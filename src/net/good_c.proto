@@ -1,0 +1,14 @@
+syntax = "proto3";
+package message;
+//option  go_package = "gonet/pb/login_c";//设置go包的可选项
+
+//0x000300 开启监听商品(goodCode)的竞价信息
+message RequestBidOn {
+    string goodCode = 1;
+}
+
+//0x000301 关闭商品(goodCode)的竞价信息监听
+message RequestBidOff  {
+
+}
+
