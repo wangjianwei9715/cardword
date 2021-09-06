@@ -1,0 +1,51 @@
+syntax = "proto3";
+package message;
+//option  go_package = "gonet/pb/login_s";//设置go包的可选项
+
+message ChatMessage {
+    int64 msgId = 1;
+    bool isMy = 2;//是否我发送的
+    bool read = 3; //别人发送的话自己是否已读
+    int64 sendTime = 4; // 1607033628, //发送此消息的时间戳
+    string picUrl = 5;
+    string content = 6;//":"聊天内容",
+}
+//0x000201 服务端监测到未向客户端发送过此BucketInfo 会先主动发送
+message BucketInfo {
+    int64 bucketId = 1;
+    message Good {
+        uint32 state = 1; //0在售 1 已成交
+        string code = 2;//":"商品编码",
+        string title = 3;
+        string pic = 4;
+        string price = 5;
+        uint32 leftSec = 6;
+    }
+    Good good = 2;
+    message Talker {
+        int64 userId = 1;
+        string name = 2;
+        string avatar = 3;
+    }
+    Talker talker = 3;
+    repeated ChatMessage msgList = 4;////从时间由远到近
+}
+
+//0x000202 推送聊天消息
+message PushChatMessage {
+    int64 bucketId = 1;
+    ChatMessage msg = 2;
+}
+
+//0x000203 发送失败才发
+message BackSendMessage {
+	enum RetCode {
+        RC_OK =0;
+        RC_WRONG = 1; //没有权限
+        RC_WRONG_BUCKET = 2; //bucket不存在
+        RC_FORBIDEN = 3;  //被禁止的操作
+        RC_OTHER = 4;  //其它错误
+    }
+	RetCode code = 1;		//0成功，其他失败 成功后客户端把聊天内容加到聊天框
+	string msg = 2;		//失败原因
+}

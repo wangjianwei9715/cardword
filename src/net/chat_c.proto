@@ -1,0 +1,22 @@
+syntax = "proto3";
+package message;
+//option  go_package = "gonet/pb/login_c";//设置go包的可选项
+
+//0x000200 开启聊天监听 开启后 服务端将主动通过socket推送他人的聊天消息
+message RequestChatOn {
+
+}
+
+//0x000201 关闭聊天监听
+message RequestChatOff {
+
+}
+
+//0x000202 发送聊天
+message SendChatMessage {
+    int64 bucketId = 1;
+    string picUrl = 2;
+    string content = 3;
+}
+
+
