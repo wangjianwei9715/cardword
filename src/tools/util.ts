@@ -40,6 +40,21 @@ export function dateFormat(time:number|string){
     // 返回
     return result;
 }
+// 时间换算
+export function getTime(time:number){
+    let day = String(Math.floor(time/3600/24));
+    let hour=String(Math.floor((time-3600*24*Number(day))/3600));
+    let minute=String(Math.floor((time-3600*24*Number(day)-3600*Number(hour))/60));
+    let second=String(Math.floor((time-3600*24*Number(day)-3600*Number(hour))%60));
+    if(Number(hour)<10){hour = '0'+hour}
+    if(Number(minute)<10){minute = '0'+minute}
+    if(Number(second)<10){second = '0'+second}
+    if(Number(day)>0){
+        return day+'天'+hour+':'+minute+':'+second
+    }else{
+        return hour+':'+minute+':'+second
+    }
+}
 export function formatDateToMonth(time:number){
     let date = new Date(time);
     let month = ("0" + (date.getMonth() + 1)).slice(-2);

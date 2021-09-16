@@ -24,16 +24,16 @@
 				<view class="panel-content">
 					<progress :percent="wgtUpNum" active-mode="forwards" active stroke-width="6" border-radius="20px" activeColor="#4DCDCC" />
 				</view>
-				
 			</view>
 		</view>
+		
 		<view class="header-banner" :style="pullDown?'position:absolute':''" >
 			<statusbar/>
 			<view class="tab-header">
-				<view class="index-icon"></view>
-				<view class="header-search" @click="onClickSearch"><view class="search-icon"></view></view>
+				<view class="header-search" @click="onClickSearch"><view class="search-icon"></view>搜索热门、球员、球队</view>
 			</view>
 		</view>
+		
 		<view class="tab-center">
 			<view class="banner-content" :style="'padding-top:'+statusBarHeight+'px'">
 				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff"> 
@@ -44,28 +44,29 @@
 			</view>
 			<view class="tab-type">
 				<view class="tab-index" v-for="(item,index) in tabList" :key="index" @click="onClickJumpUrl(item.url)">
-					<image :class="'tabimg'+index" :src="item.img" mode=""></image>
+					<view class="tab-img-content"><image :class="'tabimg'+index" :src="item.img" mode=""></image></view>
 					<view class="tabtext">{{item.text}}</view>
 				</view>
 			</view>
-			<view class="tab-notice">
-				<swiper class="notice-swiper" autoplay="true" circular="true" vertical="true" duration="0" disable-touch="true">
-					<swiper-item v-for="(item,index) in noticeList" :key="index">
-						<view class="notice-index">
-							<view class="notice-left">
-								<image class="notice-img1" :src="item.title" mode="heightFix"></image>
-								<view class="notice-text">{{item.text}}</view>
-								<view class="notice-type">{{item.num}}件商品 {{item.status}}</view>
-							</view>
-							<view class="notice-banner">
-								<image class="notice-img2" :src="item.img" mode="aspectFit"></image>
+			<view class="tab-good-content">
+				<view class="tab-good-inedx" v-for="item in noticeList" :key="item.id">
+					<view class="tab-good-title">{{item.title}}</view>
+					<view class="tab-good-bottom">
+						<image class="tab-good-img" :src="item.img" mode="aspectFill"></image>
+						<view class="tab-good-desc">
+							<view class="tab-good-name">{{item.name}}</view>
+							<view class="tab-good-btn" v-if="item.id==2">去围观</view>
+							<view class="tab-price-content" v-else>
+								¥<text class="tab-price">{{item.price}}</text>
 							</view>
 						</view>
-					</swiper-item>
-				</swiper>
+					</view>
+				</view>
 			</view>
 		</view>
-		
+		<view class="tabs-content">
+			<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
+		</view>
 		<view class="goodslist-index">
 			<goodslist  :goodsList="goodsList" :ispullDown="pullDownRefresh" @send="onClickJumpDetails"/>
 		</view>
@@ -83,26 +84,72 @@
 		tabList = [
 			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/goods/index?type=3'},
 			{img:'../../static/index/tab1.png',text:'足球',url:'/pages/goods/index?type=4'},
-			{img:'../../static/index/tab2.png',text:'TCG',url:'/pages/goods/index?type=0'},
-			{img:'../../static/index/tab3.png',text:'影视',url:'/pages/goods/index?type=1'},
+			{img:'../../static/index/tab2.png',text:'其它',url:'/pages/goods/index?type=0'},
+			{img:'../../static/index/tab3.png',text:'ALL',url:'/pages/goods/index?type=1'},
 		];
 		noticeList = [
 			{
-				img:'../../static/index/test1.png',
-				title:'../../static/index/test2.png',
-				text:'小皇帝1勒布朗1詹姆斯1限量卡盒',
-				num:11,
-				status:'竞拍中'
+				id:1,
+				title:'每日精选',
+				img:'',
+				name:'2021国宝系列',
+				price:149
 			},
 			{
-				img:'../../static/index/test1.png',
-				title:'../../static/index/test2.png',
-				text:'小皇帝2勒布朗2詹姆斯2限量卡盒',
-				num:22,
-				status:'竞拍中'
+				id:2,
+				title:'正在直播',
+				img:'',
+				name:'卡皇球星社',
+				price:0
+			}
+		];
+		goodTab = [
+			{id:1,name:'推荐'},
+			{id:2,name:'即将拼成'},
+			{id:3,name:'新品'},
+			{id:4,name:'高端'},
+			{id:5,name:'优惠'},
+			{id:6,name:'即将上线'},
+		];
+		goodTabCheck = 1;
+		goodsList:any = [
+			{
+				id:1,
+				img:'',
+				title:'20-21 National Treasures Hobby原箱*3',
+				num_all:410,
+				num:120,
+				price:149,
+				tips:'满10组减5元'
+			},
+			{
+				id:2,
+				img:'',
+				title:'20-21 National Treasures Hobby原箱*3',
+				num_all:200,
+				num:150,
+				price:349,
+				tips:'满10组减50元'
+			},
+			{
+				id:3,
+				img:'',
+				title:'20-21 National Treasures Hobby原箱*3',
+				num_all:300,
+				num:50,
+				price:1429,
+				tips:'满20组减100元'
+			},
+			{
+				id:4,
+				img:'',
+				title:'20-21 National Treasures Hobby原箱*3',
+				num_all:500,
+				num:220,
+				price:2429,
+				tips:'满20组减100元'
 			},
 		];
-		goodsList:any = [];
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
@@ -135,24 +182,24 @@
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
-			this.currentPage = 1;
-			this.noMoreData = false;
-			this.reqNewData('default',()=>{
-				setTimeout(()=>{
-					uni.stopPullDownRefresh();
-				},1000)
-			})
+			// this.currentPage = 1;
+			// this.noMoreData = false;
+			// this.reqNewData('default',()=>{
+			// 	setTimeout(()=>{
+			// 		uni.stopPullDownRefresh();
+			// 	},1000)
+			// })
 		}
 		//   加载更多数据
 		onReachBottom() {
-		    this.reqNewData('reach') 
+		    // this.reqNewData('reach') 
 		}
 		initEvent(){
-			app.http.Get("dataApi/home", {}, (data: any) => {
-				console.log('index/home====',data)
-				this.goodsList = data.goodList;
-				this.advertisingList = data.topAddList;
-			})
+			// app.http.Get("dataApi/home", {}, (data: any) => {
+			// 	console.log('index/home====',data)
+			// 	this.goodsList = data.goodList;
+			// 	this.advertisingList = data.topAddList;
+			// })
 			
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
@@ -202,25 +249,12 @@
 		}
 		onClickSearch(){
 			// 搜索
-			uni.navigateTo({
-				url: '/pages/goods/goodssearch'
-			})
+			// uni.navigateTo({
+			// 	url: '/pages/goods/goodssearch'
+			// })
 		}
 		onClickTopJumpUrl(item:any){
-			if(item.target.id!=''){
-				uni.navigateTo({
-					url: '/pages/goods/goodsdetails?id='+item.target.id
-				})
-			}
-			if(item.target.page!=''){
-				uni.navigateTo({
-					url: item.target.page
-				})
-			}
 			
-			if(item.target.url!=''){
-				plus.runtime.openURL(item.target.url)
-			}
 		}
 		onClickJumpUrl(url:string){
 			uni.navigateTo({
@@ -232,6 +266,12 @@
 			uni.navigateTo({
 				url: '/pages/goods/goodsdetails?id='+id
 			})
+		}
+		onClickListTabs(id:any){
+			if(id==this.goodTabCheck){
+				return;
+			}
+			this.goodTabCheck = id
 		}
 		reqNewData(type:string,cb?:Function) {
 			let reach = false
@@ -272,10 +312,18 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	$bg:#283443;
+	$font-16:16rpx;
+	$font-20:20rpx;
+	$font-24:24rpx;
+	$font-28:28rpx;
+	$font-32:32rpx;
+	page{
+		background:#F6F7F8
+	}
 	.content{
 		width: 100%;
-		background:#F5F5F9;
 	}
 	.absolute{
 		position: relative;
@@ -284,8 +332,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		background:#fff;
-		margin-bottom: 14rpx;
-		padding-top: 113rpx;
+		padding-top: 104rpx;
 	}
 	.goods-list{
 		width: 100%;
@@ -307,37 +354,33 @@
 	}
 	.tab-header{
 		width: 100%;
-		height:80rpx;
+		height:104rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding:0 30rpx;
+		padding:0 20rpx;
 		z-index: 10;
 		align-items: center;
 	}
-	.index-icon{
-		width: 94rpx;
-		height:46rpx;
-		background:url(../../static/index/icon.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-top: 2rpx;
-		margin-right: 29rpx;
-	}
 	.header-search{
-		width: 561rpx;
-		height:50rpx;
-		background: #FFFFFF;
-		border: 1px solid #949494;
-		border-radius: 25px;
+		width: 100%;
+		height:64rpx;
+		background: #F5F5F8;
+		border-radius: 4rpx;
 		box-sizing: border-box;
 		display: flex;
-		padding-left: 20rpx;
+		padding-left: 28rpx;
 		align-items: center;
+		font-size: $font-24;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #AAAABB;
 	}
 	.search-icon{
-		width:25rpx ;
-		height:25rpx;
-		background:url(../../static/index/search.png) no-repeat center;
-		background-size: 100% 100%;
+		width: 28rpx;
+		height:28rpx;
+		background:url(../../static/index/sousuo@2x.png) no-repeat center;
+		background-size:100% 100%;
+		margin-right: 20rpx;
 	}
 	.banner-content{
 		width: 100%;
@@ -346,201 +389,153 @@
 		box-sizing: border-box;
 		overflow: hidden;
 		display: flex;
-		padding:0 30rpx;
+		padding:0 20rpx;
 	}
 	.swiper{
 		width: 100%;
-		height:265rpx;
+		height:180rpx;
 		box-sizing: border-box;
+		background:#F6F6F7;
+		border-radius: 4rpx;
 	}
 	.swiper-image{
 		width: 100%;
-		height:265rpx;
+		height:180rpx;
 		box-sizing: border-box;
-		border-radius: 16rpx;
+		border-radius: 4srpx;
 	}
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:44rpx 64rpx 94rpx 64rpx;
+		padding:40rpx 60rpx 32rpx 60rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		border-bottom: 1px solid #F4F3F2;
 	}
 	.tab-index{
-		height:100rpx;
+		height:110rpx;
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		position: relative;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	.tab-img-content{
+		display: flex;
+		height:72rpx;
+		align-items: flex-start;
+
 	}
 	.tabimg0{
-		width: 82rpx;
-		height:84rpx;
+		width: 58rpx;
+		height:62rpx;
 	}
 	.tabimg1{
-		width: 94rpx;
-		height:89rpx;
+		width: 58rpx;
+		height:62rpx;
 	}
 	.tabimg2{
-		width: 102rpx;
-		height:100rpx;
+		width: 68rpx;
+		height:72rpx;
 	}
 	.tabimg3{
-		width: 58rpx;
-		height:95rpx;
+		width: 54rpx;
+		height:54rpx;
+		margin-top: 6rpx;
 	}
 	.tabtext{
 		width: 100%;
-		height:27rpx;
-		color:#3B3B3B;
-		font-size: 28rpx;
+		height:34rpx;
+		font-size: $font-24;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #14151A;
 		text-align: center;
-		position: absolute;
-		bottom:-46rpx;
-		left:0;
 	}
-	.tab-notice{
+	.tab-good-content{
 		width: 100%;
-		height:208rpx;
+		height:174rpx;
 		box-sizing: border-box;
-	}
-	.notice-swiper{
-		width: 100%;
-		height:208rpx;
-		box-sizing: border-box;
-	}
-	.notice-index{
-		width: 100%;
-		height:208rpx;
-		box-sizing: border-box;
-		padding:0 30rpx;
+		padding:0 20rpx;
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 	}
-	.notice-left{
-		width: 480rpx;
-		height:208rpx;
+	.tab-good-inedx{
+		width: 340rpx;
+		border-radius: 4rpx;
+		background:#F6F6F7;
 		box-sizing: border-box;
+		padding:16rpx 24rpx;
+	}
+	.tab-good-title{
+		width: 100%;
+		font-size:$font-28;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #14151A;
+		margin-bottom: 12rpx;
+	}
+	.tab-good-bottom{
+		width: 100%;
+		height:90rpx;
 		display: flex;
 		align-items: center;
-		flex-wrap: wrap;
-		padding:30rpx 0
-	}
-	.notice-banner{
-		width: 200rpx;
-		height:208rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		justify-content: space-between;
 		box-sizing: border-box;
 	}
-	.notice-img1{
-		height:38rpx;
+	.tab-good-img{
+		width: 120rpx;
+		height:90rpx;
+		border-radius: 4rpx;
 	}
-	.notice-img2{
-		max-width: 180rpx;
-		max-height:180rpx
+	.tab-good-desc{
+		width: 160rpx;
+		height:90rpx;
+		box-sizing: border-box;
+		padding-top: 4rpx;
 	}
-	.notice-text{
+	.tab-good-name{
 		width: 100%;
-		margin-top:20rpx;
-		margin-bottom: 10rpx;
-		color:#3B3B3B;
-		font-size: 33rpx;
-		line-height: 36rpx;
+		font-size: $font-24;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #14151A;
+		margin-bottom: 8rpx;
 	}
-	.notice-type{
-		color:#7B7B7B;
-		font-size: 22rpx;
+	.tab-good-btn{
+		width: 100rpx;
+		height: 40rpx;
+		background: linear-gradient(90deg, #FDEB57 0%, #FFDB37 100%);
+		border-radius: 24rpx;
+		text-align: center;
+		line-height: 40rpx;
+		font-size: $font-20;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #14151A;
+	}
+	.tab-price-content{
 		width: 100%;
+		font-size: $font-24;
+		font-family: 'DIN';
+		font-weight: bold;
+		color: #14151A;
 	}
-	.index-goods{
+	.tab-price{
+		font-size: $font-32;
+	}
+	.tabs-content{
 		width: 100%;
 		background:#fff;
-		box-sizing: border-box;
-		padding:30rpx;
-		display: flex;
-	}
-	.goods-content{
-		width: 330rpx;
-		display: inline-block;
-	}
-	.goods-left{
-		margin-right: 30rpx;
-	}
-	.goods-item{
-		width: 330rpx;
-		display: inline-block;
-		margin-bottom: 30rpx;
-		box-sizing: border-box;
-	}
-	.goods-image-content{
-		width: 330rpx;
-		background:#F5F5F9;
-		border-radius: 10rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-bottom: 15rpx;
-	}
-	.goods-image{
-		width: 100%;
-		border-radius: 10rpx;
-	}
-	.goods-desc{
-		width: 330rpx;
-		font-size: 24rpx;
-		font-family: Adobe Heiti Std;
-		font-weight: normal;
-		color: #3B3B3B;
-		line-height: 30rpx;
-		margin-bottom: 10rpx;
-	}
-	.goods-price{
-		width: 330rpx;
-		font-size: 28rpx;
-		font-family: FZZYK;
-		font-weight: bold;
-		color: #3B3B3B;
-	}
-	.goods-time{
-		width: 330rpx;
-		font-size: 20rpx;
-		font-family: HYQiHei;
-		font-weight: normal;
-		color: #7B7B7B;
-		margin-top: 10rpx;
-		margin-bottom: 11rpx;
-	}
-	.goods-seller{
-		width: 330rpx;
-		height:40rpx;
-		display: flex;	
-		align-items: center;
-	}
-	.goods-seller-image{
-		width: 40rpx;
-		height:40rpx;
-		border:50%;
-		margin-right: 12rpx;
-	}
-	.seller-name{
-		height:40rpx;
-		line-height: 40rpx;
-		font-size: 24rpx;
-		font-family: HYQiHei;
-		font-weight: normal;
-		color: #7B7B7B;
 	}
 	.goodslist-index{
 		width: 100%;
 		box-sizing: border-box;
-		padding:30rpx 0;
-		background:#fff
+		padding:16rpx 20rpx;
+		
 	}
-
+	
 	.update-content {
 		width: 100%;
 		height: 100%;

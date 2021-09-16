@@ -298,7 +298,13 @@ export default Vue.extend({
 <style>
 /* uni.css - 通用组件、模板样式库，可以当作一套ui库应用 */
 @import "./common/uni.css";
-
+@font-face {
+  font-family: 'DIN';
+  src: url("./common/DIN/DINAlternateBold.ttf");
+}
+.din{
+  font-family: 'DIN' !important;
+}
 /*每个页面公共css */
 .content {
   display: flex;
