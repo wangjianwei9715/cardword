@@ -35,6 +35,17 @@
             }
             
         }
+        ,{
+            "path" : "pages/goods/goods_details",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "商品详情",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
