@@ -275,7 +275,8 @@ export default Vue.extend({
         pack.d(buffer).to(app.sever);
       }
     };
-    app.update = UpdateManager.getInstance();
+    // 热更新
+    // app.update = UpdateManager.getInstance();
     //心跳包
     setInterval(() => {
       sendHeartBeat();

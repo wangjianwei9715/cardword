@@ -10,8 +10,8 @@ export module app{
     };
     export let sever:SocketServer;
     export let socketInfo = {tcp:'',tcpToken:''};
-    export let localTest=false;
-    // export let localTest=true;
+    // export let localTest=false;
+    export let localTest=true;
     export let domaintest='http://192.168.0.38:8701/api/v1/';  
     export let bussinessApiDomain='http://192.168.0.38:8701/api/v1/';
     export let update_url='';
