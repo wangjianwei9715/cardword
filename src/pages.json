@@ -46,6 +46,28 @@
             }
             
         }
+        ,{
+            "path" : "pages/goods/all_good_card",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "20-21 国宝 Hobby",
+				"navigationBarBackgroundColor":"#ffffff",
+				"navigationBarTextStyle":"black",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/goods/confirmorder",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "确认订单",
+				"navigationBarBackgroundColor":"#ffffff",
+				"navigationBarTextStyle":"black",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
