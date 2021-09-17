@@ -1,9 +1,9 @@
 {
     "name" : "集趣",
-    "appid" : "__UNI__5EA94B9",
+    "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.0.0",
-    "versionCode" : 102,
+    "versionName" : "1.0.0",
+    "versionCode" : 100,
     "transformPx" : false,
     "networkTimeout" : {
         "request" : 5000,

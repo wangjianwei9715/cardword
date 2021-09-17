@@ -1,6 +1,6 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="goodslist-index" v-for="item in goodsList" :key="item.id">
+		<view class="goodslist-index" v-for="item in goodsList" :key="item.id" @click="onClickJumpUrl(item.id)">
 			<image class="goodslist-pic" :src="item.img" mode="aspectFit"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-title">{{item.title}}</view>

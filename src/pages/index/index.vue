@@ -264,7 +264,7 @@
 		// 跳转商品详情
 		onClickJumpDetails(id:any){
 			uni.navigateTo({
-				url: '/pages/goods/goodsdetails?id='+id
+				url: '/pages/goods/goods_details?id='+id
 			})
 		}
 		onClickListTabs(id:any){
