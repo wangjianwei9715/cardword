@@ -52,7 +52,7 @@
 		border-radius: 12rpx 12rpx 0px 0px;
 		box-sizing: border-box;
 		border-top: 1px solid #F4F3F2;
-		transition: all 0.3s linear;
+		transition: all 0.2s linear;
 		z-index:99;
 		background:#fff
 	}

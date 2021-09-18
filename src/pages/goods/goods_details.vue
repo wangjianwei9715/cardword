@@ -57,7 +57,7 @@
 				</view>
 			</view>
 			<view class="header-bottom">
-				<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id">
+				<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id" @click="onClickCardPlay(item.id)">
 					<view class="header-bottom-index-name">{{item.name}}</view>
 					<view class="header-bottom-index-desc">{{item.desc}}<view v-if="item.id<=2" class="icon-tishi"></view></view>
 				</view>
@@ -122,7 +122,8 @@
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
 			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
 		</view>
-	
+
+		<cardplay :operationShow="operationCardShow" @operacancel="onClickCardCancel" />
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
 	</view>
 </template>
@@ -169,6 +170,7 @@
 			{id:1,img:'/static/share/pyq@2x.png',text:'朋友圈'},
 			{id:2,img:'/static/share/lianjie@2x.png',text:'分享链接'},
 		];
+		operationCardShow=false;
 		sceneStr = [
 			{scene:'WXSceneSession',text:'分享到聊天界面'},
 			{scene:'WXSenceTimeline',text:'分享到朋友圈'}
@@ -198,6 +200,14 @@
 			if(!this.operationShow){
 				this.operationShow = true
 			}
+		}
+		onClickCardPlay(id:number){
+			if(id<=2){
+				this.operationCardShow = true
+			}
+		}
+		onClickCardCancel(){
+			this.operationCardShow = false
 		}
 		onClickShareCancel(){
 			this.operationShow = false
@@ -240,6 +250,7 @@
 				});
 			}
 		}
+		
 		onClickFavor(){
 			this.favorType = !this.favorType
 		}
