@@ -30,7 +30,7 @@
 		<view class="header-banner" :style="pullDown?'position:absolute':''" >
 			<statusbar/>
 			<view class="tab-header">
-				<view class="header-search" @click="onClickSearch"><view class="search-icon"></view>搜索热门、球员、球队</view>
+				<searchinput :searchText="'搜索热门、球员、球队、帖子'" @clicksearch="onClickSearch"></searchinput>
 			</view>
 		</view>
 		
@@ -360,27 +360,6 @@
 		padding:0 20rpx;
 		z-index: 10;
 		align-items: center;
-	}
-	.header-search{
-		width: 100%;
-		height:64rpx;
-		background: #F5F5F8;
-		border-radius: 4rpx;
-		box-sizing: border-box;
-		display: flex;
-		padding-left: 28rpx;
-		align-items: center;
-		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #AAAABB;
-	}
-	.search-icon{
-		width: 28rpx;
-		height:28rpx;
-		background:url(../../static/index/sousuo@2x.png) no-repeat center;
-		background-size:100% 100%;
-		margin-right: 20rpx;
 	}
 	.banner-content{
 		width: 100%;
