@@ -72,7 +72,9 @@
 			</view>
 			<view class="goods-card-content">
 				<scroll-view class="goods-card-content-scroll" scroll-x="true" lower-threshold="20" @scrolltolower="onScrollToLower"  show-scrollbar="false">
-                    <view class="scroll-index"></view>
+                    <view class="scroll-index" v-for="(item,index) in cardData" :key="index" @click="onClickPreviewCard(index)">
+						<image class="scroll-index-img" :src="item" mode="aspectFit"></image>
+					</view>
                 </scroll-view>
 			</view>
 		</view>
@@ -98,6 +100,14 @@
 				</view>
 			</view>
 		</view>
+		<!-- 直播可拖动控件 -->
+		<movable-area class="movable-area" v-if="goodsState!=0">
+			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
+				<livewicket :liveImg="liveImg" :liveStatus="liveStatus"></livewicket>
+			</movable-view>
+		</movable-area>
+		<!-- 底部吐司 -->
+		<tips :tipsData="tipsData" v-if="goodsState==0"></tips>
 		<!-- 底部按钮 -->
 		<view class="btn-content" v-if="goodsState==0">
 			<view class="btn-content-left">
@@ -112,7 +122,7 @@
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
 			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
 		</view>
-
+	
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
 	</view>
 </template>
@@ -123,7 +133,7 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		goodsState = 1;
-		goodsImg:any = [];
+		goodsImg:any = ['../../static/goods/zhutu@2x.png'];
 		countDay:any = '';
 		countHour:any = '';
 		countMinute:any = '';
@@ -136,6 +146,10 @@
 			{id:2,name:'即买即随',desc:'随机方式'},
 			{id:3,name:'原箱*3',desc:'拼团规格'},
 			{id:4,name:'3盒*4包*3张',desc:'每箱配置'}
+		];
+		cardData:any = [
+			'../../static/goods/1@2x.png',
+			'../../static/goods/2@2x.png'
 		];
 		scrollIng = false;
 		explainData:{[x:string]:any} = [
@@ -159,6 +173,13 @@
 			{scene:'WXSceneSession',text:'分享到聊天界面'},
 			{scene:'WXSenceTimeline',text:'分享到朋友圈'}
 		];
+		tipsData:{[x:string]:any} = [
+			{img:'',desc:'1分钟前加入拼团*30'},
+			{img:'',desc:'1分钟前加入拼团*30'},
+			{img:'',desc:'1分钟前加入拼团*30'}
+		];
+		liveImg = '../../static/goods/zhutu@2x.png';
+		liveStatus = '直播回放'
 		onLoad(query:any) {
 			this.getCountDown()
 		}
@@ -221,6 +242,13 @@
 		onClickPreviewImage(index:number){
 			uni.previewImage({
 				urls: this.goodsImg,
+				current:index,
+				indicator: "number" 
+			});
+		}
+		onClickPreviewCard(index:number){
+			uni.previewImage({
+				urls: this.cardData,
 				current:index,
 				indicator: "number" 
 			});
@@ -352,7 +380,7 @@
 		justify-content: center;
 	}
 	.goods-img{
-		max-width: 750rpx;
+		width: 750rpx;
 		height: 680rpx;
 	}
 	.header-content{
@@ -612,6 +640,11 @@
 				border-radius: 4rpx;
 				display: inline-block;
 				margin-right: 20rpx;
+				overflow: hidden;
+				&-img{
+					width: 112rpx;
+					height:144rpx;
+				}
 			}
 		}
 	}
@@ -811,5 +844,17 @@
 			color: $color-F;
 		}
 	}
-	
+	.movable-area{
+		position: fixed;
+		left:0;
+		top:0;
+		width: 100%;
+		height:100%;
+		pointer-events: none;
+	}
+	.movable-content{
+		pointer-events: auto;
+		width: 200rpx;
+		height:150rpx;
+	}
 </style>
