@@ -24,9 +24,9 @@
 					<view class="goods-money-info">
 						<text class="goods-money">¥149</text>
 						<view class="goods-money-add">
-							<view class="img-add">1</view>
+							<view class="img-jian" @click="onClickCutDown()"></view>
 							<input class="money-add" @input="onInputMoney" v-model="moneyNum" type="number" />
-							<view class="img-jian"></view>
+							<view class="img-add" @click="onClickAdd()"></view>
 						</view>
 					</view>
 				</view>
@@ -100,6 +100,14 @@
 		
 		onInputMoney(event:any){
 			
+		}
+		
+		onClickCutDown(){
+			console.log('减')
+		}
+		
+		onClickAdd(){
+			console.log('加')
 		}
 	}
 </script>
@@ -227,14 +235,16 @@
 		margin-right: 12rpx;
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 	}
 
 	.img-add{
 		width: 48rpx;
 		height:48rpx;
-		background: url(../../static/goods/‭‭icon_add_price.png) no-repeat center;
-		background-size: 100% 100%;
+		background: url(../../static/goods/icon_add_price.png) no-repeat center;
+		background-size: cover;
 	}
+	
 	.img-jian {
 		width: 48rpx;
 		height: 48rpx;

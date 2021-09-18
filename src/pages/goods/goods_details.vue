@@ -109,8 +109,8 @@
 			<view class="btn-confirm">立即购买</view>
 		</view>
 		<view class="btn-contented" v-else>
-			<view class="btn-pt">拼团结果</view>
-			<view class="btn-ck">拆卡报告</view>
+			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
+			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
 		</view>
 
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
@@ -198,7 +198,7 @@
 				let scene = this.sceneStr[id].scene;
 				uni.share({
 					provider: "weixin",
-					scene: scene,
+					scene: scene as any,
 					type: 0,
 					href: "http://share.jc.ji7.com/good.html?id="+'',
 					title: '',
@@ -259,6 +259,14 @@
 			this.scrollIng = true;
 			console.log('已经到最右边')
 		}
+		
+		onClickResult(chooseID: number) {
+			console.log('拼团结果==0   拆卡报告==1')
+			uni.navigateTo({
+				url: 'goods_result_list?chooseIds=' + chooseID
+			})
+		}
+		
 	}
 </script>
 	
