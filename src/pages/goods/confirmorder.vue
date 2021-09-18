@@ -24,7 +24,7 @@
 					<view class="goods-money-info">
 						<text class="goods-money">¥149</text>
 						<view class="goods-money-add">
-							<view class="money-add">1</view>
+							<view class="img-add">1</view>
 							<input class="money-add" @input="onInputMoney" v-model="moneyNum" type="number" />
 							<view class="img-jian"></view>
 						</view>
@@ -229,10 +229,10 @@
 		flex-direction: row;
 	}
 
-	.money-add{
+	.img-add{
 		width: 48rpx;
 		height:48rpx;
-		background: url(../../static/goods/‭add.png) no-repeat center;
+		background: url(../../static/goods/‭‭icon_add_price.png) no-repeat center;
 		background-size: 100% 100%;
 	}
 	.img-jian {
