@@ -223,19 +223,19 @@
 		flex-wrap: wrap;
 	}
 	.search-index{
-		height:54rpx;
-		line-height: 54rpx;
+		height:56rpx;
+		line-height: 56rpx;
 		box-sizing: border-box;
-		padding:0 12rpx;
-		background: #F5F5F9;
-		border-radius: 6rpx;
+		padding:0 24rpx;
+		background: #F6F6F7;
+		border-radius: 4rpx;
 		text-align: center;
-		font-size: 26rpx;
-		font-family: HYQiHei;
-		font-weight: normal;
-		color: #7B7B7B;
-		margin-right: 20rpx;
-		margin-bottom: 20rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #767880;
+		margin-right: 16rpx;
+		margin-bottom: 16rpx;
 	}
 	.hot-content{
 		width: 100%;
