@@ -1,10 +1,8 @@
 <template>
 	<view class="content">
 		<view class="tab-header">
-			<view class="header-search" @click="onClickSearch">
-				<view class="search-icon"></view>搜索球员、球队
-			</view>
-			<image src="../../static/goods/icon_fanyi.png" style="width: 42rpx; height: 40rpx; margin-right: 20rpx;"
+			<searchinput :searchText="'搜索球员、球队'" @clicksearch="onClickSearch()"></searchinput>
+			<image src="../../static/goods/icon_fanyi.png" style="width: 42rpx; height: 40rpx; margin: 0 28rpx;"
 				@click="onClickTranslate()">
 			</image>
 		</view>
@@ -86,37 +84,16 @@
 
 	.tab-header {
 		width: 100%;
+		height: 104rpx;
+		
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		margin: 40rpx 0 20rpx 0;
-	}
-
-	.header-search {
-		width: 632rpx;
-		height: 64rpx;
-		background: #F5F5F8;
-		border-radius: 4px;
 		box-sizing: border-box;
-		display: flex;
-		padding-left: 28rpx;
-		align-items: center;
-		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #AAAABB;
-		margin-left: 20rpx;
-		margin-right: 28rpx;
+		padding: 0 20rpx;
+		z-index: 10;
 	}
 
-	.search-icon {
-		width: 28rpx;
-		height: 28rpx;
-		background: url(../../static/index/sousuo@2x.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-right: 20rpx;
-	}
-	
 	.item-content{
 		width: 710rpx;
 		height: 60rpx;

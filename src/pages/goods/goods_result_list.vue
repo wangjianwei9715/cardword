@@ -13,8 +13,55 @@
 				</view>
 			</view>
 		</view>
-		<view style="padding-top:88rpx">
+		<view style="padding-top:116rpx">
 			<statusbar />
+		</view>
+
+		<view class="tab-header">
+			<searchinput :searchText="'搜索关键字'" @clicksearch="onClickSearch()"></searchinput>
+			<image src="../../static/goods/icon_fanyi.png" style="width: 42rpx; height: 40rpx; margin:0 28rpx; "
+				@click="onClickTranslate()">
+			</image>
+		</view>
+
+		<!-- 拼团结果 -->
+		<view v-if="chooseId==0">
+			<view class="item-content">
+				<view class="title-middle" v-for="(item,index) in itemListName" :key="index">
+					<text class="text-name">{{item}}</text>
+				</view>
+			</view>
+			<!-- 单数行用灰色背景，双数行用白色背景 -->
+			<view :class="index%2==0?'title-middle-pin':'title-middle-pin2'" v-for="(item,index) in teamDataList"
+				:key="index">
+				<text class="text-name3">{{item.name}}</text>
+				<text class="text-name2">{{item.bh}}</text>
+				<text class="text-name3" style="margin-right: 24rpx;">{{item.time}}</text>
+			</view>
+		</view>
+
+		<!-- 拆卡报告 -->
+		<view v-if="chooseId==1">
+			<view v-if="isEmpty">
+				<text>拆卡成功才能有记录</text>
+			</view>
+
+			<view v-else>
+				<view class="item-content">
+					<view class="title-middle" v-for="(item,index) in itemListName2" :key="index">
+						<text class="text-name" style="margin-right: 20rpx;">{{item}}</text>
+					</view>
+				</view>
+				<!-- 单数行用灰色背景，双数行用白色背景 -->
+				<view :class="index%2==0?'title-middle-chai':'title-middle-chai2'" v-for="(item,index) in teamDataList2"
+					:key="index">
+					<text class="item-name">{{item.name}}</text>
+					<text class="item-bh">{{item.bh}}</text>
+					<text class="item-time">{{item.time}}</text>
+					<image src="../../static/goods/1@2x.png"
+						style="width: 100rpx; height: 128rpx; margin-right: 36rpx;"></image>
+				</view>
+			</view>
 		</view>
 
 	</view>
@@ -28,6 +75,51 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
+		itemListName = ['用户', '编号', '获取时间'];
+		itemListName2 = ['用户', '编号', '获取时间', '图片'];
+		teamDataList = [{
+				name: '梅超风',
+				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',
+				time: '2021.09.15 16:00'
+			},
+			{
+				name: '梅超风',
+				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',
+				time: '2021.09.15 16:00'
+			},
+			{
+				name: '梅超风',
+				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',
+				time: '2021.09.15 16:00'
+			},
+			{
+				name: '梅超风',
+				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',
+				time: '2021.09.15 16:00'
+			}
+		];
+		teamDataList2 = [{
+				name: '梅超风',
+				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编',
+				time: '2021.09.15 16:00'
+			},
+			{
+				name: '梅超风',
+				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编',
+				time: '2021.09.15 16:00'
+			},
+			{
+				name: '梅超风',
+				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编',
+				time: '2021.09.15 16:00'
+			},
+			{
+				name: '梅超风',
+				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编',
+				time: '2021.09.15 16:00'
+			}
+		];
+		isEmpty = false;
 
 		onLoad(query: any) {
 			if (query.chooseIds) {
@@ -44,17 +136,27 @@
 
 		onClickGroupBookingResult() {
 			console.log('拼团结果')
-			this.chooseId=0;
+			this.chooseId = 0;
 		}
 
 		onClickSplitCardsReport() {
 			console.log('拆卡报告')
-			this.chooseId=1;
+			this.chooseId = 1;
+		}
+
+		onClickSearch() {
+			console.log('搜索')
+		}
+
+		onClickTranslate() {
+			console.log('翻译')
 		}
 	}
 </script>
 
 <style lang="scss">
+	$font-22:22rpx;
+	$font-24:24rpx;
 	$font-32:32rpx;
 
 	.header-banner {
@@ -65,7 +167,6 @@
 		top: 0;
 		box-sizing: border-box;
 		z-index: 10;
-		// border-bottom: 1px solid #F4F3F2;
 
 		.tab-header {
 			width: 100%;
@@ -119,5 +220,135 @@
 			flex-direction: column;
 			align-items: center;
 		}
+	}
+
+	.tab-header {
+		width: 100%;
+		height: 104rpx;
+
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
+		padding: 0 20rpx;
+		z-index: 10;
+	}
+
+	.item-content {
+		width: 710rpx;
+		height: 60rpx;
+		background: linear-gradient(90deg, #FD8339 0%, #F24B28 100%);
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.title-middle {
+		font-size: $font-22;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+		line-height: 32rpx;
+	}
+
+	.title-middle-pin {
+		width: 710rpx;
+		height: 100rpx;
+		background: #F6F6F7;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+
+		font-size: $font-24;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #14151A;
+		line-height: 34rpx;
+	}
+
+	.title-middle-pin2 {
+		width: 710rpx;
+		height: 100rpx;
+		background: #FFFFFF;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+
+		font-size: $font-24;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #14151A;
+		line-height: 34rpx;
+	}
+
+	.text-name {
+		text-align: center;
+		padding-left: 52rpx;
+		padding-right: 44rpx;
+	}
+
+	.text-name2 {
+		width: 55%;
+		text-align: center;
+		margin-left: 38rpx;
+		margin-right: 36rpx;
+	}
+
+	.text-name3 {
+		width: 20%;
+		text-align: center;
+	}
+
+	.item-bh {
+		width: 190rpx;
+		text-align: center;
+		margin-left: 28rpx;
+		margin-right: 20rpx;
+	}
+
+	.item-name {
+		width: 72rpx;
+		text-align: center;
+		margin-left: 38rpx;
+	}
+
+	.item-time {
+		width: 122rpx;
+		text-align: center;
+		margin-right: 72rpx;
+	}
+
+	.title-middle-chai {
+		width: 710rpx;
+		height: 152rpx;
+		background: #F6F6F7;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+
+		font-size: $font-24;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #14151A;
+		line-height: 34rpx;
+	}
+
+	.title-middle-chai2 {
+		width: 710rpx;
+		height: 152rpx;
+		background: #FFFFFF;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+
+		font-size: $font-24;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #14151A;
+		line-height: 34rpx;
 	}
 </style>
