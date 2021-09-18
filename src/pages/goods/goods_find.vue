@@ -153,7 +153,7 @@
 		justify-content: space-between;
 	}
 	.header-search{
-		width: 626rpx;
+		width: 640rpx;
 		height:64rpx;
 		background: #F5F5F8;
 		border-radius: 4rpx;
