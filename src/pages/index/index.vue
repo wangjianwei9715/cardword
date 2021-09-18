@@ -35,7 +35,7 @@
 		</view>
 		
 		<view class="tab-center">
-			<view class="banner-content" :style="'padding-top:'+statusBarHeight+'px'">
+			<view class="banner-content">
 				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff"> 
 					<swiper-item v-for="(item,index) in advertisingList" :key="index">
 						<image class="swiper-image" :src="item.pic" mode="aspectFit" @click="onClickTopJumpUrl(item)"></image>
@@ -115,7 +115,7 @@
 		goodsList:any = [
 			{
 				id:1,
-				img:'',
+				img:'../../static/goods/zhutu@2x.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:410,
 				num:120,
@@ -124,7 +124,7 @@
 			},
 			{
 				id:2,
-				img:'',
+				img:'../../static/goods/zhutu@2x.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:200,
 				num:150,
@@ -133,7 +133,7 @@
 			},
 			{
 				id:3,
-				img:'',
+				img:'../../static/goods/zhutu@2x.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:300,
 				num:50,
@@ -142,7 +142,7 @@
 			},
 			{
 				id:4,
-				img:'',
+				img:'../../static/goods/zhutu@2x.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:500,
 				num:220,
@@ -249,9 +249,9 @@
 		}
 		onClickSearch(){
 			// 搜索
-			// uni.navigateTo({
-			// 	url: '/pages/goods/goodssearch'
-			// })
+			uni.navigateTo({
+				url: '/pages/goods/goods_find'
+			})
 		}
 		onClickTopJumpUrl(item:any){
 			

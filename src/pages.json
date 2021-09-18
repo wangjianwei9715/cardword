@@ -74,6 +74,32 @@
                 "enablePullDownRefresh": false
             }
             
+        },
+		{
+		    "path" : "pages/goods/goods_find",
+		    "style" :                                                                                    
+		    {
+		        "navigationStyle":"custom",	
+		        "enablePullDownRefresh": false
+		    }
+		}
+        ,{
+            "path" : "pages/goods/goods_find_list",
+            "style" :                                                                                    
+            {
+                "navigationStyle":"custom",	
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/userinfo/merchant_shops",
+            "style" :                                                                                    
+            {
+                "navigationStyle":"custom",
+                "enablePullDownRefresh": false
+            }
+            
         }
     ],
 	"globalStyle": {

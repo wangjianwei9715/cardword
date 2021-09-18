@@ -35,7 +35,7 @@
 		display: flex;
 		padding-left: 28rpx;
 		align-items: center;
-		font-size: $font-24;
+		font-size: 24rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
 		color: #AAAABB;

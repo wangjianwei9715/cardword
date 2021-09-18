@@ -87,7 +87,7 @@
 					<view class="goods-seller-left-desc-tips">已拼团5组</view>
 				</view>
 			</view>
-			<view class="goods-seller-right">店铺</view>
+			<view class="goods-seller-right" @click="onClickShops">店铺</view>
 		</view>
 		<!-- 商品详情 -->
 		<view class="goods-desc">
@@ -187,6 +187,11 @@
 			uni.navigateBack({
 				delta: 1
 			});
+		}
+		onClickShops(){
+			uni.navigateTo({
+				url: '/pages/userinfo/merchant_shops'
+			})
 		}
 		// 分享
 		onClickShare(){
