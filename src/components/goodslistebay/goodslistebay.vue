@@ -1,6 +1,6 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="goodslist-index" v-for="item in goodsList" :key="item.id" @click="onClickJumpUrl(item.id)">
+		<view class="goodslist-index" v-for="item in goodsOldList" :key="item.id" @click="onClickJumpUrl(item.id)">
 			<image class="goodslist-pic" :src="item.img" mode="aspectFill"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-tip" :class="item.type=='拍卖'?'icon-paimai':'icon-yikou'" >{{item.type}}</view>
@@ -36,12 +36,15 @@
 		@Watch('goodsList')
 		onGoodsListChanged(val: any, oldVal: any){
 			this.goodsList = val;
+			setTimeout(()=>{
+				this.getGoodsList()
+			},100)
 		}
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-			
+			this.getGoodsList()
 		}
 		getPlan(now:number,all:number){
 			let width = Math.floor(Number(now)/Number(all)*100);
@@ -49,6 +52,13 @@
 		}
 		onClickJumpUrl(id:any){
 			this.$emit("send", id);
+		}
+		getGoodsList(){
+			let data = JSON.parse(JSON.stringify(this.goodsList))
+			if(!data){
+				return;
+			}
+			this.goodsOldList = this.goodsOldList.concat(data)
 		}
 	}
 </script>

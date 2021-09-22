@@ -110,6 +110,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/live/live_find",
+            "style" :                                                                                    
+            {
+                "navigationStyle":"custom",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -136,7 +145,7 @@
 			{
 				"pagePath": "pages/index/live",
 				"iconPath": "static/index/tabbar_live.png",
-				"selectedIconPath": "static/index/tabbar_live.png",
+				"selectedIconPath": "static/index/tabbar_live_.png",
 				"text": "直播"
 			},
 			{

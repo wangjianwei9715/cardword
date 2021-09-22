@@ -17,39 +17,6 @@
 			<view class="search-list">
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
 			</view>
-			
-			<!-- <view class="hot-content">
-				<scroll-view style="display: flex;white-space: nowrap; " scroll-x="true">
-					<view class="hot-list">
-						<view class="hot-header">
-							<view class="hot-header-left">热销卖家</view>
-							<view class="hot-header-right">在售商品</view>
-						</view>
-						<view class="hot-center">
-							<view class="hot-index" v-for="(item,index) in hotSellerData" :key="index">
-								<view class="hot-index-left">
-									<view :class="'hot-icon'+item.rank">{{item.rank}}</view>{{item.name}}
-								</view>
-								<view class="hot-index-right">{{item.num}}</view>
-							</view>
-						</view>
-					</view>
-					<view class="hot-list">
-						<view class="hot-header">
-							<view class="hot-header-left">热门球员</view>
-							<view class="hot-header-right">在售商品</view>
-						</view>
-						<view class="hot-center">
-							<view class="hot-index" v-for="(item,index) in hotCardData" :key="index">
-								<view class="hot-index-left">
-									<view :class="'hot-icon'+item.rank">{{item.rank}}</view>{{item.name}}
-								</view>
-								<view class="hot-index-right">{{item.num}}</view>
-							</view>
-						</view>
-					</view>
-				</scroll-view>
-			</view> -->
 		</view>
 	</view>
 </template>
@@ -63,14 +30,8 @@
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
-		// hotSellerData:{[x:string]:any} = [
-		// 	{rank:1,name:'阿巴巴',num:22}
-		// ]
-		// hotCardData:{[x:string]:any} = [
-		// 	{rank:1,name:'阿巴巴',num:22}
-		// ]
 		onLoad(query:any) {
-			let searchData = uni.getStorageSync("searchData");
+			let searchData = uni.getStorageSync("liveFind");
 			if(searchData){
 				this.historyList = searchData
 			}
@@ -85,7 +46,7 @@
 		}
 		onClickDelete(){
 			this.historyList = []
-			uni.removeStorageSync("searchData")
+			uni.removeStorageSync("liveFind")
 		}
 		onClickSearch(text:string){
 			if(text!=''){
@@ -98,7 +59,7 @@
 						searchData = []
 					}
 					searchData.unshift(searchText)
-					uni.setStorageSync("searchData",searchData)
+					uni.setStorageSync("liveFind",searchData)
 				}
 			}
 			
@@ -108,8 +69,9 @@
 				q:encodeURIComponent(text),
 				timeStamp:Date.parse(date)/1000
 			}
-			uni.redirectTo({
-				url: '/pages/goods/goods_find_list?q='+text
+			uni.$emit('liveFind',text)
+			uni.switchTab({
+				url: '/pages/index/live'
 			})
 			// app.http.Get('dataApi/search',params,(res:any)=>{
 			// 	uni.redirectTo({

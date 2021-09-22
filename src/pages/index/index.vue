@@ -35,6 +35,7 @@
 		</view>
 		
 		<view class="tab-center">
+			<statusbar/>
 			<view class="banner-content">
 				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff"> 
 					<swiper-item v-for="(item,index) in advertisingList" :key="index">
