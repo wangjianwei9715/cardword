@@ -4,7 +4,7 @@
 			<statusbar/>
 			<view class="tab-header">
 				<view class="header-search">
-					<searchinput :searchText="searchText"></searchinput>
+					<searchinput :searchText="searchText" @clicksearch="onClickSearch"></searchinput>
 				</view>
 				<view class="header-right" @click="onClickBack">取消</view>
 			</view>
@@ -97,6 +97,11 @@
 		}
 		onClickJumpDetails(id:number){
 
+		}
+		onClickSearch(){
+			uni.navigateBack({
+				delta: 1
+			});
 		}
 	}
 </script>

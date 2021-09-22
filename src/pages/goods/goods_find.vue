@@ -7,7 +7,8 @@
 					<view class="search-icon"></view>
 					<input class="search-input" type="text" focus v-model="searchTetxt" placeholder="搜索" @confirm="onClickSearch(searchTetxt)" confirm-type="search"/>
 				</view>
-				<view class="header-right" @click="onClickBack">取消</view>
+				<view v-if="searchTetxt==''" class="header-right" @click="onClickBack">取消</view>
+				<view v-else class="header-right" @click="onClickSearch(searchTetxt)">搜索</view>
 			</view>
 		</view>
 		
@@ -16,12 +17,8 @@
 			<view class="search-list">
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
 			</view>
-			<view class="search-title">热门搜索</view>
-			<view class="search-list">
-				<view class="search-index" @click="onClickSearch(item)" v-for="item in hotList" :key="item">{{item}}</view>
-			</view>
 			
-			<view class="hot-content">
+			<!-- <view class="hot-content">
 				<scroll-view style="display: flex;white-space: nowrap; " scroll-x="true">
 					<view class="hot-list">
 						<view class="hot-header">
@@ -52,7 +49,7 @@
 						</view>
 					</view>
 				</scroll-view>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -66,13 +63,12 @@
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
 		historyList:{[x:string]:any} = []
-		hotList:{[x:string]:any} = ['科比','詹姆斯']
-		hotSellerData:{[x:string]:any} = [
-			{rank:1,name:'阿巴巴',num:22}
-		]
-		hotCardData:{[x:string]:any} = [
-			{rank:1,name:'阿巴巴',num:22}
-		]
+		// hotSellerData:{[x:string]:any} = [
+		// 	{rank:1,name:'阿巴巴',num:22}
+		// ]
+		// hotCardData:{[x:string]:any} = [
+		// 	{rank:1,name:'阿巴巴',num:22}
+		// ]
 		onLoad(query:any) {
 			let searchData = uni.getStorageSync("searchData");
 			if(searchData){

@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" focus v-model="searchTetxt" placeholder="搜索" @confirm="onClickSearch(searchTetxt)" confirm-type="search"/>
+					<input class="search-input" type="text"  v-model="searchTetxt" placeholder="搜索" @confirm="onClickSearch(searchTetxt)" confirm-type="search"/>
 				</view>
 			</view>
 		</view>
@@ -33,9 +33,7 @@
 			if(refData){
 				this.historyList = refData
 			}
-			if(query.q){
-				this.searchTetxt = query.q
-			}
+			
 		}
 		onClickBack(){
 			uni.navigateBack({
