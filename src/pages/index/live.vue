@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="header-banner" :style="pullDown?'position:absolute':''" >
+		<view class="header-banner">
 			<statusbar/>
 			<view class="tab-header">
 				<searchinput :searchText="searchText==''?'搜索商品':searchText" @clicksearch="onClickSearch"></searchinput>
@@ -12,7 +12,7 @@
 
 		<view class="live-content">
 			<statusbar/>
-			<liveslist :liveList="liveList" />
+			<liveslist :liveList="liveList" :ispullDown="pullDownRefresh" @send="onClickLive"/>
 		</view>
 	</view>
 </template>
@@ -23,7 +23,6 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		statusBarHeight = app.statusBarHeight;
 		searchText = '';
 		pullDown = false;
 		pullDownRefresh = false;
@@ -99,13 +98,6 @@
 				this.searchText = res
 			})
 		}
-		onPageScroll(e:any){
-			if(e.scrollTop>=0){
-				this.pullDown = false
-			}else{
-				this.pullDown = true
-			}
-		}
 		onClickListTabs(id:any){
 			if(id==this.goodTabCheck){
 				return;
@@ -117,6 +109,9 @@
 			uni.navigateTo({
 				url: '/pages/live/live_find?q='+this.searchText
 			})
+		}
+		onClickLive(id:any){
+
 		}
 	}
 </script>

@@ -18,20 +18,19 @@
 				</view>
 			</view>
 		</view>
-		<view class="goods-lists"  :style="'margin-top:'+statusBarHeight+'px'">
-			<goodslistebay  :goodsList="goodsList"  @send="onClickJumpDetails"/>
+		<view class="goods-lists">
+			<statusbar/>
+			<goodslistebay  :goodsList="goodsList" :ispullDown="pullDownRefresh" @send="onClickJumpDetails"/>
 		</view>
 	</view>
 
 </template>
 
 <script lang="ts">
-	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		statusBarHeight = app.statusBarHeight;
 		searchText = '';
 		sortData = [
 			{id:1,name:'成交时间',sort_up:false},

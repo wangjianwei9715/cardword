@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text"  v-model="searchTetxt" placeholder="搜索" @confirm="onClickSearch(searchTetxt)" confirm-type="search"/>
+					<input class="search-input" type="text" placeholder-style="color:#AAAABB" v-model="searchTetxt" placeholder="搜索" @confirm="onClickSearch(searchTetxt)" confirm-type="search"/>
 				</view>
 			</view>
 		</view>
@@ -107,7 +107,7 @@
 		justify-content: space-between;
 	}
 	.header-search{
-		width: 710rpx;
+		width: 100%;
 		height:64rpx;
 		background: #F5F5F8;
 		border-radius: 4rpx;
@@ -115,9 +115,10 @@
 		display: flex;
 		align-items: center;
 		position: relative;
+		padding-left:28rpx ;
 	}
 	.search-input{
-		width: 710rpx;
+		width: 634rpx;
 		height:64rpx;
 		background: #F5F5F8;
 		border-radius: 4rpx;
@@ -125,17 +126,13 @@
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #14151A;
-		padding-left:76rpx ;
 	}
 	.search-icon{
 		width: 28rpx;
 		height:28rpx;
 		background:url(../../static/index/sousuo@2x.png) no-repeat center;
 		background-size:100% 100%;
-		position: absolute;
-		left:28rpx;
-		top:50%;
-		margin-top: -14rpx;
+		margin-right: 20rpx;
 	}
 	.header-right{
 		height:50rpx;
@@ -148,7 +145,7 @@
 	.top-center{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 30rpx;
+		padding:0 32rpx;
 		padding-top: 124rpx;
 	}
 	.search-title{

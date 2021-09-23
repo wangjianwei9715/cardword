@@ -38,7 +38,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding:0 54rpx;
+		padding:0 32rpx;
 		position: relative;
 	}
 	.index{
@@ -53,13 +53,15 @@
 		position: relative;
 	}
 	.current::before{
-		width: 100%;
+		width: 28rpx;
 		height:6rpx;
 		content: '';
 		background-size: 100% 100%;
 		position: absolute;
 		bottom:0;
-		left:0;
+		left:50%;
+		margin-left:-14rpx;
+		border-radius: 3rpx;
 		background:#14151A
 	}
 	

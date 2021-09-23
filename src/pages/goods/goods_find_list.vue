@@ -25,19 +25,18 @@
 			</view>
 		</view>
 		<view class="sort-shadow" v-show="classifyShow" @click="onClickClassifyCancel"></view>
-		<view class="goods-lists"  :style="'margin-top:'+statusBarHeight+'px'">
+		<view class="goods-lists">
+			<statusbar/>
 			<goodslist  :goodsList="goodsList" :ispullDown="pullDownRefresh" @send="onClickJumpDetails"/>
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		statusBarHeight = app.statusBarHeight;
 		searchText = '';
 		goodTab = [
 			{id:1,name:'在售'},
@@ -209,6 +208,7 @@
 		width: 100%;
 		height:90rpx;
 		margin-top: -10rpx;
+		padding:0 22rpx;
 		box-sizing: border-box;
 		border-bottom: 1px solid #F1F1F4;
 	}

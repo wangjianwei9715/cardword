@@ -50,6 +50,9 @@
 		destroyed(){
 			
 		}
+		onClickJumpUrl(id:any){
+			this.$emit("send", id);
+		}
 		getLivesList(){
 			let data = JSON.parse(JSON.stringify(this.liveList))
 			if(!data){
