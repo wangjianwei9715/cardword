@@ -25,8 +25,7 @@
 <style>
 	.content{
 		width:100%;
-		background:#fff !important;
 		position: relative;
-		z-index: 999;
+		z-index: 1;
 	}
 </style>

@@ -57,7 +57,7 @@
 			display: flex;
 			justify-content: center;
 			flex-wrap: wrap;
-			padding:18rpx 0;
+			padding:24rpx 0;
 			
 			.icon-bofang{
 				width: 42rpx;

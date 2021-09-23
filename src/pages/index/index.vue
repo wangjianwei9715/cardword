@@ -35,7 +35,8 @@
 		</view>
 		
 		<view class="tab-center">
-			<view class="banner-content" :style="'padding-top:'+statusBarHeight+'px'">
+			<statusbar/>
+			<view class="banner-content">
 				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff"> 
 					<swiper-item v-for="(item,index) in advertisingList" :key="index">
 						<image class="swiper-image" :src="item.pic" mode="aspectFit" @click="onClickTopJumpUrl(item)"></image>
@@ -82,7 +83,7 @@
 		statusBarHeight = app.statusBarHeight;
 		advertisingList:{[x:string]:any} = [];
 		tabList = [
-			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/goods/index?type=3'},
+			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/userinfo/order_list'},
 			{img:'../../static/index/tab1.png',text:'足球',url:'/pages/goods/index?type=4'},
 			{img:'../../static/index/tab2.png',text:'其它',url:'/pages/goods/all_good_card?type=0'},
 			{img:'../../static/index/tab3.png',text:'ALL',url:'/pages/goods/index?type=1'},
@@ -115,7 +116,7 @@
 		goodsList:any = [
 			{
 				id:1,
-				img:'',
+				img:'../../static/goods/zhutu@2x.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:410,
 				num:120,
@@ -124,7 +125,7 @@
 			},
 			{
 				id:2,
-				img:'',
+				img:'../../static/goods/zhutu@2x.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:200,
 				num:150,
@@ -133,7 +134,7 @@
 			},
 			{
 				id:3,
-				img:'',
+				img:'../../static/goods/zhutu@2x.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:300,
 				num:50,
@@ -142,7 +143,7 @@
 			},
 			{
 				id:4,
-				img:'',
+				img:'../../static/goods/zhutu@2x.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:500,
 				num:220,
@@ -249,9 +250,9 @@
 		}
 		onClickSearch(){
 			// 搜索
-			// uni.navigateTo({
-			// 	url: '/pages/goods/goodssearch'
-			// })
+			uni.navigateTo({
+				url: '/pages/goods/goods_find'
+			})
 		}
 		onClickTopJumpUrl(item:any){
 			
@@ -435,7 +436,7 @@
 		width: 100%;
 		height:174rpx;
 		box-sizing: border-box;
-		padding:0 20rpx;
+		padding:0 24rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

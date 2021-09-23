@@ -3,18 +3,13 @@
 		<view class="goodslist-index" v-for="item in goodsOldList" :key="item.id" @click="onClickJumpUrl(item.id)">
 			<image class="goodslist-pic" :src="item.img" mode="aspectFill"></image>
 			<view class="goodslist-right">
+				<view class="goodslist-tip" :class="item.type=='拍卖'?'icon-paimai':'icon-yikou'" >{{item.type}}</view>
 				<view class="goodslist-title">{{item.title}}</view>
-				<view class="goodslist-plan-content">
-					<view class="goodslist-plan-now" :style="'width:'+getPlan(item.num,item.num_all)+'%'"></view>
-					<view class="goodslist-plan-desc">余{{item.num_all-item.num}}/共{{item.num_all}}</view>
-				</view>
 				<view class="goodslist-bottom">
 					<view class="goodslist-price-content">
 						¥<text class="goodslist-price">{{item.price}}</text>
 					</view>
-					<view class="goodslist-tips">
-						{{item.tips}}
-					</view>
+					<image class="goodslist-yibei" src="../../static/goods/ebay@2x.png" mode="aspectFit"></image>
 				</view>
 			</view>
 		</view>
@@ -33,6 +28,7 @@
 		ispullDown:any;
 	
 		goodsOldList:any = [];
+
 		@Watch('ispullDown')
 		onIspullDownChanged(val: any, oldVal: any){
 			this.goodsOldList = []
@@ -59,7 +55,6 @@
 		}
 		getGoodsList(){
 			let data = JSON.parse(JSON.stringify(this.goodsList))
-			console.log(data)
 			if(!data){
 				return;
 			}
@@ -98,7 +93,7 @@
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #14151A;
-			margin-bottom: 16rpx;
+			margin-bottom: 12rpx;
 		}
 		&-plan-content{
 			width: 440rpx;
@@ -137,6 +132,7 @@
 			height:40rpx;
 			display: flex;
 			align-items: center;
+			justify-content: space-between;
 		}
 		&-price-content{
 			font-size: 24rpx;
@@ -147,18 +143,39 @@
 		&-price{
 			font-size: 32rpx;
 		}
-		&-tips{
-			width: 130rpx;
-			height:38rpx;
-			text-align: center;
-			line-height: 38rpx;
-			font-size: 20rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #E6D188;
-			margin-left: 16rpx;
-			background:url(../../static/index/title@2x.png) no-repeat center;
-			background-size: 100% 100%;
+		&-tip{
+			width: 72rpx;
+			height:36rpx;
+			border-radius: 4rpx;
+			margin-bottom: 10rpx;
 		}
+		&-yibei{
+			width: 60rpx;
+			height:40rpx;
+		}
+	}
+	.icon-paimai{
+		width: 72rpx;
+		height:38rpx;
+		background:url(../../static/goods/paimai@2x.png) no-repeat center;
+		background-size: 100% 100%;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+		text-align: center;
+		line-height: 38rpx;
+	}
+	.icon-yikou{
+		width: 72rpx;
+		height:38rpx;
+		background:url(../../static/goods/yikou@2x.png) no-repeat center;
+		background-size: 100% 100%;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+		text-align: center;
+		line-height: 38rpx;
 	}
 </style>
