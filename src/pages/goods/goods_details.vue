@@ -116,7 +116,7 @@
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="btn-confirm">立即购买</view>
+			<view class="btn-confirm" @click="onClickBuy()">立即购买</view>
 		</view>
 		<view class="btn-contented" v-else>
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
@@ -286,6 +286,13 @@
 			}
 			this.scrollIng = true;
 			console.log('已经到最右边')
+		}
+		
+		onClickBuy(){
+			console.log('立即购买')
+			uni.navigateTo({
+				url:'confirmorder'
+			})
 		}
 		
 		onClickResult(chooseID: number) {
