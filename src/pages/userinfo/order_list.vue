@@ -171,7 +171,9 @@
 			}
 		];
 		onLoad(query:any) {
-			
+			if(query.type){
+				this.orderTabCheck = query.type
+			}
 		}
 		onClickBack(){
 			uni.navigateBack({

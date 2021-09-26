@@ -27,17 +27,17 @@
 		<view class="user-order">
 			<view class="header">
 				<view class="title">我的订单</view>
-				<view class="right">全部<view class="icon-right"></view></view>
+				<view class="right" @click="onClickOrderList(1)">全部<view class="icon-right"></view></view>
 			</view>
 			<view class="tab-content">
-				<view class="tab" v-for="item in orderTab" :key="item.id">
+				<view class="tab" v-for="item in orderTab" :key="item.id" @click="onClickOrderList(item.id)">
 					<view class="icon-content">
 						<view :class="'icon-'+item.icon"></view>
 					</view>
 					<view class="name">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="order-tip">您有2个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
+			<view class="order-tip"  @click="onClickOrderList(2)">您有2个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
 		</view>
 
 		<view class="orther-setting">
@@ -61,10 +61,10 @@
 			{id:3,name:'我的收藏',num:0}
 		];
 		orderTab = [
-			{id:1,name:'进行中',icon:'jx'},
-			{id:2,name:'待发货',icon:'fh'},
-			{id:3,name:'待收货',icon:'sh'},
-			{id:4,name:'未中卡',icon:'zk'}
+			{id:3,name:'进行中',icon:'jx'},
+			{id:4,name:'待发货',icon:'fh'},
+			{id:5,name:'待收货',icon:'sh'},
+			{id:6,name:'未中卡',icon:'zk'}
 		];
 		settingTab = [
 			{id:1,name:'地址管理',url:'/pages/userinfo/setting_addresses'},
@@ -85,6 +85,11 @@
 				url:url
 			})
 		}
+		onClickOrderList(id:number){
+			uni.navigateTo({
+				url:'/pages/userinfo/order_list?type='+id
+			})
+		}	
 		countDownTime(){
 			this.countStr = getCountDownTime(this.countTime);
 			this.countInterval = this.scheduler(()=>{
@@ -96,6 +101,7 @@
 				}
 			},1)
 		}
+		
 	}
 </script>
 
