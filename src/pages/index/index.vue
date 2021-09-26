@@ -353,7 +353,7 @@
 		padding-bottom:10rpx;
 	}
 	.tab-header{
-		width: 100%;
+		width: 750rpx;
 		height:104rpx;
 		display: flex;
 		box-sizing: border-box;

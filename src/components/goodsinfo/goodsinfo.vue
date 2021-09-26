@@ -18,21 +18,18 @@
 </template>
 
 <script lang="ts">
+	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		data() {
-			return {
-				@Prop({
-					default: []
-				})
-				goodListInfo: any;
-			};
-		}
+		@Prop({
+			default: []
+		})
+		goodListInfo: any;
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.yunfei-info {
 		width: 100%;
 		display: flex;
@@ -60,7 +57,7 @@
 	}
 
 	.heji-text {
-		font-size: $font-20;
+		font-size: 20rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
 		color: #14151A;
@@ -68,7 +65,7 @@
 	}
 
 	.heji-money2 {
-		font-size: $font-24;
+		font-size: 24rpx;
 		font-family: 'DIN';
 		font-weight: bold;
 		color: #14151A;

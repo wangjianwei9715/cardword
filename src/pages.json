@@ -121,6 +121,25 @@
             }
             
         }
+        ,{
+            "path" : "pages/userinfo/setting_addresses",
+            "style" :                                                                                    
+            {
+                "navigationStyle": "custom",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/userinfo/setting_addressedit",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "地址编辑",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -158,7 +177,7 @@
 			{
 				"pagePath": "pages/index/userinfo",
 				"iconPath": "static/index/tabbar_user.png",
-				"selectedIconPath": "static/index/tabbar_user.png",
+				"selectedIconPath": "static/index/tabbar_user_.png",
 				"text": "我的"
 			}
 		]
