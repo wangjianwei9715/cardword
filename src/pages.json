@@ -110,7 +110,18 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "pages/userinfo/order_details",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationBarBackgroundColor": "#ffffff",
+                "navigationBarTextStyle": "black",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

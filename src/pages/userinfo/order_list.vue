@@ -40,6 +40,120 @@
 			{
 				id:1,
 				state:0,
+				coun_down:250,
+				num:5,
+				seller:{
+					avatar:'',
+					name:'皇球星社'
+				},
+				goods:{
+					img:'../../static/goods/zhutu@2x.png',
+					title:'20-21 National Treasures Hobby原箱*3',
+					price:149
+				},
+				operate:[
+					{cmd:'cancel',name:'取消订单'},
+					{cmd:'pay',name:'立即支付'}
+				]
+			},
+			{
+				id:2,
+				state:1,
+				coun_down:250,
+				num:5,
+				seller:{
+					avatar:'',
+					name:'皇球星社'
+				},
+				goods:{
+					img:'../../static/goods/zhutu@2x.png',
+					title:'20-21 National Treasures Hobby原箱*3',
+					price:149
+				},
+				operate:[
+					{cmd:'cancel',name:'取消订单'},
+					{cmd:'pay',name:'立即支付'}
+				]
+			},
+			{
+				id:3,
+				state:2,
+				coun_down:250,
+				num:5,
+				seller:{
+					avatar:'',
+					name:'皇球星社'
+				},
+				goods:{
+					img:'../../static/goods/zhutu@2x.png',
+					title:'20-21 National Treasures Hobby原箱*3',
+					price:149
+				},
+				operate:[
+					{cmd:'del',name:'删除订单'}
+				]
+			},
+			{
+				id:4,
+				state:3,
+				coun_down:250,
+				num:5,
+				seller:{
+					avatar:'',
+					name:'皇球星社'
+				},
+				goods:{
+					img:'../../static/goods/zhutu@2x.png',
+					title:'20-21 National Treasures Hobby原箱*3',
+					price:149
+				},
+				operate:[
+					{cmd:'wuliuu',name:'查看物流'},
+					{cmd:'reward',name:'我的中卡'}
+				]
+			},
+			{
+				id:5,
+				state:4,
+				coun_down:250,
+				num:5,
+				seller:{
+					avatar:'',
+					name:'皇球星社'
+				},
+				goods:{
+					img:'../../static/goods/zhutu@2x.png',
+					title:'20-21 National Treasures Hobby原箱*3',
+					price:149
+				},
+				operate:[
+					{cmd:'cancel',name:'取消订单'},
+					{cmd:'pay',name:'立即支付'}
+				]
+			},
+			{
+				id:6,
+				state:5,
+				coun_down:250,
+				num:5,
+				seller:{
+					avatar:'',
+					name:'皇球星社'
+				},
+				goods:{
+					img:'../../static/goods/zhutu@2x.png',
+					title:'20-21 National Treasures Hobby原箱*3',
+					price:149
+				},
+				operate:[
+					{cmd:'cancel',name:'取消订单'},
+					{cmd:'pay',name:'立即支付'}
+				]
+			},
+			{
+				id:7,
+				state:-1,
+				coun_down:250,
 				num:5,
 				seller:{
 					avatar:'',
@@ -74,7 +188,9 @@
 			this.orderTabCheck = id
 		}
 		onClickOrder(id:any){
-
+			uni.navigateTo({
+				url:'/pages/userinfo/order_details?id='+id
+			})
 		}
 	}
 </script>

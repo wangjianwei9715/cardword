@@ -109,8 +109,7 @@
 			{id:2,name:'即将拼成'},
 			{id:3,name:'新品'},
 			{id:4,name:'高端'},
-			{id:5,name:'优惠'},
-			{id:6,name:'即将上线'},
+			{id:5,name:'优惠'}
 		];
 		goodTabCheck = 1;
 		goodsList:any = [
