@@ -33,11 +33,12 @@
 				<input class="input-content" type="text" placeholder="街道、小区、门牌号" v-model="addressDetail" @input="onInputName"/>
 			</view>
 		</view>
+		<view class="add-btn" @click="onClickAddressConfirm">保存</view>
 		<view class="default-index">
-			<view :class="addressDefault?'adress-default':'icon-default'" @click="onClickDefault"></view>设为默认地址
+			设为默认地址<switch style="margin-left:20rpx" color="#14151B" :checked="addressDefault" @change="onClickDefault" />
 		</view>
 		
-		<view class="add-btn" @click="onClickAddressConfirm">保存</view>
+		
 	</view>
 </template>
 
@@ -51,7 +52,7 @@
 		userName = '';
 		userPhone = '';
 		addressDetail = '';
-		addressDefault = false
+		addressDefault = true
 		editData:{[x:string]:any} = []
 		onLoad(query:any) {
 			if (query.title) {
@@ -141,19 +142,20 @@
 <style>
 	.setting-index {
 		width: 100%;
-		min-height: 125rpx;
+		min-height: 98rpx;
 		box-sizing: border-box;
-		padding: 0 40rpx;
+		padding: 0 32rpx;
 		background: #fff;
-		border-bottom: 1px solid #F4F3F2;
+		
 	}
 
 	.setting-view {
 		width: 100%;
-		min-height: 125rpx;
+		min-height: 98rpx;
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
+		border-bottom: 1px solid #F4F3F2;
 	}
 	.left-content{
 		width: auto;
@@ -164,10 +166,10 @@
 	}
 	.left-title {
 		width: 120rpx;
-		font-size: 30rpx;
-		font-family: HYQiHei;
-		font-weight: normal;
-		color: #3C3C3C;
+		font-size: 26rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #14151A;
 		line-height: 40rpx;
 	}
 
@@ -203,42 +205,27 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:0 32rpx;
-		height:100rpx;
+		height:60rpx;
 		display: flex;
 		align-items: center;
-		font-size: 25rpx;
-		font-family: HYQiHei;
-		font-weight: normal;
-		color: #7B7B7B;
-	}
-	.icon-default{
-		width: 29rpx;
-		height:29rpx;
-		background:url(../../static/userinfo/icon_check.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-right: 16rpx;
-	}
-	.adress-default{
-		width: 29rpx;
-		height:29rpx;
-		background:url(../../static/userinfo/icon_check_.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-right: 16rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #14151A;
 	}
 	.add-btn{
-		width: 690rpx;
-		height: 78rpx;
-		background: #4DCDCC;
-		border-radius: 39rpx;
-		position: fixed;
-		bottom:70rpx;
-		left:50%;
-		margin-left:-345rpx;
+		width: 718rpx;
+		height: 88rpx;
+		background: #14151B;
+		border-radius: 4rpx;
 		text-align: center;
-		line-height: 78rpx;
-		font-size: 36rpx;
-		font-family: HYQiHei;
-		font-weight: bold;
+		line-height: 88rpx;
+		font-size: 28rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
 		color: #FFFFFF;
+		margin-top: 40rpx;
+		box-sizing: border-box;
+		margin-bottom: 60rpx;
 	}
 </style>

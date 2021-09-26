@@ -1,21 +1,20 @@
 <template>
 	<view class="content">
-		<navigationbar :isShowRightBtn="true" @navclick="onClickAdd" title='地址管理' rightText='+'/>
-		<view class="setting-index" >
+		<view class="setting-index" v-show="addressesList.length>0">
 			<view class="setting-view" v-for="item in addressesList" :key="item.id">
 				<view class="left-content" @click="onClickSelect(item)">
+					<view class="left-des"><view v-if="item.default" class="icon-moren">默认</view>{{item.name}}  {{item.phone}}</view>
 					<text class="left-title">{{item.district}}{{item.detail}}</text>
-					<text class="left-des">{{item.name}}  {{item.phone}}</text>
+					
 				</view>
-				<button class="btn-back" @click="onClickEdit(item)">编辑</button>
+				<button class="btn-edit" @click="onClickEdit(item)"><view class="icon-edit"></view></button>
 			</view>
 		</view>
+		<view class="btn-add">新建地址</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import { app } from "@/app";
-	import { userinfo } from "@/net/DataDefine";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
@@ -24,21 +23,26 @@
 		addressesList:any=[
 			{
 				id:1,
-				district:'123',
-				detail:'qwe',
+				district:'浙江省 杭州市 西湖区',
+				detail:'西湖小区2幢1单元4541室风的射流风机爱德克斯',
 				name:'kkk',
-				phone:'18956320152'
+				phone:'18956320152',
+				default:true
+			},
+			{
+				id:2,
+				district:'浙江省 杭州市 西湖区',
+				detail:'西湖小区2幢1单元4541室风的射流风机爱德克斯',
+				name:'ddd',
+				phone:'18956320152',
+				default:false
 			}
 		];
 		onLoad(query:any) {
 			if(query.type){
 				this.orderSelect = true;
 			}
-			
 			this.initEvent()
-			
-			
-
 			this.onEventUI('addressedit',(data)=>{
 				this.initEvent()
 			});
@@ -75,60 +79,96 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	page{
+		width: 100%;
+		height:100%;
+		background:#F6F7F8
+	}
 	.setting-index {
 		width: 100%;
-		/* height: 150rpx; */
 		box-sizing: border-box;
-		padding: 0 40rpx;
-		background: #fff;
-		border-bottom: 1px solid #F4F3F2;
-		padding-top: 30rpx;
+		padding:20rpx;
 	}
 
 	.setting-view {
 		width: 100%;
-		height: 150rpx;
+		height:  176rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		box-sizing: border-box;
+		background:#fff;
+		padding:28rpx 0 28rpx 40rpx;
+		border-radius: 4rpx;
+		margin-bottom: 20rpx;
 		
 	}
 	.left-content{
-		width: 570rpx;
-		display: flex;
+		width: 540rpx;
+		height:120rpx;
 		flex-direction: column;
-		align-items: center;
-		justify-content: center;
 	}
 	.left-title {
 		width: 100%;
-		font-size: 26rpx;
-		font-family: HYQiHei;
-		font-weight: bold;
-		color: #3B3B3B;
-		line-height: 42rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #7F7F8E;
+		line-height: 30rpx;
 		text-align: left;
 	}
 	.left-des {
 		width: 100%;
-		font-size: 24rpx;
-		font-family: HYQiHei;
-		font-weight: bold;
-		color: #7B7B7B;
+		font-size: 28rpx;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #14151A;
 		line-height: 40rpx;
 		text-align: left;
+		display: flex;
+		margin-bottom: 10rpx;
 	}
-	.btn-back {
-		width: 100rpx;
-		height: 100rpx;
-		background: #fff;
+	.icon-moren{
+		width: 66rpx;
+		height:38rpx;
+		background:url(../../static/userinfo/paimai@2x.png) no-repeat center;
+		background-size: 100% 100%;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+		margin-right: 12rpx;
+		text-align: center;
+		line-height: 36rpx;
+	}
+	.btn-edit {
+		width: 102rpx;
+		height: 80rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background:#fff;
+		box-sizing: border-box;
+		border-left: 1px solid #F1F1F4;
+		.icon-edit{
+			width: 32rpx;
+			height:32rpx;
+			background:url(../../static/userinfo/bianji@2x.png) no-repeat center;
+			background-size: 100% 100%;
+		}
+	}
+	.btn-add{
+		width: 718rpx;
+		height: 88rpx;
+		background: #14151B;
+		border-radius: 4rpx;
+		margin:40rpx auto;
+		text-align: center;
+		line-height: 88rpx;
 		font-size: 28rpx;
-		line-height: 100rpx;
-		font-family: HYQiHei;
-		font-weight: normal;
-		color: #7B7B7B;
-		margin: 0;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #FFFFFF;
 	}
 </style>
