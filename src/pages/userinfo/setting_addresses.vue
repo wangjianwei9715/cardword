@@ -10,7 +10,7 @@
 				<button class="btn-edit" @click="onClickEdit(item)"><view class="icon-edit"></view></button>
 			</view>
 		</view>
-		<view class="btn-add">新建地址</view>
+		<view class="btn-add" @click="onClickAdd">新建地址</view>
 	</view>
 </template>
 

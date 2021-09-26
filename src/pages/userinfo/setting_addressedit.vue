@@ -52,7 +52,7 @@
 		userName = '';
 		userPhone = '';
 		addressDetail = '';
-		addressDefault = true
+		addressDefault = false
 		editData:{[x:string]:any} = []
 		onLoad(query:any) {
 			if (query.title) {

@@ -20,7 +20,7 @@
 		</view>
 		<view class="goods-lists">
 			<statusbar/>
-			<goodslistebay  :goodsList="goodsList" :ispullDown="pullDownRefresh" @send="onClickJumpDetails"/>
+			<goodslistebay  :goodsList="goodsList" @send="onClickJumpDetails"/>
 		</view>
 	</view>
 
