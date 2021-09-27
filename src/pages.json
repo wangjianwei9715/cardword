@@ -193,7 +193,17 @@
             "path" : "pages/userinfo/user_collect",
             "style" :                                                                                    
             {
-                "navigationStyle": "custom",
+                "navigationBarTitleText": "设置",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
+            }
+            
+        }
+        ,{
+            "path" : "pages/userinfo/setting",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
             

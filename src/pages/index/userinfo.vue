@@ -3,7 +3,7 @@
 		<view class="user-header">
 			
 			<view class="setting-content">
-				<view class="icon-setting"></view>
+				<view class="icon-setting" @click="onClickSetting"></view>
 				<view class="icon-xiaoxi"><view class="xiaoxi-num">6</view></view>
 			</view>
 			<view class="userinfo">
@@ -83,6 +83,11 @@
 		onClickNavigateto(url:any){
 			uni.navigateTo({
 				url:url
+			})
+		}
+		onClickSetting(){
+			uni.navigateTo({
+				url:'/pages/userinfo/setting'
 			})
 		}
 		onClickOrderList(id:number){
