@@ -83,7 +83,7 @@
 		statusBarHeight = app.statusBarHeight;
 		advertisingList:{[x:string]:any} = [];
 		tabList = [
-			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/userinfo/order_list'},
+			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/login/login'},
 			{img:'../../static/index/tab1.png',text:'足球',url:'/pages/goods/index?type=4'},
 			{img:'../../static/index/tab2.png',text:'其它',url:'/pages/goods/all_good_card?type=0'},
 			{img:'../../static/index/tab3.png',text:'ALL',url:'/pages/goods/index?type=1'},

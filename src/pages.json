@@ -141,6 +141,35 @@
             }
             
         }
+        ,{
+            "path" : "pages/login/login",
+            "style" :                                                                                    
+            {
+                "navigationStyle": "custom",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/login/change_password",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "找回密码",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
+            }
+            
+        }
+        ,{
+            "path" : "pages/login/bind_phone",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "绑定手机",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
