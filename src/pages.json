@@ -170,6 +170,34 @@
             }
             
         }
+        ,{
+            "path" : "pages/userinfo/card_no",
+            "style" :                                                                                    
+            {
+                "navigationStyle": "custom",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/userinfo/user_live",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的直播",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
+            }
+            
+        }
+        ,{
+            "path" : "pages/userinfo/user_collect",
+            "style" :                                                                                    
+            {
+                "navigationStyle": "custom",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

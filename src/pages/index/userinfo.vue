@@ -17,7 +17,7 @@
 				<view class="right"></view>
 			</view>
 			<view class="header-tab">
-				<view class="tab" v-for="item in headerTab" :key="item.id">
+				<view class="tab" v-for="item in headerTab" :key="item.id" @click="onClickNavigateto(item.url)">
 					<view class="num">{{item.num}}</view>
 					<view class="name">{{item.name}}</view>
 				</view>
@@ -56,9 +56,9 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		headerTab = [
-			{id:1,name:'我的编号',num:1591},
-			{id:2,name:'我的直播',num:66},
-			{id:3,name:'我的收藏',num:0}
+			{id:1,name:'我的编号',num:1591,url:'/pages/userinfo/card_no'},
+			{id:2,name:'我的直播',num:66,url:'/pages/userinfo/user_live'},
+			{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
 		];
 		orderTab = [
 			{id:3,name:'进行中',icon:'jx'},
