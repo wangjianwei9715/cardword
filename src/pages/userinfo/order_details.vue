@@ -47,7 +47,7 @@
 		<view class="buyer-cotnent">
 			<view class="card-header">
 				<view class="card-header-title">我的编号</view>
-				<view class="card-header-right">查看全部<view class="icon-right"></view></view>
+				<view class="card-header-right" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
 			</view>
 			<buyCardId :cardList="cardList"/>
 		</view>
@@ -174,6 +174,11 @@
 					clearInterval(this.countDownInter)
 				}
 			},1)
+		}
+		onClickAllCard(){
+			uni.navigateTo({
+				url:'/pages/userinfo/order_myCard'
+			})
 		}
 		// 复制订单号
 		onClickCopyInfo(text:any){

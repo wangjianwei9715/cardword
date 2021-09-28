@@ -44,7 +44,6 @@
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-			this.getGoodsList()
 		}
 		getPlan(now:number,all:number){
 			let width = Math.floor(Number(now)/Number(all)*100);

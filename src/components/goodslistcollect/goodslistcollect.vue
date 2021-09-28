@@ -1,6 +1,6 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="item" v-for="item in goodsOldList" :key="item.id">
+		<view class="item" v-show="goodsOldList.length>0" v-for="item in goodsOldList" :key="item.id">
 			<view :class="['goodslist-index',{'del-start':delStart}]"  @click="onClickJumpUrl(item.id)">
 				<image class="goodslist-pic" :src="item.img" mode="aspectFill"></image>
 				<view class="goodslist-right">
@@ -22,6 +22,7 @@
 			</view>
 			<view v-show="delStart" :class="getDel(item.id)?'deled-icon':'del-icon'" @click="onClickDel(item.id)"></view>
 		</view>
+		<empty v-show="goodsOldList.length==0" />
 	</view>
 </template>
 
@@ -52,7 +53,6 @@
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-			this.getGoodsList()
 		}
 		getPlan(now:number,all:number){
 			let width = Math.floor(Number(now)/Number(all)*100);

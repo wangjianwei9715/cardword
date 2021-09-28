@@ -42,6 +42,7 @@
 
 <script lang="ts">
 	import { app } from "@/app";
+	import { Md5 } from "ts-md5/dist/md5";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
@@ -98,6 +99,8 @@
 
 			if(this.codeLogin){
 				this.onClickCodeLogin()
+			}else{
+				this.onClickPwLogin()
 			}
 		}
 		onClickCodeLogin(){
@@ -112,6 +115,24 @@
 			let params = {
 				phone:this.phone,
 				code:this.vcode,
+				uuid:app.platform.deviceID,
+				os:app.platform.systemInfo.platform,
+				device:app.platform.systemInfo.model
+			};
+			this.HttpLogin(params)
+		}
+		onClickPwLogin(){
+			if(this.password == ''){
+				uni.showToast({
+					title: '请输入密码！',
+					icon: 'none',
+					duration: 2000
+				});
+				return;
+			}
+			let params = {
+				phone:this.phone,
+				password:Md5.hashStr(this.password+'_pmpm'),
 				uuid:app.platform.deviceID,
 				os:app.platform.systemInfo.platform,
 				device:app.platform.systemInfo.model

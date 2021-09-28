@@ -144,6 +144,7 @@ export function getGoodsImg(img:string){  //返回图片
 		 return img
 	}else{
 		let imgone = img.split(',')
+        console.log(imgone[0])
 		return imgone[0]
 	}
 }

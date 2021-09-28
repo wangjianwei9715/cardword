@@ -242,7 +242,7 @@ export default class HttpRequest {
 			if(url.indexOf("app/update") != -1){
 				config.baseURL = app.update_url
 			}
-			if(url.indexOf("dataApi/search") != -1 || url.indexOf("dataApi/home") != -1 || url.indexOf("dataApi/good") != -1 || url.indexOf("dataApi/config/wuliu") != -1|| url.indexOf("dataApi/oss/token") != -1|| url.indexOf("dataApi/config/category") != -1){
+			if(url.indexOf("dataApi/search") != -1 || url.indexOf("dataApi/home") != -1 || url.indexOf("dataApi/good") != -1 || url.indexOf("dataApi/config/wuliu") != -1|| url.indexOf("dataApi/oss/token") != -1|| url.indexOf("dataApi/config/category") != -1|| url.indexOf("dataApi/goodlist") != -1){
 				config.url = url.substring(8);
 				// #ifndef H5
 				if(!app.localTest){

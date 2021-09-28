@@ -208,6 +208,26 @@
             }
             
         }
+        ,{
+            "path" : "pages/userinfo/order_myCard",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的编号",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
+            }
+            
+        }
+        ,{
+            "path" : "pages/userinfo/message",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "消息",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

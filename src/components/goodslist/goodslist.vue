@@ -1,19 +1,19 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="goodslist-index" v-for="item in goodsOldList" :key="item.id" @click="onClickJumpUrl(item.id)">
-			<image class="goodslist-pic" :src="item.img" mode="aspectFill"></image>
+		<view class="goodslist-index" v-for="(item,index) in goodsOldList" :key="item.id" @click="onClickJumpUrl(item.id)">
+			<image class="goodslist-pic" :src="getGoodsImg(item.pic)" mode="aspectFill"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-title">{{item.title}}</view>
 				<view class="goodslist-plan-content">
-					<view class="goodslist-plan-now" :style="'width:'+getPlan(item.num,item.num_all)+'%'"></view>
-					<view class="goodslist-plan-desc">余{{item.num_all-item.num}}/共{{item.num_all}}</view>
+					<view class="goodslist-plan-now" :style="'width:'+getPlan(item.lockNum,item.currentNum,item.totalNum)+'%'"></view>
+					<view class="goodslist-plan-desc">余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
 				</view>
 				<view class="goodslist-bottom">
 					<view class="goodslist-price-content">
 						¥<text class="goodslist-price">{{item.price}}</text>
 					</view>
-					<view class="goodslist-tips">
-						{{item.tips}}
+					<view class="goodslist-tips" v-show="discountList[index]" v-for="(items,indexs) in discountList[index]" :key="indexs">
+						{{items}}
 					</view>
 				</view>
 			</view>
@@ -24,6 +24,9 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import {
+		getGoodsImg
+	} from "../../tools/util";
 	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
@@ -31,8 +34,10 @@
 		goodsList:any;
 		@Prop({default:false})
 		ispullDown:any;
-	
+
+		getGoodsImg = getGoodsImg;
 		goodsOldList:any = [];
+		discountList:any = [];
 		@Watch('ispullDown')
 		onIspullDownChanged(val: any, oldVal: any){
 			this.goodsOldList = []
@@ -48,10 +53,9 @@
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-			this.getGoodsList()
 		}
-		getPlan(now:number,all:number){
-			let width = Math.floor(Number(now)/Number(all)*100);
+		getPlan(lock:number,now:number,all:number){
+			let width = Math.floor((Number(lock)+Number(now))/Number(all)*100);
 			return width
 		}
 		onClickJumpUrl(id:any){
@@ -63,6 +67,13 @@
 			if(!data){
 				return;
 			}
+			for(let i in data){
+				if(data[i].discount!=''){
+					this.discountList[i] = data[i].discount.split(',');
+				}
+			}
+			
+			console.log(this.discountList)
 			this.goodsOldList = this.goodsOldList.concat(data)
 		}
 	}

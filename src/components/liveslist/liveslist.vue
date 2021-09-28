@@ -1,7 +1,7 @@
 <template>
 	<view class="livelist">
-		<view class="livelist-index" v-for="item in liveOldList" :key="item.id" @click="onClickJumpUrl(item.id)">
-			<view class="livelist-top">
+		<view class="livelist-index" v-show="liveOldList.length>0"  v-for="item in liveOldList" :key="item.id" @click="onClickJumpUrl(item.id)">
+			<view class="livelist-top" >
 				<image class="livelist-top-image" :src="item.pic" mode="aspectFill"></image>
 				<view class="livelist-top-status">
 					<view v-if="item.status==1" class="livelist-top-status-ing">
@@ -15,6 +15,7 @@
 			</view>
 			<view class="livelist-center">{{item.title}}</view>
 		</view>
+		<empty v-show="liveOldList.length==0" />
 	</view>
 </template>
 
@@ -45,7 +46,6 @@
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-			this.getLivesList()
 		}
 		destroyed(){
 			

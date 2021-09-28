@@ -33,7 +33,8 @@
 </template>
 
 <script lang="ts">
-	import { Component } from "vue-property-decorator";
+	import { app } from "@/app";
+import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -60,6 +61,7 @@
 		]
 		classifyOpt = 1;
 		classifyShow = false;
+		goodsData:any = []
 		goodsList:{[x:string]:any} = [
 			{
 				id:1,
@@ -117,9 +119,23 @@
 			}
 		];
 		pullDownRefresh = false;
+		scrollId = '';
+		noMoreData = false;
 		onLoad(query:any) {
 			if(query.q){
 				this.searchText = query.q
+			}
+			if(query.data){
+				setTimeout(()=>{
+					this.goodsData =  JSON.parse(query.data);
+					this.goodsList = this.goodsData.goodList
+					this.scrollId = this.goodsData.scrollId
+					if(query.data.end){
+						this.noMoreData = true;
+					}
+				},10)
+			}else{
+				this.reqNewData('default') 
 			}
 		}
 		onClickBack(){
@@ -162,7 +178,58 @@
 				url: '/pages/goods/goods_details?id='+id
 			})
 		}
-		
+		getSort(key:any){
+			switch (key) {
+				case 0:
+					return 'activeAt:desc';
+				case 1:
+					return 'overAt';
+				case 2:
+					return 'price:desc';
+				case 3:
+					return 'price'					
+				default:
+					return 'default'
+			}
+		}
+		reqNewData(type:string,cb?:Function) {
+			let reach = false
+			if(type=='reach'){
+				reach = true
+			}
+			// 获取列表
+			if (this.noMoreData) {
+				return;
+			}
+			// 排序方式
+			// let sort = this.getSort(this.checkSort)
+			let params:{[x:string]:any} ={}
+			
+			if(this.searchText==''){
+				params.q = ''
+			}else{
+				params.q = encodeURIComponent(this.searchText)
+			}
+			if(reach){
+				params.scrollId = this.scrollId
+			}
+			let date:any = new Date()
+			
+			// params.sort = sort
+			params.timeStamp = Date.parse(date)/1000
+			app.http.Get("dataApi/search", params, (res: any) => {
+				if (res.end) {
+					this.noMoreData = true;
+				}
+				if(res.goodList){
+					this.goodsList = res.goodList
+				}else{
+					this.goodsList = []
+				}
+				this.scrollId = res.scrollId
+				if(cb) cb()
+			});
+		}
 	}
 </script>
 

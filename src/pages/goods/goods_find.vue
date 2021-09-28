@@ -108,14 +108,12 @@
 				q:encodeURIComponent(text),
 				timeStamp:Date.parse(date)/1000
 			}
-			uni.redirectTo({
-				url: '/pages/goods/goods_find_list?q='+text
+			
+			app.http.Get('dataApi/search',params,(res:any)=>{
+				uni.redirectTo({
+					url: '/pages/goods/goods_find_list?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
+				})
 			})
-			// app.http.Get('dataApi/search',params,(res:any)=>{
-			// 	uni.redirectTo({
-			// 		url: '/pages/goods/index?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
-			// 	})
-			// })
 		}
 	}
 </script>

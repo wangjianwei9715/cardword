@@ -34,7 +34,7 @@ import BaseNode from "../../base/BaseNode.vue";
 @Component({})
 export default class ClassName extends BaseNode {
   settingTab = [
-    { id: 1, name: "修改密码/设置登录密码", url: "" },
+    { id: 1, name: "修改密码/设置登录密码", url: "/pages/login/change_password" },
     { id: 2, name: "地址管理", url: "/pages/userinfo/setting_addresses" },
     { id: 3, name: "消息通知", url: "" },
     { id: 4, name: "清除缓存", url: "" },

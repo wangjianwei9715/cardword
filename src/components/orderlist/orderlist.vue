@@ -71,7 +71,6 @@
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-			this.getOrderList()
 		}
 		destroyed(){
 			for(let i in this.intervalList){
