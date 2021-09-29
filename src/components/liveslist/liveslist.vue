@@ -30,12 +30,11 @@
 		ispullDown:any;
 	
 		liveOldList:any = [];
-
 		@Watch('ispullDown')
 		onIspullDownChanged(val: any, oldVal: any){
 			this.liveOldList = []
 		}
-		@Watch('goodsList')
+		@Watch('liveList')
 		onGoodsListChanged(val: any, oldVal: any){
 			this.liveList = val;
 			setTimeout(()=>{

@@ -42,6 +42,10 @@
 		delList:any;
 		
 		goodsOldList:any = [];
+		@Watch('ispullDown')
+		onIspullDownChanged(val: any, oldVal: any){
+			this.goodsOldList = []
+		}
 		@Watch('goodsList')
 		onGoodsListChanged(val: any, oldVal: any){
 			this.goodsList = val;

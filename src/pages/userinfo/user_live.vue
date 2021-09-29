@@ -7,13 +7,14 @@
 		</view>
 
 		<view class="live-content">
-			<liveslist :liveList="liveList"  @send="onClickLive"/>
+			<liveslist :liveList="liveList" :ispullDown="pullDownRefresh"  @send="onClickLive"/>
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import { Component } from "vue-property-decorator";
+	import { app } from "@/app";
+import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -24,76 +25,53 @@
 			{id:5,name:'已完成'}
 		];
 		goodTabCheck = 1;
-		liveList:{[x:string]:any} = [
-			{
-				id:1,
-				status:1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
-			},
-			{
-				id:2,
-				status:0,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
-			},
-			{
-				id:3,
-				status:1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
-			},
-			{
-				id:4,
-				status:0,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
-			},
-			{
-				id:5,
-				status:-1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
-			},
-			{
-				id:6,
-				status:-1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
-			},
-			{
-				id:7,
-				status:-1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
-			},
-			{
-				id:8,
-				status:-1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
-			}
-
-		]
+		liveList:{[x:string]:any} = []
+		currentPage = 1;
+		pageSize = 10;
+		noMoreData = false;
+		pullDownRefresh = false;
 		onLoad(query:any) {
-			
+			this.reqNewData()
+		}
+		//   加载更多数据
+		onReachBottom() {
+		    this.reqNewData() 
+		}
+		reqNewData(cb?:Function) {
+			// 获取更多商品
+			if (this.noMoreData) {
+				return;
+			}
+			let params:{[x:string]:any} = {
+				
+				tp:this.goodTabCheck-1,
+				pageIndex: this.currentPage,
+				pageSize:this.pageSize,
+			}
+			app.http.Get('me/broadcast', params, (data: any) => {
+				console.log('idndead',data)
+				if(data.totalPage<=this.currentPage){
+					this.noMoreData = true;
+				}
+				if(data.list){
+					this.liveList = data.list;
+				}
+				this.currentPage++;
+				if(cb) cb()
+			});
 		}
 		onClickListTabs(id:any){
 			if(id==this.goodTabCheck){
 				return;
 			}
 			this.goodTabCheck = id
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.pullDownRefresh = !this.pullDownRefresh
+			this.reqNewData()
 		}
 		onClickLive(id:any){
-
+			
 		}
 		
 	}

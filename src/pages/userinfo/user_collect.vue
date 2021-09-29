@@ -17,7 +17,7 @@
 
 		<view class="order-list">
 			<statusbar/>
-			<goodslistcollect :goodsList="goodsList" :delStart="deling" :delList="delList" @send="onClickJumpDetails"  @del="onClickDel"/>
+			<goodslistcollect :goodsList="goodsList" :ispullDown="pullDownRefresh" :delStart="deling" :delList="delList" @send="onClickJumpDetails"  @del="onClickDel"/>
 		</view>
 
 		<view v-show="deling" class="del-bottom">
@@ -28,7 +28,8 @@
 </template>
 
 <script lang="ts">
-	import { Component } from "vue-property-decorator";
+	import { app } from "@/app";
+import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -39,30 +40,42 @@
 			{id:3,name:'已拼成'},
 			{id:4,name:'未拼成'}
 		];
-		goodsList:{[x:string]:any} = [
-			{
-				id:1,
-				img:'../../static/goods/zhutu@2x.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:410,
-				num:120,
-				price:149,
-				tips:'满10组减5元'
-			},
-			{
-				id:2,
-				img:'../../static/goods/zhutu@2x.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:200,
-				num:150,
-				price:349,
-				tips:'满10组减50元'
-			}
-		];
+		goodsList:{[x:string]:any} = [];
 		deling = false;
 		delList:any = [];
+		currentPage = 1;
+		pageSize = 10;
+		noMoreData = false;
+		pullDownRefresh = false;
 		onLoad(query:any) {
-			
+			this.reqNewData()
+		}
+		//   加载更多数据
+		onReachBottom() {
+		    this.reqNewData() 
+		}
+		reqNewData(cb?:Function) {
+			// 获取更多商品
+			if (this.noMoreData) {
+				return;
+			}
+			let params:{[x:string]:any} = {
+				
+				tp:this.tabCheck-1,
+				pageIndex: this.currentPage,
+				pageSize:this.pageSize,
+			}
+			app.http.Get('me/favorite', params, (data: any) => {
+				console.log('idndead',data)
+				if(data.totalPage<=this.currentPage){
+					this.noMoreData = true;
+				}
+				if(data.list){
+					this.goodsList = data.list;
+				}
+				this.currentPage++;
+				if(cb) cb()
+			});
 		}
 		onClickBack(){
 			uni.navigateBack({
@@ -74,7 +87,11 @@
 			if(id==this.tabCheck){
 				return;
 			}
-			this.tabCheck = id
+			this.tabCheck = id;
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.pullDownRefresh = !this.pullDownRefresh
+			this.reqNewData()
 		}
 		// 跳转商品详情
 		onClickJumpDetails(id:any){
