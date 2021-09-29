@@ -5,7 +5,8 @@
 			<view class="header-top">
 				<view class="header-back" @click="onClickBack"></view>
 				<view class="header-search">
-					<searchinput :searchText="searchText==''?'搜索订单':searchText" @clicksearch="onClickSearch"></searchinput>
+					<view class="search-icon"></view>
+					<input class="search-input" type="text" v-model="searchText" placeholder="搜索" @confirm="onInputSearch" confirm-type="search"/>
 				</view>
 			</view>
 			<view class="header-tab">
@@ -21,6 +22,7 @@
 </template>
 
 <script lang="ts">
+	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
@@ -35,64 +37,11 @@
 			{id:6,name:'未中卡'}
 		];
 		orderTabCheck = 1;
+		currentPage = 1;
+		pageSize = 10;
+		noMoreData = false;
 		pullDownRefresh = false;
 		orderList:{[x:string]:any} = [
-			{
-				id:1,
-				state:0,
-				coun_down:250,
-				num:5,
-				seller:{
-					avatar:'',
-					name:'皇球星社'
-				},
-				goods:{
-					img:'../../static/goods/zhutu@2x.png',
-					title:'20-21 National Treasures Hobby原箱*3',
-					price:149
-				},
-				operate:[
-					{cmd:'cancel',name:'取消订单'},
-					{cmd:'pay',name:'立即支付'}
-				]
-			},
-			{
-				id:2,
-				state:1,
-				coun_down:250,
-				num:5,
-				seller:{
-					avatar:'',
-					name:'皇球星社'
-				},
-				goods:{
-					img:'../../static/goods/zhutu@2x.png',
-					title:'20-21 National Treasures Hobby原箱*3',
-					price:149
-				},
-				operate:[
-					{cmd:'cancel',name:'取消订单'},
-					{cmd:'pay',name:'立即支付'}
-				]
-			},
-			{
-				id:3,
-				state:2,
-				coun_down:250,
-				num:5,
-				seller:{
-					avatar:'',
-					name:'皇球星社'
-				},
-				goods:{
-					img:'../../static/goods/zhutu@2x.png',
-					title:'20-21 National Treasures Hobby原箱*3',
-					price:149
-				},
-				operate:[
-					{cmd:'del',name:'删除订单'}
-				]
-			},
 			{
 				id:4,
 				state:3,
@@ -112,86 +61,66 @@
 					{cmd:'reward',name:'我的中卡'}
 				]
 			},
-			{
-				id:5,
-				state:4,
-				coun_down:250,
-				num:5,
-				seller:{
-					avatar:'',
-					name:'皇球星社'
-				},
-				goods:{
-					img:'../../static/goods/zhutu@2x.png',
-					title:'20-21 National Treasures Hobby原箱*3',
-					price:149
-				},
-				operate:[
-					{cmd:'cancel',name:'取消订单'},
-					{cmd:'pay',name:'立即支付'}
-				]
-			},
-			{
-				id:6,
-				state:5,
-				coun_down:250,
-				num:5,
-				seller:{
-					avatar:'',
-					name:'皇球星社'
-				},
-				goods:{
-					img:'../../static/goods/zhutu@2x.png',
-					title:'20-21 National Treasures Hobby原箱*3',
-					price:149
-				},
-				operate:[
-					{cmd:'cancel',name:'取消订单'},
-					{cmd:'pay',name:'立即支付'}
-				]
-			},
-			{
-				id:7,
-				state:-1,
-				coun_down:250,
-				num:5,
-				seller:{
-					avatar:'',
-					name:'皇球星社'
-				},
-				goods:{
-					img:'../../static/goods/zhutu@2x.png',
-					title:'20-21 National Treasures Hobby原箱*3',
-					price:149
-				},
-				operate:[
-					{cmd:'cancel',name:'取消订单'},
-					{cmd:'pay',name:'立即支付'}
-				]
-			}
+			
 		];
 		onLoad(query:any) {
 			if(query.type){
 				this.orderTabCheck = query.type
 			}
+			this.reqNewData() 
+		}
+		reqNewData(cb?:Function) {
+		  // 获取更多商品
+		  if (this.noMoreData) {
+		    return;
+		  }
+		  let params:{[x:string]:any} = {
+			tp:this.orderTabCheck-1,
+			pageIndex: this.currentPage,
+			pageSize:this.pageSize
+		  }
+		  if(this.searchText!=''){
+			params.q = encodeURIComponent(this.searchText)
+		  }
+		  app.http.Get("me/order/buyer/orderList", params, (data: any) => {
+			if(data.list){
+				if(this.currentPage==1){
+					this.orderList = data.list;
+				}else{
+					this.orderList = this.orderList.concat(data.list);
+				}
+			}else{
+				this.noMoreData = true;
+			}
+			console.log(this.orderList)
+		    this.currentPage++;
+			if(cb) cb()
+		  });
+		}
+		againReqNewData(){
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.pullDownRefresh = !this.pullDownRefresh
+			this.reqNewData() 
+		}
+		onInputSearch(){
+			this.againReqNewData()
 		}
 		onClickBack(){
 			uni.navigateBack({
 			    delta: 1
 			});
 		}
-		onClickSearch(){
-			
-		}
 		onClickListTabs(id:number){
 			if(id==this.orderTabCheck){
 				return;
 			}
-			this.orderTabCheck = id
+			this.orderTabCheck = id;
+			this.againReqNewData()
 		}
-		onClickOrder(id:any){
+		onClickOrder(code:any){
 			uni.navigateTo({
-				url:'/pages/userinfo/order_details?id='+id
+				url:'/pages/userinfo/order_details?code='+code
 			})
 		}
 	}
@@ -223,6 +152,12 @@
 	.header-search{
 		width: 626rpx;
 		height:64rpx;
+		background: #F5F5F8;
+		border-radius: 4rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		position: relative;
 	}
 	.header-back{
 		width: 80rpx;
@@ -241,5 +176,26 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding: 204rpx 20rpx 20rpx 20rpx;
+	}
+	.search-input{
+		width: 626rpx;
+		height:64rpx;
+		background: #F5F5F8;
+		border-radius: 4rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #14151A;
+		padding-left:76rpx ;
+	}
+	.search-icon{
+		width: 28rpx;
+		height:28rpx;
+		background:url(../../static/index/sousuo@2x.png) no-repeat center;
+		background-size:100% 100%;
+		position: absolute;
+		left:28rpx;
+		top:50%;
+		margin-top: -14rpx;
 	}
 </style>

@@ -8,7 +8,7 @@
 			</view>
 			<view class="userinfo"  @click="onClickUserInfo">
 				<view class="left">
-					<image class="user-avatar" :src="decodeURIComponent(infoData.avatar)" mode="aspectFit"></image>
+					<image class="user-avatar" :src="infoData.avatar" mode="aspectFit"></image>
 					<view class="userinfo-index">
 						<view class="userinfo-name">{{infoData.name}}</view>
 						<view class="userinfo-sign">{{infoData.sign}}</view>
@@ -103,6 +103,8 @@
 			app.http.Get('me/home',{},(res:any)=>{
 				let data = res.data;
 				this.infoData = data;
+				this.infoData.avatar = decodeURIComponent(data.avatar)
+				console.log(this.infoData)
 				// 我的直播、编号、收藏
 				for (const key in this.headerTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {

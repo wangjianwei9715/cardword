@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="orderlist-index" v-for="item in orderOldList" :key="item.id" @click="onClickJumpUrl(item.id)">
+		<view class="orderlist-index" v-for="item in orderOldList" :key="item.code" @click="onClickJumpUrl(item.code)">
 			<view class="orderlist-index-header">
 				<view class="header-left">
 					<image class="seller-image" :src="item.seller.avatar" mode="aspectFill"></image>
@@ -8,24 +8,24 @@
 				</view>
 				<view class="header-right">
 					<view :class="['header-right-index','state'+item.state]">{{stateStr[item.state]}}</view>
-					<view v-if="item.state==0" class="header-right-count">{{intervalList[item.id]?intervalList[item.id].coun_down:''}}</view>
+					<view v-if="item.state==0" class="header-right-count">{{intervalList[item.code]?intervalList[item.code].coun_down:''}}</view>
 				</view>
 			</view>
 			<view class="orderlist-index-center">
-				<image class="goods-image" :src="item.goods.img" mode="aspectFill"></image>
+				<image class="goods-image" :src="getGoodsImg(item.good.pic)" mode="aspectFill"></image>
 				<view class="goods-content">
-					<view class="title">{{item.goods.title}}</view>
+					<view class="title">{{item.good.title}}</view>
 					<view class="desc">
-						<view class="price">{{item.goods.price}}</view>
+						<view class="price">￥{{item.price}}</view>
 						<view class="total-num">共{{item.num}}件</view>
 					</view>
 				</view>
 			</view>
 			<view class="orderlist-index-bottom">
 				<view class="price">
-					合计：<view class="price-index">￥<text class="price-num">{{item.goods.price}}</text></view>
+					合计：<view class="price-index">￥<text class="price-num">{{item.price*item.num}}</text></view>
 				</view>
-				<view class="operate">
+				<view class="operate" v-show="item.operate">
 					<view :class="['btn','btn-'+btnitem.cmd]" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
 				</view>
 			</view>
@@ -37,30 +37,34 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import {getCountDownTime} from '@/tools/util';
+	import {
+		getGoodsImg
+	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		orderList:any;
 		@Prop({default:false})
 		ispullDown:any;
-	
+
 		orderOldList:any = [];
+		getGoodsImg = getGoodsImg;
 		getCountDownTime = getCountDownTime;
 		intervalList:{[x:string]:any} = {};
 		stateStr = {
 			'-1':'订单关闭',
-			'0':'待支付',
-			'1':'进行中',
-			'2':'未中卡',
+			'1':'待支付',
+			'2':'进行中',
 			'3':'待发货',
 			'4':'待收货',
-			'5':'已完成'
+			'5':'已完成',
+			'10':'未中卡'
 		}
 		@Watch('ispullDown')
 		onIspullDownChanged(val: any, oldVal: any){
 			this.orderOldList = []
 		}
-		@Watch('goodsList')
+		@Watch('orderList')
 		onGoodsListChanged(val: any, oldVal: any){
 			this.orderList = val;
 			setTimeout(()=>{
@@ -82,14 +86,14 @@
 		}
 		getOrderList(){
 			let data = JSON.parse(JSON.stringify(this.orderList))
-			console.log(data)
+			console.log('data===',data)
 			if(!data){
 				return;
 			}
 			this.orderOldList = this.orderOldList.concat(data)
 			for(let i in this.orderList){
 				if(this.orderList[i].state==0&&this.orderList[i].coun_down>0){
-					this.intervalList[this.orderList[i].id] = {id:this.orderList[i].id,coun_down:this.getCountDownTime(this.orderList[i].coun_down),time:this.orderList[i].coun_down,func:function(){}};
+					this.intervalList[this.orderList[i].code] = {code:this.orderList[i].code,coun_down:this.getCountDownTime(this.orderList[i].coun_down),time:this.orderList[i].coun_down,func:function(){}};
 				}
 			}
 			this.countDownTime()
@@ -117,7 +121,6 @@
 	.orderlist{
 		&-index{
 			width: 710rpx;
-			height:420rpx;
 			border-radius: 4rpx;
 			background:#fff;
 			box-sizing: border-box;
@@ -169,13 +172,13 @@
 						color: #FF4349;
 						margin-left: 14rpx;
 					}
-					.state0{
+					.state1{
 						color: #FF4349;
 					}
-					.state1{
+					.state2{
 						color: #FF9748;
 					}
-					.state2{
+					.state10{
 						color: #B3B3B3;
 					}
 					.state3{
@@ -246,7 +249,6 @@
 			}
 			&-bottom{
 				width: 100%;
-				height:156rpx;
 				box-sizing: border-box;
 				margin-top: 20rpx;
 				padding:20rpx 0 20rpx 20rpx;

@@ -7,20 +7,48 @@
 </template>
 
 <script lang="ts">
-	import { Component } from "vue-property-decorator";
+	import { app } from "@/app";
+import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		cardList:{[x:string]:any} = [
-			{id:1,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'中卡*1',state:1,pic:'../../static/goods/1@2x.png'},
-			{id:2,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'中卡*1',state:1,pic:'../../static/goods/2@2x.png'},
-			{id:3,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'未中卡',state:0},
-			{id:4,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'未中卡',state:1,pic:'../../static/goods/1@2x.png'},
-			{id:5,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'未中卡',state:0},
-		];
+		cardList:{[x:string]:any} = [];
+		orderCode = '';
+		currentPage = 1;
+		pageSize = 10;
+		noMoreData = false;
 		onLoad(query:any) {
-			
+			this.orderCode = query.code;
+			this.reqNewData()
 		}
+		//   加载更多数据
+		onReachBottom() {
+		    this.reqNewData() 
+		}
+		reqNewData(cb?:Function) {
+			// 获取更多商品
+			if (this.noMoreData) {
+				return;
+			}
+			
+			let params:{[x:string]:any} = {
+				pageIndex: this.currentPage,
+				pageSize:this.pageSize,
+			}
+			
+			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList', params, (data: any) => {
+				console.log('idndead',data)
+				if(data.totalPage<=this.currentPage){
+					this.noMoreData = true;
+				}
+				if(data.list){
+					this.cardList = data.list;
+				}
+				this.currentPage++;
+				if(cb) cb()
+			});
+		}
+		
 	}
 </script>
 

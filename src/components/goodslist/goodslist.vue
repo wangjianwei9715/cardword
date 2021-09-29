@@ -105,6 +105,7 @@
 		}
 		&-title{
 			width: 100%;
+			height:80rpx;
 			font-size: 28rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;

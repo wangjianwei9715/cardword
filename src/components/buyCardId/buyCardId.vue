@@ -1,11 +1,12 @@
 <template>
 	<view class="buy-card">
-		<view class="card-index" v-show="cardList.length>0" v-for="item in cardList" :key="item.id">
-			<view class="left">{{item.title}}</view>
-			<view v-if="showImg&&item.state==1" class="right">
+		<view class="card-index" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
+			<view class="left">{{item.name}}</view>
+			<view v-if="showImg&&item.num>0" class="right">
 				<image class="show-img" :src="item.pic"  mode="aspectFill"/>
 			</view>
-			<view v-else class="right" :class="item.state==1?'reward':''">{{item.desc}}</view>
+			<view v-if="item.num>0" class="right reward">{{'中卡*'+item.num}}</view>
+			<view v-else class="right">{{getText(item.state)}}</view>
 		</view>
 		<empty v-show="cardList.length==0" />
 	</view>
@@ -37,6 +38,18 @@
 		}
 		destroyed(){
 			
+		}
+		getText(index:any){
+			switch(index){
+				case 1:
+					return '待拆开';
+				case 2:
+					return '开卡成功';
+				case 3:
+					return '开卡失败';
+				case 4:
+					return '已失效'
+			}
 		}
 		getOrderList(){
 			let data = JSON.parse(JSON.stringify(this.cardList))

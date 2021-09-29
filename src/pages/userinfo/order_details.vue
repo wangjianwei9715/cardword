@@ -1,11 +1,11 @@
 <template>
 	<view class="content">
 		<!-- 头部状态 -->
-		<view class="header">
+		<view class="header" v-if="orderData.good">
 			<view v-if="orderData.state==0" class="header-waitpay">订单将于 {{countDownStr}} 后关闭</view>
 			<view v-else-if="orderData.state==-1" class="header-close">拼团未成功订单关闭，款项已原路退回…</view>
 			<view v-else class="header-orther">
-				<view class="header-statestr">{{getStateStr(orderData.state)}}</view>
+				<view class="header-statestr">{{orderData.good.desc?orderData.good.desc:''}}</view>
 				<view class="header-btn-content">
 					<view class="header-btn-pintuan">拼团结果</view>
 					<view class="header-btn-chaika">拆卡报告</view>
@@ -13,10 +13,10 @@
 			</view>
 		</view>
 		<!-- 商品信息 -->
-		<view class="order-index">
+		<view class="order-index" v-if="orderData.seller"> 
 			<view class="order-index-header">
 				<view class="header-left">
-					<image class="seller-image" :src="orderData.seller.avatar" mode="aspectFill"></image>
+					<image class="seller-image" :src="orderData.seller.avatar?orderData.seller.avatar:''" mode="aspectFill"></image>
 					<view class="seller-name">{{orderData.seller.name}}</view>
 				</view>
 				<view class="header-right">
@@ -24,11 +24,11 @@
 				</view>
 			</view>
 			<view class="order-index-center">
-				<image class="goods-image" :src="orderData.goods.img" mode="aspectFill"></image>
+				<image class="goods-image" :src="getGoodsImg(orderData.good.pic)" mode="aspectFill"></image>
 				<view class="goods-content">
-					<view class="title">{{orderData.goods.title}}</view>
+					<view class="title">{{orderData.good.title}}</view>
 					<view class="desc">
-						<view class="price">￥{{orderData.goods.price}}</view>
+						<view class="price">￥{{orderData.price}}</view>
 						<view class="total-num">共{{orderData.num}}件</view>
 					</view>
 				</view>
@@ -40,7 +40,7 @@
 				<view class="name">{{item.name}}</view><view class="info">{{item.desc}}</view>
 			</view>
 			<view class="order-desc-bottom">
-				合计：<view class="price-index">￥<text class="price-num">{{orderData.goods.price}}</text></view>
+				合计：<view class="price-index">￥<text class="price-num">{{orderData.price*orderData.num-orderData.discount}}</text></view>
 			</view>
 		</view>
 		<!-- 我的编号 -->
@@ -65,8 +65,9 @@
 		<!-- 订单详细信息 -->
 		<view class="order-info">
 			<view class="title">订单信息</view>
-			<view class="index" v-for="item in orderInfo" :key="item.id">
-				<text>{{item.title}}:{{item.desc}}</text>
+			<view class="index" v-for="item in orderInfo" :key="item.id" v-show="item.desc!=0">
+				<text v-if="item.title=='订单编号'||item.title=='支付方式'">{{item.title}}:{{item.desc}}</text>
+				<text v-else>{{item.title}}:{{dateFormat(item.desc)}}</text>
 				<view v-if="item.title=='订单编号'" class="copy" @click="onClickCopyInfo(item.desc)">复制</view>
 			</view>
 			<view class="info-tab">
@@ -76,11 +77,12 @@
 		</view>
 		<!-- 底部按钮 -->
 		<view class="bottom-btn">
-			<!-- <view class="big-btn">查看商品</view> -->
-			<view class="small-btn-content">
+			
+			<view class="small-btn-content" v-if="orderData.state==3||orderData.state==4||orderData.state==5">
 				<view class="small-btn left">查看物流</view>
 				<view class="small-btn right">我的中卡</view>
 			</view>
+			<view class="big-btn" v-else @click="onClickGoods">查看商品</view>
 		</view>
 	</view>
 </template>
@@ -89,68 +91,72 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import {getCountDownTime} from '@/tools/util';
-	import {getOrderDetailState} from '@/tools/switchUtil';
+	import { app } from "@/app";
+	import {
+		getGoodsImg,dateFormat
+	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
-		getStateStr = getOrderDetailState;
+		getGoodsImg = getGoodsImg;
+		dateFormat = dateFormat;
 		countDownInter:any;
 		countDown = 300;
-		countDownStr = ''
-		orderData:{[x:string]:any} = {
-			id:4,
-			state:1,
-			coun_down:250,
-			num:5,
-			seller:{
-				avatar:'',
-				name:'皇球星社'
-			},
-			goods:{
-				img:'../../static/goods/zhutu@2x.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				price:149
-			},
-			operate:[
-				{cmd:'wuliuu',name:'查看物流'},
-				{cmd:'reward',name:'我的中卡'}
-			]
-		};
+		countDownStr = '';
+		orderCode = '';
+		orderData:{[x:string]:any} = [];
+
 		stateStr = {
 			'-1':'订单关闭',
-			'0':'待支付',
-			'1':'进行中',
-			'2':'未中卡',
+			'1':'待支付',
+			'2':'进行中',
 			'3':'待发货',
 			'4':'待收货',
-			'5':'已完成'
+			'5':'已完成',
+			'10':'未中卡'
 		};
 		orderDesc = [
-			{id:1,name:'商品金额',desc:'¥56.00'},
-			{id:2,name:'优惠',desc:'- ¥5.00'},
+			{id:1,name:'商品金额',desc:''},
+			{id:2,name:'优惠',desc:''},
 			{id:3,name:'运费',desc:'包邮'},
 		];
-		cardList:{[x:string]:any} = [
-			{id:1,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'中卡*1',state:1},
-			{id:2,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'中卡*1',state:1},
-			{id:3,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'未中卡',state:0},
-			{id:4,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'未中卡',state:0},
-			{id:5,title:'圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',desc:'未中卡',state:0},
-		];
-		orderInfo:any = [
-			{id:1,title:'订单编号',desc:'8445645465145'},
-			{id:2,title:'支付方式',desc:'支付宝'},
-			{id:3,title:'创建时间',desc:'2021-08-21 16:00'},
-			{id:4,title:'拼成时间',desc:'2021-08-21 16:00'},
-			{id:5,title:'开卡时间',desc:'2021-08-21 16:00'},
-			{id:6,title:'发货时间',desc:'2021-08-21 16:00'},
-			{id:7,title:'收货时间',desc:'2021-08-21 16:00'},
-		];
+		cardList:{[x:string]:any} = [];
+		orderInfo:any = {
+			orderNo:{id:1,title:'订单编号',desc:''},
+			payMethod:{id:2,title:'支付方式',desc:''},
+			createTime:{id:3,title:'创建时间',desc:''},
+			groupTime:{id:4,title:'拼成时间',desc:''},
+			openTime:{id:5,title:'开卡时间',desc:''},
+			deliverTime:{id:6,title:'发货时间',desc:''},
+			receiveTime:{id:7,title:'收货时间',desc:''},
+		};
 		onLoad(query:any) {
+			if(query.code){
+				this.orderCode = query.code;
+				this.initEvent();
+			}
 		}
-		onReady(){
-			uni.setNavigationBarTitle({
-				title: '待支付'
-			});
+		initEvent(cb?:Function){
+			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
+				this.orderData = res.data
+				uni.setNavigationBarTitle({
+					title: res.data.stateName
+				});
+				this.getGoodDesc(res.data)
+				if(cb) cb()
+			})
+
+			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList',{pageIndex:1,pageSize:5},(res:any)=>{
+				this.cardList = res.list
+			})
+		}
+		getGoodDesc(data:any){
+			this.orderDesc[0].desc ='¥'+data.price;
+			this.orderDesc[1].desc ='- ¥'+data.discount;
+			for (const key in this.orderInfo) {
+				if (Object.prototype.hasOwnProperty.call(data.payInfo, key)) {
+					this.orderInfo[key].desc = data.payInfo[key];
+				}
+			}
 		}
 		getCountDown(){
 			this.countDownStr = getCountDownTime(this.countDown);
@@ -167,7 +173,12 @@
 		}
 		onClickAllCard(){
 			uni.navigateTo({
-				url:'/pages/userinfo/order_myCard'
+				url:'/pages/userinfo/order_myCard?code='+this.orderCode
+			})
+		}
+		onClickGoods(){
+			uni.navigateTo({
+				url: '/pages/goods/goods_details?id='+this.orderData.good.goodCode
 			})
 		}
 		// 复制订单号

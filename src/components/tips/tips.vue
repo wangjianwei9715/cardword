@@ -43,7 +43,7 @@
 			},5000);
 		}
 		tipsScroll(){
-			this.marginHeight+= 64
+			this.marginHeight+= 62
 		}
 
 	}

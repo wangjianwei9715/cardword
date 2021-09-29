@@ -1,24 +1,43 @@
 <template>
 	<view class="content">
-		<view class="card-index" v-for="item in cardNoData" :key="item.id">
+		<view class="card-index" v-for="item in cardOldData" :key="item.id">
 			<view class="left">
-				<view class="title">{{item.title}}</view>
-				<view class="desc">{{item.desc}}</view>
-				<view class="time">{{item.time}}</view>
+				<view class="title">{{item.goodTitle}}</view>
+				<view class="desc">{{item.name}}</view>
+				<view class="time">{{dateFormat(item.time)}}</view>
 			</view>
-			<view class="right">未中卡</view>
+
+			<view v-if="item.resultNum>0" class="right">中卡*{{item.resultNum}}</view>
+			<view v-else class="right">{{getText(item.state)}}</view>
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue } from "vue-property-decorator";
+	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import { dateFormat } from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseComponent {
+		
 		@Prop({default:[]})
 		cardNoData:any;
+		@Prop({default:false})
+		ispullDown:any;
 
+		dateFormat = dateFormat
+		cardOldData:any = [];
+		@Watch('ispullDown')
+		onIspullDownChanged(val: any, oldVal: any){
+			this.cardOldData = []
+		}
+		@Watch('cardNoData')
+		onGoodsListChanged(val: any, oldVal: any){
+			this.cardNoData = val;
+			setTimeout(()=>{
+				this.GetcardNoData()
+			},100)
+		}
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -27,6 +46,27 @@
 		}
 		destroyed(){
 			
+		}
+		GetcardNoData(){
+			let data = JSON.parse(JSON.stringify(this.cardNoData))
+			console.log(data)
+			if(!data){
+				return;
+			}
+			
+			this.cardOldData = this.cardOldData.concat(data)
+		}
+		getText(index:any){
+			switch(index){
+				case 1:
+					return '待拆开';
+				case 2:
+					return '开卡成功';
+				case 3:
+					return '开卡失败';
+				case 4:
+					return '已失效'
+			}
 		}
 	}
 </script>
@@ -57,6 +97,7 @@
 				margin-bottom: 8rpx;
 			}
 			.desc{
+				height:70rpx;
 				font-size: 24rpx;
 				font-family: PingFangSC-Semibold, PingFang SC;
 				font-weight: 600;

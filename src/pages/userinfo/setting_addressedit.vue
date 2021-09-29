@@ -48,7 +48,7 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		address = '';
+		address = '浙江省杭州市西湖区';
 		userName = '';
 		userPhone = '';
 		addressDetail = '';

@@ -65,7 +65,7 @@
 			
 		</view>
 		<!-- 卡片展示 -->
-		<view class="goods-card">
+		<view class="goods-card" v-show="cardData.length>0">
 			<view class="goods-card-title">
 				<view class="goods-card-title-name">特色卡片</view>
 				<view class="goods-card-title-more">查看全部<view class="icon-right"></view></view>
@@ -317,6 +317,7 @@
 			this.explainData.num.desc = data.totalNum+'份';
 			this.explainData.price.desc = data.price+'元/份';
 		}
+		
 		onClickBack(){
 			uni.navigateBack({
 				delta: 1
@@ -384,7 +385,17 @@
 		}
 		
 		onClickFavor(){
-			this.favorType = !this.favorType
+			let url = ''
+			if(!this.favorType){
+				url="good/favor/"
+			}else{
+				url="good/unfavor/"
+			}
+			app.http.Post(url+this.goodsId,{},(data:any)=>{
+				this.favorType = !this.favorType
+				
+			})
+			
 		}
 		// 观看大图
 		onClickPreviewImage(index:number){
@@ -415,7 +426,7 @@
 		onClickBuy(){
 			console.log('立即购买')
 			uni.navigateTo({
-				url:'confirmorder'
+				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))
 			})
 		}
 		

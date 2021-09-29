@@ -393,7 +393,9 @@ export default class HttpRequest {
 	getStr(config:any,msg:any,type?:any){
 		let str = ''
 		for(let i in config.data){
-			str+= i+'='+config.data[i]+'&'
+			if(config.data[i]!=undefined){
+				str+= i+'='+config.data[i]+'&'
+			}
 		}
 		str = str.substring(0,str.lastIndexOf('&'));
 		if(type){

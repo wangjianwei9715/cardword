@@ -5,7 +5,8 @@
 			<view class="header-top">
 				<view class="header-back" @click="onClickBack"></view>
 				<view class="header-search">
-					<searchinput :searchText="searchText==''?'搜索编号':searchText" @clicksearch="onClickSearch"></searchinput>
+					<view class="search-icon"></view>
+					<input class="search-input" type="text"  v-model="searchText" placeholder="搜索" @confirm="onInputSearch" confirm-type="search"/>
 				</view>
 			</view>
 			<view class="header-tab">
@@ -15,12 +16,13 @@
 
 		<view class="order-list">
 			<statusbar/>
-			<cardNolist :cardNoData="cardNoData" />
+			<cardNolist :cardNoData="cardNoData"  :ispullDown="pullDownRefresh"/>
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
+	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
@@ -33,25 +35,66 @@
 			{id:3,name:'已购得'},
 			{id:4,name:'未够得'}
 		];
-		cardNoData:{[x:string]:any} = [
-			{id:1,title:'National Treasures Hobby 原箱',desc:'圣安东尼奥马刺 帕特里克·威廉姆斯49编好事 Apprentice Lnk #11',time:'2021-08-09 16:00',status:'已中卡*3'}
-		]
+		cardNoData:{[x:string]:any} = [];
+		currentPage = 1;
+		pageSize = 10;
+		noMoreData = false;
+		pullDownRefresh = false;
 		onLoad(query:any) {
+			this.reqNewData()
+		}
+		//   加载更多数据
+		onReachBottom() {
+		    this.reqNewData() 
+		}
+		reqNewData(cb?:Function) {
+			// 获取更多商品
+			if (this.noMoreData) {
+				return;
+			}
 			
+			let params:{[x:string]:any} = {
+				
+				tp:this.cardTabCheck-1,
+				pageIndex: this.currentPage,
+				pageSize:this.pageSize,
+			}
+			if(this.searchText!=''){
+				params.q = encodeURIComponent(this.searchText)
+			}
+			app.http.Get('me/cardNo', params, (data: any) => {
+				console.log('idndead',data)
+				if(data.totalPage<=this.currentPage){
+					this.noMoreData = true;
+				}
+				if(data.list){
+					this.cardNoData = data.list;
+				}
+				this.currentPage++;
+				if(cb) cb()
+			});
+		}
+		onInputSearch(){
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.pullDownRefresh = !this.pullDownRefresh
+			this.reqNewData()
 		}
 		onClickBack(){
 			uni.navigateBack({
 			    delta: 1
 			});
 		}
-		onClickSearch(){
-			
-		}
+		
 		onClickListTabs(id:number){
 			if(id==this.cardTabCheck){
 				return;
 			}
-			this.cardTabCheck = id
+			this.cardTabCheck = id;
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.pullDownRefresh = !this.pullDownRefresh
+			this.reqNewData() 
 		}
 	}
 </script>
@@ -86,6 +129,12 @@
 	.header-search{
 		width: 626rpx;
 		height:64rpx;
+		background: #F5F5F8;
+		border-radius: 4rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		position: relative;
 	}
 	.header-back{
 		width: 80rpx;
@@ -104,5 +153,26 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding: 204rpx 20rpx 20rpx 20rpx;
+	}
+	.search-input{
+		width: 626rpx;
+		height:64rpx;
+		background: #F5F5F8;
+		border-radius: 4rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #14151A;
+		padding-left:76rpx ;
+	}
+	.search-icon{
+		width: 28rpx;
+		height:28rpx;
+		background:url(../../static/index/sousuo@2x.png) no-repeat center;
+		background-size:100% 100%;
+		position: absolute;
+		left:28rpx;
+		top:50%;
+		margin-top: -14rpx;
 	}
 </style>

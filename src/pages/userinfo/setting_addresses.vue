@@ -15,29 +15,13 @@
 </template>
 
 <script lang="ts">
+	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
 		orderSelect = false;
-		addressesList:any=[
-			{
-				id:1,
-				district:'浙江省 杭州市 西湖区',
-				detail:'西湖小区2幢1单元4541室风的射流风机爱德克斯',
-				name:'kkk',
-				phone:'18956320152',
-				default:true
-			},
-			{
-				id:2,
-				district:'浙江省 杭州市 西湖区',
-				detail:'西湖小区2幢1单元4541室风的射流风机爱德克斯',
-				name:'ddd',
-				phone:'18956320152',
-				default:false
-			}
-		];
+		addressesList:any=[];
 		onLoad(query:any) {
 			if(query.type){
 				this.orderSelect = true;
@@ -49,9 +33,9 @@
 			
 		}
 		initEvent(){
-			// app.http.Get('me/delivery',{},(res:userinfo.deliveryData)=>{
-			// 	this.addressesList = res.list
-			// })
+			app.http.Get('me/delivery',{},(res:any)=>{
+				this.addressesList = res.list
+			})
 		}
 		onClickSelect(data:any){
 			if(this.orderSelect){

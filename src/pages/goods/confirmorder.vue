@@ -1,28 +1,28 @@
 <template>
 	<view class="content">
-		<view class="top-content">
-			<view class="address-content">
-				<image class="img-location"></image>
-				<text class="order-address" v-if="isHasAdress">浙江省杭州市西湖区数字娱乐产业园7号楼401室巴拉 巴拉巴拉巴拉芭芭拉
-					巴拉巴拉巴拉芭芭拉巴拉巴拉巴拉芭芭拉巴拉巴拉巴拉芭芭拉巴拉巴拉巴拉芭芭拉</text>
-				<text class="order-address" v-else>请填写收货地址</text>
-				<image class="img-fanhui"></image>
+		<view class="header" @click="onClickAddress">
+			<view class="header-left">
+				<view class="icon-address"></view>
+				<view v-if="addressData!=''" class="header-address">
+					<view class="address-desc">{{addressData.district}}{{addressData.detail}}</view>
+					<view class="address-name">{{addressData.name}}<text>{{addressData.phone}}</text></view>
+				</view>
+				<view v-else  class="header-address">
+					<view class="address-tips">请选择收货地址</view>
+				</view>
 			</view>
-			<view class="phone-info" v-if="isHasAdress">
-				<text class="phone-name">梅超风 </text>
-				<text class="phone-num">183****7451</text>
-			</view>
+			<button class="header-right">&#xe470;</button>
 		</view>
 		<image src="../../static/goods/icon_xinfeng.png" style="width: 748rpx; height: 4rpx;"></image>
 
 		<view class="order-detail">
 			<view class="goods-info">
-				<image src="../../static/index/tab0.png"
+				<image :src="getGoodsImg(goodsData.pic)"
 					style="width: 200rpx; height: 200rpx; padding: 16rpx; margin: 20rpx;"></image>
 				<view class="goods-info2">
-					<text class="goods-info2-title">20-21 National Treasures Hobby 原箱*3</text>
+					<text class="goods-info2-title">{{goodsData.title}}</text>
 					<view class="goods-money-info">
-						<text class="goods-money">¥149</text>
+						<text class="goods-money">¥{{goodsData.price}}</text>
 						<view class="goods-money-add">
 							<view class="img-jian" @click="onClickCutDown()"></view>
 							<input class="money-add" @input="onInputMoney" v-model="moneyNum" type="number" />
@@ -33,13 +33,10 @@
 			</view>
 
 			<view style="width: 750rpx; height: 20rpx; background: #F6F7F8;"></view>
-			<view class="huo-dong-bg">
+			<view class="huo-dong-bg" v-show="goodsData.discount!=''">
 				<text class="item-name">活动</text>
-				<view class="item-youhui-bg">
-					满10组减5元
-				</view>
-				<view class="item-youhui-bg2">
-					满10组减5元
+				<view class="item-youhui-bg" v-for="(item,index) in goodsData.discount" :key="index">
+					{{item.content}}
 				</view>
 			</view>
 
@@ -47,11 +44,11 @@
 			<view class="yunfei-info">
 				<view class="yunfei-item">
 					<text class="item-name">商品金额</text>
-					<text class="item-name">¥56.00</text>
+					<text class="item-name">¥{{goodsData.price}}</text>
 				</view>
-				<view class="yunfei-item">
+				<view class="yunfei-item" v-show="youhuiPrice>0">
 					<text class="item-name">优惠</text>
-					<text class="item-name">- ¥5.00</text>
+					<text class="item-name">- ¥{{youhuiPrice}}</text>
 				</view>
 				<view class="yunfei-item">
 					<text class="item-name">运费</text>
@@ -62,7 +59,7 @@
 					<text class="item-name"></text>
 					<view class="heji-money">
 						<text class="heji-text">合计:</text>
-						<text class="heji-money2">¥14452354832625879</text>
+						<text class="heji-money2">¥{{moneyNum*goodsData.price-youhuiPrice}}</text>
 					</view>
 				</view>
 			</view>
@@ -70,9 +67,9 @@
 			<view class="bottom-content">
 				<view class="heji-money-pay">
 					<text class="heji-text" style="color: #FF4349;">合计:</text>
-					<text class="heji-money2" style="color: #FF4349;">¥14452354832625879</text>
+					<text class="heji-money2" style="color: #FF4349;">¥{{moneyNum*goodsData.price-youhuiPrice}}</text>
 				</view>
-				<view :class="isAbleBtn==true?'btn-payment2':'btn-payment'" @click="onClickToPay()">去支付</view>
+				<view class="btn-payment2" @click="onClickToPay()">去支付</view>
 			</view>
 
 		</view>
@@ -80,34 +77,90 @@
 </template>
 
 <script lang="ts">
-	import {
+	import { app } from "@/app";
+import {
 		Component
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import {
+		getGoodsImg
+	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
-		isHasAdress = true; //是否存在收货地址
+		addressData:any = [];
+		getGoodsImg = getGoodsImg;
 		moneyNum = 1;
-		isAbleBtn = false; //是否可以支付
-
+		goodsData:{[x:string]:any} = [];
+		youhuiPrice = 0;
 		onLoad(query: any) {
+			if(query.data){
+				this.goodsData = JSON.parse(query.data)
+				console.log(this.goodsData)
+				
+			}
 
+			this.onEventUI('addressSelect',(data)=>{
+				this.addressData = data.data
+			})
 		}
-
-		onClickToPay() {
-			console.log('去支付')
-		}
-		
 		onInputMoney(event:any){
 			
+			if(this.youhuiPrice>0&&this.moneyNum<this.goodsData.discount[0].minNum){
+				this.youhuiPrice = 0;
+			}
+			this.onChangeMoneyNum()
 		}
 		
 		onClickCutDown(){
+			if(this.moneyNum>1){
+				this.moneyNum--;
+			}
+			if(this.youhuiPrice>0&&this.moneyNum<this.goodsData.discount[0].minNum){
+				this.youhuiPrice = 0;
+			}
 			console.log('减')
 		}
 		
 		onClickAdd(){
-			console.log('加')
+			this.moneyNum++;
+			this.onChangeMoneyNum()
+			console.log('加',this.youhuiPrice)
+		}
+		onChangeMoneyNum(){
+			if(this.goodsData.discount!=''){
+				for(let i of this.goodsData.discount){
+					if(this.moneyNum>=i.minNum){
+						this.youhuiPrice = i.discount
+					}
+				}		
+			}
+		}
+		onClickAddress(){
+			uni.navigateTo({
+				url:'/pages/userinfo/setting_addresses?type=order'
+			})
+		}
+		onClickToPay(){
+			if(this.addressData==''){
+				uni.showToast({
+					title:'请先选择地址',
+					icon:'none',
+				})
+				return;
+			}
+			let params:{[x:string]:any} = {
+				channel:'alipay',
+				delivery:this.addressData.id,
+				num:Number(this.moneyNum)
+			}
+			app.http.Post('good/topay200/'+this.goodsData.goodCode,params,(res:any)=>{
+				uni.redirectTo({
+					url:'/pages/userinfo/order_list'
+				})
+				// if(res.alipay.orderInfo!=''){
+				// 	app.payment.paymentAlipay(res.alipay.orderInfo,()=>{})
+				// }
+			})
 		}
 	}
 </script>
@@ -121,74 +174,75 @@
 	page {
 		background: #F6F7F8;
 	}
-
-	.top-content {
-		width: 100%;
-		height: auto;
-		background: #FFFFFF;
+	.order-detail{
+		background:#fff;
 	}
-
-	.address-content {
+	.header{
+		width: 100%;
+		height:200rpx;
+		background:#fff;
+		box-sizing: border-box;
+		padding:0 30rpx;
+		border-bottom: 14rpx solid #F5F5F9;
 		display: flex;
-		flex-direction: row;
-		margin: 48rpx 0 16rpx 0;
+		align-items: center;
+		justify-content: space-between;
 	}
-
-	.img-location {
+	.header-left{
+		width: 630rpx;
+		height:100rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+	}
+	.header-right{
+		width: 72rpx;
+		height:72rpx;
+		background-color: rgba(0, 0, 0, 0);
+		font-family: uniicons;
+		font-size: 48rpx;
+		font-weight: normal;
+		font-style: normal;
+		line-height: 72rpx;
+		color: #C4C3C8;
+		margin: 0
+	}
+	.icon-address{
 		width: 32rpx;
-		height: 38rpx;
-		background: url(../../static/goods/icon_location.png) no-repeat center;
-		background-size: cover;
-		margin-left: 32rpx;
+		height:38rpx;
+		background:url(../../static/goods/icon_location.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-right: 24rpx;
 	}
-
-	.img-fanhui {
-		width: 10rpx;
-		height: 22rpx;
-		margin-top: 8rpx;
-		background: url(../../static/goods/icon_righ_back.png) no-repeat center;
-		background-size: cover;
-		margin-right: 32rpx;
+	.header-address{
+		width: 570rpx;
+		height:100rpx;
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
 	}
-
-	.order-address {
-		width: 556rpx;
-		height: auto;
-		margin-left: 24rpx;
-		margin-right: 64rpx;
-
-		font-size: $font-24;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #14151A;
-		line-height: 34rpx;
-	}
-
-	.phone-info {
+	.address-desc{
 		width: 100%;
-
-		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #7F7F8E;
-		line-height: 34rpx;
-		padding-bottom: 20rpx;
+		font-size: 28rpx;
+		font-family: HYQiHei;
+		font-weight: bold;
+		color: #3B3B3B;
 	}
-
-	.phone-name {
-		margin-left: 88rpx;
-	}
-
-	.phone-num {
-		margin-left: 40rpx;
-	}
-
-	.order-detail {
+	.address-name{
 		width: 100%;
-		margin-top: 20rpx;
-		background: #FFFFFF;
+		font-size: 24rpx;
+		font-family: HYQiHei;
+		font-weight: bold;
+		color: #3B3B3B;
 	}
-
+	.address-tips{
+		height:100rpx;
+		line-height: 100rpx;
+		font-size: 28rpx;
+		font-family: HYQiHei;
+		font-weight: bold;
+		color: #3B3B3B;
+	}
 	.goods-info {
 		width: 100%;
 		display: flex;
@@ -299,6 +353,7 @@
 		color: #E6D188;
 		line-height: 28rpx;
 		margin-left: 32rpx;
+
 	}
 
 	.item-youhui-bg2 {
