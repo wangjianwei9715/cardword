@@ -89,8 +89,10 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import {getCountDownTime} from '@/tools/util';
+	import {getOrderDetailState} from '@/tools/switchUtil';
 	@Component({})
 	export default class ClassName extends BaseNode {
+		getStateStr = getOrderDetailState;
 		countDownInter:any;
 		countDown = 300;
 		countDownStr = ''
@@ -149,18 +151,6 @@
 			uni.setNavigationBarTitle({
 				title: '待支付'
 			});
-		}
-		getStateStr(state:number){
-			switch(state){
-				case 1:
-					return '拼团中：商品拼团中xxx/xxx';
-				case 2:
-					return '待直播：等待商品直播';
-				case 3:
-					return '直播中：商品正在直播';
-				case 4:
-					return '订单已完成，未购得卡片'
-			}
 		}
 		getCountDown(){
 			this.countDownStr = getCountDownTime(this.countDown);

@@ -178,20 +178,7 @@ import { Component } from "vue-property-decorator";
 				url: '/pages/goods/goods_details?id='+id
 			})
 		}
-		getSort(key:any){
-			switch (key) {
-				case 0:
-					return 'activeAt:desc';
-				case 1:
-					return 'overAt';
-				case 2:
-					return 'price:desc';
-				case 3:
-					return 'price'					
-				default:
-					return 'default'
-			}
-		}
+		
 		reqNewData(type:string,cb?:Function) {
 			let reach = false
 			if(type=='reach'){

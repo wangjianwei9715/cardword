@@ -22,7 +22,7 @@
 			</swiper>
 		</view>
 		<view :class="['header-content',{'header-content-end':goodsState!=0}]">
-			<view class="header-price">¥<text>149</text></view>
+			<view class="header-price">¥<text>{{goodsData.price}}</text></view>
 			<view class="header-right" v-if="goodsState==0">
 				<view class="icon-end"></view>
 				<view class="countdown-content">
@@ -41,8 +41,8 @@
 			<!-- 头部详情 -->
 			<view class="header-top">
 				<view class="header-top-left">
-					<view class="icon-tips">满10组减5元</view>
-					<view class="header-top-left-title">20-21 National Treasures Hobby原箱*3组球星卡</view>
+					<view class="youhui"><view class="icon-tips" v-for="(item,index) in discountList" :key="index">{{item.content}}</view></view>
+					<view class="header-top-left-title">{{goodsData.title}}</view>
 				</view>
 				<view class="header-top-right" @click="onClickFavor">
 					<view :class="['icon-favor',{'icon-favored':favorType}]"></view>
@@ -50,8 +50,8 @@
 				</view>
 			</view>
 			<view class="header-center">
-				<view class="header-center-top">余124/共475</view>
-				<view class="header-center-plan"><plan :num_ex="124" :num_all="475"></plan></view>
+				<view class="header-center-top">余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}</view>
+				<view class="header-center-plan"><plan :num_ex="(goodsData.currentNum+goodsData.lockNum)" :num_all="goodsData.totalNum"></plan></view>
 				<view class="header-center-actor">
 					<image class="header-center-actor-img" src="" mode="aspectFit"></image>
 				</view>
@@ -79,12 +79,12 @@
 			</view>
 		</view>
 		<!-- 卖家信息 -->
-		<view class="goods-seller">
+		<view class="goods-seller" v-if="goodsData.publisher">
 			<view class="goods-seller-left">
 				<image class="goods-seller-left-avatar" src="" mode="aspectFit"></image>
 				<view class="goods-seller-left-desc">
-					<view class="goods-seller-left-desc-name">皇球星社</view>
-					<view class="goods-seller-left-desc-tips">已拼团5组</view>
+					<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
+					<view class="goods-seller-left-desc-tips">已拼团{{goodsData.publisher.deal}}组</view>
 				</view>
 			</view>
 			<view class="goods-seller-right" @click="onClickShops">店铺</view>
@@ -94,14 +94,14 @@
 			<view class="goods-desc-title">商品详情</view>
 			<view class="goods-desc-explain">
 				<view class='goods-desc-explain-text' v-for="item in explainData" :key="item.id">
-					<view class="explain-name">【{{item.name}}】</view>
+					<view class="explain-name">{{item.name}}</view>
 					<view class="explain-icon">：</view>
 					<view class="explain-desc">{{item.desc}}</view>
 				</view>
 			</view>
 		</view>
 		<!-- 直播可拖动控件 -->
-		<movable-area class="movable-area" v-if="goodsState!=0">
+		<movable-area class="movable-area" v-if="goodsState!=0&&goodsState!=2">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
 				<livewicket :liveImg="liveImg" :liveStatus="liveStatus"></livewicket>
 			</movable-view>
@@ -129,37 +129,47 @@
 </template>
 
 <script lang="ts">
+	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import {getGoodsPintuan,getGoodsRandom} from '@/tools/switchUtil';
+	import {dateFormat} from '@/tools/util';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		goodsState = 1;
-		goodsImg:any = ['../../static/goods/zhutu@2x.png'];
+		goodsState = 0;
+		goodsId = '';
+		goodsImg:any = [];
+		goodsData:{[x:string]:any} = [];
 		countDay:any = '';
 		countHour:any = '';
 		countMinute:any = '';
 		countSecond:any = '';
 		count_down:any;
-		countDown = 152200;
+		countDown = 0;
 		favorType = false;
-		goodsSpe:{[x:string]:any} = [
-			{id:1,name:'随机卡种',desc:'拼团形式'},
-			{id:2,name:'即买即随',desc:'随机方式'},
-			{id:3,name:'原箱*3',desc:'拼团规格'},
-			{id:4,name:'3盒*4包*3张',desc:'每箱配置'}
-		];
-		cardData:any = [
-			'../../static/goods/1@2x.png',
-			'../../static/goods/2@2x.png'
-		];
+		goodsSpe:{[x:string]:any} = {
+			pintuan_type:{id:1,name:'',desc:'拼团形式'},
+			random_type:{id:2,name:'',desc:'随机方式'},
+			spec:{id:3,name:'',desc:'拼团规格'},
+			spec_str:{id:4,name:'',desc:''}
+		};
+		cardData:any = [];
+		cardCurrentPage = 1;
+		cardNoMoreData = false;
 		scrollIng = false;
-		explainData:{[x:string]:any} = [
-			{id:1,name:'商品名称',desc:'20-21 National Treasures Hobby Hobby原箱*3'},
-			{id:2,name:'商品编号',desc:'112233'},
-			{id:3,name:'拼团时间',desc:'2021-08-01 18:00至2021-08-01 18:00'},
-			{id:4,name:'拼团规格',desc:'3箱*4盒*5包*10张 共600张'},
-			{id:5,name:'配置',desc:'平均每盒1张bese，8张签字或实物，一张平行签字或实物或小书'},
-		];
+		explainData:{[x:string]:any} = {
+			title:{id:1,name:'【商品名称】',desc:''},
+			code:{id:2,name:'【商品编号】',desc:''},
+			time:{id:3,name:'【拼团时间】',desc:''},
+			spec:{id:4,name:'【拼团规格】',desc:''},
+			config:{id:5,name:'【配置】',desc:''},
+			num:{id:6,name:'【拼团份数】',desc:''},
+			price:{id:7,name:'【拼团费用】',desc:''},
+			openCardTime:{id:8,name:'【开卡时间】',desc:'组满后24小时内开卡'},
+			openCardType:{id:9,name:'【开卡方式】',desc:'组满后小程序直播'},
+			getCard:{id:10,name:'【获卡方式】',desc:'3日内寄给所有获卡者'},
+			sub:{id:11,name:'【认购时限】',desc:'本次组队时间为7天，如购买人数不足，所有款项原路返还。此外，平台不提供退组服务。'}
+		};
 		tipBtn:{[x:string]:any}=[
 			{id:1,name:'客服',url:'../../static/goods/kefu@2x.png',class:'kf'},
 			{id:2,name:'直播提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
@@ -180,10 +190,132 @@
 			{img:'',desc:'1分钟前加入拼团*30'},
 			{img:'',desc:'1分钟前加入拼团*30'}
 		];
+		discountList:any = [];
 		liveImg = '../../static/goods/zhutu@2x.png';
 		liveStatus = '直播回放'
 		onLoad(query:any) {
-			this.getCountDown()
+			this.goodsId = query.id;
+			this.getGoodData(this.goodsId)
+		}
+		// 数据详情赋值
+		getGoodData(id:any){
+			setTimeout(()=>{
+				app.http.Get('dataApi/good/'+id,{},(data:any)=>{
+					// 是否收藏
+					this.favorType = data.favorite==-1?false:true;
+					// 数据详情
+					this.goodsData = data.good;
+					// 状态
+					this.goodsState = data.good.state;
+					// 倒计时
+					this.countDown = data.good.leftsec;
+					// 获取优惠标签
+					this.discountList= data.good.discount?data.good.discount:'';
+					// 获取商品图片
+					this.getGoodsImage(this.goodsData.pic);
+					// 卡片特色图片
+					this.getCardPics()
+					// 倒计时
+					this.getCountDown();
+					// 商品规格、配置、形式、
+					this.getGoodsSpe()
+				})
+			},200)
+			
+		}
+		// 获取特色卡牌
+		getCardPics(){
+			if(this.cardNoMoreData){return;}
+
+			app.http.Get('dataApi/good/'+this.goodsData.goodCode+'/pics',{pageIndex:this.cardCurrentPage,pageSize:10},(res:any)=>{
+				if(res.samplePics == ''){
+					this.cardNoMoreData = true;
+					return;
+				}
+				this.cardData = res.samplePics.split(',');
+				this.scrollIng = false;
+				this.cardCurrentPage++
+			})
+		}
+		// 商品图片
+		getGoodsImage(img:any){
+			if(img.indexOf(',') == -1){
+				this.goodsImg.push(img)
+			}else{
+				this.goodsImg = img.split(',')
+			}
+		}
+		// 倒计时时间计算
+		getTime(){
+			let day = String(Math.floor(this.countDown/3600/24));
+			let day_num = this.countDown-3600*24*Number(day)
+			let hour=Math.floor((day_num)/3600)<10?'0'+Math.floor((day_num)/3600):Math.floor((day_num)/3600);
+			let minute=Math.floor((day_num-3600*Number(hour))/60)<10?'0'+Math.floor((day_num-3600*Number(hour))/60):Math.floor((day_num-3600*Number(hour))/60);
+			let second=Math.floor((day_num-3600*Number(hour))%60)<10?'0'+Math.floor((day_num-3600*Number(hour))%60):Math.floor((day_num-3600*Number(hour))%60);
+			if(Number(day)>0){
+				this.countDay = day;
+			}
+			this.countHour = hour;
+			this.countMinute = minute;
+			this.countSecond = second
+		}
+		// 倒计时定时器
+		getCountDown(){
+			this.getTime()
+			this.count_down=this.scheduler(()=>{
+				if(this.countDown>0){
+					this.countDown --;
+					this.getTime()
+				}else{
+					clearInterval(this.count_down)
+				}
+			},1);
+		}
+		// 拼团形式规格
+		getGoodsSpe(){
+			let data = this.goodsData;
+			this.goodsSpe.pintuan_type.name = getGoodsPintuan(data.pintuan_type);
+			this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
+			this.getGoodsSpecStr(data.spec)
+			// 商品详情
+			this.getExplainData()
+		}
+		getGoodsSpecStr(data:any){
+			// "spec":{  //规格
+			//     "xiang":1, //几箱
+			//     "he":1, //几盒
+			//     "bao":1, //几包
+			//     "unit":10, //每包几张
+			// },
+			if(data.xiang>0){
+				this.goodsSpe.spec.name = '原箱*'+data.xiang;
+				this.goodsSpe.spec_str.name = data.he+'盒*'+data.bao+'包*'+data.unit+'张';
+				this.goodsSpe.spec_str.desc = '每箱配置';
+				this.explainData.spec.desc = data.xiang+'箱*'+data.he+'盒*'+data.bao+'包*'+data.unit+'张 共'+(data.xiang*data.he*data.bao*data.unit)+'张';
+				return;
+			}else if(data.he>0){
+				this.goodsSpe.spec.name = '原盒*'+data.he;
+				this.goodsSpe.spec_str.name = data.bao+'包*'+data.unit+'张';
+				this.goodsSpe.spec_str.desc = '每盒配置';
+				this.explainData.spec.desc = data.he+'盒*'+data.bao+'包*'+data.unit+'张 共'+(data.he*data.bao*data.unit)+'张';
+				return;
+			}else if(data.bao>0){
+				this.goodsSpe.spec.name = '原包*'+data.bao;
+				this.goodsSpe.spec_str.name = data.unit+'张';
+				this.goodsSpe.spec_str.desc = '每包配置';
+				this.explainData.spec.desc = data.bao+'包*'+data.unit+'张 共'+(data.bao*data.unit)+'张';
+				return;
+			}
+		}
+		// 商品详情
+		getExplainData(){
+			let data = this.goodsData;
+			this.explainData.title.desc = data.title;
+			this.explainData.code.desc = data.goodCode;
+			this.explainData.time.desc = dateFormat(data.startAt)+'至'+dateFormat(data.overAt);
+			this.explainData.config.desc = data.config;
+			this.explainData.num.desc = data.totalNum+'份';
+			this.explainData.price.desc = data.price+'元/份';
 		}
 		onClickBack(){
 			uni.navigateBack({
@@ -269,32 +401,7 @@
 				indicator: "number" 
 			});
 		}
-		// 倒计时时间计算
-		getTime(){
-			let day = String(Math.floor(this.countDown/3600/24));
-			let day_num = this.countDown-3600*24*Number(day)
-			let hour=Math.floor((day_num)/3600)<10?'0'+Math.floor((day_num)/3600):Math.floor((day_num)/3600);
-			let minute=Math.floor((day_num-3600*Number(hour))/60)<10?'0'+Math.floor((day_num-3600*Number(hour))/60):Math.floor((day_num-3600*Number(hour))/60);
-			let second=Math.floor((day_num-3600*Number(hour))%60)<10?'0'+Math.floor((day_num-3600*Number(hour))%60):Math.floor((day_num-3600*Number(hour))%60);
-			if(Number(day)>0){
-				this.countDay = day;
-			}
-			this.countHour = hour;
-			this.countMinute = minute;
-			this.countSecond = second
-		}
-		// 倒计时定时器
-		getCountDown(){
-			this.getTime()
-			this.count_down=this.scheduler(()=>{
-				if(this.countDown>0){
-					this.countDown --;
-					this.getTime()
-				}else{
-					clearInterval(this.count_down)
-				}
-			},1);
-		}
+		
 		// 监听卡片滚动
 		onScrollToLower(){
 			if(this.scrollIng){
@@ -302,6 +409,7 @@
 			}
 			this.scrollIng = true;
 			console.log('已经到最右边')
+			this.getCardPics()
 		}
 		
 		onClickBuy(){
@@ -507,18 +615,25 @@
 				color: #000000;
 			}
 		}
-		.icon-tips{
-			width: 130rpx;
+		.youhui{
 			height:40rpx;
-			background:url(../../static/index/title@2x.png) no-repeat center;
-			background-size: 100% 100%;
-			text-align: center;
-			line-height: 40rpx;
-			font-size: $font-20;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #E6D188;
+			display: flex;
+			align-items: center;
+			box-sizing: border-box;
 			margin-bottom: 18rpx;
+			.icon-tips{
+				width: 130rpx;
+				height:40rpx;
+				background:url(../../static/index/title@2x.png) no-repeat center;
+				background-size: 100% 100%;
+				text-align: center;
+				line-height: 40rpx;
+				font-size: $font-20;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #E6D188;
+				margin-right: 10rpx;
+			}
 		}
 		.icon-favor{
 			width: 44rpx;

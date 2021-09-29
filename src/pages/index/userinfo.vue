@@ -4,7 +4,7 @@
 			
 			<view class="setting-content">
 				<view class="icon-setting" @click="onClickSetting"></view>
-				<view class="icon-xiaoxi"><view class="xiaoxi-num">6</view></view>
+				<view class="icon-xiaoxi" @click="onClickMessage"><view class="xiaoxi-num">6</view></view>
 			</view>
 			<view class="userinfo">
 				<view class="left">
@@ -53,6 +53,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import {getCountDownTime} from '@/tools/util';
+	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		headerTab = [
@@ -78,7 +79,44 @@
 		countTime = 300;
 		countStr = '';
 		onLoad(query:any) {
+			this.onEventUI('loginSuccess', () => {
+				this.initPageData();
+			});
+		}
+		onShow(){
+			this.initPageData();
+		}
+		initPageData(cb?:Function){
+			if(app.token.accessToken == ''){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				return;
+			}
 			this.countDownTime()
+			// app.http.Get('me/home',{},(res:any)=>{
+			// 	let data:userinfo.HomeData = res.data;
+			// 	this.infoData = data;
+			// 	this.infoData.avatar = this.infoData.avatar
+			// 	for (const key in this.tabData) {
+			// 		if (Object.prototype.hasOwnProperty.call(data, key)) {
+			// 			this.tabData[key].num = data[key];
+			// 		}
+			// 	}
+			// 	let buyerData:any = data.buyer 
+			// 	for (const key in this.buyerBtns) {
+			// 		if (Object.prototype.hasOwnProperty.call(buyerData, key)) {
+			// 			this.buyerBtns[key].num = buyerData[key];	
+			// 		}
+			// 	}
+			// 	let sellData:any = data.seller
+			// 	for (const key in this.sellerBtns) {
+			// 		if (Object.prototype.hasOwnProperty.call(sellData, key)) {
+			// 			this.sellerBtns[key].num = sellData[key];	
+			// 		}
+			// 	}
+			// 	if(cb) cb()
+			// });
 		}
 		onClickNavigateto(url:any){
 			uni.navigateTo({
@@ -88,6 +126,11 @@
 		onClickSetting(){
 			uni.navigateTo({
 				url:'/pages/userinfo/setting'
+			})
+		}
+		onClickMessage(){
+			uni.navigateTo({
+				url:'/pages/userinfo/message'
 			})
 		}
 		onClickOrderList(id:number){

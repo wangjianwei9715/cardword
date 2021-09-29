@@ -1,6 +1,6 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="goodslist-index" v-for="item in goodsOldList" :key="item.id" @click="onClickJumpUrl(item.id)">
+		<view class="goodslist-index" v-for="item in goodsOldList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
 			<image class="goodslist-pic" :src="item.img" mode="aspectFill"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-tip" :class="item.type=='拍卖'?'icon-paimai':'icon-yikou'" >{{item.type}}</view>

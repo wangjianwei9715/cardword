@@ -182,24 +182,24 @@
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
-			// this.currentPage = 1;
-			// this.noMoreData = false;
-			// this.reqNewData('default',()=>{
-			// 	setTimeout(()=>{
-			// 		uni.stopPullDownRefresh();
-			// 	},1000)
-			// })
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.reqNewData(()=>{
+				setTimeout(()=>{
+					uni.stopPullDownRefresh();
+				},1000)
+			})
 		}
 		//   加载更多数据
 		onReachBottom() {
-		    // this.reqNewData('reach') 
+		    this.reqNewData() 
 		}
 		initEvent(){
-			// app.http.Get("dataApi/home", {}, (data: any) => {
-			// 	console.log('index/home====',data)
-			// 	this.goodsList = data.goodList;
-			// 	this.advertisingList = data.topAddList;
-			// })
+			app.http.Get("dataApi/home", {}, (data: any) => {
+				console.log('index/home====',data)
+				this.goodsList = data.goodList;
+				this.advertisingList = data.topAddList;
+			})
 			
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
@@ -272,36 +272,32 @@
 				return;
 			}
 			this.goodTabCheck = id
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.reqNewData()
 		}
-		reqNewData(type:string,cb?:Function) {
-			let reach = false
-			if(type=='reach'){
-				reach = true
-			}
+		reqNewData(cb?:Function) {
 			// 获取更多商品
 			if (this.noMoreData) {
 				return;
 			}
 			
 			let params:{[x:string]:any} = {
+				tp:this.goodTabCheck-1,
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 			}
-			if(reach && this.scrollId!=''){
-				params.scrollId = this.scrollId
-			}
-			let date:any = new Date()
-			params.timeStamp = Date.parse(date)/1000
 			
-			app.http.Get("dataApi/search", params, (data: any) => {
+			app.http.Get("dataApi/goodlist", params, (data: any) => {
 				console.log('idndead',data)
+				if(data.totalPage<=this.currentPage){
+					this.noMoreData = true;
+				}
 				if(data.goodList){
 					if(this.currentPage==1){
 						this.pullDownRefresh = !this.pullDownRefresh
 					}
 					this.goodsList = data.goodList;
-				}else{
-					this.noMoreData = true;
 				}
 				
 				this.scrollId = data.scrollId

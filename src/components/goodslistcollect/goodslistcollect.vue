@@ -1,7 +1,7 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="item" v-show="goodsOldList.length>0" v-for="item in goodsOldList" :key="item.id">
-			<view :class="['goodslist-index',{'del-start':delStart}]"  @click="onClickJumpUrl(item.id)">
+		<view class="item" v-show="goodsOldList.length>0" v-for="item in goodsOldList" :key="item.goodCode">
+			<view :class="['goodslist-index',{'del-start':delStart}]"  @click="onClickJumpUrl(item.goodCode)">
 				<image class="goodslist-pic" :src="item.img" mode="aspectFill"></image>
 				<view class="goodslist-right">
 					<view class="goodslist-title">{{item.title}}</view>
@@ -20,7 +20,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-show="delStart" :class="getDel(item.id)?'deled-icon':'del-icon'" @click="onClickDel(item.id)"></view>
+			<view v-show="delStart" :class="getDel(item.goodCode)?'deled-icon':'del-icon'" @click="onClickDel(item.goodCode)"></view>
 		</view>
 		<empty v-show="goodsOldList.length==0" />
 	</view>

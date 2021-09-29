@@ -193,7 +193,7 @@
             "path" : "pages/userinfo/user_collect",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "设置",
+                "navigationBarTitleText": "我的收藏",
                 "navigationBarBackgroundColor":"#ffffff",
                 "navigationBarTextStyle":"black"
             }
@@ -203,8 +203,9 @@
             "path" : "pages/userinfo/setting",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": "设置",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
             }
             
         }
@@ -223,6 +224,16 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "消息",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
+            }
+            
+        }
+        ,{
+            "path" : "pages/userinfo/user_info",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "个人信息",
                 "navigationBarBackgroundColor":"#ffffff",
                 "navigationBarTextStyle":"black"
             }

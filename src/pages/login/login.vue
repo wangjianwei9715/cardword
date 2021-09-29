@@ -145,6 +145,7 @@
 				app.opKey = data.opKey
 				app.socketInfo = data.app;
 				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
+				console.log('login===',app)
 				if(data.app.launchDomain&&data.app.launchDomain!=''){
 					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
 				}

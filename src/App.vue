@@ -2,152 +2,19 @@
 import Vue from "vue";
 import { app } from "./app";
 
-import * as proto from "./net/proto";
-
-import { SocketServer } from "@/net/SocketServer";
-import { Message } from "@/net/NetDefine";
-import { PackageBase } from "@/net/PackageBase";
 import HttpRequest from "./net/HttpRequest";
 import UpdateManager from "./manager/UpdateManager";
+import { SocketServer } from "@/net/SocketServer";
 import { Md5 } from "ts-md5";
 export default Vue.extend({
   mpType: "app",
   globalData: {},
   onLaunch() {
     console.log("App Launch");
-    // #ifdef APP-PLUS
-    app.version = plus.runtime.version || "1.0.0";
-
-    if (!app.localTest) {
-      plus.device.getOAID({
-        complete: (res: any) => {
-          if (res.oaid) {
-            app.platform.deviceID = res.oaid;
-          }
-          if (plus.device.imei && app.platform.deviceID == "") {
-            app.platform.deviceID = plus.device.imei.split(",")[0];
-          }
-          if (app.platform.deviceID == "") {
-            app.platform.deviceID = uni.getSystemInfoSync().uuid;
-          }
-          let launchUrl = app.launch_url.sort(() => {
-            return Math.random() - 0.5;
-          });
-          let launchSuccess = false;
-          let params = {
-            name: "com.chuanqiu.ttauction",
-            version: app.version,
-            uuid: app.platform.deviceID,
-          };
-
-          console.log("launchuuid", app.platform);
-          for (let i in launchUrl) {
-            if (!launchSuccess) {
-              app.http.Post(
-                launchUrl[i] + "/api/app/launch",
-                params,
-                (res: any) => {
-                  launchSuccess = true;
-                  console.log("launch=============", res);
-                  app.bussinessApiDomain =
-                    res.app.bussinessApiDomain + "api/v1/";
-                  if (res.app.dataApiDomain) {
-                    app.dataApiDomain = res.app.dataApiDomain + "api/v1/";
-                  } else {
-                    app.dataApiDomain = res.app.bussinessApiDomain + "api/v1/";
-                  }
-
-                  uni.setStorageSync("launchConfig", res);
-                  app.update_url = launchUrl[i] + "/api/";
-                }
-              );
-              break;
-            } else {
-              break;
-            }
-          }
-
-          if (!launchSuccess) {
-            let launchConfig = uni.getStorageSync("launchConfig");
-            if (launchConfig.app) {
-              app.bussinessApiDomain =
-                launchConfig.app.bussinessApiDomain + "api/v1/";
-              if (launchConfig.app.dataApiDomain) {
-                app.dataApiDomain = launchConfig.app.dataApiDomain + "api/v1/";
-              } else {
-                app.dataApiDomain =
-                  launchConfig.app.bussinessApiDomain + "api/v1/";
-              }
-            } else {
-            }
-          }
-          console.log("bussinessApiDomain==========", app.bussinessApiDomain);
-          console.log("dataApiDomain==========", app.dataApiDomain);
-        },
-      });
-    }
-
-    plus.push.addEventListener(
-      "click",
-      (msg: any) => {
-        console.log("push-click", msg);
-        if (msg.payload) {
-          if (app.token.accessToken == "") {
-            app.payload = msg.payload;
-          } else {
-            uni.navigateTo({
-              url: msg.payload,
-            });
-          }
-        }
-      },
-      false
-    );
-    //监听在线消息事件
-    plus.push.addEventListener(
-      "receive",
-      (msg: any) => {
-        console.log("push-click", msg);
-        if (msg.payload) {
-          if (app.token.accessToken == "") {
-            app.payload = msg.payload;
-          } else {
-            uni.navigateTo({
-              url: msg.payload,
-            });
-          }
-        }
-      },
-      false
-    );
-    // #endif
 
     let needPushIdentifier = true;
 
     const loginToken = uni.getStorageSync("token");
-    if (loginToken) {
-      needPushIdentifier = false;
-      app.token = JSON.parse(loginToken);
-      let params = {
-        uuid: app.platform.deviceID,
-        os: app.platform.systemInfo.platform,
-        device: app.platform.systemInfo.brand + app.platform.systemInfo.model,
-      };
-      HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
-        console.log("access=====", data);
-        app.data = data.data;
-        app.opKey = data.opKey;
-        if (data.app) {
-          app.socketInfo = data.app;
-        }
-        if (data.data.mustBindPhone) {
-          uni.reLaunch({
-            url: "/pages/login/bindphone",
-          });
-        }
-        uni.$emit("loginSuccess");
-      });
-    }
 
     uni.$on("refreshToken", () => {
       try {
@@ -191,40 +58,7 @@ export default Vue.extend({
         url: "/pages/login/login",
       });
     });
-    console.log(proto);
-    app.protobuf = proto;
     app.sever = new SocketServer();
-
-    let sendWebsocketLogin = () => {
-      let msg = new proto.message.Login();
-      msg.BuildNo = app.version;
-      msg.accountId = app.data.accountId;
-      msg.token = app.socketInfo.tcpToken;
-      let buffer = proto.message.Login.encode(msg).finish();
-      let pack = new PackageBase(Message.Login);
-      pack.d(buffer).to(app.sever);
-    };
-    let connectSever = () => {
-      app.sever.close();
-      app.sever.setServerInfo({ ip: app.socketInfo.tcp });
-      app.sever.connect(
-        () => {
-          console.log("connect success");
-          sendHeartBeat();
-          sendWebsocketLogin();
-        },
-        () => {
-          // uni.showModal({
-          // 	title:'连接失败',
-          // 	content:'服务器维护中，请稍后再试...',
-          // 	showCancel:false,
-          // 	success:()=>{
-          // 		connectSever();
-          // 	}
-          // });
-        }
-      );
-    };
     uni.$on("loginSuccess", () => {
       // #ifdef APP-PLUS
       if (needPushIdentifier) {
@@ -241,10 +75,6 @@ export default Vue.extend({
         app.payload = "";
       }
       // #endif
-
-      if (app.socketInfo.tcp && app.socketInfo.tcp != "") {
-        connectSever();
-      }
     });
     uni.$on("socketClose", () => {
       if (app.socketInfo.tcp && app.socketInfo.tcp != "") {
@@ -259,28 +89,192 @@ export default Vue.extend({
       }
     });
 
+    // #ifdef APP-PLUS
+    app.version = plus.runtime.version || "1.0.0";
+
+    plus.device.getOAID({
+      complete: (res: any) => {
+        if (res.oaid) {
+          app.platform.deviceID = res.oaid;
+        }
+        if (plus.device.imei && app.platform.deviceID == "") {
+          app.platform.deviceID = plus.device.imei.split(",")[0];
+        }
+        if (app.platform.deviceID == "") {
+          app.platform.deviceID = uni.getSystemInfoSync().uuid;
+        }
+        if (!app.localTest) {
+          let launchUrl: { [x: string]: any } = {};
+          let configLaunchUrl = uni.getStorageSync("configLaunchUrl");
+          if (configLaunchUrl) {
+            launchUrl = configLaunchUrl.sort(() => {
+              return Math.random() - 0.5;
+            });
+          } else {
+            launchUrl = app.launch_url.sort(() => {
+              return Math.random() - 0.5;
+            });
+          }
+          console.log("launchURL===============", launchUrl);
+
+          let launchSuccess = false;
+          let params = {
+            name: "com.chuanqiu.ttauction",
+            version: app.version,
+            uuid: app.platform.deviceID,
+          };
+
+          console.log("launchuuid", params);
+          for (let i in launchUrl) {
+            if (!launchSuccess) {
+              let url = launchUrl[i];
+              if (url.charAt(url.length - 1) == "/") {
+                url = url.slice(0, url.length - 1);
+              }
+              app.http.Post(url + "/api/app/launch", params, (res: any) => {
+                console.log("launchpost===", res);
+                launchSuccess = true;
+
+                let bussinessApiDomain = res.app.bussinessApiDomain;
+                let dataApiDomain = res.app.dataApiDomain;
+                if (
+                  bussinessApiDomain.charAt(bussinessApiDomain.length - 1) ==
+                  "/"
+                ) {
+                  bussinessApiDomain = bussinessApiDomain.slice(
+                    0,
+                    bussinessApiDomain.length - 1
+                  );
+                }
+                if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
+                  dataApiDomain = dataApiDomain.slice(
+                    0,
+                    dataApiDomain.length - 1
+                  );
+                }
+                app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
+                if (res.app.dataApiDomain) {
+                  app.dataApiDomain = dataApiDomain + "/api/v1/";
+                } else {
+                  app.dataApiDomain = bussinessApiDomain + "/api/v1/";
+                }
+
+                uni.setStorageSync("launchConfig", res);
+                app.update_url = launchUrl[i] + "/api/";
+                app.update = UpdateManager.getInstance();
+              });
+              break;
+            } else {
+              break;
+            }
+          }
+
+          if (!launchSuccess) {
+            let launchConfig = uni.getStorageSync("launchConfig");
+            if (launchConfig.app) {
+              let bussinessApiDomain = launchConfig.app.bussinessApiDomain;
+              let dataApiDomain = launchConfig.app.dataApiDomain;
+              if (
+                bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/"
+              ) {
+                bussinessApiDomain = bussinessApiDomain.slice(
+                  0,
+                  bussinessApiDomain.length - 1
+                );
+              }
+              if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
+                dataApiDomain = dataApiDomain.slice(
+                  0,
+                  dataApiDomain.length - 1
+                );
+              }
+              app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
+              if (launchConfig.app.dataApiDomain) {
+                app.dataApiDomain = dataApiDomain + "/api/v1/";
+              } else {
+                app.dataApiDomain = bussinessApiDomain + "/api/v1/";
+              }
+            } else {
+            }
+          }
+          console.log("bussinessApiDomain==========", app.bussinessApiDomain);
+          console.log("dataApiDomain==========", app.dataApiDomain);
+        }
+        if (loginToken) {
+          needPushIdentifier = false;
+          app.token = JSON.parse(loginToken);
+          let params = {
+            uuid: app.platform.deviceID,
+            os: app.platform.systemInfo.platform,
+            device:
+              app.platform.systemInfo.brand + app.platform.systemInfo.model,
+          };
+          HttpRequest.getIns().Post(
+            "user/token/access",
+            params,
+            (data: any) => {
+              console.log("access=====", data);
+              app.data = data.data;
+              app.opKey = data.opKey;
+              if (data.app) {
+                app.socketInfo = data.app;
+              }
+              if (data.app.launchDomain && data.app.launchDomain != "") {
+                uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
+              }
+              if (data.data.mustBindPhone) {
+                uni.reLaunch({
+                  url: "/pages/login/bindphone",
+                });
+              }
+              uni.$emit("loginSuccess");
+            }
+          );
+        }
+      },
+    });
+
+    plus.push.addEventListener(
+      "click",
+      (msg: any) => {
+        console.log("push-click", msg);
+        if (msg.payload) {
+          if (app.token.accessToken == "") {
+            app.payload = msg.payload;
+          } else {
+            uni.navigateTo({
+              url: msg.payload,
+            });
+          }
+        }
+      },
+      false
+    );
+    //监听在线消息事件
+    plus.push.addEventListener(
+      "receive",
+      (msg: any) => {
+        console.log("push-click", msg);
+        if (msg.payload) {
+          if (app.token.accessToken == "") {
+            app.payload = msg.payload;
+          } else {
+            uni.navigateTo({
+              url: msg.payload,
+            });
+          }
+        }
+      },
+      false
+    );
+    // #endif
+
     uni.onTabBarMidButtonTap(() => {
       // 监听tabbar中间发起按钮
       uni.navigateTo({
         url: "/pages/initiate/initiate",
       });
     });
-
-    let sendHeartBeat = () => {
-      if (app.sever && app.sever.isNetOK()) {
-        let msg = new proto.message.HeartBeat();
-        msg.time = new Date().getTime();
-        let buffer = proto.message.HeartBeat.encode(msg).finish();
-        let pack = new PackageBase(Message.HeartBeat);
-        pack.d(buffer).to(app.sever);
-      }
-    };
-    // 热更新
-    // app.update = UpdateManager.getInstance();
-    //心跳包
-    setInterval(() => {
-      sendHeartBeat();
-    }, 10000);
   },
   onShow() {
     console.log("App Show");
@@ -288,6 +282,17 @@ export default Vue.extend({
     uni.setKeepScreenOn({
       keepScreenOn: true,
     });
+    let args = plus.runtime.arguments;
+    if (args) {
+      if (args.indexOf("goodsdetails") != -1) {
+        let index = args.indexOf("=") + 1;
+        let id = args.substring(index);
+        plus.runtime.arguments = null;
+        uni.navigateTo({
+          url: "/pages/goods/goodsdetails?id=" + id,
+        });
+      }
+    }
     // #endif
   },
   onHide() {
@@ -299,13 +304,7 @@ export default Vue.extend({
 <style>
 /* uni.css - 通用组件、模板样式库，可以当作一套ui库应用 */
 @import "./common/uni.css";
-@font-face {
-  font-family: 'DIN';
-  src: url("./common/DIN/DINAlternateBold.ttf");
-}
-.din{
-  font-family: 'DIN' !important;
-}
+
 /*每个页面公共css */
 .content {
   display: flex;
