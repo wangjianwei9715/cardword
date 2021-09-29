@@ -1,0 +1,188 @@
+<template>
+	<view class="content">
+		<view class="orther-setting">
+			<view
+				class="setting"
+				v-for="item in settingTab"
+				:key="item.id"
+				@click="onClickEdit(item.id)"
+			>
+				<view v-if="item.id==1">
+					<image class="avatar" :src="item.avatar" mode="" />
+				</view>
+				<view v-else class="name">{{ item.name }}</view>
+
+				<view class="right">
+					{{ item.desc }}
+					<view class="icon-right"></view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script lang="ts">
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
+	import BaseNode from '../../base/BaseNode.vue';
+	import ossUtils from "../../tools/ossUtils";
+	@Component({})
+	export default class ClassName extends BaseNode {
+		settingTab:{[x: string]: any} = {
+			avatar:{ id: 1, name: "头像",avatar:'',desc:''},
+			name:{ id: 2, name: "修改昵称", desc:''},
+			sign:{ id: 3, name: "个性签名", desc:''},
+			sex:{ id: 4, name: "性别", desc:''},
+			birth:{ id: 5, name: "生日",desc:''},
+			userId:{ id: 6, name: "ID", desc:''}
+		};
+		ossutils = ossUtils.getInstance();
+		changeAvatar = '';
+		changeAvatarOne = false;
+		onLoad(query:any) {
+			if(query.data){
+				let data = JSON.parse(query.data)
+				console.log(data)
+				for (const key in this.settingTab) {
+					if (Object.prototype.hasOwnProperty.call(data, key)) {
+						if(key=='avatar'){
+							this.settingTab[key].avatar = decodeURIComponent(data[key]);
+						}else{
+							this.settingTab[key].desc = data[key];
+						}
+						
+					}
+				}
+				console.log(this.settingTab)
+			}
+			this.onEventUI('finishName',(res:any)=>{
+				this.settingTab.name.desc = res.name
+			});
+			this.onEventUI('finishSign',(res:any)=>{
+				this.settingTab.sign.desc = res.sign
+			});
+			this.onEventUI('finishAvatar',(res:any)=>{
+				if(!this.changeAvatarOne){
+					this.changeAvatarOne = true
+					console.log('接收一次')
+					this.onClickAddImg(res.image);
+				}
+			});
+		}
+		onClickEdit(id:any){
+			if(id==1){
+				console.log('点击一次')
+				this.onClickChangeAvatar()
+			}
+			if(id==2){
+				uni.navigateTo({url:'/pages/userinfo/setting_name?name='+this.settingTab.name.desc});
+			}
+			if(id==3){
+				uni.navigateTo({url:'/pages/userinfo/setting_sign?sign='+this.settingTab.sign.desc});
+			}
+
+		}
+		async onClickAddImg(src:any){
+			let filePath = 'images/'+ this.ossutils.getFileName(src); // 自定义上传后的文件名称
+			let sign: any = await this.ossutils.getSTS(); // 获取签名等信息
+			uni.showLoading({
+				title: '上传图片中...'
+			});
+			console.log('上传')
+			uni.uploadFile({
+				url: sign.host,
+				filePath: src,
+				fileType: 'image',
+				name: 'file',
+				formData: {
+					key: filePath,
+					policy: sign.policy,
+					OSSAccessKeyId: sign.accessId,
+					success_action_status: '200',
+					//让服务端返回200,不然，默认会返回204
+					signature: sign.signature,
+					'x-oss-security-token': sign.security_token
+				},
+				success: (res: any) => {
+					console.log('接手')
+					uni.hideLoading();
+					if (res.statusCode == 200) {
+						let avatar = sign.host + '/' + filePath
+						this.changeAvatar = avatar
+						this.postEdit((res:any)=>{
+							this.settingTab.avatar.avatar = avatar
+							console.log(this.settingTab)
+							uni.$emit('infoUpdate');
+						})
+					}
+				},
+				fail: (err) => {
+					uni.hideLoading();
+					uni.showModal({
+						content: err.errMsg,
+						showCancel: false
+					});
+				}
+			});
+		}
+		async onClickChangeAvatar(){
+			let imageSrc = await this.ossutils.getImage();
+
+			uni.navigateTo({
+				url: "/pages/userinfo/setting_avatar?data=" + encodeURIComponent(JSON.stringify(imageSrc))
+			})
+		}
+		postEdit(cb?:Function){
+			let params = {
+				avatar:encodeURIComponent(this.changeAvatar),
+			}
+			app.http.Post('me/editAvatar',params,(res:any)=>{
+				if(cb) cb(res)
+ 			})
+		}
+	}
+</script>
+
+<style lang="scss">
+	.icon-right {
+		width: 10rpx;
+		height: 16rpx;
+		background: url(../../static/goods/jinru@2x.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-left: 8rpx;
+	}
+	.orther-setting {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0 32rpx;
+		.setting {
+			width: 100%;
+			box-sizing: border-box;
+			padding:32rpx 0;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			border-bottom: 1px solid #f1f1f4;
+			.name {
+				font-size: 24rpx;
+				font-family: PingFangSC-Semibold, PingFang SC;
+				font-weight: 600;
+				color: #14151a;
+			}
+			.avatar{
+					width: 100rpx;
+					height:100rpx;
+					border-radius: 50%;
+				}
+			.right {
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #aaaabb;
+			}
+		}
+	}
+</style>

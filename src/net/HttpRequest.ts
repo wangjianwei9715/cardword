@@ -361,6 +361,8 @@ export default class HttpRequest {
 		this.axiosInstance.get(reqUrl+'?'+strParams).then((response) => {
 			if (response.data&&response.data.code==0) {
 				if (cb) cb(response.data);
+			}else if(response.data.code==1101||response.data.code==1102){
+				uni.$emit('refreshToken');
 			}else{
 				uni.showToast({
 					title:response.data.msg,

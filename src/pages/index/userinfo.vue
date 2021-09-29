@@ -6,12 +6,12 @@
 				<view class="icon-setting" @click="onClickSetting"></view>
 				<view class="icon-xiaoxi" @click="onClickMessage"><view class="xiaoxi-num">6</view></view>
 			</view>
-			<view class="userinfo">
+			<view class="userinfo"  @click="onClickUserInfo">
 				<view class="left">
-					<image class="user-avatar" src="" mode="aspectFit"></image>
+					<image class="user-avatar" :src="decodeURIComponent(infoData.avatar)" mode="aspectFit"></image>
 					<view class="userinfo-index">
-						<view class="userinfo-name">梅超风2001</view>
-						<view class="userinfo-sign">不个性的签名不算签名</view>
+						<view class="userinfo-name">{{infoData.name}}</view>
+						<view class="userinfo-sign">{{infoData.sign}}</view>
 					</view>
 				</view>
 				<view class="right"></view>
@@ -37,7 +37,7 @@
 					<view class="name">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="order-tip"  @click="onClickOrderList(2)">您有2个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
+			<view class="order-tip" v-show="countTime>0"  @click="onClickOrderList(2)">您有{{countNum}}个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
 		</view>
 
 		<view class="orther-setting">
@@ -56,11 +56,12 @@
 	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseNode {
-		headerTab = [
-			{id:1,name:'我的编号',num:1591,url:'/pages/userinfo/card_no'},
-			{id:2,name:'我的直播',num:66,url:'/pages/userinfo/user_live'},
-			{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
-		];
+		infoData:{[x:string]:any} = [];
+		headerTab:{[x: string]: any} = {
+			no:{id:1,name:'我的编号',num:1591,url:'/pages/userinfo/card_no'},
+			broadcast:{id:2,name:'我的直播',num:66,url:'/pages/userinfo/user_live'},
+			favorite:{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
+		};
 		orderTab = [
 			{id:3,name:'进行中',icon:'jx'},
 			{id:4,name:'待发货',icon:'fh'},
@@ -76,15 +77,20 @@
 			{id:6,name:'加入群聊',url:''},
 		]
 		countInterval:any;
-		countTime = 300;
+		countTime = 0;
+		countNum = 0;
 		countStr = '';
+		
 		onLoad(query:any) {
-			this.onEventUI('loginSuccess', () => {
-				this.initPageData();
-			});
+			
+			
 		}
 		onShow(){
 			this.initPageData();
+			
+		}
+		onHide(){
+			clearInterval(this.countInterval)
 		}
 		initPageData(cb?:Function){
 			if(app.token.accessToken == ''){
@@ -94,29 +100,23 @@
 				return;
 			}
 			this.countDownTime()
-			// app.http.Get('me/home',{},(res:any)=>{
-			// 	let data:userinfo.HomeData = res.data;
-			// 	this.infoData = data;
-			// 	this.infoData.avatar = this.infoData.avatar
-			// 	for (const key in this.tabData) {
-			// 		if (Object.prototype.hasOwnProperty.call(data, key)) {
-			// 			this.tabData[key].num = data[key];
-			// 		}
-			// 	}
-			// 	let buyerData:any = data.buyer 
-			// 	for (const key in this.buyerBtns) {
-			// 		if (Object.prototype.hasOwnProperty.call(buyerData, key)) {
-			// 			this.buyerBtns[key].num = buyerData[key];	
-			// 		}
-			// 	}
-			// 	let sellData:any = data.seller
-			// 	for (const key in this.sellerBtns) {
-			// 		if (Object.prototype.hasOwnProperty.call(sellData, key)) {
-			// 			this.sellerBtns[key].num = sellData[key];	
-			// 		}
-			// 	}
-			// 	if(cb) cb()
-			// });
+			app.http.Get('me/home',{},(res:any)=>{
+				let data = res.data;
+				this.infoData = data;
+				// 我的直播、编号、收藏
+				for (const key in this.headerTab) {
+					if (Object.prototype.hasOwnProperty.call(data, key)) {
+						this.headerTab[key].num = data[key];
+					}
+				}
+				// 未支付订单
+				if(data.toPay){
+					this.countNum = data.toPay.num;
+					this.countTime = data.toPay.leftSec;
+				}
+				if(cb) cb()
+
+			});
 		}
 		onClickNavigateto(url:any){
 			uni.navigateTo({
@@ -133,15 +133,22 @@
 				url:'/pages/userinfo/message'
 			})
 		}
+		onClickUserInfo(){
+			uni.navigateTo({
+				url:'/pages/userinfo/user_info?data='+encodeURIComponent(JSON.stringify(this.infoData))
+			})
+
+		}
 		onClickOrderList(id:number){
 			uni.navigateTo({
 				url:'/pages/userinfo/order_list?type='+id
 			})
-		}	
+		}
 		countDownTime(){
 			this.countStr = getCountDownTime(this.countTime);
 			this.countInterval = this.scheduler(()=>{
 				if(this.countTime>0){
+					console.log(this.countTime)
 					this.countTime--;
 					this.countStr = getCountDownTime(this.countTime);
 				}else{
