@@ -72,7 +72,7 @@
 		onClickTranslate() {
 			console.log('翻译')
 			uni.navigateTo({
-				url:'confirmorder'
+				url:'../userinfo/order_logistics'
 			})
 		}
 	}

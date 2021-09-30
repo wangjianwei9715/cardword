@@ -287,7 +287,7 @@ export default Vue.extend({
       if (args.indexOf("goodsdetails") != -1) {
         let index = args.indexOf("=") + 1;
         let id = args.substring(index);
-        plus.runtime.arguments = null;
+        plus.runtime.arguments = "";
         uni.navigateTo({
           url: "/pages/goods/goodsdetails?id=" + id,
         });
