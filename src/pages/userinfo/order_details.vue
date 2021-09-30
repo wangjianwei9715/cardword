@@ -20,7 +20,7 @@
 					<view class="seller-name">{{orderData.seller.name}}</view>
 				</view>
 				<view class="header-right">
-					<view :class="['header-right-index','state'+orderData.state]">{{stateStr[orderData.state]}}</view>
+					<view :class="['header-right-index','state'+orderData.state]">{{orderData.stateName}}</view>
 				</view>
 			</view>
 			<view class="order-index-center">
@@ -40,7 +40,7 @@
 				<view class="name">{{item.name}}</view><view class="info">{{item.desc}}</view>
 			</view>
 			<view class="order-desc-bottom">
-				合计：<view class="price-index">￥<text class="price-num">{{orderData.price*orderData.num-orderData.discount}}</text></view>
+				合计：<view class="price-index">￥<text class="price-num">{{orderData.price-orderData.discount}}</text></view>
 			</view>
 		</view>
 		<!-- 我的编号 -->
@@ -52,14 +52,14 @@
 			<buyCardId :cardList="cardList"/>
 		</view>
 		<!-- 收货地址 -->
-		<view class="address-content">
+		<view class="address-content" v-if="orderData.receiver">
 			<view class="title">收货地址</view>
 			<view class="index">
 				<view class="address-icon"></view>
-				<view class="address-desc">浙江省杭州市西湖区数字娱乐产业园7号楼401室巴拉巴拉巴拉巴拉芭芭拉</view>
+				<view class="address-desc">{{orderData.receiver.address}}</view>
 			</view>
 			<view class="address-info">
-				<view class="name">梅超风</view>183****7451
+				<view class="name">{{orderData.receiver.name}}</view>{{orderData.receiver.phone}}
 			</view>
 		</view>
 		<!-- 订单详细信息 -->
@@ -104,16 +104,6 @@
 		countDownStr = '';
 		orderCode = '';
 		orderData:{[x:string]:any} = [];
-
-		stateStr = {
-			'-1':'订单关闭',
-			'1':'待支付',
-			'2':'进行中',
-			'3':'待发货',
-			'4':'待收货',
-			'5':'已完成',
-			'10':'未中卡'
-		};
 		orderDesc = [
 			{id:1,name:'商品金额',desc:''},
 			{id:2,name:'优惠',desc:''},

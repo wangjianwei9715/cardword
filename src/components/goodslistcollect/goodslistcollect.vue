@@ -2,27 +2,26 @@
 	<view class="content">
 		<view class="item" v-show="goodsOldList.length>0" v-for="item in goodsOldList" :key="item.goodCode">
 			<view :class="['goodslist-index',{'del-start':delStart}]"  @click="onClickJumpUrl(item.goodCode)">
-				<image class="goodslist-pic" :src="item.img" mode="aspectFill"></image>
+				<image class="goodslist-pic" :src="getGoodsImg(item.pic)" mode="aspectFill"></image>
 				<view class="goodslist-right">
 					<view class="goodslist-title">{{item.title}}</view>
 					<view class="goodslist-plan-content">
-						<view class="goodslist-plan-now" :style="'width:'+getPlan(item.num,item.num_all)+'%'"></view>
-						<view class="goodslist-plan-desc">余{{item.num_all-item.num}}/共{{item.num_all}}</view>
+						<view class="goodslist-plan-now" :style="'width:'+getPlan(item.lockNum,item.currentNum,item.totalNum)+'%'"></view>
+						<view class="goodslist-plan-desc">余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
 					</view>
 					<view class="goodslist-bottom">
 						<view class="goodslist-price-content">
 							¥<text class="goodslist-price">{{item.price}}</text>
 						</view>
-						<view class="goodslist-tips">
-							{{item.tips}}
+						<view class="goodslist-tips" v-show="discountList[index]" v-for="(items,indexs) in discountList[index]" :key="indexs">
+							{{items}}
 						</view>
-						<view class="goodslist-status">已拼成</view>
+						<view class="goodslist-status">{{getStateStr(item.state)}}</view>
 					</view>
 				</view>
 			</view>
 			<view v-show="delStart" :class="getDel(item.goodCode)?'deled-icon':'del-icon'" @click="onClickDel(item.goodCode)"></view>
 		</view>
-		<empty v-show="goodsOldList.length==0" />
 	</view>
 </template>
 
@@ -30,6 +29,9 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
+	import {
+		getGoodsImg
+	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
@@ -41,7 +43,9 @@
 		@Prop({default:[]})
 		delList:any;
 		
+		getGoodsImg = getGoodsImg
 		goodsOldList:any = [];
+		discountList:any = [];
 		@Watch('ispullDown')
 		onIspullDownChanged(val: any, oldVal: any){
 			this.goodsOldList = []
@@ -58,9 +62,19 @@
 		}
 		mounted(){//挂载到实例上去之后调用
 		}
-		getPlan(now:number,all:number){
-			let width = Math.floor(Number(now)/Number(all)*100);
+		getPlan(lock:number,now:number,all:number){
+			let width = Math.floor((Number(lock)+Number(now))/Number(all)*100);
 			return width
+		}
+		getStateStr(state:number){
+			switch(state){
+				case 0:
+					return '出售中';
+				case 1:
+					return '拼团成功';
+				case 2:
+					return '拼团失败';
+			}
 		}
 		getDel(id:any){
 			let index = this.delList.indexOf(id);
@@ -81,6 +95,11 @@
 			console.log(data)
 			if(!data){
 				return;
+			}
+			for(let i in data){
+				if(data[i].discount!=''){
+					this.discountList[i] = data[i].discount.split(',');
+				}
 			}
 			this.goodsOldList = this.goodsOldList.concat(data)
 		}

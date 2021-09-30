@@ -153,7 +153,7 @@ import {
 				delivery:this.addressData.id,
 				num:Number(this.moneyNum)
 			}
-			app.http.Post('good/topay200/'+this.goodsData.goodCode,params,(res:any)=>{
+			app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
 				uni.redirectTo({
 					url:'/pages/userinfo/order_list'
 				})

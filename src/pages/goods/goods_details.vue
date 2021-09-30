@@ -65,10 +65,10 @@
 			
 		</view>
 		<!-- 卡片展示 -->
-		<view class="goods-card" v-show="cardData.length>0">
+		<view class="goods-card" >
 			<view class="goods-card-title">
 				<view class="goods-card-title-name">特色卡片</view>
-				<view class="goods-card-title-more">查看全部<view class="icon-right"></view></view>
+				<view class="goods-card-title-more" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
 			</view>
 			<view class="goods-card-content">
 				<scroll-view class="goods-card-content-scroll" scroll-x="true" lower-threshold="20" @scrolltolower="onScrollToLower"  show-scrollbar="false">
@@ -202,7 +202,7 @@
 			setTimeout(()=>{
 				app.http.Get('dataApi/good/'+id,{},(data:any)=>{
 					// 是否收藏
-					this.favorType = data.favorite==-1?false:true;
+					this.favorType = data.favorite<=0?false:true;
 					// 数据详情
 					this.goodsData = data.good;
 					// 状态
@@ -328,6 +328,11 @@
 				url: '/pages/userinfo/merchant_shops'
 			})
 		}
+		onClickAllCard(){
+			uni.navigateTo({
+				url: '/pages/goods/all_good_card?code='+this.goodsData.goodCode+'&type='+this.goodsData.pintuan_type
+			})
+		}
 		// 分享
 		onClickShare(){
 			if(!this.operationShow){
@@ -424,7 +429,12 @@
 		}
 		
 		onClickBuy(){
-			console.log('立即购买')
+			if(app.token.accessToken == ''){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				return;
+			}
 			uni.navigateTo({
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))
 			})

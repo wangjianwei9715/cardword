@@ -17,7 +17,9 @@
 		<view class="order-list">
 			<statusbar/>
 			<cardNolist :cardNoData="cardNoData"  :ispullDown="pullDownRefresh"/>
+			<empty v-show="cardNoData.length==0"/>
 		</view>
+
 	</view>
 </template>
 
@@ -69,6 +71,8 @@
 				}
 				if(data.list){
 					this.cardNoData = data.list;
+				}else if(this.currentPage==1){
+					this.cardNoData = []
 				}
 				this.currentPage++;
 				if(cb) cb()

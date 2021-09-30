@@ -8,7 +8,6 @@
 			<view v-if="item.num>0" class="right reward">{{'中卡*'+item.num}}</view>
 			<view v-else class="right">{{getText(item.state)}}</view>
 		</view>
-		<empty v-show="cardList.length==0" />
 	</view>
 </template>
 

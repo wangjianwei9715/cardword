@@ -99,7 +99,6 @@
 				})
 				return;
 			}
-			this.countDownTime()
 			app.http.Get('me/home',{},(res:any)=>{
 				let data = res.data;
 				this.infoData = data;
@@ -115,6 +114,7 @@
 				if(data.toPay){
 					this.countNum = data.toPay.num;
 					this.countTime = data.toPay.leftSec;
+					this.countDownTime()
 				}
 				if(cb) cb()
 

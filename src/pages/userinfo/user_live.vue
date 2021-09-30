@@ -8,6 +8,7 @@
 
 		<view class="live-content">
 			<liveslist :liveList="liveList" :ispullDown="pullDownRefresh"  @send="onClickLive"/>
+			<empty v-show="liveList.length==0"/>
 		</view>
 	</view>
 </template>
@@ -55,6 +56,8 @@ import { Component } from "vue-property-decorator";
 				}
 				if(data.list){
 					this.liveList = data.list;
+				}else if(this.currentPage==1){
+					this.liveList = []
 				}
 				this.currentPage++;
 				if(cb) cb()
