@@ -19,7 +19,7 @@
 			<statusbar/>
 			<goodslistcollect :goodsList="goodsList" :ispullDown="pullDownRefresh" :delStart="deling" :delList="delList" @send="onClickJumpDetails"  @del="onClickDel"/>
 		</view>
-
+		<empty v-show="goodsList.length==0"/>
 		<view v-show="deling" class="del-bottom">
 			<view class="del-btn btn-all" @click="onClickAllChoose">全选</view>
 			<view class="del-btn btn-del" @click="onClickDelChoose">删除</view>
@@ -72,6 +72,8 @@ import { Component } from "vue-property-decorator";
 				}
 				if(data.list){
 					this.goodsList = data.list;
+				}else if(this.currentPage==1){
+					this.goodsList = []
 				}
 				this.currentPage++;
 				if(cb) cb()

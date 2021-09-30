@@ -7,7 +7,7 @@
 					<view class="seller-name">{{item.seller.name}}</view>
 				</view>
 				<view class="header-right">
-					<view :class="['header-right-index','state'+item.state]">{{stateStr[item.state]}}</view>
+					<view :class="['header-right-index','state'+item.state]">{{item.stateName}}</view>
 					<view v-if="item.state==0" class="header-right-count">{{intervalList[item.code]?intervalList[item.code].coun_down:''}}</view>
 				</view>
 			</view>
@@ -23,7 +23,7 @@
 			</view>
 			<view class="orderlist-index-bottom">
 				<view class="price">
-					合计：<view class="price-index">￥<text class="price-num">{{item.price*item.num}}</text></view>
+					合计：<view class="price-index">￥<text class="price-num">{{item.price}}</text></view>
 				</view>
 				<view class="operate" v-show="item.operate">
 					<view :class="['btn','btn-'+btnitem.cmd]" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
@@ -51,15 +51,6 @@
 		getGoodsImg = getGoodsImg;
 		getCountDownTime = getCountDownTime;
 		intervalList:{[x:string]:any} = {};
-		stateStr = {
-			'-1':'订单关闭',
-			'1':'待支付',
-			'2':'进行中',
-			'3':'待发货',
-			'4':'待收货',
-			'5':'已完成',
-			'10':'未中卡'
-		}
 		@Watch('ispullDown')
 		onIspullDownChanged(val: any, oldVal: any){
 			this.orderOldList = []

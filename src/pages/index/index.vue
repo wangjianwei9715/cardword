@@ -155,7 +155,6 @@
 		noMoreData = false;
 		pullDown = false;
 		pullDownRefresh = false;
-		scrollId = '';
 		apkNeedUpdate = false;
 		updateStart = false;
 		downloadText = '下载中：0 MB/0 MB, 0%';
@@ -300,7 +299,6 @@
 					this.goodsList = data.goodList;
 				}
 				
-				this.scrollId = data.scrollId
 				this.currentPage++;
 				if(cb) cb()
 			});

@@ -92,6 +92,10 @@ export default class HttpRequest {
 			if (url.indexOf("good/edit") != -1) {
 				this.getStr(config,'editGood');
 			}
+			// 商品下单
+			if(url.indexOf("good/topay/") != -1){
+				this.getStr(config,'payGoodCode'); 
+			}
 			// 支付订单
 			if (url.indexOf("order/topay/") != -1) {
 				this.getStr(config,'payGoodOrder'); 
@@ -164,11 +168,6 @@ export default class HttpRequest {
 					console.log('search=====',data+'_searchSecret')
 					config.headers['opSign'] = Md5.hashStr(data+'_searchSecret')
 				}
-			}
-			// 商品下单
-			if(url.indexOf("good/topay200/") != -1){
-				let data = 'opk_'+app.opKey+'_'+config.url?.substring(14)+'_'+config.data.delivery+'_'+config.data.negotiateId+'_'+config.data.couponId
-				config.headers['opSign'] = Md5.hashStr(data)
 			}
 			// 商品竞拍
 			if(url.indexOf("good/bid") != -1){

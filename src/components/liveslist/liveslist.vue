@@ -15,7 +15,6 @@
 			</view>
 			<view class="livelist-center">{{item.title}}</view>
 		</view>
-		<empty v-show="liveOldList.length==0" />
 	</view>
 </template>
 
