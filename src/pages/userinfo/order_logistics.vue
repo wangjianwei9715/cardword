@@ -9,7 +9,7 @@
 				<text>快递公司：顺丰快递</text>
 				<view class="order-num">
 					<text>快递单号：45614512121454561</text>
-					<button class="btn-copy">复制</button>
+					<button class="btn-copy" @click="onClickCopyOrderNum()">复制</button>
 				</view>
 			</view>
 			<view class="cross-line"></view>
@@ -95,6 +95,10 @@
 
 		onLoad(query: any) {
 
+		}
+		
+		onClickCopyOrderNum(){
+			console.log('复制单号')
 		}
 	}
 </script>
