@@ -289,7 +289,7 @@ export default Vue.extend({
         let id = args.substring(index);
         plus.runtime.arguments = null;
         uni.navigateTo({
-          url: "/pages/goods/goodsdetails?id=" + id,
+          url: "/pages/goods/goods_details?id=" + id,
         });
       }
     }
