@@ -40,56 +40,56 @@
 				status:1,
 				name:'卡皇球星社',
 				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
+				pic:'../../static/goods/.png'
 			},
 			{
 				id:2,
 				status:0,
 				name:'卡皇球星社',
 				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
+				pic:'../../static/goods/.png'
 			},
 			{
 				id:3,
 				status:1,
 				name:'卡皇球星社',
 				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
+				pic:'../../static/goods/.png'
 			},
 			{
 				id:4,
 				status:0,
 				name:'卡皇球星社',
 				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
+				pic:'../../static/goods/.png'
 			},
 			{
 				id:5,
 				status:-1,
 				name:'卡皇球星社',
 				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
+				pic:'../../static/goods/.png'
 			},
 			{
 				id:6,
 				status:-1,
 				name:'卡皇球星社',
 				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
+				pic:'../../static/goods/.png'
 			},
 			{
 				id:7,
 				status:-1,
 				name:'卡皇球星社',
 				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
+				pic:'../../static/goods/.png'
 			},
 			{
 				id:8,
 				status:-1,
 				name:'卡皇球星社',
 				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/zhutu@2x.png'
+				pic:'../../static/goods/.png'
 			}
 
 		]

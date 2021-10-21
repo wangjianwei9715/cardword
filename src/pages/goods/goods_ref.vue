@@ -39,42 +39,42 @@
 		goodsList:{[x:string]:any} = [
 			{
 				id:1,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				price:149,
 				type:'拍卖'
 			},
 			{
 				id:2,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				price:349,
 				type:'一口价'
 			},
 			{
 				id:3,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				price:1429,
 				type:'拍卖'
 			},
 			{
 				id:4,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				price:2429,
 				type:'一口价'
 			},
 			{
 				id:5,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				price:1429,
 				type:'拍卖'
 			},
 			{
 				id:6,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				price:2429,
 				type:'一口价'

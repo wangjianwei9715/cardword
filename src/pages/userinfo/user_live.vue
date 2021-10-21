@@ -7,7 +7,7 @@
 		</view>
 
 		<view class="live-content">
-			<liveslist :liveList="liveList" :ispullDown="pullDownRefresh"  @send="onClickLive"/>
+			<liveslist :liveList="liveList"   @send="onClickLive"/>
 			<empty v-show="liveList.length==0"/>
 		</view>
 	</view>
@@ -30,7 +30,6 @@ import { Component } from "vue-property-decorator";
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
-		pullDownRefresh = false;
 		onLoad(query:any) {
 			this.reqNewData()
 		}
@@ -55,7 +54,7 @@ import { Component } from "vue-property-decorator";
 					this.noMoreData = true;
 				}
 				if(data.list){
-					this.liveList = data.list;
+					this.liveList = this.liveList.concat(data.list);
 				}else if(this.currentPage==1){
 					this.liveList = []
 				}
@@ -70,7 +69,7 @@ import { Component } from "vue-property-decorator";
 			this.goodTabCheck = id
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.pullDownRefresh = !this.pullDownRefresh
+			this.liveList = []
 			this.reqNewData()
 		}
 		onClickLive(id:any){

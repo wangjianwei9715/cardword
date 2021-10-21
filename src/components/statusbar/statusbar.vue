@@ -1,5 +1,7 @@
 <template>
+	<!-- #ifndef MP-WEIXIN -->
 	<view class="content" :style="'height:'+statusBarHeight+'px'"></view>
+	<!-- #endif -->
 </template>
 
 <script lang="ts">

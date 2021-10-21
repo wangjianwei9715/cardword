@@ -15,7 +15,9 @@ export default Vue.extend({
     let needPushIdentifier = true;
 
     const loginToken = uni.getStorageSync("token");
-
+    if(loginToken){
+      app.token = JSON.parse(loginToken);
+    }
     uni.$on("refreshToken", () => {
       try {
         uni.removeStorageSync("token");
@@ -58,7 +60,9 @@ export default Vue.extend({
         url: "/pages/login/login",
       });
     });
+    // #ifdef APP-PLUS
     app.sever = new SocketServer();
+    // #endif
     uni.$on("loginSuccess", () => {
       // #ifdef APP-PLUS
       if (needPushIdentifier) {
@@ -76,6 +80,7 @@ export default Vue.extend({
       }
       // #endif
     });
+    // #ifdef APP-PLUS
     uni.$on("socketClose", () => {
       if (app.socketInfo.tcp && app.socketInfo.tcp != "") {
         // uni.showModal({
@@ -88,7 +93,48 @@ export default Vue.extend({
         // });
       }
     });
-
+    // #endif
+    //#ifdef MP
+			uni.getSetting({
+				success: (res) => {
+					if (!res.authSetting["scope.userInfo"]) {
+						app.needAuth = true;
+					}
+				},
+			});
+			//#endif
+    // #ifndef APP-PLUS
+    if (loginToken) {
+      needPushIdentifier = false;
+      let params = {
+        uuid: app.platform.deviceID,
+        os: app.platform.systemInfo.platform,
+        device:
+          app.platform.systemInfo.brand + app.platform.systemInfo.model,
+      };
+      HttpRequest.getIns().Post(
+        "user/token/access",
+        params,
+        (data: any) => {
+          console.log("access=====", data);
+          app.data = data.data;
+          app.opKey = data.opKey;
+          if (data.app) {
+            app.socketInfo = data.app;
+          }
+          if (data.app.launchDomain && data.app.launchDomain != "") {
+            uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
+          }
+          if (data.data.mustBindPhone) {
+            uni.reLaunch({
+              url: "/pages/login/bindphone",
+            });
+          }
+          uni.$emit("loginSuccess");
+        }
+      );
+    }
+    // #endif
     // #ifdef APP-PLUS
     app.version = plus.runtime.version || "1.0.0";
 
@@ -202,7 +248,6 @@ export default Vue.extend({
         }
         if (loginToken) {
           needPushIdentifier = false;
-          app.token = JSON.parse(loginToken);
           let params = {
             uuid: app.platform.deviceID,
             os: app.platform.systemInfo.platform,
@@ -278,7 +323,7 @@ export default Vue.extend({
   },
   onShow() {
     console.log("App Show");
-    // #ifndef H5
+    // #ifdef APP-PLUS
     uni.setKeepScreenOn({
       keepScreenOn: true,
     });

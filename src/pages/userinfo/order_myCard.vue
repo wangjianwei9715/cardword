@@ -42,7 +42,7 @@ import { Component } from "vue-property-decorator";
 					this.noMoreData = true;
 				}
 				if(data.list){
-					this.cardList = data.list;
+					this.cardList = this.cardList.concat(data.list);
 				}
 				this.currentPage++;
 				if(cb) cb()

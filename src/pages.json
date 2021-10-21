@@ -1,30 +1,61 @@
 {
-	"pages": [{
+	"pages": [
+        
+        {
 			"path": "pages/index/index",
 			"style": {
+                //  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": true
+                //  #endif
+
+                //  #ifdef MP-WEIXIN
+                "navigationBarTitleText": "首页",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+                //  #endif
+                "enablePullDownRefresh": true
 			}
 		}
-
+        
 		, {
 			"path": "pages/index/live",
 			"style": {
+				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
+                //  #endif
+                //  #ifdef MP-WEIXIN
+                "navigationBarTitleText": "直播",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+                //  #endif
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/index/userinfo",
 			"style": {
+				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
+                //  #endif
+                //  #ifdef MP-WEIXIN
+                "navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+                //  #endif
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/index/ref",
 			"style": {
+				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
+                //  #endif
+                //  #ifdef MP-WEIXIN
+                "navigationBarTitleText": "查价",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+                //  #endif
 				"enablePullDownRefresh": false
 			}
 
@@ -64,13 +95,27 @@
 		{
 			"path": "pages/goods/goods_find",
 			"style": {
+				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
+                //  #endif
+                //  #ifdef MP-WEIXIN
+                "navigationBarTitleText": "搜索",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+                //  #endif
 				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/goods/goods_find_list",
 			"style": {
+				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
+                //  #endif
+                //  #ifdef MP-WEIXIN
+                "navigationBarTitleText": "商品",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+                //  #endif
 				"enablePullDownRefresh": false
 			}
 
@@ -91,14 +136,28 @@
 		}, {
 			"path": "pages/live/live_find",
 			"style": {
+				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
+                //  #endif
+                //  #ifdef MP-WEIXIN
+                "navigationBarTitleText": "直播",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+                //  #endif
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/userinfo/order_list",
 			"style": {
+				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
+                //  #endif
+                //  #ifdef MP-WEIXIN
+                "navigationBarTitleText": "订单",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+                //  #endif
 				"enablePullDownRefresh": false
 			}
 

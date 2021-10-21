@@ -71,9 +71,9 @@
 				<view class="goods-card-title-more" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
 			</view>
 			<view class="goods-card-content">
-				<scroll-view class="goods-card-content-scroll" scroll-x="true" lower-threshold="20" @scrolltolower="onScrollToLower"  show-scrollbar="false">
+				<scroll-view class="goods-card-content-scroll">
                     <view class="scroll-index" v-for="(item,index) in cardData" :key="index" @click="onClickPreviewCard(index)">
-						<image class="scroll-index-img" :src="item" mode="aspectFit"></image>
+						<image class="scroll-index-img" :src="decodeURIComponent(item)" mode="aspectFit"></image>
 					</view>
                 </scroll-view>
 			</view>
@@ -93,10 +93,9 @@
 		<view class="goods-desc">
 			<view class="goods-desc-title">商品详情</view>
 			<view class="goods-desc-explain">
-				<view class='goods-desc-explain-text' v-for="item in explainData" :key="item.id">
-					<view class="explain-name">{{item.name}}</view>
-					<view class="explain-icon">：</view>
-					<view class="explain-desc">{{item.desc}}</view>
+				<!-- <rich-text :nodes="goodsDesc"></rich-text> -->
+				<view class='goods-desc-explain-text' v-for="item in goodsDesc" :key="item.id">
+					<view class="explain-desc">{{item}}</view>
 				</view>
 			</view>
 		</view>
@@ -151,25 +150,10 @@
 			pintuan_type:{id:1,name:'',desc:'拼团形式'},
 			random_type:{id:2,name:'',desc:'随机方式'},
 			spec:{id:3,name:'',desc:'拼团规格'},
-			spec_str:{id:4,name:'',desc:''}
+			spec_str:{id:4,name:'',desc:'商品数量'}
 		};
+		goodsDesc:{[x:string]:any} = [];
 		cardData:any = [];
-		cardCurrentPage = 1;
-		cardNoMoreData = false;
-		scrollIng = false;
-		explainData:{[x:string]:any} = {
-			title:{id:1,name:'【商品名称】',desc:''},
-			code:{id:2,name:'【商品编号】',desc:''},
-			time:{id:3,name:'【拼团时间】',desc:''},
-			spec:{id:4,name:'【拼团规格】',desc:''},
-			config:{id:5,name:'【配置】',desc:''},
-			num:{id:6,name:'【拼团份数】',desc:''},
-			price:{id:7,name:'【拼团费用】',desc:''},
-			openCardTime:{id:8,name:'【开卡时间】',desc:'组满后24小时内开卡'},
-			openCardType:{id:9,name:'【开卡方式】',desc:'组满后小程序直播'},
-			getCard:{id:10,name:'【获卡方式】',desc:'3日内寄给所有获卡者'},
-			sub:{id:11,name:'【认购时限】',desc:'本次组队时间为7天，如购买人数不足，所有款项原路返还。此外，平台不提供退组服务。'}
-		};
 		tipBtn:{[x:string]:any}=[
 			{id:1,name:'客服',url:'../../static/goods/kefu@2x.png',class:'kf'},
 			{id:2,name:'直播提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
@@ -191,7 +175,7 @@
 			{img:'',desc:'1分钟前加入拼团*30'}
 		];
 		discountList:any = [];
-		liveImg = '../../static/goods/zhutu@2x.png';
+		liveImg = '../../static/goods/.png';
 		liveStatus = '直播回放'
 		onLoad(query:any) {
 			this.goodsId = query.id;
@@ -212,37 +196,34 @@
 					// 获取优惠标签
 					this.discountList= data.good.discount?data.good.discount:'';
 					// 获取商品图片
-					this.getGoodsImage(this.goodsData.pic);
-					// 卡片特色图片
-					this.getCardPics()
+					this.getGoodsImage(decodeURIComponent(this.goodsData.pic.carousel));
+					this.getCardImage(decodeURIComponent(this.goodsData.pic.feature))
 					// 倒计时
 					this.getCountDown();
 					// 商品规格、配置、形式、
-					this.getGoodsSpe()
+					this.getGoodsSpe();
+					let newData = decodeURIComponent(data.good.desc).split('\r');
+					this.goodsDesc = newData
 				})
 			},200)
 			
 		}
-		// 获取特色卡牌
-		getCardPics(){
-			if(this.cardNoMoreData){return;}
-
-			app.http.Get('dataApi/good/'+this.goodsData.goodCode+'/pics',{pageIndex:this.cardCurrentPage,pageSize:10},(res:any)=>{
-				if(res.samplePics == ''){
-					this.cardNoMoreData = true;
-					return;
-				}
-				this.cardData = res.samplePics.split(',');
-				this.scrollIng = false;
-				this.cardCurrentPage++
-			})
-		}
 		// 商品图片
 		getGoodsImage(img:any){
+			console.log('img',img)
 			if(img.indexOf(',') == -1){
 				this.goodsImg.push(img)
 			}else{
 				this.goodsImg = img.split(',')
+			}
+		}
+		// 特色卡片
+		getCardImage(img:any){
+			console.log('img',img)
+			if(img.indexOf(',') == -1){
+				this.cardData.push(img)
+			}else{
+				this.cardData = img.split(',')
 			}
 		}
 		// 倒计时时间计算
@@ -276,46 +257,15 @@
 			let data = this.goodsData;
 			this.goodsSpe.pintuan_type.name = getGoodsPintuan(data.pintuan_type);
 			this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
-			this.getGoodsSpecStr(data.spec)
+			this.goodsSpe.spec.name = data.spec.name;
+			this.goodsSpe.spec_str.name = data.spec.num;
 			// 商品详情
 			this.getExplainData()
 		}
-		getGoodsSpecStr(data:any){
-			// "spec":{  //规格
-			//     "xiang":1, //几箱
-			//     "he":1, //几盒
-			//     "bao":1, //几包
-			//     "unit":10, //每包几张
-			// },
-			if(data.xiang>0){
-				this.goodsSpe.spec.name = '原箱*'+data.xiang;
-				this.goodsSpe.spec_str.name = data.he+'盒*'+data.bao+'包*'+data.unit+'张';
-				this.goodsSpe.spec_str.desc = '每箱配置';
-				this.explainData.spec.desc = data.xiang+'箱*'+data.he+'盒*'+data.bao+'包*'+data.unit+'张 共'+(data.xiang*data.he*data.bao*data.unit)+'张';
-				return;
-			}else if(data.he>0){
-				this.goodsSpe.spec.name = '原盒*'+data.he;
-				this.goodsSpe.spec_str.name = data.bao+'包*'+data.unit+'张';
-				this.goodsSpe.spec_str.desc = '每盒配置';
-				this.explainData.spec.desc = data.he+'盒*'+data.bao+'包*'+data.unit+'张 共'+(data.he*data.bao*data.unit)+'张';
-				return;
-			}else if(data.bao>0){
-				this.goodsSpe.spec.name = '原包*'+data.bao;
-				this.goodsSpe.spec_str.name = data.unit+'张';
-				this.goodsSpe.spec_str.desc = '每包配置';
-				this.explainData.spec.desc = data.bao+'包*'+data.unit+'张 共'+(data.bao*data.unit)+'张';
-				return;
-			}
-		}
+
 		// 商品详情
 		getExplainData(){
 			let data = this.goodsData;
-			this.explainData.title.desc = data.title;
-			this.explainData.code.desc = data.goodCode;
-			this.explainData.time.desc = dateFormat(data.startAt)+'至'+dateFormat(data.overAt);
-			this.explainData.config.desc = data.config;
-			this.explainData.num.desc = data.totalNum+'份';
-			this.explainData.price.desc = data.price+'元/份';
 		}
 		
 		onClickBack(){
@@ -418,16 +368,6 @@
 			});
 		}
 		
-		// 监听卡片滚动
-		onScrollToLower(){
-			if(this.scrollIng){
-				return;
-			}
-			this.scrollIng = true;
-			console.log('已经到最右边')
-			this.getCardPics()
-		}
-		
 		onClickBuy(){
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -443,7 +383,7 @@
 		onClickResult(chooseID: number) {
 			console.log('拼团结果==0   拆卡报告==1')
 			uni.navigateTo({
-				url: 'goods_result_list?chooseIds=' + chooseID
+				url: 'goods_result_list?chooseIds=' + chooseID+'&code='+this.goodsId
 			})
 		}
 		
@@ -897,9 +837,12 @@
 				width: 20rpx;
 			}
 			.explain-desc{
-				width: 480rpx;
+				width: 100%;
+				box-sizing: border-box;
 				line-height: 45rpx;
 				word-break: break-all;
+				text-indent: -190rpx;
+				padding-left:190rpx
 			}
 		}
 	}
@@ -1010,6 +953,7 @@
 		width: 100%;
 		height:100%;
 		pointer-events: none;
+		z-index:3
 	}
 	.movable-content{
 		pointer-events: auto;

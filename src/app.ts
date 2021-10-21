@@ -12,8 +12,8 @@ export module app{
     export let socketInfo = {tcp:'',tcpToken:''};
     // export let localTest=false;
     export let localTest=true;
-    export let domaintest='http://192.168.0.38:8701/api/v1/';  
-    export let bussinessApiDomain='http://192.168.0.38:8701/api/v1/';
+    export let domaintest='https://server.zc.ji7.com/api/v1/';  
+    export let bussinessApiDomain='https://server.zc.ji7.com/api/v1/';
     export let update_url='';
     export let dataApiDomain='';
     export let launch_url=['http://service.jc1.ji7.com','http://service.jc23.ji7.com','http://service.jc301.ji7.com'];
@@ -25,6 +25,7 @@ export module app{
     export let protobuf:any = null;
     export let data:{[x: string]: any} = {};//登录数据
     export let token = {accessToken:'',refreshToken:''};
+    export let needAuth = false;//小程序是否需要授权
     export let opKey = ''; //安全密钥
     export let version = '1.0.0';
     export let update:{[x: string]: any} = {};//更新数据

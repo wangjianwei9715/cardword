@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="orderlist-index" v-for="item in orderOldList" :key="item.code" @click="onClickJumpUrl(item.code)">
+		<view class="orderlist-index" v-for="item in orderList" :key="item.code" @click="onClickJumpUrl(item.code)">
 			<view class="orderlist-index-header">
 				<view class="header-left">
 					<image class="seller-image" :src="item.seller.avatar" mode="aspectFill"></image>
@@ -44,17 +44,11 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		orderList:any;
-		@Prop({default:false})
-		ispullDown:any;
-
-		orderOldList:any = [];
+		
 		getGoodsImg = getGoodsImg;
 		getCountDownTime = getCountDownTime;
 		intervalList:{[x:string]:any} = {};
-		@Watch('ispullDown')
-		onIspullDownChanged(val: any, oldVal: any){
-			this.orderOldList = []
-		}
+		
 		@Watch('orderList')
 		onGoodsListChanged(val: any, oldVal: any){
 			this.orderList = val;
@@ -81,7 +75,6 @@
 			if(!data){
 				return;
 			}
-			this.orderOldList = this.orderOldList.concat(data)
 			for(let i in this.orderList){
 				if(this.orderList[i].state==0&&this.orderList[i].coun_down>0){
 					this.intervalList[this.orderList[i].code] = {code:this.orderList[i].code,coun_down:this.getCountDownTime(this.orderList[i].coun_down),time:this.orderList[i].coun_down,func:function(){}};

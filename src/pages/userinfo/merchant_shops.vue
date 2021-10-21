@@ -36,7 +36,7 @@
 		goodsList:{[x:string]:any} = [
 			{
 				id:1,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:410,
 				num:120,
@@ -45,7 +45,7 @@
 			},
 			{
 				id:2,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:200,
 				num:150,
@@ -54,7 +54,7 @@
 			},
 			{
 				id:3,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:300,
 				num:50,
@@ -63,7 +63,7 @@
 			},
 			{
 				id:4,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:500,
 				num:220,
@@ -72,7 +72,7 @@
 			},
 			{
 				id:5,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:300,
 				num:50,
@@ -81,7 +81,7 @@
 			},
 			{
 				id:6,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:500,
 				num:220,

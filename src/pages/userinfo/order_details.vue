@@ -36,7 +36,7 @@
 		</view>
 		<!-- 金额计算 -->
 		<view class="order-desc">
-			<view class="order-desc-index" v-for="item in orderDesc" :key="item.id">
+			<view class="order-desc-index" v-for="item in orderDesc" :key="item.id" v-show="item.desc!='- ¥0'">
 				<view class="name">{{item.name}}</view><view class="info">{{item.desc}}</view>
 			</view>
 			<view class="order-desc-bottom">
@@ -140,7 +140,7 @@
 			})
 		}
 		getGoodDesc(data:any){
-			this.orderDesc[0].desc ='¥'+data.price;
+			this.orderDesc[0].desc ='¥'+(data.price+data.discount);
 			this.orderDesc[1].desc ='- ¥'+data.discount;
 			for (const key in this.orderInfo) {
 				if (Object.prototype.hasOwnProperty.call(data.payInfo, key)) {

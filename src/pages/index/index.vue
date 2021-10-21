@@ -69,7 +69,7 @@
 			<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
 		</view>
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsList" :ispullDown="pullDownRefresh" @send="onClickJumpDetails"/>
+			<goodslist  :goodsList="goodsList"  @send="onClickJumpDetails"/>
 		</view>
 	</view>
 </template>
@@ -112,49 +112,11 @@
 			{id:5,name:'优惠'}
 		];
 		goodTabCheck = 1;
-		goodsList:any = [
-			{
-				id:1,
-				img:'../../static/goods/zhutu@2x.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:410,
-				num:120,
-				price:149,
-				tips:'满10组减5元'
-			},
-			{
-				id:2,
-				img:'../../static/goods/zhutu@2x.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:200,
-				num:150,
-				price:349,
-				tips:'满10组减50元'
-			},
-			{
-				id:3,
-				img:'../../static/goods/zhutu@2x.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:300,
-				num:50,
-				price:1429,
-				tips:'满20组减100元'
-			},
-			{
-				id:4,
-				img:'../../static/goods/zhutu@2x.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:500,
-				num:220,
-				price:2429,
-				tips:'满20组减100元'
-			},
-		];
+		goodsList:any = [];
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
 		pullDown = false;
-		pullDownRefresh = false;
 		apkNeedUpdate = false;
 		updateStart = false;
 		downloadText = '下载中：0 MB/0 MB, 0%';
@@ -294,9 +256,10 @@
 				}
 				if(data.goodList){
 					if(this.currentPage==1){
-						this.pullDownRefresh = !this.pullDownRefresh
+						this.goodsList = []
 					}
-					this.goodsList = data.goodList;
+					this.goodsList = this.goodsList.concat(data.goodList);
+					console.log('goodslist========',this.goodsList)
 				}
 				
 				this.currentPage++;

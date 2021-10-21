@@ -1,6 +1,6 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="item" v-show="goodsOldList.length>0" v-for="item in goodsOldList" :key="item.goodCode">
+		<view class="item" v-show="goodsOldList.length>0" v-for="item in goodsList" :key="item.goodCode">
 			<view :class="['goodslist-index',{'del-start':delStart}]"  @click="onClickJumpUrl(item.goodCode)">
 				<image class="goodslist-pic" :src="getGoodsImg(item.pic)" mode="aspectFill"></image>
 				<view class="goodslist-right">
@@ -37,22 +37,15 @@
 		@Prop({default:[]})
 		goodsList:any;
 		@Prop({default:false})
-		ispullDown:any;
-		@Prop({default:false})
 		delStart:any;
 		@Prop({default:[]})
 		delList:any;
 		
 		getGoodsImg = getGoodsImg
-		goodsOldList:any = [];
 		discountList:any = [];
-		@Watch('ispullDown')
-		onIspullDownChanged(val: any, oldVal: any){
-			this.goodsOldList = []
-		}
+		
 		@Watch('goodsList')
 		onGoodsListChanged(val: any, oldVal: any){
-			this.goodsList = val;
 			setTimeout(()=>{
 				this.getGoodsList()
 			},100)
@@ -101,7 +94,6 @@
 					this.discountList[i] = data[i].discount.split(',');
 				}
 			}
-			this.goodsOldList = this.goodsOldList.concat(data)
 		}
 	}
 </script>

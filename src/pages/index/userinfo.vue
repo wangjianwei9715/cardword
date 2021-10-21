@@ -7,6 +7,7 @@
 				<view class="icon-xiaoxi" @click="onClickMessage"><view class="xiaoxi-num">6</view></view>
 			</view>
 			<view class="userinfo"  @click="onClickUserInfo">
+				<!-- #ifdef APP-PLUS -->
 				<view class="left">
 					<image class="user-avatar" :src="infoData.avatar" mode="aspectFit"></image>
 					<view class="userinfo-index">
@@ -14,8 +15,22 @@
 						<view class="userinfo-sign">{{infoData.sign}}</view>
 					</view>
 				</view>
+				<!-- #endif -->
+				<!-- #ifdef MP -->
+				<view class="left" style="width:440rpx">
+					<image class="user-avatar" :src="infoData.avatar" mode="aspectFit"></image>
+					<view class="userinfo-index" style="width:340rpx">
+						<view class="userinfo-name">{{infoData.name}}</view>
+						<view class="userinfo-sign">{{infoData.sign}}</view>
+					</view>
+				</view>
+				<button class="update-info-button" @click="getUserProfile" withCredentials="true">
+					同步微信资料
+				</button>
+				<!-- #endif -->
 				<view class="right"></view>
 			</view>
+			
 			<view class="header-tab">
 				<view class="tab" v-for="item in headerTab" :key="item.id" @click="onClickNavigateto(item.url)">
 					<view class="num">{{item.num}}</view>
@@ -37,7 +52,7 @@
 					<view class="name">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="order-tip" v-show="countTime>0"  @click="onClickOrderList(2)">您有{{countNum}}个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
+			<view class="order-tip" v-if="countTime>0"  @click="onClickOrderList(2)">您有{{countNum}}个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
 		</view>
 
 		<view class="orther-setting">
@@ -58,8 +73,8 @@
 	export default class ClassName extends BaseNode {
 		infoData:{[x:string]:any} = [];
 		headerTab:{[x: string]: any} = {
-			no:{id:1,name:'我的编号',num:1591,url:'/pages/userinfo/card_no'},
-			broadcast:{id:2,name:'我的直播',num:66,url:'/pages/userinfo/user_live'},
+			no:{id:1,name:'我的编号',num:0,url:'/pages/userinfo/card_no'},
+			broadcast:{id:2,name:'我的直播',num:0,url:'/pages/userinfo/user_live'},
 			favorite:{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
 		};
 		orderTab = [
@@ -77,12 +92,14 @@
 			{id:6,name:'加入群聊',url:''},
 		]
 		countInterval:any;
-		countTime = 0;
+		countTime = -1;
 		countNum = 0;
 		countStr = '';
 		
 		onLoad(query:any) {
-			
+			this.onEventUI('updateToken',()=>{
+				this.initPageData();
+			})
 			
 		}
 		onShow(){
@@ -93,12 +110,22 @@
 			clearInterval(this.countInterval)
 		}
 		initPageData(cb?:Function){
+			// #ifdef APP-PLUS
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
+			// #endif
+
+			// #ifdef MP-WEIXIN
+			if(app.token.accessToken == ''){
+				app.platform.wechatLogin();
+				return;
+			}
+			// #endif
+			
 			app.http.Get('me/home',{},(res:any)=>{
 				let data = res.data;
 				this.infoData = data;
@@ -136,6 +163,9 @@
 			})
 		}
 		onClickUserInfo(){
+			if(this.infoData.avatar==''){
+				return;
+			}
 			uni.navigateTo({
 				url:'/pages/userinfo/user_info?data='+encodeURIComponent(JSON.stringify(this.infoData))
 			})
@@ -157,6 +187,15 @@
 					clearInterval(this.countInterval)
 				}
 			},1)
+		}
+		getUserProfile(){
+			app.platform.getWechatUserInfo((infoRes:any)=>{
+				uni.showToast({
+					title: '用户信息同步成功！',
+					icon: 'none',
+					duration: 2000
+				});
+			})
 		}
 		
 	}
@@ -432,5 +471,16 @@
 				color: #14151A;
 			}
 		}
+	}
+	.update-info-button{
+		width: 200rpx;
+		height:100rpx;
+		display: flex;
+		box-sizing: border-box;
+		align-items: center;
+		font-size: 30rpx;
+		background:rgba(0,0,0,0);
+		margin:0;
+		justify-content: center;
 	}
 </style>

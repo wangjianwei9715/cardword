@@ -17,7 +17,7 @@
 
 		<view class="order-list">
 			<statusbar/>
-			<goodslistcollect :goodsList="goodsList" :ispullDown="pullDownRefresh" :delStart="deling" :delList="delList" @send="onClickJumpDetails"  @del="onClickDel"/>
+			<goodslistcollect :goodsList="goodsList" :delStart="deling" :delList="delList" @send="onClickJumpDetails"  @del="onClickDel"/>
 		</view>
 		<empty v-show="goodsList.length==0"/>
 		<view v-show="deling" class="del-bottom">
@@ -46,7 +46,6 @@ import { Component } from "vue-property-decorator";
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
-		pullDownRefresh = false;
 		onLoad(query:any) {
 			this.reqNewData()
 		}
@@ -71,7 +70,7 @@ import { Component } from "vue-property-decorator";
 					this.noMoreData = true;
 				}
 				if(data.list){
-					this.goodsList = data.list;
+					this.goodsList = this.goodsList.concat(data.list);
 				}else if(this.currentPage==1){
 					this.goodsList = []
 				}
@@ -92,7 +91,7 @@ import { Component } from "vue-property-decorator";
 			this.tabCheck = id;
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.pullDownRefresh = !this.pullDownRefresh
+			this.goodsList = []
 			this.reqNewData()
 		}
 		// 跳转商品详情

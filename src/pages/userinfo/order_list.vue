@@ -16,7 +16,7 @@
 
 		<view class="order-list">
 			<statusbar/>
-			<orderlist :orderList="orderList" :ispullDown="pullDownRefresh" @send="onClickOrder"/>
+			<orderlist :orderList="orderList"  @send="onClickOrder"/>
 		</view>
 	</view>
 </template>
@@ -40,7 +40,6 @@
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
-		pullDownRefresh = false;
 		orderList:{[x:string]:any} = [
 			{
 				id:4,
@@ -52,7 +51,7 @@
 					name:'皇球星社'
 				},
 				goods:{
-					img:'../../static/goods/zhutu@2x.png',
+					img:'../../static/goods/.png',
 					title:'20-21 National Treasures Hobby原箱*3',
 					price:149
 				},
@@ -100,7 +99,7 @@
 		againReqNewData(){
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.pullDownRefresh = !this.pullDownRefresh
+			this.orderList = []
 			this.reqNewData() 
 		}
 		onInputSearch(){

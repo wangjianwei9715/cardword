@@ -16,7 +16,7 @@
 
 		<view class="order-list">
 			<statusbar/>
-			<cardNolist :cardNoData="cardNoData"  :ispullDown="pullDownRefresh"/>
+			<cardNolist :cardNoData="cardNoData" />
 			<empty v-show="cardNoData.length==0"/>
 		</view>
 
@@ -41,7 +41,7 @@
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
-		pullDownRefresh = false;
+	
 		onLoad(query:any) {
 			this.reqNewData()
 		}
@@ -70,7 +70,7 @@
 					this.noMoreData = true;
 				}
 				if(data.list){
-					this.cardNoData = data.list;
+					this.cardNoData = this.cardNoData.concat(data.list);
 				}else if(this.currentPage==1){
 					this.cardNoData = []
 				}
@@ -81,7 +81,7 @@
 		onInputSearch(){
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.pullDownRefresh = !this.pullDownRefresh
+			this.cardNoData = []
 			this.reqNewData()
 		}
 		onClickBack(){
@@ -97,7 +97,7 @@
 			this.cardTabCheck = id;
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.pullDownRefresh = !this.pullDownRefresh
+			this.cardNoData = []
 			this.reqNewData() 
 		}
 	}

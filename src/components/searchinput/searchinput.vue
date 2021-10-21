@@ -27,7 +27,7 @@
 
 <style>
 	.header-search{
-		width: 100%;
+		width: 710rpx;
 		height:64rpx;
 		background: #F5F5F8;
 		border-radius: 4rpx;

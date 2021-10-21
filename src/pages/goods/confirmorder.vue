@@ -17,7 +17,7 @@
 
 		<view class="order-detail">
 			<view class="goods-info">
-				<image :src="getGoodsImg(goodsData.pic)"
+				<image :src="getGoodsImg(goodsData.pic.carousel)"
 					style="width: 200rpx; height: 200rpx; padding: 16rpx; margin: 20rpx;"></image>
 				<view class="goods-info2">
 					<text class="goods-info2-title">{{goodsData.title}}</text>

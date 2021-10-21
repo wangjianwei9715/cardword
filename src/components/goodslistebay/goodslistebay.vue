@@ -1,6 +1,6 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="goodslist-index" v-for="item in goodsOldList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
+		<view class="goodslist-index" v-for="item in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
 			<image class="goodslist-pic" :src="item.img" mode="aspectFill"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-tip" :class="item.type=='拍卖'?'icon-paimai':'icon-yikou'" >{{item.type}}</view>
@@ -24,22 +24,7 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		goodsList:any;
-		@Prop({default:false})
-		ispullDown:any;
 	
-		goodsOldList:any = [];
-
-		@Watch('ispullDown')
-		onIspullDownChanged(val: any, oldVal: any){
-			this.goodsOldList = []
-		}
-		@Watch('goodsList')
-		onGoodsListChanged(val: any, oldVal: any){
-			this.goodsList = val;
-			setTimeout(()=>{
-				this.getGoodsList()
-			},100)
-		}
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -52,13 +37,7 @@
 		onClickJumpUrl(id:any){
 			this.$emit("send", id);
 		}
-		getGoodsList(){
-			let data = JSON.parse(JSON.stringify(this.goodsList))
-			if(!data){
-				return;
-			}
-			this.goodsOldList = this.goodsOldList.concat(data)
-		}
+		
 	}
 </script>
 

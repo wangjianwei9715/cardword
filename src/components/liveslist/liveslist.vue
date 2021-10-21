@@ -1,6 +1,6 @@
 <template>
 	<view class="livelist">
-		<view class="livelist-index" v-show="liveOldList.length>0"  v-for="item in liveOldList" :key="item.id" @click="onClickJumpUrl(item.id)">
+		<view class="livelist-index" v-show="liveOldList.length>0"  v-for="item in liveList" :key="item.id" @click="onClickJumpUrl(item.id)">
 			<view class="livelist-top" >
 				<image class="livelist-top-image" :src="item.pic" mode="aspectFill"></image>
 				<view class="livelist-top-status">
@@ -25,21 +25,7 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		liveList:any;
-		@Prop({default:false})
-		ispullDown:any;
-	
-		liveOldList:any = [];
-		@Watch('ispullDown')
-		onIspullDownChanged(val: any, oldVal: any){
-			this.liveOldList = []
-		}
-		@Watch('liveList')
-		onGoodsListChanged(val: any, oldVal: any){
-			this.liveList = val;
-			setTimeout(()=>{
-				this.getLivesList()
-			},100)
-		}
+		
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -51,13 +37,7 @@
 		onClickJumpUrl(id:any){
 			this.$emit("send", id);
 		}
-		getLivesList(){
-			let data = JSON.parse(JSON.stringify(this.liveList))
-			if(!data){
-				return;
-			}
-			this.liveOldList = this.liveOldList.concat(data)
-		}
+		
 	}
 </script>
 

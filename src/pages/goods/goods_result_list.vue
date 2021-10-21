@@ -31,36 +31,34 @@
 					<text class="text-name">{{item}}</text>
 				</view>
 			</view>
+			<view v-if="teamDataList.length==0" class="empty">暂无数据</view>
 			<!-- 单数行用灰色背景，双数行用白色背景 -->
 			<view :class="index%2==0?'title-middle-pin':'title-middle-pin2'" v-for="(item,index) in teamDataList"
 				:key="index">
-				<text class="text-name3">{{item.name}}</text>
-				<text class="text-name2">{{item.bh}}</text>
-				<text class="text-name3" style="margin-right: 24rpx;">{{item.time}}</text>
+				<text class="text-name3">{{item.userName}}</text>
+				<text class="text-name2">{{item.no}}</text>
+				<text class="text-name3" style="margin-right: 24rpx;">{{dateFormat(item.time)}}</text>
 			</view>
 		</view>
 
 		<!-- 拆卡报告 -->
 		<view v-if="chooseId==1">
-			<view v-if="isEmpty">
-				<text>拆卡成功才能有记录</text>
-			</view>
+			
 
-			<view v-else>
-				<view class="item-content">
-					<view class="title-middle" v-for="(item,index) in itemListName2" :key="index">
-						<text class="text-name" style="margin-right: 20rpx;">{{item}}</text>
-					</view>
+			<view class="item-content">
+				<view class="title-middle" v-for="(item,index) in itemListName2" :key="index">
+					<text class="text-name" style="margin-right: 20rpx;">{{item}}</text>
 				</view>
-				<!-- 单数行用灰色背景，双数行用白色背景 -->
-				<view :class="index%2==0?'title-middle-chai':'title-middle-chai2'" v-for="(item,index) in teamDataList2"
-					:key="index">
-					<text class="item-name">{{item.name}}</text>
-					<text class="item-bh">{{item.bh}}</text>
-					<text class="item-time">{{item.time}}</text>
-					<image src="../../static/goods/1@2x.png"
-						style="width: 100rpx; height: 128rpx; margin-right: 36rpx;"></image>
-				</view>
+			</view>
+			<view v-if="teamDataList2.length==0" class="empty">暂无数据</view>
+			<!-- 单数行用灰色背景，双数行用白色背景 -->
+			<view :class="index%2==0?'title-middle-chai':'title-middle-chai2'" v-for="(item,index) in teamDataList2"
+				:key="index">
+				<text class="item-name">{{item.userName}}</text>
+				<text class="item-bh">{{item.no}}</text>
+				<text class="item-time">{{dateFormat(item.time)}}</text>
+				<image :src="decodeURIComponent(item.pic)"
+					style="width: 100rpx; height: 128rpx; margin-right: 36rpx;"></image>
 			</view>
 		</view>
 
@@ -68,66 +66,73 @@
 </template>
 
 <script lang="ts">
+	import { app } from "@/app";
 	import {
 		Component
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import {
+		dateFormat
+	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
+		goodCode = '';
 		itemListName = ['用户', '编号', '获取时间'];
 		itemListName2 = ['用户', '编号', '获取时间', '图片'];
-		teamDataList = [{
-				name: '梅超风',
-				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',
-				time: '2021.09.15 16:00'
-			},
-			{
-				name: '梅超风',
-				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',
-				time: '2021.09.15 16:00'
-			},
-			{
-				name: '梅超风',
-				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',
-				time: '2021.09.15 16:00'
-			},
-			{
-				name: '梅超风',
-				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编 Apprentice Lnk #11',
-				time: '2021.09.15 16:00'
-			}
-		];
-		teamDataList2 = [{
-				name: '梅超风',
-				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编',
-				time: '2021.09.15 16:00'
-			},
-			{
-				name: '梅超风',
-				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编',
-				time: '2021.09.15 16:00'
-			},
-			{
-				name: '梅超风',
-				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编',
-				time: '2021.09.15 16:00'
-			},
-			{
-				name: '梅超风',
-				bh: '圣安东尼奥马刺 帕特里克·威廉姆斯49编',
-				time: '2021.09.15 16:00'
-			}
-		];
-		isEmpty = false;
-
+		teamDataList = [];
+		teamDataList2 = [];
+		currentPage = 1;
+		noMore = false;
 		onLoad(query: any) {
 			if (query.chooseIds) {
 				console.log(query)
 				this.chooseId = query.chooseIds;
+				this.goodCode = query.code
+				if(this.chooseId===0){
+					this.getTpCardNo()
+				}else{
+					this.getTpCardNoResult()
+				}
 			}
-		}
 
+		}
+		getTpCardNo(){
+			if(this.noMore){
+				return;
+			}
+			let params = {
+				pageIndex:this.currentPage,
+				pageSize:20
+			}
+			app.http.Get('good/'+this.goodCode+'/cardNo',params,(res:any)=>{
+				if(res.list){
+					this.teamDataList = res.list
+				}else{
+					this.noMore = true
+				}
+				
+				this.currentPage++;
+			})
+		}
+		getTpCardNoResult(){
+			if(this.noMore){
+				return;
+			}
+			let params = {
+				pageIndex:this.currentPage,
+				pageSize:20
+			}
+			app.http.Get('good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
+				if(res.list){
+					this.teamDataList = res.list
+				}else{
+					this.noMore = true
+				}
+				
+				this.currentPage++;
+			})
+		}
 		onClickBack() {
 			uni.navigateBack({
 				delta: 1
@@ -136,14 +141,23 @@
 
 		onClickGroupBookingResult() {
 			console.log('拼团结果')
+			this.resetInfo()
 			this.chooseId = 0;
+			this.getTpCardNo()
 		}
 
 		onClickSplitCardsReport() {
 			console.log('拆卡报告')
+			this.resetInfo()
 			this.chooseId = 1;
+			this.getTpCardNoResult()
 		}
-
+		resetInfo(){
+			this.currentPage = 1;
+			this.noMore = false;
+			this.teamDataList = [];
+			this.teamDataList2 = []
+		}
 		onClickSearch() {
 			console.log('搜索')
 		}
@@ -350,5 +364,12 @@
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
+	}
+	.empty{
+		width: 100%;
+		text-align: center;
+		color:#bbb;
+		font-size: 20rpx;
+		margin-top: 20rpx;
 	}
 </style>

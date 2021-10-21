@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="card-index" v-for="item in cardOldData" :key="item.id">
+		<view class="card-index" v-for="item in cardNoData" :key="item.id">
 			<view class="left">
 				<view class="title">{{item.goodTitle}}</view>
 				<view class="desc">{{item.name}}</view>
@@ -22,18 +22,11 @@
 		
 		@Prop({default:[]})
 		cardNoData:any;
-		@Prop({default:false})
-		ispullDown:any;
+		
 
 		dateFormat = dateFormat
-		cardOldData:any = [];
-		@Watch('ispullDown')
-		onIspullDownChanged(val: any, oldVal: any){
-			this.cardOldData = []
-		}
 		@Watch('cardNoData')
 		onGoodsListChanged(val: any, oldVal: any){
-			this.cardNoData = val;
 			setTimeout(()=>{
 				this.GetcardNoData()
 			},100)
@@ -53,8 +46,6 @@
 			if(!data){
 				return;
 			}
-			
-			this.cardOldData = this.cardOldData.concat(data)
 		}
 		getText(index:any){
 			switch(index){

@@ -9,9 +9,9 @@ export function getGoodsPintuan(state:number){
         case 3:
             return '随机球员';
         case 4:
-            return '随机卡包'
+            return '随机卡盒'
         case 5:
-            return '随机卡盒'    
+            return '随机卡包'    
     }
 }
 // 商品详情随机形式

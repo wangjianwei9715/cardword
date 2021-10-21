@@ -1,7 +1,7 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="goodslist-index" v-for="(item,index) in goodsOldList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
-			<image class="goodslist-pic" :src="getGoodsImg(item.pic)" mode="aspectFill"></image>
+		<view class="goodslist-index" v-for="(item,index) in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
+			<image class="goodslist-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-title">{{item.title}}</view>
 				<view class="goodslist-plan-content">
@@ -32,19 +32,12 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		goodsList:any;
-		@Prop({default:false})
-		ispullDown:any;
 
 		getGoodsImg = getGoodsImg;
-		goodsOldList:any = [];
 		discountList:any = [];
-		@Watch('ispullDown')
-		onIspullDownChanged(val: any, oldVal: any){
-			this.goodsOldList = []
-		}
+	
 		@Watch('goodsList')
 		onGoodsListChanged(val: any, oldVal: any){
-			this.goodsList = val;
 			setTimeout(()=>{
 				this.getGoodsList()
 			},100)
@@ -63,7 +56,6 @@
 		}
 		getGoodsList(){
 			let data = JSON.parse(JSON.stringify(this.goodsList))
-			console.log(data)
 			if(!data){
 				return;
 			}
@@ -72,9 +64,6 @@
 					this.discountList[i] = data[i].discount.split(',');
 				}
 			}
-			
-			console.log(this.discountList)
-			this.goodsOldList = this.goodsOldList.concat(data)
 		}
 	}
 </script>

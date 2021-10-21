@@ -27,7 +27,7 @@
 		<view class="sort-shadow" v-show="classifyShow" @click="onClickClassifyCancel"></view>
 		<view class="goods-lists">
 			<statusbar/>
-			<goodslist  :goodsList="goodsList" :ispullDown="pullDownRefresh" @send="onClickJumpDetails"/>
+			<goodslist  :goodsList="goodsList"  @send="onClickJumpDetails"/>
 		</view>
 	</view>
 </template>
@@ -65,7 +65,7 @@ import { Component } from "vue-property-decorator";
 		goodsList:{[x:string]:any} = [
 			{
 				id:1,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:410,
 				num:120,
@@ -74,7 +74,7 @@ import { Component } from "vue-property-decorator";
 			},
 			{
 				id:2,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:200,
 				num:150,
@@ -83,7 +83,7 @@ import { Component } from "vue-property-decorator";
 			},
 			{
 				id:3,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:300,
 				num:50,
@@ -92,7 +92,7 @@ import { Component } from "vue-property-decorator";
 			},
 			{
 				id:4,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:500,
 				num:220,
@@ -101,7 +101,7 @@ import { Component } from "vue-property-decorator";
 			},
 			{
 				id:5,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:300,
 				num:50,
@@ -110,7 +110,7 @@ import { Component } from "vue-property-decorator";
 			},
 			{
 				id:6,
-				img:'../../static/goods/zhutu@2x.png',
+				img:'../../static/goods/.png',
 				title:'20-21 National Treasures Hobby原箱*3',
 				num_all:500,
 				num:220,
@@ -118,7 +118,6 @@ import { Component } from "vue-property-decorator";
 				tips:'满20组减100元'
 			}
 		];
-		pullDownRefresh = false;
 		scrollId = '';
 		noMoreData = false;
 		onLoad(query:any) {
@@ -209,7 +208,7 @@ import { Component } from "vue-property-decorator";
 					this.noMoreData = true;
 				}
 				if(res.goodList){
-					this.goodsList = res.goodList
+					this.goodsList = this.goodsList.concat(res.goodList)
 				}else{
 					this.goodsList = []
 				}
