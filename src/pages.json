@@ -16,7 +16,7 @@
                 "enablePullDownRefresh": true
 			}
 		}
-        
+        //  #ifndef MP-WEIXIN
 		, {
 			"path": "pages/index/live",
 			"style": {
@@ -24,14 +24,17 @@
 				"navigationStyle": "custom",
                 //  #endif
                 //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "直播",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
+                // "navigationBarTitleText": "直播",
+				// "navigationBarBackgroundColor": "#ffffff",
+				// "navigationBarTextStyle": "black",
                 //  #endif
 				"enablePullDownRefresh": false
 			}
 
-		}, {
+		}
+        //  #endif
+        , 
+        {
 			"path": "pages/index/userinfo",
 			"style": {
 				//  #ifndef MP-WEIXIN
@@ -62,7 +65,14 @@
 		}, {
 			"path": "pages/goods/goods_details",
 			"style": {
+				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
+                //  #endif
+                //  #ifdef MP-WEIXIN
+                "navigationBarTitleText": "",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+                //  #endif
 				"enablePullDownRefresh": false
 			}
 
@@ -119,14 +129,7 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
-			"path": "pages/userinfo/merchant_shops",
-			"style": {
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
+		},  {
 			"path": "pages/goods/goods_ref",
 			"style": {
 				"navigationStyle": "custom",
@@ -147,21 +150,7 @@
 				"enablePullDownRefresh": false
 			}
 
-		}, {
-			"path": "pages/userinfo/order_list",
-			"style": {
-				//  #ifndef MP-WEIXIN
-				"navigationStyle": "custom",
-                //  #endif
-                //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "订单",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-                //  #endif
-				"enablePullDownRefresh": false
-			}
-
-		}, {
+		},  {
 			"path": "pages/live/broadcast",
 			"style": {
 				"navigationStyle": "custom",
@@ -170,37 +159,6 @@
 
 		}
 	    ,{
-            "path" : "pages/userinfo/order_details",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "navigationBarBackgroundColor": "#ffffff",
-                "navigationBarTextStyle": "black",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/setting_addresses",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "地址管理",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/setting_addressedit",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "地址编辑",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
             "path" : "pages/login/login",
             "style" :                                                                                    
             {
@@ -229,114 +187,7 @@
             }
             
         }
-        ,{
-            "path" : "pages/userinfo/card_no",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/user_live",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "我的直播",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/user_collect",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "我的收藏",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/setting",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "设置",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/order_myCard",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "我的编号",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/message",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "消息",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/user_info",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "个人信息",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/setting_avatar",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "更换头像",
-				"enablePullDownRefresh": false,
-				"navigationBarTextStyle": "white",
-				"navigationBarBackgroundColor": "#000000"
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/setting_name",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/setting_sign",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/userinfo/order_logistics",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText":"物流",
-                "navigationBarBackgroundColor":"#FFFFFF",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -359,12 +210,14 @@
 				"selectedIconPath": "static/index/tabbar_index_.png",
 				"text": "首页"
 			},
+            //  #ifndef MP-WEIXIN
 			{
 				"pagePath": "pages/index/live",
 				"iconPath": "static/index/tabbar_live.png",
 				"selectedIconPath": "static/index/tabbar_live_.png",
 				"text": "直播"
 			},
+            //  #endif
 			{
 				"pagePath": "pages/index/ref",
 				"iconPath": "static/index/tabbar_search.png",
@@ -384,5 +237,180 @@
 		"custom": {
 			"^uni-(.*)": "@/components/uni-$1.vue"
 		}
-	}
+	},
+    "subPackages": [{
+        "root": "pages/userinfo",
+        "pages": [
+            {
+                "path": "merchant_shops",
+                "style": {
+                    "navigationStyle": "custom",
+                    "enablePullDownRefresh": false
+                }
+    
+            },{
+                "path": "order_list",
+                "style": {
+                    //  #ifndef MP-WEIXIN
+                    "navigationStyle": "custom",
+                    //  #endif
+                    //  #ifdef MP-WEIXIN
+                    "navigationBarTitleText": "订单",
+                    "navigationBarBackgroundColor": "#ffffff",
+                    "navigationBarTextStyle": "black",
+                    //  #endif
+                    "enablePullDownRefresh": false
+                }
+            },{
+                "path" : "order_details",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "navigationBarBackgroundColor": "#ffffff",
+                    "navigationBarTextStyle": "black",
+                    "enablePullDownRefresh": false
+                }
+                
+            }
+            ,{
+                "path" : "setting_addresses",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "地址管理",
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "navigationBarTextStyle":"black"
+                }
+                
+            }
+            ,{
+                "path" : "setting_addressedit",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "地址编辑",
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "navigationBarTextStyle":"black"
+                }
+                
+            },{
+                "path" : "card_no",
+                "style" :                                                                                    
+                {
+                    //  #ifndef MP-WEIXIN
+                    "navigationStyle": "custom",
+                    //  #endif
+                    //  #ifdef MP-WEIXIN
+                    "navigationBarTitleText": "我的编号",
+                    "navigationBarBackgroundColor": "#ffffff",
+                    "navigationBarTextStyle": "black",
+                    //  #endif
+                    "enablePullDownRefresh": false
+                }
+                
+            }
+            ,{
+                "path" : "user_live",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "我的直播",
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "navigationBarTextStyle":"black"
+                }
+                
+            }
+            ,{
+                "path" : "user_collect",
+                "style" :                                                                                    
+                {
+                    //  #ifndef MP-WEIXIN
+                    "navigationStyle": "custom",
+                    //  #endif
+                    //  #ifdef MP-WEIXIN
+                    "navigationBarTitleText": "",
+                    //  #endif
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "navigationBarTextStyle":"black"
+                }
+                
+            }
+            ,{
+                "path" : "setting",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "设置",
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "navigationBarTextStyle":"black"
+                }
+                
+            }
+            ,{
+                "path" : "order_myCard",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "我的编号",
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "navigationBarTextStyle":"black"
+                }
+                
+            }
+            ,{
+                "path" : "message",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "消息",
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "navigationBarTextStyle":"black"
+                }
+                
+            }
+            ,{
+                "path" : "user_info",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "个人信息",
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "navigationBarTextStyle":"black"
+                }
+                
+            }
+            ,{
+                "path" : "setting_avatar",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "更换头像",
+                    "enablePullDownRefresh": false,
+                    "navigationBarTextStyle": "white",
+                    "navigationBarBackgroundColor": "#000000"
+                }
+                
+            }
+            ,{
+                "path" : "setting_name",
+                "style" :                                                                                    
+                {
+                    "navigationStyle": "custom",
+                    "enablePullDownRefresh": false
+                }
+                
+            }
+            ,{
+                "path" : "setting_sign",
+                "style" :                                                                                    
+                {
+                    "navigationStyle": "custom",
+                    "enablePullDownRefresh": false
+                }
+                
+            }
+            ,{
+                "path" : "order_logistics",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText":"物流",
+                    "navigationBarBackgroundColor":"#FFFFFF",
+                    "enablePullDownRefresh": false
+                }
+                
+            }
+        ]
+     }]
 }

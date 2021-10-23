@@ -273,6 +273,7 @@ export default class HttpRequest {
 						}
 					});
 				}else if (response.data.code == 1100) {
+					// #ifndef MP
 					uni.showModal({
 						title: '信息无效',
 						content: '登录信息无效，请重新登录',
@@ -281,6 +282,7 @@ export default class HttpRequest {
 							uni.$emit('reLogin');
 						}
 					});
+					// #endif
 				}else if (response.data.code == 1108) {
 					uni.showModal({
 						title: '提示',

@@ -161,6 +161,65 @@ export default class PlatformManager {
         }
         // #endif
     }
+	payment(data:any,callback?:Function){
+        // #ifndef H5
+        // #ifdef MP-WEIXIN
+		let params = {
+			provider: 'wxpay',
+			timeStamp: data.timeStamp,
+			nonceStr: data.nonceStr,
+			package: 'prepay_id='+data.prepayId,
+			signType: 'RSA',
+			paySign: data.sign
+		}
+		console.log(params)
+		uni.requestPayment({
+			provider: 'wxpay',
+			timeStamp: data.timeStamp,
+			nonceStr: data.nonceStr,
+			package: 'prepay_id='+data.prepayId,
+			signType: 'RSA',
+			paySign: data.sign,
+			success: (res:any)=> {
+				console.log('success:' + JSON.stringify(res));
+				if (callback) {
+					callback(res);
+				}
+			},
+			fail: (err:any)=> {
+				console.log('fail:' + JSON.stringify(err));
+			}
+		});
+        // #endif
+        // #ifdef APP-PLUS
+        // HttpPost('order/'+orderID+'/prepay',{channel:'wechat',gateway:'app'},(data:any)=>{
+        //     uni.requestPayment({
+        //         provider: 'wxpay',
+        //         orderInfo: data,
+        //         success: (res:any)=> {
+        //             console.log('success:' + JSON.stringify(res));
+        //             if (callback) {
+        //                 callback(res);
+        //             }
+        //         },
+        //         fail: (err:any)=> {
+        //             console.log('fail:' + JSON.stringify(err));
+        //         }
+        //     });
+        // });
+        // #endif
+
+        
+        
+        // #endif
+
+        //#ifdef H5
+        //微信内部网页环境
+        if (navigator.userAgent.match(/micromessenger/i)) {
+            
+        }
+        // #endif
+    }
 	phoneAspect():boolean{
 		let aspect = this.systemInfo.windowHeight/this.systemInfo.windowWidth>1.8?true:false
 		return aspect;

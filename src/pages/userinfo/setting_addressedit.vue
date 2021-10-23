@@ -63,7 +63,13 @@
 
 			if(query.data){
 				console.log(query.data)
+				// #ifndef MP 
 				this.editData = JSON.parse(query.data);
+				// #endif
+				// #ifdef MP
+				this.editData = JSON.parse(decodeURIComponent(query.data));
+				// #endif
+				
 				this.userName = this.editData.name;
 				this.userPhone = this.editData.phone;
 				this.address = this.editData.district;

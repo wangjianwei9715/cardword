@@ -15,8 +15,8 @@
 				<view class="header-sort-index" v-for="item in sortData" :key="item.id" @click="onClickSort(item.id)">
 					{{item.name}}
 					<view class="header-sort-icon">
-						<view v-if="item.name!='分类'" :class="item.sort_up?'icon-sort-up':'icon-sort-upn'"></view>
-						<view :class="!item.sort_up?'icon-sort-down':'icon-sort-downn'"></view>
+						<view v-if="item.name!='分类'" :class="{'icon-sort-upn':item.sort_up!='up','icon-sort-up':item.sort_up=='up'}"></view>
+						<view :class="{'icon-sort-downn':item.sort_up!='down','icon-sort-down':item.sort_up=='down'}"></view>
 					</view>
 				</view>
 				<view :class="['header-sort-classify',{'classify-show':classifyShow}]">
@@ -41,93 +41,46 @@ import { Component } from "vue-property-decorator";
 		searchText = '';
 		goodTab = [
 			{id:1,name:'在售'},
-			{id:2,name:'即将发售'},
+			{id:0,name:'即将发售'},
 			{id:3,name:'待直播'},
 			{id:4,name:'直播中'},
-			{id:5,name:'已拼成'}
+			{id:2,name:'已拼成'}
 		];
 		goodTabCheck = 1;
 		sortData = [
-			{id:1,name:'分类',sort_up:false},
-			{id:2,name:'进度',sort_up:false},
-			{id:3,name:'价格',sort_up:false},
+			{id:1,name:'分类',sort_up:''},
+			{id:2,name:'进度',sort_up:''},
+			{id:3,name:'价格',sort_up:''},
 		];
 		classifyData = [
+			{id:100,name:'全部'},
 			{id:1,name:'篮球'},
 			{id:2,name:'足球'},
-			{id:3,name:'卡通动漫'},
-			{id:4,name:'影视手绘'},
-			{id:5,name:'其他'}
+			{id:0,name:'其他'},
+
 		]
-		classifyOpt = 1;
+		classifyOpt = 100;
 		classifyShow = false;
 		goodsData:any = []
-		goodsList:{[x:string]:any} = [
-			{
-				id:1,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:410,
-				num:120,
-				price:149,
-				tips:'满10组减5元'
-			},
-			{
-				id:2,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:200,
-				num:150,
-				price:349,
-				tips:'满10组减50元'
-			},
-			{
-				id:3,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:300,
-				num:50,
-				price:1429,
-				tips:'满20组减100元'
-			},
-			{
-				id:4,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:500,
-				num:220,
-				price:2429,
-				tips:'满20组减100元'
-			},
-			{
-				id:5,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:300,
-				num:50,
-				price:1429,
-				tips:'满20组减100元'
-			},
-			{
-				id:6,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:500,
-				num:220,
-				price:2429,
-				tips:'满20组减100元'
-			}
-		];
+		goodsList:{[x:string]:any} = [];
 		scrollId = '';
 		noMoreData = false;
 		onLoad(query:any) {
 			if(query.q){
 				this.searchText = query.q
 			}
+			if(query.classType){
+				this.classifyOpt = query.classType
+			}
 			if(query.data){
 				setTimeout(()=>{
-					this.goodsData =  JSON.parse(query.data);
-					this.goodsList = this.goodsData.goodList
+					// #ifndef MP 
+					this.goodsData = JSON.parse(query.data)
+					// #endif
+					// #ifdef MP
+					this.goodsData = JSON.parse(decodeURIComponent(query.data))
+					// #endif
+					this.goodsList = this.goodsData.goodList?this.goodsData.goodList:[]
 					this.scrollId = this.goodsData.scrollId
 					if(query.data.end){
 						this.noMoreData = true;
@@ -136,6 +89,7 @@ import { Component } from "vue-property-decorator";
 			}else{
 				this.reqNewData('default') 
 			}
+			
 		}
 		onClickBack(){
 			uni.navigateBack({
@@ -151,21 +105,36 @@ import { Component } from "vue-property-decorator";
 			if(id==this.goodTabCheck){
 				return;
 			}
-			this.goodTabCheck = id
+			console.log(this.goodTabCheck)
+			this.goodTabCheck = id;
+			this.goodsList = [];
+			this.noMoreData = false
+			this.reqNewData('default') 
 		}
 		// 排序选择
 		onClickSort(id:number){
 			if(id==1){
 				this.onClickClassifyCancel()
 			}else{
-				this.sortData[id-1].sort_up = !this.sortData[id-1].sort_up
+				if(this.sortData[id-1].sort_up==''){
+					this.sortData[id-1].sort_up = 'up'
+				}else if(this.sortData[id-1].sort_up == 'up'){
+					this.sortData[id-1].sort_up = 'down'
+				}else if(this.sortData[id-1].sort_up == 'down'){
+					this.sortData[id-1].sort_up = ''
+				}
+				this.goodsList = [];
+				this.noMoreData = false
+				this.reqNewData('default') 
 			}
 		}
 		onClickClassifyOpt(id:number){
 			if(this.classifyOpt==id) return;
-
 			this.classifyOpt = id;
 			this.onClickClassifyCancel()
+			this.goodsList = [];
+			this.noMoreData = false
+			this.reqNewData('default') 
 		}
 		// 分类取消
 		onClickClassifyCancel(){
@@ -187,10 +156,13 @@ import { Component } from "vue-property-decorator";
 			if (this.noMoreData) {
 				return;
 			}
-			// 排序方式
-			// let sort = this.getSort(this.checkSort)
-			let params:{[x:string]:any} ={}
 			
+			let params:{[x:string]:any} ={
+				state:Number(this.goodTabCheck)
+			}
+			if(this.classifyOpt!=100){
+				params.tp = Number(this.classifyOpt)
+			}
 			if(this.searchText==''){
 				params.q = ''
 			}else{
@@ -199,9 +171,28 @@ import { Component } from "vue-property-decorator";
 			if(reach){
 				params.scrollId = this.scrollId
 			}
-			let date:any = new Date()
+			// 排序方式
+			let sort = ''
+			if(this.sortData[2].sort_up!=''){
+				if(this.sortData[2].sort_up=='up'){
+					sort += 'price'
+				}else{
+					sort += 'price:desc'
+				}
+			}
+			if(this.sortData[1].sort_up!=''){
+				if(sort!=''){sort+=','}
+				if(this.sortData[1].sort_up=='up'){
+					sort += 'progress'
+				}else{
+					sort += 'progress:desc'
+				}
+			}
+			if(sort!=''){
+				params.sort = sort
+			}
 			
-			// params.sort = sort
+			let date:any = new Date()
 			params.timeStamp = Date.parse(date)/1000
 			app.http.Get("dataApi/search", params, (res: any) => {
 				if (res.end) {
@@ -209,13 +200,12 @@ import { Component } from "vue-property-decorator";
 				}
 				if(res.goodList){
 					this.goodsList = this.goodsList.concat(res.goodList)
-				}else{
-					this.goodsList = []
 				}
 				this.scrollId = res.scrollId
 				if(cb) cb()
 			});
 		}
+		
 	}
 </script>
 
@@ -343,7 +333,7 @@ import { Component } from "vue-property-decorator";
 			}
 		}
 		.classify-show{
-			height:400rpx;
+			height:330rpx;
 		}
 		.classify-opt{
 			color:#F65D2D

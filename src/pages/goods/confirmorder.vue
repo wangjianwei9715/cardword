@@ -15,9 +15,9 @@
 		</view>
 		<image src="../../static/goods/icon_xinfeng.png" style="width: 748rpx; height: 4rpx;"></image>
 
-		<view class="order-detail">
+		<view class="order-detail" v-if="goodsData.pic">
 			<view class="goods-info">
-				<image :src="getGoodsImg(goodsData.pic.carousel)"
+				<image :src="decodeURIComponent(getGoodsImg(goodsData.pic.carousel))"
 					style="width: 200rpx; height: 200rpx; padding: 16rpx; margin: 20rpx;"></image>
 				<view class="goods-info2">
 					<text class="goods-info2-title">{{goodsData.title}}</text>
@@ -94,8 +94,12 @@ import {
 		youhuiPrice = 0;
 		onLoad(query: any) {
 			if(query.data){
+				// #ifndef MP 
 				this.goodsData = JSON.parse(query.data)
-				console.log(this.goodsData)
+				// #endif
+				// #ifdef MP
+				this.goodsData = JSON.parse(decodeURIComponent(query.data))
+				// #endif
 				
 			}
 
@@ -148,7 +152,22 @@ import {
 				})
 				return;
 			}
-			let params:{[x:string]:any} = {
+			let params:{[x:string]:any}
+			// #ifdef MP
+			params= {
+				channel:'mini',
+				delivery:this.addressData.id,
+				num:Number(this.moneyNum)
+			}
+			app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
+				app.platform.payment(res.wechat,(data:any)=>{
+					console.log(data)
+				})
+			})
+			
+			// #endif
+			// #ifndef MP
+			params = {
 				channel:'alipay',
 				delivery:this.addressData.id,
 				num:Number(this.moneyNum)
@@ -160,7 +179,9 @@ import {
 				// if(res.alipay.orderInfo!=''){
 				// 	app.payment.paymentAlipay(res.alipay.orderInfo,()=>{})
 				// }
+				
 			})
+			// #endif
 		}
 	}
 </script>

@@ -21,9 +21,9 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<view :class="['header-content',{'header-content-end':goodsState!=0}]">
+		<view :class="['header-content',{'header-content-end':goodsState!=1}]">
 			<view class="header-price">¥<text>{{goodsData.price}}</text></view>
-			<view class="header-right" v-if="goodsState==0">
+			<view class="header-right" v-if="goodsState==1">
 				<view class="icon-end"></view>
 				<view class="countdown-content">
 					<view v-if="countDay>0" class="countdown-index">{{countDay}}</view>
@@ -100,15 +100,15 @@
 			</view>
 		</view>
 		<!-- 直播可拖动控件 -->
-		<movable-area class="movable-area" v-if="goodsState!=0&&goodsState!=2">
+		<movable-area class="movable-area" v-if="goodsState == 4">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
 				<livewicket :liveImg="liveImg" :liveStatus="liveStatus"></livewicket>
 			</movable-view>
 		</movable-area>
 		<!-- 底部吐司 -->
-		<tips :tipsData="tipsData" v-if="goodsState==0"></tips>
+		<tips :tipsData="tipsData" v-if="goodsState==1"></tips>
 		<!-- 底部按钮 -->
-		<view class="btn-content" v-if="goodsState==0">
+		<view class="btn-content" v-if="goodsState==1||goodsState==0">
 			<view class="btn-content-left">
 				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id">
 					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFit"></image>

@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="setting-index" v-show="addressesList.length>0">
+		<view class="setting-index" v-if="addressesList.length>0">
 			<view class="setting-view" v-for="item in addressesList" :key="item.id">
 				<view class="left-content" @click="onClickSelect(item)">
 					<view class="left-des"><view v-if="item.default" class="icon-moren">默认</view>{{item.name}}  {{item.phone}}</view>
@@ -35,6 +35,7 @@
 		initEvent(){
 			app.http.Get('me/delivery',{},(res:any)=>{
 				this.addressesList = res.list
+				console.log(this.addressesList)
 			})
 		}
 		onClickSelect(data:any){

@@ -19,8 +19,9 @@ import { Vue,Component } from "vue-property-decorator";
 					this.$delete(this.eventListenerMap, eventName);
 				}
 			}
+			// #ifndef MP
 			app.sever.unregisterHandlers(this);
-
+			// #endif
 			this.clearAllScheduler();
 		}
 		/**计时器

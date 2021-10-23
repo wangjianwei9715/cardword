@@ -30,7 +30,7 @@
 		<view class="header-banner" :style="pullDown?'position:absolute':''" >
 			<statusbar/>
 			<view class="tab-header">
-				<searchinput :searchText="'搜索热门、球员、球队、帖子'" @clicksearch="onClickSearch"></searchinput>
+				<searchinput :searchText="'搜索商品、商家'" @clicksearch="onClickSearch"></searchinput>
 			</view>
 		</view>
 		
@@ -83,10 +83,10 @@
 		statusBarHeight = app.statusBarHeight;
 		advertisingList:{[x:string]:any} = [];
 		tabList = [
-			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/login/login'},
-			{img:'../../static/index/tab1.png',text:'足球',url:'/pages/goods/index?type=4'},
-			{img:'../../static/index/tab2.png',text:'其它',url:'/pages/goods/all_good_card?type=0'},
-			{img:'../../static/index/tab3.png',text:'ALL',url:'/pages/goods/index?type=1'},
+			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/goods/goods_find_list?classType=1'},
+			{img:'../../static/index/tab1.png',text:'足球',url:'/pages/goods/goods_find_list?classType=2'},
+			{img:'../../static/index/tab2.png',text:'其它',url:'/pages/goods/goods_find_list?classType=0'},
+			{img:'../../static/index/tab3.png',text:'ALL',url:'/pages/goods/goods_find_list?classType=100'},
 		];
 		noticeList = [
 			{
@@ -158,7 +158,7 @@
 		initEvent(){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
-				this.goodsList = data.goodList;
+				this.goodsList = data.goodList?data.goodList:[];
 				this.advertisingList = data.topAddList;
 			})
 			
@@ -234,6 +234,7 @@
 			}
 			this.goodTabCheck = id
 			this.currentPage = 1;
+			this.goodsList = []
 			this.noMoreData = false;
 			this.reqNewData()
 		}

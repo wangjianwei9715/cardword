@@ -106,7 +106,8 @@
 			let params={
 				highlight:1,
 				q:encodeURIComponent(text),
-				timeStamp:Date.parse(date)/1000
+				timeStamp:Date.parse(date)/1000,
+				state:1
 			}
 			
 			app.http.Get('dataApi/search',params,(res:any)=>{

@@ -17,11 +17,11 @@ export default class PayManager {
 		uni.requestPayment({
 			provider:'alipay',   //alipay
 			orderInfo: orderInfo, //支付宝订单数据
-			success: function (res) {
+			success: function (res:any) {
 				console.log('success:' + JSON.stringify(res));
 				if(cb) cb()
 			},
-			fail: function (err) {
+			fail: function (err:any) {
 				console.log('fail:' + JSON.stringify(err));
 			}
 		});
@@ -41,11 +41,11 @@ export default class PayManager {
 		uni.requestPayment({
 			provider:'wxpay', 
 			orderInfo: order, //微信订单数据
-			success: function (res) {
+			success: function (res:any) {
 				console.log('success:' + JSON.stringify(res));
 				if(cb) cb()
 			},
-			fail: function (err) {
+			fail: function (err:any) {
 				console.log('fail:' + JSON.stringify(err));
 			}
 		});

@@ -46,6 +46,11 @@ export default class ClassName extends BaseNode {
   needRemove = true;
   onLoad(query: any) {
     this.formatSize();
+    // #ifdef MP
+    this.settingTab.splice(0,1)
+    this.settingTab.splice(1,1)
+    this.settingTab.splice(1,1)
+    // #endif
   }
   onClickNavigateto(url: any) {
     uni.navigateTo({

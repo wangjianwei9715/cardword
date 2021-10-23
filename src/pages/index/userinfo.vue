@@ -7,7 +7,7 @@
 				<view class="icon-xiaoxi" @click="onClickMessage"><view class="xiaoxi-num">6</view></view>
 			</view>
 			<view class="userinfo"  @click="onClickUserInfo">
-				<!-- #ifdef APP-PLUS -->
+				<!-- #ifndef MP-WEIXIN -->
 				<view class="left">
 					<image class="user-avatar" :src="infoData.avatar" mode="aspectFit"></image>
 					<view class="userinfo-index">
@@ -32,7 +32,7 @@
 			</view>
 			
 			<view class="header-tab">
-				<view class="tab" v-for="item in headerTab" :key="item.id" @click="onClickNavigateto(item.url)">
+				<view class="tab" v-for="item in headerTab" :key="item.id" @click="onClickTopNavigateto(item)">
 					<view class="num">{{item.num}}</view>
 					<view class="name">{{item.name}}</view>
 				</view>
@@ -110,7 +110,8 @@
 			clearInterval(this.countInterval)
 		}
 		initPageData(cb?:Function){
-			// #ifdef APP-PLUS
+			// #ifndef MP-WEIXIN
+			console.log(app.token.accessToken)
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
@@ -147,7 +148,21 @@
 
 			});
 		}
+		onClickTopNavigateto(item:any){
+			// #ifdef MP
+			let url = this.headerTab[item].url
+			uni.navigateTo({
+				url:url
+			})
+			// #endif
+			// #ifndef MP
+			uni.navigateTo({
+				url:item.url
+			})
+			// #endif
+		}
 		onClickNavigateto(url:any){
+			console.log(url)
 			uni.navigateTo({
 				url:url
 			})
