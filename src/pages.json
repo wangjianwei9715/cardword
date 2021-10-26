@@ -143,7 +143,7 @@
 				"navigationStyle": "custom",
                 //  #endif
                 //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "直播",
+                "navigationBarTitleText": "",
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
                 //  #endif

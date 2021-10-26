@@ -56,9 +56,11 @@ export default Vue.extend({
         console.log(e);
       }
       app.data = {};
+	  // #ifdef APP-PLUS
       uni.navigateTo({
         url: "/pages/login/login",
       });
+	  // #endif
     });
     // #ifdef APP-PLUS
     app.sever = new SocketServer();

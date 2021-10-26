@@ -16,7 +16,7 @@
 
 		<view class="order-list">
 			<statusbar/>
-			<orderlist :orderList="orderList"  @send="onClickOrder"/>
+			<orderlist :orderList="orderList"  @send="onClickOrder" @operate="onClickOperate" />
 		</view>
 	</view>
 </template>
@@ -102,19 +102,8 @@
 			this.orderList = []
 			this.reqNewData() 
 		}
+		
 		onInputSearch(){
-			this.againReqNewData()
-		}
-		onClickBack(){
-			uni.navigateBack({
-			    delta: 1
-			});
-		}
-		onClickListTabs(id:number){
-			if(id==this.orderTabCheck){
-				return;
-			}
-			this.orderTabCheck = id;
 			this.againReqNewData()
 		}
 		onClickOrder(code:any){
@@ -122,6 +111,37 @@
 				url:'/pages/userinfo/order_details?code='+code
 			})
 		}
+		onClickOperate(code:any,cmd:any){
+			console.log(code+',cmd:====',cmd)
+			let params:{[x:string]:any}
+			// if(cmd=='toPay'){
+			// 	params= {
+			// 		channel:'alipay',
+			// 		delivery:this.addressData.id,
+			// 		num:Number(this.moneyNum)
+			// 	}
+			// 	app.http.Post('order/topay/'+code,params,(res:any)=>{
+					// app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
+					// 	
+					// })
+			// 	})
+			// }
+		}
+		onClickBack(){
+			uni.navigateBack({
+			    delta: 1
+			});
+		}
+		
+		onClickListTabs(id:number){
+			if(id==this.orderTabCheck){
+				return;
+			}
+			this.orderTabCheck = id;
+			this.againReqNewData()
+		}
+		
+		
 	}
 </script>
 

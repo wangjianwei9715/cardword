@@ -173,12 +173,13 @@ import {
 				num:Number(this.moneyNum)
 			}
 			app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
-				uni.redirectTo({
-					url:'/pages/userinfo/order_list'
-				})
-				// if(res.alipay.orderInfo!=''){
-				// 	app.payment.paymentAlipay(res.alipay.orderInfo,()=>{})
-				// }
+				if(res.alipay.orderInfo!=''){
+					app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
+						uni.redirectTo({
+							url:'/pages/userinfo/order_list'
+						})
+					})
+				}
 				
 			})
 			// #endif

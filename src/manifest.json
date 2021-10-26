@@ -19,7 +19,8 @@
             "OAuth" : {},
             "Maps" : {},
             "Geolocation" : {},
-            "Share" : {}
+            "Share" : {},
+            "Push" : {}
         },
         /* 模块配置 */
         "distribute" : {

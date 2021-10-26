@@ -24,7 +24,7 @@
 				</view>
 			</view>
 			<view class="order-index-center">
-				<image class="goods-image" :src="getGoodsImg(orderData.good.pic)" mode="aspectFill"></image>
+				<image class="goods-image" :src="decodeURIComponent(getGoodsImg(orderData.good.pic))" mode="aspectFill"></image>
 				<view class="goods-content">
 					<view class="title">{{orderData.good.title}}</view>
 					<view class="desc">
@@ -67,7 +67,7 @@
 			<view class="title">订单信息</view>
 			<view class="index" v-for="item in orderInfo" :key="item.id" v-show="item.desc!=0">
 				<text v-if="item.title=='订单编号'||item.title=='支付方式'">{{item.title}}:{{item.desc}}</text>
-				<text v-else>{{item.title}}:{{dateFormat(item.desc)}}</text>
+				<text v-else>{{item.title}}:{{item.desc>0?dateFormat(item.desc):''}}</text>
 				<view v-if="item.title=='订单编号'" class="copy" @click="onClickCopyInfo(item.desc)">复制</view>
 			</view>
 			<view class="info-tab">

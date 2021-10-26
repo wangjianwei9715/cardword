@@ -1,17 +1,17 @@
 <template>
 	<view class="livelist">
-		<view class="livelist-index" v-show="liveOldList.length>0"  v-for="item in liveList" :key="item.id" @click="onClickJumpUrl(item.id)">
+		<view class="livelist-index"  v-for="item in liveList" :key="item.id" @click="onClickJumpUrl(item.id)">
 			<view class="livelist-top" >
-				<image class="livelist-top-image" :src="item.pic" mode="aspectFill"></image>
+				<image class="livelist-top-image" :src="decodeURIComponent(getGoodsImg(item.pic))" mode="aspectFill"></image>
 				<view class="livelist-top-status">
-					<view v-if="item.status==1" class="livelist-top-status-ing">
+					<view v-if="item.stateName=='直播中'" class="livelist-top-status-ing">
 						<view class="icon-ing"></view>直播中
 					</view>
-					<view v-else-if="item.status==0" class="livelist-top-status-wait">
-						<view class="icon-wait"></view>即将直播
+					<view v-else class="livelist-top-status-wait">
+						<view class="icon-wait"></view>{{item.stateName}}
 					</view>
 				</view>
-				<view class="livelist-top-name">{{item.name}}</view>
+				<view class="livelist-top-name">{{item.merchant}}</view>
 			</view>
 			<view class="livelist-center">{{item.title}}</view>
 		</view>
@@ -21,11 +21,14 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import {
+		getGoodsImg
+	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		liveList:any;
-		
+		getGoodsImg = getGoodsImg;
 		created(){//在实例创建完成后被立即调用
 			
 		}

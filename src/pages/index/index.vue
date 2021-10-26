@@ -37,9 +37,13 @@
 		<view class="tab-center">
 			<statusbar/>
 			<view class="banner-content">
+				
 				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff"> 
-					<swiper-item v-for="(item,index) in advertisingList" :key="index">
-						<image class="swiper-image" :src="item.pic" mode="aspectFit" @click="onClickTopJumpUrl(item)"></image>
+					<swiper-item>
+						<image class="swiper-image" src="../../static/index/banner1.jpg" mode="aspectFit" @click="onClickTopJumpUrl('item')"></image>
+					</swiper-item>
+					<swiper-item>
+						<image class="swiper-image" src="../../static/index/banner_.jpg" mode="aspectFit" @click="onClickTopJumpUrl('item')"></image>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -81,7 +85,10 @@
 	@Component({})
 	export default class index extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
-		advertisingList:{[x:string]:any} = [];
+		advertisingList:any = [
+			'../../static/index/banner1.jpg',
+			'../../static/index/banner_.jpg',
+		];
 		tabList = [
 			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/goods/goods_find_list?classType=1'},
 			{img:'../../static/index/tab1.png',text:'足球',url:'/pages/goods/goods_find_list?classType=2'},
@@ -98,7 +105,7 @@
 			},
 			{
 				id:2,
-				title:'正在直播',
+				title:'热门',
 				img:'',
 				name:'卡皇球星社',
 				price:0
@@ -332,11 +339,10 @@
 		width: 100%;
 		height:180rpx;
 		box-sizing: border-box;
-		background:#F6F6F7;
 		border-radius: 4rpx;
 	}
 	.swiper-image{
-		width: 100%;
+		width: 710rpx;
 		height:180rpx;
 		box-sizing: border-box;
 		border-radius: 4srpx;

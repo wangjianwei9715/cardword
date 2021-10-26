@@ -27,82 +27,36 @@
 		pullDown = false;
 		pullDownRefresh = false;
 		goodTab = [
-			{id:1,name:'全部'},
-			{id:2,name:'我的直播'},
-			{id:3,name:'直播中'},
-			{id:4,name:'待直播'},
-			{id:5,name:'已完成'}
+			{id:0,name:'全部'},
+			{id:5,name:'我的直播'},
+			{id:2,name:'直播中'},
+			{id:1,name:'待直播'},
+			{id:3,name:'已完成'}
 		];
-		goodTabCheck = 1;
-		liveList:{[x:string]:any} = [
-			{
-				id:1,
-				status:1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/.png'
-			},
-			{
-				id:2,
-				status:0,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/.png'
-			},
-			{
-				id:3,
-				status:1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/.png'
-			},
-			{
-				id:4,
-				status:0,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/.png'
-			},
-			{
-				id:5,
-				status:-1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/.png'
-			},
-			{
-				id:6,
-				status:-1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/.png'
-			},
-			{
-				id:7,
-				status:-1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/.png'
-			},
-			{
-				id:8,
-				status:-1,
-				name:'卡皇球星社',
-				title:'20-21 National  Hobby原箱*3',
-				pic:'../../static/goods/.png'
-			}
-
-		]
+		goodTabCheck = 0;
+		currentPage = 1;
+		pageSize = 10;
+		noMoreData = false;
+		liveList:{[x:string]:any} = []
 		onLoad(query:any) {
 			this.onEventUI('liveFind',(res:any)=>{
 				this.searchText = res
 			})
+			this.reqNewData()
+		}
+		getLiveList(){
+			
+			
 		}
 		onClickListTabs(id:any){
 			if(id==this.goodTabCheck){
 				return;
 			}
-			this.goodTabCheck = id
+			this.goodTabCheck = id;
+			this.liveList = [];
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.reqNewData()
 		}
 		onClickSearch(){
 			// 搜索
@@ -112,6 +66,37 @@
 		}
 		onClickLive(id:any){
 
+		}
+		reqNewData(cb?:Function) {
+			// 获取更多商品
+			if (this.noMoreData) {
+				return;
+			}
+			
+			let params = {
+				tp:this.goodTabCheck,
+				pageIndex:this.currentPage,
+				pageSize:this.pageSize
+			}
+			
+			if(this.goodTabCheck<5){
+				
+				app.http.Get('broadcast',params,(data:any)=>{
+					if(data.totalPage<=this.currentPage){
+						this.noMoreData = true;
+					}
+					if(data.list){
+						if(this.currentPage==1){
+							this.liveList = []
+						}
+						this.liveList = this.liveList.concat(data.list);
+						console.log('goodslist========',this.liveList)
+					}
+					this.currentPage++;
+					if(cb) cb()
+				})
+			}
+			
 		}
 	}
 </script>
