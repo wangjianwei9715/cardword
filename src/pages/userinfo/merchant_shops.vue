@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts">
+	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
@@ -33,64 +34,44 @@
 			{id:2,name:'已成交'}
 		];
 		goodTabCheck = 1;
-		goodsList:{[x:string]:any} = [
-			{
-				id:1,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:410,
-				num:120,
-				price:149,
-				tips:'满10组减5元'
-			},
-			{
-				id:2,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:200,
-				num:150,
-				price:349,
-				tips:'满10组减50元'
-			},
-			{
-				id:3,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:300,
-				num:50,
-				price:1429,
-				tips:'满20组减100元'
-			},
-			{
-				id:4,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:500,
-				num:220,
-				price:2429,
-				tips:'满20组减100元'
-			},
-			{
-				id:5,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:300,
-				num:50,
-				price:1429,
-				tips:'满20组减100元'
-			},
-			{
-				id:6,
-				img:'../../static/goods/.png',
-				title:'20-21 National Treasures Hobby原箱*3',
-				num_all:500,
-				num:220,
-				price:2429,
-				tips:'满20组减100元'
-			}
-		];
+		merchantId = 0;
+		goodsList:{[x:string]:any} = [];
+		currentPage = 1;
+		pageSize = 10;
+		noMoreData = false;
 		onLoad(query:any) {
+			if(query.id){
+				this.merchantId = query.id;
+				this.reqNewData()
+			}
+		}
+		reqNewData(cb?:Function) {
+			// 获取更多商品
+			if (this.noMoreData) {
+				return;
+			}
 			
+			let params:{[x:string]:any} = {
+				tp:this.goodTabCheck,
+				pageIndex: this.currentPage,
+				pageSize:this.pageSize,
+			}
+			
+			app.http.Get('seller/'+this.merchantId+'/goodlist', params, (data: any) => {
+				if(data.totalPage<=this.currentPage){
+					this.noMoreData = true;
+				}
+				if(data.list){
+					if(this.currentPage==1){
+						this.goodsList = []
+					}
+					this.goodsList = this.goodsList.concat(data.list);
+					console.log('goodslist========',this.goodsList)
+				}
+				
+				this.currentPage++;
+				if(cb) cb()
+			});
 		}
 		onClickBack(){
 			uni.navigateBack({
@@ -104,7 +85,11 @@
 			if(id==this.goodTabCheck){
 				return;
 			}
-			this.goodTabCheck = id
+			this.goodTabCheck = id;
+			this.noMoreData = false;
+			this.currentPage = 1;
+			this.goodsList = [];
+			this.reqNewData()
 		}
 		// 跳转商品详情
 		onClickJumpDetails(id:any){

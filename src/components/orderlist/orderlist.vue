@@ -12,7 +12,7 @@
 				</view>
 			</view>
 			<view class="orderlist-index-center" @click="onClickJumpUrl(item.code)">
-				<image class="goods-image" :src="decodeURIComponent(getGoodsImg(item.good.pic))" mode="aspectFill"></image>
+				<image class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic))" mode="aspectFill"></image>
 				<view class="goods-content">
 					<view class="title">{{item.good.title}}</view>
 					<view class="desc">
@@ -26,7 +26,7 @@
 					合计：<view class="price-index">￥<text class="price-num">{{item.price}}</text></view>
 				</view>
 				<view class="operate" v-show="item.operate" >
-					<view :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item.code,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
+					<view :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
 				</view>
 			</view>
 		</view>
@@ -69,8 +69,8 @@
 		onClickJumpUrl(id:any){
 			this.$emit("send", id);
 		}
-		onClickOperate(code:any,cmd:any){
-			this.$emit("operate", code,cmd);
+		onClickOperate(item:any,cmd:any){
+			this.$emit("operate", item,cmd);
 		}
 		getOrderList(){
 			let data = JSON.parse(JSON.stringify(this.orderList))

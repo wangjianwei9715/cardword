@@ -40,28 +40,7 @@
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
-		orderList:{[x:string]:any} = [
-			{
-				id:4,
-				state:3,
-				coun_down:250,
-				num:5,
-				seller:{
-					avatar:'',
-					name:'皇球星社'
-				},
-				goods:{
-					img:'../../static/goods/.png',
-					title:'20-21 National Treasures Hobby原箱*3',
-					price:149
-				},
-				operate:[
-					{cmd:'wuliuu',name:'查看物流'},
-					{cmd:'reward',name:'我的中卡'}
-				]
-			},
-			
-		];
+		orderList:{[x:string]:any} = [];
 		onLoad(query:any) {
 			if(query.type){
 				this.orderTabCheck = query.type
@@ -111,21 +90,31 @@
 				url:'/pages/userinfo/order_details?code='+code
 			})
 		}
-		onClickOperate(code:any,cmd:any){
-			console.log(code+',cmd:====',cmd)
+		onClickOperate(item:any,cmd:any){
+			let code = item.code
 			let params:{[x:string]:any}
-			// if(cmd=='toPay'){
-			// 	params= {
-			// 		channel:'alipay',
-			// 		delivery:this.addressData.id,
-			// 		num:Number(this.moneyNum)
-			// 	}
-			// 	app.http.Post('order/topay/'+code,params,(res:any)=>{
-					// app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-					// 	
-					// })
-			// 	})
-			// }
+			if(cmd=='view'){
+				uni.navigateTo({
+					url:'/pages/userinfo/order_details?code='+code
+				})
+			}else if(cmd=='wuliu'){
+				uni.navigateTo({
+					url:'/pages/userinfo/order_logistics?code='+code
+				})
+			}
+			if(cmd=='toPay'){
+				params= {
+					channel:'alipay',
+					delivery:0,
+					num:Number(item.num)
+				}
+				console.log(params)
+				app.http.Post('order/topay/'+code,params,(res:any)=>{
+					app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
+						this.reqNewData()
+					})
+				})
+			}
 		}
 		onClickBack(){
 			uni.navigateBack({

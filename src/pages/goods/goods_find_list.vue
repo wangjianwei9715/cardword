@@ -42,8 +42,8 @@ import { Component } from "vue-property-decorator";
 		goodTab = [
 			{id:1,name:'在售'},
 			{id:0,name:'即将发售'},
-			{id:3,name:'待直播'},
-			{id:4,name:'直播中'},
+			{id:3,name:'待视频'},
+			{id:4,name:'视频中'},
 			{id:2,name:'已拼成'}
 		];
 		goodTabCheck = 1;

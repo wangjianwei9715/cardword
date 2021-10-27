@@ -161,7 +161,10 @@ import {
 			}
 			app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
 				app.platform.payment(res.wechat,(data:any)=>{
-					console.log(data)
+					
+				})
+				uni.redirectTo({
+					url:'/pages/userinfo/order_list'
 				})
 			})
 			
@@ -175,12 +178,12 @@ import {
 			app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
 				if(res.alipay.orderInfo!=''){
 					app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-						uni.redirectTo({
-							url:'/pages/userinfo/order_list'
-						})
+						
+					})
+					uni.redirectTo({
+						url:'/pages/userinfo/order_list'
 					})
 				}
-				
 			})
 			// #endif
 		}

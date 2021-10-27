@@ -59,6 +59,8 @@
     "@dcloudio/uni-stat": "^2.0.0-31920210709003",
     "@vue/shared": "^3.1.4",
     "axios": "^0.21.1",
+    "browserslist": "^4.17.5",
+    "caniuse-lite": "^1.0.30001271",
     "core-js": "^3.15.2",
     "crypto-js": "^4.0.0",
     "crypto-ts": "^1.0.2",

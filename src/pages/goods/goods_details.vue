@@ -81,7 +81,7 @@
 		<!-- 卖家信息 -->
 		<view class="goods-seller" v-if="goodsData.publisher">
 			<view class="goods-seller-left">
-				<image class="goods-seller-left-avatar" src="" mode="aspectFit"></image>
+				<image class="goods-seller-left-avatar" :src="decodeURIComponent(goodsData.publisher.avatar)" mode="aspectFit"></image>
 				<view class="goods-seller-left-desc">
 					<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
 					<view class="goods-seller-left-desc-tips">已拼团{{goodsData.publisher.deal}}组</view>
@@ -99,14 +99,14 @@
 				</view>
 			</view>
 		</view>
-		<!-- 直播可拖动控件 -->
+		<!-- 视频可拖动控件 -->
 		<movable-area class="movable-area" v-if="goodsState == 4">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
 				<livewicket :liveImg="liveImg" :liveStatus="liveStatus"></livewicket>
 			</movable-view>
 		</movable-area>
 		<!-- 底部吐司 -->
-		<tips :tipsData="tipsData" v-if="goodsState==1"></tips>
+		<!-- <tips :tipsData="tipsData" v-if="goodsState==1"></tips> -->
 		<!-- 底部按钮 -->
 		<view class="btn-content" v-if="goodsState==1||goodsState==0">
 			<view class="btn-content-left">
@@ -117,7 +117,7 @@
 			</view>
 			<view class="btn-confirm" @click="onClickBuy()">立即购买</view>
 		</view>
-		<view class="btn-contented" v-else>
+		<view class="btn-contented" v-else-if="goodsState>=2">
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
 			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
 		</view>
@@ -156,7 +156,7 @@
 		cardData:any = [];
 		tipBtn:{[x:string]:any}=[
 			{id:1,name:'客服',url:'../../static/goods/kefu@2x.png',class:'kf'},
-			{id:2,name:'直播提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
+			{id:2,name:'视频提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
 		];
 		operationShow=false;
 		operationData = [
@@ -176,7 +176,7 @@
 		];
 		discountList:any = [];
 		liveImg = '../../static/goods/.png';
-		liveStatus = '直播回放'
+		liveStatus = '视频回放'
 		onLoad(query:any) {
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId)
@@ -275,7 +275,7 @@
 		}
 		onClickShops(){
 			uni.navigateTo({
-				url: '/pages/userinfo/merchant_shops'
+				url: '/pages/userinfo/merchant_shops?id='+this.goodsData.publisher.id
 			})
 		}
 		onClickAllCard(){
@@ -369,12 +369,20 @@
 		}
 		
 		onClickBuy(){
+			// #ifndef MP
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
+			// #endif
+			// #ifdef MP-WEIXIN
+			if(app.token.accessToken == ''){
+				app.platform.wechatLogin();
+				return;
+			}
+			// #endif
 			uni.navigateTo({
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))
 			})

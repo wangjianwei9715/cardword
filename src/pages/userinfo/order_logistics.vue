@@ -1,104 +1,49 @@
 <template>
-	<!-- <logistics></logistics> -->
+	
 	<view class="contents">
-		<view class="order-status">
-			<text>运输中</text>
-		</view>
-		<view class="order-content">
-			<view class="order-info">
-				<text>快递公司：顺丰快递</text>
-				<view class="order-num">
-					<text>快递单号：45614512121454561</text>
-					<button class="btn-copy" @click="onClickCopyOrderNum()">复制</button>
-				</view>
-			</view>
-			<view class="cross-line"></view>
-
-			<!-- 物流信息展示 -->
-			<view class="order-step" v-if="isShowOrderAddress">
-				<view class="transport-info" v-for="(item,index) in orderAddressList" :key="index">
-					<view class="desc">
-						<view class="dot-bg" v-if="item.status==4"></view>
-						<view :class="item.status==1?'car-bg':'car-bg2'" v-else>
-							<text class="order-receive" v-if="item.status==0">收</text>
-							<image class="pic-car" v-else-if="item.status==1||item.status==2"></image>
-							<image class="pic-order" v-else-if="item.status==3"></image>
-						</view>
-						<view
-							:class="item.status==4?'cross-line-column3':(item.status==1?'cross-line-column2':'cross-line-column')"
-							v-if="item.status!=3"></view>
-					</view>
-					<view class="desc">
-						<view class="transport-info-bg" v-if="item.status!=0">
-							<text :class="item.status==1?'transport-status':'transport-status2'"
-								v-if="item.status!=4">{{item.transport_status}}</text>
-							<text
-								:class="item.status==1?'transport-time':'transport-time2'">{{item.transport_time}}</text>
-						</view>
-						<text :class="item.status==1?'transport-desc':'transport-desc2'">{{item.transport_desc}}</text>
-					</view>
-				</view>
-			</view>
-
-			<view class="express" v-else>
-				<view class="title">暂无物流信息</view>
-			</view>
-		</view>
+		<logistics :wlInfo="wlInfo" @send="onClickCopy"></logistics>
 	</view>
 </template>
 
 <script lang="ts">
+	import { app } from "@/app";
 	import {
 		Component
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		isShowOrderAddress = true;
-		orderAddressList = [{
-				status: 0,
-				transport_status: '',
-				transport_time: '09-18 11:12',
-				transport_desc: '[收货地址]杭州转运中心公司 已出发，下一站 浙江省杭 州市余杭区城西交换站 185*****1542',
-			},
-			{
-				status: 1,
-				transport_status: '运输中',
-				transport_time: '09-18 11:12',
-				transport_desc: '杭州转运中心公司 已出发，下一站 浙江省杭州市余杭区 城西交换站',
-			},
-			{
-				status: 4,
-				transport_status: '',
-				transport_time: '09-18 11:12',
-				transport_desc: '杭州转运中心公司 已出发，下一站 浙江省杭州市余杭区 城西交换站',
-			},
-			{
-				status: 4,
-				transport_status: '',
-				transport_time: '09-18 11:12',
-				transport_desc: '杭州转运中心公司 已出发，下一站 浙江省杭州市余杭区 城西交换站',
-			},
-			{
-				status: 2,
-				transport_status: '已发货',
-				transport_time: '09-18 11:12',
-				transport_desc: '商品已发货',
-			},
-			{
-				status: 3,
-				transport_status: '已下单',
-				transport_time: '09-18 11:12',
-				transport_desc: '商品已下单',
-			}
-		];
+		goodsCode = '';
+		wlInfo:{[x:string]:any} = {};
 
 		onLoad(query: any) {
-
+			if(query.code){
+				this.goodsCode = query.code;
+				this.getWuliu()
+			}
 		}
-		
+		getWuliu(){
+			app.http.Get('me/orderInfo/wuliu/'+this.goodsCode,{},(res:any)=>{
+				this.wlInfo = {
+					post_name:res.data.wuliuName,
+					post_no:res.data.no,
+					list:res.data.list
+				}
+			})
+		}		
 		onClickCopyOrderNum(){
 			console.log('复制单号')
+		}
+		onClickCopy(text:any){
+			uni.setClipboardData({
+				data: text,
+				success:()=> {
+					uni.showToast({
+						title:'复制成功',
+						icon:'none'
+					})
+				}
+			});
 		}
 	}
 </script>

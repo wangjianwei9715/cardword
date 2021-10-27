@@ -4,7 +4,7 @@
 		<view class="header" v-if="orderData.good">
 			<view v-if="orderData.state==0" class="header-waitpay">订单将于 {{countDownStr}} 后关闭</view>
 			<view v-else-if="orderData.state==-1" class="header-close">拼团未成功订单关闭，款项已原路退回…</view>
-			<view v-else class="header-orther">
+			<view v-else-if="orderData.good.state>=2" class="header-orther">
 				<view class="header-statestr">{{orderData.good.desc?orderData.good.desc:''}}</view>
 				<view class="header-btn-content">
 					<view class="header-btn-pintuan">拼团结果</view>
@@ -72,7 +72,7 @@
 			</view>
 			<view class="info-tab">
 				<view class="tab-index"><view class="icon-lianxi"></view>联系客服</view>
-				<view class="tab-index"><view class="icon-tousu"></view>投诉订单</view>
+				<view class="tab-index" @click="onClickComplain"><view class="icon-tousu"></view>投诉订单</view>
 			</view>
 		</view>
 		<!-- 底部按钮 -->
@@ -169,6 +169,11 @@
 		onClickGoods(){
 			uni.navigateTo({
 				url: '/pages/goods/goods_details?id='+this.orderData.good.goodCode
+			})
+		}
+		onClickComplain(){
+			uni.navigateTo({
+				url:'/pages/userinfo/order_complain?code='+this.orderCode+'&data='+decodeURIComponent(JSON.stringify(this.orderData.good))
 			})
 		}
 		// 复制订单号

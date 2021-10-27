@@ -21,8 +21,8 @@ import { Component } from "vue-property-decorator";
 	export default class ClassName extends BaseNode {
 		goodTab = [
 			{id:1,name:'全部'},
-			{id:3,name:'直播中'},
-			{id:4,name:'待直播'},
+			{id:3,name:'视频中'},
+			{id:4,name:'待视频'},
 			{id:5,name:'已完成'}
 		];
 		goodTabCheck = 1;

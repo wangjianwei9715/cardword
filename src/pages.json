@@ -24,7 +24,7 @@
 				"navigationStyle": "custom",
                 //  #endif
                 //  #ifdef MP-WEIXIN
-                // "navigationBarTitleText": "直播",
+                // "navigationBarTitleText": "视频",
 				// "navigationBarBackgroundColor": "#ffffff",
 				// "navigationBarTextStyle": "black",
                 //  #endif
@@ -215,7 +215,7 @@
 				"pagePath": "pages/index/live",
 				"iconPath": "static/index/tabbar_live.png",
 				"selectedIconPath": "static/index/tabbar_live_.png",
-				"text": "直播"
+				"text": "视频"
 			},
             //  #endif
 			{
@@ -311,7 +311,7 @@
                 "path" : "user_live",
                 "style" :                                                                                    
                 {
-                    "navigationBarTitleText": "我的直播",
+                    "navigationBarTitleText": "我的视频",
                     "navigationBarBackgroundColor":"#ffffff",
                     "navigationBarTextStyle":"black"
                 }
@@ -406,6 +406,16 @@
                 "style" :                                                                                    
                 {
                     "navigationBarTitleText":"物流",
+                    "navigationBarBackgroundColor":"#FFFFFF",
+                    "enablePullDownRefresh": false
+                }
+                
+            },
+            {
+                "path" : "order_complain",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText":"订单投诉",
                     "navigationBarBackgroundColor":"#FFFFFF",
                     "enablePullDownRefresh": false
                 }

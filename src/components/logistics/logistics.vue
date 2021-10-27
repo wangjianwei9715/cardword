@@ -148,7 +148,7 @@
 	.detail-copy{
 		width: 27rpx;
 		height:28rpx;
-		background:url(../../static/goods/details/icon_copy.png) no-repeat center;
+		background:url(../../static/goods/icon_copy.png) no-repeat center;
 		background-size: 100% 100%;
 		margin-left: 16rpx;
 		margin-bottom: -2rpx;

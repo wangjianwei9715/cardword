@@ -90,12 +90,16 @@ export default class PlatformManager {
 		return PlatformManager.instance;
     }
 	wechatLogin(){
+		uni.showLoading({
+			title: '正在登录'
+		});
 		uni.login({
             provider: "weixin",
             success: (loginRes) => {
                 console.log("weixin-res=", loginRes);
                 // #ifdef MP
 				app.http.Post("user/login/wechat/mini",{jsCode:loginRes.code,os:'mini',device:'iosmini'},(data:any)=>{
+					uni.hideLoading()
 					app.data = data.data;
 					app.opKey = data.opKey
 					app.socketInfo = data.app;

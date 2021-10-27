@@ -137,9 +137,10 @@ export default Vue.extend({
       );
     }
     // #endif
+    
     // #ifdef APP-PLUS
     app.version = plus.runtime.version || "1.0.0";
-
+   
     plus.device.getOAID({
       complete: (res: any) => {
         if (res.oaid) {
@@ -151,6 +152,7 @@ export default Vue.extend({
         if (app.platform.deviceID == "") {
           app.platform.deviceID = uni.getSystemInfoSync().uuid;
         }
+        app.update = UpdateManager.getInstance();
         if (!app.localTest) {
           let launchUrl: { [x: string]: any } = {};
           let configLaunchUrl = uni.getStorageSync("configLaunchUrl");

@@ -2,10 +2,10 @@
 	<view class="livelist">
 		<view class="livelist-index"  v-for="item in liveList" :key="item.id" @click="onClickJumpUrl(item.id)">
 			<view class="livelist-top" >
-				<image class="livelist-top-image" :src="decodeURIComponent(getGoodsImg(item.pic))" mode="aspectFill"></image>
+				<image class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 				<view class="livelist-top-status">
-					<view v-if="item.stateName=='直播中'" class="livelist-top-status-ing">
-						<view class="icon-ing"></view>直播中
+					<view v-if="item.stateName=='视频中'" class="livelist-top-status-ing">
+						<view class="icon-ing"></view>视频中
 					</view>
 					<view v-else class="livelist-top-status-wait">
 						<view class="icon-wait"></view>{{item.stateName}}
