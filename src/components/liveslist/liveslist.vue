@@ -52,7 +52,6 @@
 		flex-wrap: wrap;
 		&-index{
 			width: 346rpx;
-			height:376rpx;
 			border-radius: 4rpx;
 			background:#fff;
 			overflow: hidden;
@@ -133,9 +132,8 @@
 		}
 		&-center{
 			width: 100%;
-			height:116rpx;
 			box-sizing: border-box;
-			padding:16rpx 20rpx 0 20rpx;
+			padding:16rpx 20rpx 20rpx 20rpx;
 			font-size: 28rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;

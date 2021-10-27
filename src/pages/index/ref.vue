@@ -33,7 +33,9 @@
 			if(refData){
 				this.historyList = refData
 			}
-			
+			this.onEventUI('refBack',(res)=>{
+				this.searchTetxt = res.text
+			})
 		}
 		onClickBack(){
 			uni.navigateBack({
@@ -64,18 +66,26 @@
 			
 			let date:any = new Date()
 			let params={
-				highlight:1,
 				q:encodeURIComponent(text),
 				timeStamp:Date.parse(date)/1000
 			}
-			uni.navigateTo({
-				url:'/pages/goods/goods_ref?q='+text
+			uni.showLoading({
+				title: '加载中'
+			});
+			
+			app.http.Get('search/query_price',params,(res:any)=>{
+				uni.hideLoading();
+				if(!res.list){
+					uni.showToast({
+						title: '暂无数据',
+						icon:'none'
+					});
+					return;
+				}
+				uni.navigateTo({
+					url: '/pages/goods/goods_ref?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
+				})
 			})
-			// app.http.Get('dataApi/search',params,(res:any)=>{
-			// 	uni.redirectTo({
-			// 		url: '/pages/goods/index?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
-			// 	})
-			// })
 		}
 	}
 </script>

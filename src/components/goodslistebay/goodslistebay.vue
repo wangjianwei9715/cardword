@@ -1,7 +1,7 @@
 <template name="goodslist">
 	<view class="content">
 		<view class="goodslist-index" v-for="item in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
-			<image class="goodslist-pic" :src="item.img" mode="aspectFill"></image>
+			<image class="goodslist-pic" :src="item.pic" mode="aspectFill"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-tip" :class="item.type=='拍卖'?'icon-paimai':'icon-yikou'" >{{item.type}}</view>
 				<view class="goodslist-title">{{item.title}}</view>
@@ -45,7 +45,6 @@
 	.goodslist{
 		&-index{
 			width: 100%;
-			height:232rpx;
 			background: #FFFFFF;
 			border-radius: 4rpx;
 			box-sizing: border-box;
@@ -62,7 +61,6 @@
 		}
 		&-right{
 			width: 440rpx;
-			height:176rpx;
 			box-sizing: border-box;
 		}
 		&-title{

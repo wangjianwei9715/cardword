@@ -47,6 +47,9 @@
 			}
 			this.reqNewData() 
 		}
+		onReachBottom(){
+			this.reqNewData()
+		}
 		reqNewData(cb?:Function) {
 		  // 获取更多商品
 		  if (this.noMoreData) {
@@ -67,7 +70,8 @@
 				}else{
 					this.orderList = this.orderList.concat(data.list);
 				}
-			}else{
+			}
+			if(!data.list || data.list.length<this.pageSize){
 				this.noMoreData = true;
 			}
 			console.log(this.orderList)

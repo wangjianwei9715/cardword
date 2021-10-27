@@ -38,15 +38,27 @@
 		pageSize = 10;
 		noMoreData = false;
 		liveList:{[x:string]:any} = []
+		searchData:any = [];
+		scrollId = '';
 		onLoad(query:any) {
 			this.onEventUI('liveFind',(res:any)=>{
-				this.searchText = res
+				this.searchText = res.text;
+				this.currentPage = 1;
+				this.liveList = [];
+				this.noMoreData = false;
+				this.reqNewData()
+				
 			})
 			this.reqNewData()
 		}
-		getLiveList(){
-			
-			
+		//   加载更多数据
+		onReachBottom() {
+			if(this.scrollId==''){
+				this.reqNewData()
+			}else{
+				this.searchReqNew()
+			}
+		     
 		}
 		onClickListTabs(id:any){
 			if(id==this.goodTabCheck){
@@ -67,21 +79,59 @@
 		onClickLive(id:any){
 
 		}
+		searchReqNew(){
+			// 获取更多商品
+			if (this.noMoreData) {
+				return;
+			}
+			let date:any = new Date()
+			let params={
+				highlight:1,
+				timeStamp:Date.parse(date)/1000,
+				scrollId:this.scrollId
+			}
+			
+			app.http.Get('search/broadcast',params,(res:any)=>{
+				this.scrollId = res.scrollId;
+				this.liveList = this.liveList.concat(res.list);
+				if(res.end){
+					this.noMoreData = true
+				}
+			})
+			
+		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
 			if (this.noMoreData) {
 				return;
 			}
 			
-			let params = {
-				tp:this.goodTabCheck,
+			let params:any = {
 				pageIndex:this.currentPage,
 				pageSize:this.pageSize
 			}
 			
 			if(this.goodTabCheck<5){
-				
+				params.tp = this.goodTabCheck;
+				if(this.searchText){
+					params.q = this.searchText
+				}
 				app.http.Get('broadcast',params,(data:any)=>{
+					if(data.totalPage<=this.currentPage){
+						this.noMoreData = true;
+					}
+					if(data.list){
+						if(this.currentPage==1){
+							this.liveList = []
+						}
+						this.liveList = this.liveList.concat(data.list);
+						console.log('goodslist========',this.liveList)
+					}
+					this.currentPage++;
+					if(cb) cb()
+				})
+			}else{
+				app.http.Get('me/broadcast',params,(data:any)=>{
 					if(data.totalPage<=this.currentPage){
 						this.noMoreData = true;
 					}

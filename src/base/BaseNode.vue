@@ -19,7 +19,7 @@ import { Vue,Component } from "vue-property-decorator";
 					this.$delete(this.eventListenerMap, eventName);
 				}
 			}
-			// #ifndef MP
+			// #ifdef APP-PLUS
 			app.sever.unregisterHandlers(this);
 			// #endif
 			this.clearAllScheduler();

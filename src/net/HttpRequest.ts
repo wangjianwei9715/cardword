@@ -78,20 +78,19 @@ export default class HttpRequest {
 			if (url.indexOf("me/certify") != -1) {
 				config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 			}
-			
-			if(url.indexOf("me/goodTemplate/add") != -1){
-				this.getStr(config,'addTemplate');
-			}
-			if(url.indexOf("me/goodTemplate/edit") != -1){
-				this.getStr(config,'editTemplate');
-			}
-			if(url.indexOf("user/complain") != -1){
-				this.getStr(config,'userComplain');
-			}
-			// 编辑商品
-			if (url.indexOf("good/edit") != -1) {
-				this.getStr(config,'editGood');
-			}
+			// if(url.indexOf("opSign") != -1){
+			// 	// 示例 [opSign=_searchSecret]
+			// 	let start = url.indexOf('[');
+			// 	let end = url.indexOf(']');
+			// 	let newUrlData = url.split(url.slice(start,end+1));
+			// 	let opsign =  url.substring(start+1,end).slice(7);
+			// 	let newUrl  = '';
+			// 	for(let i of newUrlData){
+			// 		newUrl += i;
+			// 	}
+			// 	config.baseURL = newUrl;
+			// 	this.getStr(config,opsign); 
+			// }
 			// 商品下单
 			if(url.indexOf("good/topay/") != -1){
 				this.getStr(config,'payGoodCode'); 
@@ -100,43 +99,18 @@ export default class HttpRequest {
 			if (url.indexOf("order/topay/") != -1) {
 				this.getStr(config,'payGoodOrder'); 
 			}
-			// 入驻保证金
-			if (url.indexOf("topay/custom") != -1) {
-				this.getStr(config,'payCustom');
-			}
-			// 上传商家资质
-			if (url.indexOf("user/sellerCertify/upload") != -1) {
-				this.getStr(config,'sellerCertifyUpload');
-			}
 			// 微信登录
 			if (url.indexOf("user/login/wechat/app") != -1) {
 				this.getStr(config,'wechat',true); 
 			}
-			// 重新绑定手机号 第一步
-			if (url.indexOf("user/reBindPhone/checkOldPhone") != -1) {
-				this.getStr(config,'checkOldPhone'); 
+			// 列表 查价 搜索
+			if (url.indexOf("search/good") != -1 || url.indexOf("search/query_price") != -1) {
+				this.getStr(config,'searchSecret',true); 
 			}
-			// 重新绑定手机号 第二步
-			if (url.indexOf("user/reBindPhone/validCode1") != -1) {
-				this.getStr(config,'validCode1'); 
-			}
-
-			// 重新绑定手机号 第三步
-			if (url.indexOf("user/reBindPhone/newPhone") != -1) {
-				this.getStr(config,'newPhone'); 
-			}
-			// 重新绑定手机号 第四步
-			if (url.indexOf("user/reBindPhone/validCode2") != -1) {
-				this.getStr(config,'validCode2'); 
-			}
+			
 			// 短信验证码
 			if(url.indexOf("user/code") != -1){
 				let data = 'opk_smscode_'+config.data.phone+'_'+config.data.type;
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			// 物流
-			if(url.indexOf("me/order/seller/delivered") != -1){
-				let data = 'opk_'+app.opKey+'_delivered_'+config.data.code+'_'+config.data.wuliu+'_'+config.data.no
 				config.headers['opSign'] = Md5.hashStr(data)
 			}
 			// 确认收货
@@ -144,98 +118,11 @@ export default class HttpRequest {
 				let data = 'opk_'+app.opKey+'_receive_good_'+config.data.code
 				config.headers['opSign'] = Md5.hashStr(data)
 			}
-			// 买家确认支付_线下交易
-			if(url.indexOf("me/order/buyer/offpayed") != -1){
-				let data = 'opk_'+app.opKey+'_offpayed_'+config.data.code
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			// 买家确认收货_线下交易
-			if(url.indexOf("me/order/buyer/receive_good") != -1){
-				let data = 'opk_'+app.opKey+'_receive_good_'+config.data.code
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			// 卖家确认收钱_线下交易
-			if(url.indexOf("me/order/seller/receive_offpay") != -1){
-				let data = 'opk_'+app.opKey+'_receive_offpay_'+config.data.code
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			// 搜索
-			if(url.indexOf("search") != -1){
-				if(config.url?.indexOf('scrollId') == -1){
-					let data = '';
-					let urlindex = config.url?.indexOf('?');
-					data += config.url?.substring(urlindex?urlindex+1:7);
-					console.log('search=====',data+'_searchSecret')
-					config.headers['opSign'] = Md5.hashStr(data+'_searchSecret')
-				}
-			}
-			// 商品竞拍
-			if(url.indexOf("good/bid") != -1){
-				let data = 'opk_'+app.opKey+'_'+config.data.code+'_'+config.data.price;
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			// 合并订单
-			if(url.indexOf("me/order/seller/merge") != -1){
-				let codes = config.data.codes||'';
-				let data = 'opk_'+app.opKey+'_'+codes;
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			if(url.indexOf("sendMessage") != -1){
-				let bucketId = config.data.bucketId;
-				let imgurl = config.data.picUrl||'';
-				let content = config.data.content||'';
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+bucketId+'_'+imgurl+'_'+content)
-			}
+			
 			if (url.indexOf("user/bindPushIdentifier") != -1) {
 				let info = plus.push.getClientInfo();
 				console.log('info==',info);
 				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+info.clientid);
-			}
-			// 修改登录密码
-			if (url.indexOf("accountInfo") != -1) {
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_accountInfo');
-			}
-			// 商品发布
-			if(url.indexOf("good/publish") != -1){
-				if (!config.headers['opSign']){
-					let year = config.data.year?config.data.year:0;
-					let attr = config.data.attr?config.data.attr:''	;
-					let data = 'opk_'+app.opKey+'_'+config.data.title+'_'+config.data.cate+'_'+year+'_'+attr+'_'+config.data.appearance+'_'+config.data.sell_method+'_'+config.data.price;
-					config.headers['opSign'] = Md5.hashStr(data);
-				}
-			}
-			// 议价
-			if (url.indexOf("good/negotiate/") != -1) {
-				let goods = 0;
-				if(config.data.negotiateId){
-					goods=config.data.negotiateId
-				}else{
-					goods=0
-				}
-				let url = goods+'_'+config.data.operate+'_';
-				if(config.data.price){
-					url+=config.data.price
-				}else{
-					url+='0'
-				}
-				console.log('opk_'+app.opKey+'_'+url)
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+url);
-			}
-			
-			// 支付套餐
-			if (url.indexOf("package/topay/") != -1) {
-				let id = config.url?.substring(14);
-				console.log('md5====',Md5.hashStr('opk_'+app.opKey+'_'+id+'_'+config.data.channel))
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+id+'_'+config.data.channel);
-			}
-			
-			// 取消标签
-			if (url.indexOf("good/removeLable") != -1) {
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+config.data.codes);
-			}
-			// 修改标签
-			if (url.indexOf("good/editLable") != -1) {
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+config.data.codes+'_'+config.data.label);
 			}
 			
 			if(url.indexOf("app/update") != -1){
@@ -395,17 +282,24 @@ export default class HttpRequest {
 	}
 	getStr(config:any,msg:any,type?:any){
 		let str = ''
-		for(let i in config.data){
-			if(config.data[i]!=undefined){
-				str+= i+'='+config.data[i]+'&'
+		if(config.data){
+			for(let i in config.data){
+				if(config.data[i]!=undefined){
+					str+= i+'='+config.data[i]+'&'
+				}
 			}
+			str = str.substring(0,str.lastIndexOf('&'));
+		}else{
+			str = config.url.split('?')[1];
 		}
-		str = str.substring(0,str.lastIndexOf('&'));
+		
 		if(type){
 			config.headers['opSign'] = Md5.hashStr(str+'_'+msg)
+			console.log('opSign==',str+'_'+msg)
 			return ;
 		}else{
 			config.headers['opSign'] = Md5.hashStr(app.opKey+'_'+str+'_'+msg)
+			console.log('opSign==',app.opKey+'_'+str+'_'+msg)
 			return ;
 		}
 		

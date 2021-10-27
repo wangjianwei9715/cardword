@@ -63,21 +63,12 @@
 				}
 			}
 			
-			let date:any = new Date()
-			let params={
-				highlight:1,
-				q:encodeURIComponent(text),
-				timeStamp:Date.parse(date)/1000
-			}
-			uni.$emit('liveFind',text)
+			
+			uni.$emit('liveFind',{text:text})
 			uni.switchTab({
 				url: '/pages/index/live'
 			})
-			// app.http.Get('dataApi/search',params,(res:any)=>{
-			// 	uni.redirectTo({
-			// 		url: '/pages/goods/index?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
-			// 	})
-			// })
+			
 		}
 	}
 </script>

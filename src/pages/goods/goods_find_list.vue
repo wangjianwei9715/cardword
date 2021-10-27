@@ -91,6 +91,9 @@ import { Component } from "vue-property-decorator";
 			}
 			
 		}
+		onReachBottom(){
+			this.reqNewData('reach')
+		}
 		onClickBack(){
 			uni.navigateBack({
 			    delta: 1
@@ -194,7 +197,7 @@ import { Component } from "vue-property-decorator";
 			
 			let date:any = new Date()
 			params.timeStamp = Date.parse(date)/1000
-			app.http.Get("dataApi/search", params, (res: any) => {
+			app.http.Get("search/good", params, (res: any) => {
 				if (res.end) {
 					this.noMoreData = true;
 				}

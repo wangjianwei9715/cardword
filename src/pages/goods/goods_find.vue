@@ -110,7 +110,7 @@
 				state:1
 			}
 			
-			app.http.Get('dataApi/search',params,(res:any)=>{
+			app.http.Get('search/good',params,(res:any)=>{
 				uni.redirectTo({
 					url: '/pages/goods/goods_find_list?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
 				})

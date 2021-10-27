@@ -122,7 +122,7 @@
 					this.noMoreData = true;
 				}
 				
-				this.scrollId = data.scrollId
+				this.scrollId = data.scrollId?data.scrollId:''
 				this.currentPage++;
 				if(cb) cb()
 			});

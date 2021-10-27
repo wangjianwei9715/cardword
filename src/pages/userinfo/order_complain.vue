@@ -30,7 +30,12 @@
 		onLoad(query:any) {
 			if(query){
 				this.code = query.code;
-				this.goodsData = JSON.parse(query.data);
+				// #ifndef MP 
+				this.goodsData = JSON.parse(query.data)
+				// #endif
+				// #ifdef MP
+				this.goodsData = JSON.parse(decodeURIComponent(query.data))
+				// #endif
                 console.log(this.goodsData)
 			}
 		}
