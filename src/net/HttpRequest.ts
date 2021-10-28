@@ -124,7 +124,13 @@ export default class HttpRequest {
 				console.log('info==',info);
 				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+info.clientid);
 			}
-			
+			// 客服发送消息
+			if(url.indexOf("sendMessage") != -1){
+				let bucketId = config.data.bucketId;
+				let imgurl = config.data.picUrl||'';
+				let content = config.data.content||'';
+				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+bucketId+'_'+imgurl+'_'+content)
+			}
 			if(url.indexOf("app/update") != -1){
 				config.baseURL = app.update_url
 				console.log(config)
@@ -194,6 +200,13 @@ export default class HttpRequest {
 					uni.showToast({ title: '请不要频繁操作', icon: 'none', duration: 2000 });
 				}else if (error.response.status > 400 && error.response.status < 500) {
 					uni.showToast({ title: error.response.status + '：' + error.response.statusText, icon: 'none', duration: 2000 });
+				}else if(error.response.data.code==1001&&error.response.data.uri.indexOf('search/query_price') != -1){
+					uni.showToast({
+						title:'服务忙碌中，请稍后再试',
+						icon:'none'
+					})
+					uni.$emit('refStop')
+					uni.hideLoading();
 				}
 			} else {
 				uni.showToast({ title: error.message, icon: 'none', duration: 2000 });
@@ -252,6 +265,7 @@ export default class HttpRequest {
 			if (response.data&&response.data.code==0) {
 				if (cb) cb(response.data);
 			}else if(response.data.code==1101||response.data.code==1102){
+				console.log('1101====')
 				uni.$emit('refreshToken');
 			}else{
 				uni.showToast({

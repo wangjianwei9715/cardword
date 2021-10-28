@@ -45,6 +45,11 @@
 			if(query.type){
 				this.orderTabCheck = query.type
 			}
+			this.onEventUI('orderchange',()=>{
+				this.reqNewData()
+			})
+		}
+		onShow(){
 			this.reqNewData() 
 		}
 		onReachBottom(){
@@ -101,9 +106,10 @@
 				uni.navigateTo({
 					url:'/pages/userinfo/order_details?code='+code
 				})
-			}else if(cmd=='wuliu'){
+			}else if(cmd.indexOf('wuliu')!=-1){
+				let wuliucode = cmd.slice(6)
 				uni.navigateTo({
-					url:'/pages/userinfo/order_logistics?code='+code
+					url:'/pages/userinfo/order_logistics?code='+wuliucode
 				})
 			}
 			if(cmd=='toPay'){
@@ -117,6 +123,34 @@
 					app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
 						this.reqNewData()
 					})
+				})
+			}
+			if(cmd=='receive_good'){
+				uni.showModal({
+					title: '提示',
+					content: '是否确认已经收货？',
+					success: (res)=> {
+						if (res.confirm) {
+							params = {
+								code:code
+							}
+							app.http.Post('me/order/buyer/receive_good',params,(res:any)=>{
+								uni.showToast({
+									title:'收货成功',
+									icon:'none'
+								})
+								this.againReqNewData()
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+				
+			}
+			if(cmd=='appraise'){
+				uni.navigateTo({
+					url:'/pages/userinfo/orderevaluate?code='+code+'&data='+decodeURIComponent(JSON.stringify(item.good))
 				})
 			}
 		}

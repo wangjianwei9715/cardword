@@ -4,7 +4,7 @@
 			
 			<view class="setting-content">
 				<view class="icon-setting" @click="onClickSetting"></view>
-				<view class="icon-xiaoxi" @click="onClickMessage"><view class="xiaoxi-num">6</view></view>
+				<view class="icon-xiaoxi" @click="onClickMessage"><view class="xiaoxi-num" v-if="infoData.unReadMsg>0">{{infoData.unReadMsg}}</view></view>
 			</view>
 			<view class="userinfo"  @click="onClickUserInfo">
 				<!-- #ifndef MP-WEIXIN -->
@@ -18,7 +18,7 @@
 				<!-- #endif -->
 				<!-- #ifdef MP -->
 				<view class="left" style="width:440rpx">
-					<image class="user-avatar" :src="infoData.avatar" mode="aspectFit"></image>
+					<image class="user-avatar" :src="infoData.avatar!=''?infoData.avatar:defaultAvatar" mode="aspectFit"></image>
 					<view class="userinfo-index" style="width:300rpx">
 						<view class="userinfo-name">{{infoData.name}}</view>
 						<view class="userinfo-sign">{{infoData.sign}}</view>
@@ -56,7 +56,7 @@
 		</view>
 
 		<view class="orther-setting">
-			<view class="setting" v-for="item in settingTab" :key="item.id" @click="onClickNavigateto(item.url)">
+			<view class="setting" v-for="item in settingTab" :key="item.id" @click="onClickNavigateto(item)">
 				<view class="name">{{item.name}}</view>
 				<view class="icon-right"></view>
 			</view>
@@ -72,6 +72,7 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		infoData:{[x:string]:any} = [];
+		defaultAvatar = app.defaultAvatar;
 		headerTab:{[x: string]: any} = {
 			no:{id:1,name:'我的编号',num:0,url:'/pages/userinfo/card_no'},
 			broadcast:{id:2,name:'我的视频',num:0,url:'/pages/userinfo/user_live'},
@@ -104,10 +105,9 @@
 		}
 		onShow(){
 			this.initPageData();
-			
 		}
 		onHide(){
-			clearInterval(this.countInterval)
+			clearInterval(this.countInterval);
 		}
 		initPageData(cb?:Function){
 			// #ifndef MP-WEIXIN
@@ -138,6 +138,8 @@
 						this.headerTab[key].num = data[key];
 					}
 				}
+				this.countNum = 0;
+				this.countTime = -1;
 				// 未支付订单
 				if(data.toPay){
 					this.countNum = data.toPay.num;
@@ -161,11 +163,17 @@
 			})
 			// #endif
 		}
-		onClickNavigateto(url:any){
-			console.log(url)
-			uni.navigateTo({
-				url:url
-			})
+		onClickNavigateto(item:any){
+			if(item.name == '地址管理'){
+				uni.navigateTo({
+					url:item.url
+				})
+			}else if(item.name=='联系客服'){
+				uni.navigateTo({
+					url: '/pages/userinfo/talk?targetUserId='+this.infoData.kefuUserId[0]
+				})
+			}
+			
 		}
 		onClickSetting(){
 			uni.navigateTo({

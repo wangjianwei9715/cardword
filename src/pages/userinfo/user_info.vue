@@ -8,7 +8,7 @@
 				@click="onClickEdit(item.id)"
 			>
 				<view v-if="item.id==1">
-					<image class="avatar" :src="item.avatar" mode="" />
+					<image class="avatar" :src="item.avatar!=''?item.avatar:defaultAvatar" mode="" />
 				</view>
 				<view v-else class="name">{{ item.name }}</view>
 
@@ -28,6 +28,7 @@
 	import ossUtils from "../../tools/ossUtils";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		defaultAvatar = app.defaultAvatar
 		settingTab:{[x: string]: any} = {
 			avatar:{ id: 1, name: "头像",avatar:'',desc:''},
 			name:{ id: 2, name: "修改昵称", desc:''},

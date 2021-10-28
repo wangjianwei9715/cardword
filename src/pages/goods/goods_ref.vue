@@ -28,7 +28,7 @@
 		searchData:{[x:string]:any} = [];
 		scrollId = '';
 		noMoreData = false;
-
+		searchIng = false;
 		onLoad(query:any) {
 			if(query.q){
 				this.searchText = query.q
@@ -41,6 +41,9 @@
 				this.goodsList = this.searchData.list
 				this.scrollId = this.searchData.scrollId
 			}
+			this.onEventUI('refStop',()=>{
+				this.searchIng = false;
+			})
 		}
 		onClickBack(){
 			uni.navigateBack({
@@ -48,26 +51,32 @@
 			});
 		}
 		onReachBottom(){
-			this.reqNewData()
+			if(!this.searchIng){
+				this.reqNewData()
+			}
 		}
 		reqNewData(cb?:Function) {
 		  // 获取更多商品
 		  if (this.noMoreData) {
 		    return;
 		  }
+		  this.searchIng = true;
 		  let params:{[x:string]:any} = {
 			scrollId:this.scrollId
 		  }
 		  uni.showLoading({
 			title: '加载中'
 		  });
+		  
 		  app.http.Get("search/query_price", params, (data: any) => {
+			this.searchIng = false;
 			uni.hideLoading();
 			if(data.end){
 				this.noMoreData = true
 			}
 			if(data.list){
 				this.goodsList = this.goodsList.concat(data.list);
+				this.scrollId = data.scrollId
 			}else{
 				this.noMoreData = true;
 			}
@@ -124,6 +133,7 @@
 	.header-search{
 		width: 640rpx;
 		height:64rpx;
+		overflow: hidden;
 	}
 	.header-right{
 		height:50rpx;

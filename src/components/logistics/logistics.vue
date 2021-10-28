@@ -19,9 +19,9 @@
 			<view >
 				<view class="flex list">
 					<view class="time"></view>
-					<view class="info flex1">
+					<!-- <view class="info flex1">
 						<view class="title address">[收货地址]{{wlInfo.addr}}</view>
-					</view>
+					</view> -->
 				</view>
 				
 				<view class="flex list" v-for="item in wlInfo.list"

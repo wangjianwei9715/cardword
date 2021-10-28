@@ -46,9 +46,7 @@
 		
 		@Watch('goodsList')
 		onGoodsListChanged(val: any, oldVal: any){
-			setTimeout(()=>{
-				this.getGoodsList()
-			},100)
+			this.getGoodsList()
 		}
 		created(){//在实例创建完成后被立即调用
 			

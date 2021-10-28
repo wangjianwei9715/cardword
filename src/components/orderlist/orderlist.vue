@@ -52,9 +52,7 @@
 		@Watch('orderList')
 		onGoodsListChanged(val: any, oldVal: any){
 			this.orderList = val;
-			setTimeout(()=>{
-				this.getOrderList()
-			},100)
+			this.getOrderList()
 		}
 		created(){//在实例创建完成后被立即调用
 			

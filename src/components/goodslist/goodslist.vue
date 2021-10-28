@@ -38,14 +38,13 @@
 	
 		@Watch('goodsList')
 		onGoodsListChanged(val: any, oldVal: any){
-			setTimeout(()=>{
-				this.getGoodsList()
-			},100)
+			this.getGoodsList()
 		}
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
+			
 		}
 		getPlan(lock:number,now:number,all:number){
 			let width = Math.floor((Number(lock)+Number(now))/Number(all)*100);
@@ -64,6 +63,7 @@
 					this.discountList[i] = data[i].discount.split(',');
 				}
 			}
+			console.log(this.discountList)
 		}
 	}
 </script>

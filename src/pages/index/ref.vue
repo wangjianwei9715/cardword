@@ -27,7 +27,8 @@
 	export default class ClassName extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
-		historyList:{[x:string]:any} = []
+		historyList:{[x:string]:any} = [];
+		searchIng = false;
 		onLoad(query:any) {
 			let refData = uni.getStorageSync("refData");
 			if(refData){
@@ -35,6 +36,9 @@
 			}
 			this.onEventUI('refBack',(res)=>{
 				this.searchTetxt = res.text
+			})
+			this.onEventUI('refStop',()=>{
+				this.searchIng = false;
 			})
 		}
 		onClickBack(){
@@ -47,9 +51,10 @@
 			uni.removeStorageSync("refData")
 		}
 		onClickSearch(text:string){
-			if(text==''){
+			if(text==''||this.searchIng){
 				return
 			}
+			this.searchIng = true
 			// 保存本地搜索记录
 			let searchText = text
 			
@@ -74,6 +79,7 @@
 			});
 			
 			app.http.Get('search/query_price',params,(res:any)=>{
+				this.searchIng = false
 				uni.hideLoading();
 				if(!res.list){
 					uni.showToast({
@@ -117,8 +123,9 @@
 		justify-content: space-between;
 	}
 	.header-search{
-		width: 100%;
+		width: 710rpx;
 		height:64rpx;
+		overflow: hidden;
 		background: #F5F5F8;
 		border-radius: 4rpx;
 		box-sizing: border-box;
@@ -136,6 +143,7 @@
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #14151A;
+		
 	}
 	.search-icon{
 		width: 28rpx;

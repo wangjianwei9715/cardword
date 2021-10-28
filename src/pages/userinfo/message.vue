@@ -1,43 +1,32 @@
 <template>
 	<view class="content">
 		<view class="top">
-			<view class="index border">
+			<view class="index border" v-for="(item,index) in dynamicData" :key="index" @click="onClickDynamic('trade')">
 				<view class="left">
-					<view class="icon"><view class="icon-zx"></view></view>
+					<view class="icon"><view :class="item.title=='交易动态'?'icon-zx':'icon-tz'"></view></view>
 					<view class="desc">
-						<view class="desc-title">交易消息</view>
-						<view class="desc-message">您的订单“20-21 National”已发货</view>
+						<view class="desc-title">{{item.title}}</view>
+						<view class="desc-message">{{item.content}}</view>
 					</view>
 				</view>
 				<view class="right">
-					<view class="time">15:21</view>
-					<view class="new-message">6</view>
+					<view class="time">{{item.lastTime>0?getTime(item.lastTime):''}}</view>
+					<view class="new-message" v-if="item.new>0">{{item.new}}</view>
 				</view>
 			</view>
-			<view class="index">
-				<view class="left">
-					<view class="icon"><view class="icon-tz"></view></view>
-					<view class="desc">
-						<view class="desc-title">平台通知</view>
-						<view class="desc-message">欢迎平台入驻呜呼啦呼商圈</view>
-					</view>
-				</view>
-				<view class="right">
-					<view class="time">15:21</view>
-				</view>
-			</view>
+			
 		</view>
 		<view class="bottom">
-			<view class="index">
+			<view class="index" v-for="(item,index) in buckedList" :key="index" @click="onClickBucketId(item.bucketId)">
 				<view class="left">
 					<view class="icon"><view class="icon-kf"></view></view>
 					<view class="desc">
-						<view class="desc-title">在线客服</view>
-						<view class="desc-message">亲，请问有什么问题需要帮助？</view>
+						<view class="desc-title">{{item.target.name}}</view>
+						<view class="desc-message" v-html="decodeURIComponent(item.content)"></view>
 					</view>
 				</view>
 				<view class="right">
-					<view class="time">15:21</view>
+					<view class="time">{{getTime(item.sendTime)}}</view>
 				</view>
 			</view>
 		</view>
@@ -46,18 +35,91 @@
 </template>
 
 <script lang="ts">
+	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
+	import { formatDateToHour, formatDateToMonth, formatDateToYear } from "@/tools/util";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		
+		dynamicData:any = [];
+		buckedList:any = [];
+		pageIndex = 1;
+		pageSize = 10;
+		noMoreData = false;
 		onLoad(query:any) {
+			this.getMessageList()
+			this.getBucketlist()
+
+			this.onEventUI('sendMessage',()=>{
+				this.pageIndex = 1;
+				this.noMoreData = false;
+				
+				this.getBucketlist()
+			})
+		}
+		//   加载更多数据
+		onReachBottom() {
+			this.getBucketlist()
+		}
+		getMessageList(){
+			app.http.Get('message/bucketlist',{},(res:any)=>{
+				console.log(res.list)
+				this.dynamicData = res.list
+			})
+		}
+		getBucketlist(){
+			if(this.noMoreData){
+				return;
+			}
+			let params = {
+				pageIndex:this.pageIndex,
+				pageSize:this.pageSize
+			}
+			app.http.Get('chat/bucketlist',params,(res:any)=>{
+				if(this.pageIndex){
+					this.buckedList = []
+				}
+				if(res.list){
+					this.buckedList = this.buckedList.concat(res.list)
+				}else{
+					this.noMoreData = true
+				}
+				this.pageIndex ++;
+			})
+		}
+		onClickBucketId(id:any){
+			uni.navigateTo({
+				url: '/pages/userinfo/talk?bucketId='+id
+			})
+		}
+		onClickDynamic(type:any){
+			if(type=='trade'){
+				uni.navigateTo({
+					url: '/pages/userinfo/dynamic?type='+type
+				})
+			}
 			
 		}
+		getTime(second:number){
+			let now = new Date();
+			let sendTime = new Date(second*1000);
+			const day = 24*60*60*1000;
+		
+			let isShowYear = new Date().getFullYear()!=sendTime.getFullYear();
+			if (isShowYear) {
+				return formatDateToYear(sendTime.getTime());
+			}
+			let isShowDate = now.getDate() != sendTime.getDate()||now.getTime()-sendTime.getTime()>day;
+			if (isShowDate) {
+				return formatDateToMonth(sendTime.getTime());
+			}
+			return formatDateToHour(sendTime.getTime());
+		}
+
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.content{
 		width: 100%;
 		box-sizing: border-box;
@@ -81,7 +143,7 @@
 		align-items: center;
 		justify-content: space-between;
 		.left{
-			width: 600rpx;
+			width: 560rpx;
 			height:148rpx;
 			display: flex;
 			box-sizing: border-box;
@@ -140,7 +202,7 @@
 			}
 		}
 		.right{
-			width: 86rpx;
+			width: 120rpx;
 			height:84rpx;
 			box-sizing: border-box;
 			display: flex;
@@ -174,5 +236,19 @@
 	
 	.border{
 		border-bottom: 1px solid #F1F1F4;
+	}
+	.desc-message /deep/ p{
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #767880;
+	}
+	.desc-message /deep/ image{
+		width: 50rpx !important;
+		height:50rpx;
+	}
+	.desc-message /deep/ img{
+		width: 50rpx !important;
+		height:50rpx;
 	}
 </style>

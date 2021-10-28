@@ -81,7 +81,7 @@
 		<!-- 卖家信息 -->
 		<view class="goods-seller" v-if="goodsData.publisher">
 			<view class="goods-seller-left">
-				<image class="goods-seller-left-avatar" :src="decodeURIComponent(goodsData.publisher.avatar)" mode="aspectFit"></image>
+				<image class="goods-seller-left-avatar" :src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar" mode="aspectFit"></image>
 				<view class="goods-seller-left-desc">
 					<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
 					<view class="goods-seller-left-desc-tips">已拼团{{goodsData.publisher.deal}}组</view>
@@ -99,7 +99,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- 视频可拖动控件 -->
+		<!-- 直播可拖动控件 -->
 		<movable-area class="movable-area" v-if="goodsState == 4">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
 				<livewicket :liveImg="liveImg" :liveStatus="liveStatus"></livewicket>
@@ -136,6 +136,7 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		goodsState = 0;
+		defaultAvatar = app.defaultAvatar
 		goodsId = '';
 		goodsImg:any = [];
 		goodsData:{[x:string]:any} = [];
@@ -156,7 +157,7 @@
 		cardData:any = [];
 		tipBtn:{[x:string]:any}=[
 			{id:1,name:'客服',url:'../../static/goods/kefu@2x.png',class:'kf'},
-			{id:2,name:'视频提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
+			{id:2,name:'直播提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
 		];
 		operationShow=false;
 		operationData = [
@@ -176,7 +177,7 @@
 		];
 		discountList:any = [];
 		liveImg = '../../static/goods/.png';
-		liveStatus = '视频回放'
+		liveStatus = '直播回放'
 		onLoad(query:any) {
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId)

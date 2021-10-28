@@ -28,9 +28,9 @@
 		pullDownRefresh = false;
 		goodTab = [
 			{id:0,name:'全部'},
-			{id:5,name:'我的视频'},
-			{id:2,name:'视频中'},
-			{id:1,name:'待视频'},
+			{id:5,name:'我的直播'},
+			{id:2,name:'直播中'},
+			{id:1,name:'待直播'},
 			{id:3,name:'已完成'}
 		];
 		goodTabCheck = 0;
@@ -77,7 +77,31 @@
 			})
 		}
 		onClickLive(id:any){
-
+			// #ifdef APP-PLUS
+			plus.share.getServices(res => {
+				let sweixin = res.find(i => i.id === 'weixin')
+				if (sweixin) {
+					sweixin.launchMiniProgram({
+						id: 'wx15372dc7bbfb2434',
+						path: '/pages/index/live?id'+id,
+						type:0
+					},(res:any)=>{
+						console.log(res)
+					})
+				} else {
+					// 没有获取到微信分享服务
+				}
+			}, err => {
+				// 获取分享服务列表失败
+			});
+			
+			// #endif
+			// #ifdef MP-WEIXIN
+			console.log('plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id='+id)
+			wx.navigateTo({
+				url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id='+id
+			})
+			// #endif
 		}
 		searchReqNew(){
 			// 获取更多商品

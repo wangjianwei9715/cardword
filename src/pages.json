@@ -16,7 +16,6 @@
                 "enablePullDownRefresh": true
 			}
 		}
-        //  #ifndef MP-WEIXIN
 		, {
 			"path": "pages/index/live",
 			"style": {
@@ -24,15 +23,14 @@
 				"navigationStyle": "custom",
                 //  #endif
                 //  #ifdef MP-WEIXIN
-                // "navigationBarTitleText": "视频",
-				// "navigationBarBackgroundColor": "#ffffff",
-				// "navigationBarTextStyle": "black",
+                "navigationBarTitleText": "直播",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
                 //  #endif
 				"enablePullDownRefresh": false
 			}
 
 		}
-        //  #endif
         , 
         {
 			"path": "pages/index/userinfo",
@@ -59,80 +57,6 @@
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
                 //  #endif
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/goods/goods_details",
-			"style": {
-				//  #ifndef MP-WEIXIN
-				"navigationStyle": "custom",
-                //  #endif
-                //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-                //  #endif
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/goods/all_good_card",
-			"style": {
-				"navigationBarTitleText": "20-21 国宝 Hobby",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/goods/confirmorder",
-			"style": {
-				"navigationBarTitleText": "确认订单",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/goods/goods_result_list",
-			"style": {
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": false
-			}
-
-		},
-		{
-			"path": "pages/goods/goods_find",
-			"style": {
-				//  #ifndef MP-WEIXIN
-				"navigationStyle": "custom",
-                //  #endif
-                //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "搜索",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-                //  #endif
-				"enablePullDownRefresh": false
-			}
-		}, {
-			"path": "pages/goods/goods_find_list",
-			"style": {
-				//  #ifndef MP-WEIXIN
-				"navigationStyle": "custom",
-                //  #endif
-                //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "商品",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-                //  #endif
-				"enablePullDownRefresh": false
-			}
-
-		},  {
-			"path": "pages/goods/goods_ref",
-			"style": {
-				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
 
@@ -210,14 +134,12 @@
 				"selectedIconPath": "static/index/tabbar_index_.png",
 				"text": "首页"
 			},
-            //  #ifndef MP-WEIXIN
 			{
 				"pagePath": "pages/index/live",
 				"iconPath": "static/index/tabbar_live.png",
 				"selectedIconPath": "static/index/tabbar_live_.png",
-				"text": "视频"
+				"text": "直播"
 			},
-            //  #endif
 			{
 				"pagePath": "pages/index/ref",
 				"iconPath": "static/index/tabbar_search.png",
@@ -238,7 +160,89 @@
 			"^uni-(.*)": "@/components/uni-$1.vue"
 		}
 	},
-    "subPackages": [{
+    "subPackages": [
+        {
+            "root": "pages/goods",
+            "pages": [
+                {
+                    "path": "goods_details",
+                    "style": {
+                        //  #ifndef MP-WEIXIN
+                        "navigationStyle": "custom",
+                        //  #endif
+                        //  #ifdef MP-WEIXIN
+                        "navigationBarTitleText": "",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "navigationBarTextStyle": "black",
+                        //  #endif
+                        "enablePullDownRefresh": false
+                    }
+        
+                }, {
+                    "path": "all_good_card",
+                    "style": {
+                        "navigationBarTitleText": "20-21 国宝 Hobby",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "navigationBarTextStyle": "black",
+                        "enablePullDownRefresh": false
+                    }
+        
+                }, {
+                    "path": "confirmorder",
+                    "style": {
+                        "navigationBarTitleText": "确认订单",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "navigationBarTextStyle": "black",
+                        "enablePullDownRefresh": false
+                    }
+        
+                }, {
+                    "path": "goods_result_list",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": false
+                    }
+        
+                },
+                {
+                    "path": "goods_find",
+                    "style": {
+                        //  #ifndef MP-WEIXIN
+                        "navigationStyle": "custom",
+                        //  #endif
+                        //  #ifdef MP-WEIXIN
+                        "navigationBarTitleText": "搜索",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "navigationBarTextStyle": "black",
+                        //  #endif
+                        "enablePullDownRefresh": false
+                    }
+                }, {
+                    "path": "goods_find_list",
+                    "style": {
+                        //  #ifndef MP-WEIXIN
+                        "navigationStyle": "custom",
+                        //  #endif
+                        //  #ifdef MP-WEIXIN
+                        "navigationBarTitleText": "商品",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "navigationBarTextStyle": "black",
+                        //  #endif
+                        "enablePullDownRefresh": false
+                    }
+        
+                },  {
+                    "path": "goods_ref",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": false
+                    }
+        
+                }
+            ]
+         },
+        
+        {
         "root": "pages/userinfo",
         "pages": [
             {
@@ -417,6 +421,35 @@
                 {
                     "navigationBarTitleText":"订单投诉",
                     "navigationBarBackgroundColor":"#FFFFFF",
+                    "enablePullDownRefresh": false
+                }
+                
+            },
+            {
+                "path" : "dynamic",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText":"消息",
+                    "navigationBarBackgroundColor":"#FFFFFF",
+                    "enablePullDownRefresh": false
+                }
+                
+            },{
+                "path" : "orderevaluate",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "评价",
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "enablePullDownRefresh": false
+                }
+                
+            },
+            {
+                "path" : "talk",
+                "style" :                                                                                    
+                {
+                    
+                    "navigationBarTitleText": "在线客服",
                     "enablePullDownRefresh": false
                 }
                 

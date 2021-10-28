@@ -57,7 +57,7 @@
 				<text class="item-name">{{item.userName}}</text>
 				<text class="item-bh">{{item.no}}</text>
 				<text class="item-time">{{dateFormat(item.time)}}</text>
-				<image :src="decodeURIComponent(item.pic)"
+				<image :src="getGoodsImg(decodeURIComponent(item.pic))"
 					style="width: 100rpx; height: 128rpx; margin-right: 36rpx;"></image>
 			</view>
 		</view>
@@ -72,7 +72,7 @@
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import {
-		dateFormat
+		dateFormat,getGoodsImg
 	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -82,6 +82,8 @@
 		itemListName2 = ['用户', '编号', '获取时间', '图片'];
 		teamDataList = [];
 		teamDataList2 = [];
+		getGoodsImg = getGoodsImg;
+		dateFormat = dateFormat;
 		currentPage = 1;
 		noMore = false;
 		onLoad(query: any) {
@@ -89,7 +91,7 @@
 				console.log(query)
 				this.chooseId = query.chooseIds;
 				this.goodCode = query.code
-				if(this.chooseId===0){
+				if(this.chooseId==0){
 					this.getTpCardNo()
 				}else{
 					this.getTpCardNoResult()
@@ -125,7 +127,7 @@
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
 				if(res.list){
-					this.teamDataList = res.list
+					this.teamDataList2 = res.list
 				}else{
 					this.noMore = true
 				}
@@ -267,7 +269,6 @@
 
 	.title-middle-pin {
 		width: 710rpx;
-		height: 100rpx;
 		background: #F6F6F7;
 		display: flex;
 		flex-direction: row;
@@ -283,7 +284,6 @@
 
 	.title-middle-pin2 {
 		width: 710rpx;
-		height: 100rpx;
 		background: #FFFFFF;
 		display: flex;
 		flex-direction: row;
@@ -308,6 +308,8 @@
 		text-align: center;
 		margin-left: 38rpx;
 		margin-right: 36rpx;
+		padding:10rpx 0;
+		box-sizing: border-box;
 	}
 
 	.text-name3 {

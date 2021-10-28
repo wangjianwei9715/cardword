@@ -7,8 +7,8 @@
 			<view v-else-if="orderData.good.state>=2" class="header-orther">
 				<view class="header-statestr">{{orderData.good.desc?orderData.good.desc:''}}</view>
 				<view class="header-btn-content">
-					<view class="header-btn-pintuan">拼团结果</view>
-					<view class="header-btn-chaika">拆卡报告</view>
+					<view class="header-btn-pintuan" @click="onClcikResult(0)">拼团结果</view>
+					<view class="header-btn-chaika" @click="onClcikResult(1)">拆卡报告</view>
 				</view>
 			</view>
 		</view>
@@ -16,7 +16,7 @@
 		<view class="order-index" v-if="orderData.seller"> 
 			<view class="order-index-header">
 				<view class="header-left">
-					<image class="seller-image" :src="orderData.seller.avatar?orderData.seller.avatar:''" mode="aspectFill"></image>
+					<image class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill"></image>
 					<view class="seller-name">{{orderData.seller.name}}</view>
 				</view>
 				<view class="header-right">
@@ -24,7 +24,7 @@
 				</view>
 			</view>
 			<view class="order-index-center">
-				<image class="goods-image" :src="decodeURIComponent(getGoodsImg(orderData.good.pic))" mode="aspectFill"></image>
+				<image class="goods-image" :src="getGoodsImg(decodeURIComponent(orderData.good.pic))" mode="aspectFill"></image>
 				<view class="goods-content">
 					<view class="title">{{orderData.good.title}}</view>
 					<view class="desc">
@@ -76,13 +76,12 @@
 			</view>
 		</view>
 		<!-- 底部按钮 -->
-		<view class="bottom-btn">
+		<view class="bottom-btn" v-if="orderData.operate">
 			
-			<view class="small-btn-content" v-if="orderData.state==3||orderData.state==4||orderData.state==5">
-				<view class="small-btn left">查看物流</view>
-				<view class="small-btn right">我的中卡</view>
+			<view class="small-btn-content" v-if="orderData.operate.length>1">
+				<view class="small-btn left" v-for="(item,index) in orderData.operate" :key="index" @click="onClickOperate(item.cmd)">{{item.name}}</view>
 			</view>
-			<view class="big-btn" v-else @click="onClickGoods">查看商品</view>
+			<view v-else class="big-btn" @click="onClickOperate(orderData.operate[0].cmd)">{{orderData.operate[0].name}}</view>
 		</view>
 	</view>
 </template>
@@ -99,6 +98,7 @@
 	export default class ClassName extends BaseNode {
 		getGoodsImg = getGoodsImg;
 		dateFormat = dateFormat;
+		defaultAvatar = app.defaultAvatar;
 		countDownInter:any;
 		countDown = 300;
 		countDownStr = '';
@@ -119,6 +119,7 @@
 			deliverTime:{id:6,title:'发货时间',desc:''},
 			receiveTime:{id:7,title:'收货时间',desc:''},
 		};
+
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -166,10 +167,60 @@
 				url:'/pages/userinfo/order_myCard?code='+this.orderCode
 			})
 		}
-		onClickGoods(){
-			uni.navigateTo({
-				url: '/pages/goods/goods_details?id='+this.orderData.good.goodCode
-			})
+		onClickOperate(cmd:any){
+			let params:{[x:string]:any}
+			if(cmd=='viewGood'){
+				uni.navigateTo({
+					url: '/pages/goods/goods_details?id='+this.orderData.good.goodCode
+				})
+			}
+
+			if(cmd.indexOf('wuliu')!=-1){
+				let wuliucode = cmd.slice(6)
+				uni.navigateTo({
+					url:'/pages/userinfo/order_logistics?code='+wuliucode
+				})
+			}
+
+			if(cmd=='toPay'){
+				params= {
+					channel:'alipay',
+					delivery:0,
+					num:Number(this.orderData.num)
+				}
+				console.log(params)
+				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+					app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
+						this.initEvent()
+					})
+				})
+			}
+
+			if(cmd=='receive_good'){
+				uni.showModal({
+					title: '提示',
+					content: '是否确认已经收货？',
+					success: (res)=> {
+						if (res.confirm) {
+							params = {
+								code:this.orderData.code
+							}
+							app.http.Post('me/order/buyer/receive_good',params,(res:any)=>{
+								uni.showToast({
+									title:'收货成功',
+									icon:'none'
+								})
+								this.initEvent()
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+				
+			}
+
+			
 		}
 		onClickComplain(){
 			uni.navigateTo({
@@ -188,6 +239,13 @@
 				}
 			});
 		}
+		onClcikResult(chooseID:any){
+			console.log('拼团结果==0   拆卡报告==1')
+			uni.navigateTo({
+				url: '/pages/goods/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode
+			})
+		}
+		
 	}
 </script>
 
