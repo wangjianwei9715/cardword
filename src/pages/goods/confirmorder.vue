@@ -181,7 +181,7 @@ import {
 						
 					})
 					uni.redirectTo({
-						url:'/pages/userinfo/order_list'
+						url:'/pages/userinfo/order_details?code='+res.goodOrderCode
 					})
 				}
 			})

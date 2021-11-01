@@ -29,14 +29,14 @@
 	export default class ClassName extends BaseNode {
 		searchText = '';
 		orderTab = [
-			{id:1,name:'全部'},
-			{id:2,name:'待支付'},
-			{id:3,name:'进行中'},
-			{id:4,name:'待发货'},
-			{id:5,name:'待收货'},
-			{id:6,name:'未中卡'}
+			{id:0,name:'全部'},
+			{id:1,name:'待支付'},
+			{id:2,name:'进行中'},
+			{id:3,name:'待发货'},
+			{id:4,name:'待收货'},
+			{id:10,name:'未中卡'}
 		];
-		orderTabCheck = 1;
+		orderTabCheck = 0;
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
@@ -50,6 +50,8 @@
 			})
 		}
 		onShow(){
+			this.currentPage = 1;
+			this.noMoreData = false;
 			this.reqNewData() 
 		}
 		onReachBottom(){
@@ -61,7 +63,7 @@
 		    return;
 		  }
 		  let params:{[x:string]:any} = {
-			tp:this.orderTabCheck-1,
+			tp:this.orderTabCheck,
 			pageIndex: this.currentPage,
 			pageSize:this.pageSize
 		  }
@@ -152,6 +154,33 @@
 				uni.navigateTo({
 					url:'/pages/userinfo/orderevaluate?code='+code+'&data='+decodeURIComponent(JSON.stringify(item.good))
 				})
+			}
+			if(cmd=='resultCard'){
+				uni.navigateTo({
+					url: '/pages/goods/goods_result_list?chooseIds=1&code='+item.good.goodCode
+				})
+			}
+			if(cmd=='cancel'){
+				uni.showModal({
+					title: '提示',
+					content: '是否取消支付该订单？',
+					success: (res)=> {
+						if (res.confirm) {
+							params = {
+								code:code
+							}
+							app.http.Post('me/order/buyer/cancel',params,(res:any)=>{
+								uni.showToast({
+									title:'取消成功',
+									icon:'none'
+								})
+								this.againReqNewData()
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
 			}
 		}
 		onClickBack(){

@@ -220,6 +220,29 @@
 				
 			}
 
+			if(cmd=='cancel'){
+				uni.showModal({
+					title: '提示',
+					content: '是否取消支付该订单？',
+					success: (res)=> {
+						if (res.confirm) {
+							params = {
+								code:this.orderData.code
+							}
+							app.http.Post('me/order/buyer/cancel',params,(res:any)=>{
+								uni.showToast({
+									title:'取消成功',
+									icon:'none'
+								})
+								this.initEvent()
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+			}
+
 			
 		}
 		onClickComplain(){

@@ -42,7 +42,7 @@
 		<view class="user-order">
 			<view class="header">
 				<view class="title">我的订单</view>
-				<view class="right" @click="onClickOrderList(1)">全部<view class="icon-right"></view></view>
+				<view class="right" @click="onClickOrderList(0)">全部<view class="icon-right"></view></view>
 			</view>
 			<view class="tab-content">
 				<view class="tab" v-for="item in orderTab" :key="item.id" @click="onClickOrderList(item.id)">
@@ -79,10 +79,10 @@
 			favorite:{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
 		};
 		orderTab = [
-			{id:3,name:'进行中',icon:'jx'},
-			{id:4,name:'待发货',icon:'fh'},
-			{id:5,name:'待收货',icon:'sh'},
-			{id:6,name:'未中卡',icon:'zk'}
+			{id:2,name:'进行中',icon:'jx'},
+			{id:3,name:'待发货',icon:'fh'},
+			{id:4,name:'待收货',icon:'sh'},
+			{id:10,name:'未中卡',icon:'zk'}
 		];
 		settingTab = [
 			{id:1,name:'地址管理',url:'/pages/userinfo/setting_addresses'},

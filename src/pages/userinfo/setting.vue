@@ -5,7 +5,7 @@
         class="setting"
         v-for="item in settingTab"
         :key="item.id"
-        @click="onClickNavigateto(item.url)"
+        @click="onClickNavigateto(item)"
       >
         <view class="name">{{ item.name }}</view>
         <view v-if="item.id == 3" class="right">
@@ -52,10 +52,21 @@ export default class ClassName extends BaseNode {
     this.settingTab.splice(1,1)
     // #endif
   }
-  onClickNavigateto(url: any) {
-    uni.navigateTo({
-      url: url,
-    });
+  onClickNavigateto(item: any) {
+    if(item.id==1||item.id==2){
+      uni.navigateTo({
+        url: item.url,
+      });
+    }else if(item.id==3){
+      let pushUrl = ''
+      if(this.xiaoxiDefault){
+        pushUrl = 'me/pushOn'
+      }else{
+        pushUrl = 'me/pushOff'
+      }
+      app.http.Post(pushUrl,{},(res:any)=>{})
+    }
+    
   }
   onClickDefault() {
     this.xiaoxiDefault = !this.xiaoxiDefault;
