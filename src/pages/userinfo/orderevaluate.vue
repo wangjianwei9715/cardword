@@ -112,10 +112,12 @@
 			}
 			app.http.Post('order/appraise/'+this.code,params,(res:any)=>{
 				uni.$emit('orderchange')
-				uni.showToast({
-					title:'评价成功',
-					icon:'none'
-				})
+				setTimeout(()=>{
+					uni.showToast({
+						title:'评价成功',
+						icon:'none'
+					})
+				},100)
 				
 				this.complainText = ''
 				uni.navigateBack({

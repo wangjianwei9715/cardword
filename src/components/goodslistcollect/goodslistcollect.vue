@@ -13,14 +13,11 @@
 						<view class="goodslist-price-content">
 							¥<text class="goodslist-price">{{item.price}}</text>
 						</view>
-						<view class="goodslist-tips" v-show="discountList[index]" v-for="(items,indexs) in discountList[index]" :key="indexs">
-							{{items}}
-						</view>
 						<view class="goodslist-status">{{getStateStr(item.state)}}</view>
 					</view>
 				</view>
 			</view>
-			<view v-show="delStart" :class="getDel(item.goodCode)?'deled-icon':'del-icon'" @click="onClickDel(item.goodCode)"></view>
+			<view v-show="delStart" :class="getDel(item.id)?'deled-icon':'del-icon'" @click="onClickDel(item.id)"></view>
 		</view>
 	</view>
 </template>
@@ -87,11 +84,7 @@
 			if(!data){
 				return;
 			}
-			for(let i in data){
-				if(data[i].discount!=''){
-					this.discountList[i] = data[i].discount.split(',');
-				}
-			}
+			
 		}
 	}
 </script>

@@ -152,7 +152,6 @@ export default Vue.extend({
         if (app.platform.deviceID == "") {
           app.platform.deviceID = uni.getSystemInfoSync().uuid;
         }
-        app.update = UpdateManager.getInstance();
         if (!app.localTest) {
           let launchUrl: { [x: string]: any } = {};
           let configLaunchUrl = uni.getStorageSync("configLaunchUrl");
@@ -208,7 +207,7 @@ export default Vue.extend({
                 } else {
                   app.dataApiDomain = bussinessApiDomain + "/api/v1/";
                 }
-
+                console.log('app.bussinessApiDomain===',app.bussinessApiDomain)
                 uni.setStorageSync("launchConfig", res);
                 app.update_url = launchUrl[i] + "/api/";
                 app.update = UpdateManager.getInstance();

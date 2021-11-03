@@ -137,9 +137,14 @@
 				this.updateShow();
 				return;
 			}
+			if(query.id){
+				app.platform.goWeChatLive(query.id)
+			}
 			let listeners = ['BackLogin']
 			this.register(listeners);
-			this.initEvent()
+			setTimeout(()=>{
+				this.initEvent()
+			},500)
 		}
 		onPageScroll(e:any){
 			if(e.scrollTop>=0){
@@ -166,6 +171,7 @@
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
 				this.goodsList = data.goodList?data.goodList:[];
+				console.log('goodsList===',this.goodsList)
 				this.advertisingList = data.topAddList;
 			})
 			

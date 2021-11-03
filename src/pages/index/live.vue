@@ -80,10 +80,11 @@
 			// #ifdef APP-PLUS
 			plus.share.getServices(res => {
 				let sweixin = res.find(i => i.id === 'weixin')
+				console.log('getServices==',res)
 				if (sweixin) {
 					sweixin.launchMiniProgram({
-						id: 'wx15372dc7bbfb2434',
-						path: '/pages/index/live?id'+id,
+						id: 'gh_5cf45dd26926',
+						path: '/pages/index/index?id='+id,
 						type:0
 					},(res:any)=>{
 						console.log(res)
@@ -97,10 +98,7 @@
 			
 			// #endif
 			// #ifdef MP-WEIXIN
-			console.log('plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id='+id)
-			wx.navigateTo({
-				url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id='+id
-			})
+			app.platform.goWeChatLive(id)
 			// #endif
 		}
 		searchReqNew(){

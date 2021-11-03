@@ -49,10 +49,12 @@
 			}
 
 			app.http.Post('order/complain/'+this.code,{content:encodeURIComponent(this.complainText)},(res:any)=>{
-				uni.showToast({
-					title:'投诉成功',
-					icon:'none'
-				})
+				setTimeout(()=>{
+					uni.showToast({
+						title:'投诉成功',
+						icon:'none'
+					})
+				},100)
 				this.complainText = ''
 				uni.navigateBack({
 					delta:1

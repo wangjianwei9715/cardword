@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" focus v-model="searchTetxt" placeholder="搜索" @confirm="onClickSearch(searchTetxt)" confirm-type="search"/>
+					<input class="search-input" type="text" focus v-model="searchTetxt" placeholder="搜索" @confirm="onClickSearch(searchTetxt)" />
 				</view>
 				<view v-if="searchTetxt==''" class="header-right" @click="onClickBack">取消</view>
 				<view v-else class="header-right" @click="onClickSearch(searchTetxt)">搜索</view>

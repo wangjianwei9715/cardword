@@ -166,7 +166,6 @@ export default class PlatformManager {
         // #endif
     }
 	payment(data:any,callback?:Function){
-        // #ifndef H5
         // #ifdef MP-WEIXIN
 		let params = {
 			provider: 'wxpay',
@@ -195,27 +194,13 @@ export default class PlatformManager {
 			}
 		});
         // #endif
+		
         // #ifdef APP-PLUS
-        // HttpPost('order/'+orderID+'/prepay',{channel:'wechat',gateway:'app'},(data:any)=>{
-        //     uni.requestPayment({
-        //         provider: 'wxpay',
-        //         orderInfo: data,
-        //         success: (res:any)=> {
-        //             console.log('success:' + JSON.stringify(res));
-        //             if (callback) {
-        //                 callback(res);
-        //             }
-        //         },
-        //         fail: (err:any)=> {
-        //             console.log('fail:' + JSON.stringify(err));
-        //         }
-        //     });
-        // });
+        
         // #endif
 
         
         
-        // #endif
 
         //#ifdef H5
         //微信内部网页环境
@@ -224,6 +209,12 @@ export default class PlatformManager {
         }
         // #endif
     }
+	// 微信直播间
+	goWeChatLive(id:any){
+		wx.navigateTo({
+			url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id='+id
+		})
+	}
 	phoneAspect():boolean{
 		let aspect = this.systemInfo.windowHeight/this.systemInfo.windowWidth>1.8?true:false
 		return aspect;

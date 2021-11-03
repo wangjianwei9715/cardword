@@ -75,7 +75,7 @@
 		defaultAvatar = app.defaultAvatar;
 		headerTab:{[x: string]: any} = {
 			no:{id:1,name:'我的编号',num:0,url:'/pages/userinfo/card_no'},
-			broadcast:{id:2,name:'我的视频',num:0,url:'/pages/userinfo/user_live'},
+			broadcast:{id:2,name:'我的直播',num:0,url:'/pages/userinfo/user_live'},
 			favorite:{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
 		};
 		orderTab = [
@@ -132,7 +132,7 @@
 				this.infoData = data;
 				this.infoData.avatar = decodeURIComponent(data.avatar)
 				console.log(this.infoData)
-				// 我的视频、编号、收藏
+				// 我的直播、编号、收藏
 				for (const key in this.headerTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
 						this.headerTab[key].num = data[key];

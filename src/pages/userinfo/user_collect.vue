@@ -107,6 +107,7 @@ import { Component } from "vue-property-decorator";
 			}else{
 				this.delList.splice(index,1)
 			}
+			console.log(this.delList)
 		}
 		onClickDelComplete(){
 			this.deling = false;
@@ -117,9 +118,23 @@ import { Component } from "vue-property-decorator";
 			for(let i in this.goodsList){
 				this.delList.push(this.goodsList[i].id);
 			}
+			console.log(this.delList)
 		}
 		onClickDelChoose(){
-			
+			if(this.delList.length==0){
+				return;
+			}
+			let params = {
+				ids:this.delList.toString()
+			};
+			app.http.Post('action/deleteFavorite',params,(res:any)=>{
+				uni.showToast({
+					title:'删除成功',
+					icon:'none'
+				})
+				this.currentPage = 1
+				this.reqNewData();
+			})
 		}
 	}
 </script>

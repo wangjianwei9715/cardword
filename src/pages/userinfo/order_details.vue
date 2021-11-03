@@ -123,8 +123,10 @@
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
-				this.initEvent();
 			}
+		}
+		onShow(){
+			this.initEvent();
 		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{

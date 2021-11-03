@@ -22,7 +22,7 @@
 				<view @click="codeLogin = true">使用验证码登录</view>
 				<view @click="onClickChangePassword">忘记密码?</view>
 			</view>
-			<view class="bottom">
+			<view class="bottom" @click="onClickWechatLogin">
 				<view class="bottom-tip">微信账号登录</view>
 				<view class="icon-wechat"></view>
 			</view>
@@ -154,6 +154,57 @@
 					url: "/pages/index/index",
 				});
 				uni.$emit('loginSuccess');
+			})
+		}
+		onClickWechatLogin(){
+			uni.showLoading({
+				title: '加载中'
+			});
+			uni.getProvider({
+				service: 'oauth',
+				success: (res)=> {
+					if (~res.provider.indexOf('weixin')) {
+						uni.login({
+							provider: 'weixin',
+							success: (loginRes:any)=> {
+								let params = {
+									weixinToken:loginRes.authResult.access_token,
+									unionid:loginRes.authResult.unionid,
+									openid:loginRes.authResult.openid,
+									uuid:app.platform.deviceID,
+									os:app.platform.systemInfo.platform,
+									device:app.platform.systemInfo.brand+app.platform.systemInfo.model
+								}
+								console.log('weixinLoginRes=====',loginRes)
+								this.WeChetLogin(params)
+							}
+						});
+					}
+				}
+			});
+		}
+		WeChetLogin(params:any){
+			app.http.Post('user/login/wechat/app',params,(data:any)=>{
+				uni.hideLoading();
+				console.log('wechatlogin======',data)
+				app.data = data.data;
+				app.opKey = data.opKey
+				app.socketInfo = data.app;
+				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
+				if(data.app.launchDomain&&data.app.launchDomain!=''){
+					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
+				}
+				
+				uni.setStorageSync("token", JSON.stringify(app.token));
+				uni.switchTab({
+					url: "/pages/index/index",
+				});
+				uni.$emit('loginSuccess');
+				if(data.data.mustBindPhone){
+					uni.reLaunch({
+						url: "/pages/login/bind_phone"
+					})
+				}
 			})
 		}
 	}

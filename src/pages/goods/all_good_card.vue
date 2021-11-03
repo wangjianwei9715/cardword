@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="tab-header" v-if="goodType<4">
 			<view class="search-icon"></view>
-			<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队" @confirm="onClickSearch" confirm-type="search"/>
+			<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队" @blur="onClickSearch" @confirm="onClickSearch" />
 			
 			<image v-if="translate" src="../../static/goods/icon_fanyi.png" style="width: 42rpx; height: 40rpx; margin: 0 28rpx;"
 				@click="onClickTranslate()">

@@ -11,7 +11,7 @@
 		</view>
 		<view class="goods-lists">
 			<statusbar/>
-			<goodslistebay  :goodsList="goodsList" @send="onClickJumpDetails"/>
+			<goodslistebay  :goodsList="goodsList" @send="onClickPreviewImage"/>
 		</view>
 	</view>
 
@@ -83,8 +83,13 @@
 			if(cb) cb()
 		  });
 		}
-		onClickJumpDetails(id:number){
-
+		onClickPreviewImage(pic:any){
+			let img = [pic]
+			// 预览图片
+			uni.previewImage({
+				current:1,
+				urls: img
+			});
 		}
 		onClickSearch(){
 			uni.$emit('refBack',{text:this.searchText})

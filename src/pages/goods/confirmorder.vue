@@ -171,19 +171,26 @@ import {
 			// #endif
 			// #ifndef MP
 			params = {
-				channel:'alipay',
+				channel:'weixin',
 				delivery:this.addressData.id,
 				num:Number(this.moneyNum)
 			}
 			app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
-				if(res.alipay.orderInfo!=''){
-					app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-						
-					})
+				if(res.wechat){
+					console.log(res.wechat)
+					app.payment.paymentWxpay(res.wechat,()=>{})
 					uni.redirectTo({
 						url:'/pages/userinfo/order_details?code='+res.goodOrderCode
 					})
 				}
+				// if(res.alipay.orderInfo!=''){
+				// 	app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
+						
+				// 	})
+				// 	uni.redirectTo({
+				// 		url:'/pages/userinfo/order_details?code='+res.goodOrderCode
+				// 	})
+				// }
 			})
 			// #endif
 		}

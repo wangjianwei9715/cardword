@@ -1,7 +1,7 @@
 <template name="goodslist">
 	<view class="content">
-		<view class="goodslist-index" v-for="item in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
-			<image class="goodslist-pic" :src="item.pic" mode="aspectFill"></image>
+		<view class="goodslist-index" v-for="item in goodsList" :key="item.goodCode" >
+			<image class="goodslist-pic" :src="item.pic" mode="aspectFill" @click="onClickPic(item.pic)"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-tip" :class="item.type=='拍卖'?'icon-paimai':'icon-yikou'" >{{item.type}}</view>
 				<view class="goodslist-title">{{item.title}}</view>
@@ -34,8 +34,8 @@
 			let width = Math.floor(Number(now)/Number(all)*100);
 			return width
 		}
-		onClickJumpUrl(id:any){
-			this.$emit("send", id);
+		onClickPic(pic:any){
+			this.$emit("send", pic);
 		}
 		
 	}

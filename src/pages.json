@@ -315,7 +315,7 @@
                 "path" : "user_live",
                 "style" :                                                                                    
                 {
-                    "navigationBarTitleText": "我的视频",
+                    "navigationBarTitleText": "我的直播",
                     "navigationBarBackgroundColor":"#ffffff",
                     "navigationBarTextStyle":"black"
                 }

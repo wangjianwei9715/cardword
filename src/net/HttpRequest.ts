@@ -16,7 +16,7 @@ export default class HttpRequest {
 	
 	
     private constructor() {
-		let domain = ''
+		var domain = ''
 		// #ifndef H5
 		domain = app.bussinessApiDomain
     	// #endif
@@ -69,6 +69,12 @@ export default class HttpRequest {
 		this.axiosInstance.interceptors.request.use((config)=> {
 			// 在发送请求之前做些什么
 			// console.log('config===',config);
+			// #ifndef H5
+			config.baseURL = app.bussinessApiDomain
+			// #endif
+			// #ifdef H5
+			config.baseURL = app.domaintest
+			// #endif
 			let url = config.url+'';
 			if (url.indexOf("user/login/phone") == -1&&url.indexOf("user/code") == -1&&url.indexOf("user/forget") == -1) {//验证码、刷新、登录 首页接口不需要token &&config.url!='xingqiu/refresh_lists'&&config.url!='xingqiu/index_act'
 				if (!config.headers['token']) {
@@ -138,12 +144,14 @@ export default class HttpRequest {
 			}
 			if(url.indexOf("dataApi/search") != -1 || url.indexOf("dataApi/home") != -1 || url.indexOf("dataApi/good") != -1 || url.indexOf("dataApi/config/wuliu") != -1|| url.indexOf("dataApi/oss/token") != -1|| url.indexOf("dataApi/config/category") != -1|| url.indexOf("dataApi/goodlist") != -1){
 				config.url = url.substring(8);
+				console.log('config.baseURL====',config.baseURL)
 				// #ifndef H5
 				if(!app.localTest){
 					config.baseURL = app.dataApiDomain;
 				}
 				// #endif
 			}
+			
 			if(url.indexOf("app/launch") != -1){
 				config.baseURL = ''
 			}
