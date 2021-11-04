@@ -210,7 +210,9 @@ export default Vue.extend({
                 console.log('app.bussinessApiDomain===',app.bussinessApiDomain)
                 uni.setStorageSync("launchConfig", res);
                 app.update_url = launchUrl[i] + "/api/";
-                app.update = UpdateManager.getInstance();
+                if(uni.getSystemInfoSync().platform === 'android'){
+                  app.update = UpdateManager.getInstance();
+                }
               });
               break;
             } else {
@@ -349,11 +351,17 @@ export default Vue.extend({
 });
 </script>
 
-<style>
+<style lang="scss">
 /* uni.css - 通用组件、模板样式库，可以当作一套ui库应用 */
 @import "./common/uni.css";
 
 /*每个页面公共css */
+// #ifndef MP 
+@font-face {
+	font-family: "DIN";
+	src: url("~@/common/DIN/DINAlternateBold.ttf")
+}
+// #endif
 .content {
   display: flex;
   flex-direction: column;

@@ -10,7 +10,8 @@
 			</view>
 		</view>
 		
-		<view class="top-center" :style="'margin-top:'+statusBarHeight+'px'">
+		<view class="top-center">
+			<statusbar/>
 			<view class="search-title">历史记录<view class="icon-delete" @click="onClickDelete"></view></view>
 			<view class="search-list">
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
@@ -71,13 +72,16 @@
 			
 			let date:any = new Date()
 			let params={
-				q:encodeURIComponent(text),
+				q:text,
+				sold: 1,
 				timeStamp:Date.parse(date)/1000
 			}
 			uni.showLoading({
 				title: '加载中'
 			});
-			
+			setTimeout(()=>{
+				uni.hideLoading();
+			},5000)
 			app.http.Get('search/query_price',params,(res:any)=>{
 				this.searchIng = false
 				uni.hideLoading();

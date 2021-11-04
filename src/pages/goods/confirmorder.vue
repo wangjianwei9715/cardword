@@ -22,7 +22,7 @@
 				<view class="goods-info2">
 					<text class="goods-info2-title">{{goodsData.title}}</text>
 					<view class="goods-money-info">
-						<text class="goods-money">¥{{goodsData.price}}</text>
+						<text class="goods-money">¥{{onePrice}}</text>
 						<view class="goods-money-add">
 							<view class="img-jian" @click="onClickCutDown()"></view>
 							<input class="money-add" @input="onInputMoney" v-model="moneyNum" type="number" />
@@ -44,11 +44,11 @@
 			<view class="yunfei-info">
 				<view class="yunfei-item">
 					<text class="item-name">商品金额</text>
-					<text class="item-name">¥{{goodsData.price}}</text>
+					<text class="item-name">¥{{onePrice}}</text>
 				</view>
-				<view class="yunfei-item" v-show="youhuiPrice>0">
+				<view class="yunfei-item" v-show="goodsData.price-onePrice>0">
 					<text class="item-name">优惠</text>
-					<text class="item-name">- ¥{{youhuiPrice}}</text>
+					<text class="item-name">- ¥{{moneyNum*(goodsData.price-onePrice)}}</text>
 				</view>
 				<view class="yunfei-item">
 					<text class="item-name">运费</text>
@@ -59,7 +59,7 @@
 					<text class="item-name"></text>
 					<view class="heji-money">
 						<text class="heji-text">合计:</text>
-						<text class="heji-money2">¥{{moneyNum*goodsData.price-youhuiPrice}}</text>
+						<text class="heji-money2">¥{{moneyNum*onePrice}}</text>
 					</view>
 				</view>
 			</view>
@@ -67,7 +67,7 @@
 			<view class="bottom-content">
 				<view class="heji-money-pay">
 					<text class="heji-text" style="color: #FF4349;">合计:</text>
-					<text class="heji-money2" style="color: #FF4349;">¥{{moneyNum*goodsData.price-youhuiPrice}}</text>
+					<text class="heji-money2" style="color: #FF4349;">¥{{moneyNum*onePrice}}</text>
 				</view>
 				<view class="btn-payment2" @click="onClickToPay()">去支付</view>
 			</view>
@@ -92,6 +92,7 @@ import {
 		moneyNum = 1;
 		goodsData:{[x:string]:any} = [];
 		youhuiPrice = 0;
+		onePrice = 0
 		onLoad(query: any) {
 			if(query.data){
 				// #ifndef MP 
@@ -100,44 +101,54 @@ import {
 				// #ifdef MP
 				this.goodsData = JSON.parse(decodeURIComponent(query.data))
 				// #endif
-				
+				this.getOnePrice()
 			}
-
+			app.http.Get('me/delivery',{},(res:any)=>{
+				if(res.list){
+					console.log(res.list)
+					for(let i in res.list){
+						console.log(res.list[i].default)
+						if(res.list[i].default){
+							this.addressData = res.list[i];
+							return;
+						}
+					}
+					if(this.addressData == ''){
+						this.addressData = res.list[0]
+					}
+				}
+			})
 			this.onEventUI('addressSelect',(data)=>{
 				this.addressData = data.data
 			})
 		}
 		onInputMoney(event:any){
-			
-			if(this.youhuiPrice>0&&this.moneyNum<this.goodsData.discount[0].minNum){
-				this.youhuiPrice = 0;
-			}
-			this.onChangeMoneyNum()
+			this.getOnePrice()
 		}
-		
+		getOnePrice(){
+			if(this.goodsData.discount){
+				for(let i in this.goodsData.discount){
+					if(this.moneyNum>= this.goodsData.discount[i].minNum){
+						this.onePrice = this.goodsData.discount[i].price
+					}else{
+						this.onePrice = this.goodsData.price
+					}
+				}
+			}else{
+				this.onePrice = this.goodsData.price
+			}
+			
+		}
 		onClickCutDown(){
 			if(this.moneyNum>1){
 				this.moneyNum--;
 			}
-			if(this.youhuiPrice>0&&this.moneyNum<this.goodsData.discount[0].minNum){
-				this.youhuiPrice = 0;
-			}
-			console.log('减')
+			this.getOnePrice()
 		}
 		
 		onClickAdd(){
 			this.moneyNum++;
-			this.onChangeMoneyNum()
-			console.log('加',this.youhuiPrice)
-		}
-		onChangeMoneyNum(){
-			if(this.goodsData.discount!=''){
-				for(let i of this.goodsData.discount){
-					if(this.moneyNum>=i.minNum){
-						this.youhuiPrice = i.discount
-					}
-				}		
-			}
+			this.getOnePrice()
 		}
 		onClickAddress(){
 			uni.navigateTo({

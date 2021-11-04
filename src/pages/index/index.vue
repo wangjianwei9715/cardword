@@ -39,12 +39,10 @@
 			<view class="banner-content">
 				
 				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff"> 
-					<swiper-item>
-						<image class="swiper-image" src="../../static/index/banner1.jpg" mode="aspectFit" @click="onClickTopJumpUrl('item')"></image>
+					<swiper-item v-for="(item,index) in topAddList" :key="index">
+						<image class="swiper-image" :src="item.pic" mode="aspectFit" @click="onClickTopJumpUrl(item.url)"></image>
 					</swiper-item>
-					<swiper-item>
-						<image class="swiper-image" src="../../static/index/banner_.jpg" mode="aspectFit" @click="onClickTopJumpUrl('item')"></image>
-					</swiper-item>
+					
 				</swiper>
 			</view>
 			<view class="tab-type">
@@ -85,10 +83,10 @@
 	@Component({})
 	export default class index extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
-		advertisingList:any = [
-			'../../static/index/banner1.jpg',
-			'../../static/index/banner_.jpg',
+		topAddList:any = [
+			{pic:'../../static/index/banner2.jpg',url:'/pages/act/free/index'}
 		];
+		
 		tabList = [
 			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/goods/goods_find_list?classType=1'},
 			{img:'../../static/index/tab1.png',text:'足球',url:'/pages/goods/goods_find_list?classType=2'},
@@ -170,9 +168,7 @@
 		initEvent(){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
-				this.goodsList = data.goodList?data.goodList:[];
-				console.log('goodsList===',this.goodsList)
-				this.advertisingList = data.topAddList;
+				this.reqNewData()
 			})
 			
 			this.onEventUI("apkNeedUpdate", () => {
@@ -227,8 +223,10 @@
 				url: '/pages/goods/goods_find'
 			})
 		}
-		onClickTopJumpUrl(item:any){
-			
+		onClickTopJumpUrl(url:any){
+			uni.navigateTo({
+				url: url
+			})
 		}
 		onClickJumpUrl(url:string){
 			uni.navigateTo({

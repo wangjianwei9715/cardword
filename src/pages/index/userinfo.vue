@@ -52,7 +52,7 @@
 					<view class="name">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="order-tip" v-if="countTime>0"  @click="onClickOrderList(2)">您有{{countNum}}个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
+			<view class="order-tip" v-if="countTime>0"  @click="onClickOrderList(1)">您有{{countNum}}个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
 		</view>
 
 		<view class="orther-setting">
@@ -89,7 +89,7 @@
 			{id:2,name:'联系客服',url:''},
 			{id:3,name:'常见问题',url:''},
 			{id:4,name:'用户协议',url:''},
-			{id:5,name:'关于我们',url:''},
+			{id:5,name:'关于我们',url:'/pages/userinfo/about_us'},
 			{id:6,name:'加入群聊',url:''},
 		]
 		countInterval:any;
@@ -164,13 +164,13 @@
 			// #endif
 		}
 		onClickNavigateto(item:any){
-			if(item.name == '地址管理'){
-				uni.navigateTo({
-					url:item.url
-				})
-			}else if(item.name=='联系客服'){
+			if(item.name=='联系客服'){
 				uni.navigateTo({
 					url: '/pages/userinfo/talk?targetUserId='+this.infoData.kefuUserId[0]
+				})
+			}else{
+				uni.navigateTo({
+					url:item.url
 				})
 			}
 			
@@ -240,6 +240,9 @@
 		border-bottom: 20rpx solid #F6F7F8;
 		box-sizing: border-box;
 		padding-top: 78rpx;
+		// #ifndef APP-PLUS
+		margin-top: -60rpx;
+		// #endif
 		.setting-content{
 			width: 100%;
 			height:48rpx;
@@ -478,7 +481,6 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:0 32rpx;
-		border-bottom: 20rpx solid 	#F6F7F8;
 		.setting{
 			width: 100%;
 			height:98rpx;

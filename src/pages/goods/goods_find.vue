@@ -12,7 +12,8 @@
 			</view>
 		</view>
 		
-		<view class="top-center" :style="'margin-top:'+statusBarHeight+'px'">
+		<view class="top-center">
+			<statusbar/>
 			<view class="search-title">历史记录<view class="icon-delete" @click="onClickDelete"></view></view>
 			<view class="search-list">
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
@@ -105,7 +106,7 @@
 			let date:any = new Date()
 			let params={
 				highlight:1,
-				q:encodeURIComponent(text),
+				q:text,
 				timeStamp:Date.parse(date)/1000,
 				state:1
 			}

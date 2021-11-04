@@ -98,9 +98,10 @@
 					<view class="explain-desc">{{item}}</view>
 				</view>
 			</view>
+			<image  @click="onClickPreviewImage(index)" class="goods-desc-image" mode="aspectFit" v-for="(item,index) in goodsImg" :key="index" :src="item" />
 		</view>
 		<!-- 直播可拖动控件 -->
-		<movable-area class="movable-area" v-if="goodsState == 4">
+		<movable-area class="movable-area" v-if="goodsState >3">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
 				<livewicket :liveImg="liveImg" :liveStatus="liveStatus"></livewicket>
 			</movable-view>
@@ -122,7 +123,7 @@
 			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
 		</view>
 
-		<cardplay :operationShow="operationCardShow" @operacancel="onClickCardCancel" />
+		<cardplay :operationShow="operationCardShow" :operaType="operaType" @operacancel="onClickCardCancel" />
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
 	</view>
 </template>
@@ -147,6 +148,7 @@
 		count_down:any;
 		countDown = 0;
 		favorType = false;
+		operaType = 0;
 		goodsSpe:{[x:string]:any} = {
 			pintuan_type:{id:1,name:'',desc:'拼团形式'},
 			random_type:{id:2,name:'',desc:'随机方式'},
@@ -292,7 +294,8 @@
 		}
 		onClickCardPlay(id:number){
 			if(id<=2){
-				this.operationCardShow = true
+				this.operationCardShow = true;
+				this.operaType = id
 			}
 		}
 		onClickCardCancel(){
@@ -968,5 +971,9 @@
 		pointer-events: auto;
 		width: 200rpx;
 		height:150rpx;
+	}
+	.goods-desc-image{
+		width: 100%;
+		margin-top: 10rpx;
 	}
 </style>

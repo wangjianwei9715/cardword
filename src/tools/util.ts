@@ -40,6 +40,28 @@ export function dateFormat(time:number|string){
     // 返回
     return result;
 }
+// 时间戳 年月日
+export function dateFormatYMS(time:number|string){
+    var date = new Date(Number(time)*1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var sdate = ("0" + date.getDate()).slice(-2);
+ 
+    // 拼接
+    var result = year + "-" + month + "-" + sdate
+   
+    return result;
+}
+// 时间戳 月日
+export function dateFormatMS(time:number|string){
+    var date = new Date(Number(time)*1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var sdate = ("0" + date.getDate()).slice(-2);
+    // 拼接
+    var result =  month + "-" + sdate
+   
+    return result;
+}
 // 时间换算
 export function getCountDownTime(time:number){
     let day = String(Math.floor(time/3600/24));

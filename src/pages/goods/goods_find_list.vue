@@ -169,7 +169,7 @@ import { Component } from "vue-property-decorator";
 			if(this.searchText==''){
 				params.q = ''
 			}else{
-				params.q = encodeURIComponent(this.searchText)
+				params.q = this.searchText
 			}
 			if(reach){
 				params.scrollId = this.scrollId
@@ -317,7 +317,7 @@ import { Component } from "vue-property-decorator";
 			left:0;
 			padding:0 36rpx;
 			background:#fff;
-			transition:all 0.2s linear;
+			transition:all 0.1s linear;
 			overflow: hidden;
 			&-index{
 				width: 100%;

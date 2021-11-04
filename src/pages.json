@@ -86,8 +86,9 @@
             "path" : "pages/login/login",
             "style" :                                                                                    
             {
-                "navigationStyle": "custom",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": "登录",
+                "navigationBarBackgroundColor":"#ffffff",
+                "navigationBarTextStyle":"black"
             }
             
         }
@@ -111,6 +112,7 @@
             }
             
         }
+        
         
     ],
 	"globalStyle": {
@@ -241,7 +243,33 @@
                 }
             ]
          },
-        
+        {
+            "root": "pages/act",
+            "pages": [
+                {
+                    "path" : "free/index",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarTitleText": "每日免单",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "navigationBarTextStyle": "black"
+                    }
+                    
+                },
+                {
+                    "path" : "free/record",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarTitleText": "免单记录",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "navigationBarTextStyle": "black"
+                    }
+                    
+                }
+                
+            ]
+            
+        },
         {
         "root": "pages/userinfo",
         "pages": [
@@ -454,6 +482,16 @@
                 }
                 
             }
-        ]
+            ,{
+				"path" : "about_us",
+				"style" :                                                                                    
+				{
+					"navigationBarTitleText": "关于卡世界",
+					"navigationBarBackgroundColor":"#ffffff",
+					"enablePullDownRefresh": false
+				}
+			
+			}
+            ]
      }]
 }

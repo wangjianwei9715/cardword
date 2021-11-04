@@ -58,6 +58,12 @@
 		onLoad(query:any) {
 			
 		}
+		onBackPress(type:any){
+			uni.switchTab({
+				url:'/pages/index/index'
+			})
+			return true
+		}
 		onClickChangePassword(){
 			uni.navigateTo({
 				url:'/pages/login/change_password'
