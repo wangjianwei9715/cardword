@@ -28,9 +28,18 @@ export default class PayManager {
 	}
 	paymentWxpay(orderInfo:any,cb?:Function){
 		console.log('orderInfo========',orderInfo)
+		let order = {
+			appid: "wx51f32c948fbbe03e",  // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
+			noncestr: orderInfo.nonceStr, // 随机字符串
+			package: "Sign=WXPay",        // 固定值
+			partnerid: '1615470291',      // 微信支付商户号
+			prepayid: orderInfo.prepayId, // 统一下单订单号 
+			timestamp: orderInfo.timeStamp,        // 时间戳（单位：秒）
+			sign: orderInfo.sign// 签名，这里用的 MD5 签名
+		}
 		uni.requestPayment({
 			provider: 'wxpay',
-			orderInfo: orderInfo,
+			orderInfo: order,
 			success: (res:any)=> {
 				console.log('success:' + JSON.stringify(res));
 				if (cb) {

@@ -18,6 +18,8 @@
 			<statusbar/>
 			<orderlist :orderList="orderList"  @send="onClickOrder" @operate="onClickOperate" />
 		</view>
+
+		<payment :showPayMent="showPayMent" :payPrice="payItem.price" @cancelPay="onClickCancelPay" :countTime="countTime" @pay="onClickPayGoods" />
 	</view>
 </template>
 
@@ -41,6 +43,13 @@
 		pageSize = 10;
 		noMoreData = false;
 		orderList:{[x:string]:any} = [];
+		showPayMent = false;
+		countTime = 0;
+		payItem = {
+			num:0,
+			code:'',
+			price:0
+		}
 		onLoad(query:any) {
 			if(query.type){
 				this.orderTabCheck = query.type
@@ -115,17 +124,13 @@
 				})
 			}
 			if(cmd=='toPay'){
-				params= {
-					channel:'alipay',
-					delivery:0,
-					num:Number(item.num)
-				}
-				console.log(params)
-				app.http.Post('order/topay/'+code,params,(res:any)=>{
-					app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-						this.reqNewData()
-					})
-				})
+				this.countTime = item.leftSec;
+				console.log(this.countTime)
+				this.payItem.num = Number(item.num)
+				this.payItem.code = code
+				this.payItem.price =  item.price
+				this.showPayMent = true
+
 			}
 			if(cmd=='receive_good'){
 				uni.showModal({
@@ -197,6 +202,49 @@
 			this.againReqNewData()
 		}
 		
+		// 取消支付
+		onClickCancelPay(){
+			this.showPayMent = false;
+			this.againReqNewData()
+		}
+		onClickPayGoods(type:any){
+			// 1：支付宝 2：微信
+			if(type==0){
+				return;
+			}
+			uni.showLoading({
+				title: '加载中'
+			});
+			let params = {
+				channel:'',
+				delivery:0,
+				num:this.payItem.num
+			}
+			if(type==1){
+				params.channel = 'alipay';
+				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
+					if(res.alipay.orderInfo!=''){
+						app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
+							this.againReqNewData()
+						})
+						this.onClickCancelPay()
+					}
+				})
+			}else if(type==2){
+				params.channel = 'weixin';
+				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
+					if(res.wechat){
+						console.log(res.wechat)
+						uni.hideLoading()
+						app.payment.paymentWxpay(res.wechat,()=>{
+							this.againReqNewData()
+						})
+						this.onClickCancelPay()
+						
+					}
+				})
+			}
+		}
 		
 	}
 </script>

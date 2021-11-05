@@ -40,7 +40,7 @@
 				<view class="name">{{item.name}}</view><view class="info">{{item.desc}}</view>
 			</view>
 			<view class="order-desc-bottom">
-				合计：<view class="price-index">￥<text class="price-num">{{orderData.price-orderData.discount}}</text></view>
+				合计：<view class="price-index">￥<text class="price-num">{{orderData.price}}</text></view>
 			</view>
 		</view>
 		<!-- 我的编号 -->
@@ -83,6 +83,8 @@
 			</view>
 			<view v-else class="big-btn" @click="onClickOperate(orderData.operate[0].cmd)">{{orderData.operate[0].name}}</view>
 		</view>
+
+		<payment :showPayMent="showPayMent" @cancelPay="onClickCancelPay" :payPrice="orderData.price" :countTime="countDown" @pay="onClickPayGoods" />
 	</view>
 </template>
 
@@ -119,7 +121,7 @@
 			deliverTime:{id:6,title:'发货时间',desc:''},
 			receiveTime:{id:7,title:'收货时间',desc:''},
 		};
-
+		showPayMent = false;
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -131,11 +133,13 @@
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
 				this.orderData = res.data
+				this.countDown = res.data.leftSec
 				uni.setNavigationBarTitle({
 					title: res.data.stateName
 				});
 				this.getGoodDesc(res.data)
 				if(cb) cb()
+				this.getCountDown()
 			})
 
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList',{pageIndex:1,pageSize:5},(res:any)=>{
@@ -185,17 +189,7 @@
 			}
 
 			if(cmd=='toPay'){
-				params= {
-					channel:'alipay',
-					delivery:0,
-					num:Number(this.orderData.num)
-				}
-				console.log(params)
-				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
-					app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-						this.initEvent()
-					})
-				})
+				this.showPayMent = true
 			}
 
 			if(cmd=='receive_good'){
@@ -270,7 +264,49 @@
 				url: '/pages/goods/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode
 			})
 		}
-		
+		// 取消支付
+		onClickCancelPay(){
+			this.showPayMent = false;
+		}
+		onClickPayGoods(type:any){
+			// 1：支付宝 2：微信
+			if(type==0){
+				return;
+			}
+			uni.showLoading({
+				title: '加载中'
+			});
+
+			
+			let params = {
+				channel:'',
+				delivery:0,
+				num:Number(this.orderData.num)
+			}
+			if(type==1){
+				params.channel = 'alipay';
+				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+					if(res.alipay.orderInfo!=''){
+						app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
+							
+						})
+						this.onClickCancelPay()
+					}
+				})
+			}else if(type==2){
+				params.channel = 'weixin';
+				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+					if(res.wechat){
+						console.log(res.wechat)
+						uni.hideLoading()
+						app.payment.paymentWxpay(res.wechat,()=>{
+							
+						})
+						this.onClickCancelPay()
+					}
+				})
+			}
+		}
 	}
 </script>
 

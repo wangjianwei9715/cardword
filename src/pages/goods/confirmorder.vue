@@ -73,6 +73,8 @@
 			</view>
 
 		</view>
+
+		<payment :showPayMent="showPayMent" @cancelPay="onClickCancelPay" :payPrice="moneyNum*onePrice" :countTime="countTime" @pay="onClickPayGoods" />
 	</view>
 </template>
 
@@ -92,7 +94,9 @@ import {
 		moneyNum = 1;
 		goodsData:{[x:string]:any} = [];
 		youhuiPrice = 0;
-		onePrice = 0
+		onePrice = 0;
+		showPayMent = false;
+		countTime = 300;
 		onLoad(query: any) {
 			if(query.data){
 				// #ifndef MP 
@@ -163,6 +167,7 @@ import {
 				})
 				return;
 			}
+			
 			let params:{[x:string]:any}
 			// #ifdef MP
 			params= {
@@ -181,29 +186,56 @@ import {
 			
 			// #endif
 			// #ifndef MP
-			params = {
-				channel:'weixin',
+			this.showPayMent = true
+			
+			
+			// #endif
+		}
+		// 取消支付
+		onClickCancelPay(){
+			this.showPayMent = false;
+			this.countTime = 300
+		}
+		onClickPayGoods(type:any){
+			// 1：支付宝 2：微信
+			if(type==0){
+				return;
+			}
+			uni.showLoading({
+				title: '加载中'
+			});
+			let params = {
+				channel:'',
 				delivery:this.addressData.id,
 				num:Number(this.moneyNum)
 			}
-			app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
-				if(res.wechat){
-					console.log(res.wechat)
-					app.payment.paymentWxpay(res.wechat,()=>{})
-					uni.redirectTo({
-						url:'/pages/userinfo/order_details?code='+res.goodOrderCode
-					})
-				}
-				// if(res.alipay.orderInfo!=''){
-				// 	app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-						
-				// 	})
-				// 	uni.redirectTo({
-				// 		url:'/pages/userinfo/order_details?code='+res.goodOrderCode
-				// 	})
-				// }
-			})
-			// #endif
+			if(type==1){
+				params.channel = 'alipay';
+				app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
+					if(res.alipay.orderInfo!=''){
+						app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
+							
+						})
+						uni.redirectTo({
+							url:'/pages/userinfo/order_details?code='+res.goodOrderCode
+						})
+					}
+				})
+			}else if(type==2){
+				params.channel = 'weixin';
+				app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
+					if(res.wechat){
+						console.log(res.wechat)
+						uni.hideLoading()
+						app.payment.paymentWxpay(res.wechat,()=>{
+							
+						})
+						uni.redirectTo({
+							url:'/pages/userinfo/order_details?code='+res.goodOrderCode
+						})
+					}
+				})
+			}
 		}
 	}
 </script>

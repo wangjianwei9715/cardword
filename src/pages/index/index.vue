@@ -142,7 +142,7 @@
 			this.register(listeners);
 			setTimeout(()=>{
 				this.initEvent()
-			},500)
+			},200)
 		}
 		onPageScroll(e:any){
 			if(e.scrollTop>=0){

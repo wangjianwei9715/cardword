@@ -184,6 +184,9 @@
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId)
 		}
+		onShow(){
+			this.getProgress()
+		}
 		// 数据详情赋值
 		getGoodData(id:any){
 			setTimeout(()=>{
@@ -210,6 +213,13 @@
 				})
 			},200)
 			
+		}
+		getProgress(){
+			app.http.Get('good/'+this.goodsId+'/progress',{},(res:any)=>{
+				this.goodsData.currentNum = res.data.currentNum; 
+				this.goodsData.totalNum = res.data.totalNum;
+				this.goodsData.lockNum = res.data.lockNum;
+			})
 		}
 		// 商品图片
 		getGoodsImage(img:any){

@@ -162,10 +162,12 @@ export default class HttpRequest {
 			return config;
 		}, function (error) {
 			// 对请求错误做些什么
+			uni.hideLoading()
 			return Promise.reject(error);
 		});
 		// 添加响应拦截器
 		this.axiosInstance.interceptors.response.use((response)=> {
+			uni.hideLoading()
 			if (response.data) {
 				if (response.data.code == 1101){
 					uni.showModal({
@@ -203,6 +205,7 @@ export default class HttpRequest {
 			
 			return response;
 		},(error)=> {
+			uni.hideLoading()
 			console.log('error====',error)
 			if (error.response) {
 				if (error.response.status == 429) {
