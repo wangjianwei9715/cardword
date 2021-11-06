@@ -65,7 +65,6 @@
 <style lang="scss">
 	.card-index{
 		width: 710rpx;
-		height:192rpx;
 		background:url(../../static/userinfo/NUMBER@2x.png) no-repeat center;
 		background-size: 100% 100%;
 		margin-bottom: 20rpx;
@@ -77,7 +76,6 @@
 		box-sizing: border-box;
 		.left{
 			width: 538rpx;
-			height:192rpx;
 			box-sizing: border-box;
 			padding:20rpx 22rpx 20rpx 32rpx;
 			.title{
@@ -88,7 +86,6 @@
 				margin-bottom: 8rpx;
 			}
 			.desc{
-				height:70rpx;
 				font-size: 24rpx;
 				font-family: PingFangSC-Semibold, PingFang SC;
 				font-weight: 600;

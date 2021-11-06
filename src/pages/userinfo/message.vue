@@ -44,11 +44,9 @@
 		dynamicData:any = [];
 		buckedList:any = [];
 		pageIndex = 1;
-		pageSize = 10;
+		pageSize = 15;
 		noMoreData = false;
 		onLoad(query:any) {
-			this.getMessageList()
-			this.getBucketlist()
 
 			this.onEventUI('sendMessage',()=>{
 				this.pageIndex = 1;
@@ -56,6 +54,10 @@
 				
 				this.getBucketlist()
 			})
+		}
+		onShow(){
+			this.getMessageList()
+			this.getBucketlist()
 		}
 		//   加载更多数据
 		onReachBottom() {

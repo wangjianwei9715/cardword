@@ -111,13 +111,14 @@
 			height:626rpx;
 			position: fixed;
 			box-sizing: border-box;
-			bottom:-626rpx;
-			left:0;
-			right:0;
 			background:#fff;
 			border-radius: 12rpx 12rpx 0px 0px;
 			z-index: 1000;
-			transition:all 0.2s linear;
+			bottom:0;
+			left:0;
+			transition:transform 0.2s;
+			-webkit-transition: -webkit-transform 0.2s;
+			transform: translateY(626rpx);
 		}
 		.payment-header{
 			width: 100%;
@@ -229,6 +230,6 @@
 		top:36rpx;
 	}
 	.payment-popup-show{
-		bottom:0
+		transform: translateY(0);
 	}
 </style>

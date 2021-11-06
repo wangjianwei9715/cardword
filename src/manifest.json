@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "1.3.1",
+    "versionName" : "1.3.6",
     "versionCode" : 100,
     "transformPx" : false,
     "networkTimeout" : {
@@ -75,7 +75,7 @@
                     "weixin" : {
                         "appid" : "wx51f32c948fbbe03e",
                         "appsecret" : "0efbfdf1c48f662fb81db9a3b026a3c3",
-                        "UniversalLinks" : "https://www.ka-world.com/"
+                        "UniversalLinks" : "https://www.ka-world.com/links/"
                     },
                     "apple" : {}
                 },
@@ -86,7 +86,7 @@
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
                         "appid" : "wx51f32c948fbbe03e",
-                        "UniversalLinks" : "https://www.ka-world.com/"
+                        "UniversalLinks" : "https://www.ka-world.com/links/"
                     },
                     "appleiap" : {}
                 },
@@ -102,7 +102,7 @@
                 "share" : {
                     "weixin" : {
                         "appid" : "wx51f32c948fbbe03e",
-                        "UniversalLinks" : "https://www.ka-world.com/"
+                        "UniversalLinks" : "https://www.ka-world.com/links/"
                     }
                 }
             },
@@ -135,6 +135,12 @@
                         "settings@3x" : "unpackage/res/icons/87x87.png",
                         "spotlight@2x" : "unpackage/res/icons/80x80.png",
                         "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                    },
+                    "capabilities" : {
+                        "entitlements" : {
+                            // 合并到工程entitlements文件的数据（json格式）  
+                            "com.apple.developer.associated-domains" : [ "applinks:ka-world.com" ]
+                        }
                     }
                 }
             }

@@ -98,7 +98,7 @@
 					<view class="explain-desc">{{item}}</view>
 				</view>
 			</view>
-			<image  @click="onClickPreviewImage(index)" class="goods-desc-image" mode="aspectFit" v-for="(item,index) in goodsImg" :key="index" :src="item" />
+			<image  @click="onClickPreviewImage(index)" class="goods-desc-image" mode="widthFix" v-for="(item,index) in goodsImg" :key="index" :src="item" />
 		</view>
 		<!-- 直播可拖动控件 -->
 		<movable-area class="movable-area" v-if="goodsState >3">

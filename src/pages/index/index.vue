@@ -27,7 +27,7 @@
 			</view>
 		</view>
 		
-		<view class="header-banner" :style="pullDown?'position:absolute':''" >
+		<view class="header-banner" >
 			<statusbar/>
 			<view class="tab-header">
 				<searchinput :searchText="'搜索商品、商家'" @clicksearch="onClickSearch"></searchinput>
@@ -71,7 +71,7 @@
 			<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
 		</view>
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsList"  @send="onClickJumpDetails"/>
+			<goodslist  :goodsList="goodsList" :pageIndex="currentPage"  @send="onClickJumpDetails"/>
 		</view>
 	</view>
 </template>
@@ -119,9 +119,8 @@
 		goodTabCheck = 1;
 		goodsList:any = [];
 		currentPage = 1;
-		pageSize = 10;
+		pageSize = 15;
 		noMoreData = false;
-		pullDown = false;
 		apkNeedUpdate = false;
 		updateStart = false;
 		downloadText = '下载中：0 MB/0 MB, 0%';
@@ -145,11 +144,7 @@
 			},200)
 		}
 		onPageScroll(e:any){
-			if(e.scrollTop>=0){
-				this.pullDown = false
-			}else{
-				this.pullDown = true
-			}
+			
 		}
 		//   下拉刷新
 		onPullDownRefresh(){

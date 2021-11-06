@@ -44,7 +44,7 @@ import { Component } from "vue-property-decorator";
 		deling = false;
 		delList:any = [];
 		currentPage = 1;
-		pageSize = 10;
+		pageSize = 15;
 		noMoreData = false;
 		onLoad(query:any) {
 			this.reqNewData()

@@ -37,7 +37,7 @@
 		merchantId = 0;
 		goodsList:{[x:string]:any} = [];
 		currentPage = 1;
-		pageSize = 10;
+		pageSize = 15;
 		noMoreData = false;
 		onLoad(query:any) {
 			if(query.id){

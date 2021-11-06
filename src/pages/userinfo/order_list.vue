@@ -40,7 +40,7 @@
 		];
 		orderTabCheck = 0;
 		currentPage = 1;
-		pageSize = 10;
+		pageSize = 15;
 		noMoreData = false;
 		orderList:{[x:string]:any} = [];
 		showPayMent = false;
@@ -124,12 +124,29 @@
 				})
 			}
 			if(cmd=='toPay'){
+				// #ifdef MP
+				params= {
+					channel:'mini',
+					delivery:0,
+					num:Number(item.num)
+				}
+				app.http.Post('good/topay/'+code,params,(res:any)=>{
+					app.platform.payment(res.wechat,(data:any)=>{
+					})
+					this.againReqNewData()
+				})
+				
+				// #endif
+				// #ifndef MP
 				this.countTime = item.leftSec;
 				console.log(this.countTime)
 				this.payItem.num = Number(item.num)
 				this.payItem.code = code
 				this.payItem.price =  item.price
 				this.showPayMent = true
+				
+				// #endif
+				
 
 			}
 			if(cmd=='receive_good'){

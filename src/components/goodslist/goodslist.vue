@@ -32,12 +32,17 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		goodsList:any;
-
+		@Prop({default:1})
+		pageIndex:any;
+		
 		getGoodsImg = getGoodsImg;
 		discountList:any = [];
-	
+
 		@Watch('goodsList')
 		onGoodsListChanged(val: any, oldVal: any){
+			if(this.pageIndex==1){
+				this.discountList = []
+			}
 			this.getGoodsList()
 		}
 		created(){//在实例创建完成后被立即调用

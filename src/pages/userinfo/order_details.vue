@@ -2,7 +2,7 @@
 	<view class="content">
 		<!-- 头部状态 -->
 		<view class="header" v-if="orderData.good">
-			<view v-if="orderData.state==0" class="header-waitpay">订单将于 {{countDownStr}} 后关闭</view>
+			<view v-if="orderData.state==1" class="header-waitpay">订单将于 {{countDownStr}} 后关闭</view>
 			<view v-else-if="orderData.state==-1" class="header-close">拼团未成功订单关闭，款项已原路退回…</view>
 			<view v-else-if="orderData.good.state>=2" class="header-orther">
 				<view class="header-statestr">{{orderData.good.desc?orderData.good.desc:''}}</view>
@@ -44,7 +44,7 @@
 			</view>
 		</view>
 		<!-- 我的编号 -->
-		<view class="buyer-cotnent">
+		<view class="buyer-cotnent" v-if="cardList!=''">
 			<view class="card-header">
 				<view class="card-header-title">我的编号</view>
 				<view class="card-header-right" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
@@ -130,6 +130,9 @@
 		onShow(){
 			this.initEvent();
 		}
+		onHide(){
+			clearInterval(this.countDownInter);
+		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
 				this.orderData = res.data
@@ -143,7 +146,9 @@
 			})
 
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList',{pageIndex:1,pageSize:5},(res:any)=>{
-				this.cardList = res.list
+				if(res.list){
+					this.cardList = res.list
+				}
 			})
 		}
 		getGoodDesc(data:any){
@@ -189,7 +194,23 @@
 			}
 
 			if(cmd=='toPay'){
+				// #ifdef MP
+				params= {
+					channel:'mini',
+					delivery:0,
+					num:Number(this.orderData.num)
+				}
+				app.http.Post('good/topay/'+this.orderData.code,params,(res:any)=>{
+					app.platform.payment(res.wechat,(data:any)=>{
+					})
+					this.initEvent()
+				})
+				// #endif
+				// #ifndef MP
 				this.showPayMent = true
+				
+				// #endif
+				
 			}
 
 			if(cmd=='receive_good'){
@@ -288,7 +309,7 @@
 				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
 					if(res.alipay.orderInfo!=''){
 						app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-							
+							this.initEvent()
 						})
 						this.onClickCancelPay()
 					}
@@ -300,7 +321,7 @@
 						console.log(res.wechat)
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.wechat,()=>{
-							
+							this.initEvent()
 						})
 						this.onClickCancelPay()
 					}

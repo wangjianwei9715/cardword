@@ -11,7 +11,22 @@ export default Vue.extend({
   globalData: {},
   onLaunch() {
     console.log("App Launch");
-
+    if(process.env.NODE_ENV === 'development'){
+        console.log('开发环境')
+        app.localTest=true;
+        app.domaintest='http://192.168.0.38:8701/api/v1/';  
+        app.bussinessApiDomain='http://192.168.0.38:8701/api/v1/';
+    }else{
+        console.log('生产环境')
+        // #ifdef MP-WEIXIN
+        app.localTest=false;
+        // #endif
+        // #ifndef MP-WEIXIN
+        app.localTest=true;
+        // #endif
+        app.domaintest='https://server.ssl1.ka-world.com/api/v1/'; 
+        app.bussinessApiDomain='https://server.ssl1.ka-world.com/api/v1/';
+    }
     let needPushIdentifier = true;
 
     const loginToken = uni.getStorageSync("token");
