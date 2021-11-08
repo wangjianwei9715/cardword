@@ -350,7 +350,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 				}
 			}
 			let params = {
-				pageSize:20,
+				pageSize:30,
 				referMsgId:msgId,
 				sliderDir:isNew?1:0//0:老记录，1：新纪录
 			}

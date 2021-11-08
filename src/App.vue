@@ -19,10 +19,10 @@ export default Vue.extend({
     }else{
         console.log('生产环境')
         // #ifdef MP-WEIXIN
-        app.localTest=false;
+        app.localTest=true;
         // #endif
         // #ifndef MP-WEIXIN
-        app.localTest=true;
+        app.localTest=false;
         // #endif
         app.domaintest='https://server.ssl1.ka-world.com/api/v1/'; 
         app.bussinessApiDomain='https://server.ssl1.ka-world.com/api/v1/';

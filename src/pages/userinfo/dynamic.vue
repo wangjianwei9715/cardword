@@ -27,7 +27,7 @@
 		dynamicData:{[x:string]:any} = [];
 		bucketName = '';
 		currentPage = 1;
-		pageSize = 15;
+		pageSize = 20;
 		noMoreData = false;
 		onLoad(query:any) {
 			if(query.type){

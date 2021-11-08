@@ -119,7 +119,7 @@
 		goodTabCheck = 1;
 		goodsList:any = [];
 		currentPage = 1;
-		pageSize = 15;
+		pageSize = 20;
 		noMoreData = false;
 		apkNeedUpdate = false;
 		updateStart = false;

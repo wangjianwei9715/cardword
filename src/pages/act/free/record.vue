@@ -50,7 +50,7 @@
 		recordDay = '';
 		newDay = '';
 		currentPage = 1;
-		pageSize = 15;
+		pageSize = 20;
 		noMoreData = false;
 		dateFormatYMS = dateFormatYMS
 		onLoad(query:any) {

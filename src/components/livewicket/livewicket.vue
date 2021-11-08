@@ -1,5 +1,5 @@
 <template>
-	<view class="livewicket">
+	<view class="livewicket" @click="onClickLive">
 		<image class="livewicket-img" :src="liveImg" mode="aspectFill"></image>
 		<view class="livewicket-content">
 			<view class="icon-bofang"></view>
@@ -26,6 +26,9 @@
 		}
 		destroyed(){
 			
+		}
+		onClickLive(){
+			this.$emit('live')
 		}
 	}
 </script>

@@ -36,7 +36,7 @@
 		goodType = 0;
 		searchText = '';
 		currentPage = 1;
-		pageSize = 20;
+		pageSize = 30;
 		noMoreData = false;
 		itemListName=[];
 		teamDataList = [];

@@ -35,7 +35,7 @@
 		];
 		goodTabCheck = 0;
 		currentPage = 1;
-		pageSize = 15;
+		pageSize = 20;
 		noMoreData = false;
 		liveList:{[x:string]:any} = []
 		searchData:any = [];

@@ -52,8 +52,8 @@
 			<view class="header-center">
 				<view class="header-center-top">余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}</view>
 				<view class="header-center-plan"><plan :num_ex="(goodsData.currentNum+goodsData.lockNum)" :num_all="goodsData.totalNum"></plan></view>
-				<view class="header-center-actor">
-					<image class="header-center-actor-img" src="" mode="aspectFit"></image>
+				<view class="header-center-actor" v-if="goodsData.lastBuyerList">
+					<image class="header-center-actor-img" v-for="(item,index) in goodsData.lastBuyerList" :key="index" :src="decodeURIComponent(item.avatar)" mode="aspectFit"></image>
 				</view>
 			</view>
 			<view class="header-bottom">
@@ -71,7 +71,7 @@
 				<view class="goods-card-title-more" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
 			</view>
 			<view class="goods-card-content">
-				<scroll-view class="goods-card-content-scroll">
+				<scroll-view class="goods-card-content-scroll" :scroll-x="true">
                     <view class="scroll-index" v-for="(item,index) in cardData" :key="index" @click="onClickPreviewCard(index)">
 						<image class="scroll-index-img" :src="decodeURIComponent(item)" mode="aspectFit"></image>
 					</view>
@@ -103,11 +103,11 @@
 		<!-- 直播可拖动控件 -->
 		<movable-area class="movable-area" v-if="goodsState >3">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
-				<livewicket :liveImg="liveImg" :liveStatus="liveStatus"></livewicket>
+				<livewicket :liveImg="decodeURIComponent(goodsData.broadcast.pic)" :liveStatus="goodsData.broadcast.name" @live="onClickLive"></livewicket>
 			</movable-view>
 		</movable-area>
 		<!-- 底部吐司 -->
-		<!-- <tips :tipsData="tipsData" v-if="goodsState==1"></tips> -->
+		<tips :tipsData="buyRecordList" v-if="buyRecordList!=''"></tips>
 		<!-- 底部按钮 -->
 		<view class="btn-content" v-if="goodsState==1||goodsState==0">
 			<view class="btn-content-left">
@@ -178,11 +178,11 @@
 			{img:'',desc:'1分钟前加入拼团*30'}
 		];
 		discountList:any = [];
-		liveImg = '../../static/goods/.png';
-		liveStatus = '直播回放'
+		buyRecordList:any = [];
 		onLoad(query:any) {
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId)
+
 		}
 		onShow(){
 			this.getProgress()
@@ -210,6 +210,11 @@
 					this.getGoodsSpe();
 					let newData = decodeURIComponent(data.good.desc).split('\r');
 					this.goodsDesc = newData
+				})
+				app.http.Get('good/'+id+'/buyRecord',{},(res:any)=>{
+					if(res.list){
+						this.buyRecordList = res.list
+					}
 				})
 			},200)
 			
@@ -288,7 +293,7 @@
 		}
 		onClickShops(){
 			uni.navigateTo({
-				url: '/pages/userinfo/merchant_shops?id='+this.goodsData.publisher.id
+				url: '/pages/userinfo/merchant_shops?id='+this.goodsData.publisher.id+'&name='+this.goodsData.publisher.name+'&avatar='+this.goodsData.publisher.avatar
 			})
 		}
 		onClickAllCard(){
@@ -407,6 +412,10 @@
 			uni.navigateTo({
 				url: 'goods_result_list?chooseIds=' + chooseID+'&code='+this.goodsId
 			})
+		}
+
+		onClickLive(){
+			app.platform.goWeChatLive(this.goodsData.broadcast.roomId)
 		}
 		
 	}

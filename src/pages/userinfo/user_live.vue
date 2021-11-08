@@ -28,7 +28,7 @@ import { Component } from "vue-property-decorator";
 		goodTabCheck = 1;
 		liveList:{[x:string]:any} = []
 		currentPage = 1;
-		pageSize = 15;
+		pageSize = 20;
 		noMoreData = false;
 		onLoad(query:any) {
 			this.reqNewData()

@@ -44,7 +44,7 @@
 		dynamicData:any = [];
 		buckedList:any = [];
 		pageIndex = 1;
-		pageSize = 15;
+		pageSize = 20;
 		noMoreData = false;
 		onLoad(query:any) {
 

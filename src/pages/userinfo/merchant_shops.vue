@@ -5,8 +5,8 @@
 			<view class="tab-header">
 				<view class="icon-back" @click="onClickBack"></view>
 				<view class="header-title">
-					<image class="header-title-img" src="" mode="aspectFit"></image>
-					皇球星社
+					<image class="header-title-img" :src="merchantAvatar" mode="aspectFit"></image>
+					{{merchantName}}
 				</view>
 				<view class="icon-liaotian" @click="onClickLT"></view>
 			</view>
@@ -35,13 +35,17 @@
 		];
 		goodTabCheck = 1;
 		merchantId = 0;
+		merchantName = '';
+		merchantAvatar = '';
 		goodsList:{[x:string]:any} = [];
 		currentPage = 1;
-		pageSize = 15;
+		pageSize = 20;
 		noMoreData = false;
 		onLoad(query:any) {
 			if(query.id){
 				this.merchantId = query.id;
+				this.merchantName = query.name;
+				this.merchantAvatar =decodeURIComponent(query.avatar)
 				this.reqNewData()
 			}
 		}

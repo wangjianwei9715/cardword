@@ -105,7 +105,7 @@
 			}
 			let params = {
 				pageIndex:this.currentPage,
-				pageSize:20
+				pageSize:30
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNo',params,(res:any)=>{
 				if(res.list){
@@ -123,7 +123,7 @@
 			}
 			let params = {
 				pageIndex:this.currentPage,
-				pageSize:20
+				pageSize:30
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
 				if(res.list){

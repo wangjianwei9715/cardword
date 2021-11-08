@@ -3,9 +3,7 @@
 		<view class="card-index">
 			<buyCardId :cardList="cardList" :showImg="true"/>
 		</view>	
-		<view class="card-bottom">
-			<view class="small-btn" @click="onClickMore">加载更多</view>
-		</view>
+		
 	</view>
 </template>
 
@@ -18,7 +16,7 @@ import { Component } from "vue-property-decorator";
 		cardList:{[x:string]:any} = [];
 		orderCode = '';
 		currentPage = 1;
-		pageSize = 15;
+		pageSize = 20;
 		noMoreData = false;
 		onLoad(query:any) {
 			this.orderCode = query.code;
@@ -77,32 +75,7 @@ import { Component } from "vue-property-decorator";
 		width: 100%;
 		box-sizing: border-box;
 		padding:20rpx;
-		padding-bottom: 140rpx;
+		padding-bottom: 20rpx;
 	}
-	.card-bottom{
-		width: 100%;
-		height:120rpx;
-		position: fixed;
-		bottom:0;
-		left:0;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		background:#fff;
-		box-sizing: border-box;
-		padding:0 20rpx
-	}
-	.small-btn{
-		width: 100%;
-		height: 80rpx;
-		border-radius: 4rpx;
-		border: 1px solid #14151B;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 28rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #14151B;
-	}
+	
 </style>

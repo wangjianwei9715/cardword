@@ -1,9 +1,9 @@
 <template>
 	<view class="bottom-tips">
-		<view class="bottom-tips-content" :style="'margin-top:-'+marginHeight+'rpx'">
+		<view class="bottom-tips-content" :style="'transform:translateY(-'+marginHeight+'rpx)'">
 			<view class="bottom-tips-index" v-for="item in tipsData" :key="item.id">
-				<image class="bottom-tips-img" :src="item.img" mode="aspectFit"></image>
-				<view class="bottom-tips-desc">{{item.desc}}</view>
+				<image class="bottom-tips-img" :src="decodeURIComponent(item.avatar)" mode="aspectFit"></image>
+				<view class="bottom-tips-desc">{{setTime(item.time)}}加入拼团*{{item.num}}</view>
 			</view>
 		</view>
 	</view>
@@ -40,10 +40,22 @@
 				}else{
 					clearInterval(this.tipsInter)
 				}
-			},5000);
+			},2000);
 		}
 		tipsScroll(){
 			this.marginHeight+= 62
+		}
+		setTime(time:any){
+			let newDate:any = new Date;
+			let date = Date.parse(newDate)/1000 - time;
+			if(date>300){
+				return '5分钟前'
+			}else if(date<60){
+				return date+'秒前'
+			}else{
+				let num = Math.floor(date/60);
+				return num+'分钟前'
+			}
 		}
 
 	}
@@ -61,7 +73,7 @@
 		overflow: hidden;
 		&-content{
 			width: 300rpx;
-			transition: all 0.5s linear;
+			transition: all 0.2s linear;
 			box-sizing: border-box;
 			display:flex;
 			align-items: flex-start;
@@ -92,6 +104,7 @@
 			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 500;
 			color: #FFFFFF;
+			padding-right: 20rpx;
 		}
 	}
 </style>

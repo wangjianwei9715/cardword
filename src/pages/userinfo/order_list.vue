@@ -40,7 +40,7 @@
 		];
 		orderTabCheck = 0;
 		currentPage = 1;
-		pageSize = 15;
+		pageSize = 20;
 		noMoreData = false;
 		orderList:{[x:string]:any} = [];
 		showPayMent = false;
