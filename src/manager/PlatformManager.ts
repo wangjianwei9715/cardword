@@ -167,21 +167,12 @@ export default class PlatformManager {
     }
 	payment(data:any,callback?:Function){
         // #ifdef MP-WEIXIN
-		let params = {
-			provider: 'wxpay',
-			timeStamp: data.timeStamp,
-			nonceStr: data.nonceStr,
-			package: 'prepay_id='+data.prepayId,
-			signType: 'RSA',
-			paySign: data.sign
-		}
-		console.log(params)
 		uni.requestPayment({
 			provider: 'wxpay',
 			timeStamp: data.timeStamp,
 			nonceStr: data.nonceStr,
 			package: 'prepay_id='+data.prepayId,
-			signType: 'RSA',
+			signType: data.signType,
 			paySign: data.sign,
 			success: (res:any)=> {
 				console.log('success:' + JSON.stringify(res));

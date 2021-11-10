@@ -39,7 +39,7 @@ export default class ClassName extends BaseNode {
     { id: 3, name: "消息通知", url: "" },
     { id: 4, name: "清除缓存", url: "" },
     { id: 5, name: "用户协议", url: "" },
-    { id: 6, name: "关于我们", url: "" },
+    { id: 6, name: "关于我们", url: "/pages/userinfo/about_us" },
   ];
   xiaoxiDefault = false;
   fileSizeString = "";
@@ -53,7 +53,7 @@ export default class ClassName extends BaseNode {
     // #endif
   }
   onClickNavigateto(item: any) {
-    if(item.id==1||item.id==2){
+    if(item.id!=3&&item.id!=4){
       uni.navigateTo({
         url: item.url,
       });

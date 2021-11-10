@@ -20,12 +20,12 @@ import { Component } from "vue-property-decorator";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		goodTab = [
-			{id:1,name:'全部'},
-			{id:3,name:'直播中'},
-			{id:4,name:'待直播'},
-			{id:5,name:'已完成'}
+			{id:0,name:'全部'},
+			{id:1,name:'待直播'},
+			{id:2,name:'直播中'},
+			{id:3,name:'已完成'}
 		];
-		goodTabCheck = 1;
+		goodTabCheck = 0;
 		liveList:{[x:string]:any} = []
 		currentPage = 1;
 		pageSize = 20;
@@ -44,7 +44,7 @@ import { Component } from "vue-property-decorator";
 			}
 			let params:{[x:string]:any} = {
 				
-				tp:this.goodTabCheck-1,
+				tp:this.goodTabCheck,
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 			}
@@ -73,7 +73,7 @@ import { Component } from "vue-property-decorator";
 			this.reqNewData()
 		}
 		onClickLive(id:any){
-			
+			app.platform.goWeChatLive(id)
 		}
 		
 	}

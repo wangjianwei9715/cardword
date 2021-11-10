@@ -41,7 +41,7 @@
 			<!-- 头部详情 -->
 			<view class="header-top">
 				<view class="header-top-left">
-					<view class="youhui"><view class="icon-tips" v-for="(item,index) in discountList" :key="index">{{item.content}}</view></view>
+					<view class="youhui" v-show="discountList!=''"><view class="icon-tips" v-for="(item,index) in discountList" :key="index">{{item.content}}</view></view>
 					<view class="header-top-left-title">{{goodsData.title}}</view>
 				</view>
 				<view class="header-top-right" @click="onClickFavor">
@@ -209,7 +209,9 @@
 					// 商品规格、配置、形式、
 					this.getGoodsSpe();
 					let newData = decodeURIComponent(data.good.desc).split('\r');
-					this.goodsDesc = newData
+					this.goodsDesc = newData;
+					this.goodsDesc.unshift('【拼团时间】：'+dateFormat(data.good.startAt)+'至'+dateFormat(data.good.overAt))
+					this.goodsDesc.unshift('【商品编号】：'+data.good.goodCode)
 				})
 				app.http.Get('good/'+id+'/buyRecord',{},(res:any)=>{
 					if(res.list){
@@ -276,7 +278,7 @@
 			this.goodsSpe.pintuan_type.name = getGoodsPintuan(data.pintuan_type);
 			this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
 			this.goodsSpe.spec.name = data.spec.name;
-			this.goodsSpe.spec_str.name = data.spec.num;
+			this.goodsSpe.spec_str.name = data.spec.num+'张';
 			// 商品详情
 			this.getExplainData()
 		}
@@ -588,9 +590,8 @@
 			box-sizing: border-box;
 			&-title{
 				width: 100%;
-				font-size: $font-28;
+				font-size: $font-34;
 				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
 				color: #14151A;
 			}
 		}
@@ -642,7 +643,7 @@
 	.header-center{
 		width: 100%;
 		box-sizing: border-box;
-		margin-top: 4rpx;
+		margin-top: 20rpx;
 		position: relative;
 		&-top{
 			width: 100%;
@@ -717,7 +718,7 @@
 		width: 100%;
 		background:$color-F;
 		box-sizing: border-box;
-		padding:20rpx 0 20rpx 32rpx;
+		padding:30rpx 0 30rpx 32rpx;
 		border-bottom: 14rpx solid #F6F7F8;
 		&-title{
 			width: 100%;
@@ -780,11 +781,11 @@
 	}
 	.goods-seller{
 		width: 100%;
-		height:120rpx;
+		height:140rpx;
 		background:$color-F;
 		border-bottom: 14rpx solid #F5F5F9;
 		box-sizing: border-box;
-		padding:0 40rpx;
+		padding:10rpx 40rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

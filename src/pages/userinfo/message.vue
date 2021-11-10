@@ -56,6 +56,8 @@
 			})
 		}
 		onShow(){
+			this.pageIndex=1;
+			this.noMoreData = false
 			this.getMessageList()
 			this.getBucketlist()
 		}

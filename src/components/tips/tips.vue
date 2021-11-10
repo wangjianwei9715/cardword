@@ -40,10 +40,10 @@
 				}else{
 					clearInterval(this.tipsInter)
 				}
-			},2000);
+			},4000);
 		}
 		tipsScroll(){
-			this.marginHeight+= 62
+			this.marginHeight+= 64
 		}
 		setTime(time:any){
 			let newDate:any = new Date;

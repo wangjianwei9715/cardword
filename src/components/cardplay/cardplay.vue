@@ -84,11 +84,13 @@
 		width: 100%;
 		height:764rpx;
 		position: fixed;
-		bottom:-764rpx;
 		left:0;
+		bottom:0;
 		border-radius: 24rpx 24rpx 0px 0px;
 		box-sizing: border-box;
 		transition: all 0.3s linear;
+		-webkit-transition: -webkit-transform 0.3s;
+		transform: translateY(764rpx);
 		z-index:99;
 		background:#fff;
 		padding:40rpx 32rpx;
@@ -97,11 +99,13 @@
 		width: 100%;
 		height:320rpx;
 		position: fixed;
-		bottom:-320rpx;
 		left:0;
+		bottom:0;
 		border-radius: 24rpx 24rpx 0px 0px;
 		box-sizing: border-box;
 		transition: all 0.3s linear;
+		-webkit-transition: -webkit-transform 0.3s;
+		transform: translateY(320rpx);
 		z-index:99;
 		background:#fff;
 		padding:40rpx 32rpx;
@@ -137,6 +141,6 @@
 		background: rgba(0, 0, 0, 0.5);
 	}
 	.operation-show{
-		bottom:0
+		transform: translateY(0);
 	}
 </style>
