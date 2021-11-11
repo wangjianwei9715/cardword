@@ -53,7 +53,7 @@
 				<view class="header-center-top">余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}</view>
 				<view class="header-center-plan"><plan :num_ex="(goodsData.currentNum+goodsData.lockNum)" :num_all="goodsData.totalNum"></plan></view>
 				<view class="header-center-actor" v-if="goodsData.lastBuyerList">
-					<image class="header-center-actor-img" v-for="(item,index) in goodsData.lastBuyerList" :key="index" :src="decodeURIComponent(item.avatar)" mode="aspectFit"></image>
+					<image class="header-center-actor-img" v-for="(item,index) in goodsData.lastBuyerList" :key="index" :src="item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFit"></image>
 				</view>
 			</view>
 			<view class="header-bottom">
@@ -404,6 +404,13 @@
 				return;
 			}
 			// #endif
+			if(this.goodsData.totalNum-(this.goodsData.currentNum+this.goodsData.lockNum)<=0){
+				uni.showToast({
+					title:'该商品已售罄',
+					icon:'none'
+				})
+				return;
+			}
 			uni.navigateTo({
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))
 			})
@@ -591,8 +598,9 @@
 			&-title{
 				width: 100%;
 				font-size: $font-34;
-				font-family: PingFangSC-Semibold, PingFang SC;
+				font-family: PingFang SC;
 				color: #14151A;
+				font-weight: normal !important;
 			}
 		}
 		&-right{

@@ -15,7 +15,7 @@
 				<view class="header-sort-index" v-for="item in sortData" :key="item.id" @click="onClickSort(item.id)">
 					{{item.name}}
 					<view class="header-sort-icon">
-						<view v-if="item.name!='分类'" :class="{'icon-sort-upn':item.sort_up!='up','icon-sort-up':item.sort_up=='up'}"></view>
+						<view v-if="item.id!=1" :class="{'icon-sort-upn':item.sort_up!='up','icon-sort-up':item.sort_up=='up'}"></view>
 						<view :class="{'icon-sort-downn':item.sort_up!='down','icon-sort-down':item.sort_up=='down'}"></view>
 					</view>
 				</view>
@@ -114,6 +114,7 @@ import { Component } from "vue-property-decorator";
 			this.noMoreData = false
 			this.reqNewData('default') 
 		}
+		
 		// 排序选择
 		onClickSort(id:number){
 			if(id==1){
@@ -134,10 +135,25 @@ import { Component } from "vue-property-decorator";
 		onClickClassifyOpt(id:number){
 			if(this.classifyOpt==id) return;
 			this.classifyOpt = id;
+			this.sortData[0].name = this.getSortStr(id);
 			this.onClickClassifyCancel()
 			this.goodsList = [];
 			this.noMoreData = false
 			this.reqNewData('default') 
+		}
+		getSortStr(id:any){
+			switch(id){
+				case 100:
+					return '全部';
+				case 1:
+					return '篮球';
+				case 2:
+					return '足球';
+				case 0:
+					return '其它';
+				default:
+					return '分类'
+			}
 		}
 		// 分类取消
 		onClickClassifyCancel(){

@@ -33,10 +33,10 @@
 		orderTab = [
 			{id:0,name:'全部'},
 			{id:1,name:'待支付'},
-			{id:2,name:'进行中'},
+			{id:2,name:'已付款'},
 			{id:3,name:'待发货'},
 			{id:4,name:'待收货'},
-			{id:10,name:'未中卡'}
+			{id:5,name:'已完成'}
 		];
 		orderTabCheck = 0;
 		currentPage = 1;

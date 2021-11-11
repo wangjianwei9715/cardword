@@ -46,6 +46,7 @@
 			</view>
 			<view class="tab-content">
 				<view class="tab" v-for="item in orderTab" :key="item.id" @click="onClickOrderList(item.id)">
+					<view v-if="item.num>0&&item.name!='已完成'" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num}}</view>
 					<view class="icon-content">
 						<view :class="'icon-'+item.icon"></view>
 					</view>
@@ -78,12 +79,12 @@
 			broadcast:{id:2,name:'我的直播',num:0,url:'/pages/userinfo/user_live'},
 			favorite:{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
 		};
-		orderTab = [
-			{id:2,name:'进行中',icon:'jx'},
-			{id:3,name:'待发货',icon:'fh'},
-			{id:4,name:'待收货',icon:'sh'},
-			{id:10,name:'未中卡',icon:'zk'}
-		];
+		orderTab:{[x: string]: any} = {
+			go:{id:2,name:'已付款',icon:'jx',num:0},
+			toDeliver:{id:3,name:'待发货',icon:'fh',num:0},
+			toTake:{id:4,name:'待收货',icon:'sh',num:0},
+			fail:{id:5,name:'已完成',icon:'zk',num:0}
+		};
 		settingTab = [
 			{id:1,name:'地址管理',url:'/pages/userinfo/setting_addresses'},
 			{id:2,name:'联系客服',url:''},
@@ -132,6 +133,12 @@
 				this.infoData = data;
 				this.infoData.avatar = decodeURIComponent(data.avatar)
 				console.log(this.infoData)
+				
+				for (const key in this.orderTab) {
+					if (Object.prototype.hasOwnProperty.call(data, key)) {
+						this.orderTab[key].num = data[key];
+					}
+				}
 				// 我的直播、编号、收藏
 				for (const key in this.headerTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -412,6 +419,7 @@
 				width: 80rpx;
 				height:84rpx;
 				box-sizing: border-box;
+				position: relative;
 				.icon-content{
 					width: 80rpx;
 					height:40rpx;
@@ -507,5 +515,24 @@
 		background:rgba(0,0,0,0);
 		margin:0;
 		justify-content: center;
+	}
+	.icon-yuan{
+		width: 30rpx;
+		height:30rpx;
+		line-height: 30rpx;
+		text-align: center;
+		background:#FD0000;
+		border-radius: 40rpx;
+		position: absolute;
+		right:0;
+		top:-10rpx;
+		font-size: 20rpx;
+		color:#fff;
+		z-index: 10;
+		border:1px solid #fff;
+		font-weight: bold;
+	}
+	.icon-yuans{
+		padding:0 6rpx
 	}
 </style>

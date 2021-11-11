@@ -84,19 +84,6 @@ export default class HttpRequest {
 			if (url.indexOf("me/certify") != -1) {
 				config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 			}
-			// if(url.indexOf("opSign") != -1){
-			// 	// 示例 [opSign=_searchSecret]
-			// 	let start = url.indexOf('[');
-			// 	let end = url.indexOf(']');
-			// 	let newUrlData = url.split(url.slice(start,end+1));
-			// 	let opsign =  url.substring(start+1,end).slice(7);
-			// 	let newUrl  = '';
-			// 	for(let i of newUrlData){
-			// 		newUrl += i;
-			// 	}
-			// 	config.baseURL = newUrl;
-			// 	this.getStr(config,opsign); 
-			// }
 			// 商品下单
 			if(url.indexOf("good/topay/") != -1){
 				this.getStr(config,'payGoodCode'); 

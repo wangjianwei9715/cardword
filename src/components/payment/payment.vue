@@ -68,7 +68,7 @@
 			
 		}
 		destroyed(){
-			
+			clearInterval(this.countInterval)
 		}
 		onClickCancelPay(){
 			this.$emit("cancelPay");

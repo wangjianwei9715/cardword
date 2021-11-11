@@ -2,7 +2,7 @@
 	<view class="bottom-tips">
 		<view class="bottom-tips-content" :style="'transform:translateY(-'+marginHeight+'rpx)'">
 			<view class="bottom-tips-index" v-for="item in tipsData" :key="item.id">
-				<image class="bottom-tips-img" :src="decodeURIComponent(item.avatar)" mode="aspectFit"></image>
+				<image class="bottom-tips-img" :src="item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFit"></image>
 				<view class="bottom-tips-desc">{{setTime(item.time)}}加入拼团*{{item.num}}</view>
 			</view>
 		</view>
@@ -12,6 +12,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
@@ -19,6 +20,7 @@
 
 		scrollNum = 0;
 		dataLength = 0;
+		defaultAvatar = app.defaultAvatar
 		tipsInter:any;
 		marginHeight = 0;
 		created(){//在实例创建完成后被立即调用

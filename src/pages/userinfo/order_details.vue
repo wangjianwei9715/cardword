@@ -63,7 +63,7 @@
 			</view>
 		</view>
 		<!-- 订单详细信息 -->
-		<view class="order-info">
+		<view class="order-info" v-if="orderInfo.orderNo.desc!=''">
 			<view class="title">订单信息</view>
 			<view class="index" v-for="item in orderInfo" :key="item.id" v-show="item.desc!=0">
 				<text v-if="item.title=='订单编号'||item.title=='支付方式'">{{item.title}}:{{item.desc}}</text>
@@ -159,6 +159,7 @@
 					this.orderInfo[key].desc = data.payInfo[key];
 				}
 			}
+			this.orderInfo['orderNo'].desc = this.orderData.code
 		}
 		getCountDown(){
 			this.countDownStr = getCountDownTime(this.countDown);

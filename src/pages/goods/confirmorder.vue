@@ -23,10 +23,15 @@
 					<text class="goods-info2-title">{{goodsData.title}}</text>
 					<view class="goods-money-info">
 						<text class="goods-money">¥{{onePrice}}</text>
-						<view class="goods-money-add">
-							<view class="img-jian" @click="onClickCutDown()"></view>
-							<input class="money-add" @input="onInputMoney" v-model="moneyNum" type="number" />
-							<view class="img-add" @click="onClickAdd()"></view>
+						<view class="goods-money-right">
+							<view class="goods-money-right-header">
+								{{goodsData.buyLimit?'单笔最少购买'+goodsData.buyLimit.minNumPerOrder+'份，最多购买'+goodsData.buyLimit.maxNumPerOrder+'份':''}}
+							</view>
+							<view class="goods-money-add">
+								<view class="img-jian" @click="onClickCutDown()"></view>
+								<input class="money-add" @input="onInputMoney" v-model="moneyNum" type="number" />
+								<view class="img-add" @click="onClickAdd()"></view>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -97,6 +102,7 @@ import {
 		onePrice = 0;
 		showPayMent = false;
 		countTime = 300;
+		maxNum = 0;
 		onLoad(query: any) {
 			if(query.data){
 				// #ifndef MP 
@@ -106,6 +112,7 @@ import {
 				this.goodsData = JSON.parse(decodeURIComponent(query.data))
 				// #endif
 				this.getOnePrice()
+				this.maxNum = this.goodsData.totalNum-(this.goodsData.currentNum+this.goodsData.lockNum)
 			}
 			app.http.Get('me/delivery',{},(res:any)=>{
 				if(res.list){
@@ -127,6 +134,9 @@ import {
 			})
 		}
 		onInputMoney(event:any){
+			if(event.detail.value>this.maxNum){
+				this.moneyNum = this.maxNum
+			}
 			this.getOnePrice()
 		}
 		getOnePrice(){
@@ -151,7 +161,11 @@ import {
 		}
 		
 		onClickAdd(){
-			this.moneyNum++;
+			if(this.moneyNum>=this.maxNum){
+				this.moneyNum = this.maxNum
+			}else{
+				this.moneyNum++;
+			}
 			this.getOnePrice()
 		}
 		onClickAddress(){
@@ -358,9 +372,22 @@ import {
 		color: #14151A;
 		line-height: 28rpx;
 	}
-
+	.goods-money-right{
+		box-sizing: border-box;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+	}
+	.goods-money-right-header{
+		width: 100%;
+		height:50rpx;
+		line-height: 50rpx;
+		font-size: $font-24;
+		color: #14151A;
+		text-align: right;
+		padding-right: 12rpx;
+	}
 	.goods-money-add {
-		margin-top: 50rpx;
 		margin-right: 12rpx;
 		display: flex;
 		flex-direction: row;

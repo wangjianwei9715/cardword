@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="icon-back" @click="onClickBack"></view>
 				<view class="header-title">
-					<image class="header-title-img" :src="merchantAvatar" mode="aspectFit"></image>
+					<image class="header-title-img" :src="merchantAvatar!=''?merchantAvatar:defaultAvatar" mode="aspectFit"></image>
 					{{merchantName}}
 				</view>
 				<view class="icon-liaotian" @click="onClickLT"></view>
@@ -33,6 +33,7 @@
 			{id:1,name:'在售'},
 			{id:2,name:'已成交'}
 		];
+		defaultAvatar = app.defaultAvatar
 		goodTabCheck = 1;
 		merchantId = 0;
 		merchantName = '';
