@@ -119,6 +119,7 @@ export default Vue.extend({
 
     // #ifdef APP-PLUS
     app.version = plus.runtime.version || "1.0.0";
+    console.log('app.version==',plus.runtime)
 
     plus.device.getOAID({
       complete: (res: any) => {
@@ -248,6 +249,7 @@ export default Vue.extend({
               console.log("access=====", data);
               app.data = data.data;
               app.opKey = data.opKey;
+              uni.setStorageSync("app_opk", data.opKey);
               if (data.app) {
                 app.socketInfo = data.app;
               }
@@ -301,7 +303,7 @@ export default Vue.extend({
     );
     // #endif
 
-    // #ifdef MP-WEIXIN
+    // #ifndef APP-PLUS
     if (!app.localTest) {
       let launchUrl: { [x: string]: any } = {};
       let configLaunchUrl = uni.getStorageSync("configLaunchUrl");
@@ -399,6 +401,7 @@ export default Vue.extend({
         console.log("access=====", data);
         app.data = data.data;
         app.opKey = data.opKey;
+        uni.setStorageSync("app_opk", data.opKey);
         if (data.app) {
           app.socketInfo = data.app;
         }

@@ -71,7 +71,7 @@
 			<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
 		</view>
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsList" :pageIndex="currentPage"  @send="onClickJumpDetails"/>
+			<goodslist  :goodsList="goodsList" :pageIndex="currentPage" @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails"/>
 		</view>
 	</view>
 </template>
@@ -128,6 +128,9 @@
 		useCache = 1;
 		wgtUpdate = false;
 		wgtUpNum = 0;
+		pagescroll = false;
+		postGoodProgressIn:any;
+		progressList:any = [];
 		onLoad(query:any) {
 			// uni.$emit('reLogin')
 			if (app.update.apkNeedUpdate) {
@@ -141,10 +144,18 @@
 			this.register(listeners);
 			setTimeout(()=>{
 				this.initEvent()
-			},200)
+			},300)
+		}
+		onShow(){
+			if(this.progressList!=''){
+				this.getGoodProgress(this.progressList)
+			}
+		}
+		onHide(){
+			clearInterval(this.postGoodProgressIn);
 		}
 		onPageScroll(e:any){
-			
+			this.pagescroll = !this.pagescroll
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
@@ -176,6 +187,32 @@
 			this.onEventUI("wgtUpdateNum", (res) => {
 				this.wgtUpNum = res;
 			});
+		}
+		getGoodProgress(val:any){
+			console.log('progress====',val)
+			this.progressList = val
+			clearInterval(this.postGoodProgressIn);
+			this.postGoodProgressIn = this.scheduler(()=>{
+				if(this.goodsList==''||val==''){
+					clearInterval(this.postGoodProgressIn);
+					return;
+				}
+				app.http.Post('good/progress/list',{list:val},(res:any)=>{
+					this.setNewProgress(res.list)
+					console.log('getProgress=====',res.list)
+				})
+			},10)
+		}
+		setNewProgress(list:any){
+			for(let i in list){
+				for(let t in this.goodsList){
+					if(list[i].code==this.goodsList[t].goodCode){
+						this.goodsList[t].lockNum = list[i].lockNum
+						this.goodsList[t].currentNum = list[i].currentNum
+						this.goodsList[t].totalNum = list[i].totalNum
+					}
+				}
+			}
 		}
 		updateShow() {
 			uni.hideTabBar();

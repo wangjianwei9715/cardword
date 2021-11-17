@@ -18,11 +18,14 @@
 		</view>
 
 		<view class="tab-header">
-			<searchinput :searchText="'搜索关键字'" @clicksearch="onClickSearch()"></searchinput>
-			<image src="../../static/goods/icon_fanyi.png" style="width: 42rpx; height: 40rpx; margin:0 28rpx; "
-				@click="onClickTranslate()">
-			</image>
+			<view class="header-search">
+				<view class="search-icon"></view>
+				<input class="search-input" type="text" placeholder-style="color:#AAAABB" v-model="searchTetxt" placeholder="搜索"  @confirm="onClickSearch(searchTetxt)" confirm-type="search" />
+			</view>
 		</view>
+		<!-- <view class="tab-header">
+			<searchinput :searchText="'搜索关键字'" @clicksearch="onClickSearch()"></searchinput>
+		</view> -->
 
 		<!-- 拼团结果 -->
 		<view v-if="chooseId==0">
@@ -57,8 +60,7 @@
 				<text class="item-name">{{item.userName}}</text>
 				<text class="item-bh">{{item.no}}</text>
 				<text class="item-time">{{dateFormat(item.time)}}</text>
-				<image :src="getGoodsImg(decodeURIComponent(item.pic))"
-					style="width: 100rpx; height: 128rpx; margin-right: 36rpx;"></image>
+				<image :src="getGoodsImg(decodeURIComponent(item.pic))" style="width: 100rpx; height: 128rpx; margin-right: 36rpx;" @click="onClickPreviewCard(decodeURIComponent(item.pic))"></image>
 			</view>
 		</view>
 
@@ -86,6 +88,7 @@
 		dateFormat = dateFormat;
 		currentPage = 1;
 		noMore = false;
+		searchTetxt = "";
 		onLoad(query: any) {
 			if (query.chooseIds) {
 				console.log(query)
@@ -99,21 +102,32 @@
 			}
 
 		}
+		//   加载更多数据
+		onReachBottom() {
+			if(this.chooseId==0){
+				this.getTpCardNo()
+			}else{
+				this.getTpCardNoResult()
+			}
+		}
 		getTpCardNo(){
 			if(this.noMore){
 				return;
 			}
 			let params = {
+				q:this.searchTetxt,
 				pageIndex:this.currentPage,
 				pageSize:30
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNo',params,(res:any)=>{
 				if(res.list){
-					this.teamDataList = res.list
+					this.teamDataList = this.teamDataList.concat(res.list)
 				}else{
 					this.noMore = true
 				}
-				
+				if(res.list.length<30){
+					this.noMore = true
+				}
 				this.currentPage++;
 			})
 		}
@@ -122,16 +136,19 @@
 				return;
 			}
 			let params = {
+				q:this.searchTetxt,
 				pageIndex:this.currentPage,
 				pageSize:30
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
 				if(res.list){
-					this.teamDataList2 = res.list
+					this.teamDataList2 = this.teamDataList2.concat(res.list)
 				}else{
 					this.noMore = true
 				}
-				
+				if(res.list.length<30){
+					this.noMore = true
+				}
 				this.currentPage++;
 			})
 		}
@@ -160,12 +177,24 @@
 			this.teamDataList = [];
 			this.teamDataList2 = []
 		}
-		onClickSearch() {
-			console.log('搜索')
+		onClickSearch(text:string){
+			if(this.chooseId==0){
+				// 拼团结果
+				this.resetInfo()
+				this.getTpCardNo()
+			}else{
+				// 拆卡报告
+				this.resetInfo()
+				this.getTpCardNoResult()
+			}
 		}
 
-		onClickTranslate() {
-			console.log('翻译')
+		
+		onClickPreviewCard(pic:any){
+			let url = pic.split(',')
+			uni.previewImage({
+				urls:url
+			});
 		}
 	}
 </script>
@@ -338,7 +367,6 @@
 
 	.title-middle-chai {
 		width: 710rpx;
-		height: 152rpx;
 		background: #F6F6F7;
 		display: flex;
 		flex-direction: row;
@@ -350,11 +378,12 @@
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
+		box-sizing: border-box;
+		padding:10rpx 0
 	}
 
 	.title-middle-chai2 {
 		width: 710rpx;
-		height: 152rpx;
 		background: #FFFFFF;
 		display: flex;
 		flex-direction: row;
@@ -366,6 +395,8 @@
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
+		box-sizing: border-box;
+		padding:10rpx 0
 	}
 	.empty{
 		width: 100%;
@@ -373,5 +404,45 @@
 		color:#bbb;
 		font-size: 20rpx;
 		margin-top: 20rpx;
+	}
+	.tab-header{
+		width: 100%;
+		height:104rpx;
+		display: flex;
+		box-sizing: border-box;
+		padding:0 20rpx;
+		z-index: 9;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.header-search{
+		width: 710rpx;
+		height:64rpx;
+		overflow: hidden;
+		background: #F5F5F8;
+		border-radius: 4rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		position: relative;
+		padding-left:28rpx ;
+	}
+	.search-input{
+		width: 634rpx;
+		height:64rpx;
+		background: #F5F5F8;
+		border-radius: 4rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #14151A;
+		
+	}
+	.search-icon{
+		width: 28rpx;
+		height:28rpx;
+		background:url(../../static/index/sousuo@2x.png) no-repeat center;
+		background-size:100% 100%;
+		margin-right: 20rpx;
 	}
 </style>

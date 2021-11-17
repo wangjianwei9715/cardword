@@ -77,29 +77,7 @@
 			})
 		}
 		onClickLive(id:any){
-			// #ifdef APP-PLUS
-			plus.share.getServices(res => {
-				let sweixin = res.find(i => i.id === 'weixin')
-				console.log('getServices==',res)
-				if (sweixin) {
-					sweixin.launchMiniProgram({
-						id: 'gh_5cf45dd26926',
-						path: '/pages/index/index?id='+id,
-						type:0
-					},(res:any)=>{
-						console.log(res)
-					})
-				} else {
-					// 没有获取到微信分享服务
-				}
-			}, err => {
-				// 获取分享服务列表失败
-			});
-			
-			// #endif
-			// #ifdef MP-WEIXIN
 			app.platform.goWeChatLive(id)
-			// #endif
 		}
 		searchReqNew(){
 			// 获取更多商品

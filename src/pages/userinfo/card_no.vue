@@ -6,7 +6,7 @@
 				<view class="header-back" @click="onClickBack"></view>
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text"  v-model="searchText" placeholder="搜索" @confirm="onInputSearch" />
+					<input class="search-input" type="text"  v-model="searchText" placeholder="搜索" @confirm="onInputSearch" confirm-type="search" />
 				</view>
 			</view>
 			<view class="header-tab">

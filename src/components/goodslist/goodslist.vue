@@ -1,12 +1,12 @@
 <template name="goodslist">
-	<view class="content" v-if="goodsList.length>0">
+	<view class="content" >
 		<view class="goodslist-index" v-for="(item,index) in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
 			<image class="goodslist-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-title">{{item.title}}</view>
 				<view class="goodslist-plan-content">
 					<view class="goodslist-plan-now" :style="'width:'+getPlan(item.lockNum,item.currentNum,item.totalNum)+'%'"></view>
-					<view class="goodslist-plan-desc">余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
+					<view :id="item.goodCode" class="goodslist-plan-desc">余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
 				</view>
 				<view class="goodslist-bottom">
 					<view class="goodslist-price-content">
@@ -34,10 +34,17 @@
 		goodsList:any;
 		@Prop({default:1})
 		pageIndex:any;
-		
+		@Prop({default:false})
+		pagescroll:any;
+
 		getGoodsImg = getGoodsImg;
 		discountList:any = [];
-
+		screenHeight = uni.getSystemInfoSync().windowHeight
+		showPlan:any = []
+		@Watch('pagescroll')
+		onPagescrollChanged(val: any, oldVal: any){
+			this.selectory()
+		}
 		@Watch('goodsList')
 		onGoodsListChanged(val: any, oldVal: any){
 			if(this.pageIndex==1){
@@ -58,9 +65,36 @@
 		onClickJumpUrl(id:any){
 			this.$emit("send", id);
 		}
+		selectory(){
+			setTimeout(()=>{
+				// 实时监控目前显示的商品列表
+				let select= uni.createSelectorQuery().in(this).selectAll('.goodslist-plan-desc');
+				let plan:any = []
+				select.boundingClientRect( res => {
+					let data:any = res
+					if(data){
+						for(let i in data){
+							if(data[i].top< this.screenHeight &&data[i].top>0){
+								plan.push(data[i].id)
+							}
+						}
+						if(JSON.stringify(plan) != JSON.stringify(this.showPlan)){
+							this.showPlan = JSON.parse(JSON.stringify(plan))
+							this.getGoodProgress()
+							console.log('goodP',this.showPlan)
+						}
+						
+					}
+				}).exec();
+				
+			},100)
+		}
+		getGoodProgress(){
+			this.$emit('progress',this.showPlan)
+		}
 		getGoodsList(){
 			let data = JSON.parse(JSON.stringify(this.goodsList))
-			if(!data){
+			if(data==''){
 				return;
 			}
 			for(let i in data){
@@ -68,7 +102,7 @@
 					this.discountList[i] = data[i].discount.split(',');
 				}
 			}
-			console.log(this.discountList)
+			this.selectory()
 		}
 	}
 </script>

@@ -80,7 +80,7 @@
 				pageSize:this.pageSize
 			}
 			app.http.Get('chat/bucketlist',params,(res:any)=>{
-				if(this.pageIndex){
+				if(this.pageIndex==1){
 					this.buckedList = []
 				}
 				if(res.list){

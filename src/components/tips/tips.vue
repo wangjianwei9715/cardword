@@ -65,7 +65,7 @@
 
 <style lang="scss">
 	.bottom-tips{
-		width: 300rpx;
+		width: 500rpx;
 		height:56rpx;
 		position: fixed;
 		box-sizing: border-box;
@@ -74,7 +74,7 @@
 		z-index: 9;
 		overflow: hidden;
 		&-content{
-			width: 300rpx;
+			width: 500rpx;
 			transition: all 0.2s linear;
 			box-sizing: border-box;
 			display:flex;

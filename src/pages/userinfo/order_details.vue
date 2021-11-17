@@ -143,13 +143,16 @@
 				this.getGoodDesc(res.data)
 				if(cb) cb()
 				this.getCountDown()
-			})
-
-			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList',{pageIndex:1,pageSize:5},(res:any)=>{
-				if(res.list){
-					this.cardList = res.list
+				if(res.data.state>=2){
+					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList',{pageIndex:1,pageSize:5},(res:any)=>{
+						if(res.list){
+							this.cardList = res.list
+						}
+					})
 				}
 			})
+
+			
 		}
 		getGoodDesc(data:any){
 			this.orderDesc[0].desc ='¥'+(data.price+data.discount);
@@ -203,6 +206,7 @@
 				}
 				app.http.Post('good/topay/'+this.orderData.code,params,(res:any)=>{
 					app.platform.payment(res.wechat,(data:any)=>{
+						uni.$emit('orderchange')
 					})
 					this.initEvent()
 				})
@@ -228,6 +232,7 @@
 									title:'收货成功',
 									icon:'none'
 								})
+								uni.$emit('orderchange')
 								this.initEvent()
 							})
 						} else if (res.cancel) {
@@ -252,6 +257,7 @@
 									title:'取消成功',
 									icon:'none'
 								})
+								uni.$emit('orderchange')
 								this.initEvent()
 							})
 						} else if (res.cancel) {
@@ -311,6 +317,7 @@
 					if(res.alipay.orderInfo!=''){
 						app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
 							this.initEvent()
+							uni.$emit('orderchange')
 						})
 						this.onClickCancelPay()
 					}
@@ -323,6 +330,7 @@
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.wechat,()=>{
 							this.initEvent()
+							uni.$emit('orderchange')
 						})
 						this.onClickCancelPay()
 					}

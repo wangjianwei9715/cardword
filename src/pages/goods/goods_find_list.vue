@@ -177,7 +177,8 @@ import { Component } from "vue-property-decorator";
 			}
 			
 			let params:{[x:string]:any} ={
-				state:Number(this.goodTabCheck)
+				state:Number(this.goodTabCheck),
+				pageSize:20
 			}
 			if(this.classifyOpt!=100){
 				params.tp = Number(this.classifyOpt)

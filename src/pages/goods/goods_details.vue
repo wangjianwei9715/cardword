@@ -101,7 +101,7 @@
 			<image  @click="onClickPreviewImage(index)" class="goods-desc-image" mode="widthFix" v-for="(item,index) in goodsImg" :key="index" :src="item" />
 		</view>
 		<!-- 直播可拖动控件 -->
-		<movable-area class="movable-area" v-if="goodsState >3">
+		<movable-area class="movable-area" v-if="goodsState >3&&goodsData.broadcast">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
 				<livewicket :liveImg="decodeURIComponent(goodsData.broadcast.pic)" :liveStatus="goodsData.broadcast.name" @live="onClickLive"></livewicket>
 			</movable-view>
@@ -424,6 +424,7 @@
 		}
 
 		onClickLive(){
+			console.log(this.goodsData.broadcast.roomId)
 			app.platform.goWeChatLive(this.goodsData.broadcast.roomId)
 		}
 		

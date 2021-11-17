@@ -149,6 +149,7 @@
 			app.http.Post('user/login/phone',params,(data:any)=>{
 				app.data = data.data;
 				app.opKey = data.opKey
+				uni.setStorageSync("app_opk", data.opKey);
 				app.socketInfo = data.app;
 				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
 				console.log('login===',app)
@@ -195,6 +196,7 @@
 				console.log('wechatlogin======',data)
 				app.data = data.data;
 				app.opKey = data.opKey
+				uni.setStorageSync("app_opk", data.opKey);
 				app.socketInfo = data.app;
 				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
 				if(data.app.launchDomain&&data.app.launchDomain!=''){

@@ -98,6 +98,7 @@
 					app.token.accessToken = res.newToken.accessToken;
 					app.token.refreshToken = res.newToken.refreshToken;
 					app.opKey = res.newToken.opKey;
+					uni.setStorageSync("app_opk", res.newToken.opKey);
 					uni.setStorageSync("token", JSON.stringify(app.token));
 				}
 				uni.$emit('loginSuccess');

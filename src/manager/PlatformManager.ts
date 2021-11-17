@@ -102,6 +102,7 @@ export default class PlatformManager {
 					uni.hideLoading()
 					app.data = data.data;
 					app.opKey = data.opKey
+					uni.setStorageSync("app_opk", data.opKey);
 					app.socketInfo = data.app;
 					app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
 					uni.setStorageSync("token", JSON.stringify(app.token));
@@ -202,9 +203,33 @@ export default class PlatformManager {
     }
 	// 微信直播间
 	goWeChatLive(id:any){
+
+		// #ifdef APP-PLUS
+		plus.share.getServices(res => {
+			let sweixin = res.find(i => i.id === 'weixin')
+			console.log('getServices==',res)
+			if (sweixin) {
+				sweixin.launchMiniProgram({
+					id: 'gh_5cf45dd26926',
+					path: '/pages/index/index?id='+id,
+					type:0
+				},(res:any)=>{
+					console.log(res)
+				})
+			} else {
+				// 没有获取到微信分享服务
+			}
+		}, err => {
+			// 获取分享服务列表失败
+		});
+		
+		// #endif
+		// #ifdef MP-WEIXIN
 		wx.navigateTo({
 			url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id='+id
 		})
+		// #endif
+		
 	}
 	phoneAspect():boolean{
 		let aspect = this.systemInfo.windowHeight/this.systemInfo.windowWidth>1.8?true:false

@@ -6,7 +6,7 @@
 				<view class="header-back" @click="onClickBack"></view>
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" v-model="searchText" placeholder="搜索" @blur="onInputSearch" @confirm="onInputSearch" />
+					<input class="search-input" type="text" v-model="searchText" placeholder="搜索" confirm-type="search"  @confirm="onInputSearch" />
 				</view>
 			</view>
 			<view class="header-tab">
@@ -55,12 +55,10 @@
 				this.orderTabCheck = query.type
 			}
 			this.onEventUI('orderchange',()=>{
+				this.currentPage = 1;
+				this.noMoreData = false;
 				this.reqNewData()
 			})
-		}
-		onShow(){
-			this.currentPage = 1;
-			this.noMoreData = false;
 			this.reqNewData() 
 		}
 		onReachBottom(){

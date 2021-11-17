@@ -1,5 +1,6 @@
 import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
+import { data } from 'browserslist';
 import {Md5} from 'ts-md5/dist/md5';
 import {
 	objKeySort
@@ -69,6 +70,9 @@ export default class HttpRequest {
 		this.axiosInstance.interceptors.request.use((config)=> {
 			// 在发送请求之前做些什么
 			// console.log('config===',config);
+			if(app.opKey == ''){
+				app.opKey = uni.getStorageSync('app_opk')
+			}
 			// #ifndef H5
 			config.baseURL = app.bussinessApiDomain
 			// #endif
@@ -90,6 +94,7 @@ export default class HttpRequest {
 			}
 			// 支付订单
 			if (url.indexOf("order/topay/") != -1) {
+				
 				this.getStr(config,'payGoodOrder'); 
 			}
 			// 微信登录
@@ -305,7 +310,7 @@ export default class HttpRequest {
 		}else{
 			str = config.url.split('?')[1];
 		}
-		
+		console.log(app.opKey)
 		if(type){
 			config.headers['opSign'] = Md5.hashStr(str+'_'+msg)
 			console.log('opSign==',str+'_'+msg)
