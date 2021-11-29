@@ -125,7 +125,6 @@
 							this.liveList = []
 						}
 						this.liveList = this.liveList.concat(data.list);
-						console.log('goodslist========',this.liveList)
 					}
 					this.currentPage++;
 					if(cb) cb()
@@ -140,7 +139,6 @@
 							this.liveList = []
 						}
 						this.liveList = this.liveList.concat(data.list);
-						console.log('goodslist========',this.liveList)
 					}
 					this.currentPage++;
 					if(cb) cb()

@@ -108,7 +108,6 @@ import { Component } from "vue-property-decorator";
 			if(id==this.goodTabCheck){
 				return;
 			}
-			console.log(this.goodTabCheck)
 			this.goodTabCheck = id;
 			this.goodsList = [];
 			this.noMoreData = false

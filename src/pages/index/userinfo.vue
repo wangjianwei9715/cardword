@@ -132,7 +132,6 @@
 				let data = res.data;
 				this.infoData = data;
 				this.infoData.avatar = decodeURIComponent(data.avatar)
-				console.log(this.infoData)
 				
 				for (const key in this.orderTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -210,7 +209,6 @@
 			this.countStr = getCountDownTime(this.countTime);
 			this.countInterval = this.scheduler(()=>{
 				if(this.countTime>0){
-					console.log(this.countTime)
 					this.countTime--;
 					this.countStr = getCountDownTime(this.countTime);
 				}else{

@@ -62,7 +62,6 @@
 			}
 
 			if(query.data){
-				console.log(query.data)
 				// #ifndef MP 
 				this.editData = JSON.parse(query.data);
 				// #endif

@@ -35,7 +35,6 @@
 		initEvent(){
 			app.http.Get('me/delivery',{},(res:any)=>{
 				this.addressesList = res.list
-				console.log(this.addressesList)
 			})
 		}
 		onClickSelect(data:any){
@@ -51,7 +50,6 @@
 			}
 		}
 		onClickEdit(data:any){
-			console.log(data)
 			uni.navigateTo({
 				url:'/pages/userinfo/setting_addressedit?data='+decodeURIComponent(JSON.stringify(data))
 			})

@@ -77,12 +77,9 @@
 			this.$emit("pay",this.checkPay)
 		}
 		countDownTime(){
-			console.log('22222222')
-			console.log(this.countTime)
 			this.countStr = getCountDownTime(this.countTimeCopy);
 			this.countInterval = setInterval(()=>{
 				if(this.countTimeCopy>0){
-					console.log(this.countTimeCopy)
 					this.countTimeCopy--;
 					this.countStr = getCountDownTime(this.countTimeCopy);
 				}else{

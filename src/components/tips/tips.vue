@@ -38,7 +38,6 @@
 				if(this.dataLength>this.scrollNum){
 					this.scrollNum ++;
 					this.tipsScroll()
-					console.log('scrollssssss')
 				}else{
 					clearInterval(this.tipsInter)
 				}

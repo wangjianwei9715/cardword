@@ -25,7 +25,8 @@
 						<text class="goods-money">¥{{onePrice}}</text>
 						<view class="goods-money-right">
 							<view class="goods-money-right-header">
-								{{goodsData.buyLimit?'单笔最少购买'+goodsData.buyLimit.minNumPerOrder+'份，最多购买'+goodsData.buyLimit.maxNumPerOrder+'份':''}}
+								{{goodsData.buyLimit&&goodsData.buyLimit.minNumPerOrder>0?'单笔最少购买'+goodsData.buyLimit.minNumPerOrder+'份':''}}
+								{{goodsData.buyLimit&&goodsData.buyLimit.maxNumPerOrder>0?'，最多购买'+goodsData.buyLimit.maxNumPerOrder+'份':''}}
 							</view>
 							<view class="goods-money-add">
 								<view class="img-jian" @click="onClickCutDown()"></view>
@@ -85,7 +86,7 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-import {
+	import {
 		Component
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
@@ -116,9 +117,7 @@ import {
 			}
 			app.http.Get('me/delivery',{},(res:any)=>{
 				if(res.list){
-					console.log(res.list)
 					for(let i in res.list){
-						console.log(res.list[i].default)
 						if(res.list[i].default){
 							this.addressData = res.list[i];
 							return;
@@ -239,7 +238,6 @@ import {
 				params.channel = 'weixin';
 				app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
 					if(res.wechat){
-						console.log(res.wechat)
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.wechat,()=>{
 							

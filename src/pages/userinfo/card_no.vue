@@ -65,7 +65,6 @@
 				params.q = encodeURIComponent(this.searchText)
 			}
 			app.http.Get('me/cardNo', params, (data: any) => {
-				console.log('idndead',data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}

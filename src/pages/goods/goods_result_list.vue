@@ -91,7 +91,6 @@
 		searchTetxt = "";
 		onLoad(query: any) {
 			if (query.chooseIds) {
-				console.log(query)
 				this.chooseId = query.chooseIds;
 				this.goodCode = query.code
 				if(this.chooseId==0){
@@ -159,14 +158,12 @@
 		}
 
 		onClickGroupBookingResult() {
-			console.log('拼团结果')
 			this.resetInfo()
 			this.chooseId = 0;
 			this.getTpCardNo()
 		}
 
 		onClickSplitCardsReport() {
-			console.log('拆卡报告')
 			this.resetInfo()
 			this.chooseId = 1;
 			this.getTpCardNoResult()

@@ -156,6 +156,7 @@
 				if(data.app.launchDomain&&data.app.launchDomain!=''){
 					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
 				}
+				app.http.Post('user/domain',{content:encodeURIComponent(app.bussinessApiDomain.slice(0,app.bussinessApiDomain.indexOf('/api'))+'&'+app.service_url)})
 				uni.setStorageSync("token", JSON.stringify(app.token));
 				uni.switchTab({
 					url: "/pages/index/index",
@@ -202,7 +203,7 @@
 				if(data.app.launchDomain&&data.app.launchDomain!=''){
 					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
 				}
-				
+				app.http.Post('user/domain',{content:encodeURIComponent(app.bussinessApiDomain.slice(0,app.bussinessApiDomain.indexOf('/api'))+'&'+app.service_url)})
 				uni.setStorageSync("token", JSON.stringify(app.token));
 				uni.switchTab({
 					url: "/pages/index/index",

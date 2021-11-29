@@ -49,7 +49,6 @@ import { Component } from "vue-property-decorator";
 				pageSize:this.pageSize,
 			}
 			app.http.Get('me/broadcast', params, (data: any) => {
-				console.log('idndead',data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}

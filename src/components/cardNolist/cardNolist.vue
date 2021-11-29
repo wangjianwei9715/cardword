@@ -42,7 +42,6 @@
 		}
 		GetcardNoData(){
 			let data = JSON.parse(JSON.stringify(this.cardNoData))
-			console.log(data)
 			if(!data){
 				return;
 			}

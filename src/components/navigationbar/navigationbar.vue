@@ -38,7 +38,6 @@
 		
 		statusBarHeight = app.statusBarHeight;
 		created(){//在实例创建完成后被立即调用
-			console.log(this.statusBarHeight)
 		}
 		mounted(){//挂载到实例上去之后调用
 			

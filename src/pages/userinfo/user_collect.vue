@@ -65,7 +65,6 @@ import { Component } from "vue-property-decorator";
 				pageSize:this.pageSize,
 			}
 			app.http.Get('me/favorite', params, (data: any) => {
-				console.log('idndead',data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
@@ -107,7 +106,6 @@ import { Component } from "vue-property-decorator";
 			}else{
 				this.delList.splice(index,1)
 			}
-			console.log(this.delList)
 		}
 		onClickDelComplete(){
 			this.deling = false;
@@ -118,7 +116,6 @@ import { Component } from "vue-property-decorator";
 			for(let i in this.goodsList){
 				this.delList.push(this.goodsList[i].id);
 			}
-			console.log(this.delList)
 		}
 		onClickDelChoose(){
 			if(this.delList.length==0){

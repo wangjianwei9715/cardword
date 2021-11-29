@@ -225,7 +225,6 @@ export default class HttpRequest {
 	Post(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function) {
 		let newParams = objKeySort(params)
 		this.axiosInstance.post(reqUrl,newParams).then((response:any) => {
-			console.log(response)
 			if (response.data) {
 				if (response.data.code==0) {
 					if (cb) cb(response.data);

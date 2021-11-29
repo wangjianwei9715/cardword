@@ -72,7 +72,6 @@
 		}
 		getOrderList(){
 			let data = JSON.parse(JSON.stringify(this.orderList))
-			console.log('data===',data)
 			if(!data){
 				return;
 			}

@@ -49,7 +49,6 @@
 				// #ifdef MP
 				data = JSON.parse(decodeURIComponent(query.data))
 				// #endif
-				console.log(data)
 				for (const key in this.settingTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
 						if(key=='avatar'){
@@ -60,7 +59,6 @@
 						
 					}
 				}
-				console.log(this.settingTab)
 			}
 			this.onEventUI('finishName',(res:any)=>{
 				this.settingTab.name.desc = res.name
@@ -71,14 +69,12 @@
 			this.onEventUI('finishAvatar',(res:any)=>{
 				if(!this.changeAvatarOne){
 					this.changeAvatarOne = true
-					console.log('接收一次')
 					this.onClickAddImg(res.image);
 				}
 			});
 		}
 		onClickEdit(id:any){
 			if(id==1){
-				console.log('点击一次')
 				this.onClickChangeAvatar()
 			}
 			if(id==2){
@@ -95,7 +91,6 @@
 			uni.showLoading({
 				title: '上传图片中...'
 			});
-			console.log('上传')
 			uni.uploadFile({
 				url: sign.host,
 				filePath: src,
@@ -111,14 +106,12 @@
 					'x-oss-security-token': sign.security_token
 				},
 				success: (res: any) => {
-					console.log('接手')
 					uni.hideLoading();
 					if (res.statusCode == 200) {
 						let avatar = sign.host + '/' + filePath
 						this.changeAvatar = avatar
 						this.postEdit((res:any)=>{
 							this.settingTab.avatar.avatar = avatar
-							console.log(this.settingTab)
 							uni.$emit('infoUpdate');
 						})
 					}

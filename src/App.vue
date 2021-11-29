@@ -23,7 +23,6 @@ export default Vue.extend({
       app.bussinessApiDomain = "https://server.ssl1.ka-world.com/api/v1/";
     }
     let needPushIdentifier = true;
-
     const loginToken = uni.getStorageSync("token");
     if (loginToken) {
       app.token = JSON.parse(loginToken);
@@ -43,15 +42,12 @@ export default Vue.extend({
         app.token.accessToken = data.data.accessToken;
         app.token.refreshToken = data.data.refreshToken;
         uni.setStorageSync("token", JSON.stringify(app.token));
-        console.log("data======", data);
-        console.log("app.token=======", app.token);
         let params = {
           uuid: app.platform.deviceID,
           os: app.platform.systemInfo.platform,
           device: app.platform.systemInfo.brand + app.platform.systemInfo.model,
         };
         HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
-          console.log(data);
           app.data = data.data;
           app.socketInfo = data.app;
           uni.$emit("updateUserData");
@@ -132,139 +128,7 @@ export default Vue.extend({
         if (app.platform.deviceID == "") {
           app.platform.deviceID = uni.getSystemInfoSync().uuid;
         }
-        if (!app.localTest) {
-          let launchUrl: { [x: string]: any } = {};
-          let configLaunchUrl = uni.getStorageSync("configLaunchUrl");
-          if (configLaunchUrl) {
-            launchUrl = configLaunchUrl.sort(() => {
-              return Math.random() - 0.5;
-            });
-          } else {
-            launchUrl = app.launch_url.sort(() => {
-              return Math.random() - 0.5;
-            });
-          }
-          console.log("launchURL===============", launchUrl);
-
-          let launchSuccess = false;
-          let params = {
-            name: "com.chuanqiu.ttauction",
-            version: app.version,
-            uuid: app.platform.deviceID,
-          };
-
-          console.log("launchuuid", params);
-          for (let i in launchUrl) {
-            if (!launchSuccess) {
-              let url = launchUrl[i];
-              if (url.charAt(url.length - 1) == "/") {
-                url = url.slice(0, url.length - 1);
-              }
-              app.http.Post(url + "/api/app/launch", params, (res: any) => {
-                console.log("launchpost===", res);
-                launchSuccess = true;
-
-                let bussinessApiDomain = res.app.bussinessApiDomain;
-                let dataApiDomain = res.app.dataApiDomain;
-                if (
-                  bussinessApiDomain.charAt(bussinessApiDomain.length - 1) ==
-                  "/"
-                ) {
-                  bussinessApiDomain = bussinessApiDomain.slice(
-                    0,
-                    bussinessApiDomain.length - 1
-                  );
-                }
-                if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
-                  dataApiDomain = dataApiDomain.slice(
-                    0,
-                    dataApiDomain.length - 1
-                  );
-                }
-                app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-                if (res.app.dataApiDomain) {
-                  app.dataApiDomain = dataApiDomain + "/api/v1/";
-                } else {
-                  app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-                }
-                console.log(
-                  "app.bussinessApiDomain===",
-                  app.bussinessApiDomain
-                );
-                uni.setStorageSync("launchConfig", res);
-                app.update_url = launchUrl[i] + "/api/";
-                if (uni.getSystemInfoSync().platform === "android") {
-                  app.update = UpdateManager.getInstance();
-                }
-              });
-              break;
-            } else {
-              break;
-            }
-          }
-
-          if (!launchSuccess) {
-            let launchConfig = uni.getStorageSync("launchConfig");
-            if (launchConfig.app) {
-              let bussinessApiDomain = launchConfig.app.bussinessApiDomain;
-              let dataApiDomain = launchConfig.app.dataApiDomain;
-              if (
-                bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/"
-              ) {
-                bussinessApiDomain = bussinessApiDomain.slice(
-                  0,
-                  bussinessApiDomain.length - 1
-                );
-              }
-              if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
-                dataApiDomain = dataApiDomain.slice(
-                  0,
-                  dataApiDomain.length - 1
-                );
-              }
-              app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-              if (launchConfig.app.dataApiDomain) {
-                app.dataApiDomain = dataApiDomain + "/api/v1/";
-              } else {
-                app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-              }
-            } else {
-            }
-          }
-          console.log("bussinessApiDomain==========", app.bussinessApiDomain);
-          console.log("dataApiDomain==========", app.dataApiDomain);
-        }
-        if (loginToken) {
-          needPushIdentifier = false;
-          let params = {
-            uuid: app.platform.deviceID,
-            os: app.platform.systemInfo.platform,
-            device:
-              app.platform.systemInfo.brand + app.platform.systemInfo.model,
-          };
-          HttpRequest.getIns().Post(
-            "user/token/access",
-            params,
-            (data: any) => {
-              console.log("access=====", data);
-              app.data = data.data;
-              app.opKey = data.opKey;
-              uni.setStorageSync("app_opk", data.opKey);
-              if (data.app) {
-                app.socketInfo = data.app;
-              }
-              if (data.app.launchDomain && data.app.launchDomain != "") {
-                uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
-              }
-              if (data.data.mustBindPhone) {
-                uni.reLaunch({
-                  url: "/pages/login/bindphone",
-                });
-              }
-              uni.$emit("loginSuccess");
-            }
-          );
-        }
+        app.platform.appLuanch(loginToken)
       },
     });
 
@@ -304,119 +168,9 @@ export default Vue.extend({
     // #endif
 
     // #ifndef APP-PLUS
-    if (!app.localTest) {
-      let launchUrl: { [x: string]: any } = {};
-      let configLaunchUrl = uni.getStorageSync("configLaunchUrl");
-      if (configLaunchUrl) {
-        launchUrl = configLaunchUrl.sort(() => {
-          return Math.random() - 0.5;
-        });
-      } else {
-        launchUrl = app.launch_url.sort(() => {
-          return Math.random() - 0.5;
-        });
-      }
-      console.log("launchURL===============", launchUrl);
-
-      let launchSuccess = false;
-      let params = {
-        name: "com.chuanqiu.ttauction",
-        version: app.version,
-        uuid: app.platform.deviceID,
-      };
-
-      console.log("launchuuid", params);
-      for (let i in launchUrl) {
-        if (!launchSuccess) {
-          let url = launchUrl[i];
-          if (url.charAt(url.length - 1) == "/") {
-            url = url.slice(0, url.length - 1);
-          }
-          app.http.Post(url + "/api/app/launch", params, (res: any) => {
-            console.log("launchpost===", res);
-            launchSuccess = true;
-
-            let bussinessApiDomain = res.app.bussinessApiDomain;
-            let dataApiDomain = res.app.dataApiDomain;
-            if (
-              bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/"
-            ) {
-              bussinessApiDomain = bussinessApiDomain.slice(
-                0,
-                bussinessApiDomain.length - 1
-              );
-            }
-            if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
-              dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
-            }
-            app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-            if (res.app.dataApiDomain) {
-              app.dataApiDomain = dataApiDomain + "/api/v1/";
-            } else {
-              app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-            }
-            console.log("app.bussinessApiDomain===", app.bussinessApiDomain);
-            uni.setStorageSync("launchConfig", res);
-           
-          });
-          break;
-        } else {
-          break;
-        }
-      }
-
-      if (!launchSuccess) {
-        let launchConfig = uni.getStorageSync("launchConfig");
-        if (launchConfig.app) {
-          let bussinessApiDomain = launchConfig.app.bussinessApiDomain;
-          let dataApiDomain = launchConfig.app.dataApiDomain;
-          if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
-            bussinessApiDomain = bussinessApiDomain.slice(
-              0,
-              bussinessApiDomain.length - 1
-            );
-          }
-          if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
-            dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
-          }
-          app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-          if (launchConfig.app.dataApiDomain) {
-            app.dataApiDomain = dataApiDomain + "/api/v1/";
-          } else {
-            app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-          }
-        }
-      }
-      console.log("bussinessApiDomain==========", app.bussinessApiDomain);
-      console.log("dataApiDomain==========", app.dataApiDomain);
-    }
-    if (loginToken) {
-      needPushIdentifier = false;
-      let params = {
-        uuid: app.platform.deviceID,
-        os: app.platform.systemInfo.platform,
-        device: app.platform.systemInfo.brand + app.platform.systemInfo.model,
-      };
-      HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
-        console.log("access=====", data);
-        app.data = data.data;
-        app.opKey = data.opKey;
-        uni.setStorageSync("app_opk", data.opKey);
-        if (data.app) {
-          app.socketInfo = data.app;
-        }
-        if (data.app.launchDomain && data.app.launchDomain != "") {
-          uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
-        }
-        if (data.data.mustBindPhone) {
-          uni.reLaunch({
-            url: "/pages/login/bindphone",
-          });
-        }
-        uni.$emit("loginSuccess");
-      });
-    }
+    app.platform.appLuanch(loginToken)
     // #endif
+    
     uni.onTabBarMidButtonTap(() => {
       // 监听tabbar中间发起按钮
       uni.navigateTo({
@@ -466,7 +220,9 @@ export default Vue.extend({
   align-items: center;
   justify-content: center;
 }
-
+[type="search"]::-webkit-search-decoration {  
+  display: none;  
+}
 ::-webkit-scrollbar {
   display: none;
 }

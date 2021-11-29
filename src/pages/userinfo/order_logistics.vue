@@ -31,9 +31,7 @@
 				}
 			})
 		}		
-		onClickCopyOrderNum(){
-			console.log('复制单号')
-		}
+		
 		onClickCopy(text:any){
 			uni.setClipboardData({
 				data: text,

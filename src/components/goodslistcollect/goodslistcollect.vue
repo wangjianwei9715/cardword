@@ -80,7 +80,6 @@
 		}
 		getGoodsList(){
 			let data = JSON.parse(JSON.stringify(this.goodsList))
-			console.log(data)
 			if(!data){
 				return;
 			}

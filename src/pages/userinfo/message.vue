@@ -67,7 +67,6 @@
 		}
 		getMessageList(){
 			app.http.Get('message/bucketlist',{},(res:any)=>{
-				console.log(res.list)
 				this.dynamicData = res.list
 			})
 		}

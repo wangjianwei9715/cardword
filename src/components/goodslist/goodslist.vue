@@ -81,7 +81,6 @@
 						if(JSON.stringify(plan) != JSON.stringify(this.showPlan)){
 							this.showPlan = JSON.parse(JSON.stringify(plan))
 							this.getGoodProgress()
-							console.log('goodP',this.showPlan)
 						}
 						
 					}

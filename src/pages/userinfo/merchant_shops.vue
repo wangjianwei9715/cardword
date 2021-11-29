@@ -71,7 +71,6 @@
 						this.goodsList = []
 					}
 					this.goodsList = this.goodsList.concat(data.list);
-					console.log('goodslist========',this.goodsList)
 				}
 				
 				this.currentPage++;

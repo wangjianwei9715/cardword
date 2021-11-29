@@ -88,7 +88,6 @@
 			if(!data.list || data.list.length<this.pageSize){
 				this.noMoreData = true;
 			}
-			console.log(this.orderList)
 		    this.currentPage++;
 			if(cb) cb()
 		  });
@@ -137,7 +136,6 @@
 				// #endif
 				// #ifndef MP
 				this.countTime = item.leftSec;
-				console.log(this.countTime)
 				this.payItem.num = Number(item.num)
 				this.payItem.code = code
 				this.payItem.price =  item.price
@@ -249,7 +247,6 @@
 				params.channel = 'weixin';
 				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
 					if(res.wechat){
-						console.log(res.wechat)
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.wechat,()=>{
 							this.againReqNewData()

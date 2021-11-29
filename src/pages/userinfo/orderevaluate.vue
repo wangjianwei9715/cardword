@@ -49,7 +49,6 @@
 			if(query){
 				this.code = query.code;
 				this.goodsData = JSON.parse(query.data);
-				console.log(this.goodsData)
 			}
 		}
 		onClickStar(index:number){

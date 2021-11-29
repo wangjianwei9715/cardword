@@ -230,7 +230,6 @@
 		}
 		// 商品图片
 		getGoodsImage(img:any){
-			console.log('img',img)
 			if(img.indexOf(',') == -1){
 				this.goodsImg.push(img)
 			}else{
@@ -239,7 +238,6 @@
 		}
 		// 特色卡片
 		getCardImage(img:any){
-			console.log('img',img)
 			if(img.indexOf(',') == -1){
 				this.cardData.push(img)
 			}else{
@@ -417,14 +415,12 @@
 		}
 		
 		onClickResult(chooseID: number) {
-			console.log('拼团结果==0   拆卡报告==1')
 			uni.navigateTo({
 				url: 'goods_result_list?chooseIds=' + chooseID+'&code='+this.goodsId
 			})
 		}
 
 		onClickLive(){
-			console.log(this.goodsData.broadcast.roomId)
 			app.platform.goWeChatLive(this.goodsData.broadcast.roomId)
 		}
 		

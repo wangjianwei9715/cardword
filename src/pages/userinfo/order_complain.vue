@@ -36,7 +36,6 @@
 				// #ifdef MP
 				this.goodsData = JSON.parse(decodeURIComponent(query.data))
 				// #endif
-                console.log(this.goodsData)
 			}
 		}
 		onClickConfirm(){

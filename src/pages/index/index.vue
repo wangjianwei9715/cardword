@@ -52,14 +52,14 @@
 				</view>
 			</view>
 			<view class="tab-good-content">
-				<view class="tab-good-inedx" v-for="item in noticeList" :key="item.id">
+				<view class="tab-good-inedx" v-for="item in noticeList" :key="item.id" @click="onClickNotice(item.target)">
 					<view class="tab-good-title">{{item.title}}</view>
 					<view class="tab-good-bottom">
 						<image class="tab-good-img" :src="item.img" mode="aspectFill"></image>
 						<view class="tab-good-desc">
 							<view class="tab-good-name">{{item.name}}</view>
 							<view class="tab-good-btn" v-if="item.id==2">去围观</view>
-							<view class="tab-price-content" v-else>
+							<view class="tab-price-content" v-else-if="item.price!=0">
 								¥<text class="tab-price">{{item.price}}</text>
 							</view>
 						</view>
@@ -93,22 +93,23 @@
 			{img:'../../static/index/tab2.png',text:'其它',url:'/pages/goods/goods_find_list?classType=0'},
 			{img:'../../static/index/tab3.png',text:'ALL',url:'/pages/goods/goods_find_list?classType=100'},
 		];
-		noticeList = [
-			{
+		noticeList = {
+			daily:{
 				id:1,
 				title:'每日精选',
 				img:'',
-				name:'2021国宝系列',
-				price:149
+				name:'',
+				price:0,
+				target:{}
 			},
-			{
+			broadCast:{
 				id:2,
-				title:'热门',
+				title:'',
 				img:'',
-				name:'卡皇球星社',
-				price:0
+				name:'',
+				target:{}
 			}
-		];
+		};
 		goodTab = [
 			{id:1,name:'推荐'},
 			{id:2,name:'即将拼成'},
@@ -144,7 +145,7 @@
 			this.register(listeners);
 			setTimeout(()=>{
 				this.initEvent()
-			},300)
+			},500)
 		}
 		onShow(){
 			if(this.progressList!=''){
@@ -171,9 +172,23 @@
 		onReachBottom() {
 		    this.reqNewData() 
 		}
+		
 		initEvent(){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
+				if(data.daily){
+					this.noticeList.daily.img = this.getPic(data.daily.pic)
+					this.noticeList.daily.name = data.daily.name
+					this.noticeList.daily.price = data.daily.price
+					this.noticeList.daily.price = data.daily.target
+				}
+				if(data.broadCast){
+					this.noticeList.broadCast.title = data.broadCast[0].title
+					this.noticeList.broadCast.img = this.getPic(decodeURIComponent(data.broadCast[0].pic))
+					this.noticeList.broadCast.name = data.broadCast[0].name
+					this.noticeList.broadCast.target = data.broadCast[0].target
+				}
+				
 				this.reqNewData()
 			})
 			
@@ -188,8 +203,15 @@
 				this.wgtUpNum = res;
 			});
 		}
+		getPic(img:any){
+			if(img.indexOf(',') == -1){
+				return img;
+			}else{
+				let pic = img.split(',')
+				return pic[0]
+			}
+		}
 		getGoodProgress(val:any){
-			console.log('progress====',val)
 			this.progressList = val
 			clearInterval(this.postGoodProgressIn);
 			this.postGoodProgressIn = this.scheduler(()=>{
@@ -199,7 +221,6 @@
 				}
 				app.http.Post('good/progress/list',{list:val},(res:any)=>{
 					this.setNewProgress(res.list)
-					console.log('getProgress=====',res.list)
 				})
 			},10)
 		}
@@ -249,6 +270,15 @@
 		}
 		Logout(res:any){
 		}
+		onClickNotice(target:any){
+			if(target.goodCode!=''){
+				this.onClickJumpDetails(target.goodCode)
+			}else if(target.page!=''){
+				this.onClickTopJumpUrl(target.page)
+			}else if(target.url){
+				app.platform.goWeChatLive(target.url)
+			}
+		}
 		onClickSearch(){
 			// 搜索
 			uni.navigateTo({
@@ -294,7 +324,6 @@
 			}
 			
 			app.http.Get("dataApi/goodlist", params, (data: any) => {
-				console.log('idndead',data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
@@ -303,7 +332,6 @@
 						this.goodsList = []
 					}
 					this.goodsList = this.goodsList.concat(data.goodList);
-					console.log('goodslist========',this.goodsList)
 				}
 				
 				this.currentPage++;
@@ -481,6 +509,9 @@
 		font-weight: 400;
 		color: #14151A;
 		margin-bottom: 8rpx;
+		white-space:nowrap;	
+		overflow:hidden;
+		text-overflow:ellipsis;
 	}
 	.tab-good-btn{
 		width: 100rpx;

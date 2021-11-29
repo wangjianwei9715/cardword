@@ -33,9 +33,7 @@
 		clickOne = false;
 		onLoad(query:any) {
 			this.imageSrc = JSON.parse(decodeURIComponent(query.data));
-			console.log(this.imageSrc)
 			let systemInfo = uni.getSystemInfoSync();
-			console.log(systemInfo);
 			this.viewHeight = ((systemInfo.windowHeight) - 150*systemInfo.screenWidth/DesignWidth) + 'px';
 		}
 		load(path:string, info:any){

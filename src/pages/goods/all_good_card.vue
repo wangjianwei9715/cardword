@@ -71,7 +71,6 @@
 			}
 			
 			app.http.Get("good/"+this.goodCode+'/noList', params, (data: any) => {
-				console.log('idndead',data)
 				uni.setNavigationBarTitle({
 					title:data.goodTitle
 				})
@@ -108,7 +107,6 @@
 			}
 			
 			app.http.Get("good/"+this.goodCode+'/cards/search', params, (data: any) => {
-				console.log('idndead',data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
@@ -128,7 +126,6 @@
 			});
 		}
 		onClickSearch() {
-			console.log('搜索')
 			this.currentPage = 1;
 			this.noMoreData = false;
 			this.teamDataList = [];
@@ -140,7 +137,6 @@
 		}
 
 		onClickTranslate() {
-			console.log('翻译')
 			this.english = !this.english
 		}
 	}

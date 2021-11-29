@@ -166,7 +166,6 @@
 		}
 		getCountDown(){
 			this.countDownStr = getCountDownTime(this.countDown);
-			console.log(this.countDownStr)
 			this.countDownInter = this.scheduler(()=>{
 				
 				if(this.countDown>0){
@@ -287,7 +286,6 @@
 			});
 		}
 		onClcikResult(chooseID:any){
-			console.log('拼团结果==0   拆卡报告==1')
 			uni.navigateTo({
 				url: '/pages/goods/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode
 			})
@@ -326,7 +324,6 @@
 				params.channel = 'weixin';
 				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
 					if(res.wechat){
-						console.log(res.wechat)
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.wechat,()=>{
 							this.initEvent()

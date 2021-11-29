@@ -22,6 +22,8 @@ export module app{
     export let bussinessApiDomain='https://server.ssl1.ka-world.com/api/v1/';
     // 热更新地址
     export let update_url='http://service.s1.ka-world.com/';
+    // 请求的service地址
+    export let service_url='';
     export let dataApiDomain='';
     export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
     export let statusBarHeight = 0;

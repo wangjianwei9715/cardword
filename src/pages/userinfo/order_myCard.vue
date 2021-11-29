@@ -41,7 +41,6 @@ import { Component } from "vue-property-decorator";
 			}
 			
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList', params, (data: any) => {
-				console.log('idndead',data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 					uni.showToast({
