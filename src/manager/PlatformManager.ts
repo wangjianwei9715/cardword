@@ -168,41 +168,7 @@ export default class PlatformManager {
 		}
 		// #endif
 	}
-	payment(data: any, callback?: Function) {
-		// #ifdef MP-WEIXIN
-		uni.requestPayment({
-			provider: 'wxpay',
-			timeStamp: data.timeStamp,
-			nonceStr: data.nonceStr,
-			package: 'prepay_id=' + data.prepayId,
-			signType: data.signType,
-			paySign: data.sign,
-			success: (res: any) => {
-				console.log('success:' + JSON.stringify(res));
-				if (callback) {
-					callback(res);
-				}
-			},
-			fail: (err: any) => {
-				console.log('fail:' + JSON.stringify(err));
-			}
-		});
-		// #endif
 
-		// #ifdef APP-PLUS
-
-		// #endif
-
-
-
-
-		//#ifdef H5
-		//微信内部网页环境
-		if (navigator.userAgent.match(/micromessenger/i)) {
-
-		}
-		// #endif
-	}
 	// 微信直播间
 	goWeChatLive(id: any) {
 
@@ -233,95 +199,181 @@ export default class PlatformManager {
 		// #endif
 
 	}
-	appLuanch(loginToken: any) {
+	requestSubscribeMessage(id: string, callback?: Function) {
+		// 调起订阅消息
+		//用户发生点击行为或者发起支付回调后，才可以调起订阅消息界面
+		// #ifdef MP-WEIXIN
+
+		//抽奖通知 fK8zwq6rK2AIai0uLT6aGTj_2M6rVYtBmbs6A5f61zU
+		//瓜分红包 yta_BPwNmfgf4U_Mfr9YE6Ix9Ur44CTpl8uNHy9Qamk
+		uni.requestSubscribeMessage({
+			tmplIds: [id],
+			success: (res: any) => {
+				if (res[id] == "accept") {
+					// 授权成功
+					if (callback) {
+						callback();
+					}
+				} else {
+					uni.showToast({
+						title: '不授权将无法收到开播提醒,请获取授权。',
+						icon: 'none',
+						duration: 2000
+					});
+				}
+			},
+			fail: (res) => {
+				wx.getSetting({
+					withSubscriptions: true,
+					success: (res) => {
+						console.log(res.authSetting)
+						uni.showModal({
+							title: '授权失败',
+							content: '不授权将无法收到开播提醒,请点击确定去设置。',
+							showCancel: false,
+							success: (result) => {
+								if (result.confirm) {
+									wx.openSetting({
+										withSubscriptions: true,
+										success: (res) => {
+											console.log('openSetting', res);
+											// if (res.subscriptionsSetting.mainSwitch) {
+											//     this.requestSubscribeMessage.call(this, callback);
+											// }
+										},
+										fail: (res) => {
+											console.log('openSetting', res);
+										}
+									});
+								}
+							}
+						});
+					}
+				})
+			}
+		});
+		// #endif
+		// #ifndef MP-WEIXIN
+		if (callback) {
+			callback();
+		}
+		// #endif
+	}
+	appLuanch(loginToken: any, cb?: Function) {
 		let needPushIdentifier = true;
 		if (!app.localTest) {
+			// launchUrl：             储存打乱顺序后的launch
+			// configLaunchUrl：       access保存的launch数据
 			let launchUrl: { [x: string]: any } = {};
 			let launchSuccess = false;
-			let launchConfig = uni.getStorageSync("launchConfig");
-			if (launchConfig.app) {
-				launchSuccess = true;
-				let bussinessApiDomain = launchConfig.app.bussinessApiDomain;
-				let dataApiDomain = launchConfig.app.dataApiDomain;
-				if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
-					bussinessApiDomain = bussinessApiDomain.slice(
-						0,
-						bussinessApiDomain.length - 1
-					);
-				}
-				if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
-					dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
-				}
-				app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-				if (launchConfig.app.dataApiDomain) {
-					app.dataApiDomain = dataApiDomain + "/api/v1/";
-				} else {
-					app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-				}
+			
+			let configLaunchUrl = uni.getStorageSync("configLaunchUrl");
+			app.service_url = uni.getStorageSync('launchUrl')
+			if (configLaunchUrl) {
+				launchUrl = configLaunchUrl.sort(() => {
+					return Math.random() - 0.5;
+				});
+			} else {
+				launchUrl = app.launch_url.sort(() => {
+					return Math.random() - 0.5;
+				});
 			}
-
-
-			if (!launchSuccess) {
-				let configLaunchUrl = uni.getStorageSync("configLaunchUrl");
-				if (configLaunchUrl) {
-					launchUrl = configLaunchUrl.sort(() => {
-						return Math.random() - 0.5;
-					});
-				} else {
-					launchUrl = app.launch_url.sort(() => {
-						return Math.random() - 0.5;
-					});
-				}
-				console.log("launchURL===============", launchUrl);
-				let params = {
-					name: "com.chuanqiu.ttauction",
-					version: app.version,
-					uuid: app.platform.deviceID,
-				};
-				console.log("launchuuid", params);
-				for (let i in launchUrl) {
-					if (!launchSuccess) {
-						let url = launchUrl[i];
-						if (url.charAt(url.length - 1) == "/") {
-							url = url.slice(0, url.length - 1);
-						}
-						app.http.Post(url + "/api/app/launch", params, (res: any) => {
-							console.log("launchpost===", res);
-							launchSuccess = true;
-							app.service_url = url;
-							let bussinessApiDomain = res.app.bussinessApiDomain;
-							let dataApiDomain = res.app.dataApiDomain;
-							if (
-								bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/"
-							) {
-								bussinessApiDomain = bussinessApiDomain.slice(
-									0,
-									bussinessApiDomain.length - 1
-								);
-							}
-							if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
-								dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
-							}
-							app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-							if (res.app.dataApiDomain) {
-								app.dataApiDomain = dataApiDomain + "/api/v1/";
-							} else {
-								app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-							}
-							uni.setStorageSync("launchConfig", res);
-							// #ifdef APP-PLUS
-							app.update_url = launchUrl[i] + "/api/";
-							if (uni.getSystemInfoSync().platform === "android") {
-								app.update = UpdateManager.getInstance();
-							}
-							// #endif
-						});
-						break;
-					} else {
-						break;
+			let params = {
+				name: "卡世界",
+				version: app.version,
+				uuid: app.platform.deviceID,
+			};
+			console.log("launcParams=", params);
+			for (let i in launchUrl) {
+				if (!launchSuccess) {
+					let url = launchUrl[i];
+					if (url.charAt(url.length - 1) == "/") {
+						url = url.slice(0, url.length - 1);
 					}
+					if (app.service_url != '') {
+						url = app.service_url
+					}
+					app.http.Post(url + "/api/app/launch", params, (res: any) => {
+						console.log("post  /api/app/launch=", res);
+						launchSuccess = true;
+						app.service_url = url;
+						// bussinessApiDomain     主接口域名
+						// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
+						let bussinessApiDomain = res.app.bussinessApiDomain;
+						let dataApiDomain = res.app.dataApiDomain;
+						if (
+							bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/"
+						) {
+							bussinessApiDomain = bussinessApiDomain.slice(
+								0,
+								bussinessApiDomain.length - 1
+							);
+						}
+						if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
+							dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
+						}
+						app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
+						if (res.app.dataApiDomain) {
+							app.dataApiDomain = dataApiDomain + "/api/v1/";
+						} else {
+							app.dataApiDomain = bussinessApiDomain + "/api/v1/";
+						}
+
+						if (cb) cb()
+						uni.setStorageSync("launchConfig", res);
+						uni.setStorageSync('launchUrl', url)
+						// #ifdef APP-PLUS
+						app.update_url = url + "/api/";
+						if (uni.getSystemInfoSync().platform === "android") {
+							app.update = UpdateManager.getInstance();
+						}
+						this.getOnlineCfg()
+						// #endif
+
+						let iosVersion = Number(res.app.version.substr(0,1));
+						if (app.platform.systemInfo.platform == 'ios' && iosVersion%2 ==0) {
+							uni.setTabBarItem({
+								index: 1,
+								text: '直播',
+								pagePath: '/pages/index/live',
+								iconPath: 'static/index/tabbar_live.png',
+								selectedIconPath: 'static/index/tabbar_live_.png',
+							})
+							app.iosVersion = iosVersion
+						}
+					});
+					break;
+				} else {
+					break;
 				}
 			}
+			if (!launchSuccess) {
+				let launchConfig = uni.getStorageSync("launchConfig");
+				if (launchConfig.app) {
+					launchSuccess = true;
+
+					let bussinessApiDomain = launchConfig.app.bussinessApiDomain;
+					let dataApiDomain = launchConfig.app.dataApiDomain;
+					if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
+						bussinessApiDomain = bussinessApiDomain.slice(
+							0,
+							bussinessApiDomain.length - 1
+						);
+					}
+					if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
+						dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
+					}
+					app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
+					if (launchConfig.app.dataApiDomain) {
+						app.dataApiDomain = dataApiDomain + "/api/v1/";
+					} else {
+						app.dataApiDomain = bussinessApiDomain + "/api/v1/";
+					}
+					this.getOnlineCfg()
+				}
+			}
+
+
 
 
 
@@ -354,6 +406,44 @@ export default class PlatformManager {
 				uni.$emit("loginSuccess");
 			});
 		}
+	}
+	getOnlineCfg(): any {
+		// #ifdef APP-PLUS
+
+		if (app.platform.systemInfo.platform != 'ios') {
+			uni.setTabBarItem({
+				index: 1,
+				text: '直播',
+				pagePath: '/pages/index/live',
+				iconPath: 'static/index/tabbar_live.png',
+				selectedIconPath: 'static/index/tabbar_live_.png',
+			})
+			return
+		}
+		
+		// let onlineParams = {
+		// 	name: "卡世界",
+		// 	version: app.version,
+		// 	uuid: app.platform.deviceID,
+		// 	os: 'ios',
+		// 	tag: 'apple'
+		// }
+		// app.http.Post(app.service_url + '/api/app/onlinecfg', onlineParams, (data: any) => {
+		// 	console.log('app/onlinecfg==', data)
+		// 	if (!data.data.review) {
+		// 		console.log('apple review')
+		// 		uni.setTabBarItem({
+		// 			index: 1,
+		// 			text: '直播',
+		// 			pagePath: '/pages/index/live',
+		// 			iconPath: 'static/index/tabbar_live.png',
+		// 			selectedIconPath: 'static/index/tabbar_live_.png',
+		// 		})
+		// 	}else{
+		// 		app.iosPlatform = true;
+		// 	}
+		// })
+		// #endif
 	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false

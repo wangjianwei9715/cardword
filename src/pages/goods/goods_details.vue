@@ -1,5 +1,6 @@
 <template>
-	<view class="content">
+	<view class="content" v-show="goodsData!=''">
+		<!-- #ifndef MP -->
 		<view class="header-banner">
 			<statusbar/>
 			<view class="tab-header">
@@ -8,98 +9,118 @@
 				<view class="icon-share" @click="onClickShare"></view>
 			</view>
 		</view>
+		
 		<view style="padding-top:88rpx">
 			<statusbar/>
 		</view>
+		<!-- #endif -->
 		<!-- 商品图片价格 -->
 		<view class="pic-content">
 			<swiper class="swiper" :indicator-dots="goodsImg.length>1" autoplay="true" circular="true" indicator-active-color="#ffffff">
 				<swiper-item v-for="(item,index) in goodsImg" :key="index" @click="onClickPreviewImage(index)">
 					<view class="goods-img-content">
-						<image class="goods-img" :src="item" mode="aspectFit"></image>
+						<image class="goods-img" :src="item" mode="aspectFill"></image>
 					</view>
 				</swiper-item>
 			</swiper>
 		</view>
-		<view :class="['header-content',{'header-content-end':goodsState!=1}]">
-			<view class="header-price">¥<text>{{goodsData.price}}</text></view>
-			<view class="header-right" v-if="goodsState==1">
-				<view class="icon-end"></view>
-				<view class="countdown-content">
-					<view v-if="countDay>0" class="countdown-index">{{countDay}}</view>
-					<view v-if="countDay>0" class="countdown-icon">天</view>
-					<view class="countdown-index">{{countHour}}</view>
-					<view class="countdown-icon">:</view>
-					<view class="countdown-index">{{countMinute}}</view>
-					<view class="countdown-icon">:</view>
-					<view class="countdown-index">{{countSecond}}</view>
+		<view class="detail-index-bg">
+			<view class="detail-bg">
+				<view :class="['header-content',{'header-content-end':goodsState!=1}]">
+					<view class="header-price">¥<text>{{goodsData.price}}</text></view>
+					<view class="header-right" v-if="goodsState==1">
+						<view class="icon-end">距结束</view>
+						<view class="countdown-content">
+							<view v-if="countDay>0" class="countdown-icon">{{countDay}}天</view>
+							<view class="countdown-index">{{countHour}}</view>
+							<view class="countdown-icon">:</view>
+							<view class="countdown-index">{{countMinute}}</view>
+							<view class="countdown-icon">:</view>
+							<view class="countdown-index">{{countSecond}}</view>
+						</view>
+					</view>
+				</view>
+				<view class="header">
+					<view class="header-top">
+						<view class="header-top-left">
+							<view class="youhui" v-if="discountList!=''"><view class="icon-tips" v-for="(item,index) in discountList" :key="index">{{item.content}}</view></view>
+							<view class="header-top-left-title">{{goodsData.title}}</view>
+						</view>
+						<view class="header-top-right" @click="onClickFavor">
+							<view :class="['icon-favor',{'icon-favored':favorType}]"></view>
+							<view class="header-top-right-desc">收藏</view>
+						</view>
+					</view>
+					<view class="header-top-id">商品ID：{{goodsId}}</view>
+				</view>
+			</view>
+			
+			<view class="detail-bg">
+				<view class="header">
+					<view class="header-desc-title">拼团信息</view>
+					<view class="header-center">
+						<view class="header-center-top">余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}</view>
+						<view class="header-center-plan"><plan :num_ex="(goodsData.currentNum+goodsData.lockNum)" :num_all="goodsData.totalNum"></plan></view>
+						<!-- <view class="header-center-actor" v-if="goodsData.lastBuyerList">
+							<image class="header-center-actor-img" v-for="(item,index) in goodsData.lastBuyerList" :key="index" :src="item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFit"></image>
+						</view> -->
+					</view>
+					<view class="header-bottom">
+						<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id" @click="onClickCardPlay(item.id)">
+							<view class="header-bottom-index-name">{{item.name}}</view>
+							<view class="header-bottom-index-desc">{{item.desc}}<view v-if="item.id<=2" class="icon-tishi"></view></view>
+						</view>
+					</view>
+					
+				</view>
+			</view>
+			
+			<!-- 卡片展示 -->
+			<view class="detail-bg">
+				<view class="goods-card" >
+					<view class="goods-card-title">
+						<view class="goods-card-title-name">商品特色</view>
+						<view class="goods-card-title-more" @click="onClickAllCard">编号列表</view>
+					</view>
+					<view class="goods-card-content">
+						<scroll-view class="goods-card-content-scroll" :scroll-x="true">
+							<view class="scroll-index" v-for="(item,index) in cardData" :key="index" @click="onClickPreviewCard(index)">
+								<image class="scroll-index-img" :src="decodeURIComponent(item)" mode="aspectFit"></image>
+							</view>
+						</scroll-view>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 卖家信息 -->
+			<view class="detail-bg">
+				<view class="goods-seller" v-if="goodsData.publisher">
+					<view class="goods-seller-left">
+						<image class="goods-seller-left-avatar" :src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar" mode="aspectFit"></image>
+						<view class="goods-seller-left-desc">
+							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
+							<view class="goods-seller-left-desc-tips">已拼团{{goodsData.publisher.deal}}组</view>
+						</view>
+					</view>
+					<view class="goods-seller-right" @click="onClickShops">店铺</view>
+				</view>
+			</view>
+			
+			<!-- 商品详情 -->
+			<view class="detail-bg">
+				<view class="goods-desc">
+					<view class="goods-desc-title">商品详情</view>
+					<view class="goods-desc-explain">
+						<!-- <rich-text :nodes="goodsDesc"></rich-text> -->
+						<view class='goods-desc-explain-text' v-for="item in goodsDesc" :key="item.id">
+							<view class="explain-desc">{{item}}</view>
+						</view>
+					</view>
+					<image  @click="onClickPreviewImage(index)" class="goods-desc-image" mode="widthFix" v-for="(item,index) in goodsImg" :key="index" :src="item" />
 				</view>
 			</view>
 		</view>
 		
-		<view class="header">
-			<!-- 头部详情 -->
-			<view class="header-top">
-				<view class="header-top-left">
-					<view class="youhui" v-show="discountList!=''"><view class="icon-tips" v-for="(item,index) in discountList" :key="index">{{item.content}}</view></view>
-					<view class="header-top-left-title">{{goodsData.title}}</view>
-				</view>
-				<view class="header-top-right" @click="onClickFavor">
-					<view :class="['icon-favor',{'icon-favored':favorType}]"></view>
-					<view class="header-top-right-desc">收藏</view>
-				</view>
-			</view>
-			<view class="header-center">
-				<view class="header-center-top">余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}</view>
-				<view class="header-center-plan"><plan :num_ex="(goodsData.currentNum+goodsData.lockNum)" :num_all="goodsData.totalNum"></plan></view>
-				<view class="header-center-actor" v-if="goodsData.lastBuyerList">
-					<image class="header-center-actor-img" v-for="(item,index) in goodsData.lastBuyerList" :key="index" :src="item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFit"></image>
-				</view>
-			</view>
-			<view class="header-bottom">
-				<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id" @click="onClickCardPlay(item.id)">
-					<view class="header-bottom-index-name">{{item.name}}</view>
-					<view class="header-bottom-index-desc">{{item.desc}}<view v-if="item.id<=2" class="icon-tishi"></view></view>
-				</view>
-			</view>
-			
-		</view>
-		<!-- 卡片展示 -->
-		<view class="goods-card" >
-			<view class="goods-card-title">
-				<view class="goods-card-title-name">特色卡片</view>
-				<view class="goods-card-title-more" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
-			</view>
-			<view class="goods-card-content">
-				<scroll-view class="goods-card-content-scroll" :scroll-x="true">
-                    <view class="scroll-index" v-for="(item,index) in cardData" :key="index" @click="onClickPreviewCard(index)">
-						<image class="scroll-index-img" :src="decodeURIComponent(item)" mode="aspectFit"></image>
-					</view>
-                </scroll-view>
-			</view>
-		</view>
-		<!-- 卖家信息 -->
-		<view class="goods-seller" v-if="goodsData.publisher">
-			<view class="goods-seller-left">
-				<image class="goods-seller-left-avatar" :src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar" mode="aspectFit"></image>
-				<view class="goods-seller-left-desc">
-					<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
-					<view class="goods-seller-left-desc-tips">已拼团{{goodsData.publisher.deal}}组</view>
-				</view>
-			</view>
-			<view class="goods-seller-right" @click="onClickShops">店铺</view>
-		</view>
-		<!-- 商品详情 -->
-		<view class="goods-desc">
-			<view class="goods-desc-title">商品详情</view>
-			<view class="goods-desc-explain">
-				<!-- <rich-text :nodes="goodsDesc"></rich-text> -->
-				<view class='goods-desc-explain-text' v-for="item in goodsDesc" :key="item.id">
-					<view class="explain-desc">{{item}}</view>
-				</view>
-			</view>
-			<image  @click="onClickPreviewImage(index)" class="goods-desc-image" mode="widthFix" v-for="(item,index) in goodsImg" :key="index" :src="item" />
-		</view>
 		<!-- 直播可拖动控件 -->
 		<movable-area class="movable-area" v-if="goodsState >3&&goodsData.broadcast">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
@@ -111,7 +132,7 @@
 		<!-- 底部按钮 -->
 		<view class="btn-content" v-if="goodsState==1||goodsState==0">
 			<view class="btn-content-left">
-				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id">
+				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id" @click="onClickTipBtn(item)">
 					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFit"></image>
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
@@ -159,7 +180,7 @@
 		cardData:any = [];
 		tipBtn:{[x:string]:any}=[
 			{id:1,name:'客服',url:'../../static/goods/kefu@2x.png',class:'kf'},
-			{id:2,name:'直播提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
+			{id:2,name:'拼团提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
 		];
 		operationShow=false;
 		operationData = [
@@ -179,13 +200,56 @@
 		];
 		discountList:any = [];
 		buyRecordList:any = [];
+		onNetWorkFunc:any;
 		onLoad(query:any) {
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId)
-
+			uni.getNetworkType({
+				success: (res)=> {
+					if(res.networkType=='none'){
+						uni.showModal({
+							title: '提示',
+							content: '当前无网络服务，请开启网络',
+							success: function (res) {
+								if (res.confirm) {
+									console.log('用户点击确定');
+								} else if (res.cancel) {
+									console.log('用户点击取消');
+								}
+							}
+						});
+					}
+				}
+			});
+			this.onNetWorkFunc = uni.onNetworkStatusChange((res)=>{
+				console.log('onNetworkStatusChange=',res)
+				if(res.isConnected){
+					uni.showLoading({
+						title: '加载中'
+					});
+					setTimeout(()=>{
+						this.getGoodData(this.goodsId)
+						uni.hideLoading();
+					},1000)
+				}
+			})
 		}
 		onShow(){
 			this.getProgress()
+		}
+		onHide(){
+			uni.offNetworkStatusChange((res)=>{
+				console.log('onNetworkStatusChange=',res)
+				if(res.isConnected){
+					uni.showLoading({
+						title: '加载中'
+					});
+					setTimeout(()=>{
+						this.getGoodData(this.goodsId)
+						uni.hideLoading();
+					},1000)
+				}
+			})
 		}
 		// 数据详情赋值
 		getGoodData(id:any){
@@ -210,7 +274,9 @@
 					this.getGoodsSpe();
 					let newData = decodeURIComponent(data.good.desc).split('\r');
 					this.goodsDesc = newData;
-					this.goodsDesc.unshift('【拼团时间】：'+dateFormat(data.good.startAt)+'至'+dateFormat(data.good.overAt))
+					console.log(newData)
+					this.goodsDesc.unshift('【结束时间】：'+dateFormat(data.good.overAt))
+					this.goodsDesc.unshift('【开售时间】：'+dateFormat(data.good.startAt))
 					this.goodsDesc.unshift('【商品编号】：'+data.good.goodCode)
 				})
 				app.http.Get('good/'+id+'/buyRecord',{},(res:any)=>{
@@ -277,15 +343,48 @@
 			this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
 			this.goodsSpe.spec.name = data.spec.name;
 			this.goodsSpe.spec_str.name = data.spec.num+'张';
-			// 商品详情
-			this.getExplainData()
 		}
+		onClickTipBtn(item:any){
+			if(item.id==1){
+				if(app.token.accessToken == ''){
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+					return;
+				}
+				if(this.goodsData.kefu>0){
+					uni.navigateTo({
+						url: '/pages/userinfo/talk?targetUserId='+this.goodsData.kefu+'&goodCode='+this.goodsId
+					})
+				}else{
+					uni.showToast({
+						title:'当前商品暂无客服',
+						icon:'none'
+					})
+				}
+				
+			}
 
-		// 商品详情
-		getExplainData(){
-			let data = this.goodsData;
+			if(item.id==2){
+				// #ifdef APP-PLUS
+				app.http.Post('good/remind/'+this.goodsId,{},(res:any)=>{
+					uni.showToast({
+						title:res.msg,
+						icon:'none'
+					})
+				})
+				// #endif
+
+				// #ifdef MP-WEIXIN
+				app.platform.requestSubscribeMessage('I38fTkA41Vtr3LQFTRi_Xd6p7Y_9AZKpZCKKF3bo2W0',()=>{
+					uni.showToast({
+						title:'订阅成功',
+						icon:'success'
+					})
+				})
+				// #endif
+			}
 		}
-		
 		onClickBack(){
 			uni.navigateBack({
 				delta: 1
@@ -322,7 +421,7 @@
 		onClcikShareConfirm(id:any){
 			if(id==2){
 				uni.setClipboardData({
-					data: "http://share.jc.ji7.com/good.html?id="+'',
+					data: "https://www.ka-world.com/share/good.html?id="+this.goodsId,
 					success: ()=> {
 						this.operationShow = false;
 						uni.showToast({
@@ -341,11 +440,11 @@
 				let scene = this.sceneStr[id].scene;
 				uni.share({
 					provider: "weixin",
-					scene: scene as any,
+					scene: scene,
 					type: 0,
-					href: "http://share.jc.ji7.com/good.html?id="+'',
-					title: '',
-					summary: '',
+					href: "https://www.ka-world.com/share/good.html?id="+this.goodsId,
+					title: this.goodsData.title,
+					summary: this.goodsData.title,
 					imageUrl: this.goodsImg[0],
 					success: (res)=> {
 						this.operationShow = false
@@ -439,6 +538,7 @@
 	.content{
 		width: 750rpx;
 		box-sizing: border-box;
+		// background:#F2F2F2
 	}
 	.header-banner{
 		width: 100%;
@@ -491,17 +591,17 @@
 	
 	.pic-content{
 		width: 750rpx;
-		height:680rpx;
+		height:630rpx;
 		box-sizing: border-box;
 	}
 	.swiper{
 		width: 750rpx;
-		height:680rpx;
+		height:630rpx;
 		background:#F5F5F9;
 	}
 	.goods-img-content{
 		width: 750rpx;
-		height:680rpx;
+		height:630rpx;
 		background:#F5F5F9;
 		box-sizing: border-box;
 		display: flex;
@@ -510,12 +610,27 @@
 	}
 	.goods-img{
 		width: 750rpx;
-		height: 680rpx;
+		height: 630rpx;
+	}
+	.detail-index-bg{
+		width: 100%;
+		background:#F2F2F2;
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		box-sizing: border-box;
+		padding-top: 20rpx;
+	}
+	.detail-bg{
+		width: 722rpx;
+		border-radius: 20rpx;
+		background:#fff;
+		margin-bottom: 23rpx;
 	}
 	.header-content{
-		width: 750rpx;
-		height:112rpx;
-		background:url(../../static/goods/jiage@2x.png) no-repeat center;
+		width: 722rpx;
+		height:107rpx;
+		background:url(../../static/goods/new_price.png) no-repeat center;
 		background-size: 100% 100%;
 		box-sizing: border-box;
 		padding-left:36rpx;
@@ -524,54 +639,64 @@
 		justify-content: space-between;
 	}
 	.header-content-end{
-		background:url(../../static/goods/jiage_@2x.png) no-repeat center;
+		background:url(../../static/goods/new_price.png) no-repeat center;
 		background-size: 100% 100%;
 	}
+	.header-desc-title{
+		width: 100%;
+		font-size: $font-28;
+		font-family: PingFangSC-Semibold, PingFang SC;
+		font-weight: 600;
+		color: #14151A;
+		margin-bottom: 20rpx;
+		padding-top: 27rpx;
+	}
 	.header-price{
-		font-size: $font-40;
+		font-size: 33rpx;
 		font-family: 'DIN';
 		font-weight: bold;
 		color: $color-F;
 	}
 	.header-price text{
-		font-size: $font-60;
+		font-size:60rpx;
 	}
 	.header-right{
-		width: 280rpx;
-		height:112rpx;
+		width: 240rpx;
+		height:107rpx;
 		box-sizing: border-box;
-		padding:18rpx 0 12rpx 0;
+		padding:15rpx 0 12rpx 0;
 	}
 	.icon-end{
-		width: 110rpx;
-		height:32rpx;
-		background:url(../../static/goods/end@2x.png) no-repeat center;
-		background-size: 100% 100%;
-		margin:0 auto;
-		margin-bottom: 14rpx;
+		width: 100%;
+		text-align: center;
+		font-size: 22rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #FFFFFF;
+		margin-bottom: 15rpx;
 	}
 	.countdown-content{
 		width: 100%;
-		height:36rpx;
+		height:27rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 	.countdown-index{
-		width: 36rpx;
-		height:36rpx;
+		width: 34rpx;
+		height:27rpx;
 		text-align: center;
-		line-height: 36rpx;
-		font-size: $font-22;
+		line-height: 27rpx;
+		font-size: 20rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
 		color: $color-F;
-		background:#FF8F61
+		background:#727377
 	}
 	.countdown-icon{
-		font-size: $font-24;
+		font-size: 20rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
+		font-weight: 400;
 		color: $color-F;
 		margin:0 8rpx;
 	}
@@ -579,8 +704,15 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:0 32rpx;
-		background:$color-F;
-		border-bottom: 14rpx solid #F6F7F8;
+	}
+	.header-top-id{
+		width: 100%;
+		font-size: 24rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #ACAEB7;
+		margin-bottom: 40rpx;
+		margin-top: 10rpx;
 	}
 	.header-top{
 		width: 100%;
@@ -595,8 +727,9 @@
 			&-title{
 				width: 100%;
 				font-size: $font-34;
-				font-family: PingFang SC;
+				font-family: 'ali-Light';
 				color: #14151A;
+				line-height: 50rpx;
 				font-weight: normal !important;
 			}
 		}
@@ -614,22 +747,23 @@
 			}
 		}
 		.youhui{
-			height:40rpx;
+			height:34rpx;
 			display: flex;
 			align-items: center;
 			box-sizing: border-box;
 			margin-bottom: 18rpx;
 			.icon-tips{
-				width: 130rpx;
-				height:40rpx;
-				background:url(../../static/index/title@2x.png) no-repeat center;
-				background-size: 100% 100%;
+				height:34rpx;
+				border: 2rpx solid #FB4E3E;
+				border-radius: 10rpx;
 				text-align: center;
-				line-height: 40rpx;
-				font-size: $font-20;
-				font-family: PingFangSC-Regular, PingFang SC;
+				line-height: 34rpx;
+				font-size: 18rpx;
+				font-family: Microsoft YaHei;
 				font-weight: 400;
-				color: #E6D188;
+				color: #FB4E3E;
+				box-sizing: border-box;
+				padding:0 11rpx;
 				margin-right: 10rpx;
 			}
 		}
@@ -659,8 +793,9 @@
 			color: #A9ABB4;
 		}
 		&-plan{
-			width: 100%;
+			width: 95%;
 			height:12rpx;
+			margin:0 auto;
 			margin-top: 12rpx;
 			z-index: 5;
 		}
@@ -721,10 +856,8 @@
 	}
 	.goods-card{
 		width: 100%;
-		background:$color-F;
 		box-sizing: border-box;
 		padding:30rpx 0 30rpx 32rpx;
-		border-bottom: 14rpx solid #F6F7F8;
 		&-title{
 			width: 100%;
 			height:40rpx;
@@ -743,13 +876,15 @@
 				color: #14151A;
 			}
 			&-more{
-				height:40rpx;
+				height:31rpx;
 				display: flex;
+				border: 1px solid #D7D7DC;
+				padding:5rpx 10rpx;
 				align-items: center;
-				font-size: $font-22;
-				font-family: PingFangSC-Regular, PingFang SC;
+				font-size: 20rpx;
+				font-family: Microsoft YaHei;
 				font-weight: 400;
-				color: #A9ABB4;
+				color: #ACAEB7;
 			}
 			.icon-right{
 				width: 10rpx;
@@ -770,16 +905,21 @@
 				white-space: nowrap;
 			}
 			.scroll-index{
-				width: 112rpx;
+				width: 120rpx;
 				height:144rpx;
-				background:#F5F5F9;
+				background:#FFF;
 				border-radius: 4rpx;
 				display: inline-block;
 				margin-right: 20rpx;
 				overflow: hidden;
+				border:1px solid #F2F2F2;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				box-sizing: border-box;
 				&-img{
-					width: 112rpx;
-					height:144rpx;
+					width: 102rpx;
+					height:134rpx;
 				}
 			}
 		}
@@ -787,8 +927,6 @@
 	.goods-seller{
 		width: 100%;
 		height:140rpx;
-		background:$color-F;
-		border-bottom: 14rpx solid #F5F5F9;
 		box-sizing: border-box;
 		padding:10rpx 40rpx;
 		display: flex;
@@ -830,15 +968,15 @@
 			}
 		}
 		&-right{
-			width: 140rpx;
-			height: 56rpx;
-			background: linear-gradient(90deg, #FD8339 0%, #F24B28 100%);
-			border-radius: 4rpx;
+			width: 139rpx;
+			height: 57rpx;
+			background: #FB4E3E;
+			border-radius: 29rpx;
 			text-align: center;
-			line-height: 56rpx;
-			font-size: $font-24;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
+			line-height: 57rpx;
+			font-size: 28rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
 			color: $color-F;
 		}
 	}
@@ -930,8 +1068,8 @@
 		.btn-confirm{
 			width: 462rpx;
 			height: 88rpx;
-			background: #14151B;
-			border-radius: 4rpx;
+			background: #FB4E3E;
+			border-radius: 44rpx;
 			text-align: center;
 			line-height: 88rpx;
 			font-size: $font-28;

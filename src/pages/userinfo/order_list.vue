@@ -10,7 +10,7 @@
 				</view>
 			</view>
 			<view class="header-tab">
-				<tabc :tabs="orderTab" :tabsCheck="orderTabCheck" @tabsClick="onClickListTabs"></tabc>
+				<tabc :tabc="orderTab" :tabsCheck="orderTabCheck" @tabsClick="onClickListTabs"></tabc>
 			</view>
 		</view>
 
@@ -54,12 +54,9 @@
 			if(query.type){
 				this.orderTabCheck = query.type
 			}
-			this.onEventUI('orderchange',()=>{
-				this.currentPage = 1;
-				this.noMoreData = false;
-				this.reqNewData()
-			})
-			this.reqNewData() 
+		}
+		onShow(){
+			this.againReqNewData()
 		}
 		onReachBottom(){
 			this.reqNewData()
@@ -127,8 +124,12 @@
 					delivery:0,
 					num:Number(item.num)
 				}
-				app.http.Post('good/topay/'+code,params,(res:any)=>{
-					app.platform.payment(res.wechat,(data:any)=>{
+				uni.showLoading({
+					title: '加载中'
+				});
+				app.http.Post('order/topay/'+code,params,(res:any)=>{
+					uni.hideLoading()
+					app.payment.paymentMini(res.wechat,(data:any)=>{
 					})
 					this.againReqNewData()
 				})
@@ -175,7 +176,7 @@
 			}
 			if(cmd=='resultCard'){
 				uni.navigateTo({
-					url: '/pages/goods/goods_result_list?chooseIds=1&code='+item.good.goodCode
+					url: '/pages/userinfo/goods_result_list?chooseIds=1&code='+item.good.goodCode+'&order='+item.code
 				})
 			}
 			if(cmd=='cancel'){
@@ -237,9 +238,8 @@
 				params.channel = 'alipay';
 				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
 					if(res.alipay.orderInfo!=''){
-						app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-							this.againReqNewData()
-						})
+						uni.hideLoading()
+						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
 						this.onClickCancelPay()
 					}
 				})
@@ -248,13 +248,23 @@
 				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
 					if(res.wechat){
 						uni.hideLoading()
-						app.payment.paymentWxpay(res.wechat,()=>{
-							this.againReqNewData()
-						})
+						app.payment.paymentWxpay(res.pay_type,res.wechat)
 						this.onClickCancelPay()
-						
 					}
 				})
+				// params= {
+				// 	channel:'mini',
+				// 	delivery:0,
+				// 	num:this.payItem.num
+				// }
+				// uni.showLoading({
+				// 	title: '加载中'
+				// });
+				// app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
+				// 	uni.hideLoading()
+				// 	app.payment.yinshengPay(res.wechat)
+					
+				// })
 			}
 		}
 		
@@ -263,7 +273,7 @@
 
 <style lang="scss">
 	page{
-		background:#F6F7F8;
+		background:#F2F2F2;
 	}
 	.header-banner{
 		width: 100%;
@@ -293,6 +303,7 @@
 		display: flex;
 		align-items: center;
 		position: relative;
+		border-radius: 29rpx;
 	}
 	.header-back{
 		width: 80rpx;
@@ -322,6 +333,7 @@
 		font-weight: 500;
 		color: #14151A;
 		padding-left:76rpx ;
+		border-radius: 29rpx;
 	}
 	.search-icon{
 		width: 28rpx;

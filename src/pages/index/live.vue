@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<searchinput :searchText="searchText==''?'搜索商品':searchText" @clicksearch="onClickSearch"></searchinput>
 			</view>
-			<view class="tabs-content">
+			<view class="tabc-content">
 				<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
 			</view>
 		</view>
@@ -116,7 +116,7 @@
 				if(this.searchText){
 					params.q = this.searchText
 				}
-				app.http.Get('broadcast',params,(data:any)=>{
+				app.http.Get('dataApi/broadcast',params,(data:any)=>{
 					if(data.totalPage<=this.currentPage){
 						this.noMoreData = true;
 					}
@@ -151,7 +151,7 @@
 
 <style lang="scss">
 	page{
-		background:#F6F7F8;
+		background:#F2F2F2;
 	}
 	.content{
 		width: 100%;
@@ -174,7 +174,7 @@
 		z-index: 10;
 		align-items: center;
 	}
-	.tabs-content{
+	.tabc-content{
 		width: 100%;
 		margin-top: -20rpx;
 	}

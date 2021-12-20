@@ -52,7 +52,7 @@
 		flex-wrap: wrap;
 		&-index{
 			width: 346rpx;
-			border-radius: 4rpx;
+			border-radius: 20rpx;
 			background:#fff;
 			overflow: hidden;
 			margin-bottom: 20rpx;

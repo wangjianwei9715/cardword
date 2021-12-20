@@ -74,7 +74,7 @@
 			this.initEvent()
 		}
 		initEvent(){
-			app.http.Get('activity/free/home',{},(res:any)=>{
+			app.http.Get('dataApi/activity/free/home',{},(res:any)=>{
 				let data = res.today;
 				let today = dateFormatMS(Math.floor(new Date().getTime()/1000))
 				this.topData = data;

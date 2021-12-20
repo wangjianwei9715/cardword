@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "1.5.2",
+    "versionName" : "1.7.5",
     "versionCode" : 100,
     "transformPx" : false,
     "networkTimeout" : {
@@ -56,19 +56,25 @@
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
-                "schemes" : "ttauction"
+                "schemes" : "kawowang"
             },
             "ios" : {
-                "urltypes" : "ttauction"
+                "urltypes" : "ttauction",
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "获取相册照片用于头像修改",
+                    "NSPhotoLibraryAddUsageDescription" : "读取相册照片用于头像修改",
+                    "NSLocationWhenInUseUsageDescription" : "",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "用于修改收货地址"
+                }
             },
             /* ios打包配置 */
             "sdkConfigs" : {
                 "ad" : {},
                 "geolocation" : {
                     "amap" : {
-                        "__platform__" : [ "android" ],
-                        "appkey_ios" : "e8aa049ad2297c489fd59e53a99049a5",
-                        "appkey_android" : "e8aa049ad2297c489fd59e53a99049a5"
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "7579dbed10e59361b3535e1acc7fae2e",
+                        "appkey_android" : "67c16e1400e0e5c800e16562274e72ec"
                     }
                 },
                 "oauth" : {
@@ -95,8 +101,8 @@
                 },
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "e8aa049ad2297c489fd59e53a99049a5",
-                        "appkey_android" : "e8aa049ad2297c489fd59e53a99049a5"
+                        "appkey_ios" : "7579dbed10e59361b3535e1acc7fae2e",
+                        "appkey_android" : "67c16e1400e0e5c800e16562274e72ec"
                     }
                 },
                 "share" : {

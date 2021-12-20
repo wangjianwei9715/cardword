@@ -115,19 +115,39 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 		targetUserId = 0
 		onLoad(query: any) {
 			if (query.bucketId){
+				console.log('bucketId=',query.bucketId)
 				app.http.Get('chat/bucket/'+query.bucketId, {}, (res: msg.bucketData) => {
 					this.msgList = res.msglist||[];
 					this.bucketId = res.bucketId;
 					this.targetUserInfo = res.target;
 					this.scrollToBottom();
+					uni.setNavigationBarTitle({
+						title: this.targetUserInfo.name
+					});
 				});
-			}if (query.targetUserId) {
+			}else if(query.goodCode){
+				console.log('talk_goodCode=',{targetUserId:query.targetUserId,goodCode:query.goodCode})
+				this.targetUserId = query.targetUserId
+				app.http.Get('chat/user', {targetUserId:this.targetUserId,goodCode:query.goodCode}, (res: msg.bucketData) => {
+					this.msgList = res.msglist||[];
+					this.bucketId = res.bucketId;
+					this.targetUserInfo = res.target;
+					this.scrollToBottom();
+					uni.setNavigationBarTitle({
+						title: this.targetUserInfo.name
+					});
+				});
+			}else if (query.targetUserId) {
+				console.log('targetUserId=',query.targetUserId)
 				this.targetUserId = query.targetUserId
 				app.http.Get('chat/user', {targetUserId:this.targetUserId}, (res: msg.bucketData) => {
 					this.msgList = res.msglist||[];
 					this.bucketId = res.bucketId;
 					this.targetUserInfo = res.target;
 					this.scrollToBottom();
+					uni.setNavigationBarTitle({
+						title: this.targetUserInfo.name
+					});
 				});
 			}
 			uni.onKeyboardHeightChange(res => {

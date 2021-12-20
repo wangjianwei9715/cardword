@@ -56,12 +56,12 @@
 		}
 		getStateStr(state:number){
 			switch(state){
-				case 0:
-					return '出售中';
 				case 1:
-					return '拼团成功';
+					return '进行中';
 				case 2:
-					return '拼团失败';
+					return '拼团成功';
+				case 3:
+					return '未拼成';
 			}
 		}
 		getDel(id:any){

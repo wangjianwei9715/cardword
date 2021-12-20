@@ -11,7 +11,7 @@
 				<view class="icon-liaotian" @click="onClickLT"></view>
 			</view>
 			<view class="header-tab">
-				<tabc :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabc>
+				<tabc :tabc="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabc>
 			</view>
 		</view>
 		<view style="padding-top:168rpx">
@@ -173,7 +173,7 @@
 		box-sizing: border-box;
 	}
 	.goods-lists{
-		background:#F6F7F8;
+		background:#F2F2F2;
 		width: 100%;
 		box-sizing: border-box;
 		padding:16rpx 20rpx;

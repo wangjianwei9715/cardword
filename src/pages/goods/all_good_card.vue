@@ -181,7 +181,7 @@
 	.item-content{
 		width: 710rpx;
 		height: 60rpx;
-		background: linear-gradient(90deg, #FD8339 0%, #F24B28 100%);
+		background: #FB4E3E;
 		display: flex;
 		flex-direction: row;
 		align-items: center;

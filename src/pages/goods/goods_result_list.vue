@@ -28,39 +28,31 @@
 		</view> -->
 
 		<!-- 拼团结果 -->
-		<view v-if="chooseId==0">
-			<view class="item-content">
-				<view class="title-middle" v-for="(item,index) in itemListName" :key="index">
-					<text class="text-name">{{item}}</text>
-				</view>
-			</view>
+		<view v-if="chooseId==0" class="result-index">
 			<view v-if="teamDataList.length==0" class="empty">暂无数据</view>
-			<!-- 单数行用灰色背景，双数行用白色背景 -->
-			<view :class="index%2==0?'title-middle-pin':'title-middle-pin2'" v-for="(item,index) in teamDataList"
-				:key="index">
-				<text class="text-name3">{{item.userName}}</text>
-				<text class="text-name2">{{item.no}}</text>
-				<text class="text-name3" style="margin-right: 24rpx;">{{dateFormat(item.time)}}</text>
+
+			<view class="card-index" v-for="(item,index) in teamDataList" :key="index">
+				<view class="left" style="width:100%">
+					<view class="title"><image class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit"></image> {{item.userName}}</view>
+					<view class="desc">{{item.no}}</view>
+					<view class="time">{{dateFormat(item.time)}}</view>
+				</view>
 			</view>
 		</view>
 
 		<!-- 拆卡报告 -->
-		<view v-if="chooseId==1">
+		<view v-if="chooseId==1" class="result-index">
 			
-
-			<view class="item-content">
-				<view class="title-middle" v-for="(item,index) in itemListName2" :key="index">
-					<text class="text-name" style="margin-right: 20rpx;">{{item}}</text>
-				</view>
-			</view>
 			<view v-if="teamDataList2.length==0" class="empty">暂无数据</view>
-			<!-- 单数行用灰色背景，双数行用白色背景 -->
-			<view :class="index%2==0?'title-middle-chai':'title-middle-chai2'" v-for="(item,index) in teamDataList2"
-				:key="index">
-				<text class="item-name">{{item.userName}}</text>
-				<text class="item-bh">{{item.no}}</text>
-				<text class="item-time">{{dateFormat(item.time)}}</text>
-				<image :src="getGoodsImg(decodeURIComponent(item.pic))" style="width: 100rpx; height: 128rpx; margin-right: 36rpx;" @click="onClickPreviewCard(decodeURIComponent(item.pic))"></image>
+
+			<view class="card-index" v-for="(item,index) in teamDataList2" :key="index">
+				<view class="left">
+					<view class="title"><image class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit"></image> {{item.userName}}</view>
+					<view class="desc">{{item.no}}</view>
+					<view class="time">{{dateFormat(item.time)}}</view>
+				</view>
+
+				<view class="right"><image class="right-img" :src="getGoodsImg(decodeURIComponent(item.pic))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></image></view>
 			</view>
 		</view>
 
@@ -78,10 +70,9 @@
 	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		defaultAvatar = app.defaultAvatar;
 		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
 		goodCode = '';
-		itemListName = ['用户', '编号', '获取时间'];
-		itemListName2 = ['用户', '编号', '获取时间', '图片'];
 		teamDataList = [];
 		teamDataList2 = [];
 		getGoodsImg = getGoodsImg;
@@ -278,7 +269,7 @@
 	.item-content {
 		width: 710rpx;
 		height: 60rpx;
-		background: linear-gradient(90deg, #FD8339 0%, #F24B28 100%);
+		background: #FB4E3E;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -423,6 +414,7 @@
 		align-items: center;
 		position: relative;
 		padding-left:28rpx ;
+		border-radius: 29rpx;
 	}
 	.search-input{
 		width: 634rpx;
@@ -441,5 +433,92 @@
 		background:url(../../static/index/sousuo@2x.png) no-repeat center;
 		background-size:100% 100%;
 		margin-right: 20rpx;
+	}
+
+	.card-index{
+		width: 710rpx;
+		background:url(../../static/userinfo/NUMBER@2x.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-bottom: 20rpx;
+		border-radius: 4rpx;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
+		.left{
+			width: 538rpx;
+			box-sizing: border-box;
+			padding:20rpx 22rpx 20rpx 32rpx;
+			.title{
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #7F7F8E;
+				margin-bottom: 8rpx;
+				display: flex;
+				align-items: center;
+				.title-img{
+					width: 40rpx;
+					height:40rpx;
+					border-radius: 50%;
+					margin-right: 10rpx;
+				}
+			}
+			.desc{
+				font-size: 24rpx;
+				font-family: PingFangSC-Semibold, PingFang SC;
+				font-weight: 600;
+				color: #14151A;
+				line-height: 34rpx;
+				margin-bottom: 8rpx;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				line-clamp: 2;
+				-webkit-box-orient: vertical;
+			}
+			.time{
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #AAAABB;
+			}
+		}
+		.right{
+			width: 172rpx;
+			height: 192rpx;
+			background: linear-gradient(180deg, #E6E6E6 0%, #FFFFFF 100%);
+			border-radius: 4rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 24rpx;
+			font-family: PingFangSC-Semibold, PingFang SC;
+			font-weight: 600;
+			color: #828292;
+			.right-img{
+				width: 100%;
+				height:100%
+			}
+		}
+		.state1{
+			background: linear-gradient(180deg, #FFEDE2 0%, #FFFFFF 100%);
+			color: #FE7348;
+		}
+		.state2{
+			background: linear-gradient(180deg, #FFF7E4 0%, #FFFFFF 100%);
+			color: #EBBF7C;
+		}
+	}
+	.result-index{
+		width: 100%;
+		box-sizing: border-box;
+		background:#F5F5F8;
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		padding-top: 20rpx;
 	}
 </style>

@@ -73,7 +73,7 @@
 				pageIndex:this.currentPage,
 				pageSize:this.pageSize
 			}
-			app.http.Get('activity/free/noList',params,(res:any)=>{
+			app.http.Get('dataApi/activity/free/noList',params,(res:any)=>{
 				if(res.data.none){
 					uni.showToast({
 						title:'暂无数据',

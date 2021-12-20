@@ -66,7 +66,7 @@
 	page{
 		width: 100%;
 		height:100%;
-		background:#F6F7F8
+		background:#F2F2F2
 	}
 	.setting-index {
 		width: 100%;

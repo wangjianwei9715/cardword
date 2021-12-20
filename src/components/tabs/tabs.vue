@@ -59,13 +59,14 @@
 <style lang="scss">
 	.list{
 		width: 100%;
-		height:104rpx;
+		height:84rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		padding:0 36rpx;
 		position: relative;
+		padding-top: 14rpx;
 	}
 	// .line{
 	// 	width: 100%;
@@ -82,26 +83,28 @@
 	// 	transition:all 0.2s linear;
 	// }
 	.index{
-		height:104rpx;
-		line-height: 104rpx;
-		font-size: 28rpx;
+		height:84rpx;
+		line-height: 84rpx;
+		font-size: 26rpx;
 		color:#A9ABB4;
 	}
 	.current{
+		font-size: 29rpx;
 		font-weight: 600;
 		color: #14151A;
 		position: relative;
 	}
 	.current::before{
-		width: 32rpx;
-		height:12rpx;
+		width: 37rpx;
+		height: 7rpx;
+		background: #FB4E3E;
 		content: '';
-		background:url(../../static/index/qiehuan@2x.png) no-repeat center;
 		background-size: 100% 100%;
 		position: absolute;
-		bottom:20rpx;
+		bottom:18rpx;
 		left:50%;
-		margin-left:-16rpx;
+		margin-left:-19rpx;
+		border-radius: 5rpx;
 	}
 	
 </style>

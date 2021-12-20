@@ -26,10 +26,11 @@
 </script>
 
 <style>
+	/* #ifndef MP */
 	.header-search{
-		width: 710rpx;
+		width: 100%;
 		height:64rpx;
-		background: #F5F5F8;
+		background: #F2F2F2;
 		border-radius: 4rpx;
 		box-sizing: border-box;
 		display: flex;
@@ -39,7 +40,26 @@
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
 		color: #AAAABB;
+		border-radius: 29rpx;
 	}
+	/* #endif */
+	/* #ifdef MP */
+	.header-search{
+		width: 710rpx;
+		height:64rpx;
+		background: #F2F2F2;
+		border-radius: 4rpx;
+		box-sizing: border-box;
+		display: flex;
+		padding-left: 28rpx;
+		align-items: center;
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #AAAABB;
+		border-radius: 29rpx;
+	}
+	/* #endif */
 	.search-icon{
 		width: 28rpx;
 		height:28rpx;

@@ -108,6 +108,7 @@
 		display: flex;
 		align-items: center;
 		position: relative;
+		border-radius: 29rpx;
 	}
 	.search-input{
 		width: 626rpx;

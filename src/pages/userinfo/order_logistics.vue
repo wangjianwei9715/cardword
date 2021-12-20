@@ -125,7 +125,7 @@
 	.cross-line {
 		width: 100%;
 		height: 20rpx;
-		background: #F6F7F8;
+		background: #F2F2F2;
 	}
 
 	.order-step {

@@ -24,14 +24,21 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		settingTab = [
-			{id:1,name:'给我们评分',url:''},
-			{id:2,name:'公司信息',url:''},
-			{id:3,name:'隐私政策',url:''},
+			// {id:1,name:'给我们评分',url:''},
+			{id:2,name:'公司信息',url:'/pages/userinfo/corporate_info'},
+			{id:3,name:'隐私政策',url:'/pages/userinfo/privacy'},
 		
 		]
 		version = ''
 		onLoad(query:any) {
 			this.version = app.version
+		}
+		onClickNavigateto(item:any){
+			if(item.url!=''){
+				uni.navigateTo({
+					url:item.url
+				})
+			}
 		}
 	}
 </script>

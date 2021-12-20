@@ -38,7 +38,7 @@
 				</view>
 			</view>
 
-			<view style="width: 750rpx; height: 20rpx; background: #F6F7F8;"></view>
+			<view style="width: 750rpx; height: 20rpx; background: #F2F2F2;"></view>
 			<view class="huo-dong-bg" v-show="goodsData.discount!=''">
 				<text class="item-name">活动</text>
 				<view class="item-youhui-bg" v-for="(item,index) in goodsData.discount" :key="index">
@@ -46,7 +46,7 @@
 				</view>
 			</view>
 
-			<view style="width: 750rpx; height: 20rpx; background: #F6F7F8;"></view>
+			<view style="width: 750rpx; height: 20rpx; background: #F2F2F2;"></view>
 			<view class="yunfei-info">
 				<view class="yunfei-item">
 					<text class="item-name">商品金额</text>
@@ -102,7 +102,7 @@
 		youhuiPrice = 0;
 		onePrice = 0;
 		showPayMent = false;
-		countTime = 300;
+		countTime = 0;
 		maxNum = 0;
 		onLoad(query: any) {
 			if(query.data){
@@ -133,8 +133,11 @@
 			})
 		}
 		onInputMoney(event:any){
-			if(event.detail.value>this.maxNum){
-				this.moneyNum = this.maxNum
+			if(Number(event.detail.value)>this.maxNum){
+				console.log(this.maxNum)
+				setTimeout(()=>{
+					this.moneyNum = this.maxNum;
+				},100)
 			}
 			this.getOnePrice()
 		}
@@ -188,8 +191,12 @@
 				delivery:this.addressData.id,
 				num:Number(this.moneyNum)
 			}
+			uni.showLoading({
+				title: '加载中'
+			});
 			app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
-				app.platform.payment(res.wechat,(data:any)=>{
+				uni.hideLoading()
+				app.payment.paymentMini(res.wechat,(data:any)=>{
 					
 				})
 				uni.redirectTo({
@@ -207,7 +214,7 @@
 		// 取消支付
 		onClickCancelPay(){
 			this.showPayMent = false;
-			this.countTime = 300
+			this.countTime = 0
 		}
 		onClickPayGoods(type:any){
 			// 1：支付宝 2：微信
@@ -225,10 +232,10 @@
 			if(type==1){
 				params.channel = 'alipay';
 				app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
+					console.log('alipay==',res)
 					if(res.alipay.orderInfo!=''){
-						app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-							
-						})
+						uni.hideLoading()
+						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
 						uni.redirectTo({
 							url:'/pages/userinfo/order_details?code='+res.goodOrderCode
 						})
@@ -239,14 +246,25 @@
 				app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
 					if(res.wechat){
 						uni.hideLoading()
-						app.payment.paymentWxpay(res.wechat,()=>{
-							
-						})
-						uni.redirectTo({
-							url:'/pages/userinfo/order_details?code='+res.goodOrderCode
+						app.payment.paymentWxpay(res.pay_type,res.wechat,()=>{
+							uni.redirectTo({
+								url:'/pages/userinfo/order_details?code='+res.goodOrderCode
+							})
 						})
 					}
 				})
+				// params= {
+				// 	channel:'mini',
+				// 	delivery:this.addressData.id,
+				// 	num:Number(this.moneyNum)
+				// }
+				// app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
+				// 	uni.hideLoading()
+				// 	app.payment.yinshengPay(res.wechat)
+				// 	uni.redirectTo({
+				// 		url:'/pages/userinfo/order_list'
+				// 	})
+				// })
 			}
 		}
 	}
@@ -259,7 +277,7 @@
 	$font-28:28rpx;
 
 	page {
-		background: #F6F7F8;
+		background: #F2F2F2;
 	}
 	.order-detail{
 		background:#fff;
@@ -553,8 +571,8 @@
 	.btn-payment2 {
 		width: 360rpx;
 		height: 88rpx;
-		background: #14151B;
-		border-radius: 4rpx;
+		background: #FF504F;
+		border-radius: 44rpx;
 		margin-right: 16rpx;
 
 		display: flex;

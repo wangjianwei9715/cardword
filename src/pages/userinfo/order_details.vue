@@ -13,7 +13,7 @@
 			</view>
 		</view>
 		<!-- 商品信息 -->
-		<view class="order-index" v-if="orderData.seller"> 
+		<view class="order-index" v-if="orderData.seller" @click="onClickGoodDetail"> 
 			<view class="order-index-header">
 				<view class="header-left">
 					<image class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill"></image>
@@ -71,7 +71,7 @@
 				<view v-if="item.title=='订单编号'" class="copy" @click="onClickCopyInfo(item.desc)">复制</view>
 			</view>
 			<view class="info-tab">
-				<view class="tab-index"><view class="icon-lianxi"></view>联系客服</view>
+				<view class="tab-index" @click="onClickKefu"><view class="icon-lianxi"></view>联系客服</view>
 				<view class="tab-index" @click="onClickComplain"><view class="icon-tousu"></view>投诉订单</view>
 			</view>
 		</view>
@@ -126,6 +126,10 @@
 			if(query.code){
 				this.orderCode = query.code;
 			}
+
+			this.onEventUI('orderchange',()=>{
+				this.initEvent();
+			})
 		}
 		onShow(){
 			this.initEvent();
@@ -137,12 +141,11 @@
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
 				this.orderData = res.data
 				this.countDown = res.data.leftSec
+				this.getCountDown()
 				uni.setNavigationBarTitle({
 					title: res.data.stateName
 				});
 				this.getGoodDesc(res.data)
-				if(cb) cb()
-				this.getCountDown()
 				if(res.data.state>=2){
 					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList',{pageIndex:1,pageSize:5},(res:any)=>{
 						if(res.list){
@@ -150,6 +153,7 @@
 						}
 					})
 				}
+				if(cb) cb()
 			})
 
 			
@@ -166,6 +170,7 @@
 		}
 		getCountDown(){
 			this.countDownStr = getCountDownTime(this.countDown);
+			console.log(this.countDownStr)
 			this.countDownInter = this.scheduler(()=>{
 				
 				if(this.countDown>0){
@@ -180,6 +185,23 @@
 			uni.navigateTo({
 				url:'/pages/userinfo/order_myCard?code='+this.orderCode
 			})
+		}
+		onClickGoodDetail(){
+			uni.navigateTo({
+				url: '/pages/goods/goods_details?id='+this.orderData.good.goodCode
+			})
+		}
+		onClickKefu(){
+			if(this.orderData.kefu>0){
+				uni.navigateTo({
+					url: '/pages/userinfo/talk?targetUserId='+this.orderData.kefu+'&goodCode='+this.orderData.good.goodCode
+				})
+			}else{
+				uni.showToast({
+					title:'当前商品暂无客服',
+					icon:'none'
+				})
+			}
 		}
 		onClickOperate(cmd:any){
 			let params:{[x:string]:any}
@@ -203,11 +225,14 @@
 					delivery:0,
 					num:Number(this.orderData.num)
 				}
-				app.http.Post('good/topay/'+this.orderData.code,params,(res:any)=>{
-					app.platform.payment(res.wechat,(data:any)=>{
+				uni.showLoading({
+					title: '加载中'
+				});
+				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+					uni.hideLoading()
+					app.payment.paymentMini(res.wechat,(data:any)=>{
 						uni.$emit('orderchange')
 					})
-					this.initEvent()
 				})
 				// #endif
 				// #ifndef MP
@@ -232,7 +257,6 @@
 									icon:'none'
 								})
 								uni.$emit('orderchange')
-								this.initEvent()
 							})
 						} else if (res.cancel) {
 							console.log('用户点击取消');
@@ -257,7 +281,6 @@
 									icon:'none'
 								})
 								uni.$emit('orderchange')
-								this.initEvent()
 							})
 						} else if (res.cancel) {
 							console.log('用户点击取消');
@@ -287,7 +310,7 @@
 		}
 		onClcikResult(chooseID:any){
 			uni.navigateTo({
-				url: '/pages/goods/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode
+				url: '/pages/userinfo/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode+'&order='+this.orderData.code
 			})
 		}
 		// 取消支付
@@ -313,10 +336,8 @@
 				params.channel = 'alipay';
 				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
 					if(res.alipay.orderInfo!=''){
-						app.payment.paymentAlipay(res.alipay.orderInfo,()=>{
-							this.initEvent()
-							uni.$emit('orderchange')
-						})
+						uni.hideLoading()
+						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
 						this.onClickCancelPay()
 					}
 				})
@@ -325,13 +346,19 @@
 				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
 					if(res.wechat){
 						uni.hideLoading()
-						app.payment.paymentWxpay(res.wechat,()=>{
-							this.initEvent()
-							uni.$emit('orderchange')
-						})
+						app.payment.paymentWxpay(res.pay_type,res.wechat)
 						this.onClickCancelPay()
 					}
 				})
+				// params= {
+				// 	channel:'mini',
+				// 	delivery:0,
+				// 	num:Number(this.orderData.num)
+				// }
+				// app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+				// 	uni.hideLoading()
+				// 	app.payment.yinshengPay(res.wechat)
+				// })
 			}
 		}
 	}
@@ -601,8 +628,8 @@
 	.order-desc{
 		width: 100%;
 		box-sizing: border-box;
-		border-top:20rpx solid #F6F7F8;
-		border-bottom: 20rpx solid #F6F7F8;
+		border-top:20rpx solid #F2F2F2;
+		border-bottom: 20rpx solid #F2F2F2;
 		padding: 20rpx 32rpx 0 32rpx;
 		&-index{
 			width: 100%;
@@ -681,12 +708,12 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:20rpx;
-		border-bottom: 20rpx solid #F6F7F8;
+		border-bottom: 20rpx solid #F2F2F2;
 	}
 	.address-content{
 		width: 100%;
 		box-sizing: border-box;
-		border-bottom: 20rpx solid #F6F7F8;
+		border-bottom: 20rpx solid #F2F2F2;
 		padding:20rpx 32rpx;
 		.title{
 			width: 100%;
@@ -737,7 +764,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:20rpx 32rpx;
-		border-bottom: 20rpx solid #F6F7F8;
+		border-bottom: 20rpx solid #F2F2F2;
 		margin-bottom: 110rpx;
 		.title{
 			width: 100%;
@@ -817,15 +844,15 @@
 		.big-btn{
 			width: 718rpx;
 			height: 88rpx;
-			border-radius: 4rpx;
-			border:1px solid #14151B;
+			border:1px solid #FB4E3E;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			font-size: 28rpx;
 			font-family: PingFangSC-Semibold, PingFang SC;
 			font-weight: 600;
-			color: #14151B;
+			color: #FB4E3E;
+			border-radius: 20rpx;
 		}
 		.small-btn-content{
 			width: 100%;

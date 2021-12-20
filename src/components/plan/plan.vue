@@ -1,7 +1,7 @@
 <template>
 	<view class="goodslist-plan-content" :style="'height:'+planHeight+'rpx'">
 		<view class="goodslist-plan-now" :style="'width:'+getPlan()+'%;height:'+planHeight+'rpx'"></view>
-		<view class="goodslist-plan-desc" :style="'height:'+planHeight+'rpx'"></view>
+		<view class="goodslist-plan-desc" :style="'left:'+getPlan()+'%'">{{getPlan()+'%'}}</view>
 	</view>
 </template>
 
@@ -36,21 +36,32 @@
 	.goodslist{
 		&-plan-content{
 			width: 100%;
-			background: #FFD1BE;
+			background: #F2F2F2;
 			border-radius: 12rpx;
-			overflow: hidden;
 			position: relative;
 			margin-bottom: 20rpx;
 		}
 		&-plan-desc{
-			width: 100%;
 			position: absolute;
 			left:0;
-			top:0;
+			top:50%;
+			margin-top: -15rpx;
+			margin-left: -33rpx;
 			z-index: 2;
+			width: 66rpx;
+			height: 30rpx;
+			background: #FB4E3E;
+			box-shadow: 0rpx 3rpx 4rpx 0rpx rgba(107, 27, 27, 0.28);
+			border-radius: 15rpx;
+			text-align: center;
+			line-height: 30rpx;
+			font-size: 18rpx;
+			font-family: 'LT';
+			font-weight: bold;
+			color: #FFFFFF;
 		}
 		&-plan-now{
-			background: linear-gradient(90deg, #FD8339 0%, #F24B28 100%);
+			background: #FB4E3E;
 			border-radius: 12rpx;
 			position: absolute;
 			left:0;

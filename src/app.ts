@@ -26,11 +26,15 @@ export module app{
     export let service_url='';
     export let dataApiDomain='';
     export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
-    export let statusBarHeight = 0;
+    // export let launch_url = ['https://service.s777.ka-world.com']
+    
+    export let statusBarHeight:any = 0;
     export let platform = PlatformManager.getIns();
 	export let payment = PayManager.getIns();
     export let http =  HttpRequest.getIns();
 
+    export let iosPlatform = false
+    export let iosVersion = 1
     export let protobuf:any = null;
     export let data:{[x: string]: any} = {};//登录数据
     export let token = {accessToken:'',refreshToken:''};

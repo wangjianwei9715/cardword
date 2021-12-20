@@ -3,7 +3,7 @@
 		<view class="index">
 			<input type="number" v-model="phone" class="phone" placeholder="请输入手机号">
 			<view class="code-content" v-if="codeLogin">
-				<input type="text" v-model="vcode" class="code" placeholder="请输入验证码">
+				<input type="text" v-model="vcode" class="code" maxlength="4" placeholder="请输入验证码">
 				<view class="code-btn" @click="getInterval">{{codeCountdown>0?codeCountdown+'s后重发':'获取验证码'}}</view>
 			</view>
 			<view class="code-content" v-else>
@@ -11,7 +11,7 @@
 			</view>
 			<view class="xieyi">
 				<view class="icon-xieyi" :class="xieyiAgree?'xieyi-agree':''" @click="xieyiAgree = !xieyiAgree"></view>
-				<view class="xieyi-desc">登录即自动注册，并同意<text>《用户协议》</text>和<text>《隐私协议》</text></view>
+				<view class="xieyi-desc">登录即自动注册，并同意<text @click="onClickPrivacy">《隐私协议》</text></view>
 			</view>
 			<view class="btn" :class="phone!=''?'btn-confirm':''" @click="onClickLogin">登录</view>
 			<view class="orther" v-if="codeLogin">
@@ -22,9 +22,10 @@
 				<view @click="codeLogin = true">使用验证码登录</view>
 				<view @click="onClickChangePassword">忘记密码?</view>
 			</view>
-			<view class="bottom" @click="onClickWechatLogin">
-				<view class="bottom-tip">微信账号登录</view>
-				<view class="icon-wechat"></view>
+			<view class="bottom">
+				<view class="bottom-tip">其它方式登录</view>
+				<view v-if="iosLogin" class="icon-apple" @click="onClickAppleLogin"></view>
+				<view class="icon-wechat" @click="onClickWechatLogin"></view>
 			</view>
 		</view>
 
@@ -53,10 +54,13 @@
 		codeCountdown = 0;
 		getCode = false;
 		xieyiAgree = false;
-		codeLogin = true;
-		popupHid = true
+		codeLogin = false;
+		popupHid = true;
+		iosLogin = false;
 		onLoad(query:any) {
-			
+			if (app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0) {
+				this.iosLogin = true
+			}
 		}
 		onBackPress(type:any){
 			uni.switchTab({
@@ -69,16 +73,29 @@
 				url:'/pages/login/change_password'
 			})
 		}
+		onClickPrivacy(){
+			uni.navigateTo({
+				url:'/pages/userinfo/privacy'
+			})
+		}
+		regPhone(){
+			let reg = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
+			if (!reg.test(this.phone)) {
+				uni.showToast({
+					title: '请输入正确的手机号',
+					icon: 'none',
+					duration: 2000
+				});
+				return false;
+			}else{
+				return true
+			}
+		}
 		getInterval(){
 			if(this.codeCountdown>0){
 				return;
 			}
-			if (this.phone == '') {
-				uni.showToast({
-					title: '请输入手机号！',
-					icon: 'none',
-					duration: 2000
-				});
+			if(!this.regPhone()){
 				return;
 			}
 			app.http.Post('user/code',{phone:this.phone,type:'login'},(data:any)=>{
@@ -110,9 +127,20 @@
 			}
 		}
 		onClickCodeLogin(){
+			if(!this.regPhone()){
+				return;
+			}
 			if(!this.getCode){
 				uni.showToast({
 					title: '请先获取验证码！',
+					icon: 'none',
+					duration: 2000
+				});
+				return;
+			}
+			if(this.vcode==''){
+				uni.showToast({
+					title: '请输入验证码',
 					icon: 'none',
 					duration: 2000
 				});
@@ -128,6 +156,9 @@
 			this.HttpLogin(params)
 		}
 		onClickPwLogin(){
+			if(!this.regPhone()){
+				return;
+			}
 			if(this.password == ''){
 				uni.showToast({
 					title: '请输入密码！',
@@ -156,13 +187,23 @@
 				if(data.app.launchDomain&&data.app.launchDomain!=''){
 					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
 				}
-				app.http.Post('user/domain',{content:encodeURIComponent(app.bussinessApiDomain.slice(0,app.bussinessApiDomain.indexOf('/api'))+'&'+app.service_url)})
+				this.postDomain()
 				uni.setStorageSync("token", JSON.stringify(app.token));
 				uni.switchTab({
 					url: "/pages/index/index",
 				});
 				uni.$emit('loginSuccess');
 			})
+		}
+		postDomain(){
+			let domian = app.bussinessApiDomain.slice(0,app.bussinessApiDomain.indexOf('/api'));
+			if(app.service_url!=''){
+				 domian +='&'+app.service_url
+			}
+			let params = {
+				content:encodeURIComponent(domian)
+			}
+			app.http.Post('user/domain',params)
 		}
 		onClickWechatLogin(){
 			uni.showLoading({
@@ -185,6 +226,12 @@
 								}
 								console.log('weixinLoginRes=====',loginRes)
 								this.WeChetLogin(params)
+							},
+							fail:(loginRes:any)=>{
+								uni.showToast({
+									title:'请确认已经安装微信',
+									icon:'none'
+								})
 							}
 						});
 					}
@@ -203,7 +250,7 @@
 				if(data.app.launchDomain&&data.app.launchDomain!=''){
 					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
 				}
-				app.http.Post('user/domain',{content:encodeURIComponent(app.bussinessApiDomain.slice(0,app.bussinessApiDomain.indexOf('/api'))+'&'+app.service_url)})
+				this.postDomain()
 				uni.setStorageSync("token", JSON.stringify(app.token));
 				uni.switchTab({
 					url: "/pages/index/index",
@@ -214,6 +261,50 @@
 						url: "/pages/login/bind_phone"
 					})
 				}
+			})
+		}
+		onClickAppleLogin(){
+			uni.showLoading({
+				title: '加载中'
+			});
+			uni.login({  
+				provider: 'apple',  
+				success: (loginRes:any)=> {  
+					console.log('appleLogin==',loginRes)
+					let params = {
+						openid:loginRes.authResult.openid,
+						uuid:app.platform.deviceID,
+						os:app.platform.systemInfo.platform,
+						device:app.platform.systemInfo.brand+app.platform.systemInfo.model
+					}
+					this.appleLogin(params)
+					
+				},  
+				fail: (err)=> {  
+					uni.hideLoading()
+					// 登录失败  
+				}  
+			});  
+		}
+		appleLogin(params:any){
+			console.log('applelogin=',params)
+			app.http.Post('user/login/apple',params,(data:any)=>{
+				console.log('appleData=',data)
+				uni.hideLoading();
+				app.data = data.data;
+				app.opKey = data.opKey
+				uni.setStorageSync("app_opk", data.opKey);
+				app.socketInfo = data.app;
+				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
+				if(data.app.launchDomain&&data.app.launchDomain!=''){
+					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
+				}
+				this.postDomain()
+				uni.setStorageSync("token", JSON.stringify(app.token));
+				uni.switchTab({
+					url: "/pages/index/index",
+				});
+				uni.$emit('loginSuccess');
 			})
 		}
 	}
@@ -342,12 +433,26 @@
 			bottom:130rpx;
 			left:50%;
 			margin-left: -301rpx;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: center;
 			.icon-wechat{
+				display: inline-block;
 				width: 100rpx;
 				height:100rpx;
 				background:url(../../static/login/weixin@2x.png) no-repeat center;
 				background-size: 100% 100%;
-				margin:0 auto;
+				margin:0 20rpx;
+				margin-top: 40rpx;
+			}
+			.icon-apple{
+				display: inline-block;
+				width: 100rpx;
+				height:100rpx;
+				background:url(../../static/login/apple.png) no-repeat center;
+				background-size: 100% 100%;
+				margin:0 20rpx;
 				margin-top: 40rpx;
 			}
 			.bottom-tip{

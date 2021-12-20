@@ -4,18 +4,25 @@
 			<image class="goodslist-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-title">{{item.title}}</view>
-				<view class="goodslist-plan-content">
-					<view class="goodslist-plan-now" :style="'width:'+getPlan(item.lockNum,item.currentNum,item.totalNum)+'%'"></view>
-					<view :id="item.goodCode" class="goodslist-plan-desc">余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
+				<view class="goodslist-tips" v-show="discountList[index]" v-for="(items,indexs) in discountList[index]" :key="indexs">
+					{{items}}
 				</view>
 				<view class="goodslist-bottom">
 					<view class="goodslist-price-content">
 						¥<text class="goodslist-price">{{item.price}}</text>
 					</view>
-					<view class="goodslist-tips" v-show="discountList[index]" v-for="(items,indexs) in discountList[index]" :key="indexs">
-						{{items}}
+					<view class="goodslist-bottom-right">
+						<view :id="item.goodCode" class="goodslist-plan-desc">余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
+						<view class="goodslist-plan-content">
+							<view class="goodslist-plan-now" :style="'width:'+getPlan(item.lockNum,item.currentNum,item.totalNum)+'%'"></view>
+							<view class="goodslist-plan-num">
+								{{getPlan(item.lockNum,item.currentNum,item.totalNum)}}<text style="font-weight:0;font-size:18rpx">%</text>
+							</view>
+						</view>
 					</view>
+					
 				</view>
+				
 			</view>
 		</view>
 	</view>
@@ -110,94 +117,120 @@
 	.goodslist{
 		&-index{
 			width: 100%;
-			height:232rpx;
 			background: #FFFFFF;
 			border-radius: 4rpx;
 			box-sizing: border-box;
-			padding:16rpx;
+			padding:24rpx 20rpx 24rpx 24rpx;
 			display: flex;
 			align-items: center;
-			margin-bottom: 16rpx;
+			margin-bottom: 20rpx;
+			border-radius: 20rpx;
 		}
 		&-pic{
-			width: 200rpx;
-			height:200rpx;
-			border-radius: 4rpx;
+			width: 230rpx;
+			height:230rpx;
+			border-radius:15rpx;
 			margin-right: 24rpx;
 		}
 		&-right{
-			width: 440rpx;
-			height:176rpx;
+			width: 420rpx;
+			height:230rpx;
 			box-sizing: border-box;
+			position: relative;
 		}
 		&-title{
 			width: 100%;
-			height:80rpx;
-			font-size: 28rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			max-height:80rpx;
+			font-size: 30rpx;
+			font-family: 'ali-Light';
 			font-weight: 400;
 			color: #14151A;
 			margin-bottom: 16rpx;
+			text-overflow: -o-ellipsis-lastline;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			line-height: 45rpx;
+			-webkit-line-clamp: 2;
+			line-clamp: 2;
+			-webkit-box-orient: vertical;
 		}
 		&-plan-content{
-			width: 440rpx;
-			height:20rpx;
-			background: #FFD1BE;
-			border-radius: 12rpx;
+			width: 112rpx;
+			height:40rpx;
+			background: #F9D0CC;
 			overflow: hidden;
 			position: relative;
-			margin-bottom: 20rpx;
+			border-radius: 8rpx;
+			
+		}
+		&-plan-num{
+			position: absolute;
+			left:0;
+			top:0;
+			width: 112rpx;
+			height:40rpx;
+			line-height: 40rpx;
+			font-size: 22rpx;
+			font-family:PingFangSC-Regular, PingFang SC;
+			font-weight: bold;
+			color: #fff;
+			text-align: center;
 		}
 		&-plan-desc{
 			width: 100%;
 			height:20rpx;
-			position: absolute;
-			left:0;
-			top:0;
-			z-index: 2;
-			text-align: center;
+			text-align: right;
 			line-height: 20rpx;
-			font-size: 16rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
-			color: #FFFFFF;
+			font-size: 18rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+			color: #AAAABB;;
+			margin-bottom:10rpx			
 		}
 		&-plan-now{
-			height:20rpx;
-			background: linear-gradient(90deg, #FD8339 0%, #F24B28 100%);
-			border-radius: 12rpx;
-			position: absolute;
-			left:0;
-			top:0;
-			z-index: 1;
+			height:40rpx;
+			background: #FB4E3E;
 		}
 		&-bottom{
 			width: 100%;
-			height:40rpx;
 			display: flex;
-			align-items: center;
+			align-items: flex-end;
+			justify-content: space-between;
+			position: absolute;
+			bottom:0;
+			left:0;
+		}
+		&-bottom-right{
+			width: 300rpx;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
 		}
 		&-price-content{
-			font-size: 24rpx;
-			font-family: 'DIN';
-			font-weight: bold;
+			font-size: 26rpx;
+			font-family:  Microsoft YaHei;
+			font-weight: normal;
 			color: #14151A;
+			margin-top: -10rpx;
 		}
 		&-price{
-			font-size: 32rpx;
+			font-size: 36rpx;
 		}
 		&-tips{
-			width: 130rpx;
-			height:38rpx;
 			text-align: center;
-			line-height: 38rpx;
-			font-size: 20rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			line-height: 34rpx;
+			margin-right: 16rpx;
+			height: 34rpx;
+			background: #FFFFFF;
+			border: 2rpx solid #FB4E3E;
+			border-radius: 10rpx;
+			font-size: 18rpx;
+			font-family: Microsoft YaHei;
 			font-weight: 400;
-			color: #E6D188;
-			margin-left: 16rpx;
-			background:url(../../static/index/title@2x.png) no-repeat center;
-			background-size: 100% 100%;
+			color: #FB4E3E;
+			padding:0 11rpx;
+			width: fit-content;
 		}
 	}
 </style>

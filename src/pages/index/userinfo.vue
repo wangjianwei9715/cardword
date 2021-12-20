@@ -9,7 +9,7 @@
 			<view class="userinfo"  @click="onClickUserInfo">
 				<!-- #ifndef MP-WEIXIN -->
 				<view class="left">
-					<image class="user-avatar" :src="infoData.avatar" mode="aspectFit"></image>
+					<image class="user-avatar" :src="infoData.avatar?infoData.avatar:defaultAvatar" mode="aspectFit"></image>
 					<view class="userinfo-index">
 						<view class="userinfo-name">{{infoData.name}}</view>
 						<view class="userinfo-sign">{{infoData.sign}}</view>
@@ -45,6 +45,7 @@
 				<view class="right" @click="onClickOrderList(0)">全部<view class="icon-right"></view></view>
 			</view>
 			<view class="tab-content">
+				<!-- #ifndef MP -->
 				<view class="tab" v-for="item in orderTab" :key="item.id" @click="onClickOrderList(item.id)">
 					<view v-if="item.num>0&&item.name!='已完成'" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num}}</view>
 					<view class="icon-content">
@@ -52,6 +53,17 @@
 					</view>
 					<view class="name">{{item.name}}</view>
 				</view>
+				<!-- #endif -->
+
+				<!-- #ifdef MP -->
+				<view class="tab" v-for="item in orderTab" :key="item.id" @click="onClickOrderListMp(item)">
+					<view v-if="item.num>0&&item.name!='已完成'" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num}}</view>
+					<view class="icon-content">
+						<view :class="'icon-'+item.icon"></view>
+					</view>
+					<view class="name">{{item.name}}</view>
+				</view>
+				<!-- #endif -->
 			</view>
 			<view class="order-tip" v-if="countTime>0"  @click="onClickOrderList(1)">您有{{countNum}}个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
 		</view>
@@ -75,8 +87,8 @@
 		infoData:{[x:string]:any} = [];
 		defaultAvatar = app.defaultAvatar;
 		headerTab:{[x: string]: any} = {
-			no:{id:1,name:'我的编号',num:0,url:'/pages/userinfo/card_no'},
-			broadcast:{id:2,name:'我的直播',num:0,url:'/pages/userinfo/user_live'},
+			point:{id:1,name:'我的积分',num:0,url:'/pages/userinfo/card_no'},
+			// broadcast:{id:2,name:'我的直播',num:0,url:'/pages/userinfo/user_live'},
 			favorite:{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
 		};
 		orderTab:{[x: string]: any} = {
@@ -88,10 +100,10 @@
 		settingTab = [
 			{id:1,name:'地址管理',url:'/pages/userinfo/setting_addresses'},
 			{id:2,name:'联系客服',url:''},
-			{id:3,name:'常见问题',url:''},
-			{id:4,name:'用户协议',url:''},
+			// {id:3,name:'常见问题',url:''},
+			{id:4,name:'用户协议',url:'/pages/userinfo/privacy'},
 			{id:5,name:'关于我们',url:'/pages/userinfo/about_us'},
-			{id:6,name:'加入群聊',url:''},
+			// {id:6,name:'加入群聊',url:''},
 		]
 		countInterval:any;
 		countTime = -1;
@@ -106,6 +118,11 @@
 		}
 		onShow(){
 			this.initPageData();
+			// #ifdef MP-WEIXIN
+			if(this.infoData&&this.infoData.name==''){
+				app.platform.wechatLogin();
+			}
+			// #endif
 		}
 		onHide(){
 			clearInterval(this.countInterval);
@@ -156,14 +173,29 @@
 
 			});
 		}
+	
 		onClickTopNavigateto(item:any){
 			// #ifdef MP
+			if(this.headerTab[item].id==1){
+				uni.showToast({
+					title:'商城维护中',
+					icon:'none'
+				})
+				return;
+			}
 			let url = this.headerTab[item].url
 			uni.navigateTo({
 				url:url
 			})
 			// #endif
 			// #ifndef MP
+			if(item.id==1){
+				uni.showToast({
+					title:'商城维护中',
+					icon:'none'
+				})
+				return;
+			}
 			uni.navigateTo({
 				url:item.url
 			})
@@ -192,9 +224,11 @@
 			})
 		}
 		onClickUserInfo(){
+			// #ifdef MP
 			if(this.infoData.avatar==''){
 				return;
 			}
+			// #endif
 			uni.navigateTo({
 				url:'/pages/userinfo/user_info?data='+encodeURIComponent(JSON.stringify(this.infoData))
 			})
@@ -203,6 +237,11 @@
 		onClickOrderList(id:number){
 			uni.navigateTo({
 				url:'/pages/userinfo/order_list?type='+id
+			})
+		}
+		onClickOrderListMp(item:any){
+			uni.navigateTo({
+				url:'/pages/userinfo/order_list?type='+this.orderTab[item].id
 			})
 		}
 		countDownTime(){
@@ -242,7 +281,7 @@
 		height:436rpx;
 		background:url(../../static/userinfo/bg@2x.png) no-repeat center;
 		background-size: 100% 100%;
-		border-bottom: 20rpx solid #F6F7F8;
+		border-bottom: 20rpx solid #F2F2F2;
 		box-sizing: border-box;
 		padding-top: 78rpx;
 		// #ifndef APP-PLUS
@@ -281,7 +320,7 @@
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
 					color: #FFFFFF;
-					background:#FF4349;
+					background:#FB4E3E;
 					position: absolute;
 					right:-10rpx;
 					top:-10rpx;
@@ -375,7 +414,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:24rpx 0 0 0;
-		border-bottom: 20rpx solid #F6F7F8;
+		border-bottom: 20rpx solid #F2F2F2;
 		.header{
 			width: 100%;
 			height:40rpx;
@@ -519,7 +558,7 @@
 		height:30rpx;
 		line-height: 30rpx;
 		text-align: center;
-		background:#FD0000;
+		background:#FF504F;
 		border-radius: 40rpx;
 		position: absolute;
 		right:0;

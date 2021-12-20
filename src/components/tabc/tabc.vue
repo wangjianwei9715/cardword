@@ -1,6 +1,6 @@
 <template>
 	<view class="list">
-		<view :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]" v-for="item in tabs" :key="item.id" @click="onClickIndex(item.id)">{{item.name}}</view>
+		<view :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]" v-for="item in tabc" :key="item.id" @click="onClickIndex(item.id)">{{item.name}}</view>
 	</view>
 </template>
 
@@ -10,7 +10,7 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
-		tabs:any;
+		tabc:any;
 		@Prop({default:1})
 		tabsCheck:any;
 
@@ -53,16 +53,16 @@
 		position: relative;
 	}
 	.current::before{
-		width: 28rpx;
-		height:6rpx;
+		width: 37rpx;
+		height: 7rpx;
+		background: #FB4E3E;
 		content: '';
 		background-size: 100% 100%;
 		position: absolute;
-		bottom:0;
+		bottom:18rpx;
 		left:50%;
-		margin-left:-14rpx;
+		margin-left:-19rpx;
 		border-radius: 3rpx;
-		background:#14151A
 	}
 	
 </style>

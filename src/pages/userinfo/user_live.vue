@@ -1,14 +1,14 @@
 <template>
 	<view class="content">
 		<view class="header-banner">
-			<view class="tabs-content">
-				<tabc :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs" />
+			<view class="tabc-content">
+				<tabc :tabc="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs" />
 			</view>
 		</view>
 
 		<view class="live-content">
 			<liveslist :liveList="liveList"   @send="onClickLive"/>
-			<empty v-show="liveList.length==0"/>
+			<empty v-if="liveList.length==0"/>
 		</view>
 	</view>
 </template>
@@ -80,7 +80,7 @@ import { Component } from "vue-property-decorator";
 
 <style lang="scss">
 	page{
-		background:#F6F7F8;
+		background:#F2F2F2;
 	}
 	.content{
 		width: 100%;
@@ -94,7 +94,7 @@ import { Component } from "vue-property-decorator";
 		box-sizing: border-box ;
 		z-index: 9;
 	}
-	.tabs-content{
+	.tabc-content{
 		width: 100%;
 	}
 	.live-content{

@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="top">
-			<view class="index border" v-for="(item,index) in dynamicData" :key="index" @click="onClickDynamic('trade')">
+			<view class="index border" v-for="(item,index) in dynamicData" :key="index" @click="onClickDynamic(item.bucketName)">
 				<view class="left">
 					<view class="icon"><view :class="item.title=='交易动态'?'icon-zx':'icon-tz'"></view></view>
 					<view class="desc">
@@ -16,12 +16,12 @@
 			</view>
 			
 		</view>
-		<view class="bottom">
+		<view class="bottom" v-if="buckedList!=''">
 			<view class="index" v-for="(item,index) in buckedList" :key="index" @click="onClickBucketId(item.bucketId)">
-				<view class="left">
-					<view class="icon"><view class="icon-kf"></view></view>
+				<view class="left" >
+					<view class="icon"><image class="icon-kf" :src="item.target.avatar?decodeURIComponent(item.target.avatar):'../../static/userinfo/kefu@2x.png'"></image></view>
 					<view class="desc">
-						<view class="desc-title">{{item.target.name}}</view>
+						<view class="desc-title">{{item.target&&item.target.name?item.target.name:''}}</view>
 						<view class="desc-message" v-html="decodeURIComponent(item.content)"></view>
 					</view>
 				</view>
@@ -51,11 +51,27 @@
 			this.onEventUI('sendMessage',()=>{
 				this.pageIndex = 1;
 				this.noMoreData = false;
-				
 				this.getBucketlist()
 			})
 		}
 		onShow(){
+			// #ifndef MP-WEIXIN
+			console.log(app.token.accessToken)
+			if(app.token.accessToken == ''){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				return;
+			}
+			// #endif
+
+			// #ifdef MP-WEIXIN
+			if(app.token.accessToken == ''){
+				app.platform.wechatLogin();
+				return;
+			}
+			// #endif
+
 			this.pageIndex=1;
 			this.noMoreData = false
 			this.getMessageList()
@@ -96,11 +112,9 @@
 			})
 		}
 		onClickDynamic(type:any){
-			if(type=='trade'){
-				uni.navigateTo({
-					url: '/pages/userinfo/dynamic?type='+type
-				})
-			}
+			uni.navigateTo({
+				url: '/pages/userinfo/dynamic?type='+type
+			})
 			
 		}
 		getTime(second:number){
@@ -129,7 +143,7 @@
 	}
 	.top{
 		width: 100%;
-		border-bottom: 20rpx solid #F6F7F8;
+		border-bottom: 20rpx solid #F2F2F2;
 		box-sizing: border-box;
 		padding: 0 32rpx;
 	}
@@ -175,14 +189,13 @@
 					background-size: 100% 100%;
 				}
 				.icon-kf{
-					width: 42rpx;
-					height:44rpx;
-					background:url(../../static/userinfo/kefu@2x.png) no-repeat center;
-					background-size: 100% 100%;
+					width: 84rpx;
+					height:84rpx;
+					border-radius: 50%;
 				}
 			}
 			.desc{
-				width: 490rpx;
+				width: 470rpx;
 				height:148rpx;
 				box-sizing: border-box;
 				padding:32rpx 0;

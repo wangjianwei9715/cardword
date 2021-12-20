@@ -82,7 +82,7 @@
 			setTimeout(()=>{
 				uni.hideLoading();
 			},5000)
-			app.http.Get('search/query_price',params,(res:any)=>{
+			app.http.Get('dataApi/search/query_price',params,(res:any)=>{
 				this.searchIng = false
 				uni.hideLoading();
 				if(!res.list){
@@ -137,6 +137,7 @@
 		align-items: center;
 		position: relative;
 		padding-left:28rpx ;
+		border-radius: 29rpx;
 	}
 	.search-input{
 		width: 634rpx;

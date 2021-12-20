@@ -248,6 +248,7 @@ $font-24: 24rpx;
   width: 640rpx;
   height: 64rpx;
   overflow: hidden;
+  border-radius: 29rpx;
 }
 .header-right {
   height: 50rpx;
@@ -262,7 +263,7 @@ $font-24: 24rpx;
   width: 100%;
   box-sizing: border-box;
   padding: 194rpx 20rpx 60rpx 20rpx;
-  background: #f6f7f8;
+  background: #F2F2F2;
 }
 .header-sort {
   width: 100%;

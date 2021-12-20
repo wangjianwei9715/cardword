@@ -112,7 +112,7 @@
 				pageSize:20
 			}
 			
-			app.http.Get('search/good',params,(res:any)=>{
+			app.http.Get('dataApi/search/good',params,(res:any)=>{
 				uni.redirectTo({
 					url: '/pages/goods/goods_find_list?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
 				})
@@ -151,11 +151,11 @@
 		width: 640rpx;
 		height:64rpx;
 		background: #F5F5F8;
-		border-radius: 4rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		position: relative;
+		border-radius: 29rpx;
 	}
 	.search-input{
 		width: 626rpx;
@@ -167,6 +167,7 @@
 		font-weight: 500;
 		color: #14151A;
 		padding-left:76rpx ;
+		border-radius: 29rpx;
 	}
 	.search-icon{
 		width: 28rpx;

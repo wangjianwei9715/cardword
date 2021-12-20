@@ -16,12 +16,23 @@
 				<input class="input-content" type="number" v-model="userPhone"  placeholder="请输入收货人手机号" @input="onInputName"/>
 			</view>
 		</view>
-		<view class="setting-index" @click="onClickAddress">
+		<!-- <view class="setting-index" @click="onClickAddress">
 			<view class="setting-view">
 				<view class="left-content">
 					<text class="left-title">所在地区</text>
 				</view>
 				<view class="input-content"><text :style="address==''?'color:#BABDC7':'color:#3C3C3C'">{{address!=''?address:'省份、城市、区县'}}</text></view>
+				<button class="btn-back">&#xe470;</button>
+			</view>
+		</view> -->
+		<view class="setting-index">
+			<view class="setting-view">
+				<view class="left-content">
+					<text class="left-title">所在地区</text>
+				</view>
+				<pick-regions style="width: 520rpx;" @getRegion="handleGetRegion">
+					<view class="input-content"><text :style="address==''?'color:#BABDC7':'color:#3C3C3C'">{{address!=''?address:'省份、城市、区县'}}</text></view>
+				</pick-regions>
 				<button class="btn-back">&#xe470;</button>
 			</view>
 		</view>
@@ -46,14 +57,16 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import pickRegions from '@/components/pick-regions/pick-regions.vue'
 	@Component({})
 	export default class ClassName extends BaseNode {
-		address = '浙江省杭州市西湖区';
+		address = '';
 		userName = '';
 		userPhone = '';
 		addressDetail = '';
 		addressDefault = false
 		editData:{[x:string]:any} = []
+		addressData:any = {};
 		onLoad(query:any) {
 			if (query.title) {
 				uni.setNavigationBarTitle({title: query.title});
@@ -88,6 +101,18 @@
 		}
 		onClickDefault(){
 			this.addressDefault = !this.addressDefault
+		}
+		handleGetRegion(region:any){
+			console.log('region===',region);
+			if (region.length<3) {
+				uni.showToast({title:'无效的地址!',icon: 'none',duration: 2000});
+				return;
+			}
+			this.addressData.provinceName = region[0].name;
+			this.addressData.cityName = region[1].name;
+			this.addressData.countyName = region[2].name;
+			this.address = this.addressData.provinceName+this.addressData.cityName+this.addressData.countyName;
+			console.log(this.addressData)
 		}
 		onClickAddressConfirm(){
 			if(this.userName==''){

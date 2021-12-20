@@ -11,7 +11,7 @@
 				</view>
 			</view>
 			<view class="header-tab">
-				<tabc :tabs="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
+				<tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
 			</view>
 		</view>
 
@@ -19,7 +19,7 @@
 			<statusbar/>
 			<goodslistcollect :goodsList="goodsList" :delStart="deling" :delList="delList" @send="onClickJumpDetails"  @del="onClickDel"/>
 		</view>
-		<empty v-show="goodsList.length==0"/>
+		<empty v-if="goodsList.length==0"/>
 		<view v-show="deling" class="del-bottom">
 			<view class="del-btn btn-all" @click="onClickAllChoose">全选</view>
 			<view class="del-btn btn-del" @click="onClickDelChoose">删除</view>
@@ -138,7 +138,7 @@ import { Component } from "vue-property-decorator";
 
 <style lang="scss">
 	page{
-		background:#F6F7F8;
+		background:#F2F2F2;
 	}
 	.content{
 		width: 100%;

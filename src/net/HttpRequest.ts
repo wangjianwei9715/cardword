@@ -101,6 +101,10 @@ export default class HttpRequest {
 			if (url.indexOf("user/login/wechat/app") != -1) {
 				this.getStr(config,'wechat',true); 
 			}
+			// 苹果
+			if (url.indexOf("user/login/apple") != -1) {
+				this.getStr(config,'apple',true); 
+			}
 			// 列表 查价 搜索
 			if (url.indexOf("search/good") != -1 || url.indexOf("search/query_price") != -1) {
 				this.getStr(config,'searchSecret',true); 
@@ -114,6 +118,7 @@ export default class HttpRequest {
 			// 确认收货
 			if(url.indexOf("me/order/buyer/receive_good") != -1){
 				let data = 'opk_'+app.opKey+'_receive_good_'+config.data.code
+				console.log('order_receive_opSign=',data)
 				config.headers['opSign'] = Md5.hashStr(data)
 			}
 			
@@ -134,7 +139,7 @@ export default class HttpRequest {
 				console.log(config)
 				
 			}
-			if(url.indexOf("dataApi/search") != -1 || url.indexOf("dataApi/home") != -1 || url.indexOf("dataApi/good") != -1 || url.indexOf("dataApi/config/wuliu") != -1|| url.indexOf("dataApi/oss/token") != -1|| url.indexOf("dataApi/config/category") != -1|| url.indexOf("dataApi/goodlist") != -1){
+			if(url.indexOf("dataApi/") != -1){
 				config.url = url.substring(8);
 				
 				// #ifndef H5
@@ -145,7 +150,7 @@ export default class HttpRequest {
 				console.log('config.baseURL====',config.baseURL)
 			}
 			
-			if(url.indexOf("app/launch") != -1){
+			if(url.indexOf("app/launch") != -1||url.indexOf("app/onlinecfg") != -1){
 				config.baseURL = ''
 			}
 			if (url.indexOf("advice/upload_advice") != -1) {

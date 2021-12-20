@@ -9,7 +9,7 @@
 				</view>
 			</view>
 			<view class="header-tab">
-				<tabc :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabc>
+				<tabc :tabc="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabc>
 			</view>
 			<view class="header-sort">
 				<view class="header-sort-index" v-for="item in sortData" :key="item.id" @click="onClickSort(item.id)">
@@ -88,6 +88,14 @@ import { Component } from "vue-property-decorator";
 				},10)
 			}else{
 				this.reqNewData('default') 
+			}
+
+			if(app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0){
+				this.goodTab = [
+					{id:1,name:'在售'},
+					{id:0,name:'即将发售'},
+					{id:2,name:'已拼成'}
+				]
 			}
 			
 		}
@@ -213,7 +221,7 @@ import { Component } from "vue-property-decorator";
 			
 			let date:any = new Date()
 			params.timeStamp = Date.parse(date)/1000
-			app.http.Get("search/good", params, (res: any) => {
+			app.http.Get("dataApi/search/good", params, (res: any) => {
 				if (res.end) {
 					this.noMoreData = true;
 				}
@@ -231,7 +239,7 @@ import { Component } from "vue-property-decorator";
 <style lang="scss">
 	$font-24:24rpx;
 	page{
-		background:#F6F7F8;
+		background:#F2F2F2;
 	}
 	.content{
 		width: 100%;
@@ -259,6 +267,8 @@ import { Component } from "vue-property-decorator";
 	.header-search{
 		width: 626rpx;
 		height:64rpx;
+		border-radius: 29rpx;
+		overflow: hidden;
 	}
 	.header-back{
 		width: 80rpx;

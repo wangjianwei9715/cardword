@@ -13,9 +13,10 @@ export default Vue.extend({
     console.log("App Launch");
     if (process.env.NODE_ENV === "development") {
       console.log("开发环境");
-      app.localTest=true;
-      app.domaintest='http://192.168.0.38:8701/api/v1/';
-      app.bussinessApiDomain='http://192.168.0.38:8701/api/v1/';
+      // app.localTest=true;
+      // app.domaintest='http://192.168.0.38:8701/api/v1/';
+      // app.bussinessApiDomain='http://192.168.0.38:8701/api/v1/';
+      
     } else {
       console.log("生产环境");
       app.localTest = false;
@@ -213,6 +214,16 @@ export default Vue.extend({
   font-family: "DIN";
   src: url("~@/common/DIN/DINAlternateBold.ttf");
 }
+@font-face {
+  font-family: "LT";
+  src: url("~@/common/DIN/lanting.TTF");
+}
+
+@font-face {
+  font-family: "ali-Light";
+  src: url("~@/common/ALI/Alibaba-PuHuiTi-Light.ttf");
+}
+
 // #endif
 .content {
   display: flex;

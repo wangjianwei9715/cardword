@@ -39,35 +39,36 @@
 			<view class="banner-content">
 				
 				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff"> 
-					<swiper-item v-for="(item,index) in topAddList" :key="index">
-						<image class="swiper-image" :src="item.pic" mode="aspectFit" @click="onClickTopJumpUrl(item.url)"></image>
+					<swiper-item v-for="(item,index) in topAddList" :key="index" @click="onClickTopAdd">
+						<image class="swiper-image" :src="item.pic" mode="aspectFits" @click="onClickTopJumpUrl(item.url)"></image>
 					</swiper-item>
 					
 				</swiper>
 			</view>
-			<view class="tab-type">
-				<view class="tab-index" v-for="(item,index) in tabList" :key="index" @click="onClickJumpUrl(item.url)">
-					<view class="tab-img-content"><image :class="'tabimg'+index" :src="item.img" mode=""></image></view>
-					<view class="tabtext">{{item.text}}</view>
-				</view>
-			</view>
+			
 			<view class="tab-good-content">
-				<view class="tab-good-inedx" v-for="item in noticeList" :key="item.id" @click="onClickNotice(item.target)">
-					<view class="tab-good-title">{{item.title}}</view>
-					<view class="tab-good-bottom">
-						<image class="tab-good-img" :src="item.img" mode="aspectFill"></image>
-						<view class="tab-good-desc">
-							<view class="tab-good-name">{{item.name}}</view>
-							<view class="tab-good-btn" v-if="item.id==2">去围观</view>
-							<view class="tab-price-content" v-else-if="item.price!=0">
-								¥<text class="tab-price">{{item.price}}</text>
+				<view class="tab-type">
+					<view class="tab-index" v-for="(item,index) in tabList" :key="index" @click="onClickJumpUrl(item)">
+						<view class="tab-img-content"><image class="tabimg" :src="item.img" mode=""></image></view>
+						<view class="tabtext">{{item.text}}</view>
+					</view>
+				</view>
+				
+				<view class="tab-act-content">
+					<view class="tab-act-title">活动专区</view>
+					<scroll-view class="goods-card-content-scroll" :scroll-x="true">
+						<view class="tab-good-inedx" v-show="item.img!=''" v-for="(item,index) in noticeList" :key="index" @click="onClickNotice(item.target.goodCode)">
+							<image class="tab-good-index-img" :src="decodeURIComponent(item.pic)" mode="aspectFill"></image>
+							<view class="tab-good-index-bottom">
+								<view class="tab-good-index-price">￥{{item.price}}</view>
+								<view class="tab-good-index-tip">{{item.name}}</view>
 							</view>
 						</view>
-					</view>
+					</scroll-view>
 				</view>
 			</view>
 		</view>
-		<view class="tabs-content">
+		<view class="tabc-content">
 			<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
 		</view>
 		<view class="goodslist-index">
@@ -88,34 +89,20 @@
 		];
 		
 		tabList = [
-			{img:'../../static/index/tab0.png',text:'篮球',url:'/pages/goods/goods_find_list?classType=1'},
-			{img:'../../static/index/tab1.png',text:'足球',url:'/pages/goods/goods_find_list?classType=2'},
-			{img:'../../static/index/tab2.png',text:'其它',url:'/pages/goods/goods_find_list?classType=0'},
-			{img:'../../static/index/tab3.png',text:'ALL',url:'/pages/goods/goods_find_list?classType=100'},
+			{img:'../../static/index/tab0.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
+			{img:'../../static/index/tab1.png',text:'资讯',url:''},
+			{img:'../../static/index/tab2.png',text:'查价',url:'/pages/index/ref'},
+			{img:'../../static/index/tab3.png',text:'积分商城',url:''},
 		];
-		noticeList = {
-			daily:{
-				id:1,
-				title:'每日精选',
-				img:'',
-				name:'',
-				price:0,
-				target:{}
-			},
-			broadCast:{
-				id:2,
-				title:'',
-				img:'',
-				name:'',
-				target:{}
-			}
-		};
+		noticeList = [
+		
+		];
 		goodTab = [
 			{id:1,name:'推荐'},
+			{id:4,name:'高端'},
 			{id:2,name:'即将拼成'},
 			{id:3,name:'新品'},
-			{id:4,name:'高端'},
-			{id:5,name:'优惠'}
+			{id:5,name:'优惠'},
 		];
 		goodTabCheck = 1;
 		goodsList:any = [];
@@ -132,6 +119,9 @@
 		pagescroll = false;
 		postGoodProgressIn:any;
 		progressList:any = [];
+		networkStatus:any;
+		getLuanchFnc:any;
+		onNetWorkFunc:any;
 		onLoad(query:any) {
 			// uni.$emit('reLogin')
 			if (app.update.apkNeedUpdate) {
@@ -141,19 +131,72 @@
 			if(query.id){
 				app.platform.goWeChatLive(query.id)
 			}
+			if(query.paydata){
+				// #ifdef MP-WEIXIN
+				let paydata = query.paydata
+				if(app.token.accessToken == ''){
+					app.platform.wechatLogin();
+				}
+				app.payment.paymentMini(JSON.parse(decodeURIComponent(paydata)))
+				// #endif
+			}
 			let listeners = ['BackLogin']
 			this.register(listeners);
-			setTimeout(()=>{
-				this.initEvent()
-			},500)
+			uni.showToast({
+				title:'正在加载',
+				icon:'none',
+				duration:1000
+			})
+			this.getLuanchApp()
+			// #ifdef MP-WEIXIN
+			app.platform.wechatLogin();
+			// #endif
 		}
 		onShow(){
-			if(this.progressList!=''){
-				this.getGoodProgress(this.progressList)
-			}
+			setTimeout(()=>{
+				this.currentPage = 1;
+				this.noMoreData = false;
+				this.initEvent()
+				if(this.progressList!=''){
+					this.getGoodProgress(this.progressList)
+				}
+			},1000)
+			uni.getNetworkType({
+				success: (res)=> {
+					if(res.networkType=='none'){
+
+						uni.showModal({
+							title: '提示',
+							content: '当前无网络服务，请开启网络',
+							success: function (res) {
+								if (res.confirm) {
+									console.log('用户点击确定');
+								} else if (res.cancel) {
+									console.log('用户点击取消');
+								}
+							}
+						});
+					}
+				}
+			});
+			this.networkStatusChange()
 		}
 		onHide(){
 			clearInterval(this.postGoodProgressIn);
+			clearInterval(this.getLuanchFnc);
+			uni.offNetworkStatusChange((res)=>{
+				console.log('onNetworkStatusChange=',res)
+				if(res.isConnected){
+					uni.showLoading({
+						title: '加载中'
+					});
+					app.platform.appLuanch(false);
+					setTimeout(()=>{
+						this.initEvent();
+						uni.hideLoading();
+					},1000)
+				}
+			})
 		}
 		onPageScroll(e:any){
 			this.pagescroll = !this.pagescroll
@@ -172,26 +215,36 @@
 		onReachBottom() {
 		    this.reqNewData() 
 		}
-		
+		// 监听网络
+		networkStatusChange(){
+			// #ifdef APP-PLUS
+			this.onNetWorkFunc= uni.onNetworkStatusChange((res)=>{
+				console.log('onNetworkStatusChange=',res)
+				if(res.isConnected&&app.service_url==''){
+					uni.showLoading({
+						title: '加载中'
+					});
+					app.platform.appLuanch(false);
+					setTimeout(()=>{
+						this.initEvent();
+						uni.hideLoading();
+					},1000)
+				}
+			})
+			// #endif
+		}
 		initEvent(){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
-				if(data.daily){
-					this.noticeList.daily.img = this.getPic(data.daily.pic)
-					this.noticeList.daily.name = data.daily.name
-					this.noticeList.daily.price = data.daily.price
-					this.noticeList.daily.price = data.daily.target
-				}
-				if(data.broadCast){
-					this.noticeList.broadCast.title = data.broadCast[0].title
-					this.noticeList.broadCast.img = this.getPic(decodeURIComponent(data.broadCast[0].pic))
-					this.noticeList.broadCast.name = data.broadCast[0].name
-					this.noticeList.broadCast.target = data.broadCast[0].target
-				}
-				
+				this.noticeList = data.activity
 				this.reqNewData()
 			})
-			
+			// #ifdef MP-WEIXIN
+			if(app.token.accessToken == ''){
+				app.platform.wechatLogin();
+				return;
+			}
+			// #endif
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
 			});
@@ -220,9 +273,30 @@
 					return;
 				}
 				app.http.Post('good/progress/list',{list:val},(res:any)=>{
+					console.log('INDEX progress===',res)
 					this.setNewProgress(res.list)
 				})
 			},10)
+		}
+		getLuanchApp(){
+			let loginToken = uni.getStorageSync("token");
+			this.getLuanchFnc = this.scheduler(()=>{
+				uni.showLoading({
+					title:'加载中'
+				})
+				console.log('app.service_url=',app.service_url)
+				if(app.service_url==''||app.dataApiDomain==''){
+					uni.removeStorageSync("launchConfig");
+					console.log('重新开始luanch')
+					app.platform.appLuanch(loginToken,()=>{
+						console.log('launchCb')
+						this.initEvent()
+					})
+				}else{
+					uni.hideLoading()
+					clearInterval(this.getLuanchFnc);
+				}
+			},1)
 		}
 		setNewProgress(list:any){
 			for(let i in list){
@@ -270,14 +344,14 @@
 		}
 		Logout(res:any){
 		}
-		onClickNotice(target:any){
-			if(target.goodCode!=''){
-				this.onClickJumpDetails(target.goodCode)
-			}else if(target.page!=''){
-				this.onClickTopJumpUrl(target.page)
-			}else if(target.url){
-				app.platform.goWeChatLive(target.url)
-			}
+		onClickNotice(code:any){
+			this.onClickJumpDetails(code)
+		}
+		onClickTopAdd(){
+			uni.showToast({
+				title:'活动升级中',
+				icon:'none'
+			})
 		}
 		onClickSearch(){
 			// 搜索
@@ -286,14 +360,33 @@
 			})
 		}
 		onClickTopJumpUrl(url:any){
-			uni.navigateTo({
-				url: url
-			})
+			// uni.navigateTo({
+			// 	url: url
+			// })
 		}
-		onClickJumpUrl(url:string){
-			uni.navigateTo({
-				url: url
-			})
+		onClickJumpUrl(item:any){
+			if(item.text=='拼团'){
+				uni.navigateTo({
+					url: item.url
+				})
+			}else if(item.text=='积分商城'){
+				uni.showToast({
+					title:'商城维护中',
+					icon:'none'
+				})
+				return;
+			}else if(item.text=='资讯'){
+				uni.showToast({
+					title:'资讯升级中',
+					icon:'none'
+				})
+				return;
+			}else{
+				uni.switchTab({
+					url:item.url
+				})
+			}
+			
 		}
 		// 跳转商品详情
 		onClickJumpDetails(id:any){
@@ -349,7 +442,7 @@
 	$font-28:28rpx;
 	$font-32:32rpx;
 	page{
-		background:#F6F7F8
+		background:#F2F2F2
 	}
 	.content{
 		width: 100%;
@@ -383,15 +476,16 @@
 	}
 	.tab-header{
 		width: 750rpx;
-		height:104rpx;
+		height:84rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding:0 20rpx;
+		padding:20rpx 20rpx 0 20rpx;
 		z-index: 10;
 		align-items: center;
 	}
 	.banner-content{
-		width: 100%;
+		width: 750rpx;
+		height:190rpx;
 		margin:0 auto;
 		border-radius: 10rpx;
 		box-sizing: border-box;
@@ -400,27 +494,38 @@
 		padding:0 20rpx;
 	}
 	.swiper{
-		width: 100%;
-		height:180rpx;
+		width: 710rpx;
+		height:190rpx;
 		box-sizing: border-box;
-		border-radius: 4rpx;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
 	}
 	.swiper-image{
 		width: 710rpx;
-		height:180rpx;
+		height:190rpx;
 		box-sizing: border-box;
-		border-radius: 4srpx;
+		border-radius: 20rpx;
+		
 	}
+	.tab-good-content{
+		width: 100%;
+		box-sizing: border-box;
+		padding:0 19rpx;
+		background: linear-gradient(0deg, #F2F2F2, #FFFFFF 80%, #FFFFFF);
+	}
+
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:40rpx 60rpx 32rpx 60rpx;
+		padding:20rpx 36rpx 32rpx 36rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 	.tab-index{
-		height:110rpx;
+		width: 100rpx;
+		height:140rpx;
 		display: flex;
 		align-items: flex-start;
 		position: relative;
@@ -429,26 +534,14 @@
 	}
 	.tab-img-content{
 		display: flex;
-		height:72rpx;
+		width: 100rpx;
+		height:100rpx;
 		align-items: flex-start;
 
 	}
-	.tabimg0{
-		width: 58rpx;
-		height:62rpx;
-	}
-	.tabimg1{
-		width: 58rpx;
-		height:62rpx;
-	}
-	.tabimg2{
-		width: 68rpx;
-		height:72rpx;
-	}
-	.tabimg3{
-		width: 54rpx;
-		height:54rpx;
-		margin-top: 6rpx;
+	.tabimg{
+		width: 100rpx;
+		height:100rpx;
 	}
 	.tabtext{
 		width: 100%;
@@ -459,21 +552,61 @@
 		color: #14151A;
 		text-align: center;
 	}
-	.tab-good-content{
+	
+	.tab-act-content{
 		width: 100%;
-		height:174rpx;
+		padding:0 20rpx 0 24rpx;
+		padding-bottom: 20rpx;
 		box-sizing: border-box;
-		padding:0 24rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		border-radius: 20rpx;
+		background:#fff;
+		padding-top: 20rpx;
+	}
+	.tab-act-title{
+		width: 100%;
+		box-sizing: border-box;
+		font-size: 30rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 600;
+		color: #34363A;
+		margin-bottom: 20rpx;
 	}
 	.tab-good-inedx{
-		width: 340rpx;
-		border-radius: 4rpx;
-		background:#F6F6F7;
+		width:170rpx;
+		height:240rpx;
 		box-sizing: border-box;
-		padding:16rpx 24rpx;
+		display: inline-block;
+		margin-right: 20rpx;
+	}
+	.tab-good-index-img{
+		width: 170rpx;
+		height:170rpx;
+		border-radius: 10rpx;
+	}
+	.tab-good-index-bottom{
+		width: 170rpx;
+		height:50rpx;
+		display: flex;
+		align-items: center;
+		white-space:nowrap;
+		overflow:hidden;
+		margin-top: -10rpx;
+		text-overflow:ellipsis;
+		margin-top: 10rpx;
+
+	}
+	.tab-good-index-price{
+		font-size: 32rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 0;
+		color: #14151A;
+	}
+	.tab-good-index-tip{
+		font-size: 21rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #ABABBB;
+		margin-left: 8rpx;
 	}
 	.tab-good-title{
 		width: 100%;
@@ -535,9 +668,9 @@
 	.tab-price{
 		font-size: $font-32;
 	}
-	.tabs-content{
+	.tabc-content{
 		width: 100%;
-		background:#fff;
+		background:#F2F2F2;
 	}
 	.goodslist-index{
 		width: 100%;
@@ -640,5 +773,11 @@
 		color: #292929;
 		line-height: 88rpx;
 	}
-
+	.goods-card-content-scroll{
+		width: 100%;
+		height:240rpx;
+		display: flex;
+		white-space: nowrap;
+		overflow: auto;
+	}
 </style>

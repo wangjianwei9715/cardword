@@ -3,11 +3,11 @@
 		<view class="orderlist-index" v-for="item in orderList" :key="item.code" >
 			<view class="orderlist-index-header">
 				<view class="header-left">
-					<image class="seller-image" :src="item.seller.avatar" mode="aspectFill"></image>
+					<image class="seller-image" :src="decodeURIComponent(item.seller.avatar)" mode="aspectFill"></image>
 					<view class="seller-name">{{item.seller.name}}</view>
 				</view>
 				<view class="header-right">
-					<view :class="['header-right-index','state'+item.state]">{{item.stateName}}</view>
+					<view :class="['header-right-index','state']">{{item.stateName}}</view>
 					<view v-if="item.state==0" class="header-right-count">{{intervalList[item.code]?intervalList[item.code].coun_down:''}}</view>
 				</view>
 			</view>
@@ -15,17 +15,16 @@
 				<image class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic))" mode="aspectFill"></image>
 				<view class="goods-content">
 					<view class="title">{{item.good.title}}</view>
+					<view class="state">{{item.good.stateName}}</view>
 					<view class="desc">
-						<view class="price">￥{{item.price}}</view>
-						<view class="total-num">共{{item.num}}件</view>
+						<view class="price">￥{{item.price}}<text class="total-num">共{{item.num}}件</text></view>
+						<view ></view>
 					</view>
 				</view>
 			</view>
 			<view class="orderlist-index-bottom">
-				<view class="price">
-					合计：<view class="price-index">￥<text class="price-num">{{item.price}}</text></view>
-				</view>
-				<view class="operate" v-show="item.operate" >
+				
+				<view class="operate" v-if="item.operate" >
 					<view :class="['btn','btn-'+btnitem.cmd]" @click="onClickOperate(item,btnitem.cmd)" v-for="btnitem in item.operate" :key="btnitem.cmd">{{btnitem.name}}</view>
 				</view>
 			</view>
@@ -105,7 +104,7 @@
 	.orderlist{
 		&-index{
 			width: 710rpx;
-			border-radius: 4rpx;
+			border-radius: 20rpx;
 			background:#fff;
 			box-sizing: border-box;
 			margin-bottom: 20rpx;
@@ -156,25 +155,7 @@
 						color: #FF4349;
 						margin-left: 14rpx;
 					}
-					.state1{
-						color: #FF4349;
-					}
-					.state2{
-						color: #FF9748;
-					}
-					.state10{
-						color: #B3B3B3;
-					}
-					.state3{
-						color: #EBBF7C;
-					}
-					.state4{
-						color: #EBBF7C;						
-					}
-					.state5{
-						color: #14151B;
-					}
-					.state-1{
+					.state{
 						color: #14151B;	
 					}
 				}
@@ -189,21 +170,37 @@
 				.goods-image{
 					width: 160rpx;
 					height:160rpx;
-					border-radius: 4rprx;
+					border-radius: 15rpx;
 					margin-right: 24rpx;
 				}
 				.goods-content{
 					width: 486rpx;
 					height:160rpx;
 					box-sizing: border-box;
-					padding:12rpx 0;
+					padding:0;
 					.title{
 						width: 100%;
+						height:80rpx;
 						font-size: 28rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
 						color: #14151A;
-						margin-bottom: 20rpx;
+						margin-bottom: 0;
+						overflow: hidden;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 2;
+						-ms-text-overflow: ellipsis;
+						text-overflow: ellipsis;
+					}
+					.state{
+						width: 100%;
+						height:40rpx;
+						margin-bottom: 0;
+						font-size: 24rpx;
+						font-family: PingFangSC-Regular, PingFang SC;
+						font-weight: 400;
+						color: #FF9748
 					}
 					.desc{
 						width: 100%;
@@ -215,7 +212,7 @@
 						.price{
 							height:40rpx;
 							line-height: 40rpx;
-							font-size: 24rpx;
+							font-size: 34rpx;
 							font-family: DINAlternate-Bold, DINAlternate;
 							font-weight: bold;
 							color: #14151A;
@@ -227,6 +224,7 @@
 							font-family: PingFangSC-Regular, PingFang SC;
 							font-weight: 400;
 							color: #AAAABB;
+							margin-left: 10rpx;
 						}
 					}
 				}
@@ -234,9 +232,7 @@
 			&-bottom{
 				width: 100%;
 				box-sizing: border-box;
-				margin-top: 20rpx;
 				padding:20rpx 0 20rpx 20rpx;
-				border-top: 1px solid #F1F1F4;
 				.price{
 					width: 100%;
 					height:40rpx;
@@ -268,7 +264,6 @@
 					display: flex;
 					align-items: center;
 					justify-content: flex-end;
-					margin-top: 20rpx;
 					.btn{
 						width: 148rpx;
 						height:60rpx;

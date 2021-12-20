@@ -10,14 +10,14 @@
 				</view>
 			</view>
 			<view class="header-tab">
-				<tabc :tabs="orderTab" :tabsCheck="cardTabCheck" @tabsClick="onClickListTabs"></tabc>
+				<tabc :tabc="orderTab" :tabsCheck="cardTabCheck" @tabsClick="onClickListTabs"></tabc>
 			</view>
 		</view>
 
 		<view class="order-list">
 			<statusbar/>
 			<cardNolist :cardNoData="cardNoData" />
-			<empty v-show="cardNoData.length==0"/>
+			<empty v-if="cardNoData.length==0"/>
 		</view>
 
 	</view>
@@ -104,7 +104,7 @@
 
 <style lang="scss">
 	page{
-		background:#F6F7F8;
+		background:#F2F2F2;
 	}
 	.content{
 		width: 100%;
@@ -138,6 +138,7 @@
 		display: flex;
 		align-items: center;
 		position: relative;
+		border-radius: 29rpx;
 	}
 	.header-back{
 		width: 80rpx;

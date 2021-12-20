@@ -12,7 +12,19 @@
 				</view>
 				<view v-else class="name">{{ item.name }}</view>
 
-				<view class="right">
+				<view v-if="item.id==4" class="right">
+					<picker @change="bindPickerChange" :value="sexIndex" :range="sexArray">
+                        <view >{{sexIndex>=0?sexArray[sexIndex]:'请选择'}}</view>
+                    </picker>
+					<view class="icon-right"></view>
+				</view>
+				<view v-else-if="item.id==5" class="right">
+					<picker  mode="date" @change="bindDateChange" :value="dateValue" >
+                        <view>{{dateValue==''?'请选择':dateValue}}</view>
+                    </picker>
+					<view class="icon-right"></view>
+				</view>
+				<view v-else class="right">
 					{{ item.desc }}
 					<view class="icon-right"></view>
 				</view>
@@ -37,9 +49,12 @@
 			birth:{ id: 5, name: "生日",desc:''},
 			userId:{ id: 6, name: "ID", desc:''}
 		};
+		sexArray:any = ['男','女'];
+		sexIndex:any = -1;
 		ossutils = ossUtils.getInstance();
 		changeAvatar = '';
 		changeAvatarOne = false;
+		dateValue = '';
 		onLoad(query:any) {
 			if(query.data){
 				let data;
@@ -73,6 +88,13 @@
 				}
 			});
 		}
+		bindPickerChange(val:any){
+			this.sexIndex = val.detail.value
+			
+		}
+		bindDateChange(val:any){
+			this.dateValue = val.detail.value
+		}
 		onClickEdit(id:any){
 			if(id==1){
 				this.onClickChangeAvatar()
@@ -83,6 +105,7 @@
 			if(id==3){
 				uni.navigateTo({url:'/pages/userinfo/setting_sign?sign='+this.settingTab.sign.desc});
 			}
+			
 
 		}
 		async onClickAddImg(src:any){
@@ -140,6 +163,7 @@
 				if(cb) cb(res)
  			})
 		}
+		
 	}
 </script>
 

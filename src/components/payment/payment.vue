@@ -24,7 +24,7 @@
 					<view :class="checkPay==2?'payment-checked':'payment-check'"></view>
 				</view>
 			</view>
-			<view class="payment-btn" @click="onClickPay">立即支付{{countStr}}</view>
+			<view class="payment-btn" @click="onClickPay">立即支付{{countTimeCopy==0?'':countStr}}</view>
 		</view>
 	</view>
 </template>
