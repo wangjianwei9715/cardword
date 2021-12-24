@@ -76,9 +76,9 @@
 			width: 500rpx;
 			transition: all 0.2s linear;
 			box-sizing: border-box;
-			display:flex;
-			align-items: flex-start;
-			flex-wrap: wrap;
+			// display:flex;
+			// align-items: flex-start;
+			// flex-wrap: wrap;
 		}
 		&-index{
 			height: 56rpx;
@@ -86,7 +86,7 @@
 			border-radius: 30rpx;
 			box-sizing: border-box;
 			padding:0 8rpx;
-			display: flex;
+			display: inline-flex;
 			align-items: center;
 			margin-bottom: 8rpx;
 		}

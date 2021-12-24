@@ -11,14 +11,18 @@
 					<view class="goodslist-price-content">
 						¥<text class="goodslist-price">{{item.price}}</text>
 					</view>
-					<view class="goodslist-bottom-right">
+					<view v-if="mini"></view>
+					<view v-else-if="!presell" class="goodslist-bottom-right" >
 						<view :id="item.goodCode" class="goodslist-plan-desc">余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
 						<view class="goodslist-plan-content">
 							<view class="goodslist-plan-now" :style="'width:'+getPlan(item.lockNum,item.currentNum,item.totalNum)+'%'"></view>
 							<view class="goodslist-plan-num">
-								{{getPlan(item.lockNum,item.currentNum,item.totalNum)}}<text style="font-weight:0;font-size:18rpx">%</text>
+								{{getPlan(item.lockNum,item.currentNum,item.totalNum)}}<text class="plan-baifen">%</text>
 							</view>
 						</view>
+					</view>
+					<view v-else class="goodslist-bottom-right-time">
+						<view class="goodslist-plan-desc-time">{{dateFormatMSHMS(item.startAt)}}开售</view>
 					</view>
 					
 				</view>
@@ -31,6 +35,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+    import { dateFormatMSHMS } from "@/tools/util"
 	import {
 		getGoodsImg
 	} from "../../tools/util";
@@ -43,7 +48,11 @@
 		pageIndex:any;
 		@Prop({default:false})
 		pagescroll:any;
-
+		@Prop({default:false})
+		presell:any;
+		@Prop({default:false})
+		mini:any;
+		dateFormatMSHMS = dateFormatMSHMS
 		getGoodsImg = getGoodsImg;
 		discountList:any = [];
 		screenHeight = uni.getSystemInfoSync().windowHeight
@@ -140,7 +149,7 @@
 		}
 		&-title{
 			width: 100%;
-			max-height:80rpx;
+			max-height:90rpx;
 			font-size: 30rpx;
 			font-family: 'ali-Light';
 			font-weight: 400;
@@ -188,6 +197,17 @@
 			color: #AAAABB;;
 			margin-bottom:10rpx			
 		}
+		&-plan-desc-time{
+			width: 100%;
+			height:20rpx;
+			text-align: right;
+			line-height: 20rpx;
+			font-size:22rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+			color: #AAAAAA;;
+			margin-bottom:10rpx
+		}
 		&-plan-now{
 			height:40rpx;
 			background: #FB4E3E;
@@ -207,6 +227,16 @@
 			flex-wrap: wrap;
 			justify-content: flex-end;
 		}
+		&-bottom-right-time{
+			width:400rpx;
+			display: flex;
+			flex-wrap: wrap;
+			box-sizing: border-box;
+			padding-right: 20rpx;
+			color:#AAAAAA;
+			font-size:30rpx ;
+			justify-content: flex-end;
+		}
 		&-price-content{
 			font-size: 26rpx;
 			font-family:  Microsoft YaHei;
@@ -223,14 +253,20 @@
 			margin-right: 16rpx;
 			height: 34rpx;
 			background: #FFFFFF;
-			border: 2rpx solid #FB4E3E;
-			border-radius: 10rpx;
-			font-size: 18rpx;
+			border: 1rpx solid #FB4E3E;
+			border-radius: 3rpx;
+			font-size: 20rpx;
 			font-family: Microsoft YaHei;
 			font-weight: 400;
 			color: #FB4E3E;
 			padding:0 11rpx;
 			width: fit-content;
+			display: inline-flex;
 		}
+	}
+	.plan-baifen{
+		font-weight:0;
+		font-size:18rpx;
+		font-family:Microsoft YaHei;
 	}
 </style>

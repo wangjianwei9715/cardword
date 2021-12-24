@@ -27,7 +27,7 @@
 		<view class="detail-index-bg">
 			<view class="detail-bg">
 				<view :class="['header-content',{'header-content-end':goodsState!=1}]">
-					<view class="header-price">¥<text>{{goodsData.price}}</text></view>
+					<view class="header-price" :class="goodsState!=1?'price-black':''">¥<text>{{goodsData.price}}</text></view>
 					<view class="header-right" v-if="goodsState==1">
 						<view class="icon-end">距结束</view>
 						<view class="countdown-content">
@@ -38,6 +38,9 @@
 							<view class="countdown-icon">:</view>
 							<view class="countdown-index">{{countSecond}}</view>
 						</view>
+					</view>
+					<view class="header-right-end" v-else>
+						{{goodsState==-1?'等待开售':'已结束'}}
 					</view>
 				</view>
 				<view class="header">
@@ -66,7 +69,7 @@
 						</view> -->
 					</view>
 					<view class="header-bottom">
-						<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id" @click="onClickCardPlay(item.id)">
+						<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id" @click="onClickCardPlay(item)">
 							<view class="header-bottom-index-name">{{item.name}}</view>
 							<view class="header-bottom-index-desc">{{item.desc}}<view v-if="item.id<=2" class="icon-tishi"></view></view>
 						</view>
@@ -122,11 +125,12 @@
 		</view>
 		
 		<!-- 直播可拖动控件 -->
-		<movable-area class="movable-area" v-if="goodsState >3&&goodsData.broadcast">
-			<movable-view class="movable-content" direction="all" x="530rpx" y="1000rpx">
+		<movable-area class="movable-area" v-if="goodsData.broadcast">
+			<movable-view class="movable-content" direction="all" x="530rpx" y="750rpx">
 				<livewicket :liveImg="decodeURIComponent(goodsData.broadcast.pic)" :liveStatus="goodsData.broadcast.name" @live="onClickLive"></livewicket>
 			</movable-view>
 		</movable-area>
+		
 		<!-- 底部吐司 -->
 		<tips :tipsData="buyRecordList" v-if="buyRecordList!=''"></tips>
 		<!-- 底部按钮 -->
@@ -146,6 +150,7 @@
 
 		<cardplay :operationShow="operationCardShow" :operaType="operaType" @operacancel="onClickCardCancel" />
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
+		<!-- <checkTeamPay :teamCheckShow="teamCheckShow" :teamCheckId="teamCheckId" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" /> -->
 	</view>
 </template>
 
@@ -161,7 +166,7 @@
 		defaultAvatar = app.defaultAvatar
 		goodsId = '';
 		goodsImg:any = [];
-		goodsData:{[x:string]:any} = [];
+		goodsData:any = [];
 		countDay:any = '';
 		countHour:any = '';
 		countMinute:any = '';
@@ -201,7 +206,28 @@
 		discountList:any = [];
 		buyRecordList:any = [];
 		onNetWorkFunc:any;
+		// 自选球队相关
+		teamCheckShow:boolean=false;
+		teamCheckId:number = 1;
 		onLoad(query:any) {
+			// #ifdef MP
+			uni.showModal({
+				title: '提示',
+				content: '当前商品已售罄',
+				success: function (res) {
+					if (res.confirm) {
+						uni.switchTab({
+							url: '/pages/index/index'
+						});
+					} else if (res.cancel) {
+						uni.switchTab({
+							url: '/pages/index/index'
+						});
+					}
+				}
+			});
+			// #endif
+			// #ifndef MP
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId)
 			uni.getNetworkType({
@@ -221,6 +247,9 @@
 					}
 				}
 			});
+			setTimeout(()=>{
+				this.getDataIng()
+			},500)
 			this.onNetWorkFunc = uni.onNetworkStatusChange((res)=>{
 				console.log('onNetworkStatusChange=',res)
 				if(res.isConnected){
@@ -229,13 +258,19 @@
 					});
 					setTimeout(()=>{
 						this.getGoodData(this.goodsId)
-						uni.hideLoading();
+						
 					},1000)
 				}
 			})
+			// #endif
 		}
 		onShow(){
-			this.getProgress()
+			// #ifndef MP
+			if(this.goodsData !=''){
+				this.getProgress()
+			}	
+			
+			// #endif
 		}
 		onHide(){
 			uni.offNetworkStatusChange((res)=>{
@@ -254,7 +289,12 @@
 		// 数据详情赋值
 		getGoodData(id:any){
 			setTimeout(()=>{
-				app.http.Get('dataApi/good/'+id,{},(data:any)=>{
+				app.http.Get('dataApi/good/'+id+'/detail',{},(data:any)=>{
+					if(data.good==null||data.good==undefined){
+						this.getDataIng()
+						return;
+					}
+					uni.hideLoading();
 					// 是否收藏
 					this.favorType = data.favorite<=0?false:true;
 					// 数据详情
@@ -265,6 +305,7 @@
 					this.countDown = data.good.leftsec;
 					// 获取优惠标签
 					this.discountList= data.good.discount?data.good.discount:'';
+					console.log(decodeURIComponent(data.good.publisher.avatar))
 					// 获取商品图片
 					this.getGoodsImage(decodeURIComponent(this.goodsData.pic.carousel));
 					this.getCardImage(decodeURIComponent(this.goodsData.pic.feature))
@@ -272,20 +313,40 @@
 					this.getCountDown();
 					// 商品规格、配置、形式、
 					this.getGoodsSpe();
-					let newData = decodeURIComponent(data.good.desc).split('\r');
+					console.log()
+					let newData;
+					if(decodeURIComponent(data.good.desc).indexOf('\n')>-1){
+						newData = decodeURIComponent(data.good.desc).split('\n');
+					}else{
+						newData = decodeURIComponent(data.good.desc).split('\r');
+					}
 					this.goodsDesc = newData;
 					console.log(newData)
 					this.goodsDesc.unshift('【结束时间】：'+dateFormat(data.good.overAt))
 					this.goodsDesc.unshift('【开售时间】：'+dateFormat(data.good.startAt))
 					this.goodsDesc.unshift('【商品编号】：'+data.good.goodCode)
+					app.http.Get('good/'+id+'/buyRecord',{},(res:any)=>{
+						if(res.list){
+							this.buyRecordList = res.list
+						}
+					})
 				})
-				app.http.Get('good/'+id+'/buyRecord',{},(res:any)=>{
-					if(res.list){
-						this.buyRecordList = res.list
-					}
-				})
+				
 			},200)
 			
+		}
+		getDataIng(){
+			if(this.goodsData == ''){
+				uni.showLoading({
+					title: '加载中'
+				});
+				setTimeout(()=>{
+					if(this.goodsData==''){
+						
+						this.getGoodData(this.goodsId)
+					}
+				},3000)
+			}
 		}
 		getProgress(){
 			app.http.Get('good/'+this.goodsId+'/progress',{},(res:any)=>{
@@ -406,18 +467,8 @@
 				this.operationShow = true
 			}
 		}
-		onClickCardPlay(id:number){
-			if(id<=2){
-				this.operationCardShow = true;
-				this.operaType = id
-			}
-		}
-		onClickCardCancel(){
-			this.operationCardShow = false
-		}
-		onClickShareCancel(){
-			this.operationShow = false
-		}
+		
+		
 		onClcikShareConfirm(id:any){
 			if(id==2){
 				uni.setClipboardData({
@@ -487,6 +538,8 @@
 		}
 		
 		onClickBuy(){
+			// this.teamCheckShow = true
+			// return;
 			// #ifndef MP
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -522,7 +575,38 @@
 		onClickLive(){
 			app.platform.goWeChatLive(this.goodsData.broadcast.roomId)
 		}
-		
+		onClickCardPlay(item:any){
+			
+			// #ifndef MP
+			if(item.id<=2){
+				this.operationCardShow = true;
+				this.operaType = item.id
+			}
+			// #endif
+			// #ifdef MP
+			if(this.goodsSpe[item].id<=2){
+				this.operationCardShow = true;
+				this.operaType = this.goodsSpe[item].id
+			}
+			// #endif
+
+		}
+		onClickCardCancel(){
+			this.operationCardShow = false
+		}
+		onClickShareCancel(){
+			this.operationShow = false
+		}
+		// 自选球队 遮罩点击
+		onClickTeamCheckCancel(){
+			this.teamCheckShow = false
+		}
+		// 自选球队 选择球队
+		onClickTeamCheck(id:any){
+			if(this.teamCheckId==id) return;
+
+			this.teamCheckId = id;
+		}
 	}
 </script>
 	
@@ -637,9 +721,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		border-radius: 20rpx;
 	}
 	.header-content-end{
-		background:url(../../static/goods/new_price.png) no-repeat center;
+		background:#fff;
 		background-size: 100% 100%;
 	}
 	.header-desc-title{
@@ -666,10 +751,23 @@
 		box-sizing: border-box;
 		padding:15rpx 0 12rpx 0;
 	}
+	.header-right-end{
+		width: 240rpx;
+		height:107rpx;
+		box-sizing: border-box;
+		padding:15rpx 20rpx 12rpx 0;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		font-size: 26rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #14151B;
+	}
 	.icon-end{
 		width: 100%;
 		text-align: center;
-		font-size: 22rpx;
+		font-size: 26rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #FFFFFF;
@@ -683,18 +781,19 @@
 		justify-content: center;
 	}
 	.countdown-index{
-		width: 34rpx;
+		width: 40rpx;
 		height:27rpx;
 		text-align: center;
 		line-height: 27rpx;
-		font-size: 20rpx;
+		font-size: 22rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
 		color: $color-F;
-		background:#727377
+		background:#727377;
+		border-radius: 3rpx;
 	}
 	.countdown-icon{
-		font-size: 20rpx;
+		font-size: 22rpx;
 		font-family: PingFangSC-Semibold, PingFang SC;
 		font-weight: 400;
 		color: $color-F;
@@ -878,9 +977,10 @@
 			&-more{
 				height:31rpx;
 				display: flex;
-				border: 1px solid #D7D7DC;
+				border: 1rpx solid #D7D7DC;
 				padding:5rpx 10rpx;
 				align-items: center;
+				border-radius: 3rpx;
 				font-size: 20rpx;
 				font-family: Microsoft YaHei;
 				font-weight: 400;
@@ -909,11 +1009,10 @@
 				height:144rpx;
 				background:#FFF;
 				border-radius: 4rpx;
-				display: inline-block;
 				margin-right: 20rpx;
 				overflow: hidden;
 				border:1px solid #F2F2F2;
-				display: flex;
+				display: inline-flex;
 				align-items: center;
 				justify-content: center;
 				box-sizing: border-box;
@@ -1138,5 +1237,8 @@
 	.goods-desc-image{
 		width: 100%;
 		margin-top: 10rpx;
+	}
+	.price-black{
+		color:#14151B
 	}
 </style>

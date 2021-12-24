@@ -35,20 +35,21 @@
 
 <style lang="scss">
 	.livewicket{
-		width: 200rpx;
-		height: 150rpx;
+		width: 180rpx;
+		height: 130rpx;
 		background: #FFFFFF;
 		border-radius: 16rpx;
-		border: 2rpx solid #F7632F;
+		border: 4rpx solid #FFF;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		overflow: hidden;
 		position: relative;
+		box-shadow: 0px 0px 20rpx 4rpx #f2f2f2;
 		&-img{
-			width: 196rpx;
-			height:146rpx;
+			width: 160rpx;
+			height:110rpx;
 		}
 		&-content{
 			width: 196rpx;

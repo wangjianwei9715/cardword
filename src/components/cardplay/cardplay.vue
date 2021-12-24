@@ -41,10 +41,15 @@
 			},
 			{
 				id:3,
+				title:'随机球队',
+				desc:'系统为玩家推送该商品中可能出现的随机球员。开卡结束后，玩家获得对应球队的所有球星卡。'
+			},
+			{
+				id:4,
 				title:'随机卡包',
 				desc:'系统为玩家推送随机编号。开卡时，会对原盒中的卡包进行编号，玩家获得对应编号卡包中的所有球星卡。'
 			},{
-				id:4,
+				id:5,
 				title:'随机卡盒',
 				desc:'系统为玩家推送随机编号。开卡时，会对原箱中的卡盒进行编号，玩家获得对应编号卡盒中的所有球星卡。'
 			}
@@ -82,7 +87,7 @@
 <style lang="scss">
 	.operation-content{
 		width: 100%;
-		height:764rpx;
+		height:950rpx;
 		position: fixed;
 		left:0;
 		bottom:0;
@@ -90,7 +95,7 @@
 		box-sizing: border-box;
 		transition: all 0.3s linear;
 		-webkit-transition: -webkit-transform 0.3s;
-		transform: translateY(764rpx);
+		transform: translateY(950rpx);
 		z-index:99;
 		background:#fff;
 		padding:40rpx 32rpx;

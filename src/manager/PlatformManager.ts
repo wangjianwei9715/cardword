@@ -327,11 +327,8 @@ export default class PlatformManager {
 						if (uni.getSystemInfoSync().platform === "android") {
 							app.update = UpdateManager.getInstance();
 						}
-						this.getOnlineCfg()
-						// #endif
-
 						let iosVersion = Number(res.app.version.substr(0,1));
-						if (app.platform.systemInfo.platform == 'ios' && iosVersion%2 ==0) {
+						if (uni.getSystemInfoSync().platform == 'ios' && iosVersion%2 ==0) {
 							uni.setTabBarItem({
 								index: 1,
 								text: '直播',
@@ -339,8 +336,12 @@ export default class PlatformManager {
 								iconPath: 'static/index/tabbar_live.png',
 								selectedIconPath: 'static/index/tabbar_live_.png',
 							})
+							app.update = UpdateManager.getInstance();
 							app.iosVersion = iosVersion
 						}
+						// #endif
+
+						
 					});
 					break;
 				} else {
@@ -369,7 +370,6 @@ export default class PlatformManager {
 					} else {
 						app.dataApiDomain = bussinessApiDomain + "/api/v1/";
 					}
-					this.getOnlineCfg()
 				}
 			}
 
@@ -409,7 +409,6 @@ export default class PlatformManager {
 	}
 	getOnlineCfg(): any {
 		// #ifdef APP-PLUS
-
 		if (app.platform.systemInfo.platform != 'ios') {
 			uni.setTabBarItem({
 				index: 1,
@@ -419,7 +418,8 @@ export default class PlatformManager {
 				selectedIconPath: 'static/index/tabbar_live_.png',
 			})
 			return
-		}
+		}	
+		
 		
 		// let onlineParams = {
 		// 	name: "卡世界",

@@ -146,7 +146,7 @@
 				"selectedIconPath": "static/index/tabbar_index_.png",
 				"text": "首页"
 			},
-            // #ifndef MP
+            // #ifdef APP-PLUS
 			{
 				"pagePath": "pages/index/message",
 				"iconPath": "static/index/tabbar_mess.png",
@@ -154,7 +154,7 @@
 				"text": "消息"
 			},
             // #endif
-            // #ifdef MP
+            // #ifndef APP-PLUS
             {
 				"pagePath": "pages/index/live",
 				"iconPath": "static/index/tabbar_live.png",
@@ -292,6 +292,16 @@
                         "navigationBarTextStyle": "black"
                     }
                     
+                },
+                {
+                    "path" : "yiyuan/index",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarTitleText": "一元上组",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "navigationBarTextStyle": "black"
+                    }
+                    
                 }
                 
             ]
@@ -303,7 +313,14 @@
             {
                 "path": "merchant_shops",
                 "style": {
+                    //  #ifndef MP-WEIXIN
                     "navigationStyle": "custom",
+                    //  #endif
+                    //  #ifdef MP-WEIXIN
+                    "navigationBarTitleText": "商家",
+                    "navigationBarBackgroundColor": "#ffffff",
+                    "navigationBarTextStyle": "black",
+                    //  #endif
                     "enablePullDownRefresh": false
                 }
     

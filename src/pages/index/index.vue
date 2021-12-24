@@ -45,7 +45,7 @@
 					
 				</swiper>
 			</view>
-			
+			<!-- #ifndef MP  -->
 			<view class="tab-good-content">
 				<view class="tab-type">
 					<view class="tab-index" v-for="(item,index) in tabList" :key="index" @click="onClickJumpUrl(item)">
@@ -67,13 +67,23 @@
 					</scroll-view>
 				</view>
 			</view>
+			<!-- #endif -->
 		</view>
+		<!-- #ifndef MP  -->
 		<view class="tabc-content">
 			<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
 		</view>
+		
 		<view class="goodslist-index">
 			<goodslist  :goodsList="goodsList" :pageIndex="currentPage" @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails"/>
 		</view>
+		<!-- #endif -->
+
+		<!-- #ifdef MP -->
+		<view class="goodslist-index">
+			<goodslist  :goodsList="goodsMiniList" :pageIndex="currentPage"  @send="onClickMiniGood" :mini="true"/>
+		</view>
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -85,9 +95,23 @@
 	export default class index extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
 		topAddList:any = [
-			{pic:'../../static/index/banner2.jpg',url:'/pages/act/free/index'}
+			{pic:'../../static/index/banner1.jpg',url:'/pages/act/yiyuan/index'}
 		];
-		
+		goodsMiniList = [
+			{
+				currentNum:0,
+				discount: "",
+				goodCode: "GT4228482",
+				lockNum: 0,
+				overAt: 0,
+				pic: "../../static/index/mp_mini_good.jpg",
+				price: 99999,
+				startAt: 0,
+				title: "20-21 篮球 Panini National Treasures  Hobby  原箱",
+				totalNum: 1
+
+			}
+		]
 		tabList = [
 			{img:'../../static/index/tab0.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
 			{img:'../../static/index/tab1.png',text:'资讯',url:''},
@@ -137,6 +161,7 @@
 				if(app.token.accessToken == ''){
 					app.platform.wechatLogin();
 				}
+				console.log(JSON.parse(decodeURIComponent(paydata)))
 				app.payment.paymentMini(JSON.parse(decodeURIComponent(paydata)))
 				// #endif
 			}
@@ -153,14 +178,19 @@
 			// #endif
 		}
 		onShow(){
+			// #ifndef MP
 			setTimeout(()=>{
 				this.currentPage = 1;
 				this.noMoreData = false;
 				this.initEvent()
 				if(this.progressList!=''){
-					this.getGoodProgress(this.progressList)
+					// this.getGoodProgress(this.progressList)
 				}
 			},1000)
+			// #endif
+			// #ifdef MP
+			this.topAddList = [{pic:'../../static/index/mp_mini.jpg',url:''}]
+			// #endif
 			uni.getNetworkType({
 				success: (res)=> {
 					if(res.networkType=='none'){
@@ -264,6 +294,12 @@
 				return pic[0]
 			}
 		}
+		onClickMiniGood(){
+			uni.showToast({
+				title:'商品正在筹备中',
+				icon:'none'
+			})
+		}
 		getGoodProgress(val:any){
 			this.progressList = val
 			clearInterval(this.postGoodProgressIn);
@@ -279,6 +315,9 @@
 			},10)
 		}
 		getLuanchApp(){
+			if(app.localTest){
+				return
+			}
 			let loginToken = uni.getStorageSync("token");
 			this.getLuanchFnc = this.scheduler(()=>{
 				uni.showLoading({
@@ -318,6 +357,10 @@
 			this.wgtUpdate = true;
 		}
 		onClickDownload() {
+			if (uni.getSystemInfoSync().platform == 'ios'){
+				plus.runtime.openURL('https://itunes.apple.com/cn/app/卡世界/id1593158816?mt=8')
+				return;
+			}
 			let downloadTask = uni.downloadFile({
 				url: app.update.apkData.pkg_url,
 				success: (downloadResult) => {
@@ -347,22 +390,23 @@
 		onClickNotice(code:any){
 			this.onClickJumpDetails(code)
 		}
-		onClickTopAdd(){
-			uni.showToast({
-				title:'活动升级中',
-				icon:'none'
-			})
-		}
+		
 		onClickSearch(){
 			// 搜索
 			uni.navigateTo({
 				url: '/pages/goods/goods_find'
 			})
 		}
-		onClickTopJumpUrl(url:any){
-			// uni.navigateTo({
-			// 	url: url
+		onClickTopAdd(){
+			// uni.showToast({
+			// 	title:'活动升级中',
+			// 	icon:'none'
 			// })
+		}
+		onClickTopJumpUrl(url:any){
+			uni.navigateTo({
+				url: url
+			})
 		}
 		onClickJumpUrl(item:any){
 			if(item.text=='拼团'){
@@ -371,7 +415,7 @@
 				})
 			}else if(item.text=='积分商城'){
 				uni.showToast({
-					title:'商城维护中',
+					title:'敬请期待',
 					icon:'none'
 				})
 				return;

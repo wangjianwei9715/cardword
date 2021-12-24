@@ -65,7 +65,7 @@
 					<text class="item-name"></text>
 					<view class="heji-money">
 						<text class="heji-text">合计:</text>
-						<text class="heji-money2">¥{{moneyNum*onePrice}}</text>
+						<text class="heji-money2">¥{{keepTwoDecimal(moneyNum*onePrice)}}</text>
 					</view>
 				</view>
 			</view>
@@ -73,14 +73,14 @@
 			<view class="bottom-content">
 				<view class="heji-money-pay">
 					<text class="heji-text" style="color: #FF4349;">合计:</text>
-					<text class="heji-money2" style="color: #FF4349;">¥{{moneyNum*onePrice}}</text>
+					<text class="heji-money2" style="color: #FF4349;">¥{{keepTwoDecimal(moneyNum*onePrice)}}</text>
 				</view>
 				<view class="btn-payment2" @click="onClickToPay()">去支付</view>
 			</view>
 
 		</view>
 
-		<payment :showPayMent="showPayMent" @cancelPay="onClickCancelPay" :payPrice="moneyNum*onePrice" :countTime="countTime" @pay="onClickPayGoods" />
+		<payment :showPayMent="showPayMent" @cancelPay="onClickCancelPay" :payPrice="keepTwoDecimal(moneyNum*onePrice)" :countTime="countTime" @pay="onClickPayGoods" />
 	</view>
 </template>
 
@@ -210,6 +210,15 @@
 			
 			
 			// #endif
+		}
+		keepTwoDecimal(num:any) {
+		 var result = parseFloat(num);
+		 if (isNaN(result)) {
+		 alert('传递参数错误，请检查！');
+		 return false;
+		 }
+		 result = Math.round(num * 100) / 100;
+		 return result;
 		}
 		// 取消支付
 		onClickCancelPay(){

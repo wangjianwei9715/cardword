@@ -1,7 +1,7 @@
 <template>
 	<view class="goodslist-plan-content" :style="'height:'+planHeight+'rpx'">
 		<view class="goodslist-plan-now" :style="'width:'+getPlan()+'%;height:'+planHeight+'rpx'"></view>
-		<view class="goodslist-plan-desc" :style="'left:'+getPlan()+'%'">{{getPlan()+'%'}}</view>
+		<view class="goodslist-plan-desc" :style="'left:'+getPlan()+'%'">{{getPlan()}}<text class="baifenbi">%</text></view>
 	</view>
 </template>
 
@@ -60,6 +60,7 @@
 			font-weight: bold;
 			color: #FFFFFF;
 		}
+		
 		&-plan-now{
 			background: #FB4E3E;
 			border-radius: 12rpx;
@@ -68,5 +69,8 @@
 			top:0;
 			z-index: 1;
 		}
+	}
+	.baifenbi{
+		font-family: Microsoft YaHei;
 	}
 </style>

@@ -29,7 +29,7 @@
 						</view>
 						<!-- 如果是图片 -->
 						<view v-else class="talk" :class="{'self':item.isMy}" style="padding:0 30rpx;">
-							<image class="img" :src="item.picUrl" mode="aspectFit"/>
+							<image @click="onClickPreviewImage(item.picUrl)" class="img" :src="item.picUrl" mode="aspectFit"/>
 						</view>
 						<image v-if="item.isMy" class="avatar" :src="selfAvatar"/>
 					</view>
@@ -140,7 +140,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 			}else if (query.targetUserId) {
 				console.log('targetUserId=',query.targetUserId)
 				this.targetUserId = query.targetUserId
-				app.http.Get('chat/user', {targetUserId:this.targetUserId}, (res: msg.bucketData) => {
+				app.http.Get('chat/kefu', {targetUserId:this.targetUserId}, (res: msg.bucketData) => {
 					this.msgList = res.msglist||[];
 					this.bucketId = res.bucketId;
 					this.targetUserInfo = res.target;
@@ -233,6 +233,14 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 		}
 		onReady() {
 			this.scrollViewHeight()
+		}
+		onClickPreviewImage(pic: any) {
+			let img = [pic];
+			// 预览图片
+			uni.previewImage({
+				current: 1,
+				urls: img,
+			});
 		}
 		registerChat(){
 			let msg = new proto.message.RequestChatOn();

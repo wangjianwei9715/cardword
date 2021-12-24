@@ -111,12 +111,13 @@
 				state:1,
 				pageSize:20
 			}
-			
+			// #ifndef MP
 			app.http.Get('dataApi/search/good',params,(res:any)=>{
 				uni.redirectTo({
 					url: '/pages/goods/goods_find_list?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
 				})
 			})
+			// #endif
 		}
 	}
 </script>

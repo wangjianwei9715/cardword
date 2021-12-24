@@ -63,19 +63,13 @@
 				})
 				return;
 			}
-			// #endif
-
-			// #ifdef MP-WEIXIN
-			if(app.token.accessToken == ''){
-				app.platform.wechatLogin();
-				return;
-			}
-			// #endif
-
 			this.pageIndex=1;
 			this.noMoreData = false
 			this.getMessageList()
 			this.getBucketlist()
+			// #endif
+
+			
 		}
 		//   加载更多数据
 		onReachBottom() {
@@ -170,12 +164,12 @@
 				width: 84rpx;
 				height:84rpx;
 				border-radius: 50%;
-				background:#F6F6F7;
 				display: flex;
 				box-sizing: border-box;
 				align-items: center;
 				justify-content: center;
 				margin-right: 24rpx;
+				overflow: hidden;
 				.icon-zx{
 					width: 42rpx;
 					height:34rpx;
@@ -191,11 +185,11 @@
 				.icon-kf{
 					width: 84rpx;
 					height:84rpx;
-					border-radius: 50%;
+					background:#AAAAAA
 				}
 			}
 			.desc{
-				width: 470rpx;
+				width: 450rpx;
 				height:148rpx;
 				box-sizing: border-box;
 				padding:32rpx 0;

@@ -83,6 +83,7 @@ export default class PayManager {
 	
 	}
 	paymentMini(data: any, callback?: Function) {
+		console.log('miniData = ',data)
 		// #ifdef MP-WEIXIN
 		uni.requestPayment({
 			provider: 'wxpay',

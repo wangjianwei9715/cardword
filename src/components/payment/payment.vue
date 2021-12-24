@@ -43,7 +43,7 @@
 		payPrice!:number;
 		
 		showPopup = false;
-		checkPay = 0;
+		checkPay = 1;
 		countStr = '';
 		countInterval:any;
 		countTimeCopy = 300

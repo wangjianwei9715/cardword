@@ -14,8 +14,8 @@ export default Vue.extend({
     if (process.env.NODE_ENV === "development") {
       console.log("开发环境");
       // app.localTest=true;
-      // app.domaintest='http://192.168.0.38:8701/api/v1/';
-      // app.bussinessApiDomain='http://192.168.0.38:8701/api/v1/';
+      // app.domaintest='http://192.168.0.38:8702/api/v1/';
+      // app.bussinessApiDomain='http://192.168.0.38:8702/api/v1/';
       
     } else {
       console.log("生产环境");
@@ -132,7 +132,7 @@ export default Vue.extend({
         app.platform.appLuanch(loginToken)
       },
     });
-
+    
     plus.push.addEventListener(
       "click",
       (msg: any) => {
@@ -166,8 +166,10 @@ export default Vue.extend({
       },
       false
     );
-    // #endif
 
+    app.platform.getOnlineCfg()
+    // #endif
+    
     // #ifndef APP-PLUS
     app.platform.appLuanch(loginToken)
     // #endif

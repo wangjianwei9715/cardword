@@ -54,7 +54,8 @@ export default class UpdateManager {
       console.log('widgetInfo===',widgetInfo);
       HttpRequest.getIns().Get("app/update", {
         name: widgetInfo.name,
-        version: widgetInfo.version
+        version: widgetInfo.version,
+        os:uni.getSystemInfoSync().platform
       }, (res: any) => {
         let data = res.data
         console.log('AppUpdate-data===',data);

@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<!-- #ifndef MP -->
 		<view class="setting-index" v-if="addressesList.length>0">
 			<view class="setting-view" v-for="item in addressesList" :key="item.id">
 				<view class="left-content" @click="onClickSelect(item)">
@@ -11,6 +12,7 @@
 			</view>
 		</view>
 		<view class="btn-add" @click="onClickAdd">新建地址</view>
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -23,6 +25,7 @@
 		orderSelect = false;
 		addressesList:any=[];
 		onLoad(query:any) {
+			// #ifndef MP
 			if(query.type){
 				this.orderSelect = true;
 			}
@@ -30,7 +33,7 @@
 			this.onEventUI('addressedit',(data)=>{
 				this.initEvent()
 			});
-			
+			// #endif
 		}
 		initEvent(){
 			app.http.Get('me/delivery',{},(res:any)=>{

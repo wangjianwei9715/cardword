@@ -17,7 +17,7 @@
 		<view style="padding-top:168rpx">
 			<statusbar/>
 		</view>
-		<view class="goods-lists">
+		<view class="goods-lists" v-if="goodsList!=''">
 			<goodslist  :goodsList="goodsList" @send="onClickJumpDetails"/>
 		</view>
 	</view>

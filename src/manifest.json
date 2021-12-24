@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "1.7.5",
+    "versionName" : "1.8.8",
     "versionCode" : 100,
     "transformPx" : false,
     "networkTimeout" : {
@@ -63,8 +63,14 @@
                 "privacyDescription" : {
                     "NSPhotoLibraryUsageDescription" : "获取相册照片用于头像修改",
                     "NSPhotoLibraryAddUsageDescription" : "读取相册照片用于头像修改",
-                    "NSLocationWhenInUseUsageDescription" : "",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "用于修改收货地址"
+                    "NSLocationWhenInUseUsageDescription" : "访问地址",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "用于修改收货地址",
+                    "NSCameraUsageDescription" : "拍照获取头像",
+                    "NSMicrophoneUsageDescription" : "获取麦克风语音",
+                    "NSLocationAlwaysUsageDescription" : "访问地址",
+                    "NSLocalNetworkUsageDescription" : "判断当前网络",
+                    "NSUserTrackingUsageDescription" : "获取用户需求",
+                    "NSFaceIDUsageDescription" : ""
                 }
             },
             /* ios打包配置 */

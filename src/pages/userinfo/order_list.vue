@@ -56,7 +56,10 @@
 			}
 		}
 		onShow(){
+			// #ifndef MP
 			this.againReqNewData()
+			// #endif 
+			
 		}
 		onReachBottom(){
 			this.reqNewData()
@@ -246,6 +249,7 @@
 			}else if(type==2){
 				params.channel = 'weixin';
 				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
+					console.log('wechat=',res)
 					if(res.wechat){
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.pay_type,res.wechat)

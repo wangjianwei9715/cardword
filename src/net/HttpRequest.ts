@@ -268,7 +268,7 @@ export default class HttpRequest {
 			p.push(`${key}=${newParams[key]}`);
 		}
 		var strParams = p.join('&');
-
+		
 		this.axiosInstance.get(reqUrl+'?'+strParams).then((response) => {
 			if (response.data&&response.data.code==0) {
 				if (cb) cb(response.data);
@@ -311,8 +311,10 @@ export default class HttpRequest {
 				}
 			}
 			str = str.substring(0,str.lastIndexOf('&'));
+			config.data.rawStr = app.opKey+'_'+str+'_'+msg
 		}else{
 			str = config.url.split('?')[1];
+			config.url+='&rawStr='+str+'_'+msg
 		}
 		console.log(app.opKey)
 		if(type){

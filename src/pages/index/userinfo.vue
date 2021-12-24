@@ -30,13 +30,14 @@
 				<!-- #endif -->
 				<view class="right"></view>
 			</view>
-			
+			<!-- #ifndef  MP-->
 			<view class="header-tab">
 				<view class="tab" v-for="item in headerTab" :key="item.id" @click="onClickTopNavigateto(item)">
 					<view class="num">{{item.num}}</view>
 					<view class="name">{{item.name}}</view>
 				</view>
 			</view>
+			<!-- #endif  -->
 		</view>
 
 		<view class="user-order">
@@ -168,6 +169,15 @@
 					this.countNum = data.toPay.num;
 					this.countTime = data.toPay.leftSec;
 					this.countDownTime()
+				}
+				if(data.familial){
+					uni.setTabBarItem({
+						index: 1,
+						text: '直播',
+						pagePath: '/pages/index/live',
+						iconPath: 'static/index/tabbar_live.png',
+						selectedIconPath: 'static/index/tabbar_live_.png',
+					})
 				}
 				if(cb) cb()
 
@@ -383,7 +393,7 @@
 			width: 100%;
 			height:80rpx;
 			box-sizing: border-box;
-			padding:0 100rpx;
+			padding:0 150rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -413,7 +423,7 @@
 	.user-order{
 		width: 100%;
 		box-sizing: border-box;
-		padding:24rpx 0 0 0;
+		padding:30rpx 0 0 0;
 		border-bottom: 20rpx solid #F2F2F2;
 		.header{
 			width: 100%;
@@ -422,7 +432,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			margin-bottom: 24rpx;
+			margin-bottom: 30rpx;
 			padding:0 32rpx;
 			.title{
 				height:40rpx;
@@ -451,7 +461,7 @@
 			align-items: center;
 			justify-content: space-between;
 			padding: 0 72rpx;
-			margin-bottom: 24rpx;
+			margin-bottom: 30rpx;
 			.tab{
 				width: 80rpx;
 				height:84rpx;
@@ -493,7 +503,7 @@
 					width: 80rpx;
 					height:32rpx;
 					text-align: center;
-					font-size: 22rpx;
+					font-size: 26rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
 					color: #14151A;
@@ -535,7 +545,7 @@
 			justify-content: space-between;
 			border-bottom: 1px solid #F1F1F4;
 			.name{
-				font-size: 24rpx;
+				font-size: 26rpx;
 				font-family: PingFangSC-Semibold, PingFang SC;
 				font-weight: 600;
 				color: #14151A;
