@@ -28,9 +28,9 @@
 		pullDownRefresh = false;
 		goodTab = [
 			{id:0,name:'全部'},
-			{id:5,name:'我的直播'},
-			{id:2,name:'直播中'},
-			{id:1,name:'待直播'},
+			{id:5,name:'我的拆卡'},
+			{id:2,name:'拆卡中'},
+			{id:1,name:'待拆卡'},
 			{id:3,name:'已完成'}
 		];
 		goodTabCheck = 0;

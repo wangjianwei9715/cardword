@@ -6,8 +6,8 @@
 				<view class="header-back" @click="onClickBack"></view>
 				<view class="header-title">我的收藏</view>
 				<view class="header-del">
-					<view v-show="!deling" class="icon-del" @click="deling=true"></view>
-					<view v-show="deling" class="del-text" @click="onClickDelComplete">完成</view>
+					<!-- <view v-show="!deling" class="icon-del" @click="deling=true"></view>
+					<view v-show="deling" class="del-text" @click="onClickDelComplete">完成</view> -->
 				</view>
 			</view>
 			<view class="header-tab">
@@ -17,7 +17,7 @@
 
 		<view class="order-list">
 			<statusbar/>
-			<goodslistcollect :goodsList="goodsList" :delStart="deling" :delList="delList" @send="onClickJumpDetails"  @del="onClickDel"/>
+			<goodslist :goodsList="goodsList" :delStart="deling" :delList="delList" @send="onClickJumpDetails"  @del="onClickDel"/>
 		</view>
 		<empty v-if="goodsList.length==0"/>
 		<view v-show="deling" class="del-bottom">
@@ -68,10 +68,11 @@ import { Component } from "vue-property-decorator";
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
+				if(this.currentPage==1){
+					this.goodsList = []
+				}
 				if(data.list){
 					this.goodsList = this.goodsList.concat(data.list);
-				}else if(this.currentPage==1){
-					this.goodsList = []
 				}
 				this.currentPage++;
 				if(cb) cb()

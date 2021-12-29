@@ -54,7 +54,7 @@
     </view>
     <view class="goods-lists">
       <statusbar />
-      <goodslistebay :goodsList="goodsList" @send="onClickPreviewImage" />
+      <goodslistebay :goodsList="goodsList" @send="onClickPreviewImage" :presell="false" />
     </view>
   </view>
 </template>

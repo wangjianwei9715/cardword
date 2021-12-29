@@ -27,7 +27,7 @@
 		<view class="sort-shadow" v-show="classifyShow" @click="onClickClassifyCancel"></view>
 		<view class="goods-lists">
 			<statusbar/>
-			<goodslist  :goodsList="goodsList"  @send="onClickJumpDetails"/>
+			<goodslist  :goodsList="goodsList"  @send="onClickJumpDetails" :presell="false"/>
 		</view>
 	</view>
 </template>
@@ -42,8 +42,8 @@ import { Component } from "vue-property-decorator";
 		goodTab = [
 			{id:1,name:'在售'},
 			{id:0,name:'即将发售'},
-			{id:3,name:'待直播'},
-			{id:4,name:'直播中'},
+			{id:3,name:'待拆卡'},
+			{id:4,name:'拆卡中'},
 			{id:2,name:'已拼成'}
 		];
 		goodTabCheck = 1;

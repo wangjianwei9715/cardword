@@ -30,7 +30,10 @@
 		<view class="header-banner" >
 			<statusbar/>
 			<view class="tab-header">
-				<searchinput :searchText="'搜索商品、商家'" @clicksearch="onClickSearch"></searchinput>
+				<view class="header-search" @click="onClickSearch">
+					搜索商品、商家
+					<view class="search-icon">搜索</view>
+				</view>
 			</view>
 		</view>
 		
@@ -55,7 +58,7 @@
 				</view>
 				
 				<view class="tab-act-content">
-					<view class="tab-act-title">活动专区</view>
+					<view class="tab-act-title"></view>
 					<scroll-view class="goods-card-content-scroll" :scroll-x="true">
 						<view class="tab-good-inedx" v-show="item.img!=''" v-for="(item,index) in noticeList" :key="index" @click="onClickNotice(item.target.goodCode)">
 							<image class="tab-good-index-img" :src="decodeURIComponent(item.pic)" mode="aspectFill"></image>
@@ -75,13 +78,13 @@
 		</view>
 		
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsList" :pageIndex="currentPage" @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails"/>
+			<goodslist  :goodsList="goodsList" :pageIndex="currentPage" @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
 		<!-- #ifdef MP -->
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsMiniList" :pageIndex="currentPage"  @send="onClickMiniGood" :mini="true"/>
+			<goodslist  :goodsList="goodsMiniList" :pageIndex="currentPage"  @send="onClickMiniGood" :mini="true" :presell="false"/>
 		</view>
 		<!-- #endif -->
 	</view>
@@ -114,15 +117,17 @@
 		]
 		tabList = [
 			{img:'../../static/index/tab0.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
+			// {img:'../../static/index/tab1.png',text:'资讯',url:'/pages/information/list'},
 			{img:'../../static/index/tab1.png',text:'资讯',url:''},
 			{img:'../../static/index/tab2.png',text:'查价',url:'/pages/index/ref'},
-			{img:'../../static/index/tab3.png',text:'积分商城',url:''},
+			{img:'../../static/index/tab3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
 		];
 		noticeList = [
 		
 		];
 		goodTab = [
 			{id:1,name:'推荐'},
+			// {id:11,name:'自选'},
 			{id:4,name:'高端'},
 			{id:2,name:'即将拼成'},
 			{id:3,name:'新品'},
@@ -409,7 +414,7 @@
 			})
 		}
 		onClickJumpUrl(item:any){
-			if(item.text=='拼团'){
+			if(item.text=='拼团' ||item.text=='商家列表'){
 				uni.navigateTo({
 					url: item.url
 				})
@@ -421,7 +426,7 @@
 				return;
 			}else if(item.text=='资讯'){
 				uni.showToast({
-					title:'资讯升级中',
+					title:'敬请期待',
 					icon:'none'
 				})
 				return;
@@ -598,26 +603,25 @@
 	}
 	
 	.tab-act-content{
-		width: 100%;
+		width: 710rpx;
 		padding:0 20rpx 0 24rpx;
 		padding-bottom: 20rpx;
 		box-sizing: border-box;
 		border-radius: 20rpx;
-		background:#fff;
-		padding-top: 20rpx;
+		background: linear-gradient(90deg, #E7F1FB, #E8E4FA);
+		margin:0 auto;
 	}
 	.tab-act-title{
-		width: 100%;
-		box-sizing: border-box;
-		font-size: 30rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 600;
-		color: #34363A;
-		margin-bottom: 20rpx;
+		width: 281rpx;
+		height:44rpx;
+		background:url(../../static/index/act_title.png) no-repeat;
+		background-size: 100% 100%;
+		margin:0 auto;
+		margin-bottom: 15rpx;
 	}
 	.tab-good-inedx{
 		width:170rpx;
-		height:240rpx;
+		height:230rpx;
 		box-sizing: border-box;
 		display: inline-block;
 		margin-right: 20rpx;
@@ -636,14 +640,14 @@
 		overflow:hidden;
 		margin-top: -10rpx;
 		text-overflow:ellipsis;
-		margin-top: 10rpx;
+		margin-top: 2rpx;
 
 	}
 	.tab-good-index-price{
 		font-size: 32rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 0;
-		color: #14151A;
+		color: #FB4E3E
 	}
 	.tab-good-index-tip{
 		font-size: 21rpx;
@@ -819,9 +823,44 @@
 	}
 	.goods-card-content-scroll{
 		width: 100%;
-		height:240rpx;
+		height:250rpx;
 		display: flex;
 		white-space: nowrap;
 		overflow: auto;
+		background:#fff;
+		box-sizing: border-box;
+		padding:15rpx 18rpx 15rpx 19rpx
+	}
+	.header-search{
+		width: 708rpx;
+		height: 62rpx;
+		background: #FFFFFF;
+		border: 2rpx solid #FB4E3E;
+		border-radius: 40rpx;
+		position: relative;
+		font-size: 24rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #ABABBB;
+		line-height: 62rpx;
+		box-sizing: border-box;
+		padding-left: 34rpx;
+		
+	}
+	.search-icon{
+		width: 113rpx;
+		height: 62rpx;
+		background: #FB4E3E;
+		border-radius: 30rpx;
+		position: absolute;
+		right:-1rpx;
+		top:-1rpx;
+		text-align: center;
+		line-height: 62rpx;
+		font-size: 24rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #FFFFFF;
+		box-sizing: border-box;
 	}
 </style>

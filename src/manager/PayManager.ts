@@ -22,6 +22,7 @@ export default class PayManager {
 				provider:'alipay',   //alipay
 				orderInfo: orderInfo, //支付宝订单数据
 				success: function (res:any) {
+					uni.$emit('paySuccess')
 					console.log('success:' + JSON.stringify(res));
 					if(cb) cb()
 				},
@@ -69,6 +70,7 @@ export default class PayManager {
 				provider: 'wxpay',
 				orderInfo: order,
 				success: (res:any)=> {
+					uni.$emit('paySuccess')
 					console.log('success:' + JSON.stringify(res));
 					if (cb) {
 						cb(res);

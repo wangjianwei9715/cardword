@@ -44,7 +44,7 @@
 			},4000);
 		}
 		tipsScroll(){
-			this.marginHeight+= 64
+			this.marginHeight+= 66
 		}
 		setTime(time:any){
 			let newDate:any = new Date;
@@ -65,7 +65,7 @@
 <style lang="scss">
 	.bottom-tips{
 		width: 500rpx;
-		height:56rpx;
+		height:60rpx;
 		position: fixed;
 		box-sizing: border-box;
 		left:32rpx;
@@ -73,7 +73,7 @@
 		z-index: 9;
 		overflow: hidden;
 		&-content{
-			width: 500rpx;
+			width: 300rpx;
 			transition: all 0.2s linear;
 			box-sizing: border-box;
 			// display:flex;
@@ -86,9 +86,9 @@
 			border-radius: 30rpx;
 			box-sizing: border-box;
 			padding:0 8rpx;
-			display: inline-flex;
+			display: flex;
 			align-items: center;
-			margin-bottom: 8rpx;
+			margin-bottom: 10rpx;
 		}
 		&-img{
 			width: 40rpx;

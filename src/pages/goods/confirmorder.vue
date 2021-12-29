@@ -1,596 +1,812 @@
 <template>
-	<view class="content">
-		<view class="header" @click="onClickAddress">
-			<view class="header-left">
-				<view class="icon-address"></view>
-				<view v-if="addressData!=''" class="header-address">
-					<view class="address-desc">{{addressData.district}}{{addressData.detail}}</view>
-					<view class="address-name">{{addressData.name}}<text>{{addressData.phone}}</text></view>
-				</view>
-				<view v-else  class="header-address">
-					<view class="address-tips">请选择收货地址</view>
-				</view>
-			</view>
-			<button class="header-right">&#xe470;</button>
-		</view>
-		<image src="../../static/goods/icon_xinfeng.png" style="width: 748rpx; height: 4rpx;"></image>
+  <view class="content">
+    <view class="header" @click="onClickAddress">
+      <view class="header-left">
+        <view class="icon-address"></view>
+        <view v-if="addressData != ''" class="header-address">
+          <view class="address-desc"
+            >{{ addressData.district }}{{ addressData.detail }}</view
+          >
+          <view class="address-name"
+            >{{ addressData.name }}<text>{{ addressData.phone }}</text></view
+          >
+        </view>
+        <view v-else class="header-address">
+          <view class="address-tips">请选择收货地址</view>
+        </view>
+      </view>
+      <button class="header-right">&#xe470;</button>
+    </view>
+    <image
+      src="../../static/goods/icon_xinfeng.png"
+      style="width: 748rpx; height: 4rpx"
+    ></image>
 
-		<view class="order-detail" v-if="goodsData.pic">
-			<view class="goods-info">
-				<image :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))"
-					style="width: 200rpx; height: 200rpx; padding: 16rpx; margin: 20rpx;"></image>
-				<view class="goods-info2">
-					<text class="goods-info2-title">{{goodsData.title}}</text>
-					<view class="goods-money-info">
-						<text class="goods-money">¥{{onePrice}}</text>
-						<view class="goods-money-right">
-							<view class="goods-money-right-header">
-								{{goodsData.buyLimit&&goodsData.buyLimit.minNumPerOrder>0?'单笔最少购买'+goodsData.buyLimit.minNumPerOrder+'份':''}}
-								{{goodsData.buyLimit&&goodsData.buyLimit.maxNumPerOrder>0?'，最多购买'+goodsData.buyLimit.maxNumPerOrder+'份':''}}
-							</view>
-							<view class="goods-money-add">
-								<view class="img-jian" @click="onClickCutDown()"></view>
-								<input class="money-add" @input="onInputMoney" v-model="moneyNum" type="number" />
-								<view class="img-add" @click="onClickAdd()"></view>
-							</view>
-						</view>
-					</view>
-				</view>
-			</view>
+    <view class="order-detail" v-if="goodsData.pic">
+      <view class="goods-info">
+        <image
+          :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))"
+          style="width: 200rpx; height: 200rpx; padding: 16rpx; margin: 20rpx"
+        ></image>
+        <view class="goods-info2">
+          <text class="goods-info2-title">{{ goodsData.title }}</text>
+          <view class="goods-money-info" v-if="cartData == ''">
+            <text class="goods-money">¥{{ onePrice }}</text>
+            <view class="goods-money-right">
+              <view class="goods-money-right-header">
+                {{
+                  goodsData.buyLimit && goodsData.buyLimit.maxNumPerOrder > 0
+                    ? "限购" + goodsData.buyLimit.maxNumPerOrder + "份"
+                    : ""
+                }}
+              </view>
+              <view class="goods-money-add">
+                <view class="img-jian" @click="onClickCutDown()"></view>
+                <input
+                  class="money-add"
+                  @input="onInputMoney"
+                  v-model="moneyNum"
+                  type="number"
+                />
+                <view class="img-add" @click="onClickAdd()"></view>
+              </view>
+            </view>
+          </view>
+		  <view class="goods-money-info" v-else>
+			  <text class="goods-money">¥{{ cartData.amount }}</text>
+			  <view class="goods-money-right">
+              <view class="goods-money-right-header">
+                
+              </view>
+              <view class="goods-money-add">
+                <view class="goods-money-availa">共{{cartData.available}}件</view>
+              </view>
+            </view>
+		  </view>
+		  
+        </view>
+      </view>
+	  <view style="width: 750rpx; height: 20rpx; background: #f2f2f2" v-if="cartData!=''"></view>
+	  <!-- 自选球队编号 -->
+      <view class="yunfei-info check-team" v-if="cartData!=''">
+	    	<view class="item-name">已选编号</view>
+        <view class="yunfei-item" v-for="(item,index) in cartData.list" :key="item.id">
+          <text class="item-name">{{index+1}}.{{item.name}}</text>
+          <text class="item-name">¥{{ item.price }}</text>
+        </view>
+        
+      </view>
+	  <!--  -->
 
-			<view style="width: 750rpx; height: 20rpx; background: #F2F2F2;"></view>
-			<view class="huo-dong-bg" v-show="goodsData.discount!=''">
-				<text class="item-name">活动</text>
-				<view class="item-youhui-bg" v-for="(item,index) in goodsData.discount" :key="index">
-					{{item.content}}
-				</view>
-			</view>
+      <view style="width: 750rpx; height: 20rpx; background: #f2f2f2" v-if="goodsData.discount "></view>
+      <view class="huo-dong-bg" v-show="goodsData.discount && cartData.length == 0">
+        <text class="item-name">活动</text>
+        <view
+          class="item-youhui-bg"
+          v-for="(item, index) in goodsData.discount"
+          :key="index"
+        >
+          {{ item.content }}
+        </view>
+      </view>
 
-			<view style="width: 750rpx; height: 20rpx; background: #F2F2F2;"></view>
-			<view class="yunfei-info">
-				<view class="yunfei-item">
-					<text class="item-name">商品金额</text>
-					<text class="item-name">¥{{onePrice}}</text>
-				</view>
-				<view class="yunfei-item" v-show="goodsData.price-onePrice>0">
-					<text class="item-name">优惠</text>
-					<text class="item-name">- ¥{{moneyNum*(goodsData.price-onePrice)}}</text>
-				</view>
-				<view class="yunfei-item">
-					<text class="item-name">运费</text>
-					<text class="item-name">包邮</text>
-				</view>
-				<view class="cross-line"></view>
-				<view class="yunfei-item">
-					<text class="item-name"></text>
-					<view class="heji-money">
-						<text class="heji-text">合计:</text>
-						<text class="heji-money2">¥{{keepTwoDecimal(moneyNum*onePrice)}}</text>
-					</view>
-				</view>
-			</view>
+      <view style="width: 750rpx; height: 20rpx; background: #f2f2f2"></view>
+	  <!-- 普通商品金额 -->
+      <view class="yunfei-info" v-if="cartData==''">
+        <view class="yunfei-item">
+          <text class="item-name">商品金额</text>
+          <text class="item-name">¥{{ onePrice }}</text>
+        </view>
+        <view class="yunfei-item" v-show="goodsData.price - onePrice > 0">
+          <text class="item-name">优惠</text>
+          <text class="item-name"
+            >- ¥{{ moneyNum * (goodsData.price - onePrice) }}</text
+          >
+        </view>
+        <view class="yunfei-item">
+          <text class="item-name">运费</text>
+          <text class="item-name">包邮</text>
+        </view>
+        <view class="cross-line"></view>
+        <view class="yunfei-item">
+          <text class="item-name"></text>
+          <view class="heji-money">
+            <text class="heji-text">合计:</text>
+            <text class="heji-money2"
+              >¥{{ keepTwoDecimal(moneyNum * onePrice) }}</text
+            >
+          </view>
+        </view>
+      </view>
+	  <!-- 自选球队金额 -->
+      <view class="yunfei-info" v-if="cartData!=''">
+        <view class="yunfei-item">
+          <text class="item-name">商品金额</text>
+          <text class="item-name">¥{{ cartData.amount }}</text>
+        </view>
+        <view class="yunfei-item">
+          <text class="item-name">运费</text>
+          <text class="item-name">包邮</text>
+        </view>
+        <view class="cross-line"></view>
+        <view class="yunfei-item">
+          <text class="item-name"></text>
+          <view class="heji-money">
+            <text class="heji-text">合计:</text>
+            <text class="heji-money2"
+              >¥{{ cartData.amount }}</text
+            >
+          </view>
+        </view>
+      </view>
+	  <!--  -->
+      <view class="bottom-gm">
+        <view class="bottom-gm-title" @click="gmCheck = !gmCheck">
+          <view class="bottom-gm-gx" :class="{'bottom-gm-check':gmCheck}"></view>
+          购买须知:
+        </view>
+        <view class="bottom-gm-tips">
+          除拼团时限届满未满员外，所购商品因其商品属性及价值的特殊性，不支持退款、退货服务。本次拼团可能存在未中卡情形，请卡迷理性消费
+        </view>
+        <view class="bottom-gm-btn" @click="operationCardShow = true">查看详情<view class="bottom-gm-right"></view></view>
+      </view>
+      <view class="bottom-content">
+        <view class="heji-money-pay">
+          <text class="heji-text-b" style="color: #ff4349">合计:</text>
+          <text class="heji-money2-b" style="color: #ff4349"
+            >¥{{ cartData==''?keepTwoDecimal(moneyNum * onePrice):cartData.amount }}</text
+          >
+        </view>
+        <view class="btn-payment2" @click="onClickToPay()">去支付</view>
+      </view>
+    </view>
 
-			<view class="bottom-content">
-				<view class="heji-money-pay">
-					<text class="heji-text" style="color: #FF4349;">合计:</text>
-					<text class="heji-money2" style="color: #FF4349;">¥{{keepTwoDecimal(moneyNum*onePrice)}}</text>
-				</view>
-				<view class="btn-payment2" @click="onClickToPay()">去支付</view>
-			</view>
 
-		</view>
-
-		<payment :showPayMent="showPayMent" @cancelPay="onClickCancelPay" :payPrice="keepTwoDecimal(moneyNum*onePrice)" :countTime="countTime" @pay="onClickPayGoods" />
-	</view>
+    <cardplay :operationShow="operationCardShow" :operaType="3" @operacancel="onClickCardCancel" />
+    <payment
+      :showPayMent="showPayMent"
+      @cancelPay="onClickCancelPay"
+      :payPrice="cartData==''?keepTwoDecimal(moneyNum * onePrice):cartData.amount"
+      :countTime="countTime"
+      @pay="onClickPayGoods"
+    />
+  </view>
 </template>
 
 <script lang="ts">
-	import { app } from "@/app";
-	import {
-		Component
-	} from "vue-property-decorator";
-	import BaseNode from '../../base/BaseNode.vue';
-	import {
-		getGoodsImg
-	} from "../../tools/util";
-	@Component({})
-	export default class ClassName extends BaseNode {
-		addressData:any = [];
-		getGoodsImg = getGoodsImg;
-		moneyNum = 1;
-		goodsData:{[x:string]:any} = [];
-		youhuiPrice = 0;
-		onePrice = 0;
-		showPayMent = false;
-		countTime = 0;
-		maxNum = 0;
-		onLoad(query: any) {
-			if(query.data){
-				// #ifndef MP 
-				this.goodsData = JSON.parse(query.data)
-				// #endif
-				// #ifdef MP
-				this.goodsData = JSON.parse(decodeURIComponent(query.data))
-				// #endif
-				this.getOnePrice()
-				this.maxNum = this.goodsData.totalNum-(this.goodsData.currentNum+this.goodsData.lockNum)
-			}
-			app.http.Get('me/delivery',{},(res:any)=>{
-				if(res.list){
-					for(let i in res.list){
-						if(res.list[i].default){
-							this.addressData = res.list[i];
-							return;
-						}
-					}
-					if(this.addressData == ''){
-						this.addressData = res.list[0]
-					}
-				}
-			})
-			this.onEventUI('addressSelect',(data)=>{
-				this.addressData = data.data
-			})
+import { app } from "@/app";
+import { Component } from "vue-property-decorator";
+import BaseNode from "../../base/BaseNode.vue";
+import { getGoodsImg } from "../../tools/util";
+@Component({})
+export default class ClassName extends BaseNode {
+  addressData: any = [];
+  getGoodsImg = getGoodsImg;
+  moneyNum = 1;
+  goodsData: { [x: string]: any } = [];
+  youhuiPrice = 0;
+  onePrice = 0;
+  showPayMent = false;
+  countTime = 0;
+  maxNum = 0;
+  cartData:any = [];
+  gmCheck = true;
+  operationCardShow = false;
+  onLoad(query: any) {
+    if (query.data) {
+      // #ifndef MP
+      this.goodsData = JSON.parse(query.data);
+      // #endif
+      // #ifdef MP
+      this.goodsData = JSON.parse(decodeURIComponent(query.data));
+      // #endif
+	  if(query.cart){
+		  this.cartData = JSON.parse(query.cart);
+		  console.log(this.cartData)
+	  }
+      this.getOnePrice();
+      this.maxNum =
+        this.goodsData.totalNum -
+        (this.goodsData.currentNum + this.goodsData.lockNum);
+    }
+    app.http.Get("me/delivery", {}, (res: any) => {
+      if (res.list) {
+        for (let i in res.list) {
+          if (res.list[i].default) {
+            this.addressData = res.list[i];
+            return;
+          }
+        }
+        if (this.addressData == "") {
+          this.addressData = res.list[0];
+        }
+      }
+    });
+    this.onEventUI("addressSelect", (data) => {
+      this.addressData = data.data;
+    });
+  }
+  onInputMoney(event: any) {
+    if (Number(event.detail.value) > this.maxNum) {
+      console.log(this.maxNum);
+      setTimeout(() => {
+        this.moneyNum = this.maxNum;
+      }, 100);
+    }
+    this.getOnePrice();
+  }
+  getOnePrice() {
+    if (this.goodsData.discount) {
+      for (let i in this.goodsData.discount) {
+        if (this.moneyNum >= this.goodsData.discount[i].minNum) {
+          this.onePrice = this.goodsData.discount[i].price;
+        } else {
+          this.onePrice = this.goodsData.price;
+        }
+      }
+    } else {
+      this.onePrice = this.goodsData.price;
+    }
+  }
+  onClickCutDown() {
+    if (this.moneyNum > 1) {
+      this.moneyNum--;
+    }
+    this.getOnePrice();
+  }
+
+  onClickAdd() {
+    if (this.moneyNum >= this.maxNum) {
+      this.moneyNum = this.maxNum;
+    } else {
+      this.moneyNum++;
+    }
+    this.getOnePrice();
+  }
+  onClickAddress() {
+    uni.navigateTo({
+      url: "/pages/userinfo/setting_addresses?type=order",
+    });
+  }
+  onClickToPay() {
+    if (this.addressData == "") {
+      uni.showToast({
+        title: "请先选择地址",
+        icon: "none",
+      });
+      return;
+    }
+    if(!this.gmCheck){
+      uni.showToast({
+        title: "请先确认购买须知",
+        icon: "none",
+      });
+      return;
+    }
+    let params: { [x: string]: any };
+    // #ifdef MP
+    params = {
+      channel: "mini",
+      delivery: this.addressData.id,
+      num: Number(this.moneyNum),
+    };
+    uni.showLoading({
+      title: "加载中",
+    });
+    app.http.Post(
+      "good/topay/" + this.goodsData.goodCode,
+      params,
+      (res: any) => {
+        uni.hideLoading();
+        app.payment.paymentMini(res.wechat, (data: any) => {});
+        uni.redirectTo({
+          url: "/pages/userinfo/order_list",
+        });
+      }
+    );
+
+    // #endif
+    // #ifndef MP
+    this.showPayMent = true;
+
+    // #endif
+  }
+  keepTwoDecimal(num: any) {
+    var result = parseFloat(num);
+    if (isNaN(result)) {
+      alert("传递参数错误，请检查！");
+      return false;
+    }
+    result = Math.round(num * 100) / 100;
+    return result;
+  }
+  // 取消支付
+  onClickCancelPay() {
+    this.showPayMent = false;
+    this.countTime = 0;
+  }
+  onClickPayGoods(type: any) {
+    // 1：支付宝 2：微信
+    if (type == 0) {
+      return;
+    }
+    uni.showLoading({
+      title: "加载中",
+    });
+	let params:any = {
+		channel: "",
+		delivery: this.addressData.id,
+	};
+	let url = "good/topay/" + this.goodsData.goodCode;
+	// 普通支付 || 自选球队
+	if(this.cartData==''){
+		params.num = Number(this.moneyNum)
+	}else{
+		let id = []
+		for(let i in this.cartData.list){
+			id.push(this.cartData.list[i].noId)
 		}
-		onInputMoney(event:any){
-			if(Number(event.detail.value)>this.maxNum){
-				console.log(this.maxNum)
-				setTimeout(()=>{
-					this.moneyNum = this.maxNum;
-				},100)
-			}
-			this.getOnePrice()
-		}
-		getOnePrice(){
-			if(this.goodsData.discount){
-				for(let i in this.goodsData.discount){
-					if(this.moneyNum>= this.goodsData.discount[i].minNum){
-						this.onePrice = this.goodsData.discount[i].price
-					}else{
-						this.onePrice = this.goodsData.price
-					}
-				}
-			}else{
-				this.onePrice = this.goodsData.price
-			}
-			
-		}
-		onClickCutDown(){
-			if(this.moneyNum>1){
-				this.moneyNum--;
-			}
-			this.getOnePrice()
-		}
-		
-		onClickAdd(){
-			if(this.moneyNum>=this.maxNum){
-				this.moneyNum = this.maxNum
-			}else{
-				this.moneyNum++;
-			}
-			this.getOnePrice()
-		}
-		onClickAddress(){
-			uni.navigateTo({
-				url:'/pages/userinfo/setting_addresses?type=order'
-			})
-		}
-		onClickToPay(){
-			if(this.addressData==''){
-				uni.showToast({
-					title:'请先选择地址',
-					icon:'none',
-				})
-				return;
-			}
-			
-			let params:{[x:string]:any}
-			// #ifdef MP
-			params= {
-				channel:'mini',
-				delivery:this.addressData.id,
-				num:Number(this.moneyNum)
-			}
-			uni.showLoading({
-				title: '加载中'
-			});
-			app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
-				uni.hideLoading()
-				app.payment.paymentMini(res.wechat,(data:any)=>{
-					
-				})
-				uni.redirectTo({
-					url:'/pages/userinfo/order_list'
-				})
-			})
-			
-			// #endif
-			// #ifndef MP
-			this.showPayMent = true
-			
-			
-			// #endif
-		}
-		keepTwoDecimal(num:any) {
-		 var result = parseFloat(num);
-		 if (isNaN(result)) {
-		 alert('传递参数错误，请检查！');
-		 return false;
-		 }
-		 result = Math.round(num * 100) / 100;
-		 return result;
-		}
-		// 取消支付
-		onClickCancelPay(){
-			this.showPayMent = false;
-			this.countTime = 0
-		}
-		onClickPayGoods(type:any){
-			// 1：支付宝 2：微信
-			if(type==0){
-				return;
-			}
-			uni.showLoading({
-				title: '加载中'
-			});
-			let params = {
-				channel:'',
-				delivery:this.addressData.id,
-				num:Number(this.moneyNum)
-			}
-			if(type==1){
-				params.channel = 'alipay';
-				app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
-					console.log('alipay==',res)
-					if(res.alipay.orderInfo!=''){
-						uni.hideLoading()
-						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
-						uni.redirectTo({
-							url:'/pages/userinfo/order_details?code='+res.goodOrderCode
-						})
-					}
-				})
-			}else if(type==2){
-				params.channel = 'weixin';
-				app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
-					if(res.wechat){
-						uni.hideLoading()
-						app.payment.paymentWxpay(res.pay_type,res.wechat,()=>{
-							uni.redirectTo({
-								url:'/pages/userinfo/order_details?code='+res.goodOrderCode
-							})
-						})
-					}
-				})
-				// params= {
-				// 	channel:'mini',
-				// 	delivery:this.addressData.id,
-				// 	num:Number(this.moneyNum)
-				// }
-				// app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
-				// 	uni.hideLoading()
-				// 	app.payment.yinshengPay(res.wechat)
-				// 	uni.redirectTo({
-				// 		url:'/pages/userinfo/order_list'
-				// 	})
-				// })
-			}
-		}
+		params.id = id
+		url = "good/topay/"+this.goodsData.goodCode+'/select'
 	}
+  
+    if (type == 1) {
+      params.channel = "alipay";
+	  
+      app.http.Post(
+        url,
+        params,
+        (res: any) => {
+          console.log("alipay==", res);
+          if (res.alipay.orderInfo != "") {
+            uni.hideLoading();
+            app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo);
+            uni.redirectTo({
+              url: "/pages/userinfo/order_details?code=" + res.goodOrderCode,
+            });
+          }
+        }
+      );
+    } else if (type == 2) {
+      uni.showToast({
+        title: "暂时无法使用微信支付，请使用支付宝支付",
+        icon: "none",
+      });
+      return;
+      params.channel = "weixin";
+      app.http.Post(
+        url,
+        params,
+        (res: any) => {
+          if (res.wechat) {
+            uni.hideLoading();
+            app.payment.paymentWxpay(res.pay_type, res.wechat, () => {
+              uni.redirectTo({
+                url: "/pages/userinfo/order_details?code=" + res.goodOrderCode,
+              });
+            });
+          }
+        }
+      );
+      // params= {
+      // 	channel:'mini',
+      // 	delivery:this.addressData.id,
+      // 	num:Number(this.moneyNum)
+      // }
+      // app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
+      // 	uni.hideLoading()
+      // 	app.payment.yinshengPay(res.wechat)
+      // 	uni.redirectTo({
+      // 		url:'/pages/userinfo/order_list'
+      // 	})
+      // })
+    }
+  }
+  onClickCardCancel(){
+    this.operationCardShow = false
+  }
+}
 </script>
 
 <style lang="scss">
-	$font-16:16rpx;
-	$font-20:20rpx;
-	$font-24:24rpx;
-	$font-28:28rpx;
+$font-16: 16rpx;
+$font-20: 20rpx;
+$font-24: 24rpx;
+$font-28: 28rpx;
 
-	page {
-		background: #F2F2F2;
-	}
-	.order-detail{
-		background:#fff;
-	}
-	.header{
-		width: 100%;
-		height:200rpx;
-		background:#fff;
-		box-sizing: border-box;
-		padding:0 30rpx;
-		border-bottom: 14rpx solid #F5F5F9;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.header-left{
-		width: 630rpx;
-		height:100rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: center;
-	}
-	.header-right{
-		width: 72rpx;
-		height:72rpx;
-		background-color: rgba(0, 0, 0, 0);
-		font-family: uniicons;
-		font-size: 48rpx;
-		font-weight: normal;
-		font-style: normal;
-		line-height: 72rpx;
-		color: #C4C3C8;
-		margin: 0
-	}
-	.icon-address{
-		width: 32rpx;
-		height:38rpx;
-		background:url(../../static/goods/icon_location.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-right: 24rpx;
-	}
-	.header-address{
-		width: 570rpx;
-		height:100rpx;
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
-	}
-	.address-desc{
-		width: 100%;
-		font-size: 28rpx;
-		font-family: HYQiHei;
-		font-weight: bold;
-		color: #3B3B3B;
-	}
-	.address-name{
-		width: 100%;
-		font-size: 24rpx;
-		font-family: HYQiHei;
-		font-weight: bold;
-		color: #3B3B3B;
-	}
-	.address-tips{
-		height:100rpx;
-		line-height: 100rpx;
-		font-size: 28rpx;
-		font-family: HYQiHei;
-		font-weight: bold;
-		color: #3B3B3B;
-	}
-	.goods-info {
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-	}
+page {
+  background: #f2f2f2;
+}
+.content{
+  box-sizing: border-box;
+  padding-bottom: 300rpx;
+}
+.order-detail {
+  background: #fff;
+}
+.header {
+  width: 100%;
+  height: 200rpx;
+  background: #fff;
+  box-sizing: border-box;
+  padding: 0 30rpx;
+  border-bottom: 14rpx solid #f5f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-left {
+  width: 630rpx;
+  height: 100rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+.header-right {
+  width: 72rpx;
+  height: 72rpx;
+  background-color: rgba(0, 0, 0, 0);
+  font-family: uniicons;
+  font-size: 48rpx;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 72rpx;
+  color: #c4c3c8;
+  margin: 0;
+}
+.icon-address {
+  width: 32rpx;
+  height: 38rpx;
+  background: url(../../static/goods/icon_location.png) no-repeat center;
+  background-size: 100% 100%;
+  margin-right: 24rpx;
+}
+.header-address {
+  width: 570rpx;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.address-desc {
+  width: 100%;
+  font-size: 28rpx;
+  font-family: HYQiHei;
+  font-weight: bold;
+  color: #3b3b3b;
+}
+.address-name {
+  width: 100%;
+  font-size: 24rpx;
+  font-family: HYQiHei;
+  font-weight: bold;
+  color: #3b3b3b;
+}
+.address-tips {
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 28rpx;
+  font-family: HYQiHei;
+  font-weight: bold;
+  color: #3b3b3b;
+}
+.goods-info {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
 
-	.goods-info2 {
-		width: 478rpx;
-		margin: 28rpx 0;
-		display: flex;
-		flex-direction: column;
-	}
+.goods-info2 {
+  width: 478rpx;
+  margin: 28rpx 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
 
-	.goods-info2-title {
-		margin-right: 30rpx;
-		margin-left: 8rpx;
-		font-size: $font-28;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #14151A;
-		line-height: 40rpx;
-	}
+.goods-info2-title {
+  margin-right: 30rpx;
+  margin-left: 8rpx;
+  font-size: $font-28;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #14151a;
+  line-height: 40rpx;
+}
 
-	.goods-money-info {
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-	}
+.goods-money-info {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  bottom:10rpx;left:0
+}
 
-	.goods-money {
-		margin-left: 8rpx;
-		margin-top: 58rpx;
-		font-size: $font-24;
-		font-family: 'DIN';
-		font-weight: bold;
-		color: #14151A;
-		line-height: 28rpx;
-	}
-	.goods-money-right{
-		box-sizing: border-box;
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: flex-end;
-	}
-	.goods-money-right-header{
-		width: 100%;
-		height:50rpx;
-		line-height: 50rpx;
-		font-size: $font-24;
-		color: #14151A;
-		text-align: right;
-		padding-right: 12rpx;
-	}
-	.goods-money-add {
-		margin-right: 12rpx;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
+.goods-money {
+  margin-left: 8rpx;
+  margin-top: 58rpx;
+  font-size: 28rpx;
+  font-family: "DIN";
+  font-weight: bold;
+  color: #14151a;
+  line-height: 28rpx;
+}
+.goods-money-right {
+  width: 180rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.goods-money-right-header {
+  width: 100%;
+  height: 50rpx;
+  line-height: 50rpx;
+  font-size: $font-24;
+  color: #ff504f;
+  text-align: center;
+  padding-right: 12rpx;
+  padding-left: 12rpx;
+}
+.goods-money-add {
+  margin-right: 12rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-	.img-add{
-		width: 48rpx;
-		height:48rpx;
-		background: url(../../static/goods/icon_add_price.png) no-repeat center;
-		background-size: cover;
-	}
-	
-	.img-jian {
-		width: 48rpx;
-		height: 48rpx;
-		background: url(../../static/goods/icon_jian_price.png) no-repeat center;
-		background-size: cover;
-	}
+.img-add {
+  width: 48rpx;
+  height: 48rpx;
+  background: url(../../static/goods/icon_add_price.png) no-repeat center;
+  background-size: cover;
+}
 
-	.money-add {
-		width: 66rpx;
-		height: 48rpx;
-		border: 2rpx solid #EEEEEE;
-		text-align: center;
+.img-jian {
+  width: 48rpx;
+  height: 48rpx;
+  background: url(../../static/goods/icon_jian_price.png) no-repeat center;
+  background-size: cover;
+}
 
-		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #14151A;
-		line-height: 34rpx;
-	}
+.money-add {
+  width: 66rpx;
+  height: 48rpx;
+  border: 2rpx solid #eeeeee;
+  text-align: center;
 
-	.huo-dong-bg {
-		width: 100%;
-		height: 72rpx;
-		background: #FFFFFF;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: start;
-	}
+  font-size: $font-24;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #14151a;
+  line-height: 34rpx;
+}
 
-	.item-name {
-		font-size: $font-24;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #14151A;
-		line-height: 34rpx;
-		margin-left: 36rpx;
-	}
+.huo-dong-bg {
+  width: 100%;
+  height: 72rpx;
+  background: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
 
-	.item-youhui-bg {
-		width: 130rpx;
-		height: 40rpx;
-		background: url(../../static/goods/icon_discounts_bg.png) no-repeat center;
-		background-size: cover;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+.item-name {
+  font-size: $font-24;
+  font-family: PingFangSC-Semibold, PingFang SC;
+  font-weight: 600;
+  color: #14151a;
+  line-height: 34rpx;
+  margin-left: 36rpx;
+}
 
-		font-size: $font-20;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #E6D188;
-		line-height: 28rpx;
-		margin-left: 32rpx;
+.item-youhui-bg {
+  text-align: center;
+			line-height: 34rpx;
+			margin-right: 16rpx;
+			height: 34rpx;
+			background: #FFFFFF;
+			border: 1rpx solid #FB4E3E;
+			border-radius: 3rpx;
+			font-size: 20rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+			color: #FB4E3E;
+			padding:0 11rpx;
+			width: fit-content;
+			display: inline-flex;
+      margin-left: 10rpx;
+}
 
-	}
+.item-youhui-bg2 {
+  width: 130rpx;
+  height: 40rpx;
+  background: url(../../static/goods/icon_discounts_bg2.png) no-repeat center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-	.item-youhui-bg2 {
-		width: 130rpx;
-		height: 40rpx;
-		background: url(../../static/goods/icon_discounts_bg2.png) no-repeat center;
-		background-size: cover;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+  font-size: $font-20;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #14151a;
+  line-height: 28rpx;
+  margin-left: 16rpx;
+}
 
-		font-size: $font-20;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #14151A;
-		line-height: 28rpx;
-		margin-left: 16rpx;
-	}
+.yunfei-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
-	.yunfei-info {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-	}
+.yunfei-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 24rpx 36rpx 0 0;
+}
 
-	.yunfei-item {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		margin: 24rpx 36rpx 0 0;
-	}
+.cross-line {
+  width: 678rpx;
+  height: 2rpx;
+  background: #f1f1f4;
+  margin: 24rpx 36rpx 0 36rpx;
+}
 
-	.cross-line {
-		width: 678rpx;
-		height: 2rpx;
-		background: #F1F1F4;
-		margin: 24rpx 36rpx 0 36rpx;
-	}
+.heji-money {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 24rpx;
+}
 
-	.heji-money {
-		display: flex;
-		flex-direction: row;
-		margin-bottom: 24rpx;
-	}
+.heji-text {
+  font-size: $font-20;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #14151a;
+  line-height: 28rpx;
+}
 
-	.heji-text {
-		font-size: $font-20;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #14151A;
-		line-height: 28rpx;
-	}
+.heji-money2 {
+  font-size: $font-24;
+  font-family: "DIN";
+  font-weight: bold;
+  color: #14151a;
+  line-height: 28rpx;
+  margin-left: 12rpx;
+}
 
-	.heji-money2 {
-		font-size: $font-24;
-		font-family: 'DIN';
-		font-weight: bold;
-		color: #14151A;
-		line-height: 28rpx;
-		margin-left: 12rpx;
-	}
+.heji-text-b {
+  font-size: 26rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #14151a;
+  line-height: 28rpx;
+}
 
-	.bottom-content {
-		width: 100%;
-		height: 112rpx;
-		background: #FFFFFF;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
+.heji-money2-b {
+  font-size: 40rpx;
+  font-family: "DIN";
+  font-weight: bold;
+  color: #14151a;
+  line-height: 28rpx;
+  margin-left: 12rpx;
+}
+.bottom-gm{
+  width: 100%;
+  height:180rpx;
+  position: fixed;
+  bottom:112rpx;
+  left:0;
+  background:#FBF2F3;
+  box-sizing: border-box;
+  padding:20rpx 32rpx 0 32rpx;
+  .bottom-gm-title{
+    width: 100%;
+    height:40rpx;
+    display: flex;
+    align-items: center;
+    font-size: 26rpx;
+    color:#ff504f
+  }
+  .bottom-gm-gx{
+    width: 28rpx;
+    height:28rpx;
+    background:url(../../static/userinfo/weixuan@2x.png) no-repeat center;
+    background-size: 100% 100%;
+    margin-right: 10rpx;
+  }
+  .bottom-gm-check{
+    width: 28rpx;
+    height:28rpx;
+    background:url(../../static/userinfo/pay_gou.png) no-repeat center;
+    background-size: 100% 100%;
+    margin-right: 10rpx;
+  }
+  .bottom-gm-tips{
+    width: 100%;
+    font-size: 22rpx;
+    color:#ff504f;
+    margin-top:10rpx
+  }
+  .bottom-gm-btn{
+    position: absolute;
+    right:32rpx;
+    bottom:10rpx;
+    font-size: 22rpx;
+    color:#AAAAAA;
+    display: flex;
+    align-items: center;
+  }
+  .bottom-gm-right{
+    width: 10rpx;
+    height:16rpx;
+    background:url(../../static/goods/jinru@2x.png) no-repeat center;
+    background-size: 100% 100%;
+    margin-left: 6rpx;
+  }
+}
+.bottom-content {
+  width: 100%;
+  height: 112rpx;
+  background: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 
-		position: fixed;
-		bottom: 0;
-	}
+  position: fixed;
+  bottom: 0;
+}
 
-	.heji-money-pay {
-		margin-left: 36rpx;
-	}
+.heji-money-pay {
+  margin-left: 36rpx;
+}
 
-	.btn-payment {
-		width: 360rpx;
-		height: 88rpx;
-		background: #CECFD3;
-		border-radius: 4rpx;
-		margin-right: 16rpx;
+.btn-payment {
+  width: 360rpx;
+  height: 88rpx;
+  background: #cecfd3;
+  border-radius: 4rpx;
+  margin-right: 16rpx;
 
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: $font-28;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #FFFFFF;
-		line-height: 40rpx;
-	}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-28;
+  font-family: PingFangSC-Semibold, PingFang SC;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 40rpx;
+}
 
-	.btn-payment2 {
-		width: 360rpx;
-		height: 88rpx;
-		background: #FF504F;
-		border-radius: 44rpx;
-		margin-right: 16rpx;
+.btn-payment2 {
+  width: 360rpx;
+  height: 88rpx;
+  background: #ff504f;
+  border-radius: 44rpx;
+  margin-right: 16rpx;
 
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: $font-28;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #FFFFFF;
-		line-height: 40rpx;
-	}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-28;
+  font-family: PingFangSC-Semibold, PingFang SC;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 40rpx;
+}
+.goods-money-availa{
+	font-size: 24rpx;
+}
+.check-team{
+	box-sizing: border-box;
+	padding:20rpx 0;
+}
 </style>

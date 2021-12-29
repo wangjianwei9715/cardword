@@ -18,7 +18,7 @@
 			<statusbar/>
 		</view>
 		<view class="goods-lists" v-if="goodsList!=''">
-			<goodslist  :goodsList="goodsList" @send="onClickJumpDetails"/>
+			<goodslist  :goodsList="goodsList" @send="onClickJumpDetails" :presell="false"/>
 		</view>
 	</view>
 </template>
@@ -105,7 +105,11 @@
 </script>
 
 <style lang="scss">
+	
 	$font-34:34rpx;
+	page{
+		background:#F2F2F2
+	}
 	.content{
 		width: 100%;
 		box-sizing: border-box;

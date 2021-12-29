@@ -13,7 +13,9 @@
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
                 //  #endif
-                "enablePullDownRefresh": true
+                "enablePullDownRefresh": true,
+                "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 			}
 		}
 		, {
@@ -27,7 +29,9 @@
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
                 //  #endif
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+                "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 			}
 
 		}
@@ -124,6 +128,7 @@
         }
         
         
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -197,7 +202,9 @@
                         "navigationBarBackgroundColor": "#ffffff",
                         "navigationBarTextStyle": "black",
                         //  #endif
-                        "enablePullDownRefresh": false
+                        "enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                     }
         
                 }, {
@@ -257,7 +264,9 @@
                         "navigationBarBackgroundColor": "#ffffff",
                         "navigationBarTextStyle": "black",
                         //  #endif
-                        "enablePullDownRefresh": false
+                        "enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                     }
         
                 },  {
@@ -306,7 +315,23 @@
                 
             ]
             
+        },{
+            "root": "pages/information",
+            "pages": [
+                {
+                    "path" : "list",
+                    "style" :                                                                                    
+                    {
+                        "navigationStyle": "custom",
+                        "enablePullDownRefresh": false
+                    }
+                    
+                }
+                
+            ]
+            
         },
+        
         {
         "root": "pages/userinfo",
         "pages": [
@@ -321,7 +346,9 @@
                     "navigationBarBackgroundColor": "#ffffff",
                     "navigationBarTextStyle": "black",
                     //  #endif
-                    "enablePullDownRefresh": false
+                    "enablePullDownRefresh": false,
+                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
     
             },{
@@ -335,7 +362,9 @@
                     "navigationBarBackgroundColor": "#ffffff",
                     "navigationBarTextStyle": "black",
                     //  #endif
-                    "enablePullDownRefresh": false
+                    "enablePullDownRefresh": false,
+                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
             },{
                 "path" : "order_details",
@@ -404,7 +433,9 @@
                     "navigationBarTitleText": "",
                     //  #endif
                     "navigationBarBackgroundColor":"#ffffff",
-                    "navigationBarTextStyle":"black"
+                    "navigationBarTextStyle":"black",
+                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
                 
             }
@@ -576,6 +607,19 @@
                     "navigationBarBackgroundColor":"#ffffff",
                     "navigationBarTextStyle":"black",
                     "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "merchant_list",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "商家列表",
+					"navigationBarBackgroundColor":"#ffffff",
+					"navigationBarTextStyle":"black",
+					"enablePullDownRefresh": false,
+                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                 }
                 
                 }

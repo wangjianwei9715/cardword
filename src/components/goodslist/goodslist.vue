@@ -1,11 +1,14 @@
 <template name="goodslist">
 	<view class="content" >
-		<view class="goodslist-index" v-for="(item,index) in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
+		<view class="goodslist-index" v-for="item in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
+			<view v-if="item.isSelect" class="select-team">自选球队</view>
 			<image class="goodslist-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 			<view class="goodslist-right">
 				<view class="goodslist-title">{{item.title}}</view>
-				<view class="goodslist-tips" v-show="discountList[index]" v-for="(items,indexs) in discountList[index]" :key="indexs">
-					{{items}}
+				<view v-if="item.discount&&item.discount!=''">
+					<view class="goodslist-tips" v-for="(items,indexs) in typeof (item.discount) =='string'?item.discount.split(','):item.discount" :key="indexs">
+					{{typeof (item.discount) =='string'?items:items.content}}
+					</view>
 				</view>
 				<view class="goodslist-bottom">
 					<view class="goodslist-price-content">
@@ -54,7 +57,6 @@
 		mini:any;
 		dateFormatMSHMS = dateFormatMSHMS
 		getGoodsImg = getGoodsImg;
-		discountList:any = [];
 		screenHeight = uni.getSystemInfoSync().windowHeight
 		showPlan:any = []
 		@Watch('pagescroll')
@@ -63,9 +65,6 @@
 		}
 		@Watch('goodsList')
 		onGoodsListChanged(val: any, oldVal: any){
-			if(this.pageIndex==1){
-				this.discountList = []
-			}
 			this.getGoodsList()
 		}
 		created(){//在实例创建完成后被立即调用
@@ -82,6 +81,7 @@
 			this.$emit("send", id);
 		}
 		selectory(){
+			return;
 			setTimeout(()=>{
 				// 实时监控目前显示的商品列表
 				let select= uni.createSelectorQuery().in(this).selectAll('.goodslist-plan-desc');
@@ -112,11 +112,7 @@
 			if(data==''){
 				return;
 			}
-			for(let i in data){
-				if(data[i].discount!=''){
-					this.discountList[i] = data[i].discount.split(',');
-				}
-			}
+			
 			this.selectory()
 		}
 	}
@@ -134,6 +130,7 @@
 			align-items: center;
 			margin-bottom: 20rpx;
 			border-radius: 20rpx;
+			position: relative;
 		}
 		&-pic{
 			width: 230rpx;
@@ -268,5 +265,22 @@
 		font-weight:0;
 		font-size:18rpx;
 		font-family:Microsoft YaHei;
+	}
+	.select-team{
+		height: 28rpx;
+		background: linear-gradient(90deg, #A36DFD, #D6ABFF);
+		border-radius: 0rpx 4rpx 4rpx 0rpx;
+		font-size: 13rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #FFFFFF;
+		text-align: center;
+		line-height: 28rpx;
+		position: absolute;
+		left:24rpx;
+		top:36rpx;
+		z-index: 1;
+		box-sizing: border-box;
+		padding:0 5rpx;
 	}
 </style>

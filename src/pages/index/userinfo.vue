@@ -173,7 +173,7 @@
 				if(data.familial){
 					uni.setTabBarItem({
 						index: 1,
-						text: '直播',
+						text: '拆卡',
 						pagePath: '/pages/index/live',
 						iconPath: 'static/index/tabbar_live.png',
 						selectedIconPath: 'static/index/tabbar_live_.png',
@@ -289,9 +289,8 @@
 	.user-header{
 		width: 750rpx;
 		height:436rpx;
-		background:url(../../static/userinfo/bg@2x.png) no-repeat center;
+		background:url(../../static/userinfo/bg@2x.jpg) no-repeat center;
 		background-size: 100% 100%;
-		border-bottom: 20rpx solid #F2F2F2;
 		box-sizing: border-box;
 		padding-top: 78rpx;
 		// #ifndef APP-PLUS
@@ -329,8 +328,8 @@
 					font-size: 20rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
-					color: #FFFFFF;
-					background:#FB4E3E;
+					color: #FB4E3E;
+					background:#FFFFFF;
 					position: absolute;
 					right:-10rpx;
 					top:-10rpx;
@@ -370,7 +369,7 @@
 						font-size: 32rpx;
 						font-family: PingFangSC-Semibold, PingFang SC;
 						font-weight: 600;
-						color: #14151A;
+						color: #fff;
 						margin-bottom: 8rpx;
 					}
 					.userinfo-sign{
@@ -378,14 +377,14 @@
 						font-size: 24rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
-						color: #7F7F8E;
+						color: #fff;
 					}
 				}
 			}
 			.right{
 				width: 14rpx;
 				height:26rpx;
-				background:url(../../static/goods/icon_righ_back.png) no-repeat center;
+				background:url(../../static/userinfo/jinru@2x.png) no-repeat center;
 				background-size: 100% 100%;
 			}
 		}
@@ -405,7 +404,7 @@
 					font-size: 36rpx;
 					font-family: DINAlternate-Bold, DINAlternate;
 					font-weight: bold;
-					color: #14151A;
+					color: #fff;
 					text-align: center;
 					margin-bottom: 4rpx;
 				}
@@ -415,7 +414,7 @@
 					font-size: 24rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
-					color: #AAAABB;
+					color: #fff;
 				}
 			}
 		}

@@ -18,12 +18,7 @@ export default class HttpRequest {
 	
     private constructor() {
 		var domain = ''
-		// #ifndef H5
 		domain = app.bussinessApiDomain
-    	// #endif
-		// #ifdef H5
-		domain = app.domaintest
-    	// #endif
 		console.log('domain=========',domain)
 		let systemInfo = app.platform.getAppInfo();
 
@@ -73,12 +68,13 @@ export default class HttpRequest {
 			if(app.opKey == ''){
 				app.opKey = uni.getStorageSync('app_opk')
 			}
-			// #ifndef H5
 			config.baseURL = app.bussinessApiDomain
-			// #endif
-			// #ifdef H5
-			config.baseURL = app.domaintest
-			// #endif
+			// let math = Math.random()*10;
+			// if(math<5){
+			// 	app.domaintest = 'http://192.168.0.38:8702/api/v1/'
+			// }else{
+			// 	app.domaintest = 'http://192.168.0.38:8701/api/v1/'
+			// }
 			let url = config.url+'';
 			if (url.indexOf("user/login/phone") == -1&&url.indexOf("user/code") == -1&&url.indexOf("user/forget") == -1) {//验证码、刷新、登录 首页接口不需要token &&config.url!='xingqiu/refresh_lists'&&config.url!='xingqiu/index_act'
 				if (!config.headers['token']) {
@@ -298,7 +294,7 @@ export default class HttpRequest {
 			content: '当前网络状况不佳，请检查网络环境后重试',
 			showCancel: false,
 			success:()=>{
-				if (retryCb) retryCb();
+				// if (retryCb) retryCb();
 			}
 		});
 	}

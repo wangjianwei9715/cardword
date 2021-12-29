@@ -15,7 +15,7 @@
 				<image class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic))" mode="aspectFill"></image>
 				<view class="goods-content">
 					<view class="title">{{item.good.title}}</view>
-					<view class="state">{{item.good.stateName}}</view>
+					<view class="state" :class="{'no-bg':item.good.stateName=='未中卡'}">{{item.good.stateName=='未中卡'?'':item.good.stateName}}</view>
 					<view class="desc">
 						<view class="price">￥{{item.price}}<text class="total-num">共{{item.num}}件</text></view>
 						<view ></view>
@@ -180,7 +180,7 @@
 					padding:0;
 					.title{
 						width: 100%;
-						height:80rpx;
+						height:45rpx;
 						font-size: 28rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
@@ -189,21 +189,29 @@
 						overflow: hidden;
 						display: -webkit-box;
 						-webkit-box-orient: vertical;
-						-webkit-line-clamp: 2;
+						-webkit-line-clamp: 1;
 						-ms-text-overflow: ellipsis;
 						text-overflow: ellipsis;
 					}
 					.state{
-						width: 100%;
-						height:40rpx;
-						margin-bottom: 0;
-						font-size: 24rpx;
+						height:30rpx;
+						margin-top: 5rpx;
+						font-size: 22rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
-						color: #FF9748
+						color: #FB4E3E;
+						box-sizing: border-box;
+						padding:0 9rpx;
+						background: #FBF2F3;
+						display: inline-flex;
+						align-items: center;
+					}
+					.no-bg{
+						background:none
 					}
 					.desc{
 						width: 100%;
+						margin-top: 30rpx;
 						height:40rpx;
 						display: flex;
 						box-sizing: border-box;
@@ -270,23 +278,22 @@
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						box-sizing: border-box;
-						border-radius: 4rpx;
+						border-radius: 30rpx;
 						font-size: 24rpx;
 						font-family: PingFangSC-Semibold, PingFang SC;
-						font-weight: 600;
+						font-weight: 400;
 						margin-right: 20rpx;
 						background:#fff;
-						border:1px solid #14151B;
+						border:1.5rpx solid #14151B;
 						color:#14151B
 					}
-					.btn-pay{
-						background:#14151B;
+					.btn-toPay{
+						background:#FB4E3E;
 						border:none;
 						color:#FFFFFF
 					}
-					.btn-reward{
-						background: linear-gradient(90deg, #FD8339 0%, #F24B28 100%);
+					.btn-resultCard{
+						background: #FB4E3E;
 						border:none;
 						color:#FFFFFF
 					}

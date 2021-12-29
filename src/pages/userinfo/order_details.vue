@@ -20,7 +20,7 @@
 					<view class="seller-name">{{orderData.seller.name}}</view>
 				</view>
 				<view class="header-right">
-					<view :class="['header-right-index','state'+orderData.state]">{{orderData.stateName}}</view>
+					<view :class="['header-right-index','state'+orderData.state]">{{orderData.good.stateName}}</view>
 				</view>
 			</view>
 			<view class="order-index-center">
@@ -43,6 +43,14 @@
 				合计：<view class="price-index">￥<text class="price-num">{{orderData.price}}</text></view>
 			</view>
 		</view>
+		<view class="yunfei-info check-team" v-if="cartList!=''">
+	    	<view class="item-name">已选编号</view>
+			<view class="yunfei-item" v-for="(item,index) in cartList" :key="item.id">
+				<text class="item-name">{{index+1}}.{{item.name}}</text>
+				<text class="item-name">{{ item.stateName }}</text>
+			</view>
+        
+        </view>
 		<!-- 我的编号 -->
 		<view class="buyer-cotnent" v-if="cardList!=''">
 			<view class="card-header">
@@ -85,6 +93,8 @@
 		</view>
 
 		<payment :showPayMent="showPayMent" @cancelPay="onClickCancelPay" :payPrice="orderData.price" :countTime="countDown" @pay="onClickPayGoods" />
+
+		<paymentSuccess :showPaySuccess="showPaySuccess" @cancelPaySuccess="onClickcancelPaySuccess"/>
 	</view>
 </template>
 
@@ -122,6 +132,8 @@
 			receiveTime:{id:7,title:'收货时间',desc:''},
 		};
 		showPayMent = false;
+		cartList:any = [];
+		showPaySuccess = false;
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -129,6 +141,9 @@
 
 			this.onEventUI('orderchange',()=>{
 				this.initEvent();
+			})
+			this.onEventUI('paySuccess',()=>{
+				this.showPaySuccess = true
 			})
 		}
 		onShow(){
@@ -146,6 +161,13 @@
 					title: res.data.stateName
 				});
 				this.getGoodDesc(res.data)
+				if(res.data.showSelectNo){
+					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/selectList',{pageIndex:1,pageSize:10},(res:any)=>{
+						if(res.list){
+							this.cartList = res.list
+						}
+					})
+				}
 				if(res.data.state>=2){
 					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList',{pageIndex:1,pageSize:5},(res:any)=>{
 						if(res.list){
@@ -342,6 +364,11 @@
 					}
 				})
 			}else if(type==2){
+				uni.showToast({
+					title:'暂时无法使用微信支付，请使用支付宝支付',
+					icon:'none'
+				})
+				return;
 				params.channel = 'weixin';
 				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
 					if(res.wechat){
@@ -360,6 +387,10 @@
 				// 	app.payment.yinshengPay(res.wechat)
 				// })
 			}
+		}
+		// 支付成功弹窗关闭
+		onClickcancelPaySuccess(){
+			this.showPaySuccess = false;
 		}
 	}
 </script>
@@ -574,7 +605,7 @@
 						.price{
 							height:40rpx;
 							line-height: 40rpx;
-							font-size: 24rpx;
+							font-size: 30rpx;
 							font-family: DINAlternate-Bold, DINAlternate;
 							font-weight: bold;
 							color: #14151A;
@@ -881,4 +912,28 @@
 			}
 		}
 	}
+	.yunfei-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.yunfei-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 24rpx 36rpx 0 0;
+}
+.item-name {
+  font-size: 24rpx;
+  font-family: PingFangSC-Semibold, PingFang SC;
+  font-weight: 600;
+  color: #14151a;
+  line-height: 34rpx;
+  margin-left: 36rpx;
+}
+.check-team{
+	box-sizing: border-box;
+	padding:20rpx 0;
+}
 </style>

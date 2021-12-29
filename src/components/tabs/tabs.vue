@@ -1,6 +1,9 @@
 <template>
 	<view class="list">
-		<view :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]" v-for="item in tabs" :key="item.id" @click="onClickIndex(item.id)">{{item.name}}</view>
+		<view class="index" v-for="item in tabs" :key="item.id" @click="onClickIndex(item.id)">
+			<view v-if="item.name=='自选'" :class="{'zixuan':true,'zixuan-check':tabsCheck==item.id}"></view>
+			<view v-else :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]">{{item.name}}</view>
+		</view>
 		<!-- <view class="line">
 			<view class="current-line"></view>
 		</view>	 -->
@@ -85,11 +88,14 @@
 	.index{
 		height:84rpx;
 		line-height: 84rpx;
-		font-size: 26rpx;
+		font-size: 28rpx;
 		color:#A9ABB4;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 	.current{
-		font-size: 29rpx;
+		font-size:34rpx;
 		font-weight: 600;
 		color: #14151A;
 		position: relative;
@@ -101,10 +107,23 @@
 		content: '';
 		background-size: 100% 100%;
 		position: absolute;
-		bottom:18rpx;
+		bottom:15rpx;
 		left:50%;
 		margin-left:-19rpx;
 		border-radius: 5rpx;
 	}
-	
+	.zixuan{
+		width: 92rpx;
+		height:31rpx;
+		background:url(../../static/index/check_team.png) no-repeat center;
+		background-size: 100% 100%;
+		transform: scale(0.8);
+	}
+	.zixuan-check{
+		width: 103rpx;
+		height:31rpx;
+		background:url(../../static/index/check_team_.png) no-repeat center;
+		background-size: 100% 100%;
+		transform: scale(1);
+	}
 </style>

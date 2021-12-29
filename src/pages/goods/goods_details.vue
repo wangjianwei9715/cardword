@@ -1,5 +1,5 @@
 <template>
-	<view class="content" v-show="goodsData!=''">
+	<view class="content" v-show="goodsData!=''"  :class="{'body-hidden':teamCheckShow}">
 		<!-- #ifndef MP -->
 		<view class="header-banner">
 			<statusbar/>
@@ -40,7 +40,7 @@
 						</view>
 					</view>
 					<view class="header-right-end" v-else>
-						{{goodsState==-1?'等待开售':'已结束'}}
+						{{goodsState==-1||goodsState==0?'等待开售':'已结束'}}
 					</view>
 				</view>
 				<view class="header">
@@ -62,7 +62,7 @@
 				<view class="header">
 					<view class="header-desc-title">拼团信息</view>
 					<view class="header-center">
-						<view class="header-center-top">余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}</view>
+						<view class="header-center-top">余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}<text class="header-center-lock">{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</text></view>
 						<view class="header-center-plan"><plan :num_ex="(goodsData.currentNum+goodsData.lockNum)" :num_all="goodsData.totalNum"></plan></view>
 						<!-- <view class="header-center-actor" v-if="goodsData.lastBuyerList">
 							<image class="header-center-actor-img" v-for="(item,index) in goodsData.lastBuyerList" :key="index" :src="item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFit"></image>
@@ -99,10 +99,11 @@
 			<view class="detail-bg">
 				<view class="goods-seller" v-if="goodsData.publisher">
 					<view class="goods-seller-left">
-						<image class="goods-seller-left-avatar" :src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar" mode="aspectFit"></image>
+						<image class="goods-seller-left-avatar" :src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar" mode="aspectFill"></image>
 						<view class="goods-seller-left-desc">
 							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
 							<view class="goods-seller-left-desc-tips">已拼团{{goodsData.publisher.deal}}组</view>
+							<view class="goods-seller-left-desc-js"><view class="goods-seller-left-desc-icon"></view>商品由该商家在平台寄售</view>
 						</view>
 					</view>
 					<view class="goods-seller-right" @click="onClickShops">店铺</view>
@@ -137,7 +138,7 @@
 		<view class="btn-content" v-if="goodsState==1||goodsState==0">
 			<view class="btn-content-left">
 				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id" @click="onClickTipBtn(item)">
-					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFit"></image>
+					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFill"></image>
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
 			</view>
@@ -150,7 +151,9 @@
 
 		<cardplay :operationShow="operationCardShow" :operaType="operaType" @operacancel="onClickCardCancel" />
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
-		<!-- <checkTeamPay :teamCheckShow="teamCheckShow" :teamCheckId="teamCheckId" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" /> -->
+		
+		<!-- 自选球队 -->
+		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @settlement="onClickSettlement" @touchmove.stop.prevent="moveHandle" />
 	</view>
 </template>
 
@@ -185,7 +188,7 @@
 		cardData:any = [];
 		tipBtn:{[x:string]:any}=[
 			{id:1,name:'客服',url:'../../static/goods/kefu@2x.png',class:'kf'},
-			{id:2,name:'拼团提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
+			// {id:2,name:'拼团提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
 		];
 		operationShow=false;
 		operationData = [
@@ -207,8 +210,16 @@
 		buyRecordList:any = [];
 		onNetWorkFunc:any;
 		// 自选球队相关
+		// 球队选择
+		// 分支选择
+		// 购物车数据
 		teamCheckShow:boolean=false;
-		teamCheckId:number = 1;
+		teamLeftSec = 0;
+		teamData:any = [];
+		teamCheckIndex:number = 0;
+		branchData:any = [];
+		branchCheckIndex:number = 0;
+		cartData:any = [];
 		onLoad(query:any) {
 			// #ifdef MP
 			uni.showModal({
@@ -325,7 +336,7 @@
 					this.goodsDesc.unshift('【结束时间】：'+dateFormat(data.good.overAt))
 					this.goodsDesc.unshift('【开售时间】：'+dateFormat(data.good.startAt))
 					this.goodsDesc.unshift('【商品编号】：'+data.good.goodCode)
-					app.http.Get('good/'+id+'/buyRecord',{},(res:any)=>{
+					app.http.Get('dataApi/good/'+id+'/buyRecord',{},(res:any)=>{
 						if(res.list){
 							this.buyRecordList = res.list
 						}
@@ -400,8 +411,16 @@
 		// 拼团形式规格
 		getGoodsSpe(){
 			let data = this.goodsData;
-			this.goodsSpe.pintuan_type.name = getGoodsPintuan(data.pintuan_type);
-			this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
+			if(this.goodsData.isSelect){
+				this.goodsSpe = {
+					pintuan_type:{id:1,name:'自选球队',desc:'拼团形式'},
+					spec:{id:3,name:'',desc:'拼团规格'},
+					spec_str:{id:4,name:'',desc:'商品数量'}
+				};
+			}else{
+				this.goodsSpe.pintuan_type.name = getGoodsPintuan(data.pintuan_type);
+				this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
+			}
 			this.goodsSpe.spec.name = data.spec.name;
 			this.goodsSpe.spec_str.name = data.spec.num+'张';
 		}
@@ -452,6 +471,14 @@
 			});
 		}
 		onClickShops(){
+			// #ifndef MP
+			if(app.token.accessToken == ''){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				return;
+			}
+			// #endif
 			uni.navigateTo({
 				url: '/pages/userinfo/merchant_shops?id='+this.goodsData.publisher.id+'&name='+this.goodsData.publisher.name+'&avatar='+this.goodsData.publisher.avatar
 			})
@@ -538,8 +565,8 @@
 		}
 		
 		onClickBuy(){
-			// this.teamCheckShow = true
-			// return;
+			
+			
 			// #ifndef MP
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -554,6 +581,18 @@
 				return;
 			}
 			// #endif
+
+			// 自选球队
+			if(this.goodsData.isSelect){
+				this.getGoodSelect(()=>{
+					this.getGoodSelectBranch();
+					this.getGoodSelectCart()
+					this.teamCheckShow = true;
+				})
+				
+				return;
+			}
+
 			if(this.goodsData.totalNum-(this.goodsData.currentNum+this.goodsData.lockNum)<=0){
 				uni.showToast({
 					title:'该商品已售罄',
@@ -597,15 +636,107 @@
 		onClickShareCancel(){
 			this.operationShow = false
 		}
+		// 自选球队 我要选队
+		getGoodSelect(cb?:Function){
+			app.http.Get('good/'+this.goodsId+'/select',{},(res:any)=>{
+				this.teamData = res.team;
+				
+				if(this.goodsData.state == 0){
+					this.teamLeftSec  = res.good.preSaleLeftSec
+				}
+				if(cb) cb()
+			})
+		}
+		// 自选球队 获取球队分支
+		getGoodSelectBranch(){
+			let id = this.teamData[this.teamCheckIndex].id;
+			app.http.Get('good/'+this.goodsId+'/select/branch',{teamId:id},(res:any)=>{
+				this.branchCheckIndex = 0
+				this.branchData = res.list;
+				console.log('branch==',res)
+			})
+		}
+		getGoodSelectCart(){
+			app.http.Get('good/'+this.goodsId+'/select/cart',{},(res:any)=>{
+				this.cartData = res.data;
+				console.log(this.cartData)
+			})
+		}
 		// 自选球队 遮罩点击
 		onClickTeamCheckCancel(){
 			this.teamCheckShow = false
 		}
 		// 自选球队 选择球队
-		onClickTeamCheck(id:any){
-			if(this.teamCheckId==id) return;
+		onClickTeamCheck(index:any){
+			if(this.teamCheckIndex==index) return;
 
-			this.teamCheckId = id;
+			this.teamCheckIndex = index;
+			this.getGoodSelectBranch()
+		}
+		// 自选球队 选择分支
+		onClickBranchCheck(index:any){
+			if(this.branchCheckIndex==index) return;
+
+			this.branchCheckIndex = index;
+		}
+		onClickDeleteCart(index:any){
+			if(index!=0&&index=='[]'){
+				app.http.Post('good/select/cart/'+this.goodsId+'/delete',{id:[]},(res:any)=>{
+					
+					this.getGoodSelectCart()
+				})
+				return;
+			}
+			let id = this.cartData.list[index].id
+			app.http.Post('good/select/cart/'+this.goodsId+'/delete',{id:[id]},(res:any)=>{
+				
+				this.getGoodSelectCart()
+			})
+		}
+		// 加入购物车
+		joinCart(){
+			if(this.branchData[this.branchCheckIndex].soldOut){
+				uni.showToast({
+					title:'该商品已售罄',
+					icon:'none'
+				})
+				return;
+			}
+			if(this.branchData[this.branchCheckIndex].lock){
+				uni.showToast({
+					title:'该商品暂时不能支付',
+					icon:'none'
+				})
+				return;
+			}
+			app.http.Post('good/select/cart/'+this.goodsId+'/add',{id:[this.branchData[this.branchCheckIndex].id]},(res:any)=>{		
+				
+				this.getGoodSelectCart()
+			})
+		}
+		onClickSettlement(){
+			if(this.cartData.available == 0){
+				uni.showToast({
+					title:'购物车中暂无有效商品',
+					icon:'none'
+				})
+				return;
+			}
+			if(this.cartData.available!=this.cartData.num){
+				uni.showToast({
+					title:'购物车中有不能支付的商品',
+					icon:'none'
+				})
+				return;
+			}
+			
+			uni.navigateTo({
+				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&cart='+encodeURIComponent(JSON.stringify(this.cartData))
+			})
+			this.onClickTeamCheckCancel()
+		}
+		moveHandle(){
+
 		}
 	}
 </script>
@@ -721,7 +852,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		border-radius: 20rpx;
 	}
 	.header-content-end{
 		background:#fff;
@@ -891,6 +1021,9 @@
 			font-weight: 500;
 			color: #A9ABB4;
 		}
+		&-lock{
+			color:#dad7d7
+		}
 		&-plan{
 			width: 95%;
 			height:12rpx;
@@ -1025,7 +1158,7 @@
 	}
 	.goods-seller{
 		width: 100%;
-		height:140rpx;
+		height:180rpx;
 		box-sizing: border-box;
 		padding:10rpx 40rpx;
 		display: flex;
@@ -1033,19 +1166,19 @@
 		justify-content: space-between;
 		&-left{
 			width: 500rpx;
-			height:80rpx;
+			height:110rpx;
 			display: flex;
 			align-items: center;
 			box-sizing: border-box;
 			&-avatar{
-				width: 80rpx;
-				height:80rpx;
+				width: 110rpx;
+				height:110rpx;
 				border-radius: 50%;
 				background:#F5F5F9
 			}
 			&-desc{
-				width: 420rpx;
-				height:80rpx;
+				width: 380rpx;
+				height:110rpx;
 				box-sizing: border-box;
 				padding:4rpx 0 4rpx 20rpx;
 				display: flex;
@@ -1064,6 +1197,27 @@
 					font-weight: 400;
 					color: #A9ABB4;
 				}
+				&-js{
+					height: 34rpx;
+					background: #FBF2F3;
+					font-size:18rpx;
+					font-family: Microsoft YaHei;
+					font-weight: 400;
+					color: #FF504F;
+					display: inline-flex;
+					align-items: center;
+					margin-top: 5rpx;
+					box-sizing: border-box;
+					padding:0 9rpx;
+				}
+				&-icon{
+					width: 20rpx;
+					height:17rpx;
+					background:url(../../static/goods/merchant_icon.png) no-repeat center;
+					background-size: 100% 100%;
+					margin-right: 6rpx;
+				}
+
 			}
 		}
 		&-right{
@@ -1135,7 +1289,7 @@
 		align-items: center;
 		justify-content: center;
 		&-left{
-			width: 272rpx;
+			width: 152rpx;
 			height:112rpx;
 			box-sizing: border-box;
 			padding:0 40rpx;
@@ -1165,7 +1319,7 @@
 			}
 		}
 		.btn-confirm{
-			width: 462rpx;
+			width: 602rpx;
 			height: 88rpx;
 			background: #FB4E3E;
 			border-radius: 44rpx;
@@ -1240,5 +1394,11 @@
 	}
 	.price-black{
 		color:#14151B
+	}
+	.body-hidden{
+		width: 100%;
+		height:100%;
+		overflow: hidden;
+		position:fixed;
 	}
 </style>

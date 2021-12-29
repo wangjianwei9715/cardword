@@ -328,10 +328,11 @@ export default class PlatformManager {
 							app.update = UpdateManager.getInstance();
 						}
 						let iosVersion = Number(res.app.version.substr(0,1));
+						console.log('iosVersion',res.app.version)
 						if (uni.getSystemInfoSync().platform == 'ios' && iosVersion%2 ==0) {
 							uni.setTabBarItem({
 								index: 1,
-								text: '直播',
+								text: '拆卡',
 								pagePath: '/pages/index/live',
 								iconPath: 'static/index/tabbar_live.png',
 								selectedIconPath: 'static/index/tabbar_live_.png',
@@ -412,7 +413,7 @@ export default class PlatformManager {
 		if (app.platform.systemInfo.platform != 'ios') {
 			uni.setTabBarItem({
 				index: 1,
-				text: '直播',
+				text: '拆卡',
 				pagePath: '/pages/index/live',
 				iconPath: 'static/index/tabbar_live.png',
 				selectedIconPath: 'static/index/tabbar_live_.png',

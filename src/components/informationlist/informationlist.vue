@@ -1,22 +1,10 @@
 <template>
-	<view class="livelist">
-		<view class="livelist-index"  v-for="(item,index) in liveList" :key="index" @click="onClickJumpUrl(item.roomId)">
-			<view class="livelist-top" >
-				<image class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
-				<view class="livelist-top-status">
-					<view v-if="item.stateName=='直播中'" class="livelist-top-status-ing">
-						<view class="icon-ing"></view>直播中
-					</view>
-					<view v-else class="livelist-top-status-wait">
-						<view class="icon-wait"></view>{{item.stateName}}
-					</view>
-				</view>
-				<view class="livelist-top-name">
-					<view class="livelist-top-name-text">{{item.merchant}}</view>
-					<view class="livelist-top-name-text">{{item.time}}</view>
-				</view>
+	<view class="information">
+		<view class="information-index"  v-for="(item,index) in information" :key="index" @click="onClickJumpUrl(item.roomId)">
+			<view class="information-top" >
+				<image class="information-top-image" :src="getGoodsImg(decodeURIComponent(item.cover))" mode="aspectFill"></image>
 			</view>
-			<view class="livelist-center">{{item.title}}</view>
+			<view class="information-center">{{item.title}}</view>
 		</view>
 	</view>
 </template>
@@ -30,7 +18,7 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
-		liveList:any;
+		information:any;
 		getGoodsImg = getGoodsImg;
 		created(){//在实例创建完成后被立即调用
 			
@@ -48,46 +36,39 @@
 </script>
 
 <style lang="scss">
-	.livelist{
+	.information{
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
 		&-index{
-			width: 346rpx;
+			width: 330rpx;
 			border-radius: 20rpx;
 			background:#fff;
 			overflow: hidden;
 			margin-bottom: 20rpx;
 		}
 		&-top{
-			width: 346rpx;
+			width: 330rpx;
 			height:260rpx;
 			position: relative;
 			&-image{
-				width: 346rpx;
+				width: 330rpx;
 				height:260rpx;
 			}
 			&-name{
-				width: 346rpx;
+				width: 330rpx;
 				height: 80rpx;
 				background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
 				box-sizing: border-box;
 				padding:34rpx 20rpx 0 20rpx;
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #FFFFFF;
 				position: absolute;
 				bottom:0;
 				left:0;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				&-text{
-					font-size: 22rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
-					font-weight: 400;
-					color: #FFFFFF;
-					height: 80rpx;
-					line-height: 80rpx;
-				}
 			}
 			&-status{
 				width: 124rpx;
