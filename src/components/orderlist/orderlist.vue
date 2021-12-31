@@ -180,18 +180,16 @@
 					padding:0;
 					.title{
 						width: 100%;
-						height:45rpx;
+						height:40rpx;
 						font-size: 28rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
 						color: #14151A;
 						margin-bottom: 0;
-						overflow: hidden;
 						display: -webkit-box;
-						-webkit-box-orient: vertical;
-						-webkit-line-clamp: 1;
-						-ms-text-overflow: ellipsis;
-						text-overflow: ellipsis;
+						overflow: hidden;
+						text-overflow:ellipsis;
+						white-space: nowrap;
 					}
 					.state{
 						height:30rpx;

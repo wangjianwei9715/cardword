@@ -1,35 +1,6 @@
 <template>
   <view class="content">
-    <view class="header-banner">
-      <statusbar />
-      <view class="tab-header">
-        <view class="icon-back" @click="onClickBack"></view>
-        <view class="header-title">资讯</view>
-        <view class="header-likes" @click="myLikes">我的点赞</view>
-      </view>
-      <view class="header-search">
-        <view class="search-icon"></view>
-        <input
-          class="search-input"
-          type="text"
-          placeholder-style="color:#AAAABB"
-          v-model="searchText"
-          placeholder="搜索"
-          @confirm="onClickSearch"
-          confirm-type="search"
-        />
-      </view>
-      <view class="tabc-content">
-        <tabs
-          :tabs="goodTab"
-          :tabsCheck="goodTabCheck"
-          @tabsClick="onClickListTabs"
-        ></tabs>
-      </view>
-    </view>
-
     <view class="live-content">
-      <statusbar />
       <view class="information">
         <view
           class="information-index"
@@ -69,72 +40,16 @@ import { getGoodsImg,dateFormatMS } from "@/tools/util"
 export default class ClassName extends BaseNode {
   getGoodsImg = getGoodsImg;
   dateFormatMS = dateFormatMS;
-  searchText = "";
-  pullDownRefresh = false;
-  goodTab = [
-    { id: 0, name: "最新" },
-    { id: 100, name: "热门" },
-    { id: 1, name: "公告" },
-    { id: 2, name: "卡圈资讯" },
-    { id: 3, name: "体育快报" },
-  ];
-  goodTabCheck = 0;
   currentPage = 1;
   pageSize = 20;
   noMoreData = false;
   information: { [x: string]: any } = [];
-  searchData: any = [];
-  scrollId = "";
   onLoad(query: any) {
     this.reqNewData();
-    this.onEventUI('atticleLike',()=>{
-      this.information = [];
-      this.currentPage = 1;
-      this.noMoreData = false;
-      this.reqNewData()
-    })
   }
   //   加载更多数据
   onReachBottom() {
     this.reqNewData();
-  }
-  onClickListTabs(id: any) {
-    if (id == this.goodTabCheck) {
-      return;
-    }
-    this.goodTabCheck = id;
-    this.information = [];
-    this.currentPage = 1;
-    this.noMoreData = false;
-    this.reqNewData();
-  }
-  onClickBack() {
-    uni.navigateBack({
-      delta: 1,
-    });
-  }
-  onClickSearch() {
-    // 搜索
-    this.information = [];
-    this.currentPage = 1;
-    this.noMoreData = false;
-    this.reqNewData();
-  }
-  onClickJumpUrl(code: any) {
-    uni.navigateTo({
-      url:'/pages/information/details?code=2A3234859'
-    })
-  }
-  myLikes(){
-    if(app.token.accessToken == ''){
-      uni.navigateTo({
-        url:'/pages/login/login'
-      })
-      return;
-    }
-    uni.navigateTo({
-      url:'/pages/information/mylikes'
-    })
   }
   reqNewData(cb?: Function) {
     // 获取更多商品
@@ -144,11 +59,9 @@ export default class ClassName extends BaseNode {
 
     let params: any = {
       pageIndex: this.currentPage,
-      pageSize: this.pageSize,
-      qt: this.goodTabCheck,
-      q: encodeURIComponent(this.searchText),
+      pageSize: this.pageSize
     };
-    app.http.Get("article/homelist", params, (data: any) => {
+    app.http.Get("article/likeslist", params, (data: any) => {
       if (data.totalPage <= this.currentPage) {
         this.noMoreData = true;
       }
@@ -229,7 +142,7 @@ page {
 .live-content {
   width: 100%;
   box-sizing: border-box;
-  padding: 280rpx 29rpx 20rpx 29rpx;
+  padding: 20rpx 29rpx 20rpx 29rpx;
 
   position: relative;
   z-index: 2;

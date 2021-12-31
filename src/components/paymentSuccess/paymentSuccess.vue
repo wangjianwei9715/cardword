@@ -2,8 +2,8 @@
 	<view class="payment" v-show="showPaySuccess">
 		<view class="payment-showdow" ></view>
 		<view class="payment-popup">
-			<view class="popup-icon1"></view>
-			<view class="popup-text1">支付成功</view>
+			<view class="popup-icon1" v-if="!showJoin"></view>
+			<view class="popup-text1">{{showJoin?'加入群聊':'支付成功'}}</view>
 			<view class="popup-icon2"></view>
 			<view class="popup-icon3"></view>
 			<view class="popup-text2">截图微信扫码加入社群</view>
@@ -21,7 +21,8 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
 		showPaySuccess!:boolean;
-
+		@Prop({default:false})
+		showJoin!:boolean|undefined;
 
 
 

@@ -40,7 +40,7 @@
 						</view>
 					</view>
 					<view class="header-right-end" v-else>
-						{{goodsState==-1||goodsState==0?'等待开售':'已结束'}}
+						{{goodsState==-1||goodsState==0?'等待开售':switchGoodsState(goodsState)}}
 					</view>
 				</view>
 				<view class="header">
@@ -423,6 +423,24 @@
 			}
 			this.goodsSpe.spec.name = data.spec.name;
 			this.goodsSpe.spec_str.name = data.spec.num+'张';
+		}
+		switchGoodsState(state:any){
+			switch(state){
+				case 0:
+					return '等待开售';
+				case 1:
+					return '出售中';
+				case 2:
+					return '等待直播';
+				case 3:
+					return '即将直播';
+				case 4:
+					return '直播中';
+				case -1:
+					return '等待开售';
+				default:
+					return '已结束'
+			}
 		}
 		onClickTipBtn(item:any){
 			if(item.id==1){

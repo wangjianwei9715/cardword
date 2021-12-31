@@ -364,11 +364,11 @@
 					}
 				})
 			}else if(type==2){
-				uni.showToast({
-					title:'暂时无法使用微信支付，请使用支付宝支付',
-					icon:'none'
-				})
-				return;
+				// uni.showToast({
+				// 	title:'暂时无法使用微信支付，请使用支付宝支付',
+				// 	icon:'none'
+				// })
+				// return;
 				params.channel = 'weixin';
 				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
 					if(res.wechat){

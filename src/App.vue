@@ -12,19 +12,17 @@ export default Vue.extend({
   onLaunch() {
     console.log("App Launch");
     if (process.env.NODE_ENV === "development") {
-      console.log("开发环境");
-      app.localTest=true;
-      app.domaintest='http://192.168.7.114:8701/api/v1/';
-      app.bussinessApiDomain='http://192.168.7.114:8701/api/v1/';
+      // console.log("开发环境");
+      // app.localTest=true;
+      // app.domaintest='http://192.168.7.113:8701/api/v1/';
+      // app.bussinessApiDomain='http://192.168.7.113:8701/api/v1/';
       
     } else {
       console.log("生产环境");
       app.localTest = false;
       app.domaintest = "https://server.ssl1.ka-world.com/api/v1/";
       app.bussinessApiDomain = "https://server.ssl1.ka-world.com/api/v1/";
-
     }
-    let needPushIdentifier = true;
     const loginToken = uni.getStorageSync("token");
     if (loginToken) {
       app.token = JSON.parse(loginToken);
@@ -75,9 +73,10 @@ export default Vue.extend({
     // #endif
     uni.$on("loginSuccess", () => {
       // #ifdef APP-PLUS
-      if (needPushIdentifier) {
+      if (app.needPushIdentifier) {
         let info = plus.push.getClientInfo();
         console.log("getClientInfo", info);
+        
         HttpRequest.getIns().Post("user/bindPushIdentifier", {
           id: info.clientid,
         });

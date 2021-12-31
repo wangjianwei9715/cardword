@@ -98,6 +98,7 @@
 	export default class index extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
 		topAddList:any = [
+			{pic:'../../static/index/banner2.jpg',url:'/pages/information/details?code=2A3234859'},
 			{pic:'../../static/index/banner1.jpg',url:'/pages/act/yiyuan/index'}
 		];
 		goodsMiniList = [
@@ -117,8 +118,8 @@
 		]
 		tabList = [
 			{img:'../../static/index/tab0.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
-			// {img:'../../static/index/tab1.png',text:'资讯',url:'/pages/information/list'},
-			{img:'../../static/index/tab1.png',text:'资讯',url:''},
+			{img:'../../static/index/tab1.png',text:'资讯',url:'/pages/information/list'},
+			// {img:'../../static/index/tab1.png',text:'资讯',url:''},
 			{img:'../../static/index/tab2.png',text:'查价',url:'/pages/index/ref'},
 			{img:'../../static/index/tab3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
 		];
@@ -127,10 +128,10 @@
 		];
 		goodTab = [
 			{id:1,name:'推荐'},
+			{id:3,name:'新品'},
 			// {id:11,name:'自选'},
 			{id:4,name:'高端'},
 			{id:2,name:'即将拼成'},
-			{id:3,name:'新品'},
 			{id:5,name:'优惠'},
 		];
 		goodTabCheck = 1;
@@ -414,7 +415,7 @@
 			})
 		}
 		onClickJumpUrl(item:any){
-			if(item.text=='拼团' ||item.text=='商家列表'){
+			if(item.text=='拼团' ||item.text=='商家列表'||item.text=='资讯'){
 				uni.navigateTo({
 					url: item.url
 				})

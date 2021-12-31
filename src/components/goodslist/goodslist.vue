@@ -1,8 +1,10 @@
 <template name="goodslist">
 	<view class="content" >
 		<view class="goodslist-index" v-for="item in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
-			<view v-if="item.isSelect" class="select-team">自选球队</view>
-			<image class="goodslist-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
+			<view class="goodslist-pic">
+				<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
+				<image class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
+			</view>
 			<view class="goodslist-right">
 				<view class="goodslist-title">{{item.title}}</view>
 				<view v-if="item.discount&&item.discount!=''">
@@ -137,6 +139,12 @@
 			height:230rpx;
 			border-radius:15rpx;
 			margin-right: 24rpx;
+			overflow: hidden;
+			position: relative;
+		}
+		&-pic-image{
+			width: 230rpx;
+			height:230rpx;
 		}
 		&-right{
 			width: 420rpx;
@@ -267,20 +275,12 @@
 		font-family:Microsoft YaHei;
 	}
 	.select-team{
-		height: 28rpx;
-		background: linear-gradient(90deg, #A36DFD, #D6ABFF);
-		border-radius: 0rpx 4rpx 4rpx 0rpx;
-		font-size: 13rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #FFFFFF;
-		text-align: center;
-		line-height: 28rpx;
+		width: 81rpx;
+		height: 37rpx;
 		position: absolute;
-		left:24rpx;
-		top:36rpx;
+		left:0;
+		top:0;
 		z-index: 1;
 		box-sizing: border-box;
-		padding:0 5rpx;
 	}
 </style>

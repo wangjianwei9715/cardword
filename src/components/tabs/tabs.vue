@@ -2,7 +2,10 @@
 	<view class="list">
 		<view class="index" v-for="item in tabs" :key="item.id" @click="onClickIndex(item.id)">
 			<view v-if="item.name=='自选'" :class="{'zixuan':true,'zixuan-check':tabsCheck==item.id}"></view>
-			<view v-else :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]">{{item.name}}</view>
+			<view v-else :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]">
+				{{item.name}}
+				<view v-if="item.name=='新品'" class="new-icon"></view>
+			</view>
 		</view>
 		<!-- <view class="line">
 			<view class="current-line"></view>
@@ -93,6 +96,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		position: relative;
 	}
 	.current{
 		font-size:34rpx;
@@ -125,5 +129,15 @@
 		background:url(../../static/index/check_team_.png) no-repeat center;
 		background-size: 100% 100%;
 		transform: scale(1);
+	}
+	.new-icon{
+		width: 53rpx;
+		height:25rpx;
+		background:url(../../static/index/new_icon.png) no-repeat center;
+		background-size: 100% 100%;
+		position: absolute;
+		top:0;
+		left:50%;
+		// margin-left:-25rpx
 	}
 </style>

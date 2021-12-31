@@ -75,6 +75,8 @@
 				<view class="icon-right"></view>
 			</view>
 		</view>
+
+		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
 	</view>
 </template>
 
@@ -104,13 +106,13 @@
 			// {id:3,name:'常见问题',url:''},
 			{id:4,name:'用户协议',url:'/pages/userinfo/privacy'},
 			{id:5,name:'关于我们',url:'/pages/userinfo/about_us'},
-			// {id:6,name:'加入群聊',url:''},
+			{id:6,name:'加入群聊',url:''},
 		]
 		countInterval:any;
 		countTime = -1;
 		countNum = 0;
 		countStr = '';
-		
+		showPaySuccess = false;
 		onLoad(query:any) {
 			this.onEventUI('updateToken',()=>{
 				this.initPageData();
@@ -216,6 +218,8 @@
 				uni.navigateTo({
 					url: '/pages/userinfo/talk?targetUserId='+this.infoData.kefuUserId[0]
 				})
+			}else if(item.name=='加入群聊'){
+				this.showPaySuccess = true
 			}else{
 				uni.navigateTo({
 					url:item.url
@@ -273,6 +277,9 @@
 					duration: 2000
 				});
 			})
+		}
+		onClickcancelPaySuccess(){
+			this.showPaySuccess = false;
 		}
 		
 	}

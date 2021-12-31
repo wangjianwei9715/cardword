@@ -16,14 +16,14 @@
 					<view :class="checkPay==1?'payment-checked':'payment-check'"></view>
 				</view>
 			</view>
-			<view class="payment-list">
+			<!-- <view class="payment-list">
 				<view class="payment-list-left">
 					<view class="icon-wx"></view>微信支付
 				</view>
 				<view class="payment-list-right" @click="checkPay=2">
 					<view :class="checkPay==2?'payment-checked':'payment-check'"></view>
 				</view>
-			</view>
+			</view> -->
 			<view class="payment-btn" @click="onClickPay">立即支付{{countTimeCopy==0?'':countStr}}</view>
 		</view>
 	</view>

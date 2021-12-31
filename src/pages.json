@@ -323,11 +323,38 @@
                     "style" :                                                                                    
                     {
                         "navigationStyle": "custom",
-                        "enablePullDownRefresh": false
+                        "enablePullDownRefresh": false,
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                     }
                     
                 }
                 
+                ,{
+                    "path" : "details",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false,
+                    "navigationBarBackgroundColor": "#ffffff",
+                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                }
+                
+                }
+                ,{
+                    "path" : "mylikes",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "我的点赞",
+                    "enablePullDownRefresh": false,
+                    "navigationBarBackgroundColor": "#ffffff",
+                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                }
+                
+                }
             ]
             
         },

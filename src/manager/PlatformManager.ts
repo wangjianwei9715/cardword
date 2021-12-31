@@ -260,7 +260,6 @@ export default class PlatformManager {
 		// #endif
 	}
 	appLuanch(loginToken: any, cb?: Function) {
-		let needPushIdentifier = true;
 		if (!app.localTest) {
 			// launchUrl：             储存打乱顺序后的launch
 			// configLaunchUrl：       access保存的launch数据
@@ -382,7 +381,7 @@ export default class PlatformManager {
 			console.log("dataApiDomain==========", app.dataApiDomain);
 		}
 		if (loginToken) {
-			needPushIdentifier = false;
+			app.needPushIdentifier = false;
 			let params = {
 				uuid: app.platform.deviceID,
 				os: app.platform.systemInfo.platform,
@@ -401,7 +400,7 @@ export default class PlatformManager {
 				}
 				if (data.data.mustBindPhone) {
 					uni.reLaunch({
-						url: "/pages/login/bindphone",
+						url: "/pages/login/bind_phone",
 					});
 				}
 				uni.$emit("loginSuccess");

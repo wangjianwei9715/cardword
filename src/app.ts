@@ -32,7 +32,7 @@ export module app{
     export let platform = PlatformManager.getIns();
 	export let payment = PayManager.getIns();
     export let http =  HttpRequest.getIns();
-
+    export let needPushIdentifier = true;
     export let iosPlatform = false
     export let iosVersion = 1
     export let protobuf:any = null;

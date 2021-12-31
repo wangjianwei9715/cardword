@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "1.9.3",
+    "versionName" : "1.9.6",
     "versionCode" : 100,
     "transformPx" : false,
     "networkTimeout" : {
@@ -22,7 +22,6 @@
             "Share" : {},
             "Push" : {}
         },
-        
         /* 模块配置 */
         "distribute" : {
             /* 应用发布信息 */
