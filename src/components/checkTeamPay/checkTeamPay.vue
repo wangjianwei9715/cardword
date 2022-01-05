@@ -11,7 +11,7 @@
 						<view class="header-price">¥<text>{{branchData[branchCheckIndex].price}}</text></view>
 						<view class="header-teamname">“{{teamData[teamCheckIndex].name}}”</view>
 						<view class="header-teamtip">{{branchData[branchCheckIndex].name}}</view>
-						<button  class="header-shopping-btn" @click="onClickJoinCart">加入购物车</button>
+						<button  class="header-shopping-btn" :class="{'cart-have':getCartHaveIndex()}" @click="onClickJoinCart">{{getCartHaveIndex()?'已在购物车':'加入购物车'}}</button>
 					</view>
 				</view>
 				<view class="teamtion-index">
@@ -31,7 +31,7 @@
 				<view class="teamtion-index">
 					<view class="branch-list">
 						<view :class="{'branch-index':true,'branch-index-check':branchCheckIndex==index}" v-for="(item,index) in branchData" :key="item.id" @click="onClickBranchCheck(index)">
-							{{item.name}}￥{{item.price}}
+							<view class="branch-index-name">{{item.name}} </view>￥{{item.price}}
 							<view class="branch-sq" v-if="item.soldOut||item.lock">{{item.soldOut?'售罄':'未支付'}}</view>
 						</view>
 					</view>
@@ -48,19 +48,19 @@
 						
 						<view class="cart-list" v-if="cartData.list&&cartData.list!=''">
 							<view :class="{'cart-index':true}" v-for="(item,index) in cartData.list" :key="item.id" >
-								{{item.name}}￥{{item.price}}
+								<view class="cart-index-name">{{item.name}} </view>￥{{item.price}}
 								<view class="branch-sq" v-if="item.soldOut||item.lock">{{item.soldOut?'售罄':'未支付'}}</view>
 								<view class="cart-delete" @click="onClickDelCartIndex(index)"></view>
 							</view>
 						</view>
-						<view v-else class="cart-empty">空空如也~</view>
+						<view v-else class="cart-empty">请先将编号加入购物车后购买</view>
 					</view>
 					
 					<view class="bottom-btn">
 						<view class="btncheck-content">
 							<view class="btn-left">合计<text class="btn-left-price">￥{{cartData.amount}}</text></view>
 							<view v-if="countTimeCopy>0" class="btn-right-count" ><text class="count-text">开售倒计时</text> {{countTimeCopy==0?'':' '+countStr}}</view>
-							<view v-else class="btn-right" @click="onClickSettlement">去结算</view>
+							<view v-else class="btn-right" :class="{'btn-empty':cartData.available==0}" @click="onClickSettlement">去结算</view>
 						</view>
 					</view>
 				</view>
@@ -84,7 +84,7 @@
 		teamCheckIndex:number|undefined;
 		// 自选球队 分支选择
 		@Prop({ default: 0 })
-		branchCheckIndex:number|undefined;
+		branchCheckIndex:any;
 		// 自选球队 球队列表
 		@Prop({ default: [] })
 		teamData:any;
@@ -136,6 +136,9 @@
 			this.$emit("cartDel",index);
 		}
 		onClickJoinCart(){
+			// if(this.getCartHaveIndex()){
+			// 	return;
+			// }
 			this.$emit('joinCart')
 		}
 		// 去结算
@@ -152,6 +155,14 @@
 					clearInterval(this.countInterval)
 				}
 			},1000)
+		}
+		getCartHaveIndex(){
+			let branchId = this.branchData[this.branchCheckIndex].id;
+			for(let i in this.cartData.list){
+				if(this.cartData.list[i].noId == branchId){
+					return true;
+				}
+			}
 		}
 	}
 </script>
@@ -240,7 +251,7 @@
 			}
 			.header-teamname{
 				width: 100%;
-				font-size: 22rpx;
+				font-size: 24rpx;
 				font-family: Microsoft YaHei;
 				text-indent: -10rpx;
 				font-weight: 400;
@@ -248,22 +259,20 @@
 			}
 			.header-teamtip{
 				width: 100%;
-				font-size: 20rpx;
+				font-size: 22rpx;
 				font-family: Microsoft YaHei;
 				font-weight: 400;
-				color: #AAAABB;
-				overflow: hidden;
-				text-overflow:ellipsis;
-				white-space: nowrap;
+				color: #AAAAAA;
+		
 			}
 			.header-shopping-btn{
 				width: 207rpx;
-				height: 53rpx;
+				height: 60rpx;
 				background: #FB4E3E;
 				text-align: center;
-				line-height: 53rpx;
-				border-radius: 27rpx;
-				font-size: 22rpx;
+				line-height: 60rpx;
+				border-radius: 30rpx;
+				font-size: 28rpx;
 				font-family: Microsoft YaHei;
 				font-weight: 400;
 				color: #FFFFFF;
@@ -314,7 +323,7 @@
 				height:158rpx;
 				background:#FFF;
 				border-radius: 10rpx;
-				margin-right:10rpx;
+				margin-right:12rpx;
 				overflow: hidden;
 				display: inline-flex;
 				align-items: center;
@@ -324,13 +333,14 @@
 				padding:10rpx 0;
 				border: 1rpx solid #fff;
 				margin-top: 1rpx;
+				
 				&-img{
 					width: 100rpx;
 					height:100rpx;
 				}
 				&-name{
 					width:120rpx;
-					font-size: 20rpx;
+					font-size: 22rpx;
 					font-family: Microsoft YaHei;
 					font-weight: 400;
 					color: #34363A;
@@ -363,13 +373,17 @@
 		width: 100%;
 		margin-top: 30rpx;
 		padding-bottom: 2rpx;
+		display: flex;
+		flex-wrap: wrap;
+		overflow-x: hidden;
 	}
 	.branch-index{
+		max-width: 100%;
 		height: 46rpx;
 		background: #FFFFFF;
 		border: 1rpx solid #E2E2E3;
 		border-radius: 23rpx;
-		font-size: 20rpx;
+		font-size: 22rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #34363A;
@@ -377,9 +391,23 @@
 		line-height: 46rpx;
 		padding: 0 28rpx;
 		box-sizing: border-box;
-		display: table;
 		margin-bottom: 20rpx;
 		position:relative;
+		margin-right: 20rpx;
+		display: flex;
+		align-items: center;
+	}
+	.branch-index-name{
+		max-width: 90%;
+		height: 46rpx;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+		font-size: 22rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #34363A;
+		line-height: 46rpx;
 	}
 	.branch-sq{
 		height: 27rpx;
@@ -400,6 +428,9 @@
 	}
 	.branch-index-check{
 		border: 1rpx solid #FB4E3E;
+		color:#FB4E3E
+	}
+	.branch-index-check .branch-index-name{
 		color:#FB4E3E
 	}
 	.teamtion-bottom{
@@ -434,6 +465,7 @@
 			margin-top: 30rpx;
 		}
 		.cart-index{
+			max-width: 95%;
 			height: 46rpx;
 			background: #F2F2F2;
 			border-radius: 4rpx;
@@ -449,6 +481,20 @@
 			margin-right: 20rpx;
 			margin-bottom: 20rpx;
 			position: relative;
+			display: inline-flex;
+			align-items: center;
+		}
+		.cart-index-name{
+			max-width: 90%;
+			height: 46rpx;
+			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+			font-size: 22rpx;
+			font-family: Microsoft YaHei;
+			font-weight: 400;
+			color: #34363A;
+			line-height: 46rpx;
 		}
 	}
 	.cart-delete{
@@ -490,7 +536,7 @@
 			.btn-right{
 				width: 500rpx;
 				height: 88rpx;
-				background: #FB4E3E;
+				background:#FB4E3E;
 				border-radius: 44rpx;
 				text-align: center;
 				line-height: 88rpx;
@@ -521,10 +567,16 @@
 	}
 	.cart-empty{
 		width: 100%;
-		height:100rpx;
-		line-height: 100rpx;
-		color:#AAAAAA;
-		font-size: 26rpx;
+		height:190rpx;
+		line-height: 190rpx;
+		color:#ACAEB7;
+		font-size: 24rpx;
 		text-align: center;
+	}
+	.btn-empty{
+		background:#AAAAAA !important
+	}
+	.cart-have{
+		background:#AAAAAA !important
 	}
 </style>

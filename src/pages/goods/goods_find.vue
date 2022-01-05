@@ -89,6 +89,14 @@
 			uni.removeStorageSync("searchData")
 		}
 		onClickSearch(text:string){
+			let hideGoods = /GT{1}\d{7}/g
+			if(hideGoods.test(text)){
+				let code:any = text.match(hideGoods);
+				uni.navigateTo({
+					url: '/pages/goods/goods_details?id='+code
+				})
+				return;
+			}
 			if(text!=''){
 				// 保存本地搜索记录5条
 				let searchText = text

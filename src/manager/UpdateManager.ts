@@ -1,5 +1,6 @@
 import HttpRequest from "../net/HttpRequest";
 import BaseNode from '../base/BaseNode.vue';
+import { app } from "@/app";
 export default class UpdateManager {
   private static instance: UpdateManager;
   apkNeedUpdate = false;
@@ -51,6 +52,7 @@ export default class UpdateManager {
     plus.runtime.getProperty(plus.runtime.appid||'', (widgetInfo) => {
       let myapp = getApp().globalData || {};
       myapp.version = widgetInfo.version
+      app.version = myapp.version
       console.log('widgetInfo===',widgetInfo);
       HttpRequest.getIns().Get("app/update", {
         name: widgetInfo.name,

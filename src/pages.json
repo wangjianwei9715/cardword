@@ -164,7 +164,7 @@
 				"pagePath": "pages/index/live",
 				"iconPath": "static/index/tabbar_live.png",
 				"selectedIconPath": "static/index/tabbar_live_.png",
-				"text": "直播"
+				"text": "拆卡"
 			},
             // #endif
 			{
@@ -389,7 +389,7 @@
                     "navigationBarBackgroundColor": "#ffffff",
                     "navigationBarTextStyle": "black",
                     //  #endif
-                    "enablePullDownRefresh": false,
+                    "enablePullDownRefresh": true,
                     "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                     "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }

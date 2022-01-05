@@ -1,6 +1,6 @@
 <template>
 	<view class="bottom-tips">
-		<view class="bottom-tips-content" :style="'transform:translateY(-'+marginHeight+'rpx)'">
+		<view class="bottom-tips-content" :style="'transform:translateY(-'+marginHeight+'px)'">
 			<view class="bottom-tips-index" v-for="item in tipsData" :key="item.id">
 				<image class="bottom-tips-img" :src="item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFit"></image>
 				<view class="bottom-tips-desc">{{setTime(item.time)}}加入拼团*{{item.num}}</view>
@@ -23,11 +23,18 @@
 		defaultAvatar = app.defaultAvatar
 		tipsInter:any;
 		marginHeight = 0;
+		tipsHeight:any = 0
+	
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
 			this.tipsInterval()
+			const query = uni.createSelectorQuery();
+			query.select('.bottom-tips').boundingClientRect(data => {
+				this.tipsHeight = data.height
+			}).exec();
+
 		}
 		destroyed(){
 			clearInterval(this.tipsInter)
@@ -44,7 +51,8 @@
 			},4000);
 		}
 		tipsScroll(){
-			this.marginHeight+= 66
+			this.marginHeight+= this.tipsHeight;
+			
 		}
 		setTime(time:any){
 			let newDate:any = new Date;
@@ -64,8 +72,8 @@
 
 <style lang="scss">
 	.bottom-tips{
-		width: 500rpx;
-		height:60rpx;
+		width: 300rpx;
+		height:56rpx;
 		position: fixed;
 		box-sizing: border-box;
 		left:32rpx;
@@ -73,12 +81,11 @@
 		z-index: 9;
 		overflow: hidden;
 		&-content{
-			width: 300rpx;
 			transition: all 0.2s linear;
 			box-sizing: border-box;
-			// display:flex;
-			// align-items: flex-start;
-			// flex-wrap: wrap;
+			display:inline-flex;
+			align-items: flex-start;
+			flex-wrap: wrap;
 		}
 		&-index{
 			height: 56rpx;
@@ -88,7 +95,6 @@
 			padding:0 8rpx;
 			display: flex;
 			align-items: center;
-			margin-bottom: 10rpx;
 		}
 		&-img{
 			width: 40rpx;

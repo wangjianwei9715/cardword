@@ -27,7 +27,7 @@
 		<view class="detail-index-bg">
 			<view class="detail-bg">
 				<view :class="['header-content',{'header-content-end':goodsState!=1}]">
-					<view class="header-price" :class="goodsState!=1?'price-black':''">¥<text>{{goodsData.price}}</text></view>
+					<view class="header-price" :class="goodsState!=1?'price-black':''">¥<text>{{goodsData.price}}</text><text class="price-qi">{{goodsData.isSelect?'起':''}}</text></view>
 					<view class="header-right" v-if="goodsState==1">
 						<view class="icon-end">距结束</view>
 						<view class="countdown-content">
@@ -142,7 +142,7 @@
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="btn-confirm" @click="onClickBuy()">立即购买</view>
+			<view class="btn-confirm" @click="onClickBuy()">{{goodsData.isSelect?'选择编号':'立即购买'}}</view>
 		</view>
 		<view class="btn-contented" v-else-if="goodsState>=2">
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
@@ -220,7 +220,19 @@
 		branchData:any = [];
 		branchCheckIndex:number = 0;
 		cartData:any = [];
+		// 支付方式
+		payChannel:any = [
+			{
+				"name": "支付宝支付",
+				"channel": "alipay"
+			},
+			{
+				"name": "微信支付",
+				"channel": "wechat"
+			}
+		]
 		onLoad(query:any) {
+			
 			// #ifdef MP
 			uni.showModal({
 				title: '提示',
@@ -310,6 +322,10 @@
 					this.favorType = data.favorite<=0?false:true;
 					// 数据详情
 					this.goodsData = data.good;
+					// 支付方式
+					// if(data.payChannel){
+					// 	this.payChannel = data.payChannel
+					// }
 					// 状态
 					this.goodsState = data.good.state;
 					// 倒计时
@@ -404,6 +420,9 @@
 					this.countDown --;
 					this.getTime()
 				}else{
+					if(this.goodsState==1){
+						this.goodsState = -99
+					}
 					clearInterval(this.count_down)
 				}
 			},1);
@@ -619,7 +638,7 @@
 				return;
 			}
 			uni.navigateTo({
-				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))
+				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))
 			})
 		}
 		
@@ -740,16 +759,9 @@
 				})
 				return;
 			}
-			if(this.cartData.available!=this.cartData.num){
-				uni.showToast({
-					title:'购物车中有不能支付的商品',
-					icon:'none'
-				})
-				return;
-			}
 			
 			uni.navigateTo({
-				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&cart='+encodeURIComponent(JSON.stringify(this.cartData))
+				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&cart='+encodeURIComponent(JSON.stringify(this.cartData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))
 			})
 			this.onClickTeamCheckCancel()
 		}
@@ -892,6 +904,16 @@
 	}
 	.header-price text{
 		font-size:60rpx;
+	}
+	.header-price .price-qi{
+		font-size: 20rpx;
+		color:#ffffff;
+		font-weight: 200;
+	}
+	.price-black .price-qi{
+		font-size: 20rpx;
+		color:#ACAEB7;
+		font-weight: 200;
 	}
 	.header-right{
 		width: 240rpx;

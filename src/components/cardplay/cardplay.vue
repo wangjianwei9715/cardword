@@ -59,6 +59,11 @@
 				id:5,
 				title:'随机卡盒',
 				desc:'系统为玩家推送随机编号。开卡时，会对原箱中的卡盒进行编号，玩家获得对应编号卡盒中的所有球星卡。'
+			},
+			{
+				id:6,
+				title:'自选球队',
+				desc:'玩家可在选择编号页面自由选购球队及编号。开卡结束后，玩家获得对应编号的所有球星卡'
 			}
 		]
 		typeData = [
@@ -104,7 +109,7 @@
 <style lang="scss">
 	.operation-content{
 		width: 100%;
-		height:950rpx;
+		height:1050rpx;
 		position: fixed;
 		left:0;
 		bottom:0;
@@ -112,7 +117,7 @@
 		box-sizing: border-box;
 		transition: all 0.3s linear;
 		-webkit-transition: -webkit-transform 0.3s;
-		transform: translateY(950rpx);
+		transform: translateY(1050rpx);
 		z-index:99;
 		background:#fff;
 		padding:40rpx 32rpx;

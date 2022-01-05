@@ -70,10 +70,13 @@
 	  <!-- 自选球队编号 -->
       <view class="yunfei-info check-team" v-if="cartData!=''">
 	    	<view class="item-name">已选编号</view>
-        <view class="yunfei-item" v-for="(item,index) in cartData.list" :key="item.id">
-          <text class="item-name">{{index+1}}.{{item.name}}</text>
-          <text class="item-name">¥{{ item.price }}</text>
+        <view v-for="(item,index) in cartData.list" :key="item.id">
+          <view class="yunfei-item" v-if="!item.soldOut&&!item.lock">
+            <text class="item-name">{{index+1}}.{{item.name}}</text>
+            <text class="item-name">¥{{ item.price }}</text>
+          </view>
         </view>
+        
         
       </view>
 	  <!--  -->
@@ -200,10 +203,10 @@ export default class ClassName extends BaseNode {
       // #ifdef MP
       this.goodsData = JSON.parse(decodeURIComponent(query.data));
       // #endif
-	  if(query.cart){
-		  this.cartData = JSON.parse(query.cart);
-		  console.log(this.cartData)
-	  }
+      if(query.cart){
+        this.cartData = JSON.parse(query.cart);
+        console.log(this.cartData)
+      }
       this.getOnePrice();
       this.maxNum =
         this.goodsData.totalNum -
@@ -344,7 +347,9 @@ export default class ClassName extends BaseNode {
 	}else{
 		let id = []
 		for(let i in this.cartData.list){
-			id.push(this.cartData.list[i].noId)
+      if(!this.cartData.list[i].soldOut&&!this.cartData.list[i].lock){
+        id.push(this.cartData.list[i].noId)
+      }
 		}
 		params.id = id
 		url = "good/topay/"+this.goodsData.goodCode+'/select'

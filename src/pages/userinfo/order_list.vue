@@ -54,12 +54,19 @@
 			if(query.type){
 				this.orderTabCheck = query.type
 			}
+			this.againReqNewData()
 		}
 		onShow(){
-			// #ifndef MP
-			this.againReqNewData()
-			// #endif 
 			
+		}
+		//   下拉刷新
+		onPullDownRefresh(){
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.orderList = []
+			this.reqNewData(()=>{
+				uni.stopPullDownRefresh();
+			}) 
 		}
 		onReachBottom(){
 			this.reqNewData()

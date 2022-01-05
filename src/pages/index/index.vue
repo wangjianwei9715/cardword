@@ -4,25 +4,31 @@
 			<view class="panel-shadow" @touchmove.stop.prevent="doNothing"></view>
 			<view class="panel-bg">
 				<view class="panel-title">
-					版本更新公告
+					<view class="panel-title-text">版本更新公告</view>
+					<view class="panel-title-ver">V{{version}}</view>
 				</view>
 				<view class="panel-content">
-					<text>
-						{{updateMsg}}
-					</text>
+					<view class="progress-msg">
+						<text>
+							{{updateMsg}}
+						</text>
+					</view>
+					<button v-if="!updateStart" class="download-button" @click="onClickDownload">立即更新</button>
+					<view v-else class="download-text">{{downloadText}}</view>
 				</view>
-				<button v-if="!updateStart" class="download-button" @click="onClickDownload">立即更新</button>
-				<view v-else class="download-text">{{downloadText}}</view>
+				
 			</view>
 		</view>
 		<view v-if="wgtUpdate" class="update-content">
 			<view class="panel-shadow"></view>
 			<view class="panel-bg">
 				<view class="panel-title">
-					更新进度
+					<view class="panel-title-text">正在更新</view>
+					<view class="panel-title-ver">V{{version}}</view>
 				</view>
 				<view class="panel-content">
-					<progress :percent="wgtUpNum" active-mode="forwards" active stroke-width="6" border-radius="20px" activeColor="#4DCDCC" />
+					<view class="progress-content"><progress :percent="wgtUpNum" active-mode="forwards" active stroke-width="6" border-radius="20px" activeColor="#FB4E3E" /></view>
+					<view class="progress-wait">正在更新中，请您耐心等待...</view>
 				</view>
 			</view>
 		</view>
@@ -41,8 +47,8 @@
 			<statusbar/>
 			<view class="banner-content">
 				
-				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff"> 
-					<swiper-item v-for="(item,index) in topAddList" :key="index" @click="onClickTopAdd">
+				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff" duration="200"> 
+					<swiper-item v-for="(item,index) in topAddList" :key="index">
 						<image class="swiper-image" :src="item.pic" mode="aspectFits" @click="onClickTopJumpUrl(item.url)"></image>
 					</swiper-item>
 					
@@ -87,6 +93,8 @@
 			<goodslist  :goodsList="goodsMiniList" :pageIndex="currentPage"  @send="onClickMiniGood" :mini="true" :presell="false"/>
 		</view>
 		<!-- #endif -->
+
+		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
 	</view>
 </template>
 
@@ -99,7 +107,8 @@
 		statusBarHeight = app.statusBarHeight;
 		topAddList:any = [
 			{pic:'../../static/index/banner2.jpg',url:'/pages/information/details?code=2A3234859'},
-			{pic:'../../static/index/banner1.jpg',url:'/pages/act/yiyuan/index'}
+			{pic:'../../static/index/banner3.jpg',url:'社群'},
+			{pic:'../../static/index/banner1.jpg',url:'/pages/act/yiyuan/index'},
 		];
 		goodsMiniList = [
 			{
@@ -128,8 +137,8 @@
 		];
 		goodTab = [
 			{id:1,name:'推荐'},
+			{id:11,name:'自选'},
 			{id:3,name:'新品'},
-			// {id:11,name:'自选'},
 			{id:4,name:'高端'},
 			{id:2,name:'即将拼成'},
 			{id:5,name:'优惠'},
@@ -152,6 +161,8 @@
 		networkStatus:any;
 		getLuanchFnc:any;
 		onNetWorkFunc:any;
+		showPaySuccess = false;
+		version = ''
 		onLoad(query:any) {
 			// uni.$emit('reLogin')
 			if (app.update.apkNeedUpdate) {
@@ -182,6 +193,17 @@
 			// #ifdef MP-WEIXIN
 			app.platform.wechatLogin();
 			// #endif
+
+			this.onEventUI("apkNeedUpdate", () => {
+				this.updateShow();
+			});
+
+			this.onEventUI("wgtNeedUpdate", () => {
+				this.wgtUpdateShow();
+			});
+			this.onEventUI("wgtUpdateNum", (res) => {
+				this.wgtUpNum = res;
+			});
 		}
 		onShow(){
 			// #ifndef MP
@@ -189,6 +211,7 @@
 				this.currentPage = 1;
 				this.noMoreData = false;
 				this.initEvent()
+				this.version = app.version
 				if(this.progressList!=''){
 					// this.getGoodProgress(this.progressList)
 				}
@@ -281,16 +304,9 @@
 				return;
 			}
 			// #endif
-			this.onEventUI("apkNeedUpdate", () => {
-				this.updateShow();
-			});
 			
-			this.onEventUI("wgtNeedUpdate", () => {
-				this.wgtUpdateShow();
-			});
-			this.onEventUI("wgtUpdateNum", (res) => {
-				this.wgtUpNum = res;
-			});
+			
+			
 		}
 		getPic(img:any){
 			if(img.indexOf(',') == -1){
@@ -355,6 +371,7 @@
 			}
 		}
 		updateShow() {
+			console.log('222222222222')
 			uni.hideTabBar();
 			this.updateMsg = decodeURIComponent(app.update.apkData.msg);
 			this.apkNeedUpdate = true;
@@ -410,9 +427,16 @@
 			// })
 		}
 		onClickTopJumpUrl(url:any){
+			if(url=='社群'){
+				this.showPaySuccess = true;
+				return;
+			}
 			uni.navigateTo({
 				url: url
 			})
+		}
+		onClickcancelPaySuccess(){
+			this.showPaySuccess = false;
 		}
 		onClickJumpUrl(item:any){
 			if(item.text=='拼团' ||item.text=='商家列表'||item.text=='资讯'){
@@ -755,16 +779,15 @@
 	}
 
 	.panel-bg {
-		width: 520rpx;
+		width: 500rpx;
 		height: auto;
-		background: #FFFFFF;
-		border-radius: 36rpx;
+		border-radius: 40rpx;
 		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 42rpx 0;
+		padding: 0;
 		z-index: 1002;
 	}
 
@@ -777,20 +800,39 @@
 	}
 
 	.panel-title {
-		height: 50rpx;
-		font-size: 36rpx;
-		font-weight: bolder;
-		color: #4DCDCC;
-		line-height: 50rpx;
-		margin-top: 26rpx;
-	}
-
-	.panel-content {
-		width: 440rpx;
-		height: auto;
+		width: 500rpx;
+		height: 188rpx;
+		background:url(../../static/index/update_bg.png) no-repeat center;
+		background-size: 100% 100%;
+		display: flex;
+		flex-wrap: wrap;
 		box-sizing: border-box;
-		margin: 32rpx 40rpx;
+		padding:50rpx 0 20rpx 0;
+	}
+	.panel-title-text{
+		width: 100%;
 		text-align: center;
+		font-size: 43rpx;
+		font-family: FZLanTingHei-H-GBK;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+	.panel-title-ver{
+		width: 100%;
+		text-align: center;
+		font-size: 24rpx;
+		font-family: FZLanTingHeiS-B-GB;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+	.panel-content {
+		width: 500rpx;
+		height: 420rpx;
+		box-sizing: border-box;
+		background:#fff;
+		text-align: center;
+		border-bottom-left-radius: 40rpx;
+		border-bottom-right-radius: 40rpx;
 	}
 
 	.panel-content text {
@@ -801,11 +843,29 @@
 		line-height: 40rpx;
 		text-align: left;
 	}
-
+	.progress-content{
+		width: 374rpx;
+		margin:0 auto;
+		margin-top: 150rpx;
+		border-radius: 7px;
+		overflow: hidden;
+	}
+	.progress-msg{
+		margin:80rpx auto;
+	}
+	.progress-wait{
+		width: 100%;
+		text-align: center;
+		font-size: 18rpx;
+		font-family: Adobe Heiti Std;
+		font-weight: normal;
+		color: #C0C0C0;
+		margin-top: 18rpx;
+	}
 	.download-button {
 		width: 400rpx;
 		height: 88rpx;
-		background: linear-gradient(142deg, #4DCDCC 0%, #4DCDCC 100%);
+		background: #FB4E3E;
 		border-radius: 44rpx;
 		margin-top: 10rpx;
 

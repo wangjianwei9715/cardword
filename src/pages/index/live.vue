@@ -64,6 +64,14 @@
 			if(id==this.goodTabCheck){
 				return;
 			}
+			if(id==5){
+				if(app.token.accessToken == ''){
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+					return;
+				}
+			}
 			this.goodTabCheck = id;
 			this.liveList = [];
 			this.currentPage = 1;
@@ -130,6 +138,7 @@
 					if(cb) cb()
 				})
 			}else{
+				
 				app.http.Get('me/broadcast',params,(data:any)=>{
 					if(data.totalPage<=this.currentPage){
 						this.noMoreData = true;

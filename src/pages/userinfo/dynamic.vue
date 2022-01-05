@@ -118,6 +118,7 @@
 		padding: 10rpx 30rpx;
 		box-sizing: border-box;
 		background: #fff;
+		margin-bottom: 20rpx;
 	}
 	.dynamic-item .left{
 		width: auto;

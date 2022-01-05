@@ -3,9 +3,9 @@
 		<!-- 头部状态 -->
 		<view class="header" v-if="orderData.good">
 			<view v-if="orderData.state==1" class="header-waitpay">订单将于 {{countDownStr}} 后关闭</view>
-			<view v-else-if="orderData.state==-1" class="header-close">拼团未成功订单关闭，款项已原路退回…</view>
-			<view v-else-if="orderData.good.state>=2" class="header-orther">
-				<view class="header-statestr">{{orderData.good.desc?orderData.good.desc:''}}</view>
+			<view v-else-if="orderData.state<0" class="header-close">{{orderData.desc?orderData.desc:''}}</view>
+			<view v-else-if="orderData.state>=2" class="header-orther">
+				<view class="header-statestr">{{orderData.desc?orderData.desc:''}}</view>
 				<view class="header-btn-content">
 					<view class="header-btn-pintuan" @click="onClcikResult(0)">拼团结果</view>
 					<view class="header-btn-chaika" @click="onClcikResult(1)">拆卡报告</view>
@@ -161,8 +161,9 @@
 					title: res.data.stateName
 				});
 				this.getGoodDesc(res.data)
+				this.cartList = [];
 				if(res.data.showSelectNo){
-					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/selectList',{pageIndex:1,pageSize:10},(res:any)=>{
+					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/selectList',{pageIndex:1,pageSize:50},(res:any)=>{
 						if(res.list){
 							this.cartList = res.list
 						}
@@ -913,10 +914,11 @@
 		}
 	}
 	.yunfei-info {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		border-bottom: 20rpx solid #f2f2f2;
+	}
 
 .yunfei-item {
   display: flex;

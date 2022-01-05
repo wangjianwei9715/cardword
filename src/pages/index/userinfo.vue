@@ -152,7 +152,7 @@
 				let data = res.data;
 				this.infoData = data;
 				this.infoData.avatar = decodeURIComponent(data.avatar)
-				
+				console.log('homedata==',this.infoData.avatar)
 				for (const key in this.orderTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
 						this.orderTab[key].num = data[key];
@@ -215,8 +215,9 @@
 		}
 		onClickNavigateto(item:any){
 			if(item.name=='联系客服'){
+				let num = Math.random()>0.5?1:0;
 				uni.navigateTo({
-					url: '/pages/userinfo/talk?targetUserId='+this.infoData.kefuUserId[0]
+					url: '/pages/userinfo/talk?targetUserId='+this.infoData.kefuUserId[num]
 				})
 			}else if(item.name=='加入群聊'){
 				this.showPaySuccess = true

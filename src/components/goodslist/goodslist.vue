@@ -1,37 +1,40 @@
 <template name="goodslist">
 	<view class="content" >
-		<view class="goodslist-index" v-for="item in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
-			<view class="goodslist-pic">
-				<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
-				<image class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
-			</view>
-			<view class="goodslist-right">
-				<view class="goodslist-title">{{item.title}}</view>
-				<view v-if="item.discount&&item.discount!=''">
-					<view class="goodslist-tips" v-for="(items,indexs) in typeof (item.discount) =='string'?item.discount.split(','):item.discount" :key="indexs">
-					{{typeof (item.discount) =='string'?items:items.content}}
-					</view>
+		<view class="goodslist-index-show" v-for="item in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
+			<view class="goodslist-index">
+				<view class="goodslist-pic">
+					<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
+					<image class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 				</view>
-				<view class="goodslist-bottom">
-					<view class="goodslist-price-content">
-						¥<text class="goodslist-price">{{item.price}}</text>
-					</view>
-					<view v-if="mini"></view>
-					<view v-else-if="!presell" class="goodslist-bottom-right" >
-						<view :id="item.goodCode" class="goodslist-plan-desc">余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
-						<view class="goodslist-plan-content">
-							<view class="goodslist-plan-now" :style="'width:'+getPlan(item.lockNum,item.currentNum,item.totalNum)+'%'"></view>
-							<view class="goodslist-plan-num">
-								{{getPlan(item.lockNum,item.currentNum,item.totalNum)}}<text class="plan-baifen">%</text>
-							</view>
+				<view class="goodslist-right">
+					<view class="goodslist-title">{{item.title}}</view>
+					<view v-if="item.discount&&item.discount!=''">
+						<view class="goodslist-tips" v-for="(items,indexs) in typeof (item.discount) =='string'?item.discount.split(','):item.discount" :key="indexs">
+						{{typeof (item.discount) =='string'?items:items.content}}
 						</view>
 					</view>
-					<view v-else class="goodslist-bottom-right-time">
-						<view class="goodslist-plan-desc-time">{{dateFormatMSHMS(item.startAt)}}开售</view>
+					<view class="goodslist-bottom">
+						<view class="goodslist-price-content">
+							¥<text class="goodslist-price">{{item.price}}</text>
+							<text class="price-qi">{{item.isSelect?'起':''}}</text>
+						</view>
+						<view v-if="mini"></view>
+						<view v-else-if="!presell&&item.state!=0" class="goodslist-bottom-right" >
+							<view :id="item.goodCode" class="goodslist-plan-desc">余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
+							<view class="goodslist-plan-content">
+								<view class="goodslist-plan-now" :style="'width:'+getPlan(item.lockNum,item.currentNum,item.totalNum)+'%'"></view>
+								<view class="goodslist-plan-num">
+									{{getPlan(item.lockNum,item.currentNum,item.totalNum)}}<text class="plan-baifen">%</text>
+								</view>
+							</view>
+						</view>
+						<view v-else class="goodslist-bottom-right-time">
+							<view class="goodslist-plan-desc-time">{{dateFormatMSHMS(item.startAt)}}开售</view>
+						</view>
+						
 					</view>
 					
 				</view>
-				
 			</view>
 		</view>
 	</view>
@@ -122,6 +125,9 @@
 
 <style lang="scss">
 	.goodslist{
+		&-index-show{
+			
+		}
 		&-index{
 			width: 100%;
 			background: #FFFFFF;
@@ -233,7 +239,7 @@
 			justify-content: flex-end;
 		}
 		&-bottom-right-time{
-			width:400rpx;
+			width:250rpx;
 			display: flex;
 			flex-wrap: wrap;
 			box-sizing: border-box;
@@ -252,6 +258,7 @@
 		&-price{
 			font-size: 36rpx;
 		}
+		
 		&-tips{
 			text-align: center;
 			line-height: 34rpx;
@@ -282,5 +289,9 @@
 		top:0;
 		z-index: 1;
 		box-sizing: border-box;
+	}
+	.price-qi{
+		font-size: 20rpx !important;
+		color:#ACAEB7 !important;
 	}
 </style>

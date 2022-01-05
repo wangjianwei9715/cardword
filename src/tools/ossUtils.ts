@@ -85,7 +85,7 @@ export default class ossUtils {
             let policy = this._getPolicy();
             let res = {
                 accessId: token.access_key_id,
-                host: 'https://paimai-res.oss-cn-hangzhou.aliyuncs.com',  // 自己去申请
+                host: token.host,  // 自己去申请
                 policy:policy,
                 signature: this._getSignature(policy),
                 security_token:token.security_token

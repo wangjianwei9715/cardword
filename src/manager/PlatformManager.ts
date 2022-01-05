@@ -326,6 +326,7 @@ export default class PlatformManager {
 						if (uni.getSystemInfoSync().platform === "android") {
 							app.update = UpdateManager.getInstance();
 						}
+						// app.update = UpdateManager.getInstance();
 						let iosVersion = Number(res.app.version.substr(0,1));
 						console.log('iosVersion',res.app.version)
 						if (uni.getSystemInfoSync().platform == 'ios' && iosVersion%2 ==0) {
