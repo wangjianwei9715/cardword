@@ -166,6 +166,7 @@ export default Vue.extend({
       },
       false
     );
+    
 
     app.platform.getOnlineCfg()
     // #endif

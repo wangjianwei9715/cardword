@@ -162,7 +162,8 @@
 		getLuanchFnc:any;
 		onNetWorkFunc:any;
 		showPaySuccess = false;
-		version = ''
+		version = '';
+		oneLoad = true;
 		onLoad(query:any) {
 			// uni.$emit('reLogin')
 			if (app.update.apkNeedUpdate) {
@@ -204,18 +205,23 @@
 			this.onEventUI("wgtUpdateNum", (res) => {
 				this.wgtUpNum = res;
 			});
+			// #ifdef APP-PLUS
+			// 判断是否有邀请上线
+			// app.platform.getInvitationClipboard()
+			// #endif
 		}
 		onShow(){
 			// #ifndef MP
-			setTimeout(()=>{
-				this.currentPage = 1;
-				this.noMoreData = false;
-				this.initEvent()
-				this.version = app.version
-				if(this.progressList!=''){
-					// this.getGoodProgress(this.progressList)
-				}
-			},1000)
+			if(this.oneLoad){
+				this.oneLoad = false;
+				setTimeout(()=>{
+					this.version = app.version
+					this.showInitEvent()
+				},1000)
+			}else{
+				this.showInitEvent()
+			}
+			
 			// #endif
 			// #ifdef MP
 			this.topAddList = [{pic:'../../static/index/mp_mini.jpg',url:''}]
@@ -292,6 +298,14 @@
 			})
 			// #endif
 		}
+		showInitEvent(){
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.initEvent()
+			if(this.progressList!=''){
+				this.getGoodProgress(this.progressList)
+			}
+		}
 		initEvent(){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
@@ -304,9 +318,6 @@
 				return;
 			}
 			// #endif
-			
-			
-			
 		}
 		getPic(img:any){
 			if(img.indexOf(',') == -1){

@@ -446,6 +446,23 @@ export default class PlatformManager {
 		// })
 		// #endif
 	}
+	// 获取粘贴板内容
+	getInvitationClipboard(){
+		if (plus.os.name == 'iOS') {  
+			var UIPasteboard = plus.ios.importClass("UIPasteboard");  
+			var generalPasteboard = UIPasteboard.generalPasteboard();  
+			var value = generalPasteboard.valueForPasteboardType("public.utf8-plain-text");  
+			// value就是粘贴板的值  
+			console.log('IOS-COPY==',value)
+		} else if (plus.os.name == 'Android') {  
+			var Context = plus.android.importClass("android.content.Context");  
+			var main = plus.android.runtimeMainActivity();  
+			var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);  
+			var value = plus.android.invoke(clip, "getText");  
+			// value就是粘贴板的值  
+			console.log('Android-COPY==',value)
+		}
+	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false
 		return aspect;

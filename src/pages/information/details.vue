@@ -44,7 +44,9 @@
 				return;
 			}
 			app.http.Post('article/like/or/cancel/'+this.articleData.articleCode,{},(res:any)=>{
-				this.getArticleDetail()
+				this.articleData.isLikes = res.liked;
+				this.articleData.likes = res.likes;
+				this.articleData.comment = res.comment
 				uni.$emit("atticleLike");
 			})
 		}

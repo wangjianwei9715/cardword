@@ -75,6 +75,11 @@ export default class ClassName extends BaseNode {
       if (cb) cb();
     });
   }
+  onClickJumpUrl(code: any) {
+    uni.navigateTo({
+      url:'/pages/information/details?code='+code
+    })
+  }
 }
 </script>
 

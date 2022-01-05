@@ -35,9 +35,9 @@
           class="information-index"
           v-for="(item, index) in information"
           :key="index"
-          @click="onClickJumpUrl(item.articleCode)"
+          
         >
-          <view class="information-top">
+          <view class="information-top" @click="onClickJumpUrl(item.articleCode)">
             <image
               class="information-top-image"
               :src="getGoodsImg(decodeURIComponent(item.cover))"
@@ -45,12 +45,12 @@
             ></image>
           </view>
           <view class="information-center">
-            <view class="title">{{item.title}}</view>
+            <view class="title" @click="onClickJumpUrl(item.articleCode)">{{item.title}}</view>
             <view class="desc">
               <view class="desc-index">{{dateFormatMS(item.created_at)}}</view>
               <view class="desc-index">
                 <view class="icon-pl"></view>{{item.comment}}
-                <view class="icon-dz" :class="{'icon-dzed':item.isLikes}" ></view>{{item.likes}}
+                <view class="icon-dz" :class="{'icon-dzed':item.isLikes}" @click="onClickLikes(index)"></view>{{item.likes}}
               </view>
             </view>
           </view>
@@ -120,9 +120,23 @@ export default class ClassName extends BaseNode {
     this.noMoreData = false;
     this.reqNewData();
   }
+  // 点赞
+  onClickLikes(index:number){
+    if(app.token.accessToken == ''){
+      uni.navigateTo({
+        url:'/pages/login/login'
+      })
+      return;
+    }
+    app.http.Post('article/like/or/cancel/'+this.information[index].articleCode,{},(res:any)=>{
+      this.information[index].isLikes = res.liked;
+      this.information[index].likes = res.likes;
+      this.information[index].comment = res.comment
+    })
+  }
   onClickJumpUrl(code: any) {
     uni.navigateTo({
-      url:'/pages/information/details?code=2A3234859'
+      url:'/pages/information/details?code='+code
     })
   }
   myLikes(){
