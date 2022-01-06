@@ -49,7 +49,7 @@
 				
 				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff" duration="200"> 
 					<swiper-item v-for="(item,index) in topAddList" :key="index">
-						<image class="swiper-image" :src="item.pic" mode="aspectFits" @click="onClickTopJumpUrl(item.url)"></image>
+						<image class="swiper-image" :src="decodeURIComponent(item.pic)" mode="aspectFits" @click="onClickTopJumpUrl(item.target)"/>
 					</swiper-item>
 					
 				</swiper>
@@ -58,7 +58,7 @@
 			<view class="tab-good-content">
 				<view class="tab-type">
 					<view class="tab-index" v-for="(item,index) in tabList" :key="index" @click="onClickJumpUrl(item)">
-						<view class="tab-img-content"><image class="tabimg" :src="item.img" mode=""></image></view>
+						<view class="tab-img-content"><image class="tabimg" :src="item.img" mode=""/></view>
 						<view class="tabtext">{{item.text}}</view>
 					</view>
 				</view>
@@ -67,7 +67,7 @@
 					<view class="tab-act-title"></view>
 					<scroll-view class="goods-card-content-scroll" :scroll-x="true">
 						<view class="tab-good-inedx" v-show="item.img!=''" v-for="(item,index) in noticeList" :key="index" @click="onClickNotice(item.target.goodCode)">
-							<image class="tab-good-index-img" :src="decodeURIComponent(item.pic)" mode="aspectFill"></image>
+							<image class="tab-good-index-img" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
 							<view class="tab-good-index-bottom">
 								<view class="tab-good-index-price">￥{{item.price}}</view>
 								<view class="tab-good-index-tip">{{item.name}}</view>
@@ -309,6 +309,7 @@
 		initEvent(){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
+				this.topAddList = data.topAddList
 				this.noticeList = data.activity
 				this.reqNewData()
 			})
@@ -438,13 +439,27 @@
 			// })
 		}
 		onClickTopJumpUrl(url:any){
-			if(url=='社群'){
-				this.showPaySuccess = true;
+			if(url.goodCode!=''){
+				uni.navigateTo({
+					url: '/pages/goods/goods_details?id='+decodeURIComponent(url.goodCode)
+				})
+				return;
+			}else if(url.url!=''){
+				uni.navigateTo({
+					url: '/pages/act/outLink/outLink?url='+decodeURIComponent(url.url)
+				})
+				return;
+			}else if(url.page!=''){
+				if(decodeURIComponent(url.page)=='社群'){
+					this.showPaySuccess = true;
+					return;
+				}
+				uni.navigateTo({
+					url: decodeURIComponent(url.page)
+				})
 				return;
 			}
-			uni.navigateTo({
-				url: url
-			})
+			
 		}
 		onClickcancelPaySuccess(){
 			this.showPaySuccess = false;

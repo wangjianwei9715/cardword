@@ -19,7 +19,7 @@
 			<swiper class="swiper" :indicator-dots="goodsImg.length>1" autoplay="true" circular="true" indicator-active-color="#ffffff">
 				<swiper-item v-for="(item,index) in goodsImg" :key="index" @click="onClickPreviewImage(index)">
 					<view class="goods-img-content">
-						<image class="goods-img" :src="item" mode="aspectFill"></image>
+						<image class="goods-img" :src="item" mode="aspectFill" />
 					</view>
 				</swiper-item>
 			</swiper>
@@ -88,7 +88,7 @@
 					<view class="goods-card-content">
 						<scroll-view class="goods-card-content-scroll" :scroll-x="true">
 							<view class="scroll-index" v-for="(item,index) in cardData" :key="index" @click="onClickPreviewCard(index)">
-								<image class="scroll-index-img" :src="decodeURIComponent(item)" mode="aspectFit"></image>
+								<image class="scroll-index-img" :src="decodeURIComponent(item)" mode="aspectFit"/>
 							</view>
 						</scroll-view>
 					</view>
@@ -99,7 +99,7 @@
 			<view class="detail-bg">
 				<view class="goods-seller" v-if="goodsData.publisher">
 					<view class="goods-seller-left">
-						<image class="goods-seller-left-avatar" :src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar" mode="aspectFill"></image>
+						<image class="goods-seller-left-avatar" :src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar" mode="aspectFill"/>
 						<view class="goods-seller-left-desc">
 							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
 							<view class="goods-seller-left-desc-tips">已拼团{{goodsData.publisher.deal}}组</view>
@@ -138,7 +138,7 @@
 		<view class="btn-content" v-if="goodsState==1||goodsState==0">
 			<view class="btn-content-left">
 				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id" @click="onClickTipBtn(item)">
-					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFill"></image>
+					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFill"/>
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
 			</view>

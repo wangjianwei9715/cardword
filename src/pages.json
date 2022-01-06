@@ -129,6 +129,7 @@
         
         
         
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -315,15 +316,25 @@
                 
                 ,{
                     "path" : "invite/invite",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "navigationBarBackgroundColor": "#ffffff",
-                    "navigationBarTextStyle": "black",
-					"enablePullDownRefresh": true
-                }
+						"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true
+					}
                 
-                }
+                },{
+					"path" : "outLink/outLink",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+					
+				}
             ]
             
         },{
