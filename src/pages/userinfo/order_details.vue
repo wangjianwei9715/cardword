@@ -43,14 +43,12 @@
 				合计：<view class="price-index">￥<text class="price-num">{{orderData.price}}</text></view>
 			</view>
 		</view>
-		<view class="yunfei-info check-team" v-if="cartList!=''">
-	    	<view class="item-name">已选编号</view>
-			<view class="yunfei-item" v-for="(item,index) in cartList" :key="item.id">
-				<text class="item-name">{{index+1}}.{{item.name}}</text>
-				<text class="item-name">{{ item.stateName }}</text>
+		<view class="buyer-cotnent" v-if="cartList!=''">
+			<view class="card-header">
+				<view class="card-header-title">已选编号</view>
 			</view>
-        
-        </view>
+			<buyCardId :cardList="cartList" :waitPay="true" />
+		</view>
 		<!-- 我的编号 -->
 		<view class="buyer-cotnent" v-if="cardList!=''">
 			<view class="card-header">

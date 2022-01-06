@@ -5,7 +5,7 @@
 			<!-- <view v-if="showImg&&item.num>0" class="right">
 				<image class="show-img" :src="item.pic"  mode="aspectFill"/>
 			</view> -->
-			<view  class="right reward">{{item.content}}</view>
+			<view  class="right reward">{{waitPay?item.stateName:item.content}}</view>
 			
 		</view>
 	</view>
@@ -20,7 +20,8 @@
 		cardList:any;
 		@Prop({default:false})
 		showImg:any;
-
+		@Prop({default:false})
+		waitPay:any;
 		
 		created(){//在实例创建完成后被立即调用
 			

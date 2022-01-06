@@ -453,15 +453,41 @@ export default class PlatformManager {
 			var generalPasteboard = UIPasteboard.generalPasteboard();  
 			var value = generalPasteboard.valueForPasteboardType("public.utf8-plain-text");  
 			// value就是粘贴板的值  
-			console.log('IOS-COPY==',value)
+			this.matchInviteRequestKey(value)
+			
 		} else if (plus.os.name == 'Android') {  
 			var Context = plus.android.importClass("android.content.Context");  
 			var main = plus.android.runtimeMainActivity();  
 			var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);  
 			var value = plus.android.invoke(clip, "getText");  
 			// value就是粘贴板的值  
-			console.log('Android-COPY==',value)
+			this.matchInviteRequestKey(value)
 		}
+	}
+	// 判断粘贴板是否有邀请码
+	matchInviteRequestKey(code:string){
+		let inviteCode = /[0-9a-zA-Z]{9}/g;
+		let key:any = ''
+		if(inviteCode.test(code)){
+			key = code.match(inviteCode);
+			console.log('邀请码code=========',key[0])
+			if(app.token.accessToken == ''){
+				app.requestKey = key[0];
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				return;
+			}
+			this.inviteRequestKey(key[0])
+			
+		}
+	}
+	// 提交邀请口令
+	inviteRequestKey(key:string){
+		app.http.Post('activity/invite/requestKey',{key:key},(res:any)=>{
+			console.log('invite/requestKey========',res)
+			app.requestKey = '';
+		})
 	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false

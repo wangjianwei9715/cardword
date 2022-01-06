@@ -313,6 +313,17 @@
                     
                 }
                 
+                ,{
+                    "path" : "invite/invite",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "navigationBarBackgroundColor": "#ffffff",
+                    "navigationBarTextStyle": "black",
+					"enablePullDownRefresh": true
+                }
+                
+                }
             ]
             
         },{

@@ -44,4 +44,5 @@ export module app{
     export let update:{[x: string]: any} = {};//更新数据
     export let defaultAvatar = '/static/index/moren@2x.png';
     export let payload = '';//unipush跳转参数
+    export let requestKey = ''; // 邀请key
 }

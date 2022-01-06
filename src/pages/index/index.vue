@@ -207,7 +207,7 @@
 			});
 			// #ifdef APP-PLUS
 			// 判断是否有邀请上线
-			// app.platform.getInvitationClipboard()
+			app.platform.getInvitationClipboard()
 			// #endif
 		}
 		onShow(){

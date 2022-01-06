@@ -193,6 +193,10 @@
 					url: "/pages/index/index",
 				});
 				uni.$emit('loginSuccess');
+				// 判断是否有邀请码
+				if(app.requestKey!=''){
+					app.platform.inviteRequestKey(app.requestKey)
+				}
 			})
 		}
 		postDomain(){
@@ -260,6 +264,10 @@
 					uni.reLaunch({
 						url: "/pages/login/bind_phone"
 					})
+				}
+				// 判断是否有邀请码
+				if(app.requestKey!=''){
+					app.platform.inviteRequestKey(app.requestKey)
 				}
 			})
 		}

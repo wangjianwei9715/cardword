@@ -93,6 +93,11 @@ export default class HttpRequest {
 				
 				this.getStr(config,'payGoodOrder'); 
 			}
+			// 提交口令
+			if (url.indexOf("activity/invite/requestKey") != -1) {
+				
+				this.getStr(config,'inviteKey'); 
+			}
 			// 微信登录
 			if (url.indexOf("user/login/wechat/app") != -1) {
 				this.getStr(config,'wechat',true); 
