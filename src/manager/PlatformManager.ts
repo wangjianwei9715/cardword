@@ -453,7 +453,10 @@ export default class PlatformManager {
 			var generalPasteboard = UIPasteboard.generalPasteboard();  
 			var value = generalPasteboard.valueForPasteboardType("public.utf8-plain-text");  
 			// value就是粘贴板的值  
-			this.matchInviteRequestKey(value)
+			if(value!=undefined){
+				this.matchInviteRequestKey(value)
+			}
+			
 			
 		} else if (plus.os.name == 'Android') {  
 			var Context = plus.android.importClass("android.content.Context");  
@@ -461,7 +464,9 @@ export default class PlatformManager {
 			var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);  
 			var value = plus.android.invoke(clip, "getText");  
 			// value就是粘贴板的值  
-			this.matchInviteRequestKey(value)
+			if(value!=undefined){
+				this.matchInviteRequestKey(value)
+			}
 		}
 	}
 	// 判断粘贴板是否有邀请码

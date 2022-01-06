@@ -53,8 +53,8 @@
 				align-items: center;
 				justify-content: center;
 				font-size: 24rpx;
-				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
+				font-family: PingFang SC;
+				font-weight: 400;
 				color: #14151A;
 				line-height: 34rpx;
 				text-align: center;
@@ -65,8 +65,8 @@
 				align-items: center;
 				justify-content: center;
 				font-size: 24rpx;
-				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
+				font-family:PingFang SC;
+				font-weight: 400;
 				color: #AAAABB;
 				.show-img{
 					width: 100rpx;

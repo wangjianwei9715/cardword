@@ -69,11 +69,11 @@
 	  <view style="width: 750rpx; height: 20rpx; background: #f2f2f2" v-if="cartData!=''"></view>
 	  <!-- 自选球队编号 -->
       <view class="yunfei-info check-team" v-if="cartData!=''">
-	    	<view class="item-name">已选编号</view>
+	    	<view class="item-title">已选编号</view>
         <view v-for="(item,index) in cartData.list" :key="item.id">
           <view class="yunfei-item" v-show="!item.soldOut&&!item.lock">
-            <text class="item-name">{{index+1}}.{{item.name}}</text>
-            <text class="item-name">¥{{ item.price }}</text>
+            <text class="item-teamname">{{index+1}}.{{item.name}}</text>
+            <text class="item-teamname">¥{{ item.price }}</text>
           </view>
         </view>
         
@@ -608,7 +608,22 @@ page {
   line-height: 34rpx;
   margin-left: 36rpx;
 }
-
+.item-title{
+  font-size: 28rpx;
+  font-family: PingFang SC;
+  font-weight: 600;
+  color: #14151a;
+  line-height: 34rpx;
+  margin-left: 36rpx;
+}
+.item-teamname{
+  font-size: 24rpx;
+  font-family:PingFang SC;
+  font-weight: 200;
+  color: #14151a;
+  line-height: 34rpx;
+  margin-left: 36rpx;
+}
 .item-youhui-bg {
   text-align: center;
 			line-height: 34rpx;
