@@ -87,12 +87,6 @@ export default class ClassName extends BaseNode {
   scrollId = "";
   onLoad(query: any) {
     this.reqNewData();
-    this.onEventUI('atticleLike',()=>{
-      this.information = [];
-      this.currentPage = 1;
-      this.noMoreData = false;
-      this.reqNewData()
-    })
   }
   //   加载更多数据
   onReachBottom() {
@@ -162,7 +156,7 @@ export default class ClassName extends BaseNode {
       qt: this.goodTabCheck,
       q: encodeURIComponent(this.searchText),
     };
-    app.http.Get("article/homelist", params, (data: any) => {
+    app.http.Get("dataApi/article/homelist", params, (data: any) => {
       if (data.totalPage <= this.currentPage) {
         this.noMoreData = true;
       }

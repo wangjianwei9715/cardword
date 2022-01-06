@@ -193,6 +193,8 @@ export default class HttpRequest {
 							})
 						}
 					});
+				}else if(response.data.code == 1001&&response.data.msg == '商品不存在'){
+					uni.$emit('noGoodsDetail')
 				}
 			}
 			

@@ -136,9 +136,9 @@
 			this.$emit("cartDel",index);
 		}
 		onClickJoinCart(){
-			// if(this.getCartHaveIndex()){
-			// 	return;
-			// }
+			if(this.getCartHaveIndex()){
+				return;
+			}
 			this.$emit('joinCart')
 		}
 		// 去结算
@@ -376,9 +376,10 @@
 		display: flex;
 		flex-wrap: wrap;
 		overflow-x: hidden;
+		padding-top: 10rpx;
 	}
 	.branch-index{
-		max-width: 100%;
+		max-width: 95%;
 		height: 46rpx;
 		background: #FFFFFF;
 		border: 1rpx solid #E2E2E3;

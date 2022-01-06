@@ -71,7 +71,7 @@
       <view class="yunfei-info check-team" v-if="cartData!=''">
 	    	<view class="item-name">已选编号</view>
         <view v-for="(item,index) in cartData.list" :key="item.id">
-          <view class="yunfei-item" v-if="!item.soldOut&&!item.lock">
+          <view class="yunfei-item" v-show="!item.soldOut&&!item.lock">
             <text class="item-name">{{index+1}}.{{item.name}}</text>
             <text class="item-name">¥{{ item.price }}</text>
           </view>

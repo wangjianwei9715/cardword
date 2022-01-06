@@ -285,6 +285,7 @@
 					},1000)
 				}
 			})
+			
 			// #endif
 		}
 		onShow(){
@@ -369,9 +370,12 @@
 				});
 				setTimeout(()=>{
 					if(this.goodsData==''){
-						
 						this.getGoodData(this.goodsId)
 					}
+					this.onEventUI('noGoodsDetail',(res:any)=>{
+						uni.hideLoading()
+						uni.navigateBack({delta:1})
+					})
 				},3000)
 			}
 		}
@@ -753,10 +757,6 @@
 		}
 		onClickSettlement(){
 			if(this.cartData.available == 0){
-				uni.showToast({
-					title:'购物车中暂无有效商品',
-					icon:'none'
-				})
 				return;
 			}
 			

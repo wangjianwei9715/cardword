@@ -47,11 +47,10 @@
 				this.articleData.isLikes = res.liked;
 				this.articleData.likes = res.likes;
 				this.articleData.comment = res.comment
-				uni.$emit("atticleLike");
 			})
 		}
 		getArticleDetail(){
-			app.http.Get('article/detail/'+this.code,{},(res:any)=>{
+			app.http.Get('dataApi/article/detail/'+this.code,{},(res:any)=>{
 				this.articleData = res.data
 			})
 		}
