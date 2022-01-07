@@ -132,23 +132,46 @@
 		showPayMent = false;
 		cartList:any = [];
 		showPaySuccess = false;
+		clickToPay = false;
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
 			}
+			if(query.waitPay){
+				setTimeout(()=>{
+					this.clickToPay = true
+				},1000)
+			}
+			this.initEvent();
 
 			this.onEventUI('orderchange',()=>{
 				this.initEvent();
 			})
+
 			this.onEventUI('paySuccess',()=>{
-				this.showPaySuccess = true
+				this.showPaySuccess = true;
+				this.clickPayShowLoading()
 			})
 		}
 		onShow(){
-			this.initEvent();
+			if(this.clickToPay){
+				this.clickPayShowLoading()
+			}
+			
 		}
 		onHide(){
 			clearInterval(this.countDownInter);
+		}
+		clickPayShowLoading(){
+			uni.showLoading({
+				title: '获取订单状态中',
+				mask:true
+			})
+			setTimeout(()=>{
+				this.initEvent();
+				uni.hideLoading();
+				this.clickToPay = false;
+			},2000)
 		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
@@ -357,6 +380,7 @@
 				params.channel = 'alipay';
 				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
 					if(res.alipay.orderInfo!=''){
+						this.clickToPay = true;
 						uni.hideLoading()
 						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
 						this.onClickCancelPay()
@@ -371,20 +395,12 @@
 				params.channel = 'weixin';
 				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
 					if(res.wechat){
+						this.clickToPay = true;
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.pay_type,res.wechat)
 						this.onClickCancelPay()
 					}
 				})
-				// params= {
-				// 	channel:'mini',
-				// 	delivery:0,
-				// 	num:Number(this.orderData.num)
-				// }
-				// app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
-				// 	uni.hideLoading()
-				// 	app.payment.yinshengPay(res.wechat)
-				// })
 			}
 		}
 		// 支付成功弹窗关闭

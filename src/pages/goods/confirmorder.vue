@@ -367,7 +367,7 @@ export default class ClassName extends BaseNode {
             uni.hideLoading();
             app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo);
             uni.redirectTo({
-              url: "/pages/userinfo/order_details?code=" + res.goodOrderCode,
+              url: "/pages/userinfo/order_details?code=" + res.goodOrderCode+'&waitPay=true',
             });
           }
         }
@@ -387,7 +387,7 @@ export default class ClassName extends BaseNode {
             uni.hideLoading();
             app.payment.paymentWxpay(res.pay_type, res.wechat, () => {
               uni.redirectTo({
-                url: "/pages/userinfo/order_details?code=" + res.goodOrderCode,
+                url: "/pages/userinfo/order_details?code=" + res.goodOrderCode+'&waitPay=true',
               });
             });
           }

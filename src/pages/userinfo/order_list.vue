@@ -49,7 +49,8 @@
 			num:0,
 			code:'',
 			price:0
-		}
+		};
+		clickToPay = false;
 		onLoad(query:any) {
 			if(query.type){
 				this.orderTabCheck = query.type
@@ -57,7 +58,9 @@
 			this.againReqNewData()
 		}
 		onShow(){
-			
+			if(this.clickToPay){
+				this.clickPayShowLoading()
+			}
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
@@ -70,6 +73,17 @@
 		}
 		onReachBottom(){
 			this.reqNewData()
+		}
+		clickPayShowLoading(){
+			uni.showLoading({
+				title: '获取订单状态中',
+				mask:true
+			})
+			setTimeout(()=>{
+				this.againReqNewData();
+				uni.hideLoading();
+				this.clickToPay = false;
+			},2000)
 		}
 		reqNewData(cb?:Function) {
 		  // 获取更多商品
@@ -248,6 +262,7 @@
 				params.channel = 'alipay';
 				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
 					if(res.alipay.orderInfo!=''){
+						this.clickToPay = true;
 						uni.hideLoading()
 						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
 						this.onClickCancelPay()
@@ -263,6 +278,7 @@
 				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
 					console.log('wechat=',res)
 					if(res.wechat){
+						this.clickToPay = true;
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.pay_type,res.wechat)
 						this.onClickCancelPay()
