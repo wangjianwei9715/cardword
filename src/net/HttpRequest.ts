@@ -95,8 +95,11 @@ export default class HttpRequest {
 			}
 			// 提交口令
 			if (url.indexOf("activity/invite/requestKey") != -1) {
-				
 				this.getStr(config,'inviteKey'); 
+			}
+			// 提交口令
+			if (url.indexOf("activity/invite/getKey") != -1) {
+				this.getStr(config,'inviteGetKey'); 
 			}
 			// 微信登录
 			if (url.indexOf("user/login/wechat/app") != -1) {

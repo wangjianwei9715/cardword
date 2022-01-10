@@ -153,21 +153,19 @@
 				"text": "首页"
 			},
             // #ifdef APP-PLUS
-			{
-				"pagePath": "pages/index/message",
-				"iconPath": "static/index/tabbar_mess.png",
-				"selectedIconPath": "static/index/tabbar_mess_.png",
-				"text": "消息"
-			},
+			// {
+			// 	"pagePath": "pages/index/message",
+			// 	"iconPath": "static/index/tabbar_mess.png",
+			// 	"selectedIconPath": "static/index/tabbar_mess_.png",
+			// 	"text": "消息"
+			// },
             // #endif
-            // #ifndef APP-PLUS
             {
 				"pagePath": "pages/index/live",
 				"iconPath": "static/index/tabbar_live.png",
 				"selectedIconPath": "static/index/tabbar_live_.png",
 				"text": "拆卡"
 			},
-            // #endif
 			{
 				"pagePath": "pages/index/ref",
 				"iconPath": "static/index/tabbar_search.png",
@@ -324,7 +322,19 @@
 						"enablePullDownRefresh": true
 					}
                 
-                },{
+                },
+				{
+				    "path" : "invite/record",
+				    "style" :                                                                                    
+				{
+				    "navigationBarTitleText": "",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black",
+				    "enablePullDownRefresh": false
+				}
+				
+				},
+				{
 					"path" : "outLink/outLink",
 					"style" :                                                                                    
 					{
@@ -335,6 +345,8 @@
 					}
 					
 				}
+                
+              
             ]
             
         },{

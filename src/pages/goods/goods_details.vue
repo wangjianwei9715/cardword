@@ -58,6 +58,10 @@
 				</view>
 			</view>
 			
+			<!-- 邀请新人步骤图 -->
+			<inviteStep v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" :goodsStep="true"/>
+			<!-- 邀请新人步骤图 -->
+
 			<view class="detail-bg">
 				<view class="header">
 					<view class="header-desc-title">拼团信息</view>
@@ -142,7 +146,8 @@
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="btn-confirm" @click="onClickBuy()">{{goodsData.isSelect?'选择编号':'立即购买'}}</view>
+			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm" @click="onClickCopyInviteKey">复制口令给新人</view>
+			<view v-else class="btn-confirm" @click="onClickBuy()">{{goodsData.isSelect?'选择编号':'立即购买'}}</view>
 		</view>
 		<view class="btn-contented" v-else-if="goodsState>=2">
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
@@ -153,7 +158,11 @@
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
 		
 		<!-- 自选球队 -->
-		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @settlement="onClickSettlement" @touchmove.stop.prevent="moveHandle" />
+		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @settlement="onClickSettlement"  />
+
+
+		<!-- 邀请新人活动弹窗 -->
+		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy"/>
 	</view>
 </template>
 
@@ -230,7 +239,9 @@
 				"name": "微信支付",
 				"channel": "wechat"
 			}
-		]
+		];
+		// 邀请新人弹窗
+		showInvitePopup = false;
 		onLoad(query:any) {
 			
 			// #ifdef MP
@@ -353,11 +364,14 @@
 					this.goodsDesc.unshift('【结束时间】：'+dateFormat(data.good.overAt))
 					this.goodsDesc.unshift('【开售时间】：'+dateFormat(data.good.startAt))
 					this.goodsDesc.unshift('【商品编号】：'+data.good.goodCode)
-					app.http.Get('dataApi/good/'+id+'/buyRecord',{},(res:any)=>{
-						if(res.list){
-							this.buyRecordList = res.list
-						}
-					})
+					if(this.goodsState==1){
+						app.http.Get('dataApi/good/'+id+'/buyRecord',{},(res:any)=>{
+							if(res.list){
+								this.buyRecordList = res.list
+							}
+						})
+					}	
+					
 				})
 				
 			},200)
@@ -541,6 +555,7 @@
 			if(id==2){
 				uni.setClipboardData({
 					data: "https://www.ka-world.com/share/good.html?id="+this.goodsId,
+					showToast:false,
 					success: ()=> {
 						this.operationShow = false;
 						uni.showToast({
@@ -765,8 +780,27 @@
 			})
 			this.onClickTeamCheckCancel()
 		}
-		moveHandle(){
-
+		// 复制邀请口令
+		onClickCopyInviteKey(){
+			app.http.Post('activity/invite/getKey',{code:this.goodsId},(res:any)=>{
+				console.log('activity/invite/getKey=====',res);
+				uni.setClipboardData({
+					data: res.content,
+					showToast:false,
+					success: ()=> {
+						this.showInvitePopup = true;
+					}
+				});
+			})
+		}
+		// 复制弹窗关闭
+		onClickInvitePopupCancel(){
+			this.showInvitePopup = false;
+		}
+		// 
+		onClickInviteCopy(type:any){
+			plus.runtime.openURL("weixin://");
+			this.onClickInvitePopupCancel();
 		}
 	}
 </script>

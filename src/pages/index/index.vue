@@ -106,9 +106,9 @@
 	export default class index extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
 		topAddList:any = [
-			{pic:'../../static/index/banner2.jpg',url:'/pages/information/details?code=2A3234859'},
-			{pic:'../../static/index/banner3.jpg',url:'社群'},
-			{pic:'../../static/index/banner1.jpg',url:'/pages/act/yiyuan/index'},
+			// {pic:'../../static/index/banner2.jpg',url:'/pages/information/details?code=2A3234859'},
+			// {pic:'../../static/index/banner3.jpg',url:'社群'},
+			// {pic:'../../static/index/banner1.jpg',url:'/pages/act/yiyuan/index'},
 		];
 		goodsMiniList = [
 			{
@@ -207,7 +207,7 @@
 			});
 			// #ifdef APP-PLUS
 			// 判断是否有邀请上线
-			app.platform.getInvitationClipboard()
+			// app.platform.getInvitationClipboard()
 			// #endif
 		}
 		onShow(){
@@ -309,7 +309,9 @@
 		initEvent(){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
+				// #ifndef MP
 				this.topAddList = data.topAddList
+				// #endif
 				this.noticeList = data.activity
 				this.reqNewData()
 			})
@@ -383,7 +385,6 @@
 			}
 		}
 		updateShow() {
-			console.log('222222222222')
 			uni.hideTabBar();
 			this.updateMsg = decodeURIComponent(app.update.apkData.msg);
 			this.apkNeedUpdate = true;
@@ -459,6 +460,13 @@
 				})
 				return;
 			}
+			// if(url=='社群'){
+			// 	this.showPaySuccess = true;
+			// 	return;
+			// }
+			// uni.navigateTo({
+			// 	url: url
+			// })
 			
 		}
 		onClickcancelPaySuccess(){

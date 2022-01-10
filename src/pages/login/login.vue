@@ -24,7 +24,7 @@
 			</view>
 			<view class="bottom">
 				<view class="bottom-tip">其它方式登录</view>
-				<view v-if="iosLogin" class="icon-apple" @click="onClickAppleLogin"></view>
+				<view class="icon-apple" @click="onClickAppleLogin"></view>
 				<view class="icon-wechat" @click="onClickWechatLogin"></view>
 			</view>
 		</view>
@@ -56,11 +56,9 @@
 		xieyiAgree = false;
 		codeLogin = false;
 		popupHid = true;
-		iosLogin = false;
+
 		onLoad(query:any) {
-			if (app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0) {
-				this.iosLogin = true
-			}
+			
 		}
 		onBackPress(type:any){
 			uni.switchTab({
@@ -195,7 +193,9 @@
 				uni.$emit('loginSuccess');
 				// 判断是否有邀请码
 				if(app.requestKey!=''){
-					app.platform.inviteRequestKey(app.requestKey)
+					uni.navigateTo({
+						url:'/pages/act/invite/invite'
+					})
 				}
 			})
 		}
@@ -204,6 +204,10 @@
 			if(app.service_url!=''){
 				 domian +='&'+app.service_url
 			}
+			if(app.familial){
+				domian +='&oldUser=true&version='+app.version
+			}
+			console.log('domian===============',domian)
 			let params = {
 				content:encodeURIComponent(domian)
 			}
@@ -267,7 +271,9 @@
 				}
 				// 判断是否有邀请码
 				if(app.requestKey!=''){
-					app.platform.inviteRequestKey(app.requestKey)
+					uni.navigateTo({
+						url:'/pages/act/invite/invite'
+					})
 				}
 			})
 		}

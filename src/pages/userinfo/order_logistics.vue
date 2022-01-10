@@ -35,6 +35,7 @@
 		onClickCopy(text:any){
 			uni.setClipboardData({
 				data: text,
+				showToast:false,
 				success:()=> {
 					uni.showToast({
 						title:'复制成功',

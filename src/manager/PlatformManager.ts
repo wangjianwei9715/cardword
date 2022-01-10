@@ -330,13 +330,7 @@ export default class PlatformManager {
 						let iosVersion = Number(res.app.version.substr(0,1));
 						console.log('iosVersion',res.app.version)
 						if (uni.getSystemInfoSync().platform == 'ios' && iosVersion%2 ==0) {
-							uni.setTabBarItem({
-								index: 1,
-								text: '拆卡',
-								pagePath: '/pages/index/live',
-								iconPath: 'static/index/tabbar_live.png',
-								selectedIconPath: 'static/index/tabbar_live_.png',
-							})
+							
 							app.update = UpdateManager.getInstance();
 							app.iosVersion = iosVersion
 						}
@@ -408,44 +402,7 @@ export default class PlatformManager {
 			});
 		}
 	}
-	getOnlineCfg(): any {
-		// #ifdef APP-PLUS
-		if (app.platform.systemInfo.platform != 'ios') {
-			uni.setTabBarItem({
-				index: 1,
-				text: '拆卡',
-				pagePath: '/pages/index/live',
-				iconPath: 'static/index/tabbar_live.png',
-				selectedIconPath: 'static/index/tabbar_live_.png',
-			})
-			return
-		}	
-		
-		
-		// let onlineParams = {
-		// 	name: "卡世界",
-		// 	version: app.version,
-		// 	uuid: app.platform.deviceID,
-		// 	os: 'ios',
-		// 	tag: 'apple'
-		// }
-		// app.http.Post(app.service_url + '/api/app/onlinecfg', onlineParams, (data: any) => {
-		// 	console.log('app/onlinecfg==', data)
-		// 	if (!data.data.review) {
-		// 		console.log('apple review')
-		// 		uni.setTabBarItem({
-		// 			index: 1,
-		// 			text: '直播',
-		// 			pagePath: '/pages/index/live',
-		// 			iconPath: 'static/index/tabbar_live.png',
-		// 			selectedIconPath: 'static/index/tabbar_live_.png',
-		// 		})
-		// 	}else{
-		// 		app.iosPlatform = true;
-		// 	}
-		// })
-		// #endif
-	}
+	
 	// 获取粘贴板内容
 	getInvitationClipboard(){
 		if (plus.os.name == 'iOS') {  
@@ -471,28 +428,38 @@ export default class PlatformManager {
 	}
 	// 判断粘贴板是否有邀请码
 	matchInviteRequestKey(code:string){
+		if(code.indexOf('卡世界帮我助力') == -1){
+			return 
+		}
 		let inviteCode = /[0-9a-zA-Z]{9}/g;
 		let key:any = ''
 		if(inviteCode.test(code)){
 			key = code.match(inviteCode);
 			console.log('邀请码code=========',key[0])
+			app.requestKey = key[0];
 			if(app.token.accessToken == ''){
-				app.requestKey = key[0];
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
-			this.inviteRequestKey(key[0])
-			
+			uni.navigateTo({
+				url:'/pages/act/invite/invite'
+			})
 		}
 	}
 	// 提交邀请口令
 	inviteRequestKey(key:string){
 		app.http.Post('activity/invite/requestKey',{key:key},(res:any)=>{
 			console.log('invite/requestKey========',res)
-			app.requestKey = '';
 		})
+		app.requestKey = '';
+		uni.setClipboardData({
+			data: '',
+			showToast:false,
+			success: ()=> {
+			}
+		});
 	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false

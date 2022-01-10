@@ -36,7 +36,6 @@
 		}
         //   加载更多数据
 		onReachBottom() {
-            console.log('2')
 		    this.reqNewData() 
 		}
         onClickIndex(id:number){
@@ -91,6 +90,9 @@
 </script>
 
 <style lang="scss">
+    page{
+        background:#0B44B3
+    }
 	.content{
 		width: 100%;
 		box-sizing:border-box;

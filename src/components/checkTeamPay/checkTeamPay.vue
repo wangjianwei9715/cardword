@@ -73,7 +73,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import {getCountDownTime} from '@/tools/util';
+	import {getCountDownTimeHour} from '@/tools/util';
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		// 自选球队 显示隐藏
@@ -146,11 +146,11 @@
 			this.$emit('settlement')
 		}
 		countDownTime(){
-			this.countStr = getCountDownTime(this.countTimeCopy);
+			this.countStr = getCountDownTimeHour(this.countTimeCopy);
 			this.countInterval = setInterval(()=>{
 				if(this.countTimeCopy>0){
 					this.countTimeCopy--;
-					this.countStr = getCountDownTime(this.countTimeCopy);
+					this.countStr = getCountDownTimeHour(this.countTimeCopy);
 				}else{
 					clearInterval(this.countInterval)
 				}

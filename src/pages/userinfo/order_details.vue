@@ -175,6 +175,7 @@
 		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
+				console.log('orderDetail====',res)
 				this.orderData = res.data
 				this.countDown = res.data.leftSec
 				this.getCountDown()
@@ -190,13 +191,10 @@
 						}
 					})
 				}
-				if(res.data.state>=2){
-					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noList',{pageIndex:1,pageSize:5},(res:any)=>{
-						if(res.list){
-							this.cardList = res.list
-						}
-					})
+				if(res.data.noList){
+					this.cardList = res.data.noList
 				}
+				
 				if(cb) cb()
 			})
 
@@ -205,11 +203,14 @@
 		getGoodDesc(data:any){
 			this.orderDesc[0].desc ='¥'+(data.price+data.discount);
 			this.orderDesc[1].desc ='- ¥'+data.discount;
-			for (const key in this.orderInfo) {
-				if (Object.prototype.hasOwnProperty.call(data.payInfo, key)) {
-					this.orderInfo[key].desc = data.payInfo[key];
+			if(data.payInfo){
+				for (const key in this.orderInfo) {
+					if (Object.prototype.hasOwnProperty.call(data.payInfo, key)) {
+						this.orderInfo[key].desc = data.payInfo[key];
+					}
 				}
 			}
+			
 			this.orderInfo['orderNo'].desc = this.orderData.code
 		}
 		getCountDown(){
@@ -344,6 +345,7 @@
 		onClickCopyInfo(text:any){
 			uni.setClipboardData({
 				data: text,
+				showToast:false,
 				success: function () {
 					uni.showToast({
 						title:'复制成功',

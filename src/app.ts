@@ -45,4 +45,5 @@ export module app{
     export let defaultAvatar = '/static/index/moren@2x.png';
     export let payload = '';//unipush跳转参数
     export let requestKey = ''; // 邀请key
+    export let familial = false;
 }

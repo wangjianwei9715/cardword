@@ -152,6 +152,7 @@
 				let data = res.data;
 				this.infoData = data;
 				this.infoData.avatar = decodeURIComponent(data.avatar)
+				app.familial = data.familial;
 				console.log('homedata==',this.infoData.avatar)
 				for (const key in this.orderTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
