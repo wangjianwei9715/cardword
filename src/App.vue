@@ -220,7 +220,10 @@ export default Vue.extend({
   font-family: "LT";
   src: url("~@/common/DIN/lanting.TTF");
 }
-
+@font-face {
+  font-family: "LTGBK";
+  src: url("~@/common/DIN/ltGBK.TTF");
+}
 @font-face {
   font-family: "ali-Light";
   src: url("~@/common/ALI/Alibaba-PuHuiTi-Light.ttf");

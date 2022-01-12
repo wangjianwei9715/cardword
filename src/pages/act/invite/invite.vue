@@ -4,7 +4,7 @@
 			<view class="rules" @click="onClickRules">规则</view>
 		</view>
 		<view class="record">
-			<view class="record-content" :style="'transform:translateX('+marginLeft+'px)'">
+			<view class="record-content" :class="{'transition-ing':transitionIng}" :style="'transform:translateX('+marginLeft+'px)'">
 				<view class="record-index" v-for="(item,index) in tipsData" :key="index">{{item}}刚刚免费上了1组</view>
 			</view>
 		</view>
@@ -16,7 +16,7 @@
 			<view class="goodslist-ing" v-for="(item,index) in goodsIng" :key="index" v-show="goodsIng!=''">
 				<view class="goodslist-ing-title">正在进行</view>
 					<view class="goodslist-ing-content">
-						<inviteGoods :goodsData="item"/>
+						<inviteGoods :goodsData="item" @send="onClickJumpGood"/>
 						<view class="goodslist-bottom">
 							<view class="invite-record" @click="onClickInviteRecord(item.goodCode)">
 								<view class="my-num">已购得{{item.myNum}}组</view>
@@ -47,7 +47,7 @@
 		
 
 		<!-- 邀请新人活动弹窗 -->
-		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="inviteResult" :rules="rules" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInvitePopupBtn"/>
+		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="inviteResult" :rules="rules" :inviteResultStr="inviteResultStr" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInvitePopupBtn"/>
 	</view>
 </template>
 
@@ -70,6 +70,8 @@
 		showInvitePopup = false;
 		inviteResult = 0;
 		rules = false;
+		inviteResultStr = ''
+		transitionIng = true;
 		onLoad(query:any) {
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -80,13 +82,35 @@
 
 			// 判断是否有邀请码
 			if(app.requestKey!=''){
-				app.platform.inviteRequestKey(app.requestKey)
+				app.platform.inviteRequestKey(app.requestKey,(res:any)=>{
+					console.log('app.requestKeyres==',res)
+					this.showInvitePopup = true;
+					this.rules = false;
+					this.inviteResult= res.result;
+					this.inviteResultStr = res.errorMsg
+					if(res.result==0){
+						this.currentPage = 1;
+						this.noMoreData = false;
+						this.reqNewData()
+					}
+				})
 			}
 			this.reqNewData()
 
-			
-			
+			// 10分钟记录缓存
+			let inviteRecord = uni.getStorageSync('inviteRecord');
+			let newDate:any = new Date();
+			let dateParse = Date.parse(newDate)/1000;
+			if( dateParse - inviteRecord.time <600){
+				this.tipsData = inviteRecord.list
+			}else{
+				app.http.Get('activity/invite/recordlist',{},(res:any)=>{
+					this.tipsData = res.list
+					uni.setStorageSync('inviteRecord',{list:res.list,time:dateParse})
+				})
+			}
 		}
+		
         //   加载更多数据
 		onReachBottom() {
 		    this.reqNewData() 
@@ -109,9 +133,7 @@
 			if (this.noMoreData) {
 				return;
 			}
-			app.http.Get('activity/invite/recordlist',{},(res:any)=>{
-				this.tipsData = res.list
-			})
+			
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
@@ -157,8 +179,10 @@
 			}
 			this.tipsInter=setInterval(()=>{
 				if(this.marginLeft>(this.recordWidth-this.tipsWidth)){
+					this.transitionIng = true
 					this.marginLeft --;
 				}else{
+					this.transitionIng = false
 					this.marginLeft = 30
 				}
 			},50);
@@ -210,6 +234,11 @@
 				url: "/pages/act/invite/record?code="+code,
 			})
 		}
+		onClickJumpGood(code:string){
+			uni.navigateTo({
+				url: '/pages/goods/goods_details?id='+code
+			})
+		}
 		
 	}
 </script>
@@ -258,7 +287,6 @@
 		&-content{
 			width: max-content;
 			height:38rpx;
-			transition: all 0.2s linear;
 			position: absolute;
 			left:0;
 			top:0;
@@ -278,6 +306,9 @@
 			display: inline-block;
 		}
 	}
+	.transition-ing{
+		transition: all 0.2s linear;
+	}
 	.center{
 		width: 100%;
 		box-sizing: border-box;
@@ -291,6 +322,7 @@
 		background-size: 100% 100%;
 		box-sizing: border-box;
 		margin:0 auto;
+		margin-bottom: 20rpx;
 		.goodslist-ing-title{
 			width: 100%;
 			height:70rpx;
@@ -366,8 +398,7 @@
 		margin:0 auto;
 		border-radius: 10rpx;
 		position: relative;
-		background:#878acb;
-		margin-top: 26rpx;
+		background: linear-gradient(90deg, #a1a4d5, #878acb);
 		padding-bottom: 20rpx;
 	}
 	.end-banner{

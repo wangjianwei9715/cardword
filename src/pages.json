@@ -316,7 +316,7 @@
                     "path" : "invite/invite",
 						"style" :                                                                                    
 					{
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "邀请新人",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": true
@@ -674,14 +674,53 @@
                 ,{
                     "path" : "merchant_list",
                     "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "商家列表",
-					"navigationBarBackgroundColor":"#ffffff",
-					"navigationBarTextStyle":"black",
-					"enablePullDownRefresh": false,
-                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    {
+                        "navigationBarTitleText": "商家列表",
+                        "navigationBarBackgroundColor":"#ffffff",
+                        "navigationBarTextStyle":"black",
+                        "enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    }
+                
                 }
+                ,{
+                    "path" : "coupon/coupon",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarTitleText": "优惠券",
+                        "navigationBarBackgroundColor":"#ffffff",
+                        "navigationBarTextStyle":"black",
+                        "enablePullDownRefresh": true,
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    }
+                
+                }
+                ,{
+                    "path" : "coupon/coupon_exchange",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarTitleText": "优惠券兑换",
+                        "navigationBarBackgroundColor":"#ffffff",
+                        "navigationBarTextStyle":"black",
+                        "enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    }
+                
+                }
+                ,{
+                    "path" : "coupon/coupon_over",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarTitleText": "优惠券",
+                        "navigationBarBackgroundColor":"#ffffff",
+                        "navigationBarTextStyle":"black",
+                        "enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    }
                 
                 }
             ]

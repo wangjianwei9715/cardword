@@ -1,6 +1,6 @@
 <template name="goodslist">
 	<view class="content" >
-		<view class="goodslist-index">
+		<view class="goodslist-index" @click="onClickJumpUrl(goodsData.goodCode)">
 			<view class="goodslist-pic">
 				<image class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(goodsData.pic))" mode="aspectFill"></image>
 			</view>
@@ -11,7 +11,7 @@
 						¥<text class="goodslist-price">{{goodsData.price}}</text>
 					</view>
 					<view v-if="goodsData.state!=0" class="goodslist-bottom-right" >
-						<view :id="goodsData.goodCode" class="goodslist-plan-desc">{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}</view>
+						<view :id="goodsData.goodCode" class="goodslist-plan-desc">余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}</view>
 						<view class="goodslist-plan-content">
 							<view class="goodslist-plan-now" :style="'width:'+getPlan(goodsData.lockNum,goodsData.currentNum,goodsData.totalNum)+'%'"></view>
 						</view>
@@ -49,8 +49,8 @@
 			let width = Math.floor((Number(lock)+Number(now))/Number(all)*100);
 			return width
 		}
-		onClickJumpUrl(id:any){
-			this.$emit("send", id);
+		onClickJumpUrl(code:any){
+			this.$emit("send", code);
 		}
 		
 	}
@@ -105,7 +105,7 @@
 			-webkit-box-orient: vertical;
 		}
 		&-plan-content{
-			width: 205rpx;
+			width: 150rpx;
 			height:12rpx;
 			background: #FEE5E3;
 			overflow: hidden;

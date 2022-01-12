@@ -105,11 +105,7 @@
 	@Component({})
 	export default class index extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
-		topAddList:any = [
-			// {pic:'../../static/index/banner2.jpg',url:'/pages/information/details?code=2A3234859'},
-			// {pic:'../../static/index/banner3.jpg',url:'社群'},
-			// {pic:'../../static/index/banner1.jpg',url:'/pages/act/yiyuan/index'},
-		];
+		topAddList:any = [];
 		goodsMiniList = [
 			{
 				currentNum:0,
@@ -128,7 +124,6 @@
 		tabList = [
 			{img:'../../static/index/tab0.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
 			{img:'../../static/index/tab1.png',text:'资讯',url:'/pages/information/list'},
-			// {img:'../../static/index/tab1.png',text:'资讯',url:''},
 			{img:'../../static/index/tab2.png',text:'查价',url:'/pages/index/ref'},
 			{img:'../../static/index/tab3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
 		];
@@ -207,7 +202,7 @@
 			});
 			// #ifdef APP-PLUS
 			// 判断是否有邀请上线
-			// app.platform.getInvitationClipboard()
+			app.platform.getInvitationClipboard()
 			// #endif
 		}
 		onShow(){
@@ -394,7 +389,7 @@
 		}
 		onClickDownload() {
 			if (uni.getSystemInfoSync().platform == 'ios'){
-				plus.runtime.openURL('https://itunes.apple.com/cn/app/卡世界/id1593158816?mt=8')
+				plus.runtime.openURL('https://itunes.apple.com/cn/app/id1593158816?mt=8')
 				return;
 			}
 			let downloadTask = uni.downloadFile({

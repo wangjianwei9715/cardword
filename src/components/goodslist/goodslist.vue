@@ -274,6 +274,7 @@
 			padding:0 11rpx;
 			width: fit-content;
 			display: inline-flex;
+			margin-left: 1rpx;
 		}
 	}
 	.plan-baifen{

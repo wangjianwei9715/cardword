@@ -1057,10 +1057,10 @@
 			margin-bottom: 18rpx;
 			.icon-tips{
 				height:34rpx;
-				border: 2rpx solid #FB4E3E;
+				border: 1rpx solid #FB4E3E;
 				border-radius: 10rpx;
 				text-align: center;
-				line-height: 34rpx;
+				line-height: 32rpx;
 				font-size: 18rpx;
 				font-family: Microsoft YaHei;
 				font-weight: 400;
@@ -1068,6 +1068,7 @@
 				box-sizing: border-box;
 				padding:0 11rpx;
 				margin-right: 10rpx;
+				margin-left: 1rpx;
 			}
 		}
 		.icon-favor{

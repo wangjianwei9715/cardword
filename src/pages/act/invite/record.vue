@@ -57,7 +57,7 @@
 					this.noMoreData = true;
 				}
 				if(this.currentPage==1){
-					this.inviteList = data.list;
+					this.inviteList = [];
 				}
 				if(data.list){
 					this.inviteList = this.inviteList.concat(data.list);

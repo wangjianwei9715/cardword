@@ -416,18 +416,19 @@ export default class PlatformManager {
 			
 			
 		} else if (plus.os.name == 'Android') {  
-			var Context = plus.android.importClass("android.content.Context");  
-			var main = plus.android.runtimeMainActivity();  
-			var clip = main.getSystemService(Context.CLIPBOARD_SERVICE);  
-			var value = plus.android.invoke(clip, "getText");  
-			// value就是粘贴板的值  
-			if(value!=undefined){
-				this.matchInviteRequestKey(value)
-			}
+			uni.getClipboardData({
+				success: (res)=> {
+					if(res.data){
+						this.matchInviteRequestKey(res.data)
+					}
+				}
+			});
+			
 		}
 	}
 	// 判断粘贴板是否有邀请码
 	matchInviteRequestKey(code:string){
+		console.log(code)
 		if(code.indexOf('卡世界帮我助力') == -1){
 			return 
 		}
@@ -449,8 +450,9 @@ export default class PlatformManager {
 		}
 	}
 	// 提交邀请口令
-	inviteRequestKey(key:string){
+	inviteRequestKey(key:string,cb?:Function){
 		app.http.Post('activity/invite/requestKey',{key:key},(res:any)=>{
+			if(cb) cb(res)
 			console.log('invite/requestKey========',res)
 		})
 		app.requestKey = '';

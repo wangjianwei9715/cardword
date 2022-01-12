@@ -147,6 +147,7 @@
 		font-weight: 400;
 		color: #34363A;
 		line-height: 50rpx;
+		text-align: center;
 	}
 	.popup-btn{
 		width: 462rpx;

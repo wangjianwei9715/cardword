@@ -91,7 +91,7 @@
 		defaultAvatar = app.defaultAvatar;
 		headerTab:{[x: string]: any} = {
 			point:{id:1,name:'我的积分',num:0,url:'/pages/userinfo/card_no'},
-			// broadcast:{id:2,name:'我的直播',num:0,url:'/pages/userinfo/user_live'},
+			coupon:{id:2,name:'我的优惠券',num:0,url:'/pages/userinfo/coupon/coupon'},
 			favorite:{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
 		};
 		orderTab:{[x: string]: any} = {
@@ -159,7 +159,7 @@
 						this.orderTab[key].num = data[key];
 					}
 				}
-				// 我的直播、编号、收藏
+				// 我的优惠券、积分、收藏
 				for (const key in this.headerTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
 						this.headerTab[key].num = data[key];
@@ -401,7 +401,7 @@
 			width: 100%;
 			height:80rpx;
 			box-sizing: border-box;
-			padding:0 150rpx;
+			padding:0 100rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
