@@ -30,10 +30,10 @@
 			<!-- 正在进行 -->
 			<view class="goodslist-end"  v-show="goodsEnd!=''">
 				<view class="end-banner"></view>
-				<view class="end-content" v-for="(item,index) in goodsEnd" :key="index">
+				<view class="end-content" >
 					<view class="goodslist-ing-title">已结束</view>
-					<view class="goodslist-ing-content">
-						<inviteGoods :goodsData="item"/>
+					<view class="goodslist-ing-content" v-for="(item,index) in goodsEnd" :key="index">
+						<inviteGoods :goodsData="item" @send="onClickJumpGood"/>
 						<view class="goodslist-bottom">
 							<view class="invite-record" @click="onClickInviteRecord(item.goodCode)">
 								<view class="my-num">已购得{{item.myNum}}组</view>
@@ -340,7 +340,6 @@
 			margin:0 auto;
 			padding-top: 30rpx;
 			box-sizing: border-box;
-
 		}
 	}
 	.goodslist-bottom{
@@ -435,7 +434,7 @@
 			margin:0 auto;
 			padding-top: 30rpx;
 			box-sizing: border-box;
-
+			margin-bottom: 20rpx;
 		}
 		.invite-record{
 			width: 624rpx;

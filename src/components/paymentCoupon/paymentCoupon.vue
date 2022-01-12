@@ -68,6 +68,13 @@
 			}
 			
 		}
+		@Watch('couponList')
+		onCouponListChanged(val: any, oldVal: any){
+			this.checkCouponList = [];
+			this.checkTp = 0;
+			this.checkPrice = 0;
+			
+		}
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -97,6 +104,7 @@
 		}
 		onClickcheckCoupon(id:any,index:any){
 			let checkindex = this.checkCouponList.indexOf(id)
+			// 是否已选择优惠券
 			if(checkindex == -1){
 				if(this.checkTp == 0){
 					this.checkTp = this.couponList[index].tp
@@ -108,19 +116,25 @@
 					})
 					return;
 				}
+				
+				// 满减不能叠加
+				if(this.checkTp==2){
+					this.checkCouponList = [id];
+					this.checkPrice = this.couponList[index].amount
+					return;
+				}
+
 				if(this.checkTp==1){
 					this.checkPrice+=this.couponList[index].amount
-				}else if(this.checkTp==2){
-					this.checkPrice+=this.couponList[index].minUseAmount
 				}
 				this.checkCouponList.push(id);
 				
 			}else{
-				if(this.checkTp==1){
+				if(this.checkTp==1||this.checkTp==2){
 					this.checkPrice-=this.couponList[index].amount
-				}else if(this.checkTp==2){
-					this.checkPrice-=this.couponList[index].minUseAmount
 				}
+
+				
 				this.checkCouponList.splice(checkindex,1)
 				if(this.checkCouponList.length==0){
 					this.checkTp = 0

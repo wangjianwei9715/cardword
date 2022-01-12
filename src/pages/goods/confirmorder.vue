@@ -103,10 +103,7 @@
         <view class="yunfei-item">
           <text class="item-name">优惠券</text>
           
-          <view class="item-name" @click="onClickCheckCoupon" v-if="goodsData.discount">
-            当前活动无法使用优惠券
-          </view>
-          <view class="item-name" @click="onClickCheckCoupon" v-else>
+          <view class="item-name" @click="onClickCheckCoupon">
             <text class="coupon-num">{{checkCouponPrice>0?'-¥'+checkCouponPrice:couponNum}}</text>{{checkCouponPrice>0?'':'张可用'}}<view class="item-name-right"></view>
           </view>
           
@@ -282,8 +279,6 @@ export default class ClassName extends BaseNode {
       this.onePrice = this.goodsData.price;
     }
 
-    // 有活动满减不能使用优惠券
-    if(this.goodsData.discount) return;
 
     // 获取可用优惠券数量
     let params:any = {
@@ -297,11 +292,17 @@ export default class ClassName extends BaseNode {
       params.price = this.cartData.amount
     }
     app.http.Get('me/coupon/condition/list',params,(res:any)=>{
+      // 可用优惠券发生变化 清空已选择的优惠券
+      if(this.couponNum!=0 && this.couponNum!=res.count){
+        this.checkCouponList = [];
+        this.checkCouponPrice = 0;
+        this.couponTotalPrice = 0;
+      }
       this.couponNum = res.count;
       this.couponList = res.list;
-      
+      this.getConditionPrice()
     })
-    this.getConditionPrice()
+    
   }
   onClickCutDown() {
     if (this.moneyNum > 1) {
