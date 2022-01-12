@@ -69,9 +69,10 @@
                     "NSMicrophoneUsageDescription" : "获取麦克风语音",
                     "NSLocationAlwaysUsageDescription" : "访问地址",
                     "NSLocalNetworkUsageDescription" : "判断当前网络",
-                    "NSUserTrackingUsageDescription" : "获取用户需求",
+                    "NSUserTrackingUsageDescription" : "需要访问广告标识符，用于为您提供与您更加相关的内容",
                     "NSFaceIDUsageDescription" : ""
-                }
+                },
+                "idfa" : false
             },
             /* ios打包配置 */
             "sdkConfigs" : {
