@@ -2,14 +2,14 @@
 	<view class="box-content">
 		<view class="box">
 			<view class="box-index" :class="['box-index-'+index,drawingIndex==(index+1)?'index-current':'']" v-for="(item,index) in drawingList" :key="index">
-				<image class="box-pic" :src="decodeURIComponent(item.pic)"/>
+				<image class="box-pic" mode="aspectFit" :src="decodeURIComponent(item.logo)"/>
 				<view class="reward-name">{{item.name}}</view>
 			</view>
-			<view class="box-index drawing-btn" :class="{'btning':this.turntableIng}" @click="onClickDrawing">
-				<view class="drawing-name">抽一次</view>
-				<view class="drawing-text">（1000卡豆）</view>
-				<view class="drawing-text">今日剩5次</view>
-			</view>
+			<button class="box-index drawing-btn" :class="{'btning':this.turntableIng||luckydrawNum==0}"  @click="onClickDrawing">
+				<view class="drawing-name"></view>
+				<view class="drawing-text">（{{luckydrawPrice}}卡豆）</view>
+				<view class="drawing-text">今日剩{{luckydrawNum}}次</view>
+			</button>
 		</view>
 	</view>
 </template>
@@ -23,12 +23,17 @@
 		drawingList:any;
 		@Prop({default:0})
 		rewardId:any;
+		@Prop({default:0})
+		luckydrawPrice:any;
+		@Prop({default:0})
+		luckydrawNum:any;
 
+		// 转盘转动index
 		drawingIndex = 0;
 		//抽奖转盘转动的次数
 		drawTimes = 0
-		//抽奖按钮点击事件
 		turntableIng = false;
+		//抽奖按钮点击事件
 		timeoutFnc:any;
 		drawTimeoutTime = 50;
 		@Watch('rewardId')
@@ -37,7 +42,6 @@
 				this.turntableIng = true;
 				this.turntableStart(this.rewardId)
 			}
-			
 		}
 		created(){//在实例创建完成后被立即调用
 			
@@ -47,10 +51,9 @@
 		}
 		destroyed(){
 			clearInterval(this.timeoutFnc);
-			this.$emit('turntableEnd')
 		}
 		onClickDrawing(){
-			if (this.turntableIng) {
+			if (this.turntableIng || this.luckydrawNum<=0) {
 				return;
 			}
 			this.$emit('turntableStart')
@@ -62,12 +65,13 @@
 			this.drawTimeoutTime = 50;
 			clearInterval(this.timeoutFnc);
 		}
+
 		//转盘启动
 		turntableStart(num: number) {
 			this.timeoutFnc = setTimeout(() => {
 				if (this.drawTimes == 6) {
 					if (this.drawingIndex < num) {
-						this.drawTimeoutTime+=150;
+						this.drawTimeoutTime+=50;
 						this.drawingIndex++;
 						this.turntableStart(num);
 					} else {
@@ -79,7 +83,7 @@
 					return
 				}
 				if(this.drawTimes == 5){
-					this.drawTimeoutTime+=50;
+					this.drawTimeoutTime+=30;
 				}
 				if (this.drawingIndex < 8) {
 					this.drawingIndex++;
@@ -97,21 +101,21 @@
 	.box-content{
 		width: 710rpx;
 		margin:0 auto;
-		padding:20rpx;
+		padding:30rpx 25rpx;
 		background:#fff;
 		border-radius: 20rpx;
 		box-sizing: border-box;
 	}
 	.box{
-		width: 670rpx;
-		height:670rpx;
+		width: 660rpx;
+		height:650rpx;
 		position: relative;
 	}
 	.box-index{
-		width: 210rpx;
-		height:210rpx;
+		width: 202rpx;
+		height:197rpx;
 		border-radius: 10rpx;
-		border:1rpx solid #f2f2f2;
+		border:1px solid #f2f2f2;
 		box-sizing: border-box;
 		display: flex;
 		justify-content: center;
@@ -119,51 +123,50 @@
 		padding-top: 20rpx;
 	}
 	.box-index-0{position: absolute;left:0;top:0;}
-	.box-index-1{position: absolute;left:230rpx;top:0;}
-	.box-index-2{position: absolute;left:460rpx;top:0;}
-	.box-index-3{position: absolute;left:460rpx;top:230rpx;}
-	.box-index-4{position: absolute;left:460rpx;top:460rpx;}
-	.box-index-5{position: absolute;left:230rpx;top:460rpx;}
-	.box-index-6{position: absolute;left:0;top:460rpx;}
-	.box-index-7{position: absolute;left:0;top:230rpx;}
+	.box-index-1{position: absolute;left:229rpx;top:0;}
+	.box-index-2{position: absolute;left:458rpx;top:0;}
+	.box-index-3{position: absolute;left:458rpx;top:227rpx;}
+	.box-index-4{position: absolute;left:458rpx;top:454rpx;}
+	.box-index-5{position: absolute;left:229rpx;top:454rpx;}
+	.box-index-6{position: absolute;left:0;top:454rpx;}
+	.box-index-7{position: absolute;left:0;top:227rpx;}
 	.drawing-btn{
-		border:1rpx solid #FB4E3E;
+		border:1px solid #FB4E3E;
 		background:#FB4E3E;
-		padding: 45rpx 0;
+		padding: 55rpx 0;
 		position: absolute;
 		left:230rpx;
 		top:230rpx;
 	}
 	.drawing-name{
-		width: 100%;
-		text-align: center;
-		font-size:36rpx;
-		color:#fff;
+		width: 171rpx;
+		height:41rpx;
+		background:url(../../pages/act/static/sign/luck_btn.png) no-repeat center;
+		background-size: 100% 100%;
 	}
 	.drawing-text{
 		width: 100%;
 		text-align: center;
-		font-size: 16rpx;
+		font-size: 20rpx;
 		color:#fff;
 		margin-top: 6rpx;
 	}
 	.box-pic{
-		width: 120rpx;
+		width: 105rpx;
 		height:120rpx;
-		background:#FB4E3E;
 		margin:0 auto;
 	}
 	.reward-name{
 		width: 100%;
 		text-align: center;
-		color: #1b1b1b;
-		font-size: 20rpx;
+		color: #4A4A4A;
+		font-size: 22rpx;
 	}
 	.index-current{
-		border:1rpx solid #FB4E3E;
+		border:1px solid #FB4E3E;
 	}
 	.btning{
-		background:#f2f2f2;
-		border:1rpx solid #f2f2f2
+		background:#8c8b8b;
+		border:1px solid #8c8b8b
 	}
 </style>

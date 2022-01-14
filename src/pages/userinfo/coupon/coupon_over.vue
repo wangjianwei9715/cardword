@@ -147,7 +147,7 @@
 	.content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:28rpx 20rpx 120rpx 20rpx
+		padding:118rpx 20rpx 120rpx 20rpx
 	}
 	.coupon-content{
 		width: 710rpx;
@@ -289,6 +289,9 @@
 		padding:0 150rpx;
 		box-sizing: border-box;
 		background:#fff;
+		position: fixed;
+		left:0;
+		top:0
 	}
 	.coupon-btn-content{
 		width: 100%;

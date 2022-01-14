@@ -4,7 +4,22 @@
 			<tabc :tabc="tab" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
 		</view>
 		<view class="content">
-			
+			<view class="record-list">
+				<view class="record-index" v-for="(item,index) in recordList" :key="index">
+					<image class="record-image" :src="item.logo" mode="aspectFit" />
+					<view class="record-right">
+						<view class="detail-top">
+							<view class="detail-name">{{item.name}}</view>
+							<view class="detail-text">兑换时间：{{dateFormatYMSHM(item.exchangeAt)}}</view>
+							<view class="detail-text">消耗卡豆：{{item.price}}</view>
+						</view>
+						<view class="detail-state">
+							{{item.goodTp==1?'券编号：'+item.couponCode:(item.goodTp==3?'已发放':switchState(item.state))}}
+							<button class="wuliu-btn" v-if="item.wuliuCode!=''" @click="onClickWuliu(item.wuliuCode)">查看物流</button>
+						</view>
+					</view>
+				</view>
+			</view>
 			
 			<empty v-show="showEmpty" />
 		</view>
@@ -40,6 +55,11 @@
 		onReachBottom() {
 		    this.reqNewData() 
 		}
+		onClickWuliu(wuliucode:string){
+			uni.navigateTo({
+				url:'/pages/userinfo/order_logistics?code='+wuliucode
+			})
+		}
 		onClickListTabs(id:number){
 			if(id==this.tabCheck){
 				return;
@@ -50,6 +70,18 @@
 			this.recordList = [];
 			this.reqNewData()
 		}
+		switchState(state:number){
+			switch(state){
+				case 0:
+					return '已发放';
+				case 1:
+					return '待发货';
+				case 2:
+					return '已发货';
+				case 3:
+					return '已收货'
+			}
+		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
 			if (this.noMoreData) {
@@ -59,9 +91,9 @@
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
-				state:this.tabCheck
+				tp:this.tabCheck
 			}
-			app.http.Get('me/coupon/list',params,(data:any)=>{
+			app.http.Get('point/exchange/myRecordlist',params,(data:any)=>{
 				console.log(data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
@@ -95,7 +127,7 @@
 	.content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:28rpx 20rpx 120rpx 20rpx
+		padding:118rpx 20rpx 20rpx 20rpx
 	}
 	.header-tab{
 		width: 100%;
@@ -103,5 +135,83 @@
 		padding:0 150rpx;
 		box-sizing: border-box;
 		background:#fff;
+		position: fixed;
+		left:0;
+		top:0;
+	}
+	.record-list{
+		width: 100%;
+		box-sizing: border-box;
+	}
+	.record-index{
+		width: 710rpx;
+		height:196rpx;
+		background: #FFFFFF;
+		border-radius: 10rpx;
+		margin-bottom: 26rpx;
+		display: flex;
+		box-sizing: border-box;
+		padding:20rpx 30rpx;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.record-image{
+		width: 140rpx;
+		height:154rpx;
+	}
+	.record-right{
+		width: 475rpx;
+		height:156rpx;
+	}
+	.detail-top{
+		width: 100%;
+		height:110rpx;
+		border-bottom: 1rpx solid #E7E7E7;
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		padding-bottom: 10rpx;
+		box-sizing: border-box;
+	}
+	.detail-name{
+		width: 100%;
+		font-size: 30rpx;
+		font-family: Source Han Sans CN;
+		font-weight: 400;
+		color: #666666;
+	}
+	.detail-text{
+		width: 100%;
+		font-size: 20rpx;
+		font-family: Source Han Sans CN;
+		font-weight: 400;
+		color: #B8B7B7;
+	}
+	.detail-state{
+		width: 100%;
+		height:46rpx;
+		box-sizing: border-box;
+		padding-top: 20rpx;
+		font-size: 20rpx;
+		font-family: Source Han Sans CN;
+		font-weight: 400;
+		color: #FB4E3E;
+		position: relative;
+	}
+	.wuliu-btn{
+		box-sizing: border-box;
+		padding:0 10rpx;
+		position: absolute;
+		right:0;
+		bottom:0;
+		height: 35rpx;
+		background: #FB4E3E;
+		border-radius: 30rpx;
+		text-align: center;
+		line-height: 35rpx;
+		font-size: 20rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #fff
 	}
 </style>

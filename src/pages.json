@@ -346,11 +346,12 @@
 					
 				},
 				{
-					"path" : "sign/drawing",
+					"path" : "sign/luckyDraw",
 					"style" :                                                                                    
 					{
 						"navigationBarTitleText": "幸运抽奖",
 						"navigationBarBackgroundColor": "#ffffff",
+                        "transparentTitle":"auto",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
                         "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
@@ -362,7 +363,7 @@
 					"path" : "sign/cardBean",
 					"style" :                                                                                    
 					{
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "卡豆商城",
 						"navigationBarBackgroundColor": "#ffffff",
                         "transparentTitle":"auto",
 						"navigationBarTextStyle": "black",
