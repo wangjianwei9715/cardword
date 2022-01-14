@@ -90,7 +90,7 @@
 		infoData:{[x:string]:any} = [];
 		defaultAvatar = app.defaultAvatar;
 		headerTab:{[x: string]: any} = {
-			point:{id:1,name:'我的积分',num:0,url:'/pages/userinfo/card_no'},
+			point:{id:1,name:'我的积分',num:0,url:'/pages/act/sign/cardBean'},
 			coupon:{id:2,name:'我的优惠券',num:0,url:'/pages/userinfo/coupon/coupon'},
 			favorite:{id:3,name:'我的收藏',num:0,url:'/pages/userinfo/user_collect'}
 		};
@@ -202,13 +202,7 @@
 			})
 			// #endif
 			// #ifndef MP
-			if(item.id==1){
-				uni.showToast({
-					title:'商城维护中',
-					icon:'none'
-				})
-				return;
-			}
+			
 			uni.navigateTo({
 				url:item.url
 			})

@@ -95,8 +95,6 @@
 					}
 				})
 			}
-			this.reqNewData()
-
 			// 10分钟记录缓存
 			let inviteRecord = uni.getStorageSync('inviteRecord');
 			let newDate:any = new Date();
@@ -109,6 +107,10 @@
 					uni.setStorageSync('inviteRecord',{list:res.list,time:dateParse})
 				})
 			}
+			
+			this.reqNewData()
+
+			
 		}
 		
         //   加载更多数据

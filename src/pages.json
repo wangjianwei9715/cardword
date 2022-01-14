@@ -344,6 +344,46 @@
 						"enablePullDownRefresh": false
 					}
 					
+				},
+				{
+					"path" : "sign/drawing",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "幸运抽奖",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+					
+				},
+				{
+					"path" : "sign/cardBean",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#ffffff",
+                        "transparentTitle":"auto",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F4F5F9",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F4F5F9"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+					
+				},
+				{
+					"path" : "sign/cardBean_record",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "兑换记录",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+					
 				}
                 
               
