@@ -12,7 +12,7 @@
 							<view class="coupon-name"><image class="coupon-icon" src="../../../static/userinfo/coupon_icon.png"/>{{item.name}}</view>
 							<view class="coupon-time">{{dateFormatYMS(item.startAt)}}-{{dateFormatYMS(item.overAt)}}</view>
 						</view>
-						<view class="coupon-right-header-btn">去使用</view>
+						<button class="coupon-right-header-btn" @click="onClickGoIndex">去使用</button>
 					</view>
 					<view class="coupon-right-bottom" @click="onClickCheckExplain(item.id)">
 						<view class="coupon-right-detail">查看详情</view>
@@ -22,8 +22,10 @@
 			</view>
 			<view class="coupon-explain" :class="{'show-explain':checkShowExplain(item.id)}">
 				<view class="explain-content">
-					<view class="explain-index">1、卡享券可用于平台所有商品，用户下单时，可选择卡享券按面值抵减商品金额</view>
-					<view class="explain-index">2、卡享券可叠加使用，但不设找零券编号：{{item.code}}</view>
+					<view class="explain-index">1.{{item.name}}可用于平台所有商品，用户下单时，可选择{{item.name}}按面值抵减商品金额</view>
+					<view class="explain-index">2.{{item.state==1?item.name+'可叠加使用，最低可减至0.01元，但不设找零':item.name+'不可叠加使用，不设找零'}}</view>
+					<view class="explain-index">3.不可与其他类型优惠券叠加使用</view>
+					<view class="explain-index">券编号：{{item.code}}</view>
 				</view>
 			</view>
 		</view>
@@ -115,6 +117,11 @@
 				case 3:
 					return '打折'
 			}
+		}
+		onClickGoIndex(){
+			uni.switchTab({
+				url:'/pages/index/index'
+			})
 		}
 		onClickGoOver(){
 			uni.navigateTo({
@@ -338,6 +345,6 @@
 		line-height: 36rpx;
 	}
 	.show-explain{
-		height:195rpx
+		height:225rpx
 	}
 </style>

@@ -37,19 +37,7 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		drawingList:any = [];
-		tipsData = [
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-			'张*三 刚刚抽到了6元无门槛券',
-		]
+		tipsData = []
 		rewardId:any = 0;
 		showLotteryPopup = false;
 		luckyDrawName = '';
@@ -68,20 +56,24 @@
 		}
 		initEven(){
 			app.http.Get('dataApi/point/lottery/index',{},(res:any)=>{
+				this.tipsData = res.historyList
 				this.luckydrawPrice = res.price;
 				this.luckydrawNum = res.leftNum
 				this.drawingList = res.awardList
+				
 
-				const seleQuery = uni.createSelectorQuery();
-				seleQuery.select('.record').boundingClientRect(data => {
-					this.recordWidth = data.width;
-					console.log('recordWidth==',this.recordWidth)
-				}).exec();
-				seleQuery.select('.record-content').boundingClientRect(data => {
-					this.tipsWidth = data.width;
-					console.log('tipsWidth==',this.tipsWidth)
-				}).exec();
-				this.tipsInterval()
+				setTimeout(()=>{
+					const seleQuery = uni.createSelectorQuery();
+					seleQuery.select('.record').boundingClientRect(data => {
+						this.recordWidth = data.width;
+						console.log('recordWidth==',this.recordWidth)
+					}).exec();
+					seleQuery.select('.record-content').boundingClientRect(data => {
+						this.tipsWidth = data.width;
+						console.log('tipsWidth==',this.tipsWidth)
+					}).exec();
+					this.tipsInterval()
+				},500)
 			})
 			
 		}

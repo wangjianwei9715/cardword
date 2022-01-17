@@ -307,6 +307,8 @@ export default class ClassName extends BaseNode {
   onClickCutDown() {
     if (this.moneyNum > 1) {
       this.moneyNum--;
+    }else{
+      return;
     }
     this.getOnePrice();
   }
@@ -314,6 +316,7 @@ export default class ClassName extends BaseNode {
   onClickAdd() {
     if (this.moneyNum >= this.maxNum) {
       this.moneyNum = this.maxNum;
+      return;
     } else {
       this.moneyNum++;
     }

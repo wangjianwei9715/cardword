@@ -53,7 +53,7 @@
 		checkPrice = 0;
 		confirmList:any = [];
 		confirmPrice = 0;
-		confirmTp = 0
+		confirmTp = 0;
 		@Watch('showPayMentCoupon')
 		onShowChanged(val: any, oldVal: any){
 			if(val){
@@ -104,8 +104,26 @@
 		}
 		onClickcheckCoupon(id:any,index:any){
 			let checkindex = this.checkCouponList.indexOf(id)
+
 			// 是否已选择优惠券
 			if(checkindex == -1){
+				// 同类型不可以叠加
+				if(!this.couponList[index].overlay){
+					if(this.checkTp == 0){
+						this.checkTp = this.couponList[index].tp
+						this.checkCouponList = [id];
+						this.checkPrice = this.couponList[index].amount
+						return;
+					}else{
+						uni.showToast({
+							title:'此优惠券不能叠加使用',
+							position:'top',
+							icon:'none'
+						})
+						return;
+					}
+				}
+
 				if(this.checkTp == 0){
 					this.checkTp = this.couponList[index].tp
 				}else if(this.checkTp!=this.couponList[index].tp){
@@ -117,6 +135,7 @@
 					return;
 				}
 				
+
 				// 满减不能叠加
 				if(this.checkTp==2){
 					this.checkCouponList = [id];

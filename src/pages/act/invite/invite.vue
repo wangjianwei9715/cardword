@@ -73,6 +73,7 @@
 		inviteResultStr = ''
 		transitionIng = true;
 		onLoad(query:any) {
+			
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
@@ -195,7 +196,8 @@
 		onClickGetInviteKey(code:string){
 			app.http.Post('activity/invite/getKey',{code:code},(res:any)=>{
 				console.log('activity/invite/getKey=====',res);
-				this.onClickCopyInviteKey(res.content)
+				let newKey = res.content.replace(/\[p\]/g, `\r\n`);
+				this.onClickCopyInviteKey(newKey)
 			})
 		}
 		// 复制邀请key

@@ -3,7 +3,8 @@
 		<view class="payment-showdow"></view>
 		<view class="payment-popup" v-if="!rules">
 			<view class="popup-title">{{getTitle(inviteResult)}}</view>
-			<view class="popup-msg">{{getMsg(inviteResult)}}</view>
+			<view class="popup-msg" v-html="getMsg(inviteResult)"></view>
+			<view class="popup-msg" v-show="inviteResult==0">您也来试试吧~</view>
 			<view class="popup-btn" :class="{'popup-btn-success':inviteResult==0||inviteResult==668}" @click="onClickPopupBtn(inviteResult)">
 				<view class="popup-wechat" v-show="inviteResult==668"></view>
 				{{inviteResult==668?'去微信粘贴':'确定'}}
@@ -52,11 +53,11 @@
 		}
 		getTitle(res:any){
 			if(res==0){
-				return '邀请成功';
+				return '助力成功';
 			}else if(res==668){
 				return '已复制邀请码'
 			}else{
-				return '邀请失败'
+				return '助力失败'
 			}
 		}
 		getMsg(res:any){
@@ -64,7 +65,7 @@
 				case 668:
 					return '邀请新人下载注册并复制口令至app就能帮您免费上组啦~';
 				case 0:
-					return '恭喜，您为好友完成一次免费上组您也来试试吧~';
+					return '助力好友上组成功，送您一张<text style="color:#FB4E3E">3元卡享券</text>！（可在我的-优惠券查看）';
 				case 1:
 					return '抱歉，您不是新用户哦，无法完成邀请~';
 				case 2:

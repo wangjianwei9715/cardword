@@ -429,7 +429,7 @@ export default class PlatformManager {
 	// 判断粘贴板是否有邀请码
 	matchInviteRequestKey(code:string){
 		console.log(code)
-		if(code.indexOf('卡世界帮我助力') == -1){
+		if(code.indexOf('帮我助力') == -1){
 			return 
 		}
 		let inviteCode = /[0-9a-zA-Z]{9}/g;

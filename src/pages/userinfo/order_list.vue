@@ -18,7 +18,7 @@
 			<statusbar/>
 			<orderlist :orderList="orderList"  @send="onClickOrder" @operate="onClickOperate" />
 		</view>
-
+		<empty v-show="showEmpty" />
 		<payment :showPayMent="showPayMent" :payPrice="payItem.price" @cancelPay="onClickCancelPay" :countTime="countTime" @pay="onClickPayGoods" />
 	</view>
 </template>
@@ -51,6 +51,7 @@
 			price:0
 		};
 		clickToPay = false;
+		showEmpty = false;
 		onLoad(query:any) {
 			if(query.type){
 				this.orderTabCheck = query.type
@@ -100,11 +101,15 @@
 		  }
 		  app.http.Get("me/order/buyer/orderList", params, (data: any) => {
 			if(data.list){
+				this.showEmpty = false;
 				if(this.currentPage==1){
 					this.orderList = data.list;
 				}else{
 					this.orderList = this.orderList.concat(data.list);
 				}
+			}
+			if(!data.list&&this.currentPage==1){
+				this.showEmpty = true;
 			}
 			if(!data.list || data.list.length<this.pageSize){
 				this.noMoreData = true;

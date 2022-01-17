@@ -361,9 +361,7 @@
 					}
 					this.goodsDesc = newData;
 					console.log(newData)
-					this.goodsDesc.unshift('【结束时间】：'+dateFormat(data.good.overAt))
 					this.goodsDesc.unshift('【开售时间】：'+dateFormat(data.good.startAt))
-					this.goodsDesc.unshift('【商品编号】：'+data.good.goodCode)
 					if(this.goodsState==1){
 						app.http.Get('dataApi/good/'+id+'/buyRecord',{},(res:any)=>{
 							if(res.list){
@@ -1344,8 +1342,8 @@
 				box-sizing: border-box;
 				line-height: 45rpx;
 				word-break: break-all;
-				text-indent: -190rpx;
-				padding-left:190rpx
+				text-indent: -12rpx;
+				padding-left:12rpx
 			}
 		}
 	}
