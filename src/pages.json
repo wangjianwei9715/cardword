@@ -316,7 +316,7 @@
                     "path" : "invite/invite",
 						"style" :                                                                                    
 					{
-						"navigationBarTitleText": "邀请新人",
+						"navigationBarTitleText": "邀请好友",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": true

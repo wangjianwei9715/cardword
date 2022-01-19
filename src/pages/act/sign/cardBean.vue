@@ -4,7 +4,7 @@
 			<!-- 卡豆签到区域 -->
 			<view class="header-content">
 				<view class="header-top">
-					<view class="user-bean">我的卡豆：<text>{{signInfo.point}}</text></view>
+					<view class="user-bean">我的卡豆：<text>{{signInfo.point}}</text><view class="bean-help" @click="onClickShowRule"></view></view>
 					<view class="user-mx" @click="onClickGoRecord">奖品明细></view>
 				</view>
 				<view class="header-line"></view>
@@ -14,7 +14,7 @@
 				</view>
 				<view class="header-step">
 					<view class="step-index" v-for="(item,index) in signInfo.pointList" :key="index">
-						<view class="step-bg" :class="{'step-complete':signInfo.consecutiveNum>=item.minDay}">{{item.point>0?item.point:item.coupon+'元'}}</view>
+						<view class="step-bg" :class="{'step-complete':signInfo.consecutiveNum>=item.minDay}">{{item.coupon>0?item.coupon+'元':item.point}}</view>
 						<view class="step-minday">第{{item.minDay}}天</view>
 						<view class="step-line" :class="{'line-complete':signInfo.consecutiveNum>=item.minDay}" v-if="index<3"></view>
 					</view>
@@ -59,6 +59,9 @@
 
 		<!-- 弹窗 -->
 		<lotteryPopup :popupTitle="popupTitle" :showSignPopup="showSignPopup" :signReward="signReward" :distanceDay="distanceDay" :couponReward="couponReward" :showLotteryPopup="showLotteryPopup" :exchangePrice="exchangePrice" :popupPic="popupPic" @cancelLotteryPopup="onClickCancelLotteryPopup" @popupBtn="onClickExchangeConfirm"/>
+
+		<!-- 规则弹窗 -->
+		<rulePopup :showRulePopup="showRulePopup" @cancelRulePopup="onClickCancelRulePopup"/>
 	</view>
 </template>
 
@@ -88,20 +91,19 @@
 		signReward = 0;
 		distanceDay = 0;
 		couponReward = 0;
+		// 规则弹窗
+		showRulePopup = false;
 		onLoad(query:any) {
+			this.getExchangeData()
+		}
+		onShow(){
 			this.initEvent()
-
-			this.onEventUI('luckyDrawEnd',(res:any)=>{
-				this.signInfo.point -= res.price
-			})
 		}
 		initEvent(){
 			this.getSignInfo();
-			this.getExchangeData()
 		}
 		// 获取签到信息
 		getSignInfo(){
-			app.http.Get('dataApi/point/index',{},(res:any)=>{})
 			app.http.Get('dataApi/point/sign/info',{},(res:any)=>{
 				this.signInfo = res;
 				this.couponReward = this.getPointReward(15)
@@ -109,6 +111,7 @@
 			})
 		}
 		getExchangeData(){
+			app.http.Get('dataApi/point/index',{},(res:any)=>{})
 			app.http.Get('dataApi/point/exchange/goodlist',{pageIndex:1,pageSize:30},(res:any)=>{
 				this.exchangeData = res.list;
 			})
@@ -182,7 +185,14 @@
 			this.popupPic = '';
 			this.exchangeId = 0;
 			this.exchangePrice = 0
-
+		}
+		// 规则弹窗开启
+		onClickShowRule(){
+			this.showRulePopup = true
+		}
+		// 规则弹窗关闭
+		onClickCancelRulePopup(){
+			this.showRulePopup = false;
 		}
 	}
 </script>
@@ -224,6 +234,7 @@
 			font-family: Microsoft YaHei;
 			font-weight: 400;
 			color: #4A4A4A;
+			position: relative;
 		}
 		.user-bean text{
 			font-size: 30rpx;
@@ -444,12 +455,12 @@
 				justify-content: space-between;
 			}
 			.exchange-index{
-				width: 344rpx;
+				width: 348rpx;
 				height: 477rpx;
 				background: #FFFFFF;
 				border-radius: 10rpx;
 				box-sizing: border-box;
-				margin-bottom: 22rpx;
+				margin-bottom:18rpx;
 				overflow: hidden;
 				position: relative;
 			}
@@ -531,5 +542,15 @@
 			}
 		}
 	}
-	
+	.bean-help{
+		width: 25rpx;
+		height:25rpx;
+		background:url(../static/sign/help.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-left: 20rpx;
+		position: absolute;
+		right:-35rpx;
+		top:50%;
+		margin-top: -12.5rpx;
+	}
 </style>

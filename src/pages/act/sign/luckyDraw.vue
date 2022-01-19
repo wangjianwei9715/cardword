@@ -54,6 +54,13 @@
 		onLoad(query:any) {
 			this.initEven()
 		}
+		onUnload(){
+			if(this.luckydrawToken!=''){
+				app.http.Post('point/lottery/request/end',{lotteryToken:this.luckydrawToken},(res:any)=>{
+					this.luckydrawToken = ''
+				})
+			}
+		}
 		initEven(){
 			app.http.Get('dataApi/point/lottery/index',{},(res:any)=>{
 				this.tipsData = res.historyList
@@ -91,7 +98,6 @@
 				
 				this.rewardId = this.getLuckyDrawIndex(res.hitId);
 				this.luckydrawToken = res.token;
-				console.log(this.luckydrawToken)
 			 	this.luckyDrawName = this.drawingList[this.rewardId-1].name;
 			 	this.popupPic =  this.drawingList[this.rewardId-1].logo;
 			})
@@ -102,7 +108,7 @@
 			app.http.Post('point/lottery/request/end',{lotteryToken:this.luckydrawToken},(res:any)=>{
 				this.luckydrawNum--;
 				this.showLotteryPopup = true;
-				uni.$emit('luckyDrawEnd',{price:this.luckydrawPrice})
+				this.luckydrawToken = ''
 			})
 		}
 		onClickCancelLotteryPopup(){

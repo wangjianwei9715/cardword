@@ -124,7 +124,7 @@
 		tabList = [
 			{img:'../../static/index/tab0.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
 			{img:'../../static/index/tab1.png',text:'资讯',url:'/pages/information/list'},
-			{img:'../../static/index/tab2.png',text:'查价',url:'/pages/index/ref'},
+			{img:'../../static/index/tab2.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
 			{img:'../../static/index/tab3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
 		];
 		noticeList = [
@@ -468,28 +468,9 @@
 			this.showPaySuccess = false;
 		}
 		onClickJumpUrl(item:any){
-			if(item.text=='拼团' ||item.text=='商家列表'||item.text=='资讯'){
-				uni.navigateTo({
-					url: item.url
-				})
-			}else if(item.text=='积分商城'){
-				uni.showToast({
-					title:'敬请期待',
-					icon:'none'
-				})
-				return;
-			}else if(item.text=='资讯'){
-				uni.showToast({
-					title:'敬请期待',
-					icon:'none'
-				})
-				return;
-			}else{
-				uni.switchTab({
-					url:item.url
-				})
-			}
-			
+			uni.navigateTo({
+				url: item.url
+			})
 		}
 		// 跳转商品详情
 		onClickJumpDetails(id:any){

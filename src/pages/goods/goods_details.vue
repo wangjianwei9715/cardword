@@ -1343,7 +1343,8 @@
 				line-height: 45rpx;
 				word-break: break-all;
 				text-indent: -12rpx;
-				padding-left:12rpx
+				padding-left:12rpx;
+				margin-bottom: 10rpx;
 			}
 		}
 	}

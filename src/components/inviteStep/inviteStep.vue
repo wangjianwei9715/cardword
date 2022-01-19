@@ -5,7 +5,6 @@
 				<view class="index-text">{{item.top}}</view>
 				<view class="index-text">{{item.bottom}}</view>
 			</view>
-			<view class="copy" :class="{'copy-step':goodsStep}" @click="onClickCopy">{{goodsStep?'下载链接':'复制链接'}}</view>
 		</view>
 	</view>
 </template>
@@ -65,7 +64,7 @@
 		justify-content: space-between;
 		box-sizing: border-box;
 		padding: 0 15rpx;
-		padding-top: 50rpx;
+		padding-top:63rpx;
 		
 	}
 	.goods-step{
@@ -73,28 +72,6 @@
 		height:134rpx;
 		background:url(../../pages/act/static/invite/step1.png) no-repeat center;
 		background-size: 100% 100%;
-	}
-	.copy{
-		width: 73rpx;
-		height: 20rpx;
-		border: 1rpx solid #FFF000;
-		box-sizing: border-box;
-		text-align: center;
-		line-height: 20rpx;
-		border-radius: 10px;
-		font-size: 16rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #FFF000;
-		position: absolute;
-		left:26rpx;
-		bottom:8rpx;
-		margin-left:2rpx;
-	}
-	.copy-step{
-		color: #FB4E3E;
-		border: 1rpx solid #FB4E3E;
-		margin-left:1rpx;
 	}
 	.index:nth-child(2){
 		margin-left: 20rpx;

@@ -22,8 +22,8 @@
 			</view>
 			<view class="coupon-explain" :class="{'show-explain':checkShowExplain(item.id)}">
 				<view class="explain-content">
-					<view class="explain-index">1.{{item.name}}可用于平台所有商品，用户下单时，可选择{{item.name}}按面值抵减商品金额</view>
-					<view class="explain-index">2.{{item.state==1?item.name+'可叠加使用，最低可减至0.01元，但不设找零':item.name+'不可叠加使用，不设找零'}}</view>
+					<view class="explain-index">1.{{item.tp==1?'卡享券':'满减券'}}可用于平台所有商品，用户下单时，可选择{{item.tp==1?'卡享券':'满减券'}}按面值抵减商品金额</view>
+					<view class="explain-index">2.{{item.tp==1?'卡享券可叠加使用，最低可减至0.01元，但不设找零':'满减券不可叠加使用，不设找零'}}</view>
 					<view class="explain-index">3.不可与其他类型优惠券叠加使用</view>
 					<view class="explain-index">券编号：{{item.code}}</view>
 				</view>

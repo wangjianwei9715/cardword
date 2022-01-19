@@ -164,16 +164,18 @@
 				if(cb) cb()
 				
 
-				const seleQuery = uni.createSelectorQuery();
-				seleQuery.select('.record').boundingClientRect(data => {
-					this.recordWidth = data.width;
-					console.log('recordWidth==',this.recordWidth)
-				}).exec();
-				seleQuery.select('.record-content').boundingClientRect(data => {
-					this.tipsWidth = data.width;
-					console.log('tipsWidth==',this.tipsWidth)
-				}).exec();
-				this.tipsInterval()
+				setTimeout(()=>{
+					const seleQuery = uni.createSelectorQuery();
+					seleQuery.select('.record').boundingClientRect(data => {
+						this.recordWidth = data.width;
+						console.log('recordWidth==',this.recordWidth)
+					}).exec();
+					seleQuery.select('.record-content').boundingClientRect(data => {
+						this.tipsWidth = data.width;
+						console.log('tipsWidth==',this.tipsWidth)
+					}).exec();
+					this.tipsInterval()
+				},500)
 			})
 		}
 		tipsInterval(){
@@ -265,10 +267,10 @@
 		position: relative;
 		.rules{
 			width: 86rpx;
-			height: 30rpx;
+			height: 40rpx;
 			background: #6545CC;
-			border-radius: 15rpx;
-			font-size: 18rpx;
+			border-radius: 30rpx;
+			font-size: 24rpx;
 			font-family: Microsoft YaHei;
 			font-weight: 400;
 			color: #FFFFFF;

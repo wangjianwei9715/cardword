@@ -6,7 +6,7 @@
 		<view class="content">
 			<view class="record-list">
 				<view class="record-index" v-for="(item,index) in recordList" :key="index">
-					<image class="record-image" :src="item.logo" mode="aspectFit" />
+					<image class="record-image" :src="decodeURIComponent(item.logo)" mode="aspectFit" />
 					<view class="record-right">
 						<view class="detail-top">
 							<view class="detail-name">{{item.name}}</view>
@@ -79,7 +79,7 @@
 				case 2:
 					return '已发货';
 				case 3:
-					return '已收货'
+					return '已收货' 
 			}
 		}
 		reqNewData(cb?:Function) {
