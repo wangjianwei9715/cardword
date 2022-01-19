@@ -4,7 +4,7 @@
 			<view v-if="item.name=='自选'" :class="{'zixuan':true,'zixuan-check':tabsCheck==item.id}"></view>
 			<view v-else :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]">
 				{{item.name}}
-				<view v-if="item.name=='新品'" class="new-icon"></view>
+				<!-- <view v-if="item.name=='新品'" class="new-icon"></view> -->
 			</view>
 		</view>
 		<!-- <view class="line">
