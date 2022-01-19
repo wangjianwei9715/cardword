@@ -186,10 +186,10 @@
 						font-weight: 400;
 						color: #14151A;
 						margin-bottom: 0;
-						display: -webkit-box;
 						overflow: hidden;
 						text-overflow:ellipsis;
 						white-space: nowrap;
+						box-sizing: border-box;
 					}
 					.state{
 						height:30rpx;

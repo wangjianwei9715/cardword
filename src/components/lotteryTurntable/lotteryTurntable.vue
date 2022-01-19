@@ -63,6 +63,9 @@
 		turntableEnd(){
 			this.drawTimes = 0;
 			this.drawTimeoutTime = 50;
+			setTimeout(()=>{
+				this.turntableIng = false;
+			},1000)
 			clearInterval(this.timeoutFnc);
 		}
 
@@ -76,7 +79,7 @@
 						this.turntableStart(num);
 					} else {
 						clearInterval(this.timeoutFnc);
-						this.turntableIng = false;
+						
 						this.turntableEnd();
 						this.$emit('turntableEnd')
 					}

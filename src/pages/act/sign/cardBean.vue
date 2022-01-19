@@ -50,7 +50,7 @@
 						<view class="exchange-pic-content"><image mode="aspectFit" class="exchange-pic" :src="decodeURIComponent(item.logo)" /></view>
 						<view class="exchange-title">{{item.name}}</view>
 						<view class="exchange-desc">{{item.price}}卡豆</view>
-						<button :class="item.state==1?'exchange-btn':'exchange-btn-over'" :disabled="item.state==0" @click="onClickExchange(item)">兑换</button>
+						<button :class="item.leftNum!=0?'exchange-btn':'exchange-btn-over'" :disabled="item.leftNum==0" @click="onClickExchange(item)">兑换</button>
 					</view>
 				</view>
 			</view>
@@ -94,6 +94,7 @@
 		// 规则弹窗
 		showRulePopup = false;
 		onLoad(query:any) {
+			app.http.Get('dataApi/point/index',{},(res:any)=>{})
 			this.getExchangeData()
 		}
 		onShow(){
@@ -111,7 +112,6 @@
 			})
 		}
 		getExchangeData(){
-			app.http.Get('dataApi/point/index',{},(res:any)=>{})
 			app.http.Get('dataApi/point/exchange/goodlist',{pageIndex:1,pageSize:30},(res:any)=>{
 				this.exchangeData = res.list;
 			})
@@ -169,6 +169,7 @@
 			this.showLotteryPopup = false;
 			app.http.Post('point/exchange/exchange/'+this.exchangeId,{},(res:any)=>{
 				this.signInfo.point = res.point;
+				this.getExchangeData();
 				uni.showToast({
 					title:'兑换成功',
 					icon:'none'
@@ -500,6 +501,9 @@
 				color: #4A4A4A;
 				margin-top: 15rpx;
 				box-sizing: border-box;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				white-space: nowrap;
 			}
 			.exchange-desc{
 				width: 100%;

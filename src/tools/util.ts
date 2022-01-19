@@ -78,7 +78,7 @@ export function dateFormatYMS(time:number|string){
     var sdate = ("0" + date.getDate()).slice(-2);
  
     // 拼接
-    var result = year + "-" + month + "-" + sdate
+    var result = year + "." + month + "." + sdate
    
     return result;
 }

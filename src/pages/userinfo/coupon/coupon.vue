@@ -113,7 +113,7 @@
 				case 1:
 					return '全平台无门槛';
 				case 2:
-					return '满'+minUseAmount+'减';
+					return '满'+minUseAmount+'可用';
 				case 3:
 					return '打折'
 			}
@@ -166,49 +166,51 @@
 	}
 	.coupon-index{
 		width: 710rpx;
-		height:187rpx;
+		height:216rpx;
 		background:url(../../../static/userinfo/coupon_bg.png) no-repeat center;
 		background-size: 100% 100%;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		.coupon-left{
-			width: 187rpx;
-			height:187rpx;
+			width: 216rpx;
+			height:216rpx;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			flex-wrap: wrap;
-			padding:30rpx 0 49rpx 0;
+			padding:45rpx 0 49rpx 0;
 			.coupon-price{
 				width: 100%;
-				font-size: 18rpx;
-				font-family:LTGBK;
+				font-size: 30rpx;
+				font-family: Microsoft YaHei;
 				font-weight: 400;
 				color: #FFFFFF;
 				text-align: center;
+				font-weight: bold;
 			}
 			.coupon-price text{
-				font-size: 56rpx;
+				font-family:LTGBK;
+				font-size: 70rpx;
 			}
 			.coupon-condition{
 				width: 100%;
 				text-align: center;
-				font-size: 19rpx;
+				font-size: 20rpx;
 				font-family: Microsoft YaHei;
 				font-weight: 500;
 				color: #FFFFFF;
 			}
 		}
 		.coupon-right{
-			width: 520rpx;
-			height:187rpx;
+			width: 491rpx;
+			height:216rpx;
 			box-sizing: border-box;
 			padding: 0 24rpx 0 29rpx;
 			.coupon-right-header{
 				width: 100%;
-				height:120rpx;
+				height:160rpx;
 				border-bottom: 1rpx solid #E7E7E7;
 				display: flex;
 				align-items: center;
@@ -216,7 +218,7 @@
 				position: relative;
 				.coupon-right-header-left{
 					width: 350rpx;
-					height:64rpx;
+					height:84rpx;
 					display: flex;
 					align-items: center;
 					flex-wrap: wrap;
@@ -241,7 +243,8 @@
 					font-size: 20rpx;
 					font-family: Microsoft YaHei;
 					font-weight: 400;
-					color: #666666;
+					color: #999999;
+					margin-top: 20rpx;
 				}
 				.coupon-right-header-btn{
 					width: 100rpx;
@@ -305,12 +308,12 @@
 	}
 	.coupon-btn{
 		width: 308rpx;
-		height: 58rpx;
+		height: 70rpx;
 		background: #FFFFFF;
 		border: 1rpx solid #545659;
-		border-radius: 30rpx;
+		border-radius: 40rpx;
 		text-align: center;
-		line-height: 58rpx;
+		line-height: 70rpx;
 		font-size: 28rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
