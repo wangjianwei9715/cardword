@@ -39,7 +39,13 @@
 			</view>
 
 			<view class="teamtion-bottom">
-				<view class="teamtion-index">
+				<view class="btncheck-content">
+					<view class="btn-left"><view :class="cartData.available==0?'cart-empty':'cart-noempty'" @click="onClickShowShoppingCart"></view><text class="btn-left-price">￥{{cartData.amount}}</text></view>
+					<view v-if="countTimeCopy>0" class="btn-right-count" ><text class="count-text">开售倒计时</text> {{countTimeCopy==0?'':' '+countStr}}</view>
+					<view v-else class="btn-right" :class="{'btn-empty':cartData.available==0}" @click="onClickSettlement">去结算</view>
+				</view>
+				<!--  -->
+				<!-- <view class="teamtion-index">
 					<view class="teamtion-title cart-title" >
 						购物车<text class="teamtion-title-tip">（共{{cartData.num}}件{{cartData.available==cartData.num?'':'，失效'+(cartData.num-cartData.available)+'件'}}）</text>
 						<view v-show="cartData.num>=1" class="acrt-delete" @click="onClickDelCartIndex('[]')">清空</view>
@@ -62,6 +68,23 @@
 							<view v-if="countTimeCopy>0" class="btn-right-count" ><text class="count-text">开售倒计时</text> {{countTimeCopy==0?'':' '+countStr}}</view>
 							<view v-else class="btn-right" :class="{'btn-empty':cartData.available==0}" @click="onClickSettlement">去结算</view>
 						</view>
+					</view>
+				</view> -->
+			</view>
+
+			<!-- 购物车窗口 -->
+			<view class="shopping-cart" :class="{'show-cart':showShoppingCart}">
+				<view class="checkteam-popup-header">
+					<view class="checkteam-popup-back" @click="onClickCloseShoppingCart"></view>
+					购物车
+					<view v-show="cartData.num>=1" class="cart-deleteall" @click="onClickDelCartIndex('[]')">清空</view>
+				</view>
+				<view class="checkteam-popup-list">
+					<view class="checkteam-popup-index" v-for="(item,index) in cartData.list" :key="item.id">
+						<view class="checkteam-popup-logo-box"  >
+							<image class="checkteam-popup-logo" :src="decodeURIComponent(item.trunkLogo)" mode="aspectFit"/>
+						</view>
+						<view class="cart-delete" @click="onClickDelCartIndex(index)"></view>
 					</view>
 				</view>
 			</view>
@@ -100,7 +123,8 @@
 		
 		countStr = '';
 		countInterval:any;
-		countTimeCopy = 0
+		countTimeCopy = 0;
+		showShoppingCart = false;
 		@Watch('teamCheckShow')
 		onShowChanged(val: any, oldVal: any){
 			if(val){
@@ -108,6 +132,7 @@
 				console.log(this.countTimeCopy)
 				this.countDownTime()
 			}else{
+				this.onClickCloseShoppingCart()
 				clearInterval(this.countInterval);
 			}
 			
@@ -163,6 +188,14 @@
 					return true;
 				}
 			}
+		}
+		// 关闭购物车
+		onClickCloseShoppingCart(){
+			this.showShoppingCart = false
+		}
+		// 点击购物车
+		onClickShowShoppingCart(){
+			this.showShoppingCart = !this.showShoppingCart
 		}
 	}
 </script>
@@ -366,7 +399,7 @@
 		box-sizing: border-box;
 		padding:0 32rpx;
 		padding-top:498rpx ;
-		padding-bottom: 400rpx;
+		padding-bottom: 200rpx;
 		overflow-y: auto;
 	}
 	.branch-list{
@@ -436,26 +469,17 @@
 	}
 	.teamtion-bottom{
 		width: 100%;
-		height:400rpx;
+		height:120rpx;
 		position: absolute;
 		bottom:0;
 		left:0;
 		background:#fff;
 		border-top: 1rpx solid #E2E2E3;
 		box-sizing: border-box;
-		padding:30rpx 28rpx;
+		padding:15rpx 18rpx;
+		z-index: 24;
 	}
-	.acrt-delete{
-		position: absolute;
-		right:0;
-		top:0;
-		height:40rpx;
-		line-height: 40rpx;
-		font-size: 20rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #AAAAAA;
-	}
+
 	.teamtion-bottom-header{
 		width: 100%;
 		height:190rpx;
@@ -507,57 +531,50 @@
 		top:-14rpx;
 		left:0;
 	}
-	.bottom-btn{
-		height:118rpx;
+	.btncheck-content{
 		width: 100%;
-		position: absolute;
-		bottom:0;
-		left:0;
-		padding:0 28rpx;
-		padding-bottom: 30rpx;
+		height:88rpx;
+		display: flex;
+		align-items: center;
 		box-sizing: border-box;
-		.btncheck-content{
-			width: 100%;
+		justify-content: space-between;
+		.btn-left{
 			height:88rpx;
+			line-height: 88rpx;
+			font-size: 30rpx;
+			font-family: Microsoft YaHei;
+			font-weight: bold;
+			color: #AAAAAA;
 			display: flex;
 			align-items: center;
-			box-sizing: border-box;
-			justify-content: space-between;
-			.btn-left{
-				height:88rpx;
-				line-height: 88rpx;
-				font-size: 28rpx;
-				font-family: Microsoft YaHei;
-				font-weight: bold;
-				color: #AAAAAA;
-			}
-			.btn-left-price{
-				color:#FB4E3E
-			}
-			.btn-right{
-				width: 500rpx;
-				height: 88rpx;
-				background:#FB4E3E;
-				border-radius: 44rpx;
-				text-align: center;
-				line-height: 88rpx;
-				font-size: 28rpx;
-				font-family: Microsoft YaHei;
-				font-weight: bold;
-				color: #FFFFFF;
-			}
-			.btn-right-count{
-				width: 500rpx;
-				height: 88rpx;
-				background: #AAAAAA;
-				border-radius: 44rpx;
-				text-align: center;
-				line-height: 88rpx;
-				font-size: 28rpx;
-				font-family: Microsoft YaHei;
-				font-weight: bold;
-				color: #FB4E3E;
-			}
+		}
+		.btn-left-price{
+			color:#34363A;
+			margin-left: 10rpx;
+		}
+		.btn-right{
+			width: 368rpx;
+			height: 88rpx;
+			background:#FB4E3E;
+			border-radius: 44rpx;
+			text-align: center;
+			line-height: 88rpx;
+			font-size: 28rpx;
+			font-family: Microsoft YaHei;
+			font-weight: bold;
+			color: #FFFFFF;
+		}
+		.btn-right-count{
+			width: 368rpx;
+			height: 88rpx;
+			background: #AAAAAA;
+			border-radius: 44rpx;
+			text-align: center;
+			line-height: 88rpx;
+			font-size: 28rpx;
+			font-family: Microsoft YaHei;
+			font-weight: bold;
+			color: #FB4E3E;
 		}
 	}
 	.count-text{
@@ -579,5 +596,103 @@
 	}
 	.cart-have{
 		background:#AAAAAA !important
+	}
+	.cart-empty{
+		width: 72rpx;
+		height:72rpx;
+		background:url(../../static/goods/cart.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.cart-noempty{
+		width: 72rpx;
+		height:72rpx;
+		background:url(../../static/goods/cart_.png) no-repeat center;
+		background-size: 100% 100%;
+		position: relative;
+	}
+
+	.shopping-cart{
+		position: absolute;
+		bottom:0;
+		left:0;
+		height:100%;
+		width: 100%;
+		background:#fff;
+		z-index: 23;
+		box-sizing: border-box;
+		padding-bottom: 120rpx;
+		transition: all 0.3s linear;
+		-webkit-transition: -webkit-transform 0.3s;
+		border-radius: 24rpx 24rpx 0px 0px;
+		transform: translateY(100%);
+	}
+	.show-cart{
+		transform: translateY(0);
+	}
+	.checkteam-popup-header{
+		width: 100%;
+		height:100rpx;
+		display: flex;
+		position: absolute;
+		top:0;
+		left:0;
+		align-items: center;
+		justify-content: center;
+		font-size: 32rpx;
+		font-family: Microsoft YaHei;
+		font-weight: bold;
+		color: #34363A;
+	}
+	.checkteam-popup-back{
+		width: 21rpx;
+		height:38rpx;
+		background:url(../../static/goods/back_popup.png) no-repeat center;
+		background-size: 100% 100%;
+		position: absolute;
+		left:32rpx;
+		top:50%;
+		margin-top: -19rpx;
+	}
+	.cart-deleteall{
+		height:100rpx;
+		display: flex;
+		align-items: center;
+		position: absolute;
+		right:32rpx;
+		top:0;
+		font-size: 26rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #AAAABB;
+	}
+	.checkteam-popup-list{
+		width: 100%;
+		height:100%;
+		box-sizing: border-box;
+		padding:100rpx 0 20rpx 0;
+	}
+	.checkteam-popup-index{
+		width: 100%;
+		height:220rpx;
+		border-bottom: 1rpx solid #F1EFEF;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		padding:0 32rpx;
+		justify-content: space-between;
+	}
+	.checkteam-popup-logo-box{
+		width: 138rpx;
+		height: 138rpx;
+		background: #FFFFFF;
+		border: 1rpx solid #E2E2E3;
+		border-radius: 10rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.checkteam-popup-logo{
+		width: 128rpx;
+		height:128rpx
 	}
 </style>
