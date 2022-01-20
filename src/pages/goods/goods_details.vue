@@ -158,7 +158,7 @@
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
 		
 		<!-- 自选球队 -->
-		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @settlement="onClickSettlement"  />
+		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
 
 
 		<!-- 邀请新人活动弹窗 -->
@@ -229,6 +229,8 @@
 		branchData:any = [];
 		branchCheckIndex:number = 0;
 		cartData:any = [];
+		// 自选球队随机模式数据
+		randomMode:any = ''
 		// 支付方式
 		payChannel:any = [
 			{
@@ -690,6 +692,10 @@
 		onClickShareCancel(){
 			this.operationShow = false
 		}
+		// 随机倒计时结束
+		onChangeRandomGood(){
+			this.getGoodSelect()
+		}
 		// 自选球队 我要选队
 		getGoodSelect(cb?:Function){
 			app.http.Get('good/'+this.goodsId+'/select',{},(res:any)=>{
@@ -698,11 +704,22 @@
 				if(this.goodsData.state == 0){
 					this.teamLeftSec  = res.good.preSaleLeftSec
 				}
+				if(res.good.randomMode){
+					this.randomMode = res.good.randomMode
+				}
 				if(cb) cb()
 			})
 		}
 		// 自选球队 获取球队分支
 		getGoodSelectBranch(){
+			// 随机选队
+			if(this.teamCheckIndex == 999){
+				// app.http.Get('good/'+this.goodsId+'/select/randomNo',{},(res:any)=>{
+				// 	this.branchCheckIndex = -1
+				// 	this.branchData = res.list;
+				// })
+				return;
+			}
 			let id = this.teamData[this.teamCheckIndex].id;
 			app.http.Get('good/'+this.goodsId+'/select/branch',{teamId:id},(res:any)=>{
 				this.branchCheckIndex = 0
@@ -777,6 +794,13 @@
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&cart='+encodeURIComponent(JSON.stringify(this.cartData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))
 			})
 			this.onClickTeamCheckCancel()
+		}
+
+		// 购买剩余随机
+		onClickBuyRandomGood(){
+			uni.navigateTo({
+				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))
+			})
 		}
 		// 复制邀请口令
 		onClickCopyInviteKey(){

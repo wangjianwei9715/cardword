@@ -25,8 +25,8 @@ export module app{
     // 请求的service地址
     export let service_url='';
     export let dataApiDomain='';
-    export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
-    // export let launch_url = ['https://service.s777.ka-world.com']
+    // export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
+    export let launch_url = ['https://service.s777.ka-world.com']
     
     export let statusBarHeight:any = 0;
     export let platform = PlatformManager.getIns();
