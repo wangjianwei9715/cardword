@@ -84,6 +84,11 @@
 						<view class="checkteam-popup-logo-box"  >
 							<image class="checkteam-popup-logo" :src="decodeURIComponent(item.trunkLogo)" mode="aspectFit"/>
 						</view>
+						<view class="checkteam-popup-detail">
+							<view class="checkteam-popup-detail-trunk">{{item.trunk}}</view>
+							<view class="checkteam-popup-detail-name">{{item.name}}</view>
+							<view class="checkteam-popup-detail-price">￥<text>{{item.price}}</text></view>
+						</view>
 						<view class="cart-delete" @click="onClickDelCartIndex(index)"></view>
 					</view>
 				</view>
@@ -694,5 +699,14 @@
 	.checkteam-popup-logo{
 		width: 128rpx;
 		height:128rpx
+	}
+	.checkteam-popup-detail{
+		width: 520rpx;
+		height:138rpx;
+		box-sizing: border-box;
+		position: relative;
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
 	}
 </style>
