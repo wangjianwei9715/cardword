@@ -244,31 +244,33 @@
 	}
 	.coupon-index{
 		width: 710rpx;
-		height:187rpx;
+		height:216rpx;
 		background:url(../../static/userinfo/coupon_bg.png) no-repeat center;
 		background-size: 100% 100%;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		.coupon-left{
-			width: 187rpx;
-			height:187rpx;
+			width:216rpx;
+			height:216rpx;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			flex-wrap: wrap;
-			padding:30rpx 0 49rpx 0;
+			padding:45rpx 0 49rpx 0;
 			.coupon-price{
 				width: 100%;
-				font-size: 18rpx;
-				font-family: LTGBK;
+				font-size: 30rpx;
+				font-family: Microsoft YaHei;
 				font-weight: 400;
 				color: #FFFFFF;
 				text-align: center;
+				font-weight: bold;
 			}
 			.coupon-price text{
-				font-size: 56rpx;
+				font-family:LTGBK;
+				font-size: 70rpx;
 			}
 			.coupon-condition{
 				width: 100%;
@@ -280,8 +282,8 @@
 			}
 		}
 		.coupon-right{
-			width: 520rpx;
-			height:187rpx;
+			width: 491rpx;
+			height:216rpx;
 			box-sizing: border-box;
 			padding: 0 24rpx 0 29rpx;
 			.coupon-right-header{
@@ -319,7 +321,8 @@
 					font-size: 20rpx;
 					font-family: Microsoft YaHei;
 					font-weight: 400;
-					color: #666666;
+					color: #999999;
+					margin-top: 20rpx;
 				}
 			}
 		}

@@ -299,7 +299,7 @@ export default class ClassName extends BaseNode {
         this.couponTotalPrice = 0;
       }
       this.couponNum = res.count;
-      this.couponList = res.list;
+      this.couponList = res.list?res.list:[];
       this.getConditionPrice()
     })
     

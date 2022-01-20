@@ -468,6 +468,13 @@
 			this.showPaySuccess = false;
 		}
 		onClickJumpUrl(item:any){
+			if(item.text=='卡豆商城'){
+				uni.showToast({
+					title:'卡豆商城维护中',
+					icon:'none'
+				})
+				return;
+			}
 			uni.navigateTo({
 				url: item.url
 			})
