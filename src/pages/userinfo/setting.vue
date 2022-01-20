@@ -116,6 +116,7 @@ export default class ClassName extends BaseNode {
   onClickLogout() {
     app.http.Post("user/logout", {}, (res: any) => {
       uni.removeStorageSync("token");
+      app.token = {accessToken:'',refreshToken:''};
       uni.reLaunch({
         url: "/pages/login/login",
       });

@@ -94,14 +94,22 @@
 		// 规则弹窗
 		showRulePopup = false;
 		onLoad(query:any) {
+			if(app.token.accessToken == ''){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				return;
+			}
 			app.http.Get('dataApi/point/index',{},(res:any)=>{})
-			this.getExchangeData()
+			this.getExchangeData();
+			this.getSignInfo();
+
+			this.onEventUI('luckydrawEnd',(res:any)=>{
+				this.getSignInfo()
+			})	
 		}
 		onShow(){
-			this.initEvent()
-		}
-		initEvent(){
-			this.getSignInfo();
+			
 		}
 		// 获取签到信息
 		getSignInfo(){

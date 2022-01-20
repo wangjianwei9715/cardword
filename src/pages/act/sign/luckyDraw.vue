@@ -58,6 +58,7 @@
 			if(this.luckydrawToken!=''){
 				app.http.Post('point/lottery/request/end',{lotteryToken:this.luckydrawToken},(res:any)=>{
 					this.luckydrawToken = ''
+					uni.$emit('luckydrawEnd')
 				})
 			}
 		}
@@ -108,7 +109,8 @@
 			app.http.Post('point/lottery/request/end',{lotteryToken:this.luckydrawToken},(res:any)=>{
 				this.luckydrawNum--;
 				this.showLotteryPopup = true;
-				this.luckydrawToken = ''
+				this.luckydrawToken = '';
+				uni.$emit('luckydrawEnd')
 			})
 		}
 		onClickCancelLotteryPopup(){
