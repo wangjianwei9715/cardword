@@ -202,7 +202,13 @@
 			})
 			// #endif
 			// #ifndef MP
-			
+			if(item.name=='我的卡豆'){
+				uni.showToast({
+					title:'卡豆商城维护中',
+					icon:'none'
+				})
+				return;
+			}
 			uni.navigateTo({
 				url:item.url
 			})
