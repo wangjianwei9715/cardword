@@ -268,11 +268,14 @@ export default class ClassName extends BaseNode {
   }
   getOnePrice() {
     if (this.goodsData.discount) {
-      for (let i in this.goodsData.discount) {
-        if (this.moneyNum >= this.goodsData.discount[i].minNum) {
-          this.onePrice = this.goodsData.discount[i].price;
-        } else {
+      if(this.moneyNum < this.goodsData.discount[0].minNum){
           this.onePrice = this.goodsData.price;
+          return;
+      }else{
+        for (let i in this.goodsData.discount) {
+          if (this.moneyNum >= this.goodsData.discount[i].minNum) {
+            this.onePrice = this.goodsData.discount[i].price;
+          } 
         }
       }
     } else {
