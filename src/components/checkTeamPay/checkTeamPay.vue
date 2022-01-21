@@ -8,14 +8,14 @@
 						<image class="header-left-pic" :src="teamCheckIndex==999?'../../static/goods/xianbian.png':(teamData[teamCheckIndex].logo?decodeURIComponent(teamData[teamCheckIndex].logo):'')" mode="aspectFit"/>
 					</view>
 					<view class="header-right" v-if="branchData!=''">
-						<view class="header-price">¥<text>{{teamCheckIndex==999?randomMode.good.price+'/组':branchData[branchCheckIndex].price}}</text></view>
+						<view class="header-price">¥<text>{{teamCheckIndex==999?randomMode.good.price:branchData[branchCheckIndex].price}}</text></view>
 						<view class="header-teamname">“{{teamCheckIndex==999?'剩余球队':teamData[teamCheckIndex].name}}”</view>
 						<view class="header-teamtip">{{teamCheckIndex==999?'将在剩余的球队编号中随机限编':branchData[branchCheckIndex].name}}</view>
-						<button v-if="teamCheckIndex!=999"  class="header-shopping-btn" :class="{'cart-have':getCartHaveIndex()}" @click="onClickJoinCart">{{getCartHaveIndex()?'已在购物车':'加入购物车'}}</button>
-						<view v-else class="header-shoppong-random">
-							<view class="goodslist-plan-desc">余{{randomMode.totalNum-(randomMode.currentNum+randomMode.lockNum)}}/共{{randomMode.totalNum}}</view>
+						<button v-if="teamCheckIndex!=999&&randomMode.state!=2"  class="header-shopping-btn" :class="{'cart-have':getCartHaveIndex()}" @click="onClickJoinCart">{{getCartHaveIndex()?'已在购物车':'加入购物车'}}</button>
+						<view v-else-if="teamCheckIndex==999" class="header-shoppong-random">
+							<view class="goodslist-plan-desc">余{{randomMode.good.totalNum-(randomMode.good.currentNum+randomMode.good.lockNum)}}/共{{randomMode.good.totalNum}}</view>
 							<view class="goodslist-plan-content">
-								<view class="goodslist-plan-now" :style="'width:'+getPlan(randomMode.lockNum,randomMode.currentNum,randomMode.totalNum)+'%'"></view>
+								<view class="goodslist-plan-now" :style="'width:'+getPlan(randomMode.good.lockNum,randomMode.good.currentNum,randomMode.good.totalNum)+'%'"></view>
 							</view>
 						</view>
 					</view>
@@ -26,13 +26,14 @@
 						<scroll-view class="team-check-content-scroll" :scroll-x="true">
 							<!-- 随机模式 -->
 							<view :class="{'scroll-index':true,'scroll-index-check-random':teamCheckIndex==999}" @click="onClickTeamCheckRandom" v-show="randomMode.state==2">
-								<image class="scroll-index-img" src="../../static/goods/xianbian.png" mode="aspectFit"></image>
-								<view class="scroll-index-name">剩余球队</view>
+								<image class="scroll-index-img-random" :src="teamCheckIndex==999?'../../static/goods/xianbian_.png':'../../static/goods/xianbian.png'" mode="aspectFit"></image>
+								<view class="scroll-index-name" :class="teamCheckIndex==999?'scroll-index-name-random':''">剩余球队</view>
+								<view class="random-ing">进行中</view>
 							</view>
 
 							<view :class="{'scroll-index':true,'scroll-index-check':teamCheckIndex==index}" v-for="(item,index) in teamData" :key="item.id" @click="onClickTeamCheck(index)">
 								<image class="scroll-index-img" :src="item.logo?decodeURIComponent(item.logo):''" mode="aspectFit"></image>
-								<view class="scroll-index-name">{{item.name}}</view>
+								<view class="scroll-index-name" :class="{'random-team-name':randomMode.state==2}">{{item.name}}</view>
 							</view>
 						</scroll-view>
 					</view>
@@ -51,9 +52,9 @@
 							<view class="branch-sq" v-if="item.soldOut||item.lock">{{item.soldOut?'售罄':'未支付'}}</view>
 						</view>
 					</view>
-					<view class="branch-list" v-show="teamCheckIndex==999">
+					<view class="branch-list-random" v-show="teamCheckIndex==999">
 						<view :class="{'branch-index':true}" v-for="item in branchData" :key="item.id">
-							<view class="branch-index-name">{{item.name}} </view>
+							<view class="branch-index-name-random">{{item.name}} </view>
 							<view class="branch-reward" v-if="item.isExtend">额外奖品</view>
 						</view>
 					</view>
@@ -86,7 +87,7 @@
 					<view v-else class="btn-right" :class="{'btn-empty':cartData.available==0}" @click="onClickSettlement">去结算</view>
 				</view>
 				<view class="btncheck-content" v-else>
-					<button class="btn-right-random" v-show="teamCheckIndex==999" @click="onClickBuyRandomGood">￥{{randomMode.good.price}}/组 立即购买</button>
+					<button class="btn-right-random" v-show="teamCheckIndex==999" @click="onClickBuyRandomGood">￥{{randomMode.good.price?randomMode.good.price:''}}/组 立即购买</button>
 					<view class="btn-right-random-orther" v-show="teamCheckIndex!=999">请选购剩余球队</view>
 				</view>
 			</view>
@@ -129,7 +130,7 @@
 						触发该模式后，剩余的球队编号将以随机限编的形式售卖，用户购买后获得一份限编卡密，待直播拆卡后获得剩余球队编号中对应限编的卡片。
 						<view>(随机限编单价=剩余球队总额/25)</view>
 					</view>
-					<view class="rules-title">随便限编清单</view>
+					<view class="rules-title">随机限编清单</view>
 					<table class="rules-table">
 						<thead>
 							<tr>
@@ -151,6 +152,15 @@
 
 		</view>
 		
+		<view class="random-showdow" v-show="showRandomPopup"></view>
+		<view class="random-popup" v-show="showRandomPopup">
+			<view class="popup-title">温馨提示</view>
+			<view class="popup-msg">当前商品为<text style="color:#FB4E3E">剩余随机</text>模式，您将在剩余球队中购得一份随机限编卡密，请悉知！</view>
+			<button class="popup-btn" @click="onClickPopupBtn">
+				继续购买
+			</button>
+			<view class="popup-cancel" @click="onClickCancelPopupBtn">我再想想</view>
+		</view>
 	</view>
 </template>
 
@@ -220,7 +230,8 @@
 			'23/xx编、48/xx编、73/xx编、98/xx编',
 			'24/xx编、49/xx编、74/xx编、99/xx编',
 			'25/xx编、50/xx编、75/xx编、交换版、无编卡'
-		]
+		];
+		showRandomPopup = false;
 		@Watch('teamCheckShow')
 		onShowChanged(val: any, oldVal: any){
 			if(val){
@@ -326,7 +337,14 @@
 			if(this.randomMode.totalNum-(this.randomMode.currentNum+this.randomMode.lockNum)==0){
 				return;
 			}
+			this.showRandomPopup = true
+		}
+		onClickPopupBtn(){
 			this.$emit("buyRandomGood");
+			this.onClickCancelPopupBtn()
+		}
+		onClickCancelPopupBtn(){
+			this.showRandomPopup = false
 		}
 		getPlan(lock:number,now:number,all:number){
 			let width = Math.floor((Number(lock)+Number(now))/Number(all)*100);
@@ -476,12 +494,11 @@
 	.team-check{
 		&-content{
 			width: 100%;
-			height:160rpx;
-			overflow: hidden;
-			margin-top: 30rpx;
+			height:190rpx;
+			box-sizing: border-box;
 			&-scroll{
 				width: 100%;
-				height:160rpx;
+				height:190rpx;
 				display: flex;
 				white-space: nowrap;
 				align-items: center;
@@ -492,7 +509,6 @@
 				background:#FFF;
 				border-radius: 10rpx;
 				margin-right:12rpx;
-				overflow: hidden;
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
@@ -500,10 +516,14 @@
 				box-sizing: border-box;
 				padding:10rpx 0;
 				border: 1rpx solid #fff;
-				margin-top: 1rpx;
-				
+				margin-top: 31rpx;
+				position: relative;
 				&-img{
 					width: 100rpx;
+					height:100rpx;
+				}
+				&-img-random{
+					width: 90rpx;
 					height:100rpx;
 				}
 				&-name{
@@ -514,6 +534,12 @@
 					color: #34363A;
 					text-align: center;
 				}
+				&-name-random{
+					color:#fff;
+				}
+				.random-team-name{
+					color:#AAAABB;
+				}
 			}
 			.scroll-index-check{
 				border: 1rpx solid #FB4E3E;
@@ -521,6 +547,8 @@
 			.scroll-index-check-random{
 				border: 1rpx solid #FB4E3E;
 				background:#FB4E3E;
+				position: relative;
+				overflow: initial;
 			}
 			.scroll-index:nth-child(1){
 				margin-left: 32rpx;
@@ -559,6 +587,15 @@
 		overflow-x: hidden;
 		padding-top: 10rpx;
 	}
+	.branch-list-random{
+		width: 100%;
+		margin-top: 30rpx;
+		padding-bottom: 2rpx;
+		display: flex;
+		flex-wrap: wrap;
+		overflow-x: hidden;
+		padding-top: 20rpx;
+	}
 	.branch-index{
 		max-width: 95%;
 		height: 46rpx;
@@ -581,6 +618,18 @@
 	}
 	.branch-index-name{
 		max-width: 90%;
+		height: 46rpx;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+		font-size: 22rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #34363A;
+		line-height: 46rpx;
+	}
+	.branch-index-name-random{
+		max-width: 100%;
 		height: 46rpx;
 		overflow: hidden;
 		text-overflow:ellipsis;
@@ -622,6 +671,24 @@
 		position: absolute;
 		right:-54rpx;
 		top:-14rpx;
+		z-index: 1;
+	}
+	.random-ing{
+		width: 67rpx;
+		height: 27rpx;
+		line-height: 27rpx;
+		background: #FFE400;
+		border-radius: 12rpx 2rpx 12rpx 2rpx;
+		border: 1rpx solid #FFFFFF;
+		font-size: 16rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #FF3C00;
+		position: absolute;
+		right:-10rpx;
+		top:-14rpx;
+		z-index: 33;
+		text-align: center;
 	}
 	.branch-index-check{
 		border: 1rpx solid #FB4E3E;
@@ -1020,7 +1087,7 @@
 	.header-shoppong-random{
 		position: absolute;
 		right:0;
-		top:0;
+		top:10rpx;
 		font-size: 16rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
@@ -1053,5 +1120,79 @@
 	.goodslist-plan-now{
 		height:12rpx;
 		background: #FB4E3E;
+	}
+
+	.random-showdow{
+		width: 100%;
+		height:100%;
+		position: fixed;
+		top:0;
+		left:0;
+		z-index:999;
+		background: rgba(0, 0, 0, 0.5);
+	}
+	.random-popup{
+			width:540rpx;
+			height:530rpx;
+			position: fixed;
+			box-sizing: border-box;
+			background:#fff;
+			border-radius: 40rpx;
+			z-index: 1000;
+			left:50%;
+			top:50%;
+			margin-left: -270rpx;
+			margin-top: -300rpx;
+			padding-top: 50rpx;
+			
+	}
+	.popup-title{
+		width: 100%;
+		margin-bottom: 50rpx;
+		text-align: center;
+		font-size: 34rpx;
+		font-family: Microsoft YaHei;
+		font-weight: bold;
+		color: #34363A;
+	}
+	.popup-msg{
+		width: 100%;
+		box-sizing: border-box;
+		padding:0 50rpx;
+		font-size: 28rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #34363A;
+		line-height: 50rpx;
+		text-align: center;
+	}
+	.popup-btn{
+		width: 462rpx;
+		height: 60rpx;
+		background:#FB4E3E;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		bottom:120rpx;
+		left:50%;
+		margin-left:-231rpx;
+		border-radius: 30rpx;
+		font-size: 30rpx;
+		font-family: Adobe Heiti Std;
+		font-weight: normal;
+		color: #FFFFFF;
+	}
+	.popup-cancel{
+		width: 100%;
+		height:30rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		left:0;
+		bottom:60rpx;
+		color:#AAAAAA;
+		font-size: 28rpx;
 	}
 </style>

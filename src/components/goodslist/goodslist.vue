@@ -262,7 +262,7 @@
 		&-tips{
 			text-align: center;
 			line-height: 34rpx;
-			margin-right: 16rpx;
+			margin-right: 17rpx;
 			height: 34rpx;
 			background: #FFFFFF;
 			border: 1rpx solid #FB4E3E;

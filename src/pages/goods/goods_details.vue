@@ -236,14 +236,12 @@
 			{
 				"name": "支付宝支付",
 				"channel": "alipay"
-			},
-			{
-				"name": "微信支付",
-				"channel": "wechat"
 			}
 		];
 		// 邀请新人弹窗
 		showInvitePopup = false;
+		// 是否禁用优惠券
+		disableCoupon = false;
 		onLoad(query:any) {
 			
 			// #ifdef MP
@@ -340,6 +338,7 @@
 					// if(data.payChannel){
 					// 	this.payChannel = data.payChannel
 					// }
+					
 					// 状态
 					this.goodsState = data.good.state;
 					// 倒计时
@@ -706,6 +705,9 @@
 				}
 				if(res.good.randomMode){
 					this.randomMode = res.good.randomMode
+					if(this.randomMode.state==2){
+						this.teamCheckIndex = 999
+					}
 				}
 				if(cb) cb()
 			})
@@ -714,15 +716,15 @@
 		getGoodSelectBranch(){
 			// 随机选队
 			if(this.teamCheckIndex == 999){
-				// app.http.Get('good/'+this.goodsId+'/select/randomNo',{},(res:any)=>{
-				// 	this.branchCheckIndex = -1
-				// 	this.branchData = res.list;
-				// })
+				app.http.Get('good/'+this.goodsId+'/select/randomNo',{},(res:any)=>{
+					this.branchCheckIndex = -1
+					this.branchData = res.list;
+				})
 				return;
 			}
 			let id = this.teamData[this.teamCheckIndex].id;
+			this.branchCheckIndex = 0
 			app.http.Get('good/'+this.goodsId+'/select/branch',{teamId:id},(res:any)=>{
-				this.branchCheckIndex = 0
 				this.branchData = res.list;
 				console.log('branch==',res)
 			})
@@ -799,7 +801,7 @@
 		// 购买剩余随机
 		onClickBuyRandomGood(){
 			uni.navigateTo({
-				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))
+				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))+'&payRandomPrice='+this.randomMode.good.price
 			})
 		}
 		// 复制邀请口令
