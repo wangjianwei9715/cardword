@@ -8,7 +8,7 @@
 				</view>
 				<view class="goodslist-right">
 					<view class="goodslist-title">{{item.title}}</view>
-					<view v-if="item.discount&&item.discount!=''">
+					<view v-if="item.discount&&item.discount!=''" class="goodslist-tips-list">
 						<view class="goodslist-tips" v-for="(items,indexs) in typeof (item.discount) =='string'?item.discount.split(','):item.discount" :key="indexs">
 						{{typeof (item.discount) =='string'?items:items.content}}
 						</view>
@@ -258,7 +258,12 @@
 		&-price{
 			font-size: 36rpx;
 		}
-		
+		&-tips-list{
+			width: 100%;
+			box-sizing: border-box;
+			display: flex;
+			flex-wrap: wrap;
+		}
 		&-tips{
 			text-align: center;
 			line-height: 34rpx;
@@ -273,8 +278,8 @@
 			color: #FB4E3E;
 			padding:0 11rpx;
 			width: fit-content;
-			display: inline-flex;
 			margin-left: 1rpx;
+			display: block;
 		}
 	}
 	.plan-baifen{

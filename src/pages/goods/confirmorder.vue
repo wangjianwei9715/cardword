@@ -289,7 +289,6 @@ export default class ClassName extends BaseNode {
     if (this.goodsData.discount) {
       if(this.moneyNum < this.goodsData.discount[0].minNum){
           this.onePrice = this.goodsData.price;
-          return;
       }else{
         for (let i in this.goodsData.discount) {
           if (this.moneyNum >= this.goodsData.discount[i].minNum) {

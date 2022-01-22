@@ -25,7 +25,7 @@
 					<view class="team-check-content">
 						<scroll-view class="team-check-content-scroll" :scroll-x="true">
 							<!-- 随机模式 -->
-							<view :class="{'scroll-index':true,'scroll-index-check-random':teamCheckIndex==999}" @click="onClickTeamCheckRandom" v-show="randomMode.state==2">
+							<view :class="{'scroll-index':true,'scroll-index-check-random':teamCheckIndex==999}" @click="onClickTeamCheckRandom" v-if="randomMode.state==2">
 								<image class="scroll-index-img-random" :src="teamCheckIndex==999?'../../static/goods/xianbian_.png':'../../static/goods/xianbian.png'" mode="aspectFit"></image>
 								<view class="scroll-index-name" :class="teamCheckIndex==999?'scroll-index-name-random':''">剩余球队</view>
 								<view class="random-ing">进行中</view>
@@ -54,7 +54,7 @@
 					</view>
 					<view class="branch-list-random" v-show="teamCheckIndex==999">
 						<view :class="{'branch-index':true}" v-for="item in branchData" :key="item.id">
-							<view class="branch-index-name-random">{{item.name}} </view>
+							<view class="branch-index-name-random">{{item.name}} </view>{{item.isExtend?'':'￥'+item.price}}
 							<view class="branch-reward" v-if="item.isExtend">额外奖品</view>
 						</view>
 					</view>
@@ -81,14 +81,18 @@
 						<view :class="cartData.available==0?'cart-empty':'cart-noempty'" @click="onClickShowShoppingCart">
 							<view v-show="cartData.num>0" class="icon-yuan" :class="cartData.num>=10?'icon-yuans':''">{{cartData.num}}</view>
 						</view>
-						<text class="btn-left-price">￥{{cartData.amount}}</text>
+						<view class="btn-left-content">
+							<text class="btn-left-price">￥{{cartData.amount}}</text>
+							<view class="btn-left-num">共{{cartData.num}}件,失效{{cartData.num-cartData.available}}件</view>
+						</view>
+						
 					</view>
 					<view v-if="countTimeCopy>0" class="btn-right-count" ><text class="count-text">开售倒计时</text> {{countTimeCopy==0?'':' '+countStr}}</view>
 					<view v-else class="btn-right" :class="{'btn-empty':cartData.available==0}" @click="onClickSettlement">去结算</view>
 				</view>
 				<view class="btncheck-content" v-else>
 					<button class="btn-right-random" v-show="teamCheckIndex==999" @click="onClickBuyRandomGood">￥{{randomMode.good.price?randomMode.good.price:''}}/组 立即购买</button>
-					<view class="btn-right-random-orther" v-show="teamCheckIndex!=999">请选购剩余球队</view>
+					<view class="btn-right-random-orther" v-show="teamCheckIndex!=999">剩余随机模式进行中,请选购剩余球队</view>
 				</view>
 			</view>
 
@@ -107,7 +111,8 @@
 						<view class="checkteam-popup-detail">
 							<view class="checkteam-popup-detail-trunk">{{item.trunk}}</view>
 							<view class="checkteam-popup-detail-name">{{item.name}}</view>
-							<view class="checkteam-popup-detail-price">￥<text>{{item.price}}</text></view>
+							<view class="checkteam-popup-detail-soldout" v-if="item.soldOut||item.lock">{{item.soldOut?'售罄':'未支付'}}</view>
+							<view class="checkteam-popup-detail-price" v-else>￥<text>{{item.price}}</text></view>
 							<view class="cart-delete" @click="onClickDelCartIndex(index)"></view>
 						</view>
 						
@@ -127,7 +132,7 @@
 					<view class="rules-index">商品开售后用户可自由选购心仪的球队编号，当球队编号剩余达到一定数量且一段时间没无人购买将触发剩余随机模式随机</view>
 					<view class="rules-title">剩余随机模式</view>
 					<view class="rules-index">
-						触发该模式后，剩余的球队编号将以随机限编的形式售卖，用户购买后获得一份限编卡密，待直播拆卡后获得剩余球队编号中对应限编的卡片。
+						触发该模式后，剩余的球队编号将以随机限编的形式拼团售卖，用户购买后获得一份限编卡密，待直播拆卡后获得剩余球队编号中对应限编的卡片。<text style="color:FB4E3E">若购得额外奖品的卡密请联系客服领取。</text>
 						<view>(随机限编单价=剩余球队总额/25)</view>
 					</view>
 					<view class="rules-title">随机限编清单</view>
@@ -538,9 +543,10 @@
 					color:#fff;
 				}
 				.random-team-name{
-					color:#AAAABB;
+					color:#AAAAAA;
 				}
 			}
+			
 			.scroll-index-check{
 				border: 1rpx solid #FB4E3E;
 			}
@@ -556,17 +562,17 @@
 		}
 	}
 	.bianhao-title{
-		margin-top: 20rpx;
+		margin-top: 26rpx;
 		background:#fff;
 		display: flex;
 		align-items: center;
 	}
 	.random-all{
-		margin-left: 28rpx;
-		font-size: 20rpx;
+		margin-left: 8rpx;
+		font-size: 24rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
-		color: #AAAABB;
+		color: #AAAAAA;
 	}
 	.teamtion-center{
 		width: 100%;
@@ -706,7 +712,7 @@
 		background:#fff;
 		border-top: 1rpx solid #E2E2E3;
 		box-sizing: border-box;
-		padding:15rpx 18rpx;
+		padding:15rpx 18rpx 15rpx 28rpx;
 		z-index: 24;
 	}
 
@@ -770,9 +776,24 @@
 			display: flex;
 			align-items: center;
 		}
+		.btn-left-content{
+			height:88rpx;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			box-sizing: border-box;
+			padding:10rpx 0 10rpx 10rpx;
+		}
 		.btn-left-price{
+			font-size: 34rpx;
 			color:#34363A;
 			margin-left: 10rpx;
+		}
+		.btn-left-num{
+			font-size: 22rpx;
+			width: 100%;
+			color:#AAAAAA;
+			font-weight: normal;
 		}
 		.btn-right{
 			width: 368rpx;
@@ -836,15 +857,15 @@
 		background:#AAAAAA !important
 	}
 	.cart-empty{
-		width: 72rpx;
-		height:72rpx;
+		width: 80rpx;
+		height:80rpx;
 		background:url(../../static/goods/cart.png) no-repeat center;
 		background-size: 100% 100%;
 		position: relative;
 	}
 	.cart-noempty{
-		width: 72rpx;
-		height:72rpx;
+		width: 80rpx;
+		height:80rpx;
 		background:url(../../static/goods/cart_.png) no-repeat center;
 		background-size: 100% 100%;
 		position: relative;
@@ -975,11 +996,18 @@
 	}
 	.checkteam-popup-detail-name{
 		width: 100%;
-		font-size: 20rpx;
+		font-size: 24rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #AAAABB;
 		margin-bottom: 10rpx;
+	}
+	.checkteam-popup-detail-soldout{
+		width: 100%;
+		font-family: Adobe Fan Heiti Std;
+		font-weight: normal;
+		color: #AAAABB;
+		font-size: 30rpx;
 	}
 	.checkteam-popup-detail-price{
 		width: 100%;
@@ -992,8 +1020,8 @@
 		font-size: 40rpx;
 	}
 	.cart-delete{
-		width: 47rpx;
-		height:47rpx;
+		width: 40rpx;
+		height:40rpx;
 		background:url(../../static/goods/cart_del.png) no-repeat center;
 		background-size: 100% 100%;
 		position: absolute;
@@ -1018,7 +1046,7 @@
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
-		font-size: 20rpx;
+		font-size: 24rpx;
 		font-family: Microsoft YaHei;
 		font-weight: bold;
 		color: #FFBB04;
@@ -1195,4 +1223,5 @@
 		color:#AAAAAA;
 		font-size: 28rpx;
 	}
+	
 </style>
