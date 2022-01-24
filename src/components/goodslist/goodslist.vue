@@ -124,9 +124,7 @@
 
 <style lang="scss">
 	.goodslist{
-		&-index-show{
-			
-		}
+		
 		&-index{
 			width: 100%;
 			background: #FFFFFF;
