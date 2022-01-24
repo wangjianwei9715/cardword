@@ -243,6 +243,17 @@ export default class HttpRequest {
 					uni.$emit('refreshToken');
 				}else if(response.data.code==1100||response.data.code==1103||response.data.code==1104){
 					uni.$emit('reLogin');
+				}else if(response.data.code==16){
+					uni.navigateTo({
+						url:'/pages/userinfo/setting_addresses'
+					})
+					setTimeout(()=>{
+						uni.showToast({
+							title:response.data.code+':'+response.data.msg,
+							icon:'none',
+							duration:2000
+						});
+					},100)
 				}else{
 					uni.showToast({
 						title:response.data.code+':'+response.data.msg,

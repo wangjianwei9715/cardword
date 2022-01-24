@@ -8,7 +8,7 @@
 				</view>
 				<view class="goodslist-right">
 					<view class="goodslist-title">{{item.title}}</view>
-					<view v-if="item.discount&&item.discount!=''">
+					<view v-if="item.discount&&item.discount!=''" class="goodslist-tips-list">
 						<view class="goodslist-tips" v-for="(items,indexs) in typeof (item.discount) =='string'?item.discount.split(','):item.discount" :key="indexs">
 						{{typeof (item.discount) =='string'?items:items.content}}
 						</view>
@@ -86,7 +86,6 @@
 			this.$emit("send", id);
 		}
 		selectory(){
-			return;
 			setTimeout(()=>{
 				// 实时监控目前显示的商品列表
 				let select= uni.createSelectorQuery().in(this).selectAll('.goodslist-plan-desc');
@@ -258,11 +257,16 @@
 		&-price{
 			font-size: 36rpx;
 		}
-		
+		&-tips-list{
+			width: 100%;
+			box-sizing: border-box;
+			display: flex;
+			flex-wrap: wrap;
+		}
 		&-tips{
 			text-align: center;
 			line-height: 34rpx;
-			margin-right: 16rpx;
+			margin-right: 17rpx;
 			height: 34rpx;
 			background: #FFFFFF;
 			border: 1rpx solid #FB4E3E;
@@ -273,8 +277,8 @@
 			color: #FB4E3E;
 			padding:0 11rpx;
 			width: fit-content;
-			display: inline-flex;
 			margin-left: 1rpx;
+			display: block;
 		}
 	}
 	.plan-baifen{

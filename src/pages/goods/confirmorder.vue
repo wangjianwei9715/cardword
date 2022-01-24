@@ -103,7 +103,11 @@
         <view class="yunfei-item">
           <text class="item-name">优惠券</text>
           
-          <view class="item-name" @click="onClickCheckCoupon">
+          
+          <view class="item-name" v-if="getBitDisableCoupon(goodsData.bit)" >
+            此商品优惠券不可用
+          </view>
+          <view class="item-name" v-else @click="onClickCheckCoupon">
             <text class="coupon-num">{{checkCouponPrice>0?'-¥'+checkCouponPrice:couponNum}}</text>{{checkCouponPrice>0?'':'张可用'}}<view class="item-name-right"></view>
           </view>
           
@@ -137,12 +141,13 @@
         </view>
         <view class="yunfei-item">
           <text class="item-name">优惠券</text>
-          <view class="item-name" @click="onClickCheckCoupon" v-show="checkCouponPrice==0">
-            <text class="coupon-num">{{couponNum}}</text>张可用<view class="item-name-right"></view>
+          <view class="item-name" v-if="getBitDisableCoupon(goodsData.bit)" >
+            此商品优惠券不可用
           </view>
-          <view class="item-name" @click="onClickCheckCoupon" v-show="checkCouponPrice>0">
-            <text class="coupon-num">-¥{{checkCouponPrice}}</text><view class="item-name-right"></view>
+          <view class="item-name" v-else @click="onClickCheckCoupon">
+            <text class="coupon-num">{{checkCouponPrice>0?'-¥'+checkCouponPrice:couponNum}}</text>{{checkCouponPrice>0?'':'张可用'}}<view class="item-name-right"></view>
           </view>
+          
         </view>
         <view class="yunfei-item">
           <text class="item-name">运费</text>
@@ -223,6 +228,8 @@ export default class ClassName extends BaseNode {
   checkCouponList:any = [];
   checkCouponPrice = 0;
   couponTotalPrice = 0;
+  // 随机模式金额
+  payRandomPrice = 0;
   onLoad(query: any) {
     if (query.data) {
       // #ifndef MP
@@ -231,6 +238,10 @@ export default class ClassName extends BaseNode {
       // #ifdef MP
       this.goodsData = JSON.parse(decodeURIComponent(query.data));
       // #endif
+      if(query.payRandomPrice){
+        this.payRandomPrice = query.payRandomPrice
+        this.goodsData.price = query.payRandomPrice
+      }
       if(query.cart){
         this.cartData = JSON.parse(query.cart);
         console.log(this.cartData)
@@ -266,11 +277,18 @@ export default class ClassName extends BaseNode {
     }
     this.getOnePrice();
   }
+  // 判断是否禁用优惠券
+  getBitDisableCoupon(bit:any){
+    if((bit&1) == 1){
+      return true    
+    }else{
+      return false
+    }
+  }
   getOnePrice() {
     if (this.goodsData.discount) {
       if(this.moneyNum < this.goodsData.discount[0].minNum){
           this.onePrice = this.goodsData.price;
-          return;
       }else{
         for (let i in this.goodsData.discount) {
           if (this.moneyNum >= this.goodsData.discount[i].minNum) {
@@ -278,11 +296,14 @@ export default class ClassName extends BaseNode {
           } 
         }
       }
+      
     } else {
       this.onePrice = this.goodsData.price;
     }
 
-
+    if(this.getBitDisableCoupon(this.goodsData.bit)||app.coupon<=0){
+      return;
+    }
     // 获取可用优惠券数量
     let params:any = {
       goodCode:this.goodsData.goodCode
@@ -403,6 +424,9 @@ export default class ClassName extends BaseNode {
     // 普通支付 || 自选球队
     if(this.cartData==''){
       params.num = Number(this.moneyNum)
+      if(this.payRandomPrice>0){
+        url = "good/topay/"+this.goodsData.goodCode+'/select'
+      }
     }else{
       let id = []
       for(let i in this.cartData.list){

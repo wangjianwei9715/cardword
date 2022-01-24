@@ -319,6 +319,7 @@ export default class PlatformManager {
 						}
 
 						if (cb) cb()
+						uni.$emit('appluanchOver')
 						uni.setStorageSync("launchConfig", res);
 						uni.setStorageSync('launchUrl', url)
 						// #ifdef APP-PLUS
@@ -365,6 +366,7 @@ export default class PlatformManager {
 					} else {
 						app.dataApiDomain = bussinessApiDomain + "/api/v1/";
 					}
+					uni.$emit('appluanchOver')
 				}
 			}
 
@@ -386,6 +388,7 @@ export default class PlatformManager {
 				console.log("access=====", data);
 				app.data = data.data;
 				app.opKey = data.opKey;
+				app.coupon = data.data.coupon;
 				uni.setStorageSync("app_opk", data.opKey);
 				if (data.app) {
 					app.socketInfo = data.app;
