@@ -29,6 +29,7 @@
 				uni.showToast({
 					title:'兑换成功'
 				});
+				app.coupon ++;
 				uni.$emit('couponExchange')
 				this.exchangeVal = ''
 			})

@@ -86,7 +86,6 @@
 			this.$emit("send", id);
 		}
 		selectory(){
-			return;
 			setTimeout(()=>{
 				// 实时监控目前显示的商品列表
 				let select= uni.createSelectorQuery().in(this).selectAll('.goodslist-plan-desc');

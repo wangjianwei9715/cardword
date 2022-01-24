@@ -180,6 +180,7 @@
 			app.http.Post('user/login/phone',params,(data:any)=>{
 				app.data = data.data;
 				app.opKey = data.opKey
+				app.coupon = data.data.coupon;
 				uni.setStorageSync("app_opk", data.opKey);
 				app.socketInfo = data.app;
 				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
@@ -253,7 +254,8 @@
 				uni.hideLoading();
 				console.log('wechatlogin======',data)
 				app.data = data.data;
-				app.opKey = data.opKey
+				app.opKey = data.opKey;
+				app.coupon = data.data.coupon;
 				uni.setStorageSync("app_opk", data.opKey);
 				app.socketInfo = data.app;
 				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
@@ -308,7 +310,8 @@
 				console.log('appleData=',data)
 				uni.hideLoading();
 				app.data = data.data;
-				app.opKey = data.opKey
+				app.opKey = data.opKey;
+				app.coupon = data.data.coupon;
 				uni.setStorageSync("app_opk", data.opKey);
 				app.socketInfo = data.app;
 				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};

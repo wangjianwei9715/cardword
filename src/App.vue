@@ -50,6 +50,7 @@ export default Vue.extend({
         HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
           app.data = data.data;
           app.socketInfo = data.app;
+          app.coupon = data.data.coupon;
           uni.$emit("updateUserData");
           uni.$emit("loginSuccess");
         });

@@ -301,7 +301,7 @@ export default class ClassName extends BaseNode {
       this.onePrice = this.goodsData.price;
     }
 
-    if(this.getBitDisableCoupon(this.goodsData.bit)){
+    if(this.getBitDisableCoupon(this.goodsData.bit)||app.coupon<=0){
       return;
     }
     // 获取可用优惠券数量

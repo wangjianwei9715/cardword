@@ -180,11 +180,6 @@
 			}
 			let listeners = ['BackLogin']
 			this.register(listeners);
-			uni.showToast({
-				title:'正在加载',
-				icon:'none',
-				duration:1000
-			})
 			this.getLuanchApp()
 			// #ifdef MP-WEIXIN
 			app.platform.wechatLogin();
@@ -200,6 +195,14 @@
 			this.onEventUI("wgtUpdateNum", (res) => {
 				this.wgtUpNum = res;
 			});
+			this.onEventUI('appluanchOver',()=>{
+				if(this.oneLoad){
+					this.version = app.version
+					this.showInitEvent()
+					this.oneLoad = false;
+				}
+			})
+			
 			// #ifdef APP-PLUS
 			// 判断是否有邀请上线
 			app.platform.getInvitationClipboard()
@@ -207,14 +210,15 @@
 		}
 		onShow(){
 			// #ifndef MP
-			if(this.oneLoad){
-				this.oneLoad = false;
-				setTimeout(()=>{
+			if(!this.oneLoad){
+				this.showInitEvent()
+			}else if (app.localTest) {
+				//开发环境
+				if(this.oneLoad){
 					this.version = app.version
 					this.showInitEvent()
-				},1000)
-			}else{
-				this.showInitEvent()
+					this.oneLoad = false;
+				}
 			}
 			
 			// #endif
@@ -343,7 +347,7 @@
 					console.log('INDEX progress===',res)
 					this.setNewProgress(res.list)
 				})
-			},10)
+			},30)
 		}
 		getLuanchApp(){
 			if(app.localTest){
