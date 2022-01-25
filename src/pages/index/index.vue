@@ -186,6 +186,10 @@
 			app.platform.wechatLogin();
 			// #endif
 
+			// 新年每日登录优惠券
+			this.onEventUI("loginSuccess", () => {
+				this.getNewYearDayGift()
+			});
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
 			});
@@ -297,6 +301,19 @@
 				}
 			})
 			// #endif
+		}
+		// 新年每日优惠券
+		getNewYearDayGift(){
+			if(app.token.accessToken == '' || app.dayGift) return;
+
+			setTimeout(()=>{
+				app.http.Get('me/coupon/dayGift',{},(res:any)=>{
+					if(res.bool){
+						app.dayGift = true;
+					}
+				})
+			},500)
+			
 		}
 		showInitEvent(){
 			this.currentPage = 1;
