@@ -122,10 +122,11 @@
 			}
 		]
 		tabList = [
-			{img:'../../static/index/tab0.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
-			{img:'../../static/index/tab1.png',text:'资讯',url:'/pages/information/list'},
-			{img:'../../static/index/tab2.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
-			{img:'../../static/index/tab3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
+			{img:'../../static/index/tab_0.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
+			{img:'../../static/index/tab_1.png',text:'资讯',url:'/pages/information/list'},
+			{img:'../../static/index/tab_2.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
+			{img:'../../static/index/tab_3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
+			{img:'../../static/index/tab_4.png',text:'商家入驻',url:'/pages/userinfo/merchant_join'},
 		];
 		noticeList = [
 		
@@ -613,7 +614,7 @@
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:20rpx 36rpx 32rpx 36rpx;
+		padding:20rpx 20rpx 32rpx 20rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -647,24 +648,41 @@
 		color: #14151A;
 		text-align: center;
 	}
-	
 	.tab-act-content{
 		width: 710rpx;
-		padding:0 20rpx 0 24rpx;
-		padding-bottom: 20rpx;
+		height:318rpx;;
+		padding:0 20rpx 0 20rpx;
 		box-sizing: border-box;
 		border-radius: 20rpx;
-		background: linear-gradient(90deg, #E7F1FB, #E8E4FA);
+		background:url(../../static/index/newyear.png) no-repeat center;
+		background-size: 100% 100%;
 		margin:0 auto;
 	}
 	.tab-act-title{
 		width: 281rpx;
-		height:44rpx;
-		background:url(../../static/index/act_title.png) no-repeat;
+		height:55rpx;
 		background-size: 100% 100%;
 		margin:0 auto;
 		margin-bottom: 15rpx;
 	}
+
+	// .tab-act-content{
+	// 	width: 710rpx;
+	// 	padding:0 20rpx 0 24rpx;
+	// 	padding-bottom: 20rpx;
+	// 	box-sizing: border-box;
+	// 	border-radius: 20rpx;
+	// 	background: linear-gradient(90deg, #E7F1FB, #E8E4FA);
+	// 	margin:0 auto;
+	// }
+	// .tab-act-title{
+	// 	width: 281rpx;
+	// 	height:44rpx;
+	// 	background:url(../../static/index/act_title.png) no-repeat;
+	// 	background-size: 100% 100%;
+	// 	margin:0 auto;
+	// 	margin-bottom: 15rpx;
+	// }
 	.tab-good-inedx{
 		width:170rpx;
 		height:230rpx;
@@ -903,15 +921,25 @@
 		color: #292929;
 		line-height: 88rpx;
 	}
+	// .goods-card-content-scroll{
+	// 	width: 100%;
+	// 	height:250rpx;
+	// 	display: flex;
+	// 	white-space: nowrap;
+	// 	overflow: auto;
+	// 	background:#fff;
+	// 	box-sizing: border-box;
+	// 	padding:15rpx 18rpx 15rpx 19rpx
+	// }
 	.goods-card-content-scroll{
 		width: 100%;
-		height:250rpx;
+		height:220rpx;
 		display: flex;
 		white-space: nowrap;
 		overflow: auto;
 		background:#fff;
 		box-sizing: border-box;
-		padding:15rpx 18rpx 15rpx 19rpx
+		padding:0 18rpx 0 19rpx
 	}
 	.header-search{
 		width: 708rpx;
