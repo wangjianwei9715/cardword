@@ -139,7 +139,7 @@
 		<!-- 底部吐司 -->
 		<tips :tipsData="buyRecordList" v-if="buyRecordList!=''"></tips>
 		<!-- 底部按钮 -->
-		<view class="btn-content" v-if="goodsState==1||goodsState==0">
+		<view class="btn-content" v-if="goodsState==1||(goodsState==0&&goodsData.isSelect)">
 			<view class="btn-content-left">
 				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id" @click="onClickTipBtn(item)">
 					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFill"/>
@@ -158,7 +158,7 @@
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
 		
 		<!-- 自选球队 -->
-		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
+		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
 
 
 		<!-- 邀请新人活动弹窗 -->
@@ -242,6 +242,16 @@
 		showInvitePopup = false;
 		// 是否禁用优惠券
 		disableCoupon = false;
+		endRules = [
+			'【购买须知】：商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。',
+			'【拼团规则】',
+			' 1.“卡世界”提供平台/技术支持，入驻商家提供商品、直播拆卡、售后服务。',
+			' 2.根据厂商官方公布的Checklist，组队方式分为随机球员、随机球队、随机位置等，每种方式对应一定的【拼团份数】，每一份对应一个随机卡密。',
+			' 3.【随机方式】若为即买即随，用户付款完成后，将获得对应下单份数的随机卡密；若为组满队伍，用户付款完成且认购满员后，用户将获得对应下单份数的随机卡密。',
+			' 4.认购满员后，商家将在小程序直播公示拆卡过程，并在直播结束后上传拆卡结果，完成后续发货工作。 中卡的用户，获得实体卡片；未中卡用户，则无实体卡片，希望各位卡迷理性消费。',
+			' 5.超过拼团【认购时限】，认购未满员，所有款项通过系统原路返还，除此种情况之外，平台方不提供退款服务。'
+		];
+		randomNum = 0;
 		onLoad(query:any) {
 			
 			// #ifdef MP
@@ -363,6 +373,7 @@
 					this.goodsDesc = newData;
 					console.log(newData)
 					this.goodsDesc.unshift('【开售时间】：'+dateFormat(data.good.startAt))
+					this.goodsDesc = this.goodsDesc.concat(this.endRules)
 					if(this.goodsState==1){
 						app.http.Get('dataApi/good/'+id+'/buyRecord',{},(res:any)=>{
 							if(res.list){
@@ -717,8 +728,15 @@
 			// 随机选队
 			if(this.teamCheckIndex == 999){
 				app.http.Get('good/'+this.goodsId+'/select/randomNo',{},(res:any)=>{
+					this.randomNum = 0;
+					for(let i in res.list){
+						if(!res.list[i].isExtend){
+							this.randomNum++
+						}
+					}
 					this.branchCheckIndex = -1
 					this.branchData = res.list;
+					
 				})
 				return;
 			}
@@ -1371,6 +1389,7 @@
 				text-indent: -12rpx;
 				padding-left:12rpx;
 				margin-bottom: 10rpx;
+				white-space: break-spaces
 			}
 		}
 	}

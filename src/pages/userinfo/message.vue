@@ -11,7 +11,7 @@
 				</view>
 				<view class="right">
 					<view class="time">{{item.lastTime>0?getTime(item.lastTime):''}}</view>
-					<view class="new-message" v-if="item.new>0">{{item.new}}</view>
+					<view class="new-message" v-if="item.new>0">{{item.new>99?'99+':item.new}}</view>
 				</view>
 			</view>
 			

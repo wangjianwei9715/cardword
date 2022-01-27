@@ -95,6 +95,8 @@
 		<!-- #endif -->
 
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
+
+		<dailyWelfare :dailyShow="dailyShow" :dailyList="dailyList" @closeDailyShow="onClickCloseDailyShow"/>
 	</view>
 </template>
 
@@ -127,6 +129,7 @@
 			{img:'../../static/index/tab_2.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
 			{img:'../../static/index/tab_3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
 			{img:'../../static/index/tab_4.png',text:'商家入驻',url:'/pages/userinfo/merchant_join'},
+			// {img:'../../static/index/tab_4.png',text:'商家入驻',url:'/pages/act/newYear/newYear'},
 		];
 		noticeList = [
 		
@@ -160,6 +163,8 @@
 		showPaySuccess = false;
 		version = '';
 		oneLoad = true;
+		dailyShow = false;
+		dailyList:any = [];
 		onLoad(query:any) {
 			// uni.$emit('reLogin')
 			if (app.update.apkNeedUpdate) {
@@ -201,6 +206,7 @@
 				this.wgtUpNum = res;
 			});
 			this.onEventUI('appluanchOver',()=>{
+				console.log('appluanchOver=========')
 				if(this.oneLoad){
 					this.version = app.version
 					this.showInitEvent()
@@ -308,12 +314,17 @@
 
 			setTimeout(()=>{
 				app.http.Get('me/coupon/dayGift',{},(res:any)=>{
+					console.log('每日优惠==',res)
 					if(res.bool){
 						app.dayGift = true;
+						this.dailyList = res.list;
+						this.dailyShow = true;
 					}
 				})
 			},500)
-			
+		}
+		onClickCloseDailyShow(){
+			this.dailyShow = false;
 		}
 		showInitEvent(){
 			this.currentPage = 1;
@@ -631,7 +642,7 @@
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:20rpx 20rpx 32rpx 20rpx;
+		padding:30rpx 0 32rpx 0;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -721,8 +732,7 @@
 		overflow:hidden;
 		margin-top: -10rpx;
 		text-overflow:ellipsis;
-		margin-top: 2rpx;
-
+		// margin-top: 2rpx;
 	}
 	.tab-good-index-price{
 		font-size: 32rpx;

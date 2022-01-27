@@ -282,7 +282,7 @@ export default class PlatformManager {
 				version: app.version,
 				uuid: app.platform.deviceID,
 			};
-			console.log("launcParams=", params);
+
 			for (let i in launchUrl) {
 				if (!launchSuccess) {
 					let url = launchUrl[i];
@@ -319,9 +319,12 @@ export default class PlatformManager {
 						}
 
 						if (cb) cb()
-						uni.$emit('appluanchOver')
 						uni.setStorageSync("launchConfig", res);
 						uni.setStorageSync('launchUrl', url)
+						// 延时调用避免一开始接收不到
+						setTimeout(()=>{
+							uni.$emit('appluanchOver')
+						},10)
 						// #ifdef APP-PLUS
 						app.update_url = url + "/api/";
 						if (uni.getSystemInfoSync().platform === "android") {
@@ -366,7 +369,6 @@ export default class PlatformManager {
 					} else {
 						app.dataApiDomain = bussinessApiDomain + "/api/v1/";
 					}
-					uni.$emit('appluanchOver')
 				}
 			}
 

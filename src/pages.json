@@ -385,6 +385,33 @@
                         "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 					
+				},
+                {
+					"path" : "newYear/newYear",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "新春福盒",
+						"navigationBarBackgroundColor": "#ffffff",
+                        // "transparentTitle":"auto",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true,
+                        "backgroundColorTop":"#F4F5F9",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F4F5F9"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+					
+				},
+                {
+					"path" : "newYear/list",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "新春福盒",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F4F5F9",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F4F5F9"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+					
 				}
                 
               

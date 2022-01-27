@@ -4,7 +4,7 @@
 			
 			<view class="setting-content">
 				<view class="icon-setting" @click="onClickSetting"></view>
-				<view class="icon-xiaoxi" @click="onClickMessage"><view class="xiaoxi-num" v-if="infoData.unReadMsg>0">{{infoData.unReadMsg}}</view></view>
+				<view class="icon-xiaoxi" @click="onClickMessage"><view class="xiaoxi-num" v-if="infoData.unReadMsg>0">{{infoData.unReadMsg>99?'99+':infoData.unReadMsg}}</view></view>
 			</view>
 			<view class="userinfo"  @click="onClickUserInfo">
 				<!-- #ifndef MP-WEIXIN -->
@@ -48,7 +48,7 @@
 			<view class="tab-content">
 				<!-- #ifndef MP -->
 				<view class="tab" v-for="item in orderTab" :key="item.id" @click="onClickOrderList(item.id)">
-					<view v-if="item.num>0&&item.name!='已完成'" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num}}</view>
+					<view v-if="item.num>0&&item.name!='已完成'" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num>99?'99+':item.num}}</view>
 					<view class="icon-content">
 						<view :class="'icon-'+item.icon"></view>
 					</view>

@@ -40,7 +40,7 @@
 				</view>
 				<view class="teamtion-title bianhao-title">
 					{{teamCheckIndex==999?'剩余编号':'选择编号'}}
-					<view class="random-all" v-if="teamCheckIndex==999">（共25组，合计{{Number(randomMode.good.price)*25}}元）</view>
+					<view class="random-all" v-if="teamCheckIndex==999">（剩余{{randomNum}}组，合计{{Number(randomMode.good.price)*25}}元）</view>
 				</view>
 
 			</view>
@@ -62,24 +62,10 @@
 			</view>
 
 			<view class="teamtion-bottom">
-				<!-- 随机买队 -->
-				<view class="teamtion-random" v-show="randomMode!=''">
-					<view class="teamtion-random-text" v-if="randomMode.state==0">
-						编号数量≤{{randomMode.maxLeftNum}}件且{{randomMode.idleMinute}}分钟内无人购买将进入剩余随机模式
-					</view>
-					<view class="teamtion-random-text" v-else-if="randomMode.state==1">
-						{{randomCountTimeCopy==0?'':randomCountStr}}后进入剩余随机模式
-					</view>
-					<view class="teamtion-random-text" v-else-if="randomMode.state==2">
-						剩余随机进行中
-					</view>
-					<view class="teamtion-random-help" @click="showRulesPopup = true"></view>
-				</view>
-				<!--  -->
 				<view class="btncheck-content" v-if="randomMode==''||randomMode.state!=2">
 					<view class="btn-left">
 						<view :class="cartData.available==0?'cart-empty':'cart-noempty'" @click="onClickShowShoppingCart">
-							<view v-show="cartData.num>0" class="icon-yuan" :class="cartData.num>=10?'icon-yuans':''">{{cartData.num}}</view>
+							<view v-show="cartData.num>0" class="icon-yuan" :class="cartData.num>=10?'icon-yuans':''">{{cartData.available}}</view>
 						</view>
 						<view class="btn-left-content">
 							<text class="btn-left-price">￥{{cartData.amount}}</text>
@@ -95,7 +81,20 @@
 					<view class="btn-right-random-orther" v-show="teamCheckIndex!=999">剩余随机模式进行中,请选购剩余球队</view>
 				</view>
 			</view>
-
+			<!-- 随机买队 -->
+			<view class="teamtion-random" v-show="randomMode!=''">
+				<view class="teamtion-random-text" v-if="randomMode.state==0">
+					编号数量≤{{randomMode.maxLeftNum}}件且{{randomMode.idleMinute}}分钟内无人购买将进入剩余随机模式
+				</view>
+				<view class="teamtion-random-text" v-else-if="randomMode.state==1">
+					{{randomCountTimeCopy==0?'':randomCountStr}}后进入剩余随机模式
+				</view>
+				<view class="teamtion-random-text" v-else-if="randomMode.state==2">
+					剩余随机进行中
+				</view>
+				<view class="teamtion-random-help" @click="showRulesPopup = true"></view>
+			</view>
+			<!--  -->
 			<!-- 购物车窗口 -->
 			<view class="shopping-cart" :class="{'show-cart':showShoppingCart}">
 				<view class="checkteam-popup-header">
@@ -132,15 +131,15 @@
 					<view class="rules-index">商品开售后用户可自由选购心仪的球队编号，当球队编号剩余达到一定数量且一段时间没无人购买将触发剩余随机模式随机</view>
 					<view class="rules-title">剩余随机模式</view>
 					<view class="rules-index">
-						触发该模式后，剩余的球队编号将以随机限编的形式拼团售卖，用户购买后获得一份限编卡密，待直播拆卡后获得剩余球队编号中对应限编的卡片。<text style="color:FB4E3E">若购得额外奖品的卡密请联系客服领取。</text>
+						触发该模式后，剩余的球队编号将以随机限编的形式拼团售卖，用户购买后获得一份限编卡密(组满随机)，待直播拆卡后获得剩余球队编号中对应限编的卡片。<text style="color:FB4E3E">若购得额外奖品的卡密请联系客服领取。</text>
 						<view>(随机限编单价=剩余球队总额/25)</view>
 					</view>
-					<view class="rules-title">随机限编清单</view>
+					<view class="rules-title">剩余随机卡密清单</view>
 					<table class="rules-table">
 						<thead>
 							<tr>
 								<td width="15%">序号</td>
-								<td width="85%">获得卡种(剩余球队)</td>
+								<td width="85%">卡密(剩余球队)</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -199,6 +198,8 @@
 		// 自选球队 随机模式数据
 		@Prop({ default: [] })
 		randomMode:any
+		@Prop({ default: 0 })
+		randomNum:any
 		
 		countStr = '';
 		countInterval:any;
@@ -1032,14 +1033,15 @@
 		width: 100%;
 		height:65rpx;
 		background: #FFF4C7;
-		position: absolute;
-		top:-65rpx;
+		position: fixed;
+		bottom:120rpx;
 		left:0;
 		display: flex;
 		box-sizing: border-box;
 		align-items: center;
 		justify-content: space-between;
-		padding:0 27rpx
+		padding:0 27rpx;
+		z-index: 22;
 	}
 	.teamtion-random-text{
 		height:65rpx;

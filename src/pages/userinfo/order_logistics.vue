@@ -23,6 +23,15 @@
 			}
 		}
 		getWuliu(){
+			if(this.goodsCode == 'ffffffffffff'){
+				this.wlInfo = {
+					post_name:'自提快递',
+					post_no:'已自提',
+					list:''
+				}
+				return;
+			};
+
 			app.http.Get('me/orderInfo/wuliu/'+this.goodsCode,{},(res:any)=>{
 				this.wlInfo = {
 					post_name:res.data.wuliuName,

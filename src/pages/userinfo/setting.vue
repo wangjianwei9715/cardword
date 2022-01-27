@@ -33,6 +33,7 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
+import permision from "@/js_sdk/wa-permission/permission"
 @Component({})
 export default class ClassName extends BaseNode {
   settingTab = [
@@ -60,8 +61,24 @@ export default class ClassName extends BaseNode {
         url: item.url,
       });
     }else if(item.id==3){
+
       let pushUrl = ''
       if(this.xiaoxiDefault){
+        if(plus.os.name == "iOS"){
+          let iosPush = permision.judgeIosPermission('push');
+          if(!iosPush){
+            uni.showModal({
+                title: '提示',
+                content: '请先开启消息通知',
+                success: function (res) {
+                    if (res.confirm) {
+                      app.platform.gotoPermissionSetting()
+                    }
+                }
+            });
+            return;
+          }
+        }
         pushUrl = 'me/pushOn'
       }else{
         pushUrl = 'me/pushOff'
