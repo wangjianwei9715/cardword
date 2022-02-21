@@ -90,7 +90,7 @@
 			<view v-else class="big-btn" @click="onClickOperate(orderData.operate[0].cmd)">{{orderData.operate[0].name}}</view>
 		</view>
 
-		<payment :showPayMent="showPayMent" @cancelPay="onClickCancelPay" :payPrice="orderData.price" :countTime="countDown" @pay="onClickPayGoods" />
+		<payment :showPayMent="showPayMent" :payChannel="payChannel" @cancelPay="onClickCancelPay" :payPrice="orderData.price" :countTime="countDown" @pay="onClickPayGoods" />
 
 		<paymentSuccess :showPaySuccess="showPaySuccess" @cancelPaySuccess="onClickcancelPaySuccess"/>
 	</view>
@@ -117,7 +117,8 @@
 		orderDesc = [
 			{id:1,name:'商品金额',desc:''},
 			{id:2,name:'优惠',desc:''},
-			{id:3,name:'运费',desc:'包邮'},
+			{id:3,name:'优惠券',desc:''},
+			{id:4,name:'运费',desc:'包邮'},
 		];
 		cardList:{[x:string]:any} = [];
 		orderInfo:any = {
@@ -133,6 +134,7 @@
 		cartList:any = [];
 		showPaySuccess = false;
 		clickToPay = false;
+		payChannel:any = [];
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -171,12 +173,13 @@
 				this.initEvent();
 				uni.hideLoading();
 				this.clickToPay = false;
-			},2000)
+			},1000)
 		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
 				console.log('orderDetail====',res)
 				this.orderData = res.data
+				this.payChannel = res.data.good.payChannel?res.data.good.payChannel:[]
 				this.countDown = res.data.leftSec
 				this.getCountDown()
 				uni.setNavigationBarTitle({
@@ -201,8 +204,9 @@
 			
 		}
 		getGoodDesc(data:any){
-			this.orderDesc[0].desc ='¥'+(data.price+data.discount);
+			this.orderDesc[0].desc ='¥'+(data.price+data.discount+(data.coupon?data.coupon:0));
 			this.orderDesc[1].desc ='- ¥'+data.discount;
+			this.orderDesc[2].desc ='- ¥'+(data.coupon?data.coupon:0);
 			if(data.payInfo){
 				for (const key in this.orderInfo) {
 					if (Object.prototype.hasOwnProperty.call(data.payInfo, key)) {
@@ -363,9 +367,9 @@
 		onClickCancelPay(){
 			this.showPayMent = false;
 		}
-		onClickPayGoods(type:any){
+		onClickPayGoods(data:any){
 			// 1：支付宝 2：微信
-			if(type==0){
+			if (data == '') {
 				return;
 			}
 			uni.showLoading({
@@ -374,36 +378,30 @@
 
 			
 			let params = {
-				channel:'',
+				channelId:data.channelId?data.channelId:'',
+      			channel: data.channel,
 				delivery:0,
 				num:Number(this.orderData.num)
 			}
-			if(type==1){
-				params.channel = 'alipay';
-				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+
+			app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+				if(data.channel=='alipay'){
 					if(res.alipay.orderInfo!=''){
 						this.clickToPay = true;
 						uni.hideLoading()
 						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
 						this.onClickCancelPay()
 					}
-				})
-			}else if(type==2){
-				// uni.showToast({
-				// 	title:'暂时无法使用微信支付，请使用支付宝支付',
-				// 	icon:'none'
-				// })
-				// return;
-				params.channel = 'weixin';
-				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+				}else{
 					if(res.wechat){
 						this.clickToPay = true;
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.pay_type,res.wechat)
 						this.onClickCancelPay()
 					}
-				})
-			}
+				}
+			})
+			
 		}
 		// 支付成功弹窗关闭
 		onClickcancelPaySuccess(){

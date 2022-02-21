@@ -84,8 +84,8 @@
 				url: '/pages/live/live_find?q='+this.searchText
 			})
 		}
-		onClickLive(id:any){
-			app.platform.goWeChatLive(id)
+		onClickLive(item:any){
+			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		searchReqNew(){
 			// 获取更多商品

@@ -134,8 +134,11 @@
 						let avatar = sign.host + '/' + filePath
 						this.changeAvatar = avatar
 						this.postEdit((res:any)=>{
-							this.settingTab.avatar.avatar = avatar
-							uni.$emit('infoUpdate');
+							uni.showToast({
+								title:'头像审核中,过审后将立即更新',
+								icon:'none'
+							})
+							
 						})
 					}
 				},

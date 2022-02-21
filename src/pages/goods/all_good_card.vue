@@ -29,6 +29,7 @@
 	import {
 		Component
 	} from "vue-property-decorator";
+	import {Md5} from 'ts-md5/dist/md5';
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -43,6 +44,7 @@
 		translate = false;
 		english = false
 		scrollId = '';
+		scrollIdSt:any = 0;
 		onLoad(query: any) {
 			if(query.code){
 				this.goodCode = query.code;
@@ -103,7 +105,9 @@
 				pageSize:this.pageSize,
 			}
 			if(this.scrollId!=''){
-				params.scrollId = this.scrollId
+				params.scrollId = this.scrollId;
+				params.st = this.scrollIdSt;
+				params.sn = Md5.hashStr(this.scrollIdSt+this.scrollId+'scrollSearchGood')
 			}
 			
 			app.http.Get("good/"+this.goodCode+'/cards/search', params, (data: any) => {
@@ -120,7 +124,8 @@
 					this.noMoreData = true;
 				}
 				
-				this.scrollId = data.scrollId?data.scrollId:''
+				this.scrollId = data.scrollId?data.scrollId:'';
+				this.scrollIdSt = data.timeStamp;
 				this.currentPage++;
 				if(cb) cb()
 			});

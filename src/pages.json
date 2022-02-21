@@ -96,6 +96,14 @@
 			}
 
 		}
+        ,  {
+			"path": "pages/live/playback",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+
+		}
 	    ,{
             "path" : "pages/login/login",
             "style" :                                                                                    
@@ -126,10 +134,7 @@
             }
             
         }
-        
-        
-        
-        
+      
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

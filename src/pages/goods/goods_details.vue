@@ -124,7 +124,7 @@
 							<view class="explain-desc">{{item}}</view>
 						</view>
 					</view>
-					<image  @click="onClickPreviewImage(index)" class="goods-desc-image" mode="widthFix" v-for="(item,index) in goodsImg" :key="index" :src="item" />
+					<image  @click="onClickPreviewDetailImage(index)" class="goods-desc-image" mode="widthFix" v-for="(item,index) in detailImg" :key="index" :src="item" />
 				</view>
 			</view>
 		</view>
@@ -158,7 +158,7 @@
 		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
 		
 		<!-- 自选球队 -->
-		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
+		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" :baoduiLeftSec="baoduiLeftSec" :baoduiState="baoduiState" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
 
 
 		<!-- 邀请新人活动弹窗 -->
@@ -178,6 +178,7 @@
 		defaultAvatar = app.defaultAvatar
 		goodsId = '';
 		goodsImg:any = [];
+		detailImg:any = [];
 		goodsData:any = [];
 		countDay:any = '';
 		countHour:any = '';
@@ -228,16 +229,13 @@
 		teamCheckIndex:number = 0;
 		branchData:any = [];
 		branchCheckIndex:number = 0;
+		baoduiLeftSec = 0;
+		baoduiState = -1;
 		cartData:any = [];
 		// 自选球队随机模式数据
 		randomMode:any = ''
 		// 支付方式
-		payChannel:any = [
-			{
-				"name": "支付宝支付",
-				"channel": "alipay"
-			}
-		];
+		payChannel:any = [];
 		// 邀请新人弹窗
 		showInvitePopup = false;
 		// 是否禁用优惠券
@@ -345,9 +343,9 @@
 					// 数据详情
 					this.goodsData = data.good;
 					// 支付方式
-					// if(data.payChannel){
-					// 	this.payChannel = data.payChannel
-					// }
+					if(data.payChannel){
+						this.payChannel = data.payChannel
+					}
 					
 					// 状态
 					this.goodsState = data.good.state;
@@ -358,6 +356,7 @@
 					console.log(decodeURIComponent(data.good.publisher.avatar))
 					// 获取商品图片
 					this.getGoodsImage(decodeURIComponent(this.goodsData.pic.carousel));
+					this.getDetailImage(decodeURIComponent(this.goodsData.pic.detail))
 					this.getCardImage(decodeURIComponent(this.goodsData.pic.feature))
 					// 倒计时
 					this.getCountDown();
@@ -416,6 +415,14 @@
 				this.goodsImg.push(img)
 			}else{
 				this.goodsImg = img.split(',')
+			}
+		}
+		// 详情图片
+		getDetailImage(img:any){
+			if(img.indexOf(',') == -1){
+				this.detailImg.push(img)
+			}else{
+				this.detailImg = img.split(',')
 			}
 		}
 		// 特色卡片
@@ -622,6 +629,13 @@
 				indicator: "number" 
 			});
 		}
+		onClickPreviewDetailImage(index:number){
+			uni.previewImage({
+				urls: this.detailImg,
+				current:index,
+				indicator: "number" 
+			});
+		}
 		onClickPreviewCard(index:number){
 			uni.previewImage({
 				urls: this.cardData,
@@ -678,7 +692,7 @@
 		}
 
 		onClickLive(){
-			app.platform.goWeChatLive(this.goodsData.broadcast.roomId)
+			app.platform.goWeChatLive({playCode:this.goodsData.broadcast.playCode,goodCode:this.goodsData.goodCode})
 		}
 		onClickCardPlay(item:any){
 			
@@ -719,6 +733,14 @@
 					if(this.randomMode.state==2){
 						this.teamCheckIndex = 999
 					}
+				}
+				if(res.good.baoduiMode){
+					this.baoduiState = res.good.baoduiMode.state;
+					this.baoduiLeftSec = res.good.baoduiMode.totalSecond;
+					if(this.baoduiState ==1){
+						this.teamLeftSec = res.good.baoduiMode.leftSec;
+					}
+					
 				}
 				if(cb) cb()
 			})
@@ -815,7 +837,22 @@
 			})
 			this.onClickTeamCheckCancel()
 		}
+		// 包队
+		onClickBaodui(){
+			let price = this.getBranchPrice(this.branchData)
+			uni.navigateTo({
+				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&baodui='+this.teamData[this.teamCheckIndex].id+'&price='+price+'&baoduiName='+this.teamData[this.teamCheckIndex].name+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))
+			})
+			this.onClickTeamCheckCancel()
+		}
+		getBranchPrice(list:any){
+			let price = 0;
+			for(let i in list){
+				price += list[i].price
+			}
 
+			return price;
+		}
 		// 购买剩余随机
 		onClickBuyRandomGood(){
 			uni.navigateTo({

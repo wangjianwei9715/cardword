@@ -31,8 +31,8 @@
         <view class="goods-info2">
           <text class="goods-info2-title">{{ goodsData.title }}</text>
           <view class="goods-money-info" v-if="cartData == ''">
-            <text class="goods-money">¥{{ onePrice }}</text>
-            <view class="goods-money-right">
+            <text class="goods-money">¥{{ goodsData.price }}</text>
+            <view class="goods-money-right" v-if="baoduiId==0">
               <view class="goods-money-right-header">
                 {{
                   goodsData.buyLimit && goodsData.buyLimit.maxNumPerOrder > 0
@@ -80,7 +80,19 @@
         
       </view>
 	  <!--  -->
-
+    <view style="width: 750rpx; height: 20rpx; background: #f2f2f2" v-if="baoduiName!=''"></view>
+	  <!-- 包队编号 -->
+      <view class="yunfei-info check-team" v-if="baoduiName!=''">
+	    	<view class="item-title">已选编号</view>
+        <view>
+          <view class="yunfei-item">
+            <text class="item-teamname">1.{{baoduiName}} 全队</text>
+            <text class="item-teamname">¥{{ keepTwoDecimal(onePrice) }}</text>
+          </view>
+        </view>
+      </view>
+	  <!--  -->
+    
       <view style="width: 750rpx; height: 20rpx; background: #f2f2f2" v-if="goodsData.discount"></view>
       <view class="huo-dong-bg" v-show="goodsData.discount && cartData.length == 0">
         <text class="item-name">活动</text>
@@ -98,7 +110,7 @@
       <view class="yunfei-info" v-if="cartData==''">
         <view class="yunfei-item">
           <text class="item-name">商品金额</text>
-          <text class="item-name">¥{{ onePrice }}</text>
+          <text class="item-name">¥{{ keepTwoDecimal(goodsData.price * moneyNum) }}</text>
         </view>
         <view class="yunfei-item">
           <text class="item-name">优惠券</text>
@@ -115,7 +127,7 @@
         <view class="yunfei-item" v-show="goodsData.price - onePrice > 0">
           <text class="item-name">优惠</text>
           <text class="item-name"
-            >- ¥{{ moneyNum * (goodsData.price - onePrice) }}</text
+            >- ¥{{ keepTwoDecimal(moneyNum * (goodsData.price - onePrice)) }}</text
           >
         </view>
         <view class="yunfei-item">
@@ -128,7 +140,7 @@
           <view class="heji-money">
             <text class="heji-text">合计:</text>
             <text class="heji-money2"
-              >¥{{ couponTotalPrice>0?couponTotalPrice:keepTwoDecimal(moneyNum * onePrice) }}</text
+              >¥{{ keepTwoDecimal((moneyNum * onePrice)-couponTotalPrice) }}</text
             >
           </view>
         </view>
@@ -159,7 +171,7 @@
           <view class="heji-money">
             <text class="heji-text">合计:</text>
             <text class="heji-money2"
-              >¥{{ couponTotalPrice>0?couponTotalPrice:cartData.amount }}</text
+              >¥{{ keepTwoDecimal(cartData.amount-couponTotalPrice) }}</text
             >
           </view>
         </view>
@@ -179,7 +191,7 @@
         <view class="heji-money-pay">
           <text class="heji-text-b" style="color: #ff4349">合计:</text>
           <text class="heji-money2-b" style="color: #ff4349"
-            >¥{{ couponTotalPrice>0?couponTotalPrice:(cartData==''?keepTwoDecimal(moneyNum * onePrice):cartData.amount) }}</text
+            >¥{{ (cartData==''?keepTwoDecimal((moneyNum * onePrice)-couponTotalPrice):keepTwoDecimal(cartData.amount-couponTotalPrice)) }}</text
           >
         </view>
         <view class="btn-payment2" @click="onClickToPay()">去支付</view>
@@ -190,8 +202,9 @@
     <cardplay :operationShow="operationCardShow" :operaType="3" @operacancel="onClickCardCancel" />
     <payment
       :showPayMent="showPayMent"
+      :payChannel="payChannel"
       @cancelPay="onClickCancelPay"
-      :payPrice="couponTotalPrice>0?couponTotalPrice:(cartData==''?keepTwoDecimal(moneyNum * onePrice):cartData.amount)"
+      :payPrice="(cartData==''?keepTwoDecimal((moneyNum * onePrice)-couponTotalPrice):keepTwoDecimal(cartData.amount-couponTotalPrice))"
       :countTime="countTime"
       @pay="onClickPayGoods"
     />
@@ -230,6 +243,10 @@ export default class ClassName extends BaseNode {
   couponTotalPrice = 0;
   // 随机模式金额
   payRandomPrice = 0;
+  couponNumNo = false;
+  payChannel:any = [];
+  baoduiId = 0;
+  baoduiName = '';
   onLoad(query: any) {
     if (query.data) {
       // #ifndef MP
@@ -238,9 +255,15 @@ export default class ClassName extends BaseNode {
       // #ifdef MP
       this.goodsData = JSON.parse(decodeURIComponent(query.data));
       // #endif
+      this.payChannel = JSON.parse(query.payChannel)
       if(query.payRandomPrice){
         this.payRandomPrice = query.payRandomPrice
         this.goodsData.price = query.payRandomPrice
+      }
+      if(query.baodui){
+        this.baoduiId = Number(query.baodui)
+        this.goodsData.price = query.price;
+        this.baoduiName = query.baoduiName
       }
       if(query.cart){
         this.cartData = JSON.parse(query.cart);
@@ -301,7 +324,7 @@ export default class ClassName extends BaseNode {
       this.onePrice = this.goodsData.price;
     }
 
-    if(this.getBitDisableCoupon(this.goodsData.bit)||app.coupon<=0){
+    if(this.getBitDisableCoupon(this.goodsData.bit)||this.couponNumNo){
       return;
     }
     // 获取可用优惠券数量
@@ -309,9 +332,12 @@ export default class ClassName extends BaseNode {
       goodCode:this.goodsData.goodCode
     }
     // 普通支付 || 自选球队
-    if(this.cartData==''){
+    if(this.baoduiId != 0){
+      params.price = this.goodsData.price
+    }else if(this.cartData==''){
       params.num = Number(this.moneyNum);
       if(Number(this.moneyNum)<=0) return;
+      params.price = this.keepTwoDecimal(this.moneyNum * this.onePrice)
     }else{
       params.price = this.cartData.amount
     }
@@ -323,6 +349,9 @@ export default class ClassName extends BaseNode {
         this.couponTotalPrice = 0;
       }
       this.couponNum = res.count;
+      if(res.total==0){
+        this.couponNumNo = true;
+      }
       this.couponList = res.list?res.list:[];
       this.getConditionPrice()
     })
@@ -401,33 +430,41 @@ export default class ClassName extends BaseNode {
       return false;
     }
     result = Math.round(num * 100) / 100;
-    return result;
+    return result>0?result:0.01;
   }
   // 取消支付
   onClickCancelPay() {
     this.showPayMent = false;
     this.countTime = 0;
   }
-  onClickPayGoods(type: any) {
+  onClickPayGoods(data: any) {
     // 1：支付宝 2：微信
-    if (type == 0) {
+    if (data == '') {
       return;
     }
     uni.showLoading({
       title: "加载中",
     });
     let params:any = {
-      channel: "",
-      delivery: this.addressData.id,
+      channelId:data.channelId?data.channelId:'',
+      channel: data.channel,
+      delivery: this.addressData.id
     };
     let url = "good/topay/" + this.goodsData.goodCode;
-    // 普通支付 || 自选球队
-    if(this.cartData==''){
+    
+    if(this.baoduiId != 0 ){
+      // 包队
+      params.teamId = this.baoduiId
+      params.num = 1
+      url = "good/topay/"+this.goodsData.goodCode+'/select'
+    }else if(this.cartData==''){
+      // 普通支付 
       params.num = Number(this.moneyNum)
       if(this.payRandomPrice>0){
         url = "good/topay/"+this.goodsData.goodCode+'/select'
       }
     }else{
+      // 自选球队
       let id = []
       for(let i in this.cartData.list){
         if(!this.cartData.list[i].soldOut&&!this.cartData.list[i].lock){
@@ -443,13 +480,11 @@ export default class ClassName extends BaseNode {
       params.couponIdList = this.checkCouponList
     }
   
-    if (type == 1) {
-      params.channel = "alipay";
-	  
-      app.http.Post(
-        url,
-        params,
-        (res: any) => {
+    app.http.Post(
+      url,
+      params,
+      (res: any) => {
+        if(data.channel=='alipay'){
           console.log("alipay==", res);
           if (res.alipay.orderInfo != "") {
             uni.hideLoading();
@@ -458,42 +493,19 @@ export default class ClassName extends BaseNode {
               url: "/pages/userinfo/order_details?code=" + res.goodOrderCode+'&waitPay=true',
             });
           }
-        }
-      );
-    } else if (type == 2) {
-      // uni.showToast({
-      //   title: "暂时无法使用微信支付，请使用支付宝支付",
-      //   icon: "none",
-      // });
-      // return;
-      params.channel = "weixin";
-      app.http.Post(
-        url,
-        params,
-        (res: any) => {
+        }else{
           if (res.wechat) {
             uni.hideLoading();
-            app.payment.paymentWxpay(res.pay_type, res.wechat, () => {
-              uni.redirectTo({
-                url: "/pages/userinfo/order_details?code=" + res.goodOrderCode+'&waitPay=true',
-              });
+            app.payment.paymentWxpay(res.pay_type, res.wechat, () => { });
+            uni.redirectTo({
+              url: "/pages/userinfo/order_details?code=" + res.goodOrderCode+'&waitPay=true',
             });
           }
         }
-      );
-      // params= {
-      // 	channel:'mini',
-      // 	delivery:this.addressData.id,
-      // 	num:Number(this.moneyNum)
-      // }
-      // app.http.Post('good/topay/'+this.goodsData.goodCode,params,(res:any)=>{
-      // 	uni.hideLoading()
-      // 	app.payment.yinshengPay(res.wechat)
-      // 	uni.redirectTo({
-      // 		url:'/pages/userinfo/order_list'
-      // 	})
-      // })
-    }
+        
+      }
+    );
+  
   }
   onClickCardCancel(){
     this.operationCardShow = false
@@ -524,18 +536,15 @@ export default class ClassName extends BaseNode {
       this.couponTotalPrice = 0;
       return;
     }
-    let params:any = {
-      goodCode:this.goodsData.goodCode,
-      couponIdList:this.checkCouponList
+    let price = 0;
+    for(let i in this.checkCouponList){
+      for(let t in this.couponList){
+        if(this.checkCouponList[i] == this.couponList[t].id){
+          price += Number(this.couponList[t].amount)
+        }
+      }
     }
-    if(this.cartData==''){
-      params.num = Number(this.moneyNum)
-    }else{
-      params.price = this.cartData.amount
-    }
-    app.http.Post('me/coupon/condition/price',params,(res:any)=>{
-      this.couponTotalPrice = res.price
-    })
+    this.couponTotalPrice = price
   }
 }
 </script>

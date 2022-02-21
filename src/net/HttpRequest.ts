@@ -323,7 +323,7 @@ export default class HttpRequest {
 		let str = ''
 		if(config.data){
 			for(let i in config.data){
-				if(config.data[i]!=undefined){
+				if(config.data[i]!=undefined&&typeof(config.data[i])!='object'){
 					str+= i+'='+config.data[i]+'&'
 				}
 			}

@@ -34,7 +34,8 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-import { Component } from "vue-property-decorator";
+	import {Md5} from 'ts-md5/dist/md5';
+	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -65,6 +66,7 @@ import { Component } from "vue-property-decorator";
 		goodsList:{[x:string]:any} = [];
 		scrollId = '';
 		noMoreData = false;
+		scrollIdSt:any = 0;
 		onLoad(query:any) {
 			if(query.q){
 				this.searchText = query.q
@@ -185,18 +187,16 @@ import { Component } from "vue-property-decorator";
 			
 			let params:{[x:string]:any} ={
 				state:Number(this.goodTabCheck),
-				pageSize:20
+				pageSize:10
 			}
 			if(this.classifyOpt!=100){
 				params.tp = Number(this.classifyOpt)
 			}
-			if(this.searchText==''){
-				params.q = ''
-			}else{
-				params.q = this.searchText
-			}
+			params.q = this.searchText==''?'':this.searchText
 			if(reach){
-				params.scrollId = this.scrollId
+				params.scrollId = this.scrollId;
+				params.st = this.scrollIdSt;
+				params.sn = Md5.hashStr(this.scrollIdSt+this.scrollId+'scrollSearchGood')
 			}
 			// 排序方式
 			let sort = ''
@@ -228,7 +228,8 @@ import { Component } from "vue-property-decorator";
 				if(res.goodList){
 					this.goodsList = this.goodsList.concat(res.goodList)
 				}
-				this.scrollId = res.scrollId
+				this.scrollId = res.scrollId;
+				this.scrollIdSt = res.timeStamp;
 				if(cb) cb()
 			});
 		}

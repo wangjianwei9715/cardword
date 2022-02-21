@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "2.1.8",
+    "versionName" : "2.3.1",
     "versionCode" : 100,
     "transformPx" : false,
     "networkTimeout" : {
@@ -11,7 +11,16 @@
         "uploadFile" : 60000,
         "downloadFile" : 60000
     },
+    "channel_list" : [
+        {
+            "id" : "baidu",
+            "name" : "百度推广"
+        }
+    ],
     "app-plus" : {
+        "compatible" : {
+            "ignoreVersion" : true
+        },
         /* 5+App特有相关 */
         "modules" : {
             "Payment" : {},
@@ -20,7 +29,8 @@
             "Maps" : {},
             "Geolocation" : {},
             "Share" : {},
-            "Push" : {}
+            "Push" : {},
+            "VideoPlayer" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -159,7 +169,10 @@
             }
         },
         /* SDK配置 */
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : true
+        }
     },
     "quickapp" : {},
     /* 快应用特有相关 */
@@ -175,19 +188,52 @@
                 "version" : "1.3.2",
                 "provider" : "wx2b03c6e691cd7370"
             }
+        },
+        "uniStatistics" : {
+            "enable" : true
         }
     },
     "mp-alipay" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : true
+        }
     },
     "mp-baidu" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : true
+        }
     },
     "mp-toutiao" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : true
+        }
     },
     "mp-qq" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : true
+        }
+    },
+    "uniStatistics" : {
+        "enable" : true
+    },
+    "h5" : {
+        "uniStatistics" : {
+            "enable" : true
+        }
+    },
+    "mp-kuaishou" : {
+        "uniStatistics" : {
+            "enable" : true
+        }
+    },
+    "mp-lark" : {
+        "uniStatistics" : {
+            "enable" : true
+        }
     }
 }
 /* 快应用特有相关 *//* 小程序特有相关 */

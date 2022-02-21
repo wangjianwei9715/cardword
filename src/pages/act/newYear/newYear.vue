@@ -11,7 +11,7 @@
 				<swiper class="swiper"  autoplay="true" circular="true"  duration="200"> 
 					<swiper-item v-for="(item,index) in rewardList" :key="index">
 						<view class="reward-index">
-							<image class="rewarwd-image" src=""/>
+							<image class="rewarwd-image" @click="onClickPreviewImage(index,indexs)"  v-for="(items,indexs) in item.item" :key="indexs" :src="items"/>
 						</view>
 					</swiper-item>
 				</swiper>
@@ -58,8 +58,49 @@
 		dateFormatMSHMS = dateFormatMSHMS;
 		showRulePopup = false;
 		rewardList:any = [
-			{item:[]},
-			{item:[]},
+			{item:[
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/1..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/2..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/3..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/4..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/5..jpg'
+			]},
+			{item:[
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/6..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/7..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/8..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/9..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/10..jpg'
+			]},
+			{item:[
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/11..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/12..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/13..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/14..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/15..jpg'
+			]},
+			{item:[
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/16..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/17..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/19..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/20..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/21..jpg'
+
+			]},
+			{item:[
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/22..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/23..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/24..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/25..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/26..jpg'
+			]},
+			{item:[
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/27..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/28..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/29..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/30..jpg',
+				'https://ka-world.oss-cn-shanghai.aliyuncs.com/fuhe/31..jpg'
+			]},
 		];
 		currentPage = 1;
 		pageSize = 10;
@@ -84,6 +125,14 @@
 		//   加载更多数据
 		onReachBottom() {
 		    this.reqNewData() 
+		}
+		// 观看大图
+		onClickPreviewImage(index:number,indexs:number){
+			uni.previewImage({
+				urls: this.rewardList[index].item,
+				current:indexs,
+				indicator: "number" 
+			});
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
@@ -159,7 +208,7 @@
 	}
 	.bg{
 		width: 750rpx;
-		height:1169rpx;
+		height:1170rpx;
 		background:url(https://ka-world.oss-cn-shanghai.aliyuncs.com/newYear2022/dbg.jpg) no-repeat center;
 		background-size: 100% 100%;
 		position: relative;
@@ -173,7 +222,7 @@
 		position: absolute;
 		top:0;
 		z-index: 3;
-		padding-top: 515rpx;
+		padding-top: 540rpx;
 	}
 	.newyear-rule{
 		width: 104rpx;

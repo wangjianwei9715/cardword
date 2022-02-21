@@ -1,6 +1,6 @@
 <template>
 	<view class="livelist">
-		<view class="livelist-index"  v-for="(item,index) in liveList" :key="index" @click="onClickJumpUrl(item.roomId)">
+		<view class="livelist-index"  v-for="(item,index) in liveList" :key="index" @click="onClickJumpUrl(item)">
 			<view class="livelist-top" >
 				<image class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 				<view class="livelist-top-status">
@@ -40,8 +40,8 @@
 		destroyed(){
 			
 		}
-		onClickJumpUrl(id:any){
-			this.$emit("send", id);
+		onClickJumpUrl(item:any){
+			this.$emit("send", item);
 		}
 		
 	}

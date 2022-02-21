@@ -8,12 +8,12 @@
 			</view>
 			<view class="payment-center">¥<text class="payment-price">{{payPrice}}</text></view>
 			<view class="payment-tip">支付方式</view>
-			<view class="payment-list">
+			<view class="payment-list" v-for="(item,index) in payChannel" :key="index">
 				<view class="payment-list-left">
-					<view class="icon-zfb"></view>支付宝支付
+					<view :class="item.name=='支付宝支付'?'icon-zfb':'icon-wx'"></view>{{item.name}}
 				</view>
-				<view class="payment-list-right" @click="checkPay=1">
-					<view :class="checkPay==1?'payment-checked':'payment-check'"></view>
+				<view class="payment-list-right" @click="checkPay=index">
+					<view :class="checkPay==index?'payment-checked':'payment-check'"></view>
 				</view>
 			</view>
 			<!-- <view class="payment-list">
@@ -41,9 +41,11 @@
 		countTime!:number;
 		@Prop({default:0})
 		payPrice!:number;
-		
+		@Prop({default:[]})
+		payChannel!:any;
+
 		showPopup = false;
-		checkPay = 1;
+		checkPay = 0;
 		countStr = '';
 		countInterval:any;
 		countTimeCopy = 300
@@ -74,7 +76,10 @@
 			this.$emit("cancelPay");
 		}
 		onClickPay(){
-			this.$emit("pay",this.checkPay)
+			if(this.checkPay<0){
+				return;
+			}
+			this.$emit("pay",this.payChannel[this.checkPay])
 		}
 		countDownTime(){
 			this.countStr = getCountDownTime(this.countTimeCopy);

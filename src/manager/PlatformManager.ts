@@ -1,6 +1,7 @@
 import { app } from "@/app";
 import permision from "@/js_sdk/wa-permission/permission"
 import HttpRequest from "@/net/HttpRequest";
+import {Md5} from 'ts-md5/dist/md5';
 import UpdateManager from "@/manager/UpdateManager";
 export default class PlatformManager {
 	private static instance: PlatformManager;
@@ -170,8 +171,27 @@ export default class PlatformManager {
 	}
 
 	// 微信直播间
-	goWeChatLive(id: any) {
-
+	goWeChatLive(item: any) {
+		let ts = Math.floor(new Date().getTime()/1000);
+		let params = {
+			ts:ts,
+			playCode:item.playCode,
+			sign:Md5.hashStr(ts+'_'+item.goodCode+'_'+item.playCode+'_videoPlayKsj')
+		}
+		app.http.Post('good/videoPlay/'+item.goodCode,params,(data:any)=>{
+			// 直播 回放
+			if(data.media_url!=''){
+				uni.navigateTo({
+					url:'/pages/live/playback?data='+JSON.stringify(data)
+				})
+				return 
+			}else if(data.wxRoomId>0){
+				this.launchMiniProgramLive(data.wxRoomId)
+			}
+			
+		})
+	}
+	launchMiniProgramLive(id:any){
 		// #ifdef APP-PLUS
 		plus.share.getServices(res => {
 			let sweixin = res.find(i => i.id === 'weixin')
@@ -190,14 +210,8 @@ export default class PlatformManager {
 		}, err => {
 			// 获取分享服务列表失败
 		});
-
+		return;
 		// #endif
-		// #ifdef MP-WEIXIN
-		wx.navigateTo({
-			url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + id
-		})
-		// #endif
-
 	}
 	requestSubscribeMessage(id: string, callback?: Function) {
 		// 调起订阅消息
@@ -223,33 +237,7 @@ export default class PlatformManager {
 				}
 			},
 			fail: (res) => {
-				wx.getSetting({
-					withSubscriptions: true,
-					success: (res) => {
-						console.log(res.authSetting)
-						uni.showModal({
-							title: '授权失败',
-							content: '不授权将无法收到开播提醒,请点击确定去设置。',
-							showCancel: false,
-							success: (result) => {
-								if (result.confirm) {
-									wx.openSetting({
-										withSubscriptions: true,
-										success: (res) => {
-											console.log('openSetting', res);
-											// if (res.subscriptionsSetting.mainSwitch) {
-											//     this.requestSubscribeMessage.call(this, callback);
-											// }
-										},
-										fail: (res) => {
-											console.log('openSetting', res);
-										}
-									});
-								}
-							}
-						});
-					}
-				})
+				
 			}
 		});
 		// #endif
@@ -324,7 +312,7 @@ export default class PlatformManager {
 						// 延时调用避免一开始接收不到
 						setTimeout(()=>{
 							uni.$emit('appluanchOver')
-						},10)
+						},100)
 						// #ifdef APP-PLUS
 						app.update_url = url + "/api/";
 						if (uni.getSystemInfoSync().platform === "android") {

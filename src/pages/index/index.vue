@@ -124,11 +124,11 @@
 			}
 		]
 		tabList = [
-			{img:'../../static/index/tab_0.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
-			{img:'../../static/index/tab_1.png',text:'资讯',url:'/pages/information/list'},
-			{img:'../../static/index/tab_2.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
-			{img:'../../static/index/tab_3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
-			{img:'../../static/index/tab_4.png',text:'商家入驻',url:'/pages/userinfo/merchant_join'},
+			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab1.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
+			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab2.png',text:'资讯',url:'/pages/information/list'},
+			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab3.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
+			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab4.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
+			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab5.png',text:'商家入驻',url:'/pages/userinfo/merchant_join'},
 			// {img:'../../static/index/tab_4.png',text:'商家入驻',url:'/pages/act/newYear/newYear'},
 		];
 		noticeList = [
@@ -187,9 +187,6 @@
 			let listeners = ['BackLogin']
 			this.register(listeners);
 			this.getLuanchApp()
-			// #ifdef MP-WEIXIN
-			app.platform.wechatLogin();
-			// #endif
 
 			// 新年每日登录优惠券
 			this.onEventUI("loginSuccess", () => {
@@ -214,6 +211,13 @@
 				}
 			})
 			
+			setTimeout(()=>{
+				if(this.oneLoad){
+					this.version = app.version
+					this.showInitEvent()
+					this.oneLoad = false;
+				}
+			},1000)
 			// #ifdef APP-PLUS
 			// 判断是否有邀请上线
 			app.platform.getInvitationClipboard()
@@ -676,41 +680,41 @@
 		color: #14151A;
 		text-align: center;
 	}
-	.tab-act-content{
-		width: 710rpx;
-		height:318rpx;;
-		padding:0 20rpx 0 20rpx;
-		box-sizing: border-box;
-		border-radius: 20rpx;
-		background:url(../../static/index/newyear.png) no-repeat center;
-		background-size: 100% 100%;
-		margin:0 auto;
-	}
-	.tab-act-title{
-		width: 281rpx;
-		height:55rpx;
-		background-size: 100% 100%;
-		margin:0 auto;
-		margin-bottom: 15rpx;
-	}
-
 	// .tab-act-content{
 	// 	width: 710rpx;
-	// 	padding:0 20rpx 0 24rpx;
-	// 	padding-bottom: 20rpx;
+	// 	height:318rpx;;
+	// 	padding:0 20rpx 0 20rpx;
 	// 	box-sizing: border-box;
 	// 	border-radius: 20rpx;
-	// 	background: linear-gradient(90deg, #E7F1FB, #E8E4FA);
+	// 	background:url(../../static/index/newyear.png) no-repeat center;
+	// 	background-size: 100% 100%;
 	// 	margin:0 auto;
 	// }
 	// .tab-act-title{
 	// 	width: 281rpx;
-	// 	height:44rpx;
-	// 	background:url(../../static/index/act_title.png) no-repeat;
+	// 	height:55rpx;
 	// 	background-size: 100% 100%;
 	// 	margin:0 auto;
 	// 	margin-bottom: 15rpx;
 	// }
+
+	.tab-act-content{
+		width: 710rpx;
+		padding:0 20rpx 0 24rpx;
+		padding-bottom: 20rpx;
+		box-sizing: border-box;
+		border-radius: 20rpx;
+		background: linear-gradient(90deg, #E7F1FB, #E8E4FA);
+		margin:0 auto;
+	}
+	.tab-act-title{
+		width: 281rpx;
+		height:44rpx;
+		background:url(../../static/index/act_title.png) no-repeat;
+		background-size: 100% 100%;
+		margin:0 auto;
+		margin-bottom: 15rpx;
+	}
 	.tab-good-inedx{
 		width:170rpx;
 		height:230rpx;

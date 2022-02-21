@@ -107,7 +107,7 @@
 			let params = {
 				q:this.searchTetxt,
 				pageIndex:this.currentPage,
-				pageSize:30
+				pageSize:10
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNo',params,(res:any)=>{
 				if(res.list){
@@ -115,7 +115,7 @@
 				}else{
 					this.noMore = true
 				}
-				if(res.list.length<30){
+				if(res.list.length<10){
 					this.noMore = true
 				}
 				this.currentPage++;
@@ -128,7 +128,7 @@
 			let params = {
 				q:this.searchTetxt,
 				pageIndex:this.currentPage,
-				pageSize:30
+				pageSize:10
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
 				if(res.list){
@@ -136,7 +136,7 @@
 				}else{
 					this.noMore = true
 				}
-				if(res.list.length<30){
+				if(res.list.length<10){
 					this.noMore = true
 				}
 				this.currentPage++;

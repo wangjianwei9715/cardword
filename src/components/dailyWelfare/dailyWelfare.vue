@@ -75,7 +75,7 @@
 		position: absolute;
 		top:-143rpx;
 		left:61rpx;
-		background:url(https://ka-world.oss-cn-shanghai.aliyuncs.com/newYear2022/title.png) no-repeat center;
+		background:url(https://ka-world.oss-cn-shanghai.aliyuncs.com/newYear2022/title.png?v=1) no-repeat center;
 		background-size: 100% 100%;
 		z-index: 22;
 		box-sizing: border-box;

@@ -10,7 +10,7 @@
 					<view class="header-right" v-if="branchData!=''">
 						<view class="header-price">¥<text>{{teamCheckIndex==999?randomMode.good.price:branchData[branchCheckIndex].price}}</text></view>
 						<view class="header-teamname">“{{teamCheckIndex==999?'剩余球队':teamData[teamCheckIndex].name}}”</view>
-						<view class="header-teamtip">{{teamCheckIndex==999?'将在剩余的球队编号中随机限编':branchData[branchCheckIndex].name}}</view>
+						<view class="header-teamtip">{{teamCheckIndex==999?'将在剩余的球队编号中随机限量编号(组满随机)':branchData[branchCheckIndex].name}}</view>
 						<button v-if="teamCheckIndex!=999&&randomMode.state!=2"  class="header-shopping-btn" :class="{'cart-have':getCartHaveIndex()}" @click="onClickJoinCart">{{getCartHaveIndex()?'已在购物车':'加入购物车'}}</button>
 						<view v-else-if="teamCheckIndex==999" class="header-shoppong-random">
 							<view class="goodslist-plan-desc">余{{randomMode.good.totalNum-(randomMode.good.currentNum+randomMode.good.lockNum)}}/共{{randomMode.good.totalNum}}</view>
@@ -73,7 +73,22 @@
 						</view>
 						
 					</view>
-					<view v-if="countTimeCopy>0" class="btn-right-count" ><text class="count-text">开售倒计时</text> {{countTimeCopy==0?'':' '+countStr}}</view>
+					<!-- 包队模式按钮 -->
+					<view v-if="baoduiCountTimeCopy>=0&&(baoduiNewState!=99&&baoduiNewState!=-1)" class="baodui-content">
+						<view class="baodui-btn" v-if="baoduiNewState !=1 ">
+							<text class="baodui-text">包队倒计时</text>
+							<view class="baodui-text">{{baoduiCountStr}}</view>
+						</view>
+						<view class="baodui-go" v-else @click="onClickBaodui">
+							<text class="baodui-text">￥{{getBranchPrice(branchData)}}包队</text>
+							<view class="baodui-text">{{baoduiCountStr}}</view>
+						</view>
+						<view class="baodui-btn">
+							<text class="baodui-text">开售倒计时</text>
+							<view class="baodui-text">{{countTimeCopy==0?'':' '+countStr}}</view>
+						</view>
+					</view>
+					<view v-else-if="countTimeCopy>0" class="btn-right-count" ><text class="count-text">开售倒计时</text> {{countTimeCopy==0?'':' '+countStr}}</view>
 					<view v-else class="btn-right" :class="{'btn-empty':cartData.available==0}" @click="onClickSettlement">去结算</view>
 				</view>
 				<view class="btncheck-content" v-else>
@@ -133,6 +148,7 @@
 					<view class="rules-index">
 						触发该模式后，剩余的球队编号将以随机限编的形式拼团售卖，用户购买后获得一份限编卡密(组满随机)，待直播拆卡后获得剩余球队编号中对应限编的卡片。<text style="color:FB4E3E">若购得额外奖品的卡密请联系客服领取。</text>
 						<view>(随机限编单价=剩余球队总额/25)</view>
+						<view>例：小王在剩余随机模式购买了一组，组齐后系统随机分配卡密，小王获得“1/xx编号、26/xx编、51/xx编、76/xx编”，拆卡结果为：剩余球队中的三球1/1编、怀斯曼51/99编、莫兰特25/49编以及非剩余球队中的科比1/1编，共4张卡，最终小王获得三球1/1编、怀斯曼51/99两张卡</view>
 					</view>
 					<view class="rules-title">剩余随机卡密清单</view>
 					<table class="rules-table">
@@ -159,7 +175,7 @@
 		<view class="random-showdow" v-show="showRandomPopup"></view>
 		<view class="random-popup" v-show="showRandomPopup">
 			<view class="popup-title">温馨提示</view>
-			<view class="popup-msg">当前商品为<text style="color:#FB4E3E">剩余随机</text>模式，您将在剩余球队中购得一份随机限编卡密，请悉知！</view>
+			<view class="popup-msg">当前商品为<text style="color:#FB4E3E">剩余随机</text>模式，您将在剩余球队中购得一份随机限编卡密(组满随机)，请悉知！</view>
 			<button class="popup-btn" @click="onClickPopupBtn">
 				继续购买
 			</button>
@@ -200,10 +216,20 @@
 		randomMode:any
 		@Prop({ default: 0 })
 		randomNum:any
-		
+		// 包队 倒计时
+		@Prop({ default: 0 })
+		baoduiLeftSec:any
+		// 包队 状态
+		@Prop({ default: -1 })
+		baoduiState:any
 		countStr = '';
 		countInterval:any;
 		countTimeCopy = 0;
+
+		baoduiCountStr = '';
+		baoduiCountInterval:any;
+		baoduiCountTimeCopy = 0;
+		baoduiNewState = -1;
 
 		randomCountStr = '';
 		randomCountInterval:any;
@@ -241,9 +267,12 @@
 		@Watch('teamCheckShow')
 		onShowChanged(val: any, oldVal: any){
 			if(val){
-				this.countTimeCopy = this.teamLeftSec
-				console.log(this.countTimeCopy)
-				this.countDownTime()
+				this.baoduiNewState = this.baoduiState;
+				this.baoduiCountTimeCopy = this.teamLeftSec ;
+				this.countTimeCopy = this.baoduiNewState == 1?this.teamLeftSec:(this.teamLeftSec + this.baoduiLeftSec);
+
+				this.countDownTime();
+				this.baoduiCountDownTime();
 				if(this.randomMode!=''&&this.randomMode.state==1){
 					this.randomCountTimeCopy = this.randomMode.leftSecond;
 					this.randomCountDownTime()
@@ -252,6 +281,7 @@
 			}else{
 				this.onClickCloseShoppingCart()
 				clearInterval(this.countInterval);
+				clearInterval(this.baoduiCountInterval)
 				if(this.randomMode!=''&&this.randomMode.state==1){
 					clearInterval(this.randomCountInterval);
 				}
@@ -265,6 +295,16 @@
 		}
 		destroyed(){
 			clearInterval(this.countInterval)
+			clearInterval(this.baoduiCountInterval)
+			clearInterval(this.randomCountInterval)
+		}
+		getBranchPrice(list:any){
+			let price = 0;
+			for(let i in list){
+				price += list[i].price
+			}
+
+			return price;
 		}
 		onClickTeamCancel(){
 			this.$emit("teamPaycancel");
@@ -295,6 +335,15 @@
 		onClickSettlement(){
 			this.$emit('settlement')
 		}
+		// 包队
+		onClickBaodui(){
+			for(let i in this.branchData){
+				if(this.branchData[i].lock||this.branchData[i].soldOut){
+					return;
+				}
+			}
+			this.$emit('baodui')
+		}
 		countDownTime(){
 			this.countStr = getCountDownTimeHour(this.countTimeCopy);
 			this.countInterval = setInterval(()=>{
@@ -303,6 +352,24 @@
 					this.countStr = getCountDownTimeHour(this.countTimeCopy);
 				}else{
 					clearInterval(this.countInterval)
+				}
+			},1000)
+		}
+		baoduiCountDownTime(){
+			console.log('baoduiCountTimeCopy==',this.baoduiCountTimeCopy)
+			this.baoduiCountStr = getCountDownTimeHour(this.baoduiCountTimeCopy);
+			this.baoduiCountInterval = setInterval(()=>{
+				if(this.baoduiCountTimeCopy>0){
+					this.baoduiCountTimeCopy--;
+					this.baoduiCountStr = getCountDownTimeHour(this.baoduiCountTimeCopy);
+				}else{
+					if(this.baoduiNewState == 0){
+						this.baoduiNewState = 1;
+						this.baoduiCountTimeCopy = this.baoduiLeftSec;
+					}else{
+						this.baoduiNewState = 99
+						clearInterval(this.baoduiCountInterval)
+					}
 				}
 			},1000)
 		}
@@ -768,6 +835,7 @@
 		box-sizing: border-box;
 		justify-content: space-between;
 		.btn-left{
+			width:280rpx;
 			height:88rpx;
 			line-height: 88rpx;
 			font-size: 30rpx;
@@ -778,6 +846,7 @@
 			align-items: center;
 		}
 		.btn-left-content{
+			width: 200rpx;
 			height:88rpx;
 			display: flex;
 			align-items: center;
@@ -795,6 +864,49 @@
 			width: 100%;
 			color:#AAAAAA;
 			font-weight: normal;
+		}
+		.baodui-content{
+			width: 420rpx;
+			height:88rpx;
+			display: flex;
+			align-items: center;
+			box-sizing: border-box;
+			justify-content: space-between;
+			.baodui-btn{
+				width: 200rpx;
+				height:88rpx;
+				background: #AAAAAA;
+				border-radius: 44rpx;
+				text-align: center;
+				line-height: 88rpx;
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				box-sizing: border-box;
+				padding:20rpx 0;
+			}
+			.baodui-go{
+				width: 200rpx;
+				height:88rpx;
+				background: #FB4E3E;
+				border-radius: 44rpx;
+				text-align: center;
+				line-height: 88rpx;
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				box-sizing: border-box;
+				padding:20rpx 0;
+			}
+			.baodui-text{
+				width: 100%;
+				height:30rpx;
+				line-height: 30rpx;
+				font-size: 28rpx;
+				font-family: Microsoft YaHei;
+				font-weight: bold;
+				color: #FFFFFF;
+			}
 		}
 		.btn-right{
 			width: 368rpx;
@@ -1054,8 +1166,8 @@
 		color: #FFBB04;
 	}
 	.teamtion-random-help{
-		width: 25rpx;
-		height:25rpx;
+		width: 33rpx;
+		height:33rpx;
 		background: url(../../static/goods/cart_help.png) no-repeat center;
 		background-size: 100% 100%;
 	}

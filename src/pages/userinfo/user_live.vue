@@ -15,7 +15,7 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-import { Component } from "vue-property-decorator";
+	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -71,8 +71,18 @@ import { Component } from "vue-property-decorator";
 			this.liveList = []
 			this.reqNewData()
 		}
-		onClickLive(id:any){
-			app.platform.goWeChatLive(id)
+		onClickLive(item:any){
+			console.log(item)
+			return;
+			if(item.media_url!=''){
+				
+				uni.navigateTo({
+					url:'/pages/live/playback?url='+item.media_url
+				})
+			}else{
+				app.platform.goWeChatLive(item.id)
+			}
+			
 		}
 		
 	}

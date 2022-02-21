@@ -19,7 +19,7 @@
 			<orderlist :orderList="orderList"  @send="onClickOrder" @operate="onClickOperate" />
 		</view>
 		<empty v-show="showEmpty" />
-		<payment :showPayMent="showPayMent" :payPrice="payItem.price" @cancelPay="onClickCancelPay" :countTime="countTime" @pay="onClickPayGoods" />
+		<payment :showPayMent="showPayMent" :payChannel="payChannel" :payPrice="payItem.price" @cancelPay="onClickCancelPay" :countTime="countTime" @pay="onClickPayGoods" />
 	</view>
 </template>
 
@@ -52,6 +52,7 @@
 		};
 		clickToPay = false;
 		showEmpty = false;
+		payChannel:any = [];
 		onLoad(query:any) {
 			if(query.type){
 				this.orderTabCheck = query.type
@@ -147,6 +148,7 @@
 				})
 			}
 			if(cmd=='toPay'){
+				this.payChannel = item.good.payChannel
 				// #ifdef MP
 				params= {
 					channel:'mini',
@@ -250,59 +252,39 @@
 			this.showPayMent = false;
 			this.againReqNewData()
 		}
-		onClickPayGoods(type:any){
+		onClickPayGoods(data:any){
 			// 1：支付宝 2：微信
-			if(type==0){
+			if (data == '') {
 				return;
 			}
 			uni.showLoading({
 				title: '加载中'
 			});
 			let params = {
-				channel:'',
+				channelId:data.channelId?data.channelId:'',
+      			channel: data.channel,
 				delivery:0,
 				num:this.payItem.num
 			}
-			if(type==1){
-				params.channel = 'alipay';
-				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
+			app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
+				if(data.channel=='alipay'){
 					if(res.alipay.orderInfo!=''){
 						this.clickToPay = true;
 						uni.hideLoading()
 						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
 						this.onClickCancelPay()
 					}
-				})
-			}else if(type==2){
-				// uni.showToast({
-				// 	title:'暂时无法使用微信支付，请使用支付宝支付',
-				// 	icon:'none'
-				// })
-				// return;
-				params.channel = 'weixin';
-				app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
-					console.log('wechat=',res)
+				}else{
 					if(res.wechat){
 						this.clickToPay = true;
 						uni.hideLoading()
 						app.payment.paymentWxpay(res.pay_type,res.wechat)
 						this.onClickCancelPay()
 					}
-				})
-				// params= {
-				// 	channel:'mini',
-				// 	delivery:0,
-				// 	num:this.payItem.num
-				// }
-				// uni.showLoading({
-				// 	title: '加载中'
-				// });
-				// app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
-				// 	uni.hideLoading()
-				// 	app.payment.yinshengPay(res.wechat)
-					
-				// })
-			}
+				}
+				
+			})
+			
 		}
 		
 	}
