@@ -206,8 +206,9 @@
 				})
 			}
 			if(cmd=='resultCard'){
+				let random = item.good.state>0?true:false
 				uni.navigateTo({
-					url: '/pages/userinfo/goods_result_list?chooseIds=1&code='+item.good.goodCode+'&order='+item.code
+					url: '/pages/userinfo/goods_result_list?chooseIds=1&code='+item.good.goodCode+'&order='+item.code+'&random='+random
 				})
 			}
 			if(cmd=='cancel'){

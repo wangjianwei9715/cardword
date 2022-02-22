@@ -1,6 +1,6 @@
 <template>
 	<view class="buy-card">
-		<view class="card-index" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
+		<view class="card-index" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index" @click="onClickLookCard(item)">
 			<view class="left">{{item.name}}</view>
 			<!-- <view v-if="showImg&&item.num>0" class="right">
 				<image class="show-img" :src="item.pic"  mode="aspectFill"/>
@@ -14,6 +14,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:''})
@@ -23,14 +24,29 @@
 		@Prop({default:false})
 		waitPay:any;
 		
+		picList:any = []
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-			
 		}
 		destroyed(){
 			
+		}
+		onClickLookCard(item:any){
+			if(item.state!=2) return;
+
+			app.http.Get('me/cardNo/'+item.id+'/hit/pic',{},(res:any)=>{
+				this.picList = [];
+				for(let i in res.list){
+					this.picList.push(decodeURIComponent(res.list[i]))
+				}
+				uni.previewImage({
+					urls: this.picList,
+					current:0,
+					indicator: "number" 
+				});
+			})
 		}
 	}
 </script>

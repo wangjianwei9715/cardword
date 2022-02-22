@@ -172,7 +172,7 @@
 				return;
 			}
 			if(query.id){
-				app.platform.goWeChatLive(query.id)
+				app.platform.launchMiniProgramLive(query.id)
 			}
 			if(query.paydata){
 				// #ifdef MP-WEIXIN
@@ -952,25 +952,15 @@
 		color: #292929;
 		line-height: 88rpx;
 	}
-	// .goods-card-content-scroll{
-	// 	width: 100%;
-	// 	height:250rpx;
-	// 	display: flex;
-	// 	white-space: nowrap;
-	// 	overflow: auto;
-	// 	background:#fff;
-	// 	box-sizing: border-box;
-	// 	padding:15rpx 18rpx 15rpx 19rpx
-	// }
 	.goods-card-content-scroll{
 		width: 100%;
-		height:220rpx;
+		height:250rpx;
 		display: flex;
 		white-space: nowrap;
 		overflow: auto;
 		background:#fff;
 		box-sizing: border-box;
-		padding:0 18rpx 0 19rpx
+		padding:15rpx 18rpx 15rpx 19rpx
 	}
 	.header-search{
 		width: 708rpx;

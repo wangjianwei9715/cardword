@@ -210,8 +210,13 @@ export default class PlatformManager {
 		}, err => {
 			// 获取分享服务列表失败
 		});
-		return;
 		// #endif
+		// #ifdef MP-WEIXIN
+		// wx.navigateTo({
+		// 	url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + id
+		// })
+		// #endif
+
 	}
 	requestSubscribeMessage(id: string, callback?: Function) {
 		// 调起订阅消息

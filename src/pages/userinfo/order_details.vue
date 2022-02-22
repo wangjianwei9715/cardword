@@ -359,8 +359,9 @@
 			});
 		}
 		onClcikResult(chooseID:any){
+			let random = this.orderData.good.state>0?true:false
 			uni.navigateTo({
-				url: '/pages/userinfo/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode+'&order='+this.orderData.code
+				url: '/pages/userinfo/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode+'&order='+this.orderData.code+'&random='+random
 			})
 		}
 		// 取消支付

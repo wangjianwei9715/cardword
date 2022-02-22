@@ -2,16 +2,22 @@
 	<view class="payment" v-show="showRulePopup">
 		<view class="payment-showdow"></view>
 		
-		<view class="rules-popup" v-if="!newYear">
-			<view class="popup-title">活动规则</view>
-			<view class="popup-rules" v-for="(item,index) in rulesData" :key="index">{{item}}</view>
-			<view class="popup-close" @click="onClickCancelRule"></view>
-		</view>
-		<view class="rules-popup2" v-else>
+		<view class="rules-popup2" v-if="newYear==true">
 			<view class="popup-title">活动规则</view>
 			<view class="popup-rules" v-for="(item,index) in rulesDataNweYear" :key="index">{{item}}</view>
 			<view class="popup-close" @click="onClickCancelRule"></view>
 		</view>
+		<view class="rules-popup3" v-else-if="decompose==true">
+			<view class="popup-title">规则说明</view>
+			<view class="popup-rules" v-for="(item,index) in rulesDecomposeData" :key="index">{{item}}</view>
+			<view class="popup-close" @click="onClickCancelRule"></view>
+		</view>
+		<view class="rules-popup" v-else>
+			<view class="popup-title">活动规则</view>
+			<view class="popup-rules" v-for="(item,index) in rulesData" :key="index">{{item}}</view>
+			<view class="popup-close" @click="onClickCancelRule"></view>
+		</view>
+		
 	</view>
 </template>
 
@@ -24,7 +30,9 @@
 		showRulePopup!:boolean;
 		@Prop({default:false})
 		newYear!:boolean;
-
+		@Prop({default:false})
+		decompose!:boolean;
+		
 		rulesData = [
 			'1、获取卡豆：玩家可通过参与拼团（1元=1积分）、签到、不定期活动等方式获取卡豆',
 			'2、签到说明：1~2天每日获得3积分；3~6天每日获得5积分；7~14天每日获得10积分；第15天获得3元卡享券*1。连续签到满15天后，在第16天时重置签到天数。若签到断档，则签到天数重置。',
@@ -32,10 +40,16 @@
 			'4、卡豆抽奖：每位玩家首次抽奖半价，每日可抽5次，1000卡豆/次，抽奖概率以公示概率为准。抽奖前需填写并确认默认邮寄地址，若兑换实物，平台将在3个工作日内联系到您，核实邮寄地址后寄出（包邮），兑换后可在奖品明细中查看详情。',
 			'5、若玩家采取不正当作弊手段获得卡豆参与活动，一经发现，平台有权对该玩家进行封号处理，并追回所获得奖励。',
 		]
+		rulesDecomposeData = [
+			'1.卡片分解功能当前为测试版，可能会进行改动',
+			'2.卡片分解仅支持部分商品，用户中卡后可分解卡片获得奖励（商家发货后无法再分解）',
+			'3.进行分解时，必须一次性分解该商品下所有订单的中卡卡片，此功能适用于当前商品中卡较少且价值较低时使用，在中卡数量较多或卡片价值较大的情况下不建议分解，请您慎重考虑',
+			'4.分解后无法找回',
+		]
 		rulesDataNweYear = [
 			'1.活动期间，卡世界新春压岁盒以拼团形式售卖，拼满即拆。新春压岁盒由卡世界平台发行，商家代拆。',
-			'2.新春压岁盒每盒可得1~4张球星卡（具体卡片请查看奖品列表），部分福盒可获得一张100元-600元不等的无门槛优惠券，获卡后请联系客服领取。',
-			'3.福盒共200份，每人限购1盒'
+			'2.新春压岁盒每盒必得1~3张球星卡（具体卡片请查看奖品列表），有概率获得100元-600元平台无门槛券，无门槛券请联系客服领取。',
+			'3.福盒共200份，每人限购1盒，每盒额外附赠50元满减券，请联系客服领取'
 		]
 		
 
@@ -189,6 +203,38 @@
 		top:50%;
 		margin-left: -340rpx;
 		margin-top: -200rpx;
+		padding-top: 50rpx;
+		.popup-title{
+			width: 100%;
+			margin-bottom: 40rpx;
+			text-align: center;
+			font-size: 34rpx;
+			font-family: Microsoft YaHei;
+			font-weight: bold;
+			color: #34363A;
+		}
+		.popup-close{
+			width: 52rpx;
+			height:52rpx;
+			position: absolute;
+			right:0;
+			top:-94rpx;
+			background:url(../../pages/act/static/invite/close.png) no-repeat center;
+			background-size: 100% 100%;
+		}
+	}
+	.rules-popup3{
+		width:680rpx;
+		height:550rpx;
+		position: fixed;
+		box-sizing: border-box;
+		background:#fff;
+		border-radius: 40rpx;
+		z-index: 1000;
+		left:50%;
+		top:50%;
+		margin-left: -340rpx;
+		margin-top: -230rpx;
 		padding-top: 50rpx;
 		.popup-title{
 			width: 100%;

@@ -1,20 +1,32 @@
 <template>
-	<view class="content">
-		<view class="dynamic-item" @click="onClickDynamic(index,item.pagePath,item.msgId)" v-for="(item,index) in dynamicData" :key="item.msgId">
-			<view class="left">
-				<image class="img" src="/static/index/message_icon.png"/>
-				<view class="info">
-					<view class="name">{{item.title}}</view>
-					<view class="des">{{item.content}}</view>
-				</view>
+	<view>
+		<view class="header-banner">
+			<statusbar />
+			<view class="tab-header">
+				<view class="icon-back" @click="onClickBack"></view>
+				<view class="header-title">消息</view>
+				<view v-if="bucketName == 'trade'" class="header-likes" @click="onClickReadAll">一键已读</view>
 			</view>
-			
-			<view class="right-new">
-				{{getTime(item.sendTime)}}
-				<view v-show="!item.read" class="icon-new"></view>
+		</view>
+		<view class="dynamic-content">
+			<statusbar />
+			<view class="dynamic-item" @click="onClickDynamic(index,item.pagePath,item.msgId)" v-for="(item,index) in dynamicData" :key="item.msgId">
+				<view class="left">
+					<image class="img" src="/static/index/message_icon.png"/>
+					<view class="info">
+						<view class="name">{{item.title}}</view>
+						<view class="des">{{item.content}}</view>
+					</view>
+				</view>
+				
+				<view class="right-new">
+					{{getTime(item.sendTime)}}
+					<view v-show="!item.read && !readAll" class="icon-new"></view>
+				</view>
 			</view>
 		</view>
 	</view>
+	
 </template>
 
 <script lang="ts">
@@ -29,6 +41,7 @@
 		currentPage = 1;
 		pageSize = 20;
 		noMoreData = false;
+		readAll = false;
 		onLoad(query:any) {
 			if(query.type){
 				this.bucketName = query.type
@@ -54,6 +67,32 @@
 				if (data.end) {
 					this.noMoreData = true;
 				}
+			});
+		}
+		onClickReadAll(){
+			uni.showModal({
+				title: '提示',
+				content: '是否确认已读所有消息',
+				success:(res)=> {
+					if (res.confirm) {
+						app.http.Post('message/readAll',{name:'trade'},(res:any)=>{
+							this.readAll = true
+							uni.showToast({
+								title:'操作成功',
+								icon:'none'
+							})
+							
+						})
+					} else if (res.cancel) {
+						console.log('用户点击取消');
+					}
+				}
+			});
+			
+		}
+		onClickBack() {
+			uni.navigateBack({
+			delta: 1,
 			});
 		}
 		onClickDynamic(index:number,url:any,id:any){
@@ -110,6 +149,13 @@
 </script>
 
 <style>
+	.dynamic-content {
+		width: 100%;
+		box-sizing: border-box;
+		padding:110rpx 0 0 0;
+		position: relative;
+		z-index: 2;
+	}
 	.dynamic-item{
 		width: 100%;
 		display: flex;
@@ -196,5 +242,54 @@
 		top:50%;
 		margin-top: 20rpx;
 		right:0;
+	}
+	.header-banner {
+		width: 100%;
+		background: #ffffff;
+		position: fixed;
+		left: 0;
+		top: 0;
+		box-sizing: border-box;
+		z-index: 9;
+	}
+	.tab-header {
+		width: 100%;
+		height: 94rpx;
+		display: flex;
+		box-sizing: border-box;
+		padding: 0 20rpx;
+		z-index: 10;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+	}
+
+	.icon-back {
+	width: 80rpx;
+	height: 88rpx;
+	background: url(../../static/goods/back@2x.png) no-repeat center;
+	background-size: 100% 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+	.header-title {
+	height: 88rpx;
+	line-height: 88rpx;
+	font-size: 34rpx;
+	font-family: PingFangSC-Regular, PingFang SC;
+	font-weight: 400;
+	color: #000000;
+	}
+	.header-likes {
+	height: 94rpx;
+	line-height: 104rpx;
+	font-size: 22rpx;
+	font-family: Microsoft YaHei;
+	font-weight: 400;
+	color: #ababbb;
+	position: absolute;
+	right: 20rpx;
+	top: 0;
 	}
 </style>

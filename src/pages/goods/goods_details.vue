@@ -686,8 +686,9 @@
 		}
 		
 		onClickResult(chooseID: number) {
+			let random = this.goodsData.pintuan_type==10?true:false
 			uni.navigateTo({
-				url: 'goods_result_list?chooseIds=' + chooseID+'&code='+this.goodsId
+				url: 'goods_result_list?chooseIds=' + chooseID+'&code='+this.goodsId+'&random='+random
 			})
 		}
 

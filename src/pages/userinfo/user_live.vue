@@ -74,14 +74,7 @@
 		onClickLive(item:any){
 			console.log(item)
 			return;
-			if(item.media_url!=''){
-				
-				uni.navigateTo({
-					url:'/pages/live/playback?url='+item.media_url
-				})
-			}else{
-				app.platform.goWeChatLive(item.id)
-			}
+			
 			
 		}
 		

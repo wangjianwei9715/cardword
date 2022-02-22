@@ -417,6 +417,40 @@
                         "backgroundColorBottom":"#F4F5F9"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 					
+				},
+				{
+					"path" : "service/index",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "平台服务",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+				        "backgroundColorTop":"#F4F5F9",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+				        "backgroundColorBottom":"#F4F5F9"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path" : "decompose/index",
+					"style" :                                                                                    
+					{   
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+				        "backgroundColorTop":"#F4F5F9",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+				        "backgroundColorBottom":"#F4F5F9"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+                {
+					"path" : "decompose/card_list",
+					"style" :                                                                                    
+					{
+						"navigationBarTitleText": "中卡详情",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+				        "backgroundColorTop":"#F4F5F9",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+				        "backgroundColorBottom":"#F4F5F9"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
 				}
                 
               
@@ -668,9 +702,7 @@
                 "path" : "dynamic",
                 "style" :                                                                                    
                 {
-                    "navigationBarTitleText":"消息",
-                    "navigationBarBackgroundColor":"#FFFFFF",
-					"navigationBarTextStyle":"black",
+                    "navigationStyle": "custom",
                     "enablePullDownRefresh": false
                 }
                 

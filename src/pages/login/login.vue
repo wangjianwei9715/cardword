@@ -24,7 +24,7 @@
 			</view>
 			<view class="bottom">
 				<view class="bottom-tip">其它方式登录</view>
-				<view class="icon-apple" @click="onClickAppleLogin"></view>
+				<view v-if="false" class="icon-apple" @click="onClickAppleLogin"></view>
 				<view class="icon-wechat" @click="onClickWechatLogin"></view>
 			</view>
 		</view>

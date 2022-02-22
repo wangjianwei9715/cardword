@@ -18,7 +18,7 @@
 			</view>
 			<view class="reward-newtitle">
 				<image class="title-pic" src="https://ka-world.oss-cn-shanghai.aliyuncs.com/newYear2022/new_title.png"/>
-				<view class="newtitle-desc">每位用户限购1盒，附赠50元以上无门槛券</view>
+				<view class="newtitle-desc">每位用户限购1盒，每盒附赠50元满减券</view>
 			</view>
 
 			<view class="goods-item" v-for="(item,index) in goodsData" :key="index" >
@@ -34,7 +34,7 @@
 					<view class="goods-item-desc" v-else>{{getState(item.state,item.startAt)}}</view>
 				</view>
 				<view class="goods-tips">
-					<image class="goods-tips-pic" /> {{item.merchant}} 代开
+					<image class="goods-tips-pic" :src="decodeURIComponent(item.merchantLogo)" /> {{item.merchant}} 代开
 				</view>
 				<view class="goods-bottom">
 					<view class="goods-bottom-price">￥<text>{{item.price}}</text></view>
@@ -167,7 +167,7 @@
 		}
 		onClickGoChaika(goodCode: number) {
 			uni.navigateTo({
-				url: '/pages/goods/goods_result_list?chooseIds=0&code='+goodCode
+				url: '/pages/goods/goods_result_list?chooseIds=1&code='+goodCode+'&random=false'
 			})
 		}
 		onClickGoAllList(){
@@ -255,7 +255,7 @@
 		position: relative;
 	}
 	.reward-title-image{
-		width: 119rpx;
+		width: 184rpx;
 		height:29rpx;
 	}
 	.reward-all{
@@ -343,13 +343,12 @@
 		width: 441rpx;
 		height:123rpx;
 		box-sizing: border-box;
-		padding:20rpx 0;
+		padding:6rpx 0;
 		display: flex;
-		align-items: center;
 		flex-wrap: wrap;
 	}
 	.goods-item-title{
-		font-size: 28rpx;
+		font-size: 30rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #545659;
@@ -371,10 +370,11 @@
 		display: flex;
 		box-sizing: border-box;
 		align-items: center;
+		margin-top: -20rpx;
 	}
 	.goods-item-plan-content{
-		width: 88rpx;
-		height: 20rpx;
+		width: 180rpx;
+		height: 10rpx;
 		background: #FEE5E3;
 		border-radius: 10rpx;
 		overflow: hidden;
@@ -403,17 +403,17 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 27rpx;
+		font-size: 25rpx;
 		font-family: CTCuHeiSJ;
 		font-weight: 400;
 		color: #FFFFFF;
 	}
 	.goods-tips-pic{
-		width: 41rpx;
-		height:41rpx;
+		width: 37rpx;
+		height:37rpx;
 		border-radius: 50%;
 		margin-right: 10rpx;
-		margin-left: 20rpx;
+		margin-left: 40rpx;
 	}
 	.goods-bottom{
 		width:441rpx;
@@ -452,7 +452,7 @@
 	.goods-bottom-btn2{
 		width: 182rpx;
 		height: 48rpx;
-		background: #14151B;
+		background: #d2b25f;
 		border-radius: 24rpx;
 		text-align: center;
 		line-height: 48rpx;
