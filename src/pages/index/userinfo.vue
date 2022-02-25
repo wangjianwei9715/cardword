@@ -216,9 +216,9 @@
 		}
 		onClickNavigateto(item:any){
 			if(item.name=='联系客服'){
-				let num = Math.random()>0.5?1:0;
+				// let num = Math.random()>0.5?1:0;
 				uni.navigateTo({
-					url: '/pages/userinfo/talk?targetUserId='+this.infoData.kefuUserId[num]
+					url: '/pages/userinfo/talk?targetUserId='+this.infoData.kefuUserId[0]
 				})
 			}else if(item.name=='加入群聊'){
 				this.showPaySuccess = true

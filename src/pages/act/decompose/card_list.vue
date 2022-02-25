@@ -4,8 +4,11 @@
 			<view class="order-code">订单编号：{{item.orderCode}}</view>
 			<view class="card-box">
 				<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs">
-					<view class="index-left">{{item.name}}</view>
-					<view class="index-right"></view>
+					<view class="index-left">{{items.name}}</view>
+					<view  :class="{'index-right':true,'red-color':reqType==1}" @click="onClickGetPic(items)">
+						{{reqType==1?'已中卡':'已分解'}}
+						<view class="index-right-red"></view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -24,14 +27,30 @@
 		goodsList:any = [];
 		goodCode = '';
 		reqType = 1;
+		picList:any = []
 		onLoad(query:any) {
-			this.reqType = Number(query.type);
-			this.goodCode = query.code
+			if(query.type){
+				this.reqType = Number(query.type);
+				this.goodCode = query.code
+			}
 			this.reqNewData()
 		}
 		//   加载更多数据
 		onReachBottom() {
 		    this.reqNewData() 
+		}
+		onClickGetPic(item:any){
+			app.http.Get('me/cardNo/'+item.id+'/hit/pic',{},(res:any)=>{
+				this.picList = [];
+				for(let i in res.list){
+					this.picList.push(decodeURIComponent(res.list[i]))
+				}
+				uni.previewImage({
+					urls: this.picList,
+					current:0,
+					indicator: "number" 
+				});
+			})
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
@@ -40,7 +59,7 @@
 			}
 			
 			let params:{[x:string]:any} = {
-				type:this.reqType,
+				tp:this.reqType,
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 			}
@@ -74,7 +93,7 @@
 	.content{
 		width: 100%;
 		box-sizing:border-box;
-		padding:30rpx 20rppx;
+		padding:30rpx 20rpx;
 	}
 	.card-list{
 		width: 100%;
@@ -82,6 +101,7 @@
 		padding:10rpx 14rpx;
 		background: #FFFFFF;
 		border-radius: 10px;
+		margin-bottom: 22rpx;
 	}
 	.order-code{
 		width: 100%;
@@ -108,10 +128,11 @@
 		align-items: center;
 		justify-content: space-between;
 		background:#fff;
+		margin-bottom: 5rpx;
 	}
 	.index-left{
 		width: 540rpx;
-		height: 113px;
+		height: 113rpx;
 		background: #F6F7F8;
 		box-sizing: border-box;
 		display: flex;
@@ -120,10 +141,28 @@
 		font-family: Source Han Sans CN;
 		font-weight: 400;
 		color: #666666;
+		padding:0 13rpx;
 	}
 	.index-right{
-		width: 130rpx;
-		height: 113px;
+		width: 140rpx;
+		height: 113rpx;
 		background: #F6F7F8;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 26rpx;
+		font-family: Source Han Sans CN;
+		font-weight: 400;
+		color:#666666;
+	}
+	.red-color{
+		color:#FB4E3E
+	}
+	.index-right-red{
+		width: 12rpx;
+		height:22rpx;
+		background:url(../static/pingtai/icon_red.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-left:6rpx;
 	}
 </style>

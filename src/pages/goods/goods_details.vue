@@ -107,7 +107,7 @@
 						<view class="goods-seller-left-desc">
 							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
 							<view class="goods-seller-left-desc-tips">已拼团{{goodsData.publisher.deal}}组</view>
-							<view class="goods-seller-left-desc-js"><view class="goods-seller-left-desc-icon"></view>商品由该商家在平台寄售</view>
+							<view v-if="goodsData.specialType!='fuhe'" class="goods-seller-left-desc-js"><view class="goods-seller-left-desc-icon"></view>商品由该商家在平台寄售</view>
 						</view>
 					</view>
 					<view class="goods-seller-right" @click="onClickShops">店铺</view>
@@ -589,6 +589,7 @@
 					uni.hideLoading();
 				}, 2000);
 				let scene = this.sceneStr[id].scene;
+				console.log('this.goodsImg====',this.goodsImg[0])
 				uni.share({
 					provider: "weixin",
 					scene: scene,
@@ -693,6 +694,7 @@
 		}
 
 		onClickLive(){
+			// app.platform.launchMiniProgramLive(this.goodsData.broadcast.roomId)
 			app.platform.goWeChatLive({playCode:this.goodsData.broadcast.playCode,goodCode:this.goodsData.goodCode})
 		}
 		onClickCardPlay(item:any){

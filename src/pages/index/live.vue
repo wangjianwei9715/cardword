@@ -85,6 +85,7 @@
 			})
 		}
 		onClickLive(item:any){
+			// app.platform.launchMiniProgramLive(item.roomId)
 			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		searchReqNew(){

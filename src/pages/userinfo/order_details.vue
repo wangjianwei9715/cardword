@@ -232,7 +232,7 @@
 		}
 		onClickAllCard(){
 			uni.navigateTo({
-				url:'/pages/userinfo/order_myCard?code='+this.orderCode
+				url:'/pages/userinfo/order_myCard?code='+this.orderCode+'&goodCode='+this.orderData.good.goodCode
 			})
 		}
 		onClickGoodDetail(){

@@ -2,7 +2,9 @@
 	<view class="content">
 		<view v-show="phases == 0">
 			<view class="input-content">
-				<view class="input-left">手机号</view>
+				<picker class="input-left phone-type" mode="selector" @change="bindPickerChange" :value="phoneTypeIndex" :range="phoneTypeArray">
+					{{phoneTypeArray[phoneTypeIndex]}}
+				</picker>
 				<input class="login-input" type="number" v-model="userPhone" placeholder="请输入手机号"  maxlength="11"/>
 			</view>
 			<view class="input-content">
@@ -48,6 +50,16 @@
 import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		phoneTypeArray = [
+			'中国大陆 +86',
+			'中国香港 00852',
+			'中国澳门 00853',
+			'中国台湾 00886'
+		]
+		phoneTypeArrayNum = [
+			'86','00852','00853','00886'
+		]
+		phoneTypeIndex = 0;
 		phases = 0
 		popupHid = true
 		userPhone = ''
@@ -59,6 +71,9 @@ import { app } from "@/app";
 		codesign = ''
 		onLoad(query:any) {
 			
+		}
+		bindPickerChange(val:any){
+			this.phoneTypeIndex = val.detail.value;
 		}
 		onClickCodeTip(){
 			this.popupHid = false;
@@ -76,8 +91,8 @@ import { app } from "@/app";
 				});
 				return;
 			}
-			
-			app.http.Post('user/code',{phone:this.userPhone,type:'forget'},(data:any)=>{
+			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.userPhone;
+			app.http.Post('user/code',{phone:phone,type:'forget'},(data:any)=>{
 				this.getCode = true
 				this.codeCountdown = 60;
 				let interval = this.scheduler(() => {
@@ -106,7 +121,8 @@ import { app } from "@/app";
 				});
 				return;
 			}
-			app.http.Post('user/forget',{phone:this.userPhone,code:this.userCode},(data:any)=>{
+			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.userPhone;
+			app.http.Post('user/forget',{phone:phone,code:this.userCode},(data:any)=>{
 				this.codesign = data.data.sign
 				this.phases = 1
 			})
@@ -122,7 +138,8 @@ import { app } from "@/app";
 				return;
 			}
 			let Md5_password = Md5.hashStr(this.userPasswordTwo+'_pmpm')
-			app.http.Post('user/forget2',{phone:this.userPhone,sign:this.codesign,password:Md5_password},(data:any)=>{
+			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.userPhone;
+			app.http.Post('user/forget2',{phone:phone,sign:this.codesign,password:Md5_password},(data:any)=>{
 				uni.showToast({
 					title: '修改成功！',
 					icon: 'none',
@@ -147,6 +164,7 @@ import { app } from "@/app";
 		box-sizing: border-box;
 		padding-top: 20rpx;
 	}
+	
 	.input-content{
 		width: 688rpx;
 		height:100rpx;
@@ -158,7 +176,7 @@ import { app } from "@/app";
 		margin:0 auto;
 	}
 	.input-left{
-		width: 150rpx;
+		width: 220rpx;
 		height:100rpx;
 		box-sizing: border-box;
 		line-height: 100rpx;
@@ -281,4 +299,5 @@ import { app } from "@/app";
 			border-top:1px solid #F4F3F2
 		}
 	}
+	
 </style>

@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "2.3.2",
+    "versionName" : "2.3.9",
     "versionCode" : 100,
     "transformPx" : false,
     "networkTimeout" : {
@@ -71,14 +71,13 @@
             "ios" : {
                 "urltypes" : "ttauction",
                 "privacyDescription" : {
-                    "NSPhotoLibraryUsageDescription" : "获取相册照片用于上传图片",
-                    "NSPhotoLibraryAddUsageDescription" : "读取相册照片用于上传图片",
-                    "NSLocationWhenInUseUsageDescription" : "获取位置以便提供更好的物流服务",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "获取位置以便提供更好的物流服务",
-                    "NSCameraUsageDescription" : "使用摄像头拍摄照片，以便上传新图片",
+                    "NSPhotoLibraryUsageDescription" : "是否允许此APP访问相册，以便上传头像等",
+                    "NSPhotoLibraryAddUsageDescription" : "是否允许此APP访问相册，以便上传头像等",
+                    "NSLocationWhenInUseUsageDescription" : "是否允许此App获取定位权限，以便提供定位服务？",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "是否允许此App获取定位权限，以便提供定位服务？",
+                    "NSCameraUsageDescription" : "是否允许此APP使用相机，以便拍摄照片上传头像等？",
                     "NSMicrophoneUsageDescription" : "获取麦克风语音",
-                    "NSLocationAlwaysUsageDescription" : "获取位置以便提供更好的物流服务",
-                    "NSLocalNetworkUsageDescription" : "获取本地网络，以确保网络环境正常",
+                    "NSLocalNetworkUsageDescription" : "是否允许此App获取本地网络，以便提供聊天推送等？",
                     "NSUserTrackingUsageDescription" : "需要访问广告标识符，用于为您提供与您更加相关的内容",
                     "NSFaceIDUsageDescription" : ""
                 },

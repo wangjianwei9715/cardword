@@ -4,7 +4,7 @@
 			<view class="coupon-index">
 				<view class="coupon-left">
 					<view class="coupon-price">￥<text>{{item.amount}}</text></view>
-					<view class="coupon-condition">{{getCouponType(item.tp,(item.minUseAmount?item.minUseAmount:0))}}</view>
+					<view class="coupon-condition">{{item.goodCode!=''?'指定商品':getCouponType(item.tp,(item.minUseAmount?item.minUseAmount:0))}}</view>
 				</view>
 				<view class="coupon-right">
 					<view class="coupon-right-header">
@@ -12,7 +12,7 @@
 							<view class="coupon-name"><image class="coupon-icon" src="../../../static/userinfo/coupon_icon.png"/>{{item.name}}</view>
 							<view class="coupon-time">{{dateFormatYMS(item.startAt)}}-{{dateFormatYMS(item.overAt)}}</view>
 						</view>
-						<button class="coupon-right-header-btn" @click="onClickGoIndex">去使用</button>
+						<button class="coupon-right-header-btn" @click="onClickGoIndex(item)">去使用</button>
 					</view>
 					<view class="coupon-right-bottom" @click="onClickCheckExplain(item.id)">
 						<view class="coupon-right-detail">查看详情</view>
@@ -22,7 +22,8 @@
 			</view>
 			<view class="coupon-explain" :class="{'show-explain':checkShowExplain(item.id)}">
 				<view class="explain-content">
-					<view class="explain-index">1.{{item.tp==1?'卡享券':'满减券'}}可用于平台所有商品，用户下单时，可选择{{item.tp==1?'卡享券':'满减券'}}按面值抵减商品金额</view>
+					<view v-if="item.goodCode!=''" class="explain-index">1.该券只能用于商品：{{item.goodCode}}</view>
+					<view v-else class="explain-index">1.{{item.tp==1?'卡享券':'满减券'}}可用于平台所有商品，用户下单时，可选择{{item.tp==1?'卡享券':'满减券'}}按面值抵减商品金额</view>
 					<view class="explain-index">2.{{item.tp==1?'卡享券可叠加使用，最低可减至0.1元，但不设找零':'满减券不可叠加使用，不设找零'}}</view>
 					<view class="explain-index">3.不可与其他类型优惠券叠加使用</view>
 					<view class="explain-index">券编号：{{item.code}}</view>
@@ -118,10 +119,23 @@
 					return '打折'
 			}
 		}
-		onClickGoIndex(){
-			uni.switchTab({
-				url:'/pages/index/index'
-			})
+		onClickGoIndex(item:any){
+			if(item.goodCode!=''){
+				let goodCode = ''
+				if(item.goodCode.indexOf(',') == -1){
+					goodCode = item.goodCode;
+				}else{
+					goodCode = item.goodCode.split(',')[0]
+				}
+				uni.navigateTo({
+					url: '/pages/goods/goods_details?id='+decodeURIComponent(goodCode)
+				})
+			}else{
+				uni.switchTab({
+					url:'/pages/index/index'
+				})
+			}
+			
 		}
 		onClickGoOver(){
 			uni.navigateTo({

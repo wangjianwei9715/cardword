@@ -1,7 +1,14 @@
 <template>
 	<view class="content">
 		<view class="index">
-			<input type="number" v-model="phone" class="phone" placeholder="请输入手机号">
+			<view class="code-content">
+				<picker class="phone-type" mode="selector" @change="bindPickerChange" :value="phoneTypeIndex" :range="phoneTypeArray">
+					{{phoneTypeArray[phoneTypeIndex]}}
+				</picker>
+				<input type="number" v-model="phone" class="phone" placeholder="请输入手机号">
+			</view>
+			
+			
 			<view class="code-content" v-if="codeLogin">
 				<input type="text" v-model="vcode" class="code" maxlength="4" placeholder="请输入验证码">
 				<view class="code-btn" @click="getInterval">{{codeCountdown>0?codeCountdown+'s后重发':'获取验证码'}}</view>
@@ -48,6 +55,16 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
+		phoneTypeArray = [
+			'中国大陆 +86',
+			'中国香港 00852',
+			'中国澳门 00853',
+			'中国台湾 00886'
+		]
+		phoneTypeArrayNum = [
+			'86','00852','00853','00886'
+		]
+		phoneTypeIndex = 0;
 		phone = '';
 		vcode = '';
 		password = '';
@@ -61,6 +78,9 @@
 			if (app.platform.systemInfo.platform == 'ios') {
 				this.iosLogin = true
 			}
+		}
+		bindPickerChange(val:any){
+			this.phoneTypeIndex = val.detail.value;
 		}
 		onBackPress(type:any){
 			uni.switchTab({
@@ -95,10 +115,9 @@
 			if(this.codeCountdown>0){
 				return;
 			}
-			if(!this.regPhone()){
-				return;
-			}
-			app.http.Post('user/code',{phone:this.phone,type:'login'},(data:any)=>{
+			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.phone;
+
+			app.http.Post('user/code',{phone:phone,type:'login'},(data:any)=>{
 				this.getCode = true
 				this.codeCountdown = 60
 				let interval = this.scheduler(() => {
@@ -127,9 +146,7 @@
 			}
 		}
 		onClickCodeLogin(){
-			if(!this.regPhone()){
-				return;
-			}
+			
 			if(!this.getCode){
 				uni.showToast({
 					title: '请先获取验证码！',
@@ -146,8 +163,9 @@
 				});
 				return;
 			}
+			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.phone;
 			let params = {
-				phone:this.phone,
+				phone:phone,
 				code:this.vcode,
 				uuid:app.platform.deviceID,
 				os:app.platform.systemInfo.platform,
@@ -156,9 +174,7 @@
 			this.HttpLogin(params)
 		}
 		onClickPwLogin(){
-			if(!this.regPhone()){
-				return;
-			}
+			
 			if(this.password == ''){
 				uni.showToast({
 					title: '请输入密码！',
@@ -167,8 +183,9 @@
 				});
 				return;
 			}
+			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.phone;
 			let params = {
-				phone:this.phone,
+				phone:phone,
 				password:Md5.hashStr(this.password+'_pmpm'),
 				uuid:app.platform.deviceID,
 				os:app.platform.systemInfo.platform,
@@ -338,8 +355,16 @@
 		width:100%;
 		box-sizing: border-box;
 		padding: 358rpx 74rpx 0 74rpx;
+		.phone-type{
+			height:80rpx;
+			font-size: 28rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #14151B;
+			line-height: 78rpx;
+		}	
 		.phone{
-			width: 100%;
+			width: 65%;
 			height:80rpx;
 			box-sizing: border-box;
 			line-height: 78rpx;
