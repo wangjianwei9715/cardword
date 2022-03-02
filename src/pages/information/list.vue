@@ -37,7 +37,7 @@
           :key="index"
           
         >
-          <view class="information-top" @click="onClickJumpUrl(item.articleCode)">
+          <view class="information-top" @click="onClickJumpUrl(item.articleCode,item.cover)">
             <image
               class="information-top-image"
               :src="getGoodsImg(decodeURIComponent(item.cover))"
@@ -45,7 +45,7 @@
             ></image>
           </view>
           <view class="information-center">
-            <view class="title" @click="onClickJumpUrl(item.articleCode)">{{item.title}}</view>
+            <view class="title" @click="onClickJumpUrl(item.articleCode,item.cover)">{{item.title}}</view>
             <view class="desc">
               <view class="desc-index">{{dateFormatMS(item.created_at)}}</view>
               <view class="desc-index">
@@ -128,9 +128,9 @@ export default class ClassName extends BaseNode {
       this.information[index].comment = res.comment
     })
   }
-  onClickJumpUrl(code: any) {
+  onClickJumpUrl(code: any,cover:any) {
     uni.navigateTo({
-      url:'/pages/information/details?code='+code
+      url:'/pages/information/details?code='+code+'&pic='+cover
     })
   }
   myLikes(){

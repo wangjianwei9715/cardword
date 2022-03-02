@@ -1,16 +1,16 @@
 <template>
 	<view class="content">
 		<view class="card-list"  v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
-			<view class="order-code">订单编号：{{item.orderCode}}</view>
+			<view class="order-code">{{orderCode==item.orderCode?'当前订单 ':''}}订单编号：{{item.orderCode}} </view>
 			<view class="card-box">
 				<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs">
 					<view class="index-left">{{items.name}}</view>
 					<view  class="index-right" @click="onClickLookCard(items)">
 						{{items.content}}
-						<view class="index-right-pt"></view>
+						<view v-if="items.content=='已中卡'" class="index-right-pt"></view>
 					</view>
 				</view>
-				<view class="card-more-btn" v-if="item.hasMore" @click="onClickMoreList(item.orderCode,index)">查看更多</view>
+				<view class="card-more-btn" v-if="item.hasMore" @click="onClickMoreList(item.orderCode)">查看全部</view>
 			</view>
 		</view>
 		
@@ -57,37 +57,30 @@ import { Component } from "vue-property-decorator";
 				});
 			})
 		}
-		onClickMoreList(code:any,index:number){
-			this.reqNewCardList(code,index,(res:any)=>{
-				
+		onClickMoreList(code:any){
+			uni.navigateTo({
+				url:'/pages/userinfo/order_myAllCard?code='+code
 			})
 		}
 		reqNewCardList(orderCode:string,index:number,cb?:Function) {
 			// 获取更多商品
 		
-			let pageIndex = Math.floor((this.cardList[index].noList.length)/10);
+			let pageIndex = Math.floor((this.cardList[index].noList.length)/50);
 			
 			let params:{[x:string]:any} = {
 				pageIndex: pageIndex+1,
-				pageSize:10,
+				pageSize:50,
 			}
 			
 			app.http.Get('me/orderInfo/buyer/'+orderCode+'/noList', params, (data: any) => {
 				if(data.list){
 					this.cardList[index].noList = this.cardList[index].noList.concat(data.list);
-					uni.showToast({
-						title:'加载成功',
-						icon:'none'
-					})
-					if(data.list.length<10){
+					if(data.list.length<50){
 						this.cardList[index].hasMore = false;
 					}
 				}else{
 					this.cardList[index].hasMore = false;
-					uni.showToast({
-						title:'已经到底了',
-						icon:'none'
-					})
+					
 				}
 				if(cb) cb()
 			});
@@ -106,23 +99,12 @@ import { Component } from "vue-property-decorator";
 			app.http.Get('me/good/'+this.goodCode+'/orderNoList/'+this.orderCode, params, (data: any) => {
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
-					uni.showToast({
-						title:'已经到底了',
-						icon:'none'
-					})
 				}
 				if(data.list){
 					this.cardList = this.cardList.concat(data.list);
-					uni.showToast({
-						title:'加载成功',
-						icon:'none'
-					})
 				}else{
 					this.noMoreData = true;
-					uni.showToast({
-						title:'已经到底了',
-						icon:'none'
-					})
+					
 				}
 				this.currentPage++;
 				if(cb) cb()
@@ -165,13 +147,13 @@ import { Component } from "vue-property-decorator";
 	}
 	.card-index{
 		width: 100%;
-		height: 113rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		background:#fff;
 		margin-bottom: 5rpx;
+		background: #F6F7F8;
 	}
 	.card-more-btn{
 		width: 100%;
@@ -183,8 +165,6 @@ import { Component } from "vue-property-decorator";
 	}
 	.index-left{
 		width: 540rpx;
-		height: 113rpx;
-		background: #F6F7F8;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
@@ -192,12 +172,11 @@ import { Component } from "vue-property-decorator";
 		font-family: Source Han Sans CN;
 		font-weight: 400;
 		color: #666666;
-		padding:0 13rpx;
+		padding:10rpx 13rpx;
+		border-right: 1px solid #fff;
 	}
 	.index-right{
 		width: 140rpx;
-		height: 113rpx;
-		background: #F6F7F8;
 		display: flex;
 		align-items: center;
 		justify-content: center;

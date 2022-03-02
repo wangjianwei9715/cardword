@@ -1,12 +1,23 @@
 <template>
 	<view class="content">
+		<view class="header-banner">
+			<statusbar/>
+			<view class="tab-header">
+				<view class="icon-back" @click="onClickBack"></view>
+				<view class="header-title"></view>
+				<view class="icon-share" @click="onClickShare"></view>
+			</view>
+		</view>
+		<view style="padding-top:88rpx">
+			<statusbar/>
+		</view>
 		<view class="index">
 			<view class="title">{{articleData.title}}</view>
 			<view class="user">
 				<image class="avatar" :src="articleData.author_logo"/>
 				{{articleData.author}}
 			</view>
-			<!-- <view class="time">发布于{{dateFormatMSHMS(articleData.active_at)}}</view> -->
+			<view class="time">发布于{{dateFormatMSHMS(articleData.active_at)}}</view>
 			<view class="desc" v-html="decodeURIComponent(articleData.content)"/>
 		</view>
 		<view class="bottom">
@@ -16,6 +27,8 @@
 				<view class="icon-dz" :class="{'icon-dzed':articleData.isLikes}" @click="onClickLikes"></view>{{articleData.likes}}
 			</view>
 		</view>
+
+		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
 	</view>
 </template>
 
@@ -28,10 +41,23 @@
 	export default class ClassName extends BaseNode {
 		dateFormatMSHMS = dateFormatMSHMS
 		code = '';
+		cover = '';
 		articleData:any = {};
+		operationShow=false;
+		operationData = [
+			{id:0,img:'/static/share/weixin@2x.png',text:'微信好友'},
+			{id:1,img:'/static/share/pyq@2x.png',text:'朋友圈'},
+			{id:2,img:'/static/share/lianjie@2x.png',text:'分享链接'},
+		];
+		operationCardShow=false;
+		sceneStr = [
+			{scene:'WXSceneSession',text:'分享到聊天界面'},
+			{scene:'WXSenceTimeline',text:'分享到朋友圈'}
+		];
 		onLoad(query:any) {
 			if(query.code){
 				this.code = query.code;
+				this.cover = query.pic;
 				this.getArticleDetail()
 			}
 		}
@@ -48,6 +74,60 @@
 				this.articleData.likes = res.likes;
 				this.articleData.comment = res.comment
 			})
+		}
+		onClickBack(){
+			uni.navigateBack({
+				delta: 1
+			});
+		}
+		// 分享
+		onClickShare(){
+			if(!this.operationShow){
+				this.operationShow = true
+			}
+		}
+		onClickShareCancel(){
+			this.operationShow = false
+		}
+		onClcikShareConfirm(id:any){
+			if(id==2){
+				uni.setClipboardData({
+					data: "https://www.ka-world.com/share/h5/index.html#/pages/information/index?code="+this.code,
+					showToast:false,
+					success: ()=> {
+						this.operationShow = false;
+						uni.showToast({
+							title:'复制成功',
+							icon:'none'
+						})
+					}
+				});
+			}else{
+				uni.showLoading({
+					title: '加载中'
+				});
+				setTimeout(function () {
+					uni.hideLoading();
+				}, 2000);
+				let scene = this.sceneStr[id].scene;
+				console.log(decodeURIComponent(this.cover))
+				uni.share({
+					provider: "weixin",
+					scene: scene,
+					type: 0,
+					href: "https://www.ka-world.com/share/h5/index.html#/pages/information/index?code="+this.code,
+					title: this.articleData.title,
+					summary: this.articleData.title,
+					imageUrl: decodeURIComponent(this.cover),
+					success: (res)=> {
+						this.operationShow = false
+						console.log("success:" + JSON.stringify(res));
+					},
+					fail: function (err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+				});
+			}
 		}
 		getArticleDetail(){
 			app.http.Get('dataApi/article/detail/'+this.code,{},(res:any)=>{
@@ -187,5 +267,53 @@
 	::v-deep h3{
 		line-height: 60rpx;
 		font-size: 30rpx;
+	}
+	.header-banner{
+		width: 100%;
+		background:#fff;
+		position: fixed;
+		left:0;
+		top:0;
+		box-sizing: border-box ;
+		z-index: 10;
+		border-bottom: 1px solid #F4F3F2;
+		.tab-header{
+			width: 100%;
+			height:88rpx;
+			display: flex;
+			box-sizing: border-box;
+			padding:0 30rpx;
+			position: relative;
+			z-index: 10;
+			align-items: center;
+			justify-content: center;
+		}
+		.icon-back{
+			width: 80rpx;
+			height:88rpx;
+			background:url(../../static/goods/back@2x.png) no-repeat center;
+			background-size: 100% 100%;
+			position: absolute;
+			left:0;
+			top:0;
+		}
+		.header-title{
+			height:88rpx;
+			line-height: 88rpx;
+			font-size: 34rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #000000;
+		}
+		.icon-share{
+			width: 42rpx;
+			height:42rpx;
+			position: absolute;
+			right:32rpx;
+			top:50%;
+			margin-top: -21rpx;
+			background:url(../../static/goods/fenxiang@2x.png) no-repeat center;
+			background-size: 100% 100%;
+		}
 	}
 </style>

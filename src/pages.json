@@ -476,7 +476,7 @@
                     "path" : "details",
                     "style" :                                                                                    
                 {
-                    "navigationBarTitleText": "",
+                    "navigationStyle": "custom",
                     "enablePullDownRefresh": false,
                     "navigationBarBackgroundColor": "#ffffff",
                     "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
@@ -619,6 +619,16 @@
             }
             ,{
                 "path" : "order_myCard",
+                "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "我的编号",
+                    "navigationBarBackgroundColor":"#ffffff",
+                    "navigationBarTextStyle":"black"
+                }
+                
+            }
+            ,{
+                "path" : "order_myAllCard",
                 "style" :                                                                                    
                 {
                     "navigationBarTitleText": "我的编号",

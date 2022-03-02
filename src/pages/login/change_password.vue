@@ -51,13 +51,13 @@ import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		phoneTypeArray = [
-			'中国大陆 +86',
-			'中国香港 00852',
-			'中国澳门 00853',
-			'中国台湾 00886'
+			'+86',
+			'+852',
+			'+853',
+			'+886'
 		]
 		phoneTypeArrayNum = [
-			'86','00852','00853','00886'
+			'86','852','853','886'
 		]
 		phoneTypeIndex = 0;
 		phases = 0
@@ -176,7 +176,7 @@ import { app } from "@/app";
 		margin:0 auto;
 	}
 	.input-left{
-		width: 220rpx;
+		width: 150rpx;
 		height:100rpx;
 		box-sizing: border-box;
 		line-height: 100rpx;

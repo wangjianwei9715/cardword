@@ -56,13 +56,13 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		phoneTypeArray = [
-			'中国大陆 +86',
-			'中国香港 00852',
-			'中国澳门 00853',
-			'中国台湾 00886'
+			'+86',
+			'+852',
+			'+853',
+			'+886'
 		]
 		phoneTypeArrayNum = [
-			'86','00852','00853','00886'
+			'86','852','853','886'
 		]
 		phoneTypeIndex = 0;
 		phone = '';
@@ -364,7 +364,7 @@
 			line-height: 78rpx;
 		}	
 		.phone{
-			width: 65%;
+			width: 85%;
 			height:80rpx;
 			box-sizing: border-box;
 			line-height: 78rpx;

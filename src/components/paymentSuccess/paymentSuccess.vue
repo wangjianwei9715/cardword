@@ -115,7 +115,7 @@
 			.popup-icon3{
 				width: 372rpx;
 				height:373rpx;
-				background:url(../../static/userinfo/pay_erweima.png) no-repeat center;
+				background:url('https://ka-world.oss-cn-shanghai.aliyuncs.com/newYear2022/qun.jpg') no-repeat center;
 				background-size: 100% 100%;
 				margin:0 auto;
 				margin-bottom: 31rpx;

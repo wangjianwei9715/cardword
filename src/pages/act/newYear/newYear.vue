@@ -34,7 +34,8 @@
 					<view class="goods-item-desc" v-else>{{getState(item.state,item.startAt)}}</view>
 				</view>
 				<view class="goods-tips">
-					<image class="goods-tips-pic" :src="decodeURIComponent(item.merchantLogo)" /> {{item.merchant}} 代开
+					<image class="goods-tips-pic" :src="decodeURIComponent(item.merchantLogo)" /> 
+					<view class="goods-tips-mer">{{item.merchant}}</view>代开
 				</view>
 				<view class="goods-bottom">
 					<view class="goods-bottom-price">￥<text>{{item.price}}</text></view>
@@ -407,6 +408,18 @@
 		font-family: CTCuHeiSJ;
 		font-weight: 400;
 		color: #FFFFFF;
+	}
+	.goods-tips-mer{
+		width: 140rpx;
+		height:57rpx;
+		line-height: 57rpx;
+		font-size: 25rpx;
+		font-family: CTCuHeiSJ;
+		font-weight: 400;
+		color: #FFFFFF;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
 	}
 	.goods-tips-pic{
 		width: 37rpx;
