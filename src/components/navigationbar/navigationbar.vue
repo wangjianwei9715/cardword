@@ -85,6 +85,7 @@
 		z-index: 99;
 		display: flex;
 		align-items: center;
+		background:#fff;
 	}
 	.btn-back {
 		height: 40px;

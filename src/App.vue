@@ -12,7 +12,7 @@ export default Vue.extend({
   onLaunch() {
     console.log("App Launch");
     if (process.env.NODE_ENV === "development") {
-      console.log("开发环境");
+      // console.log("开发环境");
       // app.localTest=true;
       // app.domaintest='http://192.168.8.79:8701/api/v1/';
       // app.bussinessApiDomain='http://192.168.8.79:8701/api/v1/';
@@ -228,6 +228,22 @@ export default Vue.extend({
 @font-face {
   font-family: "ali-Light";
   src: url("~@/common/ALI/Alibaba-PuHuiTi-Light.ttf");
+}
+@font-face {
+  font-family: "DIN Condensed";
+  src: url("~@/common/Tao/DIN Condensed Bold.ttf");
+}
+@font-face {
+  font-family: "FZLanTingHeiS-R-GB";
+  src: url("~@/common/Tao/FZLTHJW--GB1-0.TTF");
+}
+@font-face {
+  font-family: "FZLanTingHeiS-H-GB";
+  src: url("~@/common/Tao/FZLTTHJW--GB1-0.TTF");
+}
+@font-face {
+  font-family: "FZLanTingHeiS-DB1-GBK";
+  src: url("~@/common/Tao/FZLTZCHK--GBK1-0.ttf");
 }
 
 // #endif

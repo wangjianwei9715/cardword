@@ -4,7 +4,7 @@
 			<view class="goodslist-index">
 				<view class="goodslist-pic">
 					<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
-					<image class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
+					<image :lazy-load="true" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 				</view>
 				<view class="goodslist-right">
 					<view class="goodslist-title">{{item.title}}</view>
@@ -28,6 +28,10 @@
 								</view>
 							</view>
 						</view>
+						<view v-else-if="item.baoduiMinute>0" class="goodslist-bottom-right-time">
+							<view class="goodslist-plan-desc-time">({{dateFormatMSHMSBD(item.startAt)}}优先包队)</view>
+							<view class="goodslist-plan-desc-time">{{dateFormatMSHMS(item.startAt+(60*item.baoduiMinute))}}开售</view>
+						</view>
 						<view v-else class="goodslist-bottom-right-time">
 							<view class="goodslist-plan-desc-time">{{dateFormatMSHMS(item.startAt)}}开售</view>
 						</view>
@@ -43,7 +47,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-    import { dateFormatMSHMS } from "@/tools/util"
+    import { dateFormatMSHMS,dateFormatMSHMSBD } from "@/tools/util"
 	import {
 		getGoodsImg
 	} from "../../tools/util";
@@ -60,7 +64,8 @@
 		presell:any;
 		@Prop({default:false})
 		mini:any;
-		dateFormatMSHMS = dateFormatMSHMS
+		dateFormatMSHMS = dateFormatMSHMS;
+		dateFormatMSHMSBD = dateFormatMSHMSBD;
 		getGoodsImg = getGoodsImg;
 		screenHeight = uni.getSystemInfoSync().windowHeight
 		showPlan:any = []
@@ -236,7 +241,7 @@
 			justify-content: flex-end;
 		}
 		&-bottom-right-time{
-			width:250rpx;
+			width:300rpx;
 			display: flex;
 			flex-wrap: wrap;
 			box-sizing: border-box;

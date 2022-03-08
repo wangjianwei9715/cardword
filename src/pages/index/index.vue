@@ -129,7 +129,7 @@
 			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab3.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
 			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab4.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
 			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab5.png',text:'商家入驻',url:'/pages/userinfo/merchant_join'},
-			// {img:'../../static/index/tab_4.png',text:'商家入驻',url:'/pages/act/newYear/newYear'},
+			// {img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab5.png',text:'商家入驻',url:'/pages/goods/drawCard'}
 		];
 		noticeList = [
 		
