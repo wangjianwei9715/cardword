@@ -1,9 +1,12 @@
 <template>
     <view>
-        <!-- <view class="drawer-shadow" @click.prevent="onClickCloseDrawer"></view> -->
+        <view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
         <view class="drawer-content" :class="{'show-drawer':showDrawer}">
+			<view class="drawer-header">
+				<view class="black-line"></view>
+			</view>
             <view class="drawer-center">
-                
+                <slot></slot>
             </view>
         </view>
     </view>
@@ -47,17 +50,43 @@
 		position: fixed;
 		bottom:0;
 		left:0;
-		height:50%;
+		height:60%;
 		width: 100%;
 		background:#fff;
 		z-index: 99999;
 		box-sizing: border-box;
 		transition: all 0.3s linear;
 		-webkit-transition: -webkit-transform 0.3s;
-		border-radius: 24rpx 24rpx 0px 0px;
+		border-radius: 60rpx 60rpx 0px 0px;
 		transform: translateY(100%);
 	}
 	.show-drawer{
 		transform: translateY(0);
+	}
+	.drawer-header{
+		width: 100%;
+		height:70rpx;
+		position: absolute;
+		top:0;
+		left:0;
+		background:#fff;
+		z-index: 3;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 60rpx 60rpx 0px 0px;
+	}
+	.black-line{
+		width: 25%;
+		height:10rpx;
+		background:#000;
+		border-radius: 40rpx;
+	}
+	.drawer-center{
+		width: 100%;
+		height:100%;
+		box-sizing: border-box;
+		padding:70rpx 40rpx 30rpx 40rpx;
+		overflow-y: auto;
 	}
 </style>

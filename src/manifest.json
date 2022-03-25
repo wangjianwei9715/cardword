@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "2.4.5",
+    "versionName" : "2.5.4",
     "versionCode" : 100,
     "transformPx" : false,
     "networkTimeout" : {
@@ -20,6 +20,11 @@
     "app-plus" : {
         "compatible" : {
             "ignoreVersion" : true
+        },
+        "safearea" : {
+            "bottom" : {
+                "offset" : "none" // 底部安全区域偏移，"none"表示不空出安全区域，"auto"自动计算空出安全区域，默认值为"none"  
+            }
         },
         /* 5+App特有相关 */
         "modules" : {
@@ -165,12 +170,45 @@
                         "spotlight@3x" : "unpackage/res/icons/120x120.png"
                     }
                 }
+            },
+            "splashscreen" : {
+                "useOriginalMsgbox" : true
             }
         },
         /* SDK配置 */
         "usingComponents" : true,
         "uniStatistics" : {
             "enable" : true
+        },
+        "nativePlugins" : {
+            "DCTestUniPlugin" : {
+                "__plugin_info__" : {
+                    "name" : "DCTestUniPlugin",
+                    "description" : "uni示例插件",
+                    "platforms" : "iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            },
+            "TestModule" : {
+                "__plugin_info__" : {
+                    "name" : "TestModule",
+                    "description" : "读取渠道号",
+                    "platforms" : "Android",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            }
         }
     },
     "quickapp" : {},

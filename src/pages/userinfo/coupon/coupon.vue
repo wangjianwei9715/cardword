@@ -170,7 +170,8 @@
 	.content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:28rpx 20rpx 120rpx 20rpx
+		padding:28rpx 20rpx 120rpx 20rpx;
+		padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 	}
 	.coupon-content{
 		width: 710rpx;
@@ -309,16 +310,16 @@
 	}
 	.coupon-btn-content{
 		width: 100%;
-		height:100rpx;
+		height:calc(100rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		left:0;
 		bottom:0;
 		background:#fff;
 		display: flex;
 		box-sizing: border-box;
-		align-items: center;
 		justify-content: space-between;
 		padding:0 42rpx;
+		padding-top: 15rpx;
 	}
 	.coupon-btn{
 		width: 308rpx;

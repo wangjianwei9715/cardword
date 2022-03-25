@@ -67,7 +67,7 @@
 					<view class="tab-act-title"></view>
 					<scroll-view class="goods-card-content-scroll" :scroll-x="true">
 						<view class="tab-good-inedx" v-show="item.img!=''" v-for="(item,index) in noticeList" :key="index" @click="onClickNotice(item.target.goodCode)">
-							<image class="tab-good-index-img" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
+							<image :lazy-load="true" class="tab-good-index-img" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
 							<view class="tab-good-index-bottom">
 								<view class="tab-good-index-price">￥{{item.price}}</view>
 								<view class="tab-good-index-tip">{{item.name}}</view>
@@ -129,7 +129,6 @@
 			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab3.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
 			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab4.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
 			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab5.png',text:'商家入驻',url:'/pages/userinfo/merchant_join'},
-			// {img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab5.png',text:'商家入驻',url:'/pages/goods/drawCard'}
 		];
 		noticeList = [
 		

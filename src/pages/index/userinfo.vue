@@ -104,7 +104,7 @@
 			{id:1,name:'地址管理',url:'/pages/userinfo/setting_addresses'},
 			{id:2,name:'联系客服',url:''},
 			// {id:3,name:'常见问题',url:''},
-			{id:4,name:'用户协议',url:'/pages/userinfo/privacy'},
+			{id:4,name:'用户协议',url:'/pages/userinfo/user_agreement'},
 			{id:5,name:'关于我们',url:'/pages/userinfo/about_us'},
 			{id:6,name:'加入群聊',url:''},
 		]

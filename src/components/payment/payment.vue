@@ -8,7 +8,7 @@
 			</view>
 			<view class="payment-center">¥<text class="payment-price">{{payPrice}}</text></view>
 			<view class="payment-tip">支付方式</view>
-			<view class="payment-list" v-for="(item,index) in payChannel" :key="index">
+			<view class="payment-list" v-for="(item,index) in newPayChannel" :key="index">
 				<view class="payment-list-left">
 					<view :class="item.name=='支付宝支付'?'icon-zfb':'icon-wx'"></view>{{item.name}}
 				</view>
@@ -33,6 +33,7 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import {getCountDownTime} from '@/tools/util';
+	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
@@ -44,11 +45,13 @@
 		@Prop({default:[]})
 		payChannel!:any;
 
+		newPayChannel:any = [];
 		showPopup = false;
 		checkPay = 0;
 		countStr = '';
 		countInterval:any;
-		countTimeCopy = 300
+		countTimeCopy = 300;
+		platform = '';
 		@Watch('showPayMent')
 		onShowChanged(val: any, oldVal: any){
 			if(val){
@@ -64,7 +67,24 @@
 			
 		}
 		created(){//在实例创建完成后被立即调用
-			
+			if(app.platform.systemInfo.platform == 'android'){
+				this.platform = 'android'
+			}else{
+				this.platform = 'ios'
+			}
+			for(let i in this.payChannel){
+				if(this.payChannel[i].ios == undefined || this.payChannel[i].ios == null){
+					this.newPayChannel = this.payChannel
+					return;
+				};
+
+				if(this.platform == 'ios' && this.payChannel[i].ios){
+					this.newPayChannel.push(this.payChannel[i])
+				}else if(this.platform == 'android' && this.payChannel[i].android){
+					this.newPayChannel.push(this.payChannel[i])
+				}
+				
+			}
 		}
 		mounted(){//挂载到实例上去之后调用
 			
@@ -110,7 +130,7 @@
 		}
 		&-popup{
 			width: 100%;
-			height:626rpx;
+			height:calc(626rpx + env(safe-area-inset-bottom));
 			position: fixed;
 			box-sizing: border-box;
 			background:#fff;

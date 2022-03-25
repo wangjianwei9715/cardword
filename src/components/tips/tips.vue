@@ -77,7 +77,7 @@
 		position: fixed;
 		box-sizing: border-box;
 		left:32rpx;
-		bottom:130rpx;
+		bottom:calc(130rpx + env(safe-area-inset-bottom));
 		z-index: 9;
 		overflow: hidden;
 		&-content{

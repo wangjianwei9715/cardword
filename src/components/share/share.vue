@@ -45,9 +45,9 @@
 <style>
 	.operation-content{
 		width: 100%;
-		height:340rpx;
+		height:calc(340rpx + env(safe-area-inset-bottom));
 		position: fixed;
-		bottom:-340rpx;
+		bottom:-500rpx;
 		left:0;
 		border-radius: 12rpx 12rpx 0px 0px;
 		box-sizing: border-box;

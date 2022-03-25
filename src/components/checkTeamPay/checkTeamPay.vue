@@ -26,13 +26,13 @@
 						<scroll-view class="team-check-content-scroll" :scroll-x="true">
 							<!-- 随机模式 -->
 							<view :class="{'scroll-index':true,'scroll-index-check-random':teamCheckIndex==999}" @click="onClickTeamCheckRandom" v-if="randomMode.state==2">
-								<image class="scroll-index-img-random" :src="teamCheckIndex==999?'../../static/goods/xianbian_.png':'../../static/goods/xianbian.png'" mode="aspectFit"></image>
+								<image class="scroll-index-img-random" :lazy-load="true" :src="teamCheckIndex==999?'../../static/goods/xianbian_.png':'../../static/goods/xianbian.png'" mode="aspectFit"></image>
 								<view class="scroll-index-name" :class="teamCheckIndex==999?'scroll-index-name-random':''">剩余球队</view>
 								<view class="random-ing">进行中</view>
 							</view>
 
 							<view :class="{'scroll-index':true,'scroll-index-check':teamCheckIndex==index}" v-for="(item,index) in teamData" :key="item.id" @click="onClickTeamCheck(index)">
-								<image class="scroll-index-img" :src="item.logo?decodeURIComponent(item.logo):''" mode="aspectFit"></image>
+								<image class="scroll-index-img" :lazy-load="true" :src="item.logo?decodeURIComponent(item.logo):''" mode="aspectFit"></image>
 								<view class="scroll-index-name" :class="{'random-team-name':randomMode.state==2}">{{item.name}}</view>
 							</view>
 						</scroll-view>
@@ -589,7 +589,8 @@
 				box-sizing: border-box;
 				padding:10rpx 0;
 				border: 1rpx solid #fff;
-				margin-top: 31rpx;
+				margin-top: 21rpx;
+				margin-bottom: 10rpx;
 				position: relative;
 				&-img{
 					width: 100rpx;
@@ -773,7 +774,7 @@
 	}
 	.teamtion-bottom{
 		width: 100%;
-		height:120rpx;
+		height:calc(120rpx + env(safe-area-inset-bottom));
 		position: absolute;
 		bottom:0;
 		left:0;

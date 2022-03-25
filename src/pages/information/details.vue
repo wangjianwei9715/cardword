@@ -20,11 +20,13 @@
 			<view class="time">发布于{{dateFormatMSHMS(articleData.active_at)}}</view>
 			<view class="desc" v-html="decodeURIComponent(articleData.content)"/>
 		</view>
-		<view class="bottom">
-			<view class="input" @click="onClickInput">说点什么吧...</view>
-			<view class="desc-index">
-				<view class="icon-pl"></view>{{articleData.comment}}
-				<view class="icon-dz" :class="{'icon-dzed':articleData.isLikes}" @click="onClickLikes"></view>{{articleData.likes}}
+		<view class="bottom-box">
+			<view class="bottom">
+				<view class="input" @click="onClickInput">说点什么吧...</view>
+				<view class="desc-index">
+					<view class="icon-pl"></view>{{articleData.comment}}
+					<view class="icon-dz" :class="{'icon-dzed':articleData.isLikes}" @click="onClickLikes"></view>{{articleData.likes}}
+				</view>
 			</view>
 		</view>
 
@@ -197,15 +199,19 @@
 		width:670rpx !important;
 		height:auto;
 	}
-	.bottom{
+	.bottom-box{
 		width: 100%;
-		height:104rpx;
+		height:calc(104rpx + env(safe-area-inset-bottom));
 		background:#fff;
 		position:fixed;
 		bottom:0;
 		left:0;
-		box-sizing: border-box;
 		border-top: 4rpx solid #F8F9FA;
+	}
+	.bottom{
+		width: 100%;
+		height:104rpx;
+		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		padding:0 40rpx;

@@ -3,6 +3,7 @@
 		<view class="header-banner">
 			<statusbar/>
 			<view class="tab-header">
+				<view class="header-back" @click="onClickBack"></view>
 				<view class="header-search">
 					<view class="search-icon"></view>
 					<input class="search-input" type="text" placeholder-style="color:#AAAABB" v-model="searchTetxt" placeholder="搜索"  @confirm="onClickSearch(searchTetxt)" confirm-type="search" />
@@ -23,7 +24,7 @@
 <script lang="ts">
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
-	import BaseNode from '../../base/BaseNode.vue';
+	import BaseNode from '../../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
@@ -121,13 +122,19 @@
 		height:104rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding:0 20rpx;
+		padding:0 20rpx 0 0;
 		z-index: 10;
 		align-items: center;
 		justify-content: space-between;
 	}
+	.header-back{
+		width: 80rpx;
+		height:88rpx;
+		background:url(../../../static/goods/back@2x.png) no-repeat center;
+		background-size: 100% 100%;
+	}
 	.header-search{
-		width: 710rpx;
+		width: 640rpx;
 		height:64rpx;
 		overflow: hidden;
 		background: #F5F5F8;
@@ -153,7 +160,7 @@
 	.search-icon{
 		width: 28rpx;
 		height:28rpx;
-		background:url(../../static/index/sousuo@2x.png) no-repeat center;
+		background:url(../../../static/index/sousuo@2x.png) no-repeat center;
 		background-size:100% 100%;
 		margin-right: 20rpx;
 	}

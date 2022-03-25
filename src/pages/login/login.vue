@@ -95,7 +95,7 @@
 		}
 		onClickPrivacy(){
 			uni.navigateTo({
-				url:'/pages/userinfo/privacy'
+				url:'/pages/userinfo/user_privacy'
 			})
 		}
 		regPhone(){

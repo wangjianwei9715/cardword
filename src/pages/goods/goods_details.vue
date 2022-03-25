@@ -92,7 +92,7 @@
 					<view class="goods-card-content">
 						<scroll-view class="goods-card-content-scroll" :scroll-x="true">
 							<view class="scroll-index" v-for="(item,index) in cardData" :key="index" @click="onClickPreviewCard(index)">
-								<image class="scroll-index-img" :src="decodeURIComponent(item)" mode="aspectFit"/>
+								<image :lazy-load="true" class="scroll-index-img" :src="decodeURIComponent(item)" mode="aspectFit"/>
 							</view>
 						</scroll-view>
 					</view>
@@ -589,7 +589,7 @@
 					uni.hideLoading();
 				}, 2000);
 				let scene = this.sceneStr[id].scene;
-				console.log('this.goodsImg====',this.goodsImg[0])
+				console.log('this.goodsImg====',this.goodsData.pic.thumb)
 				uni.share({
 					provider: "weixin",
 					scene: scene,
@@ -597,7 +597,7 @@
 					href: "https://www.ka-world.com/share/good.html?id="+this.goodsId,
 					title: this.goodsData.title,
 					summary: this.goodsData.title,
-					imageUrl: this.goodsImg[0],
+					imageUrl: this.goodsData.pic.thumb,
 					success: (res)=> {
 						this.operationShow = false
 						console.log("success:" + JSON.stringify(res));
@@ -899,6 +899,7 @@
 	.content{
 		width: 750rpx;
 		box-sizing: border-box;
+		
 		// background:#F2F2F2
 	}
 	.header-banner{
@@ -1394,6 +1395,8 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:20rpx 32rpx 132rpx 32rpx;
+		margin-bottom: constant(safe-area-inset-bottom);
+		margin-bottom: env(safe-area-inset-bottom);   
 		&-title{
 			width: 100%;
 			font-size: $font-28;
@@ -1435,7 +1438,7 @@
 	}
 	.btn-content{
 		width: 100%;
-		height:112rpx;
+		height:calc(112rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:0;
 		left:0;
@@ -1447,6 +1450,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		padding-bottom: constant(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
 		&-left{
 			width: 152rpx;
 			height:112rpx;
@@ -1493,7 +1498,7 @@
 	}
 	.btn-contented{
 		width: 100%;
-		height:112rpx;
+		height:calc(112rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:0;
 		left:0;
@@ -1505,6 +1510,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		padding-bottom: constant(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
 		.btn-pt{
 			width: 352rpx;
 			height:88rpx;

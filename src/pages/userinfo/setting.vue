@@ -41,7 +41,7 @@ export default class ClassName extends BaseNode {
     { id: 2, name: "地址管理", url: "/pages/userinfo/setting_addresses" },
     { id: 3, name: "消息通知", url: "" },
     { id: 4, name: "清除缓存", url: "" },
-    { id: 5, name: "用户协议", url: "/pages/userinfo/privacy" },
+    { id: 5, name: "用户协议", url: "/pages/userinfo/user_agreement" },
     { id: 6, name: "关于我们", url: "/pages/userinfo/about_us" },
   ];
   xiaoxiDefault = false;

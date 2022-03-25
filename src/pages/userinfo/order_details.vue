@@ -81,6 +81,8 @@
 				<view class="tab-index" @click="onClickComplain"><view class="icon-tousu"></view>投诉订单</view>
 			</view>
 		</view>
+		
+
 		<!-- 底部按钮 -->
 		<view class="bottom-btn" v-if="orderData.operate">
 			
@@ -144,7 +146,7 @@
 					this.clickToPay = true
 				},1000)
 			}
-			this.initEvent();
+			this.initEvent(()=>{});
 
 			this.onEventUI('orderchange',()=>{
 				this.initEvent();
@@ -152,25 +154,28 @@
 
 			this.onEventUI('paySuccess',()=>{
 				this.showPaySuccess = true;
-				this.clickPayShowLoading()
 			})
 		}
 		onShow(){
 			if(this.clickToPay){
-				this.clickPayShowLoading()
+				this.clickPayShowLoading(()=>{
+					this.getNoShowList()
+				})
 			}
 			
 		}
 		onHide(){
 			clearInterval(this.countDownInter);
 		}
-		clickPayShowLoading(){
+		clickPayShowLoading(cb?:Function){
 			uni.showLoading({
 				title: '获取订单状态中',
 				mask:true
 			})
 			setTimeout(()=>{
-				this.initEvent();
+				this.initEvent(()=>{
+					if(cb) cb()
+				});
 				uni.hideLoading();
 				this.clickToPay = false;
 			},1000)
@@ -197,11 +202,23 @@
 				if(res.data.noList){
 					this.cardList = res.data.noList
 				}
-				
 				if(cb) cb()
 			})
 
 			
+		}
+		// 获取解锁卡密效果
+		getNoShowList(){
+			let orderRich = uni.getStorageSync("orderRich");
+			if(!orderRich) return;
+
+			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30},(res:any)=>{
+				if(res.total>0){
+					uni.navigateTo({
+						url:'/pages/goods/drawCard?code='+this.orderCode+'&data='+ encodeURIComponent(JSON.stringify(res.list))+'&num='+res.total+'&hasNumber='+res.hasNumber
+					})
+				}
+			})
 		}
 		getGoodDesc(data:any){
 			this.orderDesc[0].desc ='¥'+(data.price+data.discount+(data.coupon?data.coupon:0));
@@ -255,11 +272,13 @@
 		onClickOperate(cmd:any){
 			let params:{[x:string]:any}
 			if(cmd=='viewGood'){
-				uni.navigateTo({
+				uni.redirectTo({
 					url: '/pages/goods/goods_details?id='+this.orderData.good.goodCode
 				})
 			}
-
+			if(cmd=='resultCard'){
+				this.onClcikResult(1)
+			}
 			if(cmd.indexOf('wuliu')!=-1){
 				let wuliucode = cmd.slice(6)
 				uni.navigateTo({
@@ -413,11 +432,12 @@
 
 <style lang="scss">
 	.page{
-		background:#fff;
+		background:#f2f2f2;
 	}
 	.content{
 		width: 100%;
 		box-sizing: border-box;
+		background:#f2f2f2;
 	}
 	.header{
 		width: 100%;
@@ -508,8 +528,9 @@
 	}
 	.order{
 		&-index{
-			width: 710rpx;
+			width: 750rpx;
 			height:270rpx;
+			padding:0 20rpx;
 			border-radius: 4rpx;
 			background:#fff;
 			box-sizing: border-box;
@@ -678,6 +699,7 @@
 		border-top:20rpx solid #F2F2F2;
 		border-bottom: 20rpx solid #F2F2F2;
 		padding: 20rpx 32rpx 0 32rpx;
+		background: #fff;
 		&-index{
 			width: 100%;
 			box-sizing: border-box;
@@ -725,6 +747,7 @@
 		align-items: center;
 		justify-content: space-between;
 		margin-bottom: 24rpx;
+		
 		&-title{
 			height:40rpx;
 			line-height: 40rpx;
@@ -756,12 +779,14 @@
 		box-sizing: border-box;
 		padding:20rpx;
 		border-bottom: 20rpx solid #F2F2F2;
+		background: #fff;
 	}
 	.address-content{
 		width: 100%;
 		box-sizing: border-box;
 		border-bottom: 20rpx solid #F2F2F2;
 		padding:20rpx 32rpx;
+		background: #fff;
 		.title{
 			width: 100%;
 			font-size: 28rpx;
@@ -810,9 +835,10 @@
 	.order-info{
 		width: 100%;
 		box-sizing: border-box;
+		background: #fff;
 		padding:20rpx 32rpx;
 		border-bottom: 20rpx solid #F2F2F2;
-		margin-bottom: 110rpx;
+		margin-bottom: calc(110rpx + env(safe-area-inset-bottom));
 		.title{
 			width: 100%;
 			font-size: 28rpx;
@@ -876,9 +902,10 @@
 			}
 		}
 	}
+	
 	.bottom-btn{
 		width: 100%;
-		height:110rpx;
+		height:calc(110rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
 		position: fixed;
 		bottom:0;
@@ -886,8 +913,9 @@
 		background:#fff;
 		z-index: 9;
 		display: flex;
-		align-items: center;
 		justify-content: center;
+		padding-top: 11rpx;
+		// padding-bottom: constant(safe-area-inset-bottom);
 		.big-btn{
 			width: 718rpx;
 			height: 88rpx;
