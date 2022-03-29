@@ -488,9 +488,8 @@
 					"path" : "goldCard/index",
 					"style" :                                                                                    
 					{
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "金色卡密榜",
 						"navigationBarBackgroundColor": "#ffffff",
-                        "transparentTitle":"auto",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
                         "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  

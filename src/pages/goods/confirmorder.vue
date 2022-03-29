@@ -65,12 +65,9 @@
           </view>
         </view>
       </view>
-      <view
-        style="width: 750rpx; height: 20rpx; background: #f2f2f2"
-        v-if="cartData != ''"
-      ></view>
+   
       <!-- 自选球队编号 -->
-      <view class="yunfei-info check-team" v-if="cartData != ''">
+      <view class="yunfei-info check-team top-order" v-if="cartData != ''">
         <view class="item-title">已选编号</view>
         <view v-for="(item, index) in cartData.list" :key="item.id">
           <view class="yunfei-item" v-show="!item.soldOut && !item.lock">
@@ -80,12 +77,9 @@
         </view>
       </view>
       <!--  -->
-      <view
-        style="width: 750rpx; height: 20rpx; background: #f2f2f2"
-        v-if="baoduiName != ''"
-      ></view>
+    
       <!-- 包队编号 -->
-      <view class="yunfei-info check-team" v-if="baoduiName != ''">
+      <view class="yunfei-info check-team top-order" v-if="baoduiName != ''">
         <view class="item-title">已选编号</view>
         <view>
           <view class="yunfei-item">
@@ -96,12 +90,14 @@
       </view>
       <!--  -->
 
+      <!-- 预测卡密 -->
+      <!-- freeNum 免单次数  checkTeam 预测球队  guessList 球队列表  teamCheck 球队选择-->
+      <confirmorderGuess v-if="getBitDisableGuess()"  :freeNum="freeNum>=moneyNum?(freeNum-moneyNum):0" :checkTeam="guessCheckTeam" :teamList="guessList" :lastGuess="lastGuess" @teamCheck="onClickGuessTeamCheck" @onScrolltolower="onScrolltolower" />
+      <!-- 预测卡密 -->
+
+      
       <view
-        style="width: 750rpx; height: 20rpx; background: #f2f2f2"
-        v-if="goodsData.discount"
-      ></view>
-      <view
-        class="huo-dong-bg"
+        class="huo-dong-bg top-order"
         v-show="goodsData.discount && cartData.length == 0"
       >
         <text class="item-name">活动</text>
@@ -114,9 +110,8 @@
         </view>
       </view>
 
-      <view style="width: 750rpx; height: 20rpx; background: #f2f2f2"></view>
       <!-- 普通商品金额 -->
-      <view class="yunfei-info" v-if="cartData == ''">
+      <view class="yunfei-info top-order" v-if="cartData == ''">
         <view class="yunfei-item">
           <text class="item-name">商品金额</text>
           <text class="item-name"
@@ -137,11 +132,19 @@
             }}<view class="item-name-right"></view>
           </view>
         </view>
+        <view class="yunfei-item" v-show="freeNum > 0">
+          <text class="item-name">免单优惠</text>
+          <text class="item-name"
+            >- ¥{{
+              keepTwoDecimal(freeNum>=moneyNum?moneyNum * goodsData.price:freeNum * goodsData.price)
+            }}</text
+          >
+        </view>
         <view class="yunfei-item" v-show="goodsData.price - onePrice > 0">
           <text class="item-name">优惠</text>
           <text class="item-name"
             >- ¥{{
-              keepTwoDecimal(moneyNum * (goodsData.price - onePrice))
+              keepTwoDecimal(freeNum>0?(freeNum>=moneyNum?0:((moneyNum - freeNum) * (goodsData.price - onePrice))):(moneyNum * (goodsData.price - onePrice)))
             }}</text
           >
         </view>
@@ -156,7 +159,7 @@
             <text class="heji-text">合计:</text>
             <text class="heji-money2"
               >¥{{
-                keepTwoDecimal(moneyNum * onePrice - couponTotalPrice)
+                keepTwoDecimal(freeNum>0?(freeNum>=moneyNum?0:((moneyNum - freeNum)*(onePrice - couponTotalPrice))):(moneyNum * onePrice - couponTotalPrice))
               }}</text
             >
           </view>
@@ -228,7 +231,7 @@
             <text class="heji-money2-b" style="color: #ff4349"
               >¥{{
                 cartData == ""
-                  ? keepTwoDecimal(moneyNum * onePrice - couponTotalPrice)
+                  ? (keepTwoDecimal(freeNum>0?(freeNum>=moneyNum?0:((moneyNum - freeNum)*(onePrice - couponTotalPrice))):(moneyNum * onePrice - couponTotalPrice)))
                   : keepTwoDecimal(cartData.amount - couponTotalPrice)
               }}</text
             >
@@ -249,7 +252,7 @@
       @cancelPay="onClickCancelPay"
       :payPrice="
         cartData == ''
-          ? keepTwoDecimal(moneyNum * onePrice - couponTotalPrice)
+          ? (keepTwoDecimal(freeNum>0?(freeNum>=moneyNum?0:((moneyNum - freeNum)*(onePrice - couponTotalPrice))):(moneyNum * onePrice - couponTotalPrice)))
           : keepTwoDecimal(cartData.amount - couponTotalPrice)
       "
       :countTime="countTime"
@@ -302,6 +305,14 @@ export default class ClassName extends BaseNode {
 
   // 卡密效果开关
   orderRich = 0;
+  // 预测卡密
+  freeNum = 0;
+  guessCheckTeam = 0;
+  guessList:any = [];
+  lastGuess = '';
+  guessCurrentPage = 2;
+  guessPageSize = 30;
+  guessNoMoreData = false;
   onLoad(query: any) {
     if (query.data) {
       // #ifndef MP
@@ -311,6 +322,7 @@ export default class ClassName extends BaseNode {
       this.goodsData = JSON.parse(decodeURIComponent(query.data));
       // #endif
       this.payChannel = JSON.parse(query.payChannel);
+      
       if (query.payRandomPrice) {
         this.payRandomPrice = query.payRandomPrice;
         this.goodsData.price = query.payRandomPrice;
@@ -365,12 +377,48 @@ export default class ClassName extends BaseNode {
       return false;
     }
   }
+  // 是否开启预测球队
+  getBitDisableGuess() {
+    if ((this.goodsData.bit & 8) == 8) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  // 预测球队列表分页
+  onScrolltolower(){
+    if(this.guessNoMoreData){
+      return
+    }
+    let params:{[x:string]:any} = {
+      pageIndex: this.guessCurrentPage,
+      pageSize:this.guessPageSize,
+    }
+    
+    app.http.Get("me/order/guess/option/"+this.goodsData.goodCode, params, (data: any) => {
+      if(data.totalPage<=this.guessCurrentPage){
+        this.guessNoMoreData = true;
+      }
+      if(data.list){
+        this.guessList = this.guessList.concat(data.list);
+      }
+      
+      this.guessCurrentPage++;
+    });
+  }
   // 获取卡密效果开关
   getNoRichShow() {
     app.http.Get(
       "me/order/confirm/" + this.goodsData.goodCode,
       {},
       (res: any) => {
+        if(res.data.guess){
+          this.freeNum = res.data.guess.freeNoNum;
+          this.guessList = res.data.guess.option.list;
+          this.lastGuess = res.data.guess.lastGuess;
+          this.guessNoMoreData = res.data.guess.option.totalPage>=2?false:true;
+          console.log('guessList==',this.guessList)
+        }
         this.orderRich = res.data.noRichShowState;
         if (this.orderRich != 0) {
           let orderRich = this.orderRich == 1 ? true : false;
@@ -507,7 +555,7 @@ export default class ClassName extends BaseNode {
       return false;
     }
     result = Math.round(num * 100) / 100;
-    return result > 0 ? result : 0.01;
+    return result > 0 ? result : 0;
   }
   // 取消支付
   onClickCancelPay() {
@@ -558,30 +606,45 @@ export default class ClassName extends BaseNode {
     }
 
     app.http.Post(url, params, (res: any) => {
-      if (data.channel == "alipay") {
-        console.log("alipay==", res);
-        if (res.alipay.orderInfo != "") {
-          uni.hideLoading();
-          app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo);
-          uni.redirectTo({
+      // 预测球队
+      if(this.getBitDisableGuess()){
+        app.http.Post('me/order/guess/name/'+res.goodOrderCode,{name:this.guessList[this.guessCheckTeam].name})
+      }
+      uni.$emit('confirmorderPay')
+      if(res.price<=0){
+         uni.redirectTo({
             url:
               "/pages/userinfo/order_details?code=" +
               res.goodOrderCode +
-              "&waitPay=true",
+                "&waitPay=true",
           });
-        }
-      } else {
-        if (res.wechat) {
-          uni.hideLoading();
-          app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
-          uni.redirectTo({
-            url:
-              "/pages/userinfo/order_details?code=" +
-              res.goodOrderCode +
-              "&waitPay=true",
-          });
+      }else{
+        if (data.channel == "alipay") {
+          console.log("alipay==", res);
+          if (res.alipay.orderInfo != "") {
+            uni.hideLoading();
+            app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo);
+            uni.redirectTo({
+              url:
+                "/pages/userinfo/order_details?code=" +
+                res.goodOrderCode +
+                "&waitPay=true",
+            });
+          }
+        } else {
+          if (res.wechat) {
+            uni.hideLoading();
+            app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
+            uni.redirectTo({
+              url:
+                "/pages/userinfo/order_details?code=" +
+                res.goodOrderCode +
+                "&waitPay=true",
+            });
+          }
         }
       }
+      
     });
   }
   onClickCardCancel() {
@@ -625,6 +688,13 @@ export default class ClassName extends BaseNode {
     }
     this.couponTotalPrice = price;
   }
+
+  // 预测球队
+  onClickGuessTeamCheck(index:number){
+    if(this.guessCheckTeam!=index){
+      this.guessCheckTeam = index;
+    }
+  }
 }
 </script>
 
@@ -643,6 +713,9 @@ page {
 }
 .order-detail {
   background: #fff;
+}
+.top-order{
+  border-top: 20rpx solid #f2f2f2;
 }
 .header {
   width: 100%;

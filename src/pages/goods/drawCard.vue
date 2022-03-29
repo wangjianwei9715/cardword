@@ -97,6 +97,7 @@
               :lazy-load="true"
               :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):'../../static/goods/drawcard/default.png') : ''"
             ></image>
+            
             <view
               class="movable-box-name"
               :class="[item.color==''?'movable-box-name-silver':'movable-box-name-' + item.color,getNameLength(item.player)?'lang-name':'']"
@@ -222,6 +223,7 @@ export default class ClassName extends BaseNode {
   iosY: number = 0;
   picOnloadEd = false;
   picOnloadNum = 0;
+  onloadPic:any = [];
   onLoad(query: any) {
     uni.getSystemInfo({
       success: (res) => {
@@ -350,7 +352,18 @@ export default class ClassName extends BaseNode {
     }else if(this.picOnloadNum == this.totalNum){
       this.picOnloadEd = true;
     }
-
+    console.log(this.picOnloadNum)
+    this.onloadPic.push(index)
+    
+  }
+  getOnloadPicIndex(index:number){
+    let onloadEnd = false;
+    for(let i in this.onloadPic){
+      if(this.onloadPic[i] === index){
+        onloadEnd = true;
+      }
+    }
+    return onloadEnd
   }
   // 换肤
   onClickChangePifu() {
@@ -420,6 +433,7 @@ export default class ClassName extends BaseNode {
     this.moveX = "616rpx";
   }
   picTouchEnd() {
+    
     // 拖拽结束 计算位置
     let data = JSON.parse(JSON.stringify(this.MovableDetail));
     setTimeout(() => {
@@ -429,7 +443,20 @@ export default class ClassName extends BaseNode {
         data.y < this.boxTop - this.boxHeight / 3 ||
         data.y > this.boxTop + this.boxHeight / 3
       ) {
-        this.stepIndex++;
+        if (this.stepIndex  >= this.totalNum || !this.noInterval) {
+          return;
+        }
+        if(this.picOnloadNum<this.stepIndex+1){
+          uni.showToast({
+              title: '图片正在加载中',
+              icon:'loading',
+              duration: 2000
+          });
+          return;
+        }
+        if(this.stepIndex<this.totalNum){
+          this.stepIndex++;
+        }
         if(this.stepIndex<this.totalNum&&this.picData[this.stepIndex+1].color == 'gold'){
           uni.vibrateLong({
             success: function() {
@@ -451,7 +478,18 @@ export default class ClassName extends BaseNode {
     this.initEvent();
     this.noInterval = false;
     this.setTimeFnc = setInterval(() => {
-      this.stepIndex++;
+      if(this.picOnloadNum<this.stepIndex+1){
+        uni.showToast({
+            title: '图片正在加载中',
+            icon:'loading',
+            duration: 2000
+        });
+        this.clearIntervalCard()
+        return;
+      }
+      if(this.stepIndex<this.totalNum){
+        this.stepIndex++;
+      }
       if (this.stepIndex >= this.totalNum) {
         this.complete = true;
         this.clearIntervalCard();
@@ -661,6 +699,23 @@ export default class ClassName extends BaseNode {
   width: 474rpx;
   height: 690rpx;
   will-change: transform;
+}
+.pic-noload{
+  position: relative;
+}
+.load-text{
+  width: 100%;
+  text-align: center;
+  position:absolute;
+  left:0;
+  top:50%;
+  height:40rpx;
+  margin-top: -20rpx;
+  line-height: 40rpx;
+  font-size: 26rpx;
+  font-family: FZLanTingHeiS-R-GB;
+  font-weight: 400;
+  color: #FFFFFF;
 }
 .dangban {
   background: url("../../static/goods/drawcard/card_dangban.png") no-repeat

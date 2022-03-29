@@ -149,6 +149,7 @@
 			}
 			if(cmd=='toPay'){
 				this.payChannel = item.good.payChannel
+				console.log(this.payChannel)
 				// #ifdef MP
 				params= {
 					channel:'mini',

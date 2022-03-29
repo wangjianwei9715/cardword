@@ -49,6 +49,12 @@
 			</view>
 			<buyCardId :cardList="cartList" :waitPay="true" />
 		</view>
+
+		<!-- 预测卡密 -->
+		<!-- order 订单 state 订单状态  guessFreeNum 剩余免单次数 guessNum 预测正确数量 guessName 预测球队名字-->
+		<stepGuess v-if="guessType" :state="orderData.state" :order="true" :freeNum="guessFreeNum" :guessNum="guessNum" :guessName="guessName" :surplusNum="surplusNum" :guessSuccess="guessSuccess" @onClickSuccessHide="onClickSuccessHide"/>
+		<!-- 预测卡密 -->
+
 		<!-- 我的编号 -->
 		<view class="buyer-cotnent" v-if="cardList!=''">
 			<view class="card-header">
@@ -137,14 +143,19 @@
 		showPaySuccess = false;
 		clickToPay = false;
 		payChannel:any = [];
+		// 预测球队
+		guessType = false;
+		guessFreeNum = 0;
+		guessNum = 0;
+		guessName = '';
+		guessSuccess = false;
+		surplusNum = 0;
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
 			}
 			if(query.waitPay){
-				setTimeout(()=>{
-					this.clickToPay = true
-				},1000)
+				this.clickToPay = true
 			}
 			this.initEvent(()=>{});
 
@@ -157,9 +168,13 @@
 			})
 		}
 		onShow(){
+			console.log('clickToPay',this.clickToPay)
 			if(this.clickToPay){
 				this.clickPayShowLoading(()=>{
-					this.getNoShowList()
+					this.getNoShowList();
+					if(this.guessNum>0){
+						this.guessSuccess = true
+					}
 				})
 			}
 			
@@ -177,12 +192,25 @@
 					if(cb) cb()
 				});
 				uni.hideLoading();
-				this.clickToPay = false;
+				
 			},1000)
 		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
 				console.log('orderDetail====',res)
+				if(res.data.state==1){
+					this.clickToPay = true
+				}else{
+					this.clickToPay = false
+				}
+				// 预测卡密
+				if(res.data.guess){
+					this.guessType = true;
+					this.guessFreeNum = res.data.guess.leftNum;
+					this.guessNum = res.data.guess.bingoNum;
+					this.guessName = res.data.guess.guess;
+					this.surplusNum = res.data.good.state>=2? res.data.guess.surplusNum:0
+				}
 				this.orderData = res.data
 				this.payChannel = res.data.good.payChannel?res.data.good.payChannel:[]
 				this.countDown = res.data.leftSec
@@ -200,7 +228,7 @@
 					})
 				}
 				if(res.data.noList){
-					this.cardList = res.data.noList
+					this.cardList = res.data.noList.length>5?res.data.noList.splice(0,5):res.data.noList
 				}
 				if(cb) cb()
 			})
@@ -426,6 +454,9 @@
 		// 支付成功弹窗关闭
 		onClickcancelPaySuccess(){
 			this.showPaySuccess = false;
+		}
+		onClickSuccessHide(){
+			this.guessSuccess = false;
 		}
 	}
 </script>

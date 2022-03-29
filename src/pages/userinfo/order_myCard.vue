@@ -1,7 +1,10 @@
 <template>
 	<view class="content">
 		<view class="card-list"  v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
-			<view class="order-code">{{orderCode==item.orderCode?'当前订单 ':''}}订单编号：{{item.orderCode}} </view>
+			<view class="order-code">
+				<view class="order-code-left">{{orderCode==item.orderCode?'当前订单 ':''}}订单编号：{{item.orderCode}} </view>
+				<view class="order-code-right">我的预测：{{item.guess}}</view>
+			</view>
 			<view class="card-box">
 				<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs">
 					<view class="index-left">{{items.name}}</view>
@@ -139,6 +142,25 @@ import { Component } from "vue-property-decorator";
 		font-weight: 400;
 		color: #666666;
 		border-bottom: 1rpx solid #E7E7E7;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.order-code-left{
+		height:66rpx;
+		line-height: 66rpx;
+		font-size: 28rpx;
+		font-family: Source Han Sans CN;
+		font-weight: 400;
+		color: #666666;
+	}
+	.order-code-right{
+		height:66rpx;
+		line-height: 66rpx;
+		font-size: 28rpx;
+		font-family: Source Han Sans CN;
+		font-weight: 400;
+		color: #666666;
 	}
 	.card-box{
 		width: 100%;

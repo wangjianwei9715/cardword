@@ -62,6 +62,10 @@
 			<inviteStep v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" :goodsStep="true"/>
 			<!-- 邀请新人步骤图 -->
 
+			<!-- 预测卡密 -->
+			<stepGuess v-if="guessType" :freeNum="guessFreeNum"/>
+			<!-- 预测卡密 -->
+
 			<view class="detail-bg">
 				<view class="header">
 					<view class="header-desc-title">拼团信息</view>
@@ -250,6 +254,8 @@
 			' 5.超过拼团【认购时限】，认购未满员，所有款项通过系统原路返还，除此种情况之外，平台方不提供退款服务。'
 		];
 		randomNum = 0;
+		guessType = false;
+		guessFreeNum = 0;
 		onLoad(query:any) {
 			
 			// #ifdef MP
@@ -305,6 +311,9 @@
 				}
 			})
 			
+			this.onEventUI('confirmorderPay',()=>{
+				this.getGoodData(this.goodsId)
+			})
 			// #endif
 		}
 		onShow(){
@@ -346,7 +355,8 @@
 					if(data.payChannel){
 						this.payChannel = data.payChannel
 					}
-					
+					this.guessFreeNum = data.freeNoNum
+					this.guessType = (data.good.bit & 8) == 8?true:false;
 					// 状态
 					this.goodsState = data.good.state;
 					// 倒计时
@@ -884,6 +894,7 @@
 			plus.runtime.openURL("weixin://");
 			this.onClickInvitePopupCancel();
 		}
+		
 	}
 </script>
 	

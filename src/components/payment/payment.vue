@@ -66,6 +66,27 @@
 			}
 			
 		}
+		@Watch('payChannel')
+		onPayChanged(val: any, oldVal: any){
+			if(app.platform.systemInfo.platform == 'android'){
+				this.platform = 'android'
+			}else{
+				this.platform = 'ios'
+			}
+			for(let i in this.payChannel){
+				if(this.payChannel[i].ios == undefined || this.payChannel[i].ios == null){
+					this.newPayChannel = this.payChannel
+					return;
+				};
+
+				if(this.platform == 'ios' && this.payChannel[i].ios){
+					this.newPayChannel.push(this.payChannel[i])
+				}else if(this.platform == 'android' && this.payChannel[i].android){
+					this.newPayChannel.push(this.payChannel[i])
+				}
+			}
+			
+		}
 		created(){//在实例创建完成后被立即调用
 			if(app.platform.systemInfo.platform == 'android'){
 				this.platform = 'android'
