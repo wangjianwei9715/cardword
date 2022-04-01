@@ -73,6 +73,7 @@
 			}else{
 				this.platform = 'ios'
 			}
+			this.newPayChannel = []
 			for(let i in this.payChannel){
 				if(this.payChannel[i].ios == undefined || this.payChannel[i].ios == null){
 					this.newPayChannel = this.payChannel

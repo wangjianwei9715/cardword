@@ -3,17 +3,17 @@
 		<view class="card-list"  v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
 			<view class="order-code">
 				<view class="order-code-left">{{orderCode==item.orderCode?'当前订单 ':''}}订单编号：{{item.orderCode}} </view>
-				<view class="order-code-right">我的预测：{{item.guess}}</view>
+				<view class="order-code-right" v-if="item.guess!=''">我的预测：{{item.guess}}</view>
 			</view>
 			<view class="card-box">
 				<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs">
-					<view class="index-left">{{items.name}}</view>
+					<view class="index-left" :class="{'bingo-name':item.bingo}">{{items.name}}</view>
 					<view  class="index-right" @click="onClickLookCard(items)">
 						{{items.content}}
 						<view v-if="items.content=='已中卡'" class="index-right-pt"></view>
 					</view>
 				</view>
-				<view class="card-more-btn" v-if="item.hasMore" @click="onClickMoreList(item.orderCode)">查看全部</view>
+				<view class="card-more-btn" v-if="item.hasMore" @click="reqNewCardList(item.orderCode,index)">查看更多</view>
 			</view>
 		</view>
 		
@@ -68,22 +68,23 @@ import { Component } from "vue-property-decorator";
 		reqNewCardList(orderCode:string,index:number,cb?:Function) {
 			// 获取更多商品
 		
-			let pageIndex = Math.floor((this.cardList[index].noList.length)/50);
+			let pageIndex = Math.floor((this.cardList[index].noList.length-50)/10);
 			
 			let params:{[x:string]:any} = {
-				pageIndex: pageIndex+1,
-				pageSize:50,
+				pageIndex: pageIndex+6,
+				pageSize:10,
 			}
 			
 			app.http.Get('me/orderInfo/buyer/'+orderCode+'/noList', params, (data: any) => {
 				if(data.list){
 					this.cardList[index].noList = this.cardList[index].noList.concat(data.list);
-					if(data.list.length<50){
+					if(data.list.length<10){
 						this.cardList[index].hasMore = false;
 					}
-				}else{
+				}
+				
+				if(this.cardList[index].noList.length>=data.total){
 					this.cardList[index].hasMore = false;
-					
 				}
 				if(cb) cb()
 			});
@@ -223,5 +224,8 @@ import { Component } from "vue-property-decorator";
 		background:url(../act/static/pingtai/icon_right.png) no-repeat center;
 		background-size: 100% 100%;
 		margin-left:6rpx;
+	}
+	.bingo-name{
+		font-weight: bold !important;
 	}
 </style>

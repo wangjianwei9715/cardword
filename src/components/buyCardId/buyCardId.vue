@@ -1,7 +1,7 @@
 <template>
 	<view class="buy-card">
 		<view class="card-index" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index" @click="onClickLookCard(item)">
-			<view class="left">{{item.name}}</view>
+			<view class="left" :class="{'bingo-name':item.bingo}">{{item.name}}</view>
 			<!-- <view v-if="showImg&&item.num>0" class="right">
 				<image class="show-img" :src="item.pic"  mode="aspectFill"/>
 			</view> -->
@@ -97,5 +97,8 @@
 		.card-index:nth-child(even){
 			background:#FFFFFF
 		}
+	}
+	.bingo-name{
+		font-weight: bold !important;
 	}
 </style>

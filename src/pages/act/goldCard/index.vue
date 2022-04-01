@@ -176,8 +176,8 @@
 		position: relative;
 	}
 	.top-help{
-		width: 30rpx;
-		height:30rpx;
+		width: 40rpx;
+		height:40rpx;
 		background:url(../static/goldCard/help.png) no-repeat center;
 		background-size: 100% 100%;
 		position: absolute;

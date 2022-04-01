@@ -61,7 +61,7 @@
 <style lang="scss">
 	.video{
 		width: 750rpx;
-		height:calc(100% - env(safe-area-inset-bottom));
+		height:calc(100% - 60rpx );
 		position: fixed;
 		left:0;
 		top:0;
