@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="top-bg">
 			<view class="top-help" @click="showPopup = true"></view>
-			<view class="top-time">3.30-4.1</view>
+			<view class="top-time">4.3-4.5</view>
 			<view class="top-card-box">
 				<image class="top-card-pic"  :class="index==1?'card-center':''" v-for="(item,index) in cardPic" :key="index" :src="item"></image>
 			</view>
@@ -85,19 +85,19 @@
 				userName: "",
 				userAvatar:'',
 				gold_num:0,
-				award:'pz mega*1盒'
+				award:'黑曜石 HOBBY*1盒'
 			},
 			1:{
 				userName: "",
 				userAvatar:'',
 				gold_num:0,
-				award:'革命新春盒*1盒'
+				award:'Hoops HOBBY*1盒'
 			},
 			2:{
 				userName: "",
 				userAvatar:'',
 				gold_num:0,
-				award:'op手雷*1盒'
+				award:'PRIZM MEGA*1盒'
 			},
 		};
 		rankList:any = [
@@ -106,7 +106,7 @@
 				userAvatar: "", //用户头像
 				ranking: 1, //排名，越小越靠前
 				gold_num: 0, //金卡数量
-				award: "prizm*1盒", //奖品
+				award: "", //奖品
 			}
 		];
 		showPopup = false;
@@ -126,16 +126,20 @@
 		}
 		getRewardName(rank:number){
 			let num = rank+4;
-			if(num>=4&&num<=5){
-				return '足球编年史亚洲版'
-			}else if(num>=6&&num<=10){
-				return '100元卡享券'
+			if(num==4){
+				return '革命 新春*1盒'
+			}else if(num==5){
+				return 'OPTIC手雷*1盒'
+			}else if(num>=6&&num<=7){
+				return '足球编年史*1盒'
+			}else if(num>=8&&num<=10){
+				return '150元卡享券'
 			}else if(num>=11&&num<=20){
-				return '50元卡享券'
+				return '80元卡享券'
 			}else if(num>=21&&num<=30){
-				return '30元卡享券'
+				return '50元卡享券'
 			}else if(num>=31&&num<=50){
-				return '10元卡享券'
+				return '20元卡享券'
 			}
 		}
 		reqNewData(cb?:Function) {

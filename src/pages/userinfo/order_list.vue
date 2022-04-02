@@ -262,15 +262,20 @@
 			uni.showLoading({
 				title: '加载中'
 			});
-			let params = {
+			let params:any = {
 				channelId:data.channelId?data.channelId:'',
       			channel: data.channel,
 				delivery:0,
 				num:this.payItem.num
 			}
+			if(uni.getSystemInfoSync().platform === "android"){
+				params.nativeSdk = 'qmf_android'
+			}
 			app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
 				if(data.channel=='alipay'){
-					if(res.alipay.orderInfo!=''){
+					if(res.appPayRequest){
+						app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
+					}else if(res.alipay.orderInfo!=''){
 						this.clickToPay = true;
 						uni.hideLoading()
 						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)

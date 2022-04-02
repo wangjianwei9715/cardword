@@ -43,6 +43,11 @@
 
 		<view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
 		<view class="drawer-content" :class="{'show-drawer':showDrawer}">
+			<view class="drawer-content-header">预测卡密规则</view>
+			<view class="drawer-content-box">
+				<view class="drawer-contnet-desc" v-for="(item,index) in rulesData" :key="index">{{item}}</view>
+				<view class="drawer-content-tips">*上述活动说明仅做一般参考，最终解释权归平台所有</view>
+			</view>
 			<image class="close-pic" @click="onClickCloseDrawer" src="../../static/pay/guanbi@2x.png"></image>
 		</view>
 	</view>
@@ -69,6 +74,13 @@
 		guessName:string|undefined;
 
 		showDrawer = false;
+		rulesData = [
+			'1.购买本商品时可预测卡密所归属的球队，获得卡密后，预测的球队与卡密匹配即可获得免单购买机会',
+			'2.单笔订单可预测1支球队，每匹配成功一条卡密均可获得一次免单机会',
+			'3.免单机会可在创建订单时使用，免单的订单仍可进行卡密预测',
+			'4.卡密中包含多支球队时，预测的球队与卡密中任意一支球队匹配则算预测成功',
+			'5.若商品拼团完成，您有免单次数未用完，可联系客服退款 (退款额度=剩余免单次数*商品单价)'
+		]
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -220,25 +232,68 @@
 		left:0;
 		height:840rpx;
 		width: 100%;
-		background:url(../../pages/act/static/guess/rules.png) no-repeat center;
-		background-size: 100% 100%;
+		background:#fff;
 		z-index: 99999;
 		box-sizing: border-box;
 		transition: all 0.3s linear;
 		-webkit-transition: -webkit-transform 0.3s;
-		// border-radius: 60rpx 60rpx 0px 0px;
+		border-radius: 60rpx 60rpx 0px 0px;
 		transform: translateY(100%);
 	}
 	.show-drawer{
 		transform: translateY(0);
 	}
 	
+	.drawer-content-header{
+		width: 664rpx;
+		height:110rpx;
+		margin:0 auto;
+		border-bottom: 1rpx solid #ACACAC;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 36rpx;
+		font-family: FZLanTingHei-M-GBK;
+		font-weight: 400;
+		color: #333333;
+		position: absolute;
+		left:50%;
+		margin-left: -332rpx;
+		top:0;
+		z-index: 99;
+		
+	}
+	.drawer-content-box{
+		width: 100%;
+		height:840rpx;
+		box-sizing: border-box;
+		overflow: auto;
+		padding:110rpx 50rpx 30rpx 50rpx;
+	}
+	.drawer-contnet-desc{
+		width: 100%;
+		font-size: 26rpx;
+		font-family: FZLanTingHeiS-R-GB;
+		font-weight: 400;
+		color: #525151;
+		line-height: 40rpx;
+		margin-top: 40rpx;
+	}
+	.drawer-content-tips{
+		font-size: 24rpx;
+		font-family: FZLanTingHeiS-R-GB;
+		font-weight: 400;
+		color: #CF3737;
+		line-height: 40rpx;
+		margin-top: 60rpx;
+	}
 	.close-pic{
 		width: 32rpx;
 		height:32rpx;
 		position: absolute;
 		top:35rpx;
 		right:75rpx;
+		z-index: 100;
 	}
 	.guess-num-box{
 		width: 205rpx;
