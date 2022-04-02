@@ -576,7 +576,10 @@ export default class ClassName extends BaseNode {
       delivery: this.addressData.id,
     };
     let url = "good/topay/" + this.goodsData.goodCode;
-
+    if(uni.getSystemInfoSync().platform === "android"){
+      params.nativeSdk = 'qmf_android'
+    }
+    console.log(params)
     if (this.baoduiId != 0) {
       // 包队
       params.teamId = this.baoduiId;
@@ -621,16 +624,18 @@ export default class ClassName extends BaseNode {
       }else{
         if (data.channel == "alipay") {
           console.log("alipay==", res);
-          if (res.alipay.orderInfo != "") {
-            uni.hideLoading();
+          if(res.appPayRequest){
+            app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
+          }else if (res.alipay.orderInfo != "") {
             app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo);
-            uni.redirectTo({
-              url:
-                "/pages/userinfo/order_details?code=" +
-                res.goodOrderCode +
-                "&waitPay=true",
-            });
           }
+          uni.hideLoading();
+          uni.redirectTo({
+            url:
+              "/pages/userinfo/order_details?code=" +
+              res.goodOrderCode +
+              "&waitPay=true",
+          });
         } else {
           if (res.wechat) {
             uni.hideLoading();

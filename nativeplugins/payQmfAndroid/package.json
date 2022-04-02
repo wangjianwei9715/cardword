@@ -1,15 +1,15 @@
 {
-    "name": "TestModule",
-    "id": "TestModule",
+    "name": "payQmfAndroid",
+    "id": "payQmfAndroid",
     "version": "1.0.0",
-    "description": "读取渠道号",
+    "description": "qmfpay",
     "_dp_type":"nativeplugin",
     "_dp_nativeplugin":{
         "android": {
             "plugins": [
                 {
                     "type": "module",
-                    "name": "TestModule",
+                    "name": "payQmfAndroid",
                     "class": "io.dcloud.uniplugin.TestModule"
                 }
             ],

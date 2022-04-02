@@ -462,7 +462,7 @@
 </script>
 
 <style lang="scss">
-	.page{
+	page{
 		background:#f2f2f2;
 	}
 	.content{

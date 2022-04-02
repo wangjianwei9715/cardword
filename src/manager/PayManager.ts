@@ -3,7 +3,7 @@ import permision from "@/js_sdk/wa-permission/permission"
 import { CBC } from "crypto-ts/src/mode/CBC";
 export default class PayManager {
     private static instance: PayManager;
-	
+	payQmfAndroid:any;
     private constructor() {
 		
 		// #ifdef APP-PLUS
@@ -11,9 +11,12 @@ export default class PayManager {
 		// #endif
     }
 
-	
+	paymentAlipayQmfSdk(payRequest:string,cb?:Function){
+		this.payQmfAndroid = uni.requireNativePlugin("payQmfAndroid");
+		this.payQmfAndroid.payAliPayMiniPro(payRequest,(res:any)=>{});
+	}
 	paymentAlipay(type:any,orderInfo:string,cb?:Function){
-		console.log('AlipayOrderInfo========',orderInfo)
+		console.log('orderInfo========',orderInfo)
 		// 银盛pay
 		if(type=='ysepay'||type=='qmf'){
 			plus.runtime.openURL(orderInfo)
