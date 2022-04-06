@@ -327,15 +327,12 @@ align-items: flex-end;
 				}
 
 				.cores {
-					// content: '';
 					display: block;
-					width: 11rpx;
-					height: 17rpx;
+					width: 12rpx;
+					height: 18rpx;
 					background-image: url('../../static/goods/rightCor.png');
 					background-size: 100% 100%;
 					position: relative;
-					top: 2rpx;
-					// position: absolute;
 				}
 			}
 		}
