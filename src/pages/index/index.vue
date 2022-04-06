@@ -47,19 +47,24 @@
 			<statusbar/>
 			<!-- #ifndef MP  -->
 			<view class="tab-good-content">
-				<view class="tab-type">
-					<view class="tab-index" v-for="(item,index) in tabList" :key="index" @click="onClickJumpUrl(item)">
-						<view class="tab-img-content"><image class="tabimg" :src="item.img" mode=""/></view>
-						<view class="tabtext">{{item.text}}</view>
+				<view class="tab-type" v-for="(item,index) in tabList" :key="index">
+					<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
+						<view class="tab-img-content"><image class="tabimg" :src="items.img" mode=""/></view>
+						<view class="tabtext">{{items.text}}</view>
 					</view>
 				</view>
 				
+				
 				<!-- 卡豆商城 热门系列 拆卡围观 -->
 				<view class="tab-hot">
-					<view class="tab-hot-box" :class="'tab-hot-box-'+name" v-for="(item,name) in hotList" :key="name">
+					<view class="tab-hot-box" :class="'tab-hot-box-'+name" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(name)">
 						<view class="tab-hot-boxtitle">{{item.title}}</view>
 						<view class="tab-hot-boxtips">{{item.tips}}</view>
-						<view class="tab-hot-boxpic-index"></view>
+						<view class="tab-hot-boxpic-index">
+							<view class="tab-hot-boxpic-box" v-for="(src,index) in item.list" :key="index" >
+								<image :src="src" class="tab-hot-boxpic" mode="aspectFit"></image>
+							</view>
+						</view>
 					</view>
 				</view>
 
@@ -72,6 +77,13 @@
 		</view>
 		
 		<view class="goodslist-index">
+			<view class="index-swiper">
+				<swiper class="swiper" :indicator-dots="false" :autoplay="true" :interval="5000" :duration="500" :circular="true">
+					<swiper-item v-for="(item,index) in topAddList" :key="index">
+						<image class="swiper-image" :src="decodeURIComponent(item.pic)" @click="onClickTopJumpUrl(item.target)" mode="aspectFill"></image>
+					</swiper-item>
+				</swiper>
+			</view>
 			<goodslist  :goodsList="goodsList" :pageIndex="currentPage" @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
 		</view>
 		<!-- #endif -->
@@ -84,7 +96,7 @@
 
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
 
-		<dailyWelfare :dailyShow="dailyShow" :dailyList="dailyList" @closeDailyShow="onClickCloseDailyShow"/>
+		
 	</view>
 </template>
 
@@ -111,35 +123,44 @@
 
 			}
 		]
-		tabList = [
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab1.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab2.png',text:'资讯',url:'/pages/information/list'},
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab3.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab4.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab5.png',text:'商家入驻',url:'/pages/userinfo/merchant_join'},
-		];
+		tabList:{[x:string]:any} = {
+			tabTop:[
+				{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab1.png',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
+				{img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
+				{img:'../../static/index/v2/top_icon2.png',text:'资讯公告',url:'/pages/information/list'},
+				{img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
+			],
+			tabBottom:[
+				{img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_find_list?classType=100'},
+				{img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_find_list?classType=100'},
+				{img:'../../static/index/v2/top_icon6.png',text:'自选球队',url:'/pages/goods/goods_find_list?classType=100'},
+				{img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_find_list?classType=100'}
+			]
+		};
+		
 		// 卡豆商城 热门系列 拆卡围观
 		hotList:{[x:string]:any} = {
 			cardBean:{
 				title:'卡豆商城',
-				tips:'卡豆兑换好礼'
+				tips:'卡豆兑换好礼',
+				list:['../../static/index/v2/cardbean_pic.png','../../static/index/v2/cardbean_hb.png']
 			},
 			hot:{
 				title:'热门系列',
-				tips:'新系列上市'
+				tips:'新系列上市',
+				list:['../../static/index/v2/cardbean_pic.png','../../static/index/v2/cardbean_hb.png']
 			},
 			split:{
 				title:'拆卡围观',
-				tips:'正在拆卡'
+				tips:'正在拆卡',
+				list:['../../static/index/v2/cardbean_pic.png','../../static/index/v2/cardbean_hb.png']
 			}
 		};
 		goodTab = [
 			{id:1,name:'推荐'},
-			{id:11,name:'自选'},
-			{id:3,name:'新品'},
-			{id:4,name:'高端'},
-			{id:2,name:'即将拼成'}
-			// {id:5,name:'优惠'},
+			{id:2,name:'篮球'},
+			{id:3,name:'足球'},
+			{id:4,name:'其他'}
 		];
 		goodTabCheck = 1;
 		goodsList:any = [];
@@ -162,8 +183,7 @@
 		showPaySuccess = false;
 		version = '';
 		oneLoad = true;
-		dailyShow = false;
-		dailyList:any = [];
+		
 		onLoad(query:any) {
 			// uni.$emit('reLogin')
 			if (app.update.apkNeedUpdate) {
@@ -187,10 +207,7 @@
 			this.register(listeners);
 			this.getLuanchApp()
 
-			// 新年每日登录优惠券
-			this.onEventUI("loginSuccess", () => {
-				this.getNewYearDayGift()
-			});
+			
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
 			});
@@ -311,24 +328,16 @@
 			})
 			// #endif
 		}
-		// 新年每日优惠券
-		getNewYearDayGift(){
-			if(app.token.accessToken == '' || app.dayGift) return;
-
-			setTimeout(()=>{
-				app.http.Get('me/coupon/dayGift',{},(res:any)=>{
-					console.log('每日优惠==',res)
-					if(res.bool){
-						app.dayGift = true;
-						this.dailyList = res.list;
-						this.dailyShow = true;
-					}
+		
+		onClickHotPic(name:string){
+			if(name=='cardBean'){
+				uni.showToast({
+					title:'卡豆商城维护中',
+					icon:'none'
 				})
-			},500)
+			}
 		}
-		onClickCloseDailyShow(){
-			this.dailyShow = false;
-		}
+		
 		showInitEvent(){
 			this.currentPage = 1;
 			this.noMoreData = false;
@@ -490,13 +499,7 @@
 				})
 				return;
 			}
-			// if(url=='社群'){
-			// 	this.showPaySuccess = true;
-			// 	return;
-			// }
-			// uni.navigateTo({
-			// 	url: url
-			// })
+		
 			
 		}
 		onClickcancelPaySuccess(){
@@ -510,6 +513,15 @@
 				})
 				return;
 			}
+			if(item.text=='发售日历'){
+				if(app.token.accessToken == ''){
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+					return;
+				}
+			}
+			console.log(item.url)
 			uni.navigateTo({
 				url: item.url
 			})
@@ -537,7 +549,7 @@
 			}
 			
 			let params:{[x:string]:any} = {
-				tp:this.goodTabCheck-1,
+				tp:this.goodTabCheck,
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 			}
@@ -619,21 +631,7 @@
 		display: flex;
 		padding:0 20rpx;
 	}
-	.swiper{
-		width: 710rpx;
-		height:190rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: flex-start;
-		justify-content: center;
-	}
-	.swiper-image{
-		width: 710rpx;
-		height:190rpx;
-		box-sizing: border-box;
-		border-radius: 20rpx;
-		
-	}
+	
 	.tab-good-content{
 		width: 100%;
 		box-sizing: border-box;
@@ -644,7 +642,7 @@
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:30rpx 20rpx 32rpx 20rpx;
+		padding:10rpx 20rpx 10rpx 20rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -836,7 +834,7 @@
 		padding:15rpx 18rpx 15rpx 19rpx
 	}
 	.header-search{
-		width: 708rpx;
+		width: 100%;
 		height: 62rpx;
 		background: #FFFFFF;
 		border: 2rpx solid #FB4E3E;
@@ -886,6 +884,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		margin-top: 20rpx;
 	}
 	.tab-hot-box{
 		width: 236rpx;
@@ -903,30 +902,62 @@
 	}
 	.tab-hot-boxtitle{
 		width: 100%;
+		height:50rpx;
 		text-align: center;
 		font-size: 28rpx;
 		font-family: Alibaba PuHuiTi;
 		font-weight: bold;
 		color: #333333;
 		padding-top: 10rpx;
+		box-sizing: border-box;
 	}
 	.tab-hot-boxtips{
 		width: 100%;
+		height:35rpx;
 		text-align: center;
 		font-size: 18rpx;
 		font-family: Alibaba PuHuiTi;
 		font-weight: 400;
 		color: #565656;
-		margin-top:6rpx;
 	}
 	.tab-hot-boxpic-index{
 		width: 100%;
 		box-sizing: border-box;
 		height:84rpx;
 		padding:0 22rpx;
-		margin-top: 15rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+	}
+	.tab-hot-boxpic-box{
+		width: 84rpx;
+		height:84rpx;
+	}
+	.tab-hot-boxpic{
+		width: 84rpx;
+		height:84rpx;
+	}
+	// 活动轮播
+	.index-swiper{
+		width: 356rpx;
+		height:468rpx;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 10rpx;
+		margin-bottom: 10rpx;
+	}
+	.swiper{
+		width: 356rpx;
+		height:468rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+	}
+	.swiper-image{
+		width: 356rpx;
+		height:468rpx;
+		box-sizing: border-box;
 	}
 </style>

@@ -1,15 +1,12 @@
 <template>
 	<view class="list">
 		<view class="index" v-for="item in tabs" :key="item.id" @click="onClickIndex(item.id)">
-			<view v-if="item.name=='自选'" :class="{'zixuan':true,'zixuan-check':tabsCheck==item.id}"></view>
-			<view v-else :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]">
+			<view  :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]">
 				{{item.name}}
 				<!-- <view v-if="item.name=='新品'" class="new-icon"></view> -->
 			</view>
 		</view>
-		<!-- <view class="line">
-			<view class="current-line"></view>
-		</view>	 -->
+		
 	</view>
 </template>
 
@@ -91,30 +88,35 @@
 	.index{
 		height:84rpx;
 		line-height: 84rpx;
-		font-size: 28rpx;
-		color:#A9ABB4;
+		font-size: 30rpx;
+		font-family: Alibaba PuHuiTi;
+		font-weight: 400;
+		color: #494949;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		position: relative;
+		z-index: 4;
 	}
 	.current{
-		font-size:34rpx;
-		font-weight: 600;
-		color: #14151A;
+		font-size:40rpx;
+		font-family: FZLanTingHeiS-DB1-GBK;
+		font-weight: 400;
+		color: #333333;
 		position: relative;
 	}
 	.current::before{
-		width: 37rpx;
-		height: 7rpx;
-		background: #FB4E3E;
+		width: 92rpx;
+		height: 26rpx;
+		background: url(../../static/index/v2/tab_icon.png) no-repeat center;
 		content: '';
 		background-size: 100% 100%;
 		position: absolute;
-		bottom:15rpx;
+		top:50%;
 		left:50%;
-		margin-left:-19rpx;
-		border-radius: 5rpx;
+		margin-left: -46rpx;
+		margin-top: -13rpx;
+		z-index: 2;
 	}
 	.zixuan{
 		width: 92rpx;
