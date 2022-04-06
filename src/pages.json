@@ -153,14 +153,6 @@
 				"selectedIconPath": "static/index/v2/tabbar_index_.png",
 				"text": "卡世界"
 			},
-            // #ifdef APP-PLUS
-			// {
-			// 	"pagePath": "pages/index/message",
-			// 	"iconPath": "static/index/tabbar_mess.png",
-			// 	"selectedIconPath": "static/index/tabbar_mess_.png",
-			// 	"text": "消息"
-			// },
-            // #endif
             {
 				"pagePath": "pages/index/live",
 				"iconPath": "static/index/v2/tabbar_card.png",

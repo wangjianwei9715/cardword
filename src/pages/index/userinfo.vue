@@ -173,15 +173,7 @@
 					this.countTime = data.toPay.leftSec;
 					this.countDownTime()
 				}
-				if(data.familial){
-					uni.setTabBarItem({
-						index: 1,
-						text: '拆卡',
-						pagePath: '/pages/index/live',
-						iconPath: 'static/index/tabbar_live.png',
-						selectedIconPath: 'static/index/tabbar_live_.png',
-					})
-				}
+				
 				if(cb) cb()
 
 			});
