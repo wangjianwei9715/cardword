@@ -10,15 +10,9 @@ export module app{
     };
     export let sever:SocketServer;
     export let socketInfo = {tcp:'',tcpToken:''};
-    
-    // 测试环境
-    // export let localTest=true;
-    // export let domaintest='http://192.168.0.38:8701/api/v1/';  
-    // export let bussinessApiDomain='http://192.168.0.38:8701/api/v1/';
 
     // 发布环境
     export let localTest=false;
-    export let domaintest='https://server.ssl1.ka-world.com/api/v1/'; 
     export let bussinessApiDomain='https://server.ssl1.ka-world.com/api/v1/';
     // 热更新地址
     export let update_url='http://service.s1.ka-world.com/';
