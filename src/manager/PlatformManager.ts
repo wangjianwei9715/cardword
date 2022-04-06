@@ -461,6 +461,20 @@ export default class PlatformManager {
 			}
 		});
 	}
+	// 节流
+	throttle(fn:any,delay:any){
+		let valid = true
+		return function() {
+			if(!valid){
+				return false 
+			}
+			valid = false
+			setTimeout(() => {
+				fn()
+				valid = true;
+			}, delay)
+		}
+	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false
 		return aspect;

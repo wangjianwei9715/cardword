@@ -3,16 +3,10 @@
 		<view class="goodslist-index-show" v-for="item in goodsList" :key="item.goodCode" @click="onClickJumpUrl(item.goodCode)">
 			<view class="goodslist-index">
 				<view class="goodslist-pic">
-					<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 					<image :lazy-load="true" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 				</view>
 				<view class="goodslist-right">
 					<view class="goodslist-title">{{item.title}}</view>
-					<view v-if="item.discount&&item.discount!=''" class="goodslist-tips-list">
-						<view class="goodslist-tips" v-for="(items,indexs) in typeof (item.discount) =='string'?item.discount.split(','):item.discount" :key="indexs">
-						{{typeof (item.discount) =='string'?items:items.content}}
-						</view>
-					</view>
 					<view class="goodslist-bottom">
 						<view class="goodslist-price-content">
 							¥<text class="goodslist-price">{{item.price}}</text>
@@ -29,7 +23,6 @@
 							</view>
 						</view>
 						<view v-else-if="item.baoduiMinute>0" class="goodslist-bottom-right-time">
-							<view class="goodslist-plan-desc-time">({{dateFormatMSHMSBD(item.startAt)}}优先包队)</view>
 							<view class="goodslist-plan-desc-time">{{dateFormatMSHMS(item.startAt+(60*item.baoduiMinute))}}开售</view>
 						</view>
 						<view v-else class="goodslist-bottom-right-time">
@@ -47,7 +40,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-    import { dateFormatMSHMS,dateFormatMSHMSBD } from "@/tools/util"
+    import { dateFormatMSHMS } from "@/tools/util"
 	import {
 		getGoodsImg
 	} from "../../tools/util";
@@ -65,17 +58,13 @@
 		@Prop({default:false})
 		mini:any;
 		dateFormatMSHMS = dateFormatMSHMS;
-		dateFormatMSHMSBD = dateFormatMSHMSBD;
 		getGoodsImg = getGoodsImg;
 		screenHeight = uni.getSystemInfoSync().windowHeight
 		showPlan:any = []
+		valid = true
 		@Watch('pagescroll')
 		onPagescrollChanged(val: any, oldVal: any){
 			this.selectory()
-		}
-		@Watch('goodsList')
-		onGoodsListChanged(val: any, oldVal: any){
-			this.getGoodsList()
 		}
 		created(){//在实例创建完成后被立即调用
 			
@@ -91,39 +80,43 @@
 			this.$emit("send", id);
 		}
 		selectory(){
-			setTimeout(()=>{
-				// 实时监控目前显示的商品列表
-				let select= uni.createSelectorQuery().in(this).selectAll('.goodslist-plan-desc');
-				let plan:any = []
-				select.boundingClientRect( res => {
-					let data:any = res
-					if(data){
-						for(let i in data){
-							if(data[i].top< this.screenHeight &&data[i].top>0){
-								plan.push(data[i].id)
-							}
+			this.throttle(1000)
+		}
+		throttle(delay:any){
+			if(!this.valid){
+				return false 
+			}
+			this.valid = false
+			setTimeout(() => {
+				this.selectoryFnc()
+				this.valid = true;
+			}, delay)
+		}
+		selectoryFnc(){
+			// 实时监控目前显示的商品列表
+			let select= uni.createSelectorQuery().in(this).selectAll('.goodslist-plan-desc');
+			let plan:any = []
+			select.boundingClientRect( res => {
+				let data:any = res
+				if(data){
+					for(let i in data){
+						if(data[i].top< this.screenHeight &&data[i].top>0){
+							plan.push(data[i].id)
 						}
-						if(JSON.stringify(plan) != JSON.stringify(this.showPlan)){
-							this.showPlan = JSON.parse(JSON.stringify(plan))
-							this.getGoodProgress()
-						}
-						
 					}
-				}).exec();
-				
-			},100)
+					
+					if(JSON.stringify(plan) != JSON.stringify(this.showPlan)){
+						this.showPlan = JSON.parse(JSON.stringify(plan))
+						this.getGoodProgress()
+					}
+					
+				}
+			}).exec();
 		}
 		getGoodProgress(){
 			this.$emit('progress',this.showPlan)
 		}
-		getGoodsList(){
-			let data = JSON.parse(JSON.stringify(this.goodsList))
-			if(data==''){
-				return;
-			}
-			
-			this.selectory()
-		}
+		
 	}
 </script>
 

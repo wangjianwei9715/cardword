@@ -149,9 +149,9 @@
 		"iconWidth": "28px",
 		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/index/tabbar_index.png",
-				"selectedIconPath": "static/index/tabbar_index_.png",
-				"text": "首页"
+				"iconPath": "static/index/v2/tabbar_index.png",
+				"selectedIconPath": "static/index/v2/tabbar_index_.png",
+				"text": "卡世界"
 			},
             // #ifdef APP-PLUS
 			// {
@@ -163,20 +163,20 @@
             // #endif
             {
 				"pagePath": "pages/index/live",
-				"iconPath": "static/index/tabbar_live.png",
-				"selectedIconPath": "static/index/tabbar_live_.png",
+				"iconPath": "static/index/v2/tabbar_card.png",
+				"selectedIconPath": "static/index/v2/tabbar_card_.png",
 				"text": "拆卡"
 			},
 			{
 				"pagePath": "pages/index/service",
-				"iconPath": "static/index/tabbar_search.png",
-				"selectedIconPath": "static/index/tabbar_search_.png",
+				"iconPath": "static/index/v2/tabbar_service.png",
+				"selectedIconPath": "static/index/v2/tabbar_service_.png",
 				"text": "服务"
 			},
 			{
 				"pagePath": "pages/index/userinfo",
-				"iconPath": "static/index/tabbar_user.png",
-				"selectedIconPath": "static/index/tabbar_user_.png",
+				"iconPath": "static/index/v2/tabbar_user.png",
+				"selectedIconPath": "static/index/v2/tabbar_user_.png",
 				"text": "我的"
 			}
 		]

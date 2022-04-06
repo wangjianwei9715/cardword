@@ -37,7 +37,7 @@
 			<statusbar/>
 			<view class="tab-header">
 				<view class="header-search" @click="onClickSearch">
-					搜索商品、商家
+					<view class="sousuo-icon"></view>搜索热门球员...
 					<view class="search-icon">搜索</view>
 				</view>
 			</view>
@@ -45,15 +45,6 @@
 		
 		<view class="tab-center">
 			<statusbar/>
-			<view class="banner-content">
-				
-				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff" duration="200"> 
-					<swiper-item v-for="(item,index) in topAddList" :key="index">
-						<image class="swiper-image" :src="decodeURIComponent(item.pic)" mode="aspectFits" @click="onClickTopJumpUrl(item.target)"/>
-					</swiper-item>
-					
-				</swiper>
-			</view>
 			<!-- #ifndef MP  -->
 			<view class="tab-good-content">
 				<view class="tab-type">
@@ -63,18 +54,15 @@
 					</view>
 				</view>
 				
-				<view class="tab-act-content">
-					<view class="tab-act-title"></view>
-					<scroll-view class="goods-card-content-scroll" :scroll-x="true">
-						<view class="tab-good-inedx" v-show="item.img!=''" v-for="(item,index) in noticeList" :key="index" @click="onClickNotice(item.target.goodCode)">
-							<image :lazy-load="true" class="tab-good-index-img" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
-							<view class="tab-good-index-bottom">
-								<view class="tab-good-index-price">￥{{item.price}}</view>
-								<view class="tab-good-index-tip">{{item.name}}</view>
-							</view>
-						</view>
-					</scroll-view>
+				<!-- 卡豆商城 热门系列 拆卡围观 -->
+				<view class="tab-hot">
+					<view class="tab-hot-box" :class="'tab-hot-box-'+name" v-for="(item,name) in hotList" :key="name">
+						<view class="tab-hot-boxtitle">{{item.title}}</view>
+						<view class="tab-hot-boxtips">{{item.tips}}</view>
+						<view class="tab-hot-boxpic-index"></view>
+					</view>
 				</view>
+
 			</view>
 			<!-- #endif -->
 		</view>
@@ -130,9 +118,21 @@
 			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab4.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
 			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab5.png',text:'商家入驻',url:'/pages/userinfo/merchant_join'},
 		];
-		noticeList = [
-		
-		];
+		// 卡豆商城 热门系列 拆卡围观
+		hotList:{[x:string]:any} = {
+			cardBean:{
+				title:'卡豆商城',
+				tips:'卡豆兑换好礼'
+			},
+			hot:{
+				title:'热门系列',
+				tips:'新系列上市'
+			},
+			split:{
+				title:'拆卡围观',
+				tips:'正在拆卡'
+			}
+		};
 		goodTab = [
 			{id:1,name:'推荐'},
 			{id:11,name:'自选'},
@@ -343,7 +343,6 @@
 				// #ifndef MP
 				this.topAddList = data.topAddList
 				// #endif
-				this.noticeList = data.activity
 				this.reqNewData()
 			})
 			// #ifdef MP-WEIXIN
@@ -638,14 +637,14 @@
 	.tab-good-content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 19rpx;
-		background: linear-gradient(0deg, #F2F2F2, #FFFFFF 80%, #FFFFFF);
+		padding:0;
+		background:#fff;
 	}
 
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:30rpx 0 32rpx 0;
+		padding:30rpx 20rpx 32rpx 20rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -679,137 +678,12 @@
 		color: #14151A;
 		text-align: center;
 	}
-	// .tab-act-content{
-	// 	width: 710rpx;
-	// 	height:318rpx;;
-	// 	padding:0 20rpx 0 20rpx;
-	// 	box-sizing: border-box;
-	// 	border-radius: 20rpx;
-	// 	background:url(../../static/index/newyear.png) no-repeat center;
-	// 	background-size: 100% 100%;
-	// 	margin:0 auto;
-	// }
-	// .tab-act-title{
-	// 	width: 281rpx;
-	// 	height:55rpx;
-	// 	background-size: 100% 100%;
-	// 	margin:0 auto;
-	// 	margin-bottom: 15rpx;
-	// }
+	
 
-	.tab-act-content{
-		width: 710rpx;
-		padding:0 20rpx 0 24rpx;
-		padding-bottom: 20rpx;
-		box-sizing: border-box;
-		border-radius: 20rpx;
-		background: linear-gradient(90deg, #E7F1FB, #E8E4FA);
-		margin:0 auto;
-	}
-	.tab-act-title{
-		width: 281rpx;
-		height:44rpx;
-		background:url(../../static/index/act_title.png) no-repeat;
-		background-size: 100% 100%;
-		margin:0 auto;
-		margin-bottom: 15rpx;
-	}
-	.tab-good-inedx{
-		width:170rpx;
-		height:230rpx;
-		box-sizing: border-box;
-		display: inline-block;
-		margin-right: 20rpx;
-	}
-	.tab-good-index-img{
-		width: 170rpx;
-		height:170rpx;
-		border-radius: 10rpx;
-	}
-	.tab-good-index-bottom{
-		width: 170rpx;
-		height:50rpx;
-		display: flex;
-		align-items: center;
-		white-space:nowrap;
-		overflow:hidden;
-		margin-top: -10rpx;
-		text-overflow:ellipsis;
-		// margin-top: 2rpx;
-	}
-	.tab-good-index-price{
-		font-size: 32rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 0;
-		color: #FB4E3E
-	}
-	.tab-good-index-tip{
-		font-size: 21rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #ABABBB;
-		margin-left: 8rpx;
-	}
-	.tab-good-title{
-		width: 100%;
-		font-size:$font-28;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #14151A;
-		margin-bottom: 12rpx;
-	}
-	.tab-good-bottom{
-		width: 100%;
-		height:90rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		box-sizing: border-box;
-	}
-	.tab-good-img{
-		width: 120rpx;
-		height:90rpx;
-		border-radius: 4rpx;
-	}
-	.tab-good-desc{
-		width: 160rpx;
-		height:90rpx;
-		box-sizing: border-box;
-		padding-top: 4rpx;
-	}
-	.tab-good-name{
-		width: 100%;
-		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #14151A;
-		margin-bottom: 8rpx;
-		white-space:nowrap;	
-		overflow:hidden;
-		text-overflow:ellipsis;
-	}
-	.tab-good-btn{
-		width: 100rpx;
-		height: 40rpx;
-		background: linear-gradient(90deg, #FDEB57 0%, #FFDB37 100%);
-		border-radius: 24rpx;
-		text-align: center;
-		line-height: 40rpx;
-		font-size: $font-20;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #14151A;
-	}
-	.tab-price-content{
-		width: 100%;
-		font-size: $font-24;
-		font-family: 'DIN';
-		font-weight: bold;
-		color: #14151A;
-	}
-	.tab-price{
-		font-size: $font-32;
-	}
+	
+	
+	
+	
 	.tabc-content{
 		width: 100%;
 		background:#F2F2F2;
@@ -968,29 +842,91 @@
 		border: 2rpx solid #FB4E3E;
 		border-radius: 40rpx;
 		position: relative;
-		font-size: 24rpx;
-		font-family: Microsoft YaHei;
+		font-size: 28rpx;
+		font-family: Alibaba PuHuiTi;
 		font-weight: 400;
-		color: #ABABBB;
+		color: #A3A3A3;
 		line-height: 62rpx;
 		box-sizing: border-box;
 		padding-left: 34rpx;
-		
+		display: flex;
+		align-items: center;
+	}
+	.sousuo-icon{
+		width: 31rpx;
+		height:32rpx;
+		background:url(../../static/index/v2/sousuo.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-right: 30rpx;
 	}
 	.search-icon{
 		width: 113rpx;
-		height: 62rpx;
+		height: 54rpx;
 		background: #FB4E3E;
 		border-radius: 30rpx;
 		position: absolute;
-		right:-1rpx;
-		top:-1rpx;
+		right:2rpx;
+		top:2rpx;
 		text-align: center;
-		line-height: 62rpx;
+		line-height: 54rpx;
 		font-size: 24rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #FFFFFF;
 		box-sizing: border-box;
+	}
+
+	// 拆卡热门
+	.tab-hot{
+		width: 100%;
+		height:185rpx;
+		box-sizing: border-box;
+		padding: 0 20rpx;
+		background: linear-gradient(0deg, #F2F2F2, #FFFFFF 80%, #FFFFFF);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.tab-hot-box{
+		width: 236rpx;
+		height:185rpx;
+		background: url(../../static/index/v2/hot_bg.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.tab-hot-box-hot{
+		background: url(../../static/index/v2/hot_bg_2.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.tab-hot-box-split{
+		background: url(../../static/index/v2/hot_bg_3.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.tab-hot-boxtitle{
+		width: 100%;
+		text-align: center;
+		font-size: 28rpx;
+		font-family: Alibaba PuHuiTi;
+		font-weight: bold;
+		color: #333333;
+		padding-top: 10rpx;
+	}
+	.tab-hot-boxtips{
+		width: 100%;
+		text-align: center;
+		font-size: 18rpx;
+		font-family: Alibaba PuHuiTi;
+		font-weight: 400;
+		color: #565656;
+		margin-top:6rpx;
+	}
+	.tab-hot-boxpic-index{
+		width: 100%;
+		box-sizing: border-box;
+		height:84rpx;
+		padding:0 22rpx;
+		margin-top: 15rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 </style>
