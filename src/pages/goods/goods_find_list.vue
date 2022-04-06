@@ -372,7 +372,7 @@
 	.goods-lists{
 		width: 100%;
 		box-sizing: border-box;
-		padding: 272rpx 20rpx 60rpx 20rpx;
+		padding: 272rpx 14rpx 60rpx 14rpx;
 	}
 	.sort-shadow{
 		width: 100%;

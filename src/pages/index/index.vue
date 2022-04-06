@@ -691,7 +691,7 @@
 	.goodslist-index{
 		width: 100%;
 		box-sizing: border-box;
-		padding:16rpx 20rpx;
+		padding:16rpx 14rpx;
 		
 	}
 	
