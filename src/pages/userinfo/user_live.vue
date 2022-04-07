@@ -7,7 +7,7 @@
 		</view>
 
 		<view class="live-content">
-			<liveslist :liveList="liveList"   @send="onClickLive"/>
+			<liveslist :liveList="liveList"  />
 			<empty v-if="liveList.length==0"/>
 		</view>
 	</view>
@@ -71,12 +71,7 @@
 			this.liveList = []
 			this.reqNewData()
 		}
-		onClickLive(item:any){
-			console.log(item)
-			return;
-			
-			
-		}
+		
 		
 	}
 </script>

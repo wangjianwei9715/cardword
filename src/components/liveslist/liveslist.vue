@@ -22,6 +22,7 @@
 	import {
 		getGoodsImg
 	} from "../../tools/util";
+	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
@@ -36,7 +37,7 @@
 			
 		}
 		onClickJumpUrl(item:any){
-			this.$emit("send", item);
+			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		
 	}

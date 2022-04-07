@@ -12,7 +12,7 @@
 
 		<view class="live-content">
 			<statusbar/>
-			<liveslist :liveList="liveList"  @send="onClickLive"/>
+			<liveslist :liveList="liveList" />
 		</view>
 	</view>
 </template>
@@ -80,10 +80,6 @@
 			uni.navigateTo({
 				url: '/pages/live/live_find?q='+this.searchText
 			})
-		}
-		onClickLive(item:any){
-			// app.platform.launchMiniProgramLive(item.roomId)
-			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		searchReqNew(){
 			// 获取更多商品
