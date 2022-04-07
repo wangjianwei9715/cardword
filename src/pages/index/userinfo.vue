@@ -424,7 +424,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:30rpx 0 0 0;
-		border-bottom: 20rpx solid #F2F2F2;
+		border-bottom: 20rpx solid $content-bg;
 		.header{
 			width: 100%;
 			height:40rpx;

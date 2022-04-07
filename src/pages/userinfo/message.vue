@@ -137,7 +137,7 @@
 	}
 	.top{
 		width: 100%;
-		border-bottom: 20rpx solid #F2F2F2;
+		border-bottom: 20rpx solid $content-bg;
 		box-sizing: border-box;
 		padding: 0 32rpx;
 	}

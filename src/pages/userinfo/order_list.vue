@@ -299,7 +299,7 @@
 
 <style lang="scss">
 	page{
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.header-banner{
 		width: 100%;

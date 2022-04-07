@@ -959,7 +959,7 @@
 		width: 750rpx;
 		box-sizing: border-box;
 		
-		// background:#F2F2F2
+		// background:$content-bg
 	}
 	.header-banner{
 		width: 100%;
@@ -1086,7 +1086,7 @@
 	}
 	.detail-index-bg{
 		width: 100%;
-		background:#F2F2F2;
+		background:$content-bg;
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;

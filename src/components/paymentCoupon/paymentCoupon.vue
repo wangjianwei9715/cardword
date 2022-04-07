@@ -186,7 +186,7 @@
 			height:1000rpx;
 			position: fixed;
 			box-sizing: border-box;
-			background:#F2F2F2;
+			background:$content-bg;
 			border-radius: 12rpx 12rpx 0px 0px;
 			z-index: 1000;
 			bottom:0;

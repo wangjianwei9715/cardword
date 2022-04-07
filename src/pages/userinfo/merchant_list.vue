@@ -173,7 +173,7 @@
 
 <style lang="scss">
 	page {
-		background: #f2f2f2;
+		background: $content-bg;
 	}
 
 	.detail-bg {

@@ -419,7 +419,7 @@
 	}
 
 	.goods-lists {
-		background: #F2F2F2;
+		background: $content-bg;
 		width: 100%;
 		box-sizing: border-box;
 		padding: 16rpx 20rpx;

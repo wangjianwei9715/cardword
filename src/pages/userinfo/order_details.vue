@@ -467,12 +467,12 @@
 
 <style lang="scss">
 	page{
-		background:#f2f2f2;
+		background:$content-bg;
 	}
 	.content{
 		width: 100%;
 		box-sizing: border-box;
-		background:#f2f2f2;
+		background:$content-bg;
 	}
 	.header{
 		width: 100%;
@@ -731,8 +731,8 @@
 	.order-desc{
 		width: 100%;
 		box-sizing: border-box;
-		border-top:20rpx solid #F2F2F2;
-		border-bottom: 20rpx solid #F2F2F2;
+		border-top:20rpx solid $content-bg;
+		border-bottom: 20rpx solid $content-bg;
 		padding: 20rpx 32rpx 0 32rpx;
 		background: #fff;
 		&-index{
@@ -813,13 +813,13 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:20rpx;
-		border-bottom: 20rpx solid #F2F2F2;
+		border-bottom: 20rpx solid $content-bg;
 		background: #fff;
 	}
 	.address-content{
 		width: 100%;
 		box-sizing: border-box;
-		border-bottom: 20rpx solid #F2F2F2;
+		border-bottom: 20rpx solid $content-bg;
 		padding:20rpx 32rpx;
 		background: #fff;
 		.title{
@@ -872,7 +872,7 @@
 		box-sizing: border-box;
 		background: #fff;
 		padding:20rpx 32rpx;
-		border-bottom: 20rpx solid #F2F2F2;
+		border-bottom: 20rpx solid $content-bg;
 		margin-bottom: calc(110rpx + env(safe-area-inset-bottom));
 		.title{
 			width: 100%;
@@ -995,7 +995,7 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		border-bottom: 20rpx solid #f2f2f2;
+		border-bottom: 20rpx solid $content-bg;
 	}
 
 .yunfei-item {
