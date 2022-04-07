@@ -280,7 +280,7 @@
 <style lang="scss">
 	$font-24:24rpx;
 	page{
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.content{
 		width: 100%;

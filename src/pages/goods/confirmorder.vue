@@ -17,10 +17,8 @@
       </view>
       <button class="header-right">&#xe470;</button>
     </view>
-    <image
-      src="../../static/goods/icon_xinfeng.png"
-      style="width: 748rpx; height: 4rpx"
-    ></image>
+
+    
 
     <view class="order-detail" v-if="goodsData.pic">
       <view class="goods-info">
@@ -710,24 +708,27 @@ $font-24: 24rpx;
 $font-28: 28rpx;
 
 page {
-  background: #f2f2f2;
+  background: $content-bg;
 }
 .content {
+  width: 100%;
   box-sizing: border-box;
   padding-bottom: calc(300rpx + env(safe-area-inset-bottom));
+  padding: 13rpx
 }
 .order-detail {
+  width: 100%;
   background: #fff;
 }
 .top-order{
-  border-top: 20rpx solid #f2f2f2;
+  border-top: 20rpx solid $content-bg;
 }
 .header {
   width: 100%;
-  height: 200rpx;
+  height: 170rpx;
   background: #fff;
   box-sizing: border-box;
-  padding: 0 30rpx;
+  padding: 0 20rpx;
   border-bottom: 14rpx solid #f5f5f9;
   display: flex;
   align-items: center;
@@ -1153,7 +1154,7 @@ page {
   color: #000;
   box-sizing: border-box;
   padding:0 36rpx;
-  background:#f2f2f2
+  background:$content-bg
 }
 .kami-gx {
   width: 28rpx;

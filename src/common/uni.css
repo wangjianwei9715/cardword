@@ -585,7 +585,7 @@ radio-group label, checkbox-group label{
 
 /* 九宫格 */
 .uni-grid-9 {
-	background: #f2f2f2;
+	background: #F6F7FB;
 	width: 750rpx;
 	display: flex;
 	flex-direction: row;

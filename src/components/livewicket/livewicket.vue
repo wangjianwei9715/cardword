@@ -46,7 +46,7 @@
 		justify-content: center;
 		overflow: hidden;
 		position: relative;
-		box-shadow: 0px 0px 20rpx 4rpx #f2f2f2;
+		box-shadow: 0px 0px 20rpx 4rpx $content-bg;
 		&-img{
 			width: 160rpx;
 			height:110rpx;

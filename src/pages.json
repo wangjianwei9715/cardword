@@ -14,8 +14,8 @@
 				"navigationBarTextStyle": "black",
                 //  #endif
                 "enablePullDownRefresh": true,
-                "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 			}
 		}
 		, {
@@ -30,8 +30,8 @@
 				"navigationBarTextStyle": "black",
                 //  #endif
 				"enablePullDownRefresh": false,
-                "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 			}
 
 		}
@@ -186,8 +186,8 @@
                         "navigationBarTextStyle": "black",
                         //  #endif
                         "enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                     }
         
                 }, {
@@ -248,8 +248,8 @@
                         "navigationBarTextStyle": "black",
                         //  #endif
                         "enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                     }
         
                 },  {
@@ -269,8 +269,8 @@
                     "transparentTitle":"auto",
                     "navigationBarTextStyle": "black",
                     "enablePullDownRefresh": false,
-                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                    "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
                 
                 }
@@ -352,8 +352,8 @@
                         "transparentTitle":"auto",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 					
 				},
@@ -379,8 +379,8 @@
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 					
 				},
@@ -475,8 +475,8 @@
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 					
 				}
@@ -493,8 +493,8 @@
                         "navigationStyle": "custom",
                         "enablePullDownRefresh": false,
                         "navigationBarBackgroundColor": "#ffffff",
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                     }
                     
                 }
@@ -506,8 +506,8 @@
                     "navigationStyle": "custom",
                     "enablePullDownRefresh": false,
                     "navigationBarBackgroundColor": "#ffffff",
-                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                    "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
                 
                 }
@@ -518,8 +518,8 @@
                     "navigationBarTitleText": "我的点赞",
                     "enablePullDownRefresh": false,
                     "navigationBarBackgroundColor": "#ffffff",
-                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                    "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
                 
                 }
@@ -542,8 +542,8 @@
                     "navigationBarTextStyle": "black",
                     //  #endif
                     "enablePullDownRefresh": false,
-                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                    "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
     
             },
@@ -559,8 +559,8 @@
 			        "navigationBarTextStyle": "black",
 			        //  #endif
 			        "enablePullDownRefresh": false,
-			        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-			        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+			        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+			        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 			    }
 			    
 			},{
@@ -575,8 +575,8 @@
                     "navigationBarTextStyle": "black",
                     //  #endif
                     "enablePullDownRefresh": true,
-                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                    "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
             },{
                 "path" : "order_details",
@@ -586,8 +586,8 @@
                     "navigationBarBackgroundColor": "#ffffff",
                     "navigationBarTextStyle": "black",
                     "enablePullDownRefresh": false,
-                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                    "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
                 
             }
@@ -648,8 +648,8 @@
                     //  #endif
                     "navigationBarBackgroundColor":"#ffffff",
                     "navigationBarTextStyle":"black",
-                    "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                    "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                    "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
                 
             }
@@ -851,8 +851,8 @@
                         "navigationBarBackgroundColor":"#ffffff",
                         "navigationBarTextStyle":"black",
                         "enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                     }
                 
                 }
@@ -864,8 +864,8 @@
                         "navigationBarBackgroundColor":"#ffffff",
                         "navigationBarTextStyle":"black",
                         "enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                     }
                 
                 }
@@ -877,8 +877,8 @@
                         "navigationBarBackgroundColor":"#ffffff",
                         "navigationBarTextStyle":"black",
                         "enablePullDownRefresh": true,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                     }
                 
                 }
@@ -890,8 +890,8 @@
                         "navigationBarBackgroundColor":"#ffffff",
                         "navigationBarTextStyle":"black",
                         "enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                     }
                 
                 }
@@ -903,8 +903,8 @@
                         "navigationBarBackgroundColor":"#ffffff",
                         "navigationBarTextStyle":"black",
                         "enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                     }
                 
                 }
@@ -916,8 +916,8 @@
 						"navigationBarBackgroundColor":"#ffffff",
 						"navigationBarTextStyle":"black",
 						"enablePullDownRefresh": false,
-						"backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
                 
                 },{
@@ -926,8 +926,8 @@
 					{
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
-						"backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				
 				}

@@ -263,7 +263,7 @@ $font-24: 24rpx;
   width: 100%;
   box-sizing: border-box;
   padding: 194rpx 20rpx 60rpx 20rpx;
-  background: #F2F2F2;
+  background: $content-bg;
 }
 .header-sort {
   width: 100%;

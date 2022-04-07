@@ -353,7 +353,7 @@
 		.step-line{
 			width: 93rpx;
 			height: 4rpx;
-			background: #F2F2F2;
+			background: $content-bg;
 			position: absolute;
 			right:-108rpx;
 			top:31rpx;

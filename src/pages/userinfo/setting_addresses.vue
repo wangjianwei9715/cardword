@@ -69,7 +69,7 @@
 	page{
 		width: 100%;
 		height:100%;
-		background:#F2F2F2
+		background:$content-bg
 	}
 	.setting-index {
 		width: 100%;

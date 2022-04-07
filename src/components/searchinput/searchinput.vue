@@ -29,7 +29,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	/* #ifndef MP */
 	.header-search-input{
 		width: 100%;
@@ -53,7 +53,7 @@
 	.header-search-input{
 		width: 710rpx;
 		height:64rpx;
-		background: #F2F2F2;
+		background: $content-bg;
 		border-radius: 4rpx;
 		box-sizing: border-box;
 		display: flex;

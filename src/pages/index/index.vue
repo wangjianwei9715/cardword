@@ -118,7 +118,7 @@
 		]
 		tabList:{[x:string]:any} = {
 			tabTop:[
-				{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab1.png',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
+				{img:'../../static/index/v2/top_icon0.gif',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
 				{img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
 				{img:'../../static/index/v2/top_icon2.png',text:'资讯公告',url:'/pages/information/list'},
 				{img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
@@ -554,7 +554,7 @@
 	$font-28:28rpx;
 	$font-32:32rpx;
 	page{
-		background:#F2F2F2
+		background:$content-bg
 	}
 	.content{
 		width: 100%;
@@ -616,7 +616,7 @@
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:10rpx 20rpx 10rpx 20rpx;
+		padding:10rpx 50rpx 10rpx 50rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -658,7 +658,7 @@
 	
 	.tabc-content{
 		width: 100%;
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.goodslist-index{
 		width: 100%;
@@ -854,7 +854,7 @@
 		height:185rpx;
 		box-sizing: border-box;
 		padding: 0 20rpx;
-		background: linear-gradient(0deg, #F2F2F2, #FFFFFF 80%, #FFFFFF);
+		background: linear-gradient(0deg, $content-bg, #FFFFFF 80%, #FFFFFF);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

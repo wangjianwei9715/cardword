@@ -193,7 +193,7 @@
 	.calendar-content{
 		width: 750rpx;
 		box-sizing: border-box;
-		// background:#F2F2F2
+		// background:$content-bg
 	}
 	
 	
@@ -228,7 +228,7 @@
 		flex-wrap: wrap;
 		justify-content: center;
 		margin:0 auto;
-		border-bottom:1rpx solid #F2F2F2;
+		border-bottom:1rpx solid $content-bg;
 		margin-bottom:30rpx;
 		position: relative;
 	}

@@ -137,7 +137,7 @@
 		width: 100%;
 		height:100rpx;
 		box-sizing: border-box;
-		border-bottom: 1px solid #F2F2F2;
+		border-bottom: 1px solid $content-bg;
 		display: flex;
 		align-items: center;
 	}

@@ -717,7 +717,7 @@
 	}
 	.branch-sq{
 		height: 27rpx;
-		background: #F2F2F2;
+		background: $content-bg;
 		border: 1rpx solid #FFFFFF;
 		border-radius: 12rpx 2rpx 12rpx 2rpx;
 		position: absolute;
@@ -797,7 +797,7 @@
 		.cart-index{
 			max-width: 95%;
 			height: 46rpx;
-			background: #F2F2F2;
+			background: $content-bg;
 			border-radius: 4rpx;
 			font-size: 20rpx;
 			font-family: Microsoft YaHei;
@@ -948,7 +948,7 @@
 		.btn-right-random-orther{
 			width: 100%;
 			height: 88rpx;
-			background:#F2F2F2;
+			background:$content-bg;
 			border-radius: 44rpx;
 			text-align: center;
 			line-height: 88rpx;

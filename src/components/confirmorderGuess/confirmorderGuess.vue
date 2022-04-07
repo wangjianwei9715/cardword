@@ -80,7 +80,7 @@
 		width: 100%;
 		background:#fff;
 		padding:0 0 28rpx 0;
-		border-top: 20rpx solid #f2f2f2;
+		border-top: 20rpx solid $content-bg;
 	}
 	.guess-content-header{
 		width: 100%;
@@ -92,7 +92,7 @@
 		justify-content: space-between;
 	}
 	.guess-free{
-		border-top: 20rpx solid #f2f2f2;
+		border-top: 20rpx solid $content-bg;
 		width: 100%;
 		height: 73rpx;
 		display: flex;
