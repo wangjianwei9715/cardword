@@ -1,0 +1,102 @@
+<template>
+	<view class="tipsMask">
+		<view class="tipsCard">
+			<view class="cancelTips">
+				确定取消关注？
+			</view>
+			<view class="buttonList">
+				<view class="cancel button" @click="$emit('cancel')">取消</view>
+				<view class="confirm button" @click="$emit('confirm')">确定</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script lang="ts">
+	import {
+		Component,
+		Prop,
+		Vue
+	} from "vue-property-decorator";
+	import BaseComponent from "@/base/BaseComponent.vue";
+	@Component({})
+	export default class ClassName extends BaseComponent {
+
+
+		created() { //在实例创建完成后被立即调用
+
+		}
+		mounted() { //挂载到实例上去之后调用
+
+		}
+		destroyed() {
+
+		}
+	}
+</script>
+
+<style lang="scss">
+	.tipsMask {
+		position: fixed;
+		background-color: rgba(0, 0, 0, .4);
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+	
+		.tipsCard {
+			width: 430rpx;
+			height: 285rpx;
+			border-radius: 6rpx;
+			background-color: #fff;
+			position: absolute;
+			left: 0;
+			right: 0;
+			margin: auto;
+			top: 342rpx;
+	
+			.cancelTips {
+				font-size: 26rpx;
+				font-family: FZLanTingHeiS-R-GB;
+				font-weight: 400;
+				color: #333333;
+				text-align: center;
+				letter-spacing: 3rpx;
+				position: relative;
+				top: 81rpx;
+			}
+	
+			.buttonList {
+				padding: 0 49rpx;
+				display: flex;
+				justify-content: space-between;
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin: auto;
+				bottom: 70rpx;
+	
+				.button {
+					width: 120rpx;
+					height: 50rpx;
+					font-size: 26rpx;
+					font-family: FZLanTingHeiS-R-GB;
+					font-weight: 400;
+					line-height: 50rpx;
+					text-align: center;
+					letter-spacing: 2rpx;
+				}
+	
+				.cancel {
+					border: 1rpx solid #c4c4c4;
+					color: #333333;
+				}
+	
+				.confirm {
+					background-color: #ff0016;
+					color: #fff;
+				}
+			}
+		}
+	}
+</style>
