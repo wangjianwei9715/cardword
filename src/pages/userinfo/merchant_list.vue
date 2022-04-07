@@ -29,9 +29,10 @@
 						<view class="scroll-goodslist-item" v-for="(goodsItem,goodsIndex) in item.goodList"
 							:key='goodsItem.goodCode'>
 							<view class="picBlock">
-								
+
 								<image :src="decodeURIComponent(goodsItem.pic)" mode="aspectFill"></image>
-								<view class="angleMark" :style="{backgroundColor:goodsItem.statusName=='在售'?'#f5162b':'#4f8bf5'}">
+								<view class="angleMark"
+									:style="{backgroundColor:goodsItem.statusName=='在售'?'#f5162b':'#4f8bf5'}">
 									{{goodsItem.statusName}}
 								</view>
 							</view>
@@ -94,7 +95,8 @@
 		folloModalShow = false;
 		selectItem = {
 			id: 0,
-			follow: false
+			follow: false,
+			fans: 0
 		};
 		onLoad(query: any) {
 			this.reqNewData();
@@ -112,7 +114,9 @@
 		follow() {
 			if (!this.selectItem.id) return
 			app.http.Post('merchant/follow/' + this.selectItem.id, {}, (res: any) => {
-				this.selectItem.follow = !this.selectItem.follow
+
+				this.selectItem.follow = res.data.follow
+				this.selectItem.fans = res.data.follow ? this.selectItem.fans + 1 : this.selectItem.fans - 1
 				this.folloModalShow = false
 			})
 		}
@@ -127,14 +131,17 @@
 			// #endif
 			// const path='/pages/userinfo/merchant_shops'
 			const path = `/pages/userinfo/merchant_shopsV2`
+			// uni.navigateTo({
+			// 	url: path + "?id=" +
+			// 		item.id +
+			// 		"&name=" +
+			// 		item.name +
+			// 		"&avatar=" +
+			// 		item.logo
+			// });
 			uni.navigateTo({
-				url: path + "?id=" +
-					item.id +
-					"&name=" +
-					item.name +
-					"&avatar=" +
-					item.logo
-			});
+				url: path + '?id=' + item.id
+			})
 		}
 		reqNewData(cb ? : Function) {
 			// 获取更多商品
