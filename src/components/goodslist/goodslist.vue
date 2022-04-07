@@ -18,7 +18,7 @@
 				<view class="goodslist-title">{{item.title}}</view>
 				<view class="goodslist-priceMsg uni-flex">
 					<view class="goodslist-priceMsg-left">
-						￥<text>{{item.price}}</text><text>{{item.isSelect?'起':''}}</text>
+						￥<text>{{item.price}}</text><text>{{item.isSelect||item.discount!=''?'起':''}}</text>
 					</view>
 					<view class="goodslist-priceMsg-right">
 						{{item.totalNum-(item.currentNum+item.lockNum)}}/{{item.totalNum}}
