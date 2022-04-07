@@ -254,7 +254,7 @@
 			justify-content: end;
 			.progressMask{
 				height: inherit;
-				background-color: #F9D0CC;
+				background-color: #F6F7FB;
 				width: 30%;
 			}
 		}
