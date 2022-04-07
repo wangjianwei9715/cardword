@@ -6,7 +6,7 @@
 				<searchinput :searchText="searchText==''?'搜索商品':searchText" @clicksearch="onClickSearch"></searchinput>
 			</view>
 			<view class="tabc-content">
-				<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
+				<tabc :tabc="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabc>
 			</view>
 		</view>
 
@@ -191,7 +191,7 @@
 	.live-content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:208rpx 20rpx 20rpx 20rpx;
+		padding:190rpx 13rpx 20rpx 13rpx;
 		
 		position: relative;
 		z-index: 2;

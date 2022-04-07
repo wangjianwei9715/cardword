@@ -9,22 +9,25 @@
 				</view>
 			</view>
 			<view class="header-tab">
-				<tabc :tabc="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabc>
+				<tabc :tabc="classifyData" :tabsCheck="classifyOpt" @tabsClick="onClickListTabs"></tabc>
 			</view>
 			<view class="header-sort">
-				<view class="header-sort-index" v-for="item in sortData" :key="item.id" @click="onClickSort(item.id)">
+				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}" v-for="item in sortData" :key="item.id" @click="onClickSort(item.id)">
 					{{item.name}}
 					<view class="header-sort-icon">
-						<view v-if="item.id!=1" :class="{'icon-sort-upn':item.sort_up!='up','icon-sort-up':item.sort_up=='up'}"></view>
+						<view v-if="item.id!=1&&item.id!=2" :class="{'icon-sort-upn':item.sort_up!='up','icon-sort-up':item.sort_up=='up'}"></view>
 						<view :class="{'icon-sort-downn':item.sort_up!='down','icon-sort-down':item.sort_up=='down'}"></view>
 					</view>
 				</view>
 				<view :class="['header-sort-classify',{'classify-show':classifyShow}]">
-					<view @click="onClickClassifyOpt(item.id)" :class="['header-sort-classify-index',{'classify-opt':classifyOpt==item.id}]" v-for="item in classifyData" :key="item.id">{{item.name}}</view>
+					<view @click="onClickClassifyOpt(item.id)" :class="['header-sort-classify-index',{'classify-opt':goodTabCheck==item.id}]" v-for="item in goodTab" :key="item.id">{{item.name}}</view>
+				</view>
+				<view :class="['header-sort-classify',{'classify-show':classifyShowPlay}]">
+					<view @click="onClickClassifyOptPlay(item.id)" :class="['header-sort-classify-index',{'classify-opt':playTypeCurrent==item.id}]" v-for="item in playTypeData" :key="item.id">{{item.name}}</view>
 				</view>
 			</view>
 		</view>
-		<view class="sort-shadow" v-show="classifyShow" @click="onClickClassifyCancel"></view>
+		<view class="sort-shadow" v-show="classifyShow||classifyShowPlay" @click="onClickClassifyCancel"></view>
 		<view class="goods-lists">
 			<statusbar/>
 			<goodslist  :goodsList="goodsList"  @send="onClickJumpDetails" :presell="false"/>
@@ -49,19 +52,28 @@
 		];
 		goodTabCheck = 1;
 		sortData = [
-			{id:1,name:'分类',sort_up:''},
-			{id:2,name:'进度',sort_up:''},
-			{id:3,name:'价格',sort_up:''},
+			{id:1,name:'在售',sort_up:''},
+			{id:2,name:'拼团方式',sort_up:''},
+			{id:3,name:'进度',sort_up:''},
+			{id:4,name:'价格',sort_up:''},
 		];
 		classifyData = [
-			{id:100,name:'全部'},
+			{id:100,name:'推荐'},
 			{id:1,name:'篮球'},
 			{id:2,name:'足球'},
 			{id:0,name:'其他'},
-
 		]
 		classifyOpt = 100;
+		playTypeData = [
+			{id:0,name:'随机卡种'},
+			{id:1,name:'自选球队'},
+			{id:2,name:'随机球员'},
+			{id:3,name:'随机球队'},
+			{id:4,name:'随机卡包'}
+		]
+		playTypeCurrent = -1;
 		classifyShow = false;
+		classifyShowPlay = false;
 		goodsData:any = []
 		goodsList:{[x:string]:any} = [];
 		scrollId = '';
@@ -92,14 +104,19 @@
 				this.reqNewData('default') 
 			}
 
-			if(app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0){
-				this.goodTab = [
-					{id:1,name:'在售'},
-					{id:0,name:'即将发售'},
-					{id:2,name:'已拼成'}
-				]
-			}
+			// if(app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0){
+			// 	this.goodTab = [
+			// 		{id:1,name:'在售'},
+			// 		{id:0,name:'即将发售'},
+			// 		{id:2,name:'已拼成'}
+			// 	]
+			// }
 			
+		}
+		reqSearchList(){
+			this.goodsList = [];
+			this.noMoreData = false
+			this.reqNewData('default') 
 		}
 		onReachBottom(){
 			this.reqNewData('reach')
@@ -115,19 +132,20 @@
 			})
 		}
 		onClickListTabs(id:number){
-			if(id==this.goodTabCheck){
+			if(id==this.classifyOpt){
 				return;
 			}
-			this.goodTabCheck = id;
-			this.goodsList = [];
-			this.noMoreData = false
-			this.reqNewData('default') 
+			this.classifyOpt = id;
+			this.reqSearchList()
 		}
 		
 		// 排序选择
 		onClickSort(id:number){
+			this.onClickClassifyCancel()
 			if(id==1){
-				this.onClickClassifyCancel()
+				this.classifyShow = true
+			}else if(id==2){
+				this.classifyShowPlay = true
 			}else{
 				if(this.sortData[id-1].sort_up==''){
 					this.sortData[id-1].sort_up = 'up'
@@ -136,37 +154,59 @@
 				}else if(this.sortData[id-1].sort_up == 'down'){
 					this.sortData[id-1].sort_up = ''
 				}
-				this.goodsList = [];
-				this.noMoreData = false
-				this.reqNewData('default') 
+				this.reqSearchList()
 			}
 		}
 		onClickClassifyOpt(id:number){
-			if(this.classifyOpt==id) return;
-			this.classifyOpt = id;
+			if(this.goodTabCheck==id) return;
+			this.goodTabCheck = id;
 			this.sortData[0].name = this.getSortStr(id);
 			this.onClickClassifyCancel()
-			this.goodsList = [];
-			this.noMoreData = false
-			this.reqNewData('default') 
+			this.reqSearchList()
+		}
+		onClickClassifyOptPlay(id:number){
+			if(this.playTypeCurrent==id) return;
+			this.playTypeCurrent = id;
+			this.sortData[1].name = this.getSortStrPlay(id);
+			this.onClickClassifyCancel()
+			this.reqSearchList()
 		}
 		getSortStr(id:any){
 			switch(id){
-				case 100:
-					return '全部';
-				case 1:
-					return '篮球';
-				case 2:
-					return '足球';
 				case 0:
-					return '其它';
+					return '即将发售';
+				case 1:
+					return '在售';
+				case 2:
+					return '已拼成';
+				case 3:
+					return '待拆卡';
+				case 4:
+					return '拆卡中';	
 				default:
 					return '分类'
 			}
 		}
+		getSortStrPlay(id:any){
+			switch(id){
+				case 0:
+					return '随机卡种';
+				case 1:
+					return '自选球队';
+				case 2:
+					return '随机球员';
+				case 3:
+					return '随机球队';
+				case 4:
+					return '随机卡包';
+				default:
+					return '拼团方式'
+			}
+		}
 		// 分类取消
 		onClickClassifyCancel(){
-			this.classifyShow = !this.classifyShow
+			this.classifyShow = false;
+			this.classifyShowPlay = false
 		}
 		// 跳转商品详情
 		onClickJumpDetails(id:any){
@@ -299,10 +339,13 @@
 			display: flex;
 			align-items: center;
 			box-sizing: border-box;
-			font-size: $font-24;
+			font-size: 26rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
-			color: #14151A;
+			color: #333333;
+		}
+		.current-name{
+			color:#E23737;
 		}
 		.header-sort-icon{
 			width: 18rpx;
@@ -363,7 +406,7 @@
 			}
 		}
 		.classify-show{
-			height:330rpx;
+			height:400rpx;
 		}
 		.classify-opt{
 			color:#F65D2D

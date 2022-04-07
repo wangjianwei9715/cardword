@@ -44,25 +44,17 @@
 	.index{
 		height:90rpx;
 		line-height: 90rpx;
-		font-size: 28rpx;
-		color:#A9ABB4;
+		font-size: 30rpx;
+		font-family: Alibaba PuHuiTi;
+		font-weight: 400;
+		color: #494949;
 	}
 	.current{
-		font-weight: 600;
-		color: #14151A;
-		position: relative;
+		font-size: 30rpx;
+		font-family: Alibaba PuHuiTi;
+		font-weight: bold;
+		color: #494949;
 	}
-	.current::before{
-		width: 37rpx;
-		height: 7rpx;
-		background: #FB4E3E;
-		content: '';
-		background-size: 100% 100%;
-		position: absolute;
-		bottom:18rpx;
-		left:50%;
-		margin-left:-19rpx;
-		border-radius: 3rpx;
-	}
+	
 	
 </style>
