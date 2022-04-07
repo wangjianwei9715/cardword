@@ -5,8 +5,8 @@
 			<view class="tab-header">
 				<view class="icon-back" @click="onClickBack"></view>
 				<view class="header-title">
-					<image class="header-title-img" :src="merchantAvatar" mode="aspectFit"></image>
-					{{merchantName}}
+					<image class="header-title-img" :src="decodeURIComponent(detail.logo)" mode="aspectFit"></image>
+					{{detail.name}}
 				</view>
 				<view class="icon-liaotian" @click="onClickLT"></view>
 			</view>
@@ -20,27 +20,31 @@
 		</view>
 		<view class="business">
 			<view class="business-top uni-flex">
-				<image :src="merchantAvatar" class="business-avart" mode="aspectFill" />
+				<image :src="decodeURIComponent(detail.logo)" class="business-avart" mode="aspectFill" />
 				<view class="business-info">
 					<view class="nameInfo uni-flex">
-						<text>{{merchantName}}</text>
-						<view class="entityInfo">
-							<text>实体店家</text>
+						<text>{{detail.name}}</text>
+						<view class="entityInfo" v-if="detail.title">
+							<text>{{detail.title}}</text>
 						</view>
 					</view>
 					<view class="fansInfo">
-						粉丝999 | 在售999
+						粉丝{{detail.fans}} | 在售{{detail.sale}}
 					</view>
 				</view>
 				<view class="business-rightAction">
-					<view class="actionItem redAction">关注</view>
+					<view class="actionItem " :class="{redAction:!detail.followed}">{{detail.followed?'取消关注':'关注'}}
+					</view>
 					<!-- <view class="actionItem" @click="onClickShops(item)">进店看看</view> -->
 				</view>
 			</view>
 		</view>
 		<view class="tabsMenu uni-flex">
 			<view class="menuItem" :class="{selectItem:index==goodTabV2.index}" @click="tabsChange(item,index)"
-				v-for="(item,index) in goodTabV2.list" :key='index'>{{item.name}}</view>
+				v-for="(item,index) in goodTabV2.list" :key='index'>
+				{{item.name}}
+				<text v-if="item.valueKey">({{detail[item.valueKey]}})</text>
+				</view>
 		</view>
 		<view style="padding:0 13rpx" v-if="goodTabV2.index==0">
 			<goodslist :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
@@ -49,9 +53,11 @@
 			<liveslist :liveList='liveList'></liveslist>
 		</view>
 		<view style="padding:0 10rpx;margin-top:20rpx" v-if="goodTabV2.index==2">
-			<image :src="item" v-for="(item,index) in qualifications" :key="index" mode="aspectFill"></image>
+			<image :src="item" v-for="(item,index) in detail.certification" :key="index" mode="aspectFill"></image>
 		</view>
-		<empty v-show='(goodTabV2.index==0&&!goodsList.length) || (goodTabV2.index==1&&!liveList.length) || (goodTabV2.index==2&&!qualifications.length)'></empty>
+		<empty
+			v-show='(goodTabV2.index==0&&!goodsList.length) || (goodTabV2.index==1&&!liveList.length) || (goodTabV2.index==2&&!detail.certification.length)'>
+		</empty>
 		<!-- <view class="goods-lists" v-if="goodsList!=''">
 			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
 		</view> -->
@@ -77,34 +83,26 @@
 				name: '已成交'
 			}
 		];
-		liveList = [{
-				stateName: '直播中',
-				merchant: '2222',
-				time: '2020-12-29',
-				title: '测试测试测试',
-				pic: 'https%3A%2F%2Fka-world.oss-cn-shanghai.aliyuncs.com%2Fadmin%2Fdebug%2F2022.02.23%2Fseller%2Finfo%2F3%2F1645585656067ik0omc8g57.jpg'
-			},
-			{
-				stateName: '完成',
-				merchant: '2222',
-				time: '2020-12-29',
-				title: '测试测试测试',
-				pic: 'https%3A%2F%2Fka-world.oss-cn-shanghai.aliyuncs.com%2Fadmin%2Fdebug%2F2022.02.23%2Fseller%2Finfo%2F3%2F1645585656067ik0omc8g57.jpg'
-			}
+		liveList = [
 		];
 		qualifications = ['../../static/userinfo/v2/fakerBg.png'];
 		goodTabV2 = {
 			index: 2,
 			list: [{
 					value: 1,
-					name: '在售'
+					name: '在售',
+					assignKey: 'goodsList',
+					valueKey:'sale'
 				},
 				{
-					valu: 2,
-					name: '拆卡'
+					value: 2,
+					name: '拆卡',
+					assignKey: 'liveList',
+					valueKey:'upload'
 				}, {
-					vaue: 3,
-					name: '商家资质'
+					vauee: 3,
+					name: '商家资质',
+					assignKey: 'none'
 				}
 			]
 		}
@@ -113,19 +111,42 @@
 		merchantId = 0;
 		merchantName = '';
 		merchantAvatar = '';
+		detail = {
+			id: null,
+			fans: 0,
+			followed: false,
+			logo: '',
+			name: '',
+			sale: 0,
+			upload: 0,
+			certification: [],
+		};
 		goodsList: {
 			[x: string]: any
 		} = [];
 		currentPage = 1;
 		pageSize = 20;
 		noMoreData = false;
+		queryParams = {
+			pageIndex: 1,
+			pageSize: 20,
+			tp: 1
+		}
 		onLoad(query: any) {
 			if (query.id) {
-				this.merchantId = query.id;
-				this.merchantName = query.name;
-				this.merchantAvatar = decodeURIComponent(query.avatar)
-				this.reqNewData()
+				// this.merchantId = query.id;
+				// this.merchantName = query.name;
+				// this.merchantAvatar = decodeURIComponent(query.avatar)
+				this.getBusDetail(query.id)
+				// this.reqNewData()
 			}
+		}
+		getBusDetail(id: number) {
+			app.http.Get('merchant/detail/' + id, {}, (res: any) => {
+				// console.log(res)
+				this.detail = res.data
+				this.detail.certification = this.detail.certification || []
+			})
 		}
 		reqNewData(cb ? : Function) {
 			// 获取更多商品
@@ -158,7 +179,17 @@
 		}
 		tabsChange(item: any, index: number) {
 			this.goodTabV2.index = index
-			if (item.name == '在售') this.reqNewData()
+			this.queryParams.tp = item.value
+			if (index != 2) this.getList()
+			// if (item.name == '在售') this.reqNewData()
+		}
+		getList() {
+			app.http.Get('merchant/goodlist/' + this.detail.id, this.queryParams, (res: any) => {
+				// console.log(res)
+				// if(res.list){}
+				if(this.queryParams.tp==1) this.goodsList=res.list||[]
+				if(this.queryParams.tp==2) this.liveList=res.list||[]
+			})
 		}
 		onClickBack() {
 			uni.navigateBack({
