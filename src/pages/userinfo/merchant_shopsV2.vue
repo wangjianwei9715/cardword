@@ -49,7 +49,7 @@
 			<liveslist :liveList='liveList'></liveslist>
 		</view>
 		<view style="padding:0 10rpx;margin-top:20rpx" v-if="goodTabV2.index==2">
-			<image :src="item" v-for="(item,index) in qualifications" mode="aspectFill"></image>
+			<image :src="item" v-for="(item,index) in qualifications" :key="index" mode="aspectFill"></image>
 		</view>
 		<empty v-show='(goodTabV2.index==0&&!goodsList.length) || (goodTabV2.index==1&&!liveList.length) || (goodTabV2.index==2&&!qualifications.length)'></empty>
 		<!-- <view class="goods-lists" v-if="goodsList!=''">

@@ -142,7 +142,7 @@
 		<view class="detail-bottom-box">
 			<view class="detail-title">原封图实拍<text>（以下照片为商家拍摄）</text></view>
 			<view class="detail-bottom-picbox">
-				<image  @click="onClickPreviewDetailImage(index)" class="detail-bottom-image" mode="widthFix" v-for="(item,index) in detailImg" :key="index" :src="item" />
+				<image  @click="onClickPreviewDetailImage(index)" class="detail-bottom-image" mode="aspectFill" v-for="(item,index) in detailImg" :key="index" :src="item" />
 			</view>
 			<view class="detail-title">购买须知</view>
 			<view class="detail-bottom-explain">{{buyExplain}}</view>
@@ -1546,7 +1546,7 @@
 		.btn-confirm{
 			width: inherit;
 			height: 67rpx;
-			background: #FB4E3E;
+			background: #F5162B;
 			text-align: center;
 			line-height: 67rpx;
 			font-size: 32rpx;

@@ -35,7 +35,7 @@
 		width: 100%;
 		height: 62rpx;
 		background: #FFFFFF;
-		border: 2rpx solid #FB4E3E;
+		border: 2rpx solid #F5162B;
 		border-radius: 40rpx;
 		position: relative;
 		font-size: 28rpx;
@@ -76,7 +76,7 @@
 	.search-icon{
 		width: 113rpx;
 		height: 54rpx;
-		background: #FB4E3E;
+		background: #F5162B;
 		border-radius: 30rpx;
 		position: absolute;
 		right:2rpx;

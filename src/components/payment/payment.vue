@@ -167,11 +167,11 @@
 		.payment-header{
 			width: 100%;
 			box-sizing: border-box;
-			padding-top: 36rpx;
-			font-size: 26rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
-			color: #14151A;
+			padding-top: 60rpx;
+			font-size: 28rpx;
+			font-family: Alibaba PuHuiTi;
+			font-weight: bold;
+			color: #333333;
 			text-align: center;
 			position: relative;
 		}
@@ -180,23 +180,24 @@
 			height:84rpx;
 			margin-top: 46rpx;
 			line-height: 84rpx;
-			font-size: 48rpx;
-			font-family:'DIN';
-			font-weight: bold;
-			color: #14151B;
+			font-size: 73rpx;
+			font-family: Alibaba PuHuiTi;
+			font-weight: 500;
+			color: #333333;
 			text-align: center;
 			margin-bottom: 48rpx;
 			.payment-price{
-				font-size: 72rpx;
+				font-size: 86rpx;
 			}
 		}
 		.payment-tip{
-			width: 100%;
-			padding-left: 30rpx;
+			width: 686rpx;
+			margin:0 auto;
+			box-sizing: border-box;
 			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			font-family: Alibaba PuHuiTi;
 			font-weight: 400;
-			color: #14151A;
+			color: #333333;
 			padding-bottom: 30rpx;
 			border-bottom: 1px solid #EDEDED;
 		}
@@ -215,16 +216,16 @@
 				box-sizing: border-box;
 				align-items: center;
 				font-size: 26rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
-				font-weight: 500;
-				color: #14151A;
+				font-family: Alibaba PuHuiTi;
+				font-weight: 400;
+				color: #333333;
 			}
 			.icon-zfb{
-				width: 44rpx;
-				height:44rpx;
+				width: 36rpx;
+				height:36rpx;
 				box-sizing: border-box;
-				margin-right: 16rpx;
-				background:url(../../static/pay/zhifubao@2x.png) no-repeat center;
+				margin-right: 13rpx;
+				background:url(../../static/pay/v2/zhifubao@2x.png) no-repeat center;
 				background-size: 100% 100%;
 			}
 			.icon-wx{
@@ -249,19 +250,23 @@
 			}
 		}
 		.payment-btn{
-			width: 720rpx;
-			height: 88rpx;
-			background: #14151B;
+			width: 690rpx;
+			height: 67rpx;
+			background: #F5162B;
 			border-radius: 4rpx;
 			text-align: center;
-			line-height: 88rpx;
+			line-height: 67rpx;
 			box-sizing: border-box;
 			margin:0 auto;
-			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
+			font-size: 32rpx;
+			font-family: Alibaba PuHuiTi;
+			font-weight: 400;
 			color: #FFFFFF;
 			margin-top: 46rpx;
+			position:absolute;
+			bottom:calc(18rpx + env(safe-area-inset-bottom));
+			left:50%;
+			margin-left: -345rpx;
 		}
 	}
 	.icon-close{
