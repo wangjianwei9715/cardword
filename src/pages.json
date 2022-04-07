@@ -546,7 +546,24 @@
                     "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
                 }
     
-            },{
+            },
+			{
+			    "path": "merchant_shopsV2",
+			    "style": {
+			        //  #ifndef MP-WEIXIN
+			        "navigationStyle": "custom",
+			        //  #endif
+			        //  #ifdef MP-WEIXIN
+			        "navigationBarTitleText": "商家店铺",
+			        "navigationBarBackgroundColor": "#ffffff",
+			        "navigationBarTextStyle": "black",
+			        //  #endif
+			        "enablePullDownRefresh": false,
+			        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+			        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+			    }
+			    
+			},{
                 "path": "order_list",
                 "style": {
                     //  #ifndef MP-WEIXIN
@@ -831,6 +848,19 @@
                     "style" :                                                                                    
                     {
                         "navigationBarTitleText": "商家列表",
+                        "navigationBarBackgroundColor":"#ffffff",
+                        "navigationBarTextStyle":"black",
+                        "enablePullDownRefresh": false,
+                        "backgroundColorTop":"#F2F2F2",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                        "backgroundColorBottom":"#F2F2F2"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+                    }
+                
+                }
+                ,{
+                    "path" : "user_follow",
+                    "style" :                                                                                    
+                    {
+                        "navigationBarTitleText": "我的关注",
                         "navigationBarBackgroundColor":"#ffffff",
                         "navigationBarTextStyle":"black",
                         "enablePullDownRefresh": false,
