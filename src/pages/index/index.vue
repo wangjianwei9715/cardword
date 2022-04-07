@@ -77,20 +77,13 @@
 		</view>
 		
 		<view class="goodslist-index">
-			<view class="index-swiper">
-				<swiper class="swiper" :indicator-dots="false" :autoplay="true" :interval="5000" :duration="500" :circular="true">
-					<swiper-item v-for="(item,index) in topAddList" :key="index">
-						<image class="swiper-image" :src="decodeURIComponent(item.pic)" @click="onClickTopJumpUrl(item.target)" mode="aspectFill"></image>
-					</swiper-item>
-				</swiper>
-			</view>
-			<goodslist  :goodsList="goodsList" :pageIndex="currentPage" @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
+			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="true" :pageIndex="currentPage" @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
 		<!-- #ifdef MP -->
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsMiniList" :pageIndex="currentPage"  @send="onClickMiniGood" :mini="true" :presell="false"/>
+			<goodslist  :goodsList="goodsMiniList"  :pageIndex="currentPage"  @send="onClickMiniGood" :mini="true" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
@@ -218,6 +211,10 @@
 			this.onEventUI("wgtUpdateNum", (res) => {
 				this.wgtUpNum = res;
 			});
+			this.onEventUI("showPaySuccess", (res) => {
+				this.showPaySuccess = true;
+			});
+
 			this.onEventUI('appluanchOver',()=>{
 				console.log('appluanchOver=========')
 				if(this.oneLoad){
@@ -478,30 +475,7 @@
 			// 	icon:'none'
 			// })
 		}
-		onClickTopJumpUrl(url:any){
-			if(url.goodCode!=''){
-				uni.navigateTo({
-					url: '/pages/goods/goods_details?id='+decodeURIComponent(url.goodCode)
-				})
-				return;
-			}else if(url.url!=''){
-				uni.navigateTo({
-					url: '/pages/act/outLink/outLink?url='+decodeURIComponent(url.url)
-				})
-				return;
-			}else if(url.page!=''){
-				if(decodeURIComponent(url.page)=='社群'){
-					this.showPaySuccess = true;
-					return;
-				}
-				uni.navigateTo({
-					url: decodeURIComponent(url.page)
-				})
-				return;
-			}
 		
-			
-		}
 		onClickcancelPaySuccess(){
 			this.showPaySuccess = false;
 		}
@@ -937,27 +911,5 @@
 		width: 84rpx;
 		height:84rpx;
 	}
-	// 活动轮播
-	.index-swiper{
-		width: 356rpx;
-		height:468rpx;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		margin-right: 10rpx;
-		margin-bottom: 10rpx;
-	}
-	.swiper{
-		width: 356rpx;
-		height:468rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: flex-start;
-		justify-content: center;
-	}
-	.swiper-image{
-		width: 356rpx;
-		height:468rpx;
-		box-sizing: border-box;
-	}
+	
 </style>

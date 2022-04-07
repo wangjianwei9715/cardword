@@ -1,5 +1,13 @@
 <template name="goodslist">
 	<view class="goodsContent">
+		<!-- 首页轮播 -->
+		<view class="index-swiper" v-if="indexSwiper&&topAddList!=''">
+			<swiper class="swiper" :indicator-dots="false" :autoplay="true" :interval="5000" :duration="500" :circular="true">
+				<swiper-item v-for="(item,index) in topAddList" :key="index">
+					<image class="swiper-image" :src="decodeURIComponent(item.pic)" @click="onClickTopJumpUrl(item.target)" mode="aspectFill"></image>
+				</swiper-item>
+			</swiper>
+		</view>
 		<view class="goodslist-index-show" v-for="item in goodsList" :key="item.goodCode"
 			@click="onClickJumpUrl(item.goodCode)">
 			<view class="goodslist-index">
@@ -10,7 +18,7 @@
 				<view class="goodslist-title">{{item.title}}</view>
 				<view class="goodslist-priceMsg uni-flex">
 					<view class="goodslist-priceMsg-left">
-						￥<text>{{item.price}}</text><text>起</text>
+						￥<text>{{item.price}}</text><text>{{item.isSelect?'起':''}}</text>
 					</view>
 					<view class="goodslist-priceMsg-right">
 						{{item.totalNum-(item.currentNum+item.lockNum)}}/{{item.totalNum}}
@@ -27,38 +35,7 @@
 						<view class="cores"></view>
 					</view>
 				</view>
-				<view class="goodslist-right">
-
-					<!-- <view class="goodslist-bottom">
-						<view class="goodslist-price-content">
-							¥<text class="goodslist-price">{{item.price}}</text>
-							<text class="price-qi">{{item.isSelect?'起':''}}</text>
-						</view>
-						<view v-if="mini"></view>
-						<view v-else-if="!presell&&item.state!=0" class="goodslist-bottom-right">
-							<view :id="item.goodCode" class="goodslist-plan-desc">
-								余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}</view>
-							<view class="goodslist-plan-content">
-								<view class="goodslist-plan-now"
-									:style="'width:'+getPlan(item.lockNum,item.currentNum,item.totalNum)+'%'"></view>
-								<view class="goodslist-plan-num">
-									{{getPlan(item.lockNum,item.currentNum,item.totalNum)}}<text
-										class="plan-baifen">%</text>
-								</view>
-							</view>
-						</view>
-						<view v-else-if="item.baoduiMinute>0" class="goodslist-bottom-right-time">
-							<view class="goodslist-plan-desc-time">
-								{{dateFormatMSHMS(item.startAt+(60*item.baoduiMinute))}}开售
-							</view>
-						</view>
-						<view v-else class="goodslist-bottom-right-time">
-							<view class="goodslist-plan-desc-time">{{dateFormatMSHMS(item.startAt)}}开售</view>
-						</view>
-
-					</view> -->
-
-				</view>
+				<view class="goodslist-right"></view>
 			</view>
 		</view>
 	</view>
@@ -87,6 +64,14 @@
 			default: []
 		})
 		goodsList: any;
+		@Prop({
+			default: ''
+		})
+		topAddList?: any;
+		@Prop({
+			default: false
+		})
+		indexSwiper?: any;
 		@Prop({
 			default: 1
 		})
@@ -164,7 +149,28 @@
 		getGoodProgress() {
 			this.$emit('progress', this.showPlan)
 		}
-
+		onClickTopJumpUrl(url:any){
+			if(url.goodCode!=''){
+				uni.navigateTo({
+					url: '/pages/goods/goods_details?id='+decodeURIComponent(url.goodCode)
+				})
+				return;
+			}else if(url.url!=''){
+				uni.navigateTo({
+					url: '/pages/act/outLink/outLink?url='+decodeURIComponent(url.url)
+				})
+				return;
+			}else if(url.page!=''){
+				if(decodeURIComponent(url.page)=='社群'){
+					uni.$emit('showPaySuccess')
+					return;
+				}
+				uni.navigateTo({
+					url: decodeURIComponent(url.page)
+				})
+				return;
+			}
+		}
 	}
 </script>
 
@@ -183,12 +189,13 @@
 	.goodslist {
 		&-index {
 			width: 356rpx;
+			height:468rpx;
 			background: #FFFFFF;
 			border-radius: 4rpx;
 			box-sizing: border-box;
 			padding: 12rpx 14rpx;
 			align-items: center;
-			margin-bottom: 20rpx;
+			margin-bottom: 13rpx;
 			// border-radius: 20rpx;
 			position: relative;
 		}
@@ -219,26 +226,25 @@
 
 		&-title {
 			// width: 100%;
-			max-height: 78rpx;
-			height: 78rpx;
+			height: 60rpx;
 			font-size: 26rpx;
 			font-family:FZLanTingHeiS-R-GB;
 			font-weight: 400;
 			color: #333333;
-			margin-top: 18rpx;
+			margin-top: 10rpx;
 			// margin-bottom: 16rpx;
 			text-overflow: -o-ellipsis-lastline;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			display: -webkit-box;
-			line-height: 38rpx;
+			line-height: 32rpx;
 			-webkit-line-clamp: 2;
 			line-clamp: 2;
 			-webkit-box-orient: vertical;
 		}
 
 		&-progress {
-			background-image: url('../../static/goods/progeessBg.png');
+			background-image: url('../../static/goods/v2/progeessBg.png');
 			background-size: 100% 100%;
 			width: 100%;
 			height: 12rpx;
@@ -248,7 +254,7 @@
 			justify-content: end;
 			.progressMask{
 				height: inherit;
-				background-color: #fff;
+				background-color: #F9D0CC;
 				width: 30%;
 			}
 		}
@@ -257,9 +263,9 @@
 			justify-content: space-between;
 			// vertical-align: bottom;
 			position: relative;
-			margin-bottom: 16rpx;
-			margin-top: 16rpx;
-align-items: flex-end;
+			margin-bottom: 8rpx;
+			margin-top: 10rpx;
+			align-items: flex-end;
 			.goodslist-priceMsg-left {
 				font-size: 18rpx;
 				font-family:FZLanTingHeiS-R-GB;
@@ -477,5 +483,29 @@ align-items: flex-end;
 	.price-qi {
 		font-size: 20rpx !important;
 		color: #ACAEB7 !important;
+	}
+
+	// 活动轮播
+	.index-swiper{
+		width: 356rpx;
+		height:468rpx;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 10rpx;
+		margin-bottom: 10rpx;
+	}
+	.swiper{
+		width: 356rpx;
+		height:468rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+	}
+	.swiper-image{
+		width: 356rpx;
+		height:468rpx;
+		box-sizing: border-box;
 	}
 </style>

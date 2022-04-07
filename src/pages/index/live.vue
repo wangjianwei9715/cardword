@@ -12,7 +12,7 @@
 
 		<view class="live-content">
 			<statusbar/>
-			<liveslist :liveList="liveList" :ispullDown="pullDownRefresh" @send="onClickLive"/>
+			<liveslist :liveList="liveList"  @send="onClickLive"/>
 		</view>
 	</view>
 </template>
@@ -24,8 +24,6 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		searchText = '';
-		pullDown = false;
-		pullDownRefresh = false;
 		goodTab = [
 			{id:0,name:'全部'},
 			{id:5,name:'我的拆卡'},
@@ -38,7 +36,6 @@
 		pageSize = 20;
 		noMoreData = false;
 		liveList:{[x:string]:any} = []
-		searchData:any = [];
 		scrollId = '';
 		onLoad(query:any) {
 			this.onEventUI('liveFind',(res:any)=>{

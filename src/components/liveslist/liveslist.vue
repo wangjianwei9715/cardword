@@ -95,6 +95,8 @@
 				font-family: FZLanTingHeiS-R-GB;
 				font-weight: 400;
 				color: #FFFFFF;
+				display: flex;
+				align-items: center;
 			}
 			.livelist-icon-ing{
 				width: 88rpx;
@@ -117,15 +119,32 @@
 				background:url(../../static/live/v2/live_wait.png) no-repeat center;
 				background-size: 100% 100%;
 			}
+			.icon-ing{
+				width: 17rpx;
+				height:17rpx;
+				margin-right: 5rpx;
+			}
+			.livelist-icon-ing .icon-ing{
+				background:url(../../static/live/v2/icon_ing.gif) no-repeat center;
+				background-size: 100% 100%;
+			}
+			.livelist-icon-end .icon-ing{
+				background:url(../../static/live/v2/icon_end.png) no-repeat center;
+				background-size: 100% 100%;
+			}
+			.livelist-icon-wait .icon-ing{
+				background:url(../../static/live/v2/icon_wait.png) no-repeat center;
+				background-size: 100% 100%;
+			}
 		}
 		&-center{
 			width: 100%;
 			box-sizing: border-box;
 			padding:16rpx 20rpx 20rpx 20rpx;
-			font-size: 28rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			font-size: 26rpx;
+			font-family: Alibaba PuHuiTi;
 			font-weight: 400;
-			color: #14151A;
+			color: #333333;
 		}
 	}
 </style>

@@ -61,16 +61,7 @@
                 "enablePullDownRefresh": false
             }
         }, 
-        {
-			"path": "pages/index/message",
-			"style": {
-                "navigationBarTitleText": "消息",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
+         {
 			"path": "pages/live/live_find",
 			"style": {
 				//  #ifndef MP-WEIXIN
