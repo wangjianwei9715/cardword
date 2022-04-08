@@ -9,18 +9,22 @@
 			</image>
 		</view>
 
-		<view class="item-content">
-			<view class="title-middle" v-for="(item,index) in itemListName" :key="index">
-				<text class="text-name">{{item}}</text>
-			</view>
-		</view>
-		<!-- 单数行用灰色背景，双数行用白色背景 -->
-		<view v-for="(item,index) in teamDataList" :key="index" :class="index%2==0?'title-middle2':'title-middle3'">
-			<text v-for="(items,indexs) in itemListName" :key="indexs" class="text-name">
-				<text v-show="!english">{{item['column'+(indexs+1)]}}</text>
-				<text v-show="english">{{item['column'+(indexs+1)+'_English']?item['column'+(indexs+1)+'_English']:item['column'+(indexs+1)]}}</text>
-			</text>
-		</view>
+		<view class="item-goodtitle">{{goodTitle}}</view>
+		<table class="rules-table">
+			<thead>
+				<tr class="item-content">
+					<td :width="tabWidth" v-for="(item,index) in itemListName" :key="index"><text class="text-name">{{item}}</text></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="(item,index) in teamDataList" :key="index" :class="index%2==0?'title-middle2':'title-middle3'" >
+					<td  v-for="(items,indexs) in itemListName" :key="indexs" >
+						<text v-show="!english">{{item['column'+(indexs+1)]}}</text>
+						<text v-show="english">{{item['column'+(indexs+1)+'_English']?item['column'+(indexs+1)+'_English']:item['column'+(indexs+1)]}}</text>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</view>
 </template>
 
@@ -45,6 +49,8 @@
 		english = false
 		scrollId = '';
 		scrollIdSt:any = 0;
+		goodTitle = '';
+		tabWidth:any = '';
 		onLoad(query: any) {
 			if(query.code){
 				this.goodCode = query.code;
@@ -73,13 +79,12 @@
 			}
 			
 			app.http.Get("good/"+this.goodCode+'/noList', params, (data: any) => {
-				uni.setNavigationBarTitle({
-					title:data.goodTitle
-				})
+				this.goodTitle = data.goodTitle;
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
 				this.itemListName = data.columns;
+				this.tabWidth = (100/(this.itemListName.length))+'%';
 				this.translate = data.translate
 				if(data.list){
 					if(this.currentPage==1){
@@ -140,7 +145,7 @@
 				this.searchData()
 			}
 		}
-
+		
 		onClickTranslate() {
 			this.english = !this.english
 		}
@@ -183,61 +188,58 @@
 		color: #14151A;
 		padding-left:76rpx ;
 	}
+	.item-goodtitle{
+		width: 100%;
+		text-align: center;
+		line-height: 40rpx;
+		font-size: 30rpx;
+		font-family: FZLanTingHeiS-DB1-GBK;
+		font-weight: 400;
+		color: #333333;
+		background:#F6F7FB;
+		box-sizing: border-box;
+		padding:20rpx ;
+	}
 	.item-content{
-		width: 710rpx;
-		height: 60rpx;
-		background: #FB4E3E;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-around;
+		background: #F6F7FB;
 	}
 
 	.title-middle {
-		font-size: $font-22;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
-		color: #FFFFFF;
+		font-size: 26rpx;
+		font-family: FZLanTingHeiS-R-GB;
+		font-weight: 400;
+		color: #333333;
 		line-height: 32rpx;
 		display: flex;
 	}
 
 	.title-middle2 {
-		width: 710rpx;
-		background: #F6F6F7;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-around;
-		box-sizing: border-box;
-		padding:20rpx 0;
-		font-size: $font-24;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #14151A;
-		line-height: 34rpx;
+		background: #F0F0F2;
 	}
-
 	.title-middle3 {
-		width: 710rpx;
-		background: #FFFFFF;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-around;
-		box-sizing: border-box;
-		padding:20rpx 0;
-		font-size: $font-24;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #14151A;
-		line-height: 34rpx;
+		background: #FCFCFC;
 	}
-
 	.text-name {
 		width: 100%;
 		box-sizing: border-box;
 		text-align: center;
+		font-size: 22rpx;
+		font-family: FZLanTingHeiS-R-GB;
+		font-weight: 400;
+		color: #333333;
 	}
-
+	.rules-table{
+		width: 100%;
+		border-collapse: collapse;
+	}
+	.rules-table tr td{
+		height:76rpx;
+		line-height: 76rpx;
+		font-size: 26rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #34363A;
+		text-align: center;
+		border:1px solid #D6D6D6
+	}
 </style>
