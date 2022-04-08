@@ -33,8 +33,10 @@
 					</view>
 				</view>
 				<view class="business-rightAction">
-					<view class="actionItem " :class="{redAction:!detail.followed}">{{detail.followed?'取消关注':'关注'}}
-					</view>
+					<followButton :follow='detail.followed' :followID='detail.id'
+						@handleSuccess='followSuccess($event,detail)'></followButton>
+					<!-- <view class="actionItem " :class="{redAction:!detail.followed}">{{detail.followed?'取消关注':'关注'}}
+					</view> -->
 					<!-- <view class="actionItem" @click="onClickShops(item)">进店看看</view> -->
 				</view>
 			</view>
@@ -44,7 +46,7 @@
 				v-for="(item,index) in goodTabV2.list" :key='index'>
 				{{item.name}}
 				<text v-if="item.valueKey">({{detail[item.valueKey]}})</text>
-				</view>
+			</view>
 		</view>
 		<view style="padding:0 13rpx" v-if="goodTabV2.index==0">
 			<goodslist :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
@@ -52,7 +54,7 @@
 		<view style="padding:0 13rpx" v-if="goodTabV2.index==1">
 			<liveslist :liveList='liveList'></liveslist>
 		</view>
-		<view style="padding:0 10rpx;margin-top:20rpx" v-if="goodTabV2.index==2">
+		<view style="padding:0 10rpx" v-if="goodTabV2.index==2">
 			<image :src="item" v-for="(item,index) in detail.certification" :key="index" mode="aspectFill"></image>
 		</view>
 		<empty
@@ -83,8 +85,7 @@
 				name: '已成交'
 			}
 		];
-		liveList = [
-		];
+		liveList = [];
 		qualifications = ['../../static/userinfo/v2/fakerBg.png'];
 		goodTabV2 = {
 			index: 2,
@@ -92,13 +93,13 @@
 					value: 1,
 					name: '在售',
 					assignKey: 'goodsList',
-					valueKey:'sale'
+					valueKey: 'sale'
 				},
 				{
 					value: 2,
 					name: '拆卡',
 					assignKey: 'liveList',
-					valueKey:'upload'
+					valueKey: 'upload'
 				}, {
 					vauee: 3,
 					name: '商家资质',
@@ -177,6 +178,10 @@
 				if (cb) cb()
 			});
 		}
+		followSuccess(event: any, item: any) {
+			item.followed = event.follow
+			item.fans = event.follow ? item.fans + 1 : item.fans - 1
+		}
 		tabsChange(item: any, index: number) {
 			this.goodTabV2.index = index
 			this.queryParams.tp = item.value
@@ -187,8 +192,8 @@
 			app.http.Get('merchant/goodlist/' + this.detail.id, this.queryParams, (res: any) => {
 				// console.log(res)
 				// if(res.list){}
-				if(this.queryParams.tp==1) this.goodsList=res.list||[]
-				if(this.queryParams.tp==2) this.liveList=res.list||[]
+				if (this.queryParams.tp == 1) this.goodsList = res.list || []
+				if (this.queryParams.tp == 2) this.liveList = res.list || []
 			})
 		}
 		onClickBack() {

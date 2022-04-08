@@ -43,7 +43,7 @@
 		left: 0;
 		bottom: 0;
 		right: 0;
-	
+		z-index: 20;
 		.tipsCard {
 			width: 430rpx;
 			height: 285rpx;
@@ -54,7 +54,7 @@
 			right: 0;
 			margin: auto;
 			top: 342rpx;
-	
+
 			.cancelTips {
 				font-size: 26rpx;
 				font-family: FZLanTingHeiS-R-GB;
@@ -65,7 +65,7 @@
 				position: relative;
 				top: 81rpx;
 			}
-	
+
 			.buttonList {
 				padding: 0 49rpx;
 				display: flex;
@@ -75,7 +75,7 @@
 				right: 0;
 				margin: auto;
 				bottom: 70rpx;
-	
+
 				.button {
 					width: 120rpx;
 					height: 50rpx;
@@ -86,12 +86,12 @@
 					text-align: center;
 					letter-spacing: 2rpx;
 				}
-	
+
 				.cancel {
 					border: 1rpx solid #c4c4c4;
 					color: #333333;
 				}
-	
+
 				.confirm {
 					background-color: #ff0016;
 					color: #fff;
