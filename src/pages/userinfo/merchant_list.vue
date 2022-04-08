@@ -88,6 +88,7 @@
 		publisher: any = [];
 		currentPage = 1;
 		pageSize = 20;
+		totalPage = 0;
 		noMoreData = false;
 		liveList = [];
 		onLoad(query: any) {
@@ -95,7 +96,11 @@
 		}
 		//   加载更多数据
 		onReachBottom() {
-			this.reqNewData();
+			// this.reqNewData();
+			if (this.currentPage < this.totalPage) {
+				this.currentPage += 1
+				this.reqNewData()
+			}
 		}
 		followSuccess(event: any, item: any) {
 			item.follow = event.follow
@@ -126,9 +131,9 @@
 		}
 		reqNewData(cb ? : Function) {
 			// 获取更多商品
-			if (this.noMoreData) {
-				return;
-			}
+			// if (this.noMoreData) {
+			// 	return;
+			// }
 
 			let params: any = {
 				pageIndex: this.currentPage,
@@ -136,17 +141,22 @@
 			};
 
 			app.http.Get("merchant/list", params, (data: any) => {
-				if (data.totalPage <= this.currentPage) {
-					this.noMoreData = true;
-				}
-				if (data.list) {
-					if (this.currentPage == 1) {
-						this.publisher = [];
-					}
-					this.publisher = this.publisher.concat(data.list);
-				}
-				this.currentPage++;
-				if (cb) cb();
+				this.totalPage = data.totalPage
+				if (this.currentPage === 1) this.publisher = []
+				const dataList = data.list || []
+				this.publisher = [...this.publisher, ...dataList]
+				cb && cb()
+				// if (data.totalPage <= this.currentPage) {
+				// 	this.noMoreData = true;
+				// }
+				// if (data.list) {
+				// 	if (this.currentPage == 1) {
+				// 		this.publisher = [];
+				// 	}
+				// 	this.publisher = this.publisher.concat(data.list);
+				// }
+				// this.currentPage++;
+				// if (cb) cb();
 			});
 		}
 	}

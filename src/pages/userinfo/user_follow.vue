@@ -4,7 +4,7 @@
 			<image :src='decodeURIComponent(item.logo)' class="follow-avart" mode="aspectFill" />
 			<view class="follow-info uni-flex">
 				<view class="name">{{item.name}}</view>
-				<view class="num">在售{{item.num}}件</view>
+				<view class="num">在售{{item.sale_num}}件</view>
 			</view>
 			<view class="follow-action">
 				<followButton :follow='item.follow||true' :followID='item.id'
