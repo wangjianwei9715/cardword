@@ -54,12 +54,15 @@
 		<view style="padding:0 13rpx" v-if="goodTabV2.index==1">
 			<liveslist :liveList='liveList'></liveslist>
 		</view>
-		<view style="padding:0 10rpx" v-if="goodTabV2.index==2">
-			<image :src="item" v-for="(item,index) in detail.certification" :key="index" mode="aspectFill"></image>
+		<view v-if="goodTabV2.index==2" style="width:100%">
+			<image :src="decodeURIComponent(item)" style="margin:6rpx auto;display:block;width:94%"
+				@click.stop="previewImg(index,detail.certification)" v-for="(item,index) in detail.certification"
+				:key="index" mode="widthFix"></image>
 		</view>
 		<empty
 			v-show='(goodTabV2.index==0&&!goodsList.length) || (goodTabV2.index==1&&!liveList.length) || (goodTabV2.index==2&&!detail.certification.length)'>
 		</empty>
+		<view class="safetyBottom"></view>
 		<!-- <view class="goods-lists" v-if="goodsList!=''">
 			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
 		</view> -->
@@ -93,12 +96,18 @@
 					value: 1,
 					name: '在售',
 					assignKey: 'goodsList',
+					url: 'merchant/goodlist/',
+					query: {
+						tp: 1
+					},
 					valueKey: 'sale'
 				},
 				{
 					value: 2,
 					name: '拆卡',
 					assignKey: 'liveList',
+					url: 'merchant/broadcast/list/',
+					query: {},
 					valueKey: 'upload'
 				}, {
 					vauee: 3,
@@ -127,10 +136,17 @@
 		queryParams = {
 			pageIndex: 1,
 			pageSize: 20,
-			tp: 1
+
 		}
 		onLoad(query: any) {
 			if (query.id) this.getBusDetail(query.id)
+		}
+		previewImg(current: number, urls: any) {
+			urls = urls.map((item: any) => decodeURIComponent(item));
+			uni.previewImage({
+				current,
+				urls
+			});
 		}
 		getBusDetail(id: number) {
 			app.http.Get('merchant/detail/' + id, {}, (res: any) => {
@@ -140,7 +156,7 @@
 			})
 		}
 		onReachBottom() {
-			if (this.queryParams.pageIndex < this.totalPage) {
+			if (this.queryParams.pageIndex < this.totalPage && this.goodTabV2.index != 2) {
 				this.queryParams.pageIndex += 1
 				this.getList()
 			}
@@ -155,27 +171,38 @@
 		}
 		tabsChange(item: any, index: number) {
 			this.goodTabV2.index = index
-			this.queryParams.tp = item.value
 			if (index != 2) this.getList()
-			// if (item.name == '在售') this.reqNewData()
 		}
 		getList() {
-			app.http.Get('merchant/goodlist/' + this.detail.id, this.queryParams, (res: any) => {
+			const questItem: any = this.goodTabV2.list[this.goodTabV2.index]
+			app.http.Get(questItem.url + this.detail.id, {
+				...this.queryParams,
+				...questItem.query
+			}, (res: any) => {
 				this.totalPage = res.totalPage
 				const dataList = res.list || []
 				if (this.queryParams.pageIndex === 1) {
 					this.goodsList = []
 					this.liveList = []
 				}
-				if (this.queryParams.tp == 1) this.goodsList = [...this.goodsList, ...dataList]
-				if (this.queryParams.tp == 2) this.liveList = [...this.liveList, ...dataList]
+				if (questItem.value == 1) this.goodsList = [...this.goodsList, ...dataList]
+				if (questItem.value == 2) this.liveList = [...this.liveList, ...dataList]
 				uni.stopPullDownRefresh()
 			})
 		}
 		onClickBack() {
+			let pages: any = getCurrentPages();
+			let prevPage: any = pages[pages.length - 2]; //上一个页面
+			for (let i = 0; i < prevPage.publisher.length; i++) {
+				if (this.detail.id == prevPage.publisher[i].id) {
+					prevPage.publisher[i].follow = this.detail.followed
+					prevPage.publisher[i].fans = this.detail.fans
+					break;
+				}
+			}
 			uni.navigateBack({
 				delta: 1
-			});
+			})
 		}
 		// 跳转商品详情
 		onClickJumpDetails(id: any) {
@@ -191,6 +218,13 @@
 
 	page {
 		background: #ffffff
+	}
+
+	.safetyBottom {
+		width: 750rpx;
+		background-color: #fff;
+		padding-bottom:
+			env(safe-area-inset-bottom);
 	}
 
 	.content {

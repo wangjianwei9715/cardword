@@ -26,7 +26,7 @@
 				<view v-if='item.goodList&&item.goodList.length'>
 					<scroll-view class="scroll-goodslist uni-flex" scroll-x="true">
 						<view class="scroll-goodslist-item" v-for="(goodsItem,goodsIndex) in item.goodList"
-							:key='goodsItem.goodCode'>
+							:key='goodsItem.goodCode' @click="toPage(goodsItem)">
 							<view class="picBlock">
 
 								<image :src="decodeURIComponent(goodsItem.pic)" mode="aspectFill"></image>
@@ -42,7 +42,10 @@
 										￥<text>{{goodsItem.price}}</text>
 									</template>
 								</view>
-								<view class="bottomState-right">{{goodsItem.statusName}}</view>
+								<!--  -->
+								<view class="bottomState-right">
+									{{goodsItem.statusName=='在售'?getPlan(goodsItem.lockNum,goodsItem.currentNum,goodsItem.totalNum)+'%':goodsItem.statusName}}
+								</view>
 							</view>
 						</view>
 					</scroll-view>
@@ -96,10 +99,31 @@
 		}
 		//   加载更多数据
 		onReachBottom() {
-			// this.reqNewData();
 			if (this.currentPage < this.totalPage) {
 				this.currentPage += 1
 				this.reqNewData()
+			}
+		}
+		toPage(item: any) {
+			// console.log(item)
+			const jumpMap: any = {
+				'在售': {
+					url: '/pages/goods/goods_details?id=' + item.goodCode
+				},
+				'拆卡回放': {
+					fn: app.platform.goWeChatLive,
+					query: {
+						playCode: item.playCode,
+						goodCode: item.goodCode
+					}
+				}
+			}
+			const aboutPointer = jumpMap[item.statusName]
+			if (aboutPointer && aboutPointer.fn) aboutPointer.fn(aboutPointer.query)
+			if (aboutPointer && aboutPointer.url) {
+				uni.navigateTo({
+					url: aboutPointer.url
+				})
 			}
 		}
 		followSuccess(event: any, item: any) {
@@ -115,26 +139,16 @@
 				return;
 			}
 			// #endif
-			// const path='/pages/userinfo/merchant_shops'
 			const path = `/pages/userinfo/merchant_shopsV2`
-			// uni.navigateTo({
-			// 	url: path + "?id=" +
-			// 		item.id +
-			// 		"&name=" +
-			// 		item.name +
-			// 		"&avatar=" +
-			// 		item.logo
-			// });
 			uni.navigateTo({
 				url: path + '?id=' + item.id
 			})
 		}
+		getPlan(lock: number, now: number, all: number) {
+			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
+			return width
+		}
 		reqNewData(cb ? : Function) {
-			// 获取更多商品
-			// if (this.noMoreData) {
-			// 	return;
-			// }
-
 			let params: any = {
 				pageIndex: this.currentPage,
 				pageSize: this.pageSize
@@ -146,17 +160,6 @@
 				const dataList = data.list || []
 				this.publisher = [...this.publisher, ...dataList]
 				cb && cb()
-				// if (data.totalPage <= this.currentPage) {
-				// 	this.noMoreData = true;
-				// }
-				// if (data.list) {
-				// 	if (this.currentPage == 1) {
-				// 		this.publisher = [];
-				// 	}
-				// 	this.publisher = this.publisher.concat(data.list);
-				// }
-				// this.currentPage++;
-				// if (cb) cb();
 			});
 		}
 	}
