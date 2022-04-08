@@ -193,7 +193,7 @@
                 }, {
                     "path": "all_good_card",
                     "style": {
-                        "navigationBarTitleText": "20-21 国宝 Hobby",
+                        "navigationBarTitleText": "卡密列表",
                         "navigationBarBackgroundColor": "#ffffff",
                         "navigationBarTextStyle": "black",
                         "enablePullDownRefresh": false
