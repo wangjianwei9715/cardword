@@ -1266,7 +1266,7 @@
 				justify-content: end;
 				.progress-mask{
 					height: inherit;
-					background-color: #F9D0CC;
+					background-color: #F6F7FB;
 					width: 0%;
 				}
 			}

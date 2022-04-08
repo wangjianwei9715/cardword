@@ -770,16 +770,16 @@ page {
 .address-desc {
   width: 100%;
   font-size: 28rpx;
-  font-family: HYQiHei;
-  font-weight: bold;
-  color: #3b3b3b;
+  font-family: FZLanTingHeiS-R-GB;
+  font-weight: 400;
+  color: #333333;
 }
 .address-name {
   width: 100%;
-  font-size: 24rpx;
-  font-family: HYQiHei;
-  font-weight: bold;
-  color: #3b3b3b;
+  font-size: 23rpx;
+  font-family: FZLanTingHeiS-R-GB;
+  font-weight: 400;
+  color: #88878C;
 }
 .address-tips {
   height: 100rpx;
