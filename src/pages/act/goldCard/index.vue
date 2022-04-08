@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="top-bg">
 			<view class="top-help" @click="showPopup = true"></view>
-			<view class="top-time">4.3-4.5</view>
+			<view class="top-time">4.8-4.10</view>
 			<view class="top-card-box">
 				<image class="top-card-pic"  :class="index==1?'card-center':''" v-for="(item,index) in cardPic" :key="index" :src="item"></image>
 			</view>
