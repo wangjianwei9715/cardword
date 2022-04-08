@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="actionItem" :class="{redAction:!follow}" @click="handleAction">
+		<view class="actionItem" :class="{redAction:!follow}" @click.stop="handleAction">
 			{{follow?'已关注':'关注'}}
 		</view>
 		<followModal v-if='modalShow' @cancel='modalShow=false' @confirm='followAction'></followModal>
