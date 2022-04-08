@@ -18,9 +18,8 @@
 						</view>
 					</view>
 					<view class="business-rightAction">
-						<view class="actionItem" :class="{redAction:!item.follow}" @click="followAction(item,index)">
-							{{item.follow?'取消关注':'关注'}}
-						</view>
+						<followButton :follow='item.follow' :followID='item.id'
+							@handleSuccess='followSuccess($event,item)'></followButton>
 						<view class="actionItem" @click="onClickShops(item)">进店看看</view>
 					</view>
 				</view>
@@ -53,7 +52,6 @@
 					该商家暂无商品～
 				</view>
 			</view>
-			<followModal v-show='folloModalShow' @cancel='folloModalShow=false' @confirm='follow'></followModal>
 			<!-- <view class="goods-seller" v-for="item in publisher" :key="item.id">
         <view class="goods-seller-left">
           <image
@@ -90,35 +88,23 @@
 		publisher: any = [];
 		currentPage = 1;
 		pageSize = 20;
+		totalPage = 0;
 		noMoreData = false;
 		liveList = [];
-		folloModalShow = false;
-		selectItem = {
-			id: 0,
-			follow: false,
-			fans: 0
-		};
 		onLoad(query: any) {
 			this.reqNewData();
 		}
 		//   加载更多数据
 		onReachBottom() {
-			this.reqNewData();
+			// this.reqNewData();
+			if (this.currentPage < this.totalPage) {
+				this.currentPage += 1
+				this.reqNewData()
+			}
 		}
-		followAction(item: any, index: number) {
-			this.selectItem = item
-			//关注
-			if (!item.follow) this.follow()
-			if (item.follow) this.folloModalShow = true //取关弹窗
-		}
-		follow() {
-			if (!this.selectItem.id) return
-			app.http.Post('merchant/follow/' + this.selectItem.id, {}, (res: any) => {
-
-				this.selectItem.follow = res.data.follow
-				this.selectItem.fans = res.data.follow ? this.selectItem.fans + 1 : this.selectItem.fans - 1
-				this.folloModalShow = false
-			})
+		followSuccess(event: any, item: any) {
+			item.follow = event.follow
+			item.fans = event.follow ? item.fans + 1 : item.fans - 1
 		}
 		onClickShops(item: any) {
 			// #ifndef MP
@@ -145,9 +131,9 @@
 		}
 		reqNewData(cb ? : Function) {
 			// 获取更多商品
-			if (this.noMoreData) {
-				return;
-			}
+			// if (this.noMoreData) {
+			// 	return;
+			// }
 
 			let params: any = {
 				pageIndex: this.currentPage,
@@ -155,17 +141,22 @@
 			};
 
 			app.http.Get("merchant/list", params, (data: any) => {
-				if (data.totalPage <= this.currentPage) {
-					this.noMoreData = true;
-				}
-				if (data.list) {
-					if (this.currentPage == 1) {
-						this.publisher = [];
-					}
-					this.publisher = this.publisher.concat(data.list);
-				}
-				this.currentPage++;
-				if (cb) cb();
+				this.totalPage = data.totalPage
+				if (this.currentPage === 1) this.publisher = []
+				const dataList = data.list || []
+				this.publisher = [...this.publisher, ...dataList]
+				cb && cb()
+				// if (data.totalPage <= this.currentPage) {
+				// 	this.noMoreData = true;
+				// }
+				// if (data.list) {
+				// 	if (this.currentPage == 1) {
+				// 		this.publisher = [];
+				// 	}
+				// 	this.publisher = this.publisher.concat(data.list);
+				// }
+				// this.currentPage++;
+				// if (cb) cb();
 			});
 		}
 	}

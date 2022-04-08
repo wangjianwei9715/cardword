@@ -4,13 +4,15 @@
 			<image :src='decodeURIComponent(item.logo)' class="follow-avart" mode="aspectFill" />
 			<view class="follow-info uni-flex">
 				<view class="name">{{item.name}}</view>
-				<view class="num">在售{{item.num}}件</view>
+				<view class="num">在售{{item.sale_num}}件</view>
 			</view>
 			<view class="follow-action">
-				<view class="actionItem" @click="cancleFollow">已关注</view>
+				<followButton :follow='item.follow||true' :followID='item.id'
+					@handleSuccess='followSuccess($event,item,index)'></followButton>
+				<!-- <view class="actionItem" @click="cancleFollow">已关注</view> -->
 			</view>
 		</view>
-		<followModal v-show='modalShow' @cancel='modalShow=false' @confirm='confirmCancle'></followModal>
+		<empty v-if='!followList.length'></empty>
 	</view>
 </template>
 
@@ -24,29 +26,38 @@
 	import BaseNode from "../../base/BaseNode.vue";
 	@Component({})
 	export default class ClassName extends BaseNode {
-		followList = [{
-			name: '卡皇球星社',
-			logo: 'https%3A%2F%2Fka-world.oss-cn-shanghai.aliyuncs.com%2Fimages%2Fseller%2Fpintuan%2F1639123649805at9xntt5ae.jpg',
-			num: 8,
-			isFollow: true
-		}, {
-			name: '卡皇球星社',
-			logo: 'https%3A%2F%2Fka-world.oss-cn-shanghai.aliyuncs.com%2Fimages%2Fseller%2Fpintuan%2F1639123649805at9xntt5ae.jpg',
-			num: 8,
-			isFollow: true
-		}];
-		modalShow = false;
-		selectItem = {}
-		cancleFollow(item: any) {
-			this.modalShow = true
-			this.selectItem = item
+		followList: any = [];
+		totalPage = 0;
+		queryParams = {
+			pageIndex: 1,
+			pageSize: 20
 		}
-		confirmCancle() {
-			this.getList()
-			this.modalShow = false
+		getFollowList() {
+			app.http.Get('me/follows/list', this.queryParams, (res: any) => {
+				this.totalPage = res.totalPage
+				if (this.queryParams.pageIndex === 1) this.followList = []
+				const dataList = res.list || []
+				this.followList = [...this.followList, ...dataList]
+			})
+			uni.stopPullDownRefresh()
 		}
-		getList() {
-
+		followSuccess(event: any, item: any, index: number) {
+			this.queryParams.pageIndex = 1
+			this.getFollowList()
+		}
+		onLoad() {
+			this.getFollowList()
+		}
+		onPullDownRefresh() {
+			this.queryParams.pageIndex = 1
+			this.getFollowList()
+		}
+		onReachBottom() {
+			// console.log(333)
+			if (this.queryParams.pageIndex < this.totalPage) {
+				this.queryParams.pageIndex += 1
+				this.getFollowList()
+			}
 		}
 	}
 </script>
@@ -56,7 +67,7 @@
 		padding: 0 41rpx;
 	}
 
-	
+
 
 	.follow {
 		margin-bottom: 37rpx;

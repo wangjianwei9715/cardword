@@ -33,8 +33,10 @@
 					</view>
 				</view>
 				<view class="business-rightAction">
-					<view class="actionItem " :class="{redAction:!detail.followed}">{{detail.followed?'取消关注':'关注'}}
-					</view>
+					<followButton :follow='detail.followed' :followID='detail.id'
+						@handleSuccess='followSuccess($event,detail)'></followButton>
+					<!-- <view class="actionItem " :class="{redAction:!detail.followed}">{{detail.followed?'取消关注':'关注'}}
+					</view> -->
 					<!-- <view class="actionItem" @click="onClickShops(item)">进店看看</view> -->
 				</view>
 			</view>
@@ -44,7 +46,7 @@
 				v-for="(item,index) in goodTabV2.list" :key='index'>
 				{{item.name}}
 				<text v-if="item.valueKey">({{detail[item.valueKey]}})</text>
-				</view>
+			</view>
 		</view>
 		<view style="padding:0 13rpx" v-if="goodTabV2.index==0">
 			<goodslist :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
@@ -52,7 +54,7 @@
 		<view style="padding:0 13rpx" v-if="goodTabV2.index==1">
 			<liveslist :liveList='liveList'></liveslist>
 		</view>
-		<view style="padding:0 10rpx;margin-top:20rpx" v-if="goodTabV2.index==2">
+		<view style="padding:0 10rpx" v-if="goodTabV2.index==2">
 			<image :src="item" v-for="(item,index) in detail.certification" :key="index" mode="aspectFill"></image>
 		</view>
 		<empty
@@ -83,8 +85,7 @@
 				name: '已成交'
 			}
 		];
-		liveList = [
-		];
+		liveList: any = [];
 		qualifications = ['../../static/userinfo/v2/fakerBg.png'];
 		goodTabV2 = {
 			index: 2,
@@ -92,13 +93,13 @@
 					value: 1,
 					name: '在售',
 					assignKey: 'goodsList',
-					valueKey:'sale'
+					valueKey: 'sale'
 				},
 				{
 					value: 2,
 					name: '拆卡',
 					assignKey: 'liveList',
-					valueKey:'upload'
+					valueKey: 'upload'
 				}, {
 					vauee: 3,
 					name: '商家资质',
@@ -121,25 +122,15 @@
 			upload: 0,
 			certification: [],
 		};
-		goodsList: {
-			[x: string]: any
-		} = [];
-		currentPage = 1;
-		pageSize = 20;
-		noMoreData = false;
+		totalPage = 0;
+		goodsList: any = [];
 		queryParams = {
 			pageIndex: 1,
 			pageSize: 20,
 			tp: 1
 		}
 		onLoad(query: any) {
-			if (query.id) {
-				// this.merchantId = query.id;
-				// this.merchantName = query.name;
-				// this.merchantAvatar = decodeURIComponent(query.avatar)
-				this.getBusDetail(query.id)
-				// this.reqNewData()
-			}
+			if (query.id) this.getBusDetail(query.id)
 		}
 		getBusDetail(id: number) {
 			app.http.Get('merchant/detail/' + id, {}, (res: any) => {
@@ -148,34 +139,19 @@
 				this.detail.certification = this.detail.certification || []
 			})
 		}
-		reqNewData(cb ? : Function) {
-			// 获取更多商品
-			if (this.noMoreData) {
-				return;
+		onReachBottom() {
+			if (this.queryParams.pageIndex < this.totalPage) {
+				this.queryParams.pageIndex += 1
+				this.getList()
 			}
-
-			let params: {
-				[x: string]: any
-			} = {
-				tp: this.goodTabCheck,
-				pageIndex: this.currentPage,
-				pageSize: this.pageSize,
-			}
-
-			app.http.Get('seller/' + this.merchantId + '/goodlist', params, (data: any) => {
-				if (data.totalPage <= this.currentPage) {
-					this.noMoreData = true;
-				}
-				if (data.list) {
-					if (this.currentPage == 1) {
-						this.goodsList = []
-					}
-					this.goodsList = this.goodsList.concat(data.list);
-				}
-
-				// this.currentPage++;
-				if (cb) cb()
-			});
+		}
+		onPullDownRefresh() {
+			this.queryParams.pageIndex = 1
+			this.getList()
+		}
+		followSuccess(event: any, item: any) {
+			item.followed = event.follow
+			item.fans = event.follow ? item.fans + 1 : item.fans - 1
 		}
 		tabsChange(item: any, index: number) {
 			this.goodTabV2.index = index
@@ -185,29 +161,21 @@
 		}
 		getList() {
 			app.http.Get('merchant/goodlist/' + this.detail.id, this.queryParams, (res: any) => {
-				// console.log(res)
-				// if(res.list){}
-				if(this.queryParams.tp==1) this.goodsList=res.list||[]
-				if(this.queryParams.tp==2) this.liveList=res.list||[]
+				this.totalPage = res.totalPage
+				const dataList = res.list || []
+				if (this.queryParams.pageIndex === 1) {
+					this.goodsList = []
+					this.liveList = []
+				}
+				if (this.queryParams.tp == 1) this.goodsList = [...this.goodsList, ...dataList]
+				if (this.queryParams.tp == 2) this.liveList = [...this.liveList, ...dataList]
+				uni.stopPullDownRefresh()
 			})
 		}
 		onClickBack() {
 			uni.navigateBack({
 				delta: 1
 			});
-		}
-		onClickLT() {
-
-		}
-		onClickListTabs(id: number) {
-			if (id == this.goodTabCheck) {
-				return;
-			}
-			this.goodTabCheck = id;
-			this.noMoreData = false;
-			this.currentPage = 1;
-			this.goodsList = [];
-			this.reqNewData()
 		}
 		// 跳转商品详情
 		onClickJumpDetails(id: any) {
