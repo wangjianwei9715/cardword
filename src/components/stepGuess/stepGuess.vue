@@ -1,7 +1,7 @@
 <template>
 	<view class="step-guess">
 		<!-- 预测导航 -->
-		<view class="no-order" v-if="!order">
+		<!-- <view class="no-order" v-if="!order">
 			<view class="guess-left">
 				活动
 				<image class="guess-icon" src="../../pages/act/static/guess/guess_icon.png"></image>
@@ -11,8 +11,8 @@
 				<view class="guess-right-text">赢免单</view>
 				<button class="guess-header-right">&#xe470;</button>
 			</view>
-		</view>
-		<view class="order-guess-box" v-else>
+		</view> -->
+		<view class="order-guess-box" >
 			<view  class="order-guess">
 				<view class="guess-left">
 					<image class="guess-icon" src="../../pages/act/static/guess/guess_icon.png"></image>
@@ -56,6 +56,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import { guessRules } from "@/net/DataRules";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
@@ -74,13 +75,7 @@
 		guessName:string|undefined;
 
 		showDrawer = false;
-		rulesData = [
-			'1.购买本商品时可预测卡密所归属的球队，获得卡密后，预测的球队与卡密匹配即可获得免单购买机会',
-			'2.单笔订单可预测1支球队，每匹配成功一条卡密均可获得一次免单机会',
-			'3.免单机会可在创建订单时使用，免单的订单仍可进行卡密预测',
-			'4.卡密中包含多支球队时，预测的球队与卡密中任意一支球队匹配则算预测成功',
-			'5.若商品拼团完成，您有免单次数未用完，可联系客服退款 (退款额度=剩余免单次数*商品单价)'
-		]
+		rulesData = guessRules
 		created(){//在实例创建完成后被立即调用
 			
 		}

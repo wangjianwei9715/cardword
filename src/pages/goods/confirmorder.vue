@@ -24,12 +24,12 @@
       <view class="goods-info">
         <image
           :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))"
-          style="width: 200rpx; height: 200rpx; padding: 16rpx; margin: 20rpx"
+          style="width: 235rpx; height: 181rpx;"
         ></image>
         <view class="goods-info2">
           <text class="goods-info2-title">{{ goodsData.title }}</text>
           <view class="goods-money-info" v-if="cartData == ''">
-            <text class="goods-money">¥{{ goodsData.price }}</text>
+            <view class="goods-money">¥<text>{{ goodsData.price }}</text></view>
             <view class="goods-money-right" v-if="baoduiId == 0">
               <view class="goods-money-right-header">
                 {{
@@ -51,7 +51,7 @@
             </view>
           </view>
           <view class="goods-money-info" v-else>
-            <text class="goods-money">¥{{ cartData.amount }}</text>
+            <view class="goods-money">¥<text>{{ cartData.amount }}</text></view>
             <view class="goods-money-right">
               <view class="goods-money-right-header"> </view>
               <view class="goods-money-add">
@@ -61,6 +61,19 @@
               </view>
             </view>
           </view>
+        </view>
+      </view>
+      <view
+        class="huo-dong-bg"
+        v-show="goodsData.discount && cartData.length == 0"
+      >
+        <view
+          class="item-youhui-bg"
+          v-for="(item, index) in goodsData.discount"
+          :key="index"
+          :class="{'current-discount':(moneyNum>=item.minNum)&&(goodsData.discount[index+1]?(moneyNum>=goodsData.discount[index+1].minNum?false:true):true)}"
+        >
+          {{ item.content }}
         </view>
       </view>
    
@@ -94,27 +107,14 @@
       <!-- 预测卡密 -->
 
       
-      <view
-        class="huo-dong-bg top-order"
-        v-show="goodsData.discount && cartData.length == 0"
-      >
-        <text class="item-name">活动</text>
-        <view
-          class="item-youhui-bg"
-          v-for="(item, index) in goodsData.discount"
-          :key="index"
-        >
-          {{ item.content }}
-        </view>
-      </view>
+      
 
-      <!-- 普通商品金额 -->
-      <view class="yunfei-info top-order" v-if="cartData == ''">
+      <view class="yunfei-info top-order" >
         <view class="yunfei-item">
           <text class="item-name">商品金额</text>
-          <text class="item-name"
-            >¥{{ keepTwoDecimal(goodsData.price * moneyNum) }}</text
-          >
+          <!-- cartData 自选商品  -->
+          <text class="item-name" v-if="cartData == ''">¥{{ keepTwoDecimal(goodsData.price * moneyNum) }}</text>
+          <text class="item-name" v-else>¥{{ cartData.amount }}</text>
         </view>
         <view class="yunfei-item">
           <text class="item-name">优惠券</text>
@@ -129,6 +129,7 @@
             >{{ checkCouponPrice > 0 ? "" : "张可用"
             }}<view class="item-name-right"></view>
           </view>
+         
         </view>
         <view class="yunfei-item" v-show="freeNum > 0">
           <text class="item-name">免单优惠</text>
@@ -138,7 +139,7 @@
             }}</text
           >
         </view>
-        <view class="yunfei-item" v-show="goodsData.price - onePrice > 0">
+        <view class="yunfei-item" v-show="cartData == ''&&(goodsData.price - onePrice > 0)">
           <text class="item-name">优惠</text>
           <text class="item-name"
             >- ¥{{
@@ -150,61 +151,11 @@
           <text class="item-name">运费</text>
           <text class="item-name">包邮</text>
         </view>
-        <view class="cross-line"></view>
         <view class="yunfei-item">
-          <text class="item-name"></text>
-          <view class="heji-money">
-            <text class="heji-text">合计:</text>
-            <text class="heji-money2"
-              >¥{{
-                keepTwoDecimal(freeNum>0?(freeNum>=moneyNum?0:((moneyNum - freeNum)*(onePrice - couponTotalPrice))):(moneyNum * onePrice - couponTotalPrice))
-              }}</text
-            >
-          </view>
+          <text class="item-name">合计:</text>
+          <view class="item-name">¥<view class="item-totalprice">{{getTotalPrice()}}</view></view>
         </view>
-      </view>
-      <!-- 自选球队金额 -->
-      <view class="yunfei-info" v-if="cartData != ''">
-        <view class="yunfei-item">
-          <text class="item-name">商品金额</text>
-          <text class="item-name">¥{{ cartData.amount }}</text>
-        </view>
-        <view class="yunfei-item">
-          <text class="item-name">优惠券</text>
-          <view class="item-name" v-if="getBitDisableCoupon(goodsData.bit)">
-            此商品优惠券不可用
-          </view>
-          <view class="item-name" v-else @click="onClickCheckCoupon">
-            <text class="coupon-num">{{
-              checkCouponPrice > 0 ? "-¥" + checkCouponPrice : couponNum
-            }}</text
-            >{{ checkCouponPrice > 0 ? "" : "张可用"
-            }}<view class="item-name-right"></view>
-          </view>
-        </view>
-        <view class="yunfei-item">
-          <text class="item-name">运费</text>
-          <text class="item-name">包邮</text>
-        </view>
-        <view class="cross-line"></view>
-        <view class="yunfei-item">
-          <text class="item-name"></text>
-          <view class="heji-money">
-            <text class="heji-text">合计:</text>
-            <text class="heji-money2"
-              >¥{{ keepTwoDecimal(cartData.amount - couponTotalPrice) }}</text
-            >
-          </view>
-        </view>
-      </view>
-      <!--  -->
-      <view v-show="orderRich != 0" class="kami-title" >
-        <view
-          @click="setNoRichShow"
-          class="kami-gx"
-          :class="{ 'kami-check': orderRich == 1 }"
-        ></view>
-        开启卡密效果
+        
       </view>
 
       <view class="bottom-gm">
@@ -216,23 +167,27 @@
           购买须知:
         </view>
         <view class="bottom-gm-tips">
-          除拼团时限届满未满员外，所购商品因其商品属性及价值的特殊性，不支持退款、退货服务。本次拼团可能存在未中卡情形，请卡迷理性消费
+          除拼团时限届满未满员外，所购商品因其商品属及价值特性，不支持退款、退货服务。本次拼团可能存在未中卡情形，请卡迷理解
+          <view class="bottom-gm-btn" @click="operationCardShow = true">查看详情<text>《购买须知》</text></view>
         </view>
-        <view class="bottom-gm-btn" @click="operationCardShow = true"
-          >查看详情<view class="bottom-gm-right"></view
-        ></view>
+        
       </view>
+      
+      <view v-show="orderRich != 0" class="kami-title" >
+        <view
+          @click="setNoRichShow"
+          class="kami-gx"
+          :class="{ 'kami-check': orderRich == 1 }"
+        ></view>
+        开启卡密效果
+      </view>
+
+      
       <view class="bottom-content-box">
         <view class="bottom-content">
           <view class="heji-money-pay">
-            <text class="heji-text-b" style="color: #ff4349">合计:</text>
-            <text class="heji-money2-b" style="color: #ff4349"
-              >¥{{
-                cartData == ""
-                  ? (keepTwoDecimal(freeNum>0?(freeNum>=moneyNum?0:((moneyNum - freeNum)*(onePrice - couponTotalPrice))):(moneyNum * onePrice - couponTotalPrice)))
-                  : keepTwoDecimal(cartData.amount - couponTotalPrice)
-              }}</text
-            >
+            <text class="heji-text-b">合计:</text>
+            <text class="heji-money2-b">¥{{getTotalPrice()}}</text>
           </view>
           <view class="btn-payment2" @click="onClickToPay()">去支付</view>
         </view>
@@ -248,11 +203,7 @@
       :showPayMent="showPayMent"
       :payChannel="payChannel"
       @cancelPay="onClickCancelPay"
-      :payPrice="
-        cartData == ''
-          ? (keepTwoDecimal(freeNum>0?(freeNum>=moneyNum?0:((moneyNum - freeNum)*(onePrice - couponTotalPrice))):(moneyNum * onePrice - couponTotalPrice)))
-          : keepTwoDecimal(cartData.amount - couponTotalPrice)
-      "
+      :payPrice="getTotalPrice()"
       :countTime="countTime"
       @pay="onClickPayGoods"
     />
@@ -479,6 +430,15 @@ export default class ClassName extends BaseNode {
       this.couponList = res.list ? res.list : [];
       this.getConditionPrice();
     });
+  }
+  getTotalPrice(){
+    let price:any = 0;
+    if(this.cartData == ''){
+      price = this.keepTwoDecimal(this.freeNum>0?(this.freeNum>=this.moneyNum?0:((this.moneyNum - this.freeNum)*(this.onePrice - this.couponTotalPrice))):(this.moneyNum * this.onePrice - this.couponTotalPrice))
+    }else{
+      price = this.keepTwoDecimal(this.cartData.amount - this.couponTotalPrice)
+    }
+    return price
   }
   onClickCutDown() {
     if (this.moneyNum > 1) {
@@ -713,15 +673,16 @@ page {
 .content {
   width: 100%;
   box-sizing: border-box;
-  padding-bottom: calc(300rpx + env(safe-area-inset-bottom));
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom)) !important;
   padding: 13rpx
 }
 .order-detail {
   width: 100%;
   background: #fff;
+  
 }
 .top-order{
-  border-top: 20rpx solid $content-bg;
+  border-top: 13rpx solid $content-bg;
 }
 .header {
   width: 100%;
@@ -794,11 +755,14 @@ page {
   display: flex;
   flex-direction: row;
   position: relative;
+  box-sizing: border-box;
+  padding:30rpx 20rpx;
 }
 
 .goods-info2 {
-  width: 478rpx;
+  width: 428rpx;
   margin: 28rpx 0;
+  margin-left: 20rpx;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -807,11 +771,15 @@ page {
 .goods-info2-title {
   margin-right: 30rpx;
   margin-left: 8rpx;
-  font-size: $font-28;
-  font-family: PingFangSC-Regular, PingFang SC;
+  font-size: 26rpx;
+  font-family: Alibaba PuHuiTi;
   font-weight: 400;
-  color: #14151a;
+  color: #333333;
   line-height: 40rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .goods-money-info {
@@ -821,18 +789,24 @@ page {
   align-items: center;
   justify-content: space-between;
   position: absolute;
-  bottom: 10rpx;
+  bottom: 0rpx;
   left: 0;
 }
 
 .goods-money {
   margin-left: 8rpx;
   margin-top: 58rpx;
-  font-size: 28rpx;
-  font-family: "DIN";
-  font-weight: bold;
-  color: #14151a;
+  font-size: 18rpx;
+  font-family: Alibaba PuHuiTi;
+  font-weight: 500;
+  color: #333333;
   line-height: 28rpx;
+}
+.goods-money text{
+  font-size: 30rpx;
+  font-family: FZLanTingHeiS-B-GB;
+  font-weight: 400;
+  color: #333333;
 }
 .goods-money-right {
   width: 180rpx;
@@ -846,7 +820,7 @@ page {
   height: 50rpx;
   line-height: 50rpx;
   font-size: $font-24;
-  color: #ff504f;
+  color: #FF2727;
   text-align: center;
   padding-right: 12rpx;
   padding-left: 12rpx;
@@ -859,57 +833,65 @@ page {
 }
 
 .img-add {
-  width: 48rpx;
-  height: 48rpx;
-  background: url(../../static/goods/icon_add_price.png) no-repeat center;
+  width: 21rpx;
+  height: 21rpx;
+  background: url(../../static/pay/v2/icon_add.png) no-repeat center;
   background-size: cover;
 }
 
 .img-jian {
-  width: 48rpx;
-  height: 48rpx;
-  background: url(../../static/goods/icon_jian_price.png) no-repeat center;
-  background-size: cover;
+  width: 21rpx;
+  height: 4rpx;
+  background: url(../../static/pay/v2/icon_red.png) no-repeat center;
+  background-size: 100% 100%;
 }
 
 .money-add {
-  width: 66rpx;
-  height: 48rpx;
-  border: 2rpx solid #eeeeee;
+  height: 30rpx;
   text-align: center;
-
-  font-size: $font-24;
-  font-family: PingFangSC-Regular, PingFang SC;
+  font-size: 22rpx;
+  font-family: FZLanTingHeiS-R-GB;
   font-weight: 400;
-  color: #14151a;
-  line-height: 34rpx;
+  color: #333333;
+  line-height: 30rpx;
+  background:#F6F7FB;
+  margin:0 18rpx;
+  width: 60rpx;
 }
 
 .huo-dong-bg {
-  width: 100%;
-  height: 72rpx;
+  width: 684rpx;
+  height: 82rpx;
   background: #ffffff;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: start;
+  box-sizing: border-box;
+  margin:0 auto;
+  border-top: 2rpx solid #BBBBBB;
 }
 
 .item-name {
-  font-size: $font-24;
-  font-family: PingFangSC-Semibold, PingFang SC;
-  font-weight: 600;
-  color: #14151a;
+  font-size: 24rpx;
+  font-family: FZLanTingHeiS-R-GB;
+  font-weight: 400;
+  color: #333333;
   line-height: 34rpx;
-  margin-left: 36rpx;
   display: flex;
-  align-items: center;
+  align-items: baseline;
 }
 .coupon-num {
   font-size: $font-24;
   font-family: PingFangSC-Semibold, PingFang SC;
   font-weight: 600;
   color: #ff504f;
+}
+.item-name .item-totalprice{
+  font-size: 26rpx;
+  font-family: Alibaba PuHuiTi;
+  font-weight: bold;
+  color: #333333;
 }
 .item-name-right {
   width: 10rpx;
@@ -924,70 +906,58 @@ page {
   font-weight: 600;
   color: #14151a;
   line-height: 34rpx;
-  margin-left: 36rpx;
+  margin-left: 22rpx;
 }
 .item-teamname {
-  font-size: 24rpx;
-  font-family: PingFang SC;
-  font-weight: 200;
-  color: #14151a;
+  font-size: 22rpx;
+  font-family: Alibaba PuHuiTi;
+  font-weight: 400;
+  color: #333333;
   line-height: 34rpx;
-  margin-left: 36rpx;
+  margin:0 22rpx;
 }
 .item-youhui-bg {
   text-align: center;
-  line-height: 34rpx;
+  line-height: 43rpx;
   margin-right: 16rpx;
-  height: 34rpx;
-  background: #ffffff;
-  border: 1rpx solid #fb4e3e;
-  border-radius: 3rpx;
-  font-size: 20rpx;
-  font-family: Microsoft YaHei;
+  height: 43rpx;
+  background: #F1F1F1;
+  font-size: 23rpx;
+  font-family: FZLanTingHeiS-R-GB;
   font-weight: 400;
-  color: #fb4e3e;
+  color: #88878C;
   padding: 0 11rpx;
   width: fit-content;
   display: inline-flex;
-  margin-left: 10rpx;
+  margin-right: 10rpx;
 }
-
-.item-youhui-bg2 {
-  width: 130rpx;
-  height: 40rpx;
-  background: url(../../static/goods/icon_discounts_bg2.png) no-repeat center;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: $font-20;
-  font-family: PingFangSC-Regular, PingFang SC;
+.current-discount{
+  font-size: 23rpx;
+  font-family: FZLanTingHeiS-R-GB;
   font-weight: 400;
-  color: #14151a;
-  line-height: 28rpx;
-  margin-left: 16rpx;
+  color: #FFFFFF;
+  background:#FF0003;
 }
+
 
 .yunfei-info {
   width: 100%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  padding:10rpx 20rpx
 }
 
 .yunfei-item {
+  width: 100%;
+  height:60rpx;
+  align-items: center;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 24rpx 36rpx 0 0;
 }
 
-.cross-line {
-  width: 678rpx;
-  height: 2rpx;
-  background: #f1f1f4;
-  margin: 24rpx 36rpx 0 36rpx;
-}
+
 
 .heji-money {
   display: flex;
@@ -1004,46 +974,45 @@ page {
 }
 
 .heji-money2 {
-  font-size: $font-24;
-  font-family: "DIN";
+  font-size: 26rpx;
+  font-family: Alibaba PuHuiTi;
   font-weight: bold;
-  color: #14151a;
+  color: #333333;
   line-height: 28rpx;
   margin-left: 12rpx;
 }
 
 .heji-text-b {
-  font-size: 26rpx;
-  font-family: PingFangSC-Regular, PingFang SC;
+  font-size: 24rpx;
+  font-family: FZLanTingHeiS-R-GB;
   font-weight: 400;
-  color: #14151a;
+  color: #333333;
   line-height: 28rpx;
 }
 
 .heji-money2-b {
-  font-size: 40rpx;
-  font-family: "DIN";
-  font-weight: bold;
-  color: #14151a;
+  font-size: 41rpx;
+  font-family: Alibaba PuHuiTi;
+  font-weight: 500;
+  color: #F5162B;
   line-height: 28rpx;
   margin-left: 12rpx;
 }
 .bottom-gm {
   width: 100%;
-  height: 180rpx;
-  position: fixed;
-  bottom: calc(112rpx + env(safe-area-inset-bottom));
-  left: 0;
-  background: #fbf2f3;
+  background: #FFF;
   box-sizing: border-box;
-  padding: 20rpx 32rpx 0 32rpx;
+  border-top: 13rpx solid #F6F7FB;
+  padding: 30rpx 22rpx;
   .bottom-gm-title {
     width: 100%;
     height: 40rpx;
     display: flex;
     align-items: center;
-    font-size: 26rpx;
-    color: #ff504f;
+    font-size: 28rpx;
+    font-family: Alibaba PuHuiTi;
+    font-weight: 500;
+    color: #333333;
   }
   .bottom-gm-gx {
     width: 28rpx;
@@ -1062,17 +1031,24 @@ page {
   .bottom-gm-tips {
     width: 100%;
     font-size: 22rpx;
-    color: #ff504f;
+    font-family: FZLanTingHeiS-R-GB;
+    font-weight: 400;
+    color: #88878C;
+    line-height: 36rpx;
     margin-top: 10rpx;
   }
   .bottom-gm-btn {
-    position: absolute;
-    right: 32rpx;
-    bottom: 10rpx;
     font-size: 22rpx;
-    color: #aaaaaa;
-    display: flex;
-    align-items: center;
+    font-family: FZLanTingHeiS-R-GB;
+    font-weight: 400;
+    color: #88878C;
+    line-height: 36rpx;
+  }
+  .bottom-gm-btn text{
+    font-size: 22rpx;
+    font-family: FZLanTingHeiS-R-GB;
+    font-weight: 400;
+    color: #333333;
   }
   .bottom-gm-right {
     width: 10rpx;
@@ -1101,7 +1077,10 @@ page {
 }
 
 .heji-money-pay {
+  height:67rpx;
   margin-left: 36rpx;
+  display: flow-root;
+  line-height: 80rpx;
 }
 
 .btn-payment {
@@ -1122,20 +1101,17 @@ page {
 }
 
 .btn-payment2 {
-  width: 360rpx;
-  height: 88rpx;
-  background: #ff504f;
-  border-radius: 44rpx;
-  margin-right: 16rpx;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: $font-28;
-  font-family: PingFangSC-Semibold, PingFang SC;
-  font-weight: 600;
-  color: #ffffff;
-  line-height: 40rpx;
+  width: 426rpx;
+  height: 67rpx;
+  background: #FF0016;
+  margin-right: 35rpx;
+  font-size: 32rpx;
+  font-family: Alibaba PuHuiTi;
+  font-weight: 400;
+  color: #FFFFFF;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 67rpx;
 }
 .goods-money-availa {
   font-size: 24rpx;
@@ -1153,7 +1129,7 @@ page {
   font-size: 26rpx;
   color: #000;
   box-sizing: border-box;
-  padding:0 36rpx;
+  padding:0 22rpx;
   background:$content-bg
 }
 .kami-gx {
