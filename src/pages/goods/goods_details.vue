@@ -85,16 +85,16 @@
 			<!-- 邀请新人步骤图 -->
 
 			<!-- 预测卡密 -->
-			<stepGuess v-if="guessType" :freeNum="guessFreeNum"/>
+			<!-- <stepGuess v-if="guessType" :freeNum="guessFreeNum"/> -->
 			<!-- 预测卡密 -->
 			
 			<!-- 活动 -->
 			<view class="detail-bg">
 				<view class="detail-act-box">
-					<view class="detail-act-index" @click="onClickActHelp">
+					<view class="detail-act-index" @click="onClickActHelp" v-for="(item,index) in goodsActData" :key="index">
 						<view class="detail-act-left">
-							<view class="detail-act-name">活动一</view>
-							<view class="detail-act-desc">152位球员卡密免单</view>
+							<view class="detail-act-name">活动{{chineseNumber[index+1]}}</view>
+							<view class="detail-act-desc"><view class="detail-act-guess" v-if="item.type=='guess'"></view>{{item.name}}</view>
 						</view>
 						<view class="detail-act-right" ></view>
 					</view>
@@ -190,7 +190,7 @@
 
 		<!-- 底部弹窗 -->
 		<bottomDrawer :showDrawer="showDrawer" @closeDrawer="onClickCloseDrawer">
-			<view class="drawer-helpmsg">{{drawerMsg}}</view>
+			<view class="drawer-helpmsg" v-for="(item,index) in drawerMsg" :key="index">{{item}}</view>
     	</bottomDrawer>
 	</view>
 </template>
@@ -201,8 +201,15 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	import {getGoodsPintuan,getGoodsRandom,getGoodsPintuanSpe,getGoodsRandomSpe} from '@/tools/switchUtil';
 	import {dateFormat} from '@/tools/util';
+	import { chineseNumber } from "@/net/DataExchange";
+	import { goodsDetailHelpData,guessRules } from "@/net/DataRules";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		// 中文数字 规则
+		chineseNumber = chineseNumber;
+		helpData = goodsDetailHelpData
+		guessRules = guessRules;
+
 		goodsState = 0;
 		defaultAvatar = app.defaultAvatar
 		goodsId = '';
@@ -242,11 +249,7 @@
 			{scene:'WXSceneSession',text:'分享到聊天界面'},
 			{scene:'WXSenceTimeline',text:'分享到朋友圈'}
 		];
-		tipsData:{[x:string]:any} = [
-			{img:'',desc:'1分钟前加入拼团*30'},
-			{img:'',desc:'1分钟前加入拼团*30'},
-			{img:'',desc:'1分钟前加入拼团*30'}
-		];
+		tipsData:{[x:string]:any} = [];
 		discountList:any = [];
 		buyRecordList:any = [];
 		onNetWorkFunc:any;
@@ -272,23 +275,22 @@
 		// 是否禁用优惠券
 		disableCoupon = false;
 		buyExplain = '商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。';
-		helpData = [
-			{title:'Q1：关于退款',desc:'超过拼团认购时限，认购未满员，所有款项将在3小时内原路返还，除此种情况，暂不提供其他退款服务'},
-			{title:'Q2：如何保证原箱原盒？',desc:'商品上架前，平台会审核商家提供的原箱/原盒视频以及图片。卡片生厂商在生产过程中，有几率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以实物为准。产品宣传图均为发行商官方制作，最终拆卡结果以实物为准。请各位卡友悉知'},
-			{title:'Q3：拼成后多久拆卡？',desc:'拼团成功后24小时内在小程序内直播拆卡，拆卡后2个工作日内完成拆卡报告。如遇特殊情况需延长拆卡时间，平台将在购买须知中说明'},
-			{title:'Q4：中卡后多久发货？',desc:'通常情况下，拆卡报告生成后2个工作日内完成发货。如遇港拆、美拆等特殊情况需延长发货时间，平台将在购买须知中说明'}
-		];
+		
 		randomNum = 0;
 		guessType = false;
 		guessFreeNum = 0;
 		// 底部抽屉
   		showDrawer = false;
-		drawerMsg = '';
+		drawerMsg:any = [];
 		stepData = [
 			{name:'参与拼团',pic:'../../static/goods/v2/step_0.png'},
 			{name:'直播拆卡',pic:'../../static/goods/v2/step_1.png'},
 			{name:'拆卡报告',pic:'../../static/goods/v2/step_2.png'},
 			{name:'中卡发货',pic:'../../static/goods/v2/step_3.png'},
+		];
+		// 活动列表
+		goodsActData:{[x:string]:any} = [
+			{type:'act',name:'152位球员卡密免单',explain:''}
 		]
 		onLoad(query:any) {
 			
@@ -391,6 +393,12 @@
 					}
 					this.guessFreeNum = data.freeNoNum
 					this.guessType = (data.good.bit & 8) == 8?true:false;
+					if(this.guessType){
+						this.goodsActData.push(
+							{type:'guess',name:'猜球员 赢免单',explain:''}
+						);
+						this.drawerMsg = this.drawerMsg.concat(this.guessRules)
+					}
 					// 状态
 					this.goodsState = data.good.state;
 					// 倒计时
@@ -412,7 +420,7 @@
 					}else{
 						newData = decodeURIComponent(data.good.desc).split('\r');
 					}
-					// this.goodsDesc = newData;
+					this.goodsDesc = newData;
 					// console.log(newData)
 					this.goodsDesc.unshift('开售时间：'+dateFormat(data.good.startAt))
 					if(this.goodsState==1){
@@ -940,7 +948,6 @@
 			this.showDrawer = false;
 		}
 		onClickActHelp(){
-			this.drawerMsg = '特殊说明：由于本产品为港拆，故发货时间为10~15天；本产品base卡密不发，请悉知'
 			this.showDrawer = true;
 		}
 	}
@@ -1715,9 +1722,18 @@
 			}
 			.detail-act-desc{
 				font-size: 24rpx;
+				display: flex;
+				align-items: center;
 				font-family: FZLanTingHeiS-R-GB;
 				font-weight: 400;
 				color: #88878C;
+			}
+			.detail-act-guess{
+				width: 130rpx;
+				height:28rpx;
+				margin-right: 20rpx;
+				background:url(../act/static/guess/guess_icon.png) no-repeat center;
+				background-size: 100% 100%;
 			}
 			.detail-act-right{
 				width: 13rpx;

@@ -57,26 +57,24 @@
 		box-sizing: border-box;
 		.card-index{
 			width: 100%;
-			background:#F6F6F7;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			box-sizing: border-box;
-			padding:20rpx 0;
+			margin-bottom: 7rpx;
 			.left{
-				width:500rpx;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 24rpx;
-				font-family: PingFang SC;
+				width:604rpx;
+				font-size: 22rpx;
+				font-family: FZLanTingHeiS-R-GB;
 				font-weight: 400;
-				color: #14151A;
-				line-height: 34rpx;
+				color: #333333;
+				line-height: 32rpx;
 				text-align: center;
+				background:#F6F7FA;
+				box-sizing: border-box;
+				padding:20rpx 16rpx;
 			}
 			.right{
-				width: 210rpx;
+				width: 74rpx;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -93,9 +91,6 @@
 			.reward{
 				color: #EBBF7C;
 			}
-		}
-		.card-index:nth-child(even){
-			background:#FFFFFF
 		}
 	}
 	.bingo-name{
