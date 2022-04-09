@@ -1192,10 +1192,10 @@
 		justify-content: flex-end;
 	}
 	.countdown-index{
-		width: 26rpx;
-		height:34rpx;
+		width: 30rpx;
+		height:36rpx;
 		text-align: center;
-		line-height: 34rpx;
+		line-height: 36rpx;
 		font-size: 27rpx;
 		font-family: eryaxindahei;
 		font-weight: 400;
@@ -1462,8 +1462,6 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:20rpx 32rpx 30rpx 32rpx;
-		margin-bottom: constant(safe-area-inset-bottom);
-		margin-bottom: env(safe-area-inset-bottom);   
 		&-title{
 			width: 100%;
 			font-size: $font-28;
@@ -1646,7 +1644,7 @@
 		width: 100%;
 		background:#fff;
 		box-sizing: border-box;
-		padding:30rpx 25rpx 140rpx 25rpx;
+		padding:30rpx 25rpx 150rpx 25rpx;
 		
 	}
 	.detail-title{

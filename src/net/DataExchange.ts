@@ -1,3 +1,19 @@
+// 首页列表类型 1:推荐 2:篮球 3:足球 4:其他
+export var indexGoodsType:{[x:number]:any} = {
+    1:'main',
+    2:'basketball',
+    3:'football',
+    4:'othersport'
+}
+
+// 商品列表类型
+export var goodsListType:{[x:string]:any} = {
+    'guess':'活动专区',
+    'cheap':'新手专区',
+    'select':'自选球队',
+    'progress':'即将拼成'
+}
+
 // 中文数字
 export var chineseNumber = {
     1:'一',
