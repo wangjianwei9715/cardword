@@ -1270,7 +1270,7 @@
 				height: 9rpx;
 				position: relative;
 				display: flex;
-				justify-content: end;
+				justify-content: flex-end;
 				.progress-mask{
 					height: inherit;
 					background-color: #F6F7FB;

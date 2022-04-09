@@ -501,12 +501,13 @@
 			.header-price{
 				width: 100%;
 				font-size: 25rpx;
-				font-family: 'DIN';
+				font-family: DIN;
 				font-weight: bold;
 				color: #FB4E3E;
 			}
 			.header-price text{
 				font-size:40rpx;
+				color: #FB4E3E;
 			}
 			.header-teamname{
 				width: 100%;

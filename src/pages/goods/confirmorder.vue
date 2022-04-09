@@ -874,7 +874,7 @@ page {
 
 .item-name {
   font-size: 24rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: Alibaba PuHuiTi;
   font-weight: 400;
   color: #333333;
   line-height: 34rpx;
