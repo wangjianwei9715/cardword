@@ -77,13 +77,13 @@
 		</view>
 		
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="true" :pageIndex="currentPage" @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
+			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="true"  @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
 		<!-- #ifdef MP -->
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsMiniList"  :pageIndex="currentPage"  @send="onClickMiniGood" :mini="true" :presell="false"/>
+			<goodslist  :goodsList="goodsMiniList"   @send="onClickMiniGood" :mini="true" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
@@ -126,7 +126,7 @@
 				{img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
 			],
 			tabBottom:[
-				{img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_assign_list?type=guess'},
+				{img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_assign_list?type=activity'},
 				{img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_assign_list?type=cheap'},
 				{img:'../../static/index/v2/top_icon6.png',text:'自选球队',url:'/pages/goods/goods_assign_list?type=select'},
 				{img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_assign_list?type=progress'}

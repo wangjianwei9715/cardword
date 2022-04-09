@@ -8,7 +8,7 @@ export var indexGoodsType:{[x:number]:any} = {
 
 // 商品列表类型
 export var goodsListType:{[x:string]:any} = {
-    'guess':'活动专区',
+    'activity':'活动专区',
     'cheap':'新手专区',
     'select':'自选球队',
     'progress':'即将拼成'

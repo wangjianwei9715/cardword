@@ -72,10 +72,7 @@
 			default: false
 		})
 		indexSwiper?: any;
-		@Prop({
-			default: 1
-		})
-		pageIndex: any;
+		
 		@Prop({
 			default: false
 		})

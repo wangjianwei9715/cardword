@@ -14,7 +14,7 @@ export default Vue.extend({
     if (process.env.NODE_ENV === "development") {
       // console.log("开发环境");
       // app.localTest=true;
-      // app.bussinessApiDomain='http://192.168.8.80:8701/api/v1/';
+      // app.bussinessApiDomain='http://192.168.8.80:8701/api/v2/';
       
     } 
 
@@ -243,6 +243,10 @@ export default Vue.extend({
 @font-face {
   font-family: "FZLanTingHei-H-GBK";
   src: url("~@/common/Tao/FZLTTHK--GBK1-0.TTF");
+}
+@font-face {
+  font-family: "eryaxindahei";
+  src: url("~@/common/Tao/CountDownNum.ttf");
 }
 // #endif
 .content {

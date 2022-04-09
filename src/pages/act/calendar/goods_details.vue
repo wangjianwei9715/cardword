@@ -43,7 +43,7 @@
 			</view>
 		</view>
 
-		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
+		<share :operationShow="operationShow" :shareData="shareData"  @operacancel="onClickShareCancel"></share>
 	</view>
 </template>
 
@@ -63,16 +63,13 @@
 
 		// 分享
 		operationShow=false;
-		operationData = [
-			{id:0,img:'/static/share/weixin@2x.png',text:'微信好友'},
-			{id:1,img:'/static/share/pyq@2x.png',text:'朋友圈'},
-			{id:2,img:'/static/share/lianjie@2x.png',text:'分享链接'},
-		];
 		operationCardShow=false;
-		sceneStr = [
-			{scene:'WXSceneSession',text:'分享到聊天界面'},
-			{scene:'WXSenceTimeline',text:'分享到朋友圈'}
-		];
+		shareData:any = {
+			shareUrl:'',  
+			title:'',      
+			summary:'',    
+			thumb:''       
+		}
 		onLoad(query:any) {
 			this.goodsId = query.id;
 			this.isLikes = query.like=='true'?true:false;
@@ -92,52 +89,21 @@
 		// 分享
 		onClickShare(){
 			if(!this.operationShow){
+				if(this.shareData.shareUrl==''){
+					this.shareData = {
+						shareUrl:"https://www.ka-world.com/share/h5/index.html#/pages/calendar/goods_details?id="+this.goodsId,  
+						title:this.goodsData.title,      
+						summary:this.goodsData.title,    
+						thumb:this.goodsData.thumb_pic
+					}
+				}
 				this.operationShow = true
 			}
 		}
 		onClickShareCancel(){
 			this.operationShow = false
 		}
-		onClcikShareConfirm(id:any){
-			let url = "https://www.ka-world.com/share/h5/index.html#/pages/calendar/goods_details?id="+this.goodsId
-			if(id==2){
-				uni.setClipboardData({
-					data: url,
-					showToast:false,
-					success: ()=> {
-						this.operationShow = false;
-						uni.showToast({
-							title:'复制成功',
-							icon:'none'
-						})
-					}
-				});
-			}else{
-				uni.showLoading({
-					title: '加载中'
-				});
-				setTimeout(function () {
-					uni.hideLoading();
-				}, 2000);
-				let scene = this.sceneStr[id].scene;
-				uni.share({
-					provider: "weixin",
-					scene: scene,
-					type: 0,
-					href: url,
-					title: this.goodsData.title,
-					summary: this.goodsData.title,
-					imageUrl: this.goodsData.thumb_pic,
-					success: (res)=> {
-						this.operationShow = false
-						console.log("success:" + JSON.stringify(res));
-					},
-					fail: function (err) {
-						console.log("fail:" + JSON.stringify(err));
-					}
-				});
-			}
-		}
+		
 		// 数据详情赋值
 		getGoodData(id:any){
 			app.http.Get('function/calendar/detail/'+id,{},(res:any)=>{

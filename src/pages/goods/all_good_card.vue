@@ -234,7 +234,7 @@
 	}
 	.rules-table tr td{
 		height:76rpx;
-		line-height: 76rpx;
+		line-height: 40rpx;
 		font-size: 26rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;

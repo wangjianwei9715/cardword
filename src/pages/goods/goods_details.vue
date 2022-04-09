@@ -179,7 +179,8 @@
 		</view>
 
 		<cardplay :operationShow="operationCardShow" :operaType="operaType" @operacancel="onClickCardCancel" />
-		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
+
+		<share :operationShow="operationShow" :shareData="shareData" @operacancel="onClickShareCancel" />
 		
 		<!-- 自选球队 -->
 		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" :baoduiLeftSec="baoduiLeftSec" :baoduiState="baoduiState" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
@@ -190,7 +191,10 @@
 
 		<!-- 底部弹窗 -->
 		<bottomDrawer :showDrawer="showDrawer" @closeDrawer="onClickCloseDrawer">
-			<view class="drawer-helpmsg" v-for="(item,index) in drawerMsg" :key="index">{{item}}</view>
+			<view class="drawer-helpmsg" v-for="(item,index) in drawerMsg" :key="index">
+				<view class="drawer-help-title">{{item.title}}</view>
+				<view class="drawer-help-content" v-html="item.content"></view>
+			</view>
     	</bottomDrawer>
 	</view>
 </template>
@@ -236,19 +240,17 @@
 		goodsDesc:{[x:string]:any} = [];
 		tipBtn:{[x:string]:any}=[
 			{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'},
-			// {id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'}
+			{id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'}
 		];
+		// 分享 
 		operationShow=false;
-		operationData = [
-			{id:0,img:'/static/share/weixin@2x.png',text:'微信好友'},
-			{id:1,img:'/static/share/pyq@2x.png',text:'朋友圈'},
-			{id:2,img:'/static/share/lianjie@2x.png',text:'分享链接'},
-		];
+		shareData:any = {
+			shareUrl:'',  
+			title:'',      
+			summary:'',    
+			thumb:''       
+		}
 		operationCardShow=false;
-		sceneStr = [
-			{scene:'WXSceneSession',text:'分享到聊天界面'},
-			{scene:'WXSenceTimeline',text:'分享到朋友圈'}
-		];
 		tipsData:{[x:string]:any} = [];
 		discountList:any = [];
 		buyRecordList:any = [];
@@ -281,7 +283,12 @@
 		guessFreeNum = 0;
 		// 底部抽屉
   		showDrawer = false;
-		drawerMsg:any = [];
+		drawerMsg:any = [
+			{
+				title:"活动标题",
+				content:"活动内容",
+			}
+		];
 		stepData = [
 			{name:'参与拼团',pic:'../../static/goods/v2/step_0.png'},
 			{name:'直播拆卡',pic:'../../static/goods/v2/step_1.png'},
@@ -604,48 +611,15 @@
 		// 分享
 		onClickShare(){
 			if(!this.operationShow){
+				if(this.shareData.shareUrl==''){
+					this.shareData = {
+						shareUrl:"https://www.ka-world.com/share/good.html?id="+this.goodsId,  
+						title:this.goodsData.title,      
+						summary:this.goodsData.title,    
+						thumb:this.goodsData.pic.thumb 
+					}
+				}
 				this.operationShow = true
-			}
-		}
-		
-		
-		onClcikShareConfirm(id:any){
-			if(id==2){
-				uni.setClipboardData({
-					data: "https://www.ka-world.com/share/good.html?id="+this.goodsId,
-					showToast:false,
-					success: ()=> {
-						this.operationShow = false;
-						uni.showToast({
-							title:'复制成功',
-							icon:'none'
-						})
-					}
-				});
-			}else{
-				uni.showLoading({
-					title: '加载中'
-				});
-				setTimeout(function () {
-					uni.hideLoading();
-				}, 2000);
-				let scene = this.sceneStr[id].scene;
-				uni.share({
-					provider: "weixin",
-					scene: scene,
-					type: 0,
-					href: "https://www.ka-world.com/share/good.html?id="+this.goodsId,
-					title: this.goodsData.title,
-					summary: this.goodsData.title,
-					imageUrl: this.goodsData.pic.thumb,
-					success: (res)=> {
-						this.operationShow = false
-						console.log("success:" + JSON.stringify(res));
-					},
-					fail: function (err) {
-						console.log("fail:" + JSON.stringify(err));
-					}
-				});
 			}
 		}
 		
@@ -1744,11 +1718,21 @@
 	.drawer-helpmsg{
 		width: 100%;
 		box-sizing: border-box;
+		line-height: 40rpx;
+	}
+	.drawer-help-title{
+		font-size: 26rpx;
+		font-weight: bold;
+		color:#333333;
+		margin:20rpx 0rpx;
+	}
+	.drawer-help-content{
+		width: 100%;
 		font-size: 24rpx;
 		font-family: FZLanTingHeiS-R-GB;
 		font-weight: 400;
 		color: #9b9b9b;
-		line-height: 40rpx;
+		white-space: pre-wrap;
 	}
 	.goods-step-box{
 		width: 100%;

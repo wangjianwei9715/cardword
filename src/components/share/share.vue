@@ -17,12 +17,23 @@
 <script lang="ts">
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import { wxShare } from "@/net/DataDefine"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({ default: false })
 		operationShow:boolean|undefined;
 		@Prop({ default: [] })
-		operationData:any;
+		shareData:wxShare.shareData | any;
+		
+		sceneStr = [
+			{scene:'WXSceneSession',text:'分享到聊天界面'},
+			{scene:'WXSenceTimeline',text:'分享到朋友圈'}
+		];
+		operationData:any = [
+			{id:0,img:'/static/share/weixin@2x.png',text:'微信好友'},
+			{id:1,img:'/static/share/pyq@2x.png',text:'朋友圈'},
+			{id:2,img:'/static/share/lianjie@2x.png',text:'分享链接'},
+		];
 		
 		created(){//在实例创建完成后被立即调用
 			
@@ -33,8 +44,51 @@
 		destroyed(){
 			
 		}
+		setClipboardData(){
+			uni.setClipboardData({
+				data: this.shareData.shareUrl,
+				showToast:false,
+				success: ()=> {
+					uni.showToast({
+						title:'复制成功',
+						icon:'none'
+					})
+				}
+			});
+		}
+		weChatShare(scene:string){
+			uni.showLoading({
+				title: '加载中'
+			});
+			setTimeout(function () {
+				uni.hideLoading();
+			}, 2000);
+			uni.share({
+				provider: "weixin",
+				scene: scene,
+				type: 0,
+				href: this.shareData.shareUrl,
+				title: this.shareData.title,
+				summary: this.shareData.summary,
+				imageUrl: this.shareData.thumb,
+				success: (res)=> {
+					this.operationShow = false
+					console.log("success:" + JSON.stringify(res));
+				},
+				fail: function (err) {
+					console.log("fail:" + JSON.stringify(err));
+				}
+			});
+		}
 		operationStart(id:any){
-			this.$emit("operaclick",id);
+			// this.$emit("operaclick",id);
+			if(id==2){
+				this.setClipboardData()
+			}else{
+				this.weChatShare(this.sceneStr[id].scene)
+			}
+
+			this.$emit("operacancel");
 		}
 		onClickOperaCancel(){
 			this.$emit("operacancel");

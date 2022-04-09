@@ -488,7 +488,8 @@
 	.header{
 		width: 100%;
 		height:354rpx;
-		background:#FF0016;
+		background:url(../../static/order/top_bg.png);
+		background-size: 100% 100%;
 		box-sizing: border-box;
 		padding:40rpx;
 		&-state{
