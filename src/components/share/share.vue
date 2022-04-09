@@ -3,7 +3,7 @@
 		<view class="operation-shadow" v-show="operationShow" @click="onClickOperaCancel"></view>
 		<view class="operation-content" :class="operationShow?'operation-show':''">
 			<view class="operation-index">
-				<view class="operation-btn" @click="operationStart(item.id)" v-for="item in operationData" :key="item.id"> 
+				<view class="operation-btn" @click="operationStart(item.scene)" v-for="item in operationData" :key="item.id"> 
 					<image class="operation-img" :src="item.img" mode=""></image>
 					<view class="operation-text">{{item.text}}</view>
 				</view>
@@ -25,14 +25,10 @@
 		@Prop({ default: [] })
 		shareData:wxShare.shareData | any;
 		
-		sceneStr = [
-			{scene:'WXSceneSession',text:'分享到聊天界面'},
-			{scene:'WXSenceTimeline',text:'分享到朋友圈'}
-		];
 		operationData:any = [
-			{id:0,img:'/static/share/weixin@2x.png',text:'微信好友'},
-			{id:1,img:'/static/share/pyq@2x.png',text:'朋友圈'},
-			{id:2,img:'/static/share/lianjie@2x.png',text:'分享链接'},
+			{img:'/static/share/weixin@2x.png',text:'微信好友',scene:'WXSceneSession'},
+			{img:'/static/share/pyq@2x.png',text:'朋友圈',scene:'WXSenceTimeline'},
+			{img:'/static/share/lianjie@2x.png',text:'分享链接',scene:''},
 		];
 		
 		created(){//在实例创建完成后被立即调用
@@ -80,14 +76,12 @@
 				}
 			});
 		}
-		operationStart(id:any){
-			// this.$emit("operaclick",id);
-			if(id==2){
+		operationStart(scene:any){
+			if(scene==''){
 				this.setClipboardData()
 			}else{
-				this.weChatShare(this.sceneStr[id].scene)
+				this.weChatShare(scene)
 			}
-
 			this.$emit("operacancel");
 		}
 		onClickOperaCancel(){

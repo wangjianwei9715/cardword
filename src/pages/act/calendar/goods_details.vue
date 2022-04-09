@@ -60,10 +60,8 @@
 		goodsData:any = {};
 		goodsContentPic:any = [];
 		isLikes = false;
-
 		// 分享
 		operationShow=false;
-		operationCardShow=false;
 		shareData:any = {
 			shareUrl:'',  
 			title:'',      

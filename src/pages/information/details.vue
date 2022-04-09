@@ -46,7 +46,6 @@
 		cover = '';
 		articleData:any = {};
 		operationShow=false;
-		operationCardShow=false;
 		shareData:any = {
 			shareUrl:'',  
 			title:'',      
