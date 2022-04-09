@@ -97,8 +97,10 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
+	import { indexGoodsType } from "@/net/DataExchange"
 	@Component({})
 	export default class index extends BaseNode {
+		indexGoodsType = indexGoodsType;
 		statusBarHeight = app.statusBarHeight;
 		topAddList:any = [];
 		goodsMiniList = [
@@ -124,10 +126,10 @@
 				{img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
 			],
 			tabBottom:[
-				{img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_find_list?classType=100'},
-				{img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_find_list?classType=100'},
-				{img:'../../static/index/v2/top_icon6.png',text:'自选球队',url:'/pages/goods/goods_find_list?classType=100'},
-				{img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_find_list?classType=100'}
+				{img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_assign_list?type=guess'},
+				{img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_assign_list?type=cheap'},
+				{img:'../../static/index/v2/top_icon6.png',text:'自选球队',url:'/pages/goods/goods_assign_list?type=select'},
+				{img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_assign_list?type=progress'}
 			]
 		};
 		
@@ -157,8 +159,9 @@
 		];
 		goodTabCheck = 1;
 		goodsList:any = [];
-		currentPage = 1;
-		pageSize = 20;
+		// fetchFrom:第几个数据开始  fetchSize:取几个数据
+		fetchFrom = 1;
+		fetchSize = 10;
 		noMoreData = false;
 		apkNeedUpdate = false;
 		updateStart = false;
@@ -199,7 +202,6 @@
 			let listeners = ['BackLogin']
 			this.register(listeners);
 			this.getLuanchApp()
-
 			
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
@@ -295,9 +297,7 @@
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
-			this.currentPage = 1;
-			this.noMoreData = false;
-			this.reqNewData(()=>{
+			this.reqSearchList(()=>{
 				setTimeout(()=>{
 					uni.stopPullDownRefresh();
 				},1000)
@@ -325,7 +325,6 @@
 			})
 			// #endif
 		}
-		
 		onClickHotPic(name:string){
 			if(name=='cardBean'){
 				uni.showToast({
@@ -334,9 +333,8 @@
 				})
 			}
 		}
-		
 		showInitEvent(){
-			this.currentPage = 1;
+			this.fetchFrom = 1;
 			this.noMoreData = false;
 			this.initEvent()
 			if(this.progressList!=''){
@@ -357,14 +355,6 @@
 				return;
 			}
 			// #endif
-		}
-		getPic(img:any){
-			if(img.indexOf(',') == -1){
-				return img;
-			}else{
-				let pic = img.split(',')
-				return pic[0]
-			}
 		}
 		onClickMiniGood(){
 			uni.showToast({
@@ -457,36 +447,16 @@
 		BackLogin(res:any){
 			uni.$emit('BackLogin');
 		}
-		Logout(res:any){
-		}
-		onClickNotice(code:any){
-			this.onClickJumpDetails(code)
-		}
-		
 		onClickSearch(){
 			// 搜索
 			uni.navigateTo({
 				url: '/pages/goods/goods_find'
 			})
 		}
-		onClickTopAdd(){
-			// uni.showToast({
-			// 	title:'活动升级中',
-			// 	icon:'none'
-			// })
-		}
-		
 		onClickcancelPaySuccess(){
 			this.showPaySuccess = false;
 		}
 		onClickJumpUrl(item:any){
-			if(item.text=='卡豆商城'){
-				uni.showToast({
-					title:'卡豆商城维护中',
-					icon:'none'
-				})
-				return;
-			}
 			if(item.text=='发售日历'){
 				if(app.token.accessToken == ''){
 					uni.navigateTo({
@@ -511,10 +481,15 @@
 				return;
 			}
 			this.goodTabCheck = id
-			this.currentPage = 1;
-			this.goodsList = []
+			this.reqSearchList()
+		}
+		reqSearchList(cb?:Function){
+			this.goodsList = [];
+			this.fetchFrom = 1;
 			this.noMoreData = false;
-			this.reqNewData()
+			this.reqNewData(()=>{
+				if(cb) cb()
+			}) 
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
@@ -523,23 +498,18 @@
 			}
 			
 			let params:{[x:string]:any} = {
-				tp:this.goodTabCheck,
-				pageIndex: this.currentPage,
-				pageSize:this.pageSize,
+				fetchFrom:this.fetchFrom,
+				fetchSize:this.fetchSize
 			}
 			
-			app.http.Get("dataApi/goodlist", params, (data: any) => {
-				if(data.totalPage<=this.currentPage){
+			app.http.Get("dataApi/goodlist/forsale/"+this.indexGoodsType[this.goodTabCheck], params, (data: any) => {
+				if(data.isFetchEnd){
 					this.noMoreData = true;
 				}
 				if(data.goodList){
-					if(this.currentPage==1){
-						this.goodsList = []
-					}
 					this.goodsList = this.goodsList.concat(data.goodList);
 				}
-				
-				this.currentPage++;
+				this.fetchFrom += this.fetchSize;
 				if(cb) cb()
 			});
 		}

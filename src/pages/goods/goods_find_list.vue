@@ -12,11 +12,11 @@
 				<tabc :tabc="classifyData" :tabsCheck="classifyOpt" @tabsClick="onClickListTabs"></tabc>
 			</view>
 			<view class="header-sort">
-				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}" v-for="item in sortData" :key="item.id" @click="onClickSort(item.id)">
+				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}" v-for="item in sortData" :key="item.id" @click="onClickSort(item)">
 					{{item.name}}
 					<view class="header-sort-icon">
-						<view v-if="item.id!=1&&item.id!=2" :class="{'icon-sort-upn':item.sort_up!='up','icon-sort-up':item.sort_up=='up'}"></view>
-						<view :class="{'icon-sort-downn':item.sort_up!='down','icon-sort-down':item.sort_up=='down'}"></view>
+						<view v-if="item.id!=1&&item.id!=2" :class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
+						<view :class="{'icon-sort-downn':item.odType!=2,'icon-sort-down':item.odType==2}"></view>
 					</view>
 				</view>
 				<view :class="['header-sort-classify',{'classify-show':classifyShow}]">
@@ -51,12 +51,12 @@
 			{id:2,name:'已拼成'}
 		];
 		goodTabCheck = 1;
-		sortData = [
-			{id:1,name:'在售',sort_up:''},
-			{id:2,name:'拼团方式',sort_up:''},
-			{id:3,name:'进度',sort_up:''},
-			{id:4,name:'价格',sort_up:''},
-		];
+		sortData = {
+			state:{id:1,name:'在售',odType:0},
+			type:{id:2,name:'拼团方式',odType:0},
+			progress:{id:3,name:'进度',odType:0},
+			price:{id:4,name:'价格',odType:0},
+		};
 		classifyData = [
 			{id:100,name:'推荐'},
 			{id:1,name:'篮球'},
@@ -140,34 +140,28 @@
 		}
 		
 		// 排序选择
-		onClickSort(id:number){
+		onClickSort(item:any){
 			this.onClickClassifyCancel()
-			if(id==1){
+			if(item.id==1){
 				this.classifyShow = true
-			}else if(id==2){
+			}else if(item.id==2){
 				this.classifyShowPlay = true
 			}else{
-				if(this.sortData[id-1].sort_up==''){
-					this.sortData[id-1].sort_up = 'up'
-				}else if(this.sortData[id-1].sort_up == 'up'){
-					this.sortData[id-1].sort_up = 'down'
-				}else if(this.sortData[id-1].sort_up == 'down'){
-					this.sortData[id-1].sort_up = ''
-				}
+				item.odType = item.odType==2?item.odType=0:item.odType+=1;
 				this.reqSearchList()
 			}
 		}
 		onClickClassifyOpt(id:number){
 			if(this.goodTabCheck==id) return;
 			this.goodTabCheck = id;
-			this.sortData[0].name = this.getSortStr(id);
+			this.sortData.state.name = this.getSortStr(id);
 			this.onClickClassifyCancel()
 			this.reqSearchList()
 		}
 		onClickClassifyOptPlay(id:number){
 			if(this.playTypeCurrent==id) return;
 			this.playTypeCurrent = id;
-			this.sortData[1].name = this.getSortStrPlay(id);
+			this.sortData.type.name = this.getSortStrPlay(id);
 			this.onClickClassifyCancel()
 			this.reqSearchList()
 		}
@@ -239,22 +233,10 @@
 				params.sn = Md5.hashStr(this.scrollIdSt+this.scrollId+'scrollSearchGood')
 			}
 			// 排序方式
-			let sort = ''
-			if(this.sortData[2].sort_up!=''){
-				if(this.sortData[2].sort_up=='up'){
-					sort += 'price'
-				}else{
-					sort += 'price:desc'
-				}
-			}
-			if(this.sortData[1].sort_up!=''){
-				if(sort!=''){sort+=','}
-				if(this.sortData[1].sort_up=='up'){
-					sort += 'progress'
-				}else{
-					sort += 'progress:desc'
-				}
-			}
+			let sort = '';
+			sort += this.sortData.price.odType==0?'':(this.sortData.price.odType==1?'price':'price:desc');
+			sort += sort!='' && this.sortData.progress.odType!=0?',':'';
+			sort += this.sortData.progress.odType==0?'':(this.sortData.progress.odType==1?'progress':'progress:desc');
 			if(sort!=''){
 				params.sort = sort
 			}
