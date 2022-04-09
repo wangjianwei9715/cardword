@@ -68,7 +68,6 @@
 				summary: this.shareData.summary,
 				imageUrl: this.shareData.thumb,
 				success: (res)=> {
-					this.operationShow = false
 					console.log("success:" + JSON.stringify(res));
 				},
 				fail: function (err) {
@@ -82,7 +81,7 @@
 			}else{
 				this.weChatShare(scene)
 			}
-			this.$emit("operacancel");
+			this.onClickOperaCancel()
 		}
 		onClickOperaCancel(){
 			this.$emit("operacancel");

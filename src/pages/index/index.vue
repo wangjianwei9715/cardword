@@ -143,12 +143,12 @@
 			hot:{
 				title:'热门系列',
 				tips:'新系列上市',
-				list:['../../static/index/v2/cardbean_pic.png','../../static/index/v2/cardbean_hb.png']
+				list:[]
 			},
 			split:{
 				title:'拆卡围观',
 				tips:'正在拆卡',
-				list:['../../static/index/v2/cardbean_pic.png','../../static/index/v2/cardbean_hb.png']
+				list:[]
 			}
 		};
 		goodTab = [
