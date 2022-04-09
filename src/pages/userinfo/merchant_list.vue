@@ -65,7 +65,6 @@ export default class ClassName extends BaseNode {
   currentPage = 1;
   pageSize = 20;
   totalPage = 0;
-  noMoreData = false;
   liveList = [];
   onLoad(query: any) {
     this.reqNewData();
