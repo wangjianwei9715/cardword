@@ -30,7 +30,7 @@
 					<view class="nameInfo uni-flex">
 						<text>{{detail.name}}</text>
 						<view class="entityInfo" v-if="detail.title">
-							<text>{{detail.title}}</text>
+							{{detail.title}}
 						</view>
 					</view>
 					<view class="fansInfo">
@@ -38,7 +38,7 @@
 					</view>
 				</view>
 				<view class="business-rightAction">
-					<followButton :follow='detail.followed' :followID='detail.id' @handleSuccess='followSuccess($event,detail)'></followButton>
+					<followButton v-if="buttonShow" :follow='detail.followed' :followID='detail.id' @handleSuccess='followSuccess($event,detail)'></followButton>
 					<!-- <view class="actionItem " :class="{redAction:!detail.followed}">{{detail.followed?'取消关注':'关注'}}
 					</view> -->
 					<!-- <view class="actionItem" @click="onClickShops(item)">进店看看</view> -->
@@ -58,7 +58,7 @@
 			<liveslist :liveList='liveList'></liveslist>
 		</view>
 		<view v-if="goodTabV2.index==2" style="width:100%">
-			<image :src="decodeURIComponent(item)" style="margin:6rpx auto;display:block;width:94%" @click.stop="previewImg(index,detail.certification)" v-for="(item,index) in detail.certification" :key="index" mode="widthFix"></image>
+			<image  :src="decodeURIComponent(item)" style="margin:6rpx auto;display:block;width:94%" @click.stop="previewImg(index,detail.certification)" v-for="(item,index) in detail.certification" :key="index" mode="widthFix"></image>
 		</view>
 		<empty v-show='(goodTabV2.index==0&&!goodsList.length) || (goodTabV2.index==1&&!liveList.length) || (goodTabV2.index==2&&!detail.certification.length)'>
 		</empty>
@@ -120,6 +120,7 @@ export default class ClassName extends BaseNode {
   merchantId = 0;
   merchantName = "";
   merchantAvatar = "";
+  buttonShow=false;
   detail = {
     id: null,
     fans: 0,
@@ -153,6 +154,7 @@ export default class ClassName extends BaseNode {
       // console.log(res)
       this.detail = res.data;
       this.detail.certification = this.detail.certification || [];
+	  this.buttonShow=true
     });
   }
   onReachBottom() {
@@ -364,22 +366,15 @@ page {
 
       .entityInfo {
         background-size: 100% 100%;
-        width: 96rpx;
         height: 22rpx;
         background-image: url("../../static/userinfo/v2/entityBg.png");
-
-        text {
-          font-size: 18rpx;
-          font-family: FZLanTingHeiS-R-GB;
-          font-weight: 400;
-          line-height: 24rpx;
-          color: #ffffff;
-          white-space: nowrap;
-          // letter-spacing: 1rpx;
-          transform: scale(0.8);
-        }
-
-        // line-height: 30px;
+        padding: 0 10rpx;
+        text-align: center;
+        font-size: 18rpx;
+        font-family: FZLanTingHeiS-R-GB;
+        font-weight: 400;
+        line-height: 24rpx;
+		color: #ffffff;
       }
     }
 
@@ -431,7 +426,8 @@ page {
     font-family: FZLanTingHeiS-R-GB;
     font-weight: 400;
     color: #333333;
-    margin-right: 80rpx;
+    // margin-right: 80rpx;
+	width: 30%;
   }
 
   .selectItem {

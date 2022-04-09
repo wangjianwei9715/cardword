@@ -3,13 +3,13 @@
 		<!-- 卖家信息 -->
 		<view class="detail-bg" v-if="publisher != ''">
 			<view class="business" v-for="(item,index) in publisher" :key="item.id">
-				<view class="business-top uni-flex">
+				<view class="business-top uni-flex" @click="onClickShops(item)">
 					<image :src="item.logo != '' ? decodeURIComponent(item.logo) : defaultAvatar" class="business-avart" mode="aspectFill" />
 					<view class="business-info">
 						<view class="nameInfo uni-flex">
 							<text>{{item.name}}</text>
 							<view class="entityInfo" v-if="item.title">
-								<text>{{item.title}}</text>
+								{{item.title}}
 							</view>
 						</view>
 						<view class="fansInfo">
@@ -18,7 +18,7 @@
 					</view>
 					<view class="business-rightAction">
 						<followButton :follow='item.follow' :followID='item.id' @handleSuccess='followSuccess($event,item)'></followButton>
-						<view class="actionItem" @click="onClickShops(item)">进店看看</view>
+						<view class="actionItem" @click.stop="onClickShops(item)">进店看看</view>
 					</view>
 				</view>
 				<view v-if='item.goodList&&item.goodList.length'>
@@ -27,21 +27,21 @@
 							<view class="picBlock">
 
 								<image :src="decodeURIComponent(goodsItem.pic)" mode="aspectFill"></image>
-								<view class="angleMark" :style="{backgroundColor:goodsItem.statusName=='在售'?'#f5162b':'#4f8bf5'}">
-									{{goodsItem.statusName}}
+								<view class="angleMark" :style="{backgroundColor:goodsItem.stateName=='在售'?'#f5162b':'#4f8bf5'}">
+									{{goodsItem.stateName}}
 								</view>
 							</view>
 							<view class="onelineName">{{goodsItem.goodName}}</view>
 							<view class="bottomState uni-flex">
 								<view class="bottomState-left">
-									<template v-if="goodsItem.statusName=='在售'">
+									<template v-if="goodsItem.stateName=='在售'">
 										￥
 										<text>{{goodsItem.price}}</text>
 									</template>
 								</view>
 								<!--  -->
 								<view class="bottomState-right">
-									{{goodsItem.statusName=='在售'?getPlan(goodsItem.lockNum,goodsItem.currentNum,goodsItem.totalNum)+'%':goodsItem.statusName}}
+									{{goodsItem.stateName=='在售'?getPlan(goodsItem.lockNum,goodsItem.currentNum,goodsItem.totalNum)+'%':goodsItem.stateName}}
 								</view>
 							</view>
 						</view>
@@ -109,9 +109,16 @@ export default class ClassName extends BaseNode {
           playCode: item.playCode,
           goodCode: item.goodCode
         }
+      },
+      直播中: {
+        fn: app.platform.goWeChatLive,
+        query: {
+          playCode: item.playCode,
+          goodCode: item.goodCode
+        }
       }
     };
-    const aboutPointer = jumpMap[item.statusName];
+    const aboutPointer = jumpMap[item.stateName];
     if (aboutPointer && aboutPointer.fn) aboutPointer.fn(aboutPointer.query);
     if (aboutPointer && aboutPointer.url) {
       uni.navigateTo({
@@ -149,9 +156,23 @@ export default class ClassName extends BaseNode {
 
     app.http.Get("merchant/list", params, (data: any) => {
       this.totalPage = data.totalPage;
+      let arr = data.list || [];
+      arr.forEach((item: any) => {
+        item.goodList = [];
+        if (item.good_data && Object.keys(item.good_data).length) {
+          item.good_data.saleList = item.good_data.saleList || [];
+          item.good_data.uploadList = item.good_data.uploadList || [];
+          item.good_data.saleList.forEach(
+            (saleItem: any) => (saleItem.stateName = "在售")
+          );
+          item.goodList = [
+            ...item.good_data.saleList,
+            ...item.good_data.uploadList
+          ];
+        }
+      });
       if (this.currentPage === 1) this.publisher = [];
-      const dataList = data.list || [];
-      this.publisher = [...this.publisher, ...dataList];
+      this.publisher = [...this.publisher, ...arr];
       cb && cb();
     });
   }
@@ -226,22 +247,15 @@ page {
 
       .entityInfo {
         background-size: 100% 100%;
-        width: 96rpx;
         height: 22rpx;
         background-image: url("../../static/userinfo/v2/entityBg.png");
-
-        text {
-          font-size: 18rpx;
-          font-family: FZLanTingHeiS-R-GB;
-          font-weight: 400;
-          line-height: 24rpx;
-          color: #ffffff;
-          white-space: nowrap;
-          // letter-spacing: 1rpx;
-          transform: scale(0.8);
-        }
-
-        // line-height: 30px;
+        padding: 0 10rpx;
+        text-align: center;
+        font-size: 18rpx;
+        font-family: FZLanTingHeiS-R-GB;
+        font-weight: 400;
+        line-height: 24rpx;
+        color: #ffffff;
       }
     }
 
