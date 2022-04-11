@@ -318,6 +318,11 @@
 			if(cmd=='resultCard'){
 				this.onClcikResult(1)
 			}
+			if(cmd=='giving'){
+				uni.navigateTo({
+					url:'/pages/userinfo/giving/giving?code='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType
+				})
+			}
 			if(cmd == 'wuliu'){
 				uni.navigateTo({
 					url:'/pages/userinfo/order_logistics?code='+this.orderData.wuliuCode

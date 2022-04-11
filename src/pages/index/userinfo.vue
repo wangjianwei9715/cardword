@@ -109,7 +109,7 @@
 		};
 		serviceTab:{[x: string]: any} = {
 			coupon:{id:1,name:'优惠券',url:'/pages/userinfo/coupon/coupon'},
-			giving:{id:2,name:'卡密赠送',url:''},
+			giving:{id:2,name:'收赠卡密',url:'/pages/userinfo/giving/index'},
 			decompose:{id:3,name:'卡片分解',url:'/pages/act/decompose/index'},
 			kefu:{id:4,name:'联系客服'},
 			address:{id:5,name:'地址管理',url:'/pages/userinfo/setting_addresses'}

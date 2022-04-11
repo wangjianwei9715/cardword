@@ -12,6 +12,11 @@
 			<view class="popup-rules" v-for="(item,index) in rulesDecomposeData" :key="index">{{item}}</view>
 			<view class="popup-close" @click="onClickCancelRule"></view>
 		</view>
+		<view class="rules-popup4" v-else-if="giving==true">
+			<view class="popup-title">规则说明</view>
+			<view class="popup-rules" v-for="(item,index) in rulesGivingData" :key="index">{{item}}</view>
+			<view class="popup-close" @click="onClickCancelRule"></view>
+		</view>
 		<view class="rules-popup" v-else>
 			<view class="popup-title">活动规则</view>
 			<view class="popup-rules" v-for="(item,index) in rulesData" :key="index">{{item}}</view>
@@ -32,6 +37,8 @@
 		newYear!:boolean;
 		@Prop({default:false})
 		decompose!:boolean;
+		@Prop({default:false})
+		giving!:boolean;
 		
 		rulesData = [
 			'1、获取卡豆：玩家可通过参与拼团（1元=1积分）、签到、不定期活动等方式获取卡豆',
@@ -51,7 +58,14 @@
 			'2.新春压岁盒每盒必得1~3张球星卡（具体卡片请查看奖品列表），有概率获得100元-600元平台无门槛券，无门槛券请联系客服领取。',
 			'3.福盒共200份，每人限购1盒，每盒额外附赠50元满减券，请联系客服领取'
 		]
-		
+		rulesGivingData = [
+			'1、商品状态处于”拼团中“的卡密可赠予好友，拼团成功或拼团失败后不再支持卡密赠送',
+			'2、打开相应订单页面，点击”赠送“按钮，选择对应卡密即可赠送，每条卡密可赠送2次',
+			'3、赠送成功后，卡密会进行转移。赠送者的订单不再显示该卡密，被赠送者将会生成一条新的订单，显示收到的卡密，后续订单流程和正常拼团一致',
+			'4、赠送后，卡密与后续的中卡归属均属于被赠送者',
+			'5、在赠送页面，可生成卡密验证码，好友复制验证码打开”卡世界app“可查询卡密当前的真实归属用户',
+			'6、卡密赠送功能仅用于好友之间相互赠送，不支持其他用途。在赠送时请您仔细核对对方信息，赠送后将无法撤回'
+		]
 
 
 		created(){//在实例创建完成后被立即调用
@@ -172,24 +186,6 @@
 		margin-left: -340rpx;
 		margin-top: -450rpx;
 		padding-top: 50rpx;
-		.popup-title{
-			width: 100%;
-			margin-bottom: 40rpx;
-			text-align: center;
-			font-size: 34rpx;
-			font-family: Microsoft YaHei;
-			font-weight: bold;
-			color: #34363A;
-		}
-		.popup-close{
-			width: 52rpx;
-			height:52rpx;
-			position: absolute;
-			right:0;
-			top:-94rpx;
-			background:url(../../pages/act/static/invite/close.png) no-repeat center;
-			background-size: 100% 100%;
-		}
 	}
 	.rules-popup2{
 		width:680rpx;
@@ -204,24 +200,6 @@
 		margin-left: -340rpx;
 		margin-top: -200rpx;
 		padding-top: 50rpx;
-		.popup-title{
-			width: 100%;
-			margin-bottom: 40rpx;
-			text-align: center;
-			font-size: 34rpx;
-			font-family: Microsoft YaHei;
-			font-weight: bold;
-			color: #34363A;
-		}
-		.popup-close{
-			width: 52rpx;
-			height:52rpx;
-			position: absolute;
-			right:0;
-			top:-94rpx;
-			background:url(../../pages/act/static/invite/close.png) no-repeat center;
-			background-size: 100% 100%;
-		}
 	}
 	.rules-popup3{
 		width:680rpx;
@@ -236,25 +214,40 @@
 		margin-left: -340rpx;
 		margin-top: -230rpx;
 		padding-top: 50rpx;
-		.popup-title{
-			width: 100%;
-			margin-bottom: 40rpx;
-			text-align: center;
-			font-size: 34rpx;
-			font-family: Microsoft YaHei;
-			font-weight: bold;
-			color: #34363A;
-		}
-		.popup-close{
-			width: 52rpx;
-			height:52rpx;
-			position: absolute;
-			right:0;
-			top:-94rpx;
-			background:url(../../pages/act/static/invite/close.png) no-repeat center;
-			background-size: 100% 100%;
-		}
 	}
+	.rules-popup4{
+		width:680rpx;
+		height:820rpx;
+		position: fixed;
+		box-sizing: border-box;
+		background:#fff;
+		border-radius: 40rpx;
+		z-index: 1000;
+		left:50%;
+		top:50%;
+		margin-left: -340rpx;
+		margin-top: -450rpx;
+		padding-top: 50rpx;
+	}
+	.popup-title{
+		width: 100%;
+		margin-bottom: 40rpx;
+		text-align: center;
+		font-size: 34rpx;
+		font-family: Microsoft YaHei;
+		font-weight: bold;
+		color: #34363A;
+	}
+	.popup-close{
+		width: 52rpx;
+		height:52rpx;
+		position: absolute;
+		right:0;
+		top:-94rpx;
+		background:url(../../pages/act/static/invite/close.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	
 	.popup-rules{
 		width: 100%;
 		box-sizing: border-box;
