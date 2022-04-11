@@ -1,128 +1,118 @@
 {
 	"pages": [
-        
-        {
+
+		{
 			"path": "pages/index/index",
 			"style": {
-                //  #ifndef MP-WEIXIN
+				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
-                //  #endif
+				//  #endif
 
-                //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "首页",
+				//  #ifdef MP-WEIXIN
+				"navigationBarTitleText": "首页",
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
-                //  #endif
-                "enablePullDownRefresh": true,
-                "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+				//  #endif
+				"enablePullDownRefresh": true,
+				"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+				"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 			}
-		}
-		, {
+		}, {
 			"path": "pages/index/live",
 			"style": {
 				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
-                //  #endif
-                //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "直播",
+				//  #endif
+				//  #ifdef MP-WEIXIN
+				"navigationBarTitleText": "直播",
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
-                //  #endif
+				//  #endif
 				"enablePullDownRefresh": false,
-                "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+				"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+				"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 			}
 
-		}
-        , 
-        {
+		},
+		{
 			"path": "pages/index/userinfo",
 			"style": {
 				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
-                //  #endif
-                //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "我的",
+				//  #endif
+				//  #ifdef MP-WEIXIN
+				"navigationBarTitleText": "我的",
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
-                //  #endif
+				//  #endif
 				"enablePullDownRefresh": false
 			}
 
 		},
-        {
-            "path" : "pages/index/service",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "服务",
+		{
+			"path": "pages/index/service",
+			"style": {
+				"navigationBarTitleText": "服务",
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
-                "enablePullDownRefresh": false
-            }
-        }, 
-         {
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/live/live_find",
 			"style": {
 				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
-                //  #endif
-                //  #ifdef MP-WEIXIN
-                "navigationBarTitleText": "",
+				//  #endif
+				//  #ifdef MP-WEIXIN
+				"navigationBarTitleText": "",
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
-                //  #endif
+				//  #endif
 				"enablePullDownRefresh": false
 			}
 
-		},  {
+		}, {
 			"path": "pages/live/broadcast",
 			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
 
-		}
-        ,  {
+		}, {
 			"path": "pages/live/playback",
 			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black"
+			}
+
+		}, {
+			"path": "pages/login/change_password",
+			"style": {
+				"navigationBarTitleText": "找回密码",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black"
+			}
+
+		}, {
+			"path": "pages/login/bind_phone",
+			"style": {
+				"navigationBarTitleText": "绑定手机",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black"
+			}
+
 		}
-	    ,{
-            "path" : "pages/login/login",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "登录",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/login/change_password",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "找回密码",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-        ,{
-            "path" : "pages/login/bind_phone",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "绑定手机",
-                "navigationBarBackgroundColor":"#ffffff",
-                "navigationBarTextStyle":"black"
-            }
-            
-        }
-      
-    ],
+
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -144,7 +134,7 @@
 				"selectedIconPath": "static/index/v2/tabbar_index_.png",
 				"text": "卡世界"
 			},
-            {
+			{
 				"pagePath": "pages/index/live",
 				"iconPath": "static/index/v2/tabbar_card.png",
 				"selectedIconPath": "static/index/v2/tabbar_card_.png",
@@ -341,89 +331,82 @@
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": true
 					}
-                
-                },
-				{
-				    "path" : "invite/record",
-				    "style" :                                                                                    
-				{
-				    "navigationBarTitleText": "",
-					"navigationBarBackgroundColor": "#ffffff",
-					"navigationBarTextStyle": "black",
-				    "enablePullDownRefresh": false
-				}
-				
+
 				},
 				{
-					"path" : "outLink/outLink",
-					"style" :                                                                                    
-					{
+					"path": "invite/record",
+					"style": {
 						"navigationBarTitleText": "",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false
 					}
-					
+
 				},
 				{
-					"path" : "sign/luckyDraw",
-					"style" :                                                                                    
-					{
+					"path": "outLink/outLink",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+
+				},
+				{
+					"path": "sign/luckyDraw",
+					"style": {
 						"navigationBarTitleText": "幸运抽奖",
 						"navigationBarBackgroundColor": "#ffffff",
-                        "transparentTitle":"auto",
+						"transparentTitle": "auto",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-					
+
 				},
 				{
-					"path" : "sign/cardBean",
-					"style" :                                                                                    
-					{
+					"path": "sign/cardBean",
+					"style": {
 						"navigationBarTitleText": "卡豆商城",
 						"navigationBarBackgroundColor": "#ffffff",
-                        "transparentTitle":"auto",
+						"transparentTitle": "auto",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
                         "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                         "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-					
+
 				},
 				{
-					"path" : "sign/cardBean_record",
-					"style" :                                                                                    
-					{
+					"path": "sign/cardBean_record",
+					"style": {
 						"navigationBarTitleText": "兑换记录",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-					
+
 				},
-                {
-					"path" : "newYear/newYear",
-					"style" :                                                                                    
-					{
+				{
+					"path": "newYear/newYear",
+					"style": {
 						"navigationBarTitleText": "新春福盒",
 						"navigationBarBackgroundColor": "#ffffff",
-                        // "transparentTitle":"auto",
+						// "transparentTitle":"auto",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": true,
                         "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                         "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-					
+
 				},
-                {
-					"path" : "newYear/list",
-					"style" :                                                                                    
-					{
+				{
+					"path": "newYear/list",
+					"style": {
 						"navigationBarTitleText": "新春福盒",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
@@ -431,37 +414,35 @@
                         "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
                         "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-					
+
 				},
-                {
-                    "path": "service/ref",
-                    "style": {
-                        //  #ifndef MP-WEIXIN
-                        "navigationStyle": "custom",
-                        //  #endif
-                        //  #ifdef MP-WEIXIN
-                        "navigationBarTitleText": "查价",
-                        "navigationBarBackgroundColor": "#ffffff",
-                        "navigationBarTextStyle": "black",
-                        //  #endif
-                        "enablePullDownRefresh": false
-                    }
-        
-                },
 				{
-					"path" : "decompose/index",
-					"style" :                                                                                    
-					{   
+					"path": "service/ref",
+					"style": {
+						//  #ifndef MP-WEIXIN
+						"navigationStyle": "custom",
+						//  #endif
+						//  #ifdef MP-WEIXIN
+						"navigationBarTitleText": "查价",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						//  #endif
+						"enablePullDownRefresh": false
+					}
+
+				},
+				{
+					"path": "decompose/index",
+					"style": {
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
 				        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 				        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
-                {
-					"path" : "decompose/card_list",
-					"style" :                                                                                    
-					{
+				{
+					"path": "decompose/card_list",
+					"style": {
 						"navigationBarTitleText": "中卡详情",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
@@ -490,17 +471,33 @@
 					}
 				},
 				{
-					"path" : "goldCard/index",
-					"style" :                                                                                    
-					{
+					"path": "calendar/list",
+					"style": {
+						"navigationStyle": "custom",
+						"backgroundColorTop": "#F4F5F9", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F4F5F9" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+
+					}
+				},
+				{
+					"path": "calendar/goods_details",
+					"style": {
+						"navigationStyle": "custom",
+						"backgroundColorTop": "#F4F5F9", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F4F5F9" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "goldCard/index",
+					"style": {
 						"navigationBarTitleText": "金色卡密榜",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-                        "backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-					
+
 				}
               
             ]
@@ -948,10 +945,11 @@
 					{
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
-						"backgroundColorTop":"#F6F7FB",//顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom":"#F6F7FB"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"navigationBarBackgroundColor": "#ffffff",
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				
+
 				}
                 ,{
 				    "path" : "giving/giving_list",
