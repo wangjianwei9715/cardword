@@ -92,7 +92,8 @@
 	.content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:14rpx 14rpx 114rpx 14rpx;
+		padding:14rpx 14rpx calc(114rpx + env(safe-area-inset-bottom)) 14rpx;
+
 	}
 	.details-header{
 		width: 100%;
@@ -225,10 +226,11 @@
 		width: 43rpx;
 		height:43rpx;
 		margin-right: 6rpx;
+		border-radius: 50%;
 	}
 	.details-bottom{
 		width: 100%;
-		height:100rpx;
+		height:calc(100rpx + env(safe-area-inset-bottom));
 		border-top: 1px solid #BBBBBB;
 		box-sizing: border-box;
 		position: fixed;
@@ -236,8 +238,8 @@
 		bottom:0;
 		z-index: 10;
 		display: flex;
-		align-items: center;
 		justify-content: center;
+		padding-top: 12rpx;
 	}
 	.details-btn{
 		width: 700rpx;

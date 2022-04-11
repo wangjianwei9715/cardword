@@ -45,7 +45,7 @@
 		noMoreData = false;
 		showRulePopup = false;
 		onLoad(query:any) {
-			// this.reqNewData();
+			this.reqNewData();
 		}
 		//   加载更多数据
 		onReachBottom() {
@@ -92,7 +92,7 @@
 				return;
 			}
 			
-			let url = this.tabCheck==1? 'function/userNo/transfer/inlist' : 'function/userNo/transfer/outlist';
+			let url = this.tabCheck==1? 'function/userNo/transfer/my/inlist' : 'function/userNo/transfer/my/outlist';
 
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,
@@ -193,7 +193,7 @@
         position: relative;
         z-index:10;
         box-sizing: border-box;
-        padding:180rpx 20rpx 114rpx 20rpx;
+        padding:180rpx 20rpx calc(114rpx + env(safe-area-inset-bottom)) 20rpx;
     }
 	.box-index{
 		width: 100%;
@@ -204,10 +204,9 @@
 	}
 	.giving-bottom-box{
 		width: 100%;
-		height:100rpx;
+		height:calc(100rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
 		padding: 0 25rpx;
 		position: fixed;
@@ -215,6 +214,7 @@
 		bottom:0;
 		z-index: 20;
 		background:#fff;
+		padding-top: 12rpx;
 	}
 	.giving-btn{
 		width: 340rpx;

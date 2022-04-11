@@ -21,7 +21,7 @@
 						￥<text>{{item.price}}</text><text>{{item.isSelect||item.discount!=''?'起':''}}</text>
 					</view>
 					<view class="goodslist-priceMsg-right">
-						{{item.totalNum-(item.currentNum+item.lockNum)}}/{{item.totalNum}}
+						余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
 					</view>
 				</view>
 				<view class="goodslist-progress">

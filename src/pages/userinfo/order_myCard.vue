@@ -47,7 +47,7 @@
 		orderCode = '';
 		goodCode = '';
 		currentPage = 1;
-		pageSize = 20;
+		pageSize = 30;
 		noMoreData = false;
 		picList:any = [];
 		pintuanType = 0;
@@ -165,11 +165,15 @@
 		width: 100%;
 		background:#fff;
 		box-sizing: border-box ;
+		position: fixed;
+		left:0;
+		top:0;
 		z-index: 9;
 	}
 	.content{
 		width: 100%;
 		box-sizing:border-box;
+		padding-top: 80rpx;
 	}
 	.card-list{
 		width: 100%;

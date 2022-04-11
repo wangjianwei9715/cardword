@@ -426,11 +426,7 @@ export default class PlatformManager {
 	}
 	// 判断粘贴板是否有邀请码
 	matchInviteRequestKey(code:string){
-		console.log(code)
-		if(code.indexOf('帮我助力') == -1){
-			return 
-		}
-		let inviteCode = /[0-9a-zA-Z]{9}/g;
+		let inviteCode = /[N][O]\d{9}[S]/g;
 		let key:any = ''
 		if(inviteCode.test(code)){
 			key = code.match(inviteCode);
@@ -442,10 +438,23 @@ export default class PlatformManager {
 				})
 				return;
 			}
-			uni.navigateTo({
-				url:'/pages/act/invite/invite'
-			})
+			this.checkShareNo(app.requestKey)
 		}
+	}
+	checkShareNo(code:string){
+		let ts = Math.floor(new Date().getTime()/1000);
+		let params = {
+			ts:ts,
+			code:code,
+			sign:Md5.hashStr('viewShareNo_'+code+'_'+ts)
+		}
+		app.http.Post('function/userNo/transfer/shareNo/view',params,(res:any)=>{
+			if(res.good){ 
+				uni.navigateTo({
+					url:'/pages/userinfo/giving/code_details?data='+decodeURIComponent(JSON.stringify(res))
+				})
+			}
+		})
 	}
 	// 提交邀请口令
 	inviteRequestKey(key:string,cb?:Function){
