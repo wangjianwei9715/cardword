@@ -1,15 +1,7 @@
 <template>
 	<view class="content">
 		<view class="header-banner">
-			<view class="header-sort">
-				<view class="header-sort-index" :class="{'current-name':item.id==1&&sortData.price.odType==0&&sortData.progress.odType==0}" v-for="item in sortData" :key="item.id" @click.stop="onClickSort(item)">
-					{{item.name}}
-					<view class="header-sort-icon" v-if="item.id!=1">
-						<view :class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
-						<view :class="{'icon-sort-downn':item.odType!=2,'icon-sort-down':item.odType==2}"></view>
-					</view>
-				</view>
-			</view>
+			<sortTab :sortData="sortData" @postSort="postSort" />
 		</view>
 		<view class="goods-lists">
 			<statusbar/>
@@ -30,7 +22,7 @@
 		urlType = '';
 		// odType 0:默认 1:升序 2:降序
 		sortData = {
-			default:{id:1,name:'默认'},
+			default:{id:1,name:'默认',odType:0},
 			price:{id:2,name:'价格',odType:0},
 			progress:{id:3,name:'进度',odType:0},
 		};
@@ -39,6 +31,7 @@
 		// fetchFrom:第几个数据开始  fetchSize:取几个数据
 		fetchFrom = 1;
 		fetchSize = 10;
+		listSort = '';
 		onLoad(query:any) {
 			this.urlType = query.type;
 			uni.setNavigationBarTitle({
@@ -55,22 +48,15 @@
 			this.noMoreData = false;
 			this.reqNewData() 
 		}
-		// 排序选择
-		onClickSort(item:any){
-			if(item.id==1){
-				this.sortData.price.odType = 0;
-				this.sortData.progress.odType = 0;
-				this.reqSearchList();
-			}else{
-				item.odType = item.odType==2?item.odType=0:item.odType+=1;
-				this.reqSearchList()
-			}
-		}
 		// 跳转商品详情
 		onClickJumpDetails(id:any){
 			uni.navigateTo({
 				url: '/pages/goods/goods_details?id='+id
 			})
+		}
+		postSort(val:string){
+			this.listSort = val;
+			this.reqSearchList()
 		}
 		reqNewData(cb?:Function) {
 			// 获取列表
@@ -83,12 +69,8 @@
 				fetchSize:this.fetchSize
 			}
 			// 排序方式
-			let sort = '';
-			sort += this.sortData.price.odType==0?'':(this.sortData.price.odType==1?'price':'price:desc');
-			sort += sort!='' && this.sortData.progress.odType!=0?',':'';
-			sort += this.sortData.progress.odType==0?'':(this.sortData.progress.odType==1?'progress':'progress:desc');
-			if(sort!=''){
-				params.od = sort
+			if(this.listSort!=''){
+				params.od = this.listSort
 			}
 			
 			app.http.Get("dataApi/goodlist/forsale/"+this.urlType, params, (res: any) => {

@@ -48,7 +48,7 @@
 						<view class="name">{{item.name}}</view>
 					</view>
 				</view>
-				<view class="order-tip" v-if="countTime>0"  @click="onClickOrderList(1)">您有{{countNum}}个未支付订单 {{countStr}} 后失效<view class="right"></view></view>
+				
 			</view>
 
 			<view class="user-order">
@@ -87,7 +87,6 @@
 <script lang="ts">
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import {getCountDownTime} from '@/tools/util';
 	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -121,10 +120,6 @@
 			{id:3,name:'关于我们',url:'/pages/userinfo/about_us',pic:'../../static/userinfo/v2/icon_b_us.png'},
 			{id:4,name:'用户协议',url:'/pages/userinfo/user_agreement',pic:'../../static/userinfo/v2/icon_b_agreement.png'}
 		]
-		countInterval:any;
-		countTime = -1;
-		countNum = 0;
-		countStr = '';
 		showPaySuccess = false;
 		onLoad(query:any) {
 			this.onEventUI('updateToken',()=>{
@@ -141,7 +136,6 @@
 			// #endif
 		}
 		onHide(){
-			clearInterval(this.countInterval);
 		}
 		initPageData(cb?:Function){
 			// #ifndef MP-WEIXIN
@@ -184,14 +178,6 @@
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
 						this.headerTab[key].num = data[key];
 					}
-				}
-				this.countNum = 0;
-				this.countTime = -1;
-				// 未支付订单
-				if(data.toPay){
-					this.countNum = data.toPay.num;
-					this.countTime = data.toPay.leftSec;
-					this.countDownTime()
 				}
 				
 				if(cb) cb()
@@ -256,17 +242,7 @@
 				url:'/pages/userinfo/order_list?type='+this.orderTab[item].id
 			})
 		}
-		countDownTime(){
-			this.countStr = getCountDownTime(this.countTime);
-			this.countInterval = this.scheduler(()=>{
-				if(this.countTime>0){
-					this.countTime--;
-					this.countStr = getCountDownTime(this.countTime);
-				}else{
-					clearInterval(this.countInterval)
-				}
-			},1)
-		}
+		
 		getUserProfile(){
 			app.platform.getWechatUserInfo((infoRes:any)=>{
 				uni.showToast({
@@ -517,7 +493,7 @@
 			}
 		}
 		.order-tip{
-			width: 750rpx;
+			width: 100%;
 			height: 60rpx;
 			background: linear-gradient(90deg, #FD8339 0%, #F24B28 100%);
 			box-sizing: border-box;
@@ -528,6 +504,7 @@
 			font-family: PingFangSC-Semibold, PingFang SC;
 			font-weight: 600;
 			color: #FFFFFF;
+			margin-top: 10rpx;
 			.right{
 				width: 10rpx;
 				height:16rpx;

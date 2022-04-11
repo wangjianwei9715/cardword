@@ -506,6 +506,8 @@
 				if(data.isFetchEnd){
 					this.noMoreData = true;
 				}
+				if(this.fetchFrom == 1 ) this.goodsList = [];
+				
 				if(data.goodList){
 					this.goodsList = this.goodsList.concat(data.goodList);
 				}

@@ -1,9 +1,14 @@
 <template>
 	<view class="content">
+		<view class="header-banner" v-if="sortData!=''">
+			<sortTab :sortData="sortData" @postSort="postSort" />
+		</view>
+
 		<view class="card-list"  v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
 			<view class="order-code">
-				<view class="order-code-left">{{orderCode==item.orderCode?'当前订单 ':''}}订单编号：{{item.orderCode}} </view>
+				<view class="order-code-left"><view class="order-code-box">订单：{{item.orderCode}}</view><view class="order-code-now">{{orderCode==item.orderCode?'当前订单 ':''}}</view></view>
 				<view class="order-code-right" v-if="item.guess!=''">我的预测：{{item.guess}}</view>
+				<!--  -->
 			</view>
 			<view class="card-box">
 				<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs">
@@ -22,10 +27,12 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-import { Component } from "vue-property-decorator";
+	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import { myCardGoodsType } from '@/net/DataExchange'
 	@Component({})
 	export default class ClassName extends BaseNode {
+		myCardGoodsType = myCardGoodsType;
 		cardList:{[x:string]:any} = [];
 		orderCode = '';
 		goodCode = '';
@@ -33,9 +40,14 @@ import { Component } from "vue-property-decorator";
 		pageSize = 20;
 		noMoreData = false;
 		picList:any = [];
+		pintuanType = 0;
+		listSort = '';
+		sortData:any = [];
 		onLoad(query:any) {
 			this.orderCode = query.code;
 			this.goodCode = query.goodCode;
+			this.pintuanType = Number(query.pintuanType);
+			this.sortData = this.myCardGoodsType(this.pintuanType)
 			this.reqNewData()
 		}
 		//   加载更多数据
@@ -65,9 +77,18 @@ import { Component } from "vue-property-decorator";
 				url:'/pages/userinfo/order_myAllCard?code='+code
 			})
 		}
+		postSort(val:string){
+			this.listSort = val;
+			this.reqSearchList()
+		}
+		reqSearchList(){
+			this.currentPage = 1;
+			this.cardList = [];
+			this.noMoreData = false;
+			this.reqNewData()
+		}
 		reqNewCardList(orderCode:string,index:number,cb?:Function) {
 			// 获取更多商品
-		
 			let pageIndex = Math.floor((this.cardList[index].noList.length-50)/10);
 			
 			let params:{[x:string]:any} = {
@@ -98,7 +119,12 @@ import { Component } from "vue-property-decorator";
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
+				// leadOrderCode:this.orderCode
 			}
+			// 排序方式
+			// if(this.listSort!=''){
+			// 	params.sort = this.listSort
+			// }
 			
 			app.http.Get('me/good/'+this.goodCode+'/orderNoList/'+this.orderCode, params, (data: any) => {
 				if(data.totalPage<=this.currentPage){
@@ -119,41 +145,59 @@ import { Component } from "vue-property-decorator";
 </script>
 
 <style lang="scss">
+	.header-banner{
+		width: 100%;
+		background:#fff;
+		box-sizing: border-box ;
+		z-index: 9;
+	}
 	.content{
 		width: 100%;
 		box-sizing:border-box;
-		padding:30rpx 20rpx;
 	}
 	.card-list{
 		width: 100%;
 		box-sizing: border-box;
-		padding:10rpx 14rpx;
 		background: #FFFFFF;
 		border-radius: 10px;
-		margin-bottom: 22rpx;
+		margin-top: 14rpx;
 	}
 	.order-code{
 		width: 100%;
-		height:66rpx;
+		height:37rpx;
 		box-sizing: border-box;
-		padding-left: 12rpx;
-		line-height: 66rpx;
 		font-size: 28rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 400;
 		color: #666666;
-		border-bottom: 1rpx solid #E7E7E7;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 	.order-code-left{
-		height:66rpx;
-		line-height: 66rpx;
-		font-size: 28rpx;
+		height:37rpx;
+		display: flex;
+		align-items: center;
+	}
+	.order-code-box{
+		height:37rpx;
+		line-height: 37rpx;
+		font-size: 22rpx;
+		font-family: FZLanTingHeiS-R-GB;
+		font-weight: 400;
+		color: #FFFFFF;
+		background:#40444F;
+		box-sizing: border-box;
+		padding:0 15rpx;
+	}
+	.order-code-now{
+		height:37rpx;
+		line-height: 37rpx;
+		font-size: 24rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 400;
-		color: #666666;
+		color: #F5162B;
+		margin-left: 12rpx;
 	}
 	.order-code-right{
 		height:66rpx;
@@ -166,7 +210,7 @@ import { Component } from "vue-property-decorator";
 	.card-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:20rpx 0;
+		padding:0 15rpx;
 	}
 	.card-index{
 		width: 100%;
@@ -175,7 +219,7 @@ import { Component } from "vue-property-decorator";
 		align-items: center;
 		justify-content: space-between;
 		background:#fff;
-		margin-bottom: 5rpx;
+		margin-top: 10rpx;
 		background: #F6F7F8;
 	}
 	.card-more-btn{
@@ -187,19 +231,20 @@ import { Component } from "vue-property-decorator";
 		font-size: 26rpx;
 	}
 	.index-left{
-		width: 540rpx;
+		width: 620rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		font-size: 22rpx;
-		font-family: Source Han Sans CN;
+		font-family: FZLanTingHeiS-R-GB;
 		font-weight: 400;
-		color: #666666;
-		padding:10rpx 13rpx;
+		color: #333333;
+		line-height: 32rpx;
+		padding:10rpx 20rpx;
 		border-right: 1px solid #fff;
 	}
 	.index-right{
-		width: 140rpx;
+		width: 100rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;

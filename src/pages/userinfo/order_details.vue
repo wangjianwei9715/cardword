@@ -178,6 +178,7 @@
 		onShow(){
 			console.log('clickToPay',this.clickToPay)
 			if(this.clickToPay){
+				clearInterval(this.countDownInter);
 				this.clickPayShowLoading(()=>{
 					this.getNoShowList();
 					if(this.guessNum>0){
@@ -287,7 +288,7 @@
 		}
 		onClickAllCard(){
 			uni.navigateTo({
-				url:'/pages/userinfo/order_myCard?code='+this.orderCode+'&goodCode='+this.orderData.good.goodCode
+				url:'/pages/userinfo/order_myCard?code='+this.orderCode+'&goodCode='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType
 			})
 		}
 		onClickGoodDetail(){
@@ -697,7 +698,6 @@
 			justify-content: space-between;
 			margin-bottom: 20rpx;
 			font-size: 24rpx;
-			font-family: FZLanTingHeiS-R-GB;
 			font-weight: 400;
 			color: #333333;
 		}

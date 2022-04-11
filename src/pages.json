@@ -678,7 +678,7 @@
                 "path" : "order_myCard",
                 "style" :                                                                                    
                 {
-                    "navigationBarTitleText": "我的编号",
+                    "navigationBarTitleText": "该商品全部卡密",
                     "navigationBarBackgroundColor":"#ffffff",
                     "navigationBarTextStyle":"black"
                 }
