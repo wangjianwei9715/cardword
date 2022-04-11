@@ -38,7 +38,39 @@ export var orderState = {
     '10':'未中卡',
     '-1':'超时未支付'
 }
-
+//玩法switch
+export function orderPlayDesc(state:any){
+	switch (state) {
+		case 0:
+			return '随机卡种';
+		case 1:
+			return '自选球队';
+		case 2:
+			return '随机球员';
+		case 3:
+			return '随机球队';
+		case 4:
+			return '随机卡包';
+		default:
+			return '拼团方式'
+	}
+}
+export function orderGoodsTypeDesc(state:any){
+	switch (state) {
+		case 0:
+			return '即将发售';
+		case 1:
+			return '在售';
+		case 2:
+			return '已拼成';
+		case 3:
+			return '待拆卡';
+		case 4:
+			return '拆卡中';
+		default:
+			return '分类'
+	}
+}
 // 订单状态说明 //1 等待支付 2 进行中 3 等待发货 4 等待收货 5 收货成功  10 未中卡
 export function orderStateDesc(data:any) {
     switch(data.state){

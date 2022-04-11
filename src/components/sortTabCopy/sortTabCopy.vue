@@ -20,6 +20,9 @@
 
 		sortComData:any = [];
 		sort = '';
+        copyData:any={
+            
+        }
 		created(){//在实例创建完成后被立即调用
 			
 		}
