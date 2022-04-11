@@ -320,7 +320,7 @@
 			}
 			if(cmd=='giving'){
 				uni.navigateTo({
-					url:'/pages/userinfo/giving/giving?code='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType
+					url:'/pages/userinfo/giving/giving_list?code='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType+'&orderCode='+this.orderData.code
 				})
 			}
 			if(cmd == 'wuliu'){
@@ -372,7 +372,6 @@
 								uni.$emit('orderchange')
 							})
 						} else if (res.cancel) {
-							console.log('用户点击取消');
 						}
 					}
 				});
@@ -396,7 +395,6 @@
 								uni.$emit('orderchange')
 							})
 						} else if (res.cancel) {
-							console.log('用户点击取消');
 						}
 					}
 				});

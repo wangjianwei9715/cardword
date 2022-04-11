@@ -34,8 +34,6 @@
 		onLoad(query:any) {
 			if(query.data){
 				this.playData = JSON.parse(query.data)
-				
-				console.log(decodeURIComponent(this.playData.mechantLogo))
 			}
 		}
 		onClickNavigateBack(){
@@ -48,11 +46,8 @@
 			if(this.showMpBtn) return;
 
 			this.navClickNum++;
-			console.log(this.navClickNum)
-			console.log(this.showMpBtn)
 			if(this.navClickNum >=10){
 				this.showMpBtn = true;
-				console.log(this.showMpBtn)
 			}
 		}
 	}

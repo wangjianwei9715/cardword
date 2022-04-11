@@ -63,7 +63,7 @@
 								<view class="progress-mask" :style="{width:(100-getPlan(goodsData.lockNum,goodsData.currentNum,goodsData.totalNum))+'%'}"></view>
 							</view>
 							<view class="header-top-plan-num">
-								{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/{{goodsData.totalNum}}
+								余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}
 								<view class="header-top-plan-numbottom">{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
 						</view>
@@ -1240,7 +1240,7 @@
 			.goodslist-progress{
 				background-image: url('../../static/goods/v2/progeessBg.png');
 				background-size: 100% 100%;
-				width: 533rpx;
+				width: 500rpx;
 				height: 9rpx;
 				position: relative;
 				display: flex;

@@ -213,9 +213,7 @@
 				uni.$emit('loginSuccess');
 				// 判断是否有邀请码
 				if(app.requestKey!=''){
-					uni.navigateTo({
-						url:'/pages/act/invite/invite'
-					})
+					app.platform.checkShareNo(app.requestKey)
 				}
 			})
 		}
@@ -292,9 +290,7 @@
 				}
 				// 判断是否有邀请码
 				if(app.requestKey!=''){
-					uni.navigateTo({
-						url:'/pages/act/invite/invite'
-					})
+					app.platform.checkShareNo(app.requestKey)
 				}
 			})
 		}
@@ -305,7 +301,6 @@
 			uni.login({  
 				provider: 'apple',  
 				success: (loginRes:any)=> {  
-					console.log('appleLogin==',loginRes)
 					let params = {
 						openid:loginRes.authResult.openid,
 						uuid:app.platform.deviceID,
@@ -322,9 +317,7 @@
 			});  
 		}
 		appleLogin(params:any){
-			console.log('applelogin=',params)
 			app.http.Post('user/login/apple',params,(data:any)=>{
-				console.log('appleData=',data)
 				uni.hideLoading();
 				app.data = data.data;
 				app.opKey = data.opKey;

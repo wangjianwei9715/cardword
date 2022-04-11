@@ -1,22 +1,16 @@
 <template>
 	<view class="payment" v-show="showInvitePopup">
 		<view class="payment-showdow"></view>
-		<view class="payment-popup" v-if="!rules">
-			<view class="popup-title">{{getTitle(inviteResult)}}</view>
-			<view class="popup-msg" v-html="getMsg(inviteResult)"></view>
-			<view class="popup-msg" v-show="inviteResult==0">您也来试试吧~</view>
-			<view class="popup-btn" :class="{'popup-btn-success':inviteResult==0||inviteResult==668}" @click="onClickPopupBtn(inviteResult)">
-				<view class="popup-wechat" v-show="inviteResult==668"></view>
-				{{inviteResult==668?'去微信粘贴':'确定'}}
+		<view class="payment-popup">
+			<view class="popup-title">已复制卡密验证码</view>
+			<view class="popup-msg">去分享给好友查看吧！</view>
+			<view class="popup-btn" :class="{'popup-btn-success':true}" @click="onClickPopupBtn">
+				<view class="popup-wechat" ></view>去微信粘贴
 			</view>
 			<view class="popup-close" @click="onClickCancelInvite"></view>
 		</view>
 		
-		<view class="rules-popup" v-if="rules">
-			<view class="popup-title">活动规则</view>
-			<view class="popup-rules" v-for="(item,index) in rulesData" :key="index">{{item}}</view>
-			<view class="popup-close" @click="onClickCancelInvite"></view>
-		</view>
+		
 	</view>
 </template>
 
@@ -27,21 +21,6 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
 		showInvitePopup!:boolean;
-		@Prop({default:0})
-		inviteResult!:number;
-		@Prop({default:''})
-		inviteResultStr!:string;
-		@Prop({default:false})
-		rules!:boolean;
-
-		rulesData = [
-			'1.活动期间，玩家邀请未注册过的新人下载注册，并复制“我的口令”至卡世界app，即可在活动商品中免费上组，被邀请用户可获得3元无门槛券1张',
-			'2.1月20日0点起注册的用户为新用户，每个新用户仅可被邀请1次，本活动仅对邀请新用户有效。',
-			'3.每个商品最多邀请五人（即最多可购得5份）',
-			'4.每个活动商品的口令不同，仅对对应商品生效',
-			'5.若活动商品已售罄，用户仍复制该商品的口令并完成邀新流程，则视为邀请失败',
-			'6.若被邀请人为非新人或已被邀请过一次则视为邀请失败'
-		]
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -51,40 +30,11 @@
 		destroyed(){
 			
 		}
-		getTitle(res:any){
-			if(res==0){
-				return '助力成功';
-			}else if(res==668){
-				return '已复制邀请码'
-			}else{
-				return '助力失败'
-			}
-		}
-		getMsg(res:any){
-			switch(res){
-				case 668:
-					return '邀请新人下载注册并复制口令至app就能帮您免费上组啦~';
-				case 0:
-					return '助力好友上组成功，送您一张<text style="color:#FB4E3E">3元卡享券</text>！（可在我的-优惠券查看）';
-				case 1:
-					return '抱歉，您不是新用户哦，无法完成邀请~';
-				case 2:
-					return '抱歉，被邀请次数已用完~';
-				case 3:
-					return '抱歉，该口令邀请次数已达上限~';
-				case 4:
-					return '无效口令';
-				case 11:
-					return '口令已失效或者相当商品已售罄';
-				default:
-					return this.inviteResultStr
-			}
-		}
 		onClickCancelInvite(){
 			this.$emit("cancelInvitePopup");
 		}
-		onClickPopupBtn(type:any){
-			this.$emit("popupBtn",type);
+		onClickPopupBtn(){
+			this.$emit("copyWechat");
 		}
 		
 	}

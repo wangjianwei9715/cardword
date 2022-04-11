@@ -180,7 +180,6 @@
 			this.showRulePopup = false;
 		}
 		onClickShowRule(){
-			console.log('222')
 			this.showRulePopup = true
 		}
 		getPlan(lock:number,now:number,all:number){

@@ -264,9 +264,7 @@
 							content: '当前无网络服务，请开启网络',
 							success: function (res) {
 								if (res.confirm) {
-									console.log('用户点击确定');
 								} else if (res.cancel) {
-									console.log('用户点击取消');
 								}
 							}
 						});
@@ -388,9 +386,7 @@
 				console.log('app.service_url=',app.service_url)
 				if(app.service_url==''||app.dataApiDomain==''){
 					uni.removeStorageSync("launchConfig");
-					console.log('重新开始luanch')
 					app.platform.appLuanch(loginToken,()=>{
-						console.log('launchCb')
 						this.initEvent()
 					})
 				}else{

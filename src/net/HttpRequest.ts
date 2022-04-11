@@ -146,7 +146,6 @@ export default class HttpRequest {
 					config.baseURL = app.dataApiDomain;
 				}
 				// #endif
-				console.log('config.baseURL====',config.baseURL)
 			}
 			
 			if(url.indexOf("app/launch") != -1||url.indexOf("app/onlinecfg") != -1){
