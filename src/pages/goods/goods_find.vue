@@ -18,39 +18,6 @@
 			<view class="search-list">
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
 			</view>
-			
-			<!-- <view class="hot-content">
-				<scroll-view style="display: flex;white-space: nowrap; " scroll-x="true">
-					<view class="hot-list">
-						<view class="hot-header">
-							<view class="hot-header-left">热销卖家</view>
-							<view class="hot-header-right">在售商品</view>
-						</view>
-						<view class="hot-center">
-							<view class="hot-index" v-for="(item,index) in hotSellerData" :key="index">
-								<view class="hot-index-left">
-									<view :class="'hot-icon'+item.rank">{{item.rank}}</view>{{item.name}}
-								</view>
-								<view class="hot-index-right">{{item.num}}</view>
-							</view>
-						</view>
-					</view>
-					<view class="hot-list">
-						<view class="hot-header">
-							<view class="hot-header-left">热门球员</view>
-							<view class="hot-header-right">在售商品</view>
-						</view>
-						<view class="hot-center">
-							<view class="hot-index" v-for="(item,index) in hotCardData" :key="index">
-								<view class="hot-index-left">
-									<view :class="'hot-icon'+item.rank">{{item.rank}}</view>{{item.name}}
-								</view>
-								<view class="hot-index-right">{{item.num}}</view>
-							</view>
-						</view>
-					</view>
-				</scroll-view>
-			</view> -->
 		</view>
 	</view>
 </template>

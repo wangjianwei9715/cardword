@@ -7,7 +7,7 @@
 		<view class="card-list"  v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
 			<view class="order-code">
 				<view class="order-code-left"><view class="order-code-box">订单：{{item.orderCode}}</view><view class="order-code-now">{{orderCode==item.orderCode?'当前订单 ':''}}</view></view>
-				<view class="order-code-right" v-if="item.guess!=''">我的预测：{{item.guess}}</view>
+				<view class="order-code-right" v-if="item.guess && item.guess!=''">我的预测：{{item.guess}}</view>
 				<!--  -->
 			</view>
 			<view class="card-box">
@@ -21,7 +21,16 @@
 				<view class="card-more-btn" v-if="item.hasMore" @click="reqNewCardList(item.orderCode,index)">查看更多</view>
 			</view>
 		</view>
-		
+
+		<view v-show="cardSortList!=''">
+			<view class="card-index" v-for="(items,indexs) in cardSortList" :key="indexs">
+				<view class="index-left" :class="{'bingo-name':items.bingo}">{{items.name}}</view>
+				<view  class="index-right" @click="onClickLookCard(items)">
+					{{items.content}}
+					<view v-if="items.content=='已中卡'" class="index-right-pt"></view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -34,6 +43,7 @@
 	export default class ClassName extends BaseNode {
 		myCardGoodsType = myCardGoodsType;
 		cardList:{[x:string]:any} = [];
+		cardSortList:{[x:string]:any} = [];
 		orderCode = '';
 		goodCode = '';
 		currentPage = 1;
@@ -84,15 +94,16 @@
 		reqSearchList(){
 			this.currentPage = 1;
 			this.cardList = [];
+			this.cardSortList = [];
 			this.noMoreData = false;
 			this.reqNewData()
 		}
 		reqNewCardList(orderCode:string,index:number,cb?:Function) {
 			// 获取更多商品
-			let pageIndex = Math.floor((this.cardList[index].noList.length-50)/10);
+			let pageIndex = Math.floor((this.cardList[index].noList.length-10)/10);
 			
 			let params:{[x:string]:any} = {
-				pageIndex: pageIndex+6,
+				pageIndex: pageIndex+2,
 				pageSize:10,
 			}
 			
@@ -119,22 +130,27 @@
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
-				// leadOrderCode:this.orderCode
+				leadOrderCode:this.orderCode
 			}
 			// 排序方式
-			// if(this.listSort!=''){
-			// 	params.sort = this.listSort
-			// }
+			if(this.listSort!=''){
+				params.sort = this.listSort
+			}
 			
-			app.http.Get('me/good/'+this.goodCode+'/orderNoList/'+this.orderCode, params, (data: any) => {
+			app.http.Get('me/good/'+this.goodCode+'/orderNoList', params, (data: any) => {
+				if(data.empty){
+					this.currentPage++;
+					return;
+				}
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
 				if(data.list){
-					this.cardList = this.cardList.concat(data.list);
-				}else{
-					this.noMoreData = true;
-					
+					if(this.listSort == ''){
+						this.cardList = this.cardList.concat(data.list);
+					}else{
+						this.cardSortList = this.cardSortList.concat(data.list);
+					}	
 				}
 				this.currentPage++;
 				if(cb) cb()
