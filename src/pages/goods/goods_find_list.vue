@@ -11,517 +11,570 @@
 			<view class="header-tab">
 				<tabc :tabc="classifyData" :tabsCheck="classifyOpt" @tabsClick="onClickListTabs"></tabc>
 			</view>
-
-			<view class="header-sort">
-				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}"
-					v-for="item in sortData" :key="item.id" @click="onClickSort(item)">
+			<sortTabCopy :maskTop='200' :sortData='sortData' @tagChange='onClickListTabs'></sortTabCopy>
+			<!-- <view class="header-sort">
+				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}" v-for="item in sortData" :key="item.id" @click="onClickSort(item)">
 					{{item.name}}
 					<view class="header-sort-icon">
-						<view v-if="item.id!=1&&item.id!=2"
-							:class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
+						<view v-if="item.id!=1&&item.id!=2" :class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
 						<view :class="{'icon-sort-downn':item.odType!=2,'icon-sort-down':item.odType==2}"></view>
 					</view>
 				</view>
 				<view :class="['header-sort-classify',{'classify-show':classifyShow}]">
-					<view @click="onClickClassifyOpt(item.id)"
-						:class="['header-sort-classify-index',{'classify-opt':goodTabCheck==item.id}]"
-						v-for="item in goodTab" :key="item.id">{{item.name}}</view>
+					<view @click="onClickClassifyOpt(item.id)" :class="['header-sort-classify-index',{'classify-opt':goodTabCheck==item.id}]" v-for="item in goodTab" :key="item.id">{{item.name}}</view>
 				</view>
 				<view :class="['header-sort-classify',{'classify-show':classifyShowPlay}]">
-					<view @click="onClickClassifyOptPlay(item.id)"
-						:class="['header-sort-classify-index',{'classify-opt':playTypeCurrent==item.id}]"
-						v-for="item in playTypeData" :key="item.id">{{item.name}}</view>
+					<view @click="onClickClassifyOptPlay(item.id)" :class="['header-sort-classify-index',{'classify-opt':playTypeCurrent==item.id}]" v-for="item in playTypeData" :key="item.id">{{item.name}}</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 
-		<view class="sort-shadow" v-show="classifyShow||classifyShowPlay" @click="onClickClassifyCancel"></view>
+		<!-- <view class="sort-shadow" v-show="classifyShow||classifyShowPlay" @click="onClickClassifyCancel"></view> -->
 
 		<view class="goods-lists">
 			<statusbar />
 			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesList&&seriesList.length'>
-				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index'>
-					<image class="seriesImg"
-						:src="decodeURIComponent(item.pic_url)"
-						mode="aspectFill"></image>
-					<view class="seriesText">{{item.title}}</view>
+				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index' @click="clickSerie(item,index)">
+					<image class="seriesImg" :src="decodeURIComponent(item.pic_url)" mode="aspectFill"></image>
+					<view class="seriesText" :class="{selectSearchText:clickSerieItem&&clickSerieItem.title==item.title}">{{item.title}}</view>
 				</view>
 			</scroll-view>
 			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
+			<empty v-if="goodsList&&!goodsList.length&&!isRequest" />
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import {
-		app
-	} from "@/app";
-	import {
-		Md5
-	} from 'ts-md5/dist/md5';
-	import {
-		Component
-	} from "vue-property-decorator";
-	import BaseNode from '../../base/BaseNode.vue';
-	import {orderPlayDesc,orderGoodsTypeDesc} from '@/tools/switchUtil'
-	@Component({})
-	export default class ClassName extends BaseNode {
-		searchText = '';
-		goodTab = [{
-				id: 1,
-				name: '在售'
-			},
-			{
-				id: 0,
-				name: '即将发售'
-			},
-			{
-				id: 3,
-				name: '待拆卡'
-			},
-			{
-				id: 4,
-				name: '拆卡中'
-			},
-			{
-				id: 2,
-				name: '已拼成'
-			}
-		];
-		goodTabCheck = 1;
-		sortData = {
-			state: {
-				id: 1,
-				name: '在售',
-				odType: 0
-			},
-			type: {
-				id: 2,
-				name: '拼团方式',
-				odType: 0
-			},
-			progress: {
-				id: 3,
-				name: '进度',
-				odType: 0
-			},
-			price: {
-				id: 4,
-				name: '价格',
-				odType: 0
-			},
-		};
-		classifyData = [{
-				id: 100,
-				name: '推荐'
-			},
-			{
-				id: 1,
-				name: '篮球'
-			},
-			{
-				id: 2,
-				name: '足球'
-			},
-			{
-				id: 0,
-				name: '其他'
-			},
-		]
-		classifyOpt = 100;
-		playTypeData = [{
-				id: 0,
-				name: '随机卡种'
-			},
-			{
-				id: 1,
-				name: '自选球队'
-			},
-			{
-				id: 2,
-				name: '随机球员'
-			},
-			{
-				id: 3,
-				name: '随机球队'
-			},
-			{
-				id: 4,
-				name: '随机卡包'
-			}
-		]
-		playTypeCurrent = -1;
-		classifyShow = false;
-		classifyShowPlay = false;
-		goodsData: any = []
-		goodsList: {
-			[x: string]: any
-		} = [];
-		scrollId = '';
-		noMoreData = false;
-		scrollIdSt: any = 0;
-		seriesList:any=[];
-		onLoad(query: any) {
-			
-			if (query.q) {
-				this.searchText = query.q
-			}
-			if (query.classType) {
-				this.classifyOpt = query.classType
-			}
-			if (query.data) {
-				setTimeout(() => {
-					// #ifndef MP 
-					this.goodsData = JSON.parse(query.data)
-					// #endif
-					// #ifdef MP
-					this.goodsData = JSON.parse(decodeURIComponent(query.data))
-					// #endif
-					this.goodsList = this.goodsData.goodList ? this.goodsData.goodList : []
-					this.scrollId = this.goodsData.scrollId
-					if (query.data.end) {
-						this.noMoreData = true;
-					}
-				}, 10)
-			} else {
-				this.reqNewData('default')
-				this.reqNewSeries()
-			}
+import { app } from "@/app";
+import { Md5 } from "ts-md5/dist/md5";
+import { Component } from "vue-property-decorator";
+import BaseNode from "../../base/BaseNode.vue";
+import { orderPlayDesc, orderGoodsTypeDesc } from "@/tools/switchUtil";
+import { stateArray, palyArray } from "@/net/DataExchange";
+@Component({})
+export default class ClassName extends BaseNode {
+  searchText = "";
+  isRequest: boolean = true;
+  //   goodTab = [
+  //     {
+  //       id: 1,
+  //       name: "在售"
+  //     },
+  //     {
+  //       id: 0,
+  //       name: "即将发售"
+  //     },
+  //     {
+  //       id: 3,
+  //       name: "待拆卡"
+  //     },
+  //     {
+  //       id: 4,
+  //       name: "拆卡中"
+  //     },
+  //     {
+  //       id: 2,
+  //       name: "已拼成"
+  //     }
+  //   ];
+  goodTabCheck = 1;
+  //   sortData = {
+  //     state: {
+  //       id: 1,
+  //       name: "在售",
+  //       odType: 0
+  //     },
+  //     type: {
+  //       id: 2,
+  //       name: "拼团方式",
+  //       odType: 0
+  //     },
+  //     progress: {
+  //       id: 3,
+  //       name: "进度",
+  //       odType: 0
+  //     },
+  //     price: {
+  //       id: 4,
+  //       name: "价格",
+  //       odType: 0
+  //     }
+  //   };
+  sortData: any = [
+    {
+      name: "",
+      index: 0,
+      selectShow: false,
+      key: "state",
+      children: stateArray
+    },
+    {
+      name: "拼团方式",
+      index: -1,
+      selectShow: false,
+      key: "",
+      children: palyArray
+    },
+    {
+      name: "进度",
+      needOrder: true,
+      key: "sort",
+      searchText: "progress",
+      odType: 0
+    },
+    {
+      name: "价格",
+      needOrder: true,
+      key: "sort",
+      searchText: "price",
+      odType: 0
+    }
+  ];
+  classifyData = [
+    {
+      id: 100,
+      name: "推荐"
+    },
+    {
+      id: 1,
+      name: "篮球"
+    },
+    {
+      id: 2,
+      name: "足球"
+    },
+    {
+      id: 0,
+      name: "其他"
+    }
+  ];
+  classifyOpt = 100;
+  //   playTypeData = [
+  //     {
+  //       id: 0,
+  //       name: "随机卡种"
+  //     },
+  //     {
+  //       id: 1,
+  //       name: "自选球队"
+  //     },
+  //     {
+  //       id: 2,
+  //       name: "随机球员"
+  //     },
+  //     {
+  //       id: 3,
+  //       name: "随机球队"
+  //     },
+  //     {
+  //       id: 4,
+  //       name: "随机卡包"
+  //     }
+  //   ];
+  playTypeCurrent = -1;
+  classifyShow = false;
+  classifyShowPlay = false;
+  goodsData: any = [];
+  goodsList: {
+    [x: string]: any;
+  } = [];
+  scrollId = "";
+  noMoreData = false;
+  scrollIdSt: any = 0;
+  seriesList: any = [];
+  clickSerieItem: any = {};
+  tagParams: any = {};
+  onLoad(query: any) {
+    if (query.q) {
+      this.searchText = query.q;
+    }
+    if (query.classType) {
+      this.classifyOpt = query.classType;
+    }
+    if (query.data) {
+      setTimeout(() => {
+        // #ifndef MP
+        this.goodsData = JSON.parse(query.data);
+        // #endif
+        // #ifdef MP
+        this.goodsData = JSON.parse(decodeURIComponent(query.data));
+        // #endif
+        this.goodsList = this.goodsData.goodList ? this.goodsData.goodList : [];
+        this.scrollId = this.goodsData.scrollId;
+        if (query.data.end) {
+          this.noMoreData = true;
+        }
+      }, 10);
+    } else {
+      //   this.reqNewData("default");
+      this.reqNewSeries();
+    }
 
-			// if(app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0){
-			// 	this.goodTab = [
-			// 		{id:1,name:'在售'},
-			// 		{id:0,name:'即将发售'},
-			// 		{id:2,name:'已拼成'}
-			// 	]
-			// }
+    // if(app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0){
+    // 	this.goodTab = [
+    // 		{id:1,name:'在售'},
+    // 		{id:0,name:'即将发售'},
+    // 		{id:2,name:'已拼成'}
+    // 	]
+    // }
+  }
+  reqSearchList() {
+    this.goodsList = [];
+    this.noMoreData = false;
+    this.reqNewData("default");
+  }
+  clickSerie(item: any, index?: number) {
+    this.clickSerieItem = this.clickSerieItem.title == item.title ? {} : item;
+    this.reqSearchList();
+    // this.reqNewData("refresh");
+  }
+  onReachBottom() {
+    this.reqNewData("reach");
+  }
+  onClickBack() {
+    uni.navigateBack({
+      delta: 1
+    });
+  }
+  onClickSearch() {
+    uni.redirectTo({
+      url: "/pages/goods/goods_find?q=" + this.searchText
+    });
+  }
+  //   onClickListTabs(id: number) {
+  //     if (id == this.classifyOpt) {
+  //       return;
+  //     }
+  //     this.classifyOpt = id;
+  //     this.reqSearchList();
+  //   }
+  onClickListTabs(data: any) {
+    console.log(data);
+    this.tagParams = data;
+    this.reqSearchList();
+  }
+  // 排序选择
+  //   onClickSort(item: any) {
+  //     this.onClickClassifyCancel();
+  //     if (item.id == 1) {
+  //       this.classifyShow = true;
+  //     } else if (item.id == 2) {
+  //       this.classifyShowPlay = true;
+  //     } else {
+  //       item.odType = item.odType == 2 ? (item.odType = 0) : (item.odType += 1);
+  //       this.reqSearchList();
+  //     }
+  //   }
+  //   onClickClassifyOpt(id: number) {
+  //     if (this.goodTabCheck == id) return;
+  //     this.goodTabCheck = id;
+  //     this.sortData.state.name = orderGoodsTypeDesc(id);
+  //     this.onClickClassifyCancel();
+  //     this.reqSearchList();
+  //   }
+  //   onClickClassifyOptPlay(id: number) {
+  //     if (this.playTypeCurrent == id) return;
+  //     this.playTypeCurrent = id;
+  //     this.sortData.type.name = orderPlayDesc(id);
+  //     this.onClickClassifyCancel();
+  //     this.reqSearchList();
+  //   }
+  //   //分类取消
+  //   onClickClassifyCancel() {
+  //     this.classifyShow = false;
+  //     this.classifyShowPlay = false;
+  //   }
+  // 跳转商品详情
+  onClickJumpDetails(id: any) {
+    uni.navigateTo({
+      url: "/pages/goods/goods_details?id=" + id
+    });
+  }
+  reqNewSeries() {
+    app.http.Get(
+      "new/good/series/list",
+      {
+        pageIndex: 1,
+        pageSize: 100
+      },
+      (res: any) => {
+        this.seriesList = res.list || [];
+      }
+    );
+  }
+  reqNewData(type: string, cb?: Function) {
+    let reach = false;
+    this.isRequest = true;
+    if (type == "reach") {
+      reach = true;
+    }
+    // 获取列表
+    if (this.noMoreData) {
+      return;
+    }
 
-		}
-		reqSearchList() {
-			this.goodsList = [];
-			this.noMoreData = false
-			this.reqNewData('default')
-		}
-		onReachBottom() {
-			this.reqNewData('reach')
-		}
-		onClickBack() {
-			uni.navigateBack({
-				delta: 1
-			});
-		}
-		onClickSearch() {
-			uni.redirectTo({
-				url: '/pages/goods/goods_find?q=' + this.searchText
-			})
-		}
-		onClickListTabs(id: number) {
-			if (id == this.classifyOpt) {
-				return;
-			}
-			this.classifyOpt = id;
-			this.reqSearchList()
-		}
-
-		// 排序选择
-		onClickSort(item: any) {
-			this.onClickClassifyCancel()
-			if (item.id == 1) {
-				this.classifyShow = true
-			} else if (item.id == 2) {
-				this.classifyShowPlay = true
-			} else {
-				item.odType = item.odType == 2 ? item.odType = 0 : item.odType += 1;
-				this.reqSearchList()
-			}
-		}
-		onClickClassifyOpt(id: number) {
-			if (this.goodTabCheck == id) return;
-			this.goodTabCheck = id;
-			this.sortData.state.name = orderGoodsTypeDesc(id);
-			this.onClickClassifyCancel()
-			this.reqSearchList()
-		}
-		onClickClassifyOptPlay(id: number) {
-			if (this.playTypeCurrent == id) return;
-			this.playTypeCurrent = id;
-			this.sortData.type.name = orderPlayDesc(id);
-			this.onClickClassifyCancel()
-			this.reqSearchList()
-		}
-		// 分类取消
-		onClickClassifyCancel() {
-			this.classifyShow = false;
-			this.classifyShowPlay = false
-		}
-		// 跳转商品详情
-		onClickJumpDetails(id: any) {
-			uni.navigateTo({
-				url: '/pages/goods/goods_details?id=' + id
-			})
-		}
-		reqNewSeries() {
-			app.http.Get('new/good/series/list', {
-				pageIndex: 1,
-				pageSize: 100
-			}, (res: any) => {
-				this.seriesList = res.list || []
-			})
-		}
-		reqNewData(type: string, cb ? : Function) {
-			let reach = false
-			if (type == 'reach') {
-				reach = true
-			}
-			// 获取列表
-			if (this.noMoreData) {
-				return;
-			}
-
-			let params: {
-				[x: string]: any
-			} = {
-				state: Number(this.goodTabCheck),
-				pageSize: 10
-			}
-			if (this.classifyOpt != 100) {
-				params.tp = Number(this.classifyOpt)
-			}
-			params.q = this.searchText == '' ? '' : this.searchText
-			if (reach) {
-				params.scrollId = this.scrollId;
-				params.st = this.scrollIdSt;
-				params.sn = Md5.hashStr(this.scrollIdSt + this.scrollId + 'scrollSearchGood')
-			}
-			// 排序方式
-			let sort = '';
-			sort += this.sortData.price.odType == 0 ? '' : (this.sortData.price.odType == 1 ? 'price' : 'price:desc');
-			sort += sort != '' && this.sortData.progress.odType != 0 ? ',' : '';
-			sort += this.sortData.progress.odType == 0 ? '' : (this.sortData.progress.odType == 1 ? 'progress' :
-				'progress:desc');
-			if (sort != '') {
-				params.sort = sort
-			}
-
-			let date: any = new Date()
-			params.timeStamp = Date.parse(date) / 1000
-			app.http.Get("dataApi/search/good", params, (res: any) => {
-				if (res.end) {
-					this.noMoreData = true;
-				}
-				if (res.goodList) {
-					this.goodsList = this.goodsList.concat(res.goodList)
-				}
-				this.scrollId = res.scrollId;
-				this.scrollIdSt = res.timeStamp;
-				if (cb) cb()
-			});
-		}
-
-	}
+    let params: {
+      [x: string]: any;
+    } = {
+      state: Number(this.goodTabCheck),
+      pageSize: 10
+    };
+    if (this.classifyOpt != 100) {
+      params.tp = Number(this.classifyOpt);
+    }
+    params.q = this.searchText == "" ? "" : this.searchText;
+    if (this.clickSerieItem.title)
+      params.q = `serie:${this.clickSerieItem.title}${
+        params.q ? "," + params.q : ""
+      }`;
+    if (reach) {
+      params.scrollId = this.scrollId;
+      params.st = this.scrollIdSt;
+      params.sn = Md5.hashStr(
+        this.scrollIdSt + this.scrollId + "scrollSearchGood"
+      );
+    }
+    // 排序方式
+    // let sort = "";
+    // sort +=
+    //   this.sortData.price.odType == 0
+    //     ? ""
+    //     : this.sortData.price.odType == 1 ? "price" : "price:desc";
+    // sort += sort != "" && this.sortData.progress.odType != 0 ? "," : "";
+    // sort +=
+    //   this.sortData.progress.odType == 0
+    //     ? ""
+    //     : this.sortData.progress.odType == 1 ? "progress" : "progress:desc";
+    // if (sort != "") {
+    //   params.sort = sort;
+    // }
+    let date: any = new Date();
+    params.timeStamp = Date.parse(date) / 1000;
+    app.http.Get(
+      "dataApi/search/good",
+      { ...params, ...this.tagParams },
+      (res: any) => {
+        if (res.end) {
+          this.noMoreData = true;
+        }
+        if (res.goodList && type !== "refresh") {
+          this.goodsList = this.goodsList.concat(res.goodList);
+        }
+        this.scrollId = res.scrollId;
+        this.scrollIdSt = res.timeStamp;
+        this.isRequest = false;
+        if (cb) cb();
+      }
+    );
+  }
+}
 </script>
 
 <style lang="scss">
-	$font-24:24rpx;
+$font-24: 24rpx;
 
-	page {
-		background: $content-bg;
-	}
+page {
+  background: $content-bg;
+}
 
-	.content {
-		width: 100%;
-		box-sizing: border-box;
-	}
+.content {
+  width: 100%;
+  box-sizing: border-box;
+}
 
-	.goods-scroll {
-		width: 96%;
-		height: 180rpx;
-		display: flex;
-		// margin:0 auto;
-		margin-left: 12rpx;
-		white-space: nowrap;
+.goods-scroll {
+  width: 96%;
+  height: 180rpx;
+  display: flex;
+  // margin:0 auto;
+  margin-left: 12rpx;
+  white-space: nowrap;
 
-		.scrollItem {
-			display: inline-block;
-			width: 116rpx;
-			position: relative;
-			margin-right: 12rpx;
+  .scrollItem {
+    display: inline-block;
+    width: 116rpx;
+    position: relative;
+    margin-right: 12rpx;
 
-			.seriesImg {
-				width: 116rpx;
-				height: 116rpx;
-			}
+    .seriesImg {
+      width: 116rpx;
+      height: 116rpx;
+    }
 
-			.seriesText {
-				text-align: center;
-				font-size: 22rpx;
-				font-family: Alibaba PuHuiTi;
-				font-weight: 400;
-				color: #333333;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-		}
-	}
+    .seriesText {
+      text-align: center;
+      font-size: 22rpx;
+      font-family: Alibaba PuHuiTi;
+      font-weight: 400;
+      color: #333333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .selectSearchText {
+      color: #e23737;
+    }
+  }
+}
 
-	.header-banner {
-		width: 100%;
-		background: #fff;
-		position: fixed;
-		left: 0;
-		top: 0;
-		box-sizing: border-box;
-		z-index: 9;
-	}
+.header-banner {
+  width: 100%;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  z-index: 9;
+}
 
-	.header-top {
-		width: 100%;
-		height: 104rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding: 0 32rpx 0 0;
-		z-index: 10;
-		align-items: center;
-		justify-content: space-between;
-	}
+.header-top {
+  width: 100%;
+  height: 104rpx;
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 32rpx 0 0;
+  z-index: 10;
+  align-items: center;
+  justify-content: space-between;
+}
 
-	.header-search {
-		width: 626rpx;
-		height: 64rpx;
-		border-radius: 29rpx;
-		overflow: hidden;
-	}
+.header-search {
+  width: 626rpx;
+  height: 64rpx;
+  border-radius: 29rpx;
+  overflow: hidden;
+}
 
-	.header-back {
-		width: 80rpx;
-		height: 88rpx;
-		background: url(../../static/goods/back@2x.png) no-repeat center;
-		background-size: 100% 100%;
-	}
+.header-back {
+  width: 80rpx;
+  height: 88rpx;
+  background: url(../../static/goods/back@2x.png) no-repeat center;
+  background-size: 100% 100%;
+}
 
-	.header-tab {
-		width: 100%;
-		height: 90rpx;
-		margin-top: -10rpx;
-		padding: 0 22rpx;
-		box-sizing: border-box;
-		border-bottom: 1px solid #F1F1F4;
-	}
+.header-tab {
+  width: 100%;
+  height: 90rpx;
+  margin-top: -10rpx;
+  padding: 0 22rpx;
+  box-sizing: border-box;
+  border-bottom: 1px solid #f1f1f4;
+}
 
-	.header-sort {
-		width: 100%;
-		height: 72rpx;
-		box-sizing: border-box;
-		padding: 0 56rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		position: relative;
+// .header-sort {
+//   width: 100%;
+//   height: 72rpx;
+//   box-sizing: border-box;
+//   padding: 0 56rpx;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   position: relative;
 
-		&-index {
-			height: 72rpx;
-			display: flex;
-			align-items: center;
-			box-sizing: border-box;
-			font-size: 26rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #333333;
-		}
+//   &-index {
+//     height: 72rpx;
+//     display: flex;
+//     align-items: center;
+//     box-sizing: border-box;
+//     font-size: 26rpx;
+//     font-family: PingFangSC-Regular, PingFang SC;
+//     font-weight: 400;
+//     color: #333333;
+//   }
 
-		.current-name {
-			color: #E23737;
-		}
+//   .current-name {
+//     color: #e23737;
+//   }
 
-		.header-sort-icon {
-			width: 18rpx;
-			margin-left: 4rpx;
-			margin-bottom: -4rpx;
+//   .header-sort-icon {
+//     width: 18rpx;
+//     margin-left: 4rpx;
+//     margin-bottom: -4rpx;
 
-			.icon-sort-up {
-				width: 18rpx;
-				height: 12rpx;
-				background: url(../../static/goods/sort_u_.png) no-repeat center;
-				background-size: 100% 100%;
-				margin-bottom: 2rpx;
-			}
+//     .icon-sort-up {
+//       width: 18rpx;
+//       height: 12rpx;
+//       background: url(../../static/goods/sort_u_.png) no-repeat center;
+//       background-size: 100% 100%;
+//       margin-bottom: 2rpx;
+//     }
 
-			.icon-sort-upn {
-				width: 18rpx;
-				height: 12rpx;
-				background: url(../../static/goods/sort_u.png) no-repeat center;
-				background-size: 100% 100%;
-				margin-bottom: 2rpx;
-			}
+//     .icon-sort-upn {
+//       width: 18rpx;
+//       height: 12rpx;
+//       background: url(../../static/goods/sort_u.png) no-repeat center;
+//       background-size: 100% 100%;
+//       margin-bottom: 2rpx;
+//     }
 
-			.icon-sort-down {
-				width: 18rpx;
-				height: 12rpx;
-				background: url(../../static/goods/sort_d_.png) no-repeat center;
-				background-size: 100% 100%;
-			}
+//     .icon-sort-down {
+//       width: 18rpx;
+//       height: 12rpx;
+//       background: url(../../static/goods/sort_d_.png) no-repeat center;
+//       background-size: 100% 100%;
+//     }
 
-			.icon-sort-downn {
-				width: 18rpx;
-				height: 12rpx;
-				background: url(../../static/goods/sort_d.png) no-repeat center;
-				background-size: 100% 100%;
-			}
-		}
+//     .icon-sort-downn {
+//       width: 18rpx;
+//       height: 12rpx;
+//       background: url(../../static/goods/sort_d.png) no-repeat center;
+//       background-size: 100% 100%;
+//     }
+//   }
 
-		&-classify {
-			width: 100%;
-			height: 0;
-			box-sizing: border-box;
-			position: absolute;
-			top: 72rpx;
-			left: 0;
-			padding: 0 36rpx;
-			background: #fff;
-			transition: all 0.1s linear;
-			overflow: hidden;
+//   &-classify {
+//     width: 100%;
+//     height: 0;
+//     box-sizing: border-box;
+//     position: absolute;
+//     top: 72rpx;
+//     left: 0;
+//     padding: 0 36rpx;
+//     background: #fff;
+//     transition: all 0.1s linear;
+//     overflow: hidden;
 
-			&-index {
-				width: 100%;
-				height: 80rpx;
-				box-sizing: border-box;
-				border-bottom: 1px solid #F1F1F4;
-				display: flex;
-				align-items: center;
-				font-size: $font-24;
-				font-family: PingFangSC-Medium, PingFang SC;
-				font-weight: 500;
-				color: #14151A;
-			}
+//     &-index {
+//       width: 100%;
+//       height: 80rpx;
+//       box-sizing: border-box;
+//       border-bottom: 1px solid #f1f1f4;
+//       display: flex;
+//       align-items: center;
+//       font-size: $font-24;
+//       font-family: PingFangSC-Medium, PingFang SC;
+//       font-weight: 500;
+//       color: #14151a;
+//     }
 
-			&-index:last-child {
-				border: none
-			}
-		}
+//     &-index:last-child {
+//       border: none;
+//     }
+//   }
 
-		.classify-show {
-			height: 400rpx;
-		}
+//   .classify-show {
+//     height: 400rpx;
+//   }
 
-		.classify-opt {
-			color: #F65D2D
-		}
-	}
+//   .classify-opt {
+//     color: #f65d2d;
+//   }
+// }
 
-	.goods-lists {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 272rpx 14rpx 60rpx 14rpx;
-	}
+.goods-lists {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 272rpx 14rpx 60rpx 14rpx;
+}
 
-	.sort-shadow {
-		width: 100%;
-		height: 100%;
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: 8;
-		background: rgba(0, 0, 0, 0.5);
-	}
+.sort-shadow {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 8;
+  background: rgba(0, 0, 0, 0.5);
+}
 </style>
