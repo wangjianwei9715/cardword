@@ -85,12 +85,12 @@
 			<!-- 邀请新人步骤图 -->
 			
 			<!-- 活动 -->
-			<view class="detail-bg">
+			<view class="detail-bg" v-if="goodsActData!=''">
 				<view class="detail-act-box">
 					<view class="detail-act-index" @click="onClickActHelp" v-for="(item,index) in goodsActData" :key="index">
 						<view class="detail-act-left">
 							<view class="detail-act-name">活动{{chineseNumber[index+1]}}</view>
-							<view class="detail-act-desc"><view class="detail-act-guess" v-if="item.type=='guess'"></view>{{item.name}}</view>
+							<view class="detail-act-desc"><view class="detail-act-guess" v-if="item.type=='guess'"></view>{{item}}</view>
 						</view>
 						<view class="detail-act-right" ></view>
 					</view>
@@ -279,12 +279,7 @@
 		guessFreeNum = 0;
 		// 底部抽屉
   		showDrawer = false;
-		drawerMsg:any = [
-			{
-				title:"活动标题",
-				content:"活动内容",
-			}
-		];
+		drawerMsg:any = [];
 		stepData = [
 			{name:'参与拼团',pic:'../../static/goods/v2/step_0.png'},
 			{name:'直播拆卡',pic:'../../static/goods/v2/step_1.png'},
@@ -292,9 +287,7 @@
 			{name:'中卡发货',pic:'../../static/goods/v2/step_3.png'},
 		];
 		// 活动列表
-		goodsActData:{[x:string]:any} = [
-			{type:'act',name:'152位球员卡密免单',explain:''}
-		]
+		goodsActData:{[x:string]:any} = []
 		onLoad(query:any) {
 			
 			// #ifdef MP
@@ -395,11 +388,10 @@
 						this.payChannel = data.payChannel
 					}
 					this.guessFreeNum = data.freeNoNum
+					this.goodsActData = data.good.dActivity||[];
 					this.guessType = (data.good.bit & 8) == 8?true:false;
 					if(this.guessType){
-						this.goodsActData.push(
-							{type:'guess',name:'猜球员 赢免单',explain:''}
-						);
+						this.goodsActData.push('猜球员 赢免单');
 						this.drawerMsg = this.drawerMsg.concat(this.guessRules)
 					}
 					// 状态
@@ -407,7 +399,7 @@
 					// 倒计时
 					this.countDown = data.good.leftsec;
 					// 获取优惠标签
-					this.discountList= data.good.discount?data.good.discount:'';
+					this.discountList= data.good.discount||'';
 					console.log(decodeURIComponent(data.good.publisher.avatar))
 					// 获取商品图片
 					this.getGoodsImage(decodeURIComponent(this.goodsData.pic.carousel));
@@ -918,6 +910,11 @@
 			this.showDrawer = false;
 		}
 		onClickActHelp(){
+			if(this.drawerMsg==''){
+				app.http.Get('good/'+this.goodsId+'/dActivity',{},(res:any)=>{
+					this.drawerMsg = [...res.list,...this.drawerMsg]
+				})
+			}
 			this.showDrawer = true;
 		}
 	}

@@ -97,9 +97,8 @@
 								title:res.msg,
 								icon:'none'
 							})
-							uni.$emit('givingSuccess')
-							uni.redirectTo({
-								url: '/pages/userinfo/giving/index'
+							uni.switchTab({
+								url: '/pages/index/userinfo'
 							});
 						})
 					} else if (res.cancel) {

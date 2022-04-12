@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="icon-back" @click="onClickBack"></view>
 				<view class="header-title">可赠送的卡密</view>
-				<!-- <view class="icon-search" @click="onClickSearch"></view> -->
+				<view class="icon-search" @click="onClickSearch"></view>
 				<view class="icon-help" @click="onClickShowRule"></view>
 			</view>
 		    <view class="header-banner" v-if="sortData!=''">
@@ -85,7 +85,9 @@
 			goodOrderCode:'',
 			noId:0,
 			name:'',
-		}
+		};
+		searchText = '';
+		searchEmit = 'givingListSearch'
 		onLoad(query:any) {
 			this.goodCode = query.code;
 			this.orderCode = query.orderCode;
@@ -93,7 +95,10 @@
 			this.sortData = this.myCardGoodsType(this.pintuanType)
 			this.reqNewData()
 
-			this.onEventUI('givingSuccess',()=>{
+
+			this.onEventUI('givingListSearch',(res)=>{
+				console.log('givingListSearch====')
+				this.searchText = res;
 				this.reqSearchList()
 			})
 		}
@@ -105,6 +110,11 @@
 			uni.navigateBack({
 				delta: 1
 			});
+		}
+		onClickSearch(){
+			uni.navigateTo({
+				url:'/pages/act/ref/ref?searchText='+this.searchText+'&searchEmit='+this.searchEmit
+			})
 		}
 		onClickGivingRecord(){
 			uni.navigateTo({
@@ -194,6 +204,8 @@
 			this.reqNewData()
 		}
 		reqNewCardList(orderCode:string,index:number,cb?:Function) {
+			if(this.cardList[index].noList.length>10) return;
+
 			// 获取更多商品
 			let pageIndex = Math.floor((this.cardList[index].noList.length-10)/10);
 			
@@ -201,7 +213,9 @@
 				pageIndex: pageIndex+2,
 				pageSize:10,
 			}
-			
+			if(this.searchText!=''){
+				params.q = this.searchText;
+			}
 			app.http.Get('function/userNo/transfer/order/'+orderCode+'/list', params, (data: any) => {
 				if(data.list){
 					this.cardList[index].noList = this.cardList[index].noList.concat(data.list);
@@ -226,6 +240,9 @@
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 				leadGoodOrderCode:this.orderCode
+			}
+			if(this.searchText!=''){
+				params.q = this.searchText;
 			}
 			// 排序方式
 			if(this.listSort!=''){
