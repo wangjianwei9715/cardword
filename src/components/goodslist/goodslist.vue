@@ -28,10 +28,10 @@
 					<view class="progressMask" :style="{width:(100-getPlan(item.lockNum,item.currentNum,item.totalNum))+'%'}"></view>
 				</view>
 				<view class="goodslist-bottom">
-					<view class="bottom-left">自选球队</view>
+					<view class="bottom-left">{{getGoodsPintuan(item.pintuan_type)}}</view>
 					<view class="bottom-right">
-						<view class="avart"></view>
-						<view class="bussName">篮球卡卡社</view>
+						<image  class="avart" :src="decodeURIComponent(item.merchantLogo)" />
+						<view class="bussName">{{item.merchantName}}</view>
 						<view class="cores"></view>
 					</view>
 				</view>
@@ -58,8 +58,10 @@
 	import {
 		app
 	} from "@/app";
+	import {getGoodsPintuan} from '@/tools/switchUtil';
 	@Component({})
 	export default class ClassName extends BaseComponent {
+		getGoodsPintuan = getGoodsPintuan
 		@Prop({
 			default: []
 		})
@@ -316,7 +318,6 @@
 					display: block;
 					overflow: hidden;
 					border-radius: 50%;
-					background-color: #71ceff;
 					margin-right: 6rpx;
 				}
 

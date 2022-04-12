@@ -11,7 +11,9 @@ export function getGoodsPintuan(state:number){
         case 4:
             return '随机卡盒'
         case 5:
-            return '随机卡包'    
+            return '随机卡包'
+        case 10:
+            return '自选球队'   
     }
 }
 export function getGoodsPintuanSpe(state:number){
@@ -28,7 +30,9 @@ export function getGoodsPintuanSpe(state:number){
         case 5:
             return '随机卡包';
         case 10:
-            return '../../static/goods/v2/spe_zx.png'       
+            return '../../static/goods/v2/spe_zx.png'
+        case 11:
+            return '../../static/goods/v2/spe_randomqd.png'
     }
 }
 // 商品详情随机形式

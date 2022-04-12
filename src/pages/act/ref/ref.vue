@@ -5,9 +5,9 @@
 			<view class="tab-header">
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" focus v-model="searchText" placeholder="搜索" @confirm="onClickSearch(searchTetxt)" confirm-type="search" />
+					<input class="search-input" type="text" focus v-model="searchText" placeholder="搜索" @confirm="onClickSearch" confirm-type="search" />
 				</view>
-				<view v-if="searchText==''" class="header-right" @click="onClickBack">取消</view>
+				<view v-if="searchText==''" class="header-right" @click="onClickSearch">取消</view>
 				<view v-else class="header-right" @click="onClickSearch">搜索</view>
 			</view>
 		</view>
@@ -26,11 +26,6 @@
 		onLoad(query:any) {
 			this.searchText = query.searchText;
 			this.searchEmit = query.searchEmit
-		}
-		onClickBack(){
-			uni.navigateBack({
-			    delta: 1
-			});
 		}
 		onClickSearch(){
 			uni.$emit(this.searchEmit,this.searchText);

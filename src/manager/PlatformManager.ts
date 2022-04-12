@@ -293,23 +293,15 @@ export default class PlatformManager {
 						// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
 						let bussinessApiDomain = res.app.bussinessApiDomain;
 						let dataApiDomain = res.app.dataApiDomain;
-						if (
-							bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/"
-						) {
-							bussinessApiDomain = bussinessApiDomain.slice(
-								0,
-								bussinessApiDomain.length - 1
-							);
+
+						if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
+							bussinessApiDomain = bussinessApiDomain.slice(0,bussinessApiDomain.length - 1);
 						}
 						if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
 							dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
 						}
 						app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-						if (res.app.dataApiDomain) {
-							app.dataApiDomain = dataApiDomain + "/api/v1/";
-						} else {
-							app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-						}
+						app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v1/":bussinessApiDomain + "/api/v1/"
 
 						if (cb) cb()
 						uni.setStorageSync("launchConfig", res);
@@ -323,17 +315,13 @@ export default class PlatformManager {
 						if (uni.getSystemInfoSync().platform === "android") {
 							app.update = UpdateManager.getInstance();
 						}
-						// app.update = UpdateManager.getInstance();
 						let iosVersion = Number(res.app.version.substr(0,1));
 						console.log('iosVersion',res.app.version)
 						if (uni.getSystemInfoSync().platform == 'ios' && iosVersion%2 ==0) {
-							
 							app.update = UpdateManager.getInstance();
 							app.iosVersion = iosVersion
 						}
 						// #endif
-
-						
 					});
 					break;
 				} else {
@@ -344,31 +332,18 @@ export default class PlatformManager {
 				let launchConfig = uni.getStorageSync("launchConfig");
 				if (launchConfig.app) {
 					launchSuccess = true;
-
 					let bussinessApiDomain = launchConfig.app.bussinessApiDomain;
 					let dataApiDomain = launchConfig.app.dataApiDomain;
 					if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
-						bussinessApiDomain = bussinessApiDomain.slice(
-							0,
-							bussinessApiDomain.length - 1
-						);
+						bussinessApiDomain = bussinessApiDomain.slice(0,bussinessApiDomain.length - 1);
 					}
 					if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
 						dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
 					}
 					app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-					if (launchConfig.app.dataApiDomain) {
-						app.dataApiDomain = dataApiDomain + "/api/v1/";
-					} else {
-						app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-					}
+					app.dataApiDomain = launchConfig.app.dataApiDomain?dataApiDomain + "/api/v1/":bussinessApiDomain + "/api/v1/"
 				}
 			}
-
-
-
-
-
 			console.log("bussinessApiDomain==========", app.bussinessApiDomain);
 			console.log("dataApiDomain==========", app.dataApiDomain);
 		}
