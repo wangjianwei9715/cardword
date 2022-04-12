@@ -35,7 +35,7 @@
 						<view class="teamtion-box-price">￥{{item.price}}/组</view>
 						<view class="teamtion-box-plan">
 							<view class="goodslist-progress">
-								<view class="progress-mask" :style="{width:(100-getPlan(teamRandomData[currentIndex].lockNum,teamRandomData[currentIndex].currentNum,teamRandomData[currentIndex].totalNum))+'%'}"></view>
+								<view class="progress-mask" :style="{width:(100-getPlan(teamRandomData[index].lockNum,teamRandomData[index].currentNum,teamRandomData[index].totalNum))+'%'}"></view>
 							</view>
 						</view>
 					</view>
@@ -88,7 +88,15 @@
 			this.$emit('cardCode')
 		}
 		onClickBuy(){
-			this.$emit('buy',this.teamRandomData[this.currentIndex])
+			let data = this.teamRandomData[this.currentIndex];
+			if(this.getPlan(data.lockNum,data.currentNum,data.totalNum)>=100){
+				uni.showToast({
+					title:'该编号已售罄',
+					icon:'none'
+				})
+				return;
+			}
+			this.$emit('buy',data)
 		}
 		onClickCurrentIndex(item:any,index:number){
 			this.currentIndex = index;
@@ -150,7 +158,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: 16rpx;
+		margin-bottom: 20rpx;
 	}
 	.teamtion-header-logo{
 		width: 170rpx;
@@ -223,7 +231,7 @@
 			text-align: right;
 		}
 		.header-top-plan-numbottom{
-			width: 130rpx;
+			width: 100%;
 			height:30rpx;
 			font-size: 22rpx;
 			font-family: FZLanTingHeiS-R-GB;
@@ -375,7 +383,7 @@
 		left: 0;
 		top:0;
 		z-index: 2;
-		opacity: 0.6;
+		opacity: 0.4;
 	}
 	.teamtion-bottom{
 		width: 100%;

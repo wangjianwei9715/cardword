@@ -33,7 +33,7 @@
 		</view>
 		<view class="detail-index-bg">
 			<view class="detail-bg">
-				<view class="header-content" v-if="goodsState==1">
+				<view class="header-content" :class="{'random-bg':goodsData.pintuan_type == 11}" v-if="goodsState==1">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text class="price-qi">{{goodsData.isSelect?'起':''}}</text></view>
 					<view class="header-right">
 						<view class="icon-end">距结束</view>
@@ -400,7 +400,7 @@
 						this.drawerMsg = this.drawerMsg.concat(this.guessRules)
 					}
 					if(data.joined){
-						this.tipBtn = this.tipBtn.concat({id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'});
+						this.tipBtn = [{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'},{id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'}]
 					}
 					// 状态
 					this.goodsState = data.good.state;
@@ -887,6 +887,7 @@
 			uni.navigateTo({
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))+'&payRandomTeam='+encodeURIComponent(JSON.stringify(data))
 			})
+			this.onClickteamRandomCancel()
 		}
 		onClickteamRandomCancel(){
 			this.teamRandomShow = false;
@@ -1112,6 +1113,10 @@
 		justify-content: space-between;
 		margin-top: -23rpx;
 	}
+	.random-bg{
+		background:url(../../static/goods/v2/price_bg_.png) no-repeat center;
+		background-size: 100% 100%;
+	}
 	.header-content-end{
 		background:#fff;
 		background-size: 100% 100%;
@@ -1282,7 +1287,7 @@
 				text-align: right;
 			}
 			.header-top-plan-numbottom{
-				width: 130rpx;
+				width: 100%;
 				height:30rpx;
 				font-size: 22rpx;
 				font-family: FZLanTingHeiS-R-GB;

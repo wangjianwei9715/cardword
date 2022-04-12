@@ -303,11 +303,13 @@ export default class ClassName extends BaseNode {
       if(query.payRandomTeam){
         this.payRandomTeamData = JSON.parse(query.payRandomTeam)
         this.goodsData.price = this.payRandomTeamData.price;
+        this.goodsData.totalNum = this.payRandomTeamData.totalNum;
+        this.goodsData.currentNum = this.payRandomTeamData.currentNum;
+        this.goodsData.lockNum = this.payRandomTeamData.lockNum;
       }
       this.getOnePrice();
-      this.maxNum =
-        this.goodsData.totalNum -
-        (this.goodsData.currentNum + this.goodsData.lockNum);
+      
+      this.maxNum =  this.goodsData.totalNum -(this.goodsData.currentNum + this.goodsData.lockNum);
 
       this.getNoRichShow();
     }

@@ -430,6 +430,12 @@ export default class PlatformManager {
 				})
 			}
 		})
+		uni.setClipboardData({
+			data: '',
+			showToast:false,
+			success: ()=> {
+			}
+		});
 	}
 	// 提交邀请口令
 	inviteRequestKey(key:string,cb?:Function){
