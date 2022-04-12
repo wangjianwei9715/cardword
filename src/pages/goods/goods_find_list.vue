@@ -11,7 +11,7 @@
 			<view class="header-tab">
 				<tabc :tabc="classifyData" :tabsCheck="classifyOpt" @tabsClick="onClickListTabs"></tabc>
 			</view>
-			<sortTabCopy :maskTop='200' :sortData='sortData' @tagChange='onClickListTabs'></sortTabCopy>
+			<sortTabCopy :maskTop='400' :sortData='sortData' @tagChange='onClickListTabs'></sortTabCopy>
 			<!-- <view class="header-sort">
 				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}" v-for="item in sortData" :key="item.id" @click="onClickSort(item)">
 					{{item.name}}
