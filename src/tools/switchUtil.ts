@@ -143,3 +143,37 @@ export function myCardGoodsType(state:any){
             return [];
     }
 }
+
+//玩法switch
+export function orderPlayDesc(state:any){
+	switch (state) {
+		case 0:
+			return '随机卡种';
+		case 1:
+			return '自选球队';
+		case 2:
+			return '随机球员';
+		case 3:
+			return '随机球队';
+		case 4:
+			return '随机卡包';
+		default:
+			return '拼团方式'
+	}
+}
+export function orderGoodsTypeDesc(state:any){
+	switch (state) {
+		case 0:
+			return '即将发售';
+		case 1:
+			return '在售';
+		case 2:
+			return '已拼成';
+		case 3:
+			return '待拆卡';
+		case 4:
+			return '拆卡中';
+		default:
+			return '分类'
+	}
+}

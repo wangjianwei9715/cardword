@@ -128,7 +128,9 @@
 		}
 		//获取用户参与列表
 		getPersonJoin() {
-
+			app.http.Get('activity/snatchTreasure/active/list', {}, (res: any) => {
+				this.personJoinList = res.list || []
+			})
 		}
 		//完成任务
 		completeTask(temp: any) {

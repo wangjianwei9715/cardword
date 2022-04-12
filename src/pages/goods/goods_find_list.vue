@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="header-banner">
-			<statusbar/>
+			<statusbar />
 			<view class="header-top">
 				<view class="header-back" @click="onClickBack"></view>
 				<view class="header-search">
@@ -11,97 +11,181 @@
 			<view class="header-tab">
 				<tabc :tabc="classifyData" :tabsCheck="classifyOpt" @tabsClick="onClickListTabs"></tabc>
 			</view>
+
 			<view class="header-sort">
-				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}" v-for="item in sortData" :key="item.id" @click="onClickSort(item)">
+				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}"
+					v-for="item in sortData" :key="item.id" @click="onClickSort(item)">
 					{{item.name}}
 					<view class="header-sort-icon">
-						<view v-if="item.id!=1&&item.id!=2" :class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
+						<view v-if="item.id!=1&&item.id!=2"
+							:class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
 						<view :class="{'icon-sort-downn':item.odType!=2,'icon-sort-down':item.odType==2}"></view>
 					</view>
 				</view>
 				<view :class="['header-sort-classify',{'classify-show':classifyShow}]">
-					<view @click="onClickClassifyOpt(item.id)" :class="['header-sort-classify-index',{'classify-opt':goodTabCheck==item.id}]" v-for="item in goodTab" :key="item.id">{{item.name}}</view>
+					<view @click="onClickClassifyOpt(item.id)"
+						:class="['header-sort-classify-index',{'classify-opt':goodTabCheck==item.id}]"
+						v-for="item in goodTab" :key="item.id">{{item.name}}</view>
 				</view>
 				<view :class="['header-sort-classify',{'classify-show':classifyShowPlay}]">
-					<view @click="onClickClassifyOptPlay(item.id)" :class="['header-sort-classify-index',{'classify-opt':playTypeCurrent==item.id}]" v-for="item in playTypeData" :key="item.id">{{item.name}}</view>
+					<view @click="onClickClassifyOptPlay(item.id)"
+						:class="['header-sort-classify-index',{'classify-opt':playTypeCurrent==item.id}]"
+						v-for="item in playTypeData" :key="item.id">{{item.name}}</view>
 				</view>
 			</view>
 		</view>
+
 		<view class="sort-shadow" v-show="classifyShow||classifyShowPlay" @click="onClickClassifyCancel"></view>
+
 		<view class="goods-lists">
-			<statusbar/>
-			<goodslist  :goodsList="goodsList"  @send="onClickJumpDetails" :presell="false"/>
+			<statusbar />
+			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesList&&seriesList.length'>
+				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index'>
+					<image class="seriesImg"
+						:src="decodeURIComponent(item.pic_url)"
+						mode="aspectFill"></image>
+					<view class="seriesText">{{item.title}}</view>
+				</view>
+			</scroll-view>
+			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import { app } from "@/app";
-	import {Md5} from 'ts-md5/dist/md5';
-	import { Component } from "vue-property-decorator";
+	import {
+		app
+	} from "@/app";
+	import {
+		Md5
+	} from 'ts-md5/dist/md5';
+	import {
+		Component
+	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import {orderPlayDesc,orderGoodsTypeDesc} from '@/tools/switchUtil'
 	@Component({})
 	export default class ClassName extends BaseNode {
 		searchText = '';
-		goodTab = [
-			{id:1,name:'在售'},
-			{id:0,name:'即将发售'},
-			{id:3,name:'待拆卡'},
-			{id:4,name:'拆卡中'},
-			{id:2,name:'已拼成'}
+		goodTab = [{
+				id: 1,
+				name: '在售'
+			},
+			{
+				id: 0,
+				name: '即将发售'
+			},
+			{
+				id: 3,
+				name: '待拆卡'
+			},
+			{
+				id: 4,
+				name: '拆卡中'
+			},
+			{
+				id: 2,
+				name: '已拼成'
+			}
 		];
 		goodTabCheck = 1;
 		sortData = {
-			state:{id:1,name:'在售',odType:0},
-			type:{id:2,name:'拼团方式',odType:0},
-			progress:{id:3,name:'进度',odType:0},
-			price:{id:4,name:'价格',odType:0},
+			state: {
+				id: 1,
+				name: '在售',
+				odType: 0
+			},
+			type: {
+				id: 2,
+				name: '拼团方式',
+				odType: 0
+			},
+			progress: {
+				id: 3,
+				name: '进度',
+				odType: 0
+			},
+			price: {
+				id: 4,
+				name: '价格',
+				odType: 0
+			},
 		};
-		classifyData = [
-			{id:100,name:'推荐'},
-			{id:1,name:'篮球'},
-			{id:2,name:'足球'},
-			{id:0,name:'其他'},
+		classifyData = [{
+				id: 100,
+				name: '推荐'
+			},
+			{
+				id: 1,
+				name: '篮球'
+			},
+			{
+				id: 2,
+				name: '足球'
+			},
+			{
+				id: 0,
+				name: '其他'
+			},
 		]
 		classifyOpt = 100;
-		playTypeData = [
-			{id:0,name:'随机卡种'},
-			{id:1,name:'自选球队'},
-			{id:2,name:'随机球员'},
-			{id:3,name:'随机球队'},
-			{id:4,name:'随机卡包'}
+		playTypeData = [{
+				id: 0,
+				name: '随机卡种'
+			},
+			{
+				id: 1,
+				name: '自选球队'
+			},
+			{
+				id: 2,
+				name: '随机球员'
+			},
+			{
+				id: 3,
+				name: '随机球队'
+			},
+			{
+				id: 4,
+				name: '随机卡包'
+			}
 		]
 		playTypeCurrent = -1;
 		classifyShow = false;
 		classifyShowPlay = false;
-		goodsData:any = []
-		goodsList:{[x:string]:any} = [];
+		goodsData: any = []
+		goodsList: {
+			[x: string]: any
+		} = [];
 		scrollId = '';
 		noMoreData = false;
-		scrollIdSt:any = 0;
-		onLoad(query:any) {
-			if(query.q){
+		scrollIdSt: any = 0;
+		seriesList:any=[];
+		onLoad(query: any) {
+			
+			if (query.q) {
 				this.searchText = query.q
 			}
-			if(query.classType){
+			if (query.classType) {
 				this.classifyOpt = query.classType
 			}
-			if(query.data){
-				setTimeout(()=>{
+			if (query.data) {
+				setTimeout(() => {
 					// #ifndef MP 
 					this.goodsData = JSON.parse(query.data)
 					// #endif
 					// #ifdef MP
 					this.goodsData = JSON.parse(decodeURIComponent(query.data))
 					// #endif
-					this.goodsList = this.goodsData.goodList?this.goodsData.goodList:[]
+					this.goodsList = this.goodsData.goodList ? this.goodsData.goodList : []
 					this.scrollId = this.goodsData.scrollId
-					if(query.data.end){
+					if (query.data.end) {
 						this.noMoreData = true;
 					}
-				},10)
-			}else{
-				this.reqNewData('default') 
+				}, 10)
+			} else {
+				this.reqNewData('default')
+				this.reqNewSeries()
 			}
 
 			// if(app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0){
@@ -111,213 +195,232 @@
 			// 		{id:2,name:'已拼成'}
 			// 	]
 			// }
-			
+
 		}
-		reqSearchList(){
+		reqSearchList() {
 			this.goodsList = [];
 			this.noMoreData = false
-			this.reqNewData('default') 
+			this.reqNewData('default')
 		}
-		onReachBottom(){
+		onReachBottom() {
 			this.reqNewData('reach')
 		}
-		onClickBack(){
+		onClickBack() {
 			uni.navigateBack({
-			    delta: 1
+				delta: 1
 			});
 		}
-		onClickSearch(){
+		onClickSearch() {
 			uni.redirectTo({
-				url: '/pages/goods/goods_find?q='+this.searchText
+				url: '/pages/goods/goods_find?q=' + this.searchText
 			})
 		}
-		onClickListTabs(id:number){
-			if(id==this.classifyOpt){
+		onClickListTabs(id: number) {
+			if (id == this.classifyOpt) {
 				return;
 			}
 			this.classifyOpt = id;
 			this.reqSearchList()
 		}
-		
+
 		// 排序选择
-		onClickSort(item:any){
+		onClickSort(item: any) {
 			this.onClickClassifyCancel()
-			if(item.id==1){
+			if (item.id == 1) {
 				this.classifyShow = true
-			}else if(item.id==2){
+			} else if (item.id == 2) {
 				this.classifyShowPlay = true
-			}else{
-				item.odType = item.odType==2?item.odType=0:item.odType+=1;
+			} else {
+				item.odType = item.odType == 2 ? item.odType = 0 : item.odType += 1;
 				this.reqSearchList()
 			}
 		}
-		onClickClassifyOpt(id:number){
-			if(this.goodTabCheck==id) return;
+		onClickClassifyOpt(id: number) {
+			if (this.goodTabCheck == id) return;
 			this.goodTabCheck = id;
-			this.sortData.state.name = this.getSortStr(id);
+			this.sortData.state.name = orderGoodsTypeDesc(id);
 			this.onClickClassifyCancel()
 			this.reqSearchList()
 		}
-		onClickClassifyOptPlay(id:number){
-			if(this.playTypeCurrent==id) return;
+		onClickClassifyOptPlay(id: number) {
+			if (this.playTypeCurrent == id) return;
 			this.playTypeCurrent = id;
-			this.sortData.type.name = this.getSortStrPlay(id);
+			this.sortData.type.name = orderPlayDesc(id);
 			this.onClickClassifyCancel()
 			this.reqSearchList()
-		}
-		getSortStr(id:any){
-			switch(id){
-				case 0:
-					return '即将发售';
-				case 1:
-					return '在售';
-				case 2:
-					return '已拼成';
-				case 3:
-					return '待拆卡';
-				case 4:
-					return '拆卡中';	
-				default:
-					return '分类'
-			}
-		}
-		getSortStrPlay(id:any){
-			switch(id){
-				case 0:
-					return '随机卡种';
-				case 1:
-					return '自选球队';
-				case 2:
-					return '随机球员';
-				case 3:
-					return '随机球队';
-				case 4:
-					return '随机卡包';
-				default:
-					return '拼团方式'
-			}
 		}
 		// 分类取消
-		onClickClassifyCancel(){
+		onClickClassifyCancel() {
 			this.classifyShow = false;
 			this.classifyShowPlay = false
 		}
 		// 跳转商品详情
-		onClickJumpDetails(id:any){
+		onClickJumpDetails(id: any) {
 			uni.navigateTo({
-				url: '/pages/goods/goods_details?id='+id
+				url: '/pages/goods/goods_details?id=' + id
 			})
 		}
-		
-		reqNewData(type:string,cb?:Function) {
+		reqNewSeries() {
+			app.http.Get('new/good/series/list', {
+				pageIndex: 1,
+				pageSize: 100
+			}, (res: any) => {
+				this.seriesList = res.list || []
+			})
+		}
+		reqNewData(type: string, cb ? : Function) {
 			let reach = false
-			if(type=='reach'){
+			if (type == 'reach') {
 				reach = true
 			}
 			// 获取列表
 			if (this.noMoreData) {
 				return;
 			}
-			
-			let params:{[x:string]:any} ={
-				state:Number(this.goodTabCheck),
-				pageSize:10
+
+			let params: {
+				[x: string]: any
+			} = {
+				state: Number(this.goodTabCheck),
+				pageSize: 10
 			}
-			if(this.classifyOpt!=100){
+			if (this.classifyOpt != 100) {
 				params.tp = Number(this.classifyOpt)
 			}
-			params.q = this.searchText==''?'':this.searchText
-			if(reach){
+			params.q = this.searchText == '' ? '' : this.searchText
+			if (reach) {
 				params.scrollId = this.scrollId;
 				params.st = this.scrollIdSt;
-				params.sn = Md5.hashStr(this.scrollIdSt+this.scrollId+'scrollSearchGood')
+				params.sn = Md5.hashStr(this.scrollIdSt + this.scrollId + 'scrollSearchGood')
 			}
 			// 排序方式
 			let sort = '';
-			sort += this.sortData.price.odType==0?'':(this.sortData.price.odType==1?'price':'price:desc');
-			sort += sort!='' && this.sortData.progress.odType!=0?',':'';
-			sort += this.sortData.progress.odType==0?'':(this.sortData.progress.odType==1?'progress':'progress:desc');
-			if(sort!=''){
+			sort += this.sortData.price.odType == 0 ? '' : (this.sortData.price.odType == 1 ? 'price' : 'price:desc');
+			sort += sort != '' && this.sortData.progress.odType != 0 ? ',' : '';
+			sort += this.sortData.progress.odType == 0 ? '' : (this.sortData.progress.odType == 1 ? 'progress' :
+				'progress:desc');
+			if (sort != '') {
 				params.sort = sort
 			}
-			
-			let date:any = new Date()
-			params.timeStamp = Date.parse(date)/1000
+
+			let date: any = new Date()
+			params.timeStamp = Date.parse(date) / 1000
 			app.http.Get("dataApi/search/good", params, (res: any) => {
 				if (res.end) {
 					this.noMoreData = true;
 				}
-				if(res.goodList){
+				if (res.goodList) {
 					this.goodsList = this.goodsList.concat(res.goodList)
 				}
 				this.scrollId = res.scrollId;
 				this.scrollIdSt = res.timeStamp;
-				if(cb) cb()
+				if (cb) cb()
 			});
 		}
-		
+
 	}
 </script>
 
 <style lang="scss">
 	$font-24:24rpx;
-	page{
-		background:$content-bg;
+
+	page {
+		background: $content-bg;
 	}
-	.content{
+
+	.content {
 		width: 100%;
 		box-sizing: border-box;
 	}
-	.header-banner{
+
+	.goods-scroll {
+		width: 96%;
+		height: 180rpx;
+		display: flex;
+		// margin:0 auto;
+		margin-left: 12rpx;
+		white-space: nowrap;
+
+		.scrollItem {
+			display: inline-block;
+			width: 116rpx;
+			position: relative;
+			margin-right: 12rpx;
+
+			.seriesImg {
+				width: 116rpx;
+				height: 116rpx;
+			}
+
+			.seriesText {
+				text-align: center;
+				font-size: 22rpx;
+				font-family: Alibaba PuHuiTi;
+				font-weight: 400;
+				color: #333333;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
+	}
+
+	.header-banner {
 		width: 100%;
-		background:#fff;
+		background: #fff;
 		position: fixed;
-		left:0;
-		top:0;
-		box-sizing: border-box ;
+		left: 0;
+		top: 0;
+		box-sizing: border-box;
 		z-index: 9;
 	}
-	.header-top{
+
+	.header-top {
 		width: 100%;
-		height:104rpx;
+		height: 104rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding:0 32rpx 0 0;
+		padding: 0 32rpx 0 0;
 		z-index: 10;
 		align-items: center;
 		justify-content: space-between;
 	}
-	.header-search{
+
+	.header-search {
 		width: 626rpx;
-		height:64rpx;
+		height: 64rpx;
 		border-radius: 29rpx;
 		overflow: hidden;
 	}
-	.header-back{
+
+	.header-back {
 		width: 80rpx;
-		height:88rpx;
-		background:url(../../static/goods/back@2x.png) no-repeat center;
+		height: 88rpx;
+		background: url(../../static/goods/back@2x.png) no-repeat center;
 		background-size: 100% 100%;
 	}
-	.header-tab{
+
+	.header-tab {
 		width: 100%;
-		height:90rpx;
+		height: 90rpx;
 		margin-top: -10rpx;
-		padding:0 22rpx;
+		padding: 0 22rpx;
 		box-sizing: border-box;
 		border-bottom: 1px solid #F1F1F4;
 	}
-	.header-sort{
+
+	.header-sort {
 		width: 100%;
-		height:72rpx;
+		height: 72rpx;
 		box-sizing: border-box;
-		padding:0 56rpx;
+		padding: 0 56rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		position: relative;
-		&-index{
-			height:72rpx;
+
+		&-index {
+			height: 72rpx;
 			display: flex;
 			align-items: center;
 			box-sizing: border-box;
@@ -326,54 +429,62 @@
 			font-weight: 400;
 			color: #333333;
 		}
-		.current-name{
-			color:#E23737;
+
+		.current-name {
+			color: #E23737;
 		}
-		.header-sort-icon{
+
+		.header-sort-icon {
 			width: 18rpx;
 			margin-left: 4rpx;
 			margin-bottom: -4rpx;
-			.icon-sort-up{
+
+			.icon-sort-up {
 				width: 18rpx;
-				height:12rpx;
-				background:url(../../static/goods/sort_u_.png) no-repeat center;
+				height: 12rpx;
+				background: url(../../static/goods/sort_u_.png) no-repeat center;
 				background-size: 100% 100%;
 				margin-bottom: 2rpx;
 			}
-			.icon-sort-upn{
+
+			.icon-sort-upn {
 				width: 18rpx;
-				height:12rpx;
-				background:url(../../static/goods/sort_u.png) no-repeat center;
+				height: 12rpx;
+				background: url(../../static/goods/sort_u.png) no-repeat center;
 				background-size: 100% 100%;
 				margin-bottom: 2rpx;
 			}
-			.icon-sort-down{
+
+			.icon-sort-down {
 				width: 18rpx;
-				height:12rpx;
-				background:url(../../static/goods/sort_d_.png) no-repeat center;
+				height: 12rpx;
+				background: url(../../static/goods/sort_d_.png) no-repeat center;
 				background-size: 100% 100%;
 			}
-			.icon-sort-downn{
+
+			.icon-sort-downn {
 				width: 18rpx;
-				height:12rpx;
-				background:url(../../static/goods/sort_d.png) no-repeat center;
+				height: 12rpx;
+				background: url(../../static/goods/sort_d.png) no-repeat center;
 				background-size: 100% 100%;
 			}
 		}
-		&-classify{
+
+		&-classify {
 			width: 100%;
-			height:0;
+			height: 0;
 			box-sizing: border-box;
-			position:absolute;
-			top:72rpx;
-			left:0;
-			padding:0 36rpx;
-			background:#fff;
-			transition:all 0.1s linear;
+			position: absolute;
+			top: 72rpx;
+			left: 0;
+			padding: 0 36rpx;
+			background: #fff;
+			transition: all 0.1s linear;
 			overflow: hidden;
-			&-index{
+
+			&-index {
 				width: 100%;
-				height:80rpx;
+				height: 80rpx;
 				box-sizing: border-box;
 				border-bottom: 1px solid #F1F1F4;
 				display: flex;
@@ -383,28 +494,33 @@
 				font-weight: 500;
 				color: #14151A;
 			}
-			&-index:last-child{
-				border:none
+
+			&-index:last-child {
+				border: none
 			}
 		}
-		.classify-show{
-			height:400rpx;
+
+		.classify-show {
+			height: 400rpx;
 		}
-		.classify-opt{
-			color:#F65D2D
+
+		.classify-opt {
+			color: #F65D2D
 		}
 	}
-	.goods-lists{
+
+	.goods-lists {
 		width: 100%;
 		box-sizing: border-box;
 		padding: 272rpx 14rpx 60rpx 14rpx;
 	}
-	.sort-shadow{
+
+	.sort-shadow {
 		width: 100%;
-		height:100%;
-		position:fixed;
-		top:0;
-		left:0;
+		height: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
 		z-index: 8;
 		background: rgba(0, 0, 0, 0.5);
 	}
