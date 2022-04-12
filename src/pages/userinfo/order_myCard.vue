@@ -38,7 +38,7 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import { myCardGoodsType } from '@/net/DataExchange'
+	import { myCardGoodsType } from '@/tools/switchUtil'
 	@Component({})
 	export default class ClassName extends BaseNode {
 		myCardGoodsType = myCardGoodsType;

@@ -40,7 +40,7 @@
 		pageSize = 10;
 		noMoreData = false;
 		onLoad(query:any) {
-			
+			this.reqNewData() 
 		}
 		onReachBottom() {
 		    this.reqNewData() 
@@ -69,12 +69,12 @@
 				return;
 			}
 			// 收到 赠送
-			let url = this.tabCheck==1? 'function/userNo/transfer/inlist' : 'function/userNo/transfer/outlist';
+			let url = this.tabCheck==1? 'function/userNo/transfer/my/outlist' : 'function/userNo/transfer/my/inlist';
 
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
-				q:this.searchText 
+				q:encodeURIComponent(this.searchText )
 			}
 			
 			app.http.Get(url, params, (data: any) => {

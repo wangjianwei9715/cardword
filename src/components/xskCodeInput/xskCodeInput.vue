@@ -6,7 +6,7 @@
 				<text class="line" v-if="password.length==index&&focus" style="font-weight: normal;">|</text>
 			</view>
 			
-			<input class="input" type="number" :focus="focus" v-model="password" maxlength="9" @focus="focus=true" @blur="focus=false" @input="userinput"/>
+			<input class="input" type="number" :focus="focus" v-model="password" maxlength="9" @focus="focus=true" @blur="onBlurInput" :auto-blur="true" @input="userinput"/>
 		</view>
 	</view>
 </template>
@@ -31,6 +31,11 @@
 		}
 		destroyed(){
 			
+		}
+		onBlurInput(){
+			setTimeout(()=>{
+				this.focus=false
+			},100)
 		}
 		userinput(e:any){
 			this.$emit('update:value',this.password);

@@ -112,7 +112,8 @@
 	import {
 		getGoodsImg,dateFormat
 	} from "../../tools/util";
-	import {orderState,orderStateDesc,orderGoodsStateStr,orderSetOperate} from "@/net/DataExchange"
+	import {orderState} from "@/net/DataExchange"
+	import { orderStateDesc,orderGoodsStateStr,orderSetOperate } from "@/tools/switchUtil"
 	@Component({})
 	export default class ClassName extends BaseNode {
 		getGoodsImg = getGoodsImg;

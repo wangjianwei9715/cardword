@@ -92,7 +92,7 @@
 				return;
 			}
 			
-			let url = this.tabCheck==1? 'function/userNo/transfer/my/inlist' : 'function/userNo/transfer/my/outlist';
+			let url = this.tabCheck==1? 'function/userNo/transfer/my/outlist' : 'function/userNo/transfer/my/inlist';
 
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,

@@ -8,7 +8,7 @@
 		  <view class="giving-index-code">{{item.name}}</view>
 		  <view class="giving-index-bottom">
 			  <view class="giving-index-bottom-left">{{type==1?'收方ID：':'赠方ID：'}}{{item.userId}}</view>
-			  <button class="giving-index-bottom-btn">原始订单</button>
+			  <button class="giving-index-bottom-btn" @click="onClickGivingOrder(item)">原始订单</button>
 		  </view>
 	  </view>
   </view>
@@ -36,7 +36,11 @@ export default class ClassName extends BaseComponent {
   mounted() {
     
   }
-  
+  onClickGivingOrder(item:any){
+	  uni.navigateTo({
+		  url:'/pages/userinfo/order_details?code='+item.orderCode
+	  })
+  }
   
 }
 </script>

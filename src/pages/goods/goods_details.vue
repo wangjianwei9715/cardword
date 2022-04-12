@@ -83,10 +83,6 @@
 			<!-- 邀请新人步骤图 -->
 			<inviteStep v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" :goodsStep="true"/>
 			<!-- 邀请新人步骤图 -->
-
-			<!-- 预测卡密 -->
-			<!-- <stepGuess v-if="guessType" :freeNum="guessFreeNum"/> -->
-			<!-- 预测卡密 -->
 			
 			<!-- 活动 -->
 			<view class="detail-bg">
