@@ -2,18 +2,18 @@
 	<view class="content">
 		<view class="top-bg">
 			<view class="top-help" @click="showPopup = true"></view>
-			<view class="top-time">4.8-4.10</view>
+			<view class="top-time">4.13-4.15</view>
 			<view class="top-card-box">
 				<image class="top-card-pic"  :class="index==1?'card-center':''" v-for="(item,index) in cardPic" :key="index" :src="item"></image>
 			</view>
-			<view class="top-tips">nba随机卡种、随机球员拼团有概率获取金色卡密</view>
+			<view class="top-tips">金卡积分=金卡x卡密单价（仅限NBA随机类型拼团）</view>
 		</view>
 
 		<!-- 卡密榜 -->
 		<view class="title-box">
 			<view class="title-content">
 				<view class="title-content-rank">我的排名:{{userRanking.ranking}}</view>
-				<view class="title-content-num">({{userRanking.gold_num}})</view>
+				<view class="title-content-num">({{userRanking.gold_value}})</view>
 			</view>
 		</view>
 
@@ -29,7 +29,7 @@
 					<view class="rank-header-reward">
 						<view class="rank-header-award">{{item.award}}</view>
 						<!-- <image class="rank-header-reward-pic" :src="item.award"></image> -->
-						<view class="rank-header-goldnum">{{item.gold_num}}</view>
+						<view class="rank-header-goldnum">{{item.gold_value}}</view>
 					</view>
 				</view>
 			</view>
@@ -41,7 +41,7 @@
 						<image class="rank-box-content-pic" :src="item.userAvatar!=''?decodeURIComponent(item.userAvatar):defaultAvatar"></image>
 						<view class="rank-box-content-avatar-name">{{item.userName!=''?item.userName:'虚位以待'}}</view>
 					</view>
-					<view class="rank-box-content-num">{{item.gold_num}}</view>
+					<view class="rank-box-content-num">{{item.gold_value}}</view>
 					<view class="rank-box-content-reward">{{getRewardName(index)}}</view>
 				</view>
 			</view>
@@ -68,7 +68,7 @@
 		defaultAvatar = app.defaultAvatar
 		userRanking:any = {
 			ranking:'暂未上榜',
-			gold_num:'12金卡'
+			gold_value:0
 		};
 		cardPic:any = [
 			'../static/goldCard/card1.png',
@@ -76,27 +76,27 @@
 			'../static/goldCard/card3.png',
 		]
 		rulesData = [
-			'1、玩家可通过NBA随机卡种、随机球员类拼团商品触发卡密抽取动画，可有概率获取金色卡密',
-			'2、活动共3天，根据玩家获取金色卡密数量由高到低排名，榜单每10分钟更新一次',
-			'3、活动结束后，可结算排名奖励。实物类奖品请联系客服发货（包邮）；优惠券类奖品将在2小时内自动发放'
+			'1、玩家可通过NBA随机卡种、随机球员类拼团有概率获取金卡积分，金卡积分=金卡x卡密单价（如：小明参与10组单价为2.5元的拼团，抽到2张金色卡密，共获得5积分）',
+			'2、活动共3天，根据玩家获取金卡积分由高到低排名',
+			'3、每期结束后，结算排名奖励。实物类奖品请联系客服发货（包邮）；优惠券类奖品将在2小时内自动发放至我的-优惠券，有效期为60天，请注意查收'
 		]
 		rankListTop:any = {
 			0:{
 				userName: "",
 				userAvatar:'',
-				gold_num:0,
+				gold_value:0,
 				award:'黑曜石 HOBBY*1盒'
 			},
 			1:{
 				userName: "",
 				userAvatar:'',
-				gold_num:0,
+				gold_value:0,
 				award:'Hoops HOBBY*1盒'
 			},
 			2:{
 				userName: "",
 				userAvatar:'',
-				gold_num:0,
+				gold_value:0,
 				award:'PRIZM MEGA*1盒'
 			},
 		};
@@ -105,7 +105,7 @@
 				userName: "", //用户昵称
 				userAvatar: "", //用户头像
 				ranking: 1, //排名，越小越靠前
-				gold_num: 0, //金卡数量
+				gold_value: 0, //金卡数量
 				award: "", //奖品
 			}
 		];
@@ -152,7 +152,7 @@
 					for(let i in this.rankListTop){
 						this.rankListTop[i].userName = res.data.list[i].userName;
 						this.rankListTop[i].userAvatar = res.data.list[i].userAvatar;
-						this.rankListTop[i].gold_num = res.data.list[i].gold_num;
+						this.rankListTop[i].gold_value = res.data.list[i].gold_value;
 					}
 					res.data.list.splice(0,3);
 					this.rankList = res.data.list;
