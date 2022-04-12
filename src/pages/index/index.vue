@@ -128,7 +128,7 @@
 			tabBottom:[
 				{img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_assign_list?type=activity'},
 				{img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_assign_list?type=cheap'},
-				{img:'../../static/index/v2/top_icon6.png',text:'自选球队',url:'/pages/goods/goods_assign_list?type=select'},
+				{img:'../../static/index/v2/top_icon6.png',text:'自选玩法',url:'/pages/goods/goods_assign_list?type=select'},
 				{img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_assign_list?type=progress'}
 			]
 		};
@@ -234,9 +234,7 @@
 				}
 			},1000)
 			// #ifdef APP-PLUS
-			// 判断是否有邀请上线
-			app.platform.getInvitationClipboard()
-			// #endif
+			
 		}
 		onShow(){
 			// #ifndef MP
@@ -272,6 +270,9 @@
 				}
 			});
 			this.networkStatusChange()
+			// 判断是否有邀请上线
+			app.platform.getInvitationClipboard()
+			// #endif
 		}
 		onHide(){
 			clearInterval(this.postGoodProgressIn);

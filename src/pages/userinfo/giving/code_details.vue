@@ -31,7 +31,7 @@
 		</view>
 
 		<view class="details-bottom">
-			<button class="details-btn" @click="onClickBack">返回</button>
+			<view class="details-btn" @click="onClickBack">返回</view>
 		</view>
 	</view>
 </template>

@@ -47,8 +47,8 @@
 				<view class="giving-bottom-left-name">收增记录</view>
 			</view>
 			<view class="giving-bottom-right">
-				<button class="giving-btn" @click="onClickCopyYzm">卡密验证码</button>
-				<button class="giving-btn btn-red" @click="onClickGiving">去赠送</button>
+				<view class="giving-btn" @click="onClickCopyYzm">卡密验证码</view>
+				<view class="giving-btn btn-red" @click="onClickGiving">去赠送</view>
 			</view>
 		</view>
 
@@ -131,6 +131,14 @@
 			this.showRulePopup = false;
 		}
 		onClickCurrentOrder(item:any,order:string){
+			if(item.leftTNum<=0){
+				uni.showToast({
+					title:'此编号赠送次数已达上限',
+					icon:'none'
+				})
+				return;
+			}
+
 			this.currentData.goodOrderCode = order;
 			this.currentData.noId = item.id;
 			this.currentData.name = item.name;

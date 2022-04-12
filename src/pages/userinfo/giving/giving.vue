@@ -32,7 +32,7 @@
 			<view class="box-help">{{explain}}</view>
 		</view>
 		<view class="box-bottom">
-			<button  class="box-bottom-btn" @click="onClickConfirmGiving">立即赠送</button>
+			<view  class="box-bottom-btn" :class="{'nouser-btn':!this.userGet}" @click="onClickConfirmGiving">立即赠送</view>
 		</view>
 
 		<!-- 规则弹窗 -->
@@ -94,7 +94,7 @@
 						}
 						app.http.Post('function/userNo/transfer/apply',params,(res:any)=>{
 							uni.showToast({
-								title:res.msg,
+								title:'赠送成功',
 								icon:'none'
 							})
 							uni.switchTab({
@@ -321,5 +321,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		margin:0 auto;
+	}
+	.nouser-btn{
+		background:#c0c0c0
 	}
 </style>

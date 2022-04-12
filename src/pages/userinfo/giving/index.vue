@@ -19,8 +19,8 @@
 		</view>
 
 		<view class="giving-bottom-box">
-			<button class="giving-btn giving-btn-left" @click="onClickJumpUrl('/pages/userinfo/giving/code_ref')">查询密码</button>
-			<button class="giving-btn giving-btn-right" @click="onClickJumpUrl('/pages/userinfo/order_list?type=2')">立即赠送</button>
+			<view class="giving-btn giving-btn-left" @click="onClickJumpUrl('/pages/userinfo/giving/code_ref')">查询密码</view>
+			<view class="giving-btn giving-btn-right" @click="onClickJumpUrl('/pages/userinfo/order_list?type=2')">立即赠送</view>
 		</view>
 
 		<!-- 规则弹窗 -->

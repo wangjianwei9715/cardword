@@ -101,6 +101,16 @@
       </view>
       <!--  -->
 
+      <view class="yunfei-info check-team top-order" v-if="payRandomTeamData != ''">
+        <view class="item-title">选队随机</view>
+        <view>
+          <view class="yunfei-item">
+            <text class="item-teamname">{{ payRandomTeamData.name }}</text>
+            <text class="item-teamname">¥{{ payRandomTeamData.price }}</text>
+          </view>
+        </view>
+      </view>
+
       <!-- 预测卡密 -->
       <!-- freeNum 免单次数  checkTeam 预测球队  guessList 球队列表  teamCheck 球队选择-->
       <confirmorderGuess v-if="getBitDisableGuess()"  :freeNum="freeNum>=moneyNum?(freeNum-moneyNum):0" :checkTeam="guessCheckTeam" :teamList="guessList" :lastGuess="lastGuess" @teamCheck="onClickGuessTeamCheck" @onScrolltolower="onScrolltolower" />
@@ -262,6 +272,8 @@ export default class ClassName extends BaseNode {
   guessCurrentPage = 2;
   guessPageSize = 30;
   guessNoMoreData = false;
+
+  payRandomTeamData:any = [];
   onLoad(query: any) {
     if (query.data) {
       // #ifndef MP
@@ -271,24 +283,33 @@ export default class ClassName extends BaseNode {
       this.goodsData = JSON.parse(decodeURIComponent(query.data));
       // #endif
       this.payChannel = JSON.parse(query.payChannel);
-      
+      // 剩余随机
       if (query.payRandomPrice) {
         this.payRandomPrice = query.payRandomPrice;
         this.goodsData.price = query.payRandomPrice;
       }
+      // 包队
       if (query.baodui) {
         this.baoduiId = Number(query.baodui);
         this.goodsData.price = query.price;
         this.baoduiName = query.baoduiName;
       }
+      // 购物车
       if (query.cart) {
         this.cartData = JSON.parse(query.cart);
         console.log(this.cartData);
       }
+      // 选队随机
+      if(query.payRandomTeam){
+        this.payRandomTeamData = JSON.parse(query.payRandomTeam)
+        this.goodsData.price = this.payRandomTeamData.price;
+        this.goodsData.totalNum = this.payRandomTeamData.totalNum;
+        this.goodsData.currentNum = this.payRandomTeamData.currentNum;
+        this.goodsData.lockNum = this.payRandomTeamData.lockNum;
+      }
       this.getOnePrice();
-      this.maxNum =
-        this.goodsData.totalNum -
-        (this.goodsData.currentNum + this.goodsData.lockNum);
+      
+      this.maxNum =  this.goodsData.totalNum -(this.goodsData.currentNum + this.goodsData.lockNum);
 
       this.getNoRichShow();
     }
@@ -545,6 +566,8 @@ export default class ClassName extends BaseNode {
       url = "good/topay/" + this.goodsData.goodCode + "/select";
     } else if (this.cartData == "") {
       // 普通支付
+      if(this.payRandomTeamData!='') params.teamId = this.payRandomTeamData.id;
+      
       params.num = Number(this.moneyNum);
       if (this.payRandomPrice > 0) {
         url = "good/topay/" + this.goodsData.goodCode + "/select";

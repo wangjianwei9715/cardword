@@ -14,6 +14,8 @@ export function getGoodsPintuan(state:number){
             return '随机卡包'
         case 10:
             return '自选球队'   
+        case 11:
+            return '选队随机'   
     }
 }
 export function getGoodsPintuanSpe(state:number){
