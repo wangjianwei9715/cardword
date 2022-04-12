@@ -1245,7 +1245,7 @@
 				}
 			}
 			.header-top-plan-num{
-				width: 130rpx;
+				width: 170rpx;
 				height:30rpx;
 				font-size: 22rpx;
 				font-family: FZLanTingHeiS-R-GB;

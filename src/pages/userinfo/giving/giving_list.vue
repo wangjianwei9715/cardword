@@ -131,6 +131,14 @@
 			this.showRulePopup = false;
 		}
 		onClickCurrentOrder(item:any,order:string){
+			if(item.leftTNum<=0){
+				uni.showToast({
+					title:'此编号赠送次数已达上限',
+					icon:'none'
+				})
+				return;
+			}
+
 			this.currentData.goodOrderCode = order;
 			this.currentData.noId = item.id;
 			this.currentData.name = item.name;
