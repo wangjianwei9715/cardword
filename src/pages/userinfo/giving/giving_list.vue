@@ -63,8 +63,8 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
-	import { myCardGoodsType } from '@/net/DataExchange'
-import { Md5 } from "ts-md5";
+	import { myCardGoodsType } from '@/tools/switchUtil'
+	import { Md5 } from "ts-md5";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		myCardGoodsType = myCardGoodsType;
@@ -131,7 +131,13 @@ import { Md5 } from "ts-md5";
 			})
 		}
 		onClickCopyYzm(){
-			if(this.currentData.noId == '') return;
+			if(this.currentData.noId == '') {
+				uni.showToast({
+					title:'请选择卡密',
+					icon:'none'
+				})
+				return;
+			};
 
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
@@ -152,7 +158,13 @@ import { Md5 } from "ts-md5";
 			
 		}
 		onClickGiving(){
-			if(this.currentData.noId == '') return;
+			if(this.currentData.noId == '') {
+				uni.showToast({
+					title:'请选择卡密',
+					icon:'none'
+				})
+				return;
+			};
 
 			uni.navigateTo({
 				url:'/pages/userinfo/giving/giving?data='+encodeURIComponent(JSON.stringify(this.currentData))

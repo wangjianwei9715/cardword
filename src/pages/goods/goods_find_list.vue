@@ -46,137 +46,141 @@
 </template>
 
 <script lang="ts">
-import { app } from "@/app";
-import { Md5 } from "ts-md5/dist/md5";
-import { Component } from "vue-property-decorator";
-import BaseNode from "../../base/BaseNode.vue";
-import { orderPlayDesc, orderGoodsTypeDesc } from "@/net/DataExchange";
-@Component({})
-export default class ClassName extends BaseNode {
-  searchText = "";
-  goodTab = [
-    {
-      id: 1,
-      name: "在售"
-    },
-    {
-      id: 0,
-      name: "即将发售"
-    },
-    {
-      id: 3,
-      name: "待拆卡"
-    },
-    {
-      id: 4,
-      name: "拆卡中"
-    },
-    {
-      id: 2,
-      name: "已拼成"
-    }
-  ];
-  goodTabCheck = 1;
-  sortData = {
-    state: {
-      id: 1,
-      name: "在售",
-      odType: 0
-    },
-    type: {
-      id: 2,
-      name: "拼团方式",
-      odType: 0
-    },
-    progress: {
-      id: 3,
-      name: "进度",
-      odType: 0
-    },
-    price: {
-      id: 4,
-      name: "价格",
-      odType: 0
-    }
-  };
-  classifyData = [
-    {
-      id: 100,
-      name: "推荐"
-    },
-    {
-      id: 1,
-      name: "篮球"
-    },
-    {
-      id: 2,
-      name: "足球"
-    },
-    {
-      id: 0,
-      name: "其他"
-    }
-  ];
-  classifyOpt = 100;
-  playTypeData = [
-    {
-      id: 0,
-      name: "随机卡种"
-    },
-    {
-      id: 1,
-      name: "自选球队"
-    },
-    {
-      id: 2,
-      name: "随机球员"
-    },
-    {
-      id: 3,
-      name: "随机球队"
-    },
-    {
-      id: 4,
-      name: "随机卡包"
-    }
-  ];
-  playTypeCurrent = -1;
-  classifyShow = false;
-  classifyShowPlay = false;
-  goodsData: any = [];
-  goodsList: {
-    [x: string]: any;
-  } = [];
-  scrollId = "";
-  noMoreData = false;
-  scrollIdSt: any = 0;
-  seriesList: any = [];
-  clickSerieItem: any = {};
-  onLoad(query: any) {
-    if (query.q) {
-      this.searchText = query.q;
-    }
-    if (query.classType) {
-      this.classifyOpt = query.classType;
-    }
-    if (query.data) {
-      setTimeout(() => {
-        // #ifndef MP
-        this.goodsData = JSON.parse(query.data);
-        // #endif
-        // #ifdef MP
-        this.goodsData = JSON.parse(decodeURIComponent(query.data));
-        // #endif
-        this.goodsList = this.goodsData.goodList ? this.goodsData.goodList : [];
-        this.scrollId = this.goodsData.scrollId;
-        if (query.data.end) {
-          this.noMoreData = true;
-        }
-      }, 10);
-    } else {
-      this.reqNewData("default");
-      this.reqNewSeries();
-    }
+	import {
+		app
+	} from "@/app";
+	import {
+		Md5
+	} from 'ts-md5/dist/md5';
+	import {
+		Component
+	} from "vue-property-decorator";
+	import BaseNode from '../../base/BaseNode.vue';
+	import {orderPlayDesc,orderGoodsTypeDesc} from '@/tools/switchUtil'
+	@Component({})
+	export default class ClassName extends BaseNode {
+		searchText = '';
+		goodTab = [{
+				id: 1,
+				name: '在售'
+			},
+			{
+				id: 0,
+				name: '即将发售'
+			},
+			{
+				id: 3,
+				name: '待拆卡'
+			},
+			{
+				id: 4,
+				name: '拆卡中'
+			},
+			{
+				id: 2,
+				name: '已拼成'
+			}
+		];
+		goodTabCheck = 1;
+		sortData = {
+			state: {
+				id: 1,
+				name: '在售',
+				odType: 0
+			},
+			type: {
+				id: 2,
+				name: '拼团方式',
+				odType: 0
+			},
+			progress: {
+				id: 3,
+				name: '进度',
+				odType: 0
+			},
+			price: {
+				id: 4,
+				name: '价格',
+				odType: 0
+			},
+		};
+		classifyData = [{
+				id: 100,
+				name: '推荐'
+			},
+			{
+				id: 1,
+				name: '篮球'
+			},
+			{
+				id: 2,
+				name: '足球'
+			},
+			{
+				id: 0,
+				name: '其他'
+			},
+		]
+		classifyOpt = 100;
+		playTypeData = [{
+				id: 0,
+				name: '随机卡种'
+			},
+			{
+				id: 1,
+				name: '自选球队'
+			},
+			{
+				id: 2,
+				name: '随机球员'
+			},
+			{
+				id: 3,
+				name: '随机球队'
+			},
+			{
+				id: 4,
+				name: '随机卡包'
+			}
+		]
+		playTypeCurrent = -1;
+		classifyShow = false;
+		classifyShowPlay = false;
+		goodsData: any = []
+		goodsList: {
+			[x: string]: any
+		} = [];
+		scrollId = '';
+		noMoreData = false;
+		scrollIdSt: any = 0;
+		seriesList:any=[];
+		clickSerieItem: any = {};
+		onLoad(query: any) {
+			
+			if (query.q) {
+				this.searchText = query.q
+			}
+			if (query.classType) {
+				this.classifyOpt = query.classType
+			}
+			if (query.data) {
+				setTimeout(() => {
+					// #ifndef MP 
+					this.goodsData = JSON.parse(query.data)
+					// #endif
+					// #ifdef MP
+					this.goodsData = JSON.parse(decodeURIComponent(query.data))
+					// #endif
+					this.goodsList = this.goodsData.goodList ? this.goodsData.goodList : []
+					this.scrollId = this.goodsData.scrollId
+					if (query.data.end) {
+						this.noMoreData = true;
+					}
+				}, 10)
+			} else {
+				this.reqNewData('default')
+				this.reqNewSeries()
+			}
 
     // if(app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0){
     // 	this.goodTab = [
