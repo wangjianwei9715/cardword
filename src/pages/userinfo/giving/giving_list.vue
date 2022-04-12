@@ -47,8 +47,8 @@
 				<view class="giving-bottom-left-name">收增记录</view>
 			</view>
 			<view class="giving-bottom-right">
-				<button class="giving-btn" @click="onClickCopyYzm">卡密验证码</button>
-				<button class="giving-btn btn-red" @click="onClickGiving">去赠送</button>
+				<view class="giving-btn" @click="onClickCopyYzm">卡密验证码</view>
+				<view class="giving-btn btn-red" @click="onClickGiving">去赠送</view>
 			</view>
 		</view>
 

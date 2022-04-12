@@ -90,15 +90,15 @@
 					<view class="detail-act-index" @click="onClickActHelp" v-for="(item,index) in goodsActData" :key="index">
 						<view class="detail-act-left">
 							<view class="detail-act-name">活动{{chineseNumber[index+1]}}</view>
-							<view class="detail-act-desc"><view class="detail-act-guess" v-if="item.type=='guess'"></view>{{item}}</view>
+							<view class="detail-act-desc"><view class="detail-act-guess" v-if="item.indexOf('猜球员')!=-1"></view>{{item}}</view>
 						</view>
 						<view class="detail-act-right" ></view>
 					</view>
 				</view>
 			</view>
 
-			<view class="detail-bg">
-				<view class="special-explain">特殊说明：由于本产品为港拆，故发货时间为10~15天；本产品base卡密不发，请悉知</view>
+			<view class="detail-bg" v-if="goodsData.extraDesc">
+				<view class="special-explain">{{goodsData.extraDesc}}</view>
 			</view>
 			
 			<!-- 卖家信息 -->
@@ -181,9 +181,11 @@
 		<!-- 自选球队 -->
 		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" :baoduiLeftSec="baoduiLeftSec" :baoduiState="baoduiState" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
 
+		<!-- 自选球队随机 -->
+		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData" @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" />
 
 		<!-- 邀请新人活动弹窗 -->
-		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy"/>
+		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy" />
 
 		<!-- 底部弹窗 -->
 		<bottomDrawer :showDrawer="showDrawer" @closeDrawer="onClickCloseDrawer">
@@ -235,8 +237,7 @@
 		};
 		goodsDesc:{[x:string]:any} = [];
 		tipBtn:{[x:string]:any}=[
-			{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'},
-			{id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'}
+			{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'}
 		];
 		// 分享 
 		operationShow=false;
@@ -266,6 +267,10 @@
 		cartData:any = [];
 		// 自选球队随机模式数据
 		randomMode:any = ''
+
+		// 自选球队随机相关
+		teamRandomShow = false;
+		teamRandomData:any = [];
 		// 支付方式
 		payChannel:any = [];
 		// 邀请新人弹窗
@@ -394,6 +399,9 @@
 						this.goodsActData.push('猜球员 赢免单');
 						this.drawerMsg = this.drawerMsg.concat(this.guessRules)
 					}
+					if(data.joined){
+						this.tipBtn = this.tipBtn.concat({id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'});
+					}
 					// 状态
 					this.goodsState = data.good.state;
 					// 倒计时
@@ -403,7 +411,7 @@
 					console.log(decodeURIComponent(data.good.publisher.avatar))
 					// 获取商品图片
 					this.getGoodsImage(decodeURIComponent(this.goodsData.pic.carousel));
-					this.getDetailImage(decodeURIComponent(this.goodsData.pic.detail))
+					this.getDetailImage(decodeURIComponent(this.goodsData.pic.yuanfeng))
 					// 倒计时
 					this.getCountDown();
 					// 商品规格、配置、形式、
@@ -626,6 +634,7 @@
 		}
 		// 观看大图
 		onClickPreviewImage(index:number){
+			console.log(this.goodsImg)
 			uni.previewImage({
 				urls: this.goodsImg,
 				current:index,
@@ -666,7 +675,13 @@
 					this.getGoodSelectCart()
 					this.teamCheckShow = true;
 				})
-				
+				return;
+			}
+			// 自选随机球队
+			if(this.goodsData.pintuan_type == 11){
+				this.getGoodSelectTeamRandom(()=>{
+					this.teamRandomShow = true;
+				})
 				return;
 			}
 
@@ -760,7 +775,6 @@
 					}
 					this.branchCheckIndex = -1
 					this.branchData = res.list;
-					
 				})
 				return;
 			}
@@ -861,6 +875,22 @@
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))+'&payRandomPrice='+this.randomMode.good.price
 			})
 		}
+		// 自选球队随机 我要选队
+		getGoodSelectTeamRandom(cb?:Function){
+			app.http.Get('good/'+this.goodsId+'/selectTeamRandom',{},(res:any)=>{
+				this.teamRandomData = res.team;
+				if(cb) cb()
+			})
+		}
+		// 选队随机支付
+		onClickTeamRandomBuy(data:any){
+			uni.navigateTo({
+				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))+'&payRandomTeam='+encodeURIComponent(JSON.stringify(data))
+			})
+		}
+		onClickteamRandomCancel(){
+			this.teamRandomShow = false;
+		}
 		// 复制邀请口令
 		onClickCopyInviteKey(){
 			app.http.Post('activity/invite/getKey',{code:this.goodsId},(res:any)=>{
@@ -891,11 +921,8 @@
 				this.swiperTabCurrent = index;
 				this.swiperCurrent = 0;
 				this.goodsImg = [];
-				if(index == 0){
-					this.getGoodsImage(decodeURIComponent(this.goodsData.pic.carousel));
-				}else{
-
-				}
+				let pic = index == 0?this.goodsData.pic.carousel:this.goodsData.pic.yuanfeng;
+				this.getGoodsImage(decodeURIComponent(pic));
 			}
 		}
 		getCountStr(str:any,index:number){

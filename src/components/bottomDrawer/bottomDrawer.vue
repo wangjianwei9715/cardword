@@ -1,7 +1,7 @@
 <template>
     <view>
         <view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
-        <view class="drawer-content" :class="{'show-drawer':showDrawer}">
+        <view class="drawer-content" :class="{'show-drawer':showDrawer}" :style="'height:'+height+'%'">
 			<view class="drawer-header">
 				<view class="black-line"></view>
 			</view>
@@ -20,7 +20,8 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({ default: false })
 		showDrawer:boolean|undefined;
-
+		@Prop({ default: 60 })
+		height!:number;
 		created(){//在实例创建完成后被立即调用
 			
 		}

@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<input class="code-input" placeholder="请输入12位查询码" v-model="searchText" />
-		<button class="code-btn" @click="onClickSearchCode">查询</button>
+		<view class="code-btn" @click="onClickSearchCode">查询</view>
 	</view>
 </template>
 

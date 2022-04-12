@@ -300,8 +300,8 @@ export default class PlatformManager {
 						if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
 							dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
 						}
-						app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-						app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v1/":bussinessApiDomain + "/api/v1/"
+						app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
+						app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
 
 						if (cb) cb()
 						uni.setStorageSync("launchConfig", res);
@@ -340,8 +340,8 @@ export default class PlatformManager {
 					if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
 						dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
 					}
-					app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-					app.dataApiDomain = launchConfig.app.dataApiDomain?dataApiDomain + "/api/v1/":bussinessApiDomain + "/api/v1/"
+					app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
+					app.dataApiDomain = launchConfig.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
 				}
 			}
 			console.log("bussinessApiDomain==========", app.bussinessApiDomain);
