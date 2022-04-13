@@ -1,21 +1,22 @@
 <template>
 	<view>
 		<view class="prizeContent">
-			<view class="prizeItem" v-for="item in 4">
+			<view class="prizeItem" v-for="item in prizeList">
 				<view class="prizeItem-top">
-					<image class="prize-left" src='/static/img/back.fc566c1b.png'></image>
+					<image class="prize-left" :src='item.tp===1?decodeURIComponent(item.award_pic):"https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.12/loot/loot_sw/0/1649763728509b9m4fq61v.png"'></image>
 					<view class="prize-right">
-						<view class="title oneLineOver">iphone 13 白色 32G</view>
+						<view class="title oneLineOver">{{item.name}}</view>
 						<view class="probability">
-							中奖时间：04-05 11:11:11
+							中奖时间：{{dateFormatMSHMS(item.open_at)}}
 						</view>
 						<view class="actionContent uni-flex">
-							<view class="actionButton whiteBtn">联系客服发货</view>
+							<view class="yhTips" v-show="item.tp==2">已发放至我的优惠券</view>
+							<view class="actionButton whiteBtn" v-show='item.tp==1' @click="linkKefu">联系客服发货</view>
 						</view>
 					</view>
 				</view>
 				<view class="prizeItem-bottom">
-					<text>中奖码: </text><text>1111</text>
+					<text>中奖码: </text><text>{{item.openCode}}</text>
 				</view>
 			</view>
 		</view>
@@ -27,6 +28,9 @@
 	import {
 		app
 	} from "@/app";
+	import {
+		dateFormatMSHMS
+	} from '@/tools/util.ts'
 	import {
 		Component,
 		Prop,
@@ -41,6 +45,8 @@
 		};
 		prizeList: any = [];
 		totalPage: number = 0;
+		dateFormatMSHMS: any = dateFormatMSHMS;
+		kefuUserId:any=[]
 		onLoad() {
 			this.reqNewData()
 		}
@@ -54,11 +60,17 @@
 			this.queryParams.pageIndex = 1
 			this.reqNewData()
 		}
+		linkKefu(){
+			uni.navigateTo({
+				url: '/pages/userinfo/talk?targetUserId='+this.kefuUserId[0]
+			})
+		}
 		//我的奖品
 		reqNewData() {
-			app.http.Get('snatchTreasure/myPrize', this.queryParams, (res: any) => {
+			app.http.Get('activity/snatchTreasure/myPrize', this.queryParams, (res: any) => {
+				this.kefuUserId=res.data.kefuUserId
 				this.totalPage = res.totalPage || 0
-				const arr = res.list || []
+				const arr = res.data.list || []
 				if (this.queryParams.pageIndex === 1) this.prizeList = [];
 				this.prizeList = [...this.prizeList, ...arr];
 				setTimeout(() => {
@@ -116,7 +128,15 @@
 						justify-content: flex-end;
 						align-items: center;
 						margin-top: 40rpx;
-						
+						position: relative;
+						.yhTips{
+							font-size: 25rpx;
+							font-family: FZLanTingHeiS-R-GB;
+							font-weight: 400;
+							color: #88878C;
+							position: absolute;
+							left: 0;
+						}
 						.actionButton {
 							background-size: 100% 100%;
 							font-family: FZLanTingHeiS-R-GB;
@@ -129,6 +149,7 @@
 							font-size: 25rpx;
 							color: #fff;
 							border-radius: 4rpx;
+							// flex: 1;
 						}
 					}
 				}
