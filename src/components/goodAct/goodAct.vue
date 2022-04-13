@@ -4,7 +4,14 @@
 			<view class="detail-act-index" @click="onClickActHelp" v-for="(item,index) in goodsActData" :key="index">
 				<view class="detail-act-left">
 					<view class="detail-act-name">活动{{chineseNumber[index+1]}}</view>
-					<view class="detail-act-desc"><view class="detail-act-guess" v-if="item.indexOf('猜球员')!=-1"></view>{{item}}</view>
+					<view class="detail-act-desc" v-if="item!='discount'">
+						<view class="detail-act-guess" v-if="item.indexOf('猜球员')!=-1"></view>{{item}}
+					</view>
+					<view class="detail-act-desc" v-else>
+						<view class="detail-discount" v-show="discount[index-1]" v-for="index in 2" :key="index">
+							{{discount[index-1]}}
+						</view>
+					</view>
 				</view>
 				<view class="detail-act-right" ></view>
 			</view>
@@ -40,28 +47,30 @@
 		goodsActData:any = [];
   		showDrawer = false;
 		drawerMsg:any = [];
+		discount = [];
 		@Watch('goodsData')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){
 				this.getGoodsActData(this.goodsData)
 			}
 		}
-		created() { //在实例创建完成后被立即调用
-
-		}
-		mounted() { //挂载到实例上去之后调用
-			
+		created() {
+			String.prototype.replaceAll = function(f:any, e:any) { 
+				var reg = new RegExp(f, "g"); 
+				return this.replace(reg, e);
+			}
 		}
 		// 获取活动内容
 		getGoodsActData(data:any){
 			this.goodsActData = data.dActivity||[];
-			
+
 			let discount = data.discount ? data.discount.map((x:any)=>{
 				return x.content
 			}) : ''
 			if(discount!='') {
-				this.goodsActData  = [ discount.toString(),...this.goodsActData ];
-				this.drawerMsg = [{title:'阶梯奖励：',content:discount.toString()}, ...this.drawerMsg]
+				this.goodsActData  = [ 'discount',...this.goodsActData ];
+				this.drawerMsg = [{title:'阶梯奖励：',content:discount.toString().replaceAll(',',';')}, ...this.drawerMsg];
+				this.discount = JSON.parse(JSON.stringify(discount))
 			};
 			if((this.goodsData.bit & 8) == 8){
 				this.goodsActData.push('猜球员 赢免单');
@@ -138,6 +147,20 @@
 				height:21rpx;
 				background:url(../../static/index/v2/icon_right.png) no-repeat center;
 				background-size: 100% 100%;
+			}
+			.detail-discount{
+				height:40rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				box-sizing: border-box;
+				padding:0 13rpx;
+				border:1px solid #F4919F;
+				margin-right: 24rpx;
+				font-size: 21rpx;
+				font-family: FZLanTingHeiS-R-GB;
+				font-weight: 400;
+				color: #EA4055;
 			}
 		}
 	}
