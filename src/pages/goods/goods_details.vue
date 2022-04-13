@@ -362,6 +362,7 @@
 			// #endif
 		}
 		onHide(){
+			clearInterval(this.count_down)
 			uni.offNetworkStatusChange((res)=>{
 				console.log('onNetworkStatusChange=',res)
 				if(res.isConnected){

@@ -192,6 +192,9 @@ export default class ClassName extends BaseNode {
     if (query.classType) {
       this.classifyOpt = query.classType;
     }
+    if(query.serie){
+      this.clickSerieItem = {title:query.serie}
+    }
     if (query.data) {
       setTimeout(() => {
         // #ifndef MP
