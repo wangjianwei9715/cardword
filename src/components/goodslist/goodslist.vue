@@ -18,7 +18,7 @@
 				<view class="goodslist-title">{{item.title}}</view>
 				<view class="goodslist-priceMsg uni-flex">
 					<view class="goodslist-priceMsg-left">
-						￥<text>{{item.price}}</text><text>{{item.isSelect||item.discount!=''?'起':''}}</text>
+						￥<text>{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
 					</view>
 					<view class="goodslist-priceMsg-right">
 						余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
@@ -107,6 +107,9 @@
 		getPlan(lock: number, now: number, all: number) {
 			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
 			return width
+		}
+		getPriceStart(item:any){
+			return item.isSelect || item.discount!='' || item.pintuan_type == 11
 		}
 		onClickJumpUrl(id: any) {
 			this.$emit("send", id);

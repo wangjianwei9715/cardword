@@ -62,7 +62,7 @@
 			justify-content: space-between;
 			margin-bottom: 7rpx;
 			.left{
-				width:604rpx;
+				width:584rpx;
 				font-size: 22rpx;
 				font-family: FZLanTingHeiS-R-GB;
 				font-weight: 400;
@@ -74,7 +74,7 @@
 				padding:20rpx 16rpx;
 			}
 			.right{
-				width: 74rpx;
+				width:104rpx;
 				display: flex;
 				align-items: center;
 				justify-content: center;
