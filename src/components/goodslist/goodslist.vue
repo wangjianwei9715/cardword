@@ -302,10 +302,14 @@
 			padding-bottom: 12rpx;
 
 			.bottom-left {
+				max-width: 140rpx;
 				font-size: 20rpx;
 				font-family:FZLanTingHeiS-R-GB;
 				font-weight: 400;
 				color: #BCBCBC;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				white-space: nowrap;
 			}
 
 			.bottom-right {
@@ -322,12 +326,16 @@
 				}
 
 				.bussName {
+					max-width: 130rpx;
 					position: relative;
 					font-size: 20rpx;
 					font-family:FZLanTingHeiS-R-GB;
 					font-weight: 400;
 					color: #595959;
 					margin-right: 4rpx;
+					overflow: hidden;
+					text-overflow:ellipsis;
+					white-space: nowrap;
 				}
 
 				.cores {

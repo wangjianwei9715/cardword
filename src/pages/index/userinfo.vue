@@ -57,6 +57,7 @@
 				</view>
 				<view class="tab-content">
 					<view class="tab" v-for="(item,index) in serviceTab" :key="item.id" @click="onClickServiceTab(item)">
+						<view v-if="item.num&&item.num>0" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num>99?'99+':item.num}}</view>
 						<view class="icon-content">
 							<image class="tab-icon" :src="'../../static/userinfo/v2/icon_user_'+index+'.png'" />
 						</view>
@@ -109,7 +110,7 @@
 		};
 		serviceTab:{[x: string]: any} = {
 			coupon:{id:1,name:'优惠券',url:'/pages/userinfo/coupon/coupon'},
-			giving:{id:2,name:'收赠卡密',url:'/pages/userinfo/giving/index'},
+			giving:{id:2,name:'收赠卡密',url:'/pages/userinfo/giving/index',num:0},
 			decompose:{id:3,name:'卡片分解',url:'/pages/act/decompose/index'},
 			kefu:{id:4,name:'联系客服'},
 			address:{id:5,name:'地址管理',url:'/pages/userinfo/setting_addresses'}
@@ -160,7 +161,8 @@
 				this.infoData = data;
 				this.infoData.avatar = decodeURIComponent(data.avatar)
 				app.familial = data.familial;
-				
+				this.serviceTab.giving.num = data.unReadGoodNo;
+
 				// 卡币 我的中卡
 				for (const key in this.walletTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {

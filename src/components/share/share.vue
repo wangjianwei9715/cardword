@@ -23,7 +23,7 @@
 		@Prop({ default: false })
 		operationShow:boolean|undefined;
 		@Prop({ default: [] })
-		shareData:wxShare.shareData | any;
+		shareData!:wxShare.shareData;
 		
 		operationData:any = [
 			{img:'/static/share/weixin@2x.png',text:'微信好友',scene:'WXSceneSession'},

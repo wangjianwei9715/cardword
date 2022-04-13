@@ -5,7 +5,6 @@
 			<!-- <sortTabCopy/> -->
 		</view>
 		<view class="goods-lists">
-			<statusbar/>
 			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
 		</view>
 	</view>
@@ -105,6 +104,10 @@ page {
   width: 100%;
   background: #fff;
   box-sizing: border-box;
+  position:fixed;
+  left:0;
+  top:0;
+  z-index: 66;
   // z-index: 9;
 }
 .header-sort {
@@ -197,7 +200,7 @@ page {
 .goods-lists {
   width: 100%;
   box-sizing: border-box;
-  padding: 272rpx 14rpx 60rpx 14rpx;
+  padding: 86rpx 14rpx 60rpx 14rpx;
 }
 .sort-shadow {
   width: 100%;

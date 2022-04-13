@@ -33,7 +33,7 @@
 		</view>
 		<view class="detail-index-bg">
 			<view class="detail-bg">
-				<view class="header-content" :class="{'random-bg':goodsData.pintuan_type == 11}" v-if="goodsState==1">
+				<view class="header-content" :class="{'random-bg':getSelectType()}" v-if="goodsState==1">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text class="price-qi">{{goodsData.isSelect?'起':''}}</text></view>
 					<view class="header-right">
 						<view class="icon-end">距结束</view>
@@ -167,7 +167,7 @@
 				</view>
 			</view>
 			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm" @click="onClickCopyInviteKey">复制口令给新人</view>
-			<view v-else class="btn-confirm" @click="onClickBuy()">{{goodsData.isSelect?'选择编号':'立即购买'}}</view>
+			<view v-else class="btn-confirm" :class="{'random-confirm':getSelectType()}" @click="onClickBuy()">{{goodsData.isSelect?'选择编号':'立即购买'}}</view>
 		</view>
 		<view class="btn-contented" v-else-if="goodsState>=2">
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
@@ -249,7 +249,6 @@
 		}
 		operationCardShow=false;
 		tipsData:{[x:string]:any} = [];
-		discountList:any = [];
 		buyRecordList:any = [];
 		onNetWorkFunc:any;
 		// 自选球队相关
@@ -280,8 +279,6 @@
 		buyExplain = '商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。';
 		
 		randomNum = 0;
-		guessType = false;
-		guessFreeNum = 0;
 		// 底部抽屉
   		showDrawer = false;
 		drawerMsg:any = [];
@@ -393,10 +390,8 @@
 					if(data.payChannel){
 						this.payChannel = data.payChannel
 					}
-					this.guessFreeNum = data.freeNoNum
 					this.goodsActData = data.good.dActivity||[];
-					this.guessType = (data.good.bit & 8) == 8?true:false;
-					if(this.guessType){
+					if((data.good.bit & 8) == 8){
 						this.goodsActData.push('猜球员 赢免单');
 						this.drawerMsg = this.drawerMsg.concat(this.guessRules)
 					}
@@ -407,9 +402,6 @@
 					this.goodsState = data.good.state;
 					// 倒计时
 					this.countDown = data.good.leftsec;
-					// 获取优惠标签
-					this.discountList= data.good.discount||'';
-					console.log(decodeURIComponent(data.good.publisher.avatar))
 					// 获取商品图片
 					this.getGoodsImage(decodeURIComponent(this.goodsData.pic.carousel));
 					this.getDetailImage(decodeURIComponent(this.goodsData.pic.yuanfeng))
@@ -417,16 +409,11 @@
 					this.getCountDown();
 					// 商品规格、配置、形式、
 					this.getGoodsSpe();
-					console.log()
-					let newData;
-					if(decodeURIComponent(data.good.desc).indexOf('\n')>-1){
-						newData = decodeURIComponent(data.good.desc).split('\n');
-					}else{
-						newData = decodeURIComponent(data.good.desc).split('\r');
-					}
-					this.goodsDesc = newData;
-					// console.log(newData)
-					this.goodsDesc.unshift('开售时间：'+dateFormat(data.good.startAt))
+
+					let desc = decodeURIComponent(data.good.desc);
+					let newData = desc.indexOf('\n')>-1 ? desc.split('\n') : desc.split('\r');
+					this.goodsDesc = ['拼团编号：'+id,'开售时间：'+dateFormat(data.good.startAt),...newData];
+
 					if(this.goodsState==1){
 						app.http.Get('dataApi/good/'+id+'/buyRecord',{},(res:any)=>{
 							if(res.list){
@@ -536,24 +523,6 @@
 				this.goodsSpe.spec.icon = '../../static/goods/v2/spe_duohe.png'
 			}
 		}
-		switchGoodsState(state:any){
-			switch(state){
-				case 0:
-					return '等待开售';
-				case 1:
-					return '出售中';
-				case 2:
-					return '等待直播';
-				case 3:
-					return '即将直播';
-				case 4:
-					return '直播中';
-				case -1:
-					return '等待开售';
-				default:
-					return '已结束'
-			}
-		}
 		onClickTipBtn(item:any){
 			if(item.id==1){
 				if(app.token.accessToken == ''){
@@ -619,23 +588,14 @@
 				this.operationShow = true
 			}
 		}
-		
 		onClickFavor(){
-			let url = ''
-			if(!this.favorType){
-				url="good/favor/"
-			}else{
-				url="good/unfavor/"
-			}
+			let url = !this.favorType ? "good/favor/" : "good/unfavor/"
 			app.http.Post(url+this.goodsId,{},(data:any)=>{
 				this.favorType = !this.favorType
-				
 			})
-			
 		}
 		// 观看大图
 		onClickPreviewImage(index:number){
-			console.log(this.goodsImg)
 			uni.previewImage({
 				urls: this.goodsImg,
 				current:index,
@@ -649,11 +609,7 @@
 				indicator: "number" 
 			});
 		}
-		
-		
 		onClickBuy(){
-			
-			
 			// #ifndef MP
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -704,13 +660,10 @@
 				url: 'goods_result_list?chooseIds=' + chooseID+'&code='+this.goodsId+'&random='+random
 			})
 		}
-
 		onClickLive(){
-			// app.platform.launchMiniProgramLive(this.goodsData.broadcast.roomId)
 			app.platform.goWeChatLive({playCode:this.goodsData.broadcast.playCode,goodCode:this.goodsData.goodCode})
 		}
 		onClickCardPlay(item:any){
-			
 			// #ifndef MP
 			if(item.id<=2){
 				this.operationCardShow = true;
@@ -726,7 +679,6 @@
 				this.operaType = this.goodsSpe[item].id
 			}
 			// #endif
-
 		}
 		onClickCardCancel(){
 			this.operationCardShow = false
@@ -737,6 +689,9 @@
 		// 随机倒计时结束
 		onChangeRandomGood(){
 			this.getGoodSelect()
+		}
+		getSelectType(){
+			return this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 10
 		}
 		// 自选球队 我要选队
 		getGoodSelect(cb?:Function){
@@ -806,20 +761,17 @@
 		// 自选球队 选择分支
 		onClickBranchCheck(index:any){
 			if(this.branchCheckIndex==index) return;
-
 			this.branchCheckIndex = index;
 		}
 		onClickDeleteCart(index:any){
 			if(index!=0&&index=='[]'){
 				app.http.Post('good/select/cart/'+this.goodsId+'/delete',{id:[]},(res:any)=>{
-					
 					this.getGoodSelectCart()
 				})
 				return;
 			}
 			let id = this.cartData.list[index].id
 			app.http.Post('good/select/cart/'+this.goodsId+'/delete',{id:[id]},(res:any)=>{
-				
 				this.getGoodSelectCart()
 			})
 		}
@@ -840,15 +792,11 @@
 				return;
 			}
 			app.http.Post('good/select/cart/'+this.goodsId+'/add',{id:[this.branchData[this.branchCheckIndex].id]},(res:any)=>{		
-				
 				this.getGoodSelectCart()
 			})
 		}
 		onClickSettlement(){
-			if(this.cartData.available == 0){
-				return;
-			}
-			
+			if(this.cartData.available == 0) return;
 			uni.navigateTo({
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&cart='+encodeURIComponent(JSON.stringify(this.cartData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))
 			})
@@ -867,7 +815,6 @@
 			for(let i in list){
 				price += list[i].price
 			}
-
 			return price;
 		}
 		// 购买剩余随机
@@ -1042,7 +989,7 @@
 		right:14rpx;
 		bottom:54rpx;
 		border-radius: 40rpx;
-		background:rgba(136, 135, 140, 0.4);
+		background:#B0B0B0;
 		box-sizing: border-box;
 		padding:0 18rpx
 	}
@@ -1558,6 +1505,9 @@
 			font-family: Alibaba PuHuiTi;
 			font-weight: 400;
 			color: #FFFFFF;
+		}
+		.random-confirm{
+			background:#7C4BEA;
 		}
 		
 	}
