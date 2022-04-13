@@ -18,7 +18,7 @@
 				<view class="goodslist-title">{{item.title}}</view>
 				<view class="goodslist-priceMsg uni-flex">
 					<view class="goodslist-priceMsg-left">
-						￥<text>{{item.price}}</text><text>{{item.isSelect||item.discount!=''?'起':''}}</text>
+						￥<text>{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
 					</view>
 					<view class="goodslist-priceMsg-right">
 						余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
@@ -107,6 +107,9 @@
 		getPlan(lock: number, now: number, all: number) {
 			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
 			return width
+		}
+		getPriceStart(item:any){
+			return item.isSelect || item.discount!='' || item.pintuan_type == 11
 		}
 		onClickJumpUrl(id: any) {
 			this.$emit("send", id);
@@ -302,10 +305,14 @@
 			padding-bottom: 12rpx;
 
 			.bottom-left {
+				max-width: 140rpx;
 				font-size: 20rpx;
 				font-family:FZLanTingHeiS-R-GB;
 				font-weight: 400;
 				color: #BCBCBC;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				white-space: nowrap;
 			}
 
 			.bottom-right {
@@ -322,12 +329,16 @@
 				}
 
 				.bussName {
+					max-width: 130rpx;
 					position: relative;
 					font-size: 20rpx;
 					font-family:FZLanTingHeiS-R-GB;
 					font-weight: 400;
 					color: #595959;
 					margin-right: 4rpx;
+					overflow: hidden;
+					text-overflow:ellipsis;
+					white-space: nowrap;
 				}
 
 				.cores {

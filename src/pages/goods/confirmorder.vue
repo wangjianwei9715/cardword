@@ -102,12 +102,9 @@
       <!--  -->
 
       <view class="yunfei-info check-team top-order" v-if="payRandomTeamData != ''">
-        <view class="item-title">选队随机</view>
-        <view>
-          <view class="yunfei-item">
-            <text class="item-teamname">{{ payRandomTeamData.name }}</text>
-            <text class="item-teamname">¥{{ payRandomTeamData.price }}</text>
-          </view>
+        <view class="item-title">
+          选队随机
+          <text class="item-teamname">{{ payRandomTeamData.name }}</text>
         </view>
       </view>
 
@@ -930,6 +927,8 @@ page {
   color: #14151a;
   line-height: 34rpx;
   margin-left: 22rpx;
+  display: flex;
+  justify-content: space-between;
 }
 .item-teamname {
   font-size: 22rpx;

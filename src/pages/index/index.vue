@@ -53,21 +53,8 @@
 						<view class="tabtext">{{items.text}}</view>
 					</view>
 				</view>
-				
-				
 				<!-- 卡豆商城 热门系列 拆卡围观 -->
-				<view class="tab-hot">
-					<view class="tab-hot-box" :class="'tab-hot-box-'+name" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(name)">
-						<view class="tab-hot-boxtitle">{{item.title}}</view>
-						<view class="tab-hot-boxtips">{{item.tips}}</view>
-						<view class="tab-hot-boxpic-index">
-							<view class="tab-hot-boxpic-box" v-for="(src,index) in item.list" :key="index" >
-								<image :src="src" class="tab-hot-boxpic" mode="aspectFit"></image>
-							</view>
-						</view>
-					</view>
-				</view>
-
+				<tabHot :hotList="hotList" />
 			</view>
 			<!-- #endif -->
 		</view>
@@ -138,14 +125,17 @@
 			cardBean:{
 				title:'卡豆商城',
 				tips:'卡豆兑换好礼',
-				list:['../../static/index/v2/cardbean_pic.png','../../static/index/v2/cardbean_hb.png']
+				list:[
+					{pic:'../../static/index/v2/cardbean_pic.png'},
+					{pic:'../../static/index/v2/cardbean_hb.png'}
+				]
 			},
 			hot:{
 				title:'热门系列',
 				tips:'新系列上市',
 				list:[]
 			},
-			split:{
+			broadCast:{
 				title:'拆卡围观',
 				tips:'正在拆卡',
 				list:[]
@@ -324,14 +314,7 @@
 			})
 			// #endif
 		}
-		onClickHotPic(name:string){
-			if(name=='cardBean'){
-				uni.showToast({
-					title:'卡豆商城维护中',
-					icon:'none'
-				})
-			}
-		}
+		
 		showInitEvent(){
 			this.fetchFrom = 1;
 			this.noMoreData = false;
@@ -344,7 +327,9 @@
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
 				// #ifndef MP
-				this.topAddList = data.topAddList
+				this.topAddList = data.topAddList;
+				this.hotList.broadCast.list = data.broadCast;
+				this.hotList.hot.list = data.hotSeries;
 				// #endif
 				this.reqNewData()
 			})
@@ -817,68 +802,6 @@
 		box-sizing: border-box;
 	}
 
-	// 拆卡热门
-	.tab-hot{
-		width: 100%;
-		height:185rpx;
-		box-sizing: border-box;
-		padding: 0 20rpx;
-		background: linear-gradient(0deg, $content-bg, #FFFFFF 80%, #FFFFFF);
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-top: 20rpx;
-	}
-	.tab-hot-box{
-		width: 236rpx;
-		height:185rpx;
-		background: url(../../static/index/v2/hot_bg.png) no-repeat center;
-		background-size: 100% 100%;
-	}
-	.tab-hot-box-hot{
-		background: url(../../static/index/v2/hot_bg_2.png) no-repeat center;
-		background-size: 100% 100%;
-	}
-	.tab-hot-box-split{
-		background: url(../../static/index/v2/hot_bg_3.png) no-repeat center;
-		background-size: 100% 100%;
-	}
-	.tab-hot-boxtitle{
-		width: 100%;
-		height:50rpx;
-		text-align: center;
-		font-size: 28rpx;
-		font-family: Alibaba PuHuiTi;
-		font-weight: bold;
-		color: #333333;
-		padding-top: 10rpx;
-		box-sizing: border-box;
-	}
-	.tab-hot-boxtips{
-		width: 100%;
-		height:35rpx;
-		text-align: center;
-		font-size: 18rpx;
-		font-family: Alibaba PuHuiTi;
-		font-weight: 400;
-		color: #565656;
-	}
-	.tab-hot-boxpic-index{
-		width: 100%;
-		box-sizing: border-box;
-		height:84rpx;
-		padding:0 22rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.tab-hot-boxpic-box{
-		width: 84rpx;
-		height:84rpx;
-	}
-	.tab-hot-boxpic{
-		width: 84rpx;
-		height:84rpx;
-	}
+	
 	
 </style>

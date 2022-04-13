@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="operation-shadow" v-show="teamRandomShow" @click="onClickTeamRandomCancel"></view>
-		<view class="operation-content" v-if="teamRandomData!=''" :class="teamRandomShow?'operation-show':''">
-			<view class="teamtion-top" >
+		<view class="operation-content"  :class="teamRandomShow?'operation-show':''">
+			<view class="teamtion-top" v-if="teamRandomData!=''" >
 				<view class="icon-close" @click="onClickTeamRandomCancel"></view>
 				<view class="teamtion-header">
 					<image class="teamtion-header-logo" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
@@ -91,7 +91,7 @@
 			let data = this.teamRandomData[this.currentIndex];
 			if(this.getPlan(data.lockNum,data.currentNum,data.totalNum)>=100){
 				uni.showToast({
-					title:'该编号已售罄',
+					title:'该球队已售罄',
 					icon:'none'
 				})
 				return;

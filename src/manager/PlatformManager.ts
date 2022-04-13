@@ -36,6 +36,29 @@ export default class PlatformManager {
 			}
 		});
 		// #endif
+		
+		// 修改安卓showModal确认在左侧的问题
+		const __showModal = uni.showModal;
+		uni.showModal = function(options:any) {
+			// console.log('options-1', options);
+			let opt:any = {}
+			// #ifdef APP-PLUS
+			if (uni.getSystemInfoSync().platform == 'android' && typeof options.showCancel == 'undefined') {
+				options.cancelText = '确认';
+				options.confirmText = '取消';
+				opt.success = function(e:any) {
+				// console.log('__opt.success', e);
+				e.confirm = !e.confirm;
+				e.cancel = !e.cancel;
+				options.success(e);
+				};
+			}
+			// #endif
+			__showModal({
+				...options,
+				...opt,
+			})
+		};
 	}
 	async getLocationPermission(): Promise<boolean> {
 		// #ifdef APP-PLUS
