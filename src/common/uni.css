@@ -15,6 +15,11 @@ progress, checkbox-group{
 form {
 	width: 100%;
 }
+.oneLineOver{
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
 .uni-flex {
 	display: flex;
 	flex-direction: row;

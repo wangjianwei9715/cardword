@@ -142,6 +142,7 @@
 			}
 			// #endif
 			const path = `/pages/userinfo/merchant_shopsV2`;
+			// const path = `/pages/act/loot/index`;
 			uni.navigateTo({
 				url: path + "?id=" + item.id
 			});  
