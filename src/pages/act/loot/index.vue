@@ -2,8 +2,8 @@
 	<!-- 夺宝主页 -->
 	<view>
 		<view class="topBanner">
-			<view class="rightFloatItem" @click="pageJump('/pages/act/loot/loot_myPrize')"><text>我的</text></view>
-			<view class="rightFloatItem rule"><text>奖品规则</text></view>
+			<view class="rightFloatItem"><text>规则</text></view>
+			<view class="rightFloatItem rule" @click="pageJump('/pages/act/loot/loot_myPrize')"><text>我的奖品</text></view>
 			<view class="rollContent" id='rollContent'>
 				<view class="rollHidden" id='rollHidden' :style="{transform:`translateX(${rollX}px)`}">
 					<view class="rollItem" v-for="item in personJoinList">
@@ -61,6 +61,7 @@
 						<view class="actionButton blackBtn" @click="handleJoin(item,index)">1欧气参与</view>
 					</view>
 				</view>
+				
 			</view>
 		</view>
 		<view class="noneBlock"></view>
@@ -387,6 +388,13 @@
 			}
 		}
 		handleGetOq(item: any, isRefsh: any = false) {
+			if(item.luckyGasCodeNum==0){
+				uni.showToast({
+					title:'你还没参与该活动',
+					icon:'none'
+				})
+				return
+			}
 			if (isRefsh) this.codeParams.index = 1
 			app.http.Get('activity/snatchTreasure/myLuckyGasCode/' + item.id, this.codeParams, (res: any) => {
 				this.codeTotalPage = res.totalPage || 0
@@ -638,7 +646,7 @@
 			display: flex;
 			align-items: center;
 			position: relative;
-
+			
 			.bigPrize {
 				background-size: 100% 100%;
 				background-image: url("../../../static/act/loot/bigPrize.png");
@@ -679,7 +687,7 @@
 					font-weight: 500;
 					color: #333333;
 					margin-bottom: 13rpx;
-					// margin-top: 20rpx;
+					margin-top: 16rpx;
 				}
 
 				.probability {
@@ -722,7 +730,7 @@
 					justify-content: space-between;
 					align-items: center;
 					position: relative;
-					top: 34rpx;
+					top: 24rpx;
 
 					&-left {
 						display: flex;
@@ -767,7 +775,8 @@
 				.actionContent {
 					justify-content: flex-end;
 					align-items: center;
-
+					position: relative;
+					bottom: 4rpx;
 					.actionButton {
 						background-size: 100% 100%;
 						font-family: FZLanTingHeiS-R-GB;

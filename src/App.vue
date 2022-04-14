@@ -13,8 +13,8 @@ export default Vue.extend({
     console.log("App Launch");
     if (process.env.NODE_ENV === "development") {
       // console.log("开发环境");
-      app.localTest=true;
-      app.bussinessApiDomain='http://192.168.8.80:8701/api/v2/';
+      // app.localTest=true;
+      // app.bussinessApiDomain='http://192.168.8.79:8701/api/v2/';
       
     } 
 

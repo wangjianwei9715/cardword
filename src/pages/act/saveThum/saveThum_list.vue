@@ -99,10 +99,10 @@
 			});
 		}
 		onReachBottom() {
-			if (this.queryParams.pageIndex < this.totalPage) {
-				this.queryParams.pageIndex += 1;
-				this.reqNewData();
-			}
+			// if (this.queryParams.pageIndex < this.totalPage) {
+			// 	this.queryParams.pageIndex += 1;
+			// 	this.reqNewData();
+			// }
 		}
 		onPullDownRefresh() {
 			this.queryParams.pageIndex = 1
