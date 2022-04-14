@@ -24,7 +24,7 @@
 						余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
 					</view>
 				</view>
-				<view class="goodslist-progress">
+				<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType(item)}">
 					<view class="progressMask" :style="{width:(100-getPlan(item.lockNum,item.currentNum,item.totalNum))+'%'}"></view>
 				</view>
 				<view class="goodslist-bottom">
@@ -148,6 +148,9 @@
 				}
 			}).exec();
 		}
+		getSelectType(item:any){
+			return item.pintuan_type == 11 || item.pintuan_type == 10
+		}
 		getGoodProgress() {
 			this.$emit('progress', this.showPlan)
 		}
@@ -260,7 +263,10 @@
 				width: 30%;
 			}
 		}
-
+		&-progress-select{
+			background-image: url('../../static/goods/v2/progessBgg_select.png');
+			background-size: 100% 100%;
+		}
 		&-priceMsg {
 			justify-content: space-between;
 			// vertical-align: bottom;

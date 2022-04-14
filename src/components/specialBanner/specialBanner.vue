@@ -1,5 +1,10 @@
 <template>
-  <div class="banner-container">
+  <view class="banner-container">
+    <view class="banner-container-header">
+      <view class="swiper-number">
+        <text>{{curIndex+1}}</text>/{{listLen()}}
+      </view>
+    </view>
     <swiper
       :style="{ width: '100vw', height: '810rpx' }"
       :indicator-dots="swiperConfig.indicatorDots"
@@ -15,11 +20,7 @@
       @animationfinish="animationfinish"
     >
       <swiper-item v-for="(item, i) in bannerList" :key="i">
-        <!-- 1.当前展示为第1项时，bannerList最后一项和第二项的justifyContent值分别为flex-end和flex-start，其余项值为center -->
-        <!-- 2.当前展示为最后一项时，bannerList倒数第2项和第1项的justifyContent值分别为flex-end和flex-start，其余项值为center -->
-        <!-- 3.当前展示为其他项（非第1和最后1项）时，bannerList当前项的前1项和后1项的justifyContent值分别为flex-end和flex-start，其余项值为center -->
-        <!-- 4.padding值也需要根据不同项设定不同值，但理同justifyContent -->
-        <div
+        <view
           class="image-container"
           :class="[
             curIndex === 0
@@ -41,77 +42,69 @@
               : 'item-center',
           ]"
         >
-          <image
-            :src="item.picture"
-            class="slide-image"
-            :style="{
-              transform:
-                curIndex === i
-                  ? 'scale(' + scaleX + ',' + scaleY + ')'
-                  : 'scale(1,1)',
-              transitionDuration: '.3s',
-              transitionTimingFunction: 'ease',
-            }"
-            mode="aspectFill"
-            @click="getBannerDetail(i)"
-          />
-        </div>
+          <view class="slide-image-box" :style="{
+                transform:
+                  curIndex === i
+                    ? 'scale(' + scaleX + ',' + scaleY + ')'
+                    : 'scale(1,1)',
+                transitionDuration: '.3s',
+                transitionTimingFunction: 'ease',
+              }">
+            <image
+              :src="item.pic"
+              class="slide-image"
+              mode="aspectFit"
+              @click="getBannerDetail(i)"
+            />
+          </view>
+        </view>
       </swiper-item>
     </swiper>
-    <div class="desc-wrap" :class="[isDescAnimating ? 'hideAndShowDesc' : '']">
-      <div class="title">{{ bannerList[descIndex].title }}</div>
-      <div class="desc">{{ bannerList[descIndex].description }}</div>
-    </div>
-  </div>
+    <view class="desc-wrap" :class="[isDescAnimating ? 'hideAndShowDesc' : '']">
+      <view class="title">{{ bannerList[descIndex].title }}</view>
+      <view class="desc">{{ bannerList[descIndex].desc }}</view>
+      <view class="time">{{ dateFormat(bannerList[descIndex].time) }}</view>
+    </view>
+    <view class="special-bottom">
+      <view class="special-bottom-inedx"></view>
+    </view>
+  </view>
 </template>
-<script>
-export default {
-  props: {
-    bannerList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-    swiperConfig: {
-      type: Object,
-      default() {
-        return {
-          indicatorDots: true,
-          indicatorColor: "rgba(255, 255, 255, .4)",
-          indicatorActiveColor: "rgba(255, 255, 255, 1)",
-          autoplay: false,
-          interval: 3000,
-          duration: 300,
-          circular: true,
-          previousMargin: "58rpx",
-          nextMargin: "58rpx",
-        };
-      },
-    },
-    scaleX: {
-      type: String,
-      default: (634 / 550).toFixed(4),
-    },
-    scaleY: {
-      type: String,
-      default: (378 / 328).toFixed(4),
-    },
-  },
-  computed: {
+
+<script lang="ts">
+	import { Component, Prop,Vue } from "vue-property-decorator";
+	import BaseComponent from "@/base/BaseComponent.vue";
+  import { dateFormat } from "@/tools/util"
+	@Component({})
+	export default class ClassName extends BaseComponent {
+    dateFormat = dateFormat;
+		@Prop({default:[]})
+		bannerList:any;
+    @Prop({default:[]})
+		swiperConfig:any;
+    @Prop({default:(634 / 550).toFixed(4)})
+		scaleX!:string;
+    @Prop({default:(378 / 328).toFixed(4)})
+		scaleY!:string;
+    
+		curIndex = 0
+    descIndex = 0
+    isDescAnimating = false
+		created(){
+		}
+		mounted(){
+    }
+		destroyed(){
+		}
     listLen() {
       return this.bannerList.length;
-    },
-  },
-  data() {
-    return {
-      curIndex: 0,
-      descIndex: 0,
-      isDescAnimating: false,
-    };
-  },
-  methods: {
-    swiperChange(e) {
+    }
+    onClickBack(){
+			uni.navigateBack({
+				delta: 1
+			});
+		}
+    swiperChange(e:any) {
       const that = this;
       this.curIndex = e.mp.detail.current;
       this.isDescAnimating = true;
@@ -119,31 +112,78 @@ export default {
         that.descIndex = e.mp.detail.current;
         clearTimeout(timer);
       }, 150);
-    },
-    animationfinish(e) {
+    }
+    animationfinish(e:any) {
       this.isDescAnimating = false;
-    },
-    getBannerDetail(index) {
-      this.$emit('sercialBannerDetail',index)
-    },
-  },
-};
+    }
+    getBannerDetail(index:number) {
+      let picData = this.bannerList.map((x:any)=>{
+        return x.pic
+      })
+      uni.previewImage({
+				urls: picData,
+				current:index,
+				indicator: "number" 
+			});
+    }
+	}
 </script>
+
 <style lang="scss" scoped>
 .banner-container {
-  width: 100vw;
+  width: 100%;
   height: 950rpx;
   box-sizing: border-box;
-  padding-top: 140rpx;
+  .banner-container-header{
+    width: 100%;
+    height:140rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    position: relative;
+    .icon-back{
+      width: 80rpx;
+      height:88rpx;
+      background:url(../../static/goods/back@2x.png) no-repeat center;
+      background-size: 100% 100%;
+      position: absolute;
+      left:0;
+      top:0;
+    }
+    .swiper-number{
+      font-size: 42rpx;
+      font-family: Alibaba PuHuiTi;
+      font-weight: 500;
+      color: #333333;
+    }
+    .swiper-number text{
+      font-size: 63rpx;
+      font-family: Alibaba PuHuiTi;
+      font-weight: bold;
+      color: #333333;
+    }
+  }
   .image-container {
     box-sizing: border-box;
     width: 100%;
     height: 754rpx;
     display: flex;
     align-items: center;
+    .slide-image-box{
+      width: 510rpx;
+      height: 655rpx;
+      z-index: 200;
+      background:#383a49;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      border:11rpx solid #383a49;
+    }
     .slide-image {
-      width: 594rpx;
-      height: 665rpx;
+      width: 420rpx;
+      height: 620rpx;
       z-index: 200;
     }
   }
@@ -156,34 +196,43 @@ export default {
     padding: 0 0 0 26rpx;
   }
   .item-center {
-    
     justify-content: center;
     padding: 0 0 0 0;
+  }
+  .item-center .slide-image-box{
+    border:11rpx solid #fff;
   }
   .desc-wrap {
     box-sizing: border-box;
     width: 100%;
     height: 98rpx;
-    padding: 24rpx 66rpx 0;
+    padding: 0 90rpx 0;
     .title {
       width: 100%;
-      height: 42rpx;
-      line-height: 42rpx;
-      color: #222222;
-      font-size: 30rpx;
-      font-family: "PingFangTC-Regular";
-      font-weight: 600;
-      text-align: left;
+      font-size: 33rpx;
+      font-family: Alibaba PuHuiTi;
+      font-weight: 400;
+      color: #333333;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
     }
     .desc {
-      margin-top: 4rpx;
+      margin-top: 15rpx;
       width: 100%;
-      height: 34rpx;
-      line-height: 34rpx;
-      color: #999999;
-      font-size: 24rpx;
-      font-family: "PingFangTC-Regular";
-      text-align: left;
+      font-size: 25rpx;
+      font-family: Alibaba PuHuiTi;
+      font-weight: 400;
+      color: #595959;
+      line-height: 35rpx;
+    }
+    .time{
+      width: 100%;
+      font-size: 23rpx;
+      font-family: Alibaba PuHuiTi;
+      font-weight: 400;
+      color: #777777;
+      margin-top: 15rpx;
     }
   }
   @keyframes descAnimation {
@@ -223,6 +272,24 @@ export default {
   .hideAndShowDesc {
     animation: descAnimation 0.3s ease 1;
     -webkit-animation: descAnimation 0.3s ease 1;
+  }
+}
+.special-bottom{
+  width: 100%;
+  height:164rpx;
+  position:fixed;
+  bottom:0;
+  left:0;
+  box-sizing: border-box;
+  padding: 0 70rpx;
+  display: flex;
+  justify-content: space-between;
+  .special-bottom-inedx{
+    width: 120rpx;
+    height:110rpx;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 }
 </style>

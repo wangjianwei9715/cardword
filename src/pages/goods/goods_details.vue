@@ -59,7 +59,7 @@
 						</view>
 
 						<view class="header-top-plan">
-							<view class="goodslist-progress">
+							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
 								<view class="progress-mask" :style="{width:(100-getPlan(goodsData.lockNum,goodsData.currentNum,goodsData.totalNum))+'%'}"></view>
 							</view>
 							<view class="header-top-plan-num">
@@ -1002,13 +1002,13 @@
 		position: relative;
 	}
 	.detail-bg{
-		width: 722rpx;
+		width: 724rpx;
 		border-radius: 5rpx;
 		background:#fff;
 		margin-bottom: 13rpx;
 	}
 	.header-content{
-		width: 722rpx;
+		width: 724rpx;
 		height:100rpx;
 		background:url(../../static/goods/v2/price_bg.png) no-repeat center;
 		background-size: 100% 100%;
@@ -1181,6 +1181,10 @@
 					background-color: #F6F7FB;
 					width: 0%;
 				}
+			}
+			.goodslist-progress-select{
+				background-image: url('../../static/goods/v2/progessBgg_select.png');
+				background-size: 100% 100%;
 			}
 			.header-top-plan-num{
 				width: 170rpx;
