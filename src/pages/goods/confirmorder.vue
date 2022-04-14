@@ -425,12 +425,12 @@ export default class ClassName extends BaseNode {
       goodCode: this.goodsData.goodCode,
     };
     // 普通支付 || 自选球队
-    if (this.baoduiId != 0) {
+    if (this.baoduiId != 0 ) {
       params.price = this.goodsData.price;
     } else if (this.cartData == "") {
       params.num = Number(this.moneyNum);
       if (Number(this.moneyNum) <= 0) return;
-      params.price = this.keepTwoDecimal(this.moneyNum * this.onePrice);
+      params.price = this.payRandomTeamData == ''? this.keepTwoDecimal(this.moneyNum * this.onePrice):this.goodsData.price
     } else {
       params.price = this.cartData.amount;
     }
