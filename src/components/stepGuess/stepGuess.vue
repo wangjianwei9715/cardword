@@ -140,7 +140,7 @@
 		box-sizing: border-box;
 		padding:0 12rpx;
 		font-size: 19rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: rgba(228, 78, 78,0.97);;
 	}
@@ -154,7 +154,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 28rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 	}
@@ -178,7 +178,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 25rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 	}
@@ -194,7 +194,7 @@
 		height:67rpx;
 		line-height: 67rpx;
 		font-size: 25rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 		margin-right: 10rpx;
@@ -268,7 +268,7 @@
 	.drawer-contnet-desc{
 		width: 100%;
 		font-size: 26rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #525151;
 		line-height: 40rpx;
@@ -276,7 +276,7 @@
 	}
 	.drawer-content-tips{
 		font-size: 24rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #CF3737;
 		line-height: 40rpx;
@@ -313,7 +313,7 @@
 		box-sizing: border-box;
 		padding-left: 12rpx;
 		font-size: 20rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #FFFFFF;
 	}

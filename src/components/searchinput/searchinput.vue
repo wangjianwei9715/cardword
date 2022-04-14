@@ -39,7 +39,7 @@
 		border-radius: 40rpx;
 		position: relative;
 		font-size: 28rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #A3A3A3;
 		line-height: 62rpx;

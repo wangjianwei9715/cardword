@@ -89,7 +89,7 @@
 		height:84rpx;
 		line-height: 84rpx;
 		font-size: 30rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #494949;
 		display: flex;
@@ -100,7 +100,7 @@
 	}
 	.current{
 		font-size:40rpx;
-		font-family: FZLanTingHeiS-DB1-GBK;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 		position: relative;

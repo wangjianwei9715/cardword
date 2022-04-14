@@ -107,7 +107,7 @@
 	.left-des {
 		width: 100%;
 		font-size: 28rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 		line-height: 40rpx;
@@ -153,7 +153,7 @@
 		text-align: center;
 		line-height: 88rpx;
 		font-size: 28rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #FFFFFF;
 	}

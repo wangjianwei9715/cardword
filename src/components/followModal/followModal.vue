@@ -49,7 +49,7 @@ export default class ClassName extends BaseComponent {
 
     .cancelTips {
       font-size: 26rpx;
-      font-family: FZLanTingHeiS-R-GB;
+      font-family: PingFangSC-Regular;
       font-weight: 400;
       color: #333333;
       text-align: center;
@@ -72,7 +72,7 @@ export default class ClassName extends BaseComponent {
         width: 120rpx;
         height: 50rpx;
         font-size: 26rpx;
-        font-family: FZLanTingHeiS-R-GB;
+        font-family: PingFangSC-Regular;
         font-weight: 400;
         line-height: 50rpx;
         text-align: center;

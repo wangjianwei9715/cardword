@@ -103,7 +103,7 @@
 		height:50rpx;
 		text-align: center;
 		font-size: 28rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Medium;
 		font-weight: bold;
 		color: #333333;
 		padding-top: 10rpx;
@@ -114,7 +114,7 @@
 		height:35rpx;
 		text-align: center;
 		font-size: 18rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #565656;
 	}

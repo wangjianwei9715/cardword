@@ -203,7 +203,7 @@
 		height:37rpx;
 		line-height: 37rpx;
 		font-size: 22rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #FFFFFF;
 		background:#40444F;
@@ -256,7 +256,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 22rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 		line-height: 32rpx;

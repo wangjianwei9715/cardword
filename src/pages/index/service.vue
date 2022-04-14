@@ -140,7 +140,7 @@
 		height:30rpx;
 		line-height: 30rpx;
 		font-size: 28rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 500;
 		color: #333333;
 	}
@@ -157,7 +157,7 @@
 	.header-tips{
 		width: 100%;
 		font-size: 26rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #87868B;
 	}

@@ -201,7 +201,7 @@
 			box-sizing: border-box;
 			padding: 26rpx 0 20rpx 0;
 			font-size: 26rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #14151A;
 			text-align: center;
@@ -361,7 +361,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 28rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #ffffff;
 		line-height: 40rpx;

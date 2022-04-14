@@ -316,7 +316,7 @@
 		width: 100%;
 		height:55rpx;
 		font-size: 28rpx;
-		font-family: FZLanTingHei-H-GBK;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #AAA8B3;
 		text-align: center;

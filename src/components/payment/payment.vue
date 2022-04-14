@@ -169,7 +169,7 @@
 			box-sizing: border-box;
 			padding-top: 60rpx;
 			font-size: 28rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Medium;
 			font-weight: bold;
 			color: #333333;
 			text-align: center;
@@ -181,7 +181,7 @@
 			margin-top: 46rpx;
 			line-height: 84rpx;
 			font-size: 73rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 500;
 			color: #333333;
 			text-align: center;
@@ -195,7 +195,7 @@
 			margin:0 auto;
 			box-sizing: border-box;
 			font-size: 24rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 			padding-bottom: 30rpx;
@@ -216,7 +216,7 @@
 				box-sizing: border-box;
 				align-items: center;
 				font-size: 26rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 			}
@@ -259,7 +259,7 @@
 			box-sizing: border-box;
 			margin:0 auto;
 			font-size: 32rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #FFFFFF;
 			margin-top: 46rpx;

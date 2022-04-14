@@ -531,7 +531,7 @@
 			height: 25rpx;
 			z-index: 4;
 			font-size: 19rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			text-align: right;
 			line-height: 25rpx;
@@ -579,7 +579,7 @@
 
 					.name {
 						font-size: 25rpx;
-						font-family: Alibaba PuHuiTi;
+						font-family: PingFangSC-Regular;
 						font-weight: 400;
 						color: #FFFFFF;
 						max-width: 250rpx;
@@ -603,7 +603,7 @@
 
 		.tagItem {
 			font-size: 33rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #ffffff;
 			position: relative;
@@ -654,7 +654,7 @@
 				height: 28rpx;
 				font-size: 19rpx;
 				line-height: 28rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #ffffff;
 				z-index: 1;
@@ -683,7 +683,7 @@
 
 				.title {
 					font-size: 29rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 500;
 					color: #333333;
 					margin-bottom: 13rpx;
@@ -692,7 +692,7 @@
 
 				.probability {
 					font-size: 25rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #88878c;
 					margin-bottom: 13rpx;
@@ -720,7 +720,7 @@
 
 					.contrast {
 						font-size: 23rpx;
-						font-family: FZLanTingHeiS-R-GB;
+						font-family: PingFangSC-Regular;
 						font-weight: 400;
 						color: #88878c;
 					}
@@ -736,7 +736,7 @@
 						display: flex;
 						align-items: center;
 						font-size: 25rpx;
-						font-family: FZLanTingHeiS-R-GB;
+						font-family: PingFangSC-Regular;
 						font-weight: 400;
 						color: #88878C;
 						letter-spacing: 2rpx;
@@ -765,7 +765,7 @@
 
 						.name {
 							font-size: 25rpx;
-							font-family: FZLanTingHeiS-R-GB;
+							font-family: PingFangSC-Regular;
 							font-weight: 400;
 							color: #88878C;
 						}
@@ -779,7 +779,7 @@
 					bottom: 4rpx;
 					.actionButton {
 						background-size: 100% 100%;
-						font-family: FZLanTingHeiS-R-GB;
+						font-family: PingFangSC-Regular;
 						font-weight: 400;
 						text-align: center;
 						line-height: 55rpx;
@@ -885,7 +885,7 @@
 		.btn {
 			height: 50rpx;
 			font-size: 25rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #ffffff;
 			text-align: center;
@@ -918,11 +918,11 @@
 		transform: scale(0);
 		transition: all 0.3s;
 		pointer-events: none;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 
 		.title {
 			font-size: 33rpx;
-
+			font-family: PingFangSC-Medium;
 			font-weight: bold;
 			color: #333333;
 			text-align: center;
@@ -998,7 +998,7 @@
 		.taskContent {
 			padding: 0 21rpx;
 			margin-top: 40rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 
 			.taskItem {
 				display: flex;
@@ -1048,7 +1048,7 @@
 					height: 40rpx;
 					line-height: 40rpx;
 					font-size: 27rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #89f756;
 					text-align: center;
@@ -1105,7 +1105,7 @@
 
 			.myEg {
 				font-size: 29rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				align-items: center;
@@ -1118,7 +1118,7 @@
 
 			.getEq {
 				background-size: 100% 100%;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				text-align: center;
 				line-height: 67rpx;

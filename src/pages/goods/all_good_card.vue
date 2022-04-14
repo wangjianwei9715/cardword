@@ -193,7 +193,7 @@
 		text-align: center;
 		line-height: 40rpx;
 		font-size: 30rpx;
-		font-family: FZLanTingHeiS-DB1-GBK;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 		background:#F6F7FB;
@@ -206,7 +206,7 @@
 
 	.title-middle {
 		font-size: 26rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 		line-height: 32rpx;
@@ -224,7 +224,7 @@
 		box-sizing: border-box;
 		text-align: center;
 		font-size: 22rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 	}

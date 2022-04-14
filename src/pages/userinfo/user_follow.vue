@@ -103,7 +103,7 @@
 
 			.name {
 				font-size: 26rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				margin-bottom: 24rpx;
@@ -111,7 +111,7 @@
 
 			.num {
 				font-size: 22rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878c;
 			}
@@ -122,7 +122,7 @@
 				width: 122rpx;
 				height: 44rpx;
 				font-size: 22rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878c;
 				line-height: 44rpx;

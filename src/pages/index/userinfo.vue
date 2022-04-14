@@ -293,7 +293,7 @@
 				display: flex;
 				align-items: center;
 				font-size: 35rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 500;
 				color: #FFFFFF;
 			}
@@ -364,14 +364,14 @@
 			}
 			.header-tab-index-num{
 				font-size: 36rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Medium;
 				font-weight: bold;
 				color: #FFFFFF;
 				margin-bottom: 10rpx;
 			}
 			.header-tab-index-name{
 				font-size: 24rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #FFD2D9;
 			}
@@ -404,7 +404,7 @@
 				display: flex;
 				align-items: center;
 				font-size: 26rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Medium;
 				font-weight: 600;
 				color: #333333;
 				.langtab-left-pic{
@@ -418,7 +418,7 @@
 				display: flex;
 				align-items: center;
 				font-size: 24rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				
@@ -444,7 +444,7 @@
 				height:40rpx;
 				line-height: 40rpx;
 				font-size: 28rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 600;
 				color: #333333;
 			}
@@ -453,7 +453,7 @@
 				display: flex;
 				align-items: center;
 				font-size: 22rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
 				
@@ -484,7 +484,7 @@
 					height:32rpx;
 					text-align: center;
 					font-size: 22rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #333333;
 				}
@@ -503,7 +503,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 24rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #FFFFFF;
 			margin-top: 10rpx;
@@ -536,7 +536,7 @@
 				display: flex;
 				align-items: center;
 				font-size: 26rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #5B5B5B;
 				.setting-icon{

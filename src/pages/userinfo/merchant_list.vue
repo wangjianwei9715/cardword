@@ -222,7 +222,7 @@
 
 		.noneTips {
 			font-size: 22rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #c6c6c8;
 			text-align: center;
@@ -257,7 +257,7 @@
 				text {
 					display: block;
 					font-size: 26rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #333333;
 					line-height: 28px;
@@ -271,7 +271,7 @@
 					padding: 0 10rpx;
 					text-align: center;
 					font-size: 18rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					line-height: 24rpx;
 					color: #ffffff;
@@ -280,7 +280,7 @@
 
 			.fansInfo {
 				font-size: 22rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878c;
 				letter-spacing: 1rpx;
@@ -292,7 +292,7 @@
 				width: 122rpx;
 				height: 44rpx;
 				font-size: 22rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878c;
 				line-height: 44rpx;
@@ -335,7 +335,7 @@
 					top: 0;
 					left: 0;
 					font-size: 18rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #ffffff;
 					border-radius: 4rpx 0 0 0;
@@ -346,7 +346,7 @@
 
 			.onelineName {
 				font-size: 26rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				text-overflow: ellipsis;
@@ -364,7 +364,7 @@
 
 				&-left {
 					font-size: 22rpx;
-					font-family: Alibaba PuHuiTi;
+					font-family: PingFangSC-Regular;
 					font-weight: 500;
 					color: #333333;
 
@@ -376,7 +376,7 @@
 
 				&-right {
 					font-size: 22rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #88878c;
 				}

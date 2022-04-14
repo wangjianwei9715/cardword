@@ -153,13 +153,13 @@
     }
     .swiper-number{
       font-size: 42rpx;
-      font-family: Alibaba PuHuiTi;
+      font-family: PingFangSC-Regular;
       font-weight: 500;
       color: #333333;
     }
     .swiper-number text{
       font-size: 63rpx;
-      font-family: Alibaba PuHuiTi;
+      font-family: PingFangSC-Medium;
       font-weight: bold;
       color: #333333;
     }
@@ -210,7 +210,7 @@
     .title {
       width: 100%;
       font-size: 33rpx;
-      font-family: Alibaba PuHuiTi;
+      font-family: PingFangSC-Regular;
       font-weight: 400;
       color: #333333;
       overflow: hidden;
@@ -221,7 +221,7 @@
       margin-top: 15rpx;
       width: 100%;
       font-size: 25rpx;
-      font-family: Alibaba PuHuiTi;
+      font-family: PingFangSC-Regular;
       font-weight: 400;
       color: #595959;
       line-height: 35rpx;
@@ -229,7 +229,7 @@
     .time{
       width: 100%;
       font-size: 23rpx;
-      font-family: Alibaba PuHuiTi;
+      font-family: PingFangSC-Regular;
       font-weight: 400;
       color: #777777;
       margin-top: 15rpx;

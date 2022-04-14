@@ -211,7 +211,7 @@
 
 		.rankItem {
 			font-size: 36rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Medium;
 			font-weight: bold;
 			color: #FCB825;
 			line-height: 61rpx;
@@ -272,7 +272,7 @@
 			background-size: 100% 100%;
 			background-image: url('../../../static/act/saveThum/purple.png');
 			font-size: 29rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #FCB825;
 			margin-top: 30rpx;
@@ -286,7 +286,7 @@
 
 		.change {
 			font-size: 29rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #DA3B59;
 			align-items: center;
@@ -323,7 +323,7 @@
 			margin-top: 22rpx;
 			// height: 60rpx;
 			font-size: 23rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 			text-overflow: -o-ellipsis-lastline;
@@ -370,7 +370,7 @@
 
 			.left {
 				font-size: 29rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 			}
@@ -380,7 +380,7 @@
 				height: 82rpx;
 				background-color: #060505;
 				font-size: 33rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #FCB825;
 				text-align: center;
@@ -448,7 +448,7 @@
 
 			.text {
 				font-size: 29rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #FFFFFF;
 			}
@@ -472,7 +472,7 @@
 
 		.centerTitle-title {
 			font-size: 42rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Medium;
 			font-weight: bold;
 			color: #FCB825;
 		}

@@ -124,7 +124,7 @@
 		box-sizing: border-box;
 		padding:20rpx 0;
 		font-size: $font-24;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;
@@ -140,7 +140,7 @@
 		box-sizing: border-box;
 		padding:20rpx 0;
 		font-size: $font-24;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 		line-height: 34rpx;

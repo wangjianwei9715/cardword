@@ -1,14 +1,14 @@
 <template>
 	<view class="list-content">
-		<view class="list-index" @click="onClickWinningSwiper">
+		<view class="list-index" @click="onClickWinningSwiper" v-for="(item,index) in codeList" :key="index">
 			<view class="list-pic-box">
-				<view class="icon-new"></view>
-				<image class="list-pic" mode="aspectFit"/>
+				<view class="icon-new" v-show="item.new"></view>
+				<image class="list-pic" mode="aspectFit" :src="decodeURIComponent(item.pic)"/>
 			</view>
-			<view class="list-title">圣安东尼奥马刺 特里克·威廉姆斯 49编 Appre圣安东尼奥马刺 特里克·威廉姆斯 49编 Appre</view>
+			<view class="list-title">{{item.name}}</view>
 			<view class="list-bottom">
-				<view class="list-bottom-time">2021-04-03</view>
-				<view class="list-bottom-num">3图</view>
+				<view class="list-bottom-time">{{dateFormatYMSCustom(item.time,'-')}}</view>
+				<view class="list-bottom-num">{{item.picNum}}图</view>
 			</view>
 		</view>
 	</view>
@@ -18,9 +18,20 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
+	import { dateFormatYMSCustom } from "@/tools/util"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		codeList:any = [];
+		dateFormatYMSCustom = dateFormatYMSCustom;
+		codeList:any = [
+			{
+				index:1,//第几个卡密
+				new:true,
+				name: "编号",
+				picNum:3,//几张图
+				pic: "http(s)://xxx.com/xxx.png", 
+				time: 1649915626,
+			}
+		];
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
@@ -52,7 +63,7 @@
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize
 			}
-			app.http.Get('', params, (data: any) => {
+			app.http.Get('me/hitNo/list', params, (data: any) => {
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
@@ -115,7 +126,7 @@
 		box-sizing: border-box;
 		padding:10rpx 0;
 		font-size: 29rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 		line-height: 38rpx;
@@ -133,13 +144,13 @@
 	}
 	.list-bottom-time{
 		font-size: 25rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #595959;
 	}
 	.list-bottom-num{
 		font-size: 25rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #595959;
 	}

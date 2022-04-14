@@ -408,7 +408,7 @@ page {
     .seriesText {
       text-align: center;
       font-size: 22rpx;
-      font-family: Alibaba PuHuiTi;
+      font-family: PingFangSC-Regular;
       font-weight: 400;
       color: #333333;
       white-space: nowrap;

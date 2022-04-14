@@ -283,11 +283,11 @@
 					url: "/pages/index/index",
 				});
 				uni.$emit('loginSuccess');
-				if(data.data.mustBindPhone){
-					uni.reLaunch({
-						url: "/pages/login/bind_phone"
-					})
-				}
+				// if(data.data.mustBindPhone){
+				// 	uni.reLaunch({
+				// 		url: "/pages/login/bind_phone"
+				// 	})
+				// }
 				// 判断是否有邀请码
 				if(app.requestKey!=''){
 					app.platform.checkShareNo(app.requestKey)
@@ -444,7 +444,7 @@
 			text-align: center;
 			line-height: 88rpx;
 			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #FFFFFF;
 		}

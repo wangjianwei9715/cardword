@@ -359,7 +359,7 @@
 				text {
 					display: block;
 					font-size: 26rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #333333;
 					line-height: 28px;
@@ -373,7 +373,7 @@
 					padding: 0 10rpx;
 					text-align: center;
 					font-size: 18rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					line-height: 24rpx;
 					color: #ffffff;
@@ -382,7 +382,7 @@
 
 			.fansInfo {
 				font-size: 22rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878c;
 				letter-spacing: 1rpx;
@@ -400,7 +400,7 @@
 
 		.menuItem {
 			font-size: 26rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 			// margin-right: 80rpx;

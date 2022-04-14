@@ -751,14 +751,14 @@ page {
 .address-desc {
   width: 100%;
   font-size: 28rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
 }
 .address-name {
   width: 100%;
   font-size: 23rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #88878C;
 }
@@ -792,7 +792,7 @@ page {
   margin-right: 30rpx;
   margin-left: 8rpx;
   font-size: 26rpx;
-  font-family: Alibaba PuHuiTi;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
   line-height: 40rpx;
@@ -817,7 +817,7 @@ page {
   margin-left: 8rpx;
   margin-top: 58rpx;
   font-size: 18rpx;
-  font-family: Alibaba PuHuiTi;
+  font-family: PingFangSC-Regular;
   font-weight: 500;
   color: #333333;
   line-height: 28rpx;
@@ -870,7 +870,7 @@ page {
   height: 30rpx;
   text-align: center;
   font-size: 22rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
   line-height: 30rpx;
@@ -894,7 +894,7 @@ page {
 
 .item-name {
   font-size: 24rpx;
-  font-family: Alibaba PuHuiTi;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
   line-height: 34rpx;
@@ -903,13 +903,13 @@ page {
 }
 .coupon-num {
   font-size: $font-24;
-  font-family: PingFangSC-Semibold, PingFang SC;
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 600;
   color: #ff504f;
 }
 .item-name .item-totalprice{
   font-size: 26rpx;
-  font-family: Alibaba PuHuiTi;
+  font-family: PingFangSC-Medium;
   font-weight: bold;
   color: #333333;
 }
@@ -932,7 +932,7 @@ page {
 }
 .item-teamname {
   font-size: 22rpx;
-  font-family: Alibaba PuHuiTi;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
   line-height: 34rpx;
@@ -945,7 +945,7 @@ page {
   height: 43rpx;
   background: #F1F1F1;
   font-size: 23rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #88878C;
   padding: 0 11rpx;
@@ -955,7 +955,7 @@ page {
 }
 .current-discount{
   font-size: 23rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #FFFFFF;
   background:#FF0003;
@@ -997,7 +997,7 @@ page {
 
 .heji-money2 {
   font-size: 26rpx;
-  font-family: Alibaba PuHuiTi;
+  font-family: PingFangSC-Medium;
   font-weight: bold;
   color: #333333;
   line-height: 28rpx;
@@ -1006,7 +1006,7 @@ page {
 
 .heji-text-b {
   font-size: 24rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
   line-height: 28rpx;
@@ -1014,7 +1014,7 @@ page {
 
 .heji-money2-b {
   font-size: 41rpx;
-  font-family: Alibaba PuHuiTi;
+  font-family: PingFangSC-Regular;
   font-weight: 500;
   color: #F5162B;
   line-height: 28rpx;
@@ -1032,7 +1032,7 @@ page {
     display: flex;
     align-items: center;
     font-size: 28rpx;
-    font-family: Alibaba PuHuiTi;
+    font-family: PingFangSC-Regular;
     font-weight: 500;
     color: #333333;
   }
@@ -1053,7 +1053,7 @@ page {
   .bottom-gm-tips {
     width: 100%;
     font-size: 22rpx;
-    font-family: FZLanTingHeiS-R-GB;
+    font-family: PingFangSC-Regular;
     font-weight: 400;
     color: #88878C;
     line-height: 36rpx;
@@ -1061,14 +1061,14 @@ page {
   }
   .bottom-gm-btn {
     font-size: 22rpx;
-    font-family: FZLanTingHeiS-R-GB;
+    font-family: PingFangSC-Regular;
     font-weight: 400;
     color: #88878C;
     line-height: 36rpx;
   }
   .bottom-gm-btn text{
     font-size: 22rpx;
-    font-family: FZLanTingHeiS-R-GB;
+    font-family: PingFangSC-Regular;
     font-weight: 400;
     color: #333333;
   }
@@ -1116,7 +1116,7 @@ page {
   align-items: center;
   justify-content: center;
   font-size: $font-28;
-  font-family: PingFangSC-Semibold, PingFang SC;
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 600;
   color: #ffffff;
   line-height: 40rpx;
@@ -1128,7 +1128,7 @@ page {
   background: #FF0016;
   margin-right: 35rpx;
   font-size: 32rpx;
-  font-family: Alibaba PuHuiTi;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #FFFFFF;
   box-sizing: border-box;

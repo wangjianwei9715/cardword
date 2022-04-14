@@ -233,7 +233,7 @@
 			// width: 100%;
 			height: 60rpx;
 			font-size: 26rpx;
-			font-family:FZLanTingHeiS-R-GB;
+			font-family:PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 			margin-top: 10rpx;
@@ -276,7 +276,7 @@
 			align-items: flex-end;
 			.goodslist-priceMsg-left {
 				font-size: 18rpx;
-				font-family:FZLanTingHeiS-R-GB;
+				font-family:PingFangSC-Regular;
 				font-weight: 500;
 				color: #333333;
 
@@ -289,7 +289,7 @@
 
 				text:last-child {
 					font-size: 18rpx;
-					font-family:FZLanTingHeiS-R-GB;
+					font-family:PingFangSC-Regular;
 					font-weight: 500;
 					color: #848484;
 				}
@@ -297,7 +297,7 @@
 
 			.goodslist-priceMsg-right {
 				font-size: 18rpx;
-				font-family:FZLanTingHeiS-R-GB;
+				font-family:PingFangSC-Regular;
 				font-weight: 400;
 				color: #CCCCCC;
 			}
@@ -313,7 +313,7 @@
 			.bottom-left {
 				max-width: 140rpx;
 				font-size: 20rpx;
-				font-family:FZLanTingHeiS-R-GB;
+				font-family:PingFangSC-Regular;
 				font-weight: 400;
 				color: #BCBCBC;
 				overflow: hidden;
@@ -338,7 +338,7 @@
 					max-width: 130rpx;
 					position: relative;
 					font-size: 20rpx;
-					font-family:FZLanTingHeiS-R-GB;
+					font-family:PingFangSC-Regular;
 					font-weight: 400;
 					color: #595959;
 					margin-right: 4rpx;
