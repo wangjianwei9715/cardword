@@ -238,7 +238,7 @@
 		background-color: #fff;
 		padding-bottom: env(safe-area-inset-bottom);
 	}
- 
+  
 	.content {
 		width: 100%;
 		box-sizing: border-box;

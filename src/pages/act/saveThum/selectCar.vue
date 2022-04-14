@@ -22,7 +22,7 @@
 		cardList: any = []
 		totalPage: number = 0;
 		centerModalShow: boolean = false;
-		queryParams: any = {
+		queryParams: any = { 
 			pageIndex: 1,
 			pageSize: 20
 		}
