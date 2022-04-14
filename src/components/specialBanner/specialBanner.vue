@@ -7,6 +7,7 @@
     </view>
     <swiper
       :style="{ width: '100vw', height: '810rpx' }"
+      :current = "curIndex"
       :indicator-dots="swiperConfig.indicatorDots"
       :indicator-color="swiperConfig.indicatorColor"
       :indicator-active-color="swiperConfig.indicatorActiveColor"
@@ -16,6 +17,7 @@
       :circular="swiperConfig.circular"
       :previous-margin="swiperConfig.previousMargin"
       :next-margin="swiperConfig.nextMargin"
+      @change="changeSwiperIndex"
       @transition="swiperChange"
       @animationfinish="animationfinish"
     >
@@ -53,17 +55,17 @@
             <image
               :src="decodeURIComponent(item)"
               class="slide-image"
-              mode="aspectFit"
+              mode="widthFix"
               @click="getBannerDetail(i)"
             />
           </view>
         </view>
       </swiper-item>
     </swiper>
-    <view class="desc-wrap">
-      <view class="title">{{ bannerList.goodTitle }}</view>
-      <view class="desc">{{ bannerList.name }}</view>
-      <view class="time">{{ dateFormat(bannerList.time) }}</view>
+    <view class="desc-wrap" @click="curIndex = 0">
+      <view class="title">{{ bannerList.goodTitle?bannerList.goodTitle:'' }}</view>
+      <view class="desc">{{ bannerList.name?bannerList.name:'' }}</view>
+      <view class="time">{{ bannerList.time?dateFormat(bannerList.time):'' }}</view>
     </view>
     <view class="special-bottom">
       <view class="special-bottom-inedx"></view>
@@ -95,6 +97,7 @@
     swiperRight = false;
     swiperLeft = false;
     swiperIng = false;
+    swiperIndex = 0;
 		created(){
 		}
 		mounted(){
@@ -111,32 +114,48 @@
 		}
     swiperChange(e:any) {
       if(this.swiperIng) return;
-      if(e.detail.dx>=50){
+      if(e.detail.dx>=80 && this.swiperIndex+1>=this.listLen() ){
         this.swiperRight = true;
         this.swiperIng = true;
+        this.swiperLeft = false;
       }
-      if(e.detail.dx<=-50){
+      if(e.detail.dx<=-80 && this.swiperIndex==0 ){
         this.swiperLeft = true;
         this.swiperIng = true;
+        this.swiperRight = false;
       }
     }
+    changeSwiperIndex(e:any){
+      this.curIndex = e.detail.current
+      setTimeout(()=>{
+        this.swiperIndex = e.detail.current
+      },500)
+    }
     animationfinish(e:any) {
-      if(this.swiperRight&&this.curIndex>=this.listLen()&&this.index<this.total){
-        this.curIndex = 0;
-        this.$emit('swiperRefresh',{index:this.index+1})
+      if(this.swiperRight&&this.swiperIndex+1>=this.listLen()&&this.index<this.total){
+        this.$emit('swiperRefresh',{index:Number(this.index)+1})
+        this.refresh()
       }
-      if(this.swiperLeft&&this.curIndex==0&&this.index>1){
-        this.curIndex = 0;
-        this.$emit('swiperRefresh',{index:this.index-1})
+      if(this.swiperLeft&&this.swiperIndex==0&&this.index>1){
+        this.$emit('swiperRefresh',{index:Number(this.index)-1})
+        this.refresh()
       }
       this.swiperIng = false;
     }
     getBannerDetail(index:number) {
+      let data = this.bannerList.pic.map((x:any)=>{
+        return decodeURIComponent(x)
+      })
       uni.previewImage({
-				urls: this.bannerList.pic,
+				urls: data,
 				current:index,
 				indicator: "number" 
 			});
+    }
+    refresh(){
+      this.swiperRight = false;
+      this.swiperLeft = false;
+      this.curIndex = 0
     }
 	}
 </script>
@@ -192,9 +211,10 @@
       justify-content: center;
       box-sizing: border-box;
       border:11rpx solid #383a49;
+      overflow: hidden;
     }
     .slide-image {
-      width: 420rpx;
+      width: 510rpx;
       height: 620rpx;
       z-index: 200;
     }

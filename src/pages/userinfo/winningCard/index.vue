@@ -5,7 +5,10 @@
 				<view class="icon-new" v-show="item.new"></view>
 				<image class="list-pic" mode="aspectFit" :src="decodeURIComponent(item.pic)"/>
 			</view>
-			<view class="list-title">{{item.name}}</view>
+			<view class="list-title">
+				<view class="list-pic-shadow"></view>
+				<view class="list-title-name">{{item.name}}</view>
+			</view>
 			<view class="list-bottom">
 				<view class="list-bottom-time">{{dateFormatYMSCustom(item.time,'-')}}</view>
 				<view class="list-bottom-num">{{item.picNum}}图</view>
@@ -100,6 +103,7 @@
 		background:#383a49;
 		position: relative;
 	}
+	
 	.list-pic{
 		width: 328rpx;
 		height:335rpx;
@@ -116,8 +120,20 @@
 	.list-title{
 		width: 100%;
 		height:80rpx;
-		box-sizing: border-box;
-		padding:10rpx 0;
+		position:relative;
+	}
+	.list-pic-shadow{
+		width: 100%;
+		height:26rpx;
+		background:#F0F1F5;
+		position: absolute;
+		top:0;
+		left:0;
+		z-index: 1;
+	}
+	.list-title-name{
+		width: 100%;
+		height:80rpx;
 		font-size: 29rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
@@ -127,6 +143,10 @@
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 		overflow: hidden;
+		position: relative;
+		z-index: 3;
+		padding:10rpx 0;
+		box-sizing: border-box;
 	}
 	.list-bottom{
 		width: 100%;
