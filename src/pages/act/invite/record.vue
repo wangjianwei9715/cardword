@@ -56,9 +56,8 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
-				if(this.currentPage==1){
-					this.inviteList = [];
-				}
+				if(this.currentPage==1) this.inviteList = [];
+				
 				if(data.list){
 					this.inviteList = this.inviteList.concat(data.list);
 				}

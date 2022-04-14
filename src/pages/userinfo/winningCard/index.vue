@@ -1,6 +1,6 @@
 <template>
 	<view class="list-content">
-		<view class="list-index" @click="onClickWinningSwiper" v-for="(item,index) in codeList" :key="index">
+		<view class="list-index" @click="onClickWinningSwiper(item.index)" v-for="(item,index) in codeList" :key="index">
 			<view class="list-pic-box">
 				<view class="icon-new" v-show="item.new"></view>
 				<image class="list-pic" mode="aspectFit" :src="decodeURIComponent(item.pic)"/>
@@ -22,34 +22,25 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		dateFormatYMSCustom = dateFormatYMSCustom;
-		codeList:any = [
-			{
-				index:1,//第几个卡密
-				new:true,
-				name: "编号",
-				picNum:3,//几张图
-				pic: "http(s)://xxx.com/xxx.png", 
-				time: 1649915626,
-			}
-		];
+		codeList:any = [];
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
+		total = 0;
 		onLoad(query:any) {
-			// this.reqNewData();
+			this.reqNewData();
 		}
 		//   加载更多数据
 		onReachBottom() {
 		    this.reqNewData() 
 		}
-		onClickWinningSwiper(){
+		onClickWinningSwiper(index:number){
 			uni.navigateTo({
-				url:'/pages/userinfo/winningCard/swiper'
+				url:'/pages/userinfo/winningCard/swiper?index='+index+'&total='+this.total
 			})
 		}
 		againReqNewData(){
 			this.currentPage = 1;
-			this.codeList = [];
 			this.noMoreData = false;
 			this.reqNewData()
 		}
@@ -64,9 +55,11 @@
 				pageSize:this.pageSize
 			}
 			app.http.Get('me/hitNo/list', params, (data: any) => {
+				this.total = data.total;
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
+				if(this.currentPage== 1) this.codeList = [];
 				if(data.list){
 					this.codeList = this.codeList.concat(data.list);
 				}

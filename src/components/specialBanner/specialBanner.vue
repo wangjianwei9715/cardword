@@ -2,7 +2,7 @@
   <view class="banner-container">
     <view class="banner-container-header">
       <view class="swiper-number">
-        <text>{{curIndex+1}}</text>/{{listLen()}}
+        <text>{{index}}</text>/{{total}}
       </view>
     </view>
     <swiper
@@ -16,10 +16,10 @@
       :circular="swiperConfig.circular"
       :previous-margin="swiperConfig.previousMargin"
       :next-margin="swiperConfig.nextMargin"
-      @change="swiperChange"
+      @transition="swiperChange"
       @animationfinish="animationfinish"
     >
-      <swiper-item v-for="(item, i) in bannerList" :key="i">
+      <swiper-item v-for="(item, i) in bannerList.pic" :key="i">
         <view
           class="image-container"
           :class="[
@@ -51,7 +51,7 @@
                 transitionTimingFunction: 'ease',
               }">
             <image
-              :src="item.pic"
+              :src="decodeURIComponent(item)"
               class="slide-image"
               mode="aspectFit"
               @click="getBannerDetail(i)"
@@ -60,10 +60,10 @@
         </view>
       </swiper-item>
     </swiper>
-    <view class="desc-wrap" :class="[isDescAnimating ? 'hideAndShowDesc' : '']">
-      <view class="title">{{ bannerList[descIndex].title }}</view>
-      <view class="desc">{{ bannerList[descIndex].desc }}</view>
-      <view class="time">{{ dateFormat(bannerList[descIndex].time) }}</view>
+    <view class="desc-wrap">
+      <view class="title">{{ bannerList.goodTitle }}</view>
+      <view class="desc">{{ bannerList.name }}</view>
+      <view class="time">{{ dateFormat(bannerList.time) }}</view>
     </view>
     <view class="special-bottom">
       <view class="special-bottom-inedx"></view>
@@ -82,14 +82,19 @@
 		bannerList:any;
     @Prop({default:[]})
 		swiperConfig:any;
+    @Prop({default:0})
+		index:any;
+    @Prop({default:0})
+		total:any;
     @Prop({default:(634 / 550).toFixed(4)})
 		scaleX!:string;
     @Prop({default:(378 / 328).toFixed(4)})
 		scaleY!:string;
     
-		curIndex = 0
-    descIndex = 0
-    isDescAnimating = false
+		curIndex = 0;
+    swiperRight = false;
+    swiperLeft = false;
+    swiperIng = false;
 		created(){
 		}
 		mounted(){
@@ -97,7 +102,7 @@
 		destroyed(){
 		}
     listLen() {
-      return this.bannerList.length;
+      return this.bannerList.pic.length;
     }
     onClickBack(){
 			uni.navigateBack({
@@ -105,23 +110,30 @@
 			});
 		}
     swiperChange(e:any) {
-      const that = this;
-      this.curIndex = e.mp.detail.current;
-      this.isDescAnimating = true;
-      let timer = setTimeout(function () {
-        that.descIndex = e.mp.detail.current;
-        clearTimeout(timer);
-      }, 150);
+      if(this.swiperIng) return;
+      if(e.detail.dx>=50){
+        this.swiperRight = true;
+        this.swiperIng = true;
+      }
+      if(e.detail.dx<=-50){
+        this.swiperLeft = true;
+        this.swiperIng = true;
+      }
     }
     animationfinish(e:any) {
-      this.isDescAnimating = false;
+      if(this.swiperRight&&this.curIndex>=this.listLen()&&this.index<this.total){
+        this.curIndex = 0;
+        this.$emit('swiperRefresh',{index:this.index+1})
+      }
+      if(this.swiperLeft&&this.curIndex==0&&this.index>1){
+        this.curIndex = 0;
+        this.$emit('swiperRefresh',{index:this.index-1})
+      }
+      this.swiperIng = false;
     }
     getBannerDetail(index:number) {
-      let picData = this.bannerList.map((x:any)=>{
-        return x.pic
-      })
       uni.previewImage({
-				urls: picData,
+				urls: this.bannerList.pic,
 				current:index,
 				indicator: "number" 
 			});

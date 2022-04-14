@@ -87,11 +87,10 @@
 				this.tabWidth = (100/(this.itemListName.length))+'%';
 				this.translate = data.translate
 				if(data.list){
-					if(this.currentPage==1){
-						this.teamDataList = data.list;
-					}else{
-						this.teamDataList = this.teamDataList.concat(data.list);
-					}
+					if(this.currentPage==1) this.teamDataList =  []
+					
+					this.teamDataList = this.teamDataList.concat(data.list);
+					
 					
 				}
 				this.currentPage++;

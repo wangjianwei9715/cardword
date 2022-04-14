@@ -1044,10 +1044,10 @@
 		font-weight: 500;
 		color: #FFFFFF;
 		box-sizing: border-box;
-		padding-top: 20rpx;
+		padding-top: 10rpx;
 	}
 	.header-price text{
-		font-size: 46rpx;
+		font-size: 54rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #FFFFFF;
@@ -1142,7 +1142,7 @@
 		padding-top: 30rpx;
 		&-title{
 			width: 100%;
-			font-size: 35rpx;
+			font-size: 33rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;

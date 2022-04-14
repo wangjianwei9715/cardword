@@ -67,7 +67,6 @@
 			this.tabCheck = id;
 			this.noMoreData = false;
 			this.currentPage = 1;
-			this.recordList = [];
 			this.reqNewData()
 		}
 		switchState(state:number){

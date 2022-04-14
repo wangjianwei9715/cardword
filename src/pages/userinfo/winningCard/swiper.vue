@@ -1,6 +1,6 @@
 <template>
 	<view class="list-content">
-		<specialBanner :banner-list="bannerList" :swiper-config="swiperConfig" />
+		<specialBanner :banner-list="bannerList" :index="index" :total="total" :swiper-config="swiperConfig" @swiperRefresh="swiperRefresh" />
 	</view>
 </template>
 
@@ -10,27 +10,7 @@
 	import BaseNode from '../../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		bannerList = [{
-            pic: '../../../static/goods/drawcard/Carmelo-Anthony.png',
-            title: '20-21 篮球 panini prizm prizm ...',
-            desc: '圣安东尼奥马刺 特里克·威廉姆斯 49编 Apprentice Lnk #14 zdddi',
-            time:1649839941
-        }, {
-            pic: '../../../static/userinfo/corporate.jpg',
-            title: '20-21 篮球 panini prizm prizm ...',
-            desc: '圣安东尼奥马刺 特里克·威廉姆斯 49编 Apprentice Lnk #14 zdddi',
-            time:1649839941
-        }, {
-            pic: '../../../static/goods/drawcard/card_blue.png',
-            title: '20-21 篮球 panini prizm prizm ...',
-            desc: '圣安东尼奥马刺 特里克·威廉姆斯 49编 Apprentice Lnk #14 zdddi',
-            time:1649839941
-        }, {
-            pic: '../../../static/goods/drawcard/card_red.png',
-            title: '20-21 篮球 panini prizm prizm ...',
-            desc: '圣安东尼奥马刺 特里克·威廉姆斯 49编 Apprentice Lnk #14 zdddi',
-            time:1649839941
-        }]
+		bannerList = []
 		swiperConfig = {
             indicatorDots: true,
             indicatorColor: '#C9C9C9',
@@ -42,9 +22,24 @@
             previousMargin: '58rpx',
             nextMargin: '58rpx'
         }
+        index = 0;
+        total = 0;
 		onLoad(query:any) {
-
+            if(query.index){
+                this.index = query.index;
+                this.total = query.total;
+                this.getWinningCard()
+            }
 		}
+        swiperRefresh(index:number){
+            this.index = index;
+            this.getWinningCard()
+        }
+        getWinningCard(){
+            app.http.Get('me/hitNo/show',{index:this.index},(res:any)=>{
+                this.bannerList = res.data;
+            })
+        }
 		
 	}
 </script>
@@ -57,7 +52,7 @@
         top:0;
         left:0;
         bottom:0;
-        background:url(../../../static/userinfo/winningCard/bg.png) no-repeat center;
+        background:url(../../../static/userinfo/winningCard/bg.jpg) no-repeat center;
         background-size: 100% 100%;
     }
 

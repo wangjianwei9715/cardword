@@ -466,7 +466,6 @@
 			this.reqSearchList()
 		}
 		reqSearchList(cb?:Function){
-			this.goodsList = [];
 			this.fetchFrom = 1;
 			this.noMoreData = false;
 			this.reqNewData(()=>{
@@ -491,7 +490,7 @@
 				if(this.fetchFrom == 1 ) this.goodsList = [];
 				
 				if(data.goodList){
-					this.goodsList = this.goodsList.concat(data.goodList);
+					this.goodsList = [...this.goodsList,...data.goodList];
 				}
 				this.fetchFrom += this.fetchSize;
 				if(cb) cb()

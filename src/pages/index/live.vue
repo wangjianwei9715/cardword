@@ -35,13 +35,12 @@
 		currentPage = 1;
 		pageSize = 20;
 		noMoreData = false;
-		liveList:{[x:string]:any} = []
+		liveList:any = []
 		scrollId = '';
 		onLoad(query:any) {
 			this.onEventUI('liveFind',(res:any)=>{
 				this.searchText = res.text;
 				this.currentPage = 1;
-				this.liveList = [];
 				this.noMoreData = false;
 				this.reqNewData()
 				
@@ -70,7 +69,6 @@
 				}
 			}
 			this.goodTabCheck = id;
-			this.liveList = [];
 			this.currentPage = 1;
 			this.noMoreData = false;
 			this.reqNewData()
@@ -95,7 +93,7 @@
 			
 			app.http.Get('search/broadcast',params,(res:any)=>{
 				this.scrollId = res.scrollId;
-				this.liveList = this.liveList.concat(res.list);
+				this.liveList = [...this.liveList,...res.list];
 				if(res.end){
 					this.noMoreData = true
 				}
@@ -123,9 +121,8 @@
 						this.noMoreData = true;
 					}
 					if(data.list){
-						if(this.currentPage==1){
-							this.liveList = []
-						}
+						if(this.currentPage==1) this.liveList = []
+						
 						this.liveList = this.liveList.concat(data.list);
 					}
 					this.currentPage++;
@@ -138,9 +135,8 @@
 						this.noMoreData = true;
 					}
 					if(data.list){
-						if(this.currentPage==1){
-							this.liveList = []
-						}
+						if(this.currentPage==1) this.liveList = []
+						
 						this.liveList = this.liveList.concat(data.list);
 					}
 					this.currentPage++;

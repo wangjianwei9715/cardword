@@ -68,10 +68,9 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
+				if(this.currentPage==1) this.cardNoData = []
 				if(data.list){
 					this.cardNoData = this.cardNoData.concat(data.list);
-				}else if(this.currentPage==1){
-					this.cardNoData = []
 				}
 				this.currentPage++;
 				if(cb) cb()
@@ -80,7 +79,6 @@
 		onInputSearch(){
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.cardNoData = []
 			this.reqNewData()
 		}
 		onClickBack(){

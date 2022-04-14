@@ -30,7 +30,7 @@
 
     <view class="live-content">
       <statusbar />
-      <view class="information">
+      <view class="information" >
         <view
           class="information-index"
           v-for="(item, index) in information"
@@ -44,16 +44,7 @@
               mode="aspectFill"
             ></image>
           </view>
-          <view class="information-center">
-            <view class="title" @click="onClickJumpUrl(item.articleCode,item.cover)">{{item.title}}</view>
-            <view class="desc">
-              <view class="desc-index">{{dateFormatMS(item.created_at)}}</view>
-              <view class="desc-index">
-                <view class="icon-pl"></view>{{item.comment}}
-                <view class="icon-dz" :class="{'icon-dzed':item.isLikes}" @click="onClickLikes(index)"></view>{{item.likes}}
-              </view>
-            </view>
-          </view>
+          
         </view>
       </view>
     </view>
@@ -82,7 +73,7 @@ export default class ClassName extends BaseNode {
   currentPage = 1;
   pageSize = 20;
   noMoreData = false;
-  information: { [x: string]: any } = [];
+  information: any = [];
   searchData: any = [];
   scrollId = "";
   onLoad(query: any) {
@@ -97,7 +88,6 @@ export default class ClassName extends BaseNode {
       return;
     }
     this.goodTabCheck = id;
-    this.information = [];
     this.currentPage = 1;
     this.noMoreData = false;
     this.reqNewData();
@@ -109,7 +99,6 @@ export default class ClassName extends BaseNode {
   }
   onClickSearch() {
     // 搜索
-    this.information = [];
     this.currentPage = 1;
     this.noMoreData = false;
     this.reqNewData();
@@ -164,7 +153,7 @@ export default class ClassName extends BaseNode {
         this.information = [];
       }
       if (data.list) {
-        this.information = this.information.concat(data.list);
+        this.information = [...this.information,...data.list];
       }
       this.currentPage++;
       if (cb) cb();

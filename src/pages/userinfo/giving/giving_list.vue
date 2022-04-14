@@ -202,8 +202,8 @@
 		}
 		reqSearchList(){
 			this.currentPage = 1;
-			this.cardList = [];
-			this.cardSortList = [];
+			
+			
 			this.currentData= {
 				goodOrderCode:'',
 				noId:''
@@ -226,6 +226,10 @@
 			}
 			app.http.Get('function/userNo/transfer/order/'+orderCode+'/list', params, (data: any) => {
 				if(data.list){
+					if(this.currentPage == 1){
+						this.cardSortList = [];
+						this.cardList = [];
+					}
 					this.cardList[index].noList = this.cardList[index].noList.concat(data.list);
 					if(data.list.length<10){
 						this.cardList[index].hasMore = false;
@@ -262,6 +266,10 @@
 					this.noMoreData = true;
 				}
 				if(data.list){
+					if(this.currentPage == 1){
+						this.cardSortList = [];
+						this.cardList = [];
+					}
 					if(this.listSort == ''){
 						this.cardList = this.cardList.concat(data.list);
 					}else{
@@ -373,7 +381,7 @@
 		height:37rpx;
 		line-height: 37rpx;
 		font-size: 22rpx;
-		font-family: PingFangSC-Regular;
+		font-family: FZLanTingHeiS-R-GB;
 		font-weight: 400;
 		color: #FFFFFF;
 		background:#40444F;
@@ -425,7 +433,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 22rpx;
-		font-family: PingFangSC-Regular;
+		font-family: FZLanTingHeiS-R-GB;
 		font-weight: 400;
 		color: #333333;
 		line-height: 32rpx;

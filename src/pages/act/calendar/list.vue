@@ -130,11 +130,9 @@
 		  this.httpIng = true
 		  app.http.Get("function/calendar/list", params, (data: any) => {
 			if(data.list){
-				if(this.currentPage == 1){
-					this.calendaList = data.list;
-				}else{
-					this.calendaList = this.calendaList.concat(data.list);
-				}
+				if(this.currentPage == 1) this.calendaList = []
+				
+				this.calendaList = this.calendaList.concat(data.list);
 			}
 			if(!data.list || data.list.length<this.pageSize){
 				this.noMoreData = true;
@@ -147,7 +145,6 @@
 		againReqNewData(){
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.calendaList = []
 			this.reqNewData() 
 		}
 		onClickBack(){

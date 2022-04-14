@@ -82,22 +82,15 @@
 					return;
 				}
 				this.recordDay = this.newDay
-				if(this.currentPage==1){
-					this.recordList = []
-				}
-				if(res.data){
-					this.todayData = res.data
-				}
-				if(res.list){
-					this.recordList.concat(res.list)
-				}else{
-					this.noMoreData = true
-				}
-				if(this.currentPage>=res.totalPage){
-					this.noMoreData = true
-				}
-				this.currentPage++;
+				if(this.currentPage==1)this.recordList = []
 				
+				this.todayData = res.data ? res.data : []
+				
+				if(res.list) this.recordList.concat(res.list)
+				
+				if(this.currentPage>=res.totalPage)this.noMoreData = true
+				
+				this.currentPage++;
 			})
 		}
 		getYMS(type:any,cb?:Function){
