@@ -43,7 +43,6 @@ export default class ClassName extends BaseNode {
     this.reqNewData();
   }
   reqSearchList() {
-    this.goodsList = [];
     this.fetchFrom = 1;
     this.noMoreData = false;
     this.reqNewData();
@@ -80,6 +79,8 @@ export default class ClassName extends BaseNode {
         if (res.isFetchEnd) {
           this.noMoreData = true;
         }
+    
+        if(this.fetchFrom == 1) this.goodsList = [];
         if (res.goodList) {
           this.goodsList = this.goodsList.concat(res.goodList);
         }

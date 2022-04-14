@@ -221,30 +221,6 @@ export default Vue.extend({
   src: url("~@/common/DIN/ltGBK.TTF");
 }
 @font-face {
-  font-family: "ali-Light";
-  src: url("~@/common/ALI/Alibaba-PuHuiTi-Light.ttf");
-}
-@font-face {
-  font-family: "DIN Condensed";
-  src: url("~@/common/Tao/DIN Condensed Bold.ttf");
-}
-@font-face {
-  font-family: "FZLanTingHeiS-R-GB";
-  src: url("~@/common/Tao/FZLTHJW--GB1-0.TTF");
-}
-@font-face {
-  font-family: "FZLanTingHeiS-H-GB";
-  src: url("~@/common/Tao/FZLTTHJW--GB1-0.TTF");
-}
-@font-face {
-  font-family: "FZLanTingHeiS-DB1-GBK";
-  src: url("~@/common/Tao/FZLTZCHK--GBK1-0.ttf");
-}
-@font-face {
-  font-family: "FZLanTingHei-H-GBK";
-  src: url("~@/common/Tao/FZLTTHK--GBK1-0.TTF");
-}
-@font-face {
   font-family: "eryaxindahei";
   src: url("~@/common/Tao/CountDownNum.ttf");
 }

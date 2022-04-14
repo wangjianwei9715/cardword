@@ -151,9 +151,8 @@
 					this.noMoreData = true;
 				}
 				if(data.list){
-					if(this.currentPage==1){
-						this.goodsData = []
-					}
+					if(this.currentPage==1) this.goodsData = []
+					
 					this.goodsData = this.goodsData.concat(data.list);
 				}
 				

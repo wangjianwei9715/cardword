@@ -122,16 +122,16 @@
 				width: 120rpx;
 				height:40rpx;
 				line-height: 40rpx;
-				font-size: 28rpx;
-				font-family: Alibaba PuHuiTi;
+				font-size: 31rpx;
+				font-family: PingFangSC-Medium;
 				font-weight: bold;
 				color: #333333;
 			}
 			.detail-act-desc{
-				font-size: 24rpx;
+				font-size: 27rpx;
 				display: flex;
 				align-items: center;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
 			}
@@ -157,8 +157,8 @@
 				padding:0 13rpx;
 				border:1px solid #F4919F;
 				margin-right: 24rpx;
-				font-size: 21rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-size: 27rpx;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #EA4055;
 			}
@@ -170,15 +170,16 @@
 		line-height: 40rpx;
 	}
 	.drawer-help-title{
-		font-size: 26rpx;
+		font-size: 31rpx;
+		font-family: PingFangSC-Medium;
 		font-weight: bold;
 		color:#333333;
 		margin:20rpx 0rpx;
 	}
 	.drawer-help-content{
 		width: 100%;
-		font-size: 24rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-size: 27rpx;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #9b9b9b;
 		white-space: pre-wrap;

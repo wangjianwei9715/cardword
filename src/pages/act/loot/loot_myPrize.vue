@@ -88,7 +88,7 @@
 <style lang="scss" scoped>
 	page {
 		background-color: #f6f7fb;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 	}
 
 	.prizeContent {
@@ -111,7 +111,7 @@
 
 					.title {
 						font-size: 29rpx;
-						font-family: FZLanTingHeiS-R-GB;
+						font-family: PingFangSC-Regular;
 						font-weight: 500;
 						color: #333333;
 						margin-bottom: 16rpx;
@@ -120,7 +120,7 @@
 
 					.probability {
 						font-size: 25rpx;
-						font-family: FZLanTingHeiS-R-GB;
+						font-family: PingFangSC-Regular;
 						font-weight: 400;
 						color: #88878C;
 						margin-bottom: 13rpx;
@@ -134,7 +134,7 @@
 						position: relative;
 						.yhTips{
 							font-size: 25rpx;
-							font-family: FZLanTingHeiS-R-GB;
+							font-family: PingFangSC-Regular;
 							font-weight: 400;
 							color: #88878C;
 							position: absolute;
@@ -142,7 +142,7 @@
 						}
 						.actionButton {
 							background-size: 100% 100%;
-							font-family: FZLanTingHeiS-R-GB;
+							font-family: PingFangSC-Regular;
 							font-weight: 400;
 							text-align: center;
 							line-height: 39rpx;
@@ -162,7 +162,7 @@
 				height: 45rpx;
 				background-color: #f1f1f1;
 				font-size: 23rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
 				line-height: 45rpx;

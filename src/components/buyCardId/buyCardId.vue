@@ -64,7 +64,7 @@
 			.left{
 				width:584rpx;
 				font-size: 22rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				line-height: 32rpx;

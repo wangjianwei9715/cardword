@@ -52,7 +52,6 @@
 		}
 		againReqNewData(){
 			this.currentPage = 1;
-			this.codeList = [];
 			this.noMoreData = false;
 			this.reqNewData()
 		}
@@ -81,7 +80,7 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
-				
+				if( this.currentPage == 1 ) this.codeList = [];
 				if(data.list){
 					this.codeList = this.codeList.concat(data.list);
 				}

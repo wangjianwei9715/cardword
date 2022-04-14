@@ -389,11 +389,11 @@ export default class PlatformManager {
 				if (data.app.launchDomain && data.app.launchDomain != "") {
 					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
 				}
-				if (data.data.mustBindPhone) {
-					uni.reLaunch({
-						url: "/pages/login/bind_phone",
-					});
-				}
+				// if (data.data.mustBindPhone) {
+				// 	uni.reLaunch({
+				// 		url: "/pages/login/bind_phone",
+				// 	});
+				// }
 				uni.$emit("loginSuccess");
 			});
 		}

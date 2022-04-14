@@ -173,27 +173,27 @@
 	.teamtion-header-title{
 		width: 100%;
 		font-size: 22rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #88878C;
 		margin-bottom: 10rpx;
 	}
 	.teamtion-header-title .text-price{
 		font-size: 25rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 500;
 		color: #333333;
 	}
 	.teamtion-header-title .teamtion-price{
 		font-size: 33rpx;
-		font-family: FZLanTingHeiS-H-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 	}
 	.teamtion-header-name{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #88878C;
 	}
@@ -224,7 +224,7 @@
 			width: 170rpx;
 			height:30rpx;
 			font-size: 22rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #88878C;
 			line-height: 30rpx;
@@ -234,7 +234,7 @@
 			width: 100%;
 			height:30rpx;
 			font-size: 22rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #88878C;
 			text-align: right;
@@ -256,7 +256,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 23rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #88878C;
 	}
@@ -282,7 +282,7 @@
 	.drawer-title{
 		width: 100%;
 		font-size: 28rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 500;
 		color: #333333;
 		margin-bottom: 28rpx;
@@ -290,7 +290,7 @@
 	.drawer-help{
 		width: 100%;
 		font-size: 22rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #818080;
 		line-height: 38rpx;
@@ -346,7 +346,7 @@
 		text-align: center;
 		font-size: 22rpx;
 		line-height: 30rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #88878C;
 		position: relative;
@@ -408,7 +408,7 @@
 		background: #fff;
 		border:1px solid #DCDCDC;
 		font-size: 32rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 	}

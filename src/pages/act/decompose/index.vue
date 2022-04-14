@@ -89,7 +89,6 @@
 		}
 		againReqNewData(){
 			this.currentPage = 1;
-			this.goodsList = [];
 			this.noMoreData = false;
 			this.reqNewData()
 		}
@@ -140,11 +139,9 @@
 				}
 				
 				if(data.list){
-					if(this.currentPage==1){
-						this.goodsList = data.list;
-					}else{
-						this.goodsList = this.goodsList.concat(data.list);
-					}
+					if(this.currentPage==1) this.goodsList = [];
+			
+					this.goodsList = this.goodsList.concat(data.list);
 				}
 				this.currentPage++;
 				if(cb) cb()

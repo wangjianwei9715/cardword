@@ -228,7 +228,7 @@ import { Component } from "vue-property-decorator";
 			align-items: center;
 			justify-content: center;
 			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 		}
 		.btn-all{

@@ -93,7 +93,7 @@
 				left:0;
 				top:18rpx;
 				font-size: 16rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #FFFFFF;
 				display: flex;
@@ -143,7 +143,7 @@
 			box-sizing: border-box;
 			padding:16rpx 20rpx 20rpx 20rpx;
 			font-size: 26rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 		}

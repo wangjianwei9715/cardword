@@ -466,7 +466,6 @@
 			this.reqSearchList()
 		}
 		reqSearchList(cb?:Function){
-			this.goodsList = [];
 			this.fetchFrom = 1;
 			this.noMoreData = false;
 			this.reqNewData(()=>{
@@ -491,7 +490,7 @@
 				if(this.fetchFrom == 1 ) this.goodsList = [];
 				
 				if(data.goodList){
-					this.goodsList = this.goodsList.concat(data.goodList);
+					this.goodsList = [...this.goodsList,...data.goodList];
 				}
 				this.fetchFrom += this.fetchSize;
 				if(cb) cb()
@@ -682,7 +681,7 @@
 		width: 100%;
 		text-align: center;
 		font-size: 43rpx;
-		font-family: FZLanTingHei-H-GBK;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #FFFFFF;
 	}
@@ -769,7 +768,7 @@
 		border-radius: 40rpx;
 		position: relative;
 		font-size: 28rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #A3A3A3;
 		line-height: 62rpx;

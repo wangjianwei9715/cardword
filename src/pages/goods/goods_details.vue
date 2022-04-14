@@ -59,7 +59,7 @@
 						</view>
 
 						<view class="header-top-plan">
-							<view class="goodslist-progress">
+							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
 								<view class="progress-mask" :style="{width:(100-getPlan(goodsData.lockNum,goodsData.currentNum,goodsData.totalNum))+'%'}"></view>
 							</view>
 							<view class="header-top-plan-num">
@@ -955,22 +955,24 @@
 		height:42rpx;
 		line-height: 42rpx;
 		font-size: 20rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #F4F4F4;
 	}
 	.swiper-btn{
 		height:42rpx;
-		line-height: 42rpx;
-		font-size: 20rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-size: 21rpx;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #F4F4F4;
 		margin-left: 10rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 	.swiper-btn-current{
-		font-size: 22rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-size: 23rpx;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
 	}
@@ -1002,13 +1004,13 @@
 		position: relative;
 	}
 	.detail-bg{
-		width: 722rpx;
+		width: 724rpx;
 		border-radius: 5rpx;
 		background:#fff;
 		margin-bottom: 13rpx;
 	}
 	.header-content{
-		width: 722rpx;
+		width: 724rpx;
 		height:100rpx;
 		background:url(../../static/goods/v2/price_bg.png) no-repeat center;
 		background-size: 100% 100%;
@@ -1030,23 +1032,23 @@
 	.header-desc-title{
 		width: 100%;
 		font-size: $font-28;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 		margin-bottom: 20rpx;
 		padding-top: 27rpx;
 	}
 	.header-price{
-		font-size: 38rpx;
-		font-family: Alibaba PuHuiTi;
+		font-size: 33rpx;
+		font-family: PingFangSC-Regular;
 		font-weight: 500;
 		color: #FFFFFF;
 		box-sizing: border-box;
-		padding-top: 20rpx;
+		padding-top: 10rpx;
 	}
 	.header-price text{
-		font-size: 58rpx;
-		font-family: FZLanTingHeiS-H-GB;
+		font-size: 54rpx;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #FFFFFF;
 		margin-left: 10rpx;
@@ -1083,8 +1085,8 @@
 	.icon-end{
 		width: 100%;
 		text-align: right;
-		font-size: 18rpx;
-		font-family: Alibaba PuHuiTi;
+		font-size: 21rpx;
+		font-family: PingFangSC-Regular;
 		font-weight: 500;
 		color: #FFFFFF;
 		margin-bottom: 15rpx;
@@ -1101,7 +1103,7 @@
 		height:36rpx;
 		text-align: center;
 		line-height: 36rpx;
-		font-size: 27rpx;
+		font-size: 23rpx;
 		font-family: eryaxindahei;
 		font-weight: 400;
 		color: #FFFFFF;
@@ -1114,7 +1116,7 @@
 	}
 	.countdown-icon{
 		font-size: 22rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 400;
 		color: $color-F;
 		margin:0 1rpx;
@@ -1140,11 +1142,11 @@
 		padding-top: 30rpx;
 		&-title{
 			width: 100%;
-			font-size: 30rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-size: 33rpx;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
-			line-height: 44rpx;
+			line-height: 48rpx;
 			font-weight: normal !important;
 		}
 		&-right{
@@ -1171,8 +1173,8 @@
 			.goodslist-progress{
 				background-image: url('../../static/goods/v2/progeessBg.png');
 				background-size: 100% 100%;
-				width: 500rpx;
-				height: 9rpx;
+				width: 480rpx;
+				height: 12rpx;
 				position: relative;
 				display: flex;
 				justify-content: flex-end;
@@ -1182,11 +1184,15 @@
 					width: 0%;
 				}
 			}
+			.goodslist-progress-select{
+				background-image: url('../../static/goods/v2/progessBgg_select.png');
+				background-size: 100% 100%;
+			}
 			.header-top-plan-num{
-				width: 170rpx;
+				width: 190rpx;
 				height:30rpx;
-				font-size: 22rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
 				line-height: 30rpx;
@@ -1195,8 +1201,8 @@
 			.header-top-plan-numbottom{
 				width: 100%;
 				height:30rpx;
-				font-size: 22rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
 				text-align: right;
@@ -1252,37 +1258,29 @@
 		align-items: center;
 		justify-content: space-between;
 		&-index{
-			height:120rpx;
+			height:140rpx;
 			box-sizing: border-box;
 			text-align: center;
 			&-pic{
-				width: 35rpx;
-				height:35rpx;
+				width: 43rpx;
+				height:43rpx;
 				margin-bottom: 10rpx;
 			}
 			&-name{
 				text-align: center;
-				font-size: 20rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-size: 27rpx;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
-				margin-bottom: 10rpx;
 			}
 			&-desc{
-				font-size: 20rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #C0C0C0;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-			}
-			.icon-tishi{
-				width: 20rpx;
-				height:20rpx;
-				background:url(../../static/goods/tishi@2x.png) no-repeat center;
-				background-size: 100% 100%;
-				margin-left: 4rpx;
 			}
 		}
 	}
@@ -1291,6 +1289,7 @@
 		width: 100%;
 		height:160rpx;
 		box-sizing: border-box;
+		border-radius: 5rpx;
 		padding:0 24rpx;
 		display: flex;
 		align-items: center;
@@ -1303,8 +1302,8 @@
 			align-items: center;
 			box-sizing: border-box;
 			&-avatar{
-				width: 110rpx;
-				height:110rpx;
+				width: 104rpx;
+				height:104rpx;
 				border-radius: 50%;
 				background:#F5F5F9
 			}
@@ -1312,28 +1311,28 @@
 				width: 380rpx;
 				height:110rpx;
 				box-sizing: border-box;
-				padding:20rpx 0 4rpx 20rpx;
+				padding:20rpx 0 4rpx 30rpx;
 				display: flex;
 				flex-wrap: wrap;
 				&-name{
 					width: 100%;
-					font-size: 26rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-size: 33rpx;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #333333;
 				}
 				&-tips{
 					width: 100%;
-					font-size: 22rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-size: 25rpx;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #88878C;
 				}
 				&-js{
 					height: 28rpx;
 					background: #FBF2F3;
-					font-size: 18rpx;
-					font-family: FZLanTingHeiS-R-GB;
+					font-size: 23rpx;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #F63D47;
 					line-height: 28rpx;
@@ -1350,14 +1349,14 @@
 			}
 		}
 		&-right{
-			width: 146rpx;
-			height: 39rpx;
-			background: #FB4E3E;
-			border-radius: 29rpx;
+			width: 149rpx;
+			height: 41rpx;
+			background: linear-gradient(90deg, #FF7F74 0%, #FF0405 100%);
+			border-radius: 5rpx;
 			text-align: center;
-			line-height: 39rpx;
+			line-height: 41rpx;
 			font-size: 22rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #FFFFFF;
 			margin-top: 20rpx;
@@ -1369,8 +1368,8 @@
 		padding:20rpx 32rpx 30rpx 32rpx;
 		&-title{
 			width: 100%;
-			font-size: $font-28;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-size: 31rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 600;
 			color: #14151A;
 			margin-bottom: 20rpx;
@@ -1378,10 +1377,11 @@
 		&-explain{
 			width: 100%;
 			box-sizing: border-box;
-			font-size: $font-24;
+			font-size: 27rpx;
+			// font-family: PingFangSC-Regular, PingFang SC;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
-			color: #7D8288;
+			color: #818080;
 			&-text{
 				width: 100%;
 				box-sizing: border-box;
@@ -1397,6 +1397,7 @@
 			.explain-desc{
 				width: 100%;
 				box-sizing: border-box;
+				font-family: PingFangSC-Regular, PingFang SC;
 				line-height: 45rpx;
 				word-break: break-all;
 				margin-bottom: 10rpx;
@@ -1406,7 +1407,7 @@
 	}
 	.btn-content{
 		width: 100%;
-		height:calc(100rpx + env(safe-area-inset-bottom));
+		height:calc(115rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:0;
 		left:0;
@@ -1435,7 +1436,7 @@
 				text-align: center;
 				&-name{
 					font-size: 20rpx;
-					font-family: Alibaba PuHuiTi;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #666666;
 				}
@@ -1453,12 +1454,12 @@
 		}
 		.btn-confirm{
 			width: inherit;
-			height: 67rpx;
+			height: 76rpx;
 			background: #F5162B;
 			text-align: center;
-			line-height: 67rpx;
-			font-size: 32rpx;
-			font-family: Alibaba PuHuiTi;
+			line-height: 76rpx;
+			font-size: 33rpx;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #FFFFFF;
 		}
@@ -1492,7 +1493,7 @@
 			text-align: center;
 			line-height: 84rpx;
 			font-size: $font-28;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #14151B;
 		}
@@ -1506,7 +1507,7 @@
 			text-align: center;
 			line-height: 84rpx;
 			font-size: $font-28;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: $color-F;
 		}
@@ -1540,8 +1541,8 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:22rpx;
-		font-size: 22rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-size: 23rpx;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #88878C;
 		line-height: 32rpx;
@@ -1555,15 +1556,15 @@
 	}
 	.detail-title{
 		width: 100%;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Medium;
 		font-weight: bold;
-		font-size: 28rpx;
+		font-size: 31rpx;
 		color: #333333;
 		margin-bottom: 20rpx;
 	}
 	.detail-title text{
-		font-family: FZLanTingHeiS-R-GB;
-		font-size: 24rpx;
+		font-family: PingFangSC-Regular;
+		font-size: 23rpx;
 		font-weight: 500;
 		color: #818080;
 	}
@@ -1580,16 +1581,16 @@
 		margin-bottom: 10rpx;
 	}
 	.detail-bottom-explain{
-		font-family: FZLanTingHeiS-R-GB;
-		font-size: 22rpx;
+		font-family: PingFangSC-Regular;
+		font-size: 27rpx;
 		font-weight: 500;
 		color: #818080;
 		line-height:40rpx;
 		margin-bottom: 30rpx;
 	}
 	.detail-bottom-explain-title{
-		font-family: FZLanTingHeiS-R-GB;
-		font-size: 24rpx;
+		font-family: PingFangSC-Medium;
+		font-size: 27rpx;
 		font-weight: 500;
 		color: #818080;
 		line-height:40rpx;
@@ -1624,7 +1625,7 @@
 				width: 100%;
 				text-align: center;
 				font-size: 20rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 			}

@@ -508,7 +508,7 @@
 		&-state-desc{
 			width: 100%;
 			font-size: 28rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #FFFFFF;
 		}
@@ -549,7 +549,7 @@
 						height:40rpx;
 						line-height: 40rpx;
 						font-size: 26rpx;
-						font-family: FZLanTingHeiS-R-GB;
+						font-family: PingFangSC-Regular;
 						font-weight: 400;
 						color: #333333;
 					}
@@ -618,7 +618,7 @@
 					.title{
 						width: 100%;
 						font-size: 26rpx;
-						font-family: Alibaba PuHuiTi;
+						font-family: PingFangSC-Regular;
 						font-weight: 400;
 						color: #333333;
 						margin-bottom: 20rpx;
@@ -637,7 +637,7 @@
 							height:40rpx;
 							line-height: 40rpx;
 							font-size: 30rpx;
-							font-family: Alibaba PuHuiTi;
+							font-family: PingFangSC-Medium;
 							font-weight: bold;
 							color: #333333;
 						}
@@ -645,7 +645,7 @@
 							height:40rpx;
 							line-height: 40rpx;
 							font-size: 22rpx;
-							font-family: FZLanTingHeiS-R-GB;
+							font-family: PingFangSC-Regular;
 							font-weight: 400;
 							color: #88878C;
 						}
@@ -707,7 +707,7 @@
 		}
 		.order-totalprice{
 			font-size: 26rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Medium;
 			font-weight: 600;
 			color: #333333;
 		}
@@ -751,7 +751,7 @@
 			height:40rpx;
 			line-height: 40rpx;
 			font-size: 28rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Medium;
 			font-weight: 600;
 			color: #333333;
 			display: flex;
@@ -761,7 +761,7 @@
 				align-items: center;
 				line-height: 40rpx;
 				font-size: 26rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
 				margin-left: 17rpx;
@@ -806,7 +806,7 @@
 		.title{
 			width: 100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #14151A;
 			margin-bottom: 24rpx;
@@ -826,7 +826,7 @@
 			.address-desc{
 				width: 620rpx;
 				font-size: 28rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				line-height: 34rpx;
@@ -837,7 +837,7 @@
 			box-sizing: border-box;
 			padding-left: 56rpx;
 			font-size: 23rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #88878C;
 			display: flex;
@@ -858,7 +858,7 @@
 		.title{
 			width: 100%;
 			font-size: 28rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Medium;
 			font-weight: 600;
 			color: #333333;
 			margin-bottom: 24rpx;
@@ -875,7 +875,7 @@
 				display: flex;
 				align-items: center;
 				font-size: 24rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 			}
@@ -884,7 +884,7 @@
 				display: flex;
 				align-items: center;
 				font-size: 24rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #C6C6C8;
 			}
@@ -913,7 +913,7 @@
 			display: flex;
 			align-items: center;
 			font-size: 26rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 			.icon-lianxi{
@@ -952,7 +952,7 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 32rpx;
-			font-family: FZLanTingHeiS-R-GB;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 		}
@@ -971,7 +971,7 @@
 				align-items: center;
 				justify-content: center;
 				font-size: 32rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 			}
@@ -983,7 +983,7 @@
 				align-items: center;
 				justify-content: center;
 				font-size: 32rpx;
-				font-family: FZLanTingHeiS-R-GB;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 			}
@@ -1010,7 +1010,7 @@
 }
 .item-name {
   font-size: 24rpx;
-  font-family: PingFangSC-Semibold, PingFang SC;
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 600;
   color: #14151a;
   line-height: 34rpx;

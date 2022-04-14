@@ -68,7 +68,6 @@
 		onPullDownRefresh(){
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.orderList = []
 			this.reqNewData(()=>{
 				uni.stopPullDownRefresh();
 			}) 
@@ -101,6 +100,7 @@
 			params.q = encodeURIComponent(this.searchText)
 		  }
 		  app.http.Get("me/order/buyer/orderList", params, (data: any) => {
+			if(this.currentPage==1) this.orderList = []
 			if(data.list){
 				this.showEmpty = false;
 				if(this.currentPage==1){
@@ -122,7 +122,6 @@
 		againReqNewData(){
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.orderList = []
 			this.reqNewData() 
 		}
 		

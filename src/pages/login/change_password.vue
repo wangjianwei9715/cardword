@@ -181,7 +181,7 @@ import { app } from "@/app";
 		box-sizing: border-box;
 		line-height: 100rpx;
 		font-size: 26rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 	}

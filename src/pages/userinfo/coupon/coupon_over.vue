@@ -75,7 +75,6 @@
 			this.goodTabCheck = id;
 			this.noMoreData = false;
 			this.currentPage = 1;
-			this.couponList = [];
 			this.reqNewData()
 		}
 		reqNewData(cb?:Function) {

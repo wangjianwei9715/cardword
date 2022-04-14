@@ -145,7 +145,7 @@
 						display: flex;
 						align-items: center;
 						font-size: 26rpx;
-						font-family: PingFangSC-Semibold, PingFang SC;
+						font-family: PingFangSC-Medium, PingFang SC;
 						font-weight: 600;
 					}
 					&-count{
@@ -278,7 +278,7 @@
 						justify-content: center;
 						border-radius: 30rpx;
 						font-size: 24rpx;
-						font-family: PingFangSC-Semibold, PingFang SC;
+						font-family: PingFangSC-Medium, PingFang SC;
 						font-weight: 400;
 						margin-right: 20rpx;
 						background:#fff;

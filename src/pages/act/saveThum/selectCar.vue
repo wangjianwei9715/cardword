@@ -83,7 +83,7 @@
 
 		.tips {
 			font-size: 29rpx;
-			font-family: Alibaba PuHuiTi;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #6A6A6A;
 
@@ -101,7 +101,7 @@
 
 			&-content {
 				font-size: 27rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				text-overflow: -o-ellipsis-lastline;

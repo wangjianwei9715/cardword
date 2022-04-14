@@ -44,7 +44,6 @@
             }
 			this.tabsCheck = id;
             this.currentPage = 1;
-            this.goodsList = []
 			this.noMoreData = false;
 			this.reqNewData()
 		}
@@ -76,9 +75,8 @@
 					this.noMoreData = true;
 				}
 				if(data.goodList){
-					if(this.currentPage==1){
-						this.goodsList = []
-					}
+					if(this.currentPage==1) this.goodsList = []
+					
 					this.goodsList = this.goodsList.concat(data.goodList);
 				}
 				
