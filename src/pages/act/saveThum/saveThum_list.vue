@@ -1,5 +1,15 @@
 <template>
-	<view class="container">
+	<view class="container" style="width: 100%;
+		box-sizing: border-box;">
+		<view class="header-banner">
+			<statusbar />
+			<view class="tab-header">
+				<view class="icon-back" @click="onClickBack"></view>
+				<view class="header-title">金卡点赞榜</view>
+				<image src="../../../static/act/saveThum/rule.png" @click="ruleShow=true" class="ruleIcon" mode="">
+				</image>
+			</view>
+		</view>
 		<image class='topImge' src="../../../static/act/saveThum/back.png" mode="widthFix"></image>
 		<view class="centerTitle uni-flex">
 			<image src="../../../static/act/saveThum/left.png" mode=""></image>
@@ -13,7 +23,7 @@
 			<view class="rankContent-item" v-for="(item,index) in rankList" :key='index'>
 				<view class="left" style="width: 33.33%;">
 					<view class="rankIndex">{{item.rank}}</view>
-					<image v-if="item.avatar" :src="decodeURIComponent(item.avatar)"  class="rankAvart" mode=""></image>
+					<image v-if="item.avatar" :src="decodeURIComponent(item.avatar)" class="rankAvart" mode=""></image>
 					<view v-else class="rankAvart noneAvart"></view>
 					<view class="rankUserName text oneLineOver">{{item.userName}}</view>
 				</view>
@@ -55,7 +65,19 @@
 				去微信邀好友点赞
 			</view>
 		</view>
-		<view class="mask" v-show="centerModalShow"></view>
+		<!-- 规则弹窗-->
+		<view class="ruleModal" v-show="ruleShow">
+			<image src="../../../static/act/loot/close.png" class="close" mode="" @click="ruleShow=false">
+			</image>
+			<view class="title">活动规则</view>
+			<text>
+				1、活动期间，玩家在可将金色卡密微信分享给好友集赞，上榜玩家也可在活动页面直接获赞，活动结束根据点赞排名活动奖励
+				2、活动期间首次获得金卡后可进行分享集赞
+				3、每名好友只能为自己点赞1次，首次集满3个赞获得20-5优惠券1张
+				4、活动结束后发放奖励，实物类请联系客服领取，优惠券类自动发放
+			</text>
+		</view>
+		<view class="mask" v-show="centerModalShow || ruleShow"></view>
 		<view class="noneBlock"></view>
 		<view class="bottomBlock">
 			<view class="bottomBlock-content uni-flex">
@@ -88,6 +110,7 @@
 		myProfile: any = {
 			likeNum: 0
 		};
+		ruleShow: boolean = false;
 		unoccupied: number = 0; //虚位以待数
 		queryParams: any = {
 			pageIndex: 1,
@@ -180,6 +203,11 @@
 				url: '/pages/act/saveThum/selectCar'
 			})
 		}
+		onClickBack() {
+			uni.navigateBack({
+				delta: 1
+			});
+		}
 		// this.queryParams
 		reqNewData() {
 			app.http.Get(
@@ -206,6 +234,92 @@
 		background-color: #201455;
 	}
 
+	.ruleModal {
+		width: 500rpx;
+		height: 600rpx;
+		background-color: #fff;
+		position: fixed;
+		top: 300rpx;
+		left: 0;
+		right: 0;
+		margin: auto;
+		z-index: 201;
+		padding: 0 40rpx;
+		overflow-y: auto;
+		z-index: 1000;
+
+		.title {
+			font-size: 33rpx;
+
+			font-weight: bold;
+			color: #333333;
+			text-align: center;
+			margin-top: 32rpx;
+			margin-bottom: 24rpx;
+		}
+
+		text {
+			line-height: 40rpx;
+		}
+	}
+
+	.header-banner {
+		width: 100%;
+		background: #fff;
+		position: fixed;
+		left: 0;
+		top: 0;
+		box-sizing: border-box;
+		z-index: 10;
+		border-bottom: 1px solid #f4f3f2;
+
+		.tab-header {
+			width: 100%;
+			height: 88rpx;
+			display: flex;
+			box-sizing: border-box;
+			padding: 0 30rpx;
+			position: relative;
+			z-index: 10;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.ruleIcon {
+			width: 35rpx;
+			height: 35rpx;
+			position: absolute;
+			right: 30rpx;
+		}
+
+		.icon-back {
+			width: 80rpx;
+			height: 88rpx;
+			background: url(../../../static/goods/back@2x.png) no-repeat center;
+			background-size: 100% 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+
+		.header-title {
+			height: 88rpx;
+			display: flex;
+			align-items: center;
+			font-size: 32rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #14151a;
+
+			&-img {
+				width: 48rpx;
+				height: 48rpx;
+				border-radius: 50%;
+				margin-right: 20rpx;
+			}
+		}
+	}
+
 	.rankTop {
 		display: flex;
 		width: 722rpx;
@@ -230,6 +344,7 @@
 
 	.topImge {
 		width: 750rpx;
+		margin-top: 90rpx;
 	}
 
 	.noneBlock {
@@ -500,7 +615,7 @@
 		justify-content: center;
 		/* padding-top: 452rpx; */
 		color: #FCB825;
-		margin-top: 30rpx;
+		margin-top: 26rpx;
 
 		image {
 			display: block;
@@ -588,5 +703,13 @@
 			background: url(../../../static/userinfo/liaotian@2x.png) no-repeat center;
 			background-size: 100% 100%;
 		}
+	}
+
+	.close {
+		width: 29rpx;
+		height: 27rpx;
+		position: absolute;
+		top: 21rpx;
+		right: 21rpx;
 	}
 </style>

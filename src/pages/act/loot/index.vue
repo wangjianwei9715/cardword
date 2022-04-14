@@ -84,18 +84,20 @@
 			</view>
 			<view class="taskContent">
 				<view class="taskItem" v-for="(item,index) in taskList" :key='index'>
-					<image class="taskIcon" :src="`../../../static/act/loot/${taskTipsList[item.id].pic}`" mode="">
-					</image>
-					<view class="taskTips">
-						<view class="taskTips-top uni-flex">
-							<view class="loop" v-if="item.id==5">循环任务</view>
-							{{item.taskName}}
+					<template v-if='taskTipsList[item.id]'>
+						<image class="taskIcon" :src="`../../../static/act/loot/${taskTipsList[item.id].pic}`" mode="">
+						</image>
+						<view class="taskTips">
+							<view class="taskTips-top uni-flex">
+								<view class="loop" v-if="item.id==5">循环任务</view>
+								{{item.taskName}}
+							</view>
+							<view class="taskTips-bottom">欧气+{{item.taskReward}}</view>
 						</view>
-						<view class="taskTips-bottom">欧气+{{item.taskReward}}</view>
-					</view>
-					<view class="taskButton" :class='{noneTaskButton:item.isUse===1}' @click="handleTask(item,index)">
-						{{item.isUse===1?'明日再来':taskTipsList[item.id].tips}}
-					</view>
+						<view class="taskButton" :class='{noneTaskButton:item.isUse===1}' @click="handleTask(item,index)">
+							{{item.isUse===1?'明日再来':taskTipsList[item.id].tips}}
+						</view>
+					</template>
 				</view>
 			</view>
 		</view>
