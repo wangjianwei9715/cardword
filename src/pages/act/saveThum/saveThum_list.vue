@@ -1,16 +1,5 @@
 <template>
 	<view class="container">
-		<!-- <view class="header-banner">
-			<statusbar />
-			<view class="tab-header">
-				<view class="icon-back"></view>
-				<view class="header-title">
-					金卡点赞榜
-				</view>
-				<view class="header-right uni-flex">
-				</view>
-			</view>
-		</view> -->
 		<image class='topImge' src="../../../static/act/saveThum/back.png" mode="widthFix"></image>
 		<view class="centerTitle uni-flex">
 			<image src="../../../static/act/saveThum/left.png" mode=""></image>
@@ -24,13 +13,24 @@
 			<view class="rankContent-item" v-for="(item,index) in rankList" :key='index'>
 				<view class="left" style="width: 33.33%;">
 					<view class="rankIndex">{{item.rank}}</view>
-					<image :src="decodeURIComponent(item.avatar)" class="rankAvart" mode=""></image>
+					<image v-if="item.avatar" :src="decodeURIComponent(item.avatar)"  class="rankAvart" mode=""></image>
+					<view v-else class="rankAvart noneAvart"></view>
 					<view class="rankUserName text oneLineOver">{{item.userName}}</view>
 				</view>
 				<view class="center text oneLineOver" style="width: 33.33%;text-align: center;">{{item.award}}</view>
 				<view class="right" style="width: 33.33%;">
 					<view class="num text oneLineOver">{{item.likeNum}}获赞</view>
-					<!-- <image src="../../../static/act/saveThum/faker.png" mode="aspectFill"></image> -->
+				</view>
+			</view>
+			<view class="rankContent-item" v-for="(item,index) in unoccupied" :key='index+ +new Date()'>
+				<view class="left" style="width: 33.33%;">
+					<view class="rankIndex" v-if="false">{{index+1+rankList.length}}</view>
+					<view class="rankAvart noneAvart" v-if="false"></view>
+					<view class="rankUserName text oneLineOver" v-if="false"></view>
+				</view>
+				<view class="center text oneLineOver" style="width: 33.33%;text-align: center;">虚位以待</view>
+				<view class="right" style="width: 33.33%;">
+					<view class="num text oneLineOver" v-if="false">{{item.likeNum}}获赞</view>
 				</view>
 			</view>
 		</view>
@@ -38,8 +38,13 @@
 			<image src="../../../static/act/saveThum/close.png" class="close" @click="centerModalShow=false" mode="">
 			</image>
 			<view class="title">分享好友</view>
-			<image :src="decodeURIComponent(shareItem.pic)" @click='priveImg(0,[decodeURIComponent(shareItem.pic)])'
-				class="img" mode=""></image>
+			<view class="goldBack">
+				<image class="goldImage" src='../../../static/goods/drawcard/card_gold.png' mode="widthFix"></image>
+				<image src="../../../static/goods/drawcard/icon_rc.png" class="rcIcon" mode="widthFix"
+					v-show="shareItem.rc"></image>
+				<image :src="decodeURIComponent(shareItem.pic)" class="img" mode="widthFix"></image>
+				<!-- @click='priveImg(0,[decodeURIComponent(shareItem.pic)])' -->
+			</view>
 			<view class="tips">{{shareItem.noName}}</view>
 			<view class="change uni-flex" @click="change">
 				<text>换一张</text>
@@ -55,7 +60,7 @@
 		<view class="bottomBlock">
 			<view class="bottomBlock-content uni-flex">
 				<view class="left">我的点赞：{{myProfile.likeNum}}
-					<text>({{myProfile.rank?'排名:'+myProfile.rank:'暂未上榜'}})</text>
+					<text style="padding-left:6rpx">({{myProfile.rank?'排名:'+myProfile.rank:'暂未上榜'}})</text>
 				</view>
 				<view class="right" @click="goShare">邀请好友点赞</view>
 			</view>
@@ -83,6 +88,7 @@
 		myProfile: any = {
 			likeNum: 0
 		};
+		unoccupied: number = 0; //虚位以待数
 		queryParams: any = {
 			pageIndex: 1,
 			pageSize: 20
@@ -109,7 +115,7 @@
 			this.reqNewData();
 		}
 		shareWx() {
-			console.log('this.shareItem=>>>>>>'+this.shareItem.id)
+			console.log('this.shareItem=>>>>>>' + this.shareItem.id)
 			if (!this.shareItem.id) return
 			app.http.Post('activity/goldNoShare/share/' + this.shareItem.id, {}, (res: any) => {
 				console.log(res)
@@ -126,12 +132,12 @@
 			})
 		}
 		shareMthod(shareItem: any) {
-			console.log('shareItem=>>>>'+shareItem.shareCode)
+			console.log('shareItem=>>>>' + shareItem.shareCode)
 			uni.share({
 				provider: "weixin",
 				type: 5,
 				imageUrl: decodeURIComponent(shareItem.pic),
-				title: "快来帮我点点赞!",
+				title: "我在卡世界获得了金色卡密，快来榜我点赞助力！",
 				scene: "WXSceneSession",
 				miniProgram: {
 					id: "gh_1093b743ea0e",
@@ -174,16 +180,17 @@
 				url: '/pages/act/saveThum/selectCar'
 			})
 		}
+		// this.queryParams
 		reqNewData() {
 			app.http.Get(
-				"activity/goldNoShare/ranklist",
-				this.queryParams,
+				"activity/goldNoShare/ranklist", {},
 				(res: any) => {
 					this.totalPage = res.totalPage || 0;
 					const arr = res.list || [];
 					if (this.queryParams.pageIndex === 1) this.rankList = [];
 					this.rankList = [...this.rankList, ...arr];
-					this.myProfile = res.my||{}
+					this.myProfile = res.my || {}
+					this.unoccupied = res.unoccupied || 50
 					console.log(res)
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
@@ -239,15 +246,15 @@
 
 
 	.centerModal {
-		width: 460rpx;
-		height: 740rpx;
+		width: 530rpx;
+		height: 880rpx;
 		background-size: 100% 100%;
 		background-image: url('../../../static/act/saveThum/white.png');
 		position: fixed;
 		left: 0;
 		right: 0;
 		margin: auto;
-		top: 314rpx;
+		top: 224rpx;
 		z-index: 1000;
 		transition: all 0.2s;
 		pointer-events: none;
@@ -309,12 +316,40 @@
 			margin-top: 42rpx;
 		}
 
-		.img {
-			width: 240rpx;
-			height: 340rpx;
-			display: block;
+
+		.goldBack {
+			width: 340rpx;
+			height: 475rpx;
 			margin: 0 auto;
+			display: flex;
 			margin-top: 20rpx;
+			position: relative;
+
+			.goldImage {
+				width: 340rpx;
+				position: absolute;
+				top: 0;
+				left: 0;
+				margin: auto;
+			}
+
+			.rcIcon {
+				width: 50rpx;
+				left: 30rpx;
+				position: absolute;
+				top: 30rpx;
+			}
+
+			.img {
+				width: 306rpx;
+				// height: 340rpx;
+				display: block;
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin: auto;
+				bottom: 11rpx;
+			}
 		}
 
 		.tips {
@@ -401,7 +436,7 @@
 			height: 90rpx;
 			background-size: 100% 100%;
 			background-image: url('../../../static/act/saveThum/pp.png');
-			padding: 0 23rpx 0 26rpx;
+			padding: 0 0rpx 0 0rpx;
 			margin-bottom: 10rpx;
 
 			.left {
@@ -413,7 +448,9 @@
 					font-family: eryaxindahei;
 					font-weight: 400;
 					color: #FCB825;
-					margin-right: 25rpx;
+					// margin-right: 25rpx;
+					text-align: center;
+					min-width: 80rpx;
 				}
 
 				.rankAvart {
@@ -422,6 +459,14 @@
 					display: block;
 					border-radius: 50%;
 					margin-right: 23rpx;
+				}
+
+				.noneAvart {
+					background-color: #fff;
+				}
+
+				.noneAvart {
+					background-color: #fff;
 				}
 
 				.rankUserName {
@@ -435,20 +480,15 @@
 				justify-content: flex-end;
 
 				.num {
-
-					margin-right: 17rpx;
-				}
-
-				image {
-					width: 41rpx;
-					height: 58rpx;
-					border-radius: 4rpx;
+					width: 100%;
+					text-align: center;
+					// margin-right: 17rpx;
 				}
 			}
 
 			.text {
-				font-size: 29rpx;
-				font-family: PingFangSC-Regular;
+				font-size: 26rpx;
+				font-family: Alibaba PuHuiTi;
 				font-weight: 400;
 				color: #FFFFFF;
 			}

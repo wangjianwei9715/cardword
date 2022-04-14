@@ -2,7 +2,8 @@
 	<!-- 夺宝主页 -->
 	<view>
 		<view class="topBanner">
-			<view class="rightFloatItem"><text>规则</text></view>
+			<image src="../../../static/act/loot/banner.png" class="bannerImg" mode=""></image>
+			<view class="rightFloatItem" @click="ruleShow=true"><text>规则</text></view>
 			<view class="rightFloatItem rule" @click="pageJump('/pages/act/loot/loot_myPrize')"><text>我的奖品</text></view>
 			<view class="rollContent" id='rollContent'>
 				<view class="rollHidden" id='rollHidden' :style="{transform:`translateX(${rollX}px)`}">
@@ -26,42 +27,41 @@
 					<text>欧皇大奖</text>
 				</view>
 				<image class="prize-left"
-					:src='item.tp===1?decodeURIComponent(item.award_pic):"https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.12/loot/loot_sw/0/1649763728509b9m4fq61v.png"'
+					:src='decodeURIComponent(item.award_pic)'
 					mode='aspectFill'></image>
 				<view class="prize-right">
 					<view class="title oneLineOver">{{item.name}}</view>
-					<view class="probability">
-						{{item.status==0?`1欧气=${item.goData.getOdds}%中奖率`:`${item.take_num}/${item.total_num} 已结束`}}
-					</view>
-					<view class="probability" v-if="item.status==1">
-						<!-- {{queryParams.tp==1?`1欧气=${item.goData.getOdds}%中奖率`:`${item.take_num}/${item.total_num} 已结束`}} -->
-						{{dateFormatMSHMS(item.stopData.open_at)}}开奖
-					</view>
-					<view class="progressContent uni-flex" v-if='item.status==0'>
-						<view class="progress">
-							<view class="maskPro" :style="{width:(100-getPlan(item.take_num,item.total_num))+'%'}">
-							</view>
-						</view>
-						<view class="contrast">{{item.take_num}}/{{item.total_num}}</view>
-					</view>
-					<view class="stopTemp uni-flex" v-if='item.status==1'>
-						<view class="stopTemp-left">
-							<view style="font-size: 22rpx;">开奖码</view>
-							<view class="stopCode">{{item.stopData.openCode}}</view>
-						</view>
-						<view class="stopTemp-right">
+					<view class="probability publicText uni-flex" v-if="item.status==1">
+						<text>{{dateFormatMSHMS(item.stopData.open_at)}}开奖</text>
+						<view class="getUserInfo">
 							<image :src="decodeURIComponent(item.stopData.userAvatar)" mode=""></image>
-							<view class="name">
+							<view class="name publicText">
 								{{item.stopData.userName}} 中奖
 							</view>
 						</view>
 					</view>
-					<view class="actionContent uni-flex" v-if='item.status==0'>
+					<view class="probability publicText">
+						{{item.status==0?`1欧气=${item.goData.getOdds}%中奖率`:`${item.take_num}/${item.total_num} 已结束`}}
+					</view>
+					<view class="progressContent uni-flex" v-if='item.status==0'>
+						<view class="progress">
+							<view class="maskPro publicText"
+								:style="{width:(100-getPlan(item.take_num,item.total_num))+'%'}">
+							</view>
+						</view>
+						<view class="contrast publicText">{{item.take_num}}/{{item.total_num}}</view>
+					</view>
+					<view class="actionContent uni-flex" :class="{between:item.status===1,flexEnd:item.status===0}">
+						<view class="stopTemp-code" v-if="item.status===1">
+							<view style="font-size: 22rpx;">开奖码</view>
+							<view class="stopCode">{{item.stopData.openCode}}</view>
+						</view>
 						<view class="actionButton whiteBtn" @click="handleGetOq(item,true)">我的欧气码</view>
-						<view class="actionButton blackBtn" @click="handleJoin(item,index)">1欧气参与</view>
+						<view class="actionButton blackBtn" @click="handleJoin(item,index)" v-if="item.status===0">1欧气参与
+						</view>
 					</view>
 				</view>
-				
+
 			</view>
 		</view>
 		<view class="noneBlock"></view>
@@ -69,7 +69,8 @@
 			<view class="bootomBlock-content">
 				<view class="myEg">
 					<text style="margin-right: 12rpx;">我的欧气</text>
-					<text style="color: #E23369;font-weight: bolder;font-size: 33rpx;">{{luckyGas}}</text>
+					<text
+						style="color: #E23369;font-weight: bolder;font-size: 42rpx;font-family: Alibaba PuHuiTi;">{{luckyGas}}</text>
 				</view>
 				<view class="getEq" @click="getOq">获取欧气</view>
 			</view>
@@ -129,8 +130,21 @@
 				</view>
 			</scroll-view>
 		</view>
+		<!-- 规则弹窗-->
+		<view class="ruleModal" v-show="ruleShow">
+			<image src="../../../static/act/loot/close.png" class="close" mode="" @click="ruleShow=false">
+			</image>
+			<view class="title">活动规则</view>
+			<text>
+				1、活动期间，玩家消耗欧气可获取欧气码参与夺宝，欧气进度满后将随机生成一组开奖码，与开奖码匹配的用户获得奖品
+				2、每个夺宝奖品参与次数不限，参与欧气越多中奖概率越高
+				3、玩家完成任务可获得欧气，任务每日更新，可点击“获取欧气“查看
+				4、活动期间，奖品不定期更新
+				5、优惠券类奖品自动发放，实物类奖品请中奖用户联系客服发货
+			</text>
+		</view>
 		<!-- 遮罩层 -->
-		<view class="mask" v-show="showDrawer || luckyGasModalShow || oqModalShow" @click="closeAll">
+		<view class="mask" v-show="showDrawer || luckyGasModalShow || oqModalShow||ruleShow" @click="closeAll">
 		</view>
 	</view>
 </template>
@@ -161,6 +175,7 @@
 			pageIndex: 1,
 			pageSize: 20
 		}
+		ruleShow: boolean = false;
 		rollTotalPage: number = 0;
 		rollRequestTime: number = 0;
 		dateFormatMSHMS: any = dateFormatMSHMS;
@@ -279,7 +294,7 @@
 			this.rollTimer && clearInterval(this.rollTimer)
 			const errorValue: number = 1 //误差值
 			this.rollTimer = setInterval(() => {
-				this.rollX -= 0.15
+				this.rollX -= 0.30
 				if ((this.rollWidth + this.rollX - errorValue) <= this.phoneWidth) { //即将轮播完
 					if (this.rollTotalPage == this.rollParams.pageIndex) this.rollX = 0 //数据已查完 
 					if (this.rollTotalPage > this.rollParams.pageIndex) {
@@ -345,10 +360,11 @@
 			uni.share({
 				provider: "weixin",
 				type: 0,
-				imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.12/loot/loot_sw/0/1649752567775crquv32j7.png",
-				title: "欧皇夺宝",
+				imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.14/loot/loot_sw/0/1649923645699n8fv080wdf.jpg",
+				title: "下一个欧皇就是你！",
+				summary: '完成任务，免费参与卡世界欧皇夺宝。',
 				scene: "WXSceneSession",
-				href: 'http://191.168.3.26:8081/#/pages/loot/loot',
+				href: 'http://192.168.8.26:8081/#/pages/loot/loot',
 				// miniProgram: {
 				// 	id: "gh_5cf45dd26926",
 				// 	type: 0,
@@ -388,10 +404,10 @@
 			}
 		}
 		handleGetOq(item: any, isRefsh: any = false) {
-			if(item.luckyGasCodeNum==0){
+			if (item.luckyGasCodeNum == 0) {
 				uni.showToast({
-					title:'你还没参与该活动',
-					icon:'none'
+					title: '你还没参与该活动',
+					icon: 'none'
 				})
 				return
 			}
@@ -451,7 +467,9 @@
 				if (this.rollParams.pageIndex == 1) {
 					this.$nextTick(() => {
 						this.getRollParams().then((res: any) => {
-							this.startRollInterval()
+							setTimeout(() => {
+								this.startRollInterval()
+							}, 500)
 						})
 					})
 				}
@@ -470,6 +488,7 @@
 			this.luckyGasModalShow = false
 			this.showDrawer = false
 			this.oqModalShow = false
+			this.ruleShow = false
 		}
 		//tag切换
 		tagChange(item: any, index: number) {
@@ -514,12 +533,22 @@
 		background-color: #060505;
 	}
 
+
+
 	.topBanner {
 		width: 750rpx;
 		height: 525rpx;
 		background-size: 100% 100%;
-		background-image: url("../../../static/act/loot/banner.png");
+		// background-image: url("../../../static/act/loot/banner.png");
 		position: relative;
+
+		.bannerImg {
+			width: 750rpx;
+			height: 525rpx;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
 
 		.rightFloatItem {
 			position: absolute;
@@ -539,7 +568,7 @@
 			white-space: nowrap;
 
 			text {
-				padding-right: 28rpx;
+				padding-right: 30rpx;
 			}
 
 
@@ -638,7 +667,7 @@
 		margin-top: 28rpx;
 
 		.prizeItem {
-			height: 228rpx;
+			height: 238rpx;
 			background-size: 100% 100%;
 			background-image: url("../../../static/act/loot/block7.png");
 			margin-bottom: 18rpx;
@@ -646,7 +675,7 @@
 			display: flex;
 			align-items: center;
 			position: relative;
-			
+
 			.bigPrize {
 				background-size: 100% 100%;
 				background-image: url("../../../static/act/loot/bigPrize.png");
@@ -690,12 +719,29 @@
 					margin-top: 16rpx;
 				}
 
-				.probability {
-					font-size: 25rpx;
-					font-family: PingFangSC-Regular;
+				.publicText {
+					font-size: 23rpx;
+					font-family: FZLanTingHeiS-R-GB;
 					font-weight: 400;
 					color: #88878c;
+				}
+
+				.probability {
 					margin-bottom: 13rpx;
+					align-items: center;
+					justify-content: space-between;
+					.getUserInfo {
+						display: flex;
+						align-items: center;
+
+						image {
+							width: 40rpx;
+							height: 40rpx;
+							display: block;
+							margin-right: 10rpx;
+							border-radius: 50%;
+						}
+					}
 				}
 
 				.progressContent {
@@ -714,31 +760,20 @@
 
 						.maskPro {
 							height: inherit;
-							background-color: #fff;
+							background-color: #F6F7FB;
 						}
-					}
-
-					.contrast {
-						font-size: 23rpx;
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
-						color: #88878c;
 					}
 				}
 
-				.stopTemp {
-					justify-content: space-between;
+				.actionContent {
+					// justify-content: flex-end;
 					align-items: center;
 					position: relative;
-					top: 24rpx;
+					bottom: 0rpx;
 
-					&-left {
+					.stopTemp-code {
 						display: flex;
 						align-items: center;
-						font-size: 25rpx;
-						font-family: PingFangSC-Regular;
-						font-weight: 400;
-						color: #88878C;
 						letter-spacing: 2rpx;
 
 						.stopCode {
@@ -751,32 +786,6 @@
 						}
 					}
 
-					&-right {
-						display: flex;
-						align-items: center;
-
-						image {
-							width: 40rpx;
-							height: 40rpx;
-							display: block;
-							margin-right: 10rpx;
-							border-radius: 50%;
-						}
-
-						.name {
-							font-size: 25rpx;
-							font-family: PingFangSC-Regular;
-							font-weight: 400;
-							color: #88878C;
-						}
-					}
-				}
-
-				.actionContent {
-					justify-content: flex-end;
-					align-items: center;
-					position: relative;
-					bottom: 4rpx;
 					.actionButton {
 						background-size: 100% 100%;
 						font-family: PingFangSC-Regular;
@@ -789,7 +798,7 @@
 					}
 
 					.whiteBtn {
-						border: 2rpx solid rgba(136, 135, 140, 0.4);
+						background-image: url("../../../static/act/loot/newWhite.png");
 						height: 52rpx;
 						line-height: 52rpx;
 						border-radius: 4rpx;
@@ -968,11 +977,37 @@
 		z-index: 200;
 	}
 
+	.ruleModal {
+		width: 500rpx;
+		height: 600rpx;
+		background-color: #fff;
+		position: fixed;
+		top: 300rpx;
+		left: 0;
+		right: 0;
+		margin: auto;
+		z-index: 201;
+		padding: 0 40rpx;
+		overflow-y: auto;
 
+		.title {
+			font-size: 33rpx;
+
+			font-weight: bold;
+			color: #333333;
+			text-align: center;
+			margin-top: 32rpx;
+			margin-bottom: 24rpx;
+		}
+
+		text {
+			line-height: 40rpx;
+		}
+	}
 
 	.drawerCard {
 		width: 750rpx;
-		height: 685rpx;
+		height: 710rpx;
 		background-color: #fff;
 		position: fixed;
 		transition: all 0.3s;
@@ -1006,21 +1041,23 @@
 				margin-bottom: 44rpx;
 
 				.taskIcon {
-					width: 65rpx;
-					height: 65rpx;
+					width: 70rpx;
+					height: 70rpx;
 					margin-right: 16rpx;
 				}
 
 				.taskTips {
-					align-items: center;
 					flex: 1;
+					justify-content: space-between;
+					flex-direction: column;
+					display: flex;
 
 					&-top {
 						font-size: 29rpx;
-
 						font-weight: 400;
 						color: #333333;
 						align-items: center;
+						margin-bottom: 7rpx;
 
 						.loop {
 							font-size: 20rpx;
@@ -1054,7 +1091,7 @@
 					text-align: center;
 					background-size: 100% 100%;
 					background-image: url("../../../static/act/loot/blackBtn.png");
-					width: 127rpx;
+					width: 137rpx;
 					text-align: center;
 				}
 
@@ -1078,7 +1115,7 @@
 
 	.noneBlock {
 		width: 750rpx;
-		height: 102rpx;
+		height: 120rpx;
 		padding-bottom: constant(safe-area-inset-bottom);
 		padding-bottom: env(safe-area-inset-bottom);
 		background-color: #060505;
@@ -1098,7 +1135,7 @@
 		.bootomBlock-content {
 			width: 94%;
 			margin: 0 auto;
-			height: 102rpx;
+			height: 120rpx;
 			justify-content: space-between;
 			align-items: center;
 			display: flex;
@@ -1121,12 +1158,14 @@
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				text-align: center;
-				line-height: 67rpx;
-				height: 67rpx;
-				width: 263rpx;
-				background-image: url("../../../static/act/loot/blackBtn.png");
+				line-height: 77rpx;
+				height: 77rpx;
+				width: 275rpx;
+				background-image: url("../../../static/act/loot/bigBlock.png");
 				color: #89f756;
-				// margin-left: 17rpx;
+				font-size: 33rpx;
+				font-family: Alibaba PuHuiTi;
+				font-weight: 400;
 			}
 		}
 	}
@@ -1137,5 +1176,13 @@
 		position: absolute;
 		top: 21rpx;
 		right: 21rpx;
+	}
+
+	.between {
+		justify-content: space-between;
+	}
+
+	.flexEnd {
+		justify-content: flex-end;
 	}
 </style>

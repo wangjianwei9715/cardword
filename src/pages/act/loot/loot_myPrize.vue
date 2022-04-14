@@ -20,7 +20,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- <empty v-if='prizeList&&!prizeList.length'></empty> -->
+		<empty v-if='!isRequest&&prizeList&&!prizeList.length'></empty>
 	</view>
 </template>
 
@@ -45,6 +45,7 @@
 		};
 		prizeList: any = [];
 		totalPage: number = 0;
+		isRequest:boolean=true;
 		dateFormatMSHMS: any = dateFormatMSHMS;
 		kefuUserId:any=[]
 		onLoad() {
@@ -67,15 +68,17 @@
 		}
 		//我的奖品
 		reqNewData() {
+			this.isRequest=true
 			app.http.Get('activity/snatchTreasure/myPrize', this.queryParams, (res: any) => {
 				this.kefuUserId=res.data.kefuUserId
 				this.totalPage = res.totalPage || 0
 				const arr = res.data.list || []
 				if (this.queryParams.pageIndex === 1) this.prizeList = [];
 				this.prizeList = [...this.prizeList, ...arr];
+				this.isRequest=false
 				setTimeout(() => {
 					uni.stopPullDownRefresh();
-				}, 500)
+				}, 200)
 			})
 			// uni.stopPull
 		}
