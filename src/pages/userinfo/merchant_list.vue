@@ -145,7 +145,7 @@
 			// const path = `/pages/act/loot/index`;
 			uni.navigateTo({
 				url: path + "?id=" + item.id
-			});  
+			});   
 			// uni.share({
 			// 	provider: 'weixin',
 			// 	type: 5,

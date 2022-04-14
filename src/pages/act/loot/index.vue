@@ -2,15 +2,13 @@
 	<!-- 夺宝主页 -->
 	<view>
 		<view class="topBanner">
-			<view class="rightFloatItem" @click="pageJump('/pages/act/loot/loot_myPrize')"><text>我的</text></view>
-			<view class="rightFloatItem rule"><text>奖品规则</text></view>
+			<view class="rightFloatItem"><text>规则</text></view>
+			<view class="rightFloatItem rule" @click="pageJump('/pages/act/loot/loot_myPrize')"><text>我的奖品</text></view>
 			<view class="rollContent" id='rollContent'>
 				<view class="rollHidden" id='rollHidden' :style="{transform:`translateX(${rollX}px)`}">
-					<view class="rollItem" v-for="item in testList">
-						<image
-							src="https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.12/loot/loot_sw/0/16497588173299mxhmh8ci.jpg"
-							mode=""></image>
-						<view class="name oneLineOver">加入了iphone13夺宝</view>
+					<view class="rollItem" v-for="item in personJoinList">
+						<image :src="decodeURIComponent(item.userAvatar)" mode=""></image>
+						<view class="name oneLineOver">加入了{{item.name}}</view>
 					</view>
 				</view>
 			</view>
@@ -27,24 +25,43 @@
 				<view class="bigPrize" v-if="item.isGood===1">
 					<text>欧皇大奖</text>
 				</view>
-				<image class="prize-left" :src='item.tp===1?decodeURIComponent(item.award_pic):"https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.12/loot/loot_sw/0/1649763728509b9m4fq61v.png"' mode='aspectFill'></image>
+				<image class="prize-left"
+					:src='item.tp===1?decodeURIComponent(item.award_pic):"https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.12/loot/loot_sw/0/1649763728509b9m4fq61v.png"'
+					mode='aspectFill'></image>
 				<view class="prize-right">
 					<view class="title oneLineOver">{{item.name}}</view>
 					<view class="probability">
-						1欧气={{item.goData.getOdds}}%中奖率
+						{{item.status==0?`1欧气=${item.goData.getOdds}%中奖率`:`${item.take_num}/${item.total_num} 已结束`}}
 					</view>
-					<view class="progressContent uni-flex">
+					<view class="probability" v-if="item.status==1">
+						<!-- {{queryParams.tp==1?`1欧气=${item.goData.getOdds}%中奖率`:`${item.take_num}/${item.total_num} 已结束`}} -->
+						{{dateFormatMSHMS(item.stopData.open_at)}}开奖
+					</view>
+					<view class="progressContent uni-flex" v-if='item.status==0'>
 						<view class="progress">
 							<view class="maskPro" :style="{width:(100-getPlan(item.take_num,item.total_num))+'%'}">
 							</view>
 						</view>
 						<view class="contrast">{{item.take_num}}/{{item.total_num}}</view>
 					</view>
-					<view class="actionContent uni-flex">
+					<view class="stopTemp uni-flex" v-if='item.status==1'>
+						<view class="stopTemp-left">
+							<view style="font-size: 22rpx;">开奖码</view>
+							<view class="stopCode">{{item.stopData.openCode}}</view>
+						</view>
+						<view class="stopTemp-right">
+							<image :src="decodeURIComponent(item.stopData.userAvatar)" mode=""></image>
+							<view class="name">
+								{{item.stopData.userName}} 中奖
+							</view>
+						</view>
+					</view>
+					<view class="actionContent uni-flex" v-if='item.status==0'>
 						<view class="actionButton whiteBtn" @click="handleGetOq(item,true)">我的欧气码</view>
 						<view class="actionButton blackBtn" @click="handleJoin(item,index)">1欧气参与</view>
 					</view>
 				</view>
+				
 			</view>
 		</view>
 		<view class="noneBlock"></view>
@@ -54,7 +71,7 @@
 					<text style="margin-right: 12rpx;">我的欧气</text>
 					<text style="color: #E23369;font-weight: bolder;font-size: 33rpx;">{{luckyGas}}</text>
 				</view>
-				<view class="getEq" @click="showDrawer=true">获取欧气</view>
+				<view class="getEq" @click="getOq">获取欧气</view>
 			</view>
 		</view>
 		<!-- 任务弹窗 -->
@@ -129,15 +146,24 @@
 		Watch
 	} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import {
+		dateFormatMSHMS
+	} from '@/tools/util.ts'
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		showDrawer: boolean = false; //任务弹窗
 		operationShow: boolean = false;
-		testList:any=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,];
 		rollTimer: number = 0;
 		rollX: number = 0;
-		rollWidth:number=0;
-		phoneWidth:number=0;
+		rollWidth: number = 0;
+		phoneWidth: number = 0;
+		rollParams: any = {
+			pageIndex: 1,
+			pageSize: 20
+		}
+		rollTotalPage: number = 0;
+		rollRequestTime: number = 0;
+		dateFormatMSHMS: any = dateFormatMSHMS;
 		tag: any = {
 			index: 0,
 			list: [{
@@ -168,17 +194,17 @@
 			3: {
 				pic: "shop.png",
 				tips: "去完成",
-				url: "/pages/act/calendar/list"
+				url: "/pages/goods/goods_find_list?classType=100"
 			},
 			4: {
 				pic: "group.png",
 				tips: "去完成",
-				url: "/pages/act/calendar/list"
+				url: "/pages/goods/goods_find_list?classType=100"
 			},
 			5: {
 				pic: "order.png",
 				tips: "去完成",
-				url: "/pages/act/calendar/list"
+				url: "/pages/goods/goods_find_list?classType=100"
 			}
 		};
 		luckyGas: number = 0; //个人欧气值
@@ -190,21 +216,24 @@
 		oqModalShow: boolean = false;
 		lootList: any = [];
 		totalPage: number = 0;
+		joinConfirmTime: number = 0;
 		queryParams: any = {
 			pageIndex: 1,
-			pageSize: 20,
+			pageSize: 10,
 			tp: 1 //1 进行中，2 已开奖，3 我的参与
 		};
-		codeList:any=[];
-		codeTotalPage:number=0;
-		codeParams:any={
-			pageIndex:1,
-			pageSize:50
+		codeList: any = [];
+		codeTotalPage: number = 0;
+
+		codeParams: any = {
+			pageIndex: 1,
+			pageSize: 50
 		}
+		isJoinSuccess: boolean = false;
 		onLoad() {
 			this.firstGetData()
 		}
-		onShow(){
+		onShow() {
 			this.getTaskList();
 		}
 		onReachBottom() {
@@ -213,51 +242,61 @@
 				this.reqNewData();
 			}
 		}
-		onPullDownRefresh(){
+		onPullDownRefresh() {
 			this.firstGetData()
 		}
-		destroyed(){
+		destroyed() {
 			clearInterval(this.rollTimer)
 		}
-		firstGetData(){
-			this.queryParams.index=1
+		firstGetData() {
+			this.queryParams.index = 1
 			this.reqNewData();
 			this.getPersonJoin();
 			this.getTaskList();
-			this.$nextTick(() => {
-				this.getRollParams().then((res:any)=>{
-					this.startRollInterval()
-				})
-			})
+
 		}
 		getPlan(now: number, all: number) {
 			let width = Math.floor(Number(now) / Number(all) * 100);
 			return width;
 		}
-		getRollParams(){
-			return new Promise((resolve:any,reject:any)=>{
-		const query:any = uni.createSelectorQuery().in(this);
-		let selectCoun=0
-			query.select('#rollContent').boundingClientRect((data: any) => {
-				this.phoneWidth=data.width
-				selectCoun+=1
-			}).exec();
-			query.select('#rollHidden').boundingClientRect((data: any) => {
-				this.rollWidth=data.width
-				selectCoun+=1
-			}).exec();
-			resolve()
+		getRollParams() {
+			return new Promise((resolve: any, reject: any) => {
+				const query: any = uni.createSelectorQuery().in(this);
+				let selectCoun = 0
+				query.select('#rollContent').boundingClientRect((data: any) => {
+					this.phoneWidth = data.width
+					selectCoun += 1
+				}).exec();
+				query.select('#rollHidden').boundingClientRect((data: any) => {
+					this.rollWidth = data.width
+					selectCoun += 1
+				}).exec();
+				resolve()
 			})
 		}
-		startRollInterval(){
+		startRollInterval() {
+			if (this.rollWidth < this.phoneWidth) return
+			this.rollTimer && clearInterval(this.rollTimer)
+			const errorValue: number = 1 //误差值
 			this.rollTimer = setInterval(() => {
-					this.rollX -= 0.15
-					if((this.rollWidth+this.rollX)<=this.phoneWidth){
-						this.rollX=0
+				this.rollX -= 0.15
+				if ((this.rollWidth + this.rollX - errorValue) <= this.phoneWidth) { //即将轮播完
+					if (this.rollTotalPage == this.rollParams.pageIndex) this.rollX = 0 //数据已查完 
+					if (this.rollTotalPage > this.rollParams.pageIndex) {
+						this.rollParams.pageIndex += 1
+						this.getPersonJoin()
 					}
-				}, 10)
+					// 
+				}
+			}, 10)
 		}
 		handleJoin(item: any, index: number) {
+			if (app.token.accessToken == "") {
+				uni.navigateTo({
+					url: "/pages/login/login"
+				});
+				return;
+			}
 			if (this.luckyGas < 1) {
 				this.showDrawer = true;
 				uni.showToast({
@@ -268,8 +307,8 @@
 				return;
 			}
 			this.selectItem = item;
-			this.consumeLuckGas=1
-			this.luckyGasModalShow=true
+			this.consumeLuckGas = 1
+			this.luckyGasModalShow = true
 		}
 		handleTask(item: any, index: number) {
 			if (item.isUse == 1) {
@@ -291,20 +330,31 @@
 			}
 			// if(this.tas)
 		}
+		getOq() {
+			if (app.token.accessToken == "") {
+				uni.navigateTo({
+					url: "/pages/login/login"
+				});
+				return;
+			}
+			this.showDrawer = true
+		}
 		//微信分享
 		shareWx(item: any) {
+
 			uni.share({
 				provider: "weixin",
-				type: 5,
+				type: 0,
 				imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.12/loot/loot_sw/0/1649752567775crquv32j7.png",
 				title: "欧皇夺宝",
 				scene: "WXSceneSession",
-				miniProgram: {
-					id: "gh_5cf45dd26926",
-					type: 0,
-					path: "/pages/index/index",
-					webUrl: "https://www.ka-world.com/"
-				},
+				href: 'http://191.168.3.26:8081/#/pages/loot/loot',
+				// miniProgram: {
+				// 	id: "gh_5cf45dd26926",
+				// 	type: 0,
+				// 	path: "/pages/index/index",
+				// 	webUrl: "https://www.ka-world.com/"
+				// },
 				success: (res: any) => {
 					// this.getTaskList();
 					this.completeTask(item)
@@ -321,45 +371,65 @@
 		//计数器加减操作
 		luckAction(type: string) {
 			if (
-				(this.consumeLuckGas >= this.luckyGas&& type === "add") ||
+				(this.consumeLuckGas >= this.luckyGas && type === "add") ||
 				(this.consumeLuckGas === 1 && type === "reduce")
 			)
 				return;
-				if(this.consumeLuckGas>=(this.selectItem.total_num-this.selectItem.take_num)&& type === "add") return
+			if (this.consumeLuckGas >= (this.selectItem.total_num - this.selectItem.take_num) && type === "add") return
 			let copyNum = this.consumeLuckGas;
 			copyNum = type == "add" ? copyNum + 1 : copyNum - 1;
 			this.consumeLuckGas = copyNum;
 		}
 		//欧气码触底事件
 		scrolltolower() {
-			if(this.codeParams.pageIndex < this.codeTotalPage){
-				this.codeParams.pageIndex+=1
-				this.handleGetOq(this.selectItem,false)
+			if (this.codeParams.pageIndex < this.codeTotalPage) {
+				this.codeParams.pageIndex += 1
+				this.handleGetOq(this.selectItem, false)
 			}
 		}
-		handleGetOq(item: any,isRefsh:any=false) {
-			if(isRefsh) this.codeParams.index=1
-			app.http.Get('activity/snatchTreasure/myLuckyGasCode/'+item.id,this.codeParams,(res:any)=>{
-				this.codeTotalPage=res.totalPage||0
+		handleGetOq(item: any, isRefsh: any = false) {
+			if(item.luckyGasCodeNum==0){
+				uni.showToast({
+					title:'你还没参与该活动',
+					icon:'none'
+				})
+				return
+			}
+			if (isRefsh) this.codeParams.index = 1
+			app.http.Get('activity/snatchTreasure/myLuckyGasCode/' + item.id, this.codeParams, (res: any) => {
+				this.codeTotalPage = res.totalPage || 0
 				const arr = res.list || [];
 				if (this.codeParams.pageIndex === 1) this.codeList = [];
 				this.codeList = [...this.codeList, ...arr];
-				if(isRefsh) this.oqModalShow = true
+				if (isRefsh) this.oqModalShow = true
 			})
-			
+
 		}
 		//参与夺宝
-		joinConfirm(){
-			// console.log(this.selectItem);
-			app.http.Post('activity/snatchTreasure/active/'+this.selectItem.id,{luckyGasNum:this.consumeLuckGas},(res:any)=>{
-				this.queryParams.pageIndex=1
+		joinConfirm() {
+			if (+new Date() - this.joinConfirmTime <= 1000 * 1) return
+			this.joinConfirmTime = +new Date()
+			this.isJoinSuccess = false
+			app.http.Post('activity/snatchTreasure/active/' + this.selectItem.id, {
+				luckyGasNum: this.consumeLuckGas
+			}, (res: any) => {
+				this.isJoinSuccess = true
 				this.getTaskList()
 				uni.showToast({
-					title:'参与成功'
+					title: '参与成功'
 				})
+				this.luckyGasModalShow = false
+				this.queryParams.pageIndex = 1
 				this.reqNewData()
 			})
-			
+			setTimeout(() => {
+				if (!this.isJoinSuccess) {
+					this.queryParams.pageIndex = 1
+					this.reqNewData()
+					this.luckyGasModalShow = false
+				}
+			}, 2000)
+
 		}
 		//获取任务列表以及个人欧气值
 		getTaskList() {
@@ -370,17 +440,27 @@
 		}
 		//获取用户参与列表
 		getPersonJoin() {
-			app.http.Get("activity/snatchTreasure/active/list", {}, (res: any) => {
-				console.log(res);
-				
-				this.personJoinList = res.list || [];
+			if (+new Date() - this.rollRequestTime <= 1000 * 5) return
+			this.rollRequestTime = +new Date()
+			app.http.Get("activity/snatchTreasure/active/list", this.rollParams, (res: any) => {
+				this.rollTotalPage = res.totalPage || 0
+				const arr = res.list || [];
+				if (this.rollParams.pageIndex === 1) this.personJoinList = [];
+				this.personJoinList = [...this.personJoinList, ...arr];
+				this.getRollParams()
+				if (this.rollParams.pageIndex == 1) {
+					this.$nextTick(() => {
+						this.getRollParams().then((res: any) => {
+							this.startRollInterval()
+						})
+					})
+				}
+
 			});
 		}
 		//完成任务
 		completeTask(item: any) {
-			console.log('任务完成==》activity/snatchTreasure/luckyGas/get/' + item.id)
 			app.http.Post("activity/snatchTreasure/luckyGas/get/" + item.id, {}, (res: any) => {
-				console.log(res)
 				//更新最新欧气值
 				this.getTaskList()
 				this.closeAll()
@@ -406,6 +486,12 @@
 		}
 		//获取夺宝列表
 		reqNewData() {
+			if (app.token.accessToken == "" && this.queryParams.tp == 3) {
+				uni.navigateTo({
+					url: "/pages/login/login"
+				});
+				return;
+			}
 			app.http.Get(
 				"activity/snatchTreasure/list",
 				this.queryParams,
@@ -560,7 +646,7 @@
 			display: flex;
 			align-items: center;
 			position: relative;
-
+			
 			.bigPrize {
 				background-size: 100% 100%;
 				background-image: url("../../../static/act/loot/bigPrize.png");
@@ -594,13 +680,14 @@
 				width: 470rpx;
 				// background-color: red;
 				height: 209rpx;
+
 				.title {
 					font-size: 29rpx;
 					font-family: FZLanTingHeiS-R-GB;
 					font-weight: 500;
 					color: #333333;
 					margin-bottom: 13rpx;
-					// margin-top: 20rpx;
+					margin-top: 16rpx;
 				}
 
 				.probability {
@@ -639,10 +726,57 @@
 					}
 				}
 
+				.stopTemp {
+					justify-content: space-between;
+					align-items: center;
+					position: relative;
+					top: 24rpx;
+
+					&-left {
+						display: flex;
+						align-items: center;
+						font-size: 25rpx;
+						font-family: FZLanTingHeiS-R-GB;
+						font-weight: 400;
+						color: #88878C;
+						letter-spacing: 2rpx;
+
+						.stopCode {
+							color: #89f756;
+							background-color: black;
+							text-align: center;
+							border-radius: 4rpx;
+							padding: 0 10rpx;
+							margin-left: 6rpx;
+						}
+					}
+
+					&-right {
+						display: flex;
+						align-items: center;
+
+						image {
+							width: 40rpx;
+							height: 40rpx;
+							display: block;
+							margin-right: 10rpx;
+							border-radius: 50%;
+						}
+
+						.name {
+							font-size: 25rpx;
+							font-family: FZLanTingHeiS-R-GB;
+							font-weight: 400;
+							color: #88878C;
+						}
+					}
+				}
+
 				.actionContent {
 					justify-content: flex-end;
 					align-items: center;
-
+					position: relative;
+					bottom: 4rpx;
 					.actionButton {
 						background-size: 100% 100%;
 						font-family: FZLanTingHeiS-R-GB;

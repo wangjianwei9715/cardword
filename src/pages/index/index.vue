@@ -327,7 +327,7 @@
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
 				// #ifndef MP
-				this.topAddList = data.topAddList;
+				this.topAddList = data.addList;
 				this.hotList.broadCast.list = data.broadCast;
 				this.hotList.hot.list = data.hotSeries;
 				// #endif

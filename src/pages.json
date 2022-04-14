@@ -274,23 +274,42 @@
             "root": "pages/act",
             "pages": [
                 {
-                    "path": "loot/index",
-                    "style": {
-                        "navigationBarTitleText": "欧皇夺宝",
-                        "enablePullDownRefresh": true,
-                        "backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-                    }
-                },
-                {
-                    "path": "loot/loot_myPrize",
-                    "style": {
-                        "navigationBarTitleText": "我的奖品",
-                        "enablePullDownRefresh": true,
-                        "backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-                        "backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-                    }
-                },
+					"path": "loot/index",
+					"style": {
+						"navigationBarTitleText": "欧皇夺宝",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "loot/loot_myPrize",
+					"style": {
+						"navigationBarTitleText": "我的奖品",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "saveThum/saveThum_list",
+					"style": {
+						// "navigationStyle": "custom",
+						"navigationBarTitleText": "金卡点赞榜",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "saveThum/selectCar",
+					"style": {
+						"navigationBarTitleText": "选择金卡",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
                 {
                     "path": "ref/ref",
                     "style": {
