@@ -10,6 +10,9 @@
 				</image>
 			</view>
 		</view>
+		<view style="padding-top:70rpx">
+			<statusbar />
+		</view>
 		<image class='topImge' src="../../../static/act/saveThum/back.png" mode="widthFix"></image>
 		<view class="centerTitle uni-flex">
 			<image src="../../../static/act/saveThum/left.png" mode=""></image>
@@ -344,7 +347,7 @@
 
 	.topImge {
 		width: 750rpx;
-		margin-top: 90rpx;
+		// margin-top: 90rpx;
 	}
 
 	.noneBlock {
@@ -369,7 +372,7 @@
 		left: 0;
 		right: 0;
 		margin: auto;
-		top: 224rpx;
+		top: 294rpx;
 		z-index: 1000;
 		transition: all 0.2s;
 		pointer-events: none;
@@ -630,78 +633,6 @@
 			font-family: PingFangSC-Medium;
 			font-weight: bold;
 			color: #FCB825;
-		}
-	}
-
-	.header-banner {
-		width: 100%;
-		background: #fff;
-		position: fixed;
-		left: 0;
-		top: 0;
-		box-sizing: border-box;
-		z-index: 10;
-		border-bottom: 1px solid #f4f3f2;
-
-		.tab-header {
-			width: 100%;
-			height: 88rpx;
-			display: flex;
-			box-sizing: border-box;
-			padding: 0 30rpx;
-			position: relative;
-			z-index: 10;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.icon-back {
-			width: 80rpx;
-			height: 88rpx;
-			background: url(../../../static/goods/back@2x.png) no-repeat center;
-			background-size: 100% 100%;
-			position: absolute;
-			left: 0;
-			top: 0;
-		}
-
-		.header-title {
-			height: 88rpx;
-			display: flex;
-			align-items: center;
-			font-size: 32rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #14151a;
-
-			&-img {
-				width: 48rpx;
-				height: 48rpx;
-				border-radius: 50%;
-				margin-right: 20rpx;
-			}
-		}
-
-		.header-right {
-			position: absolute;
-			right: 0;
-			align-items: center;
-
-			image {
-				width: 41rpx;
-				margin-right: 37rpx;
-			}
-		}
-
-		.icon-liaotian {
-			width: 40rpx;
-			height: 38rpx;
-			position: absolute;
-			right: 32rpx;
-			top: 50%;
-			margin-top: -21rpx;
-			background: url(../../../static/userinfo/liaotian@2x.png) no-repeat center;
-			background-size: 100% 100%;
 		}
 	}
 
