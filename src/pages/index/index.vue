@@ -64,7 +64,7 @@
 		</view>
 		
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="true"  @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
+			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"  @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
@@ -148,6 +148,7 @@
 			{id:4,name:'其他'}
 		];
 		goodTabCheck = 1;
+		indexSwiper = true;
 		goodsList:any = [];
 		// fetchFrom:第几个数据开始  fetchSize:取几个数据
 		fetchFrom = 1;
@@ -462,6 +463,7 @@
 			if(id==this.goodTabCheck){
 				return;
 			}
+			this.indexSwiper = id==1?true:false;
 			this.goodTabCheck = id
 			this.reqSearchList()
 		}
@@ -569,7 +571,7 @@
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:10rpx 50rpx 10rpx 50rpx;
+		padding:10rpx 44rpx 10rpx 44rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -597,7 +599,7 @@
 	.tabtext{
 		width: 100%;
 		height:34rpx;
-		font-size: $font-24;
+		font-size: 23rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #14151A;
@@ -616,7 +618,7 @@
 	.goodslist-index{
 		width: 100%;
 		box-sizing: border-box;
-		padding:16rpx 14rpx;
+		padding:6rpx 14rpx;
 		
 	}
 	
@@ -762,7 +764,7 @@
 	}
 	.header-search{
 		width: 100%;
-		height: 62rpx;
+		height: 65rpx;
 		background: #FFFFFF;
 		border: 2rpx solid #F5162B;
 		border-radius: 40rpx;
@@ -771,7 +773,7 @@
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #A3A3A3;
-		line-height: 62rpx;
+		line-height: 65rpx;
 		box-sizing: border-box;
 		padding-left: 34rpx;
 		display: flex;
@@ -790,11 +792,12 @@
 		background: #F5162B;
 		border-radius: 30rpx;
 		position: absolute;
-		right:2rpx;
-		top:2rpx;
+		right:3rpx;
+		top:50%;
+		margin-top: -27rpx;
 		text-align: center;
 		line-height: 54rpx;
-		font-size: 24rpx;
+		font-size: 28rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #FFFFFF;

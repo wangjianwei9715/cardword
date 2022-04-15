@@ -77,12 +77,12 @@
 		width: 100%;
 		height:185rpx;
 		box-sizing: border-box;
-		padding: 0 20rpx;
+		padding: 0 14rpx;
 		background: linear-gradient(0deg, $content-bg, #FFFFFF 80%, #FFFFFF);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 20rpx;
+		margin-top: 16rpx;
 	}
 	.tab-hot-box{
 		width: 236rpx;
@@ -102,7 +102,7 @@
 		width: 100%;
 		height:50rpx;
 		text-align: center;
-		font-size: 28rpx;
+		font-size: 29rpx;
 		font-family: PingFangSC-Medium;
 		font-weight: bold;
 		color: #333333;
@@ -113,7 +113,7 @@
 		width: 100%;
 		height:35rpx;
 		text-align: center;
-		font-size: 18rpx;
+		font-size: 21rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #565656;

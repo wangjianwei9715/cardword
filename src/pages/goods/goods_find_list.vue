@@ -11,7 +11,7 @@
 			<view class="header-tab">
 				<tabc :tabc="classifyData" :tabsCheck="classifyOpt" @tabsClick="onClickListTabs"></tabc>
 			</view>
-			<sortTabCopy :maskTop='400' :sortData='sortData' @tagChange='onClickListTabs'></sortTabCopy>
+			<sortTabCopy :maskTop='400' :sortData='sortData' @tagChange='onClickListSortTabs'></sortTabCopy>
 			<!-- <view class="header-sort">
 				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}" v-for="item in sortData" :key="item.id" @click="onClickSort(item)">
 					{{item.name}}
@@ -150,28 +150,7 @@ export default class ClassName extends BaseNode {
     }
   ];
   classifyOpt = 100;
-  //   playTypeData = [
-  //     {
-  //       id: 0,
-  //       name: "随机卡种"
-  //     },
-  //     {
-  //       id: 1,
-  //       name: "自选球队"
-  //     },
-  //     {
-  //       id: 2,
-  //       name: "随机球员"
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "随机球队"
-  //     },
-  //     {
-  //       id: 4,
-  //       name: "随机卡包"
-  //     }
-  //   ];
+
   playTypeCurrent = -1;
   classifyShow = false;
   classifyShowPlay = false;
@@ -184,7 +163,7 @@ export default class ClassName extends BaseNode {
   scrollIdSt: any = 0;
   seriesList: any = [];
   clickSerieItem: any = {};
-  tagParams: any = {};
+  tagParams: any = {  };
   onLoad(query: any) {
     if (query.q) {
       this.searchText = query.q;
@@ -245,50 +224,16 @@ export default class ClassName extends BaseNode {
       url: "/pages/goods/goods_find?q=" + this.searchText
     });
   }
-  //   onClickListTabs(id: number) {
-  //     if (id == this.classifyOpt) {
-  //       return;
-  //     }
-  //     this.classifyOpt = id;
-  //     this.reqSearchList();
-  //   }
-  onClickListTabs(data: any) {
+  onClickListSortTabs(data: any) {
     console.log(data);
-    this.tagParams = data;
+    this.tagParams = data ;
     this.reqSearchList();
   }
-  // 排序选择
-  //   onClickSort(item: any) {
-  //     this.onClickClassifyCancel();
-  //     if (item.id == 1) {
-  //       this.classifyShow = true;
-  //     } else if (item.id == 2) {
-  //       this.classifyShowPlay = true;
-  //     } else {
-  //       item.odType = item.odType == 2 ? (item.odType = 0) : (item.odType += 1);
-  //       this.reqSearchList();
-  //     }
-  //   }
-  //   onClickClassifyOpt(id: number) {
-  //     if (this.goodTabCheck == id) return;
-  //     this.goodTabCheck = id;
-  //     this.sortData.state.name = orderGoodsTypeDesc(id);
-  //     this.onClickClassifyCancel();
-  //     this.reqSearchList();
-  //   }
-  //   onClickClassifyOptPlay(id: number) {
-  //     if (this.playTypeCurrent == id) return;
-  //     this.playTypeCurrent = id;
-  //     this.sortData.type.name = orderPlayDesc(id);
-  //     this.onClickClassifyCancel();
-  //     this.reqSearchList();
-  //   }
-  //   //分类取消
-  //   onClickClassifyCancel() {
-  //     this.classifyShow = false;
-  //     this.classifyShowPlay = false;
-  //   }
-  // 跳转商品详情
+  onClickListTabs(index:number) {
+    if(this.classifyOpt == index) return;
+    this.classifyOpt = index;
+    this.reqSearchList();
+  }
   onClickJumpDetails(id: any) {
     uni.navigateTo({
       url: "/pages/goods/goods_details?id=" + id
@@ -323,9 +268,7 @@ export default class ClassName extends BaseNode {
       state: Number(this.goodTabCheck),
       pageSize: 10
     };
-    if (this.classifyOpt != 100) {
-      params.tp = Number(this.classifyOpt);
-    }
+    if(this.classifyOpt!=100) params.tp = this.classifyOpt
     params.q = this.searchText == "" ? "" : this.searchText;
     if (this.clickSerieItem.title)
       params.q = `serie:${this.clickSerieItem.title}${
@@ -354,6 +297,7 @@ export default class ClassName extends BaseNode {
     // }
     let date: any = new Date();
     params.timeStamp = Date.parse(date) / 1000;
+
     app.http.Get(
       "dataApi/search/good",
       { ...params, ...this.tagParams },

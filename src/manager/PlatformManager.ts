@@ -474,6 +474,54 @@ export default class PlatformManager {
 			}
 		});
 	}
+	// canvas图片生成
+	canvasToTempFilePath(canvasName:string,func?:Function){
+        // #ifndef MP-ALIPAY
+        uni.canvasToTempFilePath({
+            canvasId: canvasName,
+            success: (res: any) => {
+                uni.hideLoading();
+                // 在H5平台下，tempFilePath 为 base64
+                console.log("res.tempFilePath:" + res.tempFilePath);
+                if (func) {
+                    func(res);
+                }
+            },
+            fail: () => {
+                uni.hideLoading();
+                uni.showToast({
+                    title: "图片加载失败",
+                    icon:'none',
+                    duration: 2000,
+                });
+            },
+        });
+        // #endif
+    }
+	// 保存图片
+	saveImageToPhotosAlbum(imgUrl:string,func?:Function){
+        // #ifndef H5
+        uni.saveImageToPhotosAlbum({
+            filePath: imgUrl, //    图片文件路径，可以是临时文件路径也可以是永久文件路径，不支持网络图片路径
+            success: () => {
+                uni.showToast({
+                    title: "保存成功",
+                    duration: 2000,
+                });
+                if (func) {
+                    func();
+                }
+            },
+            fail: () => {
+                uni.showToast({
+                    title: "保存失败",
+                    icon:'none',
+                    duration: 2000,
+                });
+            },
+        });
+		// #endif
+    }
 	// 节流
 	throttle(fn:any,delay:any){
 		let valid = true

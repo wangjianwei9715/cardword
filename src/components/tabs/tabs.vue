@@ -1,6 +1,6 @@
 <template>
 	<view class="list">
-		<view class="index" v-for="item in tabs" :key="item.id" @click="onClickIndex(item.id)">
+		<view class="index list-index" v-for="item in tabs" :key="item.id" @click="onClickIndex(item.id)">
 			<view  :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]">
 				{{item.name}}
 				<!-- <view v-if="item.name=='新品'" class="new-icon"></view> -->
@@ -66,8 +66,7 @@
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		padding:0 36rpx;
+		padding:0 55rpx;
 		position: relative;
 		padding-top: 14rpx;
 	}
@@ -88,7 +87,7 @@
 	.index{
 		height:84rpx;
 		line-height: 84rpx;
-		font-size: 30rpx;
+		font-size: 33rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #494949;
@@ -98,10 +97,13 @@
 		position: relative;
 		z-index: 4;
 	}
+	.list-index{
+		margin-right: 90rpx;
+	}
 	.current{
-		font-size:40rpx;
+		font-size:46rpx;
 		font-family: PingFangSC-Regular;
-		font-weight: 400;
+		font-weight: 600;
 		color: #333333;
 		position: relative;
 	}

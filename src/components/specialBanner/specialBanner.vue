@@ -68,7 +68,7 @@
       <view class="time">{{ bannerList.time?dateFormat(bannerList.time):'' }}</view>
     </view>
     <view class="special-bottom" >
-      <view class="special-bottom-inedx" v-for="(item,index) in shareData" :key="index">
+      <view class="special-bottom-inedx" v-for="(item,index) in shareData" :key="index" @click="onClickShare(item.scene)">
         <image class="special-icon" :src="item.icon"/>
         <view class="special-name">{{item.name}}</view>
       </view>
@@ -76,7 +76,8 @@
 
     
     <!-- 绘制海报canvas -->
-    <canvas canvas-id="mycanvas" style="width: 750rpx;height:1334rpx;position: absolute;top: 0;left: 10000rpx;"></canvas>
+    <image v-show="false" :src="canvasImg" class="canvas-img"></image>
+    <canvas canvas-id="mycanvas" class="canvas-box"></canvas>
   </view>
 </template>
 
@@ -84,6 +85,8 @@
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
   import { dateFormat } from "@/tools/util"
+  import { app } from "@/app";
+  import * as imgUtils from '@/tools/imgUtils';
   const DesignWidth = 750;
 	@Component({})
 	export default class ClassName extends BaseComponent {
@@ -107,12 +110,16 @@
     swiperIng = false;
     swiperIndex = 0;
     shareData = [
-      {icon:'../../../static/userinfo/winningCard/icon_wechat.png',name:'微信'},
-      {icon:'../../../static/userinfo/winningCard/icon_pyq.png',name:'朋友圈'},
-      {icon:'../../../static/userinfo/winningCard/icon_save.png',name:'保存图片'},
+      {icon:'../../../static/userinfo/winningCard/icon_wechat.png',name:'微信',scene:'WXSceneSession'},
+      {icon:'../../../static/userinfo/winningCard/icon_pyq.png',name:'朋友圈',scene:'WXSenceTimeline'},
+      {icon:'../../../static/userinfo/winningCard/icon_save.png',name:'保存图片',scene:''},
     ]
     // 合成海报
     canvasBg = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/bg.jpg';
+    canvasLogo = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/logo.png';
+    canvasEwm = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/logo.png';
+    canvasTitle = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/title.png';
+    canvasImg = '';
 		created(){
 		}
 		mounted(){
@@ -172,7 +179,19 @@
       this.swiperLeft = false;
       this.curIndex = 0
     }
-
+    async onClickShare(scene:string){
+      let imageSrc:any = await this.getShareAppImg();
+      if(scene==''){
+        app.platform.saveImageToPhotosAlbum(imageSrc,(res:any)=>{})
+      }else{
+        uni.share({
+          provider:'weixin',
+          type:2,
+          scene:scene,
+          imageUrl:imageSrc
+        });
+      }
+    }
     // 生成海报
     getShareAppImg(){
       return new Promise((resolve, reject) => {
@@ -181,8 +200,49 @@
         // 屏幕宽高 宽度比
         let ratio = systemInfo.windowWidth / DesignWidth;
         let ctx = uni.createCanvasContext("mycanvas");
+        
+        ctx.drawImage(this.canvasBg, 0, 0, 750 * ratio, 1334 * ratio);
+        ctx.drawImage(this.canvasTitle, 38 * ratio, 48 * ratio, 205 * ratio, 50 * ratio);
+        imgUtils.darwRoundRect(36 * ratio, 134 * ratio, 679 * ratio, 861 * ratio, 0, ctx,"#FFFFFF");
+        imgUtils.darwRoundRect(51 * ratio, 147 * ratio, 650 * ratio, 833 * ratio, 0, ctx,"#383a49");
+        let obj = uni.createSelectorQuery().select(".slide-image");
+        obj.boundingClientRect((data:any)=> {
+          let picData = {width:Math.floor(data.width),height:Math.floor(data.height)};
+          console.log('pic===',picData)
+          let picX = Math.floor((51 * ratio) + (((650 * ratio) - picData.width)/2));
+          let picY = Math.floor((147 * ratio) + (((833 * ratio) - picData.height)/2));
+          console.log('picX=',picX,',picY=',picY)
+          // ctx.drawImage(this.canvasLogo, picX, picY, picData.width, picData.height);
+          ctx.drawImage(decodeURIComponent(this.bannerList.pic[this.curIndex]), 51 * ratio, 147 * ratio, 650 * ratio, 833 * ratio);
+        }).exec();
+        ctx.save();
+        ctx.drawImage(this.canvasLogo, 50 * ratio, 1143 * ratio, 131 * ratio, 131 * ratio);
+        ctx.drawImage(this.canvasEwm, 197 * ratio, 1143 * ratio, 131 * ratio, 131 * ratio);
 
-        ctx.drawImage(this.canvasBg, 0, 0, 750 * ratio, 1334* ratio);
+        let fontSize = Math.floor(31 * ratio);
+        ctx.setFontSize(fontSize);
+        ctx.fillStyle = "#383a49";
+        let strObj:any = imgUtils.getTwoLineStr(ctx, this.bannerList.name, 680* ratio);
+        for(let i = 0; i<strObj.length;i++){
+          ctx.fillText(strObj[i] , 51* ratio , (1060+(50*i)) * ratio);
+        }
+
+        ctx.setFontSize(29)
+        ctx.font = "nomarl bold 29px Arial,sans-serif"
+        ctx.setFillStyle('#777777')
+        ctx.fillText("长按识别二维码了解更多", 357 * ratio, 1220 * ratio);
+
+        uni.showLoading({title: "图片生成中"});
+        setTimeout(()=>{
+          ctx.draw(true, () => {
+              setTimeout(() => {
+                  app.platform.canvasToTempFilePath('mycanvas', (res: any) => {
+                      this.canvasImg = res.tempFilePath;
+                      resolve(res.tempFilePath);
+                  });
+              }, 200)
+          });
+        },500)
       })
     }
 	}
@@ -193,6 +253,7 @@
   width: 100%;
   height: 950rpx;
   box-sizing: border-box;
+  font-family: Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', STXihei, 'Microsoft YaHei', SimHei;
   .banner-container-header{
     width: 100%;
     height:140rpx;
@@ -364,5 +425,22 @@
       margin-top: 13rpx;
     }
   }
+}
+.canvas-box{
+  width: 750rpx;
+  height:1334rpx;
+  position: absolute;
+  top: 0;
+  font-size: 25rpx;
+  left: 10000rpx;
+  font-family: Helvetica, Tahoma, Arial, 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', STXihei, 'Microsoft YaHei', SimHei;
+}
+.canvas-img{
+  width: 100%;
+  height:1334rpx;
+  position: fixed;
+  left:0;
+  top:0;
+  z-index: 999;
 }
 </style>
