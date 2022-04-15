@@ -85,7 +85,7 @@
 			this.$emit('teamRandomCancel')
 		}
 		onClickCardCode(){
-			this.$emit('cardCode')
+			this.$emit('cardCode',{id:this.teamRandomData[this.currentIndex].id})
 		}
 		onClickBuy(){
 			let data = this.teamRandomData[this.currentIndex];

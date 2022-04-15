@@ -536,9 +536,13 @@
 				url: '/pages/userinfo/merchant_shopsV2?id='+this.goodsData.publisher.id
 			})
 		}
-		onClickAllCard(){
+		onClickAllCard(data?:any){
+			let url = '/pages/goods/all_good_card?code='+this.goodsData.goodCode+'&type='+this.goodsData.pintuan_type;
+			if(data){
+				url += '&teamId='+data.id
+			}
 			uni.navigateTo({
-				url: '/pages/goods/all_good_card?code='+this.goodsData.goodCode+'&type='+this.goodsData.pintuan_type
+				url: url
 			})
 		}
 		// 分享

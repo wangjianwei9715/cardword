@@ -51,10 +51,14 @@
 		scrollIdSt:any = 0;
 		goodTitle = '';
 		tabWidth:any = '';
+		teamId = 0;
 		onLoad(query: any) {
 			if(query.code){
 				this.goodCode = query.code;
-				this.goodType = query.type
+				this.goodType = query.type;
+				if(query.teamId){
+					this.teamId = Number(query.teamId)
+				}
 				this.reqNewData()
 			}
 		}
@@ -77,6 +81,7 @@
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 			}
+			if(this.teamId>0) params.teamId = this.teamId;
 			
 			app.http.Get("good/"+this.goodCode+'/noList', params, (data: any) => {
 				this.goodTitle = data.goodTitle;
