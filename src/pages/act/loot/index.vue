@@ -728,24 +728,26 @@
 				font-family: FZLanTingHeiS-R-GB;
 				font-weight: 400;
 				color: #FFFFFF;
-				line-height: 34rpx;
+				// line-height: 34rpx;
 				z-index: 1;
 				position: absolute;
 				left: 0;
 				top: 0;
-				text-align: right;
-
+				display:flex;
+				align-items: center;
 				image {
 					width: 25rpx;
 					height: 21rpx;
 					display: block;
-					position: absolute;
-					left: 7rpx;
-					top: 6rpx;
+					margin-left: 7rpx;
+					// position: absolute;
+					// left: 7rpx;
+					// top: 6rpx;
 				}
 
 				text {
-					text-align: right;
+					margin-left: 7rpx;
+					display: block;
 					padding-right: 13rpx;
 				}
 			}
