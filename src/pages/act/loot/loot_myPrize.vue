@@ -130,7 +130,7 @@
 					.actionContent {
 						justify-content: flex-end;
 						align-items: center;
-						margin-top: 40rpx;
+						margin-top: 20rpx;
 						position: relative;
 						.yhTips{
 							font-size: 25rpx;
@@ -139,6 +139,7 @@
 							color: #88878C;
 							position: absolute;
 							left: 0;
+							top: 2rpx;
 						}
 						.actionButton {
 							background-size: 100% 100%;

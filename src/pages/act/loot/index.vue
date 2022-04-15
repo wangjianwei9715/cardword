@@ -107,15 +107,20 @@
 			</image>
 			<view class="title">获取欧气码</view>
 			<view class="counterModal uni-flex">
-				<image class="reduce" src="../../../static/act/loot/-.png" @click="luckAction('reduce')"></image>
+				<view @click="luckAction('reduce')" class="clickable">
+					<image class="reduce" src="../../../static/act/loot/-.png"></image>
+				</view>
 				<image class="line" src="../../../static/act/loot/line.png"></image>
 				<view class="center">
-					<view class="number uni-flex"><input type="number" v-model="consumeLuckGas" @input="luckGayInput">
+					<view class="number uni-flex">
+						<input type="number" @input="luckGayInput" v-model="consumeLuckGas">
 					</view>
 					<view class="text oneLineOver">消耗{{consumeLuckGas}}欧气</view>
 				</view>
 				<image class="line" src="../../../static/act/loot/line.png"></image>
-				<image class="add" src="../../../static/act/loot/+.png" @click="luckAction('add')"></image>
+				<view class="clickable" @click="luckAction('add')">
+					<image class="add" src="../../../static/act/loot/+.png"></image>
+				</view>
 			</view>
 			<view class="text" style="text-align: center;margin: 20rpx auto;">参与次数越多，夺宝概率越大</view>
 			<view class="btn" @click="joinConfirm">确定参与</view>
@@ -390,12 +395,12 @@
 		//计数器加减操作
 		luckAction(type: string) {
 			if (
-				(this.consumeLuckGas >= this.luckyGas && type === "add") ||
-				(this.consumeLuckGas === 1 && type === "reduce")
+				(+this.consumeLuckGas >= this.luckyGas && type === "add") ||
+				(+this.consumeLuckGas === 1 && type === "reduce")
 			)
 				return;
-			if (this.consumeLuckGas >= (this.selectItem.total_num - this.selectItem.take_num) && type === "add") return
-			let copyNum = this.consumeLuckGas;
+			if (+this.consumeLuckGas >= (this.selectItem.total_num - this.selectItem.take_num) && type === "add") return
+			let copyNum = +this.consumeLuckGas;
 			copyNum = type == "add" ? copyNum + 1 : copyNum - 1;
 			this.consumeLuckGas = copyNum;
 		}
@@ -419,7 +424,7 @@
 		scrolltolower() {
 			if (this.codeParams.pageIndex < this.codeTotalPage) {
 				this.codeParams.pageIndex += 1
-				
+
 				this.handleGetOq(this.selectItem, false)
 			}
 		}
@@ -477,13 +482,13 @@
 				this.queryParams.pageIndex = 1
 				this.reqNewData()
 			})
-			// setTimeout(() => {
-			// 	if (!this.isJoinSuccess) {
-			// 		this.queryParams.pageIndex = 1
-			// 		this.reqNewData()
-			// 		this.luckyGasModalShow = false
-			// 	}
-			// }, 2000)
+			setTimeout(() => {
+				if (!this.isJoinSuccess) {
+					this.queryParams.pageIndex = 1
+					this.reqNewData()
+					this.luckyGasModalShow = false
+				}
+			}, 3000)
 
 		}
 		//获取任务列表以及个人欧气值
@@ -573,6 +578,13 @@
 	}
 
 
+	.clickable {
+		width: 50rpx;
+		height: 50rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
 	.topBanner {
 		width: 750rpx;
@@ -733,8 +745,9 @@
 				position: absolute;
 				left: 0;
 				top: 0;
-				display:flex;
+				display: flex;
 				align-items: center;
+
 				image {
 					width: 25rpx;
 					height: 21rpx;
@@ -935,6 +948,9 @@
 					font-family: FZLanTingHeiS-B-GB;
 					font-weight: bolder;
 					color: #333333;
+				}
+				.number input{
+					font-size: 38rpx;
 				}
 			}
 		}
