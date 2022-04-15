@@ -232,7 +232,7 @@
 		&-title {
 			// width: 100%;
 			height: 60rpx;
-			font-size: 26rpx;
+			font-size: 27rpx;
 			font-family:PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
@@ -312,7 +312,7 @@
 
 			.bottom-left {
 				max-width: 140rpx;
-				font-size: 20rpx;
+				font-size: 24rpx;
 				font-family:PingFangSC-Regular;
 				font-weight: 400;
 				color: #BCBCBC;
@@ -337,7 +337,7 @@
 				.bussName {
 					max-width: 130rpx;
 					position: relative;
-					font-size: 20rpx;
+					font-size: 24rpx;
 					font-family:PingFangSC-Regular;
 					font-weight: 400;
 					color: #595959;

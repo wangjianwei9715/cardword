@@ -20,11 +20,11 @@
         />
       </view>
       <view class="tabc-content">
-        <tabs
-          :tabs="goodTab"
+        <tabc
+          :tabc="goodTab"
           :tabsCheck="goodTabCheck"
           @tabsClick="onClickListTabs"
-        ></tabs>
+        ></tabc>
       </view>
     </view>
 

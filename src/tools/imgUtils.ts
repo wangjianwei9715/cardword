@@ -63,7 +63,40 @@ export function roundRect(ctx: UniApp.CanvasContext, img: string, x: number, y: 
     // ctx.fill();
     ctx.closePath();
 }
-
+// 自动换两行
+export function getTwoLineStr (ctx:UniApp.CanvasContext, str:string, line:number) {
+    var lineWidth = 0
+    var s = ''
+    // 超出两行切到两行内
+    for (let j = 0; j < str.length; j++) {
+        lineWidth += ctx.measureText(str[j]).width
+        if (lineWidth > line * 2 - 50) {
+        s = str.substring(0, j)
+            break
+        }
+    }
+    if (lineWidth < line) {
+        return [str]
+    }
+    if (s === '') {
+        return cutTwo(str, ctx, line)
+    }
+    if (s !== '') {
+        return cutTwo(s, ctx, line, 'out')
+    }
+}
+export function cutTwo (str:string, ctx:UniApp.CanvasContext, line:number, flag?:string) {
+    let onelineWidth = 0
+    for (let i = 0; i < str.length; i++) {
+        onelineWidth += ctx.measureText(str[i]).width
+        if (onelineWidth > line) {
+            return [
+                str.substring(0, i),
+                flag === 'out' ? str.substring(i, str.length - 1) + '...' : str.substring(i, str.length - 1)
+            ]
+        }
+    }
+}
 //canvas文字超出一行省略
 export function fittingString(_ctx: UniApp.CanvasContext, str: string, maxWidth: number):string {
     let strWidth = _ctx.measureText(str).width;
