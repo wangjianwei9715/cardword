@@ -24,6 +24,7 @@
 		<view class="prizeContent">
 			<view class="prizeItem" v-for="(item,index) in lootList" :key="index">
 				<view class="bigPrize" v-if="item.isGood===1">
+					<image src="../../../static/act/loot/bigPirze_icon.png" mode=""></image>
 					<text>欧皇大奖</text>
 				</view>
 				<image class="prize-left" :src='decodeURIComponent(item.award_pic)' mode='aspectFill'></image>
@@ -106,16 +107,22 @@
 			</image>
 			<view class="title">获取欧气码</view>
 			<view class="counterModal uni-flex">
-				<image class="reduce" src="../../../static/act/loot/-.png" @click="luckAction('reduce')"></image>
-				<image class="line" src="../../../static/act/loot/line.png"></image>
-				<view class="center">
-					<view class="number">{{consumeLuckGas}}个</view>
-					<view class="text">消耗{{consumeLuckGas}}欧气</view>
+				<view @click="luckAction('reduce')" class="clickable">
+					<image class="reduce" src="../../../static/act/loot/-.png"></image>
 				</view>
 				<image class="line" src="../../../static/act/loot/line.png"></image>
-				<image class="add" src="../../../static/act/loot/+.png" @click="luckAction('add')"></image>
+				<view class="center">
+					<view class="number uni-flex">
+						<input type="number" @input="luckGayInput" v-model="consumeLuckGas">
+					</view>
+					<view class="text oneLineOver">消耗{{consumeLuckGas}}欧气</view>
+				</view>
+				<image class="line" src="../../../static/act/loot/line.png"></image>
+				<view class="clickable" @click="luckAction('add')">
+					<image class="add" src="../../../static/act/loot/+.png"></image>
+				</view>
 			</view>
-			<view class="text" style="text-align: center;margin: 14rpx auto;">参与次数越多，夺宝概率越大</view>
+			<view class="text" style="text-align: center;margin: 20rpx auto;">参与次数越多，夺宝概率越大</view>
 			<view class="btn" @click="joinConfirm">确定参与</view>
 		</view>
 		<!-- 欧气码弹窗 -->
@@ -388,19 +395,36 @@
 		//计数器加减操作
 		luckAction(type: string) {
 			if (
-				(this.consumeLuckGas >= this.luckyGas && type === "add") ||
-				(this.consumeLuckGas === 1 && type === "reduce")
+				(+this.consumeLuckGas >= this.luckyGas && type === "add") ||
+				(+this.consumeLuckGas === 1 && type === "reduce")
 			)
 				return;
-			if (this.consumeLuckGas >= (this.selectItem.total_num - this.selectItem.take_num) && type === "add") return
-			let copyNum = this.consumeLuckGas;
+			if (+this.consumeLuckGas >= (this.selectItem.total_num - this.selectItem.take_num) && type === "add") return
+			let copyNum = +this.consumeLuckGas;
 			copyNum = type == "add" ? copyNum + 1 : copyNum - 1;
 			this.consumeLuckGas = copyNum;
+		}
+		//
+		luckGayInput(event: any) {
+			const residueNum = this.selectItem.total_num - this.selectItem.take_num
+			if (Number(event.detail.value) > residueNum) {
+				setTimeout(() => {
+					this.consumeLuckGas = residueNum;
+				}, 100);
+				return
+			}
+			if (Number(event.detail.value) > this.luckyGas) {
+				setTimeout(() => {
+					this.consumeLuckGas = this.luckyGas;
+				}, 100);
+			}
+
 		}
 		//欧气码触底事件
 		scrolltolower() {
 			if (this.codeParams.pageIndex < this.codeTotalPage) {
 				this.codeParams.pageIndex += 1
+
 				this.handleGetOq(this.selectItem, false)
 			}
 		}
@@ -412,7 +436,8 @@
 				})
 				return
 			}
-			if (isRefsh) this.codeParams.index = 1
+			if (isRefsh) this.codeParams.pageIndex = 1
+			this.selectItem = item;
 			app.http.Get('activity/snatchTreasure/myLuckyGasCode/' + item.id, this.codeParams, (res: any) => {
 				this.codeTotalPage = res.totalPage || 0
 				const arr = res.list || [];
@@ -425,12 +450,30 @@
 		//参与夺宝
 		joinConfirm() {
 			if (+new Date() - this.joinConfirmTime <= 1000 * 1) return
+			if (!this.consumeLuckGas) {
+				uni.showToast({
+					title: '请输入有效的欧气值',
+					icon: 'none'
+				})
+				return
+			}
+			if (+this.consumeLuckGas > this.luckyGas) {
+				uni.showToast({
+					title: '您的欧气值不足',
+					icon: 'none'
+				})
+				return
+			}
 			this.joinConfirmTime = +new Date()
 			this.isJoinSuccess = false
+			uni.showLoading({
+				title: ''
+			})
 			app.http.Post('activity/snatchTreasure/active/' + this.selectItem.id, {
-				luckyGasNum: this.consumeLuckGas
+				luckyGasNum: +this.consumeLuckGas
 			}, (res: any) => {
 				this.isJoinSuccess = true
+				uni.hideLoading()
 				this.getTaskList()
 				uni.showToast({
 					title: '参与成功'
@@ -445,7 +488,7 @@
 					this.reqNewData()
 					this.luckyGasModalShow = false
 				}
-			}, 2000)
+			}, 3000)
 
 		}
 		//获取任务列表以及个人欧气值
@@ -535,6 +578,13 @@
 	}
 
 
+	.clickable {
+		width: 50rpx;
+		height: 50rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
 	.topBanner {
 		width: 750rpx;
@@ -683,22 +733,34 @@
 
 			.bigPrize {
 				background-size: 100% 100%;
-				background-image: url("../../../static/act/loot/bigPrize.png");
-				width: 120rpx;
-				height: 28rpx;
-				font-size: 19rpx;
-				line-height: 28rpx;
-				font-family: PingFangSC-Regular;
+				background-image: url("../../../static/act/loot/bigPirze_back.png");
+				width: 143rpx;
+				height: 34rpx;
+				font-size: 23rpx;
+				font-family: FZLanTingHeiS-R-GB;
 				font-weight: 400;
-				color: #ffffff;
+				color: #FFFFFF;
+				// line-height: 34rpx;
 				z-index: 1;
 				position: absolute;
 				left: 0;
 				top: 0;
-				text-align: right;
+				display: flex;
+				align-items: center;
+
+				image {
+					width: 25rpx;
+					height: 21rpx;
+					display: block;
+					margin-left: 7rpx;
+					// position: absolute;
+					// left: 7rpx;
+					// top: 6rpx;
+				}
 
 				text {
-					text-align: right;
+					margin-left: 7rpx;
+					display: block;
 					padding-right: 13rpx;
 				}
 			}
@@ -825,12 +887,12 @@
 	.luckyGasModal {
 		position: fixed;
 		background-color: #fff;
-		top: 433rpx;
+		top: 403rpx;
 		width: 523rpx;
 		left: 0;
 		right: 0;
 		margin: auto;
-		height: 369rpx;
+		height: 449rpx;
 		z-index: 999;
 		transition: all 0.3s;
 		opacity: 0;
@@ -852,7 +914,7 @@
 			background-size: 100% 100%;
 			background-image: url("../../../static/act/loot/counterModal.png");
 			width: 442rpx;
-			height: 102rpx;
+			height: 142rpx;
 			margin: 0 auto;
 			margin-top: 35rpx;
 			align-items: center;
@@ -887,6 +949,9 @@
 					font-weight: bolder;
 					color: #333333;
 				}
+				.number input{
+					font-size: 38rpx;
+				}
 			}
 		}
 
@@ -898,18 +963,20 @@
 		}
 
 		.btn {
-			height: 50rpx;
-			font-size: 25rpx;
+			height: 60rpx;
+			font-size: 29rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
-			color: #ffffff;
 			text-align: center;
 			line-height: 25rpx;
 			width: 300rpx;
-			background-color: #ff0016;
+			background-size: 100% 100%;
+			background-image: url("../../../static/act/loot/blackBtn.png");
 			margin: 0 auto;
+			color: #89f756;
+			// margin-top: 30rpx;
 			letter-spacing: 2rpx;
-			line-height: 50rpx;
+			line-height: 60rpx;
 		}
 	}
 
@@ -921,7 +988,7 @@
 
 	.oqModal {
 		width: 565rpx;
-		height: 387rpx;
+		height: 397rpx;
 		border-radius: 4rpx;
 		position: fixed;
 		top: 441rpx;
@@ -947,7 +1014,7 @@
 		.oqCodeScroll {
 			width: 90%;
 			margin: 0 auto;
-			height: 240rpx;
+			height: 260rpx;
 			margin-top: 35rpx;
 
 			.codeContent {
@@ -957,7 +1024,7 @@
 				.codeItem {
 					text-align: center;
 					width: 20%;
-					font-size: 21rpx;
+					font-size: 28rpx;
 
 					font-weight: 400;
 					color: #333333;

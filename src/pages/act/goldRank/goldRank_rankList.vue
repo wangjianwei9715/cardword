@@ -1,6 +1,19 @@
 <template>
 	<view>
-
+		<view class="staticContent">
+			<view class="rollContent" id='rollContent'>
+				<view class="rollItem" v-for="(item,index) in 20">
+					<image src="../../../static/act/loot/banner.png" mode="aspectFill">
+					</image>
+					<text>{{index}}</text>
+				</view>
+				<view class="rollItem" v-for="(item,index) in 20">
+					<image src="../../../static/act/loot/banner.png" mode="aspectFill">
+					</image>
+					<text>{{index}}</text>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -37,7 +50,12 @@
 		myData: any = {}; //个人rank数据
 		rankList: any = [];
 		onLoad() {
-			this.reqNewData(true)
+			this.$nextTick(() => {
+				const query: any = uni.createSelectorQuery().in(this);
+				query.select('#rollContent').boundingClientRect((data: any) => {
+					console.log(data.width)
+				}).exec();
+			})
 		}
 		tagChange(item: any, index: number) {
 			this.tag.index = index
@@ -63,4 +81,48 @@
 </script>
 
 <style lang="scss">
+	.staticContent {
+		width: 100%;
+		// overflow: hidden;
+		position: relative;
+		height: 300rpx;
+		// overflow-y: auto;
+
+		@keyframes rowup {
+			0% {
+				-webkit-transform: translate3d(0, 0, 0);
+				transform: translate3d(0, 0, 0);
+			}
+
+			100% {
+				-webkit-transform: translate3d(-4400rpx, 0, 0);
+				transform: translate3d(-4400rpx, 0, 0);
+			}
+		}
+
+		.rollContent {
+			position: absolute;
+			display: flex;
+			-webkit-animation: 40s rowup linear infinite normal;
+			animation: 40s rowup linear infinite normal;
+
+			.rollItem {
+				// display: flex;
+				flex-wrap: nowrap;
+
+				image {
+					margin-right: 20rpx;
+					display: block;
+					width: 200rpx;
+					height: 200rpx;
+					margin-bottom: 10rpx;
+				}
+
+				color: #000000;
+				text-align: center;
+			}
+		}
+
+
+	}
 </style>
