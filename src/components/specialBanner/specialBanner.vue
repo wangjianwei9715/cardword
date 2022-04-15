@@ -62,14 +62,21 @@
         </view>
       </swiper-item>
     </swiper>
-    <view class="desc-wrap" @click="curIndex = 0">
+    <view class="desc-wrap">
       <view class="title">{{ bannerList.goodTitle?bannerList.goodTitle:'' }}</view>
       <view class="desc">{{ bannerList.name?bannerList.name:'' }}</view>
       <view class="time">{{ bannerList.time?dateFormat(bannerList.time):'' }}</view>
     </view>
-    <view class="special-bottom">
-      <view class="special-bottom-inedx"></view>
+    <view class="special-bottom" >
+      <view class="special-bottom-inedx" v-for="(item,index) in shareData" :key="index">
+        <image class="special-icon" :src="item.icon"/>
+        <view class="special-name">{{item.name}}</view>
+      </view>
     </view>
+
+    
+    <!-- 绘制海报canvas -->
+    <canvas canvas-id="mycanvas" style="width: 750rpx;height:1334rpx;position: absolute;top: 0;left: 10000rpx;"></canvas>
   </view>
 </template>
 
@@ -77,6 +84,7 @@
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
   import { dateFormat } from "@/tools/util"
+  const DesignWidth = 750;
 	@Component({})
 	export default class ClassName extends BaseComponent {
     dateFormat = dateFormat;
@@ -98,6 +106,13 @@
     swiperLeft = false;
     swiperIng = false;
     swiperIndex = 0;
+    shareData = [
+      {icon:'../../../static/userinfo/winningCard/icon_wechat.png',name:'微信'},
+      {icon:'../../../static/userinfo/winningCard/icon_pyq.png',name:'朋友圈'},
+      {icon:'../../../static/userinfo/winningCard/icon_save.png',name:'保存图片'},
+    ]
+    // 合成海报
+    canvasBg = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/bg.jpg';
 		created(){
 		}
 		mounted(){
@@ -156,6 +171,19 @@
       this.swiperRight = false;
       this.swiperLeft = false;
       this.curIndex = 0
+    }
+
+    // 生成海报
+    getShareAppImg(){
+      return new Promise((resolve, reject) => {
+        // 获取屏幕尺寸
+        let systemInfo = uni.getSystemInfoSync();
+        // 屏幕宽高 宽度比
+        let ratio = systemInfo.windowWidth / DesignWidth;
+        let ctx = uni.createCanvasContext("mycanvas");
+
+        ctx.drawImage(this.canvasBg, 0, 0, 750 * ratio, 1334* ratio);
+      })
     }
 	}
 </script>
@@ -322,6 +350,19 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    .special-icon{
+      width: 73rpx;
+      height:74rpx;
+    }
+    .special-name{
+      width: 100%;
+      font-size: 25rpx;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: #333333;
+      text-align: center;
+      margin-top: 13rpx;
+    }
   }
 }
 </style>
