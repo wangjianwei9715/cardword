@@ -7,9 +7,9 @@
 			<view class="rightFloatItem rule" @click="pageJump('/pages/act/loot/loot_myPrize')"><text>我的奖品</text></view>
 			<view class="rollContent" id='rollContent'>
 				<view class="rollHidden" id='rollHidden' :style="{transform:`translateX(${rollX}px)`}">
-					<view class="rollItem" v-for="item in personJoinList">
+					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
 						<image :src="decodeURIComponent(item.userAvatar)" mode=""></image>
-						<view class="name oneLineOver">加入了{{item.name}}</view>
+						<view class="name oneLineOver">{{item.tp===2?'获得了':'加入了'}}{{item.name}}</view>
 					</view>
 				</view>
 			</view>
@@ -26,9 +26,7 @@
 				<view class="bigPrize" v-if="item.isGood===1">
 					<text>欧皇大奖</text>
 				</view>
-				<image class="prize-left"
-					:src='decodeURIComponent(item.award_pic)'
-					mode='aspectFill'></image>
+				<image class="prize-left" :src='decodeURIComponent(item.award_pic)' mode='aspectFill'></image>
 				<view class="prize-right">
 					<view class="title oneLineOver">{{item.name}}</view>
 					<view class="probability publicText uni-flex" v-if="item.status==1">
@@ -84,18 +82,21 @@
 			</view>
 			<view class="taskContent">
 				<view class="taskItem" v-for="(item,index) in taskList" :key='index'>
-					<image class="taskIcon" :src="`../../../static/act/loot/${taskTipsList[item.id].pic}`" mode="">
-					</image>
-					<view class="taskTips">
-						<view class="taskTips-top uni-flex">
-							<view class="loop" v-if="item.id==5">循环任务</view>
-							{{item.taskName}}
+					<template v-if='taskTipsList[item.id]'>
+						<image class="taskIcon" :src="`../../../static/act/loot/${taskTipsList[item.id].pic}`" mode="">
+						</image>
+						<view class="taskTips">
+							<view class="taskTips-top uni-flex">
+								<view class="loop" v-if="item.id==5">循环任务</view>
+								{{item.taskName}}
+							</view>
+							<view class="taskTips-bottom">欧气+{{item.taskReward}}</view>
 						</view>
-						<view class="taskTips-bottom">欧气+{{item.taskReward}}</view>
-					</view>
-					<view class="taskButton" :class='{noneTaskButton:item.isUse===1}' @click="handleTask(item,index)">
-						{{item.isUse===1?'明日再来':taskTipsList[item.id].tips}}
-					</view>
+						<view class="taskButton" :class='{noneTaskButton:item.isUse===1}'
+							@click="handleTask(item,index)">
+							{{item.isUse===1?'明日再来':taskTipsList[item.id].tips}}
+						</view>
+					</template>
 				</view>
 			</view>
 		</view>
@@ -615,6 +616,10 @@
 						margin-right: 12rpx;
 					}
 				}
+
+				.getAewRollItem {
+					background-image: url('../../../static/act/loot/pinkBlock.png');
+				}
 			}
 		}
 
@@ -715,8 +720,8 @@
 					font-family: PingFangSC-Regular;
 					font-weight: 500;
 					color: #333333;
-					margin-bottom: 13rpx;
-					margin-top: 16rpx;
+					margin-bottom: 10rpx;
+					margin-top: 8rpx;
 				}
 
 				.publicText {
@@ -730,6 +735,7 @@
 					margin-bottom: 13rpx;
 					align-items: center;
 					justify-content: space-between;
+
 					.getUserInfo {
 						display: flex;
 						align-items: center;
@@ -747,7 +753,7 @@
 				.progressContent {
 					justify-content: space-between;
 					align-items: center;
-					margin-bottom: 24rpx;
+					margin-bottom: 20rpx;
 
 					.progress {
 						width: 343rpx;

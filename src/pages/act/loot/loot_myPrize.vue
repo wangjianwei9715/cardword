@@ -3,7 +3,7 @@
 		<view class="prizeContent">
 			<view class="prizeItem" v-for="item in prizeList">
 				<view class="prizeItem-top">
-					<image class="prize-left" :src='item.tp===1?decodeURIComponent(item.award_pic):"https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.12/loot/loot_sw/0/1649763728509b9m4fq61v.png"'></image>
+					<image class="prize-left" :src='decodeURIComponent(item.award_pic)'></image>
 					<view class="prize-right">
 						<view class="title oneLineOver">{{item.name}}</view>
 						<view class="probability">
