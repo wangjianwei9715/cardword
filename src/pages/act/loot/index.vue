@@ -431,7 +431,7 @@
 				})
 				return
 			}
-			if (isRefsh) this.codeParams.index = 1
+			if (isRefsh) this.codeParams.pageIndex = 1
 			this.selectItem = item;
 			app.http.Get('activity/snatchTreasure/myLuckyGasCode/' + item.id, this.codeParams, (res: any) => {
 				this.codeTotalPage = res.totalPage || 0
