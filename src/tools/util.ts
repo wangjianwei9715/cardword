@@ -329,3 +329,29 @@ export function objKeySort(obj:any) {//排序的函数
     }
     return newObj;
 }
+const formatNumberZero = (val:any) => {
+	return val < 10 ? "0" + val : val
+}
+//倒计时
+export function countDown(endDate:number, mmbol:boolean=true){
+	let nowTime:any = new Date();
+	let times:any = new Date(endDate * 1000).getTime() - nowTime.getTime();
+	let ss:any = Math.floor(times / 1000) //毫秒转换为秒
+	let dd = Math.floor(ss / (3600 * 24)); //秒转化为天
+	ss %= 3600 * 24; //整除了天之后还剩下多少秒
+	let hh = Math.floor(ss / 3600); //秒转化为小时
+	hh = formatNumberZero(hh);
+	ss %= 3600; //整除了小时后，还剩下多少秒
+	let mm = Math.floor(ss / 60); //秒转化为分钟
+	mm = formatNumberZero(mm); //如果秒显示小于10，前面加上个零
+	ss %= 60; //整除了分之后，还剩下多少秒
+	ss = formatNumberZero(ss);
+	if (ss < 0) {
+		return `00:00:00`
+	}
+	if (mmbol) {
+		return `${hh}:${mm}:${ss}`
+	} else {
+		return dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
+	}
+}

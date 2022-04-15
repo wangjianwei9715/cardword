@@ -988,7 +988,7 @@
 
 	.oqModal {
 		width: 565rpx;
-		height: 397rpx;
+		height: 417rpx;
 		border-radius: 4rpx;
 		position: fixed;
 		top: 441rpx;
