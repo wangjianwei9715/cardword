@@ -37,7 +37,7 @@
 	export default class ClassName extends BaseComponent {
 		// 中文数字 规则
 		chineseNumber = chineseNumber;
-		guessRules = guessRules;
+		guessRules:any = guessRules;
 		@Prop({
 			default: []
 		})
@@ -79,12 +79,13 @@
 		onClickActHelp(){
 			if(this.drawerMsg==''){
 				app.http.Get('good/'+this.goodsData.goodCode+'/dActivity',{},(res:any)=>{
-					this.drawerMsg = [...this.drawerMsg,...res.list]
+					if(res.list){
+						this.drawerMsg = [...this.drawerMsg,...res.list]
+					}
+					if((this.goodsData.bit & 8) == 8){
+						this.drawerMsg.push(this.guessRules);
+					}
 				})
-				if((this.goodsData.bit & 8) == 8){
-					this.drawerMsg = this.drawerMsg.concat(this.guessRules)
-				}
-				
 			}
 			this.showDrawer = true;
 		}
