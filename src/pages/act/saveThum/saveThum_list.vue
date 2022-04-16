@@ -32,7 +32,7 @@
 				</view>
 				<view class="center text oneLineOver" style="width: 33.33%;text-align: center;">{{item.award}}</view>
 				<view class="right" style="width: 33.33%;">
-					<view class="num text oneLineOver">{{item.likeNum}}获赞</view>
+					<view class="num text oneLineOver">{{formatNumber(item.likeNum,2)}}获赞</view>
 				</view>
 			</view>
 			<view class="rankContent-item" v-for="(item,index) in unoccupied" :key='index+ +new Date()'>
@@ -43,7 +43,7 @@
 				</view>
 				<view class="center text oneLineOver" style="width: 33.33%;text-align: center;">虚位以待</view>
 				<view class="right" style="width: 33.33%;">
-					<view class="num text oneLineOver" v-if="false">{{item.likeNum}}获赞</view>
+					<view class="num text oneLineOver" v-if="false">{{formatNumber(item.likeNum,2)}}获赞</view>
 				</view>
 			</view>
 		</view>
@@ -84,7 +84,7 @@
 		<view class="noneBlock"></view>
 		<view class="bottomBlock">
 			<view class="bottomBlock-content uni-flex">
-				<view class="left">我的点赞：{{myProfile.likeNum}}
+				<view class="left">我的点赞：{{formatNumber(myProfile.likeNum,2)}}
 					<text style="padding-left:6rpx">({{myProfile.rank?'排名:'+myProfile.rank:'暂未上榜'}})</text>
 				</view>
 				<view class="right" @click="goShare">邀请好友点赞</view>
@@ -98,6 +98,9 @@
 		app
 	} from "@/app";
 	import {
+		formatNumber
+	} from '@/tools/util'
+	import {
 		Component,
 		Prop,
 		Vue,
@@ -107,6 +110,7 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		rankHear: any = ['排名', '奖励', '获赞数']
+		formatNumber: any = formatNumber;
 		rankList: any = []
 		totalPage: number = 0;
 		centerModalShow: boolean = false;

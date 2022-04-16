@@ -291,7 +291,7 @@
 					"style": {
 						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#1f1559", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#1f1559" ,//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorBottom": "#1f1559", //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 						"navigationStyle": "custom"
 					}
 				},
@@ -308,11 +308,22 @@
 					"path": "goldRank/goldRank_rankList",
 					"style": {
 						"navigationBarTitleText": "金卡积分榜",
-						"enablePullDownRefresh": true,
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB",
+						"navigationStyle": "custom",
+						"backgroundColorBottom": "#F6F7FB"
+					}
+				},
+				{
+					"path": "goldRank/goldRank_rule",
+					"style": {
+						"navigationBarTitleText": "卡世界",
+						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#F6F7FB",
 						"backgroundColorBottom": "#F6F7FB"
 					}
 				},
+
 				{
 					"path": "goldRank/goldRank_record",
 					"style": {
@@ -325,7 +336,7 @@
 				{
 					"path": "goldRank/goldRank_rewardList",
 					"style": {
-						"navigationBarTitleText": "奖励列表",
+						"navigationBarTitleText": "我的奖品",
 						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB",
 						"backgroundColorBottom": "#F6F7FB"
