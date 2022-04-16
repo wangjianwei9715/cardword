@@ -69,10 +69,8 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
-				
+				if(this.currentPage==1) this.goodsList = [];
 				if(data.list){
-					if(this.currentPage==1) this.goodsList = [];
-					
 					this.goodsList = this.goodsList.concat(data.list);
 				}
 				this.currentPage++;

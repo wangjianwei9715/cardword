@@ -118,13 +118,13 @@
 	.content{
 		width: 100%;
 		box-sizing:border-box;
-		padding:13rpx
+		padding:14rpx
 	}
 	.index{
 		width: 100%;
 		background: #FFFFFF;
 		box-sizing: border-box;
-		padding:32rpx 25rpx;
+		padding:30rpx 25rpx;
 		margin-bottom: 17rpx;
 		position:relative
 	}
@@ -134,14 +134,14 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: 12rpx;
+		margin-bottom: 16rpx;
 	}
 	.header-left{
 		height:30rpx;
 		line-height: 30rpx;
-		font-size: 28rpx;
+		font-size: 31rpx;
 		font-family: PingFangSC-Regular;
-		font-weight: 500;
+		font-weight: 600;
 		color: #333333;
 	}
 	.header-right{
@@ -156,7 +156,7 @@
 	}
 	.header-tips{
 		width: 100%;
-		font-size: 26rpx;
+		font-size: 27rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #87868B;
@@ -168,7 +168,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
-		margin-top: 24rpx;
+		margin-top: 20rpx;
 
 	}
 	.reward-index{
@@ -188,7 +188,7 @@
 		height:30rpx;
 		line-height: 30rpx;
 		margin-top: 10rpx;
-		font-size: 24rpx;
+		font-size: 27rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 500;
 		color: #5D5D5D;

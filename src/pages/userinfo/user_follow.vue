@@ -94,7 +94,7 @@
 			display: block;
 			border-radius: 50%;
 			overflow: hidden;
-			margin-right: 37rpx;
+			margin-right: 48rpx;
 		}
 
 		&-info {
@@ -102,7 +102,7 @@
 			flex: 1;
 
 			.name {
-				font-size: 26rpx;
+				font-size: 29rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
@@ -110,33 +110,13 @@
 			}
 
 			.num {
-				font-size: 22rpx;
+				font-size: 25rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878c;
 			}
 		}
 
-		&-action {
-			.actionItem {
-				width: 122rpx;
-				height: 44rpx;
-				font-size: 22rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #88878c;
-				line-height: 44rpx;
-				text-align: center;
-				letter-spacing: 1rpx;
-				background-size: 100% 100%;
-				background-image: url("../../static/userinfo/v2/whiteCard.png");
-			}
-
-			.redAction {
-				background-image: url("../../static/userinfo/v2/redCard.png");
-				color: #fff;
-			}
-		}
 	}
 
 	.follow:first-child {

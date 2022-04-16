@@ -120,9 +120,8 @@
 					if(data.totalPage<=this.currentPage){
 						this.noMoreData = true;
 					}
+					if(this.currentPage==1) this.liveList = []
 					if(data.list){
-						if(this.currentPage==1) this.liveList = []
-						
 						this.liveList = this.liveList.concat(data.list);
 					}
 					this.currentPage++;
@@ -134,9 +133,8 @@
 					if(data.totalPage<=this.currentPage){
 						this.noMoreData = true;
 					}
+					if(this.currentPage==1) this.liveList = []
 					if(data.list){
-						if(this.currentPage==1) this.liveList = []
-						
 						this.liveList = this.liveList.concat(data.list);
 					}
 					this.currentPage++;

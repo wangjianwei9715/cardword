@@ -63,15 +63,15 @@
 			margin-bottom: 7rpx;
 			.left{
 				width:584rpx;
-				font-size: 22rpx;
+				font-size: 25rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				line-height: 32rpx;
-				text-align: center;
+				text-align: left;
 				background:#F6F7FA;
 				box-sizing: border-box;
-				padding:20rpx 16rpx;
+				padding:20rpx;
 			}
 			.right{
 				width:104rpx;

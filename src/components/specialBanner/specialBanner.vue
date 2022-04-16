@@ -117,7 +117,7 @@
     // 合成海报
     canvasBg = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/bg.jpg';
     canvasLogo = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/logo.png';
-    canvasEwm = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/logo.png';
+    canvasEwm = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/erweima.png';
     canvasTitle = 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/canvas/title.png';
     canvasImg = '';
 		created(){
@@ -195,42 +195,29 @@
     // 生成海报
     getShareAppImg(){
       return new Promise((resolve, reject) => {
-        // 获取屏幕尺寸
-        let systemInfo = uni.getSystemInfoSync();
-        // 屏幕宽高 宽度比
-        let ratio = systemInfo.windowWidth / DesignWidth;
+    
         let ctx = uni.createCanvasContext("mycanvas");
         
-        ctx.drawImage(this.canvasBg, 0, 0, 750 * ratio, 1334 * ratio);
-        ctx.drawImage(this.canvasTitle, 38 * ratio, 48 * ratio, 205 * ratio, 50 * ratio);
-        imgUtils.darwRoundRect(36 * ratio, 134 * ratio, 679 * ratio, 861 * ratio, 0, ctx,"#FFFFFF");
-        imgUtils.darwRoundRect(51 * ratio, 147 * ratio, 650 * ratio, 833 * ratio, 0, ctx,"#383a49");
-        let obj = uni.createSelectorQuery().select(".slide-image");
-        obj.boundingClientRect((data:any)=> {
-          let picData = {width:Math.floor(data.width),height:Math.floor(data.height)};
-          console.log('pic===',picData)
-          let picX = Math.floor((51 * ratio) + (((650 * ratio) - picData.width)/2));
-          let picY = Math.floor((147 * ratio) + (((833 * ratio) - picData.height)/2));
-          console.log('picX=',picX,',picY=',picY)
-          // ctx.drawImage(this.canvasLogo, picX, picY, picData.width, picData.height);
-          ctx.drawImage(decodeURIComponent(this.bannerList.pic[this.curIndex]), 51 * ratio, 147 * ratio, 650 * ratio, 833 * ratio);
-        }).exec();
-        ctx.save();
-        ctx.drawImage(this.canvasLogo, 50 * ratio, 1143 * ratio, 131 * ratio, 131 * ratio);
-        ctx.drawImage(this.canvasEwm, 197 * ratio, 1143 * ratio, 131 * ratio, 131 * ratio);
+        ctx.drawImage(this.canvasBg, 0, 0, uni.upx2px(750), uni.upx2px(1334));
+        ctx.drawImage(this.canvasTitle, uni.upx2px(38), uni.upx2px(48), uni.upx2px(205), uni.upx2px(50));
+        imgUtils.darwRoundRect(uni.upx2px(36), uni.upx2px(134), uni.upx2px(679), uni.upx2px(861), 0, ctx,"#FFFFFF");
+        imgUtils.darwRoundRect(uni.upx2px(51), uni.upx2px(147), uni.upx2px(650), uni.upx2px(833), 0, ctx,"#383a49");
+        ctx.drawImage(decodeURIComponent(this.bannerList.pic[this.curIndex]), uni.upx2px(51), uni.upx2px(147), uni.upx2px(650), uni.upx2px(833));
+        ctx.drawImage(this.canvasLogo, uni.upx2px(50), uni.upx2px(1143), uni.upx2px(131), uni.upx2px(131));
+        ctx.drawImage(this.canvasEwm, uni.upx2px(197), uni.upx2px(1143), uni.upx2px(131), uni.upx2px(131));
 
-        let fontSize = Math.floor(31 * ratio);
-        ctx.setFontSize(fontSize);
+        ctx.setFontSize(uni.upx2px(31));
         ctx.fillStyle = "#383a49";
-        let strObj:any = imgUtils.getTwoLineStr(ctx, this.bannerList.name, 680* ratio);
+        let strObj:any = imgUtils.getTwoLineStr(ctx, this.bannerList.name, uni.upx2px(650));
         for(let i = 0; i<strObj.length;i++){
-          ctx.fillText(strObj[i] , 51* ratio , (1060+(50*i)) * ratio);
+          ctx.fillText(strObj[i] , uni.upx2px(51) , uni.upx2px(1060+(50*i)));
         }
 
-        ctx.setFontSize(29)
-        ctx.font = "nomarl bold 29px Arial,sans-serif"
+
+        ctx.setFontSize(uni.upx2px(29))
         ctx.setFillStyle('#777777')
-        ctx.fillText("长按识别二维码了解更多", 357 * ratio, 1220 * ratio);
+        ctx.fillText("长按识别二维码了解更多", uni.upx2px(357), uni.upx2px(1220));
+        console.log(ctx.fillText)
 
         uni.showLoading({title: "图片生成中"});
         setTimeout(()=>{

@@ -33,7 +33,7 @@
 	/* #ifndef MP */
 	.header-search-input{
 		width: 100%;
-		height: 62rpx;
+		height: 65rpx;
 		background: #FFFFFF;
 		border: 2rpx solid #F5162B;
 		border-radius: 40rpx;
@@ -42,7 +42,7 @@
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #A3A3A3;
-		line-height: 62rpx;
+		line-height: 65rpx;
 		box-sizing: border-box;
 		padding-left: 34rpx;
 		display: flex;
@@ -79,11 +79,12 @@
 		background: #F5162B;
 		border-radius: 30rpx;
 		position: absolute;
-		right:2rpx;
-		top:2rpx;
+		right:3rpx;
+		top:50%;
+		margin-top: -27rpx;
 		text-align: center;
 		line-height: 54rpx;
-		font-size: 24rpx;
+		font-size: 28rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #FFFFFF;

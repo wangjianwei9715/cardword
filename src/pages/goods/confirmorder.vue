@@ -194,7 +194,7 @@
         <view class="bottom-content">
           <view class="heji-money-pay">
             <text class="heji-text-b">合计:</text>
-            <text class="heji-money2-b">¥{{getTotalPrice()}}</text>
+            <view class="heji-money2-b">¥<text>{{getTotalPrice()}}</text></view>
           </view>
           <view class="btn-payment2" @click="onClickToPay()">去支付</view>
         </view>
@@ -693,8 +693,8 @@ page {
 .content {
   width: 100%;
   box-sizing: border-box;
-  padding-bottom: calc(120rpx + env(safe-area-inset-bottom)) !important;
-  padding: 13rpx
+  padding-bottom: calc(150rpx + env(safe-area-inset-bottom)) !important;
+  padding: 14rpx
 }
 .order-detail {
   width: 100%;
@@ -709,7 +709,7 @@ page {
   height: 170rpx;
   background: #fff;
   box-sizing: border-box;
-  padding: 0 20rpx;
+  padding: 0 25rpx;
   border-bottom: 14rpx solid #f5f5f9;
   display: flex;
   align-items: center;
@@ -750,14 +750,14 @@ page {
 }
 .address-desc {
   width: 100%;
-  font-size: 28rpx;
+  font-size: 31rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
 }
 .address-name {
   width: 100%;
-  font-size: 23rpx;
+  font-size: 27rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #88878C;
@@ -781,7 +781,7 @@ page {
 
 .goods-info2 {
   width: 428rpx;
-  margin: 28rpx 0;
+  margin: 15rpx 0 0 0 ;
   margin-left: 20rpx;
   display: flex;
   flex-direction: column;
@@ -791,7 +791,7 @@ page {
 .goods-info2-title {
   margin-right: 30rpx;
   margin-left: 8rpx;
-  font-size: 26rpx;
+  font-size: 29rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
@@ -800,6 +800,7 @@ page {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  word-break:break-all
 }
 
 .goods-money-info {
@@ -816,14 +817,14 @@ page {
 .goods-money {
   margin-left: 8rpx;
   margin-top: 58rpx;
-  font-size: 18rpx;
+  font-size: 25rpx;
   font-family: PingFangSC-Regular;
   font-weight: 500;
   color: #333333;
   line-height: 28rpx;
 }
 .goods-money text{
-  font-size: 30rpx;
+  font-size: 42rpx;
   font-family: FZLanTingHeiS-B-GB;
   font-weight: 400;
   color: #333333;
@@ -853,30 +854,30 @@ page {
 }
 
 .img-add {
-  width: 21rpx;
-  height: 21rpx;
+  width: 28rpx;
+  height: 28rpx;
   background: url(../../static/pay/v2/icon_add.png) no-repeat center;
   background-size: cover;
 }
 
 .img-jian {
-  width: 21rpx;
-  height: 4rpx;
+  width: 28rpx;
+  height: 5rpx;
   background: url(../../static/pay/v2/icon_red.png) no-repeat center;
   background-size: 100% 100%;
 }
 
 .money-add {
-  height: 30rpx;
+  height: 36rpx;
   text-align: center;
-  font-size: 22rpx;
+  font-size: 25rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
-  line-height: 30rpx;
+  line-height: 36rpx;
   background:#F6F7FB;
-  margin:0 18rpx;
-  width: 60rpx;
+  margin:0 25rpx;
+  width: 75rpx;
 }
 
 .huo-dong-bg {
@@ -889,11 +890,11 @@ page {
   justify-content: start;
   box-sizing: border-box;
   margin:0 auto;
-  border-top: 2rpx solid #BBBBBB;
+  border-top: 2rpx solid #F5F5F5;
 }
 
 .item-name {
-  font-size: 24rpx;
+  font-size: 25rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
@@ -908,7 +909,7 @@ page {
   color: #ff504f;
 }
 .item-name .item-totalprice{
-  font-size: 26rpx;
+  font-size: 27rpx;
   font-family: PingFangSC-Medium;
   font-weight: bold;
   color: #333333;
@@ -948,10 +949,10 @@ page {
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #88878C;
-  padding: 0 11rpx;
+  padding: 0 22rpx;
   width: fit-content;
   display: inline-flex;
-  margin-right: 10rpx;
+  margin-right: 28rpx;
 }
 .current-discount{
   font-size: 23rpx;
@@ -1005,35 +1006,40 @@ page {
 }
 
 .heji-text-b {
-  font-size: 24rpx;
+  font-size: 25rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
-  color: #333333;
+  color: #88878C;
   line-height: 28rpx;
 }
 
 .heji-money2-b {
-  font-size: 41rpx;
+  font-size: 29rpx;
   font-family: PingFangSC-Regular;
   font-weight: 500;
   color: #F5162B;
   line-height: 28rpx;
   margin-left: 12rpx;
 }
+.heji-money2-b text{
+  font-size: 42rpx;
+  font-family: PingFangSC-Regular;
+  font-weight: 500;
+}
 .bottom-gm {
   width: 100%;
   background: #FFF;
   box-sizing: border-box;
   border-top: 13rpx solid #F6F7FB;
-  padding: 30rpx 22rpx;
+  padding: 35rpx 20rpx;
   .bottom-gm-title {
     width: 100%;
     height: 40rpx;
     display: flex;
     align-items: center;
-    font-size: 28rpx;
+    font-size: 31rpx;
     font-family: PingFangSC-Regular;
-    font-weight: 500;
+    font-weight: 600;
     color: #333333;
   }
   .bottom-gm-gx {
@@ -1052,7 +1058,7 @@ page {
   }
   .bottom-gm-tips {
     width: 100%;
-    font-size: 22rpx;
+    font-size: 25rpx;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: #88878C;
@@ -1060,16 +1066,16 @@ page {
     margin-top: 10rpx;
   }
   .bottom-gm-btn {
-    font-size: 22rpx;
+    font-size: 25rpx;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: #88878C;
     line-height: 36rpx;
   }
   .bottom-gm-btn text{
-    font-size: 22rpx;
+    font-size: 25rpx;
     font-family: PingFangSC-Regular;
-    font-weight: 400;
+    font-weight: 600;
     color: #333333;
   }
   .bottom-gm-right {
@@ -1082,7 +1088,7 @@ page {
 }
 .bottom-content-box{
   width: 100%;
-  height: calc(112rpx + env(safe-area-inset-bottom));
+  height: calc(120rpx + env(safe-area-inset-bottom));
   position: fixed;
   bottom: 0;
   left:0;
@@ -1090,7 +1096,7 @@ page {
 }
 .bottom-content {
   width: 100%;
-  height: 112rpx;
+  height: 120rpx;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1099,9 +1105,10 @@ page {
 }
 
 .heji-money-pay {
-  height:67rpx;
+  height:30rpx;
   margin-left: 36rpx;
-  display: flow-root;
+  display: flex;
+  align-items: baseline;
   line-height: 80rpx;
 }
 
@@ -1124,16 +1131,16 @@ page {
 
 .btn-payment2 {
   width: 426rpx;
-  height: 67rpx;
+  height: 82rpx;
   background: #FF0016;
   margin-right: 35rpx;
-  font-size: 32rpx;
+  font-size: 33rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #FFFFFF;
   box-sizing: border-box;
   text-align: center;
-  line-height: 67rpx;
+  line-height: 82rpx;
 }
 .goods-money-availa {
   font-size: 24rpx;

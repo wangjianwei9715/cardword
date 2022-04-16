@@ -123,14 +123,10 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
+				if(this.currentPage==1)this.teamDataList = [];
+					
 				if(data.list){
-					if(this.currentPage==1){
-						this.teamDataList = data.list;
-					}else{
-						this.teamDataList = this.teamDataList.concat(data.list);
-					}
-				}else{
-					this.noMoreData = true;
+					this.teamDataList = this.teamDataList.concat(data.list);
 				}
 				
 				this.scrollId = data.scrollId?data.scrollId:'';
@@ -227,7 +223,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		text-align: center;
-		font-size: 22rpx;
+		font-size: 27rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
@@ -239,11 +235,11 @@
 	.rules-table tr td{
 		height:76rpx;
 		line-height: 40rpx;
-		font-size: 26rpx;
+		font-size: 23rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #34363A;
 		text-align: center;
-		border:1px solid #D6D6D6
+		border:1px solid #E5E5E5
 	}
 </style>

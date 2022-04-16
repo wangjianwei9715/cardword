@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "2.6.6",
+    "versionName" : "2.6.8",
     "versionCode" : 100,
     "transformPx" : false,
     "networkTimeout" : {
@@ -272,7 +272,8 @@
         "uniStatistics" : {
             "enable" : true
         }
-    }
+    },
+    "vueVersion" : "2"
 }
 /* 快应用特有相关 *//* 小程序特有相关 */
 

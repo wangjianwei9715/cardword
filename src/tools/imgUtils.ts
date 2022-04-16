@@ -71,7 +71,7 @@ export function getTwoLineStr (ctx:UniApp.CanvasContext, str:string, line:number
     for (let j = 0; j < str.length; j++) {
         lineWidth += ctx.measureText(str[j]).width
         if (lineWidth > line * 2 - 50) {
-        s = str.substring(0, j)
+            s = str.substring(0, j)
             break
         }
     }
@@ -92,7 +92,7 @@ export function cutTwo (str:string, ctx:UniApp.CanvasContext, line:number, flag?
         if (onelineWidth > line) {
             return [
                 str.substring(0, i),
-                flag === 'out' ? str.substring(i, str.length - 1) + '...' : str.substring(i, str.length - 1)
+                flag === 'out' ? str.substring(i, str.length) + '...' : str.substring(i, str.length)
             ]
         }
     }

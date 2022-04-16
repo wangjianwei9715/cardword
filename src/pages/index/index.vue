@@ -543,10 +543,10 @@
 	}
 	.tab-header{
 		width: 750rpx;
-		height:84rpx;
+		height:104rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding:20rpx 20rpx 0 20rpx;
+		padding:0 20rpx 0 20rpx;
 		z-index: 10;
 		align-items: center;
 	}

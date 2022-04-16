@@ -930,8 +930,8 @@
 			background-size: 100% 100%;
 		}
 		.icon-share{
-			width: 32rpx;
-			height:38rpx;
+			width: 40rpx;
+			height:39rpx;
 			background:url(../../static/goods/v2/icon_share.png) no-repeat center;
 			background-size: 100% 100%;
 		}
@@ -1128,7 +1128,7 @@
 	.header{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 22rpx;
+		padding:0 20rpx;
 		padding-bottom: 10rpx;
 	}
 	.header-top-id{
@@ -1411,7 +1411,7 @@
 	}
 	.btn-content{
 		width: 100%;
-		height:calc(115rpx + env(safe-area-inset-bottom));
+		height:calc(120rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:0;
 		left:0;
@@ -1458,10 +1458,10 @@
 		}
 		.btn-confirm{
 			width: inherit;
-			height: 76rpx;
+			height: 82rpx;
 			background: #F5162B;
 			text-align: center;
-			line-height: 76rpx;
+			line-height: 82rpx;
 			font-size: 33rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
@@ -1490,29 +1490,29 @@
 		padding-bottom: env(safe-area-inset-bottom);
 		.btn-pt{
 			width: 352rpx;
-			height:88rpx;
+			height:82rpx;
 			box-sizing: border-box;
 			border-radius: 4px;
-			border: 2rpx solid #14151B;
+			border: 2rpx solid #FE8E91;
 			text-align: center;
-			line-height: 84rpx;
-			font-size: $font-28;
+			line-height: 78rpx;
+			font-size: 33rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 600;
-			color: #14151B;
+			font-weight: 400;
+			color: #333333;
 		}
 		.btn-ck{
 			width: 352rpx;
-			height:88rpx;
+			height:82rpx;
 			box-sizing: border-box;
 			border-radius: 4px;
-			background:#14151B;
-			border: 2rpx solid #14151B;
+			background:#F5162B;
+			border: 2rpx solid #F5162B;
 			text-align: center;
-			line-height: 84rpx;
-			font-size: $font-28;
+			line-height: 78rpx;
+			font-size: 33rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 600;
+			font-weight: 400;
 			color: $color-F;
 		}
 	}
@@ -1555,7 +1555,7 @@
 		width: 100%;
 		background:#fff;
 		box-sizing: border-box;
-		padding:30rpx 25rpx 150rpx 25rpx;
+		padding:30rpx 25rpx calc(150rpx + env(safe-area-inset-bottom)) 25rpx;
 		
 	}
 	.detail-title{
@@ -1596,7 +1596,7 @@
 		font-family: PingFangSC-Medium;
 		font-size: 27rpx;
 		font-weight: 500;
-		color: #818080;
+		color: #333;
 		line-height:40rpx;
 		margin-bottom: 10rpx;
 	}

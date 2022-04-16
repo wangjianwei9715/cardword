@@ -37,18 +37,18 @@ export default class ClassName extends BaseComponent {
   right: 0;
   z-index: 20;
   .tipsCard {
-    width: 430rpx;
-    height: 285rpx;
+    width: 516rpx;
+    height: 317rpx;
     border-radius: 6rpx;
     background-color: #fff;
     position: absolute;
     left: 0;
     right: 0;
     margin: auto;
-    top: 342rpx;
+    top: 30%;
 
     .cancelTips {
-      font-size: 26rpx;
+      font-size: 33rpx;
       font-family: PingFangSC-Regular;
       font-weight: 400;
       color: #333333;
@@ -59,33 +59,33 @@ export default class ClassName extends BaseComponent {
     }
 
     .buttonList {
-      padding: 0 49rpx;
+      padding: 0 59rpx;
       display: flex;
       justify-content: space-between;
       position: absolute;
       left: 0;
       right: 0;
       margin: auto;
-      bottom: 70rpx;
+      bottom: 76rpx;
 
       .button {
-        width: 120rpx;
-        height: 50rpx;
-        font-size: 26rpx;
+        width: 168rpx;
+        height: 67rpx;
+        font-size: 25rpx;
         font-family: PingFangSC-Regular;
         font-weight: 400;
-        line-height: 50rpx;
+        line-height: 67rpx;
         text-align: center;
         letter-spacing: 2rpx;
       }
 
       .cancel {
-        border: 1rpx solid #c4c4c4;
+        border: 1rpx solid #C1C1C1;
         color: #333333;
       }
 
       .confirm {
-        background-color: #ff0016;
+        background-color: #F5162B;
         color: #fff;
       }
     }

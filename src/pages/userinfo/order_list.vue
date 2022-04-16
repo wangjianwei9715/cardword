@@ -103,11 +103,7 @@
 			if(this.currentPage==1) this.orderList = []
 			if(data.list){
 				this.showEmpty = false;
-				if(this.currentPage==1){
-					this.orderList = data.list;
-				}else{
-					this.orderList = this.orderList.concat(data.list);
-				}
+				this.orderList = this.orderList.concat(data.list);
 			}
 			if(!data.list&&this.currentPage==1){
 				this.showEmpty = true;

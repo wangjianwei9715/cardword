@@ -52,10 +52,10 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
+				if(this.currentPage==1)this.liveList = []
+				
 				if(data.list){
 					this.liveList = this.liveList.concat(data.list);
-				}else if(this.currentPage==1){
-					this.liveList = []
 				}
 				this.currentPage++;
 				if(cb) cb()

@@ -52,22 +52,21 @@
 
 <style lang="scss">
 	.actionItem {
-		width: 122rpx;
-		height: 44rpx;
-		font-size: 22rpx;
+		width: 144rpx;
+		height: 56rpx;
+		font-size: 25rpx;
 		font-family: PingFangSC-Regular;
+		box-sizing: border-box;
 		font-weight: 400;
 		color: #88878c;
-		line-height: 44rpx;
+		line-height: 56rpx;
 		text-align: center;
 		letter-spacing: 1rpx;
-		background-size: 100% 100%;
-		background-image: url("../../static/userinfo/v2/whiteCard.png");
+		border:1px solid #DBDBDB;
 	}
-
-
 	.redAction {
-		background-image: url("../../static/userinfo/v2/redCard.png");
+		background:#F5162B;
+		border:1px solid #F5162B;
 		color: #fff;
 	}
 </style>

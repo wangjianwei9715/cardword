@@ -281,7 +281,7 @@
 	}
 	.drawer-title{
 		width: 100%;
-		font-size: 28rpx;
+		font-size: 31rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 500;
 		color: #333333;
@@ -289,7 +289,7 @@
 	}
 	.drawer-help{
 		width: 100%;
-		font-size: 22rpx;
+		font-size: 25rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #818080;

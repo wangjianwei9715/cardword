@@ -96,7 +96,7 @@
 
 <style lang="scss">
 	.good-act-content{
-		width: 722rpx;
+		width: 724rpx;
 		border-radius: 5rpx;
 		background:#fff;
 		margin-bottom: 13rpx;
@@ -104,7 +104,7 @@
 	.detail-act-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:20rpx 22rpx 0 22rpx;
+		padding:20rpx 20rpx 0 20rpx;
 		.detail-act-index{
 			width: 100%;
 			height:40rpx;
@@ -113,7 +113,7 @@
 			align-items: center;
 			justify-content: space-between;
 			.detail-act-left{
-				width: 600rpx;
+				width: 660rpx;
 				height:40rpx;
 				display: flex;
 				align-items: center;

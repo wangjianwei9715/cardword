@@ -167,10 +167,10 @@
 		.payment-header{
 			width: 100%;
 			box-sizing: border-box;
-			padding-top: 60rpx;
-			font-size: 28rpx;
+			padding-top: 50rpx;
+			font-size: 33rpx;
 			font-family: PingFangSC-Medium;
-			font-weight: bold;
+			font-weight: 500;
 			color: #333333;
 			text-align: center;
 			position: relative;
@@ -180,21 +180,21 @@
 			height:84rpx;
 			margin-top: 46rpx;
 			line-height: 84rpx;
-			font-size: 73rpx;
+			font-size: 50rpx;
 			font-family: PingFangSC-Regular;
-			font-weight: 500;
+			font-weight: 600;
 			color: #333333;
 			text-align: center;
 			margin-bottom: 48rpx;
 			.payment-price{
-				font-size: 86rpx;
+				font-size: 73rpx;
 			}
 		}
 		.payment-tip{
 			width: 686rpx;
 			margin:0 auto;
 			box-sizing: border-box;
-			font-size: 24rpx;
+			font-size: 27rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
@@ -215,16 +215,16 @@
 				display: flex;
 				box-sizing: border-box;
 				align-items: center;
-				font-size: 26rpx;
+				font-size: 31rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 			}
 			.icon-zfb{
-				width: 36rpx;
-				height:36rpx;
+				width: 44rpx;
+				height:44rpx;
 				box-sizing: border-box;
-				margin-right: 13rpx;
+				margin-right: 20rpx;
 				background:url(../../static/pay/v2/zhifubao@2x.png) no-repeat center;
 				background-size: 100% 100%;
 			}
@@ -251,18 +251,17 @@
 		}
 		.payment-btn{
 			width: 690rpx;
-			height: 67rpx;
-			background: #F5162B;
+			height: 84rpx;
+			background: #FF0016;
 			border-radius: 4rpx;
 			text-align: center;
-			line-height: 67rpx;
+			line-height: 84rpx;
 			box-sizing: border-box;
 			margin:0 auto;
-			font-size: 32rpx;
+			font-size: 33rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #FFFFFF;
-			margin-top: 46rpx;
 			position:absolute;
 			bottom:calc(18rpx + env(safe-area-inset-bottom));
 			left:50%;

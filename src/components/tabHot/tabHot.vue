@@ -10,10 +10,11 @@
 			</view>
 			<view class="tab-hot-boxpic-index" v-else>
 				<view class="tab-hot-boxpic-box" @click="onClickMerchantInfo(item.list.merchantId)">
-					<image :src="decodeURIComponent(item.list.merchantLogo)" class="tab-hot-boxpic" mode="aspectFit"/>
+					<image :src="decodeURIComponent(item.list.merchantLogo)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
 				<view class="tab-hot-boxpic-box" @click="onClickLive(item.list)">
-					<image :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic" mode="aspectFit"/>
+					<view v-if="item.list.stateName == '拆卡中'" class="live-ing"></view>
+					<image :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
 			</view>
 		</view>
@@ -130,9 +131,46 @@
 	.tab-hot-boxpic-box{
 		width: 84rpx;
 		height:84rpx;
+		position: relative;
 	}
 	.tab-hot-boxpic{
 		width: 84rpx;
 		height:84rpx;
+		position: absolute;
+		left:0;
+		top:0;
+		z-index: 3;
 	}
+	.broadcast-box{
+		border-radius: 50%;
+		overflow: hidden;
+	}
+	.live-ing{
+		width: 84rpx;
+		height:84rpx;
+		position: absolute;
+		left:0;
+		top:0;
+		z-index: 2;
+		box-sizing: border-box;
+		background:#9269DE;
+		border-radius: 50%;
+		-webkit-animation: animate 1s linear infinite;
+	}
+
+	@keyframes animate {
+		0%{
+			transform: scale(1);
+			opacity: 1;  
+		}
+		50%{
+			transform: scale(1.15);  
+			opacity: 0.5;   /*圆形放大的同时，透明度逐渐减小为0*/
+		}
+		100%{
+			transform: scale(1.3);  
+			opacity: 0;   /*圆形放大的同时，透明度逐渐减小为0*/
+		}
+	}
+
 </style>

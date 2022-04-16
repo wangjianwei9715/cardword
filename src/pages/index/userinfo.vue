@@ -26,7 +26,8 @@
 			<view class="user-v2-langtab">
 				<view class="user-v2-langtab-index" @click="onClickServiceTab(item)" v-for="item in walletTab" :key="item.id">
 					<view class="langtab-left">
-						<image class="langtab-left-pic" :src="item.pic" />{{item.name}}
+						<!-- <image class="langtab-left-pic" :src="item.pic" /> -->
+						{{item.name}}
 					</view>
 					<view class="langtab-right">
 						{{item.num}}<view class="icon-right"></view>
@@ -292,7 +293,7 @@
 				height:42rpx;
 				display: flex;
 				align-items: center;
-				font-size: 35rpx;
+				font-size: 33rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 500;
 				color: #FFFFFF;
@@ -363,14 +364,14 @@
 				margin-right: 80rpx;
 			}
 			.header-tab-index-num{
-				font-size: 36rpx;
+				font-size: 33rpx;
 				font-family: PingFangSC-Medium;
 				font-weight: bold;
 				color: #FFFFFF;
 				margin-bottom: 10rpx;
 			}
 			.header-tab-index-name{
-				font-size: 24rpx;
+				font-size: 27rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #FFD2D9;
@@ -381,29 +382,29 @@
 	.user-v2-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding: 14rpx;
+		padding: 13rpx;
 		background:$content-bg;
 	}
 	.user-v2-langtab{
 		width: 100%;
-		height:98rpx;
+		height:91rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		.user-v2-langtab-index{
-			width: 354rpx;
-			height:98rpx;
+			width: 356rpx;
+			height:91rpx;
 			background:#fff;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			box-sizing: border-box;
-			padding:0 24rpx;
+			padding:0 26rpx;
 			.langtab-left{
 				height:63rpx;
 				display: flex;
 				align-items: center;
-				font-size: 26rpx;
+				font-size: 29rpx;
 				font-family: PingFangSC-Medium;
 				font-weight: 600;
 				color: #333333;
@@ -417,7 +418,7 @@
 				height:63rpx;
 				display: flex;
 				align-items: center;
-				font-size: 24rpx;
+				font-size: 25rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
@@ -431,7 +432,7 @@
 		box-sizing: border-box;
 		background:#fff;
 		padding:35rpx 22rpx;
-		margin-top: 15rpx;
+		margin-top: 13rpx;
 		.header{
 			width: 100%;
 			height:40rpx;
@@ -443,7 +444,7 @@
 			.title{
 				height:40rpx;
 				line-height: 40rpx;
-				font-size: 28rpx;
+				font-size: 31rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 600;
 				color: #333333;
@@ -452,7 +453,7 @@
 				height:40rpx;
 				display: flex;
 				align-items: center;
-				font-size: 22rpx;
+				font-size: 25rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
@@ -483,14 +484,14 @@
 					width: 100rpx;
 					height:32rpx;
 					text-align: center;
-					font-size: 22rpx;
+					font-size: 23rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #333333;
 				}
 				.tab-icon{
-					width: 50rpx;
-					height:50rpx;
+					width: 52rpx;
+					height:52rpx;
 				}
 			}
 		}
@@ -535,14 +536,14 @@
 				height:36rpx;
 				display: flex;
 				align-items: center;
-				font-size: 26rpx;
+				font-size: 27rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #5B5B5B;
 				.setting-icon{
-					width: 36rpx;
-					height:36rpx;
-					margin-right: 12rpx;
+					width: 45rpx;
+					height:45rpx;
+					margin-right: 15rpx;
 				}
 			}
 		}

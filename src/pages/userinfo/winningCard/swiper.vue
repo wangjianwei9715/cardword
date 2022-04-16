@@ -1,6 +1,7 @@
 <template>
 	<view class="list-content">
 		<specialBanner :banner-list="bannerList" :index="index" :total="total" :swiper-config="swiperConfig" @swiperRefresh="swiperRefresh" />
+        
 	</view>
 </template>
 
