@@ -69,7 +69,7 @@
 				</view>
 			</view>
 			<template v-if="rankList&&rankList.length>3">
-				<view class="residueRank uni-flex" v-for="(item,index) in getTopThreeList" :key='item.ranking'>
+				<view class="residueRank uni-flex" v-for="(item) in getTopThreeList" :key='item.ranking'>
 					<view class="residueRank-index">{{item.ranking}}</view>
 					<image class="residueRank-avart" :src="decodeURIComponent(item.userAvatar)">
 					</image>
@@ -161,12 +161,11 @@
 		rankList: any = [];
 		onLoad() {
 			this.reqNewData()
-			this.reqPrizeData()
 			this.$nextTick(() => {
-				const query: any = uni.createSelectorQuery().in(this);
-				query.select('#rollContent').boundingClientRect((data: any) => {
-					console.log(data.width)
-				}).exec();
+				// const query: any = uni.createSelectorQuery().in(this);
+				// query.select('#rollContent').boundingClientRect((data: any) => {
+				// 	console.log(data.width)
+				// }).exec();
 				this.startCountDown()
 			})
 		}
@@ -206,17 +205,6 @@
 				url
 			})
 		}
-		reqPrizeData() {
-			app.http.Get(
-				"activity/goodNoShowGoldValue/prize/list", {
-					tp: 1
-				},
-				(res: any) => {
-					console.log(res)
-				}
-			);
-
-		}
 		onClickBack() {
 			uni.navigateBack({
 				delta: 1
@@ -245,6 +233,7 @@
 					if (isRefreshAward) this.awardList = res.data.awardList || []
 					this.myData = res.data.myData || {}
 					this.unoccupied = res.data.unoccupied
+					uni.hideLoading()
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
 					}, 500);
