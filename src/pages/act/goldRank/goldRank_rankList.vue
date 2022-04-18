@@ -20,10 +20,10 @@
 			<view class="rightFloat" @click="pageJump('/pages/act/goldRank/goldRank_rule')">
 				<text>活动<br>规则</text>
 			</view>
-			<view class="rightFloat" style="top: 140rpx;" @click="pageJump('/pages/act/goldRank/goldRank_record')">
+			<view class="rightFloat" style="top: 120rpx;" @click="pageJump('/pages/act/goldRank/goldRank_record')">
 				<text>往期<br>记录</text>
 			</view>
-			<view class="rightFloat" style="top: 280rpx;" @click="pageJump('/pages/act/goldRank/goldRank_rewardList')">
+			<view class="rightFloat" style="top: 240rpx;" @click="pageJump('/pages/act/goldRank/goldRank_rewardList')">
 				<text>奖品<br>列表</text>
 			</view>
 		</view>
@@ -43,7 +43,7 @@
 		<view class="tagContent" :class="{selectTag:tag.index===1}">
 			<view class="tagContent-item" v-for="(item,index) in tag.list" :key='index' @click="tagChange(item,index)">
 				<view class="tagName">{{item.name}}</view>
-				<view class="smallName" v-if="index==0">倒计时: {{countDown(nowDateStamp,endTimeStamp)}}</view>
+				<view class="smallName" v-if="index==0">本轮倒计时: {{countDown(nowDateStamp,endTimeStamp)}}</view>
 				<view class="smallName" v-if="index==1">活动时间: 4.20-5.4 </view>
 			</view>
 			<view class="luxuryGifts"><text>豪礼</text></view>
@@ -68,7 +68,7 @@
 					<view class="prizeName">{{getTopRankItem(index)?getTopRankItem(index).awardName:'-'}}</view>
 				</view>
 			</view>
-			<template v-if="rankList&&rankList.length>3">
+			<template>
 				<view class="residueRank uni-flex" v-for="(item) in getTopThreeList" :key='item.ranking'>
 					<view class="residueRank-index">{{item.ranking}}</view>
 					<image class="residueRank-avart" :src="decodeURIComponent(item.userAvatar)">
@@ -83,12 +83,12 @@
 					<view class="residueRank-prize oneLineOver">{{item.awardName}}</view>
 				</view>
 			</template>
-			<template v-if="getUnoccupied">
+			<!-- <template v-if="getUnoccupied">
 				<view class="residueRank uni-flex" v-for="(item,index) in getUnoccupied" :key='"none"+index'>
 					<view class="residueRank-index">{{rankList.length>3?index+rankList.length+1:index+4}}</view>
 					<view class="residueRank-none">虚位以待</view>
 				</view>
-			</template>
+			</template> -->
 		</view>
 		<view class="noneBlock"></view>
 		<view class="bottomBlock">
@@ -106,7 +106,7 @@
 		<share :operationShow="operationShow" :shareData="shareData" @operacancel="operationShow=false" />
 	</view>
 </template>
-
+ 
 <script lang="ts">
 	import {
 		app
@@ -197,6 +197,7 @@
 		getTopRankItem(rankIndex: number = 0) {
 			const rankItem: any = this.rankList[rankIndex]
 			if (!rankItem) return undefined
+			if(rankItem.userName=='虚位以待'&&rankItem.gold_value==0) return undefined
 			return rankItem
 		}
 		pageJump(url: string) {
@@ -232,7 +233,7 @@
 					this.rankList = res.data.rankingList || []
 					if (isRefreshAward) this.awardList = res.data.awardList || []
 					this.myData = res.data.myData || {}
-					this.unoccupied = res.data.unoccupied
+					// this.unoccupied = res.data.unoccupied
 					uni.hideLoading()
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
@@ -305,6 +306,7 @@
 		}
 
 		&-prize {
+			font-size: 26rpx;
 			text-align: center;
 			width: 34%;
 		}
@@ -412,7 +414,7 @@
 			text {
 				position: relative;
 
-				top: 26rpx;
+				top: 28rpx;
 			}
 		}
 	}
@@ -589,8 +591,9 @@
 			display: block;
 			width: 640rpx;
 			height: 2rpx;
-			background-size: 100% 100%;
-			background-image: url(../../../static/act/goldRank/rank_line.png);
+			background-color: rgba(89, 154, 226,.32);
+			// background-size: 100% 100%;
+			// background-image: url(../../../static/act/goldRank/rank_line.png);
 			position: absolute;
 			left: 50%;
 			transform: translate(-50%, 0);
