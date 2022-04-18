@@ -22,7 +22,8 @@
 			<view class="giving-btn giving-btn-left" @click="onClickJumpUrl('/pages/userinfo/giving/code_ref')">查询密码</view>
 			<view class="giving-btn giving-btn-right" @click="onClickJumpUrl('/pages/userinfo/order_list?type=2')">立即赠送</view>
 		</view>
-
+		
+		<empty v-if="empty"/>
 		<!-- 规则弹窗 -->
 		<rulePopup :showRulePopup="showRulePopup" :giving="true" @cancelRulePopup="onClickCancelRulePopup"/>
 	</view>
@@ -44,6 +45,7 @@
 		pageSize = 10;
 		noMoreData = false;
 		showRulePopup = false;
+		empty = false;
 		onLoad(query:any) {
 			this.reqNewData();
 		}
@@ -102,7 +104,8 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
-				if(this.currentPage == 1) this.codeList = []
+				if(this.currentPage == 1) this.codeList = [];
+				if(data.total == 0) this.empty = true;
 				if(data.list){
 					this.codeList = this.codeList.concat(data.list);
 				}

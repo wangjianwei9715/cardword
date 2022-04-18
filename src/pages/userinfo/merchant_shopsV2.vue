@@ -53,10 +53,10 @@
 				<text v-if="item.valueKey">({{detail[item.valueKey]}})</text>
 			</view>
 		</view>
-		<view style="padding:0 13rpx" v-if="goodTabV2.index==0">
+		<view class="list-content" v-if="goodTabV2.index==0">
 			<goodslist :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
 		</view>
-		<view style="padding:0 13rpx" v-if="goodTabV2.index==1">
+		<view class="list-content" v-if="goodTabV2.index==1">
 			<liveslist :liveList='liveList'></liveslist>
 		</view>
 		<view v-if="goodTabV2.index==2" style="width:100%">
@@ -417,5 +417,10 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding: 16rpx 20rpx;
+	}
+	.list-content{
+		width: 100%;
+		box-sizing: border-box;
+		padding:0 13rpx;
 	}
 </style>

@@ -13,7 +13,7 @@
 				</view>
 			</template>
 		</view>
-		<empty v-if='!followList.length'></empty>
+		<empty v-if='empty'></empty>
 	</view>
 </template>
 
@@ -33,6 +33,7 @@
 			pageIndex: 1,
 			pageSize: 20
 		};
+		empty = false;
 		onLoad() {
 			this.getFollowList();
 			this.onEventUI('followAction', ((res: any) => {
@@ -57,6 +58,7 @@
 		getFollowList() {
 			app.http.Get("me/follows/list", this.queryParams, (res: any) => {
 				this.totalPage = res.totalPage;
+				if(res.total == 0) this.empty = true;
 				if (this.queryParams.pageIndex === 1) this.followList = [];
 				const dataList = (res.list || []).map((item: any) => {
 					item.follow = true;

@@ -45,11 +45,22 @@
             ></image>
           </view>
           
+          <view class="information-center">
+            <view class="title" @click="onClickJumpUrl(item.articleCode,item.cover)">{{item.title}}</view>
+            <view class="desc">
+              <view class="desc-index">{{dateFormatMS(item.created_at)}}</view>
+              <view class="desc-index">
+                <view class="icon-pl"></view>{{item.comment}}
+                <view class="icon-dz" :class="{'icon-dzed':item.isLikes}" @click="onClickLikes(index)"></view>{{item.likes}}
+              </view>
+            </view>
+          </view>
         </view>
       </view>
     </view>
   </view>
 </template>
+
 
 <script lang="ts">
 import { app } from "@/app";

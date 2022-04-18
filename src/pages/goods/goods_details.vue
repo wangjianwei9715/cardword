@@ -919,8 +919,8 @@
 			top:0;
 		}
 		.icon-collect{
-			width: 38rpx;
-			height:37rpx;
+			width: 44rpx;
+			height:41rpx;
 			background:url(../../static/goods/v2/icon_collect.png) no-repeat center;
 			background-size: 100% 100%;
 			margin-right: 40rpx;
@@ -930,8 +930,8 @@
 			background-size: 100% 100%;
 		}
 		.icon-share{
-			width: 40rpx;
-			height:39rpx;
+			width: 38rpx;
+			height:37rpx;
 			background:url(../../static/goods/v2/icon_share.png) no-repeat center;
 			background-size: 100% 100%;
 		}
@@ -1427,7 +1427,7 @@
 		padding-bottom: env(safe-area-inset-bottom);
 		&-left{
 			max-width: 240rpx;
-			height:64rpx;
+			height:76rpx;
 			box-sizing: border-box;
 			padding:0 20rpx 0 20rpx;
 			display: flex;
@@ -1435,25 +1435,25 @@
 			justify-content: space-between;
 			&-index{
 				width: 100rpx;
-				height:64rpx;
+				height:76rpx;
 				box-sizing: border-box;
 				text-align: center;
 				&-name{
-					font-size: 20rpx;
+					font-size: 25rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #666666;
 				}
 			}
 			.icon-kf{
-				width: 40rpx;
-				height:40rpx;
-				margin-bottom: 4rpx;
+				width: 37rpx;
+				height:38rpx;
+				margin-bottom: 6rpx;
 			}
 			.icon-order{
-				width: 32rpx;
-				height:37rpx;
-				margin-bottom: 7rpx;
+				width: 37rpx;
+				height:41rpx;
+				margin-bottom: 3rpx;
 			}
 		}
 		.btn-confirm{
