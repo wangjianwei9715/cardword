@@ -2,19 +2,22 @@
 	<view>
 		<view class="tagContent uni-flex">
 			<view class="tagContent-item" :class='{selectTagItem:tag.index==index}' v-for="(item,index) in tag.list"
-				:key='index'>{{item.name}}</view>
+				:key='index' @click="tagChange(item,index)">{{item.name}}</view>
 		</view>
-		<view class="prizeCard uni-flex" v-for="(item,index) in 100" :key='index'>
-			<view class="prizeCard-index">NO.{{index+1}}</view>
+		<view class="prizeCard uni-flex" v-for="(item,index) in rewardList" :key='index'>
+			<view class="prizeCard-index">{{item.noNum}}</view>
+
 			<view class="prizeCard-prize">
-				<view class="prizeName">黑曜石HOBBY*1盒</view>
-				<view class="prizeImage uni-flex">
+				<view class="prizeName">{{item.name}}</view>
+				<image class="prizeCard-prizeImage" :src='decodeURIComponent(item.pic)' @click.stop="previewImg(0,[decodeURIComponent(item.pic)])">
+				</image>
+				<!-- <view class="prizeImage uni-flex">
 					<view class="discountCoupon">
 						<view class="price block">150</view>
 						<view class="name block">卡享券</view>
 						<view class="scope block">平台通用</view>
 					</view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 	</view>
@@ -38,17 +41,34 @@
 	export default class ClassName extends BaseComponent {
 		rewardList: any = [];
 		queryParams: any = {
-			tp: 1
+			tp: 2
 		}
 		tag: any = {
 			index: 0,
 			list: [{
-				name: '日榜奖品'
+				name: '日榜奖品',
+				value: 2
 			}, {
-				name: '总榜奖品'
+				name: '总榜奖品',
+				value: 1
 			}]
 		}
 		onLoad() {
+			this.reqNewData()
+		}
+		onPullDownRefresh() {
+			this.reqNewData()
+		}
+		previewImg(current: number, urls: any) {
+			uni.previewImage({
+				current,
+				urls
+			})
+		}
+		tagChange(item: any, index: number) {
+			if (this.tag.index == index) return
+			this.tag.index = index
+			this.queryParams.tp = item.value
 			this.reqNewData()
 		}
 		//奖励列表
@@ -57,6 +77,7 @@
 				"activity/goodNoShowGoldValue/prize/list",
 				this.queryParams,
 				(res: any) => {
+					console.log(res)
 					this.rewardList = res.list || []
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
@@ -80,6 +101,13 @@
 		background-image: url(../../../static/act/prize/card.png);
 		align-items: center;
 
+		&-prizeImage {
+			display: block;
+			width: 160rpx;
+			height: 160rpx;
+			margin-top: 24rpx;
+		}
+
 		&-index {
 			font-size: 33rpx;
 			font-family: PingFang SC;
@@ -92,14 +120,15 @@
 		&-prize {
 			.prizeImage {
 				justify-content: space-between;
-margin-top: 24rpx;
+				margin-top: 24rpx;
+
 				.discountCoupon {
 					width: 160rpx;
 					height: 160rpx;
 					background-size: 100% 100%;
 					background-image: url(../../../static/act/prize/discountCoupon.png);
 					position: relative;
-					
+
 					.block {
 						position: absolute;
 						left: 50%;

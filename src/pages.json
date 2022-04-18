@@ -336,7 +336,7 @@
 				{
 					"path": "goldRank/goldRank_rewardList",
 					"style": {
-						"navigationBarTitleText": "我的奖品",
+						"navigationBarTitleText": "奖品列表",
 						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB",
 						"backgroundColorBottom": "#F6F7FB"
