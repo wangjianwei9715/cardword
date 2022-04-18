@@ -113,7 +113,7 @@ export default class ClassName extends BaseNode {
       name: "拼团方式",
       index: -1,
       selectShow: false,
-      key: "",
+      key: "ptType",
       children: palyArray
     },
     {
@@ -225,7 +225,6 @@ export default class ClassName extends BaseNode {
     });
   }
   onClickListSortTabs(data: any) {
-    console.log(data);
     this.tagParams = data ;
     this.reqSearchList();
   }

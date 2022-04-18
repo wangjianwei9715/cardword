@@ -8,26 +8,27 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<view class="goodslist-index-show" v-for="item in goodsList" :key="item.goodCode"
-			@click="onClickJumpUrl(item.goodCode)">
+		<view class="goodslist-index-show" v-for="item in goodsList" :key="item.goodCode">
 			<view class="goodslist-index">
-				<view class="goodslist-pic">
+				<view @click="onClickJumpUrl(item.goodCode)">
+					<view class="goodslist-pic">
 					<image :lazy-load="true" class="goodslist-pic-image"
-						:src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
-				</view>
-				<view class="goodslist-title">{{item.title}}</view>
-				<view class="goodslist-priceMsg uni-flex">
-					<view class="goodslist-priceMsg-left">
-						￥<text>{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
+							:src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 					</view>
-					<view class="goodslist-priceMsg-right">
-						余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
+					<view class="goodslist-title">{{item.title}}</view>
+					<view class="goodslist-priceMsg uni-flex">
+						<view class="goodslist-priceMsg-left">
+							￥<text>{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
+						</view>
+						<view class="goodslist-priceMsg-right">
+							余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
+						</view>
+					</view>
+					<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType(item)}">
+						<view class="progressMask" :style="{width:(100-getPlan(item.lockNum,item.currentNum,item.totalNum))+'%'}"></view>
 					</view>
 				</view>
-				<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType(item)}">
-					<view class="progressMask" :style="{width:(100-getPlan(item.lockNum,item.currentNum,item.totalNum))+'%'}"></view>
-				</view>
-				<view class="goodslist-bottom">
+				<view class="goodslist-bottom" @click="onClickSellerShop(item.merchantId)">
 					<view class="bottom-left">{{getGoodsPintuan(item.pintuan_type)}}</view>
 					<view class="bottom-right">
 						<image  class="avart" :src="decodeURIComponent(item.merchantLogo)" />
@@ -154,6 +155,12 @@
 		getGoodProgress() {
 			this.$emit('progress', this.showPlan)
 		}
+		onClickSellerShop(id:number){
+			const path = `/pages/userinfo/merchant_shopsV2`;
+			uni.navigateTo({
+				url: path + "?id=" + id
+			});   
+		}
 		onClickTopJumpUrl(url:any){
 			if(url.goodCode!=''){
 				uni.navigateTo({
@@ -198,7 +205,7 @@
 			background: #FFFFFF;
 			border-radius: 4rpx;
 			box-sizing: border-box;
-			padding: 12rpx 14rpx;
+			padding: 12rpx 14rpx 17rpx 14rpx;
 			align-items: center;
 			margin-bottom: 13rpx;
 			// border-radius: 20rpx;
@@ -252,7 +259,7 @@
 			background-image: url('../../static/goods/v2/progeessBg.png');
 			background-size: 100% 100%;
 			width: 100%;
-			height: 12rpx;
+			height: 8rpx;
 			margin-bottom: 18rpx;
 			position: relative;
 			display: flex;
@@ -281,25 +288,25 @@
 				color: #333333;
 
 				text {
-					font-size: 34rpx;
+					font-size: 33rpx;
 					font-family: FZLanTingHeiS-B-GB;
 					font-weight: 400;
 					color: #333333;
 				}
 
 				text:last-child {
-					font-size: 18rpx;
+					font-size: 21rpx;
 					font-family:PingFangSC-Regular;
 					font-weight: 500;
-					color: #848484;
+					color: #999999;
 				}
 			}
 
 			.goodslist-priceMsg-right {
-				font-size: 18rpx;
+				font-size: 21rpx;
 				font-family:PingFangSC-Regular;
 				font-weight: 400;
-				color: #CCCCCC;
+				color: #999999;
 			}
 		}
 
@@ -315,7 +322,7 @@
 				font-size: 24rpx;
 				font-family:PingFangSC-Regular;
 				font-weight: 400;
-				color: #BCBCBC;
+				color: #999999;
 				overflow: hidden;
 				text-overflow:ellipsis;
 				white-space: nowrap;

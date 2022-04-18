@@ -40,23 +40,23 @@ export var stateArray = [
 export var palyArray = [
     {
         name: "随机卡种",
-        value: 0
-    },
-    {
-        name: "自选球队",
         value: 1
     },
     {
-        name: "随机球员",
-        value: 2
+        name: "自选球队",
+        value: 10
     },
     {
-        name: "随机球队",
+        name: "随机球员",
         value: 3
     },
     {
+        name: "随机球队",
+        value: 2
+    },
+    {
         name: "随即卡包",
-        value: 4
+        value: 5
     }
 ]
 // 中文数字

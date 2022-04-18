@@ -14,6 +14,8 @@
 				<view class="list-bottom-num">{{item.picNum}}图</view>
 			</view>
 		</view>
+
+		<empty v-if="empty"/>
 	</view>
 </template>
 
@@ -30,6 +32,7 @@
 		pageSize = 10;
 		noMoreData = false;
 		total = 0;
+		empty = false;
 		onLoad(query:any) {
 			this.reqNewData();
 		}
@@ -63,6 +66,7 @@
 					this.noMoreData = true;
 				}
 				if(this.currentPage== 1) this.codeList = [];
+				if(data.total==0) this.empty = true;
 				if(data.list){
 					this.codeList = this.codeList.concat(data.list);
 				}

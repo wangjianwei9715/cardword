@@ -13,7 +13,7 @@
 					<image :src="decodeURIComponent(item.list.merchantLogo)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
 				<view class="tab-hot-boxpic-box" @click="onClickLive(item.list)">
-					<view v-if="item.list.stateName == '拆卡中'" class="live-ing"></view>
+					<view v-if="item.list.state == 2" class="live-ing"></view>
 					<image :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
 			</view>

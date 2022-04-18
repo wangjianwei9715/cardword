@@ -37,7 +37,7 @@
 									{{goodsItem.stateName}}
 								</view>
 							</view>
-							<view class="onelineName">{{goodsItem.goodName||'-'}}</view>
+							<view class="onelineName">{{goodsItem.goodName||goodsItem.title||'-'}}</view>
 							<view class="bottomState uni-flex">
 								<view class="bottomState-left">
 									<template v-if="goodsItem.stateName=='在售'">
@@ -290,7 +290,7 @@
 
 		&-rightAction {
 			.privewItem {
-				width: 122rpx;
+				width: 144rpx;
 				height: 44rpx;
 				font-size: 22rpx;
 				font-family: PingFangSC-Regular;
