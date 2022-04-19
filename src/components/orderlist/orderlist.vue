@@ -162,20 +162,20 @@
 			}
 			&-center{
 				width: 100%;
-				height:160rpx;
+				height:137rpx;
 				display: flex;
 				box-sizing: border-box;
 				padding:0 20rpx;
 				align-items: center;
 				.goods-image{
-					width: 160rpx;
-					height:160rpx;
-					border-radius: 15rpx;
+					width: 178rpx;
+					height:137rpx;
+					border-radius: 5rpx;
 					margin-right: 24rpx;
 				}
 				.goods-content{
 					width: 486rpx;
-					height:160rpx;
+					height:137rpx;
 					box-sizing: border-box;
 					padding:0;
 					.title{
@@ -192,15 +192,15 @@
 						box-sizing: border-box;
 					}
 					.state{
-						height:30rpx;
+						height:35rpx;
 						margin-top: 5rpx;
-						font-size: 22rpx;
+						font-size: 23rpx;
 						font-family: PingFangSC-Regular, PingFang SC;
 						font-weight: 400;
-						color: #FB4E3E;
+						color: #F63D47;
 						box-sizing: border-box;
-						padding:0 9rpx;
-						background: #FBF2F3;
+						padding:0 18rpx;
+						background: #FFEDEE;
 						display: inline-flex;
 						align-items: center;
 					}
@@ -209,7 +209,7 @@
 					}
 					.desc{
 						width: 100%;
-						margin-top: 30rpx;
+						margin-top: 20rpx;
 						height:40rpx;
 						display: flex;
 						box-sizing: border-box;
@@ -238,7 +238,7 @@
 			&-bottom{
 				width: 100%;
 				box-sizing: border-box;
-				padding:20rpx 0 20rpx 20rpx;
+				padding:15rpx 0 38rpx 20rpx;
 				.price{
 					width: 100%;
 					height:40rpx;
@@ -271,19 +271,19 @@
 					align-items: center;
 					justify-content: flex-end;
 					.btn{
-						width: 148rpx;
+						width: 146rpx;
 						height:60rpx;
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						border-radius: 30rpx;
+						border-radius:5rpx;
 						font-size: 24rpx;
 						font-family: PingFangSC-Medium, PingFang SC;
 						font-weight: 400;
 						margin-right: 20rpx;
 						background:#fff;
-						border:1.5rpx solid #14151B;
-						color:#14151B
+						border:1rpx solid #DADADA;
+						color:#88878c
 					}
 					.btn-toPay{
 						background:#FB4E3E;
