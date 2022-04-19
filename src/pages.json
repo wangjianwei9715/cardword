@@ -308,7 +308,7 @@
 					"path": "goldRank/goldRank_rankList",
 					"style": {
 						"navigationBarTitleText": "金卡积分榜",
-						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB",
 						"navigationStyle": "custom",
 						"backgroundColorBottom": "#F6F7FB"

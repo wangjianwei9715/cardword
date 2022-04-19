@@ -38,7 +38,7 @@
 		dateFormatMSHMS,
 		formatNumber,
 		countDown
-	} from '@/tools/util.ts'
+	} from '@/tools/util'
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		recordList: any = [];

@@ -2,9 +2,11 @@
 	<view class="goodsContent">
 		<!-- 首页轮播 -->
 		<view class="index-swiper" v-if="indexSwiper&&topAddList!=''">
-			<swiper class="swiper" :indicator-dots="false" :autoplay="true" :interval="5000" :duration="500" :circular="true">
+			<swiper class="swiper" :indicator-dots="false" :autoplay="true" :interval="5000" :duration="500"
+				:circular="true">
 				<swiper-item v-for="(item,index) in topAddList" :key="index">
-					<image class="swiper-image" :src="decodeURIComponent(item.pic)" @click="onClickTopJumpUrl(item.target)" mode="aspectFill"></image>
+					<image class="swiper-image" :src="decodeURIComponent(item.pic)"
+						@click="onClickTopJumpUrl(item.target)" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -12,7 +14,7 @@
 			<view class="goodslist-index">
 				<view @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic">
-					<image :lazy-load="true" class="goodslist-pic-image"
+						<image :lazy-load="true" class="goodslist-pic-image"
 							:src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 					</view>
 					<view class="goodslist-title">{{item.title}}</view>
@@ -25,13 +27,14 @@
 						</view>
 					</view>
 					<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType(item)}">
-						<view class="progressMask" :style="{width:(100-getPlan(item.lockNum,item.currentNum,item.totalNum))+'%'}"></view>
+						<view class="progressMask"
+							:style="{width:(100-getPlan(item.lockNum,item.currentNum,item.totalNum))+'%'}"></view>
 					</view>
 				</view>
 				<view class="goodslist-bottom" @click="onClickSellerShop(item.merchantId)">
 					<view class="bottom-left">{{getGoodsPintuan(item.pintuan_type)}}</view>
 					<view class="bottom-right">
-						<image  class="avart" :src="decodeURIComponent(item.merchantLogo)" />
+						<image class="avart" :src="decodeURIComponent(item.merchantLogo)" />
 						<view class="bussName">{{item.merchantName}}</view>
 						<view class="cores"></view>
 					</view>
@@ -59,7 +62,9 @@
 	import {
 		app
 	} from "@/app";
-	import {getGoodsPintuan} from '@/tools/switchUtil';
+	import {
+		getGoodsPintuan
+	} from '@/tools/switchUtil';
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		getGoodsPintuan = getGoodsPintuan
@@ -70,12 +75,12 @@
 		@Prop({
 			default: ''
 		})
-		topAddList?: any;
+		topAddList ? : any;
 		@Prop({
 			default: false
 		})
-		indexSwiper?: any;
-		
+		indexSwiper ? : any;
+
 		@Prop({
 			default: false
 		})
@@ -109,8 +114,8 @@
 			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
 			return width
 		}
-		getPriceStart(item:any){
-			return item.isSelect || item.discount!='' || item.pintuan_type == 11
+		getPriceStart(item: any) {
+			return item.isSelect || item.discount != '' || item.pintuan_type == 11
 		}
 		onClickJumpUrl(id: any) {
 			this.$emit("send", id);
@@ -149,31 +154,31 @@
 				}
 			}).exec();
 		}
-		getSelectType(item:any){
+		getSelectType(item: any) {
 			return item.pintuan_type == 11 || item.pintuan_type == 10
 		}
 		getGoodProgress() {
 			this.$emit('progress', this.showPlan)
 		}
-		onClickSellerShop(id:number){
+		onClickSellerShop(id: number) {
 			const path = `/pages/userinfo/merchant_shopsV2`;
 			uni.navigateTo({
 				url: path + "?id=" + id
-			});   
+			});
 		}
-		onClickTopJumpUrl(url:any){
-			if(url.goodCode!=''){
+		onClickTopJumpUrl(url: any) {
+			if (url.goodCode != '') {
 				uni.navigateTo({
-					url: '/pages/goods/goods_details?id='+decodeURIComponent(url.goodCode)
+					url: '/pages/goods/goods_details?id=' + decodeURIComponent(url.goodCode)
 				})
 				return;
-			}else if(url.url!=''){
+			} else if (url.url != '') {
 				uni.navigateTo({
-					url: '/pages/act/outLink/outLink?url='+decodeURIComponent(url.url)
+					url: '/pages/act/outLink/outLink?url=' + decodeURIComponent(url.url)
 				})
 				return;
-			}else if(url.page!=''){
-				if(decodeURIComponent(url.page)=='社群'){
+			} else if (url.page != '') {
+				if (decodeURIComponent(url.page) == '社群') {
 					uni.$emit('showPaySuccess')
 					return;
 				}
@@ -201,7 +206,7 @@
 	.goodslist {
 		&-index {
 			width: 356rpx;
-			height:468rpx;
+			height: 468rpx;
 			background: #FFFFFF;
 			border-radius: 4rpx;
 			box-sizing: border-box;
@@ -240,7 +245,7 @@
 			// width: 100%;
 			height: 60rpx;
 			font-size: 27rpx;
-			font-family:PingFangSC-Regular;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
 			margin-top: 10rpx;
@@ -264,34 +269,39 @@
 			position: relative;
 			display: flex;
 			justify-content: flex-end;
-			.progressMask{
+
+			.progressMask {
 				height: inherit;
 				background-color: #F6F7FB;
 				width: 30%;
 			}
 		}
-		&-progress-select{
+
+		&-progress-select {
 			background-image: url('../../static/goods/v2/progessBgg_select.png');
 			background-size: 100% 100%;
 		}
+
 		&-priceMsg {
 			justify-content: space-between;
 			// vertical-align: bottom;
-			height:40rpx;
+			height: 40rpx;
 			display: flex;
 			align-items: flex-end;
 			position: relative;
 			margin-bottom: 8rpx;
 			margin-top: 10rpx;
 			align-items: flex-end;
+
 			.goodslist-priceMsg-left {
 				font-size: 18rpx;
-				font-family:PingFangSC-Regular;
+				font-family: PingFangSC-Regular;
 				font-weight: 500;
 				color: #333333;
-				height:40rpx;
+				height: 40rpx;
 				display: flex;
 				align-items: flex-end;
+
 				text.price-text {
 					font-size: 33rpx;
 					font-family: FZLanTingHeiS-B-GB;
@@ -303,18 +313,18 @@
 
 				text:last-child {
 					font-size: 21rpx;
-					font-family:PingFangSC-Regular;
+					font-family: PingFangSC-Regular;
 					font-weight: 500;
 					color: #999999;
 				}
 			}
 
 			.goodslist-priceMsg-right {
-				height:40rpx;
+				height: 40rpx;
 				display: flex;
 				align-items: flex-end;
 				font-size: 21rpx;
-				font-family:PingFangSC-Regular;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #999999;
 			}
@@ -330,11 +340,11 @@
 			.bottom-left {
 				max-width: 140rpx;
 				font-size: 24rpx;
-				font-family:PingFangSC-Regular;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #999999;
 				overflow: hidden;
-				text-overflow:ellipsis;
+				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
 
@@ -355,12 +365,12 @@
 					max-width: 130rpx;
 					position: relative;
 					font-size: 24rpx;
-					font-family:PingFangSC-Regular;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #595959;
 					margin-right: 4rpx;
 					overflow: hidden;
-					text-overflow:ellipsis;
+					text-overflow: ellipsis;
 					white-space: nowrap;
 				}
 
@@ -518,26 +528,28 @@
 	}
 
 	// 活动轮播
-	.index-swiper{
+	.index-swiper {
 		width: 356rpx;
-		height:468rpx;
+		height: 473rpx;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		margin-right: 10rpx;
 		margin-bottom: 10rpx;
 	}
-	.swiper{
+
+	.swiper {
 		width: 356rpx;
-		height:468rpx;
+		height: 473rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: flex-start;
 		justify-content: center;
 	}
-	.swiper-image{
+
+	.swiper-image {
 		width: 356rpx;
-		height:468rpx;
+		height: 473rpx;
 		box-sizing: border-box;
 	}
 </style>

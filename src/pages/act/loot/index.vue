@@ -4,7 +4,7 @@
 		<view class="topBanner">
 			<image src="../../../static/act/loot/banner.png" class="bannerImg" mode=""></image>
 			<view class="rightFloatItem" @click="ruleShow=true"><text>规则</text></view>
-			<view class="rightFloatItem rule" @click="pageJump('/pages/act/loot/loot_myPrize')"><text>我的奖品</text></view>
+			<view class="rightFloatItem rule" @click="toMyPrize"><text>我的奖品</text></view>
 			<view class="rollContent" id='rollContent'>
 				<view class="rollHidden" id='rollHidden' :style="{transform:`translateX(${rollX}px)`}">
 					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
@@ -170,7 +170,7 @@
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import {
 		dateFormatMSHMS
-	} from '@/tools/util.ts'
+	} from '@/tools/util'
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		showDrawer: boolean = false; //任务弹窗
@@ -373,7 +373,7 @@
 				summary: '完成任务，免费参与卡世界欧皇夺宝。',
 				scene: "WXSceneSession",
 				// href: 'http://192.168.8.26:8081/#/pages/loot/loot',
-				href:'https://www.ka-world.com/share/h5/#/pages/loot/loot',
+				href: 'https://www.ka-world.com/share/h5/#/pages/loot/loot',
 				// miniProgram: {
 				// 	id: "gh_5cf45dd26926",
 				// 	type: 0,
@@ -430,6 +430,12 @@
 			}
 		}
 		handleGetOq(item: any, isRefsh: any = false) {
+			if (app.token.accessToken == "") {
+				uni.navigateTo({
+					url: "/pages/login/login"
+				});
+				return;
+			}
 			if (item.luckyGasCodeNum == 0) {
 				uni.showToast({
 					title: '你还没参与该活动',
@@ -537,10 +543,22 @@
 		}
 		//tag切换
 		tagChange(item: any, index: number) {
+			if (this.tag.index == index) return
 			this.tag.index = index;
 			this.queryParams.pageIndex = 1;
 			this.queryParams.tp = item.value;
 			this.reqNewData();
+		}
+		toMyPrize(){
+			if (app.token.accessToken == "") {
+				uni.navigateTo({
+					url: "/pages/login/login"
+				});
+				return;
+			}
+			uni.navigateTo({
+				url:'/pages/act/loot/loot_myPrize'
+			});
 		}
 		pageJump(url: string = "") {
 			if (!url) return;
@@ -950,7 +968,8 @@
 					font-weight: bolder;
 					color: #333333;
 				}
-				.number input{
+
+				.number input {
 					font-size: 38rpx;
 				}
 			}

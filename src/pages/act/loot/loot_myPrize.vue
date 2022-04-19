@@ -20,17 +20,18 @@
 				</view>
 			</view>
 		</view>
+		<view class="noneBlock"></view>
 		<empty v-if='!isRequest&&prizeList&&!prizeList.length'></empty>
 	</view>
 </template>
-
+	
 <script lang="ts">
 	import {
 		app
 	} from "@/app";
 	import {
 		dateFormatMSHMS
-	} from '@/tools/util.ts'
+	} from '@/tools/util'
 	import {
 		Component,
 		Prop,
@@ -90,7 +91,11 @@
 		background-color: #f6f7fb;
 		font-family: PingFangSC-Regular;
 	}
-
+	.noneBlock{
+		width: 750rpx;
+		padding-bottom: constant(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
+	}
 	.prizeContent {
 		padding: 0 14rpx;
 		// margin-top: 20rpx;
