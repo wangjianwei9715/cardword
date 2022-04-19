@@ -171,7 +171,7 @@
 				scene: "WXSceneSession",
 				miniProgram: {
 					id: "gh_1093b743ea0e",
-					type: 2, // 0-正式版； 1-测试版； 2-体验版。 默认值为0。
+					type: 0, // 0-正式版； 1-测试版； 2-体验版。 默认值为0。
 					path: "/pages/thumbs/thumbs?code=" + shareItem.shareCode,
 					webUrl: "https://www.ka-world.com/"
 				},

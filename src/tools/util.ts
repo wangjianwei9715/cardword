@@ -333,9 +333,10 @@ const formatNumberZero = (val:any) => {
 	return val < 10 ? "0" + val : val
 }
 //倒计时
-export function countDown(endDate:number, mmbol:boolean=true){
-	let nowTime:any = new Date();
-	let times:any = new Date(endDate * 1000).getTime() - nowTime.getTime();
+export function countDown(startDate:number,endDate:number=0, mmbol:boolean=true){
+		if(!endDate) endDate=Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
+		1) / 1000)
+	let times:any = new Date(endDate * 1000).getTime() - new Date(startDate*1000).getTime();
 	let ss:any = Math.floor(times / 1000) //毫秒转换为秒
 	let dd = Math.floor(ss / (3600 * 24)); //秒转化为天
 	ss %= 3600 * 24; //整除了天之后还剩下多少秒

@@ -1,125 +1,112 @@
 <template>
 	<view>
+		<view class="header-banner">
+			<statusbar />
+			<view class="tab-header">
+				<view class="icon-back" @click="onClickBack"></view>
+				<view class="header-title">金卡积分榜单</view>
+				<view class="header-icon">
+					<!-- <view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view> -->
+					<view class="icon-share" @click="onClickShare"></view>
+				</view>
+			</view>
+		</view>
+
+		<view style="padding-top:88rpx">
+			<statusbar />
+		</view>
 		<view class="topBanner">
 			<view class="topTitle"></view>
 			<view class="rightFloat" @click="pageJump('/pages/act/goldRank/goldRank_rule')">
 				<text>活动<br>规则</text>
 			</view>
-			<view class="rightFloat" style="top: 140rpx;" @click="pageJump('/pages/act/goldRank/goldRank_record')">
+			<view class="rightFloat" style="top: 120rpx;" @click="pageJump('/pages/act/goldRank/goldRank_record')">
 				<text>往期<br>记录</text>
+			</view>
+			<view class="rightFloat" style="top: 240rpx;" @click="pageJump('/pages/act/goldRank/goldRank_rewardList')">
+				<text>奖品<br>列表</text>
 			</view>
 		</view>
 		<view class="rollStaticContent">
 			<view class="rollContent" id='rollContent'>
-				<view class="rollItem" v-for="(item,index) in 20">
-					<image src="../../../static/act/goldRank/topBanner.png" mode="aspectFill">
+				<view class="rollItem" v-for="(item) in awardList">
+					<image :src="decodeURIComponent(item.pic)" mode="aspectFill">
 					</image>
 				</view>
-				<view class="rollItem" v-for="(item,index) in 20">
-					<image src="../../../static/act/goldRank/topBanner.png" mode="aspectFill">
+				<view class="rollItem" v-for="(item) in awardList">
+					<image :src="decodeURIComponent(item.pic)" mode="aspectFill">
 					</image>
 				</view>
 			</view>
 		</view>
 		<view class="tips">·金卡积分=金卡x卡密单价</view>
-		<view class="tagContent">
-			<view class="tagContent-item">
-				<view class="tagName">金卡积分日榜</view>
-				<view class="smallName">倒计时: {{countDown(endTimeStamp)}}</view>
-			</view>
-			<view class="tagContent-item">
-				<view class="tagName">金卡积分总榜</view>
-				<view class="smallName">活动时间: 4.20-5.4 </view>
+		<view class="tagContent" :class="{selectTag:tag.index===1}">
+			<view class="tagContent-item" v-for="(item,index) in tag.list" :key='index' @click="tagChange(item,index)">
+				<view class="tagName">{{item.name}}</view>
+				<view class="smallName" v-if="index==0">本轮倒计时: {{countDown(nowDateStamp,endTimeStamp)}}</view>
+				<view class="smallName" v-if="index==1">活动时间: 4.20-5.4 </view>
 			</view>
 			<view class="luxuryGifts"><text>豪礼</text></view>
 		</view>
 		<view class="rankContent">
 			<image src="../../../static/act/goldRank/despite_light.png" class="light" mode="widthFix"></image>
 			<view class="rankContent-despite">
-				<!-- 第一名 -->
-				<view class="topThreeItem rankOne">
+				<view class="topThreeItem" :class="{rankOne:index==0,rankTwo:index==1,rankThree:index==2}"
+					v-for="(item,index) in rankMockList" :key='index'>
 					<view class="frame">
 						<view class="avartContainer">
-							<image
-								src="https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.15/loot/loot_sw/0/1650011575014s6jqldisvv.jpg"
-								mode=""></image>
+							<image v-if="getTopRankItem(index)&&getTopRankItem(index).userAvatar"
+								:src="decodeURIComponent(getTopRankItem(index).userAvatar)" mode=""></image>
 						</view>
-						<image src="../../../static/act/goldRank/rank_one.png" mode="widthFix"></image>
+						<image :src="item.avartFrame" mode="widthFix"></image>
 					</view>
-					<view class="prizewinner">二***蛋</view>
+					<view class="prizewinner">{{getTopRankItem(index)?getTopRankItem(index).userName:'虚位以待'}}</view>
 					<view class="integral uni-flex">
 						<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix"></image>
-						<text>{{formatNumber(1000,2)}}</text>
+						<text>{{getTopRankItem(index)?formatNumber(getTopRankItem(index).gold_value,2):'-'}}</text>
 					</view>
-					<view class="prizeName">150元卡券分享</view>
+					<view class="prizeName">{{getTopRankItem(index)?getTopRankItem(index).awardName:'-'}}</view>
 				</view>
-				<!-- 第二名 -->
-				<view class="topThreeItem rankTwo">
-					<view class="frame">
-						<view class="avartContainer">
-							<image
-								src="https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.15/loot/loot_sw/0/1650011575014s6jqldisvv.jpg"
-								mode=""></image>
-						</view>
-						<image src="../../../static/act/goldRank/rank_two.png" mode="widthFix"></image>
-					</view>
-					<view class="prizewinner">二***蛋</view>
-					<view class="integral uni-flex">
-						<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix"></image>
-						<text>{{formatNumber(1000,2)}}</text>
-					</view>
-					<view class="prizeName">150元卡券分享</view>
-				</view>
-				<!-- 第三名 -->
-				<view class="topThreeItem rankThree">
-					<view class="frame">
-						<view class="avartContainer">
-							<image
-								src="https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.15/loot/loot_sw/0/1650011575014s6jqldisvv.jpg"
-								mode=""></image>
-						</view>
-						<image src="../../../static/act/goldRank/rank_three.png" mode="widthFix"></image>
-					</view>
-					<view class="prizewinner">二***蛋</view>
-					<view class="integral uni-flex">
-						<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix"></image>
-						<text>{{formatNumber(1000,2)}}</text>
-					</view>
-					<view class="prizeName">150元卡券分享</view>
-				</view>
-
 			</view>
-			<view class="residueRank uni-flex" v-for="(item,index) in 97" :key='index'>
-				<view class="residueRank-index">{{index+4}}</view>
-				<image class="residueRank-avart"
-					src="https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.15/loot/loot_sw/0/1650011575014s6jqldisvv.jpg">
-				</image>
-				<view class="residueRank-name oneLineOver">短*{{index*20}}笛</view>
-				<view class="integral uni-flex" style="flex: 1;justify-content: start;margin-top: 0;">
-					<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix" style="width: 22rpx;">
+			<template>
+				<view class="residueRank uni-flex" v-for="(item) in getTopThreeList" :key='item.ranking'>
+					<view class="residueRank-index">{{item.ranking}}</view>
+					<image class="residueRank-avart" :src="decodeURIComponent(item.userAvatar)">
 					</image>
-					<text>{{formatNumber((97-index)*100,2)}}</text>
+					<view class="residueRank-name oneLineOver">{{item.userName}}</view>
+					<view class="integral uni-flex" style="flex: 1;justify-content: start;margin-top: 0;">
+						<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix"
+							style="width: 22rpx;">
+						</image>
+						<text>{{formatNumber(item.gold_value,2)}}</text>
+					</view>
+					<view class="residueRank-prize oneLineOver">{{item.awardName}}</view>
 				</view>
-				<view class="residueRank-prize oneLineOver">150元卡券分享</view>
-			</view>
+			</template>
+			<!-- <template v-if="getUnoccupied">
+				<view class="residueRank uni-flex" v-for="(item,index) in getUnoccupied" :key='"none"+index'>
+					<view class="residueRank-index">{{rankList.length>3?index+rankList.length+1:index+4}}</view>
+					<view class="residueRank-none">虚位以待</view>
+				</view>
+			</template> -->
 		</view>
 		<view class="noneBlock"></view>
 		<view class="bottomBlock">
-			<view class="bottomBlock-rank white">未上榜</view>
-			<image class="bottomBlock-avart"
-				src="https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.15/loot/loot_sw/0/1650011575014s6jqldisvv.jpg"
-				mode=""></image>
+			<view class="bottomBlock-rank white">{{myData.ranking||'未上榜'}}</view>
+			<image class="bottomBlock-avart" :src="decodeURIComponent(myData.avatar)" mode=""></image>
 			<view class="bottomBlock-me white">我</view>
 			<view class="integral uni-flex" style="flex: 1;justify-content: start;margin-top: 0;">
 				<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix">
 				</image>
-				<text style="font-size: 28rpx;">{{formatNumber(1000,2)}}</text>
+				<text style="font-size: 28rpx;">{{formatNumber(myData.gold_value||0,2)}}</text>
 			</view>
-			<view class="bottomBlock-prize white">——</view>
+			<view class="bottomBlock-prize white">{{myData.awardName||'——'}}</view>
 		</view>
+		<!--   -->
+		<share :operationShow="operationShow" :shareData="shareData" @operacancel="operationShow=false" />
 	</view>
 </template>
-
+ 
 <script lang="ts">
 	import {
 		app
@@ -142,33 +129,48 @@
 			tp: 1 //1 今日榜单数据，2 总榜数据
 		};
 		endTimeStamp: number = 0;
+		operationShow: boolean = false;
+		shareData: any = false;
 		countDown: any = countDown;
 		dateTimer: any = 0;
 		nowDateStamp: number = +new Date() / 1000;
+		unoccupied: any = 0;
 		formatNumber: any = formatNumber;
 		tag: any = {
 			index: 0,
 			list: [{
-				name: '今日榜单',
+				name: '金卡积分日榜',
 				value: 1
 			}, {
-				name: '积分总榜',
+				name: '金卡积分总榜',
 				value: 2
 			}]
 		}
+		rankMockList: any = [{
+			name: '第一名',
+			avartFrame: '../../../static/act/goldRank/rank_one.png'
+		}, {
+			name: '第二名',
+			avartFrame: '../../../static/act/goldRank/rank_two.png'
+		}, {
+			name: '第三名',
+			avartFrame: '../../../static/act/goldRank/rank_three.png'
+		}]
 		awardList: any = []; //奖品列表
 		myData: any = {}; //个人rank数据
 		rankList: any = [];
 		onLoad() {
+			this.reqNewData()
 			this.$nextTick(() => {
-				const query: any = uni.createSelectorQuery().in(this);
-				query.select('#rollContent').boundingClientRect((data: any) => {
-					console.log(data.width)
-				}).exec();
+				// const query: any = uni.createSelectorQuery().in(this);
+				// query.select('#rollContent').boundingClientRect((data: any) => {
+				// 	console.log(data.width)
+				// }).exec();
 				this.startCountDown()
 			})
 		}
 		tagChange(item: any, index: number) {
+			if (this.tag.index == index) return
 			this.tag.index = index
 			this.queryParams.tp = item.value
 			this.reqNewData(false)
@@ -177,9 +179,26 @@
 			this.dateTimer && clearInterval(this.dateTimer)
 			this.endTimeStamp = Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
 				1) / 1000)
-			// this.dateTimer = setInterval(() => {
-			// 	this.nowDateStamp = +new Date() / 1000
-			// })
+			this.dateTimer = setInterval(() => {
+				this.nowDateStamp = +new Date() / 1000
+				//倒计时结束,刷新列表；
+				if (this.nowDateStamp === this.endTimeStamp) {
+					this.delayRefresh()
+					clearInterval(this.dateTimer)
+				}
+			}, 1000)
+		}
+		delayRefresh() {
+			setTimeout(() => {
+				this.startCountDown()
+				this.reqNewData(true)
+			}, 1000)
+		}
+		getTopRankItem(rankIndex: number = 0) {
+			const rankItem: any = this.rankList[rankIndex]
+			if (!rankItem) return undefined
+			if(rankItem.userName=='虚位以待'&&rankItem.gold_value==0) return undefined
+			return rankItem
 		}
 		pageJump(url: string) {
 			if (!url) return
@@ -187,20 +206,50 @@
 				url
 			})
 		}
+		onClickBack() {
+			uni.navigateBack({
+				delta: 1
+			});
+		}
+		// 分享
+		onClickShare() {
+			if (!this.operationShow) {
+				this.shareData = {
+					// shareUrl: 'http://192.168.8.26:8081/#/pages/goldRank/goldRank_rankList',
+					shareUrl: 'https://www.ka-world.com/share/h5/#/pages/goldRank/goldRank_rankList',
+					title: '积分榜单送豪礼',
+					summary: '积分榜单送豪礼',
+					thumb: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.18/loot/loot_sw/0/165026087575216790gc9vr.png'
+				}
+				this.operationShow = true
+			}
+		}
 		//获取rank榜以及个人rank数据
 		reqNewData(isRefreshAward: boolean = true) {
 			app.http.Get(
 				"activity/goodNoShowGoldValue/home",
 				this.queryParams,
 				(res: any) => {
-					this.rankList = res.rankingList || []
-					if (isRefreshAward) this.awardList = res.awardList || []
-					this.myData = res.myData || {}
+					this.rankList = res.data.rankingList || []
+					if (isRefreshAward) this.awardList = res.data.awardList || []
+					this.myData = res.data.myData || {}
+					// this.unoccupied = res.data.unoccupied
+					uni.hideLoading()
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
 					}, 500);
 				}
 			);
+		}
+		private get getUnoccupied() {
+			let unoccupied: number = 0
+			let len: number = this.rankList.length
+			if (len <= 3) unoccupied = this.unoccupied - (3 - len)
+			if (len > 3) unoccupied = this.unoccupied
+			return unoccupied < 0 ? 0 : unoccupied
+		}
+		private get getTopThreeList() {
+			return this.rankList.slice(3)
 		}
 	}
 </script>
@@ -223,9 +272,9 @@
 		background-size: 100% 100%;
 		background-image: url(../../../static/act/goldRank/bottom.png);
 		position: fixed;
-		bottom: 0;
-		padding-bottom: calc(0rpx + constant(safe-area-inset-bottom));
-		padding-bottom: calc(0rpx + env(safe-area-inset-bottom));
+		bottom: 0rpx;
+		padding-bottom: calc(0rpx + constant(safe-area-inset-bottom) - 40rpx);
+		padding-bottom: calc(0rpx + env(safe-area-inset-bottom) - 40rpx);
 		display: flex;
 		// padding-right:28rpx;
 		align-items: center;
@@ -240,7 +289,7 @@
 
 		&-rank {
 			text-align: center;
-			width: 23%;
+			width: 15%;
 		}
 
 		&-avart {
@@ -257,8 +306,80 @@
 		}
 
 		&-prize {
+			font-size: 26rpx;
 			text-align: center;
 			width: 34%;
+		}
+	}
+
+	.header-banner {
+		width: 100%;
+		background: #fff;
+		position: fixed;
+		left: 0;
+		top: 0;
+		box-sizing: border-box;
+		z-index: 10;
+		border-bottom: 1px solid #F4F3F2;
+
+		.tab-header {
+			width: 100%;
+			height: 88rpx;
+			display: flex;
+			box-sizing: border-box;
+			padding: 0 30rpx;
+			position: relative;
+			z-index: 10;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.icon-back {
+			width: 80rpx;
+			height: 88rpx;
+			background: url(../../../static/goods/back@2x.png) no-repeat center;
+			background-size: 100% 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+
+		.header-title {
+			height: 88rpx;
+			line-height: 88rpx;
+			font-size: 34rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #000000;
+		}
+
+		.header-icon {
+			height: 88rpx;
+			display: flex;
+			align-items: center;
+			position: absolute;
+			right: 40rpx;
+			top: 0;
+		}
+
+		.icon-collect {
+			width: 38rpx;
+			height: 37rpx;
+			background: url(../../../static/goods/v2/icon_collect.png) no-repeat center;
+			background-size: 100% 100%;
+			margin-right: 40rpx;
+		}
+
+		.icon-favored {
+			background: url(../../../static/goods/v2/icon_collect_.png) no-repeat center;
+			background-size: 100% 100%;
+		}
+
+		.icon-share {
+			width: 40rpx;
+			height: 39rpx;
+			background: url(../../../static/goods/v2/icon_share.png) no-repeat center;
+			background-size: 100% 100%;
 		}
 	}
 
@@ -293,7 +414,7 @@
 			text {
 				position: relative;
 
-				top: 26rpx;
+				top: 28rpx;
 			}
 		}
 	}
@@ -351,7 +472,7 @@
 		.luxuryGifts {
 			position: absolute;
 			right: 0;
-			top: 2rpx;
+			top: 0rpx;
 			width: 81rpx;
 			height: 87rpx;
 			background-size: 100% 100%;
@@ -365,10 +486,14 @@
 				transform: rotate(45deg);
 				letter-spacing: 2rpx;
 				position: absolute;
-				right: 4rpx;
-				top: 2rpx;
+				right: 1rpx;
+				top: 10rpx;
 			}
 		}
+	}
+
+	.selectTag {
+		background-image: url(../../../static/act/goldRank/tag_two.png);
 	}
 
 	.integral {
@@ -424,6 +549,14 @@
 				text-align: center;
 			}
 
+			&-none {
+				color: #fff;
+				width: 72%;
+				text-align: center;
+				font-weight: 500;
+				font-size: 26rpx;
+			}
+
 			&-avart {
 				width: 56rpx;
 				height: 56rpx;
@@ -458,8 +591,9 @@
 			display: block;
 			width: 640rpx;
 			height: 2rpx;
-			background-size: 100% 100%;
-			background-image: url(../../../static/act/goldRank/rank_line.png);
+			background-color: rgba(89, 154, 226,.32);
+			// background-size: 100% 100%;
+			// background-image: url(../../../static/act/goldRank/rank_line.png);
 			position: absolute;
 			left: 50%;
 			transform: translate(-50%, 0);
@@ -538,7 +672,7 @@
 					text-align: center;
 					position: absolute;
 					left: 50%;
-					transform: translate(-50%, 16rpx);
+					transform: translate(-50%, 10rpx);
 				}
 			}
 
@@ -581,8 +715,8 @@
 		.rollContent {
 			position: absolute;
 			display: flex;
-			-webkit-animation: 40s rowup linear infinite normal;
-			animation: 40s rowup linear infinite normal;
+			-webkit-animation: 65s rowup linear infinite normal;
+			animation: 65s rowup linear infinite normal;
 			top: 0;
 			bottom: 0;
 			height: 158rpx;

@@ -372,7 +372,8 @@
 				title: "下一个欧皇就是你！",
 				summary: '完成任务，免费参与卡世界欧皇夺宝。',
 				scene: "WXSceneSession",
-				href: 'http://192.168.8.26:8081/#/pages/loot/loot',
+				// href: 'http://192.168.8.26:8081/#/pages/loot/loot',
+				href:'https://www.ka-world.com/share/h5/#/pages/loot/loot',
 				// miniProgram: {
 				// 	id: "gh_5cf45dd26926",
 				// 	type: 0,
