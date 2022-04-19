@@ -166,29 +166,27 @@
 		rankList: any = [];
 		onLoad() {
 			this.reqNewData()
+			this.reqCarouselData()
 			this.$nextTick(() => {
-				// const query: any = uni.createSelectorQuery().in(this);
-				// query.select('#rollContent').boundingClientRect((data: any) => {
-				// 	console.log(data.width)
-				// }).exec();
+
 				this.startCountDown()
 			})
 		}
 		onReachBottom() {
 			if (this.queryParams.pageIndex < this.totalPage) {
 				this.queryParams.pageIndex += 1
-				this.reqNewData(false)
+				this.reqNewData()
 			}
 		}
 		onPullDownRefresh() {
 			this.queryParams.pageIndex = 1
-			this.reqNewData(false)
+			this.reqNewData()
 		}
 		tagChange(item: any, index: number) {
 			if (this.tag.index == index) return
 			this.tag.index = index
 			this.queryParams.tp = item.value
-			this.reqNewData(false)
+			this.reqNewData()
 		}
 		startCountDown() {
 			this.dateTimer && clearInterval(this.dateTimer)
@@ -206,7 +204,7 @@
 		delayRefresh() {
 			setTimeout(() => {
 				this.startCountDown()
-				this.reqNewData(true)
+				this.reqNewData()
 			}, 1000)
 		}
 		getTopRankItem(rankIndex: number = 0) {
@@ -240,8 +238,20 @@
 				this.operationShow = true
 			}
 		}
+		//获取轮播图片列表
+		reqCarouselData() {
+			app.http.Get('activity/goodNoShowGoldValue/awardList', {}, (res: any) => {
+				this.awardList = res.list || []
+				this.$nextTick(() => {
+					const query: any = uni.createSelectorQuery().in(this);
+					query.select('#rollContent').boundingClientRect((data: any) => {
+						// console.log(data.width)
+					}).exec();
+				})
+			})
+		}
 		//获取rank榜以及个人rank数据
-		reqNewData(isRefreshAward: boolean = true) {
+		reqNewData() {
 			app.http.Get(
 				"activity/goodNoShowGoldValue/home",
 				this.queryParams,
@@ -249,11 +259,10 @@
 					this.totalPage = res.totalPage
 					const arr = res.data.rankingList || []
 					this.rankList = this.queryParams.pageIndex == 1 ? arr : [...this.rankList, ...arr]
-					// console.log(this.rankList)
-					if (isRefreshAward) this.awardList = res.data.awardList || []
 					this.myData = res.data.myData || {}
 					// this.unoccupied = res.data.unoccupied
 					uni.hideLoading()
+					
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
 					}, 500);
