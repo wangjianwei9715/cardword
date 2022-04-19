@@ -4,7 +4,7 @@
 		<view class="topBanner">
 			<image src="../../../static/act/loot/banner.png" class="bannerImg" mode=""></image>
 			<view class="rightFloatItem" @click="ruleShow=true"><text>规则</text></view>
-			<view class="rightFloatItem rule" @click="pageJump('/pages/act/loot/loot_myPrize')"><text>我的奖品</text></view>
+			<view class="rightFloatItem rule" @click="toMyPrize"><text>我的奖品</text></view>
 			<view class="rollContent" id='rollContent'>
 				<view class="rollHidden" id='rollHidden' :style="{transform:`translateX(${rollX}px)`}">
 					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
@@ -548,6 +548,17 @@
 			this.queryParams.pageIndex = 1;
 			this.queryParams.tp = item.value;
 			this.reqNewData();
+		}
+		toMyPrize(){
+			if (app.token.accessToken == "") {
+				uni.navigateTo({
+					url: "/pages/login/login"
+				});
+				return;
+			}
+			uni.navigateTo({
+				url:'/pages/act/loot/loot_myPrize'
+			});
 		}
 		pageJump(url: string = "") {
 			if (!url) return;
