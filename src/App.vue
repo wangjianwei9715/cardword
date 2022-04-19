@@ -226,6 +226,10 @@ export default Vue.extend({
   font-family: "eryaxindahei";
   src: url("~@/common/Tao/CountDownNum.ttf");
 }
+@font-face {
+  font-family: "FZLTGBK";
+  src: url("~@/common/Tao/fzlt_GBK.ttf");
+}
 // #endif
 .content {
   display: flex;
