@@ -65,7 +65,11 @@ export default class ClassName extends BaseComponent {
       item.selectShow = true; //开启下拉
     } else {
       this.isDefault = false;
-      item.odType = item.odType == 2 ? (item.odType = 0) : (item.odType += 1);
+      let od = item.odType;
+      for(let i in this.copyData){
+        this.copyData[i].odType = 0;
+      }
+      item.odType = od==2?item.odType=0:od+1;
       this.sendData();
     }
   }
@@ -120,40 +124,6 @@ export default class ClassName extends BaseComponent {
     )
       return [];
     return copyData[selectMenuIndex];
-  }
-  //-------------------------------------
-  // 排序选择
-  onClickSort(item: any) {
-    if (item.id == 1) {
-      if (this.getSortType()) return;
-
-      this.sortComData = JSON.parse(JSON.stringify(this.sortData));
-      this.getSortStr();
-    } else {
-      item.odType = item.odType == 2 ? (item.odType = 0) : (item.odType += 1);
-      this.getSortStr();
-    }
-  }
-  getSortStr() {
-    let sort = "";
-    for (let i in this.sortComData) {
-      if (sort != "" && this.sortComData[i].odType != 0) sort += ",";
-
-      sort +=
-        this.sortComData[i].odType == 0
-          ? ""
-          : this.sortComData[i].odType == 1 ? i : i + ":desc";
-    }
-    console.log(sort);
-
-    this.$emit("postSort", sort);
-  }
-  getSortType() {
-    let defaultSort = true;
-    for (let i in this.sortComData) {
-      if (this.sortComData[i].odType != 0) defaultSort = false;
-    }
-    return defaultSort;
   }
 }
 </script>

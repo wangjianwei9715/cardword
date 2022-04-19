@@ -2,7 +2,7 @@
 	<view class="tab-hot">
 		<view class="tab-hot-box" :class="'tab-hot-box-'+name" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(name)">
 			<view class="tab-hot-boxtitle">{{item.title}}</view>
-			<view class="tab-hot-boxtips">{{item.tips}}</view>
+			<view class="tab-hot-boxtips">{{name == 'broadCast'?(item.list.state == 2?'正在拆卡':'拆卡回放'):item.tips}}</view>
 			<view class="tab-hot-boxpic-index" v-if="name!='broadCast'">
 				<view class="tab-hot-boxpic-box" v-for="(src,index) in item.list" :key="index" @click="onClickHotTab(src,name)">
 					<image :src="decodeURIComponent(src.pic)" class="tab-hot-boxpic" mode="aspectFit"/>
@@ -12,7 +12,7 @@
 				<view class="tab-hot-boxpic-box" @click="onClickMerchantInfo(item.list.merchantId)">
 					<image :src="decodeURIComponent(item.list.merchantLogo)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
-				<view class="tab-hot-boxpic-box"  @click="onClickLive(item.list)">
+				<view class="tab-hot-boxpic-box" :class="{'live-border':item.list.state == 2}"  @click="onClickLive(item.list)">
 					<view v-if="item.list.state == 2" class="live-ing"></view>
 					<image :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
@@ -56,9 +56,6 @@
 		}
 		onClickHotTab(item:any,name:string){
 			if(name=='hot'){
-				// uni.navigateTo({
-				// 	url: "/pages/goods/goods_find_list?serie=" +item.key
-				// });  
 				uni.navigateTo({
 					url: "/pages/goods/goods_find_list?hs=" +item.id
 				});  
@@ -136,6 +133,10 @@
 		width: 84rpx;
 		height:84rpx;
 		position: relative;
+	}
+	.live-border{
+		border:3rpx solid #8e7ae3;
+		border-radius: 50%;
 	}
 	.tab-hot-boxpic{
 		width: 84rpx;

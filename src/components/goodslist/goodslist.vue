@@ -264,7 +264,7 @@
 			background-size: 100% 100%;
 			width: 100%;
 			height: 8rpx;
-			margin-bottom: 12rpx;
+			margin-bottom: 10rpx;
 			position: relative;
 			display: flex;
 			justify-content: flex-end;
@@ -288,8 +288,8 @@
 			display: flex;
 			align-items: flex-end;
 			position: relative;
-			margin-bottom: 12rpx;
-			margin-top: 10rpx;
+			margin-bottom: 8rpx;
+			margin-top: 16rpx;
 			align-items: flex-end;
 
 			.goodslist-priceMsg-left {

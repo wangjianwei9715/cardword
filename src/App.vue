@@ -227,8 +227,8 @@ export default Vue.extend({
   src: url("~@/common/Tao/CountDownNum.ttf");
 }
 @font-face {
-  font-family: "FZLTGBK";
-  src: url("~@/common/Tao/fzlt_GBK.ttf");
+  font-family: "Impact";
+  src: url("~@/common/Tao/Impact.ttf");
 }
 // #endif
 .content {
