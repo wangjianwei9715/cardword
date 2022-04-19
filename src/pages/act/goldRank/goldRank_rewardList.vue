@@ -84,7 +84,6 @@
 				"activity/goodNoShowGoldValue/prize/list",
 				this.queryParams,
 				(res: any) => {
-					console.log(res)
 					this.rewardList = res.list || []
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
