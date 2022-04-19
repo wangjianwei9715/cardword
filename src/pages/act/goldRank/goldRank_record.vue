@@ -20,6 +20,7 @@
 			</view>
 			<view class="residueRank-prize oneLineOver">{{item.awardName}}</view>
 		</view>
+		<view class="noneBlock"></view>
 	</view>
 </template>
 
@@ -91,6 +92,10 @@
 </script>
 
 <style lang="scss">
+	.noneBlock {
+		width: 750rpx;
+		padding-bottom:env(safe-area-inset-bottom);
+	}
 	.goods-scroll {
 		width: 96%;
 		height: 90rpx;
