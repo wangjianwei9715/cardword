@@ -8,7 +8,7 @@
 			<view class="rollContent" id='rollContent'>
 				<view class="rollHidden" id='rollHidden' :style="{transform:`translateX(${rollX}px)`}">
 					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
-						<image :src="decodeURIComponent(item.userAvatar)" mode=""></image>
+						<image :src="item.userAvatar?decodeURIComponent(item.userAvatar):'../../../static/act/loot/pub_avart.png'" mode=""></image>
 						<view class="name oneLineOver">{{item.tp===2?'获得了':'加入了'}}{{item.name}}</view>
 					</view>
 				</view>

@@ -22,30 +22,33 @@
 		<view class="rankTop">
 			<view class="rankItem" v-for="item in rankHear">{{item}}</view>
 		</view>
-		<view class="rankContent" v-if='rankList&&rankList.length'>
+		<view class="rankContent">
 			<view class="rankContent-item" v-for="(item,index) in rankList" :key='index'>
 				<view class="left" style="width: 33.33%;">
 					<view class="rankIndex">{{item.rank}}</view>
-					<image v-if="item.avatar" :src="decodeURIComponent(item.avatar)" class="rankAvart" mode=""></image>
-					<view v-else class="rankAvart noneAvart"></view>
-					<view class="rankUserName text oneLineOver">{{item.userName}}</view>
+					<image v-if="item.userName!='虚位以待'&&item.likeNum===0"
+						:src="item.avatar?decodeURIComponent(item.avatar):'../../../static/act/loot/pub_avart.png'"
+						class="rankAvart" mode=""></image>
+					<!-- <view v-else class="rankAvart noneAvart"></view> -->
+					<view class="rankUserName text oneLineOver"
+						:style="{maxWidth:(item.userName!='虚位以待'&&item.likeNum===0)?'70rpx':'140rpx'}">{{item.userName}}
+					</view>
 				</view>
 				<view class="center text oneLineOver" style="width: 33.33%;text-align: center;">{{item.award}}</view>
 				<view class="right" style="width: 33.33%;">
 					<view class="num text oneLineOver">{{formatNumber(item.likeNum,2)}}获赞</view>
 				</view>
 			</view>
-			<view class="rankContent-item" v-for="(item,index) in unoccupied" :key='index+ +new Date()'>
+			<!-- <view class="rankContent-item" v-for="(item,index) in unoccupied" :key='index+ +new Date()'>
 				<view class="left" style="width: 33.33%;">
-					<view class="rankIndex" v-if="false">{{index+1+rankList.length}}</view>
-					<view class="rankAvart noneAvart" v-if="false"></view>
-					<view class="rankUserName text oneLineOver" v-if="false"></view>
+					<view class="rankIndex" v-if="true">{{index+1+rankList.length}}</view>
+					<view class="rankUserName text" style="max-width: 140rpx;">虚位以待</view>
 				</view>
-				<view class="center text oneLineOver" style="width: 33.33%;text-align: center;">虚位以待</view>
+				<view class="center text oneLineOver" style="width: 33.33%;text-align: center;">-</view>
 				<view class="right" style="width: 33.33%;">
 					<view class="num text oneLineOver" v-if="false">{{formatNumber(item.likeNum,2)}}获赞</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="centerModal" :class="{centerModalShow:centerModalShow}">
 			<image src="../../../static/act/saveThum/close.png" class="close" @click="centerModalShow=false" mode="">
@@ -220,13 +223,13 @@
 			app.http.Get(
 				"activity/goldNoShare/ranklist", {},
 				(res: any) => {
+					console.log(res)
 					this.totalPage = res.totalPage || 0;
 					const arr = res.list || [];
 					if (this.queryParams.pageIndex === 1) this.rankList = [];
 					this.rankList = [...this.rankList, ...arr];
 					this.myProfile = res.my || {}
 					this.unoccupied = res.unoccupied || 50
-					console.log(res)
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
 					}, 500);
@@ -574,7 +577,7 @@
 					color: #FCB825;
 					// margin-right: 25rpx;
 					text-align: center;
-					min-width: 80rpx;
+					min-width: 90rpx;
 				}
 
 				.rankAvart {
@@ -586,15 +589,13 @@
 				}
 
 				.noneAvart {
-					background-color: #fff;
-				}
-
-				.noneAvart {
-					background-color: #fff;
+					// background-color: #fff;
+					background-image: url('../../../static/act/loot/pub_avart.png');
+					background-size: 100% 100%;
 				}
 
 				.rankUserName {
-					max-width: 70rpx;
+					// max-width: 70rpx;
 				}
 			}
 

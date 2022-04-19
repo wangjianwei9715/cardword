@@ -95,6 +95,7 @@
 		width: 96%;
 		height: 90rpx;
 		display: flex;
+		margin-top: 20rpx;
 		// margin:0 auto;
 		margin-left: 12rpx;
 		white-space: nowrap;

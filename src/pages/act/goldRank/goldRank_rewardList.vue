@@ -10,8 +10,8 @@
 			<view class="prizeCard-prize">
 				<view class="prizeName">{{item.name}}</view>
 				<view class="uni-flex">
-					<image v-for="(imgItem,imgIndex) in item.pic" class="prizeCard-prizeImage" :src='decodeURIComponent(imgItem)'
-						@click.stop="previewImg(imgIndex,item.pic)">
+					<image v-for="(imgItem,imgIndex) in item.pic" class="prizeCard-prizeImage"
+						:src='decodeURIComponent(imgItem)' @click.stop="previewImg(imgIndex,item.pic)">
 					</image>
 				</view>
 				<!-- <view class="prizeImage uni-flex">
@@ -23,6 +23,7 @@
 				</view> -->
 			</view>
 		</view>
+		<view class="noneBlock"></view>
 	</view>
 </template>
 
@@ -83,7 +84,6 @@
 				"activity/goodNoShowGoldValue/prize/list",
 				this.queryParams,
 				(res: any) => {
-					console.log(res)
 					this.rewardList = res.list || []
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
@@ -97,6 +97,11 @@
 <style lang='scss'>
 	page {
 		background-color: #f6f7fb;
+	}
+
+	.noneBlock {
+		width: 750rpx;
+		padding-bottom:env(safe-area-inset-bottom);
 	}
 
 	.prizeCard {

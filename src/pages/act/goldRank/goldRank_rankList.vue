@@ -28,7 +28,7 @@
 			</view>
 		</view>
 		<view class="rollStaticContent">
-			<view class="rollContent" id='rollContent'>
+			<view class="rollContent" id='rollContent' :class='{rollAnim:awardList&&awardList.length}'>
 				<view class="rollItem" v-for="(item) in awardList">
 					<image :src="decodeURIComponent(item.pic)" mode="aspectFill">
 					</image>
@@ -60,7 +60,9 @@
 						</view>
 						<image :src="item.avartFrame" mode="widthFix"></image>
 					</view>
-					<view class="prizewinner">{{getTopRankItem(index)?getTopRankItem(index).userName:'虚位以待'}}</view>
+					<view class="prizewinner oneLineOver">
+						{{getTopRankItem(index)?getTopRankItem(index).userName:'虚位以待'}}
+					</view>
 					<view class="integral uni-flex">
 						<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix"></image>
 						<text>{{getTopRankItem(index)?formatNumber(getTopRankItem(index).gold_value,2):'-'}}</text>
@@ -433,18 +435,11 @@
 			text {
 				position: relative;
 
-				top: 28rpx;
+				top: 30rpx;
 			}
 		}
 	}
 
-	.rollStaticContent {
-		width: 750rpx;
-		height: 208rpx;
-		background-size: 100% 100%;
-		background-image: url(../../../static/act/goldRank/roll_back.png);
-		overflow: hidden;
-	}
 
 	.tips {
 		text-align: center;
@@ -561,7 +556,7 @@
 			position: relative;
 
 			&-index {
-				width: 15%;
+				width: 14%;
 				font-weight: bold;
 				font-size: 36rpx;
 				color: #eaa73b;
@@ -573,7 +568,7 @@
 				width: 72%;
 				text-align: center;
 				font-weight: 500;
-				font-size: 26rpx;
+				font-size: 22rpx;
 			}
 
 			&-avart {
@@ -582,7 +577,7 @@
 				display: block;
 				border-radius: 50%;
 				overflow: hidden;
-				margin-right: 36rpx;
+				margin-right: 26rpx;
 			}
 
 			&-name {
@@ -642,15 +637,26 @@
 					justify-content: center;
 
 					.avartContainer {
-						width: 110rpx;
-						height: 110rpx;
-						transform: rotate(45deg);
+						width: 130rpx;
+						height: 130rpx;
+						position: absolute;
+						left: 0;
+						top: 0;
+						bottom: 0;
+						right: 0;
+						margin: auto;
 						overflow: hidden;
+						// background-color: red;
+						-webkit-clip-path: polygon(0rpx 50%, 50% 0rpx, 100% 50%, 50% 100%, 0rpx 50%);
+
 						image {
-							width: 110rpx;
-							height: 110rpx;
+							width: 130rpx;
+							height: 130rpx;
 							display: block;
-							transform: rotate(-45deg);
+							position: absolute;
+							top: 0;
+							bottom: 0;
+							// transform: rotate(-45deg);
 						}
 					}
 
@@ -714,9 +720,12 @@
 	}
 
 	.rollStaticContent {
-		width: 100%;
-		position: relative;
+		width: 750rpx;
 		height: 208rpx;
+		background-size: 100% 100%;
+		background-image: url(../../../static/act/goldRank/roll_back.png);
+		overflow: hidden;
+		position: relative;
 
 		@keyframes rowup {
 			0% {
@@ -730,11 +739,11 @@
 			}
 		}
 
+
+
 		.rollContent {
 			position: absolute;
 			display: flex;
-			-webkit-animation: 65s rowup linear infinite normal;
-			animation: 65s rowup linear infinite normal;
 			top: 0;
 			bottom: 0;
 			height: 158rpx;
@@ -751,6 +760,11 @@
 					margin-bottom: 10rpx;
 				}
 			}
+		}
+
+		.rollAnim {
+			-webkit-animation: 65s rowup linear infinite normal;
+			animation: 65s rowup linear infinite normal;
 		}
 
 
