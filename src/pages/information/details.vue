@@ -165,6 +165,8 @@
 	}
 	.bottom-box{
 		width: 100%;
+		height:calc(104rpx);
+		height:calc(104rpx + constant(safe-area-inset-bottom));
 		height:calc(104rpx + env(safe-area-inset-bottom));
 		background:#fff;
 		position:fixed;

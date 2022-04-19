@@ -196,7 +196,9 @@
         position: relative;
         z-index:10;
         box-sizing: border-box;
-        padding:180rpx 20rpx calc(114rpx + env(safe-area-inset-bottom)) 20rpx;
+        padding:180rpx 20rpx calc(114rpx ) 20rpx;
+		padding:180rpx 20rpx calc(114rpx + constant(safe-area-inset-bottom)) 20rpx;
+		padding:180rpx 20rpx calc(114rpx + env(safe-area-inset-bottom)) 20rpx;
     }
 	.box-index{
 		width: 100%;
@@ -207,6 +209,8 @@
 	}
 	.giving-bottom-box{
 		width: 100%;
+		height:calc(100rpx );
+		height:calc(100rpx + constant(safe-area-inset-bottom));
 		height:calc(100rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
 		display: flex;

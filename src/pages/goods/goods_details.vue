@@ -1417,6 +1417,8 @@
 	}
 	.btn-content{
 		width: 100%;
+		height:calc(120rpx);
+		height:calc(120rpx + constant(safe-area-inset-bottom));
 		height:calc(120rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:0;
@@ -1429,8 +1431,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
+		
 		&-left{
 			max-width: 240rpx;
 			height:76rpx;
@@ -1561,6 +1562,8 @@
 		width: 100%;
 		background:#fff;
 		box-sizing: border-box;
+		padding:30rpx 25rpx calc(150rpx) 25rpx;
+		padding:30rpx 25rpx calc(150rpx + constant(safe-area-inset-bottom)) 25rpx;
 		padding:30rpx 25rpx calc(150rpx + env(safe-area-inset-bottom)) 25rpx;
 		
 	}

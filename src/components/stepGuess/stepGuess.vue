@@ -296,6 +296,8 @@
 		background:url(../../pages/act/static/guess/guess_tips.png) no-repeat center;
 		background-size: 100% 100%;
 		position: fixed;
+		bottom:calc(112rpx);
+		bottom:calc(112rpx + constant(safe-area-inset-bottom));
 		bottom:calc(112rpx + env(safe-area-inset-bottom));
 		right:25rpx;
 		z-index: 9;

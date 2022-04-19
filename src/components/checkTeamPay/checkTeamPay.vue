@@ -775,6 +775,8 @@
 	}
 	.teamtion-bottom{
 		width: 100%;
+		height:calc(120rpx);
+		height:calc(120rpx + constant(safe-area-inset-bottom));
 		height:calc(120rpx + env(safe-area-inset-bottom));
 		position: absolute;
 		bottom:0;

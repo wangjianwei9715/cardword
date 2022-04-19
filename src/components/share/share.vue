@@ -92,6 +92,8 @@
 <style>
 	.operation-content{
 		width: 100%;
+		height:calc(340rpx);
+		height:calc(340rpx + constant(safe-area-inset-bottom));
 		height:calc(340rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:-500rpx;

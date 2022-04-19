@@ -307,6 +307,8 @@
 		box-sizing: border-box;
 		background:#F6F7FB;
 		
+		padding:280rpx 0 calc(140rpx) 0;
+		padding:280rpx 0 calc(140rpx + constant(safe-area-inset-bottom)) 0;
 		padding:280rpx 0 calc(140rpx + env(safe-area-inset-bottom)) 0;
 	}
 	.teamtion-box-title{
@@ -401,6 +403,8 @@
 	}
 	.teamtion-bottom{
 		width: 100%;
+		height:calc(120rpx);
+		height:calc(120rpx + constant(safe-area-inset-bottom));
 		height:calc(120rpx + env(safe-area-inset-bottom));
 		position: absolute;
 		left:0;

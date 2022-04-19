@@ -691,6 +691,8 @@ page {
 .content {
   width: 100%;
   box-sizing: border-box;
+  padding-bottom: calc(150rpx) !important;
+  padding-bottom: calc(150rpx + constant(safe-area-inset-bottom)) !important;
   padding-bottom: calc(150rpx + env(safe-area-inset-bottom)) !important;
   padding: 14rpx
 }
@@ -1094,6 +1096,8 @@ page {
 }
 .bottom-content-box{
   width: 100%;
+  height: calc(120rpx);
+  height: calc(120rpx + constant(safe-area-inset-bottom));
   height: calc(120rpx + env(safe-area-inset-bottom));
   position: fixed;
   bottom: 0;
