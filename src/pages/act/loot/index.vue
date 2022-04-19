@@ -1075,7 +1075,7 @@
 		height: 600rpx;
 		background-color: #fff;
 		position: fixed;
-		top: 300rpx;
+		top: 400rpx;
 		left: 0;
 		right: 0;
 		margin: auto;

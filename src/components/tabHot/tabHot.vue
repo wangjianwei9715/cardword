@@ -56,8 +56,11 @@
 		}
 		onClickHotTab(item:any,name:string){
 			if(name=='hot'){
+				// uni.navigateTo({
+				// 	url: "/pages/goods/goods_find_list?serie=" +item.key
+				// });  
 				uni.navigateTo({
-					url: "/pages/goods/goods_find_list?serie=" +item.key
+					url: "/pages/goods/goods_find_list?hs=" +item.id
 				});  
 			}
 		}

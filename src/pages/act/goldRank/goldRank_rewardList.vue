@@ -9,9 +9,11 @@
 
 			<view class="prizeCard-prize">
 				<view class="prizeName">{{item.name}}</view>
-				<image class="prizeCard-prizeImage" :src='decodeURIComponent(item.pic)'
-					@click.stop="previewImg(0,[decodeURIComponent(item.pic)])">
-				</image>
+				<view class="uni-flex">
+					<image v-for="(imgItem,imgIndex) in item.pic" class="prizeCard-prizeImage" :src='decodeURIComponent(imgItem)'
+						@click.stop="previewImg(imgIndex,item.pic)">
+					</image>
+				</view>
 				<!-- <view class="prizeImage uni-flex">
 					<view class="discountCoupon">
 						<view class="price block">150</view>
@@ -61,6 +63,9 @@
 			this.reqNewData()
 		}
 		previewImg(current: number, urls: any) {
+			urls = urls.filter(Boolean).map((item: any) => {
+				return decodeURIComponent(item)
+			})
 			uni.previewImage({
 				current,
 				urls
@@ -107,6 +112,7 @@
 			width: 160rpx;
 			height: 160rpx;
 			margin-top: 24rpx;
+			margin-right: 10rpx;
 		}
 
 		&-index {

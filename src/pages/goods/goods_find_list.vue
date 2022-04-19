@@ -36,7 +36,7 @@
 			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesList&&seriesList.length'>
 				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index' @click="clickSerie(item,index)">
 					<image class="seriesImg" :src="decodeURIComponent(item.pic_url)" mode="aspectFill"></image>
-					<view class="seriesText" :class="{selectSearchText:clickSerieItem&&clickSerieItem.title==item.title}">{{item.title}}</view>
+					<view class="seriesText" :class="{selectSearchText:clickSerieItem&&clickSerieItem.id==item.id}">{{item.title}}</view>
 				</view>
 			</scroll-view>
 			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
@@ -171,9 +171,12 @@ export default class ClassName extends BaseNode {
     if (query.classType) {
       this.classifyOpt = query.classType;
     }
-    if(query.serie){
-      this.clickSerieItem = {title:query.serie}
-    }
+    // if(query.serie){
+    //   this.clickSerieItem = {title:query.serie}
+    // }
+	if(query.hs){
+	  this.clickSerieItem = {id:query.hs}
+	}
     if (query.data) {
       setTimeout(() => {
         // #ifndef MP
@@ -240,7 +243,7 @@ export default class ClassName extends BaseNode {
   }
   reqNewSeries() {
     app.http.Get(
-      "new/good/series/list",
+      "series/hot/list",
       {
         pageIndex: 1,
         pageSize: 100
@@ -269,10 +272,9 @@ export default class ClassName extends BaseNode {
     };
     if(this.classifyOpt!=100) params.tp = this.classifyOpt
     params.q = this.searchText == "" ? "" : this.searchText;
-    if (this.clickSerieItem.title)
-      params.q = `serie:${this.clickSerieItem.title}${
-        params.q ? "," + params.q : ""
-      }`;
+    if (this.clickSerieItem.id){
+		params.hs =this.clickSerieItem.id;
+	}
     if (reach) {
       params.scrollId = this.scrollId;
       params.st = this.scrollIdSt;
