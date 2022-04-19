@@ -22,10 +22,7 @@
 
     <view class="order-detail" v-if="goodsData.pic">
       <view class="goods-info">
-        <image
-          :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))"
-          style="width: 235rpx; height: 181rpx;"
-        ></image>
+        <image  class="goods-info-logo" :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))" />
         <view class="goods-info2">
           <text class="goods-info2-title">{{ goodsData.title }}</text>
           <view class="goods-money-info" v-if="cartData == ''">
@@ -776,21 +773,21 @@ page {
   flex-direction: row;
   position: relative;
   box-sizing: border-box;
-  padding:30rpx 20rpx;
+  padding:32rpx 20rpx 23rpx 20rpx;
 }
-
+.goods-info-logo{
+  width: 178rpx;
+  height:137rpx;
+}
 .goods-info2 {
-  width: 428rpx;
-  margin: 15rpx 0 0 0 ;
-  margin-left: 20rpx;
+  width: 480rpx;
+  margin-left: 24rpx;
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
 .goods-info2-title {
-  margin-right: 30rpx;
-  margin-left: 8rpx;
   font-size: 29rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
@@ -824,8 +821,8 @@ page {
   line-height: 28rpx;
 }
 .goods-money text{
-  font-size: 42rpx;
-  font-family: FZLanTingHeiS-B-GB;
+  font-size: 35rpx;
+  font-family: PingFangSC-Semibold;
   font-weight: 400;
   color: #333333;
 }
@@ -840,7 +837,7 @@ page {
   width: 100%;
   height: 50rpx;
   line-height: 50rpx;
-  font-size: $font-24;
+  font-size: 21rpx;
   color: #FF2727;
   text-align: center;
   padding-right: 12rpx;
@@ -882,7 +879,7 @@ page {
 
 .huo-dong-bg {
   width: 684rpx;
-  height: 82rpx;
+  height: 108rpx;
   background: #ffffff;
   display: flex;
   flex-direction: row;
@@ -1037,7 +1034,7 @@ page {
     height: 40rpx;
     display: flex;
     align-items: center;
-    font-size: 31rpx;
+    font-size: 29rpx;
     font-family: PingFangSC-Regular;
     font-weight: 600;
     color: #333333;

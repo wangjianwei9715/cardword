@@ -88,11 +88,11 @@ export default class ClassName extends BaseComponent {
   line-height: 56rpx;
   text-align: center;
   letter-spacing: 1rpx;
-  border: 1px solid #dbdbdb;
+  border: 1rpx solid #dbdbdb;
 }
 .redAction {
   background: #f5162b;
-  border: 1px solid #f5162b;
+  border: 1rpx solid #f5162b;
   color: #fff;
 }
 </style>

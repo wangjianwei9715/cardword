@@ -17,9 +17,6 @@
 				<view class="business-rightAction">
 					<followButton :width="132" :height="46" :fontSize="23" v-if="buttonShow" :follow='detail.followed' :followID='detail.id'
 						@handleSuccess='followSuccess($event,detail)'></followButton>
-					<!-- <view class="actionItem " :class="{redAction:!detail.followed}">{{detail.followed?'取消关注':'关注'}}
-					</view> -->
-					<!-- <view class="actionItem" @click="onClickShops(item)">进店看看</view> -->
 				</view>
 			</view>
 		</view>
@@ -30,24 +27,14 @@
 				<text v-if="item.valueKey">({{detail[item.valueKey]}})</text>
 			</view>
 		</view>
-		<view class="list-content" v-if="goodTabV2.index==0">
-			<goodslist :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
-		</view>
-		<view class="list-content" v-if="goodTabV2.index==1">
-			<liveslist :liveList='liveList'></liveslist>
-		</view>
-		<view v-if="goodTabV2.index==2" style="width:100%">
-			<image :src="decodeURIComponent(item)" style="margin:6rpx auto;display:block;width:94%"
+		<view class="list-content" v-show="!emptyShow">
+			<goodslist v-show="goodTabV2.index==0" :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
+			<liveslist v-show="goodTabV2.index==1" :liveList='liveList'></liveslist>
+			<image v-show="goodTabV2.index==2" :src="decodeURIComponent(item)" style="margin:6rpx auto;display:block;width:94%"
 				@click.stop="previewImg(index,detail.certification)" v-for="(item,index) in detail.certification"
 				:key="index" mode="widthFix"></image>
 		</view>
-		<empty
-			v-show='(goodTabV2.index==0&&!goodsList.length) || (goodTabV2.index==1&&!liveList.length) || (goodTabV2.index==2&&!detail.certification.length)'>
-		</empty>
-		<view class="safetyBottom"></view>
-		<!-- <view class="goods-lists" v-if="goodsList!=''">
-			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
-		</view> -->
+		<empty v-show='emptyShow' />
 	</view>
 </template>
 
@@ -117,9 +104,22 @@
 			pageIndex: 1,
 			pageSize: 20
 		};
+		emptyShow = false;
 		onLoad(query: any) {
 			if (query.id) this.getBusDetail(query.id);
 
+		}
+		onReachBottom() {
+			if (
+				this.queryParams.pageIndex < this.totalPage &&
+				this.goodTabV2.index != 2
+			) {
+				this.queryParams.pageIndex += 1;
+				this.getList();
+			}
+		}
+		onPullDownRefresh() {
+			this.againGetList();
 		}
 		previewImg(current: number, urls: any) {
 			urls = urls.map((item: any) => decodeURIComponent(item));
@@ -145,19 +145,6 @@
 				this.getList()
 			});
 		}
-		onReachBottom() {
-			if (
-				this.queryParams.pageIndex < this.totalPage &&
-				this.goodTabV2.index != 2
-			) {
-				this.queryParams.pageIndex += 1;
-				this.getList();
-			}
-		}
-		onPullDownRefresh() {
-			this.queryParams.pageIndex = 1;
-			this.getList();
-		}
 		followSuccess(event: any, item: any) {
 			item.followed = event.follow;
 			item.fans = event.follow ? item.fans + 1 : item.fans - 1;
@@ -165,7 +152,12 @@
 		}
 		tabsChange(item: any, index: number) {
 			this.goodTabV2.index = index;
-			if (index != 2) this.getList();
+			if (index != 2) this.againGetList();
+		}
+		againGetList(){
+			this.queryParams.pageIndex = 1;
+			this.emptyShow = false;
+			this.getList()
 		}
 		getList() {
 			const questItem: any = this.goodTabV2.list[this.goodTabV2.index];
@@ -186,10 +178,10 @@
 					if (questItem.value == 2)
 						this.liveList = [...this.liveList, ...dataList];
 					uni.stopPullDownRefresh();
+					if(res.total==0) this.emptyShow = true;
 				}
 			);
 		}
-		
 		// 跳转商品详情
 		onClickJumpDetails(id: any) {
 			uni.navigateTo({
@@ -206,12 +198,6 @@
 		background: #ffffff;
 	} 
 
-	.safetyBottom {
-		width: 750rpx;
-		background-color: #fff;
-		padding-bottom: env(safe-area-inset-bottom);
-	}
-  
 	.content {
 		width: 100%;
 		box-sizing: border-box;
@@ -392,6 +378,8 @@
 	.list-content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 13rpx;
+		padding:29rpx 14rpx;
+		background: $content-bg;
+		padding-bottom: env(safe-area-inset-bottom);
 	}
 </style>

@@ -28,7 +28,7 @@
 			</swiper>
 			<view class="swiper-popup">
 				<view class="swiper-dots">{{swiperCurrent+1}}/{{goodsImg.length}}</view>
-				<view class="swiper-btn" :class="{'swiper-btn-current':swiperTabCurrent==index}" v-for="(item,index) in swiperTab" :key="index" @click="onClickSwiperTab(index)">{{item}}</view>
+				<view class="swiper-btn" v-show="goodsData.pic&&goodsData.pic.yuanfeng" :class="{'swiper-btn-current':swiperTabCurrent==index}" v-for="(item,index) in swiperTab" :key="index" @click="onClickSwiperTab(index)">{{item}}</view>
 			</view>
 		</view>
 		<view class="detail-index-bg">
@@ -126,9 +126,11 @@
 			</view>
 		</view>
 		<view class="detail-bottom-box">
-			<view class="detail-title">原封图实拍<text>（以下照片为商家拍摄）</text></view>
-			<view class="detail-bottom-picbox">
-				<image  @click="onClickPreviewDetailImage(index)" class="detail-bottom-image" mode="aspectFill" v-for="(item,index) in detailImg" :key="index" :src="item" />
+			<view v-show="goodsData.pic&&goodsData.pic.yuanfeng">
+				<view class="detail-title">原封图实拍<text>（以下照片为商家拍摄）</text></view>
+				<view class="detail-bottom-picbox">
+					<image  @click="onClickPreviewDetailImage(index)" class="detail-bottom-image" mode="aspectFill" v-for="(item,index) in detailImg" :key="index" :src="item" />
+				</view>
 			</view>
 			<view class="detail-title">购买须知</view>
 			<view class="detail-bottom-explain">{{buyExplain}}</view>

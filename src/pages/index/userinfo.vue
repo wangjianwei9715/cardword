@@ -522,7 +522,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		background:#fff;
-		padding:30rpx 20rpx 1rpx 20rpx;
+		padding:40rpx 20rpx 1rpx 20rpx;
 		margin-top: 14rpx;
 		.setting{
 			width: 100%;
@@ -531,7 +531,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			margin-bottom: 36rpx;
+			margin-bottom: 46rpx;
 			.name{
 				height:36rpx;
 				display: flex;

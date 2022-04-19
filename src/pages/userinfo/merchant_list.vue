@@ -198,11 +198,11 @@
 </script>
 
 <style lang="scss" scoped>
-	page {
-		background: $content-bg;
-	}
 
 	.detail-bg {
+		width: 100%;
+		background: $content-bg;
+		box-sizing: border-box;
 		padding: 15rpx 14rpx;
 	}
 

@@ -79,39 +79,38 @@
 		box-sizing: border-box;
 		width: 100%;
 		background:#fff;
-		padding:0 0 28rpx 0;
-		border-top: 20rpx solid $content-bg;
+		padding:0;
+		border-top: 13rpx solid $content-bg;
 	}
 	.guess-content-header{
 		width: 100%;
 		margin-bottom: 16rpx;
 		box-sizing: border-box;
-		padding:0 30rpx;
+		padding:0 22rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 	.guess-free{
-		border-top: 20rpx solid $content-bg;
+		border-top: 13rpx solid $content-bg;
 		width: 100%;
-		height: 73rpx;
+		height: 91rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		box-sizing: border-box;
-		padding:0 34rpx;
+		padding:0 22rpx;
 	}
 	.guess-free-text{
-		height:73rpx;
-		line-height: 73rpx;
-		font-size: 28rpx;
-		font-family: PingFangSC-Medium;
-		font-weight: 600;
-		color: #34363A;
+		height:91rpx;
+		line-height:91rpx;
+		font-size: 29rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #333333;
 	}
 	.guess-content{
-		width: 750rpx;
-
+		width: 100%;
 	}
 	.guess-left{
 		height:67rpx;

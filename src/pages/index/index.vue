@@ -511,7 +511,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		background:#fff;
-		padding-top: 104rpx;
+		padding-top: 94rpx;
 	}
 	.goods-list{
 		width: 100%;
@@ -529,7 +529,6 @@
 		top:0;
 		box-sizing: border-box ;
 		z-index: 9;
-		padding-bottom:10rpx;
 	}
 	.tab-header{
 		width: 750rpx;
@@ -561,7 +560,7 @@
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:10rpx 44rpx 10rpx 44rpx;
+		padding:0 44rpx 10rpx 44rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -602,7 +601,7 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 		display: flex;
-		margin-top: 10rpx;
+		// margin-top: 10rpx;
 		background:url(../../static/index/v2/top_banner.png) no-repeat center;
 		background-size: 100% 100%;
 		position: relative;

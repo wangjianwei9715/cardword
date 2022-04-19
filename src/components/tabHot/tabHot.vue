@@ -83,7 +83,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 16rpx;
+		margin-top: 13rpx;
 	}
 	.tab-hot-box{
 		width: 238rpx;
