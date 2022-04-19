@@ -69,7 +69,7 @@
 				</view>
 			</view>
 			<template>
-				<view class="residueRank uni-flex" v-for="(item) in getTopThreeList" :key='item.ranking'>
+				<view class="residueRank uni-flex" v-for="(item) in getTopThreeList">
 					<view class="residueRank-index">{{item.ranking}}</view>
 					<image class="residueRank-avart" :src="decodeURIComponent(item.userAvatar)">
 					</image>
@@ -209,8 +209,9 @@
 		}
 		getTopRankItem(rankIndex: number = 0) {
 			const rankItem: any = this.rankList[rankIndex]
+			// console.log(rankItem)
 			if (!rankItem) return undefined
-			if (rankItem.userName == '虚位以待' && rankItem.gold_value == 0) return undefined
+			// if (rankItem.userName == '虚位以待' && rankItem.gold_value == 0) return undefined
 			return rankItem
 		}
 		pageJump(url: string) {
@@ -246,6 +247,7 @@
 					this.totalPage = res.totalPage
 					const arr = res.data.rankingList || []
 					this.rankList = this.queryParams.pageIndex == 1 ? arr : [...this.rankList, ...arr]
+					// console.log(this.rankList)
 					if (isRefreshAward) this.awardList = res.data.awardList || []
 					this.myData = res.data.myData || {}
 					// this.unoccupied = res.data.unoccupied
@@ -644,7 +646,6 @@
 						height: 110rpx;
 						transform: rotate(45deg);
 						overflow: hidden;
-
 						image {
 							width: 110rpx;
 							height: 110rpx;

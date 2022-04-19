@@ -74,8 +74,8 @@
 			</image>
 			<view class="title">活动规则</view>
 			<text>
-				1、活动期间，玩家在可将金色卡密微信分享给好友集赞，上榜玩家也可在活动页面直接获赞，活动结束根据点赞排名活动奖励
-				2、活动期间首次获得金卡后可进行分享集赞
+				1、活动期间，玩家获取金色卡密后可在活动页分享给好友进行集赞，活动结束根据点赞排名获得奖励
+				2、活动期间首次获得金卡可进行分享集赞
 				3、每名好友只能为自己点赞1次，首次集满3个赞获得20-5优惠券1张
 				4、活动结束后发放奖励，实物类请联系客服领取，优惠券类自动发放
 			</text>
@@ -87,7 +87,7 @@
 				<view class="left">我的点赞：{{formatNumber(myProfile.likeNum,2)}}
 					<text style="padding-left:6rpx">({{myProfile.rank?'排名:'+myProfile.rank:'暂未上榜'}})</text>
 				</view>
-				<view class="right" @click="goShare">邀请好友点赞</view>
+				<view class="right" @click="goShare">点击分享金卡</view>
 			</view>
 		</view>
 	</view>
@@ -243,10 +243,10 @@
 
 	.ruleModal {
 		width: 500rpx;
-		height: 600rpx;
+		height: 540rpx;
 		background-color: #fff;
 		position: fixed;
-		top: 300rpx;
+		top: 420rpx;
 		left: 0;
 		right: 0;
 		margin: auto;
@@ -464,13 +464,15 @@
 
 			.img {
 				width: 306rpx;
+				height: 425rpx;
+				// 577 842
 				// height: 340rpx;
 				display: block;
 				position: absolute;
 				left: 0;
 				right: 0;
 				margin: auto;
-				bottom: 11rpx;
+				bottom: 18rpx;
 			}
 		}
 
