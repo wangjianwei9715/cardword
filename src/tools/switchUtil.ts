@@ -113,14 +113,14 @@ export function orderSetOperate(data:any):{[x:string]:any} {
             if(data.good.state==1){
                 return [{cmd: "giving", name: "赠送卡密"},{cmd: "drawCard", name: "卡密特效"},{cmd: "viewGood", name: "再来一单"}];
             }else{
-                return [{cmd: "resultCard", name: "拆卡报告"},{cmd: "drawCard", name: "卡密特效"}];
+                return [{cmd: "drawCard", name: "卡密特效"},{cmd: "resultCard", name: "拆卡报告"}];
             }
         case 4: case 5:
-            return [{cmd: "resultCard", name: "拆卡报告"},{cmd: "drawCard", name: "卡密特效"},{cmd: "wuliu", name: "查看物流"}];
+            return [{cmd: "drawCard", name: "卡密特效"},{cmd: "wuliu", name: "查看物流"},{cmd: "resultCard", name: "拆卡报告"}];
         case -1:
             return [{cmd: "viewGood", name: "查看详情"}];
         default:
-            return [{cmd: "resultCard", name: "拆卡报告"},{cmd: "drawCard", name: "卡密特效"}];
+            return [{cmd: "drawCard", name: "卡密特效"},{cmd: "resultCard", name: "拆卡报告"}];
     }
 }
 

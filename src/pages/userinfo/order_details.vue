@@ -89,13 +89,9 @@
 
 		<!-- 底部按钮 -->
 		<view class="bottom-btn" v-if="operateData!=''">
-			<view class="small-btn-content" v-if="operateData.length == 3">
-				<view class="mini-btn left" :class="{'right':index==2}" v-for="(item,index) in operateData" :key="index" @click="onClickOperate(item.cmd)">{{item.name}}</view>
+			<view class="small-btn-content" >
+				<view class="mini-btn left" :class="{'right':index+1==operateData.length}" v-for="(item,index) in operateData" :key="index" @click="onClickOperate(item.cmd)">{{item.name}}</view>
 			</view>
-			<view class="small-btn-content" v-else-if="operateData.length == 2">
-				<view class="small-btn left" v-for="(item,index) in operateData" :key="index" @click="onClickOperate(item.cmd)">{{item.name}}</view>
-			</view>
-			<view v-else class="big-btn" @click="onClickOperate(orderData.operate[0].cmd)">{{orderData.operate[0].name}}</view>
 		</view>
 
 		<payment :showPayMent="showPayMent" :payChannel="payChannel" @cancelPay="onClickCancelPay" :payPrice="orderData.price" :countTime="countDown" @pay="onClickPayGoods" />
@@ -496,18 +492,18 @@
 		background:url(../../static/order/top_bg.png);
 		background-size: 100% 100%;
 		box-sizing: border-box;
-		padding:30rpx 40rpx;
+		padding:40rpx 40rpx;
 		&-state{
 			width: 100%;
-			font-size: 35rpx;
+			font-size: 37rpx;
 			font-family: PingFangSC-Regular;
-			font-weight: 400;
+			font-weight: 600;
 			color: #FFFFFF;
-			margin-bottom: 15rpx;
+			margin-bottom: 5rpx;
 		}
 		&-state-desc{
 			width: 100%;
-			font-size: 29rpx;
+			font-size: 27rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #FFFFFF;
@@ -942,9 +938,9 @@
 	}
 	.bottom-btn{
 		width: 100%;
-		height:calc(100rpx);
-		height:calc(100rpx + constant(safe-area-inset-bottom));
-		height:calc(100rpx + env(safe-area-inset-bottom));
+		height:calc(120rpx);
+		height:calc(120rpx + constant(safe-area-inset-bottom));
+		height:calc(120rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
 		position: fixed;
 		bottom:0;
@@ -953,55 +949,34 @@
 		z-index: 9;
 		display: flex;
 		justify-content: center;
-		padding:20rpx 35rpx 0 35rpx;
-		.big-btn{
-			width: 100%;
-			height: 67rpx;
-			border:1px solid #DFDFDF;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 33rpx;
-			font-family: PingFangSC-Regular;
-			font-weight: 400;
-			color: #333333;
-		}
+		padding:20rpx 39rpx 0 39rpx;
 		.small-btn-content{
 			width: 100%;
-			height:67rpx;
+			height:82rpx;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
-			.small-btn{
-				width: 320rpx;
-				height: 67rpx;
-				border:1px solid #DFDFDF;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 33rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #333333;
-			}
+			justify-content: flex-end;
+			
 			.mini-btn{
-				width: 190rpx;
-				height: 67rpx;
-				border:1px solid #DFDFDF;
+				width: 180rpx;
+				height: 82rpx;
+				border:1px solid #DADADA;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				font-size: 33rpx;
+				font-size: 30rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #333333;
+				color: #88878c;
+				margin-left: 15rpx;
 			}
 			.right{
-				width: 253rpx;
+				width: 180rpx;
 				background: $btn-red;
 				border:1px solid $btn-red;
 				color: #fff;
+				margin-left: 15rpx;
 			}
 		}
 	}

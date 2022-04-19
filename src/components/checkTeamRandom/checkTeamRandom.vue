@@ -417,8 +417,8 @@
 		z-index: 22;
 	}
 	.teamtion-bottom-btn{
-		width: 349rpx;
-		height:69rpx;
+		width: 341rpx;
+		height:77rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;

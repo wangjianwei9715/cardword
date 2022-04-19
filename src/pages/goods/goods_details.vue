@@ -1500,7 +1500,7 @@
 			height:82rpx;
 			box-sizing: border-box;
 			border-radius: 4px;
-			border: 2rpx solid #FE8E91;
+			border: 2rpx solid #DADADA;
 			text-align: center;
 			line-height: 78rpx;
 			font-size: 33rpx;
