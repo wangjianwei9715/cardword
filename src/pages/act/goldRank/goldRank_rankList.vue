@@ -642,15 +642,25 @@
 					justify-content: center;
 
 					.avartContainer {
-						width: 110rpx;
-						height: 110rpx;
-						transform: rotate(45deg);
+						width: 130rpx;
+						height: 130rpx;
+						position: absolute;
+						left: 0;
+						top: 0;
+						bottom: 0;
+						right: 0;
+						margin: auto;
 						overflow: hidden;
+						// background-color: red;
+						-webkit-clip-path: polygon(0rpx 50%, 50% 0rpx, 100% 50%, 50% 100%, 0rpx 50%);
+
 						image {
-							width: 110rpx;
-							height: 110rpx;
+							width: 130rpx;
+							height: 130rpx;
 							display: block;
-							transform: rotate(-45deg);
+							position: absolute;
+							top: 0;bottom: 0;
+							// transform: rotate(-45deg);
 						}
 					}
 
