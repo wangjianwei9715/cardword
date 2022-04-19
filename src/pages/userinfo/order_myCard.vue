@@ -223,7 +223,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: space-between;
 		background:#fff;
 		margin-top: 10rpx;
@@ -249,7 +249,7 @@
 		font-size: 26rpx;
 	}
 	.index-left{
-		width: 600rpx;
+		width: 610rpx;
 		min-height: 96rpx;
 		box-sizing: border-box;
 		display: flex;
@@ -263,14 +263,16 @@
 		background: #F6F7F8;
 	}
 	.index-right{
-		width: 100rpx;
+		width: 86rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 26rpx;
+		font-size: 21rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 400;
-		color:#666666;
+		color:#fff;
+		background:#CCCCCC;
+		margin-right: 8rpx;
 	}
 	.red-color{
 		color:#FB4E3E

@@ -1058,7 +1058,7 @@
 	}
 	.header-price text{
 		font-size: 54rpx;
-		font-family: FZLTGBK;
+		font-family: Impact;
 		font-weight: 400;
 		color: #FFFFFF;
 		margin-left: 10rpx;

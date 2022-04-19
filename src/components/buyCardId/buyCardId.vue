@@ -62,16 +62,18 @@
 			justify-content: space-between;
 			margin-bottom: 7rpx;
 			.left{
-				width:584rpx;
-				font-size: 25rpx;
+				width: 584rpx;
+				min-height: 96rpx;
+				box-sizing: border-box;
+				display: flex;
+				align-items: center;
+				font-size: 22rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 				line-height: 32rpx;
-				text-align: left;
-				background:#F6F7FA;
-				box-sizing: border-box;
-				padding:20rpx;
+				padding:10rpx 20rpx;
+				background: #F6F7F8;
 			}
 			.right{
 				width:104rpx;

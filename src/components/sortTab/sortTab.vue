@@ -35,11 +35,14 @@
 		onClickSort(item:any){
 			if(item.id==1){	
 				if(this.getSortType()) return;
-				
 				this.sortComData = JSON.parse(JSON.stringify(this.sortData))
 				this.getSortStr()
 			}else{
-				item.odType = item.odType==2?item.odType=0:item.odType+=1;
+				let od = item.odType;
+				for(let i in this.sortComData){
+					this.sortComData[i].odType = 0;
+				}
+				item.odType = od==2?item.odType=0:od+1;
 				this.getSortStr()
 			}
 		}
