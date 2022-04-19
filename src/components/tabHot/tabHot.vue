@@ -12,7 +12,7 @@
 				<view class="tab-hot-boxpic-box" @click="onClickMerchantInfo(item.list.merchantId)">
 					<image :src="decodeURIComponent(item.list.merchantLogo)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
-				<view class="tab-hot-boxpic-box" @click="onClickLive(item.list)">
+				<view class="tab-hot-boxpic-box"  @click="onClickLive(item.list)">
 					<view v-if="item.list.state == 2" class="live-ing"></view>
 					<image :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
@@ -86,8 +86,8 @@
 		margin-top: 16rpx;
 	}
 	.tab-hot-box{
-		width: 236rpx;
-		height:185rpx;
+		width: 238rpx;
+		height:188rpx;
 		background: url(../../static/index/v2/hot_bg.png) no-repeat center;
 		background-size: 100% 100%;
 	}
@@ -114,7 +114,7 @@
 		width: 100%;
 		height:35rpx;
 		text-align: center;
-		font-size: 21rpx;
+		font-size: 20rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #565656;
@@ -127,6 +127,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		margin-top: 5rpx;
 	}
 	.tab-hot-boxpic-box{
 		width: 84rpx;
@@ -153,7 +154,8 @@
 		top:0;
 		z-index: 2;
 		box-sizing: border-box;
-		background:#9269DE;
+		background:url(../../static/index/v2/live_bg.png) no-repeat center;
+		background-size: 100% 100%;
 		border-radius: 50%;
 		-webkit-animation: animate 1s linear infinite;
 	}

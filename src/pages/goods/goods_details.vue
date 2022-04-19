@@ -172,7 +172,7 @@
 		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" :baoduiLeftSec="baoduiLeftSec" :baoduiState="baoduiState" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
 
 		<!-- 自选球队随机 -->
-		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData" @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" />
+		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData"   @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" />
 
 		<!-- 邀请新人活动弹窗 -->
 		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy" />
@@ -195,6 +195,7 @@
 		defaultAvatar = app.defaultAvatar
 		goodsId = '';
 		goodsImg:any = [];
+		carouselLength = 0;
 		swiperCurrent = 0;
 		swiperTab = ['商品','原封图'];
 		swiperTabCurrent = 0;
@@ -374,7 +375,7 @@
 					// 倒计时
 					this.countDown = data.good.leftsec;
 					// 获取商品图片
-					this.getGoodsImage(decodeURIComponent(this.goodsData.pic.carousel));
+					this.getGoodsImage();
 					this.getDetailImage(decodeURIComponent(this.goodsData.pic.yuanfeng))
 					// 倒计时
 					this.getCountDown();
@@ -417,12 +418,17 @@
 			})
 		}
 		// 商品图片
-		getGoodsImage(img:any){
-			if(img.indexOf(',') == -1){
-				this.goodsImg.push(img)
+		getGoodsImage(){
+			let pic = decodeURIComponent(this.goodsData.pic.carousel);
+			let carousel:any = [];
+			if(pic.indexOf(',') == -1){
+				carousel.push(pic)
 			}else{
-				this.goodsImg = img.split(',')
+				carousel = pic.split(',')
 			}
+			this.carouselLength = carousel.length;
+			let yuanfeng = this.goodsData.pic.yuanfeng?decodeURIComponent(this.goodsData.pic.yuanfeng).split(','):[];
+			this.goodsImg = [...carousel,...yuanfeng];
 		}
 		// 详情图片
 		getDetailImage(img:any){
@@ -834,15 +840,13 @@
 			this.onClickInvitePopupCancel();
 		}
 		onChangeSwiperCurrent(event:any){
-			this.swiperCurrent = event.detail.current
+			this.swiperCurrent = event.detail.current;
+			this.swiperTabCurrent = event.detail.current<this.carouselLength?0:1
 		}
 		onClickSwiperTab(index:number){
 			if(index != this.swiperTabCurrent){
 				this.swiperTabCurrent = index;
-				this.swiperCurrent = 0;
-				this.goodsImg = [];
-				let pic = index == 0?this.goodsData.pic.carousel:this.goodsData.pic.yuanfeng;
-				this.getGoodsImage(decodeURIComponent(pic));
+				this.swiperCurrent = index==0?0:this.carouselLength;
 			}
 		}
 		getCountStr(str:any,index:number){
@@ -1195,7 +1199,7 @@
 			.header-top-plan-num{
 				width: 190rpx;
 				height:30rpx;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
@@ -1205,7 +1209,7 @@
 			.header-top-plan-numbottom{
 				width: 100%;
 				height:30rpx;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
@@ -1272,13 +1276,13 @@
 			}
 			&-name{
 				text-align: center;
-				font-size: 27rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
 			}
 			&-desc{
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #C0C0C0;

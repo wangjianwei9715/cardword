@@ -103,11 +103,11 @@
 <style lang="scss">
 	.orderlist{
 		&-index{
-			width: 710rpx;
-			border-radius: 20rpx;
+			width: 100%;
+			border-radius: 5rpx;
 			background:#fff;
 			box-sizing: border-box;
-			margin-bottom: 20rpx;
+			margin-bottom: 14rpx;
 			&-header{
 				width: 100%;
 				height:80rprx;

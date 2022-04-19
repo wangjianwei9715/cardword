@@ -18,7 +18,7 @@
 					<view class="goodslist-title">{{item.title}}</view>
 					<view class="goodslist-priceMsg uni-flex">
 						<view class="goodslist-priceMsg-left">
-							￥<text>{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
+							￥<text class="price-text">{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
 						</view>
 						<view class="goodslist-priceMsg-right">
 							余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
@@ -277,6 +277,9 @@
 		&-priceMsg {
 			justify-content: space-between;
 			// vertical-align: bottom;
+			height:40rpx;
+			display: flex;
+			align-items: flex-end;
 			position: relative;
 			margin-bottom: 8rpx;
 			margin-top: 10rpx;
@@ -286,12 +289,16 @@
 				font-family:PingFangSC-Regular;
 				font-weight: 500;
 				color: #333333;
-
-				text {
+				height:40rpx;
+				display: flex;
+				align-items: flex-end;
+				text.price-text {
 					font-size: 33rpx;
 					font-family: FZLanTingHeiS-B-GB;
 					font-weight: 400;
 					color: #333333;
+					line-height: 38rpx;
+					margin-right: 5rpx;
 				}
 
 				text:last-child {
@@ -303,6 +310,9 @@
 			}
 
 			.goodslist-priceMsg-right {
+				height:40rpx;
+				display: flex;
+				align-items: flex-end;
 				font-size: 21rpx;
 				font-family:PingFangSC-Regular;
 				font-weight: 400;
@@ -356,9 +366,9 @@
 
 				.cores {
 					display: block;
-					width: 12rpx;
-					height: 18rpx;
-					background-image: url('../../static/goods/rightCor.png');
+					width: 13rpx;
+					height: 21rpx;
+					background-image: url('../../static/goods/v2/icon_right.png');
 					background-size: 100% 100%;
 					position: relative;
 				}

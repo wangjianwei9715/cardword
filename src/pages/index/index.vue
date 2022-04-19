@@ -53,6 +53,11 @@
 						<view class="tabtext">{{items.text}}</view>
 					</view>
 				</view>
+				
+				<view class="top-banner">
+					<view class="top-ref"><view class="top-res-bg"></view>寻找金色卡密</view>
+				</view>
+
 				<!-- 卡豆商城 热门系列 拆卡围观 -->
 				<tabHot :hotList="hotList" />
 			</view>
@@ -84,27 +89,13 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
-	import { indexGoodsType } from "@/net/DataExchange"
+	import { indexGoodsType,goodsMiniList } from "@/net/DataExchange"
 	@Component({})
 	export default class index extends BaseNode {
 		indexGoodsType = indexGoodsType;
+		goodsMiniList = goodsMiniList;
 		statusBarHeight = app.statusBarHeight;
 		topAddList:any = [];
-		goodsMiniList = [
-			{
-				currentNum:0,
-				discount: "",
-				goodCode: "GT4228482",
-				lockNum: 0,
-				overAt: 0,
-				pic: "../../static/index/mp_mini_good.jpg",
-				price: 99999,
-				startAt: 0,
-				title: "20-21 篮球 Panini National Treasures  Hobby  原箱",
-				totalNum: 1
-
-			}
-		]
 		tabList:{[x:string]:any} = {
 			tabTop:[
 				{img:'../../static/index/v2/top_icon0.gif',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
@@ -119,7 +110,6 @@
 				{img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_assign_list?type=progress'}
 			]
 		};
-		
 		// 卡豆商城 热门系列 拆卡围观
 		hotList:{[x:string]:any} = {
 			cardBean:{
@@ -577,8 +567,8 @@
 		justify-content: space-between;
 	}
 	.tab-index{
-		width: 100rpx;
-		height:140rpx;
+		width: 105rpx;
+		height:150rpx;
 		display: flex;
 		align-items: flex-start;
 		position: relative;
@@ -587,14 +577,14 @@
 	}
 	.tab-img-content{
 		display: flex;
-		width: 100rpx;
-		height:100rpx;
+		width: 105rpx;
+		height:105rpx;
 		align-items: flex-start;
 
 	}
 	.tabimg{
-		width: 100rpx;
-		height:100rpx;
+		width: 105rpx;
+		height:105rpx;
 	}
 	.tabtext{
 		width: 100%;
@@ -605,12 +595,29 @@
 		color: #14151A;
 		text-align: center;
 	}
-	
 
-	
-	
-	
-	
+	.top-banner{
+		width: 722rpx;
+		height:156rpx;
+		margin: 0 auto;
+		box-sizing: border-box;
+		display: flex;
+		margin-top: 10rpx;
+		background:url(../../static/index/v2/top_banner.png) no-repeat center;
+		background-size: 100% 100%;
+		position: relative;
+	}
+	.top-ref{
+		font-size: 66rpx;
+		font-family: Jcacuhei;
+		font-weight: 600;
+		font-style: italic;
+		color: #F6F7FA;
+		position: absolute;
+		left:182rpx;
+		top:18rpx;
+		display: inline-flex;
+	}
 	.tabc-content{
 		width: 100%;
 		background:$content-bg;

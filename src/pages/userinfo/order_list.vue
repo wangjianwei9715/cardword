@@ -340,7 +340,7 @@
 	.order-list{
 		width: 100%;
 		box-sizing: border-box;
-		padding: 204rpx 20rpx 20rpx 20rpx;
+		padding: 196rpx 14rpx 14rpx 14rpx;
 	}
 	.search-input{
 		width: 626rpx;

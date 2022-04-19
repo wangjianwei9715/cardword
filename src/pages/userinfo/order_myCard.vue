@@ -1,29 +1,15 @@
 <template>
 	<view class="content">
-		<view class="header-banner" v-if="sortData!=''">
-			<sortTab :sortData="sortData" @postSort="postSort" />
-		</view>
-
-		<view class="card-list"  v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
-			<view class="order-code">
-				<view class="order-code-left"><view class="order-code-box">订单：{{item.orderCode}}</view><view class="order-code-now">{{orderCode==item.orderCode?'当前订单 ':''}}</view></view>
-				<view class="order-code-right" v-if="item.guess && item.guess!=''">我的预测：{{item.guess}}</view>
-				<!--  -->
+		<navigationSearch :navigatetoTitle="'该商品的卡密'" :searchText="searchText" :searchEmit="searchEmit"/>
+		<statusbar/>
+		<view class="header-banner" >
+			<view class="order-type">
+				<view class="order-type-index" :class="{'type-current':item.type==typeTabCurrent}" v-for="(item,index) in typeTab" :key="index" @click="onClickTypeCurrent(item.type)">{{item.name}}</view>
 			</view>
-			<view class="card-box">
-				<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs">
-					<view class="index-left" :class="{'bingo-name':item.bingo}">{{items.name}}</view>
-					<view  class="index-right" @click="onClickLookCard(items)">
-						{{items.content}}
-						<view v-if="items.content=='已中卡'" class="index-right-pt"></view>
-					</view>
-				</view>
-				<view class="card-more-btn" v-if="item.hasMore" @click="reqNewCardList(item.orderCode,index)">查看更多</view>
-			</view>
+			<sortTab v-if="sortData!=''" :sortData="sortData" @postSort="postSort" />
 		</view>
-
-		<view v-show="cardSortList!=''">
-			<view class="card-index" v-for="(items,indexs) in cardSortList" :key="indexs">
+		<view class="card-box">
+			<view class="card-index" v-for="(items,indexs) in cardList" :key="indexs">
 				<view class="index-left" :class="{'bingo-name':items.bingo}">{{items.name}}</view>
 				<view  class="index-right" @click="onClickLookCard(items)">
 					{{items.content}}
@@ -43,7 +29,11 @@
 	export default class ClassName extends BaseNode {
 		myCardGoodsType = myCardGoodsType;
 		cardList:{[x:string]:any} = [];
-		cardSortList:{[x:string]:any} = [];
+		typeTab = [
+			{name:'当前订单',type:1},
+			{name:'全部订单',type:2}
+		]
+		typeTabCurrent = 1;
 		orderCode = '';
 		goodCode = '';
 		currentPage = 1;
@@ -53,12 +43,20 @@
 		pintuanType = 0;
 		listSort = '';
 		sortData:any = [];
+		searchText = '';
+		searchEmit = 'orderMyCard'
 		onLoad(query:any) {
 			this.orderCode = query.code;
 			this.goodCode = query.goodCode;
 			this.pintuanType = Number(query.pintuanType);
 			this.sortData = this.myCardGoodsType(this.pintuanType)
 			this.reqNewData()
+
+			this.onEventUI(this.searchEmit,(res)=>{
+				console.log('res=',res)
+				this.searchText = res;
+				this.reqSearchList()
+			})
 		}
 		//   加载更多数据
 		onReachBottom() {
@@ -82,6 +80,12 @@
 				});
 			})
 		}
+		onClickTypeCurrent(type:number){
+			if(type == this.typeTabCurrent) return;
+
+			this.typeTabCurrent = type;
+			this.reqSearchList()
+		}
 		onClickMoreList(code:any){
 			uni.navigateTo({
 				url:'/pages/userinfo/order_myAllCard?code='+code
@@ -93,33 +97,8 @@
 		}
 		reqSearchList(){
 			this.currentPage = 1;
-			this.cardList = [];
-			this.cardSortList = [];
 			this.noMoreData = false;
 			this.reqNewData()
-		}
-		reqNewCardList(orderCode:string,index:number,cb?:Function) {
-			// 获取更多商品
-			let pageIndex = Math.floor((this.cardList[index].noList.length-10)/10);
-			
-			let params:{[x:string]:any} = {
-				pageIndex: pageIndex+2,
-				pageSize:10,
-			}
-			
-			app.http.Get('me/orderInfo/buyer/'+orderCode+'/noList', params, (data: any) => {
-				if(data.list){
-					this.cardList[index].noList = this.cardList[index].noList.concat(data.list);
-					if(data.list.length<10){
-						this.cardList[index].hasMore = false;
-					}
-				}
-				
-				if(this.cardList[index].noList.length>=data.total){
-					this.cardList[index].hasMore = false;
-				}
-				if(cb) cb()
-			});
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
@@ -130,27 +109,23 @@
 			let params:{[x:string]:any} = {
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
-				leadOrderCode:this.orderCode
+				
 			}
 			// 排序方式
-			if(this.listSort!=''){
-				params.sort = this.listSort
-			}
+			if(this.listSort!='') params.sort = this.listSort;
+			if(this.typeTabCurrent == 1) params.leadOrderCode = this.orderCode;
+			if(this.searchText!='') params.q = this.searchText;
 			
 			app.http.Get('me/good/'+this.goodCode+'/orderNoList', params, (data: any) => {
 				if(data.empty){
 					this.currentPage++;
 					return;
 				}
-				if(data.totalPage<=this.currentPage){
-					this.noMoreData = true;
-				}
+				if(data.totalPage<=this.currentPage) this.noMoreData = true;
+				if(this.currentPage==1) this.cardList = [];
+
 				if(data.list){
-					if(this.listSort == ''){
-						this.cardList = this.cardList.concat(data.list);
-					}else{
-						this.cardSortList = this.cardSortList.concat(data.list);
-					}	
+					this.cardList = this.cardList.concat(data.list);
 				}
 				this.currentPage++;
 				if(cb) cb()
@@ -165,15 +140,28 @@
 		width: 100%;
 		background:#fff;
 		box-sizing: border-box ;
-		position: fixed;
-		left:0;
-		top:0;
 		z-index: 9;
+		margin-bottom: 10rpx;
+	}
+	.order-type{
+		width: 685rpx;
+		height:62rpx;
+		background:#F2F2F2;
+		margin:0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
+		padding:0 4rpx;
+		margin-bottom: 20rpx;
+	}
+	.type-current{
+		background:#fff;
 	}
 	.content{
 		width: 100%;
 		box-sizing:border-box;
-		padding-top: 80rpx;
+		padding-top: 108rpx;
 	}
 	.card-list{
 		width: 100%;
@@ -230,7 +218,7 @@
 	.card-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 15rpx;
+		padding:0 14rpx;
 	}
 	.card-index{
 		width: 100%;
@@ -240,7 +228,18 @@
 		justify-content: space-between;
 		background:#fff;
 		margin-top: 10rpx;
-		background: #F6F7F8;
+		
+	}
+	.order-type-index{
+		width: 338rpx;
+		height:54rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 29rpx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #333333;
 	}
 	.card-more-btn{
 		width: 100%;
@@ -251,7 +250,8 @@
 		font-size: 26rpx;
 	}
 	.index-left{
-		width: 620rpx;
+		width: 600rpx;
+		min-height: 96rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
@@ -261,7 +261,7 @@
 		color: #333333;
 		line-height: 32rpx;
 		padding:10rpx 20rpx;
-		border-right: 1px solid #fff;
+		background: #F6F7F8;
 	}
 	.index-right{
 		width: 100rpx;

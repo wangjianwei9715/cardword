@@ -594,14 +594,9 @@
 				{
 					"path": "merchant_shopsV2",
 					"style": {
-						//  #ifndef MP-WEIXIN
-						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
 						"navigationBarTitleText": "商家店铺",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
@@ -698,9 +693,7 @@
 				{
 					"path": "order_myCard",
 					"style": {
-						"navigationBarTitleText": "该商品全部卡密",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black"
+						"navigationStyle": "custom"
 					}
 				},
 				{

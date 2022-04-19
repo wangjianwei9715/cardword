@@ -18,9 +18,9 @@
 						</view>
 					</view>
 					<view class="business-rightAction">
-						<followButton :follow='item.follow' :followID='item.id'
+						<followButton :width="132" :height="46" :fontSize="23" :follow='item.follow' :followID='item.id'
 							@handleSuccess='followSuccess($event,item)'></followButton>
-						<view style="margin-top: 20rpx;" class="privewItem" @click.stop="onClickShops(item)">进店看看</view>
+						<view class="privewItem" @click.stop="onClickShops(item)">进店看看</view>
 					</view>
 				</view>
 				<view v-if='item.goodList&&item.goodList.length'>
@@ -41,13 +41,11 @@
 							<view class="bottomState uni-flex">
 								<view class="bottomState-left">
 									<template v-if="goodsItem.stateName=='在售'">
-										￥
-										<text>{{goodsItem.price}}</text>
+										￥<text>{{goodsItem.price}}</text>
 									</template>
+									<text class="bottom-statename" v-else>{{goodsItem.stateName}}</text>
 								</view>
-								<view class="bottomState-right">
-									{{goodsItem.stateName=='在售'?getPlan(goodsItem.lockNum,goodsItem.currentNum,goodsItem.totalNum)+'%':goodsItem.stateName}}
-								</view>
+								
 							</view>
 						</view>
 					</view>
@@ -204,24 +202,15 @@
 	}
 
 	.detail-bg {
-		// width: 722rpx;
-
-		// box-sizing: border-box;
-		padding: 0 14rpx;
-		// display: flex;
-		// justify-content: center;
-		// flex-wrap: wrap;
-		// margin:0 auto;
-		// padding:0 14rpx;
+		padding: 15rpx 14rpx;
 	}
 
 	.business {
 		background-color: #fff;
-		height: 442rpx;
-		margin: 15rpx 0;
-
+		height: 462rpx;
+		margin-bottom: 15rpx;
 		.noneTips {
-			font-size: 22rpx;
+			font-size: 29rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #c6c6c8;
@@ -243,12 +232,11 @@
 			display: block;
 			border-radius: 50%;
 			overflow: hidden;
-			margin-right: 37rpx;
+			margin-right: 26rpx;
 		}
 
 		&-info {
 			flex: 1;
-
 			.nameInfo {
 				// align-content: flex-end
 				// align-items: flex-end;
@@ -256,7 +244,7 @@
 
 				text {
 					display: block;
-					font-size: 26rpx;
+					font-size: 29rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #333333;
@@ -266,20 +254,20 @@
 
 				.entityInfo {
 					background-size: 100% 100%;
-					height: 22rpx;
+					width: 114rpx;
+					height: 32rpx;
 					background-image: url("../../static/userinfo/v2/entityBg.png");
-					padding: 0 10rpx;
 					text-align: center;
-					font-size: 18rpx;
+					font-size: 21rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
-					line-height: 24rpx;
+					line-height: 32rpx;
 					color: #ffffff;
 				}
 			}
 
 			.fansInfo {
-				font-size: 22rpx;
+				font-size: 25rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878c;
@@ -289,28 +277,30 @@
 
 		&-rightAction {
 			.privewItem {
-				width: 144rpx;
-				height: 44rpx;
-				font-size: 22rpx;
+				width: 132rpx;
+				height: 48rpx;
+				font-size: 23rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878c;
-				line-height: 44rpx;
+				line-height: 48rpx;
 				text-align: center;
 				letter-spacing: 1rpx;
-				background-size: 100% 100%;
-				background-image: url("../../static/userinfo/v2/whiteCard.png");
+				box-sizing: border-box;
+				border:1rpx solid #DADADA;
+				margin-top: 18rpx;
 			}
 		}
 	}
 
 	.scroll-goodslist {
 		// white-space: nowrap;
-		width: 98%;
-		margin-left: 16rpx;
-		margin-top: 34rpx;
+		width: 100%;
+		margin-top: 36rpx;
 		flex-wrap: nowrap;
 		overflow: hidden;
+		box-sizing: border-box;
+		padding:0 22rpx;
 
 		&-item {
 			display: inline-block;
@@ -329,8 +319,8 @@
 				}
 
 				.angleMark {
-					padding: 0 10rpx;
-					height: 22rpx;
+					padding: 0 13rpx;
+					height: 29rpx;
 					position: absolute;
 					top: 0;
 					left: 0;
@@ -340,7 +330,7 @@
 					color: #ffffff;
 					border-radius: 4rpx 0 0 0;
 					text-align: center;
-					line-height: 22rpx;
+					line-height: 29rpx;
 				}
 			}
 
@@ -367,18 +357,22 @@
 					font-family: PingFangSC-Regular;
 					font-weight: 500;
 					color: #333333;
-
 					text {
-						font-size: 26rpx;
+						font-size: 29rpx;
 						font-weight: bold;
 					}
 				}
-
 				&-right {
 					font-size: 22rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #88878c;
+				}
+				.bottom-statename{
+					font-size: 25rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #88878C;
 				}
 			}
 		}

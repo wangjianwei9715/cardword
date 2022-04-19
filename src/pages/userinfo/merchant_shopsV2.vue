@@ -1,28 +1,5 @@
 <template>
 	<view class="content">
-		<view class="header-banner">
-			<statusbar />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack"></view>
-				<view class="header-title">
-					<!-- <image class="header-title-img" :src="decodeURIComponent(detail.logo)" mode="aspectFit"></image> -->
-					<!-- {{detail.name}} -->
-					商家店铺
-				</view>
-				<view class="header-right uni-flex">
-					<!-- <image src="../../static/userinfo/v2/back.png" mode="widthFix"  alt="" @click="onClickBack">
-					<image src="../../static/userinfo/v2/search.png"  mode="widthFix" style="width:35rpx" alt=""> -->
-				</view>
-				<!-- <view class="icon-liaotian" @click="onClickLT"></view> -->
-			</view>
-
-			<!-- <view class="header-tab">
-				<tabc :tabc="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabc>
-			</view> -->
-		</view>
-		<view style="padding-top:70rpx">
-			<statusbar />
-		</view>
 		<view class="business">
 			<view class="business-top uni-flex">
 				<image :src="decodeURIComponent(detail.logo)" class="business-avart" mode="aspectFill" />
@@ -38,7 +15,7 @@
 					</view>
 				</view>
 				<view class="business-rightAction">
-					<followButton v-if="buttonShow" :follow='detail.followed' :followID='detail.id'
+					<followButton :width="132" :height="46" :fontSize="23" v-if="buttonShow" :follow='detail.followed' :followID='detail.id'
 						@handleSuccess='followSuccess($event,detail)'></followButton>
 					<!-- <view class="actionItem " :class="{redAction:!detail.followed}">{{detail.followed?'取消关注':'关注'}}
 					</view> -->
@@ -212,11 +189,7 @@
 				}
 			);
 		}
-		onClickBack() {
-			uni.navigateBack({
-				delta: 1
-			});
-		}
+		
 		// 跳转商品详情
 		onClickJumpDetails(id: any) {
 			uni.navigateTo({
@@ -329,9 +302,9 @@
 	.business {
 		background-color: #fff;
 		margin: 15rpx 0;
-		width: 89%;
-		// width: 100%;
-
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0 34rpx;
 		&-top {
 			align-items: center;
 			// padding: 0 21rpx;
@@ -350,7 +323,6 @@
 
 		&-info {
 			flex: 1;
-
 			.nameInfo {
 				// align-content: flex-end
 				// align-items: flex-end;
@@ -358,7 +330,7 @@
 
 				text {
 					display: block;
-					font-size: 26rpx;
+					font-size: 29rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #333333;
@@ -368,47 +340,46 @@
 
 				.entityInfo {
 					background-size: 100% 100%;
-					height: 22rpx;
+					width: 114rpx;
+					height: 32rpx;
 					background-image: url("../../static/userinfo/v2/entityBg.png");
-					padding: 0 10rpx;
 					text-align: center;
-					font-size: 18rpx;
+					font-size: 21rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
-					line-height: 24rpx;
+					line-height: 32rpx;
 					color: #ffffff;
 				}
 			}
 
 			.fansInfo {
-				font-size: 22rpx;
+				font-size: 25rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878c;
 				letter-spacing: 1rpx;
 			}
 		}
-
 	}
 
 	.tabsMenu {
 		width: 87%;
-		// width: 100%;
-		// padding: 0 49rpx;
-		margin-top: 36rpx;
+		margin-top: 20rpx;
 		margin-bottom: 34rpx;
-
+		display: flex;
+		align-items: baseline;
 		.menuItem {
-			font-size: 26rpx;
+			font-size: 27rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
-			color: #333333;
-			// margin-right: 80rpx;
+			color: #C1C1C1;
 			width: 30%;
 		}
 
 		.selectItem {
 			font-weight: bold;
+			font-size: 31rpx;
+			color: #333333;
 		}
 	}
 

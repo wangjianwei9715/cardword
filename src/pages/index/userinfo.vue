@@ -490,8 +490,8 @@
 					color: #333333;
 				}
 				.tab-icon{
-					width: 52rpx;
-					height:52rpx;
+					width: 40rpx;
+					height:40rpx;
 				}
 			}
 		}

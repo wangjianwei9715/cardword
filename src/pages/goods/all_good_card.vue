@@ -240,6 +240,6 @@
 		font-weight: 400;
 		color: #34363A;
 		text-align: center;
-		border:1px solid #E5E5E5
+		border:1rpx solid #E5E5E5
 	}
 </style>

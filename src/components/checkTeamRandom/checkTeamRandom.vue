@@ -105,6 +105,7 @@
 			let width = Math.floor((Number(lock)+Number(now))/Number(all)*100);
 			return width
 		}
+		
 		onClickRulesShow(){
 			this.showDrawer = true
 		}
@@ -176,7 +177,7 @@
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #88878C;
-		margin-bottom: 10rpx;
+		margin-bottom: 5rpx;
 	}
 	.teamtion-header-title .text-price{
 		font-size: 25rpx;
@@ -204,12 +205,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 20rpx;
-		margin-bottom: 20rpx;
+		margin-top: 0rpx;
+		margin-bottom: 40rpx;
 		.goodslist-progress{
-			background-image: url('../../static/goods/v2/progeessBg.png');
+			background-image: url('../../static/goods/v2/progessBgg_select.png');
 			background-size: 100% 100%;
-			width: 400rpx;
+			width: 410rpx;
 			height: 9rpx;
 			position: relative;
 			display: flex;
@@ -220,10 +221,11 @@
 				width: 0%;
 			}
 		}
+		
 		.header-top-plan-num{
 			width: 170rpx;
 			height:30rpx;
-			font-size: 22rpx;
+			font-size: 17rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #88878C;
@@ -233,7 +235,7 @@
 		.header-top-plan-numbottom{
 			width: 100%;
 			height:30rpx;
-			font-size: 22rpx;
+			font-size: 17rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #88878C;
@@ -362,7 +364,7 @@
 		position: relative;
 		z-index: 6;
 		.goodslist-progress{
-			background-image: url('../../static/goods/v2/progeessBg.png');
+			background-image: url('../../static/goods/v2/progessBgg_select.png');
 			background-size: 100% 100%;
 			width: 100%;
 			height: 9rpx;
@@ -417,4 +419,5 @@
 		border:1px solid #7C4BEA;
 		color:#fff;
 	}
+	
 </style>

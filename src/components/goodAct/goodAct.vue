@@ -3,7 +3,7 @@
 		<view class="detail-act-box">
 			<view class="detail-act-index" @click="onClickActHelp" v-for="(item,index) in goodsActData" :key="index">
 				<view class="detail-act-left">
-					<view class="detail-act-name">活动{{chineseNumber[index+1]}}</view>
+					<view class="detail-act-name">活动{{index+1}}</view>
 					<view class="detail-act-desc" v-if="item!='discount'">
 						<view class="detail-act-guess" v-if="item.indexOf('猜球员')!=-1"></view>{{item}}
 					</view>
@@ -120,13 +120,13 @@
 				align-items: center;
 			}
 			.detail-act-name{
-				width: 120rpx;
+				width: 110rpx;
 				height:40rpx;
 				line-height: 40rpx;
-				font-size: 31rpx;
-				font-family: PingFangSC-Medium;
-				font-weight: bold;
-				color: #333333;
+				font-size: 27rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #C0C0C0;
 			}
 			.detail-act-desc{
 				font-size: 27rpx;
@@ -134,7 +134,7 @@
 				align-items: center;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #88878C;
+				color: #333333;
 			}
 			.detail-act-guess{
 				width: 130rpx;

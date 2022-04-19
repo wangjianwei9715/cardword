@@ -1,3 +1,19 @@
+// 微信小程序首页商品
+export var goodsMiniList = [
+    {
+        currentNum:0,
+        discount: "",
+        goodCode: "GT4228482",
+        lockNum: 0,
+        overAt: 0,
+        pic: "../../static/index/mp_mini_good.jpg",
+        price: 99999,
+        startAt: 0,
+        title: "20-21 篮球 Panini National Treasures  Hobby  原箱",
+        totalNum: 1
+
+    }
+]
 // 首页列表类型 1:推荐 2:篮球 3:足球 4:其他
 export var indexGoodsType: { [x: number]: any } = {
     1: 'main',
