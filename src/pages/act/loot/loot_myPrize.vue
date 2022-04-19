@@ -23,14 +23,14 @@
 		<empty v-if='!isRequest&&prizeList&&!prizeList.length'></empty>
 	</view>
 </template>
-
+	
 <script lang="ts">
 	import {
 		app
 	} from "@/app";
 	import {
 		dateFormatMSHMS
-	} from '@/tools/util.ts'
+	} from '@/tools/util'
 	import {
 		Component,
 		Prop,

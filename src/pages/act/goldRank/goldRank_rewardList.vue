@@ -9,7 +9,8 @@
 
 			<view class="prizeCard-prize">
 				<view class="prizeName">{{item.name}}</view>
-				<image class="prizeCard-prizeImage" :src='decodeURIComponent(item.pic)' @click.stop="previewImg(0,[decodeURIComponent(item.pic)])">
+				<image class="prizeCard-prizeImage" :src='decodeURIComponent(item.pic)'
+					@click.stop="previewImg(0,[decodeURIComponent(item.pic)])">
 				</image>
 				<!-- <view class="prizeImage uni-flex">
 					<view class="discountCoupon">
@@ -36,7 +37,7 @@
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import {
 		dateFormatMSHMS
-	} from '@/tools/util.ts'
+	} from '@/tools/util'
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		rewardList: any = [];

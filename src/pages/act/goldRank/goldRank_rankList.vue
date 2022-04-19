@@ -106,7 +106,7 @@
 		<share :operationShow="operationShow" :shareData="shareData" @operacancel="operationShow=false" />
 	</view>
 </template>
- 
+
 <script lang="ts">
 	import {
 		app
@@ -122,12 +122,15 @@
 		dateFormatMSHMS,
 		formatNumber,
 		countDown
-	} from '@/tools/util.ts'
+	} from '@/tools/util'
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		queryParams: any = {
-			tp: 1 //1 今日榜单数据，2 总榜数据
+			tp: 1, //1 今日榜单数据，2 总榜数据
+			pageIndex: 1,
+			pageSize: 50
 		};
+		totalPage: number = 1;
 		endTimeStamp: number = 0;
 		operationShow: boolean = false;
 		shareData: any = false;
@@ -169,6 +172,16 @@
 				this.startCountDown()
 			})
 		}
+		onReachBottom() {
+			if (this.queryParams.pageIndex < this.totalPage) {
+				this.queryParams.pageIndex += 1
+				this.reqNewData(false)
+			}
+		}
+		onPullDownRefresh() {
+			this.queryParams.pageIndex = 1
+			this.reqNewData(false)
+		}
 		tagChange(item: any, index: number) {
 			if (this.tag.index == index) return
 			this.tag.index = index
@@ -197,7 +210,7 @@
 		getTopRankItem(rankIndex: number = 0) {
 			const rankItem: any = this.rankList[rankIndex]
 			if (!rankItem) return undefined
-			if(rankItem.userName=='虚位以待'&&rankItem.gold_value==0) return undefined
+			if (rankItem.userName == '虚位以待' && rankItem.gold_value == 0) return undefined
 			return rankItem
 		}
 		pageJump(url: string) {
@@ -217,7 +230,7 @@
 				this.shareData = {
 					// shareUrl: 'http://192.168.8.26:8081/#/pages/goldRank/goldRank_rankList',
 					shareUrl: 'https://www.ka-world.com/share/h5/#/pages/goldRank/goldRank_rankList',
-					title: '积分榜单送豪礼',
+					title: '寻找金色卡密',
 					summary: '积分榜单送豪礼',
 					thumb: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.18/loot/loot_sw/0/165026087575216790gc9vr.png'
 				}
@@ -230,7 +243,9 @@
 				"activity/goodNoShowGoldValue/home",
 				this.queryParams,
 				(res: any) => {
-					this.rankList = res.data.rankingList || []
+					this.totalPage = res.totalPage
+					const arr = res.data.rankingList || []
+					this.rankList = this.queryParams.pageIndex == 1 ? arr : [...this.rankList, ...arr]
 					if (isRefreshAward) this.awardList = res.data.awardList || []
 					this.myData = res.data.myData || {}
 					// this.unoccupied = res.data.unoccupied
@@ -290,6 +305,7 @@
 		&-rank {
 			text-align: center;
 			width: 15%;
+			margin-left: 20rpx;
 		}
 
 		&-avart {
@@ -309,6 +325,7 @@
 			font-size: 26rpx;
 			text-align: center;
 			width: 34%;
+			margin-right: 20rpx;
 		}
 	}
 
@@ -591,7 +608,7 @@
 			display: block;
 			width: 640rpx;
 			height: 2rpx;
-			background-color: rgba(89, 154, 226,.32);
+			background-color: rgba(89, 154, 226, .32);
 			// background-size: 100% 100%;
 			// background-image: url(../../../static/act/goldRank/rank_line.png);
 			position: absolute;
