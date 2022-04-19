@@ -151,6 +151,7 @@
 			uni.$emit('followAction', item)
 		}
 		tabsChange(item: any, index: number) {
+			if(index == this.goodTabV2.index) return;
 			this.goodTabV2.index = index;
 			if (index != 2) this.againGetList();
 		}

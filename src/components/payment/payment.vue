@@ -253,7 +253,6 @@
 			width: 690rpx;
 			height: 84rpx;
 			background: #FF0016;
-			border-radius: 4rpx;
 			text-align: center;
 			line-height: 84rpx;
 			box-sizing: border-box;
