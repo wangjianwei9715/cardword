@@ -53,7 +53,6 @@
 			this.reqNewData()
 
 			this.onEventUI(this.searchEmit,(res)=>{
-				console.log('res=',res)
 				this.searchText = res;
 				this.reqSearchList()
 			})

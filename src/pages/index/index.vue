@@ -601,7 +601,7 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 		display: flex;
-		// margin-top: 10rpx;
+		margin-top: 10rpx;
 		background:url(../../static/index/v2/top_banner.png) no-repeat center;
 		background-size: 100% 100%;
 		position: relative;
@@ -619,6 +619,7 @@
 	}
 	.tabc-content{
 		width: 100%;
+		margin: 10rpx 0 ;
 		background:$content-bg;
 	}
 	.goodslist-index{

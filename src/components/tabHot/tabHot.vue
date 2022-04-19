@@ -83,7 +83,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 13rpx;
+		margin-top: 29rpx;
 	}
 	.tab-hot-box{
 		width: 238rpx;
@@ -95,7 +95,7 @@
 		background: url(../../static/index/v2/hot_bg_2.png) no-repeat center;
 		background-size: 100% 100%;
 	}
-	.tab-hot-box-split{
+	.tab-hot-box-broadCast{
 		background: url(../../static/index/v2/hot_bg_3.png) no-repeat center;
 		background-size: 100% 100%;
 	}

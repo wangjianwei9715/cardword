@@ -16,6 +16,7 @@
         </view>
       </view>
       <button class="header-right">&#xe470;</button>
+      <image class="header-order-line"  src="../../static/goods/v2/buy.png" />
     </view>
 
     
@@ -703,7 +704,7 @@ page {
 }
 .header {
   width: 100%;
-  height: 170rpx;
+  height: 180rpx;
   background: #fff;
   box-sizing: border-box;
   padding: 0 25rpx;
@@ -711,6 +712,14 @@ page {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+}
+.header-order-line{
+  width: 100%;
+  height:7rpx;
+  position: absolute;
+  bottom:0;
+  left:0;
 }
 .header-left {
   width: 630rpx;
@@ -732,9 +741,9 @@ page {
   margin: 0;
 }
 .icon-address {
-  width: 32rpx;
-  height: 38rpx;
-  background: url(../../static/goods/icon_location.png) no-repeat center;
+  width: 31rpx;
+  height: 42rpx;
+  background: url(../../static/goods/icon_address.png) no-repeat center;
   background-size: 100% 100%;
   margin-right: 24rpx;
 }

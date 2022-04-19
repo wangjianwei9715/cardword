@@ -28,6 +28,7 @@
 			</view>
 
 			<view class="teamtion-box-center">
+				<view class="teamtion-box-title">选择球队</view>
 				<view class="teamtion-box">
 					<view class="teamtion-box-index" :class="{'index-current':index==currentIndex}" @click="onClickCurrentIndex(item,index)" v-for="(item,index) in teamRandomData" :key="index">
 						<image class="teamtion-box-logo" :src="decodeURIComponent(item.logo)" />
@@ -304,23 +305,34 @@
 		height:100%;
 		overflow: auto;
 		box-sizing: border-box;
-		padding:280rpx 21rpx calc(140rpx + env(safe-area-inset-bottom)) 21rpx;
+		background:#F6F7FB;
+		
+		padding:280rpx 0 calc(140rpx + env(safe-area-inset-bottom)) 0;
+	}
+	.teamtion-box-title{
+		width: 100%;
+		box-sizing: border-box;
+		font-size: 27rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 600;
+		color: #333333;
+		margin-bottom: 12rpx;
+		padding: 23rpx 22rpx 0 22rpx;
 	}
 	.teamtion-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding: 24rpx 28rpx;
-		background:#F6F7FB;
 		display: flex;
 		flex-wrap: wrap;
+		padding: 0 22rpx;
 	}
 	.teamtion-box-index{
-		width: 156rpx;
-		height:156rpx;
+		width: 170rpx;
+		height:170rpx;
 		box-sizing: border-box;
-		margin-right: 9rpx;
+		margin-right: 10rpx;
 		background:#E9E9E9;
-		margin-bottom: 9rpx;
+		margin-bottom: 10rpx;
 		position: relative;
 		border: 1px solid #E9E9E9;
 	}
@@ -335,7 +347,7 @@
 		height:100rpx;
 		box-sizing: border-box;
 		padding-top: 50rpx;
-		font-size: 33rpx;
+		font-size: 29rpx;
 		font-family: Lantinghei SC;
 		font-weight: 600;
 		color: #333333;
@@ -346,7 +358,7 @@
 	.teamtion-box-price{
 		width: 100%;
 		text-align: center;
-		font-size: 22rpx;
+		font-size: 25rpx;
 		line-height: 30rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
@@ -367,7 +379,7 @@
 			background-image: url('../../static/goods/v2/progessBgg_select.png');
 			background-size: 100% 100%;
 			width: 100%;
-			height: 9rpx;
+			height: 10rpx;
 			position: relative;
 			display: flex;
 			justify-content: flex-end;
@@ -379,8 +391,8 @@
 		}
 	}
 	.teamtion-box-logo{
-		width: 90rpx;
-		height:90rpx;
+		width: 100rpx;
+		height:100rpx;
 		position: absolute;
 		left: 0;
 		top:0;
