@@ -2,8 +2,8 @@
 	<view class="goodsContent">
 		<!-- 首页轮播 -->
 		<view class="index-swiper" v-if="indexSwiper&&topAddList!=''">
-			<swiper class="swiper" :indicator-dots="false" :autoplay="true" :interval="5000" :duration="500"
-				:circular="true">
+			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="5000" :duration="500"
+				:circular="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'">
 				<swiper-item v-for="(item,index) in topAddList" :key="index">
 					<image class="swiper-image" :src="decodeURIComponent(item.pic)"
 						@click="onClickTopJumpUrl(item.target)" mode="aspectFill"></image>

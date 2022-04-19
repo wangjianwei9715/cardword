@@ -54,7 +54,7 @@
 					</view>
 				</view>
 				
-				<view class="top-banner">
+				<view class="top-banner" @click="onClickActJump">
 					<view class="top-ref"><view class="top-res-bg"></view>寻找金色卡密</view>
 				</view>
 
@@ -81,7 +81,7 @@
 
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
 
-		<winningCardPopup :showWinningCrad="showWinningCrad" />
+		<winningCardPopup :showWinningCrad="showWinningCrad" @closeWinning="closeWinning" />
 	</view>
 </template>
 
@@ -160,7 +160,7 @@
 		showPaySuccess = false;
 		version = '';
 		oneLoad = true;
-		showWinningCrad = true;
+		showWinningCrad = false;
 		onLoad(query:any) {
 			// uni.$emit('reLogin')
 			if (app.update.apkNeedUpdate) {
@@ -229,8 +229,8 @@
 					this.oneLoad = false;
 				}
 			}
-			
 			// #endif
+			
 			// #ifdef MP
 			this.topAddList = [{pic:'../../static/index/mp_mini.jpg',url:''}]
 			// #endif
@@ -419,6 +419,19 @@
 		}
 		BackLogin(res:any){
 			uni.$emit('BackLogin');
+		}
+		showWinning(){
+			this.showWinningCrad = true;
+			uni.hideTabBar()
+		}
+		closeWinning(){
+			this.showWinningCrad = false
+			uni.showTabBar()
+		}
+		onClickActJump(){
+			uni.navigateTo({
+				url: '/pages/act/goldRank/goldRank_rankList'
+			})
 		}
 		onClickSearch(){
 			// 搜索
