@@ -210,7 +210,9 @@
         position: relative;
         z-index:10;
         box-sizing: border-box;
-        padding:100rpx 20rpx calc(114rpx + env(safe-area-inset-bottom)) 20rpx;
+        padding:100rpx 20rpx calc(114rpx) 20rpx;
+		padding:100rpx 20rpx calc(114rpx + constant(safe-area-inset-bottom)) 20rpx;
+		padding:100rpx 20rpx calc(114rpx + env(safe-area-inset-bottom)) 20rpx;
     }
 	.box-index{
 		width: 100%;
@@ -270,6 +272,8 @@
 	.box-tips{
 		width: 100%;
 		position: fixed;
+		bottom:calc(100rpx);
+		bottom:calc(100rpx + constant(safe-area-inset-bottom));
 		bottom:calc(100rpx + env(safe-area-inset-bottom));
 		left:0;
 		box-sizing: border-box;
@@ -299,6 +303,8 @@
 	}
 	.box-bottom{
 		width: 100%;
+		height:calc(100rpx );
+		height:calc(100rpx + constant(safe-area-inset-bottom));
 		height:calc(100rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
 		padding-top: 17rpx;
@@ -312,7 +318,7 @@
 	.box-bottom-btn{
 		width: 680rpx;
 		height:67rpx;
-		background: #F5162B;
+		background: $btn-red;
 		border-radius: 5rpx;
 		font-size: 36rpx;
 		font-family: Source Han Sans CN;

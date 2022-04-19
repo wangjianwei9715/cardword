@@ -394,7 +394,7 @@
 		font-size: 24rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 400;
-		color: #F5162B;
+		color: $btn-red;
 		margin-left: 12rpx;
 	}
 	.order-code-right{
@@ -473,10 +473,14 @@
         position: relative;
         z-index:10;
         box-sizing: border-box;
-        padding:180rpx 15rpx calc(114rpx + env(safe-area-inset-bottom)) 15rpx;
+        padding:180rpx 15rpx calc(114rpx) 15rpx;
+		padding:180rpx 15rpx calc(114rpx + constant(safe-area-inset-bottom)) 15rpx;
+		padding:180rpx 15rpx calc(114rpx + env(safe-area-inset-bottom)) 15rpx;
     }
 	.giving-bottom{
 		width: 100%;
+		height:calc(100rpx );
+		height:calc(100rpx + constant(safe-area-inset-bottom));
 		height:calc(100rpx + env(safe-area-inset-bottom));
 		border-top: 1px solid #BBBBBB;
 		background:#fff;
@@ -534,8 +538,8 @@
 		background:#fff;
 	}
 	.btn-red{
-		border:1px solid #F5162B;
-		background:#F5162B;
+		border:1px solid $btn-red;
+		background:$btn-red;
 		color:#fff;
 	}
 </style>

@@ -171,6 +171,8 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:28rpx 20rpx 120rpx 20rpx;
+		padding-bottom: calc(120rpx);
+		padding-bottom: calc(120rpx + constant(safe-area-inset-bottom));
 		padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 	}
 	.coupon-content{
@@ -310,6 +312,8 @@
 	}
 	.coupon-btn-content{
 		width: 100%;
+		height:calc(100rpx );
+		height:calc(100rpx + constant(safe-area-inset-bottom));
 		height:calc(100rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		left:0;

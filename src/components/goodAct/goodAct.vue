@@ -48,6 +48,7 @@
   		showDrawer = false;
 		drawerMsg:any = [];
 		discount = [];
+		onceDActivity = false;
 		@Watch('goodsData')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){
@@ -77,8 +78,9 @@
 			}
 		}
 		onClickActHelp(){
-			if(this.drawerMsg==''){
+			if(!this.onceDActivity){
 				app.http.Get('good/'+this.goodsData.goodCode+'/dActivity',{},(res:any)=>{
+					this.onceDActivity = true;
 					if(res.list){
 						this.drawerMsg = [...this.drawerMsg,...res.list]
 					}

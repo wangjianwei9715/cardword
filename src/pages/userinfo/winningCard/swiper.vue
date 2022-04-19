@@ -34,7 +34,6 @@
 		}
         swiperRefresh(item:any){
             this.index = item.index;
-            this.bannerList = [];
             uni.showLoading({
                 title: '加载中'
             });
@@ -43,6 +42,7 @@
         getWinningCard(){
             app.http.Get('me/hitNo/show',{index:this.index},(res:any)=>{
                 uni.hideLoading();
+                this.bannerList = [];
                 this.bannerList = res.data;
             })
         }

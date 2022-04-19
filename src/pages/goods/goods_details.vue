@@ -1058,7 +1058,7 @@
 	}
 	.header-price text{
 		font-size: 54rpx;
-		font-family: PingFangSC-Regular;
+		font-family: FZLTGBK;
 		font-weight: 400;
 		color: #FFFFFF;
 		margin-left: 10rpx;
@@ -1211,7 +1211,7 @@
 			.header-top-plan-numbottom{
 				width: 100%;
 				height:30rpx;
-				font-size: 24rpx;
+				font-size: 20rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #88878C;
@@ -1417,6 +1417,8 @@
 	}
 	.btn-content{
 		width: 100%;
+		height:calc(120rpx);
+		height:calc(120rpx + constant(safe-area-inset-bottom));
 		height:calc(120rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:0;
@@ -1429,8 +1431,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
+		
 		&-left{
 			max-width: 240rpx;
 			height:76rpx;
@@ -1465,7 +1466,7 @@
 		.btn-confirm{
 			width: inherit;
 			height: 82rpx;
-			background: #F5162B;
+			background: $btn-red;
 			text-align: center;
 			line-height: 82rpx;
 			font-size: 33rpx;
@@ -1512,8 +1513,8 @@
 			height:82rpx;
 			box-sizing: border-box;
 			border-radius: 4px;
-			background:#F5162B;
-			border: 2rpx solid #F5162B;
+			background:$btn-red;
+			border: 2rpx solid $btn-red;
 			text-align: center;
 			line-height: 78rpx;
 			font-size: 33rpx;
@@ -1561,6 +1562,8 @@
 		width: 100%;
 		background:#fff;
 		box-sizing: border-box;
+		padding:30rpx 25rpx calc(150rpx) 25rpx;
+		padding:30rpx 25rpx calc(150rpx + constant(safe-area-inset-bottom)) 25rpx;
 		padding:30rpx 25rpx calc(150rpx + env(safe-area-inset-bottom)) 25rpx;
 		
 	}

@@ -92,6 +92,8 @@
 	.content{
 		width: 100%;
 		box-sizing: border-box;
+		padding:14rpx 14rpx calc(114rpx) 14rpx;
+		padding:14rpx 14rpx calc(114rpx + constant(safe-area-inset-bottom)) 14rpx;
 		padding:14rpx 14rpx calc(114rpx + env(safe-area-inset-bottom)) 14rpx;
 
 	}
@@ -230,6 +232,8 @@
 	}
 	.details-bottom{
 		width: 100%;
+		height:calc(100rpx );
+		height:calc(100rpx + constant(safe-area-inset-bottom));
 		height:calc(100rpx + env(safe-area-inset-bottom));
 		border-top: 1px solid #BBBBBB;
 		box-sizing: border-box;

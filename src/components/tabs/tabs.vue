@@ -70,20 +70,6 @@
 		position: relative;
 		padding-top: 14rpx;
 	}
-	// .line{
-	// 	width: 100%;
-	// 	height:12rpx;
-	// 	position: absolute;
-	// 	bottom:20rpx;
-	// 	left:0;
-	// }
-	// .current-line{
-	// 	width: 32rpx;
-	// 	height:12rpx;
-	// 	background:url(../../static/index/qiehuan@2x.png) no-repeat center;
-	// 	background-size: 100% 100%;
-	// 	transition:all 0.2s linear;
-	// }
 	.index{
 		height:84rpx;
 		line-height: 84rpx;
@@ -120,24 +106,9 @@
 		margin-top: -13rpx;
 		z-index: 2;
 	}
-	.zixuan{
-		width: 92rpx;
-		height:31rpx;
-		background:url(../../static/index/check_team.png) no-repeat center;
-		background-size: 100% 100%;
-		transform: scale(0.8);
-	}
-	.zixuan-check{
-		width: 103rpx;
-		height:31rpx;
-		background:url(../../static/index/check_team_.png) no-repeat center;
-		background-size: 100% 100%;
-		transform: scale(1);
-	}
 	.new-icon{
 		width: 53rpx;
 		height:25rpx;
-		background:url(../../static/index/new_icon.png) no-repeat center;
 		background-size: 100% 100%;
 		position: absolute;
 		top:0;

@@ -53,7 +53,6 @@
 			this.reqNewData()
 
 			this.onEventUI(this.searchEmit,(res)=>{
-				console.log('res=',res)
 				this.searchText = res;
 				this.reqSearchList()
 			})
@@ -204,7 +203,7 @@
 		font-size: 24rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 400;
-		color: #F5162B;
+		color: $btn-red;
 		margin-left: 12rpx;
 	}
 	.order-code-right{

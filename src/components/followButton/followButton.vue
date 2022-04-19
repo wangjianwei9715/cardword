@@ -91,8 +91,8 @@ export default class ClassName extends BaseComponent {
   border: 1rpx solid #dbdbdb;
 }
 .redAction {
-  background: #f5162b;
-  border: 1rpx solid #f5162b;
+  background: $btn-red;
+  border: 1rpx solid $btn-red;
   color: #fff;
 }
 </style>

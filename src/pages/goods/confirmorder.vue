@@ -16,6 +16,7 @@
         </view>
       </view>
       <button class="header-right">&#xe470;</button>
+      <image class="header-order-line"  src="../../static/goods/v2/buy.png" />
     </view>
 
     
@@ -690,6 +691,8 @@ page {
 .content {
   width: 100%;
   box-sizing: border-box;
+  padding-bottom: calc(150rpx) !important;
+  padding-bottom: calc(150rpx + constant(safe-area-inset-bottom)) !important;
   padding-bottom: calc(150rpx + env(safe-area-inset-bottom)) !important;
   padding: 14rpx
 }
@@ -703,7 +706,7 @@ page {
 }
 .header {
   width: 100%;
-  height: 170rpx;
+  height: 180rpx;
   background: #fff;
   box-sizing: border-box;
   padding: 0 25rpx;
@@ -711,6 +714,14 @@ page {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+}
+.header-order-line{
+  width: 100%;
+  height:7rpx;
+  position: absolute;
+  bottom:0;
+  left:0;
 }
 .header-left {
   width: 630rpx;
@@ -732,9 +743,9 @@ page {
   margin: 0;
 }
 .icon-address {
-  width: 32rpx;
-  height: 38rpx;
-  background: url(../../static/goods/icon_location.png) no-repeat center;
+  width: 31rpx;
+  height: 42rpx;
+  background: url(../../static/goods/icon_address.png) no-repeat center;
   background-size: 100% 100%;
   margin-right: 24rpx;
 }
@@ -1014,7 +1025,7 @@ page {
   font-size: 29rpx;
   font-family: PingFangSC-Regular;
   font-weight: 500;
-  color: #F5162B;
+  color: $btn-red;
   line-height: 28rpx;
   margin-left: 12rpx;
 }
@@ -1085,6 +1096,8 @@ page {
 }
 .bottom-content-box{
   width: 100%;
+  height: calc(120rpx);
+  height: calc(120rpx + constant(safe-area-inset-bottom));
   height: calc(120rpx + env(safe-area-inset-bottom));
   position: fixed;
   bottom: 0;
@@ -1129,7 +1142,7 @@ page {
 .btn-payment2 {
   width: 426rpx;
   height: 82rpx;
-  background: #FF0016;
+  background: $btn-red;
   margin-right: 35rpx;
   font-size: 33rpx;
   font-family: PingFangSC-Regular;

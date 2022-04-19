@@ -16,14 +16,7 @@
 					<view :class="checkPay==index?'payment-checked':'payment-check'"></view>
 				</view>
 			</view>
-			<!-- <view class="payment-list">
-				<view class="payment-list-left">
-					<view class="icon-wx"></view>微信支付
-				</view>
-				<view class="payment-list-right" @click="checkPay=2">
-					<view :class="checkPay==2?'payment-checked':'payment-check'"></view>
-				</view>
-			</view> -->
+			
 			<view class="payment-btn" @click="onClickPay">立即支付{{countTimeCopy==0?'':countStr}}</view>
 		</view>
 	</view>
@@ -152,6 +145,8 @@
 		}
 		&-popup{
 			width: 100%;
+			height:calc(626rpx);
+			height:calc(626rpx + constant(safe-area-inset-bottom));
 			height:calc(626rpx + env(safe-area-inset-bottom));
 			position: fixed;
 			box-sizing: border-box;
@@ -252,7 +247,7 @@
 		.payment-btn{
 			width: 690rpx;
 			height: 84rpx;
-			background: #FF0016;
+			background: $btn-red;
 			text-align: center;
 			line-height: 84rpx;
 			box-sizing: border-box;
@@ -262,6 +257,8 @@
 			font-weight: 400;
 			color: #FFFFFF;
 			position:absolute;
+			bottom:calc(18rpx );
+			bottom:calc(18rpx + constant(safe-area-inset-bottom));
 			bottom:calc(18rpx + env(safe-area-inset-bottom));
 			left:50%;
 			margin-left: -345rpx;

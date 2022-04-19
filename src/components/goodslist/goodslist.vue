@@ -206,7 +206,7 @@
 	.goodslist {
 		&-index {
 			width: 356rpx;
-			height: 468rpx;
+			height: 473rpx;
 			background: #FFFFFF;
 			border-radius: 4rpx;
 			box-sizing: border-box;
@@ -242,14 +242,12 @@
 
 
 		&-title {
-			// width: 100%;
 			height: 60rpx;
 			font-size: 27rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
-			margin-top: 10rpx;
-			// margin-bottom: 16rpx;
+			margin-top: 16rpx;
 			text-overflow: -o-ellipsis-lastline;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -258,6 +256,7 @@
 			-webkit-line-clamp: 2;
 			line-clamp: 2;
 			-webkit-box-orient: vertical;
+			word-break:break-all
 		}
 
 		&-progress {
@@ -265,7 +264,7 @@
 			background-size: 100% 100%;
 			width: 100%;
 			height: 8rpx;
-			margin-bottom: 18rpx;
+			margin-bottom: 12rpx;
 			position: relative;
 			display: flex;
 			justify-content: flex-end;
@@ -289,7 +288,7 @@
 			display: flex;
 			align-items: flex-end;
 			position: relative;
-			margin-bottom: 8rpx;
+			margin-bottom: 12rpx;
 			margin-top: 10rpx;
 			align-items: flex-end;
 

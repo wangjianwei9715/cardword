@@ -913,6 +913,8 @@
 		align-items: center;
 		padding:0 96rpx;
 		justify-content: space-between;
+		margin-bottom: calc(120rpx);
+		margin-bottom: calc(120rpx + constant(safe-area-inset-bottom));
 		margin-bottom: calc(120rpx + env(safe-area-inset-bottom));
 		.tab-index{
 			height:80rpx;
@@ -940,6 +942,8 @@
 	}
 	.bottom-btn{
 		width: 100%;
+		height:calc(100rpx);
+		height:calc(100rpx + constant(safe-area-inset-bottom));
 		height:calc(100rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
 		position: fixed;
@@ -995,8 +999,8 @@
 			}
 			.right{
 				width: 253rpx;
-				background: #FF0016;
-				border:1px solid #FF0016;
+				background: $btn-red;
+				border:1px solid $btn-red;
 				color: #fff;
 			}
 		}
