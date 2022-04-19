@@ -318,7 +318,7 @@
 	.box-bottom-btn{
 		width: 680rpx;
 		height:67rpx;
-		background: #F5162B;
+		background: $btn-red;
 		border-radius: 5rpx;
 		font-size: 36rpx;
 		font-family: Source Han Sans CN;

@@ -226,7 +226,7 @@
 		.header-top-plan-num{
 			width: 170rpx;
 			height:30rpx;
-			font-size: 17rpx;
+			font-size: 20rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #88878C;
@@ -333,13 +333,13 @@
 		height:170rpx;
 		box-sizing: border-box;
 		margin-right: 10rpx;
-		background:#E9E9E9;
+		background:#FFF;
 		margin-bottom: 10rpx;
 		position: relative;
-		border: 1px solid #E9E9E9;
+		border: 1px solid #FFF;
 	}
 	.index-current{
-		border: 1px solid #F5162B;
+		border: 1px solid $btn-red;
 	}
 	.teamtion-box-index:nth-child(4n){
 		margin-right: 0;

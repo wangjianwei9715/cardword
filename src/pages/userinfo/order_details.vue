@@ -999,8 +999,8 @@
 			}
 			.right{
 				width: 253rpx;
-				background: #FF0016;
-				border:1px solid #FF0016;
+				background: $btn-red;
+				border:1px solid $btn-red;
 				color: #fff;
 			}
 		}

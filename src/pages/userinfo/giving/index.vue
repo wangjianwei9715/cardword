@@ -242,7 +242,7 @@
 	}
 	.giving-btn-right{
 		color: #fff;
-		border: 1px solid #F5162B;
-		background:#F5162B;
+		border: 1px solid $btn-red;
+		background:$btn-red;
 	}
 </style>

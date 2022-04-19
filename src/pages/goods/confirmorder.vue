@@ -1025,7 +1025,7 @@ page {
   font-size: 29rpx;
   font-family: PingFangSC-Regular;
   font-weight: 500;
-  color: #F5162B;
+  color: $btn-red;
   line-height: 28rpx;
   margin-left: 12rpx;
 }
@@ -1142,7 +1142,7 @@ page {
 .btn-payment2 {
   width: 426rpx;
   height: 82rpx;
-  background: #FF0016;
+  background: $btn-red;
   margin-right: 35rpx;
   font-size: 33rpx;
   font-family: PingFangSC-Regular;

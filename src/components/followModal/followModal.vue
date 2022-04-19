@@ -85,7 +85,7 @@ export default class ClassName extends BaseComponent {
       }
 
       .confirm {
-        background-color: #F5162B;
+        background-color: $btn-red;
         color: #fff;
       }
     }

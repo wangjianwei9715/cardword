@@ -81,7 +81,7 @@
 
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
 
-		
+		<winningCardPopup :showWinningCrad="showWinningCrad" />
 	</view>
 </template>
 
@@ -160,7 +160,7 @@
 		showPaySuccess = false;
 		version = '';
 		oneLoad = true;
-		
+		showWinningCrad = true;
 		onLoad(query:any) {
 			// uni.$emit('reLogin')
 			if (app.update.apkNeedUpdate) {
@@ -773,7 +773,7 @@
 		width: 100%;
 		height: 65rpx;
 		background: #FFFFFF;
-		border: 2rpx solid #F5162B;
+		border: 2rpx solid $btn-red;
 		border-radius: 40rpx;
 		position: relative;
 		font-size: 28rpx;
@@ -796,7 +796,7 @@
 	.search-icon{
 		width: 113rpx;
 		height: 54rpx;
-		background: #F5162B;
+		background: $btn-red;
 		border-radius: 30rpx;
 		position: absolute;
 		right:3rpx;

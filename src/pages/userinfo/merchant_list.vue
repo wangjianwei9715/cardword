@@ -33,7 +33,7 @@
 							<view class="picBlock">
 								<image :src="decodeURIComponent(goodsItem.pic)" mode="aspectFill" />
 								<view class="angleMark"
-									:style="{backgroundColor:goodsItem.stateName=='在售'?'#f5162b':'#4f8bf5'}">
+									:style="{backgroundColor:goodsItem.stateName=='在售'?'$btn-red':'#4f8bf5'}">
 									{{goodsItem.stateName}}
 								</view>
 							</view>

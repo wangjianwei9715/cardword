@@ -111,7 +111,7 @@ export default class ClassName extends BaseComponent {
 	.giving-index-bottom-btn{
 		width: 183rpx;
 		height: 55rpx;
-		background: #F5162B;
+		background: $btn-red;
 		border-radius: 28rpx;
 		font-size: 28rpx;
 		font-family: Source Han Sans CN;

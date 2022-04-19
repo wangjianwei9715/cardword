@@ -247,7 +247,7 @@
 		.payment-btn{
 			width: 690rpx;
 			height: 84rpx;
-			background: #FF0016;
+			background: $btn-red;
 			text-align: center;
 			line-height: 84rpx;
 			box-sizing: border-box;

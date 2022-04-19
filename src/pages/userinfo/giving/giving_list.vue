@@ -394,7 +394,7 @@
 		font-size: 24rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 400;
-		color: #F5162B;
+		color: $btn-red;
 		margin-left: 12rpx;
 	}
 	.order-code-right{
@@ -538,8 +538,8 @@
 		background:#fff;
 	}
 	.btn-red{
-		border:1px solid #F5162B;
-		background:#F5162B;
+		border:1px solid $btn-red;
+		background:$btn-red;
 		color:#fff;
 	}
 </style>

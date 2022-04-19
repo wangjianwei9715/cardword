@@ -203,7 +203,7 @@
 		font-size: 24rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 400;
-		color: #F5162B;
+		color: $btn-red;
 		margin-left: 12rpx;
 	}
 	.order-code-right{
