@@ -710,7 +710,7 @@ page {
   background: #fff;
   box-sizing: border-box;
   padding: 0 25rpx;
-  border-bottom: 14rpx solid #f5f5f9;
+  border-bottom: 13rpx solid #f5f5f9;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -784,7 +784,7 @@ page {
   flex-direction: row;
   position: relative;
   box-sizing: border-box;
-  padding:32rpx 20rpx 23rpx 20rpx;
+  padding:31rpx 20rpx 31rpx 20rpx;
 }
 .goods-info-logo{
   width: 178rpx;
@@ -799,7 +799,7 @@ page {
 }
 
 .goods-info2-title {
-  font-size: 29rpx;
+  font-size: 28rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
@@ -832,7 +832,7 @@ page {
   line-height: 28rpx;
 }
 .goods-money text{
-  font-size: 35rpx;
+  font-size: 32rpx;
   font-family: PingFangSC-Semibold;
   font-weight: 400;
   color: #333333;
@@ -930,9 +930,9 @@ page {
   margin-left: 6rpx;
 }
 .item-title {
-  font-size: 28rpx;
+  font-size: 25rpx;
   font-family: PingFang SC;
-  font-weight: 600;
+  font-weight: 400;
   color: #14151a;
   line-height: 34rpx;
   margin-left: 22rpx;
@@ -940,9 +940,9 @@ page {
   justify-content: space-between;
 }
 .item-teamname {
-  font-size: 22rpx;
+  font-size: 25rpx;
   font-family: PingFangSC-Regular;
-  font-weight: 400;
+  font-weight: 600;
   color: #333333;
   line-height: 34rpx;
   margin:0 22rpx;

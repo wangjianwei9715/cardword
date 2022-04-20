@@ -92,7 +92,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: 23rpx;
+		margin-bottom: 13rpx;
 	}
 	.no-order{
 		width: 722rpx;
@@ -111,7 +111,6 @@
 		background:#fff;
 		padding:0 20rpx;
 		box-sizing: border-box;
-		padding-bottom: 15rpx;
 	}
 	.order-guess{
 		width: 100%;
