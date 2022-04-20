@@ -19,7 +19,9 @@
 			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesList&&seriesList.length&&!clickSerieItem.id'>
 				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index'
 					@click="clickSerie(item,index)">
-					<image class="seriesImg" :src="decodeURIComponent(item.pic_url)" mode="aspectFill"></image>
+					<view class="frameImage">
+						<image class="seriesImg" :src="decodeURIComponent(item.pic_url)" mode="widthFix"></image>
+					</view>
 					<view class="seriesText" :class="{selectSearchText:clickSerieItem&&clickSerieItem.id==item.id}">
 						{{item.title}}
 					</view>
@@ -289,7 +291,7 @@
 
 	.goods-scroll {
 		width: 96%;
-		height: 180rpx;
+		height: 140rpx;
 		display: flex;
 		// margin:0 auto;
 		margin-left: 12rpx;
@@ -300,11 +302,19 @@
 			width: 116rpx;
 			position: relative;
 			margin-right: 12rpx;
-
-			.seriesImg {
-				width: 116rpx;
-				height: 116rpx;
+			.frameImage{
+				width: 100rpx;
+				height: 100rpx;
+				background-color: #fff;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				.seriesImg {
+					width: 60rpx;
+					height: 60rpx;
+				}
 			}
+			
 
 			.seriesText {
 				text-align: center;
