@@ -169,11 +169,11 @@
 	}
 	.info-btn{
 		width: 668rpx;
-		height: 68rpx;
+		height: 82rpx;
 		background: #FB4E3E;
-		border-radius: 34rpx;
+		border-radius: 5rpx;
 		text-align: center;
-		line-height: 68rpx;
+		line-height: 82rpx;
 		font-size: 32rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;

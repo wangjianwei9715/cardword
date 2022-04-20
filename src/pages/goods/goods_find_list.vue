@@ -12,24 +12,7 @@
 				<tabc :tabc="classifyData" :tabsCheck="classifyOpt" @tabsClick="onClickListTabs"></tabc>
 			</view>
 			<sortTabCopy :maskTop='400' :sortData='sortData' @tagChange='onClickListSortTabs'></sortTabCopy>
-			<!-- <view class="header-sort">
-				<view class="header-sort-index" :class="{'current-name':item.id==1||item.id==2}" v-for="item in sortData" :key="item.id" @click="onClickSort(item)">
-					{{item.name}}
-					<view class="header-sort-icon">
-						<view v-if="item.id!=1&&item.id!=2" :class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
-						<view :class="{'icon-sort-downn':item.odType!=2,'icon-sort-down':item.odType==2}"></view>
-					</view>
-				</view>
-				<view :class="['header-sort-classify',{'classify-show':classifyShow}]">
-					<view @click="onClickClassifyOpt(item.id)" :class="['header-sort-classify-index',{'classify-opt':goodTabCheck==item.id}]" v-for="item in goodTab" :key="item.id">{{item.name}}</view>
-				</view>
-				<view :class="['header-sort-classify',{'classify-show':classifyShowPlay}]">
-					<view @click="onClickClassifyOptPlay(item.id)" :class="['header-sort-classify-index',{'classify-opt':playTypeCurrent==item.id}]" v-for="item in playTypeData" :key="item.id">{{item.name}}</view>
-				</view>
-			</view> -->
 		</view>
-
-		<!-- <view class="sort-shadow" v-show="classifyShow||classifyShowPlay" @click="onClickClassifyCancel"></view> -->
 
 		<view class="goods-lists">
 			<statusbar />
@@ -56,51 +39,7 @@ import { stateArray, palyArray } from "@/net/DataExchange";
 export default class ClassName extends BaseNode {
   searchText = "";
   isRequest: boolean = true;
-  //   goodTab = [
-  //     {
-  //       id: 1,
-  //       name: "在售"
-  //     },
-  //     {
-  //       id: 0,
-  //       name: "即将发售"
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "待拆卡"
-  //     },
-  //     {
-  //       id: 4,
-  //       name: "拆卡中"
-  //     },
-  //     {
-  //       id: 2,
-  //       name: "已拼成"
-  //     }
-  //   ];
   goodTabCheck = 1;
-  //   sortData = {
-  //     state: {
-  //       id: 1,
-  //       name: "在售",
-  //       odType: 0
-  //     },
-  //     type: {
-  //       id: 2,
-  //       name: "拼团方式",
-  //       odType: 0
-  //     },
-  //     progress: {
-  //       id: 3,
-  //       name: "进度",
-  //       odType: 0
-  //     },
-  //     price: {
-  //       id: 4,
-  //       name: "价格",
-  //       odType: 0
-  //     }
-  //   };
   sortData: any = [
     {
       name: "",
@@ -391,7 +330,6 @@ page {
   width: 626rpx;
   height: 64rpx;
   border-radius: 29rpx;
-  overflow: hidden;
 }
 
 .header-back {

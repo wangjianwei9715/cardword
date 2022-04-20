@@ -236,8 +236,8 @@
 		border-radius: 5rpx;
 	}
 	.giving-btn-left{
-		color: #333333;
-		border: 1px solid #333333;
+		color: #88878c;
+		border: 1px solid #DADADA;
 		background:#fff;
 	}
 	.giving-btn-right{

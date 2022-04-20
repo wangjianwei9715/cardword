@@ -303,9 +303,9 @@
 	}
 	.box-bottom{
 		width: 100%;
-		height:calc(100rpx );
-		height:calc(100rpx + constant(safe-area-inset-bottom));
-		height:calc(100rpx + env(safe-area-inset-bottom));
+		height:calc(120rpx );
+		height:calc(120rpx + constant(safe-area-inset-bottom));
+		height:calc(120rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
 		padding-top: 17rpx;
 		justify-content: center;
@@ -317,7 +317,7 @@
 	}
 	.box-bottom-btn{
 		width: 680rpx;
-		height:67rpx;
+		height:82rpx;
 		background: $btn-red;
 		border-radius: 5rpx;
 		font-size: 36rpx;

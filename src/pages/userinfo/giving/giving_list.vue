@@ -473,15 +473,15 @@
         position: relative;
         z-index:10;
         box-sizing: border-box;
-        padding:180rpx 15rpx calc(114rpx) 15rpx;
-		padding:180rpx 15rpx calc(114rpx + constant(safe-area-inset-bottom)) 15rpx;
-		padding:180rpx 15rpx calc(114rpx + env(safe-area-inset-bottom)) 15rpx;
+        padding:180rpx 15rpx calc(120rpx) 15rpx;
+		padding:180rpx 15rpx calc(120rpx + constant(safe-area-inset-bottom)) 15rpx;
+		padding:180rpx 15rpx calc(120rpx + env(safe-area-inset-bottom)) 15rpx;
     }
 	.giving-bottom{
 		width: 100%;
-		height:calc(100rpx );
-		height:calc(100rpx + constant(safe-area-inset-bottom));
-		height:calc(100rpx + env(safe-area-inset-bottom));
+		height:calc(120rpx );
+		height:calc(120rpx + constant(safe-area-inset-bottom));
+		height:calc(120rpx + env(safe-area-inset-bottom));
 		border-top: 1px solid #BBBBBB;
 		background:#fff;
 		position: fixed;
@@ -518,23 +518,23 @@
 	}
 	.giving-bottom-right{
 		width: 586rpx;
-		height:67rpx;
+		height:82rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 	.giving-btn{
 		width: 280rpx;
-		height:67rpx;
+		height:82rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 36rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 400;
-		color: #333333;
+		color: #88878c;
 		box-sizing: border-box;
-		border:1px solid #333333;
+		border:1px solid #DADADA;
 		background:#fff;
 	}
 	.btn-red{

@@ -1,6 +1,6 @@
 <template>
 	<view class="header-sort">
-		<view class="header-sort-index" :class="{'current-name':item.id==1&&getSortType()}" v-for="item in sortComData" :key="item.id" @click.stop="onClickSort(item)">
+		<view class="header-sort-index" :class="{'current-name':item.id==1&&getSortType()||item.odType!=0}" v-for="item in sortComData" :key="item.id" @click.stop="onClickSort(item)">
 			{{item.name}}
 			<view class="header-sort-icon" v-if="item.id!=1">
 				<view :class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
@@ -91,31 +91,31 @@
 			color:#E23737;
 		}
 		.header-sort-icon{
-			width: 18rpx;
+			width: 17rpx;
 			margin-left: 4rpx;
 			margin-bottom: -4rpx;
 			.icon-sort-up{
-				width: 18rpx;
+				width: 17rpx;
 				height:12rpx;
 				background:url(../../static/goods/sort_u_.png) no-repeat center;
 				background-size: 100% 100%;
 				margin-bottom: 2rpx;
 			}
 			.icon-sort-upn{
-				width: 18rpx;
+				width: 17rpx;
 				height:12rpx;
 				background:url(../../static/goods/sort_u.png) no-repeat center;
 				background-size: 100% 100%;
 				margin-bottom: 2rpx;
 			}
 			.icon-sort-down{
-				width: 18rpx;
+				width: 17rpx;
 				height:12rpx;
 				background:url(../../static/goods/sort_d_.png) no-repeat center;
 				background-size: 100% 100%;
 			}
 			.icon-sort-downn{
-				width: 18rpx;
+				width: 17rpx;
 				height:12rpx;
 				background:url(../../static/goods/sort_d.png) no-repeat center;
 				background-size: 100% 100%;

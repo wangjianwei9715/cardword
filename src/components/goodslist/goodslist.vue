@@ -374,7 +374,7 @@
 				.bussName {
 					width: 160rpx;
 					position: relative;
-					font-size: 24rpx;
+					font-size: 23rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #595959;

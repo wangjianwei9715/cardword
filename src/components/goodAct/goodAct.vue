@@ -160,7 +160,7 @@
 				padding:0 13rpx;
 				border:1px solid #F4919F;
 				margin-right: 24rpx;
-				font-size: 27rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #EA4055;

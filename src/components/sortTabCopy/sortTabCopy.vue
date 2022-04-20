@@ -4,7 +4,7 @@
 			<view class="header-sort-index" @click="rest" :class="{'current-name':isDefault}" v-if="needDefault">
 				默认
 			</view>
-			<view class="header-sort-index" :class="{'current-name':item.isDefault||(item.children&&item.index>=0)}" v-for="(item,index) in copyData" :key="index" @click="tabClick(item,index)">
+			<view class="header-sort-index" :class="{'current-name':item.isDefault||(item.children&&item.index>=0)||item.odType!=0}" v-for="(item,index) in copyData" :key="index" @click="tabClick(item,index)">
 				{{formatText(item)}}
 				<view class="header-sort-icon" v-if="item.needOrder || item.children">
 					<view v-if='item.needOrder' :class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
@@ -12,7 +12,7 @@
 				</view>
 			</view>
 			<view :class="['header-sort-classify',{'classify-show':selectItem.selectShow}]">
-				<view :class="['header-sort-classify-index',{'classify-opt':selectItem.index==index}]" @click="selectMenuClick(item,index)" v-for="(item,index) in selectItem.children" :key="index">{{item.name}}</view>
+				<view :class="['header-sort-classify-index',{'classify-opt':selectItem.index==index}]" @click="selectMenuClick(item,index)" v-for="(item,index) in selectItem.children" :key="index">{{item.name}} </view>
 			</view>
 		</view>
 		<view class="sort-shadow" :style="{top:maskTop+'rpx'}" v-show="selectItem.selectShow" @click="selectMenuIndex=-1"></view>
@@ -155,31 +155,31 @@ export default class ClassName extends BaseComponent {
     color: #e23737;
   }
   .header-sort-icon {
-    width: 18rpx;
+    width: 17rpx;
     margin-left: 4rpx;
     margin-bottom: -4rpx;
     .icon-sort-up {
-      width: 18rpx;
+      width: 17rpx;
       height: 12rpx;
       background: url(../../static/goods/sort_u_.png) no-repeat center;
       background-size: 100% 100%;
       margin-bottom: 2rpx;
     }
     .icon-sort-upn {
-      width: 18rpx;
+      width: 17rpx;
       height: 12rpx;
       background: url(../../static/goods/sort_u.png) no-repeat center;
       background-size: 100% 100%;
       margin-bottom: 2rpx;
     }
     .icon-sort-down {
-      width: 18rpx;
+      width: 17rpx;
       height: 12rpx;
       background: url(../../static/goods/sort_d_.png) no-repeat center;
       background-size: 100% 100%;
     }
     .icon-sort-downn {
-      width: 18rpx;
+      width: 17rpx;
       height: 12rpx;
       background: url(../../static/goods/sort_d.png) no-repeat center;
       background-size: 100% 100%;

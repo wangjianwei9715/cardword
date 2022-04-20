@@ -40,14 +40,6 @@ export var stateArray = [
         value: 0
     },
     {
-        name: "待拆卡",
-        value: 3
-    },
-    {
-        name: "拆卡中",
-        value: 4
-    },
-    {
         name: "已拼成",
         value: 2
     }
