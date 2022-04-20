@@ -44,7 +44,7 @@
 			<view class="tagContent-item" v-for="(item,index) in tag.list" :key='index' @click="tagChange(item,index)">
 				<view class="tagName">{{item.name}}</view>
 				<view class="smallName" v-if="index==0">本轮倒计时: {{countDown(nowDateStamp,endTimeStamp)}}</view>
-				<view class="smallName" v-if="index==1">活动时间: 4.20-5.4 </view>
+				<view class="smallName" v-if="index==1">活动时间: 4.21-5.5 </view>
 			</view>
 			<view class="luxuryGifts"><text>豪礼</text></view>
 		</view>
@@ -73,9 +73,11 @@
 			<template>
 				<view class="residueRank uni-flex" v-for="(item) in getTopThreeList">
 					<view class="residueRank-index">{{item.ranking}}</view>
-					<image class="residueRank-avart" :src="decodeURIComponent(item.userAvatar)">
+					<image v-show="item.userName!='虚位以待'&&item.gold_value!=0" class="residueRank-avart"
+						:src="decodeURIComponent(item.userAvatar)">
 					</image>
-					<view class="residueRank-name oneLineOver">{{item.userName}}</view>
+					<view class="residueRank-name oneLineOver"
+						:style="{width:(item.userName=='虚位以待'&&item.gold_value==0)?'26%':'14%'}">{{item.userName}}</view>
 					<view class="integral uni-flex" style="flex: 1;justify-content: start;margin-top: 0;">
 						<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix"
 							style="width: 22rpx;">
@@ -245,7 +247,7 @@
 				this.$nextTick(() => {
 					const query: any = uni.createSelectorQuery().in(this);
 					query.select('#rollContent').boundingClientRect((data: any) => {
-						// console.log(data.width)
+						console.log(data.width)
 					}).exec();
 				})
 			})
@@ -262,7 +264,7 @@
 					this.myData = res.data.myData || {}
 					// this.unoccupied = res.data.unoccupied
 					uni.hideLoading()
-					
+
 					setTimeout(() => {
 						uni.stopPullDownRefresh();
 					}, 500);
@@ -594,12 +596,12 @@
 				// text-align: center;
 				font-weight: 500;
 				font-size: 26rpx;
-				width: 23%;
+				width: 14%;
 				// text-align: center;
 			}
 
 			&-prize {
-				text-align: right;
+				text-align: left;
 				color: #fff;
 				width: 34%;
 				font-size: 26rpx;
