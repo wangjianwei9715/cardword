@@ -44,7 +44,7 @@
 			<view class="tagContent-item" v-for="(item,index) in tag.list" :key='index' @click="tagChange(item,index)">
 				<view class="tagName">{{item.name}}</view>
 				<view class="smallName" v-if="index==0">本轮倒计时: {{countDown(nowDateStamp,endTimeStamp)}}</view>
-				<view class="smallName" v-if="index==1">活动时间: 4.21-5.5 </view>
+				<view class="smallName" v-if="index==1">活动时间: 4.22-5.6 </view>
 			</view>
 			<view class="luxuryGifts"><text>豪礼</text></view>
 		</view>
