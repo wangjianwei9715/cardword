@@ -317,17 +317,16 @@
 	}
 	.box-bottom-btn{
 		width: 680rpx;
-		height:82rpx;
 		background: $btn-red;
-		border-radius: 5rpx;
-		font-size: 36rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
 		color: #FFFFFF;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		margin:0 auto;
+		height: $btn-height;
+		font-size: $btn-fontSize;
+		border-radius:$btn-radius;
+		font-weight: $btn-weight;
 	}
 	.nouser-btn{
 		background:#c0c0c0

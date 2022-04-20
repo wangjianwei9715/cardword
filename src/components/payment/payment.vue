@@ -246,15 +246,11 @@
 		}
 		.payment-btn{
 			width: 690rpx;
-			height: 84rpx;
 			background: $btn-red;
 			text-align: center;
-			line-height: 84rpx;
 			box-sizing: border-box;
 			margin:0 auto;
-			font-size: 33rpx;
 			font-family: PingFangSC-Regular;
-			font-weight: 400;
 			color: #FFFFFF;
 			position:absolute;
 			bottom:calc(18rpx );
@@ -262,6 +258,11 @@
 			bottom:calc(18rpx + env(safe-area-inset-bottom));
 			left:50%;
 			margin-left: -345rpx;
+			height: $btn-height;
+			line-height: $btn-height;
+			font-size: $btn-fontSize;
+			border-radius:$btn-radius;
+			font-weight: $btn-weight;
 		}
 	}
 	.icon-close{

@@ -169,18 +169,18 @@
 	}
 	.info-btn{
 		width: 668rpx;
-		height: 82rpx;
 		background: #FB4E3E;
-		border-radius: 5rpx;
 		text-align: center;
-		line-height: 82rpx;
-		font-size: 32rpx;
 		font-family: Microsoft YaHei;
-		font-weight: 400;
 		color: #FFFFFF;
 		position: fixed;
 		bottom:64rpx;
 		left:50%;
 		margin-left: -334rpx;
+		height: $btn-height;
+		line-height: $btn-height;
+		font-size: $btn-fontSize;
+		border-radius:$btn-radius;
+		font-weight: $btn-weight;
 	}
 </style>

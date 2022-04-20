@@ -94,9 +94,9 @@
 	}
 	.list-index{
 		width: 356rpx;
-		height: 499rpx;
+		height: 479rpx;
 		background: #FFFFFF;
-		box-shadow: 0rpx 2rpx 10rpx 0rpx #929394;
+		box-shadow: 0rpx 1rpx 4rpx 0rpx #AAAAAA;
 		border-radius: 5rpx;
 		box-sizing: border-box;
 		padding:12rpx 14rpx 0 14rpx;
@@ -140,7 +140,7 @@
 	.list-title-name{
 		width: 100%;
 		height:80rpx;
-		font-size: 29rpx;
+		font-size: 27rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #333333;
@@ -159,16 +159,16 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 25rpx;
+		margin-top: 10rpx;
 	}
 	.list-bottom-time{
-		font-size: 25rpx;
+		font-size: 23rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #595959;
 	}
 	.list-bottom-num{
-		font-size: 25rpx;
+		font-size: 23rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #595959;

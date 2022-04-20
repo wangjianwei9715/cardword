@@ -225,15 +225,15 @@
 	}
 	.giving-btn{
 		width: 340rpx;
-		height:82rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 36rpx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
-		border-radius: 5rpx;
+		height: $btn-height;
+		line-height: $btn-height;
+		font-size: $btn-fontSize;
+		border-radius:$btn-radius;
+		font-weight: $btn-weight;
 	}
 	.giving-btn-left{
 		color: #88878c;
