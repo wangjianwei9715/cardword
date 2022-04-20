@@ -128,8 +128,10 @@
 			// }
 			if (query.hs) {
 				this.clickSerieItem = {
-					id: query.hs
+					id: query.hs,
+					title: query.hsTitle ?? ''
 				}
+				this.searchText=query.hsTitle ?? ''
 			}
 			if (query.data) {
 				setTimeout(() => {
@@ -141,7 +143,6 @@
 					// #endif
 					this.goodsList = this.goodsData.goodList ? this.goodsData.goodList : [];
 					this.scrollId = this.goodsData.scrollId;
-					console.log(query.data)
 					if (query.data.end) {
 						this.noMoreData = true;
 					}

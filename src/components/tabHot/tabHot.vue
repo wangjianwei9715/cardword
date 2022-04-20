@@ -57,7 +57,7 @@
 		onClickHotTab(item:any,name:string){
 			if(name=='hot'){
 				uni.navigateTo({
-					url: "/pages/goods/goods_find_list?hs=" +item.id
+					url: "/pages/goods/goods_find_list?hs=" +item.id+'&hsTitle='+item.key||''
 				});  
 			}
 		}
