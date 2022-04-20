@@ -77,9 +77,10 @@
 						:src="decodeURIComponent(item.userAvatar)">
 					</image>
 					<view class="residueRank-name oneLineOver"
-						:style="{width:(item.userName=='虚位以待'&&item.gold_value==0)?'174rpx':'14%'}">{{item.userName}}
+						:style="{width:(item.userName=='虚位以待'&&item.gold_value==0)?'204rpx':'17%'}">{{item.userName}}
 					</view>
-					<view class="integral uni-flex" style="flex: 1;justify-content: start;margin-top: 0;">
+					<view class="integral uni-flex"
+						style="flex: 1;justify-content: start;margin-top: 0;margin-right: 26rpx;white-space: nowrap;">
 						<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix"
 							style="width: 22rpx;">
 						</image>
@@ -189,7 +190,7 @@
 			if (this.tag.index == index) return
 			this.tag.index = index
 			this.queryParams.tp = item.value
-			this.queryParams.pageIndex=1
+			this.queryParams.pageIndex = 1
 			this.reqNewData()
 		}
 		startCountDown() {
@@ -569,7 +570,7 @@
 			position: relative;
 
 			&-index {
-				width: 14%;
+				width: 16%;
 				font-weight: bold;
 				font-size: 36rpx;
 				color: #eaa73b;
@@ -590,13 +591,13 @@
 				display: block;
 				border-radius: 50%;
 				overflow: hidden;
-				margin-right: 26rpx;
+				margin-right: 36rpx;
 			}
 
 			&-name {
 				color: #fff;
 				// text-align: center;
-				font-weight: 500;
+				// font-weight: 500;
 				font-size: 26rpx;
 				width: 14%;
 				// text-align: center;
@@ -605,11 +606,12 @@
 			&-prize {
 				text-align: left;
 				color: #fff;
-				width: 34%;
+				width: 31%;
 				font-size: 26rpx;
 				font-family: PingFang SC;
-				font-weight: 300;
+				font-weight: bold;
 				color: #FFFFFF;
+				// background-color: red;
 			}
 		}
 
