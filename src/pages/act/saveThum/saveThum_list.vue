@@ -148,10 +148,10 @@
 			this.reqNewData();
 		}
 		shareWx() {
-			console.log('this.shareItem=>>>>>>' + this.shareItem.id)
+			// console.log('this.shareItem=>>>>>>' + this.shareItem.id)
 			if (!this.shareItem.id) return
 			app.http.Post('activity/goldNoShare/share/' + this.shareItem.id, {}, (res: any) => {
-				console.log(res)
+				// console.log(res)
 				this.shareMthod({
 					...this.shareItem,
 					shareCode: res.shareCode
@@ -165,7 +165,10 @@
 			})
 		}
 		shareMthod(shareItem: any) {
-			console.log('shareItem=>>>>' + shareItem.shareCode)
+			// console.log('shareItem=>>>>' + shareItem.shareCode)
+			uni.showLoading({
+				title:'请稍等'
+			})
 			uni.share({
 				provider: "weixin",
 				type: 5,
@@ -189,6 +192,9 @@
 						title: "分享失败",
 						icon: "none"
 					});
+				},
+				complete:(res:any)=>{
+					uni.hideLoading()
 				}
 			});
 		}
@@ -223,7 +229,7 @@
 			app.http.Get(
 				"activity/goldNoShare/ranklist", {},
 				(res: any) => {
-					console.log(res)
+					// console.log(res)
 					this.totalPage = res.totalPage || 0;
 					const arr = res.list || [];
 					if (this.queryParams.pageIndex === 1) this.rankList = [];

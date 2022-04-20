@@ -249,7 +249,7 @@
 				this.$nextTick(() => {
 					const query: any = uni.createSelectorQuery().in(this);
 					query.select('#rollContent').boundingClientRect((data: any) => {
-						console.log(data.width)
+						// console.log(data.width)
 					}).exec();
 				})
 			})
