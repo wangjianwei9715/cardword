@@ -169,10 +169,12 @@
 	} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import {
-		dateFormatMSHMS
+		dateFormatMSHMS,
+		formatNumber
 	} from '@/tools/util'
 	@Component({})
 	export default class ClassName extends BaseComponent {
+		formatNumber:any=formatNumber;
 		showDrawer: boolean = false; //任务弹窗
 		operationShow: boolean = false;
 		rollTimer: number = 0;
@@ -842,7 +844,7 @@
 					margin-bottom: 20rpx;
 
 					.progress {
-						width: 343rpx;
+						width: 330rpx;
 						height: 9rpx;
 						background-size: 100% 100%;
 						background-image: url("../../../static/act/loot/progress.png");
