@@ -53,13 +53,14 @@
 			this.reqDayData()
 			// this.reqNewData()
 		}
-		onPullDownRefresh(){
+		onPullDownRefresh() {
 			this.reqNewData()
 			// this.reqDayData()
 		}
 		tagChange(item: any, index: number) {
-			if(this.nowDayIndex == index) return 
+			if (this.nowDayIndex == index) return
 			this.nowDayIndex = index
+			this.queryParams.day = item.value
 			this.reqNewData()
 		}
 		//获取期数
@@ -94,8 +95,9 @@
 <style lang="scss">
 	.noneBlock {
 		width: 750rpx;
-		padding-bottom:env(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
 	}
+
 	.goods-scroll {
 		width: 96%;
 		height: 90rpx;
