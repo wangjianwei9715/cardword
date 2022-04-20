@@ -154,9 +154,7 @@
 		padding:0 4rpx;
 		margin-bottom: 20rpx;
 	}
-	.type-current{
-		background:#fff;
-	}
+	
 	.content{
 		width: 100%;
 		box-sizing:border-box;
@@ -238,7 +236,11 @@
 		font-size: 29rpx;
 		font-family: PingFang SC;
 		font-weight: 500;
-		color: #333333;
+		color: #959699;
+	}
+	.type-current{
+		background:#fff;
+		color:#333;
 	}
 	.card-more-btn{
 		width: 100%;

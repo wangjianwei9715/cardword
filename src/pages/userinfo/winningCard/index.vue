@@ -61,6 +61,7 @@
 				pageSize:this.pageSize
 			}
 			app.http.Get('me/hitNo/list', params, (data: any) => {
+				console.log('hitNo/list=',data)
 				this.total = data.total;
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
@@ -120,6 +121,7 @@
 		position: absolute;
 		left:-6rpx;
 		top:0;
+		z-index: 9;
 	}
 	.list-title{
 		width: 100%;

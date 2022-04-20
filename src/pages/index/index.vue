@@ -305,7 +305,6 @@
 			})
 			// #endif
 		}
-		
 		showInitEvent(){
 			this.fetchFrom = 1;
 			this.noMoreData = false;
@@ -313,7 +312,29 @@
 			if(this.progressList!=''){
 				this.getGoodProgress(this.progressList)
 			}
+
+			if(app.token.accessToken != ''){
+				// 获取是否中卡信息
+				this.getGreet()
+			}
 		}
+		// 获取是否中卡信息
+		getGreet(){
+			app.http.Get('me/greet',{},(res:any)=>{
+				console.log('me/greet=',res)
+				if(res.data.newHitNum>0) this.showWinning();
+				if(res.data.getDayGift) app.http.Get('me/coupon/dayGift',{});
+			})
+		}
+		showWinning(){
+			this.showWinningCrad = true;
+			uni.hideTabBar()
+		}
+		closeWinning(){
+			this.showWinningCrad = false
+			uni.showTabBar()
+		}
+		// 
 		initEvent(){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
@@ -419,14 +440,6 @@
 		}
 		BackLogin(res:any){
 			uni.$emit('BackLogin');
-		}
-		showWinning(){
-			this.showWinningCrad = true;
-			uni.hideTabBar()
-		}
-		closeWinning(){
-			this.showWinningCrad = false
-			uni.showTabBar()
 		}
 		onClickActJump(){
 			uni.navigateTo({

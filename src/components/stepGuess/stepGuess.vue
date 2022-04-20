@@ -1,17 +1,5 @@
 <template>
 	<view class="step-guess">
-		<!-- 预测导航 -->
-		<!-- <view class="no-order" v-if="!order">
-			<view class="guess-left">
-				活动
-				<image class="guess-icon" src="../../pages/act/static/guess/guess_icon.png"></image>
-			</view>
-			<view class="guess-right" @click="onClickGuessRules">
-				<view class="guess-right-text">猜球队</view>
-				<view class="guess-right-text">赢免单</view>
-				<button class="guess-header-right">&#xe470;</button>
-			</view>
-		</view> -->
 		<view class="order-guess-box" >
 			<view  class="order-guess">
 				<view class="guess-left">
@@ -41,15 +29,15 @@
 			</view>
 		</view>
 
-		<view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
-		<view class="drawer-content" :class="{'show-drawer':showDrawer}">
-			<view class="drawer-content-header">预测卡密规则</view>
-			<view class="drawer-content-box">
-				<view class="drawer-contnet-desc" v-for="(item,index) in rulesData" :key="index">{{item}}</view>
-				<view class="drawer-content-tips">*上述活动说明仅做一般参考，最终解释权归平台所有</view>
+		<bottomDrawer :showDrawer="showDrawer" :title="'预测卡密规则'" @closeDrawer="onClickCloseDrawer">
+			<view class="drawer-box">
+				<view class="drawer-helpmsg">
+					<view class="drawer-help-title">{{rulesData.title}}</view>
+					<view class="drawer-help-content" v-html="rulesData.content"></view>
+				</view>
 			</view>
-			<image class="close-pic" @click="onClickCloseDrawer" src="../../static/pay/guanbi@2x.png"></image>
-		</view>
+    	</bottomDrawer>
+		
 	</view>
 </template>
 
@@ -335,5 +323,27 @@
 		left:0;
 		top:50%;
 		margin-top: -360rpx;
+	}
+	.drawer-helpmsg{
+		width: 100%;
+		box-sizing: border-box;
+		line-height: 40rpx;
+	}
+	.drawer-help-title{
+		font-size: 27rpx;
+		font-family: PingFangSC-Medium;
+		font-weight: bold;
+		color:#333333;
+		margin:15rpx 0rpx;
+	}
+	.drawer-help-content{
+		width: 100%;
+		font-size: 25rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #7D8288;
+		white-space: pre-wrap;
+		line-height: 35rpx;
+		margin-bottom: 50rpx;
 	}
 </style>
