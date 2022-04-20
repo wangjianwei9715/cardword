@@ -98,7 +98,7 @@
 		</view>
 		<view class="noneBlock"></view>
 		<view class="bottomBlock">
-			<view class="bottomBlock-rank white">{{myData.ranking||'未上榜'}}</view>
+			<view class="bottomBlock-rank">{{myData.ranking||'未上榜'}}</view>
 			<image class="bottomBlock-avart" :src="decodeURIComponent(myData.avatar)" mode=""></image>
 			<view class="bottomBlock-me white">我</view>
 			<view class="integral uni-flex" style="flex: 1;justify-content: start;margin-top: 0;">
@@ -323,7 +323,10 @@
 		&-rank {
 			text-align: center;
 			width: 15%;
-			margin-left: 20rpx;
+			margin-left: 30rpx;
+			font-size: 36rpx;
+			font-weight: bold;
+			color: #fff;
 		}
 
 		&-avart {
@@ -336,7 +339,7 @@
 		}
 
 		&-me {
-			margin-right: 60rpx;
+			margin-right: 70rpx;
 		}
 
 		&-prize {
