@@ -77,7 +77,7 @@
 						:src="decodeURIComponent(item.userAvatar)">
 					</image>
 					<view class="residueRank-name oneLineOver"
-						:style="{width:(item.userName=='虚位以待'&&item.gold_value==0)?'204rpx':'17%'}">{{item.userName}}
+						:style="{width:(item.userName=='虚位以待'&&item.gold_value==0)?'202rpx':'17%'}">{{item.userName}}
 					</view>
 					<view class="integral uni-flex"
 						style="flex: 1;justify-content: start;margin-top: 0;margin-right: 26rpx;white-space: nowrap;">
