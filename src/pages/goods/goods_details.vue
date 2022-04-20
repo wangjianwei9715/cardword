@@ -102,7 +102,7 @@
 							<view class="goods-seller-left-desc-js">商品由该商家在平台寄售</view>
 						</view>
 					</view>
-					<view class="goods-seller-right" @click="onClickShops">进店看看</view>
+					<view class="goods-seller-right" @click="onClickShops">进店</view>
 				</view>
 			</view>
 			
@@ -1346,7 +1346,7 @@
 				}
 				&-tips{
 					width: 100%;
-					font-size: 25rpx;
+					font-size: 24rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #88878C;
@@ -1372,17 +1372,19 @@
 			}
 		}
 		&-right{
-			width: 149rpx;
-			height: 41rpx;
-			background: linear-gradient(90deg, #FF7F74 0%, #FF0405 100%);
+			height: 46rpx;
+			background: #fff;
+			border:1rpx solid #DADADA;
 			border-radius: 5rpx;
 			text-align: center;
-			line-height: 41rpx;
-			font-size: 22rpx;
+			line-height: 46rpx;
+			font-size: 24rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
-			color: #FFFFFF;
+			color: #88878c;
 			margin-top: 20rpx;
+			box-sizing: border-box;
+			padding:0 20rpx;
 		}
 	}
 	.goods-desc{
@@ -1463,7 +1465,7 @@
 		justify-content: center;
 		&-left{
 			max-width: 240rpx;
-			height:76rpx;
+			height:82rpx;
 			box-sizing: border-box;
 			padding:0 20rpx 0 20rpx;
 			display: flex;
@@ -1471,11 +1473,13 @@
 			justify-content: space-between;
 			&-index{
 				width: 100rpx;
-				height:76rpx;
+				height:82rpx;
 				box-sizing: border-box;
 				text-align: center;
+				padding-top: 4rpx;
 				&-name{
-					font-size: 25rpx;
+					margin-top: -4rpx;
+					font-size: 22rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #666666;
@@ -1484,24 +1488,25 @@
 			.icon-kf{
 				width: 37rpx;
 				height:38rpx;
-				margin-bottom: 6rpx;
+				margin-bottom: 3rpx;
 			}
 			.icon-order{
 				width: 37rpx;
 				height:41rpx;
-				margin-bottom: 3rpx;
+				margin-bottom: 0;
 			}
 		}
 		.btn-confirm{
 			width: inherit;
-			height: 82rpx;
 			background: $btn-red;
 			text-align: center;
-			line-height: 82rpx;
-			font-size: 33rpx;
 			font-family: PingFangSC-Regular;
-			font-weight: 400;
 			color: #FFFFFF;
+			height: $btn-height;
+			line-height: $btn-height;
+			font-size: $btn-fontSize;
+			border-radius:$btn-radius;
+			font-weight: $btn-weight;
 		}
 		.random-confirm{
 			background:#7C4BEA;
@@ -1526,30 +1531,30 @@
 		padding-bottom: env(safe-area-inset-bottom);
 		.btn-pt{
 			width: 352rpx;
-			height:82rpx;
 			box-sizing: border-box;
-			border-radius: 4px;
 			border: 2rpx solid #DADADA;
 			text-align: center;
-			line-height: 78rpx;
-			font-size: 33rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 400;
 			color: #333333;
+			height: $btn-height;
+			line-height: $btn-height;
+			font-size: $btn-fontSize;
+			border-radius:$btn-radius;
+			font-weight: $btn-weight;
 		}
 		.btn-ck{
 			width: 352rpx;
-			height:82rpx;
 			box-sizing: border-box;
-			border-radius: 4px;
 			background:$btn-red;
 			border: 2rpx solid $btn-red;
 			text-align: center;
-			line-height: 78rpx;
-			font-size: 33rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 400;
 			color: $color-F;
+			height: $btn-height;
+			line-height: $btn-height;
+			font-size: $btn-fontSize;
+			border-radius:$btn-radius;
+			font-weight: $btn-weight;
 		}
 	}
 	.movable-area{

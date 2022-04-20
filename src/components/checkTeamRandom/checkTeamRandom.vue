@@ -401,7 +401,7 @@
 		left:0;
 		bottom:0;
 		box-sizing: border-box;
-		padding: 32rpx 23rpx 0 23rpx;
+		padding: 19rpx 16rpx 0 16rpx;
 		display: flex;
 		justify-content: space-between;
 		background:#fff;
@@ -409,17 +409,18 @@
 	}
 	.teamtion-bottom-btn{
 		width: 341rpx;
-		height:77rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background: #fff;
 		border:1px solid #DCDCDC;
-		font-size: 32rpx;
 		font-family: PingFangSC-Regular;
-		font-weight: 400;
 		color: #333333;
+		height: $btn-height;
+		font-size: $btn-fontSize;
+		border-radius:$btn-radius;
+		font-weight: $btn-weight;
 	}
 	.right-btn{
 		background:#7C4BEA;

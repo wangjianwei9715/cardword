@@ -386,7 +386,7 @@
   width: 100%;
   height:164rpx;
   position:fixed;
-  bottom:0;
+  bottom:30rpx;
   left:0;
   box-sizing: border-box;
   padding: 0 70rpx;

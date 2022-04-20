@@ -1116,7 +1116,7 @@ page {
 
 .heji-money-pay {
   height:30rpx;
-  margin-left: 36rpx;
+  margin-left: 16rpx;
   display: flex;
   align-items: baseline;
   line-height: 80rpx;
@@ -1128,7 +1128,6 @@ page {
   background: #cecfd3;
   border-radius: 4rpx;
   margin-right: 16rpx;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1141,16 +1140,17 @@ page {
 
 .btn-payment2 {
   width: 426rpx;
-  height: 82rpx;
   background: $btn-red;
-  margin-right: 35rpx;
-  font-size: 33rpx;
+  margin-right: 16rpx;
   font-family: PingFangSC-Regular;
-  font-weight: 400;
   color: #FFFFFF;
   box-sizing: border-box;
   text-align: center;
-  line-height: 82rpx;
+  height: $btn-height;
+  line-height: $btn-height;
+  font-size: $btn-fontSize;
+  border-radius:$btn-radius;
+  font-weight: $btn-weight;
 }
 .goods-money-availa {
   font-size: 24rpx;

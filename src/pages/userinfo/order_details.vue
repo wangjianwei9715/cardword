@@ -960,16 +960,18 @@
 			
 			.mini-btn{
 				width: 180rpx;
-				height: 82rpx;
 				border:1px solid #DADADA;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				font-size: 30rpx;
 				font-family: PingFangSC-Regular;
-				font-weight: 400;
 				color: #88878c;
 				margin-left: 15rpx;
+				height: $btn-height;
+				line-height: $btn-height;
+				font-size: $btn-fontSize;
+				border-radius:$btn-radius;
+				font-weight: $btn-weight;
 			}
 			.right{
 				width: 180rpx;
