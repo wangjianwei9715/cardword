@@ -20,7 +20,7 @@
 				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index'
 					@click="clickSerie(item,index)">
 					<view class="frameImage">
-						<image class="seriesImg" :src="decodeURIComponent(item.pic_url)" mode="widthFix"></image>
+						<image class="seriesImg" :src="decodeURIComponent(item.pic_url)" mode="aspectFit"></image>
 					</view>
 					<view class="seriesText" :class="{selectSearchText:clickSerieItem&&clickSerieItem.id==item.id}">
 						{{item.title}}
@@ -310,12 +310,10 @@
 				justify-content: center;
 				align-items: center;
 				.seriesImg {
-					width: 60rpx;
-					height: 60rpx;
+					width: 80rpx;
+					height: 80rpx;
 				}
 			}
-			
-
 			.seriesText {
 				text-align: center;
 				font-size: 22rpx;
