@@ -27,7 +27,7 @@
 				<text>奖品<br>列表</text>
 			</view>
 		</view>
-		<view class="rollStaticContent">
+		<view class="rollStaticContent" @click="pageJump('/pages/act/goldRank/goldRank_rewardList')">
 			<view class="rollContent" id='rollContent' :class='{rollAnim:awardList&&awardList.length}'>
 				<view class="rollItem" v-for="(item) in awardList">
 					<image :src="decodeURIComponent(item.pic)" mode="aspectFill">
@@ -77,7 +77,8 @@
 						:src="decodeURIComponent(item.userAvatar)">
 					</image>
 					<view class="residueRank-name oneLineOver"
-						:style="{width:(item.userName=='虚位以待'&&item.gold_value==0)?'26%':'14%'}">{{item.userName}}</view>
+						:style="{width:(item.userName=='虚位以待'&&item.gold_value==0)?'174rpx':'14%'}">{{item.userName}}
+					</view>
 					<view class="integral uni-flex" style="flex: 1;justify-content: start;margin-top: 0;">
 						<image src="../../../static/act/goldRank/integral_icon.png" mode="widthFix"
 							style="width: 22rpx;">
@@ -188,6 +189,7 @@
 			if (this.tag.index == index) return
 			this.tag.index = index
 			this.queryParams.tp = item.value
+			this.queryParams.pageIndex=1
 			this.reqNewData()
 		}
 		startCountDown() {
