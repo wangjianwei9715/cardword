@@ -45,10 +45,10 @@
 	export default class ClassName extends BaseComponent {
 		rewardList: any = [];
 		queryParams: any = {
-			tp: 2
+			tp: 1
 		}
 		tag: any = {
-			index: 0,
+			index: 1,
 			list: [{
 				name: '日榜奖品',
 				value: 2

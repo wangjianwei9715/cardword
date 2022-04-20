@@ -195,6 +195,7 @@
 			font-family: PingFang SC;
 			font-weight: 300;
 			color: #333333;
+			margin-right: 10rpx;
 		}
 	}
 </style>

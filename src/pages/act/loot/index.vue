@@ -364,7 +364,9 @@
 		}
 		//微信分享
 		shareWx(item: any) {
-
+			uni.showLoading({
+				title:'请稍等'
+			})
 			uni.share({
 				provider: "weixin",
 				type: 0,
@@ -390,6 +392,9 @@
 						title: "分享失败",
 						icon: "none"
 					});
+				},
+				complete:(res:any)=>{
+					uni.hideLoading()
 				}
 			});
 		}
