@@ -48,9 +48,8 @@
 			</view>
 		</view>
 
-		<bottomDrawer :showDrawer="showDrawer" :height="80" @closeDrawer="showDrawer = false">
+		<bottomDrawer :showDrawer="showDrawer" :title="'规则说明'" :height="80" @closeDrawer="showDrawer = false">
 			<view class="drawer-box">
-				<view class="drawer-title">规则说明</view>
 				<view class="drawer-help" v-for="(item,index) in drawerHelp" :key="index">{{item}}</view>
 			</view>
 		</bottomDrawer>
@@ -282,22 +281,14 @@
 		width: 100%;
 		box-sizing: border-box;
 	}
-	.drawer-title{
-		width: 100%;
-		font-size: 31rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 500;
-		color: #333333;
-		margin-bottom: 28rpx;
-	}
 	.drawer-help{
 		width: 100%;
 		font-size: 25rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
-		color: #818080;
+		color: #7D8288;
 		line-height: 38rpx;
-		margin-bottom: 30rpx;
+		margin-bottom: 50rpx;
 	}
 
 	.teamtion-box-center{

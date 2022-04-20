@@ -18,7 +18,7 @@
 		</view>
 
 		<!-- 底部弹窗 -->
-		<bottomDrawer :showDrawer="showDrawer" @closeDrawer="onClickCloseDrawer">
+		<bottomDrawer :showDrawer="showDrawer" :title="'活动规则'" @closeDrawer="onClickCloseDrawer">
 			<view class="drawer-helpmsg" v-for="(item,index) in drawerMsg" :key="index">
 				<view class="drawer-help-title">{{item.title}}</view>
 				<view class="drawer-help-content" v-html="item.content"></view>
@@ -173,19 +173,20 @@
 		line-height: 40rpx;
 	}
 	.drawer-help-title{
-		font-size: 31rpx;
+		font-size: 27rpx;
 		font-family: PingFangSC-Medium;
 		font-weight: bold;
 		color:#333333;
-		margin:20rpx 0rpx;
+		margin:15rpx 0rpx;
 	}
 	.drawer-help-content{
 		width: 100%;
-		font-size: 27rpx;
+		font-size: 25rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
-		color: #9b9b9b;
+		color: #7D8288;
 		white-space: pre-wrap;
 		line-height: 35rpx;
+		margin-bottom: 50rpx;
 	}
 </style>

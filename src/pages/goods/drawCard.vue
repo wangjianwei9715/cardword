@@ -142,7 +142,7 @@
       </view>
     </view>
 
-    <bottomDrawer :showDrawer="showDrawer" @closeDrawer="onClickCloseDrawer">
+    <bottomDrawer :showDrawer="showDrawer" :title="'已解锁卡密'" @closeDrawer="onClickCloseDrawer">
       <view class="drawer-box">
         <view class="drawer-box-header">
           <view

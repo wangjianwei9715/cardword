@@ -109,7 +109,12 @@
 			<!-- 商品详情 -->
 			<view class="detail-bg">
 				<view class="goods-desc">
-					<view class="goods-desc-title">拼团详情</view>
+					<view class="goods-desc-title">
+						<view class="goods-desc-title-left">拼团详情</view>
+						<view class="goods-desc-title-right" @click.stop="showDrawer = true">
+							拼团规则<image class="goods-desc-title-help" src="../../static/goods/v2/icon_help.png" />
+						</view>
+					</view>
 					<view class="goods-desc-explain">
 						<view class='goods-desc-explain-text' v-for="item in goodsDesc" :key="item.id">
 							<view class="explain-desc">{{item}}</view>
@@ -135,7 +140,7 @@
 			<view class="detail-title">购买须知</view>
 			<view class="detail-bottom-explain">{{buyExplain}}</view>
 			<view class="detail-title">常见问题</view>
-			<view class="detail-bottom-explain" v-for="(item,index) in helpData" :key="index">
+			<view class="detail-bottom-explain" v-for="(item,index) in goodsDetailRules" :key="index">
 				<view class="detail-bottom-explain-title">{{item.title}}</view>
 				{{item.desc}}
 			</view>
@@ -179,7 +184,12 @@
 		<!-- 邀请新人活动弹窗 -->
 		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy" />
 
-		
+		<!-- 底部弹窗 -->
+		<bottomDrawer :showDrawer="showDrawer" :title="'拼团规则'" @closeDrawer="onClickCloseDrawer">
+			<view class="drawer-box" v-for="(item,index) in goodsDetailHelp" :key="index">
+				<view class="drawer-help" v-html="item.content"></view>
+			</view>
+    	</bottomDrawer>
 	</view>
 </template>
 
@@ -189,10 +199,11 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	import {getGoodsPintuan,getGoodsRandom,getGoodsPintuanSpe,getGoodsRandomSpe} from '@/tools/switchUtil';
 	import {dateFormat} from '@/tools/util';
-	import { goodsDetailHelpData } from "@/net/DataRules";
+	import { goodsDetailRules,goodsDetailHelp } from "@/net/DataRules";
 	@Component({})
 	export default class ClassName extends BaseNode {
-		helpData = goodsDetailHelpData
+		goodsDetailRules = goodsDetailRules
+		goodsDetailHelp = goodsDetailHelp;
 		goodsState = 0;
 		defaultAvatar = app.defaultAvatar
 		goodsId = '';
@@ -859,7 +870,9 @@
 			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
 			return width
 		}
-		
+		onClickCloseDrawer() {
+			this.showDrawer = false;
+		}
 		
 	}
 </script>
@@ -1378,11 +1391,29 @@
 		padding:20rpx 32rpx 30rpx 32rpx;
 		&-title{
 			width: 100%;
-			font-size: 31rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 600;
-			color: #14151A;
 			margin-bottom: 20rpx;
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			.goods-desc-title-left{
+				font-size: 31rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 600;
+				color: #14151A;
+			}
+			.goods-desc-title-right{
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #949398;
+				display: flex;
+				align-items: center;
+			}
+			.goods-desc-title-help{
+				width: 23rpx;
+				height:22rpx;
+				margin-left: 18rpx;
+			}
 		}
 		&-explain{
 			width: 100%;
@@ -1426,12 +1457,10 @@
 		background:$color-F;
 		z-index: 8;
 		box-sizing: border-box;
-		padding: 0 16rpx 0 0;
+		padding: 19rpx 16rpx 0 0;
 		border-top: 1px solid #F5F5F8;
 		display: flex;
-		align-items: center;
 		justify-content: center;
-		
 		&-left{
 			max-width: 240rpx;
 			height:76rpx;
@@ -1653,5 +1682,19 @@
 			right: -56rpx;
 			top:37rpx;
 		}
+	}
+
+	.drawer-box{
+		width: 100%;
+		box-sizing: border-box;
+	}
+	.drawer-help{
+		width: 100%;
+		font-size: 25rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #7D8288;
+		line-height: 38rpx;
+		margin-bottom: 50rpx;
 	}
 </style>

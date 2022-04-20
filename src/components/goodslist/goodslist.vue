@@ -210,7 +210,7 @@
 			background: #FFFFFF;
 			border-radius: 4rpx;
 			box-sizing: border-box;
-			padding: 12rpx 14rpx 17rpx 14rpx;
+			padding: 12rpx 13rpx 17rpx 13rpx;
 			align-items: center;
 			margin-bottom: 13rpx;
 			// border-radius: 20rpx;
@@ -337,23 +337,34 @@
 			padding-bottom: 12rpx;
 
 			.bottom-left {
-				max-width: 140rpx;
-				font-size: 24rpx;
+				width: 102rpx;
+				font-size: 23rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #999999;
+				position: relative;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
-
+			.bottom-left::after{
+				content: '';
+				width: 2rpx;
+				height:20rpx;
+				position: absolute;
+				right:0;
+				top:50%;
+				margin-top: -10rpx;
+				background:#DADADA;
+			}
 			.bottom-right {
+				width: 210rpx;
 				display: flex;
 				align-items: center;
 
 				.avart {
-					width: 27rpx;
-					height: 27rpx;
+					width: 31rpx;
+					height: 31rpx;
 					display: block;
 					overflow: hidden;
 					border-radius: 50%;
@@ -361,13 +372,12 @@
 				}
 
 				.bussName {
-					max-width: 130rpx;
+					width: 160rpx;
 					position: relative;
 					font-size: 24rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #595959;
-					margin-right: 4rpx;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;

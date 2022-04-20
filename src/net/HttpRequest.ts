@@ -19,7 +19,6 @@ export default class HttpRequest {
     private constructor() {
 		var domain = ''
 		domain = app.bussinessApiDomain
-		console.log('domain=========',domain)
 		let systemInfo = app.platform.getAppInfo();
 
 		
