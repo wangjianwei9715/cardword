@@ -8,7 +8,9 @@
 			<view class="rollContent" id='rollContent'>
 				<view class="rollHidden" id='rollHidden' :style="{transform:`translateX(${rollX}px)`}">
 					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
-						<image :src="item.userAvatar?decodeURIComponent(item.userAvatar):'../../../static/act/loot/pub_avart.png'" mode=""></image>
+						<image
+							:src="item.userAvatar?decodeURIComponent(item.userAvatar):'../../../static/act/loot/pub_avart.png'"
+							mode=""></image>
 						<view class="name oneLineOver">{{item.tp===2?'获得了':'加入了'}}{{item.name}}</view>
 					</view>
 				</view>
@@ -174,7 +176,7 @@
 	} from '@/tools/util'
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		formatNumber:any=formatNumber;
+		formatNumber: any = formatNumber;
 		showDrawer: boolean = false; //任务弹窗
 		operationShow: boolean = false;
 		rollTimer: number = 0;
@@ -367,8 +369,9 @@
 		//微信分享
 		shareWx(item: any) {
 			uni.showLoading({
-				title:'请稍等'
+				title: '请稍等'
 			})
+			
 			uni.share({
 				provider: "weixin",
 				type: 0,
@@ -386,7 +389,7 @@
 				// },
 				success: (res: any) => {
 					// this.getTaskList();
-					this.completeTask(item)
+
 				},
 				fail: (err: any) => {
 					console.log("失败原因=>", err);
@@ -395,10 +398,14 @@
 						icon: "none"
 					});
 				},
-				complete:(res:any)=>{
+				complete: (res: any) => {
 					uni.hideLoading()
+
 				}
 			});
+			setTimeout(() => {
+				this.completeTask(item)
+			}, 2000)
 		}
 		//计数器加减操作
 		luckAction(type: string) {
@@ -556,7 +563,7 @@
 			this.queryParams.tp = item.value;
 			this.reqNewData();
 		}
-		toMyPrize(){
+		toMyPrize() {
 			if (app.token.accessToken == "") {
 				uni.navigateTo({
 					url: "/pages/login/login"
@@ -564,7 +571,7 @@
 				return;
 			}
 			uni.navigateTo({
-				url:'/pages/act/loot/loot_myPrize'
+				url: '/pages/act/loot/loot_myPrize'
 			});
 		}
 		pageJump(url: string = "") {
@@ -1107,7 +1114,8 @@
 
 	.drawerCard {
 		width: 750rpx;
-		height: 710rpx;
+		height: calc(740rpx + constant(safe-area-inset-bottom));
+		height: calc(740rpx + env(safe-area-inset-bottom));
 		background-color: #fff;
 		position: fixed;
 		transition: all 0.3s;
@@ -1115,8 +1123,8 @@
 		bottom: -1500rpx;
 		opacity: 0;
 		// bottom: -500rpx;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
+		// padding-bottom: constant(safe-area-inset-bottom);
+		// padding-bottom: env(safe-area-inset-bottom);
 
 		// visibility: hidden;
 
@@ -1134,6 +1142,8 @@
 			padding: 0 21rpx;
 			margin-top: 40rpx;
 			font-family: PingFangSC-Regular;
+			padding-bottom: constant(safe-area-inset-bottom);
+			padding-bottom: env(safe-area-inset-bottom);
 
 			.taskItem {
 				display: flex;
