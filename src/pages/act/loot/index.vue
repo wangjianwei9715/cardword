@@ -1114,8 +1114,8 @@
 
 	.drawerCard {
 		width: 750rpx;
-		height: calc(740rpx + constant(safe-area-inset-bottom));
-		height: calc(740rpx + env(safe-area-inset-bottom));
+		height: calc(750rpx + constant(safe-area-inset-bottom));
+		height: calc(750rpx + env(safe-area-inset-bottom));
 		background-color: #fff;
 		position: fixed;
 		transition: all 0.3s;
