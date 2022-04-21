@@ -37,7 +37,7 @@
 			<statusbar/>
 			<view class="tab-header">
 				<view class="header-search" @click="onClickSearch">
-					<view class="sousuo-icon"></view>搜索热门球员...
+					<view class="sousuo-icon"></view>搜索热门系列...
 					<view class="search-icon">搜索</view>
 				</view>
 			</view>
@@ -54,7 +54,7 @@
 					</view>
 				</view>
 				
-				<view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-04-22', '2022-05-08')">
+				<view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-04-21', '2022-05-08')">
 					<view class="top-ref"></view>
 				</view>
 

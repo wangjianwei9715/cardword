@@ -900,7 +900,7 @@ page {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   box-sizing: border-box;
   margin:0 auto;
   border-top: 2rpx solid #F5F5F5;

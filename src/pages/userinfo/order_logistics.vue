@@ -74,7 +74,7 @@
 		background: #FFF7E4;
 		display: flex;
 		align-items: center;
-		justify-content: start;
+		justify-content: flex-start;
 	}
 
 	.order-status text {

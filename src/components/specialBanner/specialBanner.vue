@@ -262,24 +262,24 @@
     box-sizing: border-box;
     position: relative;
     .swiper-left-icon{
-      width: 25rpx;
-      height:36rpx;
+      width: 20rpx;
+      height:29rpx;
       background:url(../../static/userinfo/winningCard/icon_left.png) no-repeat center;
       background-size: 100% 100%;
       position: absolute;
-      left:114rpx;
+      left:160rpx;
       top:50%;
-      margin-top: -18rpx;
+      margin-top: -14.5rpx;
     }
     .swiper-right-icon{
-      width: 25rpx;
-      height:36rpx;
+      width: 20rpx;
+      height:29rpx;
       background:url(../../static/userinfo/winningCard/icon_right.png) no-repeat center;
       background-size: 100% 100%;
       position: absolute;
-      right:114rpx;
+      right:160rpx;
       top:50%;
-      margin-top: -18rpx;
+      margin-top: -14.5rpx;
     }
     .icon-back{
       width: 80rpx;
