@@ -28,12 +28,12 @@
 			</view>
 		</view>
 		<view class="rollStaticContent" @click="pageJump('/pages/act/goldRank/goldRank_rewardList')">
-			<view class="rollContent" id='rollContent' :class='{rollAnim:awardList&&awardList.length}'>
-				<view class="rollItem" v-for="(item) in awardList">
+			<view class="rollContent" id='rollContent' :class='{rollAnim:rollStart}'>
+				<view class="rollItem" v-for="(item,index) in awardList" :key="index">
 					<image :src="decodeURIComponent(item.pic)" mode="aspectFill">
 					</image>
 				</view>
-				<view class="rollItem" v-for="(item) in awardList">
+				<view class="rollItem" v-for="(item,index) in awardList" :key="index">
 					<image :src="decodeURIComponent(item.pic)" mode="aspectFill">
 					</image>
 				</view>
@@ -71,7 +71,7 @@
 				</view>
 			</view>
 			<template>
-				<view class="residueRank uni-flex" v-for="(item) in getTopThreeList">
+				<view class="residueRank uni-flex" v-for="(item,index) in getTopThreeList" :key="index">
 					<view class="residueRank-index">{{item.ranking}}</view>
 					<image v-show="item.userName!='虚位以待'&&item.gold_value!=0" class="residueRank-avart"
 						:src="decodeURIComponent(item.userAvatar)">
@@ -168,11 +168,11 @@
 		awardList: any = []; //奖品列表
 		myData: any = {}; //个人rank数据
 		rankList: any = [];
+		rollStart = false;
 		onLoad() {
 			this.reqNewData()
 			this.reqCarouselData()
 			this.$nextTick(() => {
-
 				this.startCountDown()
 			})
 		}
@@ -247,6 +247,7 @@
 		reqCarouselData() {
 			app.http.Get('activity/goodNoShowGoldValue/awardList', {}, (res: any) => {
 				this.awardList = res.list || []
+				this.rollStart = res.list ? true : false;
 				this.$nextTick(() => {
 					const query: any = uni.createSelectorQuery().in(this);
 					query.select('#rollContent').boundingClientRect((data: any) => {

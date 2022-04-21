@@ -99,7 +99,7 @@
 			favorite:{id:2,name:'收藏',num:0,url:'/pages/userinfo/user_collect'}
 		};
 		walletTab:{[x: string]: any} = {
-			point:{id:1,name:'卡币',num:0,pic:'../../static/userinfo/v2/icon_tab_gold.png',url:''},
+			point:{id:1,name:'卡币',num:0,pic:'../../static/userinfo/v2/icon_tab_gold.png',url:'',tips:'5月初开放'},
 			hitNo:{id:2,name:'我的中卡',num:0,pic:'../../static/userinfo/v2/icon_tab_card.png',url:'/pages/userinfo/winningCard/index'}
 		}
 		orderTab:{[x: string]: any} = {
@@ -112,7 +112,7 @@
 		serviceTab:{[x: string]: any} = {
 			coupon:{id:1,name:'优惠券',url:'/pages/userinfo/coupon/coupon'},
 			giving:{id:2,name:'收赠卡密',url:'/pages/userinfo/giving/index',num:0},
-			decompose:{id:3,name:'卡片分解',url:'/pages/act/decompose/index'},
+			decompose:{id:3,name:'卡片分解',url:'',tips:'暂未开放'},
 			kefu:{id:4,name:'联系客服'},
 			address:{id:5,name:'地址管理',url:'/pages/userinfo/setting_addresses'}
 		};
@@ -235,7 +235,7 @@
 				})
 			}else{
 				uni.showToast({
-					title:'功能暂未开放',
+					title:item.tips,
 					icon:'none'
 				})
 			}

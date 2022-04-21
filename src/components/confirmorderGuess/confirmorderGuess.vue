@@ -1,7 +1,7 @@
 <template>
 	<view class="guess-box">
 		<view class="guess-free">
-			<view class="guess-free-text">剩余免单次数</view>
+			<view class="guess-free-text">剩余免单组数</view>
 			<view class="guess-free-text">{{freeNum}}</view>
 		</view>
 

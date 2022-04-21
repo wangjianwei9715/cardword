@@ -19,7 +19,7 @@
 		</view>
 
 		<view class="giving-bottom-box">
-			<view class="giving-btn giving-btn-left" @click="onClickJumpUrl('/pages/userinfo/giving/code_ref')">查询密码</view>
+			<view class="giving-btn giving-btn-left" @click="onClickJumpUrl('/pages/userinfo/giving/code_ref')">查询验证码</view>
 			<view class="giving-btn giving-btn-right" @click="onClickJumpUrl('/pages/userinfo/order_list?type=2')">立即赠送</view>
 		</view>
 		

@@ -12,7 +12,7 @@
 			</view>
 			<view v-if="surplusNum>0" class="order-guess-free">
 				<image class="guess-icon-kefu" src="../../pages/act/static/guess/kefu.png"></image>
-				您有{{surplusNum}}次免单机会未使用，可联系客服退款
+				您有{{surplusNum}}组免单机会未使用，可联系客服退款
 			</view>
 
 			<view v-if="guessSuccess" class="order-guess-successbox" @click="onClickSuccessHide">
@@ -25,7 +25,7 @@
 		<view class="guess-num-box" v-if="freeNum>0">
 			<view class="guess-num-center">
 				<image class="guess-mini" src="../../pages/act/static/guess/guess_mini.png"></image>
-				可免单{{freeNum}}次
+				可免单{{freeNum}}组
 			</view>
 		</view>
 
@@ -278,16 +278,16 @@
 		z-index: 100;
 	}
 	.guess-num-box{
-		width: 205rpx;
-		height:53rpx;
+		width: 197rpx;
+		height:40rpx;
 		background:url(../../pages/act/static/guess/guess_tips.png) no-repeat center;
 		background-size: 100% 100%;
 		position: fixed;
-		bottom:calc(112rpx);
-		bottom:calc(112rpx + constant(safe-area-inset-bottom));
-		bottom:calc(112rpx + env(safe-area-inset-bottom));
+		bottom:calc(100rpx);
+		bottom:calc(100rpx + constant(safe-area-inset-bottom));
+		bottom:calc(100rpx + env(safe-area-inset-bottom));
 		right:25rpx;
-		z-index: 9;
+		z-index: 99;
 	}
 	.guess-mini{
 		width: 45rpx;
@@ -296,7 +296,7 @@
 	}
 	.guess-num-center{
 		width: 100%;
-		height:42rpx;
+		height:32rpx;
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;

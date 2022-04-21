@@ -71,6 +71,7 @@
 		padding-top: 14rpx;
 	}
 	.index{
+		width:max-content;
 		height:84rpx;
 		line-height: 84rpx;
 		font-size: 33rpx;
@@ -79,7 +80,7 @@
 		color: #494949;
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-start;
 		position: relative;
 		z-index: 4;
 	}

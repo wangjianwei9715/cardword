@@ -54,8 +54,8 @@
 					</view>
 				</view>
 				
-				<view class="top-banner" @click="onClickActJump">
-					<view class="top-ref"><view class="top-res-bg"></view>寻找金色卡密</view>
+				<view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-04-22', '2022-05-08')">
+					<view class="top-ref"></view>
 				</view>
 
 				<!-- 卡豆商城 热门系列 拆卡围观 -->
@@ -90,8 +90,10 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
 	import { indexGoodsType,goodsMiniList } from "@/net/DataExchange"
+	import { isDuringDate } from "@/tools/util" 
 	@Component({})
 	export default class index extends BaseNode {
+		isDuringDate = isDuringDate;
 		indexGoodsType = indexGoodsType;
 		goodsMiniList = goodsMiniList;
 		statusBarHeight = app.statusBarHeight;
@@ -334,7 +336,6 @@
 			this.showWinningCrad = false
 			uni.showTabBar()
 		}
-		// 
 		initEvent(){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
@@ -622,8 +623,8 @@
 	}
 
 	.top-banner{
-		width: 722rpx;
-		height:156rpx;
+		width: 750rpx;
+		height:169rpx;
 		margin: 0 auto;
 		box-sizing: border-box;
 		display: flex;
@@ -633,15 +634,25 @@
 		position: relative;
 	}
 	.top-ref{
-		font-size: 66rpx;
-		font-family: Jcacuhei;
-		font-weight: 600;
-		font-style: italic;
-		color: #F6F7FA;
+		width: 80rpx;
+		height:79rpx;
+		background:url(../../static/index/v2/banner_go.png) no-repeat center;
+		background-size: 100% 100%;
 		position: absolute;
-		left:182rpx;
-		top:18rpx;
-		display: inline-flex;
+		right:43rpx;
+		bottom:25rpx;
+		animation: bounce-down 1s linear infinite;
+	}
+	@keyframes bounce-down {
+		25% {
+		-webkit-transform: translateY(-5rpx);
+		}
+		50%, 100% {
+		-webkit-transform: translateY(0);
+		}
+		75% {
+		-webkit-transform: translateY(5rpx);
+		}
 	}
 	.tabc-content{
 		width: 100%;

@@ -614,8 +614,13 @@ export default class ClassName extends BaseNode {
           });
         } else {
           if (res.wechat) {
+            console.log('wechat=',res)
+            if(res.appPayRequest){
+              app.payment.paymentWxQmfSdk(JSON.stringify(res.appPayRequest));
+            }else{
+              app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
+            }
             uni.hideLoading();
-            app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
             uni.redirectTo({
               url:
                 "/pages/userinfo/order_details?code=" +

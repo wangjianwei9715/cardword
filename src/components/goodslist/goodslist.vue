@@ -14,6 +14,7 @@
 			<view class="goodslist-index">
 				<view @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic">
+						<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 						<image :lazy-load="true" class="goodslist-pic-image"
 							:src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 					</view>
@@ -208,7 +209,7 @@
 			width: 356rpx;
 			height: 473rpx;
 			background: #FFFFFF;
-			border-radius: 4rpx;
+			border-radius: 5rpx;
 			box-sizing: border-box;
 			padding: 12rpx 13rpx 17rpx 13rpx;
 			align-items: center;
@@ -221,8 +222,6 @@
 			width: 328rpx;
 			height: 253rpx;
 			margin: 0 auto;
-			// border-radius: 15rpx;
-			// margin-right: 24rpx;
 			overflow: hidden;
 			position: relative;
 		}
@@ -554,11 +553,13 @@
 		display: flex;
 		align-items: flex-start;
 		justify-content: center;
+		border-radius: 5rpx;
 	}
 
 	.swiper-image {
 		width: 356rpx;
 		height: 473rpx;
 		box-sizing: border-box;
+		border-radius: 5rpx;
 	}
 </style>
