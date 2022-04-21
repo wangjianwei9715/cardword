@@ -132,7 +132,7 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		queryParams: any = {
-			tp: 1, //1 今日榜单数据，2 总榜数据
+			tp: 2, //1 今日榜单数据，2 总榜数据
 			pageIndex: 1,
 			pageSize: 50
 		};
@@ -146,7 +146,7 @@
 		unoccupied: any = 0;
 		formatNumber: any = formatNumber;
 		tag: any = {
-			index: 0,
+			index: 1,
 			list: [{
 				name: '金卡积分日榜',
 				value: 1
