@@ -12,8 +12,8 @@
 				<view class="tab-hot-boxpic-box" @click="onClickMerchantInfo(item.list.merchantId)">
 					<image :src="decodeURIComponent(item.list.merchantLogo)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
-				<view class="tab-hot-boxpic-box" :class="{'live-border':item.list.state == 2}"  @click="onClickLive(item.list)">
-					<view v-if="item.list.state == 2" class="live-ing"></view>
+				<view class="tab-hot-boxpic-box" :class="{'live-border':item.list.state == 2 || item.list.state == 1}"  @click="onClickLive(item.list)">
+					<view v-if="item.list.state == 2 || item.list.state == 1" class="live-ing"></view>
 					<image :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
 			</view>
@@ -64,7 +64,7 @@
 		onClickHotPic(name:string){
 			if(name=='cardBean'){
 				uni.showToast({
-					title:'卡豆商城维护中',
+					title:'5月初开放',
 					icon:'none'
 				})
 			}

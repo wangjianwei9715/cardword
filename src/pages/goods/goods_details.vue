@@ -190,6 +190,14 @@
 				<view class="drawer-help" v-html="item.content"></view>
 			</view>
     	</bottomDrawer>
+		
+		<!-- 免单 -->
+		<view class="guess-num-box" v-if="freeNoNum>0">
+			<view class="guess-num-center">
+				<image class="guess-mini" src="../../pages/act/static/guess/guess_mini.png"></image>
+				可免单{{freeNoNum}}组
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -280,6 +288,7 @@
 			{name:'拆卡报告',pic:'../../static/goods/v2/step_2.png'},
 			{name:'中卡发货',pic:'../../static/goods/v2/step_3.png'},
 		];
+		freeNoNum = 0;
 		onLoad(query:any) {
 			
 			// #ifdef MP
@@ -387,6 +396,8 @@
 					this.goodsState = data.good.state;
 					// 倒计时
 					this.countDown = data.good.leftsec;
+					// 免单
+					this.freeNoNum = data.freeNoNum
 					// 获取商品图片
 					this.getGoodsImage();
 					this.getDetailImage(decodeURIComponent(this.goodsData.pic.yuanfeng))
@@ -1701,5 +1712,36 @@
 		color: #7D8288;
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
+	}
+
+	// 免单
+	.guess-num-box{
+		width: 197rpx;
+		height:40rpx;
+		background:url(../../pages/act/static/guess/guess_tips.png) no-repeat center;
+		background-size: 100% 100%;
+		position: fixed;
+		bottom:calc(100rpx);
+		bottom:calc(100rpx + constant(safe-area-inset-bottom));
+		bottom:calc(100rpx + env(safe-area-inset-bottom));
+		right:13rpx;
+		z-index: 99;
+	}
+	.guess-mini{
+		width: 45rpx;
+		height:18rpx;
+		margin-right: 10rpx;
+	}
+	.guess-num-center{
+		width: 100%;
+		height:32rpx;
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
+		padding-left: 12rpx;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #FFFFFF;
 	}
 </style>

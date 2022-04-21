@@ -1,4 +1,3 @@
-
 //keepNum为保留小数位数，默认不保留小数
 export function formatNumber(number: number, keepNum = 0) {//返回 xxx.xx亿
     let result = '' + number;
@@ -24,6 +23,16 @@ export function formatGold(number: number, symbol = ',', interval = 3) {//返回
         symbolIndex++;
     }
     return result;
+}
+// 比较当前时间是否在指定日期范围内 beginDateStr:开始日期 endDateStr:结束日期 格式 yyyy-mm-dd
+export function isDuringDate(beginDateStr:string, endDateStr:string) {
+    var curDate = new Date(),
+        beginDate = new Date(beginDateStr),
+        endDate = new Date(endDateStr);
+    if (curDate >= beginDate && curDate <= endDate) {
+        return true;
+    }
+    return false;
 }
 // 时间戳
 export function dateFormat(time:number|string){

@@ -17,9 +17,9 @@
 			<statusbar/>
 			
 			<view class="card-list"  v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
-				<view class="order-code">
+				<!-- <view class="order-code">
 					<view class="order-code-left"><view class="order-code-box">订单：{{item.orderCode}}</view><view class="order-code-now">{{orderCode==item.orderCode?'当前订单 ':''}}</view></view>
-				</view>
+				</view> -->
 				<view class="card-box">
 					<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs">
 						<view class="index-left" :class="{'bingo-name':item.bingo}">{{items.name}}</view>
@@ -212,7 +212,7 @@
 			this.reqNewData()
 		}
 		reqNewCardList(orderCode:string,index:number,cb?:Function) {
-			if(this.cardList[index].noList.length>10) return;
+			if(this.cardList[index].noList.length<10) return;
 
 			// 获取更多商品
 			let pageIndex = Math.floor((this.cardList[index].noList.length-10)/10);
@@ -358,7 +358,7 @@
 		box-sizing: border-box;
 		background: #FFFFFF;
 		border-radius: 10px;
-		margin-top: 14rpx;
+		margin-bottom: 14rpx;
 	}
 	.order-code{
 		width: 100%;
@@ -429,6 +429,7 @@
 	}
 	.index-left{
 		width: 620rpx;
+		min-height: 96rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;

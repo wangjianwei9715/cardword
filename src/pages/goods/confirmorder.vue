@@ -614,8 +614,13 @@ export default class ClassName extends BaseNode {
           });
         } else {
           if (res.wechat) {
+            console.log('wechat=',res)
+            if(res.appPayRequest){
+              app.payment.paymentWxQmfSdk(JSON.stringify(res.appPayRequest));
+            }else{
+              app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
+            }
             uni.hideLoading();
-            app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
             uni.redirectTo({
               url:
                 "/pages/userinfo/order_details?code=" +
@@ -895,7 +900,7 @@ page {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   box-sizing: border-box;
   margin:0 auto;
   border-top: 2rpx solid #F5F5F5;

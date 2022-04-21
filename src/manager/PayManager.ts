@@ -15,6 +15,10 @@ export default class PayManager {
 		this.payQmfAndroid = uni.requireNativePlugin("payQmfAndroid");
 		this.payQmfAndroid.payAliPayMiniPro(payRequest,(res:any)=>{});
 	}
+	paymentWxQmfSdk(payRequest:string,cb?:Function){
+		this.payQmfAndroid = uni.requireNativePlugin("payQmfAndroid");
+		this.payQmfAndroid.payWx(payRequest,(res:any)=>{});
+	}
 	paymentAlipay(type:any,orderInfo:string,cb?:Function){
 		console.log('orderInfo========',orderInfo)
 		// 银盛pay

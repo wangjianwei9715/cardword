@@ -247,7 +247,7 @@
 					display: block;
 					font-size: 29rpx;
 					font-family: PingFangSC-Regular;
-					font-weight: 400;
+					font-weight: 600;
 					color: #333333;
 					line-height: 28px;
 					margin-right: 10rpx;
@@ -290,6 +290,7 @@
 				box-sizing: border-box;
 				border:1rpx solid #DADADA;
 				margin-top: 18rpx;
+				border-radius: 5rpx;
 			}
 		}
 	}

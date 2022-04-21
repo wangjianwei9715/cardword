@@ -319,7 +319,7 @@
 					display: block;
 					font-size: 29rpx;
 					font-family: PingFangSC-Regular;
-					font-weight: 400;
+					font-weight: 600;
 					color: #333333;
 					line-height: 28px;
 					margin-right: 10rpx;
@@ -379,7 +379,7 @@
 	.list-content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:29rpx 14rpx;
+		padding:14rpx 14rpx;
 		background: $content-bg;
 		padding-bottom: env(safe-area-inset-bottom);
 	}

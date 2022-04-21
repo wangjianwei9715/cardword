@@ -571,7 +571,7 @@ export default class ClassName extends BaseNode {
   z-index: 1;
   .drawcard-box-header-left {
     font-size: 50rpx;
-    font-family: PingFangSC-Medium;
+    font-family: Impact;
     font-weight: bold;
     color: #ffffff;
     word-spacing: 10rpx;
@@ -579,7 +579,7 @@ export default class ClassName extends BaseNode {
   }
   .drawcard-box-header-left text {
     font-size: 100rpx;
-    font-family: PingFangSC-Medium;
+    font-family: Impact;
     font-weight: bold;
     color: #ffffff;
   }

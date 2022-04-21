@@ -1,9 +1,9 @@
 <template>
   <view class="banner-container">
     <view class="banner-container-header">
-      <view class="swiper-number">
-        <text>{{index}}</text>/{{total}}
-      </view>
+      <view class="swiper-left-icon" @click="onClickSwiperTab('left')"></view>
+      <view class="swiper-number"><text>{{index}}</text>/{{total}}</view>
+      <view class="swiper-right-icon" @click="onClickSwiperTab('right')"></view>
     </view>
     <swiper
       :style="{ width: '100vw', height: '810rpx' }"
@@ -154,15 +154,27 @@
       },500)
     }
     animationfinish(e:any) {
+      let index = 0;
       if(this.swiperRight&&this.swiperIndex+1>=this.listLen()&&this.index<this.total){
-        this.$emit('swiperRefresh',{index:Number(this.index)+1})
-        this.refresh()
+        index = Number(this.index)+1
       }
       if(this.swiperLeft&&this.swiperIndex==0&&this.index>1){
-        this.$emit('swiperRefresh',{index:Number(this.index)-1})
-        this.refresh()
+        index = Number(this.index)-1
       }
+      if(index>0) this.emitSwiper(index)
+      
       this.swiperIng = false;
+    }
+    onClickSwiperTab(type:string){
+      let index = 0;
+      if(type=='right'&&this.index<this.total) index = Number(this.index)+1
+      if(type=='left'&&this.index>1) index = Number(this.index)-1
+      if(index>0) this.emitSwiper(index)
+    }
+    emitSwiper(index:number){
+      console.log('index=',index)
+      this.$emit('swiperRefresh',{index:index})
+      this.refresh()
     }
     getBannerDetail(index:number) {
       let data = this.bannerList.pic.map((x:any)=>{
@@ -249,6 +261,26 @@
     justify-content: center;
     box-sizing: border-box;
     position: relative;
+    .swiper-left-icon{
+      width: 20rpx;
+      height:29rpx;
+      background:url(../../static/userinfo/winningCard/icon_left.png) no-repeat center;
+      background-size: 100% 100%;
+      position: absolute;
+      left:160rpx;
+      top:50%;
+      margin-top: -14.5rpx;
+    }
+    .swiper-right-icon{
+      width: 20rpx;
+      height:29rpx;
+      background:url(../../static/userinfo/winningCard/icon_right.png) no-repeat center;
+      background-size: 100% 100%;
+      position: absolute;
+      right:160rpx;
+      top:50%;
+      margin-top: -14.5rpx;
+    }
     .icon-back{
       width: 80rpx;
       height:88rpx;
