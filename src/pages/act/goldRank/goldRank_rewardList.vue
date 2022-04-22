@@ -48,13 +48,13 @@
 			tp: 1
 		}
 		tag: any = {
-			index: 1,
+			index: 0,
 			list: [{
-				name: '日榜奖品',
-				value: 2
-			}, {
 				name: '总榜奖品',
 				value: 1
+			}, {
+				name: '日榜奖品',
+				value: 2
 			}]
 		}
 		onLoad() {
@@ -101,7 +101,7 @@
 
 	.noneBlock {
 		width: 750rpx;
-		padding-bottom:env(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
 	}
 
 	.prizeCard {

@@ -43,8 +43,8 @@
 		<view class="tagContent" :class="{selectTag:tag.index===1}">
 			<view class="tagContent-item" v-for="(item,index) in tag.list" :key='index' @click="tagChange(item,index)">
 				<view class="tagName">{{item.name}}</view>
-				<view class="smallName" v-if="index==0">本轮倒计时: {{countDown(nowDateStamp,endTimeStamp)}}</view>
-				<view class="smallName" v-if="index==1">活动时间: 4.24-5.8 </view>
+				<view class="smallName" v-if="index==1">本轮倒计时: {{countDown(nowDateStamp,endTimeStamp)}}</view>
+				<view class="smallName" v-if="index==0">活动时间: 4.24-5.8 </view>
 			</view>
 			<view class="luxuryGifts"><text>豪礼</text></view>
 		</view>
@@ -147,11 +147,10 @@
 		formatNumber: any = formatNumber;
 		tag: any = {
 			index: 0,
-			list: [
-				 {
-					name: '金卡积分总榜',
-					value: 2
-				},{
+			list: [{
+				name: '金卡积分总榜',
+				value: 2
+			}, {
 				name: '金卡积分日榜',
 				value: 1
 			}]
@@ -509,10 +508,11 @@
 			width: 81rpx;
 			height: 87rpx;
 			background-size: 100% 100%;
-			background-image: url(../../../static/act/goldRank/luxuryGifts.png); 
+			background-image: url(../../../static/act/goldRank/luxuryGifts.png);
 			font-family: Alibaba PuHuiTi;
 			font-size: 20rpx;
 			color: #fff;
+
 			// transform: rotateY(180deg);
 			text {
 				display: block;
