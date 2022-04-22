@@ -10,7 +10,7 @@
 				</image>
 			</view>
 		</view>
-		<view style="padding-top:70rpx">
+		<view style="padding-top:86rpx">
 			<statusbar />
 		</view>
 		<image class='topImge' src="../../../static/act/saveThum/back.png" mode="widthFix"></image>
@@ -55,15 +55,14 @@
 			</image>
 			<view class="title">分享好友</view>
 			<view class="goldBack">
-				<image class="goldImage" src='../../../static/goods/drawcard/card_gold.png' mode="widthFix"></image>
 				<image src="../../../static/goods/drawcard/icon_rc.png" class="rcIcon" mode="widthFix"
-					v-show="shareItem.rc"></image>
+					></image>
 				<image :src="decodeURIComponent(shareItem.pic)" class="img" mode="widthFix"></image>
 				<!-- @click='priveImg(0,[decodeURIComponent(shareItem.pic)])' -->
 			</view>
 			<view class="tips">{{shareItem.noName}}</view>
 			<view class="change uni-flex" @click="change">
-				<text>换一张</text>
+				<text>换一张</text>	
 				<image src="../../../static/act/saveThum/change.png" mode=""></image>
 			</view>
 			<view class="shareButton" @click="shareWx">
@@ -455,7 +454,8 @@
 			display: flex;
 			margin-top: 20rpx;
 			position: relative;
-
+			background-image: url(../../../static/goods/drawcard/card_gold.png);
+			background-size: 100% 100%;
 			.goldImage {
 				width: 340rpx;
 				position: absolute;
