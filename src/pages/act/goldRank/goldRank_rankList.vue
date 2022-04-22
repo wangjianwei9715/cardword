@@ -504,22 +504,22 @@
 
 		.luxuryGifts {
 			position: absolute;
-			right: 0;
+			left: 0;
 			top: 0rpx;
 			width: 81rpx;
 			height: 87rpx;
 			background-size: 100% 100%;
-			background-image: url(../../../static/act/goldRank/luxuryGifts.png);
+			background-image: url(../../../static/act/goldRank/luxuryGifts.png); 
 			font-family: Alibaba PuHuiTi;
 			font-size: 20rpx;
 			color: #fff;
-
+			// transform: rotateY(180deg);
 			text {
 				display: block;
-				transform: rotate(45deg);
+				transform: rotate(-45deg);
 				letter-spacing: 2rpx;
 				position: absolute;
-				right: 1rpx;
+				left: 1rpx;
 				top: 10rpx;
 			}
 		}
