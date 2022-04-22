@@ -146,13 +146,14 @@
 		unoccupied: any = 0;
 		formatNumber: any = formatNumber;
 		tag: any = {
-			index: 1,
-			list: [{
+			index: 0,
+			list: [
+				 {
+					name: '金卡积分总榜',
+					value: 2
+				},{
 				name: '金卡积分日榜',
 				value: 1
-			}, {
-				name: '金卡积分总榜',
-				value: 2
 			}]
 		}
 		rankMockList: any = [{
