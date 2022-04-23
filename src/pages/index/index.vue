@@ -54,7 +54,7 @@
 					</view>
 				</view>
 				
-				<view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-04-21', '2022-05-08')">
+				<view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-04-24', '2022-05-10')">
 					<view class="top-ref"></view>
 				</view>
 

@@ -4,7 +4,7 @@
 			<view class="header-sort-index" @click="rest" :class="{'current-name':isDefault}" v-if="needDefault">
 				默认
 			</view>
-			<view class="header-sort-index" :class="{'current-name':item.isDefault||(item.children&&item.index>=0)||item.odType!=0}" v-for="(item,index) in copyData" :key="index" @click="tabClick(item,index)">
+			<view class="header-sort-index" :class="{'current-name':item.isDefault||(item.children&&item.index>=0)||(item.odType!=0&&item.key=='sort')}" v-for="(item,index) in copyData" :key="index" @click="tabClick(item,index)">
 				{{formatText(item)}}
 				<view class="header-sort-icon" v-if="item.needOrder || item.children">
 					<view v-if='item.needOrder' :class="{'icon-sort-upn':item.odType!=1,'icon-sort-up':item.odType==1}"></view>
