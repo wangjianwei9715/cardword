@@ -247,7 +247,9 @@
 		reqCarouselData() {
 			app.http.Get('activity/goodNoShowGoldValue/awardList', {}, (res: any) => {
 				this.awardList = res.list || []
-				this.rollStart = res.list ? true : false;
+				setTimeout(()=>{
+					this.rollStart = res.list ? true : false;
+				},500)
 				this.$nextTick(() => {
 					const query: any = uni.createSelectorQuery().in(this);
 					query.select('#rollContent').boundingClientRect((data: any) => {
@@ -749,13 +751,13 @@
 
 		@keyframes rowup {
 			0% {
-				-webkit-transform: translateX(0);
-				transform: translateX(0);
+				-webkit-transform: translate3d(0,0,0);
+				transform: translate3d(0,0,0);
 			}
 
 			100% {
-				-webkit-transform: translateX(-3560rpx);
-				transform: translateX(-3560rpx);
+				-webkit-transform: translate3d(-3560rpx,0,0);
+				transform: translate3d(-3560rpx,0,0);
 			}
 		}
 

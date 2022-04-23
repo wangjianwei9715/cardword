@@ -16,7 +16,7 @@
 
 		<view class="goods-lists">
 			<statusbar />
-			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesList&&seriesList.length&&!clickSerieItem.id'>
+			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow'>
 				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index'
 					@click="clickSerie(item,index)">
 					<view class="frameImage">
@@ -149,6 +149,7 @@
 						this.noMoreData = true;
 					}
 				}, 10);
+				this.reqNewSeries();
 			} else {
 				//   this.reqNewData("default");
 				this.reqNewSeries();
@@ -273,6 +274,11 @@
 					if (cb) cb();
 				}
 			);
+		}
+		private get seriesShow(){
+			let show=false
+			if(!this.searchText) return true
+			return this.seriesList&&this.seriesList.length&&!this.clickSerieItem.id
 		}
 	}
 </script>
