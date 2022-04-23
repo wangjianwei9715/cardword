@@ -6,7 +6,8 @@
 			<view class="rightFloatItem" @click="ruleShow=true"><text>规则</text></view>
 			<view class="rightFloatItem rule" @click="toMyPrize"><text>我的奖品</text></view>
 			<view class="rollContent" id='rollContent'>
-				<view class="rollHidden" id='rollHidden' :style="{transform:`translateX(${rollX}px)`}">
+				<view class="rollHidden" id='rollHidden' :class="{rollAnimation:rollAnimation}"
+					:style="{transform:`translateX(${rollX}px)`}">
 					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
 						<image
 							:src="item.userAvatar?decodeURIComponent(item.userAvatar):'../../../static/act/loot/pub_avart.png'"
@@ -181,6 +182,7 @@
 		operationShow: boolean = false;
 		rollTimer: number = 0;
 		rollX: number = 0;
+		rollAnimation: boolean = false;
 		rollWidth: number = 0;
 		phoneWidth: number = 0;
 		rollParams: any = {
@@ -305,17 +307,27 @@
 			if (this.rollWidth < this.phoneWidth) return
 			this.rollTimer && clearInterval(this.rollTimer)
 			const errorValue: number = 1 //误差值
+
 			this.rollTimer = setInterval(() => {
-				this.rollX -= 0.30
+				this.rollAnimation = true
+				this.rollX -= 14.30
 				if ((this.rollWidth + this.rollX - errorValue) <= this.phoneWidth) { //即将轮播完
-					if (this.rollTotalPage == this.rollParams.pageIndex) this.rollX = 0 //数据已查完 
+					if (this.rollTotalPage == this.rollParams.pageIndex) {
+						clearInterval(this.rollTimer)
+						setTimeout(() => {
+							this.rollAnimation = false
+							this.rollX = 0 //数据已查完 
+							this.startRollInterval()
+						}, 1000)
+					}
 					if (this.rollTotalPage > this.rollParams.pageIndex) {
 						this.rollParams.pageIndex += 1
 						this.getPersonJoin()
+
 					}
 					// 
 				}
-			}, 10)
+			}, 501)
 		}
 		handleJoin(item: any, index: number) {
 			if (app.token.accessToken == "") {
@@ -371,7 +383,7 @@
 			uni.showLoading({
 				title: '请稍等'
 			})
-			
+
 			uni.share({
 				provider: "weixin",
 				type: 0,
@@ -521,24 +533,27 @@
 		}
 		//获取用户参与列表
 		getPersonJoin() {
-			if (+new Date() - this.rollRequestTime <= 1000 * 5) return
-			this.rollRequestTime = +new Date()
+			// if (+new Date() - this.rollRequestTime <= 1000 * 2) return
+			// this.rollRequestTime = +new Date()
 			app.http.Get("activity/snatchTreasure/active/list", this.rollParams, (res: any) => {
-				this.rollTotalPage = res.totalPage || 0
+				this.rollTotalPage =res.totalPage || 0
 				const arr = res.list || [];
-				if (this.rollParams.pageIndex === 1) this.personJoinList = [];
-				this.personJoinList = [...this.personJoinList, ...arr];
-				this.getRollParams()
-				if (this.rollParams.pageIndex == 1) {
+				if (this.rollParams.pageIndex === 1) {
+					this.personJoinList = arr;
 					this.$nextTick(() => {
-						this.getRollParams().then((res: any) => {
-							setTimeout(() => {
+						setTimeout(() => {
+							this.getRollParams().then(res => {
 								this.startRollInterval()
-							}, 500)
-						})
+							})
+						}, 100)
 					})
 				}
-
+				if (this.rollParams.pageIndex !== 1) {
+					this.personJoinList.push(...arr)
+					this.$nextTick(() => {
+						this.getRollParams()
+					})
+				}
 			});
 		}
 		//完成任务
@@ -703,6 +718,10 @@
 				.getAewRollItem {
 					background-image: url('../../../static/act/loot/pinkBlock.png');
 				}
+			}
+
+			.rollAnimation {
+				transition: all 0.5s linear;
 			}
 		}
 
