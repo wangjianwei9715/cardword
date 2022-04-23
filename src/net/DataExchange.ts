@@ -27,7 +27,8 @@ export var goodsListType: { [x: string]: any } = {
     'activity': '活动专区',
     'cheap': '新手专区',
     'select': '自选球队',
-    'progress': '即将拼成'
+    'progress': '即将拼成',
+	'yifen':'一分上组'
 }
 // 状态
 export var stateArray = [
