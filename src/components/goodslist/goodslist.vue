@@ -23,7 +23,10 @@
 						<view class="goodslist-priceMsg-left">
 							￥<text class="price-text">{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
 						</view>
-						<view class="goodslist-priceMsg-right">
+						<view v-if="item.state==0 || item.state == -1" class="goodslist-priceMsg-right">
+							{{dateFormatMSHMS(item.startAt)}}开售
+						</view>
+						<view v-else class="goodslist-priceMsg-right">
 							余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
 						</view>
 					</view>
