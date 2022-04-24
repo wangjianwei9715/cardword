@@ -27,7 +27,7 @@
 				<view class="left" style="width: 33.33%;">
 					<view class="rankIndex">{{item.rank}}</view>
 					<image v-if="item.userName!='虚位以待'&&item.likeNum!==0"
-						:src="item.avatar?decodeURIComponent(item.avatar):'../../../static/act/loot/pub_avart.png'"
+						:src="item.avatar?decodeURIComponent(item.avatar):defaultAvatar"
 						class="rankAvart" mode=""></image>
 					<!-- <view v-else class="rankAvart noneAvart"></view> -->
 					<view class="rankUserName text oneLineOver"
@@ -113,6 +113,7 @@
 		rankHear: any = ['排名', '奖励', '获赞数']
 		formatNumber: any = formatNumber;
 		rankList: any = []
+		defaultAvatar = app.defaultAvatar;
 		totalPage: number = 0;
 		centerModalShow: boolean = false;
 		myProfile: any = {

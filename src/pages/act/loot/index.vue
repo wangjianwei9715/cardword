@@ -10,7 +10,7 @@
 					:style="{transform:`translate3d(${rollX}px,0,0)`}">
 					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
 						<image
-							:src="item.userAvatar?decodeURIComponent(item.userAvatar):'../../../static/act/loot/pub_avart.png'"
+							:src="item.userAvatar?decodeURIComponent(item.userAvatar):defaultAvatar"
 							mode=""></image>
 						<view class="name oneLineOver">{{item.tp===2?'获得了':'加入了'}}{{item.name}}</view>
 					</view>
@@ -36,7 +36,7 @@
 					<view class="probability publicText uni-flex" v-if="item.status==1">
 						<text>{{dateFormatMSHMS(item.stopData.open_at)}}开奖</text>
 						<view class="getUserInfo">
-							<image :src="decodeURIComponent(item.stopData.userAvatar)" mode=""></image>
+							<image :src="item.stopData.userAvatar?decodeURIComponent(item.stopData.userAvatar):defaultAvatar" mode=""></image>
 							<view class="name publicText">
 								{{item.stopData.userName}} 中奖
 							</view>
@@ -180,6 +180,7 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		formatNumber: any = formatNumber;
+		defaultAvatar = app.defaultAvatar;
 		showDrawer: boolean = false; //任务弹窗
 		operationShow: boolean = false;
 		rollTimer: number = 0;

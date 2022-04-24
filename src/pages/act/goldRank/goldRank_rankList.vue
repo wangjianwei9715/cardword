@@ -74,7 +74,7 @@
 				<view class="residueRank uni-flex" v-for="(item,index) in getTopThreeList" :key="index">
 					<view class="residueRank-index">{{item.ranking}}</view>
 					<image v-show="item.userName!='虚位以待'&&item.gold_value!=0" class="residueRank-avart"
-						:src="decodeURIComponent(item.userAvatar)">
+						:src="item.userAvatar?decodeURIComponent(item.userAvatar):defaultAvatar">
 					</image>
 					<view class="residueRank-name oneLineOver"
 						:style="{width:(item.userName=='虚位以待'&&item.gold_value==0)?'202rpx':'17%'}">{{item.userName}}
@@ -136,6 +136,7 @@
 			pageIndex: 1,
 			pageSize: 50
 		};
+		defaultAvatar = app.defaultAvatar;
 		totalPage: number = 1;
 		endTimeStamp: number = 0;
 		operationShow: boolean = false;
