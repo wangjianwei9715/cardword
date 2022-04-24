@@ -37,14 +37,18 @@
                 }}
               </view>
               <view class="goods-money-add">
-                <view class="img-jian" @click="onClickCutDown()"></view>
+				<view class="num-box" @click="onClickCutDown()">
+					<view class="img-jian" ></view>
+				</view>
                 <input
                   class="money-add"
                   @input="onInputMoney"
                   v-model="moneyNum"
                   type="number"
                 />
-                <view class="img-add" @click="onClickAdd()"></view>
+				<view class="num-box" @click="onClickAdd()">
+					<view class="img-add" ></view>
+				</view>
               </view>
             </view>
           </view>
@@ -865,7 +869,13 @@ page {
   flex-direction: row;
   align-items: center;
 }
-
+.num-box{
+  width: 36rpx;
+  height:36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .img-add {
   width: 28rpx;
   height: 28rpx;
@@ -889,7 +899,7 @@ page {
   color: #333333;
   line-height: 36rpx;
   background:#F6F7FB;
-  margin:0 25rpx;
+  margin:0 21rpx;
   width: 75rpx;
 }
 
