@@ -12,9 +12,9 @@
 		</view>
 		<view class="goodslist-index-show" v-for="item in goodsList" :key="item.goodCode">
 			<view class="goodslist-index">
+				<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic">
-						<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 						<image :lazy-load="true" class="goodslist-pic-image"
 							:src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 					</view>
@@ -524,7 +524,7 @@
 	}
 
 	.select-team {
-		width: 81rpx;
+		width: 127rpx;
 		height: 37rpx;
 		position: absolute;
 		left: 0;

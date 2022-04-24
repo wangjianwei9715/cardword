@@ -26,7 +26,7 @@ export var indexGoodsType: { [x: number]: any } = {
 export var goodsListType: { [x: string]: any } = {
     'activity': '活动专区',
     'cheap': '新手专区',
-    'select': '自选球队',
+    'select': '自选玩法',
     'progress': '即将拼成',
 	'yifen':'一分上组'
 }
@@ -54,6 +54,10 @@ export var palyArray = [
     {
         name: "自选球队",
         value: 10
+    },
+    {
+        name: "选队随机",
+        value: 11
     },
     {
         name: "随机球员",
