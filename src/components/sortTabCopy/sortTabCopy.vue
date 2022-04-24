@@ -214,7 +214,7 @@ export default class ClassName extends BaseComponent {
     }
   }
   .classify-show {
-    height: 400rpx;
+    height:480rpx;
   }
   .classify-opt {
     color: #f65d2d;
