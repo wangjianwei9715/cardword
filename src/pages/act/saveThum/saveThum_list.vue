@@ -55,7 +55,7 @@
 			</image>
 			<view class="title">分享好友</view>
 			<view class="goldBack">
-				<image src="../../../static/goods/drawcard/icon_rc.png" class="rcIcon" mode="widthFix"></image>
+				<image src="../../../static/goods/drawcard/icon_rc.png" v-show="shareItem.rc" class="rcIcon" mode="widthFix"></image>
 				<image :src="decodeURIComponent(shareItem.pic)" class="img" mode="widthFix"></image>
 				<!-- @click='priveImg(0,[decodeURIComponent(shareItem.pic)])' -->
 			</view>
