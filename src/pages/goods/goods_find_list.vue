@@ -125,6 +125,12 @@
 			if (query.classType) {
 				this.classifyOpt = query.classType;
 			}
+			if(query.ptType){
+				const findIndex:number=palyArray.findIndex((item:any)=>{
+					return item.value==Number(query.ptType)
+				})
+				this.sortData[1].index=findIndex
+			}
 			// if(query.serie){
 			//   this.clickSerieItem = {title:query.serie}
 			// }

@@ -230,7 +230,7 @@
 			3: {
 				pic: "shop.png",
 				tips: "去完成",
-				url: "/pages/goods/goods_find_list?classType=100"
+				url: "/pages/goods/goods_find_list?classType=100&ptType=11"
 			},
 			4: {
 				pic: "group.png",
