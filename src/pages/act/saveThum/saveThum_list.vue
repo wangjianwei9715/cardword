@@ -142,6 +142,9 @@
 			// 	this.reqNewData();
 			// }
 		}
+		onShow(){
+			uni.hideLoading()
+		}
 		onPullDownRefresh() {
 			this.queryParams.pageIndex = 1
 			this.reqNewData();
