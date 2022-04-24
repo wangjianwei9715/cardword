@@ -26,7 +26,7 @@
 			<view class="rankContent-item" v-for="(item,index) in rankList" :key='index'>
 				<view class="left" style="width: 33.33%;">
 					<view class="rankIndex">{{item.rank}}</view>
-					<image v-if="item.userName!='虚位以待'&&item.likeNum===0"
+					<image v-if="item.userName!='虚位以待'&&item.likeNum!==0"
 						:src="item.avatar?decodeURIComponent(item.avatar):'../../../static/act/loot/pub_avart.png'"
 						class="rankAvart" mode=""></image>
 					<!-- <view v-else class="rankAvart noneAvart"></view> -->
@@ -55,14 +55,13 @@
 			</image>
 			<view class="title">分享好友</view>
 			<view class="goldBack">
-				<image src="../../../static/goods/drawcard/icon_rc.png" class="rcIcon" mode="widthFix"
-					></image>
+				<image src="../../../static/goods/drawcard/icon_rc.png" class="rcIcon" mode="widthFix"></image>
 				<image :src="decodeURIComponent(shareItem.pic)" class="img" mode="widthFix"></image>
 				<!-- @click='priveImg(0,[decodeURIComponent(shareItem.pic)])' -->
 			</view>
 			<view class="tips">{{shareItem.noName}}</view>
 			<view class="change uni-flex" @click="change">
-				<text>换一张</text>	
+				<text>换一张</text>
 				<image src="../../../static/act/saveThum/change.png" mode=""></image>
 			</view>
 			<view class="shareButton" @click="shareWx">
@@ -166,7 +165,7 @@
 		shareMthod(shareItem: any) {
 			// console.log('shareItem=>>>>' + shareItem.shareCode)
 			uni.showLoading({
-				title:'请稍等'
+				title: '请稍等'
 			})
 			uni.share({
 				provider: "weixin",
@@ -192,7 +191,7 @@
 						icon: "none"
 					});
 				},
-				complete:(res:any)=>{
+				complete: (res: any) => {
 					uni.hideLoading()
 				}
 			});
@@ -456,6 +455,7 @@
 			position: relative;
 			background-image: url(../../../static/goods/drawcard/card_gold.png);
 			background-size: 100% 100%;
+
 			.goldImage {
 				width: 340rpx;
 				position: absolute;
