@@ -115,8 +115,8 @@
 		// 卡豆商城 热门系列 拆卡围观
 		hotList:{[x:string]:any} = {
 			cardBean:{
-				title:'卡豆商城',
-				tips:'卡豆兑换好礼',
+				title:'卡币商城',
+				tips:'卡币兑换好礼',
 				list:[
 					{pic:'../../static/index/v2/cardbean_pic.png'},
 					{pic:'../../static/index/v2/cardbean_hb.png'}

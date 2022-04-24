@@ -321,7 +321,6 @@
 	}
 	.scroll-month text{
 		font-size: 35rpx;
-		font-family: LTGBK;
 	}
 	.current-month{
 		background:url(../static/pingtai/month_bg.png) no-repeat center;
@@ -370,7 +369,6 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 35rpx;
-		font-family: LTGBK;
 		font-weight: 400;
 		color: #41414D;
 		position:absolute;

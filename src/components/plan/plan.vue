@@ -56,7 +56,6 @@
 			text-align: center;
 			line-height: 30rpx;
 			font-size: 18rpx;
-			font-family: 'LT';
 			font-weight: bold;
 			color: #FFFFFF;
 		}

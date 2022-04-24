@@ -183,7 +183,6 @@
 				font-weight: bold;
 			}
 			.coupon-price text{
-				font-family:LTGBK;
 				font-size: 70rpx;
 			}
 			.coupon-condition{

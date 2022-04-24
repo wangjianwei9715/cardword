@@ -196,7 +196,7 @@
 	$font-34: 34rpx;
 
 	page {
-		background: #ffffff;
+		background: $content-bg;
 	} 
 
 	.content {
@@ -288,10 +288,9 @@
 
 	.business {
 		background-color: #fff;
-		margin: 15rpx 0;
+		padding:15rpx 34rpx;
 		width: 100%;
 		box-sizing: border-box;
-		padding: 0 34rpx;
 		&-top {
 			align-items: center;
 			// padding: 0 21rpx;
@@ -350,11 +349,12 @@
 	}
 
 	.tabsMenu {
-		width: 87%;
-		margin-top: 20rpx;
-		margin-bottom: 34rpx;
+		width: 100%;
 		display: flex;
 		align-items: baseline;
+		background:#fff;
+		padding:20rpx 34rpx 30rpx 34rpx;
+		box-sizing: border-box;
 		.menuItem {
 			font-size: 27rpx;
 			font-family: PingFangSC-Regular;
