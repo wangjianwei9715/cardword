@@ -6,8 +6,8 @@
 			<view class="rightFloatItem" @click="ruleShow=true"><text>规则</text></view>
 			<view class="rightFloatItem rule" @click="toMyPrize"><text>我的奖品</text></view>
 			<view class="rollContent" id='rollContent'>
-				<view class="rollHidden" id='rollHidden' :class="{rollAnimation:rollAnimation}"
-					:style="{transform:`translateX(${rollX}px)`}">
+				<view class="rollHidden" id='rollHidden' ref='rollHidden' :class="{rollAnimation:rollAnimation}"
+					:style="{transform:`translate3d(${rollX}px,0,0)`}">
 					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
 						<image
 							:src="item.userAvatar?decodeURIComponent(item.userAvatar):'../../../static/act/loot/pub_avart.png'"
@@ -173,16 +173,18 @@
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import {
 		dateFormatMSHMS,
-		formatNumber
+		formatNumber,
+		calculate
 	} from '@/tools/util'
+
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		formatNumber: any = formatNumber;
 		showDrawer: boolean = false; //任务弹窗
 		operationShow: boolean = false;
 		rollTimer: number = 0;
-		rollX: number = 0;
-		rollAnimation: boolean = false;
+		rollX: any = 0;
+		rollAnimation: boolean = true;
 		rollWidth: number = 0;
 		phoneWidth: number = 0;
 		rollParams: any = {
@@ -193,6 +195,7 @@
 		rollTotalPage: number = 0;
 		rollRequestTime: number = 0;
 		dateFormatMSHMS: any = dateFormatMSHMS;
+		calculate: any = calculate;
 		tag: any = {
 			index: 0,
 			list: [{
@@ -307,10 +310,9 @@
 			if (this.rollWidth < this.phoneWidth) return
 			this.rollTimer && clearInterval(this.rollTimer)
 			const errorValue: number = 1 //误差值
-
+			this.rollAnimation = true
 			this.rollTimer = setInterval(() => {
-				this.rollAnimation = true
-				this.rollX -= 14.30
+				this.rollX = calculate.sub(this.rollX, 14.30)
 				if ((this.rollWidth + this.rollX - errorValue) <= this.phoneWidth) { //即将轮播完
 					if (this.rollTotalPage == this.rollParams.pageIndex) {
 						clearInterval(this.rollTimer)
@@ -327,7 +329,7 @@
 					}
 					// 
 				}
-			}, 501)
+			}, 505)
 		}
 		handleJoin(item: any, index: number) {
 			if (app.token.accessToken == "") {
@@ -536,7 +538,7 @@
 			// if (+new Date() - this.rollRequestTime <= 1000 * 2) return
 			// this.rollRequestTime = +new Date()
 			app.http.Get("activity/snatchTreasure/active/list", this.rollParams, (res: any) => {
-				this.rollTotalPage =res.totalPage || 0
+				this.rollTotalPage = res.totalPage || 0
 				const arr = res.list || [];
 				if (this.rollParams.pageIndex === 1) {
 					this.personJoinList = arr;
@@ -680,6 +682,7 @@
 			top: 456rpx;
 			overflow: hidden;
 
+
 			.rollHidden {
 				display: flex;
 				flex-wrap: nowrap;
@@ -687,6 +690,7 @@
 				position: absolute;
 
 				.rollItem {
+					display: block;
 					// width: 306rpx;
 					height: 38rpx;
 					background-size: 100% 100%;
@@ -721,7 +725,7 @@
 			}
 
 			.rollAnimation {
-				transition: all 0.5s linear;
+				transition: transform 0.5s linear;
 			}
 		}
 

@@ -365,3 +365,65 @@ export function countDown(startDate:number,endDate:number=0, mmbol:boolean=true)
 		return dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
 	}
 }
+//加法函数 用来得到精确的加法结果   
+const add = (a:any, b:any) => {
+	var c, d, e;
+	try {
+		c = a.toString().split(".")[1].length;
+	} catch (f) {
+		c = 0;
+	}
+	try {
+		d = b.toString().split(".")[1].length;
+	} catch (f) {
+		d = 0;
+	}
+	return e = Math.pow(10, Math.max(c, d)), (mul(a, e) + mul(b, e)) / e;
+
+}
+//乘法函数，用来得到精确的乘法结果   
+const mul = (a:any, b:any) => {
+	var c = 0,
+		d = a.toString(),
+		e = b.toString();
+	try {
+		c += d.split(".")[1].length;
+	} catch (f) {}
+	try {
+		c += e.split(".")[1].length;
+	} catch (f) {}
+	return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c);
+}
+//减法函数，用来得到精确的减法结果   
+const sub = (a:any, b:any) => {
+	var c, d, e;
+	try {
+		c = a.toString().split(".")[1].length;
+	} catch (f) {
+		c = 0;
+	}
+	try {
+		d = b.toString().split(".")[1].length;
+	} catch (f) {
+		d = 0;
+	}
+	return e = Math.pow(10, Math.max(c, d)), (mul(a, e) - mul(b, e)) / e;
+
+}
+//除法函数，用来得到精确的除法结果   
+const div = (a:any, b:any) => {
+	var c, d, e = 0,
+		f = 0;
+	try {
+		e = a.toString().split(".")[1].length;
+	} catch (g) {}
+	try {
+		f = b.toString().split(".")[1].length;
+	} catch (g) {}
+	return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), mul(c / d, Math
+		.pow(10,
+			f - e));
+}
+export const calculate={
+	add,mul,div,sub
+}
