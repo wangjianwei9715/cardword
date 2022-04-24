@@ -1,3 +1,15 @@
+// 首页直播状态
+export function getBroadCastStr(state:number){
+     //1 即将拆卡 2 正在拆卡 3 拆卡回放 0 等待拆卡
+    switch(state){
+        case 2:
+            return '正在拆卡';
+        case 3:
+            return '拆卡回放';
+        default:
+            return '即将拆卡'; 
+    }
+}
 // 商品详情拼团形式
 export function getGoodsPintuan(state:number){
     // 拼团形式 1 随机卡种 2 随机球队 3 随机球员 4 随机卡包 5 随机卡盒    

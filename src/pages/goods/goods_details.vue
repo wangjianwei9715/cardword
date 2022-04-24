@@ -34,7 +34,7 @@
 		<view class="detail-index-bg">
 			<view class="detail-bg">
 				<view class="header-content" :class="{'random-bg':getSelectType()}" v-if="goodsState==1">
-					<view class="header-price">¥<text>{{goodsData.price}}</text><text class="price-qi">{{goodsData.isSelect?'起':''}}</text></view>
+					<view class="header-price">¥<text>{{goodsData.price}}</text><text class="price-qi">{{getPriceStart()?'起':''}}</text></view>
 					<view class="header-right">
 						<view class="icon-end">距结束</view>
 						<view class="countdown-content">
@@ -690,6 +690,9 @@
 		// 随机倒计时结束
 		onChangeRandomGood(){
 			this.getGoodSelect()
+		}
+		getPriceStart() {
+			return this.goodsData.isSelect || this.goodsData.pintuan_type == 11
 		}
 		getSelectType(){
 			return this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 10

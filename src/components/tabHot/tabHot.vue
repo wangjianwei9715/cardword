@@ -2,7 +2,7 @@
 	<view class="tab-hot">
 		<view class="tab-hot-box" :class="'tab-hot-box-'+name" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(name)">
 			<view class="tab-hot-boxtitle">{{item.title}}</view>
-			<view class="tab-hot-boxtips">{{name == 'broadCast'?(item.list.state == 2?'正在拆卡':'拆卡回放'):item.tips}}</view>
+			<view class="tab-hot-boxtips">{{name == 'broadCast'?getBroadCastStr():item.tips}}</view>
 			<view class="tab-hot-boxpic-index" v-if="name!='broadCast'">
 				<view class="tab-hot-boxpic-box" v-for="(src,index) in item.list" :key="index" @click="onClickHotTab(src,name)">
 					<image :src="decodeURIComponent(src.pic)" class="tab-hot-boxpic" mode="aspectFit"/>
@@ -25,12 +25,13 @@
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
+	import { getBroadCastStr } from "@/tools/switchUtil";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		hotList:any;
 
-		// allWidth=0;
+		getBroadCastStr = getBroadCastStr;
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -52,22 +53,24 @@
 			});  
 		}
 		onClickLive(item:any){
+			if(item.state != 1 && item.state != 2) return;
+
 			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		onClickHotTab(item:any,name:string){
-			if(name=='hot'){
-				uni.navigateTo({
-					url: "/pages/goods/goods_find_list?hs=" +item.id+'&hsTitle='+item.key||''
-				});  
-			}
+			if(name!='hot') return;
+
+			uni.navigateTo({
+				url: "/pages/goods/goods_find_list?hs=" +item.id+'&hsTitle='+item.key||''
+			});  
 		}
 		onClickHotPic(name:string){
-			if(name=='cardBean'){
-				uni.showToast({
-					title:'5月初开放',
-					icon:'none'
-				})
-			}
+			if(name!='cardBean') return;
+			
+			uni.showToast({
+				title:'5月初开放',
+				icon:'none'
+			})
 		}
 	}
 </script>
