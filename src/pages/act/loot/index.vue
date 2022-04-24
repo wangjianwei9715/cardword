@@ -7,11 +7,11 @@
 			<view class="rightFloatItem rule" @click="toMyPrize"><text>我的奖品</text></view>
 			<view class="rollContent" id='rollContent'>
 				<view class="rollHidden" id='rollHidden' ref='rollHidden' :class="{rollAnimation:rollAnimation}"
-					:style="{transform:`translate3d(${rollX}px,0,0)`}">
+					:style="{left:rollX+'px'}">
+					<!-- left:rollX+'px' -->
+					<!-- transform:`translate3d(${rollX}px,0,0)`} -->
 					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
-						<image
-							:src="item.userAvatar?decodeURIComponent(item.userAvatar):defaultAvatar"
-							mode=""></image>
+						<image :src="item.userAvatar?decodeURIComponent(item.userAvatar):defaultAvatar" mode=""></image>
 						<view class="name oneLineOver">{{item.tp===2?'获得了':'加入了'}}{{item.name}}</view>
 					</view>
 				</view>
@@ -36,7 +36,9 @@
 					<view class="probability publicText uni-flex" v-if="item.status==1">
 						<text>{{dateFormatMSHMS(item.stopData.open_at)}}开奖</text>
 						<view class="getUserInfo">
-							<image :src="item.stopData.userAvatar?decodeURIComponent(item.stopData.userAvatar):defaultAvatar" mode=""></image>
+							<image
+								:src="item.stopData.userAvatar?decodeURIComponent(item.stopData.userAvatar):defaultAvatar"
+								mode=""></image>
 							<view class="name publicText">
 								{{item.stopData.userName}} 中奖
 							</view>
@@ -67,6 +69,7 @@
 			</view>
 		</view>
 		<view class="noneBlock"></view>
+
 		<view class="bottomBlock">
 			<view class="bootomBlock-content">
 				<view class="myEg">
@@ -265,9 +268,16 @@
 		isJoinSuccess: boolean = false;
 		onLoad() {
 			this.firstGetData()
+
 		}
 		onShow() {
 			this.getTaskList();
+			setTimeout(()=>{
+				this.startRollInterval()
+			},500)
+		}
+		onHide(){
+			clearInterval(this.rollTimer)
 		}
 		onReachBottom() {
 			if (this.queryParams.pageIndex < this.totalPage) {
@@ -313,7 +323,18 @@
 			const errorValue: number = 1 //误差值
 			this.rollAnimation = true
 			this.rollTimer = setInterval(() => {
-				this.rollX = calculate.sub(this.rollX, 14.30)
+				this.rollX = calculate.sub(this.rollX, 10)
+				// const query: any = uni.createSelectorQuery().in(this);
+				// query.select('#rollHidden').boundingClientRect((data: any) => {
+				// 	// console.log(data)
+				// 	// this.rollX = calculate.sub(data.left, 10)
+				// 	this.testList.push([this.rollX, data.left])
+					
+					
+				// }).exec(); 
+				
+
+
 				if ((this.rollWidth + this.rollX - errorValue) <= this.phoneWidth) { //即将轮播完
 					if (this.rollTotalPage == this.rollParams.pageIndex) {
 						clearInterval(this.rollTimer)
@@ -326,11 +347,9 @@
 					if (this.rollTotalPage > this.rollParams.pageIndex) {
 						this.rollParams.pageIndex += 1
 						this.getPersonJoin()
-
 					}
-					// 
 				}
-			}, 505)
+			}, 300)
 		}
 		handleJoin(item: any, index: number) {
 			if (app.token.accessToken == "") {
@@ -689,7 +708,8 @@
 				flex-wrap: nowrap;
 				height: 38rpx;
 				position: absolute;
-
+				transform: translate3d(0, 0, 0);
+				visibility: hidden;
 				.rollItem {
 					display: block;
 					// width: 306rpx;
@@ -726,7 +746,8 @@
 			}
 
 			.rollAnimation {
-				transition: transform 0.5s linear;
+				visibility: visible;
+				transition: all 0.3s linear;
 			}
 		}
 
@@ -1144,7 +1165,9 @@
 		position: fixed;
 		transition: all 0.3s;
 		z-index: 1000;
-		bottom: -1500rpx;
+		bottom: 0;
+		transform: translateY(1500rpx);
+		// bottom: -1500rpx;
 		opacity: 0;
 		// bottom: -500rpx;
 		// padding-bottom: constant(safe-area-inset-bottom);
@@ -1238,7 +1261,8 @@
 	}
 
 	.showDrawerCard {
-		bottom: 0;
+		transform: translateY(0rpx);
+		// bottom: 0;
 		opacity: 1;
 	}
 
