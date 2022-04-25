@@ -13,8 +13,8 @@ export default Vue.extend({
     console.log("App Launch");
     if (process.env.NODE_ENV === "development") {
       // console.log("开发环境");
-      app.localTest=true;
-      app.bussinessApiDomain='http://192.168.8.80:8701/api/v2/';
+      // app.localTest=true;
+      // app.bussinessApiDomain='http://192.168.8.79:8701/api/v2/';
       // 正式服测试环境
       // app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
       
@@ -213,14 +213,6 @@ export default Vue.extend({
 @font-face {
   font-family: "DIN";
   src: url("~@/common/DIN/DINAlternateBold.ttf");
-}
-@font-face {
-  font-family: "LT";
-  src: url("~@/common/DIN/lanting.TTF");
-}
-@font-face {
-  font-family: "LTGBK";
-  src: url("~@/common/DIN/ltGBK.TTF");
 }
 @font-face {
   font-family: "eryaxindahei";

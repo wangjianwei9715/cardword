@@ -199,31 +199,25 @@
 			this.onEventUI("showPaySuccess", (res) => {
 				this.showPaySuccess = true;
 			});
-
 			this.onEventUI('appluanchOver',()=>{
-				console.log('appluanchOver=========')
 				if(this.oneLoad){
 					this.version = app.version
 					this.showInitEvent()
 					this.oneLoad = false;
 				}
 			})
-			
-			setTimeout(()=>{
-				if(this.oneLoad){
-					this.version = app.version
-					this.showInitEvent()
-					this.oneLoad = false;
-				}
-			},1000)
 			// #ifdef APP-PLUS
 			
 		}
 		onShow(){
+			// 销毁页面重新加载
+			if(uni.getStorageSync('reLaunch')||(this.goodTabCheck==1&&this.goodsList=='')){
+				this.showInitEvent(()=>{
+					uni.removeStorageSync('reLaunch')
+				})
+			}
 			// #ifndef MP
-			if(!this.oneLoad){
-				this.showInitEvent()
-			}else if (app.localTest) {
+			if (app.localTest) {
 				//开发环境
 				if(this.oneLoad){
 					this.version = app.version
@@ -252,6 +246,18 @@
 					}
 				}
 			});
+			if(this.goodsList!=''){
+				let list = this.goodsList.map((x:any)=>{
+					return x.goodCode;
+				})
+				app.http.Post('good/progress/list',{list:list},(res:any)=>{
+					console.log('good/progress/list',res)
+					this.setNewProgress(res.list)
+				})
+			}
+			if(this.progressList!=''){
+				this.getGoodProgress(this.progressList)
+			}
 			this.networkStatusChange()
 			// 判断是否有邀请上线
 			app.platform.getInvitationClipboard()
@@ -268,7 +274,6 @@
 					});
 					app.platform.appLuanch(false);
 					setTimeout(()=>{
-						this.initEvent();
 						uni.hideLoading();
 					},1000)
 				}
@@ -279,7 +284,7 @@
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
-			this.reqSearchList(()=>{
+			this.showInitEvent(()=>{
 				setTimeout(()=>{
 					uni.stopPullDownRefresh();
 				},1000)
@@ -300,21 +305,18 @@
 					});
 					app.platform.appLuanch(false);
 					setTimeout(()=>{
-						this.initEvent();
 						uni.hideLoading();
 					},1000)
 				}
 			})
 			// #endif
 		}
-		showInitEvent(){
+		showInitEvent(cb?:Function){
 			this.fetchFrom = 1;
 			this.noMoreData = false;
-			this.initEvent()
-			if(this.progressList!=''){
-				this.getGoodProgress(this.progressList)
-			}
-
+			this.initEvent(()=>{
+				if(cb) cb()
+			})
 			if(app.token.accessToken != ''){
 				// 获取是否中卡信息
 				this.getGreet()
@@ -336,7 +338,7 @@
 			this.showWinningCrad = false
 			uni.showTabBar()
 		}
-		initEvent(){
+		initEvent(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
 				// #ifndef MP
@@ -344,7 +346,9 @@
 				this.hotList.broadCast.list = data.broadCast;
 				this.hotList.hot.list = data.hotSeries;
 				// #endif
-				this.reqNewData()
+				this.reqNewData(()=>{
+					if(cb) cb()
+				})
 			})
 			// #ifdef MP-WEIXIN
 			if(app.token.accessToken == ''){
@@ -368,7 +372,6 @@
 					return;
 				}
 				app.http.Post('good/progress/list',{list:val},(res:any)=>{
-					console.log('INDEX progress===',res)
 					this.setNewProgress(res.list)
 				})
 			},30)
@@ -385,9 +388,7 @@
 				console.log('app.service_url=',app.service_url)
 				if(app.service_url==''||app.dataApiDomain==''){
 					uni.removeStorageSync("launchConfig");
-					app.platform.appLuanch(loginToken,()=>{
-						this.initEvent()
-					})
+					app.platform.appLuanch(loginToken)
 				}else{
 					uni.hideLoading()
 					clearInterval(this.getLuanchFnc);

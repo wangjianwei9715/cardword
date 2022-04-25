@@ -53,7 +53,7 @@
 			});  
 		}
 		onClickLive(item:any){
-			if(item.state != 1 && item.state != 2) return;
+			if(item.state == 0) return;
 
 			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}

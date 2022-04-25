@@ -26,7 +26,7 @@
 						<view v-if="item.state==0 || item.state == -1" class="goodslist-priceMsg-right">
 							{{dateFormatMSHMS(item.startAt)}}开售
 						</view>
-						<view v-else class="goodslist-priceMsg-right">
+						<view v-else :id="item.goodCode" class="goodslist-priceMsg-right goodslist-plan-desc">
 							余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
 						</view>
 					</view>
@@ -107,12 +107,8 @@
 			this.selectory()
 		}
 		created() { //在实例创建完成后被立即调用
-
 		}
 		mounted() { //挂载到实例上去之后调用
-			setTimeout(() => {
-				console.log(this.goodsList)
-			}, 2000)
 		}
 		getPlan(lock: number, now: number, all: number) {
 			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
@@ -141,6 +137,7 @@
 			// 实时监控目前显示的商品列表
 			let select = uni.createSelectorQuery().in(this).selectAll('.goodslist-plan-desc');
 			let plan: any = []
+			
 			select.boundingClientRect(res => {
 				let data: any = res
 				if (data) {
@@ -149,7 +146,6 @@
 							plan.push(data[i].id)
 						}
 					}
-
 					if (JSON.stringify(plan) != JSON.stringify(this.showPlan)) {
 						this.showPlan = JSON.parse(JSON.stringify(plan))
 						this.getGoodProgress()
@@ -418,32 +414,6 @@
 			font-weight: bold;
 			color: #fff;
 			text-align: center;
-		}
-
-		&-plan-desc {
-			width: 100%;
-			height: 20rpx;
-			text-align: right;
-			line-height: 20rpx;
-			font-size: 18rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
-			color: #AAAABB;
-			;
-			margin-bottom: 10rpx
-		}
-
-		&-plan-desc-time {
-			width: 100%;
-			height: 20rpx;
-			text-align: right;
-			line-height: 20rpx;
-			font-size: 22rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
-			color: #AAAAAA;
-			;
-			margin-bottom: 10rpx
 		}
 
 		&-plan-now {

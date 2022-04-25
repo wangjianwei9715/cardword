@@ -195,6 +195,7 @@
 		}
 		HttpLogin(params:any){
 			app.http.Post('user/login/phone',params,(data:any)=>{
+				uni.$emit('loginSuccess');
 				app.data = data.data;
 				app.opKey = data.opKey
 				app.coupon = data.data.coupon;
@@ -207,14 +208,14 @@
 				}
 				this.postDomain()
 				uni.setStorageSync("token", JSON.stringify(app.token));
-				uni.switchTab({
-					url: "/pages/index/index",
-				});
-				uni.$emit('loginSuccess');
 				// 判断是否有邀请码
 				if(app.requestKey!=''){
 					app.platform.checkShareNo(app.requestKey)
 				}
+				uni.switchTab({
+					url: "/pages/index/index",
+				});
+				
 			})
 		}
 		postDomain(){
@@ -267,7 +268,10 @@
 		WeChetLogin(params:any){
 			app.http.Post('user/login/wechat/app',params,(data:any)=>{
 				uni.hideLoading();
-				console.log('wechatlogin======',data)
+				uni.$emit('loginSuccess');
+				if(app.requestKey!=''){
+					app.platform.checkShareNo(app.requestKey)
+				}
 				app.data = data.data;
 				app.opKey = data.opKey;
 				app.coupon = data.data.coupon;
@@ -282,16 +286,8 @@
 				uni.switchTab({
 					url: "/pages/index/index",
 				});
-				uni.$emit('loginSuccess');
-				// if(data.data.mustBindPhone){
-				// 	uni.reLaunch({
-				// 		url: "/pages/login/bind_phone"
-				// 	})
-				// }
-				// 判断是否有邀请码
-				if(app.requestKey!=''){
-					app.platform.checkShareNo(app.requestKey)
-				}
+				
+				
 			})
 		}
 		onClickAppleLogin(){

@@ -56,20 +56,22 @@
 		noData = true;
 		onLoad(query:any) {
 			this.initEvent()
-
 			this.onEventUI("loginSuccess", () => {
 				if(this.noData){
 					this.initEvent()
 				}
 			});
 		}
-		initEvent(){
+		onShow(){	
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
+		}
+		initEvent(){
+			
 			this.noData = false;
 			// this.testModule = uni.requireNativePlugin("TestModule");
 			app.http.Get('function/calendar/index',{},(res:any)=>{

@@ -1333,7 +1333,7 @@
 		justify-content: space-between;
 		position: relative;
 		&-left{
-			width: 500rpx;
+			width: 580rpx;
 			height:110rpx;
 			display: flex;
 			align-items: center;
@@ -1345,7 +1345,7 @@
 				background:#F5F5F9
 			}
 			&-desc{
-				width: 380rpx;
+				width: 460rpx;
 				height:110rpx;
 				box-sizing: border-box;
 				padding:20rpx 0 4rpx 30rpx;
@@ -1357,6 +1357,9 @@
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #333333;
+					overflow: hidden;
+					text-overflow:ellipsis;
+					white-space: nowrap;
 				}
 				&-tips{
 					width: 100%;
