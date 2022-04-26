@@ -129,9 +129,8 @@
 		  }
 		  this.httpIng = true
 		  app.http.Get("function/calendar/list", params, (data: any) => {
+			if(this.currentPage == 1) this.calendaList = []
 			if(data.list){
-				if(this.currentPage == 1) this.calendaList = []
-				
 				this.calendaList = this.calendaList.concat(data.list);
 			}
 			if(!data.list || data.list.length<this.pageSize){

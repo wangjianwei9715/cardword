@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<video :src="playData.media_url"  autoplay="true" object-fit="fill" show-fullscreen-btn="false"  class="video">
+		<video :src="playData.media_url"  autoplay="true" object-fit="contain" show-fullscreen-btn="false"  class="video">
 			<cover-view class="self-nav" :style="'top:'+statusBarHeight+'px'" >
 				<cover-view class="nav-bg">
 					<cover-view class="nav-logo-content">

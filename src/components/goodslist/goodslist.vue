@@ -494,8 +494,8 @@
 	}
 
 	.select-team {
-		width: 127rpx;
-		height: 37rpx;
+		width: 112rpx;
+		height: 32rpx;
 		position: absolute;
 		left: 0;
 		top: 0;

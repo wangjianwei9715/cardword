@@ -27,14 +27,13 @@ export module app{
 	export let payment = PayManager.getIns();
     export let http =  HttpRequest.getIns();
     export let needPushIdentifier = true;
-    export let iosPlatform = false
-    export let iosVersion = 1
     export let protobuf:any = null;
     export let data:{[x: string]: any} = {};//登录数据
     export let token = {accessToken:'',refreshToken:''};
     export let needAuth = false;//小程序是否需要授权
     export let opKey = ''; //安全密钥
     export let version = '1.0.0';
+    export let iosPlatform = false;
     export let update:{[x: string]: any} = {};//更新数据
     export let defaultAvatar = '/static/index/moren@2x.png';
     export let payload = '';//unipush跳转参数

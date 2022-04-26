@@ -11,9 +11,8 @@
 		<view class="card-box">
 			<view class="card-index" v-for="(items,indexs) in cardList" :key="indexs">
 				<view class="index-left" :class="{'bingo-name':items.bingo}">{{items.name}}</view>
-				<view  class="index-right" @click="onClickLookCard(items)">
+				<view  class="index-right" :class="{'winning-card':items.state==2}" @click="onClickLookCard(items)">
 					{{items.content}}
-					<view v-if="items.content=='已中卡'" class="index-right-pt"></view>
 				</view>
 			</view>
 		</view>
@@ -295,5 +294,9 @@
 	}
 	.bingo-name{
 		font-weight: bold !important;
+	}
+	.winning-card{
+		background:#ef3333;
+		color:#fff;
 	}
 </style>

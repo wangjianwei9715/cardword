@@ -31,7 +31,7 @@
 			</view>
 			<view class="bottom">
 				<view class="bottom-tip">其它方式登录</view>
-				<view v-if="false" class="icon-apple" @click="onClickAppleLogin"></view>
+				<view v-if="iosLogin" class="icon-apple" @click="onClickAppleLogin"></view>
 				<view class="icon-wechat" @click="onClickWechatLogin"></view>
 			</view>
 		</view>
@@ -73,11 +73,9 @@
 		xieyiAgree = false;
 		codeLogin = false;
 		popupHid = true;
-		iosLogin = false;
+		iosLogin = app.iosPlatform;
 		onLoad(query:any) {
-			if (app.platform.systemInfo.platform == 'ios') {
-				this.iosLogin = true
-			}
+			
 		}
 		bindPickerChange(val:any){
 			this.phoneTypeIndex = val.detail.value;

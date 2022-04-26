@@ -194,7 +194,8 @@ export default class ClassName extends BaseComponent {
     left: 0;
     padding: 0 36rpx;
     background: #fff;
-    transition: all 0.1s linear;
+    transition: all 0.2s linear;
+    opacity: 0;
     overflow: hidden;
     z-index: 9;
     &-index {
@@ -215,6 +216,7 @@ export default class ClassName extends BaseComponent {
   }
   .classify-show {
     height:480rpx;
+    opacity: 1;
   }
   .classify-opt {
     color: #f65d2d;

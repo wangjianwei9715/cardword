@@ -7,7 +7,7 @@
 					<view class="icon-ing"></view>{{item.stateName}}
 				</view>
 				<view class="livelist-top-name">
-					<view class="livelist-top-name-text">{{item.merchant}}</view>
+					<view class="livelist-top-name-title">{{item.merchant}}</view>
 					<view class="livelist-top-name-text">{{item.time}}</view>
 				</view>
 			</view>
@@ -71,13 +71,25 @@
 				height: 80rpx;
 				background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
 				box-sizing: border-box;
-				padding:34rpx 20rpx 0 20rpx;
+				padding:34rpx 10rpx 0 10rpx;
 				position: absolute;
 				bottom:0;
 				left:0;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
+				&-title{
+					max-width: 180rpx;
+					font-size: 22rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #FFFFFF;
+					height: 80rpx;
+					line-height: 80rpx;
+					overflow: hidden;
+					text-overflow:ellipsis;
+					white-space: nowrap;
+				}
 				&-text{
 					font-size: 22rpx;
 					font-family: PingFangSC-Regular, PingFang SC;

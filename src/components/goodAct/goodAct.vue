@@ -5,7 +5,7 @@
 				<view class="detail-act-left">
 					<view class="detail-act-name">活动{{index+1}}</view>
 					<view class="detail-act-desc" v-if="item!='discount'">
-						<view class="detail-act-guess" v-if="item.indexOf('猜球员')!=-1"></view>{{item}}
+						<view class="detail-act-guess" v-if="item.indexOf('猜球队')!=-1"></view>{{item}}
 					</view>
 					<view class="detail-act-desc" v-else>
 						<view class="detail-discount" v-show="discount[index-1]" v-for="index in 2" :key="index">
@@ -74,7 +74,7 @@
 				this.discount = JSON.parse(JSON.stringify(discount))
 			};
 			if((this.goodsData.bit & 8) == 8){
-				this.goodsActData.push('猜球员 赢免单');
+				this.goodsActData.push('猜球队 赢免单');
 			}
 		}
 		onClickActHelp(){

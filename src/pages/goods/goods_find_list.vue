@@ -160,13 +160,7 @@
 				//   this.reqNewData("default");
 				this.reqNewSeries();
 			}
-			// if(app.platform.systemInfo.platform == 'ios' && app.iosVersion%2 !=0){
-			// 	this.goodTab = [
-			// 		{id:1,name:'在售'},
-			// 		{id:0,name:'即将发售'},
-			// 		{id:2,name:'已拼成'}
-			// 	]
-			// }
+			
 		}
 		reqSearchList() {
 			this.goodsList = [];
@@ -335,7 +329,7 @@
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
-				text-align: left;
+				text-align: center;
 			}
 
 			.selectSearchText {

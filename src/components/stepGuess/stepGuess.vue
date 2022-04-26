@@ -22,7 +22,7 @@
 		
 
 
-		<view class="guess-num-box" v-if="freeNum>0">
+		<view class="guess-num-box" v-if="freeNum>0&&state==1">
 			<view class="guess-num-center">
 				<image class="guess-mini" src="../../pages/act/static/guess/guess_mini.png"></image>
 				可免单{{freeNum}}组

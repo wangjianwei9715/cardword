@@ -113,9 +113,11 @@ export default Vue.extend({
     
 
     // #ifdef APP-PLUS
-    app.version = plus.runtime.version || "1.0.0";
-    console.log('app.version==',plus.runtime)
-
+    plus.runtime.getProperty(plus.runtime.appid||'', (widgetInfo) => {
+      app.version = widgetInfo.version || '1.0.0'
+      console.log('app.version==',app.version)
+    })
+    
     plus.device.getOAID({
       complete: (res: any) => {
         if (res.oaid) {

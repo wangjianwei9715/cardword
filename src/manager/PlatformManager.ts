@@ -312,6 +312,7 @@ export default class PlatformManager {
 						console.log("post  /api/app/launch=", res);
 						launchSuccess = true;
 						app.service_url = url;
+						
 						// bussinessApiDomain     主接口域名
 						// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
 						let bussinessApiDomain = res.app.bussinessApiDomain;
@@ -335,15 +336,10 @@ export default class PlatformManager {
 						},100)
 						// #ifdef APP-PLUS
 						app.update_url = url + "/api/";
-						if (uni.getSystemInfoSync().platform === "android") {
-							app.update = UpdateManager.getInstance();
+						if (app.platform.systemInfo.platform == 'ios') {
+							app.iosPlatform = app.platform.validateVersion(app.version,res.app.pingguo)
 						}
-						let iosVersion = Number(res.app.version.substr(0,1));
-						console.log('iosVersion',res.app.version)
-						if (uni.getSystemInfoSync().platform == 'ios' && iosVersion%2 ==0) {
-							app.update = UpdateManager.getInstance();
-							app.iosVersion = iosVersion
-						}
+						app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
 						// #endif
 					});
 					break;
@@ -535,6 +531,17 @@ export default class PlatformManager {
 				valid = true;
 			}, delay)
 		}
+	}
+	validateVersion(a:string, b:string) {
+		if (a === b || !a || !b) {
+			return false
+		}
+		const aArr = a.split('.')
+		const bArr = b.split('.');
+		const res = aArr.map((aStr, index) => {
+			return Number(aStr)>=Number(bArr[index])
+		})
+		return res.every(bool => bool)
 	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false
