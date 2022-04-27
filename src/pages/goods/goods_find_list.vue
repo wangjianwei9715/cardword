@@ -18,12 +18,10 @@
 			</view>
 			<sortTabCopy :maskTop='400' :sortData='sortData' @tagChange='onClickListSortTabs'></sortTabCopy>
 		</view>
-
 		<view class="goods-lists">
 			<statusbar />
 			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow'>
-				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index'
-					@click="clickSerie(item,index)">
+				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index' @click="clickSerie(item,index)">
 					<view class="frameImage">
 						<image class="seriesImg" :src="decodeURIComponent(item.pic_url)" mode="aspectFit"></image>
 					</view>
@@ -275,256 +273,256 @@
 </script>
 
 <style lang="scss">
-	$font-24: 24rpx;
+$font-24: 24rpx;
 
-	page {
-		background: $content-bg;
-	}
+page {
+  background: $content-bg;
+}
 
-	.content {
-		width: 100%;
-		box-sizing: border-box;
-	}
+.content {
+  width: 100%;
+  box-sizing: border-box;
+}
 
-	.goods-scroll {
-		width: 96%;
-		height: 140rpx;
-		display: flex;
-		// margin:0 auto;
-		margin-left: 12rpx;
-		white-space: nowrap;
+.goods-scroll {
+  width: 96%;
+  height: 140rpx;
+  display: flex;
+  // margin:0 auto;
+  margin-left: 12rpx;
+  white-space: nowrap;
 
-		.scrollItem {
-			display: inline-block;
-			width: 116rpx;
-			position: relative;
-			margin-right: 12rpx;
-			.frameImage{
-				width: 100rpx;
-				height: 100rpx;
-				background-color: #fff;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				.seriesImg {
-					width: 80rpx;
-					height: 80rpx;
-				}
-			}
-			.seriesText {
-				text-align: center;
-				font-size: 22rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #333333;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				text-align: center;
-			}
+  .scrollItem {
+    display: inline-block;
+    width: 116rpx;
+    position: relative;
+    margin-right: 12rpx;
+    .frameImage {
+      width: 100rpx;
+      height: 100rpx;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .seriesImg {
+        width: 80rpx;
+        height: 80rpx;
+      }
+    }
+    .seriesText {
+      text-align: center;
+      font-size: 22rpx;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: #333333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+    }
 
-			.selectSearchText {
-				color: #e23737;
-			}
-		}
-	}
+    .selectSearchText {
+      color: #e23737;
+    }
+  }
+}
 
-	.header-banner {
-		width: 100%;
-		background: #fff;
-		position: fixed;
-		left: 0;
-		top: 0;
-		box-sizing: border-box;
-		z-index: 9;
-	}
+.header-banner {
+  width: 100%;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  z-index: 9;
+}
 
-	.header-top {
-		width: 100%;
-		height: 104rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding: 0 20rpx 0 0;
-		z-index: 10;
-		align-items: center;
-		justify-content: space-between;
-	}
+.header-top {
+  width: 100%;
+  height: 104rpx;
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 20rpx 0 0;
+  z-index: 10;
+  align-items: center;
+  justify-content: space-between;
+}
 
-	.header-search {
-		width: 626rpx;
-		height: 64rpx;
-		border-radius: 29rpx;
-		position: relative;
-	}
-	.header-search-input{
-		width: 100%;
-		height: 65rpx;
-		background: #EDECEC;
-		border-radius: 40rpx;
-		position: relative;
-		font-size: 28rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #A3A3A3;
-		line-height: 65rpx;
-		box-sizing: border-box;
-		padding-left: 34rpx;
-		display: flex;
-		align-items: center;
-	}
-	.sousuo-icon{
-		width: 31rpx;
-		height:32rpx;
-		background:url(../../static/index/v2/sousuo.png) no-repeat center;
-		background-size:100% 100%;
-		margin-right: 30rpx;
-	}
-	.search-icon{
-		width: 31rpx;
-		height: 31rpx;
-		position: absolute;
-		right:30rpx;
-		top:50%;
-		margin-top: -15.5rpx;
-		background:#DBDBDB;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 50%;
-	}
-	.search-remove{
-		width: 15rpx;
-		height:14rpx;
-	}
-	.header-back {
-		width: 80rpx;
-		height: 88rpx;
-		background: url(../../static/goods/back@2x.png) no-repeat center;
-		background-size: 100% 100%;
-	}
+.header-search {
+  width: 626rpx;
+  height: 64rpx;
+  border-radius: 29rpx;
+  position: relative;
+}
+.header-search-input {
+  width: 100%;
+  height: 65rpx;
+  background: #edecec;
+  border-radius: 40rpx;
+  position: relative;
+  font-size: 28rpx;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #a3a3a3;
+  line-height: 65rpx;
+  box-sizing: border-box;
+  padding-left: 34rpx;
+  display: flex;
+  align-items: center;
+}
+.sousuo-icon {
+  width: 31rpx;
+  height: 32rpx;
+  background: url(../../static/index/v2/sousuo.png) no-repeat center;
+  background-size: 100% 100%;
+  margin-right: 30rpx;
+}
+.search-icon {
+  width: 31rpx;
+  height: 31rpx;
+  position: absolute;
+  right: 30rpx;
+  top: 50%;
+  margin-top: -15.5rpx;
+  background: #dbdbdb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.search-remove {
+  width: 15rpx;
+  height: 14rpx;
+}
+.header-back {
+  width: 80rpx;
+  height: 88rpx;
+  background: url(../../static/goods/back@2x.png) no-repeat center;
+  background-size: 100% 100%;
+}
 
-	.header-tab {
-		width: 100%;
-		height: 90rpx;
-		margin-top: -10rpx;
-		padding: 0 22rpx;
-		box-sizing: border-box;
-		border-bottom: 1px solid #f1f1f4;
-	}
+.header-tab {
+  width: 100%;
+  height: 90rpx;
+  margin-top: -10rpx;
+  padding: 0 22rpx;
+  box-sizing: border-box;
+  border-bottom: 1px solid #f1f1f4;
+}
 
-	// .header-sort {
-	//   width: 100%;
-	//   height: 72rpx;
-	//   box-sizing: border-box;
-	//   padding: 0 56rpx;
-	//   display: flex;
-	//   align-items: center;
-	//   justify-content: space-between;
-	//   position: relative;
+// .header-sort {
+//   width: 100%;
+//   height: 72rpx;
+//   box-sizing: border-box;
+//   padding: 0 56rpx;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   position: relative;
 
-	//   &-index {
-	//     height: 72rpx;
-	//     display: flex;
-	//     align-items: center;
-	//     box-sizing: border-box;
-	//     font-size: 26rpx;
-	//     font-family: PingFangSC-Regular, PingFang SC;
-	//     font-weight: 400;
-	//     color: #333333;
-	//   }
+//   &-index {
+//     height: 72rpx;
+//     display: flex;
+//     align-items: center;
+//     box-sizing: border-box;
+//     font-size: 26rpx;
+//     font-family: PingFangSC-Regular, PingFang SC;
+//     font-weight: 400;
+//     color: #333333;
+//   }
 
-	//   .current-name {
-	//     color: #e23737;
-	//   }
+//   .current-name {
+//     color: #e23737;
+//   }
 
-	//   .header-sort-icon {
-	//     width: 18rpx;
-	//     margin-left: 4rpx;
-	//     margin-bottom: -4rpx;
+//   .header-sort-icon {
+//     width: 18rpx;
+//     margin-left: 4rpx;
+//     margin-bottom: -4rpx;
 
-	//     .icon-sort-up {
-	//       width: 18rpx;
-	//       height: 12rpx;
-	//       background: url(../../static/goods/sort_u_.png) no-repeat center;
-	//       background-size: 100% 100%;
-	//       margin-bottom: 2rpx;
-	//     }
+//     .icon-sort-up {
+//       width: 18rpx;
+//       height: 12rpx;
+//       background: url(../../static/goods/sort_u_.png) no-repeat center;
+//       background-size: 100% 100%;
+//       margin-bottom: 2rpx;
+//     }
 
-	//     .icon-sort-upn {
-	//       width: 18rpx;
-	//       height: 12rpx;
-	//       background: url(../../static/goods/sort_u.png) no-repeat center;
-	//       background-size: 100% 100%;
-	//       margin-bottom: 2rpx;
-	//     }
+//     .icon-sort-upn {
+//       width: 18rpx;
+//       height: 12rpx;
+//       background: url(../../static/goods/sort_u.png) no-repeat center;
+//       background-size: 100% 100%;
+//       margin-bottom: 2rpx;
+//     }
 
-	//     .icon-sort-down {
-	//       width: 18rpx;
-	//       height: 12rpx;
-	//       background: url(../../static/goods/sort_d_.png) no-repeat center;
-	//       background-size: 100% 100%;
-	//     }
+//     .icon-sort-down {
+//       width: 18rpx;
+//       height: 12rpx;
+//       background: url(../../static/goods/sort_d_.png) no-repeat center;
+//       background-size: 100% 100%;
+//     }
 
-	//     .icon-sort-downn {
-	//       width: 18rpx;
-	//       height: 12rpx;
-	//       background: url(../../static/goods/sort_d.png) no-repeat center;
-	//       background-size: 100% 100%;
-	//     }
-	//   }
+//     .icon-sort-downn {
+//       width: 18rpx;
+//       height: 12rpx;
+//       background: url(../../static/goods/sort_d.png) no-repeat center;
+//       background-size: 100% 100%;
+//     }
+//   }
 
-	//   &-classify {
-	//     width: 100%;
-	//     height: 0;
-	//     box-sizing: border-box;
-	//     position: absolute;
-	//     top: 72rpx;
-	//     left: 0;
-	//     padding: 0 36rpx;
-	//     background: #fff;
-	//     transition: all 0.1s linear;
-	//     overflow: hidden;
+//   &-classify {
+//     width: 100%;
+//     height: 0;
+//     box-sizing: border-box;
+//     position: absolute;
+//     top: 72rpx;
+//     left: 0;
+//     padding: 0 36rpx;
+//     background: #fff;
+//     transition: all 0.1s linear;
+//     overflow: hidden;
 
-	//     &-index {
-	//       width: 100%;
-	//       height: 80rpx;
-	//       box-sizing: border-box;
-	//       border-bottom: 1px solid #f1f1f4;
-	//       display: flex;
-	//       align-items: center;
-	//       font-size: $font-24;
-	//       font-family: PingFangSC-Medium, PingFang SC;
-	//       font-weight: 500;
-	//       color: #14151a;
-	//     }
+//     &-index {
+//       width: 100%;
+//       height: 80rpx;
+//       box-sizing: border-box;
+//       border-bottom: 1px solid #f1f1f4;
+//       display: flex;
+//       align-items: center;
+//       font-size: $font-24;
+//       font-family: PingFangSC-Medium, PingFang SC;
+//       font-weight: 500;
+//       color: #14151a;
+//     }
 
-	//     &-index:last-child {
-	//       border: none;
-	//     }
-	//   }
+//     &-index:last-child {
+//       border: none;
+//     }
+//   }
 
-	//   .classify-show {
-	//     height: 400rpx;
-	//   }
+//   .classify-show {
+//     height: 400rpx;
+//   }
 
-	//   .classify-opt {
-	//     color: #f65d2d;
-	//   }
-	// }
+//   .classify-opt {
+//     color: #f65d2d;
+//   }
+// }
 
-	.goods-lists {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 272rpx 14rpx 60rpx 14rpx;
-	}
+.goods-lists {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 272rpx 14rpx 60rpx 14rpx;
+}
 
-	.sort-shadow {
-		width: 100%;
-		height: 100%;
-		position: fixed;
-		top: 0;
-		left: 0;
-		z-index: 8;
-		background: rgba(0, 0, 0, 0.5);
-	}
+.sort-shadow {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 8;
+  background: rgba(0, 0, 0, 0.5);
+}
 </style>
