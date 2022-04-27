@@ -439,18 +439,22 @@
 		background:#666666
 	}
 	.goods-right-box{
-		width:33rpx;
+		width:80rpx;
 		height:126rpx;
 		box-sizing: border-box;
 		padding:14rpx 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		align-items: flex-start;
 	}
 	.goods-right-text{
 		width: 100%;
-		text-align: center;
+		text-align: right;
 		font-size: 22rpx;
 		font-weight: 400;
 		color: #666666;
-		margin-top: 10rpx;
+		margin-top: -10rpx;
 	}
 	.goods-right-like{
 		width: 33rpx;

@@ -6,7 +6,6 @@
 				<view class="icon-back" @click="onClickBack"></view>
 				<view class="header-title">金卡积分榜单</view>
 				<view class="header-icon">
-					<!-- <view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view> -->
 					<view class="icon-share" @click="onClickShare"></view>
 				</view>
 			</view>
@@ -16,7 +15,6 @@
 			<statusbar />
 		</view>
 		<view class="topBanner">
-			<view class="topTitle"></view>
 			<view class="rightFloat" @click="pageJump('/pages/act/goldRank/goldRank_rule')">
 				<text>活动<br>规则</text>
 			</view>
@@ -73,9 +71,9 @@
 			<template>
 				<view class="residueRank uni-flex" v-for="(item,index) in getTopThreeList" :key="index">
 					<view class="residueRank-index">{{item.ranking}}</view>
-					<image v-show="item.userName!='虚位以待'&&item.gold_value!=0" class="residueRank-avart"
-						:src="item.userAvatar?decodeURIComponent(item.userAvatar):defaultAvatar">
-					</image>
+					<easyLoadimage v-show="item.userName!='虚位以待'&&item.gold_value!=0" class="residueRank-avart"
+						:image-src="item.userAvatar?decodeURIComponent(item.userAvatar):defaultAvatar" :borderRadius="50" loading-mode="spin-circle" :scroll-top="scrollTop">
+					</easyLoadimage>
 					<view class="residueRank-name oneLineOver"
 						:style="{width:(item.userName=='虚位以待'&&item.gold_value==0)?'202rpx':'17%'}">{{item.userName}}
 					</view>
@@ -89,12 +87,6 @@
 					<view class="residueRank-prize oneLineOver">{{item.awardName}}</view>
 				</view>
 			</template>
-			<!-- <template v-if="getUnoccupied">
-				<view class="residueRank uni-flex" v-for="(item,index) in getUnoccupied" :key='"none"+index'>
-					<view class="residueRank-index">{{rankList.length>3?index+rankList.length+1:index+4}}</view>
-					<view class="residueRank-none">虚位以待</view>
-				</view>
-			</template> -->
 		</view>
 		<view class="noneBlock"></view>
 		<view class="bottomBlock">
@@ -129,7 +121,9 @@
 		formatNumber,
 		countDown
 	} from '@/tools/util'
-	@Component({})
+import easyLoadimage from "@/components/easy-loadimage/easy-loadimage.vue";
+	@Component({
+  components: { easyLoadimage },})
 	export default class ClassName extends BaseComponent {
 		queryParams: any = {
 			tp: 2, //1 今日榜单数据，2 总榜数据
@@ -170,12 +164,15 @@
 		myData: any = {}; //个人rank数据
 		rankList: any = [];
 		rollStart = false;
+		scrollTop = 0;
 		onLoad() {
-			this.reqNewData()
 			this.reqCarouselData()
-			this.$nextTick(() => {
+			this.reqNewData(()=>{
 				this.startCountDown()
 			})
+		}
+		onPageScroll(e:any){
+			this.scrollTop = e.scrollTop
 		}
 		onReachBottom() {
 			if (this.queryParams.pageIndex < this.totalPage) {
@@ -185,7 +182,11 @@
 		}
 		onPullDownRefresh() {
 			this.queryParams.pageIndex = 1
-			this.reqNewData()
+			this.reqNewData(()=>{
+				setTimeout(()=>{
+					uni.stopPullDownRefresh();
+				},500)
+			})
 		}
 		tagChange(item: any, index: number) {
 			if (this.tag.index == index) return
@@ -251,16 +252,10 @@
 				setTimeout(()=>{
 					this.rollStart = res.list ? true : false;
 				},500)
-				this.$nextTick(() => {
-					const query: any = uni.createSelectorQuery().in(this);
-					query.select('#rollContent').boundingClientRect((data: any) => {
-						// console.log(data.width)
-					}).exec();
-				})
 			})
 		}
 		//获取rank榜以及个人rank数据
-		reqNewData() {
+		reqNewData(cb?:Function) {
 			app.http.Get(
 				"activity/goodNoShowGoldValue/home",
 				this.queryParams,
@@ -269,21 +264,9 @@
 					const arr = res.data.rankingList || []
 					this.rankList = this.queryParams.pageIndex == 1 ? arr : [...this.rankList, ...arr]
 					this.myData = res.data.myData || {}
-					// this.unoccupied = res.data.unoccupied
-					uni.hideLoading()
-
-					setTimeout(() => {
-						uni.stopPullDownRefresh();
-					}, 500);
+					if(cb) cb()
 				}
 			);
-		}
-		private get getUnoccupied() {
-			let unoccupied: number = 0
-			let len: number = this.rankList.length
-			if (len <= 3) unoccupied = this.unoccupied - (3 - len)
-			if (len > 3) unoccupied = this.unoccupied
-			return unoccupied < 0 ? 0 : unoccupied
 		}
 		private get getTopThreeList() {
 			return this.rankList.slice(3)
@@ -431,11 +414,6 @@
 		position: relative;
 		background-size: 100% 100%;
 		background-image: url(../../../static/act/goldRank/topBanner.png);
-
-		.topTitle {
-			background-size: 100% 100%;
-			background-image: url(../../../static/act/goldRank/topBanner.png);
-		}
 
 		.rightFloat {
 			width: 118rpx;

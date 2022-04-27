@@ -13,7 +13,7 @@ export module app{
 
     // 发布环境
     export let localTest=false;
-    export let bussinessApiDomain='https://server.ssl1.ka-world.com/api/v1/';
+    export let bussinessApiDomain='https://server.ssl1.ka-world.com/api/v2/';
     // 热更新地址
     export let update_url='http://service.s1.ka-world.com/';
     // 请求的service地址
