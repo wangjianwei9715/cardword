@@ -137,7 +137,7 @@
 		width: 100%;
 		height:100rpx;
 		box-sizing: border-box;
-		border-bottom: 1px solid #F2F2F2;
+		border-bottom: 1px solid $content-bg;
 		display: flex;
 		align-items: center;
 	}
@@ -169,18 +169,18 @@
 	}
 	.info-btn{
 		width: 668rpx;
-		height: 68rpx;
 		background: #FB4E3E;
-		border-radius: 34rpx;
 		text-align: center;
-		line-height: 68rpx;
-		font-size: 32rpx;
 		font-family: Microsoft YaHei;
-		font-weight: 400;
 		color: #FFFFFF;
 		position: fixed;
 		bottom:64rpx;
 		left:50%;
 		margin-left: -334rpx;
+		height: $btn-height;
+		line-height: $btn-height;
+		font-size: $btn-fontSize;
+		border-radius:$btn-radius;
+		font-weight: $btn-weight;
 	}
 </style>

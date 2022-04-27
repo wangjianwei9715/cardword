@@ -2,8 +2,8 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "2.6.4",
-    "versionCode" : 100,
+    "versionName" : "2.8.7",
+    "versionCode" : 200,
     "transformPx" : false,
     "networkTimeout" : {
         "request" : 5000,
@@ -71,8 +71,17 @@
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
+                "permissionExternalStorage" : {
+                    "request" : "once",
+                    "prompt" : "应用保存运行状态等信息，需要获取读写手机存储（系统提示为访问设备上的照片、媒体内容和文件）权限，请允许。"
+                },
+                "permissionPhoneState" : {
+                    "request" : "once",
+                    "prompt" : "为保证您正常、安全的使用，需要获取设备识别码（部分手机提示为获取手机号码）请允许。"
+                },
                 "schemes" : "kawowang",
-                "minSdkVersion" : 22
+                "minSdkVersion" : 22,
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a" ]
             },
             "ios" : {
                 "urltypes" : "ttauction",
@@ -272,7 +281,8 @@
         "uniStatistics" : {
             "enable" : true
         }
-    }
+    },
+    "vueVersion" : "2"
 }
 /* 快应用特有相关 *//* 小程序特有相关 */
 

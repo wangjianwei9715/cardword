@@ -1,18 +1,6 @@
 <template>
 	<view class="step-guess">
-		<!-- 预测导航 -->
-		<view class="no-order" v-if="!order">
-			<view class="guess-left">
-				活动
-				<image class="guess-icon" src="../../pages/act/static/guess/guess_icon.png"></image>
-			</view>
-			<view class="guess-right" @click="onClickGuessRules">
-				<view class="guess-right-text">猜球队</view>
-				<view class="guess-right-text">赢免单</view>
-				<button class="guess-header-right">&#xe470;</button>
-			</view>
-		</view>
-		<view class="order-guess-box" v-else>
+		<view class="order-guess-box" >
 			<view  class="order-guess">
 				<view class="guess-left">
 					<image class="guess-icon" src="../../pages/act/static/guess/guess_icon.png"></image>
@@ -24,7 +12,7 @@
 			</view>
 			<view v-if="surplusNum>0" class="order-guess-free">
 				<image class="guess-icon-kefu" src="../../pages/act/static/guess/kefu.png"></image>
-				您有{{surplusNum}}次免单机会未使用，可联系客服退款
+				您有{{surplusNum}}组免单机会未使用，可联系客服退款
 			</view>
 
 			<view v-if="guessSuccess" class="order-guess-successbox" @click="onClickSuccessHide">
@@ -34,28 +22,29 @@
 		
 
 
-		<view class="guess-num-box" v-if="freeNum>0">
+		<view class="guess-num-box" v-if="freeNum>0&&state==1">
 			<view class="guess-num-center">
 				<image class="guess-mini" src="../../pages/act/static/guess/guess_mini.png"></image>
-				可免单{{freeNum}}次
+				可免单{{freeNum}}组
 			</view>
 		</view>
 
-		<view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
-		<view class="drawer-content" :class="{'show-drawer':showDrawer}">
-			<view class="drawer-content-header">预测卡密规则</view>
-			<view class="drawer-content-box">
-				<view class="drawer-contnet-desc" v-for="(item,index) in rulesData" :key="index">{{item}}</view>
-				<view class="drawer-content-tips">*上述活动说明仅做一般参考，最终解释权归平台所有</view>
+		<bottomDrawer :showDrawer="showDrawer" :title="'预测卡密规则'" @closeDrawer="onClickCloseDrawer">
+			<view class="drawer-box">
+				<view class="drawer-helpmsg">
+					<view class="drawer-help-title">{{rulesData.title}}</view>
+					<view class="drawer-help-content" v-html="rulesData.content"></view>
+				</view>
 			</view>
-			<image class="close-pic" @click="onClickCloseDrawer" src="../../static/pay/guanbi@2x.png"></image>
-		</view>
+    	</bottomDrawer>
+		
 	</view>
 </template>
 
 <script lang="ts">
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import { guessRules } from "@/net/DataRules";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
@@ -74,13 +63,7 @@
 		guessName:string|undefined;
 
 		showDrawer = false;
-		rulesData = [
-			'1.购买本商品时可预测卡密所归属的球队，获得卡密后，预测的球队与卡密匹配即可获得免单购买机会',
-			'2.单笔订单可预测1支球队，每匹配成功一条卡密均可获得一次免单机会',
-			'3.免单机会可在创建订单时使用，免单的订单仍可进行卡密预测',
-			'4.卡密中包含多支球队时，预测的球队与卡密中任意一支球队匹配则算预测成功',
-			'5.若商品拼团完成，您有免单次数未用完，可联系客服退款 (退款额度=剩余免单次数*商品单价)'
-		]
+		rulesData = guessRules
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -109,7 +92,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: 23rpx;
+		margin-bottom: 13rpx;
 	}
 	.no-order{
 		width: 722rpx;
@@ -128,7 +111,6 @@
 		background:#fff;
 		padding:0 20rpx;
 		box-sizing: border-box;
-		padding-bottom: 15rpx;
 	}
 	.order-guess{
 		width: 100%;
@@ -145,7 +127,7 @@
 		box-sizing: border-box;
 		padding:0 12rpx;
 		font-size: 19rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: rgba(228, 78, 78,0.97);;
 	}
@@ -159,7 +141,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 28rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 	}
@@ -183,7 +165,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 25rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 	}
@@ -199,7 +181,7 @@
 		height:67rpx;
 		line-height: 67rpx;
 		font-size: 25rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 		margin-right: 10rpx;
@@ -273,7 +255,7 @@
 	.drawer-contnet-desc{
 		width: 100%;
 		font-size: 26rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #525151;
 		line-height: 40rpx;
@@ -281,7 +263,7 @@
 	}
 	.drawer-content-tips{
 		font-size: 24rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #CF3737;
 		line-height: 40rpx;
@@ -296,14 +278,16 @@
 		z-index: 100;
 	}
 	.guess-num-box{
-		width: 205rpx;
-		height:53rpx;
+		width: 197rpx;
+		height:40rpx;
 		background:url(../../pages/act/static/guess/guess_tips.png) no-repeat center;
 		background-size: 100% 100%;
 		position: fixed;
-		bottom:calc(112rpx + env(safe-area-inset-bottom));
+		bottom:calc(100rpx);
+		bottom:calc(100rpx + constant(safe-area-inset-bottom));
+		bottom:calc(100rpx + env(safe-area-inset-bottom));
 		right:25rpx;
-		z-index: 9;
+		z-index: 99;
 	}
 	.guess-mini{
 		width: 45rpx;
@@ -312,13 +296,13 @@
 	}
 	.guess-num-center{
 		width: 100%;
-		height:42rpx;
+		height:32rpx;
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
 		padding-left: 12rpx;
 		font-size: 20rpx;
-		font-family: FZLanTingHeiS-R-GB;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #FFFFFF;
 	}
@@ -338,5 +322,27 @@
 		left:0;
 		top:50%;
 		margin-top: -360rpx;
+	}
+	.drawer-helpmsg{
+		width: 100%;
+		box-sizing: border-box;
+		line-height: 40rpx;
+	}
+	.drawer-help-title{
+		font-size: 27rpx;
+		font-family: PingFangSC-Medium;
+		font-weight: bold;
+		color:#333333;
+		margin:15rpx 0rpx;
+	}
+	.drawer-help-content{
+		width: 100%;
+		font-size: 25rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #7D8288;
+		white-space: pre-wrap;
+		line-height: 35rpx;
+		margin-bottom: 50rpx;
 	}
 </style>

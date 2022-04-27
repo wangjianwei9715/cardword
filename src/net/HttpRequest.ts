@@ -19,7 +19,6 @@ export default class HttpRequest {
     private constructor() {
 		var domain = ''
 		domain = app.bussinessApiDomain
-		console.log('domain=========',domain)
 		let systemInfo = app.platform.getAppInfo();
 
 		
@@ -69,12 +68,7 @@ export default class HttpRequest {
 				app.opKey = uni.getStorageSync('app_opk')
 			}
 			config.baseURL = app.bussinessApiDomain
-			// let math = Math.random()*10;
-			// if(math<5){
-			// 	app.domaintest = 'http://192.168.0.38:8702/api/v1/'
-			// }else{
-			// 	app.domaintest = 'http://192.168.0.38:8701/api/v1/'
-			// }
+			
 			let url = config.url+'';
 			if (url.indexOf("user/login/phone") == -1&&url.indexOf("user/code") == -1&&url.indexOf("user/forget") == -1) {//验证码、刷新、登录 首页接口不需要token &&config.url!='xingqiu/refresh_lists'&&config.url!='xingqiu/index_act'
 				if (!config.headers['token']) {
@@ -151,7 +145,6 @@ export default class HttpRequest {
 					config.baseURL = app.dataApiDomain;
 				}
 				// #endif
-				console.log('config.baseURL====',config.baseURL)
 			}
 			
 			if(url.indexOf("app/launch") != -1||url.indexOf("app/onlinecfg") != -1){

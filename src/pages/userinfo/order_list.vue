@@ -68,7 +68,6 @@
 		onPullDownRefresh(){
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.orderList = []
 			this.reqNewData(()=>{
 				uni.stopPullDownRefresh();
 			}) 
@@ -101,13 +100,10 @@
 			params.q = encodeURIComponent(this.searchText)
 		  }
 		  app.http.Get("me/order/buyer/orderList", params, (data: any) => {
+			if(this.currentPage==1) this.orderList = []
 			if(data.list){
 				this.showEmpty = false;
-				if(this.currentPage==1){
-					this.orderList = data.list;
-				}else{
-					this.orderList = this.orderList.concat(data.list);
-				}
+				this.orderList = this.orderList.concat(data.list);
 			}
 			if(!data.list&&this.currentPage==1){
 				this.showEmpty = true;
@@ -122,7 +118,6 @@
 		againReqNewData(){
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.orderList = []
 			this.reqNewData() 
 		}
 		
@@ -195,7 +190,6 @@
 								this.againReqNewData()
 							})
 						} else if (res.cancel) {
-							console.log('用户点击取消');
 						}
 					}
 				});
@@ -229,7 +223,6 @@
 								this.againReqNewData()
 							})
 						} else if (res.cancel) {
-							console.log('用户点击取消');
 						}
 					}
 				});
@@ -299,7 +292,7 @@
 
 <style lang="scss">
 	page{
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.header-banner{
 		width: 100%;
@@ -347,7 +340,7 @@
 	.order-list{
 		width: 100%;
 		box-sizing: border-box;
-		padding: 204rpx 20rpx 20rpx 20rpx;
+		padding: 196rpx 14rpx 14rpx 14rpx;
 	}
 	.search-input{
 		width: 626rpx;

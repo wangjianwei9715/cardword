@@ -8,7 +8,7 @@
 			<view class="header-tips">新品发售  抢先知晓~</view>
 			<view class="reward">
 				<view class="reward-index" v-for="(item,index) in calendarList" :key="index">
-					<image class="reward-img" :src="decodeURIComponent(item.pic_url_cover)" mode="aspectFit"></image>
+					<image class="reward-img" :src="decodeURIComponent(item.pic_url_cover)" mode="aspectFill"></image>
 					<view class="reward-name">{{dateFormatMSCustom(item.public_day,'/')}}</view>
 				</view>
 			</view>
@@ -56,20 +56,22 @@
 		noData = true;
 		onLoad(query:any) {
 			this.initEvent()
-
 			this.onEventUI("loginSuccess", () => {
 				if(this.noData){
 					this.initEvent()
 				}
 			});
 		}
-		initEvent(){
+		onShow(){	
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
+		}
+		initEvent(){
+			
 			this.noData = false;
 			// this.testModule = uni.requireNativePlugin("TestModule");
 			app.http.Get('function/calendar/index',{},(res:any)=>{
@@ -118,31 +120,31 @@
 	.content{
 		width: 100%;
 		box-sizing:border-box;
-		padding:20rpx
+		padding:14rpx
 	}
 	.index{
 		width: 100%;
 		background: #FFFFFF;
-		border-radius: 20rpx;
 		box-sizing: border-box;
-		padding:36rpx;
-		margin-bottom: 24rpx;
+		padding:30rpx 25rpx;
+		margin-bottom: 17rpx;
 		position:relative
 	}
 	.header{
 		width: 100%;
-		height:40rpx;
+		height:30rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: 10rpx;
+		margin-bottom: 16rpx;
 	}
 	.header-left{
-		height:40rpx;
-		line-height: 40rpx;
-		font-size: 36rpx;
-		font-weight: bold;
-		color: #000;
+		height:30rpx;
+		line-height: 30rpx;
+		font-size: 31rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 600;
+		color: #333333;
 	}
 	.header-right{
 		height:40rpx;
@@ -156,10 +158,10 @@
 	}
 	.header-tips{
 		width: 100%;
-		font-size: 24rpx;
-		font-family: Source Han Sans CN;
-		font-weight: normal;
-		color: #5D5D5D;
+		font-size: 27rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #87868B;
 	}
 	.reward{
 		width: 100%;
@@ -168,28 +170,27 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
-		margin-top: 50rpx;
+		margin-top: 20rpx;
 
 	}
 	.reward-index{
-		width: 130rpx;
+		width: 162rpx;
 		height:170rpx;
-		margin-right: 38rpx;
+		margin-right: 7rpx;
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;
 	}
 	.reward-img{
-		width: 130rpx;
-		height:130rpx;
-		border-radius: 10rpx;
+		width: 162rpx;
+		height:124rpx;
 	}
 	.reward-name{
 		width: 130rpx;
 		height:30rpx;
 		line-height: 30rpx;
 		margin-top: 10rpx;
-		font-size: 24rpx;
+		font-size: 27rpx;
 		font-family: Source Han Sans CN;
 		font-weight: 500;
 		color: #5D5D5D;
@@ -205,19 +206,19 @@
 		margin-top: 30rpx;
 	}
 	.icon-right2{
-		width: 11rpx;
-		height:19rpx;
-		background:url(../act/static/pingtai/icon_right2.png) no-repeat center;
+		width: 13rpx;
+		height:21rpx;
+		background:url(../../static/index/v2/icon_right.png) no-repeat center;
 		background-size: 100% 100%;
 	}
 	.icon-search{
-		width: 43rpx;
-		height:44rpx;
+		width: 31rpx;
+		height:32rpx;
 		position: absolute;
-		right:36rpx;
+		right:28rpx;
 		top:50%;
-		margin-top: -24rpx;
-		background:url(../act/static/pingtai/search.png) no-repeat center;
+		margin-top: -20rpx;
+		background:url(../../static/index/v2/sousuo.png) no-repeat center;
 		background-size: 100% 100%;
 
 	}

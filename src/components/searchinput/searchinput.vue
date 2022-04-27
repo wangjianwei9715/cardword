@@ -1,5 +1,9 @@
 <template>
-	<view class="header-search" @click="onClickSearch"><view class="search-icon"></view>{{searchText}}</view>
+	<view class="header-search-input" @click="onClickSearch">
+		<view class="sousuo-icon"></view>
+		{{searchText}}
+		<view class="search-icon">搜索</view>
+	</view>
 </template>
 
 <script lang="ts">
@@ -25,29 +29,31 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	/* #ifndef MP */
-	.header-search{
+	.header-search-input{
 		width: 100%;
-		height:64rpx;
-		background: #F2F2F2;
-		border-radius: 4rpx;
-		box-sizing: border-box;
-		display: flex;
-		padding-left: 28rpx;
-		align-items: center;
-		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		height: 65rpx;
+		background: #FFFFFF;
+		border: 2rpx solid $btn-red;
+		border-radius: 40rpx;
+		position: relative;
+		font-size: 28rpx;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
-		color: #AAAABB;
-		border-radius: 29rpx;
+		color: #A3A3A3;
+		line-height: 65rpx;
+		box-sizing: border-box;
+		padding-left: 34rpx;
+		display: flex;
+		align-items: center;
 	}
 	/* #endif */
 	/* #ifdef MP */
-	.header-search{
+	.header-search-input{
 		width: 710rpx;
 		height:64rpx;
-		background: #F2F2F2;
+		background: $content-bg;
 		border-radius: 4rpx;
 		box-sizing: border-box;
 		display: flex;
@@ -60,11 +66,28 @@
 		border-radius: 29rpx;
 	}
 	/* #endif */
-	.search-icon{
-		width: 28rpx;
-		height:28rpx;
-		background:url(../../static/index/sousuo@2x.png) no-repeat center;
+	.sousuo-icon{
+		width: 31rpx;
+		height:32rpx;
+		background:url(../../static/index/v2/sousuo.png) no-repeat center;
 		background-size:100% 100%;
-		margin-right: 20rpx;
+		margin-right: 30rpx;
+	}
+	.search-icon{
+		width: 113rpx;
+		height: 54rpx;
+		background: $btn-red;
+		border-radius: 30rpx;
+		position: absolute;
+		right:3rpx;
+		top:50%;
+		margin-top: -27rpx;
+		text-align: center;
+		line-height: 54rpx;
+		font-size: 28rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #FFFFFF;
+		box-sizing: border-box;
 	}
 </style>

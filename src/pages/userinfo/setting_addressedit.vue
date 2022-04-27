@@ -197,7 +197,7 @@
 	.left-title {
 		width: 120rpx;
 		font-size: 26rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 		line-height: 40rpx;
@@ -239,7 +239,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 24rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 	}
@@ -251,7 +251,7 @@
 		text-align: center;
 		line-height: 88rpx;
 		font-size: 28rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #FFFFFF;
 		margin-top: 40rpx;

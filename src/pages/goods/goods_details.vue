@@ -6,7 +6,10 @@
 			<view class="tab-header">
 				<view class="icon-back" @click="onClickBack"></view>
 				<view class="header-title">商品详情</view>
-				<view class="icon-share" @click="onClickShare"></view>
+				<view class="header-icon">
+					<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
+					<view class="icon-share" @click="onClickShare"></view>
+				</view>
 			</view>
 		</view>
 		
@@ -16,91 +19,76 @@
 		<!-- #endif -->
 		<!-- 商品图片价格 -->
 		<view class="pic-content">
-			<swiper class="swiper" :indicator-dots="goodsImg.length>1" autoplay="true" circular="true" indicator-active-color="#ffffff">
+			<swiper class="swiper" :current="swiperCurrent" autoplay="true" circular="true" indicator-active-color="#ffffff" @change="onChangeSwiperCurrent">
 				<swiper-item v-for="(item,index) in goodsImg" :key="index" @click="onClickPreviewImage(index)">
 					<view class="goods-img-content">
 						<image class="goods-img" :src="item" mode="aspectFill" />
 					</view>
 				</swiper-item>
 			</swiper>
+			<view class="swiper-popup">
+				<view class="swiper-dots">{{swiperCurrent+1}}/{{goodsImg.length}}</view>
+				<view class="swiper-btn" v-show="goodsData.pic&&goodsData.pic.yuanfeng" :class="{'swiper-btn-current':swiperTabCurrent==index}" v-for="(item,index) in swiperTab" :key="index" @click="onClickSwiperTab(index)">{{item}}</view>
+			</view>
 		</view>
 		<view class="detail-index-bg">
 			<view class="detail-bg">
-				<view :class="['header-content',{'header-content-end':goodsState!=1}]">
-					<view class="header-price" :class="goodsState!=1?'price-black':''">¥<text>{{goodsData.price}}</text><text class="price-qi">{{goodsData.isSelect?'起':''}}</text></view>
-					<view class="header-right" v-if="goodsState==1">
+				<view class="header-content" :class="{'random-bg':getSelectType()}" v-if="goodsState==1">
+					<view class="header-price">¥<text>{{goodsData.price}}</text><text class="price-qi">{{getPriceStart()?'起':''}}</text></view>
+					<view class="header-right">
 						<view class="icon-end">距结束</view>
 						<view class="countdown-content">
-							<view v-if="countDay>0" class="countdown-icon">{{countDay}}天</view>
-							<view class="countdown-index">{{countHour}}</view>
+							<view v-if="countDay>0" class="countdown-index">{{countDay}}</view>
+							<view v-if="countDay>0" class="countdown-index countdown-day">天</view>
+							<view class="countdown-index">{{getCountStr(countHour,0)}}</view>
+							<view class="countdown-index">{{getCountStr(countHour,1)}}</view>
 							<view class="countdown-icon">:</view>
-							<view class="countdown-index">{{countMinute}}</view>
+							<view class="countdown-index">{{getCountStr(countMinute,0)}}</view>
+							<view class="countdown-index">{{getCountStr(countMinute,1)}}</view>
 							<view class="countdown-icon">:</view>
-							<view class="countdown-index">{{countSecond}}</view>
+							<view class="countdown-index">{{getCountStr(countSecond,0)}}</view>
+							<view class="countdown-index">{{getCountStr(countSecond,1)}}</view>
 						</view>
 					</view>
-					<view class="header-right-end" v-else>
-						{{goodsState==-1||goodsState==0?'等待开售':switchGoodsState(goodsState)}}
-					</view>
+					
 				</view>
 				<view class="header">
 					<view class="header-top">
-						<view class="header-top-left">
-							<view class="youhui" v-if="discountList!=''"><view class="icon-tips" v-for="(item,index) in discountList" :key="index">{{item.content}}</view></view>
-							<view class="header-top-left-title">{{goodsData.title}}</view>
+						<view class="header-top-title">
+							{{goodsData.title}}
 						</view>
-						<view class="header-top-right" @click="onClickFavor">
-							<view :class="['icon-favor',{'icon-favored':favorType}]"></view>
-							<view class="header-top-right-desc">收藏</view>
+
+						<view class="header-top-plan">
+							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
+								<view class="progress-mask" :style="{width:(100-getPlan(goodsData.lockNum,goodsData.currentNum,goodsData.totalNum))+'%'}"></view>
+							</view>
+							<view class="header-top-plan-num">
+								余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}
+								<view class="header-top-plan-numbottom">{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
+							</view>
 						</view>
 					</view>
-					<view class="header-top-id">商品ID：{{goodsId}}</view>
+					
+					<view class="header-bottom">
+						<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id" @click="onClickCardPlay(item)">
+							<image class="header-bottom-index-pic" :src="item.icon" />
+							<view class="header-bottom-index-name">{{item.name}}</view>
+							<view class="header-bottom-index-desc">{{item.desc}}</view>
+						</view>
+					</view>
+					<!-- <view class="header-top-id">商品ID：{{goodsId}}</view> -->
 				</view>
 			</view>
 			
 			<!-- 邀请新人步骤图 -->
 			<inviteStep v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" :goodsStep="true"/>
 			<!-- 邀请新人步骤图 -->
-
-			<!-- 预测卡密 -->
-			<stepGuess v-if="guessType" :freeNum="guessFreeNum"/>
-			<!-- 预测卡密 -->
-
-			<view class="detail-bg">
-				<view class="header">
-					<view class="header-desc-title">拼团信息</view>
-					<view class="header-center">
-						<view class="header-center-top">余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}<text class="header-center-lock">{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</text></view>
-						<view class="header-center-plan"><plan :num_ex="(goodsData.currentNum+goodsData.lockNum)" :num_all="goodsData.totalNum"></plan></view>
-						<!-- <view class="header-center-actor" v-if="goodsData.lastBuyerList">
-							<image class="header-center-actor-img" v-for="(item,index) in goodsData.lastBuyerList" :key="index" :src="item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFit"></image>
-						</view> -->
-					</view>
-					<view class="header-bottom">
-						<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id" @click="onClickCardPlay(item)">
-							<view class="header-bottom-index-name">{{item.name}}</view>
-							<view class="header-bottom-index-desc">{{item.desc}}<view v-if="item.id<=2" class="icon-tishi"></view></view>
-						</view>
-					</view>
-					
-				</view>
-			</view>
 			
-			<!-- 卡片展示 -->
-			<view class="detail-bg">
-				<view class="goods-card" >
-					<view class="goods-card-title">
-						<view class="goods-card-title-name">商品特色</view>
-						<view class="goods-card-title-more" @click="onClickAllCard">编号列表</view>
-					</view>
-					<view class="goods-card-content">
-						<scroll-view class="goods-card-content-scroll" :scroll-x="true">
-							<view class="scroll-index" v-for="(item,index) in cardData" :key="index" @click="onClickPreviewCard(index)">
-								<image :lazy-load="true" class="scroll-index-img" :src="decodeURIComponent(item)" mode="aspectFit"/>
-							</view>
-						</scroll-view>
-					</view>
-				</view>
+			<!-- 活动展示 -->
+			<goodAct :goodsData="goodsData" />
+
+			<view class="detail-bg" v-if="goodsData.extraDesc">
+				<view class="special-explain">{{goodsData.extraDesc}}</view>
 			</view>
 			
 			<!-- 卖家信息 -->
@@ -110,26 +98,51 @@
 						<image class="goods-seller-left-avatar" :src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar" mode="aspectFill"/>
 						<view class="goods-seller-left-desc">
 							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
-							<view class="goods-seller-left-desc-tips">已拼团{{goodsData.publisher.deal}}组</view>
-							<view v-if="goodsData.specialType!='fuhe'" class="goods-seller-left-desc-js"><view class="goods-seller-left-desc-icon"></view>商品由该商家在平台寄售</view>
+							<view class="goods-seller-left-desc-tips">粉丝{{goodsData.publisher.fans}} | 在售{{goodsData.publisher.sale}}</view>
+							<view class="goods-seller-left-desc-js">商品由该商家在平台寄售</view>
 						</view>
 					</view>
-					<view class="goods-seller-right" @click="onClickShops">店铺</view>
+					<view class="goods-seller-right" @click="onClickShops">进店</view>
 				</view>
 			</view>
 			
 			<!-- 商品详情 -->
 			<view class="detail-bg">
 				<view class="goods-desc">
-					<view class="goods-desc-title">商品详情</view>
+					<view class="goods-desc-title">
+						<view class="goods-desc-title-left">拼团详情</view>
+						<view class="goods-desc-title-right" @click.stop="showDrawer = true">
+							拼团规则<image class="goods-desc-title-help" src="../../static/goods/v2/icon_help.png" />
+						</view>
+					</view>
 					<view class="goods-desc-explain">
-						<!-- <rich-text :nodes="goodsDesc"></rich-text> -->
 						<view class='goods-desc-explain-text' v-for="item in goodsDesc" :key="item.id">
 							<view class="explain-desc">{{item}}</view>
 						</view>
 					</view>
-					<image  @click="onClickPreviewDetailImage(index)" class="goods-desc-image" mode="widthFix" v-for="(item,index) in detailImg" :key="index" :src="item" />
+					
+					<view class="goods-step-box">
+						<view class="goods-step-index" :class="{'goods-step-index-tips':index<3}" v-for="(item,index) in stepData" :key="index">
+							<image class="goods-step-pic" :src="item.pic" />
+							<view class="goods-step-name">{{item.name}}</view>
+						</view>
+					</view>
 				</view>
+			</view>
+		</view>
+		<view class="detail-bottom-box">
+			<view v-show="goodsData.pic&&goodsData.pic.yuanfeng">
+				<view class="detail-title">原封图实拍<text>（以下照片为商家拍摄）</text></view>
+				<view class="detail-bottom-picbox">
+					<image  @click="onClickPreviewDetailImage(index)" class="detail-bottom-image" mode="aspectFill" v-for="(item,index) in detailImg" :key="index" :src="item" />
+				</view>
+			</view>
+			<view class="detail-title">购买须知</view>
+			<view class="detail-bottom-explain">{{buyExplain}}</view>
+			<view class="detail-title">常见问题</view>
+			<view class="detail-bottom-explain" v-for="(item,index) in goodsDetailRules" :key="index">
+				<view class="detail-bottom-explain-title">{{item.title}}</view>
+				{{item.desc}}
 			</view>
 		</view>
 		
@@ -151,7 +164,7 @@
 				</view>
 			</view>
 			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm" @click="onClickCopyInviteKey">复制口令给新人</view>
-			<view v-else class="btn-confirm" @click="onClickBuy()">{{goodsData.isSelect?'选择编号':'立即购买'}}</view>
+			<view v-else class="btn-confirm" :class="{'random-confirm':getSelectType()}" @click="onClickBuy()">{{goodsData.isSelect?'选择编号':'立即购买'}}</view>
 		</view>
 		<view class="btn-contented" v-else-if="goodsState>=2">
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
@@ -159,14 +172,32 @@
 		</view>
 
 		<cardplay :operationShow="operationCardShow" :operaType="operaType" @operacancel="onClickCardCancel" />
-		<share :operationShow="operationShow" :operationData="operationData" @operacancel="onClickShareCancel" @operaclick="onClcikShareConfirm"></share>
+
+		<share :operationShow="operationShow" :shareData="shareData" @operacancel="onClickShareCancel" />
 		
 		<!-- 自选球队 -->
 		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" :baoduiLeftSec="baoduiLeftSec" :baoduiState="baoduiState" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
 
+		<!-- 自选球队随机 -->
+		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData"   @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" />
 
 		<!-- 邀请新人活动弹窗 -->
-		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy"/>
+		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy" />
+
+		<!-- 底部弹窗 -->
+		<bottomDrawer :showDrawer="showDrawer" :title="'拼团规则'" @closeDrawer="onClickCloseDrawer">
+			<view class="drawer-box" v-for="(item,index) in goodsDetailHelp" :key="index">
+				<view class="drawer-help" v-html="item.content"></view>
+			</view>
+    	</bottomDrawer>
+		
+		<!-- 免单 -->
+		<view class="guess-num-box" v-if="freeNoNum>0">
+			<view class="guess-num-center">
+				<image class="guess-mini" src="../../pages/act/static/guess/guess_mini.png"></image>
+				可免单{{freeNoNum}}组
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -174,14 +205,21 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import {getGoodsPintuan,getGoodsRandom} from '@/tools/switchUtil';
+	import {getGoodsPintuan,getGoodsRandom,getGoodsPintuanSpe,getGoodsRandomSpe} from '@/tools/switchUtil';
 	import {dateFormat} from '@/tools/util';
+	import { goodsDetailRules,goodsDetailHelp } from "@/net/DataRules";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		goodsDetailRules = goodsDetailRules
+		goodsDetailHelp = goodsDetailHelp;
 		goodsState = 0;
 		defaultAvatar = app.defaultAvatar
 		goodsId = '';
 		goodsImg:any = [];
+		carouselLength = 0;
+		swiperCurrent = 0;
+		swiperTab = ['商品','原封图'];
+		swiperTabCurrent = 0;
 		detailImg:any = [];
 		goodsData:any = [];
 		countDay:any = '';
@@ -193,34 +231,25 @@
 		favorType = false;
 		operaType = 0;
 		goodsSpe:{[x:string]:any} = {
-			pintuan_type:{id:1,name:'',desc:'拼团形式'},
-			random_type:{id:2,name:'',desc:'随机方式'},
-			spec:{id:3,name:'',desc:'拼团规格'},
-			spec_str:{id:4,name:'',desc:'商品数量'}
+			spec:{id:3,name:'',desc:'拼团规格',icon:''},
+			pintuan_type:{id:1,name:'',desc:'拼团形式',icon:''},
+			random_type:{id:2,name:'',desc:'随机方式',icon:''},
+			spec_str:{id:4,name:'查看',desc:'卡密列表',icon:'../../static/goods/v2/spe_ck.png'}
 		};
 		goodsDesc:{[x:string]:any} = [];
-		cardData:any = [];
 		tipBtn:{[x:string]:any}=[
-			{id:1,name:'客服',url:'../../static/goods/kefu@2x.png',class:'kf'},
-			// {id:2,name:'拼团提醒',url:'../../static/goods/zhibotixing@2x.png',class:'tx'}
+			{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'}
 		];
+		// 分享 
 		operationShow=false;
-		operationData = [
-			{id:0,img:'/static/share/weixin@2x.png',text:'微信好友'},
-			{id:1,img:'/static/share/pyq@2x.png',text:'朋友圈'},
-			{id:2,img:'/static/share/lianjie@2x.png',text:'分享链接'},
-		];
+		shareData:any = {
+			shareUrl:'',  
+			title:'',      
+			summary:'',    
+			thumb:''       
+		}
 		operationCardShow=false;
-		sceneStr = [
-			{scene:'WXSceneSession',text:'分享到聊天界面'},
-			{scene:'WXSenceTimeline',text:'分享到朋友圈'}
-		];
-		tipsData:{[x:string]:any} = [
-			{img:'',desc:'1分钟前加入拼团*30'},
-			{img:'',desc:'1分钟前加入拼团*30'},
-			{img:'',desc:'1分钟前加入拼团*30'}
-		];
-		discountList:any = [];
+		tipsData:{[x:string]:any} = [];
 		buyRecordList:any = [];
 		onNetWorkFunc:any;
 		// 自选球队相关
@@ -238,24 +267,28 @@
 		cartData:any = [];
 		// 自选球队随机模式数据
 		randomMode:any = ''
+
+		// 自选球队随机相关
+		teamRandomShow = false;
+		teamRandomData:any = [];
 		// 支付方式
 		payChannel:any = [];
 		// 邀请新人弹窗
 		showInvitePopup = false;
 		// 是否禁用优惠券
 		disableCoupon = false;
-		endRules = [
-			'【购买须知】：商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。',
-			'【拼团规则】',
-			' 1.“卡世界”提供平台/技术支持，入驻商家提供商品、直播拆卡、售后服务。',
-			' 2.根据厂商官方公布的Checklist，组队方式分为随机球员、随机球队、随机位置等，每种方式对应一定的【拼团份数】，每一份对应一个随机卡密。',
-			' 3.【随机方式】若为即买即随，用户付款完成后，将获得对应下单份数的随机卡密；若为组满队伍，用户付款完成且认购满员后，用户将获得对应下单份数的随机卡密。',
-			' 4.认购满员后，商家将在小程序直播公示拆卡过程，并在直播结束后上传拆卡结果，完成后续发货工作。 中卡的用户，获得实体卡片；未中卡用户，则无实体卡片，希望各位卡迷理性消费。',
-			' 5.超过拼团【认购时限】，认购未满员，所有款项通过系统原路返还，除此种情况之外，平台方不提供退款服务。'
-		];
+		buyExplain = '商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。';
+		
 		randomNum = 0;
-		guessType = false;
-		guessFreeNum = 0;
+		// 底部抽屉
+  		showDrawer = false;
+		stepData = [
+			{name:'参与拼团',pic:'../../static/goods/v2/step_0.png'},
+			{name:'直播拆卡',pic:'../../static/goods/v2/step_1.png'},
+			{name:'拆卡报告',pic:'../../static/goods/v2/step_2.png'},
+			{name:'中卡发货',pic:'../../static/goods/v2/step_3.png'},
+		];
+		freeNoNum = 0;
 		onLoad(query:any) {
 			
 			// #ifdef MP
@@ -312,6 +345,7 @@
 			})
 			
 			this.onEventUI('confirmorderPay',()=>{
+				
 				this.getGoodData(this.goodsId)
 			})
 			// #endif
@@ -340,6 +374,8 @@
 		}
 		// 数据详情赋值
 		getGoodData(id:any){
+			clearInterval(this.count_down);
+
 			setTimeout(()=>{
 				app.http.Get('dataApi/good/'+id+'/detail',{},(data:any)=>{
 					if(data.good==null||data.good==undefined){
@@ -352,45 +388,31 @@
 					// 数据详情
 					this.goodsData = data.good;
 					// 支付方式
-					if(data.payChannel){
-						this.payChannel = data.payChannel
+					this.payChannel = data.payChannel || []
+					if(data.joined){
+						this.tipBtn = [{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'},{id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'}]
 					}
-					this.guessFreeNum = data.freeNoNum
-					this.guessType = (data.good.bit & 8) == 8?true:false;
 					// 状态
 					this.goodsState = data.good.state;
 					// 倒计时
 					this.countDown = data.good.leftsec;
-					// 获取优惠标签
-					this.discountList= data.good.discount?data.good.discount:'';
-					console.log(decodeURIComponent(data.good.publisher.avatar))
+					// 免单
+					this.freeNoNum = data.freeNoNum
 					// 获取商品图片
-					this.getGoodsImage(decodeURIComponent(this.goodsData.pic.carousel));
-					this.getDetailImage(decodeURIComponent(this.goodsData.pic.detail))
-					this.getCardImage(decodeURIComponent(this.goodsData.pic.feature))
+					this.getGoodsImage();
+					this.getDetailImage(decodeURIComponent(this.goodsData.pic.yuanfeng))
 					// 倒计时
 					this.getCountDown();
 					// 商品规格、配置、形式、
 					this.getGoodsSpe();
-					console.log()
-					let newData;
-					if(decodeURIComponent(data.good.desc).indexOf('\n')>-1){
-						newData = decodeURIComponent(data.good.desc).split('\n');
-					}else{
-						newData = decodeURIComponent(data.good.desc).split('\r');
-					}
-					this.goodsDesc = newData;
-					console.log(newData)
-					this.goodsDesc.unshift('【开售时间】：'+dateFormat(data.good.startAt))
-					this.goodsDesc = this.goodsDesc.concat(this.endRules)
+					let desc = decodeURIComponent(data.good.desc);
+					let newData = desc.indexOf('\n')>-1 ? desc.split('\n') : desc.split('\r');
+					this.goodsDesc = ['拼团 I D ：'+id,'开售时间：'+dateFormat(data.good.startAt),...newData];
 					if(this.goodsState==1){
 						app.http.Get('dataApi/good/'+id+'/buyRecord',{},(res:any)=>{
-							if(res.list){
-								this.buyRecordList = res.list
-							}
+							if(res.list) this.buyRecordList = res.list
 						})
 					}	
-					
 				})
 				
 			},200)
@@ -420,12 +442,17 @@
 			})
 		}
 		// 商品图片
-		getGoodsImage(img:any){
-			if(img.indexOf(',') == -1){
-				this.goodsImg.push(img)
+		getGoodsImage(){
+			let pic = decodeURIComponent(this.goodsData.pic.carousel);
+			let carousel:any = [];
+			if(pic.indexOf(',') == -1){
+				carousel.push(pic)
 			}else{
-				this.goodsImg = img.split(',')
+				carousel = pic.split(',')
 			}
+			this.carouselLength = carousel.length;
+			let yuanfeng = this.goodsData.pic.yuanfeng?decodeURIComponent(this.goodsData.pic.yuanfeng).split(','):[];
+			this.goodsImg = [...carousel,...yuanfeng];
 		}
 		// 详情图片
 		getDetailImage(img:any){
@@ -435,14 +462,7 @@
 				this.detailImg = img.split(',')
 			}
 		}
-		// 特色卡片
-		getCardImage(img:any){
-			if(img.indexOf(',') == -1){
-				this.cardData.push(img)
-			}else{
-				this.cardData = img.split(',')
-			}
-		}
+		
 		// 倒计时时间计算
 		getTime(){
 			let day = String(Math.floor(this.countDown/3600/24));
@@ -477,33 +497,26 @@
 			let data = this.goodsData;
 			if(this.goodsData.isSelect){
 				this.goodsSpe = {
-					pintuan_type:{id:1,name:'自选球队',desc:'拼团形式'},
 					spec:{id:3,name:'',desc:'拼团规格'},
-					spec_str:{id:4,name:'',desc:'商品数量'}
+					pintuan_type:{id:1,name:'自选球队',desc:'拼团形式',icon:'../../static/goods/v2/spe_zx.png'},
+					spec_str:{id:4,name:'查看',desc:'卡密列表',icon:'../../static/goods/v2/spe_ck.png'}
 				};
 			}else{
 				this.goodsSpe.pintuan_type.name = getGoodsPintuan(data.pintuan_type);
+				this.goodsSpe.pintuan_type.icon = getGoodsPintuanSpe(data.pintuan_type);
 				this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
+				this.goodsSpe.random_type.icon = getGoodsRandomSpe(data.random_type);
 			}
-			this.goodsSpe.spec.name = data.spec.name;
-			this.goodsSpe.spec_str.name = data.spec.num+'张';
+			this.getSpeNamePic(data.spec.name);
 		}
-		switchGoodsState(state:any){
-			switch(state){
-				case 0:
-					return '等待开售';
-				case 1:
-					return '出售中';
-				case 2:
-					return '等待直播';
-				case 3:
-					return '即将直播';
-				case 4:
-					return '直播中';
-				case -1:
-					return '等待开售';
-				default:
-					return '已结束'
+		getSpeNamePic(name:string){
+			this.goodsSpe.spec.name = name;
+			if(name.indexOf('箱')!=-1){
+				this.goodsSpe.spec.icon = '../../static/goods/v2/spe_xiang.png'
+			}else if(name.indexOf('1盒')!=-1){
+				this.goodsSpe.spec.icon = '../../static/goods/v2/spe_he.png'
+			}else{
+				this.goodsSpe.spec.icon = '../../static/goods/v2/spe_duohe.png'
 			}
 		}
 		onClickTipBtn(item:any){
@@ -528,23 +541,10 @@
 			}
 
 			if(item.id==2){
-				// #ifdef APP-PLUS
-				app.http.Post('good/remind/'+this.goodsId,{},(res:any)=>{
-					uni.showToast({
-						title:res.msg,
-						icon:'none'
-					})
+				uni.navigateTo({
+					url:'/pages/userinfo/order_myCard?code=&goodCode='+this.goodsId
 				})
-				// #endif
-
-				// #ifdef MP-WEIXIN
-				app.platform.requestSubscribeMessage('I38fTkA41Vtr3LQFTRi_Xd6p7Y_9AZKpZCKKF3bo2W0',()=>{
-					uni.showToast({
-						title:'订阅成功',
-						icon:'success'
-					})
-				})
-				// #endif
+				
 			}
 		}
 		onClickBack(){
@@ -561,76 +561,39 @@
 				return;
 			}
 			// #endif
+			
 			uni.navigateTo({
-				url: '/pages/userinfo/merchant_shops?id='+this.goodsData.publisher.id+'&name='+this.goodsData.publisher.name+'&avatar='+this.goodsData.publisher.avatar
+				url: '/pages/userinfo/merchant_shopsV2?id='+this.goodsData.publisher.id
 			})
 		}
-		onClickAllCard(){
+		onClickAllCard(data?:any){
+			let url = '/pages/goods/all_good_card?code='+this.goodsData.goodCode+'&type='+this.goodsData.pintuan_type;
+			if(data){
+				url += '&teamId='+data.id
+			}
 			uni.navigateTo({
-				url: '/pages/goods/all_good_card?code='+this.goodsData.goodCode+'&type='+this.goodsData.pintuan_type
+				url: url
 			})
 		}
 		// 分享
 		onClickShare(){
 			if(!this.operationShow){
+				if(this.shareData.shareUrl==''){
+					this.shareData = {
+						shareUrl:"https://www.ka-world.com/share/good.html?id="+this.goodsId,  
+						title:this.goodsData.title,      
+						summary:this.goodsData.title,    
+						thumb:this.goodsData.pic.thumb 
+					}
+				}
 				this.operationShow = true
 			}
 		}
-		
-		
-		onClcikShareConfirm(id:any){
-			if(id==2){
-				uni.setClipboardData({
-					data: "https://www.ka-world.com/share/good.html?id="+this.goodsId,
-					showToast:false,
-					success: ()=> {
-						this.operationShow = false;
-						uni.showToast({
-							title:'复制成功',
-							icon:'none'
-						})
-					}
-				});
-			}else{
-				uni.showLoading({
-					title: '加载中'
-				});
-				setTimeout(function () {
-					uni.hideLoading();
-				}, 2000);
-				let scene = this.sceneStr[id].scene;
-				console.log('this.goodsImg====',this.goodsData.pic.thumb)
-				uni.share({
-					provider: "weixin",
-					scene: scene,
-					type: 0,
-					href: "https://www.ka-world.com/share/good.html?id="+this.goodsId,
-					title: this.goodsData.title,
-					summary: this.goodsData.title,
-					imageUrl: this.goodsData.pic.thumb,
-					success: (res)=> {
-						this.operationShow = false
-						console.log("success:" + JSON.stringify(res));
-					},
-					fail: function (err) {
-						console.log("fail:" + JSON.stringify(err));
-					}
-				});
-			}
-		}
-		
 		onClickFavor(){
-			let url = ''
-			if(!this.favorType){
-				url="good/favor/"
-			}else{
-				url="good/unfavor/"
-			}
+			let url = !this.favorType ? "good/favor/" : "good/unfavor/"
 			app.http.Post(url+this.goodsId,{},(data:any)=>{
 				this.favorType = !this.favorType
-				
 			})
-			
 		}
 		// 观看大图
 		onClickPreviewImage(index:number){
@@ -647,17 +610,7 @@
 				indicator: "number" 
 			});
 		}
-		onClickPreviewCard(index:number){
-			uni.previewImage({
-				urls: this.cardData,
-				current:index,
-				indicator: "number" 
-			});
-		}
-		
 		onClickBuy(){
-			
-			
 			// #ifndef MP
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -680,7 +633,13 @@
 					this.getGoodSelectCart()
 					this.teamCheckShow = true;
 				})
-				
+				return;
+			}
+			// 自选随机球队
+			if(this.goodsData.pintuan_type == 11){
+				this.getGoodSelectTeamRandom(()=>{
+					this.teamRandomShow = true;
+				})
 				return;
 			}
 
@@ -702,17 +661,17 @@
 				url: 'goods_result_list?chooseIds=' + chooseID+'&code='+this.goodsId+'&random='+random
 			})
 		}
-
 		onClickLive(){
-			// app.platform.launchMiniProgramLive(this.goodsData.broadcast.roomId)
 			app.platform.goWeChatLive({playCode:this.goodsData.broadcast.playCode,goodCode:this.goodsData.goodCode})
 		}
 		onClickCardPlay(item:any){
-			
 			// #ifndef MP
 			if(item.id<=2){
 				this.operationCardShow = true;
 				this.operaType = item.id
+			}
+			if(item.id==4){
+				this.onClickAllCard()
 			}
 			// #endif
 			// #ifdef MP
@@ -721,7 +680,6 @@
 				this.operaType = this.goodsSpe[item].id
 			}
 			// #endif
-
 		}
 		onClickCardCancel(){
 			this.operationCardShow = false
@@ -732,6 +690,12 @@
 		// 随机倒计时结束
 		onChangeRandomGood(){
 			this.getGoodSelect()
+		}
+		getPriceStart() {
+			return this.goodsData.isSelect || this.goodsData.pintuan_type == 11
+		}
+		getSelectType(){
+			return this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 10
 		}
 		// 自选球队 我要选队
 		getGoodSelect(cb?:Function){
@@ -771,7 +735,6 @@
 					}
 					this.branchCheckIndex = -1
 					this.branchData = res.list;
-					
 				})
 				return;
 			}
@@ -802,20 +765,17 @@
 		// 自选球队 选择分支
 		onClickBranchCheck(index:any){
 			if(this.branchCheckIndex==index) return;
-
 			this.branchCheckIndex = index;
 		}
 		onClickDeleteCart(index:any){
 			if(index!=0&&index=='[]'){
 				app.http.Post('good/select/cart/'+this.goodsId+'/delete',{id:[]},(res:any)=>{
-					
 					this.getGoodSelectCart()
 				})
 				return;
 			}
 			let id = this.cartData.list[index].id
 			app.http.Post('good/select/cart/'+this.goodsId+'/delete',{id:[id]},(res:any)=>{
-				
 				this.getGoodSelectCart()
 			})
 		}
@@ -836,15 +796,11 @@
 				return;
 			}
 			app.http.Post('good/select/cart/'+this.goodsId+'/add',{id:[this.branchData[this.branchCheckIndex].id]},(res:any)=>{		
-				
 				this.getGoodSelectCart()
 			})
 		}
 		onClickSettlement(){
-			if(this.cartData.available == 0){
-				return;
-			}
-			
+			if(this.cartData.available == 0) return;
 			uni.navigateTo({
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&cart='+encodeURIComponent(JSON.stringify(this.cartData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))
 			})
@@ -863,7 +819,6 @@
 			for(let i in list){
 				price += list[i].price
 			}
-
 			return price;
 		}
 		// 购买剩余随机
@@ -871,6 +826,23 @@
 			uni.navigateTo({
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))+'&payRandomPrice='+this.randomMode.good.price
 			})
+		}
+		// 自选球队随机 我要选队
+		getGoodSelectTeamRandom(cb?:Function){
+			app.http.Get('good/'+this.goodsId+'/selectTeamRandom',{},(res:any)=>{
+				this.teamRandomData = res.team;
+				if(cb) cb()
+			})
+		}
+		// 选队随机支付
+		onClickTeamRandomBuy(data:any){
+			uni.navigateTo({
+				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))+'&payRandomTeam='+encodeURIComponent(JSON.stringify(data))
+			})
+			this.onClickteamRandomCancel()
+		}
+		onClickteamRandomCancel(){
+			this.teamRandomShow = false;
 		}
 		// 复制邀请口令
 		onClickCopyInviteKey(){
@@ -894,6 +866,27 @@
 			plus.runtime.openURL("weixin://");
 			this.onClickInvitePopupCancel();
 		}
+		onChangeSwiperCurrent(event:any){
+			this.swiperCurrent = event.detail.current;
+			this.swiperTabCurrent = event.detail.current<this.carouselLength?0:1
+		}
+		onClickSwiperTab(index:number){
+			if(index != this.swiperTabCurrent){
+				this.swiperTabCurrent = index;
+				this.swiperCurrent = index==0?0:this.carouselLength;
+			}
+		}
+		getCountStr(str:any,index:number){
+			let Str = String(str)
+			return Str.substr(index,1)
+		}
+		getPlan(lock: number, now: number, all: number) {
+			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
+			return width
+		}
+		onClickCloseDrawer() {
+			this.showDrawer = false;
+		}
 		
 	}
 </script>
@@ -911,7 +904,7 @@
 		width: 750rpx;
 		box-sizing: border-box;
 		
-		// background:#F2F2F2
+		// background:$content-bg
 	}
 	.header-banner{
 		width: 100%;
@@ -950,14 +943,29 @@
 			font-weight: 400;
 			color: #000000;
 		}
-		.icon-share{
-			width: 42rpx;
-			height:42rpx;
+		.header-icon{
+			height:88rpx;
+			display: flex;
+			align-items: center;
 			position: absolute;
-			right:32rpx;
-			top:50%;
-			margin-top: -21rpx;
-			background:url(../../static/goods/fenxiang@2x.png) no-repeat center;
+			right:40rpx;
+			top:0;
+		}
+		.icon-collect{
+			width: 44rpx;
+			height:41rpx;
+			background:url(../../static/goods/v2/icon_collect.png) no-repeat center;
+			background-size: 100% 100%;
+			margin-right: 40rpx;
+		}
+		.icon-favored{
+			background:url(../../static/goods/v2/icon_collect_.png) no-repeat center;
+			background-size: 100% 100%;
+		}
+		.icon-share{
+			width: 38rpx;
+			height:37rpx;
+			background:url(../../static/goods/v2/icon_share.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 	}
@@ -966,6 +974,44 @@
 		width: 750rpx;
 		height:630rpx;
 		box-sizing: border-box;
+		position: relative;
+	}
+	.swiper-popup{
+		height:50rpx;
+		display: inline-flex;
+		align-items: center;
+		position: absolute;
+		right:14rpx;
+		bottom:54rpx;
+		border-radius: 40rpx;
+		background:#B0B0B0;
+		box-sizing: border-box;
+		padding:0 18rpx
+	}
+	.swiper-dots{
+		height:42rpx;
+		line-height: 42rpx;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #F4F4F4;
+	}
+	.swiper-btn{
+		height:42rpx;
+		font-size: 21rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #F4F4F4;
+		margin-left: 10rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.swiper-btn-current{
+		font-size: 23rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #333333;
 	}
 	.swiper{
 		width: 750rpx;
@@ -987,29 +1033,34 @@
 	}
 	.detail-index-bg{
 		width: 100%;
-		background:#F2F2F2;
+		background:$content-bg;
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;
 		box-sizing: border-box;
-		padding-top: 20rpx;
+		position: relative;
 	}
 	.detail-bg{
-		width: 722rpx;
-		border-radius: 20rpx;
+		width: 724rpx;
+		border-radius: 5rpx;
 		background:#fff;
-		margin-bottom: 23rpx;
+		margin-bottom: 13rpx;
 	}
 	.header-content{
-		width: 722rpx;
-		height:107rpx;
-		background:url(../../static/goods/new_price.png) no-repeat center;
+		width: 724rpx;
+		height:100rpx;
+		background:url(../../static/goods/v2/price_bg.png) no-repeat center;
 		background-size: 100% 100%;
 		box-sizing: border-box;
 		padding-left:36rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		margin-top: -23rpx;
+	}
+	.random-bg{
+		background:url(../../static/goods/v2/price_bg_.png) no-repeat center;
+		background-size: 100% 100%;
 	}
 	.header-content-end{
 		background:#fff;
@@ -1018,7 +1069,7 @@
 	.header-desc-title{
 		width: 100%;
 		font-size: $font-28;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #14151A;
 		margin-bottom: 20rpx;
@@ -1026,12 +1077,18 @@
 	}
 	.header-price{
 		font-size: 33rpx;
-		font-family: 'DIN';
-		font-weight: bold;
-		color: $color-F;
+		font-family: PingFangSC-Regular;
+		font-weight: 500;
+		color: #FFFFFF;
+		box-sizing: border-box;
+		padding-top: 10rpx;
 	}
 	.header-price text{
-		font-size:60rpx;
+		font-size: 54rpx;
+		font-family: Impact;
+		font-weight: 400;
+		color: #FFFFFF;
+		margin-left: 10rpx;
 	}
 	.header-price .price-qi{
 		font-size: 20rpx;
@@ -1044,10 +1101,10 @@
 		font-weight: 200;
 	}
 	.header-right{
-		width: 240rpx;
+		// width: 240rpx;
 		height:107rpx;
 		box-sizing: border-box;
-		padding:15rpx 0 12rpx 0;
+		padding:15rpx 30rpx 12rpx 0;
 	}
 	.header-right-end{
 		width: 240rpx;
@@ -1064,10 +1121,10 @@
 	}
 	.icon-end{
 		width: 100%;
-		text-align: center;
-		font-size: 26rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
+		text-align: right;
+		font-size: 21rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 500;
 		color: #FFFFFF;
 		margin-bottom: 15rpx;
 	}
@@ -1076,31 +1133,36 @@
 		height:27rpx;
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-end;
 	}
 	.countdown-index{
-		width: 40rpx;
-		height:27rpx;
+		width: 30rpx;
+		height:36rpx;
 		text-align: center;
-		line-height: 27rpx;
-		font-size: 22rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
+		line-height: 36rpx;
+		font-size: 23rpx;
+		font-family: eryaxindahei;
 		font-weight: 400;
-		color: $color-F;
-		background:#727377;
+		color: #FFFFFF;
+		background:#000;
 		border-radius: 3rpx;
+		margin-right: 4rpx;
+	}
+	.countdown-day{
+		margin-right:10rpx !important;
 	}
 	.countdown-icon{
 		font-size: 22rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 400;
 		color: $color-F;
-		margin:0 8rpx;
+		margin:0 1rpx;
 	}
 	.header{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 32rpx;
+		padding:0 20rpx;
+		padding-bottom: 10rpx;
 	}
 	.header-top-id{
 		width: 100%;
@@ -1113,22 +1175,16 @@
 	}
 	.header-top{
 		width: 100%;
-		display: flex;
 		box-sizing: border-box;
-		align-items: center;
-		justify-content: space-between;
-		padding-top: 20rpx;
-		&-left{
-			width: 580rpx;
-			box-sizing: border-box;
-			&-title{
-				width: 100%;
-				font-size: $font-34;
-				font-family: 'ali-Light';
-				color: #14151A;
-				line-height: 50rpx;
-				font-weight: normal !important;
-			}
+		padding-top: 30rpx;
+		&-title{
+			width: 100%;
+			font-size: 33rpx;
+			font-family: PingFangSC-Regular;
+			font-weight: 400;
+			color: #333333;
+			line-height: 48rpx;
+			font-weight: normal !important;
 		}
 		&-right{
 			width: 50rpx;
@@ -1143,39 +1199,53 @@
 				color: #000000;
 			}
 		}
-		.youhui{
-			height:34rpx;
+		&-plan{
+			width: 100%;
+			height:30rpx;
 			display: flex;
 			align-items: center;
-			box-sizing: border-box;
-			margin-bottom: 18rpx;
-			.icon-tips{
-				height:34rpx;
-				border: 1rpx solid #FB4E3E;
-				border-radius: 10rpx;
-				text-align: center;
-				line-height: 32rpx;
-				font-size: 18rpx;
-				font-family: Microsoft YaHei;
+			justify-content: space-between;
+			margin-top: 20rpx;
+			margin-bottom: 20rpx;
+			.goodslist-progress{
+				background-image: url('../../static/goods/v2/progeessBg.png');
+				background-size: 100% 100%;
+				width: 480rpx;
+				height: 12rpx;
+				position: relative;
+				display: flex;
+				justify-content: flex-end;
+				.progress-mask{
+					height: inherit;
+					background-color: #F6F7FB;
+					width: 0%;
+				}
+			}
+			.goodslist-progress-select{
+				background-image: url('../../static/goods/v2/progessBgg_select.png');
+				background-size: 100% 100%;
+			}
+			.header-top-plan-num{
+				width: 190rpx;
+				height:30rpx;
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #FB4E3E;
-				box-sizing: border-box;
-				padding:0 11rpx;
-				margin-right: 10rpx;
-				margin-left: 1rpx;
+				color: #88878C;
+				line-height: 30rpx;
+				text-align: right;
+			}
+			.header-top-plan-numbottom{
+				width: 100%;
+				height:30rpx;
+				font-size: 20rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #88878C;
+				text-align: right;
 			}
 		}
-		.icon-favor{
-			width: 44rpx;
-			height:40rpx;
-			background:url(../../static/goods/shoucang@2x.png) no-repeat center;
-			background-size: 100% 100%;
-			margin-bottom: 4rpx;
-		}
-		.icon-favored{
-			background:url(../../static/goods/shoucang_@2x.png) no-repeat center;
-			background-size: 100% 100%;
-		}
+		
 	}
 	.header-center{
 		width: 100%;
@@ -1224,205 +1294,154 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding:0 22rpx;
 		&-index{
-			height:76rpx;
+			height:140rpx;
 			box-sizing: border-box;
 			text-align: center;
-			&-name{
-				text-align: center;
-				font-size: $font-24;
-				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
-				color: #14151A;
+			&-pic{
+				width: 43rpx;
+				height:43rpx;
 				margin-bottom: 10rpx;
 			}
-			&-desc{
-				font-size: $font-22;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
-				color: #A9ABB4;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-			.icon-tishi{
-				width: 20rpx;
-				height:20rpx;
-				background:url(../../static/goods/tishi@2x.png) no-repeat center;
-				background-size: 100% 100%;
-				margin-left: 4rpx;
-			}
-		}
-	}
-	.goods-card{
-		width: 100%;
-		box-sizing: border-box;
-		padding:30rpx 0 30rpx 32rpx;
-		&-title{
-			width: 100%;
-			height:40rpx;
-			display: flex;
-			box-sizing: border-box;
-			align-items: center;
-			justify-content: space-between;
-			margin-bottom: 16rpx;
-			padding-right: 32rpx;
 			&-name{
-				height:40rpx;
-				line-height: 40rpx;
-				font-size: $font-28;
-				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
-				color: #14151A;
-			}
-			&-more{
-				height:31rpx;
-				display: flex;
-				border: 1rpx solid #D7D7DC;
-				padding:5rpx 10rpx;
-				align-items: center;
-				border-radius: 3rpx;
-				font-size: 20rpx;
-				font-family: Microsoft YaHei;
+				text-align: center;
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #ACAEB7;
+				color: #333333;
 			}
-			.icon-right{
-				width: 10rpx;
-				height:16rpx;
-				background:url(../../static/goods/jinru@2x.png) no-repeat center;
-				background-size: 100% 100%;
-				margin-left: 8rpx;
-			}
-		}
-		&-content{
-			width: 100%;
-			height:144rpx;
-			overflow: hidden;
-			&-scroll{
-				width: 100%;
-				height:144rpx;
+			&-desc{
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #C0C0C0;
 				display: flex;
-				white-space: nowrap;
-			}
-			.scroll-index{
-				width: 120rpx;
-				height:144rpx;
-				background:#FFF;
-				border-radius: 4rpx;
-				margin-right: 20rpx;
-				overflow: hidden;
-				border:1px solid #F2F2F2;
-				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				box-sizing: border-box;
-				&-img{
-					width: 102rpx;
-					height:134rpx;
-				}
 			}
 		}
 	}
+	
 	.goods-seller{
 		width: 100%;
-		height:180rpx;
+		height:160rpx;
 		box-sizing: border-box;
-		padding:10rpx 40rpx;
+		border-radius: 5rpx;
+		padding:0 24rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		position: relative;
 		&-left{
-			width: 500rpx;
+			width: 580rpx;
 			height:110rpx;
 			display: flex;
 			align-items: center;
 			box-sizing: border-box;
 			&-avatar{
-				width: 110rpx;
-				height:110rpx;
+				width: 104rpx;
+				height:104rpx;
 				border-radius: 50%;
 				background:#F5F5F9
 			}
 			&-desc{
-				width: 380rpx;
+				width: 460rpx;
 				height:110rpx;
 				box-sizing: border-box;
-				padding:4rpx 0 4rpx 20rpx;
+				padding:20rpx 0 4rpx 30rpx;
 				display: flex;
 				flex-wrap: wrap;
 				&-name{
 					width: 100%;
-					font-size: $font-28;
-					font-family: PingFangSC-Regular, PingFang SC;
+					font-size: 33rpx;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
-					color: #14151A;
+					color: #333333;
+					overflow: hidden;
+					text-overflow:ellipsis;
+					white-space: nowrap;
 				}
 				&-tips{
 					width: 100%;
-					font-size: $font-22;
-					font-family: PingFangSC-Regular, PingFang SC;
+					font-size: 24rpx;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
-					color: #A9ABB4;
+					color: #88878C;
 				}
 				&-js{
-					height: 34rpx;
+					height: 28rpx;
 					background: #FBF2F3;
-					font-size:18rpx;
-					font-family: Microsoft YaHei;
+					font-size: 23rpx;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
-					color: #FF504F;
+					color: #F63D47;
+					line-height: 28rpx;
 					display: inline-flex;
 					align-items: center;
-					margin-top: 5rpx;
 					box-sizing: border-box;
-					padding:0 9rpx;
+					padding:0 16rpx;
+					position:absolute;
+					right:0;
+					top:0;
 				}
-				&-icon{
-					width: 20rpx;
-					height:17rpx;
-					background:url(../../static/goods/merchant_icon.png) no-repeat center;
-					background-size: 100% 100%;
-					margin-right: 6rpx;
-				}
+				
 
 			}
 		}
 		&-right{
-			width: 139rpx;
-			height: 57rpx;
-			background: #FB4E3E;
-			border-radius: 29rpx;
+			height: 46rpx;
+			background: #fff;
+			border:1rpx solid #DADADA;
+			border-radius: 5rpx;
 			text-align: center;
-			line-height: 57rpx;
-			font-size: 28rpx;
-			font-family: Microsoft YaHei;
+			line-height: 46rpx;
+			font-size: 24rpx;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
-			color: $color-F;
+			color: #88878c;
+			margin-top: 20rpx;
+			box-sizing: border-box;
+			padding:0 20rpx;
 		}
 	}
 	.goods-desc{
 		width: 100%;
 		box-sizing: border-box;
-		padding:20rpx 32rpx 132rpx 32rpx;
-		margin-bottom: constant(safe-area-inset-bottom);
-		margin-bottom: env(safe-area-inset-bottom);   
+		padding:20rpx 32rpx 30rpx 32rpx;
 		&-title{
 			width: 100%;
-			font-size: $font-28;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
-			color: #14151A;
 			margin-bottom: 20rpx;
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			.goods-desc-title-left{
+				font-size: 31rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 600;
+				color: #14151A;
+			}
+			.goods-desc-title-right{
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #949398;
+				display: flex;
+				align-items: center;
+			}
+			.goods-desc-title-help{
+				width: 23rpx;
+				height:22rpx;
+				margin-left: 18rpx;
+			}
 		}
 		&-explain{
 			width: 100%;
 			box-sizing: border-box;
-			font-size: $font-24;
+			font-size: 27rpx;
+			// font-family: PingFangSC-Regular, PingFang SC;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
-			color: #7D8288;
+			color: #818080;
 			&-text{
 				width: 100%;
 				box-sizing: border-box;
@@ -1438,10 +1457,9 @@
 			.explain-desc{
 				width: 100%;
 				box-sizing: border-box;
+				font-family: PingFangSC-Regular, PingFang SC;
 				line-height: 45rpx;
 				word-break: break-all;
-				text-indent: -12rpx;
-				padding-left:12rpx;
 				margin-bottom: 10rpx;
 				white-space: break-spaces
 			}
@@ -1449,67 +1467,72 @@
 	}
 	.btn-content{
 		width: 100%;
-		height:calc(112rpx + env(safe-area-inset-bottom));
+		height:calc(120rpx);
+		height:calc(120rpx + constant(safe-area-inset-bottom));
+		height:calc(120rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:0;
 		left:0;
 		background:$color-F;
 		z-index: 8;
 		box-sizing: border-box;
-		padding: 0 16rpx 0 0;
+		padding: 19rpx 16rpx 0 0;
 		border-top: 1px solid #F5F5F8;
 		display: flex;
-		align-items: center;
 		justify-content: center;
-		padding-bottom: constant(safe-area-inset-bottom);
-		padding-bottom: env(safe-area-inset-bottom);
 		&-left{
-			width: 152rpx;
-			height:112rpx;
+			max-width: 240rpx;
+			height:82rpx;
 			box-sizing: border-box;
-			padding:0 40rpx;
+			padding:0 20rpx 0 20rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			&-index{
-				height:80rpx;
+				width: 100rpx;
+				height:82rpx;
 				box-sizing: border-box;
 				text-align: center;
+				padding-top: 4rpx;
 				&-name{
-					font-size: $font-20;
-					font-family: PingFangSC-Regular, PingFang SC;
+					margin-top: -4rpx;
+					font-size: 22rpx;
+					font-family: PingFangSC-Regular;
 					font-weight: 400;
-					color: #000000;
+					color: #666666;
 				}
 			}
 			.icon-kf{
-				width: 40rpx;
-				height:48rpx;
-				margin-bottom: 4rpx;
+				width: 37rpx;
+				height:38rpx;
+				margin-bottom: 3rpx;
 			}
-			.icon-tx{
-				width: 44rpx;
-				height:46rpx;
-				margin-bottom: 6rpx;
+			.icon-order{
+				width: 37rpx;
+				height:41rpx;
+				margin-bottom: 0;
 			}
 		}
 		.btn-confirm{
-			width: 602rpx;
-			height: 88rpx;
-			background: #FB4E3E;
-			border-radius: 44rpx;
+			width: inherit;
+			background: $btn-red;
 			text-align: center;
-			line-height: 88rpx;
-			font-size: $font-28;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
-			color: $color-F;
+			font-family: PingFangSC-Regular;
+			color: #FFFFFF;
+			height: $btn-height;
+			line-height: $btn-height;
+			font-size: $btn-fontSize;
+			border-radius:$btn-radius;
+			font-weight: $btn-weight;
+		}
+		.random-confirm{
+			background:#7C4BEA;
 		}
 		
 	}
 	.btn-contented{
 		width: 100%;
-		height:calc(112rpx + env(safe-area-inset-bottom));
+		height:calc(100rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:0;
 		left:0;
@@ -1525,30 +1548,30 @@
 		padding-bottom: env(safe-area-inset-bottom);
 		.btn-pt{
 			width: 352rpx;
-			height:88rpx;
 			box-sizing: border-box;
-			border-radius: 4px;
-			border: 2rpx solid #14151B;
+			border: 2rpx solid #DADADA;
 			text-align: center;
-			line-height: 84rpx;
-			font-size: $font-28;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
-			color: #14151B;
+			font-family: PingFangSC-Medium, PingFang SC;
+			color: #333333;
+			height: $btn-height;
+			line-height: $btn-height;
+			font-size: $btn-fontSize;
+			border-radius:$btn-radius;
+			font-weight: $btn-weight;
 		}
 		.btn-ck{
 			width: 352rpx;
-			height:88rpx;
 			box-sizing: border-box;
-			border-radius: 4px;
-			background:#14151B;
-			border: 2rpx solid #14151B;
+			background:$btn-red;
+			border: 2rpx solid $btn-red;
 			text-align: center;
-			line-height: 84rpx;
-			font-size: $font-28;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
+			font-family: PingFangSC-Medium, PingFang SC;
 			color: $color-F;
+			height: $btn-height;
+			line-height: $btn-height;
+			font-size: $btn-fontSize;
+			border-radius:$btn-radius;
+			font-weight: $btn-weight;
 		}
 	}
 	.movable-area{
@@ -1565,10 +1588,7 @@
 		width: 200rpx;
 		height:150rpx;
 	}
-	.goods-desc-image{
-		width: 100%;
-		margin-top: 10rpx;
-	}
+
 	.price-black{
 		color:#14151B
 	}
@@ -1577,5 +1597,157 @@
 		height:100%;
 		overflow: hidden;
 		position:fixed;
+	}
+	// 特殊说明
+	.special-explain{
+		width: 100%;
+		box-sizing: border-box;
+		padding:22rpx;
+		font-size: 23rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #88878C;
+		line-height: 32rpx;
+	}
+	.detail-bottom-box{
+		width: 100%;
+		background:#fff;
+		box-sizing: border-box;
+		padding:30rpx 25rpx calc(150rpx) 25rpx;
+		padding:30rpx 25rpx calc(150rpx + constant(safe-area-inset-bottom)) 25rpx;
+		padding:30rpx 25rpx calc(150rpx + env(safe-area-inset-bottom)) 25rpx;
+		
+	}
+	.detail-title{
+		width: 100%;
+		font-family: PingFangSC-Medium;
+		font-weight: bold;
+		font-size: 31rpx;
+		color: #333333;
+		margin-bottom: 20rpx;
+	}
+	.detail-title text{
+		font-family: PingFangSC-Regular;
+		font-size: 23rpx;
+		font-weight: 500;
+		color: #818080;
+	}
+	.detail-bottom-picbox{
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		margin-bottom: 50rpx;
+	}
+	.detail-bottom-image{
+		width: 345rpx;
+		height:345rpx;
+		margin-right: 10rpx;
+		margin-bottom: 10rpx;
+	}
+	.detail-bottom-explain{
+		font-family: PingFangSC-Regular;
+		font-size: 27rpx;
+		font-weight: 500;
+		color: #818080;
+		line-height:40rpx;
+		margin-bottom: 30rpx;
+	}
+	.detail-bottom-explain-title{
+		font-family: PingFangSC-Medium;
+		font-size: 27rpx;
+		font-weight: 500;
+		color: #333;
+		line-height:40rpx;
+		margin-bottom: 10rpx;
+	}
+	.detail-bottom-image:nth-child(2n){
+		margin-right: 0;
+	}
+	
+	
+	.goods-step-box{
+		width: 100%;
+		height:144rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
+		padding: 0 25rpx;
+		background:#f6f6f6;
+		.goods-step-index{
+			height:114rpx;
+			width:100rpx;
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			position: relative;
+			.goods-step-pic{
+				width: 80rpx;
+				height:80rpx;
+			}
+			.goods-step-name{
+				width: 100%;
+				text-align: center;
+				font-size: 20rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #333333;
+			}
+		}
+		.goods-step-index-tips::after{
+			width: 42rpx;
+			height:13rpx;
+			background:url(../../static/goods/v2/step_jd.png) no-repeat center;
+			background-size: 100% 100%;
+			content: '';
+			position:absolute;
+			right: -56rpx;
+			top:37rpx;
+		}
+	}
+
+	.drawer-box{
+		width: 100%;
+		box-sizing: border-box;
+	}
+	.drawer-help{
+		width: 100%;
+		font-size: 25rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #7D8288;
+		line-height: 38rpx;
+		margin-bottom: 50rpx;
+	}
+
+	// 免单
+	.guess-num-box{
+		width: 197rpx;
+		height:40rpx;
+		background:url(../../pages/act/static/guess/guess_tips.png) no-repeat center;
+		background-size: 100% 100%;
+		position: fixed;
+		bottom:calc(100rpx);
+		bottom:calc(100rpx + constant(safe-area-inset-bottom));
+		bottom:calc(100rpx + env(safe-area-inset-bottom));
+		right:13rpx;
+		z-index: 99;
+	}
+	.guess-mini{
+		width: 45rpx;
+		height:18rpx;
+		margin-right: 10rpx;
+	}
+	.guess-num-center{
+		width: 100%;
+		height:32rpx;
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
+		padding-left: 12rpx;
+		font-size: 20rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #FFFFFF;
 	}
 </style>

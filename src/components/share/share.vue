@@ -3,7 +3,7 @@
 		<view class="operation-shadow" v-show="operationShow" @click="onClickOperaCancel"></view>
 		<view class="operation-content" :class="operationShow?'operation-show':''">
 			<view class="operation-index">
-				<view class="operation-btn" @click="operationStart(item.id)" v-for="item in operationData" :key="item.id"> 
+				<view class="operation-btn" @click="operationStart(item.scene)" v-for="item in operationData" :key="item.id"> 
 					<image class="operation-img" :src="item.img" mode=""></image>
 					<view class="operation-text">{{item.text}}</view>
 				</view>
@@ -17,12 +17,19 @@
 <script lang="ts">
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import { wxShare } from "@/net/DataDefine"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({ default: false })
 		operationShow:boolean|undefined;
 		@Prop({ default: [] })
-		operationData:any;
+		shareData!:wxShare.shareData;
+		
+		operationData:any = [
+			{img:'/static/share/weixin@2x.png',text:'微信好友',scene:'WXSceneSession'},
+			{img:'/static/share/pyq@2x.png',text:'朋友圈',scene:'WXSenceTimeline'},
+			{img:'/static/share/lianjie@2x.png',text:'分享链接',scene:''},
+		];
 		
 		created(){//在实例创建完成后被立即调用
 			
@@ -33,8 +40,48 @@
 		destroyed(){
 			
 		}
-		operationStart(id:any){
-			this.$emit("operaclick",id);
+		setClipboardData(){
+			uni.setClipboardData({
+				data: this.shareData.shareUrl,
+				showToast:false,
+				success: ()=> {
+					uni.showToast({
+						title:'复制成功',
+						icon:'none'
+					})
+				}
+			});
+		}
+		weChatShare(scene:string){
+			uni.showLoading({
+				title: '加载中'
+			});
+			setTimeout(function () {
+				uni.hideLoading();
+			}, 2000);
+			uni.share({
+				provider: "weixin",
+				scene: scene,
+				type: 0,
+				href: this.shareData.shareUrl,
+				title: this.shareData.title,
+				summary: this.shareData.summary,
+				imageUrl: this.shareData.thumb,
+				success: (res)=> {
+					console.log("success:" + JSON.stringify(res));
+				},
+				fail: function (err) {
+					console.log("fail:" + JSON.stringify(err));
+				}
+			});
+		}
+		operationStart(scene:any){
+			if(scene==''){
+				this.setClipboardData()
+			}else{
+				this.weChatShare(scene)
+			}
+			this.onClickOperaCancel()
 		}
 		onClickOperaCancel(){
 			this.$emit("operacancel");
@@ -45,6 +92,8 @@
 <style>
 	.operation-content{
 		width: 100%;
+		height:calc(340rpx);
+		height:calc(340rpx + constant(safe-area-inset-bottom));
 		height:calc(340rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom:-500rpx;

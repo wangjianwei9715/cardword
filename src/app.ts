@@ -10,16 +10,10 @@ export module app{
     };
     export let sever:SocketServer;
     export let socketInfo = {tcp:'',tcpToken:''};
-    
-    // 测试环境
-    // export let localTest=true;
-    // export let domaintest='http://192.168.0.38:8701/api/v1/';  
-    // export let bussinessApiDomain='http://192.168.0.38:8701/api/v1/';
 
     // 发布环境
     export let localTest=false;
-    export let domaintest='https://server.ssl1.ka-world.com/api/v1/'; 
-    export let bussinessApiDomain='https://server.ssl1.ka-world.com/api/v1/';
+    export let bussinessApiDomain='https://server.ssl1.ka-world.com/api/v2/';
     // 热更新地址
     export let update_url='http://service.s1.ka-world.com/';
     // 请求的service地址
@@ -33,14 +27,13 @@ export module app{
 	export let payment = PayManager.getIns();
     export let http =  HttpRequest.getIns();
     export let needPushIdentifier = true;
-    export let iosPlatform = false
-    export let iosVersion = 1
     export let protobuf:any = null;
     export let data:{[x: string]: any} = {};//登录数据
     export let token = {accessToken:'',refreshToken:''};
     export let needAuth = false;//小程序是否需要授权
     export let opKey = ''; //安全密钥
     export let version = '1.0.0';
+    export let iosPlatform = false;
     export let update:{[x: string]: any} = {};//更新数据
     export let defaultAvatar = '/static/index/moren@2x.png';
     export let payload = '';//unipush跳转参数

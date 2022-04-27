@@ -65,6 +65,12 @@
 				title:'自选球队',
 				desc:'玩家可在选择编号页面自由选购球队及编号。开卡结束后，玩家获得对应编号的所有球星卡'
 			}
+			,
+			{
+				id:7,
+				title:'选队随机(卡种)',
+				desc:'在随机卡种玩法的基础上，玩家可选择心仪的球队进行随机，必定获得所选球队中的卡密'
+			}
 		]
 		typeData = [
 			{
@@ -109,7 +115,7 @@
 <style lang="scss">
 	.operation-content{
 		width: 100%;
-		height:1050rpx;
+		height:1250rpx;
 		position: fixed;
 		left:0;
 		bottom:0;
@@ -117,7 +123,7 @@
 		box-sizing: border-box;
 		transition: all 0.3s linear;
 		-webkit-transition: -webkit-transform 0.3s;
-		transform: translateY(1050rpx);
+		transform: translateY(1250rpx);
 		z-index:99;
 		background:#fff;
 		padding:40rpx 32rpx;
@@ -159,7 +165,7 @@
 		&-title{
 			width:100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #14151A;
 			margin-bottom: 20rpx;
@@ -180,7 +186,7 @@
 		&-title{
 			width:100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #14151A;
 			margin-bottom: 20rpx;

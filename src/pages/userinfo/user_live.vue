@@ -7,7 +7,7 @@
 		</view>
 
 		<view class="live-content">
-			<liveslist :liveList="liveList"   @send="onClickLive"/>
+			<liveslist :liveList="liveList"  />
 			<empty v-if="liveList.length==0"/>
 		</view>
 	</view>
@@ -52,10 +52,10 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
+				if(this.currentPage==1)this.liveList = []
+				
 				if(data.list){
 					this.liveList = this.liveList.concat(data.list);
-				}else if(this.currentPage==1){
-					this.liveList = []
 				}
 				this.currentPage++;
 				if(cb) cb()
@@ -71,19 +71,14 @@
 			this.liveList = []
 			this.reqNewData()
 		}
-		onClickLive(item:any){
-			console.log(item)
-			return;
-			
-			
-		}
+		
 		
 	}
 </script>
 
 <style lang="scss">
 	page{
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.content{
 		width: 100%;

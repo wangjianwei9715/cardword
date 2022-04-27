@@ -31,7 +31,7 @@
 			</view>
 			<view class="bottom">
 				<view class="bottom-tip">其它方式登录</view>
-				<view v-if="false" class="icon-apple" @click="onClickAppleLogin"></view>
+				<view v-if="iosLogin" class="icon-apple" @click="onClickAppleLogin"></view>
 				<view class="icon-wechat" @click="onClickWechatLogin"></view>
 			</view>
 		</view>
@@ -73,11 +73,9 @@
 		xieyiAgree = false;
 		codeLogin = false;
 		popupHid = true;
-		iosLogin = false;
+		iosLogin = app.iosPlatform;
 		onLoad(query:any) {
-			if (app.platform.systemInfo.platform == 'ios') {
-				this.iosLogin = true
-			}
+			
 		}
 		bindPickerChange(val:any){
 			this.phoneTypeIndex = val.detail.value;
@@ -195,6 +193,7 @@
 		}
 		HttpLogin(params:any){
 			app.http.Post('user/login/phone',params,(data:any)=>{
+				uni.$emit('loginSuccess');
 				app.data = data.data;
 				app.opKey = data.opKey
 				app.coupon = data.data.coupon;
@@ -207,16 +206,14 @@
 				}
 				this.postDomain()
 				uni.setStorageSync("token", JSON.stringify(app.token));
+				// 判断是否有邀请码
+				if(app.requestKey!=''){
+					app.platform.checkShareNo(app.requestKey)
+				}
 				uni.switchTab({
 					url: "/pages/index/index",
 				});
-				uni.$emit('loginSuccess');
-				// 判断是否有邀请码
-				if(app.requestKey!=''){
-					uni.navigateTo({
-						url:'/pages/act/invite/invite'
-					})
-				}
+				
 			})
 		}
 		postDomain(){
@@ -269,7 +266,10 @@
 		WeChetLogin(params:any){
 			app.http.Post('user/login/wechat/app',params,(data:any)=>{
 				uni.hideLoading();
-				console.log('wechatlogin======',data)
+				uni.$emit('loginSuccess');
+				if(app.requestKey!=''){
+					app.platform.checkShareNo(app.requestKey)
+				}
 				app.data = data.data;
 				app.opKey = data.opKey;
 				app.coupon = data.data.coupon;
@@ -284,18 +284,8 @@
 				uni.switchTab({
 					url: "/pages/index/index",
 				});
-				uni.$emit('loginSuccess');
-				if(data.data.mustBindPhone){
-					uni.reLaunch({
-						url: "/pages/login/bind_phone"
-					})
-				}
-				// 判断是否有邀请码
-				if(app.requestKey!=''){
-					uni.navigateTo({
-						url:'/pages/act/invite/invite'
-					})
-				}
+				
+				
 			})
 		}
 		onClickAppleLogin(){
@@ -305,7 +295,6 @@
 			uni.login({  
 				provider: 'apple',  
 				success: (loginRes:any)=> {  
-					console.log('appleLogin==',loginRes)
 					let params = {
 						openid:loginRes.authResult.openid,
 						uuid:app.platform.deviceID,
@@ -322,9 +311,7 @@
 			});  
 		}
 		appleLogin(params:any){
-			console.log('applelogin=',params)
 			app.http.Post('user/login/apple',params,(data:any)=>{
-				console.log('appleData=',data)
 				uni.hideLoading();
 				app.data = data.data;
 				app.opKey = data.opKey;
@@ -451,7 +438,7 @@
 			text-align: center;
 			line-height: 88rpx;
 			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #FFFFFF;
 		}

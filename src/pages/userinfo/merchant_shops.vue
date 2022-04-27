@@ -66,10 +66,8 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
+				if(this.currentPage==1)this.goodsList = []
 				if(data.list){
-					if(this.currentPage==1){
-						this.goodsList = []
-					}
 					this.goodsList = this.goodsList.concat(data.list);
 				}
 				
@@ -108,7 +106,7 @@
 	
 	$font-34:34rpx;
 	page{
-		background:#F2F2F2
+		background:$content-bg
 	}
 	.content{
 		width: 100%;
@@ -177,7 +175,7 @@
 		box-sizing: border-box;
 	}
 	.goods-lists{
-		background:#F2F2F2;
+		background:$content-bg;
 		width: 100%;
 		box-sizing: border-box;
 		padding:16rpx 20rpx;

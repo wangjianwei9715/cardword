@@ -67,7 +67,6 @@
 			this.tabCheck = id;
 			this.noMoreData = false;
 			this.currentPage = 1;
-			this.recordList = [];
 			this.reqNewData()
 		}
 		switchState(state:number){
@@ -122,7 +121,7 @@
 	page{
 		width: 100%;
 		height:100%;
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.content{
 		width: 100%;

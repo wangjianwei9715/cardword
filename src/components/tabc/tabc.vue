@@ -44,25 +44,17 @@
 	.index{
 		height:90rpx;
 		line-height: 90rpx;
-		font-size: 28rpx;
-		color:#A9ABB4;
+		font-size: 29rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #BCBCBC;
 	}
 	.current{
-		font-weight: 600;
-		color: #14151A;
-		position: relative;
+		font-size: 31rpx;
+		font-family: PingFangSC-Medium;
+		font-weight: bold;
+		color: #333;
 	}
-	.current::before{
-		width: 37rpx;
-		height: 7rpx;
-		background: #FB4E3E;
-		content: '';
-		background-size: 100% 100%;
-		position: absolute;
-		bottom:18rpx;
-		left:50%;
-		margin-left:-19rpx;
-		border-radius: 3rpx;
-	}
+	
 	
 </style>

@@ -6,7 +6,7 @@
                 <view :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]" v-for="item in tabc" :key="item.id" @click="onClickIndex(item.id)">{{item.name}}</view>
             </view>
             <view class="goodslist-index" v-show="goodsList!=''">
-                <goodslist  :goodsList="goodsList" :pageIndex="currentPage" @send="onClickJumpDetails" :presell="tabsCheck==2"/>
+                <goodslist  :goodsList="goodsList"  @send="onClickJumpDetails" :presell="tabsCheck==2"/>
             </view>
             <view class="goodslist-index" v-show="goodsList==''">
                 <view class="empty">好箱马上就来~</view>
@@ -44,7 +44,6 @@
             }
 			this.tabsCheck = id;
             this.currentPage = 1;
-            this.goodsList = []
 			this.noMoreData = false;
 			this.reqNewData()
 		}
@@ -75,10 +74,8 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
+                if(this.currentPage==1) this.goodsList = []
 				if(data.goodList){
-					if(this.currentPage==1){
-						this.goodsList = []
-					}
 					this.goodsList = this.goodsList.concat(data.goodList);
 				}
 				

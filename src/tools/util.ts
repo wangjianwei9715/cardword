@@ -1,4 +1,3 @@
-
 //keepNum为保留小数位数，默认不保留小数
 export function formatNumber(number: number, keepNum = 0) {//返回 xxx.xx亿
     let result = '' + number;
@@ -24,6 +23,16 @@ export function formatGold(number: number, symbol = ',', interval = 3) {//返回
         symbolIndex++;
     }
     return result;
+}
+// 比较当前时间是否在指定日期范围内 beginDateStr:开始日期 endDateStr:结束日期 格式 yyyy-mm-dd
+export function isDuringDate(beginDateStr:string, endDateStr:string) {
+    var curDate = new Date(),
+        beginDate = new Date(beginDateStr),
+        endDate = new Date(endDateStr);
+    if (curDate >= beginDate && curDate <= endDate) {
+        return true;
+    }
+    return false;
 }
 // 时间戳
 export function dateFormat(time:number|string){
@@ -328,4 +337,93 @@ export function objKeySort(obj:any) {//排序的函数
         newObj[newkey[i]] = obj[newkey[i]];
     }
     return newObj;
+}
+const formatNumberZero = (val:any) => {
+	return val < 10 ? "0" + val : val
+}
+//倒计时
+export function countDown(startDate:number,endDate:number=0, mmbol:boolean=true){
+		if(!endDate) endDate=Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
+		1) / 1000)
+	let times:any = new Date(endDate * 1000).getTime() - new Date(startDate*1000).getTime();
+	let ss:any = Math.floor(times / 1000) //毫秒转换为秒
+	let dd = Math.floor(ss / (3600 * 24)); //秒转化为天
+	ss %= 3600 * 24; //整除了天之后还剩下多少秒
+	let hh = Math.floor(ss / 3600); //秒转化为小时
+	hh = formatNumberZero(hh);
+	ss %= 3600; //整除了小时后，还剩下多少秒
+	let mm = Math.floor(ss / 60); //秒转化为分钟
+	mm = formatNumberZero(mm); //如果秒显示小于10，前面加上个零
+	ss %= 60; //整除了分之后，还剩下多少秒
+	ss = formatNumberZero(ss);
+	if (ss < 0) {
+		return `00:00:00`
+	}
+	if (mmbol) {
+		return `${hh}:${mm}:${ss}`
+	} else {
+		return dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
+	}
+}
+//加法函数 用来得到精确的加法结果   
+const add = (a:any, b:any) => {
+	var c, d, e;
+	try {
+		c = a.toString().split(".")[1].length;
+	} catch (f) {
+		c = 0;
+	}
+	try {
+		d = b.toString().split(".")[1].length;
+	} catch (f) {
+		d = 0;
+	}
+	return e = Math.pow(10, Math.max(c, d)), (mul(a, e) + mul(b, e)) / e;
+
+}
+//乘法函数，用来得到精确的乘法结果   
+const mul = (a:any, b:any) => {
+	var c = 0,
+		d = a.toString(),
+		e = b.toString();
+	try {
+		c += d.split(".")[1].length;
+	} catch (f) {}
+	try {
+		c += e.split(".")[1].length;
+	} catch (f) {}
+	return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c);
+}
+//减法函数，用来得到精确的减法结果   
+const sub = (a:any, b:any) => {
+	var c, d, e;
+	try {
+		c = a.toString().split(".")[1].length;
+	} catch (f) {
+		c = 0;
+	}
+	try {
+		d = b.toString().split(".")[1].length;
+	} catch (f) {
+		d = 0;
+	}
+	return e = Math.pow(10, Math.max(c, d)), (mul(a, e) - mul(b, e)) / e;
+
+}
+//除法函数，用来得到精确的除法结果   
+const div = (a:any, b:any) => {
+	var c, d, e = 0,
+		f = 0;
+	try {
+		e = a.toString().split(".")[1].length;
+	} catch (g) {}
+	try {
+		f = b.toString().split(".")[1].length;
+	} catch (g) {}
+	return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), mul(c / d, Math
+		.pow(10,
+			f - e));
+}
+export const calculate={
+	add,mul,div,sub
 }

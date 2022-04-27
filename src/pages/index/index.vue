@@ -37,7 +37,7 @@
 			<statusbar/>
 			<view class="tab-header">
 				<view class="header-search" @click="onClickSearch">
-					搜索商品、商家
+					<view class="sousuo-icon"></view>搜索热门系列...
 					<view class="search-icon">搜索</view>
 				</view>
 			</view>
@@ -45,36 +45,21 @@
 		
 		<view class="tab-center">
 			<statusbar/>
-			<view class="banner-content">
-				
-				<swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" indicator-active-color="#ffffff" duration="200"> 
-					<swiper-item v-for="(item,index) in topAddList" :key="index">
-						<image class="swiper-image" :src="decodeURIComponent(item.pic)" mode="aspectFits" @click="onClickTopJumpUrl(item.target)"/>
-					</swiper-item>
-					
-				</swiper>
-			</view>
 			<!-- #ifndef MP  -->
 			<view class="tab-good-content">
-				<view class="tab-type">
-					<view class="tab-index" v-for="(item,index) in tabList" :key="index" @click="onClickJumpUrl(item)">
-						<view class="tab-img-content"><image class="tabimg" :src="item.img" mode=""/></view>
-						<view class="tabtext">{{item.text}}</view>
+				<view class="tab-type" v-for="(item,index) in tabList" :key="index">
+					<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
+						<view class="tab-img-content"><image class="tabimg" :src="items.img" mode=""/></view>
+						<view class="tabtext">{{items.text}}</view>
 					</view>
 				</view>
 				
-				<view class="tab-act-content">
-					<view class="tab-act-title"></view>
-					<scroll-view class="goods-card-content-scroll" :scroll-x="true">
-						<view class="tab-good-inedx" v-show="item.img!=''" v-for="(item,index) in noticeList" :key="index" @click="onClickNotice(item.target.goodCode)">
-							<image :lazy-load="true" class="tab-good-index-img" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
-							<view class="tab-good-index-bottom">
-								<view class="tab-good-index-price">￥{{item.price}}</view>
-								<view class="tab-good-index-tip">{{item.name}}</view>
-							</view>
-						</view>
-					</scroll-view>
+				<view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-04-24', '2022-05-10')">
+					<view class="top-ref"></view>
 				</view>
+
+				<!-- 卡豆商城 热门系列 拆卡围观 -->
+				<tabHot :hotList="hotList" />
 			</view>
 			<!-- #endif -->
 		</view>
@@ -84,19 +69,19 @@
 		</view>
 		
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsList" :pageIndex="currentPage" @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
+			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"  @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
 		<!-- #ifdef MP -->
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsMiniList" :pageIndex="currentPage"  @send="onClickMiniGood" :mini="true" :presell="false"/>
+			<goodslist  :goodsList="goodsMiniList"   @send="onClickMiniGood" :mini="true" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
 
-		<dailyWelfare :dailyShow="dailyShow" :dailyList="dailyList" @closeDailyShow="onClickCloseDailyShow"/>
+		<winningCardPopup :showWinningCrad="showWinningCrad" @closeWinning="closeWinning" />
 	</view>
 </template>
 
@@ -104,47 +89,62 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
+	import { indexGoodsType,goodsMiniList } from "@/net/DataExchange"
+	import { isDuringDate } from "@/tools/util" 
 	@Component({})
 	export default class index extends BaseNode {
+		isDuringDate = isDuringDate;
+		indexGoodsType = indexGoodsType;
+		goodsMiniList = goodsMiniList;
 		statusBarHeight = app.statusBarHeight;
 		topAddList:any = [];
-		goodsMiniList = [
-			{
-				currentNum:0,
-				discount: "",
-				goodCode: "GT4228482",
-				lockNum: 0,
-				overAt: 0,
-				pic: "../../static/index/mp_mini_good.jpg",
-				price: 99999,
-				startAt: 0,
-				title: "20-21 篮球 Panini National Treasures  Hobby  原箱",
-				totalNum: 1
-
+		tabList:{[x:string]:any} = {
+			tabTop:[
+				{img:'../../static/index/v2/top_icon0.gif',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
+				{img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
+				{img:'../../static/index/v2/top_icon2.png',text:'资讯公告',url:'/pages/information/list'},
+				{img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
+			],
+			tabBottom:[
+				{img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_assign_list?type=activity'},
+				{img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_assign_list?type=cheap'},
+				{img:'../../static/index/v2/top_icon6.png',text:'自选玩法',url:'/pages/goods/goods_assign_list?type=select'},
+				{img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_assign_list?type=progress'}
+			]
+		};
+		// 卡豆商城 热门系列 拆卡围观
+		hotList:{[x:string]:any} = {
+			cardBean:{
+				title:'卡币商城',
+				tips:'卡币兑换好礼',
+				list:[
+					{pic:'../../static/index/v2/cardbean_pic.png'},
+					{pic:'../../static/index/v2/cardbean_hb.png'}
+				]
+			},
+			hot:{
+				title:'热门系列',
+				tips:'新系列上市',
+				list:[]
+			},
+			broadCast:{
+				title:'拆卡围观',
+				tips:'正在拆卡',
+				list:[]
 			}
-		]
-		tabList = [
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab1.png',text:'拼团',url:'/pages/goods/goods_find_list?classType=100'},
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab2.png',text:'资讯',url:'/pages/information/list'},
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab3.png',text:'卡豆商城',url:'/pages/act/sign/cardBean'},
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab4.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
-			{img:'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/index/index_tab5.png',text:'商家入驻',url:'/pages/userinfo/merchant_join'},
-		];
-		noticeList = [
-		
-		];
+		};
 		goodTab = [
 			{id:1,name:'推荐'},
-			{id:11,name:'自选'},
-			{id:3,name:'新品'},
-			{id:4,name:'高端'},
-			{id:2,name:'即将拼成'}
-			// {id:5,name:'优惠'},
+			{id:2,name:'篮球'},
+			{id:3,name:'足球'},
+			{id:4,name:'其他'}
 		];
 		goodTabCheck = 1;
+		indexSwiper = true;
 		goodsList:any = [];
-		currentPage = 1;
-		pageSize = 20;
+		// fetchFrom:第几个数据开始  fetchSize:取几个数据
+		fetchFrom = 1;
+		fetchSize = 10;
 		noMoreData = false;
 		apkNeedUpdate = false;
 		updateStart = false;
@@ -162,8 +162,7 @@
 		showPaySuccess = false;
 		version = '';
 		oneLoad = true;
-		dailyShow = false;
-		dailyList:any = [];
+		showWinningCrad = false;
 		onLoad(query:any) {
 			// uni.$emit('reLogin')
 			if (app.update.apkNeedUpdate) {
@@ -186,11 +185,7 @@
 			let listeners = ['BackLogin']
 			this.register(listeners);
 			this.getLuanchApp()
-
-			// 新年每日登录优惠券
-			this.onEventUI("loginSuccess", () => {
-				this.getNewYearDayGift()
-			});
+			
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
 			});
@@ -201,32 +196,28 @@
 			this.onEventUI("wgtUpdateNum", (res) => {
 				this.wgtUpNum = res;
 			});
+			this.onEventUI("showPaySuccess", (res) => {
+				this.showPaySuccess = true;
+			});
 			this.onEventUI('appluanchOver',()=>{
-				console.log('appluanchOver=========')
 				if(this.oneLoad){
 					this.version = app.version
 					this.showInitEvent()
 					this.oneLoad = false;
 				}
 			})
-			
-			setTimeout(()=>{
-				if(this.oneLoad){
-					this.version = app.version
-					this.showInitEvent()
-					this.oneLoad = false;
-				}
-			},1000)
 			// #ifdef APP-PLUS
-			// 判断是否有邀请上线
-			app.platform.getInvitationClipboard()
-			// #endif
+			
 		}
 		onShow(){
+			// 销毁页面重新加载
+			if(uni.getStorageSync('reLaunch')||(this.goodTabCheck==1&&this.goodsList=='')){
+				this.showInitEvent(()=>{
+					uni.removeStorageSync('reLaunch')
+				})
+			}
 			// #ifndef MP
-			if(!this.oneLoad){
-				this.showInitEvent()
-			}else if (app.localTest) {
+			if (app.localTest) {
 				//开发环境
 				if(this.oneLoad){
 					this.version = app.version
@@ -234,8 +225,8 @@
 					this.oneLoad = false;
 				}
 			}
-			
 			// #endif
+			
 			// #ifdef MP
 			this.topAddList = [{pic:'../../static/index/mp_mini.jpg',url:''}]
 			// #endif
@@ -248,16 +239,29 @@
 							content: '当前无网络服务，请开启网络',
 							success: function (res) {
 								if (res.confirm) {
-									console.log('用户点击确定');
 								} else if (res.cancel) {
-									console.log('用户点击取消');
 								}
 							}
 						});
 					}
 				}
 			});
+			if(this.goodsList!=''){
+				let list = this.goodsList.map((x:any)=>{
+					return x.goodCode;
+				})
+				app.http.Post('good/progress/list',{list:list},(res:any)=>{
+					console.log('good/progress/list',res)
+					this.setNewProgress(res.list)
+				})
+			}
+			if(this.progressList!=''){
+				this.getGoodProgress(this.progressList)
+			}
 			this.networkStatusChange()
+			// 判断是否有邀请上线
+			app.platform.getInvitationClipboard()
+			// #endif
 		}
 		onHide(){
 			clearInterval(this.postGoodProgressIn);
@@ -270,7 +274,6 @@
 					});
 					app.platform.appLuanch(false);
 					setTimeout(()=>{
-						this.initEvent();
 						uni.hideLoading();
 					},1000)
 				}
@@ -281,9 +284,7 @@
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
-			this.currentPage = 1;
-			this.noMoreData = false;
-			this.reqNewData(()=>{
+			this.showInitEvent(()=>{
 				setTimeout(()=>{
 					uni.stopPullDownRefresh();
 				},1000)
@@ -304,47 +305,50 @@
 					});
 					app.platform.appLuanch(false);
 					setTimeout(()=>{
-						this.initEvent();
 						uni.hideLoading();
 					},1000)
 				}
 			})
 			// #endif
 		}
-		// 新年每日优惠券
-		getNewYearDayGift(){
-			if(app.token.accessToken == '' || app.dayGift) return;
-
-			setTimeout(()=>{
-				app.http.Get('me/coupon/dayGift',{},(res:any)=>{
-					console.log('每日优惠==',res)
-					if(res.bool){
-						app.dayGift = true;
-						this.dailyList = res.list;
-						this.dailyShow = true;
-					}
-				})
-			},500)
-		}
-		onClickCloseDailyShow(){
-			this.dailyShow = false;
-		}
-		showInitEvent(){
-			this.currentPage = 1;
+		showInitEvent(cb?:Function){
+			this.fetchFrom = 1;
 			this.noMoreData = false;
-			this.initEvent()
-			if(this.progressList!=''){
-				this.getGoodProgress(this.progressList)
+			this.initEvent(()=>{
+				if(cb) cb()
+			})
+			if(app.token.accessToken != ''){
+				// 获取是否中卡信息
+				this.getGreet()
 			}
 		}
-		initEvent(){
+		// 获取是否中卡信息
+		getGreet(){
+			app.http.Get('me/greet',{},(res:any)=>{
+				console.log('me/greet=',res)
+				if(res.data.newHitNum>0) this.showWinning();
+				if(res.data.getDayGift) app.http.Get('me/coupon/dayGift',{});
+			})
+		}
+		showWinning(){
+			this.showWinningCrad = true;
+			uni.hideTabBar()
+		}
+		closeWinning(){
+			this.showWinningCrad = false
+			uni.showTabBar()
+		}
+		initEvent(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				console.log('index/home====',data)
 				// #ifndef MP
-				this.topAddList = data.topAddList
+				this.topAddList = data.addList;
+				this.hotList.broadCast.list = data.broadCast;
+				this.hotList.hot.list = data.hotSeries;
 				// #endif
-				this.noticeList = data.activity
-				this.reqNewData()
+				this.reqNewData(()=>{
+					if(cb) cb()
+				})
 			})
 			// #ifdef MP-WEIXIN
 			if(app.token.accessToken == ''){
@@ -352,14 +356,6 @@
 				return;
 			}
 			// #endif
-		}
-		getPic(img:any){
-			if(img.indexOf(',') == -1){
-				return img;
-			}else{
-				let pic = img.split(',')
-				return pic[0]
-			}
 		}
 		onClickMiniGood(){
 			uni.showToast({
@@ -376,7 +372,6 @@
 					return;
 				}
 				app.http.Post('good/progress/list',{list:val},(res:any)=>{
-					console.log('INDEX progress===',res)
 					this.setNewProgress(res.list)
 				})
 			},30)
@@ -393,11 +388,7 @@
 				console.log('app.service_url=',app.service_url)
 				if(app.service_url==''||app.dataApiDomain==''){
 					uni.removeStorageSync("launchConfig");
-					console.log('重新开始luanch')
-					app.platform.appLuanch(loginToken,()=>{
-						console.log('launchCb')
-						this.initEvent()
-					})
+					app.platform.appLuanch(loginToken)
 				}else{
 					uni.hideLoading()
 					clearInterval(this.getLuanchFnc);
@@ -452,65 +443,30 @@
 		BackLogin(res:any){
 			uni.$emit('BackLogin');
 		}
-		Logout(res:any){
+		onClickActJump(){
+			uni.navigateTo({
+				url: '/pages/act/goldRank/goldRank_rankList'
+			})
 		}
-		onClickNotice(code:any){
-			this.onClickJumpDetails(code)
-		}
-		
 		onClickSearch(){
 			// 搜索
 			uni.navigateTo({
 				url: '/pages/goods/goods_find'
 			})
 		}
-		onClickTopAdd(){
-			// uni.showToast({
-			// 	title:'活动升级中',
-			// 	icon:'none'
-			// })
-		}
-		onClickTopJumpUrl(url:any){
-			if(url.goodCode!=''){
-				uni.navigateTo({
-					url: '/pages/goods/goods_details?id='+decodeURIComponent(url.goodCode)
-				})
-				return;
-			}else if(url.url!=''){
-				uni.navigateTo({
-					url: '/pages/act/outLink/outLink?url='+decodeURIComponent(url.url)
-				})
-				return;
-			}else if(url.page!=''){
-				if(decodeURIComponent(url.page)=='社群'){
-					this.showPaySuccess = true;
-					return;
-				}
-				uni.navigateTo({
-					url: decodeURIComponent(url.page)
-				})
-				return;
-			}
-			// if(url=='社群'){
-			// 	this.showPaySuccess = true;
-			// 	return;
-			// }
-			// uni.navigateTo({
-			// 	url: url
-			// })
-			
-		}
 		onClickcancelPaySuccess(){
 			this.showPaySuccess = false;
 		}
 		onClickJumpUrl(item:any){
-			if(item.text=='卡豆商城'){
-				uni.showToast({
-					title:'卡豆商城维护中',
-					icon:'none'
-				})
-				return;
+			if(item.text=='发售日历'){
+				if(app.token.accessToken == ''){
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+					return;
+				}
 			}
+			console.log(item.url)
 			uni.navigateTo({
 				url: item.url
 			})
@@ -525,11 +481,16 @@
 			if(id==this.goodTabCheck){
 				return;
 			}
+			this.indexSwiper = id==1?true:false;
 			this.goodTabCheck = id
-			this.currentPage = 1;
-			this.goodsList = []
+			this.reqSearchList()
+		}
+		reqSearchList(cb?:Function){
+			this.fetchFrom = 1;
 			this.noMoreData = false;
-			this.reqNewData()
+			this.reqNewData(()=>{
+				if(cb) cb()
+			}) 
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
@@ -538,23 +499,20 @@
 			}
 			
 			let params:{[x:string]:any} = {
-				tp:this.goodTabCheck-1,
-				pageIndex: this.currentPage,
-				pageSize:this.pageSize,
+				fetchFrom:this.fetchFrom,
+				fetchSize:this.fetchSize
 			}
 			
-			app.http.Get("dataApi/goodlist", params, (data: any) => {
-				if(data.totalPage<=this.currentPage){
+			app.http.Get("dataApi/goodlist/forsale/"+this.indexGoodsType[this.goodTabCheck], params, (data: any) => {
+				if(data.isFetchEnd){
 					this.noMoreData = true;
 				}
-				if(data.goodList){
-					if(this.currentPage==1){
-						this.goodsList = []
-					}
-					this.goodsList = this.goodsList.concat(data.goodList);
-				}
+				if(this.fetchFrom == 1 ) this.goodsList = [];
 				
-				this.currentPage++;
+				if(data.goodList){
+					this.goodsList = [...this.goodsList,...data.goodList];
+				}
+				this.fetchFrom += this.fetchSize;
 				if(cb) cb()
 			});
 		}
@@ -569,7 +527,7 @@
 	$font-28:28rpx;
 	$font-32:32rpx;
 	page{
-		background:#F2F2F2
+		background:$content-bg
 	}
 	.content{
 		width: 100%;
@@ -581,7 +539,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		background:#fff;
-		padding-top: 104rpx;
+		padding-top: 94rpx;
 	}
 	.goods-list{
 		width: 100%;
@@ -599,14 +557,13 @@
 		top:0;
 		box-sizing: border-box ;
 		z-index: 9;
-		padding-bottom:10rpx;
 	}
 	.tab-header{
 		width: 750rpx;
-		height:84rpx;
+		height:104rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding:20rpx 20rpx 0 20rpx;
+		padding:0 20rpx 0 20rpx;
 		z-index: 10;
 		align-items: center;
 	}
@@ -620,39 +577,25 @@
 		display: flex;
 		padding:0 20rpx;
 	}
-	.swiper{
-		width: 710rpx;
-		height:190rpx;
-		box-sizing: border-box;
-		display: flex;
-		align-items: flex-start;
-		justify-content: center;
-	}
-	.swiper-image{
-		width: 710rpx;
-		height:190rpx;
-		box-sizing: border-box;
-		border-radius: 20rpx;
-		
-	}
+	
 	.tab-good-content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 19rpx;
-		background: linear-gradient(0deg, #F2F2F2, #FFFFFF 80%, #FFFFFF);
+		padding:0;
+		background:#fff;
 	}
 
 	.tab-type{
 		width: 100%;
 		box-sizing: border-box;
-		padding:30rpx 0 32rpx 0;
+		padding:0 44rpx 10rpx 44rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 	.tab-index{
-		width: 100rpx;
-		height:140rpx;
+		width: 105rpx;
+		height:150rpx;
 		display: flex;
 		align-items: flex-start;
 		position: relative;
@@ -661,163 +604,66 @@
 	}
 	.tab-img-content{
 		display: flex;
-		width: 100rpx;
-		height:100rpx;
+		width: 105rpx;
+		height:105rpx;
 		align-items: flex-start;
 
 	}
 	.tabimg{
-		width: 100rpx;
-		height:100rpx;
+		width: 105rpx;
+		height:105rpx;
 	}
 	.tabtext{
 		width: 100%;
 		height:34rpx;
-		font-size: $font-24;
+		font-size: 23rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
 		color: #14151A;
 		text-align: center;
 	}
-	// .tab-act-content{
-	// 	width: 710rpx;
-	// 	height:318rpx;;
-	// 	padding:0 20rpx 0 20rpx;
-	// 	box-sizing: border-box;
-	// 	border-radius: 20rpx;
-	// 	background:url(../../static/index/newyear.png) no-repeat center;
-	// 	background-size: 100% 100%;
-	// 	margin:0 auto;
-	// }
-	// .tab-act-title{
-	// 	width: 281rpx;
-	// 	height:55rpx;
-	// 	background-size: 100% 100%;
-	// 	margin:0 auto;
-	// 	margin-bottom: 15rpx;
-	// }
 
-	.tab-act-content{
-		width: 710rpx;
-		padding:0 20rpx 0 24rpx;
-		padding-bottom: 20rpx;
+	.top-banner{
+		width: 750rpx;
+		height:169rpx;
+		margin: 0 auto;
 		box-sizing: border-box;
-		border-radius: 20rpx;
-		background: linear-gradient(90deg, #E7F1FB, #E8E4FA);
-		margin:0 auto;
-	}
-	.tab-act-title{
-		width: 281rpx;
-		height:44rpx;
-		background:url(../../static/index/act_title.png) no-repeat;
+		display: flex;
+		margin-top: 10rpx;
+		background:url(../../static/index/v2/top_banner.png) no-repeat center;
 		background-size: 100% 100%;
-		margin:0 auto;
-		margin-bottom: 15rpx;
+		position: relative;
 	}
-	.tab-good-inedx{
-		width:170rpx;
-		height:230rpx;
-		box-sizing: border-box;
-		display: inline-block;
-		margin-right: 20rpx;
+	.top-ref{
+		width: 80rpx;
+		height:79rpx;
+		background:url(../../static/index/v2/banner_go.png) no-repeat center;
+		background-size: 100% 100%;
+		position: absolute;
+		right:43rpx;
+		bottom:25rpx;
+		animation: bounce-down 1s linear infinite;
 	}
-	.tab-good-index-img{
-		width: 170rpx;
-		height:170rpx;
-		border-radius: 10rpx;
-	}
-	.tab-good-index-bottom{
-		width: 170rpx;
-		height:50rpx;
-		display: flex;
-		align-items: center;
-		white-space:nowrap;
-		overflow:hidden;
-		margin-top: -10rpx;
-		text-overflow:ellipsis;
-		// margin-top: 2rpx;
-	}
-	.tab-good-index-price{
-		font-size: 32rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 0;
-		color: #FB4E3E
-	}
-	.tab-good-index-tip{
-		font-size: 21rpx;
-		font-family: Microsoft YaHei;
-		font-weight: 400;
-		color: #ABABBB;
-		margin-left: 8rpx;
-	}
-	.tab-good-title{
-		width: 100%;
-		font-size:$font-28;
-		font-family: PingFangSC-Semibold, PingFang SC;
-		font-weight: 600;
-		color: #14151A;
-		margin-bottom: 12rpx;
-	}
-	.tab-good-bottom{
-		width: 100%;
-		height:90rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		box-sizing: border-box;
-	}
-	.tab-good-img{
-		width: 120rpx;
-		height:90rpx;
-		border-radius: 4rpx;
-	}
-	.tab-good-desc{
-		width: 160rpx;
-		height:90rpx;
-		box-sizing: border-box;
-		padding-top: 4rpx;
-	}
-	.tab-good-name{
-		width: 100%;
-		font-size: $font-24;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #14151A;
-		margin-bottom: 8rpx;
-		white-space:nowrap;	
-		overflow:hidden;
-		text-overflow:ellipsis;
-	}
-	.tab-good-btn{
-		width: 100rpx;
-		height: 40rpx;
-		background: linear-gradient(90deg, #FDEB57 0%, #FFDB37 100%);
-		border-radius: 24rpx;
-		text-align: center;
-		line-height: 40rpx;
-		font-size: $font-20;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #14151A;
-	}
-	.tab-price-content{
-		width: 100%;
-		font-size: $font-24;
-		font-family: 'DIN';
-		font-weight: bold;
-		color: #14151A;
-	}
-	.tab-price{
-		font-size: $font-32;
+	@keyframes bounce-down {
+		25% {
+		-webkit-transform: translateY(-5rpx);
+		}
+		50%, 100% {
+		-webkit-transform: translateY(0);
+		}
+		75% {
+		-webkit-transform: translateY(5rpx);
+		}
 	}
 	.tabc-content{
 		width: 100%;
-		background:#F2F2F2;
+		margin: 10rpx 0 ;
+		background:$content-bg;
 	}
 	.goodslist-index{
 		width: 100%;
 		box-sizing: border-box;
-		padding:16rpx 20rpx;
+		padding:6rpx 14rpx;
 		
 	}
 	
@@ -882,7 +728,7 @@
 		width: 100%;
 		text-align: center;
 		font-size: 43rpx;
-		font-family: FZLanTingHei-H-GBK;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #FFFFFF;
 	}
@@ -962,35 +808,47 @@
 		padding:15rpx 18rpx 15rpx 19rpx
 	}
 	.header-search{
-		width: 708rpx;
-		height: 62rpx;
+		width: 100%;
+		height: 65rpx;
 		background: #FFFFFF;
-		border: 2rpx solid #FB4E3E;
+		border: 2rpx solid $btn-red;
 		border-radius: 40rpx;
 		position: relative;
-		font-size: 24rpx;
-		font-family: Microsoft YaHei;
+		font-size: 28rpx;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
-		color: #ABABBB;
-		line-height: 62rpx;
+		color: #A3A3A3;
+		line-height: 65rpx;
 		box-sizing: border-box;
 		padding-left: 34rpx;
-		
+		display: flex;
+		align-items: center;
+	}
+	.sousuo-icon{
+		width: 31rpx;
+		height:32rpx;
+		background:url(../../static/index/v2/sousuo.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-right: 30rpx;
 	}
 	.search-icon{
 		width: 113rpx;
-		height: 62rpx;
-		background: #FB4E3E;
+		height: 54rpx;
+		background: $btn-red;
 		border-radius: 30rpx;
 		position: absolute;
-		right:-1rpx;
-		top:-1rpx;
+		right:3rpx;
+		top:50%;
+		margin-top: -27rpx;
 		text-align: center;
-		line-height: 62rpx;
-		font-size: 24rpx;
+		line-height: 54rpx;
+		font-size: 28rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #FFFFFF;
 		box-sizing: border-box;
 	}
+
+	
+	
 </style>

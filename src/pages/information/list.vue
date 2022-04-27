@@ -20,17 +20,17 @@
         />
       </view>
       <view class="tabc-content">
-        <tabs
-          :tabs="goodTab"
+        <tabc
+          :tabc="goodTab"
           :tabsCheck="goodTabCheck"
           @tabsClick="onClickListTabs"
-        ></tabs>
+        ></tabc>
       </view>
     </view>
 
     <view class="live-content">
       <statusbar />
-      <view class="information">
+      <view class="information" >
         <view
           class="information-index"
           v-for="(item, index) in information"
@@ -44,6 +44,7 @@
               mode="aspectFill"
             ></image>
           </view>
+          
           <view class="information-center">
             <view class="title" @click="onClickJumpUrl(item.articleCode,item.cover)">{{item.title}}</view>
             <view class="desc">
@@ -59,6 +60,7 @@
     </view>
   </view>
 </template>
+
 
 <script lang="ts">
 import { app } from "@/app";
@@ -82,7 +84,7 @@ export default class ClassName extends BaseNode {
   currentPage = 1;
   pageSize = 20;
   noMoreData = false;
-  information: { [x: string]: any } = [];
+  information: any = [];
   searchData: any = [];
   scrollId = "";
   onLoad(query: any) {
@@ -97,7 +99,6 @@ export default class ClassName extends BaseNode {
       return;
     }
     this.goodTabCheck = id;
-    this.information = [];
     this.currentPage = 1;
     this.noMoreData = false;
     this.reqNewData();
@@ -109,7 +110,6 @@ export default class ClassName extends BaseNode {
   }
   onClickSearch() {
     // 搜索
-    this.information = [];
     this.currentPage = 1;
     this.noMoreData = false;
     this.reqNewData();
@@ -164,7 +164,7 @@ export default class ClassName extends BaseNode {
         this.information = [];
       }
       if (data.list) {
-        this.information = this.information.concat(data.list);
+        this.information = [...this.information,...data.list];
       }
       this.currentPage++;
       if (cb) cb();
@@ -175,7 +175,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-  background: #f2f2f2;
+  background: $content-bg;
 }
 .content {
   width: 100%;

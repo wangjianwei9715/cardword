@@ -142,7 +142,7 @@
       </view>
     </view>
 
-    <bottomDrawer :showDrawer="showDrawer" @closeDrawer="onClickCloseDrawer">
+    <bottomDrawer :showDrawer="showDrawer" :title="'已解锁卡密'" @closeDrawer="onClickCloseDrawer">
       <view class="drawer-box">
         <view class="drawer-box-header">
           <view
@@ -530,7 +530,7 @@ export default class ClassName extends BaseNode {
     width: 100%;
     margin-top: 30rpx;
     font-size: 24rpx;
-    font-family: FZLanTingHeiS-R-GB;
+    font-family: PingFangSC-Regular;
     font-weight: 400;
     color: #a3a3a3;
     text-align: center;
@@ -571,7 +571,7 @@ export default class ClassName extends BaseNode {
   z-index: 1;
   .drawcard-box-header-left {
     font-size: 50rpx;
-    font-family: DIN Condensed;
+    font-family: Impact;
     font-weight: bold;
     color: #ffffff;
     word-spacing: 10rpx;
@@ -579,7 +579,7 @@ export default class ClassName extends BaseNode {
   }
   .drawcard-box-header-left text {
     font-size: 100rpx;
-    font-family: DIN Condensed;
+    font-family: Impact;
     font-weight: bold;
     color: #ffffff;
   }
@@ -591,7 +591,7 @@ export default class ClassName extends BaseNode {
     text-align: center;
     line-height: 44rpx;
     font-size: 28rpx;
-    font-family: FZLanTingHeiS-DB1-GBK;
+    font-family: PingFangSC-Regular;
     font-weight: 400;
     color: #f9f9f9;
     margin: 0;
@@ -662,7 +662,7 @@ export default class ClassName extends BaseNode {
   width: 426rpx;
   height: 57rpx;
   font-size: 30rpx;
-  font-family: FZLanTingHeiS-H-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #ffffff;
   text-align: center;
@@ -713,7 +713,7 @@ export default class ClassName extends BaseNode {
   margin-top: -20rpx;
   line-height: 40rpx;
   font-size: 26rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #FFFFFF;
 }
@@ -740,7 +740,7 @@ export default class ClassName extends BaseNode {
   top: 1100rpx;
   left: 0;
   font-size: 26rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #ffffff;
 }
@@ -755,7 +755,7 @@ export default class ClassName extends BaseNode {
   margin-left: -300rpx;
   text-align: center;
   font-size: 26rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #ffffff;
   line-height: 32rpx;
@@ -789,7 +789,7 @@ export default class ClassName extends BaseNode {
   margin-bottom: 18rpx;
   text-align: center;
   font-size: 20rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #ffffff;
 }
@@ -841,7 +841,7 @@ export default class ClassName extends BaseNode {
   text-align: center;
   line-height: 75rpx;
   font-size: 37rpx;
-  font-family: FZLanTingHeiS-H-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #2b2b2b;
   margin-bottom: 68rpx;
@@ -869,7 +869,7 @@ export default class ClassName extends BaseNode {
   height: 40rpx;
   line-height: 40rpx;
   font-size: 24rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #9b9b9b;
   margin-right: 15rpx;
@@ -890,7 +890,7 @@ export default class ClassName extends BaseNode {
 }
 .drawer-box-header-check {
   color: #333333;
-  font-family: FZLanTingHeiS-DB1-GBK;
+  font-family: PingFangSC-Regular;
   font-size: 30rpx;
 }
 .drawer-box-item {
@@ -908,7 +908,7 @@ export default class ClassName extends BaseNode {
 .drawer-box-item-left {
   width: 580rpx;
   font-size: 20rpx;
-  font-family: FZLanTingHeiS-R-GB;
+  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #333333;
   line-height: 30rpx;
@@ -919,7 +919,7 @@ export default class ClassName extends BaseNode {
   align-items: center;
   justify-content: center;
   font-size: 88rpx;
-  font-family: DIN Condensed;
+  font-family: PingFangSC-Medium;
   font-weight: bold;
   color: #333333;
 }

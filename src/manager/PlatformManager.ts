@@ -36,6 +36,29 @@ export default class PlatformManager {
 			}
 		});
 		// #endif
+		
+		// 修改安卓showModal确认在左侧的问题
+		const __showModal = uni.showModal;
+		uni.showModal = function(options:any) {
+			// console.log('options-1', options);
+			let opt:any = {}
+			// #ifdef APP-PLUS
+			if (uni.getSystemInfoSync().platform == 'android' && typeof options.showCancel == 'undefined') {
+				options.cancelText = '确认';
+				options.confirmText = '取消';
+				opt.success = function(e:any) {
+				// console.log('__opt.success', e);
+				e.confirm = !e.confirm;
+				e.cancel = !e.cancel;
+				options.success(e);
+				};
+			}
+			// #endif
+			__showModal({
+				...options,
+				...opt,
+			})
+		};
 	}
 	async getLocationPermission(): Promise<boolean> {
 		// #ifdef APP-PLUS
@@ -289,27 +312,20 @@ export default class PlatformManager {
 						console.log("post  /api/app/launch=", res);
 						launchSuccess = true;
 						app.service_url = url;
+						
 						// bussinessApiDomain     主接口域名
 						// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
 						let bussinessApiDomain = res.app.bussinessApiDomain;
 						let dataApiDomain = res.app.dataApiDomain;
-						if (
-							bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/"
-						) {
-							bussinessApiDomain = bussinessApiDomain.slice(
-								0,
-								bussinessApiDomain.length - 1
-							);
+
+						if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
+							bussinessApiDomain = bussinessApiDomain.slice(0,bussinessApiDomain.length - 1);
 						}
 						if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
 							dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
 						}
-						app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-						if (res.app.dataApiDomain) {
-							app.dataApiDomain = dataApiDomain + "/api/v1/";
-						} else {
-							app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-						}
+						app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
+						app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
 
 						if (cb) cb()
 						uni.setStorageSync("launchConfig", res);
@@ -320,20 +336,11 @@ export default class PlatformManager {
 						},100)
 						// #ifdef APP-PLUS
 						app.update_url = url + "/api/";
-						if (uni.getSystemInfoSync().platform === "android") {
-							app.update = UpdateManager.getInstance();
+						if (app.platform.systemInfo.platform == 'ios') {
+							app.iosPlatform = app.platform.validateVersion(app.version,res.app.pingguo)
 						}
-						// app.update = UpdateManager.getInstance();
-						let iosVersion = Number(res.app.version.substr(0,1));
-						console.log('iosVersion',res.app.version)
-						if (uni.getSystemInfoSync().platform == 'ios' && iosVersion%2 ==0) {
-							
-							app.update = UpdateManager.getInstance();
-							app.iosVersion = iosVersion
-						}
+						app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
 						// #endif
-
-						
 					});
 					break;
 				} else {
@@ -344,31 +351,18 @@ export default class PlatformManager {
 				let launchConfig = uni.getStorageSync("launchConfig");
 				if (launchConfig.app) {
 					launchSuccess = true;
-
 					let bussinessApiDomain = launchConfig.app.bussinessApiDomain;
 					let dataApiDomain = launchConfig.app.dataApiDomain;
 					if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
-						bussinessApiDomain = bussinessApiDomain.slice(
-							0,
-							bussinessApiDomain.length - 1
-						);
+						bussinessApiDomain = bussinessApiDomain.slice(0,bussinessApiDomain.length - 1);
 					}
 					if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
 						dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
 					}
-					app.bussinessApiDomain = bussinessApiDomain + "/api/v1/";
-					if (launchConfig.app.dataApiDomain) {
-						app.dataApiDomain = dataApiDomain + "/api/v1/";
-					} else {
-						app.dataApiDomain = bussinessApiDomain + "/api/v1/";
-					}
+					app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
+					app.dataApiDomain = launchConfig.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
 				}
 			}
-
-
-
-
-
 			console.log("bussinessApiDomain==========", app.bussinessApiDomain);
 			console.log("dataApiDomain==========", app.dataApiDomain);
 		}
@@ -391,11 +385,11 @@ export default class PlatformManager {
 				if (data.app.launchDomain && data.app.launchDomain != "") {
 					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
 				}
-				if (data.data.mustBindPhone) {
-					uni.reLaunch({
-						url: "/pages/login/bind_phone",
-					});
-				}
+				// if (data.data.mustBindPhone) {
+				// 	uni.reLaunch({
+				// 		url: "/pages/login/bind_phone",
+				// 	});
+				// }
 				uni.$emit("loginSuccess");
 			});
 		}
@@ -426,11 +420,7 @@ export default class PlatformManager {
 	}
 	// 判断粘贴板是否有邀请码
 	matchInviteRequestKey(code:string){
-		console.log(code)
-		if(code.indexOf('帮我助力') == -1){
-			return 
-		}
-		let inviteCode = /[0-9a-zA-Z]{9}/g;
+		let inviteCode = /[N][O]\d{9}[S]/g;
 		let key:any = ''
 		if(inviteCode.test(code)){
 			key = code.match(inviteCode);
@@ -442,10 +432,29 @@ export default class PlatformManager {
 				})
 				return;
 			}
-			uni.navigateTo({
-				url:'/pages/act/invite/invite'
-			})
+			this.checkShareNo(app.requestKey)
 		}
+	}
+	checkShareNo(code:string){
+		let ts = Math.floor(new Date().getTime()/1000);
+		let params = {
+			ts:ts,
+			code:code,
+			sign:Md5.hashStr('viewShareNo_'+code+'_'+ts)
+		}
+		app.http.Post('function/userNo/transfer/shareNo/view',params,(res:any)=>{
+			if(res.good){ 
+				uni.navigateTo({
+					url:'/pages/userinfo/giving/code_details?data='+decodeURIComponent(JSON.stringify(res))
+				})
+			}
+		})
+		uni.setClipboardData({
+			data: '',
+			showToast:false,
+			success: ()=> {
+			}
+		});
 	}
 	// 提交邀请口令
 	inviteRequestKey(key:string,cb?:Function){
@@ -460,6 +469,79 @@ export default class PlatformManager {
 			success: ()=> {
 			}
 		});
+	}
+	// canvas图片生成
+	canvasToTempFilePath(canvasName:string,func?:Function){
+        // #ifndef MP-ALIPAY
+        uni.canvasToTempFilePath({
+            canvasId: canvasName,
+            success: (res: any) => {
+                uni.hideLoading();
+                // 在H5平台下，tempFilePath 为 base64
+                console.log("res.tempFilePath:" + res.tempFilePath);
+                if (func) {
+                    func(res);
+                }
+            },
+            fail: () => {
+                uni.hideLoading();
+                uni.showToast({
+                    title: "图片加载失败",
+                    icon:'none',
+                    duration: 2000,
+                });
+            },
+        });
+        // #endif
+    }
+	// 保存图片
+	saveImageToPhotosAlbum(imgUrl:string,func?:Function){
+        // #ifndef H5
+        uni.saveImageToPhotosAlbum({
+            filePath: imgUrl, //    图片文件路径，可以是临时文件路径也可以是永久文件路径，不支持网络图片路径
+            success: () => {
+                uni.showToast({
+                    title: "保存成功",
+                    duration: 2000,
+                });
+                if (func) {
+                    func();
+                }
+            },
+            fail: () => {
+                uni.showToast({
+                    title: "保存失败",
+                    icon:'none',
+                    duration: 2000,
+                });
+            },
+        });
+		// #endif
+    }
+	// 节流
+	throttle(fn:any,delay:any){
+		let valid = true
+		return function() {
+			if(!valid){
+				return false 
+			}
+			valid = false
+			setTimeout(() => {
+				fn()
+				valid = true;
+			}, delay)
+		}
+	}
+	validateVersion(a:string, b:string) {
+		if (a === b || !a || !b) {
+			return false
+		}
+		const aArr = a.split('.')
+		const bArr = b.split('.');
+		const res = aArr.map((aStr, index) => {
+			return Number(aStr)>=Number(bArr[index])
+		})
+		return res.every(bool => bool)
 	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false

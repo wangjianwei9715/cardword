@@ -75,7 +75,6 @@
 			this.goodTabCheck = id;
 			this.noMoreData = false;
 			this.currentPage = 1;
-			this.couponList = [];
 			this.reqNewData()
 		}
 		reqNewData(cb?:Function) {
@@ -144,7 +143,7 @@
 	page{
 		width: 100%;
 		height:100%;
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.content{
 		width: 100%;
@@ -184,7 +183,6 @@
 				font-weight: bold;
 			}
 			.coupon-price text{
-				font-family:LTGBK;
 				font-size: 70rpx;
 			}
 			.coupon-condition{

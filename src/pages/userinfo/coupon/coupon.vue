@@ -23,7 +23,7 @@
 			<view class="coupon-explain" :class="{'show-explain':checkShowExplain(item.id)}">
 				<view class="explain-content">
 					<view v-if="item.goodCode!=''" class="explain-index">1.该券只能用于商品：{{item.goodCode}}</view>
-					<view v-else class="explain-index">1.{{item.tp==1?'卡享券':'满减券'}}可用于平台所有商品，用户下单时，可选择{{item.tp==1?'卡享券':'满减券'}}按面值抵减商品金额</view>
+					<view v-else class="explain-index">1.{{item.tp==1?'卡享券':item.name}}可用于平台所有商品，用户下单时，可选择{{item.tp==1?'卡享券':'满减券'}}按面值抵减商品金额</view>
 					<view class="explain-index">2.{{item.tp==1?'卡享券可叠加使用，最低可减至0.1元，但不设找零':'满减券不可叠加使用，不设找零'}}</view>
 					<view class="explain-index">3.不可与其他类型优惠券叠加使用</view>
 					<view class="explain-index">券编号：{{item.code}}</view>
@@ -165,12 +165,14 @@
 	page{
 		width: 100%;
 		height:100%;
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.content{
 		width: 100%;
 		box-sizing: border-box;
 		padding:28rpx 20rpx 120rpx 20rpx;
+		padding-bottom: calc(120rpx);
+		padding-bottom: calc(120rpx + constant(safe-area-inset-bottom));
 		padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 	}
 	.coupon-content{
@@ -206,7 +208,6 @@
 				font-weight: bold;
 			}
 			.coupon-price text{
-				font-family:LTGBK;
 				font-size: 70rpx;
 			}
 			.coupon-condition{
@@ -310,6 +311,8 @@
 	}
 	.coupon-btn-content{
 		width: 100%;
+		height:calc(100rpx );
+		height:calc(100rpx + constant(safe-area-inset-bottom));
 		height:calc(100rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		left:0;

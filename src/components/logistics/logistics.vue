@@ -69,7 +69,7 @@
 		height: calc(100vh - 44px);
 		/* #endif */
 		font-size: 24rpx;
-		background-color: #F2F2F2;
+		background-color: $content-bg;
 		overflow-y: auto;
 	}
 

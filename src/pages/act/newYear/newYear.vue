@@ -150,10 +150,8 @@
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
+				if(this.currentPage==1) this.goodsData = []
 				if(data.list){
-					if(this.currentPage==1){
-						this.goodsData = []
-					}
 					this.goodsData = this.goodsData.concat(data.list);
 				}
 				
@@ -180,7 +178,6 @@
 			this.showRulePopup = false;
 		}
 		onClickShowRule(){
-			console.log('222')
 			this.showRulePopup = true
 		}
 		getPlan(lock:number,now:number,all:number){

@@ -36,7 +36,7 @@
 	.goodslist{
 		&-plan-content{
 			width: 100%;
-			background: #F2F2F2;
+			background: $content-bg;
 			border-radius: 12rpx;
 			position: relative;
 			margin-bottom: 20rpx;
@@ -56,7 +56,6 @@
 			text-align: center;
 			line-height: 30rpx;
 			font-size: 18rpx;
-			font-family: 'LT';
 			font-weight: bold;
 			color: #FFFFFF;
 		}

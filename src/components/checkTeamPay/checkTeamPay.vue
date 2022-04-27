@@ -501,12 +501,13 @@
 			.header-price{
 				width: 100%;
 				font-size: 25rpx;
-				font-family: 'DIN';
+				font-family: DIN;
 				font-weight: bold;
 				color: #FB4E3E;
 			}
 			.header-price text{
 				font-size:40rpx;
+				color: #FB4E3E;
 			}
 			.header-teamname{
 				width: 100%;
@@ -717,7 +718,7 @@
 	}
 	.branch-sq{
 		height: 27rpx;
-		background: #F2F2F2;
+		background: $content-bg;
 		border: 1rpx solid #FFFFFF;
 		border-radius: 12rpx 2rpx 12rpx 2rpx;
 		position: absolute;
@@ -774,6 +775,8 @@
 	}
 	.teamtion-bottom{
 		width: 100%;
+		height:calc(120rpx);
+		height:calc(120rpx + constant(safe-area-inset-bottom));
 		height:calc(120rpx + env(safe-area-inset-bottom));
 		position: absolute;
 		bottom:0;
@@ -797,7 +800,7 @@
 		.cart-index{
 			max-width: 95%;
 			height: 46rpx;
-			background: #F2F2F2;
+			background: $content-bg;
 			border-radius: 4rpx;
 			font-size: 20rpx;
 			font-family: Microsoft YaHei;
@@ -948,7 +951,7 @@
 		.btn-right-random-orther{
 			width: 100%;
 			height: 88rpx;
-			background:#F2F2F2;
+			background:$content-bg;
 			border-radius: 44rpx;
 			text-align: center;
 			line-height: 88rpx;

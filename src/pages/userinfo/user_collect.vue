@@ -19,7 +19,7 @@
 			<statusbar/>
 			<goodslist :goodsList="goodsList" :delStart="deling" :delList="delList" @send="onClickJumpDetails"  @del="onClickDel"/>
 		</view>
-		<empty v-if="goodsList.length==0"/>
+		<empty v-if="empty"/>
 		<view v-show="deling" class="del-bottom">
 			<view class="del-btn btn-all" @click="onClickAllChoose">全选</view>
 			<view class="del-btn btn-del" @click="onClickDelChoose">删除</view>
@@ -46,6 +46,7 @@ import { Component } from "vue-property-decorator";
 		currentPage = 1;
 		pageSize = 20;
 		noMoreData = false;
+		empty = false;
 		onLoad(query:any) {
 			this.reqNewData()
 		}
@@ -68,9 +69,9 @@ import { Component } from "vue-property-decorator";
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
-				if(this.currentPage==1){
-					this.goodsList = []
-				}
+				if(this.currentPage==1) this.goodsList = []
+				if(data.total == 0) this.empty = true;
+
 				if(data.list){
 					this.goodsList = this.goodsList.concat(data.list);
 				}
@@ -139,7 +140,7 @@ import { Component } from "vue-property-decorator";
 
 <style lang="scss">
 	page{
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.content{
 		width: 100%;
@@ -228,7 +229,7 @@ import { Component } from "vue-property-decorator";
 			align-items: center;
 			justify-content: center;
 			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 		}
 		.btn-all{

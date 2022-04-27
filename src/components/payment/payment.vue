@@ -16,14 +16,7 @@
 					<view :class="checkPay==index?'payment-checked':'payment-check'"></view>
 				</view>
 			</view>
-			<!-- <view class="payment-list">
-				<view class="payment-list-left">
-					<view class="icon-wx"></view>微信支付
-				</view>
-				<view class="payment-list-right" @click="checkPay=2">
-					<view :class="checkPay==2?'payment-checked':'payment-check'"></view>
-				</view>
-			</view> -->
+			
 			<view class="payment-btn" @click="onClickPay">立即支付{{countTimeCopy==0?'':countStr}}</view>
 		</view>
 	</view>
@@ -152,6 +145,8 @@
 		}
 		&-popup{
 			width: 100%;
+			height:calc(626rpx);
+			height:calc(626rpx + constant(safe-area-inset-bottom));
 			height:calc(626rpx + env(safe-area-inset-bottom));
 			position: fixed;
 			box-sizing: border-box;
@@ -167,11 +162,11 @@
 		.payment-header{
 			width: 100%;
 			box-sizing: border-box;
-			padding-top: 36rpx;
-			font-size: 26rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
-			color: #14151A;
+			padding-top: 50rpx;
+			font-size: 33rpx;
+			font-family: PingFangSC-Medium;
+			font-weight: 500;
+			color: #333333;
 			text-align: center;
 			position: relative;
 		}
@@ -180,23 +175,24 @@
 			height:84rpx;
 			margin-top: 46rpx;
 			line-height: 84rpx;
-			font-size: 48rpx;
-			font-family:'DIN';
-			font-weight: bold;
-			color: #14151B;
+			font-size: 50rpx;
+			font-family: PingFangSC-Regular;
+			font-weight: 600;
+			color: #333333;
 			text-align: center;
 			margin-bottom: 48rpx;
 			.payment-price{
-				font-size: 72rpx;
+				font-size: 73rpx;
 			}
 		}
 		.payment-tip{
-			width: 100%;
-			padding-left: 30rpx;
-			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			width: 686rpx;
+			margin:0 auto;
+			box-sizing: border-box;
+			font-size: 27rpx;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
-			color: #14151A;
+			color: #333333;
 			padding-bottom: 30rpx;
 			border-bottom: 1px solid #EDEDED;
 		}
@@ -214,17 +210,17 @@
 				display: flex;
 				box-sizing: border-box;
 				align-items: center;
-				font-size: 26rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
-				font-weight: 500;
-				color: #14151A;
+				font-size: 31rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #333333;
 			}
 			.icon-zfb{
 				width: 44rpx;
 				height:44rpx;
 				box-sizing: border-box;
-				margin-right: 16rpx;
-				background:url(../../static/pay/zhifubao@2x.png) no-repeat center;
+				margin-right: 20rpx;
+				background:url(../../static/pay/v2/zhifubao@2x.png) no-repeat center;
 				background-size: 100% 100%;
 			}
 			.icon-wx{
@@ -249,19 +245,24 @@
 			}
 		}
 		.payment-btn{
-			width: 720rpx;
-			height: 88rpx;
-			background: #14151B;
-			border-radius: 4rpx;
+			width: 690rpx;
+			background: $btn-red;
 			text-align: center;
-			line-height: 88rpx;
 			box-sizing: border-box;
 			margin:0 auto;
-			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
+			font-family: PingFangSC-Regular;
 			color: #FFFFFF;
-			margin-top: 46rpx;
+			position:absolute;
+			bottom:calc(18rpx );
+			bottom:calc(18rpx + constant(safe-area-inset-bottom));
+			bottom:calc(18rpx + env(safe-area-inset-bottom));
+			left:50%;
+			margin-left: -345rpx;
+			height: $btn-height;
+			line-height: $btn-height;
+			font-size: $btn-fontSize;
+			border-radius:$btn-radius;
+			font-weight: $btn-weight;
 		}
 	}
 	.icon-close{

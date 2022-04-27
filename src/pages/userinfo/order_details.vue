@@ -1,101 +1,97 @@
 <template>
 	<view class="content">
 		<!-- 头部状态 -->
-		<view class="header" v-if="orderData.good">
-			<view v-if="orderData.state==1" class="header-waitpay">订单将于 {{countDownStr}} 后关闭</view>
-			<view v-else-if="orderData.state<0" class="header-close">{{orderData.desc?orderData.desc:''}}</view>
-			<view v-else-if="orderData.state>=2" class="header-orther">
-				<view class="header-statestr">{{orderData.desc?orderData.desc:''}}</view>
-				<view class="header-btn-content">
-					<view class="header-btn-pintuan" @click="onClcikResult(0)">拼团结果</view>
-					<view class="header-btn-chaika" @click="onClcikResult(1)">拆卡报告</view>
-				</view>
-			</view>
+		<view class="header">
+			<view class="header-state">{{orderState[orderData.state]}}</view>
+			<view class="header-state-desc">{{orderData.state==1?'订单将于'+countDownStr+'后关闭':orderStateDesc(orderData)}}</view>
 		</view>
-		<!-- 商品信息 -->
-		<view class="order-index" v-if="orderData.seller" @click="onClickGoodDetail"> 
-			<view class="order-index-header">
-				<view class="header-left">
-					<image class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill"></image>
-					<view class="seller-name">{{orderData.seller.name}}</view>
+		
+		<view class="order-box">
+			<!-- 商品信息 -->
+			<view class="order-index" v-if="orderData.seller" @click="onClickGoodDetail"> 
+				<view class="order-index-header">
+					<view class="header-left">
+						<image class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill"></image>
+						<view class="seller-name">{{orderData.seller.name}}</view>
+					</view>
+					<view class="header-right">
+						<view :class="['header-right-index','state'+orderData.state]">{{orderGoodsStateStr(orderData)}}</view>
+					</view>
 				</view>
-				<view class="header-right">
-					<view :class="['header-right-index','state'+orderData.state]">{{orderData.good.stateName}}</view>
-				</view>
-			</view>
-			<view class="order-index-center">
-				<image class="goods-image" :src="getGoodsImg(decodeURIComponent(orderData.good.pic))" mode="aspectFill"></image>
-				<view class="goods-content">
-					<view class="title">{{orderData.good.title}}</view>
-					<view class="desc">
-						<view class="price">￥{{orderData.price}}</view>
-						<view class="total-num">共{{orderData.num}}件</view>
+				<view class="order-index-center">
+					<image class="goods-image" :src="getGoodsImg(decodeURIComponent(orderData.good.pic))" mode="aspectFill"></image>
+					<view class="goods-content">
+						<view class="title">{{orderData.good.title}}</view>
+						<view class="desc">
+							<view class="price">￥<text>{{orderData.price}}</text></view>
+							<view class="total-num">共{{orderData.num}}件</view>
+						</view>
 					</view>
 				</view>
 			</view>
-		</view>
-		<!-- 金额计算 -->
-		<view class="order-desc">
-			<view class="order-desc-index" v-for="item in orderDesc" :key="item.id" v-show="item.desc!='- ¥0'">
-				<view class="name">{{item.name}}</view><view class="info">{{item.desc}}</view>
+			<!-- 金额计算 -->
+			<view class="order-desc">
+				<view class="order-desc-index" v-for="item in orderDesc" :key="item.id" v-show="item.desc!='- ¥0'">
+					<view class="name">{{item.name}}</view><view class="info">{{item.desc}}</view>
+				</view>
+				<view class="order-desc-index">
+					<view class="name">合计：</view><view class="info order-totalprice">￥{{orderData.price}}</view>
+				</view>
 			</view>
-			<view class="order-desc-bottom">
-				合计：<view class="price-index">￥<text class="price-num">{{orderData.price}}</text></view>
+			<view class="buyer-cotnent" v-if="cartList!=''">
+				<view class="card-header">
+					<view class="card-header-title">已选编号</view>
+				</view>
+				<buyCardId :cardList="cartList" :waitPay="true" />
 			</view>
-		</view>
-		<view class="buyer-cotnent" v-if="cartList!=''">
-			<view class="card-header">
-				<view class="card-header-title">已选编号</view>
-			</view>
-			<buyCardId :cardList="cartList" :waitPay="true" />
-		</view>
 
-		<!-- 预测卡密 -->
-		<!-- order 订单 state 订单状态  guessFreeNum 剩余免单次数 guessNum 预测正确数量 guessName 预测球队名字-->
-		<stepGuess v-if="guessType" :state="orderData.state" :order="true" :freeNum="guessFreeNum" :guessNum="guessNum" :guessName="guessName" :surplusNum="surplusNum" :guessSuccess="guessSuccess" @onClickSuccessHide="onClickSuccessHide"/>
-		<!-- 预测卡密 -->
+			<!-- 预测卡密 -->
+			<!-- order 订单 state 订单状态  guessFreeNum 剩余免单次数 guessNum 预测正确数量 guessName 预测球队名字-->
+			<stepGuess v-if="guessType" :state="orderData.state" :order="true" :freeNum="guessFreeNum" :guessNum="guessNum" :guessName="guessName" :surplusNum="surplusNum" :guessSuccess="guessSuccess" @onClickSuccessHide="onClickSuccessHide"/>
+			<!-- 预测卡密 -->
 
-		<!-- 我的编号 -->
-		<view class="buyer-cotnent" v-if="cardList!=''">
-			<view class="card-header">
-				<view class="card-header-title">我的编号</view>
-				<view class="card-header-right" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
+			<!-- 我的编号 -->
+			<view class="buyer-cotnent" v-if="cardList!=''">
+				<view class="card-header">
+					<view class="card-header-title">我的卡密<view class="card-header-title-desc">{{orderData.state>2?'+'+orderData.point:'未中卡可获得'}}<image class="order-gold" src="../../static/order/gold.png" /></view></view>
+					<view class="card-header-right" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
+				</view>
+				<buyCardId :cardList="cardList"/>
 			</view>
-			<buyCardId :cardList="cardList"/>
-		</view>
-		<!-- 收货地址 -->
-		<view class="address-content" v-if="orderData.receiver">
-			<view class="title">收货地址</view>
-			<view class="index">
-				<view class="address-icon"></view>
-				<view class="address-desc">{{orderData.receiver.address}}</view>
+			<!-- 收货地址 -->
+			<view class="address-content" v-if="orderData.receiver">
+				<view class="index">
+					<view class="address-icon"></view>
+					<view class="address-desc">{{orderData.receiver.name}} {{orderData.receiver.phone}}</view>
+				</view>
+				<view class="address-info">
+					{{orderData.receiver.address}}
+				</view>
 			</view>
-			<view class="address-info">
-				<view class="name">{{orderData.receiver.name}}</view>{{orderData.receiver.phone}}
+			<!-- 订单详细信息 -->
+			<view class="order-info" v-if="orderInfo.orderNo.desc!=''">
+				<view class="title">订单信息</view>
+				<view class="index" v-for="item in orderInfo" :key="item.id" v-show="item.desc!=0">
+					<view class="index-left">{{item.title}}</view>
+					<view class="index-right">
+						{{item.title=='订单编号'||item.title=='支付方式'?item.desc:(item.desc>0?dateFormat(item.desc):'')}}
+						<view v-if="item.title=='订单编号'" class="copy" @click="onClickCopyInfo(item.desc)"></view>
+					</view>
+				</view>
 			</view>
-		</view>
-		<!-- 订单详细信息 -->
-		<view class="order-info" v-if="orderInfo.orderNo.desc!=''">
-			<view class="title">订单信息</view>
-			<view class="index" v-for="item in orderInfo" :key="item.id" v-show="item.desc!=0">
-				<text v-if="item.title=='订单编号'||item.title=='支付方式'">{{item.title}}:{{item.desc}}</text>
-				<text v-else>{{item.title}}:{{item.desc>0?dateFormat(item.desc):''}}</text>
-				<view v-if="item.title=='订单编号'" class="copy" @click="onClickCopyInfo(item.desc)">复制</view>
-			</view>
+
 			<view class="info-tab">
 				<view class="tab-index" @click="onClickKefu"><view class="icon-lianxi"></view>联系客服</view>
 				<view class="tab-index" @click="onClickComplain"><view class="icon-tousu"></view>投诉订单</view>
 			</view>
-		</view>
 		
+		</view>
 
 		<!-- 底部按钮 -->
-		<view class="bottom-btn" v-if="orderData.operate">
-			
-			<view class="small-btn-content" v-if="orderData.operate.length>1">
-				<view class="small-btn left" v-for="(item,index) in orderData.operate" :key="index" @click="onClickOperate(item.cmd)">{{item.name}}</view>
+		<view class="bottom-btn" v-if="operateData!=''">
+			<view class="small-btn-content" >
+				<view class="mini-btn left" :class="{'right':index+1==operateData.length}" v-for="(item,index) in operateData" :key="index" @click="onClickOperate(item.cmd)">{{item.name}}</view>
 			</view>
-			<view v-else class="big-btn" @click="onClickOperate(orderData.operate[0].cmd)">{{orderData.operate[0].name}}</view>
 		</view>
 
 		<payment :showPayMent="showPayMent" :payChannel="payChannel" @cancelPay="onClickCancelPay" :payPrice="orderData.price" :countTime="countDown" @pay="onClickPayGoods" />
@@ -112,10 +108,17 @@
 	import {
 		getGoodsImg,dateFormat
 	} from "../../tools/util";
+	import {orderState} from "@/net/DataExchange"
+	import { orderStateDesc,orderGoodsStateStr,orderSetOperate } from "@/tools/switchUtil"
 	@Component({})
 	export default class ClassName extends BaseNode {
 		getGoodsImg = getGoodsImg;
 		dateFormat = dateFormat;
+		orderState = orderState;
+		orderStateDesc = orderStateDesc;
+		orderGoodsStateStr = orderGoodsStateStr;
+		orderSetOperate = orderSetOperate
+
 		defaultAvatar = app.defaultAvatar;
 		countDownInter:any;
 		countDown = 300;
@@ -124,7 +127,7 @@
 		orderData:{[x:string]:any} = [];
 		orderDesc = [
 			{id:1,name:'商品金额',desc:''},
-			{id:2,name:'优惠',desc:''},
+			{id:2,name:'优惠（阶梯奖励）',desc:''},
 			{id:3,name:'优惠券',desc:''},
 			{id:4,name:'运费',desc:'包邮'},
 		];
@@ -138,6 +141,8 @@
 			deliverTime:{id:6,title:'发货时间',desc:''},
 			receiveTime:{id:7,title:'收货时间',desc:''},
 		};
+		// 底部按钮
+		operateData:{[x:string]:any} = [];
 		showPayMent = false;
 		cartList:any = [];
 		showPaySuccess = false;
@@ -170,6 +175,7 @@
 		onShow(){
 			console.log('clickToPay',this.clickToPay)
 			if(this.clickToPay){
+				clearInterval(this.countDownInter);
 				this.clickPayShowLoading(()=>{
 					this.getNoShowList();
 					if(this.guessNum>0){
@@ -218,7 +224,8 @@
 				uni.setNavigationBarTitle({
 					title: res.data.stateName
 				});
-				this.getGoodDesc(res.data)
+				this.getGoodDesc(res.data);
+				this.operateData = this.orderSetOperate(res.data);
 				this.cartList = [];
 				if(res.data.showSelectNo){
 					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/selectList',{pageIndex:1,pageSize:50},(res:any)=>{
@@ -248,6 +255,7 @@
 				}
 			})
 		}
+		
 		getGoodDesc(data:any){
 			this.orderDesc[0].desc ='¥'+(data.price+data.discount+(data.coupon?data.coupon:0));
 			this.orderDesc[1].desc ='- ¥'+data.discount;
@@ -277,7 +285,7 @@
 		}
 		onClickAllCard(){
 			uni.navigateTo({
-				url:'/pages/userinfo/order_myCard?code='+this.orderCode+'&goodCode='+this.orderData.good.goodCode
+				url:'/pages/userinfo/order_myCard?code='+this.orderCode+'&goodCode='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType
 			})
 		}
 		onClickGoodDetail(){
@@ -307,14 +315,20 @@
 			if(cmd=='resultCard'){
 				this.onClcikResult(1)
 			}
-			if(cmd.indexOf('wuliu')!=-1){
-				let wuliucode = cmd.slice(6)
+			if(cmd=='giving'){
 				uni.navigateTo({
-					url:'/pages/userinfo/order_logistics?code='+wuliucode
+					url:'/pages/userinfo/giving/giving_list?code='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType+'&orderCode='+this.orderData.code
 				})
 			}
-
-			if(cmd=='toPay'){
+			if(cmd == 'wuliu'){
+				uni.navigateTo({
+					url:'/pages/userinfo/order_logistics?code='+this.orderData.wuliuCode
+				})
+			}
+			if(cmd == 'drawCard'){
+				this.getNoShowList()
+			}
+			if(cmd == 'toPay'){
 				// #ifdef MP
 				params= {
 					channel:'mini',
@@ -355,7 +369,6 @@
 								uni.$emit('orderchange')
 							})
 						} else if (res.cancel) {
-							console.log('用户点击取消');
 						}
 					}
 				});
@@ -379,7 +392,6 @@
 								uni.$emit('orderchange')
 							})
 						} else if (res.cancel) {
-							console.log('用户点击取消');
 						}
 					}
 				});
@@ -467,119 +479,59 @@
 
 <style lang="scss">
 	page{
-		background:#f2f2f2;
+		background:$content-bg;
 	}
 	.content{
 		width: 100%;
 		box-sizing: border-box;
-		background:#f2f2f2;
+		background:$content-bg;
 	}
 	.header{
 		width: 100%;
-		&-waitpay{
+		height:354rpx;
+		background:url(../../static/order/top_bg.png);
+		background-size: 100% 100%;
+		box-sizing: border-box;
+		padding:40rpx 40rpx;
+		&-state{
 			width: 100%;
-			height:60rpx;
-			background:#FFF7E4;
-			text-align: center;
-			line-height: 60rpx;
-			font-size: 26rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-size: 37rpx;
+			font-family: PingFangSC-Regular;
 			font-weight: 600;
-			color: #DAAC61;
+			color: #FFFFFF;
+			margin-bottom: 5rpx;
 		}
-		&-close{
+		&-state-desc{
 			width: 100%;
-			height:100rpx;
-			background: linear-gradient(180deg, #E6E6E6 0%, #FFFFFF 100%);
-			box-sizing: border-box;
-			padding:0 32rpx;
-			line-height: 100rpx;
-			font-size: 26rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
-			color: #828292;
+			font-size: 27rpx;
+			font-family: PingFangSC-Regular;
+			font-weight: 400;
+			color: #FFFFFF;
 		}
-		&-orther{
-			width: 100%;
-			height:100rpx;
-			background: linear-gradient(180deg, #FFEDE2 0%, #FFFFFF 100%);
-			box-sizing: border-box;
-			padding:0 32rpx;
-			font-size: 26rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
-			color: #393939;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-		}
-		&-statestr{
-			height:100rpx;
-			line-height: 100rpx;
-			font-size: 26rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
-			background: linear-gradient(90deg, #FE7348 0%, #FF9353 100%);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-		}
-		&-btn-content{
-			height:60rpx;
-			display: flex;
-			align-items: center;
-			justify-content: flex-end;
-			.header-btn-pintuan{
-				width: 148rpx;
-				height: 60rpx;
-				box-sizing: border-box;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				background: #FFF8F4;
-				border-radius: 4rpx;
-				border: 1px solid #FE7348;
-				font-size: 24rpx;
-				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
-				color: #FE7348;
-			}
-			.header-btn-chaika{
-				width: 148rpx;
-				height: 60rpx;
-				box-sizing: border-box;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				background: #FFF8F4;
-				border-radius: 4rpx;
-				border: 1px solid #FF9353;
-				font-size: 24rpx;
-				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
-				color: #FF9353;
-				margin-left: 28rpx;
-			}
-		}
+	}
+	.order-box{
+		width: 100%;
+		box-sizing: border-box;
+		padding:0 14rpx;
 	}
 	.order{
 		&-index{
-			width: 750rpx;
-			height:270rpx;
-			padding:0 20rpx;
+			width: 100%;
+			// height:305rpx;
+			padding:0 22rpx 31rpx 22rpx;
 			border-radius: 4rpx;
 			background:#fff;
 			box-sizing: border-box;
-			margin-bottom: 20rpx;
+			margin-top: -188rpx;
 			&-header{
 				width: 100%;
-				height:80rprx;
+				height:93rprx;
 				display: flex;
 				box-sizing: border-box;
-				padding:0 20rpx 0 28rpx;
 				align-items: center;
 				justify-content: space-between;
 				.header-left{
-					height:80rpx;
+					height:93rpx;
 					box-sizing: border-box;
 					display: flex;
 					align-items: center;
@@ -592,10 +544,10 @@
 					.seller-name{
 						height:40rpx;
 						line-height: 40rpx;
-						font-size: 24rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
+						font-size: 27rpx;
+						font-family: PingFangSC-Regular;
 						font-weight: 400;
-						color: #14151A;
+						color: #333333;
 					}
 				}
 				.header-right{
@@ -606,7 +558,7 @@
 						height:80rpx;
 						display: flex;
 						align-items: center;
-						font-size: 24rpx;
+						font-size: 25rpx;
 						font-family: PingFangSC-Medium, PingFang SC;
 						font-weight: 500;
 						color: #EBBF7C;
@@ -643,29 +595,29 @@
 			}
 			&-center{
 				width: 100%;
-				height:160rpx;
+				height:137rpx;
 				display: flex;
 				box-sizing: border-box;
-				padding:0 20rpx;
 				align-items: center;
 				.goods-image{
-					width: 160rpx;
-					height:160rpx;
+					width: 178rpx;
+					height:137rpx;
 					border-radius: 4rprx;
 					margin-right: 24rpx;
 				}
 				.goods-content{
-					width: 486rpx;
-					height:160rpx;
+					width: 480rpx;
+					height:137rpx;
 					box-sizing: border-box;
-					padding:12rpx 0;
+					position: relative;
 					.title{
 						width: 100%;
 						font-size: 28rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
+						font-family: PingFangSC-Regular;
 						font-weight: 400;
-						color: #14151A;
+						color: #333333;
 						margin-bottom: 20rpx;
+						word-break:break-all
 					}
 					.desc{
 						width: 100%;
@@ -674,21 +626,29 @@
 						box-sizing: border-box;
 						align-items: center;
 						justify-content: space-between;
+						position: absolute;
+						bottom:0;
+						left:0;
 						.price{
 							height:40rpx;
 							line-height: 40rpx;
-							font-size: 30rpx;
-							font-family: DINAlternate-Bold, DINAlternate;
+							font-size: 25rpx;
+							font-family: PingFangSC-Regular;
+							font-weight: 400;
+							color: #333333;
+						}
+						.price text{
+							font-size: 32rpx;
+							font-family: PingFangSC-Medium;
 							font-weight: bold;
-							color: #14151A;
 						}
 						.total-num{
 							height:40rpx;
 							line-height: 40rpx;
-							font-size: 24rpx;
-							font-family: PingFangSC-Regular, PingFang SC;
+							font-size: 25rpx;
+							font-family: PingFangSC-Regular;
 							font-weight: 400;
-							color: #AAAABB;
+							color: #88878C;
 						}
 					}
 				}
@@ -731,9 +691,9 @@
 	.order-desc{
 		width: 100%;
 		box-sizing: border-box;
-		border-top:20rpx solid #F2F2F2;
-		border-bottom: 20rpx solid #F2F2F2;
-		padding: 20rpx 32rpx 0 32rpx;
+		border-top:13rpx solid $content-bg;
+		border-bottom: 13rpx solid $content-bg;
+		padding: 20rpx 22rpx 0 22rpx;
 		background: #fff;
 		&-index{
 			width: 100%;
@@ -742,10 +702,15 @@
 			align-items: center;
 			justify-content: space-between;
 			margin-bottom: 20rpx;
-			font-size: 24rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-size: 25rpx;
+			font-weight: 400;
+			color: #333333;
+		}
+		.order-totalprice{
+			font-size: 27rpx;
+			font-family: PingFangSC-Medium;
 			font-weight: 600;
-			color: #14151A;
+			color: #333333;
 		}
 		&-bottom{
 			width: 100%;
@@ -786,16 +751,33 @@
 		&-title{
 			height:40rpx;
 			line-height: 40rpx;
-			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-size: 31rpx;
+			font-family: PingFangSC-Medium;
 			font-weight: 600;
-			color: #14151A;
+			color: #333333;
+			display: flex;
+			.card-header-title-desc{
+				height:40rpx;
+				display: flex;
+				align-items: center;
+				line-height: 40rpx;
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #88878C;
+				margin-left: 17rpx;
+			}
+			.order-gold{
+				width: 29rpx;
+				height:29rpx;
+				margin-left: 6rpx;
+			}
 		}
 		&-right{
 			height:40rpx;
 			display: flex;
 			align-items: center;
-			font-size: 22rpx;
+			font-size: 23rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #A9ABB4;
@@ -813,19 +795,19 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:20rpx;
-		border-bottom: 20rpx solid #F2F2F2;
+		border-bottom: 13rpx solid $content-bg;
 		background: #fff;
 	}
 	.address-content{
 		width: 100%;
 		box-sizing: border-box;
-		border-bottom: 20rpx solid #F2F2F2;
-		padding:20rpx 32rpx;
+		border-bottom: 13rpx solid $content-bg;
+		padding:30rpx 25rpx;
 		background: #fff;
 		.title{
 			width: 100%;
 			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #14151A;
 			margin-bottom: 24rpx;
@@ -836,18 +818,18 @@
 			align-items: center;
 			box-sizing: border-box;
 			.address-icon{
-				width: 32rpx;
-				height:38rpx;
-				background:url(../../static/goods/icon_location.png) no-repeat center;
+				width: 31rpx;
+				height:42rpx;
+				background:url(../../static/goods/icon_address.png) no-repeat center;
 				background-size: 100% 100%;
-				margin-right: 24rpx;
+				margin-right: 21rpx;
 			}
 			.address-desc{
 				width: 620rpx;
-				font-size: 24rpx;
-				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
-				color: #14151A;
+				font-size: 31rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #333333;
 				line-height: 34rpx;
 			}
 		}
@@ -855,10 +837,10 @@
 			width: 100%;
 			box-sizing: border-box;
 			padding-left: 56rpx;
-			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
+			font-size: 27rpx;
+			font-family: PingFangSC-Regular;
 			font-weight: 400;
-			color: #7F7F8E;
+			color: #88878C;
 			display: flex;
 			align-items: center;
 			margin-top:16rpx;
@@ -871,76 +853,93 @@
 		width: 100%;
 		box-sizing: border-box;
 		background: #fff;
-		padding:20rpx 32rpx;
-		border-bottom: 20rpx solid #F2F2F2;
-		margin-bottom: calc(110rpx + env(safe-area-inset-bottom));
+		padding:30rpx 22rpx 10rpx 22rpx;
+		border-bottom: 13rpx solid $content-bg;
+		
 		.title{
 			width: 100%;
-			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-size: 31rpx;
+			font-family: PingFangSC-Medium;
 			font-weight: 600;
-			color: #14151A;
-			margin-bottom: 24rpx;
+			color: #333333;
+			margin-bottom: 30rpx;
 		}
 		.index{
 			width: 100%;
 			display: flex;
+			height:40rpx;
 			align-items: center;
-			font-size: 24rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #14151A;
 			margin-bottom: 20rpx;
-		}
-		.copy{
-			width: 64rpx;
-			height: 38rpx;
-			border-radius: 4rpx;
-			border: 1px solid #D2D2DB;
-			box-sizing: border-box;
-			margin-left: 16rpx;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 20rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #828292;
-		}
-		.info-tab{
-			width: 100%;
-			height:84rpx;
-			box-sizing: border-box;
-			border-top: 1px solid #F1F1F4;
-			display: flex;
-			align-items: center;
-			padding:0 120rpx;
 			justify-content: space-between;
-			.tab-index{
-				height:80rpx;
+			.index-left{
+				height:40rpx;
 				display: flex;
 				align-items: center;
-				.icon-lianxi{
-					width: 34rpx;
-					height:32rpx;
-					background:url(../../static/userinfo/liaotian.png) no-repeat center;
-					background-size: 100% 100%;
-					margin-right:16rpx
-				}
-				.icon-tousu{
-					width: 34rpx;
-					height:32rpx;
-					background:url(../../static/userinfo/tousu@2x.png) no-repeat center;
-					background-size: 100% 100%;
-					margin-right:16rpx
-				}
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #333333;
+			}
+			.index-right{
+				height:40rpx;
+				display: flex;
+				align-items: center;
+				font-size: 25rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #C6C6C8;
+			}
+		}
+		.copy{
+			width: 20rpx;
+			height:26rpx;
+			background:url(../../static/order/copy.png) no-repeat center;
+			background-size:100% 100%;
+			margin-left: 6rpx;
+		}
+		
+	}
+	.info-tab{
+		width: 100%;
+		height:91rpx;
+		box-sizing: border-box;
+		background:#fff;
+		display: flex;
+		align-items: center;
+		padding:0 96rpx;
+		justify-content: space-between;
+		margin-bottom: calc(120rpx);
+		margin-bottom: calc(120rpx + constant(safe-area-inset-bottom));
+		margin-bottom: calc(120rpx + env(safe-area-inset-bottom));
+		.tab-index{
+			height:80rpx;
+			display: flex;
+			align-items: center;
+			font-size: 27rpx;
+			font-family: PingFangSC-Regular;
+			font-weight: 400;
+			color: #333333;
+			.icon-lianxi{
+				width: 42rpx;
+				height:40rpx;
+				background:url(../../static/order/kefu.png) no-repeat center;
+				background-size: 100% 100%;
+				margin-right:16rpx
+			}
+			.icon-tousu{
+				width: 36rpx;
+				height:38rpx;
+				background:url(../../static/order/tousu.png) no-repeat center;
+				background-size: 100% 100%;
+				margin-right:16rpx
 			}
 		}
 	}
-	
 	.bottom-btn{
 		width: 100%;
-		height:calc(110rpx + env(safe-area-inset-bottom));
+		height:calc(120rpx);
+		height:calc(120rpx + constant(safe-area-inset-bottom));
+		height:calc(120rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
 		position: fixed;
 		bottom:0;
@@ -949,45 +948,36 @@
 		z-index: 9;
 		display: flex;
 		justify-content: center;
-		padding-top: 11rpx;
-		// padding-bottom: constant(safe-area-inset-bottom);
-		.big-btn{
-			width: 718rpx;
-			height: 88rpx;
-			border:1px solid #FB4E3E;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 28rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
-			font-weight: 600;
-			color: #FB4E3E;
-			border-radius: 20rpx;
-		}
+		padding:20rpx 39rpx 0 39rpx;
 		.small-btn-content{
 			width: 100%;
-			height:110rpx;
+			height:82rpx;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
-			justify-content: center;
-			.small-btn{
-				width: 352rpx;
-				height: 88rpx;
-				border-radius: 4rpx;
-				border: 1px solid #14151B;
+			justify-content: flex-end;
+			
+			.mini-btn{
+				width: 180rpx;
+				border:1px solid #DADADA;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				font-size: 28rpx;
-				font-family: PingFangSC-Semibold, PingFang SC;
-				font-weight: 600;
-				color: #14151B;
-				margin:0 7rpx
+				font-family: PingFangSC-Regular;
+				color: #88878c;
+				margin-left: 15rpx;
+				height: $btn-height;
+				line-height: $btn-height;
+				font-size: $btn-fontSize;
+				border-radius:$btn-radius;
+				font-weight: $btn-weight;
 			}
 			.right{
-				background: #14151B;
+				width: 180rpx;
+				background: $btn-red;
+				border:1px solid $btn-red;
 				color: #fff;
+				margin-left: 15rpx;
 			}
 		}
 	}
@@ -995,7 +985,7 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		border-bottom: 20rpx solid #f2f2f2;
+		border-bottom: 20rpx solid $content-bg;
 	}
 
 .yunfei-item {
@@ -1006,7 +996,7 @@
 }
 .item-name {
   font-size: 24rpx;
-  font-family: PingFangSC-Semibold, PingFang SC;
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 600;
   color: #14151a;
   line-height: 34rpx;

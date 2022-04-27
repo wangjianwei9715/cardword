@@ -118,7 +118,7 @@
 		width: 202rpx;
 		height:197rpx;
 		border-radius: 10rpx;
-		border:1px solid #f2f2f2;
+		border:1px solid $content-bg;
 		box-sizing: border-box;
 		display: flex;
 		justify-content: center;

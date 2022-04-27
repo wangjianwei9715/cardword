@@ -358,7 +358,6 @@
 		width: 100%;
 		text-align: center;
 		font-size: 22rpx;
-		font-family: LTGBK;
 		font-weight: 400;
 		color: #F8D797;
 	}

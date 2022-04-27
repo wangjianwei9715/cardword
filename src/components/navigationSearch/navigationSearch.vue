@@ -1,0 +1,95 @@
+<template>
+	<view class="navigation-header">
+		<statusbar/>
+		<view class="tab-header">
+			<view class="icon-back" @click="onClickBack"></view>
+			<view class="header-title">{{navigatetoTitle}}</view>
+			<view class="icon-search" @click="onClickSearch"></view>
+		</view>
+	</view>
+	
+</template>
+
+<script lang="ts">
+	import { Component, Prop,Vue } from "vue-property-decorator";
+	import BaseComponent from "@/base/BaseComponent.vue";
+	@Component({})
+	export default class navigationbar extends BaseComponent {
+		@Prop({ default: '' })
+		navigatetoTitle!: string;
+		@Prop({ default: '' })
+		searchText!: string;
+		@Prop({ default: '' })
+		searchEmit!: string;
+		
+		created(){//在实例创建完成后被立即调用
+		}
+		mounted(){//挂载到实例上去之后调用
+			
+		}
+		destroyed(){
+			
+		}
+		onClickBack(){
+			uni.navigateBack({
+				delta:1
+			})
+		}
+		onClickSearch(){
+			uni.navigateTo({
+				url:'/pages/act/ref/ref?searchText='+this.searchText+'&searchEmit='+this.searchEmit
+			})
+		}
+		
+	}
+</script>
+
+<style lang="scss">
+	.navigation-header{
+		width: 100%;
+		background:#fff;
+		position: fixed;
+		left:0;
+		top:0;
+		box-sizing: border-box ;
+		z-index: 10;
+		.tab-header{
+			width: 100%;
+			height:88rpx;
+			display: flex;
+			box-sizing: border-box;
+			padding:0 30rpx;
+			position: relative;
+			z-index: 10;
+			align-items: center;
+			justify-content: center;
+		}
+		.icon-back{
+			width: 80rpx;
+			height:88rpx;
+			background:url(../../static/goods/back@2x.png) no-repeat center;
+			background-size: 100% 100%;
+			position: absolute;
+			left:0;
+			top:0;
+		}
+		.header-title{
+			height:88rpx;
+			line-height: 88rpx;
+			font-size: 34rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #000000;
+		}
+		.icon-search{
+			width: 42rpx;
+			height:42rpx;
+			position: absolute;
+			right:32rpx;
+			top:50%;
+			margin-top: -21rpx;
+			background:url(../../static/userinfo/v2/icon_search.png) no-repeat center;
+			background-size: 100% 100%;
+		}
+	}
+</style>

@@ -1,7 +1,7 @@
 <template>
 	<view class="guess-box">
 		<view class="guess-free">
-			<view class="guess-free-text">剩余免单次数</view>
+			<view class="guess-free-text">剩余免单组数</view>
 			<view class="guess-free-text">{{freeNum}}</view>
 		</view>
 
@@ -27,16 +27,23 @@
 			</view>
 		</view>
 
-		<view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
-		<view class="drawer-content" :class="{'show-drawer':showDrawer}">
-			<image class="close-pic" @click="onClickCloseDrawer" src="../../static/pay/guanbi@2x.png"></image>
-		</view>
+
+		<bottomDrawer :showDrawer="showDrawer" :title="'预测卡密规则'" @closeDrawer="onClickCloseDrawer">
+			<view class="drawer-box">
+				<view class="drawer-helpmsg">
+					<view class="drawer-help-title">{{rulesData.title}}</view>
+					<view class="drawer-help-content" v-html="rulesData.content"></view>
+				</view>
+			</view>
+    	</bottomDrawer>
+		
 	</view>
 </template>
 
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import { guessRules } from "@/net/DataRules";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:0})
@@ -48,7 +55,8 @@
 		@Prop({default:''})
 		lastGuess:string|undefined;
 
-		showDrawer = false
+		showDrawer = false;
+		rulesData = guessRules
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -79,39 +87,38 @@
 		box-sizing: border-box;
 		width: 100%;
 		background:#fff;
-		padding:0 0 28rpx 0;
-		border-top: 20rpx solid #f2f2f2;
+		padding:0;
+		border-top: 13rpx solid $content-bg;
 	}
 	.guess-content-header{
 		width: 100%;
 		margin-bottom: 16rpx;
 		box-sizing: border-box;
-		padding:0 30rpx;
+		padding:0 22rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 	.guess-free{
-		border-top: 20rpx solid #f2f2f2;
+		border-top: 13rpx solid $content-bg;
 		width: 100%;
-		height: 73rpx;
+		height: 91rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		box-sizing: border-box;
-		padding:0 34rpx;
+		padding:0 22rpx;
 	}
 	.guess-free-text{
-		height:73rpx;
-		line-height: 73rpx;
-		font-size: 28rpx;
-		font-family: Alibaba PuHuiTi;
-		font-weight: 600;
-		color: #34363A;
+		height:91rpx;
+		line-height:91rpx;
+		font-size: 29rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #333333;
 	}
 	.guess-content{
-		width: 750rpx;
-
+		width: 100%;
 	}
 	.guess-left{
 		height:67rpx;
@@ -127,7 +134,7 @@
 		display: flex;
 		align-items: center;
 		font-size: 25rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 	}
@@ -135,7 +142,7 @@
 		height:67rpx;
 		line-height: 67rpx;
 		font-size: 25rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: normal;
 		color: rgba(101, 98, 98, 0.84);
 		margin-right: 10rpx;
@@ -185,7 +192,7 @@
 				line-height: 30rpx;
 				text-align: center;
 				font-size: 20rpx;
-				font-family: Alibaba PuHuiTi;
+				font-family: PingFangSC-Regular;
 				font-weight: normal;
 				color: #656262;
 			}
@@ -210,7 +217,7 @@
 		left:0;
 		text-align: center;
 		font-size: 20rpx;
-		font-family: Alibaba PuHuiTi;
+		font-family: PingFangSC-Regular;
 		font-weight: normal;
 		color: #656262;
 	}
@@ -247,5 +254,27 @@
 		position: absolute;
 		top:35rpx;
 		right:75rpx;
+	}
+	.drawer-helpmsg{
+		width: 100%;
+		box-sizing: border-box;
+		line-height: 40rpx;
+	}
+	.drawer-help-title{
+		font-size: 27rpx;
+		font-family: PingFangSC-Medium;
+		font-weight: bold;
+		color:#333333;
+		margin:15rpx 0rpx;
+	}
+	.drawer-help-content{
+		width: 100%;
+		font-size: 25rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #7D8288;
+		white-space: pre-wrap;
+		line-height: 35rpx;
+		margin-bottom: 50rpx;
 	}
 </style>

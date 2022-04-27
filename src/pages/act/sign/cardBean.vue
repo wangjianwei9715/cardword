@@ -247,7 +247,6 @@
 		}
 		.user-bean text{
 			font-size: 30rpx;
-			font-family: LTGBK;
 			color:#FB4E3E;
 		}
 		.user-mx{
@@ -331,7 +330,6 @@
 			align-items: center;
 			justify-content: center;
 			font-size: 22rpx;
-			font-family: LTGBK;
 			font-weight: 400;
 			color: #A29E9F;
 		}
@@ -353,7 +351,7 @@
 		.step-line{
 			width: 93rpx;
 			height: 4rpx;
-			background: #F2F2F2;
+			background: $content-bg;
 			position: absolute;
 			right:-108rpx;
 			top:31rpx;

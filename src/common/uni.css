@@ -15,6 +15,11 @@ progress, checkbox-group{
 form {
 	width: 100%;
 }
+.oneLineOver{
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
 .uni-flex {
 	display: flex;
 	flex-direction: row;
@@ -585,7 +590,7 @@ radio-group label, checkbox-group label{
 
 /* 九宫格 */
 .uni-grid-9 {
-	background: #f2f2f2;
+	background: #F6F7FB;
 	width: 750rpx;
 	display: flex;
 	flex-direction: row;

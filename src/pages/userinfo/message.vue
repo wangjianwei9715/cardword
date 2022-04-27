@@ -137,7 +137,7 @@
 	}
 	.top{
 		width: 100%;
-		border-bottom: 20rpx solid #F2F2F2;
+		border-bottom: 20rpx solid $content-bg;
 		box-sizing: border-box;
 		padding: 0 32rpx;
 	}
@@ -199,7 +199,7 @@
 				.desc-title{
 					width: 100%;
 					font-size: 28rpx;
-					font-family: PingFangSC-Semibold, PingFang SC;
+					font-family: PingFangSC-Medium, PingFang SC;
 					font-weight: 600;
 				}
 				.desc-message{

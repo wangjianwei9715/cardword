@@ -14,15 +14,12 @@ export default Vue.extend({
     if (process.env.NODE_ENV === "development") {
       // console.log("开发环境");
       // app.localTest=true;
-      // app.domaintest='http://192.168.8.79:8701/api/v1/';
-      // app.bussinessApiDomain='http://192.168.8.79:8701/api/v1/';
+      // app.bussinessApiDomain='http://192.168.8.79:8701/api/v2/';
+      // 正式服测试环境
+      // app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
       
-    } else {
-      console.log("生产环境");
-      app.localTest = false;
-      app.domaintest = "https://server.ssl1.ka-world.com/api/v1/";
-      app.bussinessApiDomain = "https://server.ssl1.ka-world.com/api/v1/";
-    }
+    } 
+
     const loginToken = uni.getStorageSync("token");
     if (loginToken) {
       app.token = JSON.parse(loginToken);
@@ -116,9 +113,11 @@ export default Vue.extend({
     
 
     // #ifdef APP-PLUS
-    app.version = plus.runtime.version || "1.0.0";
-    console.log('app.version==',plus.runtime)
-
+    plus.runtime.getProperty(plus.runtime.appid||'', (widgetInfo) => {
+      app.version = widgetInfo.version || '1.0.0'
+      console.log('app.version==',app.version)
+    })
+    
     plus.device.getOAID({
       complete: (res: any) => {
         if (res.oaid) {
@@ -218,36 +217,12 @@ export default Vue.extend({
   src: url("~@/common/DIN/DINAlternateBold.ttf");
 }
 @font-face {
-  font-family: "LT";
-  src: url("~@/common/DIN/lanting.TTF");
+  font-family: "eryaxindahei";
+  src: url("~@/common/Tao/CountDownNum.ttf");
 }
 @font-face {
-  font-family: "LTGBK";
-  src: url("~@/common/DIN/ltGBK.TTF");
-}
-@font-face {
-  font-family: "ali-Light";
-  src: url("~@/common/ALI/Alibaba-PuHuiTi-Light.ttf");
-}
-@font-face {
-  font-family: "DIN Condensed";
-  src: url("~@/common/Tao/DIN Condensed Bold.ttf");
-}
-@font-face {
-  font-family: "FZLanTingHeiS-R-GB";
-  src: url("~@/common/Tao/FZLTHJW--GB1-0.TTF");
-}
-@font-face {
-  font-family: "FZLanTingHeiS-H-GB";
-  src: url("~@/common/Tao/FZLTTHJW--GB1-0.TTF");
-}
-@font-face {
-  font-family: "FZLanTingHeiS-DB1-GBK";
-  src: url("~@/common/Tao/FZLTZCHK--GBK1-0.ttf");
-}
-@font-face {
-  font-family: "FZLanTingHei-H-GBK";
-  src: url("~@/common/Tao/FZLTTHK--GBK1-0.TTF");
+  font-family: "Impact";
+  src: url("~@/common/Tao/Impact.ttf");
 }
 // #endif
 .content {

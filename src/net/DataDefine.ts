@@ -158,3 +158,11 @@ export namespace index {
         [propName: string]: any
     }
 }
+export namespace wxShare {
+    export interface shareData {
+        "shareUrl":string,   //分享地址
+        "title":string,      //分享标题
+        "summary":string,    //分享内容
+        "thumb":string       //分享缩略图
+    }
+}

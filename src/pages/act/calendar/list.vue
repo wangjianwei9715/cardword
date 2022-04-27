@@ -129,12 +129,9 @@
 		  }
 		  this.httpIng = true
 		  app.http.Get("function/calendar/list", params, (data: any) => {
+			if(this.currentPage == 1) this.calendaList = []
 			if(data.list){
-				if(this.currentPage == 1){
-					this.calendaList = data.list;
-				}else{
-					this.calendaList = this.calendaList.concat(data.list);
-				}
+				this.calendaList = this.calendaList.concat(data.list);
 			}
 			if(!data.list || data.list.length<this.pageSize){
 				this.noMoreData = true;
@@ -147,7 +144,6 @@
 		againReqNewData(){
 			this.currentPage = 1;
 			this.noMoreData = false;
-			this.calendaList = []
 			this.reqNewData() 
 		}
 		onClickBack(){
@@ -316,7 +312,7 @@
 		width: 100%;
 		height:55rpx;
 		font-size: 28rpx;
-		font-family: FZLanTingHei-H-GBK;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #AAA8B3;
 		text-align: center;
@@ -324,7 +320,6 @@
 	}
 	.scroll-month text{
 		font-size: 35rpx;
-		font-family: LTGBK;
 	}
 	.current-month{
 		background:url(../static/pingtai/month_bg.png) no-repeat center;
@@ -373,7 +368,6 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 35rpx;
-		font-family: LTGBK;
 		font-weight: 400;
 		color: #41414D;
 		position:absolute;
@@ -445,18 +439,22 @@
 		background:#666666
 	}
 	.goods-right-box{
-		width:33rpx;
+		width:80rpx;
 		height:126rpx;
 		box-sizing: border-box;
 		padding:14rpx 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		align-items: flex-start;
 	}
 	.goods-right-text{
 		width: 100%;
-		text-align: center;
+		text-align: right;
 		font-size: 22rpx;
 		font-weight: 400;
 		color: #666666;
-		margin-top: 10rpx;
+		margin-top: -10rpx;
 	}
 	.goods-right-like{
 		width: 33rpx;

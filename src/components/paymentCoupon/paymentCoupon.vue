@@ -186,7 +186,7 @@
 			height:1000rpx;
 			position: fixed;
 			box-sizing: border-box;
-			background:#F2F2F2;
+			background:$content-bg;
 			border-radius: 12rpx 12rpx 0px 0px;
 			z-index: 1000;
 			bottom:0;
@@ -201,7 +201,7 @@
 			box-sizing: border-box;
 			padding: 26rpx 0 20rpx 0;
 			font-size: 26rpx;
-			font-family: PingFangSC-Semibold, PingFang SC;
+			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 600;
 			color: #14151A;
 			text-align: center;
@@ -269,7 +269,6 @@
 				font-weight: bold;
 			}
 			.coupon-price text{
-				font-family:LTGBK;
 				font-size: 70rpx;
 			}
 			.coupon-condition{
@@ -361,7 +360,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: 28rpx;
-		font-family: PingFangSC-Semibold, PingFang SC;
+		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 600;
 		color: #ffffff;
 		line-height: 40rpx;

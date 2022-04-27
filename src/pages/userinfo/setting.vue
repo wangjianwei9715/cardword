@@ -134,8 +134,9 @@ export default class ClassName extends BaseNode {
     app.http.Post("user/logout", {}, (res: any) => {
       uni.removeStorageSync("token");
       app.token = {accessToken:'',refreshToken:''};
+      uni.setStorageSync('reLaunch',true);
       uni.reLaunch({
-        url: "/pages/login/login",
+        url: "/pages/index/index",
       });
     });
   }
@@ -168,7 +169,7 @@ export default class ClassName extends BaseNode {
     border-bottom: 1px solid #f1f1f4;
     .name {
       font-size: 24rpx;
-      font-family: PingFangSC-Semibold, PingFang SC;
+      font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 600;
       color: #14151a;
     }
@@ -197,7 +198,7 @@ uni-switch .uni-switch-input {
   text-align: center;
   line-height: 88rpx;
   font-size: 28rpx;
-  font-family: PingFangSC-Semibold, PingFang SC;
+  font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 600;
   color: #ffffff;
 }

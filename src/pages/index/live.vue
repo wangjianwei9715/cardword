@@ -6,13 +6,13 @@
 				<searchinput :searchText="searchText==''?'搜索商品':searchText" @clicksearch="onClickSearch"></searchinput>
 			</view>
 			<view class="tabc-content">
-				<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
+				<tabc :tabc="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabc>
 			</view>
 		</view>
 
 		<view class="live-content">
 			<statusbar/>
-			<liveslist :liveList="liveList" :ispullDown="pullDownRefresh" @send="onClickLive"/>
+			<liveslist :liveList="liveList" />
 		</view>
 	</view>
 </template>
@@ -24,8 +24,6 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		searchText = '';
-		pullDown = false;
-		pullDownRefresh = false;
 		goodTab = [
 			{id:0,name:'全部'},
 			{id:5,name:'我的拆卡'},
@@ -37,14 +35,12 @@
 		currentPage = 1;
 		pageSize = 20;
 		noMoreData = false;
-		liveList:{[x:string]:any} = []
-		searchData:any = [];
+		liveList:any = []
 		scrollId = '';
 		onLoad(query:any) {
 			this.onEventUI('liveFind',(res:any)=>{
 				this.searchText = res.text;
 				this.currentPage = 1;
-				this.liveList = [];
 				this.noMoreData = false;
 				this.reqNewData()
 				
@@ -73,7 +69,6 @@
 				}
 			}
 			this.goodTabCheck = id;
-			this.liveList = [];
 			this.currentPage = 1;
 			this.noMoreData = false;
 			this.reqNewData()
@@ -83,10 +78,6 @@
 			uni.navigateTo({
 				url: '/pages/live/live_find?q='+this.searchText
 			})
-		}
-		onClickLive(item:any){
-			// app.platform.launchMiniProgramLive(item.roomId)
-			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		searchReqNew(){
 			// 获取更多商品
@@ -102,7 +93,7 @@
 			
 			app.http.Get('search/broadcast',params,(res:any)=>{
 				this.scrollId = res.scrollId;
-				this.liveList = this.liveList.concat(res.list);
+				this.liveList = [...this.liveList,...res.list];
 				if(res.end){
 					this.noMoreData = true
 				}
@@ -129,10 +120,8 @@
 					if(data.totalPage<=this.currentPage){
 						this.noMoreData = true;
 					}
+					if(this.currentPage==1) this.liveList = []
 					if(data.list){
-						if(this.currentPage==1){
-							this.liveList = []
-						}
 						this.liveList = this.liveList.concat(data.list);
 					}
 					this.currentPage++;
@@ -144,10 +133,8 @@
 					if(data.totalPage<=this.currentPage){
 						this.noMoreData = true;
 					}
+					if(this.currentPage==1) this.liveList = []
 					if(data.list){
-						if(this.currentPage==1){
-							this.liveList = []
-						}
 						this.liveList = this.liveList.concat(data.list);
 					}
 					this.currentPage++;
@@ -161,7 +148,7 @@
 
 <style lang="scss">
 	page{
-		background:#F2F2F2;
+		background:$content-bg;
 	}
 	.content{
 		width: 100%;
@@ -191,7 +178,7 @@
 	.live-content{
 		width: 100%;
 		box-sizing: border-box;
-		padding:208rpx 20rpx 20rpx 20rpx;
+		padding:190rpx 13rpx 20rpx 13rpx;
 		
 		position: relative;
 		z-index: 2;
