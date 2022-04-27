@@ -56,6 +56,16 @@
 			}
 		     
 		}
+		//   下拉刷新
+		onPullDownRefresh(){
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.reqNewData(()=>{
+				setTimeout(()=>{
+					uni.stopPullDownRefresh();
+				},1000)
+			})
+		}
 		onClickListTabs(id:any){
 			if(id==this.goodTabCheck){
 				return;

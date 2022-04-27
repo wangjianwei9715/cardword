@@ -5,7 +5,12 @@
 			<view class="header-top">
 				<view class="header-back" @click="onClickBack"></view>
 				<view class="header-search">
-					<searchinput :searchText="searchText" @clicksearch="onClickSearch"></searchinput>
+					<view class="header-search-input" @click="onClickSearch">
+						<view class="sousuo-icon"></view>{{searchText}}
+					</view>
+					<view class="search-icon" v-show="searchText!=''" @click="onClickRemoveSearch">
+						<image class="search-remove" src="../../static/goods/v2/mini_close.png" />
+					</view>
 				</view>
 			</view>
 			<view class="header-tab">
@@ -167,6 +172,11 @@
 			this.noMoreData = false;
 			this.reqNewData("default");
 		}
+		onClickRemoveSearch(){
+			this.searchText = '';
+			this.clickSerieItem = {};
+			this.reqSearchList()
+		}
 		clickSerie(item: any, index ? : number) {
 			this.clickSerieItem = this.clickSerieItem.id == item.id ? {} : item;
 			this.searchText = item.title
@@ -211,16 +221,11 @@
 			);
 		}
 		reqNewData(type: string, cb ? : Function) {
-			let reach = false;
-			this.isRequest = true;
-			if (type == "reach") {
-				reach = true;
-			}
-			// 获取列表
-			if (this.noMoreData) {
-				return;
-			}
+			if (this.noMoreData) return;
 
+			let reach = type == "reach"? true : false;
+			this.isRequest = true;
+			// 获取列表
 			let params: {
 				[x: string]: any;
 			} = {
@@ -239,23 +244,9 @@
 					this.scrollIdSt + this.scrollId + "scrollSearchGood"
 				);
 			}
-			// 排序方式
-			// let sort = "";
-			// sort +=
-			//   this.sortData.price.odType == 0
-			//     ? ""
-			//     : this.sortData.price.odType == 1 ? "price" : "price:desc";
-			// sort += sort != "" && this.sortData.progress.odType != 0 ? "," : "";
-			// sort +=
-			//   this.sortData.progress.odType == 0
-			//     ? ""
-			//     : this.sortData.progress.odType == 1 ? "progress" : "progress:desc";
-			// if (sort != "") {
-			//   params.sort = sort;
-			// }
+			
 			let date: any = new Date();
 			params.timeStamp = Date.parse(date) / 1000;
-
 			app.http.Get(
 				"dataApi/search/good", {
 					...params,
@@ -353,7 +344,7 @@
 		height: 104rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding: 0 32rpx 0 0;
+		padding: 0 20rpx 0 0;
 		z-index: 10;
 		align-items: center;
 		justify-content: space-between;
@@ -363,8 +354,48 @@
 		width: 626rpx;
 		height: 64rpx;
 		border-radius: 29rpx;
+		position: relative;
 	}
-
+	.header-search-input{
+		width: 100%;
+		height: 65rpx;
+		background: #EDECEC;
+		border-radius: 40rpx;
+		position: relative;
+		font-size: 28rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #A3A3A3;
+		line-height: 65rpx;
+		box-sizing: border-box;
+		padding-left: 34rpx;
+		display: flex;
+		align-items: center;
+	}
+	.sousuo-icon{
+		width: 31rpx;
+		height:32rpx;
+		background:url(../../static/index/v2/sousuo.png) no-repeat center;
+		background-size:100% 100%;
+		margin-right: 30rpx;
+	}
+	.search-icon{
+		width: 31rpx;
+		height: 31rpx;
+		position: absolute;
+		right:30rpx;
+		top:50%;
+		margin-top: -15.5rpx;
+		background:#DBDBDB;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+	}
+	.search-remove{
+		width: 15rpx;
+		height:14rpx;
+	}
 	.header-back {
 		width: 80rpx;
 		height: 88rpx;

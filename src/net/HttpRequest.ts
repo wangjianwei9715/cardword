@@ -140,11 +140,9 @@ export default class HttpRequest {
 			if(url.indexOf("dataApi/") != -1){
 				config.url = url.substring(8);
 				
-				// #ifndef H5
 				if(!app.localTest){
 					config.baseURL = app.dataApiDomain;
 				}
-				// #endif
 			}
 			
 			if(url.indexOf("app/launch") != -1||url.indexOf("app/onlinecfg") != -1){
