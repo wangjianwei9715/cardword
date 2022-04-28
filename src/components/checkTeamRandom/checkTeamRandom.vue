@@ -22,14 +22,14 @@
 					</view>
 				</view>
 				<view class="teamtion-help">
-					<view class="teamtion-help-title">选队随机：购买后将在所选球队的卡种中随机卡密</view>
+					<view class="teamtion-help-title">{{getCardRandomtips(type)}}</view>
 					<view class="icon-help" @click="onClickRulesShow"></view>
 				</view>
 			</view>
 
 			<view class="teamtion-box-center">
-				<view class="teamtion-box-title">选择球队</view>
-				<view class="teamtion-box">
+				<view class="teamtion-box-title">{{getCardRandomTitle(type)}}</view>
+				<view class="teamtion-box" :class="{'card-box':type==12}">
 					<view class="teamtion-box-index" :class="{'index-current':index==currentIndex}" @click="onClickCurrentIndex(item,index)" v-for="(item,index) in teamRandomData" :key="index">
 						<image class="teamtion-box-logo" :src="decodeURIComponent(item.logo)" />
 						<view class="teamtion-box-name">{{item.name}}</view>
@@ -50,7 +50,7 @@
 
 		<bottomDrawer :showDrawer="showDrawer" :title="'规则说明'" :height="80" @closeDrawer="showDrawer = false">
 			<view class="drawer-box">
-				<view class="drawer-help" v-for="(item,index) in drawerHelp" :key="index">{{item}}</view>
+				<view class="drawer-help" v-for="(item,index) in getCardRandomHelp(type)" :key="index">{{item}}</view>
 			</view>
 		</bottomDrawer>
 	</view>
@@ -59,7 +59,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import {getCountDownTimeHour} from '@/tools/util';
+	import {getCardRandomtips,getCardRandomHelp,getCardRandomTitle} from "@/tools/switchUtil"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		// 自选球队随机 显示隐藏
@@ -68,11 +68,15 @@
 		// 选队随机数据
 		@Prop({ default: [] })
 		teamRandomData:any;
+		// 类型 11：选队随机 12：选卡种随机
+		@Prop({ default: false })
+		type:boolean|undefined;
 		
-
+		getCardRandomtips = getCardRandomtips;
+		getCardRandomTitle = getCardRandomTitle;
+		getCardRandomHelp = getCardRandomHelp;
 		currentIndex = 0;
 		showDrawer = false;
-		drawerHelp = ['1.玩家可在选队页面选择心仪的球队进行购买，购买后将在所选球队的卡种中随机卡密','2.常规球队包含该球队最新队名下的全部单人卡种和同队的多人卡种；其他包含老球队下的卡种、不同队的多人卡种以及其他类型卡密','3.每个球队的份数与单价不一，请理性选择']
 		created(){//在实例创建完成后被立即调用
 		}
 		mounted(){//挂载到实例上去之后调用
@@ -105,7 +109,6 @@
 			let width = Math.floor((Number(lock)+Number(now))/Number(all)*100);
 			return width
 		}
-		
 		onClickRulesShow(){
 			this.showDrawer = true
 		}
@@ -329,9 +332,7 @@
 		position: relative;
 		border: 1px solid #FFF;
 	}
-	.index-current{
-		border: 1px solid $btn-red;
-	}
+	
 	.teamtion-box-index:nth-child(4n){
 		margin-right: 0;
 	}
@@ -391,6 +392,80 @@
 		top:0;
 		z-index: 2;
 		opacity: 0.4;
+	}
+	.card-box .teamtion-box-index{
+		width: 230rpx;
+		height:274rpx;
+		box-sizing: border-box;
+		margin-right: 10rpx;
+		background:#FFF;
+		margin-bottom: 10rpx;
+		position: relative;
+		border: 1px solid #FFF;
+	}
+	.card-box .teamtion-box-index:nth-child(3n){
+		margin-right: 0;
+	}
+	.card-box .teamtion-box-name{
+		width: 100%;
+		min-height:200rpx;
+		box-sizing: border-box;
+		font-size: 26rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #333333;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		z-index: 6;
+	}
+	.card-box .teamtion-box-price{
+		width: 100%;
+		text-align: center;
+		font-size: 25rpx;
+		line-height: 30rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #88878C;
+		position: relative;
+		z-index: 6;
+	}
+	.card-box .teamtion-box-plan{
+		width: 200rpx;
+		height:27rpx;
+		margin:0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		z-index: 6;
+		.goodslist-progress{
+			background-image: url('../../static/goods/v2/progessBgg_select.png');
+			background-size: 100% 100%;
+			width: 100%;
+			height: 10rpx;
+			position: relative;
+			display: flex;
+			justify-content: flex-end;
+			.progress-mask{
+				height: inherit;
+				background-color: #F6F7FB;
+				width: 0%;
+			}
+		}
+	}
+	.card-box .teamtion-box-logo{
+		width: 150rpx;
+		height:150rpx;
+		position: absolute;
+		left: 0;
+		top:0;
+		z-index: 2;
+		opacity: 0.4;
+	}
+	.index-current{
+		border: 1px solid $btn-red !important;
 	}
 	.teamtion-bottom{
 		width: 100%;

@@ -68,7 +68,7 @@
 			if(name!='cardBean') return;
 			
 			uni.showToast({
-				title:'5月初开放',
+				title:'5月开放',
 				icon:'none'
 			})
 		}

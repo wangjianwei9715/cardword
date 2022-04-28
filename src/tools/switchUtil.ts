@@ -195,3 +195,30 @@ export function orderGoodsTypeDesc(state:any){
 			return '分类'
 	}
 }
+
+// 自选随机说明
+export function getCardRandomtips(state:number){
+    // 随机方式 11 选队随机 12 选卡种随机 
+    switch(state){
+        case 11:
+            return '选队随机：购买后将在所选球队的卡种中随机卡密';
+        case 12:
+            return '选卡种随机：购买后将在所选卡种中随机卡密';
+    }
+}
+export function getCardRandomTitle(state:number){
+    switch(state){
+        case 11:
+            return '选择球队';
+        case 12:
+            return '选择卡种';
+    }
+}
+export function getCardRandomHelp(state:number){
+    switch(state){
+        case 11:
+            return ['1.玩家可在选队页面选择心仪的球队进行购买，购买后将在所选球队的卡种中随机卡密','2.常规球队包含该球队最新队名下的全部单人卡种和同队的多人卡种；其他包含老球队下的卡种、不同队的多人卡种以及其他类型卡密','3.每个球队的份数与单价不一，请理性选择'];
+        case 12:
+            return ['1、玩家可自由先择心仪的卡种类型进行购买，购买后将在所选卡种中随机卡密','2、每个卡种的份数与单价不一，请理性选择'];
+    }
+}

@@ -182,7 +182,7 @@
 		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" :baoduiLeftSec="baoduiLeftSec" :baoduiState="baoduiState" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
 
 		<!-- 自选球队随机 -->
-		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData"   @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" />
+		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData" :type="goodsData.pintuan_type"  @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" />
 
 		<!-- 邀请新人活动弹窗 -->
 		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy" />
@@ -639,7 +639,7 @@
 				return;
 			}
 			// 自选随机球队
-			if(this.goodsData.pintuan_type == 11){
+			if(this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 12){
 				this.getGoodSelectTeamRandom(()=>{
 					this.teamRandomShow = true;
 				})
@@ -695,10 +695,15 @@
 			this.getGoodSelect()
 		}
 		getPriceStart() {
-			return this.goodsData.isSelect || this.goodsData.pintuan_type == 11
+			return this.goodsData.isSelect || this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 12
 		}
 		getSelectType(){
-			return this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 10
+			switch(this.goodsData.pintuan_type){
+				case 10: case 11: case 12:
+					return true;
+				default:
+					return false
+			}
 		}
 		// 自选球队 我要选队
 		getGoodSelect(cb?:Function){
@@ -830,9 +835,10 @@
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))+'&payRandomPrice='+this.randomMode.good.price
 			})
 		}
-		// 自选球队随机 我要选队
+		// 自选球队随机 我要选队 我要选卡种
 		getGoodSelectTeamRandom(cb?:Function){
-			app.http.Get('good/'+this.goodsId+'/selectTeamRandom',{},(res:any)=>{
+			let urlType = this.goodsData.pintuan_type == 12? 'selectCardSetGroupRandom' : 'selectTeamRandom';
+			app.http.Get('good/'+this.goodsId+'/'+urlType,{},(res:any)=>{
 				this.teamRandomData = res.team;
 				if(cb) cb()
 			})
