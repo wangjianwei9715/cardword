@@ -9,124 +9,23 @@
 		<view class="topTisp">每次猜对获得2点欧气，每轮比赛进行2场后不可再猜测</view>
 		<view class="contestContainer">
 			<view class="contest-teamCard-container uni-flex" style="margin-bottom: 66rpx;">
-				<view class="contest-smallCard">
-					<view class="contest-topScoreBoard uni-flex">
-						<view class="avatar selectAvatar">
-						</view>
-						<view class="scoreContent">
-							<view class="scoreContent-left none red">1</view>
-							<view class="scoreContent-right none blue">1</view>
-						</view>
-						<view class="avatar noneAvatar">
-						</view>
-					</view>
-					<!-- <view class="contest-noStart">暂未开始</view> -->
-					<!-- <view class="contest-supportButton" @click="modalShow=true">立即支持</view> -->
-					<view class="contest-proportion">
-						<view class="proportionBlock contest-proportion-left">
-						</view>
-						<view class="proportionBlock contest-proportion-right">
-						</view>
-						<view class="support-percent support-percent-left">
-							<text>20%</text>
-							<text>222人支持</text>
-						</view>
-						<view class="support-percent support-percent-right">
-							<text>80%</text>
-							<text>888人支持</text>
-						</view>
-					</view>
-				</view>
-				<view class="contest-smallCard">
-					<view class="contest-topScoreBoard uni-flex">
-						<view class="avatar noneAvatar">
-						</view>
-						<view class="scoreContent">
-							<view class="scoreContent-left none">0</view>
-							<view class="scoreContent-right none">0</view>
-						</view>
-						<view class="avatar noneAvatar">
-						</view>
-					</view>
-					<!-- <view class="contest-noStart">暂未开始</view> -->
-					<view class="contest-supportButton" @click="modalShow=true">立即支持</view>
-				</view>
+				<confrontCard v-for="(item,index) in getEightList('westList')" :item='item' :key='index'
+					@onClickSup='actionSupot'></confrontCard>
 				<view class="line lineOne"></view>
 			</view>
 			<view class="contest-teamCard-container uni-flex just-center" style="margin-bottom: 52rpx;">
-				<view class="contest-smallCard">
-					<view class="contest-topScoreBoard uni-flex">
-						<view class="avatar noneAvatar">
-						</view>
-						<view class="scoreContent">
-							<view class="scoreContent-left none">0</view>
-							<view class="scoreContent-right none">0</view>
-						</view>
-						<view class="avatar noneAvatar">
-						</view>
-					</view>
-					<view class="contest-noStart">暂未开始</view>
-				</view>
+				<confrontCard @onClickSup='actionSupot' :item="getHalfAndFinal('westHalfOf')"></confrontCard>
 			</view>
 			<view class="contest-teamCard-container uni-flex just-center" style="margin-bottom: 55rpx;">
-				<view class="contest-bigCard">
-					<image src="../../../static/act/teamContest/bigVs.png" class="vsIcon" mode="widthFix"></image>
-					<view class="contest-topScoreBoard uni-flex">
-						<view class="avatar noneAvatar">
-						</view>
-						<view class="scoreContent">
-							<view class="scoreContent-left none">0</view>
-							<view class="scoreContent-right none">0</view>
-						</view>
-						<view class="avatar noneAvatar">
-						</view>
-					</view>
-					<view class="contest-noStart">暂未开始</view>
-				</view>
+				<confrontCard @onClickSup='actionSupot' :isBig='true' :item="getHalfAndFinal('finalData')"></confrontCard>
 				<view class="line lineTwo"></view>
 			</view>
 			<view class="contest-teamCard-container uni-flex just-center" style="margin-bottom: 66rpx;">
-				<view class="contest-smallCard">
-					<view class="contest-topScoreBoard uni-flex">
-						<view class="avatar noneAvatar">
-						</view>
-						<view class="scoreContent">
-							<view class="scoreContent-left none">0</view>
-							<view class="scoreContent-right none">0</view>
-						</view>
-						<view class="avatar noneAvatar">
-						</view>
-					</view>
-					<view class="contest-noStart">暂未开始</view>
-				</view>
+				<confrontCard @onClickSup='actionSupot' :item="getHalfAndFinal('eastHalfOf')"></confrontCard>
 			</view>
 			<view class="contest-teamCard-container uni-flex">
-				<view class="contest-smallCard">
-					<view class="contest-topScoreBoard uni-flex">
-						<view class="avatar noneAvatar">
-						</view>
-						<view class="scoreContent">
-							<view class="scoreContent-left none">0</view>
-							<view class="scoreContent-right none">0</view>
-						</view>
-						<view class="avatar noneAvatar">
-						</view>
-					</view>
-					<view class="contest-noStart">暂未开始</view>
-				</view>
-				<view class="contest-smallCard">
-					<view class="contest-topScoreBoard uni-flex">
-						<view class="avatar noneAvatar">
-						</view>
-						<view class="scoreContent">
-							<view class="scoreContent-left none">0</view>
-							<view class="scoreContent-right none">0</view>
-						</view>
-						<view class="avatar noneAvatar">
-						</view>
-					</view>
-					<view class="contest-noStart">暂未开始</view>
-				</view>
+				<confrontCard v-for="(item,index) in getEightList('eastList')" @onClickSup='actionSupot' :key='index'
+					:item='item'></confrontCard>
 				<view class="line lineThree"></view>
 			</view>
 		</view>
@@ -134,8 +33,10 @@
 			<view class="close" @click="modalShow=false"></view>
 			<view class="tips">请选择您支持的球队</view>
 			<view class="chioceContainer">
-				<view class="teamChoice">篮网</view>
-				<view class="teamChoice">凯尔特人</view>
+				<view class="teamChoice" @click='supportTeam(1,nowSelectTeamData.name_1)'>{{nowSelectTeamData.name_1}}
+				</view>
+				<view class="teamChoice" @click='supportTeam(2,nowSelectTeamData.name_2)'>{{nowSelectTeamData.name_2}}
+				</view>
 			</view>
 		</view>
 		<view class="ruleModal" v-show="ruleShow">
@@ -149,7 +50,7 @@
 		</view>
 		<view class="mask" v-show="modalShow||ruleShow"></view>
 		<view class="bottomContainer">
-			<view class="bottom-button share">
+			<view class="bottom-button share" @click="shareWx">
 				<text>分享</text>
 				<text>首次分享欧气+5</text>
 			</view>
@@ -160,24 +61,143 @@
 
 <script lang="ts">
 	import {
+		app
+	} from "@/app";
+	import {
 		Component,
 		Prop,
 		Vue
 	} from "vue-property-decorator";
+	import {
+		formatNumber
+	} from '@/tools/util'
 	import BaseComponent from "@/base/BaseComponent.vue";
-	@Component({})
+	import confrontCard from './components/confrontCard.vue'
+	@Component({
+		components: {
+			confrontCard
+		}
+	})
 	export default class ClassName extends BaseComponent {
-		modalShow: boolean = false; 
+
+		modalShow: boolean = false;
+		formatNumber: any = formatNumber;
 		ruleShow: boolean = false;
-		//计算百分比
-		caclPercent(){
-			
+		eastList: any = [] //东部8进4
+		eastHalfOf: any = {} //东部半决赛
+		westList: any = [] //西部8进4
+		westHalfOf: any = {} //西部半决赛
+		finalData: any = {} //总决赛
+		noneData: any = {
+			supportTeam: -1, //支持的球队，1 球队1，2 球队2， 0 未支持，-1 不可支持
+		}
+		nowSelectTeamData: any = {}
+		onLoad() {
+			this.reqNewData()
+		}
+		onShow() {
+			uni.hideLoading()
+		}
+		onPullDownRefresh() {
+			this.reqNewData(() => {
+				setTimeout(() => {
+					uni.stopPullDownRefresh();
+				}, 500)
+			})
+		}
+		actionSupot(item: any) {
+			this.nowSelectTeamData = item
+			this.modalShow = true
+		}
+
+		//支持球队
+		supportTeam(team: number, teamName: string) {
+			app.http.Post('activity/playoff/support/' + this.nowSelectTeamData.id, {
+				team,
+				teamName
+			}, (res: any) => {
+				this.modalShow = false
+				uni.showToast({
+					title: '支持成功'
+				})
+			})
+		}
+		//分享
+		shareWx() {
+			uni.showLoading({
+				title: '请稍等'
+			})
+			uni.share({
+				provider: "weixin",
+				type: 0,
+				imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.14/loot/loot_sw/0/1649923645699n8fv080wdf.jpg",
+				title: "下一个欧皇就是你！",
+				summary: '完成任务，免费参与卡世界欧皇夺宝。',
+				scene: "WXSceneSession",
+				href: 'https://www.ka-world.com/share/h5/#/pages/loot/loot',
+				success: (res: any) => {},
+				fail: (err: any) => {
+					console.log("失败原因=>", err);
+					uni.showToast({
+						title: "分享失败",
+						icon: "none"
+					});
+				},
+				complete: (res: any) => {
+					uni.hideLoading()
+				}
+			});
+			setTimeout(() => {
+				this.completeTask()
+			}, 2000)
+		}
+		completeTask() {
+			app.http.Post('activity/playoff/share/luckyGas/get', {}, (res: any) => {
+				uni.showToast({
+					title: '分享成功,欧气+5!'
+				})
+			})
+		}
+		classifyData(allList: any) {
+			let eastList: any = []
+			let westList: any = []
+			allList.forEach((item: any) => {
+				if (item.zone == 1 && item.place == 8) eastList.push(item) //8进4东部赛区
+				if (item.zone == 1 && item.place == 4) this.eastHalfOf = item //半决赛东部赛区
+				if (item.zone == 2 && item.place == 8) westList.push(item) //8进4西部部赛区
+				if (item.zone == 2 && item.place == 4) this.westHalfOf = item //半决赛西部部赛区
+				if (item.zone == 3 && item.place == 2) this.finalData = item //总决赛
+			})
+			this.eastList = eastList
+			this.westList = westList
+		}
+		reqNewData(cb ? : Function) {
+			app.http.Get('dataApi/activity/playoff', {}, (res: any) => {
+				this.classifyData(res.list || [])
+				cb && cb()
+			})
 		}
 		pageJump(url: string) {
 			if (!url) return
 			uni.navigateTo({
 				url
 			})
+		}
+		private get getEightList() {
+			const _this: any = this
+			return function(key: string) {
+				if (_this[key].length == 2) return _this[key]
+				const lenth: number = _this[key].length
+				const fillArr: any = new Array(2 - lenth).fill(_this.noneData)
+				return [..._this[key], ...fillArr]
+			}
+		}
+		private get getHalfAndFinal() {
+			const _this: any = this
+			return function(key: string) {
+				if (Object.keys(_this[key]).length < 3) return _this.noneData
+				return _this[key]
+			}
 		}
 	}
 </script>
@@ -239,7 +259,7 @@
 
 	.contestContainer {
 		/* padding: 0 47rpx; */
-		width:660rpx ;
+		width: 660rpx;
 		margin: 0 auto;
 		position: relative;
 		padding-bottom: calc(140rpx + constant(safe-area-inset-bottom));
@@ -344,246 +364,6 @@
 			left: 0;
 			right: 0;
 			margin: auto;
-		}
-	}
-
-	.contest-smallCard {
-		width: 296rpx;
-		height: 148rpx;
-		background: #FFFFFF;
-		border-radius: 5rpx;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-		overflow: hidden;
-		z-index: 2;
-	}
-
-	.contest-bigCard {
-		width: 661rpx;
-		height: 161rpx;
-		background: #FFFFFF;
-		border-radius: 5rpx;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-		overflow: hidden;
-		z-index: 2;
-
-		.vsIcon {
-			width: 138rpx;
-			height: 105rpx;
-			position: absolute;
-			left: -33rpx;
-			top: -18rpx;
-		}
-	}
-
-	.contest-topScoreBoard {
-		margin: 0 auto;
-		align-items: center;
-		justify-content: center;
-		position: relative;
-		flex: 1;
-
-		.avatar {
-			width: 59rpx;
-			height: 59rpx;
-			background: #B7B7B7;
-			border-radius: 50%;
-
-			display: block;
-			position: relative;
-		}
-
-		.noneAvatar::after {
-			content: '';
-			display: block;
-			width: 29rpx;
-			height: 40rpx;
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: 0;
-			bottom: 0;
-			margin: auto;
-			background-size: 100% 100%;
-			background-image: url(../../../static/act/teamContest/smallVs.png);
-		}
-
-		.selectAvatar::after {
-			content: '';
-			display: block;
-			width: 68rpx;
-			height: 68rpx;
-			border: 2rpx solid #EF3333;
-			border-radius: 50%;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			transform: translate(-50%, -50%);
-		}
-
-		.scoreContent {
-
-			font-family: Impact;
-			font-weight: 400;
-			display: flex;
-			margin: 0 31rpx;
-			position: relative;
-
-			&-left {
-				color: #EF3333;
-				font-size: 39rpx;
-				margin-right: 30rpx;
-			}
-
-			&-right {
-				font-size: 39rpx;
-				color: #245BE7;
-			}
-
-			.none {
-				color: #333333;
-			}
-
-			.red {
-				color: #EF3333;
-			}
-
-			.blue {
-				color: #245BE7;
-			}
-		}
-
-		.scoreContent::after {
-			content: ':';
-			position: absolute;
-			font-size: 33rpx;
-			font-family: Impact;
-			font-weight: 400;
-			color: #333333;
-			left: 0;
-			top: 0;
-			bottom: 0;
-			right: 0;
-			text-align: center;
-			margin: auto;
-		}
-	}
-
-	.contest-supportButton {
-		width: 100%;
-		height: 54rpx;
-		background: #EF3333;
-		border-radius: 0px 0px 5rpx 5rpx;
-		font-size: 27rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #FFFFFF;
-		line-height: 54rpx;
-		text-align: center;
-		letter-spacing: 2rpx;
-	}
-
-	.contest-noStart {
-		width: 100%;
-		height: 53rpx;
-		background: #B7B7B7;
-		border-radius: 0px 0px 5rpx 5prx;
-		font-size: 27rpx;
-		font-family: PingFang SC;
-		text-align: center;
-		line-height: 53rpx;
-		font-weight: 400;
-		color: #595959;
-		letter-spacing: 2rpx;
-	}
-
-	.contest-proportion {
-		width: 100%;
-		height: 53rpx;
-		background-color: #fff;
-		overflow: hidden;
-		display: flex;
-
-		.proportionBlock {
-			height: 53rpx;
-			position: absolute;
-		}
-
-		&-left {
-			background-color: #ff0023;
-			left: 0;
-			text-align: left;
-			width:calc(50% - 18rpx);
-			z-index: 2;
-
-		}
-
-		&-left::after {
-			content: '';
-			display: block;
-			width: 0;
-			position: absolute;
-			height: 0;
-			border-color: #ff0023 transparent transparent transparent;
-			border-style: solid;
-			border-width: 53rpx 36rpx 0 0;
-			right: -35rpx;
-			top: 0;
-			z-index: 1;
-		}
-
-		&-right {
-			background-color: #005df0;
-			right: 0;
-			width: calc(50% - 18rpx);
-			text-align: right;
-
-			text {
-				margin-right: 10rpx;
-			}
-		}
-
-		&-right::after {
-			content: '';
-			display: block;
-			width: 0;
-			position: absolute;
-			height: 0;
-			border-color: transparent #005df0 transparent transparent;
-			border-style: solid;
-			border-width: 53rpx 36rpx 0 0;
-			left: -35rpx;
-		}
-
-		.support-percent {
-			position: absolute;
-			width: 50%;
-			font-size: 20rpx;
-			font-family: PingFang SC;
-			font-weight: 600;
-			color: #FFFFFF;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			height: 53rpx;
-			z-index: 3;
-			position: absolute;
-			white-space: nowrap;
-			line-height: 24rpx;
-		}
-
-		.support-percent-left {
-			text-align: left;
-			left: 14rpx;
-		}
-
-		.support-percent-right {
-			text-align: right;
-			right: 14rpx;
 		}
 	}
 
