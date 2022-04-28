@@ -69,7 +69,7 @@
 		</view>
 		
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"  @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
+			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper" @send="onClickJumpDetails" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
@@ -153,7 +153,6 @@
 		useCache = 1;
 		wgtUpdate = false;
 		wgtUpNum = 0;
-		pagescroll = false;
 		postGoodProgressIn:any;
 		progressList:any = [];
 		networkStatus:any;
@@ -255,9 +254,7 @@
 					this.setNewProgress(res.list)
 				})
 			}
-			if(this.progressList!=''){
-				this.getGoodProgress(this.progressList)
-			}
+			
 			this.networkStatusChange()
 			// 判断是否有邀请上线
 			app.platform.getInvitationClipboard()
@@ -278,9 +275,6 @@
 					},1000)
 				}
 			})
-		}
-		onPageScroll(e:any){
-			this.pagescroll = !this.pagescroll
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
@@ -362,19 +356,6 @@
 				title:'商品正在筹备中',
 				icon:'none'
 			})
-		}
-		getGoodProgress(val:any){
-			this.progressList = val
-			clearInterval(this.postGoodProgressIn);
-			this.postGoodProgressIn = this.scheduler(()=>{
-				if(this.goodsList==''||val==''){
-					clearInterval(this.postGoodProgressIn);
-					return;
-				}
-				app.http.Post('good/progress/list',{list:val},(res:any)=>{
-					this.setNewProgress(res.list)
-				})
-			},30)
 		}
 		getLuanchApp(){
 			if(app.localTest){
