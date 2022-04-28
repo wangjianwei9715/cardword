@@ -651,7 +651,9 @@
 		box-sizing: border-box;
 		padding:0 32rpx;
 		padding-top:498rpx ;
-		padding-bottom: 200rpx;
+		padding-bottom:calc(200rpx);
+		padding-bottom:calc(200rpx + constant(safe-area-inset-bottom));
+		padding-bottom:calc(200rpx + env(safe-area-inset-bottom));
 		overflow-y: auto;
 	}
 	.branch-list{
@@ -1150,7 +1152,9 @@
 		height:65rpx;
 		background: #FFF4C7;
 		position: fixed;
-		bottom:120rpx;
+		bottom:calc(120rpx);
+		bottom:calc(120rpx + constant(safe-area-inset-bottom));
+		bottom:calc(120rpx + env(safe-area-inset-bottom));
 		left:0;
 		display: flex;
 		box-sizing: border-box;

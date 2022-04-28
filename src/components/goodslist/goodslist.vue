@@ -53,8 +53,7 @@
 	import {
 		Component,
 		Prop,
-		Vue,
-		Watch
+		Vue
 	} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import {
@@ -102,10 +101,6 @@
 		screenHeight = uni.getSystemInfoSync().windowHeight
 		showPlan: any = []
 		valid = true
-		@Watch('pagescroll')
-		onPagescrollChanged(val: any, oldVal: any) {
-			this.selectory()
-		}
 		created() { //在实例创建完成后被立即调用
 		}
 		mounted() { //挂载到实例上去之后调用
@@ -120,45 +115,8 @@
 		onClickJumpUrl(id: any) {
 			this.$emit("send", id);
 		}
-		selectory() {
-			this.throttle(1000)
-		}
-		throttle(delay: any) {
-			if (!this.valid) {
-				return false
-			}
-			this.valid = false
-			setTimeout(() => {
-				this.selectoryFnc()
-				this.valid = true;
-			}, delay)
-		}
-		selectoryFnc() {
-			// 实时监控目前显示的商品列表
-			let select = uni.createSelectorQuery().in(this).selectAll('.goodslist-plan-desc');
-			let plan: any = []
-			
-			select.boundingClientRect(res => {
-				let data: any = res
-				if (data) {
-					for (let i in data) {
-						if (data[i].top < this.screenHeight && data[i].top > 0) {
-							plan.push(data[i].id)
-						}
-					}
-					if (JSON.stringify(plan) != JSON.stringify(this.showPlan)) {
-						this.showPlan = JSON.parse(JSON.stringify(plan))
-						this.getGoodProgress()
-					}
-
-				}
-			}).exec();
-		}
 		getSelectType(item: any) {
 			return item.pintuan_type == 11 || item.pintuan_type == 10
-		}
-		getGoodProgress() {
-			this.$emit('progress', this.showPlan)
 		}
 		onClickSellerShop(id: number) {
 			const path = `/pages/userinfo/merchant_shopsV2`;
@@ -240,7 +198,7 @@
 
 
 		&-title {
-			height: 60rpx;
+			height: 65rpx;
 			font-size: 27rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
@@ -287,7 +245,7 @@
 			align-items: flex-end;
 			position: relative;
 			margin-bottom: 8rpx;
-			margin-top: 16rpx;
+			margin-top: 11rpx;
 			align-items: flex-end;
 
 			.goodslist-priceMsg-left {

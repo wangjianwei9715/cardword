@@ -33,7 +33,10 @@
 		</view>
 		<view class="detail-index-bg">
 			<view class="detail-bg">
-				<view class="header-content" :class="{'random-bg':getSelectType()}" v-if="goodsState==1">
+				<view class="header-content-end" v-if="goodsState>=2">
+					<view class="header-price">¥<text>{{goodsData.price}}</text><text class="price-qi">{{getPriceStart()?'起':''}}</text></view>
+				</view>
+				<view class="header-content" :class="{'random-bg':getSelectType()}" v-else-if="goodsState==1">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text class="price-qi">{{getPriceStart()?'起':''}}</text></view>
 					<view class="header-right">
 						<view class="icon-end">距结束</view>
@@ -50,7 +53,6 @@
 							<view class="countdown-index">{{getCountStr(countSecond,1)}}</view>
 						</view>
 					</view>
-					
 				</view>
 				<view class="header">
 					<view class="header-top">
@@ -62,7 +64,8 @@
 							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
 								<view class="progress-mask" :style="{width:(100-getPlan(goodsData.lockNum,goodsData.currentNum,goodsData.totalNum))+'%'}"></view>
 							</view>
-							<view class="header-top-plan-num">
+							<view class="header-top-plan-num" v-if="goodsState>=2">已完成</view>
+							<view class="header-top-plan-num" v-else>
 								余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}
 								<view class="header-top-plan-numbottom">{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
@@ -1062,10 +1065,6 @@
 		background:url(../../static/goods/v2/price_bg_.png) no-repeat center;
 		background-size: 100% 100%;
 	}
-	.header-content-end{
-		background:#fff;
-		background-size: 100% 100%;
-	}
 	.header-desc-title{
 		width: 100%;
 		font-size: $font-28;
@@ -1089,6 +1088,23 @@
 		font-weight: 400;
 		color: #FFFFFF;
 		margin-left: 10rpx;
+	}
+	.header-content-end{
+		background:#fff;
+		box-sizing: border-box;
+		padding-left: 36rpx;	
+		margin-top: -23rpx;	
+		border-top-left-radius: 5rpx;
+		border-top-right-radius: 5rpx;
+		height:82rpx;
+		display: flex;
+		align-items: center;
+	}
+	.header-content-end .header-price ,.header-content-end{
+		padding-top: 19rpx;
+	}
+	.header-content-end .header-price ,.header-content-end .header-price text{
+		color:#333333
 	}
 	.header-price .price-qi{
 		font-size: 20rpx;
