@@ -341,7 +341,6 @@
 						"navigationBarTitleText": "季后赛球队竞猜",
 						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB",
-						"navigationStyle": "custom",
 						"backgroundColorBottom": "#F6F7FB"
 					}
 				},
