@@ -37,18 +37,19 @@
                 }}
               </view>
               <view class="goods-money-add">
-				<view class="num-box" @click="onClickCutDown()">
-					<view class="img-jian" ></view>
-				</view>
+                <view class="goods-money-max" v-if="payRandomTeamData != ''" @click="moneyNum = maxNum">MAX</view>
+                <view class="num-box" @click="onClickCutDown()">
+                  <view class="img-jian" ></view>
+                </view>
                 <input
                   class="money-add"
                   @input="onInputMoney"
                   v-model="moneyNum"
                   type="number"
                 />
-				<view class="num-box" @click="onClickAdd()">
-					<view class="img-add" ></view>
-				</view>
+                <view class="num-box" @click="onClickAdd()">
+                  <view class="img-add" ></view>
+                </view>
               </view>
             </view>
           </view>
@@ -817,7 +818,7 @@ page {
   color: #333333;
 }
 .goods-money-right {
-  width: 180rpx;
+  width: 290rpx;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
@@ -845,6 +846,21 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.goods-money-max{
+  width: 78rpx;
+  height: 38rpx;
+  border: 1rpx solid #CCCCCC;
+  border-radius: 3rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #88878C;
+  margin-right:26rpx;
 }
 .img-add {
   width: 28rpx;

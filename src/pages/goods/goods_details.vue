@@ -208,7 +208,7 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import {getGoodsPintuan,getGoodsRandom,getGoodsPintuanSpe,getGoodsRandomSpe} from '@/tools/switchUtil';
+	import {getGoodsPintuanDetail,getGoodsRandom,getGoodsPintuanSpe,getGoodsRandomSpe} from '@/tools/switchUtil';
 	import {dateFormat} from '@/tools/util';
 	import { goodsDetailRules,goodsDetailHelp } from "@/net/DataRules";
 	@Component({})
@@ -487,7 +487,7 @@
 					spec_str:{id:4,name:'查看',desc:'卡密列表',icon:'../../static/goods/v2/spe_ck.png'}
 				};
 			}else{
-				this.goodsSpe.pintuan_type.name = getGoodsPintuan(data.pintuan_type);
+				this.goodsSpe.pintuan_type.name = getGoodsPintuanDetail(data.pintuan_type);
 				this.goodsSpe.pintuan_type.icon = getGoodsPintuanSpe(data.pintuan_type);
 				this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
 				this.goodsSpe.random_type.icon = getGoodsRandomSpe(data.random_type);
