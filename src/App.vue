@@ -19,7 +19,7 @@ export default Vue.extend({
       // app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
       
     } 
-
+    
     const loginToken = uni.getStorageSync("token");
     if (loginToken) {
       app.token = JSON.parse(loginToken);
@@ -111,8 +111,11 @@ export default Vue.extend({
     });
     //#endif
     
-
+    
     // #ifdef APP-PLUS
+    setInterval(()=>{
+      plus.cache.clear();
+    },3600000)
     plus.runtime.getProperty(plus.runtime.appid||'', (widgetInfo) => {
       app.version = widgetInfo.version || '1.0.0'
       console.log('app.version==',app.version)
@@ -184,9 +187,6 @@ export default Vue.extend({
   onShow() {
     console.log("App Show");
     // #ifdef APP-PLUS
-    uni.setKeepScreenOn({
-      keepScreenOn: true,
-    });
     let args = plus.runtime.arguments;
     if (args) {
       if (args.indexOf("goodsdetails") != -1) {
@@ -237,7 +237,7 @@ export default Vue.extend({
 ::-webkit-scrollbar {
   display: none;
 }
-
+image{will-change: transform}
 uni-button {
   padding: 0;
 }

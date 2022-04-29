@@ -235,7 +235,9 @@
 			
 			this.networkStatusChange()
 			// 判断是否有邀请上线
-			app.platform.getInvitationClipboard()
+			app.platform.getInvitationClipboard((val:string)=>{
+				app.platform.matchInviteRequestKey(val)
+			})
 			// #endif
 		}
 		onHide(){

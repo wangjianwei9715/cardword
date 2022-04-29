@@ -1,5 +1,5 @@
-<template>
-	<view class="content">
+<template >
+	<view class="content" >
 		<!-- 头部状态 -->
 		<view class="header">
 			<view class="header-state">{{orderState[orderData.state]}}</view>
@@ -51,7 +51,7 @@
 			<!-- 预测卡密 -->
 
 			<!-- 我的编号 -->
-			<view class="buyer-cotnent" v-if="cardList!=''">
+			<view class="buyer-cotnent" v-if="cardList!='' && !clickToPay">
 				<view class="card-header">
 					<view class="card-header-title">我的卡密<view class="card-header-title-desc">{{orderData.state>2?'+'+orderData.point:'未中卡可获得'}}<image class="order-gold" src="../../static/order/gold.png" /></view></view>
 					<view class="card-header-right" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
@@ -173,7 +173,6 @@
 			})
 		}
 		onShow(){
-			console.log('clickToPay',this.clickToPay)
 			if(this.clickToPay){
 				clearInterval(this.countDownInter);
 				this.clickPayShowLoading(()=>{
@@ -204,11 +203,10 @@
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
 				console.log('orderDetail====',res)
-				if(res.data.state==1){
-					this.clickToPay = true
-				}else{
-					this.clickToPay = false
-				}
+				setTimeout(()=>{
+					this.clickToPay = res.data.state==1? true :false
+				},3000)
+				
 				// 预测卡密
 				if(res.data.guess){
 					this.guessType = true;

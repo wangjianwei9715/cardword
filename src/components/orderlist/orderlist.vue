@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="orderlist-index" v-for="item in orderList" :key="item.code" >
 			<view class="orderlist-index-header">
-				<view class="header-left">
+				<view class="header-left" @click="onClickJumpMerchant(item.seller.id)">
 					<image class="seller-image" :src="decodeURIComponent(item.seller.avatar)" mode="aspectFill"></image>
 					<view class="seller-name">{{item.seller.name}}</view>
 				</view>
@@ -62,6 +62,9 @@
 			for(let i in this.intervalList){
 				clearInterval(this.intervalList[i].func)
 			}
+		}
+		onClickJumpMerchant(id:number){
+			uni.navigateTo({ url:"/pages/userinfo/merchant_shopsV2?id=" + id });  
 		}
 		onClickJumpUrl(id:any){
 			this.$emit("send", id);
