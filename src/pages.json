@@ -2,14 +2,7 @@
 	"pages": [{
 			"path": "pages/index/index",
 			"style": {
-				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
-				//  #endif
-				//  #ifdef MP-WEIXIN
-				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				//  #endif
 				"enablePullDownRefresh": true,
 				"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 				"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
@@ -18,14 +11,7 @@
 		{
 			"path": "pages/index/live",
 			"style": {
-				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
-				//  #endif
-				//  #ifdef MP-WEIXIN
-				"navigationBarTitleText": "直播",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				//  #endif
 				"enablePullDownRefresh": true,
 				"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 				"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
@@ -34,14 +20,7 @@
 		{
 			"path": "pages/index/userinfo",
 			"style": {
-				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
-				//  #endif
-				//  #ifdef MP-WEIXIN
-				"navigationBarTitleText": "我的",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				//  #endif
 				"enablePullDownRefresh": false
 			}
 		},
@@ -57,14 +36,7 @@
 		{
 			"path": "pages/live/live_find",
 			"style": {
-				//  #ifndef MP-WEIXIN
 				"navigationStyle": "custom",
-				//  #endif
-				//  #ifdef MP-WEIXIN
-				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				//  #endif
 				"enablePullDownRefresh": false
 			}
 		},
@@ -152,14 +124,7 @@
 			"pages": [{
 					"path": "goods_details",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "商品详情",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
@@ -186,42 +151,21 @@
 				{
 					"path": "goods_result_list",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": false
 					}
 				},
 				{
 					"path": "goods_find",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "搜索",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": false
 					}
 				},
 				{
 					"path": "goods_find_list",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "商品",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
@@ -465,14 +409,7 @@
 				{
 					"path": "service/ref",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "查价",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": false
 					}
 				},
@@ -580,14 +517,7 @@
 			"pages": [{
 					"path": "merchant_shops",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "商家",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
@@ -607,14 +537,7 @@
 				{
 					"path": "order_list",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "订单",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
@@ -650,14 +573,7 @@
 				{
 					"path": "card_no",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "我的编号",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": false
 					}
 				},
@@ -672,12 +588,7 @@
 				{
 					"path": "user_collect",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "",
-						//  #endif
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
@@ -816,14 +727,7 @@
 				{
 					"path": "goods_result_list",
 					"style": {
-						//  #ifndef MP-WEIXIN
 						"navigationStyle": "custom",
-						//  #endif
-						//  #ifdef MP-WEIXIN
-						"navigationBarTitleText": "",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						//  #endif
 						"enablePullDownRefresh": false
 					}
 				},

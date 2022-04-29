@@ -131,16 +131,10 @@
 		}
 		onShow(){
 			this.initPageData();
-			// #ifdef MP-WEIXIN
-			if(this.infoData&&this.infoData.name==''){
-				app.platform.wechatLogin();
-			}
-			// #endif
 		}
 		onHide(){
 		}
 		initPageData(cb?:Function){
-			// #ifndef MP-WEIXIN
 			console.log(app.token.accessToken)
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -148,14 +142,7 @@
 				})
 				return;
 			}
-			// #endif
 
-			// #ifdef MP-WEIXIN
-			if(app.token.accessToken == ''){
-				app.platform.wechatLogin();
-				return;
-			}
-			// #endif
 			
 			app.http.Get('me/home',{},(res:any)=>{
 				let data = res.data;
@@ -207,11 +194,6 @@
 			})
 		}
 		onClickUserInfo(){
-			// #ifdef MP
-			if(this.infoData.avatar==''){
-				return;
-			}
-			// #endif
 			uni.navigateTo({
 				url:'/pages/userinfo/user_info?data='+encodeURIComponent(JSON.stringify(this.infoData))
 			})
@@ -246,15 +228,6 @@
 			})
 		}
 		
-		getUserProfile(){
-			app.platform.getWechatUserInfo((infoRes:any)=>{
-				uni.showToast({
-					title: '用户信息同步成功！',
-					icon: 'none',
-					duration: 2000
-				});
-			})
-		}
 		onClickcancelPaySuccess(){
 			this.showPaySuccess = false;
 		}

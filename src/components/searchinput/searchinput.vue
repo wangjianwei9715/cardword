@@ -30,7 +30,6 @@
 </script>
 
 <style lang="scss">
-	/* #ifndef MP */
 	.header-search-input{
 		width: 100%;
 		height: 65rpx;
@@ -48,24 +47,6 @@
 		display: flex;
 		align-items: center;
 	}
-	/* #endif */
-	/* #ifdef MP */
-	.header-search-input{
-		width: 710rpx;
-		height:64rpx;
-		background: $content-bg;
-		border-radius: 4rpx;
-		box-sizing: border-box;
-		display: flex;
-		padding-left: 28rpx;
-		align-items: center;
-		font-size: 24rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #AAAABB;
-		border-radius: 29rpx;
-	}
-	/* #endif */
 	.sousuo-icon{
 		width: 31rpx;
 		height:32rpx;

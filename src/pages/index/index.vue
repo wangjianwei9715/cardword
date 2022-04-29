@@ -73,12 +73,6 @@
 		</view>
 		<!-- #endif -->
 
-		<!-- #ifdef MP -->
-		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsMiniList"   @send="onClickMiniGood" :mini="true" :presell="false"/>
-		</view>
-		<!-- #endif -->
-
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
 
 		<winningCardPopup :showWinningCrad="showWinningCrad" @closeWinning="closeWinning" />
@@ -168,19 +162,7 @@
 				this.updateShow();
 				return;
 			}
-			if(query.id){
-				app.platform.launchMiniProgramLive(query.id)
-			}
-			if(query.paydata){
-				// #ifdef MP-WEIXIN
-				let paydata = query.paydata
-				if(app.token.accessToken == ''){
-					app.platform.wechatLogin();
-				}
-				console.log(JSON.parse(decodeURIComponent(paydata)))
-				app.payment.paymentMini(JSON.parse(decodeURIComponent(paydata)))
-				// #endif
-			}
+			
 			let listeners = ['BackLogin']
 			this.register(listeners);
 			this.getLuanchApp()
@@ -224,10 +206,6 @@
 					this.oneLoad = false;
 				}
 			}
-			// #endif
-			
-			// #ifdef MP
-			this.topAddList = [{pic:'../../static/index/mp_mini.jpg',url:''}]
 			// #endif
 			uni.getNetworkType({
 				success: (res)=> {
@@ -344,12 +322,6 @@
 					if(cb) cb()
 				})
 			})
-			// #ifdef MP-WEIXIN
-			if(app.token.accessToken == ''){
-				app.platform.wechatLogin();
-				return;
-			}
-			// #endif
 		}
 		onClickMiniGood(){
 			uni.showToast({

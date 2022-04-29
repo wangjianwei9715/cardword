@@ -86,12 +86,7 @@ export default class ClassName extends BaseNode {
   onLoad(query: any) {
     if (query.q) {
       this.searchText = query.q;
-      // #ifndef MP
       this.searchData = JSON.parse(query.data);
-      // #endif
-      // #ifdef MP
-      this.searchData = JSON.parse(decodeURIComponent(query.data));
-      // #endif
       this.goodsList = this.searchData.list;
       this.scrollId = this.searchData.scrollId;
     }

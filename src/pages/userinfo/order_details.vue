@@ -329,27 +329,7 @@
 				this.getNoShowList()
 			}
 			if(cmd == 'toPay'){
-				// #ifdef MP
-				params= {
-					channel:'mini',
-					delivery:0,
-					num:Number(this.orderData.num)
-				}
-				uni.showLoading({
-					title: '加载中'
-				});
-				app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
-					uni.hideLoading()
-					app.payment.paymentMini(res.wechat,(data:any)=>{
-						uni.$emit('orderchange')
-					})
-				})
-				// #endif
-				// #ifndef MP
 				this.showPayMent = true
-				
-				// #endif
-				
 			}
 
 			if(cmd=='receive_good'){

@@ -293,24 +293,6 @@
 		];
 		freeNoNum = 0;
 		onLoad(query:any) {
-			
-			// #ifdef MP
-			uni.showModal({
-				title: '提示',
-				content: '当前商品已售罄',
-				success: function (res) {
-					if (res.confirm) {
-						uni.switchTab({
-							url: '/pages/index/index'
-						});
-					} else if (res.cancel) {
-						uni.switchTab({
-							url: '/pages/index/index'
-						});
-					}
-				}
-			});
-			// #endif
 			// #ifndef MP
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId)
@@ -614,20 +596,12 @@
 			});
 		}
 		onClickBuy(){
-			// #ifndef MP
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
-			// #endif
-			// #ifdef MP-WEIXIN
-			if(app.token.accessToken == ''){
-				app.platform.wechatLogin();
-				return;
-			}
-			// #endif
 
 			// 自选球队
 			if(this.goodsData.isSelect){
@@ -668,7 +642,6 @@
 			app.platform.goWeChatLive({playCode:this.goodsData.broadcast.playCode,goodCode:this.goodsData.goodCode})
 		}
 		onClickCardPlay(item:any){
-			// #ifndef MP
 			if(item.id<=2){
 				this.operationCardShow = true;
 				this.operaType = item.id
@@ -676,13 +649,6 @@
 			if(item.id==4){
 				this.onClickAllCard()
 			}
-			// #endif
-			// #ifdef MP
-			if(this.goodsSpe[item].id<=2){
-				this.operationCardShow = true;
-				this.operaType = this.goodsSpe[item].id
-			}
-			// #endif
 		}
 		onClickCardCancel(){
 			this.operationCardShow = false
