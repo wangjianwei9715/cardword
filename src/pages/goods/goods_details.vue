@@ -293,24 +293,6 @@
 		];
 		freeNoNum = 0;
 		onLoad(query:any) {
-			
-			// #ifdef MP
-			uni.showModal({
-				title: '提示',
-				content: '当前商品已售罄',
-				success: function (res) {
-					if (res.confirm) {
-						uni.switchTab({
-							url: '/pages/index/index'
-						});
-					} else if (res.cancel) {
-						uni.switchTab({
-							url: '/pages/index/index'
-						});
-					}
-				}
-			});
-			// #endif
 			// #ifndef MP
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId)
@@ -438,7 +420,7 @@
 			}
 		}
 		getProgress(){
-			app.http.Get('good/'+this.goodsId+'/progress',{},(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodsId+'/progress',{},(res:any)=>{
 				this.goodsData.currentNum = res.data.currentNum; 
 				this.goodsData.totalNum = res.data.totalNum;
 				this.goodsData.lockNum = res.data.lockNum;
@@ -614,20 +596,12 @@
 			});
 		}
 		onClickBuy(){
-			// #ifndef MP
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
-			// #endif
-			// #ifdef MP-WEIXIN
-			if(app.token.accessToken == ''){
-				app.platform.wechatLogin();
-				return;
-			}
-			// #endif
 
 			// 自选球队
 			if(this.goodsData.isSelect){
@@ -668,7 +642,6 @@
 			app.platform.goWeChatLive({playCode:this.goodsData.broadcast.playCode,goodCode:this.goodsData.goodCode})
 		}
 		onClickCardPlay(item:any){
-			// #ifndef MP
 			if(item.id<=2){
 				this.operationCardShow = true;
 				this.operaType = item.id
@@ -676,13 +649,6 @@
 			if(item.id==4){
 				this.onClickAllCard()
 			}
-			// #endif
-			// #ifdef MP
-			if(this.goodsSpe[item].id<=2){
-				this.operationCardShow = true;
-				this.operaType = this.goodsSpe[item].id
-			}
-			// #endif
 		}
 		onClickCardCancel(){
 			this.operationCardShow = false
@@ -707,7 +673,7 @@
 		}
 		// 自选球队 我要选队
 		getGoodSelect(cb?:Function){
-			app.http.Get('good/'+this.goodsId+'/select',{},(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodsId+'/select',{},(res:any)=>{
 				this.teamData = res.team;
 				
 				if(this.goodsData.state == 0){
@@ -734,7 +700,7 @@
 		getGoodSelectBranch(){
 			// 随机选队
 			if(this.teamCheckIndex == 999){
-				app.http.Get('good/'+this.goodsId+'/select/randomNo',{},(res:any)=>{
+				app.http.Get('dataApi/good/'+this.goodsId+'/select/randomNo',{},(res:any)=>{
 					this.randomNum = 0;
 					for(let i in res.list){
 						if(!res.list[i].isExtend){
@@ -748,13 +714,13 @@
 			}
 			let id = this.teamData[this.teamCheckIndex].id;
 			this.branchCheckIndex = 0
-			app.http.Get('good/'+this.goodsId+'/select/branch',{teamId:id},(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodsId+'/select/branch',{teamId:id},(res:any)=>{
 				this.branchData = res.list;
 				console.log('branch==',res)
 			})
 		}
 		getGoodSelectCart(){
-			app.http.Get('good/'+this.goodsId+'/select/cart',{},(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodsId+'/select/cart',{},(res:any)=>{
 				this.cartData = res.data;
 				console.log(this.cartData)
 			})
@@ -838,7 +804,7 @@
 		// 自选球队随机 我要选队 我要选卡种
 		getGoodSelectTeamRandom(cb?:Function){
 			let urlType = this.goodsData.pintuan_type == 12? 'selectCardSetGroupRandom' : 'selectTeamRandom';
-			app.http.Get('good/'+this.goodsId+'/'+urlType,{},(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodsId+'/'+urlType,{},(res:any)=>{
 				this.teamRandomData = res.team;
 				if(cb) cb()
 			})

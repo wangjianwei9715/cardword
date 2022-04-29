@@ -83,7 +83,7 @@
 			}
 			if(this.teamId>0) params.teamId = this.teamId;
 			
-			app.http.Get("good/"+this.goodCode+'/noList', params, (data: any) => {
+			app.http.Get("dataApi/good/"+this.goodCode+'/noList', params, (data: any) => {
 				this.goodTitle = data.goodTitle;
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
@@ -119,7 +119,7 @@
 				params.sn = Md5.hashStr(this.scrollIdSt+this.scrollId+'scrollSearchGood')
 			}
 			
-			app.http.Get("good/"+this.goodCode+'/cards/search', params, (data: any) => {
+			app.http.Get("dataApi/good/"+this.goodCode+'/cards/search', params, (data: any) => {
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}

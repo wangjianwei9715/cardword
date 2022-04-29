@@ -275,12 +275,7 @@ export default class ClassName extends BaseNode {
   payRandomTeamData:any = [];
   onLoad(query: any) {
     if (query.data) {
-      // #ifndef MP
       this.goodsData = JSON.parse(query.data);
-      // #endif
-      // #ifdef MP
-      this.goodsData = JSON.parse(decodeURIComponent(query.data));
-      // #endif
       this.payChannel = JSON.parse(query.payChannel);
       // 剩余随机
       if (query.payRandomPrice) {
@@ -499,32 +494,7 @@ export default class ClassName extends BaseNode {
       return;
     }
     let params: { [x: string]: any };
-    // #ifdef MP
-    params = {
-      channel: "mini",
-      delivery: this.addressData.id,
-      num: Number(this.moneyNum),
-    };
-    uni.showLoading({
-      title: "加载中",
-    });
-    app.http.Post(
-      "good/topay/" + this.goodsData.goodCode,
-      params,
-      (res: any) => {
-        uni.hideLoading();
-        app.payment.paymentMini(res.wechat, (data: any) => {});
-        uni.redirectTo({
-          url: "/pages/userinfo/order_list",
-        });
-      }
-    );
-
-    // #endif
-    // #ifndef MP
     this.showPayMent = true;
-
-    // #endif
   }
   keepTwoDecimal(num: any) {
     var result = parseFloat(num);

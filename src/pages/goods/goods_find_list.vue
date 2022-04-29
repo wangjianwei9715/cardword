@@ -146,12 +146,7 @@
 			}
 			if (query.data) {
 				setTimeout(() => {
-					// #ifndef MP
 					this.goodsData = JSON.parse(query.data);
-					// #endif
-					// #ifdef MP
-					this.goodsData = JSON.parse(decodeURIComponent(query.data));
-					// #endif
 					this.goodsList = this.goodsData.goodList ? this.goodsData.goodList : [];
 					this.scrollId = this.goodsData.scrollId;
 					if (query.data.end) {
@@ -209,7 +204,7 @@
 		}
 		reqNewSeries() {
 			app.http.Get(
-				"series/hot/list", {
+				"dataApi/series/hot/list", {
 					pageIndex: 1,
 					pageSize: 100
 				},

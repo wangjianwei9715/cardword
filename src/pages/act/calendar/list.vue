@@ -128,7 +128,7 @@
 			date:startDate
 		  }
 		  this.httpIng = true
-		  app.http.Get("function/calendar/list", params, (data: any) => {
+		  app.http.Get("dataApi/function/calendar/list", params, (data: any) => {
 			if(this.currentPage == 1) this.calendaList = []
 			if(data.list){
 				this.calendaList = this.calendaList.concat(data.list);

@@ -145,33 +145,11 @@
 			if(cmd=='toPay'){
 				this.payChannel = item.good.payChannel
 				console.log(this.payChannel)
-				// #ifdef MP
-				params= {
-					channel:'mini',
-					delivery:0,
-					num:Number(item.num)
-				}
-				uni.showLoading({
-					title: '加载中'
-				});
-				app.http.Post('order/topay/'+code,params,(res:any)=>{
-					uni.hideLoading()
-					app.payment.paymentMini(res.wechat,(data:any)=>{
-					})
-					this.againReqNewData()
-				})
-				
-				// #endif
-				// #ifndef MP
 				this.countTime = item.leftSec;
 				this.payItem.num = Number(item.num)
 				this.payItem.code = code
 				this.payItem.price =  item.price
 				this.showPayMent = true
-				
-				// #endif
-				
-
 			}
 			if(cmd=='receive_good'){
 				uni.showModal({
