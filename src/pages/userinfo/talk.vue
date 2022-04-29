@@ -197,7 +197,7 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 				}
 			};
 			//心跳包
-			setInterval(() => {
+			this.scheduler(() => {
 				sendHeartBeat();
 			}, 10000);
 

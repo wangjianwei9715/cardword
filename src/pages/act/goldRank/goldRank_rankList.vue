@@ -188,6 +188,9 @@ import easyLoadimage from "@/components/easy-loadimage/easy-loadimage.vue";
 				},500)
 			})
 		}
+		destroyed(){
+			clearInterval(this.dateTimer)
+		}
 		tagChange(item: any, index: number) {
 			if (this.tag.index == index) return
 			this.tag.index = index

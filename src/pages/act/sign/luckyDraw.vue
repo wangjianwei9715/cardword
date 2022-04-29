@@ -85,6 +85,9 @@
 			})
 			
 		}
+		destroyed(){
+			clearInterval(this.tipsInter)
+		}
 		// 获取奖品index
 		getLuckyDrawIndex(id:number){
 			for(let i in this.drawingList){

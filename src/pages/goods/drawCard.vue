@@ -264,6 +264,10 @@ export default class ClassName extends BaseNode {
     });
     
   }
+  destroyed(){
+		clearInterval(this.startTimeFnc)
+    clearInterval(this.setTimeFnc);
+	}
   initFnc(){
     console.log('-------------------',this.picData)
     this.startTimeFnc = setInterval(() => {
