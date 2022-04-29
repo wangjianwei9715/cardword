@@ -48,14 +48,15 @@
 				<text>1.NBA季候赛期间，玩家在活动页面支持自己喜爱的球队就可免费获得欧气</text><br>
 				<text>2.欧气获取：</text><br>
 				<text>1) 首次分享活动页+5欧气数 (限1次)</text><br>
-				<text>2) 每次猜对获得2点欧气，每轮比赛进行2场后不可再猜测</text>
+				<text>2) 每次猜对获得2点欧气，每轮比赛进行2场后不可再猜测</text><br>
+				<text>3) 7场全部猜对平台赠送pod卡包一份，请联系客服领取（包邮）</text>
 			</view>
 		</view>
 		<view class="mask" v-show="modalShow||ruleShow"></view>
 		<view class="bottomContainer">
 			<view class="bottom-button share" @click="shareWx">
-				<text>分享</text>
-				<text>首次分享欧气+5</text>
+				<text style="font-size: 31rpx;">分享</text>
+				<text style="color: #ef3333;font-size: 21rpx;" v-if="!isShare">首次分享欧气+5</text>
 			</view>
 			<view class="bottom-button goLoot" @click="pageJump('/pages/act/loot/index')">前往欧皇夺宝</view>
 		</view>
@@ -120,7 +121,7 @@
 				team,
 				teamName
 			}, (res: any) => {
-				console.log(res)
+				// console.log(res)
 				// this.reqNewData()
 				this.nowSelectTeamData.supportNum_1 = res.data.supportNum_1
 				this.nowSelectTeamData.supportNum_2 = res.data.supportNum_2
@@ -330,14 +331,14 @@
 				width: 100%;
 				text-align: center;
 			}
-
-			text:first-child {
+			
+			/* text:first-child {
 				font-size: 31rpx;
 			}
 
 			text:last-child {
 				font-size: 21rpx;
-			}
+			} */
 
 		}
 
