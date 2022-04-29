@@ -172,7 +172,7 @@
 				pageSize: this.pageSize
 			};
 
-			app.http.Get("merchant/list", params, (data: any) => {
+			app.http.Get("dataApi/merchant/list", params, (data: any) => {
 				this.totalPage = data.totalPage;
 				let arr = data.list || [];
 				arr.forEach((item: any) => {

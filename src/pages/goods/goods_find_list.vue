@@ -209,7 +209,7 @@
 		}
 		reqNewSeries() {
 			app.http.Get(
-				"series/hot/list", {
+				"dataApi/series/hot/list", {
 					pageIndex: 1,
 					pageSize: 100
 				},
