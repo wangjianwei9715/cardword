@@ -18,6 +18,7 @@
 				<view class="box-index-id">请输入收方ID</view>
 				<xskCodeInput 
 					:value.sync="userId" 
+					:copyId="copyId"
 					:length="9"
 					@confirm="inputConfirm">
 				</xskCodeInput>
@@ -49,6 +50,7 @@
 	export default class ClassName extends BaseNode {
 		showRulePopup = false;
 		userId = '';
+		copyId = '';
 		orderData:any = {};
 		tipsCurrent = true;
 		userData:any = {
@@ -59,6 +61,32 @@
 		explain = '赠送须知：平台提供卡密赠送功能，仅用于好友之间相互赠送，不得作为其他用途。在赠送时请您仔细核对对方信息，赠送后将无法撤回！请悉知'
 		onLoad(query:any) {
 			this.orderData = JSON.parse(query.data);
+		}
+		onShow(){
+			app.platform.getInvitationClipboard((val:string)=>{
+				this.userIdRequestKey(val)
+			})
+		}
+		// 判断粘贴板是否有用户ID
+		userIdRequestKey(id:string){
+			let inviteCode = /[0-9]{9}/g;
+			let key:any = ''
+			if(inviteCode.test(id)){
+				key = id.match(inviteCode);
+				uni.showModal({
+					title: '检测到粘贴板',
+					content: '是否查询此用户ID：'+key,
+					success: (res)=>{
+						if (res.confirm) {
+							this.copyId = key[0];
+							uni.setClipboardData({
+								data: '',
+								showToast:false
+							});
+						}
+					}
+				})
+			}
 		}
 		onClickShowRule(){
 			this.showRulePopup = true;
@@ -108,7 +136,6 @@
 			});
 		}
 		inputConfirm(val:any){
-			console.log('val===',val)
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
 				goodOrderCode:this.orderData.goodOrderCode,
@@ -121,7 +148,6 @@
 				this.userGet = true;
 				this.userData.userName = res.userName;
 				this.userData.avatar = decodeURIComponent(res.avatar);
-				console.log(this.userData.avatar)
 			})
 		}
 		

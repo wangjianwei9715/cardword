@@ -319,14 +319,14 @@ export default class PlatformManager {
 	}
 	
 	// 获取粘贴板内容
-	getInvitationClipboard(){
+	getInvitationClipboard(cb?:Function){
 		if (plus.os.name == 'iOS') {  
 			var UIPasteboard = plus.ios.importClass("UIPasteboard");  
 			var generalPasteboard = UIPasteboard.generalPasteboard();  
 			var value = generalPasteboard.valueForPasteboardType("public.utf8-plain-text");  
 			// value就是粘贴板的值  
 			if(value!=undefined){
-				this.matchInviteRequestKey(value)
+				if(cb) cb(value)
 			}
 			
 			
@@ -334,7 +334,7 @@ export default class PlatformManager {
 			uni.getClipboardData({
 				success: (res)=> {
 					if(res.data){
-						this.matchInviteRequestKey(res.data)
+						if(cb) cb(res.data)
 					}
 				}
 			});

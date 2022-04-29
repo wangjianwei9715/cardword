@@ -237,7 +237,7 @@ export default Vue.extend({
 ::-webkit-scrollbar {
   display: none;
 }
-
+image{will-change: transform}
 uni-button {
   padding: 0;
 }
