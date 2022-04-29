@@ -1,5 +1,5 @@
 <template>
-	<view :class="{'contest-smallCard':!isBig,'contest-bigCard':isBig}">
+	<view :class="{'contest-smallCard':!isBig,'contest-bigCard':isBig}" id='block'>
 		<image src="../../../../static/act/teamContest/bigVs.png" class="vsIcon" v-if='isBig' mode="widthFix"></image>
 		<view class="contest-topScoreBoard uni-flex">
 			<view class="avatar" :style='{backgroundImage:`url("${decodeURIComponent(propItem.avatar_1)}")`}'
@@ -19,14 +19,16 @@
 				:class="{selectAvatar:propItem.supportTeam==2,noneAvatar:!propItem.avatar_2}">
 			</view>
 		</view>
-		<view class="contest-noStart" v-if="propItem.supportTeam==-1&&!bothTeamFull(propItem)">暂未开始</view>
+		<view class="contest-noStart" v-if="!bothTeamFull(propItem)">暂未开始</view>
 		<view class="contest-supportButton" v-if="bothTeamFull(propItem)&&propItem.supportTeam==0"
 			@click="actionSupot(propItem)">
 			立即支持</view>
-		<view class="contest-proportion" v-if="supportability(propItem)">
-			<view class="proportionBlock contest-proportion-left">
+		<view class="contest-proportion" v-if="supportability(propItem)" id='percentBlock'>
+			<view class="proportionBlock contest-proportion-left"
+				:style="{width:calc(caclPercent(propItem.supportNum_1,propItem.supportNum_2),caclPercent(propItem.supportNum_2,propItem.supportNum_1))+'rpx'}">
 			</view>
-			<view class="proportionBlock contest-proportion-right">
+			<view class="proportionBlock contest-proportion-right"
+				:style="{width:calc(caclPercent(propItem.supportNum_2,propItem.supportNum_1),caclPercent(propItem.supportNum_1,propItem.supportNum_2))+'rpx'}">
 			</view>
 			<view class="support-percent support-percent-left">
 				<text>{{caclPercent(propItem.supportNum_1,propItem.supportNum_2)}}%</text>
@@ -50,7 +52,8 @@
 		Vue
 	} from "vue-property-decorator";
 	import {
-		formatNumber
+		formatNumber,
+		calculate
 	} from '@/tools/util'
 	import BaseComponent from "@/base/BaseComponent.vue";
 	@Component({})
@@ -61,12 +64,20 @@
 			}
 		})
 		item: any;
-		@Prop({ default: false })
-		isBig?: boolean;
+		@Prop({
+			default: false
+		})
+		isBig ? : boolean;
 
 		copyItem: any = {}
+		blockWidth: number = 296;
 		formatNumber: any = formatNumber;
-		mounted() {}
+		// calculate:any=calculate;
+		mounted() {
+			this.$nextTick(() => {
+				this.getPercentWidth()
+			})
+		}
 		actionSupot(item: any) {
 			if (app.token.accessToken == "") {
 				uni.navigateTo({
@@ -78,11 +89,31 @@
 		}
 		//计算百分比
 		caclPercent(num1: number, num2: number) {
-			if (num1 || num1 + num2 == 0) return 0
+			if (!num1 || num1 + num2 == 0) return 0
 			const num = (num1 * 100 / (num1 + num2)).toFixed(2)
 			return num
 		}
-		//是展示比例界面
+		//获取宽度
+		getPercentWidth() {
+			const query: any = uni.createSelectorQuery().in(this);
+			query.select('#block').boundingClientRect((data: any) => {
+				this.blockWidth = data.width * 2
+			}).exec();
+		}
+		//计算宽度
+		calc(percent1: number,percent2:number) {
+			if(!percent1&&!percent2){
+				return calculate.mul(0.5,this.blockWidth)-9
+			}
+			// if(percent==0) return 
+			const triangleWidth = 18
+			// // console.log(calculate)
+			// console.log(calculate.mul((percent / 100),this.blockWidth) - 18)
+			return calculate.mul((percent1 / 100),this.blockWidth) -9
+			// return 0
+			// return 
+		}
+		//是否展示比例界面
 		supportability(item: any) {
 			if (item.supportTeam == undefined) return false
 			return this.bothTeamFull(item) && item.supportTeam != 0
@@ -276,7 +307,7 @@
 			background-color: #ff0023;
 			left: 0;
 			text-align: left;
-			width: calc(50% - 18rpx);
+			/* width: calc(50% - 18rpx); */
 			z-index: 2;
 
 		}
@@ -290,7 +321,7 @@
 			border-color: #ff0023 transparent transparent transparent;
 			border-style: solid;
 			border-width: 53rpx 36rpx 0 0;
-			right: -35rpx;
+			right: -36rpx;
 			top: 0;
 			z-index: 1;
 		}
@@ -298,7 +329,7 @@
 		&-right {
 			background-color: #005df0;
 			right: 0;
-			width: calc(50% - 18rpx);
+			/* width: calc(50% - 18rpx); */
 			text-align: right;
 
 			text {
@@ -315,7 +346,7 @@
 			border-color: transparent #005df0 transparent transparent;
 			border-style: solid;
 			border-width: 53rpx 36rpx 0 0;
-			left: -35rpx;
+			left: -36rpx;
 		}
 
 		.support-percent {

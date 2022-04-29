@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view class="rightFloat" style="top:20rpx;">
+		<view class="rightFloat" style="top:20rpx;" @click='ruleShow=true'>
 			<text>规则</text>
 		</view>
 		<view class="topImage">
@@ -17,7 +17,8 @@
 				<confrontCard @onClickSup='actionSupot' :item="getHalfAndFinal('westHalfOf')"></confrontCard>
 			</view>
 			<view class="contest-teamCard-container uni-flex just-center" style="margin-bottom: 55rpx;">
-				<confrontCard @onClickSup='actionSupot' :isBig='true' :item="getHalfAndFinal('finalData')"></confrontCard>
+				<confrontCard @onClickSup='actionSupot' :isBig='true' :item="getHalfAndFinal('finalData')">
+				</confrontCard>
 				<view class="line lineTwo"></view>
 			</view>
 			<view class="contest-teamCard-container uni-flex just-center" style="margin-bottom: 66rpx;">
@@ -29,6 +30,7 @@
 				<view class="line lineThree"></view>
 			</view>
 		</view>
+		<view class="noneBlock"></view>
 		<view class="confirmModal" :class="{confirmModalShow:modalShow}">
 			<view class="close" @click="modalShow=false"></view>
 			<view class="tips">请选择您支持的球队</view>
@@ -45,7 +47,8 @@
 			<view class="rule-particulars">
 				<text>1.NBA季候赛期间，玩家在活动页面支持自己喜爱的球队就可免费获得欧气</text><br>
 				<text>2.欧气获取：</text><br>
-				<text>1) 首次分享活动页+5欧气数 (限1次)</text>
+				<text>1) 首次分享活动页+5欧气数 (限1次)</text><br>
+				<text>2) 每次猜对获得2点欧气，每轮比赛进行2场后不可再猜测</text>
 			</view>
 		</view>
 		<view class="mask" v-show="modalShow||ruleShow"></view>
@@ -91,6 +94,7 @@
 		noneData: any = {
 			supportTeam: -1, //支持的球队，1 球队1，2 球队2， 0 未支持，-1 不可支持
 		}
+		isShare:boolean=false;
 		nowSelectTeamData: any = {}
 		onLoad() {
 			this.reqNewData()
@@ -109,32 +113,44 @@
 			this.nowSelectTeamData = item
 			this.modalShow = true
 		}
-
+		
 		//支持球队
 		supportTeam(team: number, teamName: string) {
 			app.http.Post('activity/playoff/support/' + this.nowSelectTeamData.id, {
 				team,
 				teamName
 			}, (res: any) => {
+				console.log(res)
+				// this.reqNewData()
+				this.nowSelectTeamData.supportNum_1 = res.data.supportNum_1
+				this.nowSelectTeamData.supportNum_2 = res.data.supportNum_2
+				this.nowSelectTeamData.supportTeam = res.data.supportTeam
 				this.modalShow = false
 				uni.showToast({
 					title: '支持成功'
 				})
+
 			})
 		}
 		//分享
 		shareWx() {
+			if (app.token.accessToken == "") {
+				uni.navigateTo({
+					url: "/pages/login/login"
+				});
+				return;
+			}
 			uni.showLoading({
 				title: '请稍等'
 			})
 			uni.share({
 				provider: "weixin",
 				type: 0,
-				imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.14/loot/loot_sw/0/1649923645699n8fv080wdf.jpg",
-				title: "下一个欧皇就是你！",
-				summary: '完成任务，免费参与卡世界欧皇夺宝。',
+				imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.29/teamContest/teamContest_index/0/16512000162575ktlx870rl.png",
+				title: "猜季后赛赢礼品！",
+				summary: '参与季后赛竞猜活动,获得欧气;',
 				scene: "WXSceneSession",
-				href: 'https://www.ka-world.com/share/h5/#/pages/loot/loot',
+				href: 'https://www.ka-world.com/share/h5/#/pages/teamContest/teamContest_index',
 				success: (res: any) => {},
 				fail: (err: any) => {
 					console.log("失败原因=>", err);
@@ -148,14 +164,14 @@
 				}
 			});
 			setTimeout(() => {
-				this.completeTask()
+				if(!this.isShare) this.completeTask()
 			}, 2000)
 		}
 		completeTask() {
 			app.http.Post('activity/playoff/share/luckyGas/get', {}, (res: any) => {
-				uni.showToast({
-					title: '分享成功,欧气+5!'
-				})
+				// uni.showToast({
+				// 	title: '分享成功,欧气+5!'
+				// })
 			})
 		}
 		classifyData(allList: any) {
@@ -174,6 +190,7 @@
 		reqNewData(cb ? : Function) {
 			app.http.Get('dataApi/activity/playoff', {}, (res: any) => {
 				this.classifyData(res.list || [])
+				this.isShare=res.isShare
 				cb && cb()
 			})
 		}
@@ -186,7 +203,9 @@
 		private get getEightList() {
 			const _this: any = this
 			return function(key: string) {
+				console.log(_this[key])
 				if (_this[key].length == 2) return _this[key]
+				if(_this[key].length>2) return _this[key].slice(0,2)
 				const lenth: number = _this[key].length
 				const fillArr: any = new Array(2 - lenth).fill(_this.noneData)
 				return [..._this[key], ...fillArr]
@@ -262,8 +281,14 @@
 		width: 660rpx;
 		margin: 0 auto;
 		position: relative;
-		padding-bottom: calc(140rpx + constant(safe-area-inset-bottom));
-		padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
+	}
+
+	.noneBlock {
+		width: 750rpx;
+		opacity: 0;
+		height: 160rpx;
+		padding-bottom: constant(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
 	}
 
 	.bottomContainer {
@@ -272,8 +297,11 @@
 		position: fixed;
 		bottom: 0;
 		background-image: url(../../../static/act/teamContest/white_bottom.png);
-		height: calc(124rpx + constant(safe-area-inset-bottom));
-		height: calc(124rpx + env(safe-area-inset-bottom));
+		/* height: calc(124rpx + constant(safe-area-inset-bottom));
+		height: calc(124rpx + env(safe-area-inset-bottom)); */
+		height: 124rpx;
+		padding-bottom: constant(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
 		z-index: 3;
 		display: flex;
 		justify-content: center;
@@ -385,8 +413,10 @@
 		position: fixed;
 		left: 0;
 		right: 0;
+		top: 0;
+		bottom: 0;
 		margin: auto;
-		top: 447rpx;
+
 		z-index: 9;
 		opacity: 0;
 		transform: scale(0);
@@ -440,14 +470,14 @@
 
 	.ruleModal {
 		width: 750rpx;
-		height: calc(950rpx + constant(safe-area-inset-bottom));
-		height: calc(950rpx + env(safe-area-inset-bottom));
+		height: 950rpx;
+		padding-bottom: constant(safe-area-inset-bottom);
 		background: #FFFFFF;
 		border-radius: 5rpx 5rpx 0px 0px;
 		position: fixed;
 		bottom: 0;
 		z-index: 9;
-
+		
 		.close {
 			width: 29rpx;
 			height: 27rpx;
@@ -473,7 +503,7 @@
 			font-family: PingFang SC;
 			font-weight: 400;
 			color: #7D8288;
-
+			line-height: 50rpx;
 		}
 	}
 

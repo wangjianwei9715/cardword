@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "2.9.0",
+    "versionName" : "2.8.8",
     "versionCode" : 200,
     "transformPx" : false,
     "networkTimeout" : {
@@ -18,10 +18,6 @@
         }
     ],
     "app-plus" : {
-        "kernel" : {
-            "ios" : "WKWebview",
-            "recovery" : "reload"
-        },
         "compatible" : {
             "ignoreVersion" : true
         },
