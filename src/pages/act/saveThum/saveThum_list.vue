@@ -27,9 +27,8 @@
 				<view class="left" style="width: 33.33%;">
 					<view class="rankIndex">{{item.rank}}</view>
 					<image v-if="item.userName!='虚位以待'&&item.likeNum!==0"
-						:src="item.avatar?decodeURIComponent(item.avatar):defaultAvatar"
-						class="rankAvart" mode=""></image>
-					<!-- <view v-else class="rankAvart noneAvart"></view> -->
+						:src="item.avatar?decodeURIComponent(item.avatar):defaultAvatar" class="rankAvart" mode="">
+					</image>
 					<view class="rankUserName text oneLineOver"
 						:style="{maxWidth:(item.userName!='虚位以待'&&item.likeNum===0)?'70rpx':'140rpx'}">{{item.userName}}
 					</view>
@@ -39,25 +38,15 @@
 					<view class="num text oneLineOver">{{formatNumber(item.likeNum,2)}}获赞</view>
 				</view>
 			</view>
-			<!-- <view class="rankContent-item" v-for="(item,index) in unoccupied" :key='index+ +new Date()'>
-				<view class="left" style="width: 33.33%;">
-					<view class="rankIndex" v-if="true">{{index+1+rankList.length}}</view>
-					<view class="rankUserName text" style="max-width: 140rpx;">虚位以待</view>
-				</view>
-				<view class="center text oneLineOver" style="width: 33.33%;text-align: center;">-</view>
-				<view class="right" style="width: 33.33%;">
-					<view class="num text oneLineOver" v-if="false">{{formatNumber(item.likeNum,2)}}获赞</view>
-				</view>
-			</view> -->
 		</view>
 		<view class="centerModal" :class="{centerModalShow:centerModalShow}">
 			<image src="../../../static/act/saveThum/close.png" class="close" @click="centerModalShow=false" mode="">
 			</image>
 			<view class="title">分享好友</view>
 			<view class="goldBack">
-				<image src="../../../static/goods/drawcard/icon_rc.png" v-show="shareItem.rc" class="rcIcon" mode="widthFix"></image>
+				<image src="../../../static/goods/drawcard/icon_rc.png" v-show="shareItem.rc" class="rcIcon"
+					mode="widthFix"></image>
 				<image :src="decodeURIComponent(shareItem.pic)" class="img" mode="widthFix"></image>
-				<!-- @click='priveImg(0,[decodeURIComponent(shareItem.pic)])' -->
 			</view>
 			<view class="tips">{{shareItem.noName}}</view>
 			<view class="change uni-flex" @click="change">
@@ -77,7 +66,7 @@
 			<text>
 				1、活动期间，玩家获取金色卡密后可在活动页分享给好友进行集赞，活动结束根据点赞排名获得奖励
 				2、活动期间首次获得金卡可进行分享集赞
-				3、每名好友只能为自己点赞1次，首次集满3个赞获得20-5优惠券1张
+				3、每名好友只能为自己点赞1次，首次集满3个赞获2元无门槛优惠券，首次集满10个赞送5元满减券
 				4、活动结束后发放奖励，实物类请联系客服领取，优惠券类自动发放
 			</text>
 		</view>
@@ -88,7 +77,10 @@
 				<view class="left">我的点赞：{{formatNumber(myProfile.likeNum,2)}}
 					<text style="padding-left:6rpx">({{myProfile.rank?'排名:'+myProfile.rank:'暂未上榜'}})</text>
 				</view>
-				<view class="right" @click="goShare">点击分享金卡</view>
+				<view class="right" @click="goShare">
+					<text>邀请好友点赞</text>
+					<text style="font-size: 20rpx;">每张金卡可获赞20次</text>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -142,7 +134,7 @@
 			// 	this.reqNewData();
 			// }
 		}
-		onShow(){
+		onShow() {
 			uni.hideLoading()
 		}
 		onPullDownRefresh() {
@@ -201,11 +193,11 @@
 			});
 		}
 		goShare() {
-			uni.showToast({
-				title:"活动已结束",
-				icon:"none"
-			})
-			return;
+			// uni.showToast({
+			// 	title: "活动已结束",
+			// 	icon: "none"
+			// })
+			// return;
 			if (app.token.accessToken == "") {
 				uni.navigateTo({
 					url: "/pages/login/login"
@@ -561,7 +553,16 @@
 				font-weight: 400;
 				color: #FCB825;
 				text-align: center;
-				line-height: 82rpx;
+				// line-height: 82rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				position: relative;
+
+				text {
+					display: block;
+				}
 			}
 		}
 	}
