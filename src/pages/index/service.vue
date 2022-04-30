@@ -82,10 +82,7 @@
 			// })
 		}
 		testSyncFunc(){
-			
-			
 			var ret = this.testModule.testSyncFunc()
-			console.log('testmodule==',ret)
 			uni.showToast({
 				title:'调用同步方法 ' + ret,
 				icon: "none"

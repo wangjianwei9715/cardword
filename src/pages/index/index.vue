@@ -147,7 +147,6 @@
 		useCache = 1;
 		wgtUpdate = false;
 		wgtUpNum = 0;
-		postGoodProgressIn:any;
 		progressList:any = [];
 		networkStatus:any;
 		getLuanchFnc:any;
@@ -157,7 +156,7 @@
 		oneLoad = true;
 		showWinningCrad = false;
 		onLoad(query:any) {
-			// uni.$emit('reLogin')
+
 			if (app.update.apkNeedUpdate) {
 				this.updateShow();
 				return;
@@ -228,7 +227,6 @@
 					return x.goodCode;
 				})
 				app.http.Post('good/progress/list',{list:list},(res:any)=>{
-					console.log('good/progress/list',res)
 					this.setNewProgress(res.list)
 				})
 			}
@@ -241,20 +239,8 @@
 			// #endif
 		}
 		onHide(){
-			clearInterval(this.postGoodProgressIn);
 			clearInterval(this.getLuanchFnc);
-			uni.offNetworkStatusChange((res)=>{
-				console.log('onNetworkStatusChange=',res)
-				if(res.isConnected){
-					uni.showLoading({
-						title: '加载中'
-					});
-					app.platform.appLuanch(false);
-					setTimeout(()=>{
-						uni.hideLoading();
-					},1000)
-				}
-			})
+			uni.offNetworkStatusChange((res)=>{})
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
@@ -272,7 +258,6 @@
 		networkStatusChange(){
 			// #ifdef APP-PLUS
 			this.onNetWorkFunc= uni.onNetworkStatusChange((res)=>{
-				console.log('onNetworkStatusChange=',res)
 				if(res.isConnected&&app.service_url==''){
 					uni.showLoading({
 						title: '加载中'
@@ -299,9 +284,7 @@
 		// 获取是否中卡信息
 		getGreet(){
 			app.http.Get('me/greet',{},(res:any)=>{
-				console.log('me/greet=',res)
 				if(res.data.newHitNum>0) this.showWinning();
-				if(res.data.getDayGift) app.http.Get('me/coupon/dayGift',{});
 			})
 		}
 		showWinning(){
@@ -314,7 +297,6 @@
 		}
 		initEvent(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
-				console.log('index/home====',data)
 				// #ifndef MP
 				this.topAddList = data.addList;
 				this.hotList.broadCast.list = data.broadCast;
@@ -340,7 +322,6 @@
 				uni.showLoading({
 					title:'加载中'
 				})
-				console.log('app.service_url=',app.service_url)
 				if(app.service_url==''||app.dataApiDomain==''){
 					uni.removeStorageSync("launchConfig");
 					app.platform.appLuanch(loginToken)
@@ -421,7 +402,6 @@
 					return;
 				}
 			}
-			console.log(item.url)
 			uni.navigateTo({
 				url: item.url
 			})
