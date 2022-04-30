@@ -31,12 +31,6 @@
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
-		// hotSellerData:{[x:string]:any} = [
-		// 	{rank:1,name:'阿巴巴',num:22}
-		// ]
-		// hotCardData:{[x:string]:any} = [
-		// 	{rank:1,name:'阿巴巴',num:22}
-		// ]
 		onLoad(query:any) {
 			let searchData = uni.getStorageSync("searchData");
 			if(searchData){

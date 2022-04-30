@@ -99,9 +99,7 @@ export default class ClassName extends BaseNode {
       return;
     }
     this.goodTabCheck = id;
-    this.currentPage = 1;
-    this.noMoreData = false;
-    this.reqNewData();
+    this.onClickSearch()
   }
   onClickBack() {
     uni.navigateBack({

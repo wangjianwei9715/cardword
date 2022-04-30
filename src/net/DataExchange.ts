@@ -48,7 +48,6 @@ export var indexGoodsType: { [x: number]: any } = {
     3: 'football',
     4: 'othersport'
 }
-
 // 商品列表类型
 export var goodsListType: { [x: string]: any } = {
     'activity': '活动专区',
@@ -57,6 +56,20 @@ export var goodsListType: { [x: string]: any } = {
     'progress': '即将拼成',
 	'yifen':'一分上组'
 }
+// 商品详情规格
+export var goodDetailSpe = {
+    spec:{id:3,name:'',desc:'拼团规格',icon:''},
+    pintuan_type:{id:1,name:'',desc:'拼团形式',icon:''},
+    random_type:{id:2,name:'',desc:'随机方式',icon:''},
+    spec_str:{id:4,name:'查看',desc:'卡密列表',icon:'../../static/goods/v2/spe_ck.png'}
+};
+// 商品详情规格
+export var goodDetailStep = [
+    {name:'参与拼团',pic:'../../static/goods/v2/step_0.png'},
+    {name:'直播拆卡',pic:'../../static/goods/v2/step_1.png'},
+    {name:'拆卡报告',pic:'../../static/goods/v2/step_2.png'},
+    {name:'中卡发货',pic:'../../static/goods/v2/step_3.png'},
+]
 // 状态
 export var stateArray = [
     {

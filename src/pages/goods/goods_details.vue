@@ -211,10 +211,13 @@
 	import {getGoodsPintuanDetail,getGoodsRandom,getGoodsPintuanSpe,getGoodsRandomSpe} from '@/tools/switchUtil';
 	import {dateFormat} from '@/tools/util';
 	import { goodsDetailRules,goodsDetailHelp } from "@/net/DataRules";
+	import { goodDetailSpe,goodDetailStep } from "@/net/DataExchange"
 	@Component({})
 	export default class ClassName extends BaseNode {
 		goodsDetailRules = goodsDetailRules
 		goodsDetailHelp = goodsDetailHelp;
+		goodsSpe:{[x:string]:any} = goodDetailSpe;
+		stepData = goodDetailStep;
 		goodsState = 0;
 		defaultAvatar = app.defaultAvatar
 		goodsId = '';
@@ -233,12 +236,6 @@
 		countDown = 0;
 		favorType = false;
 		operaType = 0;
-		goodsSpe:{[x:string]:any} = {
-			spec:{id:3,name:'',desc:'拼团规格',icon:''},
-			pintuan_type:{id:1,name:'',desc:'拼团形式',icon:''},
-			random_type:{id:2,name:'',desc:'随机方式',icon:''},
-			spec_str:{id:4,name:'查看',desc:'卡密列表',icon:'../../static/goods/v2/spe_ck.png'}
-		};
 		goodsDesc:{[x:string]:any} = [];
 		tipBtn:{[x:string]:any}=[
 			{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'}
@@ -281,16 +278,9 @@
 		// 是否禁用优惠券
 		disableCoupon = false;
 		buyExplain = '商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。';
-		
 		randomNum = 0;
 		// 底部抽屉
   		showDrawer = false;
-		stepData = [
-			{name:'参与拼团',pic:'../../static/goods/v2/step_0.png'},
-			{name:'直播拆卡',pic:'../../static/goods/v2/step_1.png'},
-			{name:'拆卡报告',pic:'../../static/goods/v2/step_2.png'},
-			{name:'中卡发货',pic:'../../static/goods/v2/step_3.png'},
-		];
 		freeNoNum = 0;
 		onLoad(query:any) {
 			// #ifndef MP

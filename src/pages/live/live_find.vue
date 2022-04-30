@@ -31,13 +31,8 @@
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
 		onLoad(query:any) {
-			let searchData = uni.getStorageSync("liveFind");
-			if(searchData){
-				this.historyList = searchData
-			}
-			if(query.q){
-				this.searchTetxt = query.q
-			}
+			this.historyList = uni.getStorageSync("liveFind") || ''
+			this.searchTetxt = query.q || ''
 		}
 		onClickBack(){
 			uni.navigateBack({
