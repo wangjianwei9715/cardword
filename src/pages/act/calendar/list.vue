@@ -181,8 +181,6 @@
 					this.scrollRight = true;
 				}
 				if(this.scrollRight && event.detail.scrollLeft<=this.monthScrollLeft){
-					console.log(event.detail.scrollLeft,this.monthScrollLeft)
-					console.log('swiperIndex==',this.swiperIndex)
 					this.scrollRight = false;
 					this.monthIndex = 1;
 					this.swiperIndex ++ ;

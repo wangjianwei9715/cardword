@@ -2,7 +2,7 @@
 	<view class="tab-hot">
 		<view class="tab-hot-box" :class="'tab-hot-box-'+name" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(name)">
 			<view class="tab-hot-boxtitle">{{item.title}}</view>
-			<view class="tab-hot-boxtips">{{name == 'broadCast'?getBroadCastStr():item.tips}}</view>
+			<view class="tab-hot-boxtips">{{name == 'broadCast'?getBroadCastStr(item.list.state):item.tips}}</view>
 			<view class="tab-hot-boxpic-index" v-if="name!='broadCast'">
 				<view class="tab-hot-boxpic-box" v-for="(src,index) in item.list" :key="index" @click="onClickHotTab(src,name)">
 					<image :src="decodeURIComponent(src.pic)" class="tab-hot-boxpic" mode="aspectFit"/>

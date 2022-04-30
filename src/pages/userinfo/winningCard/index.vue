@@ -61,7 +61,6 @@
 				pageSize:this.pageSize
 			}
 			app.http.Get('me/hitNo/list', params, (data: any) => {
-				console.log('hitNo/list=',data)
 				this.total = data.total;
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;

@@ -73,7 +73,6 @@ export default Vue.extend({
       // #ifdef APP-PLUS
       if (app.needPushIdentifier) {
         let info = plus.push.getClientInfo();
-        console.log("getClientInfo", info);
         
         HttpRequest.getIns().Post("user/bindPushIdentifier", {
           id: info.clientid,
@@ -90,27 +89,10 @@ export default Vue.extend({
     // #ifdef APP-PLUS
     uni.$on("socketClose", () => {
       if (app.socketInfo.tcp && app.socketInfo.tcp != "") {
-        // uni.showModal({
-        // 	title:'连接失败',
-        // 	content:'服务器维护中，请稍后再试...',
-        // 	showCancel:false,
-        // 	success:()=>{
         // 		connectSever();
-        // 	}
-        // });
       }
     });
     // #endif
-    //#ifdef MP
-    uni.getSetting({
-      success: (res) => {
-        if (!res.authSetting["scope.userInfo"]) {
-          app.needAuth = true;
-        }
-      },
-    });
-    //#endif
-    
     
     // #ifdef APP-PLUS
     setInterval(()=>{
@@ -118,7 +100,6 @@ export default Vue.extend({
     },3600000)
     plus.runtime.getProperty(plus.runtime.appid||'', (widgetInfo) => {
       app.version = widgetInfo.version || '1.0.0'
-      console.log('app.version==',app.version)
     })
     
     plus.device.getOAID({
@@ -169,8 +150,6 @@ export default Vue.extend({
       },
       false
     );
-    
-
     // #endif
     
     // #ifndef APP-PLUS

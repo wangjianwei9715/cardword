@@ -98,7 +98,6 @@
 			this.addressDefault = !this.addressDefault
 		}
 		handleGetRegion(region:any){
-			console.log('region===',region);
 			if (region.length<3) {
 				uni.showToast({title:'无效的地址!',icon: 'none',duration: 2000});
 				return;
@@ -107,7 +106,6 @@
 			this.addressData.cityName = region[1].name;
 			this.addressData.countyName = region[2].name;
 			this.address = this.addressData.provinceName+this.addressData.cityName+this.addressData.countyName;
-			console.log(this.addressData)
 		}
 		onClickAddressConfirm(){
 			if(this.userName==''){

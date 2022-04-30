@@ -76,7 +76,6 @@
 
     
     <!-- 绘制海报canvas -->
-    <image v-show="false" :src="canvasImg" class="canvas-img"></image>
     <canvas canvas-id="mycanvas" class="canvas-box"></canvas>
   </view>
 </template>
@@ -172,7 +171,6 @@
       if(index>0) this.emitSwiper(index)
     }
     emitSwiper(index:number){
-      console.log('index=',index)
       this.$emit('swiperRefresh',{index:index})
       this.refresh()
     }
@@ -229,7 +227,6 @@
         ctx.setFontSize(uni.upx2px(29))
         ctx.setFillStyle('#777777')
         ctx.fillText("长按识别二维码了解更多", uni.upx2px(357), uni.upx2px(1220));
-        console.log(ctx.fillText)
 
         uni.showLoading({title: "图片生成中"});
         setTimeout(()=>{

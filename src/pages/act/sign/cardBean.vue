@@ -116,7 +116,6 @@
 			app.http.Get('dataApi/point/sign/info',{},(res:any)=>{
 				this.signInfo = res;
 				this.couponReward = this.getPointReward(15)
-				console.log('signInfo=====',res)
 			})
 		}
 		getExchangeData(){

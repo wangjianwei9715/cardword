@@ -127,7 +127,6 @@
 			this.onEventUI('updateToken',()=>{
 				this.initPageData();
 			})
-			
 		}
 		onShow(){
 			this.initPageData();
@@ -135,15 +134,12 @@
 		onHide(){
 		}
 		initPageData(cb?:Function){
-			console.log(app.token.accessToken)
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
-
-			
 			app.http.Get('me/home',{},(res:any)=>{
 				let data = res.data;
 				this.infoData = data;
@@ -157,7 +153,6 @@
 						this.walletTab[key].num = data[key];
 					}
 				}
-
 				for (const key in this.orderTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
 						this.orderTab[key].num = key == 'toPay'? data[key].num:data[key];
@@ -227,7 +222,6 @@
 				url:'/pages/userinfo/order_list?type='+this.orderTab[item].id
 			})
 		}
-		
 		onClickcancelPaySuccess(){
 			this.showPaySuccess = false;
 		}

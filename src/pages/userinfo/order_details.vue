@@ -202,7 +202,6 @@
 		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
-				console.log('orderDetail====',res)
 				setTimeout(()=>{
 					this.clickToPay = res.data.state==1? true :false
 				},3000)
@@ -270,7 +269,6 @@
 		}
 		getCountDown(){
 			this.countDownStr = getCountDownTime(this.countDown);
-			console.log(this.countDownStr)
 			this.countDownInter = this.scheduler(()=>{
 				
 				if(this.countDown>0){

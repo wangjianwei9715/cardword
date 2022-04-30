@@ -30,7 +30,6 @@ export module app{
     export let protobuf:any = null;
     export let data:{[x: string]: any} = {};//登录数据
     export let token = {accessToken:'',refreshToken:''};
-    export let needAuth = false;//小程序是否需要授权
     export let opKey = ''; //安全密钥
     export let version = '1.0.0';
     export let iosPlatform = false;
@@ -40,5 +39,4 @@ export module app{
     export let requestKey = ''; // 邀请key
     export let familial = false;
     export let coupon = 0;  //优惠券张数
-    export let dayGift = false;  //新年每日优惠券
 }

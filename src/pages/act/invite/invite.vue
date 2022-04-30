@@ -84,7 +84,6 @@
 			// 判断是否有邀请码
 			if(app.requestKey!=''){
 				app.platform.inviteRequestKey(app.requestKey,(res:any)=>{
-					console.log('app.requestKeyres==',res)
 					this.showInvitePopup = true;
 					this.rules = false;
 					this.inviteResult= res.result;
@@ -142,7 +141,6 @@
 				pageSize:this.pageSize,
 			}
 			app.http.Get('activity/invite/goodlist',params,(data:any)=>{
-				console.log(data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
@@ -159,7 +157,6 @@
 						}
 					}
 				}
-				console.log(this.goodsIng)
 				this.currentPage++;
 				if(cb) cb()
 				
@@ -168,11 +165,9 @@
 					const seleQuery = uni.createSelectorQuery();
 					seleQuery.select('.record').boundingClientRect(data => {
 						this.recordWidth = data.width;
-						console.log('recordWidth==',this.recordWidth)
 					}).exec();
 					seleQuery.select('.record-content').boundingClientRect(data => {
 						this.tipsWidth = data.width;
-						console.log('tipsWidth==',this.tipsWidth)
 					}).exec();
 					this.tipsInterval()
 				},500)
@@ -197,7 +192,6 @@
 		// 获取邀请key
 		onClickGetInviteKey(code:string){
 			app.http.Post('activity/invite/getKey',{code:code},(res:any)=>{
-				console.log('activity/invite/getKey=====',res);
 				let newKey = res.content.replace(/\[p\]/g, `\r\n`);
 				this.onClickCopyInviteKey(newKey)
 			})
@@ -216,7 +210,6 @@
 		}
 		onClickGetInviteList(code:string){
 			app.http.Get('activity/invite/1/'+code+'/list',{},(res:any)=>{
-				console.log('activity/invite/list=====',res);
 			})
 		}
 		// 复制弹窗关闭
