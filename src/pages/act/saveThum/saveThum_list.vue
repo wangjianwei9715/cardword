@@ -72,6 +72,7 @@
 				2、活动期间首次获得金卡可进行分享集赞
 				3、每名好友只能为自己点赞1次，首次集满3个赞获2元无门槛优惠券，首次集满10个赞送5元满减券
 				4、活动结束后发放奖励，实物类请联系客服领取，优惠券类自动发放
+				5、禁止机刷等刷赞方式，一经发现平台有权封号切不发放奖品！
 			</text>
 		</view>
 		<view class="mask" v-show="centerModalShow || ruleShow"></view>
@@ -264,7 +265,7 @@
 
 	.ruleModal {
 		width: 500rpx;
-		height: 540rpx;
+		height: 630rpx;
 		background-color: #fff;
 		position: fixed;
 		top: 420rpx;
