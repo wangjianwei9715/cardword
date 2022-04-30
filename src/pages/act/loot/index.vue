@@ -39,8 +39,8 @@
 							<image
 								:src="item.stopData.userAvatar?decodeURIComponent(item.stopData.userAvatar):defaultAvatar"
 								mode=""></image>
-							<view class="name publicText">
-								{{item.stopData.userName}} 中奖
+							<view class="name publicText uni-flex">
+								<view class="winName oneLineOver">{{item.stopData.userName}}</view> 中奖
 							</view>
 						</view>
 					</view>
@@ -886,6 +886,16 @@
 							display: block;
 							margin-right: 10rpx;
 							border-radius: 50%;
+						}
+						.winName{
+							max-width: 120rpx;
+							align-items: center;
+							font-size: 23rpx;
+							font-family: FZLanTingHeiS-R-GB;
+							font-weight: 400;
+							color: #88878c;
+							justify-content: flex-end;
+							margin-right: 6rpx;
 						}
 					}
 				}
