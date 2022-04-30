@@ -26,12 +26,16 @@
 			<view class="rankContent-item" v-for="(item,index) in rankList" :key='index'>
 				<view class="left" style="width: 33.33%;">
 					<view class="rankIndex">{{item.rank}}</view>
-					<image v-if="item.userName!='虚位以待'&&item.likeNum!==0"
+					<easyLoadimage v-show="item.userName!='虚位以待'&&item.likeNum!==0" class="rankAvart"
+						:image-src="item.avatar?decodeURIComponent(item.avatar):defaultAvatar" :borderRadius="50"
+						loading-mode="spin-circle" :scroll-top="scrollTop"/>
+						<!-- <image v-if="item.userName!='虚位以待'&&item.likeNum!==0"
 						:src="item.avatar?decodeURIComponent(item.avatar):defaultAvatar" class="rankAvart" mode="">
-					</image>
-					<view class="rankUserName text oneLineOver"
-						:style="{maxWidth:(item.userName!='虚位以待'&&item.likeNum===0)?'70rpx':'140rpx'}">{{item.userName}}
-					</view>
+						</image> -->
+						<view class="rankUserName text oneLineOver"
+							:style="{maxWidth:(item.userName!='虚位以待'&&item.likeNum===0)?'70rpx':'140rpx'}">
+							{{item.userName}}
+						</view>
 				</view>
 				<view class="center text oneLineOver" style="width: 33.33%;text-align: center;">{{item.award}}</view>
 				<view class="right" style="width: 33.33%;">
@@ -100,7 +104,12 @@
 		Watch
 	} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	@Component({})
+	import easyLoadimage from "@/components/easy-loadimage/easy-loadimage.vue";
+	@Component({
+		components: {
+			easyLoadimage
+		},
+	})
 	export default class ClassName extends BaseComponent {
 		rankHear: any = ['排名', '奖励', '获赞数']
 		formatNumber: any = formatNumber;
@@ -119,6 +128,7 @@
 		}
 		//默认分享数据
 		shareItem: any = {}
+		scrollTop: any = 0;
 		onLoad() {
 			this.reqNewData()
 			this.onEventUI("cardClick", (res: any) => {
@@ -127,6 +137,9 @@
 					this.centerModalShow = true
 				}
 			});
+		}
+		onPageScroll(e: any) {
+			this.scrollTop = e.scrollTop
 		}
 		onReachBottom() {
 			// if (this.queryParams.pageIndex < this.totalPage) {
