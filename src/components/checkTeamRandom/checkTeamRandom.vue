@@ -6,8 +6,8 @@
 				<view class="icon-close" @click="onClickTeamRandomCancel"></view>
 				<view class="teamtion-header">
 					<image class="teamtion-header-logo" v-if="type==11" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
-					<view v-else class="teamtion-header-card">
-						<view class="teamtion-header-card-name">{{teamRandomData[currentIndex].NameEn}}</view>
+					<view v-else class="teamtion-header-card" :class="{'teamtion-header-card-gold':teamRandomData[currentIndex].gold}">
+						<view class="teamtion-header-card-name">{{teamRandomData[currentIndex].nameEn}}</view>
 					</view>
 					<view class="teamtion-header-right">
 						<view class="teamtion-header-title"><text class="text-price">￥</text><text class="teamtion-price">{{teamRandomData[currentIndex].price}}</text>/组</view>
@@ -33,12 +33,12 @@
 			<view class="teamtion-box-center">
 				<view class="teamtion-box-title">{{getCardRandomTitle(type)}}</view>
 				<view class="teamtion-box" :class="{'card-box':type==12}">
-					<view class="teamtion-box-index" :class="{'index-current':index==currentIndex}" @click="onClickCurrentIndex(item,index)" v-for="(item,index) in teamRandomData" :key="index">
+					<view class="teamtion-box-index " :class="{'index-current':index==currentIndex,'card-goldbg':item.gold}" @click="onClickCurrentIndex(item,index)" v-for="(item,index) in teamRandomData" :key="index">
 						<view class="index-shadow" v-show="getPlan(teamRandomData[index].lockNum,teamRandomData[index].currentNum,teamRandomData[index].totalNum)>=100"></view>
 						<image class="teamtion-box-logo" v-show="type==11" :src="decodeURIComponent(item.logo)" />
 						<view class="teamtion-box-name" v-if="type==11">{{item.name}}</view>
 						<view class="teamtion-box-name-card" v-else>
-							<view class="teamtion-box-name-card-eng">{{item.NameEn}}</view>
+							<view class="teamtion-box-name-card-eng">{{item.nameEn}}</view>
 							<view class="teamtion-box-name-card-chn">{{item.name}}</view>
 						</view>
 						<view class="teamtion-box-price">￥{{item.price}}/组</view>
@@ -189,7 +189,10 @@
 		justify-content: center;
 		background:url(../../static/goods/v2/card_bg.png) no-repeat center;
 		background-size: 100% 100%;
-		
+	}
+	.teamtion-header-card-gold{
+		background:url(../../static/goods/v2/card_bg_gold.png) no-repeat center !important;
+		background-size: 100% 100%;
 	}
 	.teamtion-header-card-name{
 		width: 170rpx;
@@ -442,6 +445,10 @@
 		margin-bottom: 9rpx;
 		position: relative;
 		background:url(../../static/goods/v2/card_bg_.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.card-box .card-goldbg{
+		background:url(../../static/goods/v2/card_bg_gold_.png) no-repeat center !important;
 		background-size: 100% 100%;
 	}
 	.card-box .teamtion-box-index:nth-child(3n){
