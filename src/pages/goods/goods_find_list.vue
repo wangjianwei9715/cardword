@@ -289,9 +289,9 @@ page {
 
   .scrollItem {
     display: inline-block;
-    width: 116rpx;
+    width: 100rpx;
     position: relative;
-    margin-right: 12rpx;
+    margin-right: 22rpx;
     .frameImage {
       width: 100rpx;
       height: 100rpx;
