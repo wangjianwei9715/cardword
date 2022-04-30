@@ -144,7 +144,6 @@
 			}
 			if(cmd=='toPay'){
 				this.payChannel = item.good.payChannel
-				console.log(this.payChannel)
 				this.countTime = item.leftSec;
 				this.payItem.num = Number(item.num)
 				this.payItem.code = code

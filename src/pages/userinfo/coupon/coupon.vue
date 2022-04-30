@@ -90,7 +90,6 @@
 				state:1
 			}
 			app.http.Get('me/coupon/list',params,(data:any)=>{
-				console.log(data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}

@@ -97,7 +97,6 @@
 
 
 			this.onEventUI('givingListSearch',(res)=>{
-				console.log('givingListSearch====')
 				this.searchText = res;
 				this.reqSearchList()
 			})

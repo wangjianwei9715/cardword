@@ -307,7 +307,6 @@
 				this.getDataIng()
 			},500)
 			this.onNetWorkFunc = uni.onNetworkStatusChange((res)=>{
-				console.log('onNetworkStatusChange=',res)
 				if(res.isConnected){
 					uni.showLoading({
 						title: '加载中'
@@ -335,7 +334,6 @@
 		}
 		onHide(){
 			uni.offNetworkStatusChange((res)=>{
-				console.log('onNetworkStatusChange=',res)
 				if(res.isConnected){
 					uni.showLoading({
 						title: '加载中'
@@ -706,13 +704,11 @@
 			this.branchCheckIndex = 0
 			app.http.Get('dataApi/good/'+this.goodsId+'/select/branch',{teamId:id},(res:any)=>{
 				this.branchData = res.list;
-				console.log('branch==',res)
 			})
 		}
 		getGoodSelectCart(){
 			app.http.Get('dataApi/good/'+this.goodsId+'/select/cart',{},(res:any)=>{
 				this.cartData = res.data;
-				console.log(this.cartData)
 			})
 		}
 		// 自选球队 遮罩点击
@@ -812,7 +808,6 @@
 		// 复制邀请口令
 		onClickCopyInviteKey(){
 			app.http.Post('activity/invite/getKey',{code:this.goodsId},(res:any)=>{
-				console.log('activity/invite/getKey=====',res);
 				uni.setClipboardData({
 					data: res.content,
 					showToast:false,

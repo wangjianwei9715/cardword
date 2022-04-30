@@ -63,9 +63,7 @@
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 			}
-			console.log('params==',params,'code==',this.goodCode)
 			app.http.Get('function/decompose/good/'+this.goodCode+'/orderlist', params, (data: any) => {
-				console.log('data===',data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}

@@ -292,7 +292,6 @@ export default class ClassName extends BaseNode {
       // 购物车
       if (query.cart) {
         this.cartData = JSON.parse(query.cart);
-        console.log(this.cartData);
       }
       // 选队随机
       if(query.payRandomTeam){
@@ -327,7 +326,6 @@ export default class ClassName extends BaseNode {
   }
   onInputMoney(event: any) {
     if (Number(event.detail.value) > this.maxNum) {
-      console.log(this.maxNum);
       setTimeout(() => {
         this.moneyNum = this.maxNum;
       }, 100);
@@ -382,7 +380,6 @@ export default class ClassName extends BaseNode {
           this.guessList = res.data.guess.option.list;
           this.lastGuess = res.data.guess.lastGuess;
           this.guessNoMoreData = res.data.guess.option.totalPage>=2?false:true;
-          console.log('guessList==',this.guessList)
         }
         this.orderRich = res.data.noRichShowState;
         if (this.orderRich != 0) {
@@ -528,7 +525,6 @@ export default class ClassName extends BaseNode {
     if(uni.getSystemInfoSync().platform === "android"){
       params.nativeSdk = 'qmf_android'
     }
-    console.log(params)
     if (this.baoduiId != 0) {
       // 包队
       params.teamId = this.baoduiId;
@@ -574,7 +570,6 @@ export default class ClassName extends BaseNode {
           });
       }else{
         if (data.channel == "alipay") {
-          console.log("alipay==", res);
           if(res.appPayRequest){
             app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
           }else if (res.alipay.orderInfo != "") {
@@ -589,7 +584,6 @@ export default class ClassName extends BaseNode {
           });
         } else {
           if (res.wechat) {
-            console.log('wechat=',res)
             if(res.appPayRequest){
               app.payment.paymentWxQmfSdk(JSON.stringify(res.appPayRequest));
             }else{

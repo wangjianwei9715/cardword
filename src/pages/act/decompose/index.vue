@@ -107,7 +107,6 @@
 				success:(res)=> {
 					if (res.confirm) {
 						app.http.Post('function/decompose/good/'+code+'/request',{},(res:any)=>{
-							console.log('分解商品===',code,'res:===',res)
 							uni.showToast({
 								title:'操作成功',
 								icon:'none'
