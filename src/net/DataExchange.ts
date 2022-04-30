@@ -1,18 +1,45 @@
-// 微信小程序首页商品
-export var goodsMiniList = [
-    {
-        currentNum:0,
-        discount: "",
-        goodCode: "GT4228482",
-        lockNum: 0,
-        overAt: 0,
-        pic: "../../static/index/mp_mini_good.jpg",
-        price: 99999,
-        startAt: 0,
-        title: "20-21 篮球 Panini National Treasures  Hobby  原箱",
-        totalNum: 1
-
+// 首页tab列表
+export var indexTabList = {
+    tabTop:[
+        {img:'../../static/index/v2/top_icon0.gif',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
+        {img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
+        {img:'../../static/index/v2/top_icon2.png',text:'资讯公告',url:'/pages/information/list'},
+        {img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
+    ],
+    tabBottom:[
+        {img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_assign_list?type=activity'},
+        {img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_assign_list?type=cheap'},
+        {img:'../../static/index/v2/top_icon6.png',text:'自选玩法',url:'/pages/goods/goods_assign_list?type=select'},
+        {img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_assign_list?type=progress'}
+    ]
+}
+// 首页hot列表
+export var indexHotList = {
+    cardBean:{
+        title:'卡币商城',
+        tips:'卡币兑换好礼',
+        list:[
+            {pic:'../../static/index/v2/cardbean_pic.png'},
+            {pic:'../../static/index/v2/cardbean_hb.png'}
+        ]
+    },
+    hot:{
+        title:'热门系列',
+        tips:'新系列上市',
+        list:[]
+    },
+    broadCast:{
+        title:'拆卡围观',
+        tips:'正在拆卡',
+        list:[]
     }
+}
+// 首页goodTab
+export var indexGoodTab = [
+    {id:1,name:'推荐'},
+    {id:2,name:'篮球'},
+    {id:3,name:'足球'},
+    {id:4,name:'其他'}
 ]
 // 首页列表类型 1:推荐 2:篮球 3:足球 4:其他
 export var indexGoodsType: { [x: number]: any } = {

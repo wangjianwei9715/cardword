@@ -83,56 +83,17 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
-	import { indexGoodsType,goodsMiniList } from "@/net/DataExchange"
+	import { indexTabList,indexHotList,indexGoodTab,indexGoodsType } from "@/net/DataExchange"
 	import { isDuringDate } from "@/tools/util" 
 	@Component({})
 	export default class index extends BaseNode {
 		isDuringDate = isDuringDate;
 		indexGoodsType = indexGoodsType;
-		goodsMiniList = goodsMiniList;
-		statusBarHeight = app.statusBarHeight;
+		tabList:{[x:string]:any} = indexTabList;
+		hotList:{[x:string]:any} = indexHotList;
+		goodTab = indexGoodTab;
 		topAddList:any = [];
-		tabList:{[x:string]:any} = {
-			tabTop:[
-				{img:'../../static/index/v2/top_icon0.gif',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
-				{img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
-				{img:'../../static/index/v2/top_icon2.png',text:'资讯公告',url:'/pages/information/list'},
-				{img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
-			],
-			tabBottom:[
-				{img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_assign_list?type=activity'},
-				{img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_assign_list?type=cheap'},
-				{img:'../../static/index/v2/top_icon6.png',text:'自选玩法',url:'/pages/goods/goods_assign_list?type=select'},
-				{img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_assign_list?type=progress'}
-			]
-		};
 		// 卡豆商城 热门系列 拆卡围观
-		hotList:{[x:string]:any} = {
-			cardBean:{
-				title:'卡币商城',
-				tips:'卡币兑换好礼',
-				list:[
-					{pic:'../../static/index/v2/cardbean_pic.png'},
-					{pic:'../../static/index/v2/cardbean_hb.png'}
-				]
-			},
-			hot:{
-				title:'热门系列',
-				tips:'新系列上市',
-				list:[]
-			},
-			broadCast:{
-				title:'拆卡围观',
-				tips:'正在拆卡',
-				list:[]
-			}
-		};
-		goodTab = [
-			{id:1,name:'推荐'},
-			{id:2,name:'篮球'},
-			{id:3,name:'足球'},
-			{id:4,name:'其他'}
-		];
 		goodTabCheck = 1;
 		indexSwiper = true;
 		goodsList:any = [];
@@ -144,11 +105,8 @@
 		updateStart = false;
 		downloadText = '下载中：0 MB/0 MB, 0%';
 		updateMsg = '暂无';
-		useCache = 1;
 		wgtUpdate = false;
 		wgtUpNum = 0;
-		progressList:any = [];
-		networkStatus:any;
 		getLuanchFnc:any;
 		onNetWorkFunc:any;
 		showPaySuccess = false;
