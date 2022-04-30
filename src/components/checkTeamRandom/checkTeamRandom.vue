@@ -6,7 +6,9 @@
 				<view class="icon-close" @click="onClickTeamRandomCancel"></view>
 				<view class="teamtion-header">
 					<image class="teamtion-header-logo" v-if="type==11" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
-					<view v-else class="teamtion-header-card">{{teamRandomData[currentIndex].NameEn}}</view>
+					<view v-else class="teamtion-header-card">
+						<view class="teamtion-header-card-name">{{teamRandomData[currentIndex].NameEn}}</view>
+					</view>
 					<view class="teamtion-header-right">
 						<view class="teamtion-header-title"><text class="text-price">￥</text><text class="teamtion-price">{{teamRandomData[currentIndex].price}}</text>/组</view>
 						<view class="teamtion-header-name">已选"{{teamRandomData[currentIndex].name}}"</view>
@@ -187,7 +189,17 @@
 		justify-content: center;
 		background:url(../../static/goods/v2/card_bg.png) no-repeat center;
 		background-size: 100% 100%;
+		
 	}
+	.teamtion-header-card-name{
+		width: 170rpx;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 5;
+		overflow: hidden;
+		word-break:break-word; 
+		text-align: center;
+	}	
 	.teamtion-header-right{
 		width: 516rpx;
 		height:170rpx;
@@ -465,7 +477,7 @@
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 3;
 		overflow: hidden;
-		word-break:break-all; 
+		word-break:break-word; 
 	}
 	.teamtion-box-name-card-chn{
 		width: 200rpx;
@@ -482,7 +494,7 @@
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 		overflow: hidden;
-		word-break:break-all; 
+		word-break:break-word; 
 	}
 	.card-box .teamtion-box-price{
 		width: 100%;
