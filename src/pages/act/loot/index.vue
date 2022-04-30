@@ -193,7 +193,7 @@
 		phoneWidth: number = 0;
 		rollParams: any = {
 			pageIndex: 1,
-			pageSize: 20
+			pageSize: 50
 		}
 		ruleShow: boolean = false;
 		rollTotalPage: number = 0;
@@ -272,11 +272,11 @@
 		}
 		onShow() {
 			this.getTaskList();
-			setTimeout(()=>{
+			setTimeout(() => {
 				this.startRollInterval()
-			},500)
+			}, 500)
 		}
-		onHide(){
+		onHide() {
 			clearInterval(this.rollTimer)
 		}
 		onReachBottom() {
@@ -324,30 +324,25 @@
 			this.rollAnimation = true
 			this.rollTimer = setInterval(() => {
 				this.rollX = calculate.sub(this.rollX, 10)
-				// const query: any = uni.createSelectorQuery().in(this);
-				// query.select('#rollHidden').boundingClientRect((data: any) => {
-				// 	// console.log(data)
-				// 	// this.rollX = calculate.sub(data.left, 10)
-				// 	this.testList.push([this.rollX, data.left])
-					
-					
-				// }).exec(); 
-				
-
-
 				if ((this.rollWidth + this.rollX - errorValue) <= this.phoneWidth) { //即将轮播完
-					if (this.rollTotalPage == this.rollParams.pageIndex) {
-						clearInterval(this.rollTimer)
-						setTimeout(() => {
-							this.rollAnimation = false
-							this.rollX = 0 //数据已查完 
-							this.startRollInterval()
-						}, 1000)
-					}
-					if (this.rollTotalPage > this.rollParams.pageIndex) {
-						this.rollParams.pageIndex += 1
-						this.getPersonJoin()
-					}
+					clearInterval(this.rollTimer)
+					setTimeout(() => {
+						this.rollAnimation = false
+						this.rollX = 0 //数据已查完 
+						this.startRollInterval()
+					}, 1000)
+					// if (this.rollTotalPage == this.rollParams.pageIndex) {
+					// 	clearInterval(this.rollTimer)
+					// 	setTimeout(() => {
+					// 		this.rollAnimation = false
+					// 		this.rollX = 0 //数据已查完 
+					// 		this.startRollInterval()
+					// 	}, 1000)
+					// }
+					// if (this.rollTotalPage > this.rollParams.pageIndex) {
+					// 	this.rollParams.pageIndex += 1
+					// 	this.getPersonJoin()
+					// }
 				}
 			}, 300)
 		}
@@ -710,6 +705,7 @@
 				position: absolute;
 				transform: translate3d(0, 0, 0);
 				visibility: hidden;
+
 				.rollItem {
 					display: block;
 					// width: 306rpx;
@@ -887,7 +883,8 @@
 							margin-right: 10rpx;
 							border-radius: 50%;
 						}
-						.winName{
+
+						.winName {
 							max-width: 120rpx;
 							align-items: center;
 							font-size: 23rpx;
