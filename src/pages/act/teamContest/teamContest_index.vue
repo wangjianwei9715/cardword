@@ -169,7 +169,8 @@
 			}, 2000)
 		}
 		completeTask() {
-			app.http.Post('activity/playoff/share/luckyGas/get', {}, (res: any) => {
+			app.http.Post('dataApi/activity/playoff/share/luckyGas/get', {}, (res: any) => {
+				this.isShare=true
 				// uni.showToast({
 				// 	title: '分享成功,欧气+5!'
 				// })
