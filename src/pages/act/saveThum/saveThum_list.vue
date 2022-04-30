@@ -46,7 +46,7 @@
 			<view class="goldBack">
 				<image src="../../../static/goods/drawcard/icon_rc.png" v-show="shareItem.rc" class="rcIcon"
 					mode="widthFix"></image>
-				<image :src="decodeURIComponent(shareItem.pic)" class="img" mode="widthFix"></image>
+				<image :src="decodeURIComponent(shareItem.pic)" class="img" mode="aspectFill"></image>
 			</view>
 			<view class="tips">{{shareItem.noName}}</view>
 			<view class="change uni-flex" @click="change">

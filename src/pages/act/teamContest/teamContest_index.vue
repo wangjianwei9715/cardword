@@ -147,7 +147,7 @@
 			uni.share({
 				provider: "weixin",
 				type: 0,
-				imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.29/teamContest/teamContest_index/0/16512000162575ktlx870rl.png",
+				imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.30/teamContest/teamContest_index/0/1651286674991k5ocgc3wci.png",
 				title: "猜季后赛赢礼品！",
 				summary: '参与季后赛竞猜活动,获得欧气;',
 				scene: "WXSceneSession",
