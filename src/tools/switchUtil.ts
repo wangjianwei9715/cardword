@@ -10,7 +10,30 @@ export function getBroadCastStr(state:number){
             return '即将拆卡'; 
     }
 }
+
 // 商品详情拼团形式
+export function getGoodsPintuanDetail(state:number){
+    // 拼团形式 1 随机卡种 2 随机球队 3 随机球员 4 随机卡包 5 随机卡盒    
+    switch(state){
+        case 1:
+            return '随机卡种';
+        case 2:
+            return '随机球队';
+        case 3:
+            return '随机球员';
+        case 4:
+            return '随机卡盒'
+        case 5:
+            return '随机卡包'
+        case 10:
+            return '自选球队'   
+        case 11:
+            return '选队随机'
+        case 12:
+            return '自选卡种随机' 
+    }
+}
+// 商品列表拼团形式
 export function getGoodsPintuan(state:number){
     // 拼团形式 1 随机卡种 2 随机球队 3 随机球员 4 随机卡包 5 随机卡盒    
     switch(state){
@@ -27,7 +50,9 @@ export function getGoodsPintuan(state:number){
         case 10:
             return '自选球队'   
         case 11:
-            return '选队随机'   
+            return '选队随机'
+        case 12:
+            return '自选卡种' 
     }
 }
 export function getGoodsPintuanSpe(state:number){
@@ -47,6 +72,8 @@ export function getGoodsPintuanSpe(state:number){
             return '../../static/goods/v2/spe_zx.png'
         case 11:
             return '../../static/goods/v2/spe_randomqd.png'
+        case 12:
+            return '../../static/goods/v2/spe_xkz.png'
     }
 }
 // 商品详情随机形式

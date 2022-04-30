@@ -31,6 +31,7 @@
 				<view class="teamtion-box-title">{{getCardRandomTitle(type)}}</view>
 				<view class="teamtion-box" :class="{'card-box':type==12}">
 					<view class="teamtion-box-index" :class="{'index-current':index==currentIndex}" @click="onClickCurrentIndex(item,index)" v-for="(item,index) in teamRandomData" :key="index">
+						<view class="index-shadow" v-show="getPlan(teamRandomData[index].lockNum,teamRandomData[index].currentNum,teamRandomData[index].totalNum)>=100"></view>
 						<image class="teamtion-box-logo" :src="decodeURIComponent(item.logo)" />
 						<view class="teamtion-box-name">{{item.name}}</view>
 						<view class="teamtion-box-price">￥{{item.price}}/组</view>
@@ -332,7 +333,15 @@
 		position: relative;
 		border: 1px solid #FFF;
 	}
-	
+	.index-shadow{
+		position: absolute;
+		z-index: 9;
+		background:rgba(228,227,227,0.6);
+		width: 100%;
+		height:100%;
+		left:0;
+		top:0;
+	}
 	.teamtion-box-index:nth-child(4n){
 		margin-right: 0;
 	}
