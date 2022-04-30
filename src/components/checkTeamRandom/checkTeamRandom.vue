@@ -5,7 +5,8 @@
 			<view class="teamtion-top" v-if="teamRandomData!=''" >
 				<view class="icon-close" @click="onClickTeamRandomCancel"></view>
 				<view class="teamtion-header">
-					<image class="teamtion-header-logo" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
+					<image class="teamtion-header-logo" v-if="type==11" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
+					<view v-else class="teamtion-header-card">{{teamRandomData[currentIndex].NameEn}}</view>
 					<view class="teamtion-header-right">
 						<view class="teamtion-header-title"><text class="text-price">￥</text><text class="teamtion-price">{{teamRandomData[currentIndex].price}}</text>/组</view>
 						<view class="teamtion-header-name">已选"{{teamRandomData[currentIndex].name}}"</view>
@@ -32,8 +33,12 @@
 				<view class="teamtion-box" :class="{'card-box':type==12}">
 					<view class="teamtion-box-index" :class="{'index-current':index==currentIndex}" @click="onClickCurrentIndex(item,index)" v-for="(item,index) in teamRandomData" :key="index">
 						<view class="index-shadow" v-show="getPlan(teamRandomData[index].lockNum,teamRandomData[index].currentNum,teamRandomData[index].totalNum)>=100"></view>
-						<image class="teamtion-box-logo" :src="decodeURIComponent(item.logo)" />
-						<view class="teamtion-box-name">{{item.name}}</view>
+						<image class="teamtion-box-logo" v-show="type==11" :src="decodeURIComponent(item.logo)" />
+						<view class="teamtion-box-name" v-if="type==11">{{item.name}}</view>
+						<view class="teamtion-box-name-card" v-else>
+							<view class="teamtion-box-name-card-eng">{{item.NameEn}}</view>
+							<view class="teamtion-box-name-card-chn">{{item.name}}</view>
+						</view>
 						<view class="teamtion-box-price">￥{{item.price}}/组</view>
 						<view class="teamtion-box-plan">
 							<view class="goodslist-progress">
@@ -168,6 +173,20 @@
 	.teamtion-header-logo{
 		width: 170rpx;
 		height:170rpx;
+	}
+	.teamtion-header-card{
+		width: 170rpx;
+		height:170rpx;
+		box-sizing: border-box;
+		padding: 0 21rpx;
+		font-size: 26rpx;
+		font-family: PingFang SC;
+		font-weight: 300;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background:url(../../static/goods/v2/card_bg.png) no-repeat center;
+		background-size: 100% 100%;
 	}
 	.teamtion-header-right{
 		width: 516rpx;
@@ -403,37 +422,74 @@
 		opacity: 0.4;
 	}
 	.card-box .teamtion-box-index{
-		width: 230rpx;
-		height:274rpx;
+		width: 231rpx;
+		height:285rpx;
 		box-sizing: border-box;
-		margin-right: 10rpx;
+		margin-right: 9rpx;
 		background:#FFF;
-		margin-bottom: 10rpx;
+		margin-bottom: 9rpx;
 		position: relative;
-		border: 1px solid #FFF;
+		background:url(../../static/goods/v2/card_bg_.png) no-repeat center;
+		background-size: 100% 100%;
 	}
 	.card-box .teamtion-box-index:nth-child(3n){
 		margin-right: 0;
 	}
-	.card-box .teamtion-box-name{
+	.card-box .teamtion-box-name-card{
 		width: 100%;
-		min-height:200rpx;
+		height:195rpx;
 		box-sizing: border-box;
 		font-size: 26rpx;
 		font-family: PingFang SC;
 		font-weight: 600;
 		color: #333333;
 		display: flex;
-		align-items: center;
 		justify-content: center;
+		flex-wrap: wrap;
 		position: relative;
 		z-index: 6;
+		padding-top: 40rpx;
+		
+	}
+	.teamtion-box-name-card-eng{
+		width: 200rpx;
+		margin:0 auto;
+		height:76rpx;
+		font-size: 24rpx;
+		font-family: PingFang SC;
+		font-weight: 300;
+		color: #333333;
+		line-height: 25rpx;
+		text-align: center;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		overflow: hidden;
+		word-break:break-all; 
+	}
+	.teamtion-box-name-card-chn{
+		width: 200rpx;
+		margin:0 auto;
+		height:65rpx;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		text-align: center;
+		font-weight: 500;
+		color: #333333;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+		word-break:break-all; 
 	}
 	.card-box .teamtion-box-price{
 		width: 100%;
+		height:40rpx;
 		text-align: center;
 		font-size: 25rpx;
-		line-height: 30rpx;
+		line-height: 40rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #88878C;

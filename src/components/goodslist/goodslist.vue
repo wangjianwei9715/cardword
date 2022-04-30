@@ -10,7 +10,7 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<view class="goodslist-index-show" v-for="item in goodsList" :key="item.goodCode">
+		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
 			<view class="goodslist-index">
 				<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
