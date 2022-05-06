@@ -97,7 +97,7 @@
 								<view class="loop" v-if="item.id==5">循环任务</view>
 								{{item.taskName}}
 							</view>
-							<view class="taskTips-bottom">欧气+{{item.taskReward}}</view>
+							<view class="taskTips-bottom">欧气+{{item.taskReward}}{{index==taskList.length-1?'(拼成后发放)':''}}</view>
 						</view>
 						<view class="taskButton" :class='{noneTaskButton:item.isUse===1}'
 							@click="handleTask(item,index)">
