@@ -228,10 +228,8 @@ export default class ClassName extends BaseNode {
     uni.getSystemInfo({
       success: (res) => {
         // 根据 model 进行判断
-        console.log("res.model=", res.model);
         uni.getSystemInfo({
           success: (res:any) => {
-            console.log("system==============", res.system);
             if (res.safeArea.top > 20) {
               //x及以上的异形屏top为44，非异形屏为20
               // 可以将结果存到globalData：
@@ -254,7 +252,6 @@ export default class ClassName extends BaseNode {
               }
               
             }
-            console.log("iosY=", this.iosY);
           },
           fail(err) {
             console.error(err);
@@ -264,8 +261,11 @@ export default class ClassName extends BaseNode {
     });
     
   }
+  destroyed(){
+		clearInterval(this.startTimeFnc)
+    clearInterval(this.setTimeFnc);
+	}
   initFnc(){
-    console.log('-------------------',this.picData)
     this.startTimeFnc = setInterval(() => {
       if (this.startTime < 100) {
         if(this.startTime <95){
@@ -280,7 +280,6 @@ export default class ClassName extends BaseNode {
           if(this.picData[this.stepIndex+1].color == 'gold'){
             uni.vibrateLong({
               success: function() {
-                console.log('success');
               }
             });
           }
@@ -310,7 +309,6 @@ export default class ClassName extends BaseNode {
               ? (data.top / (270 + this.iosY)) * (770 + this.iosY)
               : 0;
             this.boxleft = data.left ? (data.left / 111) * 611 : 0;
-            console.log(data);
           })
           .exec();
       },
@@ -333,7 +331,6 @@ export default class ClassName extends BaseNode {
 				}
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
-          console.log('end============')
           if(cb) cb()
 				}else{
           this.currentPage++;
@@ -352,7 +349,6 @@ export default class ClassName extends BaseNode {
     }else if(this.picOnloadNum == this.totalNum){
       this.picOnloadEd = true;
     }
-    console.log(this.picOnloadNum)
     this.onloadPic.push(index)
     
   }

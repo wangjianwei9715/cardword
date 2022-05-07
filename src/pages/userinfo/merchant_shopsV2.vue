@@ -65,7 +65,7 @@
 					value: 1,
 					name: "在售",
 					assignKey: "goodsList",
-					url: "merchant/goodlist/",
+					url: "dataApi/merchant/goodlist/",
 					query: {
 						tp: 1
 					},
@@ -75,7 +75,7 @@
 					value: 2,
 					name: "拆卡",
 					assignKey: "liveList",
-					url: "merchant/broadcast/list/",
+					url: "dataApi/merchant/broadcast/list/",
 					query: {},
 					valueKey: "upload"
 				}
@@ -129,7 +129,7 @@
 			});
 		}
 		getBusDetail(id: number) {
-			app.http.Get("merchant/detail/" + id, {}, (res: any) => {
+			app.http.Get("dataApi/merchant/detail/" + id, {}, (res: any) => {
 				// console.log(res)
 				this.detail = res.data;
 				this.detail.certification = this.detail.certification || [];

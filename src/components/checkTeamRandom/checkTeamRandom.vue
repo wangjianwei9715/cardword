@@ -5,7 +5,10 @@
 			<view class="teamtion-top" v-if="teamRandomData!=''" >
 				<view class="icon-close" @click="onClickTeamRandomCancel"></view>
 				<view class="teamtion-header">
-					<image class="teamtion-header-logo" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
+					<image class="teamtion-header-logo" v-if="type==11" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
+					<view v-else class="teamtion-header-card" :class="{'teamtion-header-card-gold':teamRandomData[currentIndex].gold}">
+						<view class="teamtion-header-card-name">{{teamRandomData[currentIndex].nameEn}}</view>
+					</view>
 					<view class="teamtion-header-right">
 						<view class="teamtion-header-title"><text class="text-price">￥</text><text class="teamtion-price">{{teamRandomData[currentIndex].price}}</text>/组</view>
 						<view class="teamtion-header-name">已选"{{teamRandomData[currentIndex].name}}"</view>
@@ -22,17 +25,22 @@
 					</view>
 				</view>
 				<view class="teamtion-help">
-					<view class="teamtion-help-title">选队随机：购买后将在所选球队的卡种中随机卡密</view>
+					<view class="teamtion-help-title">{{getCardRandomtips(type)}}</view>
 					<view class="icon-help" @click="onClickRulesShow"></view>
 				</view>
 			</view>
 
 			<view class="teamtion-box-center">
-				<view class="teamtion-box-title">选择球队</view>
-				<view class="teamtion-box">
-					<view class="teamtion-box-index" :class="{'index-current':index==currentIndex}" @click="onClickCurrentIndex(item,index)" v-for="(item,index) in teamRandomData" :key="index">
-						<image class="teamtion-box-logo" :src="decodeURIComponent(item.logo)" />
-						<view class="teamtion-box-name">{{item.name}}</view>
+				<view class="teamtion-box-title">{{getCardRandomTitle(type)}}</view>
+				<view class="teamtion-box" :class="{'card-box':type==12}">
+					<view class="teamtion-box-index " :class="{'index-current':index==currentIndex,'card-goldbg':item.gold}" @click="onClickCurrentIndex(item,index)" v-for="(item,index) in teamRandomData" :key="index">
+						<view class="index-shadow" v-show="getPlan(teamRandomData[index].lockNum,teamRandomData[index].currentNum,teamRandomData[index].totalNum)>=100"></view>
+						<image class="teamtion-box-logo" v-show="type==11" :src="decodeURIComponent(item.logo)" />
+						<view class="teamtion-box-name" v-if="type==11">{{item.name}}</view>
+						<view class="teamtion-box-name-card" v-else>
+							<view class="teamtion-box-name-card-eng">{{item.nameEn}}</view>
+							<view class="teamtion-box-name-card-chn">{{item.name}}</view>
+						</view>
 						<view class="teamtion-box-price">￥{{item.price}}/组</view>
 						<view class="teamtion-box-plan">
 							<view class="goodslist-progress">
@@ -50,7 +58,7 @@
 
 		<bottomDrawer :showDrawer="showDrawer" :title="'规则说明'" :height="80" @closeDrawer="showDrawer = false">
 			<view class="drawer-box">
-				<view class="drawer-help" v-for="(item,index) in drawerHelp" :key="index">{{item}}</view>
+				<view class="drawer-help" v-for="(item,index) in getCardRandomHelp(type)" :key="index">{{item}}</view>
 			</view>
 		</bottomDrawer>
 	</view>
@@ -59,7 +67,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import {getCountDownTimeHour} from '@/tools/util';
+	import {getCardRandomtips,getCardRandomHelp,getCardRandomTitle} from "@/tools/switchUtil"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		// 自选球队随机 显示隐藏
@@ -68,11 +76,15 @@
 		// 选队随机数据
 		@Prop({ default: [] })
 		teamRandomData:any;
+		// 类型 11：选队随机 12：选卡种随机
+		@Prop({ default: false })
+		type:boolean|undefined;
 		
-
+		getCardRandomtips = getCardRandomtips;
+		getCardRandomTitle = getCardRandomTitle;
+		getCardRandomHelp = getCardRandomHelp;
 		currentIndex = 0;
 		showDrawer = false;
-		drawerHelp = ['1.玩家可在选队页面选择心仪的球队进行购买，购买后将在所选球队的卡种中随机卡密','2.常规球队包含该球队最新队名下的全部单人卡种和同队的多人卡种；其他包含老球队下的卡种、不同队的多人卡种以及其他类型卡密','3.每个球队的份数与单价不一，请理性选择']
 		created(){//在实例创建完成后被立即调用
 		}
 		mounted(){//挂载到实例上去之后调用
@@ -105,7 +117,6 @@
 			let width = Math.floor((Number(lock)+Number(now))/Number(all)*100);
 			return width
 		}
-		
 		onClickRulesShow(){
 			this.showDrawer = true
 		}
@@ -165,6 +176,33 @@
 		width: 170rpx;
 		height:170rpx;
 	}
+	.teamtion-header-card{
+		width: 170rpx;
+		height:170rpx;
+		box-sizing: border-box;
+		padding: 0 21rpx;
+		font-size: 26rpx;
+		font-family: PingFang SC;
+		font-weight: 300;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background:url(../../static/goods/v2/card_bg.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.teamtion-header-card-gold{
+		background:url(../../static/goods/v2/card_bg_gold.png) no-repeat center !important;
+		background-size: 100% 100%;
+	}
+	.teamtion-header-card-name{
+		width: 170rpx;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 5;
+		overflow: hidden;
+		word-break:break-word; 
+		text-align: center;
+	}	
 	.teamtion-header-right{
 		width: 516rpx;
 		height:170rpx;
@@ -329,8 +367,14 @@
 		position: relative;
 		border: 1px solid #FFF;
 	}
-	.index-current{
-		border: 1px solid $btn-red;
+	.index-shadow{
+		position: absolute;
+		z-index: 9;
+		background:rgba(228,227,227,0.6);
+		width: 100%;
+		height:100%;
+		left:0;
+		top:0;
 	}
 	.teamtion-box-index:nth-child(4n){
 		margin-right: 0;
@@ -391,6 +435,121 @@
 		top:0;
 		z-index: 2;
 		opacity: 0.4;
+	}
+	.card-box .teamtion-box-index{
+		width: 231rpx;
+		height:285rpx;
+		box-sizing: border-box;
+		margin-right: 9rpx;
+		background:#FFF;
+		margin-bottom: 9rpx;
+		position: relative;
+		background:url(../../static/goods/v2/card_bg_.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.card-box .card-goldbg{
+		background:url(../../static/goods/v2/card_bg_gold_.png) no-repeat center !important;
+		background-size: 100% 100%;
+	}
+	.card-box .teamtion-box-index:nth-child(3n){
+		margin-right: 0;
+	}
+	.card-box .teamtion-box-name-card{
+		width: 100%;
+		height:195rpx;
+		box-sizing: border-box;
+		font-size: 26rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #333333;
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		position: relative;
+		z-index: 6;
+		padding-top: 40rpx;
+		
+	}
+	.teamtion-box-name-card-eng{
+		width: 200rpx;
+		margin:0 auto;
+		height:76rpx;
+		font-size: 24rpx;
+		font-family: PingFang SC;
+		font-weight: 300;
+		color: #333333;
+		line-height: 25rpx;
+		text-align: center;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		overflow: hidden;
+		word-break:break-word; 
+	}
+	.teamtion-box-name-card-chn{
+		width: 200rpx;
+		margin:0 auto;
+		height:65rpx;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		text-align: center;
+		font-weight: 500;
+		color: #333333;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+		word-break:break-word; 
+	}
+	.card-box .teamtion-box-price{
+		width: 100%;
+		height:40rpx;
+		text-align: center;
+		font-size: 25rpx;
+		line-height: 40rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 400;
+		color: #88878C;
+		position: relative;
+		z-index: 6;
+	}
+	.card-box .teamtion-box-plan{
+		width: 200rpx;
+		height:27rpx;
+		margin:0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		z-index: 6;
+		.goodslist-progress{
+			background-image: url('../../static/goods/v2/progessBgg_select.png');
+			background-size: 100% 100%;
+			width: 100%;
+			height: 10rpx;
+			position: relative;
+			display: flex;
+			justify-content: flex-end;
+			.progress-mask{
+				height: inherit;
+				background-color: #F6F7FB;
+				width: 0%;
+			}
+		}
+	}
+	.card-box .teamtion-box-logo{
+		width: 150rpx;
+		height:150rpx;
+		position: absolute;
+		left: 0;
+		top:0;
+		z-index: 2;
+		opacity: 0.4;
+	}
+	.index-current{
+		border: 1px solid $btn-red !important;
 	}
 	.teamtion-bottom{
 		width: 100%;

@@ -93,7 +93,6 @@
 				tp:this.tabCheck
 			}
 			app.http.Get('point/exchange/myRecordlist',params,(data:any)=>{
-				console.log(data)
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}

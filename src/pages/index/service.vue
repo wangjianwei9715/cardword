@@ -74,7 +74,7 @@
 			
 			this.noData = false;
 			// this.testModule = uni.requireNativePlugin("TestModule");
-			app.http.Get('function/calendar/index',{},(res:any)=>{
+			app.http.Get('dataApi/function/calendar/index',{},(res:any)=>{
 				this.calendarList = res.data.calendar
 			})
 			// app.http.Get('function/decompose/index',{},(res:any)=>{
@@ -82,10 +82,7 @@
 			// })
 		}
 		testSyncFunc(){
-			
-			
 			var ret = this.testModule.testSyncFunc()
-			console.log('testmodule==',ret)
 			uni.showToast({
 				title:'调用同步方法 ' + ret,
 				icon: "none"

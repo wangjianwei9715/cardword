@@ -91,36 +91,6 @@ export default class PayManager {
 		
 	
 	}
-	paymentMini(data: any, callback?: Function) {
-		console.log('miniData = ',data)
-		// #ifdef MP-WEIXIN
-		uni.requestPayment({
-			provider: 'wxpay',
-			timeStamp: data.timeStamp,
-			nonceStr: data.nonceStr,
-			package: 'prepay_id=' + data.prepayId,
-			signType: data.signType,
-			paySign: data.sign,
-			success: (res: any) => {
-				console.log('success:' + JSON.stringify(res));
-				if (callback) {
-					callback(res);
-				}
-			},
-			fail: (err: any) => {
-				console.log('fail:' + JSON.stringify(err));
-			}
-		});
-		// #endif
-
-		//#ifdef H5
-		//微信内部网页环境
-		if (navigator.userAgent.match(/micromessenger/i)) {
-
-		}
-		// #endif
-	}
-	
 	static getIns(): PayManager {
 		if(!PayManager.instance) {
 			PayManager.instance = new PayManager();

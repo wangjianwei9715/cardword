@@ -36,30 +36,28 @@
 		pageSize = 20;
 		noMoreData = false;
 		liveList:any = []
-		scrollId = '';
 		onLoad(query:any) {
 			this.onEventUI('liveFind',(res:any)=>{
 				this.searchText = res.text;
-				this.currentPage = 1;
-				this.noMoreData = false;
-				this.reqNewData()
-				
+				this.reqSearch()
 			})
 			this.reqNewData()
 		}
 		//   加载更多数据
 		onReachBottom() {
-			if(this.scrollId==''){
-				this.reqNewData()
-			}else{
-				this.searchReqNew()
-			}
-		     
+			this.reqNewData()
+		}
+		//   下拉刷新
+		onPullDownRefresh(){
+			this.reqSearch(()=>{
+				setTimeout(()=>{
+					uni.stopPullDownRefresh();
+				},1000)
+			})
 		}
 		onClickListTabs(id:any){
-			if(id==this.goodTabCheck){
-				return;
-			}
+			if(id==this.goodTabCheck) return;
+			
 			if(id==5){
 				if(app.token.accessToken == ''){
 					uni.navigateTo({
@@ -69,9 +67,7 @@
 				}
 			}
 			this.goodTabCheck = id;
-			this.currentPage = 1;
-			this.noMoreData = false;
-			this.reqNewData()
+			this.reqSearch()
 		}
 		onClickSearch(){
 			// 搜索
@@ -79,68 +75,33 @@
 				url: '/pages/live/live_find?q='+this.searchText
 			})
 		}
-		searchReqNew(){
-			// 获取更多商品
-			if (this.noMoreData) {
-				return;
-			}
-			let date:any = new Date()
-			let params={
-				highlight:1,
-				timeStamp:Date.parse(date)/1000,
-				scrollId:this.scrollId
-			}
-			
-			app.http.Get('search/broadcast',params,(res:any)=>{
-				this.scrollId = res.scrollId;
-				this.liveList = [...this.liveList,...res.list];
-				if(res.end){
-					this.noMoreData = true
-				}
+		reqSearch(cb?:Function){
+			this.currentPage = 1;
+			this.noMoreData = false;
+			this.reqNewData(()=>{
+				if(cb) cb()
 			})
-			
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
-			if (this.noMoreData) {
-				return;
-			}
+			if (this.noMoreData) return ;
 			
 			let params:any = {
 				pageIndex:this.currentPage,
 				pageSize:this.pageSize
 			}
-			
+			let url = this.goodTabCheck<5 ? 'dataApi/broadcast' : 'me/broadcast';
 			if(this.goodTabCheck<5){
 				params.tp = this.goodTabCheck;
-				if(this.searchText){
-					params.q = this.searchText
-				}
-				app.http.Get('dataApi/broadcast',params,(data:any)=>{
-					if(data.totalPage<=this.currentPage){
-						this.noMoreData = true;
-					}
-					if(this.currentPage==1) this.liveList = []
-					if(data.list){
-						this.liveList = this.liveList.concat(data.list);
-					}
-					this.currentPage++;
-					if(cb) cb()
-				})
-			}else{
-				
-				app.http.Get('me/broadcast',params,(data:any)=>{
-					if(data.totalPage<=this.currentPage){
-						this.noMoreData = true;
-					}
-					if(this.currentPage==1) this.liveList = []
-					if(data.list){
-						this.liveList = this.liveList.concat(data.list);
-					}
-					this.currentPage++;
-					if(cb) cb()
-				})
+				if(this.searchText) params.q = this.searchText
 			}
+			app.http.Get(url,params,(data:any)=>{
+				if(data.totalPage<=this.currentPage) this.noMoreData = true;
+				if(this.currentPage==1) this.liveList = []
+				if(data.list) this.liveList = this.liveList.concat(data.list);
+				this.currentPage++;
+				if(cb) cb()
+			})
 			
 		}
 	}

@@ -104,7 +104,7 @@
 		
 		// 数据详情赋值
 		getGoodData(id:any){
-			app.http.Get('function/calendar/detail/'+id,{},(res:any)=>{
+			app.http.Get('dataApi/function/calendar/detail/'+id,{},(res:any)=>{
 				this.goodsImg = []
 				for(let i in res.data.pics){
 					this.goodsImg.push(decodeURIComponent(res.data.pics[i]))

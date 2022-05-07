@@ -24,9 +24,7 @@
 				<input class="search-input" type="text" placeholder-style="color:#AAAABB" v-model="searchTetxt" placeholder="搜索"  @confirm="onClickSearch(searchTetxt)" confirm-type="search" />
 			</view>
 		</view>
-		<!-- <view class="tab-header">
-			<searchinput :searchText="'搜索关键字'" @clicksearch="onClickSearch()"></searchinput>
-		</view> -->
+		
 
 		<!-- 拼团结果 -->
 		<view v-if="chooseId==0" class="result-index">

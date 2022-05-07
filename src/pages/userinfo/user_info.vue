@@ -58,12 +58,7 @@
 		onLoad(query:any) {
 			if(query.data){
 				let data;
-				// #ifndef MP 
 				data = JSON.parse(query.data)
-				// #endif
-				// #ifdef MP
-				data = JSON.parse(decodeURIComponent(query.data))
-				// #endif
 				for (const key in this.settingTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
 						if(key=='avatar'){

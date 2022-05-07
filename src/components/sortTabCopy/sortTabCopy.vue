@@ -194,7 +194,7 @@ export default class ClassName extends BaseComponent {
     left: 0;
     padding: 0 36rpx;
     background: #fff;
-    transition: all 0.2s linear;
+    transition: height 0.3s linear;
     opacity: 0;
     overflow: hidden;
     z-index: 9;

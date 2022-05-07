@@ -23,7 +23,6 @@
 		@Watch('showWinningCrad')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){
-				console.log(val)
 				setTimeout(()=>{
 					this.showImg = true;
 					setTimeout(()=>{

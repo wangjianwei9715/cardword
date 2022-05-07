@@ -33,7 +33,10 @@
 		</view>
 		<view class="detail-index-bg">
 			<view class="detail-bg">
-				<view class="header-content" :class="{'random-bg':getSelectType()}" v-if="goodsState==1">
+				<view class="header-content-end" v-if="goodsState>=2">
+					<view class="header-price">¥<text>{{goodsData.price}}</text><text class="price-qi">{{getPriceStart()?'起':''}}</text></view>
+				</view>
+				<view class="header-content" :class="{'random-bg':getSelectType()}" v-else-if="goodsState==1">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text class="price-qi">{{getPriceStart()?'起':''}}</text></view>
 					<view class="header-right">
 						<view class="icon-end">距结束</view>
@@ -50,7 +53,6 @@
 							<view class="countdown-index">{{getCountStr(countSecond,1)}}</view>
 						</view>
 					</view>
-					
 				</view>
 				<view class="header">
 					<view class="header-top">
@@ -62,7 +64,8 @@
 							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
 								<view class="progress-mask" :style="{width:(100-getPlan(goodsData.lockNum,goodsData.currentNum,goodsData.totalNum))+'%'}"></view>
 							</view>
-							<view class="header-top-plan-num">
+							<view class="header-top-plan-num" v-if="goodsState>=2">已完成</view>
+							<view class="header-top-plan-num" v-else>
 								余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}
 								<view class="header-top-plan-numbottom">{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
@@ -179,7 +182,7 @@
 		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" :baoduiLeftSec="baoduiLeftSec" :baoduiState="baoduiState" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
 
 		<!-- 自选球队随机 -->
-		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData"   @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" />
+		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData" :type="goodsData.pintuan_type"  @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" />
 
 		<!-- 邀请新人活动弹窗 -->
 		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy" />
@@ -205,13 +208,16 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import {getGoodsPintuan,getGoodsRandom,getGoodsPintuanSpe,getGoodsRandomSpe} from '@/tools/switchUtil';
+	import {getGoodsPintuanDetail,getGoodsRandom,getGoodsPintuanSpe,getGoodsRandomSpe} from '@/tools/switchUtil';
 	import {dateFormat} from '@/tools/util';
 	import { goodsDetailRules,goodsDetailHelp } from "@/net/DataRules";
+	import { goodDetailSpe,goodDetailStep } from "@/net/DataExchange"
 	@Component({})
 	export default class ClassName extends BaseNode {
 		goodsDetailRules = goodsDetailRules
 		goodsDetailHelp = goodsDetailHelp;
+		goodsSpe:{[x:string]:any} = goodDetailSpe;
+		stepData = goodDetailStep;
 		goodsState = 0;
 		defaultAvatar = app.defaultAvatar
 		goodsId = '';
@@ -230,12 +236,6 @@
 		countDown = 0;
 		favorType = false;
 		operaType = 0;
-		goodsSpe:{[x:string]:any} = {
-			spec:{id:3,name:'',desc:'拼团规格',icon:''},
-			pintuan_type:{id:1,name:'',desc:'拼团形式',icon:''},
-			random_type:{id:2,name:'',desc:'随机方式',icon:''},
-			spec_str:{id:4,name:'查看',desc:'卡密列表',icon:'../../static/goods/v2/spe_ck.png'}
-		};
 		goodsDesc:{[x:string]:any} = [];
 		tipBtn:{[x:string]:any}=[
 			{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'}
@@ -278,36 +278,11 @@
 		// 是否禁用优惠券
 		disableCoupon = false;
 		buyExplain = '商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。';
-		
 		randomNum = 0;
 		// 底部抽屉
   		showDrawer = false;
-		stepData = [
-			{name:'参与拼团',pic:'../../static/goods/v2/step_0.png'},
-			{name:'直播拆卡',pic:'../../static/goods/v2/step_1.png'},
-			{name:'拆卡报告',pic:'../../static/goods/v2/step_2.png'},
-			{name:'中卡发货',pic:'../../static/goods/v2/step_3.png'},
-		];
 		freeNoNum = 0;
 		onLoad(query:any) {
-			
-			// #ifdef MP
-			uni.showModal({
-				title: '提示',
-				content: '当前商品已售罄',
-				success: function (res) {
-					if (res.confirm) {
-						uni.switchTab({
-							url: '/pages/index/index'
-						});
-					} else if (res.cancel) {
-						uni.switchTab({
-							url: '/pages/index/index'
-						});
-					}
-				}
-			});
-			// #endif
 			// #ifndef MP
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId)
@@ -332,7 +307,6 @@
 				this.getDataIng()
 			},500)
 			this.onNetWorkFunc = uni.onNetworkStatusChange((res)=>{
-				console.log('onNetworkStatusChange=',res)
 				if(res.isConnected){
 					uni.showLoading({
 						title: '加载中'
@@ -360,7 +334,6 @@
 		}
 		onHide(){
 			uni.offNetworkStatusChange((res)=>{
-				console.log('onNetworkStatusChange=',res)
 				if(res.isConnected){
 					uni.showLoading({
 						title: '加载中'
@@ -435,7 +408,7 @@
 			}
 		}
 		getProgress(){
-			app.http.Get('good/'+this.goodsId+'/progress',{},(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodsId+'/progress',{},(res:any)=>{
 				this.goodsData.currentNum = res.data.currentNum; 
 				this.goodsData.totalNum = res.data.totalNum;
 				this.goodsData.lockNum = res.data.lockNum;
@@ -502,7 +475,7 @@
 					spec_str:{id:4,name:'查看',desc:'卡密列表',icon:'../../static/goods/v2/spe_ck.png'}
 				};
 			}else{
-				this.goodsSpe.pintuan_type.name = getGoodsPintuan(data.pintuan_type);
+				this.goodsSpe.pintuan_type.name = getGoodsPintuanDetail(data.pintuan_type);
 				this.goodsSpe.pintuan_type.icon = getGoodsPintuanSpe(data.pintuan_type);
 				this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
 				this.goodsSpe.random_type.icon = getGoodsRandomSpe(data.random_type);
@@ -611,20 +584,12 @@
 			});
 		}
 		onClickBuy(){
-			// #ifndef MP
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
-			// #endif
-			// #ifdef MP-WEIXIN
-			if(app.token.accessToken == ''){
-				app.platform.wechatLogin();
-				return;
-			}
-			// #endif
 
 			// 自选球队
 			if(this.goodsData.isSelect){
@@ -636,7 +601,7 @@
 				return;
 			}
 			// 自选随机球队
-			if(this.goodsData.pintuan_type == 11){
+			if(this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 12){
 				this.getGoodSelectTeamRandom(()=>{
 					this.teamRandomShow = true;
 				})
@@ -665,7 +630,6 @@
 			app.platform.goWeChatLive({playCode:this.goodsData.broadcast.playCode,goodCode:this.goodsData.goodCode})
 		}
 		onClickCardPlay(item:any){
-			// #ifndef MP
 			if(item.id<=2){
 				this.operationCardShow = true;
 				this.operaType = item.id
@@ -673,13 +637,6 @@
 			if(item.id==4){
 				this.onClickAllCard()
 			}
-			// #endif
-			// #ifdef MP
-			if(this.goodsSpe[item].id<=2){
-				this.operationCardShow = true;
-				this.operaType = this.goodsSpe[item].id
-			}
-			// #endif
 		}
 		onClickCardCancel(){
 			this.operationCardShow = false
@@ -692,14 +649,19 @@
 			this.getGoodSelect()
 		}
 		getPriceStart() {
-			return this.goodsData.isSelect || this.goodsData.pintuan_type == 11
+			return this.goodsData.isSelect || this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 12
 		}
 		getSelectType(){
-			return this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 10
+			switch(this.goodsData.pintuan_type){
+				case 10: case 11: case 12:
+					return true;
+				default:
+					return false
+			}
 		}
 		// 自选球队 我要选队
 		getGoodSelect(cb?:Function){
-			app.http.Get('good/'+this.goodsId+'/select',{},(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodsId+'/select',{},(res:any)=>{
 				this.teamData = res.team;
 				
 				if(this.goodsData.state == 0){
@@ -726,7 +688,7 @@
 		getGoodSelectBranch(){
 			// 随机选队
 			if(this.teamCheckIndex == 999){
-				app.http.Get('good/'+this.goodsId+'/select/randomNo',{},(res:any)=>{
+				app.http.Get('dataApi/good/'+this.goodsId+'/select/randomNo',{},(res:any)=>{
 					this.randomNum = 0;
 					for(let i in res.list){
 						if(!res.list[i].isExtend){
@@ -740,15 +702,13 @@
 			}
 			let id = this.teamData[this.teamCheckIndex].id;
 			this.branchCheckIndex = 0
-			app.http.Get('good/'+this.goodsId+'/select/branch',{teamId:id},(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodsId+'/select/branch',{teamId:id},(res:any)=>{
 				this.branchData = res.list;
-				console.log('branch==',res)
 			})
 		}
 		getGoodSelectCart(){
-			app.http.Get('good/'+this.goodsId+'/select/cart',{},(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodsId+'/select/cart',{},(res:any)=>{
 				this.cartData = res.data;
-				console.log(this.cartData)
 			})
 		}
 		// 自选球队 遮罩点击
@@ -827,9 +787,10 @@
 				url:'confirmorder?data='+encodeURIComponent(JSON.stringify(this.goodsData))+'&payChannel='+encodeURIComponent(JSON.stringify(this.payChannel))+'&payRandomPrice='+this.randomMode.good.price
 			})
 		}
-		// 自选球队随机 我要选队
+		// 自选球队随机 我要选队 我要选卡种
 		getGoodSelectTeamRandom(cb?:Function){
-			app.http.Get('good/'+this.goodsId+'/selectTeamRandom',{},(res:any)=>{
+			let urlType = this.goodsData.pintuan_type == 12? 'selectCardSetGroupRandom' : 'selectTeamRandom';
+			app.http.Get('dataApi/good/'+this.goodsId+'/'+urlType,{},(res:any)=>{
 				this.teamRandomData = res.team;
 				if(cb) cb()
 			})
@@ -847,7 +808,6 @@
 		// 复制邀请口令
 		onClickCopyInviteKey(){
 			app.http.Post('activity/invite/getKey',{code:this.goodsId},(res:any)=>{
-				console.log('activity/invite/getKey=====',res);
 				uni.setClipboardData({
 					data: res.content,
 					showToast:false,
@@ -1062,10 +1022,6 @@
 		background:url(../../static/goods/v2/price_bg_.png) no-repeat center;
 		background-size: 100% 100%;
 	}
-	.header-content-end{
-		background:#fff;
-		background-size: 100% 100%;
-	}
 	.header-desc-title{
 		width: 100%;
 		font-size: $font-28;
@@ -1089,6 +1045,23 @@
 		font-weight: 400;
 		color: #FFFFFF;
 		margin-left: 10rpx;
+	}
+	.header-content-end{
+		background:#fff;
+		box-sizing: border-box;
+		padding-left: 36rpx;	
+		margin-top: -23rpx;	
+		border-top-left-radius: 5rpx;
+		border-top-right-radius: 5rpx;
+		height:82rpx;
+		display: flex;
+		align-items: center;
+	}
+	.header-content-end .header-price ,.header-content-end{
+		padding-top: 19rpx;
+	}
+	.header-content-end .header-price ,.header-content-end .header-price text{
+		color:#333333
 	}
 	.header-price .price-qi{
 		font-size: 20rpx;

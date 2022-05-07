@@ -2,7 +2,10 @@
 	<view class="carContent">
 		<view class="tips">可选择最近获得的10条金色卡密</view>
 		<view class="cmItem " v-for="item in cardList" @click="cardClick(item)">
-			<view class="cmItem-content">{{item.noName}}</view>
+			<view class="cmItem-content">
+				<view class="goldCard">{{item.noName}}</view>
+				<view class="likeNum">点赞数: {{item.likeNum}}</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -22,7 +25,7 @@
 		cardList: any = []
 		totalPage: number = 0;
 		centerModalShow: boolean = false;
-		queryParams: any = { 
+		queryParams: any = {
 			pageIndex: 1,
 			pageSize: 20
 		}
@@ -104,15 +107,31 @@
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #333333;
-				text-overflow: -o-ellipsis-lastline;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				display: -webkit-box;
-				line-height: 36rpx;
-				-webkit-line-clamp: 2;
-				line-clamp: 2;
-				-webkit-box-orient: vertical;
-				padding: 0 48rpx 0 20rpx;
+				
+				padding: 0 20rpx 0 20rpx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				.goldCard {
+					width: 80%;
+					text-overflow: -o-ellipsis-lastline;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					line-height: 36rpx;
+					-webkit-line-clamp: 2;
+					line-clamp: 2;
+					-webkit-box-orient: vertical;
+				}
+
+				.likeNum {
+					width: 20%;
+					font-size: 24rpx;
+					color: #6A6A6A;
+					text-align: right;
+				}
+
 			}
 		}
 	}

@@ -70,6 +70,11 @@
 				id:7,
 				title:'选队随机(卡种)',
 				desc:'在随机卡种玩法的基础上，玩家可选择心仪的球队进行随机，必定获得所选球队中的卡密'
+			},
+			{
+				id:8,
+				title:'自选卡种随机',
+				desc:'在随机卡种玩法的基础上，玩家可选择心仪的卡种类型进行随机，必定获得所选卡种类型中的卡密'
 			}
 		]
 		typeData = [
@@ -127,6 +132,7 @@
 		z-index:99;
 		background:#fff;
 		padding:40rpx 32rpx;
+		overflow: auto;
 	}
 	.operation-content2{
 		width: 100%;

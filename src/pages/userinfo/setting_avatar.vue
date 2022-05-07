@@ -40,7 +40,6 @@
 			//console.log('load=',path,info);
 		}
 		errHandle(err:any){
-			console.log('errHandle=',err);
 			uni.showToast({
 				title: err,
 				icon: 'none',

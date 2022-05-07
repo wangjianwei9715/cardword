@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue } from "vue-property-decorator";
+	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	@Component({})
 	export default class ClassName extends BaseComponent {
@@ -20,9 +20,18 @@
 		length:any;
 		@Prop({default:true})
 		showVal!:boolean;
+		@Prop({default:''})
+		copyId!:any;
 
 		focus = false
 		password = ''
+		@Watch('copyId')
+		onGetCopyId(val:any){
+			if(val!=''){
+				this.password = val;
+				this.$emit('confirm',this.password)
+			}
+		}
 		created(){//在实例创建完成后被立即调用
 			
 		}

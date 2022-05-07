@@ -33,7 +33,7 @@
 							<view class="picBlock">
 								<image :src="decodeURIComponent(goodsItem.pic)" mode="aspectFill" />
 								<view class="angleMark"
-									:style="{backgroundColor:goodsItem.stateName=='在售'?'$btn-red':'#4f8bf5'}">
+									:style="{backgroundColor:goodsItem.stateName=='在售'?'#F5162B':'#4f8bf5'}">
 									{{goodsItem.stateName}}
 								</view>
 							</view>
@@ -140,27 +140,10 @@
 			}
 			// #endif
 			const path = `/pages/userinfo/merchant_shopsV2`;
-			// const path=`/pages/act/goldRank/goldRank_rankList`
-			// const path = `/pages/act/loot/index`;
 			uni.navigateTo({
 				url: path + "?id=" + item.id
 			});   
-			// uni.share({
-			// 	provider: 'weixin',
-			// 	type: 5,
-			// 	imageUrl: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/template/1638343271625m78pvyqzdn.png',
-			// 	title: '活动',
-			// 	scene: 'WXSceneSession',
-			// 	miniProgram: {
-			// 		id: 'gh_5cf45dd26926',
-			// 		type: 0,
-			// 		path: '/pages/index/index',
-			// 		webUrl:'https://www.ka-world.com/'
-			// 	},
-			// 	fail:(err)=>{
-			// 		console.log(err)
-			// 	}
-			// })
+			
 		}
 		getPlan(lock: number, now: number, all: number) {
 			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
@@ -172,7 +155,7 @@
 				pageSize: this.pageSize
 			};
 
-			app.http.Get("merchant/list", params, (data: any) => {
+			app.http.Get("dataApi/merchant/list", params, (data: any) => {
 				this.totalPage = data.totalPage;
 				let arr = data.list || [];
 				arr.forEach((item: any) => {

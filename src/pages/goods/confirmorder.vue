@@ -37,18 +37,19 @@
                 }}
               </view>
               <view class="goods-money-add">
-				<view class="num-box" @click="onClickCutDown()">
-					<view class="img-jian" ></view>
-				</view>
+                <view class="goods-money-max" v-if="payRandomTeamData != ''" @click="moneyNum = maxNum">MAX</view>
+                <view class="num-box" @click="onClickCutDown()">
+                  <view class="img-jian" ></view>
+                </view>
                 <input
                   class="money-add"
                   @input="onInputMoney"
                   v-model="moneyNum"
                   type="number"
                 />
-				<view class="num-box" @click="onClickAdd()">
-					<view class="img-add" ></view>
-				</view>
+                <view class="num-box" @click="onClickAdd()">
+                  <view class="img-add" ></view>
+                </view>
               </view>
             </view>
           </view>
@@ -275,12 +276,7 @@ export default class ClassName extends BaseNode {
   payRandomTeamData:any = [];
   onLoad(query: any) {
     if (query.data) {
-      // #ifndef MP
       this.goodsData = JSON.parse(query.data);
-      // #endif
-      // #ifdef MP
-      this.goodsData = JSON.parse(decodeURIComponent(query.data));
-      // #endif
       this.payChannel = JSON.parse(query.payChannel);
       // 剩余随机
       if (query.payRandomPrice) {
@@ -296,7 +292,6 @@ export default class ClassName extends BaseNode {
       // 购物车
       if (query.cart) {
         this.cartData = JSON.parse(query.cart);
-        console.log(this.cartData);
       }
       // 选队随机
       if(query.payRandomTeam){
@@ -331,7 +326,6 @@ export default class ClassName extends BaseNode {
   }
   onInputMoney(event: any) {
     if (Number(event.detail.value) > this.maxNum) {
-      console.log(this.maxNum);
       setTimeout(() => {
         this.moneyNum = this.maxNum;
       }, 100);
@@ -386,7 +380,6 @@ export default class ClassName extends BaseNode {
           this.guessList = res.data.guess.option.list;
           this.lastGuess = res.data.guess.lastGuess;
           this.guessNoMoreData = res.data.guess.option.totalPage>=2?false:true;
-          console.log('guessList==',this.guessList)
         }
         this.orderRich = res.data.noRichShowState;
         if (this.orderRich != 0) {
@@ -499,32 +492,7 @@ export default class ClassName extends BaseNode {
       return;
     }
     let params: { [x: string]: any };
-    // #ifdef MP
-    params = {
-      channel: "mini",
-      delivery: this.addressData.id,
-      num: Number(this.moneyNum),
-    };
-    uni.showLoading({
-      title: "加载中",
-    });
-    app.http.Post(
-      "good/topay/" + this.goodsData.goodCode,
-      params,
-      (res: any) => {
-        uni.hideLoading();
-        app.payment.paymentMini(res.wechat, (data: any) => {});
-        uni.redirectTo({
-          url: "/pages/userinfo/order_list",
-        });
-      }
-    );
-
-    // #endif
-    // #ifndef MP
     this.showPayMent = true;
-
-    // #endif
   }
   keepTwoDecimal(num: any) {
     var result = parseFloat(num);
@@ -557,7 +525,6 @@ export default class ClassName extends BaseNode {
     if(uni.getSystemInfoSync().platform === "android"){
       params.nativeSdk = 'qmf_android'
     }
-    console.log(params)
     if (this.baoduiId != 0) {
       // 包队
       params.teamId = this.baoduiId;
@@ -603,7 +570,6 @@ export default class ClassName extends BaseNode {
           });
       }else{
         if (data.channel == "alipay") {
-          console.log("alipay==", res);
           if(res.appPayRequest){
             app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
           }else if (res.alipay.orderInfo != "") {
@@ -618,7 +584,6 @@ export default class ClassName extends BaseNode {
           });
         } else {
           if (res.wechat) {
-            console.log('wechat=',res)
             if(res.appPayRequest){
               app.payment.paymentWxQmfSdk(JSON.stringify(res.appPayRequest));
             }else{
@@ -847,7 +812,7 @@ page {
   color: #333333;
 }
 .goods-money-right {
-  width: 180rpx;
+  width: 290rpx;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
@@ -875,6 +840,21 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.goods-money-max{
+  width: 78rpx;
+  height: 38rpx;
+  border: 1rpx solid #CCCCCC;
+  border-radius: 3rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #88878C;
+  margin-right:26rpx;
 }
 .img-add {
   width: 28rpx;

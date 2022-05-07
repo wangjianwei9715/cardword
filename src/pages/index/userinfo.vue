@@ -99,7 +99,7 @@
 			favorite:{id:2,name:'收藏',num:0,url:'/pages/userinfo/user_collect'}
 		};
 		walletTab:{[x: string]: any} = {
-			point:{id:1,name:'卡币',num:0,pic:'../../static/userinfo/v2/icon_tab_gold.png',url:'',tips:'5月初开放'},
+			point:{id:1,name:'卡币',num:0,pic:'../../static/userinfo/v2/icon_tab_gold.png',url:'',tips:'5月开放'},
 			hitNo:{id:2,name:'我的中卡',num:0,pic:'../../static/userinfo/v2/icon_tab_card.png',url:'/pages/userinfo/winningCard/index'}
 		}
 		orderTab:{[x: string]: any} = {
@@ -127,36 +127,19 @@
 			this.onEventUI('updateToken',()=>{
 				this.initPageData();
 			})
-			
 		}
 		onShow(){
 			this.initPageData();
-			// #ifdef MP-WEIXIN
-			if(this.infoData&&this.infoData.name==''){
-				app.platform.wechatLogin();
-			}
-			// #endif
 		}
 		onHide(){
 		}
 		initPageData(cb?:Function){
-			// #ifndef MP-WEIXIN
-			console.log(app.token.accessToken)
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'
 				})
 				return;
 			}
-			// #endif
-
-			// #ifdef MP-WEIXIN
-			if(app.token.accessToken == ''){
-				app.platform.wechatLogin();
-				return;
-			}
-			// #endif
-			
 			app.http.Get('me/home',{},(res:any)=>{
 				let data = res.data;
 				this.infoData = data;
@@ -170,7 +153,6 @@
 						this.walletTab[key].num = data[key];
 					}
 				}
-
 				for (const key in this.orderTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
 						this.orderTab[key].num = key == 'toPay'? data[key].num:data[key];
@@ -207,11 +189,6 @@
 			})
 		}
 		onClickUserInfo(){
-			// #ifdef MP
-			if(this.infoData.avatar==''){
-				return;
-			}
-			// #endif
 			uni.navigateTo({
 				url:'/pages/userinfo/user_info?data='+encodeURIComponent(JSON.stringify(this.infoData))
 			})
@@ -243,16 +220,6 @@
 		onClickOrderListMp(item:any){
 			uni.navigateTo({
 				url:'/pages/userinfo/order_list?type='+this.orderTab[item].id
-			})
-		}
-		
-		getUserProfile(){
-			app.platform.getWechatUserInfo((infoRes:any)=>{
-				uni.showToast({
-					title: '用户信息同步成功！',
-					icon: 'none',
-					duration: 2000
-				});
 			})
 		}
 		onClickcancelPaySuccess(){

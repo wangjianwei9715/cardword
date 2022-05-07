@@ -19,7 +19,7 @@ export default Vue.extend({
       // app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
       
     } 
-
+    
     const loginToken = uni.getStorageSync("token");
     if (loginToken) {
       app.token = JSON.parse(loginToken);
@@ -73,7 +73,6 @@ export default Vue.extend({
       // #ifdef APP-PLUS
       if (app.needPushIdentifier) {
         let info = plus.push.getClientInfo();
-        console.log("getClientInfo", info);
         
         HttpRequest.getIns().Post("user/bindPushIdentifier", {
           id: info.clientid,
@@ -90,32 +89,17 @@ export default Vue.extend({
     // #ifdef APP-PLUS
     uni.$on("socketClose", () => {
       if (app.socketInfo.tcp && app.socketInfo.tcp != "") {
-        // uni.showModal({
-        // 	title:'连接失败',
-        // 	content:'服务器维护中，请稍后再试...',
-        // 	showCancel:false,
-        // 	success:()=>{
         // 		connectSever();
-        // 	}
-        // });
       }
     });
     // #endif
-    //#ifdef MP
-    uni.getSetting({
-      success: (res) => {
-        if (!res.authSetting["scope.userInfo"]) {
-          app.needAuth = true;
-        }
-      },
-    });
-    //#endif
     
-
     // #ifdef APP-PLUS
+    setInterval(()=>{
+      plus.cache.clear();
+    },3600000)
     plus.runtime.getProperty(plus.runtime.appid||'', (widgetInfo) => {
       app.version = widgetInfo.version || '1.0.0'
-      console.log('app.version==',app.version)
     })
     
     plus.device.getOAID({
@@ -166,8 +150,6 @@ export default Vue.extend({
       },
       false
     );
-    
-
     // #endif
     
     // #ifndef APP-PLUS
@@ -184,9 +166,6 @@ export default Vue.extend({
   onShow() {
     console.log("App Show");
     // #ifdef APP-PLUS
-    uni.setKeepScreenOn({
-      keepScreenOn: true,
-    });
     let args = plus.runtime.arguments;
     if (args) {
       if (args.indexOf("goodsdetails") != -1) {
@@ -237,7 +216,7 @@ export default Vue.extend({
 ::-webkit-scrollbar {
   display: none;
 }
-
+image{will-change: transform}
 uni-button {
   padding: 0;
 }

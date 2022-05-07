@@ -56,7 +56,6 @@
 		}
 		onShow(){
 			// #ifndef MP-WEIXIN
-			console.log(app.token.accessToken)
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'

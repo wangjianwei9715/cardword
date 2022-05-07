@@ -115,83 +115,6 @@ export default class PlatformManager {
 		}
 		return PlatformManager.instance;
 	}
-	wechatLogin() {
-		uni.showLoading({
-			title: '正在登录'
-		});
-		uni.login({
-			provider: "weixin",
-			success: (loginRes) => {
-				console.log("weixin-res=", loginRes);
-				// #ifdef MP
-				app.http.Post("user/login/wechat/mini", { jsCode: loginRes.code, os: 'mini', device: 'iosmini' }, (data: any) => {
-					uni.hideLoading()
-					app.data = data.data;
-					app.opKey = data.opKey
-					uni.setStorageSync("app_opk", data.opKey);
-					app.socketInfo = data.app;
-					app.token = { accessToken: data.accessToken, refreshToken: data.refreshToken };
-					uni.setStorageSync("token", JSON.stringify(app.token));
-					uni.$emit('updateToken')
-				})
-
-				// #endif
-
-				// #ifdef APP-PLUS
-				// let auth:any = loginRes.authResult;
-				// let params:any = { app_id: wxAppID,access_token:auth.access_token,openid:auth.openid,uuid:this.deviceID};
-				// if (myapp.channel!='') {
-				//     params.source = myapp.channel;
-				// }
-				// if (myapp.group!='') {
-				//     params.group_name = myapp.group;
-				// }
-				// wechatAppLogin(params, (data: any) => {
-				//     console.log("login-res=", data);
-				//     myapp.token = data.token;
-				//     uni.setStorage({ key: "token_key", data: data.token });
-				//     uni.$emit('updateToken');
-				// });
-				// #endif
-			},
-			fail: (result: any) => {
-				console.log("login-fail=", result);
-			}
-		});
-	}
-	getWechatUserInfo(callback?: Function) {//此接口需要 open-type="getUserInfo"
-		let myapp = getApp().globalData || {};
-		//#ifdef MP
-		// uni.showLoading({
-		//     mask:true
-		// });
-		uni.getUserProfile({
-			desc: '用于显示头像昵称',
-			success: (infoRes) => {
-				myapp.needAuth = false;
-				if (callback) {
-					callback(infoRes);
-				}
-				console.log(infoRes.userInfo)
-				let userinfo: any = infoRes.userInfo;
-				app.http.Post("user/miniSetAttr", { avatar: encodeURIComponent(userinfo.avatarUrl), name: userinfo.nickName, sex: userinfo.gender }, () => {
-					app.data.avatar = infoRes.userInfo.avatarUrl;
-					app.data.name = infoRes.userInfo.nickName;
-					uni.$emit('updateToken')
-				});
-			},
-			complete: () => {
-			}
-		});
-		// #endif
-
-		//#ifdef H5
-		//微信内部网页环境
-		if (navigator.userAgent.match(/micromessenger/i)) {
-
-		}
-		// #endif
-	}
 
 	// 微信直播间
 	goWeChatLive(item: any) {
@@ -396,14 +319,14 @@ export default class PlatformManager {
 	}
 	
 	// 获取粘贴板内容
-	getInvitationClipboard(){
+	getInvitationClipboard(cb?:Function){
 		if (plus.os.name == 'iOS') {  
 			var UIPasteboard = plus.ios.importClass("UIPasteboard");  
 			var generalPasteboard = UIPasteboard.generalPasteboard();  
 			var value = generalPasteboard.valueForPasteboardType("public.utf8-plain-text");  
 			// value就是粘贴板的值  
 			if(value!=undefined){
-				this.matchInviteRequestKey(value)
+				if(cb) cb(value)
 			}
 			
 			
@@ -411,7 +334,7 @@ export default class PlatformManager {
 			uni.getClipboardData({
 				success: (res)=> {
 					if(res.data){
-						this.matchInviteRequestKey(res.data)
+						if(cb) cb(res.data)
 					}
 				}
 			});

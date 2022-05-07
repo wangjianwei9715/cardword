@@ -10,7 +10,30 @@ export function getBroadCastStr(state:number){
             return '即将拆卡'; 
     }
 }
+
 // 商品详情拼团形式
+export function getGoodsPintuanDetail(state:number){
+    // 拼团形式 1 随机卡种 2 随机球队 3 随机球员 4 随机卡包 5 随机卡盒    
+    switch(state){
+        case 1:
+            return '随机卡种';
+        case 2:
+            return '随机球队';
+        case 3:
+            return '随机球员';
+        case 4:
+            return '随机卡盒'
+        case 5:
+            return '随机卡包'
+        case 10:
+            return '自选球队'   
+        case 11:
+            return '选队随机'
+        case 12:
+            return '自选卡种随机' 
+    }
+}
+// 商品列表拼团形式
 export function getGoodsPintuan(state:number){
     // 拼团形式 1 随机卡种 2 随机球队 3 随机球员 4 随机卡包 5 随机卡盒    
     switch(state){
@@ -27,7 +50,9 @@ export function getGoodsPintuan(state:number){
         case 10:
             return '自选球队'   
         case 11:
-            return '选队随机'   
+            return '选队随机'
+        case 12:
+            return '自选卡种' 
     }
 }
 export function getGoodsPintuanSpe(state:number){
@@ -47,6 +72,8 @@ export function getGoodsPintuanSpe(state:number){
             return '../../static/goods/v2/spe_zx.png'
         case 11:
             return '../../static/goods/v2/spe_randomqd.png'
+        case 12:
+            return '../../static/goods/v2/spe_xkz.png'
     }
 }
 // 商品详情随机形式
@@ -194,4 +221,31 @@ export function orderGoodsTypeDesc(state:any){
 		default:
 			return '分类'
 	}
+}
+
+// 自选随机说明
+export function getCardRandomtips(state:number){
+    // 随机方式 11 选队随机 12 选卡种随机 
+    switch(state){
+        case 11:
+            return '选队随机：购买后将在所选球队的卡种中随机卡密';
+        case 12:
+            return '选卡种随机：购买后将在所选卡种中随机卡密';
+    }
+}
+export function getCardRandomTitle(state:number){
+    switch(state){
+        case 11:
+            return '选择球队';
+        case 12:
+            return '选择卡种';
+    }
+}
+export function getCardRandomHelp(state:number){
+    switch(state){
+        case 11:
+            return ['1.玩家可在选队页面选择心仪的球队进行购买，购买后将在所选球队的卡种中随机卡密','2.常规球队包含该球队最新队名下的全部单人卡种和同队的多人卡种；其他包含老球队下的卡种、不同队的多人卡种以及其他类型卡密','3.每个球队的份数与单价不一，请理性选择'];
+        case 12:
+            return ['1、玩家可自由先择心仪的卡种类型进行购买，购买后将在所选卡种中随机卡密','2、每个卡种的份数与单价不一，请理性选择'];
+    }
 }

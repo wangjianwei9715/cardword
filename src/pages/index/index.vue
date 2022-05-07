@@ -69,13 +69,7 @@
 		</view>
 		
 		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"  @progress="getGoodProgress" :pagescroll="pagescroll"  @send="onClickJumpDetails" :presell="false"/>
-		</view>
-		<!-- #endif -->
-
-		<!-- #ifdef MP -->
-		<view class="goodslist-index">
-			<goodslist  :goodsList="goodsMiniList"   @send="onClickMiniGood" :mini="true" :presell="false"/>
+			<goodslist  :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper" @send="onClickJumpDetails" :presell="false"/>
 		</view>
 		<!-- #endif -->
 
@@ -89,56 +83,17 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
-	import { indexGoodsType,goodsMiniList } from "@/net/DataExchange"
+	import { indexTabList,indexHotList,indexGoodTab,indexGoodsType } from "@/net/DataExchange"
 	import { isDuringDate } from "@/tools/util" 
 	@Component({})
 	export default class index extends BaseNode {
 		isDuringDate = isDuringDate;
 		indexGoodsType = indexGoodsType;
-		goodsMiniList = goodsMiniList;
-		statusBarHeight = app.statusBarHeight;
+		tabList:{[x:string]:any} = indexTabList;
+		hotList:{[x:string]:any} = indexHotList;
+		goodTab = indexGoodTab;
 		topAddList:any = [];
-		tabList:{[x:string]:any} = {
-			tabTop:[
-				{img:'../../static/index/v2/top_icon0.gif',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
-				{img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
-				{img:'../../static/index/v2/top_icon2.png',text:'资讯公告',url:'/pages/information/list'},
-				{img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
-			],
-			tabBottom:[
-				{img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_assign_list?type=activity'},
-				{img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_assign_list?type=cheap'},
-				{img:'../../static/index/v2/top_icon6.png',text:'自选玩法',url:'/pages/goods/goods_assign_list?type=select'},
-				{img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_assign_list?type=progress'}
-			]
-		};
 		// 卡豆商城 热门系列 拆卡围观
-		hotList:{[x:string]:any} = {
-			cardBean:{
-				title:'卡币商城',
-				tips:'卡币兑换好礼',
-				list:[
-					{pic:'../../static/index/v2/cardbean_pic.png'},
-					{pic:'../../static/index/v2/cardbean_hb.png'}
-				]
-			},
-			hot:{
-				title:'热门系列',
-				tips:'新系列上市',
-				list:[]
-			},
-			broadCast:{
-				title:'拆卡围观',
-				tips:'正在拆卡',
-				list:[]
-			}
-		};
-		goodTab = [
-			{id:1,name:'推荐'},
-			{id:2,name:'篮球'},
-			{id:3,name:'足球'},
-			{id:4,name:'其他'}
-		];
 		goodTabCheck = 1;
 		indexSwiper = true;
 		goodsList:any = [];
@@ -150,13 +105,8 @@
 		updateStart = false;
 		downloadText = '下载中：0 MB/0 MB, 0%';
 		updateMsg = '暂无';
-		useCache = 1;
 		wgtUpdate = false;
 		wgtUpNum = 0;
-		pagescroll = false;
-		postGoodProgressIn:any;
-		progressList:any = [];
-		networkStatus:any;
 		getLuanchFnc:any;
 		onNetWorkFunc:any;
 		showPaySuccess = false;
@@ -164,24 +114,12 @@
 		oneLoad = true;
 		showWinningCrad = false;
 		onLoad(query:any) {
-			// uni.$emit('reLogin')
+
 			if (app.update.apkNeedUpdate) {
 				this.updateShow();
 				return;
 			}
-			if(query.id){
-				app.platform.launchMiniProgramLive(query.id)
-			}
-			if(query.paydata){
-				// #ifdef MP-WEIXIN
-				let paydata = query.paydata
-				if(app.token.accessToken == ''){
-					app.platform.wechatLogin();
-				}
-				console.log(JSON.parse(decodeURIComponent(paydata)))
-				app.payment.paymentMini(JSON.parse(decodeURIComponent(paydata)))
-				// #endif
-			}
+			
 			let listeners = ['BackLogin']
 			this.register(listeners);
 			this.getLuanchApp()
@@ -226,10 +164,6 @@
 				}
 			}
 			// #endif
-			
-			// #ifdef MP
-			this.topAddList = [{pic:'../../static/index/mp_mini.jpg',url:''}]
-			// #endif
 			uni.getNetworkType({
 				success: (res)=> {
 					if(res.networkType=='none'){
@@ -251,36 +185,20 @@
 					return x.goodCode;
 				})
 				app.http.Post('good/progress/list',{list:list},(res:any)=>{
-					console.log('good/progress/list',res)
 					this.setNewProgress(res.list)
 				})
 			}
-			if(this.progressList!=''){
-				this.getGoodProgress(this.progressList)
-			}
+			
 			this.networkStatusChange()
 			// 判断是否有邀请上线
-			app.platform.getInvitationClipboard()
+			app.platform.getInvitationClipboard((val:string)=>{
+				app.platform.matchInviteRequestKey(val)
+			})
 			// #endif
 		}
 		onHide(){
-			clearInterval(this.postGoodProgressIn);
 			clearInterval(this.getLuanchFnc);
-			uni.offNetworkStatusChange((res)=>{
-				console.log('onNetworkStatusChange=',res)
-				if(res.isConnected){
-					uni.showLoading({
-						title: '加载中'
-					});
-					app.platform.appLuanch(false);
-					setTimeout(()=>{
-						uni.hideLoading();
-					},1000)
-				}
-			})
-		}
-		onPageScroll(e:any){
-			this.pagescroll = !this.pagescroll
+			uni.offNetworkStatusChange((res)=>{})
 		}
 		//   下拉刷新
 		onPullDownRefresh(){
@@ -298,7 +216,6 @@
 		networkStatusChange(){
 			// #ifdef APP-PLUS
 			this.onNetWorkFunc= uni.onNetworkStatusChange((res)=>{
-				console.log('onNetworkStatusChange=',res)
 				if(res.isConnected&&app.service_url==''){
 					uni.showLoading({
 						title: '加载中'
@@ -325,9 +242,7 @@
 		// 获取是否中卡信息
 		getGreet(){
 			app.http.Get('me/greet',{},(res:any)=>{
-				console.log('me/greet=',res)
 				if(res.data.newHitNum>0) this.showWinning();
-				if(res.data.getDayGift) app.http.Get('me/coupon/dayGift',{});
 			})
 		}
 		showWinning(){
@@ -340,7 +255,6 @@
 		}
 		initEvent(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
-				console.log('index/home====',data)
 				// #ifndef MP
 				this.topAddList = data.addList;
 				this.hotList.broadCast.list = data.broadCast;
@@ -350,31 +264,12 @@
 					if(cb) cb()
 				})
 			})
-			// #ifdef MP-WEIXIN
-			if(app.token.accessToken == ''){
-				app.platform.wechatLogin();
-				return;
-			}
-			// #endif
 		}
 		onClickMiniGood(){
 			uni.showToast({
 				title:'商品正在筹备中',
 				icon:'none'
 			})
-		}
-		getGoodProgress(val:any){
-			this.progressList = val
-			clearInterval(this.postGoodProgressIn);
-			this.postGoodProgressIn = this.scheduler(()=>{
-				if(this.goodsList==''||val==''){
-					clearInterval(this.postGoodProgressIn);
-					return;
-				}
-				app.http.Post('good/progress/list',{list:val},(res:any)=>{
-					this.setNewProgress(res.list)
-				})
-			},30)
 		}
 		getLuanchApp(){
 			if(app.localTest){
@@ -385,7 +280,6 @@
 				uni.showLoading({
 					title:'加载中'
 				})
-				console.log('app.service_url=',app.service_url)
 				if(app.service_url==''||app.dataApiDomain==''){
 					uni.removeStorageSync("launchConfig");
 					app.platform.appLuanch(loginToken)
@@ -466,7 +360,6 @@
 					return;
 				}
 			}
-			console.log(item.url)
 			uni.navigateTo({
 				url: item.url
 			})

@@ -25,8 +25,6 @@
 		}
 		mounted(){//挂载到实例上去之后调用
 			this.sortComData = JSON.parse(JSON.stringify(this.sortData))
-			console.log(this.sortComData);
-			
 		}
 		destroyed(){
 			
@@ -53,8 +51,6 @@
 
 				sort += this.sortComData[i].odType==0?'':(this.sortComData[i].odType==1?i:i+':desc');
 			}
-			console.log(sort);
-			
 			this.$emit('postSort',sort)
 		}
 		getSortType(){

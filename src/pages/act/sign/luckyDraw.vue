@@ -74,16 +74,17 @@
 					const seleQuery = uni.createSelectorQuery();
 					seleQuery.select('.record').boundingClientRect(data => {
 						this.recordWidth = data.width;
-						console.log('recordWidth==',this.recordWidth)
 					}).exec();
 					seleQuery.select('.record-content').boundingClientRect(data => {
 						this.tipsWidth = data.width;
-						console.log('tipsWidth==',this.tipsWidth)
 					}).exec();
 					this.tipsInterval()
 				},500)
 			})
 			
+		}
+		destroyed(){
+			clearInterval(this.tipsInter)
 		}
 		// 获取奖品index
 		getLuckyDrawIndex(id:number){
