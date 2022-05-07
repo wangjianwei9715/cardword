@@ -22,10 +22,23 @@
 					<image class="goods-image" :src="getGoodsImg(decodeURIComponent(orderData.good.pic))" mode="aspectFill"></image>
 					<view class="goods-content">
 						<view class="title">{{orderData.good.title}}</view>
-						<view class="desc">
+						<view class="desc" v-if="orderData.good.pintuanType>10">
+							<view class="select-team-title">{{getGoodsPintuan(orderData.good.pintuanType)}}</view>
+						</view>
+						<view class="desc" v-else>
 							<view class="price">￥<text>{{orderData.price}}</text></view>
 							<view class="total-num">共{{orderData.num}}件</view>
 						</view>
+					</view>
+				</view>
+			</view>
+			<!-- 选队随机 自选卡种 -->
+			<view class="randomh-box" v-show="optionList!=''" >
+				<view class="randomh-index" v-for="(item,index) in optionList" :key="index">
+					<view class="randomh-index-left">{{item.name}}</view>
+					<view class="randomh-index-right">
+						<view class="randomh-index-price">￥{{item.amount}}</view>
+						<view class="randomh-index-num">x{{item.num}}件</view>
 					</view>
 				</view>
 			</view>
@@ -109,7 +122,7 @@
 		getGoodsImg,dateFormat
 	} from "../../tools/util";
 	import {orderState} from "@/net/DataExchange"
-	import { orderStateDesc,orderGoodsStateStr,orderSetOperate } from "@/tools/switchUtil"
+	import { orderStateDesc,orderGoodsStateStr,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
 	@Component({})
 	export default class ClassName extends BaseNode {
 		getGoodsImg = getGoodsImg;
@@ -117,7 +130,8 @@
 		orderState = orderState;
 		orderStateDesc = orderStateDesc;
 		orderGoodsStateStr = orderGoodsStateStr;
-		orderSetOperate = orderSetOperate
+		orderSetOperate = orderSetOperate;
+		getGoodsPintuan = getGoodsPintuan;
 
 		defaultAvatar = app.defaultAvatar;
 		countDownInter:any;
@@ -154,7 +168,9 @@
 		guessNum = 0;
 		guessName = '';
 		guessSuccess = false;
+		guessState = 0;
 		surplusNum = 0;
+		optionList:any = []
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -212,7 +228,18 @@
 					this.guessFreeNum = res.data.guess.leftNum;
 					this.guessNum = res.data.guess.bingoNum;
 					this.guessName = res.data.guess.guess;
-					this.surplusNum = res.data.good.state>=2? res.data.guess.surplusNum:0
+					this.surplusNum = res.data.good.state>=2? res.data.guess.surplusNum:0;
+					this.guessState = res.data.guess.state
+					if(res.data.guess.state == 0){
+						setTimeout(()=>{
+							this.initEvent();
+						},500)
+					}
+				}
+				if(res.data.good.pintuanType>10){
+					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/option',{},(res:any)=>{
+						this.optionList = res.list || []
+					})
 				}
 				this.orderData = res.data
 				this.payChannel = res.data.good.payChannel?res.data.good.payChannel:[]
@@ -605,6 +632,20 @@
 						position: absolute;
 						bottom:0;
 						left:0;
+						.select-team-title{
+							width: 123rpx;
+							height: 36rpx;
+							background: #754CE2;
+							border-radius: 3rpx;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							font-size: 24rpx;
+							font-family: PingFang SC;
+							font-weight: 400;
+							color: #F6F7FB;
+							margin-left: 0;
+						}
 						.price{
 							height:40rpx;
 							line-height: 40rpx;
@@ -982,4 +1023,84 @@
 	box-sizing: border-box;
 	padding:20rpx 0;
 }
+
+// 自选卡种 选队随机
+.randomh-box{
+  width: 100%;
+  padding:26rpx 20rpx;
+  box-sizing: border-box;
+  background:#fff;
+  border-bottom-left-radius: 5rpx;
+  border-bottom-right-radius: 5rpx;
+  position: relative;
+}
+.randomh-box::after{
+  content: '';
+  width: 682rpx;
+  height:1px;
+  position:absolute;
+  top:0;
+  left:50%;
+  margin-left: -341rpx;
+  background:#F5F5F5;
+  z-index: 2;
+}
+.randomh-index{
+  width: 100%;
+  height:40rpx;
+  margin-bottom: 34rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.randomh-index:last-child{
+  margin-bottom: 0;
+}
+.randomh-index-left{
+    max-width: 204rpx;
+	height:40rpx;
+	background:#F6F7FB;
+	text-align: center;
+	line-height: 40rpx;
+	font-size: 23rpx;
+	font-family: PingFang SC;
+	font-weight: 400;
+	color: #333333;
+	box-sizing: border-box;
+	padding:0 12rpx;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.randomh-index-right{
+  width: 468rpx;
+  height:40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  .randomh-index-price{
+	height:40rpx;
+	font-size: 25rpx;
+	font-family: PingFang SC;
+	font-weight: 400;
+	color: #333333;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+  }
+  .randomh-index-num{
+	width: 120rpx;
+	height:40rpx;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	font-size: 25rpx;
+	font-family: PingFang SC;
+	font-weight: 400;
+	color: #88878C;
+  }
+}
+// 
 </style>

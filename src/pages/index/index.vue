@@ -154,6 +154,13 @@
 					uni.removeStorageSync('reLaunch')
 				})
 			}
+			if(!this.oneLoad){
+				app.http.Get("dataApi/home", {}, (data: any) => {
+					this.topAddList = data.addList;
+					this.hotList.broadCast.list = data.broadCast;
+					this.hotList.hot.list = data.hotSeries;
+				})
+			}
 			// #ifndef MP
 			if (app.localTest) {
 				//开发环境
@@ -167,23 +174,15 @@
 			uni.getNetworkType({
 				success: (res)=> {
 					if(res.networkType=='none'){
-
 						uni.showModal({
 							title: '提示',
-							content: '当前无网络服务，请开启网络',
-							success: function (res) {
-								if (res.confirm) {
-								} else if (res.cancel) {
-								}
-							}
+							content: '当前无网络服务，请开启网络'
 						});
 					}
 				}
 			});
 			if(this.goodsList!=''){
-				let list = this.goodsList.map((x:any)=>{
-					return x.goodCode;
-				})
+				let list = this.goodsList.map((x:any)=>{ return x.goodCode; })
 				app.http.Post('good/progress/list',{list:list},(res:any)=>{
 					this.setNewProgress(res.list)
 				})

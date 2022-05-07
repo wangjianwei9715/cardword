@@ -111,7 +111,7 @@
 		getCouponType(type:number,minUseAmount:number){
 			switch(type){
 				case 1:
-					return '全平台无门槛';
+					return '无门槛';
 				case 2:
 					return '满'+minUseAmount+'可用';
 				case 3:

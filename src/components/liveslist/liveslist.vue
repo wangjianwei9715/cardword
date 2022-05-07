@@ -158,6 +158,7 @@
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #333333;
+			word-break:break-all;
 		}
 	}
 </style>

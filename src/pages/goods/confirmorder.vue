@@ -4,12 +4,8 @@
       <view class="header-left">
         <view class="icon-address"></view>
         <view v-if="addressData != ''" class="header-address">
-          <view class="address-desc"
-            >{{ addressData.district }}{{ addressData.detail }}</view
-          >
-          <view class="address-name"
-            >{{ addressData.name }}<text>{{ addressData.phone }}</text></view
-          >
+          <view class="address-desc" >{{ addressData.name }}{{ addressData.phone }}</view >
+          <view class="address-name" >{{ addressData.district }}{{ addressData.detail }}</view >
         </view>
         <view v-else class="header-address">
           <view class="address-tips">请选择收货地址</view>
@@ -26,36 +22,23 @@
         <image  class="goods-info-logo" :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))" />
         <view class="goods-info2">
           <text class="goods-info2-title">{{ goodsData.title }}</text>
-          <view class="goods-money-info" v-if="cartData == ''">
+
+          <view class="goods-money-info" v-if="cartData == '' && payRandomTeamData == ''">
             <view class="goods-money">¥<text>{{ goodsData.price }}</text></view>
             <view class="goods-money-right" v-if="baoduiId == 0">
-              <view class="goods-money-right-header">
-                {{
-                  goodsData.buyLimit && goodsData.buyLimit.maxNumPerOrder > 0
-                    ? "限购" + goodsData.buyLimit.maxNumPerOrder + "份"
-                    : ""
-                }}
-              </view>
+              <view class="goods-money-right-header"> {{  goodsData.buyLimit && goodsData.buyLimit.maxNumPerOrder > 0 ? "限购" + goodsData.buyLimit.maxNumPerOrder + "份" : "" }} </view>
               <view class="goods-money-add">
                 <view class="goods-money-max" v-if="payRandomTeamData != ''" @click="moneyNum = maxNum">MAX</view>
-                <view class="num-box" @click="onClickCutDown()">
-                  <view class="img-jian" ></view>
-                </view>
-                <input
-                  class="money-add"
-                  @input="onInputMoney"
-                  v-model="moneyNum"
-                  type="number"
-                />
-                <view class="num-box" @click="onClickAdd()">
-                  <view class="img-add" ></view>
-                </view>
+                <view class="num-box" @click="onClickCutDown()">  <view class="img-jian" ></view> </view>
+                <input class="money-add" @input="onInputMoney" v-model="moneyNum" type="number" />
+                <view class="num-box" @click="onClickAdd()"> <view class="img-add" ></view> </view>
               </view>
             </view>
           </view>
           <view class="goods-money-info" v-else>
-            <view class="goods-money">¥<text>{{ cartData.amount }}</text></view>
-            <view class="goods-money-right">
+            <view class="goods-money" v-if="payRandomTeamData==''">¥<text>{{ cartData.amount }}</text></view>
+            <view class="goods-money select-team-title" v-else>{{getGoodsPintuan(goodsData.pintuan_type)}}</view>
+            <view class="goods-money-right" v-if="payRandomTeamData == ''">
               <view class="goods-money-right-header"> </view>
               <view class="goods-money-add">
                 <view class="goods-money-availa"
@@ -66,10 +49,7 @@
           </view>
         </view>
       </view>
-      <view
-        class="huo-dong-bg"
-        v-show="goodsData.discount && cartData.length == 0"
-      >
+      <view class="huo-dong-bg" v-show="goodsData.discount && cartData.length == 0" >
         <view
           class="item-youhui-bg"
           v-for="(item, index) in goodsData.discount"
@@ -79,7 +59,28 @@
           {{ item.content }}
         </view>
       </view>
-   
+      <!-- 选队随机 自选卡种 -->
+      <view class="randomh-box" v-show="payRandomTeamData!=''" >
+        <view class="randomh-index" v-for="(item,index) in payRandomTeamData" :key="index">
+          <view class="randomh-index-left">
+            <view class="randomh-name">{{item.name}}</view>
+            <view class="randomh-price">￥{{item.price}}</view>
+          </view>
+          <view class="randomh-index-right">
+            <view class="randohm-max" @click="onClickRandomMax(item)">MAX</view>
+            <view class="randomh-num-box">
+              <view class="randomh-num-btn" @click="onClickRandomNum(item,'reduce')">
+                <image class="icon-randomReduce" src="../../static/pay/v2/icon_reduce_.png" />
+              </view>
+              <input class="randomh-num" v-model="item.num" @input="onInputMoneyRandom($event,item)" />
+              <view class="randomh-num-btn" @click="onClickRandomNum(item,'add')">
+                <image class="icon-randomAdd" src="../../static/pay/v2/icon_add_.png" />
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
       <!-- 自选球队编号 -->
       <view class="yunfei-info check-team top-order" v-if="cartData != ''">
         <view class="item-title">已选编号</view>
@@ -104,13 +105,6 @@
       </view>
       <!--  -->
 
-      <view class="yunfei-info check-team top-order" v-if="payRandomTeamData != ''">
-        <view class="item-title">
-          选队随机
-          <text class="item-teamname">{{ payRandomTeamData.name }}</text>
-        </view>
-      </view>
-
       <!-- 预测卡密 -->
       <!-- freeNum 免单次数  checkTeam 预测球队  guessList 球队列表  teamCheck 球队选择-->
       <confirmorderGuess v-if="getBitDisableGuess()"  :freeNum="freeNum>=moneyNum?(freeNum-moneyNum):0" :checkTeam="guessCheckTeam" :teamList="guessList" :lastGuess="lastGuess" @teamCheck="onClickGuessTeamCheck" @onScrolltolower="onScrolltolower" />
@@ -123,8 +117,9 @@
         <view class="yunfei-item">
           <text class="item-name">商品金额</text>
           <!-- cartData 自选商品  -->
-          <text class="item-name" v-if="cartData == ''">¥{{ keepTwoDecimal(goodsData.price * moneyNum) }}</text>
-          <text class="item-name" v-else>¥{{ cartData.amount }}</text>
+          <text class="item-name" v-if="cartData != ''">¥{{ cartData.amount }}</text>
+          <text class="item-name" v-else-if="payRandomTeamData!=''">¥{{ keepTwoDecimal(getRandomTotalPrice()) }}</text>
+          <text class="item-name" v-else>¥{{ keepTwoDecimal(goodsData.price * moneyNum) }}</text>
         </view>
         <view class="yunfei-item">
           <text class="item-name">优惠券</text>
@@ -229,11 +224,13 @@
 
 <script lang="ts">
 import { app } from "@/app";
+import { getGoodsPintuan } from "@/tools/switchUtil";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 import { getGoodsImg } from "../../tools/util";
 @Component({})
 export default class ClassName extends BaseNode {
+  getGoodsPintuan = getGoodsPintuan;
   addressData: any = [];
   getGoodsImg = getGoodsImg;
   moneyNum = 1;
@@ -296,10 +293,6 @@ export default class ClassName extends BaseNode {
       // 选队随机
       if(query.payRandomTeam){
         this.payRandomTeamData = JSON.parse(query.payRandomTeam)
-        this.goodsData.price = this.payRandomTeamData.price;
-        this.goodsData.totalNum = this.payRandomTeamData.totalNum;
-        this.goodsData.currentNum = this.payRandomTeamData.currentNum;
-        this.goodsData.lockNum = this.payRandomTeamData.lockNum;
       }
       this.getOnePrice();
       
@@ -328,9 +321,33 @@ export default class ClassName extends BaseNode {
     if (Number(event.detail.value) > this.maxNum) {
       setTimeout(() => {
         this.moneyNum = this.maxNum;
+        this.getOnePrice();
       }, 100);
+    }else{
+      this.getOnePrice();
+    }
+  }
+  onClickRandomMax(item:any){
+    item.num = item.maxNum;
+    this.getOnePrice();
+  }
+  onClickRandomNum(item:any,type:string){
+    if( type == 'add' ){
+      item.num = item.num >= item.maxNum ? item.maxNum : item.num+1
+    }else{
+      item.num = item.num > 1 ? item.num-1 : 1
     }
     this.getOnePrice();
+  }
+  onInputMoneyRandom(event:any,item:any){
+    if (Number(event.detail.value) > item.maxNum) {
+      setTimeout(() => {
+        // item.num = item.maxNum;
+        this.getOnePrice();
+      }, 100);
+    }else{
+      this.getOnePrice();
+    }
   }
   // 判断是否禁用优惠券
   getBitDisableCoupon(bit: any) {
@@ -422,13 +439,17 @@ export default class ClassName extends BaseNode {
     // 普通支付 || 自选球队
     if (this.baoduiId != 0 ) {
       params.price = this.goodsData.price;
-    } else if (this.cartData == "") {
+    } else if (this.payRandomTeamData != '') {
+      params.num = 1;
+      params.price = this.keepTwoDecimal(this.getRandomTotalPrice())
+    } else if (this.cartData != "") {
+      params.price = this.cartData.amount;
+    } else {
       params.num = Number(this.moneyNum);
       if (Number(this.moneyNum) <= 0) return;
-      params.price = this.payRandomTeamData == ''? this.keepTwoDecimal(this.moneyNum * this.onePrice):this.goodsData.price
-    } else {
-      params.price = this.cartData.amount;
+      params.price = this.keepTwoDecimal(this.moneyNum * this.onePrice)
     }
+    if(params.price<=0) return;
     app.http.Get("me/coupon/condition/list", params, (res: any) => {
       // 可用优惠券发生变化 清空已选择的优惠券
       if (this.couponNum != 0 && this.couponNum != res.count) {
@@ -446,11 +467,20 @@ export default class ClassName extends BaseNode {
   }
   getTotalPrice(){
     let price:any = 0;
-    if(this.cartData == ''){
-      price = this.keepTwoDecimal(this.freeNum>0?(this.freeNum>=this.moneyNum?0:((this.moneyNum - this.freeNum)*(this.onePrice - this.couponTotalPrice))):(this.moneyNum * this.onePrice - this.couponTotalPrice))
-    }else{
+    if(this.cartData != ''){
       price = this.keepTwoDecimal(this.cartData.amount - this.couponTotalPrice)
+    }else if(this.payRandomTeamData!=''){
+      price = this.keepTwoDecimal(this.getRandomTotalPrice() - this.couponTotalPrice)
+    }else{
+      price = this.keepTwoDecimal(this.freeNum>0?(this.freeNum>=this.moneyNum?0:((this.moneyNum - this.freeNum)*(this.onePrice - this.couponTotalPrice))):(this.moneyNum * this.onePrice - this.couponTotalPrice))
     }
+    return price
+  }
+  getRandomTotalPrice(){
+    let priceData = this.payRandomTeamData.map((x:any)=>{
+      return x.price * x.num;
+    })
+    let price = eval(priceData.join("+"));
     return price
   }
   onClickCutDown() {
@@ -530,16 +560,8 @@ export default class ClassName extends BaseNode {
       params.teamId = this.baoduiId;
       params.num = 1;
       url = "good/topay/" + this.goodsData.goodCode + "/select";
-    } else if (this.cartData == "") {
-      // 普通支付
-      if(this.payRandomTeamData!='') params.teamId = this.payRandomTeamData.id;
-      
-      params.num = Number(this.moneyNum);
-      if (this.payRandomPrice > 0) {
-        url = "good/topay/" + this.goodsData.goodCode + "/select";
-      }
-    } else {
-      // 自选球队
+    } else if (this.cartData != "") {
+       // 自选球队
       let id = [];
       for (let i in this.cartData.list) {
         if (!this.cartData.list[i].soldOut && !this.cartData.list[i].lock) {
@@ -548,13 +570,27 @@ export default class ClassName extends BaseNode {
       }
       params.id = id;
       url = "good/topay/" + this.goodsData.goodCode + "/select";
+    } else if (this.payRandomTeamData != '') {
+      params.list = this.payRandomTeamData.map((x:any)=>{
+        return { id:x.id, num:Number(x.num) }
+      })
+      url = "good/topay/" + this.goodsData.goodCode + "/optional";
+      // if(this.payRandomTeamData!='') params.teamId = this.payRandomTeamData[0].id;
+      // params.num = Number(this.payRandomTeamData[0].num)
+      // if (this.payRandomPrice > 0) {
+      //   url = "good/topay/" + this.goodsData.goodCode + "/select";
+      // }
+    } else {
+      // 普通支付
+      params.num = Number(this.moneyNum);
+      if (this.payRandomPrice > 0) {
+        url = "good/topay/" + this.goodsData.goodCode + "/select";
+      }
     }
-
     // 是否使用优惠券
     if (this.checkCouponList != "") {
       params.couponIdList = this.checkCouponList;
     }
-
     app.http.Post(url, params, (res: any) => {
       // 预测球队
       if(this.getBitDisableGuess()){
@@ -563,25 +599,24 @@ export default class ClassName extends BaseNode {
       uni.$emit('confirmorderPay')
       if(res.price<=0){
          uni.redirectTo({
-            url:
-              "/pages/userinfo/order_details?code=" +
-              res.goodOrderCode +
-                "&waitPay=true",
+            url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
           });
       }else{
         if (data.channel == "alipay") {
           if(res.appPayRequest){
-            app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
+            app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest),()=>{
+              uni.redirectTo({
+                url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
+              });
+            });
           }else if (res.alipay.orderInfo != "") {
-            app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo);
+            app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,res.goodOrderCode,()=>{
+              uni.redirectTo({
+                url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
+              });
+            });
           }
           uni.hideLoading();
-          uni.redirectTo({
-            url:
-              "/pages/userinfo/order_details?code=" +
-              res.goodOrderCode +
-              "&waitPay=true",
-          });
         } else {
           if (res.wechat) {
             if(res.appPayRequest){
@@ -591,10 +626,7 @@ export default class ClassName extends BaseNode {
             }
             uni.hideLoading();
             uni.redirectTo({
-              url:
-                "/pages/userinfo/order_details?code=" +
-                res.goodOrderCode +
-                "&waitPay=true",
+              url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
             });
           }
         }
@@ -680,7 +712,7 @@ page {
 }
 .header {
   width: 100%;
-  height: 180rpx;
+  min-height: 180rpx;
   background: #fff;
   box-sizing: border-box;
   padding: 0 25rpx;
@@ -699,7 +731,7 @@ page {
 }
 .header-left {
   width: 630rpx;
-  height: 100rpx;
+  min-height: 100rpx;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -811,6 +843,20 @@ page {
   font-weight: 400;
   color: #333333;
 }
+.select-team-title{
+  width: 123rpx;
+  height: 36rpx;
+  background: #754CE2;
+  border-radius: 3rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #F6F7FB;
+  margin-left: 0;
+}
 .goods-money-right {
   width: 290rpx;
   box-sizing: border-box;
@@ -895,7 +941,135 @@ page {
   margin:0 auto;
   border-top: 2rpx solid #F5F5F5;
 }
-
+// 自选卡种 选队随机
+.randomh-box{
+  width: 100%;
+  padding:26rpx 20rpx;
+  box-sizing: border-box;
+  background:#fff;
+  border-bottom-left-radius: 5rpx;
+  border-bottom-right-radius: 5rpx;
+  position: relative;
+}
+.randomh-box::after{
+  content: '';
+  width: 682rpx;
+  height:1px;
+  position:absolute;
+  top:0;
+  left:50%;
+  margin-left: -341rpx;
+  background:#F5F5F5;
+  z-index: 2;
+}
+.randomh-index{
+  width: 100%;
+  height:40rpx;
+  margin-bottom: 34rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.randomh-index:last-child{
+  margin-bottom: 0;
+}
+.randomh-index-left{
+  width: 410rpx;
+  height:40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  .randomh-name{
+    max-width: 204rpx;
+    height:40rpx;
+    background:#F6F7FB;
+    text-align: center;
+	  line-height: 40rpx;
+    font-size: 23rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    box-sizing: border-box;
+    padding:0 12rpx;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
+  .randomh-price{
+    width: 154rpx;
+    height:40rpx;
+    line-height: 40rpx;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
+}
+.randomh-index-right{
+  width: 268rpx;
+  height:40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  .randohm-max{
+    width: 78rpx;
+    height: 38rpx;
+    border: 1px solid #CCCCCC;
+    border-radius: 3rpx;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #88878C;
+  }
+  .randomh-num-box{
+    width: 177rpx;
+    height:40rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    .randomh-num-btn{
+      width: 43rpx;
+      height: 39rpx;
+      background: #F6F7FB;
+      border-radius: 1rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .icon-randomReduce{
+        width: 15rpx;
+        height:3rpx;
+      }
+      .icon-randomAdd{
+        width: 15rpx;
+        height:15rpx;
+      }
+    }
+    .randomh-num{
+      width: 83rpx;
+      height: 39rpx;
+      background: #F6F7FB;
+      border-radius: 1rpx;
+      text-align: center;
+      line-height: 39rpx;
+      font-size: 25rpx;
+      font-family: PingFang SC;
+      font-weight: 400;
+      color: #333333;
+    }
+  }
+}
+// 
 .item-name {
   font-size: 25rpx;
   font-family: PingFangSC-Regular;

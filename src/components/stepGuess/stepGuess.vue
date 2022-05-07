@@ -7,7 +7,7 @@
 					<image @click="onClickGuessRules" class="guess-help" src="../../pages/act/static/goldCard/help.png"></image>
 				</view>
 				<view class="guess-right">
-					<view class="guess-res">预测{{state!=1?(guessNum>0?'成功'+guessNum+'组':'失败'):''}}（{{guessName}})</view>
+					<view class="guess-res">预测{{guessState==0?'中':(state!=1?(guessNum>0?'成功'+guessNum+'组':'失败'):'')}}（{{guessName}})</view>
 				</view>
 			</view>
 			<view v-if="surplusNum>0" class="order-guess-free">
@@ -51,6 +51,8 @@
 		order:boolean|undefined;
 		@Prop({default:false})
 		guessSuccess:boolean|undefined;
+		@Prop({default:0})
+		guessState:number|undefined;
 		@Prop({default:0})
 		state:number|undefined;
 		@Prop({default:0})

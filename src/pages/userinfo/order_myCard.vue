@@ -60,9 +60,6 @@
 		onReachBottom() {
 		    this.reqNewData() 
 		}
-		onClickMore(){
-			this.reqNewData() 
-		}
 		onClickLookCard(item:any){
 			if(item.state!=2) return;
 
@@ -83,11 +80,6 @@
 
 			this.typeTabCurrent = type;
 			this.reqSearchList()
-		}
-		onClickMoreList(code:any){
-			uni.navigateTo({
-				url:'/pages/userinfo/order_myAllCard?code='+code
-			})
 		}
 		postSort(val:string){
 			this.listSort = val;

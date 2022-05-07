@@ -14,33 +14,43 @@ export default class PayManager {
 	paymentAlipayQmfSdk(payRequest:string,cb?:Function){
 		this.payQmfAndroid = uni.requireNativePlugin("payQmfAndroid");
 		this.payQmfAndroid.payAliPayMiniPro(payRequest,(res:any)=>{});
+		if(cb) cb()
 	}
 	paymentWxQmfSdk(payRequest:string,cb?:Function){
 		this.payQmfAndroid = uni.requireNativePlugin("payQmfAndroid");
 		this.payQmfAndroid.payWx(payRequest,(res:any)=>{});
 	}
-	paymentAlipay(type:any,orderInfo:string,cb?:Function){
+	paymentAlipay(type:any,orderInfo:string,goodOrder?:string,cb?:Function){
 		console.log('orderInfo========',orderInfo)
-		// 银盛pay
+		// let alipay_H5 = false 
+
+		// if(alipay_H5){
+		// 	let ht = 'https://www.ka-world.com/share/h5/#/pages/pay/alipay?orderInfo='+encodeURIComponent(orderInfo)
+		// 	console.log('ht==',ht)
+		// 	plus.runtime.openURL(ht)
+		// 	uni.navigateTo({
+		// 		url:'/pages/webView/index?url=https://www.ka-world.com/share/h5/#/pages/pay/alipay?orderInfo='+encodeURIComponent(orderInfo)+'&orderCode='+goodOrder
+		// 	})
+		// }else 
 		if(type=='ysepay'||type=='qmf'){
+			// 渠道H5支付
 			plus.runtime.openURL(orderInfo)
+			if(cb) cb()
 		}else{
 			uni.requestPayment({
 				provider:'alipay',   //alipay
 				orderInfo: orderInfo, //支付宝订单数据
-				success: function (res:any) {
+				success: (res:any)=> {
 					uni.$emit('paySuccess')
 					console.log('success:' + JSON.stringify(res));
-					if(cb) cb()
+					
 				},
 				fail: function (err:any) {
 					console.log('fail:' + JSON.stringify(err));
 				}
 			});
+			if(cb) cb()
 		}
-		
-
-		
 	}
 	paymentWxpay(type:any,orderInfo:any,cb?:Function){
 		console.log('orderInfo========',orderInfo)

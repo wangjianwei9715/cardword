@@ -225,7 +225,7 @@
 				state: Number(this.goodTabCheck),
 				pageSize: 10
 			};
-			if (this.classifyOpt != 100) params.tp = this.classifyOpt
+			params.tp = this.classifyOpt!=100?(this.classifyOpt==0?100:this.classifyOpt):0
 			params.q = this.clickSerieItem.id ? '' : this.searchText
 			if (this.clickSerieItem.id) {
 				params.hs = this.clickSerieItem.id;

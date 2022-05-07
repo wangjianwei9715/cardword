@@ -10,7 +10,7 @@
 			<view class="payment-tip">支付方式</view>
 			<view class="payment-list" v-for="(item,index) in newPayChannel" :key="index">
 				<view class="payment-list-left">
-					<view :class="item.name=='支付宝支付'?'icon-zfb':'icon-wx'"></view>{{item.name}}
+					<view :class="item.name=='微信支付'?'icon-wx':'icon-zfb'"></view>{{item.name}}
 				</view>
 				<view class="payment-list-right" @click="checkPay=index">
 					<view :class="checkPay==index?'payment-checked':'payment-check'"></view>

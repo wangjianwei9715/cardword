@@ -5,9 +5,8 @@
 			<view class="teamtion-top" v-if="teamRandomData!=''" >
 				<view class="icon-close" @click="onClickTeamRandomCancel"></view>
 				<view class="teamtion-header">
-					<image class="teamtion-header-logo" v-if="type==11" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
+					<image class="teamtion-header-logo" v-if="teamRandomData[currentIndex].logo!=''" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
 					<view v-else class="teamtion-header-card" :class="{'teamtion-header-card-gold':teamRandomData[currentIndex].gold}">
-						<view class="teamtion-header-card-name">{{teamRandomData[currentIndex].nameEn}}</view>
 					</view>
 					<view class="teamtion-header-right">
 						<view class="teamtion-header-title"><text class="text-price">￥</text><text class="teamtion-price">{{teamRandomData[currentIndex].price}}</text>/组</view>
@@ -15,7 +14,7 @@
 
 						<view class="header-top-plan">
 							<view class="goodslist-progress">
-								<view class="progress-mask" :style="{width:(100-getPlan(teamRandomData[currentIndex].lockNum,teamRandomData[currentIndex].currentNum,teamRandomData[currentIndex].totalNum))+'%'}"></view>
+								<view class="progress-mask" :style="{width:(100-getPlan(teamRandomData[currentIndex]))+'%'}"></view>
 							</view>
 							<view class="header-top-plan-num">
 								余{{teamRandomData[currentIndex].totalNum-(teamRandomData[currentIndex].currentNum+teamRandomData[currentIndex].lockNum)}}/共{{teamRandomData[currentIndex].totalNum}}
@@ -33,8 +32,9 @@
 			<view class="teamtion-box-center">
 				<view class="teamtion-box-title">{{getCardRandomTitle(type)}}</view>
 				<view class="teamtion-box" :class="{'card-box':type==12}">
-					<view class="teamtion-box-index " :class="{'index-current':index==currentIndex,'card-goldbg':item.gold}" @click="onClickCurrentIndex(item,index)" v-for="(item,index) in teamRandomData" :key="index">
-						<view class="index-shadow" v-show="getPlan(teamRandomData[index].lockNum,teamRandomData[index].currentNum,teamRandomData[index].totalNum)>=100"></view>
+					<view class="teamtion-box-index " :class="{'index-current':index==currentIndex,'card-goldbg':item.gold}" @click="currentIndex = index" v-for="(item,index) in teamRandomData" :key="index">
+						<view v-show="multiple&&getPlan(teamRandomData[index])<100" class="index-multiple multiple" :class="{'multiple-cur':onClickCurrentMultiple(index,'css')}" @click.stop="onClickCurrentMultiple(index,'click')"></view>
+						<view class="index-shadow" v-show="getPlan(teamRandomData[index])>=100"></view>
 						<image class="teamtion-box-logo" v-show="type==11" :src="decodeURIComponent(item.logo)" />
 						<view class="teamtion-box-name" v-if="type==11">{{item.name}}</view>
 						<view class="teamtion-box-name-card" v-else>
@@ -44,15 +44,21 @@
 						<view class="teamtion-box-price">￥{{item.price}}/组</view>
 						<view class="teamtion-box-plan">
 							<view class="goodslist-progress">
-								<view class="progress-mask" :style="{width:(100-getPlan(teamRandomData[index].lockNum,teamRandomData[index].currentNum,teamRandomData[index].totalNum))+'%'}"></view>
+								<view class="progress-mask" :style="{width:(100-getPlan(teamRandomData[index]))+'%'}"></view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 			<view class="teamtion-bottom">
-				<view class="teamtion-bottom-btn" @click="onClickCardCode">卡密列表</view>
-				<view class="teamtion-bottom-btn right-btn" @click="onClickBuy">立即购买</view>
+				<view class="teamtion-bottom-left">
+					<view class="multiple" :class="{'multiple-cur':multiple}" @click="onClickMultiple"></view>
+					<view class="teamtion-bottom-multiple-title">多选</view>
+				</view>
+				<view class="teamtion-bottom-right">
+					<view class="teamtion-bottom-btn" @click="onClickCardCode">卡密列表</view>
+					<view class="teamtion-bottom-btn right-btn" :class="{'multiple-empty':multiple&&multipleCurrent==''}" @click="onClickBuy">{{multiple&&multipleCurrent==''?'请勾选分组':'立即购买'}}</view>
+				</view>
 			</view>
 		</view>
 
@@ -85,6 +91,11 @@
 		getCardRandomHelp = getCardRandomHelp;
 		currentIndex = 0;
 		showDrawer = false;
+		// 多选
+		multiple = false;
+		multipleCurrent:any = [];
+		// 剩余随机
+		random = false;
 		created(){//在实例创建完成后被立即调用
 		}
 		mounted(){//挂载到实例上去之后调用
@@ -93,6 +104,20 @@
 		destroyed(){
 			
 		}
+		onClickMultiple(){
+			this.multiple = !this.multiple;
+			this.multipleCurrent = [];
+		}
+		onClickCurrentMultiple(index:number,type:string){
+			let indexOf = this.multipleCurrent.indexOf(index);
+			if( type == 'css') return indexOf == -1 ? false : true;
+
+			if( indexOf != -1 ){
+				this.multipleCurrent.splice(indexOf,1)
+			}else{
+				this.multipleCurrent.push(index)
+			}
+		}
 		onClickTeamRandomCancel(){
 			this.$emit('teamRandomCancel')
 		}
@@ -100,21 +125,26 @@
 			this.$emit('cardCode',{id:this.teamRandomData[this.currentIndex].id})
 		}
 		onClickBuy(){
-			let data = this.teamRandomData[this.currentIndex];
-			if(this.getPlan(data.lockNum,data.currentNum,data.totalNum)>=100){
-				uni.showToast({
-					title:'该球队已售罄',
-					icon:'none'
-				})
-				return;
+			if( !this.multiple ){
+				let data = this.teamRandomData[this.currentIndex];
+				if(this.getPlan(data)>=100){
+					uni.showToast({ title:'该球队已售罄', icon:'none' })
+					return;
+				}
 			}
-			this.$emit('buy',data)
+			if( this.multiple && this.multipleCurrent.length <= 0) return;
+
+			let current = this.multiple ? this.multipleCurrent : [this.currentIndex];
+			let buyData = current.map((x:any)=>{
+				let data = this.teamRandomData[x];
+				return {...data,num:1,maxNum:data.totalNum-(data.currentNum+data.lockNum)}
+			})
+			this.$emit('buy',buyData);
+			this.multiple = false;
+			this.multipleCurrent = [];
 		}
-		onClickCurrentIndex(item:any,index:number){
-			this.currentIndex = index;
-		}
-		getPlan(lock:number,now:number,all:number){
-			let width = Math.floor((Number(lock)+Number(now))/Number(all)*100);
+		getPlan(data:any){
+			let width = Math.floor((Number(data.lockNum)+Number(data.currentNum))/Number(data.totalNum)*100);
 			return width
 		}
 		onClickRulesShow(){
@@ -181,7 +211,7 @@
 		height:170rpx;
 		box-sizing: border-box;
 		padding: 0 21rpx;
-		font-size: 26rpx;
+		font-size: 22rpx;
 		font-family: PingFang SC;
 		font-weight: 300;
 		display: flex;
@@ -196,6 +226,9 @@
 	}
 	.teamtion-header-card-name{
 		width: 170rpx;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 300;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 5;
@@ -361,9 +394,9 @@
 		width: 170rpx;
 		height:170rpx;
 		box-sizing: border-box;
-		margin-right: 10rpx;
+		margin-right: 9.5rpx;
 		background:#FFF;
-		margin-bottom: 10rpx;
+		margin-bottom: 9.5rpx;
 		position: relative;
 		border: 1px solid #FFF;
 	}
@@ -447,6 +480,12 @@
 		background:url(../../static/goods/v2/card_bg_.png) no-repeat center;
 		background-size: 100% 100%;
 	}
+	.index-multiple{
+		position: absolute;
+		right:8rpx;
+		top:8rpx;
+		z-index: 8;
+	}
 	.card-box .card-goldbg{
 		background:url(../../static/goods/v2/card_bg_gold_.png) no-repeat center !important;
 		background-size: 100% 100%;
@@ -491,10 +530,11 @@
 		margin:0 auto;
 		height:65rpx;
 		display: flex;
-		align-items: flex-end;
+		align-items: center;
 		justify-content: center;
 		font-size: 25rpx;
 		font-family: PingFang SC;
+		line-height: 30rpx;
 		text-align: center;
 		font-weight: 500;
 		color: #333333;
@@ -560,14 +600,48 @@
 		left:0;
 		bottom:0;
 		box-sizing: border-box;
-		padding: 19rpx 16rpx 0 16rpx;
+		padding: 19rpx 20rpx 0 20rpx;
 		display: flex;
 		justify-content: space-between;
 		background:#fff;
 		z-index: 22;
 	}
+	.teamtion-bottom-left{
+		width: 154rpx;
+		height:$btn-height;
+		display: flex;
+		align-items: center;
+	}
+	.multiple{
+		width: 34rpx;
+		height:34rpx;
+		background: url(../../static/goods/v2/icon_multiple.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.multiple-cur{
+		width: 34rpx;
+		height:34rpx;
+		background: url(../../static/goods/v2/icon_multiple_.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.teamtion-bottom-multiple-title{
+		height:$btn-height;
+		margin-left: 18rpx;
+		font-size: 29rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		line-height:$btn-height ;
+	}
+	.teamtion-bottom-right{
+		width: 556rpx;
+		height:$btn-height;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
 	.teamtion-bottom-btn{
-		width: 341rpx;
+		width: 270rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
@@ -575,7 +649,7 @@
 		background: #fff;
 		border:1px solid #DCDCDC;
 		font-family: PingFangSC-Regular;
-		color: #333333;
+		color: #5E5D5D;
 		height: $btn-height;
 		font-size: $btn-fontSize;
 		border-radius:$btn-radius;
@@ -586,5 +660,9 @@
 		border:1px solid #7C4BEA;
 		color:#fff;
 	}
-	
+	.multiple-empty{
+		background:#BDBDBD;
+		border:1px solid #BDBDBD;
+		color:#fff;
+	}
 </style>
