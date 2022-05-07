@@ -8,10 +8,10 @@
 					<image class="teamtion-header-logo" v-if="teamRandomData[currentIndex].logo!=''" :src="decodeURIComponent(teamRandomData[currentIndex].logo)"/>
 					<view v-else class="teamtion-header-card" :class="{'teamtion-header-card-gold':teamRandomData[currentIndex].gold}">
 					</view>
-					<view class="teamtion-header-right">
+
+					<view class="teamtion-header-right" v-if="teamRandomData[currentIndex].id != -1 || teamrandomGood.state==2">
 						<view class="teamtion-header-title"><text class="text-price">￥</text><text class="teamtion-price">{{teamRandomData[currentIndex].price}}</text>/组</view>
 						<view class="teamtion-header-name">已选"{{teamRandomData[currentIndex].name}}"</view>
-
 						<view class="header-top-plan">
 							<view class="goodslist-progress">
 								<view class="progress-mask" :style="{width:(100-getPlan(teamRandomData[currentIndex]))+'%'}"></view>
@@ -22,9 +22,23 @@
 							</view>
 						</view>
 					</view>
+					<view class="teamtion-header-right" v-else>
+						<!-- 剩余随机未开启 -->
+						<view class="teamtion-header-title"><text class="teamtion-price">剩余随机</text></view>
+						<view class="teamtion-header-name">已选"{{teamRandomData[currentIndex].name}}"</view>
+						<view class="header-top-plan">
+							<view class="goodslist-progress">
+								<view class="progress-mask" :style="{width:'100%'}"></view>
+							</view>
+							<view class="header-top-plan-num">暂未开始</view>
+						</view>
+					</view>
+					
+					
 				</view>
 				<view class="teamtion-help">
-					<view class="teamtion-help-title">{{getCardRandomtips(type)}}</view>
+					<view class="teamtion-help-title" v-if="teamRandomData[currentIndex] && teamRandomData[currentIndex].id != -1" >{{getCardRandomtips(type)}}</view>
+					<view class="teamtion-help-title" v-else> {{getRandomMode()}} </view>
 					<view class="icon-help" @click="onClickRulesShow"></view>
 				</view>
 			</view>
@@ -33,16 +47,17 @@
 				<view class="teamtion-box-title">{{getCardRandomTitle(type)}}</view>
 				<view class="teamtion-box" :class="{'card-box':type==12}">
 					<view class="teamtion-box-index " :class="{'index-current':index==currentIndex,'card-goldbg':item.gold}" @click="currentIndex = index" v-for="(item,index) in teamRandomData" :key="index">
-						<view v-show="multiple&&getPlan(teamRandomData[index])<100" class="index-multiple multiple" :class="{'multiple-cur':onClickCurrentMultiple(index,'css')}" @click.stop="onClickCurrentMultiple(index,'click')"></view>
-						<view class="index-shadow" v-show="getPlan(teamRandomData[index])>=100"></view>
+						<view v-show="multiple&&getPlan(teamRandomData[index])<100&&item.id != -1" class="index-multiple multiple" :class="{'multiple-cur':onClickCurrentMultiple(index,'css')}" @click.stop="onClickCurrentMultiple(index,'click')"></view>
+						<view class="index-shadow" v-show="getPlan(teamRandomData[index])>=100 || (item.id == -1 && multiple) || (teamrandomGood!='' && teamrandomGood.state==2 && item.id != -1)"></view>
 						<image class="teamtion-box-logo" v-show="type==11" :src="decodeURIComponent(item.logo)" />
 						<view class="teamtion-box-name" v-if="type==11">{{item.name}}</view>
 						<view class="teamtion-box-name-card" v-else>
 							<view class="teamtion-box-name-card-eng">{{item.nameEn}}</view>
 							<view class="teamtion-box-name-card-chn">{{item.name}}</view>
 						</view>
-						<view class="teamtion-box-price">￥{{item.price}}/组</view>
-						<view class="teamtion-box-plan">
+						<view class="teamtion-box-price" v-if="item.id != -1 || teamrandomGood.state==2">￥{{item.price}}/组</view>
+						<view class="teamtion-box-price" v-else>{{teamrandomGood.state==0?'暂未开始':randomCountStr+'后开启'}}</view>
+						<view class="teamtion-box-plan" v-show="item.id != -1 || (teamrandomGood!='' && teamrandomGood.state==2)">
 							<view class="goodslist-progress">
 								<view class="progress-mask" :style="{width:(100-getPlan(teamRandomData[index]))+'%'}"></view>
 							</view>
@@ -55,9 +70,14 @@
 					<view class="multiple" :class="{'multiple-cur':multiple}" @click="onClickMultiple"></view>
 					<view class="teamtion-bottom-multiple-title">多选</view>
 				</view>
-				<view class="teamtion-bottom-right">
+				<view class="teamtion-bottom-right" v-if="teamRandomData[currentIndex] && teamRandomData[currentIndex].id != -1">
 					<view class="teamtion-bottom-btn" @click="onClickCardCode">卡密列表</view>
 					<view class="teamtion-bottom-btn right-btn" :class="{'multiple-empty':multiple&&multipleCurrent==''}" @click="onClickBuy">{{multiple&&multipleCurrent==''?'请勾选分组':'立即购买'}}</view>
+				</view>
+				<view class="teamtion-bottom-right" v-else>
+					<view class="teamtion-bottom-btn" @click="showDrawerRandom = true">剩余随机列表</view>
+					<view class="teamtion-bottom-btn right-btn" v-if="teamrandomGood.state==2" @click="onClickGoodBuy">立即购买</view>
+					<view class="teamtion-bottom-btn multiple-empty" v-else>{{teamrandomGood.state==0?'暂未开始':randomCountStr+'后开启'}}</view>
 				</view>
 			</view>
 		</view>
@@ -67,6 +87,16 @@
 				<view class="drawer-help" v-for="(item,index) in getCardRandomHelp(type)" :key="index">{{item}}</view>
 			</view>
 		</bottomDrawer>
+
+		<bottomDrawer :showDrawer="showDrawerRandom" :title="'剩余随机列表'" :height="80" @closeDrawer="showDrawerRandom = false">
+			<view class="drawer-box">
+				<view class="drawer-help" v-if="teamrandomGood.state<2">{{getRandomMode()}}</view>
+				<view class="drawer-help" v-else>
+
+				</view>
+			</view>
+		</bottomDrawer>
+		
 	</view>
 </template>
 
@@ -74,14 +104,19 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import {getCardRandomtips,getCardRandomHelp,getCardRandomTitle} from "@/tools/switchUtil"
+	import { getCountDownTime } from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		// 自选球队随机 显示隐藏
 		@Prop({ default: false })
 		teamRandomShow:boolean|undefined;
-		// 选队随机数据
+		// 选队随机数据 剩余随机未开启时id:-1  
 		@Prop({ default: [] })
 		teamRandomData:any;
+		// 选队随机 剩余随机数据
+		@Prop({ default: [] })
+		teamrandomGood:any;
+		
 		// 类型 11：选队随机 12：选卡种随机
 		@Prop({ default: false })
 		type:boolean|undefined;
@@ -95,14 +130,31 @@
 		multiple = false;
 		multipleCurrent:any = [];
 		// 剩余随机
-		random = false;
+		randomCountStr = '';
+		randomCountInterval:any;
+		randomCountTimeCopy = 0;
+		showDrawerRandom = false;
+		@Watch('teamRandomShow')
+		onShowChanged(val: any, oldVal: any){
+			if(val){
+				if(this.teamrandomGood!=''&&this.teamrandomGood.state==1){
+					this.randomCountTimeCopy = this.teamrandomGood.leftSecond;
+					this.randomCountDownTime()
+				}
+			}else{
+				if(this.teamrandomGood!=''&&this.teamrandomGood.state==1){
+					clearInterval(this.randomCountInterval);
+				}
+			}
+			
+		}
 		created(){//在实例创建完成后被立即调用
 		}
 		mounted(){//挂载到实例上去之后调用
 			
 		}
 		destroyed(){
-			
+			clearInterval(this.randomCountInterval);
 		}
 		onClickMultiple(){
 			this.multiple = !this.multiple;
@@ -133,6 +185,7 @@
 				}
 			}
 			if( this.multiple && this.multipleCurrent.length <= 0) return;
+			if( this.teamrandomGood != '' && this.teamrandomGood.state == 2 && this.currentIndex !=0 ) return;
 
 			let current = this.multiple ? this.multipleCurrent : [this.currentIndex];
 			let buyData = current.map((x:any)=>{
@@ -143,12 +196,41 @@
 			this.multiple = false;
 			this.multipleCurrent = [];
 		}
+		onClickGoodBuy(){
+			this.$emit('goodBuy',this.teamRandomData[this.currentIndex].id);
+		}
 		getPlan(data:any){
 			let width = Math.floor((Number(data.lockNum)+Number(data.currentNum))/Number(data.totalNum)*100);
 			return width
 		}
 		onClickRulesShow(){
 			this.showDrawer = true
+		}
+		// 剩余随机
+		randomCountDownTime(){
+			this.randomCountStr = getCountDownTime(this.randomCountTimeCopy);
+			this.randomCountInterval = setInterval(()=>{
+				if(this.randomCountTimeCopy>0){
+					this.randomCountTimeCopy--;
+					this.randomCountStr = getCountDownTime(this.randomCountTimeCopy);
+				}else{
+					this.$emit('randomCountOver');
+					this.currentIndex = 0;
+					clearInterval(this.randomCountInterval)
+				}
+			},1000)
+		}
+		getRandomMode(){
+			if(this.teamrandomGood == '') return;
+			
+			switch(this.teamrandomGood.state){
+				case 0:
+					return '剩余随机：总进度＜'+this.teamrandomGood.maxLeftNum+'组后，倒计时'+this.teamrandomGood.idleMinute+'分钟开启购买';
+				case 1:
+					return '剩余随机：'+this.randomCountStr+'后开启';
+				case 2:
+					return '剩余随机：将在剩余的全部卡密中随机'
+			}
 		}
 		
 	}

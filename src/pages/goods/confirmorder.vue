@@ -269,7 +269,7 @@ export default class ClassName extends BaseNode {
   guessCurrentPage = 2;
   guessPageSize = 30;
   guessNoMoreData = false;
-
+  selectRanId = 0;
   payRandomTeamData:any = [];
   onLoad(query: any) {
     if (query.data) {
@@ -293,6 +293,9 @@ export default class ClassName extends BaseNode {
       // 选队随机
       if(query.payRandomTeam){
         this.payRandomTeamData = JSON.parse(query.payRandomTeam)
+      }
+      if(query.selectRanId){
+        this.selectRanId = Number(query.selectRanId)
       }
       this.getOnePrice();
       
@@ -342,7 +345,7 @@ export default class ClassName extends BaseNode {
   onInputMoneyRandom(event:any,item:any){
     if (Number(event.detail.value) > item.maxNum) {
       setTimeout(() => {
-        // item.num = item.maxNum;
+        item.num = item.maxNum;
         this.getOnePrice();
       }, 100);
     }else{
@@ -444,6 +447,9 @@ export default class ClassName extends BaseNode {
       params.price = this.keepTwoDecimal(this.getRandomTotalPrice())
     } else if (this.cartData != "") {
       params.price = this.cartData.amount;
+    } else if(this.selectRanId!=0){
+      params.num = 1;
+      params.price = this.keepTwoDecimal(this.moneyNum * this.onePrice)
     } else {
       params.num = Number(this.moneyNum);
       if (Number(this.moneyNum) <= 0) return;
@@ -575,13 +581,9 @@ export default class ClassName extends BaseNode {
         return { id:x.id, num:Number(x.num) }
       })
       url = "good/topay/" + this.goodsData.goodCode + "/optional";
-      // if(this.payRandomTeamData!='') params.teamId = this.payRandomTeamData[0].id;
-      // params.num = Number(this.payRandomTeamData[0].num)
-      // if (this.payRandomPrice > 0) {
-      //   url = "good/topay/" + this.goodsData.goodCode + "/select";
-      // }
     } else {
       // 普通支付
+      if(this.selectRanId!=0) params.teamId = this.selectRanId;
       params.num = Number(this.moneyNum);
       if (this.payRandomPrice > 0) {
         url = "good/topay/" + this.goodsData.goodCode + "/select";
