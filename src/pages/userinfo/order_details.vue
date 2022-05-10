@@ -66,7 +66,7 @@
 			<!-- 我的编号 -->
 			<view class="buyer-cotnent" v-if="cardList!='' && !clickToPay">
 				<view class="card-header">
-					<view class="card-header-title">我的卡密<view class="card-header-title-desc">{{orderData.state>2?'+'+orderData.point:'未中卡可获得'}}<image class="order-gold" src="../../static/order/gold.png" /></view></view>
+					<view class="card-header-title">我的卡密<view class="card-header-title-desc">{{orderData.state>2?'+'+orderData.point:'未中卡可获得卡币'}}<image class="order-gold" src="../../static/order/gold.png" /></view></view>
 					<view class="card-header-right" @click="onClickAllCard">查看全部<view class="icon-right"></view></view>
 				</view>
 				<buyCardId :cardList="cardList"/>

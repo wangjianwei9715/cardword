@@ -182,7 +182,7 @@
 		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec"  :teamCheckIndex="teamCheckIndex" :branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData" :randomMode="randomMode" :randomNum="randomNum" :baoduiLeftSec="baoduiLeftSec" :baoduiState="baoduiState" @teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck" @cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement" @buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood"/>
 
 		<!-- 自选球队随机 -->
-		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData" :teamrandomGood="teamrandomGood" :type="goodsData.pintuan_type"  @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" @goodBuy="onClickRandomBuy" @randomCountOver="getGoodSelectTeamRandom" />
+		<checkTeamRandom  :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData" :teamrandomGood="teamrandomGood"   :teamrandomRemainder="teamrandomRemainder" :type="goodsData.pintuan_type"  @teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy" @goodBuy="onClickRandomBuy" @randomCountOver="getGoodSelectTeamRandom" />
 
 		<!-- 邀请新人活动弹窗 -->
 		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668" @cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy" />
@@ -272,6 +272,7 @@
 		teamRandomShow = false;
 		teamRandomData:any = [];
 		teamrandomGood:any = [];
+		teamrandomRemainder:any = [];
 		// 支付方式
 		payChannel:any = [];
 		// 邀请新人弹窗
@@ -793,6 +794,7 @@
 			app.http.Get('dataApi/good/'+this.goodsId+'/optionPanel',{},(res:any)=>{
 				this.teamRandomData = res.team;
 				this.teamrandomGood = (res.good && res.good.randomMode) || [];
+				this.teamrandomRemainder = (res.good && res.good.remainder) || []
 				if(cb) cb()
 			})
 		}

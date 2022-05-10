@@ -290,7 +290,6 @@ export default class PlatformManager {
 			console.log("dataApiDomain==========", app.dataApiDomain);
 		}
 		if (loginToken) {
-			app.needPushIdentifier = false;
 			let params = {
 				uuid: app.platform.deviceID,
 				os: app.platform.systemInfo.platform,

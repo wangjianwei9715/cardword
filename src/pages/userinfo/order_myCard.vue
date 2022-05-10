@@ -10,7 +10,7 @@
 		</view>
 		<view class="card-box">
 			<view class="card-index" v-for="(items,indexs) in cardList" :key="indexs">
-				<view class="index-left" :class="{'bingo-name':items.bingo}">{{items.name}}</view>
+				<view class="index-left" :class="{'bingo-name':items.bingo}" v-html="getNameReward(items.name)"></view>
 				<view  class="index-right" :class="{'winning-card':items.state==2}" @click="onClickLookCard(items)">
 					{{items.content}}
 				</view>
@@ -59,6 +59,9 @@
 		//   加载更多数据
 		onReachBottom() {
 		    this.reqNewData() 
+		}
+		getNameReward(name:string){
+			return name
 		}
 		onClickLookCard(item:any){
 			if(item.state!=2) return;

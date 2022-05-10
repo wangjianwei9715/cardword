@@ -172,7 +172,6 @@
 			this.HttpLogin(params)
 		}
 		onClickPwLogin(){
-			
 			if(this.password == ''){
 				uni.showToast({
 					title: '请输入密码！',
@@ -193,7 +192,6 @@
 		}
 		HttpLogin(params:any){
 			app.http.Post('user/login/phone',params,(data:any)=>{
-				uni.$emit('loginSuccess');
 				app.data = data.data;
 				app.opKey = data.opKey
 				app.coupon = data.data.coupon;
@@ -210,6 +208,7 @@
 				if(app.requestKey!=''){
 					app.platform.checkShareNo(app.requestKey)
 				}
+				uni.$emit('loginSuccess');
 				uni.switchTab({
 					url: "/pages/index/index",
 				});
@@ -266,7 +265,6 @@
 		WeChetLogin(params:any){
 			app.http.Post('user/login/wechat/app',params,(data:any)=>{
 				uni.hideLoading();
-				uni.$emit('loginSuccess');
 				if(app.requestKey!=''){
 					app.platform.checkShareNo(app.requestKey)
 				}
@@ -281,6 +279,7 @@
 				}
 				this.postDomain()
 				uni.setStorageSync("token", JSON.stringify(app.token));
+				uni.$emit('loginSuccess');
 				uni.switchTab({
 					url: "/pages/index/index",
 				});
@@ -324,10 +323,10 @@
 				}
 				this.postDomain()
 				uni.setStorageSync("token", JSON.stringify(app.token));
+				uni.$emit('loginSuccess');
 				uni.switchTab({
 					url: "/pages/index/index",
 				});
-				uni.$emit('loginSuccess');
 			})
 		}
 	}

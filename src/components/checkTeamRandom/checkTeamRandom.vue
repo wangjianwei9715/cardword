@@ -75,7 +75,10 @@
 					<view class="teamtion-bottom-btn right-btn" :class="{'multiple-empty':multiple&&multipleCurrent==''}" @click="onClickBuy">{{multiple&&multipleCurrent==''?'请勾选分组':'立即购买'}}</view>
 				</view>
 				<view class="teamtion-bottom-right" v-else>
-					<view class="teamtion-bottom-btn" @click="showDrawerRandom = true">剩余随机列表</view>
+					<view class="teamtion-bottom-btn" @click="showDrawerRandom = true">
+						剩余随机列表
+						<view v-if="teamrandomGood.state==2 && teamrandomRemainder.totalAward>0" class="teamtion-bottom-drawer-bg">额外奖品</view>
+					</view>
 					<view class="teamtion-bottom-btn right-btn" v-if="teamrandomGood.state==2" @click="onClickGoodBuy">立即购买</view>
 					<view class="teamtion-bottom-btn multiple-empty" v-else>{{teamrandomGood.state==0?'暂未开始':randomCountStr+'后开启'}}</view>
 				</view>
@@ -91,8 +94,20 @@
 		<bottomDrawer :showDrawer="showDrawerRandom" :title="'剩余随机列表'" :height="80" @closeDrawer="showDrawerRandom = false">
 			<view class="drawer-box">
 				<view class="drawer-help" v-if="teamrandomGood.state<2">{{getRandomMode()}}</view>
-				<view class="drawer-help" v-else>
+				<view class="drawer-random" v-else>
+					<view class="drawer-random-title">剩余卡密<text>详情请查看分队列表</text></view>
+					<view class="drawer-random-list" v-for="(item,index) in teamrandomRemainder.no" :key="index">
+						<view class="drawer-random-name">{{index+1}}.{{item.name}}</view><text>x{{item.num}}组</text>
+					</view>
+					<view class="drawer-random-total">合计:{{teamrandomRemainder.totalNo}}组</view>
 
+					<view v-if="teamrandomRemainder.totalAward>0">
+						<view class="drawer-random-title">额外奖品<text>每条卡密获奖概率=奖品数量/剩余随机卡密总数</text></view>
+						<view class="drawer-random-list" v-for="(item,index) in teamrandomRemainder.extraAward" :key="index">
+							<view class="drawer-random-name">{{index+1}}.{{item.name}}</view><text>x{{item.num}}份</text>
+						</view>
+						<view class="drawer-random-total">合计:{{teamrandomRemainder.totalAward}}份奖品</view>
+					</view>
 				</view>
 			</view>
 		</bottomDrawer>
@@ -116,6 +131,9 @@
 		// 选队随机 剩余随机数据
 		@Prop({ default: [] })
 		teamrandomGood:any;
+		// 选队随机 剩余随机配置
+		@Prop({ default: [] })
+		teamrandomRemainder:any;
 		
 		// 类型 11：选队随机 12：选卡种随机
 		@Prop({ default: false })
@@ -443,7 +461,54 @@
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
 	}
-
+	.drawer-random{
+		.drawer-random-title{
+			width: 100%;
+			font-size: 28rpx;
+			font-family: PingFangSC-Regular;
+			font-weight: 400;
+			color: #333333;
+			margin-bottom: 30rpx;
+		}
+		.drawer-random-title text{
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular;
+			font-weight: 400;
+			color: #7D8288;
+			margin-left: 20rpx;
+		}
+		.drawer-random-list{
+			width: 48%;
+			display: inline-flex;
+			align-items: center;
+			margin-bottom:10rpx;
+		}
+		.drawer-random-name{
+			max-width: 73%;
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular;
+			font-weight: 400;
+			color: #333333;
+			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+		}
+		.drawer-random-list text{
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular;
+			font-weight: 400;
+			color: #7D8288;
+		}
+		.drawer-random-total{
+			width: 100%;
+			font-size: 25rpx;
+			font-family: PingFangSC-Regular;
+			font-weight: 400;
+			color: #333333;
+			margin-top: 10rpx;
+			margin-bottom: 50rpx;
+		}
+	}
 	.teamtion-box-center{
 		width: 100%;
 		height:100%;
@@ -736,6 +801,23 @@
 		font-size: $btn-fontSize;
 		border-radius:$btn-radius;
 		font-weight: $btn-weight;
+		position: relative;
+	}
+	.teamtion-bottom-drawer-bg{
+		position: absolute;
+		right:0;
+		top:-39rpx;
+		width: 119rpx;
+		height:39rpx;
+		background: url(../../static/goods/v2/icon_reward.png) no-repeat center;
+		background-size: 100% 100%;
+		z-index: 2;
+		font-size: 23rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+		line-height: 32rpx;
+		text-align: center;
 	}
 	.right-btn{
 		background:#7C4BEA;

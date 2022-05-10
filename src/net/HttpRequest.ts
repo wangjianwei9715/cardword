@@ -123,6 +123,8 @@ export default class HttpRequest {
 			if (url.indexOf("user/bindPushIdentifier") != -1) {
 				let info = plus.push.getClientInfo();
 				console.log('info==',info);
+				console.log('bindtoken==',app.token.accessToken)
+				console.log('bindPushIdentifier==',config.headers['token'])
 				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+info.clientid);
 			}
 			// 客服发送消息
