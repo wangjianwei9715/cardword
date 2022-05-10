@@ -134,17 +134,18 @@
 			});
 		}
     swiperChange(e:any) {
-      if(this.swiperIng) return;
-      if(e.detail.dx>=80 && this.swiperIndex+1>=this.listLen() ){
-        this.swiperRight = true;
-        this.swiperIng = true;
-        this.swiperLeft = false;
-      }
-      if(e.detail.dx<=-80 && this.swiperIndex==0 ){
-        this.swiperLeft = true;
-        this.swiperIng = true;
-        this.swiperRight = false;
-      }
+      // console.log('e.detail.dx=',e.detail)
+      // if(this.swiperIng) return;
+      // if(e.detail.dx>=80 && this.swiperIndex+1>=this.listLen() ){
+      //   this.swiperRight = true;
+      //   this.swiperIng = true;
+      //   this.swiperLeft = false;
+      // }
+      // if(e.detail.dx<=-80 && this.swiperIndex==0 ){
+      //   this.swiperLeft = true;
+      //   this.swiperIng = true;
+      //   this.swiperRight = false;
+      // }
     }
     changeSwiperIndex(e:any){
       this.curIndex = e.detail.current

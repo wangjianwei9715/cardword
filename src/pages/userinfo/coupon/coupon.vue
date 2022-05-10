@@ -4,7 +4,7 @@
 			<view class="coupon-index">
 				<view class="coupon-left">
 					<view class="coupon-price">￥<text>{{item.amount}}</text></view>
-					<view class="coupon-condition">{{item.goodCode!=''?'指定商品':getCouponType(item.tp,(item.minUseAmount?item.minUseAmount:0))}}</view>
+					<view class="coupon-condition">{{getCouponType(item.tp,(item.minUseAmount?item.minUseAmount:0))}}</view>
 				</view>
 				<view class="coupon-right">
 					<view class="coupon-right-header">

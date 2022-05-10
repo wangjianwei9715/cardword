@@ -62,7 +62,13 @@
 		    this.reqNewData() 
 		}
 		getNameReward(name:string){
-			return name
+			let rewardIndex = name.indexOf('、');
+			if(rewardIndex == -1){
+				return name
+			}else{
+				let reward = name.split('、');
+				return reward[0]+'、<text style="color:#ef3333">'+reward[1]+'</text>'
+			}
 		}
 		onClickLookCard(item:any){
 			if(item.state!=2) return;
@@ -259,7 +265,7 @@
 		width: 610rpx;
 		min-height: 96rpx;
 		box-sizing: border-box;
-		display: flex;
+		display: -webkit-box;
 		align-items: center;
 		font-size: 22rpx;
 		font-family: PingFangSC-Regular;
