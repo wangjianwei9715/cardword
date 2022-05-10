@@ -43,7 +43,8 @@
 		listSort = '';
 		sortData:any = [];
 		searchText = '';
-		searchEmit = 'orderMyCard'
+		searchEmit = 'orderMyCard';
+		typeTabClick = false;
 		onLoad(query:any) {
 			this.orderCode = query.code;
 			this.goodCode = query.goodCode;
@@ -80,7 +81,17 @@
 		}
 		onClickTypeCurrent(type:number){
 			if(type == this.typeTabCurrent) return;
-
+			if(this.typeTabClick){
+				uni.showToast({
+					title:'请勿连续点击',
+					icon:'none'
+				})
+				return;
+			}
+			this.typeTabClick = true;
+			setTimeout(()=>{
+				this.typeTabClick = false;
+			},1000)
 			this.typeTabCurrent = type;
 			this.reqSearchList()
 		}

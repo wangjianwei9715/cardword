@@ -120,7 +120,7 @@
 			}
 			
 			app.http.Get("dataApi/good/"+this.goodCode+'/cards/search', params, (data: any) => {
-				if(data.totalPage<=this.currentPage){
+				if(data.total<=this.teamDataList.length){
 					this.noMoreData = true;
 				}
 				if(this.currentPage==1)this.teamDataList = [];
