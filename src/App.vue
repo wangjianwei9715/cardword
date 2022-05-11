@@ -25,6 +25,9 @@ export default Vue.extend({
       app.token = JSON.parse(loginToken);
     }
     uni.$on("refreshToken", () => {
+      if(app.refreshIng) return;
+      app.refreshIng = true;
+
       try {
         uni.removeStorageSync("token");
       } catch (e) {
@@ -39,6 +42,7 @@ export default Vue.extend({
         app.token.accessToken = data.data.accessToken;
         app.token.refreshToken = data.data.refreshToken;
         uni.setStorageSync("token", JSON.stringify(app.token));
+        app.refreshIng = false;
         let params = {
           uuid: app.platform.deviceID,
           os: app.platform.systemInfo.platform,

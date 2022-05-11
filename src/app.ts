@@ -26,6 +26,7 @@ export module app{
     export let platform = PlatformManager.getIns();
 	export let payment = PayManager.getIns();
     export let http =  HttpRequest.getIns();
+    export let refreshIng = false;
     export let needPushIdentifier = true;
     export let protobuf:any = null;
     export let data:{[x: string]: any} = {};//登录数据
