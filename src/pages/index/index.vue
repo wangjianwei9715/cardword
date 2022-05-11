@@ -154,13 +154,7 @@
 					uni.removeStorageSync('reLaunch')
 				})
 			}
-			if(!this.oneLoad){
-				app.http.Get("dataApi/home", {}, (data: any) => {
-					this.topAddList = data.addList;
-					this.hotList.broadCast.list = data.broadCast;
-					this.hotList.hot.list = data.hotSeries;
-				})
-			}
+			
 			// #ifndef MP
 			if (app.localTest) {
 				//开发环境
@@ -255,9 +249,9 @@
 		initEvent(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				// #ifndef MP
-				this.topAddList = data.addList;
-				this.hotList.broadCast.list = data.broadCast;
-				this.hotList.hot.list = data.hotSeries;
+				this.topAddList = data.addList||[];
+				this.hotList.broadCast.list = data.broadCast||[];
+				this.hotList.hot.list = data.hotSeries||[];
 				// #endif
 				this.reqNewData(()=>{
 					if(cb) cb()

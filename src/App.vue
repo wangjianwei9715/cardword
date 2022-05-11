@@ -99,9 +99,6 @@ export default Vue.extend({
     // #endif
     
     // #ifdef APP-PLUS
-    setInterval(()=>{
-      plus.cache.clear();
-    },3600000)
     plus.runtime.getProperty(plus.runtime.appid||'', (widgetInfo) => {
       app.version = widgetInfo.version || '1.0.0'
     })

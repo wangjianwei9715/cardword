@@ -256,7 +256,7 @@ export default class PlatformManager {
 						// 延时调用避免一开始接收不到
 						setTimeout(()=>{
 							uni.$emit('appluanchOver')
-						},100)
+						},200)
 						// #ifdef APP-PLUS
 						app.update_url = url + "/api/";
 						if (app.platform.systemInfo.platform == 'ios') {
@@ -285,6 +285,9 @@ export default class PlatformManager {
 					app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
 					app.dataApiDomain = launchConfig.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
 				}
+				setTimeout(()=>{
+					uni.$emit('appluanchOver')
+				},200)
 			}
 			console.log("bussinessApiDomain==========", app.bussinessApiDomain);
 			console.log("dataApiDomain==========", app.dataApiDomain);
