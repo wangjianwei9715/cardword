@@ -149,7 +149,7 @@
 		}
 		onShow(){
 			// 销毁页面重新加载
-			if(uni.getStorageSync('reLaunch')||(this.goodTabCheck==1&&this.goodsList=='')){
+			if(uni.getStorageSync('reLaunch')||(this.goodTabCheck==1&&this.goodsList==''&&!this.oneLoad)){
 				this.showInitEvent(()=>{
 					uni.removeStorageSync('reLaunch')
 				})
@@ -402,7 +402,7 @@
 				if(this.fetchFrom == 1 ) this.goodsList = [];
 				
 				if(data.goodList){
-					this.goodsList = [...this.goodsList,...data.goodList];
+					this.goodsList = this.fetchFrom == 1 ? data.goodList : [...this.goodsList,...data.goodList];
 				}
 				this.fetchFrom += this.fetchSize;
 				if(cb) cb()

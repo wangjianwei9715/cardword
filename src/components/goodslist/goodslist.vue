@@ -18,7 +18,10 @@
 						<image :lazy-load="true" class="goodslist-pic-image"
 							:src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
 					</view>
-					<view class="goodslist-title">{{item.title}}</view>
+					<view class="goodslist-title">
+						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
+						{{item.title}}
+					</view>
 					<view class="goodslist-priceMsg uni-flex">
 						<view class="goodslist-priceMsg-left">
 							￥<text class="price-text">{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
@@ -212,9 +215,27 @@
 			-webkit-line-clamp: 2;
 			line-clamp: 2;
 			-webkit-box-orient: vertical;
+			align-items: flex-start;
 			word-break:break-all
 		}
-
+		&-remainder{
+			width: 87rpx;
+			text-align: center;
+			height: 27rpx;
+			background: #754DE2;
+			opacity: 0.88;
+			border-radius: 3rpx;
+			box-sizing: border-box;
+			display: inline-block;
+			font-size: 19rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #FFFEFE;
+			line-height: 27rpx;
+			margin-right: 6rpx;
+			overflow: hidden;
+			margin-bottom: -2rpx;
+		}
 		&-progress {
 			background-image: url('../../static/goods/v2/progeessBg.png');
 			background-size: 100% 100%;

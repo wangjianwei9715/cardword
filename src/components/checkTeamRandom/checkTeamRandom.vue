@@ -47,7 +47,9 @@
 				<view class="teamtion-box-title">{{getCardRandomTitle(type)}}</view>
 				<view class="teamtion-box" :class="{'card-box':type==12}">
 					<view class="teamtion-box-index " :class="{'index-current':index==currentIndex,'card-goldbg':item.gold}" @click="currentIndex = index" v-for="(item,index) in teamRandomData" :key="index">
-						<view v-show="multiple&&getPlan(teamRandomData[index])<100&&item.id != -1" class="index-multiple multiple" :class="{'multiple-cur':onClickCurrentMultiple(index,'css')}" @click.stop="onClickCurrentMultiple(index,'click')"></view>
+						<view v-show="multiple&&getPlan(teamRandomData[index])<100&&item.id != -1" class="index-multiple"  @click.stop="onClickCurrentMultiple(index,'click')">
+							<view class="multiple" :class="{'multiple-cur':onClickCurrentMultiple(index,'css')}"></view>
+						</view>
 						<view class="index-shadow" v-show="getPlan(teamRandomData[index])>=100 || (item.id == -1 && multiple) || (teamrandomGood!='' && teamrandomGood.state==2 && item.id != -1)"></view>
 						<image class="teamtion-box-logo" v-show="type==11" :src="decodeURIComponent(item.logo)" />
 						<view class="teamtion-box-name" v-if="type==11">{{item.name}}</view>
@@ -72,7 +74,8 @@
 				</view>
 				<view class="teamtion-bottom-right" v-if="teamRandomData[currentIndex] && teamRandomData[currentIndex].id != -1">
 					<view class="teamtion-bottom-btn" @click="onClickCardCode">卡密列表</view>
-					<view class="teamtion-bottom-btn right-btn" :class="{'multiple-empty':multiple&&multipleCurrent==''}" @click="onClickBuy">{{multiple&&multipleCurrent==''?'请勾选分组':'立即购买'}}</view>
+					<view v-if="getPlan(teamRandomData[currentIndex])>=100" class="teamtion-bottom-btn multiple-empty">已售罄</view>
+					<view v-else class="teamtion-bottom-btn right-btn" :class="{'multiple-empty':multiple&&multipleCurrent==''}" @click="onClickBuy">{{multiple&&multipleCurrent==''?'请勾选分组':'立即购买'}}</view>
 				</view>
 				<view class="teamtion-bottom-right" v-else>
 					<view class="teamtion-bottom-btn" @click="showDrawerRandom = true">
@@ -632,7 +635,13 @@
 		right:8rpx;
 		top:8rpx;
 		z-index: 8;
+		width: 54rpx;
+		height:54rpx;
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-end;
 	}
+	
 	.card-box .card-goldbg{
 		background:url(../../static/goods/v2/card_bg_gold_.png) no-repeat center !important;
 		background-size: 100% 100%;
