@@ -95,7 +95,7 @@
               mode="aspectFill"
               @load="onLoadMovablePic(index)"
               :lazy-load="true"
-              :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):'../../static/goods/drawcard/default.png') : ''"
+              :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''"
             ></image>
             
             <view
@@ -224,6 +224,7 @@ export default class ClassName extends BaseNode {
   picOnloadEd = false;
   picOnloadNum = 0;
   onloadPic:any = [];
+  defultPic = '../../static/goods/drawcard/default.png';
   onLoad(query: any) {
     uni.getSystemInfo({
       success: (res) => {
@@ -250,7 +251,9 @@ export default class ClassName extends BaseNode {
                   this.initFnc()
                 })
               }
-              
+              if(query.picType == 1){
+                this.defultPic = '../../static/goods/drawcard/default_.png';
+              }
             }
           },
           fail(err) {
