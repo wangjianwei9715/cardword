@@ -126,13 +126,15 @@ export default class ClassName extends BaseNode {
     });
   }
   onClickLogout() {
-    app.http.Post("user/logout", {}, (res: any) => {
-      uni.removeStorageSync("token");
-      app.token = {accessToken:'',refreshToken:''};
-      uni.setStorageSync('reLaunch',true);
-      uni.reLaunch({
-        url: "/pages/index/index",
-      });
+    app.http.Post("user/logout", {});
+    this.logoutEvent()
+  }
+  logoutEvent(){
+    uni.removeStorageSync("token");
+    app.token = {accessToken:'',refreshToken:''};
+    uni.setStorageSync('reLaunch',true);
+    uni.reLaunch({
+      url: "/pages/index/index",
     });
   }
 }

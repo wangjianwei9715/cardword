@@ -177,7 +177,7 @@
 			});
 			if(this.goodsList!=''){
 				let list = this.goodsList.map((x:any)=>{ return x.goodCode; })
-				app.http.Post('good/progress/list',{list:list},(res:any)=>{
+				app.http.Post('dataApi/good/progress/list',{list:list},(res:any)=>{
 					this.setNewProgress(res.list)
 				})
 			}

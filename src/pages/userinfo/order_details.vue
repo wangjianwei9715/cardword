@@ -60,7 +60,7 @@
 
 			<!-- 预测卡密 -->
 			<!-- order 订单 state 订单状态  guessFreeNum 剩余免单次数 guessNum 预测正确数量 guessName 预测球队名字-->
-			<stepGuess v-if="guessType" :state="orderData.state" :order="true" :freeNum="guessFreeNum" :guessNum="guessNum" :guessName="guessName" :surplusNum="surplusNum" :guessSuccess="guessSuccess" @onClickSuccessHide="onClickSuccessHide"/>
+			<stepGuess v-if="guessType" :state="guessState" :order="true" :freeNum="guessFreeNum" :guessNum="guessNum" :guessName="guessName" :surplusNum="surplusNum" :guessSuccess="guessSuccess" @onClickSuccessHide="onClickSuccessHide"/>
 			<!-- 预测卡密 -->
 
 			<!-- 我的编号 -->
