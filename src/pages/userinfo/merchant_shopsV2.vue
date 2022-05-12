@@ -28,8 +28,9 @@
 			</view>
 		</view>
 		<view class="list-content" v-show="!emptyShow">
-			<goodslist v-show="goodTabV2.index==0" :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
-			<liveslist v-show="goodTabV2.index==1" :liveList='liveList'></liveslist>
+			<!-- v-show="goodTabV2.index==0" -->
+			<goodslist :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
+			<!-- <liveslist v-show="goodTabV2.index==1" :liveList='liveList'></liveslist> -->
 			<image v-show="goodTabV2.index==2" :src="decodeURIComponent(item)" style="margin:6rpx auto;display:block;width:94%"
 				@click.stop="previewImg(index,detail.certification)" v-for="(item,index) in detail.certification"
 				:key="index" mode="widthFix"></image>
@@ -73,11 +74,13 @@
 				},
 				{
 					value: 2,
-					name: "拆卡",
-					assignKey: "liveList",
-					url: "dataApi/merchant/broadcast/list/",
-					query: {},
-					valueKey: "upload"
+					name: "已拼成",
+					assignKey: "goodsList",
+					url: "dataApi/merchant/goodlist/",
+					query: {
+						tp: 2
+					},
+					valueKey: "success"
 				}
 
 			]
@@ -174,10 +177,11 @@
 						this.goodsList = [];
 						this.liveList = [];
 					}
-					if (questItem.value == 1)
-						this.goodsList = [...this.goodsList, ...dataList];
-					if (questItem.value == 2)
-						this.liveList = [...this.liveList, ...dataList];
+					// if (questItem.value == 1)
+					// 	this.goodsList = [...this.goodsList, ...dataList];
+					// if (questItem.value == 2)
+					// 	this.liveList = [...this.liveList, ...dataList];
+					this.goodsList = [...this.goodsList, ...dataList];
 					uni.stopPullDownRefresh();
 					if(res.total==0) this.emptyShow = true;
 				}

@@ -23,29 +23,29 @@
 						<view class="privewItem" @click.stop="onClickShops(item)">进店看看</view>
 					</view>
 				</view>
-				<view v-if='item.goodList&&item.goodList.length'>
+				<view v-if='item.goodData&&item.goodData.length'>
 					<!-- <scroll-view class="scroll-goodslist uni-flex" scroll-x="true">
 						
 					</scroll-view> -->
 					<view class="scroll-goodslist uni-flex">
-						<view class="scroll-goodslist-item" v-for="(goodsItem) in item.goodList"
+						<view class="scroll-goodslist-item" v-for="(goodsItem) in item.goodData"
 							:key='goodsItem.goodCode' @click="toPage(goodsItem)">
 							<view class="picBlock">
 								<image :src="decodeURIComponent(goodsItem.pic)" mode="aspectFill" />
 								<view class="angleMark"
-									:style="{backgroundColor:goodsItem.stateName=='在售'?'#F5162B':'#4f8bf5'}">
-									{{goodsItem.stateName}}
+									:style="{backgroundColor:goodsItem.status==1?'#F5162B':'#4f8bf5'}">
+									{{goodsItem.status==1?'在售':'已拼成'}}
 								</view>
 							</view>
 							<view class="onelineName">{{goodsItem.goodName||goodsItem.title||'-'}}</view>
 							<view class="bottomState uni-flex">
 								<view class="bottomState-left">
-									<template v-if="goodsItem.stateName=='在售'">
+									<template v-if="goodsItem.status==1">
 										￥<text>{{goodsItem.price}}</text>
 									</template>
-									<text class="bottom-statename" v-else>{{goodsItem.stateName}}</text>
+									<text class="bottom-statename" v-else>已拼成</text>
 								</view>
-								
+
 							</view>
 						</view>
 					</view>
@@ -99,32 +99,35 @@
 		}
 		toPage(item: any) {
 			// console.log(item)
-			const jumpMap: any = {
-				在售: {
-					url: "/pages/goods/goods_details?id=" + item.goodCode
-				},
-				拆卡回放: {
-					fn: app.platform.goWeChatLive,
-					query: {
-						playCode: item.playCode,
-						goodCode: item.goodCode
-					}
-				},
-				直播中: {
-					fn: app.platform.goWeChatLive,
-					query: {
-						playCode: item.playCode,
-						goodCode: item.goodCode
-					}
-				}
-			};
-			const aboutPointer = jumpMap[item.stateName];
-			if (aboutPointer && aboutPointer.fn) aboutPointer.fn(aboutPointer.query);
-			if (aboutPointer && aboutPointer.url) {
-				uni.navigateTo({
-					url: aboutPointer.url
-				});
-			}
+			// const jumpMap: any = {
+			// 	在售: {
+			// 		url: "/pages/goods/goods_details?id=" + item.goodCode
+			// 	},
+			// 	拆卡回放: {
+			// 		fn: app.platform.goWeChatLive,
+			// 		query: {
+			// 			playCode: item.playCode,
+			// 			goodCode: item.goodCode
+			// 		}
+			// 	},
+			// 	直播中: {
+			// 		fn: app.platform.goWeChatLive,
+			// 		query: {
+			// 			playCode: item.playCode,
+			// 			goodCode: item.goodCode
+			// 		}
+			// 	}
+			// };
+			// const aboutPointer = jumpMap[item.stateName];
+			// if (aboutPointer && aboutPointer.fn) aboutPointer.fn(aboutPointer.query);
+			// if (aboutPointer && aboutPointer.url) {
+			// 	uni.navigateTo({
+			// 		url: aboutPointer.url
+			// 	});
+			// }
+			uni.navigateTo({
+				url: "/pages/goods/goods_details?id=" + item.goodCode
+			});
 		}
 		followSuccess(event: any, item: any) {
 			item.follow = event.follow;
@@ -142,8 +145,8 @@
 			const path = `/pages/userinfo/merchant_shopsV2`;
 			uni.navigateTo({
 				url: path + "?id=" + item.id
-			});   
-			
+			});
+
 		}
 		getPlan(lock: number, now: number, all: number) {
 			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
@@ -158,20 +161,20 @@
 			app.http.Get("dataApi/merchant/list", params, (data: any) => {
 				this.totalPage = data.totalPage;
 				let arr = data.list || [];
-				arr.forEach((item: any) => {
-					item.goodList = [];
-					if (item.goodData && Object.keys(item.goodData).length) {
-						item.goodData.saleList = item.goodData.saleList || [];
-						item.goodData.uploadList = item.goodData.uploadList || [];
-						item.goodData.saleList.forEach(
-							(saleItem: any) => (saleItem.stateName = "在售")
-						);
-						item.goodList = [
-							...item.goodData.saleList,
-							...item.goodData.uploadList
-						];
-					}
-				});
+				// arr.forEach((item: any) => {
+				// 	item.goodList = [];
+				// 	if (item.goodData && Object.keys(item.goodData).length) {
+				// 		item.goodData.saleList = item.goodData.saleList || [];
+				// 		item.goodData.uploadList = item.goodData.uploadList || [];
+				// 		item.goodData.saleList.forEach(
+				// 			(saleItem: any) => (saleItem.stateName = "在售")
+				// 		);
+				// 		item.goodList = [
+				// 			...item.goodData.saleList,
+				// 			...item.goodData.uploadList
+				// 		];
+				// 	}
+				// });
 				if (this.currentPage === 1) this.publisher = [];
 				this.publisher = [...this.publisher, ...arr];
 				cb && cb();
@@ -181,7 +184,6 @@
 </script>
 
 <style lang="scss" scoped>
-
 	.detail-bg {
 		width: 100%;
 		background: $content-bg;
@@ -193,6 +195,7 @@
 		background-color: #fff;
 		height: 462rpx;
 		margin-bottom: 15rpx;
+
 		.noneTips {
 			font-size: 29rpx;
 			font-family: PingFangSC-Regular;
@@ -221,6 +224,7 @@
 
 		&-info {
 			flex: 1;
+
 			.nameInfo {
 				// align-content: flex-end
 				// align-items: flex-end;
@@ -271,7 +275,7 @@
 				text-align: center;
 				letter-spacing: 1rpx;
 				box-sizing: border-box;
-				border:1rpx solid #DADADA;
+				border: 1rpx solid #DADADA;
 				margin-top: 18rpx;
 				border-radius: 5rpx;
 			}
@@ -285,7 +289,7 @@
 		flex-wrap: nowrap;
 		overflow: hidden;
 		box-sizing: border-box;
-		padding:0 22rpx;
+		padding: 0 22rpx;
 
 		&-item {
 			display: inline-block;
@@ -342,18 +346,21 @@
 					font-family: PingFangSC-Regular;
 					font-weight: 500;
 					color: #333333;
+
 					text {
 						font-size: 29rpx;
 						font-weight: bold;
 					}
 				}
+
 				&-right {
 					font-size: 22rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #88878c;
 				}
-				.bottom-statename{
+
+				.bottom-statename {
 					font-size: 25rpx;
 					font-family: PingFang SC;
 					font-weight: 400;
