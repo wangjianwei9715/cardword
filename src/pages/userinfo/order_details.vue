@@ -221,7 +221,17 @@
 				setTimeout(()=>{
 					this.clickToPay = res.data.state==1? true :false
 				},3000)
-				
+				if(res.data.wait){
+					uni.showLoading({ title:'数据加载中请稍后' })
+					// 继续请求数据
+					setTimeout(()=>{
+						this.initEvent(()=>{
+							if(cb) cb()
+						})
+					},5000)
+				}else{
+					uni.hideLoading()
+				}
 				// 预测卡密
 				if(res.data.guess){
 					this.guessType = true;
@@ -261,7 +271,7 @@
 				if(res.data.noList){
 					this.cardList = res.data.noList.length>5?res.data.noList.splice(0,5):res.data.noList
 				}
-				if(cb) cb()
+				if(cb && !res.data.wait) cb()
 			})
 
 			
@@ -296,6 +306,7 @@
 			this.orderInfo['orderNo'].desc = this.orderData.code
 		}
 		getCountDown(){
+			clearInterval(this.countDownInter)
 			this.countDownStr = getCountDownTime(this.countDown);
 			this.countDownInter = this.scheduler(()=>{
 				
