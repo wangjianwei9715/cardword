@@ -95,7 +95,7 @@
 		width: 100%;
 		height:100%;
 		box-sizing: border-box;
-		padding:100rpx 40rpx 30rpx 40rpx;
+		padding:100rpx 30rpx 30rpx 30rpx;
 		overflow-y: auto;
 	}
 	.close-icon{

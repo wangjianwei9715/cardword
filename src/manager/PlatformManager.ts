@@ -264,60 +264,38 @@ export default class PlatformManager {
 						}
 						app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
 						// #endif
+
+						if (loginToken) {
+							let params = {
+								uuid: app.platform.deviceID,
+								os: app.platform.systemInfo.platform,
+								device: app.platform.systemInfo.brand + app.platform.systemInfo.model,
+							};
+							HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
+								console.log("access=====", data);
+								app.data = data.data;
+								app.opKey = data.opKey;
+								app.coupon = data.data.coupon;
+								uni.setStorageSync("app_opk", data.opKey);
+								if (data.app) {
+									app.socketInfo = data.app;
+								}
+								if (data.app.launchDomain && data.app.launchDomain != "") {
+									uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
+								}
+								uni.$emit("loginSuccess");
+							});
+						}
 					});
 					break;
 				} else {
 					break;
 				}
 			}
-			if (!launchSuccess) {
-				let launchConfig = uni.getStorageSync("launchConfig");
-				if (launchConfig.app) {
-					launchSuccess = true;
-					let bussinessApiDomain = launchConfig.app.bussinessApiDomain;
-					let dataApiDomain = launchConfig.app.dataApiDomain;
-					if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
-						bussinessApiDomain = bussinessApiDomain.slice(0,bussinessApiDomain.length - 1);
-					}
-					if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
-						dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
-					}
-					app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
-					app.dataApiDomain = launchConfig.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
-				}
-				setTimeout(()=>{
-					uni.$emit('appluanchOver')
-				},200)
-			}
 			console.log("bussinessApiDomain==========", app.bussinessApiDomain);
 			console.log("dataApiDomain==========", app.dataApiDomain);
 		}
-		if (loginToken) {
-			let params = {
-				uuid: app.platform.deviceID,
-				os: app.platform.systemInfo.platform,
-				device: app.platform.systemInfo.brand + app.platform.systemInfo.model,
-			};
-			HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
-				console.log("access=====", data);
-				app.data = data.data;
-				app.opKey = data.opKey;
-				app.coupon = data.data.coupon;
-				uni.setStorageSync("app_opk", data.opKey);
-				if (data.app) {
-					app.socketInfo = data.app;
-				}
-				if (data.app.launchDomain && data.app.launchDomain != "") {
-					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
-				}
-				// if (data.data.mustBindPhone) {
-				// 	uni.reLaunch({
-				// 		url: "/pages/login/bind_phone",
-				// 	});
-				// }
-				uni.$emit("loginSuccess");
-			});
-		}
+		
 	}
 	
 	// 获取粘贴板内容

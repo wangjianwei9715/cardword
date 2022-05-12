@@ -100,14 +100,14 @@
 				<view class="drawer-random" v-else>
 					<view class="drawer-random-title">剩余卡密<text>详情请查看分队列表</text></view>
 					<view class="drawer-random-list" v-for="(item,index) in teamrandomRemainder.no" :key="index">
-						<view class="drawer-random-name">{{index+1}}.{{item.name}}</view><text>x{{item.num}}组</text>
+						<view class="drawer-random-name">{{item.name}}</view><text>x{{item.num}}组</text>
 					</view>
 					<view class="drawer-random-total">合计:{{teamrandomRemainder.totalNo}}组</view>
 
 					<view v-if="teamrandomRemainder.totalAward>0">
 						<view class="drawer-random-title">额外奖品<text>每条卡密获奖概率=奖品数量/剩余随机卡密总数</text></view>
 						<view class="drawer-random-list" v-for="(item,index) in teamrandomRemainder.extraAward" :key="index">
-							<view class="drawer-random-name">{{index+1}}.{{item.name}}</view><text>x{{item.num}}份</text>
+							<view class="drawer-random-name drawer-red">{{item.name}}</view><text>x{{item.num}}份</text>
 						</view>
 						<view class="drawer-random-total">合计:{{teamrandomRemainder.totalAward}}份奖品</view>
 					</view>
@@ -488,6 +488,9 @@
 		}
 		.drawer-random-name{
 			max-width: 73%;
+			height:34rpx;
+			background: #F6F7FB;
+			border-radius: 3rpx;
 			font-size: 25rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
@@ -495,6 +498,14 @@
 			overflow: hidden;
 			text-overflow:ellipsis;
 			white-space: nowrap;
+			box-sizing: border-box;
+			padding:0 10rpx;
+			margin-right: 15rpx;
+			line-height: 34rpx;
+		}
+		.drawer-red{
+			background:#E8665B;
+			color:#fff;
 		}
 		.drawer-random-list text{
 			font-size: 25rpx;
