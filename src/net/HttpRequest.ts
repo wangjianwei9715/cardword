@@ -293,6 +293,9 @@ export default class HttpRequest {
 				});
 			}
 		}).catch((error)=>{
+			if (reqUrl == 'dataApi/home'){
+				uni.$emit('refreshHome');
+			}
 			if (error.response && error.response.status > 500) {
 				this.netError(() => {
 					this.Post(reqUrl, params, cb, errorCb);

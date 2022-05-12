@@ -144,8 +144,9 @@
 					this.oneLoad = false;
 				}
 			})
-			// #ifdef APP-PLUS
-			
+			this.onEventUI('refreshHome',()=>{
+				this.showInitEvent()
+			})
 		}
 		onShow(){
 			// 销毁页面重新加载
@@ -154,7 +155,13 @@
 					uni.removeStorageSync('reLaunch')
 				})
 			}
-			
+			if(!this.oneLoad){
+				app.http.Get("dataApi/home", {}, (data: any) => {
+					this.topAddList = data.addList||[];
+					this.hotList.broadCast.list = data.broadCast||[];
+					this.hotList.hot.list = data.hotSeries||[];
+				})
+			}
 			// #ifndef MP
 			if (app.localTest) {
 				//开发环境
@@ -181,7 +188,7 @@
 					this.setNewProgress(res.list)
 				})
 			}
-			
+			// #ifdef APP-PLUS
 			this.networkStatusChange()
 			// 判断是否有邀请上线
 			app.platform.getInvitationClipboard((val:string)=>{
@@ -302,6 +309,7 @@
 			this.wgtUpdate = true;
 		}
 		onClickDownload() {
+			// #ifdef APP-PLUS
 			if (uni.getSystemInfoSync().platform == 'ios'){
 				plus.runtime.openURL('https://itunes.apple.com/cn/app/id1593158816?mt=8')
 				return;
@@ -326,6 +334,7 @@
 					.totalBytesExpectedToWrite / 1024 / 1024) + ' MB'
 				this.downloadText = '下载中：' + downMB + ', ' + result.progress + '%';
 			});
+			// #endif
 		}
 		BackLogin(res:any){
 			uni.$emit('BackLogin');

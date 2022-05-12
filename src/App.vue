@@ -78,8 +78,8 @@ export default Vue.extend({
       if (app.needPushIdentifier) {
         let info = plus.push.getClientInfo();
         
-        HttpRequest.getIns().Post("user/bindPushIdentifier", {
-          id: info.clientid,
+        HttpRequest.getIns().Post("user/bindPushIdentifier", {id: info.clientid},()=>{
+          app.needPushIdentifier = false;
         });
       }
       if (app.payload != "") {
