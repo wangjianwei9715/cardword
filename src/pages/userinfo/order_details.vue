@@ -278,14 +278,14 @@
 		}
 		// 获取解锁卡密效果
 		getNoShowList(){
-			// let orderRich = uni.getStorageSync("orderRich");
-			// if(!orderRich) {
-			// 	uni.showToast({
-			// 		title:'卡密特效未开启',
-			// 		icon:'none'
-			// 	})
-			// 	return
-			// };
+			let orderRich = uni.getStorageSync("orderRich");
+			if(!orderRich) {
+				uni.showToast({
+					title:'卡密特效未开启',
+					icon:'none'
+				})
+				return
+			};
 
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30},(res:any)=>{
 				if(res.total>0){
