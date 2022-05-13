@@ -201,7 +201,7 @@ export default class PlatformManager {
 	appLuanch(loginToken: any, cb?: Function) {
 		let launchData = uni.getStorageSync("launchData");
 		if (launchData!='' && (Math.round(new Date().getTime()/1000)-launchData.time<3600)){
-			this.setLaunchData(launchData)
+			this.setLaunchData(launchData,loginToken)
 		} else if (!app.localTest) {
 			// launchUrl：             储存打乱顺序后的launch
 			// configLaunchUrl：       access保存的launch数据
@@ -265,23 +265,28 @@ export default class PlatformManager {
 		},()=>{
 			let launchData = uni.getStorageSync("launchData");
 			if(launchData!=''){
-				this.setLaunchData(launchData)
+				this.setLaunchData(launchData,loginToken)
 			} else if (this.urlIndex<3){
 				this.urlIndex += 1;
+				app.service_url = '';
 				this.postLaunch(loginToken,launchUrl,params,()=>{
 					if(cb) cb()
 				})
 			}
 		});
 	}
-	setLaunchData(data:any){
+	setLaunchData(data:any,loginToken:any){
 		app.service_url = data.service_url;
 		app.bussinessApiDomain = data.bussinessApiDomain;
 		app.dataApiDomain = data.dataApiDomain;
 		app.update_url = data.update_url;
+		// #ifdef APP-PLUS
+		app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
+		// #endif
 		setTimeout(()=>{
 			uni.$emit('appluanchOver')
 		},200)
+		if (loginToken) this.getAccess()
 	}
 	getAccess(){
 		let params = {

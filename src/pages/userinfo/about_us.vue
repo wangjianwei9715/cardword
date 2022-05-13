@@ -43,7 +43,6 @@
 			}
 		}
 		onClickDebug(){
-			console.log(this.debugNum)
 			if(this.debugNum<9){
 				this.debugNum++;
 			}else{
@@ -54,7 +53,6 @@
 					title:'debug模式'+(app.updateDebug == 'on' ? '开启' : '关闭'),
 					icon:'none'
 				})
-				console.log('app.updateDebug',app.updateDebug)
 			}
 		}
 	}

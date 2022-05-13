@@ -126,8 +126,12 @@ export default class ClassName extends BaseNode {
     });
   }
   onClickLogout() {
-    app.http.Post("user/logout", {});
-    this.logoutEvent()
+    app.http.Post("user/logout", {},()=>{
+      this.logoutEvent()
+    },()=>{
+      this.logoutEvent()
+    });
+    
   }
   logoutEvent(){
     uni.removeStorageSync("token");

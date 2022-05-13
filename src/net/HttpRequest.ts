@@ -63,7 +63,7 @@ export default class HttpRequest {
 		// 添加请求拦截器
 		this.axiosInstance.interceptors.request.use((config)=> {
 			// 在发送请求之前做些什么
-			// console.log('请求开始：config===',config);
+			
 			if(app.opKey == ''){
 				app.opKey = uni.getStorageSync('app_opk')
 			}
@@ -153,6 +153,7 @@ export default class HttpRequest {
 			if (url.indexOf("advice/upload_advice") != -1) {
 				config.headers['Content-Type'] = 'multipart/form-data';
 			}
+			console.log('请求开始：config===',config);
 			return config;
 		}, function (error) {
 			// 对请求错误做些什么
@@ -229,7 +230,7 @@ export default class HttpRequest {
 	Post(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function) {
 		let newParams = objKeySort(params)
 		this.axiosInstance.post(reqUrl,newParams).then((response:any) => {
-			// console.log('Post接收：reqUrl=',reqUrl+'&response=',response)
+			console.log('Post接收：reqUrl=',reqUrl+'&response=',response)
 			if (response.data) {
 				if (response.data.code==0) {
 					if (cb) cb(response.data);
@@ -248,6 +249,8 @@ export default class HttpRequest {
 							duration:2000
 						});
 					},100)
+				}else if(response.data.code==1000){
+					if(errorCb) errorCb()
 				}else{
 					uni.showToast({
 						title:response.data.code+':'+response.data.msg,
@@ -266,7 +269,7 @@ export default class HttpRequest {
 			
 		}).catch((error)=>{
 			if(errorCb) errorCb()
-			// console.log('!!!!!!!!!!errorreqUrl=',reqUrl+'&error=',error)
+			console.log('!!!!!!!!!!errorreqUrl=',reqUrl+'&error=',error)
 			if (error.response && error.response.status > 500) {
 				this.netError(() => {
 					this.Post(reqUrl, params, cb, errorCb);
@@ -284,7 +287,7 @@ export default class HttpRequest {
 		var strParams = p.join('&');
 		
 		this.axiosInstance.get(reqUrl+'?'+strParams).then((response) => {
-			// console.log('Get接收：reqUrl=',reqUrl+'&response=',response)
+			console.log('Get接收：reqUrl=',reqUrl+'&response=',response)
 			if (response.data&&response.data.code==0) {
 				if (cb) cb(response.data);
 			}else if(response.data.code==1101||response.data.code==1102){
@@ -298,7 +301,7 @@ export default class HttpRequest {
 				});
 			}
 		}).catch((error)=>{
-			// console.log('!!!!!!!!!!errorreqUrl=',reqUrl+'&error=',error)
+			console.log('!!!!!!!!!!errorreqUrl=',reqUrl+'&error=',error)
 			if (reqUrl == 'dataApi/home'){
 				uni.$emit('refreshHome');
 			}

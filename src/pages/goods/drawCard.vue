@@ -445,14 +445,6 @@ export default class ClassName extends BaseNode {
         if (this.stepIndex  >= this.totalNum || !this.noInterval) {
           return;
         }
-        if(this.picOnloadNum<this.stepIndex+1){
-          uni.showToast({
-              title: '图片正在加载中',
-              icon:'loading',
-              duration: 2000
-          });
-          return;
-        }
         if(this.stepIndex<this.totalNum){
           this.stepIndex++;
         }
@@ -477,15 +469,6 @@ export default class ClassName extends BaseNode {
     this.initEvent();
     this.noInterval = false;
     this.setTimeFnc = setInterval(() => {
-      if(this.picOnloadNum<this.stepIndex+1){
-        uni.showToast({
-            title: '图片正在加载中',
-            icon:'loading',
-            duration: 2000
-        });
-        this.clearIntervalCard()
-        return;
-      }
       if(this.stepIndex<this.totalNum){
         this.stepIndex++;
       }

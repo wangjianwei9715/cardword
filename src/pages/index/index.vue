@@ -149,18 +149,12 @@
 		}
 		onShow(){
 			// 销毁页面重新加载
-			if(uni.getStorageSync('reLaunch')||(this.goodTabCheck==1&&this.goodsList==''&&!this.oneLoad)){
+			if(uni.getStorageSync('reLaunch')){
 				this.showInitEvent(()=>{
 					uni.removeStorageSync('reLaunch')
 				})
 			}
-			if(!this.oneLoad){
-				app.http.Get("dataApi/home", {}, (data: any) => {
-					this.topAddList = data.addList||[];
-					this.hotList.broadCast.list = data.broadCast||[];
-					this.hotList.hot.list = data.hotSeries||[];
-				})
-			}
+			
 			// #ifndef MP
 			if (app.localTest) {
 				//开发环境
