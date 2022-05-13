@@ -40,4 +40,5 @@ export module app{
     export let requestKey = ''; // 邀请key
     export let familial = false;
     export let coupon = 0;  //优惠券张数
+    export let updateDebug = '';  //更新debug模式
 }

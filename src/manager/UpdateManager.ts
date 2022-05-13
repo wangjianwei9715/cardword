@@ -53,8 +53,10 @@ export default class UpdateManager {
       let myapp = getApp().globalData || {};
       myapp.version = widgetInfo.version
       app.version = myapp.version
+      app.updateDebug = uni.getStorageSync("updateDebug");
       console.log('widgetInfo===',widgetInfo);
       HttpRequest.getIns().Get("app/update", {
+        debug:app.updateDebug,
         name: widgetInfo.name,
         version: widgetInfo.version,
         os:uni.getSystemInfoSync().platform

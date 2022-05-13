@@ -19,7 +19,7 @@ export default Vue.extend({
       // app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
       
     } 
-    
+    app.needPushIdentifier = uni.getStorageSync("needPushIdentifier") == 1 ? false : true;
     const loginToken = uni.getStorageSync("token");
     if (loginToken) {
       app.token = JSON.parse(loginToken);
@@ -77,9 +77,9 @@ export default Vue.extend({
       // #ifdef APP-PLUS
       if (app.needPushIdentifier) {
         let info = plus.push.getClientInfo();
-        
         HttpRequest.getIns().Post("user/bindPushIdentifier", {id: info.clientid},()=>{
           app.needPushIdentifier = false;
+          uni.setStorageSync("needPushIdentifier", 1);
         });
       }
       if (app.payload != "") {

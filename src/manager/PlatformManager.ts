@@ -10,7 +10,7 @@ export default class PlatformManager {
 	imei = '';
 	deviceID = '';
 	isIos = false;
-
+	urlIndex = 0;
 	private constructor() {
 		this.deviceID = this.systemInfo.deviceId;
 		console.log('########Platform:', this.systemInfo);
@@ -199,105 +199,109 @@ export default class PlatformManager {
 		// #endif
 	}
 	appLuanch(loginToken: any, cb?: Function) {
-		if (!app.localTest) {
+		let launchData = uni.getStorageSync("launchData");
+		if (launchData!='' && (Math.round(new Date().getTime()/1000)-launchData.time<3600)){
+			this.setLaunchData(launchData)
+		} else if (!app.localTest) {
 			// launchUrl：             储存打乱顺序后的launch
 			// configLaunchUrl：       access保存的launch数据
 			let launchUrl: { [x: string]: any } = {};
-			let launchSuccess = false;
-			
 			let configLaunchUrl = uni.getStorageSync("configLaunchUrl");
-			app.service_url = uni.getStorageSync('launchUrl')
+			app.service_url = uni.getStorageSync('launchUrl') || ''
 			if (configLaunchUrl) {
-				launchUrl = configLaunchUrl.sort(() => {
-					return Math.random() - 0.5;
-				});
+				launchUrl = configLaunchUrl.sort(() => { return Math.random() - 0.5; });
 			} else {
-				launchUrl = app.launch_url.sort(() => {
-					return Math.random() - 0.5;
-				});
+				launchUrl = app.launch_url.sort(() => { return Math.random() - 0.5; });
 			}
-			let params = {
-				name: "卡世界",
-				version: app.version,
-				uuid: app.platform.deviceID,
-			};
-
-			for (let i in launchUrl) {
-				if (!launchSuccess) {
-					let url = launchUrl[i];
-					if (url.charAt(url.length - 1) == "/") {
-						url = url.slice(0, url.length - 1);
-					}
-					if (app.service_url != '') {
-						url = app.service_url
-					}
-					app.http.Post(url + "/api/app/launch", params, (res: any) => {
-						console.log("post  /api/app/launch=", res);
-						launchSuccess = true;
-						app.service_url = url;
-						
-						// bussinessApiDomain     主接口域名
-						// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
-						let bussinessApiDomain = res.app.bussinessApiDomain;
-						let dataApiDomain = res.app.dataApiDomain;
-
-						if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
-							bussinessApiDomain = bussinessApiDomain.slice(0,bussinessApiDomain.length - 1);
-						}
-						if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
-							dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
-						}
-						app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
-						app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
-
-						if (cb) cb()
-						uni.setStorageSync("launchConfig", res);
-						uni.setStorageSync('launchUrl', url)
-						// 延时调用避免一开始接收不到
-						setTimeout(()=>{
-							uni.$emit('appluanchOver')
-						},200)
-						// #ifdef APP-PLUS
-						app.update_url = url + "/api/";
-						if (app.platform.systemInfo.platform == 'ios') {
-							app.iosPlatform = app.platform.validateVersion(app.version,res.app.pingguo)
-						}
-						app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
-						// #endif
-
-						if (loginToken) {
-							let params = {
-								uuid: app.platform.deviceID,
-								os: app.platform.systemInfo.platform,
-								device: app.platform.systemInfo.brand + app.platform.systemInfo.model,
-							};
-							HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
-								console.log("access=====", data);
-								app.data = data.data;
-								app.opKey = data.opKey;
-								app.coupon = data.data.coupon;
-								uni.setStorageSync("app_opk", data.opKey);
-								if (data.app) {
-									app.socketInfo = data.app;
-								}
-								if (data.app.launchDomain && data.app.launchDomain != "") {
-									uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
-								}
-								uni.$emit("loginSuccess");
-							});
-						}
-					});
-					break;
-				} else {
-					break;
-				}
-			}
-			console.log("bussinessApiDomain==========", app.bussinessApiDomain);
-			console.log("dataApiDomain==========", app.dataApiDomain);
+			let params = { name: "卡世界", version: app.version, uuid: app.platform.deviceID, };
+			this.postLaunch(loginToken,launchUrl,params,()=>{ if(cb) cb() })
 		}
 		
 	}
-	
+	postLaunch(loginToken:any,launchUrl:any,params:any,cb:Function){
+		let url = launchUrl[this.urlIndex];
+		if (url.charAt(url.length - 1) == "/") { url = url.slice(0, url.length - 1); }
+		if (app.service_url != '') { url = app.service_url }
+		app.http.Post(url + "/api/app/launch", params, (res: any) => {
+			console.log("post  /api/app/launch=", res);
+			app.service_url = url;
+			// bussinessApiDomain     主接口域名
+			// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
+			let bussinessApiDomain = res.app.bussinessApiDomain;
+			let dataApiDomain = res.app.dataApiDomain;
+
+			if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
+				bussinessApiDomain = bussinessApiDomain.slice(0,bussinessApiDomain.length - 1);
+			}
+			if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
+				dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
+			}
+			app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
+			app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
+
+			if (cb) cb()
+			uni.setStorageSync("launchConfig", res);
+			uni.setStorageSync('launchUrl', url)
+			// 延时调用避免一开始接收不到
+			setTimeout(()=>{ uni.$emit('appluanchOver') },200)
+			// #ifdef APP-PLUS
+			app.update_url = url + "/api/";
+			if (app.platform.systemInfo.platform == 'ios') {
+				app.iosPlatform = app.platform.validateVersion(app.version,res.app.pingguo)
+			}
+			app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
+			// #endif
+			uni.setStorageSync("launchData", {
+				service_url:app.service_url,
+				bussinessApiDomain:app.bussinessApiDomain,
+				dataApiDomain:app.dataApiDomain,
+				update_url:app.update_url,
+				time:Math.round(new Date().getTime()/1000)
+			});
+			if (loginToken) this.getAccess()
+			
+			console.log("bussinessApiDomain==========", app.bussinessApiDomain);
+			console.log("dataApiDomain==========", app.dataApiDomain);
+		},()=>{
+			let launchData = uni.getStorageSync("launchData");
+			if(launchData!=''){
+				this.setLaunchData(launchData)
+			} else if (this.urlIndex<3){
+				this.urlIndex += 1;
+				this.postLaunch(loginToken,launchUrl,params,()=>{
+					if(cb) cb()
+				})
+			}
+		});
+	}
+	setLaunchData(data:any){
+		app.service_url = data.service_url;
+		app.bussinessApiDomain = data.bussinessApiDomain;
+		app.dataApiDomain = data.dataApiDomain;
+		app.update_url = data.update_url;
+		setTimeout(()=>{
+			uni.$emit('appluanchOver')
+		},200)
+	}
+	getAccess(){
+		let params = {
+			uuid: app.platform.deviceID,
+			os: app.platform.systemInfo.platform,
+			device: app.platform.systemInfo.brand + app.platform.systemInfo.model,
+		};
+		HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
+			console.log("access=====", data);
+			app.data = data.data;
+			app.opKey = data.opKey;
+			app.coupon = data.data.coupon;
+			uni.setStorageSync("app_opk", data.opKey);
+			if (data.app) app.socketInfo = data.app;
+			if (data.app.launchDomain && data.app.launchDomain != "") {
+				uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
+			}
+			uni.$emit("loginSuccess");
+		});
+	}
 	// 获取粘贴板内容
 	getInvitationClipboard(cb?:Function){
 		if (plus.os.name == 'iOS') {  

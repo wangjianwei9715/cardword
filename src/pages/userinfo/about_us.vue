@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="about-top"> 
 			<view class="about-icon"></view>
-			<view class="about-ver">V {{version}}</view>
+			<view class="about-ver" @click="onClickDebug">V {{version}} {{app.updateDebug == 0 ? '' : 'debug'}}</view>
 		</view>
 		<view class="orther-setting">
 			<view class="setting" v-for="item in settingTab" :key="item.id" @click="onClickNavigateto(item)">
@@ -30,6 +30,8 @@
 		
 		]
 		version = ''
+		app = app;
+		debugNum = 0;
 		onLoad(query:any) {
 			this.version = app.version
 		}
@@ -38,6 +40,21 @@
 				uni.navigateTo({
 					url:item.url
 				})
+			}
+		}
+		onClickDebug(){
+			console.log(this.debugNum)
+			if(this.debugNum<9){
+				this.debugNum++;
+			}else{
+				this.debugNum = 0;
+				app.updateDebug = app.updateDebug == '' ? 'on' : '';
+				uni.setStorageSync("updateDebug", app.updateDebug);
+				uni.showToast({
+					title:'debug模式'+(app.updateDebug == 'on' ? '开启' : '关闭'),
+					icon:'none'
+				})
+				console.log('app.updateDebug',app.updateDebug)
 			}
 		}
 	}

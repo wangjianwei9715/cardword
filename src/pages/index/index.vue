@@ -122,7 +122,6 @@
 			
 			let listeners = ['BackLogin']
 			this.register(listeners);
-			this.getLuanchApp()
 			
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
@@ -245,6 +244,7 @@
 				if(res.data.newHitNum>0) this.showWinning();
 			})
 		}
+		
 		showWinning(){
 			this.showWinningCrad = true;
 			uni.hideTabBar()
@@ -255,6 +255,7 @@
 		}
 		initEvent(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
+				uni.hideLoading()
 				// #ifndef MP
 				this.topAddList = data.addList||[];
 				this.hotList.broadCast.list = data.broadCast||[];
@@ -270,24 +271,6 @@
 				title:'商品正在筹备中',
 				icon:'none'
 			})
-		}
-		getLuanchApp(){
-			if(app.localTest){
-				return
-			}
-			let loginToken = uni.getStorageSync("token");
-			this.getLuanchFnc = this.scheduler(()=>{
-				uni.showLoading({
-					title:'加载中'
-				})
-				if(app.service_url==''||app.dataApiDomain==''){
-					uni.removeStorageSync("launchConfig");
-					app.platform.appLuanch(loginToken)
-				}else{
-					uni.hideLoading()
-					clearInterval(this.getLuanchFnc);
-				}
-			},1)
 		}
 		setNewProgress(list:any){
 			for(let i in list){
