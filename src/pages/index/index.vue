@@ -107,7 +107,6 @@
 		updateMsg = '暂无';
 		wgtUpdate = false;
 		wgtUpNum = 0;
-		getLuanchFnc:any;
 		onNetWorkFunc:any;
 		showPaySuccess = false;
 		version = '';
@@ -136,12 +135,10 @@
 			this.onEventUI("showPaySuccess", (res) => {
 				this.showPaySuccess = true;
 			});
-			this.onEventUI('appluanchOver',()=>{
-				if(this.oneLoad){
-					this.version = app.version
-					this.showInitEvent()
-					this.oneLoad = false;
-				}
+			uni.$on('appluanchOver',()=>{
+				this.version = app.version
+				this.showInitEvent()
+				this.oneLoad = false;
 			})
 			this.onEventUI('refreshHome',()=>{
 				this.showInitEvent()
@@ -154,7 +151,6 @@
 					uni.removeStorageSync('reLaunch')
 				})
 			}
-			
 			// #ifndef MP
 			if (app.localTest) {
 				//开发环境
@@ -190,7 +186,6 @@
 			// #endif
 		}
 		onHide(){
-			clearInterval(this.getLuanchFnc);
 			uni.offNetworkStatusChange((res)=>{})
 		}
 		//   下拉刷新
