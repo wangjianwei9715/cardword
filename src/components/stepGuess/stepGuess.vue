@@ -7,7 +7,7 @@
 					<image @click="onClickGuessRules" class="guess-help" src="../../pages/act/static/goldCard/help.png"></image>
 				</view>
 				<view class="guess-right">
-					<view class="guess-res">预测{{guessState==0?'中':(state==1?'成功'+guessNum+'组':'失败')}}({{guessName}})</view>
+					<view class="guess-res">预测{{guessState==0?'中':(guessState==1?'成功'+guessNum+'组':'失败')}}({{guessName}})</view>
 				</view>
 			</view>
 			<view v-if="surplusNum>0" class="order-guess-free">
@@ -22,7 +22,7 @@
 		
 
 
-		<view class="guess-num-box" v-if="freeNum>0&&state==1">
+		<view class="guess-num-box" v-if="freeNum>0&&state==2">
 			<view class="guess-num-center">
 				<image class="guess-mini" src="../../pages/act/static/guess/guess_mini.png"></image>
 				可免单{{freeNum}}组

@@ -53,8 +53,6 @@
 			});  
 		}
 		onClickLive(item:any){
-			if(item.state == 0) return;
-
 			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		onClickHotTab(item:any,name:string){
