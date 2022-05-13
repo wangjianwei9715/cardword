@@ -1193,11 +1193,12 @@ page {
 }
 
 .heji-money2-b {
+  height:40rpx;
   font-size: 29rpx;
   font-family: PingFangSC-Regular;
   font-weight: 500;
   color: $btn-red;
-  line-height: 28rpx;
+  line-height: 40rpx;
   margin-left: 12rpx;
 }
 .heji-money2-b text{
@@ -1286,10 +1287,10 @@ page {
 }
 
 .heji-money-pay {
-  height:30rpx;
+  height:60rpx;
   margin-left: 16rpx;
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
   line-height: 80rpx;
 }
 
