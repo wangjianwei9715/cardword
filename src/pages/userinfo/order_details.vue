@@ -60,7 +60,7 @@
 
 			<!-- 预测卡密 -->
 			<!-- order 订单 state 订单状态  guessFreeNum 剩余免单次数 guessNum 预测正确数量 guessName 预测球队名字-->
-			<stepGuess v-if="guessType" :state="orderData.state" :guessState="guessState" :order="true" :freeNum="guessFreeNum" :guessNum="guessNum" :guessName="guessName" :surplusNum="surplusNum" :guessSuccess="guessSuccess" @onClickSuccessHide="onClickSuccessHide"/>
+			<stepGuess v-if="guessType" :state="orderData.good.state" :guessState="guessState" :order="true" :freeNum="guessFreeNum" :guessNum="guessNum" :guessName="guessName" :surplusNum="surplusNum" :guessSuccess="guessSuccess" @onClickSuccessHide="onClickSuccessHide"/>
 			<!-- 预测卡密 -->
 
 			<!-- 我的编号 -->
@@ -279,7 +279,13 @@
 		// 获取解锁卡密效果
 		getNoShowList(){
 			let orderRich = uni.getStorageSync("orderRich");
-			if(!orderRich) return;
+			if(!orderRich) {
+				uni.showToast({
+					title:'卡密特效未开启',
+					icon:'none'
+				})
+				return
+			};
 
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30},(res:any)=>{
 				if(res.total>0){
