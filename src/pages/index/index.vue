@@ -135,10 +135,13 @@
 			this.onEventUI("showPaySuccess", (res) => {
 				this.showPaySuccess = true;
 			});
-			uni.$on('appluanchOver',()=>{
-				this.version = app.version
-				this.showInitEvent()
-				this.oneLoad = false;
+			uni.$once('appluanchOver',()=>{
+				if(this.oneLoad){
+					console.log('a2ppluanchOver')
+					this.version = app.version
+					this.showInitEvent()
+					this.oneLoad = false;
+				}
 			})
 			this.onEventUI('refreshHome',()=>{
 				this.showInitEvent()
@@ -150,6 +153,13 @@
 				this.showInitEvent(()=>{
 					uni.removeStorageSync('reLaunch')
 				})
+			}
+			// 避免部分机型uni.$once监听不到
+			if(this.oneLoad && uni.getStorageSync('appluanchOver') == 1){
+				uni.removeStorageSync('appluanchOver')
+				this.version = app.version
+				this.showInitEvent()
+				this.oneLoad = false;
 			}
 			// #ifndef MP
 			if (app.localTest) {

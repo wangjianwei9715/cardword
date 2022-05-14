@@ -243,7 +243,8 @@ export default class PlatformManager {
 			uni.setStorageSync("launchConfig", res);
 			uni.setStorageSync('launchUrl', url)
 			// 延时调用避免一开始接收不到
-			setTimeout(()=>{ uni.$emit('appluanchOver') },200)
+			uni.setStorageSync('appluanchOver', 1)
+			setTimeout(()=>{ uni.$emit('appluanchOver') },500)
 			// #ifdef APP-PLUS
 			app.update_url = url + "/api/";
 			if (app.platform.systemInfo.platform == 'ios') {
@@ -283,9 +284,10 @@ export default class PlatformManager {
 		// #ifdef APP-PLUS
 		app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
 		// #endif
+		uni.setStorageSync('appluanchOver', 1)
 		setTimeout(()=>{
 			uni.$emit('appluanchOver')
-		},200)
+		},500)
 		if (loginToken) this.getAccess()
 	}
 	getAccess(){
