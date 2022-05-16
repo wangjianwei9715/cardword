@@ -28,7 +28,8 @@
 			<view v-show="calendaList!=''" class="goods-box">
 				<view class="goods-index" v-for="(item,index) in calendaList" :key="index" >
 					<view v-if="index==0 || (index>0 && getDateFormatS(item.public_day)!=getDateFormatS(calendaList[index-1].public_day))" class="goods-month">{{getDateFormatS(item.public_day)}}</view>
-					<image class="goods-pic" :lazy-load="true" @click="onClickGoDetail(item,index)" mode="aspectFit" :src="decodeURIComponent(item.pic_cover)"></image>
+					<muqian-lazyLoad class="goods-pic" @click="onClickGoDetail(item,index)" :src="decodeURIComponent(item.pic_cover)" >
+					</muqian-lazyLoad>
 					<view class="goods-right">
 						<view class="goods-right-desc" @click="onClickGoDetail(item,index)">
 							<view class="goods-desc-title">{{item.title}}</view>

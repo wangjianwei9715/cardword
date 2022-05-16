@@ -70,7 +70,11 @@ import { Component } from "vue-property-decorator";
 					this.noMoreData = true;
 				}
 				if(this.currentPage==1) this.goodsList = []
-				if(data.total == 0) this.empty = true;
+				if(data.total == 0){ 
+					this.empty = true
+				}else{
+					this.empty = false
+				};
 
 				if(data.list){
 					this.goodsList = this.goodsList.concat(data.list);

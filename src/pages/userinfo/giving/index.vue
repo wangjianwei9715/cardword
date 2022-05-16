@@ -105,7 +105,11 @@
 					this.noMoreData = true;
 				}
 				if(this.currentPage == 1) this.codeList = [];
-				if(data.total == 0) this.empty = true;
+				if(data.total == 0) {
+					this.empty = true
+				}else{
+					this.empty = false
+				};
 				if(data.list){
 					this.codeList = this.codeList.concat(data.list);
 				}

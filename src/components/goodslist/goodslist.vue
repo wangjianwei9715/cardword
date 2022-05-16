@@ -15,8 +15,7 @@
 				<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic">
-						<image :lazy-load="true" class="goodslist-pic-image"
-							:src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
+						<muqian-lazyLoad class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
 					</view>
 					<view class="goodslist-title">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
@@ -74,31 +73,19 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		getGoodsPintuan = getGoodsPintuan
-		@Prop({
-			default: []
-		})
+		@Prop({ default: [] })
 		goodsList: any;
-		@Prop({
-			default: ''
-		})
+		@Prop({ default: '' })
 		topAddList ? : any;
-		@Prop({
-			default: false
-		})
+		@Prop({ default: false })
 		indexSwiper ? : any;
-
-		@Prop({
-			default: false
-		})
+		@Prop({ default: false })
 		pagescroll: any;
-		@Prop({
-			default: false
-		})
+		@Prop({ default: false })
 		presell: any;
-		@Prop({
-			default: false
-		})
+		@Prop({ default: false })
 		mini: any;
+
 		dateFormatMSHMS = dateFormatMSHMS;
 		getGoodsImg = getGoodsImg;
 		screenHeight = uni.getSystemInfoSync().windowHeight

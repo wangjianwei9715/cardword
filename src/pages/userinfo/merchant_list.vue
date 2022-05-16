@@ -4,8 +4,8 @@
 		<view class="detail-bg" v-if="publisher != ''">
 			<view class="business" v-for="(item) in publisher" :key="item.id">
 				<view class="business-top uni-flex" @click="onClickShops(item)">
-					<image :src="item.logo != '' ? decodeURIComponent(item.logo) : defaultAvatar" class="business-avart"
-						mode="aspectFill" />
+					<muqian-lazyLoad class="business-avart" :src="item.logo != '' ? decodeURIComponent(item.logo) : defaultAvatar" :borderRadius="'50%'">
+					</muqian-lazyLoad>
 					<view class="business-info">
 						<view class="nameInfo uni-flex">
 							<text>{{item.name}}</text>
@@ -31,7 +31,8 @@
 						<view class="scroll-goodslist-item" v-for="(goodsItem) in item.goodData"
 							:key='goodsItem.goodCode' @click="toPage(goodsItem)">
 							<view class="picBlock">
-								<image :src="decodeURIComponent(goodsItem.pic)" mode="aspectFill" />
+								<muqian-lazyLoad class="picBlock-pic" :src="decodeURIComponent(goodsItem.pic)" >
+								</muqian-lazyLoad>
 								<view class="angleMark"
 									:style="{backgroundColor:goodsItem.status==1?'#F5162B':'#4f8bf5'}">
 									{{goodsItem.status==1?'在售':'已拼成'}}
@@ -301,12 +302,10 @@
 				width: inherit;
 				height: 161rpx;
 				position: relative;
-
-				image {
+				.picBlock-pic{
 					width: inherit;
 					height: inherit;
 				}
-
 				.angleMark {
 					padding: 0 13rpx;
 					height: 29rpx;
