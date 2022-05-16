@@ -54,9 +54,9 @@
 					</view>
 				</view>
 				
-				<view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-04-24', '2022-05-13')">
+				<!-- <view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-04-24', '2022-05-13')">
 					<view class="top-ref"></view>
-				</view>
+				</view> -->
 
 				<!-- 卡豆商城 热门系列 拆卡围观 -->
 				<tabHot :hotList="hotList" />

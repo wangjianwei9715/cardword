@@ -58,7 +58,11 @@
 		getFollowList() {
 			app.http.Get("me/follows/list", this.queryParams, (res: any) => {
 				this.totalPage = res.totalPage;
-				if(res.total == 0) this.empty = true;
+				if(res.total == 0){
+					this.empty = true
+				}else{
+					this.empty = false
+				};
 				if (this.queryParams.pageIndex === 1) this.followList = [];
 				const dataList = (res.list || []).map((item: any) => {
 					item.follow = true;
