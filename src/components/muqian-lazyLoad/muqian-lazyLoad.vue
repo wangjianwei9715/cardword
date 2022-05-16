@@ -79,7 +79,7 @@
 			//当图片加载过快(存在缓存)至少显示多少秒加载动画
 			minTimeOut: {
 				type: String || Number,
-				default: '300'
+				default: '0'
 			},
 			//当图片到屏幕哪个位置的时候开始加载 单位px 可以是负数
 			showDistance: {

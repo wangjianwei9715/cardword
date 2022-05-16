@@ -220,7 +220,7 @@
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
 				setTimeout(()=>{
 					this.clickToPay = res.data.state==1? true :false
-				},3000)
+				},1000)
 				if(res.data.wait){
 					uni.showLoading({ title:'数据加载中请稍后' })
 					// 继续请求数据
