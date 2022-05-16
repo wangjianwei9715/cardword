@@ -117,6 +117,7 @@
 		} = [];
 		scrollId = "";
 		noMoreData = false;
+		hasQueryData:boolean=false;
 		scrollIdSt: any = 0;
 		seriesList: any = [];
 		clickSerieItem: any = {};
@@ -152,10 +153,11 @@
 					if (query.data.end) {
 						this.noMoreData = true;
 					}
+					this.hasQueryData=true
 				}, 10);
 				this.reqNewSeries();
 			} else {
-				//   this.reqNewData("default");
+				  this.reqNewData("default");
 				this.reqNewSeries();
 			}
 			
@@ -189,12 +191,13 @@
 			});
 		}
 		onClickListSortTabs(data: any) {
-			this.tagParams = data;
-			this.reqSearchList();
+			this.tagParams = data.data;
+			if(data.refresh) this.reqSearchList();
 		}
 		onClickListTabs(index: number) {
 			if (this.classifyOpt == index) return;
 			this.classifyOpt = index;
+			
 			this.reqSearchList();
 		}
 		onClickJumpDetails(id: any) {

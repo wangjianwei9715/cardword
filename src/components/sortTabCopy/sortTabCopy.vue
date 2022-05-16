@@ -70,22 +70,22 @@ export default class ClassName extends BaseComponent {
         this.copyData[i].odType = 0;
       }
       item.odType = od==2?item.odType=0:od+1;
-      this.sendData();
+      this.sendData(true);
     }
   }
   selectMenuClick(item: any, index: number) {
     this.selectItem.index = index;
     this.selectItem.selectShow = false; //关闭下拉
     this.isDefault = false;
-    this.sendData();
+    this.sendData(true);
   }
   rest() {
     this.isDefault = true;
     this.copyData = JSON.parse(JSON.stringify(this.sortData));
-    this.sendData();
+    this.sendData(true);
   }
   //数据
-  sendData() {
+  sendData(refresh:boolean=false) {
     let data: any = {};
     for (let i: number = 0, len: number = this.copyData.length; i < len; i++) {
       if (!this.copyData[i].key) continue; //无key跳过
@@ -106,7 +106,7 @@ export default class ClassName extends BaseComponent {
         }`;
       }
     }
-    this.$emit("tagChange", data);
+    this.$emit("tagChange", {data,refresh});
   }
   formatChild(item: any) {
     return item.children[item.index].value;
