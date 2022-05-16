@@ -164,20 +164,25 @@ export default Vue.extend({
       });
     });
   },
+  
   onShow() {
     console.log("App Show");
     // #ifdef APP-PLUS
-    let args = plus.runtime.arguments;
-    if (args) {
-      if (args.indexOf("goodsdetails") != -1) {
-        let index = args.indexOf("=") + 1;
-        let id = args.substring(index);
-        plus.runtime.arguments = null;
-        uni.navigateTo({
-          url: "/pages/goods/goods_details?id=" + id,
-        });
+    setTimeout(()=>{
+      console.log('plus.runtime.arguments=',plus.runtime.arguments)
+      let args = plus.runtime.arguments;
+      if (args) {
+        if (args.indexOf("goodsdetails") != -1) {
+          let index = args.indexOf("=") + 1;
+          let id = args.substring(index);
+          plus.runtime.arguments = null;
+          uni.navigateTo({
+            url: "/pages/goods/goods_details?id=" + id,
+          });
+        }
       }
-    }
+    },500)
+    
     // #endif
   },
   onHide() {

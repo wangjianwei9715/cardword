@@ -169,7 +169,13 @@
 			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm" @click="onClickCopyInviteKey">复制口令给新人</view>
 			<view v-else class="btn-confirm" :class="{'random-confirm':getSelectType()}" @click="onClickBuy()">{{goodsData.isSelect?'选择编号':'立即购买'}}</view>
 		</view>
-		<view class="btn-contented" v-else-if="goodsState>=2">
+		<view class="btn-contented" :class="{'joined':joined}" v-else-if="goodsState>=2">
+			<view class="btn-content-left" v-if="joined">
+				<view class="btn-content-left-index" @click="onClickTipBtn({id:2})">
+					<image class="icon-order" :src="'../../static/goods/v2/icon_order.png'" mode="aspectFill"/>
+					<view class="btn-content-left-index-name">我的卡密</view>
+				</view>
+			</view>
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
 			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
 		</view>
@@ -284,6 +290,7 @@
 		// 底部抽屉
   		showDrawer = false;
 		freeNoNum = 0;
+		joined = false;
 		onLoad(query:any) {
 			// #ifndef MP
 			this.goodsId = query.id;
@@ -363,7 +370,8 @@
 					// 数据详情
 					this.goodsData = data.good;
 					// 支付方式
-					this.payChannel = data.payChannel || []
+					this.payChannel = data.payChannel || [];
+					this.joined = data.joined
 					if(data.joined){
 						this.tipBtn = [{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'},{id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'}]
 					}
@@ -1556,6 +1564,12 @@
 			border-radius:$btn-radius;
 			font-weight: $btn-weight;
 		}
+	}
+	.joined .btn-pt{
+		margin-right: 10rpx !important; 
+	}
+	.joined .btn-ck{
+		margin-left: 10rpx !important;
 	}
 	.movable-area{
 		position: fixed;

@@ -3,7 +3,7 @@
 		<view class="list-index" @click="onClickWinningSwiper(item.index)" v-for="(item,index) in codeList" :key="index">
 			<view class="list-pic-box">
 				<view class="icon-new" v-show="item.new"></view>
-				<image class="list-pic" mode="aspectFit" :src="decodeURIComponent(item.pic)"/>
+				<muqian-lazyLoad class="list-pic" :src="decodeURIComponent(item.pic)"/>
 			</view>
 			<view class="list-title">
 				<view class="list-pic-shadow"></view>

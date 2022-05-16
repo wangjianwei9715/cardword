@@ -3,7 +3,7 @@
 		<view class="orderlist-index" v-for="item in orderList" :key="item.code" >
 			<view class="orderlist-index-header">
 				<view class="header-left" @click="onClickJumpMerchant(item.seller.id)">
-					<image class="seller-image" :src="decodeURIComponent(item.seller.avatar)" mode="aspectFill"></image>
+					<muqian-lazyLoad class="seller-image" :src="decodeURIComponent(item.seller.avatar)" :borderRadius="'50%'"></muqian-lazyLoad>
 					<view class="seller-name">{{item.seller.name}}</view>
 				</view>
 				<view class="header-right">
@@ -12,7 +12,7 @@
 				</view>
 			</view>
 			<view class="orderlist-index-center" @click="onClickJumpUrl(item.code)">
-				<image class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic))" mode="aspectFill"></image>
+				<muqian-lazyLoad class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic))"></muqian-lazyLoad>
 				<view class="goods-content">
 					<view class="title">{{item.good.title}}</view>
 					<view class="state" :class="{'no-bg':item.good.stateName=='未中卡'}">{{item.good.stateName=='未中卡'?'':item.good.stateName}}</view>
