@@ -112,6 +112,7 @@
 		version = '';
 		oneLoad = true;
 		showWinningCrad = false;
+		greeted = false;
 		onLoad(query:any) {
 
 			if (app.update.apkNeedUpdate) {
@@ -232,14 +233,13 @@
 			this.initEvent(()=>{
 				if(cb) cb()
 			})
-			if(app.token.accessToken != ''){
-				// 获取是否中卡信息
-				this.getGreet()
-			}
 		}
 		// 获取是否中卡信息
 		getGreet(){
+			if(this.greeted) return;
+			// 只获取一次
 			app.http.Get('me/greet',{},(res:any)=>{
+				this.greeted = true;
 				if(res.data.newHitNum>0) this.showWinning();
 			})
 		}
@@ -259,6 +259,10 @@
 				this.topAddList = data.addList||[];
 				this.hotList.broadCast.list = data.broadCast||[];
 				this.hotList.hot.list = data.hotSeries||[];
+				if(app.token.accessToken != ''){
+					// 获取是否中卡信息
+					this.getGreet()
+				}
 				// #endif
 				this.reqNewData(()=>{
 					if(cb) cb()
