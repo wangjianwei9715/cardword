@@ -62,12 +62,13 @@
 		    this.reqNewData() 
 		}
 		getNameReward(name:string){
-			let rewardIndex = name.indexOf('、');
-			if(rewardIndex == -1){
+			let rewardIndex = name.lastIndexOf('、');
+			if(rewardIndex == -1 ){
 				return name
 			}else{
-				let reward = name.split('、');
-				return reward[0]+'、<text style="color:#ef3333">'+reward[1]+'</text>'
+				let str = name.substring(0,rewardIndex);
+				let reward = name.substring(rewardIndex+1)
+				return str+'、<text style="color:#ef3333">'+reward+'</text>'
 			}
 		}
 		onClickLookCard(item:any){

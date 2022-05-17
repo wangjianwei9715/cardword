@@ -106,7 +106,7 @@
 			this.$emit("send", id);
 		}
 		getSelectType(item: any) {
-			return item.pintuan_type == 11 || item.pintuan_type == 10
+			return item.pintuan_type == 10 || item.pintuan_type == 11 || item.pintuan_type == 12
 		}
 		onClickSellerShop(id: number) {
 			const path = `/pages/userinfo/merchant_shopsV2`;
