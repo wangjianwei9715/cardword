@@ -197,11 +197,13 @@
 		}
 
 		.muqain-load {
-			width: 0rpx !important;
-			height: 0rpx !important;
+			width: 1rpx !important;
+			height: 1rpx !important;
 			position: absolute;
-			left:0;
-			top:0;
+			left:50%;
+			top:50%;
+			margin-top: -0.5rpx;
+			margin-left: -0.5rpx;
 		}
 	}
 </style>

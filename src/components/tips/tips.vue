@@ -30,10 +30,12 @@
 		}
 		mounted(){//挂载到实例上去之后调用
 			this.tipsInterval()
-			const query = uni.createSelectorQuery();
-			query.select('.bottom-tips').boundingClientRect(data => {
-				this.tipsHeight = data.height
-			}).exec();
+			setTimeout(()=>{
+				const query = uni.createSelectorQuery();
+				query.select('.bottom-tips').boundingClientRect(data => {
+					this.tipsHeight = data.height || 0
+				}).exec();
+			},200)
 
 		}
 		destroyed(){
