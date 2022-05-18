@@ -51,7 +51,7 @@
 					<view class="time">{{dateFormat(item.time)}}</view>
 				</view>
 
-				<view class="right"><image class="right-img" :src="getGoodsImg(decodeURIComponent(item.pic))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></image></view>
+				<view class="right"><muqian-lazyLoad class="right-img" :src="getGoodsImg(decodeURIComponent(item.pic))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
 			</view>
 		</view>
 

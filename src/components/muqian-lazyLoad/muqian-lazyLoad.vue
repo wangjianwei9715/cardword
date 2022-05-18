@@ -7,7 +7,7 @@
 				}"></image>
 				
 		<!-- 加载成功 -->
-		<image class="muqian-image" @load="load"  @error="error" v-if="status==1" :src="src" mode="aspectFill" :style="{
+		<image class="muqian-image" @click="onClickLazyImage" @load="load"  @error="error" v-if="status==1" :src="src" :mode="mode" :style="{
 				opacity:isShow?'1':'0',
 				borderRadius,
 				transition: `opacity ${duration/1000}s ${effect}`
@@ -76,6 +76,10 @@
 				type: String,
 				default: ''
 			},
+			mode:{
+				type: String,
+				default: 'aspectFill'
+			},
 			//当图片加载过快(存在缓存)至少显示多少秒加载动画
 			minTimeOut: {
 				type: String || Number,
@@ -132,6 +136,9 @@
 			this.$emit('destroyed')
 		},
 		methods: {
+			onClickLazyImage(){
+				this.$emit('click')
+			},
 			load() {
 				if (this.minTimeOut == 0) {
 					this.isShow = true
