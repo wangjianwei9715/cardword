@@ -157,10 +157,7 @@
 			}
 			// 避免部分机型uni.$once监听不到
 			if(this.oneLoad && uni.getStorageSync('appluanchOver') == 1){
-				uni.removeStorageSync('appluanchOver')
-				this.version = app.version
-				this.showInitEvent()
-				this.oneLoad = false;
+				this.reHomeGet()
 			}
 			// #ifndef MP
 			if (app.localTest) {
@@ -210,6 +207,16 @@
 		//   加载更多数据
 		onReachBottom() {
 		    this.reqNewData() 
+		}
+		reHomeGet(){
+			if(app.dataApiDomain == ''){
+				setTimeout(()=>{ this.reHomeGet() },100);
+				return;
+			}
+			uni.removeStorageSync('appluanchOver')
+			this.version = app.version
+			this.showInitEvent()
+			this.oneLoad = false;
 		}
 		// 监听网络
 		networkStatusChange(){
