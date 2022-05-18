@@ -28,7 +28,7 @@
 
 <script>
 	let loadTimer = null
-	import loadingImage from '../../static/easy-loadimage/loading.gif'
+	import loadingImage from '../../static/easy-loadimage/loading.jpg'
 	import loadFailImage from '../../static/loadFail.png'
 	/**
 	 * 懒加载插件
@@ -190,13 +190,11 @@
 		}
 
 		.muqain-load {
-			width: 100rpx !important;
-			height:100rpx !important;
+			width: 0rpx !important;
+			height: 0rpx !important;
 			position: absolute;
-			left: 50%;
-			top: 50%;
-			margin-top: -50rpx;
-			margin-left: -50rpx;
+			left:0;
+			top:0;
 		}
 	}
 </style>
