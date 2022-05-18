@@ -10,7 +10,7 @@
 					:style="{left:rollX+'px'}">
 					<!-- left:rollX+'px' -->
 					<!-- transform:`translate3d(${rollX}px,0,0)`} -->
-					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="item in personJoinList">
+					<view class="rollItem" :class="{getAewRollItem:item.tp===2}" v-for="(item,index) in personJoinList" :key="index">
 						<image :src="item.userAvatar?decodeURIComponent(item.userAvatar):defaultAvatar" mode=""></image>
 						<view class="name oneLineOver">{{item.tp===2?'获得了':'加入了'}}{{item.name}}</view>
 					</view>
@@ -138,7 +138,7 @@
 			<view class="title">我的欧气码</view>
 			<scroll-view class="oqCodeScroll" scroll-y="true" @scrolltolower='scrolltolower'>
 				<view class="codeContent">
-					<view class="codeItem" v-for="item in codeList">
+					<view class="codeItem" v-for="(item,index) in codeList" :key="index">
 						{{item}}
 					</view>
 				</view>

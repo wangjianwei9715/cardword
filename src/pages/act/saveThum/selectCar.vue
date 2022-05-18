@@ -1,7 +1,7 @@
 <template>
 	<view class="carContent">
 		<view class="tips">可选择最近获得的10条金色卡密</view>
-		<view class="cmItem " v-for="item in cardList" @click="cardClick(item)">
+		<view class="cmItem " v-for="(item,index) in cardList" :key="index" @click="cardClick(item)">
 			<view class="cmItem-content">
 				<view class="goldCard">{{item.noName}}</view>
 				<view class="likeNum">点赞数: {{item.likeNum}}</view>

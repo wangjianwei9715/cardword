@@ -10,7 +10,7 @@
 			<view class="prizeCard-prize">
 				<view class="prizeName">{{item.name}}</view>
 				<view class="uni-flex">
-					<image v-for="(imgItem,imgIndex) in item.pic" class="prizeCard-prizeImage"
+					<image v-for="(imgItem,imgIndex) in item.pic" :key="imgIndex" class="prizeCard-prizeImage"
 						:src='decodeURIComponent(imgItem)' @click.stop="previewImg(imgIndex,item.pic)">
 					</image>
 				</view>

@@ -294,24 +294,7 @@
 		onLoad(query:any) {
 			// #ifndef MP
 			this.goodsId = query.id;
-			this.getGoodData(this.goodsId)
-			uni.getNetworkType({
-				success: (res)=> {
-					if(res.networkType=='none'){
-						uni.showModal({
-							title: '提示',
-							content: '当前无网络服务，请开启网络',
-							success: function (res) {
-								if (res.confirm) {
-									console.log('用户点击确定');
-								} else if (res.cancel) {
-									console.log('用户点击取消');
-								}
-							}
-						});
-					}
-				}
-			});
+			this.getGoodData(this.goodsId);
 			this.onEventUI('confirmorderPay',()=>{
 				this.getGoodData(this.goodsId)
 			})
@@ -323,18 +306,20 @@
 				this.getProgress()
 			}	
 			// #endif
+			uni.getNetworkType({
+				success: (res)=> {
+					if(res.networkType=='none'){
+						uni.showModal({
+							title: '提示',
+							content: '当前无网络服务，请开启网络',
+							success: function (res) {}
+						});
+					}
+				}
+			});
 		}
 		onHide(){
-			uni.offNetworkStatusChange((res)=>{
-				if(res.isConnected){
-					uni.showLoading({
-						title: '加载中'
-					});
-					setTimeout(()=>{
-						uni.hideLoading();
-					},1000)
-				}
-			})
+			uni.offNetworkStatusChange((res)=>{});
 		}
 		// 数据详情赋值
 		getGoodData(id:any){
@@ -351,7 +336,6 @@
 					})
 					return;
 				}
-				uni.hideLoading();
 				// 是否收藏
 				this.favorType = data.favorite<=0?false:true;
 				// 数据详情
@@ -499,9 +483,7 @@
 			}
 		}
 		onClickBack(){
-			uni.navigateBack({
-				delta: 1
-			});
+			uni.navigateBack({ delta: 1 });
 		}
 		onClickShops(){
 			// #ifndef MP

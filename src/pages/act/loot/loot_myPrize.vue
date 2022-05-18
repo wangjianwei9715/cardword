@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="prizeContent">
-			<view class="prizeItem" v-for="item in prizeList">
+			<view class="prizeItem" v-for="(item,index) in prizeList" :key="index">
 				<view class="prizeItem-top">
 					<image class="prize-left" :src='decodeURIComponent(item.award_pic)'></image>
 					<view class="prize-right">

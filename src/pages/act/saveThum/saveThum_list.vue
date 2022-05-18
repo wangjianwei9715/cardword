@@ -20,7 +20,7 @@
 			<image src="../../../static/act/saveThum/right.png" mode=""></image>
 		</view>
 		<view class="rankTop">
-			<view class="rankItem" v-for="item in rankHear">{{item}}</view>
+			<view class="rankItem" v-for="(item,index) in rankHear" :key="index">{{item}}</view>
 		</view>
 		<view class="rankContent">
 			<view class="rankContent-item" v-for="(item,index) in rankList" :key='index'>
