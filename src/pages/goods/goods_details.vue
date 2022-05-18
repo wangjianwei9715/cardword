@@ -312,23 +312,7 @@
 					}
 				}
 			});
-			setTimeout(()=>{
-				this.getDataIng()
-			},500)
-			this.onNetWorkFunc = uni.onNetworkStatusChange((res)=>{
-				if(res.isConnected){
-					uni.showLoading({
-						title: '加载中'
-					});
-					setTimeout(()=>{
-						this.getGoodData(this.goodsId)
-						
-					},1000)
-				}
-			})
-			
 			this.onEventUI('confirmorderPay',()=>{
-				
 				this.getGoodData(this.goodsId)
 			})
 			// #endif
@@ -338,7 +322,6 @@
 			if(this.goodsData !=''){
 				this.getProgress()
 			}	
-			
 			// #endif
 		}
 		onHide(){
@@ -348,7 +331,6 @@
 						title: '加载中'
 					});
 					setTimeout(()=>{
-						this.getGoodData(this.goodsId)
 						uni.hideLoading();
 					},1000)
 				}
@@ -358,64 +340,50 @@
 		getGoodData(id:any){
 			clearInterval(this.count_down);
 
-			setTimeout(()=>{
-				app.http.Get('dataApi/good/'+id+'/detail',{},(data:any)=>{
-					if(data.good==null||data.good==undefined){
-						this.getDataIng()
-						return;
-					}
-					uni.hideLoading();
-					// 是否收藏
-					this.favorType = data.favorite<=0?false:true;
-					// 数据详情
-					this.goodsData = data.good;
-					// 支付方式
-					this.payChannel = data.payChannel || [];
-					this.joined = data.joined
-					if(data.joined){
-						this.tipBtn = [{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'},{id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'}]
-					}
-					// 状态
-					this.goodsState = data.good.state;
-					// 倒计时
-					this.countDown = data.good.leftsec;
-					// 免单
-					this.freeNoNum = data.freeNoNum
-					// 获取商品图片
-					this.getGoodsImage();
-					this.getDetailImage(decodeURIComponent(this.goodsData.pic.yuanfeng))
-					// 倒计时
-					this.getCountDown();
-					// 商品规格、配置、形式、
-					this.getGoodsSpe();
-					let desc = decodeURIComponent(data.good.desc);
-					let newData = desc.indexOf('\n')>-1 ? desc.split('\n') : desc.split('\r');
-					this.goodsDesc = ['拼团 I D ：'+id,'开售时间：'+dateFormat(data.good.startAt),...newData];
-					if(this.goodsState==1){
-						app.http.Get('dataApi/good/'+id+'/buyRecord',{},(res:any)=>{
-							if(res.list) this.buyRecordList = res.list
-						})
-					}	
-				})
-				
-			},200)
-			
-		}
-		getDataIng(){
-			if(this.goodsData == ''){
-				uni.showLoading({
-					title: '加载中'
-				});
-				setTimeout(()=>{
-					if(this.goodsData==''){
-						this.getGoodData(this.goodsId)
-					}
-					this.onEventUI('noGoodsDetail',(res:any)=>{
-						uni.hideLoading()
-						uni.navigateBack({delta:1})
+			app.http.Get('dataApi/good/'+id+'/detail',{},(data:any)=>{
+				if(data.good==null||data.good==undefined){
+					uni.showToast({
+						title:'无此商品',
+						icon:'none'
 					})
-				},3000)
-			}
+					uni.switchTab({
+						url:'/pages/index/index'
+					})
+					return;
+				}
+				uni.hideLoading();
+				// 是否收藏
+				this.favorType = data.favorite<=0?false:true;
+				// 数据详情
+				this.goodsData = data.good;
+				// 支付方式
+				this.payChannel = data.payChannel || [];
+				this.joined = data.joined
+				if(data.joined){
+					this.tipBtn = [{id:1,name:'客服',url:'../../static/goods/v2/icon_kefu.png',class:'kf'},{id:2,name:'我的卡密',url:'../../static/goods/v2/icon_order.png',class:'order'}]
+				}
+				// 状态
+				this.goodsState = data.good.state;
+				// 倒计时
+				this.countDown = data.good.leftsec;
+				// 免单
+				this.freeNoNum = data.freeNoNum
+				// 获取商品图片
+				this.getGoodsImage();
+				this.getDetailImage(decodeURIComponent(this.goodsData.pic.yuanfeng))
+				// 倒计时
+				this.getCountDown();
+				// 商品规格、配置、形式、
+				this.getGoodsSpe();
+				let desc = decodeURIComponent(data.good.desc);
+				let newData = desc.indexOf('\n')>-1 ? desc.split('\n') : desc.split('\r');
+				this.goodsDesc = ['拼团 I D ：'+id,'开售时间：'+dateFormat(data.good.startAt),...newData];
+				if(this.goodsState==1){
+					app.http.Get('dataApi/good/'+id+'/buyRecord',{},(res:any)=>{
+						if(res.list) this.buyRecordList = res.list
+					})
+				}	
+			})
 		}
 		getProgress(){
 			app.http.Get('dataApi/good/'+this.goodsId+'/progress',{},(res:any)=>{
