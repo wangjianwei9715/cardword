@@ -1,0 +1,162 @@
+<template>
+	<view class="full" @click='webClick'>
+		<!-- :style="{height:height}" -->
+		<web-view :catchtouchmove="true" :style="{height:height,width:width}" id='webView' allow="fullscreen"
+			v-if="viewShow" class="webView" ref="webview" :webview-styles="webviewStyles" @onPostMessage="handleMessage"
+			:src="webViewUrl">
+			<!-- https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd?test=true -->
+			<!-- http://192.168.8.26:8080/#/pages/liveStreaming/theAnchorEnd -->
+			<!-- src="https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index"> -->
+		</web-view>
+	</view>
+
+</template>
+
+<script>
+	import request from '@/net/nuveRequest'
+	const isTest = false
+	export default {
+		data() {
+			return {
+				height: null,
+				width: null,
+				viewShow: false,
+				webviewStyles: {
+					progress: false
+				},
+				// webViewUrl:'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd'//主播端
+				// webViewUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index', //用户端
+				webViewUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index', //用户端
+				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
+				loginRoomData: {
+					roomID: "0002",
+					streamID: "0002",
+					userID: "0003",
+					userName: "游客1",
+					token: "03AAAAAGJTzUAEDR2aDl4YjVod2U2NGo3NWYAoFx74D21P6vgnpkf7Fcr9prnzxqYiyt1bxq5DD0dRxBysvhiPosaYsWEI1PvTW1LVDxQASd2oL0A42CXukFBWgljFm6IJYi8aDrCuFiXeRXt0vgMaz2e6YvMw7xmLDQc8US2S307MV6fkG1XCi4WvLIwvovBoCWthxZgRL9Wm3tQwwdGdvsemh1GsUNnkN5hc24E4xqH9Mdi1p0ilI"
+				},
+				appProfile: {
+
+				}
+			}
+		},
+		onLoad() {
+
+			uni.getSystemInfo({
+				success: (res) => {
+					this.deviceAssign(res)
+					this.getUserProfile(res)
+				}
+			});
+		},
+		onShow() {
+			uni.hideLoading()
+		},
+		onUnload() {
+			if (this.$refs.webview) this.$refs.webview.evalJs(
+				`logOutRoom(${JSON.stringify(this.loginRoomData)})`
+			)
+		},
+		methods: {
+			//webview高度,设备相关
+			deviceAssign(res) {
+				this.deviceId = res.deviceId
+				const hasNotchInScreen = plus.navigator.hasNotchInScreen()
+				const safeAreaBottomHeight = res.screenHeight - res.safeArea.bottom
+				const iosHeight = res.screenHeight + res.statusBarHeight + safeAreaBottomHeight
+				this.height = hasNotchInScreen ? iosHeight : res.screenHeight
+				this.width = res.screenWidth
+				this.viewShow = true
+			},
+			//获取及赋值
+			async getUserProfile(deviceInfo) {
+				let userData = {}
+				if (uni.getStorageSync("token") && JSON.parse(uni.getStorageSync("token")).accessToken) {
+					const {
+						data
+					} = await request('me/home', {}, 'get')
+					userData = data
+				} else {
+					//用设备号
+					userData = {
+						userId: deviceInfo.deviceId,
+						name: '小卡迷' + deviceInfo.deviceId.substr(deviceInfo.deviceId.length - 4)
+					}
+				}
+
+				const tokenData = await request('https://xlsh.7piccolo.com:6400/getZgToken', { //node测试token接口(后续换)
+					userID: userData.userId,
+					roomID: this.loginRoomData.roomID
+				}, 'post')
+				this.loginRoom(userData, tokenData.data, deviceInfo)
+			},
+			loginRoom(userData, roomToken, deviceInfo) {
+				this.appProfile = userData
+				this.loginRoomData.userID = userData.userId + ''
+				this.loginRoomData.userName = userData.name
+				this.loginRoomData.token = roomToken
+				setTimeout(() => {
+					this.$refs.webview.evalJs(
+						`statusBarHeight=${deviceInfo.statusBarHeight}`
+					) //通知webView手机号状态栏高度
+					this.$refs.webview.evalJs(
+						`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)})`
+					) //登录房间
+					
+				}, 1000)
+			},
+			back() {
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+			webClick() {},
+			share() {
+				uni.showLoading({
+					title: '请稍等'
+				})
+				uni.share({
+					provider: "weixin",
+					type: 0,
+					imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.14/loot/loot_sw/0/1649923645699n8fv080wdf.jpg",
+					title: "拆卡进行中！",
+					summary: '拆卡进行中！',
+					scene: "WXSceneSession",
+					href: 'https://www.ka-world.com/share/h5/#/pages/live/index',
+					success: (res) => {},
+					fail: (err) => {
+						console.log("失败原因=>", err);
+						uni.showToast({
+							title: "分享失败",
+							icon: "none"
+						});
+					},
+					complete: (res) => {
+						uni.hideLoading()
+
+					}
+				});
+			},
+			handleMessage(event) {
+				//接收webViewPostMessage
+				const {
+					data
+				} = event.detail
+				const resData = data[0]
+				this[resData.action]()
+			}
+		}
+	}
+</script>
+
+<style>
+	.full {
+		background-color: black;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		overflow: hidden;
+	}
+</style>
