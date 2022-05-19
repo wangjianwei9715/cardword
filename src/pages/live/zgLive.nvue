@@ -24,9 +24,9 @@
 				webviewStyles: {
 					progress: false
 				},
-				// webViewUrl:'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd'//主播端
+				webViewUrl:'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd',//主播端
 				// webViewUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index', //用户端
-				webViewUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index', //用户端
+				// webViewUrl: 'http://192.168.8.26:8082/#/pages/liveStreaming/index', //用户端
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
 					roomID: "0002",
@@ -98,7 +98,7 @@
 				setTimeout(() => {
 					this.$refs.webview.evalJs(
 						`statusBarHeight=${deviceInfo.statusBarHeight}`
-					) //通知webView手机号状态栏高度
+					) //通知webView手机状态栏高度
 					this.$refs.webview.evalJs(
 						`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)})`
 					) //登录房间
