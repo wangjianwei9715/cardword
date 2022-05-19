@@ -7,57 +7,25 @@
           class="drawcard-start-pic"
           src="https://ka-world.oss-cn-shanghai.aliyuncs.com/app/goods_drawCard/start.png"
         ></image>
-        <view class="drawcard-start-time"
-          >卡密即将开启（{{ startTime }}%）</view
-        >
+        <view class="drawcard-start-time">卡密即将开启（{{ startTime }}%）</view>
       </view>
     </view>
     <!-- 拆卡内容 -->
     <view  :class="[bgType == 1 ? 'black-bg' : 'white-bg',!startIng?'content':'']">
-      <view
-        v-if="iosY > 0"
-        style="width: 100%"
-        :style="
-          'height:' + statusBarHeight + 'rpx;margin-bottom:30px'
-        "
-      ></view>
+      <view v-if="iosY > 0" style="width: 100%" :style="'height:' + statusBarHeight + 'rpx;margin-bottom:30px'"></view>
       <view class="drawcard-box-header">
-        <view class="drawcard-box-header-left"
-          ><text>{{ stepIndex }}</text
-          >/{{ totalNum }}</view
-        >
-        <button
-          class="drawcard-box-header-right"
-          v-if="stepIndex == totalNum && noInterval"
-          @click="onClickAgain"
-        >
-          重新体验
-        </button>
-        <button
-          class="drawcard-box-header-right"
-          v-else-if="noInterval"
-          @click="onClickShowPopup"
-        >
-          自动解锁
-        </button>
-        <button
-          class="drawcard-box-header-right"
-          v-else
-          @click="clearIntervalCard"
-        >
-          暂停
-        </button>
+        <view class="drawcard-box-header-left" ><text>{{ stepIndex }}</text >/{{ totalNum }}</view >
+        <button class="drawcard-box-header-right" v-if="stepIndex == totalNum && noInterval" @click="onClickAgain">重新体验</button>
+        <button class="drawcard-box-header-right" v-else-if="noInterval" @click="onClickShowPopup">自动解锁</button>
+        <button class="drawcard-box-header-right" v-else @click="clearIntervalCard">暂停</button>
       </view>
 
       <!-- 卡片拖动控件 -->
       <movable-area class="movable-area">
         <movable-view
           class="movable-content"
-          :disabled="
-            index != stepIndex || index == totalNum || !noInterval
-          "
+          :disabled=" index != stepIndex || index == totalNum || !noInterval "
           :class="{ 'end-pic': index < stepIndex}"
-          
           v-for="(item, index) in picData"
           :key="index"
           :animation="false"
@@ -67,27 +35,18 @@
           :y="index == stepIndex ? moveY : moveYe"
           :style="'z-index:' + (999 - index)"
         >
+          <view v-if="index == 0" class="movable-box dangban" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd"  ></view>
+          <view v-else-if="item.color=='SP'" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
+            <image class="movable-box-sp" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/>
+          </view>
           <view
-            v-if="index == 0"
-			
-            class="movable-box dangban"
-            @touchstart.prevent="picTouchStart"
-            @touchend.prevent="picTouchEnd"
-          ></view>
-          
-          <view
-            v-else
-            v-show="index < stepIndex + 6"
+            v-else-if="index < stepIndex + 6"
             class="movable-box"
             :class="[(index == stepIndex + 1)&&item.color=='gold'?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
             @touchstart.prevent="picTouchStart"
             @touchend.prevent="picTouchEnd"
           >
-            <view
-              v-if="item.color == 'gold'"
-              class="movable-gold"
-              v-show="index == stepIndex + 1 || index == stepIndex"
-            >
+            <view v-if="item.color == 'gold'" class="movable-gold" v-show="index == stepIndex + 1 || index == stepIndex" >
             </view>
             <view v-if="item.rc" class="icon-rc"></view>
             <image
@@ -97,34 +56,18 @@
               :lazy-load="true"
               :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''"
             ></image>
-            
             <view
               class="movable-box-name"
-              :class="[item.color==''?'movable-box-name-silver':'movable-box-name-' + item.color,getNameLength(item.player)?'lang-name':'']"
-              >{{ item.player }}</view
-            >
-            
+              :class="[item.color==''?'movable-box-name-silver':'movable-box-name-' + item.color,getNameLength(item.player)?'lang-name':'']" >{{ item.player }}</view>
           </view>
         </movable-view>
       </movable-area>
 
-      <view
-        v-if="stepIndex == 0"
-        class="tips-start"
-        :style="'top:' + (1050 + statusBarHeight + iosY) + 'rpx'"
-        ><view class="icon-help"></view>拖动卡片解锁卡密</view
-      >
-      <view
-        v-else
-        class="tips-desc"
-        :style="'top:' + (1050 + statusBarHeight + iosY) + 'rpx'"
-        >{{ picData[stepIndex].nameNoEnglish?picData[stepIndex].nameNoEnglish:picData[stepIndex].name}}</view
-      >
+      <view v-if="stepIndex == 0" class="tips-start" :style="'top:' + (1050 + statusBarHeight + iosY) + 'rpx'"><view class="icon-help"></view>拖动卡片解锁卡密</view>
+      <view v-else class="tips-desc" :style="'top:' + (1050 + statusBarHeight + iosY) + 'rpx'">{{ picData[stepIndex].nameNoEnglish?picData[stepIndex].nameNoEnglish:picData[stepIndex].name}}</view>
 
       <view class="drawcard-bottom">
-        <view class="drawcard-bottom-tips"
-          >*图片可能存在误差，请以卡密为准（卡片类型:金-红-蓝-银）</view
-        >
+        <view class="drawcard-bottom-tips">*图片可能存在误差，请以卡密为准（卡片类型:金-红-蓝-银）</view>
         <button class="drawcard-bh-btn" @click="onClickDrawerShow"></button>
       </view>
     </view>
@@ -133,12 +76,8 @@
     <view class="draw-shadow" v-show="shadowShow">
       <view class="draw-shadow-box">
         <view class="draw-shadow-close" @click="onClickShadowClose"></view>
-        <button class="draw-shadow-btn" @click="onClickSetIntervalCard(200)">
-          快 速
-        </button>
-        <button class="draw-shadow-btn" @click="onClickSetIntervalCard(2000)">
-          慢 速
-        </button>
+        <button class="draw-shadow-btn" @click="onClickSetIntervalCard(200)"> 快 速 </button>
+        <button class="draw-shadow-btn" @click="onClickSetIntervalCard(2000)"> 慢 速 </button>
       </view>
     </view>
 
@@ -150,19 +89,9 @@
             class="drawer-box-header-btn"
             v-for="(item, index) in drawerData"
             :key="index"
-            :class="{
-              'drawer-box-header-check': drawerCheck == item.id,
-              'drawer-box-header-btn-right': item.id == 2,
-            }"
-            >{{ item.name }}</view
-          >
+            :class="{ 'drawer-box-header-check': drawerCheck == item.id, 'drawer-box-header-btn-right': item.id == 2, }">{{ item.name }}</view>
         </view>
-        <view
-          class="drawer-box-item"
-          :class="{ 'border-bottom': index != stepIndex }"
-          v-for="(item, index) in cardData"
-          :key="index"
-        >
+        <view class="drawer-box-item" :class="{ 'border-bottom': index != stepIndex }" v-for="(item, index) in cardData" :key="index">
           <view class="drawer-box-item-left">{{ item.name }}</view>
           <view class="drawer-box-item-right">{{ index+1 }}</view>
         </view>
@@ -448,7 +377,7 @@ export default class ClassName extends BaseNode {
         if(this.stepIndex<this.totalNum){
           this.stepIndex++;
         }
-        if(this.stepIndex<this.totalNum&&this.picData[this.stepIndex+1].color == 'gold'){
+        if(this.stepIndex<this.totalNum&&(this.picData[this.stepIndex+1].color == 'gold'||this.picData[this.stepIndex+1].color == 'SP')){
           uni.vibrateLong({
             success: function() {
               console.log('success');
@@ -623,6 +552,10 @@ export default class ClassName extends BaseNode {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.movable-box-sp{
+  width: 528rpx;
+  height: 741rpx;
 }
 .movable-box-silver {
   background: url(../../static/goods/drawcard/card_silver.png) no-repeat center;
