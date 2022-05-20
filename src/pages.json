@@ -58,6 +58,13 @@
 			}
 		},
 		{
+			"path": "pages/live/myLive",
+			"style": {
+				"navigationBarTitleText": "我的直播",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录",

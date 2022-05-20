@@ -1,24 +1,26 @@
 <template>
-	<view>
-		<view class="liveItem">
+	<view class="liveContent">
+		<view class="liveItem" v-for='(item,index) in dataList' :key='index'>
 			<view class="liveItem-top uni-flex">
-				<image class='avatar'></image>
-				<view class="name">卡皇球星社</view>
+				<image class='avatar' :src='decodeURIComponent(item.merchantLogo)' mode='aspectFill'></image>
+				<view class="name">{{item.merchantName}}</view>
 			</view>
 			<view class="liveItem-message uni-flex">
-				<image class="goodsImage"></image>
+				<image class="goodsImage" :src='decodeURIComponent(item.cover)' mode='aspectFill'></image>
 				<view class="live-right">
 					<view>
-						<view class='goodsName'>20-21 panini prizm prizm...</view>
-						<view class='startTime'>开播时间：04-05 11:11:11</view>
+						<view class='goodsName'>{{item.title}}</view>
+						<view class='startTime'>开播时间：{{dateFormatYMSHM(item.startAt)}}</view>
 					</view>
 					<view class='uni-flex' style='justify-content: space-between;align-items:center'>
-						<view class='state'>待直播</view>
-						<view class='startButton'>进入直播间</view>
+						<view class='state'>{{stateData[String(item.state)]}}</view>
+						<view class='startButton' @click='toAnchor(item)' v-if='item.push'>进入直播间</view>
+						<view class='startButton' @click='toAnchor(item,true)' v-if='item.state===2'>重新进入</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<empty v-if='!dataList.length'></empty>
 	</view>
 </template>
 
@@ -30,16 +32,68 @@
 		Component
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import {
+		dateFormatYMSHM
+	} from '@/tools/util'
 	@Component({})
 	export default class ClassName extends BaseNode {
+		queryParams: any = {
+			fetchFrom: 1,
+			fetchSize: 10
+		}
 		dataList: any = []
+		isFetchEnd: boolean = true;
+		dateFormatYMSHM: any = dateFormatYMSHM
+		stateData: any = {
+			"0": '待直播',
+			"1": '即将直播',
+			"2": '正在直播',
+			"3": '直播完成',
+			"-1": '过期',
+			"-2": '已取消'
+		}
 		onLoad() {
-
+			if (app.token.accessToken == "") {
+				uni.navigateTo({
+					url: "/pages/login/login"
+				});
+				return;
+			}
+			this.getList()
+		}
+		onPullDownRefresh() {
+			this.queryParams.fetchFrom = 1
+			this.getList(() => {
+				uni.stopPullDownRefresh()
+			})
+		}
+		onReachBottom() {
+			if (this.isFetchEnd) return
+			this.queryParams.fetchFrom += 1
+			this.getList()
+		}
+		toAnchor(item: any, isReenter: boolean = false) {
+			const streamID = `&streamID=${item.goodCode+'_'+item.id}`
+			uni.navigateTo({
+				url: `/pages/live/zgLive?roomID=${item.id}&merchantMessage=${JSON.stringify({merchantId:item.merchantId,merchantLogo:item.merchantLogo,merchantName:item.merchantName})}${isReenter?streamID:''}`
+			})
+		}
+		getList(cb ? : Function) {
+			app.http.Get('brodcast/third/1001/achor/roomlist', this.queryParams, (res: any) => {
+				this.isFetchEnd = res.isFetchEnd || true
+				const dataList = res.list || []
+				this.dataList = this.queryParams.fetchFrom == 1 ? dataList : [...this.dataList, ...dataList]
+				cb && cb()
+			})
 		}
 	}
 </script>
 
 <style lang='scss'>
+	.liveContent {
+		padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+	}
+
 	.liveItem {
 		padding: 0 26rpx;
 		margin-top: 33rpx;
@@ -104,16 +158,18 @@
 			color: #88878C;
 			margin-top: 18rpx;
 		}
-		.startButton{
+
+		.startButton {
 			width: 161rpx;
 			height: 52rpx;
 			background: #F5162B;
 			border-radius: 3rpx;
-			text-align:center;
-			line-height:52rpx;
-			color:#fff;
+			text-align: center;
+			line-height: 52rpx;
+			color: #fff;
 		}
-		.state{
+
+		.state {
 			font-size: 25rpx;
 			font-family: PingFang SC;
 			font-weight: 600;

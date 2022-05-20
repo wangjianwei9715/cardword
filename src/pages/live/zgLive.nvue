@@ -1,19 +1,32 @@
 <template>
 	<view class="full" @click='webClick'>
-		<!-- :style="{height:height}" -->
 		<web-view :catchtouchmove="true" :style="{height:height,width:width}" id='webView' allow="fullscreen"
 			v-if="viewShow" class="webView" ref="webview" :webview-styles="webviewStyles" @onPostMessage="handleMessage"
 			:src="webViewUrl">
-			<!-- https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd?test=true -->
-			<!-- http://192.168.8.26:8080/#/pages/liveStreaming/theAnchorEnd -->
-			<!-- src="https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index"> -->
 		</web-view>
+		<view class='merchant' :style="{top:56+statusBarHeight+'rpx'}">
+			<image :src='decodeURIComponent(merchantMessage.merchantLogo)' class='merchant_avatar' mode='aspectFill'
+				@click='pageJump(`/pages/userinfo/merchant_shopsV2?id=${merchantMessage.merchantId}`)'>
+			</image>
+			<view class='merchant_name'>
+				<text class='merchant_name_text'>{{merchantMessage.merchantName}}</text>
+				<text class='merchant_name_like'>{{999}}本场点赞</text>
+			</view>
+			<text class='merchant_action' @click='attention'>{{merchantMessage.followed?'已关注':'关注'}}</text>
+			<!-- <view class='merchant_action'>
+				<image></image>
+				<text>关注</text>
+			</view> -->
+		</view>
 	</view>
 
 </template>
 
 <script>
 	import request from '@/net/nuveRequest'
+	import {
+		Md5
+	} from 'ts-md5/dist/md5';
 	const isTest = false
 	export default {
 		data() {
@@ -24,27 +37,37 @@
 				webviewStyles: {
 					progress: false
 				},
-				webViewUrl:'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd',//主播端
+				statusBarHeight: 0,
+				// webViewUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd', //主播端
 				// webViewUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index', //用户端
-				// webViewUrl: 'http://192.168.8.26:8082/#/pages/liveStreaming/index', //用户端
+				webViewUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index', //用户端
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
-					roomID: "0002",
-					streamID: "0002",
-					userID: "0003",
-					userName: "游客1",
-					token: "03AAAAAGJTzUAEDR2aDl4YjVod2U2NGo3NWYAoFx74D21P6vgnpkf7Fcr9prnzxqYiyt1bxq5DD0dRxBysvhiPosaYsWEI1PvTW1LVDxQASd2oL0A42CXukFBWgljFm6IJYi8aDrCuFiXeRXt0vgMaz2e6YvMw7xmLDQc8US2S307MV6fkG1XCi4WvLIwvovBoCWthxZgRL9Wm3tQwwdGdvsemh1GsUNnkN5hc24E4xqH9Mdi1p0ilI"
+					roomID: null,
+					streamID: null,
+					userID: null,
+					userName: null,
+					token: null
 				},
+				merchantMessage: {},
 				appProfile: {
 
-				}
+				},
+				hasToken: Boolean(uni.getStorageSync("token") && JSON.parse(uni.getStorageSync("token"))
+					.accessToken),
+				queryToken: '',
+				queryStreamID: ''
 			}
 		},
-		onLoad() {
+		onLoad(query) {
+			if (query.roomID) this.loginRoomData.roomID = query.roomID
+			if (query.streamID) this.loginRoomData.streamID = query.streamID
+			if (query.merchantMessage) this.merchantMessage = JSON.parse(query.merchantMessage)
 
 			uni.getSystemInfo({
 				success: (res) => {
 					this.deviceAssign(res)
+					this.getMerchant()
 					this.getUserProfile(res)
 				}
 			});
@@ -64,6 +87,7 @@
 				const hasNotchInScreen = plus.navigator.hasNotchInScreen()
 				const safeAreaBottomHeight = res.screenHeight - res.safeArea.bottom
 				const iosHeight = res.screenHeight + res.statusBarHeight + safeAreaBottomHeight
+				this.statusBarHeight = res.statusBarHeight
 				this.height = hasNotchInScreen ? iosHeight : res.screenHeight
 				this.width = res.screenWidth
 				this.viewShow = true
@@ -71,7 +95,7 @@
 			//获取及赋值
 			async getUserProfile(deviceInfo) {
 				let userData = {}
-				if (uni.getStorageSync("token") && JSON.parse(uni.getStorageSync("token")).accessToken) {
+				if (this.hasToken) {
 					const {
 						data
 					} = await request('me/home', {}, 'get')
@@ -83,12 +107,9 @@
 						name: '小卡迷' + deviceInfo.deviceId.substr(deviceInfo.deviceId.length - 4)
 					}
 				}
-
-				const tokenData = await request('https://xlsh.7piccolo.com:6400/getZgToken', { //node测试token接口(后续换)
-					userID: userData.userId,
-					roomID: this.loginRoomData.roomID
-				}, 'post')
-				this.loginRoom(userData, tokenData.data, deviceInfo)
+				const tokenData = await request('brodcast/third/1001/user/login/' + this.loginRoomData.roomID, {},
+					'post')
+				this.loginRoom(userData, tokenData.token, deviceInfo)
 			},
 			loginRoom(userData, roomToken, deviceInfo) {
 				this.appProfile = userData
@@ -102,15 +123,78 @@
 					this.$refs.webview.evalJs(
 						`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)})`
 					) //登录房间
-					
-				}, 1000)
+				}, 500)
+			},
+			getMerchant() {
+				//未登录用户
+				if (!this.hasToken) {
+					this.merchantMessage.followed = false
+					return
+				}
+				//登录用户
+				if (this.hasToken) {
+					request('merchant/detail/' + this.merchantMessage.merchantId, {}, 'get').then(res => {
+						this.merchantMessage.followed = res.data.followed
+					}).catch(err => {
+						this.merchantMessag.followed = false
+					})
+				}
+			},
+			attention() {
+				if (!this.hasToken) {
+					uni.navigateTo({
+						url: '/pages/login/login'
+					})
+				}
+				request("merchant/follow/" + this.merchantMessage.merchantId,'post').then(res=>{
+					this.merchantMessage.followed=res.data
+				})
+			},
+			stopLive() {
+				const stopSign = Md5.hashStr('stopPushStream' +
+					`_${this.loginRoomData.roomID}_${this.loginRoomData.streamID}`)
+				request('brodcast/third/1001/achor/stopPush/' + this.loginRoomData.roomID, {
+					sign: stopSign
+				}, "post").then(res => {
+					console.log('结束直播');
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			//推流
+			pushStream() {
+				//误操退出直播间后，重新进入直播间重新推流
+				if (this.loginRoomData.streamID) {
+					this.$refs.webview.evalJs(`streamID="${this.loginRoomData.streamID}"`) //推送streamID
+					return
+				}
+				//首次推流获取streamID,改变直播状态
+				request('brodcast/third/1001/achor/push/' + this.loginRoomData.roomID, {}, 'post').then(res => {
+					this.loginRoomData.streamID = res.streamID
+					this.$refs.webview.evalJs(`streamID="${res.streamID}"`) //推送streamID
+				}).catch(err => {
+					this.$refs.webview.evalJs(`streamIDError=true}`) //通知错误
+				})
 			},
 			back() {
 				uni.navigateBack({
 					delta: 1
 				})
 			},
-			webClick() {},
+			refreshToken() {
+				// request('https://xlsh.7piccolo.com:6400/getZgToken', { //node测试token接口(后续换)
+				// 	userID: this.appProfile.userId,
+				// 	roomID: this.loginRoomData.roomID
+				// }, 'post').then(res => {
+				// 	this.$refs.webview.evalJs(
+				// 		`refreshZgToken(${JSON.stringify({
+				// 			token:res.data,
+				// 			roomID:this.loginRoomData.roomID
+				// 		})})`
+				// 	) //更新token
+				// })
+			},
+			// netWork
 			share() {
 				uni.showLoading({
 					title: '请稍等'
@@ -137,6 +221,11 @@
 					}
 				});
 			},
+			pageJump(url) {
+				uni.navigateTo({
+					url
+				})
+			},
 			handleMessage(event) {
 				//接收webViewPostMessage
 				const {
@@ -158,5 +247,60 @@
 		bottom: 0;
 		left: 0;
 		overflow: hidden;
+	}
+
+	.merchant {
+		/* width: 252rpx; */
+		height: 72rpx;
+		background: rgba(0, 0, 0, .38);
+		/* background-color: #fff; */
+		border-radius: 36rpx;
+		position: fixed;
+		left: 24rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding: 0 14rpx;
+	}
+
+	.merchant_avatar {
+		width: 61rpx;
+		height: 61rpx;
+		border-radius: 50%;
+		margin-right: 13rpx;
+	}
+
+	.merchant_name {
+		flex-direction: column;
+	}
+
+	.merchant_name_text {
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+
+	}
+
+	.merchant_name_like {
+		font-size: 20rpx;
+		font-family: PingFang SC;
+		font-weight: 300;
+		color: #FFFFFF;
+
+	}
+
+	.merchant_action {
+		width: 93rpx;
+		background: linear-gradient(to right, #EF3333, #EB6141);
+		height: 50rpx;
+		border-radius: 25rpx;
+		font-size: 29rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #FFFFFF;
+		line-height: 50rpx;
+		text-align: center;
+		margin-left: 15rpx;
 	}
 </style>
