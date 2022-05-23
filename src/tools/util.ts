@@ -365,6 +365,12 @@ export function countDown(startDate:number,endDate:number=0, mmbol:boolean=true)
 		return dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
 	}
 }
+// 正则每3位数字添加逗号
+export function toThousands(num = 0){
+    return num.toString().replace(/\d+/, function(n) {
+       return n.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+    });
+ };
 //加法函数 用来得到精确的加法结果   
 const add = (a:any, b:any) => {
 	var c, d, e;

@@ -200,10 +200,8 @@
 			width: 1rpx !important;
 			height: 1rpx !important;
 			position: absolute;
-			left:50%;
-			top:50%;
-			margin-top: -0.5rpx;
-			margin-left: -0.5rpx;
+			left:0;
+			top:0;
 		}
 	}
 </style>

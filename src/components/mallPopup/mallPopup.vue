@@ -1,11 +1,11 @@
 <template>
 	<view>	
 		<view class="exchange-popup" v-show="showPopup"></view>
-		<view v-if="popupStep==1" class="popup-box" :class="{'showbox':showPopup}">
+		<view v-if="popupType==''" class="popup-box" :class="{'showbox':showPopup}">
 			<view class="popup-close" @click="onClickClose"></view>
 			<view class="popup-title">确认兑换</view>
 			<view class="pic-box">
-				<image class="popup-pic" mode="aspectFill" :src="awardData.pic" />
+				<image class="popup-pic" mode="aspectFit" :src="awardData.pic" />
 			</view>
 			<view class="popup-explain">兑换后无法取消，可在"奖品明细"中查看兑换记录。</view>
 			<view class="popup-ts">(兑换实物将使用您的默认地址发货，请提前确认)</view>
@@ -15,7 +15,7 @@
 		<view v-else class="popup-box popup-toast" :class="{'showbox':showPopup}">
 			<view class="popup-close" @click="onClickClose"></view>
 			<view class="popup-title">兑换成功</view>
-			<view class="popup-btn" @click="onClickGoAward">查看奖品</view>
+			<view class="popup-btn" @click="onClickConfirm">查看奖品</view>
 		</view>
 	</view>
 </template>
@@ -27,10 +27,10 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
 		showPopup!:boolean;
-		@Prop({default:{}})
-		awardData!:object;
-		@Prop({default:1})
-		popupStep!:number;
+		@Prop({default:''})
+		awardData!:any;
+		@Prop({default:''})
+		popupType!:string;
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -58,6 +58,7 @@
 		position: fixed;
 		left:0;
 		top:0;
+		z-index: 99;
 	}
 	.popup-box{
 		width: 442rpx;
@@ -72,6 +73,7 @@
 		transform: scale(0);
 		box-sizing: border-box;
 		padding:0 43rpx;
+		z-index: 100;
 		.popup-title{
 			width: 100%;
 			text-align: center;
@@ -139,17 +141,9 @@
 	.popup-toast{
 		height:243rpx;
 		margin-top: -122rpx;
-		transition: none;
 		.popup-title{
-			width: 100%;
-			text-align: center;
-			font-size: 33rpx;
-			font-family: PingFang SC;
-			font-weight: 600;
-			color: #333333;
 			height:125rpx;
 			padding-top: 46rpx;
-			box-sizing: border-box;
 		}
 		.popup-btn{
 			margin-top: 0;
