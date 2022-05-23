@@ -155,6 +155,9 @@
 				3、玩家完成任务可获得欧气，任务每日更新，可点击“获取欧气“查看
 				4、活动期间，奖品不定期更新
 				5、优惠券类奖品自动发放，实物类奖品请中奖用户联系客服发货
+			</text><br>
+			<text style='color:red'>
+				6、活动结束后未使用的欧气可累计到下一期！
 			</text>
 		</view>
 		<!-- 遮罩层 -->
@@ -1138,7 +1141,7 @@
 
 	.ruleModal {
 		width: 500rpx;
-		height: 600rpx;
+		height: 650rpx;
 		background-color: #fff;
 		position: fixed;
 		top: 400rpx;
