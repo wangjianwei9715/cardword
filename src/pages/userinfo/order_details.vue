@@ -170,7 +170,8 @@
 		guessSuccess = false;
 		guessState = 0;
 		surplusNum = 0;
-		optionList:any = []
+		optionList:any = [];
+		onceLoad = true;
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -178,7 +179,14 @@
 			if(query.waitPay){
 				this.clickToPay = true
 			}
-			this.initEvent(()=>{});
+			this.initEvent(()=>{
+				if(this.clickToPay){
+					this.getNoShowList();
+					if(this.guessNum>0){
+						this.guessSuccess = true
+					}
+				}
+			});
 
 			this.onEventUI('orderchange',()=>{
 				this.initEvent();
@@ -189,7 +197,7 @@
 			})
 		}
 		onShow(){
-			if(this.clickToPay){
+			if(this.clickToPay && !this.onceLoad){
 				clearInterval(this.countDownInter);
 				this.clickPayShowLoading(()=>{
 					this.getNoShowList();
@@ -218,6 +226,7 @@
 		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
+				this.onceLoad = false;
 				setTimeout(()=>{
 					this.clickToPay = res.data.state==1? true :false
 				},1000)

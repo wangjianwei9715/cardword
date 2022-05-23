@@ -92,7 +92,9 @@ export default class UpdateManager {
                           showCancel: false,
                           success: (result) => {
                             if (result.confirm) {
-                              plus.runtime.restart();
+                              setTimeout(()=>{
+                                plus.runtime.restart();
+                              },100)
                             }
                           }
                         });

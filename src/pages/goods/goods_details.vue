@@ -295,15 +295,12 @@
 			// #ifndef MP
 			this.goodsId = query.id;
 			this.getGoodData(this.goodsId);
-			this.onEventUI('confirmorderPay',()=>{
-				this.getGoodData(this.goodsId)
-			})
 			// #endif
 		}
 		onShow(){
 			// #ifndef MP
 			if(this.goodsData !=''){
-				this.getProgress()
+				this.getGoodData(this.goodsId);
 			}	
 			// #endif
 			uni.getNetworkType({
