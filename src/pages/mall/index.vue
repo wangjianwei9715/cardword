@@ -90,6 +90,7 @@
 		toThousands = toThousands;
 		awardList:{[x:string]:any} = [
 			{
+				id:1,
 				num:20,
 				pic:'../../static/goods/drawcard/card_gold.png',
 				title:'iphone13 ProMAX',
@@ -98,6 +99,7 @@
 				leftsec:10
 			},
 			{
+				id:2,
 				num:10,
 				pic:'../../static/goods/drawcard/card_dangban.png',
 				title:'iphone13 ProMAX',
@@ -110,6 +112,7 @@
 		countDown = 0;
 		showPopup = false;
 		awardData:{[x:string]:any} = {
+			id:0,
 			pic:'',
 			price:12000
 		};
