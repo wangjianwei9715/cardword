@@ -14,8 +14,8 @@
 					</view>
 					<view class='uni-flex' style='justify-content: space-between;align-items:center'>
 						<view class='state'>{{stateData[String(item.state)]}}</view>
-						<view class='startButton' @click='toAnchor(item)' v-if='item.push'>进入直播间</view>
-						<view class='startButton' @click='toAnchor(item,true)' v-if='item.state===2'>重新进入</view>
+						<view class='startButton' @click='toAnchor(item)' v-if='item.push'>{{item.state===2?'重新进入':'进入直播间'}}</view>
+						<!-- <view class='startButton' @click='toAnchor(item,true)' v-if='item.state===2'>重新进入</view> -->
 					</view>
 				</view>
 			</view>
@@ -69,13 +69,12 @@
 		}
 		onReachBottom() {
 			if (this.isFetchEnd) return
-			this.queryParams.fetchFrom += 1
+			this.queryParams.fetchFrom += this.queryParams.fetchSize
 			this.getList()
 		}
 		toAnchor(item: any, isReenter: boolean = false) {
-			const streamID = `&streamID=${item.goodCode+'_'+item.id}`
 			uni.navigateTo({
-				url: `/pages/live/zgLive?roomID=${item.id}&merchantMessage=${JSON.stringify({merchantId:item.merchantId,merchantLogo:item.merchantLogo,merchantName:item.merchantName})}${isReenter?streamID:''}`
+				url: `/pages/live/zgLive?roomID=${item.id}&merchantMessage=${JSON.stringify({merchantId:item.merchantId,merchantLogo:item.merchantLogo,merchantName:item.merchantName})}&isAnchor=true`
 			})
 		}
 		getList(cb ? : Function) {
