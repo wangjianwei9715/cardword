@@ -26,6 +26,8 @@
 				<view class="sp-index-right">{{item.SP_num>0?'+'+item.SP_num:item.SP_num}}</view>
 			</view>
 		</view>
+
+		<empty v-show="empty" />
 	</view>
 </template>
 
@@ -47,6 +49,7 @@
 		pageSize = 20;
 		noMoreData = false;
 		kefuUserId = 0;
+		empty = false;
 		onLoad(query:any) {
 			this.reqNewData()
 		}
@@ -77,7 +80,11 @@
 			}
 			app.http.Get(this.tabData[this.tabCurrent].url,params,(data:any)=>{
 				if(data.totalPage<=this.currentPage) this.noMoreData = true;
-
+				if(data.total == 0){ 
+					this.empty = true;
+				}else{
+					this.empty = false
+				}
 				if(this.tabCurrent==0) this.kefuUserId = data.kefuUserId[0] || 0;
 				if(this.currentPage==1) this.tabData[this.tabCurrent].list = [];
 				if(data.list) this.tabData[this.tabCurrent].list = this.tabData[this.tabCurrent].list.concat(data.list);
