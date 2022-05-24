@@ -60,8 +60,7 @@
 		background:#fff;
 		z-index: 99999;
 		box-sizing: border-box;
-		transition: all 0.3s linear;
-		-webkit-transition: -webkit-transform 0.3s;
+		transition: all 0.3s;
 		border-radius: 5rpx 5rpx 0px 0px;
 		transform: translateY(100%);
 	}

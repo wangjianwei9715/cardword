@@ -215,7 +215,10 @@
 		font-family: "Impact";
 		src: url("~@/common/Tao/Impact.ttf");
 	}
-
+	@font-face {
+		font-family: "hei";
+		src: url("~@/common/Tao/hei.ttf");
+	}
 	// #endif
 	.content {
 		display: flex;

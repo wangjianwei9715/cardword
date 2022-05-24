@@ -170,7 +170,8 @@
 		guessSuccess = false;
 		guessState = 0;
 		surplusNum = 0;
-		optionList:any = []
+		optionList:any = [];
+		onceLoad = true;
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -178,7 +179,16 @@
 			if(query.waitPay){
 				this.clickToPay = true
 			}
-			this.initEvent(()=>{});
+			setTimeout(()=>{
+				this.initEvent(()=>{
+					if(this.clickToPay){
+						this.getNoShowList();
+						if(this.guessNum>0){
+							this.guessSuccess = true
+						}
+					}
+				});
+			},200)
 
 			this.onEventUI('orderchange',()=>{
 				this.initEvent();
@@ -189,7 +199,7 @@
 			})
 		}
 		onShow(){
-			if(this.clickToPay){
+			if(this.clickToPay && !this.onceLoad){
 				clearInterval(this.countDownInter);
 				this.clickPayShowLoading(()=>{
 					this.getNoShowList();
@@ -218,8 +228,9 @@
 		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
+				this.onceLoad = false;
 				setTimeout(()=>{
-					this.clickToPay = res.data.state==1? true :false
+					this.clickToPay = res.data.state!=1 && !res.data.wait ? false : true
 				},1000)
 				if(res.data.wait){
 					uni.showLoading({ title:'数据加载中请稍后' })
@@ -638,7 +649,11 @@
 						font-weight: 400;
 						color: #333333;
 						margin-bottom: 20rpx;
-						word-break:break-all
+						word-break:break-all;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 2;
+						overflow: hidden;
 					}
 					.desc{
 						width: 100%;

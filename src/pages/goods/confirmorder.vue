@@ -598,7 +598,6 @@ export default class ClassName extends BaseNode {
       if(this.getBitDisableGuess()){
         app.http.Post('me/order/guess/name/'+res.goodOrderCode,{name:this.guessList[this.guessCheckTeam].name})
       }
-      uni.$emit('confirmorderPay')
       if(res.price<=0){
          uni.redirectTo({
             url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
