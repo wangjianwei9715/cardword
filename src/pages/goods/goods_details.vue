@@ -75,7 +75,8 @@
 							<view class="header-top-plan-num" v-else>
 								余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}
 								<view class="header-top-plan-numbottom">
-									{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
+									{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
+								</view>
 							</view>
 						</view>
 					</view>
@@ -185,7 +186,8 @@
 			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm"
 				@click="onClickCopyInviteKey">复制口令给新人</view>
 			<view v-else class="btn-confirm" :class="{'random-confirm':getSelectType()}" @click="onClickBuy()">
-				{{goodsData.isSelect?'选择编号':'立即购买'}}</view>
+				{{goodsData.isSelect?'选择编号':'立即购买'}}
+			</view>
 		</view>
 		<view class="btn-contented" :class="{'joined':joined}" v-else-if="goodsState>=2">
 			<view class="btn-content-left" v-if="joined">
@@ -673,17 +675,18 @@
 			})
 		}
 		onClickLive() {
-			const {
-				publisher
-			} = this.goodsData
-			if (this.goodsData.broadcast.third == 1001) {
+
+			if (this.goodsData.broadcast.third&&this.goodsData.broadcast.third == 1001) {
+				const {
+					publisher
+				} = this.goodsData
 				const params = {
-					merchantId:publisher.id,
-					merchantLogo:publisher.avatar,
-					merchantName:publisher.name
+					merchantId: publisher.id,
+					merchantLogo: publisher.avatar,
+					merchantName: publisher.name
 				}
 				uni.navigateTo({
-					url:`/pages/live/zgLive?roomID=${this.goodsData.broadcast.roomID}&merchantMessage=${JSON.stringify(params)}&isAnchor=false`
+					url: `/pages/live/zgLive?roomID=${this.goodsData.broadcast.roomID}&merchantMessage=${JSON.stringify(params)}&isAnchor=false`
 				})
 				return
 			}
