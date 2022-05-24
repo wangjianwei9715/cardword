@@ -144,9 +144,6 @@
 					this.oneLoad = false;
 				}
 			})
-			this.onEventUI('refreshHome',()=>{
-				this.showInitEvent()
-			})
 		}
 		onShow(){
 			// 销毁页面重新加载
