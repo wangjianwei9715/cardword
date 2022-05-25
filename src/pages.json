@@ -538,15 +538,14 @@
 		},
 		{
 			"root": "pages/mall",
-			"pages": [
-				{
+			"pages": [{
 					"path": "index",
 					"style": {
 						"navigationBarTitleText": "卡币商城",
 						"navigationBarBackgroundColor": "#ffffff",
 						"transparentTitle": "auto",
 						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
@@ -568,7 +567,7 @@
 						"navigationBarTitleText": "奖品明细",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
@@ -579,12 +578,12 @@
 						"navigationBarTitleText": "卡币明细",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				}
-				
+
 			]
 		},
 		{

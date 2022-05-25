@@ -4,7 +4,7 @@
 			<view class="mall-bt">卡币商城</view>
 			<view class="mall-my-point">我的卡豆</view>
 			<navigator url="/pages/mall/record_point" hover-class="none" class="mall-point">
-				<view class="point-num">{{toThousands(8858.6)}}</view>
+				<view class="point-num">{{toThousands(meBeanPoint)}}</view>
 				<view class="point-right"></view>
 			</navigator>
 			<view class="mall-top-right">
@@ -21,31 +21,35 @@
 			<view class="mall-limit">
 				<view class="mall-limit-header">
 					<view class="limit-header-left">
-						<image class="limit-bg" src="../../static/mall/limit.png"/>
+						<image class="limit-bg" src="../../static/mall/limit.png" />
 					</view>
 					<navigator url="/pages/mall/limit_award" hover-class="none" class="limit-header-right">
-						查看全部<image class="limit-right" src="../../static/mall/limit_right.png"/>
+						查看全部
+						<image class="limit-right" src="../../static/mall/limit_right.png" />
 					</navigator>
 				</view>
 				<view class="award-box">
-					<scroll-view class="award-box-scroll" :scroll-x="true">
-						<view class="award-scroll-index" v-for="(item,index) in awardList" :key="index">
+					<scroll-view class="award-box-scroll" :scroll-x="true" @scrolltolower='awardScrolltolower'>
+						<view class="award-scroll-index" v-for="(item,index) in award.list" :key="index">
 							<view class="award-top">
-								<view class="award-num">{{item.num}}份</view>
+								<view class="award-num">{{item.leftNum}}份</view>
 								<view class="award-pic-box">
-									<image class="award-pic" mode="aspectFit" :src="decodeURIComponent(item.pic)"/>
+									<!-- <image class="award-pic" mode="aspectFit" :src="decodeURIComponent(item.logo)"/> -->
+									<muqian-lazyLoad class="award-pic" :src="decodeURIComponent(item.logo)">
+									</muqian-lazyLoad>
 								</view>
-								<view class="award-status buying" v-if="(item.leftsec-countDown<=0)">开抢中</view>
-								<view class="award-status" v-else>距开始{{getTime(item.leftsec-countDown)}}</view>
+								<view class="award-status buying" v-if="(item.start_at-countDown<=0)">开抢中</view>
+								<view class="award-status" v-else>距开始{{getTime(item.start_at-countDown)}}</view>
 							</view>
 							<view class="award-bottom">
-								<view class="award-title">{{item.title}}</view>
+								<view class="award-title oneLineOver">{{item.name}}</view>
 								<view class="award-price">{{item.price}}卡币</view>
-								<view class="award-exbtn buying" v-if="(item.leftsec-countDown<=0)" @click="onClickExchange(item)">兑 换</view>
+								<view class="award-exbtn buying" v-if="(item.start_at-countDown<=0)"
+									@click="onClickExchange(item)">兑 换</view>
 								<view class="award-exbtn" v-else>即将开抢</view>
 							</view>
 						</view>
-						
+
 					</scroll-view>
 				</view>
 			</view>
@@ -56,26 +60,30 @@
 				<view calss="point-tips">不定期上新</view>
 			</view>
 			<view class="point-box">
-				<view class="point-index">
+				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index">
 					<view class="point-pic-box">
-						<image class="point-pic" mode="aspectFit"/>
+						<muqian-lazyLoad class="point-pic" :src="decodeURIComponent(item.logo)">
+						</muqian-lazyLoad>
+						<!-- <image class="point-pic" :src="decodeURIComponent(item.logo)" mode="aspectFit" /> -->
 					</view>
-					<view class="point-name">无门槛60元优惠券</view>
-					<view class="point-price">10000卡币</view>
-					<view class="point-btn">兑 换</view>
+					<view class="point-name">{{item.name}}</view>
+					<view class="point-price">{{item.price}}卡币</view>
+					<view class="point-btn" @click="onClickExchange(item)">兑 换</view>
 				</view>
 			</view>
 		</view>
 
 		<!-- 弹窗 -->
-		<mallPopup :showPopup="showPopup" :awardData="awardData" @popupClose="showPopup = false" @popupConfirm="onClickExConfirm"></mallPopup>
-		<mallPopup :showPopup="showPopupToast" :popupType="'toast'" @popupClose="showPopupToast = false" @popupConfirm="onClickGoAward"></mallPopup>
+		<mallPopup :showPopup="showPopup" :awardData="awardData" @popupClose="showPopup = false"
+			@popupConfirm="onClickExConfirm"></mallPopup>
+		<mallPopup :showPopup="showPopupToast" :popupType="'toast'" @popupClose="showPopupToast = false"
+			@popupConfirm="onClickGoAward"></mallPopup>
 		<!-- 规则 -->
 		<bottomDrawer :showDrawer="showDrawer" :title="'兑换规则'" @closeDrawer="showDrawer=false">
 			<view class="drawer-box" v-for="(item,index) in mallExchangeRule" :key="index">
 				<view class="drawer-help" v-html="item.content"></view>
 			</view>
-    	</bottomDrawer>
+		</bottomDrawer>
 	</view>
 </template>
 
@@ -88,88 +96,143 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		toThousands = toThousands;
-		awardList:{[x:string]:any} = [
-			{
-				id:1,
-				num:20,
-				pic:'../../static/goods/drawcard/card_gold.png',
-				title:'iphone13 ProMAX',
-				price:120000,
-				state:1,
-				leftsec:10
-			},
-			{
-				id:2,
-				num:10,
-				pic:'../../static/goods/drawcard/card_dangban.png',
-				title:'iphone13 ProMAX',
-				price:110000,
-				state:0,
-				leftsec:20
-			}
-		];
-		count_down:any;
+		count_down: any;
 		countDown = 0;
 		showPopup = false;
-		awardData:{[x:string]:any} = {
-			id:0,
-			pic:'',
-			price:12000
+		awardData: { [x: string]: any } = {
+			id: 0,
+			logo: '',
+			price: 12000
 		};
+		award: any = {
+			list: [],
+			totalPage: 0,
+			queryParams: {
+				pageIndex: 1,
+				pageSize: 10,
+				tp: 11,//1 兑换奖品，11 限时好礼
+				state: 1//1 兑换中，2 已兑完
+			}
+		};
+		cardBean: any = {
+			list: [],
+			totalPage: 0,
+			queryParams: {
+				pageIndex: 1,
+				pageSize: 10,
+				tp: 1,//1 兑换奖品，11 限时好礼
+				state: 1//1 兑换中，2 已兑完
+			}
+		}
+		meBeanPoint: number = 0;
 		showPopupToast = false;
 		showDrawer = false;
 		mallExchangeRule = mallExchangeRule;
-		onLoad(query:any) {
-			if(app.token.accessToken == ''){
+
+		onLoad(query: any) {
+			if (app.token.accessToken == '') {
 				uni.navigateTo({
-					url:'/pages/login/login'
+					url: '/pages/login/login'
 				})
 				return;
 			}
+			this.reqTimeLimitData()
+			this.reqKdData()
+			this.reqMeCardBean()
 			this.getCountDown()
 		}
-		onShow(){
-			
+		onShow() {
+
 		}
-		onClickExConfirm(){
-			this.showPopup = false;
-			this.showPopupToast = true
+		onPullDownRefresh() {
+			this.cardBean.queryParams.pageIndex = 1
+			this.reqKdData(() => {
+				setTimeout(() => {
+					uni.stopPullDownRefresh()
+				}, 500)
+			})
 		}
-		onClickExchange(item:{[x:string]:any}){
+		onReachBottom() {
+			if (this.cardBean.queryParams.pageIndex < this.cardBean.totalPage) {
+				this.cardBean.queryParams.pageIndex += 1
+				this.reqKdData()
+			}
+		}
+		onClickExConfirm() {
+			app.http.Post('point/exchange/exchange/' + this.awardData.id, {}, (res: any) => {
+				this.showPopup = false;
+				this.showPopupToast = true
+			})
+
+		}
+		onClickExchange(item: { [x: string]: any }) {
 			for (const key in this.awardData) {
 				if (Object.prototype.hasOwnProperty.call(item, key)) {
 					this.awardData[key] = item[key];
 				}
 			}
+			console.log(this.awardData);
 			this.showPopup = true;
 		}
-		onClickGoAward(){
+		onClickGoAward() {
 			uni.navigateTo({
-				url:'/pages/mall/record_award'
+				url: '/pages/mall/record_award'
 			})
 			this.showPopupToast = false
 		}
 		// 倒计时定时器
-		getCountDown(){
-			this.count_down=this.scheduler(()=>{
-				this.countDown ++;
-			},1);
+		getCountDown() {
+			this.count_down = this.scheduler(() => {
+				this.countDown++;
+			}, 1);
 		}
 		// 倒计时时间计算
-		getTime(countDown:number){
-			if(countDown<=0){
+		getTime(countDown: number) {
+			if (countDown <= 0) {
 				// 有商品可以兑换以后重新请求数据
 				clearInterval(this.count_down);
 				return;
 			}
-			let day = String(Math.floor(countDown/3600/24));
-			let day_num = countDown-3600*24*Number(day)
-			let hour=Math.floor((day_num)/3600)<10?'0'+Math.floor((day_num)/3600):Math.floor((day_num)/3600);
-			let minute=Math.floor((day_num-3600*Number(hour))/60)<10?'0'+Math.floor((day_num-3600*Number(hour))/60):Math.floor((day_num-3600*Number(hour))/60);
-			let second=Math.floor((day_num-3600*Number(hour))%60)<10?'0'+Math.floor((day_num-3600*Number(hour))%60):Math.floor((day_num-3600*Number(hour))%60);
-			return (Number(day)>0?day+'天 ':'')+hour+':'+minute+':'+second;
+			let day = String(Math.floor(countDown / 3600 / 24));
+			let day_num = countDown - 3600 * 24 * Number(day)
+			let hour = Math.floor((day_num) / 3600) < 10 ? '0' + Math.floor((day_num) / 3600) : Math.floor((day_num) / 3600);
+			let minute = Math.floor((day_num - 3600 * Number(hour)) / 60) < 10 ? '0' + Math.floor((day_num - 3600 * Number(hour)) / 60) : Math.floor((day_num - 3600 * Number(hour)) / 60);
+			let second = Math.floor((day_num - 3600 * Number(hour)) % 60) < 10 ? '0' + Math.floor((day_num - 3600 * Number(hour)) % 60) : Math.floor((day_num - 3600 * Number(hour)) % 60);
+			return (Number(day) > 0 ? day + '天 ' : '') + hour + ':' + minute + ':' + second;
 		}
-		
+		awardScrolltolower() {
+			if (this.award.queryParams.pageIndex < this.award.totalPage) {
+				this.award.queryParams.pageIndex += 1
+				this.reqTimeLimitData()
+			}
+		}
+		//获取个人卡豆
+		reqMeCardBean(cb?: Function) {
+			app.http.Get('dataApi/point/index', {}, (res: any) => {
+				this.meBeanPoint = res.point || 0
+				cb && cb()
+			})
+
+		}
+		//限时兑换
+		reqTimeLimitData(cb?: Function) {
+			app.http.Get('dataApi/point/exchange/goodlist', this.award.queryParams, (res: any) => {
+				this.award.totalPage = res.totalPage
+				const reqList = res.list || []
+				this.award.queryParams.pageIndex == 1 ? this.award.list = reqList : this.award.list.push(...reqList)
+				cb && cb()
+			})
+		}
+		//卡豆兑换
+		reqKdData(cb?: Function) {
+			app.http.Get('dataApi/point/exchange/goodlist', this.cardBean.queryParams, (res: any) => {
+				this.cardBean.totalPage = res.totalPage
+				const reqList = res.list || []
+				this.cardBean.queryParams.pageIndex == 1 ? this.cardBean.list = reqList : this.cardBean.list.push(...reqList)
+				cb && cb()
+			})
+		}
+
 	}
 </script>
 
@@ -177,14 +240,17 @@
 	page {
 		background-color: #f6f7fb;
 	}
-	.buying{
+
+	.buying {
 		background: #E84F5E !important;
 	}
-	.drawer-box{
+
+	.drawer-box {
 		width: 100%;
 		box-sizing: border-box;
 	}
-	.drawer-help{
+
+	.drawer-help {
 		width: 100%;
 		font-size: 25rpx;
 		font-family: PingFangSC-Regular;
@@ -193,16 +259,18 @@
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
 	}
-	.mall-top{
+
+	.mall-top {
 		width: 100%;
-		height:667rpx;
-		background:url(../../static/mall/bg.png) no-repeat center;
+		height: 667rpx;
+		background: url(../../static/mall/bg.png) no-repeat center;
 		background-size: 100% 100%;
 		position: relative;
 		box-sizing: border-box;
 		padding-top: 170rpx;
 		padding-left: 47rpx;
-		.mall-bt{
+
+		.mall-bt {
 			width: 100%;
 			box-sizing: border-box;
 			font-size: 69rpx;
@@ -211,42 +279,47 @@
 			color: #FFFFFF;
 			margin-bottom: 49rpx;
 		}
-		
-		.mall-my-point{
+
+		.mall-my-point {
 			font-size: 27rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
 			color: #FFFFFF;
-			letter-spacing:5rpx;
+			letter-spacing: 5rpx;
 		}
-		.mall-point{
+
+		.mall-point {
 			display: flex;
-			height:80rpx;
+			height: 80rpx;
 			align-items: center;
-			.point-num{
-				height:80rpx;
+
+			.point-num {
+				height: 80rpx;
 				font-size: 50rpx;
 				font-family: PingFang SC;
 				font-weight: 600;
 				color: #FFFFFF;
 				text-shadow: 3px 3px 6rpx rgba(50, 46, 164, 0.8);
 			}
-			.point-right{
+
+			.point-right {
 				width: 35rpx;
-				height:47rpx;
+				height: 47rpx;
 				background: url(../../static/mall/right.png) no-repeat center;
 				background-size: 100% 100%;
 				margin-left: 15rpx;
 			}
 		}
-		.mall-top-right{
+
+		.mall-top-right {
 			width: 175rpx;
 			position: absolute;
-			right:0;
-			top:170rpx;
+			right: 0;
+			top: 170rpx;
 			box-sizing: border-box;
 		}
-		.mall-top-btn{
+
+		.mall-top-btn {
 			width: 175rpx;
 			height: 57rpx;
 			border: 3rpx solid #FFFFFF;
@@ -263,36 +336,41 @@
 			font-family: PingFang SC;
 			font-weight: 400;
 			color: #FFFFFF;
-			.mall-top-img{
+
+			.mall-top-img {
 				width: 42rpx;
-				height:43rpx;
+				height: 43rpx;
 				margin-right: 14rpx;
 			}
 		}
 	}
-	.mall-center{
+
+	.mall-center {
 		width: 100%;
-		height:100rpx;
+		height: 100rpx;
 		box-sizing: border-box;
 		padding: 0 14rpx;
 		margin-top: -240rpx;
 		position: relative;
 		z-index: 9;
-		.mall-limit{
+
+		.mall-limit {
 			width: 100%;
 			background: #FFFFFF;
 			border-radius: 5rpx;
-			padding:37rpx 19rpx;
+			padding: 37rpx 19rpx;
 			box-sizing: border-box;
-			.mall-limit-header{
+
+			.mall-limit-header {
 				width: 100%;
-				height:32rpx;
+				height: 32rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				margin-bottom: 36rpx;
-				.limit-header-left{
-					height:32rpx;
+
+				.limit-header-left {
+					height: 32rpx;
 					display: flex;
 					align-items: center;
 					font-size: 23rpx;
@@ -300,53 +378,61 @@
 					font-weight: 400;
 					color: #333333;
 					line-height: 32rpx;
-					.limit-bg{
+
+					.limit-bg {
 						width: 140rpx;
 						height: 32rpx;
 						margin-right: 8rpx;
 					}
-					
+
 				}
-				.limit-header-right{
-					height:32rpx;
+
+				.limit-header-right {
+					height: 32rpx;
 					font-size: 23rpx;
 					font-family: PingFang SC;
 					font-weight: 400;
 					color: #333333;
 					line-height: 32rpx;
-					.limit-right{
+
+					.limit-right {
 						width: 12rpx;
-						height:20rpx;
+						height: 20rpx;
 						margin-left: 10rpx;
 						margin-bottom: -3rpx;
 					}
 				}
 			}
-			.award-box{
+
+			.award-box {
 				width: 100%;
-				height:390rpx;
+				height: 390rpx;
 				box-sizing: border-box;
-				&-scroll{
+
+				&-scroll {
 					width: 100%;
-					height:390rpx;
+					height: 390rpx;
 					display: flex;
 					white-space: nowrap;
 					align-items: center;
 				}
-				.award-scroll-index{
+
+				.award-scroll-index {
 					width: 240rpx;
-					height:390rpx;
+					height: 390rpx;
 					margin-right: 20rpx;
 					box-sizing: border-box;
 					display: inline-block;
-					.award-top{
+
+					.award-top {
 						width: 240rpx;
-						height:240rpx;
+						height: 240rpx;
 						box-sizing: border-box;
 						position: relative;
-						.award-num{
+
+						.award-num {
 							width: 65rpx;
-							height:22rpx;
+							height: 22rpx;
 							background: url(../../static/mall/limit_num.png) no-repeat center;
 							background-size: 100% 100%;
 							font-size: 20rpx;
@@ -356,44 +442,49 @@
 							text-align: center;
 							line-height: 22rpx;
 							position: absolute;
-							left:0;
-							top:0;
+							left: 0;
+							top: 0;
 							z-index: 8;
 						}
-						.award-pic-box{
+
+						.award-pic-box {
 							width: 240rpx;
-							height:210rpx;
-							background:rgba(226, 232, 255, 0.14);
+							height: 210rpx;
+							background: rgba(226, 232, 255, 0.14);
 							display: flex;
 							align-items: center;
 							justify-content: center;
 						}
-						.award-pic{
+
+						.award-pic {
 							width: 240rpx;
-							height:210rpx;
+							height: 210rpx;
 						}
-						.award-status{
+
+						.award-status {
 							width: 240rpx;
-							height:30rpx;
+							height: 30rpx;
 							position: absolute;
-							bottom:0;
-							left:0;
+							bottom: 0;
+							left: 0;
 							text-align: center;
-							background:#B9D7EF;
+							background: #B9D7EF;
 							line-height: 30rpx;
 							font-size: 22rpx;
 							font-family: PingFang SC;
 							font-weight: 400;
 							color: #FFFFFF;
 						}
-						
+
 					}
-					.award-bottom{
+
+					.award-bottom {
 						width: 240rpx;
-						height:150rpx;
-						.award-title{
+						height: 150rpx;
+
+						.award-title {
 							width: 100%;
-							height:70rpx;
+							height: 70rpx;
 							line-height: 70rpx;
 							font-size: 27rpx;
 							font-family: PingFang SC;
@@ -401,12 +492,13 @@
 							color: #333333;
 							text-align: center;
 							overflow: hidden;
-							text-overflow:ellipsis;
+							text-overflow: ellipsis;
 							white-space: nowrap;
 						}
-						.award-price{
+
+						.award-price {
 							width: 100%;
-							height:34rpx;
+							height: 34rpx;
 							font-size: 25rpx;
 							font-family: PingFang SC;
 							font-weight: 400;
@@ -414,9 +506,10 @@
 							text-align: center;
 							line-height: 20rpx;
 						}
-						.award-exbtn{
+
+						.award-exbtn {
 							width: 100%;
-							height:46rpx;
+							height: 46rpx;
 							background: #DBDBDB;
 							border-radius: 3rpx;
 							text-align: center;
@@ -431,58 +524,69 @@
 			}
 		}
 	}
-	.point-header{
+
+	.point-header {
 		width: 100%;
-		height:62rpx;
+		height: 62rpx;
 		margin-top: 14rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		box-sizing: border-box;
-		padding:0 19rpx;
-		.point-title{
+		padding: 0 19rpx;
+
+		.point-title {
 			font-size: 31rpx;
 			font-family: PingFang SC;
 			font-weight: 600;
 			color: #333333;
 		}
-		.point-tips{
+
+		.point-tips {
 			font-size: 23rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
 			color: #333333;
 		}
 	}
-	.point-box{
+
+	.point-box {
 		width: 100%;
 		box-sizing: border-box;
-		.point-index{
+		display: flex;
+		flex-wrap: wrap;
+
+		.point-index {
 			width: 235rpx;
 			height: 326rpx;
 			background: #FFFFFF;
 			border-radius: 5rpx;
 			margin-right: 8;
 			box-sizing: border-box;
-			padding:0 12rpx;
+			padding: 0 12rpx;
 		}
-		.point-index:nth-child(3n){
+
+		.point-index:nth-child(3n) {
 			margin-right: 0;
 		}
-		.point-pic-box{
+
+		.point-pic-box {
 			width: 100%;
-			height:170rpx;
+			height: 170rpx;
 			display: flex;
 			justify-content: center;
 			box-sizing: border-box;
-			padding-top: 20rpx;
-			.point-pic{
+			padding-top: 24rpx;
+
+			.point-pic {
 				width: 158rpx;
-				height:131rpx;
+				height: 131rpx;
 			}
 		}
-		.point-name{
+
+		.point-name {
 			width: 100%;
-			height:36rpx;
+			height: 36rpx;
 			line-height: 36rpx;
 			font-size: 25rpx;
 			font-family: PingFang SC;
@@ -490,12 +594,13 @@
 			color: #333333;
 			text-align: center;
 			overflow: hidden;
-			text-overflow:ellipsis;
+			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
-		.point-price{
+
+		.point-price {
 			width: 100%;
-			height:50rpx;
+			height: 50rpx;
 			line-height: 50rpx;
 			font-size: 23rpx;
 			font-family: PingFang SC;
@@ -503,10 +608,11 @@
 			color: #EF3333;
 			text-align: center;
 			overflow: hidden;
-			text-overflow:ellipsis;
+			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
-		.point-btn{
+
+		.point-btn {
 			width: 203rpx;
 			height: 43rpx;
 			background: #E84F5E;
@@ -517,8 +623,7 @@
 			font-family: PingFang SC;
 			font-weight: 400;
 			color: #FFFFFF;
-			margin:0 auto;
+			margin: 0 auto;
 		}
 	}
-		
 </style>
