@@ -28,7 +28,7 @@
 					</view>
 				</view>
 				<view class="user-explain">
-					<view class="explain-view">经典系列21-22 noir、小真金将在6月上市。</view>
+					<view class="explain-view">经典系列21-22 noir、小真金！</view>
 					<view class="explain-view explain-bold">收集sp卡密：鞋灯/聚光灯/数据签兑奖品！<text>（您也可收取他人赠送的卡密获取）</text></view>
 				</view>
 			</view>
@@ -295,18 +295,18 @@
 	}
 	.sp-user{
 		width: 100%;
-		height:205rpx;
+		height:242rpx;
 		background: url(../../../static/act/sp/sp_bg.png) no-repeat center;
 		background-size: 100% 100%;
 		margin-top: 14rpx;
 		display: flex;
 		justify-content: space-between;
 		box-sizing: border-box;
-		padding:0 23rpx 0 15rpx;
+		padding:0 26rpx 0 15rpx;
 		.user-info{
 			width: 250rpx;
 			box-sizing: border-box;
-			padding-top: 13rpx;
+			padding-top: 30rpx;
 			.user-title{
 				width: 100%;
 				font-size: 33rpx;
@@ -315,20 +315,20 @@
 				color: #333333;
 				box-sizing: border-box;
 				padding-left: 9rpx;
-				margin-bottom: 8rpx;
+				margin-bottom: 28rpx;
 			}
 			.user-bg{
-				width: 152rpx;
-				height:139rpx;
+				width: 133rpx;
+				height:121rpx;
 				background: url(../../../static/act/sp/sp_num.png) no-repeat center;
 				background-size: 100% 100%;
 				position: relative;
 				.user-num{
 					height:20rpx;
 					position: absolute;
-					bottom:37rpx;
-					left:135rpx;
-					font-size: 33rpx;
+					bottom:47rpx;
+					left:152rpx;
+					font-size: 50rpx;
 					font-family: hei;
 					font-weight: 400;
 					color: #333333;
@@ -337,15 +337,15 @@
 			}
 		}
 		.user-explain{
-			width: 353rpx;
+			width: 325rpx;
 			box-sizing: border-box;
-			padding-top: 20rpx;
+			padding-top: 30rpx;
 			.explain-view{
-				font-size: 23rpx;
+				font-size: 24rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
 				color: #333333;
-				line-height: 33rpx;
+				line-height: 36rpx;
 			}
 			.explain-bold{
 				font-weight: bold;
