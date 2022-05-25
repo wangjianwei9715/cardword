@@ -390,6 +390,11 @@
 			// if(this.tas)
 		}
 		getOq() {
+			uni.showToast({
+				title:'活动结束',
+				icon:'none'
+			})
+			return
 			if (app.token.accessToken == "") {
 				uni.navigateTo({
 					url: "/pages/login/login"
