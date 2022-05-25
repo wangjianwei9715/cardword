@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="mall-top">
 			<view class="mall-bt">卡币商城</view>
-			<view class="mall-my-point">我的卡豆</view>
+			<view class="mall-my-point">我的卡币</view>
 			<navigator url="/pages/mall/record_point" hover-class="none" class="mall-point">
 				<view class="point-num">{{toThousands(meBeanPoint)}}</view>
 				<view class="point-right"></view>
@@ -54,9 +54,9 @@
 				</view>
 			</view>
 
-			<!-- 卡豆兑换 -->
+			<!-- 卡币兑换 -->
 			<view class="point-header">
-				<view class="point-title">卡豆兑换</view>
+				<view class="point-title">卡币兑换</view>
 				<view calss="point-tips">不定期上新</view>
 			</view>
 			<view class="point-box">
@@ -226,7 +226,7 @@
 				this.reqTimeLimitData();
 			}
 		}
-		//获取个人卡豆
+		//获取个人卡币
 		reqMeCardBean(cb?: Function) {
 			app.http.Get("dataApi/point/index", {}, (res: any) => {
 				this.meBeanPoint = res.point || 0;
@@ -248,7 +248,7 @@
 				}
 			);
 		}
-		//卡豆兑换
+		//卡币兑换
 		reqKdData(cb?: Function) {
 			app.http.Get(
 				"dataApi/point/exchange/goodlist",

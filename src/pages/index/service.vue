@@ -48,7 +48,7 @@
 		dateFormatMSCustom = dateFormatMSCustom;
 		decomposeNum = 0;
 		rewardList:{[x:string]:any} = [
-			{icon:'../act/static/pingtai/icon1.png',name:'卡豆'},
+			{icon:'../act/static/pingtai/icon1.png',name:'卡币'},
 			{icon:'../act/static/pingtai/icon.png',name:'优惠券'}
 		];
 		calendarList:{[x:string]:any} = [];

@@ -1,10 +1,10 @@
 <template>
 	<view class="content">
 		<view class="header">
-			<!-- 卡豆签到区域 -->
+			<!-- 卡币签到区域 -->
 			<view class="header-content">
 				<view class="header-top">
-					<view class="user-bean">我的卡豆：<text>{{signInfo.point}}</text><view class="bean-help" @click="onClickShowRule"></view></view>
+					<view class="user-bean">我的卡币：<text>{{signInfo.point}}</text><view class="bean-help" @click="onClickShowRule"></view></view>
 					<view class="user-mx" @click="onClickGoRecord">奖品明细></view>
 				</view>
 				<view class="header-line"></view>
@@ -41,7 +41,7 @@
 			<!-- 兑换 -->
 			<view class="exchange-content">
 				<view class="exchange-header">
-					<view class="left-title">卡豆兑换</view>
+					<view class="left-title">卡币兑换</view>
 					<view class="right-tips">不定期上新</view>
 				</view>
 				<view class="exchange-list">
@@ -49,7 +49,7 @@
 						<view class="exchange-num" v-show="item.leftNum>-1">剩{{item.leftNum}}件</view>
 						<view class="exchange-pic-content"><image mode="aspectFit" class="exchange-pic" :src="decodeURIComponent(item.logo)" /></view>
 						<view class="exchange-title">{{item.name}}</view>
-						<view class="exchange-desc">{{item.price}}卡豆</view>
+						<view class="exchange-desc">{{item.price}}卡币</view>
 						<button :class="item.leftNum!=0?'exchange-btn':'exchange-btn-over'" :disabled="item.leftNum==0" @click="onClickExchange(item)">兑换</button>
 					</view>
 				</view>
@@ -80,7 +80,7 @@
 		exchangeData = []
 		popupTitle = '';
 		// 兑换弹窗
-		// 兑换需要卡豆 图片
+		// 兑换需要卡币 图片
 		showLotteryPopup = false;
 		exchangePrice = 0;
 		popupPic = '';

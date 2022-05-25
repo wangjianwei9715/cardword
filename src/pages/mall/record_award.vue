@@ -10,7 +10,7 @@
 				<view class="title oneLineOver">{{item.name}}
 				</view>
 				<view class="normal" style="margin-top: 10rpx;">兑换时间：{{dateFormatMSHMS(item.exchangeAt)}}</view>
-				<view class="normal" style="margin-top: 10rpx;">消耗卡豆:{{item.price}}</view>
+				<view class="normal" style="margin-top: 10rpx;">卡币:{{item.price}}</view>
 				<view class="line"></view>
 				<view class="normal" style="color:#FB4E3E">券编号：{{item.couponCode}}</view>
 			</view>
