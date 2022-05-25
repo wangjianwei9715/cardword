@@ -387,7 +387,7 @@
 				{
 					"path": "sign/cardBean",
 					"style": {
-						"navigationBarTitleText": "卡豆商城",
+						"navigationBarTitleText": "卡币商城",
 						"navigationBarBackgroundColor": "#ffffff",
 						"transparentTitle": "auto",
 						"navigationBarTextStyle": "black",

@@ -11,7 +11,7 @@
 						<view class="detail-top">
 							<view class="detail-name">{{item.name}}</view>
 							<view class="detail-text">兑换时间：{{dateFormatYMSHM(item.exchangeAt)}}</view>
-							<view class="detail-text">消耗卡豆：{{item.price}}</view>
+							<view class="detail-text">消耗卡币：{{item.price}}</view>
 						</view>
 						<view class="detail-state">
 							{{item.goodTp==1?'券编号：'+item.couponCode:(item.goodTp==3?'已发放':switchState(item.state))}}
@@ -42,8 +42,8 @@
 		noMoreData = false;
  		showEmpty = false;
 		tab = [
-			{id:1,name:'卡豆兑换'},
-			{id:2,name:'卡豆抽奖'}
+			{id:1,name:'卡币兑换'},
+			{id:2,name:'卡币抽奖'}
 		];
 		tabCheck = 1;
 		onLoad(query:any) {

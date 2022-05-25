@@ -7,7 +7,7 @@
 			</view>
 			<button class="box-index drawing-btn" :class="{'btning':this.turntableIng||luckydrawNum==0}"  @click="onClickDrawing">
 				<view class="drawing-name"></view>
-				<view class="drawing-text">（{{luckydrawPrice}}卡豆）</view>
+				<view class="drawing-text">（{{luckydrawPrice}}卡币）</view>
 				<view class="drawing-text">今日剩{{luckydrawNum}}次</view>
 			</button>
 		</view>

@@ -58,7 +58,7 @@
 					<view class="top-ref"></view>
 				</view> -->
 
-				<!-- 卡豆商城 热门系列 拆卡围观 -->
+				<!-- 卡币商城 热门系列 拆卡围观 -->
 				<tabHot :hotList="hotList" />
 			</view>
 			<!-- #endif -->
@@ -93,7 +93,7 @@
 		hotList:{[x:string]:any} = indexHotList;
 		goodTab = indexGoodTab;
 		topAddList:any = [];
-		// 卡豆商城 热门系列 拆卡围观
+		// 卡币商城 热门系列 拆卡围观
 		goodTabCheck = 1;
 		indexSwiper = true;
 		goodsList:any = [];

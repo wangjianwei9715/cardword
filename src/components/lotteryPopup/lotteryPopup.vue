@@ -6,12 +6,12 @@
 			<view class="payment-popup-t">
 				<view class="popup-title-t">{{popupTitle}}</view>
 				<view class="popup-msg" v-show="popupTitle!='抽奖成功'">兑换后无法取消，可在"奖品明细"中查看兑换记录。<text >（兑换实物将使用您的默认地址发货，请提前确认）</text></view>
-				<view class="popup-msg" v-show="popupTitle=='抽奖成功'">恭喜获得<text >{{luckyDrawName}}</text>，奖品请在“卡豆专区-奖品明细”中查看</view>
+				<view class="popup-msg" v-show="popupTitle=='抽奖成功'">恭喜获得<text >{{luckyDrawName}}</text>，奖品请在“卡币专区-奖品明细”中查看</view>
 				<view class="popup-pic-content">
 					<image class="popup-pic" :src="decodeURIComponent(popupPic)"/>
 				</view>
 				<button class="popup-btn" @click="onClickPopupBtn">
-					{{popupTitle=='抽奖成功'?'我知道了':'确认兑换（'+exchangePrice+'卡豆）'}}
+					{{popupTitle=='抽奖成功'?'我知道了':'确认兑换（'+exchangePrice+'卡币）'}}
 				</button>
 				<view class="popup-close" @click="onClickCancelLottery"></view>
 			</view>
@@ -22,7 +22,7 @@
 			<view class="payment-showdow"></view>
 			<view class="payment-popup">
 				<view class="popup-title">签到成功</view>
-				<view class="popup-msg"> 签到成功，获得<text>{{signReward}}{{distanceDay>0?'卡豆':'元无门槛券'}}</text></view>
+				<view class="popup-msg"> 签到成功，获得<text>{{signReward}}{{distanceDay>0?'卡币':'元无门槛券'}}</text></view>
 				<view class="popup-tips" v-show="distanceDay>0">再签{{distanceDay}}天可得{{couponReward}}元无门槛券</view>
 				<button class="popup-btn" @click="onClickSignBtn">
 					我知道了
