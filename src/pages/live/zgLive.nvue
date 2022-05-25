@@ -36,8 +36,8 @@
 				},
 				statusBarHeight: 0,
 				webViewUrl: '',
-				AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd',
-				// AnchorEndUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/theAnchorEnd', 
+				// AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd',
+				AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd', 
 				UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index',
 				// UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?testUser=true',
 				// webViewUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index', //用户端
@@ -56,12 +56,17 @@
 				},
 				hasToken: Boolean(uni.getStorageSync("token") && JSON.parse(uni.getStorageSync("token"))
 					.accessToken),
-				context: null
+				context: null,
+				tokenData: {
+					token: '',
+					anonymous: true, //是否匿名(不公开个人信息或者游客)
+					uid: "",
+					streamId: ""
+				}
 			}
 		},
 		async onLoad(query) {
 			var result = await permision.requestAndroidPermission(['android.permission.CAMERA'])
-
 			this.webViewUrl = query.isAnchor == 'true' ? this.AnchorEndUrl : this.UserUrl
 			if (query.roomID) this.loginRoomData.roomID = query.roomID
 			if (query.streamID) this.loginRoomData.streamID = query.streamID
@@ -82,6 +87,7 @@
 			if (this.$refs.webview) this.$refs.webview.evalJs(
 				`logOutRoom(${JSON.stringify(this.loginRoomData)})`
 			)
+			if(this.tokenData.uid) request('brodcast/third/1001/user/logout/'+this.loginRoomData.roomID,{uid:this.tokenData.uid},'post')
 		},
 		methods: {
 			//webview高度,设备相关
@@ -99,29 +105,39 @@
 			async getUserProfile(deviceInfo) {
 				let userData = {}
 				const device = Md5.hashStr(deviceInfo.deviceId)
+
+
+				const tokenRespone = await request('brodcast/third/1001/user/login/' + this.loginRoomData.roomID, {},
+					'post')
+				this.tokenData = tokenRespone.data
+				console.log(this.tokenData);
 				if (this.hasToken) {
 					const {
 						data
 					} = await request('me/home', {}, 'get')
 					userData = data
+					//匿名
+					if (this.tokenData.anonymous) {
+						userData.avatar =
+							'https%3A%2F%2Fthirdwx.qlogo.cn%2Fmmopen%2Fvi_32%2FbYYh0TtEM9WHX1IwZJHRZ4IFEk6dhfLicT8LgJq6AOHymbZNxTY5Y6yX4EKcsLXicPic6mIl3Ne0VsDV8ygj3VdiaQ%2F132'
+						userData.name = this.tokenData.uname
+					}
 				} else {
 					//用设备号
 					userData = {
-						userId: device,
-						name: '小卡迷' + deviceInfo.deviceId.substr(deviceInfo.deviceId.length - 4)
+						name: this.tokenData.uname,
+						userId: this.tokenData.uid
 					}
+					// userData = {
+					// 	userId: device,
+					// 	name: '小卡迷' + deviceInfo.deviceId.substr(deviceInfo.deviceId.length - 4)
+					// }
 				}
-
-				const tokenData = await request('brodcast/third/1001/user/login/' + this.loginRoomData.roomID, this
-					.hasToken ? {} : {
-						device
-					},
-					'post')
-				this.loginRoom(userData, tokenData, deviceInfo)
+				this.loginRoom(userData, tokenRespone.data, deviceInfo)
 			},
 			loginRoom(userData, roomTokenData, deviceInfo) {
 				this.appProfile = userData
-				this.loginRoomData.userID = userData.userId + ''
+				this.loginRoomData.userID = roomTokenData.uid
 				this.loginRoomData.userName = userData.name
 				this.loginRoomData.token = roomTokenData.token
 				this.loginRoomData.streamID = roomTokenData.streamId || null
@@ -191,7 +207,7 @@
 					content: '请前往系统设置,手动开启录音、相机等权限后,重新进入直播间',
 					showCancel: false,
 					success: ({
-						confirm 
+						confirm
 					}) => {
 						if (confirm) permision.gotoAppPermissionSetting()
 					}
