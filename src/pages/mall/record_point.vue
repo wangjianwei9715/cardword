@@ -9,7 +9,7 @@
 				<view class="name">{{item.nme}}</view>
 				<view class="time">{{item.created_at}}</view>
 			</view>
-			<view class="point-num">{{item.point}}</view>
+			<view class="point-num" :style="{color:item.point<0?'#7AC04F':'#EF3333'}">{{item.point}}</view>
 		</view>
 		<empty v-if='!pointList.length'/>
 	</view>
