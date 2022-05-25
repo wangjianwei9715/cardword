@@ -257,6 +257,7 @@ export default class HttpRequest {
 						icon:'none',
 						duration:2000
 					});
+					errorCb&&errorCb(response.data.msg)
 				}
 			}else{
 				if(errorCb) errorCb()

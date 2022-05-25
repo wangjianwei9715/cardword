@@ -90,18 +90,19 @@
 <script lang="ts">
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
-	import BaseNode from '../../base/BaseNode.vue';
+	import BaseNode from "../../base/BaseNode.vue";
 	import { mallExchangeRule } from "@/net/DataRules";
-	import { toThousands } from "@/tools/util"
+	import { toThousands } from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		toThousands = toThousands;
 		count_down: any;
-		countDown = 0;
+		countDown: any = Math.round(+new Date() / 1000);
 		showPopup = false;
+		requestLock: boolean = false;
 		awardData: { [x: string]: any } = {
 			id: 0,
-			logo: '',
+			logo: "",
 			price: 12000
 		};
 		award: any = {
@@ -110,8 +111,8 @@
 			queryParams: {
 				pageIndex: 1,
 				pageSize: 10,
-				tp: 11,//1 兑换奖品，11 限时好礼
-				state: 1//1 兑换中，2 已兑完
+				tp: 11, //1 兑换奖品，11 限时好礼
+				state: 1 //1 兑换中，2 已兑完
 			}
 		};
 		cardBean: any = {
@@ -120,50 +121,63 @@
 			queryParams: {
 				pageIndex: 1,
 				pageSize: 10,
-				tp: 1,//1 兑换奖品，11 限时好礼
-				state: 1//1 兑换中，2 已兑完
+				tp: 1, //1 兑换奖品，11 限时好礼
+				state: 1 //1 兑换中，2 已兑完
 			}
-		}
+		};
 		meBeanPoint: number = 0;
 		showPopupToast = false;
 		showDrawer = false;
 		mallExchangeRule = mallExchangeRule;
 
 		onLoad(query: any) {
-			if (app.token.accessToken == '') {
+			if (app.token.accessToken == "") {
 				uni.navigateTo({
-					url: '/pages/login/login'
-				})
+					url: "/pages/login/login"
+				});
 				return;
 			}
-			this.reqTimeLimitData()
-			this.reqKdData()
-			this.reqMeCardBean()
-			this.getCountDown()
+			this.reqTimeLimitData();
+			this.reqKdData();
+			this.reqMeCardBean();
+			this.getCountDown();
 		}
-		onShow() {
-
-		}
+		onShow() { }
 		onPullDownRefresh() {
-			this.cardBean.queryParams.pageIndex = 1
+			this.cardBean.queryParams.pageIndex = 1;
+			this.award.queryParams.pageIndex=1
+			this.reqTimeLimitData(() => {
+				setTimeout(() => {
+					uni.stopPullDownRefresh();
+				}, 500);
+			});
 			this.reqKdData(() => {
 				setTimeout(() => {
-					uni.stopPullDownRefresh()
-				}, 500)
-			})
+					uni.stopPullDownRefresh();
+				}, 500);
+			});
 		}
 		onReachBottom() {
 			if (this.cardBean.queryParams.pageIndex < this.cardBean.totalPage) {
-				this.cardBean.queryParams.pageIndex += 1
-				this.reqKdData()
+				this.cardBean.queryParams.pageIndex += 1;
+				this.reqKdData();
 			}
 		}
 		onClickExConfirm() {
-			app.http.Post('point/exchange/exchange/' + this.awardData.id, {}, (res: any) => {
-				this.showPopup = false;
-				this.showPopupToast = true
-			})
-
+			if(this.requestLock) return
+			this.requestLock=true
+			app.http.Post(
+				"point/exchange/exchange/" + this.awardData.id,
+				{},
+				(res: any) => {
+					this.requestLock=false
+					this.meBeanPoint = res.point;
+					this.showPopup = false;
+					this.showPopupToast = true;
+				},(err:any)=>{
+					this.requestLock=false
+				}
+			);
 		}
 		onClickExchange(item: { [x: string]: any }) {
 			for (const key in this.awardData) {
@@ -171,14 +185,13 @@
 					this.awardData[key] = item[key];
 				}
 			}
-			console.log(this.awardData);
 			this.showPopup = true;
 		}
 		onClickGoAward() {
 			uni.navigateTo({
-				url: '/pages/mall/record_award'
-			})
-			this.showPopupToast = false
+				url: "/pages/mall/record_award"
+			});
+			this.showPopupToast = false;
 		}
 		// 倒计时定时器
 		getCountDown() {
@@ -194,45 +207,66 @@
 				return;
 			}
 			let day = String(Math.floor(countDown / 3600 / 24));
-			let day_num = countDown - 3600 * 24 * Number(day)
-			let hour = Math.floor((day_num) / 3600) < 10 ? '0' + Math.floor((day_num) / 3600) : Math.floor((day_num) / 3600);
-			let minute = Math.floor((day_num - 3600 * Number(hour)) / 60) < 10 ? '0' + Math.floor((day_num - 3600 * Number(hour)) / 60) : Math.floor((day_num - 3600 * Number(hour)) / 60);
-			let second = Math.floor((day_num - 3600 * Number(hour)) % 60) < 10 ? '0' + Math.floor((day_num - 3600 * Number(hour)) % 60) : Math.floor((day_num - 3600 * Number(hour)) % 60);
-			return (Number(day) > 0 ? day + '天 ' : '') + hour + ':' + minute + ':' + second;
+			let day_num = countDown - 3600 * 24 * Number(day);
+			let hour =
+				Math.floor(day_num / 3600) < 10
+					? "0" + Math.floor(day_num / 3600)
+					: Math.floor(day_num / 3600);
+			let minute =
+				Math.floor((day_num - 3600 * Number(hour)) / 60) < 10
+					? "0" + Math.floor((day_num - 3600 * Number(hour)) / 60)
+					: Math.floor((day_num - 3600 * Number(hour)) / 60);
+			let second =
+				Math.floor((day_num - 3600 * Number(hour)) % 60) < 10
+					? "0" + Math.floor((day_num - 3600 * Number(hour)) % 60)
+					: Math.floor((day_num - 3600 * Number(hour)) % 60);
+			return (
+				(Number(day) > 0 ? day + "天 " : "") + hour + ":" + minute + ":" + second
+			);
 		}
 		awardScrolltolower() {
 			if (this.award.queryParams.pageIndex < this.award.totalPage) {
-				this.award.queryParams.pageIndex += 1
-				this.reqTimeLimitData()
+				this.award.queryParams.pageIndex += 1;
+				this.reqTimeLimitData();
 			}
 		}
 		//获取个人卡豆
 		reqMeCardBean(cb?: Function) {
-			app.http.Get('dataApi/point/index', {}, (res: any) => {
-				this.meBeanPoint = res.point || 0
-				cb && cb()
-			})
-
+			app.http.Get("dataApi/point/index", {}, (res: any) => {
+				this.meBeanPoint = res.point || 0;
+				cb && cb();
+			});
 		}
 		//限时兑换
 		reqTimeLimitData(cb?: Function) {
-			app.http.Get('dataApi/point/exchange/goodlist', this.award.queryParams, (res: any) => {
-				this.award.totalPage = res.totalPage
-				const reqList = res.list || []
-				this.award.queryParams.pageIndex == 1 ? this.award.list = reqList : this.award.list.push(...reqList)
-				cb && cb()
-			})
+			app.http.Get(
+				"dataApi/point/exchange/goodlist",
+				this.award.queryParams,
+				(res: any) => {
+					this.award.totalPage = res.totalPage;
+					const reqList = res.list || [];
+					this.award.queryParams.pageIndex == 1
+						? (this.award.list = reqList)
+						: this.award.list.push(...reqList);
+					cb && cb();
+				}
+			);
 		}
 		//卡豆兑换
 		reqKdData(cb?: Function) {
-			app.http.Get('dataApi/point/exchange/goodlist', this.cardBean.queryParams, (res: any) => {
-				this.cardBean.totalPage = res.totalPage
-				const reqList = res.list || []
-				this.cardBean.queryParams.pageIndex == 1 ? this.cardBean.list = reqList : this.cardBean.list.push(...reqList)
-				cb && cb()
-			})
+			app.http.Get(
+				"dataApi/point/exchange/goodlist",
+				this.cardBean.queryParams,
+				(res: any) => {
+					this.cardBean.totalPage = res.totalPage;
+					const reqList = res.list || [];
+					this.cardBean.queryParams.pageIndex == 1
+						? (this.cardBean.list = reqList)
+						: this.cardBean.list.push(...reqList);
+					cb && cb();
+				}
+			);
 		}
-
 	}
 </script>
 
@@ -242,7 +276,7 @@
 	}
 
 	.buying {
-		background: #E84F5E !important;
+		background: #e84f5e !important;
 	}
 
 	.drawer-box {
@@ -255,7 +289,7 @@
 		font-size: 25rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
-		color: #7D8288;
+		color: #7d8288;
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
 	}
@@ -276,7 +310,7 @@
 			font-size: 69rpx;
 			font-family: hei;
 			font-weight: 400;
-			color: #FFFFFF;
+			color: #ffffff;
 			margin-bottom: 49rpx;
 		}
 
@@ -284,7 +318,7 @@
 			font-size: 27rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
-			color: #FFFFFF;
+			color: #ffffff;
 			letter-spacing: 5rpx;
 		}
 
@@ -298,7 +332,7 @@
 				font-size: 50rpx;
 				font-family: PingFang SC;
 				font-weight: 600;
-				color: #FFFFFF;
+				color: #ffffff;
 				text-shadow: 3px 3px 6rpx rgba(50, 46, 164, 0.8);
 			}
 
@@ -322,11 +356,11 @@
 		.mall-top-btn {
 			width: 175rpx;
 			height: 57rpx;
-			border: 3rpx solid #FFFFFF;
+			border: 3rpx solid #ffffff;
 			border-right: none;
 			border-top-left-radius: 27rpx;
 			border-bottom-left-radius: 27rpx;
-			background: #9EAEFF;
+			background: #9eaeff;
 			margin-bottom: 27rpx;
 			box-sizing: border-box;
 			padding-left: 10rpx;
@@ -335,7 +369,7 @@
 			font-size: 23rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
-			color: #FFFFFF;
+			color: #ffffff;
 
 			.mall-top-img {
 				width: 42rpx;
@@ -356,7 +390,7 @@
 
 		.mall-limit {
 			width: 100%;
-			background: #FFFFFF;
+			background: #ffffff;
 			border-radius: 5rpx;
 			padding: 37rpx 19rpx;
 			box-sizing: border-box;
@@ -384,7 +418,6 @@
 						height: 32rpx;
 						margin-right: 8rpx;
 					}
-
 				}
 
 				.limit-header-right {
@@ -438,7 +471,7 @@
 							font-size: 20rpx;
 							font-family: PingFang SC;
 							font-weight: 500;
-							color: #FFFFFF;
+							color: #ffffff;
 							text-align: center;
 							line-height: 22rpx;
 							position: absolute;
@@ -468,14 +501,13 @@
 							bottom: 0;
 							left: 0;
 							text-align: center;
-							background: #B9D7EF;
+							background: #b9d7ef;
 							line-height: 30rpx;
 							font-size: 22rpx;
 							font-family: PingFang SC;
 							font-weight: 400;
-							color: #FFFFFF;
+							color: #ffffff;
 						}
-
 					}
 
 					.award-bottom {
@@ -502,7 +534,7 @@
 							font-size: 25rpx;
 							font-family: PingFang SC;
 							font-weight: 400;
-							color: #EF3333;
+							color: #ef3333;
 							text-align: center;
 							line-height: 20rpx;
 						}
@@ -510,14 +542,14 @@
 						.award-exbtn {
 							width: 100%;
 							height: 46rpx;
-							background: #DBDBDB;
+							background: #dbdbdb;
 							border-radius: 3rpx;
 							text-align: center;
 							line-height: 46rpx;
 							font-size: 27rpx;
 							font-family: PingFang SC;
 							font-weight: 400;
-							color: #FFFFFF;
+							color: #ffffff;
 						}
 					}
 				}
@@ -559,7 +591,7 @@
 		.point-index {
 			width: 235rpx;
 			height: 326rpx;
-			background: #FFFFFF;
+			background: #ffffff;
 			border-radius: 5rpx;
 			margin-right: 8;
 			box-sizing: border-box;
@@ -605,7 +637,7 @@
 			font-size: 23rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
-			color: #EF3333;
+			color: #ef3333;
 			text-align: center;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -615,14 +647,14 @@
 		.point-btn {
 			width: 203rpx;
 			height: 43rpx;
-			background: #E84F5E;
+			background: #e84f5e;
 			border-radius: 3rpx;
 			text-align: center;
 			line-height: 43rpx;
 			font-size: 25rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
-			color: #FFFFFF;
+			color: #ffffff;
 			margin: 0 auto;
 		}
 	}
