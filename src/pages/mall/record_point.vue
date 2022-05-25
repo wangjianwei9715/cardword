@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view style="padding-bottom: calc(20rpx + env(safe-area-inset-bottom))">
 		<view class="menu uni-flex">
 			<view class="menu-item" @click="menuChange(item,index)" :class="{selectItem:index==tagMenu.index}"
 				v-for='(item,index) in tagMenu.list' :key='index'>{{item.name}}</view>

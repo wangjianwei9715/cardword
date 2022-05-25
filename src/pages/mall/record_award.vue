@@ -1,8 +1,8 @@
 <template>
-	<view>
-		<view class="menu uni-flex">
+	<view style="padding-bottom: calc(20rpx + env(safe-area-inset-bottom));padding-top:20rpx">
+		<!-- <view class="menu uni-flex">
 			<view class="menu-item" @click="menuChange(item,index)" :class="{selectItem:index==tagMenu.index}" v-for='(item,index) in tagMenu.list' :key='index'>{{item.name}}</view>
-		</view>
+		</view> -->
 		<view class="commodity" v-for="(item,index) in awardList" :key='index'>
 			<muqian-lazyLoad class="commodity-image" :src="decodeURIComponent(item.logo)">
 			</muqian-lazyLoad>
@@ -44,7 +44,7 @@ export default class ClassName extends BaseNode {
   queryParams: any = {
     pageIndex: 1,
     pageSize: 20,
-    tp: 1 //1 兑换记录 2 抽奖记录
+    // tp: 1 //1 兑换记录 2 抽奖记录
   };
   totalPage: number = 0;
   awardList: any = [];

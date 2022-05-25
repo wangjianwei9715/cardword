@@ -146,11 +146,7 @@
 		onPullDownRefresh() {
 			this.cardBean.queryParams.pageIndex = 1;
 			this.award.queryParams.pageIndex=1
-			this.reqTimeLimitData(() => {
-				setTimeout(() => {
-					uni.stopPullDownRefresh();
-				}, 500);
-			});
+			this.reqTimeLimitData();
 			this.reqKdData(() => {
 				setTimeout(() => {
 					uni.stopPullDownRefresh();

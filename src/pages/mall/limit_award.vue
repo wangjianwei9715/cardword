@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view style="padding-bottom: calc(20rpx + env(safe-area-inset-bottom))">
 		<view class="menu uni-flex">
 			<view class="menu-item" @click="menuChange(item,index)" :class="{selectItem:index==tagMenu.index}"
 				v-for='(item,index) in tagMenu.list' :key='index'>{{item.name}}</view>
@@ -20,7 +20,7 @@
 					</template>
 					<view class="participation" v-if='tagMenu.index==1&&item.avatar'>
 						<muqian-lazyLoad v-for="(avatarItem,avatarIndex) in item.avatar.split(',')" class="avatar"
-							:src="decodeURIComponent(avatarItem)" />
+							:src="decodeURIComponent(avatarItem)" :key='avatarIndex'/>
 						<view class="normal" style="font-size: 21rpx;">等用户已抢</view>
 					</view>
 
@@ -180,7 +180,6 @@
 	page {
 		font-family: PingFang SC;
 	}
-
 	.menu {
 		width: 750rpx;
 	}
