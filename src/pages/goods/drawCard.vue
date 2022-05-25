@@ -36,7 +36,7 @@
           :style="'z-index:' + (999 - index)"
         >
           <view v-if="index == 0" class="movable-box dangban" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd"  ></view>
-          <view v-else-if="item.color=='SP'" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
+          <view v-else-if="item.color=='SP' && index < stepIndex + 6" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
             <image class="movable-box-sp" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/>
           </view>
           <view
@@ -457,7 +457,7 @@ export default class ClassName extends BaseNode {
   bottom: 0;
   display: block;
   z-index: 9;
-  padding-top: 90rpx;
+  padding-top: 70rpx;
   box-sizing: border-box;
 }
 .black-bg {
@@ -471,7 +471,7 @@ export default class ClassName extends BaseNode {
 //   background-size: 100% 100%;
 // }
 .drawcard-box-header {
-  width: 460rpx;
+  width: 528rpx;
   height: 200rpx;
   margin: 0 auto;
   box-sizing: border-box;
@@ -486,7 +486,8 @@ export default class ClassName extends BaseNode {
     font-weight: bold;
     color: #ffffff;
     word-spacing: 10rpx;
-    margin-bottom: 10rpx;
+    margin-bottom: 20rpx;
+    margin-left: 34rpx;
   }
   .drawcard-box-header-left text {
     font-size: 100rpx;
@@ -506,10 +507,9 @@ export default class ClassName extends BaseNode {
     font-weight: 400;
     color: #f9f9f9;
     margin: 0;
-    margin-bottom: 50rpx;
+    margin-bottom: 40rpx;
   }
 }
-
 .movable-area {
   position: fixed;
   left: -500rpx;
@@ -553,9 +553,60 @@ export default class ClassName extends BaseNode {
   align-items: center;
   justify-content: center;
 }
+@keyframes opacityChange {
+    50% {
+        opacity:.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes rotate {
+	100% {
+		transform: rotate(1turn);
+	}
+}
 .movable-box-sp{
+  border-width: 20rpx;
   width: 528rpx;
   height: 741rpx;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 6rpx;
+  z-index: 0;
+  &::after, &::before {
+      box-sizing: border-box;
+  }
+
+  &::before {
+      content: '';
+      position: absolute;
+      z-index: -2;
+      left: -50%;
+      top: -50%;
+      width: 200%;
+      height: 200%;
+      background-color: #0d1724;
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      background-image: conic-gradient(transparent,  rgba(168, 239, 255, 1), transparent 30%);
+      animation: rotate 2.5s linear infinite;
+  }
+
+  &::after {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      left: calc(var(20rpx) / 2);
+      top: calc(var(20rpx) / 2);
+      width: calc(100% - var(20rpx));
+      height: calc(100% - var(20rpx));
+      background: #000;
+      border-radius: 5px;
+      // animation: opacityChange 5s infinite linear;
+  }
 }
 .movable-box-silver {
   background: url(../../static/goods/drawcard/card_silver.png) no-repeat center;

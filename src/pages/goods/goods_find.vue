@@ -50,7 +50,7 @@
 			uni.removeStorageSync("searchData")
 		}
 		onClickSearch(text:string){
-			let hideGoods = /GT{1}\d{7}/g
+			let hideGoods = /[A-Z]{2}\d{7}/g
 			if(hideGoods.test(text)){
 				let code:any = text.match(hideGoods);
 				uni.navigateTo({

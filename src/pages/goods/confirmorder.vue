@@ -404,7 +404,7 @@ export default class ClassName extends BaseNode {
         this.orderRich = res.data.noRichShowState;
         if (this.orderRich != 0) {
           let orderRich = this.orderRich == 1 ? true : false;
-          uni.setStorageSync("orderRich", orderRich);
+          app.orderRich = orderRich;
         }
       }
     );
@@ -414,7 +414,7 @@ export default class ClassName extends BaseNode {
     let open = this.orderRich == 1 ? false : true;
     app.http.Post("me/order/noRichShow/switch", { open: open }, (res: any) => {
       this.orderRich = open == true ? 1 : -1;
-      uni.setStorageSync("orderRich", open);
+      app.orderRich = open;
     });
   }
   getOnePrice() {

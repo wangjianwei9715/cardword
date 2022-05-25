@@ -289,7 +289,7 @@
 		}
 		// 获取解锁卡密效果
 		getNoShowList(){
-			let orderRich = uni.getStorageSync("orderRich");
+			let orderRich = app.orderRich;
 			if(!orderRich) {
 				uni.showToast({
 					title:'卡密特效未开启',
