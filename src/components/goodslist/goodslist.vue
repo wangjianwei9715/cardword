@@ -11,11 +11,11 @@
 			</swiper>
 		</view>
 		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
-			<view class="goodslist-index">
+			<view class="goodslist-index" :style="{'width':indexWidth+'rpx'}">
 				<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
-					<view class="goodslist-pic">
-						<muqian-lazyLoad class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
+					<view class="goodslist-pic"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}">
+						<muqian-lazyLoad class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
 					</view>
 					<view class="goodslist-title">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
@@ -85,6 +85,12 @@
 		presell: any;
 		@Prop({ default: false })
 		mini: any;
+		@Prop({ default: 356 })
+		indexWidth?: number;
+		@Prop({ default: 328 })
+		picWidth?: number;
+		@Prop({ default: 253 })
+		picHeight?: number;
 
 		dateFormatMSHMS = dateFormatMSHMS;
 		getGoodsImg = getGoodsImg;

@@ -303,7 +303,10 @@ export default class HttpRequest {
 		}).catch((error)=>{
 			console.log('!!!!!!!!!!errorreqUrl=',reqUrl+'&error=',error)
 			if (reqUrl == 'dataApi/home'){
-				uni.$emit('refreshHome');
+				uni.showToast({
+					title:'当前网络状态不佳',
+					icon:'none'
+				})
 			}
 			if (error.response && error.response.status > 500) {
 				this.netError(() => {
