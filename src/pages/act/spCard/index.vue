@@ -332,6 +332,7 @@
 					font-family: hei;
 					font-weight: 400;
 					color: #333333;
+					letter-spacing:5rpx;
 				}
 			}
 		}

@@ -41,4 +41,5 @@ export module app{
     export let familial = false;
     export let coupon = 0;  //优惠券张数
     export let updateDebug = '';  //更新debug模式
+    export let orderRich = true; //卡密特效默认开启
 }
