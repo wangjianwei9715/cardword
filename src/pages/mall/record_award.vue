@@ -11,8 +11,10 @@
 				</view>
 				<view class="normal" style="margin-top: 10rpx;">兑换时间：{{dateFormatMSHMS(item.exchangeAt)}}</view>
 				<view class="normal" style="margin-top: 10rpx;">卡币:{{item.price}}</view>
-				<view class="line"></view>
-				<view class="normal" style="color:#FB4E3E">券编号：{{item.couponCode}}</view>
+				<template v-if='item.goodTp===1'>
+					<view class="line"></view>
+					<view class="normal" style="color:#FB4E3E" @click='setCopy(item)'>券编号：{{item.couponCode}}(点击复制)</view>
+				</template>
 			</view>
 		</view>
 		<empty v-if='!awardList.length' />
@@ -66,6 +68,18 @@ export default class ClassName extends BaseNode {
     }
   }
   onShow() {}
+  setCopy(item:any){
+	  if(item.goodTp!==1) return
+	  uni.setClipboardData({
+		  data:item.couponCode,
+		  success:(res:any)=>{
+			  uni.showToast({
+			  	title:'卷编号复制成功',
+				duration:2000
+			  })
+		  }
+	  })
+  }
   menuChange(item: any, index: number) {
     if (this.tagMenu.index == index) return;
     this.tagMenu.index = index;
