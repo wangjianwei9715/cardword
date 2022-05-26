@@ -114,19 +114,16 @@
 		showWinningCrad = false;
 		greeted = false;
 		onLoad(query:any) {
-
 			if (app.update.apkNeedUpdate) {
 				this.updateShow();
 				return;
 			}
-			
 			let listeners = ['BackLogin']
 			this.register(listeners);
 			
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
 			});
-
 			this.onEventUI("wgtNeedUpdate", () => {
 				this.wgtUpdateShow();
 			});
