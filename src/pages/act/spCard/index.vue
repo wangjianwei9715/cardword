@@ -29,7 +29,7 @@
 				</view>
 				<view class="user-explain">
 					<view class="explain-view">经典系列21-22 noir、小真金！</view>
-					<view class="explain-view explain-bold">收集sp卡密：鞋灯/聚光灯/数据签兑奖品！<text>（您也可收取他人赠送的卡密获取）</text></view>
+					<view class="explain-view explain-bold">收集sp卡密：鞋灯/聚光灯/数据签兑大礼！SP卡密中卡再送额外sp值！<text>（您也可收取他人赠送的卡密获取）</text></view>
 				</view>
 			</view>
 
@@ -42,7 +42,7 @@
 					<view class="sp-ex-index" v-for="(item,index) in exchangeData" :key="index">
 						<view class="ex-pic-box">
 							<view v-if="item.total_num!=0" class="ex-index-num">剩{{item.total_num-item.get_num}}份</view>
-							<image class="ex-pic" :src="decodeURIComponent(item.pic_url)" mode="aspectFit" />
+							<image @click="onClickPreviewImage(decodeURIComponent(item.pic_url))" class="ex-pic" :src="decodeURIComponent(item.pic_url)" mode="aspectFit" />
 						</view>
 						<view class="ex-index-title">{{item.name}}</view>
 						<view class="ex-index-btn" @click="onClickExchange(item)">{{item.exchange_num}}sp兑换</view>
@@ -63,7 +63,7 @@
 		<!-- 规则 -->
 		<bottomDrawer :showDrawer="showDrawer" :title="'活动规则'" @closeDrawer="showDrawer=false">
 			<view class="drawer-box" v-for="(item,index) in spCardRule" :key="index">
-				<view class="drawer-help" v-html="item.content"></view>
+				<view class="drawer-help">{{index+1}}、<text>{{item.title}}</text>{{item.content}}</view>
 			</view>
     	</bottomDrawer>
 	</view>
@@ -71,12 +71,14 @@
 
 <script lang="ts">
 	import { app } from "@/app";
+	import { spCardRule } from "@/net/DataRules";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
-	import { spCardRule } from "@/net/DataRules";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		defaultAvatar = app.defaultAvatar;
+		// 集sp卡密 活动规则
+		spCardRule = spCardRule
 		mySP = 0;
 		scrollList:{[x:string]:any} = []
 		needScrollWidth = 0;
@@ -86,7 +88,6 @@
 		exchangeData:{[x:string]:any} = [];
 		goodsList:any = [];
 		showDrawer = false;
-		spCardRule = spCardRule;
 		showPopup = false;
 		popupType = '';
 		awardData:{[x:string]:any} = {};
@@ -113,6 +114,7 @@
 				return;
 			}
 			app.http.Get('activity/SP/home',{},(res:any)=>{
+				console.log('activity/SP/home=',res)
 				this.mySP = res.mySP;
 				this.scrollList = res.data.exchangeList;
 				this.exchangeData = res.data.list;
@@ -183,6 +185,14 @@
 			url: "/pages/goods/goods_details?id=" + id
 			});
 		}
+		// 观看大图
+		onClickPreviewImage(img: string) {
+			uni.previewImage({
+				urls: [img],
+				current: 0,
+				indicator: "number"
+			});
+		}
 	}
 </script>
 
@@ -204,6 +214,10 @@
 		color: #7D8288;
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
+	}
+	.drawer-help text{
+		font-weight: bold;
+		color:#333
 	}
 	.sp-top{
 		width: 750rpx;
@@ -339,7 +353,7 @@
 		.user-explain{
 			width: 325rpx;
 			box-sizing: border-box;
-			padding-top: 30rpx;
+			padding-top: 35rpx;
 			.explain-view{
 				font-size: 24rpx;
 				font-family: PingFang SC;
@@ -395,7 +409,6 @@
 				.ex-pic-box{
 					width: 204rpx;
 					height:204rpx;
-					background: #fff;
 					position: relative;
 					display: flex;
 					align-items: center;

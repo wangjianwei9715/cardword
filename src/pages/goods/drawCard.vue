@@ -67,7 +67,7 @@
       <view v-else class="tips-desc" :style="'top:' + (1050 + statusBarHeight + iosY) + 'rpx'">{{ picData[stepIndex].nameNoEnglish?picData[stepIndex].nameNoEnglish:picData[stepIndex].name}}</view>
 
       <view class="drawcard-bottom">
-        <view class="drawcard-bottom-tips">*图片可能存在误差，请以卡密为准（卡片类型:金-红-蓝-银）</view>
+        <view class="drawcard-bottom-tips">*图片可能存在误差，请以卡密为准（卡片类型:SP-金-红-蓝-银）</view>
         <button class="drawcard-bh-btn" @click="onClickDrawerShow"></button>
       </view>
     </view>
@@ -567,19 +567,19 @@ export default class ClassName extends BaseNode {
 	}
 }
 .movable-box-sp{
-  border-width: 20rpx;
+  border-width: 2rpx;
   width: 528rpx;
   height: 741rpx;
   position: relative;
   z-index: 0;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 6rpx;
+  padding: 0;
   z-index: 0;
+  border-radius: 5rpx;
   &::after, &::before {
       box-sizing: border-box;
   }
-
   &::before {
       content: '';
       position: absolute;
@@ -588,21 +588,20 @@ export default class ClassName extends BaseNode {
       top: -50%;
       width: 200%;
       height: 200%;
-      background-color: #0d1724;
+      background-color: #C2C7CD;
       background-repeat: no-repeat;
       background-position: 0 0;
-      background-image: conic-gradient(transparent,  rgba(168, 239, 255, 1), transparent 30%);
+      background-image: conic-gradient(transparent,  rgb(243, 10, 126), transparent 30%);
       animation: rotate 2.5s linear infinite;
   }
-
   &::after {
       content: '';
       position: absolute;
       z-index: -1;
-      left: calc(var(20rpx) / 2);
-      top: calc(var(20rpx) / 2);
-      width: calc(100% - var(20rpx));
-      height: calc(100% - var(20rpx));
+      left: calc(var(2rpx) / 2);
+      top: calc(var(2rpx) / 2);
+      width: calc(100% - var(2rpx));
+      height: calc(100% - var(2rpx));
       background: #000;
       border-radius: 5px;
       // animation: opacityChange 5s infinite linear;
