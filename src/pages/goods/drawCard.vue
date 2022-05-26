@@ -37,8 +37,7 @@
         >
           <view v-if="index == 0" class="movable-box dangban" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd"  ></view>
           <view v-else-if="item.color=='SP' && index < stepIndex + 6" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
-            <!-- <image class="movable-box-sp" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/> -->
-            <image class="movable-box-sp" @load="onLoadMovablePic(index)" src="../../static/goods/drawcard/test.png" mode="aspectFill"/>
+            <image class="movable-box-sp" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/>
           </view>
           <view
             v-else-if="index < stepIndex + 6"
@@ -568,14 +567,14 @@ export default class ClassName extends BaseNode {
 	}
 }
 .movable-box-sp{
-  border-width: 1rpx;
+  border-width: 2rpx;
   width: 528rpx;
   height: 741rpx;
   position: relative;
   z-index: 0;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 0;
+  padding: 2rpx;
   z-index: 0;
   border-radius: 5rpx;
   &::after, &::before {
@@ -599,10 +598,10 @@ export default class ClassName extends BaseNode {
       content: '';
       position: absolute;
       z-index: -1;
-      left: calc(var(1rpx) / 2);
-      top: calc(var(1rpx) / 2);
-      width: calc(100% - var(1rpx));
-      height: calc(100% - var(1rpx));
+      left: calc(var(2rpx) / 2);
+      top: calc(var(2rpx) / 2);
+      width: calc(100% - var(2rpx));
+      height: calc(100% - var(2rpx));
       background: #000;
       border-radius: 5px;
       // animation: opacityChange 5s infinite linear;
