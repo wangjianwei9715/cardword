@@ -10,7 +10,7 @@
 				<view class="title oneLineOver">{{item.name}}
 				</view>
 				<view class="normal" style="margin-top: 20rpx;">{{dateFormatMSHMS(item.start_at)}}开抢</view>
-				<view class="normal" style="margin-top: 10rpx;">限量10份</view>
+				<view class="normal" style="margin-top: 10rpx;">限量{{item.leftNum}}份</view>
 				<view class="commodity-bottom">
 					<view class="normal" style="color: #EF3333;font-weight: 600;">{{item.price}}卡币</view>
 					<template v-if='tagMenu.index==0'>
@@ -50,7 +50,8 @@
 		awardData: { [x: string]: any } = {
 			id: 0,
 			logo: "",
-			price: 12000
+			price: 0,
+			limit_num:0,//限购份数，0代表不限制
 		};
 		requestLock: boolean = false;
 		tagMenu: any = {

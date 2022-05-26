@@ -103,7 +103,8 @@
 		awardData: { [x: string]: any } = {
 			id: 0,
 			logo: "",
-			price: 12000
+			price: 0,
+			limit_num:0,//限购份数，0代表不限制
 		};
 		award: any = {
 			list: [],

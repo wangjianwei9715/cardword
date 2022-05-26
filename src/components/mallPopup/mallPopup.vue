@@ -1,7 +1,7 @@
 <template>
 	<view>	
 		<view class="exchange-popup" v-show="showPopup"></view>
-		<view v-if="popupType==''" class="popup-box" :class="{'showbox':showPopup}">
+		<view v-if="popupType==''" class="popup-box" :class="{'showbox':showPopup,'popup-limitTips':awardData.limit_num}">
 			<view class="popup-close" @click="onClickClose"></view>
 			<view class="popup-title">确认兑换</view>
 			<view class="pic-box">
@@ -9,6 +9,8 @@
 			</view>
 			<view class="popup-explain">兑换后无法取消，可在"奖品明细"中查看兑换记录。</view>
 			<view class="popup-ts">(兑换实物将使用您的默认地址发货，请提前确认)</view>
+			<view class="popup-ts" v-if='awardData.limit_num'>(该商品每人限购{{awardData.limit_num}}份)</view>
+			
 			<view class="popup-btn" @click="onClickConfirm">确认兑换（{{awardData.price}}卡币）</view>
 		</view>
 
@@ -137,6 +139,9 @@
 			right:0;
 			top:-52rpx
 		}
+	}
+	.popup-limitTips{
+		height:630rpx;
 	}
 	.popup-toast{
 		height:243rpx;
