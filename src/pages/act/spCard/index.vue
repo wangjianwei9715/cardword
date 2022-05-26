@@ -42,7 +42,7 @@
 					<view class="sp-ex-index" v-for="(item,index) in exchangeData" :key="index">
 						<view class="ex-pic-box">
 							<view v-if="item.total_num!=0" class="ex-index-num">剩{{item.total_num-item.get_num}}份</view>
-							<image class="ex-pic" :src="decodeURIComponent(item.pic_url)" mode="aspectFit" />
+							<image @click="onClickPreviewImage(decodeURIComponent(item.pic_url))" class="ex-pic" :src="decodeURIComponent(item.pic_url)" mode="aspectFit" />
 						</view>
 						<view class="ex-index-title">{{item.name}}</view>
 						<view class="ex-index-btn" @click="onClickExchange(item)">{{item.exchange_num}}sp兑换</view>
@@ -183,6 +183,14 @@
 		onClickJumpDetails(id: any) {
 			uni.navigateTo({
 			url: "/pages/goods/goods_details?id=" + id
+			});
+		}
+		// 观看大图
+		onClickPreviewImage(img: string) {
+			uni.previewImage({
+				urls: [img],
+				current: 0,
+				indicator: "number"
 			});
 		}
 	}

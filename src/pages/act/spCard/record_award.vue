@@ -6,7 +6,7 @@
 
 		<view class="list-box">
 			<view class="ex-index" v-for="(item,index) in awardList" :key="index">
-				<image class="ex-pic" :src="decodeURIComponent(item.pic_url)" />
+				<image class="ex-pic" :src="decodeURIComponent(item.pic_url)" @click="onClickPreviewImage(decodeURIComponent(item.pic_url))"/>
 				<view class="ex-right">
 					<view class="ex-title">{{item.name}}</view>
 					<view class="ex-time" v-if="item.total_num!=0">剩{{item.total_num-item.get_num}}份</view>
@@ -46,6 +46,14 @@
 		//   加载更多数据
 		onReachBottom() {
 			this.reqNewData()
+		}
+		// 观看大图
+		onClickPreviewImage(img: string) {
+			uni.previewImage({
+				urls: [img],
+				current: 0,
+				indicator: "number"
+			});
 		}
 		onClickTab(index:number){
 			if(this.tabCurrent == index ) return;
