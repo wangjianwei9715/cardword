@@ -574,7 +574,7 @@ export default class ClassName extends BaseNode {
   z-index: 0;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 2rpx;
+  padding: 0;
   z-index: 0;
   border-radius: 5rpx;
   &::after, &::before {
