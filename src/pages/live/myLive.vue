@@ -72,7 +72,7 @@
 			this.queryParams.fetchFrom += this.queryParams.fetchSize
 			this.getList()
 		}
-		toAnchor(item: any, isReenter: boolean = false) {
+		toAnchor(item: any, isReenter: boolean = false) { 
 			uni.navigateTo({
 				url: `/pages/live/zgLive?roomID=${item.id}&merchantId=${item.merchantId}&isAnchor=true`
 			})

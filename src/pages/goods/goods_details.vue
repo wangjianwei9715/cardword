@@ -681,7 +681,7 @@
 					publisher
 				} = this.goodsData
 				uni.navigateTo({
-					url: `/pages/live/zgLive?roomID=${this.goodsData.broadcast.roomID}&merchantId=${publisher.id}&isAnchor=false`
+					url: `/pages/live/zgLive?roomID=${this.goodsData.broadcast.roomId}&merchantId=${publisher.id}&isAnchor=false`
 				})
 				return
 			}
