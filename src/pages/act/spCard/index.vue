@@ -22,7 +22,7 @@
 		<view class="sp-box">
 			<view class="sp-user">
 				<view class="user-info">
-					<view class="user-title">我的SP值</view>
+					<view class="user-title">我的SP值<text>(1:10)</text></view>
 					<view class="user-bg">
 						<view class="user-num">x{{mySP}}</view>
 					</view>
@@ -330,6 +330,12 @@
 				box-sizing: border-box;
 				padding-left: 9rpx;
 				margin-bottom: 28rpx;
+			}
+			.user-title text{
+				font-size: 24rpx;
+				font-weight: 400;
+				color: #333333;
+				margin-left: 4rpx;
 			}
 			.user-bg{
 				width: 133rpx;
