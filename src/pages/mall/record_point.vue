@@ -6,8 +6,8 @@
 		</view>
 		<view class="point" v-for="(item,index) in pointList" :key="index">
 			<view class="point-left">
-				<view class="name">{{item.nme}}</view>
-				<view class="time">{{item.created_at}}</view>
+				<view class="name">{{item.name}}</view>
+				<view class="time">{{dateFormatMSHMS(item.created_at)}}</view>
 			</view>
 			<view class="point-num" :style="{color:item.point<0?'#7AC04F':'#EF3333'}">{{item.point}}</view>
 		</view>
@@ -18,8 +18,10 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import { dateFormatMSHMS } from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		dateFormatMSHMS:any=dateFormatMSHMS
 		tagMenu: any = {
 			index: 0,
 			list: [{

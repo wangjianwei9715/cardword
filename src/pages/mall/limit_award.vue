@@ -19,8 +19,7 @@
 						<view class="startPanicBuying" v-else>即将开抢</view>
 					</template>
 					<view class="participation" v-if='tagMenu.index==1&&item.avatar'>
-						<muqian-lazyLoad v-for="(avatarItem,avatarIndex) in item.avatar.split(',')" class="avatar"
-							:src="decodeURIComponent(avatarItem)" :key='avatarIndex' />
+						<muqian-lazyLoad borderRadius='35rpx'  v-for="(avatarItem,avatarIndex) in item.avatar.split(',')" class="avatar" :src="decodeURIComponent(avatarItem)" :key='avatarIndex' />
 						<view class="normal" style="font-size: 21rpx;">等用户已抢</view>
 					</view>
 
@@ -267,7 +266,8 @@
 			.avatar {
 				width: 35rpx;
 				height: 35rpx;
-				background: #dbdbdb;
+				// overflow: hidden;
+				position:relative;
 				display: block;
 				border-radius: 50%;
 				margin-right: 6rpx;
