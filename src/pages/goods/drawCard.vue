@@ -67,7 +67,7 @@
       <view v-else class="tips-desc" :style="'top:' + (1050 + statusBarHeight + iosY) + 'rpx'">{{ picData[stepIndex].nameNoEnglish?picData[stepIndex].nameNoEnglish:picData[stepIndex].name}}</view>
 
       <view class="drawcard-bottom">
-        <view class="drawcard-bottom-tips">*图片可能存在误差，请以卡密为准（卡片类型:金-红-蓝-银）</view>
+        <view class="drawcard-bottom-tips">*图片可能存在误差，请以卡密为准（卡片类型:SP-金-红-蓝-银）</view>
         <button class="drawcard-bh-btn" @click="onClickDrawerShow"></button>
       </view>
     </view>
