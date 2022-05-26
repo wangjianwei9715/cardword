@@ -73,9 +73,14 @@
 			this.getList()
 		}
 		toAnchor(item: any, isReenter: boolean = false) { 
-			uni.navigateTo({
-				url: `/pages/live/zgLive?roomID=${item.id}&merchantId=${item.merchantId}&isAnchor=true`
+			app.platform.goZgLive({
+				roomID: item.id,
+				merchantId: item.merchantId,
+				isAnchor: true
 			})
+			// uni.navigateTo({
+			// 	url: `/pages/live/zgLive?roomID=${item.id}&merchantId=${item.merchantId}&isAnchor=true`
+			// })
 		}
 		getList(cb ? : Function) {
 			app.http.Get('brodcast/third/1001/achor/roomlist', this.queryParams, (res: any) => {

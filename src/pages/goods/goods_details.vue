@@ -680,8 +680,11 @@
 				const {
 					publisher
 				} = this.goodsData
-				uni.navigateTo({
-					url: `/pages/live/zgLive?roomID=${this.goodsData.broadcast.roomId}&merchantId=${publisher.id}&isAnchor=false`
+				app.platform.goZgLive({
+					roomID:this.goodsData.broadcast.roomId,
+					merchantId:publisher.id,
+					playCode:this.goodsData.broadcast.playCode,
+					isAnchor:false
 				})
 				return
 			}
