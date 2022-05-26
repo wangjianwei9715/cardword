@@ -29,7 +29,7 @@
 				</view>
 				<view class="user-explain">
 					<view class="explain-view">经典系列21-22 noir、小真金！</view>
-					<view class="explain-view explain-bold">收集sp卡密：鞋灯/聚光灯/数据签兑大礼！SP卡密中卡再送3倍sp值！<text>（您也可收取他人赠送的卡密获取）</text></view>
+					<view class="explain-view explain-bold">收集sp卡密：鞋灯/聚光灯/数据签兑大礼！SP卡密中卡再送额外sp值！<text>（您也可收取他人赠送的卡密获取）</text></view>
 				</view>
 			</view>
 
@@ -409,7 +409,6 @@
 				.ex-pic-box{
 					width: 204rpx;
 					height:204rpx;
-					background: #fff;
 					position: relative;
 					display: flex;
 					align-items: center;
