@@ -453,9 +453,13 @@ export default class PlatformManager {
 		const aArr = a.split('.')
 		const bArr = b.split('.');
 		const res = aArr.map((aStr, index) => {
-			return Number(aStr)>=Number(bArr[index])
+			return Number(aStr)>Number(bArr[index])
 		})
-		return res.every(bool => bool)
+		let type = false;
+		for(let i in res){
+			if(res[i]) type=true;
+		}
+		return type
 	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false
