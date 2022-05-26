@@ -32,7 +32,7 @@
 					<scroll-view class="award-box-scroll" :scroll-x="true" @scrolltolower='awardScrolltolower'>
 						<view class="award-scroll-index" v-for="(item,index) in award.list" :key="index">
 							<view class="award-top">
-								<view class="award-num">{{item.leftNum}}份</view>
+								<view class="award-num">{{item.leftNum==-1?'无限量':item.leftNum+'份'}}</view>
 								<view class="award-pic-box">
 									<!-- <image class="award-pic" mode="aspectFit" :src="decodeURIComponent(item.logo)"/> -->
 									<muqian-lazyLoad class="award-pic" :src="decodeURIComponent(item.logo)">
@@ -45,7 +45,7 @@
 								<view class="award-title oneLineOver">{{item.name}}</view>
 								<view class="award-price">{{item.price}}卡币</view>
 								<view class="award-exbtn buying" v-if="(item.start_at-countDown<=0)"
-									@click="onClickExchange(item)">兑 换</view>
+									@click="onClickExchange(item,index,'award')">兑 换</view>
 								<view class="award-exbtn" v-else>即将开抢</view>
 							</view>
 						</view>
@@ -61,6 +61,7 @@
 			</view>
 			<view class="point-box">
 				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index">
+					<view class="award-num">{{item.leftNum==-1?'无限量':item.leftNum+'份'}}</view>
 					<view class="point-pic-box">
 						<muqian-lazyLoad class="point-pic" :src="decodeURIComponent(item.logo)">
 						</muqian-lazyLoad>
@@ -68,7 +69,7 @@
 					</view>
 					<view class="point-name">{{item.name}}</view>
 					<view class="point-price">{{item.price}}卡币</view>
-					<view class="point-btn" @click="onClickExchange(item)">兑 换</view>
+					<view class="point-btn" @click="onClickExchange(item,index,'cardBean')">兑 换</view>
 				</view>
 			</view>
 		</view>
@@ -88,11 +89,19 @@
 </template>
 
 <script lang="ts">
-	import { app } from "@/app";
-	import { Component } from "vue-property-decorator";
+	import {
+		app
+	} from "@/app";
+	import {
+		Component
+	} from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
-	import { mallExchangeRule } from "@/net/DataRules";
-	import { toThousands } from "@/tools/util";
+	import {
+		mallExchangeRule
+	} from "@/net/DataRules";
+	import {
+		toThousands
+	} from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		toThousands = toThousands;
@@ -100,11 +109,13 @@
 		countDown: any = Math.round(+new Date() / 1000);
 		showPopup = false;
 		requestLock: boolean = false;
-		awardData: { [x: string]: any } = {
+		awardData: {
+			[x: string]: any
+		} = {
 			id: 0,
 			logo: "",
 			price: 0,
-			limit_num:0,//限购份数，0代表不限制
+			limit_num: 0, //限购份数，0代表不限制
 		};
 		award: any = {
 			list: [],
@@ -116,6 +127,9 @@
 				state: 1 //1 兑换中，2 已兑完
 			}
 		};
+		selectItem: any = {};
+		selectIndex: number = -1;
+		selectListKey: string = ''
 		cardBean: any = {
 			list: [],
 			totalPage: 0,
@@ -143,10 +157,10 @@
 			this.reqMeCardBean();
 			this.getCountDown();
 		}
-		onShow() { }
+		onShow() {}
 		onPullDownRefresh() {
 			this.cardBean.queryParams.pageIndex = 1;
-			this.award.queryParams.pageIndex=1
+			this.award.queryParams.pageIndex = 1
 			this.reqTimeLimitData();
 			this.reqKdData(() => {
 				setTimeout(() => {
@@ -161,27 +175,37 @@
 			}
 		}
 		onClickExConfirm() {
-			if(this.requestLock) return
-			this.requestLock=true
+			if (this.requestLock) return
+			this.requestLock = true
 			app.http.Post(
-				"point/exchange/exchange/" + this.awardData.id,
-				{},
+				"point/exchange/exchange/" + this.awardData.id, {},
 				(res: any) => {
-					this.requestLock=false
+					this.requestLock = false
 					this.meBeanPoint = res.point;
 					this.showPopup = false;
 					this.showPopupToast = true;
-				},(err:any)=>{
-					this.requestLock=false
+					if (res.leftNum == -2) {
+						const _this: any = this
+						_this[this.selectListKey].list.splice(this.selectIndex, 1)
+					} else {
+						this.selectItem.leftNum = res.leftNum
+					}
+				}, (err: any) => {
+					this.requestLock = false
 				}
 			);
 		}
-		onClickExchange(item: { [x: string]: any }) {
+		onClickExchange(item: {
+			[x: string]: any
+		}, index: number, dataKey: string) {
 			for (const key in this.awardData) {
 				if (Object.prototype.hasOwnProperty.call(item, key)) {
 					this.awardData[key] = item[key];
 				}
 			}
+			this.selectItem = item
+			this.selectIndex = index
+			this.selectListKey = dataKey
 			this.showPopup = true;
 		}
 		onClickGoAward() {
@@ -206,17 +230,17 @@
 			let day = String(Math.floor(countDown / 3600 / 24));
 			let day_num = countDown - 3600 * 24 * Number(day);
 			let hour =
-				Math.floor(day_num / 3600) < 10
-					? "0" + Math.floor(day_num / 3600)
-					: Math.floor(day_num / 3600);
+				Math.floor(day_num / 3600) < 10 ?
+				"0" + Math.floor(day_num / 3600) :
+				Math.floor(day_num / 3600);
 			let minute =
-				Math.floor((day_num - 3600 * Number(hour)) / 60) < 10
-					? "0" + Math.floor((day_num - 3600 * Number(hour)) / 60)
-					: Math.floor((day_num - 3600 * Number(hour)) / 60);
+				Math.floor((day_num - 3600 * Number(hour)) / 60) < 10 ?
+				"0" + Math.floor((day_num - 3600 * Number(hour)) / 60) :
+				Math.floor((day_num - 3600 * Number(hour)) / 60);
 			let second =
-				Math.floor((day_num - 3600 * Number(hour)) % 60) < 10
-					? "0" + Math.floor((day_num - 3600 * Number(hour)) % 60)
-					: Math.floor((day_num - 3600 * Number(hour)) % 60);
+				Math.floor((day_num - 3600 * Number(hour)) % 60) < 10 ?
+				"0" + Math.floor((day_num - 3600 * Number(hour)) % 60) :
+				Math.floor((day_num - 3600 * Number(hour)) % 60);
 			return (
 				(Number(day) > 0 ? day + "天 " : "") + hour + ":" + minute + ":" + second
 			);
@@ -228,38 +252,38 @@
 			}
 		}
 		//获取个人卡币
-		reqMeCardBean(cb?: Function) {
+		reqMeCardBean(cb ? : Function) {
 			app.http.Get("dataApi/point/index", {}, (res: any) => {
 				this.meBeanPoint = res.point || 0;
 				cb && cb();
 			});
 		}
 		//限时兑换
-		reqTimeLimitData(cb?: Function) {
+		reqTimeLimitData(cb ? : Function) {
 			app.http.Get(
 				"dataApi/point/exchange/goodlist",
 				this.award.queryParams,
 				(res: any) => {
 					this.award.totalPage = res.totalPage;
 					const reqList = res.list || [];
-					this.award.queryParams.pageIndex == 1
-						? (this.award.list = reqList)
-						: this.award.list.push(...reqList);
+					this.award.queryParams.pageIndex == 1 ?
+						(this.award.list = reqList) :
+						this.award.list.push(...reqList);
 					cb && cb();
 				}
 			);
 		}
 		//卡币兑换
-		reqKdData(cb?: Function) {
+		reqKdData(cb ? : Function) {
 			app.http.Get(
 				"dataApi/point/exchange/goodlist",
 				this.cardBean.queryParams,
 				(res: any) => {
 					this.cardBean.totalPage = res.totalPage;
 					const reqList = res.list || [];
-					this.cardBean.queryParams.pageIndex == 1
-						? (this.cardBean.list = reqList)
-						: this.cardBean.list.push(...reqList);
+					this.cardBean.queryParams.pageIndex == 1 ?
+						(this.cardBean.list = reqList) :
+						this.cardBean.list.push(...reqList);
 					cb && cb();
 				}
 			);
@@ -375,7 +399,23 @@
 			}
 		}
 	}
-
+	.award-num {
+		// width: 65rpx;
+		padding: 0 10rpx;
+		height: 22rpx;
+		background: url(../../static/mall/limit_num.png) no-repeat center;
+		background-size: 100% 100%;
+		font-size: 20rpx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #ffffff;
+		text-align: center;
+		line-height: 22rpx;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 8;
+	}
 	.mall-center {
 		width: 100%;
 		height: 100rpx;
@@ -460,22 +500,7 @@
 						box-sizing: border-box;
 						position: relative;
 
-						.award-num {
-							width: 65rpx;
-							height: 22rpx;
-							background: url(../../static/mall/limit_num.png) no-repeat center;
-							background-size: 100% 100%;
-							font-size: 20rpx;
-							font-family: PingFang SC;
-							font-weight: 500;
-							color: #ffffff;
-							text-align: center;
-							line-height: 22rpx;
-							position: absolute;
-							left: 0;
-							top: 0;
-							z-index: 8;
-						}
+						
 
 						.award-pic-box {
 							width: 240rpx;
@@ -593,6 +618,7 @@
 			margin-right: 8;
 			box-sizing: border-box;
 			padding: 0 12rpx;
+			position: relative;
 		}
 
 		.point-index:nth-child(3n) {

@@ -74,7 +74,7 @@
 		}
 		toAnchor(item: any, isReenter: boolean = false) {
 			uni.navigateTo({
-				url: `/pages/live/zgLive?roomID=${item.id}&merchantMessage=${JSON.stringify({merchantId:item.merchantId,merchantLogo:item.merchantLogo,merchantName:item.merchantName})}&isAnchor=true`
+				url: `/pages/live/zgLive?roomID=${item.id}&merchantId=${item.merchantId}&isAnchor=true`
 			})
 		}
 		getList(cb ? : Function) {

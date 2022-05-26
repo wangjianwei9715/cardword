@@ -680,13 +680,8 @@
 				const {
 					publisher
 				} = this.goodsData
-				const params = {
-					merchantId: publisher.id,
-					merchantLogo: publisher.avatar,
-					merchantName: publisher.name
-				}
 				uni.navigateTo({
-					url: `/pages/live/zgLive?roomID=${this.goodsData.broadcast.roomID}&merchantMessage=${JSON.stringify(params)}&isAnchor=false`
+					url: `/pages/live/zgLive?roomID=${this.goodsData.broadcast.roomID}&merchantId=${publisher.id}&isAnchor=false`
 				})
 				return
 			}

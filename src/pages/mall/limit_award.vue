@@ -10,17 +10,17 @@
 				<view class="title oneLineOver">{{item.name}}
 				</view>
 				<view class="normal" style="margin-top: 20rpx;">{{dateFormatMSHMS(item.start_at)}}开抢</view>
-				<view class="normal" style="margin-top: 10rpx;">限量{{item.leftNum}}份</view>
+				<view class="normal" style="margin-top: 10rpx;">{{item.leftNum==-1?'无限量':'限量'+item.leftNum+'份'}}</view>
 				<view class="commodity-bottom">
 					<view class="normal" style="color: #EF3333;font-weight: 600;">{{item.price}}卡币</view>
 					<template v-if='tagMenu.index==0'>
 						<view class="startPanicBuying buying" v-if="(item.start_at-countDown<=0)"
-							@click="onClickExchange(item)">兑 换</view>
+							@click="onClickExchange(item,index)">兑 换</view>
 						<view class="startPanicBuying" v-else>即将开抢</view>
 					</template>
 					<view class="participation" v-if='tagMenu.index==1&&item.avatar'>
 						<muqian-lazyLoad v-for="(avatarItem,avatarIndex) in item.avatar.split(',')" class="avatar"
-							:src="decodeURIComponent(avatarItem)" :key='avatarIndex'/>
+							:src="decodeURIComponent(avatarItem)" :key='avatarIndex' />
 						<view class="normal" style="font-size: 21rpx;">等用户已抢</view>
 					</view>
 
@@ -36,10 +36,16 @@
 </template>
 
 <script lang="ts">
-	import { app } from "@/app";
-	import { Component } from "vue-property-decorator";
+	import {
+		app
+	} from "@/app";
+	import {
+		Component
+	} from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
-	import { dateFormatMSHMS } from "@/tools/util";
+	import {
+		dateFormatMSHMS
+	} from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		dateFormatMSHMS: any = dateFormatMSHMS
@@ -47,17 +53,18 @@
 		count_down: any;
 		showPopup = false;
 		showPopupToast = false;
-		awardData: { [x: string]: any } = {
+		awardData: {
+			[x: string]: any
+		} = {
 			id: 0,
 			logo: "",
 			price: 0,
-			limit_num:0,//限购份数，0代表不限制
+			limit_num: 0, //限购份数，0代表不限制
 		};
 		requestLock: boolean = false;
 		tagMenu: any = {
 			index: 0,
-			list: [
-				{
+			list: [{
 					name: "即将开抢",
 					value: 1
 				},
@@ -67,11 +74,13 @@
 				}
 			]
 		};
+		selectItem: any = {};
+		selectIndex: number = -1;
 		queryParams: any = {
 			pageIndex: 1,
 			pageSize: 20,
 			tp: 11, //1 兑换奖品，11 限时好礼
-			state: 1//1 兑换中，2 已兑完
+			state: 1 //1 兑换中，2 已兑完
 		};
 		totalPage: number = 0;
 		awardList: any = []
@@ -99,26 +108,34 @@
 			});
 			this.showPopupToast = false;
 		}
-		onClickExchange(item: { [x: string]: any }) {
+		onClickExchange(item: {
+			[x: string]: any
+		},index:number) {
 			for (const key in this.awardData) {
 				if (Object.prototype.hasOwnProperty.call(item, key)) {
 					this.awardData[key] = item[key];
 				}
 			}
+			this.selectItem = item
+			this.selectIndex = index
 			this.showPopup = true;
 		}
 		onClickExConfirm() {
-			if(this.requestLock) return
-			this.requestLock=true
+			if (this.requestLock) return
+			this.requestLock = true
 			app.http.Post(
-				"point/exchange/exchange/" + this.awardData.id,
-				{},
+				"point/exchange/exchange/" + this.awardData.id, {},
 				(res: any) => {
-					this.requestLock=false
+					this.requestLock = false
 					this.showPopup = false;
 					this.showPopupToast = true
+					if (res.leftNum == -2) {
+						this.awardList.splice(this.selectIndex, 1)
+					} else {
+						this.selectItem.leftNum = res.leftNum
+					}
 				}, (err: any) => {
-					this.requestLock=false
+					this.requestLock = false
 				}
 			);
 		}
@@ -138,17 +155,17 @@
 			let day = String(Math.floor(countDown / 3600 / 24));
 			let day_num = countDown - 3600 * 24 * Number(day);
 			let hour =
-				Math.floor(day_num / 3600) < 10
-					? "0" + Math.floor(day_num / 3600)
-					: Math.floor(day_num / 3600);
+				Math.floor(day_num / 3600) < 10 ?
+				"0" + Math.floor(day_num / 3600) :
+				Math.floor(day_num / 3600);
 			let minute =
-				Math.floor((day_num - 3600 * Number(hour)) / 60) < 10
-					? "0" + Math.floor((day_num - 3600 * Number(hour)) / 60)
-					: Math.floor((day_num - 3600 * Number(hour)) / 60);
+				Math.floor((day_num - 3600 * Number(hour)) / 60) < 10 ?
+				"0" + Math.floor((day_num - 3600 * Number(hour)) / 60) :
+				Math.floor((day_num - 3600 * Number(hour)) / 60);
 			let second =
-				Math.floor((day_num - 3600 * Number(hour)) % 60) < 10
-					? "0" + Math.floor((day_num - 3600 * Number(hour)) % 60)
-					: Math.floor((day_num - 3600 * Number(hour)) % 60);
+				Math.floor((day_num - 3600 * Number(hour)) % 60) < 10 ?
+				"0" + Math.floor((day_num - 3600 * Number(hour)) % 60) :
+				Math.floor((day_num - 3600 * Number(hour)) % 60);
 			return (
 				(Number(day) > 0 ? day + "天 " : "") + hour + ":" + minute + ":" + second
 			);
@@ -160,16 +177,16 @@
 			this.queryParams.pageIndex = 1
 			this.reqNewData()
 		}
-		reqNewData(cb?: Function) {
+		reqNewData(cb ? : Function) {
 			app.http.Get(
 				"dataApi/point/exchange/goodlist",
 				this.queryParams,
 				(res: any) => {
 					this.totalPage = res.totalPage;
 					const reqList = res.list || [];
-					this.queryParams.pageIndex == 1
-						? (this.awardList = reqList)
-						: this.awardList.push(...reqList);
+					this.queryParams.pageIndex == 1 ?
+						(this.awardList = reqList) :
+						this.awardList.push(...reqList);
 					cb && cb();
 				}
 			);
@@ -181,6 +198,7 @@
 	page {
 		font-family: PingFang SC;
 	}
+
 	.menu {
 		width: 750rpx;
 	}

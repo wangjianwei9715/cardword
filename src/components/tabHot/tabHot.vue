@@ -53,6 +53,12 @@
 			});  
 		}
 		onClickLive(item:any){
+			if (item.third && item.third === 1001) {
+				uni.navigateTo({
+					url: `/pages/live/zgLive?roomID=${item.roomId}&merchantId=${item.merchantId}&isAnchor=false`
+				})
+				return
+			}
 			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		onClickHotTab(item:any,name:string){
