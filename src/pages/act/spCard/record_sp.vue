@@ -85,7 +85,7 @@
 				}else{
 					this.empty = false
 				}
-				if(this.tabCurrent==0) this.kefuUserId = data.kefuUserId[0] || 0;
+				if(this.tabCurrent==0 && data.kefuUserId) this.kefuUserId = data.kefuUserId[0] || 0;
 				if(this.currentPage==1) this.tabData[this.tabCurrent].list = [];
 				if(data.list) this.tabData[this.tabCurrent].list = this.tabData[this.tabCurrent].list.concat(data.list);
 				this.currentPage++;

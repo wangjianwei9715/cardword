@@ -229,8 +229,48 @@
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
 				this.onceLoad = false;
+				this.orderData = res.data
+				this.payChannel = res.data.good.payChannel?res.data.good.payChannel:[]
+				this.countDown = res.data.leftSec
+				this.getCountDown();
+				uni.setNavigationBarTitle({
+					title: res.data.stateName
+				});
+				this.getGoodDesc(res.data);
+				this.operateData = this.orderSetOperate(res.data);
+				if(res.data.good.pintuanType>10){
+					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/option',{},(res:any)=>{
+						this.optionList = res.list || []
+					})
+				}
+				this.cartList = [];
+				if(res.data.showSelectNo){
+					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/selectList',{pageIndex:1,pageSize:50},(res:any)=>{
+						if(res.list){
+							this.cartList = res.list
+						}
+					})
+				}
+				// 预测卡密
+				if(res.data.guess){
+					this.guessType = true;
+					this.guessFreeNum = res.data.guess.leftNum;
+					this.guessNum = res.data.guess.bingoNum;
+					this.guessName = res.data.guess.guess;
+					this.surplusNum = res.data.good.state>=2? res.data.guess.surplusNum:0;
+					this.guessState = res.data.guess.state
+					if(res.data.guess.state == 0 && res.data.state != 1){
+						setTimeout(()=>{
+							this.initEvent();
+						},500)
+					}
+				}
+				if(res.data.state==1){
+					console.log('订单待支付')
+					return;
+				}
 				setTimeout(()=>{
-					this.clickToPay = res.data.state!=1 && !res.data.wait ? false : true
+					this.clickToPay = !res.data.wait ? false : true
 				},1000)
 				if(res.data.wait){
 					uni.showLoading({ title:'数据加载中请稍后' })
@@ -242,42 +282,6 @@
 					},5000)
 				}else{
 					uni.hideLoading()
-				}
-				// 预测卡密
-				if(res.data.guess){
-					this.guessType = true;
-					this.guessFreeNum = res.data.guess.leftNum;
-					this.guessNum = res.data.guess.bingoNum;
-					this.guessName = res.data.guess.guess;
-					this.surplusNum = res.data.good.state>=2? res.data.guess.surplusNum:0;
-					this.guessState = res.data.guess.state
-					if(res.data.guess.state == 0){
-						setTimeout(()=>{
-							this.initEvent();
-						},500)
-					}
-				}
-				if(res.data.good.pintuanType>10){
-					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/option',{},(res:any)=>{
-						this.optionList = res.list || []
-					})
-				}
-				this.orderData = res.data
-				this.payChannel = res.data.good.payChannel?res.data.good.payChannel:[]
-				this.countDown = res.data.leftSec
-				this.getCountDown()
-				uni.setNavigationBarTitle({
-					title: res.data.stateName
-				});
-				this.getGoodDesc(res.data);
-				this.operateData = this.orderSetOperate(res.data);
-				this.cartList = [];
-				if(res.data.showSelectNo){
-					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/selectList',{pageIndex:1,pageSize:50},(res:any)=>{
-						if(res.list){
-							this.cartList = res.list
-						}
-					})
 				}
 				if(res.data.noList){
 					this.cardList = res.data.noList.length>5?res.data.noList.splice(0,5):res.data.noList
