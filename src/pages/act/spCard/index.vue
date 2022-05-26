@@ -29,7 +29,7 @@
 				</view>
 				<view class="user-explain">
 					<view class="explain-view">经典系列21-22 noir、小真金！</view>
-					<view class="explain-view explain-bold">收集sp卡密：鞋灯/聚光灯/数据签兑大礼！SP卡密中卡再送额外sp值！<text>（您也可收取他人赠送的卡密获取）</text></view>
+					<view class="explain-view explain-bold">收集sp卡密：鞋灯/聚光灯/数据签兑大礼！您也可收取他人赠送的卡密获取！<text>（SP值获取时冻结，拼成后可用）</text></view>
 				</view>
 			</view>
 
@@ -63,7 +63,7 @@
 		<!-- 规则 -->
 		<bottomDrawer :showDrawer="showDrawer" :title="'活动规则'" @closeDrawer="showDrawer=false">
 			<view class="drawer-box" v-for="(item,index) in spCardRule" :key="index">
-				<view class="drawer-help">{{index+1}}、<text>{{item.title}}</text>{{item.content}}</view>
+				<view class="drawer-help">{{index+1}}、<text class="drawer-help-title">{{item.title}}</text><text class="drawer-help-tips" v-if="item.tips">{{item.tips}}</text>{{item.content}}</view>
 			</view>
     	</bottomDrawer>
 	</view>
@@ -215,9 +215,12 @@
 		line-height: 38rpx;
 		margin-bottom: 50rpx;
 	}
-	.drawer-help text{
+	.drawer-help-title{
 		font-weight: bold;
 		color:#333
+	}
+	.drawer-help-tips{
+		color:#ef3333
 	}
 	.sp-top{
 		width: 750rpx;
@@ -346,7 +349,7 @@
 				.user-num{
 					height:20rpx;
 					position: absolute;
-					bottom:47rpx;
+					bottom:65rpx;
 					left:152rpx;
 					font-size: 50rpx;
 					font-family: hei;
