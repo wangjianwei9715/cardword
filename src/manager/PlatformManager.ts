@@ -205,10 +205,12 @@ export default class PlatformManager {
 		// #endif
 	}
 	appLuanch(loginToken: any, cb?: Function) {
+		if(app.localTest) return;
+		
 		let launchData = uni.getStorageSync("launchData");
 		if (launchData!='' && (Math.round(new Date().getTime()/1000)-launchData.time<3600)){
 			this.setLaunchData(launchData,loginToken)
-		} else if (!app.localTest) {
+		} else {
 			// launchUrl：             储存打乱顺序后的launch
 			// configLaunchUrl：       access保存的launch数据
 			let launchUrl: { [x: string]: any } = {};

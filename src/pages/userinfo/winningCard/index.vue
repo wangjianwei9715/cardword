@@ -142,7 +142,7 @@
 	}
 	.list-title-name{
 		width: 100%;
-		height:80rpx;
+		height:85rpx;
 		font-size: 27rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
@@ -156,6 +156,7 @@
 		z-index: 3;
 		padding:10rpx 0;
 		box-sizing: border-box;
+		word-break:break-all
 	}
 	.list-bottom{
 		width: 100%;
