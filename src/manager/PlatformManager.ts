@@ -140,7 +140,7 @@ export default class PlatformManager {
 	//即构直播间
 	goZgLive(item:any){
 		uni.navigateTo({
-			url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}`
+			url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&liveData=${JSON.stringify(item.liveData||{})}`
 		})
 	}
 	launchMiniProgramLive(id:any){
