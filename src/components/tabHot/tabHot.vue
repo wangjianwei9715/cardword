@@ -54,8 +54,11 @@
 		}
 		onClickLive(item:any){
 			if (item.third && item.third === 1001) {
-				uni.navigateTo({
-					url: `/pages/live/zgLive?roomID=${item.roomId}&merchantId=${item.merchantId}&isAnchor=false`
+				app.platform.goZgLive({
+					roomID: item.roomId,
+					merchantId: item.merchantId,
+					playCode:item.playCode,
+					isAnchor: false
 				})
 				return
 			}

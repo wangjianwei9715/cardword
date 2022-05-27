@@ -36,8 +36,8 @@
 				},
 				statusBarHeight: 0,
 				webViewUrl: '',
-				// AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd',
-				AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd',
+				AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd',
+				// AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd',
 				UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index',
 				// UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?testUser=true',
 				// webViewUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index', //用户端
@@ -62,7 +62,8 @@
 					anonymous: true, //是否匿名(不公开个人信息或者游客)
 					uid: "",
 					streamId: ""
-				}
+				},
+				deviceInfo: {}
 			}
 		},
 		async onLoad(query) {
@@ -75,6 +76,7 @@
 				success: (res) => {
 					this.deviceAssign(res)
 					this.getUserProfile(res)
+					this.deviceInfo = res
 				}
 			});
 		},
@@ -145,22 +147,18 @@
 					this.$refs.webview.evalJs(
 						`statusBarHeight=${deviceInfo.statusBarHeight}`
 					) //通知webView手机状态栏高度
-					this.$refs.webview.evalJs(
-						`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)})`
-					) //登录房间
+					this.againLogin()
 				}, 1000)
 			},
+			againLogin() {
+				console.log(this.loginRoomData);
+				this.$refs.webview.evalJs(
+					`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)})`
+				) //登录房间
+			},
 			getMerchant(merchantId) {
-				// //未登录用户
-				// if (!this.hasToken) {
-				// 	this.merchantMessage.followed = false
-				// 	return
-				// }
-				console.log(merchantId);
 				request('merchant/detail/' + merchantId, {}, 'get').then(res => {
-					// this.merchantMessage.followed = res.data.followed
 					this.merchantMessage = res.data
-					console.log(this.merchantMessage);
 				})
 			},
 			attention() {
@@ -192,12 +190,13 @@
 					return
 				}
 				//首次推流获取streamID,改变直播状态
-				request('brodcast/third/1001/achor/push/' + this.loginRoomData.roomID, {}, 'post').then(res => {
-					this.loginRoomData.streamID = res.streamID
-					this.$refs.webview.evalJs(`streamID="${res.streamID}"`) //推送streamID
-				}).catch(err => {
-					this.$refs.webview.evalJs(`streamIDError=true}`) //通知错误
-				})
+				request('brodcast/third/1001/achor/push/' + this.loginRoomData.roomID, {}, 'post')
+				// request('brodcast/third/1001/achor/push/' + this.loginRoomData.roomID, {}, 'post').then(res => {
+				// 	this.loginRoomData.streamID = res.streamID
+				// 	this.$refs.webview.evalJs(`streamID="${res.streamID}"`) //推送streamID
+				// }).catch(err => {
+				// 	this.$refs.webview.evalJs(`streamIDError=true}`) //通知错误
+				// })
 			},
 			noneAuthTips() {
 				uni.showModal({

@@ -39,6 +39,15 @@
 			
 		}
 		onClickJumpUrl(item:any){
+			if(item.third&&item.third==1001){
+				app.platform.goZgLive({
+					roomID:item.roomId,
+					merchantId:item.merchantId,
+					playCode:item.playCode,
+					isAnchor:false
+				})
+				return
+			}
 			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		

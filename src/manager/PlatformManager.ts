@@ -137,6 +137,12 @@ export default class PlatformManager {
 			
 		})
 	}
+	//即构直播间
+	goZgLive(item:any){
+		uni.navigateTo({
+			url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}`
+		})
+	}
 	launchMiniProgramLive(id:any){
 		// #ifdef APP-PLUS
 		plus.share.getServices(res => {
