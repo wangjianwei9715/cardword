@@ -15,7 +15,7 @@
 				<muqian-lazyLoad class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic))"></muqian-lazyLoad>
 				<view class="goods-content">
 					<view class="title">{{item.good.title}}</view>
-					<view class="state" :class="{'no-bg':item.good.stateName=='未中卡'}">{{item.good.stateName=='未中卡'?'':item.good.stateName}}</view>
+					<view class="state" :class="{'no-bg':item.good.stateName=='未中卡'}">{{item.good.stateName=='未中卡'?'':item.good.stateName}}{{item.good.stateName=='拼团中'?' '+(item.good.currentNum+item.good.lockNum)+'/'+item.good.totalNum:''}}</view>
 					<view class="desc">
 						<view class="price">￥{{item.price}}<text class="total-num">共{{item.num}}件</text></view>
 						<view ></view>

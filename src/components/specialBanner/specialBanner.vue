@@ -62,10 +62,13 @@
         </view>
       </swiper-item>
     </swiper>
-    <view class="desc-wrap">
-      <view class="title">{{ bannerList.goodTitle?bannerList.goodTitle:'' }}</view>
-      <view class="desc">{{ bannerList.name?bannerList.name:'' }}</view>
-      <view class="time">{{ bannerList.time?dateFormat(bannerList.time):'' }}</view>
+    <view class="desc-wrap" v-if="bannerList!=''">
+      <view class="title">{{ bannerList.goodTitle}}</view>
+      <view class="desc">{{ bannerList.name }}</view>
+      <view class="time" v-if="merchant!=''">
+        <image class="avatar" :src="decodeURIComponent(merchant.logo)" />
+        {{merchant.name+' '+dateFormat(bannerList.time)+' 拆出'}}
+      </view>
     </view>
     <view class="special-bottom" >
       <view class="special-bottom-inedx" v-for="(item,index) in shareData" :key="index" @click="onClickShare(item.scene)">
@@ -92,6 +95,8 @@
     dateFormat = dateFormat;
 		@Prop({default:[]})
 		bannerList:any;
+    @Prop({default:[]})
+		merchant:any;
     @Prop({default:[]})
 		swiperConfig:any;
     @Prop({default:0})
@@ -167,7 +172,7 @@
     }
     onClickSwiperTab(type:string){
       let index = 0;
-      if(type=='right'&&this.index<this.total) index = Number(this.index)+1
+      if(type=='right'&&Number(this.index)<Number(this.total)) index = Number(this.index)+1
       if(type=='left'&&this.index>1) index = Number(this.index)-1
       if(index>0) this.emitSwiper(index)
     }
@@ -260,24 +265,24 @@
     box-sizing: border-box;
     position: relative;
     .swiper-left-icon{
-      width: 20rpx;
-      height:29rpx;
+      width: 62rpx;
+      height:62rpx;
       background:url(../../static/userinfo/winningCard/icon_left.png) no-repeat center;
       background-size: 100% 100%;
       position: absolute;
       left:160rpx;
       top:50%;
-      margin-top: -14.5rpx;
+      margin-top: -31rpx;
     }
     .swiper-right-icon{
-      width: 20rpx;
-      height:29rpx;
+      width: 62rpx;
+      height:62rpx;
       background:url(../../static/userinfo/winningCard/icon_right.png) no-repeat center;
       background-size: 100% 100%;
       position: absolute;
       right:160rpx;
       top:50%;
-      margin-top: -14.5rpx;
+      margin-top: -31rpx;
     }
     .icon-back{
       width: 80rpx;
@@ -366,11 +371,20 @@
     }
     .time{
       width: 100%;
-      font-size: 23rpx;
+      height:40rpx;
+      font-size: 24rpx;
       font-family: PingFangSC-Regular;
       font-weight: 400;
       color: #777777;
-      margin-top: 15rpx;
+      margin-top: 20rpx;
+      display: flex;
+      align-items: center;
+      .avatar{
+        width: 40rpx;
+        height:40rpx;
+        border-radius: 50%;
+        margin-right: 6rpx;
+      }
     }
   }
   @keyframes descAnimation {

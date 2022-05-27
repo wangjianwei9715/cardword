@@ -79,6 +79,7 @@
 					success: (res)=>{
 						if (res.confirm) {
 							this.copyId = key[0];
+							this.userId = key[0]
 							uni.setClipboardData({
 								data: '',
 								showToast:false
@@ -112,6 +113,13 @@
 				content: '是否确认赠送此卡密',
 				success: (res)=> {
 					if (res.confirm) {
+						if(this.userId == ''){
+							uni.showToast({
+								title:'请重新输入用户ID',
+								icon:'none'
+							})
+							return;
+						}
 						let ts = Math.floor(new Date().getTime()/1000);
 						let params = {
 							goodOrderCode:this.orderData.goodOrderCode,

@@ -24,7 +24,10 @@
 				<view class="user-info">
 					<view class="user-title">我的SP值<text>(1:10)</text></view>
 					<view class="user-bg">
-						<view class="user-num">x{{mySP}}</view>
+						<view class="user-num">
+							x{{mySP}}
+							<view class="user-lock" v-if="myLockSP>0">冻结中:{{myLockSP}}</view>
+						</view>
 					</view>
 				</view>
 				<view class="user-explain">
@@ -80,6 +83,7 @@
 		// 集sp卡密 活动规则
 		spCardRule = spCardRule
 		mySP = 0;
+		myLockSP = 0;
 		scrollList:{[x:string]:any} = []
 		needScrollWidth = 0;
 		scrollWidth = 0;
@@ -116,6 +120,7 @@
 			app.http.Get('activity/SP/home',{},(res:any)=>{
 				console.log('activity/SP/home=',res)
 				this.mySP = res.mySP;
+				this.myLockSP = res.myLockSP;
 				this.scrollList = res.data.exchangeList;
 				this.exchangeData = res.data.list;
 				setTimeout(()=>{
@@ -347,6 +352,7 @@
 				background-size: 100% 100%;
 				position: relative;
 				.user-num{
+					width: max-content;
 					height:20rpx;
 					position: absolute;
 					bottom:65rpx;
@@ -356,6 +362,14 @@
 					font-weight: 400;
 					color: #333333;
 					letter-spacing:5rpx;
+				}
+				.user-lock{
+					margin-top: 4rpx;
+					font-size: 24rpx;
+					font-family:  PingFang SC;
+					font-weight: 400;
+					color: #5846B2;
+					letter-spacing:0
 				}
 			}
 		}

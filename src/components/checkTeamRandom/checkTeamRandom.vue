@@ -110,6 +110,10 @@
 							<view class="drawer-random-name drawer-red">{{item.name}}</view><text>x{{item.num}}份</text>
 						</view>
 						<view class="drawer-random-total">合计:{{teamrandomRemainder.totalAward}}份奖品</view>
+						<view class="drawer-random-explain">
+							<view class="drawer-random-explain-title">(获得额外奖品将显示在卡密中)</view>
+							<image class="drawer-random-explain-pic" src="../../static/goods/v2/random_tips.jpg" mode="aspectFit"/>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -473,12 +477,17 @@
 			color: #333333;
 			margin-bottom: 30rpx;
 		}
-		.drawer-random-title text{
+		.drawer-random-title text,.drawer-random-explain-title{
 			font-size: 25rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #7D8288;
 			margin-left: 20rpx;
+		}
+		.drawer-random-explain-pic{
+			width: 100%;
+			height:300rpx;
+			margin-top: -30rpx;
 		}
 		.drawer-random-list{
 			width: 48%;
