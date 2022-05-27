@@ -23,7 +23,7 @@
 					<view class="sp-name">{{item.tpName}}</view>
 					<view class="sp-time">{{dateFormatYMSHM(item.created_at)}}</view>
 				</view>
-				<view class="sp-index-right">{{item.SP_num>0?'+'+item.SP_num:item.SP_num}}</view>
+				<view class="sp-index-right">{{item.SP_num>0?'+'+item.SP_num:item.SP_num}}{{item.lock==1?'(冻结中)':''}}</view>
 			</view>
 		</view>
 

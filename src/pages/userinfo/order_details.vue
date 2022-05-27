@@ -259,7 +259,7 @@
 					this.guessName = res.data.guess.guess;
 					this.surplusNum = res.data.good.state>=2? res.data.guess.surplusNum:0;
 					this.guessState = res.data.guess.state
-					if(res.data.guess.state == 0 && res.data.state != 1){
+					if(res.data.guess.state == 0 && res.data.state > 1){
 						setTimeout(()=>{
 							this.initEvent();
 						},500)
