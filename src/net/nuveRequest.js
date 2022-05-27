@@ -2,7 +2,10 @@
 // import nvueApp from './nvueGetApp.js'
 const request = (url, params = {}, method = 'GET') => {
 	const isTest = false
-	const requestUrl = isTest ? 'http://192.168.8.80:8701/api/v2/' : 'https://server.ssl1.ka-world.com/api/v2/'
+	// const requestUrl = isTest ? 'http://192.168.8.79:8701/api/v2/' : 'https://server.ssl1.ka-world.com/api/v2/'
+	// const requestUrl='https://server.ssl1.ka-world.com/api/v2/'
+	const requestUrl='https://server.ssltest.ka-world.com/api/v2/'
+	// const requestUrl = 'http://192.168.8.79:8701/api/v2/'
 	return new Promise((resolve, reject) => {
 		const httpReg = /^http(s)?/
 		const finUrl = httpReg.test(url) ? url : requestUrl + url

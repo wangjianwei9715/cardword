@@ -6,14 +6,25 @@
 		</web-view>
 		<view class='merchant' :style="{top:56+statusBarHeight+'rpx'}">
 			<image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill'
-				@click='pageJump(`/pages/userinfo/merchant_shopsV2?id=${merchantMessage.merchantId}`)'>
+				@click='pageJump(`/pages/userinfo/merchant_shopsV2?id=${merchantMessage.id}`)'>
 			</image>
 			<view class='merchant_name'>
 				<text class='merchant_name_text'>{{merchantMessage.name}}</text>
-				<text class='merchant_name_like'>{{999}}本场点赞</text>
+				<text class='merchant_name_like'>{{roomLikeNum}}本场点赞</text>
 			</view>
 			<text class='merchant_action' @click='attention'>{{merchantMessage.followed?'已关注':'关注'}}</text>
 		</view>
+		<!-- <view class="interaction">
+			<view class="interaction_item">
+				<image src="../../static/live/v2/order.png" class="interaction_icon" mode="aspectFill" style="width: 49rpx;height: 56rpx;"></image>
+			</view>
+			<view class="interaction_item" @click="share">
+				<image src="../../static/live/v2/share.png" class="interaction_icon" mode="aspectFill" style="width: 43rpx;height: 37rpx;"></image>
+			</view>
+			<view class="interaction_item">
+				<image src="../../static/live/v2/noneLove.png" class="interaction_icon" mode="aspectFill" style="width: 49rpx;height: 48rpx;"></image>
+			</view>
+		</view> -->
 	</view>
 
 </template>
@@ -36,10 +47,10 @@
 				},
 				statusBarHeight: 0,
 				webViewUrl: '',
-				AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd',
+				AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
 				// AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd',
-				UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index',
-				// UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?testUser=true',
+				// UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index',
+				UserUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				// webViewUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index', //用户端
 				// webViewUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index', //用户端
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
@@ -63,15 +74,28 @@
 					uid: "",
 					streamId: ""
 				},
-				deviceInfo: {}
+				liveData: {
+					//状态  0 待直播,  1 即将直播  2 正在直播,  3 直播完成(回放)  -1 过期 -2 已取消
+				},
+				deviceInfo: {},
+				roomLikeNum: 0,
 			}
 		},
 		async onLoad(query) {
 			// var result = await permision.requestAndroidPermission(['android.permission.CAMERA'])
+
 			this.webViewUrl = query.isAnchor == 'true' ? this.AnchorEndUrl : this.UserUrl
 			if (query.merchantId) this.getMerchant(+query.merchantId)
 			if (query.roomID) this.loginRoomData.roomID = query.roomID
 			if (query.streamID) this.loginRoomData.streamID = query.streamID
+			uni.showLoading({
+				title: '请稍等'
+			})
+			const {
+				data
+			} = await this.getLiveRoomInfo(+query.roomID)
+			this.liveData = data
+			console.log(this.liveData);
 			uni.getSystemInfo({
 				success: (res) => {
 					this.deviceAssign(res)
@@ -102,13 +126,23 @@
 				this.height = hasNotchInScreen ? iosHeight : res.screenHeight
 				this.width = res.screenWidth
 				this.viewShow = true
+				uni.hideLoading()
+			},
+			//获取直播间信息
+			async getLiveRoomInfo(roomID) {
+				const ts = Math.round(+new Date() / 1000)
+				const params = {
+					ts,
+					sign: Md5.hashStr(`1001room_${roomID}_${ts}`)
+				}
+				return request('brodcast/third/1001/roomInfo/' + roomID, params, 'get')
 			},
 			//获取及赋值
 			async getUserProfile(deviceInfo) {
 				let userData = {}
 				const device = Md5.hashStr(deviceInfo.deviceId)
 
-
+				console.log(this.loginRoomData.roomID);
 				const tokenRespone = await request('brodcast/third/1001/user/login/' + this.loginRoomData.roomID, {},
 					'post')
 				this.tokenData = tokenRespone.data
@@ -151,9 +185,8 @@
 				}, 1000)
 			},
 			againLogin() {
-				console.log(this.loginRoomData);
 				this.$refs.webview.evalJs(
-					`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)})`
+					`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)},${JSON.stringify(this.liveData)})`
 				) //登录房间
 			},
 			getMerchant(merchantId) {
@@ -184,19 +217,18 @@
 			},
 			//推流
 			pushStream() {
-				//误操退出直播间后，重新进入直播间重新推流
-				if (this.loginRoomData.streamID) {
-					this.$refs.webview.evalJs(`streamID="${this.loginRoomData.streamID}"`) //推送streamID
-					return
-				}
 				//首次推流获取streamID,改变直播状态
-				request('brodcast/third/1001/achor/push/' + this.loginRoomData.roomID, {}, 'post')
-				// request('brodcast/third/1001/achor/push/' + this.loginRoomData.roomID, {}, 'post').then(res => {
-				// 	this.loginRoomData.streamID = res.streamID
-				// 	this.$refs.webview.evalJs(`streamID="${res.streamID}"`) //推送streamID
-				// }).catch(err => {
-				// 	this.$refs.webview.evalJs(`streamIDError=true}`) //通知错误
-				// })
+				if (this.liveData && this.liveData.state <= 1) request('brodcast/third/1001/achor/push/' + this
+					.loginRoomData.roomID, {}, 'post')
+			},
+			//点赞
+			addLike(likeNum) {
+				request('brodcast/third/1001/user/like/' + this.loginRoomData.roomID, {
+					num: likeNum,
+					uid: this.loginRoomData.userID
+				}, 'post').then(res => {
+					this.roomLikeNum = res.data.totalNum
+				})
 			},
 			noneAuthTips() {
 				uni.showModal({
@@ -215,19 +247,7 @@
 					delta: 1
 				})
 			},
-			refreshToken() {
-				// request('https://xlsh.7piccolo.com:6400/getZgToken', { //node测试token接口(后续换)
-				// 	userID: this.appProfile.userId,
-				// 	roomID: this.loginRoomData.roomID
-				// }, 'post').then(res => {
-				// 	this.$refs.webview.evalJs(
-				// 		`refreshZgToken(${JSON.stringify({
-				// 			token:res.data,
-				// 			roomID:this.loginRoomData.roomID
-				// 		})})`
-				// 	) //更新token
-				// })
-			},
+			refreshToken() {},
 			// netWork
 			share() {
 				uni.showLoading({
@@ -255,6 +275,13 @@
 					}
 				});
 			},
+			loginError(err) {
+				uni.showToast({
+					title: '房间进入失败',
+					icon: 'none'
+				})
+				console.log(err);
+			},
 			pageJump(url) {
 				uni.navigateTo({
 					url
@@ -266,7 +293,7 @@
 					data
 				} = event.detail
 				const resData = data[0]
-				this[resData.action]()
+				this[resData.action](resData.params || null)
 			}
 		}
 	}
@@ -336,5 +363,31 @@
 		line-height: 50rpx;
 		text-align: center;
 		margin-left: 15rpx;
+	}
+
+	.interaction {
+		position: absolute;
+		bottom: 24rpx;
+		right: 27rpx;
+		justify-content: flex-end;
+		/* background-color: red; */
+		/* width: 300rpx; */
+		flex-direction: row;
+	}
+
+	.interaction_item {
+		width: 73rpx;
+		height: 73rpx;
+		background: rgba(0, 0, 0, .28);
+		border-radius: 50%;
+		margin-left: 14rpx;
+		/* justify-content:; */
+		align-items: center;
+		display: flex;
+		justify-content: center;
+	}
+
+	.interaction_icon {
+		display: block;
 	}
 </style>
