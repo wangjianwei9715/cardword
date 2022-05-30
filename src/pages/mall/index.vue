@@ -617,10 +617,11 @@
 			height: 326rpx;
 			background: #ffffff;
 			border-radius: 5rpx;
-			margin-right: 8;
+			margin-right: 10rpx;
 			box-sizing: border-box;
 			padding: 0 12rpx;
 			position: relative;
+			margin-bottom: 10rpx;
 		}
 
 		.point-index:nth-child(3n) {
