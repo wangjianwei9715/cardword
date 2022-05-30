@@ -534,7 +534,20 @@
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				}
-			]
+			    ,{
+                    "path" : "mysticalCode/mysticalCode",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "神秘代码",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black",
+					"enablePullDownRefresh": false,
+					"backgroundColorTop": "#EFBE35", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+					"backgroundColorBottom": "#EFBE35" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+                }
+                
+                }
+            ]
 		},
 		{
 			"root": "pages/information",
