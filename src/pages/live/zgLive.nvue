@@ -256,11 +256,11 @@
 				uni.share({
 					provider: "weixin",
 					type: 0,
-					imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.04.14/loot/loot_sw/0/1649923645699n8fv080wdf.jpg",
+					imageUrl: decodeURIComponent(this.liveData.cover),
 					title: "拆卡进行中！",
 					summary: '拆卡进行中！',
 					scene: "WXSceneSession",
-					href: 'https://www.ka-world.com/share/h5/#/pages/live/index',
+					href: 'https://www.ka-world.com/share/h5/#/pages/live/liveShare?roomID='+this.loginRoomData.roomID,
 					success: (res) => {},
 					fail: (err) => {
 						console.log("失败原因=>", err);
@@ -388,6 +388,6 @@
 	}
 
 	.interaction_icon {
-		display: block;
+		/* display: block; */
 	}
 </style>
