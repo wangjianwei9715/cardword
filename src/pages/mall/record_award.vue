@@ -144,7 +144,7 @@
 		display: flex;
 		background-color: #fff;
 		justify-content: space-between;
-		margin: 26rpx auto;
+		margin: 14rpx auto;
 		border-radius: 10rpx;
 	}
 

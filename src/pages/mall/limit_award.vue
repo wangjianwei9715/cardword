@@ -223,7 +223,7 @@
 		padding: 19rpx 12rpx;
 		display: flex;
 		justify-content: space-between;
-		margin: 20rpx auto;
+		margin: 14rpx auto;
 		background-color:#fff;
 		border-radius: 5rpx;
 	}
