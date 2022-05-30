@@ -178,13 +178,13 @@
 				this.loginRoomData.token = roomTokenData.token
 				this.loginRoomData.streamID = roomTokenData.streamId || null
 				setTimeout(() => {
-					this.$refs.webview.evalJs(
-						`statusBarHeight=${deviceInfo.statusBarHeight}`
-					) //通知webView手机状态栏高度
 					this.againLogin()
 				}, 1000)
 			},
 			againLogin() {
+				this.$refs.webview.evalJs(
+					`statusBarHeight=${this.deviceInfo.statusBarHeight}`
+				) //通知webView手机状态栏高度
 				this.$refs.webview.evalJs(
 					`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)},${JSON.stringify(this.liveData)})`
 				) //登录房间
@@ -276,10 +276,10 @@
 				});
 			},
 			loginError(err) {
-				uni.showToast({
-					title: '房间进入失败',
-					icon: 'none'
-				})
+				// uni.showToast({
+				// 	title: '房间进入失败',
+				// 	icon: 'none'
+				// })
 				console.log(err);
 			},
 			pageJump(url) {

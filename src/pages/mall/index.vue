@@ -510,6 +510,7 @@
 							display: flex;
 							align-items: center;
 							justify-content: center;
+							z-index: 7;
 						}
 
 						.award-pic {
@@ -633,7 +634,7 @@
 			justify-content: center;
 			box-sizing: border-box;
 			padding-top: 24rpx;
-
+			z-index: 7;
 			.point-pic {
 				width: 158rpx;
 				height: 131rpx;
