@@ -210,31 +210,29 @@
     }
     // 生成海报
     getShareAppImg(){
-      return new Promise((resolve, reject) => {
-    
+      return new Promise( async (resolve, reject) => {
+        uni.showLoading({title: "图片生成中"});
         let ctx = uni.createCanvasContext("mycanvas");
         
         ctx.drawImage(this.canvasBg, 0, 0, uni.upx2px(750), uni.upx2px(1334));
         ctx.drawImage(this.canvasTitle, uni.upx2px(38), uni.upx2px(48), uni.upx2px(205), uni.upx2px(50));
         imgUtils.darwRoundRect(uni.upx2px(36), uni.upx2px(134), uni.upx2px(679), uni.upx2px(861), 0, ctx,"#FFFFFF");
         imgUtils.darwRoundRect(uni.upx2px(51), uni.upx2px(147), uni.upx2px(650), uni.upx2px(833), 0, ctx,"#383a49");
-        ctx.drawImage(decodeURIComponent(this.bannerList.pic[this.curIndex]), uni.upx2px(51), uni.upx2px(147), uni.upx2px(650), uni.upx2px(833));
+        
+        await this.setTailorImage(ctx);
         ctx.drawImage(this.canvasLogo, uni.upx2px(50), uni.upx2px(1143), uni.upx2px(131), uni.upx2px(131));
         ctx.drawImage(this.canvasEwm, uni.upx2px(197), uni.upx2px(1143), uni.upx2px(131), uni.upx2px(131));
-
+        
         ctx.setFontSize(uni.upx2px(31));
         ctx.fillStyle = "#383a49";
         let strObj:any = imgUtils.getTwoLineStr(ctx, this.bannerList.name, uni.upx2px(650));
         for(let i = 0; i<strObj.length;i++){
           ctx.fillText(strObj[i] , uni.upx2px(51) , uni.upx2px(1060+(50*i)));
         }
-
-
         ctx.setFontSize(uni.upx2px(29))
         ctx.setFillStyle('#777777')
         ctx.fillText("长按识别二维码了解更多", uni.upx2px(357), uni.upx2px(1220));
 
-        uni.showLoading({title: "图片生成中"});
         setTimeout(()=>{
           ctx.draw(true, () => {
               setTimeout(() => {
@@ -245,6 +243,48 @@
               }, 200)
           });
         },500)
+      })
+    }
+    setTailorImage(ctx:any){
+      return new Promise((resolve, reject) => {
+        let imgUrl = decodeURIComponent(this.bannerList.pic[this.curIndex]);
+        uni.getImageInfo({
+          src:imgUrl,
+          success (res) {
+            let imgX = uni.upx2px(51) //图片在画布上的x轴坐标
+            let imgY = uni.upx2px(147) //图片在画布上的y轴坐标
+            let imgW = uni.upx2px(650) //图片在画布上的宽度
+            let imgH = uni.upx2px(833) //图片在画布上的高度
+            let visibleW = res.width//截取的图片的宽度
+            let visibleH = res.height//截取的图片的高度
+            let visibleX = null // 所截取的图片的x轴坐标
+            let visibleY = null // 所截取的图片的y轴坐标
+            let imgBili = imgW / imgH
+            let visibleBili = visibleW / visibleH
+            if(imgBili < visibleBili){
+              visibleH = uni.upx2px(650) / visibleBili;
+              visibleY = imgY+((imgH-visibleH)/2) // 所截取的图片的y轴坐标
+              console.log(imgUrl, imgX, visibleY, imgW, visibleH)
+              ctx.drawImage(imgUrl, imgX, visibleY, imgW, visibleH)
+            }else {
+              visibleX = 0
+              let newH = (imgW * visibleH) / visibleW
+              const bili = newH / visibleH
+              visibleY = Math.abs(imgH - newH) /2 / bili
+              visibleH = visibleW * imgH / imgW
+              ctx.drawImage(imgUrl, visibleX, visibleY, visibleW, visibleH,imgX, imgY, imgW, imgH)
+            }
+            resolve(true)
+            
+          },
+          fail (e) {
+            uni.showToast({
+              title:'图片生成失败',
+              icon:'none'
+            })
+          }
+          
+        })
       })
     }
 	}
