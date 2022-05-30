@@ -264,7 +264,6 @@
             if(imgBili < visibleBili){
               visibleH = uni.upx2px(650) / visibleBili;
               visibleY = imgY+((imgH-visibleH)/2) // 所截取的图片的y轴坐标
-              console.log(imgUrl, imgX, visibleY, imgW, visibleH)
               ctx.drawImage(imgUrl, imgX, visibleY, imgW, visibleH)
             }else {
               visibleX = 0

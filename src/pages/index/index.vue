@@ -244,6 +244,12 @@
 				if(res.data.broadcastActor) app.broadcastActor=res.data.broadcastActor
 				if(res.data.newHitNum>0) this.showWinning();
 			})
+			// 专属代码
+			// app.http.Get('activity/secretCode/my',{},(res:any)=>{
+			// 	if(res.myCode=='') return;
+
+
+			// })
 		}
 		
 		showWinning(){
