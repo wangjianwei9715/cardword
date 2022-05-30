@@ -68,6 +68,13 @@
 			</view>
 
 			<view class="orther-setting">
+				<view class="setting" v-if='broadcastActor' @click="onClickNavigateto({url:'/pages/live/myLive'})">
+					<view class="name">
+						<image class="setting-icon" src="../../static/userinfo/liveCamera.png" />
+						我的直播
+					</view>
+					<view class="icon-right"></view>
+				</view>
 				<view class="setting" v-for="item in settingTab" :key="item.id" @click="onClickNavigateto(item)">
 					<view class="name">
 						<image class="setting-icon" :src="item.pic" />
@@ -78,8 +85,6 @@
 			</view>
 
 		</view>
-		
-
 		
 
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
@@ -94,6 +99,7 @@
 	export default class ClassName extends BaseNode {
 		infoData:{[x:string]:any} = [];
 		defaultAvatar = app.defaultAvatar;
+		broadcastActor=app.broadcastActor;
 		headerTab:{[x: string]: any} = {
 			follows:{id:1,name:'关注',num:0,url:'/pages/userinfo/user_follow'},
 			favorite:{id:2,name:'收藏',num:0,url:'/pages/userinfo/user_collect'}
@@ -147,7 +153,7 @@
 				this.infoData.avatar = decodeURIComponent(data.avatar)
 				app.familial = data.familial;
 				this.serviceTab.giving.num = data.unReadGoodNo;
-
+ 
 				// 卡币 我的中卡
 				for (const key in this.walletTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
