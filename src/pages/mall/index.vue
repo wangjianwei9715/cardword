@@ -32,10 +32,10 @@
 					<scroll-view class="award-box-scroll" :scroll-x="true" @scrolltolower='awardScrolltolower'>
 						<view class="award-scroll-index" v-for="(item,index) in award.list" :key="index">
 							<view class="award-top">
-								<view class="award-num">{{item.leftNum==-1?'无限量':item.leftNum+'份'}}</view>
-								<view class="award-pic-box">
+								<view class="award-num" style='z-index:8'>{{item.leftNum==-1?'无限量':item.leftNum+'份'}}</view>
+								<view class="award-pic-box" style='z-index:7'>
 									<!-- <image class="award-pic" mode="aspectFit" :src="decodeURIComponent(item.logo)"/> -->
-									<muqian-lazyLoad class="award-pic" :src="decodeURIComponent(item.logo)">
+									<muqian-lazyLoad style='z-index:7' class="award-pic" :src="decodeURIComponent(item.logo)">
 									</muqian-lazyLoad>
 								</view>
 								<view class="award-status buying" v-if="(item.start_at-countDown<=0)">开抢中</view>
@@ -61,9 +61,9 @@
 			</view>
 			<view class="point-box">
 				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index">
-					<view class="award-num">{{item.leftNum==-1?'无限量':item.leftNum+'份'}}</view>
-					<view class="point-pic-box">
-						<muqian-lazyLoad class="point-pic" :src="decodeURIComponent(item.logo)">
+					<view class="award-num" style='z-index:8'>{{item.leftNum==-1?'无限量':item.leftNum+'份'}}</view>
+					<view class="point-pic-box" style='z-index:7'>
+						<muqian-lazyLoad style='z-index:7' class="point-pic" :src="decodeURIComponent(item.logo)">
 						</muqian-lazyLoad>
 						<!-- <image class="point-pic" :src="decodeURIComponent(item.logo)" mode="aspectFit" /> -->
 					</view>
@@ -400,23 +400,7 @@
 			}
 		}
 	}
-	.award-num {
-		// width: 65rpx;
-		padding: 0 10rpx;
-		height: 22rpx;
-		background: url(../../static/mall/limit_num.png) no-repeat center;
-		background-size: 100% 100%;
-		font-size: 20rpx;
-		font-family: PingFang SC;
-		font-weight: 500;
-		color: #ffffff;
-		text-align: center;
-		line-height: 22rpx;
-		position: absolute;
-		left: 0;
-		top: 0;
-		z-index: 8;
-	}
+	
 	.mall-center {
 		width: 100%;
 		height: 100rpx;
@@ -500,9 +484,6 @@
 						height: 240rpx;
 						box-sizing: border-box;
 						position: relative;
-
-						
-
 						.award-pic-box {
 							width: 240rpx;
 							height: 210rpx;
@@ -683,5 +664,22 @@
 			color: #ffffff;
 			margin: 0 auto;
 		}
+	}
+	.award-num {
+		// width: 65rpx;
+		padding: 0 10rpx;
+		height: 22rpx;
+		background: url(../../static/mall/limit_num.png) no-repeat center;
+		background-size: 100% 100%;
+		font-size: 20rpx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #ffffff;
+		text-align: center;
+		line-height: 22rpx;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 8;
 	}
 </style>
