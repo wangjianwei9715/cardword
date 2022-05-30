@@ -196,10 +196,12 @@
 <style lang="scss">
 	page {
 		font-family: PingFang SC;
+		background-color: #f6f7fb;
 	}
 
 	.menu {
 		width: 750rpx;
+		background-color:#fff;
 	}
 
 	.menu-item {
@@ -217,10 +219,13 @@
 	}
 
 	.commodity {
-		padding: 0 26rpx;
+		width: 700rpx;
+		padding: 19rpx 12rpx;
 		display: flex;
 		justify-content: space-between;
-		margin: 20rpx 0;
+		margin: 20rpx auto;
+		background-color:#fff;
+		border-radius: 5rpx;
 	}
 
 	.buying {

@@ -81,11 +81,13 @@
 <style lang="scss">
 	page {
 		font-family: PingFang SC;
+		background-color: #f6f7fb;
 	}
 
 	.menu {
 		width: 750rpx;
-		margin-bottom: 50rpx;
+		// margin-bottom: 50rpx;
+		background-color: #fff;
 	}
 
 	.menu-item {
@@ -105,12 +107,16 @@
 	}
 
 	.point {
-		margin-bottom: 70rpx;
+		width:617rpx;
+		height: 140rpx;
+		
+		margin: 14rpx auto;
+		border-radius: 5rpx;
 		padding: 0 56rpx 0 49rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-
+		background-color: #fff;
 		&-left {
 			.name {
 				font-size: 29rpx;
