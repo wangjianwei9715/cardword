@@ -11,9 +11,10 @@
 				</view>
 				<view class="normal" style="margin-top: 10rpx;font-size: 20rpx;color: #B8B7B7;">兑换时间：{{dateFormatMSHMS(item.exchangeAt)}}</view>
 				<view class="normal" style="margin-top: 10rpx;font-size: 20rpx;color: #B8B7B7;">卡币:{{item.price}}</view>
+				<view class="wuliu" v-if='item.goodTp===2' @click='onClickWuliu(item)'>查看物流</view>
 				<template v-if='item.goodTp===1'>
 					<view class="line"></view>
-					<view class="normal" style="color:#FB4E3E;font-size: 20rpx;" @click='setCopy(item)'>券编号：{{item.couponCode}}(点击复制)
+					<view class="normal" style="color:#FB4E3E;font-size: 20rpx;" @click='setCopy(item)'>券编号：{{item.couponCode}}
 					</view>
 				</template>
 			</view>
@@ -86,6 +87,18 @@
 				}
 			})
 		}
+		onClickWuliu(item:any){
+			if(!item.wuliuCode){
+				uni.showToast({
+					title:'暂未发货,请联系客服发货',
+					icon:'none'
+				})
+				return
+			}
+			uni.navigateTo({
+				url:'/pages/userinfo/order_logistics?code='+item.wuliuCode
+			})
+		}
 		menuChange(item: any, index: number) {
 			if (this.tagMenu.index == index) return;
 			this.tagMenu.index = index;
@@ -137,7 +150,18 @@
 		font-size: 31rpx;
 		color: #e23737;
 	}
-
+	.wuliu{
+		width: 112rpx;
+		height: 34rpx;
+		color:#fff;
+		font-size:22rpx;
+		text-align:center;
+		line-height:34rpx;
+		background: #E84F5E;
+		border-radius: 3rpx;
+		position: absolute;
+		right: 0;
+	}
 	.commodity {
 		width: 658rpx;
 		padding: 20rpx 26rpx;
@@ -156,7 +180,7 @@
 
 	.commodity-right {
 		width: 70%;
-
+		position: relative;
 		.title {
 			font-weight: 600;
 			color: #333333;

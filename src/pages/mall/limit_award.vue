@@ -14,7 +14,7 @@
 				<view class="commodity-bottom">
 					<view class="normal" style="color: #EF3333;font-weight: 600;">{{item.price}}卡币</view>
 					<template v-if='tagMenu.index==0'>
-						<view class="startPanicBuying buying" v-if="(item.start_at-countDown<=0)"
+						<view class="startPanicBuying conversion" v-if="(item.start_at-countDown<=0)"
 							@click="onClickExchange(item,index)">兑 换</view>
 						<view class="startPanicBuying" v-else>即将开抢</view>
 					</template>
@@ -203,7 +203,9 @@
 		width: 750rpx;
 		background-color:#fff;
 	}
-
+	.conversion{
+		background-color: #ed4d50 !important;
+	}
 	.menu-item {
 		width: 50%;
 		text-align: center;

@@ -119,7 +119,7 @@
 		.popup-btn{
 			width: 355rpx;
 			height: 69rpx;
-			background: #E84F5E;
+			background: #ed4d50;
 			border-radius: 3rpx;
 			margin:0 auto;
 			margin-top: 44rpx;

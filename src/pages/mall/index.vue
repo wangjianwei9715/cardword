@@ -32,19 +32,21 @@
 					<scroll-view class="award-box-scroll" :scroll-x="true" @scrolltolower='awardScrolltolower'>
 						<view class="award-scroll-index" v-for="(item,index) in award.list" :key="index">
 							<view class="award-top">
-								<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>{{'剩'+item.leftNum+'份'}}</view>
+								<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>
+									{{'剩'+item.leftNum+'份'}}</view>
 								<view class="award-pic-box" style='z-index:7'>
 									<!-- <image class="award-pic" mode="aspectFit" :src="decodeURIComponent(item.logo)"/> -->
-									<muqian-lazyLoad style='z-index:7' class="award-pic" :src="decodeURIComponent(item.logo)">
+									<muqian-lazyLoad style='z-index:7' class="award-pic"
+										:src="decodeURIComponent(item.logo)">
 									</muqian-lazyLoad>
 								</view>
-								<view class="award-status buying" v-if="(item.start_at-countDown<=0)">开抢中</view>
-								<view class="award-status" v-else>距开始{{getTime(item.start_at-countDown)}}</view>
+								<view class="award-status buying" style='z-index:8' v-if="(item.start_at-countDown<=0)">开抢中</view>
+								<view class="award-status" style='z-index:8;color: #fff;' v-else>距开始{{getTime(item.start_at-countDown)}}</view>
 							</view>
 							<view class="award-bottom">
 								<view class="award-title oneLineOver">{{item.name}}</view>
 								<view class="award-price">{{item.price}}卡币</view>
-								<view class="award-exbtn buying" v-if="(item.start_at-countDown<=0)"
+								<view class="award-exbtn conversion" v-if="(item.start_at-countDown<=0)"
 									@click="onClickExchange(item,index,'award')">兑 换</view>
 								<view class="award-exbtn" v-else>即将开抢</view>
 							</view>
@@ -61,7 +63,8 @@
 			</view>
 			<view class="point-box">
 				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index">
-					<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>{{'剩'+item.leftNum+'份'}}</view>
+					<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>
+						{{'剩'+item.leftNum+'份'}}</view>
 					<view class="point-pic-box" style='z-index:7'>
 						<muqian-lazyLoad style='z-index:7' class="point-pic" :src="decodeURIComponent(item.logo)">
 						</muqian-lazyLoad>
@@ -69,7 +72,7 @@
 					</view>
 					<view class="point-name">{{item.name}}</view>
 					<view class="point-price">{{item.price}}卡币</view>
-					<view class="point-btn" @click="onClickExchange(item,index,'cardBean')">兑 换</view>
+					<view class="point-btn conversion" @click="onClickExchange(item,index,'cardBean')">兑 换</view>
 				</view>
 			</view>
 		</view>
@@ -298,12 +301,17 @@
 	}
 
 	.buying {
-		background: #F63D47 !important;
+		background: #FBF2F3 !important;
+			color: #F63D47;
 	}
 
 	.drawer-box {
 		width: 100%;
 		box-sizing: border-box;
+	}
+
+	.conversion {
+		background-color: #ed4d50 !important;
 	}
 
 	.drawer-help {
@@ -400,7 +408,7 @@
 			}
 		}
 	}
-	
+
 	.mall-center {
 		width: 100%;
 		height: 100rpx;
@@ -484,9 +492,10 @@
 						height: 240rpx;
 						box-sizing: border-box;
 						position: relative;
+
 						.award-pic-box {
 							width: 240rpx;
-							height: 210rpx;
+							height: 240rpx;
 							background: rgba(226, 232, 255, 0.14);
 							display: flex;
 							align-items: center;
@@ -496,22 +505,22 @@
 
 						.award-pic {
 							width: 240rpx;
-							height: 210rpx;
+							height: 240rpx;
 						}
 
 						.award-status {
 							width: 240rpx;
-							height: 30rpx;
+							height: 31rpx;
 							position: absolute;
 							bottom: 0;
 							left: 0;
 							text-align: center;
 							background: #b9d7ef;
-							line-height: 30rpx;
+							line-height: 31rpx;
 							font-size: 22rpx;
 							font-family: PingFang SC;
 							font-weight: 400;
-							color: #ffffff;
+							// color: #ffffff;
 						}
 					}
 
@@ -593,6 +602,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+
 		.point-index {
 			width: 235rpx;
 			height: 326rpx;
@@ -617,6 +627,7 @@
 			box-sizing: border-box;
 			padding-top: 24rpx;
 			z-index: 7;
+
 			.point-pic {
 				width: 158rpx;
 				height: 131rpx;
@@ -665,6 +676,7 @@
 			margin: 0 auto;
 		}
 	}
+
 	.award-num {
 		// width: 65rpx;
 		padding: 0 10rpx;
