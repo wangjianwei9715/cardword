@@ -509,7 +509,7 @@
 						.award-pic-box {
 							width: 240rpx;
 							height: 240rpx;
-							background: rgba(226, 232, 255, 0.14);
+							// background: rgba(226, 232, 255, 0.14);
 							display: flex;
 							align-items: center;
 							justify-content: center;
