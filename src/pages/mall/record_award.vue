@@ -4,7 +4,7 @@
 			<view class="menu-item" @click="menuChange(item,index)" :class="{selectItem:index==tagMenu.index}" v-for='(item,index) in tagMenu.list' :key='index'>{{item.name}}</view>
 		</view> -->
 		<view class="commodity" v-for="(item,index) in awardList" :key='index'>
-			<muqian-lazyLoad class="commodity-image" :src="decodeURIComponent(item.logo)">
+			<muqian-lazyLoad @click="onClickPreviewImage(decodeURIComponent(item.logo))" class="commodity-image" :src="decodeURIComponent(item.logo)">
 			</muqian-lazyLoad>
 			<view class="commodity-right">
 				<view class="title oneLineOver">{{item.name}}
@@ -75,6 +75,14 @@
 			}
 		}
 		onShow() {}
+		// 观看大图
+		onClickPreviewImage(img: string) {
+			uni.previewImage({
+				urls: [img],
+				current: 0,
+				indicator: "number"
+			});
+		}
 		setCopy(item: any) {
 			if (item.goodTp !== 1) return
 			uni.setClipboardData({
@@ -175,7 +183,7 @@
 	.commodity-image {
 		width: 140rpx;
 		height: 154rpx;
-		background: #333333;
+		// background: #333333;
 	}
 
 	.commodity-right {

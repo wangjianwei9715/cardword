@@ -36,7 +36,7 @@
 									{{'剩'+item.leftNum+'份'}}</view>
 								<view class="award-pic-box" style='z-index:7'>
 									<!-- <image class="award-pic" mode="aspectFit" :src="decodeURIComponent(item.logo)"/> -->
-									<muqian-lazyLoad style='z-index:7' class="award-pic"
+									<muqian-lazyLoad style='z-index:7' @click="onClickPreviewImage(decodeURIComponent(item.logo))" class="award-pic"
 										:src="decodeURIComponent(item.logo)">
 									</muqian-lazyLoad>
 								</view>
@@ -66,7 +66,7 @@
 					<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>
 						{{'剩'+item.leftNum+'份'}}</view>
 					<view class="point-pic-box" style='z-index:7'>
-						<muqian-lazyLoad style='z-index:7' class="point-pic" :src="decodeURIComponent(item.logo)">
+						<muqian-lazyLoad @click="onClickPreviewImage(decodeURIComponent(item.logo))" style='z-index:7' class="point-pic" :src="decodeURIComponent(item.logo)">
 						</muqian-lazyLoad>
 						<!-- <image class="point-pic" :src="decodeURIComponent(item.logo)" mode="aspectFit" /> -->
 					</view>
@@ -254,6 +254,14 @@
 				this.award.queryParams.pageIndex += 1;
 				this.reqTimeLimitData();
 			}
+		}
+		// 观看大图
+		onClickPreviewImage(img: string) {
+			uni.previewImage({
+				urls: [img],
+				current: 0,
+				indicator: "number"
+			});
 		}
 		//获取个人卡币
 		reqMeCardBean(cb ? : Function) {

@@ -5,7 +5,7 @@
 				v-for='(item,index) in tagMenu.list' :key='index'>{{item.name}}</view>
 		</view>
 		<view class="commodity" v-for="(item,index) in awardList" :key="index">
-			<muqian-lazyLoad class="commodity-image" :src="decodeURIComponent(item.logo)" />
+			<muqian-lazyLoad class="commodity-image" @click="onClickPreviewImage(decodeURIComponent(item.logo))" :src="decodeURIComponent(item.logo)" />
 			<view class="commodity-right">
 				<view class="title oneLineOver">{{item.name}}
 				</view>
@@ -86,6 +86,14 @@
 		onLoad(query: any) {
 			this.reqNewData()
 			this.getCountDown()
+		}
+		// 观看大图
+		onClickPreviewImage(img: string) {
+			uni.previewImage({
+				urls: [img],
+				current: 0,
+				indicator: "number"
+			});
 		}
 		onPullDownRefresh() {
 			this.queryParams.pageIndex = 1
@@ -238,7 +246,7 @@
 	.commodity-image {
 		width: 188rpx;
 		height: 188rpx;
-		background: #333333;
+		// background: #333333;
 		border-radius: 3rpx;
 	}
 
