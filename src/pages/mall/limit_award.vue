@@ -143,6 +143,8 @@
 					}
 				}, (err: any) => {
 					this.requestLock = false
+					this.queryParams.pageIndex = 1
+					this.reqNewData()
 				}
 			);
 		}

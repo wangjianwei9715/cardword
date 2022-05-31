@@ -196,6 +196,11 @@
 					}
 				}, (err: any) => {
 					this.requestLock = false
+					this.cardBean.queryParams.pageIndex = 1;
+					this.award.queryParams.pageIndex = 1
+					this.reqTimeLimitData();
+					this.reqMeCardBean()
+					this.reqKdData();
 				}
 			);
 		}
