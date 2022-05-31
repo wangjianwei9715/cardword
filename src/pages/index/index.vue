@@ -76,6 +76,7 @@
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
 
 		<winningCardPopup :showWinningCrad="showWinningCrad" @closeWinning="closeWinning" />
+		<!-- <winningCodePopup :showWinningCode="showWinningCode" :code="mysticalCode" @closeWinCode="showWinningCode=false;uni.showTabBar()"/> -->
 	</view>
 </template>
 
@@ -113,6 +114,9 @@
 		oneLoad = true;
 		showWinningCrad = false;
 		greeted = false;
+		// 神秘代码活动弹窗
+		showWinningCode = false;
+		mysticalCode = ''
 		onLoad(query:any) {
 			if (app.update.apkNeedUpdate) {
 				this.updateShow();
@@ -247,8 +251,9 @@
 			// 专属代码
 			// app.http.Get('activity/secretCode/my',{},(res:any)=>{
 			// 	if(res.myCode=='') return;
-
-
+			// 	this.mysticalCode = res.myCode
+			// 	this.showWinningCode = true;
+			// 	uni.hideTabBar()
 			// })
 		}
 		

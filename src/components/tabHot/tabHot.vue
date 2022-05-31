@@ -73,11 +73,6 @@
 		}
 		onClickHotPic(name:string){
 			if(name!='cardBean') return;
-			uni.showToast({
-				title:'5月开放',
-				icon:'none'
-			})
-			return
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
 					url:'/pages/login/login'

@@ -8,7 +8,7 @@
 			</view>
 		</view>
 		<view class="code-box">
-			<textarea class="code-input" placeholder="请输入代码破解..." placeholder-class="placeholder-color"/>
+			<textarea class="code-input" v-model="mysticalCode" placeholder="请输入代码破解..." placeholder-class="placeholder-color"/>
 			<view class="code-btn" @click="onClickSecretCodeCrack()"></view>
 		</view>
 		<view class="code-list">
@@ -16,7 +16,19 @@
 				<view class="header-tab" :class="{'tab-current':reqData.tp==item.tp}" v-for="(item,index) in tabData" :key="index" @click="onClickTab(item.tp)">{{item.name}}</view>
 			</view>
 			<view class="list-box">
-				<view class="list-index"></view>
+				<view class="list-index" v-for="(item,index) in codeList" :key="index">
+					<view class="code-icon" v-if="item.state==2||item.state==3">{{item.state==2?'终极代码':'专属代码'}}</view>
+					<image class="code-pic" :src="decodeURIComponent(item.pic_url)" />
+					<view class="code-info">
+						<view class="code-info-title">漏洞：{{item.name}}</view>
+						<text :selectable="true" class="code-info-tips">代码提示：{{item.hint}}</text>
+						<view class="code-info-status" v-if="reqData.tp!=3">可破解次数：{{(item.total_num-item.get_num)}}/{{item.total_num}}</view>
+						<view class="code-info-status" v-else @click="onClickKefu()">
+							{{item.tp==1?'请联系客服领取':'已发放至我的-优惠券'}}
+							<image v-if="item.tp==1" class="icon-kf" src="../../../static/act/mysticalCode/kefu.png" />
+						</view>
+					</view>
+				</view>
 			</view>
 		</view>
 
@@ -27,6 +39,18 @@
 				<view class="drawer-help" v-html="item.content"></view>
 			</view>
     	</bottomDrawer>
+
+		<view class="code-shadow" v-show="showPopup">
+			<view class="code-popup">
+				<view class="popup-close" @click="showPopup=false"></view>
+				<view class="popup-title">{{popupData.success?'破解成功':'破解失败'}}</view>
+				<view class="popup-msg-box">
+					<view class="popup-msg">{{popupData.success?'您获得了'+popupData.name:popupData.msg}}</view>
+					<view class="popup-msg" v-if="popupData.success">{{popupData.tp==1?'请联系客服领取':'已发放至我的-优惠券'}}</view>
+					<view class="popup-btn" @click="showPopup=false">确 定</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -44,8 +68,9 @@
 			{name:'我破解的',tp:3},
 		]
 		codeList:{[x:string]:any} = [];
+		kefuUserId:{[x:string]:any} = [];
 		reqData:{[x:string]:any} = {
-			currentPage:1,
+			currentPage:0,
 			pageSize:10,
 			noMoreData:false,
 			tp:1
@@ -61,31 +86,60 @@
 		// 规则
 		codePopup = codePopup;
 		showDrawer = false;
+		// 弹窗
+		showPopup = false;
+		popupData:{[x:string]:any} = {
+			success:false,
+			msg:'',
+			name:'',
+			tp:1
+		}
 		onLoad(query:any) {
-			// this.reqNewData()
+			this.reqNewData()
 		}
 		//   加载更多数据
 		onReachBottom() {
 			this.reqNewData()
 		}
-		reqNewData(cb?:Function) {
+		againReq(){
+			this.reqData = {
+				currentPage:0,
+				pageSize:10,
+				noMoreData:false,
+				tp:1
+			}
+			this.reqNewData()
+		}
+		reqNewData(cb?:Function) {	
 			// 获取更多商品
-			let params = this.reqData
+			let params = this.reqData;
+			params.currentPage++;
+			if (params.currentPage==1) this.codeList = [];
 			if (params.noMoreData) return ;
-			
 			app.http.Get('activity/secretCode/list',params,(data:any)=>{
 				if(data.totalPage<=params.currentPage) params.noMoreData = true;
-				if(params.currentPage==1) this.codeList = [];
-				if(data.list) this.codeList = this.codeList.concat(data.list);
-				params.currentPage++;
+				if(data.list) {
+					if(params.currentPage==1){
+						this.codeList = data.list
+					}else{
+						this.codeList = this.codeList.concat(data.list)
+					}	
+				};
+				if(params.tp==3) this.kefuUserId = data.kefuUserId;
 				if(cb) cb()
 			})
+			
 		}
 		onClickTab(tp:number){
 			if(tp == this.reqData.tp) return;
-
+			if(tp ==3 && app.token.accessToken == ''){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				return;
+			}
 			this.reqData = {
-				currentPage:1,
+				currentPage:0,
 				pageSize:10,
 				noMoreData:false,
 				tp:tp
@@ -94,9 +148,23 @@
 		}
 		onClickSecretCodeCrack(){
 			if(this.mysticalCode=='') return;
-
+			if(app.token.accessToken == ''){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				return;
+			}
 			app.http.Post('activity/secretCode/crack',{code:this.mysticalCode},(res:any)=>{
-
+				this.popupData = res;
+				this.showPopup = true;
+				if(res.success){
+					this.againReq()
+				}
+			})
+		}
+		onClickKefu(){
+			uni.navigateTo({
+				url: '/pages/userinfo/talk?targetUserId='+this.kefuUserId[0]
 			})
 		}
 		// 分享
@@ -118,6 +186,11 @@
 </script>
 
 <style lang="scss" scoped>
+	.icon-kf{
+		width: 30rpx;
+		height:32rpx;
+		margin-right: 18rpx;
+	}
 	.drawer-box {
 		width: 100%;
 		box-sizing: border-box;
@@ -143,6 +216,7 @@
 		background-size: 100% 100%;
 		box-sizing: border-box;
 		display: block;
+		overflow-y: auto;
 	}
 	.top-bg{
 		width: 590rpx;
@@ -237,6 +311,7 @@
 		width: 696rpx;
 		margin:0 auto;
 		box-sizing: border-box;
+		padding-bottom :30rpx;
 		.list-header{
 			width: 100%;
 			height:120rpx;
@@ -270,8 +345,141 @@
 				background:url(../../../static/act/mysticalCode/list_index.png) no-repeat center;
 				background-size: 100% 100%;
 				position: relative;
-				padding:40rpx 30rpx 50rpx 50rpx
+				padding:40rpx 30rpx 50rpx 50rpx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.code-icon{
+					width: 105rpx;
+					height:105rpx;
+					background:url(../../../static/act/mysticalCode/list_tips.png) no-repeat center;
+					background-size: 100% 100%;
+					position: absolute;
+					right:3rpx;
+					top:-29rpx;
+					z-index: 3;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding:0 25rpx 0 33rpx;
+					font-size: 20rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #01E7F6;
+					line-height: 24rpx;
+					box-sizing: border-box;
+				}
+				.code-pic{
+					width:160rpx;
+					height:160rpx;
+				}
+				.code-info{
+					width: 430rpx;
+					height:160rpx;
+					box-sizing: border-box;
+					position: relative;
+					.code-info-title{
+						font-size: 29rpx;
+						font-family: PingFang SC;
+						font-weight: 600;
+						color: #00F0FF;
+					}
+					.code-info-tips{
+						font-size: 24rpx;
+						font-family: PingFang SC;
+						font-weight: 400;
+						color: #FFFFFF;
+						margin-top: 10rpx;
+					}
+					.code-info-status{
+						width: 100%;
+						font-size: 24rpx;
+						font-family: PingFang SC;
+						font-weight: 400;
+						color: rgba(255,255,255,0.38);
+						position: absolute;
+						left:0;
+						bottom:0;
+						display: flex;
+						justify-content: space-between;
+					}
+				}
 			}
 		}
 	}
+	.code-shadow{
+		width: 100%;
+		height:100%;
+		position: fixed;
+		left:0;
+		top:0;
+		z-index: 99;
+		background:rgba(0,0,0,0.78);
+		.code-popup{
+			width: 535rpx;
+			height:484rpx;
+			position: fixed;
+			left:50%;
+			margin-left:-267.5rpx;
+			top:45%;
+			margin-top: -250rpx;
+			background: url(../../../static/act/mysticalCode/popup.png) no-repeat center;
+			background-size: 100% 100%;
+			box-sizing: border-box;
+			.popup-close{
+				width: 29rpx;
+				height:27rpx;
+				background: url(../../../static/act/mysticalCode/close.png) no-repeat center;
+				background-size: 100% 100%;
+				position: absolute;
+				right:7rpx;
+				top:-53rpx;
+				z-index: 1;
+			}
+			.popup-title{
+				width: 100%;
+				text-align: center;
+				font-size: 46rpx;
+				font-family: PingFang SC;
+				font-weight: 600;
+				color: #00F0FF;
+				padding-top: 80rpx;
+			}
+			.popup-msg-box{
+				width: 100%;
+				margin-top: 55rpx;
+				height:120rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-wrap: wrap;
+				.popup-msg{
+					width: 100%;
+					text-align:center;
+					font-size: 29rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #00F0FF;
+					line-height: 47rpx;
+				}
+				.popup-btn{
+					width: 335rpx;
+					height:73rpx;
+					background: url(../../../static/act/mysticalCode/popup_btn.png) no-repeat center;
+					background-size: 100% 100%;
+					position: absolute;
+					left:50%;
+					margin-left: -167.5rpx;
+					bottom:75rpx;
+					text-align: center;
+					line-height: 60rpx;
+					font-size: 29rpx;
+					font-family: PingFang SC;
+					font-weight: 600;
+					color: #00F0FF;
+				}
+			}
+		}
+	}
+	
 </style>
