@@ -32,7 +32,7 @@
 					<scroll-view class="award-box-scroll" :scroll-x="true" @scrolltolower='awardScrolltolower'>
 						<view class="award-scroll-index" v-for="(item,index) in award.list" :key="index">
 							<view class="award-top">
-								<view class="award-num" style='z-index:8'>{{item.leftNum==-1?'无限量':item.leftNum+'份'}}</view>
+								<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>{{'剩'+item.leftNum+'份'}}</view>
 								<view class="award-pic-box" style='z-index:7'>
 									<!-- <image class="award-pic" mode="aspectFit" :src="decodeURIComponent(item.logo)"/> -->
 									<muqian-lazyLoad style='z-index:7' class="award-pic" :src="decodeURIComponent(item.logo)">
@@ -61,7 +61,7 @@
 			</view>
 			<view class="point-box">
 				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index">
-					<view class="award-num" style='z-index:8'>{{item.leftNum==-1?'无限量':item.leftNum+'份'}}</view>
+					<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>{{'剩'+item.leftNum+'份'}}</view>
 					<view class="point-pic-box" style='z-index:7'>
 						<muqian-lazyLoad style='z-index:7' class="point-pic" :src="decodeURIComponent(item.logo)">
 						</muqian-lazyLoad>
@@ -298,7 +298,7 @@
 	}
 
 	.buying {
-		background: #e84f5e !important;
+		background: #F63D47 !important;
 	}
 
 	.drawer-box {
@@ -565,7 +565,7 @@
 	.point-header {
 		width: 100%;
 		height: 62rpx;
-		margin-top: 14rpx;
+		margin-top: 30rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -654,7 +654,7 @@
 		.point-btn {
 			width: 203rpx;
 			height: 43rpx;
-			background: #e84f5e;
+			background: #F63D47;
 			border-radius: 3rpx;
 			text-align: center;
 			line-height: 43rpx;
