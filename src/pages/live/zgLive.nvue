@@ -14,6 +14,22 @@
 			</view>
 			<text class='merchant_action' @click='attention'>{{merchantMessage.followed?'已关注':'关注'}}</text>
 		</view>
+		<view class="card" :class="{cardBottom:cardShow}">
+			<view class='card-title'>
+				<text class='card-title-text'>商品卡密</text>
+				<image class='card-title-img' @click='cardShow=false' src='../../static/pay/guanbi@2x.png'></image>
+			</view>
+			<scroll-view class='card-scroll' :scroll-y='true' @scrolltolower='cardReachBottom'>
+				<view class="card-index" v-for="(items,indexs) in card.list" :key="indexs">
+					<view class="card-left">
+						<text class="card-left-text" :style="{color:txtIndex==0?'#333333':'#ef3333'}" :key="txtIndex" v-for="(txtItem,txtIndex)  in getNameReward(items.name)">
+							{{txtItem}}
+						</text></view>
+					<text class="card-right" :class="{'winning-card':items.state==2}"
+						@click='onClickLookCard(items)'>{{items.content}}</text>
+				</view>
+			</scroll-view>
+		</view>
 		<!-- <view class="interaction">
 			<view class="interaction_item">
 				<image src="../../static/live/v2/order.png" class="interaction_icon" mode="aspectFill" style="width: 49rpx;height: 56rpx;"></image>
@@ -46,13 +62,12 @@
 					progress: false
 				},
 				statusBarHeight: 0,
+				safeAreaBottomHeight: 0,
 				webViewUrl: '',
 				AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
 				// AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd',
-				UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index?ts='+ (+new Date()),
-				// UserUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/index?ts=' + (+new Date()),
-				// webViewUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index', //用户端
-				// webViewUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index', //用户端
+				// UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index?ts='+ (+new Date()),
+				UserUrl: 'http://192.168.8.26:8083/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
 					roomID: null,
@@ -79,6 +94,16 @@
 				},
 				deviceInfo: {},
 				roomLikeNum: 0,
+				cardShow: false,
+				cardList: [],
+				card: {
+					list: [],
+					totalPage: 0
+				},
+				cardQuery: {
+					pageIndex: 1,
+					pageSize: 30,
+				}
 			}
 		},
 		async onLoad(query) {
@@ -121,6 +146,7 @@
 				this.deviceId = res.deviceId
 				const hasNotchInScreen = plus.navigator.hasNotchInScreen()
 				const safeAreaBottomHeight = res.screenHeight - res.safeArea.bottom
+				this.safeAreaBottomHeight = safeAreaBottomHeight
 				const iosHeight = res.screenHeight + res.statusBarHeight + safeAreaBottomHeight
 				this.statusBarHeight = res.statusBarHeight
 				this.height = hasNotchInScreen ? iosHeight : res.screenHeight
@@ -194,6 +220,49 @@
 					this.merchantMessage = res.data
 				})
 			},
+			openCard() {
+				this.cardQuery.pageIndex = 1
+				this.getNoList()
+			},
+			getNoList() {
+				request(`me/good/${this.liveData.goodCode || 'CP0220448'}/orderNoList`, this.cardQuery, 'get').then(
+					res => {
+						console.log(res);
+						const list = res.list || []
+						this.card.totalPage = res.totalPage
+						this.cardQuery.pageIndex == 1 ? this.card.list = list : this.card.list.push(...list)
+						this.cardShow = true
+					})
+			},
+			cardReachBottom() {
+				if (this.cardQuery.pageIndex < this.card.totalPage) {
+					this.cardQuery.pageIndex += 1
+					this.getNoList()
+				}
+			},
+			getNameReward(name) {
+				let rewardIndex = name.lastIndexOf('、');
+				if (rewardIndex == -1) {
+					return [name]
+				} else {
+					let str = name.substring(0, rewardIndex);
+					let reward = name.substring(rewardIndex + 1)
+					return [str + '、', reward]
+				}
+			},
+			onClickLookCard(item) {
+				if (item.state != 2) return;
+				request('me/cardNo/' + item.id + '/hit/pic', {}, 'get').then(res => {
+					const urls = (res.list || []).map(image => {
+						return decodeURIComponent(image)
+					})
+					uni.previewImage({
+						urls,
+						current: 0,
+						indicator: "number"
+					});
+				})
+			},
 			attention() {
 				if (!this.hasToken) {
 					uni.navigateTo({
@@ -260,7 +329,8 @@
 					title: "拆卡进行中！",
 					summary: '拆卡进行中！',
 					scene: "WXSceneSession",
-					href: 'https://www.ka-world.com/share/h5/#/pages/live/liveShare?roomID='+this.loginRoomData.roomID,
+					href: 'https://www.ka-world.com/share/h5/#/pages/live/liveShare?roomID=' + this.loginRoomData
+						.roomID,
 					success: (res) => {},
 					fail: (err) => {
 						console.log("失败原因=>", err);
@@ -389,5 +459,97 @@
 
 	.interaction_icon {
 		/* display: block; */
+	}
+
+	.card {
+		width: 750rpx;
+		position: absolute;
+		background-color: #fff;
+		height: 800rpx;
+		bottom: -1000rpx;
+		align-items: center;
+		font-size: 22rpx;
+		padding-top: 30rpx;
+		border-radius: 40rpx 40rpx 0 0;
+		transition-property: bottom;
+		transition-duration: 0.3s;
+		transition-delay: 0s;
+		transition-timing-function: ease;
+	}
+
+	.cardBottom {
+		bottom: 0;
+	}
+
+	.card-title {
+		width: 750rpx;
+		flex-direction: row;
+		align-items: center;
+		position: relative;
+		margin-bottom: 10rpx;
+		justify-content: center;
+	}
+
+	.card-title-text {
+		text-align: center;
+		font-size: 28rpx;
+	}
+
+	.card-title-img {
+		width: 30rpx;
+		height: 30rpx;
+		position: absolute;
+		right: 50rpx;
+	}
+
+	.safe {
+		background: #000000;
+		width: 750rpx;
+	}
+
+	.card-scroll {
+		height: 670rpx;
+	}
+
+	.card-index {
+		width: 690rpx;
+		/* box-sizing: border-box; */
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background: #fff;
+		margin-top: 20rpx;
+		/* flex-dr */
+		flex-direction: row;
+		font-size: 22rpx;
+
+	}
+
+	.card-left {
+		width: 540rpx;
+		
+		background: #F6F7F8;
+		padding: 10rpx 20rpx;
+	}
+	.card-left-text{
+		font-weight: 400;
+		font-size: 22rpx;
+	}
+	.card-right {
+		width: 86rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		font-size: 21rpx;
+		font-family: Source Han Sans CN;
+		font-weight: 400;
+		color: #fff;
+		background: #CCCCCC;
+	}
+
+	.winning-card {
+		background: #ef3333;
+		color: #fff;
 	}
 </style>
