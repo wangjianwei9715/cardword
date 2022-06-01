@@ -10,8 +10,8 @@
 				<view class="title oneLineOver">{{item.name}}
 				</view>
 				<view class="normal" style="margin-top: 20rpx;">{{dateFormatMSHMS(item.start_at)}}开抢</view>
-				<view class="normal" style="margin-top: 10rpx;" v-if='tagMenu.index==0'>{{item.leftNum==-1?'无限量':'剩'+item.leftNum+'份'}}</view>
-				<view class="normal" style="margin-top: 10rpx;" v-else>{{item.totalNum==0?'无限量':'限量'+item.totalNum+'份'}}</view>
+				<view class="normal" style="margin-top: 10rpx;" v-if='tagMenu.index==0'>{{item.leftNum==-1?'不限量':'剩'+item.leftNum+'份'}}</view>
+				<view class="normal" style="margin-top: 10rpx;" v-else>{{item.totalNum==0?'不限量':'限量'+item.totalNum+'份'}}</view>
 				<view class="commodity-bottom">
 					<view class="normal" style="color: #EF3333;font-weight: 600;">{{item.price}}卡币</view>
 					<template v-if='tagMenu.index==0'>
