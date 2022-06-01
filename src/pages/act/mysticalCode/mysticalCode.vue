@@ -70,7 +70,7 @@
 		codeList:{[x:string]:any} = [];
 		kefuUserId:{[x:string]:any} = [];
 		reqData:{[x:string]:any} = {
-			currentPage:0,
+			pageIndex:0,
 			pageSize:10,
 			noMoreData:false,
 			tp:1
@@ -103,7 +103,7 @@
 		}
 		againReq(){
 			this.reqData = {
-				currentPage:0,
+				pageIndex:0,
 				pageSize:10,
 				noMoreData:false,
 				tp:1
@@ -113,13 +113,13 @@
 		reqNewData(cb?:Function) {	
 			// 获取更多商品
 			let params = this.reqData;
-			params.currentPage++;
-			if (params.currentPage==1) this.codeList = [];
+			params.pageIndex++;
+			if (params.pageIndex==1) this.codeList = [];
 			if (params.noMoreData) return ;
 			app.http.Get('activity/secretCode/list',params,(data:any)=>{
-				if(data.totalPage<=params.currentPage) params.noMoreData = true;
+				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
 				if(data.list) {
-					if(params.currentPage==1){
+					if(params.pageIndex==1){
 						this.codeList = data.list
 					}else{
 						this.codeList = this.codeList.concat(data.list)
@@ -139,7 +139,7 @@
 				return;
 			}
 			this.reqData = {
-				currentPage:0,
+				pageIndex:0,
 				pageSize:10,
 				noMoreData:false,
 				tp:tp
@@ -172,7 +172,7 @@
 			if (!this.operationShow) {
 				if (this.shareData.shareUrl == '') {
 					this.shareData = {
-						shareUrl: "https://www.ka-world.com/share/",
+						shareUrl: "https://www.ka-world.com/share/h5/#/pages/mysticalCode/mysticalCode",
 						title: '卡世界神秘代码',
 						summary: '卡世界神秘代码',
 						thumb: ''

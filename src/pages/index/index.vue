@@ -76,7 +76,7 @@
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
 
 		<winningCardPopup :showWinningCrad="showWinningCrad" @closeWinning="closeWinning" />
-		<!-- <winningCodePopup :showWinningCode="showWinningCode" :code="mysticalCode" @closeWinCode="showWinningCode=false;uni.showTabBar()"/> -->
+		<winningCodePopup :showWinningCode="showWinningCode" :code="mysticalCode" @closeWinCode="closeWinCode"/>
 	</view>
 </template>
 
@@ -249,12 +249,12 @@
 				if(res.data.newHitNum>0) this.showWinning();
 			})
 			// 专属代码
-			// app.http.Get('activity/secretCode/my',{},(res:any)=>{
-			// 	if(res.myCode=='') return;
-			// 	this.mysticalCode = res.myCode
-			// 	this.showWinningCode = true;
-			// 	uni.hideTabBar()
-			// })
+			app.http.Get('activity/secretCode/my',{},(res:any)=>{
+				if(res.myCode=='') return;
+				this.mysticalCode = res.myCode
+				this.showWinningCode = true;
+				uni.hideTabBar()
+			})
 		}
 		
 		showWinning(){
@@ -263,6 +263,10 @@
 		}
 		closeWinning(){
 			this.showWinningCrad = false
+			uni.showTabBar()
+		}
+		closeWinCode(){
+			this.showWinningCode=false;
 			uni.showTabBar()
 		}
 		initEvent(cb?:Function){

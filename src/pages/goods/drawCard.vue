@@ -39,6 +39,9 @@
           <view v-else-if="item.color=='SP' && index < stepIndex + 6" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
             <image class="movable-box-sp" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/>
           </view>
+          <!-- <view v-else-if="item.color=='SP' && index < stepIndex + 6" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
+            <image class="movable-box-noir" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/>
+          </view> -->
           <view
             v-else-if="index < stepIndex + 6"
             class="movable-box"
@@ -607,6 +610,62 @@ export default class ClassName extends BaseNode {
       // animation: opacityChange 5s infinite linear;
   }
 }
+.movable-box-noir{
+  border-width: 2rpx;
+  width: 528rpx;
+  height: 741rpx;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0;
+  z-index: 0;
+  border-radius: 5rpx;
+}
+ 
+.movable-box-noir:before {
+    content:"";
+    position: absolute;
+    width:200rpx;
+    height:100%;
+    top:0;
+    left:-50%;
+    overflow: hidden;
+    background: -moz-linear-gradient(left,
+      rgba(255, 255, 255, 0)25%,
+      rgba(255, 255, 255, .2)50%,
+      rgba(255, 255, 255, 0)75%);
+    background: -webkit-gradient(linear, left top, right top,
+      color-stop(25%, rgba(255, 255, 255, 0)),
+      color-stop(50%, rgba(255, 255, 255, .2)),
+      color-stop(75%, rgba(255, 255, 255, 0)));
+    background: -webkit-linear-gradient(left,
+      rgba(255, 255, 255, 0)25%, 
+      rgba(255, 255, 255, .2)50%, 
+      rgba(255, 255, 255, 0)75%);
+    background: -o-linear-gradient(left, 
+      rgba(255, 255, 255, 0)25%, 
+      rgba(255, 255, 255, .2)50%, 
+      rgba(255, 255, 255, 0)75%);
+    transform: skewX(-45deg);
+    -webkit-transform: skewX(-45deg);
+    -moz-transform: skewX(-45deg);
+    animation:tolight 1.5s infinite  linear;
+    -webkit-animation:tolight 1.5s infinite  linear;
+  
+  }
+ 
+/*光影划过动画*/
+@keyframes tolight
+{
+	from {left:-100%;}
+	to {left:150%;}
+}
+@-webkit-keyframes tolight {
+	from {left:-100%;}
+	to {left:150%;}
+}
+
 .movable-box-silver {
   background: url(../../static/goods/drawcard/card_silver.png) no-repeat center;
   background-size: 100% 100%;

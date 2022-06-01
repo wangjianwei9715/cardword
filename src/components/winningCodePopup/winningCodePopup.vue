@@ -34,7 +34,7 @@
 				data: this.code,
 				showToast: false,
 				success: () => {
-					this.onClickCloseWinning();
+					this.$emit('closeWinCode')
 					uni.navigateTo({
 						url:'/pages/act/mysticalCode/mysticalCode'
 					})

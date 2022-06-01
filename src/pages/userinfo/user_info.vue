@@ -18,13 +18,13 @@
                     </picker>
 					<view class="icon-right"></view>
 				</view>
-				<view v-else-if="item.id==5" class="right">
+				<view v-else-if="item.id==5" class="right" >
 					<picker  mode="date" @change="bindDateChange" :value="dateValue" >
                         <view>{{dateValue==''?'请选择':dateValue}}</view>
                     </picker>
 					<view class="icon-right"></view>
 				</view>
-				<view v-else class="right">
+				<view v-else class="right" @click="onClickC(item.id)">
 					{{ item.desc }}
 					<view class="icon-right"></view>
 				</view>
@@ -55,6 +55,7 @@
 		changeAvatar = '';
 		changeAvatarOne = false;
 		dateValue = '';
+		clearNum = 0;
 		onLoad(query:any) {
 			if(query.data){
 				let data;
@@ -160,6 +161,21 @@
 			app.http.Post('me/editAvatar',params,(res:any)=>{
 				if(cb) cb(res)
  			})
+		}
+		onClickC(id:number){
+			if(id!=6) return;
+			if(this.clearNum<9){
+				this.clearNum++;
+			}else{
+				this.clearNum = 0;
+				uni.removeStorageSync('launchUrl');
+				uni.removeStorageSync('configLaunchUrl');
+				uni.removeStorageSync('launchData');
+				uni.showToast({
+					title:'已清除launch',
+					icon:'none'
+				})
+			}
 		}
 		
 	}
