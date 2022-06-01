@@ -37,11 +37,8 @@
         >
           <view v-if="index == 0" class="movable-box dangban" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd"  ></view>
           <view v-else-if="item.color=='SP' && index < stepIndex + 6" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
-            <image class="movable-box-sp" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/>
+            <image class="movable-box-sp" :class="movableAni" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/>
           </view>
-          <!-- <view v-else-if="item.color=='SP' && index < stepIndex + 6" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
-            <image class="movable-box-noir" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/>
-          </view> -->
           <view
             v-else-if="index < stepIndex + 6"
             class="movable-box"
@@ -157,6 +154,7 @@ export default class ClassName extends BaseNode {
   picOnloadNum = 0;
   onloadPic:any = [];
   defultPic = '../../static/goods/drawcard/default.png';
+  movableAni:any = '';
   onLoad(query: any) {
     uni.getSystemInfo({
       success: (res) => {
@@ -250,32 +248,43 @@ export default class ClassName extends BaseNode {
     });
   }
   reqNewData(cb?:Function) {
-			// 获取更多商品
-			if (this.noMoreData||this.totalNum<=30) {
-				return;
-			}
-			
-			let params:{[x:string]:any} = {
-				pageIndex: this.currentPage,
-				pageSize:this.pageSize,
-			}
-			
-			app.http.Get('me/orderInfo/buyer/'+this.goodOrder+'/noShowList', params, (data: any) => {
-				if(data.list){
-					this.picData = this.picData.concat(data.list);
-				}
-				if(data.totalPage<=this.currentPage){
-					this.noMoreData = true;
-          if(cb) cb()
-				}else{
-          this.currentPage++;
-          setTimeout(()=>{
-            this.reqNewData(cb)
-          },10)
-        }
-				
-			});
-		}
+    // 获取更多商品
+    if (this.noMoreData||this.totalNum<=30) {
+      return;
+    }
+    
+    let params:{[x:string]:any} = {
+      pageIndex: this.currentPage,
+      pageSize:this.pageSize,
+    }
+    
+    app.http.Get('me/orderInfo/buyer/'+this.goodOrder+'/noShowList', params, (data: any) => {
+      if(data.sp && this.movableAni==''){
+        this.movableAni = this.setSpAni(data.sp)
+      }
+      if(data.list){
+        this.picData = this.picData.concat(data.list);
+      }
+      if(data.totalPage<=this.currentPage){
+        this.noMoreData = true;
+        if(cb) cb()
+      }else{
+        this.currentPage++;
+        setTimeout(()=>{
+          this.reqNewData(cb)
+        },10)
+      }
+      
+    });
+  }
+  setSpAni(sp:number){
+    switch(sp){
+      case 1:
+        return 'movable-box-xzj'
+      case 2:
+        return 'movable-box-noir'
+    }
+  }
   // 图片加载
   onLoadMovablePic(index:number){
     this.picOnloadNum ++;
@@ -556,6 +565,49 @@ export default class ClassName extends BaseNode {
   align-items: center;
   justify-content: center;
 }
+
+.movable-box-sp{
+  border-width: 2rpx;
+  width: 528rpx;
+  height: 741rpx;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0;
+  z-index: 0;
+  border-radius: 5rpx;
+  
+}
+.movable-box-xzj::after, .movable-box-xzj::before {
+    box-sizing: border-box;
+}
+.movable-box-xzj::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background-color: #C2C7CD;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-image: conic-gradient(transparent,  rgb(243, 10, 126), transparent 30%);
+    animation: rotate 2.5s linear infinite;
+}
+.movable-box-xzj::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: calc(var(2rpx) / 2);
+    top: calc(var(2rpx) / 2);
+    width: calc(100% - var(2rpx));
+    height: calc(100% - var(2rpx));
+    background: #000;
+    border-radius: 5px;
+    // animation: opacityChange 5s infinite linear;
+}
 @keyframes opacityChange {
     50% {
         opacity:.5;
@@ -569,101 +621,62 @@ export default class ClassName extends BaseNode {
 		transform: rotate(1turn);
 	}
 }
-.movable-box-sp{
-  border-width: 2rpx;
-  width: 528rpx;
-  height: 741rpx;
-  position: relative;
-  z-index: 0;
+
+// noir动效
+.movable-box-noir::before {
+  content:"";
+  position: absolute;
+  width:200rpx;
+  height:100%;
+  top:0;
+  left:-100%;
   overflow: hidden;
-  box-sizing: border-box;
-  padding: 0;
-  z-index: 0;
-  border-radius: 5rpx;
-  &::after, &::before {
-      box-sizing: border-box;
-  }
-  &::before {
-      content: '';
-      position: absolute;
-      z-index: -2;
-      left: -50%;
-      top: -50%;
-      width: 200%;
-      height: 200%;
-      background-color: #C2C7CD;
-      background-repeat: no-repeat;
-      background-position: 0 0;
-      background-image: conic-gradient(transparent,  rgb(243, 10, 126), transparent 30%);
-      animation: rotate 2.5s linear infinite;
-  }
-  &::after {
-      content: '';
-      position: absolute;
-      z-index: -1;
-      left: calc(var(2rpx) / 2);
-      top: calc(var(2rpx) / 2);
-      width: calc(100% - var(2rpx));
-      height: calc(100% - var(2rpx));
-      background: #000;
-      border-radius: 5px;
-      // animation: opacityChange 5s infinite linear;
-  }
+  background: -moz-linear-gradient(left,
+    rgba(255, 255, 255, 0)25%,
+    rgba(255, 255, 255, .2)50%,
+    rgba(255, 255, 255, 0)75%);
+  background: -webkit-gradient(linear, left top, right top,
+    color-stop(25%, rgba(255, 255, 255, 0)),
+    color-stop(50%, rgba(255, 255, 255, .2)),
+    color-stop(75%, rgba(255, 255, 255, 0)));
+  background: -webkit-linear-gradient(left,
+    rgba(255, 255, 255, 0)25%, 
+    rgba(255, 255, 255, .2)50%, 
+    rgba(255, 255, 255, 0)75%);
+  background: -o-linear-gradient(left, 
+    rgba(255, 255, 255, 0)25%, 
+    rgba(255, 255, 255, .2)50%, 
+    rgba(255, 255, 255, 0)75%);
+  transform: skewX(-45deg);
+  -webkit-transform: skewX(-45deg);
+  -moz-transform: skewX(-45deg);
+  animation:tolight 3s infinite  linear;
+  -webkit-animation:tolight 3s infinite  linear;
+
 }
-.movable-box-noir{
-  border-width: 2rpx;
-  width: 528rpx;
-  height: 741rpx;
-  position: relative;
-  z-index: 0;
-  overflow: hidden;
-  box-sizing: border-box;
-  padding: 0;
-  z-index: 0;
-  border-radius: 5rpx;
-}
- 
-.movable-box-noir:before {
-    content:"";
-    position: absolute;
-    width:200rpx;
-    height:100%;
-    top:0;
-    left:-50%;
-    overflow: hidden;
-    background: -moz-linear-gradient(left,
-      rgba(255, 255, 255, 0)25%,
-      rgba(255, 255, 255, .2)50%,
-      rgba(255, 255, 255, 0)75%);
-    background: -webkit-gradient(linear, left top, right top,
-      color-stop(25%, rgba(255, 255, 255, 0)),
-      color-stop(50%, rgba(255, 255, 255, .2)),
-      color-stop(75%, rgba(255, 255, 255, 0)));
-    background: -webkit-linear-gradient(left,
-      rgba(255, 255, 255, 0)25%, 
-      rgba(255, 255, 255, .2)50%, 
-      rgba(255, 255, 255, 0)75%);
-    background: -o-linear-gradient(left, 
-      rgba(255, 255, 255, 0)25%, 
-      rgba(255, 255, 255, .2)50%, 
-      rgba(255, 255, 255, 0)75%);
-    transform: skewX(-45deg);
-    -webkit-transform: skewX(-45deg);
-    -moz-transform: skewX(-45deg);
-    animation:tolight 1.5s infinite  linear;
-    -webkit-animation:tolight 1.5s infinite  linear;
-  
-  }
- 
 /*光影划过动画*/
 @keyframes tolight
 {
-	from {left:-100%;}
-	to {left:150%;}
+  30% {
+      left:-100%;
+  }
+  60% {
+      left:200%;
+  }
+  100% {
+      left:200%;
+  }
 }
 @-webkit-keyframes tolight {
-	from {left:-100%;}
-	to {left:150%;}
+	30% {
+      left:-100%;
+  }
+  60% {
+      left:200%;
+  }
+  100% {
+      left:200%;
+  }
 }
 
 .movable-box-silver {

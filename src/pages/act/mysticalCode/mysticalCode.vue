@@ -174,8 +174,8 @@
 					this.shareData = {
 						shareUrl: "https://www.ka-world.com/share/h5/#/pages/mysticalCode/mysticalCode",
 						title: '卡世界神秘代码',
-						summary: '卡世界神秘代码',
-						thumb: ''
+						summary: '破解代码赢海量奖品',
+						thumb: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/goods_drawCard/code_wx.png'
 					}
 				}
 				this.operationShow = true
