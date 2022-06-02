@@ -600,7 +600,7 @@
 			if (!this.operationShow) {
 				if (this.shareData.shareUrl == '') {
 					this.shareData = {
-						shareUrl: "https://www.ka-world.com/share/good.html?id=" + this.goodsId,
+						shareUrl: "https://www.ka-world.com/share/h5/#/pages/goods/goods_details?id=" + this.goodsId,
 						title: this.goodsData.title,
 						summary: this.goodsData.title,
 						thumb: this.goodsData.pic.thumb
@@ -1293,6 +1293,7 @@
 			color: #333333;
 			line-height: 48rpx;
 			font-weight: normal !important;
+			word-break:break-all;
 		}
 
 		&-right {
