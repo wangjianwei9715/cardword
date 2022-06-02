@@ -20,15 +20,15 @@
 						<view class="startPanicBuying" v-else>即将开抢</view>
 					</template>
 					<view class="participation" v-if='tagMenu.index==1&&item.avatar'>
-						<muqian-lazyLoad borderRadius='35rpx'  v-for="(avatarItem,avatarIndex) in item.avatar.split(',')" class="avatar" :src="decodeURIComponent(avatarItem)" :key='avatarIndex' />
+						<muqian-lazyLoad borderRadius='35rpx'  v-for="(avatarItem,avatarIndex) in item.avatar.split(',')" class="avatar" :src="avatarItem?decodeURIComponent(avatarItem):defaultAvatar" :key='avatarIndex' />
 						<view class="normal" style="font-size: 21rpx;">等用户已抢</view>
 					</view>
-
+					
 				</view>
 			</view>
 		</view>
 		<mallPopup :showPopup="showPopup" :awardData="awardData" @popupClose="showPopup = false"
-			@popupConfirm="onClickExConfirm"></mallPopup>
+			@popupConfirm="onClickExConfirm"></mallPopup>	
 		<mallPopup :showPopup="showPopupToast" :popupType="'toast'" @popupClose="showPopupToast = false"
 			@popupConfirm="onClickGoAward"></mallPopup>
 		<empty v-if='!awardList.length' />
@@ -48,6 +48,7 @@
 	} from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		defaultAvatar = app.defaultAvatar;
 		dateFormatMSHMS: any = dateFormatMSHMS
 		countDown: any = Math.round(+new Date() / 1000);
 		count_down: any;
