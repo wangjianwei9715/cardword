@@ -486,6 +486,7 @@
 				if(data.channel=='alipay'){
 					if(res.appPayRequest){
 						app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
+						this.onClickCancelPay()
 					}else if(res.alipay.orderInfo!=''){
 						this.clickToPay = true;
 						uni.hideLoading()
