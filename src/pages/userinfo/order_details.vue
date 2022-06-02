@@ -306,7 +306,7 @@
 				if(res.total>0){
 					let type = this.orderData.good.title.indexOf('足球')!=-1?1:0
 					uni.navigateTo({
-						url:'/pages/goods/drawCard?code='+this.orderCode+'&data='+ encodeURIComponent(JSON.stringify(res.list))+'&num='+res.total+'&hasNumber='+res.hasNumber+'&picType='+type
+						url:'/pages/goods/drawCard?code='+this.orderCode+'&data='+ encodeURIComponent(JSON.stringify(res.list))+'&num='+res.total+'&hasNumber='+res.hasNumber+'&picType='+type+'&sp='+res.sp
 					})
 				}
 			})
