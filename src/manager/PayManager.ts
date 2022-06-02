@@ -32,7 +32,8 @@ export default class PayManager {
 		// 		url:'/pages/webView/index?url=https://www.ka-world.com/share/h5/#/pages/pay/alipay?orderInfo='+encodeURIComponent(orderInfo)+'&orderCode='+goodOrder
 		// 	})
 		// }else 
-		if(type=='ysepay'||type=='qmf'){
+		// orderInfo.indexOf('https://')!=-1
+		if(type=='ysepay'||type=='qmf' ||type == "qmf_divide"){
 			// 渠道H5支付
 			plus.runtime.openURL(orderInfo)
 			if(cb) cb()

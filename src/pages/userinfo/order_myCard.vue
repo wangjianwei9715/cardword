@@ -10,7 +10,7 @@
 		</view>
 		<view class="card-box">
 			<view class="card-index" v-for="(items,indexs) in cardList" :key="indexs">
-				<view class="index-left" :class="{'bingo-name':items.bingo}" v-html="getNameReward(items.name)"></view>
+				<text class="index-left" :selectable="true" :class="{'bingo-name':items.bingo}" v-html="getNameReward(items.name)"></text>
 				<view  class="index-right" :class="{'winning-card':items.state==2}" @click="onClickLookCard(items)">
 					{{items.content}}
 				</view>
