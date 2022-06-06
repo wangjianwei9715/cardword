@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<view class="content-bg"></view>
 		<view class="top-bg">
 			<view class="top-title">您已进入卡世界后台控制系统！</view>
 			<view class="top-right">
@@ -208,6 +209,11 @@
 	.content{
 		width: 100%;
 		height:100%;
+		position: relative;
+	}
+	.content-bg{
+		width: 100%;
+		height:100%;
 		position: fixed;
 		left:0;
 		top: var(--window-top);
@@ -215,8 +221,7 @@
 		background:url(../../../static/act/mysticalCode/bg.jpg) no-repeat center;
 		background-size: 100% 100%;
 		box-sizing: border-box;
-		display: block;
-		overflow-y: auto;
+		z-index: 0;
 	}
 	.top-bg{
 		width: 590rpx;
@@ -312,6 +317,8 @@
 		margin:0 auto;
 		box-sizing: border-box;
 		padding-bottom :30rpx;
+		position: relative;
+		z-index: 6;
 		.list-header{
 			width: 100%;
 			height:120rpx;
