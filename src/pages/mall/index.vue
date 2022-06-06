@@ -33,15 +33,19 @@
 						<view class="award-scroll-index" v-for="(item,index) in award.list" :key="index">
 							<view class="award-top">
 								<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>
-									{{'剩'+item.leftNum+'份'}}</view>
+									{{'剩'+item.leftNum+'份'}}
+								</view>
 								<view class="award-pic-box" style='z-index:7'>
 									<!-- <image class="award-pic" mode="aspectFit" :src="decodeURIComponent(item.logo)"/> -->
-									<muqian-lazyLoad style='z-index:7' @click="onClickPreviewImage(decodeURIComponent(item.logo))" class="award-pic"
+									<muqian-lazyLoad style='z-index:7'
+										@click="onClickPreviewImage(decodeURIComponent(item.logo))" class="award-pic"
 										:src="decodeURIComponent(item.logo)">
 									</muqian-lazyLoad>
 								</view>
-								<view class="award-status buying" style='z-index:8' v-if="(item.start_at-countDown<=0)">开抢中</view>
-								<view class="award-status" style='z-index:8;color: #fff;' v-else>距开始{{getTime(item.start_at-countDown)}}</view>
+								<view class="award-status buying" style='z-index:8' v-if="(item.start_at-countDown<=0)">
+									开抢中</view>
+								<view class="award-status" style='z-index:8;color: #fff;' v-else>
+									距开始{{getTime(item.start_at-countDown)}}</view>
 							</view>
 							<view class="award-bottom">
 								<view class="award-title oneLineOver">{{item.name}}</view>
@@ -64,9 +68,11 @@
 			<view class="point-box">
 				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index">
 					<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>
-						{{'剩'+item.leftNum+'份'}}</view>
+						{{'剩'+item.leftNum+'份'}}
+					</view>
 					<view class="point-pic-box" style='z-index:7'>
-						<muqian-lazyLoad @click="onClickPreviewImage(decodeURIComponent(item.logo))" style='z-index:7' class="point-pic" :src="decodeURIComponent(item.logo)">
+						<muqian-lazyLoad @click="onClickPreviewImage(decodeURIComponent(item.logo))" style='z-index:7'
+							class="point-pic" :src="decodeURIComponent(item.logo)">
 						</muqian-lazyLoad>
 						<!-- <image class="point-pic" :src="decodeURIComponent(item.logo)" mode="aspectFit" /> -->
 					</view>
@@ -160,8 +166,11 @@
 			this.reqMeCardBean();
 			this.getCountDown();
 		}
-		onShow() {}
+		onShow() {
+			this.countDown = Math.round(+new Date() / 1000)
+		}
 		onPullDownRefresh() {
+			this.countDown = Math.round(+new Date() / 1000)
 			this.cardBean.queryParams.pageIndex = 1;
 			this.award.queryParams.pageIndex = 1
 			this.reqTimeLimitData();
@@ -315,7 +324,7 @@
 
 	.buying {
 		background: #FBF2F3 !important;
-			color: #F63D47;
+		color: #F63D47;
 	}
 
 	.drawer-box {
