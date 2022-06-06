@@ -156,6 +156,9 @@ export default class ClassName extends BaseNode {
   defultPic = '../../static/goods/drawcard/default.png';
   movableAni:any = '';
   onLoad(query: any) {
+    if(query.sp){
+      this.movableAni = this.setSpAni(Number(query.sp))
+    }
     uni.getSystemInfo({
       success: (res) => {
         // 根据 model 进行判断
@@ -259,9 +262,6 @@ export default class ClassName extends BaseNode {
     }
     
     app.http.Get('me/orderInfo/buyer/'+this.goodOrder+'/noShowList', params, (data: any) => {
-      if(data.sp && this.movableAni==''){
-        this.movableAni = this.setSpAni(data.sp)
-      }
       if(data.list){
         this.picData = this.picData.concat(data.list);
       }

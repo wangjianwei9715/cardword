@@ -262,7 +262,7 @@ export default class HttpRequest {
 			}else{
 				if(errorCb) errorCb()
 				uni.showToast({
-					title:response.errMsg,
+					title:'网络异常',
 					icon:'none',
 					duration:2000
 				});
@@ -305,7 +305,7 @@ export default class HttpRequest {
 			console.log('!!!!!!!!!!errorreqUrl=',reqUrl+'&error=',error)
 			if (reqUrl == 'dataApi/home'){
 				uni.showToast({
-					title:'当前网络状态不佳',
+					title:'网络异常',
 					icon:'none'
 				})
 			}
