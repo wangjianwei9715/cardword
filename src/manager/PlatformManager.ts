@@ -139,9 +139,33 @@ export default class PlatformManager {
 	}
 	//即构直播间
 	goZgLive(item:any){
-		uni.navigateTo({
-			url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&liveData=${JSON.stringify(item.liveData||{})}`
+		let ts = Math.floor(new Date().getTime()/1000);
+		let params = {
+			ts:ts,
+			playCode:item.playCode,
+			sign:Md5.hashStr(ts+'_'+item.goodCode+'_'+item.playCode+'_videoPlayKsj')
+		}
+		if(item.state!=3){
+			uni.navigateTo({
+				url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&liveData=${JSON.stringify(item.liveData||{})}`
+			})
+			return
+		} 
+		app.http.Post('good/videoPlay/'+item.goodCode,params,(data:any)=>{
+			// 直播 回放
+			if(data.media_url!=''){
+				uni.navigateTo({
+					url:'/pages/live/playback?data='+JSON.stringify(data)
+				})
+				return 
+			}else if(data.wxRoomId>0){
+				uni.navigateTo({
+					url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&liveData=${JSON.stringify(item.liveData||{})}`
+				})
+			}
+			
 		})
+		
 	}
 	launchMiniProgramLive(id:any){
 		// #ifdef APP-PLUS

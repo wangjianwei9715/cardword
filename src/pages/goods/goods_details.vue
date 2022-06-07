@@ -684,7 +684,8 @@
 					roomID:this.goodsData.broadcast.roomId,
 					merchantId:publisher.id,
 					playCode:this.goodsData.broadcast.playCode,
-					isAnchor:false
+					isAnchor:false,
+					goodCode: this.goodsData.goodCode
 				})
 				return
 			}

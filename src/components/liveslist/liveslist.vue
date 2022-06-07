@@ -44,7 +44,9 @@
 					roomID:item.roomId,
 					merchantId:item.merchantId,
 					playCode:item.playCode,
-					isAnchor:false
+					goodCode:item.goodCode,
+					isAnchor:false,
+					...item
 				})
 				return
 			}

@@ -64,10 +64,12 @@
 				statusBarHeight: 0,
 				safeAreaBottomHeight: 0,
 				webViewUrl: '',
-				AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				// AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				AnchorEndUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
 				// AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd',
 				// UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index?ts='+ (+new Date()),
-				UserUrl: 'http://192.168.8.26:8083/#/pages/liveStreaming/index?ts=' + (+new Date()),
+				// UserUrl: 'http://192.168.8.26:8083/#/pages/liveStreaming/index?ts=' + (+new Date()),
+				UserUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
 					roomID: null,
@@ -181,7 +183,7 @@
 					//匿名
 					if (this.tokenData.anonymous) {
 						userData.avatar =
-							'https%3A%2F%2Fthirdwx.qlogo.cn%2Fmmopen%2Fvi_32%2FbYYh0TtEM9WHX1IwZJHRZ4IFEk6dhfLicT8LgJq6AOHymbZNxTY5Y6yX4EKcsLXicPic6mIl3Ne0VsDV8ygj3VdiaQ%2F132'
+							'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.06.07/teamContest/teamContest_index/0/1654582097412np07eg7ntj.png'
 						userData.name = this.tokenData.uname
 					}
 				} else {
