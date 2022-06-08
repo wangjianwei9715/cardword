@@ -150,6 +150,17 @@
 				this.payItem.price =  item.price
 				this.showPayMent = true
 			}
+			if(cmd=='appraise'){
+				uni.navigateTo({
+					url:'/pages/userinfo/orderevaluate?code='+code+'&data='+decodeURIComponent(JSON.stringify(item.good))
+				})
+			}
+			if(cmd=='resultCard'){
+				let random = item.good.state>0?true:false
+				uni.navigateTo({
+					url: '/pages/userinfo/goods_result_list?chooseIds=1&code='+item.good.goodCode+'&order='+item.code+'&random='+random
+				})
+			}
 			if(cmd=='receive_good'){
 				uni.showModal({
 					title: '提示',
@@ -172,17 +183,6 @@
 				});
 				
 			}
-			if(cmd=='appraise'){
-				uni.navigateTo({
-					url:'/pages/userinfo/orderevaluate?code='+code+'&data='+decodeURIComponent(JSON.stringify(item.good))
-				})
-			}
-			if(cmd=='resultCard'){
-				let random = item.good.state>0?true:false
-				uni.navigateTo({
-					url: '/pages/userinfo/goods_result_list?chooseIds=1&code='+item.good.goodCode+'&order='+item.code+'&random='+random
-				})
-			}
 			if(cmd=='cancel'){
 				uni.showModal({
 					title: '提示',
@@ -195,6 +195,28 @@
 							app.http.Post('me/order/buyer/cancel',params,(res:any)=>{
 								uni.showToast({
 									title:'取消成功',
+									icon:'none'
+								})
+								this.againReqNewData()
+							})
+						} else if (res.cancel) {
+						}
+					}
+				});
+			}
+
+			if(cmd == 'buy_delete_order'){
+				uni.showModal({
+					title: '提示',
+					content: '是否删除该订单？',
+					success: (res)=> {
+						if (res.confirm) {
+							params = {
+								code:code
+							}
+							app.http.Post('me/order/buyer/delete_order',params,(res:any)=>{
+								uni.showToast({
+									title:'删除成功',
 									icon:'none'
 								})
 								this.againReqNewData()

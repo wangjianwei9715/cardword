@@ -264,6 +264,7 @@
 		goodDetailSpe,
 		goodDetailStep
 	} from "@/net/DataExchange"
+	import { Md5 } from "ts-md5";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		goodsDetailRules = goodsDetailRules
@@ -379,8 +380,12 @@
 		// 数据详情赋值
 		getGoodData(id: any) {
 			clearInterval(this.count_down);
-
-			app.http.Get('dataApi/good/' + id + '/detail', {}, (data: any) => {
+			let ts = Math.floor(new Date().getTime()/1000);
+			let params = {
+				ts:ts,
+				s:Md5.hashStr('kww_good_sign_'+id+'_'+ts+'_2022')
+			}
+			app.http.Get('dataApi/good/' + id + '/detail', params, (data: any) => {
 				if (data.good == null || data.good == undefined) {
 					uni.showToast({
 						title: '无此商品',
