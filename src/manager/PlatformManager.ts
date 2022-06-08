@@ -146,9 +146,7 @@ export default class PlatformManager {
 			sign:Md5.hashStr(ts+'_'+item.goodCode+'_'+item.playCode+'_videoPlayKsj')
 		}
 		if(item.state!=3){
-			uni.navigateTo({
-				url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&liveData=${JSON.stringify(item.liveData||{})}`
-			})
+			jump()
 			return
 		} 
 		app.http.Post('good/videoPlay/'+item.goodCode,params,(data:any)=>{
@@ -159,13 +157,15 @@ export default class PlatformManager {
 				})
 				return 
 			}else if(data.wxRoomId>0){
-				uni.navigateTo({
-					url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&liveData=${JSON.stringify(item.liveData||{})}`
-				})
+				jump()
 			}
 			
 		})
-		
+		function jump():void{
+			uni.navigateTo({
+				url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}`
+			})
+		}
 	}
 	launchMiniProgramLive(id:any){
 		// #ifdef APP-PLUS

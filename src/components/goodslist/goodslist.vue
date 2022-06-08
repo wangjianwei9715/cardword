@@ -37,7 +37,7 @@
 							:style="{width:(100-getPlan(item.lockNum,item.currentNum,item.totalNum))+'%'}"></view>
 					</view>
 				</view>
-				<view class="goodslist-bottom" @click="onClickSellerShop(item.merchantId)">
+				<view class="goodslist-bottom" @click="onClickSellerShop(item)">
 					<view class="bottom-left">{{getGoodsPintuan(item.pintuan_type)}}</view>
 					<view class="bottom-right">
 						<image class="avart" :src="decodeURIComponent(item.merchantLogo)" />
@@ -114,10 +114,11 @@
 		getSelectType(item: any) {
 			return item.pintuan_type == 10 || item.pintuan_type == 11 || item.pintuan_type == 12
 		}
-		onClickSellerShop(id: number) {
+		onClickSellerShop(item: any) {
+			console.log(item);
 			const path = `/pages/userinfo/merchant_shopsV2`;
 			uni.navigateTo({
-				url: path + "?id=" + id
+				url: path + "?id=" + item.merchantId+'&alias='+item.merchantAlias
 			});
 		}
 		onClickTopJumpUrl(url: any) {

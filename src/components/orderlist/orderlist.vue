@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="orderlist-index" v-for="item in orderList" :key="item.code" >
 			<view class="orderlist-index-header">
-				<view class="header-left" @click="onClickJumpMerchant(item.seller.id)">
+				<view class="header-left" @click="onClickJumpMerchant(item)">
 					<muqian-lazyLoad class="seller-image" :src="decodeURIComponent(item.seller.avatar)" :borderRadius="'50%'"></muqian-lazyLoad>
 					<view class="seller-name">{{item.seller.name}}</view>
 				</view>
@@ -63,8 +63,8 @@
 				clearInterval(this.intervalList[i].func)
 			}
 		}
-		onClickJumpMerchant(id:number){
-			uni.navigateTo({ url:"/pages/userinfo/merchant_shopsV2?id=" + id });  
+		onClickJumpMerchant(item:any){
+			uni.navigateTo({ url:"/pages/userinfo/merchant_shopsV2?id=" + item.seller.id+'&alias='+item.seller.alias });  
 		}
 		onClickJumpUrl(id:any){
 			this.$emit("send", id);

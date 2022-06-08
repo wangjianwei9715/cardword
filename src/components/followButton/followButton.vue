@@ -61,7 +61,8 @@ export default class ClassName extends BaseComponent {
   }
   followAction() {
     if (!this.followID) return;
-    app.http.Post("merchant/follow/" + this.followID, {}, (res: any) => {
+	// merchant/follow/  (oldAPI)
+    app.http.Post("merchant/1/follow/" + this.followID, {}, (res: any) => {
       this.$emit("handleSuccess", res.data);
       this.modalShow = false;
     });

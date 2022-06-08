@@ -77,6 +77,7 @@
 			app.platform.goZgLive({
 				roomID: item.id,
 				merchantId: item.merchantId,
+				merchantAlias:item.merchantAlias,
 				isAnchor: true
 			})
 			// uni.navigateTo({

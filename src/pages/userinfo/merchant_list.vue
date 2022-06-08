@@ -18,7 +18,7 @@
 						</view>
 					</view>
 					<view class="business-rightAction">
-						<followButton :width="132" :height="46" :fontSize="23" :follow='item.follow' :followID='item.id'
+						<followButton :width="132" :height="46" :fontSize="23" :follow='item.follow' :followID='item.alias'
 							@handleSuccess='followSuccess($event,item)'></followButton>
 						<view class="privewItem" @click.stop="onClickShops(item)">进店看看</view>
 					</view>
@@ -145,7 +145,7 @@
 			// #endif
 			const path = `/pages/userinfo/merchant_shopsV2`;
 			uni.navigateTo({
-				url: path + "?id=" + item.id
+				url: path + "?id=" + item.id+'&alias='+item.alias
 			});
 
 		}

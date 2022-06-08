@@ -9,7 +9,7 @@
 				</view>
 			</view>
 			<view class="tab-hot-boxpic-index" v-else>
-				<view class="tab-hot-boxpic-box" @click="onClickMerchantInfo(item.list.merchantId)">
+				<view class="tab-hot-boxpic-box" @click="onClickMerchantInfo(item)">
 					<image :src="decodeURIComponent(item.list.merchantLogo)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
 				</view>
 				<view class="tab-hot-boxpic-box live-border" @click="onClickLive(item.list)">
@@ -41,7 +41,7 @@
 		destroyed(){
 			
 		}
-		onClickMerchantInfo(id:number){
+		onClickMerchantInfo(item:any){
 			if (app.token.accessToken == "") {
 				uni.navigateTo({
 					url: "/pages/login/login"
@@ -49,7 +49,7 @@
 				return;
 			}
 			uni.navigateTo({
-				url: "/pages/userinfo/merchant_shopsV2?id=" +id
+				url: "/pages/userinfo/merchant_shopsV2?id=" +item.list.merchantId+'&alias='+item.list.merchantAlias
 			});  
 		}
 		onClickLive(item:any){

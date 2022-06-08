@@ -15,7 +15,7 @@
 					</view>
 				</view>
 				<view class="business-rightAction">
-					<followButton :width="132" :height="46" :fontSize="23" v-if="buttonShow" :follow='detail.followed' :followID='detail.id'
+					<followButton :width="132" :height="46" :fontSize="23" v-if="buttonShow" :follow='detail.followed' :followID='detail.alias'
 						@handleSuccess='followSuccess($event,detail)'></followButton>
 				</view>
 			</view>
@@ -29,7 +29,7 @@
 		</view>
 		<view class="list-content" v-show="!emptyShow">
 			<!-- v-show="goodTabV2.index==0" -->
-			<goodslist :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
+			<goodslist v-show="goodTabV2.index==0||goodTabV2.index==1" :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
 			<!-- <liveslist v-show="goodTabV2.index==1" :liveList='liveList'></liveslist> -->
 			<image v-show="goodTabV2.index==2" :src="decodeURIComponent(item)" style="margin:6rpx auto;display:block;width:94%"
 				@click.stop="previewImg(index,detail.certification)" v-for="(item,index) in detail.certification"
@@ -66,7 +66,8 @@
 					value: 1,
 					name: "在售",
 					assignKey: "goodsList",
-					url: "dataApi/merchant/goodlist/",
+					// url: "dataApi/merchant/goodlist/",
+					url: "dataApi/merchant/1/goodlist/",
 					query: {
 						tp: 1
 					},
@@ -76,7 +77,8 @@
 					value: 2,
 					name: "已拼成",
 					assignKey: "goodsList",
-					url: "dataApi/merchant/goodlist/",
+					// url: "dataApi/merchant/goodlist/",
+					url: "dataApi/merchant/1/goodlist/",
 					query: {
 						tp: 2
 					},
@@ -99,7 +101,8 @@
 			name: "",
 			sale: 0,
 			upload: 0,
-			certification: []
+			certification: [],
+			alias:''
 		};
 		totalPage = 0;
 		goodsList: any = [];
@@ -109,7 +112,9 @@
 		};
 		emptyShow = false;
 		onLoad(query: any) {
-			if (query.id) this.getBusDetail(query.id);
+			// if (query.id) this.getBusDetail(query.id);
+			if (query.alias) this.getBusDetail(query.alias)
+			
 
 		}
 		onReachBottom() {
@@ -132,7 +137,7 @@
 			});
 		}
 		getBusDetail(id: number) {
-			app.http.Get("dataApi/merchant/detail/" + id, {}, (res: any) => {
+			app.http.Get("dataApi/merchant/1/detail/" + id, {}, (res: any) => {
 				// console.log(res)
 				this.detail = res.data;
 				this.detail.certification = this.detail.certification || [];
@@ -166,7 +171,10 @@
 		getList() {
 			const questItem: any = this.goodTabV2.list[this.goodTabV2.index];
 			app.http.Get(
-				questItem.url + this.detail.id, {
+				// questItem.url + this.detail.id
+				questItem.url + this.detail.alias
+				,
+				{
 					...this.queryParams,
 					...questItem.query
 				},

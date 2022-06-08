@@ -8,7 +8,7 @@
 					<view class="num">在售{{item.sale_num}}件</view>
 				</view>
 				<view class="follow-action">
-					<followButton :follow='item.follow||true' :followID='item.id'
+					<followButton :follow='item.follow||true' :followID='item.alias'
 						@handleSuccess='followSuccess($event,item,index)'></followButton>
 				</view>
 			</template>
@@ -77,7 +77,7 @@
 		}
 		toDetail(item: any) {
 			uni.navigateTo({
-				url: "/pages/userinfo/merchant_shopsV2?id=" + item.id
+				url: "/pages/userinfo/merchant_shopsV2?id=" + item.id+'&alias='+item.alias
 			});
 		}
 

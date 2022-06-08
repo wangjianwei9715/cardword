@@ -582,7 +582,7 @@
 			// #endif
 
 			uni.navigateTo({
-				url: '/pages/userinfo/merchant_shopsV2?id=' + this.goodsData.publisher.id
+				url: '/pages/userinfo/merchant_shopsV2?id=' + this.goodsData.publisher.id+'&alias='+this.goodsData.publisher.alias
 			})
 		}
 		onClickAllCard(data ? : any) {
@@ -685,7 +685,8 @@
 					merchantId:publisher.id,
 					playCode:this.goodsData.broadcast.playCode,
 					isAnchor:false,
-					goodCode: this.goodsData.goodCode
+					goodCode: this.goodsData.goodCode,
+					alias:publisher.alias
 				})
 				return
 			}

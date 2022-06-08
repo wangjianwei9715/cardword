@@ -6,7 +6,7 @@
 		</web-view>
 		<view class='merchant' :style="{top:56+statusBarHeight+'rpx'}">
 			<image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill'
-				@click='pageJump(`/pages/userinfo/merchant_shopsV2?id=${merchantMessage.id}`)'>
+				@click='pageJump(`/pages/userinfo/merchant_shopsV2?id=${merchantMessage.id}&alias=${merchantMessage.alias}`)'>
 			</image>
 			<view class='merchant_name'>
 				<text class='merchant_name_text'>{{merchantMessage.name}}</text>
@@ -14,6 +14,7 @@
 			</view>
 			<text class='merchant_action' @click='attention'>{{merchantMessage.followed?'已关注':'关注'}}</text>
 		</view>
+		<!-- <video style="width: 750rpx;height: 400rpx;position: absolute;top: 0;" ref='nvueVideo'></video> -->
 		<view class="card" :class="{cardBottom:cardShow}">
 			<view class='card-title'>
 				<text class='card-title-text'>商品卡密</text>
@@ -64,8 +65,8 @@
 				statusBarHeight: 0,
 				safeAreaBottomHeight: 0,
 				webViewUrl: '',
-				// AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
-				AnchorEndUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				// AnchorEndUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
 				// AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd',
 				// UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index?ts='+ (+new Date()),
 				// UserUrl: 'http://192.168.8.26:8083/#/pages/liveStreaming/index?ts=' + (+new Date()),
@@ -110,9 +111,10 @@
 		},
 		async onLoad(query) {
 			// var result = await permision.requestAndroidPermission(['android.permission.CAMERA'])
-
+			if(!query.roomID) return
 			this.webViewUrl = query.isAnchor == 'true' ? this.AnchorEndUrl : this.UserUrl
-			if (query.merchantId) this.getMerchant(+query.merchantId)
+			// if (query.merchantId) this.getMerchant(+query.merchantId)
+			if(query.alias) this.getMerchant(query.alias)
 			if (query.roomID) this.loginRoomData.roomID = query.roomID
 			if (query.streamID) this.loginRoomData.streamID = query.streamID
 			uni.showLoading({
@@ -128,6 +130,10 @@
 					this.deviceAssign(res)
 					this.getUserProfile(res)
 					this.deviceInfo = res
+					// setTimeout(()=>{
+					// 	console.log(this.$refs.nvueVideo)
+					// 	this.$refs.nvueVideo.attr.src='http://vod-tencent1.1001.replay.ka-world.com/6cab3398vodcq1500013174/8203630a387702301739601057/f0.mp4'
+					// },2000)
 				}
 			});
 		},
@@ -218,7 +224,7 @@
 				) //登录房间
 			},
 			getMerchant(merchantId) {
-				request('merchant/detail/' + merchantId, {}, 'get').then(res => {
+				request('merchant/1/detail/' + merchantId, {}, 'get').then(res => {
 					this.merchantMessage = res.data
 				})
 			},
@@ -252,6 +258,9 @@
 					return [str + '、', reward]
 				}
 			},
+			getRemoteStream(remoteStream){
+				console.log(remoteStream);
+			},
 			onClickLookCard(item) {
 				if (item.state != 2) return;
 				request('me/cardNo/' + item.id + '/hit/pic', {}, 'get').then(res => {
@@ -271,7 +280,7 @@
 						url: '/pages/login/login'
 					})
 				}
-				request("merchant/follow/" + this.merchantMessage.id, {}, 'post').then(res => {
+				request("merchant/1/follow/" + this.merchantMessage.alias, {}, 'post').then(res => {
 					this.merchantMessage.followed = res.data.follow
 				})
 			},
