@@ -14,20 +14,21 @@
 			</view>
 			<text class='merchant_action' @click='attention'>{{merchantMessage.followed?'已关注':'关注'}}</text>
 		</view>
-		<!-- <video style="width: 750rpx;height: 400rpx;position: absolute;top: 0;" ref='nvueVideo'></video> -->
 		<view class="card" :class="{cardBottom:cardShow}">
 			<view class='card-title'>
 				<text class='card-title-text'>商品卡密</text>
 				<image class='card-title-img' @click='cardShow=false' src='../../static/pay/guanbi@2x.png'></image>
 			</view>
 			<scroll-view class='card-scroll' :scroll-y='true' @scrolltolower='cardReachBottom'>
-				<view class="card-index" v-for="(items,indexs) in card.list" :key="indexs">
+				<view class="card-index" v-for="(items,indexs) in card.list" :key="indexs" @click='sendCard(items)'>
 					<view class="card-left">
-						<text class="card-left-text" :style="{color:txtIndex==0?'#333333':'#ef3333'}" :key="txtIndex" v-for="(txtItem,txtIndex)  in getNameReward(items.name)">
+						<text class="card-left-text" :style="{color:txtIndex==0?'#333333':'#ef3333'}" :key="txtIndex"
+							v-for="(txtItem,txtIndex)  in getNameReward(items.name)">
 							{{txtItem}}
-						</text></view>
-					<text class="card-right" :class="{'winning-card':items.state==2}"
-						@click='onClickLookCard(items)'>{{items.content}}</text>
+						</text>
+					</view>
+					<!-- <text class="card-right" :class="{'winning-card':items.state==2}"
+						@click='onClickLookCard(items)'>{{items.content}}</text> -->
 				</view>
 			</scroll-view>
 		</view>
@@ -52,6 +53,9 @@
 	import {
 		Md5
 	} from 'ts-md5/dist/md5';
+	let UIImpactFeedbackGenerator = null;
+	let impact = null;
+
 	const isTest = false
 	export default {
 		data() {
@@ -69,8 +73,8 @@
 				// AnchorEndUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
 				// AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd',
 				// UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index?ts='+ (+new Date()),
-				// UserUrl: 'http://192.168.8.26:8083/#/pages/liveStreaming/index?ts=' + (+new Date()),
-				UserUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/index?ts=' + (+new Date()),
+				UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
+				// UserUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
 					roomID: null,
@@ -109,31 +113,31 @@
 				}
 			}
 		},
+		onReady() {
+
+		},
 		async onLoad(query) {
 			// var result = await permision.requestAndroidPermission(['android.permission.CAMERA'])
-			if(!query.roomID) return
+			if (!query.roomID) return
 			this.webViewUrl = query.isAnchor == 'true' ? this.AnchorEndUrl : this.UserUrl
 			// if (query.merchantId) this.getMerchant(+query.merchantId)
-			if(query.alias) this.getMerchant(query.alias)
+			if (query.alias) this.getMerchant(query.alias)
 			if (query.roomID) this.loginRoomData.roomID = query.roomID
 			if (query.streamID) this.loginRoomData.streamID = query.streamID
-			uni.showLoading({
-				title: '请稍等'
-			})
+
 			const {
 				data
 			} = await this.getLiveRoomInfo(+query.roomID)
 			this.liveData = data
-			console.log(this.liveData);
 			uni.getSystemInfo({
 				success: (res) => {
 					this.deviceAssign(res)
 					this.getUserProfile(res)
 					this.deviceInfo = res
-					// setTimeout(()=>{
-					// 	console.log(this.$refs.nvueVideo)
-					// 	this.$refs.nvueVideo.attr.src='http://vod-tencent1.1001.replay.ka-world.com/6cab3398vodcq1500013174/8203630a387702301739601057/f0.mp4'
-					// },2000)
+					if (this.deviceInfo.platform == 'ios') {
+						UIImpactFeedbackGenerator = plus.ios.importClass('UIImpactFeedbackGenerator');
+						impact = new UIImpactFeedbackGenerator();
+					}
 				}
 			});
 		},
@@ -232,10 +236,30 @@
 				this.cardQuery.pageIndex = 1
 				this.getNoList()
 			},
+			sendCard(item) {
+				this.informH5Action('cardSend', item.name)
+				this.UIClickFeedBack()
+				this.cardShow = false
+			},
+			//ui触感反馈(单次)
+			UIClickFeedBack() {
+				if (this.deviceInfo.platform == 'ios') {
+					impact.prepare();
+					impact.init(1);
+					impact.impactOccurred();
+				}
+			},
+			informH5Action(actionName, params = '') {
+				const sendParams = JSON.stringify({
+					params: params
+				})
+				this.$refs.webview.evalJs(
+					`actionSet("${actionName}",${sendParams})`
+				)
+			},
 			getNoList() {
 				request(`me/good/${this.liveData.goodCode || 'CP0220448'}/orderNoList`, this.cardQuery, 'get').then(
 					res => {
-						console.log(res);
 						const list = res.list || []
 						this.card.totalPage = res.totalPage
 						this.cardQuery.pageIndex == 1 ? this.card.list = list : this.card.list.push(...list)
@@ -258,7 +282,7 @@
 					return [str + '、', reward]
 				}
 			},
-			getRemoteStream(remoteStream){
+			getRemoteStream(remoteStream) {
 				console.log(remoteStream);
 			},
 			onClickLookCard(item) {
@@ -280,8 +304,10 @@
 						url: '/pages/login/login'
 					})
 				}
+				this.UIClickFeedBack()
 				request("merchant/1/follow/" + this.merchantMessage.alias, {}, 'post').then(res => {
 					this.merchantMessage.followed = res.data.follow
+					
 				})
 			},
 			stopLive() {
@@ -303,12 +329,12 @@
 			},
 			//点赞
 			addLike(likeNum) {
-				request('brodcast/third/1001/user/like/' + this.loginRoomData.roomID, {
-					num: likeNum,
-					uid: this.loginRoomData.userID
-				}, 'post').then(res => {
-					this.roomLikeNum = res.data.totalNum
-				})
+				// request('brodcast/third/1001/user/like/' + this.loginRoomData.roomID, {
+				// 	num: likeNum,
+				// 	uid: this.loginRoomData.userID
+				// }, 'post').then(res => {
+				// 	this.roomLikeNum = res.data.totalNum
+				// })
 			},
 			noneAuthTips() {
 				uni.showModal({
@@ -477,19 +503,23 @@
 		position: absolute;
 		background-color: #fff;
 		height: 800rpx;
-		bottom: -1000rpx;
+		bottom: 0;
+		transform: translateY(1000rpx);
 		align-items: center;
 		font-size: 22rpx;
+		opacity: 0;
 		padding-top: 30rpx;
 		border-radius: 40rpx 40rpx 0 0;
-		transition-property: bottom;
+		transition-property: transform;
 		transition-duration: 0.3s;
 		transition-delay: 0s;
 		transition-timing-function: ease;
 	}
 
 	.cardBottom {
-		bottom: 0;
+		/* bottom: 0; */
+		opacity: 1;
+		transform: translateY(0rpx);
 	}
 
 	.card-title {
@@ -537,15 +567,17 @@
 	}
 
 	.card-left {
-		width: 540rpx;
-		
+		width: 660rpx;
+
 		background: #F6F7F8;
 		padding: 10rpx 20rpx;
 	}
-	.card-left-text{
+
+	.card-left-text {
 		font-weight: 400;
 		font-size: 22rpx;
 	}
+
 	.card-right {
 		width: 86rpx;
 		display: flex;
