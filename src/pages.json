@@ -91,7 +91,18 @@
 		{
 			"path": "pages/webView/index",
 			"style": {
-				"navigationStyle": "custom",
+				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/talk/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
 				"enablePullDownRefresh": false
 			}
 		}

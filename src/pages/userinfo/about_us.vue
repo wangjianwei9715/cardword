@@ -77,7 +77,7 @@
 		.about-icon{
 			width: 124rpx;
 			height:124rpx;
-			background:url(../../static/userinfo/logo@2x.png) no-repeat center;
+			background:url(../../static/userinfo/logo.png) no-repeat center;
 			background-size: 100% 100%;
 			margin:0 auto;
 			margin-bottom: 20rpx;

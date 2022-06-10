@@ -242,9 +242,9 @@
 		// 获取是否中卡信息
 		getGreet(){
 			if(this.greeted) return;
+			this.greeted = true;
 			// 只获取一次
 			app.http.Get('me/greet',{},(res:any)=>{
-				this.greeted = true;
 				if(res.data.broadcastActor) app.broadcastActor=res.data.broadcastActor
 				if(res.data.newHitNum>0) this.showWinning();
 			})
