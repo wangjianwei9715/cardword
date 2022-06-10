@@ -60,55 +60,6 @@ export default class PlatformManager {
 			})
 		};
 	}
-	async getLocationPermission(): Promise<boolean> {
-		// #ifdef APP-PLUS
-		if (permision.checkSystemEnableLocation()) {
-			if (!this.isIos) {
-				return await permision.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION') == 1;
-			} else {
-				return permision.judgeIosPermission('location');
-			}
-		} else {
-			return false;
-		}
-		// #endif
-
-		// #ifndef APP-PLUS
-		return false;//暂时不处理native以外的情况
-		// #endif
-	}
-	async getCameraPermission(): Promise<boolean> {
-		// #ifdef APP-PLUS
-		if (!this.isIos) {
-			return await permision.requestAndroidPermission('android.permission.CAMERA') == 1;
-		} else {
-			return permision.judgeIosPermission('camera');
-		}
-		// #endif
-
-		// #ifndef APP-PLUS
-		return false;//暂时不处理native以外的情况
-		// #endif
-	}
-	async getPhotoPermission(): Promise<boolean> {
-		// #ifdef APP-PLUS
-		if (!this.isIos) {
-			return await permision.requestAndroidPermission('android.permission.READ_EXTERNAL_STORAGE') == 1;
-		} else {
-			return permision.judgeIosPermission('photoLibrary');
-		}
-		// #endif
-
-		// #ifndef APP-PLUS
-		return false;//暂时不处理native以外的情况
-		// #endif
-	}
-	gotoPermissionSetting() {
-		// #ifdef APP-PLUS
-		permision.gotoAppPermissionSetting();
-		// #endif
-	}
-
 	static getIns(): PlatformManager {
 		if (!PlatformManager.instance) {
 			PlatformManager.instance = new PlatformManager();

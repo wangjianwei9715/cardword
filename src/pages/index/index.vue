@@ -86,6 +86,7 @@
 	import BaseNode from '@/base/BaseNode.vue';
 	import { indexTabList,indexHotList,indexGoodTab,indexGoodsType } from "@/net/DataExchange"
 	import { isDuringDate } from "@/tools/util" 
+	import { Md5 } from "ts-md5";
 	@Component({})
 	export default class index extends BaseNode {
 		isDuringDate = isDuringDate;
@@ -139,12 +140,12 @@
 			});
 			uni.$once('appluanchOver',()=>{
 				if(this.oneLoad){
-					console.log('a2ppluanchOver')
 					this.version = app.version
 					this.showInitEvent()
 					this.oneLoad = false;
 				}
 			})
+			
 		}
 		onShow(){
 			// 销毁页面重新加载
@@ -395,13 +396,16 @@
 			if (this.noMoreData) {
 				return;
 			}
-			
+			let ts = Math.floor(new Date().getTime()/1000);
+			let type = this.indexGoodsType[this.goodTabCheck];
 			let params:{[x:string]:any} = {
 				fetchFrom:this.fetchFrom,
-				fetchSize:this.fetchSize
+				fetchSize:this.fetchSize,
+				ts:ts,
+				s:Md5.hashStr('kww_goodlist_sign_'+type+'_'+this.fetchFrom+'_'+this.fetchSize+'_'+ts+'_2022')
 			}
-			
-			app.http.Get("dataApi/goodlist/forsale/"+this.indexGoodsType[this.goodTabCheck], params, (data: any) => {
+			console.log('kww_goodlist_sign_'+type+'_'+this.fetchFrom+'_'+this.fetchSize+'_'+ts+'_2022')
+			app.http.Get("dataApi/goodlist/forsale/"+type, params, (data: any) => {
 				if(data.isFetchEnd){
 					this.noMoreData = true;
 				}
