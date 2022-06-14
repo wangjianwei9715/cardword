@@ -21,37 +21,37 @@ export default class PayManager {
 		this.payQmfAndroid.payWx(payRequest,(res:any)=>{});
 	}
 	paymentAlipay(type:any,orderInfo:string,goodOrder?:string,cb?:Function){
-		console.log('orderInfo========',orderInfo)
-		// let alipay_H5 = false 
+		console.log('orderInfo========',orderInfo,'&type==',type)
+		let alipay_H5 = false 
 
-		// if(alipay_H5){
-		// 	let ht = 'https://www.ka-world.com/share/h5/#/pages/pay/alipay?orderInfo='+encodeURIComponent(orderInfo)
-		// 	console.log('ht==',ht)
-		// 	plus.runtime.openURL(ht)
-		// 	uni.navigateTo({
-		// 		url:'/pages/webView/index?url=https://www.ka-world.com/share/h5/#/pages/pay/alipay?orderInfo='+encodeURIComponent(orderInfo)+'&orderCode='+goodOrder
-		// 	})
-		// }else 
-		// orderInfo.indexOf('https://')!=-1
-		if(type=='ysepay'||type=='qmf' ||type == "qmf_divide"){
-			// 渠道H5支付
-			plus.runtime.openURL(orderInfo)
-			if(cb) cb()
+		if(alipay_H5){
+			uni.redirectTo({
+				url:'/pages/webView/index?url='+encodeURIComponent(orderInfo)+'&orderCode='+goodOrder
+			})
 		}else{
-			uni.requestPayment({
-				provider:'alipay',   //alipay
-				orderInfo: orderInfo, //支付宝订单数据
-				success: (res:any)=> {
-					uni.$emit('paySuccess')
-					console.log('success:' + JSON.stringify(res));
-					
-				},
-				fail: function (err:any) {
-					console.log('fail:' + JSON.stringify(err));
-				}
-			});
-			if(cb) cb()
+			if(type=='ysepay'||type=='qmf' ||type == "qmf_divide"){
+				// 渠道H5支付
+				plus.runtime.openURL(orderInfo)
+				if(cb) cb()
+			}else{
+				uni.requestPayment({
+					provider:'alipay',   //alipay
+					orderInfo: orderInfo, //支付宝订单数据
+					success: (res:any)=> {
+						uni.$emit('paySuccess')
+						console.log('success:' + JSON.stringify(res));
+						
+					},
+					fail: function (err:any) {
+						console.log('fail:' + JSON.stringify(err));
+					}
+				});
+				if(cb) cb()
+			}
 		}
+		// return;
+		// orderInfo.indexOf('https://')!=-1
+		
 	}
 	paymentWxpay(type:any,orderInfo:any,cb?:Function){
 		console.log('orderInfo========',orderInfo)

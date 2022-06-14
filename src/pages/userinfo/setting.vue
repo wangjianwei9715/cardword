@@ -67,7 +67,7 @@ export default class ClassName extends BaseNode {
                 content: '请先开启消息通知',
                 success: function (res) {
                     if (res.confirm) {
-                      app.platform.gotoPermissionSetting()
+                      // app.platform.gotoPermissionSetting()
                     }
                 }
             });
