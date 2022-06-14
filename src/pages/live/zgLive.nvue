@@ -69,10 +69,10 @@
 				statusBarHeight: 0,
 				safeAreaBottomHeight: 0,
 				webViewUrl: '',
-				AnchorEndUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				AnchorEndUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
 				// AnchorEndUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
 				// AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd',
-				// UserUrl: 'https://xlsh.7piccolo.com:8088/live/#/pages/liveStreaming/index?ts='+ (+new Date()),
+				// UserUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/index?ts='+ (+new Date()),
 				UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				// UserUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
@@ -114,7 +114,7 @@
 			}
 		},
 		onReady() {
-
+			
 		},
 		async onLoad(query) {
 			// var result = await permision.requestAndroidPermission(['android.permission.CAMERA'])
@@ -166,6 +166,12 @@
 				this.width = res.screenWidth
 				this.viewShow = true
 				uni.hideLoading()
+				// setTimeout(() => {
+				// 	const nowWebView = plus.webview.currentWebview()
+				// 	// console.log(plus.webview.defaultHardwareAccelerated());
+				// 	// console.log(plus.webview.currentWebview().getURL());
+				// 	// plus.webview.hide(nowWebView,'slide-out-right')
+				// }, 3000)
 			},
 			//获取直播间信息
 			async getLiveRoomInfo(roomID) {
@@ -176,7 +182,7 @@
 				}
 				return request('brodcast/third/1001/roomInfo/' + roomID, params, 'get')
 			},
-			//获取及赋值
+			//获取及赋值 
 			async getUserProfile(deviceInfo) {
 				let userData = {}
 				const device = Md5.hashStr(deviceInfo.deviceId)
@@ -248,7 +254,7 @@
 					impact.prepare();
 					impact.init(1);
 					impact.impactOccurred();
-				}else{
+				} else {
 					uni.vibrateShort()
 				}
 			},
@@ -310,7 +316,7 @@
 				this.UIClickFeedBack()
 				request("merchant/1/follow/" + this.merchantMessage.alias, {}, 'post').then(res => {
 					this.merchantMessage.followed = res.data.follow
-					
+
 				})
 			},
 			stopLive() {

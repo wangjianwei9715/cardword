@@ -1,0 +1,53 @@
+<template>
+	<view>zgPlayBack</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				playBackData: {
+					media_url: ''
+				},
+				plusVideo: null,
+				rateOption: [0.5, 1, 1.5, 2],
+				rateOptionIndex: 1
+			}
+		},
+		onLoad(query) {
+			console.log(33333333);
+			console.log(JSON.parse(query.data));
+			this.playBackData = JSON.parse(query.data)
+			this.createVideo()
+
+		},
+		methods: {
+			createVideo() {
+				if (this.plusVideo) return
+				const player = plus.video.createVideoPlayer('videoplayer', {
+					src: 'http://vod-tencent1.1001.replay.ka-world.com/6cab3398vodcq1500013174/62dc1109387702301773508610/f0.mp4',
+					top: '100px',
+					left: '0px',
+					width: '100px',
+					height: '200px',
+					position: 'static'
+				});
+				plus.webview.currentWebview().append(player);
+				// this.plusVideo.play()
+				// this.plusVideo.playbackRate(2)
+			},
+			setRateVideo(rate = null) {
+				if (rate) this.plusVideo.playbackRate(rate)
+				if (!rate) {
+					const selectRate = this.rateOption[this.rateOptionIndex]
+					this.plusVideo.playbackRate(selectRate)
+				}
+
+			}
+		}
+	}
+</script>
+
+<style>
+
+</style>

@@ -153,7 +153,7 @@ export default class PlatformManager {
 			// 直播 回放
 			if(data.media_url!=''){
 				uni.navigateTo({
-					url:'/pages/live/playback?data='+JSON.stringify(data)
+					url:'/pages/live/zgPlayBack?data='+JSON.stringify(data)
 				})
 				return 
 			}else if(data.wxRoomId>0){
