@@ -43,4 +43,5 @@ export module app{
     export let updateDebug = '';  //更新debug模式
     export let orderRich = true; //卡密特效默认开启
 	export let broadcastActor = false; 
+	export let picEncryptionKey='ksjreskey2022%^&'
 }
