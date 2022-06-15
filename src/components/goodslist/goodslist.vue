@@ -15,7 +15,7 @@
 				<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}">
-						<muqian-lazyLoad class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
+						<muqian-lazyLoad class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic_cdn||item.pic))" ></muqian-lazyLoad>
 					</view>
 					<view class="goodslist-title">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
@@ -70,6 +70,9 @@
 	import {
 		getGoodsPintuan
 	} from '@/tools/switchUtil';
+	import {
+		Md5
+	} from "ts-md5";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		getGoodsPintuan = getGoodsPintuan

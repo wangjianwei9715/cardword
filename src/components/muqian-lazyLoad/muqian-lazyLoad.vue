@@ -1,13 +1,14 @@
 <template>
 	<view class="muqian-content">
 		<!-- 加载中 -->
-		<image :src="loadSrc" class="muqian-image muqain-load" @load="init"  mode="aspectFit" :style="{
+		<image :src="loadSrc" class="muqian-image muqain-load" @load="init" mode="aspectFit" :style="{
 				opacity:isShow?'0':'1',
 				transition: `opacity ${duration/1000}s ${effect}`
 				}"></image>
-				
+
 		<!-- 加载成功 -->
-		<image class="muqian-image" @click="onClickLazyImage" @load="load"  @error="error" v-if="status==1" :src="src" :mode="mode" :style="{
+		<image class="muqian-image" @click="onClickLazyImage" @load="load" @error="error" v-if="status==1"
+			:src="$parsePic(src)" :mode="mode" :style="{
 				opacity:isShow?'1':'0',
 				borderRadius,
 				transition: `opacity ${duration/1000}s ${effect}`
@@ -22,7 +23,6 @@
 			transition: `opacity ${duration/1000}s ${effect}`
 			}">
 		</image>
-		
 	</view>
 </template>
 
@@ -76,7 +76,7 @@
 				type: String,
 				default: ''
 			},
-			mode:{
+			mode: {
 				type: String,
 				default: 'aspectFill'
 			},
@@ -110,14 +110,14 @@
 			//加载失败图片
 			errorSrc: {
 				type: String,
-				default:loadFailImage
+				default: loadFailImage
 			}
 
 		},
 		data() {
 			return {
 				status: 0, //0加载中 1加载成功 2加载失败
-				isShow: false
+				isShow: false,
 			}
 		},
 		watch: {
@@ -136,13 +136,13 @@
 			this.$emit('destroyed')
 		},
 		methods: {
-			onClickLazyImage(){
+			onClickLazyImage() {
 				this.$emit('click')
 			},
 			load() {
 				if (this.minTimeOut == 0) {
 					this.isShow = true
-				}else{
+				} else {
 					let newTimer = new Date().getTime() - loadTimer
 					if (newTimer < this.minTimeOut) {
 						setTimeout(() => {
@@ -152,16 +152,16 @@
 						this.isShow = true
 					}
 				}
-				
-				setTimeout(()=>{
+
+				setTimeout(() => {
 					this.$emit('showSuccess');
-				},this.duration)
+				}, this.duration)
 			},
 			error() {
 				this.status = 2
 				this.isShow = true
 			},
-			init(){
+			init() {
 				let intersectionObserver = uni.createIntersectionObserver(this)
 				let load = false
 				//当图片加载完的时候取消监听
@@ -189,9 +189,10 @@
 	.muqian-content {
 		overflow: hidden;
 		position: relative;
+
 		.muqian-image {
 			width: 100%;
-        	height: 100%;
+			height: 100%;
 			display: block;
 			will-change: transform;
 		}
@@ -200,8 +201,8 @@
 			width: 1rpx !important;
 			height: 1rpx !important;
 			position: absolute;
-			left:0;
-			top:0;
+			left: 0;
+			top: 0;
 		}
 	}
 </style>
