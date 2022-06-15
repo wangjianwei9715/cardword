@@ -88,7 +88,7 @@ export default class PlatformManager {
 			
 		})
 	}
-	//即构直播间
+	//平台直播间
 	goZgLive(item:any){
 		let ts = Math.floor(new Date().getTime()/1000);
 		let params = {
@@ -104,7 +104,8 @@ export default class PlatformManager {
 			// 直播 回放
 			if(data.media_url!=''){
 				uni.navigateTo({
-					url:'/pages/live/zgPlayBack?data='+JSON.stringify(data)
+					url:`/pages/live/zgPlayBack?data=${JSON.stringify(data)}&alias=${item.alias||item.merchantAlias}&roomID=${item.roomID}`
+					// url:`/pages/live/transition`
 				})
 				return 
 			}else if(data.wxRoomId>0){

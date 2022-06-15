@@ -264,7 +264,8 @@
 				params.nativeSdk = 'qmf_android'
 			}
 			app.http.Post('order/topay/'+this.payItem.code,params,(res:any)=>{
-				if(data.channel=='alipay'){
+				//data.channel=='alipay' (before)
+				if(data.channel=='alipay_h5' || data.channel=='alipay'){
 					if(res.appPayRequest){
 						app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
 						this.onClickCancelPay()

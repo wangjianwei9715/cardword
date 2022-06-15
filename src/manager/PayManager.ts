@@ -29,7 +29,9 @@ export default class PayManager {
 				url:'/pages/webView/index?url='+encodeURIComponent(orderInfo)+'&orderCode='+goodOrder
 			})
 		}else{
-			if(type=='ysepay'||type=='qmf' ||type == "qmf_divide"){
+			console.log(type,'type')
+			//加了个type=='h5'
+			if(type=='ysepay'||type=='qmf' ||type == "qmf_divide"||type=='h5'){
 				// 渠道H5支付
 				plus.runtime.openURL(orderInfo)
 				if(cb) cb()

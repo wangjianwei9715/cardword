@@ -603,7 +603,8 @@ export default class ClassName extends BaseNode {
             url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
           });
       }else{
-        if (data.channel == "alipay") {
+		  //data.channel=='alipay' (before)
+        if (data.channel == "alipay_h5" || data.channel == "alipay") {
           if(res.appPayRequest){
             app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest),()=>{
               uni.redirectTo({
