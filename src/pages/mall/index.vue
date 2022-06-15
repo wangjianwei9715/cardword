@@ -66,7 +66,7 @@
 				<view calss="point-tips">不定期上新</view>
 			</view>
 			<view class="point-box">
-				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index">
+				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index" :style='{marginRight:(index+1)%3==0?"0rpx":"10rpx"}'>
 					<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>
 						{{'剩'+item.leftNum+'份'}}
 					</view>
@@ -638,7 +638,7 @@
 		}
 
 		.point-index:nth-child(3n) {
-			margin-right: 0;
+			margin-right: 0rpx;
 		}
 
 		.point-pic-box {
