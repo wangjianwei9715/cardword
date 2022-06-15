@@ -19,12 +19,15 @@
 			console.log("App Launch");
 			if (process.env.NODE_ENV === "development") {
 				// console.log("开发环境");
-				// app.localTest=true;
-				// app.bussinessApiDomain='http://192.168.8.79:8701/api/v2/';
+				// app.localTest = true;
+				// app.bussinessApiDomain = 'http://192.168.8.79:8701/api/v2/';
+				// app.bussinessApiDomain="https://server.ssltest.ka-world.com/api/v2/"
+
 				// 正式服测试环境
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
 
 			}
+			uni.setStorageSync('openAppTime',Math.round(+new Date()/1000))//存储打开app时间
 			app.needPushIdentifier = uni.getStorageSync("needPushIdentifier") == 1 ? false : true;
 			const loginToken = uni.getStorageSync("token");
 			if (loginToken) {
@@ -175,7 +178,12 @@
 		onShow() {
 			console.log("App Show");
 			// #ifdef APP-PLUS
-			setTimeout(()=>{
+			const nowTimeStamp=Math.round(+new Date()/1000)
+			const refreshThreshold=2*60*60//刷新App阈值
+			if(uni.getStorageSync('openAppTime')&&nowTimeStamp-uni.getStorageSync('openAppTime')>=refreshThreshold){
+				plus.runtime.restart()
+			}
+			setTimeout(() => {
 				let args = plus.runtime.arguments;
 				if (args) {
 					if (args.indexOf("goodsdetails") != -1) {
@@ -187,7 +195,7 @@
 						});
 					}
 				}
-			},500)
+			}, 500)
 			// #endif
 		},
 		onHide() {
@@ -217,10 +225,12 @@
 		font-family: "Impact";
 		src: url("~@/common/Tao/Impact.ttf");
 	}
+
 	@font-face {
 		font-family: "hei";
 		src: url("~@/common/Tao/hei.ttf");
 	}
+
 	// #endif
 	.content {
 		display: flex;
