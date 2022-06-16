@@ -205,11 +205,11 @@
 					}
 				}, (err: any) => {
 					this.requestLock = false
-					this.cardBean.queryParams.pageIndex = 1;
+					// this.cardBean.queryParams.pageIndex = 1;
 					this.award.queryParams.pageIndex = 1
 					this.reqTimeLimitData();
 					this.reqMeCardBean()
-					this.reqKdData();
+					// this.reqKdData();
 				}
 			);
 		}
@@ -271,7 +271,7 @@
 		}
 		// 观看大图
 		onClickPreviewImage(img: string) {
-			uni.previewImage({
+			uni.previewImage({ 
 				urls: [img],
 				current: 0,
 				indicator: "number"
