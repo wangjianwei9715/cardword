@@ -67,6 +67,7 @@
 		addressDefault = false
 		editData:{[x:string]:any} = []
 		addressData:any = {};
+		editIng = false;
 		onLoad(query:any) {
 			if (query.title) {
 				uni.setNavigationBarTitle({title: query.title});
@@ -108,6 +109,13 @@
 			this.address = this.addressData.provinceName+this.addressData.cityName+this.addressData.countyName;
 		}
 		onClickAddressConfirm(){
+			if(this.editIng){
+				uni.showToast({
+					title:'请不要连续点击',
+					icon:'none'
+				})
+				return;
+			}
 			if(this.userName==''){
 				uni.showToast({
 					title:'请输入收货人姓名',
@@ -152,7 +160,12 @@
 				params.id = this.editData.id
 				url = 'me/delivery/edit'
 			}
+			this.editIng = true;
+			setTimeout(()=>{
+				this.editIng = false;
+			},2000)
 			app.http.Post(url,params,(res:any)=>{
+				this.editIng = false;
 				uni.$emit('addressedit')
 				uni.navigateBack({
 				    delta: 1
