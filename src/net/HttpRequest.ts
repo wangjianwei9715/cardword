@@ -8,6 +8,8 @@ import {
 export default class HttpRequest {
     private static instance: HttpRequest;
 	private axiosInstance:AxiosInstance;
+	debounceUrl = '';
+
 	static getIns(): HttpRequest {
 		if(!HttpRequest.instance) {
 			HttpRequest.instance = new HttpRequest();
@@ -63,13 +65,21 @@ export default class HttpRequest {
 		// 添加请求拦截器
 		this.axiosInstance.interceptors.request.use((config)=> {
 			// 在发送请求之前做些什么
-			
 			if(app.opKey == ''){
 				app.opKey = uni.getStorageSync('app_opk')
 			}
 			config.baseURL = app.bussinessApiDomain
 			
 			let url = config.url+'';
+			if(this.debounceUrl == url){
+				// console.log('防止200毫秒内连续点击')
+				return;
+			}
+			this.debounceUrl = url;
+			setTimeout(()=>{
+				this.debounceUrl = '';
+			},200)
+
 			if (url.indexOf("user/login/phone") == -1&&url.indexOf("user/code") == -1&&url.indexOf("user/forget") == -1) {//验证码、刷新、登录 首页接口不需要token &&config.url!='xingqiu/refresh_lists'&&config.url!='xingqiu/index_act'
 				if (!config.headers['token']) {
 					config.headers['token'] = app.token.accessToken;
