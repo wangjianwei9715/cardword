@@ -8,7 +8,7 @@
 			<view class="header-tips">新品发售  抢先知晓~</view>
 			<view class="reward">
 				<view class="reward-index" v-for="(item,index) in calendarList" :key="index">
-					<muqian-lazyLoad class="reward-img" :src="decodeURIComponent(item.pic_url_cover)"></muqian-lazyLoad>
+					<muqian-lazyLoad class="reward-img" :src="decodeURIComponent(item.pic_cover_cdn||item.pic_url_cover)"></muqian-lazyLoad>
 					<view class="reward-name">{{dateFormatMSCustom(item.public_day,'/')}}</view>
 				</view>
 			</view>
@@ -74,7 +74,7 @@
 			
 			this.noData = false;
 			// this.testModule = uni.requireNativePlugin("TestModule");
-			app.http.Get('dataApi/function/calendar/index',{},(res:any)=>{
+			app.http.Get('dataApi/function/calendar/index',{urlvalid: 1},(res:any)=>{
 				this.calendarList = res.data.calendar
 			})
 			// app.http.Get('function/decompose/index',{},(res:any)=>{

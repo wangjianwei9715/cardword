@@ -568,14 +568,24 @@
 			    ,{
                     "path" : "mysticalCode/mysticalCode",
                     "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "神秘代码",
-					"navigationBarBackgroundColor": "#ffffff",
-					"navigationBarTextStyle": "black",
-					"enablePullDownRefresh": false,
-					"backgroundColorTop": "#EFBE35", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-					"backgroundColorBottom": "#EFBE35" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					{
+						"navigationBarTitleText": "神秘代码",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#EFBE35", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#EFBE35" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+                
                 }
+				,{
+                    "path" : "goods618/index",
+                    "style" :                                                                                    
+					{
+						"navigationStyle": "custom",
+						"backgroundColorTop": "#FEE8E9", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#FEE8E9" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
                 
                 }
             ]

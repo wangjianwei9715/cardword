@@ -78,7 +78,8 @@
 				q:text,
 				timeStamp:Date.parse(date)/1000,
 				state:1,
-				pageSize:20
+				pageSize:20,
+				urlvalid:1
 			}
 			// #ifndef MP
 			app.http.Get('dataApi/search/good',params,(res:any)=>{

@@ -40,11 +40,11 @@
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text
 							class="price-qi">{{getPriceStart()?'起':''}}</text></view>
 				</view>
-				<view class="header-content" :class="{'random-bg':getSelectType()}" v-else-if="goodsState==1">
+				<view class="header-content" :class="{'random-bg':getSelectType()}" v-else-if="goodsState==1||goodsState==0">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text
 							class="price-qi">{{getPriceStart()?'起':''}}</text></view>
 					<view class="header-right">
-						<view class="icon-end">距结束</view>
+						<view class="icon-end">{{goodsState==0?'距开售':'距结束'}}</view>
 						<view class="countdown-content">
 							<view v-if="countDay>0" class="countdown-index">{{countDay}}</view>
 							<view v-if="countDay>0" class="countdown-index countdown-day">天</view>
@@ -419,7 +419,7 @@
 				// 状态
 				this.goodsState = data.good.state;
 				// 倒计时
-				this.countDown = data.good.leftsec;
+				this.countDown = data.good.state == 0? ( data.good.leftsec - (data.good.overAt - data.good.startAt)): data.good.leftsec;
 				// 免单
 				this.freeNoNum = data.freeNoNum
 				// 获取商品图片
@@ -494,6 +494,9 @@
 					this.countDown--;
 					this.getTime()
 				} else {
+					if(this.goodsState == 0){
+						this.getGoodData(this.goodsId);
+					}
 					if (this.goodsState == 1) {
 						this.goodsState = -99
 					}

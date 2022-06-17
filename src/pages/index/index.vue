@@ -57,9 +57,8 @@
 					</view>
 				</view>
 
-				<!-- <view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-04-24', '2022-05-13')">
-					<view class="top-ref"></view>
-				</view> -->
+				<view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-06-18', '2022-06-21')">
+				</view>
 
 				<!-- 卡币商城 热门系列 拆卡围观 -->
 				<tabHot :hotList="hotList" />
@@ -301,7 +300,7 @@
 			uni.showTabBar()
 		}
 		initEvent(cb ? : Function) {
-			app.http.Get("dataApi/home", {}, (data: any) => {
+			app.http.Get("dataApi/home", {urlvalid:1}, (data: any) => {
 				uni.hideLoading()
 				// #ifndef MP
 				this.topAddList = data.addList || [];
@@ -375,7 +374,7 @@
 		}
 		onClickActJump() {
 			uni.navigateTo({
-				url: '/pages/act/goldRank/goldRank_rankList'
+				url: '/pages/act/goods618/index'
 			})
 		}
 		onClickSearch() {
@@ -438,7 +437,6 @@
 					ts + '_2022'),
 				urlvalid: 1
 			}
-			// console.log('kww_goodlist_sign_'+type+'_'+this.fetchFrom+'_'+this.fetchSize+'_'+ts+'_2022')
 			app.http.Get("dataApi/goodlist/forsale/" + type, params, (data: any) => {
 				if (data.isFetchEnd) {
 					this.noMoreData = true;
@@ -448,7 +446,6 @@
 				if (data.goodList) {
 					this.fetchFrom == 1 ? this.goodsList = data.goodList : this.goodsList.push(...data
 						.goodList);
-					// [...this.goodsList,...data.goodList]
 				}
 				this.fetchFrom += this.fetchSize;
 				if (cb) cb()
@@ -574,8 +571,8 @@
 	}
 
 	.top-banner {
-		width: 750rpx;
-		height: 169rpx;
+		width: 722rpx;
+		height: 156rpx;
 		margin: 0 auto;
 		box-sizing: border-box;
 		display: flex;
@@ -585,16 +582,16 @@
 		position: relative;
 	}
 
-	.top-ref {
-		width: 80rpx;
-		height: 79rpx;
-		background: url(../../static/index/v2/banner_go.png) no-repeat center;
-		background-size: 100% 100%;
-		position: absolute;
-		right: 43rpx;
-		bottom: 25rpx;
-		animation: bounce-down 1s linear infinite;
-	}
+	// .top-ref {
+	// 	width: 80rpx;
+	// 	height: 79rpx;
+	// 	background: url(../../static/index/v2/banner_go.png) no-repeat center;
+	// 	background-size: 100% 100%;
+	// 	position: absolute;
+	// 	right: 43rpx;
+	// 	bottom: 25rpx;
+	// 	animation: bounce-down 1s linear infinite;
+	// }
 
 	@keyframes bounce-down {
 		25% {

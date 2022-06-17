@@ -23,7 +23,7 @@
 			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow'>
 				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index' @click="clickSerie(item,index)">
 					<view class="frameImage">
-						<image class="seriesImg" :src="decodeURIComponent(item.pic_url)" mode="aspectFit"></image>
+						<muqian-lazyLoad class="seriesImg" :src="decodeURIComponent(item.pic_url_cdn||item.pic_url)" mode="aspectFit"></muqian-lazyLoad>
 					</view>
 					<view class="seriesText" :class="{selectSearchText:clickSerieItem&&clickSerieItem.id==item.id}">
 						{{item.title}}
@@ -246,7 +246,8 @@
 			app.http.Get(
 				"dataApi/search/good", {
 					...params,
-					...this.tagParams
+					...this.tagParams,
+					urlvalid:1
 				},
 				(res: any) => {
 					if (res.end) {

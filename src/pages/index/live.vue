@@ -88,7 +88,8 @@
 			
 			let params:any = {
 				pageIndex:this.currentPage,
-				pageSize:this.pageSize
+				pageSize:this.pageSize,
+				urlvalid:1
 			}
 			let url = this.goodTabCheck<5 ? 'dataApi/broadcast' : 'me/broadcast';
 			if(this.goodTabCheck<5){

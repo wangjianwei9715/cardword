@@ -5,8 +5,8 @@
 			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="5000" :duration="500"
 				:circular="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'">
 				<swiper-item v-for="(item,index) in topAddList" :key="index">
-					<image class="swiper-image" :src="decodeURIComponent(item.pic)"
-						@click="onClickTopJumpUrl(item.target)" mode="aspectFill"></image>
+					<muqian-lazyLoad class="swiper-image" :src="decodeURIComponent(item.pic_cdn||item.pic)"
+						@click="onClickTopJumpUrl(item.target)" mode="aspectFill"></muqian-lazyLoad>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -38,9 +38,9 @@
 					</view>
 				</view>
 				<view class="goodslist-bottom" @click="onClickSellerShop(item)">
-					<view class="bottom-left">{{getGoodsPintuan(item.pintuan_type)}}</view>
-					<view class="bottom-right">
-						<image class="avart" :src="decodeURIComponent(item.merchantLogo)" />
+					<view class="bottom-left" :class="{'bottom-left-shu':item.merchantName}">{{getGoodsPintuan(item.pintuan_type)}}</view>
+					<view class="bottom-right" v-show="item.merchantName">
+						<muqian-lazyLoad class="avart" :src="decodeURIComponent(item.merchantLogo_cdn||item.merchantLogo)" borderRadius="50%"/>
 						<view class="bussName">{{item.merchantName}}</view>
 						<view class="cores"></view>
 					</view>
@@ -118,6 +118,7 @@
 			return item.pintuan_type == 10 || item.pintuan_type == 11 || item.pintuan_type == 12
 		}
 		onClickSellerShop(item: any) {
+			if(!item.merchantName) return;
 			console.log(item);
 			const path = `/pages/userinfo/merchant_shopsV2`;
 			uni.navigateTo({
@@ -321,7 +322,7 @@
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
-			.bottom-left::after{
+			.bottom-left-shu::after{
 				content: '';
 				width: 2rpx;
 				height:20rpx;

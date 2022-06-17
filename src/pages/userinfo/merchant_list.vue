@@ -4,7 +4,7 @@
 		<view class="detail-bg" v-if="publisher != ''">
 			<view class="business" v-for="(item) in publisher" :key="item.id">
 				<view class="business-top uni-flex" @click="onClickShops(item)">
-					<muqian-lazyLoad class="business-avart" :src="item.logo != '' ? decodeURIComponent(item.logo) : defaultAvatar" :borderRadius="'50%'">
+					<muqian-lazyLoad class="business-avart" :src="item.logo != '' ? decodeURIComponent(item.logo_cdn||item.logo) : defaultAvatar" :borderRadius="'50%'">
 					</muqian-lazyLoad>
 					<view class="business-info">
 						<view class="nameInfo uni-flex">
@@ -156,7 +156,8 @@
 		reqNewData(cb ? : Function) {
 			let params: any = {
 				pageIndex: this.currentPage,
-				pageSize: this.pageSize
+				pageSize: this.pageSize,
+				urlvalid:1
 			};
 
 			app.http.Get("dataApi/merchant/list", params, (data: any) => {

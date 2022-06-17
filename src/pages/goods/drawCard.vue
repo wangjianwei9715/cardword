@@ -54,7 +54,7 @@
               mode="aspectFill"
               @load="onLoadMovablePic(index)"
               :lazy-load="true"
-              :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''"
+              :src="index < stepIndex + 6 || complete ? (item.pic!=''?$parsePic(decodeURIComponent(item.pic_cdn||item.pic)):defultPic) : ''"
             ></image>
             <view
               class="movable-box-name"
@@ -259,6 +259,7 @@ export default class ClassName extends BaseNode {
     let params:{[x:string]:any} = {
       pageIndex: this.currentPage,
       pageSize:this.pageSize,
+      urlvalid:1
     }
     
     app.http.Get('me/orderInfo/buyer/'+this.goodOrder+'/noShowList', params, (data: any) => {

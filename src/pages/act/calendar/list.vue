@@ -28,7 +28,7 @@
 			<view v-show="calendaList!=''" class="goods-box">
 				<view class="goods-index" v-for="(item,index) in calendaList" :key="index" >
 					<view v-if="index==0 || (index>0 && getDateFormatS(item.public_day)!=getDateFormatS(calendaList[index-1].public_day))" class="goods-month">{{getDateFormatS(item.public_day)}}</view>
-					<muqian-lazyLoad class="goods-pic" @click="onClickGoDetail(item,index)" :src="decodeURIComponent(item.pic_cover)" >
+					<muqian-lazyLoad class="goods-pic" @click="onClickGoDetail(item,index)" :src="decodeURIComponent(item.pic_cover_cdn||item.pic_cover)" >
 					</muqian-lazyLoad>
 					<view class="goods-right">
 						<view class="goods-right-desc" @click="onClickGoDetail(item,index)">
@@ -129,7 +129,8 @@ import { Md5 } from "ts-md5";
 			pageSize:this.pageSize,
 			date:startDate,
 			ts:ts,
-			s:Md5.hashStr('kww_calendar_'+this.orderTabCheck+'_'+startDate+'_'+this.currentPage+'_'+this.pageSize+'_'+ts+'_2022')
+			s:Md5.hashStr('kww_calendar_'+this.orderTabCheck+'_'+startDate+'_'+this.currentPage+'_'+this.pageSize+'_'+ts+'_2022'),
+			urlvalid: 1
 		  }
 		  this.httpIng = true
 		  app.http.Get("dataApi/function/calendar/list", params, (data: any) => {
