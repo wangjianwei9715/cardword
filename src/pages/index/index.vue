@@ -57,8 +57,8 @@
 					</view>
 				</view>
 
-				<view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-06-18', '2022-06-21')">
-				</view>
+				<!-- <view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-06-18', '2022-06-21')">
+				</view> -->
 
 				<!-- 卡币商城 热门系列 拆卡围观 -->
 				<tabHot :hotList="hotList" />

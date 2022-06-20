@@ -71,7 +71,7 @@ export default class HttpRequest {
 			config.baseURL = app.bussinessApiDomain
 			
 			let url = config.url+'';
-			if(this.debounceUrl == url){
+			if(this.debounceUrl == url && url.indexOf("dataApi/home") == -1){
 				// console.log('防止200毫秒内连续点击')
 				return;
 			}

@@ -37,7 +37,7 @@
         >
           <view v-if="index == 0" class="movable-box dangban" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd"  ></view>
           <view v-else-if="item.color=='SP' && index < stepIndex + 6" class="movable-box" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd">
-            <image class="movable-box-sp" :class="movableAni" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?decodeURIComponent(item.pic):defultPic) : ''" mode="aspectFill"/>
+            <image class="movable-box-sp" :class="movableAni" @load="onLoadMovablePic(index)" :src="index < stepIndex + 6 || complete ? (item.pic!=''?item.pic:defultPic) : ''" mode="aspectFill"/>
           </view>
           <view
             v-else-if="index < stepIndex + 6"
@@ -54,7 +54,7 @@
               mode="aspectFill"
               @load="onLoadMovablePic(index)"
               :lazy-load="true"
-              :src="index < stepIndex + 6 || complete ? (item.pic!=''?$parsePic(decodeURIComponent(item.pic_cdn||item.pic)):defultPic) : ''"
+              :src="index < stepIndex + 6 || complete ? (item.pic!=''?item.pic:defultPic) : ''"
             ></image>
             <view
               class="movable-box-name"
@@ -102,11 +102,13 @@
 
 <script lang="ts">
 import { app } from "@/app";
+import { parsePic } from "@/tools/util";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 @Component({})
 export default class ClassName extends BaseNode {
   statusBarHeight = app.statusBarHeight;
+  parsePic = parsePic;
   // 启动动画
   startIng = true;
   startTime = 0;
@@ -174,6 +176,11 @@ export default class ClassName extends BaseNode {
             this.moveYs = 755 + app.statusBarHeight + this.iosY + "rpx";
             if(query.code){
               this.picData = this.picData.concat(JSON.parse(query.data));
+              for(let i in this.picData){
+                if(this.picData[i] != ''){
+                  this.picData[i].pic = parsePic(decodeURIComponent(this.picData[i].pic_cdn||this.picData[i].pic));
+                }
+              }
               this.totalNum = query.num;
               if(query.hasNumber){ this.drawerData.push({ id: 2, name: "按限编排序" }) }
               this.goodOrder = query.code;
@@ -264,7 +271,11 @@ export default class ClassName extends BaseNode {
     
     app.http.Get('me/orderInfo/buyer/'+this.goodOrder+'/noShowList', params, (data: any) => {
       if(data.list){
-        this.picData = this.picData.concat(data.list);
+        let listData = data.list
+        for(let i in listData){
+          listData[i].pic = parsePic(decodeURIComponent(listData[i].pic_cdn||listData[i].pic));
+        }
+        this.picData = this.picData.concat(listData);
       }
       if(data.totalPage<=this.currentPage){
         this.noMoreData = true;
@@ -295,7 +306,6 @@ export default class ClassName extends BaseNode {
       this.picOnloadEd = true;
     }
     this.onloadPic.push(index)
-    
   }
   getOnloadPicIndex(index:number){
     let onloadEnd = false;
