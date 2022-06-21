@@ -107,7 +107,12 @@ page {
   box-sizing: border-box;
   position:fixed;
   left:0;
+  // #ifdef H5
+  top:80rpx;
+  // #endif
+  // #ifndef H5
   top:0;
+  // #endif
   z-index: 66;
   // z-index: 9;
 }
