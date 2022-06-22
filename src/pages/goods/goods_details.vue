@@ -385,7 +385,8 @@
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
 				ts:ts,
-				s:Md5.hashStr('kww_good_sign_'+id+'_'+ts+'_2022')
+				s:Md5.hashStr('kww_good_sign_'+id+'_'+ts+'_2022'),
+				urlvalid:1
 			}
 			app.http.Get('dataApi/good/' + id + '/detail', params, (data: any) => {
 				if (data.good == null || data.good == undefined) {
@@ -456,13 +457,13 @@
 				carousel.push(parsePic(pic))
 			} else {
 				carousel = pic.split(',')
-				carousel.map((x:any)=>{
+				carousel = carousel.map((x:any)=>{
 					return parsePic(x)
 				})
 			}
 			this.carouselLength = carousel.length;
 			let yuanfeng = this.goodsData.pic.yuanfeng ? decodeURIComponent(this.goodsData.pic.yuanfeng_cdn||this.goodsData.pic.yuanfeng).split(',') : [];
-			yuanfeng.map((x:any)=>{
+			yuanfeng = yuanfeng.map((x:any)=>{
 				return parsePic(x)
 			})
 			this.goodsImg = [...carousel, ...yuanfeng];
@@ -473,7 +474,7 @@
 				this.detailImg.push(parsePic(img))
 			} else {
 				this.detailImg = img.split(',')
-				this.detailImg.map((x:any)=>{
+				this.detailImg = this.detailImg.map((x:any)=>{
 					return parsePic(x)
 				})
 			}

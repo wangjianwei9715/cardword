@@ -22,7 +22,6 @@ export default class HttpRequest {
 		var domain = ''
 		domain = app.bussinessApiDomain
 		let systemInfo = app.platform.getAppInfo();
-		let version = ''
 		
 		this.axiosInstance = axios.create({
 			baseURL: domain,
@@ -34,8 +33,7 @@ export default class HttpRequest {
 				'device-density':systemInfo['device-density']||'1.5',
 				model:systemInfo.model||'windows',
 				'os-version':systemInfo.os_version||'10',
-				plat:systemInfo.plat||'official',
-				version:version
+				plat:systemInfo.plat||'official'
 			},
 			adapter: (config: any) => {
 				return new Promise((resolve, reject) => {
@@ -80,8 +78,8 @@ export default class HttpRequest {
 			setTimeout(()=>{
 				this.debounceUrl = '';
 			},200)
-			if(version == ''){
-				version = app.version;
+
+			if(app.version != '' && app.version != '1.0.0'){
 				config.headers['version'] = app.version;
 			}
 			if (url.indexOf("user/login/phone") == -1&&url.indexOf("user/code") == -1&&url.indexOf("user/forget") == -1) {//验证码、刷新、登录 首页接口不需要token &&config.url!='xingqiu/refresh_lists'&&config.url!='xingqiu/index_act'

@@ -51,7 +51,7 @@
 					<view class="time">{{dateFormat(item.time)}}</view>
 				</view>
 
-				<view class="right"><muqian-lazyLoad class="right-img" :src="getGoodsImg(decodeURIComponent(item.pic_cdn||item.pic))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
+				<view class="right"><muqian-lazyLoad class="right-img" :src="getGoodsImg(decodeURIComponent(item.pic_cdn||item.pic))"  @click="onClickPreviewCard(decodeURIComponent(item.pic_cdn||item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
 			</view>
 		</view>
 
@@ -78,10 +78,11 @@
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import {
-		dateFormat,getGoodsImg
+		dateFormat,getGoodsImg, parsePic
 	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		parsePic = parsePic;
 		defaultAvatar = app.defaultAvatar;
 		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
 		goodCode = '';
@@ -164,7 +165,8 @@
 			let params = {
 				q:this.searchTetxt,
 				pageIndex:this.currentPage,
-				pageSize:10
+				pageSize:10,
+				urlvalid:1
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
 				if(res.list){
@@ -216,6 +218,9 @@
 		
 		onClickPreviewCard(pic:any){
 			let url = pic.split(',')
+			url = url.map((x:any)=>{
+				return parsePic(x)
+			})
 			uni.previewImage({
 				urls:url
 			});
