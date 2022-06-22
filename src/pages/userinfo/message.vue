@@ -53,6 +53,7 @@
 				this.noMoreData = false;
 				this.getBucketlist()
 			})
+			// this.getHeliChat()
 		}
 		onShow(){
 			// #ifndef MP-WEIXIN
@@ -97,6 +98,10 @@
 					this.noMoreData = true
 				}
 				this.pageIndex ++;
+			})
+		}
+		getHeliChat(){
+			app.http.Get('heli/chat/data',{},(res:any)=>{
 			})
 		}
 		onClickBucketId(id:any){
