@@ -265,8 +265,10 @@
 		goodDetailStep
 	} from "@/net/DataExchange"
 	import { Md5 } from "ts-md5";
+	import { parsePic } from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		parsePic = parsePic;
 		goodsDetailRules = goodsDetailRules
 		goodsDetailHelp = goodsDetailHelp;
 		goodsSpe: {
@@ -448,24 +450,32 @@
 		}
 		// 商品图片
 		getGoodsImage() {
-			let pic = decodeURIComponent(this.goodsData.pic.carousel);
+			let pic:any = decodeURIComponent(this.goodsData.pic.carousel_cdn||this.goodsData.pic.carousel);
 			let carousel: any = [];
 			if (pic.indexOf(',') == -1) {
-				carousel.push(pic)
+				carousel.push(parsePic(pic))
 			} else {
 				carousel = pic.split(',')
+				carousel.map((x:any)=>{
+					return parsePic(x)
+				})
 			}
 			this.carouselLength = carousel.length;
-			let yuanfeng = this.goodsData.pic.yuanfeng ? decodeURIComponent(this.goodsData.pic.yuanfeng).split(',') :
-			[];
+			let yuanfeng = this.goodsData.pic.yuanfeng ? decodeURIComponent(this.goodsData.pic.yuanfeng_cdn||this.goodsData.pic.yuanfeng).split(',') : [];
+			yuanfeng.map((x:any)=>{
+				return parsePic(x)
+			})
 			this.goodsImg = [...carousel, ...yuanfeng];
 		}
 		// 详情图片
 		getDetailImage(img: any) {
 			if (img.indexOf(',') == -1) {
-				this.detailImg.push(img)
+				this.detailImg.push(parsePic(img))
 			} else {
 				this.detailImg = img.split(',')
+				this.detailImg.map((x:any)=>{
+					return parsePic(x)
+				})
 			}
 		}
 
@@ -558,6 +568,12 @@
 						url: '/pages/userinfo/talk?targetUserId=' + this.goodsData.kefu + '&goodCode=' + this
 							.goodsId
 					})
+					// 第三方客服
+					// let params = {
+					// 	agentExten:this.goodsData.kefu,
+					// 	businessParam:'goodCode:'+this.goodsId
+					// }
+					// app.platform.heliService(params)
 				} else {
 					uni.showToast({
 						title: '当前商品暂无客服',

@@ -445,6 +445,11 @@ export default class PlatformManager {
 		}
 		return type
 	}
+	heliService(params:object){
+		uni.navigateTo({
+			url: '/pages/talk/index?url_params='+JSON.stringify(params)
+		})
+	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false
 		return aspect;
