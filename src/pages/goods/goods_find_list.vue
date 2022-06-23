@@ -16,7 +16,7 @@
 			<view class="header-tab">
 				<tabc :tabc="classifyData" :tabsCheck="classifyOpt" @tabsClick="onClickListTabs"></tabc>
 			</view>
-			<sortTabCopy :maskTop='400' :sortData='sortData' @tagChange='onClickListSortTabs'></sortTabCopy>
+			<sortTabCopy :maskTop='300' :sortData='sortData' @tagChange='onClickListSortTabs'></sortTabCopy>
 		</view>
 		<view class="goods-lists">
 			<statusbar />
