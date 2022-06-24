@@ -31,7 +31,7 @@
 						<view class="scroll-goodslist-item" v-for="(goodsItem) in item.goodData"
 							:key='goodsItem.goodCode' @click="toPage(goodsItem)">
 							<view class="picBlock">
-								<muqian-lazyLoad class="picBlock-pic" :src="decodeURIComponent(goodsItem.pic)" >
+								<muqian-lazyLoad class="picBlock-pic" :src="decodeURIComponent(goodsItem.pic_cdn||goodsItem.pic)" >
 								</muqian-lazyLoad>
 								<view class="angleMark"
 									:style="{backgroundColor:goodsItem.status==1?'#F5162B':'#4f8bf5'}">
