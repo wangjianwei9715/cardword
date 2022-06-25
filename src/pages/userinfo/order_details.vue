@@ -316,7 +316,7 @@
 		}
 		
 		getGoodDesc(data:any){
-			this.orderDesc[0].desc ='¥'+(data.price+data.discount+(data.coupon?data.coupon:0));
+			this.orderDesc[0].desc ='¥'+this.keepTwoDecimal(data.price+data.discount+(data.coupon?data.coupon:0));
 			this.orderDesc[1].desc ='- ¥'+data.discount;
 			this.orderDesc[2].desc ='- ¥'+(data.coupon?data.coupon:0);
 			if(data.payInfo){
@@ -506,6 +506,15 @@
 				}
 			})
 			
+		}
+		keepTwoDecimal(num: any) {
+			var result = parseFloat(num);
+			if (isNaN(result)) {
+			alert("传递参数错误，请检查！");
+			return false;
+			}
+			result = Math.round(num * 100) / 100;
+			return result > 0 ? result : 0;
 		}
 		// 支付成功弹窗关闭
 		onClickcancelPaySuccess(){
