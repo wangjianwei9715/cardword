@@ -165,11 +165,10 @@
 	.goodslist {
 		&-index {
 			width: 356rpx;
-			height: 473rpx;
 			background: #FFFFFF;
 			border-radius: 5rpx;
 			box-sizing: border-box;
-			padding: 12rpx 13rpx 17rpx 13rpx;
+			padding: 12rpx 12rpx 17rpx 12rpx;
 			align-items: center;
 			margin-bottom: 13rpx;
 			// border-radius: 20rpx;
@@ -177,7 +176,7 @@
 		}
 
 		&-pic {
-			width: 328rpx;
+			width: 332rpx;
 			height: 253rpx;
 			margin: 0 auto;
 			overflow: hidden;
@@ -185,7 +184,7 @@
 		}
 
 		&-pic-image {
-			width: 328rpx;
+			width: 332rpx;
 			height: 253rpx;
 		}
 
