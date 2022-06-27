@@ -1406,193 +1406,193 @@ export namespace message {
         public toJSON(): { [k: string]: any };
     }
 
-    /** Properties of a Login. */
-    interface ILogin {
+    /** Properties of a LoginBroadCastRoom1001. */
+    interface ILoginBroadCastRoom1001 {
 
-        /** Login BuildNo */
-        BuildNo?: (string|null);
+        /** LoginBroadCastRoom1001 roomId */
+        roomId?: (number|Long|null);
 
-        /** Login accountId */
-        accountId?: (number|Long|null);
+        /** LoginBroadCastRoom1001 uid */
+        uid?: (string|null);
 
-        /** Login token */
+        /** LoginBroadCastRoom1001 token */
         token?: (string|null);
     }
 
-    /** Represents a Login. */
-    class Login implements ILogin {
+    /** Represents a LoginBroadCastRoom1001. */
+    class LoginBroadCastRoom1001 implements ILoginBroadCastRoom1001 {
 
         /**
-         * Constructs a new Login.
+         * Constructs a new LoginBroadCastRoom1001.
          * @param [properties] Properties to set
          */
-        constructor(properties?: message.ILogin);
+        constructor(properties?: message.ILoginBroadCastRoom1001);
 
-        /** Login BuildNo. */
-        public BuildNo: string;
+        /** LoginBroadCastRoom1001 roomId. */
+        public roomId: (number|Long);
 
-        /** Login accountId. */
-        public accountId: (number|Long);
+        /** LoginBroadCastRoom1001 uid. */
+        public uid: string;
 
-        /** Login token. */
+        /** LoginBroadCastRoom1001 token. */
         public token: string;
 
         /**
-         * Creates a new Login instance using the specified properties.
+         * Creates a new LoginBroadCastRoom1001 instance using the specified properties.
          * @param [properties] Properties to set
-         * @returns Login instance
+         * @returns LoginBroadCastRoom1001 instance
          */
-        public static create(properties?: message.ILogin): message.Login;
+        public static create(properties?: message.ILoginBroadCastRoom1001): message.LoginBroadCastRoom1001;
 
         /**
-         * Encodes the specified Login message. Does not implicitly {@link message.Login.verify|verify} messages.
-         * @param message Login message or plain object to encode
+         * Encodes the specified LoginBroadCastRoom1001 message. Does not implicitly {@link message.LoginBroadCastRoom1001.verify|verify} messages.
+         * @param message LoginBroadCastRoom1001 message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: message.ILogin, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: message.ILoginBroadCastRoom1001, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified Login message, length delimited. Does not implicitly {@link message.Login.verify|verify} messages.
-         * @param message Login message or plain object to encode
+         * Encodes the specified LoginBroadCastRoom1001 message, length delimited. Does not implicitly {@link message.LoginBroadCastRoom1001.verify|verify} messages.
+         * @param message LoginBroadCastRoom1001 message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: message.ILogin, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: message.ILoginBroadCastRoom1001, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Decodes a Login message from the specified reader or buffer.
+         * Decodes a LoginBroadCastRoom1001 message from the specified reader or buffer.
          * @param reader Reader or buffer to decode from
          * @param [length] Message length if known beforehand
-         * @returns Login
+         * @returns LoginBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.Login;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.LoginBroadCastRoom1001;
 
         /**
-         * Decodes a Login message from the specified reader or buffer, length delimited.
+         * Decodes a LoginBroadCastRoom1001 message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
-         * @returns Login
+         * @returns LoginBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.Login;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.LoginBroadCastRoom1001;
 
         /**
-         * Verifies a Login message.
+         * Verifies a LoginBroadCastRoom1001 message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
         public static verify(message: { [k: string]: any }): (string|null);
 
         /**
-         * Creates a Login message from a plain object. Also converts values to their respective internal types.
+         * Creates a LoginBroadCastRoom1001 message from a plain object. Also converts values to their respective internal types.
          * @param object Plain object
-         * @returns Login
+         * @returns LoginBroadCastRoom1001
          */
-        public static fromObject(object: { [k: string]: any }): message.Login;
+        public static fromObject(object: { [k: string]: any }): message.LoginBroadCastRoom1001;
 
         /**
-         * Creates a plain object from a Login message. Also converts values to other types if specified.
-         * @param message Login
+         * Creates a plain object from a LoginBroadCastRoom1001 message. Also converts values to other types if specified.
+         * @param message LoginBroadCastRoom1001
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: message.Login, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: message.LoginBroadCastRoom1001, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
-         * Converts this Login to JSON.
+         * Converts this LoginBroadCastRoom1001 to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
     }
 
-    /** Properties of a PageLocation. */
-    interface IPageLocation {
+    /** Properties of a LogoutBroadCastRoom1001. */
+    interface ILogoutBroadCastRoom1001 {
 
-        /** PageLocation page */
-        page?: (string|null);
+        /** LogoutBroadCastRoom1001 roomId */
+        roomId?: (number|Long|null);
     }
 
-    /** Represents a PageLocation. */
-    class PageLocation implements IPageLocation {
+    /** Represents a LogoutBroadCastRoom1001. */
+    class LogoutBroadCastRoom1001 implements ILogoutBroadCastRoom1001 {
 
         /**
-         * Constructs a new PageLocation.
+         * Constructs a new LogoutBroadCastRoom1001.
          * @param [properties] Properties to set
          */
-        constructor(properties?: message.IPageLocation);
+        constructor(properties?: message.ILogoutBroadCastRoom1001);
 
-        /** PageLocation page. */
-        public page: string;
+        /** LogoutBroadCastRoom1001 roomId. */
+        public roomId: (number|Long);
 
         /**
-         * Creates a new PageLocation instance using the specified properties.
+         * Creates a new LogoutBroadCastRoom1001 instance using the specified properties.
          * @param [properties] Properties to set
-         * @returns PageLocation instance
+         * @returns LogoutBroadCastRoom1001 instance
          */
-        public static create(properties?: message.IPageLocation): message.PageLocation;
+        public static create(properties?: message.ILogoutBroadCastRoom1001): message.LogoutBroadCastRoom1001;
 
         /**
-         * Encodes the specified PageLocation message. Does not implicitly {@link message.PageLocation.verify|verify} messages.
-         * @param message PageLocation message or plain object to encode
+         * Encodes the specified LogoutBroadCastRoom1001 message. Does not implicitly {@link message.LogoutBroadCastRoom1001.verify|verify} messages.
+         * @param message LogoutBroadCastRoom1001 message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: message.IPageLocation, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: message.ILogoutBroadCastRoom1001, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified PageLocation message, length delimited. Does not implicitly {@link message.PageLocation.verify|verify} messages.
-         * @param message PageLocation message or plain object to encode
+         * Encodes the specified LogoutBroadCastRoom1001 message, length delimited. Does not implicitly {@link message.LogoutBroadCastRoom1001.verify|verify} messages.
+         * @param message LogoutBroadCastRoom1001 message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: message.IPageLocation, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: message.ILogoutBroadCastRoom1001, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Decodes a PageLocation message from the specified reader or buffer.
+         * Decodes a LogoutBroadCastRoom1001 message from the specified reader or buffer.
          * @param reader Reader or buffer to decode from
          * @param [length] Message length if known beforehand
-         * @returns PageLocation
+         * @returns LogoutBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.PageLocation;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.LogoutBroadCastRoom1001;
 
         /**
-         * Decodes a PageLocation message from the specified reader or buffer, length delimited.
+         * Decodes a LogoutBroadCastRoom1001 message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
-         * @returns PageLocation
+         * @returns LogoutBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.PageLocation;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.LogoutBroadCastRoom1001;
 
         /**
-         * Verifies a PageLocation message.
+         * Verifies a LogoutBroadCastRoom1001 message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
         public static verify(message: { [k: string]: any }): (string|null);
 
         /**
-         * Creates a PageLocation message from a plain object. Also converts values to their respective internal types.
+         * Creates a LogoutBroadCastRoom1001 message from a plain object. Also converts values to their respective internal types.
          * @param object Plain object
-         * @returns PageLocation
+         * @returns LogoutBroadCastRoom1001
          */
-        public static fromObject(object: { [k: string]: any }): message.PageLocation;
+        public static fromObject(object: { [k: string]: any }): message.LogoutBroadCastRoom1001;
 
         /**
-         * Creates a plain object from a PageLocation message. Also converts values to other types if specified.
-         * @param message PageLocation
+         * Creates a plain object from a LogoutBroadCastRoom1001 message. Also converts values to other types if specified.
+         * @param message LogoutBroadCastRoom1001
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: message.PageLocation, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: message.LogoutBroadCastRoom1001, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
-         * Converts this PageLocation to JSON.
+         * Converts this LogoutBroadCastRoom1001 to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -1688,312 +1688,110 @@ export namespace message {
         public toJSON(): { [k: string]: any };
     }
 
-    /** Properties of a BackLogin. */
-    interface IBackLogin {
+    /** Properties of a BackLoginBroadCastRoom1001. */
+    interface IBackLoginBroadCastRoom1001 {
 
-        /** BackLogin code */
-        code?: (message.BackLogin.RetCode|null);
+        /** BackLoginBroadCastRoom1001 code */
+        code?: (message.BackLoginBroadCastRoom1001.RetCode|null);
 
-        /** BackLogin msg */
+        /** BackLoginBroadCastRoom1001 msg */
         msg?: (string|null);
     }
 
-    /** Represents a BackLogin. */
-    class BackLogin implements IBackLogin {
+    /** Represents a BackLoginBroadCastRoom1001. */
+    class BackLoginBroadCastRoom1001 implements IBackLoginBroadCastRoom1001 {
 
         /**
-         * Constructs a new BackLogin.
+         * Constructs a new BackLoginBroadCastRoom1001.
          * @param [properties] Properties to set
          */
-        constructor(properties?: message.IBackLogin);
+        constructor(properties?: message.IBackLoginBroadCastRoom1001);
 
-        /** BackLogin code. */
-        public code: message.BackLogin.RetCode;
+        /** BackLoginBroadCastRoom1001 code. */
+        public code: message.BackLoginBroadCastRoom1001.RetCode;
 
-        /** BackLogin msg. */
+        /** BackLoginBroadCastRoom1001 msg. */
         public msg: string;
 
         /**
-         * Creates a new BackLogin instance using the specified properties.
+         * Creates a new BackLoginBroadCastRoom1001 instance using the specified properties.
          * @param [properties] Properties to set
-         * @returns BackLogin instance
+         * @returns BackLoginBroadCastRoom1001 instance
          */
-        public static create(properties?: message.IBackLogin): message.BackLogin;
+        public static create(properties?: message.IBackLoginBroadCastRoom1001): message.BackLoginBroadCastRoom1001;
 
         /**
-         * Encodes the specified BackLogin message. Does not implicitly {@link message.BackLogin.verify|verify} messages.
-         * @param message BackLogin message or plain object to encode
+         * Encodes the specified BackLoginBroadCastRoom1001 message. Does not implicitly {@link message.BackLoginBroadCastRoom1001.verify|verify} messages.
+         * @param message BackLoginBroadCastRoom1001 message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: message.IBackLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: message.IBackLoginBroadCastRoom1001, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified BackLogin message, length delimited. Does not implicitly {@link message.BackLogin.verify|verify} messages.
-         * @param message BackLogin message or plain object to encode
+         * Encodes the specified BackLoginBroadCastRoom1001 message, length delimited. Does not implicitly {@link message.BackLoginBroadCastRoom1001.verify|verify} messages.
+         * @param message BackLoginBroadCastRoom1001 message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: message.IBackLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: message.IBackLoginBroadCastRoom1001, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Decodes a BackLogin message from the specified reader or buffer.
+         * Decodes a BackLoginBroadCastRoom1001 message from the specified reader or buffer.
          * @param reader Reader or buffer to decode from
          * @param [length] Message length if known beforehand
-         * @returns BackLogin
+         * @returns BackLoginBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackLogin;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackLoginBroadCastRoom1001;
 
         /**
-         * Decodes a BackLogin message from the specified reader or buffer, length delimited.
+         * Decodes a BackLoginBroadCastRoom1001 message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
-         * @returns BackLogin
+         * @returns BackLoginBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackLogin;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackLoginBroadCastRoom1001;
 
         /**
-         * Verifies a BackLogin message.
+         * Verifies a BackLoginBroadCastRoom1001 message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
         public static verify(message: { [k: string]: any }): (string|null);
 
         /**
-         * Creates a BackLogin message from a plain object. Also converts values to their respective internal types.
+         * Creates a BackLoginBroadCastRoom1001 message from a plain object. Also converts values to their respective internal types.
          * @param object Plain object
-         * @returns BackLogin
+         * @returns BackLoginBroadCastRoom1001
          */
-        public static fromObject(object: { [k: string]: any }): message.BackLogin;
+        public static fromObject(object: { [k: string]: any }): message.BackLoginBroadCastRoom1001;
 
         /**
-         * Creates a plain object from a BackLogin message. Also converts values to other types if specified.
-         * @param message BackLogin
+         * Creates a plain object from a BackLoginBroadCastRoom1001 message. Also converts values to other types if specified.
+         * @param message BackLoginBroadCastRoom1001
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: message.BackLogin, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: message.BackLoginBroadCastRoom1001, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
-         * Converts this BackLogin to JSON.
+         * Converts this BackLoginBroadCastRoom1001 to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
     }
 
-    namespace BackLogin {
+    namespace BackLoginBroadCastRoom1001 {
 
         /** RetCode enum. */
         enum RetCode {
             RC_OK = 0,
-            RC_UNLOGINED = 1,
-            RC_WRONG_TOKEN = 2,
-            RC_LOGIN_CLOSED = 3,
-            RC_TOO_FAST = 4
-        }
-    }
-
-    /** Properties of a UserAttr. */
-    interface IUserAttr {
-
-        /** UserAttr list */
-        list?: (message.UserAttr.Iattr[]|null);
-    }
-
-    /** Represents a UserAttr. */
-    class UserAttr implements IUserAttr {
-
-        /**
-         * Constructs a new UserAttr.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: message.IUserAttr);
-
-        /** UserAttr list. */
-        public list: message.UserAttr.Iattr[];
-
-        /**
-         * Creates a new UserAttr instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns UserAttr instance
-         */
-        public static create(properties?: message.IUserAttr): message.UserAttr;
-
-        /**
-         * Encodes the specified UserAttr message. Does not implicitly {@link message.UserAttr.verify|verify} messages.
-         * @param message UserAttr message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: message.IUserAttr, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified UserAttr message, length delimited. Does not implicitly {@link message.UserAttr.verify|verify} messages.
-         * @param message UserAttr message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: message.IUserAttr, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a UserAttr message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns UserAttr
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.UserAttr;
-
-        /**
-         * Decodes a UserAttr message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns UserAttr
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.UserAttr;
-
-        /**
-         * Verifies a UserAttr message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a UserAttr message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns UserAttr
-         */
-        public static fromObject(object: { [k: string]: any }): message.UserAttr;
-
-        /**
-         * Creates a plain object from a UserAttr message. Also converts values to other types if specified.
-         * @param message UserAttr
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: message.UserAttr, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this UserAttr to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    namespace UserAttr {
-
-        /** Properties of an attr. */
-        interface Iattr {
-
-            /** attr name */
-            name?: (string|null);
-
-            /** attr numberVal */
-            numberVal?: (number|null);
-
-            /** attr strVal */
-            strVal?: (string|null);
-
-            /** attr boolVal */
-            boolVal?: (boolean|null);
-        }
-
-        /** Represents an attr. */
-        class attr implements Iattr {
-
-            /**
-             * Constructs a new attr.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: message.UserAttr.Iattr);
-
-            /** attr name. */
-            public name: string;
-
-            /** attr numberVal. */
-            public numberVal: number;
-
-            /** attr strVal. */
-            public strVal: string;
-
-            /** attr boolVal. */
-            public boolVal: boolean;
-
-            /**
-             * Creates a new attr instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns attr instance
-             */
-            public static create(properties?: message.UserAttr.Iattr): message.UserAttr.attr;
-
-            /**
-             * Encodes the specified attr message. Does not implicitly {@link message.UserAttr.attr.verify|verify} messages.
-             * @param message attr message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: message.UserAttr.Iattr, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified attr message, length delimited. Does not implicitly {@link message.UserAttr.attr.verify|verify} messages.
-             * @param message attr message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: message.UserAttr.Iattr, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes an attr message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns attr
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.UserAttr.attr;
-
-            /**
-             * Decodes an attr message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns attr
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.UserAttr.attr;
-
-            /**
-             * Verifies an attr message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates an attr message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns attr
-             */
-            public static fromObject(object: { [k: string]: any }): message.UserAttr.attr;
-
-            /**
-             * Creates a plain object from an attr message. Also converts values to other types if specified.
-             * @param message attr
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: message.UserAttr.attr, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this attr to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
+            RC_WRONG_IDENTIFIER = 1,
+            RC_LOGIN_CLOSED = 2,
+            RC_TOO_FAST = 3
         }
     }
 
@@ -2094,7 +1892,7 @@ export namespace message {
         ACCOUNTSERVER = 2,
         WORLDSERVER = 3,
         CORESERVER = 4,
-        ASSISTSERVER = 5
+        FUNCSERVER = 5
     }
 
     /** Properties of an Ipacket. */
@@ -2211,6 +2009,9 @@ export namespace message {
         /** RpcHead ClientId */
         ClientId?: (number|null);
 
+        /** RpcHead Key */
+        Key?: (string|null);
+
         /** RpcHead AccountId */
         AccountId?: (number|Long|null);
 
@@ -2238,6 +2039,9 @@ export namespace message {
 
         /** RpcHead ClientId. */
         public ClientId: number;
+
+        /** RpcHead Key. */
+        public Key: string;
 
         /** RpcHead AccountId. */
         public AccountId: (number|Long);
@@ -2431,5 +2235,597 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a RequestLike. */
+    interface IRequestLike {
+
+        /** RequestLike num */
+        num?: (number|null);
+    }
+
+    /** Represents a RequestLike. */
+    class RequestLike implements IRequestLike {
+
+        /**
+         * Constructs a new RequestLike.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IRequestLike);
+
+        /** RequestLike num. */
+        public num: number;
+
+        /**
+         * Creates a new RequestLike instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RequestLike instance
+         */
+        public static create(properties?: message.IRequestLike): message.RequestLike;
+
+        /**
+         * Encodes the specified RequestLike message. Does not implicitly {@link message.RequestLike.verify|verify} messages.
+         * @param message RequestLike message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IRequestLike, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RequestLike message, length delimited. Does not implicitly {@link message.RequestLike.verify|verify} messages.
+         * @param message RequestLike message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IRequestLike, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RequestLike message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RequestLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.RequestLike;
+
+        /**
+         * Decodes a RequestLike message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RequestLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.RequestLike;
+
+        /**
+         * Verifies a RequestLike message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RequestLike message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RequestLike
+         */
+        public static fromObject(object: { [k: string]: any }): message.RequestLike;
+
+        /**
+         * Creates a plain object from a RequestLike message. Also converts values to other types if specified.
+         * @param message RequestLike
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.RequestLike, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RequestLike to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BackLike. */
+    interface IBackLike {
+
+        /** BackLike code */
+        code?: (message.BackLike.RetCode|null);
+
+        /** BackLike msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackLike. */
+    class BackLike implements IBackLike {
+
+        /**
+         * Constructs a new BackLike.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackLike);
+
+        /** BackLike code. */
+        public code: message.BackLike.RetCode;
+
+        /** BackLike msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackLike instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackLike instance
+         */
+        public static create(properties?: message.IBackLike): message.BackLike;
+
+        /**
+         * Encodes the specified BackLike message. Does not implicitly {@link message.BackLike.verify|verify} messages.
+         * @param message BackLike message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackLike, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackLike message, length delimited. Does not implicitly {@link message.BackLike.verify|verify} messages.
+         * @param message BackLike message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackLike, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackLike message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackLike;
+
+        /**
+         * Decodes a BackLike message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackLike;
+
+        /**
+         * Verifies a BackLike message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackLike message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackLike
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackLike;
+
+        /**
+         * Creates a plain object from a BackLike message. Also converts values to other types if specified.
+         * @param message BackLike
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackLike, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackLike to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace BackLike {
+
+        /** RetCode enum. */
+        enum RetCode {
+            RC_OK = 0,
+            RC_LOGIN_CLOSED = 2,
+            RC_TOO_FAST = 3
+        }
+    }
+
+    /** Properties of a BroadCastLike. */
+    interface IBroadCastLike {
+
+        /** BroadCastLike list */
+        list?: (message.BroadCastLike.IUserLike[]|null);
+
+        /** BroadCastLike finalLikeNum */
+        finalLikeNum?: (number|null);
+    }
+
+    /** Represents a BroadCastLike. */
+    class BroadCastLike implements IBroadCastLike {
+
+        /**
+         * Constructs a new BroadCastLike.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBroadCastLike);
+
+        /** BroadCastLike list. */
+        public list: message.BroadCastLike.IUserLike[];
+
+        /** BroadCastLike finalLikeNum. */
+        public finalLikeNum: number;
+
+        /**
+         * Creates a new BroadCastLike instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BroadCastLike instance
+         */
+        public static create(properties?: message.IBroadCastLike): message.BroadCastLike;
+
+        /**
+         * Encodes the specified BroadCastLike message. Does not implicitly {@link message.BroadCastLike.verify|verify} messages.
+         * @param message BroadCastLike message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBroadCastLike, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BroadCastLike message, length delimited. Does not implicitly {@link message.BroadCastLike.verify|verify} messages.
+         * @param message BroadCastLike message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBroadCastLike, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BroadCastLike message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BroadCastLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastLike;
+
+        /**
+         * Decodes a BroadCastLike message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BroadCastLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastLike;
+
+        /**
+         * Verifies a BroadCastLike message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BroadCastLike message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BroadCastLike
+         */
+        public static fromObject(object: { [k: string]: any }): message.BroadCastLike;
+
+        /**
+         * Creates a plain object from a BroadCastLike message. Also converts values to other types if specified.
+         * @param message BroadCastLike
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BroadCastLike, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BroadCastLike to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace BroadCastLike {
+
+        /** Properties of a UserLike. */
+        interface IUserLike {
+
+            /** UserLike tp */
+            tp?: (string|null);
+
+            /** UserLike num */
+            num?: (number|null);
+
+            /** UserLike avatar */
+            avatar?: (string|null);
+        }
+
+        /** Represents a UserLike. */
+        class UserLike implements IUserLike {
+
+            /**
+             * Constructs a new UserLike.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: message.BroadCastLike.IUserLike);
+
+            /** UserLike tp. */
+            public tp: string;
+
+            /** UserLike num. */
+            public num: number;
+
+            /** UserLike avatar. */
+            public avatar: string;
+
+            /**
+             * Creates a new UserLike instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns UserLike instance
+             */
+            public static create(properties?: message.BroadCastLike.IUserLike): message.BroadCastLike.UserLike;
+
+            /**
+             * Encodes the specified UserLike message. Does not implicitly {@link message.BroadCastLike.UserLike.verify|verify} messages.
+             * @param message UserLike message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: message.BroadCastLike.IUserLike, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified UserLike message, length delimited. Does not implicitly {@link message.BroadCastLike.UserLike.verify|verify} messages.
+             * @param message UserLike message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: message.BroadCastLike.IUserLike, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a UserLike message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns UserLike
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastLike.UserLike;
+
+            /**
+             * Decodes a UserLike message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns UserLike
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastLike.UserLike;
+
+            /**
+             * Verifies a UserLike message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a UserLike message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns UserLike
+             */
+            public static fromObject(object: { [k: string]: any }): message.BroadCastLike.UserLike;
+
+            /**
+             * Creates a plain object from a UserLike message. Also converts values to other types if specified.
+             * @param message UserLike
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: message.BroadCastLike.UserLike, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this UserLike to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+    }
+
+    /** Properties of a BroadBilibili. */
+    interface IBroadBilibili {
+
+        /** BroadBilibili list */
+        list?: (message.BroadBilibili.IBilibili[]|null);
+    }
+
+    /** Represents a BroadBilibili. */
+    class BroadBilibili implements IBroadBilibili {
+
+        /**
+         * Constructs a new BroadBilibili.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBroadBilibili);
+
+        /** BroadBilibili list. */
+        public list: message.BroadBilibili.IBilibili[];
+
+        /**
+         * Creates a new BroadBilibili instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BroadBilibili instance
+         */
+        public static create(properties?: message.IBroadBilibili): message.BroadBilibili;
+
+        /**
+         * Encodes the specified BroadBilibili message. Does not implicitly {@link message.BroadBilibili.verify|verify} messages.
+         * @param message BroadBilibili message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBroadBilibili, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BroadBilibili message, length delimited. Does not implicitly {@link message.BroadBilibili.verify|verify} messages.
+         * @param message BroadBilibili message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBroadBilibili, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BroadBilibili message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BroadBilibili
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadBilibili;
+
+        /**
+         * Decodes a BroadBilibili message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BroadBilibili
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadBilibili;
+
+        /**
+         * Verifies a BroadBilibili message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BroadBilibili message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BroadBilibili
+         */
+        public static fromObject(object: { [k: string]: any }): message.BroadBilibili;
+
+        /**
+         * Creates a plain object from a BroadBilibili message. Also converts values to other types if specified.
+         * @param message BroadBilibili
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BroadBilibili, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BroadBilibili to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace BroadBilibili {
+
+        /** Properties of a Bilibili. */
+        interface IBilibili {
+
+            /** Bilibili sender */
+            sender?: (string|null);
+
+            /** Bilibili name */
+            name?: (string|null);
+
+            /** Bilibili num */
+            num?: (number|null);
+        }
+
+        /** Represents a Bilibili. */
+        class Bilibili implements IBilibili {
+
+            /**
+             * Constructs a new Bilibili.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: message.BroadBilibili.IBilibili);
+
+            /** Bilibili sender. */
+            public sender: string;
+
+            /** Bilibili name. */
+            public name: string;
+
+            /** Bilibili num. */
+            public num: number;
+
+            /**
+             * Creates a new Bilibili instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Bilibili instance
+             */
+            public static create(properties?: message.BroadBilibili.IBilibili): message.BroadBilibili.Bilibili;
+
+            /**
+             * Encodes the specified Bilibili message. Does not implicitly {@link message.BroadBilibili.Bilibili.verify|verify} messages.
+             * @param message Bilibili message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: message.BroadBilibili.IBilibili, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified Bilibili message, length delimited. Does not implicitly {@link message.BroadBilibili.Bilibili.verify|verify} messages.
+             * @param message Bilibili message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: message.BroadBilibili.IBilibili, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Bilibili message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns Bilibili
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadBilibili.Bilibili;
+
+            /**
+             * Decodes a Bilibili message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns Bilibili
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadBilibili.Bilibili;
+
+            /**
+             * Verifies a Bilibili message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a Bilibili message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns Bilibili
+             */
+            public static fromObject(object: { [k: string]: any }): message.BroadBilibili.Bilibili;
+
+            /**
+             * Creates a plain object from a Bilibili message. Also converts values to other types if specified.
+             * @param message Bilibili
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: message.BroadBilibili.Bilibili, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this Bilibili to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
     }
 }

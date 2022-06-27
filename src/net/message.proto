@@ -7,7 +7,7 @@ enum NODE{
     ACCOUNTSERVER=2;
     WORLDSERVER=3;
     CORESERVER=4;
-    ASSISTSERVER=5;
+    FUNCSERVER=5;
 };
 
 message Ipacket{
@@ -19,12 +19,15 @@ message Ipacket{
 
 message RpcHead{
     uint32  ClientId = 1; //网关连接ID
-    int64  AccountId = 2;
-    int32  fromNode = 3;
-    int32  toNode = 4;
-    int64  CallId = 5;
-    uint32  SocketId = 6;
+    string  Key = 2;
+    int64  AccountId = 3;
+    int32  fromNode = 4;
+    int32  toNode = 5;
+    int64  CallId = 6;
+    uint32  SocketId = 7;
 }
+
+
 
 message RpcPacket{
     string FuncName = 1;
@@ -32,3 +35,4 @@ message RpcPacket{
     RpcHead RpcHead = 3;
     bytes RpcBody = 4;
 }
+

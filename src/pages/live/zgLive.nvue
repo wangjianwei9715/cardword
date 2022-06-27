@@ -1,80 +1,77 @@
 <template>
 	<view class="full">
-		<web-view :catchtouchmove="true" :style="{height:height,width:width}" id='webView' v-if="viewShow"
-			class="webView" ref="webview" :webview-styles="webviewStyles" @onPostMessage="handleMessage"
-			:src="webViewUrl" allow='microphone;camera;midi;encrypted-media;'>
+		<video show-play-btn='false' show-center-play-btn='false' autoplay='true'
+			style='width:750rpx;position:fixed;top:0' :style="{height:height,width:width}" :src='liveRTMP'
+			show-fullscreen-btn='false' object-fit='fill' show-loading='false' ref='video'></video>
+		<web-view :catchtouchmove="true" :style="{height:height,width:width}" id='webView' class="webView" ref="webview"
+			:webview-styles="webviewStyles" @onPostMessage="handleMessage" :src="webViewUrl" v-if='viewShow'
+			allow='microphone;camera;midi;encrypted-media;'>
 		</web-view>
-		<view class='merchant' :style="{top:56+statusBarHeight+'rpx'}">
-			<image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill'
-				@click='pageJump(`/pages/userinfo/merchant_shopsV2?id=${merchantMessage.id}&alias=${merchantMessage.alias}`)'>
-			</image>
-			<view class='merchant_name'>
-				<text class='merchant_name_text'>{{merchantMessage.name}}</text>
-				<text class='merchant_name_like'>{{roomLikeNum}}本场点赞</text>
-			</view>
-			<text class='merchant_action' @click='attention'>{{merchantMessage.followed?'已关注':'关注'}}</text>
-		</view>
-		<view class="card" :class="{cardBottom:cardShow}">
-			<view class='card-title'>
-				<text class='card-title-text'>商品卡密</text>
-				<image class='card-title-img' @click='cardShow=false' src='../../static/pay/guanbi@2x.png'></image>
-			</view>
-			<scroll-view class='card-scroll' :scroll-y='true' @scrolltolower='cardReachBottom'>
-				<view class="card-index" v-for="(items,indexs) in card.list" :key="indexs" @click='sendCard(items)'>
-					<view class="card-left">
-						<text class="card-left-text" :style="{color:txtIndex==0?'#333333':'#ef3333'}" :key="txtIndex"
-							v-for="(txtItem,txtIndex)  in getNameReward(items.name)">
-							{{txtItem}}
-						</text>
-					</view>
-					<!-- <text class="card-right" :class="{'winning-card':items.state==2}"
-						@click='onClickLookCard(items)'>{{items.content}}</text> -->
+		<template v-if='webLoadSuccess'>
+			<view class="publicBottom card" :class="{publicBottomShow:cardShow}">
+				<view class='card-title'>
+					<text class='card-title-text'>商品卡密</text>
+					<image class='card-title-img' @click='cardShow=false' src='../../static/pay/guanbi@2x.png'></image>
 				</view>
-			</scroll-view>
-		</view>
-		<!-- <view class="interaction">
-			<view class="interaction_item">
-				<image src="../../static/live/v2/order.png" class="interaction_icon" mode="aspectFill" style="width: 49rpx;height: 56rpx;"></image>
+				<scroll-view class='card-scroll' :scroll-y='true' @scrolltolower='cardReachBottom'>
+					<view class="card-index" v-for="(items,indexs) in card.list" :key="indexs" @click='sendCard(items)'>
+						<view class="card-left">
+							<text class="card-left-text" :style="{color:txtIndex==0?'#333333':'#ef3333'}"
+								:key="txtIndex" v-for="(txtItem,txtIndex)  in getNameReward(items.name)">
+								{{txtItem}}
+							</text>
+						</view>
+					</view>
+				</scroll-view>
 			</view>
-			<view class="interaction_item" @click="share">
-				<image src="../../static/live/v2/share.png" class="interaction_icon" mode="aspectFill" style="width: 43rpx;height: 37rpx;"></image>
-			</view>
-			<view class="interaction_item">
-				<image src="../../static/live/v2/noneLove.png" class="interaction_icon" mode="aspectFill" style="width: 49rpx;height: 48rpx;"></image>
-			</view>
-		</view> -->
+		</template>
 	</view>
 
 </template>
 
-<script>
+<script lang="ts">
 	import request from '@/net/nuveRequest'
 	import permision from "@/js_sdk/wa-permission/permission"
 	import {
 		Md5
 	} from 'ts-md5/dist/md5';
+	// import {app} from '@/app'
+	import {
+		PackageBase
+	} from "@/net/PackageBase";
+	import {
+		SocketServer
+	} from '@/net/SocketServer'
+	import {
+		Message
+	} from "@/net/NetDefine";
+	// import PackageBase from "@/net/PackageBase.ts";
+	import * as proto from '../../net/proto';
 	let UIImpactFeedbackGenerator = null;
 	let impact = null;
-
 	const isTest = false
 	export default {
 		data() {
 			return {
-				height: null,
-				width: null,
-				viewShow: false,
+				app: getApp().globalData.app,
+				height: null, //设备高
+				width: null, //设备宽
+				viewShow: true, //webView显示
+				webLoadSuccess: false,
+				webEvalTimer: null,
+				webView: null, //webView实例
 				webviewStyles: {
 					progress: false
 				},
-				statusBarHeight: 0,
-				safeAreaBottomHeight: 0,
-				webViewUrl: '',
+				server: new SocketServer(),
+				statusBarHeight: 0, //状态栏高度
+				safeAreaBottomHeight: 0, //底部安全距离高度
+				webViewUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index', //webView地址
+				videoShow: false,
+				videoContxt: null, //视频实例
+				liveRTMP: '', //直播rtmp流地址
 				AnchorEndUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
-				// AnchorEndUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
-				// AnchorEndUrl: 'http://192.168.8.26:8081/#/pages/liveStreaming/theAnchorEnd',
-				// UserUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/index?ts='+ (+new Date()),
 				UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
-				// UserUrl: 'https://www.ka-world.com/liveTest/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
 					roomID: null,
@@ -87,6 +84,7 @@
 				appProfile: {
 
 				},
+				isAnchor: false, //是否为主播
 				hasToken: Boolean(uni.getStorageSync("token") && JSON.parse(uni.getStorageSync("token"))
 					.accessToken),
 				context: null,
@@ -99,9 +97,9 @@
 				liveData: {
 					//状态  0 待直播,  1 即将直播  2 正在直播,  3 直播完成(回放)  -1 过期 -2 已取消
 				},
-				deviceInfo: {},
-				roomLikeNum: 0,
-				cardShow: false,
+				goodsDetail: {}, //商品详情信息
+				deviceInfo: {}, //设备信息
+				roomLikeNum: 0, //房间点赞数量
 				cardList: [],
 				card: {
 					list: [],
@@ -110,50 +108,211 @@
 				cardQuery: {
 					pageIndex: 1,
 					pageSize: 30,
-				}
+				},
+				websocket: '',
+				isConnectSocket: false,
+				reconnectionTimer: null, //断线重连定时器
+				heartBeatTimer: null //心跳包定时器
 			}
 		},
 		onReady() {
-			
+			// plus.webview.create()
+		},
+		watch: {
+			liveRTMP: function(val) {
+				if (val) this.videoContxt.play()
+			}
 		},
 		async onLoad(query) {
-			// var result = await permision.requestAndroidPermission(['android.permission.CAMERA'])
+			this.$nextTick(() => {
+				this.webView = this.$refs.webview
+			})
+			uni.$on('socketClose', (res) => {
+				console.log('socket断开了');
+				//监听到断线
+				this.isConnectSocket = false
+				this.reconnectionTimer && clearInterval(this.reconnectionTimer)
+				this.reconnectionSocket()
+			})
+			// permision.requestAndroidPermission('android.permission.CAMERA')
+			// permision.requestAndroidPermission('android.permission.RECORD_AUDIO')
 			if (!query.roomID) return
+			this.isAnchor = query.isAnchor
 			this.webViewUrl = query.isAnchor == 'true' ? this.AnchorEndUrl : this.UserUrl
-			// if (query.merchantId) this.getMerchant(+query.merchantId)
-			if (query.alias) this.getMerchant(query.alias)
+			// if (query.alias) this.getMerchant(query.alias)
+			this.merchantMessage.alias = query.alias
 			if (query.roomID) this.loginRoomData.roomID = query.roomID
 			if (query.streamID) this.loginRoomData.streamID = query.streamID
-
 			const {
 				data
 			} = await this.getLiveRoomInfo(+query.roomID)
-			console.log(data);
 			this.liveData = data
+			// this.getGoodsDetail(data.goodCode)
 			uni.getSystemInfo({
 				success: (res) => {
 					this.deviceAssign(res)
-					this.getUserProfile(res)
 					this.deviceInfo = res
+					//安卓且为主播端的情况下
+					if (this.deviceInfo.platform == 'android' && query.isAnchor=='true') {
+						this.createWebView(res)
+					} else {
+						this.getUserProfile(res)
+					}
 					if (this.deviceInfo.platform == 'ios') {
 						UIImpactFeedbackGenerator = plus.ios.importClass('UIImpactFeedbackGenerator');
 						impact = new UIImpactFeedbackGenerator();
 					}
 				}
 			});
+			this.$nextTick(() => {
+				this.videoContxt = this.$refs.video
+			})
 		},
 		onShow() {
 			uni.hideLoading()
 		},
 		onUnload() {
-			if (this.$refs.webview) this.$refs.webview.evalJs(
-				`logOutRoom(${JSON.stringify(this.loginRoomData)})`
-			)
-			if (this.tokenData.uid) request('brodcast/third/1001/user/logout/' + this.loginRoomData.roomID, {
-				uid: this.tokenData.uid
-			}, 'post')
+
+			this.leaveRoom()
 		},
 		methods: {
+			//创建socketMessage包并发送
+			sendSocketMsg(packName, valueObject = null) {
+				return new Promise((resolve, reject) => {
+					let msg = new proto.message[packName]()
+					if (valueObject && Object.keys(valueObject).length) {
+						Object.keys(valueObject).forEach((key, index) => {
+							msg[key] = valueObject[key]
+						})
+					}
+					let buffer = proto.message[packName].encode(msg).finish();
+					let pack = new PackageBase(Message[packName]);
+					pack.d(buffer).to(this.server);
+					resolve({
+						pack,
+						buffer
+					})
+				})
+			},
+			//心跳包
+			sendHeartBeat() {
+				if (this.server && this.server.isNetOK()) {
+					this.sendSocketMsg('HeartBeat', {
+						time: new Date().getTime()
+					})
+				}
+			},
+			//登录房间socket
+			sendWebsocketLogin() {
+				this.sendSocketMsg('LoginBroadCastRoom1001', {
+					roomId: +this.loginRoomData.roomID,
+					uid: this.tokenData.uid,
+					token: this.loginRoomData.socketToken
+				}).then(res => {
+					this.isConnectSocket = true
+					this.reconnectionTimer && clearInterval(this.reconnectionTimer)
+				})
+			},
+			//离开房间
+			leaveOutRoomSocket() {
+				this.sendSocketMsg('LogoutBroadCastRoom1001', {
+					roomId: +this.loginRoomData.roomID
+				}).then(res => {
+					console.log('socket离开房间');
+					this.isConnectSocket = false
+				})
+			},
+			//连接sockey
+			connectSever() {
+				this.server && this.server.close();
+				this.server.setServerInfo({
+					// ip: this.websocket
+					ip: "ws://192.168.8.79:31700/ws"
+				});
+				this.server.connect(
+					() => {
+						this.sendHeartBeat();
+						this.sendWebsocketLogin();
+					},
+					() => {
+						uni.showToast({
+							title: '连接失败',
+							icon: 'none'
+						})
+						this.isConnectSocket = false
+						// uni.showModal({
+						// 	title: '连接失败',
+						// 	content: '服务器维护中，请稍后再试...',
+						// 	showCancel: false,
+						// 	success: () => {
+						// 		this.connectSever();
+						// 	}
+						// });
+					}
+				);
+			},
+			reconnectionSocket() {
+				if (this.isConnectSocket) return
+				this.reconnectionTimer && clearInterval(this.reconnectionTimer)
+				this.reconnectionTimer = setInterval(() => {
+					console.log('断线重连中', new Date());
+					this.initSocket(false)
+				}, 1000)
+			},
+			initSocket(isFirst = true) {
+				const socketInfo = uni.getStorageSync('socketInfo')
+				this.heartBeatTimer && clearInterval(this.heartBeatTimer)
+				this.heartBeatTimer = setInterval(() => {
+					this.sendHeartBeat();
+				}, 6 * 1000)
+				this.connectSever();
+				if (isFirst) {
+					let listeners = ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike'];
+					this.server.registerHandlers(this, listeners)
+				}
+			},
+			BackLoginBroadCastRoom1001(res) {
+				console.log('登陆房间回调', res);
+			},
+			BackLike(res) {
+				console.log('点赞发送的结果回调', res);
+			},
+			BroadCastLike(res) {
+				this.roomLikeNum = res.finalLikeNum
+				this.informH5Action('hasOtherManClickLike')
+			},
+			leaveRoom() {
+				this.leaveOutRoomSocket()
+
+				if (this.webView) {
+					this.webView.evalJs(
+						`logOutRoom(${JSON.stringify(this.loginRoomData)})`
+					)
+
+				}
+				if (this.tokenData.uid) request('funcApi/brodcast/third/1001/user/logout/' + this.loginRoomData.roomID, {
+					uid: this.tokenData.uid
+				}, 'post')
+
+			},
+			createWebView(res) {
+				console.log('创建webview');
+				const now = plus.webview.currentWebview()
+				this.webView = plus.webview.create(this.webViewUrl, 'androidWeb')
+				this.webView.evalJs = this.webView.evalJS
+				now.append(this.webView)
+				this.viewShow = false
+				this.webView.addEventListener('titleUpdate', (event) => {
+					const h5Event = JSON.parse(event.title)
+					this.handleMessage(h5Event)
+				})
+
+				this.webView.addEventListener('loaded', (event) => {
+					console.log('房间加载完成');
+					this.webLoadSuccess = true
+					this.getUserProfile(res)
+				})
+			},
 			//webview高度,设备相关
 			deviceAssign(res) {
 				this.deviceId = res.deviceId
@@ -166,12 +325,6 @@
 				this.width = res.screenWidth
 				this.viewShow = true
 				uni.hideLoading()
-				// setTimeout(() => {
-				// 	const nowWebView = plus.webview.currentWebview()
-				// 	// console.log(plus.webview.defaultHardwareAccelerated());
-				// 	// console.log(plus.webview.currentWebview().getURL());
-				// 	// plus.webview.hide(nowWebView,'slide-out-right')
-				// }, 3000)
 			},
 			//获取直播间信息
 			async getLiveRoomInfo(roomID) {
@@ -180,18 +333,18 @@
 					ts,
 					sign: Md5.hashStr(`1001room_${roomID}_${ts}`)
 				}
-				return request('brodcast/third/1001/roomInfo/' + roomID, params, 'get')
+				return request('funcApi/brodcast/third/1001/roomInfo/' + roomID, params, 'get')
 			},
 			//获取及赋值 
 			async getUserProfile(deviceInfo) {
 				let userData = {}
 				const device = Md5.hashStr(deviceInfo.deviceId)
-
-				console.log(this.loginRoomData.roomID);
-				const tokenRespone = await request('brodcast/third/1001/user/login/' + this.loginRoomData.roomID, {},
+				const tokenRespone = await request('funcApi/brodcast/third/1001/user/login/' + this.loginRoomData
+					.roomID, {},
 					'post')
+				this.websocket = tokenRespone.websocket
 				this.tokenData = tokenRespone.data
-				console.log(this.tokenData);
+
 				if (this.hasToken) {
 					const {
 						data
@@ -203,50 +356,74 @@
 							'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.06.07/teamContest/teamContest_index/0/1654582097412np07eg7ntj.png'
 						userData.name = this.tokenData.uname
 					}
+					//如果为主播的情况下 头像使用商家头像//昵称也使用商家昵称
+					if (this.isAnchor) {
+						userData.avatar = decodeURIComponent(this.merchantMessage.logo)
+						userData.name = this.merchantMessage.name
+					}
 				} else {
 					//用设备号
 					userData = {
 						name: this.tokenData.uname,
 						userId: this.tokenData.uid
 					}
-					// userData = {
-					// 	userId: device,
-					// 	name: '小卡迷' + deviceInfo.deviceId.substr(deviceInfo.deviceId.length - 4)
-					// }
 				}
 				this.loginRoom(userData, tokenRespone.data, deviceInfo)
+				setTimeout(() => {
+					// this.initSocket(true)
+				}, 1000)
+			},
+			SET_CDN_URL(cdnData) {
+				this.liveRTMP = cdnData.urlsRTMP
+			},
+			stopPull() {
+				this.videoContxt.stop()
+				this.liveRTMP = ''
+
+			},
+			pageLoadSuccess() {
+
+			},
+			canEval() {
+				this.webLoadSuccess = true
 			},
 			loginRoom(userData, roomTokenData, deviceInfo) {
 				this.appProfile = userData
 				this.loginRoomData.userID = roomTokenData.uid
 				this.loginRoomData.userName = userData.name
 				this.loginRoomData.token = roomTokenData.token
+				this.loginRoomData.socketToken = roomTokenData.socketToken
 				this.loginRoomData.streamID = roomTokenData.streamId || null
-				setTimeout(() => {
-					this.againLogin()
-				}, 1000)
+				this.loginRoomData.alias = this.merchantMessage.alias
+				this.againLogin()
 			},
 			againLogin() {
-				this.$refs.webview.evalJs(
-					`statusBarHeight=${this.deviceInfo.statusBarHeight}`
-				) //通知webView手机状态栏高度
-				this.$refs.webview.evalJs(
-					`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)},${JSON.stringify(this.liveData)})`
-				) //登录房间
+				this.webEvalTimer = setInterval(() => {
+					if (!this.webLoadSuccess) return
+					this.webView.evalJs(`setToken(${JSON.stringify(this.app.token)})`)
+					this.webView.evalJs(
+						`statusBarHeight=${this.deviceInfo.statusBarHeight}`
+					) //通知webView手机状态栏高度
+					this.webView.evalJs(
+						`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)},${JSON.stringify(this.liveData)})`
+					) //登录房间
+					clearInterval(this.webEvalTimer)
+				}, 100)
 			},
-			getMerchant(merchantId) {
-				request('merchant/1/detail/' + merchantId, {}, 'get').then(res => {
-					this.merchantMessage = res.data
-				})
-			},
+
 			openCard() {
 				this.cardQuery.pageIndex = 1
 				this.getNoList()
 			},
+			//发送卡密
 			sendCard(item) {
 				this.informH5Action('cardSend', item.name)
 				this.UIClickFeedBack()
 				this.cardShow = false
+			},
+			//调用h5发送弹幕
+			sendText(text) {
+				this.informH5Action('cardSend', text)
 			},
 			//ui触感反馈(单次)
 			UIClickFeedBack() {
@@ -258,71 +435,58 @@
 					uni.vibrateShort()
 				}
 			},
+			//调用h5Vue内部methods方法
 			informH5Action(actionName, params = '') {
 				const sendParams = JSON.stringify({
 					params: params
 				})
-				this.$refs.webview.evalJs(
+				this.webView.evalJs(
 					`actionSet("${actionName}",${sendParams})`
 				)
 			},
-			getNoList() {
-				request(`me/good/${this.liveData.goodCode}/orderNoList`, this.cardQuery, 'get').then(
-					res => {
-						const list = res.list || []
-						this.card.totalPage = res.totalPage
-						this.cardQuery.pageIndex == 1 ? this.card.list = list : this.card.list.push(...list)
-						this.cardShow = true
-					})
-			},
-			cardReachBottom() {
-				if (this.cardQuery.pageIndex < this.card.totalPage) {
-					this.cardQuery.pageIndex += 1
-					this.getNoList()
-				}
-			},
-			getNameReward(name) {
-				let rewardIndex = name.lastIndexOf('、');
-				if (rewardIndex == -1) {
-					return [name]
-				} else {
-					let str = name.substring(0, rewardIndex);
-					let reward = name.substring(rewardIndex + 1)
-					return [str + '、', reward]
-				}
-			},
-			getRemoteStream(remoteStream) {
-				console.log(remoteStream);
-			},
-			onClickLookCard(item) {
-				if (item.state != 2) return;
-				request('me/cardNo/' + item.id + '/hit/pic', {}, 'get').then(res => {
-					const urls = (res.list || []).map(image => {
-						return decodeURIComponent(image)
-					})
-					uni.previewImage({
-						urls,
-						current: 0,
-						indicator: "number"
-					});
+			getMerchant(merchantId) {
+				request('merchant/1/detail/' + merchantId, {}, 'get').then(res => {
+					this.merchantMessage = res.data
 				})
 			},
-			attention() {
-				if (!this.hasToken) {
-					uni.navigateTo({
-						url: '/pages/login/login'
-					})
-				}
-				this.UIClickFeedBack()
-				request("merchant/1/follow/" + this.merchantMessage.alias, {}, 'post').then(res => {
-					this.merchantMessage.followed = res.data.follow
-
+			// getGoodsDetail(id) {
+			// 	let ts = Math.floor(new Date().getTime() / 1000);
+			// 	let params = {
+			// 		ts: ts,
+			// 		s: Md5.hashStr('kww_good_sign_' + id + '_' + ts + '_2022')
+			// 	}
+			// 	request('dataApi/good/' + id + '/detail', params, 'get').then(data => {
+			// 		if (data.good == null || data.good == undefined) {
+			// 			uni.showToast({
+			// 				title: '无此商品',
+			// 				icon: 'none'
+			// 			})
+			// 			return;
+			// 		}
+			// 	})
+			// },
+			//红包列表
+			getRedPack() {
+				request(`funcApi/brodcast/third/common/room/hongbaolist/${this.loginRoomData.roomID}`, {
+					uid: this.tokenData.uid
+				}, 'get').then(res => {
+					console.log(res);
+				}).catch(err => {
+					// console.log(err);
+				})
+			},
+			//礼物列表
+			getGiftList() {
+				request(`funcApi/brodcast/third/common/room/giftlist/${this.loginRoomData.roomID}`, {
+					uid: this.tokenData.uid
+				}, 'get').then(res => {
+					console.log(res);
 				})
 			},
 			stopLive() {
 				const stopSign = Md5.hashStr('stopPushStream' +
 					`_${this.loginRoomData.roomID}_${this.loginRoomData.streamID}`)
-				request('brodcast/third/1001/achor/stopPush/' + this.loginRoomData.roomID, {
+				request('funcApi/brodcast/third/1001/achor/stopPush/' + this.loginRoomData.roomID, {
 					sign: stopSign
 				}, "post").then(res => {
 					console.log('结束直播');
@@ -333,11 +497,16 @@
 			//推流
 			pushStream() {
 				//首次推流获取streamID,改变直播状态
-				if (this.liveData && this.liveData.state <= 1) request('brodcast/third/1001/achor/push/' + this
+				if (this.liveData && this.liveData.state <= 1) request('funcApi/brodcast/third/1001/achor/push/' + this
 					.loginRoomData.roomID, {}, 'post')
 			},
 			//点赞
 			addLike(likeNum) {
+				this.sendSocketMsg('RequestLike', {
+					num: +likeNum
+				}).then(res=>{
+					console.log('发送点赞包成功', msg);
+				})
 				// request('brodcast/third/1001/user/like/' + this.loginRoomData.roomID, {
 				// 	num: likeNum,
 				// 	uid: this.loginRoomData.userID
@@ -396,7 +565,7 @@
 				// 	title: '房间进入失败',
 				// 	icon: 'none'
 				// })
-				console.log(err);
+				// console.log();
 			},
 			pageJump(url) {
 				uni.navigateTo({
@@ -417,7 +586,7 @@
 
 <style>
 	.full {
-		background-color: black;
+		/* background-color: black; */
 		position: fixed;
 		top: 0;
 		right: 0;
@@ -426,109 +595,86 @@
 		overflow: hidden;
 	}
 
-	.merchant {
-		/* width: 252rpx; */
-		height: 72rpx;
-		background: rgba(0, 0, 0, .38);
-		/* background-color: #fff; */
-		border-radius: 36rpx;
+	.webView {
 		position: fixed;
-		left: 24rpx;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		padding: 0 14rpx;
 	}
 
-	.merchant_avatar {
-		width: 61rpx;
-		height: 61rpx;
-		border-radius: 50%;
-		margin-right: 13rpx;
-	}
-
-	.merchant_name {
-		flex-direction: column;
-	}
-
-	.merchant_name_text {
-		font-size: 25rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #FFFFFF;
-
-	}
-
-	.merchant_name_like {
-		font-size: 20rpx;
-		font-family: PingFang SC;
-		font-weight: 300;
-		color: #FFFFFF;
-
-	}
-
-	.merchant_action {
-		width: 93rpx;
-		background: linear-gradient(to right, #EF3333, #EB6141);
-		height: 50rpx;
-		border-radius: 25rpx;
-		font-size: 29rpx;
-		font-family: PingFang SC;
-		font-weight: 600;
-		color: #FFFFFF;
-		line-height: 50rpx;
-		text-align: center;
-		margin-left: 15rpx;
-	}
-
-	.interaction {
+	.envelope {
+		width: 100rpx;
+		height: 100rpx;
+		background: red;
 		position: absolute;
-		bottom: 24rpx;
-		right: 27rpx;
-		justify-content: flex-end;
-		/* background-color: red; */
-		/* width: 300rpx; */
-		flex-direction: row;
+		bottom: -110rpx;
 	}
 
-	.interaction_item {
-		width: 73rpx;
-		height: 73rpx;
-		background: rgba(0, 0, 0, .28);
-		border-radius: 50%;
-		margin-left: 14rpx;
-		/* justify-content:; */
-		align-items: center;
-		display: flex;
-		justify-content: center;
-	}
-
-	.interaction_icon {
-		/* display: block; */
-	}
-
-	.card {
+	.envelopeModal {
 		width: 750rpx;
-		position: absolute;
-		background-color: #fff;
-		height: 800rpx;
-		bottom: 0;
-		transform: translateY(1000rpx);
+		height: 400rpx;
+		top: 340rpx;
+		position: fixed;
+		justify-content: center;
 		align-items: center;
-		font-size: 22rpx;
-		opacity: 0;
-		padding-top: 30rpx;
-		border-radius: 40rpx 40rpx 0 0;
 		transition-property: transform;
 		transition-duration: 0.3s;
 		transition-delay: 0s;
 		transition-timing-function: ease;
+		transform: scale(0)
 	}
 
-	.cardBottom {
-		/* bottom: 0; */
-		opacity: 1;
-		transform: translateY(0rpx);
+	.envelopeModalShow {
+		transform: scale(1)
+	}
+
+	.envelopeModal-pack {
+		width: 300rpx;
+		height: 400rpx;
+		background: red;
+	}
+	/* ------------商品信息-------------- */
+	.goodsDetail {
+		background-color: #fff;
+		height: 900rpx;
+		bottom: 0;
+		align-items: stretch;
+		padding: 20rpx;
+	}
+
+	.goodsBlock {
+		width: 750rpx;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.goodsImageBlock {
+		width: 250rpx;
+		height: 250rpx;
+	}
+
+	.goodsImage {
+		position: absolute;
+		top: 0;
+		width: 250rpx;
+		height: 250rpx;
+	}
+
+	.goodsState {
+		width: 250rpx;
+		height: 40rpx;
+		text-align: center;
+		font-size: 24rpx;
+		color: #fff;
+		line-height: 40rpx;
+		position: absolute;
+		bottom: 0;
+		background-color: rgba(255, 64, 77, .8);
+	}
+	/* -----------------------卡密--------------- */
+	.card {
+		background-color: #fff;
+		height: 800rpx;
+		align-items: center;
+		font-size: 22rpx;
+		padding-top: 30rpx;
 	}
 
 	.card-title {
@@ -575,6 +721,9 @@
 
 	}
 
+	/* ----------------------------------- */
+
+
 	.card-left {
 		width: 660rpx;
 
@@ -600,8 +749,4 @@
 		background: #CCCCCC;
 	}
 
-	.winning-card {
-		background: #ef3333;
-		color: #fff;
-	}
 </style>

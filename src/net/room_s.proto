@@ -1,0 +1,36 @@
+syntax = "proto3";
+package message;
+
+//0x000200 请求点赞返回
+message BackLike {
+	enum RetCode {
+        RC_OK =0;
+        RC_LOGIN_CLOSED = 2; //服务已经关闭
+        RC_TOO_FAST = 3;  //请求频繁
+    }
+	RetCode code = 1;		//0成功，其他失败
+	string msg = 2;		//失败原因
+}
+
+//0x000201 广播点赞消息
+message BroadCastLike {
+    message UserLike {
+        string tp = 1;
+        uint32 num = 2;
+        string avatar = 3; //观众头像 暂时忽略
+    }
+    repeated UserLike list = 1;
+    int32 finalLikeNum = 2; //房间最新点选数量
+}
+
+//0x000202 广播弹幕消息
+message BroadBilibili {
+    message Bilibili {
+        string sender = 1;  //谁送的
+        string name = 2;    //送什么
+        uint32 num = 3;     //数量
+    }
+    repeated Bilibili list = 1;
+}
+
+

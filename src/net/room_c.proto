@@ -1,0 +1,9 @@
+syntax = "proto3";
+package message;
+
+//0x000100 点赞
+message RequestLike {
+    uint32 num = 1; //点赞几次
+}
+
+

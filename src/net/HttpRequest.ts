@@ -146,7 +146,13 @@ export default class HttpRequest {
 					config.baseURL = app.dataApiDomain;
 				}
 			}
-			
+			if(url.indexOf('funcApi/')!=-1){	
+				config.url = url.substring(8);
+				config.baseURL = app.funcApiDomain || domain
+				if(!app.localTest){
+					config.baseURL = app.funcApiDomain;
+				}
+			}
 			if(url.indexOf("app/launch") != -1||url.indexOf("app/onlinecfg") != -1){
 				config.baseURL = ''
 			}

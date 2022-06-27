@@ -3,7 +3,7 @@ export class Message {
     static HeartBeat = '0x000001';
     static Login = '0x000100';
     static PageLocation = '0x000101';
-
+ 
     static RequestChatOn = '0x000200'  //开启聊天监听
     static RequestChatOff = '0x000201'  //关闭聊天监听
     static SendChatMessage = '0x000202' //发送聊天

@@ -12,22 +12,27 @@
 	import {
 		Md5
 	} from "ts-md5";
+	import * as proto from "./net/proto";
 	export default Vue.extend({
 		mpType: "app",
-		globalData: {},
+		globalData: {
+			// ...app
+			app
+		},
 		onLaunch() {
 			console.log("App Launch");
 			if (process.env.NODE_ENV === "development") {
 				// console.log("开发环境");
-				// app.localTest = true;
+				app.localTest = true;
 				// app.bussinessApiDomain = 'http://192.168.8.79:8701/api/v2/';
-				// app.bussinessApiDomain="https://server.ssltest.ka-world.com/api/v2/"
+				// app.funcApiDomain='http://192.168.8.79:8741/api/v2/'
+				app.bussinessApiDomain="https://server.ssltest.ka-world.com/api/v2/"
 
 				// 正式服测试环境
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
 
 			}
-			uni.setStorageSync('openAppTime',Math.round(+new Date()/1000))//存储打开app时间
+			uni.setStorageSync('openAppTime', Math.round(+new Date() / 1000)) //存储打开app时间
 			app.needPushIdentifier = uni.getStorageSync("needPushIdentifier") == 1 ? false : true;
 			const loginToken = uni.getStorageSync("token");
 			if (loginToken) {
@@ -60,6 +65,7 @@
 					HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
 						app.data = data.data;
 						app.socketInfo = data.app;
+						uni.setStorageSync('socketInfo', data.app)
 						app.coupon = data.data.coupon;
 						uni.$emit("updateUserData");
 						uni.$emit("loginSuccess");
@@ -80,7 +86,6 @@
 				// #endif
 			});
 			// #ifdef APP-PLUS
-			app.sever = new SocketServer();
 			// #endif
 			uni.$on("loginSuccess", () => {
 				// #ifdef APP-PLUS
@@ -163,7 +168,8 @@
 				false
 			);
 			// #endif
-
+			app.protobuf = proto;
+			app.sever = new SocketServer();
 			// #ifndef APP-PLUS
 			app.platform.appLuanch(loginToken)
 			// #endif
@@ -178,9 +184,10 @@
 		onShow() {
 			console.log("App Show");
 			// #ifdef APP-PLUS
-			const nowTimeStamp=Math.round(+new Date()/1000)
-			const refreshThreshold=2*60*60//刷新App阈值
-			if(uni.getStorageSync('openAppTime')&&nowTimeStamp-uni.getStorageSync('openAppTime')>=refreshThreshold){
+			const nowTimeStamp = Math.round(+new Date() / 1000)
+			const refreshThreshold = 2 * 60 * 60 //刷新App阈值
+			if (uni.getStorageSync('openAppTime') && nowTimeStamp - uni.getStorageSync('openAppTime') >=
+				refreshThreshold) {
 				plus.runtime.restart()
 			}
 			setTimeout(() => {

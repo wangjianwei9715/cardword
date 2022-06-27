@@ -3324,26 +3324,26 @@ $root.message = (function() {
         return HeartBeat;
     })();
 
-    message.Login = (function() {
+    message.LoginBroadCastRoom1001 = (function() {
 
         /**
-         * Properties of a Login.
+         * Properties of a LoginBroadCastRoom1001.
          * @memberof message
-         * @interface ILogin
-         * @property {string|null} [BuildNo] Login BuildNo
-         * @property {number|Long|null} [accountId] Login accountId
-         * @property {string|null} [token] Login token
+         * @interface ILoginBroadCastRoom1001
+         * @property {number|Long|null} [roomId] LoginBroadCastRoom1001 roomId
+         * @property {string|null} [uid] LoginBroadCastRoom1001 uid
+         * @property {string|null} [token] LoginBroadCastRoom1001 token
          */
 
         /**
-         * Constructs a new Login.
+         * Constructs a new LoginBroadCastRoom1001.
          * @memberof message
-         * @classdesc Represents a Login.
-         * @implements ILogin
+         * @classdesc Represents a LoginBroadCastRoom1001.
+         * @implements ILoginBroadCastRoom1001
          * @constructor
-         * @param {message.ILogin=} [properties] Properties to set
+         * @param {message.ILoginBroadCastRoom1001=} [properties] Properties to set
          */
-        function Login(properties) {
+        function LoginBroadCastRoom1001(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -3351,98 +3351,98 @@ $root.message = (function() {
         }
 
         /**
-         * Login BuildNo.
-         * @member {string} BuildNo
-         * @memberof message.Login
+         * LoginBroadCastRoom1001 roomId.
+         * @member {number|Long} roomId
+         * @memberof message.LoginBroadCastRoom1001
          * @instance
          */
-        Login.prototype.BuildNo = "";
+        LoginBroadCastRoom1001.prototype.roomId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * Login accountId.
-         * @member {number|Long} accountId
-         * @memberof message.Login
+         * LoginBroadCastRoom1001 uid.
+         * @member {string} uid
+         * @memberof message.LoginBroadCastRoom1001
          * @instance
          */
-        Login.prototype.accountId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        LoginBroadCastRoom1001.prototype.uid = "";
 
         /**
-         * Login token.
+         * LoginBroadCastRoom1001 token.
          * @member {string} token
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @instance
          */
-        Login.prototype.token = "";
+        LoginBroadCastRoom1001.prototype.token = "";
 
         /**
-         * Creates a new Login instance using the specified properties.
+         * Creates a new LoginBroadCastRoom1001 instance using the specified properties.
          * @function create
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @static
-         * @param {message.ILogin=} [properties] Properties to set
-         * @returns {message.Login} Login instance
+         * @param {message.ILoginBroadCastRoom1001=} [properties] Properties to set
+         * @returns {message.LoginBroadCastRoom1001} LoginBroadCastRoom1001 instance
          */
-        Login.create = function create(properties) {
-            return new Login(properties);
+        LoginBroadCastRoom1001.create = function create(properties) {
+            return new LoginBroadCastRoom1001(properties);
         };
 
         /**
-         * Encodes the specified Login message. Does not implicitly {@link message.Login.verify|verify} messages.
+         * Encodes the specified LoginBroadCastRoom1001 message. Does not implicitly {@link message.LoginBroadCastRoom1001.verify|verify} messages.
          * @function encode
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @static
-         * @param {message.ILogin} message Login message or plain object to encode
+         * @param {message.ILoginBroadCastRoom1001} message LoginBroadCastRoom1001 message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Login.encode = function encode(message, writer) {
+        LoginBroadCastRoom1001.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.BuildNo != null && Object.hasOwnProperty.call(message, "BuildNo"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.BuildNo);
-            if (message.accountId != null && Object.hasOwnProperty.call(message, "accountId"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.accountId);
+            if (message.roomId != null && Object.hasOwnProperty.call(message, "roomId"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.roomId);
+            if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.uid);
             if (message.token != null && Object.hasOwnProperty.call(message, "token"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.token);
             return writer;
         };
 
         /**
-         * Encodes the specified Login message, length delimited. Does not implicitly {@link message.Login.verify|verify} messages.
+         * Encodes the specified LoginBroadCastRoom1001 message, length delimited. Does not implicitly {@link message.LoginBroadCastRoom1001.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @static
-         * @param {message.ILogin} message Login message or plain object to encode
+         * @param {message.ILoginBroadCastRoom1001} message LoginBroadCastRoom1001 message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        Login.encodeDelimited = function encodeDelimited(message, writer) {
+        LoginBroadCastRoom1001.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
         /**
-         * Decodes a Login message from the specified reader or buffer.
+         * Decodes a LoginBroadCastRoom1001 message from the specified reader or buffer.
          * @function decode
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {message.Login} Login
+         * @returns {message.LoginBroadCastRoom1001} LoginBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Login.decode = function decode(reader, length) {
+        LoginBroadCastRoom1001.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.Login();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.LoginBroadCastRoom1001();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.BuildNo = reader.string();
+                    message.roomId = reader.int64();
                     break;
                 case 2:
-                    message.accountId = reader.int64();
+                    message.uid = reader.string();
                     break;
                 case 3:
                     message.token = reader.string();
@@ -3456,38 +3456,38 @@ $root.message = (function() {
         };
 
         /**
-         * Decodes a Login message from the specified reader or buffer, length delimited.
+         * Decodes a LoginBroadCastRoom1001 message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {message.Login} Login
+         * @returns {message.LoginBroadCastRoom1001} LoginBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Login.decodeDelimited = function decodeDelimited(reader) {
+        LoginBroadCastRoom1001.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
         /**
-         * Verifies a Login message.
+         * Verifies a LoginBroadCastRoom1001 message.
          * @function verify
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        Login.verify = function verify(message) {
+        LoginBroadCastRoom1001.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.BuildNo != null && message.hasOwnProperty("BuildNo"))
-                if (!$util.isString(message.BuildNo))
-                    return "BuildNo: string expected";
-            if (message.accountId != null && message.hasOwnProperty("accountId"))
-                if (!$util.isInteger(message.accountId) && !(message.accountId && $util.isInteger(message.accountId.low) && $util.isInteger(message.accountId.high)))
-                    return "accountId: integer|Long expected";
+            if (message.roomId != null && message.hasOwnProperty("roomId"))
+                if (!$util.isInteger(message.roomId) && !(message.roomId && $util.isInteger(message.roomId.low) && $util.isInteger(message.roomId.high)))
+                    return "roomId: integer|Long expected";
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                if (!$util.isString(message.uid))
+                    return "uid: string expected";
             if (message.token != null && message.hasOwnProperty("token"))
                 if (!$util.isString(message.token))
                     return "token: string expected";
@@ -3495,99 +3495,99 @@ $root.message = (function() {
         };
 
         /**
-         * Creates a Login message from a plain object. Also converts values to their respective internal types.
+         * Creates a LoginBroadCastRoom1001 message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {message.Login} Login
+         * @returns {message.LoginBroadCastRoom1001} LoginBroadCastRoom1001
          */
-        Login.fromObject = function fromObject(object) {
-            if (object instanceof $root.message.Login)
+        LoginBroadCastRoom1001.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.LoginBroadCastRoom1001)
                 return object;
-            var message = new $root.message.Login();
-            if (object.BuildNo != null)
-                message.BuildNo = String(object.BuildNo);
-            if (object.accountId != null)
+            var message = new $root.message.LoginBroadCastRoom1001();
+            if (object.roomId != null)
                 if ($util.Long)
-                    (message.accountId = $util.Long.fromValue(object.accountId)).unsigned = false;
-                else if (typeof object.accountId === "string")
-                    message.accountId = parseInt(object.accountId, 10);
-                else if (typeof object.accountId === "number")
-                    message.accountId = object.accountId;
-                else if (typeof object.accountId === "object")
-                    message.accountId = new $util.LongBits(object.accountId.low >>> 0, object.accountId.high >>> 0).toNumber();
+                    (message.roomId = $util.Long.fromValue(object.roomId)).unsigned = false;
+                else if (typeof object.roomId === "string")
+                    message.roomId = parseInt(object.roomId, 10);
+                else if (typeof object.roomId === "number")
+                    message.roomId = object.roomId;
+                else if (typeof object.roomId === "object")
+                    message.roomId = new $util.LongBits(object.roomId.low >>> 0, object.roomId.high >>> 0).toNumber();
+            if (object.uid != null)
+                message.uid = String(object.uid);
             if (object.token != null)
                 message.token = String(object.token);
             return message;
         };
 
         /**
-         * Creates a plain object from a Login message. Also converts values to other types if specified.
+         * Creates a plain object from a LoginBroadCastRoom1001 message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @static
-         * @param {message.Login} message Login
+         * @param {message.LoginBroadCastRoom1001} message LoginBroadCastRoom1001
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        Login.toObject = function toObject(message, options) {
+        LoginBroadCastRoom1001.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
             var object = {};
             if (options.defaults) {
-                object.BuildNo = "";
                 if ($util.Long) {
                     var long = new $util.Long(0, 0, false);
-                    object.accountId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    object.roomId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
-                    object.accountId = options.longs === String ? "0" : 0;
+                    object.roomId = options.longs === String ? "0" : 0;
+                object.uid = "";
                 object.token = "";
             }
-            if (message.BuildNo != null && message.hasOwnProperty("BuildNo"))
-                object.BuildNo = message.BuildNo;
-            if (message.accountId != null && message.hasOwnProperty("accountId"))
-                if (typeof message.accountId === "number")
-                    object.accountId = options.longs === String ? String(message.accountId) : message.accountId;
+            if (message.roomId != null && message.hasOwnProperty("roomId"))
+                if (typeof message.roomId === "number")
+                    object.roomId = options.longs === String ? String(message.roomId) : message.roomId;
                 else
-                    object.accountId = options.longs === String ? $util.Long.prototype.toString.call(message.accountId) : options.longs === Number ? new $util.LongBits(message.accountId.low >>> 0, message.accountId.high >>> 0).toNumber() : message.accountId;
+                    object.roomId = options.longs === String ? $util.Long.prototype.toString.call(message.roomId) : options.longs === Number ? new $util.LongBits(message.roomId.low >>> 0, message.roomId.high >>> 0).toNumber() : message.roomId;
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                object.uid = message.uid;
             if (message.token != null && message.hasOwnProperty("token"))
                 object.token = message.token;
             return object;
         };
 
         /**
-         * Converts this Login to JSON.
+         * Converts this LoginBroadCastRoom1001 to JSON.
          * @function toJSON
-         * @memberof message.Login
+         * @memberof message.LoginBroadCastRoom1001
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
-        Login.prototype.toJSON = function toJSON() {
+        LoginBroadCastRoom1001.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
-        return Login;
+        return LoginBroadCastRoom1001;
     })();
 
-    message.PageLocation = (function() {
+    message.LogoutBroadCastRoom1001 = (function() {
 
         /**
-         * Properties of a PageLocation.
+         * Properties of a LogoutBroadCastRoom1001.
          * @memberof message
-         * @interface IPageLocation
-         * @property {string|null} [page] PageLocation page
+         * @interface ILogoutBroadCastRoom1001
+         * @property {number|Long|null} [roomId] LogoutBroadCastRoom1001 roomId
          */
 
         /**
-         * Constructs a new PageLocation.
+         * Constructs a new LogoutBroadCastRoom1001.
          * @memberof message
-         * @classdesc Represents a PageLocation.
-         * @implements IPageLocation
+         * @classdesc Represents a LogoutBroadCastRoom1001.
+         * @implements ILogoutBroadCastRoom1001
          * @constructor
-         * @param {message.IPageLocation=} [properties] Properties to set
+         * @param {message.ILogoutBroadCastRoom1001=} [properties] Properties to set
          */
-        function PageLocation(properties) {
+        function LogoutBroadCastRoom1001(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -3595,75 +3595,75 @@ $root.message = (function() {
         }
 
         /**
-         * PageLocation page.
-         * @member {string} page
-         * @memberof message.PageLocation
+         * LogoutBroadCastRoom1001 roomId.
+         * @member {number|Long} roomId
+         * @memberof message.LogoutBroadCastRoom1001
          * @instance
          */
-        PageLocation.prototype.page = "";
+        LogoutBroadCastRoom1001.prototype.roomId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * Creates a new PageLocation instance using the specified properties.
+         * Creates a new LogoutBroadCastRoom1001 instance using the specified properties.
          * @function create
-         * @memberof message.PageLocation
+         * @memberof message.LogoutBroadCastRoom1001
          * @static
-         * @param {message.IPageLocation=} [properties] Properties to set
-         * @returns {message.PageLocation} PageLocation instance
+         * @param {message.ILogoutBroadCastRoom1001=} [properties] Properties to set
+         * @returns {message.LogoutBroadCastRoom1001} LogoutBroadCastRoom1001 instance
          */
-        PageLocation.create = function create(properties) {
-            return new PageLocation(properties);
+        LogoutBroadCastRoom1001.create = function create(properties) {
+            return new LogoutBroadCastRoom1001(properties);
         };
 
         /**
-         * Encodes the specified PageLocation message. Does not implicitly {@link message.PageLocation.verify|verify} messages.
+         * Encodes the specified LogoutBroadCastRoom1001 message. Does not implicitly {@link message.LogoutBroadCastRoom1001.verify|verify} messages.
          * @function encode
-         * @memberof message.PageLocation
+         * @memberof message.LogoutBroadCastRoom1001
          * @static
-         * @param {message.IPageLocation} message PageLocation message or plain object to encode
+         * @param {message.ILogoutBroadCastRoom1001} message LogoutBroadCastRoom1001 message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        PageLocation.encode = function encode(message, writer) {
+        LogoutBroadCastRoom1001.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.page != null && Object.hasOwnProperty.call(message, "page"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.page);
+            if (message.roomId != null && Object.hasOwnProperty.call(message, "roomId"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.roomId);
             return writer;
         };
 
         /**
-         * Encodes the specified PageLocation message, length delimited. Does not implicitly {@link message.PageLocation.verify|verify} messages.
+         * Encodes the specified LogoutBroadCastRoom1001 message, length delimited. Does not implicitly {@link message.LogoutBroadCastRoom1001.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof message.PageLocation
+         * @memberof message.LogoutBroadCastRoom1001
          * @static
-         * @param {message.IPageLocation} message PageLocation message or plain object to encode
+         * @param {message.ILogoutBroadCastRoom1001} message LogoutBroadCastRoom1001 message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        PageLocation.encodeDelimited = function encodeDelimited(message, writer) {
+        LogoutBroadCastRoom1001.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
         /**
-         * Decodes a PageLocation message from the specified reader or buffer.
+         * Decodes a LogoutBroadCastRoom1001 message from the specified reader or buffer.
          * @function decode
-         * @memberof message.PageLocation
+         * @memberof message.LogoutBroadCastRoom1001
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {message.PageLocation} PageLocation
+         * @returns {message.LogoutBroadCastRoom1001} LogoutBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        PageLocation.decode = function decode(reader, length) {
+        LogoutBroadCastRoom1001.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.PageLocation();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.LogoutBroadCastRoom1001();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.page = reader.string();
+                    message.roomId = reader.int64();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -3674,87 +3674,101 @@ $root.message = (function() {
         };
 
         /**
-         * Decodes a PageLocation message from the specified reader or buffer, length delimited.
+         * Decodes a LogoutBroadCastRoom1001 message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof message.PageLocation
+         * @memberof message.LogoutBroadCastRoom1001
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {message.PageLocation} PageLocation
+         * @returns {message.LogoutBroadCastRoom1001} LogoutBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        PageLocation.decodeDelimited = function decodeDelimited(reader) {
+        LogoutBroadCastRoom1001.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
         /**
-         * Verifies a PageLocation message.
+         * Verifies a LogoutBroadCastRoom1001 message.
          * @function verify
-         * @memberof message.PageLocation
+         * @memberof message.LogoutBroadCastRoom1001
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        PageLocation.verify = function verify(message) {
+        LogoutBroadCastRoom1001.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.page != null && message.hasOwnProperty("page"))
-                if (!$util.isString(message.page))
-                    return "page: string expected";
+            if (message.roomId != null && message.hasOwnProperty("roomId"))
+                if (!$util.isInteger(message.roomId) && !(message.roomId && $util.isInteger(message.roomId.low) && $util.isInteger(message.roomId.high)))
+                    return "roomId: integer|Long expected";
             return null;
         };
 
         /**
-         * Creates a PageLocation message from a plain object. Also converts values to their respective internal types.
+         * Creates a LogoutBroadCastRoom1001 message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof message.PageLocation
+         * @memberof message.LogoutBroadCastRoom1001
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {message.PageLocation} PageLocation
+         * @returns {message.LogoutBroadCastRoom1001} LogoutBroadCastRoom1001
          */
-        PageLocation.fromObject = function fromObject(object) {
-            if (object instanceof $root.message.PageLocation)
+        LogoutBroadCastRoom1001.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.LogoutBroadCastRoom1001)
                 return object;
-            var message = new $root.message.PageLocation();
-            if (object.page != null)
-                message.page = String(object.page);
+            var message = new $root.message.LogoutBroadCastRoom1001();
+            if (object.roomId != null)
+                if ($util.Long)
+                    (message.roomId = $util.Long.fromValue(object.roomId)).unsigned = false;
+                else if (typeof object.roomId === "string")
+                    message.roomId = parseInt(object.roomId, 10);
+                else if (typeof object.roomId === "number")
+                    message.roomId = object.roomId;
+                else if (typeof object.roomId === "object")
+                    message.roomId = new $util.LongBits(object.roomId.low >>> 0, object.roomId.high >>> 0).toNumber();
             return message;
         };
 
         /**
-         * Creates a plain object from a PageLocation message. Also converts values to other types if specified.
+         * Creates a plain object from a LogoutBroadCastRoom1001 message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof message.PageLocation
+         * @memberof message.LogoutBroadCastRoom1001
          * @static
-         * @param {message.PageLocation} message PageLocation
+         * @param {message.LogoutBroadCastRoom1001} message LogoutBroadCastRoom1001
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        PageLocation.toObject = function toObject(message, options) {
+        LogoutBroadCastRoom1001.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
             var object = {};
             if (options.defaults)
-                object.page = "";
-            if (message.page != null && message.hasOwnProperty("page"))
-                object.page = message.page;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.roomId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.roomId = options.longs === String ? "0" : 0;
+            if (message.roomId != null && message.hasOwnProperty("roomId"))
+                if (typeof message.roomId === "number")
+                    object.roomId = options.longs === String ? String(message.roomId) : message.roomId;
+                else
+                    object.roomId = options.longs === String ? $util.Long.prototype.toString.call(message.roomId) : options.longs === Number ? new $util.LongBits(message.roomId.low >>> 0, message.roomId.high >>> 0).toNumber() : message.roomId;
             return object;
         };
 
         /**
-         * Converts this PageLocation to JSON.
+         * Converts this LogoutBroadCastRoom1001 to JSON.
          * @function toJSON
-         * @memberof message.PageLocation
+         * @memberof message.LogoutBroadCastRoom1001
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
-        PageLocation.prototype.toJSON = function toJSON() {
+        LogoutBroadCastRoom1001.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
-        return PageLocation;
+        return LogoutBroadCastRoom1001;
     })();
 
     message.BackHeartBeat = (function() {
@@ -3958,25 +3972,25 @@ $root.message = (function() {
         return BackHeartBeat;
     })();
 
-    message.BackLogin = (function() {
+    message.BackLoginBroadCastRoom1001 = (function() {
 
         /**
-         * Properties of a BackLogin.
+         * Properties of a BackLoginBroadCastRoom1001.
          * @memberof message
-         * @interface IBackLogin
-         * @property {message.BackLogin.RetCode|null} [code] BackLogin code
-         * @property {string|null} [msg] BackLogin msg
+         * @interface IBackLoginBroadCastRoom1001
+         * @property {message.BackLoginBroadCastRoom1001.RetCode|null} [code] BackLoginBroadCastRoom1001 code
+         * @property {string|null} [msg] BackLoginBroadCastRoom1001 msg
          */
 
         /**
-         * Constructs a new BackLogin.
+         * Constructs a new BackLoginBroadCastRoom1001.
          * @memberof message
-         * @classdesc Represents a BackLogin.
-         * @implements IBackLogin
+         * @classdesc Represents a BackLoginBroadCastRoom1001.
+         * @implements IBackLoginBroadCastRoom1001
          * @constructor
-         * @param {message.IBackLogin=} [properties] Properties to set
+         * @param {message.IBackLoginBroadCastRoom1001=} [properties] Properties to set
          */
-        function BackLogin(properties) {
+        function BackLoginBroadCastRoom1001(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -3984,43 +3998,43 @@ $root.message = (function() {
         }
 
         /**
-         * BackLogin code.
-         * @member {message.BackLogin.RetCode} code
-         * @memberof message.BackLogin
+         * BackLoginBroadCastRoom1001 code.
+         * @member {message.BackLoginBroadCastRoom1001.RetCode} code
+         * @memberof message.BackLoginBroadCastRoom1001
          * @instance
          */
-        BackLogin.prototype.code = 0;
+        BackLoginBroadCastRoom1001.prototype.code = 0;
 
         /**
-         * BackLogin msg.
+         * BackLoginBroadCastRoom1001 msg.
          * @member {string} msg
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @instance
          */
-        BackLogin.prototype.msg = "";
+        BackLoginBroadCastRoom1001.prototype.msg = "";
 
         /**
-         * Creates a new BackLogin instance using the specified properties.
+         * Creates a new BackLoginBroadCastRoom1001 instance using the specified properties.
          * @function create
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @static
-         * @param {message.IBackLogin=} [properties] Properties to set
-         * @returns {message.BackLogin} BackLogin instance
+         * @param {message.IBackLoginBroadCastRoom1001=} [properties] Properties to set
+         * @returns {message.BackLoginBroadCastRoom1001} BackLoginBroadCastRoom1001 instance
          */
-        BackLogin.create = function create(properties) {
-            return new BackLogin(properties);
+        BackLoginBroadCastRoom1001.create = function create(properties) {
+            return new BackLoginBroadCastRoom1001(properties);
         };
 
         /**
-         * Encodes the specified BackLogin message. Does not implicitly {@link message.BackLogin.verify|verify} messages.
+         * Encodes the specified BackLoginBroadCastRoom1001 message. Does not implicitly {@link message.BackLoginBroadCastRoom1001.verify|verify} messages.
          * @function encode
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @static
-         * @param {message.IBackLogin} message BackLogin message or plain object to encode
+         * @param {message.IBackLoginBroadCastRoom1001} message BackLoginBroadCastRoom1001 message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        BackLogin.encode = function encode(message, writer) {
+        BackLoginBroadCastRoom1001.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
             if (message.code != null && Object.hasOwnProperty.call(message, "code"))
@@ -4031,33 +4045,33 @@ $root.message = (function() {
         };
 
         /**
-         * Encodes the specified BackLogin message, length delimited. Does not implicitly {@link message.BackLogin.verify|verify} messages.
+         * Encodes the specified BackLoginBroadCastRoom1001 message, length delimited. Does not implicitly {@link message.BackLoginBroadCastRoom1001.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @static
-         * @param {message.IBackLogin} message BackLogin message or plain object to encode
+         * @param {message.IBackLoginBroadCastRoom1001} message BackLoginBroadCastRoom1001 message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        BackLogin.encodeDelimited = function encodeDelimited(message, writer) {
+        BackLoginBroadCastRoom1001.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
         /**
-         * Decodes a BackLogin message from the specified reader or buffer.
+         * Decodes a BackLoginBroadCastRoom1001 message from the specified reader or buffer.
          * @function decode
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {message.BackLogin} BackLogin
+         * @returns {message.BackLoginBroadCastRoom1001} BackLoginBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        BackLogin.decode = function decode(reader, length) {
+        BackLoginBroadCastRoom1001.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackLogin();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackLoginBroadCastRoom1001();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
@@ -4076,30 +4090,30 @@ $root.message = (function() {
         };
 
         /**
-         * Decodes a BackLogin message from the specified reader or buffer, length delimited.
+         * Decodes a BackLoginBroadCastRoom1001 message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {message.BackLogin} BackLogin
+         * @returns {message.BackLoginBroadCastRoom1001} BackLoginBroadCastRoom1001
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        BackLogin.decodeDelimited = function decodeDelimited(reader) {
+        BackLoginBroadCastRoom1001.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
         /**
-         * Verifies a BackLogin message.
+         * Verifies a BackLoginBroadCastRoom1001 message.
          * @function verify
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        BackLogin.verify = function verify(message) {
+        BackLoginBroadCastRoom1001.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
             if (message.code != null && message.hasOwnProperty("code"))
@@ -4110,7 +4124,6 @@ $root.message = (function() {
                 case 1:
                 case 2:
                 case 3:
-                case 4:
                     break;
                 }
             if (message.msg != null && message.hasOwnProperty("msg"))
@@ -4120,37 +4133,33 @@ $root.message = (function() {
         };
 
         /**
-         * Creates a BackLogin message from a plain object. Also converts values to their respective internal types.
+         * Creates a BackLoginBroadCastRoom1001 message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {message.BackLogin} BackLogin
+         * @returns {message.BackLoginBroadCastRoom1001} BackLoginBroadCastRoom1001
          */
-        BackLogin.fromObject = function fromObject(object) {
-            if (object instanceof $root.message.BackLogin)
+        BackLoginBroadCastRoom1001.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackLoginBroadCastRoom1001)
                 return object;
-            var message = new $root.message.BackLogin();
+            var message = new $root.message.BackLoginBroadCastRoom1001();
             switch (object.code) {
             case "RC_OK":
             case 0:
                 message.code = 0;
                 break;
-            case "RC_UNLOGINED":
+            case "RC_WRONG_IDENTIFIER":
             case 1:
                 message.code = 1;
                 break;
-            case "RC_WRONG_TOKEN":
+            case "RC_LOGIN_CLOSED":
             case 2:
                 message.code = 2;
                 break;
-            case "RC_LOGIN_CLOSED":
+            case "RC_TOO_FAST":
             case 3:
                 message.code = 3;
-                break;
-            case "RC_TOO_FAST":
-            case 4:
-                message.code = 4;
                 break;
             }
             if (object.msg != null)
@@ -4159,15 +4168,15 @@ $root.message = (function() {
         };
 
         /**
-         * Creates a plain object from a BackLogin message. Also converts values to other types if specified.
+         * Creates a plain object from a BackLoginBroadCastRoom1001 message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @static
-         * @param {message.BackLogin} message BackLogin
+         * @param {message.BackLoginBroadCastRoom1001} message BackLoginBroadCastRoom1001
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        BackLogin.toObject = function toObject(message, options) {
+        BackLoginBroadCastRoom1001.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
             var object = {};
@@ -4176,506 +4185,42 @@ $root.message = (function() {
                 object.msg = "";
             }
             if (message.code != null && message.hasOwnProperty("code"))
-                object.code = options.enums === String ? $root.message.BackLogin.RetCode[message.code] : message.code;
+                object.code = options.enums === String ? $root.message.BackLoginBroadCastRoom1001.RetCode[message.code] : message.code;
             if (message.msg != null && message.hasOwnProperty("msg"))
                 object.msg = message.msg;
             return object;
         };
 
         /**
-         * Converts this BackLogin to JSON.
+         * Converts this BackLoginBroadCastRoom1001 to JSON.
          * @function toJSON
-         * @memberof message.BackLogin
+         * @memberof message.BackLoginBroadCastRoom1001
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
-        BackLogin.prototype.toJSON = function toJSON() {
+        BackLoginBroadCastRoom1001.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
         /**
          * RetCode enum.
-         * @name message.BackLogin.RetCode
+         * @name message.BackLoginBroadCastRoom1001.RetCode
          * @enum {number}
          * @property {number} RC_OK=0 RC_OK value
-         * @property {number} RC_UNLOGINED=1 RC_UNLOGINED value
-         * @property {number} RC_WRONG_TOKEN=2 RC_WRONG_TOKEN value
-         * @property {number} RC_LOGIN_CLOSED=3 RC_LOGIN_CLOSED value
-         * @property {number} RC_TOO_FAST=4 RC_TOO_FAST value
+         * @property {number} RC_WRONG_IDENTIFIER=1 RC_WRONG_IDENTIFIER value
+         * @property {number} RC_LOGIN_CLOSED=2 RC_LOGIN_CLOSED value
+         * @property {number} RC_TOO_FAST=3 RC_TOO_FAST value
          */
-        BackLogin.RetCode = (function() {
+        BackLoginBroadCastRoom1001.RetCode = (function() {
             var valuesById = {}, values = Object.create(valuesById);
             values[valuesById[0] = "RC_OK"] = 0;
-            values[valuesById[1] = "RC_UNLOGINED"] = 1;
-            values[valuesById[2] = "RC_WRONG_TOKEN"] = 2;
-            values[valuesById[3] = "RC_LOGIN_CLOSED"] = 3;
-            values[valuesById[4] = "RC_TOO_FAST"] = 4;
+            values[valuesById[1] = "RC_WRONG_IDENTIFIER"] = 1;
+            values[valuesById[2] = "RC_LOGIN_CLOSED"] = 2;
+            values[valuesById[3] = "RC_TOO_FAST"] = 3;
             return values;
         })();
 
-        return BackLogin;
-    })();
-
-    message.UserAttr = (function() {
-
-        /**
-         * Properties of a UserAttr.
-         * @memberof message
-         * @interface IUserAttr
-         * @property {Array.<message.UserAttr.Iattr>|null} [list] UserAttr list
-         */
-
-        /**
-         * Constructs a new UserAttr.
-         * @memberof message
-         * @classdesc Represents a UserAttr.
-         * @implements IUserAttr
-         * @constructor
-         * @param {message.IUserAttr=} [properties] Properties to set
-         */
-        function UserAttr(properties) {
-            this.list = [];
-            if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * UserAttr list.
-         * @member {Array.<message.UserAttr.Iattr>} list
-         * @memberof message.UserAttr
-         * @instance
-         */
-        UserAttr.prototype.list = $util.emptyArray;
-
-        /**
-         * Creates a new UserAttr instance using the specified properties.
-         * @function create
-         * @memberof message.UserAttr
-         * @static
-         * @param {message.IUserAttr=} [properties] Properties to set
-         * @returns {message.UserAttr} UserAttr instance
-         */
-        UserAttr.create = function create(properties) {
-            return new UserAttr(properties);
-        };
-
-        /**
-         * Encodes the specified UserAttr message. Does not implicitly {@link message.UserAttr.verify|verify} messages.
-         * @function encode
-         * @memberof message.UserAttr
-         * @static
-         * @param {message.IUserAttr} message UserAttr message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        UserAttr.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.list != null && message.list.length)
-                for (var i = 0; i < message.list.length; ++i)
-                    $root.message.UserAttr.attr.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified UserAttr message, length delimited. Does not implicitly {@link message.UserAttr.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof message.UserAttr
-         * @static
-         * @param {message.IUserAttr} message UserAttr message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        UserAttr.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a UserAttr message from the specified reader or buffer.
-         * @function decode
-         * @memberof message.UserAttr
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {message.UserAttr} UserAttr
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        UserAttr.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.UserAttr();
-            while (reader.pos < end) {
-                var tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    if (!(message.list && message.list.length))
-                        message.list = [];
-                    message.list.push($root.message.UserAttr.attr.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a UserAttr message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof message.UserAttr
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {message.UserAttr} UserAttr
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        UserAttr.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a UserAttr message.
-         * @function verify
-         * @memberof message.UserAttr
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        UserAttr.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.list != null && message.hasOwnProperty("list")) {
-                if (!Array.isArray(message.list))
-                    return "list: array expected";
-                for (var i = 0; i < message.list.length; ++i) {
-                    var error = $root.message.UserAttr.attr.verify(message.list[i]);
-                    if (error)
-                        return "list." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates a UserAttr message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof message.UserAttr
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {message.UserAttr} UserAttr
-         */
-        UserAttr.fromObject = function fromObject(object) {
-            if (object instanceof $root.message.UserAttr)
-                return object;
-            var message = new $root.message.UserAttr();
-            if (object.list) {
-                if (!Array.isArray(object.list))
-                    throw TypeError(".message.UserAttr.list: array expected");
-                message.list = [];
-                for (var i = 0; i < object.list.length; ++i) {
-                    if (typeof object.list[i] !== "object")
-                        throw TypeError(".message.UserAttr.list: object expected");
-                    message.list[i] = $root.message.UserAttr.attr.fromObject(object.list[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a UserAttr message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof message.UserAttr
-         * @static
-         * @param {message.UserAttr} message UserAttr
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        UserAttr.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            var object = {};
-            if (options.arrays || options.defaults)
-                object.list = [];
-            if (message.list && message.list.length) {
-                object.list = [];
-                for (var j = 0; j < message.list.length; ++j)
-                    object.list[j] = $root.message.UserAttr.attr.toObject(message.list[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this UserAttr to JSON.
-         * @function toJSON
-         * @memberof message.UserAttr
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        UserAttr.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        UserAttr.attr = (function() {
-
-            /**
-             * Properties of an attr.
-             * @memberof message.UserAttr
-             * @interface Iattr
-             * @property {string|null} [name] attr name
-             * @property {number|null} [numberVal] attr numberVal
-             * @property {string|null} [strVal] attr strVal
-             * @property {boolean|null} [boolVal] attr boolVal
-             */
-
-            /**
-             * Constructs a new attr.
-             * @memberof message.UserAttr
-             * @classdesc Represents an attr.
-             * @implements Iattr
-             * @constructor
-             * @param {message.UserAttr.Iattr=} [properties] Properties to set
-             */
-            function attr(properties) {
-                if (properties)
-                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                        if (properties[keys[i]] != null)
-                            this[keys[i]] = properties[keys[i]];
-            }
-
-            /**
-             * attr name.
-             * @member {string} name
-             * @memberof message.UserAttr.attr
-             * @instance
-             */
-            attr.prototype.name = "";
-
-            /**
-             * attr numberVal.
-             * @member {number} numberVal
-             * @memberof message.UserAttr.attr
-             * @instance
-             */
-            attr.prototype.numberVal = 0;
-
-            /**
-             * attr strVal.
-             * @member {string} strVal
-             * @memberof message.UserAttr.attr
-             * @instance
-             */
-            attr.prototype.strVal = "";
-
-            /**
-             * attr boolVal.
-             * @member {boolean} boolVal
-             * @memberof message.UserAttr.attr
-             * @instance
-             */
-            attr.prototype.boolVal = false;
-
-            /**
-             * Creates a new attr instance using the specified properties.
-             * @function create
-             * @memberof message.UserAttr.attr
-             * @static
-             * @param {message.UserAttr.Iattr=} [properties] Properties to set
-             * @returns {message.UserAttr.attr} attr instance
-             */
-            attr.create = function create(properties) {
-                return new attr(properties);
-            };
-
-            /**
-             * Encodes the specified attr message. Does not implicitly {@link message.UserAttr.attr.verify|verify} messages.
-             * @function encode
-             * @memberof message.UserAttr.attr
-             * @static
-             * @param {message.UserAttr.Iattr} message attr message or plain object to encode
-             * @param {$protobuf.Writer} [writer] Writer to encode to
-             * @returns {$protobuf.Writer} Writer
-             */
-            attr.encode = function encode(message, writer) {
-                if (!writer)
-                    writer = $Writer.create();
-                if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
-                if (message.numberVal != null && Object.hasOwnProperty.call(message, "numberVal"))
-                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.numberVal);
-                if (message.strVal != null && Object.hasOwnProperty.call(message, "strVal"))
-                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.strVal);
-                if (message.boolVal != null && Object.hasOwnProperty.call(message, "boolVal"))
-                    writer.uint32(/* id 4, wireType 0 =*/32).bool(message.boolVal);
-                return writer;
-            };
-
-            /**
-             * Encodes the specified attr message, length delimited. Does not implicitly {@link message.UserAttr.attr.verify|verify} messages.
-             * @function encodeDelimited
-             * @memberof message.UserAttr.attr
-             * @static
-             * @param {message.UserAttr.Iattr} message attr message or plain object to encode
-             * @param {$protobuf.Writer} [writer] Writer to encode to
-             * @returns {$protobuf.Writer} Writer
-             */
-            attr.encodeDelimited = function encodeDelimited(message, writer) {
-                return this.encode(message, writer).ldelim();
-            };
-
-            /**
-             * Decodes an attr message from the specified reader or buffer.
-             * @function decode
-             * @memberof message.UserAttr.attr
-             * @static
-             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-             * @param {number} [length] Message length if known beforehand
-             * @returns {message.UserAttr.attr} attr
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            attr.decode = function decode(reader, length) {
-                if (!(reader instanceof $Reader))
-                    reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.UserAttr.attr();
-                while (reader.pos < end) {
-                    var tag = reader.uint32();
-                    switch (tag >>> 3) {
-                    case 1:
-                        message.name = reader.string();
-                        break;
-                    case 2:
-                        message.numberVal = reader.uint32();
-                        break;
-                    case 3:
-                        message.strVal = reader.string();
-                        break;
-                    case 4:
-                        message.boolVal = reader.bool();
-                        break;
-                    default:
-                        reader.skipType(tag & 7);
-                        break;
-                    }
-                }
-                return message;
-            };
-
-            /**
-             * Decodes an attr message from the specified reader or buffer, length delimited.
-             * @function decodeDelimited
-             * @memberof message.UserAttr.attr
-             * @static
-             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-             * @returns {message.UserAttr.attr} attr
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            attr.decodeDelimited = function decodeDelimited(reader) {
-                if (!(reader instanceof $Reader))
-                    reader = new $Reader(reader);
-                return this.decode(reader, reader.uint32());
-            };
-
-            /**
-             * Verifies an attr message.
-             * @function verify
-             * @memberof message.UserAttr.attr
-             * @static
-             * @param {Object.<string,*>} message Plain object to verify
-             * @returns {string|null} `null` if valid, otherwise the reason why it is not
-             */
-            attr.verify = function verify(message) {
-                if (typeof message !== "object" || message === null)
-                    return "object expected";
-                if (message.name != null && message.hasOwnProperty("name"))
-                    if (!$util.isString(message.name))
-                        return "name: string expected";
-                if (message.numberVal != null && message.hasOwnProperty("numberVal"))
-                    if (!$util.isInteger(message.numberVal))
-                        return "numberVal: integer expected";
-                if (message.strVal != null && message.hasOwnProperty("strVal"))
-                    if (!$util.isString(message.strVal))
-                        return "strVal: string expected";
-                if (message.boolVal != null && message.hasOwnProperty("boolVal"))
-                    if (typeof message.boolVal !== "boolean")
-                        return "boolVal: boolean expected";
-                return null;
-            };
-
-            /**
-             * Creates an attr message from a plain object. Also converts values to their respective internal types.
-             * @function fromObject
-             * @memberof message.UserAttr.attr
-             * @static
-             * @param {Object.<string,*>} object Plain object
-             * @returns {message.UserAttr.attr} attr
-             */
-            attr.fromObject = function fromObject(object) {
-                if (object instanceof $root.message.UserAttr.attr)
-                    return object;
-                var message = new $root.message.UserAttr.attr();
-                if (object.name != null)
-                    message.name = String(object.name);
-                if (object.numberVal != null)
-                    message.numberVal = object.numberVal >>> 0;
-                if (object.strVal != null)
-                    message.strVal = String(object.strVal);
-                if (object.boolVal != null)
-                    message.boolVal = Boolean(object.boolVal);
-                return message;
-            };
-
-            /**
-             * Creates a plain object from an attr message. Also converts values to other types if specified.
-             * @function toObject
-             * @memberof message.UserAttr.attr
-             * @static
-             * @param {message.UserAttr.attr} message attr
-             * @param {$protobuf.IConversionOptions} [options] Conversion options
-             * @returns {Object.<string,*>} Plain object
-             */
-            attr.toObject = function toObject(message, options) {
-                if (!options)
-                    options = {};
-                var object = {};
-                if (options.defaults) {
-                    object.name = "";
-                    object.numberVal = 0;
-                    object.strVal = "";
-                    object.boolVal = false;
-                }
-                if (message.name != null && message.hasOwnProperty("name"))
-                    object.name = message.name;
-                if (message.numberVal != null && message.hasOwnProperty("numberVal"))
-                    object.numberVal = message.numberVal;
-                if (message.strVal != null && message.hasOwnProperty("strVal"))
-                    object.strVal = message.strVal;
-                if (message.boolVal != null && message.hasOwnProperty("boolVal"))
-                    object.boolVal = message.boolVal;
-                return object;
-            };
-
-            /**
-             * Converts this attr to JSON.
-             * @function toJSON
-             * @memberof message.UserAttr.attr
-             * @instance
-             * @returns {Object.<string,*>} JSON object
-             */
-            attr.prototype.toJSON = function toJSON() {
-                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-            };
-
-            return attr;
-        })();
-
-        return UserAttr;
+        return BackLoginBroadCastRoom1001;
     })();
 
     message.Message = (function() {
@@ -4890,7 +4435,7 @@ $root.message = (function() {
      * @property {number} ACCOUNTSERVER=2 ACCOUNTSERVER value
      * @property {number} WORLDSERVER=3 WORLDSERVER value
      * @property {number} CORESERVER=4 CORESERVER value
-     * @property {number} ASSISTSERVER=5 ASSISTSERVER value
+     * @property {number} FUNCSERVER=5 FUNCSERVER value
      */
     message.NODE = (function() {
         var valuesById = {}, values = Object.create(valuesById);
@@ -4899,7 +4444,7 @@ $root.message = (function() {
         values[valuesById[2] = "ACCOUNTSERVER"] = 2;
         values[valuesById[3] = "WORLDSERVER"] = 3;
         values[valuesById[4] = "CORESERVER"] = 4;
-        values[valuesById[5] = "ASSISTSERVER"] = 5;
+        values[valuesById[5] = "FUNCSERVER"] = 5;
         return values;
     })();
 
@@ -5134,7 +4679,7 @@ $root.message = (function() {
             case 4:
                 message.DestNodeType = 4;
                 break;
-            case "ASSISTSERVER":
+            case "FUNCSERVER":
             case 5:
                 message.DestNodeType = 5;
                 break;
@@ -5197,6 +4742,7 @@ $root.message = (function() {
          * @memberof message
          * @interface IRpcHead
          * @property {number|null} [ClientId] RpcHead ClientId
+         * @property {string|null} [Key] RpcHead Key
          * @property {number|Long|null} [AccountId] RpcHead AccountId
          * @property {number|null} [fromNode] RpcHead fromNode
          * @property {number|null} [toNode] RpcHead toNode
@@ -5226,6 +4772,14 @@ $root.message = (function() {
          * @instance
          */
         RpcHead.prototype.ClientId = 0;
+
+        /**
+         * RpcHead Key.
+         * @member {string} Key
+         * @memberof message.RpcHead
+         * @instance
+         */
+        RpcHead.prototype.Key = "";
 
         /**
          * RpcHead AccountId.
@@ -5293,16 +4847,18 @@ $root.message = (function() {
                 writer = $Writer.create();
             if (message.ClientId != null && Object.hasOwnProperty.call(message, "ClientId"))
                 writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.ClientId);
+            if (message.Key != null && Object.hasOwnProperty.call(message, "Key"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.Key);
             if (message.AccountId != null && Object.hasOwnProperty.call(message, "AccountId"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.AccountId);
+                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.AccountId);
             if (message.fromNode != null && Object.hasOwnProperty.call(message, "fromNode"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.fromNode);
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.fromNode);
             if (message.toNode != null && Object.hasOwnProperty.call(message, "toNode"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.toNode);
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.toNode);
             if (message.CallId != null && Object.hasOwnProperty.call(message, "CallId"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.CallId);
+                writer.uint32(/* id 6, wireType 0 =*/48).int64(message.CallId);
             if (message.SocketId != null && Object.hasOwnProperty.call(message, "SocketId"))
-                writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.SocketId);
+                writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.SocketId);
             return writer;
         };
 
@@ -5341,18 +4897,21 @@ $root.message = (function() {
                     message.ClientId = reader.uint32();
                     break;
                 case 2:
-                    message.AccountId = reader.int64();
+                    message.Key = reader.string();
                     break;
                 case 3:
-                    message.fromNode = reader.int32();
+                    message.AccountId = reader.int64();
                     break;
                 case 4:
-                    message.toNode = reader.int32();
+                    message.fromNode = reader.int32();
                     break;
                 case 5:
-                    message.CallId = reader.int64();
+                    message.toNode = reader.int32();
                     break;
                 case 6:
+                    message.CallId = reader.int64();
+                    break;
+                case 7:
                     message.SocketId = reader.uint32();
                     break;
                 default:
@@ -5393,6 +4952,9 @@ $root.message = (function() {
             if (message.ClientId != null && message.hasOwnProperty("ClientId"))
                 if (!$util.isInteger(message.ClientId))
                     return "ClientId: integer expected";
+            if (message.Key != null && message.hasOwnProperty("Key"))
+                if (!$util.isString(message.Key))
+                    return "Key: string expected";
             if (message.AccountId != null && message.hasOwnProperty("AccountId"))
                 if (!$util.isInteger(message.AccountId) && !(message.AccountId && $util.isInteger(message.AccountId.low) && $util.isInteger(message.AccountId.high)))
                     return "AccountId: integer|Long expected";
@@ -5425,6 +4987,8 @@ $root.message = (function() {
             var message = new $root.message.RpcHead();
             if (object.ClientId != null)
                 message.ClientId = object.ClientId >>> 0;
+            if (object.Key != null)
+                message.Key = String(object.Key);
             if (object.AccountId != null)
                 if ($util.Long)
                     (message.AccountId = $util.Long.fromValue(object.AccountId)).unsigned = false;
@@ -5467,6 +5031,7 @@ $root.message = (function() {
             var object = {};
             if (options.defaults) {
                 object.ClientId = 0;
+                object.Key = "";
                 if ($util.Long) {
                     var long = new $util.Long(0, 0, false);
                     object.AccountId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -5483,6 +5048,8 @@ $root.message = (function() {
             }
             if (message.ClientId != null && message.hasOwnProperty("ClientId"))
                 object.ClientId = message.ClientId;
+            if (message.Key != null && message.hasOwnProperty("Key"))
+                object.Key = message.Key;
             if (message.AccountId != null && message.hasOwnProperty("AccountId"))
                 if (typeof message.AccountId === "number")
                     object.AccountId = options.longs === String ? String(message.AccountId) : message.AccountId;
@@ -5782,6 +5349,1342 @@ $root.message = (function() {
         };
 
         return RpcPacket;
+    })();
+
+    message.RequestLike = (function() {
+
+        /**
+         * Properties of a RequestLike.
+         * @memberof message
+         * @interface IRequestLike
+         * @property {number|null} [num] RequestLike num
+         */
+
+        /**
+         * Constructs a new RequestLike.
+         * @memberof message
+         * @classdesc Represents a RequestLike.
+         * @implements IRequestLike
+         * @constructor
+         * @param {message.IRequestLike=} [properties] Properties to set
+         */
+        function RequestLike(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * RequestLike num.
+         * @member {number} num
+         * @memberof message.RequestLike
+         * @instance
+         */
+        RequestLike.prototype.num = 0;
+
+        /**
+         * Creates a new RequestLike instance using the specified properties.
+         * @function create
+         * @memberof message.RequestLike
+         * @static
+         * @param {message.IRequestLike=} [properties] Properties to set
+         * @returns {message.RequestLike} RequestLike instance
+         */
+        RequestLike.create = function create(properties) {
+            return new RequestLike(properties);
+        };
+
+        /**
+         * Encodes the specified RequestLike message. Does not implicitly {@link message.RequestLike.verify|verify} messages.
+         * @function encode
+         * @memberof message.RequestLike
+         * @static
+         * @param {message.IRequestLike} message RequestLike message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestLike.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.num != null && Object.hasOwnProperty.call(message, "num"))
+                writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.num);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RequestLike message, length delimited. Does not implicitly {@link message.RequestLike.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.RequestLike
+         * @static
+         * @param {message.IRequestLike} message RequestLike message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestLike.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RequestLike message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.RequestLike
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.RequestLike} RequestLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestLike.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.RequestLike();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.num = reader.uint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RequestLike message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.RequestLike
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.RequestLike} RequestLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestLike.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RequestLike message.
+         * @function verify
+         * @memberof message.RequestLike
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RequestLike.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.num != null && message.hasOwnProperty("num"))
+                if (!$util.isInteger(message.num))
+                    return "num: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a RequestLike message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.RequestLike
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.RequestLike} RequestLike
+         */
+        RequestLike.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.RequestLike)
+                return object;
+            var message = new $root.message.RequestLike();
+            if (object.num != null)
+                message.num = object.num >>> 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a RequestLike message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.RequestLike
+         * @static
+         * @param {message.RequestLike} message RequestLike
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RequestLike.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.num = 0;
+            if (message.num != null && message.hasOwnProperty("num"))
+                object.num = message.num;
+            return object;
+        };
+
+        /**
+         * Converts this RequestLike to JSON.
+         * @function toJSON
+         * @memberof message.RequestLike
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RequestLike.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RequestLike;
+    })();
+
+    message.BackLike = (function() {
+
+        /**
+         * Properties of a BackLike.
+         * @memberof message
+         * @interface IBackLike
+         * @property {message.BackLike.RetCode|null} [code] BackLike code
+         * @property {string|null} [msg] BackLike msg
+         */
+
+        /**
+         * Constructs a new BackLike.
+         * @memberof message
+         * @classdesc Represents a BackLike.
+         * @implements IBackLike
+         * @constructor
+         * @param {message.IBackLike=} [properties] Properties to set
+         */
+        function BackLike(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackLike code.
+         * @member {message.BackLike.RetCode} code
+         * @memberof message.BackLike
+         * @instance
+         */
+        BackLike.prototype.code = 0;
+
+        /**
+         * BackLike msg.
+         * @member {string} msg
+         * @memberof message.BackLike
+         * @instance
+         */
+        BackLike.prototype.msg = "";
+
+        /**
+         * Creates a new BackLike instance using the specified properties.
+         * @function create
+         * @memberof message.BackLike
+         * @static
+         * @param {message.IBackLike=} [properties] Properties to set
+         * @returns {message.BackLike} BackLike instance
+         */
+        BackLike.create = function create(properties) {
+            return new BackLike(properties);
+        };
+
+        /**
+         * Encodes the specified BackLike message. Does not implicitly {@link message.BackLike.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackLike
+         * @static
+         * @param {message.IBackLike} message BackLike message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackLike.encode = function encode(message, writer) {
+            
+            if (!writer)
+                writer = $Writer.create();
+            if (message.code != null && Object.hasOwnProperty.call(message, "code"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.code);
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackLike message, length delimited. Does not implicitly {@link message.BackLike.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackLike
+         * @static
+         * @param {message.IBackLike} message BackLike message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackLike.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackLike message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackLike
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackLike} BackLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackLike.decode = function decode(reader, length) {
+            console.log(reader,'reader');
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackLike();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.code = reader.int32();
+                    break;
+                case 2:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackLike message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackLike
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackLike} BackLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackLike.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackLike message.
+         * @function verify
+         * @memberof message.BackLike
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackLike.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.code != null && message.hasOwnProperty("code"))
+                switch (message.code) {
+                default:
+                    return "code: enum value expected";
+                case 0:
+                case 2:
+                case 3:
+                    break;
+                }
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackLike message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackLike
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackLike} BackLike
+         */
+        BackLike.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackLike)
+                return object;
+            var message = new $root.message.BackLike();
+            switch (object.code) {
+            case "RC_OK":
+            case 0:
+                message.code = 0;
+                break;
+            case "RC_LOGIN_CLOSED":
+            case 2:
+                message.code = 2;
+                break;
+            case "RC_TOO_FAST":
+            case 3:
+                message.code = 3;
+                break;
+            }
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackLike message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackLike
+         * @static
+         * @param {message.BackLike} message BackLike
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackLike.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.code = options.enums === String ? "RC_OK" : 0;
+                object.msg = "";
+            }
+            if (message.code != null && message.hasOwnProperty("code"))
+                object.code = options.enums === String ? $root.message.BackLike.RetCode[message.code] : message.code;
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackLike to JSON.
+         * @function toJSON
+         * @memberof message.BackLike
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackLike.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * RetCode enum.
+         * @name message.BackLike.RetCode
+         * @enum {number}
+         * @property {number} RC_OK=0 RC_OK value
+         * @property {number} RC_LOGIN_CLOSED=2 RC_LOGIN_CLOSED value
+         * @property {number} RC_TOO_FAST=3 RC_TOO_FAST value
+         */
+        BackLike.RetCode = (function() {
+            var valuesById = {}, values = Object.create(valuesById);
+            values[valuesById[0] = "RC_OK"] = 0;
+            values[valuesById[2] = "RC_LOGIN_CLOSED"] = 2;
+            values[valuesById[3] = "RC_TOO_FAST"] = 3;
+            return values;
+        })();
+
+        return BackLike;
+    })();
+
+    message.BroadCastLike = (function() {
+
+        /**
+         * Properties of a BroadCastLike.
+         * @memberof message
+         * @interface IBroadCastLike
+         * @property {Array.<message.BroadCastLike.IUserLike>|null} [list] BroadCastLike list
+         * @property {number|null} [finalLikeNum] BroadCastLike finalLikeNum
+         */
+
+        /**
+         * Constructs a new BroadCastLike.
+         * @memberof message
+         * @classdesc Represents a BroadCastLike.
+         * @implements IBroadCastLike
+         * @constructor
+         * @param {message.IBroadCastLike=} [properties] Properties to set
+         */
+        function BroadCastLike(properties) {
+            this.list = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BroadCastLike list.
+         * @member {Array.<message.BroadCastLike.IUserLike>} list
+         * @memberof message.BroadCastLike
+         * @instance
+         */
+        BroadCastLike.prototype.list = $util.emptyArray;
+
+        /**
+         * BroadCastLike finalLikeNum.
+         * @member {number} finalLikeNum
+         * @memberof message.BroadCastLike
+         * @instance
+         */
+        BroadCastLike.prototype.finalLikeNum = 0;
+
+        /**
+         * Creates a new BroadCastLike instance using the specified properties.
+         * @function create
+         * @memberof message.BroadCastLike
+         * @static
+         * @param {message.IBroadCastLike=} [properties] Properties to set
+         * @returns {message.BroadCastLike} BroadCastLike instance
+         */
+        BroadCastLike.create = function create(properties) {
+            return new BroadCastLike(properties);
+        };
+
+        /**
+         * Encodes the specified BroadCastLike message. Does not implicitly {@link message.BroadCastLike.verify|verify} messages.
+         * @function encode
+         * @memberof message.BroadCastLike
+         * @static
+         * @param {message.IBroadCastLike} message BroadCastLike message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastLike.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.list != null && message.list.length)
+                for (var i = 0; i < message.list.length; ++i)
+                    $root.message.BroadCastLike.UserLike.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.finalLikeNum != null && Object.hasOwnProperty.call(message, "finalLikeNum"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.finalLikeNum);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BroadCastLike message, length delimited. Does not implicitly {@link message.BroadCastLike.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BroadCastLike
+         * @static
+         * @param {message.IBroadCastLike} message BroadCastLike message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastLike.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BroadCastLike message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BroadCastLike
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BroadCastLike} BroadCastLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastLike.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastLike();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.list && message.list.length))
+                        message.list = [];
+                    message.list.push($root.message.BroadCastLike.UserLike.decode(reader, reader.uint32()));
+                    break;
+                case 2:
+                    message.finalLikeNum = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BroadCastLike message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BroadCastLike
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BroadCastLike} BroadCastLike
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastLike.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BroadCastLike message.
+         * @function verify
+         * @memberof message.BroadCastLike
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BroadCastLike.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.list != null && message.hasOwnProperty("list")) {
+                if (!Array.isArray(message.list))
+                    return "list: array expected";
+                for (var i = 0; i < message.list.length; ++i) {
+                    var error = $root.message.BroadCastLike.UserLike.verify(message.list[i]);
+                    if (error)
+                        return "list." + error;
+                }
+            }
+            if (message.finalLikeNum != null && message.hasOwnProperty("finalLikeNum"))
+                if (!$util.isInteger(message.finalLikeNum))
+                    return "finalLikeNum: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a BroadCastLike message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BroadCastLike
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BroadCastLike} BroadCastLike
+         */
+        BroadCastLike.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadCastLike)
+                return object;
+            var message = new $root.message.BroadCastLike();
+            if (object.list) {
+                if (!Array.isArray(object.list))
+                    throw TypeError(".message.BroadCastLike.list: array expected");
+                message.list = [];
+                for (var i = 0; i < object.list.length; ++i) {
+                    if (typeof object.list[i] !== "object")
+                        throw TypeError(".message.BroadCastLike.list: object expected");
+                    message.list[i] = $root.message.BroadCastLike.UserLike.fromObject(object.list[i]);
+                }
+            }
+            if (object.finalLikeNum != null)
+                message.finalLikeNum = object.finalLikeNum | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BroadCastLike message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BroadCastLike
+         * @static
+         * @param {message.BroadCastLike} message BroadCastLike
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BroadCastLike.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.list = [];
+            if (options.defaults)
+                object.finalLikeNum = 0;
+            if (message.list && message.list.length) {
+                object.list = [];
+                for (var j = 0; j < message.list.length; ++j)
+                    object.list[j] = $root.message.BroadCastLike.UserLike.toObject(message.list[j], options);
+            }
+            if (message.finalLikeNum != null && message.hasOwnProperty("finalLikeNum"))
+                object.finalLikeNum = message.finalLikeNum;
+            return object;
+        };
+
+        /**
+         * Converts this BroadCastLike to JSON.
+         * @function toJSON
+         * @memberof message.BroadCastLike
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BroadCastLike.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        BroadCastLike.UserLike = (function() {
+
+            /**
+             * Properties of a UserLike.
+             * @memberof message.BroadCastLike
+             * @interface IUserLike
+             * @property {string|null} [tp] UserLike tp
+             * @property {number|null} [num] UserLike num
+             * @property {string|null} [avatar] UserLike avatar
+             */
+
+            /**
+             * Constructs a new UserLike.
+             * @memberof message.BroadCastLike
+             * @classdesc Represents a UserLike.
+             * @implements IUserLike
+             * @constructor
+             * @param {message.BroadCastLike.IUserLike=} [properties] Properties to set
+             */
+            function UserLike(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * UserLike tp.
+             * @member {string} tp
+             * @memberof message.BroadCastLike.UserLike
+             * @instance
+             */
+            UserLike.prototype.tp = "";
+
+            /**
+             * UserLike num.
+             * @member {number} num
+             * @memberof message.BroadCastLike.UserLike
+             * @instance
+             */
+            UserLike.prototype.num = 0;
+
+            /**
+             * UserLike avatar.
+             * @member {string} avatar
+             * @memberof message.BroadCastLike.UserLike
+             * @instance
+             */
+            UserLike.prototype.avatar = "";
+
+            /**
+             * Creates a new UserLike instance using the specified properties.
+             * @function create
+             * @memberof message.BroadCastLike.UserLike
+             * @static
+             * @param {message.BroadCastLike.IUserLike=} [properties] Properties to set
+             * @returns {message.BroadCastLike.UserLike} UserLike instance
+             */
+            UserLike.create = function create(properties) {
+                return new UserLike(properties);
+            };
+
+            /**
+             * Encodes the specified UserLike message. Does not implicitly {@link message.BroadCastLike.UserLike.verify|verify} messages.
+             * @function encode
+             * @memberof message.BroadCastLike.UserLike
+             * @static
+             * @param {message.BroadCastLike.IUserLike} message UserLike message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            UserLike.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.tp != null && Object.hasOwnProperty.call(message, "tp"))
+                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.tp);
+                if (message.num != null && Object.hasOwnProperty.call(message, "num"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.num);
+                if (message.avatar != null && Object.hasOwnProperty.call(message, "avatar"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.avatar);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified UserLike message, length delimited. Does not implicitly {@link message.BroadCastLike.UserLike.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof message.BroadCastLike.UserLike
+             * @static
+             * @param {message.BroadCastLike.IUserLike} message UserLike message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            UserLike.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a UserLike message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.BroadCastLike.UserLike
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {message.BroadCastLike.UserLike} UserLike
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            UserLike.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastLike.UserLike();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.tp = reader.string();
+                        break;
+                    case 2:
+                        message.num = reader.uint32();
+                        break;
+                    case 3:
+                        message.avatar = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a UserLike message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof message.BroadCastLike.UserLike
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {message.BroadCastLike.UserLike} UserLike
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            UserLike.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a UserLike message.
+             * @function verify
+             * @memberof message.BroadCastLike.UserLike
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            UserLike.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.tp != null && message.hasOwnProperty("tp"))
+                    if (!$util.isString(message.tp))
+                        return "tp: string expected";
+                if (message.num != null && message.hasOwnProperty("num"))
+                    if (!$util.isInteger(message.num))
+                        return "num: integer expected";
+                if (message.avatar != null && message.hasOwnProperty("avatar"))
+                    if (!$util.isString(message.avatar))
+                        return "avatar: string expected";
+                return null;
+            };
+
+            /**
+             * Creates a UserLike message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.BroadCastLike.UserLike
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {message.BroadCastLike.UserLike} UserLike
+             */
+            UserLike.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.BroadCastLike.UserLike)
+                    return object;
+                var message = new $root.message.BroadCastLike.UserLike();
+                if (object.tp != null)
+                    message.tp = String(object.tp);
+                if (object.num != null)
+                    message.num = object.num >>> 0;
+                if (object.avatar != null)
+                    message.avatar = String(object.avatar);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a UserLike message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.BroadCastLike.UserLike
+             * @static
+             * @param {message.BroadCastLike.UserLike} message UserLike
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            UserLike.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.tp = "";
+                    object.num = 0;
+                    object.avatar = "";
+                }
+                if (message.tp != null && message.hasOwnProperty("tp"))
+                    object.tp = message.tp;
+                if (message.num != null && message.hasOwnProperty("num"))
+                    object.num = message.num;
+                if (message.avatar != null && message.hasOwnProperty("avatar"))
+                    object.avatar = message.avatar;
+                return object;
+            };
+
+            /**
+             * Converts this UserLike to JSON.
+             * @function toJSON
+             * @memberof message.BroadCastLike.UserLike
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            UserLike.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return UserLike;
+        })();
+
+        return BroadCastLike;
+    })();
+
+    message.BroadBilibili = (function() {
+
+        /**
+         * Properties of a BroadBilibili.
+         * @memberof message
+         * @interface IBroadBilibili
+         * @property {Array.<message.BroadBilibili.IBilibili>|null} [list] BroadBilibili list
+         */
+
+        /**
+         * Constructs a new BroadBilibili.
+         * @memberof message
+         * @classdesc Represents a BroadBilibili.
+         * @implements IBroadBilibili
+         * @constructor
+         * @param {message.IBroadBilibili=} [properties] Properties to set
+         */
+        function BroadBilibili(properties) {
+            this.list = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BroadBilibili list.
+         * @member {Array.<message.BroadBilibili.IBilibili>} list
+         * @memberof message.BroadBilibili
+         * @instance
+         */
+        BroadBilibili.prototype.list = $util.emptyArray;
+
+        /**
+         * Creates a new BroadBilibili instance using the specified properties.
+         * @function create
+         * @memberof message.BroadBilibili
+         * @static
+         * @param {message.IBroadBilibili=} [properties] Properties to set
+         * @returns {message.BroadBilibili} BroadBilibili instance
+         */
+        BroadBilibili.create = function create(properties) {
+            return new BroadBilibili(properties);
+        };
+
+        /**
+         * Encodes the specified BroadBilibili message. Does not implicitly {@link message.BroadBilibili.verify|verify} messages.
+         * @function encode
+         * @memberof message.BroadBilibili
+         * @static
+         * @param {message.IBroadBilibili} message BroadBilibili message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadBilibili.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.list != null && message.list.length)
+                for (var i = 0; i < message.list.length; ++i)
+                    $root.message.BroadBilibili.Bilibili.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BroadBilibili message, length delimited. Does not implicitly {@link message.BroadBilibili.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BroadBilibili
+         * @static
+         * @param {message.IBroadBilibili} message BroadBilibili message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadBilibili.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BroadBilibili message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BroadBilibili
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BroadBilibili} BroadBilibili
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadBilibili.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadBilibili();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.list && message.list.length))
+                        message.list = [];
+                    message.list.push($root.message.BroadBilibili.Bilibili.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BroadBilibili message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BroadBilibili
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BroadBilibili} BroadBilibili
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadBilibili.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BroadBilibili message.
+         * @function verify
+         * @memberof message.BroadBilibili
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BroadBilibili.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.list != null && message.hasOwnProperty("list")) {
+                if (!Array.isArray(message.list))
+                    return "list: array expected";
+                for (var i = 0; i < message.list.length; ++i) {
+                    var error = $root.message.BroadBilibili.Bilibili.verify(message.list[i]);
+                    if (error)
+                        return "list." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a BroadBilibili message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BroadBilibili
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BroadBilibili} BroadBilibili
+         */
+        BroadBilibili.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadBilibili)
+                return object;
+            var message = new $root.message.BroadBilibili();
+            if (object.list) {
+                if (!Array.isArray(object.list))
+                    throw TypeError(".message.BroadBilibili.list: array expected");
+                message.list = [];
+                for (var i = 0; i < object.list.length; ++i) {
+                    if (typeof object.list[i] !== "object")
+                        throw TypeError(".message.BroadBilibili.list: object expected");
+                    message.list[i] = $root.message.BroadBilibili.Bilibili.fromObject(object.list[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BroadBilibili message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BroadBilibili
+         * @static
+         * @param {message.BroadBilibili} message BroadBilibili
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BroadBilibili.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.list = [];
+            if (message.list && message.list.length) {
+                object.list = [];
+                for (var j = 0; j < message.list.length; ++j)
+                    object.list[j] = $root.message.BroadBilibili.Bilibili.toObject(message.list[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this BroadBilibili to JSON.
+         * @function toJSON
+         * @memberof message.BroadBilibili
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BroadBilibili.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        BroadBilibili.Bilibili = (function() {
+
+            /**
+             * Properties of a Bilibili.
+             * @memberof message.BroadBilibili
+             * @interface IBilibili
+             * @property {string|null} [sender] Bilibili sender
+             * @property {string|null} [name] Bilibili name
+             * @property {number|null} [num] Bilibili num
+             */
+
+            /**
+             * Constructs a new Bilibili.
+             * @memberof message.BroadBilibili
+             * @classdesc Represents a Bilibili.
+             * @implements IBilibili
+             * @constructor
+             * @param {message.BroadBilibili.IBilibili=} [properties] Properties to set
+             */
+            function Bilibili(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * Bilibili sender.
+             * @member {string} sender
+             * @memberof message.BroadBilibili.Bilibili
+             * @instance
+             */
+            Bilibili.prototype.sender = "";
+
+            /**
+             * Bilibili name.
+             * @member {string} name
+             * @memberof message.BroadBilibili.Bilibili
+             * @instance
+             */
+            Bilibili.prototype.name = "";
+
+            /**
+             * Bilibili num.
+             * @member {number} num
+             * @memberof message.BroadBilibili.Bilibili
+             * @instance
+             */
+            Bilibili.prototype.num = 0;
+
+            /**
+             * Creates a new Bilibili instance using the specified properties.
+             * @function create
+             * @memberof message.BroadBilibili.Bilibili
+             * @static
+             * @param {message.BroadBilibili.IBilibili=} [properties] Properties to set
+             * @returns {message.BroadBilibili.Bilibili} Bilibili instance
+             */
+            Bilibili.create = function create(properties) {
+                return new Bilibili(properties);
+            };
+
+            /**
+             * Encodes the specified Bilibili message. Does not implicitly {@link message.BroadBilibili.Bilibili.verify|verify} messages.
+             * @function encode
+             * @memberof message.BroadBilibili.Bilibili
+             * @static
+             * @param {message.BroadBilibili.IBilibili} message Bilibili message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Bilibili.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.sender != null && Object.hasOwnProperty.call(message, "sender"))
+                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.sender);
+                if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+                if (message.num != null && Object.hasOwnProperty.call(message, "num"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.num);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified Bilibili message, length delimited. Does not implicitly {@link message.BroadBilibili.Bilibili.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof message.BroadBilibili.Bilibili
+             * @static
+             * @param {message.BroadBilibili.IBilibili} message Bilibili message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Bilibili.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a Bilibili message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.BroadBilibili.Bilibili
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {message.BroadBilibili.Bilibili} Bilibili
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Bilibili.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadBilibili.Bilibili();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.sender = reader.string();
+                        break;
+                    case 2:
+                        message.name = reader.string();
+                        break;
+                    case 3:
+                        message.num = reader.uint32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a Bilibili message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof message.BroadBilibili.Bilibili
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {message.BroadBilibili.Bilibili} Bilibili
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Bilibili.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a Bilibili message.
+             * @function verify
+             * @memberof message.BroadBilibili.Bilibili
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            Bilibili.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.sender != null && message.hasOwnProperty("sender"))
+                    if (!$util.isString(message.sender))
+                        return "sender: string expected";
+                if (message.name != null && message.hasOwnProperty("name"))
+                    if (!$util.isString(message.name))
+                        return "name: string expected";
+                if (message.num != null && message.hasOwnProperty("num"))
+                    if (!$util.isInteger(message.num))
+                        return "num: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates a Bilibili message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.BroadBilibili.Bilibili
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {message.BroadBilibili.Bilibili} Bilibili
+             */
+            Bilibili.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.BroadBilibili.Bilibili)
+                    return object;
+                var message = new $root.message.BroadBilibili.Bilibili();
+                if (object.sender != null)
+                    message.sender = String(object.sender);
+                if (object.name != null)
+                    message.name = String(object.name);
+                if (object.num != null)
+                    message.num = object.num >>> 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a Bilibili message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.BroadBilibili.Bilibili
+             * @static
+             * @param {message.BroadBilibili.Bilibili} message Bilibili
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Bilibili.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.sender = "";
+                    object.name = "";
+                    object.num = 0;
+                }
+                if (message.sender != null && message.hasOwnProperty("sender"))
+                    object.sender = message.sender;
+                if (message.name != null && message.hasOwnProperty("name"))
+                    object.name = message.name;
+                if (message.num != null && message.hasOwnProperty("num"))
+                    object.num = message.num;
+                return object;
+            };
+
+            /**
+             * Converts this Bilibili to JSON.
+             * @function toJSON
+             * @memberof message.BroadBilibili.Bilibili
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            Bilibili.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return Bilibili;
+        })();
+
+        return BroadBilibili;
     })();
 
     return message;

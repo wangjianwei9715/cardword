@@ -1,21 +1,28 @@
-// import app from '@/app'
-// import nvueApp from './nvueGetApp.js'
+const app = getApp().globalData.app
+const httpReg = /^http(s)?/
 const request = (url, params = {}, method = 'GET') => {
-	const isTest = false
-	// const requestUrl = isTest ? 'http://192.168.8.79:8701/api/v2/' : 'https://server.ssl1.ka-world.com/api/v2/'
-	// const requestUrl='https://server.ssl1.ka-world.com/api/v2/'
-	const requestUrl='https://server.ssltest.ka-world.com/api/v2/'
-	// const requestUrl = 'http://192.168.8.80:8701/api/v2/'
+	
+	const isCustomUrl = httpReg.test(url) //是否传入完整的https/http链接
+	let baseURL = app.bussinessApiDomain
+	if (!isCustomUrl) {
+		if (url.indexOf("dataApi/") != -1) {
+			url = url.substring(8);
+			if (!app.localTest) baseURL = app.dataApiDomain;
+		}
+		if (url.indexOf('funcApi/') != -1) {
+			url = url.substring(8);
+			baseURL = app.funcApiDomain || app.bussinessApiDomain;
+			// if (!app.localTest) 
+		}
+	}
 	return new Promise((resolve, reject) => {
-		const httpReg = /^http(s)?/
-		const finUrl = httpReg.test(url) ? url : requestUrl + url
+		const finUrl = isCustomUrl ? url : baseURL + url
 		console.log(finUrl);
 		uni.request({
 			url: finUrl,
 			data: params,
 			header: {
-				token: uni.getStorageSync('token') && JSON.parse(uni.getStorageSync('token'))
-					.accessToken
+				token: app.token.accessToken
 			},
 			method: method.toUpperCase(),
 			success: (res) => {
@@ -34,5 +41,5 @@ const request = (url, params = {}, method = 'GET') => {
 			}
 		})
 	})
-} 
+}
 export default request

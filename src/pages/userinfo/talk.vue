@@ -155,13 +155,14 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 				this.updateBottomBarHeight();
 			})
 			let sendWebsocketLogin = () => {
-				let msg = new proto.message.Login();
-				msg.BuildNo = app.version;
-				msg.accountId = app.data.accountId;
-				msg.token = app.socketInfo.tcpToken;
-				let buffer = proto.message.Login.encode(msg).finish();
-				let pack = new PackageBase(Message.Login);
-				pack.d(buffer).to(app.sever);
+				// console.log('login');
+				// let msg = new proto.message.Login();
+				// msg.BuildNo = app.version;
+				// msg.accountId = app.data.accountId;
+				// msg.token = app.socketInfo.tcpToken;
+				// let buffer = proto.message.Login.encode(msg).finish();
+				// let pack = new PackageBase(Message.Login);
+				// pack.d(buffer).to(app.sever);
 			};
 			let connectSever = () => {
 				app.sever.close();

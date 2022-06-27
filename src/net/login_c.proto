@@ -7,14 +7,14 @@ message HeartBeat {
     int64 time = 1; //毫秒
 }
 
-//0x000100 登录
-message Login {
-    string BuildNo = 1;
-	int64 accountId = 2;
+//0x000100 登录直播间
+message LoginBroadCastRoom1001 {
+	int64 roomId = 1;
+	string uid = 2;
 	string token = 3;
 }
 
-//0x000101
-message PageLocation {
-    string page = 1;  //pages/index/userinfo  客户端当前位于哪个页面
+//0x00010F 退出直播间
+message LogoutBroadCastRoom1001 {
+    int64 roomId = 1;
 }

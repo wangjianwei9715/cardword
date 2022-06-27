@@ -104,7 +104,7 @@ export default class PlatformManager {
 			// 直播 回放
 			if(data.media_url!=''){
 				uni.navigateTo({
-					url:`/pages/live/zgPlayBack?data=${JSON.stringify(data)}&alias=${item.alias||item.merchantAlias}&roomID=${item.roomID}`
+					url:`/pages/live/zgPlayBack?data=${JSON.stringify(data)}&alias=${item.alias||item.merchantAlias}&roomID=${item.roomID}`,
 					// url:`/pages/live/transition`
 				})
 				return 
@@ -213,16 +213,19 @@ export default class PlatformManager {
 			// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
 			let bussinessApiDomain = res.app.bussinessApiDomain;
 			let dataApiDomain = res.app.dataApiDomain;
-
+			let funcApiDomain= res.app.funcApiDomain || ''
 			if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
 				bussinessApiDomain = bussinessApiDomain.slice(0,bussinessApiDomain.length - 1);
 			}
 			if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
 				dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
 			}
+			if (funcApiDomain.charAt(funcApiDomain.length - 1) == "/") {
+				funcApiDomain = funcApiDomain.slice(0, funcApiDomain.length - 1);
+			}
 			app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
 			app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
-
+			app.funcApiDomain = res.app.funcApiDomain?funcApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
 			if (cb) cb()
 			uni.setStorageSync("launchConfig", res);
 			uni.setStorageSync('launchUrl', url)
@@ -264,6 +267,7 @@ export default class PlatformManager {
 		app.service_url = data.service_url;
 		app.bussinessApiDomain = data.bussinessApiDomain;
 		app.dataApiDomain = data.dataApiDomain;
+		app.funcApiDomain=data.funcApiDomain || ''
 		app.update_url = data.update_url;
 		// #ifdef APP-PLUS
 		app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
