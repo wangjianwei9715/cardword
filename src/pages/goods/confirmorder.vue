@@ -19,7 +19,7 @@
 
     <view class="order-detail" v-if="goodsData.pic">
       <view class="goods-info">
-        <image  class="goods-info-logo" :src="getGoodsImg(decodeURIComponent(goodsData.pic.carousel))" />
+        <image  class="goods-info-logo" :src="$parsePic(getGoodsImg(decodeURIComponent(goodsData.pic.carousel)))" />
         <view class="goods-info2">
           <text class="goods-info2-title">{{ goodsData.title }}</text>
 
