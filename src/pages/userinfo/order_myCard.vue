@@ -24,8 +24,10 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import { myCardGoodsType } from '@/tools/switchUtil'
+	import { parsePic } from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		parsePic = parsePic;
 		myCardGoodsType = myCardGoodsType;
 		cardList:{[x:string]:any} = [];
 		typeTab = [
@@ -76,9 +78,11 @@
 
 			app.http.Get('me/cardNo/'+item.id+'/hit/pic',{},(res:any)=>{
 				this.picList = [];
-				for(let i in res.list){
-					this.picList.push(decodeURIComponent(res.list[i]))
+				let list = res.listCdn || res.list
+				for(let i in list){
+					this.picList.push(parsePic(decodeURIComponent(list[i])))
 				}
+
 				uni.previewImage({
 					urls: this.picList,
 					current:0,

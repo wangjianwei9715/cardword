@@ -40,11 +40,11 @@
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text
 							class="price-qi">{{getPriceStart()?'起':''}}</text></view>
 				</view>
-				<view class="header-content" :class="{'random-bg':getSelectType()}" v-else-if="goodsState==1">
+				<view class="header-content" :class="{'random-bg':getSelectType()}" v-else-if="goodsState==1||goodsState==0">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text
 							class="price-qi">{{getPriceStart()?'起':''}}</text></view>
 					<view class="header-right">
-						<view class="icon-end">距结束</view>
+						<view class="icon-end">{{goodsState==0?'距开售':'距结束'}}</view>
 						<view class="countdown-content">
 							<view v-if="countDay>0" class="countdown-index">{{countDay}}</view>
 							<view v-if="countDay>0" class="countdown-index countdown-day">天</view>
@@ -265,8 +265,10 @@
 		goodDetailStep
 	} from "@/net/DataExchange"
 	import { Md5 } from "ts-md5";
+	import { parsePic } from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
+		parsePic = parsePic;
 		goodsDetailRules = goodsDetailRules
 		goodsDetailHelp = goodsDetailHelp;
 		goodsSpe: {
@@ -383,7 +385,8 @@
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
 				ts:ts,
-				s:Md5.hashStr('kww_good_sign_'+id+'_'+ts+'_2022')
+				s:Md5.hashStr('kww_good_sign_'+id+'_'+ts+'_2022'),
+				urlvalid:1
 			}
 			app.http.Get('dataApi/good/' + id + '/detail', params, (data: any) => {
 				if (data.good == null || data.good == undefined) {
@@ -419,7 +422,7 @@
 				// 状态
 				this.goodsState = data.good.state;
 				// 倒计时
-				this.countDown = data.good.leftsec;
+				this.countDown = data.good.state == 0? ( data.good.leftsec - (data.good.overAt - data.good.startAt)): data.good.leftsec;
 				// 免单
 				this.freeNoNum = data.freeNoNum
 				// 获取商品图片
@@ -448,24 +451,32 @@
 		}
 		// 商品图片
 		getGoodsImage() {
-			let pic = decodeURIComponent(this.goodsData.pic.carousel);
+			let pic:any = decodeURIComponent(this.goodsData.pic.carousel_cdn||this.goodsData.pic.carousel);
 			let carousel: any = [];
 			if (pic.indexOf(',') == -1) {
-				carousel.push(pic)
+				carousel.push(parsePic(pic))
 			} else {
 				carousel = pic.split(',')
+				carousel = carousel.map((x:any)=>{
+					return parsePic(x)
+				})
 			}
 			this.carouselLength = carousel.length;
-			let yuanfeng = this.goodsData.pic.yuanfeng ? decodeURIComponent(this.goodsData.pic.yuanfeng).split(',') :
-			[];
+			let yuanfeng = this.goodsData.pic.yuanfeng ? decodeURIComponent(this.goodsData.pic.yuanfeng_cdn||this.goodsData.pic.yuanfeng).split(',') : [];
+			yuanfeng = yuanfeng.map((x:any)=>{
+				return parsePic(x)
+			})
 			this.goodsImg = [...carousel, ...yuanfeng];
 		}
 		// 详情图片
 		getDetailImage(img: any) {
 			if (img.indexOf(',') == -1) {
-				this.detailImg.push(img)
+				this.detailImg.push(parsePic(img))
 			} else {
 				this.detailImg = img.split(',')
+				this.detailImg = this.detailImg.map((x:any)=>{
+					return parsePic(x)
+				})
 			}
 		}
 
@@ -494,6 +505,9 @@
 					this.countDown--;
 					this.getTime()
 				} else {
+					if(this.goodsState == 0){
+						this.getGoodData(this.goodsId);
+					}
 					if (this.goodsState == 1) {
 						this.goodsState = -99
 					}
@@ -555,6 +569,12 @@
 						url: '/pages/userinfo/talk?targetUserId=' + this.goodsData.kefu + '&goodCode=' + this
 							.goodsId
 					})
+					// 第三方客服
+					// let params = {
+					// 	agentExten:this.goodsData.kefu,
+					// 	businessParam:'goodCode:'+this.goodsId
+					// }
+					// app.platform.heliService(params)
 				} else {
 					uni.showToast({
 						title: '当前商品暂无客服',

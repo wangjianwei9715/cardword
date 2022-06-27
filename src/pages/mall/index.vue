@@ -66,7 +66,7 @@
 				<view calss="point-tips">不定期上新</view>
 			</view>
 			<view class="point-box">
-				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index" :style='{marginRight:(index+1)%3==0?"0rpx":"10rpx"}'>
+				<view class="point-index" v-for="(item,index) in cardBean.list" :key="index">
 					<view class="award-num" style='z-index:8' v-if='item.limit_num!=0||item.leftNum!=-1'>
 						{{'剩'+item.leftNum+'份'}}
 					</view>
@@ -433,7 +433,6 @@
 
 	.mall-center {
 		width: 100%;
-		height: 100rpx;
 		box-sizing: border-box;
 		padding: 0 14rpx;
 		margin-top: -240rpx;
@@ -630,11 +629,11 @@
 			height: 326rpx;
 			background: #ffffff;
 			border-radius: 5rpx;
-			margin-right: 10rpx;
+			margin-right: 8.5rpx;
 			box-sizing: border-box;
 			padding: 0 12rpx;
 			position: relative;
-			margin-bottom: 10rpx;
+			margin-bottom: 8.5 rpx;
 		}
 
 		.point-index:nth-child(3n) {

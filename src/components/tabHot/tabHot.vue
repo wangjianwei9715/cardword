@@ -5,16 +5,16 @@
 			<view class="tab-hot-boxtips">{{name == 'broadCast'?getBroadCastStr(item.list.state):item.tips}}</view>
 			<view class="tab-hot-boxpic-index" v-if="name!='broadCast'">
 				<view class="tab-hot-boxpic-box" v-for="(src,index) in item.list" :key="index" @click="onClickHotTab(src,name)">
-					<image :src="decodeURIComponent(src.pic)" class="tab-hot-boxpic" mode="aspectFit"/>
+					<muqian-lazyLoad :src="decodeURIComponent(src.pic_cdn||src.pic)" class="tab-hot-boxpic" mode="aspectFit"/>
 				</view>
 			</view>
 			<view class="tab-hot-boxpic-index" v-else>
 				<view class="tab-hot-boxpic-box" @click="onClickMerchantInfo(item)">
-					<image :src="decodeURIComponent(item.list.merchantLogo)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
+					<muqian-lazyLoad :src="decodeURIComponent(item.list.merchantLogo_cdn||item.list.merchantLogo)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%"/>
 				</view>
 				<view class="tab-hot-boxpic-box live-border" @click="onClickLive(item.list)">
 					<view v-if="item.list.state == 2 || item.list.state == 1" class="live-ing"></view>
-					<image :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill"/>
+					<muqian-lazyLoad :src="decodeURIComponent(item.list.pic_cdn||item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%"/>
 				</view>
 			</view>
 		</view>

@@ -65,7 +65,8 @@ export default class ClassName extends BaseNode {
 
     let params: { [x: string]: any } = {
       fetchFrom: this.fetchFrom,
-      fetchSize: this.fetchSize
+      fetchSize: this.fetchSize,
+      urlvalid: 1
     };
     // 排序方式
     if (this.listSort != "") {
@@ -107,7 +108,12 @@ page {
   box-sizing: border-box;
   position:fixed;
   left:0;
+  // #ifdef H5
+  top:80rpx;
+  // #endif
+  // #ifndef H5
   top:0;
+  // #endif
   z-index: 66;
   // z-index: 9;
 }

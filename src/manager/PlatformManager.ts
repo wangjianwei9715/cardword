@@ -299,6 +299,7 @@ export default class PlatformManager {
 	}
 	// 获取粘贴板内容
 	getInvitationClipboard(cb?:Function){
+		// #ifdef APP-PLUS
 		if (plus.os.name == 'iOS') {  
 			var UIPasteboard = plus.ios.importClass("UIPasteboard");  
 			var generalPasteboard = UIPasteboard.generalPasteboard();  
@@ -307,8 +308,6 @@ export default class PlatformManager {
 			if(value!=undefined){
 				if(cb) cb(value)
 			}
-			
-			
 		} else if (plus.os.name == 'Android') {  
 			uni.getClipboardData({
 				success: (res)=> {
@@ -317,8 +316,8 @@ export default class PlatformManager {
 					}
 				}
 			});
-			
 		}
+		// #endif
 	}
 	// 判断粘贴板是否有邀请码
 	matchInviteRequestKey(code:string){
@@ -448,6 +447,11 @@ export default class PlatformManager {
 			if(res[i]) type=true;
 		}
 		return type
+	}
+	heliService(params:object){
+		uni.navigateTo({
+			url: '/pages/talk/index?url_params='+JSON.stringify(params)
+		})
 	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false

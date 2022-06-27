@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="business">
 			<view class="business-top uni-flex">
-				<image :src="decodeURIComponent(detail.logo)" class="business-avart" mode="aspectFill" />
+				<muqian-lazyLoad :src="decodeURIComponent(detail.logo_cdn||detail.logo)" class="business-avart" mode="aspectFill" borderRadius="50%" />
 				<view class="business-info">
 					<view class="nameInfo uni-flex">
 						<text>{{detail.name}}</text>
@@ -137,7 +137,7 @@
 			});
 		}
 		getBusDetail(id: number) {
-			app.http.Get("dataApi/merchant/1/detail/" + id, {}, (res: any) => {
+			app.http.Get("dataApi/merchant/1/detail/" + id, {urlvalid:1}, (res: any) => {
 				// console.log(res)
 				this.detail = res.data;
 				this.detail.certification = this.detail.certification || [];
@@ -176,7 +176,8 @@
 				,
 				{
 					...this.queryParams,
-					...questItem.query
+					...questItem.query,
+					urlvalid:1
 				},
 				(res: any) => {
 					this.totalPage = res.totalPage;

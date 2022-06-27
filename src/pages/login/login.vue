@@ -230,6 +230,15 @@
 			app.http.Post('user/domain',params)
 		}
 		onClickWechatLogin(){
+			if(!this.xieyiAgree){
+				uni.showToast({
+					title: '请先阅读并同意协议！',
+					icon: 'none',
+					duration: 2000
+				});
+				return;
+			};
+
 			uni.showLoading({
 				title: '加载中'
 			});

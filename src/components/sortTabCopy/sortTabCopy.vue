@@ -11,7 +11,7 @@
 					<view :class="{'icon-sort-downn':item.odType!=2,'icon-sort-down':item.odType==2}"></view>
 				</view>
 			</view>
-			<view :class="['header-sort-classify',{'classify-show':selectItem.selectShow}]">
+			<view :class="['header-sort-classify',{'classify-show':selectItem.selectShow&selectItem.key!='state','classify-short':selectItem.selectShow&&selectItem.key=='state'}]">
 				<view :class="['header-sort-classify-index',{'classify-opt':selectItem.index==index}]" @click="selectMenuClick(item,index)" v-for="(item,index) in selectItem.children" :key="index">{{item.name}} </view>
 			</view>
 		</view>
@@ -194,7 +194,7 @@ export default class ClassName extends BaseComponent {
     left: 0;
     padding: 0 36rpx;
     background: #fff;
-    transition: height 0.3s linear;
+    transition: height 0.2s linear;
     opacity: 0;
     overflow: hidden;
     z-index: 9;
@@ -216,6 +216,10 @@ export default class ClassName extends BaseComponent {
   }
   .classify-show {
     height:480rpx;
+    opacity: 1;
+  }
+  .classify-short {
+    height:170rpx;
     opacity: 1;
   }
   .classify-opt {

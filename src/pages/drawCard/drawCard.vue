@@ -19,23 +19,16 @@ import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 @Component({})
 export default class ClassName extends BaseNode {
-  source = [ 
-    {id:1,pic: '../../static/goods/drawcard/card_gold.png'},
+  queue:any = [{id:1,pic: '../../static/goods/drawcard/card_gold.png'},
     {id:2,pic: '../../static/goods/drawcard/card_red.png'},
     {id:3,pic: '../../static/goods/drawcard/card_blue.png'},
     {id:4,pic: '../../static/goods/drawcard/card_gold.png'},
-    {id:5,pic: '../../static/goods/drawcard/card_gold.png'}
-  ]
-  queue:any = [];
+    {id:5,pic: '../../static/goods/drawcard/card_gold.png'}];
   offset = 0
   onLoad(query: any) {
-    this.mock()
     
   }
   mock(count = 5) {
-    const list = this.source.slice(this.offset, count)
-    this.offset += count
-    this.queue = this.queue.concat(list)
   }
   onSubmit(type:string, key:any, item:any) {
     // type: result，'like': swipe right, 'nope': swipe left, 'super': swipe up

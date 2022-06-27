@@ -76,10 +76,10 @@ export var stateArray = [
         name: "在售",
         value: 1
     },
-    {
-        name: "即将发售",
-        value: 0
-    },
+    // {
+    //     name: "即将发售",
+    //     value: 0
+    // },
     {
         name: "已拼成",
         value: 2

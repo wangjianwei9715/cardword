@@ -12,7 +12,7 @@
 				</view>
 			</view>
 			<view class="orderlist-index-center" @click="onClickJumpUrl(item.code)">
-				<muqian-lazyLoad class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic))"></muqian-lazyLoad>
+				<muqian-lazyLoad class="goods-image" :src="getGoodsImg(decodeURIComponent(item.good.pic_cdn||item.good.pic))"></muqian-lazyLoad>
 				<view class="goods-content">
 					<view class="title">{{item.good.title}}</view>
 					<view class="state" :class="{'no-bg':item.good.stateName=='未中卡'}">{{item.good.stateName=='未中卡'?'':item.good.stateName}}{{item.good.stateName=='拼团中'?' '+(item.good.currentNum+item.good.lockNum)+'/'+item.good.totalNum:''}}</view>

@@ -587,13 +587,16 @@
 		height:100rpx;
 		box-sizing: border-box;
 		padding-top: 50rpx;
-		font-size: 29rpx;
+		font-size: 24rpx;
 		font-family: Lantinghei SC;
 		font-weight: 600;
 		color: #333333;
 		text-align: center;
 		position: relative;
 		z-index: 6;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
 	}
 	.teamtion-box-price{
 		width: 100%;

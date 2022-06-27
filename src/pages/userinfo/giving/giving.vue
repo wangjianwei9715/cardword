@@ -13,8 +13,6 @@
 			<statusbar/>
 
 			<view class="box-index">
-				<view class="box-index-code">订单编号:{{orderData.goodOrderCode}}</view>
-				<view class="box-index-name">{{orderData.name}}</view>
 				<view class="box-index-id">请输入收方ID</view>
 				<xskCodeInput 
 					:value.sync="userId" 
@@ -25,6 +23,10 @@
 				<view class="box-index-info">
 					<image class="box-index-avatar" :src="userData.avatar"/> {{userData.userName}}
 				</view>
+			</view>
+			<view class="box-index">
+				<view class="box-index-code">卡密信息</view>
+				<view class="box-index-name" v-for="(item,index) in orderData" :key="index">{{item.name}}</view>
 			</view>
 		</view>
 
@@ -57,10 +59,14 @@
 			avatar:'',
 			userName:''
 		};
+		idData:any = [];
 		userGet = false;
+		goodCode = '';
 		explain = '赠送须知：平台提供卡密赠送功能，仅用于好友之间相互赠送，不得作为其他用途。在赠送时请您仔细核对对方信息，赠送后将无法撤回！请悉知'
 		onLoad(query:any) {
 			this.orderData = JSON.parse(query.data);
+			this.idData = JSON.parse(query.id);
+			this.goodCode = query.goodCode
 		}
 		onShow(){
 			app.platform.getInvitationClipboard((val:string)=>{
@@ -121,14 +127,16 @@
 							return;
 						}
 						let ts = Math.floor(new Date().getTime()/1000);
+						let idSign = this.idData.join(',');
 						let params = {
-							goodOrderCode:this.orderData.goodOrderCode,
-							noId:Number(this.orderData.noId),
+							goodCode:this.goodCode,
+							noId:this.idData,
 							ts:ts,
 							userId:Number(this.userId),
-							sign:Md5.hashStr('applyTransfer_'+ts+'_'+this.orderData.goodOrderCode+'_'+this.orderData.noId+'_'+this.userId)
+							sign:Md5.hashStr('applyTransfer_'+ts+'_'+this.goodCode+'_'+idSign+'_'+this.userId)
 						}
-						app.http.Post('function/userNo/transfer/apply',params,(res:any)=>{
+						console.log('applyTransfer_'+ts+'_'+this.goodCode+'_'+idSign+'_'+this.userId)
+						app.http.Post('function/userNo/transfer/applyBatch',params,(res:any)=>{
 							uni.showToast({
 								title:'赠送成功',
 								icon:'none'
@@ -146,11 +154,11 @@
 		inputConfirm(val:any){
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
-				goodOrderCode:this.orderData.goodOrderCode,
-				noId:Number(this.orderData.noId),
+				goodOrderCode:this.orderData[0].goodOrderCode,
+				noId:Number(this.orderData[0].noId),
 				ts:ts,
 				userId:Number(val),
-				sign:Md5.hashStr('queryUser_'+ts+'_'+this.orderData.goodOrderCode+'_'+this.orderData.noId+'_'+val)
+				sign:Md5.hashStr('queryUser_'+ts+'_'+this.orderData[0].goodOrderCode+'_'+this.orderData[0].noId+'_'+val)
 			}
 			app.http.Post('function/userNo/transfer/queryUser',params,(res:any)=>{
 				this.userGet = true;
@@ -241,19 +249,24 @@
 	}
 	.box-content{
         width: 100%;
-        position: relative;
-        z-index:10;
+		height:100%;
+        position: fixed;
+		top:0;
+		left:0;
+		overflow: auto;
+        z-index:5;
         box-sizing: border-box;
-        padding:100rpx 20rpx calc(114rpx) 20rpx;
-		padding:100rpx 20rpx calc(114rpx + constant(safe-area-inset-bottom)) 20rpx;
-		padding:100rpx 20rpx calc(114rpx + env(safe-area-inset-bottom)) 20rpx;
+        padding:100rpx 20rpx calc(280rpx) 20rpx;
+		padding:100rpx 20rpx calc(280rpx + constant(safe-area-inset-bottom)) 20rpx;
+		padding:100rpx 20rpx calc(280rpx + env(safe-area-inset-bottom)) 20rpx;
     }
 	.box-index{
 		width: 100%;
 		background: #FFFFFF;
-		border-radius: 10px;
+		border-radius: 5rpx;
 		box-sizing: border-box;
 		padding:30rpx 28rpx;
+		margin-bottom: 10rpx;
 	}
 	.box-index-code{
 		width: 100%;
@@ -266,15 +279,16 @@
 	.box-index-name{
 		width: 100%;
 		box-sizing: border-box;
-		background: #F6F7FB;
-		border-radius: 5rpx;
-		padding:25rpx;
-		font-size: 26rpx;
-		font-family: Source Han Sans CN;
+		font-size: 22rpx;
+		font-family: FZLanTingHeiS-R-GB;
 		font-weight: 400;
 		color: #333333;
-		line-height: 40rpx;
-		margin-bottom: 140rpx;
+		line-height: 32rpx;
+		padding:10rpx 20rpx;
+		border-right: 1px solid #fff;
+		background: #F6F7F8;
+		margin-bottom: 10rpx;
+		word-break: break-all;
 	}
 	.box-index-id{
 		width: 100%;
@@ -313,7 +327,9 @@
 		box-sizing: border-box;
 		padding:50rpx;
 		display: flex;
+		z-index: 6;
 		justify-content: space-between;
+		background: #F6F7F8;
 	}
 	.box-currentno{
 		width: 34rpx;
@@ -348,6 +364,7 @@
 		left:0;
 		background:#fff;
 		border-top: 1px solid #BBBBBB;
+		z-index: 10;
 	}
 	.box-bottom-btn{
 		width: 680rpx;

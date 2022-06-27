@@ -53,6 +53,7 @@
 				this.noMoreData = false;
 				this.getBucketlist()
 			})
+			// this.getHeliChat()
 		}
 		onShow(){
 			// #ifndef MP-WEIXIN
@@ -99,10 +100,19 @@
 				this.pageIndex ++;
 			})
 		}
+		getHeliChat(){
+			app.http.Get('heli/chat/data',{},(res:any)=>{
+			})
+		}
 		onClickBucketId(id:any){
 			uni.navigateTo({
 				url: '/pages/userinfo/talk?bucketId='+id
 			})
+			// 第三方客服
+			// let params = {
+			// 	agentExten:id
+			// }
+			// app.platform.heliService(params)
 		}
 		onClickDynamic(type:any){
 			uni.navigateTo({

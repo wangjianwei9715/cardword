@@ -260,42 +260,8 @@
 		},
 		{
 			"root": "pages/act",
-			"pages": [{
-					"path": "loot/index",
-					"style": {
-						"navigationBarTitleText": "欧皇夺宝",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#070508",
-						"backgroundColorBottom": "#070508"
-					}
-				},
-				{
-					"path": "loot/loot_myPrize",
-					"style": {
-						"navigationBarTitleText": "我的奖品",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB"
-					}
-				},
-				{
-					"path": "saveThum/saveThum_list",
-					"style": {
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#1f1559", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#1f1559", //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "saveThum/selectCar",
-					"style": {
-						"navigationBarTitleText": "选择金卡",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB"
-					}
-				},
+			"pages": [
+				
 				{
 					"path": "goldRank/goldRank_rankList",
 					"style": {
@@ -329,15 +295,6 @@
 					"path": "goldRank/goldRank_rewardList",
 					"style": {
 						"navigationBarTitleText": "奖品列表",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB"
-					}
-				},
-				{
-					"path": "teamContest/teamContest_index",
-					"style": {
-						"navigationBarTitleText": "季后赛球队竞猜",
 						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB",
 						"backgroundColorBottom": "#F6F7FB"
@@ -401,64 +358,6 @@
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "sign/luckyDraw",
-					"style": {
-						"navigationBarTitleText": "幸运抽奖",
-						"navigationBarBackgroundColor": "#ffffff",
-						"transparentTitle": "auto",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "sign/cardBean",
-					"style": {
-						"navigationBarTitleText": "卡币商城",
-						"navigationBarBackgroundColor": "#ffffff",
-						"transparentTitle": "auto",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "sign/cardBean_record",
-					"style": {
-						"navigationBarTitleText": "兑换记录",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "newYear/newYear",
-					"style": {
-						"navigationBarTitleText": "新春福盒",
-						"navigationBarBackgroundColor": "#ffffff",
-						// "transparentTitle":"auto",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "newYear/list",
-					"style": {
-						"navigationBarTitleText": "新春福盒",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
 				{
@@ -565,19 +464,6 @@
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				}
-			    ,{
-                    "path" : "mysticalCode/mysticalCode",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "神秘代码",
-					"navigationBarBackgroundColor": "#ffffff",
-					"navigationBarTextStyle": "black",
-					"enablePullDownRefresh": false,
-					"backgroundColorTop": "#EFBE35", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-					"backgroundColorBottom": "#EFBE35" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-                }
-                
-                }
             ]
 		},
 		{

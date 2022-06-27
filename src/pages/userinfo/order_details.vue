@@ -19,7 +19,7 @@
 					</view>
 				</view>
 				<view class="order-index-center">
-					<image class="goods-image" :src="getGoodsImg(decodeURIComponent(orderData.good.pic))" mode="aspectFill"></image>
+					<image class="goods-image" :src="detailPic" mode="aspectFill"></image>
 					<view class="goods-content">
 						<view class="title">{{orderData.good.title}}</view>
 						<view class="desc" v-if="orderData.good.pintuanType>10">
@@ -116,7 +116,7 @@
 <script lang="ts">
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import {getCountDownTime} from '@/tools/util';
+	import {getCountDownTime, parsePic} from '@/tools/util';
 	import { app } from "@/app";
 	import {
 		getGoodsImg,dateFormat
@@ -125,6 +125,7 @@
 	import { orderStateDesc,orderGoodsStateStr,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
 	@Component({})
 	export default class ClassName extends BaseNode {
+		parsePic = parsePic;
 		getGoodsImg = getGoodsImg;
 		dateFormat = dateFormat;
 		orderState = orderState;
@@ -134,6 +135,7 @@
 		getGoodsPintuan = getGoodsPintuan;
 
 		defaultAvatar = app.defaultAvatar;
+		detailPic = '';
 		countDownInter:any;
 		countDown = 300;
 		countDownStr = '';
@@ -238,6 +240,7 @@
 				});
 				this.getGoodDesc(res.data);
 				this.operateData = this.orderSetOperate(res.data);
+				this.detailPic = parsePic(getGoodsImg(decodeURIComponent(res.data.good.pic_cdn||res.data.good.pic)))
 				if(res.data.good.pintuanType>10){
 					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/option',{},(res:any)=>{
 						this.optionList = res.list || []
@@ -302,7 +305,7 @@
 				return
 			};
 
-			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30},(res:any)=>{
+			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30,urlvalid:1},(res:any)=>{
 				if(res.total>0){
 					let type = this.orderData.good.title.indexOf('足球')!=-1?1:0
 					uni.navigateTo({
@@ -313,7 +316,7 @@
 		}
 		
 		getGoodDesc(data:any){
-			this.orderDesc[0].desc ='¥'+(data.price+data.discount+(data.coupon?data.coupon:0));
+			this.orderDesc[0].desc ='¥'+this.keepTwoDecimal(data.price+data.discount+(data.coupon?data.coupon:0));
 			this.orderDesc[1].desc ='- ¥'+data.discount;
 			this.orderDesc[2].desc ='- ¥'+(data.coupon?data.coupon:0);
 			if(data.payInfo){
@@ -503,6 +506,15 @@
 				}
 			})
 			
+		}
+		keepTwoDecimal(num: any) {
+			var result = parseFloat(num);
+			if (isNaN(result)) {
+			alert("传递参数错误，请检查！");
+			return false;
+			}
+			result = Math.round(num * 100) / 100;
+			return result > 0 ? result : 0;
 		}
 		// 支付成功弹窗关闭
 		onClickcancelPaySuccess(){
