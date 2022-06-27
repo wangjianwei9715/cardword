@@ -295,6 +295,7 @@ export default class PlatformManager {
 	}
 	// 获取粘贴板内容
 	getInvitationClipboard(cb?:Function){
+		// #ifdef APP-PLUS
 		if (plus.os.name == 'iOS') {  
 			var UIPasteboard = plus.ios.importClass("UIPasteboard");  
 			var generalPasteboard = UIPasteboard.generalPasteboard();  
@@ -303,8 +304,6 @@ export default class PlatformManager {
 			if(value!=undefined){
 				if(cb) cb(value)
 			}
-			
-			
 		} else if (plus.os.name == 'Android') {  
 			uni.getClipboardData({
 				success: (res)=> {
@@ -313,8 +312,8 @@ export default class PlatformManager {
 					}
 				}
 			});
-			
 		}
+		// #endif
 	}
 	// 判断粘贴板是否有邀请码
 	matchInviteRequestKey(code:string){

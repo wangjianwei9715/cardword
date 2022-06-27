@@ -24,7 +24,7 @@
 					<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs">
 						<view class="index-left" :class="{'bingo-name':item.bingo}">{{items.name}}</view>
 						<view  class="index-right" @click="onClickCurrentOrder(items,item.orderCode)">
-							<view class="index-right-currentno" :class="{'index-right-current':items.id == currentData.noId}"></view>
+							<view class="index-right-currentno" :class="{'index-right-current':checkIDHas(items.id)}"></view>
 						</view>
 					</view>
 					<view class="card-more-btn" v-if="item.hasMore" @click="reqNewCardList(item.orderCode,index)">查看更多</view>
@@ -35,7 +35,7 @@
 				<view class="card-index" v-for="(items,indexs) in cardSortList" :key="indexs">
 					<view class="index-left" :class="{'bingo-name':items.bingo}">{{items.name}}</view>
 					<view  class="index-right" @click="onClickCurrentOrder(items,items.orderCode)">
-						<view class="index-right-currentno" :class="{'index-right-current':items.id == currentData.noId}"></view>
+						<view class="index-right-currentno" :class="{'index-right-current':checkIDHas(items.id)}"></view>
 					</view>
 				</view>
 			</view>
@@ -81,11 +81,8 @@
 		sortData:any = [];
 		showRulePopup = false;
 		showInvitePopup = false;
-		currentData:any = {
-			goodOrderCode:'',
-			noId:0,
-			name:'',
-		};
+		currentList:any = [];
+		currentListData:any = [];
 		searchText = '';
 		searchEmit = 'givingListSearch'
 		onLoad(query:any) {
@@ -137,10 +134,26 @@
 				})
 				return;
 			}
-
-			this.currentData.goodOrderCode = order;
-			this.currentData.noId = item.id;
-			this.currentData.name = item.name;
+			let idIndex = this.currentList.indexOf(item.id);
+			if(idIndex == -1){
+				if(this.currentList.length>=10){
+					uni.showToast({
+						title:'最多选择十条卡密',
+						icon:'none'
+					})
+					return;
+				}
+				let data = {
+					goodOrderCode:order,
+					noId:item.id,
+					name:item.name,
+				}
+				this.currentList.push(item.id)
+				this.currentListData.push(data)
+			}else{
+				this.currentList.splice(idIndex,1)
+				this.currentListData.splice(idIndex,1)
+			}
 		}
 		onClickMoreList(code:any){
 			uni.navigateTo({
@@ -148,20 +161,26 @@
 			})
 		}
 		onClickCopyYzm(){
-			if(this.currentData.noId == '') {
+			if(this.currentList == '') {
 				uni.showToast({
 					title:'请选择卡密',
 					icon:'none'
 				})
 				return;
 			};
-
+			if(this.currentList.length>1){
+				uni.showToast({
+					title:'仅支持单条卡密查询',
+					icon:'none'
+				})
+				return;
+			}
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
-				goodOrderCode:this.currentData.goodOrderCode,
-				noId:Number(this.currentData.noId),
+				goodOrderCode:this.currentListData[0].goodOrderCode,
+				noId:Number(this.currentListData[0].noId),
 				ts:ts,
-				sign:Md5.hashStr('createShareCode_'+ts+'_'+this.currentData.goodOrderCode+'_'+this.currentData.noId)
+				sign:Md5.hashStr('createShareCode_'+ts+'_'+this.currentListData[0].goodOrderCode+'_'+this.currentListData[0].noId)
 			}
 			app.http.Post('function/userNo/transfer/shareNo/create',params,(res:any)=>{
 				uni.setClipboardData({
@@ -175,16 +194,15 @@
 			
 		}
 		onClickGiving(){
-			if(this.currentData.noId == '') {
+			if(this.currentList == '') {
 				uni.showToast({
 					title:'请选择卡密',
 					icon:'none'
 				})
 				return;
 			};
-
 			uni.navigateTo({
-				url:'/pages/userinfo/giving/giving?data='+encodeURIComponent(JSON.stringify(this.currentData))
+				url:'/pages/userinfo/giving/giving?data='+encodeURIComponent(JSON.stringify(this.currentListData))+'&id='+encodeURIComponent(JSON.stringify(this.currentList))+'&goodCode='+this.goodCode
 			})
 		}
 		// 复制弹窗关闭
@@ -199,14 +217,13 @@
 			this.listSort = val;
 			this.reqSearchList()
 		}
+		checkIDHas(id:number){
+			return this.currentList.indexOf(id) == -1 ? false : true;
+		}
 		reqSearchList(){
 			this.currentPage = 1;
-			
-			
-			this.currentData= {
-				goodOrderCode:'',
-				noId:''
-			}
+			this.currentList= [];
+			this.currentListData = [];
 			this.noMoreData = false;
 			this.reqNewData()
 		}
@@ -223,7 +240,9 @@
 			if(this.searchText!=''){
 				params.q = this.searchText;
 			}
+			console.log('params=',params)
 			app.http.Get('function/userNo/transfer/order/'+orderCode+'/list', params, (data: any) => {
+				console.log('data==',data)
 				if(data.list){
 					if(this.currentPage == 1){
 						this.cardSortList = [];
@@ -440,6 +459,7 @@
 		padding:10rpx 20rpx;
 		border-right: 1px solid #fff;
 		background: #F6F7F8;
+		word-break: break-all;
 	}
 	.index-right{
 		width: 100rpx;
