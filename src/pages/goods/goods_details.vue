@@ -451,7 +451,7 @@
 		}
 		// 商品图片
 		getGoodsImage() {
-			let pic:any = decodeURIComponent(this.goodsData.pic.carousel_cdn||this.goodsData.pic.carousel);
+			let pic:any = decodeURIComponent(this.goodsData.pic.carousel);
 			let carousel: any = [];
 			if (pic.indexOf(',') == -1) {
 				carousel.push(parsePic(pic))
@@ -462,7 +462,7 @@
 				})
 			}
 			this.carouselLength = carousel.length;
-			let yuanfeng = this.goodsData.pic.yuanfeng ? decodeURIComponent(this.goodsData.pic.yuanfeng_cdn||this.goodsData.pic.yuanfeng).split(',') : [];
+			let yuanfeng = this.goodsData.pic.yuanfeng ? decodeURIComponent(this.goodsData.pic.yuanfeng).split(',') : [];
 			yuanfeng = yuanfeng.map((x:any)=>{
 				return parsePic(x)
 			})
