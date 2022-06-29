@@ -1,7 +1,6 @@
 const app = getApp().globalData.app
 const httpReg = /^http(s)?/
 const request = (url, params = {}, method = 'GET') => {
-	
 	const isCustomUrl = httpReg.test(url) //是否传入完整的https/http链接
 	let baseURL = app.bussinessApiDomain
 	if (!isCustomUrl) {
@@ -17,7 +16,6 @@ const request = (url, params = {}, method = 'GET') => {
 	}
 	return new Promise((resolve, reject) => {
 		const finUrl = isCustomUrl ? url : baseURL + url
-		console.log(finUrl);
 		uni.request({
 			url: finUrl,
 			data: params,

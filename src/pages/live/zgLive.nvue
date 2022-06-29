@@ -1,13 +1,13 @@
 <template>
 	<view class="full">
 		<video show-play-btn='false' show-center-play-btn='false' autoplay='true'
-			style='width:750rpx;position:fixed;top:0' :style="{height:height,width:width}" :src='liveRTMP'
-			show-fullscreen-btn='false' object-fit='fill' show-loading='false' ref='video'></video>
+			style='width:750rpx;position:fixed;top:0' controls='false' :style="{height:height,width:width}"
+			:src='liveRTMP' show-fullscreen-btn='false' object-fit='fill' show-loading='false' ref='video'></video>
 		<web-view :catchtouchmove="true" :style="{height:height,width:width}" id='webView' class="webView" ref="webview"
 			:webview-styles="webviewStyles" @onPostMessage="handleMessage" :src="webViewUrl" v-if='viewShow'
 			allow='microphone;camera;midi;encrypted-media;'>
 		</web-view>
-		<template v-if='webLoadSuccess'>
+		<!-- <template v-if='webLoadSuccess'>
 			<view class="publicBottom card" :class="{publicBottomShow:cardShow}">
 				<view class='card-title'>
 					<text class='card-title-text'>商品卡密</text>
@@ -24,7 +24,7 @@
 					</view>
 				</scroll-view>
 			</view>
-		</template>
+		</template> -->
 	</view>
 
 </template>
@@ -50,10 +50,12 @@
 	let UIImpactFeedbackGenerator = null;
 	let impact = null;
 	const isTest = false
+	let sendNum = 1
 	export default {
 		data() {
 			return {
 				app: getApp().globalData.app,
+				deviceInfo: getApp().globalData.app.platform.systemInfo, //设备信息
 				height: null, //设备高
 				width: null, //设备宽
 				viewShow: true, //webView显示
@@ -66,7 +68,8 @@
 				server: new SocketServer(),
 				statusBarHeight: 0, //状态栏高度
 				safeAreaBottomHeight: 0, //底部安全距离高度
-				webViewUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index', //webView地址
+				// http://192.168.8.26:8080/#/pages/liveStreaming/index
+				webViewUrl: '', //webView地址
 				videoShow: false,
 				videoContxt: null, //视频实例
 				liveRTMP: '', //直播rtmp流地址
@@ -98,7 +101,7 @@
 					//状态  0 待直播,  1 即将直播  2 正在直播,  3 直播完成(回放)  -1 过期 -2 已取消
 				},
 				goodsDetail: {}, //商品详情信息
-				deviceInfo: {}, //设备信息
+
 				roomLikeNum: 0, //房间点赞数量
 				cardList: [],
 				card: {
@@ -124,18 +127,16 @@
 			}
 		},
 		async onLoad(query) {
+			// 
+			if (this.deviceInfo.platform == 'android' && query.isAnchor == 'true') {
+				permision.requestAndroidPermission('android.permission.CAMERA')
+				permision.requestAndroidPermission('android.permission.RECORD_AUDIO')
+			}
 			this.$nextTick(() => {
 				this.webView = this.$refs.webview
 			})
-			uni.$on('socketClose', (res) => {
-				console.log('socket断开了');
-				//监听到断线
-				this.isConnectSocket = false
-				this.reconnectionTimer && clearInterval(this.reconnectionTimer)
-				this.reconnectionSocket()
-			})
-			// permision.requestAndroidPermission('android.permission.CAMERA')
-			// permision.requestAndroidPermission('android.permission.RECORD_AUDIO')
+			uni.$on('socketClose', this.socketClose)
+
 			if (!query.roomID) return
 			this.isAnchor = query.isAnchor
 			this.webViewUrl = query.isAnchor == 'true' ? this.AnchorEndUrl : this.UserUrl
@@ -147,23 +148,27 @@
 				data
 			} = await this.getLiveRoomInfo(+query.roomID)
 			this.liveData = data
+			console.log(this.liveData);
+			this.deviceAssign(this.deviceInfo)
+			// 
+			if (this.deviceInfo.platform == 'android'&& query.isAnchor == 'true') {
+				this.createWebView(this.deviceInfo)
+			} else {
+				this.getUserProfile(this.deviceInfo)
+			}
+			if (this.deviceInfo.platform == 'ios') {
+				UIImpactFeedbackGenerator = plus.ios.importClass('UIImpactFeedbackGenerator');
+				impact = new UIImpactFeedbackGenerator();
+			}
 			// this.getGoodsDetail(data.goodCode)
-			uni.getSystemInfo({
-				success: (res) => {
-					this.deviceAssign(res)
-					this.deviceInfo = res
-					//安卓且为主播端的情况下
-					if (this.deviceInfo.platform == 'android' && query.isAnchor=='true') {
-						this.createWebView(res)
-					} else {
-						this.getUserProfile(res)
-					}
-					if (this.deviceInfo.platform == 'ios') {
-						UIImpactFeedbackGenerator = plus.ios.importClass('UIImpactFeedbackGenerator');
-						impact = new UIImpactFeedbackGenerator();
-					}
-				}
-			});
+			// uni.getSystemInfo({
+			// 	success: (res) => {
+
+			// 		// this.deviceInfo = res
+			// 		//安卓且为主播端的情况下
+
+			// 	}
+			// });
 			this.$nextTick(() => {
 				this.videoContxt = this.$refs.video
 			})
@@ -175,23 +180,43 @@
 
 			this.leaveRoom()
 		},
+		watch: {
+			roomLikeNum: function(val, oldVal) {
+				if (val != oldVal) this.informH5Action('changeLikeNum', val)
+			}
+		},
 		methods: {
+			socketClose(res) {
+				console.log('socket断开了');
+				//监听到断线
+				this.isConnectSocket = false
+				this.reconnectionTimer && clearInterval(this.reconnectionTimer)
+				this.reconnectionSocket()
+			},
 			//创建socketMessage包并发送
 			sendSocketMsg(packName, valueObject = null) {
 				return new Promise((resolve, reject) => {
-					let msg = new proto.message[packName]()
-					if (valueObject && Object.keys(valueObject).length) {
-						Object.keys(valueObject).forEach((key, index) => {
-							msg[key] = valueObject[key]
+					if (this.server && this.server.isNetOK()) {
+						let msg = new proto.message[packName]()
+						if (valueObject && Object.keys(valueObject).length) {
+							Object.keys(valueObject).forEach((key, index) => {
+								msg[key] = valueObject[key]
+							})
+						}
+						let buffer = proto.message[packName].encode(msg).finish();
+						let pack = new PackageBase(Message[packName]);
+						pack.d(buffer).to(this.server);
+						resolve({
+							pack,
+							buffer
+						})
+					} else {
+						uni.showToast({
+							title: '连接状态异常',
+							icon: 'none'
 						})
 					}
-					let buffer = proto.message[packName].encode(msg).finish();
-					let pack = new PackageBase(Message[packName]);
-					pack.d(buffer).to(this.server);
-					resolve({
-						pack,
-						buffer
-					})
+
 				})
 			},
 			//心跳包
@@ -215,6 +240,7 @@
 			},
 			//离开房间
 			leaveOutRoomSocket() {
+				uni.$off('socketClose', this.socketClose)
 				this.sendSocketMsg('LogoutBroadCastRoom1001', {
 					roomId: +this.loginRoomData.roomID
 				}).then(res => {
@@ -240,14 +266,6 @@
 							icon: 'none'
 						})
 						this.isConnectSocket = false
-						// uni.showModal({
-						// 	title: '连接失败',
-						// 	content: '服务器维护中，请稍后再试...',
-						// 	showCancel: false,
-						// 	success: () => {
-						// 		this.connectSever();
-						// 	}
-						// });
 					}
 				);
 			},
@@ -257,7 +275,7 @@
 				this.reconnectionTimer = setInterval(() => {
 					console.log('断线重连中', new Date());
 					this.initSocket(false)
-				}, 1000)
+				}, 5000)
 			},
 			initSocket(isFirst = true) {
 				const socketInfo = uni.getStorageSync('socketInfo')
@@ -267,7 +285,7 @@
 				}, 6 * 1000)
 				this.connectSever();
 				if (isFirst) {
-					let listeners = ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike'];
+					let listeners = ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike', 'BroadBilibili'];
 					this.server.registerHandlers(this, listeners)
 				}
 			},
@@ -278,8 +296,12 @@
 				console.log('点赞发送的结果回调', res);
 			},
 			BroadCastLike(res) {
+				console.log('最终点赞数量', res.finalLikeNum);
 				this.roomLikeNum = res.finalLikeNum
-				this.informH5Action('hasOtherManClickLike')
+				this.informH5Action('hasOtherManClickLike', this.roomLikeNum)
+			},
+			BroadBilibili(res) {
+				console.log('弹幕消息回调', res);
 			},
 			leaveRoom() {
 				this.leaveOutRoomSocket()
@@ -290,9 +312,12 @@
 					)
 
 				}
+				console.log(this.tokenData.uid)
 				if (this.tokenData.uid) request('funcApi/brodcast/third/1001/user/logout/' + this.loginRoomData.roomID, {
 					uid: this.tokenData.uid
-				}, 'post')
+				}, 'post').then(res => {
+					console.log(res);
+				})
 
 			},
 			createWebView(res) {
@@ -344,7 +369,7 @@
 					'post')
 				this.websocket = tokenRespone.websocket
 				this.tokenData = tokenRespone.data
-
+				console.log(tokenRespone);
 				if (this.hasToken) {
 					const {
 						data
@@ -357,7 +382,7 @@
 						userData.name = this.tokenData.uname
 					}
 					//如果为主播的情况下 头像使用商家头像//昵称也使用商家昵称
-					if (this.isAnchor) {
+					if (this.isAnchor == 'true') {
 						userData.avatar = decodeURIComponent(this.merchantMessage.logo)
 						userData.name = this.merchantMessage.name
 					}
@@ -370,7 +395,7 @@
 				}
 				this.loginRoom(userData, tokenRespone.data, deviceInfo)
 				setTimeout(() => {
-					// this.initSocket(true)
+					this.initSocket(true)
 				}, 1000)
 			},
 			SET_CDN_URL(cdnData) {
@@ -388,7 +413,10 @@
 				this.webLoadSuccess = true
 			},
 			loginRoom(userData, roomTokenData, deviceInfo) {
-				this.appProfile = userData
+				this.appProfile = {
+					...userData,
+					...this.tokenData
+				}
 				this.loginRoomData.userID = roomTokenData.uid
 				this.loginRoomData.userName = userData.name
 				this.loginRoomData.token = roomTokenData.token
@@ -401,6 +429,7 @@
 				this.webEvalTimer = setInterval(() => {
 					if (!this.webLoadSuccess) return
 					this.webView.evalJs(`setToken(${JSON.stringify(this.app.token)})`)
+					this.webView.evalJs(`isWebView()`)
 					this.webView.evalJs(
 						`statusBarHeight=${this.deviceInfo.statusBarHeight}`
 					) //通知webView手机状态栏高度
@@ -436,12 +465,12 @@
 				}
 			},
 			//调用h5Vue内部methods方法
-			informH5Action(actionName, params = '') {
+			informH5Action(actionName, params = '', isMoreArguments = false) {
 				const sendParams = JSON.stringify({
 					params: params
 				})
 				this.webView.evalJs(
-					`actionSet("${actionName}",${sendParams})`
+					`actionSet("${actionName}",${sendParams},${isMoreArguments})`
 				)
 			},
 			getMerchant(merchantId) {
@@ -465,24 +494,6 @@
 			// 		}
 			// 	})
 			// },
-			//红包列表
-			getRedPack() {
-				request(`funcApi/brodcast/third/common/room/hongbaolist/${this.loginRoomData.roomID}`, {
-					uid: this.tokenData.uid
-				}, 'get').then(res => {
-					console.log(res);
-				}).catch(err => {
-					// console.log(err);
-				})
-			},
-			//礼物列表
-			getGiftList() {
-				request(`funcApi/brodcast/third/common/room/giftlist/${this.loginRoomData.roomID}`, {
-					uid: this.tokenData.uid
-				}, 'get').then(res => {
-					console.log(res);
-				})
-			},
 			stopLive() {
 				const stopSign = Md5.hashStr('stopPushStream' +
 					`_${this.loginRoomData.roomID}_${this.loginRoomData.streamID}`)
@@ -502,10 +513,13 @@
 			},
 			//点赞
 			addLike(likeNum) {
+				console.log('发送的点赞数量', likeNum);
 				this.sendSocketMsg('RequestLike', {
 					num: +likeNum
-				}).then(res=>{
-					console.log('发送点赞包成功', msg);
+				}).then(res => {
+					// console.log('发送点赞包成功'+ +likeNum, msg);
+					sendNum += 1
+					// console.log(''sendNum);
 				})
 				// request('brodcast/third/1001/user/like/' + this.loginRoomData.roomID, {
 				// 	num: likeNum,
@@ -567,8 +581,8 @@
 				// })
 				// console.log();
 			},
-			pageJump(url) {
-				uni.navigateTo({
+			pageJump(url, type = 'navigateTo') {
+				uni[type]({
 					url
 				})
 			},
@@ -578,7 +592,9 @@
 					data
 				} = event.detail
 				const resData = data[0]
-				this[resData.action](resData.params || null)
+				const paramsIsArray = resData.params instanceof Array
+				paramsIsArray && resData.isArguments ? this[resData.action](...resData.params) : this[resData.action](
+					resData.params)
 			}
 		}
 	}
@@ -630,6 +646,7 @@
 		height: 400rpx;
 		background: red;
 	}
+
 	/* ------------商品信息-------------- */
 	.goodsDetail {
 		background-color: #fff;
@@ -668,6 +685,7 @@
 		bottom: 0;
 		background-color: rgba(255, 64, 77, .8);
 	}
+
 	/* -----------------------卡密--------------- */
 	.card {
 		background-color: #fff;
@@ -748,5 +766,4 @@
 		color: #fff;
 		background: #CCCCCC;
 	}
-
 </style>

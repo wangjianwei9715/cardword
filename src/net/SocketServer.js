@@ -79,7 +79,7 @@ export class SocketServer extends ServerBase {
 	}
 	
 	onMessage(evt) {
-		console.log(evt);
+		// console.log(evt);
 	    this.recv(evt.data);
 	}
 	onClose() {

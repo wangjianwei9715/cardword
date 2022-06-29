@@ -48,7 +48,7 @@ export class ServerBase {
 			console.error('不存在的包名：', packageName);
 			return;
 		}
-		console.log(recvMessageBytes);
+		// console.log(recvMessageBytes);
 		let message = pb.decode(recvMessageBytes);
 		
 		console.log('message===', message);

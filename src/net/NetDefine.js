@@ -18,6 +18,7 @@ export class Message {
 		'0x000102': 'Message',
 		'0x000200': 'BackLike',
 		"0x000201": "BroadCastLike",
+		"0x000202": "BroadBilibili"
 		// '0x000201': 'BucketInfo',
 		// '0x000202': 'PushChatMessage', //推送聊天消息
 		// '0x000203': 'BackSendMessage', //发送失败才发
