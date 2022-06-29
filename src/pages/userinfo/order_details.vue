@@ -357,6 +357,11 @@
 				uni.navigateTo({
 					url: '/pages/userinfo/talk?targetUserId='+this.orderData.kefu+'&goodCode='+this.orderData.good.goodCode
 				})
+				// let params = {
+				// 	agentExten:this.orderData.kefu,
+				// 	businessParam:'goodCode:'+this.orderData.good.goodCode
+				// }
+				// app.platform.heliService(params)
 			}else{
 				uni.showToast({
 					title:'当前商品暂无客服',

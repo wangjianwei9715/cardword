@@ -4,11 +4,12 @@ import { app } from '@/app'
 // #endif
 export function parsePic(src: string) {
 	if (!src) return ''
-	if (src.indexOf('res_ksj') == -1) return src
+	if (src.indexOf('res_ksj') == -1 && src.indexOf('resources.ka-world.com') == -1) return src
+	const httpUrl = src.indexOf('resources.ka-world.com') != -1 ? 'resources.ka-world.com' : 'res.ka-world.com'
 	const tsString = (Math.round(+new Date() / 1000)).toString(16).toUpperCase();
 	const noneOrigin = src.replace(/^http:\/\/[^/]+/, "");
 	const md5Key = Md5.hashStr(app.picEncryptionKey + noneOrigin + tsString)
-	return `http://res.ka-world.com/${md5Key}/${tsString}${noneOrigin}`
+	return `http://${httpUrl}/${md5Key}/${tsString}${noneOrigin}`
 }
 //keepNum为保留小数位数，默认不保留小数
 export function formatNumber(number: number, keepNum = 0) {//返回 xxx.xx亿

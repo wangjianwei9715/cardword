@@ -5,7 +5,7 @@
 			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="5000" :duration="500"
 				:circular="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'">
 				<swiper-item v-for="(item,index) in topAddList" :key="index">
-					<muqian-lazyLoad class="swiper-image" :src="decodeURIComponent(item.pic_cdn||item.pic)"
+					<muqian-lazyLoad class="swiper-image" :src="decodeURIComponent(item.pic)"
 						@click="onClickTopJumpUrl(item.target)" mode="aspectFill"></muqian-lazyLoad>
 				</swiper-item>
 			</swiper>
@@ -15,7 +15,7 @@
 				<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}">
-						<muqian-lazyLoad class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic_cdn||item.pic))" ></muqian-lazyLoad>
+						<muqian-lazyLoad class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
 					</view>
 					<view class="goodslist-title">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
