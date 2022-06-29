@@ -571,7 +571,7 @@
 					})
 					// 第三方客服
 					// let params = {
-					// 	agentExten:this.goodsData.kefu,
+					// 	agentExten:8005,
 					// 	businessParam:'goodCode:'+this.goodsId
 					// }
 					// app.platform.heliService(params)

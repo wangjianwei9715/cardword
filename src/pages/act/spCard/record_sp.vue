@@ -61,6 +61,10 @@
 			uni.navigateTo({
 				url: '/pages/userinfo/talk?targetUserId='+this.kefuUserId
 			})
+			// let params = {
+			// 	agentExten:this.kefuUserId
+			// }
+			// app.platform.heliService(params)
 		}
 		onClickTab(index:number){
 			if(this.tabCurrent == index ) return;

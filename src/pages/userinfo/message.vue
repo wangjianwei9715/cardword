@@ -29,6 +29,18 @@
 					<view class="time">{{getTime(item.sendTime)}}</view>
 				</view>
 			</view>
+			<!-- <view class="index" @click="onClickBucketId(chatData.agentExten)">
+				<view class="left" >
+					<view class="icon"><image class="icon-kf" src="../../static/userinfo/kefu@2x.png"></image></view>
+					<view class="desc">
+						<view class="desc-title">{{chatData.agentName}}</view>
+						<view class="desc-message" v-html="decodeURIComponent(chatData.content)"></view>
+					</view>
+				</view>
+				<view class="right">
+					<view class="time">{{getTime(chatData.endTime)}}</view>
+				</view>
+			</view> -->
 		</view>
 		
 	</view>
@@ -46,14 +58,17 @@
 		pageIndex = 1;
 		pageSize = 20;
 		noMoreData = false;
-		onLoad(query:any) {
+		chatData:{[x:string]:any} = {
+			
+		};
+ 		onLoad(query:any) {
 
 			this.onEventUI('sendMessage',()=>{
 				this.pageIndex = 1;
 				this.noMoreData = false;
 				this.getBucketlist()
 			})
-			// this.getHeliChat()
+			
 		}
 		onShow(){
 			// #ifndef MP-WEIXIN
@@ -67,6 +82,7 @@
 			this.noMoreData = false
 			this.getMessageList()
 			this.getBucketlist()
+			// this.getHeliChat()
 			// #endif
 
 			
@@ -102,6 +118,7 @@
 		}
 		getHeliChat(){
 			app.http.Get('heli/chat/data',{},(res:any)=>{
+				this.chatData = res.data
 			})
 		}
 		onClickBucketId(id:any){
