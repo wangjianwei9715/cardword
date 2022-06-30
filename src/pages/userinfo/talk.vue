@@ -244,10 +244,10 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 			});
 		}
 		registerChat(){
-			let msg = new proto.message.RequestChatOn();
-			let buffer = proto.message.RequestChatOn.encode(msg).finish();
-			let pack = new PackageBase(Message.RequestChatOn);
-			pack.d(buffer).to(app.sever);
+			// let msg = new proto.message.RequestChatOn();
+			// let buffer = proto.message.RequestChatOn.encode(msg).finish();
+			// let pack = new PackageBase(Message.RequestChatOn);
+			// pack.d(buffer).to(app.sever);
 		}
 		onClickBack(){
 			uni.navigateBack({

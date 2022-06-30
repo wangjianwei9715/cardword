@@ -32,7 +32,7 @@ export class ServerBase {
 		let len = this._getNum(lenArr);
 
 		let cmdID = this._toHex(this._getNum(pack.slice(3, 6)));
-		console.log(cmdID);
+		// console.log(cmdID);
 		let recvMessageBytes = pack.slice(6, len + 6 - 4);
 		//console.log(len,cmdID,recvMessageBytes);
 

@@ -37,12 +37,10 @@ export abstract class ServerBase{
         let lenArr = pack.slice(0, 2);
         let len = this._getNum(lenArr);
 
-        let cmdID = this._toHex(this._getNum(pack.slice(3, 6)));
+        let cmdID:any = this._toHex(this._getNum(pack.slice(3, 6)));
 
         let recvMessageBytes = pack.slice(6, len + 6 - 4);
-        //console.log(len,cmdID,recvMessageBytes);
-		console.log(recvMessageBytes)
-        let packageName = Message.cmd[cmdID];
+        let packageName:any = Message.cmd[cmdID];
         if (!packageName || packageName.length === 0) {
             if (cmdID != '0x00001') {//心跳包不解
                 console.log('不存在的cmdID：' + cmdID);
@@ -51,8 +49,6 @@ export abstract class ServerBase{
         }
 		// console.log(app.protobuf.message)
 		const CopyMessage:any=Message
-		console.log(packageName)
-		console.log(CopyMessage[packageName])
         let pb = app.protobuf.message[packageName];
         if (!pb) {
             console.error('不存在的包名：', packageName);

@@ -1,9 +1,30 @@
 syntax = "proto3";
 package message;
 
-//0x000100 点赞
+//0x000200 点赞
 message RequestLike {
     uint32 num = 1; //点赞几次
 }
 
+//0x000203 送礼
+message RequestSendGift {
+    int64 giftTpId = 1; //什么类型的礼物
+    uint32 num = 2; //送几份
+    int64 target = 3; //赠送对象userId, 暂时只支持0 送给商家
+}
 
+//0x000204 送红包
+message RequestSendHongbao {
+    int64 giftTpId = 1; //什么类型的红包
+    uint32 delayMinute = 2; //延时几分钟
+}
+
+//0x000207 抢红包
+message RequestGrabHongbao {
+    int64 hongbaoId = 1;
+}
+
+//0x000208 发送聊天
+message RequestSendChatMessage {
+    string content = 1;
+}

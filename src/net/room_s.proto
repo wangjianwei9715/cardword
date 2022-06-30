@@ -1,15 +1,9 @@
 syntax = "proto3";
 package message;
 
-//0x000200 请求点赞返回
+//0x000200 请求点赞返回 失败的时候才返回
 message BackLike {
-	enum RetCode {
-        RC_OK =0;
-        RC_LOGIN_CLOSED = 2; //服务已经关闭
-        RC_TOO_FAST = 3;  //请求频繁
-    }
-	RetCode code = 1;		//0成功，其他失败
-	string msg = 2;		//失败原因
+	string msg = 1;		//失败原因
 }
 
 //0x000201 广播点赞消息
@@ -20,17 +14,81 @@ message BroadCastLike {
         string avatar = 3; //观众头像 暂时忽略
     }
     repeated UserLike list = 1;
-    int32 finalLikeNum = 2; //房间最新点选数量
+    uint32 finalLikeNum = 2; //房间最新点赞数量
 }
 
-//0x000202 广播弹幕消息
-message BroadBilibili {
-    message Bilibili {
+//0x000202 广播赠送类弹幕消息
+message BroadCastBilibili_Send {
+    message Bilibili_Send {
         string sender = 1;  //谁送的
-        string name = 2;    //送什么
-        uint32 num = 3;     //数量
+        string senderAvatar = 2;  //头像
+        string name = 3;    //送什么
+        uint32 num = 4;     //最近一次赠送
+        uint32 continuityNum = 5;     //连击赠送数量 continuityNum > num 代表有连击
     }
-    repeated Bilibili list = 1;
+    repeated Bilibili_Send list = 1;
+}
+
+//0x000203 送礼物返回 失败的时候才返回
+message BackSendGift {
+	string msg = 1;		//失败原因
 }
 
 
+//0x000204 送红包返回 失败的时候才返回
+message BackSendHongbao {
+	string msg = 1;		//失败原因
+}
+
+enum HongbaoState {
+    RC_COUNTDOWN = 0; //倒计时
+    RC_READY = 1; //可抢
+    RC_FINISH = 2; //抢光了
+    RC_OTHER = 3;//其它
+}
+//0x000205 广播红包
+message BroadCastHongbao {
+    message Hongbao {
+        int64 id = 1; //红包id 唯一标识一个红包
+        HongbaoState state = 2;
+        string sender = 3;  //谁送的
+        string senderAvatar = 4;  //头像
+        float point = 5; //多少币
+        uint32 sec = 6;     //倒计时秒数
+        uint32 leftNum = 7;     //剩余几份
+    }
+    repeated Hongbao list = 1;
+}
+
+//0x000206 广播红包状态改变
+message BroadCastHongbaoUpdated {
+    message HongbaoUpdated {
+        int64 id = 1; //红包id 唯一标识一个红包
+        HongbaoState newState = 2;
+        uint32 leftNum = 3;     //剩余几份
+    }
+    repeated HongbaoUpdated list = 1;
+}
+
+//0x000207 抢红包返回
+message BackGrabHongbao {
+    float point = 1; // 抢到多少 为0 则失败
+	string msg = 2;		//失败原因
+}
+
+//0x000208 发送聊天返回 失败的时候才返回
+message BackSendChatMessage {
+	string msg = 1;		//失败原因
+}
+
+//0x000209 广播聊天
+message BroadCastChatMessage {
+    message Chat {
+        string uid = 1;  //可以判断 是不是自己 a_ 开头代表是主播说话
+        string sender = 2;
+        string senderAvatar = 3;  //头像 空则使用默认头像
+        string content = 4;  // content 和 action 二选一
+        string action = 5; //  action = 来了、走了
+    }
+    repeated Chat list = 1;
+}

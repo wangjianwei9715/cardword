@@ -5538,13 +5538,884 @@ $root.message = (function() {
         return RequestLike;
     })();
 
+    message.RequestSendGift = (function() {
+
+        /**
+         * Properties of a RequestSendGift.
+         * @memberof message
+         * @interface IRequestSendGift
+         * @property {number|Long|null} [giftTpId] RequestSendGift giftTpId
+         * @property {number|null} [num] RequestSendGift num
+         * @property {number|Long|null} [target] RequestSendGift target
+         */
+
+        /**
+         * Constructs a new RequestSendGift.
+         * @memberof message
+         * @classdesc Represents a RequestSendGift.
+         * @implements IRequestSendGift
+         * @constructor
+         * @param {message.IRequestSendGift=} [properties] Properties to set
+         */
+        function RequestSendGift(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * RequestSendGift giftTpId.
+         * @member {number|Long} giftTpId
+         * @memberof message.RequestSendGift
+         * @instance
+         */
+        RequestSendGift.prototype.giftTpId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * RequestSendGift num.
+         * @member {number} num
+         * @memberof message.RequestSendGift
+         * @instance
+         */
+        RequestSendGift.prototype.num = 0;
+
+        /**
+         * RequestSendGift target.
+         * @member {number|Long} target
+         * @memberof message.RequestSendGift
+         * @instance
+         */
+        RequestSendGift.prototype.target = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Creates a new RequestSendGift instance using the specified properties.
+         * @function create
+         * @memberof message.RequestSendGift
+         * @static
+         * @param {message.IRequestSendGift=} [properties] Properties to set
+         * @returns {message.RequestSendGift} RequestSendGift instance
+         */
+        RequestSendGift.create = function create(properties) {
+            return new RequestSendGift(properties);
+        };
+
+        /**
+         * Encodes the specified RequestSendGift message. Does not implicitly {@link message.RequestSendGift.verify|verify} messages.
+         * @function encode
+         * @memberof message.RequestSendGift
+         * @static
+         * @param {message.IRequestSendGift} message RequestSendGift message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSendGift.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.giftTpId != null && Object.hasOwnProperty.call(message, "giftTpId"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.giftTpId);
+            if (message.num != null && Object.hasOwnProperty.call(message, "num"))
+                writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.num);
+            if (message.target != null && Object.hasOwnProperty.call(message, "target"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.target);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RequestSendGift message, length delimited. Does not implicitly {@link message.RequestSendGift.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.RequestSendGift
+         * @static
+         * @param {message.IRequestSendGift} message RequestSendGift message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSendGift.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RequestSendGift message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.RequestSendGift
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.RequestSendGift} RequestSendGift
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSendGift.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.RequestSendGift();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.giftTpId = reader.int64();
+                    break;
+                case 2:
+                    message.num = reader.uint32();
+                    break;
+                case 3:
+                    message.target = reader.int64();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RequestSendGift message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.RequestSendGift
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.RequestSendGift} RequestSendGift
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSendGift.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RequestSendGift message.
+         * @function verify
+         * @memberof message.RequestSendGift
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RequestSendGift.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.giftTpId != null && message.hasOwnProperty("giftTpId"))
+                if (!$util.isInteger(message.giftTpId) && !(message.giftTpId && $util.isInteger(message.giftTpId.low) && $util.isInteger(message.giftTpId.high)))
+                    return "giftTpId: integer|Long expected";
+            if (message.num != null && message.hasOwnProperty("num"))
+                if (!$util.isInteger(message.num))
+                    return "num: integer expected";
+            if (message.target != null && message.hasOwnProperty("target"))
+                if (!$util.isInteger(message.target) && !(message.target && $util.isInteger(message.target.low) && $util.isInteger(message.target.high)))
+                    return "target: integer|Long expected";
+            return null;
+        };
+
+        /**
+         * Creates a RequestSendGift message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.RequestSendGift
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.RequestSendGift} RequestSendGift
+         */
+        RequestSendGift.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.RequestSendGift)
+                return object;
+            var message = new $root.message.RequestSendGift();
+            if (object.giftTpId != null)
+                if ($util.Long)
+                    (message.giftTpId = $util.Long.fromValue(object.giftTpId)).unsigned = false;
+                else if (typeof object.giftTpId === "string")
+                    message.giftTpId = parseInt(object.giftTpId, 10);
+                else if (typeof object.giftTpId === "number")
+                    message.giftTpId = object.giftTpId;
+                else if (typeof object.giftTpId === "object")
+                    message.giftTpId = new $util.LongBits(object.giftTpId.low >>> 0, object.giftTpId.high >>> 0).toNumber();
+            if (object.num != null)
+                message.num = object.num >>> 0;
+            if (object.target != null)
+                if ($util.Long)
+                    (message.target = $util.Long.fromValue(object.target)).unsigned = false;
+                else if (typeof object.target === "string")
+                    message.target = parseInt(object.target, 10);
+                else if (typeof object.target === "number")
+                    message.target = object.target;
+                else if (typeof object.target === "object")
+                    message.target = new $util.LongBits(object.target.low >>> 0, object.target.high >>> 0).toNumber();
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a RequestSendGift message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.RequestSendGift
+         * @static
+         * @param {message.RequestSendGift} message RequestSendGift
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RequestSendGift.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.giftTpId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.giftTpId = options.longs === String ? "0" : 0;
+                object.num = 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.target = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.target = options.longs === String ? "0" : 0;
+            }
+            if (message.giftTpId != null && message.hasOwnProperty("giftTpId"))
+                if (typeof message.giftTpId === "number")
+                    object.giftTpId = options.longs === String ? String(message.giftTpId) : message.giftTpId;
+                else
+                    object.giftTpId = options.longs === String ? $util.Long.prototype.toString.call(message.giftTpId) : options.longs === Number ? new $util.LongBits(message.giftTpId.low >>> 0, message.giftTpId.high >>> 0).toNumber() : message.giftTpId;
+            if (message.num != null && message.hasOwnProperty("num"))
+                object.num = message.num;
+            if (message.target != null && message.hasOwnProperty("target"))
+                if (typeof message.target === "number")
+                    object.target = options.longs === String ? String(message.target) : message.target;
+                else
+                    object.target = options.longs === String ? $util.Long.prototype.toString.call(message.target) : options.longs === Number ? new $util.LongBits(message.target.low >>> 0, message.target.high >>> 0).toNumber() : message.target;
+            return object;
+        };
+
+        /**
+         * Converts this RequestSendGift to JSON.
+         * @function toJSON
+         * @memberof message.RequestSendGift
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RequestSendGift.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RequestSendGift;
+    })();
+
+    message.RequestSendHongbao = (function() {
+
+        /**
+         * Properties of a RequestSendHongbao.
+         * @memberof message
+         * @interface IRequestSendHongbao
+         * @property {number|Long|null} [giftTpId] RequestSendHongbao giftTpId
+         * @property {number|null} [delayMinute] RequestSendHongbao delayMinute
+         */
+
+        /**
+         * Constructs a new RequestSendHongbao.
+         * @memberof message
+         * @classdesc Represents a RequestSendHongbao.
+         * @implements IRequestSendHongbao
+         * @constructor
+         * @param {message.IRequestSendHongbao=} [properties] Properties to set
+         */
+        function RequestSendHongbao(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * RequestSendHongbao giftTpId.
+         * @member {number|Long} giftTpId
+         * @memberof message.RequestSendHongbao
+         * @instance
+         */
+        RequestSendHongbao.prototype.giftTpId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * RequestSendHongbao delayMinute.
+         * @member {number} delayMinute
+         * @memberof message.RequestSendHongbao
+         * @instance
+         */
+        RequestSendHongbao.prototype.delayMinute = 0;
+
+        /**
+         * Creates a new RequestSendHongbao instance using the specified properties.
+         * @function create
+         * @memberof message.RequestSendHongbao
+         * @static
+         * @param {message.IRequestSendHongbao=} [properties] Properties to set
+         * @returns {message.RequestSendHongbao} RequestSendHongbao instance
+         */
+        RequestSendHongbao.create = function create(properties) {
+            return new RequestSendHongbao(properties);
+        };
+
+        /**
+         * Encodes the specified RequestSendHongbao message. Does not implicitly {@link message.RequestSendHongbao.verify|verify} messages.
+         * @function encode
+         * @memberof message.RequestSendHongbao
+         * @static
+         * @param {message.IRequestSendHongbao} message RequestSendHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSendHongbao.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.giftTpId != null && Object.hasOwnProperty.call(message, "giftTpId"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.giftTpId);
+            if (message.delayMinute != null && Object.hasOwnProperty.call(message, "delayMinute"))
+                writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.delayMinute);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RequestSendHongbao message, length delimited. Does not implicitly {@link message.RequestSendHongbao.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.RequestSendHongbao
+         * @static
+         * @param {message.IRequestSendHongbao} message RequestSendHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSendHongbao.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RequestSendHongbao message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.RequestSendHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.RequestSendHongbao} RequestSendHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSendHongbao.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.RequestSendHongbao();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.giftTpId = reader.int64();
+                    break;
+                case 2:
+                    message.delayMinute = reader.uint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RequestSendHongbao message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.RequestSendHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.RequestSendHongbao} RequestSendHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSendHongbao.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RequestSendHongbao message.
+         * @function verify
+         * @memberof message.RequestSendHongbao
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RequestSendHongbao.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.giftTpId != null && message.hasOwnProperty("giftTpId"))
+                if (!$util.isInteger(message.giftTpId) && !(message.giftTpId && $util.isInteger(message.giftTpId.low) && $util.isInteger(message.giftTpId.high)))
+                    return "giftTpId: integer|Long expected";
+            if (message.delayMinute != null && message.hasOwnProperty("delayMinute"))
+                if (!$util.isInteger(message.delayMinute))
+                    return "delayMinute: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a RequestSendHongbao message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.RequestSendHongbao
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.RequestSendHongbao} RequestSendHongbao
+         */
+        RequestSendHongbao.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.RequestSendHongbao)
+                return object;
+            var message = new $root.message.RequestSendHongbao();
+            if (object.giftTpId != null)
+                if ($util.Long)
+                    (message.giftTpId = $util.Long.fromValue(object.giftTpId)).unsigned = false;
+                else if (typeof object.giftTpId === "string")
+                    message.giftTpId = parseInt(object.giftTpId, 10);
+                else if (typeof object.giftTpId === "number")
+                    message.giftTpId = object.giftTpId;
+                else if (typeof object.giftTpId === "object")
+                    message.giftTpId = new $util.LongBits(object.giftTpId.low >>> 0, object.giftTpId.high >>> 0).toNumber();
+            if (object.delayMinute != null)
+                message.delayMinute = object.delayMinute >>> 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a RequestSendHongbao message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.RequestSendHongbao
+         * @static
+         * @param {message.RequestSendHongbao} message RequestSendHongbao
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RequestSendHongbao.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.giftTpId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.giftTpId = options.longs === String ? "0" : 0;
+                object.delayMinute = 0;
+            }
+            if (message.giftTpId != null && message.hasOwnProperty("giftTpId"))
+                if (typeof message.giftTpId === "number")
+                    object.giftTpId = options.longs === String ? String(message.giftTpId) : message.giftTpId;
+                else
+                    object.giftTpId = options.longs === String ? $util.Long.prototype.toString.call(message.giftTpId) : options.longs === Number ? new $util.LongBits(message.giftTpId.low >>> 0, message.giftTpId.high >>> 0).toNumber() : message.giftTpId;
+            if (message.delayMinute != null && message.hasOwnProperty("delayMinute"))
+                object.delayMinute = message.delayMinute;
+            return object;
+        };
+
+        /**
+         * Converts this RequestSendHongbao to JSON.
+         * @function toJSON
+         * @memberof message.RequestSendHongbao
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RequestSendHongbao.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RequestSendHongbao;
+    })();
+
+    message.RequestGrabHongbao = (function() {
+
+        /**
+         * Properties of a RequestGrabHongbao.
+         * @memberof message
+         * @interface IRequestGrabHongbao
+         * @property {number|Long|null} [hongbaoId] RequestGrabHongbao hongbaoId
+         */
+
+        /**
+         * Constructs a new RequestGrabHongbao.
+         * @memberof message
+         * @classdesc Represents a RequestGrabHongbao.
+         * @implements IRequestGrabHongbao
+         * @constructor
+         * @param {message.IRequestGrabHongbao=} [properties] Properties to set
+         */
+        function RequestGrabHongbao(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * RequestGrabHongbao hongbaoId.
+         * @member {number|Long} hongbaoId
+         * @memberof message.RequestGrabHongbao
+         * @instance
+         */
+        RequestGrabHongbao.prototype.hongbaoId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Creates a new RequestGrabHongbao instance using the specified properties.
+         * @function create
+         * @memberof message.RequestGrabHongbao
+         * @static
+         * @param {message.IRequestGrabHongbao=} [properties] Properties to set
+         * @returns {message.RequestGrabHongbao} RequestGrabHongbao instance
+         */
+        RequestGrabHongbao.create = function create(properties) {
+            return new RequestGrabHongbao(properties);
+        };
+
+        /**
+         * Encodes the specified RequestGrabHongbao message. Does not implicitly {@link message.RequestGrabHongbao.verify|verify} messages.
+         * @function encode
+         * @memberof message.RequestGrabHongbao
+         * @static
+         * @param {message.IRequestGrabHongbao} message RequestGrabHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestGrabHongbao.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.hongbaoId != null && Object.hasOwnProperty.call(message, "hongbaoId"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.hongbaoId);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RequestGrabHongbao message, length delimited. Does not implicitly {@link message.RequestGrabHongbao.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.RequestGrabHongbao
+         * @static
+         * @param {message.IRequestGrabHongbao} message RequestGrabHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestGrabHongbao.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RequestGrabHongbao message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.RequestGrabHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.RequestGrabHongbao} RequestGrabHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestGrabHongbao.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.RequestGrabHongbao();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.hongbaoId = reader.int64();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RequestGrabHongbao message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.RequestGrabHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.RequestGrabHongbao} RequestGrabHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestGrabHongbao.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RequestGrabHongbao message.
+         * @function verify
+         * @memberof message.RequestGrabHongbao
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RequestGrabHongbao.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.hongbaoId != null && message.hasOwnProperty("hongbaoId"))
+                if (!$util.isInteger(message.hongbaoId) && !(message.hongbaoId && $util.isInteger(message.hongbaoId.low) && $util.isInteger(message.hongbaoId.high)))
+                    return "hongbaoId: integer|Long expected";
+            return null;
+        };
+
+        /**
+         * Creates a RequestGrabHongbao message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.RequestGrabHongbao
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.RequestGrabHongbao} RequestGrabHongbao
+         */
+        RequestGrabHongbao.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.RequestGrabHongbao)
+                return object;
+            var message = new $root.message.RequestGrabHongbao();
+            if (object.hongbaoId != null)
+                if ($util.Long)
+                    (message.hongbaoId = $util.Long.fromValue(object.hongbaoId)).unsigned = false;
+                else if (typeof object.hongbaoId === "string")
+                    message.hongbaoId = parseInt(object.hongbaoId, 10);
+                else if (typeof object.hongbaoId === "number")
+                    message.hongbaoId = object.hongbaoId;
+                else if (typeof object.hongbaoId === "object")
+                    message.hongbaoId = new $util.LongBits(object.hongbaoId.low >>> 0, object.hongbaoId.high >>> 0).toNumber();
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a RequestGrabHongbao message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.RequestGrabHongbao
+         * @static
+         * @param {message.RequestGrabHongbao} message RequestGrabHongbao
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RequestGrabHongbao.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.hongbaoId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.hongbaoId = options.longs === String ? "0" : 0;
+            if (message.hongbaoId != null && message.hasOwnProperty("hongbaoId"))
+                if (typeof message.hongbaoId === "number")
+                    object.hongbaoId = options.longs === String ? String(message.hongbaoId) : message.hongbaoId;
+                else
+                    object.hongbaoId = options.longs === String ? $util.Long.prototype.toString.call(message.hongbaoId) : options.longs === Number ? new $util.LongBits(message.hongbaoId.low >>> 0, message.hongbaoId.high >>> 0).toNumber() : message.hongbaoId;
+            return object;
+        };
+
+        /**
+         * Converts this RequestGrabHongbao to JSON.
+         * @function toJSON
+         * @memberof message.RequestGrabHongbao
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RequestGrabHongbao.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RequestGrabHongbao;
+    })();
+
+    message.RequestSendChatMessage = (function() {
+
+        /**
+         * Properties of a RequestSendChatMessage.
+         * @memberof message
+         * @interface IRequestSendChatMessage
+         * @property {string|null} [content] RequestSendChatMessage content
+         */
+
+        /**
+         * Constructs a new RequestSendChatMessage.
+         * @memberof message
+         * @classdesc Represents a RequestSendChatMessage.
+         * @implements IRequestSendChatMessage
+         * @constructor
+         * @param {message.IRequestSendChatMessage=} [properties] Properties to set
+         */
+        function RequestSendChatMessage(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * RequestSendChatMessage content.
+         * @member {string} content
+         * @memberof message.RequestSendChatMessage
+         * @instance
+         */
+        RequestSendChatMessage.prototype.content = "";
+
+        /**
+         * Creates a new RequestSendChatMessage instance using the specified properties.
+         * @function create
+         * @memberof message.RequestSendChatMessage
+         * @static
+         * @param {message.IRequestSendChatMessage=} [properties] Properties to set
+         * @returns {message.RequestSendChatMessage} RequestSendChatMessage instance
+         */
+        RequestSendChatMessage.create = function create(properties) {
+            return new RequestSendChatMessage(properties);
+        };
+
+        /**
+         * Encodes the specified RequestSendChatMessage message. Does not implicitly {@link message.RequestSendChatMessage.verify|verify} messages.
+         * @function encode
+         * @memberof message.RequestSendChatMessage
+         * @static
+         * @param {message.IRequestSendChatMessage} message RequestSendChatMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSendChatMessage.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.content != null && Object.hasOwnProperty.call(message, "content"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.content);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RequestSendChatMessage message, length delimited. Does not implicitly {@link message.RequestSendChatMessage.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.RequestSendChatMessage
+         * @static
+         * @param {message.IRequestSendChatMessage} message RequestSendChatMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSendChatMessage.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RequestSendChatMessage message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.RequestSendChatMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.RequestSendChatMessage} RequestSendChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSendChatMessage.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.RequestSendChatMessage();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.content = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RequestSendChatMessage message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.RequestSendChatMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.RequestSendChatMessage} RequestSendChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSendChatMessage.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RequestSendChatMessage message.
+         * @function verify
+         * @memberof message.RequestSendChatMessage
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RequestSendChatMessage.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.content != null && message.hasOwnProperty("content"))
+                if (!$util.isString(message.content))
+                    return "content: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a RequestSendChatMessage message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.RequestSendChatMessage
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.RequestSendChatMessage} RequestSendChatMessage
+         */
+        RequestSendChatMessage.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.RequestSendChatMessage)
+                return object;
+            var message = new $root.message.RequestSendChatMessage();
+            if (object.content != null)
+                message.content = String(object.content);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a RequestSendChatMessage message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.RequestSendChatMessage
+         * @static
+         * @param {message.RequestSendChatMessage} message RequestSendChatMessage
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RequestSendChatMessage.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.content = "";
+            if (message.content != null && message.hasOwnProperty("content"))
+                object.content = message.content;
+            return object;
+        };
+
+        /**
+         * Converts this RequestSendChatMessage to JSON.
+         * @function toJSON
+         * @memberof message.RequestSendChatMessage
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RequestSendChatMessage.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RequestSendChatMessage;
+    })();
+
     message.BackLike = (function() {
 
         /**
          * Properties of a BackLike.
          * @memberof message
          * @interface IBackLike
-         * @property {message.BackLike.RetCode|null} [code] BackLike code
          * @property {string|null} [msg] BackLike msg
          */
 
@@ -5562,14 +6433,6 @@ $root.message = (function() {
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
-
-        /**
-         * BackLike code.
-         * @member {message.BackLike.RetCode} code
-         * @memberof message.BackLike
-         * @instance
-         */
-        BackLike.prototype.code = 0;
 
         /**
          * BackLike msg.
@@ -5601,13 +6464,10 @@ $root.message = (function() {
          * @returns {$protobuf.Writer} Writer
          */
         BackLike.encode = function encode(message, writer) {
-            
             if (!writer)
                 writer = $Writer.create();
-            if (message.code != null && Object.hasOwnProperty.call(message, "code"))
-                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.code);
             if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.msg);
             return writer;
         };
 
@@ -5636,7 +6496,6 @@ $root.message = (function() {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         BackLike.decode = function decode(reader, length) {
-            console.log(reader,'reader');
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
             var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackLike();
@@ -5644,9 +6503,6 @@ $root.message = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.code = reader.int32();
-                    break;
-                case 2:
                     message.msg = reader.string();
                     break;
                 default:
@@ -5684,15 +6540,6 @@ $root.message = (function() {
         BackLike.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.code != null && message.hasOwnProperty("code"))
-                switch (message.code) {
-                default:
-                    return "code: enum value expected";
-                case 0:
-                case 2:
-                case 3:
-                    break;
-                }
             if (message.msg != null && message.hasOwnProperty("msg"))
                 if (!$util.isString(message.msg))
                     return "msg: string expected";
@@ -5711,20 +6558,6 @@ $root.message = (function() {
             if (object instanceof $root.message.BackLike)
                 return object;
             var message = new $root.message.BackLike();
-            switch (object.code) {
-            case "RC_OK":
-            case 0:
-                message.code = 0;
-                break;
-            case "RC_LOGIN_CLOSED":
-            case 2:
-                message.code = 2;
-                break;
-            case "RC_TOO_FAST":
-            case 3:
-                message.code = 3;
-                break;
-            }
             if (object.msg != null)
                 message.msg = String(object.msg);
             return message;
@@ -5743,12 +6576,8 @@ $root.message = (function() {
             if (!options)
                 options = {};
             var object = {};
-            if (options.defaults) {
-                object.code = options.enums === String ? "RC_OK" : 0;
+            if (options.defaults)
                 object.msg = "";
-            }
-            if (message.code != null && message.hasOwnProperty("code"))
-                object.code = options.enums === String ? $root.message.BackLike.RetCode[message.code] : message.code;
             if (message.msg != null && message.hasOwnProperty("msg"))
                 object.msg = message.msg;
             return object;
@@ -5764,22 +6593,6 @@ $root.message = (function() {
         BackLike.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
-
-        /**
-         * RetCode enum.
-         * @name message.BackLike.RetCode
-         * @enum {number}
-         * @property {number} RC_OK=0 RC_OK value
-         * @property {number} RC_LOGIN_CLOSED=2 RC_LOGIN_CLOSED value
-         * @property {number} RC_TOO_FAST=3 RC_TOO_FAST value
-         */
-        BackLike.RetCode = (function() {
-            var valuesById = {}, values = Object.create(valuesById);
-            values[valuesById[0] = "RC_OK"] = 0;
-            values[valuesById[2] = "RC_LOGIN_CLOSED"] = 2;
-            values[valuesById[3] = "RC_TOO_FAST"] = 3;
-            return values;
-        })();
 
         return BackLike;
     })();
@@ -5854,7 +6667,7 @@ $root.message = (function() {
                 for (var i = 0; i < message.list.length; ++i)
                     $root.message.BroadCastLike.UserLike.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             if (message.finalLikeNum != null && Object.hasOwnProperty.call(message, "finalLikeNum"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.finalLikeNum);
+                writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.finalLikeNum);
             return writer;
         };
 
@@ -5895,7 +6708,7 @@ $root.message = (function() {
                     message.list.push($root.message.BroadCastLike.UserLike.decode(reader, reader.uint32()));
                     break;
                 case 2:
-                    message.finalLikeNum = reader.int32();
+                    message.finalLikeNum = reader.uint32();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -5970,7 +6783,7 @@ $root.message = (function() {
                 }
             }
             if (object.finalLikeNum != null)
-                message.finalLikeNum = object.finalLikeNum | 0;
+                message.finalLikeNum = object.finalLikeNum >>> 0;
             return message;
         };
 
@@ -6247,24 +7060,24 @@ $root.message = (function() {
         return BroadCastLike;
     })();
 
-    message.BroadBilibili = (function() {
+    message.BroadCastBilibili_Send = (function() {
 
         /**
-         * Properties of a BroadBilibili.
+         * Properties of a BroadCastBilibili_Send.
          * @memberof message
-         * @interface IBroadBilibili
-         * @property {Array.<message.BroadBilibili.IBilibili>|null} [list] BroadBilibili list
+         * @interface IBroadCastBilibili_Send
+         * @property {Array.<message.BroadCastBilibili_Send.IBilibili_Send>|null} [list] BroadCastBilibili_Send list
          */
 
         /**
-         * Constructs a new BroadBilibili.
+         * Constructs a new BroadCastBilibili_Send.
          * @memberof message
-         * @classdesc Represents a BroadBilibili.
-         * @implements IBroadBilibili
+         * @classdesc Represents a BroadCastBilibili_Send.
+         * @implements IBroadCastBilibili_Send
          * @constructor
-         * @param {message.IBroadBilibili=} [properties] Properties to set
+         * @param {message.IBroadCastBilibili_Send=} [properties] Properties to set
          */
-        function BroadBilibili(properties) {
+        function BroadCastBilibili_Send(properties) {
             this.list = [];
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
@@ -6273,78 +7086,78 @@ $root.message = (function() {
         }
 
         /**
-         * BroadBilibili list.
-         * @member {Array.<message.BroadBilibili.IBilibili>} list
-         * @memberof message.BroadBilibili
+         * BroadCastBilibili_Send list.
+         * @member {Array.<message.BroadCastBilibili_Send.IBilibili_Send>} list
+         * @memberof message.BroadCastBilibili_Send
          * @instance
          */
-        BroadBilibili.prototype.list = $util.emptyArray;
+        BroadCastBilibili_Send.prototype.list = $util.emptyArray;
 
         /**
-         * Creates a new BroadBilibili instance using the specified properties.
+         * Creates a new BroadCastBilibili_Send instance using the specified properties.
          * @function create
-         * @memberof message.BroadBilibili
+         * @memberof message.BroadCastBilibili_Send
          * @static
-         * @param {message.IBroadBilibili=} [properties] Properties to set
-         * @returns {message.BroadBilibili} BroadBilibili instance
+         * @param {message.IBroadCastBilibili_Send=} [properties] Properties to set
+         * @returns {message.BroadCastBilibili_Send} BroadCastBilibili_Send instance
          */
-        BroadBilibili.create = function create(properties) {
-            return new BroadBilibili(properties);
+        BroadCastBilibili_Send.create = function create(properties) {
+            return new BroadCastBilibili_Send(properties);
         };
 
         /**
-         * Encodes the specified BroadBilibili message. Does not implicitly {@link message.BroadBilibili.verify|verify} messages.
+         * Encodes the specified BroadCastBilibili_Send message. Does not implicitly {@link message.BroadCastBilibili_Send.verify|verify} messages.
          * @function encode
-         * @memberof message.BroadBilibili
+         * @memberof message.BroadCastBilibili_Send
          * @static
-         * @param {message.IBroadBilibili} message BroadBilibili message or plain object to encode
+         * @param {message.IBroadCastBilibili_Send} message BroadCastBilibili_Send message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        BroadBilibili.encode = function encode(message, writer) {
+        BroadCastBilibili_Send.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
             if (message.list != null && message.list.length)
                 for (var i = 0; i < message.list.length; ++i)
-                    $root.message.BroadBilibili.Bilibili.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                    $root.message.BroadCastBilibili_Send.Bilibili_Send.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
 
         /**
-         * Encodes the specified BroadBilibili message, length delimited. Does not implicitly {@link message.BroadBilibili.verify|verify} messages.
+         * Encodes the specified BroadCastBilibili_Send message, length delimited. Does not implicitly {@link message.BroadCastBilibili_Send.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof message.BroadBilibili
+         * @memberof message.BroadCastBilibili_Send
          * @static
-         * @param {message.IBroadBilibili} message BroadBilibili message or plain object to encode
+         * @param {message.IBroadCastBilibili_Send} message BroadCastBilibili_Send message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        BroadBilibili.encodeDelimited = function encodeDelimited(message, writer) {
+        BroadCastBilibili_Send.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
         /**
-         * Decodes a BroadBilibili message from the specified reader or buffer.
+         * Decodes a BroadCastBilibili_Send message from the specified reader or buffer.
          * @function decode
-         * @memberof message.BroadBilibili
+         * @memberof message.BroadCastBilibili_Send
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {message.BroadBilibili} BroadBilibili
+         * @returns {message.BroadCastBilibili_Send} BroadCastBilibili_Send
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        BroadBilibili.decode = function decode(reader, length) {
+        BroadCastBilibili_Send.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadBilibili();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastBilibili_Send();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
                     if (!(message.list && message.list.length))
                         message.list = [];
-                    message.list.push($root.message.BroadBilibili.Bilibili.decode(reader, reader.uint32()));
+                    message.list.push($root.message.BroadCastBilibili_Send.Bilibili_Send.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -6355,37 +7168,37 @@ $root.message = (function() {
         };
 
         /**
-         * Decodes a BroadBilibili message from the specified reader or buffer, length delimited.
+         * Decodes a BroadCastBilibili_Send message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof message.BroadBilibili
+         * @memberof message.BroadCastBilibili_Send
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {message.BroadBilibili} BroadBilibili
+         * @returns {message.BroadCastBilibili_Send} BroadCastBilibili_Send
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        BroadBilibili.decodeDelimited = function decodeDelimited(reader) {
+        BroadCastBilibili_Send.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
         /**
-         * Verifies a BroadBilibili message.
+         * Verifies a BroadCastBilibili_Send message.
          * @function verify
-         * @memberof message.BroadBilibili
+         * @memberof message.BroadCastBilibili_Send
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        BroadBilibili.verify = function verify(message) {
+        BroadCastBilibili_Send.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
             if (message.list != null && message.hasOwnProperty("list")) {
                 if (!Array.isArray(message.list))
                     return "list: array expected";
                 for (var i = 0; i < message.list.length; ++i) {
-                    var error = $root.message.BroadBilibili.Bilibili.verify(message.list[i]);
+                    var error = $root.message.BroadCastBilibili_Send.Bilibili_Send.verify(message.list[i]);
                     if (error)
                         return "list." + error;
                 }
@@ -6394,40 +7207,40 @@ $root.message = (function() {
         };
 
         /**
-         * Creates a BroadBilibili message from a plain object. Also converts values to their respective internal types.
+         * Creates a BroadCastBilibili_Send message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof message.BroadBilibili
+         * @memberof message.BroadCastBilibili_Send
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {message.BroadBilibili} BroadBilibili
+         * @returns {message.BroadCastBilibili_Send} BroadCastBilibili_Send
          */
-        BroadBilibili.fromObject = function fromObject(object) {
-            if (object instanceof $root.message.BroadBilibili)
+        BroadCastBilibili_Send.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadCastBilibili_Send)
                 return object;
-            var message = new $root.message.BroadBilibili();
+            var message = new $root.message.BroadCastBilibili_Send();
             if (object.list) {
                 if (!Array.isArray(object.list))
-                    throw TypeError(".message.BroadBilibili.list: array expected");
+                    throw TypeError(".message.BroadCastBilibili_Send.list: array expected");
                 message.list = [];
                 for (var i = 0; i < object.list.length; ++i) {
                     if (typeof object.list[i] !== "object")
-                        throw TypeError(".message.BroadBilibili.list: object expected");
-                    message.list[i] = $root.message.BroadBilibili.Bilibili.fromObject(object.list[i]);
+                        throw TypeError(".message.BroadCastBilibili_Send.list: object expected");
+                    message.list[i] = $root.message.BroadCastBilibili_Send.Bilibili_Send.fromObject(object.list[i]);
                 }
             }
             return message;
         };
 
         /**
-         * Creates a plain object from a BroadBilibili message. Also converts values to other types if specified.
+         * Creates a plain object from a BroadCastBilibili_Send message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof message.BroadBilibili
+         * @memberof message.BroadCastBilibili_Send
          * @static
-         * @param {message.BroadBilibili} message BroadBilibili
+         * @param {message.BroadCastBilibili_Send} message BroadCastBilibili_Send
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        BroadBilibili.toObject = function toObject(message, options) {
+        BroadCastBilibili_Send.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
             var object = {};
@@ -6436,42 +7249,44 @@ $root.message = (function() {
             if (message.list && message.list.length) {
                 object.list = [];
                 for (var j = 0; j < message.list.length; ++j)
-                    object.list[j] = $root.message.BroadBilibili.Bilibili.toObject(message.list[j], options);
+                    object.list[j] = $root.message.BroadCastBilibili_Send.Bilibili_Send.toObject(message.list[j], options);
             }
             return object;
         };
 
         /**
-         * Converts this BroadBilibili to JSON.
+         * Converts this BroadCastBilibili_Send to JSON.
          * @function toJSON
-         * @memberof message.BroadBilibili
+         * @memberof message.BroadCastBilibili_Send
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
-        BroadBilibili.prototype.toJSON = function toJSON() {
+        BroadCastBilibili_Send.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
-        BroadBilibili.Bilibili = (function() {
+        BroadCastBilibili_Send.Bilibili_Send = (function() {
 
             /**
-             * Properties of a Bilibili.
-             * @memberof message.BroadBilibili
-             * @interface IBilibili
-             * @property {string|null} [sender] Bilibili sender
-             * @property {string|null} [name] Bilibili name
-             * @property {number|null} [num] Bilibili num
+             * Properties of a Bilibili_Send.
+             * @memberof message.BroadCastBilibili_Send
+             * @interface IBilibili_Send
+             * @property {string|null} [sender] Bilibili_Send sender
+             * @property {string|null} [senderAvatar] Bilibili_Send senderAvatar
+             * @property {string|null} [name] Bilibili_Send name
+             * @property {number|null} [num] Bilibili_Send num
+             * @property {number|null} [continuityNum] Bilibili_Send continuityNum
              */
 
             /**
-             * Constructs a new Bilibili.
-             * @memberof message.BroadBilibili
-             * @classdesc Represents a Bilibili.
-             * @implements IBilibili
+             * Constructs a new Bilibili_Send.
+             * @memberof message.BroadCastBilibili_Send
+             * @classdesc Represents a Bilibili_Send.
+             * @implements IBilibili_Send
              * @constructor
-             * @param {message.BroadBilibili.IBilibili=} [properties] Properties to set
+             * @param {message.BroadCastBilibili_Send.IBilibili_Send=} [properties] Properties to set
              */
-            function Bilibili(properties) {
+            function Bilibili_Send(properties) {
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -6479,90 +7294,110 @@ $root.message = (function() {
             }
 
             /**
-             * Bilibili sender.
+             * Bilibili_Send sender.
              * @member {string} sender
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @instance
              */
-            Bilibili.prototype.sender = "";
+            Bilibili_Send.prototype.sender = "";
 
             /**
-             * Bilibili name.
+             * Bilibili_Send senderAvatar.
+             * @member {string} senderAvatar
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
+             * @instance
+             */
+            Bilibili_Send.prototype.senderAvatar = "";
+
+            /**
+             * Bilibili_Send name.
              * @member {string} name
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @instance
              */
-            Bilibili.prototype.name = "";
+            Bilibili_Send.prototype.name = "";
 
             /**
-             * Bilibili num.
+             * Bilibili_Send num.
              * @member {number} num
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @instance
              */
-            Bilibili.prototype.num = 0;
+            Bilibili_Send.prototype.num = 0;
 
             /**
-             * Creates a new Bilibili instance using the specified properties.
-             * @function create
-             * @memberof message.BroadBilibili.Bilibili
-             * @static
-             * @param {message.BroadBilibili.IBilibili=} [properties] Properties to set
-             * @returns {message.BroadBilibili.Bilibili} Bilibili instance
+             * Bilibili_Send continuityNum.
+             * @member {number} continuityNum
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
+             * @instance
              */
-            Bilibili.create = function create(properties) {
-                return new Bilibili(properties);
+            Bilibili_Send.prototype.continuityNum = 0;
+
+            /**
+             * Creates a new Bilibili_Send instance using the specified properties.
+             * @function create
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
+             * @static
+             * @param {message.BroadCastBilibili_Send.IBilibili_Send=} [properties] Properties to set
+             * @returns {message.BroadCastBilibili_Send.Bilibili_Send} Bilibili_Send instance
+             */
+            Bilibili_Send.create = function create(properties) {
+                return new Bilibili_Send(properties);
             };
 
             /**
-             * Encodes the specified Bilibili message. Does not implicitly {@link message.BroadBilibili.Bilibili.verify|verify} messages.
+             * Encodes the specified Bilibili_Send message. Does not implicitly {@link message.BroadCastBilibili_Send.Bilibili_Send.verify|verify} messages.
              * @function encode
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @static
-             * @param {message.BroadBilibili.IBilibili} message Bilibili message or plain object to encode
+             * @param {message.BroadCastBilibili_Send.IBilibili_Send} message Bilibili_Send message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Bilibili.encode = function encode(message, writer) {
+            Bilibili_Send.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
                 if (message.sender != null && Object.hasOwnProperty.call(message, "sender"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.sender);
+                if (message.senderAvatar != null && Object.hasOwnProperty.call(message, "senderAvatar"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.senderAvatar);
                 if (message.name != null && Object.hasOwnProperty.call(message, "name"))
-                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
                 if (message.num != null && Object.hasOwnProperty.call(message, "num"))
-                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.num);
+                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.num);
+                if (message.continuityNum != null && Object.hasOwnProperty.call(message, "continuityNum"))
+                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.continuityNum);
                 return writer;
             };
 
             /**
-             * Encodes the specified Bilibili message, length delimited. Does not implicitly {@link message.BroadBilibili.Bilibili.verify|verify} messages.
+             * Encodes the specified Bilibili_Send message, length delimited. Does not implicitly {@link message.BroadCastBilibili_Send.Bilibili_Send.verify|verify} messages.
              * @function encodeDelimited
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @static
-             * @param {message.BroadBilibili.IBilibili} message Bilibili message or plain object to encode
+             * @param {message.BroadCastBilibili_Send.IBilibili_Send} message Bilibili_Send message or plain object to encode
              * @param {$protobuf.Writer} [writer] Writer to encode to
              * @returns {$protobuf.Writer} Writer
              */
-            Bilibili.encodeDelimited = function encodeDelimited(message, writer) {
+            Bilibili_Send.encodeDelimited = function encodeDelimited(message, writer) {
                 return this.encode(message, writer).ldelim();
             };
 
             /**
-             * Decodes a Bilibili message from the specified reader or buffer.
+             * Decodes a Bilibili_Send message from the specified reader or buffer.
              * @function decode
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
              * @param {number} [length] Message length if known beforehand
-             * @returns {message.BroadBilibili.Bilibili} Bilibili
+             * @returns {message.BroadCastBilibili_Send.Bilibili_Send} Bilibili_Send
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            Bilibili.decode = function decode(reader, length) {
+            Bilibili_Send.decode = function decode(reader, length) {
                 if (!(reader instanceof $Reader))
                     reader = $Reader.create(reader);
-                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadBilibili.Bilibili();
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastBilibili_Send.Bilibili_Send();
                 while (reader.pos < end) {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
@@ -6570,10 +7405,16 @@ $root.message = (function() {
                         message.sender = reader.string();
                         break;
                     case 2:
-                        message.name = reader.string();
+                        message.senderAvatar = reader.string();
                         break;
                     case 3:
+                        message.name = reader.string();
+                        break;
+                    case 4:
                         message.num = reader.uint32();
+                        break;
+                    case 5:
+                        message.continuityNum = reader.uint32();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -6584,107 +7425,2438 @@ $root.message = (function() {
             };
 
             /**
-             * Decodes a Bilibili message from the specified reader or buffer, length delimited.
+             * Decodes a Bilibili_Send message from the specified reader or buffer, length delimited.
              * @function decodeDelimited
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @static
              * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-             * @returns {message.BroadBilibili.Bilibili} Bilibili
+             * @returns {message.BroadCastBilibili_Send.Bilibili_Send} Bilibili_Send
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            Bilibili.decodeDelimited = function decodeDelimited(reader) {
+            Bilibili_Send.decodeDelimited = function decodeDelimited(reader) {
                 if (!(reader instanceof $Reader))
                     reader = new $Reader(reader);
                 return this.decode(reader, reader.uint32());
             };
 
             /**
-             * Verifies a Bilibili message.
+             * Verifies a Bilibili_Send message.
              * @function verify
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @static
              * @param {Object.<string,*>} message Plain object to verify
              * @returns {string|null} `null` if valid, otherwise the reason why it is not
              */
-            Bilibili.verify = function verify(message) {
+            Bilibili_Send.verify = function verify(message) {
                 if (typeof message !== "object" || message === null)
                     return "object expected";
                 if (message.sender != null && message.hasOwnProperty("sender"))
                     if (!$util.isString(message.sender))
                         return "sender: string expected";
+                if (message.senderAvatar != null && message.hasOwnProperty("senderAvatar"))
+                    if (!$util.isString(message.senderAvatar))
+                        return "senderAvatar: string expected";
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
                 if (message.num != null && message.hasOwnProperty("num"))
                     if (!$util.isInteger(message.num))
                         return "num: integer expected";
+                if (message.continuityNum != null && message.hasOwnProperty("continuityNum"))
+                    if (!$util.isInteger(message.continuityNum))
+                        return "continuityNum: integer expected";
                 return null;
             };
 
             /**
-             * Creates a Bilibili message from a plain object. Also converts values to their respective internal types.
+             * Creates a Bilibili_Send message from a plain object. Also converts values to their respective internal types.
              * @function fromObject
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @static
              * @param {Object.<string,*>} object Plain object
-             * @returns {message.BroadBilibili.Bilibili} Bilibili
+             * @returns {message.BroadCastBilibili_Send.Bilibili_Send} Bilibili_Send
              */
-            Bilibili.fromObject = function fromObject(object) {
-                if (object instanceof $root.message.BroadBilibili.Bilibili)
+            Bilibili_Send.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.BroadCastBilibili_Send.Bilibili_Send)
                     return object;
-                var message = new $root.message.BroadBilibili.Bilibili();
+                var message = new $root.message.BroadCastBilibili_Send.Bilibili_Send();
                 if (object.sender != null)
                     message.sender = String(object.sender);
+                if (object.senderAvatar != null)
+                    message.senderAvatar = String(object.senderAvatar);
                 if (object.name != null)
                     message.name = String(object.name);
                 if (object.num != null)
                     message.num = object.num >>> 0;
+                if (object.continuityNum != null)
+                    message.continuityNum = object.continuityNum >>> 0;
                 return message;
             };
 
             /**
-             * Creates a plain object from a Bilibili message. Also converts values to other types if specified.
+             * Creates a plain object from a Bilibili_Send message. Also converts values to other types if specified.
              * @function toObject
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @static
-             * @param {message.BroadBilibili.Bilibili} message Bilibili
+             * @param {message.BroadCastBilibili_Send.Bilibili_Send} message Bilibili_Send
              * @param {$protobuf.IConversionOptions} [options] Conversion options
              * @returns {Object.<string,*>} Plain object
              */
-            Bilibili.toObject = function toObject(message, options) {
+            Bilibili_Send.toObject = function toObject(message, options) {
                 if (!options)
                     options = {};
                 var object = {};
                 if (options.defaults) {
                     object.sender = "";
+                    object.senderAvatar = "";
                     object.name = "";
                     object.num = 0;
+                    object.continuityNum = 0;
                 }
                 if (message.sender != null && message.hasOwnProperty("sender"))
                     object.sender = message.sender;
+                if (message.senderAvatar != null && message.hasOwnProperty("senderAvatar"))
+                    object.senderAvatar = message.senderAvatar;
                 if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
                 if (message.num != null && message.hasOwnProperty("num"))
                     object.num = message.num;
+                if (message.continuityNum != null && message.hasOwnProperty("continuityNum"))
+                    object.continuityNum = message.continuityNum;
                 return object;
             };
 
             /**
-             * Converts this Bilibili to JSON.
+             * Converts this Bilibili_Send to JSON.
              * @function toJSON
-             * @memberof message.BroadBilibili.Bilibili
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
              * @instance
              * @returns {Object.<string,*>} JSON object
              */
-            Bilibili.prototype.toJSON = function toJSON() {
+            Bilibili_Send.prototype.toJSON = function toJSON() {
                 return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
             };
 
-            return Bilibili;
+            return Bilibili_Send;
         })();
 
-        return BroadBilibili;
+        return BroadCastBilibili_Send;
+    })();
+
+    message.BackSendGift = (function() {
+
+        /**
+         * Properties of a BackSendGift.
+         * @memberof message
+         * @interface IBackSendGift
+         * @property {string|null} [msg] BackSendGift msg
+         */
+
+        /**
+         * Constructs a new BackSendGift.
+         * @memberof message
+         * @classdesc Represents a BackSendGift.
+         * @implements IBackSendGift
+         * @constructor
+         * @param {message.IBackSendGift=} [properties] Properties to set
+         */
+        function BackSendGift(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackSendGift msg.
+         * @member {string} msg
+         * @memberof message.BackSendGift
+         * @instance
+         */
+        BackSendGift.prototype.msg = "";
+
+        /**
+         * Creates a new BackSendGift instance using the specified properties.
+         * @function create
+         * @memberof message.BackSendGift
+         * @static
+         * @param {message.IBackSendGift=} [properties] Properties to set
+         * @returns {message.BackSendGift} BackSendGift instance
+         */
+        BackSendGift.create = function create(properties) {
+            return new BackSendGift(properties);
+        };
+
+        /**
+         * Encodes the specified BackSendGift message. Does not implicitly {@link message.BackSendGift.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackSendGift
+         * @static
+         * @param {message.IBackSendGift} message BackSendGift message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackSendGift.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackSendGift message, length delimited. Does not implicitly {@link message.BackSendGift.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackSendGift
+         * @static
+         * @param {message.IBackSendGift} message BackSendGift message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackSendGift.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackSendGift message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackSendGift
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackSendGift} BackSendGift
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackSendGift.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackSendGift();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackSendGift message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackSendGift
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackSendGift} BackSendGift
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackSendGift.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackSendGift message.
+         * @function verify
+         * @memberof message.BackSendGift
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackSendGift.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackSendGift message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackSendGift
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackSendGift} BackSendGift
+         */
+        BackSendGift.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackSendGift)
+                return object;
+            var message = new $root.message.BackSendGift();
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackSendGift message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackSendGift
+         * @static
+         * @param {message.BackSendGift} message BackSendGift
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackSendGift.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.msg = "";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackSendGift to JSON.
+         * @function toJSON
+         * @memberof message.BackSendGift
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackSendGift.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackSendGift;
+    })();
+
+    message.BackSendHongbao = (function() {
+
+        /**
+         * Properties of a BackSendHongbao.
+         * @memberof message
+         * @interface IBackSendHongbao
+         * @property {string|null} [msg] BackSendHongbao msg
+         */
+
+        /**
+         * Constructs a new BackSendHongbao.
+         * @memberof message
+         * @classdesc Represents a BackSendHongbao.
+         * @implements IBackSendHongbao
+         * @constructor
+         * @param {message.IBackSendHongbao=} [properties] Properties to set
+         */
+        function BackSendHongbao(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackSendHongbao msg.
+         * @member {string} msg
+         * @memberof message.BackSendHongbao
+         * @instance
+         */
+        BackSendHongbao.prototype.msg = "";
+
+        /**
+         * Creates a new BackSendHongbao instance using the specified properties.
+         * @function create
+         * @memberof message.BackSendHongbao
+         * @static
+         * @param {message.IBackSendHongbao=} [properties] Properties to set
+         * @returns {message.BackSendHongbao} BackSendHongbao instance
+         */
+        BackSendHongbao.create = function create(properties) {
+            return new BackSendHongbao(properties);
+        };
+
+        /**
+         * Encodes the specified BackSendHongbao message. Does not implicitly {@link message.BackSendHongbao.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackSendHongbao
+         * @static
+         * @param {message.IBackSendHongbao} message BackSendHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackSendHongbao.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackSendHongbao message, length delimited. Does not implicitly {@link message.BackSendHongbao.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackSendHongbao
+         * @static
+         * @param {message.IBackSendHongbao} message BackSendHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackSendHongbao.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackSendHongbao message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackSendHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackSendHongbao} BackSendHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackSendHongbao.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackSendHongbao();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackSendHongbao message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackSendHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackSendHongbao} BackSendHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackSendHongbao.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackSendHongbao message.
+         * @function verify
+         * @memberof message.BackSendHongbao
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackSendHongbao.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackSendHongbao message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackSendHongbao
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackSendHongbao} BackSendHongbao
+         */
+        BackSendHongbao.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackSendHongbao)
+                return object;
+            var message = new $root.message.BackSendHongbao();
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackSendHongbao message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackSendHongbao
+         * @static
+         * @param {message.BackSendHongbao} message BackSendHongbao
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackSendHongbao.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.msg = "";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackSendHongbao to JSON.
+         * @function toJSON
+         * @memberof message.BackSendHongbao
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackSendHongbao.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackSendHongbao;
+    })();
+
+    /**
+     * HongbaoState enum.
+     * @name message.HongbaoState
+     * @enum {number}
+     * @property {number} RC_COUNTDOWN=0 RC_COUNTDOWN value
+     * @property {number} RC_READY=1 RC_READY value
+     * @property {number} RC_FINISH=2 RC_FINISH value
+     * @property {number} RC_OTHER=3 RC_OTHER value
+     */
+    message.HongbaoState = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "RC_COUNTDOWN"] = 0;
+        values[valuesById[1] = "RC_READY"] = 1;
+        values[valuesById[2] = "RC_FINISH"] = 2;
+        values[valuesById[3] = "RC_OTHER"] = 3;
+        return values;
+    })();
+
+    message.BroadCastHongbao = (function() {
+
+        /**
+         * Properties of a BroadCastHongbao.
+         * @memberof message
+         * @interface IBroadCastHongbao
+         * @property {Array.<message.BroadCastHongbao.IHongbao>|null} [list] BroadCastHongbao list
+         */
+
+        /**
+         * Constructs a new BroadCastHongbao.
+         * @memberof message
+         * @classdesc Represents a BroadCastHongbao.
+         * @implements IBroadCastHongbao
+         * @constructor
+         * @param {message.IBroadCastHongbao=} [properties] Properties to set
+         */
+        function BroadCastHongbao(properties) {
+            this.list = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BroadCastHongbao list.
+         * @member {Array.<message.BroadCastHongbao.IHongbao>} list
+         * @memberof message.BroadCastHongbao
+         * @instance
+         */
+        BroadCastHongbao.prototype.list = $util.emptyArray;
+
+        /**
+         * Creates a new BroadCastHongbao instance using the specified properties.
+         * @function create
+         * @memberof message.BroadCastHongbao
+         * @static
+         * @param {message.IBroadCastHongbao=} [properties] Properties to set
+         * @returns {message.BroadCastHongbao} BroadCastHongbao instance
+         */
+        BroadCastHongbao.create = function create(properties) {
+            return new BroadCastHongbao(properties);
+        };
+
+        /**
+         * Encodes the specified BroadCastHongbao message. Does not implicitly {@link message.BroadCastHongbao.verify|verify} messages.
+         * @function encode
+         * @memberof message.BroadCastHongbao
+         * @static
+         * @param {message.IBroadCastHongbao} message BroadCastHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastHongbao.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.list != null && message.list.length)
+                for (var i = 0; i < message.list.length; ++i)
+                    $root.message.BroadCastHongbao.Hongbao.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BroadCastHongbao message, length delimited. Does not implicitly {@link message.BroadCastHongbao.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BroadCastHongbao
+         * @static
+         * @param {message.IBroadCastHongbao} message BroadCastHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastHongbao.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BroadCastHongbao message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BroadCastHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BroadCastHongbao} BroadCastHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastHongbao.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastHongbao();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.list && message.list.length))
+                        message.list = [];
+                    message.list.push($root.message.BroadCastHongbao.Hongbao.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BroadCastHongbao message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BroadCastHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BroadCastHongbao} BroadCastHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastHongbao.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BroadCastHongbao message.
+         * @function verify
+         * @memberof message.BroadCastHongbao
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BroadCastHongbao.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.list != null && message.hasOwnProperty("list")) {
+                if (!Array.isArray(message.list))
+                    return "list: array expected";
+                for (var i = 0; i < message.list.length; ++i) {
+                    var error = $root.message.BroadCastHongbao.Hongbao.verify(message.list[i]);
+                    if (error)
+                        return "list." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a BroadCastHongbao message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BroadCastHongbao
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BroadCastHongbao} BroadCastHongbao
+         */
+        BroadCastHongbao.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadCastHongbao)
+                return object;
+            var message = new $root.message.BroadCastHongbao();
+            if (object.list) {
+                if (!Array.isArray(object.list))
+                    throw TypeError(".message.BroadCastHongbao.list: array expected");
+                message.list = [];
+                for (var i = 0; i < object.list.length; ++i) {
+                    if (typeof object.list[i] !== "object")
+                        throw TypeError(".message.BroadCastHongbao.list: object expected");
+                    message.list[i] = $root.message.BroadCastHongbao.Hongbao.fromObject(object.list[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BroadCastHongbao message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BroadCastHongbao
+         * @static
+         * @param {message.BroadCastHongbao} message BroadCastHongbao
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BroadCastHongbao.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.list = [];
+            if (message.list && message.list.length) {
+                object.list = [];
+                for (var j = 0; j < message.list.length; ++j)
+                    object.list[j] = $root.message.BroadCastHongbao.Hongbao.toObject(message.list[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this BroadCastHongbao to JSON.
+         * @function toJSON
+         * @memberof message.BroadCastHongbao
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BroadCastHongbao.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        BroadCastHongbao.Hongbao = (function() {
+
+            /**
+             * Properties of an Hongbao.
+             * @memberof message.BroadCastHongbao
+             * @interface IHongbao
+             * @property {number|Long|null} [id] Hongbao id
+             * @property {message.HongbaoState|null} [state] Hongbao state
+             * @property {string|null} [sender] Hongbao sender
+             * @property {string|null} [senderAvatar] Hongbao senderAvatar
+             * @property {number|null} [point] Hongbao point
+             * @property {number|null} [sec] Hongbao sec
+             * @property {number|null} [leftNum] Hongbao leftNum
+             */
+
+            /**
+             * Constructs a new Hongbao.
+             * @memberof message.BroadCastHongbao
+             * @classdesc Represents an Hongbao.
+             * @implements IHongbao
+             * @constructor
+             * @param {message.BroadCastHongbao.IHongbao=} [properties] Properties to set
+             */
+            function Hongbao(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * Hongbao id.
+             * @member {number|Long} id
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @instance
+             */
+            Hongbao.prototype.id = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
+             * Hongbao state.
+             * @member {message.HongbaoState} state
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @instance
+             */
+            Hongbao.prototype.state = 0;
+
+            /**
+             * Hongbao sender.
+             * @member {string} sender
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @instance
+             */
+            Hongbao.prototype.sender = "";
+
+            /**
+             * Hongbao senderAvatar.
+             * @member {string} senderAvatar
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @instance
+             */
+            Hongbao.prototype.senderAvatar = "";
+
+            /**
+             * Hongbao point.
+             * @member {number} point
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @instance
+             */
+            Hongbao.prototype.point = 0;
+
+            /**
+             * Hongbao sec.
+             * @member {number} sec
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @instance
+             */
+            Hongbao.prototype.sec = 0;
+
+            /**
+             * Hongbao leftNum.
+             * @member {number} leftNum
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @instance
+             */
+            Hongbao.prototype.leftNum = 0;
+
+            /**
+             * Creates a new Hongbao instance using the specified properties.
+             * @function create
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @static
+             * @param {message.BroadCastHongbao.IHongbao=} [properties] Properties to set
+             * @returns {message.BroadCastHongbao.Hongbao} Hongbao instance
+             */
+            Hongbao.create = function create(properties) {
+                return new Hongbao(properties);
+            };
+
+            /**
+             * Encodes the specified Hongbao message. Does not implicitly {@link message.BroadCastHongbao.Hongbao.verify|verify} messages.
+             * @function encode
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @static
+             * @param {message.BroadCastHongbao.IHongbao} message Hongbao message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Hongbao.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
+                if (message.state != null && Object.hasOwnProperty.call(message, "state"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.state);
+                if (message.sender != null && Object.hasOwnProperty.call(message, "sender"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.sender);
+                if (message.senderAvatar != null && Object.hasOwnProperty.call(message, "senderAvatar"))
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.senderAvatar);
+                if (message.point != null && Object.hasOwnProperty.call(message, "point"))
+                    writer.uint32(/* id 5, wireType 5 =*/45).float(message.point);
+                if (message.sec != null && Object.hasOwnProperty.call(message, "sec"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.sec);
+                if (message.leftNum != null && Object.hasOwnProperty.call(message, "leftNum"))
+                    writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.leftNum);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified Hongbao message, length delimited. Does not implicitly {@link message.BroadCastHongbao.Hongbao.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @static
+             * @param {message.BroadCastHongbao.IHongbao} message Hongbao message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Hongbao.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes an Hongbao message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {message.BroadCastHongbao.Hongbao} Hongbao
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Hongbao.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastHongbao.Hongbao();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.id = reader.int64();
+                        break;
+                    case 2:
+                        message.state = reader.int32();
+                        break;
+                    case 3:
+                        message.sender = reader.string();
+                        break;
+                    case 4:
+                        message.senderAvatar = reader.string();
+                        break;
+                    case 5:
+                        message.point = reader.float();
+                        break;
+                    case 6:
+                        message.sec = reader.uint32();
+                        break;
+                    case 7:
+                        message.leftNum = reader.uint32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes an Hongbao message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {message.BroadCastHongbao.Hongbao} Hongbao
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Hongbao.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies an Hongbao message.
+             * @function verify
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            Hongbao.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.id != null && message.hasOwnProperty("id"))
+                    if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
+                        return "id: integer|Long expected";
+                if (message.state != null && message.hasOwnProperty("state"))
+                    switch (message.state) {
+                    default:
+                        return "state: enum value expected";
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                        break;
+                    }
+                if (message.sender != null && message.hasOwnProperty("sender"))
+                    if (!$util.isString(message.sender))
+                        return "sender: string expected";
+                if (message.senderAvatar != null && message.hasOwnProperty("senderAvatar"))
+                    if (!$util.isString(message.senderAvatar))
+                        return "senderAvatar: string expected";
+                if (message.point != null && message.hasOwnProperty("point"))
+                    if (typeof message.point !== "number")
+                        return "point: number expected";
+                if (message.sec != null && message.hasOwnProperty("sec"))
+                    if (!$util.isInteger(message.sec))
+                        return "sec: integer expected";
+                if (message.leftNum != null && message.hasOwnProperty("leftNum"))
+                    if (!$util.isInteger(message.leftNum))
+                        return "leftNum: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates an Hongbao message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {message.BroadCastHongbao.Hongbao} Hongbao
+             */
+            Hongbao.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.BroadCastHongbao.Hongbao)
+                    return object;
+                var message = new $root.message.BroadCastHongbao.Hongbao();
+                if (object.id != null)
+                    if ($util.Long)
+                        (message.id = $util.Long.fromValue(object.id)).unsigned = false;
+                    else if (typeof object.id === "string")
+                        message.id = parseInt(object.id, 10);
+                    else if (typeof object.id === "number")
+                        message.id = object.id;
+                    else if (typeof object.id === "object")
+                        message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
+                switch (object.state) {
+                case "RC_COUNTDOWN":
+                case 0:
+                    message.state = 0;
+                    break;
+                case "RC_READY":
+                case 1:
+                    message.state = 1;
+                    break;
+                case "RC_FINISH":
+                case 2:
+                    message.state = 2;
+                    break;
+                case "RC_OTHER":
+                case 3:
+                    message.state = 3;
+                    break;
+                }
+                if (object.sender != null)
+                    message.sender = String(object.sender);
+                if (object.senderAvatar != null)
+                    message.senderAvatar = String(object.senderAvatar);
+                if (object.point != null)
+                    message.point = Number(object.point);
+                if (object.sec != null)
+                    message.sec = object.sec >>> 0;
+                if (object.leftNum != null)
+                    message.leftNum = object.leftNum >>> 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from an Hongbao message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @static
+             * @param {message.BroadCastHongbao.Hongbao} message Hongbao
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Hongbao.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.id = options.longs === String ? "0" : 0;
+                    object.state = options.enums === String ? "RC_COUNTDOWN" : 0;
+                    object.sender = "";
+                    object.senderAvatar = "";
+                    object.point = 0;
+                    object.sec = 0;
+                    object.leftNum = 0;
+                }
+                if (message.id != null && message.hasOwnProperty("id"))
+                    if (typeof message.id === "number")
+                        object.id = options.longs === String ? String(message.id) : message.id;
+                    else
+                        object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
+                if (message.state != null && message.hasOwnProperty("state"))
+                    object.state = options.enums === String ? $root.message.HongbaoState[message.state] : message.state;
+                if (message.sender != null && message.hasOwnProperty("sender"))
+                    object.sender = message.sender;
+                if (message.senderAvatar != null && message.hasOwnProperty("senderAvatar"))
+                    object.senderAvatar = message.senderAvatar;
+                if (message.point != null && message.hasOwnProperty("point"))
+                    object.point = options.json && !isFinite(message.point) ? String(message.point) : message.point;
+                if (message.sec != null && message.hasOwnProperty("sec"))
+                    object.sec = message.sec;
+                if (message.leftNum != null && message.hasOwnProperty("leftNum"))
+                    object.leftNum = message.leftNum;
+                return object;
+            };
+
+            /**
+             * Converts this Hongbao to JSON.
+             * @function toJSON
+             * @memberof message.BroadCastHongbao.Hongbao
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            Hongbao.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return Hongbao;
+        })();
+
+        return BroadCastHongbao;
+    })();
+
+    message.BroadCastHongbaoUpdated = (function() {
+
+        /**
+         * Properties of a BroadCastHongbaoUpdated.
+         * @memberof message
+         * @interface IBroadCastHongbaoUpdated
+         * @property {Array.<message.BroadCastHongbaoUpdated.IHongbaoUpdated>|null} [list] BroadCastHongbaoUpdated list
+         */
+
+        /**
+         * Constructs a new BroadCastHongbaoUpdated.
+         * @memberof message
+         * @classdesc Represents a BroadCastHongbaoUpdated.
+         * @implements IBroadCastHongbaoUpdated
+         * @constructor
+         * @param {message.IBroadCastHongbaoUpdated=} [properties] Properties to set
+         */
+        function BroadCastHongbaoUpdated(properties) {
+            this.list = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BroadCastHongbaoUpdated list.
+         * @member {Array.<message.BroadCastHongbaoUpdated.IHongbaoUpdated>} list
+         * @memberof message.BroadCastHongbaoUpdated
+         * @instance
+         */
+        BroadCastHongbaoUpdated.prototype.list = $util.emptyArray;
+
+        /**
+         * Creates a new BroadCastHongbaoUpdated instance using the specified properties.
+         * @function create
+         * @memberof message.BroadCastHongbaoUpdated
+         * @static
+         * @param {message.IBroadCastHongbaoUpdated=} [properties] Properties to set
+         * @returns {message.BroadCastHongbaoUpdated} BroadCastHongbaoUpdated instance
+         */
+        BroadCastHongbaoUpdated.create = function create(properties) {
+            return new BroadCastHongbaoUpdated(properties);
+        };
+
+        /**
+         * Encodes the specified BroadCastHongbaoUpdated message. Does not implicitly {@link message.BroadCastHongbaoUpdated.verify|verify} messages.
+         * @function encode
+         * @memberof message.BroadCastHongbaoUpdated
+         * @static
+         * @param {message.IBroadCastHongbaoUpdated} message BroadCastHongbaoUpdated message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastHongbaoUpdated.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.list != null && message.list.length)
+                for (var i = 0; i < message.list.length; ++i)
+                    $root.message.BroadCastHongbaoUpdated.HongbaoUpdated.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BroadCastHongbaoUpdated message, length delimited. Does not implicitly {@link message.BroadCastHongbaoUpdated.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BroadCastHongbaoUpdated
+         * @static
+         * @param {message.IBroadCastHongbaoUpdated} message BroadCastHongbaoUpdated message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastHongbaoUpdated.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BroadCastHongbaoUpdated message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BroadCastHongbaoUpdated
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BroadCastHongbaoUpdated} BroadCastHongbaoUpdated
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastHongbaoUpdated.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastHongbaoUpdated();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.list && message.list.length))
+                        message.list = [];
+                    message.list.push($root.message.BroadCastHongbaoUpdated.HongbaoUpdated.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BroadCastHongbaoUpdated message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BroadCastHongbaoUpdated
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BroadCastHongbaoUpdated} BroadCastHongbaoUpdated
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastHongbaoUpdated.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BroadCastHongbaoUpdated message.
+         * @function verify
+         * @memberof message.BroadCastHongbaoUpdated
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BroadCastHongbaoUpdated.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.list != null && message.hasOwnProperty("list")) {
+                if (!Array.isArray(message.list))
+                    return "list: array expected";
+                for (var i = 0; i < message.list.length; ++i) {
+                    var error = $root.message.BroadCastHongbaoUpdated.HongbaoUpdated.verify(message.list[i]);
+                    if (error)
+                        return "list." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a BroadCastHongbaoUpdated message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BroadCastHongbaoUpdated
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BroadCastHongbaoUpdated} BroadCastHongbaoUpdated
+         */
+        BroadCastHongbaoUpdated.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadCastHongbaoUpdated)
+                return object;
+            var message = new $root.message.BroadCastHongbaoUpdated();
+            if (object.list) {
+                if (!Array.isArray(object.list))
+                    throw TypeError(".message.BroadCastHongbaoUpdated.list: array expected");
+                message.list = [];
+                for (var i = 0; i < object.list.length; ++i) {
+                    if (typeof object.list[i] !== "object")
+                        throw TypeError(".message.BroadCastHongbaoUpdated.list: object expected");
+                    message.list[i] = $root.message.BroadCastHongbaoUpdated.HongbaoUpdated.fromObject(object.list[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BroadCastHongbaoUpdated message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BroadCastHongbaoUpdated
+         * @static
+         * @param {message.BroadCastHongbaoUpdated} message BroadCastHongbaoUpdated
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BroadCastHongbaoUpdated.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.list = [];
+            if (message.list && message.list.length) {
+                object.list = [];
+                for (var j = 0; j < message.list.length; ++j)
+                    object.list[j] = $root.message.BroadCastHongbaoUpdated.HongbaoUpdated.toObject(message.list[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this BroadCastHongbaoUpdated to JSON.
+         * @function toJSON
+         * @memberof message.BroadCastHongbaoUpdated
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BroadCastHongbaoUpdated.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        BroadCastHongbaoUpdated.HongbaoUpdated = (function() {
+
+            /**
+             * Properties of an HongbaoUpdated.
+             * @memberof message.BroadCastHongbaoUpdated
+             * @interface IHongbaoUpdated
+             * @property {number|Long|null} [id] HongbaoUpdated id
+             * @property {message.HongbaoState|null} [newState] HongbaoUpdated newState
+             * @property {number|null} [leftNum] HongbaoUpdated leftNum
+             */
+
+            /**
+             * Constructs a new HongbaoUpdated.
+             * @memberof message.BroadCastHongbaoUpdated
+             * @classdesc Represents an HongbaoUpdated.
+             * @implements IHongbaoUpdated
+             * @constructor
+             * @param {message.BroadCastHongbaoUpdated.IHongbaoUpdated=} [properties] Properties to set
+             */
+            function HongbaoUpdated(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * HongbaoUpdated id.
+             * @member {number|Long} id
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @instance
+             */
+            HongbaoUpdated.prototype.id = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
+             * HongbaoUpdated newState.
+             * @member {message.HongbaoState} newState
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @instance
+             */
+            HongbaoUpdated.prototype.newState = 0;
+
+            /**
+             * HongbaoUpdated leftNum.
+             * @member {number} leftNum
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @instance
+             */
+            HongbaoUpdated.prototype.leftNum = 0;
+
+            /**
+             * Creates a new HongbaoUpdated instance using the specified properties.
+             * @function create
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @static
+             * @param {message.BroadCastHongbaoUpdated.IHongbaoUpdated=} [properties] Properties to set
+             * @returns {message.BroadCastHongbaoUpdated.HongbaoUpdated} HongbaoUpdated instance
+             */
+            HongbaoUpdated.create = function create(properties) {
+                return new HongbaoUpdated(properties);
+            };
+
+            /**
+             * Encodes the specified HongbaoUpdated message. Does not implicitly {@link message.BroadCastHongbaoUpdated.HongbaoUpdated.verify|verify} messages.
+             * @function encode
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @static
+             * @param {message.BroadCastHongbaoUpdated.IHongbaoUpdated} message HongbaoUpdated message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            HongbaoUpdated.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
+                if (message.newState != null && Object.hasOwnProperty.call(message, "newState"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).int32(message.newState);
+                if (message.leftNum != null && Object.hasOwnProperty.call(message, "leftNum"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.leftNum);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified HongbaoUpdated message, length delimited. Does not implicitly {@link message.BroadCastHongbaoUpdated.HongbaoUpdated.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @static
+             * @param {message.BroadCastHongbaoUpdated.IHongbaoUpdated} message HongbaoUpdated message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            HongbaoUpdated.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes an HongbaoUpdated message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {message.BroadCastHongbaoUpdated.HongbaoUpdated} HongbaoUpdated
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            HongbaoUpdated.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastHongbaoUpdated.HongbaoUpdated();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.id = reader.int64();
+                        break;
+                    case 2:
+                        message.newState = reader.int32();
+                        break;
+                    case 3:
+                        message.leftNum = reader.uint32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes an HongbaoUpdated message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {message.BroadCastHongbaoUpdated.HongbaoUpdated} HongbaoUpdated
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            HongbaoUpdated.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies an HongbaoUpdated message.
+             * @function verify
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            HongbaoUpdated.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.id != null && message.hasOwnProperty("id"))
+                    if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
+                        return "id: integer|Long expected";
+                if (message.newState != null && message.hasOwnProperty("newState"))
+                    switch (message.newState) {
+                    default:
+                        return "newState: enum value expected";
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                        break;
+                    }
+                if (message.leftNum != null && message.hasOwnProperty("leftNum"))
+                    if (!$util.isInteger(message.leftNum))
+                        return "leftNum: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates an HongbaoUpdated message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {message.BroadCastHongbaoUpdated.HongbaoUpdated} HongbaoUpdated
+             */
+            HongbaoUpdated.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.BroadCastHongbaoUpdated.HongbaoUpdated)
+                    return object;
+                var message = new $root.message.BroadCastHongbaoUpdated.HongbaoUpdated();
+                if (object.id != null)
+                    if ($util.Long)
+                        (message.id = $util.Long.fromValue(object.id)).unsigned = false;
+                    else if (typeof object.id === "string")
+                        message.id = parseInt(object.id, 10);
+                    else if (typeof object.id === "number")
+                        message.id = object.id;
+                    else if (typeof object.id === "object")
+                        message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
+                switch (object.newState) {
+                case "RC_COUNTDOWN":
+                case 0:
+                    message.newState = 0;
+                    break;
+                case "RC_READY":
+                case 1:
+                    message.newState = 1;
+                    break;
+                case "RC_FINISH":
+                case 2:
+                    message.newState = 2;
+                    break;
+                case "RC_OTHER":
+                case 3:
+                    message.newState = 3;
+                    break;
+                }
+                if (object.leftNum != null)
+                    message.leftNum = object.leftNum >>> 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from an HongbaoUpdated message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @static
+             * @param {message.BroadCastHongbaoUpdated.HongbaoUpdated} message HongbaoUpdated
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            HongbaoUpdated.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.id = options.longs === String ? "0" : 0;
+                    object.newState = options.enums === String ? "RC_COUNTDOWN" : 0;
+                    object.leftNum = 0;
+                }
+                if (message.id != null && message.hasOwnProperty("id"))
+                    if (typeof message.id === "number")
+                        object.id = options.longs === String ? String(message.id) : message.id;
+                    else
+                        object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
+                if (message.newState != null && message.hasOwnProperty("newState"))
+                    object.newState = options.enums === String ? $root.message.HongbaoState[message.newState] : message.newState;
+                if (message.leftNum != null && message.hasOwnProperty("leftNum"))
+                    object.leftNum = message.leftNum;
+                return object;
+            };
+
+            /**
+             * Converts this HongbaoUpdated to JSON.
+             * @function toJSON
+             * @memberof message.BroadCastHongbaoUpdated.HongbaoUpdated
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            HongbaoUpdated.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return HongbaoUpdated;
+        })();
+
+        return BroadCastHongbaoUpdated;
+    })();
+
+    message.BackGrabHongbao = (function() {
+
+        /**
+         * Properties of a BackGrabHongbao.
+         * @memberof message
+         * @interface IBackGrabHongbao
+         * @property {number|null} [point] BackGrabHongbao point
+         * @property {string|null} [msg] BackGrabHongbao msg
+         */
+
+        /**
+         * Constructs a new BackGrabHongbao.
+         * @memberof message
+         * @classdesc Represents a BackGrabHongbao.
+         * @implements IBackGrabHongbao
+         * @constructor
+         * @param {message.IBackGrabHongbao=} [properties] Properties to set
+         */
+        function BackGrabHongbao(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackGrabHongbao point.
+         * @member {number} point
+         * @memberof message.BackGrabHongbao
+         * @instance
+         */
+        BackGrabHongbao.prototype.point = 0;
+
+        /**
+         * BackGrabHongbao msg.
+         * @member {string} msg
+         * @memberof message.BackGrabHongbao
+         * @instance
+         */
+        BackGrabHongbao.prototype.msg = "";
+
+        /**
+         * Creates a new BackGrabHongbao instance using the specified properties.
+         * @function create
+         * @memberof message.BackGrabHongbao
+         * @static
+         * @param {message.IBackGrabHongbao=} [properties] Properties to set
+         * @returns {message.BackGrabHongbao} BackGrabHongbao instance
+         */
+        BackGrabHongbao.create = function create(properties) {
+            return new BackGrabHongbao(properties);
+        };
+
+        /**
+         * Encodes the specified BackGrabHongbao message. Does not implicitly {@link message.BackGrabHongbao.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackGrabHongbao
+         * @static
+         * @param {message.IBackGrabHongbao} message BackGrabHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackGrabHongbao.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.point != null && Object.hasOwnProperty.call(message, "point"))
+                writer.uint32(/* id 1, wireType 5 =*/13).float(message.point);
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackGrabHongbao message, length delimited. Does not implicitly {@link message.BackGrabHongbao.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackGrabHongbao
+         * @static
+         * @param {message.IBackGrabHongbao} message BackGrabHongbao message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackGrabHongbao.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackGrabHongbao message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackGrabHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackGrabHongbao} BackGrabHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackGrabHongbao.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackGrabHongbao();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.point = reader.float();
+                    break;
+                case 2:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackGrabHongbao message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackGrabHongbao
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackGrabHongbao} BackGrabHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackGrabHongbao.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackGrabHongbao message.
+         * @function verify
+         * @memberof message.BackGrabHongbao
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackGrabHongbao.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.point != null && message.hasOwnProperty("point"))
+                if (typeof message.point !== "number")
+                    return "point: number expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackGrabHongbao message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackGrabHongbao
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackGrabHongbao} BackGrabHongbao
+         */
+        BackGrabHongbao.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackGrabHongbao)
+                return object;
+            var message = new $root.message.BackGrabHongbao();
+            if (object.point != null)
+                message.point = Number(object.point);
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackGrabHongbao message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackGrabHongbao
+         * @static
+         * @param {message.BackGrabHongbao} message BackGrabHongbao
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackGrabHongbao.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.point = 0;
+                object.msg = "";
+            }
+            if (message.point != null && message.hasOwnProperty("point"))
+                object.point = options.json && !isFinite(message.point) ? String(message.point) : message.point;
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackGrabHongbao to JSON.
+         * @function toJSON
+         * @memberof message.BackGrabHongbao
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackGrabHongbao.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackGrabHongbao;
+    })();
+
+    message.BackSendChatMessage = (function() {
+
+        /**
+         * Properties of a BackSendChatMessage.
+         * @memberof message
+         * @interface IBackSendChatMessage
+         * @property {string|null} [msg] BackSendChatMessage msg
+         */
+
+        /**
+         * Constructs a new BackSendChatMessage.
+         * @memberof message
+         * @classdesc Represents a BackSendChatMessage.
+         * @implements IBackSendChatMessage
+         * @constructor
+         * @param {message.IBackSendChatMessage=} [properties] Properties to set
+         */
+        function BackSendChatMessage(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackSendChatMessage msg.
+         * @member {string} msg
+         * @memberof message.BackSendChatMessage
+         * @instance
+         */
+        BackSendChatMessage.prototype.msg = "";
+
+        /**
+         * Creates a new BackSendChatMessage instance using the specified properties.
+         * @function create
+         * @memberof message.BackSendChatMessage
+         * @static
+         * @param {message.IBackSendChatMessage=} [properties] Properties to set
+         * @returns {message.BackSendChatMessage} BackSendChatMessage instance
+         */
+        BackSendChatMessage.create = function create(properties) {
+            return new BackSendChatMessage(properties);
+        };
+
+        /**
+         * Encodes the specified BackSendChatMessage message. Does not implicitly {@link message.BackSendChatMessage.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackSendChatMessage
+         * @static
+         * @param {message.IBackSendChatMessage} message BackSendChatMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackSendChatMessage.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackSendChatMessage message, length delimited. Does not implicitly {@link message.BackSendChatMessage.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackSendChatMessage
+         * @static
+         * @param {message.IBackSendChatMessage} message BackSendChatMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackSendChatMessage.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackSendChatMessage message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackSendChatMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackSendChatMessage} BackSendChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackSendChatMessage.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackSendChatMessage();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackSendChatMessage message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackSendChatMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackSendChatMessage} BackSendChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackSendChatMessage.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackSendChatMessage message.
+         * @function verify
+         * @memberof message.BackSendChatMessage
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackSendChatMessage.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackSendChatMessage message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackSendChatMessage
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackSendChatMessage} BackSendChatMessage
+         */
+        BackSendChatMessage.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackSendChatMessage)
+                return object;
+            var message = new $root.message.BackSendChatMessage();
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackSendChatMessage message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackSendChatMessage
+         * @static
+         * @param {message.BackSendChatMessage} message BackSendChatMessage
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackSendChatMessage.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.msg = "";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackSendChatMessage to JSON.
+         * @function toJSON
+         * @memberof message.BackSendChatMessage
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackSendChatMessage.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackSendChatMessage;
+    })();
+
+    message.BroadCastChatMessage = (function() {
+
+        /**
+         * Properties of a BroadCastChatMessage.
+         * @memberof message
+         * @interface IBroadCastChatMessage
+         * @property {Array.<message.BroadCastChatMessage.IChat>|null} [list] BroadCastChatMessage list
+         */
+
+        /**
+         * Constructs a new BroadCastChatMessage.
+         * @memberof message
+         * @classdesc Represents a BroadCastChatMessage.
+         * @implements IBroadCastChatMessage
+         * @constructor
+         * @param {message.IBroadCastChatMessage=} [properties] Properties to set
+         */
+        function BroadCastChatMessage(properties) {
+            this.list = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BroadCastChatMessage list.
+         * @member {Array.<message.BroadCastChatMessage.IChat>} list
+         * @memberof message.BroadCastChatMessage
+         * @instance
+         */
+        BroadCastChatMessage.prototype.list = $util.emptyArray;
+
+        /**
+         * Creates a new BroadCastChatMessage instance using the specified properties.
+         * @function create
+         * @memberof message.BroadCastChatMessage
+         * @static
+         * @param {message.IBroadCastChatMessage=} [properties] Properties to set
+         * @returns {message.BroadCastChatMessage} BroadCastChatMessage instance
+         */
+        BroadCastChatMessage.create = function create(properties) {
+            return new BroadCastChatMessage(properties);
+        };
+
+        /**
+         * Encodes the specified BroadCastChatMessage message. Does not implicitly {@link message.BroadCastChatMessage.verify|verify} messages.
+         * @function encode
+         * @memberof message.BroadCastChatMessage
+         * @static
+         * @param {message.IBroadCastChatMessage} message BroadCastChatMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastChatMessage.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.list != null && message.list.length)
+                for (var i = 0; i < message.list.length; ++i)
+                    $root.message.BroadCastChatMessage.Chat.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BroadCastChatMessage message, length delimited. Does not implicitly {@link message.BroadCastChatMessage.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BroadCastChatMessage
+         * @static
+         * @param {message.IBroadCastChatMessage} message BroadCastChatMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastChatMessage.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BroadCastChatMessage message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BroadCastChatMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BroadCastChatMessage} BroadCastChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastChatMessage.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastChatMessage();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.list && message.list.length))
+                        message.list = [];
+                    message.list.push($root.message.BroadCastChatMessage.Chat.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BroadCastChatMessage message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BroadCastChatMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BroadCastChatMessage} BroadCastChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastChatMessage.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BroadCastChatMessage message.
+         * @function verify
+         * @memberof message.BroadCastChatMessage
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BroadCastChatMessage.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.list != null && message.hasOwnProperty("list")) {
+                if (!Array.isArray(message.list))
+                    return "list: array expected";
+                for (var i = 0; i < message.list.length; ++i) {
+                    var error = $root.message.BroadCastChatMessage.Chat.verify(message.list[i]);
+                    if (error)
+                        return "list." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a BroadCastChatMessage message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BroadCastChatMessage
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BroadCastChatMessage} BroadCastChatMessage
+         */
+        BroadCastChatMessage.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadCastChatMessage)
+                return object;
+            var message = new $root.message.BroadCastChatMessage();
+            if (object.list) {
+                if (!Array.isArray(object.list))
+                    throw TypeError(".message.BroadCastChatMessage.list: array expected");
+                message.list = [];
+                for (var i = 0; i < object.list.length; ++i) {
+                    if (typeof object.list[i] !== "object")
+                        throw TypeError(".message.BroadCastChatMessage.list: object expected");
+                    message.list[i] = $root.message.BroadCastChatMessage.Chat.fromObject(object.list[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BroadCastChatMessage message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BroadCastChatMessage
+         * @static
+         * @param {message.BroadCastChatMessage} message BroadCastChatMessage
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BroadCastChatMessage.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.list = [];
+            if (message.list && message.list.length) {
+                object.list = [];
+                for (var j = 0; j < message.list.length; ++j)
+                    object.list[j] = $root.message.BroadCastChatMessage.Chat.toObject(message.list[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this BroadCastChatMessage to JSON.
+         * @function toJSON
+         * @memberof message.BroadCastChatMessage
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BroadCastChatMessage.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        BroadCastChatMessage.Chat = (function() {
+
+            /**
+             * Properties of a Chat.
+             * @memberof message.BroadCastChatMessage
+             * @interface IChat
+             * @property {string|null} [uid] Chat uid
+             * @property {string|null} [sender] Chat sender
+             * @property {string|null} [senderAvatar] Chat senderAvatar
+             * @property {string|null} [content] Chat content
+             * @property {string|null} [action] Chat action
+             */
+
+            /**
+             * Constructs a new Chat.
+             * @memberof message.BroadCastChatMessage
+             * @classdesc Represents a Chat.
+             * @implements IChat
+             * @constructor
+             * @param {message.BroadCastChatMessage.IChat=} [properties] Properties to set
+             */
+            function Chat(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * Chat uid.
+             * @member {string} uid
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.uid = "";
+
+            /**
+             * Chat sender.
+             * @member {string} sender
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.sender = "";
+
+            /**
+             * Chat senderAvatar.
+             * @member {string} senderAvatar
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.senderAvatar = "";
+
+            /**
+             * Chat content.
+             * @member {string} content
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.content = "";
+
+            /**
+             * Chat action.
+             * @member {string} action
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             */
+            Chat.prototype.action = "";
+
+            /**
+             * Creates a new Chat instance using the specified properties.
+             * @function create
+             * @memberof message.BroadCastChatMessage.Chat
+             * @static
+             * @param {message.BroadCastChatMessage.IChat=} [properties] Properties to set
+             * @returns {message.BroadCastChatMessage.Chat} Chat instance
+             */
+            Chat.create = function create(properties) {
+                return new Chat(properties);
+            };
+
+            /**
+             * Encodes the specified Chat message. Does not implicitly {@link message.BroadCastChatMessage.Chat.verify|verify} messages.
+             * @function encode
+             * @memberof message.BroadCastChatMessage.Chat
+             * @static
+             * @param {message.BroadCastChatMessage.IChat} message Chat message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Chat.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
+                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.uid);
+                if (message.sender != null && Object.hasOwnProperty.call(message, "sender"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.sender);
+                if (message.senderAvatar != null && Object.hasOwnProperty.call(message, "senderAvatar"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.senderAvatar);
+                if (message.content != null && Object.hasOwnProperty.call(message, "content"))
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.content);
+                if (message.action != null && Object.hasOwnProperty.call(message, "action"))
+                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.action);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified Chat message, length delimited. Does not implicitly {@link message.BroadCastChatMessage.Chat.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof message.BroadCastChatMessage.Chat
+             * @static
+             * @param {message.BroadCastChatMessage.IChat} message Chat message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Chat.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a Chat message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.BroadCastChatMessage.Chat
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {message.BroadCastChatMessage.Chat} Chat
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Chat.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastChatMessage.Chat();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.uid = reader.string();
+                        break;
+                    case 2:
+                        message.sender = reader.string();
+                        break;
+                    case 3:
+                        message.senderAvatar = reader.string();
+                        break;
+                    case 4:
+                        message.content = reader.string();
+                        break;
+                    case 5:
+                        message.action = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a Chat message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof message.BroadCastChatMessage.Chat
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {message.BroadCastChatMessage.Chat} Chat
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Chat.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a Chat message.
+             * @function verify
+             * @memberof message.BroadCastChatMessage.Chat
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            Chat.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.uid != null && message.hasOwnProperty("uid"))
+                    if (!$util.isString(message.uid))
+                        return "uid: string expected";
+                if (message.sender != null && message.hasOwnProperty("sender"))
+                    if (!$util.isString(message.sender))
+                        return "sender: string expected";
+                if (message.senderAvatar != null && message.hasOwnProperty("senderAvatar"))
+                    if (!$util.isString(message.senderAvatar))
+                        return "senderAvatar: string expected";
+                if (message.content != null && message.hasOwnProperty("content"))
+                    if (!$util.isString(message.content))
+                        return "content: string expected";
+                if (message.action != null && message.hasOwnProperty("action"))
+                    if (!$util.isString(message.action))
+                        return "action: string expected";
+                return null;
+            };
+
+            /**
+             * Creates a Chat message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.BroadCastChatMessage.Chat
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {message.BroadCastChatMessage.Chat} Chat
+             */
+            Chat.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.BroadCastChatMessage.Chat)
+                    return object;
+                var message = new $root.message.BroadCastChatMessage.Chat();
+                if (object.uid != null)
+                    message.uid = String(object.uid);
+                if (object.sender != null)
+                    message.sender = String(object.sender);
+                if (object.senderAvatar != null)
+                    message.senderAvatar = String(object.senderAvatar);
+                if (object.content != null)
+                    message.content = String(object.content);
+                if (object.action != null)
+                    message.action = String(object.action);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a Chat message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.BroadCastChatMessage.Chat
+             * @static
+             * @param {message.BroadCastChatMessage.Chat} message Chat
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Chat.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.uid = "";
+                    object.sender = "";
+                    object.senderAvatar = "";
+                    object.content = "";
+                    object.action = "";
+                }
+                if (message.uid != null && message.hasOwnProperty("uid"))
+                    object.uid = message.uid;
+                if (message.sender != null && message.hasOwnProperty("sender"))
+                    object.sender = message.sender;
+                if (message.senderAvatar != null && message.hasOwnProperty("senderAvatar"))
+                    object.senderAvatar = message.senderAvatar;
+                if (message.content != null && message.hasOwnProperty("content"))
+                    object.content = message.content;
+                if (message.action != null && message.hasOwnProperty("action"))
+                    object.action = message.action;
+                return object;
+            };
+
+            /**
+             * Converts this Chat to JSON.
+             * @function toJSON
+             * @memberof message.BroadCastChatMessage.Chat
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            Chat.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return Chat;
+        })();
+
+        return BroadCastChatMessage;
     })();
 
     return message;

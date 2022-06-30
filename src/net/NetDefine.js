@@ -1,10 +1,12 @@
 export class Message {
 	static HeartBeat = '0x000001';
 	// static Login = '0x000100';
-	static LoginBroadCastRoom1001 = '0x000100';
-	static RequestLike = '0x000200'
+	static LoginBroadCastRoom1001 = '0x000100'; //发送邓丽
+	static RequestLike = '0x000200' //发送点赞
 	static PageLocation = '0x000101';
-	static LogoutBroadCastRoom1001 = '0x00010F'
+	static LogoutBroadCastRoom1001 = '0x00010F' //离开房间
+	static RequestSendChatMessage = '0x000208' // 发送聊天
+
 	// static RequestChatOn = '0x000200' //开启聊天监听
 	// static RequestChatOff = '0x000201' //关闭聊天监听
 	// static SendChatMessage = '0x000202' //发送聊天
@@ -12,13 +14,16 @@ export class Message {
 	// static RequestBidOff = '0x000301' //关闭商品(goodCode)的竞价信息监听
 
 	static cmd = {
-		'0x000100': 'BackLoginBroadCastRoom1001',
+		'0x000100': 'BackLoginBroadCastRoom1001', //登录回调
 		// "0x000210":"BackLoginBroadCastRoom1001",
 		'0x000101': 'UserAttr',
 		'0x000102': 'Message',
-		'0x000200': 'BackLike',
-		"0x000201": "BroadCastLike",
-		"0x000202": "BroadBilibili"
+		'0x000200': 'BackLike', //点赞发送回调
+		"0x000201": "BroadCastLike", //广播点赞
+		"0x000202": "BroadBilibili", //广播礼物
+		"0x000208": "BackSendChatMessage", //发送聊天返回 失败的时候才返回
+		"0x000209": 'BroadCastChatMessage' //广播聊天
+
 		// '0x000201': 'BucketInfo',
 		// '0x000202': 'PushChatMessage', //推送聊天消息
 		// '0x000203': 'BackSendMessage', //发送失败才发

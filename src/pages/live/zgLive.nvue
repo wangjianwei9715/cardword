@@ -7,24 +7,6 @@
 			:webview-styles="webviewStyles" @onPostMessage="handleMessage" :src="webViewUrl" v-if='viewShow'
 			allow='microphone;camera;midi;encrypted-media;'>
 		</web-view>
-		<!-- <template v-if='webLoadSuccess'>
-			<view class="publicBottom card" :class="{publicBottomShow:cardShow}">
-				<view class='card-title'>
-					<text class='card-title-text'>商品卡密</text>
-					<image class='card-title-img' @click='cardShow=false' src='../../static/pay/guanbi@2x.png'></image>
-				</view>
-				<scroll-view class='card-scroll' :scroll-y='true' @scrolltolower='cardReachBottom'>
-					<view class="card-index" v-for="(items,indexs) in card.list" :key="indexs" @click='sendCard(items)'>
-						<view class="card-left">
-							<text class="card-left-text" :style="{color:txtIndex==0?'#333333':'#ef3333'}"
-								:key="txtIndex" v-for="(txtItem,txtIndex)  in getNameReward(items.name)">
-								{{txtItem}}
-							</text>
-						</view>
-					</view>
-				</scroll-view>
-			</view>
-		</template> -->
 	</view>
 
 </template>
@@ -35,26 +17,21 @@
 	import {
 		Md5
 	} from 'ts-md5/dist/md5';
-	// import {app} from '@/app'
 	import {
 		PackageBase
 	} from "@/net/PackageBase";
 	import {
-		SocketServer
-	} from '@/net/SocketServer'
-	import {
 		Message
 	} from "@/net/NetDefine";
-	// import PackageBase from "@/net/PackageBase.ts";
 	import * as proto from '../../net/proto';
 	let UIImpactFeedbackGenerator = null;
 	let impact = null;
 	const isTest = false
 	let sendNum = 1
+	const app = getApp().globalData.app
 	export default {
 		data() {
 			return {
-				app: getApp().globalData.app,
 				deviceInfo: getApp().globalData.app.platform.systemInfo, //设备信息
 				height: null, //设备高
 				width: null, //设备宽
@@ -65,7 +42,6 @@
 				webviewStyles: {
 					progress: false
 				},
-				server: new SocketServer(),
 				statusBarHeight: 0, //状态栏高度
 				safeAreaBottomHeight: 0, //底部安全距离高度
 				// http://192.168.8.26:8080/#/pages/liveStreaming/index
@@ -74,7 +50,7 @@
 				videoContxt: null, //视频实例
 				liveRTMP: '', //直播rtmp流地址
 				AnchorEndUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
-				UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
+				UserUrl: 'http://192.168.8.26:8082/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
 					roomID: null,
@@ -88,9 +64,7 @@
 
 				},
 				isAnchor: false, //是否为主播
-				hasToken: Boolean(uni.getStorageSync("token") && JSON.parse(uni.getStorageSync("token"))
-					.accessToken),
-				context: null,
+				hasToken: Boolean(app.token.accessToken),
 				tokenData: {
 					token: '',
 					anonymous: true, //是否匿名(不公开个人信息或者游客)
@@ -103,29 +77,25 @@
 				goodsDetail: {}, //商品详情信息
 
 				roomLikeNum: 0, //房间点赞数量
-				cardList: [],
-				card: {
-					list: [],
-					totalPage: 0
-				},
-				cardQuery: {
-					pageIndex: 1,
-					pageSize: 30,
-				},
 				websocket: '',
 				isConnectSocket: false,
 				reconnectionTimer: null, //断线重连定时器
-				heartBeatTimer: null //心跳包定时器
+				heartBeatTimer: null, //心跳包定时器
+				socketLoginOk: false, //socket房间是否登录成功
+				socketRoomLoginTimer: null
 			}
 		},
 		onReady() {
 			// plus.webview.create()
 		},
-		watch: {
-			liveRTMP: function(val) {
-				if (val) this.videoContxt.play()
-			}
+		onShow() {
+			uni.hideLoading()
 		},
+		onUnload() {
+
+			this.leaveRoom()
+		},
+
 		async onLoad(query) {
 			// 
 			if (this.deviceInfo.platform == 'android' && query.isAnchor == 'true') {
@@ -136,7 +106,6 @@
 				this.webView = this.$refs.webview
 			})
 			uni.$on('socketClose', this.socketClose)
-
 			if (!query.roomID) return
 			this.isAnchor = query.isAnchor
 			this.webViewUrl = query.isAnchor == 'true' ? this.AnchorEndUrl : this.UserUrl
@@ -148,10 +117,8 @@
 				data
 			} = await this.getLiveRoomInfo(+query.roomID)
 			this.liveData = data
-			console.log(this.liveData);
 			this.deviceAssign(this.deviceInfo)
-			// 
-			if (this.deviceInfo.platform == 'android'&& query.isAnchor == 'true') {
+			if (this.deviceInfo.platform == 'android' && query.isAnchor == 'true') {
 				this.createWebView(this.deviceInfo)
 			} else {
 				this.getUserProfile(this.deviceInfo)
@@ -160,29 +127,16 @@
 				UIImpactFeedbackGenerator = plus.ios.importClass('UIImpactFeedbackGenerator');
 				impact = new UIImpactFeedbackGenerator();
 			}
-			// this.getGoodsDetail(data.goodCode)
-			// uni.getSystemInfo({
-			// 	success: (res) => {
-
-			// 		// this.deviceInfo = res
-			// 		//安卓且为主播端的情况下
-
-			// 	}
-			// });
 			this.$nextTick(() => {
 				this.videoContxt = this.$refs.video
 			})
 		},
-		onShow() {
-			uni.hideLoading()
-		},
-		onUnload() {
-
-			this.leaveRoom()
-		},
 		watch: {
+			liveRTMP: function(val) {
+				if (val) this.videoContxt.play()
+			},
 			roomLikeNum: function(val, oldVal) {
-				if (val != oldVal) this.informH5Action('changeLikeNum', val)
+				if (val != oldVal) this.informH5Action('changeLikeNum', val,false)
 			}
 		},
 		methods: {
@@ -196,7 +150,7 @@
 			//创建socketMessage包并发送
 			sendSocketMsg(packName, valueObject = null) {
 				return new Promise((resolve, reject) => {
-					if (this.server && this.server.isNetOK()) {
+					if (app.sever && app.sever.isNetOK()) {
 						let msg = new proto.message[packName]()
 						if (valueObject && Object.keys(valueObject).length) {
 							Object.keys(valueObject).forEach((key, index) => {
@@ -205,7 +159,7 @@
 						}
 						let buffer = proto.message[packName].encode(msg).finish();
 						let pack = new PackageBase(Message[packName]);
-						pack.d(buffer).to(this.server);
+						pack.d(buffer).to(app.sever);
 						resolve({
 							pack,
 							buffer
@@ -221,7 +175,7 @@
 			},
 			//心跳包
 			sendHeartBeat() {
-				if (this.server && this.server.isNetOK()) {
+				if (app.sever && app.sever.isNetOK()) {
 					this.sendSocketMsg('HeartBeat', {
 						time: new Date().getTime()
 					})
@@ -250,12 +204,13 @@
 			},
 			//连接sockey
 			connectSever() {
-				this.server && this.server.close();
-				this.server.setServerInfo({
+
+				app.sever && app.sever.close();
+				app.sever.setServerInfo({
 					// ip: this.websocket
 					ip: "ws://192.168.8.79:31700/ws"
 				});
-				this.server.connect(
+				app.sever.connect(
 					() => {
 						this.sendHeartBeat();
 						this.sendWebsocketLogin();
@@ -275,6 +230,8 @@
 				this.reconnectionTimer = setInterval(() => {
 					console.log('断线重连中', new Date());
 					this.initSocket(false)
+					// this.sendWebsocketLogin();
+					// this.sendHeartBeat();
 				}, 5000)
 			},
 			initSocket(isFirst = true) {
@@ -285,12 +242,40 @@
 				}, 6 * 1000)
 				this.connectSever();
 				if (isFirst) {
-					let listeners = ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike', 'BroadBilibili'];
-					this.server.registerHandlers(this, listeners)
+					let listeners = ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike', 'BroadBilibili',
+						'BackSendChatMessage', 'BroadCastChatMessage'
+					];
+					app.sever.registerHandlers(this, listeners)
+
 				}
+			},
+			sendTalk(content = '') {
+				console.log(content);
+				this.sendSocketMsg('RequestSendChatMessage', {
+					content,
+				}).then(res => {
+					console.log('发送成功!!!');
+				})
+			},
+			BackSendChatMessage(res) {
+				console.log('消息发送回调', res);
+			},
+			BroadCastChatMessage(res) {
+				console.log('广播消息', res);
+				// this.informH5Action('BroadCastChatMessageBack',res,false)
+				this.webView.evalJs(`actionSet("BroadCastChatMessageBack",${JSON.stringify({params:res})},false)`)
 			},
 			BackLoginBroadCastRoom1001(res) {
 				console.log('登陆房间回调', res);
+				if (Object.keys(res).length == 0) this.socketLoginOk = true
+				if (Object.keys(res).length) {
+					this.socketLoginOk = false
+					this.socketRoomLoginTimer && clearTimeout(socketRoomLoginTimer)
+					this.socketRoomLoginTimer = setTimeout(() => {
+						console.log('socket重新登录房间中')
+						this.sendWebsocketLogin();
+					})
+				}
 			},
 			BackLike(res) {
 				console.log('点赞发送的结果回调', res);
@@ -298,7 +283,8 @@
 			BroadCastLike(res) {
 				console.log('最终点赞数量', res.finalLikeNum);
 				this.roomLikeNum = res.finalLikeNum
-				this.informH5Action('hasOtherManClickLike', this.roomLikeNum)
+				this.informH5Action('hasOtherManClickLike', [this.roomLikeNum, res.list], true)
+				
 			},
 			BroadBilibili(res) {
 				console.log('弹幕消息回调', res);
@@ -402,7 +388,7 @@
 				this.liveRTMP = cdnData.urlsRTMP
 			},
 			stopPull() {
-				this.videoContxt.stop()
+				this.videoContxt.stop() 
 				this.liveRTMP = ''
 
 			},
@@ -410,7 +396,10 @@
 
 			},
 			canEval() {
+				console.log(66666666,'canEval');
+				this.webView = this.$refs.webview
 				this.webLoadSuccess = true
+				
 			},
 			loginRoom(userData, roomTokenData, deviceInfo) {
 				this.appProfile = {
@@ -428,7 +417,10 @@
 			againLogin() {
 				this.webEvalTimer = setInterval(() => {
 					if (!this.webLoadSuccess) return
-					this.webView.evalJs(`setToken(${JSON.stringify(this.app.token)})`)
+					this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`)
+					// setInterval(()=>{
+					// 	this.webView.evalJs(`actionSet("8888",${JSON.stringify(app.token)},false)`)
+					// },2000)
 					this.webView.evalJs(`isWebView()`)
 					this.webView.evalJs(
 						`statusBarHeight=${this.deviceInfo.statusBarHeight}`
@@ -439,61 +431,46 @@
 					clearInterval(this.webEvalTimer)
 				}, 100)
 			},
-
-			openCard() {
-				this.cardQuery.pageIndex = 1
-				this.getNoList()
-			},
-			//发送卡密
-			sendCard(item) {
-				this.informH5Action('cardSend', item.name)
-				this.UIClickFeedBack()
-				this.cardShow = false
-			},
-			//调用h5发送弹幕
-			sendText(text) {
-				this.informH5Action('cardSend', text)
-			},
+			// //发送卡密
+			// sendCard(item) {
+			// 	this.informH5Action('cardSend', item.name)
+			// 	this.UIClickFeedBack()
+			// 	this.cardShow = false
+			// },
+			// //调用h5发送弹幕
+			// sendText(text) {
+			// 	this.informH5Action('cardSend', text)
+			// },
 			//ui触感反馈(单次)
 			UIClickFeedBack() {
 				if (this.deviceInfo.platform == 'ios') {
 					impact.prepare();
 					impact.init(1);
 					impact.impactOccurred();
+					// this.webView.evalJs(`actionSet("8888",${JSON.stringify(app.token)},false)`)
 				} else {
 					uni.vibrateShort()
 				}
 			},
 			//调用h5Vue内部methods方法
 			informH5Action(actionName, params = '', isMoreArguments = false) {
+				// console.log(actionName)
+				// console.log(3333)
+				// this.webView.evalJs(`actionSet("8888",${JSON.stringify(app.token)},false)`)
+				return
 				const sendParams = JSON.stringify({
 					params: params
 				})
 				this.webView.evalJs(
 					`actionSet("${actionName}",${sendParams},${isMoreArguments})`
 				)
+				console.log('发送给h5l ')
 			},
 			getMerchant(merchantId) {
 				request('merchant/1/detail/' + merchantId, {}, 'get').then(res => {
 					this.merchantMessage = res.data
 				})
 			},
-			// getGoodsDetail(id) {
-			// 	let ts = Math.floor(new Date().getTime() / 1000);
-			// 	let params = {
-			// 		ts: ts,
-			// 		s: Md5.hashStr('kww_good_sign_' + id + '_' + ts + '_2022')
-			// 	}
-			// 	request('dataApi/good/' + id + '/detail', params, 'get').then(data => {
-			// 		if (data.good == null || data.good == undefined) {
-			// 			uni.showToast({
-			// 				title: '无此商品',
-			// 				icon: 'none'
-			// 			})
-			// 			return;
-			// 		}
-			// 	})
-			// },
 			stopLive() {
 				const stopSign = Md5.hashStr('stopPushStream' +
 					`_${this.loginRoomData.roomID}_${this.loginRoomData.streamID}`)
@@ -593,7 +570,7 @@
 				} = event.detail
 				const resData = data[0]
 				const paramsIsArray = resData.params instanceof Array
-				paramsIsArray && resData.isArguments ? this[resData.action](...resData.params) : this[resData.action](
+				paramsIsArray && resData.isMoreArguments ? this[resData.action](...resData.params) : this[resData.action](
 					resData.params)
 			}
 		}

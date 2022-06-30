@@ -2327,11 +2327,386 @@ export namespace message {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of a RequestSendGift. */
+    interface IRequestSendGift {
+
+        /** RequestSendGift giftTpId */
+        giftTpId?: (number|Long|null);
+
+        /** RequestSendGift num */
+        num?: (number|null);
+
+        /** RequestSendGift target */
+        target?: (number|Long|null);
+    }
+
+    /** Represents a RequestSendGift. */
+    class RequestSendGift implements IRequestSendGift {
+
+        /**
+         * Constructs a new RequestSendGift.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IRequestSendGift);
+
+        /** RequestSendGift giftTpId. */
+        public giftTpId: (number|Long);
+
+        /** RequestSendGift num. */
+        public num: number;
+
+        /** RequestSendGift target. */
+        public target: (number|Long);
+
+        /**
+         * Creates a new RequestSendGift instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RequestSendGift instance
+         */
+        public static create(properties?: message.IRequestSendGift): message.RequestSendGift;
+
+        /**
+         * Encodes the specified RequestSendGift message. Does not implicitly {@link message.RequestSendGift.verify|verify} messages.
+         * @param message RequestSendGift message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IRequestSendGift, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RequestSendGift message, length delimited. Does not implicitly {@link message.RequestSendGift.verify|verify} messages.
+         * @param message RequestSendGift message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IRequestSendGift, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RequestSendGift message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RequestSendGift
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.RequestSendGift;
+
+        /**
+         * Decodes a RequestSendGift message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RequestSendGift
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.RequestSendGift;
+
+        /**
+         * Verifies a RequestSendGift message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RequestSendGift message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RequestSendGift
+         */
+        public static fromObject(object: { [k: string]: any }): message.RequestSendGift;
+
+        /**
+         * Creates a plain object from a RequestSendGift message. Also converts values to other types if specified.
+         * @param message RequestSendGift
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.RequestSendGift, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RequestSendGift to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a RequestSendHongbao. */
+    interface IRequestSendHongbao {
+
+        /** RequestSendHongbao giftTpId */
+        giftTpId?: (number|Long|null);
+
+        /** RequestSendHongbao delayMinute */
+        delayMinute?: (number|null);
+    }
+
+    /** Represents a RequestSendHongbao. */
+    class RequestSendHongbao implements IRequestSendHongbao {
+
+        /**
+         * Constructs a new RequestSendHongbao.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IRequestSendHongbao);
+
+        /** RequestSendHongbao giftTpId. */
+        public giftTpId: (number|Long);
+
+        /** RequestSendHongbao delayMinute. */
+        public delayMinute: number;
+
+        /**
+         * Creates a new RequestSendHongbao instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RequestSendHongbao instance
+         */
+        public static create(properties?: message.IRequestSendHongbao): message.RequestSendHongbao;
+
+        /**
+         * Encodes the specified RequestSendHongbao message. Does not implicitly {@link message.RequestSendHongbao.verify|verify} messages.
+         * @param message RequestSendHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IRequestSendHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RequestSendHongbao message, length delimited. Does not implicitly {@link message.RequestSendHongbao.verify|verify} messages.
+         * @param message RequestSendHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IRequestSendHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RequestSendHongbao message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RequestSendHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.RequestSendHongbao;
+
+        /**
+         * Decodes a RequestSendHongbao message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RequestSendHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.RequestSendHongbao;
+
+        /**
+         * Verifies a RequestSendHongbao message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RequestSendHongbao message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RequestSendHongbao
+         */
+        public static fromObject(object: { [k: string]: any }): message.RequestSendHongbao;
+
+        /**
+         * Creates a plain object from a RequestSendHongbao message. Also converts values to other types if specified.
+         * @param message RequestSendHongbao
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.RequestSendHongbao, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RequestSendHongbao to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a RequestGrabHongbao. */
+    interface IRequestGrabHongbao {
+
+        /** RequestGrabHongbao hongbaoId */
+        hongbaoId?: (number|Long|null);
+    }
+
+    /** Represents a RequestGrabHongbao. */
+    class RequestGrabHongbao implements IRequestGrabHongbao {
+
+        /**
+         * Constructs a new RequestGrabHongbao.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IRequestGrabHongbao);
+
+        /** RequestGrabHongbao hongbaoId. */
+        public hongbaoId: (number|Long);
+
+        /**
+         * Creates a new RequestGrabHongbao instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RequestGrabHongbao instance
+         */
+        public static create(properties?: message.IRequestGrabHongbao): message.RequestGrabHongbao;
+
+        /**
+         * Encodes the specified RequestGrabHongbao message. Does not implicitly {@link message.RequestGrabHongbao.verify|verify} messages.
+         * @param message RequestGrabHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IRequestGrabHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RequestGrabHongbao message, length delimited. Does not implicitly {@link message.RequestGrabHongbao.verify|verify} messages.
+         * @param message RequestGrabHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IRequestGrabHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RequestGrabHongbao message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RequestGrabHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.RequestGrabHongbao;
+
+        /**
+         * Decodes a RequestGrabHongbao message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RequestGrabHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.RequestGrabHongbao;
+
+        /**
+         * Verifies a RequestGrabHongbao message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RequestGrabHongbao message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RequestGrabHongbao
+         */
+        public static fromObject(object: { [k: string]: any }): message.RequestGrabHongbao;
+
+        /**
+         * Creates a plain object from a RequestGrabHongbao message. Also converts values to other types if specified.
+         * @param message RequestGrabHongbao
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.RequestGrabHongbao, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RequestGrabHongbao to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a RequestSendChatMessage. */
+    interface IRequestSendChatMessage {
+
+        /** RequestSendChatMessage content */
+        content?: (string|null);
+    }
+
+    /** Represents a RequestSendChatMessage. */
+    class RequestSendChatMessage implements IRequestSendChatMessage {
+
+        /**
+         * Constructs a new RequestSendChatMessage.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IRequestSendChatMessage);
+
+        /** RequestSendChatMessage content. */
+        public content: string;
+
+        /**
+         * Creates a new RequestSendChatMessage instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RequestSendChatMessage instance
+         */
+        public static create(properties?: message.IRequestSendChatMessage): message.RequestSendChatMessage;
+
+        /**
+         * Encodes the specified RequestSendChatMessage message. Does not implicitly {@link message.RequestSendChatMessage.verify|verify} messages.
+         * @param message RequestSendChatMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IRequestSendChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RequestSendChatMessage message, length delimited. Does not implicitly {@link message.RequestSendChatMessage.verify|verify} messages.
+         * @param message RequestSendChatMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IRequestSendChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RequestSendChatMessage message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RequestSendChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.RequestSendChatMessage;
+
+        /**
+         * Decodes a RequestSendChatMessage message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RequestSendChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.RequestSendChatMessage;
+
+        /**
+         * Verifies a RequestSendChatMessage message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RequestSendChatMessage message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RequestSendChatMessage
+         */
+        public static fromObject(object: { [k: string]: any }): message.RequestSendChatMessage;
+
+        /**
+         * Creates a plain object from a RequestSendChatMessage message. Also converts values to other types if specified.
+         * @param message RequestSendChatMessage
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.RequestSendChatMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RequestSendChatMessage to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a BackLike. */
     interface IBackLike {
-
-        /** BackLike code */
-        code?: (message.BackLike.RetCode|null);
 
         /** BackLike msg */
         msg?: (string|null);
@@ -2345,9 +2720,6 @@ export namespace message {
          * @param [properties] Properties to set
          */
         constructor(properties?: message.IBackLike);
-
-        /** BackLike code. */
-        public code: message.BackLike.RetCode;
 
         /** BackLike msg. */
         public msg: string;
@@ -2421,16 +2793,6 @@ export namespace message {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
-    }
-
-    namespace BackLike {
-
-        /** RetCode enum. */
-        enum RetCode {
-            RC_OK = 0,
-            RC_LOGIN_CLOSED = 2,
-            RC_TOO_FAST = 3
-        }
     }
 
     /** Properties of a BroadCastLike. */
@@ -2634,195 +2996,1202 @@ export namespace message {
         }
     }
 
-    /** Properties of a BroadBilibili. */
-    interface IBroadBilibili {
+    /** Properties of a BroadCastBilibili_Send. */
+    interface IBroadCastBilibili_Send {
 
-        /** BroadBilibili list */
-        list?: (message.BroadBilibili.IBilibili[]|null);
+        /** BroadCastBilibili_Send list */
+        list?: (message.BroadCastBilibili_Send.IBilibili_Send[]|null);
     }
 
-    /** Represents a BroadBilibili. */
-    class BroadBilibili implements IBroadBilibili {
+    /** Represents a BroadCastBilibili_Send. */
+    class BroadCastBilibili_Send implements IBroadCastBilibili_Send {
 
         /**
-         * Constructs a new BroadBilibili.
+         * Constructs a new BroadCastBilibili_Send.
          * @param [properties] Properties to set
          */
-        constructor(properties?: message.IBroadBilibili);
+        constructor(properties?: message.IBroadCastBilibili_Send);
 
-        /** BroadBilibili list. */
-        public list: message.BroadBilibili.IBilibili[];
+        /** BroadCastBilibili_Send list. */
+        public list: message.BroadCastBilibili_Send.IBilibili_Send[];
 
         /**
-         * Creates a new BroadBilibili instance using the specified properties.
+         * Creates a new BroadCastBilibili_Send instance using the specified properties.
          * @param [properties] Properties to set
-         * @returns BroadBilibili instance
+         * @returns BroadCastBilibili_Send instance
          */
-        public static create(properties?: message.IBroadBilibili): message.BroadBilibili;
+        public static create(properties?: message.IBroadCastBilibili_Send): message.BroadCastBilibili_Send;
 
         /**
-         * Encodes the specified BroadBilibili message. Does not implicitly {@link message.BroadBilibili.verify|verify} messages.
-         * @param message BroadBilibili message or plain object to encode
+         * Encodes the specified BroadCastBilibili_Send message. Does not implicitly {@link message.BroadCastBilibili_Send.verify|verify} messages.
+         * @param message BroadCastBilibili_Send message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: message.IBroadBilibili, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: message.IBroadCastBilibili_Send, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified BroadBilibili message, length delimited. Does not implicitly {@link message.BroadBilibili.verify|verify} messages.
-         * @param message BroadBilibili message or plain object to encode
+         * Encodes the specified BroadCastBilibili_Send message, length delimited. Does not implicitly {@link message.BroadCastBilibili_Send.verify|verify} messages.
+         * @param message BroadCastBilibili_Send message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: message.IBroadBilibili, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: message.IBroadCastBilibili_Send, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Decodes a BroadBilibili message from the specified reader or buffer.
+         * Decodes a BroadCastBilibili_Send message from the specified reader or buffer.
          * @param reader Reader or buffer to decode from
          * @param [length] Message length if known beforehand
-         * @returns BroadBilibili
+         * @returns BroadCastBilibili_Send
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadBilibili;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastBilibili_Send;
 
         /**
-         * Decodes a BroadBilibili message from the specified reader or buffer, length delimited.
+         * Decodes a BroadCastBilibili_Send message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
-         * @returns BroadBilibili
+         * @returns BroadCastBilibili_Send
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadBilibili;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastBilibili_Send;
 
         /**
-         * Verifies a BroadBilibili message.
+         * Verifies a BroadCastBilibili_Send message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
         public static verify(message: { [k: string]: any }): (string|null);
 
         /**
-         * Creates a BroadBilibili message from a plain object. Also converts values to their respective internal types.
+         * Creates a BroadCastBilibili_Send message from a plain object. Also converts values to their respective internal types.
          * @param object Plain object
-         * @returns BroadBilibili
+         * @returns BroadCastBilibili_Send
          */
-        public static fromObject(object: { [k: string]: any }): message.BroadBilibili;
+        public static fromObject(object: { [k: string]: any }): message.BroadCastBilibili_Send;
 
         /**
-         * Creates a plain object from a BroadBilibili message. Also converts values to other types if specified.
-         * @param message BroadBilibili
+         * Creates a plain object from a BroadCastBilibili_Send message. Also converts values to other types if specified.
+         * @param message BroadCastBilibili_Send
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: message.BroadBilibili, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: message.BroadCastBilibili_Send, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
-         * Converts this BroadBilibili to JSON.
+         * Converts this BroadCastBilibili_Send to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
     }
 
-    namespace BroadBilibili {
+    namespace BroadCastBilibili_Send {
 
-        /** Properties of a Bilibili. */
-        interface IBilibili {
+        /** Properties of a Bilibili_Send. */
+        interface IBilibili_Send {
 
-            /** Bilibili sender */
+            /** Bilibili_Send sender */
             sender?: (string|null);
 
-            /** Bilibili name */
+            /** Bilibili_Send senderAvatar */
+            senderAvatar?: (string|null);
+
+            /** Bilibili_Send name */
             name?: (string|null);
 
-            /** Bilibili num */
+            /** Bilibili_Send num */
             num?: (number|null);
+
+            /** Bilibili_Send continuityNum */
+            continuityNum?: (number|null);
         }
 
-        /** Represents a Bilibili. */
-        class Bilibili implements IBilibili {
+        /** Represents a Bilibili_Send. */
+        class Bilibili_Send implements IBilibili_Send {
 
             /**
-             * Constructs a new Bilibili.
+             * Constructs a new Bilibili_Send.
              * @param [properties] Properties to set
              */
-            constructor(properties?: message.BroadBilibili.IBilibili);
+            constructor(properties?: message.BroadCastBilibili_Send.IBilibili_Send);
 
-            /** Bilibili sender. */
+            /** Bilibili_Send sender. */
             public sender: string;
 
-            /** Bilibili name. */
+            /** Bilibili_Send senderAvatar. */
+            public senderAvatar: string;
+
+            /** Bilibili_Send name. */
             public name: string;
 
-            /** Bilibili num. */
+            /** Bilibili_Send num. */
             public num: number;
 
+            /** Bilibili_Send continuityNum. */
+            public continuityNum: number;
+
             /**
-             * Creates a new Bilibili instance using the specified properties.
+             * Creates a new Bilibili_Send instance using the specified properties.
              * @param [properties] Properties to set
-             * @returns Bilibili instance
+             * @returns Bilibili_Send instance
              */
-            public static create(properties?: message.BroadBilibili.IBilibili): message.BroadBilibili.Bilibili;
+            public static create(properties?: message.BroadCastBilibili_Send.IBilibili_Send): message.BroadCastBilibili_Send.Bilibili_Send;
 
             /**
-             * Encodes the specified Bilibili message. Does not implicitly {@link message.BroadBilibili.Bilibili.verify|verify} messages.
-             * @param message Bilibili message or plain object to encode
+             * Encodes the specified Bilibili_Send message. Does not implicitly {@link message.BroadCastBilibili_Send.Bilibili_Send.verify|verify} messages.
+             * @param message Bilibili_Send message or plain object to encode
              * @param [writer] Writer to encode to
              * @returns Writer
              */
-            public static encode(message: message.BroadBilibili.IBilibili, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encode(message: message.BroadCastBilibili_Send.IBilibili_Send, writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Encodes the specified Bilibili message, length delimited. Does not implicitly {@link message.BroadBilibili.Bilibili.verify|verify} messages.
-             * @param message Bilibili message or plain object to encode
+             * Encodes the specified Bilibili_Send message, length delimited. Does not implicitly {@link message.BroadCastBilibili_Send.Bilibili_Send.verify|verify} messages.
+             * @param message Bilibili_Send message or plain object to encode
              * @param [writer] Writer to encode to
              * @returns Writer
              */
-            public static encodeDelimited(message: message.BroadBilibili.IBilibili, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: message.BroadCastBilibili_Send.IBilibili_Send, writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Decodes a Bilibili message from the specified reader or buffer.
+             * Decodes a Bilibili_Send message from the specified reader or buffer.
              * @param reader Reader or buffer to decode from
              * @param [length] Message length if known beforehand
-             * @returns Bilibili
+             * @returns Bilibili_Send
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadBilibili.Bilibili;
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastBilibili_Send.Bilibili_Send;
 
             /**
-             * Decodes a Bilibili message from the specified reader or buffer, length delimited.
+             * Decodes a Bilibili_Send message from the specified reader or buffer, length delimited.
              * @param reader Reader or buffer to decode from
-             * @returns Bilibili
+             * @returns Bilibili_Send
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadBilibili.Bilibili;
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastBilibili_Send.Bilibili_Send;
 
             /**
-             * Verifies a Bilibili message.
+             * Verifies a Bilibili_Send message.
              * @param message Plain object to verify
              * @returns `null` if valid, otherwise the reason why it is not
              */
             public static verify(message: { [k: string]: any }): (string|null);
 
             /**
-             * Creates a Bilibili message from a plain object. Also converts values to their respective internal types.
+             * Creates a Bilibili_Send message from a plain object. Also converts values to their respective internal types.
              * @param object Plain object
-             * @returns Bilibili
+             * @returns Bilibili_Send
              */
-            public static fromObject(object: { [k: string]: any }): message.BroadBilibili.Bilibili;
+            public static fromObject(object: { [k: string]: any }): message.BroadCastBilibili_Send.Bilibili_Send;
 
             /**
-             * Creates a plain object from a Bilibili message. Also converts values to other types if specified.
-             * @param message Bilibili
+             * Creates a plain object from a Bilibili_Send message. Also converts values to other types if specified.
+             * @param message Bilibili_Send
              * @param [options] Conversion options
              * @returns Plain object
              */
-            public static toObject(message: message.BroadBilibili.Bilibili, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public static toObject(message: message.BroadCastBilibili_Send.Bilibili_Send, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
             /**
-             * Converts this Bilibili to JSON.
+             * Converts this Bilibili_Send to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+    }
+
+    /** Properties of a BackSendGift. */
+    interface IBackSendGift {
+
+        /** BackSendGift msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackSendGift. */
+    class BackSendGift implements IBackSendGift {
+
+        /**
+         * Constructs a new BackSendGift.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackSendGift);
+
+        /** BackSendGift msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackSendGift instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackSendGift instance
+         */
+        public static create(properties?: message.IBackSendGift): message.BackSendGift;
+
+        /**
+         * Encodes the specified BackSendGift message. Does not implicitly {@link message.BackSendGift.verify|verify} messages.
+         * @param message BackSendGift message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackSendGift, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackSendGift message, length delimited. Does not implicitly {@link message.BackSendGift.verify|verify} messages.
+         * @param message BackSendGift message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackSendGift, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackSendGift message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackSendGift
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackSendGift;
+
+        /**
+         * Decodes a BackSendGift message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackSendGift
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackSendGift;
+
+        /**
+         * Verifies a BackSendGift message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackSendGift message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackSendGift
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackSendGift;
+
+        /**
+         * Creates a plain object from a BackSendGift message. Also converts values to other types if specified.
+         * @param message BackSendGift
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackSendGift, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackSendGift to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BackSendHongbao. */
+    interface IBackSendHongbao {
+
+        /** BackSendHongbao msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackSendHongbao. */
+    class BackSendHongbao implements IBackSendHongbao {
+
+        /**
+         * Constructs a new BackSendHongbao.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackSendHongbao);
+
+        /** BackSendHongbao msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackSendHongbao instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackSendHongbao instance
+         */
+        public static create(properties?: message.IBackSendHongbao): message.BackSendHongbao;
+
+        /**
+         * Encodes the specified BackSendHongbao message. Does not implicitly {@link message.BackSendHongbao.verify|verify} messages.
+         * @param message BackSendHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackSendHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackSendHongbao message, length delimited. Does not implicitly {@link message.BackSendHongbao.verify|verify} messages.
+         * @param message BackSendHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackSendHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackSendHongbao message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackSendHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackSendHongbao;
+
+        /**
+         * Decodes a BackSendHongbao message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackSendHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackSendHongbao;
+
+        /**
+         * Verifies a BackSendHongbao message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackSendHongbao message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackSendHongbao
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackSendHongbao;
+
+        /**
+         * Creates a plain object from a BackSendHongbao message. Also converts values to other types if specified.
+         * @param message BackSendHongbao
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackSendHongbao, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackSendHongbao to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** HongbaoState enum. */
+    enum HongbaoState {
+        RC_COUNTDOWN = 0,
+        RC_READY = 1,
+        RC_FINISH = 2,
+        RC_OTHER = 3
+    }
+
+    /** Properties of a BroadCastHongbao. */
+    interface IBroadCastHongbao {
+
+        /** BroadCastHongbao list */
+        list?: (message.BroadCastHongbao.IHongbao[]|null);
+    }
+
+    /** Represents a BroadCastHongbao. */
+    class BroadCastHongbao implements IBroadCastHongbao {
+
+        /**
+         * Constructs a new BroadCastHongbao.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBroadCastHongbao);
+
+        /** BroadCastHongbao list. */
+        public list: message.BroadCastHongbao.IHongbao[];
+
+        /**
+         * Creates a new BroadCastHongbao instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BroadCastHongbao instance
+         */
+        public static create(properties?: message.IBroadCastHongbao): message.BroadCastHongbao;
+
+        /**
+         * Encodes the specified BroadCastHongbao message. Does not implicitly {@link message.BroadCastHongbao.verify|verify} messages.
+         * @param message BroadCastHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBroadCastHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BroadCastHongbao message, length delimited. Does not implicitly {@link message.BroadCastHongbao.verify|verify} messages.
+         * @param message BroadCastHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBroadCastHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BroadCastHongbao message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BroadCastHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastHongbao;
+
+        /**
+         * Decodes a BroadCastHongbao message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BroadCastHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastHongbao;
+
+        /**
+         * Verifies a BroadCastHongbao message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BroadCastHongbao message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BroadCastHongbao
+         */
+        public static fromObject(object: { [k: string]: any }): message.BroadCastHongbao;
+
+        /**
+         * Creates a plain object from a BroadCastHongbao message. Also converts values to other types if specified.
+         * @param message BroadCastHongbao
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BroadCastHongbao, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BroadCastHongbao to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace BroadCastHongbao {
+
+        /** Properties of an Hongbao. */
+        interface IHongbao {
+
+            /** Hongbao id */
+            id?: (number|Long|null);
+
+            /** Hongbao state */
+            state?: (message.HongbaoState|null);
+
+            /** Hongbao sender */
+            sender?: (string|null);
+
+            /** Hongbao senderAvatar */
+            senderAvatar?: (string|null);
+
+            /** Hongbao point */
+            point?: (number|null);
+
+            /** Hongbao sec */
+            sec?: (number|null);
+
+            /** Hongbao leftNum */
+            leftNum?: (number|null);
+        }
+
+        /** Represents an Hongbao. */
+        class Hongbao implements IHongbao {
+
+            /**
+             * Constructs a new Hongbao.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: message.BroadCastHongbao.IHongbao);
+
+            /** Hongbao id. */
+            public id: (number|Long);
+
+            /** Hongbao state. */
+            public state: message.HongbaoState;
+
+            /** Hongbao sender. */
+            public sender: string;
+
+            /** Hongbao senderAvatar. */
+            public senderAvatar: string;
+
+            /** Hongbao point. */
+            public point: number;
+
+            /** Hongbao sec. */
+            public sec: number;
+
+            /** Hongbao leftNum. */
+            public leftNum: number;
+
+            /**
+             * Creates a new Hongbao instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Hongbao instance
+             */
+            public static create(properties?: message.BroadCastHongbao.IHongbao): message.BroadCastHongbao.Hongbao;
+
+            /**
+             * Encodes the specified Hongbao message. Does not implicitly {@link message.BroadCastHongbao.Hongbao.verify|verify} messages.
+             * @param message Hongbao message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: message.BroadCastHongbao.IHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified Hongbao message, length delimited. Does not implicitly {@link message.BroadCastHongbao.Hongbao.verify|verify} messages.
+             * @param message Hongbao message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: message.BroadCastHongbao.IHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes an Hongbao message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns Hongbao
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastHongbao.Hongbao;
+
+            /**
+             * Decodes an Hongbao message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns Hongbao
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastHongbao.Hongbao;
+
+            /**
+             * Verifies an Hongbao message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates an Hongbao message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns Hongbao
+             */
+            public static fromObject(object: { [k: string]: any }): message.BroadCastHongbao.Hongbao;
+
+            /**
+             * Creates a plain object from an Hongbao message. Also converts values to other types if specified.
+             * @param message Hongbao
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: message.BroadCastHongbao.Hongbao, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this Hongbao to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+    }
+
+    /** Properties of a BroadCastHongbaoUpdated. */
+    interface IBroadCastHongbaoUpdated {
+
+        /** BroadCastHongbaoUpdated list */
+        list?: (message.BroadCastHongbaoUpdated.IHongbaoUpdated[]|null);
+    }
+
+    /** Represents a BroadCastHongbaoUpdated. */
+    class BroadCastHongbaoUpdated implements IBroadCastHongbaoUpdated {
+
+        /**
+         * Constructs a new BroadCastHongbaoUpdated.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBroadCastHongbaoUpdated);
+
+        /** BroadCastHongbaoUpdated list. */
+        public list: message.BroadCastHongbaoUpdated.IHongbaoUpdated[];
+
+        /**
+         * Creates a new BroadCastHongbaoUpdated instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BroadCastHongbaoUpdated instance
+         */
+        public static create(properties?: message.IBroadCastHongbaoUpdated): message.BroadCastHongbaoUpdated;
+
+        /**
+         * Encodes the specified BroadCastHongbaoUpdated message. Does not implicitly {@link message.BroadCastHongbaoUpdated.verify|verify} messages.
+         * @param message BroadCastHongbaoUpdated message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBroadCastHongbaoUpdated, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BroadCastHongbaoUpdated message, length delimited. Does not implicitly {@link message.BroadCastHongbaoUpdated.verify|verify} messages.
+         * @param message BroadCastHongbaoUpdated message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBroadCastHongbaoUpdated, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BroadCastHongbaoUpdated message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BroadCastHongbaoUpdated
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastHongbaoUpdated;
+
+        /**
+         * Decodes a BroadCastHongbaoUpdated message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BroadCastHongbaoUpdated
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastHongbaoUpdated;
+
+        /**
+         * Verifies a BroadCastHongbaoUpdated message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BroadCastHongbaoUpdated message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BroadCastHongbaoUpdated
+         */
+        public static fromObject(object: { [k: string]: any }): message.BroadCastHongbaoUpdated;
+
+        /**
+         * Creates a plain object from a BroadCastHongbaoUpdated message. Also converts values to other types if specified.
+         * @param message BroadCastHongbaoUpdated
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BroadCastHongbaoUpdated, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BroadCastHongbaoUpdated to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace BroadCastHongbaoUpdated {
+
+        /** Properties of an HongbaoUpdated. */
+        interface IHongbaoUpdated {
+
+            /** HongbaoUpdated id */
+            id?: (number|Long|null);
+
+            /** HongbaoUpdated newState */
+            newState?: (message.HongbaoState|null);
+
+            /** HongbaoUpdated leftNum */
+            leftNum?: (number|null);
+        }
+
+        /** Represents an HongbaoUpdated. */
+        class HongbaoUpdated implements IHongbaoUpdated {
+
+            /**
+             * Constructs a new HongbaoUpdated.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: message.BroadCastHongbaoUpdated.IHongbaoUpdated);
+
+            /** HongbaoUpdated id. */
+            public id: (number|Long);
+
+            /** HongbaoUpdated newState. */
+            public newState: message.HongbaoState;
+
+            /** HongbaoUpdated leftNum. */
+            public leftNum: number;
+
+            /**
+             * Creates a new HongbaoUpdated instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns HongbaoUpdated instance
+             */
+            public static create(properties?: message.BroadCastHongbaoUpdated.IHongbaoUpdated): message.BroadCastHongbaoUpdated.HongbaoUpdated;
+
+            /**
+             * Encodes the specified HongbaoUpdated message. Does not implicitly {@link message.BroadCastHongbaoUpdated.HongbaoUpdated.verify|verify} messages.
+             * @param message HongbaoUpdated message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: message.BroadCastHongbaoUpdated.IHongbaoUpdated, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified HongbaoUpdated message, length delimited. Does not implicitly {@link message.BroadCastHongbaoUpdated.HongbaoUpdated.verify|verify} messages.
+             * @param message HongbaoUpdated message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: message.BroadCastHongbaoUpdated.IHongbaoUpdated, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes an HongbaoUpdated message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns HongbaoUpdated
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastHongbaoUpdated.HongbaoUpdated;
+
+            /**
+             * Decodes an HongbaoUpdated message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns HongbaoUpdated
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastHongbaoUpdated.HongbaoUpdated;
+
+            /**
+             * Verifies an HongbaoUpdated message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates an HongbaoUpdated message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns HongbaoUpdated
+             */
+            public static fromObject(object: { [k: string]: any }): message.BroadCastHongbaoUpdated.HongbaoUpdated;
+
+            /**
+             * Creates a plain object from an HongbaoUpdated message. Also converts values to other types if specified.
+             * @param message HongbaoUpdated
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: message.BroadCastHongbaoUpdated.HongbaoUpdated, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this HongbaoUpdated to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+    }
+
+    /** Properties of a BackGrabHongbao. */
+    interface IBackGrabHongbao {
+
+        /** BackGrabHongbao point */
+        point?: (number|null);
+
+        /** BackGrabHongbao msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackGrabHongbao. */
+    class BackGrabHongbao implements IBackGrabHongbao {
+
+        /**
+         * Constructs a new BackGrabHongbao.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackGrabHongbao);
+
+        /** BackGrabHongbao point. */
+        public point: number;
+
+        /** BackGrabHongbao msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackGrabHongbao instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackGrabHongbao instance
+         */
+        public static create(properties?: message.IBackGrabHongbao): message.BackGrabHongbao;
+
+        /**
+         * Encodes the specified BackGrabHongbao message. Does not implicitly {@link message.BackGrabHongbao.verify|verify} messages.
+         * @param message BackGrabHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackGrabHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackGrabHongbao message, length delimited. Does not implicitly {@link message.BackGrabHongbao.verify|verify} messages.
+         * @param message BackGrabHongbao message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackGrabHongbao, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackGrabHongbao message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackGrabHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackGrabHongbao;
+
+        /**
+         * Decodes a BackGrabHongbao message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackGrabHongbao
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackGrabHongbao;
+
+        /**
+         * Verifies a BackGrabHongbao message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackGrabHongbao message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackGrabHongbao
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackGrabHongbao;
+
+        /**
+         * Creates a plain object from a BackGrabHongbao message. Also converts values to other types if specified.
+         * @param message BackGrabHongbao
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackGrabHongbao, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackGrabHongbao to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BackSendChatMessage. */
+    interface IBackSendChatMessage {
+
+        /** BackSendChatMessage msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackSendChatMessage. */
+    class BackSendChatMessage implements IBackSendChatMessage {
+
+        /**
+         * Constructs a new BackSendChatMessage.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackSendChatMessage);
+
+        /** BackSendChatMessage msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackSendChatMessage instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackSendChatMessage instance
+         */
+        public static create(properties?: message.IBackSendChatMessage): message.BackSendChatMessage;
+
+        /**
+         * Encodes the specified BackSendChatMessage message. Does not implicitly {@link message.BackSendChatMessage.verify|verify} messages.
+         * @param message BackSendChatMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackSendChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackSendChatMessage message, length delimited. Does not implicitly {@link message.BackSendChatMessage.verify|verify} messages.
+         * @param message BackSendChatMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackSendChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackSendChatMessage message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackSendChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackSendChatMessage;
+
+        /**
+         * Decodes a BackSendChatMessage message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackSendChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackSendChatMessage;
+
+        /**
+         * Verifies a BackSendChatMessage message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackSendChatMessage message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackSendChatMessage
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackSendChatMessage;
+
+        /**
+         * Creates a plain object from a BackSendChatMessage message. Also converts values to other types if specified.
+         * @param message BackSendChatMessage
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackSendChatMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackSendChatMessage to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BroadCastChatMessage. */
+    interface IBroadCastChatMessage {
+
+        /** BroadCastChatMessage list */
+        list?: (message.BroadCastChatMessage.IChat[]|null);
+    }
+
+    /** Represents a BroadCastChatMessage. */
+    class BroadCastChatMessage implements IBroadCastChatMessage {
+
+        /**
+         * Constructs a new BroadCastChatMessage.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBroadCastChatMessage);
+
+        /** BroadCastChatMessage list. */
+        public list: message.BroadCastChatMessage.IChat[];
+
+        /**
+         * Creates a new BroadCastChatMessage instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BroadCastChatMessage instance
+         */
+        public static create(properties?: message.IBroadCastChatMessage): message.BroadCastChatMessage;
+
+        /**
+         * Encodes the specified BroadCastChatMessage message. Does not implicitly {@link message.BroadCastChatMessage.verify|verify} messages.
+         * @param message BroadCastChatMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBroadCastChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BroadCastChatMessage message, length delimited. Does not implicitly {@link message.BroadCastChatMessage.verify|verify} messages.
+         * @param message BroadCastChatMessage message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBroadCastChatMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BroadCastChatMessage message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BroadCastChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastChatMessage;
+
+        /**
+         * Decodes a BroadCastChatMessage message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BroadCastChatMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastChatMessage;
+
+        /**
+         * Verifies a BroadCastChatMessage message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BroadCastChatMessage message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BroadCastChatMessage
+         */
+        public static fromObject(object: { [k: string]: any }): message.BroadCastChatMessage;
+
+        /**
+         * Creates a plain object from a BroadCastChatMessage message. Also converts values to other types if specified.
+         * @param message BroadCastChatMessage
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BroadCastChatMessage, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BroadCastChatMessage to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace BroadCastChatMessage {
+
+        /** Properties of a Chat. */
+        interface IChat {
+
+            /** Chat uid */
+            uid?: (string|null);
+
+            /** Chat sender */
+            sender?: (string|null);
+
+            /** Chat senderAvatar */
+            senderAvatar?: (string|null);
+
+            /** Chat content */
+            content?: (string|null);
+
+            /** Chat action */
+            action?: (string|null);
+        }
+
+        /** Represents a Chat. */
+        class Chat implements IChat {
+
+            /**
+             * Constructs a new Chat.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: message.BroadCastChatMessage.IChat);
+
+            /** Chat uid. */
+            public uid: string;
+
+            /** Chat sender. */
+            public sender: string;
+
+            /** Chat senderAvatar. */
+            public senderAvatar: string;
+
+            /** Chat content. */
+            public content: string;
+
+            /** Chat action. */
+            public action: string;
+
+            /**
+             * Creates a new Chat instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Chat instance
+             */
+            public static create(properties?: message.BroadCastChatMessage.IChat): message.BroadCastChatMessage.Chat;
+
+            /**
+             * Encodes the specified Chat message. Does not implicitly {@link message.BroadCastChatMessage.Chat.verify|verify} messages.
+             * @param message Chat message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: message.BroadCastChatMessage.IChat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified Chat message, length delimited. Does not implicitly {@link message.BroadCastChatMessage.Chat.verify|verify} messages.
+             * @param message Chat message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: message.BroadCastChatMessage.IChat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Chat message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns Chat
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastChatMessage.Chat;
+
+            /**
+             * Decodes a Chat message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns Chat
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastChatMessage.Chat;
+
+            /**
+             * Verifies a Chat message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a Chat message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns Chat
+             */
+            public static fromObject(object: { [k: string]: any }): message.BroadCastChatMessage.Chat;
+
+            /**
+             * Creates a plain object from a Chat message. Also converts values to other types if specified.
+             * @param message Chat
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: message.BroadCastChatMessage.Chat, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this Chat to JSON.
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
