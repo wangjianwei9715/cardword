@@ -6,6 +6,8 @@
 			<view class="header-title">{{navigatetoTitle}}</view>
 			<view class="icon-share" @click="onClickShare"></view>
 		</view>
+
+		<share :operationShow="operationShow" :shareData="shareData"  @operacancel="onClickShareCancel"></share>
 	</view>
 	
 </template>
@@ -18,7 +20,16 @@
 	export default class navigationbar extends BaseComponent {
 		@Prop({ default: '' })
 		navigatetoTitle!: string;
-		
+		@Prop({ default: '' })
+		shareData!:any;
+		// shareData:any = {
+		// 	shareUrl:'',  
+		// 	title:'',      
+		// 	summary:'',    
+		// 	thumb:''       
+		// }
+		// 分享
+		operationShow=false;
 		statusBarHeight = app.statusBarHeight;
 		created(){//在实例创建完成后被立即调用
 		}
@@ -29,10 +40,18 @@
 			
 		}
 		onClickBack(){
-			this.$emit("navigateBack");
+			uni.navigateBack({
+				delta: 1
+			});
 		}
+		// 分享
 		onClickShare(){
-			this.$emit("navigateShare");
+			if(!this.operationShow){
+				this.operationShow = true
+			}
+		}
+		onClickShareCancel(){
+			this.operationShow = false
 		}
 		
 	}

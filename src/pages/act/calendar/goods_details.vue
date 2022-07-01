@@ -1,6 +1,6 @@
 <template>
 	<view class="calendar-content" >
-		<navigationShare :navigatetoTitle="'产品详情'" @navigateShare="onClickShare" @navigateBack="onClickBack"/>
+		<navigationShare navigatetoTitle="产品详情" :shareData="shareData"/>
 		<view style="padding-top:88rpx">
 			<statusbar/>
 		</view>
@@ -43,7 +43,6 @@
 			</view>
 		</view>
 
-		<share :operationShow="operationShow" :shareData="shareData"  @operacancel="onClickShareCancel"></share>
 	</view>
 </template>
 
@@ -79,29 +78,6 @@
 		onHide(){
 			
 		}
-		onClickBack(){
-			uni.navigateBack({
-				delta: 1
-			});
-		}
-		// 分享
-		onClickShare(){
-			if(!this.operationShow){
-				if(this.shareData.shareUrl==''){
-					this.shareData = {
-						shareUrl:"https://www.ka-world.com/share/h5/index.html#/pages/calendar/goods_details?id="+this.goodsId,  
-						title:this.goodsData.title,      
-						summary:this.goodsData.title,    
-						thumb:this.goodsData.thumb_pic
-					}
-				}
-				this.operationShow = true
-			}
-		}
-		onClickShareCancel(){
-			this.operationShow = false
-		}
-		
 		// 数据详情赋值
 		getGoodData(id:any){
 			app.http.Get('dataApi/function/calendar/detail/'+id,{},(res:any)=>{
@@ -116,6 +92,14 @@
 					}
 				}
 				this.goodsData = res.data;
+				if(this.shareData.shareUrl==''){
+					this.shareData = {
+						shareUrl:"https://www.ka-world.com/share/h5/index.html#/pages/calendar/goods_details?id="+this.goodsId,  
+						title:this.goodsData.title,      
+						summary:this.goodsData.title,    
+						thumb:this.goodsData.thumb_pic
+					}
+				}
 			})
 		}
 		// 点赞
