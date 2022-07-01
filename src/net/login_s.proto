@@ -17,9 +17,16 @@ message BackLoginBroadCastRoom1001 {
     }
 	RetCode code = 1;		//0成功，其他失败
 	string msg = 2;		//失败原因
+	float point = 3; //最新的卡币数量
+	bool applyLianmai = 4; // 是否可申请连麦
 }
 
 // 0x000102 服务器主动推送消息
 message Message {
 	repeated string list = 1;
+}
+
+// 0x000103 服务器主动推送我最新的卡币数量
+message SendMyPoint {
+	float point = 1;
 }

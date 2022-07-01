@@ -9,9 +9,11 @@ export class SocketServer extends ServerBase {
     close() {
         this.isopen = false;
         if (this.socket) {
-            let sock = this.socket;
+			this.socket.close({})
+			this.socket = null;
+            // let sock = this.socket;
             // this.socket = null;
-            sock.close({});
+            // sock.close({});
         }
     }
     /**

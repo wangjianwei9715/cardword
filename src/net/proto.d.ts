@@ -1696,6 +1696,12 @@ export namespace message {
 
         /** BackLoginBroadCastRoom1001 msg */
         msg?: (string|null);
+
+        /** BackLoginBroadCastRoom1001 point */
+        point?: (number|null);
+
+        /** BackLoginBroadCastRoom1001 applyLianmai */
+        applyLianmai?: (boolean|null);
     }
 
     /** Represents a BackLoginBroadCastRoom1001. */
@@ -1712,6 +1718,12 @@ export namespace message {
 
         /** BackLoginBroadCastRoom1001 msg. */
         public msg: string;
+
+        /** BackLoginBroadCastRoom1001 point. */
+        public point: number;
+
+        /** BackLoginBroadCastRoom1001 applyLianmai. */
+        public applyLianmai: boolean;
 
         /**
          * Creates a new BackLoginBroadCastRoom1001 instance using the specified properties.
@@ -1880,6 +1892,96 @@ export namespace message {
 
         /**
          * Converts this Message to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a SendMyPoint. */
+    interface ISendMyPoint {
+
+        /** SendMyPoint point */
+        point?: (number|null);
+    }
+
+    /** Represents a SendMyPoint. */
+    class SendMyPoint implements ISendMyPoint {
+
+        /**
+         * Constructs a new SendMyPoint.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.ISendMyPoint);
+
+        /** SendMyPoint point. */
+        public point: number;
+
+        /**
+         * Creates a new SendMyPoint instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SendMyPoint instance
+         */
+        public static create(properties?: message.ISendMyPoint): message.SendMyPoint;
+
+        /**
+         * Encodes the specified SendMyPoint message. Does not implicitly {@link message.SendMyPoint.verify|verify} messages.
+         * @param message SendMyPoint message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.ISendMyPoint, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SendMyPoint message, length delimited. Does not implicitly {@link message.SendMyPoint.verify|verify} messages.
+         * @param message SendMyPoint message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.ISendMyPoint, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SendMyPoint message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SendMyPoint
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.SendMyPoint;
+
+        /**
+         * Decodes a SendMyPoint message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SendMyPoint
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.SendMyPoint;
+
+        /**
+         * Verifies a SendMyPoint message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SendMyPoint message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SendMyPoint
+         */
+        public static fromObject(object: { [k: string]: any }): message.SendMyPoint;
+
+        /**
+         * Creates a plain object from a SendMyPoint message. Also converts values to other types if specified.
+         * @param message SendMyPoint
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.SendMyPoint, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SendMyPoint to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -2705,6 +2807,474 @@ export namespace message {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of a RequestSendMerchantCoupon. */
+    interface IRequestSendMerchantCoupon {
+
+        /** RequestSendMerchantCoupon tp */
+        tp?: (number|null);
+
+        /** RequestSendMerchantCoupon goodCode */
+        goodCode?: (string|null);
+
+        /** RequestSendMerchantCoupon amount */
+        amount?: (number|null);
+
+        /** RequestSendMerchantCoupon minUseAmount */
+        minUseAmount?: (number|null);
+
+        /** RequestSendMerchantCoupon num */
+        num?: (number|null);
+
+        /** RequestSendMerchantCoupon lifeMinute */
+        lifeMinute?: (number|null);
+
+        /** RequestSendMerchantCoupon delayMinute */
+        delayMinute?: (number|null);
+    }
+
+    /** Represents a RequestSendMerchantCoupon. */
+    class RequestSendMerchantCoupon implements IRequestSendMerchantCoupon {
+
+        /**
+         * Constructs a new RequestSendMerchantCoupon.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IRequestSendMerchantCoupon);
+
+        /** RequestSendMerchantCoupon tp. */
+        public tp: number;
+
+        /** RequestSendMerchantCoupon goodCode. */
+        public goodCode: string;
+
+        /** RequestSendMerchantCoupon amount. */
+        public amount: number;
+
+        /** RequestSendMerchantCoupon minUseAmount. */
+        public minUseAmount: number;
+
+        /** RequestSendMerchantCoupon num. */
+        public num: number;
+
+        /** RequestSendMerchantCoupon lifeMinute. */
+        public lifeMinute: number;
+
+        /** RequestSendMerchantCoupon delayMinute. */
+        public delayMinute: number;
+
+        /**
+         * Creates a new RequestSendMerchantCoupon instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RequestSendMerchantCoupon instance
+         */
+        public static create(properties?: message.IRequestSendMerchantCoupon): message.RequestSendMerchantCoupon;
+
+        /**
+         * Encodes the specified RequestSendMerchantCoupon message. Does not implicitly {@link message.RequestSendMerchantCoupon.verify|verify} messages.
+         * @param message RequestSendMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IRequestSendMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RequestSendMerchantCoupon message, length delimited. Does not implicitly {@link message.RequestSendMerchantCoupon.verify|verify} messages.
+         * @param message RequestSendMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IRequestSendMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RequestSendMerchantCoupon message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RequestSendMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.RequestSendMerchantCoupon;
+
+        /**
+         * Decodes a RequestSendMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RequestSendMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.RequestSendMerchantCoupon;
+
+        /**
+         * Verifies a RequestSendMerchantCoupon message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RequestSendMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RequestSendMerchantCoupon
+         */
+        public static fromObject(object: { [k: string]: any }): message.RequestSendMerchantCoupon;
+
+        /**
+         * Creates a plain object from a RequestSendMerchantCoupon message. Also converts values to other types if specified.
+         * @param message RequestSendMerchantCoupon
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.RequestSendMerchantCoupon, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RequestSendMerchantCoupon to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a RequestGetMerchantCoupon. */
+    interface IRequestGetMerchantCoupon {
+
+        /** RequestGetMerchantCoupon id */
+        id?: (number|Long|null);
+    }
+
+    /** Represents a RequestGetMerchantCoupon. */
+    class RequestGetMerchantCoupon implements IRequestGetMerchantCoupon {
+
+        /**
+         * Constructs a new RequestGetMerchantCoupon.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IRequestGetMerchantCoupon);
+
+        /** RequestGetMerchantCoupon id. */
+        public id: (number|Long);
+
+        /**
+         * Creates a new RequestGetMerchantCoupon instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RequestGetMerchantCoupon instance
+         */
+        public static create(properties?: message.IRequestGetMerchantCoupon): message.RequestGetMerchantCoupon;
+
+        /**
+         * Encodes the specified RequestGetMerchantCoupon message. Does not implicitly {@link message.RequestGetMerchantCoupon.verify|verify} messages.
+         * @param message RequestGetMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IRequestGetMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RequestGetMerchantCoupon message, length delimited. Does not implicitly {@link message.RequestGetMerchantCoupon.verify|verify} messages.
+         * @param message RequestGetMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IRequestGetMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RequestGetMerchantCoupon message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RequestGetMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.RequestGetMerchantCoupon;
+
+        /**
+         * Decodes a RequestGetMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RequestGetMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.RequestGetMerchantCoupon;
+
+        /**
+         * Verifies a RequestGetMerchantCoupon message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RequestGetMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RequestGetMerchantCoupon
+         */
+        public static fromObject(object: { [k: string]: any }): message.RequestGetMerchantCoupon;
+
+        /**
+         * Creates a plain object from a RequestGetMerchantCoupon message. Also converts values to other types if specified.
+         * @param message RequestGetMerchantCoupon
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.RequestGetMerchantCoupon, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RequestGetMerchantCoupon to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a RequestSwitchLianmaiAllow. */
+    interface IRequestSwitchLianmaiAllow {
+    }
+
+    /** Represents a RequestSwitchLianmaiAllow. */
+    class RequestSwitchLianmaiAllow implements IRequestSwitchLianmaiAllow {
+
+        /**
+         * Constructs a new RequestSwitchLianmaiAllow.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IRequestSwitchLianmaiAllow);
+
+        /**
+         * Creates a new RequestSwitchLianmaiAllow instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RequestSwitchLianmaiAllow instance
+         */
+        public static create(properties?: message.IRequestSwitchLianmaiAllow): message.RequestSwitchLianmaiAllow;
+
+        /**
+         * Encodes the specified RequestSwitchLianmaiAllow message. Does not implicitly {@link message.RequestSwitchLianmaiAllow.verify|verify} messages.
+         * @param message RequestSwitchLianmaiAllow message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IRequestSwitchLianmaiAllow, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RequestSwitchLianmaiAllow message, length delimited. Does not implicitly {@link message.RequestSwitchLianmaiAllow.verify|verify} messages.
+         * @param message RequestSwitchLianmaiAllow message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IRequestSwitchLianmaiAllow, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RequestSwitchLianmaiAllow message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RequestSwitchLianmaiAllow
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.RequestSwitchLianmaiAllow;
+
+        /**
+         * Decodes a RequestSwitchLianmaiAllow message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RequestSwitchLianmaiAllow
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.RequestSwitchLianmaiAllow;
+
+        /**
+         * Verifies a RequestSwitchLianmaiAllow message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RequestSwitchLianmaiAllow message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RequestSwitchLianmaiAllow
+         */
+        public static fromObject(object: { [k: string]: any }): message.RequestSwitchLianmaiAllow;
+
+        /**
+         * Creates a plain object from a RequestSwitchLianmaiAllow message. Also converts values to other types if specified.
+         * @param message RequestSwitchLianmaiAllow
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.RequestSwitchLianmaiAllow, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RequestSwitchLianmaiAllow to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a RequestApplyLianmai. */
+    interface IRequestApplyLianmai {
+    }
+
+    /** Represents a RequestApplyLianmai. */
+    class RequestApplyLianmai implements IRequestApplyLianmai {
+
+        /**
+         * Constructs a new RequestApplyLianmai.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IRequestApplyLianmai);
+
+        /**
+         * Creates a new RequestApplyLianmai instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns RequestApplyLianmai instance
+         */
+        public static create(properties?: message.IRequestApplyLianmai): message.RequestApplyLianmai;
+
+        /**
+         * Encodes the specified RequestApplyLianmai message. Does not implicitly {@link message.RequestApplyLianmai.verify|verify} messages.
+         * @param message RequestApplyLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IRequestApplyLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified RequestApplyLianmai message, length delimited. Does not implicitly {@link message.RequestApplyLianmai.verify|verify} messages.
+         * @param message RequestApplyLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IRequestApplyLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a RequestApplyLianmai message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns RequestApplyLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.RequestApplyLianmai;
+
+        /**
+         * Decodes a RequestApplyLianmai message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns RequestApplyLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.RequestApplyLianmai;
+
+        /**
+         * Verifies a RequestApplyLianmai message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a RequestApplyLianmai message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns RequestApplyLianmai
+         */
+        public static fromObject(object: { [k: string]: any }): message.RequestApplyLianmai;
+
+        /**
+         * Creates a plain object from a RequestApplyLianmai message. Also converts values to other types if specified.
+         * @param message RequestApplyLianmai
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.RequestApplyLianmai, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this RequestApplyLianmai to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of an ActorRequestLianmaiData. */
+    interface IActorRequestLianmaiData {
+    }
+
+    /** Represents an ActorRequestLianmaiData. */
+    class ActorRequestLianmaiData implements IActorRequestLianmaiData {
+
+        /**
+         * Constructs a new ActorRequestLianmaiData.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IActorRequestLianmaiData);
+
+        /**
+         * Creates a new ActorRequestLianmaiData instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ActorRequestLianmaiData instance
+         */
+        public static create(properties?: message.IActorRequestLianmaiData): message.ActorRequestLianmaiData;
+
+        /**
+         * Encodes the specified ActorRequestLianmaiData message. Does not implicitly {@link message.ActorRequestLianmaiData.verify|verify} messages.
+         * @param message ActorRequestLianmaiData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IActorRequestLianmaiData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ActorRequestLianmaiData message, length delimited. Does not implicitly {@link message.ActorRequestLianmaiData.verify|verify} messages.
+         * @param message ActorRequestLianmaiData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IActorRequestLianmaiData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an ActorRequestLianmaiData message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ActorRequestLianmaiData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.ActorRequestLianmaiData;
+
+        /**
+         * Decodes an ActorRequestLianmaiData message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ActorRequestLianmaiData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.ActorRequestLianmaiData;
+
+        /**
+         * Verifies an ActorRequestLianmaiData message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an ActorRequestLianmaiData message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ActorRequestLianmaiData
+         */
+        public static fromObject(object: { [k: string]: any }): message.ActorRequestLianmaiData;
+
+        /**
+         * Creates a plain object from an ActorRequestLianmaiData message. Also converts values to other types if specified.
+         * @param message ActorRequestLianmaiData
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.ActorRequestLianmaiData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ActorRequestLianmaiData to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a BackLike. */
     interface IBackLike {
 
@@ -3501,8 +4071,8 @@ export namespace message {
             /** Hongbao point */
             point?: (number|null);
 
-            /** Hongbao sec */
-            sec?: (number|null);
+            /** Hongbao startTime */
+            startTime?: (number|Long|null);
 
             /** Hongbao leftNum */
             leftNum?: (number|null);
@@ -3532,8 +4102,8 @@ export namespace message {
             /** Hongbao point. */
             public point: number;
 
-            /** Hongbao sec. */
-            public sec: number;
+            /** Hongbao startTime. */
+            public startTime: (number|Long);
 
             /** Hongbao leftNum. */
             public leftNum: number;
@@ -4192,6 +4762,1209 @@ export namespace message {
 
             /**
              * Converts this Chat to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+    }
+
+    /** Properties of a BackSendMerchantCoupon. */
+    interface IBackSendMerchantCoupon {
+
+        /** BackSendMerchantCoupon success */
+        success?: (boolean|null);
+
+        /** BackSendMerchantCoupon msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackSendMerchantCoupon. */
+    class BackSendMerchantCoupon implements IBackSendMerchantCoupon {
+
+        /**
+         * Constructs a new BackSendMerchantCoupon.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackSendMerchantCoupon);
+
+        /** BackSendMerchantCoupon success. */
+        public success: boolean;
+
+        /** BackSendMerchantCoupon msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackSendMerchantCoupon instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackSendMerchantCoupon instance
+         */
+        public static create(properties?: message.IBackSendMerchantCoupon): message.BackSendMerchantCoupon;
+
+        /**
+         * Encodes the specified BackSendMerchantCoupon message. Does not implicitly {@link message.BackSendMerchantCoupon.verify|verify} messages.
+         * @param message BackSendMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackSendMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackSendMerchantCoupon message, length delimited. Does not implicitly {@link message.BackSendMerchantCoupon.verify|verify} messages.
+         * @param message BackSendMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackSendMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackSendMerchantCoupon message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackSendMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackSendMerchantCoupon;
+
+        /**
+         * Decodes a BackSendMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackSendMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackSendMerchantCoupon;
+
+        /**
+         * Verifies a BackSendMerchantCoupon message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackSendMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackSendMerchantCoupon
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackSendMerchantCoupon;
+
+        /**
+         * Creates a plain object from a BackSendMerchantCoupon message. Also converts values to other types if specified.
+         * @param message BackSendMerchantCoupon
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackSendMerchantCoupon, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackSendMerchantCoupon to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BroadCastMerchantCoupon. */
+    interface IBroadCastMerchantCoupon {
+
+        /** BroadCastMerchantCoupon list */
+        list?: (message.BroadCastMerchantCoupon.ICoupon[]|null);
+    }
+
+    /** Represents a BroadCastMerchantCoupon. */
+    class BroadCastMerchantCoupon implements IBroadCastMerchantCoupon {
+
+        /**
+         * Constructs a new BroadCastMerchantCoupon.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBroadCastMerchantCoupon);
+
+        /** BroadCastMerchantCoupon list. */
+        public list: message.BroadCastMerchantCoupon.ICoupon[];
+
+        /**
+         * Creates a new BroadCastMerchantCoupon instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BroadCastMerchantCoupon instance
+         */
+        public static create(properties?: message.IBroadCastMerchantCoupon): message.BroadCastMerchantCoupon;
+
+        /**
+         * Encodes the specified BroadCastMerchantCoupon message. Does not implicitly {@link message.BroadCastMerchantCoupon.verify|verify} messages.
+         * @param message BroadCastMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBroadCastMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BroadCastMerchantCoupon message, length delimited. Does not implicitly {@link message.BroadCastMerchantCoupon.verify|verify} messages.
+         * @param message BroadCastMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBroadCastMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BroadCastMerchantCoupon message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BroadCastMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastMerchantCoupon;
+
+        /**
+         * Decodes a BroadCastMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BroadCastMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastMerchantCoupon;
+
+        /**
+         * Verifies a BroadCastMerchantCoupon message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BroadCastMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BroadCastMerchantCoupon
+         */
+        public static fromObject(object: { [k: string]: any }): message.BroadCastMerchantCoupon;
+
+        /**
+         * Creates a plain object from a BroadCastMerchantCoupon message. Also converts values to other types if specified.
+         * @param message BroadCastMerchantCoupon
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BroadCastMerchantCoupon, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BroadCastMerchantCoupon to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace BroadCastMerchantCoupon {
+
+        /** Properties of a Coupon. */
+        interface ICoupon {
+
+            /** Coupon id */
+            id?: (number|Long|null);
+
+            /** Coupon disappear */
+            disappear?: (boolean|null);
+
+            /** Coupon sec */
+            sec?: (number|null);
+        }
+
+        /** Represents a Coupon. */
+        class Coupon implements ICoupon {
+
+            /**
+             * Constructs a new Coupon.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: message.BroadCastMerchantCoupon.ICoupon);
+
+            /** Coupon id. */
+            public id: (number|Long);
+
+            /** Coupon disappear. */
+            public disappear: boolean;
+
+            /** Coupon sec. */
+            public sec: number;
+
+            /**
+             * Creates a new Coupon instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Coupon instance
+             */
+            public static create(properties?: message.BroadCastMerchantCoupon.ICoupon): message.BroadCastMerchantCoupon.Coupon;
+
+            /**
+             * Encodes the specified Coupon message. Does not implicitly {@link message.BroadCastMerchantCoupon.Coupon.verify|verify} messages.
+             * @param message Coupon message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: message.BroadCastMerchantCoupon.ICoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified Coupon message, length delimited. Does not implicitly {@link message.BroadCastMerchantCoupon.Coupon.verify|verify} messages.
+             * @param message Coupon message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: message.BroadCastMerchantCoupon.ICoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Coupon message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns Coupon
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastMerchantCoupon.Coupon;
+
+            /**
+             * Decodes a Coupon message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns Coupon
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastMerchantCoupon.Coupon;
+
+            /**
+             * Verifies a Coupon message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a Coupon message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns Coupon
+             */
+            public static fromObject(object: { [k: string]: any }): message.BroadCastMerchantCoupon.Coupon;
+
+            /**
+             * Creates a plain object from a Coupon message. Also converts values to other types if specified.
+             * @param message Coupon
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: message.BroadCastMerchantCoupon.Coupon, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this Coupon to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+    }
+
+    /** Properties of a BackGetMerchantCoupon. */
+    interface IBackGetMerchantCoupon {
+
+        /** BackGetMerchantCoupon success */
+        success?: (boolean|null);
+
+        /** BackGetMerchantCoupon msg */
+        msg?: (string|null);
+
+        /** BackGetMerchantCoupon disappear */
+        disappear?: (boolean|null);
+
+        /** BackGetMerchantCoupon coupon */
+        coupon?: (message.BackGetMerchantCoupon.ICoupon|null);
+    }
+
+    /** Represents a BackGetMerchantCoupon. */
+    class BackGetMerchantCoupon implements IBackGetMerchantCoupon {
+
+        /**
+         * Constructs a new BackGetMerchantCoupon.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackGetMerchantCoupon);
+
+        /** BackGetMerchantCoupon success. */
+        public success: boolean;
+
+        /** BackGetMerchantCoupon msg. */
+        public msg: string;
+
+        /** BackGetMerchantCoupon disappear. */
+        public disappear: boolean;
+
+        /** BackGetMerchantCoupon coupon. */
+        public coupon?: (message.BackGetMerchantCoupon.ICoupon|null);
+
+        /**
+         * Creates a new BackGetMerchantCoupon instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackGetMerchantCoupon instance
+         */
+        public static create(properties?: message.IBackGetMerchantCoupon): message.BackGetMerchantCoupon;
+
+        /**
+         * Encodes the specified BackGetMerchantCoupon message. Does not implicitly {@link message.BackGetMerchantCoupon.verify|verify} messages.
+         * @param message BackGetMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackGetMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackGetMerchantCoupon message, length delimited. Does not implicitly {@link message.BackGetMerchantCoupon.verify|verify} messages.
+         * @param message BackGetMerchantCoupon message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackGetMerchantCoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackGetMerchantCoupon message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackGetMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackGetMerchantCoupon;
+
+        /**
+         * Decodes a BackGetMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackGetMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackGetMerchantCoupon;
+
+        /**
+         * Verifies a BackGetMerchantCoupon message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackGetMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackGetMerchantCoupon
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackGetMerchantCoupon;
+
+        /**
+         * Creates a plain object from a BackGetMerchantCoupon message. Also converts values to other types if specified.
+         * @param message BackGetMerchantCoupon
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackGetMerchantCoupon, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackGetMerchantCoupon to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace BackGetMerchantCoupon {
+
+        /** Properties of a Coupon. */
+        interface ICoupon {
+
+            /** Coupon tp */
+            tp?: (number|null);
+
+            /** Coupon goodCode */
+            goodCode?: (string|null);
+
+            /** Coupon amount */
+            amount?: (number|null);
+
+            /** Coupon minUseAmount */
+            minUseAmount?: (number|null);
+
+            /** Coupon durExp */
+            durExp?: (string|null);
+        }
+
+        /** Represents a Coupon. */
+        class Coupon implements ICoupon {
+
+            /**
+             * Constructs a new Coupon.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: message.BackGetMerchantCoupon.ICoupon);
+
+            /** Coupon tp. */
+            public tp: number;
+
+            /** Coupon goodCode. */
+            public goodCode: string;
+
+            /** Coupon amount. */
+            public amount: number;
+
+            /** Coupon minUseAmount. */
+            public minUseAmount: number;
+
+            /** Coupon durExp. */
+            public durExp: string;
+
+            /**
+             * Creates a new Coupon instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Coupon instance
+             */
+            public static create(properties?: message.BackGetMerchantCoupon.ICoupon): message.BackGetMerchantCoupon.Coupon;
+
+            /**
+             * Encodes the specified Coupon message. Does not implicitly {@link message.BackGetMerchantCoupon.Coupon.verify|verify} messages.
+             * @param message Coupon message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: message.BackGetMerchantCoupon.ICoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified Coupon message, length delimited. Does not implicitly {@link message.BackGetMerchantCoupon.Coupon.verify|verify} messages.
+             * @param message Coupon message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: message.BackGetMerchantCoupon.ICoupon, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Coupon message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns Coupon
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackGetMerchantCoupon.Coupon;
+
+            /**
+             * Decodes a Coupon message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns Coupon
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackGetMerchantCoupon.Coupon;
+
+            /**
+             * Verifies a Coupon message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a Coupon message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns Coupon
+             */
+            public static fromObject(object: { [k: string]: any }): message.BackGetMerchantCoupon.Coupon;
+
+            /**
+             * Creates a plain object from a Coupon message. Also converts values to other types if specified.
+             * @param message Coupon
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: message.BackGetMerchantCoupon.Coupon, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this Coupon to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+    }
+
+    /** Properties of a BroadCastLianmaiAllowed. */
+    interface IBroadCastLianmaiAllowed {
+
+        /** BroadCastLianmaiAllowed allowed */
+        allowed?: (boolean|null);
+    }
+
+    /** Represents a BroadCastLianmaiAllowed. */
+    class BroadCastLianmaiAllowed implements IBroadCastLianmaiAllowed {
+
+        /**
+         * Constructs a new BroadCastLianmaiAllowed.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBroadCastLianmaiAllowed);
+
+        /** BroadCastLianmaiAllowed allowed. */
+        public allowed: boolean;
+
+        /**
+         * Creates a new BroadCastLianmaiAllowed instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BroadCastLianmaiAllowed instance
+         */
+        public static create(properties?: message.IBroadCastLianmaiAllowed): message.BroadCastLianmaiAllowed;
+
+        /**
+         * Encodes the specified BroadCastLianmaiAllowed message. Does not implicitly {@link message.BroadCastLianmaiAllowed.verify|verify} messages.
+         * @param message BroadCastLianmaiAllowed message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBroadCastLianmaiAllowed, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BroadCastLianmaiAllowed message, length delimited. Does not implicitly {@link message.BroadCastLianmaiAllowed.verify|verify} messages.
+         * @param message BroadCastLianmaiAllowed message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBroadCastLianmaiAllowed, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BroadCastLianmaiAllowed message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BroadCastLianmaiAllowed
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastLianmaiAllowed;
+
+        /**
+         * Decodes a BroadCastLianmaiAllowed message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BroadCastLianmaiAllowed
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastLianmaiAllowed;
+
+        /**
+         * Verifies a BroadCastLianmaiAllowed message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BroadCastLianmaiAllowed message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BroadCastLianmaiAllowed
+         */
+        public static fromObject(object: { [k: string]: any }): message.BroadCastLianmaiAllowed;
+
+        /**
+         * Creates a plain object from a BroadCastLianmaiAllowed message. Also converts values to other types if specified.
+         * @param message BroadCastLianmaiAllowed
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BroadCastLianmaiAllowed, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BroadCastLianmaiAllowed to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a SendLianmaiApply. */
+    interface ISendLianmaiApply {
+
+        /** SendLianmaiApply uid */
+        uid?: (string|null);
+
+        /** SendLianmaiApply sender */
+        sender?: (string|null);
+
+        /** SendLianmaiApply senderAvatar */
+        senderAvatar?: (string|null);
+    }
+
+    /** Represents a SendLianmaiApply. */
+    class SendLianmaiApply implements ISendLianmaiApply {
+
+        /**
+         * Constructs a new SendLianmaiApply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.ISendLianmaiApply);
+
+        /** SendLianmaiApply uid. */
+        public uid: string;
+
+        /** SendLianmaiApply sender. */
+        public sender: string;
+
+        /** SendLianmaiApply senderAvatar. */
+        public senderAvatar: string;
+
+        /**
+         * Creates a new SendLianmaiApply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SendLianmaiApply instance
+         */
+        public static create(properties?: message.ISendLianmaiApply): message.SendLianmaiApply;
+
+        /**
+         * Encodes the specified SendLianmaiApply message. Does not implicitly {@link message.SendLianmaiApply.verify|verify} messages.
+         * @param message SendLianmaiApply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.ISendLianmaiApply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SendLianmaiApply message, length delimited. Does not implicitly {@link message.SendLianmaiApply.verify|verify} messages.
+         * @param message SendLianmaiApply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.ISendLianmaiApply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SendLianmaiApply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SendLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.SendLianmaiApply;
+
+        /**
+         * Decodes a SendLianmaiApply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SendLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.SendLianmaiApply;
+
+        /**
+         * Verifies a SendLianmaiApply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SendLianmaiApply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SendLianmaiApply
+         */
+        public static fromObject(object: { [k: string]: any }): message.SendLianmaiApply;
+
+        /**
+         * Creates a plain object from a SendLianmaiApply message. Also converts values to other types if specified.
+         * @param message SendLianmaiApply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.SendLianmaiApply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SendLianmaiApply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BackApplyLianmai. */
+    interface IBackApplyLianmai {
+
+        /** BackApplyLianmai success */
+        success?: (boolean|null);
+
+        /** BackApplyLianmai msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackApplyLianmai. */
+    class BackApplyLianmai implements IBackApplyLianmai {
+
+        /**
+         * Constructs a new BackApplyLianmai.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackApplyLianmai);
+
+        /** BackApplyLianmai success. */
+        public success: boolean;
+
+        /** BackApplyLianmai msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackApplyLianmai instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackApplyLianmai instance
+         */
+        public static create(properties?: message.IBackApplyLianmai): message.BackApplyLianmai;
+
+        /**
+         * Encodes the specified BackApplyLianmai message. Does not implicitly {@link message.BackApplyLianmai.verify|verify} messages.
+         * @param message BackApplyLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackApplyLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackApplyLianmai message, length delimited. Does not implicitly {@link message.BackApplyLianmai.verify|verify} messages.
+         * @param message BackApplyLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackApplyLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackApplyLianmai message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackApplyLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackApplyLianmai;
+
+        /**
+         * Decodes a BackApplyLianmai message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackApplyLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackApplyLianmai;
+
+        /**
+         * Verifies a BackApplyLianmai message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackApplyLianmai message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackApplyLianmai
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackApplyLianmai;
+
+        /**
+         * Creates a plain object from a BackApplyLianmai message. Also converts values to other types if specified.
+         * @param message BackApplyLianmai
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackApplyLianmai, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackApplyLianmai to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BroadCastLianmaiOn. */
+    interface IBroadCastLianmaiOn {
+
+        /** BroadCastLianmaiOn uid */
+        uid?: (string|null);
+
+        /** BroadCastLianmaiOn name */
+        name?: (string|null);
+
+        /** BroadCastLianmaiOn avatar */
+        avatar?: (string|null);
+    }
+
+    /** Represents a BroadCastLianmaiOn. */
+    class BroadCastLianmaiOn implements IBroadCastLianmaiOn {
+
+        /**
+         * Constructs a new BroadCastLianmaiOn.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBroadCastLianmaiOn);
+
+        /** BroadCastLianmaiOn uid. */
+        public uid: string;
+
+        /** BroadCastLianmaiOn name. */
+        public name: string;
+
+        /** BroadCastLianmaiOn avatar. */
+        public avatar: string;
+
+        /**
+         * Creates a new BroadCastLianmaiOn instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BroadCastLianmaiOn instance
+         */
+        public static create(properties?: message.IBroadCastLianmaiOn): message.BroadCastLianmaiOn;
+
+        /**
+         * Encodes the specified BroadCastLianmaiOn message. Does not implicitly {@link message.BroadCastLianmaiOn.verify|verify} messages.
+         * @param message BroadCastLianmaiOn message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBroadCastLianmaiOn, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BroadCastLianmaiOn message, length delimited. Does not implicitly {@link message.BroadCastLianmaiOn.verify|verify} messages.
+         * @param message BroadCastLianmaiOn message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBroadCastLianmaiOn, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BroadCastLianmaiOn message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BroadCastLianmaiOn
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastLianmaiOn;
+
+        /**
+         * Decodes a BroadCastLianmaiOn message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BroadCastLianmaiOn
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastLianmaiOn;
+
+        /**
+         * Verifies a BroadCastLianmaiOn message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BroadCastLianmaiOn message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BroadCastLianmaiOn
+         */
+        public static fromObject(object: { [k: string]: any }): message.BroadCastLianmaiOn;
+
+        /**
+         * Creates a plain object from a BroadCastLianmaiOn message. Also converts values to other types if specified.
+         * @param message BroadCastLianmaiOn
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BroadCastLianmaiOn, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BroadCastLianmaiOn to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BroadCastLianmaiOff. */
+    interface IBroadCastLianmaiOff {
+    }
+
+    /** Represents a BroadCastLianmaiOff. */
+    class BroadCastLianmaiOff implements IBroadCastLianmaiOff {
+
+        /**
+         * Constructs a new BroadCastLianmaiOff.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBroadCastLianmaiOff);
+
+        /**
+         * Creates a new BroadCastLianmaiOff instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BroadCastLianmaiOff instance
+         */
+        public static create(properties?: message.IBroadCastLianmaiOff): message.BroadCastLianmaiOff;
+
+        /**
+         * Encodes the specified BroadCastLianmaiOff message. Does not implicitly {@link message.BroadCastLianmaiOff.verify|verify} messages.
+         * @param message BroadCastLianmaiOff message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBroadCastLianmaiOff, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BroadCastLianmaiOff message, length delimited. Does not implicitly {@link message.BroadCastLianmaiOff.verify|verify} messages.
+         * @param message BroadCastLianmaiOff message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBroadCastLianmaiOff, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BroadCastLianmaiOff message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BroadCastLianmaiOff
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BroadCastLianmaiOff;
+
+        /**
+         * Decodes a BroadCastLianmaiOff message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BroadCastLianmaiOff
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BroadCastLianmaiOff;
+
+        /**
+         * Verifies a BroadCastLianmaiOff message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BroadCastLianmaiOff message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BroadCastLianmaiOff
+         */
+        public static fromObject(object: { [k: string]: any }): message.BroadCastLianmaiOff;
+
+        /**
+         * Creates a plain object from a BroadCastLianmaiOff message. Also converts values to other types if specified.
+         * @param message BroadCastLianmaiOff
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BroadCastLianmaiOff, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BroadCastLianmaiOff to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BackActorLianmaiData. */
+    interface IBackActorLianmaiData {
+
+        /** BackActorLianmaiData allowed */
+        allowed?: (boolean|null);
+
+        /** BackActorLianmaiData list */
+        list?: (message.BackActorLianmaiData.ILianmai[]|null);
+    }
+
+    /** Represents a BackActorLianmaiData. */
+    class BackActorLianmaiData implements IBackActorLianmaiData {
+
+        /**
+         * Constructs a new BackActorLianmaiData.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackActorLianmaiData);
+
+        /** BackActorLianmaiData allowed. */
+        public allowed: boolean;
+
+        /** BackActorLianmaiData list. */
+        public list: message.BackActorLianmaiData.ILianmai[];
+
+        /**
+         * Creates a new BackActorLianmaiData instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackActorLianmaiData instance
+         */
+        public static create(properties?: message.IBackActorLianmaiData): message.BackActorLianmaiData;
+
+        /**
+         * Encodes the specified BackActorLianmaiData message. Does not implicitly {@link message.BackActorLianmaiData.verify|verify} messages.
+         * @param message BackActorLianmaiData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackActorLianmaiData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackActorLianmaiData message, length delimited. Does not implicitly {@link message.BackActorLianmaiData.verify|verify} messages.
+         * @param message BackActorLianmaiData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackActorLianmaiData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackActorLianmaiData message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackActorLianmaiData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackActorLianmaiData;
+
+        /**
+         * Decodes a BackActorLianmaiData message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackActorLianmaiData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackActorLianmaiData;
+
+        /**
+         * Verifies a BackActorLianmaiData message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackActorLianmaiData message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackActorLianmaiData
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackActorLianmaiData;
+
+        /**
+         * Creates a plain object from a BackActorLianmaiData message. Also converts values to other types if specified.
+         * @param message BackActorLianmaiData
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackActorLianmaiData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackActorLianmaiData to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace BackActorLianmaiData {
+
+        /** Properties of a Lianmai. */
+        interface ILianmai {
+
+            /** Lianmai tp */
+            tp?: (number|null);
+
+            /** Lianmai uid */
+            uid?: (string|null);
+
+            /** Lianmai name */
+            name?: (string|null);
+
+            /** Lianmai avatar */
+            avatar?: (string|null);
+
+            /** Lianmai sec */
+            sec?: (number|null);
+        }
+
+        /** Represents a Lianmai. */
+        class Lianmai implements ILianmai {
+
+            /**
+             * Constructs a new Lianmai.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: message.BackActorLianmaiData.ILianmai);
+
+            /** Lianmai tp. */
+            public tp: number;
+
+            /** Lianmai uid. */
+            public uid: string;
+
+            /** Lianmai name. */
+            public name: string;
+
+            /** Lianmai avatar. */
+            public avatar: string;
+
+            /** Lianmai sec. */
+            public sec: number;
+
+            /**
+             * Creates a new Lianmai instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Lianmai instance
+             */
+            public static create(properties?: message.BackActorLianmaiData.ILianmai): message.BackActorLianmaiData.Lianmai;
+
+            /**
+             * Encodes the specified Lianmai message. Does not implicitly {@link message.BackActorLianmaiData.Lianmai.verify|verify} messages.
+             * @param message Lianmai message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: message.BackActorLianmaiData.ILianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified Lianmai message, length delimited. Does not implicitly {@link message.BackActorLianmaiData.Lianmai.verify|verify} messages.
+             * @param message Lianmai message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: message.BackActorLianmaiData.ILianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Lianmai message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns Lianmai
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackActorLianmaiData.Lianmai;
+
+            /**
+             * Decodes a Lianmai message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns Lianmai
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackActorLianmaiData.Lianmai;
+
+            /**
+             * Verifies a Lianmai message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a Lianmai message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns Lianmai
+             */
+            public static fromObject(object: { [k: string]: any }): message.BackActorLianmaiData.Lianmai;
+
+            /**
+             * Creates a plain object from a Lianmai message. Also converts values to other types if specified.
+             * @param message Lianmai
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: message.BackActorLianmaiData.Lianmai, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this Lianmai to JSON.
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };

@@ -50,6 +50,7 @@ export abstract class ServerBase{
 		// console.log(app.protobuf.message)
 		const CopyMessage:any=Message
         let pb = app.protobuf.message[packageName];
+		console.log('包名',packageName)
         if (!pb) {
             console.error('不存在的包名：', packageName);
             return;
@@ -82,6 +83,7 @@ export abstract class ServerBase{
      * @param listener 监听的函数数组,**注意！函数名必须和消息同名**
      */
     registerHandlers(that:any,listeners:Array<string>){
+		this.uuidMap={}
         if(this.uuidMap[that._uid]) {
             console.log('重复监听:'+that.name);
 			return;

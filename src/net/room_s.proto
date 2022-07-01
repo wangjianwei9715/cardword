@@ -54,7 +54,7 @@ message BroadCastHongbao {
         string sender = 3;  //谁送的
         string senderAvatar = 4;  //头像
         float point = 5; //多少币
-        uint32 sec = 6;     //倒计时秒数
+        int64 startTime = 6;     //开抢时间戳 0 代表已经可抢
         uint32 leftNum = 7;     //剩余几份
     }
     repeated Hongbao list = 1;
@@ -91,4 +91,79 @@ message BroadCastChatMessage {
         string action = 5; //  action = 来了、走了
     }
     repeated Chat list = 1;
+}
+
+//0x00020A
+message BackSendMerchantCoupon {
+    bool success = 1;		//是否成功
+	string msg = 2;		//失败原因
+}
+
+//0x00020B 广播商家券 开启 或者 消失
+message BroadCastMerchantCoupon {
+    message Coupon {
+        int64 id = 1; //红包id 唯一标识一个红包
+        bool disappear = 2;		//是否可以关闭入口
+        uint32 sec = 3;     //倒计时秒数
+    }
+    repeated Coupon list = 1;
+}
+
+//0x00020D
+message BackGetMerchantCoupon {
+	bool success = 1;		//是否成功
+	string msg = 2;		//失败原因
+	bool disappear = 3;		//是否可以关闭入口
+	message Coupon {
+       uint32 tp = 4; // 1 店铺券 2 商品券
+       string goodCode = 5;
+       float amount = 6;
+       float minUseAmount = 7; //minUseAmount < amount 代表无门槛 否则 是满减券
+       string durExp = 8; //有效期
+    }
+    Coupon coupon = 4;
+}
+
+
+//0x0002A0 广播是否可申请连麦
+message BroadCastLianmaiAllowed {
+    bool allowed = 1;
+}
+
+
+//0x0002A1 发送给主播有人申请连麦
+message SendLianmaiApply {
+    string uid = 1;  //可以判断 是不是自己 a_ 开头代表是主播说话
+    string sender = 2;
+    string senderAvatar = 3;  //头像 空则使用默认头像
+}
+
+//0x0002A2 
+message BackApplyLianmai {
+    bool success = 1;       //是否成功
+    string msg = 2;     //失败原因
+}
+
+//0x0002A3 广播有人连麦了
+message BroadCastLianmaiOn {
+    string uid = 1; 
+    string name = 2;
+    string avatar = 3;  
+}
+//0x0002A4 广播连麦人退出
+message BroadCastLianmaiOff {
+    
+}
+
+//0x0002A5 返回主播连麦数据
+message BackActorLianmaiData {
+    bool allowed = 1; //是否允许连麦申请
+    message Lianmai {
+        uint32 tp = 1; // 1 等待接受 2 连麦中
+        string uid = 2; 
+        string name = 3;
+        string avatar = 4;  
+        uint32 sec = 5; // 倒计时
+    }
+    repeated Lianmai list = 2;
 }

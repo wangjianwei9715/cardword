@@ -50,7 +50,7 @@
 				videoContxt: null, //视频实例
 				liveRTMP: '', //直播rtmp流地址
 				AnchorEndUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
-				UserUrl: 'http://192.168.8.26:8082/#/pages/liveStreaming/index?ts=' + (+new Date()),
+				UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
 					roomID: null,
@@ -136,7 +136,7 @@
 				if (val) this.videoContxt.play()
 			},
 			roomLikeNum: function(val, oldVal) {
-				if (val != oldVal) this.informH5Action('changeLikeNum', val,false)
+				if (val != oldVal) this.informH5Action('changeLikeNum', val, false)
 			}
 		},
 		methods: {
@@ -157,6 +157,7 @@
 								msg[key] = valueObject[key]
 							})
 						}
+						console.log(packName,msg)
 						let buffer = proto.message[packName].encode(msg).finish();
 						let pack = new PackageBase(Message[packName]);
 						pack.d(buffer).to(app.sever);
@@ -241,16 +242,14 @@
 					this.sendHeartBeat();
 				}, 6 * 1000)
 				this.connectSever();
-				if (isFirst) {
-					let listeners = ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike', 'BroadBilibili',
-						'BackSendChatMessage', 'BroadCastChatMessage'
-					];
-					app.sever.registerHandlers(this, listeners)
-
-				}
+				let listeners = ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike', 'BroadCastBilibili_Send',
+					'BackSendChatMessage', 'BroadCastChatMessage', 'BackSendHongbao','BroadCastHongbao','BroadCastHongbaoUpdated','BackGrabHongbao','BackSendGift'
+				];
+				app.sever.registerHandlers(this, listeners)
 			},
+			//-------------------发送消息------------
 			sendTalk(content = '') {
-				console.log(content);
+				// console.log(content);
 				this.sendSocketMsg('RequestSendChatMessage', {
 					content,
 				}).then(res => {
@@ -261,21 +260,89 @@
 				console.log('消息发送回调', res);
 			},
 			BroadCastChatMessage(res) {
-				console.log('广播消息', res);
-				// this.informH5Action('BroadCastChatMessageBack',res,false)
-				this.webView.evalJs(`actionSet("BroadCastChatMessageBack",${JSON.stringify({params:res})},false)`)
+
+				// this.webView.evalJs(`actionSet("BroadCastChatMessageBack",${JSON.stringify({params:res})},false)`)
+				this.informH5Action('BroadCastChatMessageBack', res, false)
 			},
+			//-----------------发送礼物---------------
+			sendGift(giftTpId,num,target=0){
+				this.sendSocketMsg('RequestSendGift',{
+					giftTpId,
+					num,
+					target
+				})
+			},
+			BackSendGift(res){
+				//赠送礼物回调
+				this.checkBack(res).then(back=>{
+					console.log('赠送礼物回调',res)
+					this.informH5Action('giftSendSocketBack',{success:true})
+				}).catch(err=>{
+					this.informH5Action('giftSendSocketBack',{success:false,msg:err.msg})
+				})
+				
+			},
+			BroadCastBilibili_Send(res) {
+				console.log('广播礼物', res);
+				this.informH5Action('BroadCastBilibili_Send', res, false)
+			},
+			//------------------发送红包---------------
+			sendHonb(giftTpId, delayMinute) {
+				console.log(giftTpId,delayMinute)
+				this.sendSocketMsg('RequestSendHongbao', {
+					giftTpId:giftTpId,
+					delayMinute
+				})
+			},
+			BackSendHongbao(res) {
+				//发送红包回调
+				console.log('发送红包回调', res);
+			},
+			
+			BroadCastHongbao(res){
+				//广播红包
+				console.log('广播红包',res)
+				this.informH5Action('BroadCastHongbao',res)
+			},
+			BroadCastHongbaoUpdated(res){
+				//广播红包状态
+				console.log('广播红包状态',res)
+				this.informH5Action('BroadCastHongbaoUpdated',res,false)
+			},
+			grabHongbao(hongbaoId){
+				//抢红包
+				this.sendSocketMsg('RequestGrabHongbao',{hongbaoId:Number(hongbaoId)})
+			},
+			BackGrabHongbao(res){
+				//抢红包回调
+				
+				this.checkBack(res).then(back=>{
+					// console.log('赠送礼物回调',res)
+					console.log('抢红包回调',res)
+					// this.informH5Action('giftSendSocketBack',{success:true})
+					this.informH5Action('grabSuccess',res)
+				}).catch(err=>{
+					// this.informH5Action('giftSendSocketBack',{success:false,msg:err.msg})
+				})
+			},
+			//-------------
 			BackLoginBroadCastRoom1001(res) {
 				console.log('登陆房间回调', res);
-				if (Object.keys(res).length == 0) this.socketLoginOk = true
-				if (Object.keys(res).length) {
+				if (res.msg) {
 					this.socketLoginOk = false
-					this.socketRoomLoginTimer && clearTimeout(socketRoomLoginTimer)
+					this.socketRoomLoginTimer && clearTimeout(this.socketRoomLoginTimer)
 					this.socketRoomLoginTimer = setTimeout(() => {
 						console.log('socket重新登录房间中')
 						this.sendWebsocketLogin();
-					})
+					}, 500)
+				}else{
+					this.informH5Action('myPointGet', res.point, false)
+					this.socketLoginOk = true
 				}
+				// if (Object.keys(res).length == 0) this.socketLoginOk = true
+				// if (Object.keys(res).length) {
+
+				// }
 			},
 			BackLike(res) {
 				console.log('点赞发送的结果回调', res);
@@ -284,10 +351,20 @@
 				console.log('最终点赞数量', res.finalLikeNum);
 				this.roomLikeNum = res.finalLikeNum
 				this.informH5Action('hasOtherManClickLike', [this.roomLikeNum, res.list], true)
-				
+
 			},
-			BroadBilibili(res) {
-				console.log('弹幕消息回调', res);
+			checkBack(res){
+				return new Promise((resolve,reject)=>{
+					if(res.msg){
+						uni.showToast({
+							title:res.msg,
+							icon:'none'
+						})
+						reject(res.msg)
+					}else{
+						resolve(res)
+					}
+				})
 			},
 			leaveRoom() {
 				this.leaveOutRoomSocket()
@@ -380,15 +457,13 @@
 					}
 				}
 				this.loginRoom(userData, tokenRespone.data, deviceInfo)
-				setTimeout(() => {
-					this.initSocket(true)
-				}, 1000)
+				this.initSocket(true)
 			},
 			SET_CDN_URL(cdnData) {
 				this.liveRTMP = cdnData.urlsRTMP
 			},
 			stopPull() {
-				this.videoContxt.stop() 
+				this.videoContxt.stop()
 				this.liveRTMP = ''
 
 			},
@@ -396,10 +471,10 @@
 
 			},
 			canEval() {
-				console.log(66666666,'canEval');
+				console.log(66666666, 'canEval');
 				this.webView = this.$refs.webview
 				this.webLoadSuccess = true
-				
+
 			},
 			loginRoom(userData, roomTokenData, deviceInfo) {
 				this.appProfile = {
@@ -454,10 +529,6 @@
 			},
 			//调用h5Vue内部methods方法
 			informH5Action(actionName, params = '', isMoreArguments = false) {
-				// console.log(actionName)
-				// console.log(3333)
-				// this.webView.evalJs(`actionSet("8888",${JSON.stringify(app.token)},false)`)
-				return
 				const sendParams = JSON.stringify({
 					params: params
 				})
