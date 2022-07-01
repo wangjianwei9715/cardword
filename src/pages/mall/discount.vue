@@ -4,8 +4,8 @@
 			<statusbar />
 			<view class="tab-header">
 				<view class="icon-back" @click="onClickBack"></view>
-				<view class="header-title"></view>
-				精英收藏卡
+				<view class="header-title">精英收藏卡</view>
+				
 				<view class="header-icon">
 					<!-- <view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view> -->
 					<view class="icon-share" @click="onClickShare"></view>
