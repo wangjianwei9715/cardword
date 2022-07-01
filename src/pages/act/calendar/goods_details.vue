@@ -9,7 +9,7 @@
 			<swiper class="swiper" :indicator-dots="goodsImg.length>1" autoplay="true" circular="true" indicator-active-color="#ffffff">
 				<swiper-item v-for="(item,index) in goodsImg" :key="index" @click="onClickPreviewImage(index)">
 					<view class="goods-img-content">
-						<image class="goods-img" :src="decodeURIComponent(item)" mode="aspectFill" />
+						<muqian-lazyLoad class="goods-img" :src="decodeURIComponent(item)" />
 					</view>
 				</swiper-item>
 			</swiper>
@@ -27,7 +27,7 @@
 			<view class="goods-card-content">
 				<scroll-view class="goods-card-content-scroll" :scroll-x="true">
 					<view class="scroll-index" v-for="(item,index) in goodsData.goodList" :key="index" @click="onClickGoGood(item.goodCode)">
-						<image :lazy-load="true" class="scroll-index-img" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
+						<muqian-lazyLoad  class="scroll-index-img" :src="decodeURIComponent(item.pic)"/>
 						<view class="scroll-plan"><view class="scroll-nowplan" :style="'width:'+getPlan(item.currentNum,item.lockNum,item.totalNum)+'%'"></view></view>
 						<view class="scroll-price">￥{{item.price}}</view>
 					</view>
@@ -39,7 +39,7 @@
 			<view class="goods-box-title">产品介绍</view>
 			<view class="desc-box" v-html="decodeURIComponent(goodsData.content)"></view>
 			<view class="goods-box-img" v-for="(item,index) in goodsContentPic" :key="index">
-				<image class="goods-box-img"  :src="decodeURIComponent(item)" mode="widthFix" @click="onClickPreviewContentImage(index)" />
+				<image class="goods-box-img"  :src="$parsePic(decodeURIComponent(item))" mode="widthFix" @click="onClickPreviewContentImage(index)" />
 			</view>
 		</view>
 
@@ -48,10 +48,12 @@
 
 <script lang="ts">
 	import { app } from "@/app";
+import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	import { dateFormatYMSCustom } from "../../../tools/util"
-	@Component({})
+	@Component({
+  components: { muqianLazyLoad },})
 	export default class ClassName extends BaseNode {
 		dateFormatYMSCustom = dateFormatYMSCustom
 		goodsId = 0
@@ -81,16 +83,17 @@
 		// 数据详情赋值
 		getGoodData(id:any){
 			app.http.Get('dataApi/function/calendar/detail/'+id,{},(res:any)=>{
-				this.goodsImg = []
-				for(let i in res.data.pics){
-					this.goodsImg.push(decodeURIComponent(res.data.pics[i]))
-				}
+				let goodsImg = res.data.pics;
+				this.goodsImg = goodsImg.map((x:any)=>{
+					return decodeURIComponent(x)
+				})
 				this.goodsContentPic = [];
 				if(res.data.content_pics!=''){
-					for(let i in res.data.content_pics){
-						this.goodsContentPic.push(decodeURIComponent(res.data.content_pics[i]))
-					}
+					this.goodsContentPic = res.data.content_pics.map((x:any)=>{
+						return decodeURIComponent(x)
+					})
 				}
+				console.log(this.goodsContentPic)
 				this.goodsData = res.data;
 				if(this.shareData.shareUrl==''){
 					this.shareData = {
