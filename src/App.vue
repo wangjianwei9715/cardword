@@ -23,10 +23,10 @@
 			console.log("App Launch");
 			if (process.env.NODE_ENV === "development") {
 				// console.log("开发环境");
-				app.localTest = true;
-				// app.bussinessApiDomain = 'http://192.168.8.79:8701/api/v2/';
+				// app.localTest = true;
+				// app.bussinessApiDomain = 'http://192.168.8.80:8701/api/v2/';
 				// app.funcApiDomain='http://192.168.8.79:8741/api/v2/'
-				app.bussinessApiDomain="https://server.ssltest.ka-world.com/api/v2/"
+				// app.bussinessApiDomain="https://server.ssltest.ka-world.com/api/v2/"
 
 				// 正式服测试环境
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
@@ -180,6 +180,11 @@
 					url: "/pages/initiate/initiate",
 				});
 			});
+
+			//#ifdef APP-PLUS
+			plus.screen.lockOrientation('portrait-primary'); // 强制竖屏
+			// plus.screen.lockOrientation('landscape-primary'); 
+			//#endif
 		},
 		onShow() {
 			console.log("App Show");

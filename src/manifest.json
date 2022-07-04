@@ -39,6 +39,12 @@
         },
         /* 模块配置 */
         "distribute" : {
+            "screenOrientation" : [
+                "portrait-primary",
+                "landscape-primary",
+                "portrait-secondary",
+                "landscape-secondary"
+            ],
             /* 应用发布信息 */
             "android" : {
                 /* android打包配置 */
