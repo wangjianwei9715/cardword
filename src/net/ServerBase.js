@@ -111,6 +111,7 @@ export class ServerBase {
 	 * @param listener 监听的函数数组,**注意！函数名必须和消息同名**
 	 */
 	registerHandlers(that, listeners) {
+		this.uuidMap={}
 		if (this.uuidMap[that._uid]) {
 			console.log('重复监听:' + that.name);
 			return;

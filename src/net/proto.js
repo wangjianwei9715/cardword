@@ -3980,6 +3980,8 @@ $root.message = (function() {
          * @interface IBackLoginBroadCastRoom1001
          * @property {message.BackLoginBroadCastRoom1001.RetCode|null} [code] BackLoginBroadCastRoom1001 code
          * @property {string|null} [msg] BackLoginBroadCastRoom1001 msg
+         * @property {number|null} [point] BackLoginBroadCastRoom1001 point
+         * @property {boolean|null} [applyLianmai] BackLoginBroadCastRoom1001 applyLianmai
          */
 
         /**
@@ -4014,6 +4016,22 @@ $root.message = (function() {
         BackLoginBroadCastRoom1001.prototype.msg = "";
 
         /**
+         * BackLoginBroadCastRoom1001 point.
+         * @member {number} point
+         * @memberof message.BackLoginBroadCastRoom1001
+         * @instance
+         */
+        BackLoginBroadCastRoom1001.prototype.point = 0;
+
+        /**
+         * BackLoginBroadCastRoom1001 applyLianmai.
+         * @member {boolean} applyLianmai
+         * @memberof message.BackLoginBroadCastRoom1001
+         * @instance
+         */
+        BackLoginBroadCastRoom1001.prototype.applyLianmai = false;
+
+        /**
          * Creates a new BackLoginBroadCastRoom1001 instance using the specified properties.
          * @function create
          * @memberof message.BackLoginBroadCastRoom1001
@@ -4041,6 +4059,10 @@ $root.message = (function() {
                 writer.uint32(/* id 1, wireType 0 =*/8).int32(message.code);
             if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            if (message.point != null && Object.hasOwnProperty.call(message, "point"))
+                writer.uint32(/* id 3, wireType 5 =*/29).float(message.point);
+            if (message.applyLianmai != null && Object.hasOwnProperty.call(message, "applyLianmai"))
+                writer.uint32(/* id 4, wireType 0 =*/32).bool(message.applyLianmai);
             return writer;
         };
 
@@ -4080,6 +4102,12 @@ $root.message = (function() {
                     break;
                 case 2:
                     message.msg = reader.string();
+                    break;
+                case 3:
+                    message.point = reader.float();
+                    break;
+                case 4:
+                    message.applyLianmai = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -4129,6 +4157,12 @@ $root.message = (function() {
             if (message.msg != null && message.hasOwnProperty("msg"))
                 if (!$util.isString(message.msg))
                     return "msg: string expected";
+            if (message.point != null && message.hasOwnProperty("point"))
+                if (typeof message.point !== "number")
+                    return "point: number expected";
+            if (message.applyLianmai != null && message.hasOwnProperty("applyLianmai"))
+                if (typeof message.applyLianmai !== "boolean")
+                    return "applyLianmai: boolean expected";
             return null;
         };
 
@@ -4164,6 +4198,10 @@ $root.message = (function() {
             }
             if (object.msg != null)
                 message.msg = String(object.msg);
+            if (object.point != null)
+                message.point = Number(object.point);
+            if (object.applyLianmai != null)
+                message.applyLianmai = Boolean(object.applyLianmai);
             return message;
         };
 
@@ -4183,11 +4221,17 @@ $root.message = (function() {
             if (options.defaults) {
                 object.code = options.enums === String ? "RC_OK" : 0;
                 object.msg = "";
+                object.point = 0;
+                object.applyLianmai = false;
             }
             if (message.code != null && message.hasOwnProperty("code"))
                 object.code = options.enums === String ? $root.message.BackLoginBroadCastRoom1001.RetCode[message.code] : message.code;
             if (message.msg != null && message.hasOwnProperty("msg"))
                 object.msg = message.msg;
+            if (message.point != null && message.hasOwnProperty("point"))
+                object.point = options.json && !isFinite(message.point) ? String(message.point) : message.point;
+            if (message.applyLianmai != null && message.hasOwnProperty("applyLianmai"))
+                object.applyLianmai = message.applyLianmai;
             return object;
         };
 
@@ -4424,6 +4468,193 @@ $root.message = (function() {
         };
 
         return Message;
+    })();
+
+    message.SendMyPoint = (function() {
+
+        /**
+         * Properties of a SendMyPoint.
+         * @memberof message
+         * @interface ISendMyPoint
+         * @property {number|null} [point] SendMyPoint point
+         */
+
+        /**
+         * Constructs a new SendMyPoint.
+         * @memberof message
+         * @classdesc Represents a SendMyPoint.
+         * @implements ISendMyPoint
+         * @constructor
+         * @param {message.ISendMyPoint=} [properties] Properties to set
+         */
+        function SendMyPoint(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * SendMyPoint point.
+         * @member {number} point
+         * @memberof message.SendMyPoint
+         * @instance
+         */
+        SendMyPoint.prototype.point = 0;
+
+        /**
+         * Creates a new SendMyPoint instance using the specified properties.
+         * @function create
+         * @memberof message.SendMyPoint
+         * @static
+         * @param {message.ISendMyPoint=} [properties] Properties to set
+         * @returns {message.SendMyPoint} SendMyPoint instance
+         */
+        SendMyPoint.create = function create(properties) {
+            return new SendMyPoint(properties);
+        };
+
+        /**
+         * Encodes the specified SendMyPoint message. Does not implicitly {@link message.SendMyPoint.verify|verify} messages.
+         * @function encode
+         * @memberof message.SendMyPoint
+         * @static
+         * @param {message.ISendMyPoint} message SendMyPoint message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SendMyPoint.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.point != null && Object.hasOwnProperty.call(message, "point"))
+                writer.uint32(/* id 1, wireType 5 =*/13).float(message.point);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified SendMyPoint message, length delimited. Does not implicitly {@link message.SendMyPoint.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.SendMyPoint
+         * @static
+         * @param {message.ISendMyPoint} message SendMyPoint message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SendMyPoint.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a SendMyPoint message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.SendMyPoint
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.SendMyPoint} SendMyPoint
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SendMyPoint.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.SendMyPoint();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.point = reader.float();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a SendMyPoint message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.SendMyPoint
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.SendMyPoint} SendMyPoint
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SendMyPoint.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a SendMyPoint message.
+         * @function verify
+         * @memberof message.SendMyPoint
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        SendMyPoint.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.point != null && message.hasOwnProperty("point"))
+                if (typeof message.point !== "number")
+                    return "point: number expected";
+            return null;
+        };
+
+        /**
+         * Creates a SendMyPoint message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.SendMyPoint
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.SendMyPoint} SendMyPoint
+         */
+        SendMyPoint.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.SendMyPoint)
+                return object;
+            var message = new $root.message.SendMyPoint();
+            if (object.point != null)
+                message.point = Number(object.point);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a SendMyPoint message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.SendMyPoint
+         * @static
+         * @param {message.SendMyPoint} message SendMyPoint
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        SendMyPoint.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.point = 0;
+            if (message.point != null && message.hasOwnProperty("point"))
+                object.point = options.json && !isFinite(message.point) ? String(message.point) : message.point;
+            return object;
+        };
+
+        /**
+         * Converts this SendMyPoint to JSON.
+         * @function toJSON
+         * @memberof message.SendMyPoint
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        SendMyPoint.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return SendMyPoint;
     })();
 
     /**
@@ -6410,6 +6641,1007 @@ $root.message = (function() {
         return RequestSendChatMessage;
     })();
 
+    message.RequestSendMerchantCoupon = (function() {
+
+        /**
+         * Properties of a RequestSendMerchantCoupon.
+         * @memberof message
+         * @interface IRequestSendMerchantCoupon
+         * @property {number|null} [tp] RequestSendMerchantCoupon tp
+         * @property {string|null} [goodCode] RequestSendMerchantCoupon goodCode
+         * @property {number|null} [amount] RequestSendMerchantCoupon amount
+         * @property {number|null} [minUseAmount] RequestSendMerchantCoupon minUseAmount
+         * @property {number|null} [num] RequestSendMerchantCoupon num
+         * @property {number|null} [lifeMinute] RequestSendMerchantCoupon lifeMinute
+         * @property {number|null} [delayMinute] RequestSendMerchantCoupon delayMinute
+         */
+
+        /**
+         * Constructs a new RequestSendMerchantCoupon.
+         * @memberof message
+         * @classdesc Represents a RequestSendMerchantCoupon.
+         * @implements IRequestSendMerchantCoupon
+         * @constructor
+         * @param {message.IRequestSendMerchantCoupon=} [properties] Properties to set
+         */
+        function RequestSendMerchantCoupon(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * RequestSendMerchantCoupon tp.
+         * @member {number} tp
+         * @memberof message.RequestSendMerchantCoupon
+         * @instance
+         */
+        RequestSendMerchantCoupon.prototype.tp = 0;
+
+        /**
+         * RequestSendMerchantCoupon goodCode.
+         * @member {string} goodCode
+         * @memberof message.RequestSendMerchantCoupon
+         * @instance
+         */
+        RequestSendMerchantCoupon.prototype.goodCode = "";
+
+        /**
+         * RequestSendMerchantCoupon amount.
+         * @member {number} amount
+         * @memberof message.RequestSendMerchantCoupon
+         * @instance
+         */
+        RequestSendMerchantCoupon.prototype.amount = 0;
+
+        /**
+         * RequestSendMerchantCoupon minUseAmount.
+         * @member {number} minUseAmount
+         * @memberof message.RequestSendMerchantCoupon
+         * @instance
+         */
+        RequestSendMerchantCoupon.prototype.minUseAmount = 0;
+
+        /**
+         * RequestSendMerchantCoupon num.
+         * @member {number} num
+         * @memberof message.RequestSendMerchantCoupon
+         * @instance
+         */
+        RequestSendMerchantCoupon.prototype.num = 0;
+
+        /**
+         * RequestSendMerchantCoupon lifeMinute.
+         * @member {number} lifeMinute
+         * @memberof message.RequestSendMerchantCoupon
+         * @instance
+         */
+        RequestSendMerchantCoupon.prototype.lifeMinute = 0;
+
+        /**
+         * RequestSendMerchantCoupon delayMinute.
+         * @member {number} delayMinute
+         * @memberof message.RequestSendMerchantCoupon
+         * @instance
+         */
+        RequestSendMerchantCoupon.prototype.delayMinute = 0;
+
+        /**
+         * Creates a new RequestSendMerchantCoupon instance using the specified properties.
+         * @function create
+         * @memberof message.RequestSendMerchantCoupon
+         * @static
+         * @param {message.IRequestSendMerchantCoupon=} [properties] Properties to set
+         * @returns {message.RequestSendMerchantCoupon} RequestSendMerchantCoupon instance
+         */
+        RequestSendMerchantCoupon.create = function create(properties) {
+            return new RequestSendMerchantCoupon(properties);
+        };
+
+        /**
+         * Encodes the specified RequestSendMerchantCoupon message. Does not implicitly {@link message.RequestSendMerchantCoupon.verify|verify} messages.
+         * @function encode
+         * @memberof message.RequestSendMerchantCoupon
+         * @static
+         * @param {message.IRequestSendMerchantCoupon} message RequestSendMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSendMerchantCoupon.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.tp != null && Object.hasOwnProperty.call(message, "tp"))
+                writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.tp);
+            if (message.goodCode != null && Object.hasOwnProperty.call(message, "goodCode"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.goodCode);
+            if (message.amount != null && Object.hasOwnProperty.call(message, "amount"))
+                writer.uint32(/* id 3, wireType 5 =*/29).float(message.amount);
+            if (message.minUseAmount != null && Object.hasOwnProperty.call(message, "minUseAmount"))
+                writer.uint32(/* id 4, wireType 5 =*/37).float(message.minUseAmount);
+            if (message.num != null && Object.hasOwnProperty.call(message, "num"))
+                writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.num);
+            if (message.lifeMinute != null && Object.hasOwnProperty.call(message, "lifeMinute"))
+                writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.lifeMinute);
+            if (message.delayMinute != null && Object.hasOwnProperty.call(message, "delayMinute"))
+                writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.delayMinute);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RequestSendMerchantCoupon message, length delimited. Does not implicitly {@link message.RequestSendMerchantCoupon.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.RequestSendMerchantCoupon
+         * @static
+         * @param {message.IRequestSendMerchantCoupon} message RequestSendMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSendMerchantCoupon.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RequestSendMerchantCoupon message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.RequestSendMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.RequestSendMerchantCoupon} RequestSendMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSendMerchantCoupon.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.RequestSendMerchantCoupon();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.tp = reader.uint32();
+                    break;
+                case 2:
+                    message.goodCode = reader.string();
+                    break;
+                case 3:
+                    message.amount = reader.float();
+                    break;
+                case 4:
+                    message.minUseAmount = reader.float();
+                    break;
+                case 5:
+                    message.num = reader.uint32();
+                    break;
+                case 6:
+                    message.lifeMinute = reader.uint32();
+                    break;
+                case 7:
+                    message.delayMinute = reader.uint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RequestSendMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.RequestSendMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.RequestSendMerchantCoupon} RequestSendMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSendMerchantCoupon.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RequestSendMerchantCoupon message.
+         * @function verify
+         * @memberof message.RequestSendMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RequestSendMerchantCoupon.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.tp != null && message.hasOwnProperty("tp"))
+                if (!$util.isInteger(message.tp))
+                    return "tp: integer expected";
+            if (message.goodCode != null && message.hasOwnProperty("goodCode"))
+                if (!$util.isString(message.goodCode))
+                    return "goodCode: string expected";
+            if (message.amount != null && message.hasOwnProperty("amount"))
+                if (typeof message.amount !== "number")
+                    return "amount: number expected";
+            if (message.minUseAmount != null && message.hasOwnProperty("minUseAmount"))
+                if (typeof message.minUseAmount !== "number")
+                    return "minUseAmount: number expected";
+            if (message.num != null && message.hasOwnProperty("num"))
+                if (!$util.isInteger(message.num))
+                    return "num: integer expected";
+            if (message.lifeMinute != null && message.hasOwnProperty("lifeMinute"))
+                if (!$util.isInteger(message.lifeMinute))
+                    return "lifeMinute: integer expected";
+            if (message.delayMinute != null && message.hasOwnProperty("delayMinute"))
+                if (!$util.isInteger(message.delayMinute))
+                    return "delayMinute: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a RequestSendMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.RequestSendMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.RequestSendMerchantCoupon} RequestSendMerchantCoupon
+         */
+        RequestSendMerchantCoupon.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.RequestSendMerchantCoupon)
+                return object;
+            var message = new $root.message.RequestSendMerchantCoupon();
+            if (object.tp != null)
+                message.tp = object.tp >>> 0;
+            if (object.goodCode != null)
+                message.goodCode = String(object.goodCode);
+            if (object.amount != null)
+                message.amount = Number(object.amount);
+            if (object.minUseAmount != null)
+                message.minUseAmount = Number(object.minUseAmount);
+            if (object.num != null)
+                message.num = object.num >>> 0;
+            if (object.lifeMinute != null)
+                message.lifeMinute = object.lifeMinute >>> 0;
+            if (object.delayMinute != null)
+                message.delayMinute = object.delayMinute >>> 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a RequestSendMerchantCoupon message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.RequestSendMerchantCoupon
+         * @static
+         * @param {message.RequestSendMerchantCoupon} message RequestSendMerchantCoupon
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RequestSendMerchantCoupon.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.tp = 0;
+                object.goodCode = "";
+                object.amount = 0;
+                object.minUseAmount = 0;
+                object.num = 0;
+                object.lifeMinute = 0;
+                object.delayMinute = 0;
+            }
+            if (message.tp != null && message.hasOwnProperty("tp"))
+                object.tp = message.tp;
+            if (message.goodCode != null && message.hasOwnProperty("goodCode"))
+                object.goodCode = message.goodCode;
+            if (message.amount != null && message.hasOwnProperty("amount"))
+                object.amount = options.json && !isFinite(message.amount) ? String(message.amount) : message.amount;
+            if (message.minUseAmount != null && message.hasOwnProperty("minUseAmount"))
+                object.minUseAmount = options.json && !isFinite(message.minUseAmount) ? String(message.minUseAmount) : message.minUseAmount;
+            if (message.num != null && message.hasOwnProperty("num"))
+                object.num = message.num;
+            if (message.lifeMinute != null && message.hasOwnProperty("lifeMinute"))
+                object.lifeMinute = message.lifeMinute;
+            if (message.delayMinute != null && message.hasOwnProperty("delayMinute"))
+                object.delayMinute = message.delayMinute;
+            return object;
+        };
+
+        /**
+         * Converts this RequestSendMerchantCoupon to JSON.
+         * @function toJSON
+         * @memberof message.RequestSendMerchantCoupon
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RequestSendMerchantCoupon.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RequestSendMerchantCoupon;
+    })();
+
+    message.RequestGetMerchantCoupon = (function() {
+
+        /**
+         * Properties of a RequestGetMerchantCoupon.
+         * @memberof message
+         * @interface IRequestGetMerchantCoupon
+         * @property {number|Long|null} [id] RequestGetMerchantCoupon id
+         */
+
+        /**
+         * Constructs a new RequestGetMerchantCoupon.
+         * @memberof message
+         * @classdesc Represents a RequestGetMerchantCoupon.
+         * @implements IRequestGetMerchantCoupon
+         * @constructor
+         * @param {message.IRequestGetMerchantCoupon=} [properties] Properties to set
+         */
+        function RequestGetMerchantCoupon(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * RequestGetMerchantCoupon id.
+         * @member {number|Long} id
+         * @memberof message.RequestGetMerchantCoupon
+         * @instance
+         */
+        RequestGetMerchantCoupon.prototype.id = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Creates a new RequestGetMerchantCoupon instance using the specified properties.
+         * @function create
+         * @memberof message.RequestGetMerchantCoupon
+         * @static
+         * @param {message.IRequestGetMerchantCoupon=} [properties] Properties to set
+         * @returns {message.RequestGetMerchantCoupon} RequestGetMerchantCoupon instance
+         */
+        RequestGetMerchantCoupon.create = function create(properties) {
+            return new RequestGetMerchantCoupon(properties);
+        };
+
+        /**
+         * Encodes the specified RequestGetMerchantCoupon message. Does not implicitly {@link message.RequestGetMerchantCoupon.verify|verify} messages.
+         * @function encode
+         * @memberof message.RequestGetMerchantCoupon
+         * @static
+         * @param {message.IRequestGetMerchantCoupon} message RequestGetMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestGetMerchantCoupon.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RequestGetMerchantCoupon message, length delimited. Does not implicitly {@link message.RequestGetMerchantCoupon.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.RequestGetMerchantCoupon
+         * @static
+         * @param {message.IRequestGetMerchantCoupon} message RequestGetMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestGetMerchantCoupon.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RequestGetMerchantCoupon message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.RequestGetMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.RequestGetMerchantCoupon} RequestGetMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestGetMerchantCoupon.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.RequestGetMerchantCoupon();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.id = reader.int64();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RequestGetMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.RequestGetMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.RequestGetMerchantCoupon} RequestGetMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestGetMerchantCoupon.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RequestGetMerchantCoupon message.
+         * @function verify
+         * @memberof message.RequestGetMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RequestGetMerchantCoupon.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.id != null && message.hasOwnProperty("id"))
+                if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
+                    return "id: integer|Long expected";
+            return null;
+        };
+
+        /**
+         * Creates a RequestGetMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.RequestGetMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.RequestGetMerchantCoupon} RequestGetMerchantCoupon
+         */
+        RequestGetMerchantCoupon.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.RequestGetMerchantCoupon)
+                return object;
+            var message = new $root.message.RequestGetMerchantCoupon();
+            if (object.id != null)
+                if ($util.Long)
+                    (message.id = $util.Long.fromValue(object.id)).unsigned = false;
+                else if (typeof object.id === "string")
+                    message.id = parseInt(object.id, 10);
+                else if (typeof object.id === "number")
+                    message.id = object.id;
+                else if (typeof object.id === "object")
+                    message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a RequestGetMerchantCoupon message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.RequestGetMerchantCoupon
+         * @static
+         * @param {message.RequestGetMerchantCoupon} message RequestGetMerchantCoupon
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RequestGetMerchantCoupon.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.id = options.longs === String ? "0" : 0;
+            if (message.id != null && message.hasOwnProperty("id"))
+                if (typeof message.id === "number")
+                    object.id = options.longs === String ? String(message.id) : message.id;
+                else
+                    object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
+            return object;
+        };
+
+        /**
+         * Converts this RequestGetMerchantCoupon to JSON.
+         * @function toJSON
+         * @memberof message.RequestGetMerchantCoupon
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RequestGetMerchantCoupon.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RequestGetMerchantCoupon;
+    })();
+
+    message.RequestSwitchLianmaiAllow = (function() {
+
+        /**
+         * Properties of a RequestSwitchLianmaiAllow.
+         * @memberof message
+         * @interface IRequestSwitchLianmaiAllow
+         */
+
+        /**
+         * Constructs a new RequestSwitchLianmaiAllow.
+         * @memberof message
+         * @classdesc Represents a RequestSwitchLianmaiAllow.
+         * @implements IRequestSwitchLianmaiAllow
+         * @constructor
+         * @param {message.IRequestSwitchLianmaiAllow=} [properties] Properties to set
+         */
+        function RequestSwitchLianmaiAllow(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new RequestSwitchLianmaiAllow instance using the specified properties.
+         * @function create
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @static
+         * @param {message.IRequestSwitchLianmaiAllow=} [properties] Properties to set
+         * @returns {message.RequestSwitchLianmaiAllow} RequestSwitchLianmaiAllow instance
+         */
+        RequestSwitchLianmaiAllow.create = function create(properties) {
+            return new RequestSwitchLianmaiAllow(properties);
+        };
+
+        /**
+         * Encodes the specified RequestSwitchLianmaiAllow message. Does not implicitly {@link message.RequestSwitchLianmaiAllow.verify|verify} messages.
+         * @function encode
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @static
+         * @param {message.IRequestSwitchLianmaiAllow} message RequestSwitchLianmaiAllow message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSwitchLianmaiAllow.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RequestSwitchLianmaiAllow message, length delimited. Does not implicitly {@link message.RequestSwitchLianmaiAllow.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @static
+         * @param {message.IRequestSwitchLianmaiAllow} message RequestSwitchLianmaiAllow message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestSwitchLianmaiAllow.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RequestSwitchLianmaiAllow message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.RequestSwitchLianmaiAllow} RequestSwitchLianmaiAllow
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSwitchLianmaiAllow.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.RequestSwitchLianmaiAllow();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RequestSwitchLianmaiAllow message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.RequestSwitchLianmaiAllow} RequestSwitchLianmaiAllow
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestSwitchLianmaiAllow.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RequestSwitchLianmaiAllow message.
+         * @function verify
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RequestSwitchLianmaiAllow.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a RequestSwitchLianmaiAllow message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.RequestSwitchLianmaiAllow} RequestSwitchLianmaiAllow
+         */
+        RequestSwitchLianmaiAllow.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.RequestSwitchLianmaiAllow)
+                return object;
+            return new $root.message.RequestSwitchLianmaiAllow();
+        };
+
+        /**
+         * Creates a plain object from a RequestSwitchLianmaiAllow message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @static
+         * @param {message.RequestSwitchLianmaiAllow} message RequestSwitchLianmaiAllow
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RequestSwitchLianmaiAllow.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this RequestSwitchLianmaiAllow to JSON.
+         * @function toJSON
+         * @memberof message.RequestSwitchLianmaiAllow
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RequestSwitchLianmaiAllow.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RequestSwitchLianmaiAllow;
+    })();
+
+    message.RequestApplyLianmai = (function() {
+
+        /**
+         * Properties of a RequestApplyLianmai.
+         * @memberof message
+         * @interface IRequestApplyLianmai
+         */
+
+        /**
+         * Constructs a new RequestApplyLianmai.
+         * @memberof message
+         * @classdesc Represents a RequestApplyLianmai.
+         * @implements IRequestApplyLianmai
+         * @constructor
+         * @param {message.IRequestApplyLianmai=} [properties] Properties to set
+         */
+        function RequestApplyLianmai(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new RequestApplyLianmai instance using the specified properties.
+         * @function create
+         * @memberof message.RequestApplyLianmai
+         * @static
+         * @param {message.IRequestApplyLianmai=} [properties] Properties to set
+         * @returns {message.RequestApplyLianmai} RequestApplyLianmai instance
+         */
+        RequestApplyLianmai.create = function create(properties) {
+            return new RequestApplyLianmai(properties);
+        };
+
+        /**
+         * Encodes the specified RequestApplyLianmai message. Does not implicitly {@link message.RequestApplyLianmai.verify|verify} messages.
+         * @function encode
+         * @memberof message.RequestApplyLianmai
+         * @static
+         * @param {message.IRequestApplyLianmai} message RequestApplyLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestApplyLianmai.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RequestApplyLianmai message, length delimited. Does not implicitly {@link message.RequestApplyLianmai.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.RequestApplyLianmai
+         * @static
+         * @param {message.IRequestApplyLianmai} message RequestApplyLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RequestApplyLianmai.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RequestApplyLianmai message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.RequestApplyLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.RequestApplyLianmai} RequestApplyLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestApplyLianmai.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.RequestApplyLianmai();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RequestApplyLianmai message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.RequestApplyLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.RequestApplyLianmai} RequestApplyLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RequestApplyLianmai.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RequestApplyLianmai message.
+         * @function verify
+         * @memberof message.RequestApplyLianmai
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RequestApplyLianmai.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a RequestApplyLianmai message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.RequestApplyLianmai
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.RequestApplyLianmai} RequestApplyLianmai
+         */
+        RequestApplyLianmai.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.RequestApplyLianmai)
+                return object;
+            return new $root.message.RequestApplyLianmai();
+        };
+
+        /**
+         * Creates a plain object from a RequestApplyLianmai message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.RequestApplyLianmai
+         * @static
+         * @param {message.RequestApplyLianmai} message RequestApplyLianmai
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RequestApplyLianmai.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this RequestApplyLianmai to JSON.
+         * @function toJSON
+         * @memberof message.RequestApplyLianmai
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RequestApplyLianmai.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RequestApplyLianmai;
+    })();
+
+    message.ActorRequestLianmaiData = (function() {
+
+        /**
+         * Properties of an ActorRequestLianmaiData.
+         * @memberof message
+         * @interface IActorRequestLianmaiData
+         */
+
+        /**
+         * Constructs a new ActorRequestLianmaiData.
+         * @memberof message
+         * @classdesc Represents an ActorRequestLianmaiData.
+         * @implements IActorRequestLianmaiData
+         * @constructor
+         * @param {message.IActorRequestLianmaiData=} [properties] Properties to set
+         */
+        function ActorRequestLianmaiData(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new ActorRequestLianmaiData instance using the specified properties.
+         * @function create
+         * @memberof message.ActorRequestLianmaiData
+         * @static
+         * @param {message.IActorRequestLianmaiData=} [properties] Properties to set
+         * @returns {message.ActorRequestLianmaiData} ActorRequestLianmaiData instance
+         */
+        ActorRequestLianmaiData.create = function create(properties) {
+            return new ActorRequestLianmaiData(properties);
+        };
+
+        /**
+         * Encodes the specified ActorRequestLianmaiData message. Does not implicitly {@link message.ActorRequestLianmaiData.verify|verify} messages.
+         * @function encode
+         * @memberof message.ActorRequestLianmaiData
+         * @static
+         * @param {message.IActorRequestLianmaiData} message ActorRequestLianmaiData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ActorRequestLianmaiData.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ActorRequestLianmaiData message, length delimited. Does not implicitly {@link message.ActorRequestLianmaiData.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.ActorRequestLianmaiData
+         * @static
+         * @param {message.IActorRequestLianmaiData} message ActorRequestLianmaiData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ActorRequestLianmaiData.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an ActorRequestLianmaiData message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.ActorRequestLianmaiData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.ActorRequestLianmaiData} ActorRequestLianmaiData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ActorRequestLianmaiData.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.ActorRequestLianmaiData();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an ActorRequestLianmaiData message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.ActorRequestLianmaiData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.ActorRequestLianmaiData} ActorRequestLianmaiData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ActorRequestLianmaiData.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an ActorRequestLianmaiData message.
+         * @function verify
+         * @memberof message.ActorRequestLianmaiData
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ActorRequestLianmaiData.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates an ActorRequestLianmaiData message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.ActorRequestLianmaiData
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.ActorRequestLianmaiData} ActorRequestLianmaiData
+         */
+        ActorRequestLianmaiData.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.ActorRequestLianmaiData)
+                return object;
+            return new $root.message.ActorRequestLianmaiData();
+        };
+
+        /**
+         * Creates a plain object from an ActorRequestLianmaiData message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.ActorRequestLianmaiData
+         * @static
+         * @param {message.ActorRequestLianmaiData} message ActorRequestLianmaiData
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ActorRequestLianmaiData.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this ActorRequestLianmaiData to JSON.
+         * @function toJSON
+         * @memberof message.ActorRequestLianmaiData
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ActorRequestLianmaiData.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ActorRequestLianmaiData;
+    })();
+
     message.BackLike = (function() {
 
         /**
@@ -8152,7 +9384,7 @@ $root.message = (function() {
              * @property {string|null} [sender] Hongbao sender
              * @property {string|null} [senderAvatar] Hongbao senderAvatar
              * @property {number|null} [point] Hongbao point
-             * @property {number|null} [sec] Hongbao sec
+             * @property {number|Long|null} [startTime] Hongbao startTime
              * @property {number|null} [leftNum] Hongbao leftNum
              */
 
@@ -8212,12 +9444,12 @@ $root.message = (function() {
             Hongbao.prototype.point = 0;
 
             /**
-             * Hongbao sec.
-             * @member {number} sec
+             * Hongbao startTime.
+             * @member {number|Long} startTime
              * @memberof message.BroadCastHongbao.Hongbao
              * @instance
              */
-            Hongbao.prototype.sec = 0;
+            Hongbao.prototype.startTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Hongbao leftNum.
@@ -8261,8 +9493,8 @@ $root.message = (function() {
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.senderAvatar);
                 if (message.point != null && Object.hasOwnProperty.call(message, "point"))
                     writer.uint32(/* id 5, wireType 5 =*/45).float(message.point);
-                if (message.sec != null && Object.hasOwnProperty.call(message, "sec"))
-                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.sec);
+                if (message.startTime != null && Object.hasOwnProperty.call(message, "startTime"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).int64(message.startTime);
                 if (message.leftNum != null && Object.hasOwnProperty.call(message, "leftNum"))
                     writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.leftNum);
                 return writer;
@@ -8315,7 +9547,7 @@ $root.message = (function() {
                         message.point = reader.float();
                         break;
                     case 6:
-                        message.sec = reader.uint32();
+                        message.startTime = reader.int64();
                         break;
                     case 7:
                         message.leftNum = reader.uint32();
@@ -8377,9 +9609,9 @@ $root.message = (function() {
                 if (message.point != null && message.hasOwnProperty("point"))
                     if (typeof message.point !== "number")
                         return "point: number expected";
-                if (message.sec != null && message.hasOwnProperty("sec"))
-                    if (!$util.isInteger(message.sec))
-                        return "sec: integer expected";
+                if (message.startTime != null && message.hasOwnProperty("startTime"))
+                    if (!$util.isInteger(message.startTime) && !(message.startTime && $util.isInteger(message.startTime.low) && $util.isInteger(message.startTime.high)))
+                        return "startTime: integer|Long expected";
                 if (message.leftNum != null && message.hasOwnProperty("leftNum"))
                     if (!$util.isInteger(message.leftNum))
                         return "leftNum: integer expected";
@@ -8431,8 +9663,15 @@ $root.message = (function() {
                     message.senderAvatar = String(object.senderAvatar);
                 if (object.point != null)
                     message.point = Number(object.point);
-                if (object.sec != null)
-                    message.sec = object.sec >>> 0;
+                if (object.startTime != null)
+                    if ($util.Long)
+                        (message.startTime = $util.Long.fromValue(object.startTime)).unsigned = false;
+                    else if (typeof object.startTime === "string")
+                        message.startTime = parseInt(object.startTime, 10);
+                    else if (typeof object.startTime === "number")
+                        message.startTime = object.startTime;
+                    else if (typeof object.startTime === "object")
+                        message.startTime = new $util.LongBits(object.startTime.low >>> 0, object.startTime.high >>> 0).toNumber();
                 if (object.leftNum != null)
                     message.leftNum = object.leftNum >>> 0;
                 return message;
@@ -8461,7 +9700,11 @@ $root.message = (function() {
                     object.sender = "";
                     object.senderAvatar = "";
                     object.point = 0;
-                    object.sec = 0;
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.startTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.startTime = options.longs === String ? "0" : 0;
                     object.leftNum = 0;
                 }
                 if (message.id != null && message.hasOwnProperty("id"))
@@ -8477,8 +9720,11 @@ $root.message = (function() {
                     object.senderAvatar = message.senderAvatar;
                 if (message.point != null && message.hasOwnProperty("point"))
                     object.point = options.json && !isFinite(message.point) ? String(message.point) : message.point;
-                if (message.sec != null && message.hasOwnProperty("sec"))
-                    object.sec = message.sec;
+                if (message.startTime != null && message.hasOwnProperty("startTime"))
+                    if (typeof message.startTime === "number")
+                        object.startTime = options.longs === String ? String(message.startTime) : message.startTime;
+                    else
+                        object.startTime = options.longs === String ? $util.Long.prototype.toString.call(message.startTime) : options.longs === Number ? new $util.LongBits(message.startTime.low >>> 0, message.startTime.high >>> 0).toNumber() : message.startTime;
                 if (message.leftNum != null && message.hasOwnProperty("leftNum"))
                     object.leftNum = message.leftNum;
                 return object;
@@ -9857,6 +11103,2733 @@ $root.message = (function() {
         })();
 
         return BroadCastChatMessage;
+    })();
+
+    message.BackSendMerchantCoupon = (function() {
+
+        /**
+         * Properties of a BackSendMerchantCoupon.
+         * @memberof message
+         * @interface IBackSendMerchantCoupon
+         * @property {boolean|null} [success] BackSendMerchantCoupon success
+         * @property {string|null} [msg] BackSendMerchantCoupon msg
+         */
+
+        /**
+         * Constructs a new BackSendMerchantCoupon.
+         * @memberof message
+         * @classdesc Represents a BackSendMerchantCoupon.
+         * @implements IBackSendMerchantCoupon
+         * @constructor
+         * @param {message.IBackSendMerchantCoupon=} [properties] Properties to set
+         */
+        function BackSendMerchantCoupon(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackSendMerchantCoupon success.
+         * @member {boolean} success
+         * @memberof message.BackSendMerchantCoupon
+         * @instance
+         */
+        BackSendMerchantCoupon.prototype.success = false;
+
+        /**
+         * BackSendMerchantCoupon msg.
+         * @member {string} msg
+         * @memberof message.BackSendMerchantCoupon
+         * @instance
+         */
+        BackSendMerchantCoupon.prototype.msg = "";
+
+        /**
+         * Creates a new BackSendMerchantCoupon instance using the specified properties.
+         * @function create
+         * @memberof message.BackSendMerchantCoupon
+         * @static
+         * @param {message.IBackSendMerchantCoupon=} [properties] Properties to set
+         * @returns {message.BackSendMerchantCoupon} BackSendMerchantCoupon instance
+         */
+        BackSendMerchantCoupon.create = function create(properties) {
+            return new BackSendMerchantCoupon(properties);
+        };
+
+        /**
+         * Encodes the specified BackSendMerchantCoupon message. Does not implicitly {@link message.BackSendMerchantCoupon.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackSendMerchantCoupon
+         * @static
+         * @param {message.IBackSendMerchantCoupon} message BackSendMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackSendMerchantCoupon.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackSendMerchantCoupon message, length delimited. Does not implicitly {@link message.BackSendMerchantCoupon.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackSendMerchantCoupon
+         * @static
+         * @param {message.IBackSendMerchantCoupon} message BackSendMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackSendMerchantCoupon.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackSendMerchantCoupon message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackSendMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackSendMerchantCoupon} BackSendMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackSendMerchantCoupon.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackSendMerchantCoupon();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.success = reader.bool();
+                    break;
+                case 2:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackSendMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackSendMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackSendMerchantCoupon} BackSendMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackSendMerchantCoupon.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackSendMerchantCoupon message.
+         * @function verify
+         * @memberof message.BackSendMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackSendMerchantCoupon.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackSendMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackSendMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackSendMerchantCoupon} BackSendMerchantCoupon
+         */
+        BackSendMerchantCoupon.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackSendMerchantCoupon)
+                return object;
+            var message = new $root.message.BackSendMerchantCoupon();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackSendMerchantCoupon message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackSendMerchantCoupon
+         * @static
+         * @param {message.BackSendMerchantCoupon} message BackSendMerchantCoupon
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackSendMerchantCoupon.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.msg = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackSendMerchantCoupon to JSON.
+         * @function toJSON
+         * @memberof message.BackSendMerchantCoupon
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackSendMerchantCoupon.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackSendMerchantCoupon;
+    })();
+
+    message.BroadCastMerchantCoupon = (function() {
+
+        /**
+         * Properties of a BroadCastMerchantCoupon.
+         * @memberof message
+         * @interface IBroadCastMerchantCoupon
+         * @property {Array.<message.BroadCastMerchantCoupon.ICoupon>|null} [list] BroadCastMerchantCoupon list
+         */
+
+        /**
+         * Constructs a new BroadCastMerchantCoupon.
+         * @memberof message
+         * @classdesc Represents a BroadCastMerchantCoupon.
+         * @implements IBroadCastMerchantCoupon
+         * @constructor
+         * @param {message.IBroadCastMerchantCoupon=} [properties] Properties to set
+         */
+        function BroadCastMerchantCoupon(properties) {
+            this.list = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BroadCastMerchantCoupon list.
+         * @member {Array.<message.BroadCastMerchantCoupon.ICoupon>} list
+         * @memberof message.BroadCastMerchantCoupon
+         * @instance
+         */
+        BroadCastMerchantCoupon.prototype.list = $util.emptyArray;
+
+        /**
+         * Creates a new BroadCastMerchantCoupon instance using the specified properties.
+         * @function create
+         * @memberof message.BroadCastMerchantCoupon
+         * @static
+         * @param {message.IBroadCastMerchantCoupon=} [properties] Properties to set
+         * @returns {message.BroadCastMerchantCoupon} BroadCastMerchantCoupon instance
+         */
+        BroadCastMerchantCoupon.create = function create(properties) {
+            return new BroadCastMerchantCoupon(properties);
+        };
+
+        /**
+         * Encodes the specified BroadCastMerchantCoupon message. Does not implicitly {@link message.BroadCastMerchantCoupon.verify|verify} messages.
+         * @function encode
+         * @memberof message.BroadCastMerchantCoupon
+         * @static
+         * @param {message.IBroadCastMerchantCoupon} message BroadCastMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastMerchantCoupon.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.list != null && message.list.length)
+                for (var i = 0; i < message.list.length; ++i)
+                    $root.message.BroadCastMerchantCoupon.Coupon.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BroadCastMerchantCoupon message, length delimited. Does not implicitly {@link message.BroadCastMerchantCoupon.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BroadCastMerchantCoupon
+         * @static
+         * @param {message.IBroadCastMerchantCoupon} message BroadCastMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastMerchantCoupon.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BroadCastMerchantCoupon message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BroadCastMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BroadCastMerchantCoupon} BroadCastMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastMerchantCoupon.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastMerchantCoupon();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.list && message.list.length))
+                        message.list = [];
+                    message.list.push($root.message.BroadCastMerchantCoupon.Coupon.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BroadCastMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BroadCastMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BroadCastMerchantCoupon} BroadCastMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastMerchantCoupon.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BroadCastMerchantCoupon message.
+         * @function verify
+         * @memberof message.BroadCastMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BroadCastMerchantCoupon.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.list != null && message.hasOwnProperty("list")) {
+                if (!Array.isArray(message.list))
+                    return "list: array expected";
+                for (var i = 0; i < message.list.length; ++i) {
+                    var error = $root.message.BroadCastMerchantCoupon.Coupon.verify(message.list[i]);
+                    if (error)
+                        return "list." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a BroadCastMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BroadCastMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BroadCastMerchantCoupon} BroadCastMerchantCoupon
+         */
+        BroadCastMerchantCoupon.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadCastMerchantCoupon)
+                return object;
+            var message = new $root.message.BroadCastMerchantCoupon();
+            if (object.list) {
+                if (!Array.isArray(object.list))
+                    throw TypeError(".message.BroadCastMerchantCoupon.list: array expected");
+                message.list = [];
+                for (var i = 0; i < object.list.length; ++i) {
+                    if (typeof object.list[i] !== "object")
+                        throw TypeError(".message.BroadCastMerchantCoupon.list: object expected");
+                    message.list[i] = $root.message.BroadCastMerchantCoupon.Coupon.fromObject(object.list[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BroadCastMerchantCoupon message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BroadCastMerchantCoupon
+         * @static
+         * @param {message.BroadCastMerchantCoupon} message BroadCastMerchantCoupon
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BroadCastMerchantCoupon.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.list = [];
+            if (message.list && message.list.length) {
+                object.list = [];
+                for (var j = 0; j < message.list.length; ++j)
+                    object.list[j] = $root.message.BroadCastMerchantCoupon.Coupon.toObject(message.list[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this BroadCastMerchantCoupon to JSON.
+         * @function toJSON
+         * @memberof message.BroadCastMerchantCoupon
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BroadCastMerchantCoupon.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        BroadCastMerchantCoupon.Coupon = (function() {
+
+            /**
+             * Properties of a Coupon.
+             * @memberof message.BroadCastMerchantCoupon
+             * @interface ICoupon
+             * @property {number|Long|null} [id] Coupon id
+             * @property {boolean|null} [disappear] Coupon disappear
+             * @property {number|null} [sec] Coupon sec
+             */
+
+            /**
+             * Constructs a new Coupon.
+             * @memberof message.BroadCastMerchantCoupon
+             * @classdesc Represents a Coupon.
+             * @implements ICoupon
+             * @constructor
+             * @param {message.BroadCastMerchantCoupon.ICoupon=} [properties] Properties to set
+             */
+            function Coupon(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * Coupon id.
+             * @member {number|Long} id
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @instance
+             */
+            Coupon.prototype.id = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
+             * Coupon disappear.
+             * @member {boolean} disappear
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @instance
+             */
+            Coupon.prototype.disappear = false;
+
+            /**
+             * Coupon sec.
+             * @member {number} sec
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @instance
+             */
+            Coupon.prototype.sec = 0;
+
+            /**
+             * Creates a new Coupon instance using the specified properties.
+             * @function create
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @static
+             * @param {message.BroadCastMerchantCoupon.ICoupon=} [properties] Properties to set
+             * @returns {message.BroadCastMerchantCoupon.Coupon} Coupon instance
+             */
+            Coupon.create = function create(properties) {
+                return new Coupon(properties);
+            };
+
+            /**
+             * Encodes the specified Coupon message. Does not implicitly {@link message.BroadCastMerchantCoupon.Coupon.verify|verify} messages.
+             * @function encode
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @static
+             * @param {message.BroadCastMerchantCoupon.ICoupon} message Coupon message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Coupon.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
+                if (message.disappear != null && Object.hasOwnProperty.call(message, "disappear"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).bool(message.disappear);
+                if (message.sec != null && Object.hasOwnProperty.call(message, "sec"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.sec);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified Coupon message, length delimited. Does not implicitly {@link message.BroadCastMerchantCoupon.Coupon.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @static
+             * @param {message.BroadCastMerchantCoupon.ICoupon} message Coupon message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Coupon.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a Coupon message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {message.BroadCastMerchantCoupon.Coupon} Coupon
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Coupon.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastMerchantCoupon.Coupon();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.id = reader.int64();
+                        break;
+                    case 2:
+                        message.disappear = reader.bool();
+                        break;
+                    case 3:
+                        message.sec = reader.uint32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a Coupon message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {message.BroadCastMerchantCoupon.Coupon} Coupon
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Coupon.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a Coupon message.
+             * @function verify
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            Coupon.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.id != null && message.hasOwnProperty("id"))
+                    if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
+                        return "id: integer|Long expected";
+                if (message.disappear != null && message.hasOwnProperty("disappear"))
+                    if (typeof message.disappear !== "boolean")
+                        return "disappear: boolean expected";
+                if (message.sec != null && message.hasOwnProperty("sec"))
+                    if (!$util.isInteger(message.sec))
+                        return "sec: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates a Coupon message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {message.BroadCastMerchantCoupon.Coupon} Coupon
+             */
+            Coupon.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.BroadCastMerchantCoupon.Coupon)
+                    return object;
+                var message = new $root.message.BroadCastMerchantCoupon.Coupon();
+                if (object.id != null)
+                    if ($util.Long)
+                        (message.id = $util.Long.fromValue(object.id)).unsigned = false;
+                    else if (typeof object.id === "string")
+                        message.id = parseInt(object.id, 10);
+                    else if (typeof object.id === "number")
+                        message.id = object.id;
+                    else if (typeof object.id === "object")
+                        message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
+                if (object.disappear != null)
+                    message.disappear = Boolean(object.disappear);
+                if (object.sec != null)
+                    message.sec = object.sec >>> 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a Coupon message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @static
+             * @param {message.BroadCastMerchantCoupon.Coupon} message Coupon
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Coupon.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.id = options.longs === String ? "0" : 0;
+                    object.disappear = false;
+                    object.sec = 0;
+                }
+                if (message.id != null && message.hasOwnProperty("id"))
+                    if (typeof message.id === "number")
+                        object.id = options.longs === String ? String(message.id) : message.id;
+                    else
+                        object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
+                if (message.disappear != null && message.hasOwnProperty("disappear"))
+                    object.disappear = message.disappear;
+                if (message.sec != null && message.hasOwnProperty("sec"))
+                    object.sec = message.sec;
+                return object;
+            };
+
+            /**
+             * Converts this Coupon to JSON.
+             * @function toJSON
+             * @memberof message.BroadCastMerchantCoupon.Coupon
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            Coupon.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return Coupon;
+        })();
+
+        return BroadCastMerchantCoupon;
+    })();
+
+    message.BackGetMerchantCoupon = (function() {
+
+        /**
+         * Properties of a BackGetMerchantCoupon.
+         * @memberof message
+         * @interface IBackGetMerchantCoupon
+         * @property {boolean|null} [success] BackGetMerchantCoupon success
+         * @property {string|null} [msg] BackGetMerchantCoupon msg
+         * @property {boolean|null} [disappear] BackGetMerchantCoupon disappear
+         * @property {message.BackGetMerchantCoupon.ICoupon|null} [coupon] BackGetMerchantCoupon coupon
+         */
+
+        /**
+         * Constructs a new BackGetMerchantCoupon.
+         * @memberof message
+         * @classdesc Represents a BackGetMerchantCoupon.
+         * @implements IBackGetMerchantCoupon
+         * @constructor
+         * @param {message.IBackGetMerchantCoupon=} [properties] Properties to set
+         */
+        function BackGetMerchantCoupon(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackGetMerchantCoupon success.
+         * @member {boolean} success
+         * @memberof message.BackGetMerchantCoupon
+         * @instance
+         */
+        BackGetMerchantCoupon.prototype.success = false;
+
+        /**
+         * BackGetMerchantCoupon msg.
+         * @member {string} msg
+         * @memberof message.BackGetMerchantCoupon
+         * @instance
+         */
+        BackGetMerchantCoupon.prototype.msg = "";
+
+        /**
+         * BackGetMerchantCoupon disappear.
+         * @member {boolean} disappear
+         * @memberof message.BackGetMerchantCoupon
+         * @instance
+         */
+        BackGetMerchantCoupon.prototype.disappear = false;
+
+        /**
+         * BackGetMerchantCoupon coupon.
+         * @member {message.BackGetMerchantCoupon.ICoupon|null|undefined} coupon
+         * @memberof message.BackGetMerchantCoupon
+         * @instance
+         */
+        BackGetMerchantCoupon.prototype.coupon = null;
+
+        /**
+         * Creates a new BackGetMerchantCoupon instance using the specified properties.
+         * @function create
+         * @memberof message.BackGetMerchantCoupon
+         * @static
+         * @param {message.IBackGetMerchantCoupon=} [properties] Properties to set
+         * @returns {message.BackGetMerchantCoupon} BackGetMerchantCoupon instance
+         */
+        BackGetMerchantCoupon.create = function create(properties) {
+            return new BackGetMerchantCoupon(properties);
+        };
+
+        /**
+         * Encodes the specified BackGetMerchantCoupon message. Does not implicitly {@link message.BackGetMerchantCoupon.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackGetMerchantCoupon
+         * @static
+         * @param {message.IBackGetMerchantCoupon} message BackGetMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackGetMerchantCoupon.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            if (message.disappear != null && Object.hasOwnProperty.call(message, "disappear"))
+                writer.uint32(/* id 3, wireType 0 =*/24).bool(message.disappear);
+            if (message.coupon != null && Object.hasOwnProperty.call(message, "coupon"))
+                $root.message.BackGetMerchantCoupon.Coupon.encode(message.coupon, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackGetMerchantCoupon message, length delimited. Does not implicitly {@link message.BackGetMerchantCoupon.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackGetMerchantCoupon
+         * @static
+         * @param {message.IBackGetMerchantCoupon} message BackGetMerchantCoupon message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackGetMerchantCoupon.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackGetMerchantCoupon message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackGetMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackGetMerchantCoupon} BackGetMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackGetMerchantCoupon.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackGetMerchantCoupon();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.success = reader.bool();
+                    break;
+                case 2:
+                    message.msg = reader.string();
+                    break;
+                case 3:
+                    message.disappear = reader.bool();
+                    break;
+                case 4:
+                    message.coupon = $root.message.BackGetMerchantCoupon.Coupon.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackGetMerchantCoupon message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackGetMerchantCoupon
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackGetMerchantCoupon} BackGetMerchantCoupon
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackGetMerchantCoupon.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackGetMerchantCoupon message.
+         * @function verify
+         * @memberof message.BackGetMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackGetMerchantCoupon.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            if (message.disappear != null && message.hasOwnProperty("disappear"))
+                if (typeof message.disappear !== "boolean")
+                    return "disappear: boolean expected";
+            if (message.coupon != null && message.hasOwnProperty("coupon")) {
+                var error = $root.message.BackGetMerchantCoupon.Coupon.verify(message.coupon);
+                if (error)
+                    return "coupon." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a BackGetMerchantCoupon message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackGetMerchantCoupon
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackGetMerchantCoupon} BackGetMerchantCoupon
+         */
+        BackGetMerchantCoupon.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackGetMerchantCoupon)
+                return object;
+            var message = new $root.message.BackGetMerchantCoupon();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            if (object.disappear != null)
+                message.disappear = Boolean(object.disappear);
+            if (object.coupon != null) {
+                if (typeof object.coupon !== "object")
+                    throw TypeError(".message.BackGetMerchantCoupon.coupon: object expected");
+                message.coupon = $root.message.BackGetMerchantCoupon.Coupon.fromObject(object.coupon);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackGetMerchantCoupon message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackGetMerchantCoupon
+         * @static
+         * @param {message.BackGetMerchantCoupon} message BackGetMerchantCoupon
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackGetMerchantCoupon.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.msg = "";
+                object.disappear = false;
+                object.coupon = null;
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            if (message.disappear != null && message.hasOwnProperty("disappear"))
+                object.disappear = message.disappear;
+            if (message.coupon != null && message.hasOwnProperty("coupon"))
+                object.coupon = $root.message.BackGetMerchantCoupon.Coupon.toObject(message.coupon, options);
+            return object;
+        };
+
+        /**
+         * Converts this BackGetMerchantCoupon to JSON.
+         * @function toJSON
+         * @memberof message.BackGetMerchantCoupon
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackGetMerchantCoupon.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        BackGetMerchantCoupon.Coupon = (function() {
+
+            /**
+             * Properties of a Coupon.
+             * @memberof message.BackGetMerchantCoupon
+             * @interface ICoupon
+             * @property {number|null} [tp] Coupon tp
+             * @property {string|null} [goodCode] Coupon goodCode
+             * @property {number|null} [amount] Coupon amount
+             * @property {number|null} [minUseAmount] Coupon minUseAmount
+             * @property {string|null} [durExp] Coupon durExp
+             */
+
+            /**
+             * Constructs a new Coupon.
+             * @memberof message.BackGetMerchantCoupon
+             * @classdesc Represents a Coupon.
+             * @implements ICoupon
+             * @constructor
+             * @param {message.BackGetMerchantCoupon.ICoupon=} [properties] Properties to set
+             */
+            function Coupon(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * Coupon tp.
+             * @member {number} tp
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @instance
+             */
+            Coupon.prototype.tp = 0;
+
+            /**
+             * Coupon goodCode.
+             * @member {string} goodCode
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @instance
+             */
+            Coupon.prototype.goodCode = "";
+
+            /**
+             * Coupon amount.
+             * @member {number} amount
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @instance
+             */
+            Coupon.prototype.amount = 0;
+
+            /**
+             * Coupon minUseAmount.
+             * @member {number} minUseAmount
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @instance
+             */
+            Coupon.prototype.minUseAmount = 0;
+
+            /**
+             * Coupon durExp.
+             * @member {string} durExp
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @instance
+             */
+            Coupon.prototype.durExp = "";
+
+            /**
+             * Creates a new Coupon instance using the specified properties.
+             * @function create
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @static
+             * @param {message.BackGetMerchantCoupon.ICoupon=} [properties] Properties to set
+             * @returns {message.BackGetMerchantCoupon.Coupon} Coupon instance
+             */
+            Coupon.create = function create(properties) {
+                return new Coupon(properties);
+            };
+
+            /**
+             * Encodes the specified Coupon message. Does not implicitly {@link message.BackGetMerchantCoupon.Coupon.verify|verify} messages.
+             * @function encode
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @static
+             * @param {message.BackGetMerchantCoupon.ICoupon} message Coupon message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Coupon.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.tp != null && Object.hasOwnProperty.call(message, "tp"))
+                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.tp);
+                if (message.goodCode != null && Object.hasOwnProperty.call(message, "goodCode"))
+                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.goodCode);
+                if (message.amount != null && Object.hasOwnProperty.call(message, "amount"))
+                    writer.uint32(/* id 6, wireType 5 =*/53).float(message.amount);
+                if (message.minUseAmount != null && Object.hasOwnProperty.call(message, "minUseAmount"))
+                    writer.uint32(/* id 7, wireType 5 =*/61).float(message.minUseAmount);
+                if (message.durExp != null && Object.hasOwnProperty.call(message, "durExp"))
+                    writer.uint32(/* id 8, wireType 2 =*/66).string(message.durExp);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified Coupon message, length delimited. Does not implicitly {@link message.BackGetMerchantCoupon.Coupon.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @static
+             * @param {message.BackGetMerchantCoupon.ICoupon} message Coupon message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Coupon.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a Coupon message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {message.BackGetMerchantCoupon.Coupon} Coupon
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Coupon.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackGetMerchantCoupon.Coupon();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 4:
+                        message.tp = reader.uint32();
+                        break;
+                    case 5:
+                        message.goodCode = reader.string();
+                        break;
+                    case 6:
+                        message.amount = reader.float();
+                        break;
+                    case 7:
+                        message.minUseAmount = reader.float();
+                        break;
+                    case 8:
+                        message.durExp = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a Coupon message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {message.BackGetMerchantCoupon.Coupon} Coupon
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Coupon.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a Coupon message.
+             * @function verify
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            Coupon.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.tp != null && message.hasOwnProperty("tp"))
+                    if (!$util.isInteger(message.tp))
+                        return "tp: integer expected";
+                if (message.goodCode != null && message.hasOwnProperty("goodCode"))
+                    if (!$util.isString(message.goodCode))
+                        return "goodCode: string expected";
+                if (message.amount != null && message.hasOwnProperty("amount"))
+                    if (typeof message.amount !== "number")
+                        return "amount: number expected";
+                if (message.minUseAmount != null && message.hasOwnProperty("minUseAmount"))
+                    if (typeof message.minUseAmount !== "number")
+                        return "minUseAmount: number expected";
+                if (message.durExp != null && message.hasOwnProperty("durExp"))
+                    if (!$util.isString(message.durExp))
+                        return "durExp: string expected";
+                return null;
+            };
+
+            /**
+             * Creates a Coupon message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {message.BackGetMerchantCoupon.Coupon} Coupon
+             */
+            Coupon.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.BackGetMerchantCoupon.Coupon)
+                    return object;
+                var message = new $root.message.BackGetMerchantCoupon.Coupon();
+                if (object.tp != null)
+                    message.tp = object.tp >>> 0;
+                if (object.goodCode != null)
+                    message.goodCode = String(object.goodCode);
+                if (object.amount != null)
+                    message.amount = Number(object.amount);
+                if (object.minUseAmount != null)
+                    message.minUseAmount = Number(object.minUseAmount);
+                if (object.durExp != null)
+                    message.durExp = String(object.durExp);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a Coupon message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @static
+             * @param {message.BackGetMerchantCoupon.Coupon} message Coupon
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Coupon.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.tp = 0;
+                    object.goodCode = "";
+                    object.amount = 0;
+                    object.minUseAmount = 0;
+                    object.durExp = "";
+                }
+                if (message.tp != null && message.hasOwnProperty("tp"))
+                    object.tp = message.tp;
+                if (message.goodCode != null && message.hasOwnProperty("goodCode"))
+                    object.goodCode = message.goodCode;
+                if (message.amount != null && message.hasOwnProperty("amount"))
+                    object.amount = options.json && !isFinite(message.amount) ? String(message.amount) : message.amount;
+                if (message.minUseAmount != null && message.hasOwnProperty("minUseAmount"))
+                    object.minUseAmount = options.json && !isFinite(message.minUseAmount) ? String(message.minUseAmount) : message.minUseAmount;
+                if (message.durExp != null && message.hasOwnProperty("durExp"))
+                    object.durExp = message.durExp;
+                return object;
+            };
+
+            /**
+             * Converts this Coupon to JSON.
+             * @function toJSON
+             * @memberof message.BackGetMerchantCoupon.Coupon
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            Coupon.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return Coupon;
+        })();
+
+        return BackGetMerchantCoupon;
+    })();
+
+    message.BroadCastLianmaiAllowed = (function() {
+
+        /**
+         * Properties of a BroadCastLianmaiAllowed.
+         * @memberof message
+         * @interface IBroadCastLianmaiAllowed
+         * @property {boolean|null} [allowed] BroadCastLianmaiAllowed allowed
+         */
+
+        /**
+         * Constructs a new BroadCastLianmaiAllowed.
+         * @memberof message
+         * @classdesc Represents a BroadCastLianmaiAllowed.
+         * @implements IBroadCastLianmaiAllowed
+         * @constructor
+         * @param {message.IBroadCastLianmaiAllowed=} [properties] Properties to set
+         */
+        function BroadCastLianmaiAllowed(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BroadCastLianmaiAllowed allowed.
+         * @member {boolean} allowed
+         * @memberof message.BroadCastLianmaiAllowed
+         * @instance
+         */
+        BroadCastLianmaiAllowed.prototype.allowed = false;
+
+        /**
+         * Creates a new BroadCastLianmaiAllowed instance using the specified properties.
+         * @function create
+         * @memberof message.BroadCastLianmaiAllowed
+         * @static
+         * @param {message.IBroadCastLianmaiAllowed=} [properties] Properties to set
+         * @returns {message.BroadCastLianmaiAllowed} BroadCastLianmaiAllowed instance
+         */
+        BroadCastLianmaiAllowed.create = function create(properties) {
+            return new BroadCastLianmaiAllowed(properties);
+        };
+
+        /**
+         * Encodes the specified BroadCastLianmaiAllowed message. Does not implicitly {@link message.BroadCastLianmaiAllowed.verify|verify} messages.
+         * @function encode
+         * @memberof message.BroadCastLianmaiAllowed
+         * @static
+         * @param {message.IBroadCastLianmaiAllowed} message BroadCastLianmaiAllowed message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastLianmaiAllowed.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.allowed != null && Object.hasOwnProperty.call(message, "allowed"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.allowed);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BroadCastLianmaiAllowed message, length delimited. Does not implicitly {@link message.BroadCastLianmaiAllowed.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BroadCastLianmaiAllowed
+         * @static
+         * @param {message.IBroadCastLianmaiAllowed} message BroadCastLianmaiAllowed message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastLianmaiAllowed.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BroadCastLianmaiAllowed message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BroadCastLianmaiAllowed
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BroadCastLianmaiAllowed} BroadCastLianmaiAllowed
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastLianmaiAllowed.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastLianmaiAllowed();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.allowed = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BroadCastLianmaiAllowed message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BroadCastLianmaiAllowed
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BroadCastLianmaiAllowed} BroadCastLianmaiAllowed
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastLianmaiAllowed.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BroadCastLianmaiAllowed message.
+         * @function verify
+         * @memberof message.BroadCastLianmaiAllowed
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BroadCastLianmaiAllowed.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.allowed != null && message.hasOwnProperty("allowed"))
+                if (typeof message.allowed !== "boolean")
+                    return "allowed: boolean expected";
+            return null;
+        };
+
+        /**
+         * Creates a BroadCastLianmaiAllowed message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BroadCastLianmaiAllowed
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BroadCastLianmaiAllowed} BroadCastLianmaiAllowed
+         */
+        BroadCastLianmaiAllowed.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadCastLianmaiAllowed)
+                return object;
+            var message = new $root.message.BroadCastLianmaiAllowed();
+            if (object.allowed != null)
+                message.allowed = Boolean(object.allowed);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BroadCastLianmaiAllowed message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BroadCastLianmaiAllowed
+         * @static
+         * @param {message.BroadCastLianmaiAllowed} message BroadCastLianmaiAllowed
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BroadCastLianmaiAllowed.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.allowed = false;
+            if (message.allowed != null && message.hasOwnProperty("allowed"))
+                object.allowed = message.allowed;
+            return object;
+        };
+
+        /**
+         * Converts this BroadCastLianmaiAllowed to JSON.
+         * @function toJSON
+         * @memberof message.BroadCastLianmaiAllowed
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BroadCastLianmaiAllowed.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BroadCastLianmaiAllowed;
+    })();
+
+    message.SendLianmaiApply = (function() {
+
+        /**
+         * Properties of a SendLianmaiApply.
+         * @memberof message
+         * @interface ISendLianmaiApply
+         * @property {string|null} [uid] SendLianmaiApply uid
+         * @property {string|null} [sender] SendLianmaiApply sender
+         * @property {string|null} [senderAvatar] SendLianmaiApply senderAvatar
+         */
+
+        /**
+         * Constructs a new SendLianmaiApply.
+         * @memberof message
+         * @classdesc Represents a SendLianmaiApply.
+         * @implements ISendLianmaiApply
+         * @constructor
+         * @param {message.ISendLianmaiApply=} [properties] Properties to set
+         */
+        function SendLianmaiApply(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * SendLianmaiApply uid.
+         * @member {string} uid
+         * @memberof message.SendLianmaiApply
+         * @instance
+         */
+        SendLianmaiApply.prototype.uid = "";
+
+        /**
+         * SendLianmaiApply sender.
+         * @member {string} sender
+         * @memberof message.SendLianmaiApply
+         * @instance
+         */
+        SendLianmaiApply.prototype.sender = "";
+
+        /**
+         * SendLianmaiApply senderAvatar.
+         * @member {string} senderAvatar
+         * @memberof message.SendLianmaiApply
+         * @instance
+         */
+        SendLianmaiApply.prototype.senderAvatar = "";
+
+        /**
+         * Creates a new SendLianmaiApply instance using the specified properties.
+         * @function create
+         * @memberof message.SendLianmaiApply
+         * @static
+         * @param {message.ISendLianmaiApply=} [properties] Properties to set
+         * @returns {message.SendLianmaiApply} SendLianmaiApply instance
+         */
+        SendLianmaiApply.create = function create(properties) {
+            return new SendLianmaiApply(properties);
+        };
+
+        /**
+         * Encodes the specified SendLianmaiApply message. Does not implicitly {@link message.SendLianmaiApply.verify|verify} messages.
+         * @function encode
+         * @memberof message.SendLianmaiApply
+         * @static
+         * @param {message.ISendLianmaiApply} message SendLianmaiApply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SendLianmaiApply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.uid);
+            if (message.sender != null && Object.hasOwnProperty.call(message, "sender"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.sender);
+            if (message.senderAvatar != null && Object.hasOwnProperty.call(message, "senderAvatar"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.senderAvatar);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified SendLianmaiApply message, length delimited. Does not implicitly {@link message.SendLianmaiApply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.SendLianmaiApply
+         * @static
+         * @param {message.ISendLianmaiApply} message SendLianmaiApply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SendLianmaiApply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a SendLianmaiApply message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.SendLianmaiApply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.SendLianmaiApply} SendLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SendLianmaiApply.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.SendLianmaiApply();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.uid = reader.string();
+                    break;
+                case 2:
+                    message.sender = reader.string();
+                    break;
+                case 3:
+                    message.senderAvatar = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a SendLianmaiApply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.SendLianmaiApply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.SendLianmaiApply} SendLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SendLianmaiApply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a SendLianmaiApply message.
+         * @function verify
+         * @memberof message.SendLianmaiApply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        SendLianmaiApply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                if (!$util.isString(message.uid))
+                    return "uid: string expected";
+            if (message.sender != null && message.hasOwnProperty("sender"))
+                if (!$util.isString(message.sender))
+                    return "sender: string expected";
+            if (message.senderAvatar != null && message.hasOwnProperty("senderAvatar"))
+                if (!$util.isString(message.senderAvatar))
+                    return "senderAvatar: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a SendLianmaiApply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.SendLianmaiApply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.SendLianmaiApply} SendLianmaiApply
+         */
+        SendLianmaiApply.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.SendLianmaiApply)
+                return object;
+            var message = new $root.message.SendLianmaiApply();
+            if (object.uid != null)
+                message.uid = String(object.uid);
+            if (object.sender != null)
+                message.sender = String(object.sender);
+            if (object.senderAvatar != null)
+                message.senderAvatar = String(object.senderAvatar);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a SendLianmaiApply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.SendLianmaiApply
+         * @static
+         * @param {message.SendLianmaiApply} message SendLianmaiApply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        SendLianmaiApply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.uid = "";
+                object.sender = "";
+                object.senderAvatar = "";
+            }
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                object.uid = message.uid;
+            if (message.sender != null && message.hasOwnProperty("sender"))
+                object.sender = message.sender;
+            if (message.senderAvatar != null && message.hasOwnProperty("senderAvatar"))
+                object.senderAvatar = message.senderAvatar;
+            return object;
+        };
+
+        /**
+         * Converts this SendLianmaiApply to JSON.
+         * @function toJSON
+         * @memberof message.SendLianmaiApply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        SendLianmaiApply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return SendLianmaiApply;
+    })();
+
+    message.BackApplyLianmai = (function() {
+
+        /**
+         * Properties of a BackApplyLianmai.
+         * @memberof message
+         * @interface IBackApplyLianmai
+         * @property {boolean|null} [success] BackApplyLianmai success
+         * @property {string|null} [msg] BackApplyLianmai msg
+         */
+
+        /**
+         * Constructs a new BackApplyLianmai.
+         * @memberof message
+         * @classdesc Represents a BackApplyLianmai.
+         * @implements IBackApplyLianmai
+         * @constructor
+         * @param {message.IBackApplyLianmai=} [properties] Properties to set
+         */
+        function BackApplyLianmai(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackApplyLianmai success.
+         * @member {boolean} success
+         * @memberof message.BackApplyLianmai
+         * @instance
+         */
+        BackApplyLianmai.prototype.success = false;
+
+        /**
+         * BackApplyLianmai msg.
+         * @member {string} msg
+         * @memberof message.BackApplyLianmai
+         * @instance
+         */
+        BackApplyLianmai.prototype.msg = "";
+
+        /**
+         * Creates a new BackApplyLianmai instance using the specified properties.
+         * @function create
+         * @memberof message.BackApplyLianmai
+         * @static
+         * @param {message.IBackApplyLianmai=} [properties] Properties to set
+         * @returns {message.BackApplyLianmai} BackApplyLianmai instance
+         */
+        BackApplyLianmai.create = function create(properties) {
+            return new BackApplyLianmai(properties);
+        };
+
+        /**
+         * Encodes the specified BackApplyLianmai message. Does not implicitly {@link message.BackApplyLianmai.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackApplyLianmai
+         * @static
+         * @param {message.IBackApplyLianmai} message BackApplyLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackApplyLianmai.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackApplyLianmai message, length delimited. Does not implicitly {@link message.BackApplyLianmai.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackApplyLianmai
+         * @static
+         * @param {message.IBackApplyLianmai} message BackApplyLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackApplyLianmai.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackApplyLianmai message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackApplyLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackApplyLianmai} BackApplyLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackApplyLianmai.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackApplyLianmai();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.success = reader.bool();
+                    break;
+                case 2:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackApplyLianmai message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackApplyLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackApplyLianmai} BackApplyLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackApplyLianmai.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackApplyLianmai message.
+         * @function verify
+         * @memberof message.BackApplyLianmai
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackApplyLianmai.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackApplyLianmai message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackApplyLianmai
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackApplyLianmai} BackApplyLianmai
+         */
+        BackApplyLianmai.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackApplyLianmai)
+                return object;
+            var message = new $root.message.BackApplyLianmai();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackApplyLianmai message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackApplyLianmai
+         * @static
+         * @param {message.BackApplyLianmai} message BackApplyLianmai
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackApplyLianmai.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.msg = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackApplyLianmai to JSON.
+         * @function toJSON
+         * @memberof message.BackApplyLianmai
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackApplyLianmai.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackApplyLianmai;
+    })();
+
+    message.BroadCastLianmaiOn = (function() {
+
+        /**
+         * Properties of a BroadCastLianmaiOn.
+         * @memberof message
+         * @interface IBroadCastLianmaiOn
+         * @property {string|null} [uid] BroadCastLianmaiOn uid
+         * @property {string|null} [name] BroadCastLianmaiOn name
+         * @property {string|null} [avatar] BroadCastLianmaiOn avatar
+         */
+
+        /**
+         * Constructs a new BroadCastLianmaiOn.
+         * @memberof message
+         * @classdesc Represents a BroadCastLianmaiOn.
+         * @implements IBroadCastLianmaiOn
+         * @constructor
+         * @param {message.IBroadCastLianmaiOn=} [properties] Properties to set
+         */
+        function BroadCastLianmaiOn(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BroadCastLianmaiOn uid.
+         * @member {string} uid
+         * @memberof message.BroadCastLianmaiOn
+         * @instance
+         */
+        BroadCastLianmaiOn.prototype.uid = "";
+
+        /**
+         * BroadCastLianmaiOn name.
+         * @member {string} name
+         * @memberof message.BroadCastLianmaiOn
+         * @instance
+         */
+        BroadCastLianmaiOn.prototype.name = "";
+
+        /**
+         * BroadCastLianmaiOn avatar.
+         * @member {string} avatar
+         * @memberof message.BroadCastLianmaiOn
+         * @instance
+         */
+        BroadCastLianmaiOn.prototype.avatar = "";
+
+        /**
+         * Creates a new BroadCastLianmaiOn instance using the specified properties.
+         * @function create
+         * @memberof message.BroadCastLianmaiOn
+         * @static
+         * @param {message.IBroadCastLianmaiOn=} [properties] Properties to set
+         * @returns {message.BroadCastLianmaiOn} BroadCastLianmaiOn instance
+         */
+        BroadCastLianmaiOn.create = function create(properties) {
+            return new BroadCastLianmaiOn(properties);
+        };
+
+        /**
+         * Encodes the specified BroadCastLianmaiOn message. Does not implicitly {@link message.BroadCastLianmaiOn.verify|verify} messages.
+         * @function encode
+         * @memberof message.BroadCastLianmaiOn
+         * @static
+         * @param {message.IBroadCastLianmaiOn} message BroadCastLianmaiOn message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastLianmaiOn.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.uid);
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+            if (message.avatar != null && Object.hasOwnProperty.call(message, "avatar"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.avatar);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BroadCastLianmaiOn message, length delimited. Does not implicitly {@link message.BroadCastLianmaiOn.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BroadCastLianmaiOn
+         * @static
+         * @param {message.IBroadCastLianmaiOn} message BroadCastLianmaiOn message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastLianmaiOn.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BroadCastLianmaiOn message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BroadCastLianmaiOn
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BroadCastLianmaiOn} BroadCastLianmaiOn
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastLianmaiOn.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastLianmaiOn();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.uid = reader.string();
+                    break;
+                case 2:
+                    message.name = reader.string();
+                    break;
+                case 3:
+                    message.avatar = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BroadCastLianmaiOn message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BroadCastLianmaiOn
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BroadCastLianmaiOn} BroadCastLianmaiOn
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastLianmaiOn.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BroadCastLianmaiOn message.
+         * @function verify
+         * @memberof message.BroadCastLianmaiOn
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BroadCastLianmaiOn.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                if (!$util.isString(message.uid))
+                    return "uid: string expected";
+            if (message.name != null && message.hasOwnProperty("name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
+            if (message.avatar != null && message.hasOwnProperty("avatar"))
+                if (!$util.isString(message.avatar))
+                    return "avatar: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BroadCastLianmaiOn message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BroadCastLianmaiOn
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BroadCastLianmaiOn} BroadCastLianmaiOn
+         */
+        BroadCastLianmaiOn.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadCastLianmaiOn)
+                return object;
+            var message = new $root.message.BroadCastLianmaiOn();
+            if (object.uid != null)
+                message.uid = String(object.uid);
+            if (object.name != null)
+                message.name = String(object.name);
+            if (object.avatar != null)
+                message.avatar = String(object.avatar);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BroadCastLianmaiOn message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BroadCastLianmaiOn
+         * @static
+         * @param {message.BroadCastLianmaiOn} message BroadCastLianmaiOn
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BroadCastLianmaiOn.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.uid = "";
+                object.name = "";
+                object.avatar = "";
+            }
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                object.uid = message.uid;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
+            if (message.avatar != null && message.hasOwnProperty("avatar"))
+                object.avatar = message.avatar;
+            return object;
+        };
+
+        /**
+         * Converts this BroadCastLianmaiOn to JSON.
+         * @function toJSON
+         * @memberof message.BroadCastLianmaiOn
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BroadCastLianmaiOn.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BroadCastLianmaiOn;
+    })();
+
+    message.BroadCastLianmaiOff = (function() {
+
+        /**
+         * Properties of a BroadCastLianmaiOff.
+         * @memberof message
+         * @interface IBroadCastLianmaiOff
+         */
+
+        /**
+         * Constructs a new BroadCastLianmaiOff.
+         * @memberof message
+         * @classdesc Represents a BroadCastLianmaiOff.
+         * @implements IBroadCastLianmaiOff
+         * @constructor
+         * @param {message.IBroadCastLianmaiOff=} [properties] Properties to set
+         */
+        function BroadCastLianmaiOff(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new BroadCastLianmaiOff instance using the specified properties.
+         * @function create
+         * @memberof message.BroadCastLianmaiOff
+         * @static
+         * @param {message.IBroadCastLianmaiOff=} [properties] Properties to set
+         * @returns {message.BroadCastLianmaiOff} BroadCastLianmaiOff instance
+         */
+        BroadCastLianmaiOff.create = function create(properties) {
+            return new BroadCastLianmaiOff(properties);
+        };
+
+        /**
+         * Encodes the specified BroadCastLianmaiOff message. Does not implicitly {@link message.BroadCastLianmaiOff.verify|verify} messages.
+         * @function encode
+         * @memberof message.BroadCastLianmaiOff
+         * @static
+         * @param {message.IBroadCastLianmaiOff} message BroadCastLianmaiOff message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastLianmaiOff.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BroadCastLianmaiOff message, length delimited. Does not implicitly {@link message.BroadCastLianmaiOff.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BroadCastLianmaiOff
+         * @static
+         * @param {message.IBroadCastLianmaiOff} message BroadCastLianmaiOff message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BroadCastLianmaiOff.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BroadCastLianmaiOff message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BroadCastLianmaiOff
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BroadCastLianmaiOff} BroadCastLianmaiOff
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastLianmaiOff.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BroadCastLianmaiOff();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BroadCastLianmaiOff message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BroadCastLianmaiOff
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BroadCastLianmaiOff} BroadCastLianmaiOff
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BroadCastLianmaiOff.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BroadCastLianmaiOff message.
+         * @function verify
+         * @memberof message.BroadCastLianmaiOff
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BroadCastLianmaiOff.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a BroadCastLianmaiOff message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BroadCastLianmaiOff
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BroadCastLianmaiOff} BroadCastLianmaiOff
+         */
+        BroadCastLianmaiOff.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BroadCastLianmaiOff)
+                return object;
+            return new $root.message.BroadCastLianmaiOff();
+        };
+
+        /**
+         * Creates a plain object from a BroadCastLianmaiOff message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BroadCastLianmaiOff
+         * @static
+         * @param {message.BroadCastLianmaiOff} message BroadCastLianmaiOff
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BroadCastLianmaiOff.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this BroadCastLianmaiOff to JSON.
+         * @function toJSON
+         * @memberof message.BroadCastLianmaiOff
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BroadCastLianmaiOff.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BroadCastLianmaiOff;
+    })();
+
+    message.BackActorLianmaiData = (function() {
+
+        /**
+         * Properties of a BackActorLianmaiData.
+         * @memberof message
+         * @interface IBackActorLianmaiData
+         * @property {boolean|null} [allowed] BackActorLianmaiData allowed
+         * @property {Array.<message.BackActorLianmaiData.ILianmai>|null} [list] BackActorLianmaiData list
+         */
+
+        /**
+         * Constructs a new BackActorLianmaiData.
+         * @memberof message
+         * @classdesc Represents a BackActorLianmaiData.
+         * @implements IBackActorLianmaiData
+         * @constructor
+         * @param {message.IBackActorLianmaiData=} [properties] Properties to set
+         */
+        function BackActorLianmaiData(properties) {
+            this.list = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackActorLianmaiData allowed.
+         * @member {boolean} allowed
+         * @memberof message.BackActorLianmaiData
+         * @instance
+         */
+        BackActorLianmaiData.prototype.allowed = false;
+
+        /**
+         * BackActorLianmaiData list.
+         * @member {Array.<message.BackActorLianmaiData.ILianmai>} list
+         * @memberof message.BackActorLianmaiData
+         * @instance
+         */
+        BackActorLianmaiData.prototype.list = $util.emptyArray;
+
+        /**
+         * Creates a new BackActorLianmaiData instance using the specified properties.
+         * @function create
+         * @memberof message.BackActorLianmaiData
+         * @static
+         * @param {message.IBackActorLianmaiData=} [properties] Properties to set
+         * @returns {message.BackActorLianmaiData} BackActorLianmaiData instance
+         */
+        BackActorLianmaiData.create = function create(properties) {
+            return new BackActorLianmaiData(properties);
+        };
+
+        /**
+         * Encodes the specified BackActorLianmaiData message. Does not implicitly {@link message.BackActorLianmaiData.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackActorLianmaiData
+         * @static
+         * @param {message.IBackActorLianmaiData} message BackActorLianmaiData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackActorLianmaiData.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.allowed != null && Object.hasOwnProperty.call(message, "allowed"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.allowed);
+            if (message.list != null && message.list.length)
+                for (var i = 0; i < message.list.length; ++i)
+                    $root.message.BackActorLianmaiData.Lianmai.encode(message.list[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackActorLianmaiData message, length delimited. Does not implicitly {@link message.BackActorLianmaiData.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackActorLianmaiData
+         * @static
+         * @param {message.IBackActorLianmaiData} message BackActorLianmaiData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackActorLianmaiData.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackActorLianmaiData message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackActorLianmaiData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackActorLianmaiData} BackActorLianmaiData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackActorLianmaiData.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackActorLianmaiData();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.allowed = reader.bool();
+                    break;
+                case 2:
+                    if (!(message.list && message.list.length))
+                        message.list = [];
+                    message.list.push($root.message.BackActorLianmaiData.Lianmai.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackActorLianmaiData message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackActorLianmaiData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackActorLianmaiData} BackActorLianmaiData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackActorLianmaiData.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackActorLianmaiData message.
+         * @function verify
+         * @memberof message.BackActorLianmaiData
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackActorLianmaiData.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.allowed != null && message.hasOwnProperty("allowed"))
+                if (typeof message.allowed !== "boolean")
+                    return "allowed: boolean expected";
+            if (message.list != null && message.hasOwnProperty("list")) {
+                if (!Array.isArray(message.list))
+                    return "list: array expected";
+                for (var i = 0; i < message.list.length; ++i) {
+                    var error = $root.message.BackActorLianmaiData.Lianmai.verify(message.list[i]);
+                    if (error)
+                        return "list." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a BackActorLianmaiData message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackActorLianmaiData
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackActorLianmaiData} BackActorLianmaiData
+         */
+        BackActorLianmaiData.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackActorLianmaiData)
+                return object;
+            var message = new $root.message.BackActorLianmaiData();
+            if (object.allowed != null)
+                message.allowed = Boolean(object.allowed);
+            if (object.list) {
+                if (!Array.isArray(object.list))
+                    throw TypeError(".message.BackActorLianmaiData.list: array expected");
+                message.list = [];
+                for (var i = 0; i < object.list.length; ++i) {
+                    if (typeof object.list[i] !== "object")
+                        throw TypeError(".message.BackActorLianmaiData.list: object expected");
+                    message.list[i] = $root.message.BackActorLianmaiData.Lianmai.fromObject(object.list[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackActorLianmaiData message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackActorLianmaiData
+         * @static
+         * @param {message.BackActorLianmaiData} message BackActorLianmaiData
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackActorLianmaiData.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.list = [];
+            if (options.defaults)
+                object.allowed = false;
+            if (message.allowed != null && message.hasOwnProperty("allowed"))
+                object.allowed = message.allowed;
+            if (message.list && message.list.length) {
+                object.list = [];
+                for (var j = 0; j < message.list.length; ++j)
+                    object.list[j] = $root.message.BackActorLianmaiData.Lianmai.toObject(message.list[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this BackActorLianmaiData to JSON.
+         * @function toJSON
+         * @memberof message.BackActorLianmaiData
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackActorLianmaiData.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        BackActorLianmaiData.Lianmai = (function() {
+
+            /**
+             * Properties of a Lianmai.
+             * @memberof message.BackActorLianmaiData
+             * @interface ILianmai
+             * @property {number|null} [tp] Lianmai tp
+             * @property {string|null} [uid] Lianmai uid
+             * @property {string|null} [name] Lianmai name
+             * @property {string|null} [avatar] Lianmai avatar
+             * @property {number|null} [sec] Lianmai sec
+             */
+
+            /**
+             * Constructs a new Lianmai.
+             * @memberof message.BackActorLianmaiData
+             * @classdesc Represents a Lianmai.
+             * @implements ILianmai
+             * @constructor
+             * @param {message.BackActorLianmaiData.ILianmai=} [properties] Properties to set
+             */
+            function Lianmai(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * Lianmai tp.
+             * @member {number} tp
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @instance
+             */
+            Lianmai.prototype.tp = 0;
+
+            /**
+             * Lianmai uid.
+             * @member {string} uid
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @instance
+             */
+            Lianmai.prototype.uid = "";
+
+            /**
+             * Lianmai name.
+             * @member {string} name
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @instance
+             */
+            Lianmai.prototype.name = "";
+
+            /**
+             * Lianmai avatar.
+             * @member {string} avatar
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @instance
+             */
+            Lianmai.prototype.avatar = "";
+
+            /**
+             * Lianmai sec.
+             * @member {number} sec
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @instance
+             */
+            Lianmai.prototype.sec = 0;
+
+            /**
+             * Creates a new Lianmai instance using the specified properties.
+             * @function create
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @static
+             * @param {message.BackActorLianmaiData.ILianmai=} [properties] Properties to set
+             * @returns {message.BackActorLianmaiData.Lianmai} Lianmai instance
+             */
+            Lianmai.create = function create(properties) {
+                return new Lianmai(properties);
+            };
+
+            /**
+             * Encodes the specified Lianmai message. Does not implicitly {@link message.BackActorLianmaiData.Lianmai.verify|verify} messages.
+             * @function encode
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @static
+             * @param {message.BackActorLianmaiData.ILianmai} message Lianmai message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Lianmai.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.tp != null && Object.hasOwnProperty.call(message, "tp"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.tp);
+                if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.uid);
+                if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
+                if (message.avatar != null && Object.hasOwnProperty.call(message, "avatar"))
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.avatar);
+                if (message.sec != null && Object.hasOwnProperty.call(message, "sec"))
+                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.sec);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified Lianmai message, length delimited. Does not implicitly {@link message.BackActorLianmaiData.Lianmai.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @static
+             * @param {message.BackActorLianmaiData.ILianmai} message Lianmai message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            Lianmai.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a Lianmai message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {message.BackActorLianmaiData.Lianmai} Lianmai
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Lianmai.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackActorLianmaiData.Lianmai();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.tp = reader.uint32();
+                        break;
+                    case 2:
+                        message.uid = reader.string();
+                        break;
+                    case 3:
+                        message.name = reader.string();
+                        break;
+                    case 4:
+                        message.avatar = reader.string();
+                        break;
+                    case 5:
+                        message.sec = reader.uint32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a Lianmai message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {message.BackActorLianmaiData.Lianmai} Lianmai
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            Lianmai.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a Lianmai message.
+             * @function verify
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            Lianmai.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.tp != null && message.hasOwnProperty("tp"))
+                    if (!$util.isInteger(message.tp))
+                        return "tp: integer expected";
+                if (message.uid != null && message.hasOwnProperty("uid"))
+                    if (!$util.isString(message.uid))
+                        return "uid: string expected";
+                if (message.name != null && message.hasOwnProperty("name"))
+                    if (!$util.isString(message.name))
+                        return "name: string expected";
+                if (message.avatar != null && message.hasOwnProperty("avatar"))
+                    if (!$util.isString(message.avatar))
+                        return "avatar: string expected";
+                if (message.sec != null && message.hasOwnProperty("sec"))
+                    if (!$util.isInteger(message.sec))
+                        return "sec: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates a Lianmai message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {message.BackActorLianmaiData.Lianmai} Lianmai
+             */
+            Lianmai.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.BackActorLianmaiData.Lianmai)
+                    return object;
+                var message = new $root.message.BackActorLianmaiData.Lianmai();
+                if (object.tp != null)
+                    message.tp = object.tp >>> 0;
+                if (object.uid != null)
+                    message.uid = String(object.uid);
+                if (object.name != null)
+                    message.name = String(object.name);
+                if (object.avatar != null)
+                    message.avatar = String(object.avatar);
+                if (object.sec != null)
+                    message.sec = object.sec >>> 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a Lianmai message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @static
+             * @param {message.BackActorLianmaiData.Lianmai} message Lianmai
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            Lianmai.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.tp = 0;
+                    object.uid = "";
+                    object.name = "";
+                    object.avatar = "";
+                    object.sec = 0;
+                }
+                if (message.tp != null && message.hasOwnProperty("tp"))
+                    object.tp = message.tp;
+                if (message.uid != null && message.hasOwnProperty("uid"))
+                    object.uid = message.uid;
+                if (message.name != null && message.hasOwnProperty("name"))
+                    object.name = message.name;
+                if (message.avatar != null && message.hasOwnProperty("avatar"))
+                    object.avatar = message.avatar;
+                if (message.sec != null && message.hasOwnProperty("sec"))
+                    object.sec = message.sec;
+                return object;
+            };
+
+            /**
+             * Converts this Lianmai to JSON.
+             * @function toJSON
+             * @memberof message.BackActorLianmaiData.Lianmai
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            Lianmai.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return Lianmai;
+        })();
+
+        return BackActorLianmaiData;
     })();
 
     return message;

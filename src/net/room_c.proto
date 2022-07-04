@@ -28,3 +28,35 @@ message RequestGrabHongbao {
 message RequestSendChatMessage {
     string content = 1;
 }
+
+
+//0x00020A 发送商家优惠券
+message RequestSendMerchantCoupon {
+    uint32 tp = 1; // 1 店铺券 2 商品券
+    string goodCode = 2;
+    float amount = 3;
+    float minUseAmount = 4;
+    uint32 num = 5; //送几份
+    uint32 lifeMinute = 6; //有效期几分钟
+    uint32 delayMinute = 7; //延时几分钟
+}
+
+//0x00020D 领取商家优惠券
+message RequestGetMerchantCoupon {
+    int64 id = 1;
+}
+
+//0x0002A0 主播切换是否允许申请连麦
+message RequestSwitchLianmaiAllow {
+
+}
+
+//0x0002A2 申请连麦
+message RequestApplyLianmai {
+    
+}
+
+//0x0002A5 主播获取连麦列表
+message ActorRequestLianmaiData {
+    
+}

@@ -6,29 +6,40 @@ export class Message {
 	static PageLocation = '0x000101';
 	static LogoutBroadCastRoom1001 = '0x00010F' //离开房间
 	static RequestSendChatMessage = '0x000208' // 发送聊天
-
+	static RequestSendGift = "0x000203" // 送礼
+	static RequestSendHongbao = "0x000204" // 送红包
+	static RequestGrabHongbao = "0x000207" // 抢红包
+	static RequestSendMerchantCoupon = "0x00020A" // 发送商家优惠券
+	static RequestGetMerchantCoupon = "0x00020D" // 领取商家优惠券
 	// static RequestChatOn = '0x000200' //开启聊天监听
 	// static RequestChatOff = '0x000201' //关闭聊天监听
 	// static SendChatMessage = '0x000202' //发送聊天
 	// static RequestBidOn = '0x000300' //开启监听商品(goodCode)的竞价信息
 	// static RequestBidOff = '0x000301' //关闭商品(goodCode)的竞价信息监听
 
-	static cmd:{[x: string]: any} = {
-		'0x000100': 'BackLoginBroadCastRoom1001', //登录回调
-		// "0x000210":"BackLoginBroadCastRoom1001",
-		'0x000101': 'UserAttr',
-		'0x000102': 'Message',
-		'0x000200': 'BackLike', //点赞发送回调
-		"0x000201": "BroadCastLike", //广播点赞
-		"0x000202": "BroadBilibili", //广播礼物
-		"0x000208": "BackSendChatMessage", //发送聊天返回 失败的时候才返回
-		"0x000209": 'BroadCastChatMessage' //广播聊天
+	static cmd: {
+		[x: string]: any
+	} = {
+			'0x000100': 'BackLoginBroadCastRoom1001', //登录回调
+			// "0x000210":"BackLoginBroadCastRoom1001",
+			'0x000101': 'UserAttr',
+			'0x000102': 'Message',
+			'0x000200': 'BackLike', //点赞发送回调
+			"0x000201": "BroadCastLike", //广播点赞
+			"0x000202": "BroadCastBilibili_Send", //广播礼物
+			"0x000208": "BackSendChatMessage", //发送聊天返回 失败的时候才返回
+			"0x000209": 'BroadCastChatMessage', //广播聊天
+			"0x000203": "BackSendGift", //赠送礼物回调
+			"0x000204": "BackSendHongbao", //发送红包回调
+			"0x000205": "BroadCastHongbao", // 广播红包
+			"0x000206": "BroadCastHongbaoUpdated",//广播红包状态改变
+			"0x000207": "BackGrabHongbao",//抢红包回调
 
-		// '0x000201': 'BucketInfo',
-		// '0x000202': 'PushChatMessage', //推送聊天消息
-		// '0x000203': 'BackSendMessage', //发送失败才发
-		// '0x000300': 'PushGoodBidList', //推送商品竞价信息
-	}
+			// '0x000201': 'BucketInfo',
+			// '0x000202': 'PushChatMessage', //推送聊天消息
+			// '0x000203': 'BackSendMessage', //发送失败才发
+			// '0x000300': 'PushGoodBidList', //推送商品竞价信息
+		}
 
 	static attrNameMapValue = {
 		'name': 'strVal',
