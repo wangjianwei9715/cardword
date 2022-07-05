@@ -935,6 +935,17 @@
 					}
 				}
 			]
+		},
+		{
+			"root": "pages/anchor",
+			"pages": [{
+					"path": "index",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
 		}
 	]
 }

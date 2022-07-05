@@ -21,6 +21,11 @@
 		},
 		onLaunch() {
 			console.log("App Launch");
+			//#ifdef APP-PLUS
+			plus.screen.lockOrientation('portrait-primary'); // 强制竖屏
+			// plus.screen.lockOrientation('landscape-primary'); 
+			//#endif
+			
 			if (process.env.NODE_ENV === "development") {
 				// console.log("开发环境");
 				// app.localTest = true;
@@ -181,10 +186,7 @@
 				});
 			});
 
-			//#ifdef APP-PLUS
-			plus.screen.lockOrientation('portrait-primary'); // 强制竖屏
-			// plus.screen.lockOrientation('landscape-primary'); 
-			//#endif
+			
 		},
 		onShow() {
 			console.log("App Show");

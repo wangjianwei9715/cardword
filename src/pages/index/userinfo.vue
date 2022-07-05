@@ -171,6 +171,18 @@
 					}
 				}
 				
+				// res.data.cuoka
+				if(this.settingTab.length<5){
+					this.settingTab = [ 
+						...this.settingTab,
+						{
+							id:5,
+							name:'主播模式',
+							url:'/pages/anchor/index',
+							pic:'../../static/userinfo/v2/icon_b_agreement.png'
+						}
+					]
+				}
 				if(cb) cb()
 
 			});
