@@ -1,6 +1,6 @@
 <template>
 	<view class="livewicket" @click="onClickLive">
-		<image class="livewicket-img" :src="liveImg" mode="aspectFill"></image>
+		<muqian-lazyLoad class="livewicket-img" :src="liveImg" />
 		<view class="livewicket-content">
 			<view class="icon-bofang"></view>
 			<view class="livewicket-content-status">{{liveStatus}}</view>
