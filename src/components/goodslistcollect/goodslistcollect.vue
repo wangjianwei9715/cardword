@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="item" v-show="goodsList.length>0" v-for="item in goodsList" :key="item.goodCode">
 			<view :class="['goodslist-index',{'del-start':delStart}]"  @click="onClickJumpUrl(item.goodCode)">
-				<image class="goodslist-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" mode="aspectFill"></image>
+				<muqian-lazyLoad class="goodslist-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
 				<view class="goodslist-right">
 					<view class="goodslist-title">{{item.title}}</view>
 					<view class="goodslist-plan-content">

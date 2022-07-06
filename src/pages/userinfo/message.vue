@@ -19,7 +19,7 @@
 		<view class="bottom" v-if="buckedList!=''">
 			<view class="index" v-for="(item,index) in buckedList" :key="index" @click="onClickBucketId(item.bucketId)">
 				<view class="left" >
-					<view class="icon"><image class="icon-kf" :src="item.target.avatar?decodeURIComponent(item.target.avatar):'../../static/userinfo/kefu@2x.png'"></image></view>
+					<view class="icon"><muqian-lazyLoad class="icon-kf" :src="item.target.avatar?decodeURIComponent(item.target.avatar):'../../static/userinfo/kefu@2x.png'"></muqian-lazyLoad></view>
 					<view class="desc">
 						<view class="desc-title">{{item.target&&item.target.name?item.target.name:''}}</view>
 						<view class="desc-message" v-html="decodeURIComponent(item.content)"></view>

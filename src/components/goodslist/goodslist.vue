@@ -12,7 +12,7 @@
 		</view>
 		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
 			<view class="goodslist-index" :style="{'width':indexWidth+'rpx'}">
-				<image v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
+				<muqian-lazyLoad v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}">
 						<muqian-lazyLoad class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
@@ -40,7 +40,7 @@
 				<view class="goodslist-bottom" @click="onClickSellerShop(item)">
 					<view class="bottom-left" :class="{'bottom-left-shu':item.merchantName}">{{getGoodsPintuan(item.pintuan_type)}}</view>
 					<view class="bottom-right" v-show="item.merchantName">
-						<muqian-lazyLoad class="avart" :src="decodeURIComponent(item.merchantLogo_cdn||item.merchantLogo)" borderRadius="50%"/>
+						<muqian-lazyLoad class="avart" :src="decodeURIComponent(item.merchantLogo)" borderRadius="50%"/>
 						<view class="bussName">{{item.merchantName}}</view>
 						<view class="cores"></view>
 					</view>

@@ -178,7 +178,7 @@ export default class ClassName extends BaseNode {
               this.picData = this.picData.concat(JSON.parse(query.data));
               for(let i in this.picData){
                 if(this.picData[i] != ''){
-                  this.picData[i].pic = parsePic(decodeURIComponent(this.picData[i].pic_cdn||this.picData[i].pic));
+                  this.picData[i].pic = parsePic(decodeURIComponent(this.picData[i].pic));
                 }
               }
               this.totalNum = query.num;
@@ -273,7 +273,7 @@ export default class ClassName extends BaseNode {
       if(data.list){
         let listData = data.list
         for(let i in listData){
-          listData[i].pic = parsePic(decodeURIComponent(listData[i].pic_cdn||listData[i].pic));
+          listData[i].pic = parsePic(decodeURIComponent(listData[i].pic));
         }
         this.picData = this.picData.concat(listData);
       }

@@ -5,7 +5,7 @@
 			<view class="popup-close" @click="onClickClose"></view>
 			<view class="popup-title">确认兑换</view>
 			<view class="pic-box">
-				<image class="popup-pic" mode="aspectFit" :src="decodeURIComponent(awardData.logo)" />
+				<muqian-lazyLoad class="popup-pic" mode="aspectFit" :src="decodeURIComponent(awardData.logo)" />
 			</view>
 			<view class="popup-explain">兑换后无法取消，可在"奖品明细"中查看兑换记录。</view>
 			<view class="popup-ts">(兑换实物将使用您的默认地址发货，请提前确认)</view>

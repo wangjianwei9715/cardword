@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="business">
 			<view class="business-top uni-flex">
-				<muqian-lazyLoad :src="decodeURIComponent(detail.logo_cdn||detail.logo)" class="business-avart" mode="aspectFill" borderRadius="50%" />
+				<muqian-lazyLoad :src="decodeURIComponent(detail.logo)" class="business-avart" mode="aspectFill" borderRadius="50%" />
 				<view class="business-info">
 					<view class="nameInfo uni-flex">
 						<text>{{detail.name}}</text>
@@ -31,9 +31,9 @@
 			<!-- v-show="goodTabV2.index==0" -->
 			<goodslist v-show="goodTabV2.index==0||goodTabV2.index==1" :goodsList='goodsList' @send="onClickJumpDetails" :presell="false"></goodslist>
 			<!-- <liveslist v-show="goodTabV2.index==1" :liveList='liveList'></liveslist> -->
-			<image v-show="goodTabV2.index==2" :src="decodeURIComponent(item)" style="margin:6rpx auto;display:block;width:94%"
+			<muqian-lazyLoad v-show="goodTabV2.index==2" :src="decodeURIComponent(item)" style="margin:6rpx auto;display:block;width:94%"
 				@click.stop="previewImg(index,detail.certification)" v-for="(item,index) in detail.certification"
-				:key="index" mode="widthFix"></image>
+				:key="index" mode="widthFix"></muqian-lazyLoad>
 		</view>
 		<empty v-show='emptyShow' />
 	</view>

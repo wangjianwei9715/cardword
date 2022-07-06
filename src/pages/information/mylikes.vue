@@ -9,11 +9,11 @@
           @click="onClickJumpUrl(item.articleCode)"
         >
           <view class="information-top">
-            <image
+            <muqian-lazyLoad
               class="information-top-image"
               :src="getGoodsImg(decodeURIComponent(item.cover))"
               mode="aspectFill"
-            ></image>
+            ></muqian-lazyLoad>
           </view>
           <view class="information-center">
             <view class="title">{{item.title}}</view>

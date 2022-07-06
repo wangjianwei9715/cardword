@@ -8,7 +8,7 @@
 		<view class="guess-content">
 			<view class="guess-content-header">
 				<view class="guess-left">
-					<image class="guess-icon" src="../../pages/act/static/guess/guess_icon.png"></image>
+					<image class="guess-icon" src="../../pages/act/static/guess/guess_icon.png"/>
 				</view>
 				<view class="guess-right" @click="onClickGuessRules">
 					<view class="guess-right-text">猜球队</view>
@@ -19,7 +19,7 @@
 			<view class="guess-content-list">
 				<scroll-view class="guess-scroll" :scroll-x="true" @scrolltolower="onScrolltolower">
 					<view class="guess-scroll-index" :class="{'current-index':checkTeam == index}" v-for="(item,index) in teamList" :key="index" @click="onClickTeamCheck(index)">
-						<image :lazy-load="true" class="guess-scroll-img" :src="decodeURIComponent(item.logo)" mode="aspectFit"/>
+						<muqian-lazyLoad  class="guess-scroll-img" :src="decodeURIComponent(item.logo)" />
 						<view class="guess-scroll-name">{{item.name}}</view>
 						<view v-if="item.name==lastGuess" class="guess-last-check">最近选择</view>
 					</view>

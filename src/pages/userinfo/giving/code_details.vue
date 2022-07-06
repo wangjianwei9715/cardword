@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="details-header">
-			<image class="details-pic" mode="aspectFill" :src="decodeURIComponent(codeData.good.pic)" />
+			<muqian-lazyLoad class="details-pic" mode="aspectFill" :src="decodeURIComponent(codeData.good.pic)" />
 			<view class="details-header-right">
 				<view class="details-header-title">{{codeData.good.title}}</view>
 				<view class="details-header-info">
@@ -20,7 +20,7 @@
 			<view class="details-desc-index">
 				<view class="details-desc-index-line">当前持有者</view>
 				<view class="details-desc-index-line">
-					<image class="details-desc-avatar" :src="decodeURIComponent(codeData.owner.avatar)" />
+					<muqian-lazyLoad class="details-desc-avatar" :src="decodeURIComponent(codeData.owner.avatar)" />
 					{{codeData.owner.name}}
 				</view>
 			</view>

@@ -3,7 +3,7 @@
 		<view class="center">
 			<view>
 				<view class="center-desc">
-					<image class="desc-img" :src="goodsData.pic" mode="aspectFill"></image>
+					<muqian-lazyLoad class="desc-img" :src="goodsData.pic" mode="aspectFill"></muqian-lazyLoad>
 					<view class="desc-right">
 						<view class="desc-title">{{goodsData.title}}</view>
 					</view>

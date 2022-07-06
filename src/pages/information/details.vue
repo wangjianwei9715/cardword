@@ -14,7 +14,7 @@
 		<view class="index">
 			<view class="title">{{articleData.title}}</view>
 			<view class="user">
-				<image class="avatar" :src="articleData.author_logo"/>
+				<muqian-lazyLoad class="avatar" :src="articleData.author_logo"/>
 				{{articleData.author}}
 			</view>
 			<view class="time">发布于{{dateFormatMSHMS(articleData.active_at)}}</view>

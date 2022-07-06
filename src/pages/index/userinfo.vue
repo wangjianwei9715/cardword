@@ -12,7 +12,7 @@
 				</view>
 			</view>
 			<view class="header-center">
-				<image @click="onClickUserInfo" class="user-avatar" :src="infoData.avatar?infoData.avatar:defaultAvatar" mode="aspectFit" />
+				<muqian-lazyLoad @click="onClickUserInfo" class="user-avatar" :src="infoData.avatar?infoData.avatar:defaultAvatar" mode="aspectFit" />
 				<view class="header-tab-box">
 					<view class="header-tab-index" v-for="item in headerTab" :key="item.id" @click="onClickServiceTab(item)">
 						<view class="header-tab-index-num">{{item.num}}</view>
