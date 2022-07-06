@@ -25,6 +25,7 @@
 </template>
 
 <script lang="ts">
+	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
@@ -58,7 +59,17 @@
 					},
 					});
 				},
-				});
+			});
+			
+		}
+		initEven(){
+			let params = {
+				pageIndex:1,
+				pageSize:10
+			}
+			app.http.Get('my/cuoka/home',params,(res:any)=>{
+				console.log(res)
+			})
 		}
 		onUnload() {
 			plus.screen.lockOrientation('portrait-primary')
