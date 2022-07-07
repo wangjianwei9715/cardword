@@ -296,7 +296,7 @@
 			uni.showTabBar()
 		}
 		initEvent(cb ? : Function) {
-			app.http.Get("dataApi/home", {urlvalid:1}, (data: any) => {
+			app.http.Get("dataApi/home", {}, (data: any) => {
 				uni.hideLoading()
 				// #ifndef MP
 				this.topAddList = data.addList || [];

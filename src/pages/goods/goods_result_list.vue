@@ -165,8 +165,7 @@
 			let params = {
 				q:this.searchTetxt,
 				pageIndex:this.currentPage,
-				pageSize:10,
-				urlvalid:1
+				pageSize:10
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
 				if(res.list){

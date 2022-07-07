@@ -137,7 +137,7 @@
 			});
 		}
 		getBusDetail(id: number) {
-			app.http.Get("dataApi/merchant/1/detail/" + id, {urlvalid:1}, (res: any) => {
+			app.http.Get("dataApi/merchant/1/detail/" + id, {}, (res: any) => {
 				// console.log(res)
 				this.detail = res.data;
 				this.detail.certification = this.detail.certification || [];
@@ -176,8 +176,7 @@
 				,
 				{
 					...this.queryParams,
-					...questItem.query,
-					urlvalid:1
+					...questItem.query
 				},
 				(res: any) => {
 					this.totalPage = res.totalPage;

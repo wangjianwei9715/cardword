@@ -265,8 +265,7 @@ export default class ClassName extends BaseNode {
     
     let params:{[x:string]:any} = {
       pageIndex: this.currentPage,
-      pageSize:this.pageSize,
-      urlvalid:1
+      pageSize:this.pageSize
     }
     
     app.http.Get('me/orderInfo/buyer/'+this.goodOrder+'/noShowList', params, (data: any) => {

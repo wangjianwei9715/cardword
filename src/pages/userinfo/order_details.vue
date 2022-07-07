@@ -305,7 +305,7 @@
 				return
 			};
 
-			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30,urlvalid:1},(res:any)=>{
+			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30},(res:any)=>{
 				if(res.total>0){
 					let type = this.orderData.good.title.indexOf('足球')!=-1?1:0
 					uni.navigateTo({

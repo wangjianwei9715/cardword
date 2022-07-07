@@ -156,8 +156,7 @@
 		reqNewData(cb ? : Function) {
 			let params: any = {
 				pageIndex: this.currentPage,
-				pageSize: this.pageSize,
-				urlvalid:1
+				pageSize: this.pageSize
 			};
 
 			app.http.Get("dataApi/merchant/list", params, (data: any) => {
