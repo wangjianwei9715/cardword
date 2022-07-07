@@ -11,7 +11,7 @@
 			<view class="order-index" v-if="orderData.seller" @click="onClickGoodDetail"> 
 				<view class="order-index-header">
 					<view class="header-left">
-						<muqian-lazyLoad class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill"></muqian-lazyLoad>
+						<muqian-lazyLoad class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill" :borderRadius="'50%'"></muqian-lazyLoad>
 						<view class="seller-name">{{orderData.seller.name}}</view>
 					</view>
 					<view class="header-right">
@@ -305,7 +305,7 @@
 				return
 			};
 
-			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30,urlvalid:1},(res:any)=>{
+			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30},(res:any)=>{
 				if(res.total>0){
 					let type = this.orderData.good.title.indexOf('足球')!=-1?1:0
 					uni.navigateTo({

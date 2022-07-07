@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="icon-back" @click="onClickBack"></view>
 				<view class="header-title">
-					<muqian-lazyLoad class="header-title-img" :src="merchantAvatar!=''?merchantAvatar:defaultAvatar" mode="aspectFit"></muqian-lazyLoad>
+					<muqian-lazyLoad class="header-title-img" :src="merchantAvatar!=''?merchantAvatar:defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad>
 					{{merchantName}}
 				</view>
 				<view class="icon-liaotian" @click="onClickLT"></view>

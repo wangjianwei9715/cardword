@@ -246,8 +246,7 @@
 			app.http.Get(
 				"dataApi/search/good", {
 					...params,
-					...this.tagParams,
-					urlvalid:1
+					...this.tagParams
 				},
 				(res: any) => {
 					if (res.end) {

@@ -52,9 +52,8 @@
                     return this.parsePic(x)
                 })
                 this.merchant = res.merchant
-                this.merchant.logo = this.merchant.logo.map((x:any)=>{
-                    return this.parsePic(x)
-                })
+                console.log(this.merchant)
+                this.merchant.logo = this.parsePic(this.merchant.logo)
             })
         }
 		

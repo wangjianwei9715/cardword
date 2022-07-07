@@ -108,9 +108,9 @@
 			<view class="detail-bg">
 				<view class="goods-seller" v-if="goodsData.publisher">
 					<view class="goods-seller-left">
-						<image class="goods-seller-left-avatar"
+						<muqian-lazyLoad class="goods-seller-left-avatar"
 							:src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar"
-							mode="aspectFill" />
+							mode="aspectFill" :borderRadius="'50%'"/>
 						<view class="goods-seller-left-desc">
 							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
 							<view class="goods-seller-left-desc-tips">粉丝{{goodsData.publisher.fans}} |
@@ -385,8 +385,7 @@
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
 				ts:ts,
-				s:Md5.hashStr('kww_good_sign_'+id+'_'+ts+'_2022'),
-				urlvalid:1
+				s:Md5.hashStr('kww_good_sign_'+id+'_'+ts+'_2022')
 			}
 			app.http.Get('dataApi/good/' + id + '/detail', params, (data: any) => {
 				if (data.good == null || data.good == undefined) {
@@ -628,7 +627,7 @@
 						shareUrl: "https://www.ka-world.com/share/h5/#/pages/goods/goods_details?id=" + this.goodsId,
 						title: this.goodsData.title,
 						summary: this.goodsData.title,
-						thumb: this.parsePic(this.goodsData.pic.thumb)
+						thumb: this.goodsData.pic.thumb
 					}
 				}
 				this.operationShow = true

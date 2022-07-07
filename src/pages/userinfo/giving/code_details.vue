@@ -20,7 +20,7 @@
 			<view class="details-desc-index">
 				<view class="details-desc-index-line">当前持有者</view>
 				<view class="details-desc-index-line">
-					<muqian-lazyLoad class="details-desc-avatar" :src="decodeURIComponent(codeData.owner.avatar)" />
+					<muqian-lazyLoad class="details-desc-avatar" :src="decodeURIComponent(codeData.owner.avatar)" :borderRadius="'50%'"/>
 					{{codeData.owner.name}}
 				</view>
 			</view>
