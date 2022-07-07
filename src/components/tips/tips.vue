@@ -2,7 +2,7 @@
 	<view class="bottom-tips">
 		<view class="bottom-tips-content" :style="'transform:translateY(-'+marginHeight+'px)'">
 			<view class="bottom-tips-index" v-for="item in tipsData" :key="item.id">
-				<image class="bottom-tips-img" :src="item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFit"></image>
+				<image class="bottom-tips-img" :src="item.avatar!=''?$parsePic(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit"></image>
 				<view class="bottom-tips-desc">{{setTime(item.time)}}加入拼团*{{item.num}}</view>
 			</view>
 		</view>

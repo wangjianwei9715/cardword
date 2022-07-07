@@ -2,7 +2,7 @@
 	<view class="liveContent">
 		<view class="liveItem" v-for='(item,index) in dataList' :key='index'>
 			<view class="liveItem-top uni-flex">
-				<muqian-lazyLoad class='avatar' :src='decodeURIComponent(item.merchantLogo)' mode='aspectFill'></muqian-lazyLoad>
+				<muqian-lazyLoad class='avatar' :src='decodeURIComponent(item.merchantLogo)' mode='aspectFill' :borderRadius="'50%'"></muqian-lazyLoad>
 				<view class="name">{{item.merchantName}}</view>
 			</view>
 			<view class="liveItem-message uni-flex">

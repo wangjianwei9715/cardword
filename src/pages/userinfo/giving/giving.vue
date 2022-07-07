@@ -21,7 +21,7 @@
 					@confirm="inputConfirm">
 				</xskCodeInput>
 				<view class="box-index-info">
-					<muqian-lazyLoad class="box-index-avatar" :src="userData.avatar"/> {{userData.userName}}
+					<muqian-lazyLoad class="box-index-avatar" :src="userData.avatar" :borderRadius="'50%'"/> {{userData.userName}}
 				</view>
 			</view>
 			<view class="box-index">

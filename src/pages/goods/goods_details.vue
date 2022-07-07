@@ -108,9 +108,9 @@
 			<view class="detail-bg">
 				<view class="goods-seller" v-if="goodsData.publisher">
 					<view class="goods-seller-left">
-						<image class="goods-seller-left-avatar"
+						<muqian-lazyLoad class="goods-seller-left-avatar"
 							:src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar"
-							mode="aspectFill" />
+							mode="aspectFill" :borderRadius="'50%'"/>
 						<view class="goods-seller-left-desc">
 							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
 							<view class="goods-seller-left-desc-tips">粉丝{{goodsData.publisher.fans}} |
