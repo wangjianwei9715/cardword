@@ -19,6 +19,7 @@ message BackLoginBroadCastRoom1001 {
 	string msg = 2;		//失败原因
 	float point = 3; //最新的卡币数量
 	bool applyLianmai = 4; // 是否可申请连麦
+	bool gm = 5; //是否gm
 }
 
 // 0x000102 服务器主动推送消息
@@ -29,4 +30,10 @@ message Message {
 // 0x000103 服务器主动推送我最新的卡币数量
 message SendMyPoint {
 	double point = 1;
+}
+
+
+// 0x00010F
+message KickOut {
+	
 }

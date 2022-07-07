@@ -1702,6 +1702,9 @@ export namespace message {
 
         /** BackLoginBroadCastRoom1001 applyLianmai */
         applyLianmai?: (boolean|null);
+
+        /** BackLoginBroadCastRoom1001 gm */
+        gm?: (boolean|null);
     }
 
     /** Represents a BackLoginBroadCastRoom1001. */
@@ -1724,6 +1727,9 @@ export namespace message {
 
         /** BackLoginBroadCastRoom1001 applyLianmai. */
         public applyLianmai: boolean;
+
+        /** BackLoginBroadCastRoom1001 gm. */
+        public gm: boolean;
 
         /**
          * Creates a new BackLoginBroadCastRoom1001 instance using the specified properties.
@@ -1982,6 +1988,90 @@ export namespace message {
 
         /**
          * Converts this SendMyPoint to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a KickOut. */
+    interface IKickOut {
+    }
+
+    /** Represents a KickOut. */
+    class KickOut implements IKickOut {
+
+        /**
+         * Constructs a new KickOut.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IKickOut);
+
+        /**
+         * Creates a new KickOut instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns KickOut instance
+         */
+        public static create(properties?: message.IKickOut): message.KickOut;
+
+        /**
+         * Encodes the specified KickOut message. Does not implicitly {@link message.KickOut.verify|verify} messages.
+         * @param message KickOut message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IKickOut, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified KickOut message, length delimited. Does not implicitly {@link message.KickOut.verify|verify} messages.
+         * @param message KickOut message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IKickOut, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a KickOut message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns KickOut
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.KickOut;
+
+        /**
+         * Decodes a KickOut message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns KickOut
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.KickOut;
+
+        /**
+         * Verifies a KickOut message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a KickOut message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns KickOut
+         */
+        public static fromObject(object: { [k: string]: any }): message.KickOut;
+
+        /**
+         * Creates a plain object from a KickOut message. Also converts values to other types if specified.
+         * @param message KickOut
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.KickOut, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this KickOut to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -3538,6 +3628,9 @@ export namespace message {
 
         /** GmChatBid uid */
         uid?: (string|null);
+
+        /** GmChatBid name */
+        name?: (string|null);
     }
 
     /** Represents a GmChatBid. */
@@ -3551,6 +3644,9 @@ export namespace message {
 
         /** GmChatBid uid. */
         public uid: string;
+
+        /** GmChatBid name. */
+        public name: string;
 
         /**
          * Creates a new GmChatBid instance using the specified properties.
@@ -3628,6 +3724,9 @@ export namespace message {
 
         /** GmKickOutRoom uid */
         uid?: (string|null);
+
+        /** GmKickOutRoom name */
+        name?: (string|null);
     }
 
     /** Represents a GmKickOutRoom. */
@@ -3641,6 +3740,9 @@ export namespace message {
 
         /** GmKickOutRoom uid. */
         public uid: string;
+
+        /** GmKickOutRoom name. */
+        public name: string;
 
         /**
          * Creates a new GmKickOutRoom instance using the specified properties.
@@ -4108,6 +4210,9 @@ export namespace message {
             /** Bilibili_Send name */
             name?: (string|null);
 
+            /** Bilibili_Send texiao */
+            texiao?: (string|null);
+
             /** Bilibili_Send num */
             num?: (number|null);
 
@@ -4132,6 +4237,9 @@ export namespace message {
 
             /** Bilibili_Send name. */
             public name: string;
+
+            /** Bilibili_Send texiao. */
+            public texiao: string;
 
             /** Bilibili_Send num. */
             public num: number;

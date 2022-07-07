@@ -11,6 +11,7 @@ const request = (url, params = {}, method = 'GET') => {
 		if (url.indexOf('funcApi/') != -1) {
 			url = url.substring(8);
 			baseURL = app.funcApiDomain || app.bussinessApiDomain;
+			console.log(baseURL);
 			// if (!app.localTest) 
 		}
 	}
@@ -25,10 +26,13 @@ const request = (url, params = {}, method = 'GET') => {
 			method: method.toUpperCase(),
 			success: (res) => {
 				if (res.data.code != 0) {
-					uni.showToast({
-						title: res.data.msg,
-						icon: 'none'
-					})
+					const noneTips=['禁止登录']
+					if(!noneTips.includes(res.data.msg)){
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none'
+						})
+					}
 					reject(res.data.msg)
 					return
 				}

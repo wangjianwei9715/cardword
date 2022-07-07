@@ -80,9 +80,11 @@ message SelfTerminateLianmai {
 //0x0002F1 禁言
 message GmChatBid {
     string uid = 1;
+    string name = 2; //获取不到uid的情况下
 }
 
 //0x0002F2 踢出房间
 message GmKickOutRoom {
     string uid = 1;
+    string name = 2;//获取不到uid的情况下
 }

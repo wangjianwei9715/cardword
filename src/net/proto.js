@@ -3982,6 +3982,7 @@ $root.message = (function() {
          * @property {string|null} [msg] BackLoginBroadCastRoom1001 msg
          * @property {number|null} [point] BackLoginBroadCastRoom1001 point
          * @property {boolean|null} [applyLianmai] BackLoginBroadCastRoom1001 applyLianmai
+         * @property {boolean|null} [gm] BackLoginBroadCastRoom1001 gm
          */
 
         /**
@@ -4032,6 +4033,14 @@ $root.message = (function() {
         BackLoginBroadCastRoom1001.prototype.applyLianmai = false;
 
         /**
+         * BackLoginBroadCastRoom1001 gm.
+         * @member {boolean} gm
+         * @memberof message.BackLoginBroadCastRoom1001
+         * @instance
+         */
+        BackLoginBroadCastRoom1001.prototype.gm = false;
+
+        /**
          * Creates a new BackLoginBroadCastRoom1001 instance using the specified properties.
          * @function create
          * @memberof message.BackLoginBroadCastRoom1001
@@ -4063,6 +4072,8 @@ $root.message = (function() {
                 writer.uint32(/* id 3, wireType 5 =*/29).float(message.point);
             if (message.applyLianmai != null && Object.hasOwnProperty.call(message, "applyLianmai"))
                 writer.uint32(/* id 4, wireType 0 =*/32).bool(message.applyLianmai);
+            if (message.gm != null && Object.hasOwnProperty.call(message, "gm"))
+                writer.uint32(/* id 5, wireType 0 =*/40).bool(message.gm);
             return writer;
         };
 
@@ -4108,6 +4119,9 @@ $root.message = (function() {
                     break;
                 case 4:
                     message.applyLianmai = reader.bool();
+                    break;
+                case 5:
+                    message.gm = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -4163,6 +4177,9 @@ $root.message = (function() {
             if (message.applyLianmai != null && message.hasOwnProperty("applyLianmai"))
                 if (typeof message.applyLianmai !== "boolean")
                     return "applyLianmai: boolean expected";
+            if (message.gm != null && message.hasOwnProperty("gm"))
+                if (typeof message.gm !== "boolean")
+                    return "gm: boolean expected";
             return null;
         };
 
@@ -4202,6 +4219,8 @@ $root.message = (function() {
                 message.point = Number(object.point);
             if (object.applyLianmai != null)
                 message.applyLianmai = Boolean(object.applyLianmai);
+            if (object.gm != null)
+                message.gm = Boolean(object.gm);
             return message;
         };
 
@@ -4223,6 +4242,7 @@ $root.message = (function() {
                 object.msg = "";
                 object.point = 0;
                 object.applyLianmai = false;
+                object.gm = false;
             }
             if (message.code != null && message.hasOwnProperty("code"))
                 object.code = options.enums === String ? $root.message.BackLoginBroadCastRoom1001.RetCode[message.code] : message.code;
@@ -4232,6 +4252,8 @@ $root.message = (function() {
                 object.point = options.json && !isFinite(message.point) ? String(message.point) : message.point;
             if (message.applyLianmai != null && message.hasOwnProperty("applyLianmai"))
                 object.applyLianmai = message.applyLianmai;
+            if (message.gm != null && message.hasOwnProperty("gm"))
+                object.gm = message.gm;
             return object;
         };
 
@@ -4655,6 +4677,166 @@ $root.message = (function() {
         };
 
         return SendMyPoint;
+    })();
+
+    message.KickOut = (function() {
+
+        /**
+         * Properties of a KickOut.
+         * @memberof message
+         * @interface IKickOut
+         */
+
+        /**
+         * Constructs a new KickOut.
+         * @memberof message
+         * @classdesc Represents a KickOut.
+         * @implements IKickOut
+         * @constructor
+         * @param {message.IKickOut=} [properties] Properties to set
+         */
+        function KickOut(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new KickOut instance using the specified properties.
+         * @function create
+         * @memberof message.KickOut
+         * @static
+         * @param {message.IKickOut=} [properties] Properties to set
+         * @returns {message.KickOut} KickOut instance
+         */
+        KickOut.create = function create(properties) {
+            return new KickOut(properties);
+        };
+
+        /**
+         * Encodes the specified KickOut message. Does not implicitly {@link message.KickOut.verify|verify} messages.
+         * @function encode
+         * @memberof message.KickOut
+         * @static
+         * @param {message.IKickOut} message KickOut message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        KickOut.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified KickOut message, length delimited. Does not implicitly {@link message.KickOut.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.KickOut
+         * @static
+         * @param {message.IKickOut} message KickOut message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        KickOut.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a KickOut message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.KickOut
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.KickOut} KickOut
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        KickOut.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.KickOut();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a KickOut message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.KickOut
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.KickOut} KickOut
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        KickOut.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a KickOut message.
+         * @function verify
+         * @memberof message.KickOut
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        KickOut.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a KickOut message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.KickOut
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.KickOut} KickOut
+         */
+        KickOut.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.KickOut)
+                return object;
+            return new $root.message.KickOut();
+        };
+
+        /**
+         * Creates a plain object from a KickOut message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.KickOut
+         * @static
+         * @param {message.KickOut} message KickOut
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        KickOut.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this KickOut to JSON.
+         * @function toJSON
+         * @memberof message.KickOut
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        KickOut.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return KickOut;
     })();
 
     /**
@@ -8156,6 +8338,7 @@ $root.message = (function() {
          * @memberof message
          * @interface IGmChatBid
          * @property {string|null} [uid] GmChatBid uid
+         * @property {string|null} [name] GmChatBid name
          */
 
         /**
@@ -8180,6 +8363,14 @@ $root.message = (function() {
          * @instance
          */
         GmChatBid.prototype.uid = "";
+
+        /**
+         * GmChatBid name.
+         * @member {string} name
+         * @memberof message.GmChatBid
+         * @instance
+         */
+        GmChatBid.prototype.name = "";
 
         /**
          * Creates a new GmChatBid instance using the specified properties.
@@ -8207,6 +8398,8 @@ $root.message = (function() {
                 writer = $Writer.create();
             if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.uid);
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
             return writer;
         };
 
@@ -8243,6 +8436,9 @@ $root.message = (function() {
                 switch (tag >>> 3) {
                 case 1:
                     message.uid = reader.string();
+                    break;
+                case 2:
+                    message.name = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -8282,6 +8478,9 @@ $root.message = (function() {
             if (message.uid != null && message.hasOwnProperty("uid"))
                 if (!$util.isString(message.uid))
                     return "uid: string expected";
+            if (message.name != null && message.hasOwnProperty("name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
             return null;
         };
 
@@ -8299,6 +8498,8 @@ $root.message = (function() {
             var message = new $root.message.GmChatBid();
             if (object.uid != null)
                 message.uid = String(object.uid);
+            if (object.name != null)
+                message.name = String(object.name);
             return message;
         };
 
@@ -8315,10 +8516,14 @@ $root.message = (function() {
             if (!options)
                 options = {};
             var object = {};
-            if (options.defaults)
+            if (options.defaults) {
                 object.uid = "";
+                object.name = "";
+            }
             if (message.uid != null && message.hasOwnProperty("uid"))
                 object.uid = message.uid;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
             return object;
         };
 
@@ -8343,6 +8548,7 @@ $root.message = (function() {
          * @memberof message
          * @interface IGmKickOutRoom
          * @property {string|null} [uid] GmKickOutRoom uid
+         * @property {string|null} [name] GmKickOutRoom name
          */
 
         /**
@@ -8367,6 +8573,14 @@ $root.message = (function() {
          * @instance
          */
         GmKickOutRoom.prototype.uid = "";
+
+        /**
+         * GmKickOutRoom name.
+         * @member {string} name
+         * @memberof message.GmKickOutRoom
+         * @instance
+         */
+        GmKickOutRoom.prototype.name = "";
 
         /**
          * Creates a new GmKickOutRoom instance using the specified properties.
@@ -8394,6 +8608,8 @@ $root.message = (function() {
                 writer = $Writer.create();
             if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.uid);
+            if (message.name != null && Object.hasOwnProperty.call(message, "name"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
             return writer;
         };
 
@@ -8430,6 +8646,9 @@ $root.message = (function() {
                 switch (tag >>> 3) {
                 case 1:
                     message.uid = reader.string();
+                    break;
+                case 2:
+                    message.name = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -8469,6 +8688,9 @@ $root.message = (function() {
             if (message.uid != null && message.hasOwnProperty("uid"))
                 if (!$util.isString(message.uid))
                     return "uid: string expected";
+            if (message.name != null && message.hasOwnProperty("name"))
+                if (!$util.isString(message.name))
+                    return "name: string expected";
             return null;
         };
 
@@ -8486,6 +8708,8 @@ $root.message = (function() {
             var message = new $root.message.GmKickOutRoom();
             if (object.uid != null)
                 message.uid = String(object.uid);
+            if (object.name != null)
+                message.name = String(object.name);
             return message;
         };
 
@@ -8502,10 +8726,14 @@ $root.message = (function() {
             if (!options)
                 options = {};
             var object = {};
-            if (options.defaults)
+            if (options.defaults) {
                 object.uid = "";
+                object.name = "";
+            }
             if (message.uid != null && message.hasOwnProperty("uid"))
                 object.uid = message.uid;
+            if (message.name != null && message.hasOwnProperty("name"))
+                object.name = message.name;
             return object;
         };
 
@@ -9387,6 +9615,7 @@ $root.message = (function() {
              * @property {string|null} [sender] Bilibili_Send sender
              * @property {string|null} [senderAvatar] Bilibili_Send senderAvatar
              * @property {string|null} [name] Bilibili_Send name
+             * @property {string|null} [texiao] Bilibili_Send texiao
              * @property {number|null} [num] Bilibili_Send num
              * @property {number|null} [continuityNum] Bilibili_Send continuityNum
              */
@@ -9429,6 +9658,14 @@ $root.message = (function() {
              * @instance
              */
             Bilibili_Send.prototype.name = "";
+
+            /**
+             * Bilibili_Send texiao.
+             * @member {string} texiao
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
+             * @instance
+             */
+            Bilibili_Send.prototype.texiao = "";
 
             /**
              * Bilibili_Send num.
@@ -9476,10 +9713,12 @@ $root.message = (function() {
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.senderAvatar);
                 if (message.name != null && Object.hasOwnProperty.call(message, "name"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
+                if (message.texiao != null && Object.hasOwnProperty.call(message, "texiao"))
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.texiao);
                 if (message.num != null && Object.hasOwnProperty.call(message, "num"))
-                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.num);
+                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.num);
                 if (message.continuityNum != null && Object.hasOwnProperty.call(message, "continuityNum"))
-                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.continuityNum);
+                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.continuityNum);
                 return writer;
             };
 
@@ -9524,9 +9763,12 @@ $root.message = (function() {
                         message.name = reader.string();
                         break;
                     case 4:
-                        message.num = reader.uint32();
+                        message.texiao = reader.string();
                         break;
                     case 5:
+                        message.num = reader.uint32();
+                        break;
+                    case 6:
                         message.continuityNum = reader.uint32();
                         break;
                     default:
@@ -9573,6 +9815,9 @@ $root.message = (function() {
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
+                if (message.texiao != null && message.hasOwnProperty("texiao"))
+                    if (!$util.isString(message.texiao))
+                        return "texiao: string expected";
                 if (message.num != null && message.hasOwnProperty("num"))
                     if (!$util.isInteger(message.num))
                         return "num: integer expected";
@@ -9600,6 +9845,8 @@ $root.message = (function() {
                     message.senderAvatar = String(object.senderAvatar);
                 if (object.name != null)
                     message.name = String(object.name);
+                if (object.texiao != null)
+                    message.texiao = String(object.texiao);
                 if (object.num != null)
                     message.num = object.num >>> 0;
                 if (object.continuityNum != null)
@@ -9624,6 +9871,7 @@ $root.message = (function() {
                     object.sender = "";
                     object.senderAvatar = "";
                     object.name = "";
+                    object.texiao = "";
                     object.num = 0;
                     object.continuityNum = 0;
                 }
@@ -9633,6 +9881,8 @@ $root.message = (function() {
                     object.senderAvatar = message.senderAvatar;
                 if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
+                if (message.texiao != null && message.hasOwnProperty("texiao"))
+                    object.texiao = message.texiao;
                 if (message.num != null && message.hasOwnProperty("num"))
                     object.num = message.num;
                 if (message.continuityNum != null && message.hasOwnProperty("continuityNum"))

@@ -52,7 +52,7 @@
 				liveRTMP: '', //直播rtmp流地址
 				// AnchorEndUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
 				AnchorEndUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
-				UserUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/index?ts=' + (+new Date()),
+				UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				// UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
@@ -87,6 +87,7 @@
 				heartBeatTimer: null, //心跳包定时器
 				socketLoginOk: false, //socket房间是否登录成功
 				socketRoomLoginTimer: null,
+				androidWebProfileLoaded: false,
 				registerList: ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike', 'BroadCastBilibili_Send',
 					'BackSendChatMessage', 'BroadCastChatMessage', 'BackSendHongbao', 'BroadCastHongbao',
 					'BroadCastHongbaoUpdated', 'BackGrabHongbao', 'BackSendGift', 'BackSendMerchantCoupon',
@@ -100,7 +101,9 @@
 					"BackTerminateLianmai",
 					"BackGmChatBid",
 					"BackGmKickOutRoom",
-				]
+					"KickOut"
+				],
+				isLogin:false,
 			}
 		},
 		onReady() {
@@ -111,7 +114,7 @@
 		},
 		onUnload() {
 
-			this.leaveRoom()
+			if(this.isLogin) this.leaveRoom()
 		},
 
 		async onLoad(query) {
@@ -136,7 +139,9 @@
 			} = await this.getLiveRoomInfo(+query.roomID)
 			this.liveData = data
 			this.deviceAssign(this.deviceInfo)
-			if (this.deviceInfo.platform == 'android' && query.isAnchor == 'true') {
+			// && query.isAnchor == 'true'
+			if (this.deviceInfo.platform == 'android') {
+				this.viewShow = false
 				this.createWebView(this.deviceInfo)
 			} else {
 				this.getUserProfile(this.deviceInfo)
@@ -203,6 +208,10 @@
 			},
 			//登录房间socket
 			sendWebsocketLogin() {
+				uni.showLoading({
+					title: '连接中...',
+					mask: true
+				})
 				this.sendSocketMsg('LoginBroadCastRoom1001', {
 					roomId: +this.loginRoomData.roomID,
 					uid: this.tokenData.uid,
@@ -211,6 +220,27 @@
 					this.isConnectSocket = true
 					this.reconnectionTimer && clearInterval(this.reconnectionTimer)
 				})
+			},
+			BackLoginBroadCastRoom1001(res) {
+				console.log('登陆房间回调', res);
+				if (res.msg) {
+					this.socketLoginOk = false
+					this.socketRoomLoginTimer && clearTimeout(this.socketRoomLoginTimer)
+					this.socketRoomLoginTimer = setTimeout(() => {
+						console.log('socket重新登录房间中')
+						this.sendWebsocketLogin();
+					}, 500)
+				} else {
+					uni.hideLoading()
+					this.informH5Action('isGM', res.gm, false)
+					this.informH5Action('myPointGet', res.point, false)
+					this.informH5Action('canLM', res.applyLianmai, false)
+					this.socketLoginOk = true
+				}
+				// if (Object.keys(res).length == 0) this.socketLoginOk = true
+				// if (Object.keys(res).length) {
+
+				// }
 			},
 			//离开房间
 			leaveOutRoomSocket() {
@@ -272,56 +302,137 @@
 				console.log('卡币数量变化', res);
 			},
 			//-------------------连麦---------------
-			anchorEndOperationLM(){
+			anchorEndOperationLM() {
 				//主播切换是否可以连麦
+				this.UIClickFeedBack()
 				this.sendSocketMsg('RequestSwitchLianmaiAllow')
 			},
 			BroadCastLianmaiAllowed(res) {
 				//广播是否可以连麦
-				console.log('广播是否可以连麦', res);
-				this.checkBack(res).then(data=>{
-					this.informH5Action('BroadCastLianmaiAllowed',res)
+				console.log(res);
+				this.checkBack(res).then(data => {
+					console.log('广播是否可以连麦', res);
+					this.informH5Action('canLM', res.allowed, false)
 				})
 			},
 			SendLianmaiApply(res) {
 				// 发送给主播有人申请连麦
 				console.log('发送给主播有人申请连麦', res);
+				this.checkBack(res).then(data => {
+					this.informH5Action('SendLianmaiApply', res)
+				})
 			},
-			sendLianMai(){
+			sendLianMai() {
 				//申请连麦
-				this.sendSocketMsg('RequestApplyLianmai',{})
+				console.log('申请连麦了');
+				uni.showLoading({
+					title: ''
+				})
+				this.sendSocketMsg('RequestApplyLianmai', {})
 			},
 			BackApplyLianmai(res) {
 				//申请连麦回调
 				console.log("申请连麦回调", res);
+				uni.showLoading({
+					title: ''
+				})
+				this.checkBack(res)
 			},
 			BroadCastLianmaiOn(res) {
 				//广播有人连麦了
 				console.log("广播有人连麦了", res);
+				this.checkBack(res).then(data => {
+					this.informH5Action('BroadCastLianmaiOn', res)
+				})
 			},
 			BroadCastLianmaiOff(res) {
 				//广播连麦结束
 				console.log("广播连麦结束", res);
+				this.checkBack(res).then(data => {
+					this.informH5Action('BroadCastLianmaiOff', res)
+				})
+			},
+			SelfTerminateLianmai() {
+				//连麦者结束连麦
+				this.sendSocketMsg('SelfTerminateLianmai')
 			},
 			BackActorLianmaiData(res) {
 				//返回主播连麦数据
 				console.log("返回主播连麦数据", res);
+				this.checkBack(res).then(data => {
+					this.informH5Action('BackActorLianmaiData', res)
+				})
+			},
+			ActorRequestLianmaiData(res) {
+				//获取连麦列表
+				this.sendSocketMsg('ActorRequestLianmaiData', {})
+			},
+			ActorAgreeLianmaiApply(uid) {
+				//主播同意连麦
+				this.sendSocketMsg('ActorAgreeLianmaiApply', { uid })
 			},
 			BackActorAgreeLianmaiApply(res) {
 				//主播同意连麦的回调
 				console.log("主播同意连麦的回调", res);
+				this.checkBack(res)
+			},
+			ActorTerminateLianmai() {
+				//主播结束连麦
+				this.sendSocketMsg('ActorTerminateLianmai')
 			},
 			BackTerminateLianmai(res) {
 				//主播结束连麦的回调
 				console.log("主播结束连麦的回调", res);
 			},
+			SelfTerminateLianmai() {
+				//连麦者结束连麦
+				this.sendSocketMsg('SelfTerminateLianmai')
+			},
+			GmChatBid(uid, name) {
+				//禁言
+				uni.showLoading()
+				console.log(uid ? { uid } : { name });
+				// return
+				this.sendSocketMsg('GmChatBid', uid ? { uid } : { name })
+			},
+
 			BackGmChatBid(res) {
 				//禁言的回调
 				console.log("禁言的回调", res);
+				this.checkBack(res).then(data => {
+					uni.showToast({
+						title: '禁言成功'
+					})
+				})
 			},
 			BackGmKickOutRoom(res) {
 				//踢出房间的回调
 				console.log("踢出房间的回调", res);
+				this.checkBack(res).then(data => {
+					uni.showToast({
+						title: '踢出房间成功'
+					})
+				})
+			},
+			GmKickOutRoom(uid, name) {
+				//管理员进行踢出房间操作	
+				this.sendSocketMsg('GmKickOutRoom', uid ? { uid } : { name })
+			},
+			KickOut(res) {
+				console.log('被踢出房间的通知', res);
+				uni.showModal({
+					title: '提示',
+					content: '您已被踢出直播间',
+					showCancel: false,
+					success: (res) => {
+						if (res.confirm) {
+							// this.leaveRoom()
+							uni.reLaunch({
+								url: '/pages/index/index'
+							})
+						}
+					}
+				})
 			},
 			//-------------------发送消息------------
 			sendTalk(content = '') {
@@ -334,6 +445,7 @@
 			},
 			BackSendChatMessage(res) {
 				console.log('消息发送回调', res);
+				this.checkBack(res)
 			},
 			BroadCastChatMessage(res) {
 				console.log('我收到了消息', this.nowDate);
@@ -452,24 +564,7 @@
 				})
 			},
 			//-------------
-			BackLoginBroadCastRoom1001(res) {
-				console.log('登陆房间回调', res);
-				if (res.msg) {
-					this.socketLoginOk = false
-					this.socketRoomLoginTimer && clearTimeout(this.socketRoomLoginTimer)
-					this.socketRoomLoginTimer = setTimeout(() => {
-						console.log('socket重新登录房间中')
-						this.sendWebsocketLogin();
-					}, 500)
-				} else {
-					this.informH5Action('myPointGet', res.point, false)
-					this.socketLoginOk = true
-				}
-				// if (Object.keys(res).length == 0) this.socketLoginOk = true
-				// if (Object.keys(res).length) {
 
-				// }
-			},
 			BackLike(res) {
 				console.log('点赞发送的结果回调', res);
 			},
@@ -510,12 +605,13 @@
 
 			},
 			createWebView(res) {
+
 				console.log('创建webview');
 				const now = plus.webview.currentWebview()
 				this.webView = plus.webview.create(this.webViewUrl, 'androidWeb')
 				this.webView.evalJs = this.webView.evalJS
 				now.append(this.webView)
-				this.viewShow = false
+
 				this.webView.addEventListener('titleUpdate', (event) => {
 					const h5Event = JSON.parse(event.title)
 					this.handleMessage(h5Event)
@@ -524,7 +620,7 @@
 				this.webView.addEventListener('loaded', (event) => {
 					console.log('房间加载完成');
 					this.webLoadSuccess = true
-					this.getUserProfile(res)
+					if (!this.androidWebProfileLoaded) this.getUserProfile(res)
 				})
 			},
 			//webview高度,设备相关
@@ -551,39 +647,62 @@
 			},
 			//获取及赋值 
 			async getUserProfile(deviceInfo) {
-				let userData = {}
-				const device = Md5.hashStr(deviceInfo.deviceId)
-				const tokenRespone = await request('funcApi/brodcast/third/1001/user/login/' + this.loginRoomData
-					.roomID, {},
-					'post')
-				this.websocket = tokenRespone.websocket
-				this.tokenData = tokenRespone.data
-				console.log(tokenRespone);
-				if (this.hasToken) {
-					const {
-						data
-					} = await request('me/home', {}, 'get')
-					userData = data
-					//匿名
-					if (this.tokenData.anonymous) {
-						userData.avatar =
-							'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.06.07/teamContest/teamContest_index/0/1654582097412np07eg7ntj.png'
-						userData.name = this.tokenData.uname
+				try {
+					let userData = {}
+					const device = Md5.hashStr(deviceInfo.deviceId)
+					const tokenRespone = await request('funcApi/brodcast/third/1001/user/login/' + this.loginRoomData
+						.roomID, {},
+						'post')
+					this.websocket = tokenRespone.websocket
+					this.tokenData = tokenRespone.data
+					console.log('直播间用户登录数据66666666');
+					console.log(JSON.stringify(tokenRespone));
+					if (this.hasToken) {
+						const {
+							data
+						} = await request('me/home', {}, 'get')
+						userData = data
+						//匿名
+						if (this.tokenData.anonymous) {
+							userData.avatar =
+								'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.06.07/teamContest/teamContest_index/0/1654582097412np07eg7ntj.png'
+							userData.name = this.tokenData.uname
+						}
+						//如果为主播的情况下 头像使用商家头像//昵称也使用商家昵称
+						// if (this.isAnchor == 'true') {
+						// 	userData.avatar = decodeURIComponent(this.merchantMessage.logo)
+						// 	userData.name = this.merchantMessage.name
+						// }
+					} else {
+						//用设备号
+						userData = {
+							name: this.tokenData.uname,
+							userId: this.tokenData.uid
+						}
 					}
-					//如果为主播的情况下 头像使用商家头像//昵称也使用商家昵称
-					// if (this.isAnchor == 'true') {
-					// 	userData.avatar = decodeURIComponent(this.merchantMessage.logo)
-					// 	userData.name = this.merchantMessage.name
-					// }
-				} else {
-					//用设备号
-					userData = {
-						name: this.tokenData.uname,
-						userId: this.tokenData.uid
+					this.loginRoom(userData, tokenRespone.data, deviceInfo)
+					this.initSocket(true)
+					this.isLogin=true
+				} catch (err) {
+					if (err == '禁止登录') {
+						uni.showModal({
+							title: '提示',
+							content: '你已被禁止登录该直播间',
+							showCancel: false,
+							success: (res) => {
+								if (res.confirm) {
+									uni.reLaunch({
+										url: '/pages/index/index',
+										fail:(fail)=>{
+											console.log('jumpFail',fail);
+										}
+									})
+								}
+							}
+						})
 					}
+					console.log(err);
 				}
-				this.loginRoom(userData, tokenRespone.data, deviceInfo)
-				this.initSocket(true)
 			},
 			SET_CDN_URL(cdnData) {
 				console.log('收到cdn', cdnData);
@@ -614,6 +733,7 @@
 				this.loginRoomData.socketToken = roomTokenData.socketToken
 				this.loginRoomData.streamID = roomTokenData.streamId || null
 				this.loginRoomData.alias = this.merchantMessage.alias
+				this.androidWebProfileLoaded = true
 				this.againLogin()
 			},
 			againLogin() {

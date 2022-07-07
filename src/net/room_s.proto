@@ -23,8 +23,9 @@ message BroadCastBilibili_Send {
         string sender = 1;  //谁送的
         string senderAvatar = 2;  //头像
         string name = 3;    //送什么
-        uint32 num = 4;     //最近一次赠送
-        uint32 continuityNum = 5;     //连击赠送数量 continuityNum > num 代表有连击
+        string texiao = 4;    //特效资源地址
+        uint32 num = 5;     //最近一次赠送
+        uint32 continuityNum = 6;     //连击赠送数量 continuityNum > num 代表有连击
     }
     repeated Bilibili_Send list = 1;
 }
@@ -88,7 +89,7 @@ message BroadCastChatMessage {
         string sender = 2;
         string senderAvatar = 3;  //头像 空则使用默认头像
         string content = 4;  // content 和 action 二选一
-        string action = 5; //  action = 来了、走了
+        string action = 5; //  action = 来了、走了 如果内容是gm:xx已禁言 则有当前用户是gm的时候来显示该条记录
     }
     repeated Chat list = 1;
 }

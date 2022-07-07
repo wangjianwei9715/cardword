@@ -52,6 +52,7 @@ export class Message {
 			"0x0002A7":"BackTerminateLianmai" ,//主播结束连麦的回调
 			"0x0002F1":"BackGmChatBid",//禁言的回调
 			"0x0002F2":"BackGmKickOutRoom",//踢出房间的回调
+			"0x00010F":"KickOut"
 			// '0x000201': 'BucketInfo',
 			// '0x000202': 'PushChatMessage', //推送聊天消息
 			// '0x000203': 'BackSendMessage', //发送失败才发
