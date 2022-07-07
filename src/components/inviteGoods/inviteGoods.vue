@@ -2,7 +2,7 @@
 	<view class="content" >
 		<view class="goodslist-index" @click="onClickJumpUrl(goodsData.goodCode)">
 			<view class="goodslist-pic">
-				<image class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(goodsData.pic))" mode="aspectFill"></image>
+				<muqian-lazyLoad class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(goodsData.pic))" mode="aspectFill"></muqian-lazyLoad>
 			</view>
 			<view class="goodslist-right">
 				<view class="goodslist-title">{{goodsData.title}}</view>

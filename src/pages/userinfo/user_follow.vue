@@ -2,7 +2,7 @@
 	<view class="followContent">
 		<view class='follow uni-flex' v-for="(item,index) in followList" :key='index' @click='toDetail(item)'>
 			<template v-if="item.follow">
-				<image :src='decodeURIComponent(item.logo)' class="follow-avart" mode="aspectFill" />
+				<muqian-lazyLoad :src='decodeURIComponent(item.logo)' class="follow-avart" mode="aspectFill" />
 				<view class="follow-info uni-flex">
 					<view class="name">{{item.name}}</view>
 					<view class="num">在售{{item.sale_num}}件</view>

@@ -11,7 +11,7 @@
 			<view class="order-index" v-if="orderData.seller" @click="onClickGoodDetail"> 
 				<view class="order-index-header">
 					<view class="header-left">
-						<image class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill"></image>
+						<muqian-lazyLoad class="seller-image" :src="orderData.seller.avatar?decodeURIComponent(orderData.seller.avatar):defaultAvatar" mode="aspectFill"></muqian-lazyLoad>
 						<view class="seller-name">{{orderData.seller.name}}</view>
 					</view>
 					<view class="header-right">
@@ -240,7 +240,7 @@
 				});
 				this.getGoodDesc(res.data);
 				this.operateData = this.orderSetOperate(res.data);
-				this.detailPic = parsePic(getGoodsImg(decodeURIComponent(res.data.good.pic_cdn||res.data.good.pic)))
+				this.detailPic = parsePic(getGoodsImg(decodeURIComponent(res.data.good.pic)))
 				if(res.data.good.pintuanType>10){
 					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/option',{},(res:any)=>{
 						this.optionList = res.list || []

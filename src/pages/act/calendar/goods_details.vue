@@ -9,7 +9,7 @@
 			<swiper class="swiper" :indicator-dots="goodsImg.length>1" autoplay="true" circular="true" indicator-active-color="#ffffff">
 				<swiper-item v-for="(item,index) in goodsImg" :key="index" @click="onClickPreviewImage(index)">
 					<view class="goods-img-content">
-						<muqian-lazyLoad class="goods-img" :src="decodeURIComponent(item)" />
+						<image class="goods-img" :src="decodeURIComponent(item)" />
 					</view>
 				</swiper-item>
 			</swiper>
@@ -39,7 +39,7 @@
 			<view class="goods-box-title">产品介绍</view>
 			<view class="desc-box" v-html="decodeURIComponent(goodsData.content)"></view>
 			<view class="goods-box-img" v-for="(item,index) in goodsContentPic" :key="index">
-				<image class="goods-box-img"  :src="$parsePic(decodeURIComponent(item))" mode="widthFix" @click="onClickPreviewContentImage(index)" />
+				<image class="goods-box-img"  :src="decodeURIComponent(item)" mode="widthFix" @click="onClickPreviewContentImage(index)" />
 			</view>
 		</view>
 
@@ -48,13 +48,14 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
+	import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
-	import { dateFormatYMSCustom } from "../../../tools/util"
+	import { dateFormatYMSCustom,parsePic } from "../../../tools/util"
 	@Component({
   components: { muqianLazyLoad },})
 	export default class ClassName extends BaseNode {
+		parsePic = parsePic;
 		dateFormatYMSCustom = dateFormatYMSCustom
 		goodsId = 0
 		goodsImg:any = [];
@@ -85,12 +86,12 @@ import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
 			app.http.Get('dataApi/function/calendar/detail/'+id,{},(res:any)=>{
 				let goodsImg = res.data.pics;
 				this.goodsImg = goodsImg.map((x:any)=>{
-					return decodeURIComponent(x)
+					return this.parsePic(decodeURIComponent(x))
 				})
 				this.goodsContentPic = [];
 				if(res.data.content_pics!=''){
 					this.goodsContentPic = res.data.content_pics.map((x:any)=>{
-						return decodeURIComponent(x)
+						return this.parsePic(decodeURIComponent(x))
 					})
 				}
 				console.log(this.goodsContentPic)

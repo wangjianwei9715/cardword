@@ -2,11 +2,11 @@
 	<view class="liveContent">
 		<view class="liveItem" v-for='(item,index) in dataList' :key='index'>
 			<view class="liveItem-top uni-flex">
-				<image class='avatar' :src='decodeURIComponent(item.merchantLogo)' mode='aspectFill'></image>
+				<muqian-lazyLoad class='avatar' :src='decodeURIComponent(item.merchantLogo)' mode='aspectFill'></muqian-lazyLoad>
 				<view class="name">{{item.merchantName}}</view>
 			</view>
 			<view class="liveItem-message uni-flex">
-				<image class="goodsImage" :src='decodeURIComponent(item.cover)' mode='aspectFill'></image>
+				<muqian-lazyLoad class="goodsImage" :src='decodeURIComponent(item.cover)' mode='aspectFill'></muqian-lazyLoad>
 				<view class="live-right">
 					<view>
 						<view class='goodsName'>{{item.title}}</view>

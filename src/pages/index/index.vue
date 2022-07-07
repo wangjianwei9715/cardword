@@ -214,6 +214,17 @@
 				app.platform.matchInviteRequestKey(val)
 			})
 			// #endif
+
+			// let ws = new WebSocket("ws://wstest.ka-world.com");
+			// ws.onopen = function (ev) {
+			//         ws.send('{"type":"login","uid":"我是用户名","msg":"我登陆了"}');
+			//     };
+			// ws.onmessage = function (ev) {
+			//         if (ev.data){
+			//             console.log(ev.data)
+			//         }
+			// };
+			//  
 		}
 		onHide() {
 			uni.offNetworkStatusChange((res) => {})

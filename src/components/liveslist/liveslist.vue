@@ -2,7 +2,7 @@
 	<view class="livelist">
 		<view class="livelist-index"  v-for="(item,index) in liveList" :key="index" @click="onClickJumpUrl(item)">
 			<view class="livelist-top" >
-				<muqian-lazyLoad class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic_cdn||item.pic))" >
+				<muqian-lazyLoad class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic))" >
 				</muqian-lazyLoad>
 				<view class="livelist-top-status" :class="item.stateName=='直播中'?'livelist-icon-ing':(item.stateName=='拆卡回放'?'livelist-icon-end':'livelist-icon-wait')">
 					<view class="icon-ing"></view>{{item.stateName}}

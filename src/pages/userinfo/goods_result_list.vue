@@ -30,7 +30,7 @@
 
 			<view class="card-index" v-for="(item,index) in teamDataList" :key="index">
 				<view class="left" style="width:100%">
-					<view class="title"><image class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit"></image> {{item.userName}}</view>
+					<view class="title"><muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit"></muqian-lazyLoad> {{item.userName}}</view>
 					<view class="desc">{{item.no}}</view>
 					<view class="time">{{dateFormat(item.time)}}</view>
 				</view>
@@ -46,12 +46,12 @@
 				<view class="card-title" v-else-if="(index==0&&!item.isMy)||(!item.isMy&&teamDataList2[index-1].isMy)">其它中卡</view>
 				<view class="card-index" >
 					<view class="left">
-						<view class="title"><image class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit"></image> {{item.userName}}</view>
+						<view class="title"><muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit"></muqian-lazyLoad> {{item.userName}}</view>
 						<view class="desc">{{item.no}}</view>
 						<view class="time">{{dateFormat(item.time)}}</view>
 					</view>
 
-					<view class="right"><image class="right-img" :src="getGoodsImg(decodeURIComponent(item.pic))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></image></view>
+					<view class="right"><muqian-lazyLoad class="right-img" :src="getGoodsImg(decodeURIComponent(item.pic))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
 				</view>
 			</view>
 			

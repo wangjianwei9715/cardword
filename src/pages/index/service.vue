@@ -8,7 +8,7 @@
 			<view class="header-tips">新品发售  抢先知晓~</view>
 			<view class="reward">
 				<view class="reward-index" v-for="(item,index) in calendarList" :key="index">
-					<muqian-lazyLoad class="reward-img" :src="decodeURIComponent(item.pic_cover_cdn||item.pic_url_cover)"></muqian-lazyLoad>
+					<muqian-lazyLoad class="reward-img" :src="decodeURIComponent(item.pic_url_cover)"></muqian-lazyLoad>
 					<view class="reward-name">{{dateFormatMSCustom(item.public_day,'/')}}</view>
 				</view>
 			</view>

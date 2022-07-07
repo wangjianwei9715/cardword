@@ -38,7 +38,7 @@
           
         >
           <view class="information-top" @click="onClickJumpUrl(item.articleCode,item.cover)">
-            <muqian-lazyLoad class="information-top-image" :src="getGoodsImg(decodeURIComponent(item.cover_cdn||item.cover))">
+            <muqian-lazyLoad class="information-top-image" :src="getGoodsImg(decodeURIComponent(item.cover))">
 					  </muqian-lazyLoad>
           </view>
           

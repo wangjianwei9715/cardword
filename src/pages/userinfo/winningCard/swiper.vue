@@ -9,10 +9,12 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
+    import { parsePic } from "@/tools/util"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		bannerList = [];
-        merchant = [];
+        parsePic = parsePic;
+		bannerList:any = [];
+        merchant:any = [];
 		swiperConfig = {
             indicatorDots: true,
             indicatorColor: '#C9C9C9',
@@ -46,7 +48,13 @@
                 uni.hideLoading();
                 this.bannerList = [];
                 this.bannerList = res.data;
+                this.bannerList.pic = this.bannerList.pic.map((x:any)=>{
+                    return this.parsePic(x)
+                })
                 this.merchant = res.merchant
+                this.merchant.logo = this.merchant.logo.map((x:any)=>{
+                    return this.parsePic(x)
+                })
             })
         }
 		

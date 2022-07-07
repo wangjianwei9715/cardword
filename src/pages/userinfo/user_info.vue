@@ -8,7 +8,7 @@
 				@click="onClickEdit(item.id)"
 			>
 				<view v-if="item.id==1">
-					<image class="avatar" :src="item.avatar!=''?item.avatar:defaultAvatar" mode="" />
+					<muqian-lazyLoad class="avatar" :src="item.avatar!=''?item.avatar:defaultAvatar" mode="" />
 				</view>
 				<view v-else class="name">{{ item.name }}</view>
 

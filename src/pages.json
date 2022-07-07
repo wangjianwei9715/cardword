@@ -131,7 +131,8 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"pageOrientation":"auto"
 	},
 	"tabBar": {
 		"color": "#888888",
@@ -457,6 +458,17 @@
 					"path": "spCard/record_award",
 					"style": {
 						"navigationBarTitleText": "兑换奖品",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "card716/index",
+					"style": {
+						"navigationBarTitleText": "716卡展狂欢",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
@@ -931,6 +943,17 @@
 						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/anchor",
+			"pages": [{
+					"path": "index",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
 					}
 				}
 			]
