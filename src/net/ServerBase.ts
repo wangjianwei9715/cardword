@@ -57,7 +57,7 @@ export abstract class ServerBase{
         }
         let message = pb.decode(recvMessageBytes);
 
-        console.log('message===',message);
+        // console.log('message===',message);
         // 1、响应使用管理器预先在网络模块注册过的处理器，处理回调。
         if (this._packFunc[packageName]) {
             this._packFunc[packageName](message);
@@ -82,8 +82,8 @@ export abstract class ServerBase{
      * @param that 脚本的this指针
      * @param listener 监听的函数数组,**注意！函数名必须和消息同名**
      */
-    registerHandlers(that:any,listeners:Array<string>){
-		this.uuidMap={}
+    registerHandlers(that:any,listeners:Array<string>,isRefConnect?:boolean){
+		if(isRefConnect) this.uuidMap={}
         if(this.uuidMap[that._uid]) {
             console.log('重复监听:'+that.name);
 			return;

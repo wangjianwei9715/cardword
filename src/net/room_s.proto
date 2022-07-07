@@ -53,7 +53,7 @@ message BroadCastHongbao {
         HongbaoState state = 2;
         string sender = 3;  //谁送的
         string senderAvatar = 4;  //头像
-        float point = 5; //多少币
+        double point = 5; //多少币
         int64 startTime = 6;     //开抢时间戳 0 代表已经可抢
         uint32 leftNum = 7;     //剩余几份
     }
@@ -72,7 +72,7 @@ message BroadCastHongbaoUpdated {
 
 //0x000207 抢红包返回
 message BackGrabHongbao {
-    float point = 1; // 抢到多少 为0 则失败
+    double point = 1; // 抢到多少 为0 则失败
 	string msg = 2;		//失败原因
 }
 
@@ -104,7 +104,7 @@ message BroadCastMerchantCoupon {
     message Coupon {
         int64 id = 1; //红包id 唯一标识一个红包
         bool disappear = 2;		//是否可以关闭入口
-        uint32 sec = 3;     //倒计时秒数
+        int64 startTime = 6;     //开抢时间戳 0 代表已经可抢
     }
     repeated Coupon list = 1;
 }
@@ -117,8 +117,8 @@ message BackGetMerchantCoupon {
 	message Coupon {
        uint32 tp = 4; // 1 店铺券 2 商品券
        string goodCode = 5;
-       float amount = 6;
-       float minUseAmount = 7; //minUseAmount < amount 代表无门槛 否则 是满减券
+       double amount = 6;
+       double minUseAmount = 7; //minUseAmount < amount 代表无门槛 否则 是满减券
        string durExp = 8; //有效期
     }
     Coupon coupon = 4;
@@ -149,8 +149,10 @@ message BroadCastLianmaiOn {
     string uid = 1; 
     string name = 2;
     string avatar = 3;  
+    string streamId = 4;  
 }
-//0x0002A4 广播连麦人退出
+
+//0x0002A4 广播连麦结束
 message BroadCastLianmaiOff {
     
 }
@@ -159,11 +161,38 @@ message BroadCastLianmaiOff {
 message BackActorLianmaiData {
     bool allowed = 1; //是否允许连麦申请
     message Lianmai {
-        uint32 tp = 1; // 1 等待接受 2 连麦中
+        int32 tp = 1; // 1 等待接受 2 连麦中 -1 已拒绝
         string uid = 2; 
         string name = 3;
         string avatar = 4;  
         uint32 sec = 5; // 倒计时
     }
     repeated Lianmai list = 2;
+}
+
+//0x0002A6 
+message BackActorAgreeLianmaiApply {
+    bool success = 1;       //是否成功
+    string msg = 2;     //失败原因
+}
+
+//0x0002A7 
+message BackTerminateLianmai {
+    bool success = 1;       //是否成功
+    string msg = 2;     //失败原因
+}
+
+
+
+
+//0x0002F1 
+message BackGmChatBid {
+    bool success = 1;       //是否成功
+    string msg = 2;     //失败原因
+}
+
+//0x0002F2 
+message BackGmKickOutRoom {
+    bool success = 1;       //是否成功
+    string msg = 2;     //失败原因
 }

@@ -34,8 +34,8 @@ message RequestSendChatMessage {
 message RequestSendMerchantCoupon {
     uint32 tp = 1; // 1 店铺券 2 商品券
     string goodCode = 2;
-    float amount = 3;
-    float minUseAmount = 4;
+    double amount = 3;
+    double minUseAmount = 4;
     uint32 num = 5; //送几份
     uint32 lifeMinute = 6; //有效期几分钟
     uint32 delayMinute = 7; //延时几分钟
@@ -59,4 +59,30 @@ message RequestApplyLianmai {
 //0x0002A5 主播获取连麦列表
 message ActorRequestLianmaiData {
     
+}
+
+//0x0002A6 主播同意连麦
+message ActorAgreeLianmaiApply {
+    string uid = 1;
+}
+
+//0x0002A7 主播结束连麦
+message ActorTerminateLianmai {
+    
+}
+
+//0x0002A8 连麦者结束连麦
+message SelfTerminateLianmai {
+    
+}
+
+
+//0x0002F1 禁言
+message GmChatBid {
+    string uid = 1;
+}
+
+//0x0002F2 踢出房间
+message GmKickOutRoom {
+    string uid = 1;
 }

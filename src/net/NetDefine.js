@@ -11,35 +11,50 @@ export class Message {
 	static RequestGrabHongbao = "0x000207" // 抢红包
 	static RequestSendMerchantCoupon = "0x00020A" // 发送商家优惠券
 	static RequestGetMerchantCoupon = "0x00020D" // 领取商家优惠券
-	// static RequestChatOn = '0x000200' //开启聊天监听
-	// static RequestChatOff = '0x000201' //关闭聊天监听
-	// static SendChatMessage = '0x000202' //发送聊天
-	// static RequestBidOn = '0x000300' //开启监听商品(goodCode)的竞价信息
-	// static RequestBidOff = '0x000301' //关闭商品(goodCode)的竞价信息监听
-	// {
-	// 	[x: string]: any
-	// }
-	static cmd = {
-		'0x000100': 'BackLoginBroadCastRoom1001', //登录回调
-		// "0x000210":"BackLoginBroadCastRoom1001",
-		'0x000101': 'UserAttr',
-		'0x000102': 'Message',
-		'0x000200': 'BackLike', //点赞发送回调
-		"0x000201": "BroadCastLike", //广播点赞
-		"0x000202": "BroadCastBilibili_Send", //广播礼物
-		"0x000208": "BackSendChatMessage", //发送聊天返回 失败的时候才返回
-		"0x000209": 'BroadCastChatMessage', //广播聊天
-		"0x000203": "BackSendGift", //赠送礼物回调
-		"0x000204": "BackSendHongbao", //发送红包回调
-		"0x000205": "BroadCastHongbao", // 广播红包
-		"0x000206":"BroadCastHongbaoUpdated",//广播红包状态改变
-		"0x000207":"BackGrabHongbao",//抢红包回调
-		
-		// '0x000201': 'BucketInfo',
-		// '0x000202': 'PushChatMessage', //推送聊天消息
-		// '0x000203': 'BackSendMessage', //发送失败才发
-		// '0x000300': 'PushGoodBidList', //推送商品竞价信息
-	}
+	static RequestApplyLianmai = "0x0002A2"//申请连麦
+	static RequestSwitchLianmaiAllow = "0x0002A0"//主播切换是否允许申请连麦
+	static ActorRequestLianmaiData = "0x0002A5"//主播获取连麦列表
+	static ActorAgreeLianmaiApply = "0x0002A6"//主播同意连麦
+	static ActorTerminateLianmai = "0x0002A7"//主播结束连麦
+	static SelfTerminateLianmai = "0x0002A8"//连麦者结束连麦
+	static GmChatBid = "0x0002F1"//禁言
+	static GmKickOutRoom = "0x0002F2"//踢出房间
+
+	static cmd= {
+			'0x000100': 'BackLoginBroadCastRoom1001', //登录回调
+			// "0x000210":"BackLoginBroadCastRoom1001",
+			'0x000101': 'UserAttr',
+			'0x000102': 'Message',
+			'0x000200': 'BackLike', //点赞发送回调
+			"0x000201": "BroadCastLike", //广播点赞
+			"0x000202": "BroadCastBilibili_Send", //广播礼物
+			"0x000208": "BackSendChatMessage", //发送聊天返回 失败的时候才返回
+			"0x000209": 'BroadCastChatMessage', //广播聊天
+			"0x000203": "BackSendGift", //赠送礼物回调
+			"0x000204": "BackSendHongbao", //发送红包回调
+			"0x000205": "BroadCastHongbao", // 广播红包
+			"0x000206": "BroadCastHongbaoUpdated",//广播红包状态改变
+			"0x000207": "BackGrabHongbao",//抢红包回调
+			"0x00020A": "BackSendMerchantCoupon",//发送优惠券回调
+			"0x00020B": "BroadCastMerchantCoupon",//广播优惠券
+			"0x00020D": "BackGetMerchantCoupon",//抢券回调
+			"0x000103": "SendMyPoint",//卡币数量变化
+			//--连麦
+			"0x0002A0":"BroadCastLianmaiAllowed",// 广播是否可申请连麦
+			"0x0002A1":"SendLianmaiApply",// 发送给主播有人申请连麦
+			"0x0002A2":"BackApplyLianmai",//申请连麦回调
+			"0x0002A3":"BroadCastLianmaiOn", //广播有人连麦了
+			"0x0002A4":"BroadCastLianmaiOff",//广播连麦结束
+			"0x0002A5":"BackActorLianmaiData", //返回主播连麦数据
+			"0x0002A6":"BackActorAgreeLianmaiApply",//主播同意连麦的回调
+			"0x0002A7":"BackTerminateLianmai" ,//主播结束连麦的回调
+			"0x0002F1":"BackGmChatBid",//禁言的回调
+			"0x0002F2":"BackGmKickOutRoom",//踢出房间的回调
+			// '0x000201': 'BucketInfo',
+			// '0x000202': 'PushChatMessage', //推送聊天消息
+			// '0x000203': 'BackSendMessage', //发送失败才发
+			// '0x000300': 'PushGoodBidList', //推送商品竞价信息
+		}
 
 	static attrNameMapValue = {
 		'name': 'strVal',

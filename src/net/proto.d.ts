@@ -3275,6 +3275,444 @@ export namespace message {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of an ActorAgreeLianmaiApply. */
+    interface IActorAgreeLianmaiApply {
+
+        /** ActorAgreeLianmaiApply uid */
+        uid?: (string|null);
+    }
+
+    /** Represents an ActorAgreeLianmaiApply. */
+    class ActorAgreeLianmaiApply implements IActorAgreeLianmaiApply {
+
+        /**
+         * Constructs a new ActorAgreeLianmaiApply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IActorAgreeLianmaiApply);
+
+        /** ActorAgreeLianmaiApply uid. */
+        public uid: string;
+
+        /**
+         * Creates a new ActorAgreeLianmaiApply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ActorAgreeLianmaiApply instance
+         */
+        public static create(properties?: message.IActorAgreeLianmaiApply): message.ActorAgreeLianmaiApply;
+
+        /**
+         * Encodes the specified ActorAgreeLianmaiApply message. Does not implicitly {@link message.ActorAgreeLianmaiApply.verify|verify} messages.
+         * @param message ActorAgreeLianmaiApply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IActorAgreeLianmaiApply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ActorAgreeLianmaiApply message, length delimited. Does not implicitly {@link message.ActorAgreeLianmaiApply.verify|verify} messages.
+         * @param message ActorAgreeLianmaiApply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IActorAgreeLianmaiApply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an ActorAgreeLianmaiApply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ActorAgreeLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.ActorAgreeLianmaiApply;
+
+        /**
+         * Decodes an ActorAgreeLianmaiApply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ActorAgreeLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.ActorAgreeLianmaiApply;
+
+        /**
+         * Verifies an ActorAgreeLianmaiApply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an ActorAgreeLianmaiApply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ActorAgreeLianmaiApply
+         */
+        public static fromObject(object: { [k: string]: any }): message.ActorAgreeLianmaiApply;
+
+        /**
+         * Creates a plain object from an ActorAgreeLianmaiApply message. Also converts values to other types if specified.
+         * @param message ActorAgreeLianmaiApply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.ActorAgreeLianmaiApply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ActorAgreeLianmaiApply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of an ActorTerminateLianmai. */
+    interface IActorTerminateLianmai {
+    }
+
+    /** Represents an ActorTerminateLianmai. */
+    class ActorTerminateLianmai implements IActorTerminateLianmai {
+
+        /**
+         * Constructs a new ActorTerminateLianmai.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IActorTerminateLianmai);
+
+        /**
+         * Creates a new ActorTerminateLianmai instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ActorTerminateLianmai instance
+         */
+        public static create(properties?: message.IActorTerminateLianmai): message.ActorTerminateLianmai;
+
+        /**
+         * Encodes the specified ActorTerminateLianmai message. Does not implicitly {@link message.ActorTerminateLianmai.verify|verify} messages.
+         * @param message ActorTerminateLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IActorTerminateLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ActorTerminateLianmai message, length delimited. Does not implicitly {@link message.ActorTerminateLianmai.verify|verify} messages.
+         * @param message ActorTerminateLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IActorTerminateLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an ActorTerminateLianmai message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ActorTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.ActorTerminateLianmai;
+
+        /**
+         * Decodes an ActorTerminateLianmai message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ActorTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.ActorTerminateLianmai;
+
+        /**
+         * Verifies an ActorTerminateLianmai message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an ActorTerminateLianmai message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ActorTerminateLianmai
+         */
+        public static fromObject(object: { [k: string]: any }): message.ActorTerminateLianmai;
+
+        /**
+         * Creates a plain object from an ActorTerminateLianmai message. Also converts values to other types if specified.
+         * @param message ActorTerminateLianmai
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.ActorTerminateLianmai, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ActorTerminateLianmai to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a SelfTerminateLianmai. */
+    interface ISelfTerminateLianmai {
+    }
+
+    /** Represents a SelfTerminateLianmai. */
+    class SelfTerminateLianmai implements ISelfTerminateLianmai {
+
+        /**
+         * Constructs a new SelfTerminateLianmai.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.ISelfTerminateLianmai);
+
+        /**
+         * Creates a new SelfTerminateLianmai instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SelfTerminateLianmai instance
+         */
+        public static create(properties?: message.ISelfTerminateLianmai): message.SelfTerminateLianmai;
+
+        /**
+         * Encodes the specified SelfTerminateLianmai message. Does not implicitly {@link message.SelfTerminateLianmai.verify|verify} messages.
+         * @param message SelfTerminateLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.ISelfTerminateLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SelfTerminateLianmai message, length delimited. Does not implicitly {@link message.SelfTerminateLianmai.verify|verify} messages.
+         * @param message SelfTerminateLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.ISelfTerminateLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SelfTerminateLianmai message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SelfTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.SelfTerminateLianmai;
+
+        /**
+         * Decodes a SelfTerminateLianmai message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SelfTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.SelfTerminateLianmai;
+
+        /**
+         * Verifies a SelfTerminateLianmai message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SelfTerminateLianmai message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SelfTerminateLianmai
+         */
+        public static fromObject(object: { [k: string]: any }): message.SelfTerminateLianmai;
+
+        /**
+         * Creates a plain object from a SelfTerminateLianmai message. Also converts values to other types if specified.
+         * @param message SelfTerminateLianmai
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.SelfTerminateLianmai, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SelfTerminateLianmai to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a GmChatBid. */
+    interface IGmChatBid {
+
+        /** GmChatBid uid */
+        uid?: (string|null);
+    }
+
+    /** Represents a GmChatBid. */
+    class GmChatBid implements IGmChatBid {
+
+        /**
+         * Constructs a new GmChatBid.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IGmChatBid);
+
+        /** GmChatBid uid. */
+        public uid: string;
+
+        /**
+         * Creates a new GmChatBid instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GmChatBid instance
+         */
+        public static create(properties?: message.IGmChatBid): message.GmChatBid;
+
+        /**
+         * Encodes the specified GmChatBid message. Does not implicitly {@link message.GmChatBid.verify|verify} messages.
+         * @param message GmChatBid message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IGmChatBid, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GmChatBid message, length delimited. Does not implicitly {@link message.GmChatBid.verify|verify} messages.
+         * @param message GmChatBid message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IGmChatBid, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GmChatBid message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GmChatBid
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.GmChatBid;
+
+        /**
+         * Decodes a GmChatBid message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GmChatBid
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.GmChatBid;
+
+        /**
+         * Verifies a GmChatBid message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GmChatBid message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GmChatBid
+         */
+        public static fromObject(object: { [k: string]: any }): message.GmChatBid;
+
+        /**
+         * Creates a plain object from a GmChatBid message. Also converts values to other types if specified.
+         * @param message GmChatBid
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.GmChatBid, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GmChatBid to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a GmKickOutRoom. */
+    interface IGmKickOutRoom {
+
+        /** GmKickOutRoom uid */
+        uid?: (string|null);
+    }
+
+    /** Represents a GmKickOutRoom. */
+    class GmKickOutRoom implements IGmKickOutRoom {
+
+        /**
+         * Constructs a new GmKickOutRoom.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IGmKickOutRoom);
+
+        /** GmKickOutRoom uid. */
+        public uid: string;
+
+        /**
+         * Creates a new GmKickOutRoom instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GmKickOutRoom instance
+         */
+        public static create(properties?: message.IGmKickOutRoom): message.GmKickOutRoom;
+
+        /**
+         * Encodes the specified GmKickOutRoom message. Does not implicitly {@link message.GmKickOutRoom.verify|verify} messages.
+         * @param message GmKickOutRoom message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IGmKickOutRoom, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GmKickOutRoom message, length delimited. Does not implicitly {@link message.GmKickOutRoom.verify|verify} messages.
+         * @param message GmKickOutRoom message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IGmKickOutRoom, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GmKickOutRoom message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GmKickOutRoom
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.GmKickOutRoom;
+
+        /**
+         * Decodes a GmKickOutRoom message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GmKickOutRoom
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.GmKickOutRoom;
+
+        /**
+         * Verifies a GmKickOutRoom message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GmKickOutRoom message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GmKickOutRoom
+         */
+        public static fromObject(object: { [k: string]: any }): message.GmKickOutRoom;
+
+        /**
+         * Creates a plain object from a GmKickOutRoom message. Also converts values to other types if specified.
+         * @param message GmKickOutRoom
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.GmKickOutRoom, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GmKickOutRoom to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a BackLike. */
     interface IBackLike {
 
@@ -4965,8 +5403,8 @@ export namespace message {
             /** Coupon disappear */
             disappear?: (boolean|null);
 
-            /** Coupon sec */
-            sec?: (number|null);
+            /** Coupon startTime */
+            startTime?: (number|Long|null);
         }
 
         /** Represents a Coupon. */
@@ -4984,8 +5422,8 @@ export namespace message {
             /** Coupon disappear. */
             public disappear: boolean;
 
-            /** Coupon sec. */
-            public sec: number;
+            /** Coupon startTime. */
+            public startTime: (number|Long);
 
             /**
              * Creates a new Coupon instance using the specified properties.
@@ -5583,6 +6021,9 @@ export namespace message {
 
         /** BroadCastLianmaiOn avatar */
         avatar?: (string|null);
+
+        /** BroadCastLianmaiOn streamId */
+        streamId?: (string|null);
     }
 
     /** Represents a BroadCastLianmaiOn. */
@@ -5602,6 +6043,9 @@ export namespace message {
 
         /** BroadCastLianmaiOn avatar. */
         public avatar: string;
+
+        /** BroadCastLianmaiOn streamId. */
+        public streamId: string;
 
         /**
          * Creates a new BroadCastLianmaiOn instance using the specified properties.
@@ -5969,5 +6413,389 @@ export namespace message {
              */
             public toJSON(): { [k: string]: any };
         }
+    }
+
+    /** Properties of a BackActorAgreeLianmaiApply. */
+    interface IBackActorAgreeLianmaiApply {
+
+        /** BackActorAgreeLianmaiApply success */
+        success?: (boolean|null);
+
+        /** BackActorAgreeLianmaiApply msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackActorAgreeLianmaiApply. */
+    class BackActorAgreeLianmaiApply implements IBackActorAgreeLianmaiApply {
+
+        /**
+         * Constructs a new BackActorAgreeLianmaiApply.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackActorAgreeLianmaiApply);
+
+        /** BackActorAgreeLianmaiApply success. */
+        public success: boolean;
+
+        /** BackActorAgreeLianmaiApply msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackActorAgreeLianmaiApply instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackActorAgreeLianmaiApply instance
+         */
+        public static create(properties?: message.IBackActorAgreeLianmaiApply): message.BackActorAgreeLianmaiApply;
+
+        /**
+         * Encodes the specified BackActorAgreeLianmaiApply message. Does not implicitly {@link message.BackActorAgreeLianmaiApply.verify|verify} messages.
+         * @param message BackActorAgreeLianmaiApply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackActorAgreeLianmaiApply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackActorAgreeLianmaiApply message, length delimited. Does not implicitly {@link message.BackActorAgreeLianmaiApply.verify|verify} messages.
+         * @param message BackActorAgreeLianmaiApply message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackActorAgreeLianmaiApply, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackActorAgreeLianmaiApply message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackActorAgreeLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackActorAgreeLianmaiApply;
+
+        /**
+         * Decodes a BackActorAgreeLianmaiApply message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackActorAgreeLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackActorAgreeLianmaiApply;
+
+        /**
+         * Verifies a BackActorAgreeLianmaiApply message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackActorAgreeLianmaiApply message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackActorAgreeLianmaiApply
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackActorAgreeLianmaiApply;
+
+        /**
+         * Creates a plain object from a BackActorAgreeLianmaiApply message. Also converts values to other types if specified.
+         * @param message BackActorAgreeLianmaiApply
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackActorAgreeLianmaiApply, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackActorAgreeLianmaiApply to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BackTerminateLianmai. */
+    interface IBackTerminateLianmai {
+
+        /** BackTerminateLianmai success */
+        success?: (boolean|null);
+
+        /** BackTerminateLianmai msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackTerminateLianmai. */
+    class BackTerminateLianmai implements IBackTerminateLianmai {
+
+        /**
+         * Constructs a new BackTerminateLianmai.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackTerminateLianmai);
+
+        /** BackTerminateLianmai success. */
+        public success: boolean;
+
+        /** BackTerminateLianmai msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackTerminateLianmai instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackTerminateLianmai instance
+         */
+        public static create(properties?: message.IBackTerminateLianmai): message.BackTerminateLianmai;
+
+        /**
+         * Encodes the specified BackTerminateLianmai message. Does not implicitly {@link message.BackTerminateLianmai.verify|verify} messages.
+         * @param message BackTerminateLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackTerminateLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackTerminateLianmai message, length delimited. Does not implicitly {@link message.BackTerminateLianmai.verify|verify} messages.
+         * @param message BackTerminateLianmai message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackTerminateLianmai, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackTerminateLianmai message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackTerminateLianmai;
+
+        /**
+         * Decodes a BackTerminateLianmai message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackTerminateLianmai;
+
+        /**
+         * Verifies a BackTerminateLianmai message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackTerminateLianmai message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackTerminateLianmai
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackTerminateLianmai;
+
+        /**
+         * Creates a plain object from a BackTerminateLianmai message. Also converts values to other types if specified.
+         * @param message BackTerminateLianmai
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackTerminateLianmai, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackTerminateLianmai to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BackGmChatBid. */
+    interface IBackGmChatBid {
+
+        /** BackGmChatBid success */
+        success?: (boolean|null);
+
+        /** BackGmChatBid msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackGmChatBid. */
+    class BackGmChatBid implements IBackGmChatBid {
+
+        /**
+         * Constructs a new BackGmChatBid.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackGmChatBid);
+
+        /** BackGmChatBid success. */
+        public success: boolean;
+
+        /** BackGmChatBid msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackGmChatBid instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackGmChatBid instance
+         */
+        public static create(properties?: message.IBackGmChatBid): message.BackGmChatBid;
+
+        /**
+         * Encodes the specified BackGmChatBid message. Does not implicitly {@link message.BackGmChatBid.verify|verify} messages.
+         * @param message BackGmChatBid message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackGmChatBid, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackGmChatBid message, length delimited. Does not implicitly {@link message.BackGmChatBid.verify|verify} messages.
+         * @param message BackGmChatBid message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackGmChatBid, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackGmChatBid message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackGmChatBid
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackGmChatBid;
+
+        /**
+         * Decodes a BackGmChatBid message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackGmChatBid
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackGmChatBid;
+
+        /**
+         * Verifies a BackGmChatBid message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackGmChatBid message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackGmChatBid
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackGmChatBid;
+
+        /**
+         * Creates a plain object from a BackGmChatBid message. Also converts values to other types if specified.
+         * @param message BackGmChatBid
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackGmChatBid, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackGmChatBid to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a BackGmKickOutRoom. */
+    interface IBackGmKickOutRoom {
+
+        /** BackGmKickOutRoom success */
+        success?: (boolean|null);
+
+        /** BackGmKickOutRoom msg */
+        msg?: (string|null);
+    }
+
+    /** Represents a BackGmKickOutRoom. */
+    class BackGmKickOutRoom implements IBackGmKickOutRoom {
+
+        /**
+         * Constructs a new BackGmKickOutRoom.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.IBackGmKickOutRoom);
+
+        /** BackGmKickOutRoom success. */
+        public success: boolean;
+
+        /** BackGmKickOutRoom msg. */
+        public msg: string;
+
+        /**
+         * Creates a new BackGmKickOutRoom instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns BackGmKickOutRoom instance
+         */
+        public static create(properties?: message.IBackGmKickOutRoom): message.BackGmKickOutRoom;
+
+        /**
+         * Encodes the specified BackGmKickOutRoom message. Does not implicitly {@link message.BackGmKickOutRoom.verify|verify} messages.
+         * @param message BackGmKickOutRoom message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.IBackGmKickOutRoom, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified BackGmKickOutRoom message, length delimited. Does not implicitly {@link message.BackGmKickOutRoom.verify|verify} messages.
+         * @param message BackGmKickOutRoom message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.IBackGmKickOutRoom, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a BackGmKickOutRoom message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns BackGmKickOutRoom
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.BackGmKickOutRoom;
+
+        /**
+         * Decodes a BackGmKickOutRoom message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns BackGmKickOutRoom
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.BackGmKickOutRoom;
+
+        /**
+         * Verifies a BackGmKickOutRoom message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a BackGmKickOutRoom message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns BackGmKickOutRoom
+         */
+        public static fromObject(object: { [k: string]: any }): message.BackGmKickOutRoom;
+
+        /**
+         * Creates a plain object from a BackGmKickOutRoom message. Also converts values to other types if specified.
+         * @param message BackGmKickOutRoom
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.BackGmKickOutRoom, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this BackGmKickOutRoom to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
     }
 }

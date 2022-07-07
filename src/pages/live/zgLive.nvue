@@ -2,7 +2,8 @@
 	<view class="full">
 		<video show-play-btn='false' show-center-play-btn='false' autoplay='true'
 			style='width:750rpx;position:fixed;top:0' controls='false' :style="{height:height,width:width}"
-			:src='liveRTMP' show-fullscreen-btn='false' object-fit='fill' show-loading='false' ref='video'></video>
+			:src='liveRTMP' show-fullscreen-btn='false' object-fit='fill' show-loading='false' v-if='videoShow'
+			ref='video'></video>
 		<web-view :catchtouchmove="true" :style="{height:height,width:width}" id='webView' class="webView" ref="webview"
 			:webview-styles="webviewStyles" @onPostMessage="handleMessage" :src="webViewUrl" v-if='viewShow'
 			allow='microphone;camera;midi;encrypted-media;'>
@@ -46,11 +47,13 @@
 				safeAreaBottomHeight: 0, //底部安全距离高度
 				// http://192.168.8.26:8080/#/pages/liveStreaming/index
 				webViewUrl: '', //webView地址
-				videoShow: false,
+				videoShow: true,
 				videoContxt: null, //视频实例
 				liveRTMP: '', //直播rtmp流地址
-				AnchorEndUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
-				UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
+				// AnchorEndUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				AnchorEndUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				UserUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/index?ts=' + (+new Date()),
+				// UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
 					roomID: null,
@@ -63,6 +66,7 @@
 				appProfile: {
 
 				},
+				nowDate: new Date(),
 				isAnchor: false, //是否为主播
 				hasToken: Boolean(app.token.accessToken),
 				tokenData: {
@@ -82,7 +86,21 @@
 				reconnectionTimer: null, //断线重连定时器
 				heartBeatTimer: null, //心跳包定时器
 				socketLoginOk: false, //socket房间是否登录成功
-				socketRoomLoginTimer: null
+				socketRoomLoginTimer: null,
+				registerList: ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike', 'BroadCastBilibili_Send',
+					'BackSendChatMessage', 'BroadCastChatMessage', 'BackSendHongbao', 'BroadCastHongbao',
+					'BroadCastHongbaoUpdated', 'BackGrabHongbao', 'BackSendGift', 'BackSendMerchantCoupon',
+					'BroadCastMerchantCoupon', 'SendMyPoint', "BackGetMerchantCoupon", "BroadCastLianmaiAllowed",
+					"SendLianmaiApply",
+					"BackApplyLianmai",
+					"BroadCastLianmaiOn",
+					"BroadCastLianmaiOff",
+					"BackActorLianmaiData",
+					"BackActorAgreeLianmaiApply",
+					"BackTerminateLianmai",
+					"BackGmChatBid",
+					"BackGmKickOutRoom",
+				]
 			}
 		},
 		onReady() {
@@ -132,10 +150,11 @@
 			})
 		},
 		watch: {
-			liveRTMP: function(val) {
+			liveRTMP: function (val) {
+				console.log(this.videoContxt);
 				if (val) this.videoContxt.play()
 			},
-			roomLikeNum: function(val, oldVal) {
+			roomLikeNum: function (val, oldVal) {
 				if (val != oldVal) this.informH5Action('changeLikeNum', val, false)
 			}
 		},
@@ -157,7 +176,7 @@
 								msg[key] = valueObject[key]
 							})
 						}
-						console.log(packName,msg)
+						console.log(packName, msg)
 						let buffer = proto.message[packName].encode(msg).finish();
 						let pack = new PackageBase(Message[packName]);
 						pack.d(buffer).to(app.sever);
@@ -202,17 +221,20 @@
 					console.log('socket离开房间');
 					this.isConnectSocket = false
 				})
+				// app.sever.unregisterHandlers(this)
 			},
 			//连接sockey
 			connectSever() {
 
 				app.sever && app.sever.close();
 				app.sever.setServerInfo({
-					// ip: this.websocket
-					ip: "ws://192.168.8.79:31700/ws"
+					ip: this.websocket
+					// ip: "ws://192.168.8.79:31700/ws"
 				});
 				app.sever.connect(
 					() => {
+						let listeners = this.registerList;
+						app.sever.registerHandlers(this, listeners, true)
 						this.sendHeartBeat();
 						this.sendWebsocketLogin();
 					},
@@ -236,16 +258,70 @@
 				}, 5000)
 			},
 			initSocket(isFirst = true) {
+				console.log(this.websocket);
+				if (!this.websocket) return
 				const socketInfo = uni.getStorageSync('socketInfo')
 				this.heartBeatTimer && clearInterval(this.heartBeatTimer)
 				this.heartBeatTimer = setInterval(() => {
 					this.sendHeartBeat();
 				}, 6 * 1000)
 				this.connectSever();
-				let listeners = ['BackLoginBroadCastRoom1001', 'BackLike', 'BroadCastLike', 'BroadCastBilibili_Send',
-					'BackSendChatMessage', 'BroadCastChatMessage', 'BackSendHongbao','BroadCastHongbao','BroadCastHongbaoUpdated','BackGrabHongbao','BackSendGift'
-				];
-				app.sever.registerHandlers(this, listeners)
+
+			},
+			SendMyPoint(res) {
+				console.log('卡币数量变化', res);
+			},
+			//-------------------连麦---------------
+			anchorEndOperationLM(){
+				//主播切换是否可以连麦
+				this.sendSocketMsg('RequestSwitchLianmaiAllow')
+			},
+			BroadCastLianmaiAllowed(res) {
+				//广播是否可以连麦
+				console.log('广播是否可以连麦', res);
+				this.checkBack(res).then(data=>{
+					this.informH5Action('BroadCastLianmaiAllowed',res)
+				})
+			},
+			SendLianmaiApply(res) {
+				// 发送给主播有人申请连麦
+				console.log('发送给主播有人申请连麦', res);
+			},
+			sendLianMai(){
+				//申请连麦
+				this.sendSocketMsg('RequestApplyLianmai',{})
+			},
+			BackApplyLianmai(res) {
+				//申请连麦回调
+				console.log("申请连麦回调", res);
+			},
+			BroadCastLianmaiOn(res) {
+				//广播有人连麦了
+				console.log("广播有人连麦了", res);
+			},
+			BroadCastLianmaiOff(res) {
+				//广播连麦结束
+				console.log("广播连麦结束", res);
+			},
+			BackActorLianmaiData(res) {
+				//返回主播连麦数据
+				console.log("返回主播连麦数据", res);
+			},
+			BackActorAgreeLianmaiApply(res) {
+				//主播同意连麦的回调
+				console.log("主播同意连麦的回调", res);
+			},
+			BackTerminateLianmai(res) {
+				//主播结束连麦的回调
+				console.log("主播结束连麦的回调", res);
+			},
+			BackGmChatBid(res) {
+				//禁言的回调
+				console.log("禁言的回调", res);
+			},
+			BackGmKickOutRoom(res) {
+				//踢出房间的回调
+				console.log("踢出房间的回调", res);
 			},
 			//-------------------发送消息------------
 			sendTalk(content = '') {
@@ -260,27 +336,60 @@
 				console.log('消息发送回调', res);
 			},
 			BroadCastChatMessage(res) {
-
+				console.log('我收到了消息', this.nowDate);
 				// this.webView.evalJs(`actionSet("BroadCastChatMessageBack",${JSON.stringify({params:res})},false)`)
 				this.informH5Action('BroadCastChatMessageBack', res, false)
 			},
+			//------------------发送优惠券---------------
+			sendCoupon(sendItem) {
+				console.log('发送的优惠券的参数', sendItem);
+				this.sendSocketMsg('RequestSendMerchantCoupon', sendItem)
+			},
+			BackSendMerchantCoupon(res) {
+				console.log('发送优惠券回调', res);
+				this.checkBack(res).catch(err => {
+
+				})
+			},
+			BroadCastMerchantCoupon(res) {
+				console.log('广播优惠券', res);
+				this.informH5Action('BroadCastMerchantCoupon', res)
+			},
+			getQuan(id) {
+				this.sendSocketMsg('RequestGetMerchantCoupon', {
+					id
+				})
+			},
+			BackGetMerchantCoupon(res) {
+				this.checkBack(res).then(res => {
+					this.informH5Action('getCouponSuccess', res)
+				}).catch(err => {
+					this.informH5Action('getCouponFail', res)
+				})
+				console.log('抢券回调', res);
+			},
 			//-----------------发送礼物---------------
-			sendGift(giftTpId,num,target=0){
-				this.sendSocketMsg('RequestSendGift',{
+			sendGift(giftTpId, num, target = 0) {
+				this.sendSocketMsg('RequestSendGift', {
 					giftTpId,
 					num,
 					target
 				})
 			},
-			BackSendGift(res){
+			BackSendGift(res) {
 				//赠送礼物回调
-				this.checkBack(res).then(back=>{
-					console.log('赠送礼物回调',res)
-					this.informH5Action('giftSendSocketBack',{success:true})
-				}).catch(err=>{
-					this.informH5Action('giftSendSocketBack',{success:false,msg:err.msg})
+				this.checkBack(res).then(back => {
+					console.log('赠送礼物回调', res)
+					this.informH5Action('giftSendSocketBack', {
+						success: true
+					})
+				}).catch(err => {
+					this.informH5Action('giftSendSocketBack', {
+						success: false,
+						msg: err.msg
+					})
 				})
-				
+
 			},
 			BroadCastBilibili_Send(res) {
 				console.log('广播礼物', res);
@@ -288,40 +397,57 @@
 			},
 			//------------------发送红包---------------
 			sendHonb(giftTpId, delayMinute) {
-				console.log(giftTpId,delayMinute)
+				console.log(giftTpId, delayMinute)
 				this.sendSocketMsg('RequestSendHongbao', {
-					giftTpId:giftTpId,
+					giftTpId: giftTpId,
 					delayMinute
 				})
 			},
 			BackSendHongbao(res) {
 				//发送红包回调
 				console.log('发送红包回调', res);
-			},
-			
-			BroadCastHongbao(res){
-				//广播红包
-				console.log('广播红包',res)
-				this.informH5Action('BroadCastHongbao',res)
-			},
-			BroadCastHongbaoUpdated(res){
-				//广播红包状态
-				console.log('广播红包状态',res)
-				this.informH5Action('BroadCastHongbaoUpdated',res,false)
-			},
-			grabHongbao(hongbaoId){
-				//抢红包
-				this.sendSocketMsg('RequestGrabHongbao',{hongbaoId:Number(hongbaoId)})
-			},
-			BackGrabHongbao(res){
-				//抢红包回调
-				
-				this.checkBack(res).then(back=>{
+				this.checkBack(res).then(back => {
 					// console.log('赠送礼物回调',res)
-					console.log('抢红包回调',res)
+					console.log('发送红包回调', res)
 					// this.informH5Action('giftSendSocketBack',{success:true})
-					this.informH5Action('grabSuccess',res)
-				}).catch(err=>{
+					// this.informH5Action('grabSuccess', res)
+				}).catch(err => {
+					// console.log('失败', res);
+					// this.informH5Action('grabSuccess', res)
+					// this.informH5Action('giftSendSocketBack',{success:false,msg:err.msg})
+				})
+			},
+			hideVideo() {
+				this.videoContxt.stop()
+				// this.videoShow=false
+			},
+			BroadCastHongbao(res) {
+				//广播红包
+				console.log('广播红包', res)
+				this.informH5Action('BroadCastHongbao', res)
+			},
+			BroadCastHongbaoUpdated(res) {
+				//广播红包状态
+				console.log('广播红包状态', res)
+				this.informH5Action('BroadCastHongbaoUpdated', res, false)
+			},
+			grabHongbao(hongbaoId) {
+				//抢红包
+				this.sendSocketMsg('RequestGrabHongbao', {
+					hongbaoId: Number(hongbaoId)
+				})
+			},
+			BackGrabHongbao(res) {
+				//抢红包回调
+
+				this.checkBack(res).then(back => {
+					// console.log('赠送礼物回调',res)
+					console.log('抢红包回调', res)
+					// this.informH5Action('giftSendSocketBack',{success:true})
+					this.informH5Action('grabSuccess', res)
+				}).catch(err => {
+					console.log('失败', res);
+					this.informH5Action('grabSuccess', res)
 					// this.informH5Action('giftSendSocketBack',{success:false,msg:err.msg})
 				})
 			},
@@ -335,7 +461,7 @@
 						console.log('socket重新登录房间中')
 						this.sendWebsocketLogin();
 					}, 500)
-				}else{
+				} else {
 					this.informH5Action('myPointGet', res.point, false)
 					this.socketLoginOk = true
 				}
@@ -353,15 +479,15 @@
 				this.informH5Action('hasOtherManClickLike', [this.roomLikeNum, res.list], true)
 
 			},
-			checkBack(res){
-				return new Promise((resolve,reject)=>{
-					if(res.msg){
+			checkBack(res) {
+				return new Promise((resolve, reject) => {
+					if (res.msg) {
 						uni.showToast({
-							title:res.msg,
-							icon:'none'
+							title: res.msg,
+							icon: 'none'
 						})
 						reject(res.msg)
-					}else{
+					} else {
 						resolve(res)
 					}
 				})
@@ -445,10 +571,10 @@
 						userData.name = this.tokenData.uname
 					}
 					//如果为主播的情况下 头像使用商家头像//昵称也使用商家昵称
-					if (this.isAnchor == 'true') {
-						userData.avatar = decodeURIComponent(this.merchantMessage.logo)
-						userData.name = this.merchantMessage.name
-					}
+					// if (this.isAnchor == 'true') {
+					// 	userData.avatar = decodeURIComponent(this.merchantMessage.logo)
+					// 	userData.name = this.merchantMessage.name
+					// }
 				} else {
 					//用设备号
 					userData = {
@@ -460,6 +586,7 @@
 				this.initSocket(true)
 			},
 			SET_CDN_URL(cdnData) {
+				console.log('收到cdn', cdnData);
 				this.liveRTMP = cdnData.urlsRTMP
 			},
 			stopPull() {
@@ -504,6 +631,7 @@
 						`loginRoom(${JSON.stringify(this.loginRoomData)},${JSON.stringify(this.appProfile)},${JSON.stringify(this.liveData)})`
 					) //登录房间
 					clearInterval(this.webEvalTimer)
+					// this.pushStream()
 				}, 100)
 			},
 			// //发送卡密
@@ -593,7 +721,7 @@
 					delta: 1
 				})
 			},
-			refreshToken() {},
+			refreshToken() { },
 			// netWork
 			share() {
 				uni.showLoading({
@@ -608,7 +736,7 @@
 					scene: "WXSceneSession",
 					href: 'https://www.ka-world.com/share/h5/#/pages/live/liveShare?roomID=' + this.loginRoomData
 						.roomID,
-					success: (res) => {},
+					success: (res) => { },
 					fail: (err) => {
 						console.log("失败原因=>", err);
 						uni.showToast({

@@ -28,5 +28,5 @@ message Message {
 
 // 0x000103 服务器主动推送我最新的卡币数量
 message SendMyPoint {
-	float point = 1;
+	double point = 1;
 }

@@ -4527,7 +4527,7 @@ $root.message = (function() {
             if (!writer)
                 writer = $Writer.create();
             if (message.point != null && Object.hasOwnProperty.call(message, "point"))
-                writer.uint32(/* id 1, wireType 5 =*/13).float(message.point);
+                writer.uint32(/* id 1, wireType 1 =*/9).double(message.point);
             return writer;
         };
 
@@ -4563,7 +4563,7 @@ $root.message = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.point = reader.float();
+                    message.point = reader.double();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -6756,9 +6756,9 @@ $root.message = (function() {
             if (message.goodCode != null && Object.hasOwnProperty.call(message, "goodCode"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.goodCode);
             if (message.amount != null && Object.hasOwnProperty.call(message, "amount"))
-                writer.uint32(/* id 3, wireType 5 =*/29).float(message.amount);
+                writer.uint32(/* id 3, wireType 1 =*/25).double(message.amount);
             if (message.minUseAmount != null && Object.hasOwnProperty.call(message, "minUseAmount"))
-                writer.uint32(/* id 4, wireType 5 =*/37).float(message.minUseAmount);
+                writer.uint32(/* id 4, wireType 1 =*/33).double(message.minUseAmount);
             if (message.num != null && Object.hasOwnProperty.call(message, "num"))
                 writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.num);
             if (message.lifeMinute != null && Object.hasOwnProperty.call(message, "lifeMinute"))
@@ -6806,10 +6806,10 @@ $root.message = (function() {
                     message.goodCode = reader.string();
                     break;
                 case 3:
-                    message.amount = reader.float();
+                    message.amount = reader.double();
                     break;
                 case 4:
-                    message.minUseAmount = reader.float();
+                    message.minUseAmount = reader.double();
                     break;
                 case 5:
                     message.num = reader.uint32();
@@ -7640,6 +7640,887 @@ $root.message = (function() {
         };
 
         return ActorRequestLianmaiData;
+    })();
+
+    message.ActorAgreeLianmaiApply = (function() {
+
+        /**
+         * Properties of an ActorAgreeLianmaiApply.
+         * @memberof message
+         * @interface IActorAgreeLianmaiApply
+         * @property {string|null} [uid] ActorAgreeLianmaiApply uid
+         */
+
+        /**
+         * Constructs a new ActorAgreeLianmaiApply.
+         * @memberof message
+         * @classdesc Represents an ActorAgreeLianmaiApply.
+         * @implements IActorAgreeLianmaiApply
+         * @constructor
+         * @param {message.IActorAgreeLianmaiApply=} [properties] Properties to set
+         */
+        function ActorAgreeLianmaiApply(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ActorAgreeLianmaiApply uid.
+         * @member {string} uid
+         * @memberof message.ActorAgreeLianmaiApply
+         * @instance
+         */
+        ActorAgreeLianmaiApply.prototype.uid = "";
+
+        /**
+         * Creates a new ActorAgreeLianmaiApply instance using the specified properties.
+         * @function create
+         * @memberof message.ActorAgreeLianmaiApply
+         * @static
+         * @param {message.IActorAgreeLianmaiApply=} [properties] Properties to set
+         * @returns {message.ActorAgreeLianmaiApply} ActorAgreeLianmaiApply instance
+         */
+        ActorAgreeLianmaiApply.create = function create(properties) {
+            return new ActorAgreeLianmaiApply(properties);
+        };
+
+        /**
+         * Encodes the specified ActorAgreeLianmaiApply message. Does not implicitly {@link message.ActorAgreeLianmaiApply.verify|verify} messages.
+         * @function encode
+         * @memberof message.ActorAgreeLianmaiApply
+         * @static
+         * @param {message.IActorAgreeLianmaiApply} message ActorAgreeLianmaiApply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ActorAgreeLianmaiApply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.uid);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ActorAgreeLianmaiApply message, length delimited. Does not implicitly {@link message.ActorAgreeLianmaiApply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.ActorAgreeLianmaiApply
+         * @static
+         * @param {message.IActorAgreeLianmaiApply} message ActorAgreeLianmaiApply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ActorAgreeLianmaiApply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an ActorAgreeLianmaiApply message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.ActorAgreeLianmaiApply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.ActorAgreeLianmaiApply} ActorAgreeLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ActorAgreeLianmaiApply.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.ActorAgreeLianmaiApply();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.uid = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an ActorAgreeLianmaiApply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.ActorAgreeLianmaiApply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.ActorAgreeLianmaiApply} ActorAgreeLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ActorAgreeLianmaiApply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an ActorAgreeLianmaiApply message.
+         * @function verify
+         * @memberof message.ActorAgreeLianmaiApply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ActorAgreeLianmaiApply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                if (!$util.isString(message.uid))
+                    return "uid: string expected";
+            return null;
+        };
+
+        /**
+         * Creates an ActorAgreeLianmaiApply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.ActorAgreeLianmaiApply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.ActorAgreeLianmaiApply} ActorAgreeLianmaiApply
+         */
+        ActorAgreeLianmaiApply.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.ActorAgreeLianmaiApply)
+                return object;
+            var message = new $root.message.ActorAgreeLianmaiApply();
+            if (object.uid != null)
+                message.uid = String(object.uid);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an ActorAgreeLianmaiApply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.ActorAgreeLianmaiApply
+         * @static
+         * @param {message.ActorAgreeLianmaiApply} message ActorAgreeLianmaiApply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ActorAgreeLianmaiApply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.uid = "";
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                object.uid = message.uid;
+            return object;
+        };
+
+        /**
+         * Converts this ActorAgreeLianmaiApply to JSON.
+         * @function toJSON
+         * @memberof message.ActorAgreeLianmaiApply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ActorAgreeLianmaiApply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ActorAgreeLianmaiApply;
+    })();
+
+    message.ActorTerminateLianmai = (function() {
+
+        /**
+         * Properties of an ActorTerminateLianmai.
+         * @memberof message
+         * @interface IActorTerminateLianmai
+         */
+
+        /**
+         * Constructs a new ActorTerminateLianmai.
+         * @memberof message
+         * @classdesc Represents an ActorTerminateLianmai.
+         * @implements IActorTerminateLianmai
+         * @constructor
+         * @param {message.IActorTerminateLianmai=} [properties] Properties to set
+         */
+        function ActorTerminateLianmai(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new ActorTerminateLianmai instance using the specified properties.
+         * @function create
+         * @memberof message.ActorTerminateLianmai
+         * @static
+         * @param {message.IActorTerminateLianmai=} [properties] Properties to set
+         * @returns {message.ActorTerminateLianmai} ActorTerminateLianmai instance
+         */
+        ActorTerminateLianmai.create = function create(properties) {
+            return new ActorTerminateLianmai(properties);
+        };
+
+        /**
+         * Encodes the specified ActorTerminateLianmai message. Does not implicitly {@link message.ActorTerminateLianmai.verify|verify} messages.
+         * @function encode
+         * @memberof message.ActorTerminateLianmai
+         * @static
+         * @param {message.IActorTerminateLianmai} message ActorTerminateLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ActorTerminateLianmai.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ActorTerminateLianmai message, length delimited. Does not implicitly {@link message.ActorTerminateLianmai.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.ActorTerminateLianmai
+         * @static
+         * @param {message.IActorTerminateLianmai} message ActorTerminateLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ActorTerminateLianmai.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an ActorTerminateLianmai message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.ActorTerminateLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.ActorTerminateLianmai} ActorTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ActorTerminateLianmai.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.ActorTerminateLianmai();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an ActorTerminateLianmai message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.ActorTerminateLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.ActorTerminateLianmai} ActorTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ActorTerminateLianmai.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an ActorTerminateLianmai message.
+         * @function verify
+         * @memberof message.ActorTerminateLianmai
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ActorTerminateLianmai.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates an ActorTerminateLianmai message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.ActorTerminateLianmai
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.ActorTerminateLianmai} ActorTerminateLianmai
+         */
+        ActorTerminateLianmai.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.ActorTerminateLianmai)
+                return object;
+            return new $root.message.ActorTerminateLianmai();
+        };
+
+        /**
+         * Creates a plain object from an ActorTerminateLianmai message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.ActorTerminateLianmai
+         * @static
+         * @param {message.ActorTerminateLianmai} message ActorTerminateLianmai
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ActorTerminateLianmai.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this ActorTerminateLianmai to JSON.
+         * @function toJSON
+         * @memberof message.ActorTerminateLianmai
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ActorTerminateLianmai.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ActorTerminateLianmai;
+    })();
+
+    message.SelfTerminateLianmai = (function() {
+
+        /**
+         * Properties of a SelfTerminateLianmai.
+         * @memberof message
+         * @interface ISelfTerminateLianmai
+         */
+
+        /**
+         * Constructs a new SelfTerminateLianmai.
+         * @memberof message
+         * @classdesc Represents a SelfTerminateLianmai.
+         * @implements ISelfTerminateLianmai
+         * @constructor
+         * @param {message.ISelfTerminateLianmai=} [properties] Properties to set
+         */
+        function SelfTerminateLianmai(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new SelfTerminateLianmai instance using the specified properties.
+         * @function create
+         * @memberof message.SelfTerminateLianmai
+         * @static
+         * @param {message.ISelfTerminateLianmai=} [properties] Properties to set
+         * @returns {message.SelfTerminateLianmai} SelfTerminateLianmai instance
+         */
+        SelfTerminateLianmai.create = function create(properties) {
+            return new SelfTerminateLianmai(properties);
+        };
+
+        /**
+         * Encodes the specified SelfTerminateLianmai message. Does not implicitly {@link message.SelfTerminateLianmai.verify|verify} messages.
+         * @function encode
+         * @memberof message.SelfTerminateLianmai
+         * @static
+         * @param {message.ISelfTerminateLianmai} message SelfTerminateLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SelfTerminateLianmai.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified SelfTerminateLianmai message, length delimited. Does not implicitly {@link message.SelfTerminateLianmai.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.SelfTerminateLianmai
+         * @static
+         * @param {message.ISelfTerminateLianmai} message SelfTerminateLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SelfTerminateLianmai.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a SelfTerminateLianmai message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.SelfTerminateLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.SelfTerminateLianmai} SelfTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SelfTerminateLianmai.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.SelfTerminateLianmai();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a SelfTerminateLianmai message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.SelfTerminateLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.SelfTerminateLianmai} SelfTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SelfTerminateLianmai.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a SelfTerminateLianmai message.
+         * @function verify
+         * @memberof message.SelfTerminateLianmai
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        SelfTerminateLianmai.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a SelfTerminateLianmai message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.SelfTerminateLianmai
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.SelfTerminateLianmai} SelfTerminateLianmai
+         */
+        SelfTerminateLianmai.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.SelfTerminateLianmai)
+                return object;
+            return new $root.message.SelfTerminateLianmai();
+        };
+
+        /**
+         * Creates a plain object from a SelfTerminateLianmai message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.SelfTerminateLianmai
+         * @static
+         * @param {message.SelfTerminateLianmai} message SelfTerminateLianmai
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        SelfTerminateLianmai.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this SelfTerminateLianmai to JSON.
+         * @function toJSON
+         * @memberof message.SelfTerminateLianmai
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        SelfTerminateLianmai.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return SelfTerminateLianmai;
+    })();
+
+    message.GmChatBid = (function() {
+
+        /**
+         * Properties of a GmChatBid.
+         * @memberof message
+         * @interface IGmChatBid
+         * @property {string|null} [uid] GmChatBid uid
+         */
+
+        /**
+         * Constructs a new GmChatBid.
+         * @memberof message
+         * @classdesc Represents a GmChatBid.
+         * @implements IGmChatBid
+         * @constructor
+         * @param {message.IGmChatBid=} [properties] Properties to set
+         */
+        function GmChatBid(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GmChatBid uid.
+         * @member {string} uid
+         * @memberof message.GmChatBid
+         * @instance
+         */
+        GmChatBid.prototype.uid = "";
+
+        /**
+         * Creates a new GmChatBid instance using the specified properties.
+         * @function create
+         * @memberof message.GmChatBid
+         * @static
+         * @param {message.IGmChatBid=} [properties] Properties to set
+         * @returns {message.GmChatBid} GmChatBid instance
+         */
+        GmChatBid.create = function create(properties) {
+            return new GmChatBid(properties);
+        };
+
+        /**
+         * Encodes the specified GmChatBid message. Does not implicitly {@link message.GmChatBid.verify|verify} messages.
+         * @function encode
+         * @memberof message.GmChatBid
+         * @static
+         * @param {message.IGmChatBid} message GmChatBid message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GmChatBid.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.uid);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GmChatBid message, length delimited. Does not implicitly {@link message.GmChatBid.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.GmChatBid
+         * @static
+         * @param {message.IGmChatBid} message GmChatBid message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GmChatBid.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GmChatBid message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.GmChatBid
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.GmChatBid} GmChatBid
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GmChatBid.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.GmChatBid();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.uid = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GmChatBid message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.GmChatBid
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.GmChatBid} GmChatBid
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GmChatBid.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GmChatBid message.
+         * @function verify
+         * @memberof message.GmChatBid
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GmChatBid.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                if (!$util.isString(message.uid))
+                    return "uid: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a GmChatBid message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.GmChatBid
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.GmChatBid} GmChatBid
+         */
+        GmChatBid.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.GmChatBid)
+                return object;
+            var message = new $root.message.GmChatBid();
+            if (object.uid != null)
+                message.uid = String(object.uid);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GmChatBid message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.GmChatBid
+         * @static
+         * @param {message.GmChatBid} message GmChatBid
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GmChatBid.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.uid = "";
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                object.uid = message.uid;
+            return object;
+        };
+
+        /**
+         * Converts this GmChatBid to JSON.
+         * @function toJSON
+         * @memberof message.GmChatBid
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GmChatBid.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return GmChatBid;
+    })();
+
+    message.GmKickOutRoom = (function() {
+
+        /**
+         * Properties of a GmKickOutRoom.
+         * @memberof message
+         * @interface IGmKickOutRoom
+         * @property {string|null} [uid] GmKickOutRoom uid
+         */
+
+        /**
+         * Constructs a new GmKickOutRoom.
+         * @memberof message
+         * @classdesc Represents a GmKickOutRoom.
+         * @implements IGmKickOutRoom
+         * @constructor
+         * @param {message.IGmKickOutRoom=} [properties] Properties to set
+         */
+        function GmKickOutRoom(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GmKickOutRoom uid.
+         * @member {string} uid
+         * @memberof message.GmKickOutRoom
+         * @instance
+         */
+        GmKickOutRoom.prototype.uid = "";
+
+        /**
+         * Creates a new GmKickOutRoom instance using the specified properties.
+         * @function create
+         * @memberof message.GmKickOutRoom
+         * @static
+         * @param {message.IGmKickOutRoom=} [properties] Properties to set
+         * @returns {message.GmKickOutRoom} GmKickOutRoom instance
+         */
+        GmKickOutRoom.create = function create(properties) {
+            return new GmKickOutRoom(properties);
+        };
+
+        /**
+         * Encodes the specified GmKickOutRoom message. Does not implicitly {@link message.GmKickOutRoom.verify|verify} messages.
+         * @function encode
+         * @memberof message.GmKickOutRoom
+         * @static
+         * @param {message.IGmKickOutRoom} message GmKickOutRoom message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GmKickOutRoom.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.uid);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GmKickOutRoom message, length delimited. Does not implicitly {@link message.GmKickOutRoom.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.GmKickOutRoom
+         * @static
+         * @param {message.IGmKickOutRoom} message GmKickOutRoom message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GmKickOutRoom.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GmKickOutRoom message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.GmKickOutRoom
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.GmKickOutRoom} GmKickOutRoom
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GmKickOutRoom.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.GmKickOutRoom();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.uid = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GmKickOutRoom message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.GmKickOutRoom
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.GmKickOutRoom} GmKickOutRoom
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GmKickOutRoom.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GmKickOutRoom message.
+         * @function verify
+         * @memberof message.GmKickOutRoom
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GmKickOutRoom.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                if (!$util.isString(message.uid))
+                    return "uid: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a GmKickOutRoom message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.GmKickOutRoom
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.GmKickOutRoom} GmKickOutRoom
+         */
+        GmKickOutRoom.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.GmKickOutRoom)
+                return object;
+            var message = new $root.message.GmKickOutRoom();
+            if (object.uid != null)
+                message.uid = String(object.uid);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GmKickOutRoom message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.GmKickOutRoom
+         * @static
+         * @param {message.GmKickOutRoom} message GmKickOutRoom
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GmKickOutRoom.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.uid = "";
+            if (message.uid != null && message.hasOwnProperty("uid"))
+                object.uid = message.uid;
+            return object;
+        };
+
+        /**
+         * Converts this GmKickOutRoom to JSON.
+         * @function toJSON
+         * @memberof message.GmKickOutRoom
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GmKickOutRoom.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return GmKickOutRoom;
     })();
 
     message.BackLike = (function() {
@@ -9492,7 +10373,7 @@ $root.message = (function() {
                 if (message.senderAvatar != null && Object.hasOwnProperty.call(message, "senderAvatar"))
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.senderAvatar);
                 if (message.point != null && Object.hasOwnProperty.call(message, "point"))
-                    writer.uint32(/* id 5, wireType 5 =*/45).float(message.point);
+                    writer.uint32(/* id 5, wireType 1 =*/41).double(message.point);
                 if (message.startTime != null && Object.hasOwnProperty.call(message, "startTime"))
                     writer.uint32(/* id 6, wireType 0 =*/48).int64(message.startTime);
                 if (message.leftNum != null && Object.hasOwnProperty.call(message, "leftNum"))
@@ -9544,7 +10425,7 @@ $root.message = (function() {
                         message.senderAvatar = reader.string();
                         break;
                     case 5:
-                        message.point = reader.float();
+                        message.point = reader.double();
                         break;
                     case 6:
                         message.startTime = reader.int64();
@@ -10290,7 +11171,7 @@ $root.message = (function() {
             if (!writer)
                 writer = $Writer.create();
             if (message.point != null && Object.hasOwnProperty.call(message, "point"))
-                writer.uint32(/* id 1, wireType 5 =*/13).float(message.point);
+                writer.uint32(/* id 1, wireType 1 =*/9).double(message.point);
             if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
             return writer;
@@ -10328,7 +11209,7 @@ $root.message = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.point = reader.float();
+                    message.point = reader.double();
                     break;
                 case 2:
                     message.msg = reader.string();
@@ -11528,7 +12409,7 @@ $root.message = (function() {
              * @interface ICoupon
              * @property {number|Long|null} [id] Coupon id
              * @property {boolean|null} [disappear] Coupon disappear
-             * @property {number|null} [sec] Coupon sec
+             * @property {number|Long|null} [startTime] Coupon startTime
              */
 
             /**
@@ -11563,12 +12444,12 @@ $root.message = (function() {
             Coupon.prototype.disappear = false;
 
             /**
-             * Coupon sec.
-             * @member {number} sec
+             * Coupon startTime.
+             * @member {number|Long} startTime
              * @memberof message.BroadCastMerchantCoupon.Coupon
              * @instance
              */
-            Coupon.prototype.sec = 0;
+            Coupon.prototype.startTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
             /**
              * Creates a new Coupon instance using the specified properties.
@@ -11598,8 +12479,8 @@ $root.message = (function() {
                     writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
                 if (message.disappear != null && Object.hasOwnProperty.call(message, "disappear"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.disappear);
-                if (message.sec != null && Object.hasOwnProperty.call(message, "sec"))
-                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.sec);
+                if (message.startTime != null && Object.hasOwnProperty.call(message, "startTime"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).int64(message.startTime);
                 return writer;
             };
 
@@ -11640,8 +12521,8 @@ $root.message = (function() {
                     case 2:
                         message.disappear = reader.bool();
                         break;
-                    case 3:
-                        message.sec = reader.uint32();
+                    case 6:
+                        message.startTime = reader.int64();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -11684,9 +12565,9 @@ $root.message = (function() {
                 if (message.disappear != null && message.hasOwnProperty("disappear"))
                     if (typeof message.disappear !== "boolean")
                         return "disappear: boolean expected";
-                if (message.sec != null && message.hasOwnProperty("sec"))
-                    if (!$util.isInteger(message.sec))
-                        return "sec: integer expected";
+                if (message.startTime != null && message.hasOwnProperty("startTime"))
+                    if (!$util.isInteger(message.startTime) && !(message.startTime && $util.isInteger(message.startTime.low) && $util.isInteger(message.startTime.high)))
+                        return "startTime: integer|Long expected";
                 return null;
             };
 
@@ -11713,8 +12594,15 @@ $root.message = (function() {
                         message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
                 if (object.disappear != null)
                     message.disappear = Boolean(object.disappear);
-                if (object.sec != null)
-                    message.sec = object.sec >>> 0;
+                if (object.startTime != null)
+                    if ($util.Long)
+                        (message.startTime = $util.Long.fromValue(object.startTime)).unsigned = false;
+                    else if (typeof object.startTime === "string")
+                        message.startTime = parseInt(object.startTime, 10);
+                    else if (typeof object.startTime === "number")
+                        message.startTime = object.startTime;
+                    else if (typeof object.startTime === "object")
+                        message.startTime = new $util.LongBits(object.startTime.low >>> 0, object.startTime.high >>> 0).toNumber();
                 return message;
             };
 
@@ -11738,7 +12626,11 @@ $root.message = (function() {
                     } else
                         object.id = options.longs === String ? "0" : 0;
                     object.disappear = false;
-                    object.sec = 0;
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.startTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.startTime = options.longs === String ? "0" : 0;
                 }
                 if (message.id != null && message.hasOwnProperty("id"))
                     if (typeof message.id === "number")
@@ -11747,8 +12639,11 @@ $root.message = (function() {
                         object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
                 if (message.disappear != null && message.hasOwnProperty("disappear"))
                     object.disappear = message.disappear;
-                if (message.sec != null && message.hasOwnProperty("sec"))
-                    object.sec = message.sec;
+                if (message.startTime != null && message.hasOwnProperty("startTime"))
+                    if (typeof message.startTime === "number")
+                        object.startTime = options.longs === String ? String(message.startTime) : message.startTime;
+                    else
+                        object.startTime = options.longs === String ? $util.Long.prototype.toString.call(message.startTime) : options.longs === Number ? new $util.LongBits(message.startTime.low >>> 0, message.startTime.high >>> 0).toNumber() : message.startTime;
                 return object;
             };
 
@@ -12122,9 +13017,9 @@ $root.message = (function() {
                 if (message.goodCode != null && Object.hasOwnProperty.call(message, "goodCode"))
                     writer.uint32(/* id 5, wireType 2 =*/42).string(message.goodCode);
                 if (message.amount != null && Object.hasOwnProperty.call(message, "amount"))
-                    writer.uint32(/* id 6, wireType 5 =*/53).float(message.amount);
+                    writer.uint32(/* id 6, wireType 1 =*/49).double(message.amount);
                 if (message.minUseAmount != null && Object.hasOwnProperty.call(message, "minUseAmount"))
-                    writer.uint32(/* id 7, wireType 5 =*/61).float(message.minUseAmount);
+                    writer.uint32(/* id 7, wireType 1 =*/57).double(message.minUseAmount);
                 if (message.durExp != null && Object.hasOwnProperty.call(message, "durExp"))
                     writer.uint32(/* id 8, wireType 2 =*/66).string(message.durExp);
                 return writer;
@@ -12168,10 +13063,10 @@ $root.message = (function() {
                         message.goodCode = reader.string();
                         break;
                     case 6:
-                        message.amount = reader.float();
+                        message.amount = reader.double();
                         break;
                     case 7:
-                        message.minUseAmount = reader.float();
+                        message.minUseAmount = reader.double();
                         break;
                     case 8:
                         message.durExp = reader.string();
@@ -12942,6 +13837,7 @@ $root.message = (function() {
          * @property {string|null} [uid] BroadCastLianmaiOn uid
          * @property {string|null} [name] BroadCastLianmaiOn name
          * @property {string|null} [avatar] BroadCastLianmaiOn avatar
+         * @property {string|null} [streamId] BroadCastLianmaiOn streamId
          */
 
         /**
@@ -12984,6 +13880,14 @@ $root.message = (function() {
         BroadCastLianmaiOn.prototype.avatar = "";
 
         /**
+         * BroadCastLianmaiOn streamId.
+         * @member {string} streamId
+         * @memberof message.BroadCastLianmaiOn
+         * @instance
+         */
+        BroadCastLianmaiOn.prototype.streamId = "";
+
+        /**
          * Creates a new BroadCastLianmaiOn instance using the specified properties.
          * @function create
          * @memberof message.BroadCastLianmaiOn
@@ -13013,6 +13917,8 @@ $root.message = (function() {
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
             if (message.avatar != null && Object.hasOwnProperty.call(message, "avatar"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.avatar);
+            if (message.streamId != null && Object.hasOwnProperty.call(message, "streamId"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.streamId);
             return writer;
         };
 
@@ -13055,6 +13961,9 @@ $root.message = (function() {
                     break;
                 case 3:
                     message.avatar = reader.string();
+                    break;
+                case 4:
+                    message.streamId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -13100,6 +14009,9 @@ $root.message = (function() {
             if (message.avatar != null && message.hasOwnProperty("avatar"))
                 if (!$util.isString(message.avatar))
                     return "avatar: string expected";
+            if (message.streamId != null && message.hasOwnProperty("streamId"))
+                if (!$util.isString(message.streamId))
+                    return "streamId: string expected";
             return null;
         };
 
@@ -13121,6 +14033,8 @@ $root.message = (function() {
                 message.name = String(object.name);
             if (object.avatar != null)
                 message.avatar = String(object.avatar);
+            if (object.streamId != null)
+                message.streamId = String(object.streamId);
             return message;
         };
 
@@ -13141,6 +14055,7 @@ $root.message = (function() {
                 object.uid = "";
                 object.name = "";
                 object.avatar = "";
+                object.streamId = "";
             }
             if (message.uid != null && message.hasOwnProperty("uid"))
                 object.uid = message.uid;
@@ -13148,6 +14063,8 @@ $root.message = (function() {
                 object.name = message.name;
             if (message.avatar != null && message.hasOwnProperty("avatar"))
                 object.avatar = message.avatar;
+            if (message.streamId != null && message.hasOwnProperty("streamId"))
+                object.streamId = message.streamId;
             return object;
         };
 
@@ -13646,7 +14563,7 @@ $root.message = (function() {
                 if (!writer)
                     writer = $Writer.create();
                 if (message.tp != null && Object.hasOwnProperty.call(message, "tp"))
-                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.tp);
+                    writer.uint32(/* id 1, wireType 0 =*/8).int32(message.tp);
                 if (message.uid != null && Object.hasOwnProperty.call(message, "uid"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.uid);
                 if (message.name != null && Object.hasOwnProperty.call(message, "name"))
@@ -13690,7 +14607,7 @@ $root.message = (function() {
                     var tag = reader.uint32();
                     switch (tag >>> 3) {
                     case 1:
-                        message.tp = reader.uint32();
+                        message.tp = reader.int32();
                         break;
                     case 2:
                         message.uid = reader.string();
@@ -13770,7 +14687,7 @@ $root.message = (function() {
                     return object;
                 var message = new $root.message.BackActorLianmaiData.Lianmai();
                 if (object.tp != null)
-                    message.tp = object.tp >>> 0;
+                    message.tp = object.tp | 0;
                 if (object.uid != null)
                     message.uid = String(object.uid);
                 if (object.name != null)
@@ -13830,6 +14747,846 @@ $root.message = (function() {
         })();
 
         return BackActorLianmaiData;
+    })();
+
+    message.BackActorAgreeLianmaiApply = (function() {
+
+        /**
+         * Properties of a BackActorAgreeLianmaiApply.
+         * @memberof message
+         * @interface IBackActorAgreeLianmaiApply
+         * @property {boolean|null} [success] BackActorAgreeLianmaiApply success
+         * @property {string|null} [msg] BackActorAgreeLianmaiApply msg
+         */
+
+        /**
+         * Constructs a new BackActorAgreeLianmaiApply.
+         * @memberof message
+         * @classdesc Represents a BackActorAgreeLianmaiApply.
+         * @implements IBackActorAgreeLianmaiApply
+         * @constructor
+         * @param {message.IBackActorAgreeLianmaiApply=} [properties] Properties to set
+         */
+        function BackActorAgreeLianmaiApply(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackActorAgreeLianmaiApply success.
+         * @member {boolean} success
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @instance
+         */
+        BackActorAgreeLianmaiApply.prototype.success = false;
+
+        /**
+         * BackActorAgreeLianmaiApply msg.
+         * @member {string} msg
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @instance
+         */
+        BackActorAgreeLianmaiApply.prototype.msg = "";
+
+        /**
+         * Creates a new BackActorAgreeLianmaiApply instance using the specified properties.
+         * @function create
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @static
+         * @param {message.IBackActorAgreeLianmaiApply=} [properties] Properties to set
+         * @returns {message.BackActorAgreeLianmaiApply} BackActorAgreeLianmaiApply instance
+         */
+        BackActorAgreeLianmaiApply.create = function create(properties) {
+            return new BackActorAgreeLianmaiApply(properties);
+        };
+
+        /**
+         * Encodes the specified BackActorAgreeLianmaiApply message. Does not implicitly {@link message.BackActorAgreeLianmaiApply.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @static
+         * @param {message.IBackActorAgreeLianmaiApply} message BackActorAgreeLianmaiApply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackActorAgreeLianmaiApply.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackActorAgreeLianmaiApply message, length delimited. Does not implicitly {@link message.BackActorAgreeLianmaiApply.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @static
+         * @param {message.IBackActorAgreeLianmaiApply} message BackActorAgreeLianmaiApply message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackActorAgreeLianmaiApply.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackActorAgreeLianmaiApply message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackActorAgreeLianmaiApply} BackActorAgreeLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackActorAgreeLianmaiApply.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackActorAgreeLianmaiApply();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.success = reader.bool();
+                    break;
+                case 2:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackActorAgreeLianmaiApply message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackActorAgreeLianmaiApply} BackActorAgreeLianmaiApply
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackActorAgreeLianmaiApply.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackActorAgreeLianmaiApply message.
+         * @function verify
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackActorAgreeLianmaiApply.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackActorAgreeLianmaiApply message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackActorAgreeLianmaiApply} BackActorAgreeLianmaiApply
+         */
+        BackActorAgreeLianmaiApply.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackActorAgreeLianmaiApply)
+                return object;
+            var message = new $root.message.BackActorAgreeLianmaiApply();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackActorAgreeLianmaiApply message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @static
+         * @param {message.BackActorAgreeLianmaiApply} message BackActorAgreeLianmaiApply
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackActorAgreeLianmaiApply.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.msg = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackActorAgreeLianmaiApply to JSON.
+         * @function toJSON
+         * @memberof message.BackActorAgreeLianmaiApply
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackActorAgreeLianmaiApply.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackActorAgreeLianmaiApply;
+    })();
+
+    message.BackTerminateLianmai = (function() {
+
+        /**
+         * Properties of a BackTerminateLianmai.
+         * @memberof message
+         * @interface IBackTerminateLianmai
+         * @property {boolean|null} [success] BackTerminateLianmai success
+         * @property {string|null} [msg] BackTerminateLianmai msg
+         */
+
+        /**
+         * Constructs a new BackTerminateLianmai.
+         * @memberof message
+         * @classdesc Represents a BackTerminateLianmai.
+         * @implements IBackTerminateLianmai
+         * @constructor
+         * @param {message.IBackTerminateLianmai=} [properties] Properties to set
+         */
+        function BackTerminateLianmai(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackTerminateLianmai success.
+         * @member {boolean} success
+         * @memberof message.BackTerminateLianmai
+         * @instance
+         */
+        BackTerminateLianmai.prototype.success = false;
+
+        /**
+         * BackTerminateLianmai msg.
+         * @member {string} msg
+         * @memberof message.BackTerminateLianmai
+         * @instance
+         */
+        BackTerminateLianmai.prototype.msg = "";
+
+        /**
+         * Creates a new BackTerminateLianmai instance using the specified properties.
+         * @function create
+         * @memberof message.BackTerminateLianmai
+         * @static
+         * @param {message.IBackTerminateLianmai=} [properties] Properties to set
+         * @returns {message.BackTerminateLianmai} BackTerminateLianmai instance
+         */
+        BackTerminateLianmai.create = function create(properties) {
+            return new BackTerminateLianmai(properties);
+        };
+
+        /**
+         * Encodes the specified BackTerminateLianmai message. Does not implicitly {@link message.BackTerminateLianmai.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackTerminateLianmai
+         * @static
+         * @param {message.IBackTerminateLianmai} message BackTerminateLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackTerminateLianmai.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackTerminateLianmai message, length delimited. Does not implicitly {@link message.BackTerminateLianmai.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackTerminateLianmai
+         * @static
+         * @param {message.IBackTerminateLianmai} message BackTerminateLianmai message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackTerminateLianmai.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackTerminateLianmai message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackTerminateLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackTerminateLianmai} BackTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackTerminateLianmai.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackTerminateLianmai();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.success = reader.bool();
+                    break;
+                case 2:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackTerminateLianmai message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackTerminateLianmai
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackTerminateLianmai} BackTerminateLianmai
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackTerminateLianmai.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackTerminateLianmai message.
+         * @function verify
+         * @memberof message.BackTerminateLianmai
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackTerminateLianmai.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackTerminateLianmai message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackTerminateLianmai
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackTerminateLianmai} BackTerminateLianmai
+         */
+        BackTerminateLianmai.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackTerminateLianmai)
+                return object;
+            var message = new $root.message.BackTerminateLianmai();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackTerminateLianmai message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackTerminateLianmai
+         * @static
+         * @param {message.BackTerminateLianmai} message BackTerminateLianmai
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackTerminateLianmai.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.msg = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackTerminateLianmai to JSON.
+         * @function toJSON
+         * @memberof message.BackTerminateLianmai
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackTerminateLianmai.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackTerminateLianmai;
+    })();
+
+    message.BackGmChatBid = (function() {
+
+        /**
+         * Properties of a BackGmChatBid.
+         * @memberof message
+         * @interface IBackGmChatBid
+         * @property {boolean|null} [success] BackGmChatBid success
+         * @property {string|null} [msg] BackGmChatBid msg
+         */
+
+        /**
+         * Constructs a new BackGmChatBid.
+         * @memberof message
+         * @classdesc Represents a BackGmChatBid.
+         * @implements IBackGmChatBid
+         * @constructor
+         * @param {message.IBackGmChatBid=} [properties] Properties to set
+         */
+        function BackGmChatBid(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackGmChatBid success.
+         * @member {boolean} success
+         * @memberof message.BackGmChatBid
+         * @instance
+         */
+        BackGmChatBid.prototype.success = false;
+
+        /**
+         * BackGmChatBid msg.
+         * @member {string} msg
+         * @memberof message.BackGmChatBid
+         * @instance
+         */
+        BackGmChatBid.prototype.msg = "";
+
+        /**
+         * Creates a new BackGmChatBid instance using the specified properties.
+         * @function create
+         * @memberof message.BackGmChatBid
+         * @static
+         * @param {message.IBackGmChatBid=} [properties] Properties to set
+         * @returns {message.BackGmChatBid} BackGmChatBid instance
+         */
+        BackGmChatBid.create = function create(properties) {
+            return new BackGmChatBid(properties);
+        };
+
+        /**
+         * Encodes the specified BackGmChatBid message. Does not implicitly {@link message.BackGmChatBid.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackGmChatBid
+         * @static
+         * @param {message.IBackGmChatBid} message BackGmChatBid message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackGmChatBid.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackGmChatBid message, length delimited. Does not implicitly {@link message.BackGmChatBid.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackGmChatBid
+         * @static
+         * @param {message.IBackGmChatBid} message BackGmChatBid message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackGmChatBid.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackGmChatBid message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackGmChatBid
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackGmChatBid} BackGmChatBid
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackGmChatBid.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackGmChatBid();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.success = reader.bool();
+                    break;
+                case 2:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackGmChatBid message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackGmChatBid
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackGmChatBid} BackGmChatBid
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackGmChatBid.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackGmChatBid message.
+         * @function verify
+         * @memberof message.BackGmChatBid
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackGmChatBid.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackGmChatBid message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackGmChatBid
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackGmChatBid} BackGmChatBid
+         */
+        BackGmChatBid.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackGmChatBid)
+                return object;
+            var message = new $root.message.BackGmChatBid();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackGmChatBid message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackGmChatBid
+         * @static
+         * @param {message.BackGmChatBid} message BackGmChatBid
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackGmChatBid.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.msg = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackGmChatBid to JSON.
+         * @function toJSON
+         * @memberof message.BackGmChatBid
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackGmChatBid.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackGmChatBid;
+    })();
+
+    message.BackGmKickOutRoom = (function() {
+
+        /**
+         * Properties of a BackGmKickOutRoom.
+         * @memberof message
+         * @interface IBackGmKickOutRoom
+         * @property {boolean|null} [success] BackGmKickOutRoom success
+         * @property {string|null} [msg] BackGmKickOutRoom msg
+         */
+
+        /**
+         * Constructs a new BackGmKickOutRoom.
+         * @memberof message
+         * @classdesc Represents a BackGmKickOutRoom.
+         * @implements IBackGmKickOutRoom
+         * @constructor
+         * @param {message.IBackGmKickOutRoom=} [properties] Properties to set
+         */
+        function BackGmKickOutRoom(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * BackGmKickOutRoom success.
+         * @member {boolean} success
+         * @memberof message.BackGmKickOutRoom
+         * @instance
+         */
+        BackGmKickOutRoom.prototype.success = false;
+
+        /**
+         * BackGmKickOutRoom msg.
+         * @member {string} msg
+         * @memberof message.BackGmKickOutRoom
+         * @instance
+         */
+        BackGmKickOutRoom.prototype.msg = "";
+
+        /**
+         * Creates a new BackGmKickOutRoom instance using the specified properties.
+         * @function create
+         * @memberof message.BackGmKickOutRoom
+         * @static
+         * @param {message.IBackGmKickOutRoom=} [properties] Properties to set
+         * @returns {message.BackGmKickOutRoom} BackGmKickOutRoom instance
+         */
+        BackGmKickOutRoom.create = function create(properties) {
+            return new BackGmKickOutRoom(properties);
+        };
+
+        /**
+         * Encodes the specified BackGmKickOutRoom message. Does not implicitly {@link message.BackGmKickOutRoom.verify|verify} messages.
+         * @function encode
+         * @memberof message.BackGmKickOutRoom
+         * @static
+         * @param {message.IBackGmKickOutRoom} message BackGmKickOutRoom message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackGmKickOutRoom.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified BackGmKickOutRoom message, length delimited. Does not implicitly {@link message.BackGmKickOutRoom.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.BackGmKickOutRoom
+         * @static
+         * @param {message.IBackGmKickOutRoom} message BackGmKickOutRoom message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        BackGmKickOutRoom.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a BackGmKickOutRoom message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.BackGmKickOutRoom
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.BackGmKickOutRoom} BackGmKickOutRoom
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackGmKickOutRoom.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.BackGmKickOutRoom();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.success = reader.bool();
+                    break;
+                case 2:
+                    message.msg = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a BackGmKickOutRoom message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.BackGmKickOutRoom
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.BackGmKickOutRoom} BackGmKickOutRoom
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        BackGmKickOutRoom.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a BackGmKickOutRoom message.
+         * @function verify
+         * @memberof message.BackGmKickOutRoom
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        BackGmKickOutRoom.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.success != null && message.hasOwnProperty("success"))
+                if (typeof message.success !== "boolean")
+                    return "success: boolean expected";
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                if (!$util.isString(message.msg))
+                    return "msg: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a BackGmKickOutRoom message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.BackGmKickOutRoom
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.BackGmKickOutRoom} BackGmKickOutRoom
+         */
+        BackGmKickOutRoom.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.BackGmKickOutRoom)
+                return object;
+            var message = new $root.message.BackGmKickOutRoom();
+            if (object.success != null)
+                message.success = Boolean(object.success);
+            if (object.msg != null)
+                message.msg = String(object.msg);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a BackGmKickOutRoom message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.BackGmKickOutRoom
+         * @static
+         * @param {message.BackGmKickOutRoom} message BackGmKickOutRoom
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        BackGmKickOutRoom.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.success = false;
+                object.msg = "";
+            }
+            if (message.success != null && message.hasOwnProperty("success"))
+                object.success = message.success;
+            if (message.msg != null && message.hasOwnProperty("msg"))
+                object.msg = message.msg;
+            return object;
+        };
+
+        /**
+         * Converts this BackGmKickOutRoom to JSON.
+         * @function toJSON
+         * @memberof message.BackGmKickOutRoom
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        BackGmKickOutRoom.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return BackGmKickOutRoom;
     })();
 
     return message;

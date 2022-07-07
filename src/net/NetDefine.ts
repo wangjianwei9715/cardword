@@ -11,11 +11,14 @@ export class Message {
 	static RequestGrabHongbao = "0x000207" // 抢红包
 	static RequestSendMerchantCoupon = "0x00020A" // 发送商家优惠券
 	static RequestGetMerchantCoupon = "0x00020D" // 领取商家优惠券
-	// static RequestChatOn = '0x000200' //开启聊天监听
-	// static RequestChatOff = '0x000201' //关闭聊天监听
-	// static SendChatMessage = '0x000202' //发送聊天
-	// static RequestBidOn = '0x000300' //开启监听商品(goodCode)的竞价信息
-	// static RequestBidOff = '0x000301' //关闭商品(goodCode)的竞价信息监听
+	static RequestApplyLianmai = "0x0002A2"//申请连麦
+	static RequestSwitchLianmaiAllow = "0x0002A0"//主播切换是否允许申请连麦
+	static ActorRequestLianmaiData = "0x0002A5"//主播获取连麦列表
+	static ActorAgreeLianmaiApply = "0x0002A6"//主播同意连麦
+	static ActorTerminateLianmai = "0x0002A7"//主播结束连麦
+	static SelfTerminateLianmai = "0x0002A8"//连麦者结束连麦
+	static GmChatBid = "0x0002F1"//禁言
+	static GmKickOutRoom = "0x0002F2"//踢出房间
 
 	static cmd: {
 		[x: string]: any
@@ -34,7 +37,21 @@ export class Message {
 			"0x000205": "BroadCastHongbao", // 广播红包
 			"0x000206": "BroadCastHongbaoUpdated",//广播红包状态改变
 			"0x000207": "BackGrabHongbao",//抢红包回调
-
+			"0x00020A": "BackSendMerchantCoupon",//发送优惠券回调
+			"0x00020B": "BroadCastMerchantCoupon",//广播优惠券
+			"0x00020D": "BackGetMerchantCoupon",//抢券回调
+			"0x000103": "SendMyPoint",//卡币数量变化
+			//--连麦
+			"0x0002A0":"BroadCastLianmaiAllowed",// 广播是否可申请连麦
+			"0x0002A1":"SendLianmaiApply",// 发送给主播有人申请连麦
+			"0x0002A2":"BackApplyLianmai",//申请连麦回调
+			"0x0002A3":"BroadCastLianmaiOn", //广播有人连麦了
+			"0x0002A4":"BroadCastLianmaiOff",//广播连麦结束
+			"0x0002A5":"BackActorLianmaiData", //返回主播连麦数据
+			"0x0002A6":"BackActorAgreeLianmaiApply",//主播同意连麦的回调
+			"0x0002A7":"BackTerminateLianmai" ,//主播结束连麦的回调
+			"0x0002F1":"BackGmChatBid",//禁言的回调
+			"0x0002F2":"BackGmKickOutRoom",//踢出房间的回调
 			// '0x000201': 'BucketInfo',
 			// '0x000202': 'PushChatMessage', //推送聊天消息
 			// '0x000203': 'BackSendMessage', //发送失败才发
