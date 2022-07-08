@@ -1,9 +1,14 @@
 <template>
 	<view class="full">
 		<video show-play-btn='false' show-center-play-btn='false' autoplay='true'
+			style='width:750rpx;position:fixed;top:0;opacity: 0;' controls='false' :style="{height:height,width:width}"
+			:src='LmRTMP' show-fullscreen-btn='false' object-fit='fill' show-loading='false' ref='videoLm'
+			v-if='videoShow'></video>
+		<video show-play-btn='false' show-center-play-btn='false' autoplay='true'
 			style='width:750rpx;position:fixed;top:0' controls='false' :style="{height:height,width:width}"
 			:src='liveRTMP' show-fullscreen-btn='false' object-fit='fill' show-loading='false' v-if='videoShow'
 			ref='video'></video>
+
 		<web-view :catchtouchmove="true" :style="{height:height,width:width}" id='webView' class="webView" ref="webview"
 			:webview-styles="webviewStyles" @onPostMessage="handleMessage" :src="webViewUrl" v-if='viewShow'
 			allow='microphone;camera;midi;encrypted-media;'>
@@ -49,11 +54,13 @@
 				webViewUrl: '', //webView地址
 				videoShow: true,
 				videoContxt: null, //视频实例
+				videoLmContxt: null,//连麦播放器实例
 				liveRTMP: '', //直播rtmp流地址
-				// AnchorEndUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
-				AnchorEndUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				LmRTMP: '',//连麦rtmp流地址
+				AnchorEndUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				// AnchorEndUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/theAnchorEnd?ts=' + (+new Date()),
+				// UserUrl: 'https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/index?ts='+ (+new Date()),
 				UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
-				// UserUrl: 'http://192.168.8.26:8080/#/pages/liveStreaming/index?ts=' + (+new Date()),
 				deviceId: '', //设备ID用户用户未登录作为用户id进入直播间
 				loginRoomData: {
 					roomID: null,
@@ -103,22 +110,25 @@
 					"BackGmKickOutRoom",
 					"KickOut"
 				],
-				isLogin:false,
+				isLogin: false,
+				systemKickOut: false,//是否为系统强制使用户退出房间
 			}
 		},
 		onReady() {
+
 			// plus.webview.create()
 		},
 		onShow() {
 			uni.hideLoading()
 		},
 		onUnload() {
-
-			if(this.isLogin) this.leaveRoom()
+			uni.hideLoading()
+			if (this.isLogin) this.leaveRoom()
 		},
 
 		async onLoad(query) {
 			// 
+			console.log('进入房间');
 			if (this.deviceInfo.platform == 'android' && query.isAnchor == 'true') {
 				permision.requestAndroidPermission('android.permission.CAMERA')
 				permision.requestAndroidPermission('android.permission.RECORD_AUDIO')
@@ -140,30 +150,43 @@
 			this.liveData = data
 			this.deviceAssign(this.deviceInfo)
 			// && query.isAnchor == 'true'
-			if (this.deviceInfo.platform == 'android') {
-				this.viewShow = false
+			// if (this.deviceInfo.platform == 'android') {
+			// 	this.viewShow = false
+			// 	this.createWebView(this.deviceInfo)
+			// } else {
+			// 	this.getUserProfile(this.deviceInfo)
+			// }
+this.viewShow = false
 				this.createWebView(this.deviceInfo)
-			} else {
-				this.getUserProfile(this.deviceInfo)
-			}
 			if (this.deviceInfo.platform == 'ios') {
 				UIImpactFeedbackGenerator = plus.ios.importClass('UIImpactFeedbackGenerator');
 				impact = new UIImpactFeedbackGenerator();
 			}
 			this.$nextTick(() => {
 				this.videoContxt = this.$refs.video
+				this.videoLmContxt = this.$refs.videoLm
 			})
 		},
 		watch: {
 			liveRTMP: function (val) {
-				console.log(this.videoContxt);
+				console.log('准备开始播放了', this.videoContxt);
+				console.log(val);
 				if (val) this.videoContxt.play()
+			},
+			LmRTMP: function (val) {
+				console.log('准备开始播放连麦了', this.videoLmContxt);
+				if (val) this.videoLmContxt.play()
 			},
 			roomLikeNum: function (val, oldVal) {
 				if (val != oldVal) this.informH5Action('changeLikeNum', val, false)
 			}
 		},
 		methods: {
+			async getAudioPower() {
+				//获取音频权限安卓
+				const value = permision.requestAndroidPermission('android.permission.RECORD_AUDIO')
+				console.log('安卓用户音频权限', value);
+			},
 			socketClose(res) {
 				console.log('socket断开了');
 				//监听到断线
@@ -190,6 +213,7 @@
 							buffer
 						})
 					} else {
+						console.log(`发送${packName}包时socket暂未连接`, valueObject);
 						uni.showToast({
 							title: '连接状态异常',
 							icon: 'none'
@@ -210,7 +234,7 @@
 			sendWebsocketLogin() {
 				uni.showLoading({
 					title: '连接中...',
-					mask: true
+					mask: false
 				})
 				this.sendSocketMsg('LoginBroadCastRoom1001', {
 					roomId: +this.loginRoomData.roomID,
@@ -263,10 +287,11 @@
 				});
 				app.sever.connect(
 					() => {
+						console.log(`这时socket的open状态:${app.sever.isNetOK()}`);
 						let listeners = this.registerList;
 						app.sever.registerHandlers(this, listeners, true)
 						this.sendHeartBeat();
-						this.sendWebsocketLogin();
+						app.sever.isNetOK() && this.sendWebsocketLogin();
 					},
 					() => {
 						uni.showToast({
@@ -300,6 +325,7 @@
 			},
 			SendMyPoint(res) {
 				console.log('卡币数量变化', res);
+				this.informH5Action('myPointGet', res.point)
 			},
 			//-------------------连麦---------------
 			anchorEndOperationLM() {
@@ -333,9 +359,7 @@
 			BackApplyLianmai(res) {
 				//申请连麦回调
 				console.log("申请连麦回调", res);
-				uni.showLoading({
-					title: ''
-				})
+				uni.hideLoading()
 				this.checkBack(res)
 			},
 			BroadCastLianmaiOn(res) {
@@ -407,7 +431,7 @@
 			},
 			BackGmKickOutRoom(res) {
 				//踢出房间的回调
-				console.log("踢出房间的回调", res);
+				console.log("踢出房间的回调", JSON.stringify(res));
 				this.checkBack(res).then(data => {
 					uni.showToast({
 						title: '踢出房间成功'
@@ -419,10 +443,11 @@
 				this.sendSocketMsg('GmKickOutRoom', uid ? { uid } : { name })
 			},
 			KickOut(res) {
-				console.log('被踢出房间的通知', res);
+				console.log('被踢出房间的通知', JSON.stringify(res));
+				this.systemKickOut = true
 				uni.showModal({
 					title: '提示',
-					content: '您已被踢出直播间',
+					content: res.why,
 					showCancel: false,
 					success: (res) => {
 						if (res.confirm) {
@@ -529,10 +554,7 @@
 					// this.informH5Action('giftSendSocketBack',{success:false,msg:err.msg})
 				})
 			},
-			hideVideo() {
-				this.videoContxt.stop()
-				// this.videoShow=false
-			},
+
 			BroadCastHongbao(res) {
 				//广播红包
 				console.log('广播红包', res)
@@ -597,18 +619,26 @@
 
 				}
 				console.log(this.tokenData.uid)
-				if (this.tokenData.uid) request('funcApi/brodcast/third/1001/user/logout/' + this.loginRoomData.roomID, {
-					uid: this.tokenData.uid
-				}, 'post').then(res => {
-					console.log(res);
-				})
+				if (this.tokenData.uid && !this.systemKickOut) {
+					request('funcApi/brodcast/third/1001/user/logout/' + this.loginRoomData.roomID, {
+						uid: this.tokenData.uid
+					}, 'post').then(res => {
+						console.log(res);
+					})
+				}
 
 			},
 			createWebView(res) {
 
 				console.log('创建webview');
 				const now = plus.webview.currentWebview()
-				this.webView = plus.webview.create(this.webViewUrl, 'androidWeb')
+				this.webView = plus.webview.create(this.webViewUrl, 'androidWeb', {
+					webviewBGTransparent: true,
+					// hardwareAccelerated:true,
+					softinputNavBar: 'none',
+					kernel:'WKWebview'
+				})
+				console.log('是否开启硬件加速', plus.webview.defaultHardwareAccelerated());
 				this.webView.evalJs = this.webView.evalJS
 				now.append(this.webView)
 
@@ -651,7 +681,7 @@
 					let userData = {}
 					const device = Md5.hashStr(deviceInfo.deviceId)
 					const tokenRespone = await request('funcApi/brodcast/third/1001/user/login/' + this.loginRoomData
-						.roomID, {},
+						.roomID, {version: '1.0.0'},
 						'post')
 					this.websocket = tokenRespone.websocket
 					this.tokenData = tokenRespone.data
@@ -682,7 +712,7 @@
 					}
 					this.loginRoom(userData, tokenRespone.data, deviceInfo)
 					this.initSocket(true)
-					this.isLogin=true
+					this.isLogin = true
 				} catch (err) {
 					if (err == '禁止登录') {
 						uni.showModal({
@@ -693,8 +723,8 @@
 								if (res.confirm) {
 									uni.reLaunch({
 										url: '/pages/index/index',
-										fail:(fail)=>{
-											console.log('jumpFail',fail);
+										fail: (fail) => {
+											console.log('jumpFail', fail);
 										}
 									})
 								}
@@ -708,10 +738,23 @@
 				console.log('收到cdn', cdnData);
 				this.liveRTMP = cdnData.urlsRTMP
 			},
+			LMRTMP_SET(cdnData) {
+				console.log('收到连麦cdn', cdnData);
+				this.LmRTMP = cdnData.urlsRTMP
+			},
 			stopPull() {
 				this.videoContxt.stop()
 				this.liveRTMP = ''
 
+			},
+			stopLMPull() {
+				this.videoLmContxt.stop()
+				this.LmRTMP = ''
+			},
+			hideVideo() {
+				this.videoContxt.stop()
+				this.videoLmContxt.stop()
+				// this.videoShow=false
 			},
 			pageLoadSuccess() {
 
@@ -739,6 +782,7 @@
 			againLogin() {
 				this.webEvalTimer = setInterval(() => {
 					if (!this.webLoadSuccess) return
+					console.log('开始evalJs');
 					this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`)
 					// setInterval(()=>{
 					// 	this.webView.evalJs(`actionSet("8888",${JSON.stringify(app.token)},false)`)

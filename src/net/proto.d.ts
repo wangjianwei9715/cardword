@@ -1995,6 +1995,9 @@ export namespace message {
 
     /** Properties of a KickOut. */
     interface IKickOut {
+
+        /** KickOut why */
+        why?: (string|null);
     }
 
     /** Represents a KickOut. */
@@ -2005,6 +2008,9 @@ export namespace message {
          * @param [properties] Properties to set
          */
         constructor(properties?: message.IKickOut);
+
+        /** KickOut why. */
+        public why: string;
 
         /**
          * Creates a new KickOut instance using the specified properties.
@@ -4210,6 +4216,9 @@ export namespace message {
             /** Bilibili_Send name */
             name?: (string|null);
 
+            /** Bilibili_Send logo */
+            logo?: (string|null);
+
             /** Bilibili_Send texiao */
             texiao?: (string|null);
 
@@ -4237,6 +4246,9 @@ export namespace message {
 
             /** Bilibili_Send name. */
             public name: string;
+
+            /** Bilibili_Send logo. */
+            public logo: string;
 
             /** Bilibili_Send texiao. */
             public texiao: string;

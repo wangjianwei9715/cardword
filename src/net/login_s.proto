@@ -17,7 +17,7 @@ message BackLoginBroadCastRoom1001 {
     }
 	RetCode code = 1;		//0成功，其他失败
 	string msg = 2;		//失败原因
-	float point = 3; //最新的卡币数量
+	double point = 3; //最新的卡币数量
 	bool applyLianmai = 4; // 是否可申请连麦
 	bool gm = 5; //是否gm
 }
@@ -35,5 +35,5 @@ message SendMyPoint {
 
 // 0x00010F
 message KickOut {
-	
+	string why = 1;
 }

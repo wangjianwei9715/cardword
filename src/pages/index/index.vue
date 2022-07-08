@@ -135,10 +135,29 @@
 		showWinningCrad = false;
 		greeted = false;
 		onLoad(query: any) {
-			if (app.update.apkNeedUpdate) {
-				this.updateShow();
-				return;
-			}
+			// let zqWebviewFloat:any = uni.requireNativePlugin("zq-webview-float");
+			// // //显示悬浮窗
+			// zqWebviewFloat.show({
+			//     url: "http://192.168.8.26:8080/#/pages/liveStreaming/float",//设置悬浮窗webview加载的远程url，必传参数
+			//     width:250,//设置悬浮窗宽度默认值：400
+			//     height: 400,//设置悬浮窗高度默认值：400
+			//     scrollX: false,//设置悬浮窗是否有水平滚动条默认值：false
+			//     scrollY: false,//设置悬浮窗是否有垂直滚动条默认值：false
+			//     removable: true,//设置悬浮窗是否支持拖拽移动默认值：true
+			//     resizeable: true,//设置悬浮窗是否支持拖拽调整大小默认值：true
+			//     clickPass: true,//悬浮窗是否穿透点击事件作用在webview中默认值：true
+			//     dragPass: true,//悬浮窗是否穿透触摸事件作用在webview中默认值：true
+			//     dragWidth: 50//悬浮窗拖拽调整大小时，四个角的可拖拽区域大小默认值：50
+			// },function(data:any){//回调函数
+			//     console.log(data);
+			// })
+			// zqWebviewFloat.wakeUp();
+			// zqWebviewFloat.destory();
+			// console.log(zqWebviewFloat.show);
+			// if (app.update.apkNeedUpdate) {
+			// 	this.updateShow();
+			// 	return;
+			// }
 // uni.preloadPage({
 // 				url: "/pages/live/floatVideo"
 // 			})
@@ -214,17 +233,6 @@
 				app.platform.matchInviteRequestKey(val)
 			})
 			// #endif
-
-			// let ws = new WebSocket("ws://wstest.ka-world.com");
-			// ws.onopen = function (ev) {
-			//         ws.send('{"type":"login","uid":"我是用户名","msg":"我登陆了"}');
-			//     };
-			// ws.onmessage = function (ev) {
-			//         if (ev.data){
-			//             console.log(ev.data)
-			//         }
-			// };
-			//  
 		}
 		onHide() {
 			uni.offNetworkStatusChange((res) => {})
@@ -296,7 +304,7 @@
 			uni.showTabBar()
 		}
 		initEvent(cb ? : Function) {
-			app.http.Get("dataApi/home", {}, (data: any) => {
+			app.http.Get("dataApi/home", {urlvalid:1}, (data: any) => {
 				uni.hideLoading()
 				// #ifndef MP
 				this.topAddList = data.addList || [];

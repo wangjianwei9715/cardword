@@ -17,17 +17,19 @@ const request = (url, params = {}, method = 'GET') => {
 	}
 	return new Promise((resolve, reject) => {
 		const finUrl = isCustomUrl ? url : baseURL + url
+		let header = {
+			token: app.token.accessToken,
+		}
+		console.log(header);
 		uni.request({
 			url: finUrl,
 			data: params,
-			header: {
-				token: app.token.accessToken
-			},
+			header,
 			method: method.toUpperCase(),
 			success: (res) => {
 				if (res.data.code != 0) {
-					const noneTips=['禁止登录']
-					if(!noneTips.includes(res.data.msg)){
+					const noneTips = ['禁止登录']
+					if (!noneTips.includes(res.data.msg)) {
 						uni.showToast({
 							title: res.data.msg,
 							icon: 'none'

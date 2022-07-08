@@ -4069,7 +4069,7 @@ $root.message = (function() {
             if (message.msg != null && Object.hasOwnProperty.call(message, "msg"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.msg);
             if (message.point != null && Object.hasOwnProperty.call(message, "point"))
-                writer.uint32(/* id 3, wireType 5 =*/29).float(message.point);
+                writer.uint32(/* id 3, wireType 1 =*/25).double(message.point);
             if (message.applyLianmai != null && Object.hasOwnProperty.call(message, "applyLianmai"))
                 writer.uint32(/* id 4, wireType 0 =*/32).bool(message.applyLianmai);
             if (message.gm != null && Object.hasOwnProperty.call(message, "gm"))
@@ -4115,7 +4115,7 @@ $root.message = (function() {
                     message.msg = reader.string();
                     break;
                 case 3:
-                    message.point = reader.float();
+                    message.point = reader.double();
                     break;
                 case 4:
                     message.applyLianmai = reader.bool();
@@ -4685,6 +4685,7 @@ $root.message = (function() {
          * Properties of a KickOut.
          * @memberof message
          * @interface IKickOut
+         * @property {string|null} [why] KickOut why
          */
 
         /**
@@ -4701,6 +4702,14 @@ $root.message = (function() {
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
+
+        /**
+         * KickOut why.
+         * @member {string} why
+         * @memberof message.KickOut
+         * @instance
+         */
+        KickOut.prototype.why = "";
 
         /**
          * Creates a new KickOut instance using the specified properties.
@@ -4726,6 +4735,8 @@ $root.message = (function() {
         KickOut.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
+            if (message.why != null && Object.hasOwnProperty.call(message, "why"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.why);
             return writer;
         };
 
@@ -4760,6 +4771,9 @@ $root.message = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
+                case 1:
+                    message.why = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -4795,6 +4809,9 @@ $root.message = (function() {
         KickOut.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (message.why != null && message.hasOwnProperty("why"))
+                if (!$util.isString(message.why))
+                    return "why: string expected";
             return null;
         };
 
@@ -4809,7 +4826,10 @@ $root.message = (function() {
         KickOut.fromObject = function fromObject(object) {
             if (object instanceof $root.message.KickOut)
                 return object;
-            return new $root.message.KickOut();
+            var message = new $root.message.KickOut();
+            if (object.why != null)
+                message.why = String(object.why);
+            return message;
         };
 
         /**
@@ -4821,8 +4841,15 @@ $root.message = (function() {
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        KickOut.toObject = function toObject() {
-            return {};
+        KickOut.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults)
+                object.why = "";
+            if (message.why != null && message.hasOwnProperty("why"))
+                object.why = message.why;
+            return object;
         };
 
         /**
@@ -9615,6 +9642,7 @@ $root.message = (function() {
              * @property {string|null} [sender] Bilibili_Send sender
              * @property {string|null} [senderAvatar] Bilibili_Send senderAvatar
              * @property {string|null} [name] Bilibili_Send name
+             * @property {string|null} [logo] Bilibili_Send logo
              * @property {string|null} [texiao] Bilibili_Send texiao
              * @property {number|null} [num] Bilibili_Send num
              * @property {number|null} [continuityNum] Bilibili_Send continuityNum
@@ -9658,6 +9686,14 @@ $root.message = (function() {
              * @instance
              */
             Bilibili_Send.prototype.name = "";
+
+            /**
+             * Bilibili_Send logo.
+             * @member {string} logo
+             * @memberof message.BroadCastBilibili_Send.Bilibili_Send
+             * @instance
+             */
+            Bilibili_Send.prototype.logo = "";
 
             /**
              * Bilibili_Send texiao.
@@ -9713,12 +9749,14 @@ $root.message = (function() {
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.senderAvatar);
                 if (message.name != null && Object.hasOwnProperty.call(message, "name"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
+                if (message.logo != null && Object.hasOwnProperty.call(message, "logo"))
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.logo);
                 if (message.texiao != null && Object.hasOwnProperty.call(message, "texiao"))
-                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.texiao);
+                    writer.uint32(/* id 5, wireType 2 =*/42).string(message.texiao);
                 if (message.num != null && Object.hasOwnProperty.call(message, "num"))
-                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.num);
+                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.num);
                 if (message.continuityNum != null && Object.hasOwnProperty.call(message, "continuityNum"))
-                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.continuityNum);
+                    writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.continuityNum);
                 return writer;
             };
 
@@ -9763,12 +9801,15 @@ $root.message = (function() {
                         message.name = reader.string();
                         break;
                     case 4:
-                        message.texiao = reader.string();
+                        message.logo = reader.string();
                         break;
                     case 5:
-                        message.num = reader.uint32();
+                        message.texiao = reader.string();
                         break;
                     case 6:
+                        message.num = reader.uint32();
+                        break;
+                    case 7:
                         message.continuityNum = reader.uint32();
                         break;
                     default:
@@ -9815,6 +9856,9 @@ $root.message = (function() {
                 if (message.name != null && message.hasOwnProperty("name"))
                     if (!$util.isString(message.name))
                         return "name: string expected";
+                if (message.logo != null && message.hasOwnProperty("logo"))
+                    if (!$util.isString(message.logo))
+                        return "logo: string expected";
                 if (message.texiao != null && message.hasOwnProperty("texiao"))
                     if (!$util.isString(message.texiao))
                         return "texiao: string expected";
@@ -9845,6 +9889,8 @@ $root.message = (function() {
                     message.senderAvatar = String(object.senderAvatar);
                 if (object.name != null)
                     message.name = String(object.name);
+                if (object.logo != null)
+                    message.logo = String(object.logo);
                 if (object.texiao != null)
                     message.texiao = String(object.texiao);
                 if (object.num != null)
@@ -9871,6 +9917,7 @@ $root.message = (function() {
                     object.sender = "";
                     object.senderAvatar = "";
                     object.name = "";
+                    object.logo = "";
                     object.texiao = "";
                     object.num = 0;
                     object.continuityNum = 0;
@@ -9881,6 +9928,8 @@ $root.message = (function() {
                     object.senderAvatar = message.senderAvatar;
                 if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
+                if (message.logo != null && message.hasOwnProperty("logo"))
+                    object.logo = message.logo;
                 if (message.texiao != null && message.hasOwnProperty("texiao"))
                     object.texiao = message.texiao;
                 if (message.num != null && message.hasOwnProperty("num"))
