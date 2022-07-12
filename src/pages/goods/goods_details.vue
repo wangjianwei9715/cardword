@@ -379,8 +379,14 @@
 		onHide() {
 			uni.offNetworkStatusChange((res) => {});
 		}
+		//   下拉刷新
+		onPullDownRefresh() {
+			this.getGoodData(this.goodsId,() => {
+				uni.stopPullDownRefresh();
+			})
+		}
 		// 数据详情赋值
-		getGoodData(id: any) {
+		getGoodData(id: any,cb?:Function) {
 			clearInterval(this.count_down);
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
@@ -439,6 +445,8 @@
 						if (res.list) this.buyRecordList = res.list
 					})
 				}
+
+				cb && cb()
 			})
 		}
 		getProgress() {
@@ -623,6 +631,7 @@
 		onClickShare() {
 			if (!this.operationShow) {
 				if (this.shareData.shareUrl == '') {
+					console.log(this.goodsData.pic.thumb)
 					this.shareData = {
 						shareUrl: "https://www.ka-world.com/share/h5/#/pages/goods/goods_details?id=" + this.goodsId,
 						title: this.goodsData.title,

@@ -129,8 +129,7 @@ import { Md5 } from "ts-md5";
 			pageSize:this.pageSize,
 			date:startDate,
 			ts:ts,
-			s:Md5.hashStr('kww_calendar_'+this.orderTabCheck+'_'+startDate+'_'+this.currentPage+'_'+this.pageSize+'_'+ts+'_2022'),
-			urlvalid: 1
+			s:Md5.hashStr('kww_calendar_'+this.orderTabCheck+'_'+startDate+'_'+this.currentPage+'_'+this.pageSize+'_'+ts+'_2022')
 		  }
 		  this.httpIng = true
 		  app.http.Get("dataApi/function/calendar/list", params, (data: any) => {

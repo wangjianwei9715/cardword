@@ -65,8 +65,7 @@ export default class ClassName extends BaseNode {
 
     let params: { [x: string]: any } = {
       fetchFrom: this.fetchFrom,
-      fetchSize: this.fetchSize,
-      urlvalid: 1
+      fetchSize: this.fetchSize
     };
     // 排序方式
     if (this.listSort != "") {

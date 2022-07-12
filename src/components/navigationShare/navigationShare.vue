@@ -96,13 +96,13 @@
 			color: #000000;
 		}
 		.icon-share{
-			width: 42rpx;
-			height:42rpx;
+			width: 38rpx;
+			height:37rpx;
 			position: absolute;
 			right:32rpx;
 			top:50%;
-			margin-top: -21rpx;
-			background:url(../../static/goods/fenxiang@2x.png) no-repeat center;
+			margin-top: -19rpx;
+			background:url(../../static/goods/v2/icon_share.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 	}

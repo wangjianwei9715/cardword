@@ -1,7 +1,7 @@
 <template>
     <view class="scroll-box">
 		<view class="scroll-view" id="scrollBox" :class="{'transitionS':scrollIng}" :style="{'margin-left':-scrollWidth+'px'}">
-			<view class="scroll-index" v-for="(item,index) in scrollList" :key="index">
+			<view class="scroll-index" :style="{'background':indexBg}" v-for="(item,index) in scrollList" :key="index">
 				<slot name="scroll" :item="item"></slot>
 			</view>
 		</view>
@@ -16,7 +16,8 @@
 	export default class ClassName extends BaseComponent {
 		@Prop()
 		scrollList?:string[];
-		
+		@Prop({default:'#5846b2'})
+		indexBg?:string;
 		needScrollWidth = 0;
 		scrollWidth = 0;
 		scrollFnc:any;
@@ -24,7 +25,7 @@
 		@Watch('scrollList')
 		onScrollListChanged(val: any, oldVal: any){
 			if(val == '') return ;
-
+			clearInterval(this.scrollFnc)
 			setTimeout(()=>{
 				this.setScrollWidth()
 			},100)
@@ -73,7 +74,7 @@
 		padding-left: 10rpx;
 		.scroll-index{
 			height:37rpx;
-			background: rgba(88, 70, 178, 0.45);
+			background: #5846b2;
 			border-radius: 3rpx;
 			display: inline-flex;
 			align-items: center;

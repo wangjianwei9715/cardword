@@ -19,7 +19,7 @@
 
 		<!-- 底部弹窗 -->
 		<bottomDrawer :showDrawer="showDrawer" :title="'活动规则'" @closeDrawer="onClickCloseDrawer">
-			<view class="drawer-helpmsg" v-for="(item,index) in drawerMsg" :key="index">
+			<view class="drawer-helpmsg" v-for="(item,index) in [discountMsg,...drawerMsg]" :key="index">
 				<view class="drawer-help-title">{{item.title}}</view>
 				<view class="drawer-help-content" v-html="item.content"></view>
 			</view>
@@ -49,6 +49,7 @@
 		drawerMsg:any = [];
 		discount = [];
 		onceDActivity = false;
+		discountMsg:any = {}
 		@Watch('goodsData')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){
@@ -70,7 +71,7 @@
 			}) : ''
 			if(discount!='') {
 				this.goodsActData  = [ 'discount',...this.goodsActData ];
-				this.drawerMsg = [{title:'阶梯奖励：',content:discount.toString().replaceAll(',',';')}, ...this.drawerMsg];
+				this.discountMsg = {title:'阶梯奖励：',content:discount.toString().replaceAll(',',';')}
 				this.discount = JSON.parse(JSON.stringify(discount))
 			};
 			if((this.goodsData.bit & 8) == 8){

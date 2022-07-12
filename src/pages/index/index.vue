@@ -57,8 +57,8 @@
 					</view>
 				</view>
 
-				<!-- <view class="top-banner" @click="onClickActJump" v-if="isDuringDate('2022-06-18', '2022-06-21')">
-				</view> -->
+				<navigator class="top-banner" url="/pages/act/card716/index" hover-class="none" v-if="isDuringDate('2022-07-11', '2022-07-13')">
+				</navigator>
 
 				<!-- 卡币商城 热门系列 拆卡围观 -->
 				<tabHot :hotList="hotList" />
@@ -304,7 +304,7 @@
 			uni.showTabBar()
 		}
 		initEvent(cb ? : Function) {
-			app.http.Get("dataApi/home", {urlvalid:1}, (data: any) => {
+			app.http.Get("dataApi/home", {}, (data: any) => {
 				uni.hideLoading()
 				// #ifndef MP
 				this.topAddList = data.addList || [];
@@ -376,11 +376,6 @@
 		BackLogin(res: any) {
 			uni.$emit('BackLogin');
 		}
-		onClickActJump() {
-			uni.navigateTo({
-				url: '/pages/act/goods618/index'
-			})
-		}
 		onClickSearch() {
 			// 搜索
 			uni.navigateTo({
@@ -438,8 +433,7 @@
 				fetchSize: this.fetchSize,
 				ts: ts,
 				s: Md5.hashStr('kww_goodlist_sign_' + type + '_' + this.fetchFrom + '_' + this.fetchSize + '_' +
-					ts + '_2022'),
-				urlvalid: 1
+					ts + '_2022')
 			}
 			app.http.Get("dataApi/goodlist/forsale/" + type, params, (data: any) => {
 				if (data.isFetchEnd) {

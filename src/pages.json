@@ -181,9 +181,9 @@
 					"path": "goods_details",
 					"style": {
 						"navigationStyle": "custom",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#FFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#FFF" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
 				{
@@ -263,44 +263,6 @@
 			"root": "pages/act",
 			"pages": [
 				
-				{
-					"path": "goldRank/goldRank_rankList",
-					"style": {
-						"navigationBarTitleText": "金卡积分榜",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB",
-						"navigationStyle": "custom",
-						"backgroundColorBottom": "#F6F7FB"
-					}
-				},
-				{
-					"path": "goldRank/goldRank_rule",
-					"style": {
-						"navigationBarTitleText": "卡世界",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB"
-					}
-				},
-
-				{
-					"path": "goldRank/goldRank_record",
-					"style": {
-						"navigationBarTitleText": "往期记录",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB"
-					}
-				},
-				{
-					"path": "goldRank/goldRank_rewardList",
-					"style": {
-						"navigationBarTitleText": "奖品列表",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB"
-					}
-				},
 				{
 					"path": "ref/ref",
 					"style": {
@@ -420,60 +382,47 @@
 						"backgroundColorBottom": "#F4F5F9" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
-				{
-					"path": "goldCard/index",
-					"style": {
-						"navigationBarTitleText": "金色卡密榜",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "spCard/index",
-					"style": {
-						"navigationBarTitleText": "集SP卡密",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#EFBE35", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#EFBE35" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "spCard/record_sp",
-					"style": {
-						"navigationBarTitleText": "sp明细",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				}
-				,
-				{
-					"path": "spCard/record_award",
-					"style": {
-						"navigationBarTitleText": "兑换奖品",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
+				
 				{
 					"path": "card716/index",
 					"style": {
-						"navigationBarTitleText": "716卡展狂欢",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#CEE0F5", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#CEE0F5" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "card716/reward_record",
+					"style": {
+						"navigationBarTitleText": "抽奖明细",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "card716/live",
+					"style": {
+						"navigationBarTitleText": "卡展直播",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "card716/invite",
+					"style": {
+						"navigationBarTitleText": "邀请函",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#4B4962", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#1E1E2F" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				}
             ]
