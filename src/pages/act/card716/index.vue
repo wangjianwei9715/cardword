@@ -92,7 +92,7 @@
 		</view>
 
 		<!-- 邀请函浮窗 -->
-		<navigator class="popup-tips" url="/pages/act/card716/invite" hover-class="none"></navigator>
+		<navigator class="popup-tips" v-if="isDuringDate('2022-07-12', '2022-07-18')" url="/pages/act/card716/invite" hover-class="none"></navigator>
 		<view class="invite-shadow" v-show="inviteShow"></view>
 		<view :class="{'invite-popup':true,'invite-popup-show':inviteShow}">
 			<view class="popup-index">
@@ -128,11 +128,12 @@
 	]
 	import { app } from "@/app";
 	import { card716Rule } from "@/net/DataRules";
-	import { dateFormatMSHMS } from "@/tools/util";
+	import { dateFormatMSHMS, isDuringDate } from "@/tools/util";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
+		isDuringDate = isDuringDate;
 		dateFormatMSHMS = dateFormatMSHMS;
 		tabData = tabData;
 		app = app;

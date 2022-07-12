@@ -57,7 +57,7 @@
 					</view>
 				</view>
 
-				<navigator class="top-banner-mn" url="/pages/act/card716/index" hover-class="none" v-if="isDuringDate('2022-07-11', '2022-07-13')">
+				<navigator class="top-banner-mn" url="/pages/act/card716/index" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-07-22')">
 				</navigator>
 				<!-- <navigator class="top-banner" url="/pages/act/card716/index" hover-class="none" v-if="isDuringDate('2022-07-11', '2022-07-13')">
 				</navigator> -->
