@@ -57,8 +57,10 @@
 					</view>
 				</view>
 
-				<navigator class="top-banner" url="/pages/act/card716/index" hover-class="none" v-if="isDuringDate('2022-07-11', '2022-07-13')">
+				<navigator class="top-banner-mn" url="/pages/act/card716/index" hover-class="none" v-if="isDuringDate('2022-07-11', '2022-07-13')">
 				</navigator>
+				<!-- <navigator class="top-banner" url="/pages/act/card716/index" hover-class="none" v-if="isDuringDate('2022-07-11', '2022-07-13')">
+				</navigator> -->
 
 				<!-- 卡币商城 热门系列 拆卡围观 -->
 				<tabHot :hotList="hotList" />
@@ -579,7 +581,17 @@
 		background-size: 100% 100%;
 		position: relative;
 	}
-
+	.top-banner-mn {
+		width: 722rpx;
+		height: 187rpx;
+		margin: 0 auto;
+		box-sizing: border-box;
+		display: flex;
+		margin-top: 10rpx;
+		background: url(../../static/index/v2/meina.png) no-repeat center;
+		background-size: 100% 100%;
+		position: relative;
+	}
 	// .top-ref {
 	// 	width: 80rpx;
 	// 	height: 79rpx;
