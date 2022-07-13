@@ -288,7 +288,6 @@ export default class HttpRequest {
 			
 		}).catch((error)=>{
 			if(errorCb) errorCb()
-			console.log('!!!!!!!!!!errorreqUrl=',reqUrl+'&error=',error)
 			if (error.response && error.response.status > 500) {
 				this.netError(() => {
 					this.Post(reqUrl, params, cb, errorCb);
@@ -320,7 +319,6 @@ export default class HttpRequest {
 				});
 			}
 		}).catch((error)=>{
-			console.log('!!!!!!!!!!errorreqUrl=',reqUrl+'&error=',error)
 			if (reqUrl == 'dataApi/home'){
 				uni.showToast({
 					title:'网络异常',

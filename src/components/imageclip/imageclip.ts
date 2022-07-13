@@ -82,7 +82,7 @@ export default class imageclip extends Vue {
 
   canvasZoom = 1;  // export multiples of the cutter size
 
-  @Prop({ default: 'jpg', validator: (t) => { return ['png', 'jpg'].includes(t) } })
+  @Prop({ default: 'jpg' })
   fileType!: string;
 
   quality = 1;

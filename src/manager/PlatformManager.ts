@@ -129,8 +129,6 @@ export default class PlatformManager {
 					id: 'gh_5cf45dd26926',
 					path: '/pages/index/index?id=' + id,
 					type: 0
-				}, (res: any) => {
-					console.log(res)
 				})
 			} else {
 				// 没有获取到微信分享服务

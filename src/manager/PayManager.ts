@@ -66,10 +66,8 @@ export default class PayManager {
 					sweixin.launchMiniProgram({
 						id: 'gh_5cf45dd26926',
 						path: '/pages/index/index?paydata=' + encodeURIComponent(JSON.stringify(orderInfo)),
-						type: 0
-					}, (res: any) => {
-						console.log(res)
-					})
+						type: 0}
+					)
 				} else {
 					// 没有获取到微信分享服务
 				}

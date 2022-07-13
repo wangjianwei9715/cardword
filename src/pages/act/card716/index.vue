@@ -114,7 +114,7 @@
 			<view class="drawer-box" v-for="(item,index) in card716Rule" :key="index"> {{item}} </view>
 			<view class="drawer-box drawer-box-red">今日累计{{homeData.daySum}}元（累计金额每日0点清空）</view>
 			<view class="drawer-title">奖品列表</view>
-			<view class="drawer-box" v-for="(item,index) in card716Pz" :key="index"> {{item}} </view>
+			<view class="drawer-box" v-for="item in card716Pz" :key="item"> {{item}} </view>
 			<view class="drawer-title" style="margin-top:55rpx">奖励发放</view>
 			<view class="drawer-box">优惠券类奖品在获取后3小时内自动发放，实物类奖品将根据您的默认地址发放，如有疑问请联系客服。</view>
     	</bottomDrawer>
