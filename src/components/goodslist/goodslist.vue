@@ -15,7 +15,7 @@
 				<muqian-lazyLoad v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}">
-						<muqian-lazyLoad class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
+						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
 					</view>
 					<view class="goodslist-title">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
@@ -40,7 +40,7 @@
 				<view class="goodslist-bottom" @click="onClickSellerShop(item)">
 					<view class="bottom-left" :class="{'bottom-left-shu':item.merchantName}">{{getGoodsPintuan(item.pintuan_type)}}</view>
 					<view class="bottom-right" v-show="item.merchantName">
-						<muqian-lazyLoad class="avart" :src="decodeURIComponent(item.merchantLogo)" borderRadius="50%"/>
+						<muqian-lazyLoad v-if="item.merchantLogo!=''" class="avart" :src="decodeURIComponent(item.merchantLogo)" borderRadius="50%"/>
 						<view class="bussName">{{item.merchantName}}</view>
 						<view class="cores"></view>
 					</view>

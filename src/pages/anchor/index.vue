@@ -1,88 +1,109 @@
 <template>
 	<view class="content">
-		<view class="anchor-navigation"></view>
-
+		<!-- 顶部导航 -->
+		<view class="anchor-navigation">
+			<view class="navigation-merchant">
+				<view class="avatar-bg">
+					<muqian-lazyLoad class="avatar" :src="decodeURIComponent(merchantData.logo)" borderRadius="50%"  />
+				</view>
+				{{merchantData.merchant}}
+			</view>
+			<view class="navigation-title">商品列表</view>
+			<view class="navigation-back" @click="onClickBack()">
+				<text class="back-tips">THE CARDS WORLD</text>
+				<text class="back-text">退出</text>
+			</view>
+		</view>
+		
 		<view class="anchor-center">
-			<!-- 卡片拖动控件 -->
-			<movable-area class="movable-area">
-				<movable-view
-					class="movable-content"
-					:class="{ 'end-pic': index < stepIndex}"
-					v-for="(item, index) in picData"
-					:key="index"
-					:animation="false"
-					@change="onChangeMovable"
-					direction="all"
-					:x="moveData.xe"
-					:y="moveData.ye"
-					:style="'z-index:' + (999 - index)"
-				>
-				<view v-if="index == 0" class="movable-box dangban" @touchstart.prevent="picTouchStart" @touchend.prevent="picTouchEnd"  ></view>
-				</movable-view>
-			</movable-area>
+			<scroll-view class="goods-scroll" :scroll-x="true" @scrolltolower='listScrolltolower'>
+				<view class="goods-scroll-index" v-for="(item,index) in merchantData.list" :key="index" @click="onClickGoDetail(item)">
+					<view class="goods-title">{{item.title}}</view>
+					<view class="goods-pic-box">
+						<muqian-lazyLoad class="goods-pic" :src="decodeURIComponent(item.pic)" />
+					</view>
+					<view class="goods-pro">
+						<view class="progress" :style="{'width':getProgress(item)+'%'}"></view>
+						<view class="progress-q" :style="{'left':getProgress(item)+'%'}">
+							<view class="progress-text">{{getProgress(item)}}<text>%</text></view>
+						</view>
+					</view>
+					<view class="goods-info-box">
+						<view class="info-type">{{getGoodsPintuan(item.pintuanType)}}</view>
+						<view class="info-type info-num">{{item.specName}}</view>
+					</view>
+				</view>
+			</scroll-view>
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
 	import { app } from "@/app";
+	import { getGoodsPintuan } from "@/tools/switchUtil";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		picData = [
-			''
-		]
-		totalNum = 0;
-		stepIndex = 0;
-		index = 0;
-		moveData = {
-			x:'',
-			y:'',
-			xe:'1000rpx',
-			ye:'650rpx',
+		getGoodsPintuan = getGoodsPintuan
+		merchantData:{[x:string]:any} = {
+			merchant:'',
+			logo:'',
+			list:[]
+		}
+		homeParams = {
+			pageIndex:1,
+			pageSize:20,
+			totalPage:2
 		}
 		onLoad(query:any) {
 			setTimeout(()=>{
 				plus.screen.lockOrientation('landscape-primary')
 			},500)
-			
-			uni.getSystemInfo({
-				success: (res) => {
-					// 根据 model 进行判断
-					uni.getSystemInfo({
-					success: (res:any) => {
-						console.log('system=',res)
-					},
-					fail(err) {
-						console.error(err);
-					},
-					});
-				},
-			});
-			
 		}
-		initEven(){
-			let params = {
+		onShow(){
+			this.homeParams = {
 				pageIndex:1,
-				pageSize:10
+				pageSize:20,
+				totalPage:2
 			}
-			app.http.Get('my/cuoka/home',params,(res:any)=>{
-				console.log(res)
-			})
+			this.initEven()
 		}
 		onUnload() {
 			plus.screen.lockOrientation('portrait-primary')
 		}
-		picTouchStart() {
-			console.log('e1=')
+		initEven():void{
+			let params = this.homeParams;
+			if(params.pageIndex >= params.totalPage) return;
+
+			app.http.Get('my/cuoka/home',params,(res:any)=>{
+				for (const key in this.merchantData) {
+					if (Object.prototype.hasOwnProperty.call(res, key)) {
+						this.merchantData[key] = res[key];
+					}
+				}
+				params.totalPage = res.totalPage
+			})
 		}
-		picTouchEnd() {
-			console.log('e2=')
+		listScrolltolower():void{
+			let params = this.homeParams;
+			if (params.pageIndex < params.totalPage) {
+				params.pageIndex += 1;
+				this.initEven();
+			}
 		}
-		onChangeMovable(event: any) {
-			// 获取拖拽坐标
-			console.log('eve=',event)
+		onClickBack(){
+			uni.navigateBack({
+				delta:1
+			})
+		}
+		onClickGoDetail(item:{[x:string]:any}):void{
+			uni.navigateTo({
+				url:'good_detail?goodCode='+item.goodCode
+			})
+		}
+		getProgress(item:{[x:string]:any}):number{
+			return Math.floor(((item.lockNum+item.currentNum)/item.totalNum) * 100)
 		}
 	}
 </script>
@@ -90,16 +111,83 @@
 <style lang="scss" scoped>
 	.anchor-navigation{
 		width: 100%;
-		height:100rpx;
-		background:#fff;
+		height:97rpx;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: center;
+		box-sizing: border-box;
+		position: relative;
+		.navigation-merchant{
+			height:97rpx;
+			display: flex;
+			align-items: center;
+			position: absolute;
+			left:40rpx;
+			top:0;
+			font-size: 33rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #FFFFFF;
+			.avatar-bg{
+				width: 46rpx;
+				height:46rpx;
+				background: url(@/static/anchor/logo_bg.png) no-repeat center;
+				background-size: 100% 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-right: 17rpx;
+				box-sizing: border-box;
+				.avatar{
+					width: 41rpx;
+					height:41rpx
+				}
+			}
+		}
+		.navigation-title{
+			font-size: 46rpx;
+			font-family: PingFang SC;
+			font-weight: 600;
+			color: #FFFFFF;
+			line-height: 97rpx;
+			text-shadow: 0rpx 0rpx 12rpx #050505;
+		}
+		.navigation-back{
+			width: 525rpx;
+			height:63rpx;
+			background: url(@/static/anchor/back_bg.png) no-repeat center;
+			background-size: 100% 100%;
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			right:17rpx;
+			top:50%;
+			margin-top: -31.5rpx;
+			padding-top: 10rpx;
+			.back-tips{
+				font-size: 28rpx;
+				font-family: Avenir;
+				font-weight: normal;
+				color: #FFFFFF;
+				margin-right: 19rpx;
+				margin-top: 5rpx;
+			}
+			.back-text{
+				font-size: 36rpx;
+				font-family: PingFang SC;
+				font-weight: 600;
+				color: #FFFFFF;
+				margin-left: 19rpx;
+			}
+		}
 	}
 	.content{
 		width: 100%;
 		height:750rpx;
-		background:#363433;
+		background:url(@/static/anchor/bg.png) no-repeat center;
+		background-size: 100% 750rpx;
 		position: fixed;
 		left:0;
 		top:0;
@@ -109,33 +197,135 @@
 	
 	.anchor-center{
 		width: 100%;
-		height:650rpx;
+		height:617rpx;
+		background:url(@/static/anchor/c_bg.png) no-repeat center;
+		background-size: 100% 617rpx;
 		display: flex;
-		.movable-area {
-			position: fixed;
-			left: 0;
-			top: -500rpx;
+		position: relative;
+		box-sizing: border-box;
+		align-items: center;
+		.goods-scroll{
 			width: 100%;
-			height: 1750rpx;
-			pointer-events: none;
-			z-index: 100;
-		}
-		.movable-content {
-			pointer-events: auto;
-			width: 320rpx;
-			height: 500rpx;
-		}
-		.movable-box {
-			width: 320rpx;
-			height: 500rpx;
-			position: relative;
+			height: 567rpx;
 			display: flex;
+			white-space: nowrap;
 			align-items: center;
-			justify-content: center;
-		}
-		.dangban {
-			background: url("../../static/goods/drawcard/card_dangban.png") no-repeat center;
-			background-size: 100% 100%;
+			&-index{
+				width: 433rpx;
+				height: 567rpx;
+				margin-right: 18rpx;
+				box-sizing: border-box;
+				display: inline-block;
+				background:url(@/static/anchor/list_good_bg.png) no-repeat center;
+				background-size: 100% 100%;
+				padding-top: 20rpx;
+			}
+			&-index:first-child{
+				margin-left: 62rpx;
+			}
+			.goods-title{
+				width: 345rpx;
+				height:70rpx;
+				margin:0 auto;
+				font-size: 29rpx;
+				font-family: PingFang SC;
+				font-weight: 600;
+				color: #FFFFFF;
+				line-height: 40rpx;
+				word-break:break-all;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				white-space: break-spaces;
+			}
+			.goods-pic-box{
+				width: 345rpx;
+				height:266rpx;
+				margin:0 auto;
+				margin-top: 14rpx;
+			}
+			.goods-pic{
+				width: inherit;
+				height:inherit;
+			}
+			// 进度
+			.goods-pro{
+				width: 345rpx;
+				height:40rpx;
+				// background:#F6F7FB;
+				box-sizing: border-box;
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
+				margin:0 auto;
+				margin-top: 22rpx;
+				position: relative;
+				margin-bottom: 34rpx;
+				.progress{
+					width: 0%;
+					height:inherit;
+					transition: all 0.3s linear;
+					background:url(@/static/anchor/pro_j.png) no-repeat center;
+				}
+				.progress-q{
+					width: 80rpx;
+					height:63rpx;
+					background:url(@/static/anchor/pro_q.png) no-repeat center;
+					background-size: 100% 100%;
+					box-sizing: border-box;
+					position: absolute;
+					top:50%;
+					margin-top: -35rpx;
+					left:0;
+					margin-left: -50rpx;
+					transition: all 0.3s linear;
+					.progress-text{
+						width: 50rpx;
+						height:50rpx;
+						position: absolute;
+						right:-5rpx;
+						bottom:2rpx;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						font-size: 23rpx;
+						font-family: PingFang SC;
+						font-weight: 600;
+						color: #FFFFFF;		
+						box-sizing: border-box;				
+					}
+					.progress-text text{
+						font-size: 15rpx;
+					}
+				}
+			}
+			// 
+			.goods-info-box{
+				width: 345rpx;
+				height:52rpx;
+				margin:0 auto;
+				display: flex;
+				align-items: center;
+				.info-type{
+					height:inherit;
+					box-sizing: border-box;
+					background: #F19344;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding:0 14rpx;
+					font-size: 27rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #EAEAEA;
+				}
+				.info-num{
+					background:#F6C960;
+					color:#333333;
+					margin-left: 12rpx;
+				}
+			}
 		}
 	}
 </style>

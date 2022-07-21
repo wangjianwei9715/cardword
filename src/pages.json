@@ -898,8 +898,23 @@
 		},
 		{
 			"root": "pages/anchor",
-			"pages": [{
+			"pages": [
+				{
 					"path": "index",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "good_detail",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "rubCard",
 					"style": {
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false

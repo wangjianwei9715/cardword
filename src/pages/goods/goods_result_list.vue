@@ -51,7 +51,7 @@
 					<view class="time">{{dateFormat(item.time)}}</view>
 				</view>
 
-				<view class="right"><muqian-lazyLoad class="right-img" :src="getGoodsImg(decodeURIComponent(item.pic))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
+				<view class="right"><muqian-lazyLoad class="right-img" :src="replacePic(getGoodsImg(decodeURIComponent(item.pic)))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
 			</view>
 		</view>
 
@@ -213,8 +213,6 @@
 				this.getTpCardNoResult()
 			}
 		}
-
-		
 		onClickPreviewCard(pic:any){
 			let url = pic.split(',')
 			url = url.map((x:any)=>{
@@ -223,6 +221,9 @@
 			uni.previewImage({
 				urls:url
 			});
+		}
+		replacePic(str:string){
+			return str.indexOf('#thumb') == -1 ? str : str.replace('#thumb','.thumb')
 		}
 	}
 </script>

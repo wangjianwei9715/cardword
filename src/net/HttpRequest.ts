@@ -83,7 +83,7 @@ export default class HttpRequest {
 				config.headers['version'] = app.version;
 			}
 			if (url.indexOf("user/login/phone") == -1&&url.indexOf("user/code") == -1&&url.indexOf("user/forget") == -1) {//验证码、刷新、登录 首页接口不需要token &&config.url!='xingqiu/refresh_lists'&&config.url!='xingqiu/index_act'
-				if (!config.headers['token']) {
+				if (!config.headers['token'] && app.token.accessToken!='') {
 					config.headers['token'] = app.token.accessToken;
 				}
 			}
@@ -236,7 +236,7 @@ export default class HttpRequest {
 					uni.hideLoading();
 				}
 			} else {
-				uni.showToast({ title: error.message, icon: 'none', duration: 2000 });
+				// uni.showToast({ title: error.message, icon: 'none', duration: 2000 });
 			}
 			return Promise.reject(error);
 		});

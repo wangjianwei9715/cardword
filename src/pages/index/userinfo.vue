@@ -152,7 +152,7 @@
 				this.infoData.avatar = decodeURIComponent(data.avatar)
 				app.familial = data.familial;
 				this.serviceTab.giving.num = data.unReadGoodNo;
- 
+
 				// 卡币 我的中卡
 				for (const key in this.walletTab) {
 					if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -170,17 +170,17 @@
 						this.headerTab[key].num = data[key];
 					}
 				}
-				// if(this.settingTab.length<5 && res.data.cuoka){
-				// 	this.settingTab = [ 
-				// 		...this.settingTab,
-				// 		{
-				// 			id:5,
-				// 			name:'主播模式',
-				// 			url:'/pages/anchor/index',
-				// 			pic:'../../static/userinfo/v2/icon_b_agreement.png'
-				// 		}
-				// 	]
-				// }
+				if(this.settingTab.length<5 && res.data.cuoka){
+					this.settingTab = [ 
+						...this.settingTab,
+						{
+							id:5,
+							name:'主播模式',
+							url:'/pages/anchor/index',
+							pic:'../../static/userinfo/v2/icon_b_agreement.png'
+						}
+					]
+				}
 				if(cb) cb()
 
 			});

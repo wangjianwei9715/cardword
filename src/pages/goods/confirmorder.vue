@@ -186,7 +186,14 @@
         ></view>
         开启卡密效果
       </view>
-
+      <view v-show="(goodsData.bit&32) == 32" class="kami-title" >
+        <view
+          @click="cuokaOpne = !cuokaOpne"
+          class="kami-gx"
+          :class="{ 'kami-check': cuokaOpne}"
+        ></view>
+        开启代搓
+      </view>
       
       <view class="bottom-content-box">
         <view class="bottom-content">
@@ -271,6 +278,8 @@ export default class ClassName extends BaseNode {
   guessNoMoreData = false;
   selectRanId = 0;
   payRandomTeamData:any = [];
+  // 代搓卡
+  cuokaOpne = false;
   onLoad(query: any) {
     if (query.data) {
       this.goodsData = JSON.parse(query.data);
@@ -594,28 +603,34 @@ export default class ClassName extends BaseNode {
       params.couponIdList = this.checkCouponList;
     }
     app.http.Post(url, params, (res: any) => {
+      
       // 预测球队
       if(this.getBitDisableGuess()){
         app.http.Post('me/order/guess/name/'+res.goodOrderCode,{name:this.guessList[this.guessCheckTeam].name})
       }
       if(res.price<=0){
-         uni.redirectTo({
-            url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
-          });
+        // 代搓卡请求成功后跳转
+          if(this.cuokaOpne){
+            app.http.Post('my/cuoka/goodOrder/open/'+res.goodOrderCode,{state:1},(res:any)=>{
+              this.redirectToOrder(res.goodOrderCode)
+            })
+          }else{
+            this.redirectToOrder(res.goodOrderCode)
+          }
       }else{
-		  //data.channel=='alipay' (before)
+        // 代搓卡
+        if(this.cuokaOpne){
+          app.http.Post('my/cuoka/goodOrder/open/'+res.goodOrderCode,{state:1})
+        }
+		    //data.channel=='alipay' (before)
         if (data.channel == "alipay_h5" || data.channel == "alipay") {
           if(res.appPayRequest){
             app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest),()=>{
-              uni.redirectTo({
-                url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
-              });
+              this.redirectToOrder(res.goodOrderCode)
             });
           }else if (res.alipay.orderInfo != "") {
             app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,res.goodOrderCode,()=>{
-              uni.redirectTo({
-                url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
-              });
+              this.redirectToOrder(res.goodOrderCode)
             });
           }
           uni.hideLoading();
@@ -627,13 +642,16 @@ export default class ClassName extends BaseNode {
               app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
             }
             uni.hideLoading();
-            uni.redirectTo({
-              url: "/pages/userinfo/order_details?code=" + res.goodOrderCode + "&waitPay=true",
-            });
+            this.redirectToOrder(res.goodOrderCode)
           }
         }
       }
       
+    });
+  }
+  redirectToOrder(order:string){
+    uni.redirectTo({
+      url: `/pages/userinfo/order_details?code=${order}&waitPay=true`,
     });
   }
   onClickCardCancel() {
