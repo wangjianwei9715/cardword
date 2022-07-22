@@ -952,6 +952,13 @@
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false
 					}
+				},
+				{
+					"path": "middle",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
 				}
 			]
 		}

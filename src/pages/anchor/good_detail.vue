@@ -86,7 +86,6 @@
 		}
 		onUnload() {
 			clearInterval(this.intervalInit)
-			plus.screen.lockOrientation('portrait-primary')
 		}
 		initEven(){
 			app.http.Get('my/cuoka/1/'+this.detailData.goodCode+'/detail',{},(res:any)=>{

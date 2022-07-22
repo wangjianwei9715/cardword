@@ -97,7 +97,7 @@
 					<view class="ulist-index" v-for="(item,index) in userList" :key="index">
 						<view class="ulist-num">{{index+1}}</view>
 						<view class="ulist-info">
-							
+
 						</view>
 					</view>
 				</scroll-view>
@@ -150,40 +150,36 @@
 		movableAni:any = '';
 		intervalInit:any;
 		onLoad(query:any) {
+			setTimeout(()=>{
+				plus.screen.lockOrientation('landscape-primary')
+			},500)
 			this.detailData = JSON.parse(query.data)
-			if(query.picType == 1){
-				this.defultPic = '../../static/goods/drawcard/default_.png';
-			}
-			uni.getSystemInfo({
-				success: (res) => {
-					// 根据 model 进行判断
-					uni.getSystemInfo({
-						success: (res:any) => {
-							let x = (res.windowWidth/2) - uni.upx2px(175);
-							let y = uni.upx2px(650);
-							this.moveData = {
-								x:x,
-								y:y,
-								x_init:x,
-								y_init:y
-							}
-						}
-					});
-				},
-			});
+			// if(query.picType == 1){
+			// 	this.defultPic = '../../static/goods/drawcard/default_.png';
+			// }
+			// uni.getSystemInfo({
+			// 	success: (res) => {
+			// 		// 根据 model 进行判断
+			// 		uni.getSystemInfo({
+			// 			success: (res:any) => {
+			// 				let x = (res.windowWidth/2) - uni.upx2px(175);
+			// 				let y = uni.upx2px(650);
+			// 				this.moveData = { x:x, y:y, x_init:x, y_init:y }
+			// 			}
+			// 		});
+			// 	},
+			// });
 			// this.intervalInit = setInterval(()=>{
 			// 	this.initEven()
 			// },5000)
 		}
 		onUnload() {
 			clearInterval(this.intervalInit)
-			plus.screen.lockOrientation('portrait-primary')
 		}
 		picTouchStart() {
 			// 拖拽开始 记录位置
-			if (this.stepIndex  >= this.totalNum ) {
-				return;
-			}
+			if (this.stepIndex  >= this.totalNum )  return;
+			
 			this.moveData.x = this.moveData.x_init+1;
 			this.moveData.y = this.moveData.y_init
 		}
@@ -204,9 +200,7 @@
 				if(this.stepIndex<this.totalNum){
 					this.stepIndex++;
 					let color = this.picData[this.stepIndex+1].color;
-					if(( color == 'gold' || color == 'SP')){
-						uni.vibrateLong({});
-					}
+					if(( color == 'gold' || color == 'SP')) uni.vibrateLong({});
 				}else{
 					app.http.Post(`my/cuoka/release/${this.cardNoParams.orderCode}`,{})
 				}
@@ -224,13 +218,11 @@
 			if (params.noMoreData)return;
 
 			app.http.Get(`my/cuoka/user/list/${this.detailData.goodCode}`,params,(data:any)=>{
+				if(params.pageIndex == 1) this.userList = [];
 				this.userList = [...this.userList,...data.list];
 
-				if(data.totalPage<=params.pageIndex){
-					params.noMoreData = true;
-				}else{
-					params.pageIndex++;
-				}
+				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
+				else params.pageIndex++;
 				cb && cb()
 				// this.cardNoParams.orderCode = res.list[0].orderCode;
 				// this.reqNewData()
@@ -256,18 +248,16 @@
 					if(cb) cb()
 				}else{
 					params.pageIndex++;
-					setTimeout(()=>{
-						this.reqNewData(cb)
-					},10)
+					setTimeout(()=>{ this.reqNewData(cb) },10)
 				}
 			});
 		}
 		setSpAni(sp:number){
 			switch(sp){
-			case 1:
-				return 'movable-box-xzj'
-			case 2:
-				return 'movable-box-noir'
+				case 1:
+					return 'movable-box-xzj'
+				case 2:
+					return 'movable-box-noir'
 			}
 		}
 		getProgress():number{
@@ -275,14 +265,11 @@
 			return Math.floor(((item.lockNum+item.currentNum)/item.totalNum) * 100)
 		}
 		onClickBack(){
-			uni.navigateBack({
-				delta:1
-			})
+			uni.navigateBack({ delta:1 })
 		}
 		onClickCheckUlist(){
-			this.getUserlist(()=>{
-				this.showUlist = true;
-			})
+			this.userParams = { pageIndex:1, pageSize:50, noMoreData:false }
+			this.getUserlist(()=>{ this.showUlist = true; })
 		}
 	}
 </script>

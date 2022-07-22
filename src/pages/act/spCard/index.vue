@@ -31,8 +31,7 @@
 					</view>
 				</view>
 				<view class="user-explain">
-					<view class="explain-view">经典系列21-22 noir、小真金！</view>
-					<view class="explain-view explain-bold">收集sp卡密：鞋灯/聚光灯/数据签兑大礼！您也可收取他人赠送的卡密获取！<text>（SP值获取时冻结，拼成后可用）</text></view>
+					<view class="explain-view explain-bold">收集21-22PZ与国宝随机卡种/随机球员：新秀正金折、新秀正黑折、logoman签字卡密兑换奖品！<text>（SP值获取时冻结，拼成后可用）</text></view>
 				</view>
 			</view>
 
@@ -202,7 +201,7 @@
 </script>
 
 <style lang="scss">
-	page{
+	.content{
 		width: 100%;
 		height:100%;
 		background: linear-gradient(180deg, #0A0A0A 0%, #565961 99%);
@@ -231,7 +230,6 @@
 		width: 750rpx;
 		height:721rpx;
 		box-sizing: border-box;
-		padding-top: 23rpx;
 		position: relative;
 		overflow: hidden;
 		.sp-top-bg{

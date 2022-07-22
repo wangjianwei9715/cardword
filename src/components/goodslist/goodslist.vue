@@ -6,7 +6,7 @@
 				:circular="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'">
 				<swiper-item v-for="(item,index) in topAddList" :key="index">
 					<muqian-lazyLoad class="swiper-image" :src="decodeURIComponent(item.pic)"
-						@click="onClickTopJumpUrl(item.target)" mode="aspectFill"></muqian-lazyLoad>
+						@click="onClickTopJumpUrl(item.target)" borderRadius="5rpx"></muqian-lazyLoad>
 				</swiper-item>
 			</swiper>
 		</view>
