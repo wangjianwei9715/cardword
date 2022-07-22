@@ -1,5 +1,5 @@
 <template>
-	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':teamCheckShow}">
+	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':teamCheckShow||teamRandomShow}">
 		<!-- #ifndef MP -->
 		<view class="header-banner">
 			<statusbar />

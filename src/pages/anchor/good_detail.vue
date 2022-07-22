@@ -57,12 +57,12 @@
 	export default class ClassName extends BaseNode {
 		getGoodsPintuan = getGoodsPintuan;
 		cuoTab = cuoTab;
-		goodCode = '';
 		detailData:{[x:string]:any} = {
 			merchant: "", //商家名称
             logo: "", //商家头像
             pic: "", //商品图片
             title: "", //商品标题
+			goodCode:"",
             currentNum:0,
             totalNum:0,
             lockNum:0,
@@ -73,7 +73,7 @@
 		};
 		intervalInit:any;
 		onLoad(query:any) {
-			this.goodCode = query.goodCode;
+			this.detailData.goodCode = query.goodCode;
 		}
 		onShow(){
 			this.initEven()
@@ -89,7 +89,7 @@
 			plus.screen.lockOrientation('portrait-primary')
 		}
 		initEven(){
-			app.http.Get('my/cuoka/1/'+this.goodCode+'/detail',{},(res:any)=>{
+			app.http.Get('my/cuoka/1/'+this.detailData.goodCode+'/detail',{},(res:any)=>{
 				for (const key in this.detailData) {
 					if (Object.prototype.hasOwnProperty.call(res.data, key)) {
 						this.detailData[key] = res.data[key];
@@ -118,8 +118,9 @@
 				content: `是否${type=='shut'?'关闭':'开启'}代搓卡`,
 				success: (res)=> {
 					if (res.confirm) {
-						app.http.Post(`my/cuoka/good/${type}/${this.goodCode}`,{},(res:any)=>{
+						app.http.Post(`my/cuoka/good/${type}/${this.detailData.goodCode}`,{},(res:any)=>{
 							this.detailData.isCuoka = !this.detailData.isCuoka;
+							this.detailData.waitCuoka = 0;
 						})
 					}
 				}

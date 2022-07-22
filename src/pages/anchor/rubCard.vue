@@ -2,7 +2,8 @@
 	<view class="content">
 		<!-- 顶部导航 -->
 		<view class="anchor-navigation">
-			<view class="navigation-cut">
+			<view class="navigation-cut" @click="onClickCheckUlist()">
+				<view class="cut-num">{{detailData.waitCuoka}}</view>
 				<view class="cut-box">
 					<view class="avatar-bg">
 						<muqian-lazyLoad class="avatar" :src="userData.avatar==''?defaultAvatar:decodeURIComponent(userData.avatar)" borderRadius="50%"  />
@@ -16,7 +17,9 @@
 				<text class="back-text">退出</text>
 			</view>
 		</view>
+		<!-- ####### -->
 
+		<!-- 代搓卡中心位置 -->
 		<view class="anchor-center">
 			<!-- 左侧进度条 -->
 			<view class="progress-box">
@@ -75,12 +78,32 @@
 			<view class="CarMy-box">
 				<view class="CarMy-center">
 					<view class="CarMy-title">卡片编号</view>
-					<view class="CarMy-team" style="margin-bottom:10rpx">{{stepIndex>0?cardList[stepIndex-1].team:''}}</view>
-					<view class="CarMy-team">{{stepIndex>0?cardList[stepIndex-1].player:''}}</view>
-					<view class="CarMy-team">{{stepIndex>0?cardList[stepIndex-1].name:''}}</view>
+					<view class="CarMy-team" style="margin-bottom:10rpx">{{stepIndex>0?picData[stepIndex].team:''}}</view>
+					<view class="CarMy-team">{{stepIndex>0?picData[stepIndex].player:''}}</view>
+					<view class="CarMy-team">{{stepIndex>0?picData[stepIndex].name:''}}</view>
 				</view>
 			</view>
 		</view>
+		<!-- ############ -->
+
+		<!-- 代搓卡用户 -->
+		<view class="popup-shadow" v-show="showUlist">
+			<view class="ulist-box">
+				<view class="ulist-header">
+					等待搓卡
+					<view class="ulist-close" @click="showUlist = false"></view>
+				</view>
+				<scroll-view class="ulist-list" scroll-y="true" @scrolltolower="getUserlist()">
+					<view class="ulist-index" v-for="(item,index) in userList" :key="index">
+						<view class="ulist-num">{{index+1}}</view>
+						<view class="ulist-info">
+							
+						</view>
+					</view>
+				</scroll-view>
+			</view>
+		</view>
+		<!-- ######### -->
 	</view>
 </template>
 
@@ -92,7 +115,15 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		defaultAvatar = app.defaultAvatar;
+		defultPic = '../../static/goods/drawcard/default.png';
 		detailData:any = {};
+		showUlist = false;
+		userList:any = [];
+		userParams = {
+			pageIndex:1,
+			pageSize:50,
+			noMoreData:false
+		}
 		userData:{[x:string]:any} = {
 			orderCode: '', //
             userName: "", //用户昵称
@@ -100,17 +131,15 @@
             cuokaNum: 1, //待搓组数
             payTime: '', 
 		}
-		defultPic = '../../static/goods/drawcard/default.png';
-		picData:any = [ ''];
-		cardList:{[x:string]:any} = [];
+		totalNum = 0;
+		stepIndex = 0;
+		picData:any = [''];
 		cardNoParams:{[x:string]:any} = {
 			pageIndex:1,
 			pageSize:30,
 			noMoreData:false,
 			orderCode:''
 		}
-		totalNum = 0;
-		stepIndex = 0;
 		moveData:{[x:string]:number} = {
 			x:0,
 			y:0,
@@ -119,6 +148,7 @@
 		}
 		changeMove:any = {};
 		movableAni:any = '';
+		intervalInit:any;
 		onLoad(query:any) {
 			this.detailData = JSON.parse(query.data)
 			if(query.picType == 1){
@@ -141,17 +171,12 @@
 					});
 				},
 			});
-		}
-		initEven(){
-			let params = {
-				pageIndex:1,
-				pageSize:10
-			}
-			app.http.Get('my/cuoka/home',params,(res:any)=>{
-				console.log(res)
-			})
+			// this.intervalInit = setInterval(()=>{
+			// 	this.initEven()
+			// },5000)
 		}
 		onUnload() {
+			clearInterval(this.intervalInit)
 			plus.screen.lockOrientation('portrait-primary')
 		}
 		picTouchStart() {
@@ -161,6 +186,10 @@
 			}
 			this.moveData.x = this.moveData.x_init+1;
 			this.moveData.y = this.moveData.y_init
+		}
+		onChangeMovable(event: any) {
+			// 获取拖拽坐标
+			this.changeMove = event.detail;
 		}
 		picTouchEnd() {
 			// 初始位置和移动后位置
@@ -176,28 +205,43 @@
 					this.stepIndex++;
 					let color = this.picData[this.stepIndex+1].color;
 					if(( color == 'gold' || color == 'SP')){
-						uni.vibrateLong({
-							success: function() {
-							console.log('success');
-							}
-						});
+						uni.vibrateLong({});
 					}
+				}else{
+					app.http.Post(`my/cuoka/release/${this.cardNoParams.orderCode}`,{})
 				}
 			}
 			this.moveData.x = this.moveData.x_init;
 			this.moveData.y = this.moveData.y_init
 		}
-		onChangeMovable(event: any) {
-			// 获取拖拽坐标
-			this.changeMove = event.detail;
+		initEven(){
+			app.http.Get('my/cuoka/1/'+this.detailData.goodCode+'/detail',{},(res:any)=>{
+				this.detailData= res.data;
+			})
+		}
+		getUserlist(cb?:Function){
+			const params = this.userParams;
+			if (params.noMoreData)return;
+
+			app.http.Get(`my/cuoka/user/list/${this.detailData.goodCode}`,params,(data:any)=>{
+				this.userList = [...this.userList,...data.list];
+
+				if(data.totalPage<=params.pageIndex){
+					params.noMoreData = true;
+				}else{
+					params.pageIndex++;
+				}
+				cb && cb()
+				// this.cardNoParams.orderCode = res.list[0].orderCode;
+				// this.reqNewData()
+			})
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多搓卡
-			let params = this.cardNoParams
-			if (params.noMoreData) {
-				return;
-			}
-			app.http.Get('my/cuoka/user/cardNo/'+params.orderCode, params, (data: any) => {
+			const params = this.cardNoParams
+			if (params.noMoreData) return;
+			
+			app.http.Get(`my/cuoka/user/cardNo/${params.orderCode}`, params, (data: any) => {
 				if(data.list){
 					let listData = data.list
 					for(let i in listData){
@@ -206,7 +250,8 @@
 					this.picData = this.picData.concat(listData);
 				}
 				if(data.totalPage<=params.pageIndex){
-					this.movableAni = this.setSpAni(Number(data.sp))
+					this.movableAni = this.setSpAni(Number(data.sp));
+					this.totalNum = data.total;
 					params.noMoreData = true;
 					if(cb) cb()
 				}else{
@@ -234,6 +279,11 @@
 				delta:1
 			})
 		}
+		onClickCheckUlist(){
+			this.getUserlist(()=>{
+				this.showUlist = true;
+			})
+		}
 	}
 </script>
 
@@ -253,6 +303,22 @@
 			background-size: 100% 100%;
 			box-sizing: border-box;
 			margin-top: 30rpx;
+			position: relative;
+			.cut-num{
+				width: 38rpx;
+				height: 38rpx;
+				background: #EC5E58;
+				border-radius: 50%;
+				text-align: center;
+				line-height: 38rpx;
+				font-size: 27rpx;
+				font-family: PingFang SC;
+				font-weight: 400;
+				color: #FFFFFF;
+				position: absolute;
+				right:-12rpx;
+				top:-14rpx
+			}
 			.cut-box{
 				width: 100%;
 				height:50rpx;
@@ -432,6 +498,15 @@
 			width: 320rpx;
 			height: 420rpx;
 			will-change: transform;
+		}
+		.icon-rc {
+			width: 55rpx;
+			height: 56rpx;
+			background: url(../../static/anchor/icon_rc.png) no-repeat center;
+			background-size: 100% 100%;
+			position: absolute;
+			left: 34rpx;
+			top: 34rpx;
 		}
 		.dangban {
 			background: url("../../static/goods/drawcard/card_dangban.png") no-repeat center;
@@ -625,6 +700,79 @@
 				font-weight: 400;
 				color: #FFFFFF;
 				line-height: 42rpx;
+			}
+		}
+	}
+
+	// 代搓卡用户列表
+	.popup-shadow{
+		width:100%;
+		height:100%;
+		background:rgba(0,0,0,0.61);
+		position: fixed;
+		left:0;
+		top:0;
+		right:0;
+		z-index: 999;
+	}
+	.ulist-box{
+		width: 1109rpx;
+		height:649rpx;
+		background:url(../../static/anchor/popup_bg.png) no-repeat center / 100% 100%;
+		position: fixed;
+		left:50%;
+		margin-left: -554.5rpx;
+		top:50rpx;
+		.ulist-header{
+			width: 100%;
+			height:130rpx;
+			box-sizing: border-box;
+			padding-top: 20rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 42rpx;
+			font-family: PingFang SC;
+			font-weight: 600;
+			color: #FFFFFF;
+			.ulist-close{
+				position: absolute;
+				right:64rpx;
+				top:59rpx;
+				width: 37rpx;
+				height:35rpx;
+				background: url(../../static/anchor/close.png) no-repeat center / 100% 100%;
+			}
+		}
+		.ulist-list{
+			width: 100%;
+			height:500rpx;
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			.ulist-index{
+				width: 1000rpx;
+				height:218rpx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin:0 auto;
+				margin-bottom: 20rpx;
+				.ulist-num{
+					width: 89rpx;
+					height:218rpx;
+					line-height: 218rpx;
+					font-size: 95rpx;
+					font-family: Impact;
+					font-weight: 400;
+					color: #FFFFFF;
+					text-align: center;
+				}
+				.ulist-info{
+					width: 911rpx;
+					height:218rpx;
+					background: url(../../static/anchor/popup_box.png) no-repeat center / 100% 100%;
+				}
 			}
 		}
 	}

@@ -291,9 +291,11 @@ export default class ClassName extends BaseNode {
   setSpAni(sp:number){
     switch(sp){
       case 1:
-        return 'movable-box-xzj'
+        return 'movable-box-xzj';
       case 2:
-        return 'movable-box-noir'
+        return 'movable-box-noir';
+      default:
+        return ''
     }
   }
   // 图片加载

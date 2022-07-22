@@ -61,7 +61,7 @@
 		}
 		//   加载更多数据
 		onReachBottom() {
-		    this.reqNewData() 
+			this.reqNewData() 
 		}
 		getNameReward(name:string){
 			let rewardIndex = name.lastIndexOf('、');
@@ -93,16 +93,8 @@
 		onClickTypeCurrent(type:number){
 			if(type == this.typeTabCurrent) return;
 			if(this.typeTabClick){
-				uni.showToast({
-					title:'请勿连续点击',
-					icon:'none'
-				})
 				return;
 			}
-			this.typeTabClick = true;
-			setTimeout(()=>{
-				this.typeTabClick = false;
-			},1000)
 			this.typeTabCurrent = type;
 			this.reqSearchList()
 		}
@@ -130,7 +122,7 @@
 			if(this.listSort!='') params.sort = this.listSort;
 			if(this.typeTabCurrent == 1) params.leadOrderCode = this.orderCode;
 			if(this.searchText!='') params.q = this.searchText;
-			
+			this.typeTabClick = true;
 			app.http.Get('me/good/'+this.goodCode+'/orderNoList', params, (data: any) => {
 				if(data.empty){
 					this.currentPage++;
@@ -142,6 +134,7 @@
 				if(data.list){
 					this.cardList = this.cardList.concat(data.list);
 				}
+				this.typeTabClick = false;
 				this.currentPage++;
 				if(cb) cb()
 			});
