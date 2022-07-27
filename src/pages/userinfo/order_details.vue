@@ -385,7 +385,13 @@
 				this.onClcikResult(1)
 			}
 			if(cmd=='giving'){
-				if(this.orderData.isCuoka) return;
+				if(this.orderData.isCuoka) {
+					uni.showToast({
+						title:'当前状态无法赠送',
+						icon:'none'
+					})
+					return
+				};
 				
 				uni.navigateTo({
 					url:'/pages/userinfo/giving/giving_list?code='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType+'&orderCode='+this.orderData.code
