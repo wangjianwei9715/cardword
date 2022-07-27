@@ -447,10 +447,12 @@
 					this.fetchFrom == 1 ? this.goodsList = data.goodList : this.goodsList.push(...data
 						.goodList);
 				}
+				app.platform.removeDuplicate(this.goodsList)
 				this.fetchFrom += this.fetchSize;
 				if (cb) cb()
 			});
 		}
+		
 	}
 </script>
 

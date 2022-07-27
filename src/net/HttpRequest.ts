@@ -180,7 +180,6 @@ export default class HttpRequest {
 		});
 		// 添加响应拦截器
 		this.axiosInstance.interceptors.response.use((response)=> {
-			uni.hideLoading()
 			if (response.data) {
 				if (response.data.code == 1101){
 					uni.showModal({

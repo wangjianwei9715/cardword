@@ -20,6 +20,7 @@
 			app
 		},
 		onLaunch() {
+			// app.funcApiDomain='http://192.168.8.88:8741/api/v2'
 			console.log("App Launch");
 			//#ifdef APP-PLUS
 			plus.screen.lockOrientation('portrait-primary'); // 强制竖屏
@@ -29,7 +30,7 @@
 			if (process.env.NODE_ENV === "development") {
 				// console.log("开发环境");
 				// app.localTest = true;
-				// app.bussinessApiDomain = 'http://192.168.8.88:8701/api/v2/';
+				// app.bussinessApiDomain = 'http://192.168.8.79:8701/api/v2/';
 				// app.funcApiDomain='http://192.168.8.79:8741/api/v2/'
 				// app.bussinessApiDomain="https://server.ssltest.ka-world.com/api/v2/"
 

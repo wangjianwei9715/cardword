@@ -74,6 +74,7 @@
 		codeLogin = false;
 		popupHid = true;
 		iosLogin = app.iosPlatform;
+		loginIng = false;
 		onLoad(query:any) {
 			
 		}
@@ -136,7 +137,12 @@
 				});
 				return;
 			};
-
+			if(this.loginIng) return;
+			
+			this.loginIng = true;
+			setTimeout(()=>{
+				this.loginIng = false;
+			},1000)
 			if(this.codeLogin){
 				this.onClickCodeLogin()
 			}else{
@@ -192,6 +198,7 @@
 		}
 		HttpLogin(params:any){
 			app.http.Post('user/login/phone',params,(data:any)=>{
+				this.loginIng = false;
 				app.data = data.data;
 				app.opKey = data.opKey
 				app.coupon = data.data.coupon;
@@ -218,7 +225,7 @@
 		postDomain(){
 			let domian = app.bussinessApiDomain.slice(0,app.bussinessApiDomain.indexOf('/api'));
 			if(app.service_url!=''){
-				 domian +='&'+app.service_url
+				domian +='&'+app.service_url
 			}
 			if(app.familial){
 				domian +='&oldUser=true&version='+app.version

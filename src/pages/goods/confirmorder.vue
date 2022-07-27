@@ -178,21 +178,13 @@
         
       </view>
       
-      <view v-show="orderRich != 0" class="kami-title" >
-        <view
-          @click="setNoRichShow"
-          class="kami-gx"
-          :class="{ 'kami-check': orderRich == 1 }"
-        ></view>
-        开启卡密效果
-      </view>
       <view v-show="(goodsData.bit&32) == 32" class="kami-title" >
         <view
-          @click="cuokaOpne = !cuokaOpne"
+          @click="cuokaSet(!cuokaOpne)"
           class="kami-gx"
           :class="{ 'kami-check': cuokaOpne}"
         ></view>
-        开启代搓
+        商家代搓
       </view>
       
       <view class="bottom-content-box">
@@ -266,8 +258,6 @@ export default class ClassName extends BaseNode {
   baoduiId = 0;
   baoduiName = "";
 
-  // 卡密效果开关
-  orderRich = 0;
   // 预测卡密
   freeNum = 0;
   guessCheckTeam = 0;
@@ -410,22 +400,22 @@ export default class ClassName extends BaseNode {
           this.lastGuess = res.data.guess.lastGuess;
           this.guessNoMoreData = res.data.guess.option.totalPage>=2?false:true;
         }
-        this.orderRich = res.data.noRichShowState;
-        if (this.orderRich != 0) {
-          let orderRich = this.orderRich == 1 ? true : false;
-          app.orderRich = orderRich;
+        if(res.data.cuokaState){
+          this.cuokaOpne = res.data.cuokaState == 1 ? true : false
+        }
+        if(res.data.cuokaWindow){
+          uni.showModal({
+            title: '提示',
+            content: '是否由商家代搓卡密？(商家搓完后显示卡密)',
+            success: (res)=> {
+              this.cuokaSet(res.confirm)
+            }
+          });
         }
       }
     );
   }
-  // 订单卡密效果开关
-  setNoRichShow() {
-    let open = this.orderRich == 1 ? false : true;
-    app.http.Post("me/order/noRichShow/switch", { open: open }, (res: any) => {
-      this.orderRich = open == true ? 1 : -1;
-      app.orderRich = open;
-    });
-  }
+
   getOnePrice() {
     if (this.goodsData.discount) {
       if (this.moneyNum < this.goodsData.discount[0].minNum) {
@@ -609,19 +599,8 @@ export default class ClassName extends BaseNode {
         app.http.Post('me/order/guess/name/'+res.goodOrderCode,{name:this.guessList[this.guessCheckTeam].name})
       }
       if(res.price<=0){
-        // 代搓卡请求成功后跳转
-          if(this.cuokaOpne){
-            app.http.Post('my/cuoka/goodOrder/open/'+res.goodOrderCode,{state:1},(res:any)=>{
-              this.redirectToOrder(res.goodOrderCode)
-            })
-          }else{
-            this.redirectToOrder(res.goodOrderCode)
-          }
+        this.redirectToOrder(res.goodOrderCode)
       }else{
-        // 代搓卡
-        if(this.cuokaOpne){
-          app.http.Post('my/cuoka/goodOrder/open/'+res.goodOrderCode,{state:1})
-        }
 		    //data.channel=='alipay' (before)
         if (data.channel == "alipay_h5" || data.channel == "alipay") {
           if(res.appPayRequest){
@@ -648,6 +627,11 @@ export default class ClassName extends BaseNode {
       }
       
     });
+  }
+  cuokaSet(state:boolean){
+    app.http.Post('my/cuoka/state/good/switch/'+this.goodsData.goodCode,{state:state?1:-1},()=>{
+      this.cuokaOpne = state
+    })
   }
   redirectToOrder(order:string){
     uni.redirectTo({

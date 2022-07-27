@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="content" v-if="detailData.pic">
 		<!-- 顶部导航 -->
 		<view class="anchor-navigation">
 			<view class="navigation-merchant">
@@ -8,7 +8,7 @@
 				</view>
 				{{detailData.merchant}}
 			</view>
-			<view class="navigation-back" @click="onClickBack()">
+			<view class="navigation-back" @click.prevent="onClickBack()">
 				<text class="back-tips">THE CARDS WORLD</text>
 				<text class="back-text">退出</text>
 			</view>
@@ -51,62 +51,29 @@
 	]
 	import { app } from "@/app";
 	import { getGoodsPintuan } from "@/tools/switchUtil";
-	import { Component } from "vue-property-decorator";
-	import BaseNode from '../../base/BaseNode.vue';
+	import { Component, Prop,Vue } from "vue-property-decorator";
+	import BaseComponent from "@/base/BaseComponent.vue";
 	@Component({})
-	export default class ClassName extends BaseNode {
+	export default class ClassName extends BaseComponent {
+		@Prop()
+		detailData:any;
+
 		getGoodsPintuan = getGoodsPintuan;
 		cuoTab = cuoTab;
-		detailData:{[x:string]:any} = {
-			merchant: "", //商家名称
-            logo: "", //商家头像
-            pic: "", //商品图片
-            title: "", //商品标题
-			goodCode:"",
-            currentNum:0,
-            totalNum:0,
-            lockNum:0,
-            pintuanType:0,//拼团形式
-            isCuoka: false, //是否开启代搓卡
-            specName: "", //拼团规格
-            waitCuoka: 0, //待搓数量
-		};
-		intervalInit:any;
-		onLoad(query:any) {
-			this.detailData.goodCode = query.goodCode;
+		created(){//在实例创建完成后被立即调用
+			
 		}
-		onShow(){
-			this.initEven()
-			// this.intervalInit = setInterval(()=>{
-			// 	this.initEven()
-			// },5000)
+		mounted(){//挂载到实例上去之后调用
 		}
-		onHide(){
-			clearInterval(this.intervalInit)
-		}
-		onUnload() {
-			clearInterval(this.intervalInit)
-		}
-		initEven(){
-			app.http.Get('my/cuoka/1/'+this.detailData.goodCode+'/detail',{},(res:any)=>{
-				for (const key in this.detailData) {
-					if (Object.prototype.hasOwnProperty.call(res.data, key)) {
-						this.detailData[key] = res.data[key];
-					}
-				}
-			})
+		destroyed(){
 		}
 		onClickBack():void{
-			uni.navigateBack({
-				delta:1
-			})
+			this.$emit('detailClose')
 		}
 		onClickGoRub(){
-			if(this.detailData.waitCuoka>0 && this.detailData.isCuoka){
-				uni.navigateTo({
-					url:'rubCard?data='+encodeURIComponent(JSON.stringify(this.detailData))
-				})
-			}
+			// if(this.detailData.waitCuoka>0 && this.detailData.isCuoka){
+				this.$emit('rubCard')
+			// }
 		}
 		onClickCuoChange(item:{[x:string]:any}):void{
 			if(item.type === this.detailData.isCuoka) return;
@@ -132,7 +99,19 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style  lang="scss" scoped>
+	.content{
+		width: 100%;
+		height:750rpx;
+		background:url(@/static/anchor/bg.png) no-repeat center;
+		background-size: 100% 750rpx;
+		position: fixed;
+		left:0;
+		top:0;
+		right:0;
+		display: block;
+		z-index: 9999;
+	}
 	.anchor-navigation{
 		width: 100%;
 		height:97rpx;
@@ -207,17 +186,7 @@
 			}
 		}
 	}
-	.content{
-		width: 100%;
-		height:750rpx;
-		background:url(@/static/anchor/bg.png) no-repeat center;
-		background-size: 100% 750rpx;
-		position: fixed;
-		left:0;
-		top:0;
-		right:0;
-		display: block;
-	}
+	
 	
 	.anchor-center{
 		width: 100%;

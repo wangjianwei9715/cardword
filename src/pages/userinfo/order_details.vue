@@ -305,12 +305,16 @@
 				return
 			};
 			if(this.orderData.isCuoka) return;
-			
-			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/noShowList',{pageIndex:1,pageSize:30},(res:any)=>{
+
+			let listtype = ''
+			// if(this.orderData.good.pintuanType==2){
+			// 	listtype = '/team'
+			// }
+			app.http.Get(`me/orderInfo/buyer/${this.orderCode}/noShowList${listtype}`,{pageIndex:1,pageSize:30},(res:any)=>{
 				if(res.total>0){
 					let type = this.orderData.good.title.indexOf('足球')!=-1?1:0
 					uni.navigateTo({
-						url:'/pages/goods/drawCard?code='+this.orderCode+'&data='+ encodeURIComponent(JSON.stringify(res.list))+'&num='+res.total+'&hasNumber='+res.hasNumber+'&picType='+type+'&sp='+res.sp
+						url:`/pages/goods/drawCard?code=${this.orderCode}&data=${encodeURIComponent(JSON.stringify(res.list))}&num=${res.total}&hasNumber=${res.hasNumber}&picType=${type}&sp=${res.sp}`
 					})
 				}
 			})
@@ -381,6 +385,8 @@
 				this.onClcikResult(1)
 			}
 			if(cmd=='giving'){
+				if(this.orderData.isCuoka) return;
+				
 				uni.navigateTo({
 					url:'/pages/userinfo/giving/giving_list?code='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType+'&orderCode='+this.orderData.code
 				})

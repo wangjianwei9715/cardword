@@ -228,20 +228,6 @@
                     "pid" : "",
                     "parameters" : {}
                 }
-            },
-            "zq-webview" : {
-                "__plugin_info__" : {
-                    "name" : "zq-webview - [试用版，仅用于自定义调试基座]",
-                    "description" : "安卓悬浮窗插件，类似微信音视频通话时可将窗口悬浮在手机屏幕任何位置，可拖拽移动和调整窗口大小，主要应用在音视频通话等业务场景",
-                    "platforms" : "Android",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=6170",
-                    "android_package_name" : "",
-                    "ios_bundle_id" : "",
-                    "isCloud" : true,
-                    "bought" : 0,
-                    "pid" : "6170",
-                    "parameters" : {}
-                }
             }
         }
     },

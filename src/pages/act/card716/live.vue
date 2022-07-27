@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="live-content">
 			<liveslist :liveList="liveList" />
-			<view v-show="empty" class="live-empty">卡展暂未开始，卡展时间7.16-7.17</view>
+			<!-- <view v-show="empty" class="live-empty">卡展暂未开始，卡展时间7.16-7.17</view> -->
 		</view>
 	</view>
 </template>
@@ -16,7 +16,8 @@
 		params:any = {
 			pageIndex:1,
 			pageSize:20,
-			noMoreData:false
+			noMoreData:false,
+			tp:2
 		}
 		liveList:any = [];
 		empty = false;

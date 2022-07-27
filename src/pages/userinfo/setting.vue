@@ -16,6 +16,13 @@
             @change="onClickDefault"
           />
         </view>
+        <view v-else-if="item.id == 7" class="right">
+          <switch
+            class="switch"
+            color="#14151B"
+            :checked="orderRich"
+          />
+        </view>
         <view v-else-if="item.id == 4" class="right" @click="onClickRemoveFile">
           {{ fileSizeString }}
           <view class="icon-right"></view>
@@ -40,18 +47,20 @@ export default class ClassName extends BaseNode {
     { id: 1, name: "修改密码/设置登录密码", url: "/pages/login/change_password" },
     { id: 2, name: "地址管理", url: "/pages/userinfo/setting_addresses" },
     { id: 3, name: "消息通知", url: "" },
+    { id: 7, name: "卡密特效", url: "" },
     { id: 4, name: "清除缓存", url: "" },
     { id: 5, name: "用户协议", url: "/pages/userinfo/user_agreement" },
     { id: 6, name: "关于我们", url: "/pages/userinfo/about_us" },
   ];
   xiaoxiDefault = false;
+  orderRich = app.orderRich
   fileSizeString = "";
   needRemove = true;
   onLoad(query: any) {
     this.formatSize();
   }
   onClickNavigateto(item: any) {
-    if(item.id!=3&&item.id!=4){
+    if(item.id!=3&&item.id!=4&&item.id!=7){
       uni.navigateTo({
         url: item.url,
       });
@@ -79,6 +88,13 @@ export default class ClassName extends BaseNode {
         pushUrl = 'me/pushOff'
       }
       app.http.Post(pushUrl,{},(res:any)=>{})
+    }else if(item.id==7){
+      // 订单卡密效果开关
+        let open = this.orderRich ? false : true;
+        app.http.Post("me/order/noRichShow/switch", { open: open }, (res: any) => {
+          this.orderRich = open;
+          app.orderRich = open;
+        });
     }
     
   }

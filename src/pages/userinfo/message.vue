@@ -61,7 +61,7 @@
 		chatData:{[x:string]:any} = {
 			
 		};
- 		onLoad(query:any) {
+		onLoad(query:any) {
 
 			this.onEventUI('sendMessage',()=>{
 				this.pageIndex = 1;

@@ -70,7 +70,7 @@
 			<view class="orther-setting">
 				<view class="setting" v-if='broadcastActor' @click="onClickNavigateto({url:'/pages/live/myLive'})">
 					<view class="name">
-						<image class="setting-icon" src="../../static/userinfo/liveCamera.png" />
+						<image class="setting-icon" src="../../static/userinfo/v2/liveCamera.png" />
 						我的直播
 					</view>
 					<view class="icon-right"></view>
@@ -175,9 +175,9 @@
 						...this.settingTab,
 						{
 							id:5,
-							name:'主播模式',
+							name:'直播模式',
 							url:'/pages/anchor/index',
-							pic:'../../static/userinfo/v2/icon_b_agreement.png'
+							pic:'../../static/userinfo/v2/icon_b_anchor.png'
 						}
 					]
 				}

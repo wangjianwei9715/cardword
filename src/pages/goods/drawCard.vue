@@ -58,7 +58,7 @@
             ></image>
             <view
               class="movable-box-name"
-              :class="[item.color==''?'movable-box-name-silver':'movable-box-name-' + item.color,getNameLength(item.player)?'lang-name':'']" >{{ item.player }}</view>
+              :class="[item.color==''?'movable-box-name-silver':'movable-box-name-' + item.color,getNameLength(item.player||item.nameNoEnglish)?'lang-name':'']" >{{ item.player||item.nameNoEnglish }}</view>
           </view>
         </movable-view>
       </movable-area>

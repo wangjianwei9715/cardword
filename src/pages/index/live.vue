@@ -41,7 +41,9 @@
 				this.searchText = res.text;
 				this.reqSearch()
 			})
-			this.reqNewData()
+		}
+		onShow(){
+			this.reqSearch()
 		}
 		//   加载更多数据
 		onReachBottom() {

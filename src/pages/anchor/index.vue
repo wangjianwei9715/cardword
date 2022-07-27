@@ -35,6 +35,9 @@
 				</view>
 			</scroll-view>
 		</view>
+
+		<anchorDetail :detailData="detailData" @detailClose="onClickDetailClose" @rubCard="rubCardShow=true"/>
+		<anchorRubCard :rubCardShow="rubCardShow" :detailData="detailData" @rubCardClose="rubCardShow=false" @releaseCuoka="getDetailData()"/>
 	</view>
 </template>
 
@@ -56,26 +59,27 @@
 			pageSize:20,
 			totalPage:2
 		}
+		detailData:any = {};
+		intervalInit:any;
+		rubCardShow = false
 		onLoad(query:any) {
+			// #ifdef APP-PLUS
 			setTimeout(()=>{
 				plus.screen.lockOrientation('landscape-primary')
 			},500)
-		}
-		onShow(){
-			this.homeParams = {
-				pageIndex:1,
-				pageSize:20,
-				totalPage:2
-			}
+			// #endif
+
 			this.initEven()
+			this.intervalInit = setInterval(()=>{
+				this.getDetailData()
+			},5000)
 		}
 		onUnload() {
+			clearInterval(this.intervalInit)
 			plus.screen.lockOrientation('portrait-primary')
 		}
 		initEven():void{
 			let params = this.homeParams;
-			if(params.pageIndex >= params.totalPage) return;
-
 			app.http.Get('my/cuoka/home',params,(res:any)=>{
 				for (const key in this.merchantData) {
 					if (Object.prototype.hasOwnProperty.call(res, key)) {
@@ -84,6 +88,16 @@
 				}
 				params.totalPage = res.totalPage
 			})
+		}
+		getDetailData(cb?:Function){
+			if(this.detailData.goodCode && this.detailData.goodCode!=''){
+				app.http.Get('my/cuoka/1/'+this.detailData.goodCode+'/detail',{},(res:any)=>{
+					if(this.detailData.goodCode == '') return;
+					this.detailData= res.data;
+					cb && cb()
+				})
+			}
+			
 		}
 		listScrolltolower():void{
 			let params = this.homeParams;
@@ -98,9 +112,17 @@
 			})
 		}
 		onClickGoDetail(item:{[x:string]:any}):void{
-			uni.navigateTo({
-				url:'good_detail?goodCode='+item.goodCode
-			})
+			this.detailData.goodCode = item.goodCode;
+			this.getDetailData()
+		}
+		onClickDetailClose(){
+			this.detailData = {};
+			this.homeParams = {
+				pageIndex:1,
+				pageSize:20,
+				totalPage:2
+			}
+			this.initEven();
 		}
 		getProgress(item:{[x:string]:any}):number{
 			return Math.floor(((item.lockNum+item.currentNum)/item.totalNum) * 100)

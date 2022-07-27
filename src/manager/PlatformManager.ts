@@ -451,6 +451,8 @@ export default class PlatformManager {
 			url: '/pages/talk/index?url_params='+JSON.stringify(params)
 		})
 	}
+	// 去重
+	removeDuplicate = <T,_>(arr: T[]): T[] => arr.filter((i) => arr.indexOf(i) === arr.lastIndexOf(i));
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false
 		return aspect;
