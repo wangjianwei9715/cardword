@@ -663,6 +663,21 @@
 				indicator: "number"
 			});
 		}
+		isPullDown(isPull:boolean) {
+			//#ifdef APP-PLUS
+			//获取当前 Webview 窗口对象
+			const pages = getCurrentPages();  
+			const page = pages[pages.length - 1];  
+			const currentWebview = page.$getAppWebview();
+			//根据状态值来切换禁用/开启下拉刷新
+			currentWebview.setStyle({  
+				pullToRefresh: {  
+					support: isPull,  
+					style: plus.os.name === 'Android' ? 'circle' : 'default'  
+				}  
+			});  
+			//#endif
+		}
 		onClickBuy() {
 			if (app.token.accessToken == '') {
 				uni.navigateTo({
@@ -670,9 +685,12 @@
 				})
 				return;
 			}
-
+			const goodData = this.goodsData
+			if(goodData.isSelect || (goodData.pintuan_type == 11 || goodData.pintuan_type == 12)) {
+				this.isPullDown(false)
+			}
 			// 自选球队
-			if (this.goodsData.isSelect) {
+			if (goodData.isSelect) {
 				this.getGoodSelect(() => {
 					this.getGoodSelectBranch();
 					this.getGoodSelectCart()
@@ -681,14 +699,13 @@
 				return;
 			}
 			// 自选随机球队
-			if (this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 12) {
+			if (goodData.pintuan_type == 11 || goodData.pintuan_type == 12) {
 				this.getGoodSelectTeamRandom(() => {
 					this.teamRandomShow = true;
 				})
 				return;
 			}
-
-			if (this.goodsData.totalNum - (this.goodsData.currentNum + this.goodsData.lockNum) <= 0) {
+			if (goodData.totalNum - (goodData.currentNum + goodData.lockNum) <= 0) {
 				uni.showToast({
 					title: '该商品已售罄',
 					icon: 'none'
@@ -696,7 +713,7 @@
 				return;
 			}
 			uni.navigateTo({
-				url: 'confirmorder?data=' + encodeURIComponent(JSON.stringify(this.goodsData)) +
+				url: 'confirmorder?data=' + encodeURIComponent(JSON.stringify(goodData)) +
 					'&payChannel=' + encodeURIComponent(JSON.stringify(this.payChannel))
 			})
 		}
@@ -816,6 +833,7 @@
 		}
 		// 自选球队 遮罩点击
 		onClickTeamCheckCancel() {
+			this.isPullDown(true)
 			this.teamCheckShow = false
 		}
 		// 自选球队 选择球队
@@ -930,6 +948,7 @@
 			this.onClickteamRandomCancel()
 		}
 		onClickteamRandomCancel() {
+			this.isPullDown(true)
 			this.teamRandomShow = false;
 		}
 		// 复制邀请口令

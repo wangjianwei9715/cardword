@@ -13,7 +13,6 @@
             class="switch"
             color="#14151B"
             :checked="xiaoxiDefault"
-            @change="onClickDefault"
           />
         </view>
         <view v-else-if="item.id == 7" class="right">
@@ -57,6 +56,7 @@ export default class ClassName extends BaseNode {
   fileSizeString = "";
   needRemove = true;
   onLoad(query: any) {
+    this.xiaoxiDefault = uni.getStorageSync('xiaoxiDefault').state || false
     this.formatSize();
   }
   onClickNavigateto(item: any) {
@@ -67,7 +67,8 @@ export default class ClassName extends BaseNode {
     }else if(item.id==3){
 
       let pushUrl = ''
-      if(this.xiaoxiDefault){
+      if(!this.xiaoxiDefault){
+        // #ifdef APP-PLUS
         if(plus.os.name == "iOS"){
           let iosPush = permision.judgeIosPermission('push');
           if(!iosPush){
@@ -76,18 +77,22 @@ export default class ClassName extends BaseNode {
                 content: '请先开启消息通知',
                 success: function (res) {
                     if (res.confirm) {
-                      // app.platform.gotoPermissionSetting()
+                      permision.gotoAppPermissionSetting();
                     }
                 }
             });
             return;
           }
         }
+        // #endif
         pushUrl = 'me/pushOn'
       }else{
         pushUrl = 'me/pushOff'
       }
-      app.http.Post(pushUrl,{},(res:any)=>{})
+      app.http.Post(pushUrl,{},(res:any)=>{
+        this.xiaoxiDefault = !this.xiaoxiDefault;
+        uni.setStorageSync('xiaoxiDefault',{state:this.xiaoxiDefault});
+      })
     }else if(item.id==7){
       // 订单卡密效果开关
         let open = this.orderRich ? false : true;
@@ -97,9 +102,6 @@ export default class ClassName extends BaseNode {
         });
     }
     
-  }
-  onClickDefault() {
-    this.xiaoxiDefault = !this.xiaoxiDefault;
   }
   formatSize() {
     // #ifdef APP-PLUS

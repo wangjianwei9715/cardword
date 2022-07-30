@@ -66,7 +66,7 @@
 			// #ifdef APP-PLUS
 			setTimeout(()=>{
 				plus.screen.lockOrientation('landscape-primary')
-			},500)
+			},1200)
 			// #endif
 
 			this.initEven()
