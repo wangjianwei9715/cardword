@@ -185,42 +185,29 @@ export default class PlatformManager {
 		if (launchData!='' && (Math.round(new Date().getTime()/1000)-launchData.time<3600)){
 			this.setLaunchData(launchData,loginToken)
 		} else {
-			// launchUrl：             储存打乱顺序后的launch
-			// configLaunchUrl：       access保存的launch数据
-			let launchUrl: { [x: string]: any } = {};
-			let configLaunchUrl = uni.getStorageSync("configLaunchUrl");
+			// launchUrl             储存打乱顺序后的launch
+			// configLaunchUrl       access保存的launch数据
 			app.service_url = uni.getStorageSync('launchUrl') || ''
-			if (configLaunchUrl) {
-				launchUrl = configLaunchUrl.sort(() => { return Math.random() - 0.5; });
-			} else {
-				launchUrl = app.launch_url.sort(() => { return Math.random() - 0.5; });
-			}
+			const configLaunchUrl = uni.getStorageSync("configLaunchUrl");
+			const sortData = configLaunchUrl?configLaunchUrl:app.launch_url;
+			const launchUrl = sortData.sort(() => { return Math.random() - 0.5; });
+			
 			let params = { name: "卡世界", version: app.version, uuid: app.platform.deviceID, };
 			this.postLaunch(loginToken,launchUrl,params,()=>{ if(cb) cb() })
 		}
 		
 	}
 	postLaunch(loginToken:any,launchUrl:any,params:any,cb:Function){
-		let url = launchUrl[this.urlIndex];
-		if (url.charAt(url.length - 1) == "/") { url = url.slice(0, url.length - 1); }
-		if (app.service_url != '') { url = app.service_url }
+		let url = app.service_url != ''? app.service_url : this.lastCharacter(launchUrl[this.urlIndex]);
 		app.http.Post(url + "/api/app/launch", params, (res: any) => {
 			console.log("post  /api/app/launch=", res);
 			app.service_url = url;
 			// bussinessApiDomain     主接口域名
 			// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
-			let bussinessApiDomain = res.app.bussinessApiDomain;
-			let dataApiDomain = res.app.dataApiDomain;
-			let funcApiDomain= res.app.funcApiDomain || ''
-			if (bussinessApiDomain.charAt(bussinessApiDomain.length - 1) == "/") {
-				bussinessApiDomain = bussinessApiDomain.slice(0,bussinessApiDomain.length - 1);
-			}
-			if (dataApiDomain.charAt(dataApiDomain.length - 1) == "/") {
-				dataApiDomain = dataApiDomain.slice(0, dataApiDomain.length - 1);
-			}
-			if (funcApiDomain.charAt(funcApiDomain.length - 1) == "/") {
-				funcApiDomain = funcApiDomain.slice(0, funcApiDomain.length - 1);
-			}
+			let bussinessApiDomain = this.lastCharacter(res.app.bussinessApiDomain);
+			let dataApiDomain = this.lastCharacter(res.app.dataApiDomain);
+			let funcApiDomain= this.lastCharacter(res.app.funcApiDomain) || ''
+		
 			app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
 			app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
 			app.funcApiDomain = res.app.funcApiDomain?funcApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
@@ -294,6 +281,10 @@ export default class PlatformManager {
 			}
 			uni.$emit("loginSuccess");
 		});
+	}
+	lastCharacter(val:string,lastString:string="/"){
+		let newVal = val.charAt(val.length - 1) == lastString ? val.slice(0, val.length - 1) : val;
+		return newVal
 	}
 	// 获取粘贴板内容
 	getInvitationClipboard(cb?:Function){

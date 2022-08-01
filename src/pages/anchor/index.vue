@@ -31,6 +31,7 @@
 					<view class="goods-info-box">
 						<view class="info-type">{{getGoodsPintuan(item.pintuanType)}}</view>
 						<view class="info-type info-num">{{item.specName}}</view>
+						<view class="info-waitnum">{{item.waitCuoka}}</view>
 					</view>
 				</view>
 			</scroll-view>
@@ -329,6 +330,7 @@
 				margin:0 auto;
 				display: flex;
 				align-items: center;
+				position: relative;
 				.info-type{
 					height:inherit;
 					box-sizing: border-box;
@@ -346,6 +348,21 @@
 					background:#F6C960;
 					color:#333333;
 					margin-left: 12rpx;
+				}
+				.info-waitnum{
+					width: 38rpx;
+					height: 38rpx;
+					background: #EC5E58;
+					border-radius: 50%;
+					text-align: center;
+					line-height: 38rpx;
+					font-size: 27rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #FFFFFF;
+					position: absolute;
+					right:0;
+					bottom:0
 				}
 			}
 		}
