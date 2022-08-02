@@ -1707,6 +1707,7 @@ export default {
       console.log("房价附加流变化");
     },
     publisherQualityUpdate(streamID, quality) {
+      console.log(quality);
       if (quality.level == 3) {
         uni.showToast({
           title: "推流质量较差,请检查网络环境",
@@ -2048,6 +2049,7 @@ export default {
 }
 .topRight{
   flex-direction: row;
+  align-items: center;
 }
   .onlineNum{
     color: #fffefe;
