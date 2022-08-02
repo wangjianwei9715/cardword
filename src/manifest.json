@@ -228,6 +228,20 @@
                     "pid" : "",
                     "parameters" : {}
                 }
+            },
+            "zego-ZegoExpressUniAppSDK" : {
+                "__plugin_info__" : {
+                    "name" : "ZegoExpress音视频SDK",
+                    "description" : "ZegoExpressUniApp插件",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
             }
         }
     },
