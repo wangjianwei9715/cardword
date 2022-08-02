@@ -377,9 +377,57 @@ export function countDown(startDate: number, endDate: number = 0, mmbol: boolean
 		return dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
 	}
 }
+//倒计时
+export function liveCountDown(startDate: number, endDate: number = 0, mmbol: boolean = true) {
+	if (!endDate) endDate = Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
+		1) / 1000)
+	let times: any = new Date(endDate * 1000).getTime() - new Date(startDate * 1000).getTime();
+	let ss: any = Math.floor(times / 1000) //毫秒转换为秒
+	let dd = Math.floor(ss / (3600 * 24)); //秒转化为天
+	ss %= 3600 * 24; //整除了天之后还剩下多少秒
+	let hh = Math.floor(ss / 3600); //秒转化为小时
+	// hh = formatNumberZero(hh);
+	ss %= 3600; //整除了小时后，还剩下多少秒
+	let mm = Math.floor(ss / 60); //秒转化为分钟
+	// mm = formatNumberZero(mm); //如果秒显示小于10，前面加上个零
+	ss %= 60; //整除了分之后，还剩下多少秒
+	// ss = formatNumberZero(ss);
+	if (ss < 0) {
+		return `00:00:00`
+	}
+	return `${mm}:${ss}`
+}
+//倒计时 
+export function liveCountDownV2(startDate: number, endDate: number = 0, mmbol: boolean = true) {
+	if (!endDate) endDate = Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
+		1) / 1000)
+	let times: any = new Date(endDate * 1000).getTime() - new Date(startDate * 1000).getTime();
+	let ss: any = Math.floor(times / 1000) //毫秒转换为秒
+	let dd = Math.floor(ss / (3600 * 24)); //秒转化为天
+	ss %= 3600 * 24; //整除了天之后还剩下多少秒
+	let hh = Math.floor(ss / 3600); //秒转化为小时
+	// hh = formatNumberZero(hh);
+	ss %= 3600; //整除了小时后，还剩下多少秒
+	let mm = Math.floor(ss / 60); //秒转化为分钟
+	// mm = formatNumberZero(mm); //如果秒显示小于10，前面加上个零
+	ss %= 60; //整除了分之后，还剩下多少秒
+	// ss = formatNumberZero(ss);
+	if (ss < 0) {
+		return `00:00:00`
+	}
+	if (mmbol) {
+		return `${hh}:${mm}:${ss}`
+	} else {
+		const day = dd ? `${dd}天` : ''
+		const hour = hh ? `${hh}小时` : ''
+		const minute = mm ? `${mm}分钟` : ''
+		const second = ss ? `${ss}秒` : ''
+		return day + hour + minute + (!day && !hour && !minute ? second : '')
+	}
+}
 // 正则每3位数字添加逗号
 export function toThousands(num = 0) {
-	return num.toString().replace(/\d+/, function(n) {
+	return num.toString().replace(/\d+/, function (n) {
 		return n.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
 	});
 };

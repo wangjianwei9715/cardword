@@ -4421,6 +4421,201 @@ export namespace message {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of a SendGiftUpdated. */
+    interface ISendGiftUpdated {
+
+        /** SendGiftUpdated list */
+        list?: (message.SendGiftUpdated.IGiftUpdated[]|null);
+    }
+
+    /** Represents a SendGiftUpdated. */
+    class SendGiftUpdated implements ISendGiftUpdated {
+
+        /**
+         * Constructs a new SendGiftUpdated.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.ISendGiftUpdated);
+
+        /** SendGiftUpdated list. */
+        public list: message.SendGiftUpdated.IGiftUpdated[];
+
+        /**
+         * Creates a new SendGiftUpdated instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SendGiftUpdated instance
+         */
+        public static create(properties?: message.ISendGiftUpdated): message.SendGiftUpdated;
+
+        /**
+         * Encodes the specified SendGiftUpdated message. Does not implicitly {@link message.SendGiftUpdated.verify|verify} messages.
+         * @param message SendGiftUpdated message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.ISendGiftUpdated, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SendGiftUpdated message, length delimited. Does not implicitly {@link message.SendGiftUpdated.verify|verify} messages.
+         * @param message SendGiftUpdated message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.ISendGiftUpdated, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SendGiftUpdated message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SendGiftUpdated
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.SendGiftUpdated;
+
+        /**
+         * Decodes a SendGiftUpdated message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SendGiftUpdated
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.SendGiftUpdated;
+
+        /**
+         * Verifies a SendGiftUpdated message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SendGiftUpdated message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SendGiftUpdated
+         */
+        public static fromObject(object: { [k: string]: any }): message.SendGiftUpdated;
+
+        /**
+         * Creates a plain object from a SendGiftUpdated message. Also converts values to other types if specified.
+         * @param message SendGiftUpdated
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.SendGiftUpdated, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SendGiftUpdated to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace SendGiftUpdated {
+
+        /** Properties of a GiftUpdated. */
+        interface IGiftUpdated {
+
+            /** GiftUpdated id */
+            id?: (number|Long|null);
+
+            /** GiftUpdated num */
+            num?: (number|null);
+
+            /** GiftUpdated sec */
+            sec?: (number|null);
+        }
+
+        /** Represents a GiftUpdated. */
+        class GiftUpdated implements IGiftUpdated {
+
+            /**
+             * Constructs a new GiftUpdated.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: message.SendGiftUpdated.IGiftUpdated);
+
+            /** GiftUpdated id. */
+            public id: (number|Long);
+
+            /** GiftUpdated num. */
+            public num: number;
+
+            /** GiftUpdated sec. */
+            public sec: number;
+
+            /**
+             * Creates a new GiftUpdated instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns GiftUpdated instance
+             */
+            public static create(properties?: message.SendGiftUpdated.IGiftUpdated): message.SendGiftUpdated.GiftUpdated;
+
+            /**
+             * Encodes the specified GiftUpdated message. Does not implicitly {@link message.SendGiftUpdated.GiftUpdated.verify|verify} messages.
+             * @param message GiftUpdated message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: message.SendGiftUpdated.IGiftUpdated, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified GiftUpdated message, length delimited. Does not implicitly {@link message.SendGiftUpdated.GiftUpdated.verify|verify} messages.
+             * @param message GiftUpdated message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: message.SendGiftUpdated.IGiftUpdated, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a GiftUpdated message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns GiftUpdated
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.SendGiftUpdated.GiftUpdated;
+
+            /**
+             * Decodes a GiftUpdated message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns GiftUpdated
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.SendGiftUpdated.GiftUpdated;
+
+            /**
+             * Verifies a GiftUpdated message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a GiftUpdated message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns GiftUpdated
+             */
+            public static fromObject(object: { [k: string]: any }): message.SendGiftUpdated.GiftUpdated;
+
+            /**
+             * Creates a plain object from a GiftUpdated message. Also converts values to other types if specified.
+             * @param message GiftUpdated
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: message.SendGiftUpdated.GiftUpdated, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this GiftUpdated to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+    }
+
     /** Properties of a BackSendHongbao. */
     interface IBackSendHongbao {
 
@@ -6914,6 +7109,110 @@ export namespace message {
 
         /**
          * Converts this BackGmKickOutRoom to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** RoomState enum. */
+    enum RoomState {
+        BD_STATE_WAIT1 = 0,
+        BD_STATE_WAIT2 = 1,
+        BD_STATE_LIVING = 2,
+        BD_STATE_FINISH = 3
+    }
+
+    /** Properties of a SendRoomData. */
+    interface ISendRoomData {
+
+        /** SendRoomData state */
+        state?: (message.RoomState|null);
+
+        /** SendRoomData online */
+        online?: (number|null);
+    }
+
+    /** Represents a SendRoomData. */
+    class SendRoomData implements ISendRoomData {
+
+        /**
+         * Constructs a new SendRoomData.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: message.ISendRoomData);
+
+        /** SendRoomData state. */
+        public state: message.RoomState;
+
+        /** SendRoomData online. */
+        public online: number;
+
+        /**
+         * Creates a new SendRoomData instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SendRoomData instance
+         */
+        public static create(properties?: message.ISendRoomData): message.SendRoomData;
+
+        /**
+         * Encodes the specified SendRoomData message. Does not implicitly {@link message.SendRoomData.verify|verify} messages.
+         * @param message SendRoomData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: message.ISendRoomData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified SendRoomData message, length delimited. Does not implicitly {@link message.SendRoomData.verify|verify} messages.
+         * @param message SendRoomData message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: message.ISendRoomData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a SendRoomData message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SendRoomData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): message.SendRoomData;
+
+        /**
+         * Decodes a SendRoomData message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SendRoomData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): message.SendRoomData;
+
+        /**
+         * Verifies a SendRoomData message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a SendRoomData message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns SendRoomData
+         */
+        public static fromObject(object: { [k: string]: any }): message.SendRoomData;
+
+        /**
+         * Creates a plain object from a SendRoomData message. Also converts values to other types if specified.
+         * @param message SendRoomData
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: message.SendRoomData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this SendRoomData to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };

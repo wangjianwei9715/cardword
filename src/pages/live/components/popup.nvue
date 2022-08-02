@@ -1,0 +1,97 @@
+<template>
+  <!-- visible -->
+  <view class="popupMask maskShow" v-if="visible" @click="maskClick">
+    <view
+      class="publicBottom"
+      @click.stop="stopClick"
+      :class="{ publicBottomShow: transition }"
+      :style="{
+        height: height + (deviceInfo.screenHeight - deviceInfo.safeArea.bottom)*2 + 'rpx',
+        background:background
+      }"
+    >
+      <slot></slot>
+    </view>
+  </view>
+</template>
+<script>
+const app = getApp().globalData.app;
+export default {
+  props: {
+    height: {
+      type: Number,
+      default: 600,
+    },
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+    background:{
+      type:String,
+      default:'#13121a'
+    }
+  },
+  watch: {
+    visible: function (val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.transition = true;
+        });
+      } else {
+        this.transition = false;
+      }
+    },
+  },
+  mounted() {
+    this.transition = this.visible;
+  },
+  data() {
+    return {
+      transition: false,
+      deviceInfo: getApp().globalData.app.platform.systemInfo, //设备信息
+    };
+  },
+  methods: {
+    maskClick() {
+      this.$emit("update:visible", !this.visible);
+    },
+    stopClick(event) {
+      event.stopPropagation();
+    },
+  },
+};
+</script>
+<style lang="scss" scoped>
+.popupMask {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.maskShow {
+  background-color: rgba(0, 0, 0, 0.4);
+
+  opacity: 1;
+}
+.publicBottom {
+  width: 750rpx;
+  position: fixed;
+  bottom: 0;
+  height: 400rpx;
+  transform: translateY(1000rpx);
+  font-size: 22rpx;
+  background: #13121a;
+  transition-property: transform;
+  transition-duration: 0.3s;
+  transition-delay: 0s;
+  transition-timing-function: ease;
+  align-items: center;
+  z-index: 9;
+}
+.publicBottomShow {
+  opacity: 1;
+  transform: translateY(0rpx);
+}
+</style>

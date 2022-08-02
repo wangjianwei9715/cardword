@@ -10143,6 +10143,460 @@ $root.message = (function() {
         return BackSendGift;
     })();
 
+    message.SendGiftUpdated = (function() {
+
+        /**
+         * Properties of a SendGiftUpdated.
+         * @memberof message
+         * @interface ISendGiftUpdated
+         * @property {Array.<message.SendGiftUpdated.IGiftUpdated>|null} [list] SendGiftUpdated list
+         */
+
+        /**
+         * Constructs a new SendGiftUpdated.
+         * @memberof message
+         * @classdesc Represents a SendGiftUpdated.
+         * @implements ISendGiftUpdated
+         * @constructor
+         * @param {message.ISendGiftUpdated=} [properties] Properties to set
+         */
+        function SendGiftUpdated(properties) {
+            this.list = [];
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * SendGiftUpdated list.
+         * @member {Array.<message.SendGiftUpdated.IGiftUpdated>} list
+         * @memberof message.SendGiftUpdated
+         * @instance
+         */
+        SendGiftUpdated.prototype.list = $util.emptyArray;
+
+        /**
+         * Creates a new SendGiftUpdated instance using the specified properties.
+         * @function create
+         * @memberof message.SendGiftUpdated
+         * @static
+         * @param {message.ISendGiftUpdated=} [properties] Properties to set
+         * @returns {message.SendGiftUpdated} SendGiftUpdated instance
+         */
+        SendGiftUpdated.create = function create(properties) {
+            return new SendGiftUpdated(properties);
+        };
+
+        /**
+         * Encodes the specified SendGiftUpdated message. Does not implicitly {@link message.SendGiftUpdated.verify|verify} messages.
+         * @function encode
+         * @memberof message.SendGiftUpdated
+         * @static
+         * @param {message.ISendGiftUpdated} message SendGiftUpdated message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SendGiftUpdated.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.list != null && message.list.length)
+                for (var i = 0; i < message.list.length; ++i)
+                    $root.message.SendGiftUpdated.GiftUpdated.encode(message.list[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified SendGiftUpdated message, length delimited. Does not implicitly {@link message.SendGiftUpdated.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.SendGiftUpdated
+         * @static
+         * @param {message.ISendGiftUpdated} message SendGiftUpdated message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SendGiftUpdated.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a SendGiftUpdated message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.SendGiftUpdated
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.SendGiftUpdated} SendGiftUpdated
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SendGiftUpdated.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.SendGiftUpdated();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.list && message.list.length))
+                        message.list = [];
+                    message.list.push($root.message.SendGiftUpdated.GiftUpdated.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a SendGiftUpdated message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.SendGiftUpdated
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.SendGiftUpdated} SendGiftUpdated
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SendGiftUpdated.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a SendGiftUpdated message.
+         * @function verify
+         * @memberof message.SendGiftUpdated
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        SendGiftUpdated.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.list != null && message.hasOwnProperty("list")) {
+                if (!Array.isArray(message.list))
+                    return "list: array expected";
+                for (var i = 0; i < message.list.length; ++i) {
+                    var error = $root.message.SendGiftUpdated.GiftUpdated.verify(message.list[i]);
+                    if (error)
+                        return "list." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a SendGiftUpdated message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.SendGiftUpdated
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.SendGiftUpdated} SendGiftUpdated
+         */
+        SendGiftUpdated.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.SendGiftUpdated)
+                return object;
+            var message = new $root.message.SendGiftUpdated();
+            if (object.list) {
+                if (!Array.isArray(object.list))
+                    throw TypeError(".message.SendGiftUpdated.list: array expected");
+                message.list = [];
+                for (var i = 0; i < object.list.length; ++i) {
+                    if (typeof object.list[i] !== "object")
+                        throw TypeError(".message.SendGiftUpdated.list: object expected");
+                    message.list[i] = $root.message.SendGiftUpdated.GiftUpdated.fromObject(object.list[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a SendGiftUpdated message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.SendGiftUpdated
+         * @static
+         * @param {message.SendGiftUpdated} message SendGiftUpdated
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        SendGiftUpdated.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.arrays || options.defaults)
+                object.list = [];
+            if (message.list && message.list.length) {
+                object.list = [];
+                for (var j = 0; j < message.list.length; ++j)
+                    object.list[j] = $root.message.SendGiftUpdated.GiftUpdated.toObject(message.list[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this SendGiftUpdated to JSON.
+         * @function toJSON
+         * @memberof message.SendGiftUpdated
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        SendGiftUpdated.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        SendGiftUpdated.GiftUpdated = (function() {
+
+            /**
+             * Properties of a GiftUpdated.
+             * @memberof message.SendGiftUpdated
+             * @interface IGiftUpdated
+             * @property {number|Long|null} [id] GiftUpdated id
+             * @property {number|null} [num] GiftUpdated num
+             * @property {number|null} [sec] GiftUpdated sec
+             */
+
+            /**
+             * Constructs a new GiftUpdated.
+             * @memberof message.SendGiftUpdated
+             * @classdesc Represents a GiftUpdated.
+             * @implements IGiftUpdated
+             * @constructor
+             * @param {message.SendGiftUpdated.IGiftUpdated=} [properties] Properties to set
+             */
+            function GiftUpdated(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * GiftUpdated id.
+             * @member {number|Long} id
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @instance
+             */
+            GiftUpdated.prototype.id = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+            /**
+             * GiftUpdated num.
+             * @member {number} num
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @instance
+             */
+            GiftUpdated.prototype.num = 0;
+
+            /**
+             * GiftUpdated sec.
+             * @member {number} sec
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @instance
+             */
+            GiftUpdated.prototype.sec = 0;
+
+            /**
+             * Creates a new GiftUpdated instance using the specified properties.
+             * @function create
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @static
+             * @param {message.SendGiftUpdated.IGiftUpdated=} [properties] Properties to set
+             * @returns {message.SendGiftUpdated.GiftUpdated} GiftUpdated instance
+             */
+            GiftUpdated.create = function create(properties) {
+                return new GiftUpdated(properties);
+            };
+
+            /**
+             * Encodes the specified GiftUpdated message. Does not implicitly {@link message.SendGiftUpdated.GiftUpdated.verify|verify} messages.
+             * @function encode
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @static
+             * @param {message.SendGiftUpdated.IGiftUpdated} message GiftUpdated message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            GiftUpdated.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
+                if (message.num != null && Object.hasOwnProperty.call(message, "num"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.num);
+                if (message.sec != null && Object.hasOwnProperty.call(message, "sec"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).int32(message.sec);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified GiftUpdated message, length delimited. Does not implicitly {@link message.SendGiftUpdated.GiftUpdated.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @static
+             * @param {message.SendGiftUpdated.IGiftUpdated} message GiftUpdated message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            GiftUpdated.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a GiftUpdated message from the specified reader or buffer.
+             * @function decode
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {message.SendGiftUpdated.GiftUpdated} GiftUpdated
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GiftUpdated.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.SendGiftUpdated.GiftUpdated();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.id = reader.int64();
+                        break;
+                    case 2:
+                        message.num = reader.uint32();
+                        break;
+                    case 3:
+                        message.sec = reader.int32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a GiftUpdated message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {message.SendGiftUpdated.GiftUpdated} GiftUpdated
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            GiftUpdated.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a GiftUpdated message.
+             * @function verify
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            GiftUpdated.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.id != null && message.hasOwnProperty("id"))
+                    if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
+                        return "id: integer|Long expected";
+                if (message.num != null && message.hasOwnProperty("num"))
+                    if (!$util.isInteger(message.num))
+                        return "num: integer expected";
+                if (message.sec != null && message.hasOwnProperty("sec"))
+                    if (!$util.isInteger(message.sec))
+                        return "sec: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates a GiftUpdated message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {message.SendGiftUpdated.GiftUpdated} GiftUpdated
+             */
+            GiftUpdated.fromObject = function fromObject(object) {
+                if (object instanceof $root.message.SendGiftUpdated.GiftUpdated)
+                    return object;
+                var message = new $root.message.SendGiftUpdated.GiftUpdated();
+                if (object.id != null)
+                    if ($util.Long)
+                        (message.id = $util.Long.fromValue(object.id)).unsigned = false;
+                    else if (typeof object.id === "string")
+                        message.id = parseInt(object.id, 10);
+                    else if (typeof object.id === "number")
+                        message.id = object.id;
+                    else if (typeof object.id === "object")
+                        message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
+                if (object.num != null)
+                    message.num = object.num >>> 0;
+                if (object.sec != null)
+                    message.sec = object.sec | 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a GiftUpdated message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @static
+             * @param {message.SendGiftUpdated.GiftUpdated} message GiftUpdated
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            GiftUpdated.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    if ($util.Long) {
+                        var long = new $util.Long(0, 0, false);
+                        object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    } else
+                        object.id = options.longs === String ? "0" : 0;
+                    object.num = 0;
+                    object.sec = 0;
+                }
+                if (message.id != null && message.hasOwnProperty("id"))
+                    if (typeof message.id === "number")
+                        object.id = options.longs === String ? String(message.id) : message.id;
+                    else
+                        object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
+                if (message.num != null && message.hasOwnProperty("num"))
+                    object.num = message.num;
+                if (message.sec != null && message.hasOwnProperty("sec"))
+                    object.sec = message.sec;
+                return object;
+            };
+
+            /**
+             * Converts this GiftUpdated to JSON.
+             * @function toJSON
+             * @memberof message.SendGiftUpdated.GiftUpdated
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            GiftUpdated.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return GiftUpdated;
+        })();
+
+        return SendGiftUpdated;
+    })();
+
     message.BackSendHongbao = (function() {
 
         /**
@@ -12779,7 +13233,7 @@ $root.message = (function() {
                 if (message.disappear != null && Object.hasOwnProperty.call(message, "disappear"))
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.disappear);
                 if (message.startTime != null && Object.hasOwnProperty.call(message, "startTime"))
-                    writer.uint32(/* id 6, wireType 0 =*/48).int64(message.startTime);
+                    writer.uint32(/* id 3, wireType 0 =*/24).int64(message.startTime);
                 return writer;
             };
 
@@ -12820,7 +13274,7 @@ $root.message = (function() {
                     case 2:
                         message.disappear = reader.bool();
                         break;
-                    case 6:
+                    case 3:
                         message.startTime = reader.int64();
                         break;
                     default:
@@ -15886,6 +16340,257 @@ $root.message = (function() {
         };
 
         return BackGmKickOutRoom;
+    })();
+
+    /**
+     * RoomState enum.
+     * @name message.RoomState
+     * @enum {number}
+     * @property {number} BD_STATE_WAIT1=0 BD_STATE_WAIT1 value
+     * @property {number} BD_STATE_WAIT2=1 BD_STATE_WAIT2 value
+     * @property {number} BD_STATE_LIVING=2 BD_STATE_LIVING value
+     * @property {number} BD_STATE_FINISH=3 BD_STATE_FINISH value
+     */
+    message.RoomState = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "BD_STATE_WAIT1"] = 0;
+        values[valuesById[1] = "BD_STATE_WAIT2"] = 1;
+        values[valuesById[2] = "BD_STATE_LIVING"] = 2;
+        values[valuesById[3] = "BD_STATE_FINISH"] = 3;
+        return values;
+    })();
+
+    message.SendRoomData = (function() {
+
+        /**
+         * Properties of a SendRoomData.
+         * @memberof message
+         * @interface ISendRoomData
+         * @property {message.RoomState|null} [state] SendRoomData state
+         * @property {number|null} [online] SendRoomData online
+         */
+
+        /**
+         * Constructs a new SendRoomData.
+         * @memberof message
+         * @classdesc Represents a SendRoomData.
+         * @implements ISendRoomData
+         * @constructor
+         * @param {message.ISendRoomData=} [properties] Properties to set
+         */
+        function SendRoomData(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * SendRoomData state.
+         * @member {message.RoomState} state
+         * @memberof message.SendRoomData
+         * @instance
+         */
+        SendRoomData.prototype.state = 0;
+
+        /**
+         * SendRoomData online.
+         * @member {number} online
+         * @memberof message.SendRoomData
+         * @instance
+         */
+        SendRoomData.prototype.online = 0;
+
+        /**
+         * Creates a new SendRoomData instance using the specified properties.
+         * @function create
+         * @memberof message.SendRoomData
+         * @static
+         * @param {message.ISendRoomData=} [properties] Properties to set
+         * @returns {message.SendRoomData} SendRoomData instance
+         */
+        SendRoomData.create = function create(properties) {
+            return new SendRoomData(properties);
+        };
+
+        /**
+         * Encodes the specified SendRoomData message. Does not implicitly {@link message.SendRoomData.verify|verify} messages.
+         * @function encode
+         * @memberof message.SendRoomData
+         * @static
+         * @param {message.ISendRoomData} message SendRoomData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SendRoomData.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.state != null && Object.hasOwnProperty.call(message, "state"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.state);
+            if (message.online != null && Object.hasOwnProperty.call(message, "online"))
+                writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.online);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified SendRoomData message, length delimited. Does not implicitly {@link message.SendRoomData.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof message.SendRoomData
+         * @static
+         * @param {message.ISendRoomData} message SendRoomData message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        SendRoomData.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a SendRoomData message from the specified reader or buffer.
+         * @function decode
+         * @memberof message.SendRoomData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {message.SendRoomData} SendRoomData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SendRoomData.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.message.SendRoomData();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.state = reader.int32();
+                    break;
+                case 2:
+                    message.online = reader.uint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a SendRoomData message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof message.SendRoomData
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {message.SendRoomData} SendRoomData
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        SendRoomData.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a SendRoomData message.
+         * @function verify
+         * @memberof message.SendRoomData
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        SendRoomData.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.state != null && message.hasOwnProperty("state"))
+                switch (message.state) {
+                default:
+                    return "state: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    break;
+                }
+            if (message.online != null && message.hasOwnProperty("online"))
+                if (!$util.isInteger(message.online))
+                    return "online: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a SendRoomData message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof message.SendRoomData
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {message.SendRoomData} SendRoomData
+         */
+        SendRoomData.fromObject = function fromObject(object) {
+            if (object instanceof $root.message.SendRoomData)
+                return object;
+            var message = new $root.message.SendRoomData();
+            switch (object.state) {
+            case "BD_STATE_WAIT1":
+            case 0:
+                message.state = 0;
+                break;
+            case "BD_STATE_WAIT2":
+            case 1:
+                message.state = 1;
+                break;
+            case "BD_STATE_LIVING":
+            case 2:
+                message.state = 2;
+                break;
+            case "BD_STATE_FINISH":
+            case 3:
+                message.state = 3;
+                break;
+            }
+            if (object.online != null)
+                message.online = object.online >>> 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a SendRoomData message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof message.SendRoomData
+         * @static
+         * @param {message.SendRoomData} message SendRoomData
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        SendRoomData.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.state = options.enums === String ? "BD_STATE_WAIT1" : 0;
+                object.online = 0;
+            }
+            if (message.state != null && message.hasOwnProperty("state"))
+                object.state = options.enums === String ? $root.message.RoomState[message.state] : message.state;
+            if (message.online != null && message.hasOwnProperty("online"))
+                object.online = message.online;
+            return object;
+        };
+
+        /**
+         * Converts this SendRoomData to JSON.
+         * @function toJSON
+         * @memberof message.SendRoomData
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        SendRoomData.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return SendRoomData;
     })();
 
     return message;

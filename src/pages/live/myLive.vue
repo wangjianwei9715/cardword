@@ -74,11 +74,14 @@
 			this.getList()
 		}
 		toAnchor(item: any, isReenter: boolean = false) {
+			console.log(item);
+			
 			app.platform.goZgLive({
 				roomID: item.id,
 				merchantId: item.merchantId,
 				merchantAlias:item.merchantAlias,
-				isAnchor: true
+				isAnchor: true,
+				type:item.type
 			})
 			// uni.navigateTo({
 			// 	url: `/pages/live/zgLive?roomID=${item.id}&merchantId=${item.merchantId}&isAnchor=true`

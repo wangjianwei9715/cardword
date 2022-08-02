@@ -1,0 +1,234 @@
+<template>
+  <view class="maskPack" v-if="visible">
+    <view class="hbPack">
+      <!-- <image class="packBg" src="/static/live/coupon.png" mode="scaleToFill" /> -->
+      <image class="packBg" src="https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.07.25/seller/info/1658742111680av7jc09e6r.png" mode="scaleToFill" />
+      <view class='getUserMsg'>
+        <image class="getUserMsg-avatar" :src='userAvatar?parsePic(decodeURIComponent(userAvatar)):defaultAvatar' mode="scaleToFill" />
+        <text class='getUserMsg-tips'>恭喜，领券成功！</text>
+      </view>
+      <!--  -->
+      <view class="price" :class='{ios:deviceInfo.platform=="ios"}'>
+        <text class="p">￥</text>
+        <text class="pNum">{{coupon.amount || 0}}</text>
+      </view>
+      <text class="minAm">{{parseTypeText(coupon) || '555 '}}</text>
+      <text class="purpose">{{coupon.tp==1?'店铺券':'商品券'}}</text>
+      <text class="timeSecion">{{coupon.durExp || ' 555'}}</text>
+      <text class="toUse" @click='goUse(coupon)'>去使用</text>
+      <image class="close" @click="$emit('update:visible', false)" src="/static/live/redPack_close.png" mode="scaleToFill" />
+    </view>
+  </view>
+</template>
+<script>
+const app = getApp().globalData.app;
+export default {
+  props: {
+    height: {
+      type: Number,
+      default: 600
+    },
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    coupon: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
+    alias: {
+      type: String,
+      default: ""
+    },
+    userAvatar:{
+      type:String,
+      default:''
+    }
+  },
+  watch: {
+    visible: function(val) {
+      console.log("打开优惠券展示", val, this.coupon);
+    }
+  },
+  beforeCreate() {
+    // #ifdef APP-NVUE
+    const domModule = uni.requireNativePlugin("dom");
+    domModule.addRule("fontFace", {
+      fontFamily: "PingFang SC",
+      src: "https://qnc.qjnice.com/1657095955528PF.ttf"
+    });
+    // #endif
+  },
+  mounted() {},
+  data() {
+    return {
+      deviceInfo: getApp().globalData.app.platform.systemInfo, //设备信息
+      defaultAvatar: getApp().globalData.app.defaultAvatar,
+      parsePic:getApp().globalData.parsePic
+    };
+  },
+  methods: {
+    goUse(item) {
+      if (item.tp == 2 && item.goodCode) {
+        console.log("跳转商品页");
+        this.$emit(
+          "pageJump",
+          "/pages/goods/goods_details?id=" + item.goodCode
+        );
+        return;
+      }
+      console.log("跳转商家页");
+      this.$emit(
+        "pageJump",
+        "/pages/userinfo/merchant_shopsV2?alias=" + this.alias
+      );
+    },
+    parseTypeText(item) {
+      const { minUseAmount, amount } = item;
+      if (minUseAmount >= 0 && minUseAmount < amount) return "无门槛";
+      if (minUseAmount >= 0 && minUseAmount >= amount)
+        return `满${minUseAmount}元可用`;
+    }
+  }
+};
+</script>
+<style lang="scss">
+.maskPack {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 750rpx;
+  background-color: rgba(0, 0, 0, 0.4);
+  align-items: center;
+}
+.getUserMsg {
+  padding: 0 37rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-top:38rpx;
+}
+.getUserMsg-avatar {
+  width: 69rpx;
+  height: 69rpx;
+  background: #ffffff;
+  border-radius: 50%;
+  margin-right: 16rpx;
+}
+.getUserMsg-tips{
+  font-size: 39rpx;
+font-family: PingFang SC;
+font-weight: bold;
+color: #FFFFFF;
+}
+.ios {
+  margin-top: -14rpx;
+  top: 20rpx;
+}
+.price {
+  font-size: 71rpx;
+  font-family: PingFang SC;
+  font-weight: 600;
+  color: #333333;
+  text-align: center;
+  margin-top: 32rpx;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.p {
+  font-size: 82rpx;
+  font-weight: bold;
+}
+
+.pNum {
+  font-size: 130rpx;
+  position: relative;
+  font-weight: bold;
+  top: 14rpx;
+}
+
+.minAm {
+  text-align: center;
+  font-size: 34rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #333333;
+  margin-top: 24rpx;
+  /* margin-top: -18rpx; */
+}
+
+.purpose {
+  width: 231rpx;
+  height: 58rpx;
+  background: #e3bd63;
+  border-radius: 3rpx;
+  font-size: 29rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #fefefe;
+  letter-spacing: 3rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30rpx;
+  margin-top: 10rpx;
+  text-align: center;
+  line-height: 58rpx;
+}
+
+.timeSecion {
+  font-size: 24rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #82817f;
+  text-align: center;
+}
+
+.toUse {
+  width: 303rpx;
+  height: 81rpx;
+  background: #ff404d;
+  border-radius: 5rpx;
+  font-size: 34rpx;
+  font-family: PingFang SC;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 2rpx;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  margin-top: 74rpx;
+  text-align: center;
+  line-height: 81rpx;
+}
+
+.packBg {
+  width: 472rpx;
+  height: 708rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.hbPack {
+  width: 472rpx;
+  height: 798rpx;
+  margin-top: 285rpx;
+  align-items: center;
+}
+
+.close {
+  width: 53rpx;
+  height: 53rpx;
+  // margin-top: 110rpx;
+  position: absolute;
+  bottom:0;
+}
+</style>

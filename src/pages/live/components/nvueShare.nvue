@@ -1,0 +1,161 @@
+<template>
+    <popup :visible.sync='visible' background='#fff' :height='340'>
+        <view class="operation-index">
+            <view class="operation-btn" @click="operationStart(item.scene)" v-for="item in operationData" :key="item.id">
+                <image class="operation-img" :src="item.img" mode=""></image>
+                <text class="operation-text">{{item.text}}</text>
+            </view>
+        </view>
+        <text class="operation-cancel" @click="onClickOperaCancel">取消</text>
+    </popup>
+</template>
+
+<script>
+import popup from "./popup.nvue";
+export default {
+  components: {
+    popup
+  },
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    shareData:{
+        type:Object,
+        default:()=>{
+            return {}
+        }
+    }
+  },
+  data() {
+    return {
+      operationData: [
+        {
+          img: "/static/share/weixin@2x.png",
+          text: "微信好友",
+          scene: "WXSceneSession"
+        },
+        {
+          img: "/static/share/pyq@2x.png",
+          text: "朋友圈",
+          scene: "WXSenceTimeline"
+        },
+        { img: "/static/share/lianjie@2x.png", text: "分享链接", scene: "" }
+      ]
+    };
+  },
+  mounted() {
+  },
+  watch: {
+    visible: function(val) {
+      if (!val) {
+        this.$emit("update:visible", val);
+      }
+    }
+  },
+  methods: {
+    onClickOperaCancel() {
+      this.$emit("update:visible", false);
+    },
+    setClipboardData() {
+      uni.setClipboardData({
+        data: this.shareData.shareUrl,
+        showToast: false,
+        success: () => {
+          uni.showToast({
+            title: "复制成功",
+            icon: "none"
+          });
+        }
+      });
+    },
+    weChatShare(scene) {
+      uni.showLoading({
+        title: "加载中"
+      });
+      setTimeout(function() {
+        uni.hideLoading();
+      }, 2000);
+      console.log(this.shareData);
+      uni.share({
+        provider: "weixin",
+        scene: scene,
+        type: 0,
+        href: this.shareData.shareUrl,
+        title: this.shareData.title,
+        summary: this.shareData.summary,
+        imageUrl: this.shareData.thumb,
+        success: res => {
+          console.log("success:" + JSON.stringify(res));
+        },
+        fail: function(err) {
+          console.log("fail:" + JSON.stringify(err));
+        }
+      });
+    },
+    operationStart(scene) {
+      if (scene == "") {
+        this.setClipboardData();
+      } else {
+        this.weChatShare(scene);
+      }
+      this.onClickOperaCancel();
+    },
+    onClickOperaCancel() {
+      this.$emit("update:visible", false);
+    }
+  }
+};
+</script>
+<style scoped>
+.operation-index {
+  width: 750rpx;
+  flex-direction: row;
+  height: 232rpx;
+  padding: 0 90rpx;
+  align-items: center;
+  justify-content: space-between;
+}
+.operation-btn {
+  width: 120rpx;
+  height: 170rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.operation-img {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 14rpx;
+}
+.operation-text {
+  width: 750rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: #3b3b3b;
+}
+.operation-cancel {
+  width: 750rpx;
+  height: 106rpx;
+  line-height: 106rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #a9abb4;
+  border-top: 1px solid #f4f3f2;
+}
+.operation-cancel {
+  width: 750rpx;
+  height: 106rpx;
+  line-height: 106rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #a9abb4;
+  border-top: 1px solid #f4f3f2;
+}
+</style>

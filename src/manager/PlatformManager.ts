@@ -100,6 +100,14 @@ export default class PlatformManager {
 			jump()
 			return
 		} 
+		// console.log(params);
+		if(!params.playCode){
+			uni.showToast({
+				title:'回放生成中',
+				icon:'none'
+			})
+			return
+		}
 		app.http.Post('good/videoPlay/'+item.goodCode,params,(data:any)=>{
 			// 直播 回放
 			if(data.media_url!=''){
@@ -114,8 +122,11 @@ export default class PlatformManager {
 			
 		})
 		function jump():void{
+			console.log(`/pages/live/proLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}&type=${item.type}`);
+			
 			uni.navigateTo({
-				url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}`
+				// url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}`
+				url:`/pages/live/proLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}&type=${item.type}`
 			})
 		}
 	}
