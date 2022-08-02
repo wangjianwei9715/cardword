@@ -2048,6 +2048,7 @@ export default {
 }
 .topRight{
   flex-direction: row;
+  align-items: center;
 }
   .onlineNum{
     color: #fffefe;

@@ -304,7 +304,6 @@ export default class HttpRequest {
 		var strParams = p.join('&');
 		
 		this.axiosInstance.get(reqUrl+'?'+strParams).then((response) => {
-			// console.log('Get接收：reqUrl=',reqUrl+'&response=',response)
 			if (response.data&&response.data.code==0) {
 				if (cb) cb(response.data);
 			}else if(response.data.code==1101||response.data.code==1102){

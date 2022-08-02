@@ -58,6 +58,16 @@
 			}
 		},
 		{
+			"path": "pages/live/proLive",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
 			"path": "pages/live/zgPlayBack",
 			"style": { 
 				"navigationStyle": "custom",

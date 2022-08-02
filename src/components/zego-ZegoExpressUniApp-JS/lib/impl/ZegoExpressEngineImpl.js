@@ -1,5 +1,7 @@
+// #ifdef APP-PLUS
 import { pluginVersion } from "../index";
 import { ZegoPublishChannel } from "../ZegoExpressDefines";
+
 const ZegoEvent = uni.requireNativePlugin('globalEvent');
 const ZegoExpressNativeEngineMoudle = uni.requireNativePlugin('zego-ZegoExpressUniAppSDK_ZegoExpressUniAppEngine');
 const Prefix = ZegoExpressNativeEngineMoudle.prefix();
@@ -523,3 +525,4 @@ export class ZegoMediaPlayerImpl {
         return this._index;
     }
 }
+//#endif
