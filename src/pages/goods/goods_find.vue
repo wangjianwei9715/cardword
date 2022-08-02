@@ -42,7 +42,7 @@
 		}
 		onClickBack(){
 			uni.navigateBack({
-			    delta: 1
+				delta: 1
 			});
 		}
 		onClickDelete(){
@@ -52,26 +52,19 @@
 		onClickSearch(text:string){
 			let hideGoods = /[A-Z]{2}\d{7}/g
 			if(hideGoods.test(text)){
-				let code:any = text.match(hideGoods);
-				uni.navigateTo({
-					url: '/pages/goods/goods_details?id='+code
-				})
+				let code = text.match(hideGoods);
+				uni.navigateTo({ url: `/pages/goods/goods_details?id=${code}` })
 				return;
 			}
 			if(text!=''){
 				// 保存本地搜索记录5条
-				let searchText = text
-				
 				let searchData = this.historyList
-				if(searchData.indexOf(searchText) == -1){
-					if(!searchData){
-						searchData = []
-					}
-					searchData.unshift(searchText)
+				if(searchData.indexOf(text) == -1){
+					if(!searchData) searchData = []
+					searchData.unshift(text)
 					uni.setStorageSync("searchData",searchData)
 				}
 			}
-			
 			let date:any = new Date()
 			let params={
 				highlight:1,
@@ -83,7 +76,7 @@
 			// #ifndef MP
 			app.http.Get('dataApi/search/good',params,(res:any)=>{
 				uni.redirectTo({
-					url: '/pages/goods/goods_find_list?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
+					url: `/pages/goods/goods_find_list?data=${encodeURIComponent(JSON.stringify(res))}&q=${text}`
 				})
 			})
 			// #endif
@@ -178,7 +171,7 @@
 	.icon-delete{
 		width: 29rpx;
 		height:29rpx;
-		/* background:url(../../static/goods/details/icon_delete.png) no-repeat center; */
+		/* background:url(../../static/goods/icon_delete.png) no-repeat center; */
 		background-size: 100% 100%;
 	}
 	.search-list{

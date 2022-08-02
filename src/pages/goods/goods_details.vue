@@ -391,17 +391,12 @@
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
 				ts:ts,
-				s:Md5.hashStr('kww_good_sign_'+id+'_'+ts+'_2022')
+				s:Md5.hashStr(`kww_good_sign_${id}_${ts}_2022`)
 			}
-			app.http.Get('dataApi/good/' + id + '/detail', params, (data: any) => {
+			app.http.Get(`dataApi/good/${id}/detail`, params, (data: any) => {
 				if (data.good == null || data.good == undefined) {
-					uni.showToast({
-						title: '无此商品',
-						icon: 'none'
-					})
-					uni.switchTab({
-						url: '/pages/index/index'
-					})
+					uni.showToast({ title: '无此商品', icon: 'none' })
+					uni.switchTab({ url: '/pages/index/index' })
 					return;
 				}
 				// 是否收藏
@@ -412,17 +407,10 @@
 				this.payChannel = data.payChannel || [];
 				this.joined = data.joined
 				if (data.joined) {
-					this.tipBtn = [{
-						id: 1,
-						name: '客服',
-						url: '../../static/goods/v2/icon_kefu.png',
-						class: 'kf'
-					}, {
-						id: 2,
-						name: '我的卡密',
-						url: '../../static/goods/v2/icon_order.png',
-						class: 'order'
-					}]
+					this.tipBtn = [
+						{ id: 1, name: '客服', url: '../../static/goods/v2/icon_kefu.png', class: 'kf' }, 
+						{ id: 2, name: '我的卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
+					]
 				}
 				// 状态
 				this.goodsState = data.good.state;
@@ -439,9 +427,9 @@
 				this.getGoodsSpe();
 				let desc = decodeURIComponent(data.good.desc);
 				let newData = desc.indexOf('\n') > -1 ? desc.split('\n') : desc.split('\r');
-				this.goodsDesc = ['拼团 I D ：' + id, '开售时间：' + dateFormat(data.good.startAt), ...newData];
+				this.goodsDesc = [`拼团 I D ：${id}`, '开售时间：' + dateFormat(data.good.startAt), ...newData];
 				if (this.goodsState == 1) {
-					app.http.Get('dataApi/good/' + id + '/buyRecord', {}, (res: any) => {
+					app.http.Get(`dataApi/good/${id}/buyRecord`, {}, (res: any) => {
 						if (res.list) this.buyRecordList = res.list
 					})
 				}
@@ -450,7 +438,7 @@
 			})
 		}
 		getProgress() {
-			app.http.Get('dataApi/good/' + this.goodsId + '/progress', {}, (res: any) => {
+			app.http.Get(`dataApi/good/${this.goodsId}/progress`, {}, (res: any) => {
 				this.goodsData.currentNum = res.data.currentNum;
 				this.goodsData.totalNum = res.data.totalNum;
 				this.goodsData.lockNum = res.data.lockNum;
@@ -527,23 +515,9 @@
 			let data = this.goodsData;
 			if (this.goodsData.isSelect) {
 				this.goodsSpe = {
-					spec: {
-						id: 3,
-						name: '',
-						desc: '拼团规格'
-					},
-					pintuan_type: {
-						id: 1,
-						name: '自选球队',
-						desc: '拼团形式',
-						icon: '../../static/goods/v2/spe_zx.png'
-					},
-					spec_str: {
-						id: 4,
-						name: '查看',
-						desc: '卡密列表',
-						icon: '../../static/goods/v2/spe_ck.png'
-					}
+					spec: { id: 3, name: '', desc: '拼团规格' },
+					pintuan_type: { id: 1, name: '自选球队', desc: '拼团形式', icon: '../../static/goods/v2/spe_zx.png' },
+					spec_str: { id: 4, name: '查看', desc: '卡密列表', icon: '../../static/goods/v2/spe_ck.png' }
 				};
 			} else {
 				this.goodsSpe.pintuan_type.name = getGoodsPintuanDetail(data.pintuan_type);
@@ -566,15 +540,13 @@
 		onClickTipBtn(item: any) {
 			if (item.id == 1) {
 				if (app.token.accessToken == '') {
-					uni.navigateTo({
-						url: '/pages/login/login'
-					})
+					uni.navigateTo({ url: '/pages/login/login' })
 					return;
 				}
 				if (this.goodsData.kefu > 0) {
 					uni.navigateTo({
-						url: '/pages/userinfo/talk?targetUserId=' + this.goodsData.kefu + '&goodCode=' + this
-							.goodsId
+						url: `/pages/userinfo/talk?targetUserId=${this.goodsData.kefu}&goodCode=${this
+							.goodsId}`
 					})
 					// 第三方客服
 					
@@ -593,48 +565,37 @@
 			}
 
 			if (item.id == 2) {
-				uni.navigateTo({
-					url: '/pages/userinfo/order_myCard?code=&goodCode=' + this.goodsId
-				})
+				uni.navigateTo({ url: '/pages/userinfo/order_myCard?code=&goodCode=' + this.goodsId })
 
 			}
 		}
 		onClickBack() {
-			uni.navigateBack({
-				delta: 1
-			});
+			uni.navigateBack({ delta: 1 });
 		}
 		onClickShops() {
 			// #ifndef MP
 			if (app.token.accessToken == '') {
-				uni.navigateTo({
-					url: '/pages/login/login'
-				})
+				uni.navigateTo({ url: '/pages/login/login' })
 				return;
 			}
 			// #endif
-
+			const publisher = this.goodsData.publisher
 			uni.navigateTo({
-				url: '/pages/userinfo/merchant_shopsV2?id=' + this.goodsData.publisher.id+'&alias='+this.goodsData.publisher.alias
+				url: `/pages/userinfo/merchant_shopsV2?id=${publisher.id}&alias=${publisher.alias}`
 			})
 		}
 		onClickAllCard(data ? : any) {
-			let url = '/pages/goods/all_good_card?code=' + this.goodsData.goodCode + '&type=' + this.goodsData
-				.pintuan_type;
-			if (data) {
-				url += '&teamId=' + data.id
-			}
-			uni.navigateTo({
-				url: url
-			})
+			const gooData = this.goodsData
+			let url = `/pages/goods/all_good_card?code=${gooData.goodCode}&type=${gooData.pintuan_type}`;
+
+			uni.navigateTo({ url: data ? `${url}&teamId=${data.id}` : url })
 		}
 		// 分享
 		onClickShare() {
 			if (!this.operationShow) {
 				if (this.shareData.shareUrl == '') {
-					console.log(this.goodsData.pic.thumb)
 					this.shareData = {
-						shareUrl: "https://www.ka-world.com/share/h5/#/pages/goods/goods_details?id=" + this.goodsId,
+						shareUrl: `https://www.ka-world.com/share/h5/#/pages/goods/goods_details?id=${this.goodsId}`,
 						title: this.goodsData.title,
 						summary: this.goodsData.title,
 						thumb: this.goodsData.pic.thumb
@@ -714,15 +675,14 @@
 				return;
 			}
 			uni.navigateTo({
-				url: 'confirmorder?data=' + encodeURIComponent(JSON.stringify(goodData)) +
-					'&payChannel=' + encodeURIComponent(JSON.stringify(this.payChannel))
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(goodData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}`
 			})
 		}
 
 		onClickResult(chooseID: number) {
 			let random = this.goodsData.pintuan_type == 10 ? true : false
 			uni.navigateTo({
-				url: 'goods_result_list?chooseIds=' + chooseID + '&code=' + this.goodsId + '&random=' + random
+				url: `goods_result_list?chooseIds=${chooseID}&code=${this.goodsId}&random=${random}`
 			})
 		}
 		onClickLive() {
@@ -780,7 +740,7 @@
 		}
 		// 自选球队 我要选队
 		getGoodSelect(cb ? : Function) {
-			app.http.Get('dataApi/good/' + this.goodsId + '/select', {}, (res: any) => {
+			app.http.Get(`dataApi/good/${this.goodsId}/select`, {}, (res: any) => {
 				this.teamData = res.team;
 
 				if (this.goodsData.state == 0) {
@@ -807,7 +767,7 @@
 		getGoodSelectBranch() {
 			// 随机选队
 			if (this.teamCheckIndex == 999) {
-				app.http.Get('dataApi/good/' + this.goodsId + '/select/randomNo', {}, (res: any) => {
+				app.http.Get(`dataApi/good/${this.goodsId}/select/randomNo`, {}, (res: any) => {
 					this.randomNum = 0;
 					for (let i in res.list) {
 						if (!res.list[i].isExtend) {
@@ -821,14 +781,14 @@
 			}
 			let id = this.teamData[this.teamCheckIndex].id;
 			this.branchCheckIndex = 0
-			app.http.Get('dataApi/good/' + this.goodsId + '/select/branch', {
+			app.http.Get(`dataApi/good/${this.goodsId}/select/branch`, {
 				teamId: id
 			}, (res: any) => {
 				this.branchData = res.list;
 			})
 		}
 		getGoodSelectCart() {
-			app.http.Get('dataApi/good/' + this.goodsId + '/select/cart', {}, (res: any) => {
+			app.http.Get(`dataApi/good/${this.goodsId}/select/cart`, {}, (res: any) => {
 				this.cartData = res.data;
 			})
 		}
@@ -851,7 +811,7 @@
 		}
 		onClickDeleteCart(index: any) {
 			if (index != 0 && index == '[]') {
-				app.http.Post('good/select/cart/' + this.goodsId + '/delete', {
+				app.http.Post(`good/select/cart/${this.goodsId}/delete`, {
 					id: []
 				}, (res: any) => {
 					this.getGoodSelectCart()
@@ -859,7 +819,7 @@
 				return;
 			}
 			let id = this.cartData.list[index].id
-			app.http.Post('good/select/cart/' + this.goodsId + '/delete', {
+			app.http.Post(`good/select/cart/${this.goodsId}/delete`, {
 				id: [id]
 			}, (res: any) => {
 				this.getGoodSelectCart()
@@ -881,7 +841,7 @@
 				})
 				return;
 			}
-			app.http.Post('good/select/cart/' + this.goodsId + '/add', {
+			app.http.Post(`good/select/cart/${this.goodsId}/add`, {
 				id: [this.branchData[this.branchCheckIndex].id]
 			}, (res: any) => {
 				this.getGoodSelectCart()
@@ -890,20 +850,18 @@
 		onClickSettlement() {
 			if (this.cartData.available == 0) return;
 			uni.navigateTo({
-				url: 'confirmorder?data=' + encodeURIComponent(JSON.stringify(this.goodsData)) + '&cart=' +
-					encodeURIComponent(JSON.stringify(this.cartData)) + '&payChannel=' + encodeURIComponent(
-						JSON.stringify(this.payChannel))
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&cart=${encodeURIComponent(JSON.stringify(this.cartData))}&payChannel=${encodeURIComponent(
+						JSON.stringify(this.payChannel))}`
 			})
 			this.onClickTeamCheckCancel()
 		}
 		// 包队
 		onClickBaodui() {
 			let price = this.getBranchPrice(this.branchData)
+			const teamCheckData = this.teamData[this.teamCheckIndex]
 			uni.navigateTo({
-				url: 'confirmorder?data=' + encodeURIComponent(JSON.stringify(this.goodsData)) + '&baodui=' +
-					this.teamData[this.teamCheckIndex].id + '&price=' + price + '&baoduiName=' + this.teamData[
-						this.teamCheckIndex].name + '&payChannel=' + encodeURIComponent(JSON.stringify(this
-						.payChannel))
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&baodui=${teamCheckData.id}&price=${price}&baoduiName=${teamCheckData.name}&payChannel=${encodeURIComponent(JSON.stringify(this
+						.payChannel))}`
 			})
 			this.onClickTeamCheckCancel()
 		}
@@ -917,14 +875,12 @@
 		// 购买剩余随机
 		onClickBuyRandomGood() {
 			uni.navigateTo({
-				url: 'confirmorder?data=' + encodeURIComponent(JSON.stringify(this.goodsData)) +
-					'&payChannel=' + encodeURIComponent(JSON.stringify(this.payChannel)) + '&payRandomPrice=' +
-					this.randomMode.good.price
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}&payRandomPrice=${this.randomMode.good.price}`
 			})
 		}
 		// 自选球队随机 我要选队 我要选卡种
 		getGoodSelectTeamRandom(cb ? : Function) {
-			app.http.Get('dataApi/good/' + this.goodsId + '/optionPanel', {}, (res: any) => {
+			app.http.Get(`dataApi/good/${this.goodsId}/optionPanel`, {}, (res: any) => {
 				this.teamRandomData = res.team;
 				this.teamrandomGood = (res.good && res.good.randomMode) || [];
 				this.teamrandomRemainder = (res.good && res.good.remainder) || []
@@ -935,16 +891,13 @@
 		// 选队随机支付
 		onClickTeamRandomBuy(data: any) {
 			uni.navigateTo({
-				url: 'confirmorder?data=' + encodeURIComponent(JSON.stringify(this.goodsData)) +
-					'&payChannel=' + encodeURIComponent(JSON.stringify(this.payChannel)) + '&payRandomTeam=' +
-					encodeURIComponent(JSON.stringify(data))
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}&payRandomTeam=${encodeURIComponent(JSON.stringify(data))}`
 			})
 			this.onClickteamRandomCancel()
 		}
 		onClickRandomBuy(id: number) {
 			uni.navigateTo({
-				url: 'confirmorder?data=' + encodeURIComponent(JSON.stringify(this.goodsData)) +
-					'&payChannel=' + encodeURIComponent(JSON.stringify(this.payChannel)) + '&selectRanId=' + id
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}&selectRanId=${id}`
 			})
 			this.onClickteamRandomCancel()
 		}

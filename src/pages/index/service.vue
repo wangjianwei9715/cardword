@@ -13,7 +13,6 @@
 				</view>
 			</view>
 		</view>
-		<!-- <button type="primary" @click="testSyncFunc">testSyncFunc</button> -->
 		<!-- <view class="index" @click="onClickGoDecompose">
 			<view class="header">
 				<view class="header-left">卡片分解(测试版)</view>
@@ -80,14 +79,6 @@
 			// app.http.Get('function/decompose/index',{},(res:any)=>{
 			// 	this.decomposeNum = res.data.goodNum
 			// })
-		}
-		testSyncFunc(){
-			var ret = this.testModule.testSyncFunc()
-			uni.showToast({
-				title:'调用同步方法 ' + ret,
-				icon: "none"
-			})
-
 		}
 		onClickGoCalendar(){
 			uni.navigateTo({
