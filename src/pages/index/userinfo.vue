@@ -136,6 +136,7 @@
 		}
 		onShow(){
 			this.initPageData();
+			this.broadcastActor=app.broadcastActor
 		}
 		onHide(){
 		}

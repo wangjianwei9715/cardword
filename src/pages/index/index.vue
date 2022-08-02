@@ -185,6 +185,7 @@
 					this.oneLoad = false;
 				}
 			})
+			plus.webview.prefetchURL(app.liveWebView)//预载直播控件webview
 
 		}
 		onShow() {

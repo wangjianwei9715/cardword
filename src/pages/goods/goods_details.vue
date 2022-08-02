@@ -352,9 +352,11 @@
 		showDrawer = false;
 		freeNoNum = 0;
 		joined = false;
+		source="";
 		onLoad(query: any) {
 			// #ifndef MP
 			this.goodsId = query.id;
+			this.source=query.source
 			this.getGoodData(this.goodsId);
 			// #endif
 		}
@@ -686,7 +688,12 @@
 			})
 		}
 		onClickLive() {
-
+			if(this.source=='livePage') {
+				uni.navigateBack({
+					delta:1
+				})
+				return
+			}
 			if (this.goodsData.broadcast.third&&this.goodsData.broadcast.third == 1001) {
 				const {
 					publisher
