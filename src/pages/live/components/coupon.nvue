@@ -172,7 +172,7 @@ color: #FFFFFF;
   font-family: PingFang SC;
   font-weight: bold;
   color: #fefefe;
-  letter-spacing: 3rpx;
+  // letter-spacing: 3rpx;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -199,7 +199,7 @@ color: #FFFFFF;
   font-family: PingFang SC;
   font-weight: bold;
   color: #fff;
-  letter-spacing: 2rpx;
+  // letter-spacing: 2rpx;
   display: flex;
 
   justify-content: center;

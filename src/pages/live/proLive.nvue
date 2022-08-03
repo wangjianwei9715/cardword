@@ -2116,7 +2116,7 @@ export default {
   font-weight: bold;
   color: #ffffff;
   margin-bottom: 30rpx;
-  letter-spacing: 3rpx;
+  /* letter-spacing: 3rpx; */
 }
 
 .playStart {
@@ -2319,7 +2319,7 @@ export default {
   flex-direction: row;
   padding: 12rpx 10rpx;
   justify-content: flex-start;
-  max-width: 580rpx;
+  /* max-width: 580rpx; */
 }
 
 .chartImg {

@@ -434,19 +434,25 @@ export default class PlatformManager {
 		}
 	}
 	validateVersion(a:string, b:string) {
-		if (a === b || !a || !b) {
-			return false
+		console.log('validateVersion=======',a,b)
+		let cpResult:any;
+		let i = 0;
+		const arr1 = a.replace(/[^0-9.]/, '').split('.');
+		const arr2 = b.replace(/[^0-9.]/, '').split('.');
+		while (true) {
+			const s1:any = arr1[i];
+			const s2:any = arr2[i++];
+			if (s1 === undefined || s2 === undefined) {
+			cpResult = arr1.length - arr2.length;
+			break;
+			}
+			if (s1 === s2) continue;
+			cpResult = s1 - s2;
+			break;
 		}
-		const aArr = a.split('.')
-		const bArr = b.split('.');
-		const res = aArr.map((aStr, index) => {
-			return Number(aStr)>Number(bArr[index])
-		})
-		let type = false;
-		for(let i in res){
-			if(res[i]) type=true;
-		}
-		return type
+		// eslint-disable-next-line
+		console.log('cpResult===',cpResult)
+		return cpResult > 0 ? true : false;
 	}
 	heliService(params:object){
 		uni.navigateTo({

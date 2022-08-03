@@ -688,6 +688,14 @@
 					}
 				},
 				{
+					"path": "user_cancellation",
+					"style": {
+						"navigationBarTitleText": "账号注销",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
 					"path": "setting_avatar",
 					"style": {
 						"navigationBarTitleText": "更换头像",

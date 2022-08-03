@@ -2,8 +2,8 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.2.8",
-    "versionCode" : 200,
+    "versionName" : "3.4.0",
+    "versionCode" : 300,
     "transformPx" : false,
     "networkTimeout" : {
         "request" : 5000,
@@ -35,8 +35,7 @@
             "Geolocation" : {},
             "Share" : {},
             "Push" : {},
-            "VideoPlayer" : {},
-            "UIWebview" : {}
+            "VideoPlayer" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -231,15 +230,15 @@
             },
             "zego-ZegoExpressUniAppSDK" : {
                 "__plugin_info__" : {
-                    "name" : "ZegoExpress音视频SDK",
-                    "description" : "ZegoExpressUniApp插件",
+                    "name" : "ZegoExpressEngine音视频SDK",
+                    "description" : "ZegoExpress音视频SDK(Express)是一款实时的音视频互动服务产品",
                     "platforms" : "Android,iOS",
-                    "url" : "",
-                    "android_package_name" : "",
-                    "ios_bundle_id" : "",
-                    "isCloud" : false,
-                    "bought" : -1,
-                    "pid" : "",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=3617",
+                    "android_package_name" : "com.kawowang.card",
+                    "ios_bundle_id" : "com.kawowang.card",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "3617",
                     "parameters" : {}
                 }
             }
