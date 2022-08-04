@@ -18,6 +18,47 @@
 			<view class="search-list">
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
 			</view>
+
+			<swiper
+				:style="{ width: '100%', height: '1950rpx' }"
+				:current = "curIndex"
+				:indicator-dots="swiperConfig.indicatorDots"
+				:indicator-color="swiperConfig.indicatorColor"
+				:indicator-active-color="swiperConfig.indicatorActiveColor"
+				:autoplay="swiperConfig.autoplay"
+				:interval="swiperConfig.interval"
+				:duration="swiperConfig.duration"
+				:circular="swiperConfig.circular"
+				:previous-margin="swiperConfig.previousMargin"
+				:next-margin="swiperConfig.nextMargin"
+				@change="changeSwiperIndex"
+				@animationfinish="animationfinish"
+				>
+				<swiper-item v-for="(item, i) in 2" :key="i">
+					<view :class="{'swiper-left':item==1,'swiper-right':item==2}"  class="slide-image-box" :style="{ transitionDuration: '.3s', transitionTimingFunction: 'ease', }">
+						<view class="swiper-header">
+							<view class="swiper-title"></view>
+						</view>
+						<view class="swiper-list" v-if="item==1">
+							<view class="good-item" v-for="(item,index) in hotList.goodList" :key="index" @click="goGoodDetail(item.goodCode)">
+								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
+								<muqian-lazyLoad class="good-pic" :src="decodeURIComponent(item.pic)"/>
+								<view class="good-desc">{{item.title}}</view>
+								<view class="good-new" v-if="item.isNew">新</view>
+							</view>
+						</view>
+						<view class="swiper-list" v-if="item==2">
+							<view class="good-item" v-for="(item,index) in hotList.merchantList" :key="index" @click="onClickShops(item.alias)">
+								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
+								<muqian-lazyLoad class="merchant-pic" :src="decodeURIComponent(item.logo)" borderRadius="50%"/>
+								<view class="merchant-desc">{{item.name}}</view>
+								<view class="merchant-up" v-if="item.rankAlter>0"></view>
+							</view>
+						</view>
+					</view>
+				</swiper-item>
+			</swiper>
+
 		</view>
 	</view>
 </template>
@@ -31,6 +72,25 @@
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
+
+		scaleX = (634 / 550).toFixed(4);
+		scaleY = (378 / 328).toFixed(4);
+		swiperConfig = {
+            indicatorDots: false,
+            indicatorColor: '#C9C9C9',
+            indicatorActiveColor: '#666666',
+            autoplay: false,
+            interval: 3000,
+            duration: 300,
+            circular: false,
+            previousMargin: '30rpx',
+            nextMargin: '140rpx'
+        }
+		curIndex = 0;
+		hotList:any = {
+			goodList:[],
+			merchantList:[]
+		}
 		onLoad(query:any) {
 			let searchData = uni.getStorageSync("searchData");
 			if(searchData){
@@ -39,6 +99,10 @@
 			if(query.q){
 				this.searchTetxt = query.q
 			}
+			app.http.Get('search/heat/list',{},(res:any)=>{
+				this.hotList.goodList = res.data.goodList;
+				this.hotList.merchantList = res.data.merchantList;
+			})
 		}
 		onClickBack(){
 			uni.navigateBack({
@@ -53,7 +117,7 @@
 			let hideGoods = /[A-Z]{2}\d{7}/g
 			if(hideGoods.test(text)){
 				let code = text.match(hideGoods);
-				uni.navigateTo({ url: `/pages/goods/goods_details?id=${code}` })
+				this.goGoodDetail(code)
 				return;
 			}
 			if(text!=''){
@@ -81,10 +145,36 @@
 			})
 			// #endif
 		}
+		listLen() {
+			return 2;
+		}
+		changeSwiperIndex(e:any){
+			this.curIndex = e.detail.current
+		}
+		animationfinish(e:any) {
+		}
+		goGoodDetail(code:any){
+			uni.navigateTo({ url: `/pages/goods/goods_details?id=${code}` })
+		}
+		onClickShops(alias: any) {
+			// #ifndef MP
+			if (app.token.accessToken == "") {
+				uni.navigateTo({
+					url: "/pages/login/login"
+				});
+				return;
+			}
+			// #endif
+			const path = `/pages/userinfo/merchant_shopsV2`;
+			uni.navigateTo({
+				url: path + `?alias=${alias}`
+			});
+
+		}
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.content{
 		width: 100%;
 		box-sizing: border-box;
@@ -153,7 +243,6 @@
 	.top-center{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 30rpx;
 		padding-top: 124rpx;
 	}
 	.search-title{
@@ -166,7 +255,8 @@
 		color: #3B3B3B;
 		display: flex;
 		align-items: center;
-		justify-content:space-between
+		justify-content:space-between;
+		padding:0 30rpx;
 	}
 	.icon-delete{
 		width: 29rpx;
@@ -180,6 +270,7 @@
 		margin:20rpx auto;
 		display: flex;
 		flex-wrap: wrap;
+		padding:0 30rpx
 	}
 	.search-index{
 		height:56rpx;
@@ -324,5 +415,133 @@
 		font-family: HYQiHei;
 		font-weight: normal;
 		color: #FFFFFF;
+	}
+	
+	.slide-image-box{
+		width: 550rpx;
+		z-index: 200;
+		box-sizing: border-box;
+		overflow: hidden;
+		border: 1rpx solid #F3F0F0;
+		border-radius: 5rpx;
+		padding: 10rpx 20rpx;
+	}
+	.swiper-left{
+		background: linear-gradient(0deg, #FFFFFF 0%, #FEF9F4 99%);
+	}
+	.swiper-right{
+		background: linear-gradient(0deg, #FFFFFF 0%, #F6FCFC 99%);
+	}
+	.swiper-header{
+		width: 100%;
+		height:80rpx;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+	}
+	.swiper-left .swiper-title{
+		width: 163rpx;
+		height:30rpx;
+		background: url(@/static/goods/v2/title_up.png) no-repeat center / 100% 100%;
+	}
+	.swiper-right .swiper-title{
+		width: 163rpx;
+		height:30rpx;
+		background: url(@/static/goods/v2/title_hot.png) no-repeat center / 100% 100%;
+	}
+	.good-item{
+		width: 100%;
+		height:70rpx;
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
+		margin-bottom: 20rpx;
+		position: relative;
+	}
+	.good-rank{
+		width: 35rpx;
+		height:70rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 27rpx;
+		font-family: Impact;
+		font-weight: 400;
+		color: #757575;
+		margin-right: 15rpx;
+	}
+	.rank-1{
+		width: 35rpx;
+		height:44rpx;
+		background: url(@/static/goods/v2/1.png) no-repeat center / 100% 100%;
+	}
+	.rank-2{
+		width: 35rpx;
+		height:44rpx;
+		background: url(@/static/goods/v2/2.png) no-repeat center / 100% 100%;
+	}
+	.rank-3{
+		width: 35rpx;
+		height:44rpx;
+		background: url(@/static/goods/v2/3.png) no-repeat center / 100% 100%;
+	}
+	.good-pic{
+		width: 87rpx;
+		height:70rpx;
+	}
+	.good-desc{
+		width: 280rpx;
+		height:70rpx;
+		margin-left: 20rpx;
+		font-size: 23rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		text-overflow: -o-ellipsis-lastline;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		line-height: 33rpx;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		align-items: flex-start;
+		word-break:break-all
+	}
+	.good-new{
+		width: 30rpx;
+		height: 30rpx;
+		background: linear-gradient(25deg, #61A178 0%, #88CD5A 99%);
+		border-radius: 3rpx;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+		box-sizing: border-box;
+		text-align: center;
+		line-height: 30rpx;
+		position: absolute;
+		right:0;
+		top:0;
+	}
+	.merchant-pic{
+		width: 70rpx;
+		height:70rpx
+	}
+	.merchant-desc{
+		font-size: 23rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		margin-left: 22rpx;
+	}
+	.merchant-up{
+		width: 16rpx;
+		height:29rpx;
+		position: absolute;
+		right:0;
+		top:50%;
+		margin-top: -14.5rpx;
+		background: url(@/static/goods/v2/up.png) no-repeat center / 100% 100%;
 	}
 </style>

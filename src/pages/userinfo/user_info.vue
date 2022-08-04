@@ -7,11 +7,13 @@
 				:key="item.id"
 				@click="onClickEdit(item.id)"
 			>
+				<!-- 头像或名称 -->
 				<view v-if="item.id==1">
 					<muqian-lazyLoad class="avatar" :src="item.avatar!=''?item.avatar:defaultAvatar" mode="" :borderRadius="'50%'"/>
 				</view>
 				<view v-else class="name">{{ item.name }}</view>
 
+				<!-- 4：性别 5：年月日选择 -->
 				<view v-if="item.id==4" class="right">
 					<picker @change="bindPickerChange" :value="sexIndex" :range="sexArray">
                         <view >{{sexIndex>=0?sexArray[sexIndex]:'请选择'}}</view>
@@ -71,6 +73,9 @@
 					}
 				}
 			}
+			if(app.iosPlatform){
+				this.settingTab = {...this.settingTab,cancellation:{ id: 7, name: "注销账号", desc:''}}
+			}
 			this.onEventUI('finishName',(res:any)=>{
 				this.settingTab.name.desc = res.name
 			});
@@ -101,7 +106,9 @@
 			if(id==3){
 				uni.navigateTo({url:'/pages/userinfo/setting_sign?sign='+this.settingTab.sign.desc});
 			}
-			
+			if(id==7){
+				uni.navigateTo({url:'/pages/userinfo/user_cancellation?'});
+			}
 
 		}
 		async onClickAddImg(src:any){

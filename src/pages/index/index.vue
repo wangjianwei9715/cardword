@@ -185,8 +185,9 @@
 					this.oneLoad = false;
 				}
 			})
+			//#ifdef APP-PLUS
 			plus.webview.prefetchURL(app.liveWebView)//预载直播控件webview
-
+			//#endif
 		}
 		onShow() {
 			// 销毁页面重新加载
