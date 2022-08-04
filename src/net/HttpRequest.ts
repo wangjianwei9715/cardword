@@ -3,7 +3,8 @@ import axios, { AxiosInstance } from 'axios';
 import { data } from 'browserslist';
 import {Md5} from 'ts-md5/dist/md5';
 import {
-	objKeySort
+	objKeySort,
+	getUrlDataFN
 } from "../tools/util";
 export default class HttpRequest {
     private static instance: HttpRequest;
@@ -170,6 +171,11 @@ export default class HttpRequest {
 			}
 			if (url.indexOf("advice/upload_advice") != -1) {
 				config.headers['Content-Type'] = 'multipart/form-data';
+			}
+			if (url.indexOf("/relative") != -1) {
+				const data = getUrlDataFN(url)
+				config.headers['ts'] = data.ts;
+				config.headers['s'] = data.s;
 			}
 			// console.log('请求开始：config===',config);
 			return config;

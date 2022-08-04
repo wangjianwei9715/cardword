@@ -117,6 +117,8 @@
 			<view class="drawer-box" v-for="item in card716Pz" :key="item"> {{item}} </view>
 			<view class="drawer-title" style="margin-top:55rpx">奖励发放</view>
 			<view class="drawer-box">优惠券类奖品在获取后3小时内自动发放，实物类奖品将根据您的默认地址发放，如有疑问请联系客服。</view>
+			<view class="drawer-title" style="margin-top:55rpx">提示</view>
+			<view class="drawer-box">专人拆卡产品若于卡展结束后拼成，将交由其他工作人员代拆</view>
     	</bottomDrawer>
 	</view>
 </template>

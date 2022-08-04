@@ -164,7 +164,8 @@
 				{{item.desc}}
 			</view>
 		</view>
-
+		<!-- 猜你喜欢 -->
+		<guessYouLikeIt :goodsList="likeGoodList" />
 		<!-- 直播可拖动控件 -->
 		<movable-area class="movable-area" v-if="goodsData.broadcast">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="750rpx">
@@ -236,6 +237,8 @@
 				可免单{{freeNoNum}}组
 			</view>
 		</view>
+
+		
 	</view>
 </template>
 
@@ -353,6 +356,8 @@
 		freeNoNum = 0;
 		joined = false;
 		source="";
+		// 猜你喜欢
+		likeGoodList:any = [];
 		onLoad(query: any) {
 			// #ifndef MP
 			this.goodsId = query.id;
@@ -437,6 +442,13 @@
 				}
 
 				cb && cb()
+			})
+			let relativeParams = {
+				ts:ts,
+				s:Md5.hashStr(`kww_goodrelative_sign_${id}_${ts}_2022`)
+			}
+			app.http.Get(`good/${id}/relative`,relativeParams,(res:any)=>{
+				this.likeGoodList = res.state == 1 ? res.goodList : []
 			})
 		}
 		getProgress() {
@@ -1797,10 +1809,7 @@
 		width: 100%;
 		background: #fff;
 		box-sizing: border-box;
-		padding: 30rpx 25rpx calc(150rpx) 25rpx;
-		padding: 30rpx 25rpx calc(150rpx + constant(safe-area-inset-bottom)) 25rpx;
-		padding: 30rpx 25rpx calc(150rpx + env(safe-area-inset-bottom)) 25rpx;
-
+		padding: 30rpx 25rpx 0 25rpx;
 	}
 
 	.detail-title {
