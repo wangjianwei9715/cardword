@@ -22,7 +22,7 @@
     <!-- <video object-fit='cover' class='maskVideo' autoplay muted loop :controls='false' style='position:fixed;bottom:0;width:750rpx;height:1000rpx;opacity:1' src='https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.07.21/template/0/1658373452251vt3g7uep8a.mp4'></video> -->
     <!-- https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/tools -->
     <!-- https://xlsh.zjhlang.com:8088/live -->
-    <web-view class='webView' ref='webView' :webview-styles="webviewStyles" @onPostMessage="handleMessage" :style="{height:hasNotchInScreen?iosHeight:deviceInfo.screenHeight}" :src="webViewUrl" />
+    <web-view class='webView' ref='webView' :webview-styles="webviewStyles" @onPostMessage="handleMessage" :style="{height:(hasNotchInScreen&&deviceInfo.platform=='ios')?iosHeight:deviceInfo.screenHeight}" :src="webViewUrl" />
     <view class="maskTips" :class="{none:!showMask}" @click='informH5Action("closeAllPop")'>
       <text class="liveTitle">{{liveData.title}}</text>
       <text class="liveTips">{{textTipsMap[String(liveData.state)]}}</text>
