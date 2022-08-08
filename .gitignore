@@ -20,3 +20,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+nativeplugins/zego-ZegoExpressUniAppSDK/android/zego_express_sdk-release.aar
+nativeplugins/zego-ZegoExpressUniAppSDK/ios/ZegoExpressEngine.framework/ZegoExpressEngine
