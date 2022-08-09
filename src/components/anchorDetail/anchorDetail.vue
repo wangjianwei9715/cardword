@@ -71,9 +71,7 @@
 			this.$emit('detailClose')
 		}
 		onClickGoRub(){
-			// if(this.detailData.waitCuoka>0 && this.detailData.isCuoka){
-				this.$emit('rubCard')
-			// }
+			this.$emit('rubCard')
 		}
 		onClickCuoChange(item:{[x:string]:any}):void{
 			if(item.type === this.detailData.isCuoka) return;

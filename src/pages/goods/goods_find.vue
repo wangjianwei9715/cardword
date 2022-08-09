@@ -93,21 +93,16 @@
 		}
 		onLoad(query:any) {
 			let searchData = uni.getStorageSync("searchData");
-			if(searchData){
-				this.historyList = searchData
-			}
-			if(query.q){
-				this.searchTetxt = query.q
-			}
+			if(searchData) this.historyList = searchData
+			if(query.q) this.searchTetxt = query.q
+			
 			app.http.Get('search/heat/list',{},(res:any)=>{
 				this.hotList.goodList = res.data.goodList;
 				this.hotList.merchantList = res.data.merchantList;
 			})
 		}
 		onClickBack(){
-			uni.navigateBack({
-				delta: 1
-			});
+			uni.navigateBack({ delta: 1 });
 		}
 		onClickDelete(){
 			this.historyList = []
@@ -159,16 +154,12 @@
 		onClickShops(alias: any) {
 			// #ifndef MP
 			if (app.token.accessToken == "") {
-				uni.navigateTo({
-					url: "/pages/login/login"
-				});
+				uni.navigateTo({ url: "/pages/login/login" });
 				return;
 			}
 			// #endif
 			const path = `/pages/userinfo/merchant_shopsV2`;
-			uni.navigateTo({
-				url: path + `?alias=${alias}`
-			});
+			uni.navigateTo({ url: path + `?alias=${alias}` });
 
 		}
 	}
