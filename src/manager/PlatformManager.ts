@@ -88,6 +88,7 @@ export default class PlatformManager {
 			
 		})
 	}
+	
 	//平台直播间
 	goZgLive(item:any){
 		let ts = Math.floor(new Date().getTime()/1000);
@@ -154,6 +155,22 @@ export default class PlatformManager {
 		// })
 		// #endif
 
+	}
+	launchMiniQiYeProgramLive(id: string, goodCode: string) {
+		plus.share.getServices(res => {
+			let sweixin = res.find(i => i.id === 'weixin')
+			if (sweixin) {
+				sweixin.launchMiniProgram({
+					id: 'gh_1093b743ea0e',
+					path: `/pages/live/index?id=${id}&goodCode=${goodCode}`,
+					type: 2//0-正式版； 1-测试版； 2-体验版。 默认值为0。
+				})
+			} else {
+				// 没有获取到微信分享服务
+			}
+		}, err => {
+			// 获取分享服务列表失败
+		});
 	}
 	requestSubscribeMessage(id: string, callback?: Function) {
 		// 调起订阅消息
