@@ -4,7 +4,7 @@
 			<view class="icon-lx"/>猜你喜欢<view class="icon-lx"/>
 		</view>
 		<view class="like-list">
-			<view class="item" v-for="item in goodsList" :key="item.goodCode">
+			<view class="item" v-for="item in goodsList" :key="item.goodCode" @click="goGoodsDetails(item.goodCode)">
 				<view class="like-pic-box">
 					<muqian-lazyLoad class="like-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="3rpx"></muqian-lazyLoad>
 				</view>
@@ -38,6 +38,11 @@
 		}
 		getPlan(item:any){
 			return Math.floor((Number(item.lockNum)+Number(item.currentNum))/Number(item.totalNum)*100)+'%'
+		}
+		goGoodsDetails(goodCode:string){
+			uni.navigateTo({
+				url: '/pages/goods/goods_details?id=' + decodeURIComponent(goodCode)
+			})
 		}
 	}
 </script>

@@ -612,7 +612,7 @@
 						shareUrl: `https://www.ka-world.com/share/h5/#/pages/goods/goods_details?id=${this.goodsId}`,
 						title: this.goodsData.title,
 						summary: this.goodsData.title,
-						thumb: this.goodsData.pic.thumb
+						thumb: this.goodsData.pic.thumb||this.goodsImg[0]
 					}
 				}
 				this.operationShow = true

@@ -92,8 +92,7 @@
 		}
 		getDetailData(cb?:Function){
 			if(this.detailData.goodCode && this.detailData.goodCode!=''){
-				app.http.Get('my/cuoka/1/'+this.detailData.goodCode+'/detail',{},(res:any)=>{
-					if(this.detailData.goodCode == '') return;
+				app.http.Get(`my/cuoka/1/${this.detailData.goodCode}/detail`,{},(res:any)=>{
 					this.detailData= res.data;
 					cb && cb()
 				})
