@@ -76,6 +76,10 @@ export default class PlatformManager {
 			sign:Md5.hashStr(ts+'_'+item.goodCode+'_'+item.playCode+'_videoPlayKsj')
 		}
 		app.http.Post('good/videoPlay/'+item.goodCode,params,(data:any)=>{
+			if(data.type==3&&data.qiye_livingid){
+				this.launchMiniQiYeProgramLive(data.qiye_livingid,item.goodCode)
+				return
+			}
 			// 直播 回放
 			if(data.media_url!=''){
 				uni.navigateTo({
