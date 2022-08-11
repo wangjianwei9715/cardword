@@ -47,8 +47,8 @@
 			avatar:{ id: 1, name: "头像",avatar:'',desc:''},
 			name:{ id: 2, name: "修改昵称", desc:''},
 			sign:{ id: 3, name: "个性签名", desc:''},
-			sex:{ id: 4, name: "性别", desc:''},
-			birth:{ id: 5, name: "生日",desc:''},
+			// sex:{ id: 4, name: "性别", desc:''},
+			// birth:{ id: 5, name: "生日",desc:''},
 			userId:{ id: 6, name: "ID", desc:''}
 		};
 		sexArray:any = ['男','女'];
