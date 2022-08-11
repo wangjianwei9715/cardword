@@ -171,6 +171,7 @@
 		}
 		onClickC(id:number){
 			if(id!=6) return;
+			if(!app.localTest) return
 			if(this.clearNum<9){
 				this.clearNum++;
 			}else{
