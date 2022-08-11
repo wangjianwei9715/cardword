@@ -64,7 +64,7 @@
       </movable-area>
 
       <view v-if="stepIndex == 0" class="tips-start" :style="'top:' + (1050 + statusBarHeight + iosY) + 'rpx'"><view class="icon-help"></view>拖动卡片解锁卡密</view>
-      <view v-else class="tips-desc" :style="'top:' + (1050 + statusBarHeight + iosY) + 'rpx'">{{ picData[stepIndex].nameNoEnglish?picData[stepIndex].nameNoEnglish:picData[stepIndex].name}}</view>
+      <view v-else class="tips-desc" :class="{ 'once-again' : onloadPic.indexOf(stepIndex) == -1}" :style="'top:' + (1050 + statusBarHeight + iosY) + 'rpx'" @click="onClickOnceAgain">{{ picData[stepIndex].nameNoEnglish?picData[stepIndex].nameNoEnglish:picData[stepIndex].name}}</view>
 
       <view class="drawcard-bottom">
         <view class="drawcard-bottom-tips">*图片可能存在误差，请以卡密为准（卡片类型:SP-金-红-蓝-银）</view>
@@ -157,6 +157,7 @@ export default class ClassName extends BaseNode {
   onloadPic:any = [];
   defultPic = '../../static/goods/drawcard/default.png';
   movableAni:any = '';
+  initData:any = [''];
   onLoad(query: any) {
     if(query.sp){
       this.movableAni = this.setSpAni(Number(query.sp))
@@ -176,6 +177,7 @@ export default class ClassName extends BaseNode {
             this.moveYs = 755 + app.statusBarHeight + this.iosY + "rpx";
             if(query.code){
               this.picData = this.picData.concat(JSON.parse(query.data));
+              this.initData = [...this.initData,...JSON.parse(query.data)];
               for(let i in this.picData){
                 if(this.picData[i] != ''){
                   this.picData[i].pic = parsePic(decodeURIComponent(this.picData[i].pic));
@@ -271,6 +273,7 @@ export default class ClassName extends BaseNode {
     app.http.Get('me/orderInfo/buyer/'+this.goodOrder+'/noShowList', params, (data: any) => {
       if(data.list){
         let listData = data.list
+        this.initData = [...this.initData,data.list]
         for(let i in listData){
           listData[i].pic = parsePic(decodeURIComponent(listData[i].pic));
         }
@@ -436,6 +439,10 @@ export default class ClassName extends BaseNode {
   clearIntervalCard() {
     this.noInterval = true;
     clearInterval(this.setTimeFnc);
+  }
+  onClickOnceAgain(){
+    if(this.onloadPic.indexOf(this.stepIndex) != -1) return;
+    this.picData[this.stepIndex].pic = parsePic(decodeURIComponent(this.initData[this.stepIndex].pic))
   }
 }
 </script>
@@ -1019,5 +1026,8 @@ export default class ClassName extends BaseNode {
   90%{
   transform: translate3d(0,-3px,0);
   }
+}
+.once-again{
+  text-decoration:underline
 }
 </style>
