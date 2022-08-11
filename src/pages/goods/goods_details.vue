@@ -447,7 +447,16 @@
 				ts:ts,
 				s:Md5.hashStr(`kww_goodrelative_sign_${id}_${ts}_2022`)
 			}
-			app.http.Get(`good/${id}/relative`,relativeParams,(res:any)=>{
+			this.getRelative(id,relativeParams)
+		}
+		getRelative(id:number,params:any){
+			app.http.Get(`good/${id}/relative`,params,(res:any)=>{
+				if(res.state==0){
+					setTimeout(()=>{
+						this.getRelative(id,params)
+					},500)
+					return;
+				}
 				this.likeGoodList = res.state == 1 ? res.goodList : []
 			})
 		}

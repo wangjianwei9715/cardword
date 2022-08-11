@@ -18,36 +18,24 @@
 			<view class="search-list">
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
 			</view>
-
-			<swiper
-				:style="{ width: '100%', height: '1950rpx' }"
-				:current = "curIndex"
-				:indicator-dots="swiperConfig.indicatorDots"
-				:indicator-color="swiperConfig.indicatorColor"
-				:indicator-active-color="swiperConfig.indicatorActiveColor"
-				:autoplay="swiperConfig.autoplay"
-				:interval="swiperConfig.interval"
-				:duration="swiperConfig.duration"
-				:circular="swiperConfig.circular"
-				:previous-margin="swiperConfig.previousMargin"
-				:next-margin="swiperConfig.nextMargin"
-				@change="changeSwiperIndex"
-				@animationfinish="animationfinish"
-				>
-				<swiper-item v-for="(item, i) in 2" :key="i">
-					<view :class="{'swiper-left':item==1,'swiper-right':item==2}"  class="slide-image-box" :style="{ transitionDuration: '.3s', transitionTimingFunction: 'ease', }">
-						<view class="swiper-header">
-							<view class="swiper-title"></view>
-						</view>
-						<view class="swiper-list" v-if="item==1">
+			<view class="swiper-tab">
+				<view class="btn-goods" @click="curIndex=1"></view>
+				<view class="btn-merchant" @click="curIndex=2"></view>
+			</view>
+			<view class="swiper-box">
+				<view class="swiper-index" :class="{'show-merchant':curIndex==2}">
+					<view class="slide-image-box" >
+						<view class="swiper-list swiper-left">
 							<view class="good-item" v-for="(item,index) in hotList.goodList" :key="index" @click="goGoodDetail(item.goodCode)">
 								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
-								<muqian-lazyLoad class="good-pic" :src="decodeURIComponent(item.pic)"/>
+								<muqian-lazyLoad class="good-pic" :src="decodeURIComponent(item.pic)" borderRadius="7rpx"/>
 								<view class="good-desc">{{item.title}}</view>
 								<view class="good-new" v-if="item.isNew">新</view>
 							</view>
 						</view>
-						<view class="swiper-list" v-if="item==2">
+					</view>
+					<view  class="slide-image-box" >
+						<view class="swiper-list swiper-right">
 							<view class="good-item" v-for="(item,index) in hotList.merchantList" :key="index" @click="onClickShops(item.alias)">
 								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
 								<muqian-lazyLoad class="merchant-pic" :src="decodeURIComponent(item.logo)" borderRadius="50%"/>
@@ -56,8 +44,8 @@
 							</view>
 						</view>
 					</view>
-				</swiper-item>
-			</swiper>
+				</view>
+			</view>
 
 		</view>
 	</view>
@@ -73,19 +61,6 @@
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
 
-		scaleX = (634 / 550).toFixed(4);
-		scaleY = (378 / 328).toFixed(4);
-		swiperConfig = {
-            indicatorDots: false,
-            indicatorColor: '#C9C9C9',
-            indicatorActiveColor: '#666666',
-            autoplay: false,
-            interval: 3000,
-            duration: 300,
-            circular: false,
-            previousMargin: '30rpx',
-            nextMargin: '140rpx'
-        }
 		curIndex = 0;
 		hotList:any = {
 			goodList:[],
@@ -139,14 +114,6 @@
 				})
 			})
 			// #endif
-		}
-		listLen() {
-			return 2;
-		}
-		changeSwiperIndex(e:any){
-			this.curIndex = e.detail.current
-		}
-		animationfinish(e:any) {
 		}
 		goGoodDetail(code:any){
 			uni.navigateTo({ url: `/pages/goods/goods_details?id=${code}` })
@@ -250,9 +217,9 @@
 		padding:0 30rpx;
 	}
 	.icon-delete{
-		width: 29rpx;
-		height:29rpx;
-		/* background:url(../../static/goods/icon_delete.png) no-repeat center; */
+		width: 34rpx;
+		height:32rpx;
+		background:url(../../static/goods/v2/icon_del.png) no-repeat center; 
 		background-size: 100% 100%;
 	}
 	.search-list{
@@ -409,13 +376,10 @@
 	}
 	
 	.slide-image-box{
-		width: 550rpx;
+		width: 750rpx;
 		z-index: 200;
 		box-sizing: border-box;
 		overflow: hidden;
-		border: 1rpx solid #F3F0F0;
-		border-radius: 5rpx;
-		padding: 10rpx 20rpx;
 	}
 	.swiper-left{
 		background: linear-gradient(0deg, #FFFFFF 0%, #FEF9F4 99%);
@@ -446,7 +410,7 @@
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
-		margin-bottom: 20rpx;
+		margin-bottom: 25rpx;
 		position: relative;
 	}
 	.good-rank{
@@ -477,14 +441,14 @@
 		background: url(@/static/goods/v2/3.png) no-repeat center / 100% 100%;
 	}
 	.good-pic{
-		width: 87rpx;
+		width: 80rpx;
 		height:70rpx;
 	}
 	.good-desc{
 		width: 280rpx;
 		height:70rpx;
 		margin-left: 20rpx;
-		font-size: 23rpx;
+		font-size: 26rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #333333;
@@ -534,5 +498,47 @@
 		top:50%;
 		margin-top: -14.5rpx;
 		background: url(@/static/goods/v2/up.png) no-repeat center / 100% 100%;
+	}
+	.swiper-box{
+		width: 750rpx;
+		box-sizing: border-box;
+		overflow: hidden;
+	}
+	.swiper-index{
+		width: 1500rpx;
+		display: flex;
+		justify-content: space-between;
+		transition: all 0.2s linear;
+		transform: translateX(0);
+	}
+	.show-merchant{
+		transform: translateX(-750rpx);
+	}
+	.swiper-list{
+		width: 700rpx;
+		box-sizing: border-box;
+		border: 1rpx solid #F3F0F0;
+		border-radius: 5rpx;
+		padding: 20rpx 20rpx 0 20rpx;
+		margin:0 auto;
+	}
+	.swiper-tab{
+		width: 100%;
+		height:80rpx;
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
+		padding:0rpx 30rpx;
+	}
+	.btn-goods{
+		width: 164rpx;
+		height:30rpx;
+		background:url(@/static/goods/v2/title_up.png) no-repeat center / 100% 100%;
+		margin-right: 20rpx;
+	}
+	.btn-merchant{
+		width: 164rpx;
+		height:30rpx;
+		background:url(@/static/goods/v2/title_hot.png) no-repeat center / 100% 100%;
 	}
 </style>
