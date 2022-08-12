@@ -19,8 +19,8 @@
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
 			</view>
 			<view class="swiper-tab">
-				<view class="btn-goods" @click="curIndex=1"></view>
-				<view class="btn-merchant" @click="curIndex=2"></view>
+				<view class="swiper-fbtn" :class="{'btn-goods':curIndex==1}" @click="curIndex=1">{{curIndex==1?'':'商品飙升榜'}}</view>
+				<view class="swiper-fbtn" :class="{'btn-merchant':curIndex==2}" @click="curIndex=2">{{curIndex==2?'':'店铺热力榜'}}</view>
 			</view>
 			<view class="swiper-box">
 				<view class="swiper-index" :class="{'show-merchant':curIndex==2}">
@@ -61,7 +61,7 @@
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
 
-		curIndex = 0;
+		curIndex = 1;
 		hotList:any = {
 			goodList:[],
 			merchantList:[]
@@ -445,7 +445,7 @@
 		height:70rpx;
 	}
 	.good-desc{
-		width: 280rpx;
+		width: 460rpx;
 		height:70rpx;
 		margin-left: 20rpx;
 		font-size: 26rpx;
@@ -530,15 +530,21 @@
 		box-sizing: border-box;
 		padding:0rpx 30rpx;
 	}
-	.btn-goods{
-		width: 164rpx;
+	.swiper-fbtn{
+		width: 160rpx;
 		height:30rpx;
+		font-size: 27rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #757575;
+		display: flex;
+		align-items: center;
+	}
+	.btn-goods{
 		background:url(@/static/goods/v2/title_up.png) no-repeat center / 100% 100%;
-		margin-right: 20rpx;
+		margin-right: 40rpx;
 	}
 	.btn-merchant{
-		width: 164rpx;
-		height:30rpx;
 		background:url(@/static/goods/v2/title_hot.png) no-repeat center / 100% 100%;
 	}
 </style>
