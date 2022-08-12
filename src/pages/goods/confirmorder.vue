@@ -234,7 +234,6 @@ export default class ClassName extends BaseNode {
   getGoodsImg = getGoodsImg;
   moneyNum = 1;
   goodsData: { [x: string]: any } = [];
-  youhuiPrice = 0;
   onePrice = 0;
   cartData: any = [];
   gmCheck = true;

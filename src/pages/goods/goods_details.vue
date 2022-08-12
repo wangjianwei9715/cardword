@@ -89,7 +89,6 @@
 							<view class="header-bottom-index-desc">{{item.desc}}</view>
 						</view>
 					</view>
-					<!-- <view class="header-top-id">商品ID：{{goodsId}}</view> -->
 				</view>
 			</view>
 
@@ -320,7 +319,6 @@
 			[x: string]: any
 		} = [];
 		buyRecordList: any = [];
-		onNetWorkFunc: any;
 		// 自选球队相关
 		// 球队选择
 		// 分支选择
@@ -346,8 +344,6 @@
 		payChannel: any = [];
 		// 邀请新人弹窗
 		showInvitePopup = false;
-		// 是否禁用优惠券
-		disableCoupon = false;
 		buyExplain =
 			'商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。';
 		randomNum = 0;
@@ -1139,7 +1135,7 @@
 	}
 
 	.detail-index-bg {
-		width: 100%;
+		width: 750rpx;
 		background: $content-bg;
 		display: flex;
 		justify-content: center;
