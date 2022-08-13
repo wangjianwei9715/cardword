@@ -13,6 +13,7 @@
 				</view>
 			</view>
 		</view>
+
 		<!-- <view class="index" @click="onClickGoDecompose">
 			<view class="header">
 				<view class="header-left">卡片分解(测试版)</view>
@@ -51,7 +52,6 @@
 			{icon:'../act/static/pingtai/icon.png',name:'优惠券'}
 		];
 		calendarList:{[x:string]:any} = [];
-		testModule:any;
 		noData = true;
 		onLoad(query:any) {
 			this.initEvent()
@@ -70,9 +70,7 @@
 			}
 		}
 		initEvent(){
-			
 			this.noData = false;
-			// this.testModule = uni.requireNativePlugin("TestModule");
 			app.http.Get('dataApi/function/calendar/index',{},(res:any)=>{
 				this.calendarList = res.data.calendar
 			})
