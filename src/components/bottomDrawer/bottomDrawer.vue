@@ -1,7 +1,7 @@
 <template>
     <view>
         <view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
-        <view class="drawer-content" :class="{'show-drawer':showDrawer}" :style="'height:'+height+'%'">
+        <view class="drawer-content" :class="{'show-drawer':showDrawer}" :style="'height:'+height+heightType">
 			<view class="drawer-header">
 				{{title}}
 				<view class="close-icon" @click="onClickCloseDrawer"></view>
@@ -29,6 +29,10 @@
 		title!:string;
 		@Prop({ default: 60 })
 		height!:number;
+		@Prop({
+			default:'%'
+		})
+		heightType!:string;
 		created(){//在实例创建完成后被立即调用
 			
 		}
