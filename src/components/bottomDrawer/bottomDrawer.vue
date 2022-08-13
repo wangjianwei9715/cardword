@@ -15,12 +15,16 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue } from "vue-property-decorator";
+	import { Component, Prop,Vue,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		@Prop({ default: false })
-		showDrawer:boolean|undefined;
+		// @Prop({ default: false })
+		// showDrawer:boolean|undefined;
+		@PropSync("showDrawer",{
+			type:Boolean
+		}) showValue!: Boolean;
+
 		@Prop({ default: '' })
 		title!:string;
 		@Prop({ default: 60 })
@@ -36,6 +40,7 @@
 		}
         onClickCloseDrawer(){
             this.$emit("closeDrawer");
+			this.showValue = false
         }
 	
 	}
@@ -62,6 +67,8 @@
 		box-sizing: border-box;
 		transition: all 0.3s;
 		border-radius: 5rpx 5rpx 0px 0px;
+		padding-bottom:constant(safe-area-inset-bottom);
+    	padding-bottom: env(safe-area-inset-bottom);
 		transform: translateY(100%);
 	}
 	.show-drawer{
