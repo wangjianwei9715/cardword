@@ -272,7 +272,15 @@
 		{
 			"root": "pages/act",
 			"pages": [
-				
+				{
+					"path": "playGroup/index", 
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB",
+						"backgroundColorBottom": "#F6F7FB"
+					}
+				},
 				{
 					"path": "ref/ref",
 					"style": {

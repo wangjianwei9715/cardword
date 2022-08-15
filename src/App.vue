@@ -3,7 +3,7 @@
 	import {
 		app
 	} from "./app";
-	import ZegoExpressEngine from "@/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressEngine";
+	// import ZegoExpressEngine from "@/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressEngine";
 	import HttpRequest from "./net/HttpRequest";
 	import UpdateManager from "./manager/UpdateManager";
 	import {
@@ -30,13 +30,14 @@
 			liveCountDownV2,
 			getCountDownTime,
 			calculate,
-			ZegoExpressEngine,
+			// ZegoExpressEngine,
 			destroyServe: () => {
 				app.sever.isNetOK() && app.sever.close();
 				app.sever = new SocketServer();
 			},
 		},
 		onLaunch() {
+			
 			console.log("App Launch");
 			//#ifdef APP-PLUS
 			plus.screen.lockOrientation("portrait-primary"); // 强制竖屏
@@ -45,9 +46,9 @@
 			//#endif
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境");
-				// app.localTest = true;
-				//   app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2/";
-				//   app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
+				app.localTest = true;  
+				  app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2/";
+				  app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
 			}
