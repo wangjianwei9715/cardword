@@ -27,7 +27,7 @@
 					<view class="icon-right"></view>
 				</view>
 				<view v-else class="right" @click="onClickC(item.id)">
-					{{ item.desc }}
+					<view class='sign'>{{ item.desc }}</view>
 					<view class="icon-right"></view>
 				</view>
 			</view>
@@ -228,6 +228,16 @@
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
 				color: #aaaabb;
+				
+			}
+			.sign{
+				width:540rpx;
+				// background: red;
+white-space: nowrap;
+font-size: 24rpx;
+text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
 			}
 		}
 	}
