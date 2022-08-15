@@ -337,6 +337,7 @@
 						this.goodsList[t].lockNum = list[i].lockNum
 						this.goodsList[t].currentNum = list[i].currentNum
 						this.goodsList[t].totalNum = list[i].totalNum
+						this.goodsList[t].saleRatio = list[i].saleRatio
 					}
 				}
 			}
