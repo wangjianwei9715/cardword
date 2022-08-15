@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" focus v-model="searchTetxt" placeholder="搜索" confirm-type="search" @confirm="onClickSearch(searchTetxt)" />
+					<input class="search-input" type="text" focus v-model="searchTetxt" placeholder="搜索商品、店铺" confirm-type="search" @confirm="onClickSearch(searchTetxt)" />
 				</view>
 				<view v-if="searchTetxt==''" class="header-right" @click="onClickBack">取消</view>
 				<view v-else class="header-right" @click="onClickSearch(searchTetxt)">搜索</view>
@@ -22,19 +22,26 @@
 				<view class="swiper-fbtn" :class="{'btn-goods':curIndex==1}" @click="curIndex=1">{{curIndex==1?'':'商品飙升榜'}}</view>
 				<view class="swiper-fbtn" :class="{'btn-merchant':curIndex==2}" @click="curIndex=2">{{curIndex==2?'':'店铺热力榜'}}</view>
 			</view>
-			<view class="swiper-box">
-				<view class="swiper-index" :class="{'show-merchant':curIndex==2}">
-					<view class="slide-image-box" >
+
+			<swiper
+				:style="{ width: '100%', height: '1250rpx' }"
+				:current = "curIndex-1"
+				duration="200"
+				circular
+				@change="animationfinish"
+				>
+				<swiper-item v-for="(item, i) in 2" :key="i">
+					<view class="slide-image-box" v-if="item==1">
 						<view class="swiper-list swiper-left">
 							<view class="good-item" v-for="(item,index) in hotList.goodList" :key="index" @click="goGoodDetail(item.goodCode)">
 								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
-								<muqian-lazyLoad class="good-pic" :src="decodeURIComponent(item.pic)" borderRadius="7rpx"/>
+								<muqian-lazyLoad class="good-pic" :src="decodeURIComponent(item.pic)" borderRadius="5rpx"/>
 								<view class="good-desc">{{item.title}}</view>
 								<view class="good-new" v-if="item.isNew">新</view>
 							</view>
 						</view>
 					</view>
-					<view  class="slide-image-box" >
+					<view  class="slide-image-box" v-else>
 						<view class="swiper-list swiper-right">
 							<view class="good-item" v-for="(item,index) in hotList.merchantList" :key="index" @click="onClickShops(item.alias)">
 								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
@@ -44,9 +51,8 @@
 							</view>
 						</view>
 					</view>
-				</view>
-			</view>
-
+				</swiper-item>
+			</swiper>
 		</view>
 	</view>
 </template>
@@ -72,8 +78,8 @@
 			if(query.q) this.searchTetxt = query.q
 			
 			app.http.Get('search/heat/list',{},(res:any)=>{
-				this.hotList.goodList = res.data.goodList;
-				this.hotList.merchantList = res.data.merchantList;
+				this.hotList.goodList = res.data.goodList.splice(0,10);
+				this.hotList.merchantList = res.data.merchantList.splice(0,10);
 			})
 		}
 		onClickBack(){
@@ -114,6 +120,9 @@
 				})
 			})
 			// #endif
+		}
+		animationfinish(e:any) {
+			this.curIndex = e.detail.current+1
 		}
 		goGoodDetail(code:any){
 			uni.navigateTo({ url: `/pages/goods/goods_details?id=${code}` })
@@ -171,14 +180,13 @@
 	.search-input{
 		width: 626rpx;
 		height:64rpx;
-		background: #F5F5F8;
-		border-radius: 4rpx;
-		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		background: #F5F5F5;
+		border-radius: 3rpx;
+		font-size: 26rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
 		color: #14151A;
-		padding-left:76rpx ;
-		border-radius: 29rpx;
+		padding-left:76rpx
 	}
 	.search-icon{
 		width: 28rpx;
@@ -207,7 +215,7 @@
 		width: 100%;
 		height:40rpx;
 		box-sizing: border-box;
-		font-size: 28rpx;
+		font-size: 32rpx;
 		font-family: HYQiHei;
 		font-weight: bold;
 		color: #3B3B3B;
@@ -406,11 +414,11 @@
 	}
 	.good-item{
 		width: 100%;
-		height:70rpx;
+		height:84rpx;
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
-		margin-bottom: 25rpx;
+		margin-bottom: 30rpx;
 		position: relative;
 	}
 	.good-rank{
@@ -441,27 +449,23 @@
 		background: url(@/static/goods/v2/3.png) no-repeat center / 100% 100%;
 	}
 	.good-pic{
-		width: 80rpx;
-		height:70rpx;
+		width: 96rpx;
+		height:84rpx;
 	}
 	.good-desc{
-		width: 460rpx;
+		width: 440rpx;
 		height:70rpx;
 		margin-left: 20rpx;
 		font-size: 26rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #333333;
-		text-overflow: -o-ellipsis-lastline;
 		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		line-height: 33rpx;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		-webkit-box-orient: vertical;
+		text-overflow:ellipsis;
+		white-space: nowrap;
 		align-items: flex-start;
-		word-break:break-all
+		word-break:break-all;
+		line-height: 70rpx;
 	}
 	.good-new{
 		width: 30rpx;
@@ -470,21 +474,22 @@
 		border-radius: 3rpx;
 		font-size: 21rpx;
 		font-family: PingFang SC;
-		font-weight: 400;
+		font-weight: 600;
 		color: #FFFFFF;
 		box-sizing: border-box;
 		text-align: center;
 		line-height: 30rpx;
 		position: absolute;
 		right:0;
-		top:0;
+		top:50%;
+		margin-top: -15rpx;
 	}
 	.merchant-pic{
 		width: 70rpx;
 		height:70rpx
 	}
 	.merchant-desc{
-		font-size: 23rpx;
+		font-size: 26rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #333333;
@@ -519,7 +524,7 @@
 		box-sizing: border-box;
 		border: 1rpx solid #F3F0F0;
 		border-radius: 5rpx;
-		padding: 20rpx 20rpx 0 20rpx;
+		padding: 30rpx 20rpx 0 20rpx;
 		margin:0 auto;
 	}
 	.swiper-tab{
