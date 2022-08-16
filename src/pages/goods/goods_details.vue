@@ -979,7 +979,6 @@
 			const str = saleRatio > width ? 
 			`${saleRatio}%`:
 			`余${item.totalNum-(item.currentNum+item.lockNum)}/共${item.totalNum}`;
-			console.log(width,saleRatio,str)	
 			this.planData = {
 				width:Math.max(width,saleRatio),
 				str
