@@ -219,7 +219,7 @@ export default class ClassName extends BaseNode {
   }
   onClickDraw(type: number) {
     if(!app.token.accessToken){
-      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${query.helpCode?"helpCode="+this.helpCode:""}` })
+      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${this.helpCode?"helpCode="+this.helpCode:""}` })
       return
     }
     this.drawShow = false;
@@ -297,7 +297,7 @@ export default class ClassName extends BaseNode {
   }
   pageJump(url:string){
     if(!app.token.accessToken){
-      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${query.helpCode?"helpCode="+this.helpCode:""}` })
+      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${this.helpCode?"helpCode="+this.helpCode:""}` })
       return
     }
     uni.navigateTo({
