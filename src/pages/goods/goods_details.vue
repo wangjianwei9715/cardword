@@ -68,12 +68,12 @@
 						<view class="header-top-plan">
 							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
 								<view class="progress-mask"
-									:style="{width:(100-getPlan(goodsData.lockNum,goodsData.currentNum,goodsData.totalNum))+'%'}">
+									:style="{width:(100-planData.width)+'%'}">
 								</view>
 							</view>
 							<view class="header-top-plan-num" v-if="goodsState>=2">已完成</view>
 							<view class="header-top-plan-num" v-else>
-								余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}
+								{{planData.str}}
 								<view class="header-top-plan-numbottom">
 									{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
 								</view>
@@ -354,6 +354,10 @@
 		source="";
 		// 猜你喜欢
 		likeGoodList:any = [];
+		planData:any = {
+			width:0,
+			str:''
+		}
 		onLoad(query: any) {
 			// #ifndef MP
 			this.goodsId = query.id;
@@ -406,6 +410,9 @@
 				this.favorType = data.favorite <= 0 ? false : true;
 				// 数据详情
 				this.goodsData = data.good;
+				// 进度
+				this.getPlan(this.goodsData);
+
 				// 支付方式
 				this.payChannel = data.payChannel || [];
 				this.joined = data.joined
@@ -966,9 +973,17 @@
 			let Str = String(str)
 			return Str.substr(index, 1)
 		}
-		getPlan(lock: number, now: number, all: number) {
-			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
-			return width
+		getPlan(item:any){
+			const width = Math.floor((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 100);
+			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
+			const str = saleRatio > width ? 
+			`${saleRatio}%`:
+			`余${item.totalNum-(item.currentNum+item.lockNum)}/共${item.totalNum}`;
+			console.log(width,saleRatio,str)	
+			this.planData = {
+				width:Math.max(width,saleRatio),
+				str
+			}
 		}
 		onClickCloseDrawer() {
 			this.showDrawer = false;

@@ -11,7 +11,7 @@
 			
 			<view class="code-content" v-if="codeLogin">
 				<input type="text" v-model="vcode" class="code" maxlength="4" placeholder="请输入验证码">
-				<view class="code-btn" @click="getInterval">{{codeCountdown>0?codeCountdown+'s后重发':'获取验证码'}}</view>
+				<view class="code-btn" @click="$u.throttle(getInterval,1000)">{{codeCountdown>0?codeCountdown+'s后重发':'获取验证码'}}</view>
 			</view>
 			<view class="code-content" v-else>
 				<input type="password" v-model="password" class="code" placeholder="请输入密码">

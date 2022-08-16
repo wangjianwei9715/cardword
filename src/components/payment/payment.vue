@@ -17,7 +17,7 @@
 				</view>
 			</view>
 			
-			<view class="payment-btn" @click="onClickPay">立即支付{{countTimeCopy==0?'':countStr}}</view>
+			<view class="payment-btn" @click="$u.throttle(onClickPay,1000)">立即支付{{countTimeCopy==0?'':countStr}}</view>
 		</view>
 	</view>
 </template>

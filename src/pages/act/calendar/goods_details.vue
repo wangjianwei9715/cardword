@@ -18,7 +18,7 @@
 		<view class="goods-header">
 			<view class="goods-header-title">{{goodsData.title}}</view>
 			<view class="goods-header-little">{{goodsData.title_little}}</view>
-			<view class="goods-header-time">预计发售:{{dateFormatYMSCustom(goodsData.public_day,'/')}}</view>
+			<view class="goods-header-time">预计发售:{{$u.timeFormat(goodsData.public_day,'yyyy/mm/dd')}}</view>
 			<view class="likes-icon" :class="isLikes?'goods-right-like-current':'goods-right-like'" @click="onClickLikeCalendar"></view>
 		</view>
 		
@@ -51,12 +51,11 @@
 	import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
-	import { dateFormatYMSCustom,parsePic } from "../../../tools/util"
+	import { parsePic } from "../../../tools/util"
 	@Component({
-  components: { muqianLazyLoad },})
+		components: { muqianLazyLoad },})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
-		dateFormatYMSCustom = dateFormatYMSCustom
 		goodsId = 0
 		goodsImg:any = [];
 		goodsData:any = {};
@@ -89,7 +88,7 @@
 					return this.parsePic(decodeURIComponent(x))
 				})
 				this.goodsContentPic = [];
-				if(res.data.content_pics!=''){
+				if(!uni.$u.test.isEmpty(res.data.content_pics)){
 					this.goodsContentPic = res.data.content_pics.map((x:any)=>{
 						return this.parsePic(decodeURIComponent(x))
 					})

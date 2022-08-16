@@ -29,12 +29,12 @@
 							{{dateFormatMSHMS(item.startAt)}}开售
 						</view>
 						<view v-else :id="item.goodCode" class="goodslist-priceMsg-right goodslist-plan-desc">
-							余{{item.totalNum-(item.currentNum+item.lockNum)}}/共{{item.totalNum}}
+							{{getPlan(item,'str')}}
 						</view>
 					</view>
 					<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType(item)}">
 						<view class="progressMask"
-							:style="{width:(100-getPlan(item.lockNum,item.currentNum,item.totalNum))+'%'}"></view>
+							:style="{width:(100-getPlan(item,'num'))+'%'}"></view>
 					</view>
 				</view>
 				<view class="goodslist-bottom" @click="onClickSellerShop(item)">
@@ -104,9 +104,13 @@
 		}
 		mounted() { //挂载到实例上去之后调用
 		}
-		getPlan(lock: number, now: number, all: number) {
-			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
-			return width
+		getPlan(item:any,type:string){
+			const width = Math.floor((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 100);
+			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
+			const str = saleRatio > width ? 
+			`${saleRatio}%`:
+			`余${item.totalNum-(item.currentNum+item.lockNum)}/共${item.totalNum}`
+			return type=='str' ? str : Math.max(width,saleRatio)
 		}
 		getPriceStart(item: any) {
 			return item.isSelect || item.discount != '' || item.pintuan_type == 11

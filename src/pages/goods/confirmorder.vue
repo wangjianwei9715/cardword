@@ -592,7 +592,7 @@ export default class ClassName extends BaseNode {
       params.couponIdList = this.checkCouponList;
     }
     app.http.Post(url, params, (res: any) => {
-      
+      uni.hideLoading();
       // 预测球队
       if(this.getBitDisableGuess()){
         app.http.Post('me/order/guess/name/'+res.goodOrderCode,{name:this.guessList[this.guessCheckTeam].name})
@@ -611,7 +611,6 @@ export default class ClassName extends BaseNode {
               this.redirectToOrder(res.goodOrderCode)
             });
           }
-          uni.hideLoading();
         } else {
           if (res.wechat) {
             if(res.appPayRequest){
@@ -619,7 +618,6 @@ export default class ClassName extends BaseNode {
             }else{
               app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
             }
-            uni.hideLoading();
             this.redirectToOrder(res.goodOrderCode)
           }
         }

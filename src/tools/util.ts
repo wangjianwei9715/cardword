@@ -138,19 +138,6 @@ export function dateFormatMSHMSBD(time: number | string) {
 }
 
 // 时间戳 年月日
-export function dateFormatYMSCustom(time: number | string, tip: any) {
-	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-	var year = date.getFullYear();
-	var month = ("0" + (date.getMonth() + 1)).slice(-2);
-	var sdate = ("0" + date.getDate()).slice(-2);
-
-	// 拼接
-	var result = year + tip + month + tip + sdate
-
-	return result;
-}
-
-// 时间戳 年月日
 export function dateFormatYMS(time: number | string) {
 	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
 	var year = date.getFullYear();
@@ -159,16 +146,6 @@ export function dateFormatYMS(time: number | string) {
 
 	// 拼接
 	var result = year + "." + month + "." + sdate
-
-	return result;
-}
-// 时间戳 月日
-export function dateFormatMSCustom(time: number | string, tip: any) {
-	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-	var month = ("0" + (date.getMonth() + 1)).slice(-2);
-	var sdate = ("0" + date.getDate()).slice(-2);
-	// 拼接
-	var result = month + tip + sdate
 
 	return result;
 }

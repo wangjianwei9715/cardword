@@ -9,7 +9,7 @@
 			<view class="reward">
 				<view class="reward-index" v-for="(item,index) in calendarList" :key="index">
 					<muqian-lazyLoad class="reward-img" :src="decodeURIComponent(item.pic_url_cover)"></muqian-lazyLoad>
-					<view class="reward-name">{{dateFormatMSCustom(item.public_day,'/')}}</view>
+					<view class="reward-name">{{$u.timeFormat(item.public_day,'mm/dd')}}</view>
 				</view>
 			</view>
 		</view>
@@ -42,10 +42,8 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import { dateFormatMSCustom } from "../../tools/util"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		dateFormatMSCustom = dateFormatMSCustom;
 		decomposeNum = 0;
 		rewardList:{[x:string]:any} = [
 			{icon:'../act/static/pingtai/icon1.png',name:'卡币'},

@@ -10,7 +10,7 @@
 				<view class="list-title-name">{{item.name}}</view>
 			</view>
 			<view class="list-bottom">
-				<view class="list-bottom-time">{{dateFormatYMSCustom(item.time,'-')}}</view>
+				<view class="list-bottom-time">{{$u.timeFormat(item.time,'yyyy-mm-dd')}}</view>
 				<view class="list-bottom-num">{{item.picNum}}图</view>
 			</view>
 		</view>
@@ -23,10 +23,8 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
-	import { dateFormatYMSCustom } from "@/tools/util"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		dateFormatYMSCustom = dateFormatYMSCustom;
 		codeList:any = [];
 		currentPage = 1;
 		pageSize = 10;
