@@ -20,7 +20,7 @@
 				<view class="icon-xieyi" :class="xieyiAgree?'xieyi-agree':''" @click="xieyiAgree = !xieyiAgree"></view>
 				<view class="xieyi-desc">登录即自动注册，并同意<text @click="onClickPrivacy">《隐私协议》</text></view>
 			</view>
-			<view class="btn" :class="phone!=''?'btn-confirm':''" @click="onClickLogin">登录</view>
+			<view class="btn" :class="phone!=''?'btn-confirm':''" @click="$u.throttle(onClickLogin,1000)">登录</view>
 			<view class="orther" v-if="codeLogin">
 				<view @click="codeLogin = false">使用密码登录</view>
 				<view @click="popupHid = false">收不到验证码?</view>
