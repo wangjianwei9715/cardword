@@ -105,7 +105,7 @@
 		mounted() { //挂载到实例上去之后调用
 		}
 		getPlan(item:any,type:string){
-			const width = Math.floor((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 100);
+			const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000)/100;
 			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
 			const str = saleRatio > width ? 
 			`${saleRatio}%`:

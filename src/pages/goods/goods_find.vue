@@ -485,8 +485,8 @@
 		margin-top: -15rpx;
 	}
 	.merchant-pic{
-		width: 70rpx;
-		height:70rpx
+		width: 75rpx;
+		height:75rpx
 	}
 	.merchant-desc{
 		font-size: 26rpx;
@@ -496,10 +496,10 @@
 		margin-left: 22rpx;
 	}
 	.merchant-up{
-		width: 16rpx;
-		height:29rpx;
+		width: 18rpx;
+		height:28rpx;
 		position: absolute;
-		right:0;
+		right:25rpx;
 		top:50%;
 		margin-top: -14.5rpx;
 		background: url(@/static/goods/v2/up.png) no-repeat center / 100% 100%;
