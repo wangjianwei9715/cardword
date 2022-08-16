@@ -94,7 +94,7 @@ export default class UpdateManager {
                             if (result.confirm) {
                               setTimeout(()=>{
                                 plus.runtime.restart();
-                              },100)
+                              },300)
                             }
                           }
                         });

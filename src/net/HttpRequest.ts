@@ -79,7 +79,10 @@ export default class HttpRequest {
 			setTimeout(()=>{
 				this.debounceUrl = '';
 			},200)
-
+			const ksjUserId = uni.getStorageSync('ksjUserId');
+			if(!uni.$u.test.isEmpty(ksjUserId)){
+				config.headers['ksjUserId'] = ksjUserId;
+			}
 			if(app.version != '' && app.version != '1.0.0'){
 				config.headers['version'] = app.version;
 			}

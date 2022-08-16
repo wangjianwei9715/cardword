@@ -86,8 +86,19 @@
 			uni.navigateBack({ delta: 1 });
 		}
 		onClickDelete(){
-			this.historyList = []
-			uni.removeStorageSync("searchData")
+			uni.showModal({
+				title: '提示',
+				content: '是否删除搜索历史',
+				success: (res)=> {
+					if (res.confirm) {
+						this.historyList = []
+						uni.removeStorageSync("searchData")
+					} else if (res.cancel) {
+						console.log('用户点击取消');
+					}
+				}
+			});
+
 		}
 		onClickSearch(text:string){
 			let hideGoods = /[A-Z]{2}\d{7}/g
@@ -536,9 +547,8 @@
 		padding:0rpx 30rpx;
 	}
 	.swiper-fbtn{
-		width: 160rpx;
-		height:30rpx;
-		font-size: 27rpx;
+		height:35rpx;
+		font-size: 29rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #757575;
@@ -546,10 +556,13 @@
 		align-items: center;
 	}
 	.btn-goods{
+		width: 175rpx;
 		background:url(@/static/goods/v2/title_up.png) no-repeat center / 100% 100%;
-		margin-right: 40rpx;
+		margin-right: 54rpx;
 	}
 	.btn-merchant{
+		width: 176rpx;
 		background:url(@/static/goods/v2/title_hot.png) no-repeat center / 100% 100%;
+		margin-left: 54rpx;
 	}
 </style>

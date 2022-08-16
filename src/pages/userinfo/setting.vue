@@ -155,6 +155,7 @@ export default class ClassName extends BaseNode {
     uni.removeStorageSync("token");
     app.token = {accessToken:'',refreshToken:''};
     uni.setStorageSync('reLaunch',true);
+    uni.removeStorageSync('ksjUserId')
     uni.reLaunch({
       url: "/pages/index/index",
     });

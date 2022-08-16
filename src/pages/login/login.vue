@@ -221,30 +221,7 @@
 				url: "/pages/index/index",
 			});
 		}
-		HttpLogin(params:any){
-			app.http.Post('user/login/phone',params,(data:any)=>{
-				this.loginIng = false;
-				app.data = data.data;
-				app.opKey = data.opKey
-				app.coupon = data.data.coupon;
-				uni.setStorageSync("app_opk", data.opKey);
-				app.socketInfo = data.app;
-				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
-				console.log('login===',app)
-				if(data.app.launchDomain&&data.app.launchDomain!=''){
-					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
-				}
-				this.postDomain()
-				uni.setStorageSync("token", JSON.stringify(app.token));
-				// 判断是否有邀请码
-				if(app.requestKey!=''){
-					app.platform.checkShareNo(app.requestKey)
-				}
-				uni.$emit('loginSuccess');
-				this.loginSuccessJump()
-				
-			})
-		}
+		
 		postDomain(){
 			let domian = app.bussinessApiDomain.slice(0,app.bussinessApiDomain.indexOf('/api'));
 			if(app.service_url!=''){
@@ -301,28 +278,36 @@
 				}
 			});
 		}
+		HttpLogin(params:any){
+			app.http.Post('user/login/phone',params,(data:any)=>{
+				this.loginSuccess(data)
+			})
+		}
 		WeChetLogin(params:any){
 			app.http.Post('user/login/wechat/app',params,(data:any)=>{
-				uni.hideLoading();
-				if(app.requestKey!=''){
-					app.platform.checkShareNo(app.requestKey)
-				}
-				app.data = data.data;
-				app.opKey = data.opKey;
-				app.coupon = data.data.coupon;
-				uni.setStorageSync("app_opk", data.opKey);
-				app.socketInfo = data.app;
-				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
-				if(data.app.launchDomain&&data.app.launchDomain!=''){
-					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
-				}
-				this.postDomain()
-				uni.setStorageSync("token", JSON.stringify(app.token));
-				uni.$emit('loginSuccess');
-				this.loginSuccessJump()
-				
-				
+				this.loginSuccess(data)
 			})
+		}
+		loginSuccess(data:any){
+			this.loginIng = false;
+			uni.hideLoading();
+			if(app.requestKey!=''){
+				app.platform.checkShareNo(app.requestKey)
+			}
+			app.data = data.data;
+			app.opKey = data.opKey;
+			app.coupon = data.data.coupon;
+			uni.setStorageSync("app_opk", data.opKey);
+			app.socketInfo = data.app;
+			app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
+			if(data.app.launchDomain&&data.app.launchDomain!=''){
+				uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
+			}
+			this.postDomain()
+			uni.setStorageSync("token", JSON.stringify(app.token));
+			uni.setStorageSync("ksjUserId", data.data.userId);
+			uni.$emit('loginSuccess');
+			this.loginSuccessJump()
 		}
 		onClickAppleLogin(){
 			uni.showLoading({
