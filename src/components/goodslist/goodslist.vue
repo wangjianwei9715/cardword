@@ -17,7 +17,7 @@
 					<view class="goodslist-pic"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}">
 						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
 					</view>
-					<view class="goodslist-title">
+					<view class="goodslist-title u-line-2">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
 						{{item.title}}
 					</view>
@@ -208,16 +208,8 @@
 			font-weight: 400;
 			color: #333333;
 			margin-top: 16rpx;
-			text-overflow: -o-ellipsis-lastline;
-			overflow: hidden;
-			text-overflow: ellipsis;
 			display: -webkit-box;
 			line-height: 32rpx;
-			-webkit-line-clamp: 2;
-			line-clamp: 2;
-			-webkit-box-orient: vertical;
-			align-items: flex-start;
-			word-break:break-all
 		}
 		&-remainder{
 			width: 87rpx;

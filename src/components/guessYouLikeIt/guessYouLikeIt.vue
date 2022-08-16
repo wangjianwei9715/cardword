@@ -95,7 +95,6 @@
 		.like-pic-box{
 			width: 327rpx;
 			height: 252rpx;
-			background: #333333;
 			border-radius: 3rpx;
 			margin:0 auto;
 		}
