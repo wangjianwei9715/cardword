@@ -75,8 +75,9 @@
 		popupHid = true;
 		iosLogin = app.iosPlatform;
 		loginIng = false;
+		redirect:string=''
 		onLoad(query:any) {
-			
+			if(query.redirect) this.redirect=query.redirect
 		}
 		bindPickerChange(val:any){
 			this.phoneTypeIndex = val.detail.value;
@@ -196,6 +197,30 @@
 			};
 			this.HttpLogin(params)
 		}
+		loginSuccessJump(){
+			if(!this.redirect){
+				this.toIndex()
+				return
+			}
+			if(this.redirect.indexOf("?")==-1) this.redirect+="?"
+			const switchTabList=['/pages/index/index','/pages/index/live','/pages/index/service','/pages/index/userinfo']
+			const noneParamsPage:string=this.redirect.split('?')[0]
+			if(!noneParamsPage){
+				this.toIndex()
+				return
+			}
+			const jumpType:string=switchTabList.includes(noneParamsPage)?"switchTab":"redirectTo"
+			const _uni:any=uni
+			_uni[jumpType]({
+				url:this.redirect
+			});
+			return
+		}
+		toIndex(){
+			uni.switchTab({
+				url: "/pages/index/index",
+			});
+		}
 		HttpLogin(params:any){
 			app.http.Post('user/login/phone',params,(data:any)=>{
 				this.loginIng = false;
@@ -216,9 +241,7 @@
 					app.platform.checkShareNo(app.requestKey)
 				}
 				uni.$emit('loginSuccess');
-				uni.switchTab({
-					url: "/pages/index/index",
-				});
+				this.loginSuccessJump()
 				
 			})
 		}
@@ -296,9 +319,7 @@
 				this.postDomain()
 				uni.setStorageSync("token", JSON.stringify(app.token));
 				uni.$emit('loginSuccess');
-				uni.switchTab({
-					url: "/pages/index/index",
-				});
+				this.loginSuccessJump()
 				
 				
 			})
@@ -340,9 +361,7 @@
 				this.postDomain()
 				uni.setStorageSync("token", JSON.stringify(app.token));
 				uni.$emit('loginSuccess');
-				uni.switchTab({
-					url: "/pages/index/index",
-				});
+				this.loginSuccessJump()
 			})
 		}
 	}
