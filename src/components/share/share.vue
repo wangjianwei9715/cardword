@@ -15,13 +15,17 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue } from "vue-property-decorator";
+	import { Component, Prop,Vue,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { wxShare } from "@/net/DataDefine"
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		@Prop({ default: false })
-		operationShow:boolean|undefined;
+		// @Prop({ default: false })
+		// operationShow:boolean|undefined;
+		@PropSync("operationShow",{
+			type:Boolean
+		}) showValue!: Boolean;
+
 		@Prop({ default: [] })
 		shareData!:wxShare.shareData;
 		
@@ -30,7 +34,6 @@
 			{img:'/static/share/pyq@2x.png',text:'朋友圈',scene:'WXSenceTimeline'},
 			{img:'/static/share/lianjie@2x.png',text:'分享链接',scene:''},
 		];
-		
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -85,6 +88,7 @@
 		}
 		onClickOperaCancel(){
 			this.$emit("operacancel");
+			this.showValue=false
 		}
 	}
 </script>

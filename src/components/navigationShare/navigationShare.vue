@@ -4,10 +4,11 @@
 		<view class="tab-header">
 			<view class="icon-back" @click="onClickBack"></view>
 			<view class="header-title">{{navigatetoTitle}}</view>
-			<view class="icon-share" @click="onClickShare"></view>
+			<view class="icon-share" v-if='shareData' @click="onClickShare"></view>
+			<view class='right-text' v-else @click="onClickRightText">{{rightText}}</view>
 		</view>
 
-		<share :operationShow="operationShow" :shareData="shareData"  @operacancel="onClickShareCancel"></share>
+		<share v-if='shareData' :operationShow="operationShow" :shareData="shareData"  @operacancel="onClickShareCancel"></share>
 	</view>
 	
 </template>
@@ -22,6 +23,8 @@
 		navigatetoTitle!: string;
 		@Prop({ default: '' })
 		shareData!:any;
+		@Prop({ default: '' })
+		rightText!:string;
 		// shareData:any = {
 		// 	shareUrl:'',  
 		// 	title:'',      
@@ -52,6 +55,9 @@
 		}
 		onClickShareCancel(){
 			this.operationShow = false
+		}
+		onClickRightText(){
+			this.$emit('onClickRightText')
 		}
 		
 	}
@@ -104,6 +110,14 @@
 			margin-top: -19rpx;
 			background:url(../../static/goods/v2/icon_share.png) no-repeat center;
 			background-size: 100% 100%;
+		}
+		.right-text{
+			font-size: 28rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #333333;
+			position: absolute;
+			right:32rpx;
 		}
 	}
 </style>

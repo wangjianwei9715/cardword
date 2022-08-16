@@ -4,12 +4,13 @@
       <image src="/static/act/playGroup/background.png" />
     </view>
     <view class="rightTag">
-      <view class="rightTagItem">
+      <view class="rightTagItem" @click='pageJump("/pages/act/playGroup/rule")'>
         <text>活动<br />规则</text>
       </view>
-      <view class="rightTagItem rightTagItemTwo">
+      <view class="rightTagItem rightTagItemTwo" @click='pageJump("/pages/act/playGroup/logList")'>
         <text>参与<br />记录</text>
       </view>
+      
     </view>
     <view class="drawButtonContainer">
       <view class="drawButton" @click="onClickDraw(1)">抽1次</view>
@@ -18,32 +19,32 @@
     <view class="drawMsgContainer">
       <view class="drawMsg-left">
         抽奖次数:
-        <text>5</text>次
+        <text>{{myLotteryNum}}</text>次
       </view>
       <view class="drawMsg-right" @click='taskShow=true'>免费获取></view>
     </view>
     <view class="centerTitle">球员组合</view>
-    <view class="collectContainer">
+    <view class="collectContainer" v-for="(item,index) in groupList" :key='index'>
       <view class="collect-top">
         <view class="collect-msg">
-          <view class="collect-msg-title">四大分位</view>
+          <view class="collect-msg-title">{{item.name}}</view>
           <view class="collect-msg-howMany">已有199人集齐</view>
         </view>
-        <view class="collect-coupon" @click="exchangeShow=true">
+        <view class="collect-coupon" :class="{collectCouponGray:item.exchangeNum==0}" @click="onClickExchange(item)">
           <view class="collect-coupon-top">兑
             <text>5</text>元</view>
           <view class="collect-coupon-bottom">上组券</view>
         </view>
       </view>
       <view class="collect-card">
-        <view class="cardItem" v-for="(item,index) in 4" :key='index'>
-          <image class='cardItem-img' src="https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg" alt="" srcset="aspectFill">
-            <view class="cardName">科比</view>
-            <view class="cardItem-badge">9</view>
+        <view class="cardItem" v-for="(man,manIndex) in item.players" :key='manIndex'>
+          <image class='cardItem-img' :class="{noneImg:man.haveNum==0}" :src="parsePic(man.pic)" alt="" srcset="aspectFill">
+            <view class="cardName">{{man.name}}</view>
+            <view class="cardItem-badge">{{man.haveNum}}</view>
         </view>
       </view>
     </view>
-    <view class="giveBlock"></view>
+    <view class="giveBlock" @click='pageJump("/pages/act/playGroup/give")'></view>
     <bottomDrawer title='每日任务' :height='571' heightType='rpx' :showDrawer.sync='taskShow'>
       <view class="taskItem" v-for='(item,index) in taskList' :key='index'>
         <image :src='item.icon' class='taskItem-icon' mode='widthFix' />
@@ -54,14 +55,14 @@
               <text>+1</text>
             </view>
             <view class="tips-right">完成
-              <text>1</text>/3
+              <text>{{item.getNum || 0}}</text>/{{item.dayGetNum || 0}}
             </view>
           </view>
         </view>
-        <view class="taskItem-right">去分享</view>
+        <view class="taskItem-right" :class="{taskItemGray:item.isFinish}" @click="onClickTask(item)">{{item.buttonText}}</view>
       </view>
     </bottomDrawer>
-    <pedometerPop :show.sync='pedometerShow'/>
+    <pedometerPop :show.sync='pedometerShow' />
     <view class="drawCardMask" v-if='maskShow'></view>
     <view class="drawCard" v-if='drawShow'>
       <view class='transitionAll transitionDelay opacity0' :class="{opacity1:drawCard.index==drawCard.list.length-1}">
@@ -70,7 +71,7 @@
       </view>
       <template v-if="drawType==5">
         <view class="fiveCardContainer">
-          <view class='fiveCardBlock' v-for='(item,index) in drawCard.list'>
+          <view class='fiveCardBlock' v-for='(item,index) in drawCard.list' :key='index'>
             <image class="fiveCardImage transitionAll" :class="{show:index<=drawCard.index}" :src="item.src" alt="" srcset="" @click='previewImage(drawCard.list,index)' mode='aspectFill' />
           </view>
         </view>
@@ -82,8 +83,9 @@
         <view class="againButton" @click="onClickDraw(drawType)">再抽{{drawType==1?'一':'五'}}次</view>
         <view class="close" @click='drawShow=false'></view>
       </view>
-      
+
     </view>
+    <share :operationShow.sync='operationShow' :shareData="shareData"/>
   </view>
 </template>
 
@@ -123,37 +125,60 @@ import BaseNode from "../../../base/BaseNode.vue";
 import { parsePic } from "@/tools/util";
 @Component({})
 export default class ClassName extends BaseNode {
-  pedometerShow:boolean=true;
+  operationShow:boolean=false;
+  pedometerShow: boolean = false;
   taskShow: boolean = false;
   drawType: number = 1;
   drawShow: boolean = false;
   exchangeShow: boolean = false;
+  myLotteryNum:any=0;
   platform: string = app.platform.systemInfo.platform;
   taskList: any = [
     {
       icon: "/static/act/playGroup/share.png",
-      name: "分享活动页"
+      name: "分享活动页",
+      buttonText:'去分享',
+      action:'goShare'
     },
     {
       icon: "/static/act/playGroup/pullMan.png",
-      name: "好友助力"
+      name: "好友助力",
+      buttonText:'去分享',
+      action:''
     },
     {
       icon: "/static/act/playGroup/goOut.png",
-      name: "赠送一次卡密"
+      name: "赠送一次卡密",
+      buttonText:'去完成',
+      action:''
     },
     {
       icon: "/static/act/playGroup/money.png",
-      name: "赠送一次卡密"
+      name: "每上组98元",
+      buttonText:'去完成',
+      action:'pageJump',
+      params:'/pages/goods/goods_find_list?classType=100'
     }
   ];
+  groupList:any=[]
   drawCard: any = {
     index: -1,
     list: []
   };
   drawTimer: any = null;
   parsePic: any = parsePic;
+  shareData:any={
+    shareUrl:"",
+    title:"集球员组合，兑海量上足券",
+    summary:"集球员组合，兑海量上足券",
+    thumb:""
+  }
+  helpCode:string=''
   onLoad(query: any) {
+    if(!app.token.accessToken){
+      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${query.helpCode?"helpCode="+this.helpCode:""}` })
+      return
+    }
     /* #ifdef APP-PLUS */
     if (this.platform == "ios") {
       UIImpactFeedbackGenerator = plus.ios.importClass(
@@ -162,6 +187,7 @@ export default class ClassName extends BaseNode {
       impact = new UIImpactFeedbackGenerator();
     }
     /* #endif */
+    // this.reqNewData();
   }
   //   加载更多数据
   onReachBottom() {}
@@ -192,14 +218,72 @@ export default class ClassName extends BaseNode {
     }, 500);
   }
   onClickDraw(type: number) {
+    if(!app.token.accessToken){
+      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${query.helpCode?"helpCode="+this.helpCode:""}` })
+      return
+    }
     this.drawShow = false;
     this.UIClickFeedBack();
-    this.$nextTick(() => {
-      this.drawType = type;
-      this.drawCard.index = type == 1 ? 0 : -1;
-      this.drawCard.list = type == 5 ? mockList : [mockList[0]];
-      this.drawShow = true;
-    });
+    this.postDraw(type)
+  }
+  goShare(){
+    this.taskShow=false
+    this.operationShow=true
+  }
+  getHelpCode(){
+    uni.showLoading({
+      title:''
+    })
+    app.http.Get('activity/playerGroup/share/help',{},(res:any)=>{
+      const {helpCode}=res
+      uni.hideLoading()
+      uni.share({
+        provider: "weixin",
+        scene:'WXSceneSession',
+        href:`?helpCode=${helpCode}`,
+        title:'集球员组合,兑海量上足券',
+        summary:'为我助力',
+        imageUrl:''
+      })
+    })
+  }
+  postDraw(type:number){
+    uni.showLoading({
+      title: ''
+    })
+    app.http.Post('activity/playerGroup/lottery/go',{tp:type},(res:any)=>{
+      uni.hideLoading()
+      this.$nextTick(() => {
+        this.drawType = type;
+        this.drawCard.index = type == 1 ? 0 : -1;
+        this.drawCard.list = type == 5 ? mockList : [mockList[0]];
+        this.drawShow = true;
+      });
+    },(err:any)=>{
+      uni.hideLoading()
+    })
+  }
+  onClickExchange(item:any){
+    if(item.exchangeNum<=0){
+      uni.showToast({
+        title: '可兑换数量不足',
+        icon: 'none'
+      })
+      return
+    }
+  }
+  onClickTask(task:any){
+    if(task.isFinish){
+      uni.showToast({
+        title: '今日完成次数已上限',
+        icon: 'none'
+      })
+      return
+    }
+    if(task.action){
+      const _this:any=this
+      _this[task.action](task.params||undefined)
+    }
   }
   //ui触感反馈(单次)
   UIClickFeedBack() {
@@ -211,6 +295,15 @@ export default class ClassName extends BaseNode {
     }
     /* #endif */
   }
+  pageJump(url:string){
+    if(!app.token.accessToken){
+      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${query.helpCode?"helpCode="+this.helpCode:""}` })
+      return
+    }
+    uni.navigateTo({
+      url
+    })
+  }
   previewImage(list: any, index: number) {
     const urls = list.map((item: any) => this.parsePic(item.src));
     uni.previewImage({
@@ -218,11 +311,34 @@ export default class ClassName extends BaseNode {
       current: index
     });
   }
-  reqNewData(cb?: Function) {}
+  assignTaskList(taskList:any){
+    if(!taskList.length) return
+    this.taskList.forEach((item:any,index:number) => {
+      const findItem:any=taskList.find((taskItem:any)=>{
+        return item.name==taskItem.name
+      })
+      if(findItem){
+        this.taskList[index]={
+          ...item,
+          ...findItem
+        }
+      }
+    });
+  }
+  reqNewData(cb?: Function) {
+    app.http.Get("activity/playerGroup/home", {}, (res: any) => {
+      console.log(res);
+      // const data: any = res.data;
+      const {myLotteryNum,taskList,groupList}=res.data
+      this.myLotteryNum=myLotteryNum
+      this.groupList=groupList
+      this.assignTaskList(taskList)
+    });
+  }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 page {
   height: 100%;
 }
@@ -279,6 +395,12 @@ page {
     background: #1b5ab6;
     border-radius: 3rpx;
   }
+  .taskItemGray{
+    width: 138rpx;
+height: 53rpx;
+background: #B5B5B5;
+border-radius: 3rpx;
+  }
   .taskItem-name {
     font-size: 29rpx;
     font-family: PingFang SC;
@@ -297,10 +419,10 @@ page {
       margin-left: 8rpx;
     }
   }
-  .tips-left{
+  .tips-left {
     font-size: 25rpx;
   }
-  .tips-right{
+  .tips-right {
     font-size: 25rpx;
     margin-left: 40rpx;
   }
@@ -470,6 +592,9 @@ page {
     align-items: center;
     justify-items: flex-start;
   }
+  .collectCouponGray{
+    background-image: url("/static/act/playGroup/couponGray.png");
+  }
   .collect-coupon-top {
     font-size: 25rpx;
     font-family: PingFang SC;
@@ -527,8 +652,8 @@ page {
       display: block;
       position: relative;
     }
-    .cardItem-img::after {
-      content: " ";
+    .noneImg::after{
+content: " ";
       display: block;
       width: 153rpx;
       height: 215rpx;

@@ -47,16 +47,7 @@
 				"enablePullDownRefresh": false
 			}
 		},
-		{
-			"path": "pages/live/zgLive",
-			"style": {
-				"navigationStyle": "custom",
-				"enablePullDownRefresh": false,
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
+
 		{
 			"path": "pages/live/proLive",
 			"style": {
@@ -278,7 +269,58 @@
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB"
+						"backgroundColorBottom": "#F6F7FB",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
+					}
+				},
+				{
+					"path": "playGroup/give", 
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB",
+						"backgroundColorBottom": "#F6F7FB",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
+					}
+				},
+				{
+					"path": "playGroup/giveList", 
+					"style": {
+						"navigationBarTitleText": "收赠记录",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB",
+						"backgroundColorBottom": "#F6F7FB",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
+					}
+				},
+				{
+					"path": "playGroup/logList", 
+					"style": {
+						"navigationBarTitleText": "参与记录",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB",
+						"backgroundColorBottom": "#F6F7FB",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
+					}
+				},
+				{
+					"path": "playGroup/rule", 
+					"style": {
+						"navigationBarTitleText": "活动规则",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB",
+						"backgroundColorBottom": "#F6F7FB",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
 					}
 				},
 				{
@@ -596,6 +638,7 @@
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
+
 				{
 					"path": "order_list",
 					"style": {
