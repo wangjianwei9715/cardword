@@ -6,11 +6,13 @@ import {
 	objKeySort,
 	getUrlDataFN
 } from "../tools/util";
+import { headersData,opSignData } from "@/net/DataHttp"
 export default class HttpRequest {
     private static instance: HttpRequest;
 	private axiosInstance:AxiosInstance;
 	debounceUrl = '';
-
+	headersData = headersData;
+	opSignData = opSignData;
 	static getIns(): HttpRequest {
 		if(!HttpRequest.instance) {
 			HttpRequest.instance = new HttpRequest();
@@ -91,39 +93,18 @@ export default class HttpRequest {
 					config.headers['token'] = app.token.accessToken;
 				}
 			}
-			if (url.indexOf("me/certify") != -1) {
-				config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+			for(let i in this.headersData){
+				const data = this.headersData[i]
+				if(url.indexOf(`${data.url}`) != -1){
+					config.headers[`${data.name}`] = `${data.msg}`;
+				}
 			}
-			// 商品下单
-			if(url.indexOf("good/topay/") != -1){
-				this.getStr(config,'payGoodCode'); 
+			for(let i in this.opSignData){
+				const data = this.opSignData[i]
+				if(url.indexOf(`${data.url}`) != -1){
+					this.setOpSign(config,data.sign,data.needOpKey)
+				}
 			}
-			// 支付订单
-			if (url.indexOf("order/topay/") != -1) {
-				
-				this.getStr(config,'payGoodOrder'); 
-			}
-			// 提交口令
-			if (url.indexOf("activity/invite/requestKey") != -1) {
-				this.getStr(config,'inviteKey'); 
-			}
-			// 提交口令
-			if (url.indexOf("activity/invite/getKey") != -1) {
-				this.getStr(config,'inviteGetKey'); 
-			}
-			// 微信登录
-			if (url.indexOf("user/login/wechat/app") != -1) {
-				this.getStr(config,'wechat',true); 
-			}
-			// 苹果
-			if (url.indexOf("user/login/apple") != -1) {
-				this.getStr(config,'apple',true); 
-			}
-			// 列表 查价 搜索
-			if (url.indexOf("search/good") != -1 || url.indexOf("search/query_price") != -1) {
-				this.getStr(config,'searchSecret',true); 
-			}
-			
 			// 短信验证码
 			if(url.indexOf("user/code") != -1){
 				let data = 'opk_smscode_'+config.data.phone+'_'+config.data.type;
@@ -132,15 +113,10 @@ export default class HttpRequest {
 			// 确认收货
 			if(url.indexOf("me/order/buyer/receive_good") != -1){
 				let data = 'opk_'+app.opKey+'_receive_good_'+config.data.code
-				console.log('order_receive_opSign=',data)
 				config.headers['opSign'] = Md5.hashStr(data)
 			}
-			
 			if (url.indexOf("user/bindPushIdentifier") != -1) {
 				let info = plus.push.getClientInfo();
-				console.log('info==',info);
-				console.log('bindtoken==',app.token.accessToken)
-				console.log('bindPushIdentifier==',config.headers['token'])
 				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+info.clientid);
 			}
 			// 客服发送消息
@@ -152,8 +128,6 @@ export default class HttpRequest {
 			}
 			if(url.indexOf("app/update") != -1){
 				config.baseURL = app.update_url
-				console.log(config)
-				
 			}
 			if(url.indexOf("dataApi/") != -1){
 				config.url = url.substring(8);
@@ -171,9 +145,6 @@ export default class HttpRequest {
 			}
 			if(url.indexOf("app/launch") != -1||url.indexOf("app/onlinecfg") != -1){
 				config.baseURL = ''
-			}
-			if (url.indexOf("advice/upload_advice") != -1) {
-				config.headers['Content-Type'] = 'multipart/form-data';
 			}
 			if (url.indexOf("/relative") != -1) {
 				const data = getUrlDataFN(url)
@@ -351,7 +322,7 @@ export default class HttpRequest {
 			}
 		});
 	}
-	getStr(config:any,msg:any,type?:any){
+	setOpSign(config:any,msg:any,type?:any){
 		let str = ''
 		if(config.data){
 			for(let i in config.data){
@@ -365,14 +336,11 @@ export default class HttpRequest {
 			str = config.url.split('?')[1];
 			config.url+='&rawStr='+str+'_'+msg
 		}
-		console.log(app.opKey)
 		if(type){
 			config.headers['opSign'] = Md5.hashStr(str+'_'+msg)
-			console.log('opSign==',str+'_'+msg)
 			return ;
 		}else{
 			config.headers['opSign'] = Md5.hashStr(app.opKey+'_'+str+'_'+msg)
-			console.log('opSign==',app.opKey+'_'+str+'_'+msg)
 			return ;
 		}
 		

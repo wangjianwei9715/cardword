@@ -358,6 +358,7 @@
 			width:0,
 			str:''
 		}
+		relativeOnce = false;
 		onLoad(query: any) {
 			// #ifndef MP
 			this.goodsId = query.id;
@@ -454,7 +455,8 @@
 		}
 		getRelative(id:number,params:any){
 			app.http.Get(`good/${id}/relative`,params,(res:any)=>{
-				if(res.state==0){
+				if(res.state==0 && !this.relativeOnce){
+					this.relativeOnce = true
 					setTimeout(()=>{
 						this.getRelative(id,params)
 					},500)
