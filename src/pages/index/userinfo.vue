@@ -182,6 +182,9 @@
 						}
 					]
 				}
+				if(!data.toPay){
+					this.orderTab['toPay'].num = 0
+				}
 				if(cb) cb()
 
 			});

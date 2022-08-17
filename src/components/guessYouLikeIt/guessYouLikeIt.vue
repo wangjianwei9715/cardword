@@ -4,7 +4,7 @@
 			<view class="icon-lx"/>猜你喜欢<view class="icon-lx"/>
 		</view>
 		<view class="like-list">
-			<view class="item" v-for="item in goodsList" :key="item.goodCode" @click="goGoodsDetails(item.goodCode)">
+			<view class="item" v-for="(item,index) in goodsList" :key="index" @click="goGoodsDetails(item.goodCode)">
 				<view class="like-pic-box">
 					<muqian-lazyLoad class="like-pic" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="3rpx"></muqian-lazyLoad>
 				</view>
@@ -95,7 +95,6 @@
 		.like-pic-box{
 			width: 327rpx;
 			height: 252rpx;
-			background: #333333;
 			border-radius: 3rpx;
 			margin:0 auto;
 		}

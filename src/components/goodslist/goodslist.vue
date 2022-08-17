@@ -17,7 +17,7 @@
 					<view class="goodslist-pic"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}">
 						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
 					</view>
-					<view class="goodslist-title">
+					<view class="goodslist-title u-line-2">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
 						{{item.title}}
 					</view>
@@ -105,7 +105,7 @@
 		mounted() { //挂载到实例上去之后调用
 		}
 		getPlan(item:any,type:string){
-			const width = Math.floor((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 100);
+			const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000)/100;
 			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
 			const str = saleRatio > width ? 
 			`${saleRatio}%`:
@@ -208,16 +208,8 @@
 			font-weight: 400;
 			color: #333333;
 			margin-top: 16rpx;
-			text-overflow: -o-ellipsis-lastline;
-			overflow: hidden;
-			text-overflow: ellipsis;
 			display: -webkit-box;
 			line-height: 32rpx;
-			-webkit-line-clamp: 2;
-			line-clamp: 2;
-			-webkit-box-orient: vertical;
-			align-items: flex-start;
-			word-break:break-all
 		}
 		&-remainder{
 			width: 87rpx;

@@ -358,6 +358,7 @@
 			width:0,
 			str:''
 		}
+		relativeOnce = false;
 		onLoad(query: any) {
 			// #ifndef MP
 			this.goodsId = query.id;
@@ -454,7 +455,8 @@
 		}
 		getRelative(id:number,params:any){
 			app.http.Get(`good/${id}/relative`,params,(res:any)=>{
-				if(res.state==0){
+				if(res.state==0 && !this.relativeOnce){
+					this.relativeOnce = true
 					setTimeout(()=>{
 						this.getRelative(id,params)
 					},500)
@@ -974,12 +976,11 @@
 			return Str.substr(index, 1)
 		}
 		getPlan(item:any){
-			const width = Math.floor((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 100);
+			const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000)/100;
 			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
 			const str = saleRatio > width ? 
 			`${saleRatio}%`:
 			`余${item.totalNum-(item.currentNum+item.lockNum)}/共${item.totalNum}`;
-			console.log(width,saleRatio,str)	
 			this.planData = {
 				width:Math.max(width,saleRatio),
 				str

@@ -91,11 +91,9 @@ export default class UpdateManager {
                           content: '立刻重启应用完成更新。',
                           showCancel: false,
                           success: (result) => {
-                            if (result.confirm) {
-                              setTimeout(()=>{
-                                plus.runtime.restart();
-                              },100)
-                            }
+                            setTimeout(()=>{
+                              plus.runtime.restart();
+                            },500)
                           }
                         });
                       }, (result) => {
