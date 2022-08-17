@@ -6,13 +6,14 @@ import {
 	objKeySort,
 	getUrlDataFN
 } from "../tools/util";
-import { headersData,opSignData } from "@/net/DataHttp"
+import { headersData,opSignData,opSignOtherData } from "@/net/DataHttp"
 export default class HttpRequest {
     private static instance: HttpRequest;
 	private axiosInstance:AxiosInstance;
 	debounceUrl = '';
 	headersData = headersData;
 	opSignData = opSignData;
+	opSignOtherData = opSignOtherData
 	static getIns(): HttpRequest {
 		if(!HttpRequest.instance) {
 			HttpRequest.instance = new HttpRequest();
@@ -99,42 +100,45 @@ export default class HttpRequest {
 					config.headers[`${data.name}`] = `${data.msg}`;
 				}
 			}
+			// config.data数据+sign统一处理opSign
 			for(let i in this.opSignData){
 				const data = this.opSignData[i]
 				if(url.indexOf(`${data.url}`) != -1){
 					this.setOpSign(config,data.sign,data.needOpKey)
 				}
 			}
-			// 短信验证码
-			if(url.indexOf("user/code") != -1){
-				let data = 'opk_smscode_'+config.data.phone+'_'+config.data.type;
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			// 确认收货
-			if(url.indexOf("me/order/buyer/receive_good") != -1){
-				let data = 'opk_'+app.opKey+'_receive_good_'+config.data.code
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			if (url.indexOf("user/bindPushIdentifier") != -1) {
-				let info = plus.push.getClientInfo();
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+info.clientid);
-			}
-			// 客服发送消息
-			if(url.indexOf("sendMessage") != -1){
-				let bucketId = config.data.bucketId;
-				let imgurl = config.data.picUrl||'';
-				let content = config.data.content||'';
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+bucketId+'_'+imgurl+'_'+content)
+			// 需要单独处理额外数据的opSign
+			for(let i in this.opSignOtherData){
+				const data = this.opSignOtherData[i]
+				if(url.indexOf(`${data.url}`) != -1){
+					let opSign;
+					switch(data.name){
+						case '短信验证码':
+							opSign = `opk_smscode_${config.data.phone}_${config.data.type}`;
+							break;
+						case '确认收货':
+							opSign = `opk_${app.opKey}_receive_good_${config.data.code}`;
+							break;
+						case '绑定Push':
+							//#ifdef APP-PLUS
+							opSign = `opk_${app.opKey}_${plus.push.getClientInfo().clientid}`;
+							break;
+							//#endif
+						case '客服发送消息':
+							opSign = `opk_${app.opKey}_${config.data.bucketId}_${config.data.picUrl||''}_${config.data.content||''}`;
+							break;
+						default:
+							opSign = ''
+					};
+					config.headers['opSign'] = Md5.hashStr(opSign)
+				}
 			}
 			if(url.indexOf("app/update") != -1){
 				config.baseURL = app.update_url
 			}
 			if(url.indexOf("dataApi/") != -1){
 				config.url = url.substring(8);
-				
-				if(!app.localTest){
-					config.baseURL = app.dataApiDomain;
-				}
+				if(!app.localTest) config.baseURL = app.dataApiDomain;
 			}
 			if(url.indexOf('funcApi/')!=-1){	
 				config.url = url.substring(8);

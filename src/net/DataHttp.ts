@@ -16,3 +16,10 @@ export var opSignData = [
     {url:'search/query_price',sign:'searchSecret',needOpKey:true},
 ]
 
+// opSignOther
+export var opSignOtherData = [
+    {url:'user/code',name:'短信验证码'},
+    {url:'me/order/buyer/receive_good',name:'确认收货'},
+    {url:'user/bindPushIdentifier',name:'绑定Push'},
+    {url:'sendMessage',name:'客服发送消息'},
+]
