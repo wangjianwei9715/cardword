@@ -57,7 +57,7 @@
 		left:0;
 		height:100%;
 		width: 100%;
-        z-index:99998;
+        z-index:999;
 		background:rgba(0,0,0,0.5)
     }
     .drawer-content{
@@ -67,7 +67,7 @@
 		height:60%;
 		width: 100%;
 		background:#fff;
-		z-index: 99999;
+		z-index: 1000;
 		box-sizing: border-box;
 		transition: all 0.3s;
 		border-radius: 5rpx 5rpx 0px 0px;

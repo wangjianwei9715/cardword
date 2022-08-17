@@ -69,7 +69,7 @@
       <view class="taskItem" v-for='(item,index) in taskList' :key='index'>
         <image :src='item.icon' class='taskItem-icon' mode='widthFix' />
         <view class="taskItem-center">
-          <view class="taskItem-name">{{item.name}}</view>
+          <view class="taskItem-name">{{item.name}}<text v-if='item.upGroupPlan'>{{item.upGroupPlan}}</text></view>
           <view class="taskItem-tips">
             <view class="tips-left">抽奖次数
               <text>+1</text>
@@ -817,6 +817,11 @@ page {
     font-weight: 600;
     color: #333333;
     margin-bottom: 4rpx;
+    text{
+      font-size: 25rpx;
+      font-weight: 400;
+      margin-left:20rpx;
+    }
   }
 
   .taskItem-tips {
