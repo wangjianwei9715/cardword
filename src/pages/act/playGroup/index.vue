@@ -10,11 +10,11 @@
       <view class="rightTagItem rightTagItemTwo" @click='pageJump("/pages/act/playGroup/logList")'>
         <text>参与<br />记录</text>
       </view>
-      
+
     </view>
     <view class="drawButtonContainer">
-      <view class="drawButton" @click="onClickDraw(1)">抽1次</view>
-      <view class="drawButton" @click="onClickDraw(5)">抽5次</view>
+      <view class="drawButton" @click="$u.throttle(()=>{onClickDraw(1)},500)">抽1次</view>
+      <view class="drawButton" @click="$u.throttle(()=>{onClickDraw(5)},500)">抽5次</view>
     </view>
     <view class="drawMsgContainer">
       <view class="drawMsg-left">
@@ -32,7 +32,8 @@
         </view>
         <view class="collect-coupon" :class="{collectCouponGray:item.exchangeNum==0}" @click="onClickExchange(item)">
           <view class="collect-coupon-top">兑
-            <text>5</text>元</view>
+            <text>5</text>元
+          </view>
           <view class="collect-coupon-bottom">上组券</view>
         </view>
       </view>
@@ -45,6 +46,25 @@
       </view>
     </view>
     <view class="giveBlock" @click='pageJump("/pages/act/playGroup/give")'></view>
+    <!-- <u-popup :show.sync="taskShow" @close='taskShow=false' :closeable='true'>
+      <view class="popuContainer">
+        <view class="taskItem" v-for='(item,index) in taskList' :key='index'>
+          <image :src='item.icon' class='taskItem-icon' mode='widthFix' />
+          <view class="taskItem-center">
+            <view class="taskItem-name">{{item.name}}</view>
+            <view class="taskItem-tips">
+              <view class="tips-left">抽奖次数
+                <text>+1</text>
+              </view>
+              <view class="tips-right">完成
+                <text>{{item.getNum || 0}}</text>/{{item.dayGetNum || 0}}
+              </view>
+            </view>
+          </view>
+          <view class="taskItem-right" :class="{taskItemGray:item.isFinish}" @click="onClickTask(item)">{{item.buttonText}}</view>
+        </view>
+      </view>
+    </u-popup> -->
     <bottomDrawer title='每日任务' :height='571' heightType='rpx' :showDrawer.sync='taskShow'>
       <view class="taskItem" v-for='(item,index) in taskList' :key='index'>
         <image :src='item.icon' class='taskItem-icon' mode='widthFix' />
@@ -59,10 +79,11 @@
             </view>
           </view>
         </view>
-        <view class="taskItem-right" :class="{taskItemGray:item.isFinish}" @click="onClickTask(item)">{{item.buttonText}}</view>
+        <view class="taskItem-right" :class="{taskItemGray:item.isFinish}" @click="onClickTask(item)">
+          {{item.buttonText}}</view>
       </view>
     </bottomDrawer>
-    <pedometerPop :show.sync='pedometerShow' />
+    <pedometerPop :show.sync='pedometerShow' :value.sync='selectItem.needExchangeNum' :maxValue.sync='selectItem.exchangeNum' @confirm="exchangeConfirm" />
     <view class="drawCardMask" v-if='maskShow'></view>
     <view class="drawCard" v-if='drawShow'>
       <view class='transitionAll transitionDelay opacity0' :class="{opacity1:drawCard.index==drawCard.list.length-1}">
@@ -72,12 +93,12 @@
       <template v-if="drawType==5">
         <view class="fiveCardContainer">
           <view class='fiveCardBlock' v-for='(item,index) in drawCard.list' :key='index'>
-            <image class="fiveCardImage transitionAll" :class="{show:index<=drawCard.index}" :src="item.src" alt="" srcset="" @click='previewImage(drawCard.list,index)' mode='aspectFill' />
+            <image class="fiveCardImage transitionAll" :class="{show:index<=drawCard.index}" :src="parsePic(decodeURIComponent(item.pic))" alt="" srcset="" @click='previewImage(drawCard.list,index)' mode='aspectFill' />
           </view>
         </view>
       </template>
       <template v-if="drawType==1">
-        <image class="singleImage" :src="drawCard.list[0].src" alt="" srcset="" @click='previewImage(drawCard.list,0)' mode='aspectFill' />
+        <image class="singleImage transitionAll" :class="{show:index<=drawCard.index}" :src="parsePic(decodeURIComponent(drawCard.list[0].pic))" alt="" srcset="" @click='previewImage(drawCard.list,0)' mode='aspectFill' />
       </template>
       <view class='transitionAll transitionDelay opacity0' :class="{opacity1:drawCard.index==drawCard.list.length-1}">
         <view class="againButton" @click="onClickDraw(drawType)">再抽{{drawType==1?'一':'五'}}次</view>
@@ -85,7 +106,8 @@
       </view>
 
     </view>
-    <share :operationShow.sync='operationShow' :shareData="shareData"/>
+    <share :operationShow.sync='operationShow' :shareData="shareData" />
+    <u-toast ref="uToast"></u-toast>
   </view>
 </template>
 
@@ -94,27 +116,27 @@ let UIImpactFeedbackGenerator: any = null;
 let impact: any = null;
 const mockList = [
   {
-    src:
+    pic:
       "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
     name: "詹姆斯"
   },
   {
-    src:
+    pic:
       "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
     name: "詹姆斯"
   },
   {
-    src:
+    pic:
       "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
     name: "詹姆斯"
   },
   {
-    src:
+    pic:
       "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
     name: "詹姆斯"
   },
   {
-    src:
+    pic:
       "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
     name: "詹姆斯"
   }
@@ -125,60 +147,73 @@ import BaseNode from "../../../base/BaseNode.vue";
 import { parsePic } from "@/tools/util";
 @Component({})
 export default class ClassName extends BaseNode {
-  operationShow:boolean=false;
+  operationShow: boolean = false;
   pedometerShow: boolean = false;
   taskShow: boolean = false;
   drawType: number = 1;
   drawShow: boolean = false;
   exchangeShow: boolean = false;
-  myLotteryNum:any=0;
+  myLotteryNum: any = 0;
   platform: string = app.platform.systemInfo.platform;
+  selectItem: any = {
+    needExchangeNum: 1,
+    exchangeNum: 3
+  };
   taskList: any = [
     {
       icon: "/static/act/playGroup/share.png",
       name: "分享活动页",
-      buttonText:'去分享',
-      action:'goShare'
+      buttonText: "去分享",
+      action: "goShare"
     },
     {
       icon: "/static/act/playGroup/pullMan.png",
       name: "好友助力",
-      buttonText:'去分享',
-      action:''
+      buttonText: "去分享",
+      action: ""
     },
     {
       icon: "/static/act/playGroup/goOut.png",
       name: "赠送一次卡密",
-      buttonText:'去完成',
-      action:''
+      buttonText: "去完成",
+      action: ""
     },
     {
       icon: "/static/act/playGroup/money.png",
       name: "每上组98元",
-      buttonText:'去完成',
-      action:'pageJump',
-      params:'/pages/goods/goods_find_list?classType=100'
+      buttonText: "去完成",
+      action: "pageJump",
+      params: "/pages/goods/goods_find_list?classType=100"
     }
   ];
-  groupList:any=[]
+  groupList: any = [];
   drawCard: any = {
     index: -1,
     list: []
   };
   drawTimer: any = null;
   parsePic: any = parsePic;
-  shareData:any={
-    shareUrl:"",
-    title:"集球员组合，兑海量上足券",
-    summary:"集球员组合，兑海量上足券",
-    thumb:""
-  }
-  helpCode:string=''
+  shareData: any = {
+    shareUrl: "",
+    title: "集球员组合，兑海量上足券",
+    summary: "集球员组合，兑海量上足券",
+    thumb: ""
+  };
+  helpCode: string = "";
   onLoad(query: any) {
-    if(!app.token.accessToken){
-      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${query.helpCode?"helpCode="+this.helpCode:""}` })
-      return
+    if (!app.token.accessToken) {
+      uni.redirectTo({
+        url: `/pages/login/login?redirect=/pages/act/playGroup/index?${
+          query.helpCode ? "helpCode=" + query.helpCode : ""
+        }`
+      });
+      return;
     }
+    if (query.helpCode) {
+      this.helpCode = query.helpCode;
+      this.helpPost();
+    }
+
     /* #ifdef APP-PLUS */
     if (this.platform == "ios") {
       UIImpactFeedbackGenerator = plus.ios.importClass(
@@ -187,7 +222,7 @@ export default class ClassName extends BaseNode {
       impact = new UIImpactFeedbackGenerator();
     }
     /* #endif */
-    // this.reqNewData();
+    this.reqNewData();
   }
   //   加载更多数据
   onReachBottom() {}
@@ -215,74 +250,138 @@ export default class ClassName extends BaseNode {
         return;
       }
       this.drawCard.index += 1;
-    }, 500);
+    }, 150);
   }
   onClickDraw(type: number) {
-    if(!app.token.accessToken){
-      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${this.helpCode?"helpCode="+this.helpCode:""}` })
-      return
+    if (!app.token.accessToken) {
+      uni.redirectTo({
+        url: `/pages/login/login?redirect=/pages/act/playGroup/index?${
+          this.helpCode ? "helpCode=" + this.helpCode : ""
+        }`
+      });
+      return;
     }
     this.drawShow = false;
     this.UIClickFeedBack();
-    this.postDraw(type)
+    this.postDraw(type);
   }
-  goShare(){
-    this.taskShow=false
-    this.operationShow=true
+  goShare() {
+    this.taskShow = false;
+    this.operationShow = true;
   }
-  getHelpCode(){
+  getHelpCode() {
     uni.showLoading({
-      title:''
-    })
-    app.http.Get('activity/playerGroup/share/help',{},(res:any)=>{
-      const {helpCode}=res
-      uni.hideLoading()
+      title: ""
+    });
+    app.http.Get("activity/playerGroup/share/help", {}, (res: any) => {
+      const { helpCode } = res;
+      uni.hideLoading();
       uni.share({
         provider: "weixin",
-        scene:'WXSceneSession',
-        href:`?helpCode=${helpCode}`,
-        title:'集球员组合,兑海量上足券',
-        summary:'为我助力',
-        imageUrl:''
-      })
-    })
-  }
-  postDraw(type:number){
-    uni.showLoading({
-      title: ''
-    })
-    app.http.Post('activity/playerGroup/lottery/go',{tp:type},(res:any)=>{
-      uni.hideLoading()
-      this.$nextTick(() => {
-        this.drawType = type;
-        this.drawCard.index = type == 1 ? 0 : -1;
-        this.drawCard.list = type == 5 ? mockList : [mockList[0]];
-        this.drawShow = true;
+        scene: "WXSceneSession",
+        href: `?helpCode=${helpCode}`,
+        title: "集球员组合,兑海量上足券",
+        summary: "为我助力",
+        imageUrl: ""
       });
-    },(err:any)=>{
-      uni.hideLoading()
-    })
+    });
   }
-  onClickExchange(item:any){
-    if(item.exchangeNum<=0){
-      uni.showToast({
-        title: '可兑换数量不足',
-        icon: 'none'
-      })
-      return
-    }
+  helpPost() {
+    app.http.Post(
+      "activity/playerGroup/help/" + this.helpCode,
+      {},
+      (res: any) => {
+        this.$nextTick(() => {
+          this.$refs.uToast.show({
+            type: "success",
+            message: "成功助力",
+            iconUrl: "https://cdn.uviewui.com/uview/demo/toast/success.png"
+          });
+        });
+      }
+    );
   }
-  onClickTask(task:any){
-    if(task.isFinish){
+  postDraw(type: number) {
+    uni.showLoading({
+      title: ""
+    });
+    app.http.Post(
+      "activity/playerGroup/lottery/go",
+      { goLotteryNum: type },
+      (res: any) => {
+        uni.hideLoading();
+        this.$nextTick(() => {
+          this.drawType = type;
+          this.drawCard.index = -1;
+          this.drawCard.list = res.players;
+          this.myLotteryNum = res.lotteryNum;
+          this.drawShow = true;
+          this.reqNewData();
+        });
+      },
+      (err: any) => {
+        uni.hideLoading();
+      }
+    );
+  }
+  onClickExchange(item: any) {
+    if (item.exchangeNum <= 0) {
       uni.showToast({
-        title: '今日完成次数已上限',
-        icon: 'none'
-      })
-      return
+        title: "可兑换数量不足",
+        icon: "none"
+      });
+      return;
     }
-    if(task.action){
-      const _this:any=this
-      _this[task.action](task.params||undefined)
+    item.needExchangeNum = 1;
+    this.selectItem = JSON.parse(JSON.stringify(item));
+    this.pedometerShow = true;
+  }
+  exchangeConfirm() {
+    uni.showModal({
+      title: "提示",
+      content: `确认兑换${this.selectItem.needExchangeNum}份${
+        this.selectItem.name
+      }对应的奖励吗?`,
+      success: (res: any) => {
+        if (res.confirm) this.exchangePost();
+      }
+    });
+  }
+  exchangePost() {
+    if (!this.selectItem.groupId) {
+      uni.showToast({
+        title: "信息核对错误,请重试",
+        icon: "none"
+      });
+      return;
+    }
+    uni.showLoading({
+      title:''
+    });
+    app.http.Post(
+      "activity/playerGroup/exchange/" + this.selectItem.groupId,
+      { exchangeNum: this.selectItem.needExchangeNum },
+      (res: any) => {
+        uni.showToast({
+          title: "兑换成功",
+          icon: "success"
+        });
+        this.reqNewData();
+        uni.hideLoading();
+      }
+    );
+  }
+  onClickTask(task: any) {
+    if (task.isFinish) {
+      uni.showToast({
+        title: "今日完成次数已上限",
+        icon: "none"
+      });
+      return;
+    }
+    if (task.action) {
+      const _this: any = this;
+      _this[task.action](task.params || undefined);
     }
   }
   //ui触感反馈(单次)
@@ -295,14 +394,18 @@ export default class ClassName extends BaseNode {
     }
     /* #endif */
   }
-  pageJump(url:string){
-    if(!app.token.accessToken){
-      uni.redirectTo({ url: `/pages/login/login?redirect=/pages/act/playGroup/index?${this.helpCode?"helpCode="+this.helpCode:""}` })
-      return
+  pageJump(url: string) {
+    if (!app.token.accessToken) {
+      uni.redirectTo({
+        url: `/pages/login/login?redirect=/pages/act/playGroup/index?${
+          this.helpCode ? "helpCode=" + this.helpCode : ""
+        }`
+      });
+      return;
     }
     uni.navigateTo({
       url
-    })
+    });
   }
   previewImage(list: any, index: number) {
     const urls = list.map((item: any) => this.parsePic(item.src));
@@ -311,17 +414,17 @@ export default class ClassName extends BaseNode {
       current: index
     });
   }
-  assignTaskList(taskList:any){
-    if(!taskList.length) return
-    this.taskList.forEach((item:any,index:number) => {
-      const findItem:any=taskList.find((taskItem:any)=>{
-        return item.name==taskItem.name
-      })
-      if(findItem){
-        this.taskList[index]={
+  assignTaskList(taskList: any) {
+    if (!taskList.length) return;
+    this.taskList.forEach((item: any, index: number) => {
+      const findItem: any = taskList.find((taskItem: any) => {
+        return item.name == taskItem.name;
+      });
+      if (findItem) {
+        this.taskList[index] = {
           ...item,
           ...findItem
-        }
+        };
       }
     });
   }
@@ -329,28 +432,36 @@ export default class ClassName extends BaseNode {
     app.http.Get("activity/playerGroup/home", {}, (res: any) => {
       console.log(res);
       // const data: any = res.data;
-      const {myLotteryNum,taskList,groupList}=res.data
-      this.myLotteryNum=myLotteryNum
-      this.groupList=groupList
-      this.assignTaskList(taskList)
+      const { myLotteryNum, taskList, groupList } = res.data;
+      this.myLotteryNum = myLotteryNum;
+      this.groupList = groupList;
+      this.assignTaskList(taskList);
     });
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 page {
   height: 100%;
+  background: #123a85;
 }
 
 @font-face {
   font-family: HYLiLiangHeiJ;
   src: url("https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.12/seller/info/16602943088150ns2974oh.ttf");
 }
+
 @font-face {
   font-family: YouSheBiaoTiHei;
   src: url("/static/act/playGroup/YouSheBiaoTiHei-2.ttf");
 }
+
+@font-face {
+  font-family: BDZongYi-A001;
+  src: url("/static/act/playGroup/BDZongYi.ttf");
+}
+
 .playContent {
   width: 750rpx;
   background-color: #123a85;
@@ -361,6 +472,7 @@ page {
     position: absolute;
     top: 0;
     z-index: 0;
+    background-color: #123a85;
 
     image {
       pointer-events: none;
@@ -370,69 +482,10 @@ page {
     }
   }
 }
-.taskItem {
-  display: flex;
-  align-items: center;
-  margin-bottom: 44rpx;
-  .taskItem-icon {
-    display: block;
-    width: 42rpx;
-    margin-right: 31rpx;
-  }
-  .taskItem-center {
-    flex: 1;
-  }
-  .taskItem-right {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 27rpx;
-    font-family: FZLanTingHeiS-R-GB;
-    font-weight: 400;
-    color: #ffffff;
-    width: 138rpx;
-    height: 53rpx;
-    background: #1b5ab6;
-    border-radius: 3rpx;
-  }
-  .taskItemGray{
-    width: 138rpx;
-height: 53rpx;
-background: #B5B5B5;
-border-radius: 3rpx;
-  }
-  .taskItem-name {
-    font-size: 29rpx;
-    font-family: PingFang SC;
-    font-weight: 600;
-    color: #333333;
-    margin-bottom: 4rpx;
-  }
-  .taskItem-tips {
-    display: flex;
-    font-size: 25rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
-    color: #757575;
-    text {
-      color: #ff0016;
-      margin-left: 8rpx;
-    }
-  }
-  .tips-left {
-    font-size: 25rpx;
-  }
-  .tips-right {
-    font-size: 25rpx;
-    margin-left: 40rpx;
-  }
-}
-.taskItem:first-child {
-  margin-top: 10rpx;
-}
+
 .rightTag {
   position: absolute;
-  right: -17rpx;
+  right: 0rpx;
   top: -8rpx;
   width: 118rpx;
   z-index: 2;
@@ -454,7 +507,7 @@ border-radius: 3rpx;
       color: #ffffff;
       position: relative;
       top: 60rpx;
-      left: 10rpx;
+      left: 30rpx;
     }
   }
 
@@ -592,32 +645,39 @@ border-radius: 3rpx;
     align-items: center;
     justify-items: flex-start;
   }
-  .collectCouponGray{
+
+  .collectCouponGray {
     background-image: url("/static/act/playGroup/couponGray.png");
   }
+
   .collect-coupon-top {
     font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: 600;
     color: #d8162e;
     line-height: 14rpx;
+
     text {
       font-size: 33rpx;
     }
   }
+
   .collect-coupon-bottom {
     font-size: 19rpx;
   }
+
   .collect-card {
     display: flex;
     justify-content: space-between;
     margin-top: 20rpx;
+
     .cardItem {
       width: 153rpx;
       height: 215rpx;
       //   background: #333333;
       position: relative;
     }
+
     .cardName {
       font-size: 25rpx;
       font-family: PingFang SC;
@@ -630,6 +690,7 @@ border-radius: 3rpx;
       //   text-overflow: ellipsis;
       margin-top: 14rpx;
     }
+
     .cardItem-badge {
       width: 28rpx;
       height: 28rpx;
@@ -646,14 +707,16 @@ border-radius: 3rpx;
       top: 0;
       right: 0;
     }
+
     .cardItem-img {
       width: 153rpx;
       height: 215rpx;
       display: block;
       position: relative;
     }
-    .noneImg::after{
-content: " ";
+
+    .noneImg::after {
+      content: " ";
       display: block;
       width: 153rpx;
       height: 215rpx;
@@ -664,6 +727,7 @@ content: " ";
       opacity: 0.63;
     }
   }
+
   .collect-coupon-gray {
     background-image: url("/static/act/playGroup/couponGray.png");
   }
@@ -680,6 +744,16 @@ content: " ";
     font-weight: 600;
     color: #333333;
     letter-spacing: 4rpx;
+    font-size: 33rpx;
+    font-family: BDZongYi-A001;
+    font-weight: normal;
+    font-style: italic;
+    color: #333333;
+    // line-height: 345px;
+
+    background: linear-gradient(to right, #9e2dd8, #ffd200);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .collect-msg-howMany {
@@ -689,6 +763,89 @@ content: " ";
     color: #333333;
   }
 }
+
+.popuContainer {
+  width: 750rpx;
+  height: 571rpx;
+  background: #ffffff;
+}
+
+.taskItem {
+  // width: 750rpx;
+  // flex-wrap: nowrap;
+  // background: red;
+  display: flex;
+  align-items: center;
+  flex-direction: row !important;
+  margin-bottom: 44rpx;
+
+  .taskItem-icon {
+    display: block;
+    width: 42rpx;
+    margin-right: 31rpx;
+  }
+
+  .taskItem-center {
+    flex: 1;
+  }
+
+  .taskItem-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27rpx;
+    font-family: FZLanTingHeiS-R-GB;
+    font-weight: 400;
+    color: #ffffff;
+    flex-direction: row !important;
+    width: 138rpx;
+    height: 53rpx;
+    background: #1b5ab6;
+    border-radius: 3rpx;
+  }
+
+  .taskItemGray {
+    width: 138rpx;
+    height: 53rpx;
+    background: #b5b5b5;
+    border-radius: 3rpx;
+  }
+
+  .taskItem-name {
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 4rpx;
+  }
+
+  .taskItem-tips {
+    display: flex;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #757575;
+
+    text {
+      color: #ff0016;
+      margin-left: 8rpx;
+    }
+  }
+
+  .tips-left {
+    font-size: 25rpx;
+  }
+
+  .tips-right {
+    font-size: 25rpx;
+    margin-left: 40rpx;
+  }
+}
+
+.taskItem:first-child {
+  margin-top: 10rpx;
+}
+
 .giveBlock {
   width: 153rpx;
   height: 99rpx;
@@ -699,6 +856,7 @@ content: " ";
   bottom: calc(45rpx + constant(safe-area-inset-bottom));
   bottom: calc(45rpx + env(safe-area-inset-bottom));
 }
+
 .drawCardMask {
   position: fixed;
   top: 0;
@@ -708,6 +866,7 @@ content: " ";
   background-color: rgba(0, 0, 0, 0.61);
   z-index: 9;
 }
+
 .drawCard {
   position: fixed;
   top: 0;
@@ -716,6 +875,7 @@ content: " ";
   right: 0;
   z-index: 10;
 }
+
 .singleImage {
   width: 358rpx;
   height: 504rpx;
@@ -723,20 +883,25 @@ content: " ";
   margin: 0 auto;
   margin-bottom: 30rpx;
 }
+
 .transitionAll {
   transition: all 0.3s;
 }
+
 .transitionDelay {
   transition-delay: 0.3s;
 }
+
 .opacity0 {
   opacity: 0;
   pointer-events: none;
 }
+
 .opacity1 {
   opacity: 1;
   pointer-events: auto;
 }
+
 .congratulations {
   font-size: 67rpx;
   font-family: YouSheBiaoTiHei;
@@ -748,6 +913,7 @@ content: " ";
   letter-spacing: 2rpx;
   margin-bottom: 12rpx;
 }
+
 .teamList {
   font-size: 35rpx;
   font-family: PingFang SC;
@@ -759,6 +925,7 @@ content: " ";
   text-align: center;
   letter-spacing: 2rpx;
 }
+
 .againButton {
   display: flex;
   align-items: center;
@@ -775,6 +942,7 @@ content: " ";
   margin-top: 20rpx;
   letter-spacing: 2rpx;
 }
+
 .close {
   width: 47rpx;
   height: 47rpx;
@@ -783,6 +951,7 @@ content: " ";
   margin: 0 auto;
   margin-top: 49rpx;
 }
+
 .fiveCardContainer {
   box-sizing: border-box;
   width: 710rpx;

@@ -6,18 +6,18 @@
             <view class="drawer-title">兑换奖品</view>
             <view class="drawer-introduction">请输入兑换数量</view>
             <view class="pedoBox">
-                <view class="peodoBox-action">
+                <view class="peodoBox-action" @click="peodoAction('reduce')">
                     <view class="peodoBox-reduce"></view>
                 </view>
-                <input type="number" class="peodoBox-input">
-                <view class="peodoBox-action peodoBox-action-left">
+                <input type="number" class="peodoBox-input" @input="onInput" ref='peodoBoxInput' :value="value">
+                <view class="peodoBox-action peodoBox-action-left" @click="peodoAction('add')">
                     <image class="peodoBox-add" src="/static/act/playGroup/add.png" mode="scaleToFill" />
                 </view>
-                <view class="peodoBox-max" style="color:#1B5AB6">MAX</view>
+                <view class="peodoBox-max" style="color:#1B5AB6" @click="nowValue=nowMaxValue">MAX</view>
             </view>
             <view class="drawer-bottom">
                 <view class="peodoBox-button" @click="onClickCloseDrawer()">取消</view>
-                <view class="peodoBox-button peodoBox-confirm">确认</view>
+                <view class="peodoBox-button peodoBox-confirm" @click="$u.throttle(onConfirm,500)">确认</view>
             </view>
             <!-- <view class="drawer-header">
                 {{title}}
@@ -42,7 +42,14 @@
             type: Boolean
         })
         showValue!: Boolean;
-
+        @PropSync("value", {
+            type: Number
+        })
+        nowValue!: any;
+        @PropSync("maxValue", {
+            type: Number
+        })
+        nowMaxValue!: number;
         @Prop({ default: "" })
         title!: string;
         @Prop({ default: "" })
@@ -53,6 +60,7 @@
             default: "%"
         })
         heightType!: string;
+        inputTimer:any=null
         created() {
             //在实例创建完成后被立即调用
         }
@@ -60,7 +68,48 @@
             //挂载到实例上去之后调用
         }
         destroyed() { }
+        peodoAction(type: string) {
+            if (!this.nowValue || this.nowValue == '0') this.nowValue = 0
+            const shouldVal = type == 'add' ? this.nowValue + 1 : this.nowValue - 1
+            this.checkNum(shouldVal)
+        }
+        checkNum(shouldVal: any) {
+            shouldVal = Number(shouldVal)
+            if (shouldVal <= 0) this.nowValue = 0
+            if (shouldVal >= this.nowMaxValue) this.nowValue = this.nowMaxValue
+            if (shouldVal < this.nowMaxValue && shouldVal > 0) this.nowValue = shouldVal
+            this.$refs.peodoBoxInput.valueSync = this.nowValue
+        }
+        onInput(event: any) {
+            const { value } = event.detail
+            this.inputTimer && clearTimeout(this.inputTimer)
+            if (value == '') {
+                this.inputTimer = setTimeout(() => {
+                   this.nowValue = 0
+                     this.$refs.peodoBoxInput.valueSync = 0
+                }, 100)
+                return
+            } else {
+                this.inputTimer = setTimeout(() => {
+                    this.checkNum(value)
+                }, 100)
+            }
+        }
+        onConfirm(){
+            if(!this.nowValue){
+                console.log(33333);
+                
+                uni.showToast({
+                    title:'请核对数量',
+                    icon:'none'
+                })
+                return
+            }
+            this.showValue=false
+            this.$emit('confirm');
+        }
         onClickCloseDrawer() {
+            
             this.$emit("closeDrawer");
             this.showValue = false;
         }
@@ -74,7 +123,7 @@
         left: 0;
         height: 100%;
         width: 100%;
-        z-index: 99998;
+        z-index: 999;
         background: rgba(0, 0, 0, 0.5);
     }
 
@@ -93,7 +142,7 @@
         // height:60%;
         // width: 100%;
         background: #fff;
-        z-index: 99999;
+        z-index: 1000;
         box-sizing: border-box;
         transition: all 0.2s;
         border-radius: 5rpx 5rpx 0px 0px;

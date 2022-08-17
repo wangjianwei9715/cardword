@@ -15,7 +15,7 @@
                     <view class="peodoBox-action" @click="peodoAction('reduce',item,index)">
                         <view class="peodoBox-reduce"></view>
                     </view>
-                    <input type="number" :value="item.selectNum" @input="onInput($event,item)" ref="peoInput"
+                    <input type="number" :value="item.selectNum" @input="onInput($event,item,index)" ref="peoInput"
                         class="peodoBox-input" />
                     <view class="peodoBox-action peodoBox-action-left" @click="peodoAction('add',item,index)">
                         <image class="peodoBox-add" src="/static/act/playGroup/add.png" mode="scaleToFill" />
@@ -56,15 +56,18 @@
             this.allSelectNum=allSelectNum
             return allSelectNum
         }
+        onLoad(){
+            this.reqNewData()
+        }
         onClickRightText() {
             this.pageJump("/pages/act/playGroup/giveList")
         }
         peodoAction(type: string, item: any, index: number) {
             if (!item.selectNum || item.selectNum == '0') item.selectNum = 0
             const shouldVal = type == 'add' ? item.selectNum + 1 : item.selectNum - 1
-            this.checkNum(shouldVal, item)
+            this.checkNum(shouldVal, item,index)
         }
-        onInput(event: any, item: any) {
+        onInput(event: any, item: any,index:number) {
             const { value } = event.detail
             this.inputTimer && clearTimeout(this.inputTimer)
             if (value == '') {
@@ -75,16 +78,16 @@
                 return
             } else {
                 this.inputTimer = setTimeout(() => {
-                    this.checkNum(value, item)
+                    this.checkNum(value, item,index)
                 }, 100)
             }
         }
-        checkNum(shouldVal: any, item: any) {
+        checkNum(shouldVal: any, item: any,index:number) {
             shouldVal = Number(shouldVal)
             if (shouldVal <= 0) item.selectNum = 0
             if (shouldVal >= item.num) item.selectNum = item.num
             if (shouldVal < item.num && shouldVal > 0) item.selectNum = shouldVal
-            this.$refs.peoInput[0].valueSync = item.selectNum
+            this.$refs.peoInput[index].valueSync = item.selectNum
         }
         onClickSend(){
             if(!this.receive_userId){

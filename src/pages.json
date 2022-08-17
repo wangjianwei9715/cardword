@@ -266,10 +266,12 @@
 				{
 					"path": "playGroup/index", 
 					"style": {
-						"navigationStyle": "custom",
+						"navigationBarTitleText": "集球员组合",
+						// "navigationStyle": "custom",
 						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB",
+						"backgroundColorTop": "#103b83",
+						"backgroundColorBottom": "#103b83",
+						"backgroundColor":"#103b83",
 						"app-plus": {
 							"softinputNavBar": "none"
 						}

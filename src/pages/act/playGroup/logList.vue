@@ -8,14 +8,16 @@
         <view class="giveItem uni-flex" v-for="(item,index) in list" :key="index">
             <view class="giveItem-left uni-flex">
                 <view class="giveItem-title">兑换：{{item.name}}</view>
-                <view class="giveItem-time">{{item.created_at}}</view>
+                <view class="giveItem-time">{{dateFormat(item.created_at)}}</view>
             </view>
             <view class="giveItem-right uni-flex">
                 <text>{{item.awardName}}</text>
-                <image src="/static/act/playGroup/couponUp.png" mode="scaleToFill" />
+                <image v-if="queryParams.tp==1" src="/static/act/playGroup/couponUp.png" mode="scaleToFill" />
             </view>
         </view>
+        <empty v-if='!list || !list.length'/>
     </view>
+    
 </template>
 
 <script lang="ts" scoped>
@@ -23,7 +25,7 @@
     import { app } from "@/app";
     import { Component, Watch } from "vue-property-decorator";
     import BaseNode from "../../../base/BaseNode.vue";
-    import { parsePic } from "@/tools/util";
+    import { parsePic,dateFormat } from "@/tools/util";
     @Component({})
     export default class ClassName extends BaseNode {
         parsePic: any = parsePic
@@ -31,6 +33,7 @@
             index: 0,
             list: [{ label: '兑奖明细',value:1 }, { label: '抽奖明细',value:2 }]
         }
+        dateFormat:any=dateFormat
         queryParams: any = {
             pageIndex: 1,
             pageSize: 20,
@@ -56,6 +59,7 @@
             this.tab.index = index
             this.queryParams.tp = item.value
             this.queryParams.pageIndex = 1
+            this.list=[]
             this.reqNewData()
         }
         pageJump(url: string) {
@@ -103,6 +107,7 @@
     }
 
     .tabBar-item {
+        text-align: center;
         font-size: 28rpx;
         font-family: PingFang SC;
         font-weight: 400;
@@ -132,7 +137,6 @@
     .giveItem-left {
         flex-direction: column;
         justify-content: space-between;
-
     }
 
     .giveItem-title {

@@ -14,7 +14,7 @@
                 <view class="msg-right">{{item.send_at}}</view>
             </view>
         </view>
-        <empty v-if='!list.length'/>
+        <empty v-if='!list||!list.length'/>
     </view>
 </template>
 
@@ -52,6 +52,7 @@
             }
         }
         onClickTab(item: any, index: number) {
+            console.log(index);
             if (index == this.tab.index) return
             this.tab.index = index
             this.queryParams.tp = item.value
