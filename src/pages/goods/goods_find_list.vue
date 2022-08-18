@@ -42,7 +42,7 @@
 	} from "@/app";
 	import {
 		Md5
-	} from "ts-md5/dist/md5";
+	} from "ts-md5";
 	import {
 		Component
 	} from "vue-property-decorator";

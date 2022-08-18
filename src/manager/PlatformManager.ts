@@ -1,7 +1,7 @@
 import { app } from "@/app";
 import permision from "@/js_sdk/wa-permission/permission"
 import HttpRequest from "@/net/HttpRequest";
-import {Md5} from 'ts-md5/dist/md5';
+import {Md5} from 'ts-md5';
 import UpdateManager from "@/manager/UpdateManager";
 export default class PlatformManager {
 	private static instance: PlatformManager;

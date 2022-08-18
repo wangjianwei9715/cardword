@@ -33,7 +33,7 @@
 	import {
 		Component
 	} from "vue-property-decorator";
-	import {Md5} from 'ts-md5/dist/md5';
+	import {Md5} from 'ts-md5';
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {

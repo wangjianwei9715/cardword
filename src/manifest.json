@@ -109,7 +109,8 @@
                         // 合并到工程entitlements文件的数据（json格式）  
                         "com.apple.developer.associated-domains" : [ "applinks:www.ka-world.com" ]
                     }
-                }
+                },
+                "dSYMs" : false
             },
             /* ios打包配置 */
             "sdkConfigs" : {
