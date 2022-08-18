@@ -179,6 +179,7 @@ import { Md5 } from "ts-md5";
 		onceLoad = true;
 		// 猜你喜欢
 		likeGoodList:any = [];
+		relativeOnce = false
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -308,7 +309,8 @@ import { Md5 } from "ts-md5";
 		}
 		getRelative(id:number,params:any){
 			app.http.Get(`good/${id}/relative`,params,(res:any)=>{
-				if(res.state==0){
+				if(res.state==0&& !this.relativeOnce){
+					this.relativeOnce = true
 					setTimeout(()=>{
 						this.getRelative(id,params)
 					},500)
