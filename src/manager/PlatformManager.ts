@@ -475,6 +475,8 @@ export default class PlatformManager {
 			url: '/pages/talk/index?url_params='+JSON.stringify(params)
 		})
 	}
+	// 字符修剪
+	trimString = (str: string, char: string): string => str.split(char).filter(Boolean).join();
 	// 去重
 	removeDuplicate = <T,_>(arr: T[]): T[] => arr.filter((i) => arr.indexOf(i) === arr.lastIndexOf(i));
 	phoneAspect(): boolean {

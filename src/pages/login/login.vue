@@ -61,9 +61,6 @@
 			'+853',
 			'+886'
 		]
-		phoneTypeArrayNum = [
-			'86','852','853','886'
-		]
 		phoneTypeIndex = 0;
 		phone = '';
 		vcode = '';
@@ -114,9 +111,9 @@
 			if(this.codeCountdown>0){
 				return;
 			}
-			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.phone;
-
-			app.http.Post('user/code',{phone:phone,type:'login'},(data:any)=>{
+			let phone = this.phoneTypeArray[this.phoneTypeIndex]+this.phone;
+			phone = app.platform.trimString(phone,'+')
+			app.http.Post('user/code',{phone,type:'login'},(data:any)=>{
 				this.getCode = true
 				this.codeCountdown = 60
 				let interval = this.scheduler(() => {
@@ -134,20 +131,18 @@
 				return;
 			};
 
-			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.phone;
+			let phone = this.phoneTypeArray[this.phoneTypeIndex]+this.phone;
+			phone = app.platform.trimString(phone,'+')
 			let params:any = {
-				phone:phone,
+				phone,
 				uuid:app.platform.deviceID,
 				os:app.platform.systemInfo.platform,
 				device:app.platform.systemInfo.model
 			};
 			if(this.codeLogin){
-				if(!this.getCode){
-					uni.showToast({ title: '请先获取验证码！', icon: 'none', duration: 2000 });
-					return;
-				}
-				if(this.vcode==''){
-					uni.showToast({ title: '请输入验证码', icon: 'none', duration: 2000 });
+				if(!this.getCode || this.vcode==''){
+					const title = !this.getCode ? '请先获取验证码！' : '请输入验证码'
+					uni.showToast({ title, icon: 'none', duration: 2000 });
 					return;
 				}
 				params.code = this.vcode;
@@ -242,10 +237,8 @@
 			if(app.familial){
 				domian +='&oldUser=true&version='+app.version
 			}
-			let params = {
-				content:encodeURIComponent(domian)
-			}
-			app.http.Post('user/domain',params)
+			
+			app.http.Post('user/domain',{content:encodeURIComponent(domian)})
 		}
 		loginSuccessJump(){
 			if(!this.redirect){
