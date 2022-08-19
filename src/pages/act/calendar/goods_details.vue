@@ -7,7 +7,7 @@
 		<!-- 商品图片 -->
 		<view class="pic-content">
 			<swiper class="swiper" :indicator-dots="goodsImg.length>1" autoplay="true" circular="true" indicator-active-color="#ffffff">
-				<swiper-item v-for="(item,index) in goodsImg" :key="index" @click="onClickPreviewImage(index)">
+				<swiper-item v-for="(item,index) in goodsImg" :key="index" @click="onClickPreviewImage(index,goodsImg)">
 					<view class="goods-img-content">
 						<image class="goods-img" :src="decodeURIComponent(item)" />
 					</view>
@@ -39,7 +39,7 @@
 			<view class="goods-box-title">产品介绍</view>
 			<view class="desc-box" v-html="decodeURIComponent(goodsData.content)"></view>
 			<view class="goods-box-img" v-for="(item,index) in goodsContentPic" :key="index">
-				<image class="goods-box-img"  :src="decodeURIComponent(item)" mode="widthFix" @click="onClickPreviewContentImage(index)" />
+				<image class="goods-box-img"  :src="decodeURIComponent(item)" mode="widthFix" @click="onClickPreviewImage(index,goodsContentPic)" />
 			</view>
 		</view>
 
@@ -83,18 +83,18 @@
 		// 数据详情赋值
 		getGoodData(id:any){
 			app.http.Get('dataApi/function/calendar/detail/'+id,{},(res:any)=>{
-				let goodsImg = res.data.pics;
-				this.goodsImg = goodsImg.map((x:any)=>{
+				const data = res.data
+				this.goodsData = uni.$u.deepClone(data);
+				this.goodsImg = data.pics.map((x:any)=>{
 					return this.parsePic(decodeURIComponent(x))
 				})
 				this.goodsContentPic = [];
-				if(!uni.$u.test.isEmpty(res.data.content_pics)){
-					this.goodsContentPic = res.data.content_pics.map((x:any)=>{
+				if(!uni.$u.test.isEmpty(data.content_pics)){
+					this.goodsContentPic = data.content_pics.map((x:any)=>{
 						return this.parsePic(decodeURIComponent(x))
 					})
 				}
-				console.log(this.goodsContentPic)
-				this.goodsData = res.data;
+				
 				if(this.shareData.shareUrl==''){
 					this.shareData = {
 						shareUrl:"https://www.ka-world.com/share/h5/index.html#/pages/calendar/goods_details?id="+this.goodsId,  
@@ -113,16 +113,9 @@
 			})
 		}
 		// 观看大图
-		onClickPreviewImage(index:number){
+		onClickPreviewImage(index:number,urls:string[]){
 			uni.previewImage({
-				urls: this.goodsImg,
-				current:index,
-				indicator: "number" 
-			});
-		}
-		onClickPreviewContentImage(index:number){
-			uni.previewImage({
-				urls: this.goodsContentPic,
+				urls: urls,
 				current:index,
 				indicator: "number" 
 			});
