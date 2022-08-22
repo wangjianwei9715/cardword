@@ -20,18 +20,25 @@
 		// 兑换码
 		exchangeVal = '';
 		onLoad(query:any) {
-			
+			const coupon = uni.getStorageSync('couponCode');
+			if(coupon) this.exchangeVal = coupon;
 		}
 		onClickExchange(){
+			if (!app.token.accessToken) {
+				uni.redirectTo({
+					url: '/pages/login/login?redirect=/pages/userinfo/coupon/coupon_exchange'
+				});
+				return;
+			}
 			if(this.exchangeVal=='') return;
-
+			uni.removeStorageSync('couponCode');
 			app.http.Post('me/coupon/exchange',{code:this.exchangeVal},(res:any)=>{
 				uni.showToast({
 					title:'兑换成功'
 				});
 				app.coupon ++;
 				uni.$emit('couponExchange')
-				this.exchangeVal = ''
+				this.exchangeVal = '';
 			})
 		}
 	}

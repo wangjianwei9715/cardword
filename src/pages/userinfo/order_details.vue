@@ -316,7 +316,7 @@ import { Md5 } from "ts-md5";
 					},500)
 					return;
 				}
-				this.likeGoodList = res.state == 1 ? res.goodList : []
+				this.likeGoodList = res.state == 1 && res.goodList ? res.goodList : []
 			})
 		}
 		// 获取解锁卡密效果

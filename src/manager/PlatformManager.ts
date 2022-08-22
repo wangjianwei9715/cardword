@@ -352,6 +352,22 @@ export default class PlatformManager {
 			this.checkShareNo(app.requestKey)
 		}
 	}
+	matchRequestKey(regular:any,code:string,cb?:Function){
+		let key:any = ''
+		if(regular.test(code)){
+			key = code.match(regular);
+			this.setClipboardEmpty();
+			cb && cb(key[0])
+		}
+	}
+	setClipboardEmpty(){
+		uni.setClipboardData({
+			data: '',
+			showToast:false,
+			success: ()=> {
+			}
+		});
+	}
 	checkShareNo(code:string){
 		let ts = Math.floor(new Date().getTime()/1000);
 		let params = {

@@ -462,7 +462,7 @@
 					},500)
 					return;
 				}
-				this.likeGoodList = res.state == 1 ? res.goodList : []
+				this.likeGoodList = res.state == 1 && res.goodList ? res.goodList : []
 			})
 		}
 		getProgress() {
