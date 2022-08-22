@@ -1,7 +1,9 @@
+type CustomArray = (number|string)[]
+
 import { app } from "@/app";
 import permision from "@/js_sdk/wa-permission/permission"
 import HttpRequest from "@/net/HttpRequest";
-import {Md5} from 'ts-md5/dist/md5';
+import {Md5} from 'ts-md5';
 import UpdateManager from "@/manager/UpdateManager";
 export default class PlatformManager {
 	private static instance: PlatformManager;
@@ -13,7 +15,7 @@ export default class PlatformManager {
 	urlIndex = 0;
 	private constructor() {
 		this.deviceID = this.systemInfo.deviceId;
-		console.log('########Platform:', this.systemInfo);
+		// console.log('########Platform:', this.systemInfo);
 		app.statusBarHeight = this.systemInfo.statusBarHeight;
 		// #ifdef APP-PLUS
 		this.isIos = (plus.os.name == "iOS");
@@ -227,7 +229,7 @@ export default class PlatformManager {
 	postLaunch(loginToken:any,launchUrl:any,params:any,cb:Function){
 		let url = app.service_url != ''? app.service_url : this.lastCharacter(launchUrl[this.urlIndex]);
 		app.http.Post(url + "/api/app/launch", params, (res: any) => {
-			console.log("post  /api/app/launch=", res);
+			// console.log("post  /api/app/launch=", res);
 			app.service_url = url;
 			// bussinessApiDomain     主接口域名
 			// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
@@ -260,8 +262,8 @@ export default class PlatformManager {
 			});
 			if (loginToken) this.getAccess()
 			
-			console.log("bussinessApiDomain==========", app.bussinessApiDomain);
-			console.log("dataApiDomain==========", app.dataApiDomain);
+			// console.log("bussinessApiDomain==========", app.bussinessApiDomain);
+			// console.log("dataApiDomain==========", app.dataApiDomain);
 		},()=>{
 			let launchData = uni.getStorageSync("launchData");
 			if(launchData!=''){
@@ -297,7 +299,6 @@ export default class PlatformManager {
 			device: app.platform.systemInfo.brand + app.platform.systemInfo.model,
 		};
 		HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
-			console.log("access=====", data);
 			app.data = data.data;
 			app.opKey = data.opKey;
 			app.coupon = data.data.coupon;
@@ -341,7 +342,6 @@ export default class PlatformManager {
 		let key:any = ''
 		if(inviteCode.test(code)){
 			key = code.match(inviteCode);
-			console.log('邀请码code=========',key[0])
 			app.requestKey = key[0];
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -351,6 +351,22 @@ export default class PlatformManager {
 			}
 			this.checkShareNo(app.requestKey)
 		}
+	}
+	matchRequestKey(regular:any,code:string,cb?:Function){
+		let key:any = ''
+		if(regular.test(code)){
+			key = code.match(regular);
+			this.setClipboardEmpty();
+			cb && cb(key[0])
+		}
+	}
+	setClipboardEmpty(){
+		uni.setClipboardData({
+			data: '',
+			showToast:false,
+			success: ()=> {
+			}
+		});
 	}
 	checkShareNo(code:string){
 		let ts = Math.floor(new Date().getTime()/1000);
@@ -377,7 +393,6 @@ export default class PlatformManager {
 	inviteRequestKey(key:string,cb?:Function){
 		app.http.Post('activity/invite/requestKey',{key:key},(res:any)=>{
 			if(cb) cb(res)
-			console.log('invite/requestKey========',res)
 		})
 		app.requestKey = '';
 		uni.setClipboardData({
@@ -395,7 +410,6 @@ export default class PlatformManager {
             success: (res: any) => {
                 uni.hideLoading();
                 // 在H5平台下，tempFilePath 为 base64
-                console.log("res.tempFilePath:" + res.tempFilePath);
                 if (func) {
                     func(res);
                 }
@@ -475,8 +489,21 @@ export default class PlatformManager {
 			url: '/pages/talk/index?url_params='+JSON.stringify(params)
 		})
 	}
+	// 字符修剪
+	trimString = (str: string, char: string): string => str.split(char).filter(Boolean).join();
 	// 去重
 	removeDuplicate = <T,_>(arr: T[]): T[] => arr.filter((i) => arr.indexOf(i) === arr.lastIndexOf(i));
+	// 重复数
+	findRepeatNumber(nums:CustomArray){
+		const unique = new Set();
+		for(const num of nums){
+			if(unique.has(num)){
+				return num
+			}
+			unique.add(num)
+		}
+		return -1;
+	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false
 		return aspect;

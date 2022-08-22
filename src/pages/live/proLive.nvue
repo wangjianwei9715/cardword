@@ -303,7 +303,7 @@ import fixdInput from "./components/fixdInput.nvue";
 import nvueShare from "./components/nvueShare.nvue";
 import request from "@/net/nuveRequest";
 import permision from "@/js_sdk/wa-permission/permission";
-import { Md5 } from "ts-md5/dist/md5";
+import { Md5 } from "ts-md5";
 import { PackageBase } from "@/net/PackageBase";
 import { Message } from "@/net/NetDefine";
 import * as proto from "../../net/proto";

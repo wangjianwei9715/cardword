@@ -22,7 +22,7 @@
 	import permision from "@/js_sdk/wa-permission/permission"
 	import {
 		Md5
-	} from 'ts-md5/dist/md5';
+	} from 'ts-md5';
 	import {
 		PackageBase
 	} from "@/net/PackageBase";

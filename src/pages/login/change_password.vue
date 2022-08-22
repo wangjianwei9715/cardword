@@ -46,7 +46,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import HttpRequest from "../../net/HttpRequest";
-	import {Md5} from 'ts-md5/dist/md5';
+	import {Md5} from 'ts-md5';
 import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseNode {

@@ -32,7 +32,7 @@
 
 <script>
 import request from "@/net/nuveRequest";
-import { Md5 } from "ts-md5/dist/md5";
+import { Md5 } from "ts-md5";
 const app = getApp().globalData.app;
 export default {
   data() {

@@ -462,7 +462,7 @@
 					},500)
 					return;
 				}
-				this.likeGoodList = res.state == 1 ? res.goodList : []
+				this.likeGoodList = res.state == 1 && res.goodList ? res.goodList : []
 			})
 		}
 		getProgress() {
@@ -663,7 +663,7 @@
 			currentWebview.setStyle({  
 				pullToRefresh: {  
 					support: isPull,  
-					style: plus.os.name === 'Android' ? 'circle' : 'default'  
+					style: 'circle'
 				}  
 			});  
 			//#endif
@@ -695,7 +695,7 @@
 				})
 				return;
 			}
-			if (goodData.totalNum - (goodData.currentNum + goodData.lockNum) <= 0) {
+			if (this.goodSurplusNum <= 0) {
 				uni.showToast({
 					title: '该商品已售罄',
 					icon: 'none'
@@ -980,7 +980,7 @@
 			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
 			const str = saleRatio > width ? 
 			`${saleRatio}%`:
-			`余${item.totalNum-(item.currentNum+item.lockNum)}/共${item.totalNum}`;
+			`余${this.goodSurplusNum}/共${item.totalNum}`;
 			this.planData = {
 				width:Math.max(width,saleRatio),
 				str
@@ -989,7 +989,11 @@
 		onClickCloseDrawer() {
 			this.showDrawer = false;
 		}
-
+		// 商品剩余数量
+		public get goodSurplusNum() : number {
+			const goodData = this.goodsData;
+			return goodData.totalNum - (goodData.currentNum + goodData.lockNum)
+		}
 	}
 </script>
 

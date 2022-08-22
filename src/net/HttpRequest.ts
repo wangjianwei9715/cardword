@@ -1,7 +1,7 @@
 import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
 import { data } from 'browserslist';
-import {Md5} from 'ts-md5/dist/md5';
+import {Md5} from 'ts-md5';
 import {
 	objKeySort,
 	getUrlDataFN

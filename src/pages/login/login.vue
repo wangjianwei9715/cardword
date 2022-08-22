@@ -50,7 +50,7 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-	import { Md5 } from "ts-md5/dist/md5";
+	import { Md5 } from "ts-md5";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
@@ -60,9 +60,6 @@
 			'+852',
 			'+853',
 			'+886'
-		]
-		phoneTypeArrayNum = [
-			'86','852','853','886'
 		]
 		phoneTypeIndex = 0;
 		phone = '';
@@ -74,7 +71,6 @@
 		codeLogin = false;
 		popupHid = true;
 		iosLogin = app.iosPlatform;
-		loginIng = false;
 		redirect:string=''
 		onLoad(query:any) {
 			if(query.redirect) this.redirect=query.redirect
@@ -115,9 +111,9 @@
 			if(this.codeCountdown>0){
 				return;
 			}
-			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.phone;
-
-			app.http.Post('user/code',{phone:phone,type:'login'},(data:any)=>{
+			let phone = this.phoneTypeArray[this.phoneTypeIndex]+this.phone;
+			phone = app.platform.trimString(phone,'+')
+			app.http.Post('user/code',{phone,type:'login'},(data:any)=>{
 				this.getCode = true
 				this.codeCountdown = 60
 				let interval = this.scheduler(() => {
@@ -128,74 +124,121 @@
 				}, 1);
 			})
 		}
-		// 登录
+		// 手机号登录
 		onClickLogin(){
 			if(!this.xieyiAgree){
-				uni.showToast({
-					title: '请先阅读并同意协议！',
-					icon: 'none',
-					duration: 2000
-				});
+				uni.showToast({ title: '请先阅读并同意协议！', icon: 'none', duration: 2000 });
 				return;
 			};
-			if(this.loginIng) return;
-			
-			this.loginIng = true;
-			setTimeout(()=>{
-				this.loginIng = false;
-			},1000)
+
+			let phone = this.phoneTypeArray[this.phoneTypeIndex]+this.phone;
+			phone = app.platform.trimString(phone,'+')
+			let params:any = {
+				phone,
+				uuid:app.platform.deviceID,
+				os:app.platform.systemInfo.platform,
+				device:app.platform.systemInfo.model
+			};
 			if(this.codeLogin){
-				this.onClickCodeLogin()
+				if(!this.getCode || this.vcode==''){
+					const title = !this.getCode ? '请先获取验证码！' : '请输入验证码'
+					uni.showToast({ title, icon: 'none', duration: 2000 });
+					return;
+				}
+				params.code = this.vcode;
 			}else{
-				this.onClickPwLogin()
+				if(this.password == ''){
+					uni.showToast({ title: '请输入密码！', icon: 'none', duration: 2000 });
+					return;
+				}
+				params.password = Md5.hashStr(this.password+'_pmpm')
 			}
+			this.postLogin('user/login/phone',params)
 		}
-		onClickCodeLogin(){
+		// 微信登录
+		onClickWechatLogin(){
+			if(!this.xieyiAgree){
+				uni.showToast({ title: '请先阅读并同意协议！', icon: 'none', duration: 2000 });
+				return;
+			};
+			uni.showLoading({ title: '加载中' });
+			uni.getProvider({
+				service: 'oauth',
+				success: (res)=> {
+					if (~res.provider.indexOf('weixin')) {
+						uni.login({
+							provider: 'weixin',
+							success: (loginRes:any)=> {
+								let params = {
+									weixinToken:loginRes.authResult.access_token,
+									unionid:loginRes.authResult.unionid,
+									openid:loginRes.authResult.openid,
+									uuid:app.platform.deviceID,
+									os:app.platform.systemInfo.platform,
+									device:app.platform.systemInfo.brand+app.platform.systemInfo.model
+								}
+								this.postLogin('user/login/wechat/app',params)
+							},
+							fail:(loginRes:any)=>{
+								uni.showToast({ title:'请确认已经安装微信', icon:'none' })
+							}
+						});
+					}
+				}
+			});
+		}
+		// 苹果登录
+		onClickAppleLogin(){
+			uni.showLoading({ title: '加载中' });
+			uni.login({  
+				provider: 'apple',  
+				success: (loginRes:any)=> {  
+					let params = {
+						openid:loginRes.authResult.openid,
+						uuid:app.platform.deviceID,
+						os:app.platform.systemInfo.platform,
+						device:app.platform.systemInfo.brand+app.platform.systemInfo.model
+					}
+					this.postLogin('user/login/apple',params)
+				},  
+				fail: (err)=> {  
+					uni.hideLoading()
+					// 登录失败  
+				}  
+			});  
+		}
+		postLogin(url:string,params:any){
+			app.http.Post(url,params,(data:any)=>{
+				uni.hideLoading();
+				if(app.requestKey!=''){
+					app.platform.checkShareNo(app.requestKey)
+				}
+				app.data = data.data;
+				app.opKey = data.opKey;
+				app.coupon = data.data.coupon;
+				uni.setStorageSync("app_opk", data.opKey);
+				app.socketInfo = data.app;
+				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
+				if(data.app.launchDomain&&data.app.launchDomain!=''){
+					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
+				}
+				this.postDomain()
+				uni.setStorageSync("token", JSON.stringify(app.token));
+				uni.setStorageSync("ksjUserId", data.data.userId);
+				uni.$emit('loginSuccess');
+				this.loginSuccessJump()
+			})
+		}
+		postDomain(){
+			let domian = app.bussinessApiDomain.slice(0,app.bussinessApiDomain.indexOf('/api'));
+			if(app.service_url!=''){
+				domian +='&'+app.service_url
+			}
+			if(app.familial){
+				domian +='&oldUser=true&version='+app.version
+			}
 			
-			if(!this.getCode){
-				uni.showToast({
-					title: '请先获取验证码！',
-					icon: 'none',
-					duration: 2000
-				});
-				return;
-			}
-			if(this.vcode==''){
-				uni.showToast({
-					title: '请输入验证码',
-					icon: 'none',
-					duration: 2000
-				});
-				return;
-			}
-			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.phone;
-			let params = {
-				phone:phone,
-				code:this.vcode,
-				uuid:app.platform.deviceID,
-				os:app.platform.systemInfo.platform,
-				device:app.platform.systemInfo.model
-			};
-			this.HttpLogin(params)
-		}
-		onClickPwLogin(){
-			if(this.password == ''){
-				uni.showToast({
-					title: '请输入密码！',
-					icon: 'none',
-					duration: 2000
-				});
-				return;
-			}
-			let phone = this.phoneTypeArrayNum[this.phoneTypeIndex]+this.phone;
-			let params = {
-				phone:phone,
-				password:Md5.hashStr(this.password+'_pmpm'),
-				uuid:app.platform.deviceID,
-				os:app.platform.systemInfo.platform,
-				device:app.platform.systemInfo.model
-			};
-			this.HttpLogin(params)
+			app.http.Post('user/domain',{content:encodeURIComponent(domian)})
 		}
 		loginSuccessJump(){
 			if(!this.redirect){
@@ -220,134 +263,6 @@
 			uni.switchTab({
 				url: "/pages/index/index",
 			});
-		}
-		
-		postDomain(){
-			let domian = app.bussinessApiDomain.slice(0,app.bussinessApiDomain.indexOf('/api'));
-			if(app.service_url!=''){
-				domian +='&'+app.service_url
-			}
-			if(app.familial){
-				domian +='&oldUser=true&version='+app.version
-			}
-			console.log('domian===============',domian)
-			let params = {
-				content:encodeURIComponent(domian)
-			}
-			app.http.Post('user/domain',params)
-		}
-		onClickWechatLogin(){
-			if(!this.xieyiAgree){
-				uni.showToast({
-					title: '请先阅读并同意协议！',
-					icon: 'none',
-					duration: 2000
-				});
-				return;
-			};
-
-			uni.showLoading({
-				title: '加载中'
-			});
-			uni.getProvider({
-				service: 'oauth',
-				success: (res)=> {
-					if (~res.provider.indexOf('weixin')) {
-						uni.login({
-							provider: 'weixin',
-							success: (loginRes:any)=> {
-								let params = {
-									weixinToken:loginRes.authResult.access_token,
-									unionid:loginRes.authResult.unionid,
-									openid:loginRes.authResult.openid,
-									uuid:app.platform.deviceID,
-									os:app.platform.systemInfo.platform,
-									device:app.platform.systemInfo.brand+app.platform.systemInfo.model
-								}
-								console.log('weixinLoginRes=====',loginRes)
-								this.WeChetLogin(params)
-							},
-							fail:(loginRes:any)=>{
-								uni.showToast({
-									title:'请确认已经安装微信',
-									icon:'none'
-								})
-							}
-						});
-					}
-				}
-			});
-		}
-		HttpLogin(params:any){
-			app.http.Post('user/login/phone',params,(data:any)=>{
-				this.loginSuccess(data)
-			})
-		}
-		WeChetLogin(params:any){
-			app.http.Post('user/login/wechat/app',params,(data:any)=>{
-				this.loginSuccess(data)
-			})
-		}
-		loginSuccess(data:any){
-			this.loginIng = false;
-			uni.hideLoading();
-			if(app.requestKey!=''){
-				app.platform.checkShareNo(app.requestKey)
-			}
-			app.data = data.data;
-			app.opKey = data.opKey;
-			app.coupon = data.data.coupon;
-			uni.setStorageSync("app_opk", data.opKey);
-			app.socketInfo = data.app;
-			app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
-			if(data.app.launchDomain&&data.app.launchDomain!=''){
-				uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
-			}
-			this.postDomain()
-			uni.setStorageSync("token", JSON.stringify(app.token));
-			uni.setStorageSync("ksjUserId", data.data.userId);
-			uni.$emit('loginSuccess');
-			this.loginSuccessJump()
-		}
-		onClickAppleLogin(){
-			uni.showLoading({
-				title: '加载中'
-			});
-			uni.login({  
-				provider: 'apple',  
-				success: (loginRes:any)=> {  
-					let params = {
-						openid:loginRes.authResult.openid,
-						uuid:app.platform.deviceID,
-						os:app.platform.systemInfo.platform,
-						device:app.platform.systemInfo.brand+app.platform.systemInfo.model
-					}
-					this.appleLogin(params)
-					
-				},  
-				fail: (err)=> {  
-					uni.hideLoading()
-					// 登录失败  
-				}  
-			});  
-		}
-		appleLogin(params:any){
-			app.http.Post('user/login/apple',params,(data:any)=>{
-				uni.hideLoading();
-				app.data = data.data;
-				app.opKey = data.opKey;
-				app.coupon = data.data.coupon;
-				uni.setStorageSync("app_opk", data.opKey);
-				app.socketInfo = data.app;
-				app.token = {accessToken:data.accessToken,refreshToken:data.refreshToken};
-				if(data.app.launchDomain&&data.app.launchDomain!=''){
-					uni.setStorageSync("configLaunchUrl", data.app.launchDomain);
-				}
-				this.postDomain()
-				uni.setStorageSync("token", JSON.stringify(app.token));
-				uni.$emit('loginSuccess');
-				this.loginSuccessJump()
-			})
 		}
 	}
 </script>

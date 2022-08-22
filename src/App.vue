@@ -50,9 +50,10 @@
 			//#endif
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境");
-				app.localTest = true;  
-				  app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2/";
-				  app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
+				// app.localTest = true;  
+				// app.bussinessApiDomain = "http://192.168.8.31:8701/api/v2/";
+				// app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2/";
+				// app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
 			}
@@ -235,6 +236,26 @@
 					}
 				}
 			}, 500);
+
+			// 识别优惠券
+			app.platform.getInvitationClipboard((val: string) => {
+				const regular = /[k][s][j]\w{13}/g;
+				app.platform.matchRequestKey(regular,val,(code:string)=>{
+					uni.showModal({
+						title:'提示',
+						content:'检测到优惠券码，是否前往领取',
+						confirmText:'前往领取',
+						success:(res)=>{
+							if(res.confirm){
+								uni.setStorageSync('couponCode',code);
+								uni.navigateTo({
+									url: "/pages/userinfo/coupon/coupon_exchange",
+								});
+							}
+						}
+					})
+				})
+			})
 			// #endif
 		},
 		onHide() {

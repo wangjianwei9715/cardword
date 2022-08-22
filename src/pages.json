@@ -21,7 +21,10 @@
 			"path": "pages/index/userinfo",
 			"style": {
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus":{
+					"bounce":"none"
+				}
 			}
 		},
 		{
@@ -133,7 +136,12 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
-		"pageOrientation":"auto"
+		"pageOrientation":"auto",
+		"app-plus":{
+			"pullToRefresh":{
+				"style":"circle"
+			}
+		}
 	},
 	"tabBar": {
 		"color": "#888888",
@@ -183,8 +191,9 @@
 					"style": {
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": true,
+						"onReachBottomDistance":999,
 						"backgroundColorTop": "#FFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#FFF" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
 				{
