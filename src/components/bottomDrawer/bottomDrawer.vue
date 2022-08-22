@@ -1,7 +1,7 @@
 <template>
     <view>
         <view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
-        <view class="drawer-content" :class="{'show-drawer':showDrawer}" :style="'height:'+height+heightType">
+        <view class="drawer-content" :class="{'show-drawer':showDrawer,'needSafeAreaContent':needSafeArea}" :style="'height:'+height+heightType">
 			<view class="drawer-header">
 				{{title}}
 				<view class="close-icon" @click="onClickCloseDrawer"></view>
@@ -33,6 +33,9 @@
 			default:'%'
 		})
 		heightType!:string;
+		@Prop({ default: false })
+		needSafeArea!:boolean;
+		
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -71,10 +74,10 @@
 		box-sizing: border-box;
 		transition: all 0.3s;
 		border-radius: 5rpx 5rpx 0px 0px;
-		padding-bottom:constant(safe-area-inset-bottom);
-    	padding-bottom: env(safe-area-inset-bottom);
+		
 		transform: translateY(100%);
 	}
+	
 	.show-drawer{
 		transform: translateY(0);
 	}
@@ -107,6 +110,19 @@
 		box-sizing: border-box;
 		padding:100rpx 30rpx 30rpx 30rpx;
 		overflow-y: auto;
+	}
+	.needSafeAreaContent{
+		box-sizing: content-box;
+		padding-bottom:constant(safe-area-inset-bottom);
+    	padding-bottom: env(safe-area-inset-bottom);
+		.drawer-header{
+			position: relative;
+		}
+		.drawer-center{
+			padding:0 30rpx;
+			// padding-bottom:constant(safe-area-inset-bottom);
+    		// padding-bottom: env(safe-area-inset-bottom);
+		}
 	}
 	.close-icon{
 		width: 29rpx;

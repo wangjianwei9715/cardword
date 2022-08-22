@@ -27,49 +27,32 @@
     <view class="collectContainer" v-for="(item,index) in groupList" :key='index'>
       <view class="collect-top">
         <view class="collect-msg">
-          <view class="collect-msg-title">{{item.name}}</view>
-          <view class="collect-msg-howMany">已有199人集齐</view>
+          <view class="collect-msg-title" :style="lineColor(item)">{{item.name}}</view>
+          <view class="collect-msg-howMany">已有{{item.totalExchangeNum}}人集齐</view>
         </view>
         <view class="collect-coupon" :class="{collectCouponGray:item.exchangeNum==0}" @click="onClickExchange(item)">
           <view class="collect-coupon-top">兑
-            <text>5</text>元
+            <text>{{item.couponAmount}}</text>元
           </view>
           <view class="collect-coupon-bottom">上组券</view>
         </view>
       </view>
-      <view class="collect-card">
+      <view class="collect-card" :class="{noFourCollect:item.players.length<4}">
         <view class="cardItem" v-for="(man,manIndex) in item.players" :key='manIndex'>
-          <image class='cardItem-img' :class="{noneImg:man.haveNum==0}" :src="parsePic(man.pic)" alt="" srcset="aspectFill">
-            <view class="cardName">{{man.name}}</view>
-            <view class="cardItem-badge">{{man.haveNum}}</view>
+          <muqian-lazyLoad class='cardItem-img' :class="{noneImg:man.haveNum==0}" @click='previewImage(item.players,manIndex,"pic")' :src="decodeURIComponent(man.pic)" alt="" mode="aspectFill" />
+          <view class="cardName">{{man.name}}</view>
+          <view class="cardItem-badge">{{man.haveNum}}</view>
         </view>
       </view>
     </view>
-    <view class="giveBlock" @click='pageJump("/pages/act/playGroup/give")'></view>
-    <!-- <u-popup :show.sync="taskShow" @close='taskShow=false' :closeable='true'>
-      <view class="popuContainer">
-        <view class="taskItem" v-for='(item,index) in taskList' :key='index'>
-          <image :src='item.icon' class='taskItem-icon' mode='widthFix' />
-          <view class="taskItem-center">
-            <view class="taskItem-name">{{item.name}}</view>
-            <view class="taskItem-tips">
-              <view class="tips-left">抽奖次数
-                <text>+1</text>
-              </view>
-              <view class="tips-right">完成
-                <text>{{item.getNum || 0}}</text>/{{item.dayGetNum || 0}}
-              </view>
-            </view>
-          </view>
-          <view class="taskItem-right" :class="{taskItemGray:item.isFinish}" @click="onClickTask(item)">{{item.buttonText}}</view>
-        </view>
-      </view>
-    </u-popup> -->
-    <bottomDrawer title='每日任务' :height='571' heightType='rpx' :showDrawer.sync='taskShow'>
+
+    <bottomDrawer title='每日任务' :height='571' heightType='rpx' :needSafeArea='true' :showDrawer.sync='taskShow'>
       <view class="taskItem" v-for='(item,index) in taskList' :key='index'>
         <image :src='item.icon' class='taskItem-icon' mode='widthFix' />
         <view class="taskItem-center">
-          <view class="taskItem-name">{{item.name}}<text v-if='item.upGroupPlan'>{{item.upGroupPlan}}</text></view>
+          <view class="taskItem-name">{{item.name}}
+            <text v-if='item.upGroupPlan'>{{item.upGroupPlan}}</text>
+          </view>
           <view class="taskItem-tips">
             <view class="tips-left">抽奖次数
               <text>+1</text>
@@ -93,12 +76,12 @@
       <template v-if="drawType==5">
         <view class="fiveCardContainer">
           <view class='fiveCardBlock' v-for='(item,index) in drawCard.list' :key='index'>
-            <image class="fiveCardImage transitionAll" :class="{show:index<=drawCard.index}" :src="parsePic(decodeURIComponent(item.pic))" alt="" srcset="" @click='previewImage(drawCard.list,index)' mode='aspectFill' />
+            <image class="fiveCardImage transitionAll" :class="{show:index<=drawCard.index}" :src="item.pic || ''" alt="" srcset="" @click='previewImage(drawCard.list,index)' mode='aspectFill' />
           </view>
         </view>
       </template>
       <template v-if="drawType==1">
-        <image class="singleImage transitionAll" :class="{show:index<=drawCard.index}" :src="parsePic(decodeURIComponent(drawCard.list[0].pic))" alt="" srcset="" @click='previewImage(drawCard.list,0)' mode='aspectFill' />
+        <image class="singleImage transitionAll" :class="{show:drawCard.index>=0}" :src="drawCard.list[0].pic || ''" alt="" srcset="" @click='previewImage(drawCard.list,0)' mode='aspectFill' />
       </template>
       <view class='transitionAll transitionDelay opacity0' :class="{opacity1:drawCard.index==drawCard.list.length-1}">
         <view class="againButton" @click="onClickDraw(drawType)">再抽{{drawType==1?'一':'五'}}次</view>
@@ -106,41 +89,29 @@
       </view>
 
     </view>
-    <share :operationShow.sync='operationShow' :shareData="shareData" />
+    <template>
+      <view style="z-index:-1;opacity:0;position:absolute;top:0;transform: scale(0);">
+        <image v-for="(item,index) in drawCard.list" :key="index" :src="item.pic" mode="scaleToFill" @load='loadNum+=1' @error='loadNum+=1' />
+      </view>
+    </template>
+    <share :operationShow.sync='operationShow' @delyCallBack="shareCallBack" :shareData="shareData" />
     <u-toast ref="uToast"></u-toast>
+    <view class="giveBlock" :class="{iosGiveBlock:platform=='ios'}" @click='pageJump("/pages/act/playGroup/give")'></view>
   </view>
 </template>
 
 <script lang="ts">
 let UIImpactFeedbackGenerator: any = null;
 let impact: any = null;
-const mockList = [
-  {
-    pic:
-      "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
-    name: "詹姆斯"
-  },
-  {
-    pic:
-      "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
-    name: "詹姆斯"
-  },
-  {
-    pic:
-      "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
-    name: "詹姆斯"
-  },
-  {
-    pic:
-      "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
-    name: "詹姆斯"
-  },
-  {
-    pic:
-      "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.13/seller/info/1660373770287v85gaxwzph.jpg",
-    name: "詹姆斯"
-  }
-];
+const lineColorArray = {
+  one: ["#8C94A4", "#403F3F"],
+  two: ["#65B583", "#21753C"],
+  three: ["#34B0FF", "#E9662D"],
+  four: ["#3C78E5", "#EF9536"],
+  five: ["#FFCD03", "#EF9536"],
+  six: ["#F8D447", "#9136D0"],
+  seven: ["#EA3337", "#F09737"]
+};
 import { app } from "@/app";
 import { Component, Watch } from "vue-property-decorator";
 import BaseNode from "../../../base/BaseNode.vue";
@@ -159,6 +130,7 @@ export default class ClassName extends BaseNode {
     needExchangeNum: 1,
     exchangeNum: 3
   };
+  loadNum: number = 0;
   taskList: any = [
     {
       icon: "/static/act/playGroup/share.png",
@@ -170,13 +142,13 @@ export default class ClassName extends BaseNode {
       icon: "/static/act/playGroup/pullMan.png",
       name: "好友助力",
       buttonText: "去分享",
-      action: ""
+      action: "getHelpCode"
     },
     {
       icon: "/static/act/playGroup/goOut.png",
       name: "赠送一次卡密",
       buttonText: "去完成",
-      action: ""
+      action: "goSendKam"
     },
     {
       icon: "/static/act/playGroup/money.png",
@@ -200,6 +172,11 @@ export default class ClassName extends BaseNode {
     thumb: ""
   };
   helpCode: string = "";
+  queryParams: any = {
+    pageIndex: 1,
+    pageSize: 5
+  };
+  totalPage: number = 0;
   onLoad(query: any) {
     if (!app.token.accessToken) {
       uni.redirectTo({
@@ -222,14 +199,36 @@ export default class ClassName extends BaseNode {
       impact = new UIImpactFeedbackGenerator();
     }
     /* #endif */
-    this.reqNewData();
+    this.reqNewData(null, true);
+    this.getTaskList();
   }
   //   加载更多数据
-  onReachBottom() {}
+  onReachBottom() {
+    if (this.queryParams.pageIndex < this.totalPage) {
+      this.queryParams.pageIndex += 1;
+      this.reqNewData(null, false);
+    }
+  }
+
   //   下拉刷新
+  onPullDownRefresh() {
+    this.getTaskList()
+    this.reqNewData(() => {
+      uni.stopPullDownRefresh();
+    }, true);
+  }
   @Watch("drawShow")
   onDrawShowChange(val: boolean, oldVal: boolean) {
     if (val) this.drawAnimationTimer();
+  }
+  @Watch("loadNum")
+  onLoadNumChange(val: number, oldVal: number) {
+    if (!val) return;
+    if (val == this.drawCard.list.length) {
+      uni.hideLoading();
+      this.drawCard.index = -1;
+      this.drawShow = true;
+    }
   }
   private get drawAllName() {
     const { list } = this.drawCard;
@@ -237,10 +236,9 @@ export default class ClassName extends BaseNode {
     return nameList.join("、");
   }
   private get maskShow() {
-    //  || this.exchangeShow
     return this.drawShow;
   }
-  onPullDownRefresh() {}
+
   //抽卡动画
   drawAnimationTimer() {
     this.drawTimer && clearInterval(this.drawTimer);
@@ -265,15 +263,49 @@ export default class ClassName extends BaseNode {
     this.UIClickFeedBack();
     this.postDraw(type);
   }
+  lineColor(item: any) {
+    let colorArr: any = [];
+    const { couponAmount } = item;
+    if (couponAmount <= 5) {
+      colorArr = lineColorArray.one;
+    } else if (couponAmount > 5 && couponAmount <= 8) {
+      colorArr = lineColorArray.two;
+    } else if (couponAmount > 8 && couponAmount <= 20) {
+      colorArr = lineColorArray.three;
+    } else if (couponAmount > 20 && couponAmount <= 30) {
+      colorArr = lineColorArray.four;
+    } else if (couponAmount > 30 && couponAmount <= 60) {
+      colorArr = lineColorArray.five;
+    } else if (couponAmount > 60 && couponAmount <= 88) {
+      colorArr = lineColorArray.six;
+    } else {
+      colorArr = lineColorArray.seven;
+    }
+    const [firstColor, endColor] = colorArr;
+    return `
+    background: linear-gradient(to right, ${firstColor}, ${endColor});
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;`;
+  }
   goShare() {
     this.taskShow = false;
     this.operationShow = true;
+  }
+  shareCallBack() {
+    app.http.Post("activity/playerGroup/share/wechat", {}, (res: any) => {
+      this.getTaskList()
+    });
+  }
+  goSendKam() {
+    uni.navigateTo({
+      url: "/pages/userinfo/giving/index"
+    });
   }
   getHelpCode() {
     uni.showLoading({
       title: ""
     });
-    app.http.Get("activity/playerGroup/share/help", {}, (res: any) => {
+    app.http.Post("activity/playerGroup/share/help", {}, (res: any) => {
       const { helpCode } = res;
       uni.hideLoading();
       uni.share({
@@ -309,20 +341,33 @@ export default class ClassName extends BaseNode {
       "activity/playerGroup/lottery/go",
       { goLotteryNum: type },
       (res: any) => {
-        uni.hideLoading();
-        this.$nextTick(() => {
-          this.drawType = type;
-          this.drawCard.index = -1;
-          this.drawCard.list = res.players;
+        this.parsePicList(res.players).then((players: any) => {
           this.myLotteryNum = res.lotteryNum;
-          this.drawShow = true;
-          this.reqNewData();
+          this.$nextTick(() => {
+            this.drawType = type;
+            this.reqNewData(null, true);
+          });
         });
       },
       (err: any) => {
         uni.hideLoading();
       }
     );
+  }
+  async parsePicList(picList: any) {
+    try {
+      this.loadNum = 0;
+      const promiseList = picList.map((item: any) => {
+        return {
+          name: item.name,
+          pic: this.parsePic(decodeURIComponent(item.pic))
+        };
+      });
+      this.drawCard.list = promiseList;
+      return promiseList;
+    } catch (err) {
+      console.log(err);
+    }
   }
   onClickExchange(item: any) {
     if (item.exchangeNum <= 0) {
@@ -339,9 +384,9 @@ export default class ClassName extends BaseNode {
   exchangeConfirm() {
     uni.showModal({
       title: "提示",
-      content: `确认兑换${this.selectItem.needExchangeNum}份${
+      content: `确认兑换${this.selectItem.needExchangeNum}份“${
         this.selectItem.name
-      }对应的奖励吗?`,
+      }”对应的奖励吗?`,
       success: (res: any) => {
         if (res.confirm) this.exchangePost();
       }
@@ -356,7 +401,7 @@ export default class ClassName extends BaseNode {
       return;
     }
     uni.showLoading({
-      title:''
+      title: ""
     });
     app.http.Post(
       "activity/playerGroup/exchange/" + this.selectItem.groupId,
@@ -366,8 +411,20 @@ export default class ClassName extends BaseNode {
           title: "兑换成功",
           icon: "success"
         });
-        this.reqNewData();
+
         uni.hideLoading();
+        setTimeout(() => {
+          const index=this.groupList.findIndex((item:any)=>item.groupId==this.selectItem.groupId)
+          if(index<0) return
+          this.groupList[index].exchangeNum -=this.selectItem.needExchangeNum;
+          this.groupList[index].players=this.selectItem.players.map((item: any, index: number) => {
+            const syNum=item.haveNum-this.selectItem.needExchangeNum
+            return{
+              ...item,
+              haveNum:syNum
+            }
+          });
+        }, 500);
       }
     );
   }
@@ -407,8 +464,8 @@ export default class ClassName extends BaseNode {
       url
     });
   }
-  previewImage(list: any, index: number) {
-    const urls = list.map((item: any) => this.parsePic(item.src));
+  previewImage(list: any, index: number, key: string = "src") {
+    const urls = list.map((item: any) => this.parsePic(item[key]));
     uni.previewImage({
       urls,
       current: index
@@ -428,15 +485,31 @@ export default class ClassName extends BaseNode {
       }
     });
   }
-  reqNewData(cb?: Function) {
-    app.http.Get("activity/playerGroup/home", {}, (res: any) => {
-      console.log(res);
-      // const data: any = res.data;
-      const { myLotteryNum, taskList, groupList } = res.data;
-      this.myLotteryNum = myLotteryNum;
-      this.groupList = groupList;
-      this.assignTaskList(taskList);
+  getTaskList() {
+    app.http.Get("activity/playerGroup/home/task/list", {}, (res: any) => {
+      const { list } = res;
+      this.assignTaskList(list);
     });
+  }
+  reqNewData(cb?: any, refresh?: boolean) {
+    if (refresh) this.queryParams.pageIndex = 1;
+    uni.showLoading({
+      title: ""
+    });
+    app.http.Get(
+      "activity/playerGroup/home/group/list",
+      this.queryParams,
+      (res: any) => {
+        uni.hideLoading();
+        const { myLotteryNum, groupList } = res.data;
+        this.totalPage = res.totalPage;
+        this.myLotteryNum = myLotteryNum;
+        this.queryParams.pageIndex == 1
+          ? (this.groupList = groupList)
+          : this.groupList.push(...groupList);
+        cb && cb();
+      }
+    );
   }
 }
 </script>
@@ -466,7 +539,8 @@ page {
   width: 750rpx;
   background-color: #123a85;
   height: 100%;
-
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
   .back {
     pointer-events: none;
     position: absolute;
@@ -566,7 +640,7 @@ page {
     text {
       font-size: 42rpx;
       font-family: PingFang SC;
-      font-weight: 600;
+      font-weight: bold;
       color: #ffffff;
       /* line-height: 345rpx; */
       text-shadow: 2rpx 5rpx 7rpx #123c7a;
@@ -600,7 +674,7 @@ page {
 .centerTitle {
   font-size: 42rpx;
   font-family: PingFang SC;
-  font-weight: 600;
+  font-weight: bold;
   color: #ffffff;
   width: 750rpx;
   text-align: center;
@@ -620,7 +694,7 @@ page {
   box-sizing: border-box;
   padding: 0 42rpx;
   padding-top: 36rpx;
-
+  z-index: 8;
   .collect-top {
     display: flex;
     justify-content: space-between;
@@ -633,7 +707,7 @@ page {
     background-size: 100% 100%;
     background-image: url("/static/act/playGroup/couponRed.png");
     box-sizing: border-box;
-    padding: 11rpx 0 11rpx 68rpx;
+    padding: 11rpx 0 11rpx 50rpx;
     color: #d8162e;
     text-align: center;
     font-size: 19rpx;
@@ -653,16 +727,17 @@ page {
   .collect-coupon-top {
     font-size: 25rpx;
     font-family: PingFang SC;
-    font-weight: 600;
+    font-weight: bold;
     color: #d8162e;
     line-height: 14rpx;
-
+    margin-top: 6rpx;
     text {
       font-size: 33rpx;
     }
   }
 
   .collect-coupon-bottom {
+    margin-top: 2rpx;
     font-size: 19rpx;
   }
 
@@ -724,10 +799,16 @@ page {
       top: 0;
       left: 0;
       background: #ffffff;
+      pointer-events: none;
       opacity: 0.63;
     }
   }
-
+  .noFourCollect {
+    justify-content: start;
+    .cardItem {
+      margin-right: 16rpx;
+    }
+  }
   .collect-coupon-gray {
     background-image: url("/static/act/playGroup/couponGray.png");
   }
@@ -750,10 +831,6 @@ page {
     font-style: italic;
     color: #333333;
     // line-height: 345px;
-
-    background: linear-gradient(to right, #9e2dd8, #ffd200);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   .collect-msg-howMany {
@@ -817,10 +894,10 @@ page {
     font-weight: 600;
     color: #333333;
     margin-bottom: 4rpx;
-    text{
+    text {
       font-size: 25rpx;
       font-weight: 400;
-      margin-left:20rpx;
+      margin-left: 20rpx;
     }
   }
 
@@ -858,10 +935,13 @@ page {
   background-image: url("/static/act/playGroup/ball.png");
   position: fixed;
   right: 9rpx;
+  bottom: 45rpx;
+  z-index: 8;
+}
+.iosGiveBlock {
   bottom: calc(45rpx + constant(safe-area-inset-bottom));
   bottom: calc(45rpx + env(safe-area-inset-bottom));
 }
-
 .drawCardMask {
   position: fixed;
   top: 0;
@@ -887,6 +967,7 @@ page {
   display: block;
   margin: 0 auto;
   margin-bottom: 30rpx;
+  transform: scale(0);
 }
 
 .transitionAll {
@@ -981,9 +1062,11 @@ page {
     height: 296rpx;
     transform: scale(0);
   }
-
   .show {
     transform: scale(1);
   }
+}
+.show {
+  transform: scale(1);
 }
 </style>

@@ -15,7 +15,7 @@
                     <view class="peodoBox-action" @click="peodoAction('reduce',item,index)">
                         <view class="peodoBox-reduce"></view>
                     </view>
-                    <input type="number" :value="item.selectNum" @input="onInput($event,item,index)" ref="peoInput"
+                    <input type="number" v-model="item.selectNum" @input="onInput($event,item,index)" ref="peoInput"
                         class="peodoBox-input" />
                     <view class="peodoBox-action peodoBox-action-left" @click="peodoAction('add',item,index)">
                         <image class="peodoBox-add" src="/static/act/playGroup/add.png" mode="scaleToFill" />
@@ -23,6 +23,7 @@
                 </view>
             </view>
         </view>
+        <view class="bottomSafe"></view>
         <empty v-if='!playerList.length' />
         <view class="giveBottom">
             <input type="number" v-model="receive_userId" class="giveBottom-input" placeholder="请输入赠送id" />
@@ -73,7 +74,7 @@
             if (value == '') {
                 this.inputTimer = setTimeout(() => {
                     item.selectNum = "0"
-                    this.$refs.peoInput[0].valueSync = "0"
+                    this.$refs.peoInput[index].valueSync = "0"
                 }, 100)
                 return
             } else {
@@ -122,6 +123,10 @@
                     icon:'success'
                 })
                 this.reqNewData()
+                let pages = getCurrentPages();
+				let prePage = pages[pages.length - (2)];
+                prePage&&prePage.$vm.reqNewData(null,true)
+                
             })
         }
         pageJump(url: string) {
@@ -149,7 +154,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     page {
         height: 100%;
         background-color: #f7f7f7;
@@ -164,7 +169,13 @@
         font-family: YouSheBiaoTiHei;
         src: url("/static/act/playGroup/YouSheBiaoTiHei-2.ttf");
     }
-
+    .bottomSafe{
+        height: 240rpx;
+        background: #f7f7f7;
+        padding-bottom: constant(safe-area-inset-bottom);
+        padding-bottom: env(safe-area-inset-bottom);
+        width: 750rpx;
+    }
     .giveBottom {
         width: 750rpx;
         position: fixed;
@@ -177,7 +188,7 @@
         flex-direction: column;
         align-items: center;
     }
-
+    
     .giveBottom-input {
         width: 676rpx;
         height: 63rpx;
@@ -203,6 +214,10 @@
             font-family: PingFang SC;
             font-weight: 600;
             color: #333333;
+            max-width: 180rpx;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .rightButton {

@@ -59,8 +59,9 @@
 			uni.showLoading({
 				title: '加载中'
 			});
-			setTimeout(function () {
+			setTimeout(()=> {
 				uni.hideLoading();
+				this.$emit('delyCallBack');
 			}, 2000);
 			uni.share({
 				provider: "weixin",

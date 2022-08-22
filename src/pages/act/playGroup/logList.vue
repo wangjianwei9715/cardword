@@ -84,7 +84,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     page {
         height: 100%;
         background-color: #f7f7f7;

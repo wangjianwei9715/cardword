@@ -282,8 +282,8 @@
 					"style": {
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB",
+						"backgroundColorTop": "#fff",
+						"backgroundColorBottom": "#fff",
 						"app-plus": {
 							"softinputNavBar": "none"
 						}
@@ -294,8 +294,9 @@
 					"style": {
 						"navigationBarTitleText": "收赠记录",
 						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB",
+						"navigationBarBackgroundColor":"#ffffff",
+						"backgroundColorTop": "#fff",
+						"backgroundColorBottom": "#fff",
 						"app-plus": {
 							"softinputNavBar": "none"
 						}
@@ -306,8 +307,9 @@
 					"style": {
 						"navigationBarTitleText": "参与记录",
 						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB",
+						"navigationBarBackgroundColor":"#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"backgroundColorBottom": "#ffffff",
 						"app-plus": {
 							"softinputNavBar": "none"
 						}
@@ -318,8 +320,9 @@
 					"style": {
 						"navigationBarTitleText": "活动规则",
 						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB",
+						"navigationBarBackgroundColor":"#ffffff",
+						"backgroundColorTop": "#fff",
+						"backgroundColorBottom": "#fff",
 						"app-plus": {
 							"softinputNavBar": "none"
 						}

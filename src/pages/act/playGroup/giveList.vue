@@ -11,7 +11,7 @@
             </view>
             <view class="giveItem-msg uni-flex">
                 <view class="msg-left">对方id:{{item.userId}}</view>
-                <view class="msg-right">{{item.send_at}}</view>
+                <view class="msg-right">{{dateFormat(item.send_at)}}</view>
             </view>
         </view>
         <empty v-if='!list||!list.length'/>
@@ -23,10 +23,11 @@
     import { app } from "@/app";
     import { Component, Watch } from "vue-property-decorator";
     import BaseNode from "../../../base/BaseNode.vue";
-    import { parsePic } from "@/tools/util";
+    import { parsePic,dateFormat } from "@/tools/util";
     @Component({})
     export default class ClassName extends BaseNode {
         parsePic: any = parsePic
+        dateFormat:any=dateFormat
         tab: any = {
             index: 0,
             list: [{ label: '赠送', value: 1 }, { label: '收到', value: 2 }]
@@ -43,7 +44,9 @@
         }
         onPullDownRefresh() {
             this.queryParams.pageIndex = 1
-            this.reqNewData()
+            this.reqNewData(()=>{
+                uni.stopPullDownRefresh()
+            })
         }
         onReachBottom() {
             if (this.queryParams.pageIndex < this.totalPage) {
@@ -81,7 +84,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     page {
         height: 100%;
         background-color: #f7f7f7;
