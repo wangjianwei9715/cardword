@@ -447,10 +447,9 @@
 				if (this.fetchFrom == 1) this.goodsList = [];
 
 				if (data.goodList) {
-					this.fetchFrom == 1 ? this.goodsList = data.goodList : this.goodsList.push(...data
-						.goodList);
+					let list = this.fetchFrom == 1 ? data.goodList : [...this.goodsList,...data.goodList];
+					this.goodsList = app.platform.removeDuplicate(list)
 				}
-				app.platform.removeDuplicate(this.goodsList)
 				this.fetchFrom += this.fetchSize;
 				if (cb) cb()
 			});
