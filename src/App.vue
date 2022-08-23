@@ -225,15 +225,28 @@
 			}
 			setTimeout(() => {
 				let args = plus.runtime.arguments;
-				if (args) {
-					if (args.indexOf("goodsdetails") != -1) {
-						let index = args.indexOf("=") + 1;
-						let id = args.substring(index);
-						plus.runtime.arguments = null;
-						uni.navigateTo({
-							url: "/pages/goods/goods_details?id=" + id,
-						});
+				if(!args) return
+				if (args.indexOf("goodsdetails") != -1) {
+					let index = args.indexOf("=") + 1;
+					let id = args.substring(index);
+					plus.runtime.arguments = null;
+					uni.navigateTo({
+						url: "/pages/goods/goods_details?id=" + id,
+					});
+				}
+				//navigateTo=>/pages/act/playGroup/index?helpCode=666
+				if(args.indexOf("=>")!=-1){
+					const pages = getCurrentPages();
+					let [jumpType,url]=args.split("=>")
+					if(pages.length){
+						const currentRoute=pages[pages.length-1].route
+						if(url.indexOf(currentRoute)!=-1) jumpType='redirectTo'
 					}
+					const _uni:any=uni
+					_uni[jumpType]({
+						url
+					})
+					plus.runtime.arguments = null;
 				}
 			}, 500);
 

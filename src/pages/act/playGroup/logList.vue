@@ -7,7 +7,7 @@
         </view>
         <view class="giveItem uni-flex" v-for="(item,index) in list" :key="index">
             <view class="giveItem-left uni-flex">
-                <view class="giveItem-title">兑换：{{item.name}}</view>
+                <view class="giveItem-title">{{queryParams.tp==1?"兑换：":""}}{{item.name}}</view>
                 <view class="giveItem-time">{{dateFormat(item.created_at)}}</view>
             </view>
             <view class="giveItem-right uni-flex">

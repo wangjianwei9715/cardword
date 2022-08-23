@@ -126,6 +126,7 @@ export default class ClassName extends BaseNode {
   exchangeShow: boolean = false;
   myLotteryNum: any = 0;
   platform: string = app.platform.systemInfo.platform;
+  shareUrl:string="https://www.ka-world.com/share/testH5/#/pages/act/playGroup"
   selectItem: any = {
     needExchangeNum: 1,
     exchangeNum: 3
@@ -166,7 +167,7 @@ export default class ClassName extends BaseNode {
   drawTimer: any = null;
   parsePic: any = parsePic;
   shareData: any = {
-    shareUrl: "",
+    shareUrl: `${this.shareUrl}`,
     title: "集球员组合，兑海量上足券",
     summary: "集球员组合，兑海量上足券",
     thumb: ""
@@ -225,6 +226,8 @@ export default class ClassName extends BaseNode {
   onLoadNumChange(val: number, oldVal: number) {
     if (!val) return;
     if (val == this.drawCard.list.length) {
+      console.log('开始动画');
+      
       uni.hideLoading();
       this.drawCard.index = -1;
       this.drawShow = true;
@@ -293,6 +296,7 @@ export default class ClassName extends BaseNode {
   }
   shareCallBack() {
     app.http.Post("activity/playerGroup/share/wechat", {}, (res: any) => {
+      this.myLotteryNum=res.myLotteryNum
       this.getTaskList()
     });
   }
@@ -311,7 +315,7 @@ export default class ClassName extends BaseNode {
       uni.share({
         provider: "weixin",
         scene: "WXSceneSession",
-        href: `?helpCode=${helpCode}`,
+        href: `${this.shareUrl}?helpCode=${helpCode}`,
         title: "集球员组合,兑海量上足券",
         summary: "为我助力",
         imageUrl: ""
