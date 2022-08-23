@@ -242,8 +242,8 @@
 						const currentRoute=pages[pages.length-1].route
 						if(url.indexOf(currentRoute)!=-1) jumpType='redirectTo'
 					}
-					const _uni:any=uni
-					_uni[jumpType]({
+					//@ts-ignore
+					uni[jumpType]({
 						url
 					})
 					plus.runtime.arguments = null;
