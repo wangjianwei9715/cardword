@@ -51,7 +51,7 @@
 						<view class="time">{{dateFormat(item.time)}}</view>
 					</view>
 
-					<view class="right"><muqian-lazyLoad class="right-img" :src="getGoodsImg(decodeURIComponent(item.pic))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
+					<view class="right"><muqian-lazyLoad class="right-img" :src="replacePic(getGoodsImg(decodeURIComponent(item.pic)))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
 				</view>
 			</view>
 			
@@ -67,7 +67,7 @@
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import {
-		dateFormat,getGoodsImg
+		dateFormat,getGoodsImg, parsePic
 	} from "../../tools/util";
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -79,6 +79,7 @@
 		teamDataList2 = [];
 		getGoodsImg = getGoodsImg;
 		dateFormat = dateFormat;
+		parsePic = parsePic;
 		currentPage = 1;
 		noMore = false;
 		searchTetxt = "";
@@ -179,10 +180,14 @@
 				this.getTpCardNoResult()
 			}
 		}
-
-		
+		replacePic(str:string){
+			return str.indexOf('#thumb') == -1 ? str : str.replace('#thumb','.thumb')
+		}
 		onClickPreviewCard(pic:any){
 			let url = pic.split(',')
+			url = url.map((x:any)=>{
+				return parsePic(x)
+			})
 			uni.previewImage({
 				urls:url
 			});

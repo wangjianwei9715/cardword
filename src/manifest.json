@@ -35,8 +35,7 @@
             "Geolocation" : {},
             "Share" : {},
             "Push" : {},
-            "VideoPlayer" : {},
-            "UIWebview" : {}
+            "VideoPlayer" : {}
         },
         /* 模块配置 */
         "distribute" : {

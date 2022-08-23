@@ -89,7 +89,7 @@
 			showDistance: {
 				type: Object,
 				default: () => {
-					bottom: 20
+					bottom: 0
 				}
 			},
 			//过渡效果  linear / ease / ease-in / ease-out / ease-in-out
@@ -169,7 +169,7 @@
 					intersectionObserver.disconnect()
 				})
 				intersectionObserver.relativeToViewport(this.showDistance).observe('.muqain-load', (res) => {
-					if (!load && res.intersectionRatio == 0) {
+					if (!load && res.intersectionRect.bottom <= 0) {
 						load = true
 						return
 					}
