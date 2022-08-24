@@ -17,38 +17,23 @@
           class="header-sort-index"
           v-for="item in sortData"
           :key="item.id"
-          @click="onClickSort(item.id)"
+          @click="onClickSort(item)"
         >
           {{ item.name }}
           <view class="header-sort-icon">
             <view
-              v-if="item.name != '分类'"
               :class="{
-                'icon-sort-upn': item.sort_up != 'up',
-                'icon-sort-up': item.sort_up == 'up',
+                'icon-sort-upn': item.sort != 1,
+                'icon-sort-up': item.sort == 1,
               }"
             ></view>
             <view
               :class="{
-                'icon-sort-downn': item.sort_up != 'down',
-                'icon-sort-down': item.sort_up == 'down',
+                'icon-sort-downn': item.sort != 2,
+                'icon-sort-down': item.sort == 2,
               }"
             ></view>
           </view>
-        </view>
-        <view
-          :class="['header-sort-classify', { 'classify-show': classifyShow }]"
-        >
-          <view
-            @click="onClickClassifyOpt(item.id)"
-            :class="[
-              'header-sort-classify-index',
-              { 'classify-opt': classifyOpt == item.id },
-            ]"
-            v-for="item in classifyData"
-            :key="item.id"
-            >{{ item.name }}</view
-          >
         </view>
       </view>
     </view>
@@ -72,24 +57,15 @@ export default class ClassName extends BaseNode {
   noMoreData = false;
   searchIng = false;
   sortData = [
-    { id: 1, name: "分类", sort_up: "" },
-    { id: 2, name: "价格", sort_up: "" },
+    { id: 1, name: "价格", sort:0 , sortName:'rmb' },
+    { id: 2, name: "时间", sort:0 , sortName:'saleAt' },
   ];
-  classifyData = [
-    { id: 0, name: "全部" },
-    { id: 1, name: "拍卖" },
-    { id: 2, name: "议价" },
-    { id: 3, name: "不可议价" },
-  ];
-  classifyOpt = 0;
-  classifyShow = false;
   onLoad(query: any) {
-    if (query.q) {
-      this.searchText = query.q;
-      this.searchData = JSON.parse(query.data);
-      this.goodsList = this.searchData.list;
-      this.scrollId = this.searchData.scrollId;
-    }
+    this.searchText = query.q;
+    this.searchData = JSON.parse(query.data);
+    this.goodsList = this.searchData.list;
+    this.scrollId = this.searchData.scrollId;
+    
     this.onEventUI("refStop", () => {
       this.searchIng = false;
     });
@@ -110,38 +86,26 @@ export default class ClassName extends BaseNode {
       return;
     }
     this.searchIng = true;
-	let date:any = new Date()
+    let date:any = new Date()
     let params: { [x: string]: any } = {
-	  q:this.searchText,
-      sold: 1,
-	  tp:this.classifyOpt,
-	  timeStamp:Date.parse(date)/1000
+      q:this.searchText,
+      timeStamp:Date.parse(date)/1000,
+      pageSize:30
     };
-    // 排序方式
-    let sort = "";
-    if (this.sortData[1].sort_up != "") {
-      if (sort != "") {
-        sort += ",";
-      }
-      if (this.sortData[1].sort_up == "up") {
-        sort += "price";
-      } else {
-        sort += "price:desc";
+    if(this.scrollId!=''){
+      params.scrollId = this.scrollId
+    }
+    let sort = ''
+    for(let i of this.sortData){
+      if(i.sort!=0){
+        sort = `${i.sortName}${i.sort==2?':desc':''}`
       }
     }
-    if (sort != "") {
-      params.sort = sort;
-    }
-	if(this.scrollId!=''){
-		params.scrollId = this.scrollId
-	}
+    params.sort = sort;
     uni.showLoading({
       title: "加载中",
     });
-	setTimeout(()=>{
-		uni.hideLoading();
-	},5000)
-    app.http.Get("search/query_price", params, (data: any) => {
+    app.http.Get("dataApi/search/ebay", params, (data: any) => {
       this.searchIng = false;
       uni.hideLoading();
       if (data.end) {
@@ -171,41 +135,26 @@ export default class ClassName extends BaseNode {
     });
   }
   // 排序选择
-  onClickSort(id: number) {
-    if (id == 1) {
-      this.onClickClassifyCancel();
-    } else {
-      if (this.sortData[id - 1].sort_up == "") {
-        this.sortData[id - 1].sort_up = "up";
-      } else if (this.sortData[id - 1].sort_up == "up") {
-        this.sortData[id - 1].sort_up = "down";
-      } else if (this.sortData[id - 1].sort_up == "down") {
-        this.sortData[id - 1].sort_up = "";
+  onClickSort(item:any) {
+    for(let i in this.sortData){
+      if(this.sortData[i].id != item.id){
+        this.sortData[i].sort = 0;
       }
-      this.goodsList = [];
-      this.noMoreData = false;
-	  this.scrollId = ''
-      this.reqNewData();
     }
-  }
-  onClickClassifyOpt(id: number) {
-    if (this.classifyOpt == id) return;
-    this.classifyOpt = id;
-	this.scrollId = ''
-    this.onClickClassifyCancel();
+    item.sort = item.sort<2? item.sort+1 : 0;
     this.goodsList = [];
     this.noMoreData = false;
+    this.scrollId = ''
     this.reqNewData();
-  }
-  // 分类取消
-  onClickClassifyCancel() {
-    this.classifyShow = !this.classifyShow;
   }
 }
 </script>
 
 <style lang="scss">
 $font-24: 24rpx;
+page{
+  background:#F6F7FB;
+}
 .content {
   width: 100%;
   box-sizing: border-box;

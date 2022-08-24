@@ -1,13 +1,17 @@
 <template name="goodslist">
 	<view class="content">
 		<view class="goodslist-index" v-for="item in goodsList" :key="item.goodCode" >
-			<image class="goodslist-pic" :src="item.pic" mode="aspectFill" @click="onClickPic(item.pic)"></image>
+			<muqian-lazyLoad class="goodslist-pic" :src="item.thumb" mode="aspectFill" @click="onClickPic(item.pic)"></muqian-lazyLoad>
 			<view class="goodslist-right">
-				<view class="goodslist-tip" :class="item.type=='拍卖'?'icon-paimai':'icon-yikou'" >{{item.type}}</view>
+				<view>
+					<view class="goodslist-tip" :class="item.saleType=='拍卖'?'icon-paimai':'icon-yikou'" >{{item.saleType}}</view>
+					Id:{{item.ebayId}}
+				</view>
 				<view class="goodslist-title">{{item.title}}</view>
+				<view>成交日期:{{$u.timeFormat(item.saleAt,'yyyy-mm-dd hh:MM')}}</view>
 				<view class="goodslist-bottom">
 					<view class="goodslist-price-content">
-						¥<text class="goodslist-price">{{item.price}}</text>
+						￥<text class="goodslist-price">{{item.rmb}}</text>
 					</view>
 					<image class="goodslist-yibei" src="../../static/goods/ebay@2x.png" mode="aspectFit"></image>
 				</view>
@@ -70,6 +74,7 @@
 			font-weight: 400;
 			color: #14151A;
 			margin-bottom: 12rpx;
+			word-break:break-all;
 		}
 		&-plan-content{
 			width: 440rpx;
@@ -112,7 +117,6 @@
 		}
 		&-price-content{
 			font-size: 24rpx;
-			font-family: 'DIN';
 			font-weight: bold;
 			color: #14151A;
 		}
