@@ -164,7 +164,7 @@ export default class PlatformManager {
 				sweixin.launchMiniProgram({
 					id: 'gh_1093b743ea0e',
 					path: `/pages/live/index?id=${id}&goodCode=${goodCode}`,
-					type: 2//0-正式版； 1-测试版； 2-体验版。 默认值为0。
+					type: 0//0-正式版； 1-测试版； 2-体验版。 默认值为0。
 				})
 			} else {
 				// 没有获取到微信分享服务
