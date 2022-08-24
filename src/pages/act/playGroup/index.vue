@@ -339,7 +339,8 @@ export default class ClassName extends BaseNode {
   }
   postDraw(type: number) {
     uni.showLoading({
-      title: ""
+      title: "",
+      mask:true
     });
     app.http.Post(
       "activity/playerGroup/lottery/go",
@@ -349,7 +350,7 @@ export default class ClassName extends BaseNode {
           this.myLotteryNum = res.lotteryNum;
           this.$nextTick(() => {
             this.drawType = type;
-            this.reqNewData(null, true);
+            // this.reqNewData(null, true);
           });
         });
       },
