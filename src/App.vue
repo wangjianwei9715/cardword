@@ -233,6 +233,7 @@
 					uni.navigateTo({
 						url: "/pages/goods/goods_details?id=" + id,
 					});
+					return
 				}
 				//navigateTo=>/pages/act/playGroup/index?helpCode=666
 				if(args.indexOf("=>")!=-1){
@@ -247,7 +248,9 @@
 						url
 					})
 					plus.runtime.arguments = null;
+					return
 				}
+				plus.runtime.arguments = null;
 			}, 500);
 
 			// 识别优惠券

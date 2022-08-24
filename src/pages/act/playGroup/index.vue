@@ -126,7 +126,7 @@ export default class ClassName extends BaseNode {
   exchangeShow: boolean = false;
   myLotteryNum: any = 0;
   platform: string = app.platform.systemInfo.platform;
-  shareUrl:string="https://www.ka-world.com/share/testH5/#/pages/act/playGroup"
+  shareUrl:string=app.localTest?"https://www.ka-world.com/share/testH5/#/pages/act/playGroup":"https://www.ka-world.com/share/h5/#/pages/act/playGroup"
   selectItem: any = {
     needExchangeNum: 1,
     exchangeNum: 3
@@ -412,7 +412,7 @@ export default class ClassName extends BaseNode {
       { exchangeNum: this.selectItem.needExchangeNum },
       (res: any) => {
         uni.showToast({
-          title: "兑换成功",
+          title: "兑换成功", 
           icon: "success"
         });
 
@@ -420,7 +420,8 @@ export default class ClassName extends BaseNode {
         setTimeout(() => {
           const index=this.groupList.findIndex((item:any)=>item.groupId==this.selectItem.groupId)
           if(index<0) return
-          this.groupList[index].exchangeNum -=this.selectItem.needExchangeNum;
+          this.groupList[index].exchangeNum =res.exchangeNum;
+          this.groupList[index].totalExchangeNum=res.totalExchangeNum
           this.groupList[index].players=this.selectItem.players.map((item: any, index: number) => {
             const syNum=item.haveNum-this.selectItem.needExchangeNum
             return{
