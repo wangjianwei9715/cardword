@@ -37,7 +37,36 @@ export function formatGold(number: number, symbol = ',', interval = 3) {//返回
 	}
 	return result;
 }
-// 比较当前时间是否在指定日期范围内 beginDateStr:开始日期 endDateStr:结束日期 格式 yyyy-mm-dd
+export function getUrlDataFN(urlStr:string) {
+	// 定义一个空对象以储存数据
+	const urlObj:any = {}
+	// 检查url中是否携带数据
+	if (urlStr.indexOf('?') === -1) return null
+	// 找到 '?' 对应的下标
+	const index = urlStr.indexOf('?') // index = 31
+	// 截取 '?' 后的内容
+	const dataStr = urlStr.substr(index + 1) // dataStr = a=1&b=2&c=&d=xxx&e
+	// 通过 '&' 将字符串分割成数组
+	const dataArr = dataStr.split('&') // ['a=1', 'b=2', 'c=', 'd=xxx', 'e']
+	// 遍历字符串分割后的数组
+	dataArr.forEach(str => {
+		// 判断数组内的字符串是否有 '='
+		if (str.indexOf('=') === -1) {
+		// 如没有 '=' , 则将此字符串作为对象内键值对的键, 键值对的值为 undefined
+		urlObj[str] = undefined // { e: undefined }
+		} else {
+		// 如果有 '='
+		// 通过 '=' 将此字符串截取成两段字符串（不推荐使用 split 分割, 因为数据中可能携带多个 '=' ）
+		const innerArrIndex = str.indexOf('=')
+		const key = str.substring(0, innerArrIndex)
+		const value = str.substr(innerArrIndex + 1)
+		// 以截取后的两段字符串作为对象的键值对
+		urlObj[key] = value // {a: '1', b: '2', c: '', d: 'xxx'}
+		}
+	})
+	// 返回对象
+	return urlObj
+}
 export function isDuringDate(beginDateStr: string, endDateStr: string) {
 	var curDate = new Date(),
 		beginDate = new Date(beginDateStr),
@@ -109,19 +138,6 @@ export function dateFormatMSHMSBD(time: number | string) {
 }
 
 // 时间戳 年月日
-export function dateFormatYMSCustom(time: number | string, tip: any) {
-	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-	var year = date.getFullYear();
-	var month = ("0" + (date.getMonth() + 1)).slice(-2);
-	var sdate = ("0" + date.getDate()).slice(-2);
-
-	// 拼接
-	var result = year + tip + month + tip + sdate
-
-	return result;
-}
-
-// 时间戳 年月日
 export function dateFormatYMS(time: number | string) {
 	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
 	var year = date.getFullYear();
@@ -130,16 +146,6 @@ export function dateFormatYMS(time: number | string) {
 
 	// 拼接
 	var result = year + "." + month + "." + sdate
-
-	return result;
-}
-// 时间戳 月日
-export function dateFormatMSCustom(time: number | string, tip: any) {
-	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-	var month = ("0" + (date.getMonth() + 1)).slice(-2);
-	var sdate = ("0" + date.getDate()).slice(-2);
-	// 拼接
-	var result = month + tip + sdate
 
 	return result;
 }
@@ -377,9 +383,57 @@ export function countDown(startDate: number, endDate: number = 0, mmbol: boolean
 		return dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
 	}
 }
+//倒计时
+export function liveCountDown(startDate: number, endDate: number = 0, mmbol: boolean = true) {
+	if (!endDate) endDate = Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
+		1) / 1000)
+	let times: any = new Date(endDate * 1000).getTime() - new Date(startDate * 1000).getTime();
+	let ss: any = Math.floor(times / 1000) //毫秒转换为秒
+	let dd = Math.floor(ss / (3600 * 24)); //秒转化为天
+	ss %= 3600 * 24; //整除了天之后还剩下多少秒
+	let hh = Math.floor(ss / 3600); //秒转化为小时
+	// hh = formatNumberZero(hh);
+	ss %= 3600; //整除了小时后，还剩下多少秒
+	let mm = Math.floor(ss / 60); //秒转化为分钟
+	// mm = formatNumberZero(mm); //如果秒显示小于10，前面加上个零
+	ss %= 60; //整除了分之后，还剩下多少秒
+	// ss = formatNumberZero(ss);
+	if (ss < 0) {
+		return `00:00:00`
+	}
+	return `${mm}:${ss}`
+}
+//倒计时 
+export function liveCountDownV2(startDate: number, endDate: number = 0, mmbol: boolean = true) {
+	if (!endDate) endDate = Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
+		1) / 1000)
+	let times: any = new Date(endDate * 1000).getTime() - new Date(startDate * 1000).getTime();
+	let ss: any = Math.floor(times / 1000) //毫秒转换为秒
+	let dd = Math.floor(ss / (3600 * 24)); //秒转化为天
+	ss %= 3600 * 24; //整除了天之后还剩下多少秒
+	let hh = Math.floor(ss / 3600); //秒转化为小时
+	// hh = formatNumberZero(hh);
+	ss %= 3600; //整除了小时后，还剩下多少秒
+	let mm = Math.floor(ss / 60); //秒转化为分钟
+	// mm = formatNumberZero(mm); //如果秒显示小于10，前面加上个零
+	ss %= 60; //整除了分之后，还剩下多少秒
+	// ss = formatNumberZero(ss);
+	if (ss < 0) {
+		return `00:00:00`
+	}
+	if (mmbol) {
+		return `${hh}:${mm}:${ss}`
+	} else {
+		const day = dd ? `${dd}天` : ''
+		const hour = hh ? `${hh}小时` : ''
+		const minute = mm ? `${mm}分钟` : ''
+		const second = ss ? `${ss}秒` : ''
+		return day + hour + minute + (!day && !hour && !minute ? second : '')
+	}
+}
 // 正则每3位数字添加逗号
 export function toThousands(num = 0) {
-	return num.toString().replace(/\d+/, function(n) {
+	return num.toString().replace(/\d+/, function (n) {
 		return n.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
 	});
 };

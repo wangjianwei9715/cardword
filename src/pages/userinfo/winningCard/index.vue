@@ -10,12 +10,12 @@
 				<view class="list-title-name">{{item.name}}</view>
 			</view>
 			<view class="list-bottom">
-				<view class="list-bottom-time">{{dateFormatYMSCustom(item.time,'-')}}</view>
+				<view class="list-bottom-time">{{$u.timeFormat(item.time,'yyyy-mm-dd')}}</view>
 				<view class="list-bottom-num">{{item.picNum}}图</view>
 			</view>
 		</view>
 
-		<empty v-if="empty"/>
+		<empty v-if="listParams.empty"/>
 	</view>
 </template>
 
@@ -23,58 +23,50 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
-	import { dateFormatYMSCustom } from "@/tools/util"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		dateFormatYMSCustom = dateFormatYMSCustom;
 		codeList:any = [];
-		currentPage = 1;
-		pageSize = 10;
-		noMoreData = false;
-		total = 0;
-		empty = false;
+		listParams:{[x:string]:any} = {
+			currentPage:1,
+			pageSize:10,
+			noMoreData:false,
+			total:0,
+			empty:false
+		}
 		onLoad(query:any) {
 			this.reqNewData();
 		}
 		//   加载更多数据
 		onReachBottom() {
-		    this.reqNewData() 
+			this.reqNewData() 
 		}
 		onClickWinningSwiper(index:number){
 			uni.navigateTo({
-				url:'/pages/userinfo/winningCard/swiper?index='+index+'&total='+this.total
+				url:'/pages/userinfo/winningCard/swiper?index='+index+'&total='+this.listParams.total
 			})
 		}
 		againReqNewData(){
-			this.currentPage = 1;
-			this.noMoreData = false;
+			this.listParams.currentPage = 1;
+			this.listParams.noMoreData = false;
 			this.reqNewData()
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多数据
-			if (this.noMoreData) {
+			const params = this.listParams;
+			if (params.noMoreData) {
 				return;
 			}
-			
-			let params:{[x:string]:any} = {
-				pageIndex: this.currentPage,
-				pageSize:this.pageSize
-			}
 			app.http.Get('me/hitNo/list', params, (data: any) => {
-				this.total = data.total;
-				if(data.totalPage<=this.currentPage){
-					this.noMoreData = true;
-				}
-				if(this.currentPage== 1) this.codeList = [];
-				if(data.total==0) {
-					this.empty = true
-				}else{
-					this.empty = false
-				};
+				params.total = data.total;
+				params.empty = data.total == 0
+				params.noMoreData = data.totalPage <= params.currentPage;
+
+				if(params.currentPage == 1) this.codeList = [];
 				if(data.list){
-					this.codeList = this.codeList.concat(data.list);
+					this.codeList = [...this.codeList,...data.list];
 				}
-				this.currentPage++;
+
+				params.currentPage++;
 				if(cb) cb()
 			});
 		}

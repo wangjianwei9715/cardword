@@ -15,14 +15,11 @@
       <image class="header-order-line"  src="../../static/goods/v2/buy.png" />
     </view>
 
-    
-
     <view class="order-detail" v-if="goodsData.pic">
       <view class="goods-info">
         <image  class="goods-info-logo" :src="$parsePic(getGoodsImg(decodeURIComponent(goodsData.pic.carousel)))" />
         <view class="goods-info2">
           <text class="goods-info2-title">{{ goodsData.title }}</text>
-
           <view class="goods-money-info" v-if="cartData == '' && payRandomTeamData == ''">
             <view class="goods-money">¥<text>{{ goodsData.price }}</text></view>
             <view class="goods-money-right" v-if="baoduiId == 0">
@@ -80,7 +77,6 @@
           </view>
         </view>
       </view>
-
       <!-- 自选球队编号 -->
       <view class="yunfei-info check-team top-order" v-if="cartData != ''">
         <view class="item-title">已选编号</view>
@@ -92,7 +88,6 @@
         </view>
       </view>
       <!--  -->
-    
       <!-- 包队编号 -->
       <view class="yunfei-info check-team top-order" v-if="baoduiName != ''">
         <view class="item-title">已选编号</view>
@@ -104,15 +99,10 @@
         </view>
       </view>
       <!--  -->
-
       <!-- 预测卡密 -->
       <!-- freeNum 免单次数  checkTeam 预测球队  guessList 球队列表  teamCheck 球队选择-->
       <confirmorderGuess v-if="getBitDisableGuess()"  :freeNum="freeNum>=moneyNum?(freeNum-moneyNum):0" :checkTeam="guessCheckTeam" :teamList="guessList" :lastGuess="lastGuess" @teamCheck="onClickGuessTeamCheck" @onScrolltolower="onScrolltolower" />
       <!-- 预测卡密 -->
-
-      
-      
-
       <view class="yunfei-info top-order" >
         <view class="yunfei-item">
           <text class="item-name">商品金额</text>
@@ -123,7 +113,6 @@
         </view>
         <view class="yunfei-item">
           <text class="item-name">优惠券</text>
-
           <view class="item-name" v-if="getBitDisableCoupon(goodsData.bit)">
             此商品优惠券不可用
           </view>
@@ -134,7 +123,6 @@
             >{{ checkCouponPrice > 0 ? "" : "张可用"
             }}<view class="item-name-right"></view>
           </view>
-         
         </view>
         <view class="yunfei-item" v-show="freeNum > 0">
           <text class="item-name">免单优惠</text>
@@ -175,7 +163,6 @@
           除拼团时限届满未满员外，所购商品因其商品属及价值特性，不支持退款、退货服务。本次拼团可能存在未中卡情形，请卡迷理解
           <view class="bottom-gm-btn" @click="operationCardShow = true">查看详情<text>《购买须知》</text></view>
         </view>
-        
       </view>
       
       <view v-show="(goodsData.bit&32) == 32" class="kami-title" >
@@ -211,7 +198,6 @@
       :countTime="countTime"
       @pay="onClickPayGoods"
     />
-
     <paymentCoupon
       :showPayMentCoupon="showPayMentCoupon"
       :couponList="couponList"
@@ -234,7 +220,6 @@ export default class ClassName extends BaseNode {
   getGoodsImg = getGoodsImg;
   moneyNum = 1;
   goodsData: { [x: string]: any } = [];
-  youhuiPrice = 0;
   onePrice = 0;
   cartData: any = [];
   gmCheck = true;
@@ -545,18 +530,16 @@ export default class ClassName extends BaseNode {
   }
   onClickPayGoods(data: any) {
     // 1：支付宝 2：微信
-    if (data == "") {
-      return;
-    }
-    uni.showLoading({
-      title: "加载中",
-    });
+    if (data == "") return;
+    uni.showLoading({ title: "加载中"});
+
     let params: any = {
       channelId: data.channelId ? data.channelId : "",
       channel: data.channel,
       delivery: this.addressData.id,
     };
     let url = "good/topay/" + this.goodsData.goodCode;
+
     if(uni.getSystemInfoSync().platform === "android"){
       params.nativeSdk = 'qmf_android'
     }
@@ -592,8 +575,13 @@ export default class ClassName extends BaseNode {
     if (this.checkCouponList != "") {
       params.couponIdList = this.checkCouponList;
     }
+
+    this.postPay(url,params,data)
+    
+  }
+  postPay(url:string,params:any,data:any){
     app.http.Post(url, params, (res: any) => {
-      
+      uni.hideLoading();
       // 预测球队
       if(this.getBitDisableGuess()){
         app.http.Post('me/order/guess/name/'+res.goodOrderCode,{name:this.guessList[this.guessCheckTeam].name})
@@ -612,7 +600,6 @@ export default class ClassName extends BaseNode {
               this.redirectToOrder(res.goodOrderCode)
             });
           }
-          uni.hideLoading();
         } else {
           if (res.wechat) {
             if(res.appPayRequest){
@@ -620,12 +607,10 @@ export default class ClassName extends BaseNode {
             }else{
               app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
             }
-            uni.hideLoading();
             this.redirectToOrder(res.goodOrderCode)
           }
         }
       }
-      
     });
   }
   cuokaSet(state:boolean){

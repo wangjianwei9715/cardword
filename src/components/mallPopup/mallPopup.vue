@@ -11,7 +11,7 @@
 			<view class="popup-ts">(兑换实物将使用您的默认地址发货，请提前确认)</view>
 			<view class="popup-ts" v-if='awardData.limit_num'>(该商品每人限购{{awardData.limit_num}}份)</view>
 			
-			<view class="popup-btn" @click="onClickConfirm">确认兑换（{{awardData.price}}卡币）</view>
+			<view class="popup-btn" @click="$u.throttle(onClickConfirm,1000)">确认兑换（{{awardData.price}}卡币）</view>
 		</view>
 
 		<view v-else class="popup-box popup-toast" :class="{'showbox':showPopup}">

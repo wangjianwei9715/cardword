@@ -42,7 +42,7 @@
 	} from "@/app";
 	import {
 		Md5
-	} from "ts-md5/dist/md5";
+	} from "ts-md5";
 	import {
 		Component
 	} from "vue-property-decorator";
@@ -112,9 +112,7 @@
 		classifyShow = false;
 		classifyShowPlay = false;
 		goodsData: any = [];
-		goodsList: {
-			[x: string]: any;
-		} = [];
+		goodsList: any = [];
 		scrollId = "";
 		noMoreData = false;
 		hasQueryData:boolean=false;
@@ -253,7 +251,8 @@
 						this.noMoreData = true;
 					}
 					if (res.goodList && type !== "refresh") {
-						this.goodsList = this.goodsList.concat(res.goodList);
+						let list = [...this.goodsList,...res.goodList];
+						this.goodsList = app.platform.removeDuplicate(list)
 					}
 					this.scrollId = res.scrollId;
 					this.scrollIdSt = res.timeStamp;

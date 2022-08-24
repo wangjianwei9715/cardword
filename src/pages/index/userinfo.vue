@@ -136,6 +136,7 @@
 		}
 		onShow(){
 			this.initPageData();
+			this.broadcastActor=app.broadcastActor
 		}
 		onHide(){
 		}
@@ -180,6 +181,9 @@
 							pic:'../../static/userinfo/v2/icon_b_anchor.png'
 						}
 					]
+				}
+				if(!data.toPay){
+					this.orderTab['toPay'].num = 0
 				}
 				if(cb) cb()
 

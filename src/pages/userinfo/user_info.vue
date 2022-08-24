@@ -7,11 +7,13 @@
 				:key="item.id"
 				@click="onClickEdit(item.id)"
 			>
+				<!-- 头像或名称 -->
 				<view v-if="item.id==1">
 					<muqian-lazyLoad class="avatar" :src="item.avatar!=''?item.avatar:defaultAvatar" mode="" :borderRadius="'50%'"/>
 				</view>
 				<view v-else class="name">{{ item.name }}</view>
 
+				<!-- 4：性别 5：年月日选择 -->
 				<view v-if="item.id==4" class="right">
 					<picker @change="bindPickerChange" :value="sexIndex" :range="sexArray">
                         <view >{{sexIndex>=0?sexArray[sexIndex]:'请选择'}}</view>
@@ -25,7 +27,7 @@
 					<view class="icon-right"></view>
 				</view>
 				<view v-else class="right" @click="onClickC(item.id)">
-					{{ item.desc }}
+					<view class='sign'>{{ item.desc }}</view>
 					<view class="icon-right"></view>
 				</view>
 			</view>
@@ -45,8 +47,8 @@
 			avatar:{ id: 1, name: "头像",avatar:'',desc:''},
 			name:{ id: 2, name: "修改昵称", desc:''},
 			sign:{ id: 3, name: "个性签名", desc:''},
-			sex:{ id: 4, name: "性别", desc:''},
-			birth:{ id: 5, name: "生日",desc:''},
+			// sex:{ id: 4, name: "性别", desc:''},
+			// birth:{ id: 5, name: "生日",desc:''},
 			userId:{ id: 6, name: "ID", desc:''}
 		};
 		sexArray:any = ['男','女'];
@@ -70,6 +72,9 @@
 						
 					}
 				}
+			}
+			if(app.iosPlatform){
+				this.settingTab = {...this.settingTab,cancellation:{ id: 7, name: "注销账号", desc:''}}
 			}
 			this.onEventUI('finishName',(res:any)=>{
 				this.settingTab.name.desc = res.name
@@ -101,7 +106,9 @@
 			if(id==3){
 				uni.navigateTo({url:'/pages/userinfo/setting_sign?sign='+this.settingTab.sign.desc});
 			}
-			
+			if(id==7){
+				uni.navigateTo({url:'/pages/userinfo/user_cancellation?'});
+			}
 
 		}
 		async onClickAddImg(src:any){
@@ -164,6 +171,7 @@
 		}
 		onClickC(id:number){
 			if(id!=6) return;
+			if(!app.localTest) return
 			if(this.clearNum<9){
 				this.clearNum++;
 			}else{
@@ -220,6 +228,16 @@
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
 				color: #aaaabb;
+				
+			}
+			.sign{
+				width:540rpx;
+				// background: red;
+white-space: nowrap;
+font-size: 24rpx;
+text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
 			}
 		}
 	}

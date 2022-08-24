@@ -1,7 +1,9 @@
+type CustomArray = (number|string)[]
+
 import { app } from "@/app";
 import permision from "@/js_sdk/wa-permission/permission"
 import HttpRequest from "@/net/HttpRequest";
-import {Md5} from 'ts-md5/dist/md5';
+import {Md5} from 'ts-md5';
 import UpdateManager from "@/manager/UpdateManager";
 export default class PlatformManager {
 	private static instance: PlatformManager;
@@ -13,7 +15,7 @@ export default class PlatformManager {
 	urlIndex = 0;
 	private constructor() {
 		this.deviceID = this.systemInfo.deviceId;
-		console.log('########Platform:', this.systemInfo);
+		// console.log('########Platform:', this.systemInfo);
 		app.statusBarHeight = this.systemInfo.statusBarHeight;
 		// #ifdef APP-PLUS
 		this.isIos = (plus.os.name == "iOS");
@@ -76,6 +78,10 @@ export default class PlatformManager {
 			sign:Md5.hashStr(ts+'_'+item.goodCode+'_'+item.playCode+'_videoPlayKsj')
 		}
 		app.http.Post('good/videoPlay/'+item.goodCode,params,(data:any)=>{
+			if(data.type==3&&data.qiye_livingid){
+				this.launchMiniQiYeProgramLive(data.qiye_livingid,item.goodCode)
+				return
+			}
 			// 直播 回放
 			if(data.media_url!=''){
 				uni.navigateTo({
@@ -88,6 +94,7 @@ export default class PlatformManager {
 			
 		})
 	}
+	
 	//平台直播间
 	goZgLive(item:any){
 		let ts = Math.floor(new Date().getTime()/1000);
@@ -100,12 +107,18 @@ export default class PlatformManager {
 			jump()
 			return
 		} 
+		if(!params.playCode){
+			uni.showToast({
+				title:'回放生成中',
+				icon:'none'
+			})
+			return
+		}
 		app.http.Post('good/videoPlay/'+item.goodCode,params,(data:any)=>{
 			// 直播 回放
 			if(data.media_url!=''){
 				uni.navigateTo({
 					url:`/pages/live/zgPlayBack?data=${JSON.stringify(data)}&alias=${item.alias||item.merchantAlias}&roomID=${item.roomID}`,
-					// url:`/pages/live/transition`
 				})
 				return 
 			}else if(data.wxRoomId>0){
@@ -115,7 +128,7 @@ export default class PlatformManager {
 		})
 		function jump():void{
 			uni.navigateTo({
-				url:`/pages/live/zgLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}`
+				url:`/pages/live/proLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}&type=${item.type}`
 			})
 		}
 	}
@@ -143,6 +156,22 @@ export default class PlatformManager {
 		// })
 		// #endif
 
+	}
+	launchMiniQiYeProgramLive(id: string, goodCode: string) {
+		plus.share.getServices(res => {
+			let sweixin = res.find(i => i.id === 'weixin')
+			if (sweixin) {
+				sweixin.launchMiniProgram({
+					id: 'gh_1093b743ea0e',
+					path: `/pages/live/index?id=${id}&goodCode=${goodCode}`,
+					type: 0//0-正式版； 1-测试版； 2-体验版。 默认值为0。
+				})
+			} else {
+				// 没有获取到微信分享服务
+			}
+		}, err => {
+			// 获取分享服务列表失败
+		});
 	}
 	requestSubscribeMessage(id: string, callback?: Function) {
 		// 调起订阅消息
@@ -200,7 +229,7 @@ export default class PlatformManager {
 	postLaunch(loginToken:any,launchUrl:any,params:any,cb:Function){
 		let url = app.service_url != ''? app.service_url : this.lastCharacter(launchUrl[this.urlIndex]);
 		app.http.Post(url + "/api/app/launch", params, (res: any) => {
-			console.log("post  /api/app/launch=", res);
+			// console.log("post  /api/app/launch=", res);
 			app.service_url = url;
 			// bussinessApiDomain     主接口域名
 			// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
@@ -233,8 +262,8 @@ export default class PlatformManager {
 			});
 			if (loginToken) this.getAccess()
 			
-			console.log("bussinessApiDomain==========", app.bussinessApiDomain);
-			console.log("dataApiDomain==========", app.dataApiDomain);
+			// console.log("bussinessApiDomain==========", app.bussinessApiDomain);
+			// console.log("dataApiDomain==========", app.dataApiDomain);
 		},()=>{
 			let launchData = uni.getStorageSync("launchData");
 			if(launchData!=''){
@@ -270,7 +299,6 @@ export default class PlatformManager {
 			device: app.platform.systemInfo.brand + app.platform.systemInfo.model,
 		};
 		HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
-			console.log("access=====", data);
 			app.data = data.data;
 			app.opKey = data.opKey;
 			app.coupon = data.data.coupon;
@@ -314,7 +342,6 @@ export default class PlatformManager {
 		let key:any = ''
 		if(inviteCode.test(code)){
 			key = code.match(inviteCode);
-			console.log('邀请码code=========',key[0])
 			app.requestKey = key[0];
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -324,6 +351,22 @@ export default class PlatformManager {
 			}
 			this.checkShareNo(app.requestKey)
 		}
+	}
+	matchRequestKey(regular:any,code:string,cb?:Function){
+		let key:any = ''
+		if(regular.test(code)){
+			key = code.match(regular);
+			this.setClipboardEmpty();
+			cb && cb(key[0])
+		}
+	}
+	setClipboardEmpty(){
+		uni.setClipboardData({
+			data: '',
+			showToast:false,
+			success: ()=> {
+			}
+		});
 	}
 	checkShareNo(code:string){
 		let ts = Math.floor(new Date().getTime()/1000);
@@ -350,7 +393,6 @@ export default class PlatformManager {
 	inviteRequestKey(key:string,cb?:Function){
 		app.http.Post('activity/invite/requestKey',{key:key},(res:any)=>{
 			if(cb) cb(res)
-			console.log('invite/requestKey========',res)
 		})
 		app.requestKey = '';
 		uni.setClipboardData({
@@ -368,7 +410,6 @@ export default class PlatformManager {
             success: (res: any) => {
                 uni.hideLoading();
                 // 在H5平台下，tempFilePath 为 base64
-                console.log("res.tempFilePath:" + res.tempFilePath);
                 if (func) {
                     func(res);
                 }
@@ -423,27 +464,46 @@ export default class PlatformManager {
 		}
 	}
 	validateVersion(a:string, b:string) {
-		if (a === b || !a || !b) {
-			return false
+		console.log('validateVersion=======',a,b)
+		let cpResult:any;
+		let i = 0;
+		const arr1 = a.replace(/[^0-9.]/, '').split('.');
+		const arr2 = b.replace(/[^0-9.]/, '').split('.');
+		while (true) {
+			const s1:any = arr1[i];
+			const s2:any = arr2[i++];
+			if (s1 === undefined || s2 === undefined) {
+			cpResult = arr1.length - arr2.length;
+			break;
+			}
+			if (s1 === s2) continue;
+			cpResult = s1 - s2;
+			break;
 		}
-		const aArr = a.split('.')
-		const bArr = b.split('.');
-		const res = aArr.map((aStr, index) => {
-			return Number(aStr)>Number(bArr[index])
-		})
-		let type = false;
-		for(let i in res){
-			if(res[i]) type=true;
-		}
-		return type
+		// eslint-disable-next-line
+		console.log('cpResult===',cpResult)
+		return cpResult > 0 ? true : false;
 	}
 	heliService(params:object){
 		uni.navigateTo({
 			url: '/pages/talk/index?url_params='+JSON.stringify(params)
 		})
 	}
+	// 字符修剪
+	trimString = (str: string, char: string): string => str.split(char).filter(Boolean).join();
 	// 去重
 	removeDuplicate = <T,_>(arr: T[]): T[] => arr.filter((i) => arr.indexOf(i) === arr.lastIndexOf(i));
+	// 重复数
+	findRepeatNumber(nums:CustomArray){
+		const unique = new Set();
+		for(const num of nums){
+			if(unique.has(num)){
+				return num
+			}
+			unique.add(num)
+		}
+		return -1;
+	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false
 		return aspect;

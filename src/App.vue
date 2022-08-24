@@ -1,11 +1,22 @@
+<style lang="scss">
+	/* 注意要写在第一行，同时给style标签加入lang="scss"属性 */
+	@import "@/uni_modules/uview-ui/index.scss";
+</style>
 <script lang="ts">
 	import Vue from "vue";
 	import {
 		app
 	} from "./app";
-
+	// import ZegoExpressEngine from "@/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressEngine";
 	import HttpRequest from "./net/HttpRequest";
 	import UpdateManager from "./manager/UpdateManager";
+	import {
+		parsePic,
+		liveCountDown,
+		liveCountDownV2,
+		getCountDownTime,
+		calculate,
+	} from "./tools/util";
 	import {
 		SocketServer
 	} from "@/net/SocketServer";
@@ -17,29 +28,38 @@
 		mpType: "app",
 		globalData: {
 			// ...app
-			app
+			app,
+			parsePic,
+			liveCountDown,
+			liveCountDownV2,
+			getCountDownTime,
+			calculate,
+			// ZegoExpressEngine,
+			destroyServe: () => {
+				app.sever.isNetOK() && app.sever.close();
+				app.sever = new SocketServer();
+			},
 		},
 		onLaunch() {
-			// app.funcApiDomain='http://192.168.8.88:8741/api/v2'
+			
 			console.log("App Launch");
 			//#ifdef APP-PLUS
-			plus.screen.lockOrientation('portrait-primary'); // 强制竖屏
-			// plus.screen.lockOrientation('landscape-primary'); 
+			plus.screen.lockOrientation("portrait-primary"); // 强制竖屏
+			plus.webview.prefetchURL(app.liveWebView); //预载直播控件webview
+			// plus.screen.lockOrientation('landscape-primary');
 			//#endif
-			
 			if (process.env.NODE_ENV === "development") {
-				// console.log("开发环境");
-				// app.localTest = true;
-				// app.bussinessApiDomain = 'http://192.168.8.79:8701/api/v2/';
-				// app.funcApiDomain='http://192.168.8.79:8741/api/v2/'
-				// app.bussinessApiDomain="https://server.ssltest.ka-world.com/api/v2/"
-
+				//   console.log("开发环境");
+				// app.localTest = true;  
+				// app.bussinessApiDomain = "http://192.168.8.31:8701/api/v2/";
+				// app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2/";
+				// app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
-
 			}
-			uni.setStorageSync('openAppTime', Math.round(+new Date() / 1000)) //存储打开app时间
-			app.needPushIdentifier = uni.getStorageSync("needPushIdentifier") == 1 ? false : true;
+			uni.setStorageSync("openAppTime", Math.round(+new Date() / 1000)); //存储打开app时间
+			app.needPushIdentifier =
+				uni.getStorageSync("needPushIdentifier") == 1 ? false : true;
 			const loginToken = uni.getStorageSync("token");
 			if (loginToken) {
 				app.token = JSON.parse(loginToken);
@@ -71,7 +91,7 @@
 					HttpRequest.getIns().Post("user/token/access", params, (data: any) => {
 						app.data = data.data;
 						app.socketInfo = data.app;
-						uni.setStorageSync('socketInfo', data.app)
+						uni.setStorageSync("socketInfo", data.app);
 						app.coupon = data.data.coupon;
 						uni.$emit("updateUserData");
 						uni.$emit("loginSuccess");
@@ -97,12 +117,15 @@
 				// #ifdef APP-PLUS
 				if (app.needPushIdentifier) {
 					let info = plus.push.getClientInfo();
-					HttpRequest.getIns().Post("user/bindPushIdentifier", {
-						id: info.clientid
-					}, () => {
-						app.needPushIdentifier = false;
-						uni.setStorageSync("needPushIdentifier", 1);
-					});
+					HttpRequest.getIns().Post(
+						"user/bindPushIdentifier", {
+							id: info.clientid,
+						},
+						() => {
+							app.needPushIdentifier = false;
+							uni.setStorageSync("needPushIdentifier", 1);
+						}
+					);
 				}
 				if (app.payload != "") {
 					uni.navigateTo({
@@ -121,10 +144,9 @@
 			// #endif
 
 			// #ifdef APP-PLUS
-			plus.runtime.getProperty(plus.runtime.appid || '', (widgetInfo) => {
-				app.version = widgetInfo.version || '1.0.0'
-			})
-
+			plus.runtime.getProperty(plus.runtime.appid || "", (widgetInfo) => {
+				app.version = widgetInfo.version || "1.0.0";
+			});
 			plus.device.getOAID({
 				complete: (res: any) => {
 					if (res.oaid) {
@@ -136,7 +158,7 @@
 					if (app.platform.deviceID == "") {
 						app.platform.deviceID = uni.getSystemInfoSync().uuid;
 					}
-					app.platform.appLuanch(loginToken)
+					app.platform.appLuanch(loginToken);
 				},
 			});
 
@@ -177,7 +199,7 @@
 			app.protobuf = proto;
 			app.sever = new SocketServer();
 			// #ifndef APP-PLUS
-			app.platform.appLuanch(loginToken)
+			app.platform.appLuanch(loginToken);
 			// #endif
 
 			uni.onTabBarMidButtonTap(() => {
@@ -186,31 +208,67 @@
 					url: "/pages/initiate/initiate",
 				});
 			});
-
-			
 		},
 		onShow() {
 			console.log("App Show");
 			// #ifdef APP-PLUS
-			const nowTimeStamp = Math.round(+new Date() / 1000)
-			const refreshThreshold = 2 * 60 * 60 //刷新App阈值
-			if (uni.getStorageSync('openAppTime') && nowTimeStamp - uni.getStorageSync('openAppTime') >=
-				refreshThreshold) {
-				plus.runtime.restart()
+			const nowTimeStamp = Math.round(+new Date() / 1000);
+			const refreshThreshold = 2 * 60 * 60; //刷新App阈值
+			if (
+				uni.getStorageSync("openAppTime") &&
+				nowTimeStamp - uni.getStorageSync("openAppTime") >= refreshThreshold
+			) {
+				plus.runtime.restart();
 			}
 			setTimeout(() => {
 				let args = plus.runtime.arguments;
-				if (args) {
-					if (args.indexOf("goodsdetails") != -1) {
-						let index = args.indexOf("=") + 1;
-						let id = args.substring(index);
-						plus.runtime.arguments = null;
-						uni.navigateTo({
-							url: "/pages/goods/goods_details?id=" + id,
-						});
-					}
+				if(!args) return
+				if (args.indexOf("goodsdetails") != -1) {
+					let index = args.indexOf("=") + 1;
+					let id = args.substring(index);
+					plus.runtime.arguments = null;
+					uni.navigateTo({
+						url: "/pages/goods/goods_details?id=" + id,
+					});
+					return
 				}
-			}, 500)
+				//navigateTo=>/pages/act/playGroup/index?helpCode=666
+				if(args.indexOf("=>")!=-1){
+					const pages = getCurrentPages();
+					let [jumpType,url]=args.split("=>")
+					if(pages.length){
+						const currentRoute=pages[pages.length-1].route
+						if(url.indexOf(currentRoute)!=-1) jumpType='redirectTo'
+					}
+					//@ts-ignore
+					uni[jumpType]({
+						url
+					})
+					plus.runtime.arguments = null;
+					return
+				}
+				plus.runtime.arguments = null;
+			}, 500);
+
+			// 识别优惠券
+			app.platform.getInvitationClipboard((val: string) => {
+				const regular = /[k][s][j]\w{13}/g;
+				app.platform.matchRequestKey(regular,val,(code:string)=>{
+					uni.showModal({
+						title:'提示',
+						content:'检测到优惠券码，是否前往领取',
+						confirmText:'前往领取',
+						success:(res)=>{
+							if(res.confirm){
+								uni.setStorageSync('couponCode',code);
+								uni.navigateTo({
+									url: "/pages/userinfo/coupon/coupon_exchange",
+								});
+							}
+						}
+					})
+				})
+			})
 			// #endif
 		},
 		onHide() {
@@ -263,7 +321,7 @@
 	}
 
 	image {
-		will-change: transform
+		will-change: transform;
 	}
 
 	uni-button {
@@ -309,4 +367,9 @@
 	}
 
 	/* #endif */
+	.flexCenter{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 </style>

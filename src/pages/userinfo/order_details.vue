@@ -97,7 +97,9 @@
 				<view class="tab-index" @click="onClickKefu"><view class="icon-lianxi"></view>联系客服</view>
 				<view class="tab-index" @click="onClickComplain"><view class="icon-tousu"></view>投诉订单</view>
 			</view>
-		
+
+			<!-- 猜你喜欢 -->
+			<guessYouLikeIt :goodsList="likeGoodList" />
 		</view>
 
 		<!-- 底部按钮 -->
@@ -123,6 +125,7 @@
 	} from "../../tools/util";
 	import {orderState} from "@/net/DataExchange"
 	import { orderStateDesc,orderGoodsStateStr,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
+import { Md5 } from "ts-md5";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
@@ -174,6 +177,9 @@
 		surplusNum = 0;
 		optionList:any = [];
 		onceLoad = true;
+		// 猜你喜欢
+		likeGoodList:any = [];
+		relativeOnce = false
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -254,6 +260,14 @@
 						}
 					})
 				}
+				// 猜你喜欢
+				let ts = Math.floor(new Date().getTime()/1000);
+				let relativeParams = {
+					ts:ts,
+					s:Md5.hashStr(`kww_goodrelative_sign_${res.data.good.goodCode}_${ts}_2022`)
+				}
+				this.getRelative(res.data.good.goodCode,relativeParams)
+				// 
 				// 预测卡密
 				if(res.data.guess){
 					this.guessType = true;
@@ -291,8 +305,19 @@
 				}
 				if(cb && !res.data.wait) cb()
 			})
-
 			
+		}
+		getRelative(id:number,params:any){
+			app.http.Get(`good/${id}/relative`,params,(res:any)=>{
+				if(res.state==0&& !this.relativeOnce){
+					this.relativeOnce = true
+					setTimeout(()=>{
+						this.getRelative(id,params)
+					},500)
+					return;
+				}
+				this.likeGoodList = res.state == 1 && res.goodList ? res.goodList : []
+			})
 		}
 		// 获取解锁卡密效果
 		getNoShowList(){
@@ -993,9 +1018,6 @@
 		align-items: center;
 		padding:0 96rpx;
 		justify-content: space-between;
-		margin-bottom: calc(120rpx);
-		margin-bottom: calc(120rpx + constant(safe-area-inset-bottom));
-		margin-bottom: calc(120rpx + env(safe-area-inset-bottom));
 		.tab-index{
 			height:80rpx;
 			display: flex;

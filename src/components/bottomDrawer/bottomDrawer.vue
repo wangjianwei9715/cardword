@@ -1,7 +1,7 @@
 <template>
     <view>
         <view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
-        <view class="drawer-content" :class="{'show-drawer':showDrawer}" :style="'height:'+height+'%'">
+        <view class="drawer-content" :class="{'show-drawer':showDrawer,'needSafeAreaContent':needSafeArea}" :style="'height:'+height+heightType">
 			<view class="drawer-header">
 				{{title}}
 				<view class="close-icon" @click="onClickCloseDrawer"></view>
@@ -15,16 +15,27 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue } from "vue-property-decorator";
+	import { Component, Prop,Vue,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		@Prop({ default: false })
-		showDrawer:boolean|undefined;
+		// @Prop({ default: false })
+		// showDrawer:boolean|undefined;
+		@PropSync("showDrawer",{
+			type:Boolean
+		}) showValue!: Boolean;
+
 		@Prop({ default: '' })
 		title!:string;
 		@Prop({ default: 60 })
 		height!:number;
+		@Prop({
+			default:'%'
+		})
+		heightType!:string;
+		@Prop({ default: false })
+		needSafeArea!:boolean;
+		
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -36,6 +47,7 @@
 		}
         onClickCloseDrawer(){
             this.$emit("closeDrawer");
+			this.showValue = false
         }
 	
 	}
@@ -48,7 +60,7 @@
 		left:0;
 		height:100%;
 		width: 100%;
-        z-index:99998;
+        z-index:999;
 		background:rgba(0,0,0,0.5)
     }
     .drawer-content{
@@ -58,12 +70,14 @@
 		height:60%;
 		width: 100%;
 		background:#fff;
-		z-index: 99999;
+		z-index: 1000;
 		box-sizing: border-box;
 		transition: all 0.3s;
 		border-radius: 5rpx 5rpx 0px 0px;
+		
 		transform: translateY(100%);
 	}
+	
 	.show-drawer{
 		transform: translateY(0);
 	}
@@ -96,6 +110,19 @@
 		box-sizing: border-box;
 		padding:100rpx 30rpx 30rpx 30rpx;
 		overflow-y: auto;
+	}
+	.needSafeAreaContent{
+		box-sizing: content-box;
+		padding-bottom:constant(safe-area-inset-bottom);
+    	padding-bottom: env(safe-area-inset-bottom);
+		.drawer-header{
+			position: relative;
+		}
+		.drawer-center{
+			padding:0 30rpx;
+			// padding-bottom:constant(safe-area-inset-bottom);
+    		// padding-bottom: env(safe-area-inset-bottom);
+		}
 	}
 	.close-icon{
 		width: 29rpx;

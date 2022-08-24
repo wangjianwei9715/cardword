@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" focus v-model="searchTetxt" placeholder="搜索" confirm-type="search" @confirm="onClickSearch(searchTetxt)" />
+					<input class="search-input" type="text" focus v-model="searchTetxt" placeholder="搜索商品、店铺" confirm-type="search" @confirm="onClickSearch(searchTetxt)" />
 				</view>
 				<view v-if="searchTetxt==''" class="header-right" @click="onClickBack">取消</view>
 				<view v-else class="header-right" @click="onClickSearch(searchTetxt)">搜索</view>
@@ -14,10 +14,49 @@
 		
 		<view class="top-center">
 			<statusbar/>
-			<view class="search-title">历史记录<view class="icon-delete" @click="onClickDelete"></view></view>
-			<view class="search-list">
+			<view class="search-title" v-show="historyList!=''">历史记录<view class="icon-delete" @click="onClickDelete"></view></view>
+			<view class="search-list" v-show="historyList!=''">
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
 			</view>
+			<view class="search-title">热门搜索</view>
+			<view class="search-list">
+				<view class="search-index" @click="searchGoodList(item)" v-for="item in hotSearchList" :key="item">{{item}}</view>
+			</view>
+			<view class="swiper-tab">
+				<view class="swiper-fbtn" :class="{'btn-goods':curIndex==1}" @click="curIndex=1">{{curIndex==1?'':'商品飙升榜'}}</view>
+				<view class="swiper-fbtn" :class="{'btn-merchant':curIndex==2}" @click="curIndex=2">{{curIndex==2?'':'店铺热力榜'}}</view>
+			</view>
+
+			<swiper
+				:style="{ width: '100%', height: '1250rpx' }"
+				:current = "curIndex-1"
+				duration="200"
+				circular
+				@change="animationfinish"
+				>
+				<swiper-item v-for="(item, i) in 2" :key="i">
+					<view class="slide-image-box" v-if="item==1">
+						<view class="swiper-list swiper-left">
+							<view class="good-item" v-for="(item,index) in hotList.goodList" :key="index" @click="goGoodDetail(item.goodCode)">
+								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
+								<muqian-lazyLoad class="good-pic" :src="decodeURIComponent(item.pic)" borderRadius="5rpx"/>
+								<view class="good-desc">{{item.title}}</view>
+								<view class="good-new" v-if="item.isNew">新</view>
+							</view>
+						</view>
+					</view>
+					<view  class="slide-image-box" v-else>
+						<view class="swiper-list swiper-right">
+							<view class="good-item" v-for="(item,index) in hotList.merchantList" :key="index" @click="onClickShops(item.alias)">
+								<view class="good-rank" :class="'rank-'+item.rank">{{item.rank>3?item.rank:''}}</view>
+								<muqian-lazyLoad class="merchant-pic" :src="decodeURIComponent(item.logo)" borderRadius="50%"/>
+								<view class="merchant-desc">{{item.name}}</view>
+								<view class="merchant-up" v-if="item.rankAlter>0"></view>
+							</view>
+						</view>
+					</view>
+				</swiper-item>
+			</swiper>
 		</view>
 	</view>
 </template>
@@ -31,29 +70,48 @@
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
+		hotSearchList:any = [];
+		curIndex = 1;
+		hotList:any = {
+			goodList:[],
+			merchantList:[]
+		}
 		onLoad(query:any) {
 			let searchData = uni.getStorageSync("searchData");
-			if(searchData){
-				this.historyList = searchData
-			}
-			if(query.q){
-				this.searchTetxt = query.q
-			}
+			if(searchData) this.historyList = searchData
+			if(query.q) this.searchTetxt = query.q
+			
+			app.http.Get('dataApi/search/heat/list',{},(res:any)=>{
+				this.hotList.goodList = res.data.goodList.splice(0,10);
+				this.hotList.merchantList = res.data.merchantList.splice(0,10);
+			})
+			app.http.Get('dataApi/search/series/list',{},(res:any)=>{
+				this.hotSearchList = res.list ? res.list : [];
+			})
 		}
 		onClickBack(){
-			uni.navigateBack({
-				delta: 1
-			});
+			uni.navigateBack({ delta: 1 });
 		}
 		onClickDelete(){
-			this.historyList = []
-			uni.removeStorageSync("searchData")
+			uni.showModal({
+				title: '提示',
+				content: '是否删除搜索历史',
+				success: (res)=> {
+					if (res.confirm) {
+						this.historyList = []
+						uni.removeStorageSync("searchData")
+					} else if (res.cancel) {
+						console.log('用户点击取消');
+					}
+				}
+			});
+
 		}
 		onClickSearch(text:string){
 			let hideGoods = /[A-Z]{2}\d{7}/g
 			if(hideGoods.test(text)){
 				let code = text.match(hideGoods);
-				uni.navigateTo({ url: `/pages/goods/goods_details?id=${code}` })
+				this.goGoodDetail(code)
 				return;
 			}
 			if(text!=''){
@@ -65,6 +123,9 @@
 					uni.setStorageSync("searchData",searchData)
 				}
 			}
+			this.searchGoodList(text)
+		}
+		searchGoodList(text:string){
 			let date:any = new Date()
 			let params={
 				highlight:1,
@@ -81,10 +142,27 @@
 			})
 			// #endif
 		}
+		animationfinish(e:any) {
+			this.curIndex = e.detail.current+1
+		}
+		goGoodDetail(code:any){
+			uni.navigateTo({ url: `/pages/goods/goods_details?id=${code}` })
+		}
+		onClickShops(alias: any) {
+			// #ifndef MP
+			if (app.token.accessToken == "") {
+				uni.navigateTo({ url: "/pages/login/login" });
+				return;
+			}
+			// #endif
+			const path = `/pages/userinfo/merchant_shopsV2`;
+			uni.navigateTo({ url: path + `?alias=${alias}` });
+
+		}
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.content{
 		width: 100%;
 		box-sizing: border-box;
@@ -123,14 +201,13 @@
 	.search-input{
 		width: 626rpx;
 		height:64rpx;
-		background: #F5F5F8;
-		border-radius: 4rpx;
-		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
+		background: #F5F5F5;
+		border-radius: 3rpx;
+		font-size: 26rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
 		color: #14151A;
-		padding-left:76rpx ;
-		border-radius: 29rpx;
+		padding-left:76rpx
 	}
 	.search-icon{
 		width: 28rpx;
@@ -153,25 +230,25 @@
 	.top-center{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 30rpx;
 		padding-top: 124rpx;
 	}
 	.search-title{
 		width: 100%;
 		height:40rpx;
 		box-sizing: border-box;
-		font-size: 28rpx;
+		font-size: 32rpx;
 		font-family: HYQiHei;
 		font-weight: bold;
 		color: #3B3B3B;
 		display: flex;
 		align-items: center;
-		justify-content:space-between
+		justify-content:space-between;
+		padding:0 30rpx;
 	}
 	.icon-delete{
-		width: 29rpx;
-		height:29rpx;
-		/* background:url(../../static/goods/icon_delete.png) no-repeat center; */
+		width: 34rpx;
+		height:32rpx;
+		background:url(../../static/goods/v2/icon_del.png) no-repeat center; 
 		background-size: 100% 100%;
 	}
 	.search-list{
@@ -180,6 +257,7 @@
 		margin:20rpx auto;
 		display: flex;
 		flex-wrap: wrap;
+		padding:0 30rpx
 	}
 	.search-index{
 		height:56rpx;
@@ -324,5 +402,177 @@
 		font-family: HYQiHei;
 		font-weight: normal;
 		color: #FFFFFF;
+	}
+	
+	.slide-image-box{
+		width: 750rpx;
+		z-index: 200;
+		box-sizing: border-box;
+		overflow: hidden;
+	}
+	.swiper-left{
+		background: linear-gradient(0deg, #FFFFFF 0%, #FEF9F4 99%);
+	}
+	.swiper-right{
+		background: linear-gradient(0deg, #FFFFFF 0%, #F6FCFC 99%);
+	}
+	.swiper-header{
+		width: 100%;
+		height:80rpx;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+	}
+	.swiper-left .swiper-title{
+		width: 163rpx;
+		height:30rpx;
+		background: url(@/static/goods/v2/title_up.png) no-repeat center / 100% 100%;
+	}
+	.swiper-right .swiper-title{
+		width: 163rpx;
+		height:30rpx;
+		background: url(@/static/goods/v2/title_hot.png) no-repeat center / 100% 100%;
+	}
+	.good-item{
+		width: 100%;
+		height:84rpx;
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
+		margin-bottom: 30rpx;
+		position: relative;
+	}
+	.good-rank{
+		width: 35rpx;
+		height:70rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 27rpx;
+		font-family: Impact;
+		font-weight: 400;
+		color: #757575;
+		margin-right: 15rpx;
+	}
+	.rank-1{
+		width: 35rpx;
+		height:44rpx;
+		background: url(@/static/goods/v2/1.png) no-repeat center / 100% 100%;
+	}
+	.rank-2{
+		width: 35rpx;
+		height:44rpx;
+		background: url(@/static/goods/v2/2.png) no-repeat center / 100% 100%;
+	}
+	.rank-3{
+		width: 35rpx;
+		height:44rpx;
+		background: url(@/static/goods/v2/3.png) no-repeat center / 100% 100%;
+	}
+	.good-pic{
+		width: 96rpx;
+		height:84rpx;
+	}
+	.good-desc{
+		width: 440rpx;
+		height:70rpx;
+		margin-left: 20rpx;
+		font-size: 26rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+		align-items: flex-start;
+		word-break:break-all;
+		line-height: 70rpx;
+	}
+	.good-new{
+		width: 30rpx;
+		height: 30rpx;
+		background: linear-gradient(25deg, #61A178 0%, #88CD5A 99%);
+		border-radius: 3rpx;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #FFFFFF;
+		box-sizing: border-box;
+		text-align: center;
+		line-height: 30rpx;
+		position: absolute;
+		right:0;
+		top:50%;
+		margin-top: -15rpx;
+	}
+	.merchant-pic{
+		width: 75rpx;
+		height:75rpx
+	}
+	.merchant-desc{
+		font-size: 26rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		margin-left: 22rpx;
+	}
+	.merchant-up{
+		width: 18rpx;
+		height:28rpx;
+		position: absolute;
+		right:25rpx;
+		top:50%;
+		margin-top: -14.5rpx;
+		background: url(@/static/goods/v2/up.png) no-repeat center / 100% 100%;
+	}
+	.swiper-box{
+		width: 750rpx;
+		box-sizing: border-box;
+		overflow: hidden;
+	}
+	.swiper-index{
+		width: 1500rpx;
+		display: flex;
+		justify-content: space-between;
+		transition: all 0.2s linear;
+		transform: translateX(0);
+	}
+	.show-merchant{
+		transform: translateX(-750rpx);
+	}
+	.swiper-list{
+		width: 700rpx;
+		box-sizing: border-box;
+		border: 1rpx solid #F3F0F0;
+		border-radius: 5rpx;
+		padding: 30rpx 20rpx 0 20rpx;
+		margin:0 auto;
+	}
+	.swiper-tab{
+		width: 100%;
+		height:80rpx;
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
+		padding:0rpx 30rpx;
+	}
+	.swiper-fbtn{
+		height:35rpx;
+		font-size: 29rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #757575;
+		display: flex;
+		align-items: center;
+	}
+	.btn-goods{
+		width: 175rpx;
+		background:url(@/static/goods/v2/title_up.png) no-repeat center / 100% 100%;
+		margin-right: 54rpx;
+	}
+	.btn-merchant{
+		width: 176rpx;
+		background:url(@/static/goods/v2/title_hot.png) no-repeat center / 100% 100%;
+		margin-left: 54rpx;
 	}
 </style>

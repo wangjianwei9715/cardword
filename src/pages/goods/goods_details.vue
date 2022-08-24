@@ -68,12 +68,12 @@
 						<view class="header-top-plan">
 							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
 								<view class="progress-mask"
-									:style="{width:(100-getPlan(goodsData.lockNum,goodsData.currentNum,goodsData.totalNum))+'%'}">
+									:style="{width:(100-planData.width)+'%'}">
 								</view>
 							</view>
 							<view class="header-top-plan-num" v-if="goodsState>=2">已完成</view>
 							<view class="header-top-plan-num" v-else>
-								余{{goodsData.totalNum-(goodsData.currentNum+goodsData.lockNum)}}/共{{goodsData.totalNum}}
+								{{planData.str}}
 								<view class="header-top-plan-numbottom">
 									{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
 								</view>
@@ -89,7 +89,6 @@
 							<view class="header-bottom-index-desc">{{item.desc}}</view>
 						</view>
 					</view>
-					<!-- <view class="header-top-id">商品ID：{{goodsId}}</view> -->
 				</view>
 			</view>
 
@@ -164,7 +163,8 @@
 				{{item.desc}}
 			</view>
 		</view>
-
+		<!-- 猜你喜欢 -->
+		<guessYouLikeIt :goodsList="likeGoodList" />
 		<!-- 直播可拖动控件 -->
 		<movable-area class="movable-area" v-if="goodsData.broadcast">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="750rpx">
@@ -236,6 +236,8 @@
 				可免单{{freeNoNum}}组
 			</view>
 		</view>
+
+		
 	</view>
 </template>
 
@@ -317,7 +319,6 @@
 			[x: string]: any
 		} = [];
 		buyRecordList: any = [];
-		onNetWorkFunc: any;
 		// 自选球队相关
 		// 球队选择
 		// 分支选择
@@ -343,8 +344,6 @@
 		payChannel: any = [];
 		// 邀请新人弹窗
 		showInvitePopup = false;
-		// 是否禁用优惠券
-		disableCoupon = false;
 		buyExplain =
 			'商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。';
 		randomNum = 0;
@@ -352,9 +351,18 @@
 		showDrawer = false;
 		freeNoNum = 0;
 		joined = false;
+		source="";
+		// 猜你喜欢
+		likeGoodList:any = [];
+		planData:any = {
+			width:0,
+			str:''
+		}
+		relativeOnce = false;
 		onLoad(query: any) {
 			// #ifndef MP
 			this.goodsId = query.id;
+			this.source=query.source
 			this.getGoodData(this.goodsId);
 			// #endif
 		}
@@ -403,6 +411,9 @@
 				this.favorType = data.favorite <= 0 ? false : true;
 				// 数据详情
 				this.goodsData = data.good;
+				// 进度
+				this.getPlan(this.goodsData);
+
 				// 支付方式
 				this.payChannel = data.payChannel || [];
 				this.joined = data.joined
@@ -435,6 +446,23 @@
 				}
 
 				cb && cb()
+			})
+			let relativeParams = {
+				ts:ts,
+				s:Md5.hashStr(`kww_goodrelative_sign_${id}_${ts}_2022`)
+			}
+			this.getRelative(id,relativeParams)
+		}
+		getRelative(id:number,params:any){
+			app.http.Get(`good/${id}/relative`,params,(res:any)=>{
+				if(res.state==0 && !this.relativeOnce){
+					this.relativeOnce = true
+					setTimeout(()=>{
+						this.getRelative(id,params)
+					},500)
+					return;
+				}
+				this.likeGoodList = res.state == 1 && res.goodList ? res.goodList : []
 			})
 		}
 		getProgress() {
@@ -551,7 +579,7 @@
 					// 第三方客服
 					
 					// let params = {
-					// 	agentExten:8005,
+					// 	agentExten:this.goodsData.kefu,
 					// 	businessParam:'goodCode:'+this.goodsId
 					// }
 					// app.platform.heliService(params)
@@ -598,7 +626,7 @@
 						shareUrl: `https://www.ka-world.com/share/h5/#/pages/goods/goods_details?id=${this.goodsId}`,
 						title: this.goodsData.title,
 						summary: this.goodsData.title,
-						thumb: this.goodsData.pic.thumb
+						thumb: this.goodsData.pic.thumb||this.goodsImg[0]
 					}
 				}
 				this.operationShow = true
@@ -635,7 +663,7 @@
 			currentWebview.setStyle({  
 				pullToRefresh: {  
 					support: isPull,  
-					style: plus.os.name === 'Android' ? 'circle' : 'default'  
+					style: 'circle'
 				}  
 			});  
 			//#endif
@@ -667,7 +695,7 @@
 				})
 				return;
 			}
-			if (goodData.totalNum - (goodData.currentNum + goodData.lockNum) <= 0) {
+			if (this.goodSurplusNum <= 0) {
 				uni.showToast({
 					title: '该商品已售罄',
 					icon: 'none'
@@ -686,7 +714,12 @@
 			})
 		}
 		onClickLive() {
-
+			if(this.source=='livePage') {
+				uni.navigateBack({
+					delta:1
+				})
+				return
+			}
 			if (this.goodsData.broadcast.third&&this.goodsData.broadcast.third == 1001) {
 				const {
 					publisher
@@ -942,14 +975,25 @@
 			let Str = String(str)
 			return Str.substr(index, 1)
 		}
-		getPlan(lock: number, now: number, all: number) {
-			let width = Math.floor((Number(lock) + Number(now)) / Number(all) * 100);
-			return width
+		getPlan(item:any){
+			const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000)/100;
+			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
+			const str = saleRatio > width ? 
+			`${saleRatio}%`:
+			`余${this.goodSurplusNum}/共${item.totalNum}`;
+			this.planData = {
+				width:Math.max(width,saleRatio),
+				str
+			}
 		}
 		onClickCloseDrawer() {
 			this.showDrawer = false;
 		}
-
+		// 商品剩余数量
+		public get goodSurplusNum() : number {
+			const goodData = this.goodsData;
+			return goodData.totalNum - (goodData.currentNum + goodData.lockNum)
+		}
 	}
 </script>
 
@@ -1111,7 +1155,7 @@
 	}
 
 	.detail-index-bg {
-		width: 100%;
+		width: 750rpx;
 		background: $content-bg;
 		display: flex;
 		justify-content: center;
@@ -1790,10 +1834,7 @@
 		width: 100%;
 		background: #fff;
 		box-sizing: border-box;
-		padding: 30rpx 25rpx calc(150rpx) 25rpx;
-		padding: 30rpx 25rpx calc(150rpx + constant(safe-area-inset-bottom)) 25rpx;
-		padding: 30rpx 25rpx calc(150rpx + env(safe-area-inset-bottom)) 25rpx;
-
+		padding: 30rpx 25rpx 0 25rpx;
 	}
 
 	.detail-title {

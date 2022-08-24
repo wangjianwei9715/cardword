@@ -21,7 +21,10 @@
 			"path": "pages/index/userinfo",
 			"style": {
 				"navigationStyle": "custom",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus":{
+					"bounce":"none"
+				}
 			}
 		},
 		{
@@ -47,8 +50,9 @@
 				"enablePullDownRefresh": false
 			}
 		},
+
 		{
-			"path": "pages/live/zgLive",
+			"path": "pages/live/proLive",
 			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false,
@@ -79,7 +83,11 @@
 			"style": {
 				"navigationBarTitleText": "登录",
 				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black"
+				"navigationBarTextStyle": "black",
+				"app-plus": {
+					"softinputMode": "adjustPan"
+				}
+
 			}
 		},
 		{
@@ -132,7 +140,12 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
-		"pageOrientation":"auto"
+		"pageOrientation":"auto",
+		"app-plus":{
+			"pullToRefresh":{
+				"style":"circle"
+			}
+		}
 	},
 	"tabBar": {
 		"color": "#888888",
@@ -182,8 +195,9 @@
 					"style": {
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": true,
+						"onReachBottomDistance":999,
 						"backgroundColorTop": "#FFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#FFF" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
 				{
@@ -262,7 +276,71 @@
 		{
 			"root": "pages/act",
 			"pages": [
-				
+				{
+					"path": "playGroup/index", 
+					"style": {
+						"navigationBarTitleText": "集球员组合",
+						// "navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#103b83",
+						"backgroundColorBottom": "#103b83",
+						"backgroundColor":"#103b83",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
+					}
+				},
+				{
+					"path": "playGroup/give", 
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#fff",
+						"backgroundColorBottom": "#fff",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
+					}
+				},
+				{
+					"path": "playGroup/giveList", 
+					"style": {
+						"navigationBarTitleText": "收赠记录",
+						"enablePullDownRefresh": true,
+						"navigationBarBackgroundColor":"#ffffff",
+						"backgroundColorTop": "#fff",
+						"backgroundColorBottom": "#fff",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
+					}
+				},
+				{
+					"path": "playGroup/logList", 
+					"style": {
+						"navigationBarTitleText": "参与记录",
+						"enablePullDownRefresh": true,
+						"navigationBarBackgroundColor":"#ffffff",
+						"backgroundColorTop": "#ffffff",
+						"backgroundColorBottom": "#ffffff",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
+					}
+				},
+				{
+					"path": "playGroup/rule", 
+					"style": {
+						"navigationBarTitleText": "活动规则",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor":"#ffffff",
+						"backgroundColorTop": "#fff",
+						"backgroundColorBottom": "#fff",
+						"app-plus": {
+							"softinputNavBar": "none"
+						}
+					}
+				},
 				{
 					"path": "ref/ref",
 					"style": {
@@ -578,6 +656,7 @@
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
+
 				{
 					"path": "order_list",
 					"style": {
@@ -673,6 +752,14 @@
 					"path": "user_info",
 					"style": {
 						"navigationBarTitleText": "个人信息",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "user_cancellation",
+					"style": {
+						"navigationBarTitleText": "账号注销",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black"
 					}

@@ -72,7 +72,7 @@ export class SocketServer extends ServerBase {
 	
 	onError(evt) {
 	    console.log('socket--error ,evt =' + JSON.stringify(evt));
-		this.close();
+		// this.close();
 	    if(this.errorCb) {
 			this.errorCb(evt);
 		}

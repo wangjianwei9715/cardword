@@ -24,6 +24,13 @@
 			}
 		}
 		onClickConfirm(){
+			if(!this.newName){
+				uni.showToast({
+					title: '不能为空',
+					icon: 'none',
+				})
+				return
+			}
 			let params = {
 				name:this.newName,
 			}

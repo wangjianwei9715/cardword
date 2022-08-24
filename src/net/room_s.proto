@@ -36,6 +36,16 @@ message BackSendGift {
 	string msg = 1;		//失败原因
 }
 
+//0x00020C 通知礼物数量和状态的改变
+message SendGiftUpdated {
+    message GiftUpdated {
+        int64 id = 1; //红包id 唯一标识一个红包
+        uint32 num = 2;		//剩余数量
+        int32 sec = 3;     //获取下一个的倒计时秒数 -1 代表不用倒计时
+    }
+    repeated GiftUpdated list = 1;
+}
+
 
 //0x000204 送红包返回 失败的时候才返回
 message BackSendHongbao {
@@ -106,7 +116,7 @@ message BroadCastMerchantCoupon {
     message Coupon {
         int64 id = 1; //红包id 唯一标识一个红包
         bool disappear = 2;		//是否可以关闭入口
-        int64 startTime = 6;     //开抢时间戳 0 代表已经可抢
+        int64 startTime = 3;     //开抢时间戳 0 代表已经可抢
     }
     repeated Coupon list = 1;
 }
@@ -184,9 +194,6 @@ message BackTerminateLianmai {
     string msg = 2;     //失败原因
 }
 
-
-
-
 //0x0002F1 
 message BackGmChatBid {
     bool success = 1;       //是否成功
@@ -197,4 +204,16 @@ message BackGmChatBid {
 message BackGmKickOutRoom {
     bool success = 1;       //是否成功
     string msg = 2;     //失败原因
+}
+
+enum RoomState {
+   	BD_STATE_WAIT1 = 0;//等待直播
+   	BD_STATE_WAIT2  = 1;//即将直播
+   	BD_STATE_LIVING = 2;//直播中
+   	BD_STATE_FINISH = 3;//直播完成
+}
+//0x0002FF 主动发送房间数据改变
+message SendRoomData {
+    RoomState state = 1; // 在线人数
+    uint32 online = 2; // 在线人数
 }

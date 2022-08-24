@@ -174,7 +174,6 @@
 					// 根据 model 进行判断
 					uni.getSystemInfo({
 						success: (res:any) => {
-							console.log(res)
 							let x = (res.windowHeight/2) - uni.upx2px(180);
 							let y = uni.upx2px(650);
 							this.moveData = { x:x, y:y, x_init:x, y_init:y }
@@ -263,12 +262,14 @@
 				}
 			});
 		}
-		setSpAni(sp:number){
+		setSpAni(sp:number):string{
 			switch(sp){
 				case 1:
-					return 'movable-box-xzj'
+					return 'movable-box-xzj';
 				case 2:
-					return 'movable-box-noir'
+					return 'movable-box-noir';
+				default:
+					return '';
 			}
 		}
 		getProgress():number{

@@ -2,7 +2,7 @@
 	<view class="content">
 		<navigationbar :isShowRightBtn="true" @navclick="onClickConfirm" title='个性签名' rightText='保存' rightColor="#14151A" rightFont="12"/>
 
-		<textarea class="initiate-desc" v-model="newSign" placeholder="请输入个性签名..." />
+		<textarea class="initiate-desc" :maxlength='100' v-model="newSign" placeholder="请输入个性签名..." />
 
 	</view>
 </template>
@@ -22,6 +22,13 @@
 		onClickConfirm(){
 			let params = {
 				sign:this.newSign
+			}
+			if(this.newSign.length>100){
+				uni.showToast({
+					title: '长度不能超过100',
+					icon: 'none'
+				})
+				return
 			}
 			app.http.Post('me/editSign',params,(res:any)=>{
 				uni.$emit('finishSign',{sign:this.newSign});

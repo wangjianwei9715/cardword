@@ -1,15 +1,19 @@
 import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
 import { data } from 'browserslist';
-import {Md5} from 'ts-md5/dist/md5';
+import {Md5} from 'ts-md5';
 import {
-	objKeySort
+	objKeySort,
+	getUrlDataFN
 } from "../tools/util";
+import { headersData,opSignData,opSignOtherData } from "@/net/DataHttp"
 export default class HttpRequest {
     private static instance: HttpRequest;
 	private axiosInstance:AxiosInstance;
 	debounceUrl = '';
-
+	headersData = headersData;
+	opSignData = opSignData;
+	opSignOtherData = opSignOtherData
 	static getIns(): HttpRequest {
 		if(!HttpRequest.instance) {
 			HttpRequest.instance = new HttpRequest();
@@ -78,7 +82,10 @@ export default class HttpRequest {
 			setTimeout(()=>{
 				this.debounceUrl = '';
 			},200)
-
+			const ksjUserId = uni.getStorageSync('ksjUserId');
+			if(!uni.$u.test.isEmpty(ksjUserId)){
+				config.headers['ksjUserId'] = ksjUserId;
+			}
 			if(app.version != '' && app.version != '1.0.0'){
 				config.headers['version'] = app.version;
 			}
@@ -87,76 +94,51 @@ export default class HttpRequest {
 					config.headers['token'] = app.token.accessToken;
 				}
 			}
-			if (url.indexOf("me/certify") != -1) {
-				config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+			for(let i in this.headersData){
+				const data = this.headersData[i]
+				if(url.indexOf(`${data.url}`) != -1){
+					config.headers[`${data.name}`] = `${data.msg}`;
+				}
 			}
-			// 商品下单
-			if(url.indexOf("good/topay/") != -1){
-				this.getStr(config,'payGoodCode'); 
+			// config.data数据+sign统一处理opSign
+			for(let i in this.opSignData){
+				const data = this.opSignData[i]
+				if(url.indexOf(`${data.url}`) != -1){
+					this.setOpSign(config,data.sign,data.needOpKey)
+				}
 			}
-			// 支付订单
-			if (url.indexOf("order/topay/") != -1) {
-				
-				this.getStr(config,'payGoodOrder'); 
-			}
-			// 提交口令
-			if (url.indexOf("activity/invite/requestKey") != -1) {
-				this.getStr(config,'inviteKey'); 
-			}
-			// 提交口令
-			if (url.indexOf("activity/invite/getKey") != -1) {
-				this.getStr(config,'inviteGetKey'); 
-			}
-			// 微信登录
-			if (url.indexOf("user/login/wechat/app") != -1) {
-				this.getStr(config,'wechat',true); 
-			}
-			// 苹果
-			if (url.indexOf("user/login/apple") != -1) {
-				this.getStr(config,'apple',true); 
-			}
-			// 列表 查价 搜索
-			if (url.indexOf("search/good") != -1 || url.indexOf("search/query_price") != -1) {
-				this.getStr(config,'searchSecret',true); 
-			}
-			
-			// 短信验证码
-			if(url.indexOf("user/code") != -1){
-				let data = 'opk_smscode_'+config.data.phone+'_'+config.data.type;
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			// 确认收货
-			if(url.indexOf("me/order/buyer/receive_good") != -1){
-				let data = 'opk_'+app.opKey+'_receive_good_'+config.data.code
-				console.log('order_receive_opSign=',data)
-				config.headers['opSign'] = Md5.hashStr(data)
-			}
-			
-			if (url.indexOf("user/bindPushIdentifier") != -1) {
-				let info = plus.push.getClientInfo();
-				console.log('info==',info);
-				console.log('bindtoken==',app.token.accessToken)
-				console.log('bindPushIdentifier==',config.headers['token'])
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+info.clientid);
-			}
-			// 客服发送消息
-			if(url.indexOf("sendMessage") != -1){
-				let bucketId = config.data.bucketId;
-				let imgurl = config.data.picUrl||'';
-				let content = config.data.content||'';
-				config.headers['opSign'] = Md5.hashStr('opk_'+app.opKey+'_'+bucketId+'_'+imgurl+'_'+content)
+			// 需要单独处理额外数据的opSign
+			for(let i in this.opSignOtherData){
+				const data = this.opSignOtherData[i]
+				if(url.indexOf(`${data.url}`) != -1){
+					let opSign;
+					switch(data.name){
+						case '短信验证码':
+							opSign = `opk_smscode_${config.data.phone}_${config.data.type}`;
+							break;
+						case '确认收货':
+							opSign = `opk_${app.opKey}_receive_good_${config.data.code}`;
+							break;
+						case '绑定Push':
+							//#ifdef APP-PLUS
+							opSign = `opk_${app.opKey}_${plus.push.getClientInfo().clientid}`;
+							break;
+							//#endif
+						case '客服发送消息':
+							opSign = `opk_${app.opKey}_${config.data.bucketId}_${config.data.picUrl||''}_${config.data.content||''}`;
+							break;
+						default:
+							opSign = ''
+					};
+					config.headers['opSign'] = Md5.hashStr(opSign)
+				}
 			}
 			if(url.indexOf("app/update") != -1){
 				config.baseURL = app.update_url
-				console.log(config)
-				
 			}
 			if(url.indexOf("dataApi/") != -1){
 				config.url = url.substring(8);
-				
-				if(!app.localTest){
-					config.baseURL = app.dataApiDomain;
-				}
+				if(!app.localTest) config.baseURL = app.dataApiDomain;
 			}
 			if(url.indexOf('funcApi/')!=-1){	
 				config.url = url.substring(8);
@@ -168,8 +150,10 @@ export default class HttpRequest {
 			if(url.indexOf("app/launch") != -1||url.indexOf("app/onlinecfg") != -1){
 				config.baseURL = ''
 			}
-			if (url.indexOf("advice/upload_advice") != -1) {
-				config.headers['Content-Type'] = 'multipart/form-data';
+			if (url.indexOf("/relative") != -1) {
+				const data = getUrlDataFN(url)
+				config.headers['ts'] = data.ts;
+				config.headers['s'] = data.s;
 			}
 			// console.log('请求开始：config===',config);
 			return config;
@@ -226,13 +210,6 @@ export default class HttpRequest {
 					uni.showToast({ title: '请不要频繁操作', icon: 'none', duration: 2000 });
 				}else if (error.response.status > 400 && error.response.status < 500) {
 					uni.showToast({ title: error.response.status + '：' + error.response.statusText, icon: 'none', duration: 2000 });
-				}else if(error.response.data.code==1001&&error.response.data.uri.indexOf('search/query_price') != -1){
-					uni.showToast({
-						title:'服务忙碌中，请稍后再试',
-						icon:'none'
-					})
-					uni.$emit('refStop')
-					uni.hideLoading();
 				}
 			} else {
 				// uni.showToast({ title: error.message, icon: 'none', duration: 2000 });
@@ -304,7 +281,6 @@ export default class HttpRequest {
 		var strParams = p.join('&');
 		
 		this.axiosInstance.get(reqUrl+'?'+strParams).then((response) => {
-			// console.log('Get接收：reqUrl=',reqUrl+'&response=',response)
 			if (response.data&&response.data.code==0) {
 				if (cb) cb(response.data);
 			}else if(response.data.code==1101||response.data.code==1102){
@@ -343,7 +319,7 @@ export default class HttpRequest {
 			}
 		});
 	}
-	getStr(config:any,msg:any,type?:any){
+	setOpSign(config:any,msg:any,type?:any){
 		let str = ''
 		if(config.data){
 			for(let i in config.data){
@@ -357,14 +333,11 @@ export default class HttpRequest {
 			str = config.url.split('?')[1];
 			config.url+='&rawStr='+str+'_'+msg
 		}
-		console.log(app.opKey)
 		if(type){
 			config.headers['opSign'] = Md5.hashStr(str+'_'+msg)
-			console.log('opSign==',str+'_'+msg)
 			return ;
 		}else{
 			config.headers['opSign'] = Md5.hashStr(app.opKey+'_'+str+'_'+msg)
-			console.log('opSign==',app.opKey+'_'+str+'_'+msg)
 			return ;
 		}
 		

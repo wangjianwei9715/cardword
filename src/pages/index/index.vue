@@ -185,7 +185,9 @@
 					this.oneLoad = false;
 				}
 			})
-
+			//#ifdef APP-PLUS
+			plus.webview.prefetchURL(app.liveWebView)//预载直播控件webview
+			//#endif
 		}
 		onShow() {
 			// 销毁页面重新加载
@@ -335,6 +337,7 @@
 						this.goodsList[t].lockNum = list[i].lockNum
 						this.goodsList[t].currentNum = list[i].currentNum
 						this.goodsList[t].totalNum = list[i].totalNum
+						this.goodsList[t].saleRatio = list[i].saleRatio
 					}
 				}
 			}
@@ -444,10 +447,9 @@
 				if (this.fetchFrom == 1) this.goodsList = [];
 
 				if (data.goodList) {
-					this.fetchFrom == 1 ? this.goodsList = data.goodList : this.goodsList.push(...data
-						.goodList);
+					let list = this.fetchFrom == 1 ? data.goodList : [...this.goodsList,...data.goodList];
+					this.goodsList = app.platform.removeDuplicate(list)
 				}
-				app.platform.removeDuplicate(this.goodsList)
 				this.fetchFrom += this.fetchSize;
 				if (cb) cb()
 			});

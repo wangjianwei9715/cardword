@@ -1,380 +1,521 @@
 <template>
-	<view class="full">
-		<video
-			:src="playBackData.media_url"
-			:style='{height:screenHeight+"px"}' class='video' id='video' ref='video' show-play-btn='false'
-			object-fit='fill' controls='false' @timeupdate='timeupdate' autoplay='true' @play='onPlay=true' @ended='onPlay=false'
-			@pause='onPlay=false'></video>
-		<!-- autoplay='true' -->
-		<view class='merchant' :style="{top:56+statusBarHeight+'rpx'}">
-			<image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill'>
-			</image>
-			<view class='merchant_name'>
-				<text class='merchant_name_text'>{{merchantMessage.name}}</text>
-				<text class='merchant_name_like'>{{roomLikeNum}}本场点赞</text>
-			</view>
-		</view>
-		<image class='close' src='../../static/live/v2/close.png' :style="{top:76+statusBarHeight+'rpx'}"
-			@click='nvBack' />
-		<view class="control" :style="{bottom:38+safeAreaBottomHeight+'rpx'}">
-			<image v-if='!onPlay' class="play" src='../../static/live/v2/play.png' @click='onClickPlay'></image>
-			<image v-if='onPlay' class="stop" src='../../static/live/v2/stop.png' @click='onClickPlay'></image>
-			<text class='videoTime'>{{getCountDownTimeHour(videoTime.currentTime)}}</text>
-			<view class="canTouchProgress" id='canTouchProgress' @touchstart='progressTouchStart' @click='progressClick'
-				@touchmove='progressMove' @touchend='progressTouchCancle'>
-				<view class="progress" ref='progress'>
-					<view class="progress-play"></view>
-					<view class="progress-dot"></view>
-				</view>
-			</view>
+  <view class="full">
+    <video :src="decodeURIComponent(playBackData.media_url)" @click='showControls=!showControls' :style='{height:screenHeight+"px"}' class='video' id='video' ref='video' show-play-btn='false' object-fit='cover' controls='false' @timeupdate='timeupdate' autoplay='true' @play='onPlay=true' @ended='onPlay=false' @pause='onPlay=false'></video>
+    <view class='merchant' :style="{top:56+statusBarHeight+'rpx'}">
+      <image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill' />
+      <view class='merchant_name'>
+        <text class='merchant_name_text'>{{merchantMessage.name}}</text>
+        <text class='merchant_name_like'>{{roomLikeNum}}本场点赞</text>
+      </view>
+    </view>
 
-			<text class='videoTime' style='margin-right:4rpx'>{{getCountDownTimeHour(videoTime.duration)}}</text>
-			<text class='Rate' @click='changeRate'>{{rateOption[rateOptionIndex]}}x</text>
-		</view>
-	</view>
+    <image class='close' src='../../static/live/v2/close.png' :style="{top:76+statusBarHeight+'rpx'}" @click='nvBack' />
+    <web-view class='webView' ref='webView' :style="{bottom:100+safeAreaBottomHeight+'rpx'}" @click='showControls=!showControls' :webview-styles="webviewStyles" @onPostMessage="handleMessage" :src="webViewUrl" />
+    <view class="control" :style="{bottom:38+safeAreaBottomHeight+'rpx'}" :class='{opacity:!showControls}'>
+      <image v-if='!onPlay' class="play" src='../../static/live/v2/play.png' @click='onClickPlay' />
+      <image v-if='onPlay' class="stop" src='../../static/live/v2/stop.png' @click='onClickPlay' />
+      <text class='videoTime'>{{getCountDownTimeHour(videoTime.currentTime)}}</text>
+      <view class="canTouchProgress" id='canTouchProgress' @touchstart='progressTouchStart' @click='progressClick' @touchmove='progressMove' @touchend='progressTouchCancle'>
+        <view class='progressLine'></view>
+        <view class="progress" ref='progress'>
+          <view class="progress-play" :style='{width:progressWidth}'></view>
+          <view class="progress-dot"></view>
+        </view>
+      </view>
+
+      <text class='videoTime' style='margin-right:4rpx'>{{getCountDownTimeHour(videoTime.duration)}}</text>
+      <text class='Rate' @click='changeRate'>{{rateOption[rateOptionIndex]}}x</text>
+    </view>
+
+  </view>
 </template>
 
 <script>
-	import request from '@/net/nuveRequest'
-	export default {
-		data() {
-			return {
-				playBackData: {
-					media_url: ''
-				},
-				show: false,
-				statusBarHeight: 0,
-				videoContext: null,
-				rateOption: [0.5, 1.0, 1.5, 2],
-				rateOptionIndex: 1,
-				merchantMessage: {},
-				roomLikeNum: 0,
-				screenHeight: 0,
-				safeAreaBottomHeight: 0,
-				videoTime: {
-					duration: 0, //总时长s
-					currentTime: 0 //当前进度
-				},
-				isTouch: false,
-				onPlay: false,
-				progressDomWidth: 0,
-				progressLeft: 0
-			}
-		},
-		onReady() {
-			
-		},
-		onLoad(query) {
+import request from "@/net/nuveRequest";
+import { Md5 } from "ts-md5";
+const app = getApp().globalData.app;
+export default {
+  data() {
+    return {
+      playBackData: {
+        media_url: ""
+      },
+      webViewUrl: app.liveWebView,
+      webView: null,
+      showControls: true,
+      show: false,
+      statusBarHeight: 0,
+      deviceInfo: getApp().globalData.app.platform.systemInfo, //设备信息
+      hasNotchInScreen: plus.navigator.hasNotchInScreen(),
+      videoContext: null,
+      rateOption: [0.5, 1.0, 1.5, 2],
+      rateOptionIndex: 1,
+      merchantMessage: {},
+      roomLikeNum: 0,
+      screenHeight: 0,
+      safeAreaBottomHeight: 0,
+      videoTime: {
+        duration: 0, //总时长s
+        currentTime: 0 //当前进度
+      },
+      webviewStyles: {
+        progress: false
+      },
+      isTouch: false,
+      onPlay: false,
+      progressDomWidth: 0,
+      progressLeft: 0,
+      chartQuery: {
+        fromSec: 0,
+        toSec: 60,
+        fetchFrom: 1,
+        fetchSize: 30,
+        ts: Math.round(+new Date() / 1000),
+        s: ""
+      },
+      chartList: [],
+      roomID: 0
+    };
+  },
+  onReady() {},
+  onLoad(query) {
+    console.log(query);
+    this.playBackData = JSON.parse(query.data);
+    this.roomID = +query.roomID;
+    console.log(this.playBackData);
+    this.getMerchant(query.alias);
+    this.getLiveData()
+    uni.getSystemInfo({
+      success: res => {
+        this.statusBarHeight = res.statusBarHeight;
+        this.screenHeight = res.screenHeight;
+        const safeAreaBottomHeight = res.screenHeight - res.safeArea.bottom;
+        this.safeAreaBottomHeight = safeAreaBottomHeight;
+      }
+    });
+    this.$nextTick(() => {
+      this.videoContext = this.$refs.video;
+      const query = uni.createSelectorQuery().in(this);
+      setTimeout(() => {
+        this.webView = this.$refs.webView;
+      }, 200);
+      setTimeout(() => {
+        query
+          .select("#canTouchProgress")
+          .boundingClientRect(data => {
+            console.log(data);
+            this.progressDomWidth = data.width;
+            this.progressLeft = data.left;
+          })
+          .exec();
+      }, 500);
+    });
+  },
+  computed: {
+    progressWidth() {
+      const { duration, currentTime } = this.videoTime;
+      const width = currentTime * 394 / duration;
+      return width + "rpx";
+    },
+    iosHeight() {
+      return (
+        this.deviceInfo.screenHeight +
+        this.deviceInfo.statusBarHeight +
+        this.deviceInfo.screenHeight -
+        this.deviceInfo.safeArea.bottom
+      );
+    }
+  },
+  watch: {
+    "videoTime.currentTime": function(val, oldVal) {
+      //   console.log(val);
+      if (this.isTouch) return;
+      //   if(val<oldVal&&)
+      if (val > oldVal && val > this.chartQuery.toSec) {
+        // this.chartQuery.fromSec=this.chartQuery.fromSec+60>this.videoTime.duration?this.vide
+        this.chartQuery.fromSec += 60;
+        this.restFetch();
+        this.getChartList(false);
+      }
+      if (val < this.chartQuery.fromSec) {
+        this.chartQuery.fromSec = val;
+        this.restFetch();
+        this.getChartList(true);
+        console.log("拖动结束");
+      }
+    }
+  },
+  methods: {
+    getChartList(clear = true, changeToSec = true) {
+      console.log("请求接口");
+      if (clear) this.chartList = [];
+      if (changeToSec) this.chartQuery.toSec = this.chartQuery.fromSec + 60;
+      this.chartQuery.s = Md5.hashStr(
+        `kww_${this.roomID}_chatlist_${this.chartQuery.fromSec}_${
+          this.chartQuery.toSec
+        }_${this.chartQuery.fetchFrom}_${this.chartQuery.fetchSize}_${
+          this.chartQuery.ts
+        }_2022`
+      );
+      app.http.Get(
+        `funcApi/brodcast/third/common/room/chatlist/${this.roomID}`,
+        this.chartQuery,
+        res => {
+          console.log(res);
+          let list = res.list.map(item => {
+            item.senderAvatar = item.avatar;
+            return item;
+          });
+          this.informH5Action(
+            "BroadCastChatMessageBack",
+            [{ list }, clear],
+            true
+          );
+          if (!res.isFetchEnd) {
+            this.chartQuery.fetchFrom += this.chartQuery.fetchSize;
+            setTimeout(() => {
+              this.getChartList(false, false);
+            }, 1500);
+          }
+        }
+      );
+    },
+    restFetch() {
+      this.chartQuery.fetchFrom = 1;
+      this.chartQuery.fetchSize = 30;
+    },
+    getLiveData() {
+      return new Promise((resolve, reject) => {
+        const ts = Math.round(+new Date() / 1000);
+        const params = {
+          ts,
+          sign: Md5.hashStr(`1001room_${this.roomID}_${ts}`)
+        };
+        app.http.Get(
+          "funcApi/brodcast/third/1001/roomInfo/" + this.roomID,
+          params,
+          res => {
+            // this.liveData = res.data;
+            // if (this.liveData.type != 0) this.liveData.goodCode = "";
+            this.roomLikeNum=res.data.likeNum
+            console.log("直播间信息", res.data);
+            // this.getMerchant();
+            // this.setShareData(res.data);
+            // resolve(res.data);
+          },
+          err => {
+            reject(err);
+          }
+        );
+      });
+    },
+    getMerchant(merchantId) {
+      request("merchant/1/detail/" + merchantId, {}, "get").then(res => {
+        console.log(res);
+        this.merchantMessage = res.data;
+      });
+    },
+    timeupdate(event) {
+      const { duration, currentTime } = event.detail;
+      this.videoTime.duration = duration;
+      this.videoTime.currentTime = currentTime;
+    },
+    progressMove(event) {
+      if (this.isTouch && event.type == "touchmove") {
+        this.calculateTime(event);
+        const screenX = event.changedTouches[0].screenX;
+        const fingerMove = Math.round(screenX - this.progressLeft);
+        this.videoContext.pause();
+      }
+    },
+    progressTouchStart(event) {
+      // console.log(event);
+      this.isTouch = true;
+    },
+    progressTouchCancle(event) {
+      this.isTouch = false;
+      console.log(this.videoTime.currentTime);
 
-			this.playBackData = JSON.parse(query.data)
-			this.getMerchant(query.alias)
-			uni.getSystemInfo({
-				success: (res) => {
-					this.statusBarHeight = res.statusBarHeight
-					this.screenHeight = res.screenHeight
-					const safeAreaBottomHeight = res.screenHeight - res.safeArea.bottom
-					this.safeAreaBottomHeight = safeAreaBottomHeight
-				}
-			})
-			this.$nextTick(() => {
-				this.videoContext = this.$refs.video
-				const query = uni.createSelectorQuery().in(this);
-				setTimeout(()=>{
-					query.select('#canTouchProgress').boundingClientRect((data) => {
-						console.log(data)
-						this.progressDomWidth = data.width
-						this.progressLeft = data.left
-					}).exec();
-				},500)
-				// setTimeout(() => {
-				// 	this.$refs.floatWindow.open({
-				// 		x: 100,
-				// 		y: 100,
-				// 		enableDrag: true
-				// 	}, function(ret) {
-				// 		console.log(ret)
-				// 	})
-				// }, 2000)
-				// this.videoContext.play()
-			})
-		},
-		computed: {
-			progressWidth() {
-				const {
-					duration,
-					currentTime
-				} = this.videoTime
-				const width = currentTime * 394 / duration
-				return width + 'rpx'
-			}
-		},
-		methods: {
-			testClick() {
-				console.log(3333)
-			},
-			getMerchant(merchantId) {
-				request('merchant/1/detail/' + merchantId, {}, 'get').then(res => {
-					console.log(res);
-					this.merchantMessage = res.data
-				})
-			},
-			timeupdate(event) {
-				const {
-					duration,
-					currentTime
-				} = event.detail
-				this.videoTime.duration = duration
-				this.videoTime.currentTime = currentTime
-			},
-			progressMove(event) {
-				// console.log(this.$refs.progress)
-				if (this.isTouch && event.type == 'touchmove') {
-					this.calculateTime(event)
-					const screenX = event.changedTouches[0].screenX
-					const fingerMove=Math.round(screenX-this.progressLeft)
-					// console.log(fingerMove);
-					// console.log(this.progressDomWidth,this.progressLeft,screenX);
-					// if(screenX)>
-					// console.log(event.changedTouches[0].screenX);
-				}
-			},
-			progressTouchStart(event) {
-				// console.log(event);
-				this.isTouch = true
-			},
-			progressTouchCancle(event){
-				this.isTouch=false
-				console.log(this.videoTime.currentTime);
-				this.videoContext.seek(this.videoTime.currentTime)
-			},
-			progressClick(event){
-				// console.log(event)
-			},
-			calculateTime(event){
-				const screenX = event.changedTouches[0].screenX
-				const fingerMove=Math.round(screenX-this.progressLeft)
-				if(fingerMove<=0){
-					this.videoTime.currentTime=0
-					return
-				}
-				if(fingerMove>=this.progressDomWidth){
-					this.videoTime.currentTime=this.videoTime.duration
-					return
-				}
-				const currentTime=Math.round(fingerMove*this.videoTime.duration/this.progressDomWidth)
-				this.videoTime.currentTime=currentTime
-			},
-			nvBack() {
-				uni.navigateBack({
-					delta: 1
-				})
-			},
-			onClickPlay() {
-				if (this.onPlay) {
-					this.videoContext.pause()
-				} else {
-					this.videoContext.play()
-				}
-
-			},
-			changeRate() {
-				this.rateOptionIndex == this.rateOption.length - 1 ? this.rateOptionIndex = 0 : this.rateOptionIndex += 1
-				this.setRateVideo(this.rateOption[this.rateOptionIndex])
-
-			},
-			setRateVideo(rate = null) {
-				if (!rate) return
-				this.videoContext.playbackRate(rate)
-
-			},
-			// 时间换算
-			getCountDownTimeHour(time) {
-				let day = String(Math.floor(time / 3600 / 24));
-				let hour = String(Math.floor((time - 3600 * 24 * Number(day)) / 3600));
-				let minute = String(Math.floor((time - 3600 * 24 * Number(day) - 3600 * Number(hour)) / 60));
-				let second = String(Math.floor((time - 3600 * 24 * Number(day) - 3600 * Number(hour)) % 60));
-				if (Number(second) < 10) {
-					second = '0' + second
-				}
-				if (Number(hour) < 10) {
-					hour = '0' + hour
-				}
-				if (Number(minute) < 10) {
-					minute = '0' + minute
-				}
-				return hour + ':' + minute + ':' + second
-
-			}
-		}
-	}
+      this.videoContext.seek(this.videoTime.currentTime);
+      this.videoContext.play();
+    },
+    progressClick(event) {
+      // console.log(event)
+    },
+    calculateTime(event) {
+      const screenX = event.changedTouches[0].screenX;
+      const fingerMove = Math.round(screenX - this.progressLeft);
+      if (fingerMove <= 0) {
+        this.videoTime.currentTime = 0;
+        return;
+      }
+      if (fingerMove >= this.progressDomWidth) {
+        this.videoTime.currentTime = this.videoTime.duration;
+        return;
+      }
+      const currentTime = Math.round(
+        fingerMove * this.videoTime.duration / this.progressDomWidth
+      );
+      this.videoTime.currentTime = currentTime;
+    },
+    nvBack() {
+      uni.navigateBack({
+        delta: 1
+      });
+    },
+    onClickPlay() {
+      if (this.onPlay) {
+        this.videoContext.pause();
+      } else {
+        this.videoContext.play();
+      }
+    },
+    changeRate() {
+      this.rateOptionIndex == this.rateOption.length - 1
+        ? (this.rateOptionIndex = 0)
+        : (this.rateOptionIndex += 1);
+      this.setRateVideo(this.rateOption[this.rateOptionIndex]);
+    },
+    setRateVideo(rate = null) {
+      if (!rate) return;
+      this.videoContext.playbackRate(rate);
+    },
+    // 时间换算
+    getCountDownTimeHour(time) {
+      let day = String(Math.floor(time / 3600 / 24));
+      let hour = String(Math.floor((time - 3600 * 24 * Number(day)) / 3600));
+      let minute = String(
+        Math.floor((time - 3600 * 24 * Number(day) - 3600 * Number(hour)) / 60)
+      );
+      let second = String(
+        Math.floor((time - 3600 * 24 * Number(day) - 3600 * Number(hour)) % 60)
+      );
+      if (Number(second) < 10) {
+        second = "0" + second;
+      }
+      if (Number(hour) < 10) {
+        hour = "0" + hour;
+      }
+      if (Number(minute) < 10) {
+        minute = "0" + minute;
+      }
+      return hour + ":" + minute + ":" + second;
+    },
+    handleMessage(event) {
+      console.log("接收EVENT", event);
+      //接收webViewPostMessage
+      const { data } = event.detail;
+      const resData = data[0];
+      const paramsIsArray = resData.params instanceof Array;
+      if (!this[resData.action]) return;
+      paramsIsArray && resData.isMoreArguments
+        ? this[resData.action](...resData.params)
+        : this[resData.action](resData.params);
+    },
+    canEvalAction(event) {
+      console.log("canEval");
+      this.getChartList();
+    },
+    //调用h5Vue内部methods方法
+    informH5Action(actionName, params = "", isMoreArguments = false) {
+      const sendParams = JSON.stringify({
+        params: params
+      });
+      this.webView.evalJs(
+        `actionSet("${actionName}",${sendParams},${isMoreArguments})`
+      );
+      console.log("发送给h5l ");
+    }
+  }
+};
 </script>
 
 <style>
-	.full {
-		/* background-color: black; */
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		overflow: hidden;
-	}
+.full {
+  /* background-color: black; */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+.opacity {
+  opacity: 0;
+}
+.webView {
+  width: 750rpx;
+  position: fixed;
+  /* bottom: 100rpx; */
+  height: 500rpx;
+  /* background-color: red; */
+  /* height: 400rpx; */
+  /* height: ; */
+}
+.video {
+  width: 750rpx;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
 
-	.video {
-		width: 750rpx;
-		height: 100%;
-		position: absolute;
-		top: 0;
-	}
+.merchant {
+  /* width: 252rpx; */
+  height: 72rpx;
+  background: rgba(0, 0, 0, 0.38);
+  /* background-color: #fff; */
+  border-radius: 36rpx;
+  position: fixed;
+  left: 24rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 14rpx 0 4rpx;
+}
 
-	.merchant {
-		/* width: 252rpx; */
-		height: 72rpx;
-		background: rgba(0, 0, 0, .38);
-		/* background-color: #fff; */
-		border-radius: 36rpx;
-		position: fixed;
-		left: 24rpx;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		padding: 0 14rpx;
-	}
+.merchant_avatar {
+  width: 61rpx;
+  height: 61rpx;
+  border-radius: 50%;
+  margin-right: 13rpx;
+}
 
-	.merchant_avatar {
-		width: 61rpx;
-		height: 61rpx;
-		border-radius: 50%;
-		margin-right: 13rpx;
-	}
+.merchant_name {
+  flex-direction: column;
+}
 
-	.merchant_name {
-		flex-direction: column;
-	}
+.merchant_name_text {
+  font-size: 25rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+}
 
-	.merchant_name_text {
-		font-size: 25rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #FFFFFF;
+.merchant_name_like {
+  font-size: 20rpx;
+  font-family: PingFang SC;
+  font-weight: 300;
+  color: #ffffff;
+}
 
-	}
+.merchant_action {
+  width: 93rpx;
+  background: linear-gradient(to right, #ef3333, #eb6141);
+  height: 50rpx;
+  border-radius: 25rpx;
+  font-size: 29rpx;
+  font-family: PingFang SC;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 50rpx;
+  text-align: center;
+  margin-left: 15rpx;
+}
 
-	.merchant_name_like {
-		font-size: 20rpx;
-		font-family: PingFang SC;
-		font-weight: 300;
-		color: #FFFFFF;
+.close {
+  position: fixed;
+  width: 35rpx;
+  height: 35rpx;
+  right: 21rpx;
+}
 
-	}
+.control {
+  position: absolute;
+  width: 750rpx;
+  height: 34rpx;
+  /* background: red; */
+  flex-direction: row;
+  align-items: center;
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-delay: 0s;
+  transition-timing-function: ease;
+}
 
-	.merchant_action {
-		width: 93rpx;
-		background: linear-gradient(to right, #EF3333, #EB6141);
-		height: 50rpx;
-		border-radius: 25rpx;
-		font-size: 29rpx;
-		font-family: PingFang SC;
-		font-weight: 600;
-		color: #FFFFFF;
-		line-height: 50rpx;
-		text-align: center;
-		margin-left: 15rpx;
-	}
+.area {
+  width: 394rpx;
+  height: 2rpx;
+  position: relative;
+  align-items: center;
+  flex-direction: row;
+}
 
-	.close {
-		position: fixed;
-		width: 35rpx;
-		height: 35rpx;
-		right: 21rpx;
-	}
+.canTouchProgress {
+  width: 394rpx;
+  height: 34rpx;
+  position: relative;
+  align-items: center;
+  flex-direction: row;
+  display: flex;
+}
 
-	.control {
-		position: absolute;
-		width: 750rpx;
-		height: 34rpx;
-		/* background: red; */
-		flex-direction: row;
-		align-items: center;
-	}
-
-	.area {
-		width: 394rpx;
-		height: 2rpx;
-		position: relative;
-		align-items: center;
-		flex-direction: row;
-	}
-
-	.canTouchProgress {
-		width: 394rpx;
-		height: 34rpx;
-		position: relative;
-		align-items: center;
-		flex-direction: row;
-		display: flex;
-		background: rgba(0, 0, 0, .6);
-	}
-
-	.progress {
-		width: 394rpx;
-		height: 2rpx;
-		background: #FFFFFF;
-		position: relative;
-		display: flex;
-		align-items: center;
-		flex-direction: row;
-	}
-
-	.progress-play {
-		height: 4rpx;
-		background: #FFFFFF;
-		/* transition-property: width;
+.progress {
+  width: 394rpx;
+  height: 34rpx;
+  /* background: #FFFFFF; */
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.progressLine {
+  width: 394rpx;
+  height: 2rpx;
+  background: #fff;
+  position: absolute;
+}
+.progress-play {
+  height: 4rpx;
+  background: #ffffff;
+  /* transition-property: width;
 		transition-duration: 0.5s;
 		transition-delay: 0s;
 		transition-timing-function: ease; */
-	}
+}
 
-	.play {
-		width: 31rpx;
-		height: 34rpx;
-		margin-left: 24rpx;
-	}
+.play {
+  width: 31rpx;
+  height: 34rpx;
+  margin-left: 24rpx;
+}
 
-	.stop {
-		width: 31rpx;
-		height: 34rpx;
-		margin-left: 24rpx;
-	}
+.stop {
+  width: 31rpx;
+  height: 34rpx;
+  margin-left: 24rpx;
+}
 
-	.progress-dot {
-		width: 18rpx;
-		height: 18rpx;
-		z-index: 999;
-		background: #FFFFFF;
-		border-radius: 50%;
-	}
+.progress-dot {
+  width: 18rpx;
+  height: 18rpx;
+  z-index: 999;
+  background: #ffffff;
+  border-radius: 50%;
+}
 
-	.videoTime {
-		font-size: 21rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #FFFEFE;
-		margin: 0 16rpx;
-		width: 90rpx;
-	}
+.videoTime {
+  font-size: 21rpx;
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #fffefe;
+  margin: 0 16rpx;
+  width: 90rpx;
+}
 
-	.Rate {
-		width: 62rpx;
-		height: 23rpx;
-		background: rgba(0, 0, 0, .3);
-		border-radius: 3rpx;
-		font-size: 20rpx;
-		align-items: center;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #FFFEFE;
-		justify-content: center;
-		text-align: center;
-	}
+.Rate {
+  width: 62rpx;
+  height: 23rpx;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3rpx;
+  font-size: 20rpx;
+  line-height: 23rpx;
+  text-align: center;
+  /* align-items: center; */
+  font-family: PingFang SC;
+  font-weight: 400;
+  color: #fffefe;
+  /* justify-content: center;
+  text-align: center; */
+}
 </style>

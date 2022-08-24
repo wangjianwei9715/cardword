@@ -9,10 +9,11 @@
 			<view class="reward">
 				<view class="reward-index" v-for="(item,index) in calendarList" :key="index">
 					<muqian-lazyLoad class="reward-img" :src="decodeURIComponent(item.pic_url_cover)"></muqian-lazyLoad>
-					<view class="reward-name">{{dateFormatMSCustom(item.public_day,'/')}}</view>
+					<view class="reward-name">{{$u.timeFormat(item.public_day,'mm/dd')}}</view>
 				</view>
 			</view>
 		</view>
+
 		<!-- <view class="index" @click="onClickGoDecompose">
 			<view class="header">
 				<view class="header-left">卡片分解(测试版)</view>
@@ -41,17 +42,14 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import { dateFormatMSCustom } from "../../tools/util"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		dateFormatMSCustom = dateFormatMSCustom;
 		decomposeNum = 0;
 		rewardList:{[x:string]:any} = [
 			{icon:'../act/static/pingtai/icon1.png',name:'卡币'},
 			{icon:'../act/static/pingtai/icon.png',name:'优惠券'}
 		];
 		calendarList:{[x:string]:any} = [];
-		testModule:any;
 		noData = true;
 		onLoad(query:any) {
 			this.initEvent()
@@ -70,9 +68,7 @@
 			}
 		}
 		initEvent(){
-			
 			this.noData = false;
-			// this.testModule = uni.requireNativePlugin("TestModule");
 			app.http.Get('dataApi/function/calendar/index',{},(res:any)=>{
 				this.calendarList = res.data.calendar
 			})
@@ -91,6 +87,11 @@
 			})
 		}
 		onClickGoRef(){
+			uni.showToast({
+				title:'查价系统升级中',
+				icon:'none'
+			})
+			return;
 			uni.navigateTo({
 				url:'/pages/act/service/ref'
 			})
