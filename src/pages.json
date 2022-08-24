@@ -83,7 +83,11 @@
 			"style": {
 				"navigationBarTitleText": "登录",
 				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black"
+				"navigationBarTextStyle": "black",
+				"app-plus": {
+					"softinputMode": "adjustPan"
+				}
+
 			}
 		},
 		{

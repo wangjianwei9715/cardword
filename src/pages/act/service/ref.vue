@@ -6,7 +6,7 @@
 				<view class="header-back" @click="onClickBack"></view>
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" placeholder-style="color:#AAAABB" v-model="searchTetxt" placeholder="搜索"  @confirm="onClickSearch(searchTetxt)" confirm-type="search" />
+					<input class="search-input" type="text" placeholder-style="color:#AAAABB" v-model="searchTetxt" placeholder="请输入关键词或者完整的ebayID"  @confirm="onClickSearch(searchTetxt)" confirm-type="search" />
 				</view>
 			</view>
 		</view>
@@ -53,29 +53,25 @@
 			uni.removeStorageSync("refData")
 		}
 		onClickSearch(text:string){
-			if(text==''||this.searchIng){
+			if(this.searchIng){
 				return
 			}
 			this.searchIng = true
 			// 保存本地搜索记录
-			let searchText = text
-			
-			let refData = this.historyList
-			if(refData.indexOf(searchText) == -1){
-				// if(refData.length>=5){
-				// 	refData.splice(4,1)
-				// }else if(!refData){
-				// 	refData = []
-				// }
-				refData.unshift(searchText)
-				uni.setStorageSync("refData",refData)
+			if(text!=''){
+				let searchText = text
+				let refData = this.historyList
+				if(refData.indexOf(searchText) == -1){
+					refData.unshift(searchText)
+					uni.setStorageSync("refData",refData)
+				}
 			}
 			
 			let date:any = new Date()
 			let params={
 				q:text,
-				sold: 1,
-				timeStamp:Date.parse(date)/1000
+				timeStamp:Date.parse(date)/1000,
+				pageSize:30
 			}
 			uni.showLoading({
 				title: '加载中'
@@ -83,7 +79,7 @@
 			setTimeout(()=>{
 				uni.hideLoading();
 			},5000)
-			app.http.Get('dataApi/search/query_price',params,(res:any)=>{
+			app.http.Get('dataApi/search/ebay',params,(res:any)=>{
 				this.searchIng = false
 				uni.hideLoading();
 				if(!res.list){

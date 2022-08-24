@@ -210,13 +210,6 @@ export default class HttpRequest {
 					uni.showToast({ title: '请不要频繁操作', icon: 'none', duration: 2000 });
 				}else if (error.response.status > 400 && error.response.status < 500) {
 					uni.showToast({ title: error.response.status + '：' + error.response.statusText, icon: 'none', duration: 2000 });
-				}else if(error.response.data.code==1001&&error.response.data.uri.indexOf('search/query_price') != -1){
-					uni.showToast({
-						title:'服务忙碌中，请稍后再试',
-						icon:'none'
-					})
-					uni.$emit('refStop')
-					uni.hideLoading();
 				}
 			} else {
 				// uni.showToast({ title: error.message, icon: 'none', duration: 2000 });
