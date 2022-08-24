@@ -14,9 +14,13 @@
 		
 		<view class="top-center">
 			<statusbar/>
-			<view class="search-title">历史记录<view class="icon-delete" @click="onClickDelete"></view></view>
-			<view class="search-list">
+			<view class="search-title" v-show="historyList!=''">历史记录<view class="icon-delete" @click="onClickDelete"></view></view>
+			<view class="search-list" v-show="historyList!=''">
 				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
+			</view>
+			<view class="search-title">热门搜索</view>
+			<view class="search-list">
+				<view class="search-index" @click="searchGoodList(item)" v-for="item in hotSearchList" :key="item">{{item}}</view>
 			</view>
 			<view class="swiper-tab">
 				<view class="swiper-fbtn" :class="{'btn-goods':curIndex==1}" @click="curIndex=1">{{curIndex==1?'':'商品飙升榜'}}</view>
@@ -66,7 +70,7 @@
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
-
+		hotSearchList:any = [];
 		curIndex = 1;
 		hotList:any = {
 			goodList:[],
@@ -77,9 +81,12 @@
 			if(searchData) this.historyList = searchData
 			if(query.q) this.searchTetxt = query.q
 			
-			app.http.Get('search/heat/list',{},(res:any)=>{
+			app.http.Get('dataApi/search/heat/list',{},(res:any)=>{
 				this.hotList.goodList = res.data.goodList.splice(0,10);
 				this.hotList.merchantList = res.data.merchantList.splice(0,10);
+			})
+			app.http.Get('dataApi/search/series/list',{},(res:any)=>{
+				this.hotSearchList = res.list ? res.list : [];
 			})
 		}
 		onClickBack(){
@@ -116,6 +123,9 @@
 					uni.setStorageSync("searchData",searchData)
 				}
 			}
+			this.searchGoodList(text)
+		}
+		searchGoodList(text:string){
 			let date:any = new Date()
 			let params={
 				highlight:1,
