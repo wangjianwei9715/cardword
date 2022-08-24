@@ -147,9 +147,6 @@
 			plus.runtime.getProperty(plus.runtime.appid || "", (widgetInfo) => {
 				app.version = widgetInfo.version || "1.0.0";
 			});
-			plus.webview.prefetchURL(
-				"https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/index"
-			);
 			plus.device.getOAID({
 				complete: (res: any) => {
 					if (res.oaid) {
