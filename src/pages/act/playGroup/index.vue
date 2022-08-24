@@ -227,10 +227,10 @@ export default class ClassName extends BaseNode {
     if (!val) return;
     if (val == this.drawCard.list.length) {
       console.log('开始动画');
-      
       uni.hideLoading();
       this.drawCard.index = -1;
       this.drawShow = true;
+      this.reqNewData(null, true);
     }
   }
   private get drawAllName() {
@@ -498,14 +498,14 @@ export default class ClassName extends BaseNode {
   }
   reqNewData(cb?: any, refresh?: boolean) {
     if (refresh) this.queryParams.pageIndex = 1;
-    uni.showLoading({
-      title: ""
-    });
+    // uni.showLoading({
+    //   title: ""
+    // });
     app.http.Get(
       "activity/playerGroup/home/group/list",
       this.queryParams,
       (res: any) => {
-        uni.hideLoading();
+        // uni.hideLoading();
         const { myLotteryNum, groupList } = res.data;
         this.totalPage = res.totalPage;
         this.myLotteryNum = myLotteryNum;
