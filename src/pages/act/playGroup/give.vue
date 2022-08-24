@@ -118,15 +118,20 @@
                 receive_userId:Number(this.receive_userId),
                 players
             },(res:any)=>{
+                console.log('赠送成功');
+                
                 uni.showToast({
                     title:'赠送成功',
                     icon:'success'
                 })
                 this.reqNewData()
-                let pages = getCurrentPages();
+                
+                this.receive_userId=""
+                setTimeout(()=>{
+                    let pages = getCurrentPages();
 				let prePage = pages[pages.length - (2)];
                 prePage&&prePage.$vm.reqNewData(null,true)
-                
+                },1000)
             })
         }
         pageJump(url: string) {
