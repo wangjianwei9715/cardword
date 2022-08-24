@@ -579,7 +579,7 @@
 					// 第三方客服
 					
 					// let params = {
-					// 	agentExten:8005,
+					// 	agentExten:this.goodsData.kefu,
 					// 	businessParam:'goodCode:'+this.goodsId
 					// }
 					// app.platform.heliService(params)

@@ -87,6 +87,11 @@
 			})
 		}
 		onClickGoRef(){
+			uni.showToast({
+				title:'查价系统升级中',
+				icon:'none'
+			})
+			return;
 			uni.navigateTo({
 				url:'/pages/act/service/ref'
 			})
