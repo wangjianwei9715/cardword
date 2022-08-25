@@ -131,6 +131,7 @@ export default class ClassName extends BaseNode {
       content: "是否清除缓存?",
       success: (res: any) => {
         if (res.confirm) {
+			//@ts-ignore
           plus.cache.clear(() => {
             uni.showToast({
               title: "清理成功",

@@ -84,8 +84,10 @@ export default class PayManager {
 				timestamp: orderInfo.timeStamp,        // 时间戳（单位：秒）
 				sign: orderInfo.sign// 签名，这里用的 MD5 签名
 			}
+			//@ts-ignore
 			uni.requestPayment({
 				provider: 'wxpay',
+				//@ts-ignore
 				orderInfo: order,
 				success: (res:any)=> {
 					uni.$emit('paySuccess')

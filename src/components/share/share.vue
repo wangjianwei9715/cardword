@@ -65,6 +65,7 @@
 			}, 2000);
 			uni.share({
 				provider: "weixin",
+				//@ts-ignore
 				scene: scene,
 				type: 0,
 				href: this.shareData.shareUrl,
