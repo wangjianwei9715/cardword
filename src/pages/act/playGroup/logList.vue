@@ -46,7 +46,9 @@
         }
         onPullDownRefresh() {
             this.queryParams.pageIndex = 1
-            this.reqNewData()
+            this.reqNewData(()=>{
+                uni.stopPullDownRefresh()
+            })
         }
         onReachBottom() {
             if (this.queryParams.pageIndex < this.totalPage) {
