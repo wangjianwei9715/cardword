@@ -21,7 +21,7 @@
         抽奖次数:
         <text>{{myLotteryNum}}</text>次
       </view>
-      <view class="drawMsg-right" @click='taskShow=true'>免费获取></view>
+      <view class="drawMsg-right" @click='getTaskList(),taskShow=true'>免费获取></view>
     </view>
     <view class="centerTitle">球员组合</view>
     <view class="collectContainer" v-for="(item,index) in groupList" :key='index'>
@@ -89,11 +89,9 @@
       </view>
 
     </view>
-    <template>
-      <view style="z-index:-1;opacity:0;position:absolute;top:0;transform: scale(0);">
-        <image v-for="(item,index) in drawCard.list" :key="index" :src="item.pic" mode="scaleToFill" @load='loadNum+=1' @error='loadNum+=1' />
-      </view>
-    </template>
+    <view style="z-index:-1;opacity:0;position:absolute;top:0;transform: scale(0);">
+      <image v-for="(item,index) in drawCard.list" :key="index" :src="item.pic" mode="scaleToFill" @load='loadNum+=1' @error='loadNum+=1' />
+    </view>
     <share :operationShow.sync='operationShow' @delyCallBack="shareCallBack" :shareData="shareData" />
     <u-toast ref="uToast"></u-toast>
     <view class="giveBlock" :class="{iosGiveBlock:platform=='ios'}" @click='pageJump("/pages/act/playGroup/give")'></view>
@@ -126,7 +124,9 @@ export default class ClassName extends BaseNode {
   exchangeShow: boolean = false;
   myLotteryNum: any = 0;
   platform: string = app.platform.systemInfo.platform;
-  shareUrl:string=app.localTest?"https://www.ka-world.com/share/testH5/#/pages/act/playGroup":"https://www.ka-world.com/share/h5/#/pages/act/playGroup"
+  shareUrl: string = app.localTest
+    ? "https://www.ka-world.com/share/testH5/#/pages/act/playGroup"
+    : "https://www.ka-world.com/share/h5/#/pages/act/playGroup";
   selectItem: any = {
     needExchangeNum: 1,
     exchangeNum: 3
@@ -213,7 +213,7 @@ export default class ClassName extends BaseNode {
 
   //   下拉刷新
   onPullDownRefresh() {
-    this.getTaskList()
+    this.getTaskList();
     this.reqNewData(() => {
       uni.stopPullDownRefresh();
     }, true);
@@ -226,7 +226,7 @@ export default class ClassName extends BaseNode {
   onLoadNumChange(val: number, oldVal: number) {
     if (!val) return;
     if (val == this.drawCard.list.length) {
-      console.log('开始动画');
+      console.log("开始动画");
       uni.hideLoading();
       this.drawCard.index = -1;
       this.drawShow = true;
@@ -234,7 +234,7 @@ export default class ClassName extends BaseNode {
     }
   }
   private get drawAllName() {
-    const { list } = this.drawCard;
+    const list: any = this.drawCard.list;
     const nameList = list.map((item: any) => item.name);
     return nameList.join("、");
   }
@@ -268,7 +268,7 @@ export default class ClassName extends BaseNode {
   }
   lineColor(item: any) {
     let colorArr: any = [];
-    const { couponAmount } = item;
+    const couponAmount:any = item.couponAmount;
     if (couponAmount <= 5) {
       colorArr = lineColorArray.one;
     } else if (couponAmount > 5 && couponAmount <= 8) {
@@ -284,7 +284,9 @@ export default class ClassName extends BaseNode {
     } else {
       colorArr = lineColorArray.seven;
     }
-    const [firstColor, endColor] = colorArr;
+    // const [firstColor, endColor] = colorArr;
+    const firstColor: any = colorArr[0];
+    const endColor: any = colorArr[1];
     return `
     background: linear-gradient(to right, ${firstColor}, ${endColor});
     -webkit-background-clip: text;
@@ -296,8 +298,8 @@ export default class ClassName extends BaseNode {
   }
   shareCallBack() {
     app.http.Post("activity/playerGroup/share/wechat", {}, (res: any) => {
-      this.myLotteryNum=res.myLotteryNum
-      this.getTaskList()
+      this.myLotteryNum = res.myLotteryNum;
+      this.getTaskList();
     });
   }
   goSendKam() {
@@ -310,7 +312,7 @@ export default class ClassName extends BaseNode {
       title: ""
     });
     app.http.Post("activity/playerGroup/share/help", {}, (res: any) => {
-      const { helpCode } = res;
+      const helpCode = res.helpCode;
       uni.hideLoading();
       uni.share({
         provider: "weixin",
@@ -328,7 +330,7 @@ export default class ClassName extends BaseNode {
       {},
       (res: any) => {
         this.$nextTick(() => {
-			//@ts-ignore
+          //@ts-ignore
           this.$refs.uToast.show({
             type: "success",
             message: "成功助力",
@@ -341,7 +343,7 @@ export default class ClassName extends BaseNode {
   postDraw(type: number) {
     uni.showLoading({
       title: "",
-      mask:true
+      mask: true
     });
     app.http.Post(
       "activity/playerGroup/lottery/go",
@@ -414,23 +416,27 @@ export default class ClassName extends BaseNode {
       { exchangeNum: this.selectItem.needExchangeNum },
       (res: any) => {
         uni.showToast({
-          title: "兑换成功", 
+          title: "兑换成功",
           icon: "success"
         });
 
         uni.hideLoading();
         setTimeout(() => {
-          const index=this.groupList.findIndex((item:any)=>item.groupId==this.selectItem.groupId)
-          if(index<0) return
-          this.groupList[index].exchangeNum =res.exchangeNum;
-          this.groupList[index].totalExchangeNum=res.totalExchangeNum
-          this.groupList[index].players=this.selectItem.players.map((item: any, index: number) => {
-            const syNum=item.haveNum-this.selectItem.needExchangeNum
-            return{
-              ...item,
-              haveNum:syNum
+          const index = this.groupList.findIndex(
+            (item: any) => item.groupId == this.selectItem.groupId
+          );
+          if (index < 0) return;
+          this.groupList[index].exchangeNum = res.exchangeNum;
+          this.groupList[index].totalExchangeNum = res.totalExchangeNum;
+          this.groupList[index].players = this.selectItem.players.map(
+            (item: any, index: number) => {
+              const syNum = item.haveNum - this.selectItem.needExchangeNum;
+              return {
+                ...item,
+                haveNum: syNum
+              };
             }
-          });
+          );
         }, 500);
       }
     );
@@ -494,21 +500,20 @@ export default class ClassName extends BaseNode {
   }
   getTaskList() {
     app.http.Get("activity/playerGroup/home/task/list", {}, (res: any) => {
-      const { list } = res;
+      const list:any = res.list;
       this.assignTaskList(list);
     });
   }
   reqNewData(cb?: any, refresh?: boolean) {
     if (refresh) this.queryParams.pageIndex = 1;
-    // uni.showLoading({
-    //   title: ""
-    // });
     app.http.Get(
       "activity/playerGroup/home/group/list",
       this.queryParams,
       (res: any) => {
         // uni.hideLoading();
-        const { myLotteryNum, groupList } = res.data;
+        // const { myLotteryNum, groupList } = res.data;
+        const myLotteryNum: any = res.data.myLotteryNum;
+        let groupList: any = res.data.groupList;
         this.totalPage = res.totalPage;
         this.myLotteryNum = myLotteryNum;
         this.queryParams.pageIndex == 1
@@ -539,7 +544,8 @@ page {
 
 @font-face {
   font-family: BDZongYi-A001;
-  src: url("/static/act/playGroup/BDZongYi.ttf");
+  // src: url("../../../static/act/playGroup/BDZongYi.ttf");
+  src:url("https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.26/seller/info/1661506714192c1fus35zzh.ttf")
 }
 
 .playContent {
@@ -573,7 +579,7 @@ page {
 
   .rightTagItem {
     width: 118rpx;
-    height: 169rpx;
+    height: 175rpx;
     background-size: 100% 100%;
     position: relative;
     background-image: url("/static/act/playGroup/ruleIcon.png");

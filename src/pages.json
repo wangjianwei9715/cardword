@@ -1048,7 +1048,7 @@
 				{
 					"path": "niceTime",
 					"style": {
-						"navigationBarTitleText": "精彩时刻",
+						"navigationBarTitleText": "店铺精彩时刻",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": true,
