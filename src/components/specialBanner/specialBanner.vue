@@ -203,6 +203,7 @@
         uni.share({
           provider:'weixin',
           type:2,
+		  //@ts-ignore
           scene:scene,
           imageUrl:imageSrc
         });

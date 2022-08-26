@@ -32,6 +32,7 @@ export default class PlatformManager {
 					}
 				}
 				if (this.deviceID == '') {
+					//@ts-ignore
 					this.deviceID = this.systemInfo.uuid;
 				}
 

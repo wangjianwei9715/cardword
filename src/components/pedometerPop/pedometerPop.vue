@@ -78,6 +78,7 @@
             if (shouldVal <= 0) this.nowValue = 0
             if (shouldVal >= this.nowMaxValue) this.nowValue = this.nowMaxValue
             if (shouldVal < this.nowMaxValue && shouldVal > 0) this.nowValue = shouldVal
+			//@ts-ignore
             this.$refs.peodoBoxInput.valueSync = this.nowValue
         }
         onInput(event: any) {
@@ -86,6 +87,7 @@
             if (value == '') {
                 this.inputTimer = setTimeout(() => {
                    this.nowValue = 0
+				   //@ts-ignore
                      this.$refs.peodoBoxInput.valueSync = 0
                 }, 100)
                 return

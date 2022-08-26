@@ -74,6 +74,7 @@
             if (value == '') {
                 this.inputTimer = setTimeout(() => {
                     item.selectNum = "0"
+					//@ts-ignore
                     this.$refs.peoInput[index].valueSync = "0"
                 }, 100)
                 return
@@ -88,6 +89,7 @@
             if (shouldVal <= 0) item.selectNum = 0
             if (shouldVal >= item.num) item.selectNum = item.num
             if (shouldVal < item.num && shouldVal > 0) item.selectNum = shouldVal
+			//@ts-ignore
             this.$refs.peoInput[index].valueSync = item.selectNum
         }
         onClickSend(){
@@ -130,6 +132,7 @@
                 setTimeout(()=>{
                     let pages = getCurrentPages();
 				let prePage = pages[pages.length - (2)];
+				//@ts-ignore
                 prePage&&prePage.$vm.reqNewData(null,true)
                 },1000)
             })

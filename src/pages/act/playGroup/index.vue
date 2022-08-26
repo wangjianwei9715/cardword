@@ -328,6 +328,7 @@ export default class ClassName extends BaseNode {
       {},
       (res: any) => {
         this.$nextTick(() => {
+			//@ts-ignore
           this.$refs.uToast.show({
             type: "success",
             message: "成功助力",

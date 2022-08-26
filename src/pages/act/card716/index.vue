@@ -262,6 +262,7 @@
 
 		// 抽奖
 		initLuckyDraw(result:number[]){
+			//@ts-ignore
 			this.$refs.HMslotMachine.init({
 				prizeList:this.prizeList,
 				defaultResults:result,
@@ -309,6 +310,7 @@
 				this.awardData = data;
 				// roll(options)开始摇奖
 				// results 开奖结果，结构[value,value,value] value为奖品数据的id
+				//@ts-ignore
 				this.$refs.HMslotMachine.roll({
 					results:[data.id,data.id,data.id],
 					success:(e:any)=>{
