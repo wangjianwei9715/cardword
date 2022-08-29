@@ -121,7 +121,10 @@
 				"navigationBarTitleText": "",
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"softinputMode": "adjustPan"
+				}
 			}
 		}
 		,

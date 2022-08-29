@@ -493,7 +493,10 @@ export default class PlatformManager {
 	// 字符修剪
 	trimString = (str: string, char: string): string => str.split(char).filter(Boolean).join();
 	// 去重
-	removeDuplicate = <T,_>(arr: T[]): T[] => arr.filter((i) => arr.indexOf(i) === arr.lastIndexOf(i));
+	removeDuplicate(arr:any, uniId:string){
+		const res = new Map();
+		return arr.filter((item:any) => !res.has(item[uniId]) && res.set(item[uniId], 1));
+	}
 	// 重复数
 	findRepeatNumber(nums:CustomArray){
 		const unique = new Set();

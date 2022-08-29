@@ -448,7 +448,7 @@
 
 				if (data.goodList) {
 					let list = this.fetchFrom == 1 ? data.goodList : [...this.goodsList,...data.goodList];
-					this.goodsList = app.platform.removeDuplicate(list)
+					this.goodsList = app.platform.removeDuplicate(list,'goodCode')
 				}
 				this.fetchFrom += this.fetchSize;
 				if (cb) cb()

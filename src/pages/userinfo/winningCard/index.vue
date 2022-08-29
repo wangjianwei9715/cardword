@@ -31,7 +31,8 @@
 			pageSize:10,
 			noMoreData:false,
 			total:0,
-			empty:false
+			empty:false,
+			requestIng:false
 		}
 		onLoad(query:any) {
 			this.reqNewData();
@@ -53,17 +54,17 @@
 		reqNewData(cb?:Function) {
 			// 获取更多数据
 			const params = this.listParams;
-			if (params.noMoreData) {
+			if (params.noMoreData||params.requestIng) {
 				return;
 			}
 			app.http.Get('me/hitNo/list', params, (data: any) => {
 				params.total = data.total;
 				params.empty = data.total == 0
 				params.noMoreData = data.totalPage <= params.pageIndex;
-
 				if(params.pageIndex == 1) this.codeList = [];
 				if(data.list){
-					this.codeList = [...this.codeList,...data.list];
+					let list = params.pageIndex == 1 ? data.list : [...this.codeList,...data.list];
+					this.codeList = app.platform.removeDuplicate(list,'index');
 				}
 
 				params.pageIndex++;
