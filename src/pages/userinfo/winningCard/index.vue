@@ -57,18 +57,23 @@
 			if (params.noMoreData||params.requestIng) {
 				return;
 			}
+			params.requestIng = true;
+			const page = params.pageIndex
 			app.http.Get('me/hitNo/list', params, (data: any) => {
 				params.total = data.total;
 				params.empty = data.total == 0
 				params.noMoreData = data.totalPage <= params.pageIndex;
+				params.requestIng = false;
 				if(params.pageIndex == 1) this.codeList = [];
 				if(data.list){
 					let list = params.pageIndex == 1 ? data.list : [...this.codeList,...data.list];
 					this.codeList = app.platform.removeDuplicate(list,'index');
 				}
 
-				params.pageIndex++;
+				params.pageIndex = page+1;
 				if(cb) cb()
+			},(err:any)=>{
+				params.requestIng = false;
 			});
 		}
 	}
