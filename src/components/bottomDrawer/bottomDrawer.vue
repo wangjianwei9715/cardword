@@ -6,7 +6,7 @@
 				{{title}}
 				<view class="close-icon" @click="onClickCloseDrawer"></view>
 			</view>
-            <view class="drawer-center">
+            <view class="drawer-center" :style="{'background':drawerBg}">
                 <slot></slot>
             </view>
         </view>
@@ -35,6 +35,8 @@
 		heightType!:string;
 		@Prop({ default: false })
 		needSafeArea!:boolean;
+		@Prop({ default: '#ffffff' })
+		drawerBg!:string
 		
 		created(){//在实例创建完成后被立即调用
 			
