@@ -355,11 +355,15 @@ export default class PlatformManager {
 	}
 	matchRequestKey(regular:any,code:string,cb?:Function){
 		let key:any = ''
-		if(regular.test(code)){
-			key = code.match(regular);
-			this.setClipboardEmpty();
-			cb && cb(key[0])
+		for(let i of regular){
+			if(i.test(code)){
+				key = code.match(i);
+				this.setClipboardEmpty();
+				cb && cb(key[0]);
+				break;
+			}
 		}
+		
 	}
 	setClipboardEmpty(){
 		uni.setClipboardData({

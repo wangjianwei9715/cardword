@@ -76,13 +76,11 @@ export default class ClassName extends BaseNode {
     });
   }
   onReachBottom() {
-    if (!this.searchIng) {
-      this.reqNewData();
-    }
+    this.reqNewData();
   }
   reqNewData(cb?: Function) {
     // 获取更多商品
-    if (this.noMoreData) {
+    if (this.noMoreData||this.searchIng) {
       return;
     }
     this.searchIng = true;
@@ -136,6 +134,7 @@ export default class ClassName extends BaseNode {
   }
   // 排序选择
   onClickSort(item:any) {
+    if(this.searchIng) return
     for(let i in this.sortData){
       if(this.sortData[i].id != item.id){
         this.sortData[i].sort = 0;
