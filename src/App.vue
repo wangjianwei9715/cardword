@@ -252,7 +252,7 @@
 
 			// 识别优惠券
 			app.platform.getInvitationClipboard((val: string) => {
-				const regular = [/[k][s][j][a-zA-Z]{13}/g,/[k][s][j][a-zA-Z]{13}/g];
+				const regular = [/[k][s][j][a-zA-Z]{13}/g,/[a-zA-Z]{18}/g];
 				app.platform.matchRequestKey(regular,val,(code:string)=>{
 					uni.showModal({
 						title:'提示',

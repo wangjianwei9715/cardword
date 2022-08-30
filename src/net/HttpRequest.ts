@@ -7,6 +7,7 @@ import {
 	getUrlDataFN
 } from "../tools/util";
 import { headersData,opSignData,opSignOtherData } from "@/net/DataHttp"
+const debounceData = ['dataApi/point/exchange/goodlist']
 export default class HttpRequest {
     private static instance: HttpRequest;
 	private axiosInstance:AxiosInstance;
@@ -74,14 +75,6 @@ export default class HttpRequest {
 			config.baseURL = app.bussinessApiDomain
 			
 			let url = config.url+'';
-			if(this.debounceUrl == url && url.indexOf("dataApi/home") == -1){
-				// console.log('防止200毫秒内连续点击')
-				return;
-			}
-			this.debounceUrl = url;
-			setTimeout(()=>{
-				this.debounceUrl = '';
-			},200)
 			const ksjUserId = uni.getStorageSync('ksjUserId');
 			if(!uni.$u.test.isEmpty(ksjUserId)){
 				config.headers['ksjUserId'] = ksjUserId;
@@ -164,6 +157,7 @@ export default class HttpRequest {
 		});
 		// 添加响应拦截器
 		this.axiosInstance.interceptors.response.use((response)=> {
+			this.debounceUrl = ''
 			if (response.data) {
 				if (response.data.code == 1101){
 					uni.showModal({
@@ -203,6 +197,7 @@ export default class HttpRequest {
 			
 			return response;
 		},(error)=> {
+			this.debounceUrl = '';
 			uni.hideLoading()
 			console.log('error====',error)
 			if (error.response) {
@@ -273,6 +268,9 @@ export default class HttpRequest {
 		});
 	}
 	Get(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function) {
+		// 防止列表请求还未响应时重复请求 响应拦截器内删除
+		if(this.debounceUrl == reqUrl && debounceData.indexOf(reqUrl) == -1) return;
+		this.debounceUrl = reqUrl;
 		let newParams = objKeySort(params)
 		var p =[];
 		for(let key in newParams){
