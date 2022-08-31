@@ -34,7 +34,7 @@
           <view class="collect-coupon-top">兑
             <text>{{item.couponAmount}}</text>元
           </view>
-          <view class="collect-coupon-bottom">上组券</view>
+          <!-- <view class="collect-coupon-bottom">上组券</view> -->
         </view>
       </view>
       <view class="collect-card" :class="{noFourCollect:item.players.length<4}">
@@ -170,7 +170,8 @@ export default class ClassName extends BaseNode {
     shareUrl: `${this.shareUrl}`,
     title: "集球员组合，兑海量上足券",
     summary: "集球员组合，兑海量上足券",
-    thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.29/seller/info/16617373799343ooe14lqxju.png"
+    thumb:
+      "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/active/playGroup/0/1661928072908myo8o7ownl.jpg"
   };
   helpCode: string = "";
   queryParams: any = {
@@ -268,7 +269,7 @@ export default class ClassName extends BaseNode {
   }
   lineColor(item: any) {
     let colorArr: any = [];
-    const couponAmount:any = item.couponAmount;
+    const couponAmount: any = item.couponAmount;
     if (couponAmount <= 5) {
       colorArr = lineColorArray.one;
     } else if (couponAmount > 5 && couponAmount <= 8) {
@@ -320,7 +321,8 @@ export default class ClassName extends BaseNode {
         href: `${this.shareUrl}?helpCode=${helpCode}`,
         title: "集球员组合,兑海量上足券",
         summary: "为我助力",
-        imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.29/seller/info/16617373799343ooe14lqxju.png"
+        imageUrl:
+          "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/active/playGroup/0/1661928072908myo8o7ownl.jpg"
       });
     });
   }
@@ -419,7 +421,7 @@ export default class ClassName extends BaseNode {
           title: "兑换成功",
           icon: "success"
         });
-        this.reqNewData(null,true)
+        this.reqNewData(null, true);
         // uni.hideLoading();
         // setTimeout(() => {
         //   const index = this.groupList.findIndex(
@@ -500,7 +502,7 @@ export default class ClassName extends BaseNode {
   }
   getTaskList() {
     app.http.Get("activity/playerGroup/home/task/list", {}, (res: any) => {
-      const list:any = res.list;
+      const list: any = res.list;
       this.assignTaskList(list);
     });
   }
@@ -545,7 +547,7 @@ page {
 @font-face {
   font-family: BDZongYi-A001;
   // src: url("../../../static/act/playGroup/BDZongYi.ttf");
-  src:url("https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.26/seller/info/1661506714192c1fus35zzh.ttf")
+  src: url("https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.26/seller/info/1661506714192c1fus35zzh.ttf");
 }
 
 .playContent {
@@ -726,11 +728,11 @@ page {
     font-size: 19rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #d8162e;
+
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     align-items: center;
-    justify-items: flex-start;
+    justify-content: flex-end;
   }
 
   .collectCouponGray {
@@ -742,8 +744,13 @@ page {
     font-family: PingFang SC;
     font-weight: bold;
     color: #d8162e;
-    line-height: 14rpx;
-    margin-top: 6rpx;
+    // line-height: 14rpx;
+    text-align: center;
+    width: 120rpx;
+    margin-right: 10rpx;
+    height: 100%;
+    // background-color: red;
+    // margin-top: 6rpx;
     text {
       font-size: 33rpx;
     }

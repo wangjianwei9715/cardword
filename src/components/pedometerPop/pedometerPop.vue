@@ -147,7 +147,7 @@
         z-index: 1000;
         box-sizing: border-box;
         transition: all 0.2s;
-        border-radius: 5rpx 5rpx 0px 0px;
+        // border-radius: 5rpx 5rpx 0px 0px;
         pointer-events: none;
         transform: scale(0);
         // padding-bottom:constant(safe-area-inset-bottom);
