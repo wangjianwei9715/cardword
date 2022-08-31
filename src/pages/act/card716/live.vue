@@ -47,11 +47,11 @@
 			if (params.noMoreData) return ;
 			
 			app.http.Get('activity/cardShow/broadcast/list',params,(data:any)=>{
-				if(data.totalPage<=params.currentPage) params.noMoreData = true;
-				if(params.currentPage==1) this.liveList = []
+				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
+				if(params.pageIndex==1) this.liveList = []
 				if(data.list) this.liveList = this.liveList.concat(data.list);
 				if(this.liveList == '') this.empty = true
-				params.currentPage++;
+				params.pageIndex++;
 				if(cb) cb()
 			})
 			

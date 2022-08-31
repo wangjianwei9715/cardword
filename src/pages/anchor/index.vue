@@ -47,6 +47,11 @@
 	import { getGoodsPintuan } from "@/tools/switchUtil";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	const paramsInit = {
+		pageIndex:1,
+		pageSize:20,
+		totalPage:2
+	}
 	@Component({})
 	export default class ClassName extends BaseNode {
 		getGoodsPintuan = getGoodsPintuan
@@ -55,11 +60,7 @@
 			logo:'',
 			list:[]
 		}
-		homeParams = {
-			pageIndex:1,
-			pageSize:20,
-			totalPage:2
-		}
+		homeParams = {...paramsInit};
 		detailData:any = {};
 		intervalInit:any;
 		rubCardShow = false
@@ -97,7 +98,6 @@
 					cb && cb()
 				})
 			}
-			
 		}
 		listScrolltolower():void{
 			let params = this.homeParams;
@@ -117,11 +117,7 @@
 		}
 		onClickDetailClose(){
 			this.detailData = {};
-			this.homeParams = {
-				pageIndex:1,
-				pageSize:20,
-				totalPage:2
-			}
+			this.homeParams = {...paramsInit}
 			this.initEven();
 		}
 		getProgress(item:{[x:string]:any}):number{

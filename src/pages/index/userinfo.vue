@@ -221,14 +221,10 @@
 		}
 		onClickServiceTab(item:any){
 			if(item.name=='联系客服'){
-				uni.navigateTo({
-					url: '/pages/userinfo/talk?targetUserId='+this.infoData.kefuUserId[0]
-				})
-				// 第三方客服
-				// let params = {
-				// 	agentExten:8005
-				// }
-				// app.platform.heliService(params)
+				let params = {
+					agentExten:this.infoData.kefuUserId[0]
+				}
+				app.platform.heliService(params)
 			}
 			if(item.url!=''){
 				uni.navigateTo({
