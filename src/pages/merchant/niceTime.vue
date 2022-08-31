@@ -1,25 +1,26 @@
 <template>
     <view class='content'>
         <view class="niceTime">
-            <view class="niceTimeItem" v-for="(item,index) in 16">
+            <view class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index">
                 <view class="niceTimeItem-top">
-                    <image class="niceTimeItem-img" src="" mode="aspectFill" />
-                    <view class="niceTimeItem-dot flexCenter">5</view>
+                    <muqian-lazyLoad class="niceTimeItem-img" :src="parsePic(decodeURIComponent(item.pic))" mode="aspectFill" />
+                    <view class="niceTimeItem-dot flexCenter">{{item.resultNum}}</view>
                     <view class="scoreContainer uni-flex">
-                        <image src="../../static/merchant/S.png" mode="aspectFill" />
-                        <image class="A" src="../../static/merchant/A.png" mode="aspectFill" />
+                        <image :src="levelItem.levelPic" v-for="(levelItem) in filterLevel(item.rarity)" :class="{A:levelItem.level=='A'}" mode="aspectFill" />
+                        <!-- <image class="A" src="../../static/merchant/A.png" mode="aspectFill" /> -->
                     </view>
                 </view>
                 <view class="niceTime-name">
-                    圣安东尼奥马刺 特里克·
+                    {{item.name}}
                 </view>
                 <view class="niceTime-bottom uni-flex">
-                    <image class="niceTime-avatar" src="" mode="aspectFill" />
-                    <view class="niceTime-userName">用*名</view>
-                    <view class="niceTime-time">07-25</view>
+                    <muqian-lazyLoad class="niceTime-avatar" :src="item.avatar?parsePic(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFill" />
+                    <view class="niceTime-userName onLine">{{item.userName}}</view>
+                    <view class="niceTime-time">{{getStrDayNumber(item.createTime)}}</view>
                 </view>
             </view>
         </view>
+        <empty v-if="!niceTimeList.lenght"/>
     </view>
 </template>
 
@@ -27,11 +28,52 @@
     import { app } from "@/app";
     import { Component, Watch } from "vue-property-decorator";
     import BaseNode from "../../base/BaseNode.vue";
-    import { parsePic } from "@/tools/util";
+    import { parsePic,getStrDayNumber } from "@/tools/util";
     @Component({})
     export default class ClassName extends BaseNode {
         parsePic: any = parsePic;
-
+        defaultAvatar:any=app.defaultAvatar
+        getStrDayNumber:any=getStrDayNumber
+        alias: string = ""
+        queryParams: any = {
+            pageIndex: 1,
+            pageSize: 20
+        }
+        totalPage: number = 0
+        niceTimeList: any = []
+        onLoad(query: any) {
+            if (query.alias) this.alias = query.alias
+            this.reqNewData()
+        }
+        onReachBottom() {
+            if (this.queryParams.pageIndex < this.totalPage) {
+                this.queryParams.pageIndex += 1
+                this.reqNewData()
+            }
+        }
+        filterLevel(rarity:string){
+            const levelArr=rarity.split('')
+            return levelArr.map((item:any)=>{
+                return {
+                    levelPic:`/static/merchant/${item}.png`,
+                    level:item
+                }
+            })
+        }
+        onPullDownRefresh() {
+            this.queryParams.pageIndex = 1
+            this.reqNewData(() => {
+                uni.stopPullDownRefresh()
+            })
+        }
+        reqNewData(cb?: any) {
+            app.http.Get(`dataApi/merchant/newII/rarity/card/` + this.alias, this.queryParams, (res: any) => {
+                this.totalPage = res.totalPage
+                const list = res.list || []
+                this.queryParams.pageIndex == 1 ? this.niceTimeList = list : this.niceTimeList.push(...list)
+                cb && cb()
+            })
+        }
     }
 </script>
 
@@ -50,7 +92,7 @@
     }
 
     .niceTimeItem {
- 
+
         width: 356rpx;
         height: 418rpx;
         /* background-color: red; */
@@ -151,6 +193,10 @@
         font-weight: 400;
         color: #333333;
         flex: 1;
+        max-width: 200rpx;
+        overflow: hidden;    
+text-overflow:ellipsis;    
+whitewhite-space: nowrap;
     }
 
     .niceTime-time {

@@ -21,12 +21,17 @@
                     <view class="info-name">{{merchantInfo.name}}</view>
                     <view class="info-introduction">{{merchantInfo.region}} · 210拼成 · {{merchantInfo.fans}}粉丝</view>
                 </view>
-                <view class="rightEdit flexCenter" @click="pageJump('/pages/merchant/info')">编辑资料</view>
+                <view class="rightEdit flexCenter" v-if="isMerchant" @click="pageJump('/pages/merchant/info')">编辑资料
+                </view>
+                <followButton :follow="merchantInfo.followed" :width="127" v-else
+                    @handleSuccess="($event)=>{merchantInfo.followed=$event.follow}" :height="52" :fontSize="29"
+                    :newMerchantPage="true" :followID="alias"></followButton>
+                <!-- <view class="followBtton flexCenter" :class="{isFollo:merchantInfo.followed}" v-if="!isMerchant" @click="pageJump('/pages/merchant/info')">关注
+                </view> -->
             </view>
             <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr}}</view>
         </view>
-        <!-- v-if="!isMerchant" -->
-        <view class="couponContainer uni-flex">
+        <view class="couponContainer uni-flex" v-if="!isMerchant">
             <view class="leftCoupon uni-flex">
                 <view class="leftCoupon-item" style="margin-left: 14rpx;">
                     <view class="price"><text style="font-size: 25rpx;">￥</text>50</view>
@@ -43,12 +48,12 @@
                     </view>
                 </view>
             </view>
-            <view class="rightReceive flexCenter">
+            <view class="rightReceive flexCenter" @click="onClickGetMore">
                 领取<br>更多
             </view>
             <!-- <view class="coupon-receive" @click="pageJump('/pages/merchant/couponManage')">领取更多</view> -->
         </view>
-        <view class="ruleContainer">
+        <view class="ruleContainer" v-if="isMerchant">
             <view class="ruleItem" v-for="(item,index) in ruleList" :key="index" @click="onClickRule(item)">
                 <view class="rule-left flexCenter">
                     <image class="rule-icon" :src="item.icon" mode="widthFix" />
@@ -59,9 +64,9 @@
                 </view>
             </view>
         </view>
-        <view class="moreContainer">
+        <view class="moreContainer" :style="{marginTop:isMerchant?0:30+'rpx'}">
             <view class="more-left">店铺精彩时刻</view>
-            <view class="more-right" @click="pageJump('/pages/merchant/niceTime')">更多</view>
+            <view class="more-right" @click="pageJump('/pages/merchant/niceTime?alias='+alias)">更多</view>
         </view>
         <swiper indicator-dots indicator-active-color="#333333" indicator-color="#CAC6C6" class="niceTimeContainer">
             <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index">
@@ -70,15 +75,15 @@
                     mode="aspectFill" />
             </swiper-item>
         </swiper>
-        <view class="tagsContainer">
-            <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list"
-                @click="onTagClick(item,index)">
-                {{item.label}} <text>{{goodsMsg[item.valueKey]}}</text>
+        
+        <u-sticky :offsetTop="0">
+            <view class="tagsContainer">
+                <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list"
+                    @click="onTagClick(item,index)">
+                    {{item.label}} <text>{{goodsMsg[item.valueKey]}}</text>
+                </view>
             </view>
-        </view>
-        <!-- <u-sticky :offsetTop="0">
-            
-        </u-sticky> -->
+        </u-sticky>
 
         <view class="goodsList">
             <goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
@@ -87,6 +92,7 @@
         <bottomDrawer title='领取优惠券' :height='571' heightType='rpx' :needSafeArea='true'
             :showDrawer.sync='receiveCouponShow'>
         </bottomDrawer>
+        <couponGetDrawer :couponList="couponList" @lower="lowerCoupon" :showDrawer.sync='couponGetDrawerShow' />
     </view>
 </template>
 
@@ -143,7 +149,7 @@
         }
         goodsQuery: any = {
             pageIndex: 1,
-            pageSize: 20,
+            pageSize: 10,
             tp: 100,//1 在售，2 已拼成, 100 全部
 
         }
@@ -173,6 +179,13 @@
         };
         niceTimeList: any = []
         receiveCouponShow: boolean = false
+        couponQuery: any = {
+            fetchFrom: 1,
+            fetchSize: 10
+        }
+        couponGetDrawerShow: boolean = false
+        couponList: any = []
+        couponIsFetchEnd: boolean = true
         scrollTop: number = 0
         MAX_HEIGHT: number = 0;
         private get scrollTopPercent() {
@@ -180,7 +193,9 @@
         }
         onLoad(query: any) {
             if (query.alias) this.alias = query.alias
-            this.reqMyMerchantData()
+            if (query.isMerchant) this.isMerchant = true
+            if (this.isMerchant) this.reqMyMerchantData()
+            if (!this.isMerchant) this.reqMerchantData()
             this.reqGoodsData()
             this.onEventUI('refreshMerchantInfo', (res: any) => {
                 console.log("refreshMerchantInfo", res);
@@ -199,6 +214,18 @@
 
         onShow() {
 
+        }
+        onReachBottom() {
+            if (this.goodsQuery.pageIndex < this.goodsTotalPage) {
+                this.goodsQuery.pageIndex += 1
+                this.reqGoodsData()
+            }
+        }
+        onPullDownRefresh() {
+            this.goodsQuery.pageIndex += 1
+            this.reqGoodsData(() => {
+                uni.stopPullDownRefresh()
+            })
         }
         onPageScroll(data: any) {
             this.scrollTop = data.scrollTop
@@ -261,6 +288,35 @@
                 this.merchantInfo = res.data
             })
         }
+        reqMerchantData() {
+            app.http.Get(`dataApi/merchant/newII/detail/` + this.alias, {}, (res: any) => {
+                this.assignNiceTimeList(res.data.rarity_card || [])
+                this.merchantInfo = res.data
+                console.log(res);
+            })
+        }
+        lowerCoupon() {
+            if (!this.couponIsFetchEnd) {
+                this.couponQuery.fetchFrom += this.couponQuery.fetchSize
+                this.reqMerchantCoupon()
+                return
+            }
+        }
+        onClickGetMore() {
+            this.couponQuery.fetchFrom = 1
+            this.reqMerchantCoupon()
+        }
+        //获取商家店铺可领取的优惠券
+        reqMerchantCoupon(cb?: any) {
+            app.http.Get(`merchant/online/coupon/` + this.alias, this.couponQuery, (res: any) => {
+                console.log(res);
+                this.couponIsFetchEnd = res.isFetchEnd
+                const list = res.list || []
+                this.couponQuery.fetchFrom == 1 ? this.couponList = list : this.couponList.push(...list)
+                this.couponGetDrawerShow = true
+                cb && cb()
+            })
+        }
         reqGoodsData(cb?: any) {
             app.http.Get('dataApi/merchant/1/goodlist/' + this.alias, this.goodsQuery, (res: any) => {
                 const list = res.list || []
@@ -280,7 +336,7 @@
         font-family: PingFang SC;
     }
 
-    
+
 
     .pageTopContainer {
         position: fixed;
@@ -441,6 +497,23 @@
             font-weight: 500;
             color: #7C7C7C;
         }
+
+        .followBtton {
+            width: 127rpx;
+            height: 52rpx;
+            background: #FA1545;
+            border-radius: 3rpx;
+            font-size: 29rpx;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #F6F7FB;
+        }
+
+        .isFollo {
+
+            background: #F2F2F2;
+            color: #7C7C7C;
+        }
     }
 
     .merchant-introduction {
@@ -566,8 +639,11 @@
         justify-content: space-between;
         width: 750rpx;
         box-sizing: border-box;
-        margin-top: 61rpx;
-        margin-bottom: 50rpx;
+        background-color: #fff;
+        height: 110rpx;
+        align-items: center;
+        /* margin-top: 61rpx;
+        margin-bottom: 50rpx; */
 
         .tag {
             font-size: 29rpx;
@@ -591,6 +667,6 @@
         box-sizing: border-box;
         width: 750rpx;
         background-color: #f5f7fb;
-        padding-top:20rpx;
+        padding-top: 20rpx;
     }
 </style>

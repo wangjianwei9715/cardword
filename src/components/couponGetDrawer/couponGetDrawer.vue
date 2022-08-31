@@ -48,11 +48,16 @@
 					uni.showToast({ title:'领取成功', icon:'none' });
 					item.state = 2;
 				})
+                return
             }
 
             // 不在商品详情页  店铺券商品券区分
             if(!this.goodPage){
-
+                if(item.tp==1){
+                    uni.navigateTo({
+                        url: '/pages/goods/goods_details?id=' + decodeURIComponent(item.goodCode)
+                    })
+                }
             }
         }
         inspectState(item:any){

@@ -10,7 +10,7 @@
                 </u-icon>
                 <view class="pageTitle" :style="{opacity:scrollTopPercent}">商家信息</view>
                 <u-icon name="camera" :color="scrollTopPercent>0.6?'#202124':'#e3ded4'" size="25"
-                    @click="onClickChangeAvatar"></u-icon>
+                    @click="menuShow=true"></u-icon>
             </view>
         </view>
         <image class="merchantBanner" @click="menuShow=true" :src="parsePic(decodeURIComponent(merchantInfo.back_img))"

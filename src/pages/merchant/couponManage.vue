@@ -56,7 +56,7 @@
             </view>
         </view>
         <merchantCoupon :goodCode="selectItem.goodCode || ''" :showDrawer.sync="createCouponShow" />
-        <empty v-if='!goodsList.length'/>
+        <empty v-if='!goodsList.length&&tag.index==2'/>
         <statusbar />
         <!-- <view class="previewCoupon" @click="pageJump('/pages/merchant/couponDetail')">查看</view> -->
         <!-- <bottomDrawer title='店铺通用券' :height='571' heightType='rpx' :needSafeArea='true'
@@ -116,6 +116,10 @@
             this.tag.index = index
             this.queryParams.pageIndex = 1
             this.queryParams.tp = item.value
+            uni.pageScrollTo({
+                scrollTop:0,
+                duration:0
+            })
             this.reqNewData()
         }
         pageJump(url: string, type?: any) {

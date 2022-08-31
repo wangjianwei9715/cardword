@@ -1,6 +1,6 @@
 <template>
   <view>
-    <view
+    <view v-if="!newMerchantPage"
       class="actionItem"
       :class="{ redAction: !follow }"
       @click.stop="handleAction"
@@ -16,6 +16,25 @@
         'rpx'
       "
     >
+
+      {{ follow ? "已关注" : "关注" }}
+    </view>
+    <view v-else
+    class="followBtton flexCenter" :class="{isFollo:follow}"
+      @click.stop="handleAction"
+      :style="
+        'height:' +
+        height +
+        'rpx;line-height:' +
+        height +
+        'rpx;width:' +
+        width +
+        'rpx;font-size:' +
+        fontSize +
+        'rpx'
+      "
+    >
+    
       {{ follow ? "已关注" : "关注" }}
     </view>
     <followModal
@@ -52,7 +71,10 @@ export default class ClassName extends BaseComponent {
     default: 25,
   })
   fontSize?: any;
-
+  @Prop({
+    default: false,
+  })
+  newMerchantPage?: any;
   modalShow = false;
   followCopy = false;
   handleAction() {
@@ -78,6 +100,22 @@ export default class ClassName extends BaseComponent {
 </script>
 
 <style lang="scss">
+  .followBtton {
+            width: 127rpx;
+            height: 52rpx;
+            background: #FA1545;
+            border-radius: 3rpx;
+            font-size: 29rpx;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #F6F7FB;
+        }
+
+        .isFollo {
+
+            background: #F2F2F2;
+            color: #7C7C7C;
+        }
 .actionItem {
   width: 144rpx;
   height: 56rpx;

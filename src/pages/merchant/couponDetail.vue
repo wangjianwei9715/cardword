@@ -29,7 +29,7 @@
                 <view class="rightPoint" @click.stop="onClickRightMenu(item,index)">
                     <view class="rightMenu" :class="{showRightMenu:index==clickTagIndex}">
                         <view class="menuTag flexCenter" @click.stop="onClickAgainCreate(item)">再次创建</view>
-                        <view v-if="item.getTp==1" class="menuTag flexCenter" @click.stop="onOffLineClick">下线</view>
+                        <view v-if="item.stateName=='可领取'" class="menuTag flexCenter" @click.stop="onOffLineClick(item)">下线</view>
                     </view>
                 </view>
             </view>
@@ -43,6 +43,7 @@
             </view>
         </view>
         <merchantCoupon :showDrawer.sync="createCouponShow" :goodCode='goodCode' ref='merchantCoupon' />
+        <empty v-if='!couponList.length'/>
         <statusbar />
     </view>
 </template>
@@ -103,12 +104,13 @@
             }
             this.clickTagIndex = index
         }
-        onOffLineClick() {
+        onOffLineClick(item:any) {
             uni.showModal({
                 title: "提示",
                 content: "是否下线该优惠券?",
                 success: ({ confirm, cancel }) => {
-                    confirm && this.offLineAction();
+                    confirm && this.offLineAction(item);
+                    this.clickTagIndex=-1
                 }
             });
         }
@@ -119,8 +121,17 @@
             this.queryParams.tp = item.value
             this.reqNewData()
         }
-        offLineAction() {
+        offLineAction(item:any) {
             console.log("下线");
+            app.http.Post(`me/shop/good/coupon/cate/putoff/`+item.id,{},(res:any)=>{
+                console.log('成功');
+                uni.showToast({
+                    title:'操作成功',
+                    icon:'success'
+                })
+                this.queryParams.pageIndex=1
+                this.reqNewData()
+            })
         }
         onClickCopy(item: any) {
             if (item.couponCode && item.couponCodeNum == 1) {
