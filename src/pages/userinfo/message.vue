@@ -16,7 +16,19 @@
 			</view>
 			
 		</view>
-		<view class="bottom" v-if="buckedList!=''">
+		<view class="bottom">
+			<view class="index" @click="onClickHeli(chatData.agentExten)">
+				<view class="left" >
+					<view class="icon"><image class="icon-kf" src="../../static/userinfo/kefu@2x.png"></image></view>
+					<view class="desc">
+						<view class="desc-title">{{chatData.agentName}}</view>
+						<view class="desc-message" v-html="decodeURIComponent(chatData.content)"></view>
+					</view>
+				</view>
+				<view class="right">
+					<view class="time">{{getTime(chatData.endTime)}}</view>
+				</view>
+			</view>
 			<view class="index" v-for="(item,index) in buckedList" :key="index" @click="onClickBucketId(item.bucketId)">
 				<view class="left" >
 					<view class="icon"><muqian-lazyLoad class="icon-kf" :src="item.target.avatar?decodeURIComponent(item.target.avatar):'../../static/userinfo/kefu@2x.png'" :borderRadius="'50%'"></muqian-lazyLoad></view>
@@ -29,18 +41,6 @@
 					<view class="time">{{getTime(item.sendTime)}}</view>
 				</view>
 			</view>
-			<!-- <view class="index" @click="onClickBucketId(chatData.agentExten)">
-				<view class="left" >
-					<view class="icon"><image class="icon-kf" src="../../static/userinfo/kefu@2x.png"></image></view>
-					<view class="desc">
-						<view class="desc-title">{{chatData.agentName}}</view>
-						<view class="desc-message" v-html="decodeURIComponent(chatData.content)"></view>
-					</view>
-				</view>
-				<view class="right">
-					<view class="time">{{getTime(chatData.endTime)}}</view>
-				</view>
-			</view> -->
 		</view>
 		
 	</view>
@@ -82,14 +82,14 @@
 			this.noMoreData = false
 			this.getMessageList()
 			this.getBucketlist()
-			// this.getHeliChat()
+			this.getHeliChat()
 			// #endif
 
 			
 		}
 		//   加载更多数据
 		onReachBottom() {
-			this.getBucketlist()
+			// this.getBucketlist()
 		}
 		getMessageList(){
 			app.http.Get('message/bucketlist',{},(res:any)=>{
@@ -125,11 +125,13 @@
 			uni.navigateTo({
 				url: '/pages/userinfo/talk?bucketId='+id
 			})
+		}
+		onClickHeli(id:any){
 			// 第三方客服
-			// let params = {
-			// 	agentExten:id
-			// }
-			// app.platform.heliService(params)
+			let params = {
+				agentExten:id
+			}
+			app.platform.heliService(params)
 		}
 		onClickDynamic(type:any){
 			uni.navigateTo({
@@ -211,7 +213,8 @@
 				.icon-kf{
 					width: 84rpx;
 					height:84rpx;
-					background:#AAAAAA
+					background:#AAAAAA;
+					border-radius: 50%;
 				}
 			}
 			.desc{

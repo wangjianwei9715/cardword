@@ -73,7 +73,6 @@ export default class HttpRequest {
 				app.opKey = uni.getStorageSync('app_opk')
 			}
 			config.baseURL = app.bussinessApiDomain
-			
 			let url = config.url+'';
 			const ksjUserId = uni.getStorageSync('ksjUserId');
 			if(!uni.$u.test.isEmpty(ksjUserId)){
@@ -131,6 +130,7 @@ export default class HttpRequest {
 			}
 			if(url.indexOf("dataApi/") != -1){
 				config.url = url.substring(8);
+				if(app.dataApiDomain == '') return;
 				if(!app.localTest) config.baseURL = app.dataApiDomain;
 			}
 			if(url.indexOf('funcApi/')!=-1){	
