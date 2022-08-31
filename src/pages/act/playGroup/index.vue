@@ -31,7 +31,7 @@
           <view class="collect-msg-howMany">已有{{item.totalExchangeNum}}人集齐</view>
         </view>
         <view class="collect-coupon" :class="{collectCouponGray:item.exchangeNum==0}" @click="onClickExchange(item)">
-          <view class="collect-coupon-top">兑
+          <view class="collect-coupon-top" :class="{noneColorTop:item.exchangeNum==0}">兑
             <text>{{item.couponAmount}}</text>元
           </view>
           <!-- <view class="collect-coupon-bottom">上组券</view> -->
@@ -755,7 +755,9 @@ page {
       font-size: 33rpx;
     }
   }
-
+  .noneColorTop{
+    color:#757575;
+  }
   .collect-coupon-bottom {
     margin-top: 2rpx;
     font-size: 19rpx;
