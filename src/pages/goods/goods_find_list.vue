@@ -252,7 +252,7 @@
 					}
 					if (res.goodList && type !== "refresh") {
 						let list = [...this.goodsList,...res.goodList];
-						this.goodsList = app.platform.removeDuplicate(list)
+						this.goodsList = app.platform.removeDuplicate(list,'goodCode')
 					}
 					this.scrollId = res.scrollId;
 					this.scrollIdSt = res.timeStamp;

@@ -121,7 +121,10 @@
 				"navigationBarTitleText": "",
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"softinputMode": "adjustPan"
+				}
 			}
 		}
 		,
@@ -924,6 +927,18 @@
 						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+					}
+				},
+				{
+					"path": "coupon/coupon_get",
+					"style": {
+						"navigationBarTitleText": "领券中心",
+						"navigationBarBackgroundColor": "#ffffff",
+						"transparentTitle": "auto",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
 				{

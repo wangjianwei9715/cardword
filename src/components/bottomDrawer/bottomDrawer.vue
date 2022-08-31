@@ -6,10 +6,10 @@
 				{{title}}
 				<view class="close-icon" @click="onClickCloseDrawer"></view>
 			</view>
-            <view class="drawer-center" v-if='needSafeArea' :style="{padding:padding}">
+            <view class="drawer-center" v-if='needSafeArea' :style="{padding:padding,background:drawerBg}">
                 <slot></slot>
             </view>
-			<view class="drawer-center" v-else>
+			<view class="drawer-center" v-else :style="{background:drawerBg}">
                 <slot></slot>
             </view>
         </view>
@@ -40,6 +40,8 @@
 		needSafeArea!:boolean;
 		@Prop({default:"0 30rpx"})
 		padding!:string;
+		@Prop({ default: '#ffffff' })
+        drawerBg!:string
 		created(){//在实例创建完成后被立即调用
 			
 		}

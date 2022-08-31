@@ -60,13 +60,13 @@
 				params.total = data.total;
 				params.empty = data.total == 0
 				params.noMoreData = data.totalPage <= params.pageIndex;
-
 				if(params.pageIndex == 1) this.codeList = [];
 				if(data.list){
-					this.codeList = [...this.codeList,...data.list];
+					let list = params.pageIndex == 1 ? data.list : [...this.codeList,...data.list];
+					this.codeList = app.platform.removeDuplicate(list,'index');
 				}
 
-				params.pageIndex++;
+				params.pageIndex += 1;
 				if(cb) cb()
 			});
 		}

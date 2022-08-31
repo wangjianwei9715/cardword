@@ -355,11 +355,15 @@ export default class PlatformManager {
 	}
 	matchRequestKey(regular:any,code:string,cb?:Function){
 		let key:any = ''
-		if(regular.test(code)){
-			key = code.match(regular);
-			this.setClipboardEmpty();
-			cb && cb(key[0])
+		for(let i of regular){
+			if(i.test(code)){
+				key = code.match(i);
+				this.setClipboardEmpty();
+				cb && cb(key[0]);
+				break;
+			}
 		}
+		
 	}
 	setClipboardEmpty(){
 		uni.setClipboardData({
@@ -493,7 +497,10 @@ export default class PlatformManager {
 	// 字符修剪
 	trimString = (str: string, char: string): string => str.split(char).filter(Boolean).join();
 	// 去重
-	removeDuplicate = <T,_>(arr: T[]): T[] => arr.filter((i) => arr.indexOf(i) === arr.lastIndexOf(i));
+	removeDuplicate(arr:any, uniId:string){
+		const res = new Map();
+		return arr.filter((item:any) => !res.has(item[uniId]) && res.set(item[uniId], 1));
+	}
 	// 重复数
 	findRepeatNumber(nums:CustomArray){
 		const unique = new Set();

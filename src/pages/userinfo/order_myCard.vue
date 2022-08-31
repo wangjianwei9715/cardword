@@ -109,7 +109,7 @@
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
-			if (this.noMoreData) {
+			if (this.noMoreData||this.typeTabClick) {
 				return;
 			}
 			
@@ -137,6 +137,8 @@
 				this.typeTabClick = false;
 				this.currentPage++;
 				if(cb) cb()
+			},(err:any)=>{
+				this.typeTabClick = false;
 			});
 		}
 		

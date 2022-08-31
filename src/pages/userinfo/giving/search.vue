@@ -39,6 +39,7 @@
 		currentPage = 1;
 		pageSize = 10;
 		noMoreData = false;
+		requestIng = false;
 		onLoad(query:any) {
 			this.reqNewData() 
 		}
@@ -64,7 +65,7 @@
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多商品
-			if (this.noMoreData) {
+			if (this.noMoreData||this.requestIng) {
 				return;
 			}
 			// 收到 赠送
@@ -75,14 +76,16 @@
 				pageSize:this.pageSize,
 				q:encodeURIComponent(this.searchText )
 			}
-			
+			this.requestIng = true
 			app.http.Get(url, params, (data: any) => {
+				this.requestIng = false;
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
 				if( this.currentPage == 1 ) this.codeList = [];
 				if(data.list){
-					this.codeList = this.codeList.concat(data.list);
+					let list = this.currentPage == 1 ? data.list : [...this.codeList,...data.list];
+					this.codeList = list
 				}
 				this.currentPage++;
 				if(cb) cb()
