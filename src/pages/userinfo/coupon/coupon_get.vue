@@ -1,7 +1,8 @@
 <template>
 	<view class="content">
 		<view class="bg-top"></view>
-		<tabc :tabc="tabData" :tabsCheck="tabCurrent" @tabsClick="onClickTab"></tabc>
+		<u-sticky style="width:100%;background:#F6F7FB"><tabc :tabc="tabData" :tabsCheck="tabCurrent" @tabsClick="onClickTab"></tabc></u-sticky>
+		
 		<view class="list-box">
 			<view class="list-index" v-for="(item,index) in couponList" :key="index">
 				<view class="box-left">

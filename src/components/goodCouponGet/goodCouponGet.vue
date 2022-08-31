@@ -40,6 +40,7 @@
 			
 		}
 		onClickMoreCoupon(){
+			this.getParams = {...paramsInit}
 			this.getCouponList(()=>{
 				this.showDrawer = true;
 			})
@@ -48,7 +49,7 @@
 			const params = this.getParams;
 			if (params.isFetchEnd) return;
 
-			app.http.Get(`coupon/merchant/online/${this.goodCode}/list`,params,(res:any)=>{
+			app.http.Get(`coupon/merchant/online/good/${this.goodCode}/list`,params,(res:any)=>{
 				params.isFetchEnd = res.isFetchEnd;
 
 				if(res.list){
