@@ -1,57 +1,53 @@
 <template>
-    <view class='content'>
-        <navigationShare :navigatetoTitle="isGoods?'指定商品券':'店铺通用券'" rightText='新建'
+    <view class='content' @click="clickTagIndex=-1">
+        <navigationShare :navigatetoTitle="goodCode?'指定商品券':'店铺通用券'" rightText='新建'
             @onClickRightText="onClickRightText" />
         <view style="padding-top:88rpx">
             <statusbar />
         </view>
-        <view class="goodsContainer" v-if="isGoods">
-            <image class="good-image" src="" mode="aspectFill" />
+        <view class="goodsContainer" v-if="goodCode">
+            <image class="good-image" :src="parsePic(decodeURIComponent(logo))" mode="aspectFill" />
             <view class="good-message">
                 <view class="good-name">
-                    20-21 篮球 panini prizm prizm prizm panini prizm prizm ...20-21 篮球 panini prizm prizm prizm panini
-                    prizm prizm ...20-21 篮球 panini prizm prizm prizm panini prizm prizm ...
+                    {{goodName}}
                 </view>
-                <view class="good-cumulative">累计使用<text>333</text>元(包含店铺通用券500元）</view>
+                <view class="good-cumulative">累计使用<text>{{totalCouponMoney}}</text>元(包含店铺通用券500元）</view>
             </view>
         </view>
-        <u-sticky :offsetTop="app.statusBarHeight+44">
-            <view class="tagContainr" :class="{whiteTagContainer:!isGoods}">
-                <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list">{{item.label}}
-                </view>
+        <view class="tagContainr" :class="{whiteTagContainer:!goodCode}">
+            <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list"
+                @click="onClickTagChange(item,index)">{{item.label}}
             </view>
-        </u-sticky>
-        <view class="couponItem" v-for="(item, index) in 20" :key="index">
+        </view>
+        <view class="couponItem" v-for="(item, index) in couponList" :key="index">
             <view class="couponItem-top">
-                <view class="coupon-name">满50减20元</view>
+                <view class="coupon-name">{{item.name}}</view>
                 <view style="flex:1">
-                    <view class="coupon-type flexCenter">兑换码</view>
+                    <view class="coupon-type flexCenter" :class="{greenType:item.getTp==1}">{{item.getTp==1?"线上":"兑换码"}}
+                    </view>
                 </view>
                 <view class="rightPoint" @click.stop="onClickRightMenu(item,index)">
                     <view class="rightMenu" :class="{showRightMenu:index==clickTagIndex}">
-                        <view class="menuTag flexCenter">再次创建</view>
+                        <view class="menuTag flexCenter" @click.stop="onClickAgainCreate(item)">再次创建</view>
+                        <view v-if="item.getTp==1" class="menuTag flexCenter" @click.stop="onOffLineClick">下线</view>
                     </view>
                 </view>
             </view>
-            <view class="couponItem-message">可领取/有效期60天/总数333/已领200/使用150</view>
+            <view class="couponItem-message">
+                {{item.stateName}}/有效期{{item.lifeSec}}天/总数{{item.maxNum}}/已领{{item.distribute_num}}/使用{{item.use_num}}
+            </view>
             <view class="couponItem-bottom">
-                领取方式：jds4dsw8dsd657sadf
-                <image src="../../static/merchant/copy.png" mode="scaleToFill" />
+                领取方式：{{item.getTp==1?"店铺或商品详情页":(item.couponCode+(item.couponCodeNum>1?`等${item.couponCodeNum}条`:''))}}
+                <image v-if="item.getTp==2" @click="onClickCopy(item)" src="../../static/merchant/copy.png"
+                    mode="scaleToFill" />
             </view>
         </view>
-        <merchantCoupon :showDrawer.sync="createCouponShow" />
+        <merchantCoupon :showDrawer.sync="createCouponShow" :goodCode='goodCode' ref='merchantCoupon' />
         <statusbar />
     </view>
 </template>
 
 <script lang="ts">
-    interface Tag {
-        index: number;
-        list: Array<ListItem>;
-    }
-    interface ListItem {
-        label: string;
-    }
     import { app } from "@/app";
     import { Component, Watch } from "vue-property-decorator";
     import BaseNode from "../../base/BaseNode.vue";
@@ -61,21 +57,51 @@
         parsePic: any = parsePic;
         app: any = app;
         isGoods: boolean = true;
-        tag: Tag = {
+        merchantCouponMoney: number = 0;
+        totalCouponMoney: number = 0
+        goodCode: any = ""
+        logo: string = ""
+        goodName: string = ""
+        tag: any = {
             index: 0,
-            list: [{ label: "全部" }, { label: "线上优惠券" }, { label: "兑换码" }]
+            list: [{ label: "全部", value: 100 }, { label: "线上优惠券", value: 1 }, { label: "兑换码", value: 2 }]
         };
-        clickTagIndex:number=-1;
+        couponList: any = []
+        totalPage: number = 0
+        clickTagIndex: number = -1;
         createCouponShow: boolean = false;
-        onLoad() {
+        queryParams: any = {
+            pageIndex: 1,
+            pageSize: 15,
+            tp: 100
+        }
+        onLoad(query: any) {
+            if (query.goodCode) {
+                this.goodCode = query.goodCode
+                this.logo = query.logo
+                this.goodName = query.goodName
+            }
+            this.reqNewData()
 
         }
-        onClickRightMenu(item:any,index:number){
-            if(this.clickTagIndex===index){
-                this.clickTagIndex=-1
+        onReachBottom() {
+            if (this.queryParams.pageIndex < this.totalPage) {
+                this.queryParams.pageIndex += 1
+                this.reqNewData()
+            }
+        }
+        onPullDownRefresh() {
+            this.queryParams.pageIndex = 1
+            this.reqNewData(() => {
+                uni.stopPullDownRefresh()
+            })
+        }
+        onClickRightMenu(item: any, index: number) {
+            if (this.clickTagIndex === index) {
+                this.clickTagIndex = -1
                 return
             }
-            this.clickTagIndex=index
+            this.clickTagIndex = index
         }
         onOffLineClick() {
             uni.showModal({
@@ -86,16 +112,70 @@
                 }
             });
         }
+        onClickTagChange(item: any, index: number) {
+            if (this.tag.index == index) return
+            this.tag.index = index
+            this.queryParams.pageIndex = 1
+            this.queryParams.tp = item.value
+            this.reqNewData()
+        }
         offLineAction() {
             console.log("下线");
         }
-        setClipboardData(data: string) {
+        onClickCopy(item: any) {
+            if (item.couponCode && item.couponCodeNum == 1) {
+                this.setClipboardData(item.couponCode)
+            }
+            if (item.couponCode && item.couponCodeNum > 1) {
+                app.http.Get(`dataApi/me/shop/get/goodCoupon/${item.id}/code/list`, {}, (res: any) => {
+                    console.log(res);
+                    const boardString = res.list.join('，')
+                    this.setClipboardData(boardString, `已复制共${item.couponCodeNum}条卡密`)
+                })
+            }
+        }
+        setClipboardData(data: string, msg?: string) {
             uni.setClipboardData({
-                data
+                data,
+                showToast: msg ? true : false,
+                success: (res: any) => {
+                    if (!msg) return
+                    uni.showToast({
+                        title: msg
+                    })
+                }
             });
+        }
+        onClickAgainCreate(item: any) {
+            this.createCouponShow = true
+            setTimeout(() => {
+                this.$refs.merchantCoupon.couponData = {
+                    goodCode: this.goodCode,
+                    amount: item.amount,
+                    minUseAmount: item.minUseAmount,
+                    maxNum: item.maxNum,
+                    lifeTime: item.lifeSec,
+                    getTp: item.getTp,
+                    exchangeCodeTp: item.exchangeCodeTp
+                }
+            }, 50)
+            //填入数据
         }
         onClickRightText() {
             this.createCouponShow = true;
+        }
+        reqNewData(cb?: any) {
+            // const requestUrl=
+            const goodsUrl = `dataApi/me/shop/goodCoupon/${this.goodCode}/detail/list`
+            const merchantUrl = `dataApi/me/shop/merchantCoupon/detail/list`
+            app.http.Get(this.goodCode ? goodsUrl : merchantUrl, this.queryParams, (res: any) => {
+                console.log(res);
+                this.totalCouponMoney = res.totalCouponMoney
+                this.totalPage = res.totalPage
+                const list = res.list || []
+                this.queryParams.pageIndex == 1 ? this.couponList = list : this.couponList.push(...list)
+                cb && cb()
+            })
         }
     }
 </script>
@@ -222,13 +302,17 @@
             width: 88rpx;
         }
 
+        .greenType {
+            background: #59CB7F;
+        }
+
         .rightPoint {
             width: 28rpx;
             height: 6rpx;
             position: relative;
             background-size: 100% 100%;
             background-image: url(../../static/merchant/point.png);
-            
+
         }
 
         .rightMenu {
@@ -236,11 +320,13 @@
             background: #FFFFFF;
             box-shadow: 0rpx 1rpx 8rpx 0rpx #CDCCCC;
             text-align: center;
-            position: absolute;right: -20rpx;
+            position: absolute;
+            right: -20rpx;
             top: 20rpx;
             transform: scale(0);
             pointer-events: none;
             transition: all 0.2s;
+
             .menuTag {
                 width: 100%;
                 height: 53rpx;
@@ -250,7 +336,8 @@
                 color: #333333;
             }
         }
-        .showRightMenu{
+
+        .showRightMenu {
             transform: scale(1);
             pointer-events: auto;
         }

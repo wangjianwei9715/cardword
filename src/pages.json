@@ -1039,6 +1039,7 @@
 						"navigationBarTitleText": "商家中心",
 						"navigationBarBackgroundColor": "#ffffff",
 						"transparentTitle": "auto",
+						"navigationStyle": "custom",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#FFFFFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
@@ -1076,6 +1077,30 @@
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#FFFFFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#FFFFFF" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "info",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "商家信息",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#FFFFFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#FFFFFF" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "introduce",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "商家简介",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#FFFFFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#FFFFFF" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}

@@ -21,7 +21,12 @@
             defaultRegionCode:{
                 type:String
             },
-            defaultRegion:[String,Array]
+            defaultRegion:[String,Array],
+            //粒度
+            fields:{
+                type:String,
+                default:"area" //province city area
+            }
         },
 		data() {
 			return {
@@ -51,7 +56,10 @@
         },
         computed:{
             multiArray(){
-                return this.pickedArr.map(arr=>arr.map(item=>item.name))
+                let arr=this.pickedArr.map(arr=>arr.map(item=>item.name))
+                if(this.fields=='city') arr.splice(2,1)
+                if(this.fields=='province') arr.splice(1,2)
+                return arr
             },
             pickedArr(){
                 // 进行初始化
@@ -100,6 +108,8 @@
                 let [index0,index1,index2] = e.detail.value;
                 let [arr0,arr1,arr2] = this.pickedArr;
                 let address = [arr0[index0],arr1[index1],arr2[index2]];
+                if(this.fields=='city') address.splice(2,1)
+                if(this.fields=='province') address.splice(1,2)
                 // console.log(address);
                 this.$emit('getRegion',address)
             },

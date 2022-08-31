@@ -6,7 +6,10 @@
 				{{title}}
 				<view class="close-icon" @click="onClickCloseDrawer"></view>
 			</view>
-            <view class="drawer-center">
+            <view class="drawer-center" v-if='needSafeArea' :style="{padding:padding}">
+                <slot></slot>
+            </view>
+			<view class="drawer-center" v-else>
                 <slot></slot>
             </view>
         </view>
@@ -35,7 +38,8 @@
 		heightType!:string;
 		@Prop({ default: false })
 		needSafeArea!:boolean;
-		
+		@Prop({default:"0 30rpx"})
+		padding!:string;
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -60,7 +64,7 @@
 		left:0;
 		height:100%;
 		width: 100%;
-        z-index:999;
+        z-index:99;
 		background:rgba(0,0,0,0.5)
     }
     .drawer-content{
@@ -70,7 +74,7 @@
 		height:60%;
 		width: 100%;
 		background:#fff;
-		z-index: 1000;
+		z-index: 100;
 		box-sizing: border-box;
 		transition: all 0.3s;
 		border-radius: 5rpx 5rpx 0px 0px;

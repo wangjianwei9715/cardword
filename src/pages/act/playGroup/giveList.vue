@@ -138,9 +138,9 @@
         .giveItem-block {
             width: 159rpx;
             height: 49rpx;
-            background: #EFEFEF;
+            background: rgba(239, 239, 239,.8);
             border-radius: 3rpx;
-            font-size: 21rpx;
+            font-size: 25rpx;
             font-family: PingFang SC;
             font-weight: 400;
             color: #333333;
@@ -155,7 +155,7 @@
         margin-top: 30rpx;
 
         .msg-left {
-            font-size: 29rpx;
+            font-size: 27rpx;
             font-family: PingFang SC;
             font-weight: 600;
             color: #333333;

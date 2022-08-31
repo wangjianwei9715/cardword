@@ -1,5 +1,18 @@
 <template>
     <view class='content'>
+        <view class="pageTopContainer">
+            <view class="status"
+                :style="{paddingTop:app.statusBarHeight+'px',backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
+            </view>
+            <view class="pageTop" ref="pageTop" id="pageTop"
+                :style="{backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
+                <u-icon name="arrow-left" :color="scrollTopPercent>0.6?'#202124':'#e3ded4'" size="20" @click="goBack">
+                </u-icon>
+                <view class="pageTitle" :style="{opacity:scrollTopPercent}">商家中心</view>
+                <u-icon name="share-square" :color="scrollTopPercent>0.6?'#202124':'#e3ded4'" size="25"
+                    @click="onClickShare"></u-icon>
+            </view>
+        </view>
         <image :src='parsePic(decodeURIComponent(merchantInfo.back_img))' mode='aspectFill' class="merchantBanner" />
         <view class="merchantInfoContainer">
             <view class="infoTop uni-flex">
@@ -8,7 +21,7 @@
                     <view class="info-name">{{merchantInfo.name}}</view>
                     <view class="info-introduction">{{merchantInfo.region}} · 210拼成 · {{merchantInfo.fans}}粉丝</view>
                 </view>
-                <view class="rightEdit flexCenter">编辑资料</view>
+                <view class="rightEdit flexCenter" @click="pageJump('/pages/merchant/info')">编辑资料</view>
             </view>
             <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr}}</view>
         </view>
@@ -51,23 +64,16 @@
             <view class="more-right" @click="pageJump('/pages/merchant/niceTime')">更多</view>
         </view>
         <swiper indicator-dots indicator-active-color="#333333" indicator-color="#CAC6C6" class="niceTimeContainer">
-            <swiper-item class="niceTimeItem">
-                <image v-for="(item,index) in 3" class="niceTimeImage" :style="{marginRight:index==2?0:'17rpx'}" src=""
-                    mode="aspectFill" />
-            </swiper-item>
-            <swiper-item class="niceTimeItem">
-                <image v-for="(item,index) in 3" class="niceTimeImage" :style="{marginRight:index==2?0:'17rpx'}" src=""
-                    mode="aspectFill" />
-            </swiper-item>
-            <swiper-item class="niceTimeItem">
-                <image v-for="(item,index) in 3" class="niceTimeImage" :style="{marginRight:index==2?0:'17rpx'}" src=""
+            <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index">
+                <muqian-lazyLoad v-for="(sItem,sNndex) in item" class="niceTimeImage"
+                    :style="{marginRight:index==2?0:'17rpx'}" :src="parsePic(decodeURIComponent(sItem.pic))"
                     mode="aspectFill" />
             </swiper-item>
         </swiper>
         <view class="tagsContainer">
             <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list"
                 @click="onTagClick(item,index)">
-                {{item.label}} <text>20</text>
+                {{item.label}} <text>{{goodsMsg[item.valueKey]}}</text>
             </view>
         </view>
         <!-- <u-sticky :offsetTop="0">
@@ -75,11 +81,11 @@
         </u-sticky> -->
 
         <view class="goodsList">
-
+            <goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
         </view>
+        <empty v-if='!goodsList.length' style="position: relative;bottom: 50rpx;" />
         <bottomDrawer title='领取优惠券' :height='571' heightType='rpx' :needSafeArea='true'
             :showDrawer.sync='receiveCouponShow'>
-
         </bottomDrawer>
     </view>
 </template>
@@ -95,68 +101,119 @@
     @Component({})
     export default class ClassName extends BaseNode {
         parsePic: any = parsePic;
-        alias:string='';
+        app: any = app
+        alias: string = '';
         isMerchant: boolean = false
         ruleList: any = [{
             icon: '/static/merchant/live.png',
             name: '我的直播',
             tipsText: '待直播',
+            url: '/pages/live/myLive',
             valueKey: ''
-        }, {
-            icon: '/static/merchant/card.png',
-            name: '拆卡报告',
-            tipsText: '待制作',
-            valueKey: ''
-        }, {
-            icon: '/static/merchant/wul.png',
-            name: '我的发货',
-            tipsText: '待发货',
-            valueKey: ''
-        }, {
+        },
+        // {
+        //     icon: '/static/merchant/card.png',
+        //     name: '拆卡报告',
+        //     tipsText: '待制作',
+        //     valueKey: ''
+        // }, {
+        //     icon: '/static/merchant/wul.png',
+        //     name: '我的发货',
+        //     tipsText: '待发货',
+        //     valueKey: ''
+        // },
+        {
             icon: '/static/merchant/coupon.png',
             name: '优惠券管理',
             tipsText: '查看与创建',
             valueKey: '',
-            url:'/pages/merchant/couponManage'
+            url: '/pages/merchant/couponManage'
         }, {
             icon: '/static/merchant/cuoka.png',
             name: '代搓卡',
             tipsText: '直播模式',
             valueKey: ''
         }]
+        goodsList: any = []
+        goodsTotalPage: number = 0
+        goodsMsg: any = {
+            saleTotal: 0,
+            groupTotal: 0,
+            sumTotal: 0,
+        }
+        goodsQuery: any = {
+            pageIndex: 1,
+            pageSize: 20,
+            tp: 100,//1 在售，2 已拼成, 100 全部
+
+        }
         tag: any = {
             index: 0,
             list: [{
                 label: '全部',
-                valueKey: ''
+                valueKey: 'sumTotal',
+                value: 100
             }, {
                 label: '在售',
-                valueKey: ''
+                valueKey: 'saleTotal',
+                value: 1
             }, {
                 label: '已拼成',
-                valueKey: ''
-            }, {
-                label: '拆卡',
-                valueKey: ''
-            }]
+                valueKey: 'groupTotal',
+                value: 2
+            },
+                // {
+                //     label: '拆卡',
+                //     valueKey: ''
+                // }
+            ]
         }
         merchantInfo: any = {
             name: ""
         };
+        niceTimeList: any = []
         receiveCouponShow: boolean = false
-        onLoad(query:any) {
-            if(query.alias) this.alias=query.alias
-            // this.reqMyMerchantData()
+        scrollTop: number = 0
+        MAX_HEIGHT: number = 0;
+        private get scrollTopPercent() {
+            return this.scrollTop / (this.MAX_HEIGHT * 2)
+        }
+        onLoad(query: any) {
+            if (query.alias) this.alias = query.alias
+            this.reqMyMerchantData()
+            this.reqGoodsData()
+            this.onEventUI('refreshMerchantInfo', (res: any) => {
+                console.log("refreshMerchantInfo", res);
+                this.merchantInfo = res
+            });
+            this.$nextTick(() => {
+                const query: any = uni.createSelectorQuery().in(this)
+                query
+                    .select('#pageTop')
+                    .boundingClientRect((data: any) => {
+                        this.MAX_HEIGHT = data.height
+                    })
+                    .exec();
+            })
         }
 
         onShow() {
 
         }
-        onClickRule(item:any){
-            if(!item.url){
+        onPageScroll(data: any) {
+            this.scrollTop = data.scrollTop
+        }
+        goBack() {
+            uni.navigateBack({ delta: 1 })
+        }
+        onClickShare() {
+
+        }
+        onClickRule(item: any) {
+            if (!item.url) {
                 uni.showToast({
-                    title:'维护中',
-                    icon:'none'
+                    title: '维护中',
+                    icon: 'none'
                 })
                 return
             }
@@ -165,27 +222,111 @@
         onTagClick(item: any, index: number) {
             if (this.tag.index === index) return
             this.tag.index = index
+            this.goodsQuery.pageIndex = 1
+            this.goodsQuery.tp = item.value
+            this.reqGoodsData()
         }
         pageJump(url: string, type?: any) {
+            if (url == '/pages/merchant/couponManage') {
+                uni.navigateTo({
+                    url: `/pages/merchant/couponManage?logo=${this.merchantInfo.logo}`
+                })
+                return
+            }
             const jumpType = type ?? "navigateTo"
             //@ts-ignore
             uni[jumpType]({
                 url
             })
         }
-        reqMyMerchantData(){
-            app.http.Get("me/shop/home",{},(res:any)=>{
-                console.log(res);
-                this.merchantInfo=res.data
+        assignNiceTimeList(list: any) {
+            this.niceTimeList = []
+            const copies = Math.ceil(list.length / 3)
+            for (let i = 0; i < copies; i++) {
+                let arr = list.slice(i == 0 ? 0 : i + 2, 3)
+                this.niceTimeList.push(arr)
+            }
+            console.log(this.niceTimeList);
+        }
+        // 跳转商品详情
+        onClickJumpDetails(id: any) {
+            uni.navigateTo({
+                url: '/pages/goods/goods_details?id=' + id
             })
         }
-        
+        reqMyMerchantData() {
+            app.http.Get("dataApi/me/shop/home", {}, (res: any) => {
+                console.log(res);
+                this.assignNiceTimeList(res.data.rarity_card || [])
+                this.merchantInfo = res.data
+            })
+        }
+        reqGoodsData(cb?: any) {
+            app.http.Get('dataApi/merchant/1/goodlist/' + this.alias, this.goodsQuery, (res: any) => {
+                const list = res.list || []
+                this.goodsQuery.pageIndex == 1 ? this.goodsList = list : this.goodsList.push(...list)
+                this.goodsTotalPage = res.totalPage
+                this.goodsMsg = res
+                delete this.goodsMsg.list
+                cb && cb()
+            })
+        }
+
     }
 </script>
 
 <style lang="scss">
     page {
         font-family: PingFang SC;
+    }
+
+    
+
+    .pageTopContainer {
+        position: fixed;
+        top: 0;
+        z-index: 200;
+
+        .pageTop {
+            background-color: rgba(255, 255, 255, 0);
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            padding: 0 36rpx;
+            justify-content: space-between;
+            width: 750rpx;
+            height: 88rpx;
+            /* transition: all 0.2s linear; */
+        }
+
+        .btn-back {
+
+            background: rgba(0, 0, 0, 0);
+            font-family: uniicons;
+            font-size: 46rpx;
+            font-weight: normal;
+            font-style: normal;
+            color: #3C3C3C;
+        }
+
+        .pageTitle {
+            font-size: 32rpx;
+            color: #3C3C3C;
+            position: absolute;
+            font-family: HYQiHei;
+            font-weight: bold;
+            left: 0;
+            right: 0;
+            margin: auto;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .rightIcon {
+            width: 40rpx;
+            height: 40rpx;
+            opacity: 0;
+        }
     }
 
     .merchantBanner {
@@ -426,6 +567,7 @@
         width: 750rpx;
         box-sizing: border-box;
         margin-top: 61rpx;
+        margin-bottom: 50rpx;
 
         .tag {
             font-size: 29rpx;
@@ -445,7 +587,10 @@
     }
 
     .goodsList {
+        padding: 0 14rpx;
+        box-sizing: border-box;
         width: 750rpx;
-        height: 1900rpx;
+        background-color: #f5f7fb;
+        padding-top:20rpx;
     }
 </style>

@@ -170,7 +170,7 @@ export default class ClassName extends BaseNode {
     shareUrl: `${this.shareUrl}`,
     title: "集球员组合，兑海量上足券",
     summary: "集球员组合，兑海量上足券",
-    thumb: ""
+    thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.29/seller/info/16617373799343ooe14lqxju.png"
   };
   helpCode: string = "";
   queryParams: any = {
@@ -320,7 +320,7 @@ export default class ClassName extends BaseNode {
         href: `${this.shareUrl}?helpCode=${helpCode}`,
         title: "集球员组合,兑海量上足券",
         summary: "为我助力",
-        imageUrl: ""
+        imageUrl: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.29/seller/info/16617373799343ooe14lqxju.png"
       });
     });
   }
@@ -419,25 +419,25 @@ export default class ClassName extends BaseNode {
           title: "兑换成功",
           icon: "success"
         });
-
-        uni.hideLoading();
-        setTimeout(() => {
-          const index = this.groupList.findIndex(
-            (item: any) => item.groupId == this.selectItem.groupId
-          );
-          if (index < 0) return;
-          this.groupList[index].exchangeNum = res.exchangeNum;
-          this.groupList[index].totalExchangeNum = res.totalExchangeNum;
-          this.groupList[index].players = this.selectItem.players.map(
-            (item: any, index: number) => {
-              const syNum = item.haveNum - this.selectItem.needExchangeNum;
-              return {
-                ...item,
-                haveNum: syNum
-              };
-            }
-          );
-        }, 500);
+        this.reqNewData(null,true)
+        // uni.hideLoading();
+        // setTimeout(() => {
+        //   const index = this.groupList.findIndex(
+        //     (item: any) => item.groupId == this.selectItem.groupId
+        //   );
+        //   if (index < 0) return;
+        //   this.groupList[index].exchangeNum = res.exchangeNum;
+        //   this.groupList[index].totalExchangeNum = res.totalExchangeNum;
+        //   this.groupList[index].players = this.selectItem.players.map(
+        //     (item: any, index: number) => {
+        //       const syNum = item.haveNum - this.selectItem.needExchangeNum;
+        //       return {
+        //         ...item,
+        //         haveNum: syNum
+        //       };
+        //     }
+        //   );
+        // }, 500);
       }
     );
   }
@@ -705,7 +705,7 @@ page {
   background-size: 100% 100%;
   background-image: url("/static/act/playGroup/box.png");
   box-sizing: border-box;
-  padding: 0 42rpx;
+  padding: 0 36rpx 0 42rpx;
   padding-top: 36rpx;
   z-index: 8;
   .collect-top {
