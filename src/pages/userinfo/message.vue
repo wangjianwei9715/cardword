@@ -19,14 +19,14 @@
 		<view class="bottom">
 			<view class="index" @click="onClickHeli(chatData.agentExten)">
 				<view class="left" >
-					<view class="icon"><image class="icon-kf" src="../../static/userinfo/kefu@2x.png"></image></view>
+					<view class="icon"><image class="icon-kf" src="../../static/userinfo/logo.png"></image></view>
 					<view class="desc">
-						<view class="desc-title">{{chatData.agentName}}</view>
+						<view class="desc-title">卡世界客服</view>
 						<view class="desc-message" v-html="decodeURIComponent(chatData.content)"></view>
 					</view>
 				</view>
 				<view class="right">
-					<view class="time">{{getTime(chatData.endTime)}}</view>
+					<view class="time" v-show="chatData.endTime>0">{{$u.timeFormat(chatData.endTime,'mm-dd hh:MM')}}</view>
 				</view>
 			</view>
 			<view class="index" v-for="(item,index) in buckedList" :key="index" @click="onClickBucketId(item.bucketId)">
