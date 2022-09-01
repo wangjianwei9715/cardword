@@ -738,6 +738,7 @@
 				app.platform.goZgLive({
 					roomID:this.goodsData.broadcast.roomId,
 					merchantId:publisher.id,
+					state:this.goodsData.broadcast.state,
 					playCode:this.goodsData.broadcast.playCode,
 					isAnchor:false,
 					goodCode: this.goodsData.goodCode,

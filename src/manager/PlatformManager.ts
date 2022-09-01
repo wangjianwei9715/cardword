@@ -122,6 +122,11 @@ export default class PlatformManager {
 					url:`/pages/live/zgPlayBack?data=${JSON.stringify(data)}&alias=${item.alias||item.merchantAlias}&roomID=${item.roomID}`,
 				})
 				return 
+			}else if(data.media_url==''&&data.wxRoomId==0){
+				uni.showToast({
+					title:'直播回放生成中',
+					icon:'none'
+				})
 			}else if(data.wxRoomId>0){
 				jump()
 			}

@@ -314,7 +314,7 @@ const textTipsMap = {
   "0": "拆卡倒计时",
   "1": "等待主播开播",
   "2": "主播暂时离开",
-  "3": "直播结束",
+  "3": "直播结束,回放生成中",
   "-1": "直播过期",
   "-2": "直播已取消"
 };
@@ -434,10 +434,11 @@ export default {
         config: [
           {
             bitrate: 3500,
-            captureWidth: 720,
-            captureHeight: 1280,
-            encodeWidth: 720,
-            encodeHeight: 1280,
+            captureWidth: 750,
+            captureHeight: 1326,
+            encodeWidth: 750,
+            codecID:2,
+            encodeHeight: 1326,
             fps: 30
           },
           {
@@ -446,6 +447,7 @@ export default {
             captureHeight: 640,
             encodeWidth: 480,
             encodeHeight: 640,
+            codecID:2,
             fps: 20
           },
           {
@@ -454,6 +456,7 @@ export default {
             captureHeight: 320,
             encodeWidth: 240,
             encodeHeight: 320,
+            codecID:2,
             fps: 15
           }
         ]
@@ -1729,10 +1732,15 @@ export default {
         : (this.videoConfig.index += 1);
     },
     //设置相机参数
-    setVideoConfig() {
+    async setVideoConfig() {
       const config = this.videoConfig.config[this.videoConfig.index];
       console.log("推流相机参数", config);
+      
       this.engine.setVideoConfig(config);
+      // this.engine.setCameraZoomFactor(1)//变焦
+      // this.engine.getCameraMaxZoomFactor().then(res=>{
+      //   console.log("最大变焦数getCameraMaxZoomFactor",res);
+      // })
     },
     //推连麦流
     pushLm() {
@@ -1774,8 +1782,9 @@ export default {
     //预览
     async startPreview() {
       try {
+        await this.setVideoConfig();
         await this.engine.startPreview();
-        this.setVideoConfig();
+        
         this.engine.useFrontCamera(this.front);
         this.engine.muteMicrophone(this.muted);
         this.liveConfigToolShow = true;
@@ -1795,6 +1804,9 @@ export default {
     async startPublishingStream(streamID) {
       try {
         this.engine.startPublishingStream(streamID);
+        this.engine.getVideoConfig().then(res=>{
+          console.log("相机参数获取的getVideoConfig",res);
+        })
         if (streamID == this.streamID) {
           this.onLive = true;
           this.liveConfigToolShow = false;
