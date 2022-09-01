@@ -1,29 +1,48 @@
 <template>
   <view class='playContent'>
-    <view class="back">
-      <image src="/static/act/playGroup/background.png" />
+    <view class="pageTopContainer">
+      <view class="status" :style="{paddingTop:app.statusBarHeight+'px',backgroundColor:`rgba(255,255,255,1)`}">
+      </view>
+      <view class="pageTop" ref="pageTop" id="pageTop" :style="{backgroundColor:`rgba(255,255,255,1)`}">
+        <u-icon name="arrow-left" color="#3c3c3c" size="20" @click="goBack">
+        </u-icon>
+        <view class="pageTitle">集球员组合</view>
+        <u-icon name="share-square" color="#3c3c3c" size="25" @click="goShare"></u-icon>
+      </view>
     </view>
-    <view class="rightTag">
-      <view class="rightTagItem" @click='pageJump("/pages/act/playGroup/rule")'>
-        <text>活动<br />规则</text>
-      </view>
-      <view class="rightTagItem rightTagItemTwo" @click='pageJump("/pages/act/playGroup/logList")'>
-        <text>参与<br />记录</text>
-      </view>
+    <!-- <view class="fakerBar" style="background: #fff;width: 750rpx;height:88rpx" :style="{paddingTop:app.statusBarHeight+'px'}">
 
+    </view> -->
+    <!-- <navigationShare navigatetoTitle="集球员组合" />
+        <view style="padding-top:88rpx">
+            <statusbar />
+        </view> -->
+    <view class="back" :style="{top:88+(app.statusBarHeight*2)+'rpx'}">
+      <image src="/static/act/playGroup/background.png" />
+      
     </view>
-    <view class="drawButtonContainer">
+    
+    <view class="drawButtonContainer" :style="{top:88+(app.statusBarHeight*2)+'rpx'}">
+      <view class="rightTag">
+        <view class="rightTagItem" @click='pageJump("/pages/act/playGroup/rule")'>
+          <text>活动<br />规则</text>
+        </view>
+        <view class="rightTagItem rightTagItemTwo" @click='pageJump("/pages/act/playGroup/logList")'>
+          <text>参与<br />记录</text>
+        </view>
+  
+      </view>
       <view class="drawButton" @click="$u.throttle(()=>{onClickDraw(1)},500)">抽1次</view>
       <view class="drawButton" @click="$u.throttle(()=>{onClickDraw(5)},500)">抽5次</view>
     </view>
-    <view class="drawMsgContainer">
+    <view class="drawMsgContainer" :style="{top:88+(app.statusBarHeight*2)+'rpx'}">
       <view class="drawMsg-left">
         抽奖次数:
         <text>{{myLotteryNum}}</text>次
       </view>
       <view class="drawMsg-right" @click='getTaskList(),taskShow=true'>免费获取></view>
     </view>
-    <view class="centerTitle">球员组合</view>
+    <view class="centerTitle" :style="{marginTop:88+40+(app.statusBarHeight*2)+'rpx'}">球员组合</view>
     <view class="collectContainer" v-for="(item,index) in groupList" :key='index'>
       <view class="collect-top">
         <view class="collect-msg">
@@ -116,6 +135,7 @@ import BaseNode from "../../../base/BaseNode.vue";
 import { parsePic } from "@/tools/util";
 @Component({})
 export default class ClassName extends BaseNode {
+  app:any=app
   operationShow: boolean = false;
   pedometerShow: boolean = false;
   taskShow: boolean = false;
@@ -211,7 +231,9 @@ export default class ClassName extends BaseNode {
       this.reqNewData(null, false);
     }
   }
-
+  goBack(){
+    uni.navigateBack({ delta: 1 })
+  }
   //   下拉刷新
   onPullDownRefresh() {
     this.getTaskList();
@@ -571,7 +593,52 @@ page {
     }
   }
 }
+.pageTopContainer {
+        position: fixed;
+        top: 0;
+        z-index: 200;
 
+        .pageTop {
+            background-color: rgba(255, 255, 255, 0);
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            padding: 0 36rpx;
+            justify-content: space-between;
+            width: 750rpx;
+            height: 88rpx;
+            /* transition: all 0.2s linear; */
+        }
+
+        .btn-back {
+
+            background: rgba(0, 0, 0, 0);
+            font-family: uniicons;
+            font-size: 46rpx;
+            font-weight: normal;
+            font-style: normal;
+            color: #3C3C3C;
+        }
+
+        .pageTitle {
+            font-size: 32rpx;
+            color: #3C3C3C;
+            position: absolute;
+            font-family: HYQiHei;
+            font-weight: bold;
+            left: 0;
+            right: 0;
+            margin: auto;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .rightIcon {
+            width: 40rpx;
+            height: 40rpx;
+            opacity: 0;
+        }
+    }
 .rightTag {
   position: absolute;
   right: 0rpx;
@@ -755,8 +822,8 @@ page {
       font-size: 33rpx;
     }
   }
-  .noneColorTop{
-    color:#757575;
+  .noneColorTop {
+    color: #757575;
   }
   .collect-coupon-bottom {
     margin-top: 2rpx;
