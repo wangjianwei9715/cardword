@@ -130,7 +130,7 @@ export default class HttpRequest {
 			}
 			if(url.indexOf("dataApi/") != -1){
 				config.url = url.substring(8);
-				if(app.dataApiDomain == '') return;
+				if(app.dataApiDomain == '' && !app.localTest) return;
 				if(!app.localTest) config.baseURL = app.dataApiDomain;
 			}
 			if(url.indexOf('funcApi/')!=-1){	
