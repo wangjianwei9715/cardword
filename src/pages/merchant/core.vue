@@ -2,7 +2,7 @@
     <view class='content'>
         <view class="pageTopContainer">
             <view class="status"
-                :style="{paddingTop:app.statusBarHeight+'px',backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
+                :style="{paddingTop:app.statusBarHeight*2+'rpx',backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
             </view>
             <view class="pageTop" ref="pageTop" id="pageTop"
                 :style="{backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
@@ -75,15 +75,15 @@
                     mode="aspectFill" />
             </swiper-item>
         </swiper>
-        
-        <u-sticky :offsetTop="0">
-            <view class="tagsContainer">
-                <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list"
-                    @click="onTagClick(item,index)">
-                    {{item.label}} <text>{{goodsMsg[item.valueKey]}}</text>
-                </view>
+        <view class="tagsContainer">
+            <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list"
+                @click="onTagClick(item,index)">
+                {{item.label}} <text>{{goodsMsg[item.valueKey]}}</text>
             </view>
-        </u-sticky>
+        </view>
+        <!-- <u-sticky :offsetTop="MAX_HEIGHT*2" v-if="MAX_HEIGHT">
+            
+        </u-sticky> -->
 
         <view class="goodsList">
             <goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
@@ -192,6 +192,16 @@
             return this.scrollTop / (this.MAX_HEIGHT * 2)
         }
         onLoad(query: any) {
+            this.$nextTick(() => {
+                const query: any = uni.createSelectorQuery().in(this)
+                query
+                    .select('#pageTop')
+                    .boundingClientRect((data: any) => {
+                        this.MAX_HEIGHT = data.height
+                        console.log(this.MAX_HEIGHT);
+                    })
+                    .exec();
+            })
             if (query.alias) this.alias = query.alias
             if (query.isMerchant) this.isMerchant = true
             if (this.isMerchant) this.reqMyMerchantData()
@@ -201,15 +211,7 @@
                 console.log("refreshMerchantInfo", res);
                 this.merchantInfo = res
             });
-            this.$nextTick(() => {
-                const query: any = uni.createSelectorQuery().in(this)
-                query
-                    .select('#pageTop')
-                    .boundingClientRect((data: any) => {
-                        this.MAX_HEIGHT = data.height
-                    })
-                    .exec();
-            })
+            
         }
 
         onShow() {
@@ -668,5 +670,6 @@
         width: 750rpx;
         background-color: #f5f7fb;
         padding-top: 20rpx;
+        /* height: 2000rpx; */
     }
 </style>

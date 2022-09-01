@@ -280,6 +280,11 @@ export default class PlatformManager {
 		});
 	}
 	setLaunchData(data:any,loginToken:any){
+		if(!data.funcApiDomain){
+			uni.setStorageSync('launchData',"")
+			this.appLuanch(uni.getStorageSync("token"))
+			return
+		}
 		app.service_url = data.service_url;
 		app.bussinessApiDomain = data.bussinessApiDomain;
 		app.dataApiDomain = data.dataApiDomain;

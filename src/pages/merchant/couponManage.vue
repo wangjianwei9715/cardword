@@ -131,7 +131,8 @@
         }
         reqNewData(cb?: any) {
             uni.showLoading({
-                title: ''
+                title: '',
+                mask:true
             })
             app.http.Get('me/shop/coupon/good/list', this.queryParams, (res: any) => {
                 this.shopCouponMoney = res.shopCouponMoney
