@@ -230,13 +230,13 @@ export default class PlatformManager {
 	postLaunch(loginToken:any,launchUrl:any,params:any,cb:Function){
 		let url = app.service_url != ''? app.service_url : this.lastCharacter(launchUrl[this.urlIndex]);
 		app.http.Post(url + "/api/app/launch", params, (res: any) => {
-			// console.log("post  /api/app/launch=", res);
+			console.log("post  /api/app/launch=", res);
 			app.service_url = url;
 			// bussinessApiDomain     主接口域名
 			// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
 			let bussinessApiDomain = this.lastCharacter(res.app.bussinessApiDomain);
 			let dataApiDomain = this.lastCharacter(res.app.dataApiDomain);
-			let funcApiDomain= this.lastCharacter(res.app.funcApiDomain) || ''
+			let funcApiDomain= this.lastCharacter(res.app.funcApiDomain)
 		
 			app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
 			app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
@@ -259,6 +259,7 @@ export default class PlatformManager {
 				bussinessApiDomain:app.bussinessApiDomain,
 				dataApiDomain:app.dataApiDomain,
 				update_url:app.update_url,
+				funcApiDomain:app.funcApiDomain,
 				time:Math.round(new Date().getTime()/1000)
 			});
 			if (loginToken) this.getAccess()
@@ -282,7 +283,7 @@ export default class PlatformManager {
 		app.service_url = data.service_url;
 		app.bussinessApiDomain = data.bussinessApiDomain;
 		app.dataApiDomain = data.dataApiDomain;
-		app.funcApiDomain=data.funcApiDomain || ''
+		app.funcApiDomain=data.funcApiDomain
 		app.update_url = data.update_url;
 		// #ifdef APP-PLUS
 		app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
