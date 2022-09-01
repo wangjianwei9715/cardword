@@ -139,6 +139,7 @@
 			this.currentPage = 1;
 			this.noMoreData = false;
 			this.teamDataList = [];
+			this.scrollId = ''
 			if(this.searchText == ''){
 				this.reqNewData() 
 			}else{
