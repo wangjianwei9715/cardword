@@ -188,8 +188,8 @@ export default class ClassName extends BaseNode {
   parsePic: any = parsePic;
   shareData: any = {
     shareUrl: `${this.shareUrl}`,
-    title: "集球员组合，兑海量上足券",
-    summary: "集球员组合，兑海量上足券",
+    title: "集球员组合，兑海量上组券",
+    summary: "集球员组合，兑海量上组券",
     thumb:
       "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/active/playGroup/0/1661928072908myo8o7ownl.jpg"
   };
@@ -341,7 +341,7 @@ export default class ClassName extends BaseNode {
         provider: "weixin",
         scene: "WXSceneSession",
         href: `${this.shareUrl}?helpCode=${helpCode}`,
-        title: "集球员组合,兑海量上足券",
+        title: "集球员组合,兑海量上组券",
         summary: "为我助力",
         imageUrl:
           "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/active/playGroup/0/1661928072908myo8o7ownl.jpg"
