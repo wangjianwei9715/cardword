@@ -70,14 +70,16 @@
         <image :src='item.icon' class='taskItem-icon' mode='widthFix' />
         <view class="taskItem-center">
           <view class="taskItem-name">{{item.name}}
-            <text v-if='item.upGroupPlan'>{{item.upGroupPlan}}</text>
+            <text v-if='item.lockGroupMoney'>{{item.lockGroupMoney}}</text>
           </view>
+          <!-- <view v-if="index==3">asdasdasd</view> -->
           <view class="taskItem-tips">
             <view class="tips-left">抽奖次数
               <text>+1</text>
             </view>
             <view class="tips-right">完成
               <text>{{item.getNum || 0}}</text>/{{item.dayGetNum || 0}}
+              <text v-if="index==3" style="color:#757575">{{item.upGroupPlan}}</text>
             </view>
           </view>
         </view>
