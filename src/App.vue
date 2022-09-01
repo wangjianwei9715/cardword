@@ -7,7 +7,7 @@
 	import {
 		app
 	} from "./app";
-	// import ZegoExpressEngine from "@/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressEngine";
+	import ZegoExpressEngine from "@/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressEngine";
 	import HttpRequest from "./net/HttpRequest";
 	import UpdateManager from "./manager/UpdateManager";
 	import {
@@ -34,7 +34,7 @@
 			liveCountDownV2,
 			getCountDownTime,
 			calculate,
-			// ZegoExpressEngine,
+			ZegoExpressEngine,
 			destroyServe: () => {
 				app.sever.isNetOK() && app.sever.close();
 				app.sever = new SocketServer();
