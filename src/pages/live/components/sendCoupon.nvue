@@ -447,12 +447,12 @@ export default {
 }
 
 .goodsTitle {
-  // max-width: 406rpx;
+  max-width: 406rpx;
   font-size: 25rpx;
   font-family: PingFang SC;
   font-weight: 400;
   color: #ffffff;
-  text-align: center;
+  text-align: left;
   lines: 2;
   text-overflow: ellipsis;
 }

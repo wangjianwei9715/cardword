@@ -437,7 +437,7 @@ export default {
             captureWidth: 750,
             captureHeight: 1326,
             encodeWidth: 750,
-            codecID:2,
+            codecID:1,
             encodeHeight: 1326,
             fps: 30
           },
@@ -447,7 +447,7 @@ export default {
             captureHeight: 640,
             encodeWidth: 480,
             encodeHeight: 640,
-            codecID:2,
+            codecID:1,
             fps: 20
           },
           {
@@ -456,7 +456,7 @@ export default {
             captureHeight: 320,
             encodeWidth: 240,
             encodeHeight: 320,
-            codecID:2,
+            codecID:1,
             fps: 15
           }
         ]
