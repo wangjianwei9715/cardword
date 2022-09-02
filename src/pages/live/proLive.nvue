@@ -175,7 +175,7 @@
             font-family: PingFang SC;
             font-weight: bold;
             color: #E6A44F;margin-top: 28rpx;">查看大家手气></text>
-          <view class="thanksButton" @click='sendTalk(`感谢${clickPack.sender}的红包!`)'>
+          <view class="thanksButton" @click='sendTalk(`感谢${isAnchor?liveData.mechantName:clickPack.sender}的红包!`,true)'>
             <image class="bg" style="width:303rpx;height:70rpx" src="/static/live/button.png" mode="scaleToFill" />
             <text style="font-size: 38rpx;
             font-family: PingFang SC;
@@ -1040,7 +1040,7 @@ export default {
     },
     //----------socket消息弹幕等-------
     //发送消息
-    sendTalk(content = "") {
+    sendTalk(content = "",isThanks=false) {
       if (!content) {
         uni.showToast({
           title: "发送的内容不能为空",
@@ -1058,6 +1058,7 @@ export default {
       uni.showLoading({
         title: "发送中"
       });
+      if(isThanks) this.hbPackShow=false
       this.UIClickFeedBack();
       // console.log(content);
       this.sendSocketMsg("RequestSendChatMessage", {
@@ -1160,8 +1161,8 @@ export default {
           this.clickPack.state = 2;
         })
         .catch(err => {
-          // console.log();
-          const errorMsgList = ["不存在的红包", "红包抢光了"];
+          console.log(err);
+          const errorMsgList = ["不存在的红包", "红包抢光了","您已抢过红包了"];
           if (errorMsgList.includes(err)) {
             this.clickPack.state = 99; //99代表领完
             this.clickPack.isOpen = true;
