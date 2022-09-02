@@ -447,7 +447,7 @@ export default {
 }
 
 .goodsTitle {
-  max-width: 406rpx;
+ width: 406rpx;
   font-size: 25rpx;
   font-family: PingFang SC;
   font-weight: 400;

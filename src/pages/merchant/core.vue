@@ -138,7 +138,8 @@
             icon: '/static/merchant/cuoka.png',
             name: '代搓卡',
             tipsText: '直播模式',
-            valueKey: ''
+            valueKey: '',
+            url:"/pages/anchor/index"
         }]
         goodsList: any = []
         goodsTotalPage: number = 0

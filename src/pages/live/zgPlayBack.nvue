@@ -40,7 +40,8 @@ export default {
       playBackData: {
         media_url: ""
       },
-      webViewUrl: app.liveWebView,
+      webViewUrl:app.playBackWebView,
+      // app.liveWebView,
       webView: null,
       showControls: true,
       show: false,
@@ -161,7 +162,8 @@ export default {
         `funcApi/brodcast/third/common/room/chatlist/${this.roomID}`,
         this.chartQuery,
         res => {
-          console.log(res);
+          console.log(this.chartQuery);
+          console.log('获取到的数据',res);
           let list = res.list.map(item => {
             item.senderAvatar = item.avatar;
             return item;
