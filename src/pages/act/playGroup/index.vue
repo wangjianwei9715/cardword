@@ -531,7 +531,10 @@ export default class ClassName extends BaseNode {
     });
   }
   reqNewData(cb?: any, refresh?: boolean) {
-    if (refresh) this.queryParams.pageIndex = 1;
+    if (refresh){
+      this.queryParams.pageIndex = 1;
+      
+    }
     app.http.Get(
       "activity/playerGroup/home/group/list",
       this.queryParams,
@@ -542,9 +545,14 @@ export default class ClassName extends BaseNode {
         let groupList: any = res.data.groupList;
         this.totalPage = res.totalPage;
         this.myLotteryNum = myLotteryNum;
-        this.queryParams.pageIndex == 1
+        if(this.queryParams.pageIndex==1){
+          this.groupList=[]
+        }
+        this.$nextTick(()=>{
+          this.queryParams.pageIndex == 1
           ? (this.groupList = groupList)
           : this.groupList.push(...groupList);
+        })
         cb && cb();
       }
     );
