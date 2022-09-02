@@ -19,7 +19,8 @@
                 <image :src="parsePic(decodeURIComponent(merchantInfo.logo))" mode="aspectFill" class="info-avatar" />
                 <view class="info-message">
                     <view class="info-name">{{merchantInfo.name}}</view>
-                    <view class="info-introduction">{{merchantInfo.region}} · 210拼成 · {{merchantInfo.fans}}粉丝</view>
+                    <view class="info-introduction">{{merchantInfo.region}} · {{merchantInfo.groupGoodNum}}拼成 ·
+                        {{merchantInfo.fans}}粉丝</view>
                 </view>
                 <view class="rightEdit flexCenter" v-if="isMerchant" @click="pageJump('/pages/merchant/info')">编辑资料
                 </view>
@@ -33,20 +34,21 @@
         </view>
         <view class="couponContainer uni-flex" v-if="!isMerchant">
             <view class="leftCoupon uni-flex">
-                <view class="leftCoupon-item" style="margin-left: 14rpx;">
+                <view class="leftCoupon-item" style="margin-left: 14rpx;" v-for="(item,index) in couponBrief"
+                    :key="index" :style="{marginLeft:index==0?`14rpx`:`22rpx`}">
+                    <view class="price"><text style="font-size: 25rpx;">￥</text>{{item.amount}}</view>
+                    <view class="couponRight">
+                        <view class="manj">{{item.minUseAmount==0?"无门槛券":`满${item.minUseAmount}元可用`}}</view>
+                        <view class="type">{{item.tp==1?'指定商品':"指定店铺"}}</view>
+                    </view>
+                </view>
+                <!-- <view class="leftCoupon-item" style="margin-left: 72rpx;">
                     <view class="price"><text style="font-size: 25rpx;">￥</text>50</view>
                     <view class="couponRight">
                         <view class="manj">满200元可用</view>
                         <view class="type">指定店铺</view>
                     </view>
-                </view>
-                <view class="leftCoupon-item" style="margin-left: 72rpx;">
-                    <view class="price"><text style="font-size: 25rpx;">￥</text>50</view>
-                    <view class="couponRight">
-                        <view class="manj">满200元可用</view>
-                        <view class="type">指定店铺</view>
-                    </view>
-                </view>
+                </view> -->
             </view>
             <view class="rightReceive flexCenter" @click="onClickGetMore">
                 领取<br>更多
@@ -54,7 +56,7 @@
             <!-- <view class="coupon-receive" @click="pageJump('/pages/merchant/couponManage')">领取更多</view> -->
         </view>
         <view class="ruleContainer" v-if="isMerchant">
-            <view class="ruleItem" v-for="(item,index) in ruleList" :key="index" @click="onClickRule(item)">
+            <view class="ruleItem" v-for="(item,index) in merchantRule" :key="index" @click="onClickRule(item)">
                 <view class="rule-left flexCenter">
                     <image class="rule-icon" :src="item.icon" mode="widthFix" />
                 </view>
@@ -69,7 +71,8 @@
             <view class="more-right" @click="pageJump('/pages/merchant/niceTime?alias='+alias)">更多</view>
         </view>
         <swiper indicator-dots indicator-active-color="#333333" indicator-color="#CAC6C6" class="niceTimeContainer">
-            <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index">
+            <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index"
+                style="display: flex;flex-wrap: nowrap;">
                 <muqian-lazyLoad v-for="(sItem,sNndex) in item" class="niceTimeImage"
                     :style="{marginRight:index==2?0:'17rpx'}" :src="parsePic(decodeURIComponent(sItem.pic))"
                     mode="aspectFill" />
@@ -93,6 +96,7 @@
             :showDrawer.sync='receiveCouponShow'>
         </bottomDrawer>
         <couponGetDrawer :couponList="couponList" @lower="lowerCoupon" :showDrawer.sync='couponGetDrawerShow' />
+        <share :operationShow.sync='operationShow' :shareData="shareData" />
     </view>
 </template>
 
@@ -110,36 +114,50 @@
         app: any = app
         alias: string = '';
         isMerchant: boolean = false
+        operationShow: boolean = false
+        shareData: any = {
+            shareUrl: `https://www.ka-world.com/share/${app.localTest ? "testH5" : "h5"}/#/pages/merchant/index`,
+            title: "商家名称",
+            summary: "商家简介",
+            thumb: "商家logo"
+        };
+        couponBrief: any = []
         ruleList: any = [{
             icon: '/static/merchant/live.png',
             name: '我的直播',
             tipsText: '待直播',
             url: '/pages/live/myLive',
-            valueKey: ''
+            valueKey: '',
+            bit: 2,
+
         },
-        // {
-        //     icon: '/static/merchant/card.png',
-        //     name: '拆卡报告',
-        //     tipsText: '待制作',
-        //     valueKey: ''
-        // }, {
-        //     icon: '/static/merchant/wul.png',
-        //     name: '我的发货',
-        //     tipsText: '待发货',
-        //     valueKey: ''
-        // },
+        {
+            icon: '/static/merchant/card.png',
+            name: '拆卡报告',
+            tipsText: '待制作',
+            valueKey: '',
+            bit: 8
+        }, {
+            icon: '/static/merchant/wul.png',
+            name: '我的发货',
+            tipsText: '待发货',
+            valueKey: '',
+            bit: 16
+        },
         {
             icon: '/static/merchant/coupon.png',
             name: '优惠券管理',
             tipsText: '查看与创建',
             valueKey: '',
-            url: '/pages/merchant/couponManage'
+            url: '/pages/merchant/couponManage',
+            bit: 1
         }, {
             icon: '/static/merchant/cuoka.png',
             name: '代搓卡',
             tipsText: '直播模式',
             valueKey: '',
-            url:"/pages/anchor/index"
+            url: "/pages/anchor/index",
+            bit: 4
         }]
         goodsList: any = []
         goodsTotalPage: number = 0
@@ -192,6 +210,14 @@
         private get scrollTopPercent() {
             return this.scrollTop / (this.MAX_HEIGHT * 2)
         }
+        private get merchantRule() {
+            if (!this.merchantInfo.bit) return []
+            return this.ruleList.filter((item: any) => {
+                const bitNum = this.merchantInfo.bit & item.bit
+                const val = item.bit ? item.bit : 0
+                return bitNum == val
+            })
+        }
         onLoad(query: any) {
             this.$nextTick(() => {
                 const query: any = uni.createSelectorQuery().in(this)
@@ -212,7 +238,7 @@
                 console.log("refreshMerchantInfo", res);
                 this.merchantInfo = res
             });
-            
+
         }
 
         onShow() {
@@ -237,7 +263,11 @@
             uni.navigateBack({ delta: 1 })
         }
         onClickShare() {
-
+            this.shareData.shareUrl += `?alias=${this.alias}`
+            this.shareData.title = this.merchantInfo.name
+            this.shareData.summary = this.merchantInfo.brief_intr
+            this.shareData.thumb = this.parsePic(decodeURIComponent(this.merchantInfo.logo))
+            this.operationShow = true
         }
         onClickRule(item: any) {
             if (!item.url) {
@@ -286,16 +316,17 @@
         }
         reqMyMerchantData() {
             app.http.Get("dataApi/me/shop/home", {}, (res: any) => {
-                console.log(res);
                 this.assignNiceTimeList(res.data.rarity_card || [])
                 this.merchantInfo = res.data
+
             })
         }
         reqMerchantData() {
             app.http.Get(`dataApi/merchant/newII/detail/` + this.alias, {}, (res: any) => {
                 this.assignNiceTimeList(res.data.rarity_card || [])
                 this.merchantInfo = res.data
-                console.log(res);
+                this.couponBrief = res.data.couponBrief
+
             })
         }
         lowerCoupon() {
@@ -429,6 +460,8 @@
         }
 
         .leftCoupon-item {
+            width: 490rpx;
+            /* background-color: red; */
             display: flex;
             align-items: center;
         }
@@ -524,7 +557,8 @@
         font-weight: 400;
         color: #7C7C7C;
         margin-top: 17rpx;
-        letter-spacing: 2rpx;
+        letter-spacing: 0rpx;
+        line-height: 24rpx;
     }
 
     .ruleContainer {
@@ -616,14 +650,17 @@
         padding: 22rpx 24rpx 0 24rpx;
 
         .niceTimeItem {
+            width: 100%;
             dispaly: flex;
-            flex-wrap: nowrap;
+            /* flex-wrap: nowrap; */
         }
 
         .niceTimeImage {
             width: 204rpx;
             height: 265rpx;
-            background: #E6DDDD;
+            overflow: hidden;
+            display: block;
+            /* background: #E6DDDD; */
         }
     }
 

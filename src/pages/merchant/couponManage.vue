@@ -84,7 +84,7 @@
         }
         queryParams: any = {
             pageIndex: 1,
-            pageSize: 20,
+            pageSize: 10,
             tp: 1//1 可创建优惠券商品，2 拼成商品
         }
         selectItem: any = {}

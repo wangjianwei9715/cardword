@@ -27,7 +27,8 @@
                     <view class="infoItem-rightIcon"></view>
                 </view>
             </pick-regions>
-            <view class="infoItem uni-flex" @click="pageJump(`/pages/merchant/introduce?brief_intr=${merchantInfo.brief_intr}`)">
+            <view class="infoItem uni-flex"
+                @click="pageJump(`/pages/merchant/introduce?brief_intr=${merchantInfo.brief_intr}`)">
                 <view class="infoItem-name">
                     <text>简</text>
                     <text>介</text>
@@ -50,7 +51,7 @@
     import ossUtils from "../../tools/ossUtils";
     @Component({})
     export default class ClassName extends BaseNode {
-        app:any=app
+        app: any = app
         parsePic: any = parsePic;
         merchantInfo: any = {};
         menuShow: boolean = false
@@ -62,7 +63,7 @@
         private get scrollTopPercent() {
             return this.scrollTop / (this.MAX_HEIGHT * 2)
         }
-        onLoad(){
+        onLoad() {
             this.$nextTick(() => {
                 const query: any = uni.createSelectorQuery().in(this)
                 query
@@ -143,7 +144,7 @@
                 brief_intr,
                 back_img: changeBack ? this.saveBack : back_img
             }, (res: any) => {
-                
+
                 if (changeBack) {
                     this.merchantInfo.back_img = this.saveBack
                     this.saveBack = ""
@@ -173,6 +174,7 @@
     page {
         background: #ffffff;
     }
+
     .pageTopContainer {
         position: fixed;
         top: 0;
@@ -219,6 +221,7 @@
             opacity: 0;
         }
     }
+
     .merchantBanner {
         width: 750rpx;
         height: 353rpx;
@@ -265,6 +268,9 @@
         font-family: PingFang SC;
         font-weight: 500;
         color: #333333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         flex: 1;
     }
 

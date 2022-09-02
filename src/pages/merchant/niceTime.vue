@@ -16,11 +16,11 @@
                 <view class="niceTime-bottom uni-flex">
                     <muqian-lazyLoad class="niceTime-avatar" :src="item.avatar?parsePic(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFill" />
                     <view class="niceTime-userName onLine">{{item.userName}}</view>
-                    <view class="niceTime-time">{{getStrDayNumber(item.createTime)}}</view>
+                    <view class="niceTime-time">{{getStrDayNumber(item.createTime*1000)}}</view>
                 </view>
             </view>
         </view>
-        <empty v-if="!niceTimeList.lenght"/>
+        <empty v-if="!niceTimeList.length"/>
     </view>
 </template>
 
@@ -122,7 +122,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        margin-top: 13rpx;
+        
     }
 
     .niceTimeItem-dot {

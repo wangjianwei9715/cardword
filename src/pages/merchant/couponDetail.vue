@@ -42,7 +42,7 @@
                     mode="scaleToFill" />
             </view>
         </view>
-        <merchantCoupon :showDrawer.sync="createCouponShow" :goodCode='goodCode' ref='merchantCoupon' />
+        <merchantCoupon :showDrawer.sync="createCouponShow" @success="couponCreateSuccess" :goodCode='goodCode' ref='merchantCoupon' />
         <empty v-if='!couponList.length'/>
         <statusbar />
     </view>
@@ -96,6 +96,11 @@
             this.reqNewData(() => {
                 uni.stopPullDownRefresh()
             })
+        }
+        couponCreateSuccess(){
+            this.queryParams.pageIndex=1
+            this.reqNewData()
+            this.clickTagIndex=-1
         }
         onClickRightMenu(item: any, index: number) {
             if (this.clickTagIndex === index) {
