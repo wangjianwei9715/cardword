@@ -179,6 +179,12 @@ export default class PlatformManager {
 			// 获取分享服务列表失败
 		});
 	}
+	//跳转商家中心
+	goMerchantPage(alias:string,isMerchant?:boolean){
+		uni.navigateTo({
+			url:`/pages/merchant/core?alias=${alias}${isMerchant?'&isMerchant=true':''}`
+		})
+	}
 	requestSubscribeMessage(id: string, callback?: Function) {
 		// 调起订阅消息
 		//用户发生点击行为或者发起支付回调后，才可以调起订阅消息界面
