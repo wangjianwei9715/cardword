@@ -814,12 +814,19 @@ export default {
       });
     },
     showPackAction() {
+      const clickPack=this.showHbList[0]
       this.clickPack = {
-        ...this.showHbList[0],
+        ...clickPack,
         isOpen: false,
         grab: false,
         preview: false
       };
+      if(clickPack.myGrabPoint){
+        this.clickPack.grab=true
+        this.clickPack.isOpen=true
+        this.clickPack.state=2
+      }
+      // myGrabPoint
       this.hbPackShow = true;
     },
     getMerchant() {
