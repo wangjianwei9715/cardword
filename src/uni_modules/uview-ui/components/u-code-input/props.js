@@ -60,6 +60,10 @@ export default {
             type: [String, Number],
             default: uni.$u.props.codeInput.size
         },
+        height:{
+            type: [String, Number],
+            default: uni.$u.props.codeInput.height
+        },
         // 是否隐藏原生键盘，如果想用自定义键盘的话，需设置此参数为true
         disabledKeyboard: {
             type: Boolean,

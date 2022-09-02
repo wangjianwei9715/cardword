@@ -23,9 +23,7 @@
 				v-if="mode === 'line'"
 				:style="[lineStyle]"
 			></view>
-			<!-- #ifndef APP-PLUS -->
 			<view v-if="isFocus && codeArray.length === index" :style="{backgroundColor: color}" class="u-code-input__item__cursor"></view>
-			<!-- #endif -->
 		</view>
 		<input
 			:disabled="disabledKeyboard"
@@ -61,7 +59,8 @@
 	 * @property {Boolean}			bold				字体和输入横线是否加粗 （默认 false ）
 	 * @property {String}			color				字体颜色 （默认 '#606266' ）
 	 * @property {String | Number}	fontSize			字体大小，单位px （默认 18 ）
-	 * @property {String | Number}	size				输入框的大小，宽等于高 （默认 35 ）
+	 * @property {String | Number}	size				输入框的宽 （默认 35 ）
+	 * @property {String | Number}	height				输入框的高 （默认 35 ）
 	 * @property {Boolean}			disabledKeyboard	是否隐藏原生键盘，如果想用自定义键盘的话，需设置此参数为true （默认 false ）
 	 * @property {String}			borderColor			边框和线条颜色 （默认 '#c9cacc' ）
 	 * @property {Boolean}			disabledDot			是否禁止输入"."符号 （默认 true ）
@@ -99,32 +98,18 @@
 					const addUnit = uni.$u.addUnit
 					const style = {
 						width: addUnit(this.size),
-						height: addUnit(this.size)
+						height: addUnit(this.height)
 					}
 					// 盒子模式下，需要额外进行处理
 					if (this.mode === 'box') {
 						// 设置盒子的边框，如果是细边框，则设置为0.5px宽度
 						style.border = `${this.hairline ? 0.5 : 1}px solid ${this.borderColor}`
 						// 如果盒子间距为0的话
-						if (uni.$u.getPx(this.space) === 0) {
-							// 给第一和最后一个盒子设置圆角
-							if (index === 0) {
-								style.borderTopLeftRadius = '3px'
-								style.borderBottomLeftRadius = '3px'
-							}
-							if (index === this.codeLength.length - 1) {
-								style.borderTopRightRadius = '3px'
-								style.borderBottomRightRadius = '3px'
-							}
-							// 最后一个盒子的右边框需要保留
-							if (index !== this.codeLength.length - 1) {
-								style.borderRight = 'none'
-							}
-						}
+						style.borderRadius = '10rpx'
 					}
 					if (index !== this.codeLength.length - 1) {
 						// 设置验证码字符之间的距离，通过margin-right设置，最后一个字符，无需右边框
-						style.marginRight = addUnit(this.space)
+						style.marginRight = this.space
 					} else {
 						// 最后一个盒子的有边框需要保留
 						style.marginRight = 0
@@ -209,7 +194,6 @@
 				width: 40px;
 				background-color: $u-content-color;
 			}
-			/* #ifndef APP-PLUS */
 			&__cursor {
 				position: absolute;
 				top: 50%;
@@ -219,7 +203,6 @@
 				height: $u-code-input-cursor-height;
 				animation: $u-code-input-cursor-animation-duration u-cursor-flicker infinite;
 			}
-			/* #endif */
 			
 		}
 
@@ -235,7 +218,6 @@
 		}
 	}
 	
-	/* #ifndef APP-PLUS */
 	@keyframes u-cursor-flicker {
 		0% {
 		    opacity: 0;
@@ -247,6 +229,5 @@
 		    opacity: 0;
 		}
 	}
-	/* #endif */
 
 </style>
