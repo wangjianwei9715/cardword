@@ -314,6 +314,7 @@ export default class ClassName extends BaseNode {
     const endColor: any = colorArr[1];
     return `
     background: linear-gradient(to right, ${firstColor}, ${endColor});
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;`;
   }
@@ -541,17 +542,20 @@ export default class ClassName extends BaseNode {
       (res: any) => {
         // uni.hideLoading();
         // const { myLotteryNum, groupList } = res.data;
+        if(this.queryParams.pageIndex==1){
+          this.groupList=[]
+        }
         const myLotteryNum: any = res.data.myLotteryNum;
         let groupList: any = res.data.groupList;
         this.totalPage = res.totalPage;
         this.myLotteryNum = myLotteryNum;
-        if(this.queryParams.pageIndex==1){
-          this.groupList=[]
-        }
+        
         this.$nextTick(()=>{
-          this.queryParams.pageIndex == 1
+          setTimeout(()=>{
+            this.queryParams.pageIndex == 1
           ? (this.groupList = groupList)
           : this.groupList.push(...groupList);
+          },50)
         })
         cb && cb();
       }
