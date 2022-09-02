@@ -14,12 +14,7 @@
 
 			<view class="box-index">
 				<view class="box-index-id">请输入收方ID</view>
-				<xskCodeInput 
-					:value.sync="userId" 
-					:copyId="copyId"
-					:length="9"
-					@confirm="inputConfirm">
-				</xskCodeInput>
+				<u-code-input v-model="userId" :maxlength="9" @finish="inputConfirm" size="56rpx" height="82rpx" space="15rpx" borderColor="#767676" fontSize="48rpx" color="#333333" :bold="true"></u-code-input>
 				<view class="box-index-info">
 					<muqian-lazyLoad class="box-index-avatar" :src="userData.avatar" :borderRadius="'50%'"/> {{userData.userName}}
 				</view>
@@ -52,7 +47,6 @@
 	export default class ClassName extends BaseNode {
 		showRulePopup = false;
 		userId = '';
-		copyId = '';
 		orderData:any = {};
 		tipsCurrent = true;
 		userData:any = {
@@ -84,7 +78,6 @@
 					content: '是否查询此用户ID：'+key,
 					success: (res)=>{
 						if (res.confirm) {
-							this.copyId = key[0];
 							this.userId = key[0]
 							uni.setClipboardData({
 								data: '',
