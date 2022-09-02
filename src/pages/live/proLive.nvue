@@ -25,8 +25,8 @@
     <web-view class='webView' ref='webView' :webview-styles="webviewStyles" @onPostMessage="handleMessage" :style="{height:(hasNotchInScreen&&deviceInfo.platform=='ios')?iosHeight:deviceInfo.screenHeight}" :src="webViewUrl" />
     <view class="maskTips" :class="{none:!showMask}" @click='informH5Action("closeAllPop")'>
       <text class="liveTitle">{{liveData.title}}</text>
-      <text class="liveTips">{{textTipsMap[String(liveData.state)]}}</text>
-      <text class="liveCountDown" v-if="liveData.state==0">{{maskCountDownTips}}</text>
+      <text class="liveTips">{{maskCountDownTips!=''?"拆卡倒计时":textTipsMap[String(liveData.state)]}}</text>
+      <text class="liveCountDown" v-if="maskCountDownTips!=''&&typeof liveData.state!='undefined'">{{maskCountDownTips}}</text>
       <text class="playStart" v-if="isAnchor&&!finishLive" @click="startPreview">开始直播</text>
     </view>
 
@@ -617,6 +617,7 @@ export default {
     },
     maskCountDownTips() {
       const { startAt, state } = this.liveData;
+      if(this.nowTimeStamp>startAt) return ""
       return this.liveCountDownV2(this.nowTimeStamp, startAt, false);
     },
     iosHeight() {
@@ -972,6 +973,10 @@ export default {
       if (app.sever && app.sever.isNetOK()) {
         this.sendSocketMsg("HeartBeat", {
           time: new Date().getTime()
+        }).then(res=>{
+          console.log('发送成功礼物');
+        }).catch(err=>{
+          console.log('礼物发送失败,失败原因',err);
         });
       }
     },
@@ -2170,6 +2175,7 @@ export default {
   right: 0;
   background-color: rgba(0, 0, 0, 0.4);
   align-items: center;
+
 }
 
 .hbPack {
