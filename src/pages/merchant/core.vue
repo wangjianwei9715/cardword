@@ -25,7 +25,7 @@
                 <view class="rightEdit flexCenter" v-if="isMerchant" @click="pageJump('/pages/merchant/info')">编辑资料
                 </view>
                 <followButton :follow="merchantInfo.followed" :width="127" v-else
-                    @handleSuccess="($event)=>{merchantInfo.followed=$event.follow}" :height="52" :fontSize="29"
+                    @handleSuccess="($event)=>{merchantInfo.followed=$event.follow,merchantInfo.fans=$event.fans}" :height="52" :fontSize="29"
                     :newMerchantPage="true" :followID="alias"></followButton>
                 <!-- <view class="followBtton flexCenter" :class="{isFollo:merchantInfo.followed}" v-if="!isMerchant" @click="pageJump('/pages/merchant/info')">关注
                 </view> -->
