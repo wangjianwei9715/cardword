@@ -91,7 +91,7 @@
     <view class="drawCardMask" v-if='maskShow'></view>
     <view class="drawCard" v-if='drawShow'>
       <view class='transitionAll transitionDelay opacity0' :class="{opacity1:drawCard.index==drawCard.list.length-1}">
-        <view class="congratulations">恭喜获得</view>
+        <view class="congratulations" :style="{marginTop: (160+88+app.statusBarHeight*2)+'rpx'}">恭喜获得</view>
         <view class="teamList">{{drawAllName}}</view>
       </view>
       <template v-if="drawType==5">
@@ -1090,7 +1090,7 @@ page {
 .congratulations {
   font-size: 67rpx;
   font-family: YouSheBiaoTiHei;
-  margin-top: 160rpx;
+  
   font-weight: 400;
   color: #ffffff;
   width: 100%;
