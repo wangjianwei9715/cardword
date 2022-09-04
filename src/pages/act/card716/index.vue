@@ -168,7 +168,7 @@
 		};
 		inviteShow = false;
 		shareData:any = {
-			shareUrl:'https://www.ka-world.com/share/h5/index.html#/pages/act/card716',  
+			shareUrl:'share/h5/index.html#/pages/act/card716',  
 			title:'卡展狂欢',      
 			summary:'卡展狂欢，海量福利产品！可抽取美娜签名照、pz原盒、优惠券等奖品！',    
 			thumb:'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/wxShare/20220712155054.jpg'       

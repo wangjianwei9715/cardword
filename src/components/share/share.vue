@@ -68,7 +68,7 @@
 				//@ts-ignore
 				scene: scene,
 				type: 0,
-				href: this.shareData.shareUrl,
+				href: `http://share.ka-world.com/${this.shareData.shareUrl}`,
 				title: this.shareData.title,
 				summary: this.shareData.summary,
 				imageUrl: this.shareData.thumb,

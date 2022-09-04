@@ -147,8 +147,8 @@ export default class ClassName extends BaseNode {
   myLotteryNum: any = 0;
   platform: string = app.platform.systemInfo.platform;
   shareUrl: string = app.localTest
-    ? "https://www.ka-world.com/share/testH5/#/pages/act/playGroup"
-    : "https://www.ka-world.com/share/h5/#/pages/act/playGroup";
+    ? "http://share.ka-world.com/share/testH5/#/pages/act/playGroup"
+    : "http://share.ka-world.com/share/h5/#/pages/act/playGroup";
   selectItem: any = {
     needExchangeNum: 1,
     exchangeNum: 3

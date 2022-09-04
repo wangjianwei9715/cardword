@@ -634,7 +634,7 @@
 			if (!this.operationShow) {
 				if (this.shareData.shareUrl == '') {
 					this.shareData = {
-						shareUrl: `https://www.ka-world.com/share/h5/#/pages/goods/goods_details?id=${this.goodCode}`,
+						shareUrl: `share/h5/#/pages/goods/goods_details?id=${this.goodCode}`,
 						title: this.goodsData.title,
 						summary: this.goodsData.title,
 						thumb: this.goodsData.pic.thumb||this.goodsImg[0]
