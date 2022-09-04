@@ -147,8 +147,8 @@ export default class ClassName extends BaseNode {
   myLotteryNum: any = 0;
   platform: string = app.platform.systemInfo.platform;
   shareUrl: string = app.localTest
-    ? "http://share.ka-world.com/share/testH5/#/pages/act/playGroup"
-    : "http://share.ka-world.com/share/h5/#/pages/act/playGroup";
+    ? "share/testH5/#/pages/act/playGroup"
+    : "share/h5/#/pages/act/playGroup";
   selectItem: any = {
     needExchangeNum: 1,
     exchangeNum: 3
@@ -343,7 +343,7 @@ export default class ClassName extends BaseNode {
       uni.share({
         provider: "weixin",
         scene: "WXSceneSession",
-        href: `${this.shareUrl}?helpCode=${helpCode}`,
+        href: `http://share.ka-world.com/${this.shareUrl}?helpCode=${helpCode}`,
         title: "集球员组合,兑海量上组券",
         summary: "为我助力",
         imageUrl:
