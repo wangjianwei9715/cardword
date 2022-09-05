@@ -1,7 +1,7 @@
 <template>
   <view class="full">
     <video :src="decodeURIComponent(playBackData.media_url)" @click='showControls=!showControls' :style='{height:screenHeight+"px"}' class='video' id='video' ref='video' show-play-btn='false' object-fit='cover' controls='false' @timeupdate='timeupdate' autoplay='true' @play='onPlay=true' @ended='onPlay=false' @pause='onPlay=false'></video>
-    <view class='merchant' :style="{top:56+statusBarHeight+'rpx'}">
+    <view class='merchant' :style="{top:56+statusBarHeight+'rpx'}" @click='toMerchant'>
       <image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill' />
       <view class='merchant_name'>
         <text class='merchant_name_text'>{{merchantMessage.name}}</text>
@@ -216,6 +216,9 @@ export default {
         console.log(res);
         this.merchantMessage = res.data;
       });
+    },
+    toMerchant(){
+      app.platform.goMerchantPage(this.merchantMessage.alias)
     },
     timeupdate(event) {
       const { duration, currentTime } = event.detail;

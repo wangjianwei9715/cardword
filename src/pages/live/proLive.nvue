@@ -807,11 +807,12 @@ export default {
       return this.getCountDownTime(time);
     },
     toMerchant() {
-      uni.navigateTo({
-        url:
-          "/pages/userinfo/merchant_shopsV2?alias=" +
-          this.liveData.merchantAlias
-      });
+      app.platform.goMerchantPage(this.liveData.merchantAlias,this.isAnchor)
+      // uni.navigateTo({
+      //   url:
+      //     "/pages/userinfo/merchant_shopsV2?alias=" +
+      //     this.liveData.merchantAlias
+      // });
     },
     showPackAction() {
       const clickPack=this.showHbList[0]
