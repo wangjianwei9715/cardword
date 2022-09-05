@@ -21,9 +21,9 @@ export module app{
 	export let funcApiDomain='';
     export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
     // export let launch_url = ['https://service.s777.ka-world.com']
-    export let H5Url='http://share.ka-world.com'
-    export let goodShareOrigin=""
-    export let activityShareOrigin=""
+    export let H5Url='http://share01.ka-world.com'
+    // export let goodShareOrigin=""
+    // export let activityShareOrigin=""
     export let liveWebView='https://www.ka-world.com/live/#/pages/liveStreaming/tools'
     // export let liveWebView='https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/tools'
     export let playBackWebView='https://www.ka-world.com/live/#/pages/liveStreaming/chart'

@@ -45,7 +45,7 @@
 			
 		}
 		setClipboardData(){
-			const href=`${this.isGoodsShare(this.shareData.shareUrl)?app.goodShareOrigin:app.activityShareOrigin}/${this.shareData.shareUrl}`
+			const href=`${app.H5Url}/${this.shareData.shareUrl}`
 			uni.setClipboardData({
 				data:href,
 				showToast:false,
@@ -65,7 +65,7 @@
 				uni.hideLoading();
 				this.$emit('delyCallBack');
 			}, 2000);
-			const href=`${this.isGoodsShare(this.shareData.shareUrl)?app.goodShareOrigin:app.activityShareOrigin}/${this.shareData.shareUrl}`
+			const href=`${app.H5Url}/${this.shareData.shareUrl}`
 			uni.share({
 				provider: "weixin",
 				//@ts-ignore
@@ -83,15 +83,15 @@
 				}
 			});
 		}
-		isGoodsShare(url:string){
-			const goodsShareUrl=['/pages/goods/goods_details','/pages/calendar/goods_details']
-			let bol:boolean=false
-			const list=goodsShareUrl.filter((item:any)=>{
-				return url.indexOf(item)!=-1
-			})
-			if(list && list.length) bol=true
-			return bol
-		}
+		// isGoodsShare(url:string){
+		// 	const goodsShareUrl=['/pages/goods/goods_details','/pages/calendar/goods_details']
+		// 	let bol:boolean=false
+		// 	const list=goodsShareUrl.filter((item:any)=>{
+		// 		return url.indexOf(item)!=-1
+		// 	})
+		// 	if(list && list.length) bol=true
+		// 	return bol
+		// }
 		operationStart(scene:any){
 			if(scene==''){
 				this.setClipboardData()

@@ -7,7 +7,7 @@
         <u-icon name="arrow-left" color="#3c3c3c" size="20" @click="goBack">
         </u-icon>
         <view class="pageTitle">集球员组合</view>
-        <u-icon name="share-square" color="#3c3c3c" size="25" @click="goShare"></u-icon>
+        <!-- <u-icon name="share-square" color="#3c3c3c" size="25" @click="goShare"></u-icon> -->
       </view>
     </view>
     <!-- <view class="fakerBar" style="background: #fff;width: 750rpx;height:88rpx" :style="{paddingTop:app.statusBarHeight+'px'}">
@@ -83,7 +83,7 @@
             </view>
           </view>
         </view>
-        <view class="taskItem-right" :class="{taskItemGray:item.isFinish}" @click="onClickTask(item)">
+        <view class="taskItem-right" :class="{taskItemGray:item.isFinish}" @click="onClickTask(item,index)">
           {{item.buttonText}}</view>
       </view>
     </bottomDrawer>
@@ -340,11 +340,10 @@ export default class ClassName extends BaseNode {
     app.http.Post("activity/playerGroup/share/help", {}, (res: any) => {
       const helpCode = res.helpCode;
       uni.hideLoading();
-      console.log(app.activityShareOrigin);
       uni.share({
         provider: "weixin",
         scene: "WXSceneSession",
-        href: `${app.activityShareOrigin}/${this.shareUrl}?helpCode=${helpCode}`,
+        href: `${app.H5Url}/${this.shareUrl}?helpCode=${helpCode}`,
         title: "集球员组合,兑海量上组券",
         summary: "为我助力",
         imageUrl:
@@ -469,13 +468,20 @@ export default class ClassName extends BaseNode {
       }
     );
   }
-  onClickTask(task: any) {
+  onClickTask(task: any,index:number) {
     if (task.isFinish) {
       uni.showToast({
         title: "今日完成次数已上限",
         icon: "none"
       });
       return;
+    }
+    if(index==0 || index==1){
+      uni.showToast({
+        title:'任务维护中',
+        icon:'none'
+      })
+      return
     }
     if (task.action) {
       const _this: any = this;
