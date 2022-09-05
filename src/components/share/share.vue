@@ -45,6 +45,13 @@
 			
 		}
 		setClipboardData(){
+			if(!this.canShare(this.shareData.shareUrl)){
+				uni.showToast({
+					title:'维护中',
+					icon:'none'
+				})
+				return
+			}
 			const href=`${app.H5Url}/${this.shareData.shareUrl}`
 			uni.setClipboardData({
 				data:href,
@@ -61,6 +68,13 @@
 			uni.showLoading({
 				title: '加载中'
 			});
+			if(!this.canShare(this.shareData.shareUrl)){
+				uni.showToast({
+					title:'分享维护中',
+					icon:'none'
+				})
+				return
+			}
 			setTimeout(()=> {
 				uni.hideLoading();
 				this.$emit('delyCallBack');
@@ -82,6 +96,15 @@
 					console.log("fail:" + JSON.stringify(err));
 				}
 			});
+		}
+		canShare(url:string){
+			const goodsShareUrl=['/pages/goods/goods_details','/pages/calendar/goods_details']
+			let bol:boolean=false
+			const list=goodsShareUrl.filter((item:any)=>{
+				return url.indexOf(item)!=-1
+			})
+			if(list && list.length) bol=true
+			return bol
 		}
 		// isGoodsShare(url:string){
 		// 	const goodsShareUrl=['/pages/goods/goods_details','/pages/calendar/goods_details']

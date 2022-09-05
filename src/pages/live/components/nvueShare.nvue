@@ -59,7 +59,23 @@ export default {
     onClickOperaCancel() {
       this.$emit("update:visible", false);
     },
+    canShare(url){
+			const goodsShareUrl=['/pages/goods/goods_details','/pages/calendar/goods_details']
+			let bol=false
+			const list=goodsShareUrl.filter((item)=>{
+				return url.indexOf(item)!=-1
+			})
+			if(list && list.length) bol=true
+			return bol
+		},
     setClipboardData() {
+      if(!this.canShare(this.shareData.shareUrl)){
+				uni.showToast({
+					title:'分享维护中',
+					icon:'none'
+				})
+				return
+			}
       uni.setClipboardData({
         data: this.shareData.shareUrl,
         showToast: false,
@@ -75,6 +91,13 @@ export default {
       uni.showLoading({
         title: "加载中"
       });
+      if(!this.canShare(this.shareData.shareUrl)){
+				uni.showToast({
+					title:'分享维护中',
+					icon:'none'
+				})
+				return
+			}
       setTimeout(function() {
         uni.hideLoading();
       }, 2000);
