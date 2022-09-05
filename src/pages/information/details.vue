@@ -83,7 +83,7 @@
 			if(!this.operationShow){
 				if(this.shareData.shareUrl==''){
 					this.shareData = {
-						shareUrl:"https://www.ka-world.com/share/h5/index.html#/pages/information/index?code="+this.code,  
+						shareUrl:"share/h5/index.html#/pages/information/index?code="+this.code,  
 						title:this.articleData.title,      
 						summary:this.articleData.title,    
 						thumb:decodeURIComponent(this.cover)

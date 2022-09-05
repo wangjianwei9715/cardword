@@ -52,7 +52,7 @@
 			if (!this.operationShow) {
 				if (this.shareData.shareUrl == '') {
 					this.shareData = {
-						shareUrl: "https://www.ka-world.com/share/h5/#/pages/act/mallDiscount",
+						shareUrl: "share/h5/#/pages/act/mallDiscount",
 						title:'精英收藏卡',
 						summary:'精英收藏卡',
 						thumb: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.07.01/template/0/16566434613160af8woxid.png'

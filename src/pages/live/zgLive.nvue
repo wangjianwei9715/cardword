@@ -898,8 +898,8 @@ this.viewShow = false
 					title: "拆卡进行中！",
 					summary: '拆卡进行中！',
 					scene: "WXSceneSession",
-					href: 'https://www.ka-world.com/share/h5/#/pages/live/liveShare?roomID=' + this.loginRoomData
-						.roomID,
+					href: `${app.H5Url}/share/h5/#/pages/live/liveShare?roomID=${this.loginRoomData
+						.roomID}`,
 					success: (res) => { },
 					fail: (err) => {
 						console.log("失败原因=>", err);

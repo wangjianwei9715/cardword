@@ -116,7 +116,7 @@
         isMerchant: boolean = false
         operationShow: boolean = false
         shareData: any = {
-            shareUrl: `https://www.ka-world.com/share/${app.localTest ? "testH5" : "h5"}/#/pages/merchant/index`,
+            shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/merchant/index`,
             title: "商家名称",
             summary: "商家简介",
             thumb: "商家logo"

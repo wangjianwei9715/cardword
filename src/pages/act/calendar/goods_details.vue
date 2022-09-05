@@ -97,7 +97,7 @@
 				
 				if(this.shareData.shareUrl==''){
 					this.shareData = {
-						shareUrl:"https://www.ka-world.com/share/h5/index.html#/pages/calendar/goods_details?id="+this.goodsId,  
+						shareUrl:"share/h5/index.html#/pages/calendar/goods_details?id="+this.goodsId,  
 						title:this.goodsData.title,      
 						summary:this.goodsData.title,    
 						thumb:this.goodsData.thumb_pic

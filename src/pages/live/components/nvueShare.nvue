@@ -12,6 +12,7 @@
 
 <script>
 import popup from "./popup.nvue";
+const app = getApp().globalData.app
 export default {
   components: {
     popup
@@ -82,7 +83,7 @@ export default {
         provider: "weixin",
         scene: scene,
         type: 0,
-        href: this.shareData.shareUrl,
+        href: `${app.H5Url}/${this.shareData.shareUrl}`,
         title: this.shareData.title,
         summary: this.shareData.summary,
         imageUrl: this.shareData.thumb,

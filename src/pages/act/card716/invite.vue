@@ -37,7 +37,7 @@
 		app = app;
 		shareData:any = {
 			show:false,
-			shareUrl:'https://www.ka-world.com/share/h5/index.html#/pages/act/invite',  
+			shareUrl:'share/h5/index.html#/pages/act/invite',  
 			title:'卡展邀请函',      
 			summary:'7.16-7.17卡世界邀您参与北京首届国际收藏卡博览会',    
 			thumb:'https://ka-world.oss-cn-shanghai.aliyuncs.com/app/wxShare/20220712155051.jpg'       

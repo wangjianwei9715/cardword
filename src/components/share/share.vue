@@ -18,6 +18,7 @@
 	import { Component, Prop,Vue,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { wxShare } from "@/net/DataDefine"
+	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		// @Prop({ default: false })
@@ -68,7 +69,7 @@
 				//@ts-ignore
 				scene: scene,
 				type: 0,
-				href: this.shareData.shareUrl,
+				href: `${app.H5Url}/${this.shareData.shareUrl}`,
 				title: this.shareData.title,
 				summary: this.shareData.summary,
 				imageUrl: this.shareData.thumb,
