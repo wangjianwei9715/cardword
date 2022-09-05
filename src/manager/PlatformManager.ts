@@ -182,7 +182,7 @@ export default class PlatformManager {
 	//跳转商家中心
 	goMerchantPage(alias:string,isMerchant?:boolean){
 		if(!alias) return
-		const TO_NEW_MERCHANT_PAGE=true//是否跳转新商家中心
+		const TO_NEW_MERCHANT_PAGE=false//是否跳转新商家中心
 		const path=TO_NEW_MERCHANT_PAGE?`/pages/merchant/core`:`/pages/userinfo/merchant_shopsV2`
 		uni.navigateTo({
 			url:`${path}?alias=${alias}${isMerchant?'&isMerchant=true':''}`
