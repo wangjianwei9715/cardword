@@ -222,6 +222,11 @@ export default class PlatformManager {
 		}
 		// #endif
 	}
+	//设置分享域名
+	setShareUrl() {
+		if(!app.goodShareOrigin) app.goodShareOrigin=app.H5Url
+		if(!app.activityShareOrigin) app.activityShareOrigin=app.H5Url
+	}
 	appLuanch(loginToken: any, cb?: Function) {
 		if(app.localTest) return;
 		
@@ -251,10 +256,14 @@ export default class PlatformManager {
 			let bussinessApiDomain = this.lastCharacter(res.app.bussinessApiDomain);
 			let dataApiDomain = this.lastCharacter(res.app.dataApiDomain);
 			let funcApiDomain= this.lastCharacter(res.app.funcApiDomain)
-		
+			let goodShareOrigin = this.lastCharacter(res.shareDomain?res.shareDomain.good:"")
+			let activityShareOrigin = this.lastCharacter(res.shareDomain?res.shareDomain.activity:"")
+
 			app.bussinessApiDomain = bussinessApiDomain + "/api/v2/";
 			app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
 			app.funcApiDomain = res.app.funcApiDomain?funcApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
+			app.goodShareOrigin = goodShareOrigin
+			app.activityShareOrigin = activityShareOrigin
 			if (cb) cb()
 			uni.setStorageSync("launchConfig", res);
 			uni.setStorageSync('launchUrl', url)
@@ -274,8 +283,11 @@ export default class PlatformManager {
 				dataApiDomain:app.dataApiDomain,
 				update_url:app.update_url,
 				funcApiDomain:app.funcApiDomain,
+				goodShareOrigin : app.goodShareOrigin,
+				activityShareOrigin : app.activityShareOrigin,
 				time:Math.round(new Date().getTime()/1000)
 			});
+			this.setShareUrl()
 			if (loginToken) this.getAccess()
 			
 			// console.log("bussinessApiDomain==========", app.bussinessApiDomain);
@@ -294,8 +306,8 @@ export default class PlatformManager {
 		});
 	}
 	setLaunchData(data:any,loginToken:any){
-		if(!data.funcApiDomain){
-			uni.setStorageSync('launchData',"")
+		if (!data.funcApiDomain || !data.goodShareOrigin || !data.activityShareOrigin) {
+			uni.setStorageSync('launchData', "")
 			this.appLuanch(uni.getStorageSync("token"))
 			return
 		}
@@ -304,8 +316,11 @@ export default class PlatformManager {
 		app.dataApiDomain = data.dataApiDomain;
 		app.funcApiDomain=data.funcApiDomain
 		app.update_url = data.update_url;
+		app.goodShareOrigin=data.goodShareOrigin;
+		app.activityShareOrigin=data.activityShareOrigin
 		// #ifdef APP-PLUS
 		app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
+		this.setShareUrl()
 		// #endif
 		uni.setStorageSync('appluanchOver', 1)
 		setTimeout(()=>{

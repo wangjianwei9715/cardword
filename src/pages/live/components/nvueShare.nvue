@@ -83,7 +83,7 @@ export default {
         provider: "weixin",
         scene: scene,
         type: 0,
-        href: `${app.H5Url}/${this.shareData.shareUrl}`,
+        href: `${app.activityShareOrigin}/${this.shareData.shareUrl}`,
         title: this.shareData.title,
         summary: this.shareData.summary,
         imageUrl: this.shareData.thumb,

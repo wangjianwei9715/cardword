@@ -340,10 +340,11 @@ export default class ClassName extends BaseNode {
     app.http.Post("activity/playerGroup/share/help", {}, (res: any) => {
       const helpCode = res.helpCode;
       uni.hideLoading();
+      console.log(app.activityShareOrigin);
       uni.share({
         provider: "weixin",
         scene: "WXSceneSession",
-        href: `${app.H5Url}/${this.shareUrl}?helpCode=${helpCode}`,
+        href: `${app.activityShareOrigin}/${this.shareUrl}?helpCode=${helpCode}`,
         title: "集球员组合,兑海量上组券",
         summary: "为我助力",
         imageUrl:
