@@ -48,9 +48,7 @@
 				});
 				return;
 			}
-			uni.navigateTo({
-				url: "/pages/userinfo/merchant_shopsV2?id=" +item.list.merchantId+'&alias='+item.list.merchantAlias
-			});  
+			this.goMerchantPage(item.list.merchantAlias)
 		}
 		onClickLive(item:any){
 			if (item.third && item.third === 1001) {

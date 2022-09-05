@@ -181,9 +181,17 @@ export default class PlatformManager {
 	}
 	//跳转商家中心
 	goMerchantPage(alias:string,isMerchant?:boolean){
-		uni.navigateTo({
-			url:`/pages/merchant/core?alias=${alias}${isMerchant?'&isMerchant=true':''}`
-		})
+		const TO_NEW_MERCHANT_PAGE=false
+		if(TO_NEW_MERCHANT_PAGE){
+			uni.navigateTo({
+				url:`/pages/merchant/core?alias=${alias}${isMerchant?'&isMerchant=true':''}`
+			})
+		}else{
+			uni.navigateTo({
+				url:`/pages/userinfo/merchant_shopsV2?alias=${alias}${isMerchant?'&isMerchant=true':''}`
+			})
+		}
+		
 	}
 	requestSubscribeMessage(id: string, callback?: Function) {
 		// 调起订阅消息

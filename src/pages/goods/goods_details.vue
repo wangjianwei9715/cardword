@@ -619,9 +619,7 @@
 			}
 			// #endif
 			const publisher = this.goodsData.publisher
-			uni.navigateTo({
-				url: `/pages/userinfo/merchant_shopsV2?id=${publisher.id}&alias=${publisher.alias}`
-			})
+			this.goMerchantPage(publisher.alias)
 		}
 		onClickAllCard(data ? : any) {
 			const gooData = this.goodsData

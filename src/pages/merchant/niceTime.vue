@@ -3,10 +3,12 @@
         <view class="niceTime">
             <view class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index">
                 <view class="niceTimeItem-top">
-                    <muqian-lazyLoad class="niceTimeItem-img" :src="parsePic(decodeURIComponent(item.pic))" mode="aspectFill" />
+                    <muqian-lazyLoad class="niceTimeItem-img" :src="parsePic(decodeURIComponent(filterImg(item.pic)[0]))"
+                        mode="aspectFill" @click='previewImage(filterImg(item.pic),0,"")'/>
                     <view class="niceTimeItem-dot flexCenter">{{item.resultNum}}</view>
                     <view class="scoreContainer uni-flex">
-                        <image :src="levelItem.levelPic" v-for="(levelItem) in filterLevel(item.rarity)" :class="{A:levelItem.level=='A'}" mode="aspectFill" />
+                        <image :src="levelItem.levelPic" v-for="(levelItem) in filterLevel(item.rarity)"
+                            :class="{A:levelItem.level=='A'}" mode="aspectFill" />
                         <!-- <image class="A" src="../../static/merchant/A.png" mode="aspectFill" /> -->
                     </view>
                 </view>
@@ -14,13 +16,14 @@
                     {{item.name}}
                 </view>
                 <view class="niceTime-bottom uni-flex">
-                    <muqian-lazyLoad class="niceTime-avatar" :src="item.avatar?parsePic(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFill" />
+                    <muqian-lazyLoad class="niceTime-avatar"
+                        :src="item.avatar?parsePic(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFill" />
                     <view class="niceTime-userName onLine">{{item.userName}}</view>
                     <view class="niceTime-time">{{getStrDayNumber(item.createTime*1000)}}</view>
                 </view>
             </view>
         </view>
-        <empty v-if="!niceTimeList.length"/>
+        <empty v-if="!niceTimeList.length" />
     </view>
 </template>
 
@@ -28,12 +31,12 @@
     import { app } from "@/app";
     import { Component, Watch } from "vue-property-decorator";
     import BaseNode from "../../base/BaseNode.vue";
-    import { parsePic,getStrDayNumber } from "@/tools/util";
+    import { parsePic, getStrDayNumber } from "@/tools/util";
     @Component({})
     export default class ClassName extends BaseNode {
         parsePic: any = parsePic;
-        defaultAvatar:any=app.defaultAvatar
-        getStrDayNumber:any=getStrDayNumber
+        defaultAvatar: any = app.defaultAvatar
+        getStrDayNumber: any = getStrDayNumber
         alias: string = ""
         queryParams: any = {
             pageIndex: 1,
@@ -51,14 +54,25 @@
                 this.reqNewData()
             }
         }
-        filterLevel(rarity:string){
-            const levelArr=rarity.split('')
-            return levelArr.map((item:any)=>{
+        filterImg(pic:string){
+            let pics=pic.split(',')
+            return pics
+        }
+        filterLevel(rarity: string) {
+            const levelArr = rarity.split('')
+            return levelArr.map((item: any) => {
                 return {
-                    levelPic:`/static/merchant/${item}.png`,
-                    level:item
+                    levelPic: `/static/merchant/${item}.png`,
+                    level: item
                 }
             })
+        }
+        previewImage(list: any, index: number, key: string = "src") {
+            const urls = list.map((item: any) => this.parsePic(key?item[key]:item));
+            uni.previewImage({
+                urls,
+                current: index
+            });
         }
         onPullDownRefresh() {
             this.queryParams.pageIndex = 1
@@ -122,7 +136,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        
+
     }
 
     .niceTimeItem-dot {
@@ -194,9 +208,9 @@
         color: #333333;
         flex: 1;
         max-width: 200rpx;
-        overflow: hidden;    
-text-overflow:ellipsis;    
-whitewhite-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        whitewhite-space: nowrap;
     }
 
     .niceTime-time {

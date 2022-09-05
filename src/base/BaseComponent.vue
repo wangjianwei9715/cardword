@@ -2,11 +2,12 @@
 
 </template>
 <script lang="ts">
+	import {app} from "@/app"
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	@Component({})
 	export default class BaseComponent extends Vue {
 		private eventListenerMap: {[x: string]: any} = {};
-				
+		goMerchantPage:any=app.platform.goMerchantPage
 		beforeCreate() {//在实例初始化之后被调用
 			
 		}

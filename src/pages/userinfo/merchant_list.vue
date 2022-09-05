@@ -143,10 +143,8 @@
 				return;
 			}
 			// #endif
-			const path = `/pages/userinfo/merchant_shopsV2`;
-			uni.navigateTo({
-				url: path + "?id=" + item.id+'&alias='+item.alias
-			});
+			this.goMerchantPage(item.alias)
+
 
 		}
 		getPlan(lock: number, now: number, all: number) {

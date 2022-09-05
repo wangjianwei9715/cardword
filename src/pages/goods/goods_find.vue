@@ -155,9 +155,7 @@
 				return;
 			}
 			// #endif
-			const path = `/pages/userinfo/merchant_shopsV2`;
-			uni.navigateTo({ url: path + `?alias=${alias}` });
-
+			this.goMerchantPage(alias)
 		}
 	}
 </script>

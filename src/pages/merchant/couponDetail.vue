@@ -82,6 +82,9 @@
                 this.logo = query.logo
                 this.goodName = query.goodName
             }
+            if(query.totalCouponMoney){
+                this.totalCouponMoney=Number(query.totalCouponMoney)
+            }
             this.reqNewData()
 
         }
@@ -186,7 +189,7 @@
             const merchantUrl = `dataApi/me/shop/merchantCoupon/detail/list`
             app.http.Get(this.goodCode ? goodsUrl : merchantUrl, this.queryParams, (res: any) => {
                 console.log(res);
-                this.totalCouponMoney = res.totalCouponMoney
+                // if(this.goodCode)this.totalCouponMoney = res.totalCouponMoney
                 this.totalPage = res.totalPage
                 const list = res.list || []
                 this.queryParams.pageIndex == 1 ? this.couponList = list : this.couponList.push(...list)

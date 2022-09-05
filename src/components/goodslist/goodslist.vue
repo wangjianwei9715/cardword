@@ -124,10 +124,7 @@
 		onClickSellerShop(item: any) {
 			if(!item.merchantName) return;
 			console.log(item);
-			const path = `/pages/userinfo/merchant_shopsV2`;
-			uni.navigateTo({
-				url: path + "?id=" + item.merchantId+'&alias='+item.merchantAlias
-			});
+			this.goMerchantPage(item.merchantAlias)
 		}
 		onClickTopJumpUrl(url: any) {
 			if (url.goodCode != '') {

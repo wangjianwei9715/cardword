@@ -64,7 +64,7 @@
 			}
 		}
 		onClickJumpMerchant(item:any){
-			uni.navigateTo({ url:"/pages/userinfo/merchant_shopsV2?id=" + item.seller.id+'&alias='+item.seller.alias });  
+			this.goMerchantPage(item.seller.alias)
 		}
 		onClickJumpUrl(id:any){
 			this.$emit("send", id);

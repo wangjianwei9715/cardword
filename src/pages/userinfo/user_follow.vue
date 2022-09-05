@@ -76,9 +76,7 @@
 			this.followList.splice(index, 1);
 		}
 		toDetail(item: any) {
-			uni.navigateTo({
-				url: "/pages/userinfo/merchant_shopsV2?id=" + item.id+'&alias='+item.alias
-			});
+			this.goMerchantPage(item.alias)
 		}
 
 

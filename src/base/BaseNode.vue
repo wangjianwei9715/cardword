@@ -8,6 +8,7 @@ import { Vue,Component } from "vue-property-decorator";
 	export default class BaseNode extends Vue {
 		private eventListenerMap: {[x: string]: any} = {};
 		private intervalIDs:number[] = [];
+		goMerchantPage:any=app.platform.goMerchantPage
 		onLoad(query:any) {
 			
 		}
@@ -24,6 +25,7 @@ import { Vue,Component } from "vue-property-decorator";
 			// #endif
 			this.clearAllScheduler();
 		}
+		
 		/**计时器
 		 * 例：this.scheduler(()=>{
 				console.log(10秒一次);
@@ -73,6 +75,7 @@ import { Vue,Component } from "vue-property-decorator";
 			}
 			
 		}
+		
 	}
 </script>
 <style>
