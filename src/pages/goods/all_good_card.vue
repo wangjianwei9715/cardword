@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="tab-header" v-if="goodType<4">
+		<view class="tab-header" v-if="goodType<4||goodType>10">
 			<view class="search-icon"></view>
 			<input class="search-input" type="text"  v-model="searchText" placeholder="搜索球员、球队"  confirm-type="search"  @confirm="onClickSearch" />
 			
