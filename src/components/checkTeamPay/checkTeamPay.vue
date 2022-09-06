@@ -2,20 +2,20 @@
 	<view>
 		<view class="operation-shadow" v-show="teamCheckShow" @click="onClickTeamCancel"></view>
 		<view class="operation-content" :class="teamCheckShow?'operation-show':''">
-			<view class="teamtion-top" v-if="teamData!=''">
+			<view class="teamtion-top" v-if="choiceTeamData.teamData!=''">
 				<view class="teamtion-header">
 					<view class="header-left">
-						<image class="header-left-pic" :src="teamCheckIndex==999?'../../static/goods/xianbian.png':(teamData[teamCheckIndex].logo?decodeURIComponent(teamData[teamCheckIndex].logo):'')" mode="aspectFit"/>
+						<image class="header-left-pic" :src="TeamChoice?'../../static/goods/xianbian.png':(choiceTeamData.teamData[choiceTeamData.teamCheckIndex].logo?decodeURIComponent(choiceTeamData.teamData[choiceTeamData.teamCheckIndex].logo):'')" mode="aspectFit"/>
 					</view>
-					<view class="header-right" v-if="branchData!=''">
-						<view class="header-price">¥<text>{{teamCheckIndex==999?randomMode.good.price:branchData[branchCheckIndex].price}}</text></view>
-						<view class="header-teamname">“{{teamCheckIndex==999?'剩余球队':teamData[teamCheckIndex].name}}”</view>
-						<view class="header-teamtip">{{teamCheckIndex==999?'将在剩余的球队编号中随机限量编号(组满随机)':branchData[branchCheckIndex].name}}</view>
-						<button v-if="teamCheckIndex!=999&&randomMode.state!=2"  class="header-shopping-btn" :class="{'cart-have':getCartHaveIndex()}" @click="onClickJoinCart">{{getCartHaveIndex()?'已在购物车':'加入购物车'}}</button>
-						<view v-else-if="teamCheckIndex==999" class="header-shoppong-random">
-							<view class="goodslist-plan-desc">余{{randomMode.good.totalNum-(randomMode.good.currentNum+randomMode.good.lockNum)}}/共{{randomMode.good.totalNum}}</view>
+					<view class="header-right" v-if="choiceTeamData.branchData!=''">
+						<view class="header-price">¥<text>{{TeamChoice?choiceTeamData.randomMode.good.price:choiceTeamData.branchData[choiceTeamData.branchCheckIndex].price}}</text></view>
+						<view class="header-teamname">“{{TeamChoice?'剩余球队':choiceTeamData.teamData[choiceTeamData.teamCheckIndex].name}}”</view>
+						<view class="header-teamtip">{{TeamChoice?'将在剩余的球队编号中随机限量编号(组满随机)':choiceTeamData.branchData[choiceTeamData.branchCheckIndex].name}}</view>
+						<button v-if="!TeamChoice&&choiceTeamData.randomMode.state!=2"  class="header-shopping-btn" :class="{'cart-have':getCartHaveIndex()}" @click="onClickJoinCart">{{getCartHaveIndex()?'已在购物车':'加入购物车'}}</button>
+						<view v-else-if="TeamChoice" class="header-shoppong-random">
+							<view class="goodslist-plan-desc">余{{choiceTeamData.randomMode.good.totalNum-(choiceTeamData.randomMode.good.currentNum+choiceTeamData.randomMode.good.lockNum)}}/共{{choiceTeamData.randomMode.good.totalNum}}</view>
 							<view class="goodslist-plan-content">
-								<view class="goodslist-plan-now" :style="'width:'+getPlan(randomMode.good.lockNum,randomMode.good.currentNum,randomMode.good.totalNum)+'%'"></view>
+								<view class="goodslist-plan-now" :style="'width:'+getPlan(choiceTeamData.randomMode.good.lockNum,choiceTeamData.randomMode.good.currentNum,choiceTeamData.randomMode.good.totalNum)+'%'"></view>
 							</view>
 						</view>
 					</view>
@@ -25,35 +25,35 @@
 					<view class="team-check-content">
 						<scroll-view class="team-check-content-scroll" :scroll-x="true">
 							<!-- 随机模式 -->
-							<view :class="{'scroll-index':true,'scroll-index-check-random':teamCheckIndex==999}" @click="onClickTeamCheckRandom" v-if="randomMode.state==2">
-								<image class="scroll-index-img-random" :lazy-load="true" :src="teamCheckIndex==999?'../../static/goods/xianbian_.png':'../../static/goods/xianbian.png'" mode="aspectFit"></image>
-								<view class="scroll-index-name" :class="teamCheckIndex==999?'scroll-index-name-random':''">剩余球队</view>
+							<view :class="{'scroll-index':true,'scroll-index-check-random':TeamChoice}" @click="onClickTeamCheckRandom" v-if="choiceTeamData.randomMode.state==2">
+								<image class="scroll-index-img-random" :lazy-load="true" :src="TeamChoice?'../../static/goods/xianbian_.png':'../../static/goods/xianbian.png'" mode="aspectFit"></image>
+								<view class="scroll-index-name" :class="TeamChoice?'scroll-index-name-random':''">剩余球队</view>
 								<view class="random-ing">进行中</view>
 							</view>
 
-							<view :class="{'scroll-index':true,'scroll-index-check':teamCheckIndex==index}" v-for="(item,index) in teamData" :key="item.id" @click="onClickTeamCheck(index)">
+							<view :class="{'scroll-index':true,'scroll-index-check':choiceTeamData.teamCheckIndex==index}" v-for="(item,index) in choiceTeamData.teamData" :key="item.id" @click="onClickTeamCheck(index)">
 								<image class="scroll-index-img" :lazy-load="true" :src="item.logo?decodeURIComponent(item.logo):''" mode="aspectFit"></image>
-								<view class="scroll-index-name" :class="{'random-team-name':randomMode.state==2}">{{item.name}}</view>
+								<view class="scroll-index-name" :class="{'random-team-name':choiceTeamData.randomMode.state==2}">{{item.name}}</view>
 							</view>
 						</scroll-view>
 					</view>
 				</view>
 				<view class="teamtion-title bianhao-title">
-					{{teamCheckIndex==999?'剩余编号':'选择编号'}}
-					<view class="random-all" v-if="teamCheckIndex==999">（剩余{{randomNum}}组，合计{{Number(randomMode.good.price)*25}}元）</view>
+					{{TeamChoice?'剩余编号':'选择编号'}}
+					<view class="random-all" v-if="TeamChoice">（剩余{{choiceTeamData.randomNum}}组，合计{{Number(choiceTeamData.randomMode.good.price)*25}}元）</view>
 				</view>
 
 			</view>
-			<view class="teamtion-center" v-if="branchData!=''">
+			<view class="teamtion-center" v-if="choiceTeamData.branchData!=''">
 				<view class="teamtion-index">
-					<view class="branch-list" v-show="teamCheckIndex!=999">
-						<view :class="{'branch-index':true,'branch-index-check':branchCheckIndex==index}" v-for="(item,index) in branchData" :key="item.id" @click="onClickBranchCheck(index)">
+					<view class="branch-list" v-show="!TeamChoice">
+						<view :class="{'branch-index':true,'branch-index-check':choiceTeamData.branchCheckIndex==index}" v-for="(item,index) in choiceTeamData.branchData" :key="item.id" @click="onClickBranchCheck(index)">
 							<view class="branch-index-name">{{item.name}} </view>￥{{item.price}}
 							<view class="branch-sq" v-if="item.soldOut||item.lock">{{item.soldOut?'售罄':'未支付'}}</view>
 						</view>
 					</view>
-					<view class="branch-list-random" v-show="teamCheckIndex==999">
-						<view :class="{'branch-index':true}" v-for="item in branchData" :key="item.id">
+					<view class="branch-list-random" v-show="TeamChoice">
+						<view :class="{'branch-index':true}" v-for="item in choiceTeamData.branchData" :key="item.id">
 							<view class="branch-index-name-random">{{item.name}} </view>{{item.isExtend?'':'￥'+item.price}}
 							<view class="branch-reward" v-if="item.isExtend">额外奖品</view>
 						</view>
@@ -62,14 +62,14 @@
 			</view>
 
 			<view class="teamtion-bottom">
-				<view class="btncheck-content" v-if="randomMode==''||randomMode.state!=2">
+				<view class="btncheck-content" v-if="choiceTeamData.randomMode==''||choiceTeamData.randomMode.state!=2">
 					<view class="btn-left">
-						<view :class="cartData.available==0?'cart-empty':'cart-noempty'" @click="onClickShowShoppingCart">
-							<view v-show="cartData.num>0" class="icon-yuan" :class="cartData.num>=10?'icon-yuans':''">{{cartData.available}}</view>
+						<view :class="choiceTeamData.cartData.available==0?'cart-empty':'cart-noempty'" @click="onClickShowShoppingCart">
+							<view v-show="choiceTeamData.cartData.num>0" class="icon-yuan" :class="choiceTeamData.cartData.num>=10?'icon-yuans':''">{{choiceTeamData.cartData.available}}</view>
 						</view>
 						<view class="btn-left-content">
-							<text class="btn-left-price">￥{{cartData.amount}}</text>
-							<view class="btn-left-num">共{{cartData.num}}件,失效{{cartData.num-cartData.available}}件</view>
+							<text class="btn-left-price">￥{{choiceTeamData.cartData.amount}}</text>
+							<view class="btn-left-num">共{{choiceTeamData.cartData.num}}件,失效{{choiceTeamData.cartData.num-choiceTeamData.cartData.available}}件</view>
 						</view>
 						
 					</view>
@@ -80,7 +80,7 @@
 							<view class="baodui-text">{{baoduiCountStr}}</view>
 						</view>
 						<view class="baodui-go" v-else @click="onClickBaodui">
-							<text class="baodui-text">￥{{getBranchPrice(branchData)}}包队</text>
+							<text class="baodui-text">￥{{getBranchPrice(choiceTeamData.branchData)}}包队</text>
 							<view class="baodui-text">{{baoduiCountStr}}</view>
 						</view>
 						<view class="baodui-btn">
@@ -89,22 +89,22 @@
 						</view>
 					</view>
 					<view v-else-if="countTimeCopy>0" class="btn-right-count" ><text class="count-text">开售倒计时</text> {{countTimeCopy==0?'':' '+countStr}}</view>
-					<view v-else class="btn-right" :class="{'btn-empty':cartData.available==0}" @click="onClickSettlement">去结算</view>
+					<view v-else class="btn-right" :class="{'btn-empty':choiceTeamData.cartData.available==0}" @click="onClickSettlement">去结算</view>
 				</view>
 				<view class="btncheck-content" v-else>
-					<button class="btn-right-random" v-show="teamCheckIndex==999" @click="onClickBuyRandomGood">￥{{randomMode.good.price?randomMode.good.price:''}}/组 立即购买</button>
-					<view class="btn-right-random-orther" v-show="teamCheckIndex!=999">剩余随机模式进行中,请选购剩余球队</view>
+					<button class="btn-right-random" v-show="TeamChoice" @click="onClickBuyRandomGood">￥{{choiceTeamData.randomMode.good.price?choiceTeamData.randomMode.good.price:''}}/组 立即购买</button>
+					<view class="btn-right-random-orther" v-show="!TeamChoice">剩余随机模式进行中,请选购剩余球队</view>
 				</view>
 			</view>
 			<!-- 随机买队 -->
-			<view class="teamtion-random" v-show="randomMode!=''">
-				<view class="teamtion-random-text" v-if="randomMode.state==0">
-					编号数量≤{{randomMode.maxLeftNum}}件且{{randomMode.idleMinute}}分钟内无人购买将进入剩余随机模式
+			<view class="teamtion-random" v-show="choiceTeamData.randomMode!=''">
+				<view class="teamtion-random-text" v-if="choiceTeamData.randomMode.state==0">
+					编号数量≤{{choiceTeamData.randomMode.maxLeftNum}}件且{{choiceTeamData.randomMode.idleMinute}}分钟内无人购买将进入剩余随机模式
 				</view>
-				<view class="teamtion-random-text" v-else-if="randomMode.state==1">
+				<view class="teamtion-random-text" v-else-if="choiceTeamData.randomMode.state==1">
 					{{randomCountTimeCopy==0?'':randomCountStr}}后进入剩余随机模式
 				</view>
-				<view class="teamtion-random-text" v-else-if="randomMode.state==2">
+				<view class="teamtion-random-text" v-else-if="choiceTeamData.randomMode.state==2">
 					剩余随机进行中
 				</view>
 				<view class="teamtion-random-help" @click="showRulesPopup = true"></view>
@@ -115,10 +115,10 @@
 				<view class="checkteam-popup-header">
 					<view class="checkteam-popup-back" @click="onClickCloseShoppingCart"></view>
 					购物车
-					<view v-show="cartData.num>=1" class="cart-deleteall" @click="onClickDelCartIndex('[]')">清空</view>
+					<view v-show="choiceTeamData.cartData.num>=1" class="cart-deleteall" @click="onClickDelCartIndex('[]')">清空</view>
 				</view>
 				<view class="checkteam-popup-list">
-					<view class="checkteam-popup-index" v-for="(item,index) in cartData.list" :key="item.id">
+					<view class="checkteam-popup-index" v-for="(item,index) in choiceTeamData.cartData.list" :key="item.id">
 						<view class="checkteam-popup-logo-box"  >
 							<image class="checkteam-popup-logo" :src="decodeURIComponent(item.trunkLogo)" mode="aspectFit"/>
 						</view>
@@ -193,35 +193,10 @@
 		// 自选球队 显示隐藏
 		@Prop({ default: false })
 		teamCheckShow:boolean|undefined;
-		// 自选球队 球队选择
-		@Prop({ default: 0 })
-		teamCheckIndex:number|undefined;
-		// 自选球队 分支选择
-		@Prop({ default: 0 })
-		branchCheckIndex:any;
-		// 自选球队 球队列表
+		// 自选球队 数据
 		@Prop({ default: [] })
-		teamData:any;
-		// 自选球队 分支列表
-		@Prop({ default: [] })
-		branchData:any;
-		// 自选球队 购物车信息
-		@Prop({ default: {} })
-		cartData:any;
-		// 自选球队 倒计时
-		@Prop({ default: 0 })
-		teamLeftSec:any
-		// 自选球队 随机模式数据
-		@Prop({ default: [] })
-		randomMode:any
-		@Prop({ default: 0 })
-		randomNum:any
-		// 包队 倒计时
-		@Prop({ default: 0 })
-		baoduiLeftSec:any
-		// 包队 状态
-		@Prop({ default: -1 })
-		baoduiState:any
+		choiceTeamData:any;
+		
 		countStr = '';
 		countInterval:any;
 		countTimeCopy = 0;
@@ -266,15 +241,16 @@
 		showRandomPopup = false;
 		@Watch('teamCheckShow')
 		onShowChanged(val: any, oldVal: any){
+			const { choiceTeamData } = this;
 			if(val){
-				this.baoduiNewState = this.baoduiState;
-				this.baoduiCountTimeCopy = this.teamLeftSec ;
-				this.countTimeCopy = this.baoduiNewState == 1?this.teamLeftSec:(this.teamLeftSec + this.baoduiLeftSec);
+				this.baoduiNewState = choiceTeamData.baoduiState;
+				this.baoduiCountTimeCopy = choiceTeamData.teamLeftSec ;
+				this.countTimeCopy = this.baoduiNewState == 1?choiceTeamData.teamLeftSec:(choiceTeamData.teamLeftSec + choiceTeamData.baoduiLeftSec);
 
 				this.countDownTime();
 				this.baoduiCountDownTime();
-				if(this.randomMode!=''&&this.randomMode.state==1){
-					this.randomCountTimeCopy = this.randomMode.leftSecond;
+				if(choiceTeamData.randomMode!=''&&choiceTeamData.randomMode.state==1){
+					this.randomCountTimeCopy = choiceTeamData.randomMode.leftSecond;
 					this.randomCountDownTime()
 				}
 				
@@ -282,7 +258,7 @@
 				this.onClickCloseShoppingCart()
 				clearInterval(this.countInterval);
 				clearInterval(this.baoduiCountInterval)
-				if(this.randomMode!=''&&this.randomMode.state==1){
+				if(choiceTeamData.randomMode!=''&&choiceTeamData.randomMode.state==1){
 					clearInterval(this.randomCountInterval);
 				}
 			}
@@ -298,6 +274,11 @@
 			clearInterval(this.baoduiCountInterval)
 			clearInterval(this.randomCountInterval)
 		}
+		
+		public get TeamChoice() : boolean {
+			return this.choiceTeamData.teamCheckIndex == 999
+		}
+		
 		getBranchPrice(list:any){
 			let price = 0;
 			for(let i in list){
@@ -337,8 +318,9 @@
 		}
 		// 包队
 		onClickBaodui(){
-			for(let i in this.branchData){
-				if(this.branchData[i].lock||this.branchData[i].soldOut){
+			const { choiceTeamData } = this;
+			for(let i in choiceTeamData.branchData){
+				if(choiceTeamData.branchData[i].lock||choiceTeamData.branchData[i].soldOut){
 					return;
 				}
 			}
@@ -357,6 +339,7 @@
 		}
 		baoduiCountDownTime(){
 			console.log('baoduiCountTimeCopy==',this.baoduiCountTimeCopy)
+			const { choiceTeamData } = this;
 			this.baoduiCountStr = getCountDownTimeHour(this.baoduiCountTimeCopy);
 			this.baoduiCountInterval = setInterval(()=>{
 				if(this.baoduiCountTimeCopy>0){
@@ -365,7 +348,7 @@
 				}else{
 					if(this.baoduiNewState == 0){
 						this.baoduiNewState = 1;
-						this.baoduiCountTimeCopy = this.baoduiLeftSec;
+						this.baoduiCountTimeCopy = choiceTeamData.baoduiLeftSec;
 					}else{
 						this.baoduiNewState = 99
 						clearInterval(this.baoduiCountInterval)
@@ -386,9 +369,10 @@
 			},1000)
 		}
 		getCartHaveIndex(){
-			let branchId = this.branchData[this.branchCheckIndex].id;
-			for(let i in this.cartData.list){
-				if(this.cartData.list[i].noId == branchId){
+			const { choiceTeamData } = this;
+			let branchId = choiceTeamData.branchData[choiceTeamData.branchCheckIndex].id;
+			for(let i in choiceTeamData.cartData.list){
+				if(choiceTeamData.cartData.list[i].noId == branchId){
 					return true;
 				}
 			}
@@ -407,7 +391,8 @@
 		}
 		// 购买剩余随机
 		onClickBuyRandomGood(){
-			if(this.randomMode.totalNum-(this.randomMode.currentNum+this.randomMode.lockNum)==0){
+			const { choiceTeamData } = this;
+			if(choiceTeamData.randomMode.totalNum-(choiceTeamData.randomMode.currentNum+choiceTeamData.randomMode.lockNum)==0){
 				return;
 			}
 			this.showRandomPopup = true

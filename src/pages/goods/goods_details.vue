@@ -1,5 +1,5 @@
 <template>
-	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':teamCheckShow||teamRandomShow}">
+	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
 		<!-- #ifndef MP -->
 		<view class="header-banner">
 			<statusbar />
@@ -201,21 +201,19 @@
 			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
 		</view>
 
-		<cardplay :operationShow="operationCardShow" :operaType="operaType" @operacancel="operationCardShow=false" />
+		<cardplay :operationShow="operaData.operaShow" :operaType="operaData.operaType" @operacancel="operaData.operaShow=false" />
 
-		<share :operationShow="shareShow" :shareData="shareData" @operacancel="shareShow=false" />
+		<share :operationShow="shareObj.shareShow" :shareData="shareObj.shareData" @operacancel="shareObj.shareShow=false" />
 
 		<!-- 自选球队 -->
-		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec" :teamCheckIndex="teamCheckIndex"
-			:branchCheckIndex="branchCheckIndex" :teamData="teamData" :branchData="branchData" :cartData="cartData"
-			:randomMode="randomMode" :randomNum="randomNum" :baoduiLeftSec="baoduiLeftSec" :baoduiState="baoduiState"
+		<checkTeamPay :teamCheckShow="choiceTeamData.teamCheckShow" :choiceTeamData="choiceTeamData"
 			@teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck"
 			@cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement"
 			@buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood" />
 
 		<!-- 自选球队随机 -->
-		<checkTeamRandom :teamRandomShow="teamRandomShow" :teamRandomData="teamRandomData"
-			:teamrandomGood="teamrandomGood" :teamrandomRemainder="teamrandomRemainder" :type="goodsData.pintuan_type"
+		<checkTeamRandom :teamRandomShow="choiceTRData.show" :teamRandomData="choiceTRData.data"
+			:teamrandomGood="choiceTRData.rData" :teamrandomRemainder="choiceTRData.remainder" :type="goodsData.pintuan_type"
 			@teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy"
 			@goodBuy="onClickRandomBuy" @randomCountOver="getGoodSelectTeamRandom" />
 
@@ -231,10 +229,10 @@
 		</bottomDrawer>
 
 		<!-- 免单 -->
-		<view class="guess-num-box" v-if="freeNoNum>0">
+		<view class="guess-num-box" v-if="goodsData.freeNoNum>0">
 			<view class="guess-num-center">
 				<image class="guess-mini" src="../../pages/act/static/guess/guess_mini.png"></image>
-				可免单{{freeNoNum}}组
+				可免单{{goodsData.freeNoNum}}组
 			</view>
 		</view>
 
@@ -268,6 +266,7 @@
 	import { parsePic } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
 	const Manager =  detailsManager.getIns();
+	const shareData = { shareUrl: '', title: '', summary: '', thumb: '' }
 	@Component({})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
@@ -275,63 +274,33 @@
 		goodsDetailHelp = goodsDetailHelp;
 		goodsSpe = goodDetailSpe;
 		stepData = goodDetailStep;
+		shareObj = {
+			shareShow:false,
+			shareData:{...shareData}
+		};
 		favorType = Manager.favorType;
-		operaType = Manager.operaType;
-		shareShow = Manager.shareShow;
+		buyRecordList = [...Manager.buyRecordList];
+		goodsDesc = [...Manager.goodsDesc];
+		operaData = {...Manager.operaData};
 		countData = {...Manager.countData};
 		swiperData = {...Manager.swiperData};
 		picData = {...Manager.picData}
 		tipBtn = {...Manager.tipBtn};
 		goodCode = '';
 		goodsData: any = [];
-		goodsDesc: { [x: string]: any } = [];
-		shareData: any = {
-			shareUrl: '',
-			title: '',
-			summary: '',
-			thumb: ''
-		}
-		operationCardShow = false;
-		tipsData: { [x: string]: any } = [];
-		buyRecordList: any = [];
-		// 自选球队相关
-		// 球队选择
-		// 分支选择
-		// 购物车数据
-		teamCheckShow: boolean = false;
-		teamLeftSec = 0;
-		teamData: any = [];
-		teamCheckIndex: number = 0;
-		branchData: any = [];
-		branchCheckIndex: number = 0;
-		baoduiLeftSec = 0;
-		baoduiState = -1;
-		cartData: any = [];
-		// 自选球队随机模式数据
-		randomMode: any = ''
-
-		// 自选球队随机相关
-		teamRandomShow = false;
-		teamRandomData: any = [];
-		teamrandomGood: any = [];
-		teamrandomRemainder: any = [];
+		choiceTeamData = {...Manager.choiceTeamData};
+		choiceTRData = {...Manager.choiceTRData};
 		// 支付方式
 		payChannel: any = [];
-		// 邀请新人弹窗
 		showInvitePopup = false;
 		buyExplain =
 			'商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。';
-		randomNum = 0;
 		// 底部抽屉
 		showDrawer = false;
-		freeNoNum = 0;
 		source="";
 		// 猜你喜欢
 		likeGoodList:any = [];
-		planData:any = {
-			width:0,
-			str:''
-		}
+		planData = {...Manager.planData}
 		relativeOnce = false;
 		// 可领取优惠券列表
 		getCouponList:any = [];
@@ -406,11 +375,8 @@
 					return;
 				}
 				this.favorType = data.favorite>0;
-				// 数据详情
 				this.goodsData = data.good;
-				// 进度
 				this.getPlan(this.goodsData);
-				// 支付方式
 				this.payChannel = data.payChannel || [];
 				if (data.joined) {
 					this.tipBtn = [
@@ -420,16 +386,9 @@
 				}
 				// 倒计时
 				countData.countDown = data.good.state == 0? ( data.good.leftsec - (data.good.overAt - data.good.startAt)): data.good.leftsec;
-				// 免单
-				this.freeNoNum = data.freeNoNum
-				// 获取商品图片
 				this.getGoodsImage();
-				this.getDetailImage(decodeURIComponent(this.goodsData.pic.yuanfeng))
-				// 倒计时
 				this.getCountDown();
-				// 商品规格、配置、形式、
 				this.getGoodsSpe();
-				
 				let desc = decodeURIComponent(data.good.desc);
 				let newData = desc.indexOf('\n') > -1 ? desc.split('\n') : desc.split('\r');
 				this.goodsDesc = [`拼团 I D ：${goodCode}`, '开售时间：' + uni.$u.timeFormat(data.good.startAt,'yyyy-mm-dd hh:MM:ss'), ...newData];
@@ -463,8 +422,11 @@
 				this.goodsData.lockNum = res.data.lockNum;
 			})
 		}
-		// 商品图片
+		/**
+		 * 设置商品图片
+		 */
 		getGoodsImage() {
+			const { picData } = this;
 			const goodsPic = this.goodsData.pic
 			let pic:any = decodeURIComponent(goodsPic.carousel);
 			let carousel: any = [];
@@ -481,25 +443,14 @@
 			yuanfeng = yuanfeng.map((x:any)=>{
 				return parsePic(x)
 			})
-			this.picData.carousel = [...carousel, ...yuanfeng];
+			picData.detailImg = [...yuanfeng];
+			picData.carousel = [...carousel, ...yuanfeng];
 		}
-		// 详情图片
-		getDetailImage(img: any) {
-			const { picData } = this;
-			if (img.indexOf(',') == -1) {
-				picData.detailImg.push(parsePic(img))
-			} else {
-				picData.detailImg = img.split(',')
-				picData.detailImg = picData.detailImg.map((x:any)=>{
-					return parsePic(x)
-				})
-			}
-		}
-
-		// 倒计时时间计算
+		/**
+		 * 倒计时时间计算
+		 */
 		getTime() {
 			const { countData } = this;
-
 			let day = String(Math.floor(countData.countDown / 3600 / 24));
 			let day_num = countData.countDown - 3600 * 24 * Number(day)
 			let hour = Math.floor((day_num) / 3600) < 10 ? '0' + Math.floor((day_num) / 3600) : Math.floor((day_num) /
@@ -515,7 +466,9 @@
 			countData.countMinute = minute;
 			countData.countSecond = second
 		}
-		// 倒计时定时器
+		/**
+		 * 倒计时定时器
+		 */
 		getCountDown() {
 			const { countData } = this;
 			this.getTime()
@@ -534,7 +487,9 @@
 				}
 			}, 1);
 		}
-		// 拼团形式规格
+		/**
+		 * 商品规格、配置、形式
+		 */
 		getGoodsSpe() {
 			let data = this.goodsData;
 			if (this.goodsData.isSelect) {
@@ -609,16 +564,18 @@
 		}
 		// 分享
 		onClickShare() {
-			if (!this.shareShow) {
-				if (this.shareData.shareUrl == '') {
-					this.shareData = {
-						shareUrl: `share/h5/#/pages/goods/goods_details?id=${this.goodCode}`,
-						title: this.goodsData.title,
-						summary: this.goodsData.title,
-						thumb: this.goodsData.pic.thumb||this.picData.carousel[0]
+			const { shareObj } = this;
+			const { goodsData } = this;
+			if (!shareObj.shareShow) {
+				if (shareObj.shareData.shareUrl == '') {
+					shareObj.shareData = {
+						shareUrl: `share/h5/#/pages/goods/goods_details?id=${goodsData.goodCode}`,
+						title: goodsData.title,
+						summary: goodsData.title,
+						thumb: goodsData.pic.thumb||this.picData.carousel[0]
 					}
 				}
-				this.shareShow = true
+				shareObj.shareShow = true
 			}
 		}
 		onClickFavor() {
@@ -673,14 +630,14 @@
 				this.getGoodSelect(() => {
 					this.getGoodSelectBranch();
 					this.getGoodSelectCart()
-					this.teamCheckShow = true;
+					this.choiceTeamData.teamCheckShow = true;
 				})
 				return;
 			}
 			// 自选随机球队
 			if (goodData.pintuan_type == 11 || goodData.pintuan_type == 12) {
 				this.getGoodSelectTeamRandom(() => {
-					this.teamRandomShow = true;
+					this.choiceTRData.show = true;
 				})
 				return;
 			}
@@ -730,9 +687,10 @@
 			})
 		}
 		onClickCardPlay(item: any) {
+			const { operaData } = this;
 			if (item.id <= 2) {
-				this.operationCardShow = true;
-				this.operaType = item.id
+				operaData.operaShow = true;
+				operaData.operaType = item.id
 			}
 			if (item.id == 4) {
 				this.onClickAllCard()
@@ -757,23 +715,24 @@
 		}
 		// 自选球队 我要选队
 		getGoodSelect(cb ? : Function) {
+			const { choiceTeamData } = this;
 			app.http.Get(`dataApi/good/${this.goodCode}/select`, {}, (res: any) => {
-				this.teamData = res.team;
+				choiceTeamData.teamData = res.team;
 
 				if (this.goodsData.state == 0) {
-					this.teamLeftSec = res.good.preSaleLeftSec
+					choiceTeamData.teamLeftSec = res.good.preSaleLeftSec
 				}
 				if (res.good.randomMode) {
-					this.randomMode = res.good.randomMode
-					if (this.randomMode.state == 2) {
-						this.teamCheckIndex = 999
+					choiceTeamData.randomMode = res.good.randomMode
+					if (choiceTeamData.randomMode.state == 2) {
+						choiceTeamData.teamCheckIndex = 999
 					}
 				}
 				if (res.good.baoduiMode) {
-					this.baoduiState = res.good.baoduiMode.state;
-					this.baoduiLeftSec = res.good.baoduiMode.totalSecond;
-					if (this.baoduiState == 1) {
-						this.teamLeftSec = res.good.baoduiMode.leftSec;
+					choiceTeamData.baoduiState = res.good.baoduiMode.state;
+					choiceTeamData.baoduiLeftSec = res.good.baoduiMode.totalSecond;
+					if (choiceTeamData.baoduiState == 1) {
+						choiceTeamData.teamLeftSec = res.good.baoduiMode.leftSec;
 					}
 
 				}
@@ -783,48 +742,50 @@
 		// 自选球队 获取球队分支
 		getGoodSelectBranch() {
 			// 随机选队
-			if (this.teamCheckIndex == 999) {
+			const { choiceTeamData } = this;
+			if (choiceTeamData.teamCheckIndex == 999) {
 				app.http.Get(`dataApi/good/${this.goodCode}/select/randomNo`, {}, (res: any) => {
-					this.randomNum = 0;
+					choiceTeamData.randomNum = 0;
 					for (let i in res.list) {
 						if (!res.list[i].isExtend) {
-							this.randomNum++
+							choiceTeamData.randomNum++
 						}
 					}
-					this.branchCheckIndex = -1
-					this.branchData = res.list;
+					choiceTeamData.branchCheckIndex = -1
+					this.choiceTeamData.branchData = res.list;
 				})
 				return;
 			}
-			let id = this.teamData[this.teamCheckIndex].id;
-			this.branchCheckIndex = 0
+			let id = choiceTeamData.teamData[choiceTeamData.teamCheckIndex].id;
+			choiceTeamData.branchCheckIndex = 0
 			app.http.Get(`dataApi/good/${this.goodCode}/select/branch`, {
 				teamId: id
 			}, (res: any) => {
-				this.branchData = res.list;
+				this.choiceTeamData.branchData = res.list;
 			})
 		}
 		getGoodSelectCart() {
 			app.http.Get(`dataApi/good/${this.goodCode}/select/cart`, {}, (res: any) => {
-				this.cartData = res.data;
+				this.choiceTeamData.cartData = res.data;
 			})
 		}
 		// 自选球队 遮罩点击
 		onClickTeamCheckCancel() {
 			this.isPullDown(true)
-			this.teamCheckShow = false
+			this.choiceTeamData.teamCheckShow = false
 		}
 		// 自选球队 选择球队
 		onClickTeamCheck(index: any) {
-			if (this.teamCheckIndex == index) return;
+			if (this.choiceTeamData.teamCheckIndex == index) return;
 
-			this.teamCheckIndex = index;
+			this.choiceTeamData.teamCheckIndex = index;
 			this.getGoodSelectBranch()
 		}
 		// 自选球队 选择分支
 		onClickBranchCheck(index: any) {
-			if (this.branchCheckIndex == index) return;
-			this.branchCheckIndex = index;
+			const { choiceTeamData } = this;
+			if (choiceTeamData.branchCheckIndex == index) return;
+			choiceTeamData.branchCheckIndex = index;
 		}
 		onClickDeleteCart(index: any) {
 			if (index != 0 && index == '[]') {
@@ -835,7 +796,7 @@
 				})
 				return;
 			}
-			let id = this.cartData.list[index].id
+			let id = this.choiceTeamData.cartData.list[index].id
 			app.http.Post(`good/select/cart/${this.goodCode}/delete`, {
 				id: [id]
 			}, (res: any) => {
@@ -844,14 +805,15 @@
 		}
 		// 加入购物车
 		joinCart() {
-			if (this.branchData[this.branchCheckIndex].soldOut) {
+			const { choiceTeamData } = this;
+			if (choiceTeamData.branchData[choiceTeamData.branchCheckIndex].soldOut) {
 				uni.showToast({
 					title: '该商品已售罄',
 					icon: 'none'
 				})
 				return;
 			}
-			if (this.branchData[this.branchCheckIndex].lock) {
+			if (choiceTeamData.branchData[choiceTeamData.branchCheckIndex].lock) {
 				uni.showToast({
 					title: '该商品暂时不能支付',
 					icon: 'none'
@@ -859,23 +821,25 @@
 				return;
 			}
 			app.http.Post(`good/select/cart/${this.goodCode}/add`, {
-				id: [this.branchData[this.branchCheckIndex].id]
+				id: [choiceTeamData.branchData[choiceTeamData.branchCheckIndex].id]
 			}, (res: any) => {
 				this.getGoodSelectCart()
 			})
 		}
 		onClickSettlement() {
-			if (this.cartData.available == 0) return;
+			const { choiceTeamData } = this;
+			if (choiceTeamData.cartData.available == 0) return;
 			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&cart=${encodeURIComponent(JSON.stringify(this.cartData))}&payChannel=${encodeURIComponent(
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&cart=${encodeURIComponent(JSON.stringify(choiceTeamData.cartData))}&payChannel=${encodeURIComponent(
 						JSON.stringify(this.payChannel))}`
 			})
 			this.onClickTeamCheckCancel()
 		}
 		// 包队
 		onClickBaodui() {
-			let price = this.getBranchPrice(this.branchData)
-			const teamCheckData = this.teamData[this.teamCheckIndex]
+			const { choiceTeamData } = this;
+			let price = this.getBranchPrice(choiceTeamData.branchData)
+			const teamCheckData = choiceTeamData.teamData[choiceTeamData.teamCheckIndex]
 			uni.navigateTo({
 				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&baodui=${teamCheckData.id}&price=${price}&baoduiName=${teamCheckData.name}&payChannel=${encodeURIComponent(JSON.stringify(this
 						.payChannel))}`
@@ -892,15 +856,16 @@
 		// 购买剩余随机
 		onClickBuyRandomGood() {
 			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}&payRandomPrice=${this.randomMode.good.price}`
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}&payRandomPrice=${this.choiceTeamData.randomMode.good.price}`
 			})
 		}
 		// 自选球队随机 我要选队 我要选卡种
 		getGoodSelectTeamRandom(cb ? : Function) {
+			const { choiceTRData } = this;
 			app.http.Get(`dataApi/good/${this.goodCode}/optionPanel`, {}, (res: any) => {
-				this.teamRandomData = res.team;
-				this.teamrandomGood = (res.good && res.good.randomMode) || [];
-				this.teamrandomRemainder = (res.good && res.good.remainder) || []
+				choiceTRData.data = res.team;
+				choiceTRData.rData = (res.good && res.good.randomMode) || [];
+				choiceTRData.remainder = (res.good && res.good.remainder) || []
 				if (cb) cb()
 			})
 		}
@@ -920,7 +885,7 @@
 		}
 		onClickteamRandomCancel() {
 			this.isPullDown(true)
-			this.teamRandomShow = false;
+			this.choiceTRData.show = false;
 		}
 		// 复制邀请口令
 		onClickCopyInviteKey() {
@@ -961,6 +926,9 @@
 			let Str = String(str)
 			return Str.substr(index, 1)
 		}
+		/**
+		 * 设置进度
+		 */
 		getPlan(item:any){
 			const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000)/100;
 			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;

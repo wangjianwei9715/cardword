@@ -2,6 +2,11 @@
 import { Md5 } from 'ts-md5'
 import { app } from '@/app'
 // #endif
+/**
+ * 图片特殊处理
+ * @param src String 图片路径 
+ * @returns String 图片路径
+ */
 export function parsePic(src: string) {
 	if (!src) return ''
 	if (src.indexOf('res_ksj') == -1 && src.indexOf('resources.ka-world.com') == -1) return src
@@ -11,8 +16,13 @@ export function parsePic(src: string) {
 	const md5Key = Md5.hashStr(app.picEncryptionKey + noneOrigin + tsString)
 	return `http://${httpUrl}/${md5Key}/${tsString}${noneOrigin}`
 }
-//keepNum为保留小数位数，默认不保留小数
-export function formatNumber(number: number, keepNum = 0) {//返回 xxx.xx亿
+/**
+ * 数字处理 大于万/亿 调整为字符串
+ * @param number  Number 需要处理的数字	
+ * @param keepNum Number 保留N位小数
+ * @returns String
+ */
+export function formatNumber(number: number, keepNum = 0) {//
 	let result = '' + number;
 	if (number >= 100000000) {
 		result = (number / 100000000).toFixed(keepNum) + '亿'
