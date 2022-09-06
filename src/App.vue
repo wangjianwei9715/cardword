@@ -250,8 +250,9 @@
 				plus.runtime.arguments = null;
 			}, 500);
 
-			// 识别优惠券
+			
 			app.platform.getInvitationClipboard((val: string) => {
+				// 识别优惠券
 				const regular = [/[k][s][j]\w{13}/g,/\w{18}/g];
 				app.platform.matchRequestKey(regular,val,(code:string)=>{
 					uni.showModal({
@@ -268,6 +269,18 @@
 						}
 					})
 				})
+				//识别球员组合助力
+				const PLAY_GROUP=`亲，复制这段口令打开ka世界帮我助力集球员`
+				if(val.indexOf(PLAY_GROUP)!=-1){
+					const helpCode=val.replace(PLAY_GROUP,'')
+					const mineGetHelpCode=uni.getStorageSync('mineGetHelpCode')
+					if(!mineGetHelpCode || mineGetHelpCode==helpCode){
+						return
+					}
+					app.platform.checkPageJump('/pages/act/playGroup/index?helpCode='+helpCode).then(()=>{
+						app.platform.setClipboardEmpty()
+					})
+				}
 			})
 			// #endif
 		},

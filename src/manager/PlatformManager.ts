@@ -188,6 +188,22 @@ export default class PlatformManager {
 			url:`${path}?alias=${alias}${isMerchant?'&isMerchant=true':''}`
 		})
 	}
+	async checkPageJump(url: string, jumpType?: string) {
+		try {
+			if (!jumpType) jumpType = "navigateTo"
+			const pages = getCurrentPages();
+			if (pages.length) {
+				const currentRoute = pages[pages.length - 1].route
+				if (url.indexOf(currentRoute) != -1) jumpType = 'redirectTo'
+			}
+			//@ts-ignore
+			uni[jumpType]({
+				url
+			})
+		} catch (err) {
+			throw new Error(err)
+		}
+	}
 	requestSubscribeMessage(id: string, callback?: Function) {
 		// 调起订阅消息
 		//用户发生点击行为或者发起支付回调后，才可以调起订阅消息界面
