@@ -374,6 +374,10 @@
     shareCallBack() {
       app.http.Post("activity/playerGroup/share/wechat", {}, (res: any) => {
         this.myLotteryNum = res.myLotteryNum;
+        console.log('签到成功');
+        uni.showToast({
+          title:'签到成功'
+        })
         this.taskList[0].isFinish=true
         this.getTaskList();
       });
