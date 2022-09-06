@@ -221,6 +221,7 @@
 				}
 			});
 			if (this.goodsList != '') {
+				this.getHome()
 				let list = this.goodsList.map((x: any) => {
 					return x.goodCode;
 				})
@@ -308,6 +309,14 @@
 			uni.showTabBar()
 		}
 		initEvent(cb ? : Function) {
+			this.getHome(()=>{
+				this.reqNewData(() => {
+					if (cb) cb()
+				})
+			})
+			
+		}
+		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				uni.hideLoading()
 				// #ifndef MP
@@ -319,9 +328,7 @@
 					this.getGreet()
 				}
 				// #endif
-				this.reqNewData(() => {
-					if (cb) cb()
-				})
+				cb && cb()
 			})
 		}
 		onClickMiniGood() {
