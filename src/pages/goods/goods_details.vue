@@ -19,48 +19,48 @@
 		<!-- #endif -->
 		<!-- 商品图片价格 -->
 		<view class="pic-content">
-			<swiper class="swiper" :current="swiperCurrent" autoplay="true" circular="true"
+			<swiper class="swiper" :current="swiperData.swiperCurrent" autoplay="true" circular="true"
 				indicator-active-color="#ffffff" @change="onChangeSwiperCurrent">
-				<swiper-item v-for="(item,index) in goodsImg" :key="index" @click="onClickPreviewImage(index)">
+				<swiper-item v-for="(item,index) in picData.carousel" :key="index" @click="onClickPreviewImage(index)">
 					<view class="goods-img-content">
 						<image class="goods-img" :src="item" mode="aspectFill" />
 					</view>
 				</swiper-item>
 			</swiper>
 			<view class="swiper-popup">
-				<view class="swiper-dots">{{swiperCurrent+1}}/{{goodsImg.length}}</view>
+				<view class="swiper-dots">{{swiperData.swiperCurrent+1}}/{{picData.carousel.length}}</view>
 				<view class="swiper-btn" v-show="goodsData.pic&&goodsData.pic.yuanfeng"
-					:class="{'swiper-btn-current':swiperTabCurrent==index}" v-for="(item,index) in swiperTab"
+					:class="{'swiper-btn-current':swiperData.swiperTabCurrent==index}" v-for="(item,index) in swiperData.swiperTab"
 					:key="index" @click="onClickSwiperTab(index)">{{item}}</view>
 			</view>
 		</view>
 		<view class="detail-index-bg">
 			<view class="detail-bg">
-				<view class="header-content-end" v-if="goodsState>=2">
+				<view class="header-content-end" v-if="goodsData.state>=2">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text
 							class="price-qi">{{getPriceStart()?'起':''}}</text></view>
 				</view>
-				<view class="header-content" :class="{'random-bg':getSelectType()}" v-else-if="goodsState==1||goodsState==0">
+				<view class="header-content" :class="{'random-bg':getSelectType()}" v-else-if="goodsData.state==1||goodsData.state==0">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text
 							class="price-qi">{{getPriceStart()?'起':''}}</text></view>
 					<view class="header-right">
-						<view class="icon-end">{{goodsState==0?'距开售':'距结束'}}</view>
+						<view class="icon-end">{{goodsData.state==0?'距开售':'距结束'}}</view>
 						<view class="countdown-content">
-							<view v-if="countDay>0" class="countdown-index">{{countDay}}</view>
-							<view v-if="countDay>0" class="countdown-index countdown-day">天</view>
-							<view class="countdown-index">{{getCountStr(countHour,0)}}</view>
-							<view class="countdown-index">{{getCountStr(countHour,1)}}</view>
+							<view v-if="countData.countDay>0" class="countdown-index">{{countData.countDay}}</view>
+							<view v-if="countData.countDay>0" class="countdown-index countdown-day">天</view>
+							<view class="countdown-index">{{getCountStr(countData.countHour,0)}}</view>
+							<view class="countdown-index">{{getCountStr(countData.countHour,1)}}</view>
 							<view class="countdown-icon">:</view>
-							<view class="countdown-index">{{getCountStr(countMinute,0)}}</view>
-							<view class="countdown-index">{{getCountStr(countMinute,1)}}</view>
+							<view class="countdown-index">{{getCountStr(countData.countMinute,0)}}</view>
+							<view class="countdown-index">{{getCountStr(countData.countMinute,1)}}</view>
 							<view class="countdown-icon">:</view>
-							<view class="countdown-index">{{getCountStr(countSecond,0)}}</view>
-							<view class="countdown-index">{{getCountStr(countSecond,1)}}</view>
+							<view class="countdown-index">{{getCountStr(countData.countSecond,0)}}</view>
+							<view class="countdown-index">{{getCountStr(countData.countSecond,1)}}</view>
 						</view>
 					</view>
 				</view>
 				<view class="header">
-					<!-- <goodCouponGet :goodCode="goodsData.goodCode" :goodPage="true" :list="getCouponList" /> -->
+					<goodCouponGet :goodCode="goodsData.goodCode" :goodPage="true" :list="getCouponList" />
 					<view class="header-top">
 						<view class="header-top-title">
 							{{goodsData.title}}
@@ -72,7 +72,7 @@
 									:style="{width:(100-planData.width)+'%'}">
 								</view>
 							</view>
-							<view class="header-top-plan-num" v-if="goodsState>=2">已完成</view>
+							<view class="header-top-plan-num" v-if="goodsData.state>=2">已完成</view>
 							<view class="header-top-plan-num" v-else>
 								{{planData.str}}
 								<view class="header-top-plan-numbottom">
@@ -109,7 +109,7 @@
 				<view class="goods-seller" v-if="goodsData.publisher">
 					<view class="goods-seller-left">
 						<muqian-lazyLoad class="goods-seller-left-avatar"
-							:src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar"
+							:src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):app.defaultAvatar"
 							mode="aspectFill" :borderRadius="'50%'"/>
 						<view class="goods-seller-left-desc">
 							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
@@ -153,7 +153,7 @@
 				<view class="detail-title">原封图实拍<text>（以下照片为商家拍摄）</text></view>
 				<view class="detail-bottom-picbox">
 					<image @click="onClickPreviewDetailImage(index)" class="detail-bottom-image" mode="aspectFill"
-						v-for="(item,index) in detailImg" :key="index" :src="item" />
+						v-for="(item,index) in picData.detailImg" :key="index" :src="item" />
 				</view>
 			</view>
 			<view class="detail-title">购买须知</view>
@@ -177,7 +177,7 @@
 		<!-- 底部吐司 -->
 		<tips :tipsData="buyRecordList" v-if="buyRecordList!=''"></tips>
 		<!-- 底部按钮 -->
-		<view class="btn-content" v-if="goodsState==1||(goodsState==0&&goodsData.isSelect)">
+		<view class="btn-content" v-if="goodsData.state==1||(goodsData.state==0&&goodsData.isSelect)">
 			<view class="btn-content-left">
 				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id" @click="onClickTipBtn(item)">
 					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFill" />
@@ -190,8 +190,8 @@
 				{{goodsData.isSelect?'选择编号':'立即购买'}}
 			</view>
 		</view>
-		<view class="btn-contented" :class="{'joined':joined}" v-else-if="goodsState>=2">
-			<view class="btn-content-left" v-if="joined">
+		<view class="btn-contented" :class="{'joined':goodsData.joined}" v-else-if="goodsData.state>=2">
+			<view class="btn-content-left" v-if="goodsData.joined">
 				<view class="btn-content-left-index" @click="onClickTipBtn({id:2})">
 					<image class="icon-order" :src="'../../static/goods/v2/icon_order.png'" mode="aspectFill" />
 					<view class="btn-content-left-index-name">我的卡密</view>
@@ -201,9 +201,9 @@
 			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
 		</view>
 
-		<cardplay :operationShow="operationCardShow" :operaType="operaType" @operacancel="onClickCardCancel" />
+		<cardplay :operationShow="operationCardShow" :operaType="operaType" @operacancel="operationCardShow=false" />
 
-		<share :operationShow="operationShow" :shareData="shareData" @operacancel="onClickShareCancel" />
+		<share :operationShow="shareShow" :shareData="shareData" @operacancel="shareShow=false" />
 
 		<!-- 自选球队 -->
 		<checkTeamPay :teamCheckShow="teamCheckShow" :teamLeftSec="teamLeftSec" :teamCheckIndex="teamCheckIndex"
@@ -257,9 +257,6 @@
 		getGoodsRandomSpe
 	} from '@/tools/switchUtil';
 	import {
-		dateFormat
-	} from '@/tools/util';
-	import {
 		goodsDetailRules,
 		goodsDetailHelp
 	} from "@/net/DataRules";
@@ -269,42 +266,25 @@
 	} from "@/net/DataExchange"
 	import { Md5 } from "ts-md5";
 	import { parsePic } from "@/tools/util";
+	import detailsManager from "./manager/detailsManager"
+	const Manager =  detailsManager.getIns();
 	@Component({})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
 		goodsDetailRules = goodsDetailRules
 		goodsDetailHelp = goodsDetailHelp;
-		goodsSpe: {
-			[x: string]: any
-		} = goodDetailSpe;
+		goodsSpe = goodDetailSpe;
 		stepData = goodDetailStep;
-		goodsState = 0;
-		defaultAvatar = app.defaultAvatar
+		favorType = Manager.favorType;
+		operaType = Manager.operaType;
+		shareShow = Manager.shareShow;
+		countData = {...Manager.countData};
+		swiperData = {...Manager.swiperData};
+		picData = {...Manager.picData}
+		tipBtn = {...Manager.tipBtn};
 		goodCode = '';
-		goodsImg: any = [];
-		carouselLength = 0;
-		swiperCurrent = 0;
-		swiperTab = ['商品', '原封图'];
-		swiperTabCurrent = 0;
-		detailImg: any = [];
 		goodsData: any = [];
-		countDay: any = '';
-		countHour: any = '';
-		countMinute: any = '';
-		countSecond: any = '';
-		count_down: any;
-		countDown = 0;
-		favorType = false;
-		operaType = 0;
 		goodsDesc: { [x: string]: any } = [];
-		tipBtn: { [x: string]: any } = [{
-			id: 1,
-			name: '客服',
-			url: '../../static/goods/v2/icon_kefu.png',
-			class: 'kf'
-		}];
-		// 分享 
-		operationShow = false;
 		shareData: any = {
 			shareUrl: '',
 			title: '',
@@ -345,7 +325,6 @@
 		// 底部抽屉
 		showDrawer = false;
 		freeNoNum = 0;
-		joined = false;
 		source="";
 		// 猜你喜欢
 		likeGoodList:any = [];
@@ -363,15 +342,15 @@
 			this.source=query.source
 			this.getGoodData(goodCode,()=>{
 				// 购买记录
-				if (this.goodsState == 1) {
+				if (this.goodsData.state == 1) {
 					app.http.Get(`dataApi/good/${goodCode}/buyRecord`, {}, (res: any) => {
 						if (res.list) this.buyRecordList = res.list
 					})
 				}
 				// 查询可领取优惠券
-				// setTimeout(()=>{
-				// 	this.queryCoupon()
-				// },200)
+				setTimeout(()=>{
+					this.queryCoupon()
+				},200)
 				// 猜你喜欢
 				let ts = Math.floor(new Date().getTime()/1000);
 				let relativeParams = {
@@ -412,39 +391,35 @@
 			})
 		}
 		// 数据详情赋值
-		getGoodData(id: any,cb?:Function) {
-			clearInterval(this.count_down);
+		getGoodData(goodCode: any,cb?:Function) {
+			const { countData } = this;
+			clearInterval(countData.countInterval);
 			let ts = Math.floor(new Date().getTime()/1000);
 			let params = {
 				ts:ts,
-				s:Md5.hashStr(`kww_good_sign_${id}_${ts}_2022`)
+				s:Md5.hashStr(`kww_good_sign_${goodCode}_${ts}_2022`)
 			}
-			app.http.Get(`dataApi/good/${id}/detail`, params, (data: any) => {
-				if (data.good == null || data.good == undefined) {
+			app.http.Get(`dataApi/good/${goodCode}/detail`, params, (data: any) => {
+				if (!data.good) {
 					uni.showToast({ title: '无此商品', icon: 'none' })
 					uni.switchTab({ url: '/pages/index/index' })
 					return;
 				}
-				// 是否收藏
-				this.favorType = data.favorite <= 0 ? false : true;
+				this.favorType = data.favorite>0;
 				// 数据详情
 				this.goodsData = data.good;
 				// 进度
 				this.getPlan(this.goodsData);
-
 				// 支付方式
 				this.payChannel = data.payChannel || [];
-				this.joined = data.joined
 				if (data.joined) {
 					this.tipBtn = [
 						{ id: 1, name: '客服', url: '../../static/goods/v2/icon_kefu.png', class: 'kf' }, 
 						{ id: 2, name: '我的卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
 					]
 				}
-				// 状态
-				this.goodsState = data.good.state;
 				// 倒计时
-				this.countDown = data.good.state == 0? ( data.good.leftsec - (data.good.overAt - data.good.startAt)): data.good.leftsec;
+				countData.countDown = data.good.state == 0? ( data.good.leftsec - (data.good.overAt - data.good.startAt)): data.good.leftsec;
 				// 免单
 				this.freeNoNum = data.freeNoNum
 				// 获取商品图片
@@ -457,7 +432,7 @@
 				
 				let desc = decodeURIComponent(data.good.desc);
 				let newData = desc.indexOf('\n') > -1 ? desc.split('\n') : desc.split('\r');
-				this.goodsDesc = [`拼团 I D ：${id}`, '开售时间：' + dateFormat(data.good.startAt), ...newData];
+				this.goodsDesc = [`拼团 I D ：${goodCode}`, '开售时间：' + uni.$u.timeFormat(data.good.startAt,'yyyy-mm-dd hh:MM:ss'), ...newData];
 				cb && cb()
 			})
 		}
@@ -490,7 +465,8 @@
 		}
 		// 商品图片
 		getGoodsImage() {
-			let pic:any = decodeURIComponent(this.goodsData.pic.carousel);
+			const goodsPic = this.goodsData.pic
+			let pic:any = decodeURIComponent(goodsPic.carousel);
 			let carousel: any = [];
 			if (pic.indexOf(',') == -1) {
 				carousel.push(parsePic(pic))
@@ -500,20 +476,21 @@
 					return parsePic(x)
 				})
 			}
-			this.carouselLength = carousel.length;
-			let yuanfeng = this.goodsData.pic.yuanfeng ? decodeURIComponent(this.goodsData.pic.yuanfeng).split(',') : [];
+			this.swiperData.carouselLength = carousel.length;
+			let yuanfeng = goodsPic.yuanfeng ? decodeURIComponent(goodsPic.yuanfeng).split(',') : [];
 			yuanfeng = yuanfeng.map((x:any)=>{
 				return parsePic(x)
 			})
-			this.goodsImg = [...carousel, ...yuanfeng];
+			this.picData.carousel = [...carousel, ...yuanfeng];
 		}
 		// 详情图片
 		getDetailImage(img: any) {
+			const { picData } = this;
 			if (img.indexOf(',') == -1) {
-				this.detailImg.push(parsePic(img))
+				picData.detailImg.push(parsePic(img))
 			} else {
-				this.detailImg = img.split(',')
-				this.detailImg = this.detailImg.map((x:any)=>{
+				picData.detailImg = img.split(',')
+				picData.detailImg = picData.detailImg.map((x:any)=>{
 					return parsePic(x)
 				})
 			}
@@ -521,8 +498,10 @@
 
 		// 倒计时时间计算
 		getTime() {
-			let day = String(Math.floor(this.countDown / 3600 / 24));
-			let day_num = this.countDown - 3600 * 24 * Number(day)
+			const { countData } = this;
+
+			let day = String(Math.floor(countData.countDown / 3600 / 24));
+			let day_num = countData.countDown - 3600 * 24 * Number(day)
 			let hour = Math.floor((day_num) / 3600) < 10 ? '0' + Math.floor((day_num) / 3600) : Math.floor((day_num) /
 				3600);
 			let minute = Math.floor((day_num - 3600 * Number(hour)) / 60) < 10 ? '0' + Math.floor((day_num - 3600 *
@@ -530,27 +509,28 @@
 			let second = Math.floor((day_num - 3600 * Number(hour)) % 60) < 10 ? '0' + Math.floor((day_num - 3600 *
 				Number(hour)) % 60) : Math.floor((day_num - 3600 * Number(hour)) % 60);
 			if (Number(day) > 0) {
-				this.countDay = day;
+				countData.countDay = day;
 			}
-			this.countHour = hour;
-			this.countMinute = minute;
-			this.countSecond = second
+			countData.countHour = hour;
+			countData.countMinute = minute;
+			countData.countSecond = second
 		}
 		// 倒计时定时器
 		getCountDown() {
+			const { countData } = this;
 			this.getTime()
-			this.count_down = this.scheduler(() => {
-				if (this.countDown > 0) {
-					this.countDown--;
+			countData.countInterval = this.scheduler(() => {
+				if (this.countData.countDown > 0) {
+					this.countData.countDown--;
 					this.getTime()
 				} else {
-					if(this.goodsState == 0){
+					if(this.goodsData.state == 0){
 						this.getGoodData(this.goodCode);
 					}
-					if (this.goodsState == 1) {
-						this.goodsState = -99
+					if (this.goodsData.state == 1) {
+						this.goodsData.state = -99
 					}
-					clearInterval(this.count_down)
+					clearInterval(countData.countInterval)
 				}
 			}, 1);
 		}
@@ -629,16 +609,16 @@
 		}
 		// 分享
 		onClickShare() {
-			if (!this.operationShow) {
+			if (!this.shareShow) {
 				if (this.shareData.shareUrl == '') {
 					this.shareData = {
 						shareUrl: `share/h5/#/pages/goods/goods_details?id=${this.goodCode}`,
 						title: this.goodsData.title,
 						summary: this.goodsData.title,
-						thumb: this.goodsData.pic.thumb||this.goodsImg[0]
+						thumb: this.goodsData.pic.thumb||this.picData.carousel[0]
 					}
 				}
-				this.operationShow = true
+				this.shareShow = true
 			}
 		}
 		onClickFavor() {
@@ -650,14 +630,14 @@
 		// 观看大图
 		onClickPreviewImage(index: number) {
 			uni.previewImage({
-				urls: this.goodsImg,
+				urls: this.picData.carousel,
 				current: index,
 				indicator: "number"
 			});
 		}
 		onClickPreviewDetailImage(index: number) {
 			uni.previewImage({
-				urls: this.detailImg,
+				urls: this.picData.detailImg,
 				current: index,
 				indicator: "number"
 			});
@@ -757,12 +737,6 @@
 			if (item.id == 4) {
 				this.onClickAllCard()
 			}
-		}
-		onClickCardCancel() {
-			this.operationCardShow = false
-		}
-		onClickShareCancel() {
-			this.operationShow = false
 		}
 		// 随机倒计时结束
 		onChangeRandomGood() {
@@ -972,13 +946,15 @@
 			this.onClickInvitePopupCancel();
 		}
 		onChangeSwiperCurrent(event: any) {
-			this.swiperCurrent = event.detail.current;
-			this.swiperTabCurrent = event.detail.current < this.carouselLength ? 0 : 1
+			const { swiperData } = this
+			swiperData.swiperCurrent = event.detail.current;
+			swiperData.swiperTabCurrent = event.detail.current < swiperData.carouselLength ? 0 : 1
 		}
 		onClickSwiperTab(index: number) {
-			if (index != this.swiperTabCurrent) {
-				this.swiperTabCurrent = index;
-				this.swiperCurrent = index == 0 ? 0 : this.carouselLength;
+			const { swiperData } = this
+			if (index != swiperData.swiperTabCurrent) {
+				swiperData.swiperTabCurrent = index;
+				swiperData.swiperCurrent = index == 0 ? 0 : swiperData.carouselLength;
 			}
 		}
 		getCountStr(str: any, index: number) {

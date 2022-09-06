@@ -2,7 +2,8 @@
 export var indexTabList = {
     tabTop:[
         {img:'../../static/index/v2/top_icon0.gif',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
-        {img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
+        // {img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
+        {img:'../../static/index/v2/top_icon1.png',text:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
         {img:'../../static/index/v2/top_icon2.png',text:'资讯公告',url:'/pages/information/list'},
         {img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
     ],
@@ -56,14 +57,30 @@ export var goodsListType: { [x: string]: any } = {
     'progress': '即将拼成',
 	'yifen':'一分上组'
 }
-// 商品详情规格
-export var goodDetailSpe = {
+/**
+ * @goodDetailSpe   商品详情 规格类型
+ * @spec            拼团规格
+ * @pintuan_type    拼团形式
+ * @random_type     随机方式
+ * @spec_str        查看卡密
+ *  @value ｛number｝ id   id标识
+ *  @value ｛string｝ name 内容
+ *  @value ｛string｝ desc 描述
+ *  @value ｛string｝ icon 图标
+ */
+export var goodDetailSpe: {
+    [x: string]: any
+} = {
     spec:{id:3,name:'',desc:'拼团规格',icon:''},
     pintuan_type:{id:1,name:'',desc:'拼团形式',icon:''},
     random_type:{id:2,name:'',desc:'随机方式',icon:''},
     spec_str:{id:4,name:'查看',desc:'卡密列表',icon:'../../static/goods/v2/spe_ck.png'}
 };
-// 商品详情规格
+/**
+ * @goodDetailSpe 商品详情 拼团详情引导图
+ *  @value ｛string｝ name 内容
+ *  @value ｛string｝ pic  图片地址
+ */
 export var goodDetailStep = [
     {name:'参与拼团',pic:'../../static/goods/v2/step_0.png'},
     {name:'直播拆卡',pic:'../../static/goods/v2/step_1.png'},
