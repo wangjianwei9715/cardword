@@ -60,12 +60,12 @@ export default {
       this.$emit("update:visible", false);
     },
     canShare(url){
-			const goodsShareUrl=['/pages/goods/goods_details','/pages/calendar/goods_details']
-			let bol=false
-			const list=goodsShareUrl.filter((item)=>{
-				return url.indexOf(item)!=-1
-			})
-			if(list && list.length) bol=true
+			const goodsShareUrl=['/pages/goods/goods_details','/pages/calendar/goods_details','/pages/live/liveShare']
+			let bol=true
+			// const list=goodsShareUrl.filter((item)=>{
+			// 	return url.indexOf(item)!=-1
+			// })
+			// if(list && list.length) bol=true
 			return bol
 		},
     setClipboardData() {
@@ -106,7 +106,7 @@ export default {
         provider: "weixin",
         scene: scene,
         type: 0,
-        href: `${app.activityShareOrigin}/${this.shareData.shareUrl}`,
+        href: `${app.H5Url}/${this.shareData.shareUrl}`,
         title: this.shareData.title,
         summary: this.shareData.summary,
         imageUrl: this.shareData.thumb,

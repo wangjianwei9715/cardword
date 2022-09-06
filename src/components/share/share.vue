@@ -99,11 +99,11 @@
 		}
 		canShare(url:string){
 			const goodsShareUrl=['/pages/goods/goods_details','/pages/calendar/goods_details']
-			let bol:boolean=false
-			const list=goodsShareUrl.filter((item:any)=>{
-				return url.indexOf(item)!=-1
-			})
-			if(list && list.length) bol=true
+			let bol:boolean=true
+			// const list=goodsShareUrl.filter((item:any)=>{
+			// 	return url.indexOf(item)!=-1
+			// })
+			// if(list && list.length) bol=true
 			return bol
 		}
 		// isGoodsShare(url:string){
