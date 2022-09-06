@@ -45,7 +45,7 @@
 			console.log("App Launch");
 			//#ifdef APP-PLUS
 			plus.screen.lockOrientation("portrait-primary"); // 强制竖屏
-			plus.webview.prefetchURL(app.liveWebView); //预载直播控件webview
+			// plus.webview.prefetchURL(app.liveWebView); //预载直播控件webview
 			// plus.screen.lockOrientation('landscape-primary');
 			//#endif
 			if (process.env.NODE_ENV === "development") {
@@ -274,7 +274,7 @@
 				if(val.indexOf(PLAY_GROUP)!=-1){
 					const helpCode=val.replace(PLAY_GROUP,'')
 					const mineGetHelpCode=uni.getStorageSync('mineGetHelpCode')
-					if(!mineGetHelpCode || mineGetHelpCode==helpCode){
+					if(mineGetHelpCode && mineGetHelpCode==helpCode){
 						return
 					}
 					app.platform.checkPageJump('/pages/act/playGroup/index?helpCode='+helpCode).then(()=>{
