@@ -143,7 +143,7 @@
         <view class="confirmButton flexCenter" @click="goWechat">
           <u-icon name="weixin-fill" color="#fff" :size="30"
             style="position: relative;bottom: -2rpx;margin-right: 4rpx;"></u-icon>
-          去微信黏贴
+          去微信粘贴
         </view>
         <image
         @click="showWechat=false"
