@@ -86,7 +86,7 @@
           </view>
         </view>
         <view class="taskItem-right" :class="{taskItemGray:item.isFinish}" @click="onClickTask(item,index)">
-          {{item.buttonText}}</view>
+          {{index==0?(item.isFinish?'已完成':item.buttonText):item.buttonText}}</view>
       </view>
     </bottomDrawer>
     <pedometerPop :show.sync='pedometerShow' :value.sync='selectItem.needExchangeNum'
