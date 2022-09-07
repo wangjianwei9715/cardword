@@ -548,6 +548,7 @@ color: #E6A44F;">下次加油！</text>
     },
     beforeDestroy() {
       uni.hideLoading();
+      this.clearAllInterval()
       if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0") {
         this.SelfTerminateLianmai();
       }
@@ -567,7 +568,7 @@ color: #E6A44F;">下次加油！</text>
       this.leaveRoom();
       if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0")
         this.SelfTerminateLianmai();
-      this.stampTimer && clearInterval(this.stampTimer);
+
       console.log("退出房间");
     },
     async onLoad(query) {
@@ -696,6 +697,11 @@ color: #E6A44F;">下次加油！</text>
       }
     },
     methods: {
+      clearAllInterval() {
+        this.stampTimer && clearInterval(this.stampTimer);
+        this.heartBeatTimer && clearInterval(this.heartBeatTimer);
+        this.reconnectionTimer && clearInterval(this.reconnectionTimer);
+      },
       keyBoardHeightChange(obj) {
         let _heightDiff =
           this.deviceInfo.screenHeight - this.deviceInfo.windowHeight;
@@ -1574,8 +1580,8 @@ color: #E6A44F;">下次加油！</text>
       KickOut(res) {
         console.log("被踢出房间的通知", JSON.stringify(res));
         this.systemKickOut = true;
-        if(res.why=='直播已结束'){
-          this.liveData.state=3
+        if (res.why == '直播已结束') {
+          this.liveData.state = 3
         }
         uni.showModal({
           title: "提示",
