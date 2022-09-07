@@ -474,12 +474,12 @@ color: #E6A44F;">下次加油！</text>
           index: 0,
           config: [
             {
-              bitrate: 3500,
-              captureWidth: 750,
-              captureHeight: 1326,
-              encodeWidth: 750,
+              bitrate: 3000,
+              captureWidth: 720,
+              captureHeight: 1280,
+              encodeWidth: 720,
               codecID: 1,
-              encodeHeight: 1326,
+              encodeHeight: 1280,
               fps: 30
             },
             {
@@ -510,7 +510,7 @@ color: #E6A44F;">下次加油！</text>
         userData: {},
         systemKickOut: false, //是否为系统强制使用户退出房间
         keyHeight: 0,
-        pullPattern: "mixer", //拉流模式  normal正常模式,mixer混流模式
+        pullPattern: "normal", //拉流模式  normal正常模式,mixer混流模式
         mixerTask: undefined, //混流任务
         mixerStreamID: "0" //混流id
       };
@@ -662,18 +662,17 @@ color: #E6A44F;">下次加油！</text>
         }
       },
       nowTimeStamp: function (val) {
-        // console.log(val, this.heartBeatStamp);
-        // if (this.isConnectSocket) return;
-        if (this.heartBeatStamp == 0 && val - this.inLiveRoomStamp > 10) {
+        if (this.heartBeatStamp == 0 && val - this.inLiveRoomStamp > 15) {
+          console.log('进入直播间时长大于15s并且未收到心跳的情况');
           //进入直播间时长大于10s并且未收到心跳的情况
           this.reconnectionSocket()
           return
         }
         const difference = val - this.heartBeatStamp
-        // console.log('对比上次时间戳时间差', difference + 's');
-        if (difference >= 10) {
-          //超过大于10s为接收到心跳包
-          // if (this.isConnectSocket) return;
+        if (difference >= 15) {
+          console.log(difference);
+          console.log('超过大于10s为接收到心跳包,等于距离上次接收到心跳过去了10秒钟');
+          //超过大于10s为接收到心跳包,等于距离上次接收到心跳过去了10秒钟
           this.reconnectionSocket()
         }
       }
@@ -1034,6 +1033,7 @@ color: #E6A44F;">下次加油！</text>
           () => {
             app.sever.registerHandlers(this, registerList, true);
             this.sendHeartBeat();
+            this.heartBeatStamp=Math.round(new Date()/1000)
             this.sendWebsocketLogin();
             this.inReconnection = false
             uni.hideLoading()
@@ -1069,7 +1069,7 @@ color: #E6A44F;">下次加油！</text>
         this.reconnectionTimer = setInterval(() => {
           console.log("断线重连中", new Date());
           this.initSocket(false);
-        }, 5000);
+        }, 3000);
       },
       //心跳包
       sendHeartBeat() {
@@ -1841,6 +1841,9 @@ color: #E6A44F;">下次加油！</text>
             duration: 2500
           });
         }
+      },
+      playerQualityUpdate(streamID, quality){
+        console.log('拉流质量',quality);
       },
       changeVideoConfig() {
         this.videoConfig.index == 2
