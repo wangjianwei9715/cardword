@@ -155,11 +155,7 @@
 				this.currentListData.splice(idIndex,1)
 			}
 		}
-		onClickMoreList(code:any){
-			uni.navigateTo({
-				url:'/pages/userinfo/order_myAllCard?code='+code
-			})
-		}
+		
 		onClickCopyYzm(){
 			if(this.currentList == '') {
 				uni.showToast({
