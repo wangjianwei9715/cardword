@@ -696,14 +696,6 @@
 					}
 				},
 				{
-					"path": "user_live",
-					"style": {
-						"navigationBarTitleText": "我的直播",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black"
-					}
-				},
-				{
 					"path": "user_collect",
 					"style": {
 						"navigationStyle": "custom",
