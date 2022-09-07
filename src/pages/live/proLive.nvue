@@ -4,7 +4,7 @@
     <zego-remote-view :streamID="lmStreanID" :viewMode="1" style="opacity: 0;width: 0rpx;height: 0rpx;">
     </zego-remote-view>
     <!-- 预设主播流播放器 -->
-    <view class="userView" v-if="!isAnchor"
+    <view class="userView" v-if="!isAnchor" style="background-color: #222222;"
       :style="{height:deviceInfo.screenHeight+'px',width:deviceInfo.screenWidth+'px'}">
       <zego-remote-view :streamID="streamID" :viewMode="1" style=" flex: 1;"
         :style="{height:deviceInfo.screenHeight+'px',width:deviceInfo.screenWidth+'px'}">
@@ -34,7 +34,7 @@
       <text class="liveTitle">{{liveData.title}}</text>
       <text class="liveTips">{{maskCountDownTips!=''?"拆卡倒计时":textTipsMap[String(liveData.state)]}}</text>
       <text class="liveCountDown"
-        v-if="maskCountDownTips!=''&&typeof liveData.state!='undefined'">{{maskCountDownTips}}</text>
+        v-if="maskCountDownTips!=''&&(typeof liveData.state!='undefined')">{{maskCountDownTips}}</text>
       <text class="playStart" v-if="isAnchor&&!finishLive" @click="startPreview">开始直播</text>
     </view>
 
@@ -350,7 +350,7 @@ color: #E6A44F;">下次加油！</text>
   const textTipsMap = {
     "0": "拆卡倒计时",
     "1": "等待主播开播",
-    "2": "主播暂时离开",
+    "2": "拆卡进行中",
     "3": "直播结束,回放生成中",
     "-1": "直播过期",
     "-2": "直播已取消"
@@ -2121,7 +2121,7 @@ color: #E6A44F;">下次加油！</text>
     width: 750rpx;
     overflow: hidden;
     align-items: center;
-    /* background-color: red; */
+    background-color: black;
   }
 
   .none {
