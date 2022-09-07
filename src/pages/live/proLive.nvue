@@ -1574,6 +1574,9 @@ color: #E6A44F;">下次加油！</text>
       KickOut(res) {
         console.log("被踢出房间的通知", JSON.stringify(res));
         this.systemKickOut = true;
+        if(res.why=='直播已结束'){
+          this.liveData.state=3
+        }
         uni.showModal({
           title: "提示",
           content: res.why,
