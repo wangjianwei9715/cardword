@@ -54,7 +54,8 @@ export class Message {
 			"0x0002F2":"BackGmKickOutRoom",//踢出房间的回调
 			"0x00010F":"KickOut",
 			"0x00020C":"SendGiftUpdated",//免费礼物获得回调
-			"0x0002FF":"SendRoomData"//房间状态及房间在线人数
+			"0x0002FF":"SendRoomData",//房间状态及房间在线人数
+			"0x000001":"BackHeartBeat"//心跳包回调
 			// '0x000201': 'BucketInfo',
 			// '0x000202': 'PushChatMessage', //推送聊天消息
 			// '0x000203': 'BackSendMessage', //发送失败才发

@@ -38,7 +38,12 @@ export abstract class ServerBase{
         let len = this._getNum(lenArr);
 
         let cmdID:any = this._toHex(this._getNum(pack.slice(3, 6)));
-
+        if(cmdID=="0x00001"){
+            //@ts-ignore
+            this._packFunc.BackHeartBeat(Math.round(new Date()/1000))
+            return
+        }
+        
         let recvMessageBytes = pack.slice(6, len + 6 - 4);
         let packageName:any = Message.cmd[cmdID];
         if (!packageName || packageName.length === 0) {

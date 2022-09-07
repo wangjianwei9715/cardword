@@ -166,7 +166,7 @@
           this.getChartList(false);
         }
         if (val < this.chartQuery.fromSec) {
-          this.chartQuery.fromSec = val;
+          this.chartQuery.fromSec = Math.round(val);
           this.restFetch();
           this.getChartList(true);
           console.log("拖动结束");
@@ -175,7 +175,6 @@
     },
     methods: {
       getChartList(clear = true, changeToSec = true) {
-        console.log("请求接口");
         if (clear) this.chartList = [];
         if (changeToSec) this.chartQuery.toSec = this.chartQuery.fromSec + 60;
         this.chartQuery.ts=Math.round(new Date()/1000)

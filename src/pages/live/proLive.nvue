@@ -278,7 +278,7 @@ color: #E6A44F;">下次加油！</text>
         </view>
       </view>
       <text class="confirmStart"
-        @click='onLive?liveConfigToolShow=false:startPublishingStream(streamID)'>{{onLive?'关闭设置':'确认开始'}}</text>
+        @click='onLive?liveConfigToolShow=false:anchorConfirmPush(streamID)'>{{onLive?'关闭设置':'确认开始'}}</text>
     </view>
     <view class="top" :style="{ top: 56 + deviceInfo.statusBarHeight + 'rpx' }">
       <view class="merchant">
@@ -383,7 +383,8 @@ color: #E6A44F;">下次加油！</text>
     "BackGmKickOutRoom",
     "KickOut",
     "SendGiftUpdated",
-    "SendRoomData"
+    "SendRoomData",
+    "BackHeartBeat"
   ]);
   const shareData = Object.freeze({
     shareUrl: "",
@@ -421,7 +422,10 @@ color: #E6A44F;">下次加油！</text>
         textTipsMap,
         websocket: "",
         heartBeatTimer: null,
+        heartBeatStamp: 0,//心跳包接收的时间
+        inLiveRoomStamp: 0,//进入直播间时间
         socketRoomLoginTimer: null,
+        inReconnection: false,//是否在重连状态
         isConnectSocket: false,
         reconnectionTimer: null,
         isAnchor: false, //是否为主播
@@ -499,6 +503,7 @@ color: #E6A44F;">下次加油！</text>
           ]
         },
         giftShow: false,
+
         liveData: {}, //直播间信息
         merchantMessage: {}, //商家
         websocket: "", //socket版本地址
@@ -566,6 +571,8 @@ color: #E6A44F;">下次加油！</text>
       console.log("退出房间");
     },
     async onLoad(query) {
+      //进入直播间时间
+      this.inLiveRoomStamp = Math.round(new Date() / 1000)
       this.$nextTick(() => {
         this.webView = this.$refs.webView;
       });
@@ -574,27 +581,33 @@ color: #E6A44F;">下次加油！</text>
         keepScreenOn: true
       });
       uni.onKeyboardHeightChange(this.keyBoardHeightChange);
+      //是否为主播
       if (query.isAnchor == "true") this.isAnchor = true;
       this.liveType = query.type ? +query.type : 0;
+      //时实时间
       this.stampTimer = setInterval(() => {
         this.nowTimeStamp = Math.round(+new Date() / 1000);
       }, 1000);
+      //监听socket状态
       uni.$on("socketClose", this.socketClose);
-
       this.roomID = query.roomID;
       this.streamID = query.streamID;
+      //获取直播间数据
       await this.getLiveData();
+      //获取用户个人信息数据
       await this.getUserProfile();
+      //创建直播控件实例
       await this.createEngine();
-
+      //获取房间内可领取或已领取红包或优惠券
       this.getRoomRedPackList();
-
+      //导入ios UIImpactFeedbackGenerator类
       if (this.deviceInfo.platform == "ios") {
         UIImpactFeedbackGenerator = plus.ios.importClass(
           "UIImpactFeedbackGenerator"
         );
         impact = new UIImpactFeedbackGenerator();
       }
+      //当前用户为安卓设备并且为主播的情况下获取相机及麦克风权限
       if (this.deviceInfo.platform == "android" && query.isAnchor == "true") {
         permision.requestAndroidPermission("android.permission.CAMERA");
         permision.requestAndroidPermission("android.permission.RECORD_AUDIO");
@@ -645,6 +658,22 @@ color: #E6A44F;">下次加油！</text>
             return +item.id == +clickCoupon.id;
           });
           if (spliceIndex >= 0) this.showCouponList.splice(spliceIndex, 1);
+        }
+      },
+      nowTimeStamp: function (val) {
+        // console.log(val, this.heartBeatStamp);
+        // if (this.isConnectSocket) return;
+        if (this.heartBeatStamp == 0 && val - this.inLiveRoomStamp > 10) {
+          //进入直播间时长大于10s并且未收到心跳的情况
+          this.reconnectionSocket()
+          return
+        }
+        const difference = val - this.heartBeatStamp
+        // console.log('对比上次时间戳时间差', difference + 's');
+        if (difference >= 10) {
+          //超过大于10s为接收到心跳包
+          // if (this.isConnectSocket) return;
+          this.reconnectionSocket()
         }
       }
     },
@@ -757,7 +786,7 @@ color: #E6A44F;">下次加油！</text>
                   showCancel: false,
                   success: ({ confirm }) => {
                     if (confirm) {
-                      uni.reLaunch({
+                      uni.switchTab({
                         url: "/pages/index/index"
                       });
                     }
@@ -955,6 +984,7 @@ color: #E6A44F;">下次加油！</text>
               title: "连接状态异常",
               icon: "none"
             });
+            this.socketClose()
           }
         });
       },
@@ -989,6 +1019,7 @@ color: #E6A44F;">下次加油！</text>
       },
       //连接sockey
       connectSever() {
+        console.log('链接中');
         app.sever && app.sever.close();
         app.sever.setServerInfo({
           ip: this.websocket
@@ -998,6 +1029,8 @@ color: #E6A44F;">下次加油！</text>
             app.sever.registerHandlers(this, registerList, true);
             this.sendHeartBeat();
             this.sendWebsocketLogin();
+            this.inReconnection = false
+            uni.hideLoading()
           },
           () => {
             uni.showToast({
@@ -1011,17 +1044,21 @@ color: #E6A44F;">下次加油！</text>
       //监听倒socket断开的回调
       socketClose(res) {
         console.log("socket断开了");
-        uni.showLoading({
-          title: "连接中"
-        });
         //监听到断线
         this.isConnectSocket = false;
-        this.reconnectionTimer && clearInterval(this.reconnectionTimer);
+        // this.reconnectionTimer && clearInterval(this.reconnectionTimer);
         this.reconnectionSocket();
       },
       //重连socket
       reconnectionSocket() {
-        if (this.isConnectSocket) return;
+        if (this.inReconnection) return;
+        app.sever && app.sever.close();
+        uni.showLoading({
+          title: "连接中"
+        });
+        this.isConnectSocket = false;
+        this.inReconnection = true
+        console.log('开始重连');
         this.reconnectionTimer && clearInterval(this.reconnectionTimer);
         this.reconnectionTimer = setInterval(() => {
           console.log("断线重连中", new Date());
@@ -1034,11 +1071,15 @@ color: #E6A44F;">下次加油！</text>
           this.sendSocketMsg("HeartBeat", {
             time: new Date().getTime()
           }).then(res => {
-            console.log('发送成功礼物');
+            console.log('发送心跳');
           }).catch(err => {
-            console.log('礼物发送失败,失败原因', err);
+            console.log('心跳发送失败', err);
           });
         }
+      },
+      BackHeartBeat(res) {
+        console.log('心跳包回调', res, Math.round(new Date() / 1000));
+        this.heartBeatStamp = res//记录存储上次心跳包回调时间戳
       },
       //-----------socket房间功能----------
       //登录房间socket
@@ -1544,7 +1585,7 @@ color: #E6A44F;">下次加油！</text>
               this.stopPublishingStream(false, true);
             if (res.confirm) {
               // this.leaveRoom()
-              uni.reLaunch({
+              uni.switchTab({
                 url: "/pages/index/index"
               });
             }
@@ -1609,15 +1650,15 @@ color: #E6A44F;">下次加油！</text>
       //------------http接口能力----------
       //开始直播
       startLive() {
-        //首次推流获取streamID,改变直播状态
-        if (this.liveData && this.liveData.state <= 1) {
-          request(
-            "funcApi/brodcast/third/1001/achor/push/" + this.roomID,
-            {},
-            "post"
-          );
-          console.log("主播请求了开始直播的api");
-        }
+        // //首次推流获取streamID,改变直播状态
+        // if (this.liveData && this.liveData.state <= 1) {
+        //   request(
+        //     "funcApi/brodcast/third/1001/achor/push/" + this.roomID,
+        //     {},
+        //     "post"
+        //   );
+        //   console.log("主播请求了开始直播的api");
+        // }
       },
       stopLive() {
         const stopSign = Md5.hashStr(
@@ -1662,7 +1703,7 @@ color: #E6A44F;">下次加油！</text>
               showCancel: false,
               success: res => {
                 if (res.confirm) {
-                  uni.reLaunch({
+                  uni.switchTab({
                     url: "/pages/index/index",
                     fail: fail => {
                       console.log("jumpFail", fail);
@@ -1866,6 +1907,25 @@ color: #E6A44F;">下次加油！</text>
         await this.engine.stopPreview();
         this.onPreview = false;
       },
+      //主播确认开始推流
+      async anchorConfirmPush(streamID) {
+        try {
+          //首次推流获取streamID,改变直播状态
+          if (this.liveData && this.liveData.state <= 1) {
+            await request(
+              "funcApi/brodcast/third/1001/achor/push/" + this.roomID,
+              {},
+              "post"
+            );
+            console.log("主播请求了开始直播的api");
+          }
+          await this.startPublishingStream(streamID)
+        } catch (err) {
+          // uni.showToast({
+          //   title:err.m
+          // })
+        }
+      },
       //开始推流
       async startPublishingStream(streamID) {
         try {
@@ -1877,7 +1937,7 @@ color: #E6A44F;">下次加油！</text>
             this.onLive = true;
             this.liveConfigToolShow = false;
             this.liveConfigToolShow = false;
-            this.startLive();
+            // this.startLive();
           }
         } catch (err) {
           uni.showToast({
