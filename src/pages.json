@@ -696,21 +696,6 @@
 					}
 				},
 				{
-					"path": "card_no",
-					"style": {
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "user_live",
-					"style": {
-						"navigationBarTitleText": "我的直播",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black"
-					}
-				},
-				{
 					"path": "user_collect",
 					"style": {
 						"navigationStyle": "custom",
@@ -732,14 +717,6 @@
 					"path": "order_myCard",
 					"style": {
 						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "order_myAllCard",
-					"style": {
-						"navigationBarTitleText": "我的编号",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black"
 					}
 				},
 				{
