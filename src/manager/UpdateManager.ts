@@ -32,6 +32,8 @@ export default class UpdateManager {
         showCancel: false,
         success: (res) => {
           if (res.confirm) {
+            //@ts-ignore
+            plus.cache.clear(() => {});
             // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
             updateManager.applyUpdate();
           }
@@ -48,28 +50,28 @@ export default class UpdateManager {
     });
   }
 
-  initAppUpdate(){
-    plus.runtime.getProperty(plus.runtime.appid||'', (widgetInfo) => {
+  initAppUpdate() {
+    plus.runtime.getProperty(plus.runtime.appid || '', (widgetInfo) => {
       let myapp = getApp().globalData || {};
       myapp.version = widgetInfo.version
       app.version = myapp.version
       app.updateDebug = uni.getStorageSync("updateDebug");
-      console.log('widgetInfo===',widgetInfo);
+      console.log('widgetInfo===', widgetInfo);
       HttpRequest.getIns().Get("app/update", {
-        debug:app.updateDebug,
+        debug: app.updateDebug,
         name: widgetInfo.name,
         version: widgetInfo.version,
-        os:uni.getSystemInfoSync().platform
+        os: uni.getSystemInfoSync().platform
       }, (res: any) => {
         let data = res.data
-        console.log('AppUpdate-data===',data);
+        console.log('AppUpdate-data===', data);
         if (data.download && data.pkg_url) {
           //强制更新代码，需要ui界面禁止用户触摸等操作
           this.apkNeedUpdate = true;
           this.apkData = data;
           uni.$emit('apkNeedUpdate');
-        }else if (data.update && data.wgt_url&&data.wgt_url!='') {
-          console.log('############downloadFile###########',data.wgt_url);
+        } else if (data.update && data.wgt_url && data.wgt_url != '') {
+          console.log('############downloadFile###########', data.wgt_url);
           uni.showModal({
             title: '版本更新',
             content: '检测到新版本，是否立刻更新。',
@@ -91,9 +93,9 @@ export default class UpdateManager {
                           content: '立刻重启应用完成更新。',
                           showCancel: false,
                           success: (result) => {
-                            setTimeout(()=>{
+                            setTimeout(() => {
                               plus.runtime.restart();
-                            },500)
+                            }, 500)
                           }
                         });
                       }, (result) => {
@@ -107,17 +109,17 @@ export default class UpdateManager {
                 });
                 let download = 0;
                 wgtDownload.onProgressUpdate((res) => {
-                  if(res.progress>download){
+                  if (res.progress > download) {
                     download = res.progress
-                    if(res.progress<100){
-                      uni.$emit('wgtUpdateNum',res.progress);
+                    if (res.progress < 100) {
+                      uni.$emit('wgtUpdateNum', res.progress);
                     }
                   }
                 });
               }
             }
           });
-          
+
         }
       });
     });
