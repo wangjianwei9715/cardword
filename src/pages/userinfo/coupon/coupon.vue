@@ -23,7 +23,7 @@
 			<view class="coupon-explain" :class="{'show-explain':checkShowExplain(item.id)}">
 				<view class="explain-content">
 					<view v-if="item.goodCode!=''" class="explain-index">1.该券只能用于商品：{{item.goodCode}}</view>
-					<view v-else class="explain-index">1.{{item.tp==1&&item.name.indexOf('店铺')==-1?'卡享券':item.name}}可用于{{item.name.indexOf('店铺')!=-1?'该商家的':'平台'}}所有商品，用户下单时，可选择{{item.tp==1?'卡享券':'满减券'}}按面值抵减商品金额</view>
+					<view v-else class="explain-index">1.{{item.tp==1&&!item.merchantName?'卡享券':item.name}}可用于{{item.merchantName?item.merchantName:'平台'}}所有商品，用户下单时，可选择{{item.tp==1?'卡享券':'满减券'}}按面值抵减商品金额</view>
 					<view class="explain-index">2.{{item.tp==1?'卡享券可叠加使用，最低可减至0.1元，但不设找零':'满减券不可叠加使用，不设找零'}}</view>
 					<view class="explain-index">3.不可与其他类型优惠券叠加使用</view>
 					<view class="explain-index">券编号：{{item.code}}</view>
@@ -129,6 +129,8 @@
 				uni.navigateTo({
 					url: '/pages/goods/goods_details?id='+decodeURIComponent(goodCode)
 				})
+			}else if(item.merchantAlias){
+				this.goMerchantPage(item.merchantAlias)
 			}else{
 				uni.switchTab({
 					url:'/pages/index/index'

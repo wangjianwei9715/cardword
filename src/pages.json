@@ -571,6 +571,19 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
+				},
+				{
+					"path": "video",
+					"style": { 
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"titleNView": false,
+							"background":"#000000"
+						}
+						
+						
+					}
 				}
 			]
 		},
@@ -1101,3 +1114,4 @@
 		}
 	]
 }
+
