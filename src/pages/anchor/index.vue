@@ -67,6 +67,7 @@
 		onLoad(query:any) {
 			// #ifdef APP-PLUS
 			setTimeout(()=>{
+				plus.navigator.setFullscreen(true);
 				plus.screen.lockOrientation('landscape-primary')
 			},1200)
 			// #endif
@@ -78,7 +79,8 @@
 		}
 		onUnload() {
 			clearInterval(this.intervalInit)
-			plus.screen.lockOrientation('portrait-primary')
+			plus.screen.lockOrientation('portrait-primary');
+			plus.navigator.setFullscreen(false);
 		}
 		initEven():void{
 			let params = this.homeParams;

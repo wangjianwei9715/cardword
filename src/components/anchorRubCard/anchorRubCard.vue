@@ -100,10 +100,10 @@
 							<view class="ulist-info-left">
 								<view class="ulist-info-top">
 									<muqian-lazyLoad class="avatar" :src="item.avatar==''?defaultAvatar:decodeURIComponent(item.avatar)" borderRadius="50%" />
-									<view class="ulist-name">{{item.userName}}</view>
+									<view class="ulist-name u-line-1">{{item.userName}}</view>
 									<view class="ulist-num">待搓组数：{{item.cuokaNum}}</view>
 								</view>
-								<view class="ulist-time">发起时间：{{dateFormatMSHMS(item.payTime)}}</view>
+								<view class="ulist-time">发起时间：{{$u.timeFormat(item.payTime,'mm-dd hh:MM')}}</view>
 							</view>
 							<view class="ulist-btn-box">
 								<view class="ulist-btn" @click="onClickStartRub(item)">开始</view>
@@ -120,10 +120,28 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-	import { dateFormatMSHMS, parsePic } from "@/tools/util";
+	import { parsePic } from "@/tools/util";
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import muqianLazyLoad from "../muqian-lazyLoad/muqian-lazyLoad.vue";
+	const cardNoParams = {
+		pageIndex:1,
+		pageSize:30,
+		noMoreData:false,
+		orderCode:''
+	}
+	const userData = {
+		orderCode: '', //
+		userName: "", //用户昵称
+		avatar: "", //用户头像
+		cuokaNum: 1, //待搓组数
+		payTime: '', 
+	}
+	const userParams = {
+		pageIndex:1,
+		pageSize:50,
+		noMoreData:false
+	}
 	@Component({components: { muqianLazyLoad },})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
@@ -131,32 +149,16 @@
 		@Prop()
 		detailData:any;
 
-		dateFormatMSHMS = dateFormatMSHMS;
 		defaultAvatar = app.defaultAvatar;
 		defultPic = '../../static/goods/drawcard/default.png';
 		showUlist = false;
 		userList:any = [];
-		userParams = {
-			pageIndex:1,
-			pageSize:50,
-			noMoreData:false
-		}
-		userData:{[x:string]:any} = {
-			orderCode: '', //
-            userName: "", //用户昵称
-            avatar: "", //用户头像
-            cuokaNum: 1, //待搓组数
-            payTime: '', 
-		}
+		userParams = {...userParams}
+		userData = {...userData}
 		totalNum = 0;
 		stepIndex = 0;
 		picData:any = [''];
-		cardNoParams:{[x:string]:any} = {
-			pageIndex:1,
-			pageSize:30,
-			noMoreData:false,
-			orderCode:''
-		}
+		cardNoParams = {...cardNoParams}
 		moveData:{[x:string]:number} = {
 			x:0,
 			y:0,
@@ -262,57 +264,25 @@
 				}
 			});
 		}
-		setSpAni(sp:number):string{
-			switch(sp){
-				case 1:
-					return 'movable-box-xzj';
-				case 2:
-					return 'movable-box-noir';
-				default:
-					return '';
-			}
-		}
-		getProgress():number{
-			let item = this.detailData;
-			return Math.floor(((item.lockNum+item.currentNum)/item.totalNum) * 100)
-		}
 		onClickBack(){
 			this.userList = [];
-			this.userParams = {
-				pageIndex:1,
-				pageSize:50,
-				noMoreData:false
-			}
-			this.userData = {
-				orderCode: '', //
-				userName: "", //用户昵称
-				avatar: "", //用户头像
-				cuokaNum: 1, //待搓组数
-				payTime: '', 
-			}
+			this.userParams = {...userParams}
+			this.userData = {...userData}
 			this.totalNum = 0;
 			this.stepIndex = 0;
 			this.picData = [''];
-			this.cardNoParams = {
-				pageIndex:1,
-				pageSize:30,
-				noMoreData:false,
-				orderCode:''
-			}
+			this.cardNoParams = {...cardNoParams}
 			this.$emit('rubCardClose')
 		}
 		onClickCheckUlist(){
-			this.userParams = { pageIndex:1, pageSize:50, noMoreData:false }
+			this.userParams = { ...userParams }
 			this.getUserlist(()=>{ this.showUlist = true})
 		}
 		onClickStartRub(item:any){
 			this.stepIndex = 0;
-			this.cardNoParams = {
-				pageIndex:1,
-				pageSize:30,
-				noMoreData:false,
-				orderCode:item.orderCode
-			}
+			this.cardNoParams = {...cardNoParams}
+			this.cardNoParams.orderCode = item.orderCode
+			
 			this.picData = ['']
 			// 获取完卡密后释放搓卡
 			this.reqNewData(()=>{
@@ -334,6 +304,20 @@
 					}
 				}
 			});
+		}
+		getProgress():number{
+			let item = this.detailData;
+			return Math.floor(((item.lockNum+item.currentNum)/item.totalNum) * 100)
+		}
+		setSpAni(sp:number):string{
+			switch(sp){
+				case 1:
+					return 'movable-box-xzj';
+				case 2:
+					return 'movable-box-noir';
+				default:
+					return '';
+			}
 		}
 	}
 </script>
