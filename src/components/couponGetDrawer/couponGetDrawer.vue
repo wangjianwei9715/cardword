@@ -62,6 +62,7 @@
         }
         inspectState(item:any){
             if(item.state==1) return '可领取';
+            if(item.state==3) return '已使用';
             return this.goodPage ? '已领取' : '去使用'
         }
         lower(){
