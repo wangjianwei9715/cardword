@@ -2,8 +2,8 @@
 export var indexTabList = {
     tabTop:[
         {img:'../../static/index/v2/top_icon0.gif',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
-        // {img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
-        {img:'../../static/index/v2/top_icon1.png',text:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
+        {img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
+        // {img:'../../static/index/v2/top_icon1.png',text:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
         {img:'../../static/index/v2/top_icon2.png',text:'资讯公告',url:'/pages/information/list'},
         {img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
     ],
