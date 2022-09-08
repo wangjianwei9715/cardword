@@ -32,11 +32,11 @@
             </view>
             <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr}}</view>
         </view>
-        <view class="couponContainer uni-flex" v-if="!isMerchant">
+        <view class="couponContainer uni-flex" v-if="!isMerchant&&couponBrief.length">
             <view class="leftCoupon uni-flex">
-                <view class="leftCoupon-item" style="margin-left: 14rpx;" v-for="(item,index) in couponBrief"
+                <view class="leftCoupon-item" style="margin-left: 14rpx;" v-for="(item,index) in couponBrief.length==1?[...couponBrief,...couponBrief]:couponBrief"
                     :key="index" :style="{marginLeft:index==0?`14rpx`:`22rpx`}">
-                    <view class="price"><text style="font-size: 25rpx;">￥</text>{{item.amount}}</view>
+                    <view class="price"><text style="font-size: 25rpx;">￥</text><text style="font-weight: bold;">{{item.amount}}</text></view>
                     <view class="couponRight">
                         <view class="manj">{{item.minUseAmount==0?"无门槛券":`满${item.minUseAmount}元可用`}}</view>
                         <view class="type">{{item.tp==1?'指定商品':"指定店铺"}}</view>
@@ -428,13 +428,13 @@
 
     .merchantInfoContainer {
         width: 716rpx;
-        height: 215rpx;
+        /* height: 215rpx; */
         background: #FFFFFF;
         box-shadow: 0rpx 1rpx 12rpx 0rpx #A8AAA9;
         border-radius: 5rpx;
         background-color: #fff;
         box-sizing: border-box;
-        padding: 28rpx 30rpx 0 30rpx;
+        padding: 28rpx 30rpx 30rpx 30rpx;
         margin-top: -76rpx;
         z-index: 2;
     }
@@ -468,7 +468,7 @@
 
         .price {
             font-size: 38rpx;
-            font-weight: 400;
+            
             color: #FA1545;
             margin-right: 14rpx;
         }
@@ -558,7 +558,7 @@
         color: #7C7C7C;
         margin-top: 17rpx;
         letter-spacing: 0rpx;
-        line-height: 24rpx;
+        /* line-height: 24rpx; */
     }
 
     .ruleContainer {

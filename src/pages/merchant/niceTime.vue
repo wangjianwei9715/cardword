@@ -3,8 +3,9 @@
         <view class="niceTime">
             <view class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index">
                 <view class="niceTimeItem-top">
-                    <muqian-lazyLoad class="niceTimeItem-img" :src="parsePic(decodeURIComponent(filterImg(item.pic)[0]))"
-                        mode="aspectFill" @click='previewImage(filterImg(item.pic),0,"")'/>
+                    <muqian-lazyLoad class="niceTimeItem-img"
+                        :src="parsePic(decodeURIComponent(filterImg(item.pic)[0]))" mode="aspectFill"
+                        @click='previewImage(filterImg(item.pic),0,"")' />
                     <view class="niceTimeItem-dot flexCenter">{{item.resultNum}}</view>
                     <view class="scoreContainer uni-flex">
                         <image :src="levelItem.levelPic" v-for="(levelItem) in filterLevel(item.rarity)"
@@ -54,8 +55,8 @@
                 this.reqNewData()
             }
         }
-        filterImg(pic:string){
-            let pics=pic.split(',')
+        filterImg(pic: string) {
+            let pics = pic.split(',')
             return pics
         }
         filterLevel(rarity: string) {
@@ -68,7 +69,7 @@
             })
         }
         previewImage(list: any, index: number, key: string = "src") {
-            const urls = list.map((item: any) => this.parsePic(key?item[key]:item));
+            const urls = list.map((item: any) => this.parsePic(key ? item[key] : item));
             uni.previewImage({
                 urls,
                 current: index
@@ -108,7 +109,7 @@
     .niceTimeItem {
 
         width: 356rpx;
-        height: 418rpx;
+        height: 588rpx;
         /* background-color: red; */
         background: #FFFFFF;
         border-radius: 5rpx;
@@ -121,18 +122,21 @@
     }
 
     .niceTimeItem-top {
-        width: 327rpx;
-        height: 252rpx;
+        /* width: 327rpx;
+        height: 252rpx; */
+        width: 355rpx;
+        height: 426rpx;
         background: #333333;
         border-radius: 3rpx;
+        background: #333333;
         position: relative;
         overflow: hidden;
         margin-top: 13rpx;
     }
 
     .niceTimeItem-img {
-        width: 327rpx;
-        height: 252rpx;
+        width: 355rpx;
+        height: 426rpx;
         position: absolute;
         top: 0;
         left: 0;
@@ -149,8 +153,8 @@
         font-weight: 400;
         color: #FFFFFF;
         position: absolute;
-        right: 1rpx;
-        bottom: 1rpx;
+        right: 17rpx;
+        bottom: 18rpx;
     }
 
     .scoreContainer {

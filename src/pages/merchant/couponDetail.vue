@@ -11,7 +11,11 @@
                 <view class="good-name">
                     {{goodName}}
                 </view>
-                <view class="good-cumulative">累计使用<text>{{totalCouponMoney}}</text>元(包含店铺通用券500元）</view>
+                <view class="good-cumulative">累计使用<text>{{totalCouponMoney}}</text>元
+                <template v-if="merchantCouponMoney">
+                    (包含店铺通用券{{merchantCouponMoney}}元)
+                </template>
+                </view>
             </view>
         </view>
         <view class="tagContainr" :class="{whiteTagContainer:!goodCode}">
@@ -84,6 +88,9 @@
             }
             if(query.totalCouponMoney){
                 this.totalCouponMoney=Number(query.totalCouponMoney)
+            }
+            if(query.merchantCouponMoney){
+                this.merchantCouponMoney=Number(query.merchantCouponMoney)
             }
             this.reqNewData()
 

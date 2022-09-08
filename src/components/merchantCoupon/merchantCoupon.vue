@@ -31,13 +31,13 @@
             <view class="sendCouponItem">
                 <text class="sendCoupon-left">优惠券面额</text>
                 <input class="couponInput" placeholder-style="color:#333" v-model.number="couponData.amount"
-                    placeholder="请输入优惠券面额" type="digit">
+                    placeholder="请输入优惠券面额" type="number">
                 <image class="rightCoin" src="../../static/act/playGroup/rightCoin.png" mode="scaleToFill" />
             </view>
             <view class="sendCouponItem">
                 <text class="sendCoupon-left">使用条件</text>
                 <input class="couponInput" placeholder-style="color:#333" v-model.number="couponData.minUseAmount"
-                    placeholder="为0代表创建无门槛券" type="digit">
+                    placeholder="为0代表创建无门槛券" type="number">
                 <image class="rightCoin" src="../../static/act/playGroup/rightCoin.png" mode="scaleToFill" />
             </view>
             <view class="sendCouponItem">
@@ -169,6 +169,7 @@
 
                 })
                 this.showValue=false
+                this.$emit('success')
             })
         }
         refreshData() {
