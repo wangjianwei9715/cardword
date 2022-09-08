@@ -76,6 +76,7 @@ export default {
       // console.log("keyHeight变化", val,oldVal);
       if (this.needSendH5Up) this.$emit("liftChat", val);
       if (val < 0 && val < oldVal) {
+        console.log("收起键盘blur");
         this.$refs.fixInput.blur();
         this.$emit("update:showInput", false);
       }
@@ -100,7 +101,6 @@ export default {
       let _diff = obj.height - _heightDiff;
       // 键盘高度
       let height = (_diff > 0 ? _diff : 0) - 2;
-
       this.keyHeight = height;
       console.log(height, "高度变化", this.keyHeight);
     },

@@ -1,23 +1,24 @@
 <template>
   <view class="full">
     <video :src="decodeURIComponent(playBackData.media_url)" @click='showControls=!showControls'
-      :style='{height:screenHeight+"px"}' class='video' id='video' ref='video' show-play-btn='false' object-fit='cover'
+      :style='{height:screenHeight+"px"}' class='video' id='video' ref='video' show-play-btn='false' :show-center-play-btn="false" object-fit='cover'
       controls='false' @timeupdate='timeupdate' autoplay='true' @play='onPlay=true' @ended='onPlay=false'
       @pause='onPlay=false'></video>
-    <view class='merchant' :style="{top:56+statusBarHeight+'rpx'}" @click='toMerchant'>
-      <image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill' />
-      <view class='merchant_name'>
-        <text class='merchant_name_text'>{{merchantMessage.name}}</text>
-        <text class='merchant_name_like'>{{roomLikeNum}}本场点赞</text>
-      </view>
-    </view>
-
-    <image class='close' src='../../static/live/v2/close.png' :style="{top:76+statusBarHeight+'rpx'}" @click='nvBack' />
-    <web-view class='webView' ref='webView' :style="{bottom:100+safeAreaBottomHeight+'rpx'}"
+    
+      <web-view class='webView' ref='webView'  :style="{height:(hasNotchInScreen&&deviceInfo.platform=='ios')?iosHeight:deviceInfo.screenHeight}"
       @click='showControls=!showControls' :webview-styles="webviewStyles" @onPostMessage="handleMessage"
       :src="webViewUrl" />
+    <image class='close' src='../../static/live/v2/close.png' :style="{top:76+statusBarHeight+'rpx'}" @click='nvBack' />
+    <!-- :style="{bottom:100+safeAreaBottomHeight+'rpx'}" -->
     
 
+      <view class='merchant' :style="{top:56+statusBarHeight+'rpx'}" @click='toMerchant'>
+        <image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill' />
+        <view class='merchant_name'>
+          <text class='merchant_name_text'>{{merchantMessage.name}}</text>
+          <text class='merchant_name_like'>{{roomLikeNum}}本场点赞</text>
+        </view>
+      </view>
     <view class="control" :style="{bottom:38+safeAreaBottomHeight+'rpx'}" :class='{opacity:!showControls}'>
       <image v-if='!onPlay' class="play" src='../../static/live/v2/play.png' @click='onClickPlay' />
       <image v-if='onPlay' class="stop" src='../../static/live/v2/stop.png' @click='onClickPlay' />
@@ -34,15 +35,15 @@
       <text class='videoTime' style='margin-right:4rpx'>{{getCountDownTimeHour(videoTime.duration)}}</text>
       <text class='Rate' @click='changeRate'>{{rateOption[rateOptionIndex]}}x</text>
     </view>
-    <!-- <view class="rightContainer" :style="{bottom:125+safeAreaBottomHeight+'rpx'}">
+    <view class="rightContainer" :style="{bottom:85+safeAreaBottomHeight+'rpx'}">
       <view class="rightIcon" @click="shareShow=true">
         <image style="width: 42rpx;height: 37rpx;" src="../../static/live/v2/share.png" mode="scaleToFill" />
       </view>
-      <view class="rightIcon">
+      <view class="rightIcon" @click="showGoods">
         <image style="width: 49rpx;height: 56rpx;" src="../../static/live/v2/order.png" mode="scaleToFill" />
       </view>
-    </view> -->
-    <!-- <nvueShare :visible.sync='shareShow' :shareData='shareData'></nvueShare> -->
+    </view>
+    <nvueShare :visible.sync='shareShow' :shareData='shareData'></nvueShare>
   </view>
 </template>
 
@@ -52,8 +53,11 @@
   import { Md5 } from "ts-md5";
   const app = getApp().globalData.app;
   export default {
-  //   nvueShare
-  // },
+    components: {
+      nvueShare
+    },
+    //   nvueShare
+    // },
     data() {
       return {
         playBackData: {
@@ -72,7 +76,7 @@
         rateOption: [0.5, 1.0, 1.5, 2],
         rateOptionIndex: 1,
         merchantMessage: {},
-        parsePic:getApp().globalData.parsePic,
+        parsePic: getApp().globalData.parsePic,
         roomLikeNum: 0,
         screenHeight: 0,
         safeAreaBottomHeight: 0,
@@ -91,7 +95,7 @@
           fromSec: 0,
           toSec: 60,
           fetchFrom: 1,
-          fetchSize: 30,
+          fetchSize: 60,
           ts: Math.round(+new Date() / 1000),
           s: ""
         },
@@ -102,15 +106,16 @@
           title: "",
           summary: "",
           thumb: ""
-        }
+        },
+        requestTimer: null,
+        stringData:''
       };
     },
     onReady() { },
     onLoad(query) {
-      console.log(query);
       this.playBackData = JSON.parse(query.data);
+      this.stringData=query.data
       this.roomID = +query.roomID;
-      console.log(this.playBackData);
       this.getMerchant(query.alias);
       this.getLiveData()
       uni.getSystemInfo({
@@ -131,7 +136,6 @@
           query
             .select("#canTouchProgress")
             .boundingClientRect(data => {
-              console.log(data);
               this.progressDomWidth = data.width;
               this.progressLeft = data.left;
             })
@@ -160,24 +164,33 @@
         if (this.isTouch) return;
         //   if(val<oldVal&&)
         if (val > oldVal && val > this.chartQuery.toSec) {
-          // this.chartQuery.fromSec=this.chartQuery.fromSec+60>this.videoTime.duration?this.vide
-          this.chartQuery.fromSec += 60;
-          this.restFetch();
-          this.getChartList(false);
+          this.requestTimer && clearTimeout(this.requestTimer)
+          this.requestTimer = setTimeout(() => {
+            this.chartQuery.fromSec = Math.round(val);
+            // this.chartQuery.fromSec=this.chartQuery.fromSec+60>this.videoTime.duration?this.vide
+            this.chartQuery.fromSec += 60;
+            this.restFetch();
+            this.getChartList(false);
+          }, 500)
         }
         if (val < this.chartQuery.fromSec) {
-          this.chartQuery.fromSec = Math.round(val);
-          this.restFetch();
-          this.getChartList(true);
-          console.log("拖动结束");
+          this.requestTimer && clearTimeout(this.requestTimer)
+          this.requestTimer = setTimeout(() => {
+            this.chartQuery.fromSec = Math.round(val);
+            this.restFetch();
+            this.getChartList(true);
+            console.log("拖动结束");
+          }, 500)
+
         }
       }
     },
     methods: {
       getChartList(clear = true, changeToSec = true) {
+
         if (clear) this.chartList = [];
         if (changeToSec) this.chartQuery.toSec = this.chartQuery.fromSec + 60;
-        this.chartQuery.ts=Math.round(new Date()/1000)
+        this.chartQuery.ts = Math.round(new Date() / 1000)
         const key = `kww_${this.roomID}_chatlist_${this.chartQuery.fromSec}_${this.chartQuery.toSec
           }_${this.chartQuery.fetchFrom}_${this.chartQuery.fetchSize}_${this.chartQuery.ts
           }_2022`
@@ -186,7 +199,7 @@
           `funcApi/brodcast/third/common/room/chatlist/${this.roomID}`,
           this.chartQuery,
           res => {
-            console.log("请求成功的query", this.chartQuery, key);
+            console.log("请求的query", this.chartQuery);
             console.log('获取到的数据', res);
             let list = res.list.map(item => {
               item.senderAvatar = item.avatar;
@@ -197,21 +210,44 @@
               [{ list }, clear],
               true
             );
-            if (!res.isFetchEnd) {
-              this.chartQuery.fetchFrom += this.chartQuery.fetchSize;
-              setTimeout(() => {
-                this.getChartList(false, false);
-              }, 1500);
-            }
+            // if (!res.isFetchEnd) {
+            //   this.chartQuery.fetchFrom += this.chartQuery.fetchSize;
+            //   setTimeout(() => {
+            //     this.getChartList(false, false);
+            //   }, 1500);
+            // }
           },
           err => {
             console.log('请求错误的query', this.chartQuery, key);
           }
         );
+
+      },
+      pageJump(url, type = "navigateTo") {
+        uni[type]({
+          url,
+          fail: err => {
+            console.log("跳转失败", err);
+          }
+        });
       },
       restFetch() {
         this.chartQuery.fetchFrom = 1;
         this.chartQuery.fetchSize = 30;
+      },
+      showProgress(){
+        this.showControls=!this.showControls
+      },
+      showGoods() {
+        console.log("showGoods");
+        this.informH5Action(
+          "showGoods",
+          {
+            mechantName: this.merchantMessage.name,
+            roomID:this.roomID,
+            goodCode:this.goodCode
+          }
+        );
       },
       getLiveData() {
         return new Promise((resolve, reject) => {
@@ -226,6 +262,7 @@
             res => {
               // this.liveData = res.data;
               // if (this.liveData.type != 0) this.liveData.goodCode = "";
+              this.goodCode=res.data.goodCode
               this.roomLikeNum = res.data.likeNum
               console.log("直播间信息", res.data);
               this.setShareData(res.data);
@@ -243,7 +280,7 @@
         this.shareData = {
           title: `${data.title}的直播回放`,
           shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/live/liveShare?roomID=${this.roomID
-            }&funcApi=${encodeURIComponent(app.funcApiDomain)}`,
+            }&funcApi=${encodeURIComponent(app.funcApiDomain)}&stringData=${this.stringData}&alias=${this.merchantMessage.alias}`,
           summary: `${data.title}的直播回放`,
           thumb: this.parsePic(decodeURIComponent(data.cover))
         };
@@ -366,6 +403,8 @@
         this.webView.evalJs(
           `actionSet("${actionName}",${sendParams},${isMoreArguments})`
         );
+        this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`);
+        this.webView.evalJs(`setFuncApi('${app.funcApiDomain}')`);
         console.log("发送给h5l ");
       }
     }
@@ -392,7 +431,7 @@
     position: fixed;
     right: 24rpx;
     bottom: 125rpx;
-    background-color: red;
+    /* background-color: red; */
     justify-content: flex-end;
   }
 
@@ -407,11 +446,10 @@
   }
 
   .webView {
-    width: 750rpx;
     position: fixed;
-    /* bottom: 100rpx; */
-    height: 500rpx;
-    /* background-color: red; */
+    top: 0;
+    width: 750rpx;
+    height: 100%;
     /* height: 400rpx; */
     /* height: ; */
   }
@@ -484,7 +522,7 @@
   }
 
   .control {
-    position: absolute;
+    position: fixed;
     width: 750rpx;
     height: 34rpx;
     /* background: red; */

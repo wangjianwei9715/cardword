@@ -176,7 +176,6 @@
             color: #FFFFFF;font-size: 44rpx;">价值{{clickPack.point}}</text>
             <image style="width: 50rpx;height:50rpx;margin-left:9rpx" src="../../static/live/smallCoin.png"
               mode="scaleToFill" />
-
           </view>
         </template>
         <!-- 抢到状态 -->
@@ -196,7 +195,7 @@
             font-family: PingFang SC;
             font-weight: bold;
             color: #E6A44F;margin-top: 28rpx;">查看大家手气></text>
-          <view class="thanksButton" @click='sendTalk(`感谢${isAnchor?liveData.mechantName:clickPack.sender}的红包!`,true)'>
+          <view class="thanksButton" @click='sendTalk(`感谢${clickPack.sender}的红包!`,true)'>
             <image class="bg" style="width:303rpx;height:70rpx" src="/static/live/button.png" mode="scaleToFill" />
             <text style="font-size: 38rpx;
             font-family: PingFang SC;
@@ -830,7 +829,9 @@ color: #E6A44F;">下次加油！</text>
           { uid: this.userData.uid },
           res => {
             console.log("房间内可领取的红包列表优惠券列表", res);
-            this.showHbList = res.hongbao || [];
+            this.showHbList = (res.hongbao || []).filter(item=>{
+              return !item.myGrabPoint
+            });
             this.showCouponList = res.coupon || [];
             // uni.$emit("listChange", this.hb.list, this.coupon.list);
           }
