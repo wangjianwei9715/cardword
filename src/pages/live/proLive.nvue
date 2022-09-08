@@ -607,6 +607,11 @@ color: #E6A44F;">下次加油！</text>
           "UIImpactFeedbackGenerator"
         );
         impact = new UIImpactFeedbackGenerator();
+        let cache1 = plus.ios.newObject('NSURLCache');
+        let cache = plus.ios.invoke(cache1, 'sharedURLCache');
+        plus.ios.invoke(cache, 'removeAllCachedResponses');
+        plus.ios.invoke(cache, 'setDiskCapacity:', 0);
+        plus.ios.invoke(cache, 'setMemoryCapacity:', 0);
       }
       //当前用户为安卓设备并且为主播的情况下获取相机及麦克风权限
       if (this.deviceInfo.platform == "android" && query.isAnchor == "true") {
@@ -829,7 +834,7 @@ color: #E6A44F;">下次加油！</text>
           { uid: this.userData.uid },
           res => {
             console.log("房间内可领取的红包列表优惠券列表", res);
-            this.showHbList = (res.hongbao || []).filter(item=>{
+            this.showHbList = (res.hongbao || []).filter(item => {
               return !item.myGrabPoint
             });
             this.showCouponList = res.coupon || [];
@@ -1035,7 +1040,7 @@ color: #E6A44F;">下次加油！</text>
           () => {
             app.sever.registerHandlers(this, registerList, true);
             this.sendHeartBeat();
-            this.heartBeatStamp=Math.round(new Date()/1000)
+            this.heartBeatStamp = Math.round(new Date() / 1000)
             console.log('连接成功！！！！！');
             this.sendWebsocketLogin();
             this.inReconnection = false
@@ -1122,7 +1127,7 @@ color: #E6A44F;">下次加油！</text>
           //   this.sendWebsocketLogin();
           // }, 500);
         } else {
-          
+
           uni.hideLoading();
           const { gm, point, applyLianmai } = res;
           this.gm = gm ?? false;
@@ -1700,7 +1705,7 @@ color: #E6A44F;">下次加油！</text>
             },
             "post"
           );
-            console.log("直播间用户登录数据",tokenRespone);
+          console.log("直播间用户登录数据", tokenRespone);
           this.websocket = tokenRespone.websocket;
           this.userData = tokenRespone.data;
           this.streamID = tokenRespone.data.streamId;
@@ -1847,8 +1852,8 @@ color: #E6A44F;">下次加油！</text>
           });
         }
       },
-      playerQualityUpdate(streamID, quality){
-        console.log('拉流质量',quality);
+      playerQualityUpdate(streamID, quality) {
+        console.log('拉流质量', quality);
       },
       changeVideoConfig() {
         this.videoConfig.index == 2
