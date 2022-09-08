@@ -350,7 +350,7 @@ color: #E6A44F;">下次加油！</text>
   const textTipsMap = {
     "0": "拆卡倒计时",
     "1": "等待主播开播",
-    "2": "拆卡进行中",
+    "2": "主播暂时离开",
     "3": "直播结束,回放生成中",
     "-1": "直播过期",
     "-2": "直播已取消"
@@ -396,7 +396,8 @@ color: #E6A44F;">下次加油！</text>
     { name: "roomStreamUpdate", cnName: "房间内流变化" },
     { name: "apiCalledResult", cnName: "接口回调" },
     { name: "roomStreamExtraInfoUpdate", cnName: "房间内流附加信息" },
-    { name: "publisherQualityUpdate", cnName: "推流质量回调" }
+    { name: "publisherQualityUpdate", cnName: "推流质量回调" },
+    // {name:"playerQualityUpdate",cnName:'拉流质量'}
   ];
   export default {
     components: {
@@ -1014,7 +1015,6 @@ color: #E6A44F;">下次加油！</text>
       },
       //初始化scocket
       initSocket(isFirst = true) {
-        console.log(this.websocket);
         if (!this.websocket) return;
         this.heartBeatTimer && clearInterval(this.heartBeatTimer);
         this.heartBeatTimer = setInterval(() => {
@@ -1026,6 +1026,7 @@ color: #E6A44F;">下次加油！</text>
       connectSever() {
         console.log('链接中');
         app.sever && app.sever.close();
+        console.log(this.websocket);
         app.sever.setServerInfo({
           ip: this.websocket
         });
@@ -1034,6 +1035,7 @@ color: #E6A44F;">下次加油！</text>
             app.sever.registerHandlers(this, registerList, true);
             this.sendHeartBeat();
             this.heartBeatStamp=Math.round(new Date()/1000)
+            console.log('连接成功！！！！！');
             this.sendWebsocketLogin();
             this.inReconnection = false
             uni.hideLoading()
@@ -1119,6 +1121,7 @@ color: #E6A44F;">下次加油！</text>
           //   this.sendWebsocketLogin();
           // }, 500);
         } else {
+          
           uni.hideLoading();
           const { gm, point, applyLianmai } = res;
           this.gm = gm ?? false;
@@ -1696,11 +1699,12 @@ color: #E6A44F;">下次加油！</text>
             },
             "post"
           );
+            console.log("直播间用户登录数据",tokenRespone);
           this.websocket = tokenRespone.websocket;
           this.userData = tokenRespone.data;
           this.streamID = tokenRespone.data.streamId;
-          console.log("直播间用户登录数据66666666");
-          console.log(JSON.stringify(tokenRespone));
+          // console.log("直播间用户登录数据66666666");
+          // console.log(JSON.stringify(tokenRespone));
 
           // this.initSocket(true)
           this.isLogin = true;
@@ -1884,7 +1888,6 @@ color: #E6A44F;">下次加油！</text>
             isUserStatusNotify: true
           })
           .then(res => {
-            console.log("登录房间成功", res);
             console.log(
               "成功登录即构的直播房间,当前直播状态",
               this.liveData.state
