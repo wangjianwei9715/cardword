@@ -108,7 +108,8 @@
           thumb: ""
         },
         requestTimer: null,
-        stringData:''
+        stringData:'',
+        playCode:""
       };
     },
     onReady() { },
@@ -116,6 +117,7 @@
       this.playBackData = JSON.parse(query.data);
       this.stringData=query.data
       this.roomID = +query.roomID;
+      this.playCode=query.playCode
       this.getMerchant(query.alias);
       this.getLiveData()
       uni.getSystemInfo({
@@ -280,7 +282,7 @@
         this.shareData = {
           title: `${data.title}的直播回放`,
           shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/live/liveShare?roomID=${this.roomID
-            }&funcApi=${encodeURIComponent(app.funcApiDomain)}&stringData=${this.stringData}&alias=${this.merchantMessage.alias}`,
+            }&funcApi=${encodeURIComponent(app.funcApiDomain)}&playCode=${this.playCode}&alias=${this.merchantMessage.alias}&goodCode=${this.goodCode}`,
           summary: `${data.title}的直播回放`,
           thumb: this.parsePic(decodeURIComponent(data.cover))
         };
