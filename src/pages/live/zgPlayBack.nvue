@@ -35,7 +35,7 @@
       <text class='videoTime' style='margin-right:4rpx'>{{getCountDownTimeHour(videoTime.duration)}}</text>
       <text class='Rate' @click='changeRate'>{{rateOption[rateOptionIndex]}}x</text>
     </view>
-    <view class="rightContainer" :style="{bottom:85+safeAreaBottomHeight+'rpx'}">
+    <view class="rightContainer" :style="{bottom:120+safeAreaBottomHeight+'rpx'}">
       <view class="rightIcon" @click="shareShow=true">
         <image style="width: 42rpx;height: 37rpx;" src="../../static/live/v2/share.png" mode="scaleToFill" />
       </view>
