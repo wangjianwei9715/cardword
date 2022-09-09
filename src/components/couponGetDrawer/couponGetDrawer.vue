@@ -13,7 +13,7 @@
                             <view class="right-info">
                                 <view class="right-title">{{item.name}}</view>
                                 <view class="right-time">{{item.expire}}</view>
-                                <view :class="{'right-btn':true,'opacity':item.state==2&&goodPage}" @click="onClickGetCoupon(item)">{{inspectState(item)}}</view>
+                                <view :class="{'right-btn':true,'opacity':item.state!=1&&goodPage}" @click="onClickGetCoupon(item)">{{inspectState(item)}}</view>
                             </view>
                             <view class="right-b" @click="onClickCheckExplain(item.cateId)">
                                 <view class="right-b-font">指定{{item.tp==1?'商品':'店铺'}}</view>
