@@ -35,12 +35,12 @@
       <text class='videoTime' style='margin-right:4rpx'>{{getCountDownTimeHour(videoTime.duration)}}</text>
       <text class='Rate' @click='changeRate'>{{rateOption[rateOptionIndex]}}x</text>
     </view>
-    <view class="rightContainer" :style="{bottom:120+safeAreaBottomHeight+'rpx'}">
+    <view class="rightContainer" v-if="rightTagShow" :style="{bottom:120+safeAreaBottomHeight+'rpx'}">
       <view class="rightIcon" @click="shareShow=true">
         <image style="width: 42rpx;height: 37rpx;" src="../../static/live/v2/share.png" mode="scaleToFill" />
       </view>
       <view class="rightIcon" @click="showGoods">
-        <image style="width: 49rpx;height: 56rpx;" src="../../static/live/v2/order.png" mode="scaleToFill" />
+        <image style="width: 50rpx;height: 49rpx;" src="../../static/live/goods.png" mode="scaleToFill" />
       </view>
     </view>
     <nvueShare :visible.sync='shareShow' :shareData='shareData'></nvueShare>
@@ -109,7 +109,8 @@
         },
         requestTimer: null,
         stringData:'',
-        playCode:""
+        playCode:"",
+        rightTagShow:true
       };
     },
     onReady() { },
@@ -233,11 +234,15 @@
           }
         });
       },
+      showRightTag(bol){
+        this.rightTagShow=bol
+      },
       restFetch() {
         this.chartQuery.fetchFrom = 1;
         this.chartQuery.fetchSize = 30;
       },
       showProgress(){
+        if(!this.rightTagShow) return
         this.showControls=!this.showControls
       },
       showGoods() {
@@ -440,7 +445,7 @@
   .rightIcon {
     width: 73rpx;
     height: 73rpx;
-    background: rgba(0, 0, 0, .28);
+    /* background: rgba(0, 0, 0, .28); */
     border-radius: 50%;
     margin-top: 30rpx;
     align-items: center;

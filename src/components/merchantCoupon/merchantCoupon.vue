@@ -1,7 +1,7 @@
 <template>
     <view class='content'>
-        <bottomDrawer padding="0 24rpx" :title="couponData.goodCode?'商品券':'店铺券'" :height='couponData.getTp==1?686:772' heightType='rpx'
-            :needSafeArea='true' :showDrawer.sync='showValue'>
+        <bottomDrawer padding="0 24rpx" :title="couponData.goodCode?'商品券':'店铺券'" :height='couponData.getTp==1?686:772'
+            heightType='rpx' :needSafeArea='true' :showDrawer.sync='showValue'>
             <view class="sendCouponItem">
                 <text class="sendCoupon-left" style="flex: 1;">发放方式</text>
                 <view class="checkContainer uni-flex">
@@ -102,30 +102,31 @@
 
         }
         onClickSubmit() {
-            if (!this.couponData.amount) {
+            const rep:any = /[\.]/;
+            if (!this.couponData.amount || rep.test(this.couponData.amount)) {
                 uni.showToast({
-                    title: "请输入正确的优惠券面额",
+                    title: "请输入正确的优惠券面额(整数)",
                     icon: "none"
                 });
                 return;
             }
-            if (!this.couponData.maxNum) {
+            if (!this.couponData.maxNum || rep.test(this.couponData.maxNum)) {
                 uni.showToast({
-                    title: "请输入正确的发放数量",
+                    title: "请输入正确的发放数量(整数)",
                     icon: "none"
                 });
                 return;
             }
-            if (this.couponData.minUseAmount == null) {
+            if (this.couponData.minUseAmount == null || rep.test(this.couponData.minUseAmount)) {
                 uni.showToast({
-                    title: "请输入使用条件",
+                    title: "请输入使用条件(整数)",
                     icon: "none"
                 });
                 return;
             }
             if (this.couponData.maxNum > 1000) {
                 uni.showToast({
-                    title: "优惠券发放数量超过最大限制",
+                    title: "优惠券发放数量超过最大限制(整数)",
                     icon: "none"
                 });
                 return;
@@ -139,7 +140,7 @@
             }
             if (!this.couponData.lifeTime) {
                 uni.showToast({
-                    title: "请输入有效天数",
+                    title: "请输入有效天数(整数)",
                     icon: "none"
                 });
                 return;
@@ -165,17 +166,17 @@
         createCoupon() {
             app.http.Post('me/shop/coupon/create', this.couponData, (res: any) => {
                 uni.showToast({
-                    title:'创建成功',
+                    title: '创建成功',
 
                 })
-                this.showValue=false
+                this.showValue = false
                 this.$emit('success')
             })
         }
         refreshData() {
             // console.log(Object.assign({}, couponOriginalData));
             this.couponData = Object.assign({}, couponOriginalData)
-            if(this.goodCode) this.couponData.goodCode=this.goodCode
+            if (this.goodCode) this.couponData.goodCode = this.goodCode
             // console.log(this.couponData);
         }
     }

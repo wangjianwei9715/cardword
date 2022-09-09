@@ -57,6 +57,8 @@
                     uni.navigateTo({
                         url: '/pages/goods/goods_details?id=' + decodeURIComponent(item.goodCode)
                     })
+                }else{
+                    this.showValue=false
                 }
             }
         }
