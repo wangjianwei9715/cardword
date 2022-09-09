@@ -35,20 +35,13 @@
         <view class="couponContainer uni-flex" v-if="!isMerchant&&couponBrief.length">
             <view class="leftCoupon uni-flex">
                 <view class="leftCoupon-item" style="margin-left: 14rpx;" v-for="(item,index) in couponBrief.length==1?[...couponBrief,...couponBrief]:couponBrief"
-                    :key="index" :style="{marginLeft:index==0?`14rpx`:`22rpx`}">
+                    :key="index" :style="{marginLeft:index==0?`14rpx`:`60rpx`}">
                     <view class="price"><text style="font-size: 25rpx;">￥</text><text style="font-weight: bold;">{{item.amount}}</text></view>
                     <view class="couponRight">
                         <view class="manj">{{item.minUseAmount==0?"无门槛券":`满${item.minUseAmount}元可用`}}</view>
                         <view class="type">{{item.tp==1?'指定商品':"指定店铺"}}</view>
                     </view>
                 </view>
-                <!-- <view class="leftCoupon-item" style="margin-left: 72rpx;">
-                    <view class="price"><text style="font-size: 25rpx;">￥</text>50</view>
-                    <view class="couponRight">
-                        <view class="manj">满200元可用</view>
-                        <view class="type">指定店铺</view>
-                    </view>
-                </view> -->
             </view>
             <view class="rightReceive flexCenter" @click="onClickGetMore">
                 领取<br>更多
@@ -70,14 +63,17 @@
             <view class="more-left">店铺精彩时刻</view>
             <view class="more-right" @click="pageJump('/pages/merchant/niceTime?alias='+alias)">更多</view>
         </view>
-        <swiper indicator-dots indicator-active-color="#333333" indicator-color="#CAC6C6" class="niceTimeContainer">
+        <swiper indicator-dots indicator-active-color="#333333" indicator-color="#CAC6C6" class="niceTimeContainer" v-if="niceTimeList&&niceTimeList.length">
             <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index"
                 style="display: flex;flex-wrap: nowrap;">
-                <muqian-lazyLoad v-for="(sItem,sNndex) in item" class="niceTimeImage"
+                <image v-for="(sItem,sNndex) in item" class="niceTimeImage"
                     :style="{marginRight:index==2?0:'17rpx'}" :src="parsePic(decodeURIComponent(sItem.pic))"
                     mode="aspectFill" />
             </swiper-item>
         </swiper>
+        <view class="niceTimeContainer" v-else>
+            <empty style="position: relative;bottom:240rpx"/>
+        </view>
         <view class="tagsContainer">
             <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list"
                 @click="onTagClick(item,index)">
@@ -303,10 +299,10 @@
             this.niceTimeList = []
             const copies = Math.ceil(list.length / 3)
             for (let i = 0; i < copies; i++) {
-                let arr = list.slice(i == 0 ? 0 : i + 2, 3)
+                const start=i == 0 ? 0 : i + 2
+                let arr = list.slice(start, start+3)
                 this.niceTimeList.push(arr)
             }
-            console.log(this.niceTimeList);
         }
         // 跳转商品详情
         onClickJumpDetails(id: any) {
@@ -453,7 +449,7 @@
         .a {}
 
         .leftCoupon {
-            width: 520rpx;
+            width: 480rpx;
             /* background-color: rgba(0, 0, 0, .6); */
             height: 148rpx;
             align-items: center;
@@ -464,6 +460,10 @@
             /* background-color: red; */
             display: flex;
             align-items: center;
+            overflow: hidden;
+            white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
         }
 
         .price {
@@ -474,16 +474,26 @@
         }
 
         .couponRight {
+            flex:1;      
+            width:0;      
             .manj {
+                /* max-width: 100%; */
+                /* width: 100%; */
                 font-size: 21rpx;
                 font-weight: bold;
                 color: #333333;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .type {
                 font-size: 20rpx;
                 font-weight: 400;
                 color: #333333;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 

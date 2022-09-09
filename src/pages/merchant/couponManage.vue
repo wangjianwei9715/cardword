@@ -45,7 +45,7 @@
                 <view class="msg-cumulative">累计使用<text style="color:#e9114f">{{item.totalCouponMoney}}</text>元</view>
                 <view class="msg-action uni-flex">
                     <view class="actionButton flexCenter"
-                        @click="pageJump(`/pages/merchant/couponDetail?goodCode=${item.goodCode}&logo=${item.pic}&goodName=${item.title}&totalCouponMoney=${item.totalCouponMoney}`)">
+                        @click="pageJump(`/pages/merchant/couponDetail?goodCode=${item.goodCode}&logo=${item.pic}&goodName=${item.title}&totalCouponMoney=${item.totalCouponMoney}&merchantCouponMoney=${item.merchantCouponMoney}`)">
                         查看
                     </view>
                     <view class="actionButton flexCenter redButton" v-if="queryParams.tp==1"

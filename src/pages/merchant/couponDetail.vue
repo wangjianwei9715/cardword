@@ -150,7 +150,7 @@
         }
         onClickCopy(item: any) {
             if (item.couponCode && item.couponCodeNum == 1) {
-                this.setClipboardData(item.couponCode)
+                this.setClipboardData(item.couponCode,'复制成功')
             }
             if (item.couponCode && item.couponCodeNum > 1) {
                 app.http.Get(`dataApi/me/shop/get/goodCoupon/${item.id}/code/list`, {}, (res: any) => {
