@@ -33,7 +33,7 @@
       </view>
 
       <text class='videoTime' style='margin-right:4rpx'>{{getCountDownTimeHour(videoTime.duration)}}</text>
-      <text class='Rate' @click='changeRate'>{{rateOption[rateOptionIndex]}}x</text>
+      <text class='Rate' v-if="rightTagShow" @click='changeRate'>{{rateOption[rateOptionIndex]}}x</text>
     </view>
     <view class="rightContainer" v-if="rightTagShow" :style="{bottom:120+safeAreaBottomHeight+'rpx'}">
       <view class="rightIcon" @click="shareShow=true">
