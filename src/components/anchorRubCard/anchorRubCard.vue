@@ -103,7 +103,7 @@
 									<view class="ulist-name u-line-1">{{item.userName}}</view>
 									<view class="ulist-num">待搓组数：{{item.cuokaNum}}</view>
 								</view>
-								<view class="ulist-time">发起时间：{{$u.timeFormat(item.payTime,'mm-dd hh:MM')}}</view>
+								<view class="ulist-time">发起时间：{{$u.timeFormat(item.createTime,'mm-dd hh:MM')}}</view>
 							</view>
 							<view class="ulist-btn-box">
 								<view class="ulist-btn" @click="onClickStartRub(item)">开始</view>
