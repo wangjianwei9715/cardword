@@ -134,6 +134,8 @@
         const query = uni.createSelectorQuery().in(this);
         setTimeout(() => {
           this.webView = this.$refs.webView;
+          this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`);
+        this.webView.evalJs(`setFuncApi('${app.funcApiDomain}')`);
         }, 200);
         setTimeout(() => {
           query
@@ -401,6 +403,7 @@
       canEvalAction(event) {
         console.log("canEval");
         this.getChartList();
+        
       },
       //调用h5Vue内部methods方法
       informH5Action(actionName, params = "", isMoreArguments = false) {
@@ -410,8 +413,7 @@
         this.webView.evalJs(
           `actionSet("${actionName}",${sendParams},${isMoreArguments})`
         );
-        this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`);
-        this.webView.evalJs(`setFuncApi('${app.funcApiDomain}')`);
+        
         console.log("发送给h5l ");
       }
     }
