@@ -1,24 +1,25 @@
 <template>
   <view class="full">
     <video :src="decodeURIComponent(playBackData.media_url)" @click='showControls=!showControls'
-      :style='{height:screenHeight+"px"}' class='video' id='video' ref='video' show-play-btn='false' :show-center-play-btn="false" object-fit='cover'
-      controls='false' @timeupdate='timeupdate' autoplay='true' @play='onPlay=true' @ended='onPlay=false'
-      @pause='onPlay=false'></video>
-    
-      <web-view class='webView' ref='webView'  :style="{height:(hasNotchInScreen&&deviceInfo.platform=='ios')?iosHeight:deviceInfo.screenHeight}"
+      :style='{height:screenHeight+"px"}' class='video' id='video' ref='video' show-play-btn='false'
+      :show-center-play-btn="false" object-fit='cover' controls='false' @timeupdate='timeupdate' autoplay='true'
+      @play='onPlay=true' @ended='onPlay=false' @pause='onPlay=false'></video>
+
+    <web-view class='webView' ref='webView'
+      :style="{height:(hasNotchInScreen&&deviceInfo.platform=='ios')?iosHeight:deviceInfo.screenHeight}"
       @click='showControls=!showControls' :webview-styles="webviewStyles" @onPostMessage="handleMessage"
       :src="webViewUrl" />
     <image class='close' src='../../static/live/v2/close.png' :style="{top:76+statusBarHeight+'rpx'}" @click='nvBack' />
     <!-- :style="{bottom:100+safeAreaBottomHeight+'rpx'}" -->
-    
 
-      <view class='merchant' :style="{top:56+statusBarHeight+'rpx'}" @click='toMerchant'>
-        <image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill' />
-        <view class='merchant_name'>
-          <text class='merchant_name_text'>{{merchantMessage.name}}</text>
-          <text class='merchant_name_like'>{{roomLikeNum}}本场点赞</text>
-        </view>
+
+    <view class='merchant' :style="{top:56+statusBarHeight+'rpx'}" @click='toMerchant'>
+      <image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill' />
+      <view class='merchant_name'>
+        <text class='merchant_name_text'>{{merchantMessage.name}}</text>
+        <text class='merchant_name_like'>{{roomLikeNum}}本场点赞</text>
       </view>
+    </view>
     <view class="control" :style="{bottom:38+safeAreaBottomHeight+'rpx'}" :class='{opacity:!showControls}'>
       <image v-if='!onPlay' class="play" src='../../static/live/v2/play.png' @click='onClickPlay' />
       <image v-if='onPlay' class="stop" src='../../static/live/v2/stop.png' @click='onClickPlay' />
@@ -108,17 +109,17 @@
           thumb: ""
         },
         requestTimer: null,
-        stringData:'',
-        playCode:"",
-        rightTagShow:true
+        stringData: '',
+        playCode: "",
+        rightTagShow: true
       };
     },
     onReady() { },
     onLoad(query) {
       this.playBackData = JSON.parse(query.data);
-      this.stringData=query.data
+      this.stringData = query.data
       this.roomID = +query.roomID;
-      this.playCode=query.playCode
+      this.playCode = query.playCode
       this.getMerchant(query.alias);
       this.getLiveData()
       uni.getSystemInfo({
@@ -135,7 +136,7 @@
         setTimeout(() => {
           this.webView = this.$refs.webView;
           this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`);
-        this.webView.evalJs(`setFuncApi('${app.funcApiDomain}')`);
+          this.webView.evalJs(`setFuncApi('${app.funcApiDomain}')`);
         }, 200);
         setTimeout(() => {
           query
@@ -236,16 +237,16 @@
           }
         });
       },
-      showRightTag(bol){
-        this.rightTagShow=bol
+      showRightTag(bol) {
+        this.rightTagShow = bol
       },
       restFetch() {
         this.chartQuery.fetchFrom = 1;
         this.chartQuery.fetchSize = 30;
       },
-      showProgress(){
-        if(!this.rightTagShow) return
-        this.showControls=!this.showControls
+      showProgress() {
+        if (!this.rightTagShow) return
+        this.showControls = !this.showControls
       },
       showGoods() {
         console.log("showGoods");
@@ -253,8 +254,8 @@
           "showGoods",
           {
             mechantName: this.merchantMessage.name,
-            roomID:this.roomID,
-            goodCode:this.goodCode
+            roomID: this.roomID,
+            goodCode: this.goodCode
           }
         );
       },
@@ -271,7 +272,7 @@
             res => {
               // this.liveData = res.data;
               // if (this.liveData.type != 0) this.liveData.goodCode = "";
-              this.goodCode=res.data.goodCode
+              this.goodCode = res.data.goodCode
               this.roomLikeNum = res.data.likeNum
               console.log("直播间信息", res.data);
               this.setShareData(res.data);
@@ -403,7 +404,10 @@
       canEvalAction(event) {
         console.log("canEval");
         this.getChartList();
-        
+        setTimeout(() => {
+          this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`);
+          this.webView.evalJs(`setFuncApi('${app.funcApiDomain}')`);
+        }, 100)
       },
       //调用h5Vue内部methods方法
       informH5Action(actionName, params = "", isMoreArguments = false) {
@@ -413,7 +417,7 @@
         this.webView.evalJs(
           `actionSet("${actionName}",${sendParams},${isMoreArguments})`
         );
-        
+
         console.log("发送给h5l ");
       }
     }
