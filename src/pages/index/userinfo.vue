@@ -171,17 +171,6 @@
 						this.headerTab[key].num = data[key];
 					}
 				}
-				if(this.settingTab.length<5 && res.data.cuoka){
-					this.settingTab = [ 
-						...this.settingTab,
-						{
-							id:5,
-							name:'直播模式',
-							url:'/pages/anchor/index',
-							pic:'../../static/userinfo/v2/icon_b_anchor.png'
-						}
-					]
-				}
 				if(!data.toPay){
 					this.orderTab['toPay'].num = 0
 				}
