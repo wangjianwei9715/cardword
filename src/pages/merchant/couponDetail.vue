@@ -46,7 +46,7 @@
                     mode="scaleToFill" />
             </view>
             <view class="couponItem-bottom" v-else>
-                已领完
+                {{item.stateName}}
             </view>
         </view>
         <merchantCoupon :showDrawer.sync="createCouponShow" @success="couponCreateSuccess" :goodCode='goodCode' ref='merchantCoupon' />
