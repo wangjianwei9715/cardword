@@ -1634,6 +1634,7 @@ color: #E6A44F;">下次加油！</text>
       },
       sendGift(giftTpId, num, target = 0) {
         console.log("礼物发送中");
+        this.UIClickFeedBack()
         this.sendSocketMsg("RequestSendGift", {
           giftTpId,
           num,
