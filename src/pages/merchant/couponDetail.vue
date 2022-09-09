@@ -40,10 +40,13 @@
             <view class="couponItem-message">
                 {{item.stateName}}/有效期{{item.lifeSec}}天/总数{{item.maxNum}}/已领{{item.distribute_num}}/使用{{item.use_num}}
             </view>
-            <view class="couponItem-bottom">
+            <view class="couponItem-bottom" v-if="item.stateName=='可领取'">
                 领取方式：{{item.getTp==1?"店铺或商品详情页":(item.couponCode+(item.couponCodeNum>1?`等${item.couponCodeNum}条`:''))}}
                 <image v-if="item.getTp==2" @click="onClickCopy(item)" src="../../static/merchant/copy.png"
                     mode="scaleToFill" />
+            </view>
+            <view class="couponItem-bottom" v-else>
+                已领完
             </view>
         </view>
         <merchantCoupon :showDrawer.sync="createCouponShow" @success="couponCreateSuccess" :goodCode='goodCode' ref='merchantCoupon' />
