@@ -8,7 +8,7 @@
 					<view class="avatar-bg">
 						<muqian-lazyLoad class="avatar" :src="userData.avatar==''?defaultAvatar:decodeURIComponent(userData.avatar)" borderRadius="50%"  />
 					</view>
-					{{userData.userName==''?'请选择':userData.userName}}
+					<view class="cut-box-name u-line-1">{{userData.userName==''?'请选择':userData.userName}}</view>
 					<view class="user-choice"></view>
 				</view>
 			</view>
@@ -375,10 +375,6 @@
 				justify-content: space-between;
 				box-sizing: border-box;
 				padding:0 45rpx 0 23rpx;
-				font-size: 33rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
-				color: #333333;
 				.avatar-bg{
 					width: 46rpx;
 					height:46rpx;
@@ -391,6 +387,13 @@
 						width: 42rpx;
 						height:42rpx
 					}
+				}
+				.cut-box-name{
+					max-width: 150rpx;
+					font-size: 33rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #333333;
 				}
 				.user-choice{
 					width: 37rpx;
