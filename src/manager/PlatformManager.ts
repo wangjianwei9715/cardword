@@ -119,7 +119,7 @@ export default class PlatformManager {
 			// 直播 回放
 			if(data.media_url!=''){
 				uni.navigateTo({
-					url:`/pages/live/zgPlayBack?data=${JSON.stringify(data)}&alias=${item.alias||item.merchantAlias}&roomID=${item.roomID}`,
+					url:`/pages/live/zgPlayBack?data=${JSON.stringify({media_url:data.media_url})}&alias=${item.alias||item.merchantAlias}&roomID=${item.roomID}&playCode=${item.playCode}`,
 				})
 				return 
 			}else if(data.media_url==''&&data.wxRoomId==0){
@@ -137,6 +137,30 @@ export default class PlatformManager {
 				url:`/pages/live/proLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}&type=${item.type}`
 			})
 		}
+	}
+	comeFromOpenPlayBack(url: any) {
+		let urlStr = url.split('?')[1]
+		// 创建空对象存储参数
+		let obj:any = {};
+		// 再通过 & 将每一个参数单独分割出来
+		let paramsArr = urlStr.split('&')
+		for (let i = 0, len = paramsArr.length; i < len; i++) {
+			// 再通过 = 将每一个参数分割为 key:value 的形式
+			let arr = paramsArr[i].split('=')
+			obj[arr[0]] = arr[1];
+		}
+		console.log(obj);
+		this.goZgLive({
+			state: 3,
+			playCode: obj.playCode,
+			goodCode: obj.goodCode,
+			roomID: obj.roomID,
+			alias: obj.alias
+		})
+	}
+	clearCache(){
+		//@ts-ignore
+		plus.cache.clear(() => {});
 	}
 	launchMiniProgramLive(id:any){
 		// #ifdef APP-PLUS

@@ -25,8 +25,8 @@ export module app{
     // export let goodShareOrigin=""
     // export let activityShareOrigin=""
     export let liveWebView='https://www.ka-world.com/live/#/pages/liveStreaming/tools'
-    // export let liveWebView='https://xlsh.zjhlang.com:8088/live/#/pages/liveStreaming/tools'
     export let playBackWebView='https://www.ka-world.com/live/#/pages/liveStreaming/chart'
+    export let webViewVersion="1.0"
     export let statusBarHeight:any = 0;
     export let platform = PlatformManager.getIns();
 	export let payment = PayManager.getIns();

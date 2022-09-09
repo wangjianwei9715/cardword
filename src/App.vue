@@ -58,6 +58,14 @@
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
 			}
 			uni.setStorageSync("openAppTime", Math.round(+new Date() / 1000)); //存储打开app时间
+			if(!uni.getStorageSync("webViewVersion") || uni.getStorageSync("webViewVersion")!=app.webViewVersion){
+				//#ifdef APP-PLUS
+				app.platform.clearCache()
+				//#endif
+				uni.setStorageSync("webViewVersion",app.webViewVersion)
+			}else{
+				uni.setStorageSync("webViewVersion",app.webViewVersion)
+			}
 			app.needPushIdentifier =
 				uni.getStorageSync("needPushIdentifier") == 1 ? false : true;
 			const loginToken = uni.getStorageSync("token");
@@ -239,6 +247,11 @@
 					if(pages.length){
 						const currentRoute=pages[pages.length-1].route
 						if(url.indexOf(currentRoute)!=-1) jumpType='redirectTo'
+					}
+					console.log(url);
+					if(url.indexOf('/pages/live/zgPlayBack')!=-1){
+						app.platform.comeFromOpenPlayBack(url)
+						return
 					}
 					//@ts-ignore
 					uni[jumpType]({

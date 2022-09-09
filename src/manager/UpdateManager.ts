@@ -32,8 +32,6 @@ export default class UpdateManager {
         showCancel: false,
         success: (res) => {
           if (res.confirm) {
-            //@ts-ignore
-            plus.cache.clear(() => {});
             // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
             updateManager.applyUpdate();
           }
