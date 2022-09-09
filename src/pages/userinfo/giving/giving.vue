@@ -78,7 +78,8 @@
 					content: '是否查询此用户ID：'+key,
 					success: (res)=>{
 						if (res.confirm) {
-							this.userId = key[0]
+							this.userId = key[0];
+							this.inputConfirm(this.userId)
 							uni.setClipboardData({
 								data: '',
 								showToast:false
