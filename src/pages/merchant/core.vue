@@ -63,7 +63,7 @@
             <view class="more-left">店铺精彩时刻</view>
             <view class="more-right" @click="pageJump('/pages/merchant/niceTime?alias='+alias)">更多</view>
         </view>
-        <swiper indicator-dots indicator-active-color="#333333" indicator-color="#CAC6C6" class="niceTimeContainer" v-if="niceTimeList&&niceTimeList.length">
+        <swiper indicator-dots autoplay :interval="3*1000" indicator-active-color="#333333" indicator-color="#CAC6C6" class="niceTimeContainer" v-if="niceTimeList&&niceTimeList.length">
             <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index"
                 style="display: flex;flex-wrap: nowrap;">
                 <image v-for="(sItem,sNndex) in item" class="niceTimeImage"
