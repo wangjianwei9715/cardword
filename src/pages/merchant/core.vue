@@ -32,7 +32,7 @@
             </view>
             <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr}}</view>
         </view>
-        <view class="couponContainer uni-flex" v-if="!isMerchant&&couponBrief.length">
+        <view class="couponContainer uni-flex" v-if="!isMerchant&&couponBrief&&couponBrief.length">
             <view class="leftCoupon uni-flex">
                 <view class="leftCoupon-item" style="margin-left: 14rpx;" v-for="(item,index) in couponBrief.length==1?[...couponBrief,...couponBrief]:couponBrief"
                     :key="index" :style="{marginLeft:index==0?`14rpx`:`60rpx`}">

@@ -13,7 +13,8 @@
                             <view class="right-info">
                                 <view class="right-title">{{item.name}}</view>
                                 <view class="right-time">{{item.expire}}</view>
-                                <view :class="{'right-btn':true,'opacity':item.state!=1&&goodPage}" @click="onClickGetCoupon(item)">{{inspectState(item)}}</view>
+                                <!-- &&goodPage -->
+                                <view :class="{'right-btn':true,'opacity':(item.state!=1&&goodPage) || item.state==3}" @click="onClickGetCoupon(item)">{{inspectState(item)}}</view>
                             </view>
                             <view class="right-b" @click="onClickCheckExplain(item.cateId)">
                                 <view class="right-b-font">指定{{item.tp==1?'商品':'店铺'}}</view>
@@ -42,6 +43,7 @@
         goodPage!:Boolean;
 
         onClickGetCoupon(item:any){
+            if(item.state==3) return
             // 可领取
             if(item.state==1){
                 app.http.Post(`coupon/merchant/online/draw/${item.cateId}`,{},(res:any)=>{
