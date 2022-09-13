@@ -188,7 +188,8 @@
         -webkit-box-orient: vertical;
         margin-top: 15rpx;
         width: 100%;
-        height: 64rpx;
+        height: 60rpx;
+        line-height: 30rpx;
         margin-bottom: 30rpx;
     }
 
