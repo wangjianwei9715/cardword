@@ -13,7 +13,7 @@
                     @click="onClickShare"></u-icon>
             </view>
         </view>
-        <image :src='parsePic(decodeURIComponent(merchantInfo.back_img))' mode='aspectFill' class="merchantBanner" />
+        <image :src='parsePic(decodeURIComponent(merchantInfo.back_img))' @click="previewImage([decodeURIComponent(merchantInfo.back_img)],0,'')" mode='aspectFill' class="merchantBanner" />
         <view class="merchantInfoContainer">
             <view class="infoTop uni-flex">
                 <image :src="parsePic(decodeURIComponent(merchantInfo.logo))" mode="aspectFill" class="info-avatar" />
@@ -67,7 +67,7 @@
             <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index"
                 style="display: flex;flex-wrap: nowrap;">
                 <image v-for="(sItem,sNndex) in item" class="niceTimeImage"
-                    :style="{marginRight:index==2?0:'17rpx'}" :src="parsePic(decodeURIComponent(sItem.pic))"
+                    :style="{marginRight:index==2?0:'17rpx'}" :src="filterImage(decodeURIComponent(sItem.pic))"
                     mode="aspectFill" />
             </swiper-item>
         </swiper>
@@ -255,6 +255,13 @@
         onPageScroll(data: any) {
             this.scrollTop = data.scrollTop
         }
+        previewImage(list: any, index: number, key: string = "src") {
+            const urls = list.map((item: any) => this.parsePic(key ? item[key] : item));
+            uni.previewImage({
+                urls,
+                current: index
+            });
+        }
         goBack() {
             uni.navigateBack({ delta: 1 })
         }
@@ -294,6 +301,12 @@
             uni[jumpType]({
                 url
             })
+        }
+        filterImage(picstring:any){
+            if(!picstring) return ""
+            let pics=picstring.split(',')
+            if(pics&&pics.length==1) return this.parsePic(picstring)
+            if(pics&&pics.length>1) return this.parsePic(pics[0])
         }
         assignNiceTimeList(list: any) {
             this.niceTimeList = []
