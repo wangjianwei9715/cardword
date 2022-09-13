@@ -387,6 +387,15 @@ export default class PlatformManager {
 			uni.$emit("loginSuccess");
 		});
 	}
+	hasLoginToken(cb?:Function){
+		if(app.token.accessToken == ''){
+			uni.navigateTo({
+				url:'/pages/login/login'
+			})
+			return;
+		}
+		cb && cb()
+	}
 	lastCharacter(val:string,lastString:string="/"){
 		let newVal = val.charAt(val.length - 1) == lastString ? val.slice(0, val.length - 1) : val;
 		return newVal
