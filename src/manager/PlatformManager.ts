@@ -228,6 +228,107 @@ export default class PlatformManager {
 			throw new Error(err)
 		}
 	}
+	//ios跳转通知
+	iosToPermissionPush(){
+		uni.showModal({
+			title: '通知权限开启提醒',
+			content: '您还没有开启通知权限，无法接受到消息通知，是否前往开启推送?',
+			// showCancel: false,
+			confirmText: '立即前往',
+			success: function(res) {
+				if (res.confirm) {
+					var app = plus.ios.invoke('UIApplication', 'sharedApplication');
+					var setting = plus.ios.invoke('NSURL', 'URLWithString:', 'app-settings:');
+					plus.ios.invoke(app, 'openURL:', setting);
+					plus.ios.deleteObject(setting);
+					plus.ios.deleteObject(app);
+				}
+			}
+		});
+	}
+	//判断有没有通知权限
+	judgeIosPermissionPush() {
+		const isIos=plus.os.name == "iOS"
+		if (isIos) { //ios
+			var result = false;
+			//@ts-ignore
+			var UIApplication = plus.ios.import("UIApplication");
+			var app = UIApplication.sharedApplication();
+			var enabledTypes = 0;
+			if (app.currentUserNotificationSettings) {
+				var settings = app.currentUserNotificationSettings();
+				enabledTypes = settings.plusGetAttribute("types");
+				console.log("enabledTypes1:" + enabledTypes);
+				if (enabledTypes == 0) {
+					// gotoAppPermissionSetting()
+					console.log("推送权限没有开启");
+					this.iosToPermissionPush()
+				} else {
+					result = true;
+					console.log("已经开启推送功能!")
+				}
+				plus.ios.deleteObject(settings);
+			} else {
+				enabledTypes = app.enabledRemoteNotificationTypes();
+				if (enabledTypes == 0) {
+					// gotoAppPermissionSetting()
+					console.log("推送权限没有开启!");
+					this.iosToPermissionPush()
+				} else {
+					result = true;
+					console.log("已经开启推送功能!")
+				}
+				console.log("enabledTypes2:" + enabledTypes);
+			}
+			plus.ios.deleteObject(app);
+			plus.ios.deleteObject(UIApplication);
+			return result;
+		} else { //android
+			var result = false
+			var main:any = plus.android.runtimeMainActivity();
+			var pkName = main.getPackageName();
+			var uid = main.getApplicationInfo().plusGetAttribute("uid");
+			var NotificationManagerCompat = plus.android.importClass("androidx.core.app.NotificationManagerCompat")
+			//("android.support.v4.app.NotificationManagerCompat");
+			var areNotificationsEnabled = NotificationManagerCompat.from(main)
+			// 未开通‘允许通知’权限，则弹窗提醒开通，并点击确认后，跳转到系统设置页面进行设置  
+			if (!areNotificationsEnabled.areNotificationsEnabled()) {
+				uni.showModal({
+					title: '提示',
+					content: '请先打开APP通知权限',
+					showCancel: false,
+					success: function (res) {
+						if (res.confirm) {
+							var Intent:any = plus.android.importClass('android.content.Intent');
+							var Build:any = plus.android.importClass("android.os.Build");
+							//android 8.0引导  
+							if (Build.VERSION.SDK_INT >= 26) {
+								var intent = new Intent('android.settings.APP_NOTIFICATION_SETTINGS');
+								intent.putExtra('android.provider.extra.APP_PACKAGE', pkName);
+							} else if (Build.VERSION.SDK_INT >= 21) { //android 5.0-7.0  
+								var intent = new Intent('android.settings.APP_NOTIFICATION_SETTINGS');
+								intent.putExtra("app_package", pkName);
+								intent.putExtra("app_uid", uid);
+							} else { //(<21)其他--跳转到该应用管理的详情页
+								var Settings:any = plus.android.importClass("android.provider.Settings");
+								var Uri:any = plus.android.importClass("android.net.Uri");
+								var intent = new Intent();
+								intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+								var uri = Uri.fromParts("package", main.getPackageName(), null);
+								intent.setData(uri);
+							}
+							// 跳转到该应用的系统通知设置页  
+							main.startActivity(intent);
+							return result
+						}
+					}
+				});
+			} else {
+				result = true
+				return result
+			}
+		}
+	}
 	requestSubscribeMessage(id: string, callback?: Function) {
 		// 调起订阅消息
 		//用户发生点击行为或者发起支付回调后，才可以调起订阅消息界面
