@@ -11,7 +11,7 @@
 					<view class="coupon-index">
 						<view class="coupon-left">
 							<view class="coupon-price">￥<text>{{item.amount}}</text></view>
-							<view class="coupon-condition">{{item.goodCode!=''?'指定商品':getCouponType(item.tp,(item.minUseAmount?item.minUseAmount:0))}}</view>
+							<view class="coupon-condition">{{item.merchantName!=''?'店铺':'全平台'}}{{item.goodCode!=''?'指定商品':getCouponType(item.tp,(item.minUseAmount?item.minUseAmount:0))}}</view>
 						</view>
 						<view class="coupon-right">
 							<view class="coupon-right-header">
@@ -86,7 +86,7 @@
 		getCouponType(type:number,minUseAmount:number){
 			switch(type){
 				case 1:
-					return '全平台无门槛';
+					return '无门槛';
 				case 2:
 					return '满'+minUseAmount+'减';
 				case 3:
