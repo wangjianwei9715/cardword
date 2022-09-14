@@ -240,20 +240,27 @@ export function formatDay(value: any) {//返回 dd天hh:mm:ss
 export function formatMinute(value: any) {//返回 mm:ss
 	let secondTime = parseInt(value);// 秒
 	let minuteTime = 0;// 分
+	let hoursTime = 0;
 
-	if (secondTime > 60) {//如果秒数大于60，将秒数转换成整数
+	if (secondTime >= 3600) {
+		hoursTime = Math.floor(secondTime / 3600);
+	}
+	if (secondTime >= 60) {//如果秒数大于60，将秒数转换成整数
 		//获取分钟，除以60取整数，得到整数分钟
 		minuteTime = Math.floor(secondTime / 60);
 		//获取秒数，秒数取佘，得到整数秒数
 		secondTime = Math.floor(secondTime % 60);
 	}
-	if (minuteTime > 60) {
+	if (minuteTime >= 60) {
 		minuteTime = Math.floor(minuteTime % 60);
 	}
 
 	let result = "";
 	result = (secondTime >= 10 ? '' : '0') + secondTime;
 	result = (minuteTime >= 10 ? '' : '0') + minuteTime + ":" + result;
+	if(hoursTime>0){
+		result = (hoursTime >= 10 ? '' : '0') + hoursTime + ":" + result;
+	}
 	return result;
 }
 
