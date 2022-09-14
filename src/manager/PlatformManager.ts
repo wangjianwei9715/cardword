@@ -290,6 +290,7 @@ export default class PlatformManager {
 			var uid = main.getApplicationInfo().plusGetAttribute("uid");
 			var NotificationManagerCompat = plus.android.importClass("androidx.core.app.NotificationManagerCompat")
 			//("android.support.v4.app.NotificationManagerCompat");
+			//@ts-ignore
 			var areNotificationsEnabled = NotificationManagerCompat.from(main)
 			// 未开通‘允许通知’权限，则弹窗提醒开通，并点击确认后，跳转到系统设置页面进行设置  
 			if (!areNotificationsEnabled.areNotificationsEnabled()) {
