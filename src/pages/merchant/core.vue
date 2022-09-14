@@ -6,10 +6,10 @@
             </view>
             <view class="pageTop" ref="pageTop" id="pageTop"
                 :style="{backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
-                <u-icon name="arrow-left" :color="scrollTopPercent>0.6?'#202124':'#e3ded4'" size="20" @click="goBack">
+                <u-icon name="arrow-left" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="22" @click="goBack">
                 </u-icon>
                 <view class="pageTitle" :style="{opacity:scrollTopPercent}">商家中心</view>
-                <u-icon name="share-square" :color="scrollTopPercent>0.6?'#202124':'#e3ded4'" size="25"
+                <u-icon name="share-square" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="28"
                     @click="onClickShare"></u-icon>
             </view>
         </view>
@@ -358,11 +358,11 @@
                 this.couponQuery.fetchFrom == 1 ? this.couponList = list : this.couponList.push(...list)
                 this.couponGetDrawerShow = true
                 cb && cb()
-            })
+            })  
         }
         reqGoodsData(cb?: any) {
             app.http.Get('dataApi/merchant/1/goodlist/' + this.alias, this.goodsQuery, (res: any) => {
-                const list = res.list || []
+                const list:any = res.list || []
                 this.goodsQuery.pageIndex == 1 ? this.goodsList = list : this.goodsList.push(...list)
                 this.goodsTotalPage = res.totalPage
                 this.goodsMsg = res
@@ -432,7 +432,7 @@
         display: block;
         width: 750rpx;
         z-index: 1;
-        height: 353rpx;
+        height: 380rpx;
     }
 
     .merchantInfoContainer {
@@ -444,7 +444,7 @@
         background-color: #fff;
         box-sizing: border-box;
         padding: 28rpx 30rpx 30rpx 30rpx;
-        margin-top: -76rpx;
+        margin-top: -58rpx;
         z-index: 2;
     }
 
@@ -527,11 +527,13 @@
             width: 111rpx;
             height: 111rpx;
             margin-right: 19rpx;
+            border-radius: 5rpx;
         }
 
         .info-message {
             flex: 1;
             margin-top: 10rpx;
+            
         }
 
         .info-name {
@@ -683,6 +685,7 @@
             height: 265rpx;
             overflow: hidden;
             display: block;
+            border-radius: 5rpx;
             /* background: #E6DDDD; */
         }
     }
