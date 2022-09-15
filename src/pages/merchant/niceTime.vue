@@ -116,7 +116,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 11rpx;
+        margin-bottom: 12rpx;
         box-sizing: border-box;
         padding: 0 14rpx;
     }
@@ -131,7 +131,7 @@
         background: #333333;
         position: relative;
         overflow: hidden;
-        margin-top: 13rpx;
+        /* margin-top: 13rpx; */
     }
 
     .niceTimeItem-img {
@@ -155,6 +155,7 @@
         position: absolute;
         right: 17rpx;
         bottom: 18rpx;
+        opacity: .7;
     }
 
     .scoreContainer {

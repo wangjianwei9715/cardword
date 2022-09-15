@@ -51,7 +51,7 @@
         <view class="ruleContainer" v-if="isMerchant">
             <view class="ruleItem" v-for="(item,index) in merchantRule" :key="index" @click="onClickRule(item)">
                 <view class="rule-left flexCenter">
-                    <image class="rule-icon" :src="item.icon" mode="widthFix" />
+                    <image class="rule-icon" :src="item.icon" :style="{width:item.width+'rpx'}" mode="widthFix" />
                 </view>
                 <view class="rule-right">
                     <view class="rule-name">{{item.name}}</view>
@@ -59,7 +59,7 @@
                 </view>
             </view>
         </view>
-        <view class="moreContainer" :style="{marginTop:isMerchant?0:30+'rpx'}">
+        <view class="moreContainer" :style="{marginTop:(isMerchant?27:30)+'rpx'}">
             <view class="more-left">店铺精彩时刻</view>
             <view class="more-right" @click="pageJump('/pages/merchant/niceTime?alias='+alias)">更多</view>
         </view>
@@ -67,7 +67,7 @@
             <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index"
                 style="display: flex;flex-wrap: nowrap;">
                 <image v-for="(sItem,sNndex) in item" class="niceTimeImage"
-                    :style="{marginRight:index==2?0:'17rpx'}" :src="filterImage(decodeURIComponent(sItem.pic))"
+                    :style="{marginRight:sNndex==2?0:'24rpx'}" :src="filterImage(decodeURIComponent(sItem.pic))"
                     mode="aspectFill" />
             </swiper-item>
         </swiper>
@@ -85,7 +85,7 @@
         </u-sticky> -->
 
         <view class="goodsList">
-            <goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
+            <goodslist :goodsList="goodsList" v-if="goodsList&&goodsList.length" @send="onClickJumpDetails" :presell="false" />
         </view>
         <empty v-if='!goodsList.length' style="position: relative;bottom: 50rpx;" />
         <bottomDrawer title='领取优惠券' :height='571' heightType='rpx' :needSafeArea='true'
@@ -123,6 +123,7 @@
             name: '我的直播',
             tipsText: '待直播',
             url: '/pages/live/myLive',
+            width:52,
             valueKey: '',
             bit: 2,
 
@@ -131,12 +132,14 @@
             icon: '/static/merchant/card.png',
             name: '拆卡报告',
             tipsText: '待制作',
+            width:47,
             valueKey: '',
             bit: 8
         }, {
             icon: '/static/merchant/wul.png',
             name: '我的发货',
             tipsText: '待发货',
+            width:48,
             valueKey: '',
             bit: 16
         },
@@ -144,6 +147,7 @@
             icon: '/static/merchant/coupon.png',
             name: '优惠券管理',
             tipsText: '查看与创建',
+            width:51,
             valueKey: '',
             url: '/pages/merchant/couponManage',
             bit: 1
@@ -151,6 +155,7 @@
             icon: '/static/merchant/cuoka.png',
             name: '代搓卡',
             tipsText: '直播模式',
+            width:41,
             valueKey: '',
             url: "/pages/anchor/index",
             bit: 4
@@ -543,7 +548,7 @@
         }
 
         .info-introduction {
-            font-size: 21rpx;
+            font-size: 23rpx;
             font-weight: 400;
             color: #7C7C7C;
             margin-top: 10rpx;
@@ -578,7 +583,7 @@
     }
 
     .merchant-introduction {
-        font-size: 23rpx;
+        font-size: 25rpx;
         font-weight: 400;
         color: #7C7C7C;
         margin-top: 17rpx;
@@ -592,36 +597,36 @@
         display: flex;
         padding: 0 28rpx;
         flex-wrap: wrap;
-        margin-top: 37rpx;
+        margin-top: 46rpx;
 
         .ruleItem {
             width: 33.33%;
             height: 70rpx;
-            margin-bottom: 36rpx;
+            margin-bottom: 35rpx;
             display: flex;
             align-items: center;
         }
 
         .rule-left {
-            width: 70rpx;
-            height: 70rpx;
+            width: 73rpx;
+            height: 73rpx;
             background: rgba(230, 228, 227, .6);
             border-radius: 3rpx;
             margin-right: 14rpx;
         }
 
         .rule-icon {
-            width: 36rpx;
+            /* width: 36rpx; */
         }
 
         .rule-name {
-            font-size: 25rpx;
+            font-size: 27rpx;
             font-weight: 500;
             color: #333333;
         }
 
         .rule-tips {
-            font-size: 21rpx;
+            font-size: 23rpx;
             font-weight: 400;
             color: #7C7C7C;
         }
@@ -702,7 +707,9 @@
     .tagsContainer {
         padding: 0 28rpx;
         display: flex;
-        justify-content: space-between;
+        /* justify-content: center; */
+        justify-content: space-evenly;
+        /* justify-content: space-between; */
         width: 750rpx;
         box-sizing: border-box;
         background-color: #fff;
@@ -712,17 +719,17 @@
         margin-bottom: 50rpx; */
 
         .tag {
-            font-size: 29rpx;
-            font-weight: bold;
-            color: #7B7A7A;
-
+            font-size: 27rpx;
+            font-weight: 400;
+            color: #959699;
+            /* margin-right:82rpx; */
             text {
                 margin-left: 6rpx;
             }
         }
 
         .selectTag {
-            font-size: 33rpx;
+            font-size: 31rpx;
             font-weight: bold;
             color: #333333;
         }

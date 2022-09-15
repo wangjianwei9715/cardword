@@ -91,8 +91,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-bottom: 13rpx;
             .item-left{
-                width: 170rpx;
+                width: 190rpx;
                 height:190rpx;
                 box-sizing: border-box;
                 padding-top: 35rpx;
@@ -109,7 +110,7 @@
                 .left-type{
                     margin-top: 5rpx;
                     text-align: center;
-                    font-size: 25rpx;
+                    font-size: 23rpx;
                     font-family: PingFang SC;
                     font-weight: 400;
                     color: #FFFFFF;
@@ -131,6 +132,7 @@
                     font-family: PingFang SC;
                     font-weight: 600;
                     color: #333333;
+                    margin-bottom: 6rpx;
                 }
                 .right-time{
                     font-size: 21rpx;
@@ -142,7 +144,7 @@
                 .right-btn{
                     width: 127rpx;
                     height: 47rpx;
-                    background: #E6374C;
+                    background: #fb1644;
                     border-radius: 3rpx;
                     box-sizing: border-box;
                     display: flex;
