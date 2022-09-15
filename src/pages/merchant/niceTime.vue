@@ -6,7 +6,7 @@
                     <muqian-lazyLoad class="niceTimeItem-img"
                         :src="parsePic(decodeURIComponent(filterImg(item.pic)[0]))" mode="aspectFill"
                         @click='previewImage(filterImg(item.pic),0,"")' />
-                    <view class="niceTimeItem-dot flexCenter">{{item.resultNum}}</view>
+                    <view class="niceTimeItem-dot flexCenter">{{imageNums(item.pic)}}</view>
                     <view class="scoreContainer uni-flex">
                         <image :src="levelItem.levelPic" v-for="(levelItem) in filterLevel(item.rarity)"
                             :class="{A:levelItem.level=='A'}" mode="aspectFill" />
@@ -74,6 +74,10 @@
                 urls,
                 current: index
             });
+        }
+        imageNums(picString:any){
+            if(!picString) return 0
+            return picString.split(',').length
         }
         onPullDownRefresh() {
             this.queryParams.pageIndex = 1
