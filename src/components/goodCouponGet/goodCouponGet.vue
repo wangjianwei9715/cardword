@@ -6,7 +6,7 @@
 					<view class="coupon-item">{{item}}</view>
 				</view>
 			</view>
-			<view class="coupon-list-right" @click="onClickMoreCoupon">更多<image class="icon-r" src="@/static/goods/v2/icon_r.png"/></view>
+			<view class="coupon-list-right" @click="onClickMoreCoupon">领券<image class="icon-r" src="@/static/goods/v2/icon_r.png"/></view>
 		</view>
 
 		<couponGetDrawer :showDrawer.sync="showDrawer" :goodPage="goodPage" :couponList="couponList" @lower="getCouponList"/>
@@ -92,7 +92,7 @@
 				height:38rpx;
 				position: relative;
 				overflow: hidden;
-				margin-right: 28rpx;
+				margin-right: 20rpx;
 			}
 			.coupon-item{
 				height:38rpx;
@@ -103,7 +103,7 @@
 				justify-content: center;
 				border: 1px solid #fba8b6;
 				border-radius: 5rpx;
-				font-size: 21rpx;
+				font-size: 23rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
 				color: #F53756;
@@ -139,10 +139,10 @@
 			height:38rpx;
 			display: flex;
 			align-items: center;
-			font-size: 23rpx;
+			font-size: 25rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
-			color: #7B7A7A;
+			color: #949398;
 		}
 	}
 </style>

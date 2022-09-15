@@ -163,7 +163,7 @@ import { Md5 } from "ts-md5";
 			justify-content: space-between;
 			background: url(@/static/userinfo/v2/coupon_bg.png) no-repeat center / 100% 100%;
 			.box-left{
-				width: 560rpx;
+				width: 540rpx;
 				height:171rpx;
 				box-sizing: border-box;
 				padding:0 30rpx;
@@ -186,7 +186,7 @@ import { Md5 } from "ts-md5";
 				.info-m{
 					display: flex;
 					align-items: center;
-					margin-top: 10rpx;
+					margin-top: 5rpx;
 					font-size: 21rpx;
 					font-family: PingFang SC;
 					font-weight: 400;
@@ -200,7 +200,7 @@ import { Md5 } from "ts-md5";
 				.info-bottom{
 					width: 100%;
 					position: absolute;
-					bottom:6rpx;
+					bottom:0;
 					left:0;
 					font-size: 21rpx;
 					font-family: PingFang SC;
@@ -228,7 +228,7 @@ import { Md5 } from "ts-md5";
 				height:171rpx;
 			}
 			.box-right{
-				width: 170rpx;
+				width: 190rpx;
 				height:171rpx;
 				box-sizing: border-box;
 				padding-right:8rpx;
@@ -262,7 +262,7 @@ import { Md5 } from "ts-md5";
 					position: absolute;
 					bottom:12rpx;
 					left:50%;
-					margin-left: -59rpx;
+					margin-left: -61rpx;
 					font-size: 25rpx;
 					font-family: PingFang SC;
 					font-weight: 500;
@@ -277,5 +277,6 @@ import { Md5 } from "ts-md5";
 				}
 			}
 		}
+		
 	}
 </style>

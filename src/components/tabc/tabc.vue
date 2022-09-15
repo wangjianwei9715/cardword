@@ -47,10 +47,10 @@
 		font-size: 29rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
-		color: #BCBCBC;
+		color: #959699;
 	}
 	.current{
-		font-size: 31rpx;
+		font-size: 33rpx;
 		font-family: PingFangSC-Medium;
 		font-weight: bold;
 		color: #333;
