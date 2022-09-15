@@ -6,10 +6,10 @@
             </view>
             <view class="pageTop" ref="pageTop" id="pageTop"
                 :style="{backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
-                <u-icon name="arrow-left" :color="scrollTopPercent>0.6?'#202124':'#e3ded4'" size="20" @click="goBack">
+                <u-icon name="arrow-left" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="20" @click="goBack">
                 </u-icon>
                 <view class="pageTitle" :style="{opacity:scrollTopPercent}">商家信息</view>
-                <u-icon name="camera" :color="scrollTopPercent>0.6?'#202124':'#e3ded4'" size="25"
+                <u-icon name="camera" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="26"
                     @click="menuShow=true"></u-icon>
             </view>
         </view>

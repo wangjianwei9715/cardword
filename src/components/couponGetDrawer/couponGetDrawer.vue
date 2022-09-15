@@ -85,7 +85,7 @@
             opacity: 0.43;
         }
         .coupon-item{
-            width: 703rpx;
+            width: 708rpx;
             height:195rpx;
             background:url(@/static/userinfo/v2/coupon_g_bg.png) no-repeat center / 100% 100%;
             display: flex;
@@ -93,7 +93,7 @@
             justify-content: space-between;
             margin-bottom: 13rpx;
             .item-left{
-                width: 190rpx;
+                width: 200rpx;
                 height:190rpx;
                 box-sizing: border-box;
                 padding-top: 35rpx;
@@ -132,7 +132,7 @@
                     font-family: PingFang SC;
                     font-weight: 600;
                     color: #333333;
-                    margin-bottom: 6rpx;
+                    margin-bottom: 2rpx;
                 }
                 .right-time{
                     font-size: 21rpx;
