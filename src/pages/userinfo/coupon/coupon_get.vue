@@ -22,7 +22,7 @@
 				<view class="box-right">
 					<view class="right-p">￥<text>{{item.amount}}</text></view>
 					<view class="right-min">{{item.minUseAmount>0?`满${item.minUseAmount}可用`:'无门槛券'}}</view>
-					<view :class="{'right-btn':true,'btn-white':item.state!=1}" @click="$u.throttle(onClickGetCoupon(item),1000)">{{getBtnMsg(item)}}</view>
+					<view :class="{'right-btn':true,'btn-white':item.state!=1}" @click="$u.throttle(()=>{onClickGetCoupon(item)},1000)">{{getBtnMsg(item)}}</view>
 				</view>
 			</view>
 		</view>
@@ -111,10 +111,13 @@ import { Md5 } from "ts-md5";
 					item.state = 2;
 				})
 			}else if(item.state==2){
-				let url = item.tp==1 ? 
-				`/pages/goods/goods_details?id=${item.good.goodCode}` 
-				: `/pages/userinfo/merchant_shopsV2?alias=${item.merchant.merchantAlias}`
-				uni.navigateTo({ url })
+				if(item.tp==1){
+					uni.navigateTo({ 
+						url:`/pages/goods/goods_details?id=${item.good.goodCode}`
+					})
+				}else{
+					this.goMerchantPage(item.alias)
+				}
 			}
 		}
 		getBtnMsg(item:any):string{
