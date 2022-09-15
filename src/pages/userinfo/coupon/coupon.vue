@@ -15,7 +15,7 @@
 						<button class="coupon-right-header-btn" @click="onClickGoIndex(item)">去使用</button>
 					</view>
 					<view class="coupon-right-bottom" @click="onClickCheckExplain(item.id)">
-						<view class="coupon-right-detail">查看详情</view>
+						<view class="coupon-right-detail">{{item.goodCode!=''?'指定商品':(item.merchantName!=''?'指定店铺':'平台通用')}}</view>
 						<view :class="checkShowExplain(item.id)?'coupon-right-up':'coupon-right-down'"></view>
 					</view>
 				</view>
