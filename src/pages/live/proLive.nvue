@@ -36,6 +36,11 @@
       <text class="liveCountDown"
         v-if="maskCountDownTips!=''&&(typeof liveData.state!='undefined')">{{maskCountDownTips}}</text>
       <text class="playStart" v-if="isAnchor&&!finishLive" @click="startPreview">开始直播</text>
+      <!-- !isAnchor&&([0,1].includes(liveData.state)) -->
+      <template v-if="false">
+        <image v-if="!subscribed" src="../../static/live/playTips.png" class="subscribedTips" mode="scaleToFill" @click="onClickSubscribed"/>
+        <image v-else src="../../static/live/noneTips.png" class="subscribedTips" mode="scaleToFill" @click="onClickSubscribed"/>
+      </template>
     </view>
 
     <!-- 红包 -->
@@ -512,7 +517,8 @@ color: #E6A44F;">下次加油！</text>
         keyHeight: 0,
         pullPattern: "normal", //拉流模式  normal正常模式,mixer混流模式
         mixerTask: undefined, //混流任务
-        mixerStreamID: "0" //混流id
+        mixerStreamID: "0", //混流id
+        subscribed: false,//是否开启了开播提醒
       };
     },
     beforeCreate() {
@@ -705,6 +711,22 @@ color: #E6A44F;">下次加油！</text>
         this.stampTimer && clearInterval(this.stampTimer);
         this.heartBeatTimer && clearInterval(this.heartBeatTimer);
         this.reconnectionTimer && clearInterval(this.reconnectionTimer);
+      },
+      onClickSubscribed(){
+        this.UIClickFeedBack()
+        if(this.subscribed){
+          this.SubscribedAction()
+          return
+        }
+        const hasPower=app.platform.judgeIosPermissionPush()
+        this.SubscribedAction()
+      },
+      SubscribedAction(){
+        const url=this.subscribed?`brodcast/third/1001/user/unsubscribe/`:`brodcast/third/1001/user/subscribe/`
+        app.http.Post('funcApi/'+url+this.roomID,{},(res)=>{
+          console.log(res);
+          this.subscribed=!this.subscribed
+        })
       },
       keyBoardHeightChange(obj) {
         let _heightDiff =
@@ -1699,6 +1721,7 @@ color: #E6A44F;">下次加油！</text>
       },
       async getUserProfile() {
         try {
+          console.log('请求登录直播间');
           const tokenRespone = await request(
             "funcApi/brodcast/third/1001/user/login/" + this.roomID,
             {
@@ -1708,6 +1731,7 @@ color: #E6A44F;">下次加油！</text>
           );
           console.log("直播间用户登录数据", tokenRespone);
           this.websocket = tokenRespone.websocket;
+          this.subscribed = tokenRespone.subscribed
           this.userData = tokenRespone.data;
           this.streamID = tokenRespone.data.streamId;
           // console.log("直播间用户登录数据66666666");
@@ -2297,6 +2321,12 @@ color: #E6A44F;">下次加油！</text>
     font-family: PingFang SC;
     font-weight: 400;
     color: #fffefe;
+  }
+
+  .subscribedTips {
+    width: 282rpx;
+    height: 77rpx;
+    margin-top: 20rpx;
   }
 
   .liveBackCover {
