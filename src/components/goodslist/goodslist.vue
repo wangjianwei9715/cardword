@@ -128,9 +128,7 @@
 		}
 		onClickTopJumpUrl(url: any) {
 			if (url.goodCode != '') {
-				uni.navigateTo({
-					url: '/pages/goods/goods_details?id=' + decodeURIComponent(url.goodCode)
-				})
+				app.navigateTo.goGoodsDetails(url.goodCode)
 				return;
 			} else if (url.url != '') {
 				uni.navigateTo({

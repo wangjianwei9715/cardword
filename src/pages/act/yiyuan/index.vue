@@ -48,13 +48,11 @@
 			this.reqNewData()
 		}
         // 跳转商品详情
-		onClickJumpDetails(id:any){
+		onClickJumpDetails(goodCode:any){
             if(this.tabsCheck==2){
                 return;
             }
-			uni.navigateTo({
-				url: '/pages/goods/goods_details?id='+id
-			})
+            app.navigateTo.goGoodsDetails(goodCode)
 		}
         reqNewData(cb?:Function) {
 			// 获取更多商品

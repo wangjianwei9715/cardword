@@ -40,9 +40,7 @@
 			return Math.floor((Number(item.lockNum)+Number(item.currentNum))/Number(item.totalNum)*100)+'%'
 		}
 		goGoodsDetails(goodCode:string){
-			uni.navigateTo({
-				url: '/pages/goods/goods_details?id=' + decodeURIComponent(goodCode)
-			})
+			app.navigateTo.goGoodsDetails(goodCode)
 		}
 	}
 </script>

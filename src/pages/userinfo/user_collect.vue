@@ -100,10 +100,8 @@ import { Component } from "vue-property-decorator";
 			this.reqNewData()
 		}
 		// 跳转商品详情
-		onClickJumpDetails(id:any){
-			uni.navigateTo({
-				url: '/pages/goods/goods_details?id='+id
-			})
+		onClickJumpDetails(goodCode:any){
+			app.navigateTo.goGoodsDetails(goodCode)
 		}
 		onClickDel(id:number){
 			let index = this.delList.indexOf(id)

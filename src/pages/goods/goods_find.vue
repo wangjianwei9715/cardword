@@ -145,8 +145,8 @@
 		animationfinish(e:any) {
 			this.curIndex = e.detail.current+1
 		}
-		goGoodDetail(code:any){
-			uni.navigateTo({ url: `/pages/goods/goods_details?id=${code}` })
+		goGoodDetail(goodCode:any){
+			app.navigateTo.goGoodsDetails(goodCode)
 		}
 		onClickShops(alias: any) {
 			// #ifndef MP

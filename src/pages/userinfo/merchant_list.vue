@@ -126,9 +126,7 @@
 			// 		url: aboutPointer.url
 			// 	});
 			// }
-			uni.navigateTo({
-				url: "/pages/goods/goods_details?id=" + item.goodCode
-			});
+			app.navigateTo.goGoodsDetails(item.goodCode)
 		}
 		followSuccess(event: any, item: any) {
 			item.follow = event.follow;
