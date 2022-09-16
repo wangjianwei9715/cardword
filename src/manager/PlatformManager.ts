@@ -225,7 +225,7 @@ export default class PlatformManager {
 				url
 			})
 		} catch (err) {
-			throw new Error(err)
+			throw new Error(String(err))
 		}
 	}
 	//ios跳转通知

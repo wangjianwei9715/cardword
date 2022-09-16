@@ -177,7 +177,7 @@
 		<!-- 底部吐司 -->
 		<tips :tipsData="buyRecordList" v-if="buyRecordList!=''"></tips>
 		<!-- 底部按钮 -->
-		<view class="btn-content" v-if="goodsData.state==1||(goodsData.state==0&&goodsData.isSelect)">
+		<view class="btn-content" v-if="goodsData.state==1||(goodsData.state==0&&getPriceStart())">
 			<view class="btn-content-left">
 				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id" @click="onClickTipBtn(item)">
 					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFill" />
@@ -306,7 +306,7 @@
 		getCouponList:any = [];
 		onLoad(query: any) {
 			// #ifndef MP
-			const goodCode = query.id
+			const goodCode = query.goodCode
 			this.goodCode = goodCode;
 			this.source=query.source
 			this.getGoodData(goodCode,()=>{
@@ -872,14 +872,23 @@
 
 		// 选队随机支付
 		onClickTeamRandomBuy(data: any) {
-			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}&payRandomTeam=${encodeURIComponent(JSON.stringify(data))}`
-			})
-			this.onClickteamRandomCancel()
+			const params = `&payRandomTeam=${encodeURIComponent(JSON.stringify(data))}`
+			this.toConfirmorder(params)
 		}
 		onClickRandomBuy(id: number) {
+			const params = `&selectRanId=${id}`
+			this.toConfirmorder(params)
+		}
+		toConfirmorder(params:string){
+			if((this.goodsData.state==0)){
+				uni.showToast({
+					title:'暂未开售',
+					icon:'none'
+				})
+				return;
+			}
 			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}&selectRanId=${id}`
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}${params}`
 			})
 			this.onClickteamRandomCancel()
 		}

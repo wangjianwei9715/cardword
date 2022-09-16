@@ -112,9 +112,7 @@ import { Md5 } from "ts-md5";
 				})
 			}else if(item.state==2){
 				if(item.tp==1){
-					uni.navigateTo({ 
-						url:`/pages/goods/goods_details?id=${item.good.goodCode}`
-					})
+					app.navigateTo.goGoodsDetails(item.good.goodCode)
 				}else{
 					this.goMerchantPage(item.alias)
 				}

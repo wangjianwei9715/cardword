@@ -233,11 +233,9 @@
 				if(!args) return
 				if (args.indexOf("goodsdetails") != -1) {
 					let index = args.indexOf("=") + 1;
-					let id = args.substring(index);
+					let goodCode = args.substring(index);
 					plus.runtime.arguments = null;
-					uni.navigateTo({
-						url: "/pages/goods/goods_details?id=" + id,
-					});
+					app.navigateTo.goGoodsDetails(goodCode)
 					return
 				}
 				//navigateTo=>/pages/act/playGroup/index?helpCode=666

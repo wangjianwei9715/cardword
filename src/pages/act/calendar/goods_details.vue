@@ -123,10 +123,8 @@
 		getPlan(now:number,lock:number,total:number){
 			return Math.floor(((now+lock)/total)*100)
 		}
-		onClickGoGood(code:string){
-			uni.navigateTo({
-				url: '/pages/goods/goods_details?id='+code
-			})
+		onClickGoGood(goodCode:string){
+			app.navigateTo.goGoodsDetails(goodCode)
 		}
 		
 	}

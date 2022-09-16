@@ -184,10 +184,8 @@
 			})
 		}
 		// 跳转商品详情
-		onClickJumpDetails(id: any) {
-			uni.navigateTo({
-			url: "/pages/goods/goods_details?id=" + id
-			});
+		onClickJumpDetails(goodCode: any) {
+			app.navigateTo.goGoodsDetails(goodCode)
 		}
 		// 观看大图
 		onClickPreviewImage(img: string) {

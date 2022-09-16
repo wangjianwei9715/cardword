@@ -378,9 +378,7 @@ import { Md5 } from "ts-md5";
 			})
 		}
 		onClickGoodDetail(){
-			uni.navigateTo({
-				url: '/pages/goods/goods_details?id='+this.orderData.good.goodCode
-			})
+			app.navigateTo.goGoodsDetails(this.orderData.good.goodCode)
 		}
 		onClickKefu(){
 			if(this.orderData.kefu>0){

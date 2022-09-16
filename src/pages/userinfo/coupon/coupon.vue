@@ -126,9 +126,7 @@
 				}else{
 					goodCode = item.goodCode.split(',')[0]
 				}
-				uni.navigateTo({
-					url: '/pages/goods/goods_details?id='+decodeURIComponent(goodCode)
-				})
+				app.navigateTo.goGoodsDetails(goodCode)
 			}else if(item.merchantAlias){
 				this.goMerchantPage(item.merchantAlias)
 			}else{

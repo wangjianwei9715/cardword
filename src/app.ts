@@ -1,5 +1,6 @@
 import PlatformManager from "./manager/PlatformManager";
 import PayManager from "./manager/PayManager";
+import navigateManager from "./manager/navigateManager";
 import HttpRequest from "./net/HttpRequest";
 import { SocketServer } from "./net/SocketServer";
 export module app{
@@ -31,6 +32,7 @@ export module app{
     export let platform = PlatformManager.getIns();
 	export let payment = PayManager.getIns();
     export let http =  HttpRequest.getIns();
+    export let navigateTo =  navigateManager.getIns();
     export let refreshIng = false;
     export let needPushIdentifier = true;
     export let protobuf:any = null; 

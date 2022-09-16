@@ -233,10 +233,8 @@
 				url: "/pages/act/invite/record?code="+code,
 			})
 		}
-		onClickJumpGood(code:string){
-			uni.navigateTo({
-				url: '/pages/goods/goods_details?id='+code
-			})
+		onClickJumpGood(goodCode:string){
+			app.navigateTo.goGoodsDetails(goodCode)
 		}
 		
 	}
