@@ -24,13 +24,14 @@ export default class navigateManager {
 	/**
 	 * 跳转资讯详情
 	 * @param item 资讯信息
+	 * @param ad   广告位进入为1
 	 */
-	goInformationDetail(item:any){
+	goInformationDetail(item:any,ad=0){
 		if(!item) return;
 		const articleCode = item.articleCode;
 		const url = item.video_at&&item.video_at!='' ? 'video' : 'details'
 		uni.navigateTo({
-			url:`/pages/information/${url}?code=${articleCode}`
+			url:`/pages/information/${url}?code=${articleCode}&ad=${ad}`
 		})
 	}
 }
