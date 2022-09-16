@@ -71,12 +71,12 @@
 <style lang="scss">
 	.coupon-list{
 		width: 100%;
-		height:70rpx;
+		height:40rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding-top: 30rpx;
+		margin-bottom: 20rpx;
 		.icon-r{
 			width: 11rpx;
 			height:17rpx;

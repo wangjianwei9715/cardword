@@ -11,7 +11,7 @@
 						<image class="icon-pl" src="@/static/information/icon_m_pl.png" />{{item.comment}}
 					</view>
 					<view class="orther-item" @click.prevent="onClickLike(item)">
-						<view :class="item.liked?'icon-lked':'icon-lk'"/>{{item.likes}}
+						<view :class="item.isLikes?'icon-lked':'icon-lk'"/>{{item.likes}}
 					</view>
 				</view>
 			</view>
@@ -49,15 +49,13 @@
 			
 		}
 		onClickJumpUrl(item:any){
-			uni.navigateTo({
-				url:`/pages/information/details?code=${item.articleCode}&pic=${item.cover}`
-			})
+			app.navigateTo.goInformationDetail(item)
 		}
 		onClickLike(item:any){
 			app.platform.hasLoginToken(()=>{
 				app.http.Post(`article/like/or/cancel/${item.articleCode}`,{},(res:any)=>{
 					item.likes = res.likes;
-					item.liked = res.liked
+					item.isLikes = res.liked
 				})
 			})
 		}
