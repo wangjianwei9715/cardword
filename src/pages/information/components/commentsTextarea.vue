@@ -1,14 +1,14 @@
 <template>
 	<view class="content" v-show="focus" @touchmove.stop.prevent="move">
 		<view class="input-box" v-show="focus" :style="{transform:`translateY(-${textareaData.height}px)`,'transition-duration': textareaData.duration+'s'}">
-			<textarea class="input" v-model="textareaData.val" placeholder="说点什么..." :focus="focus" :adjust-position="false" @blur="show=false" @keyboardheightchange="getHeight"/>
+			<textarea class="input" v-model="textareaData.val" :placeholder="replyName!=''?'回复'+replyName:'说点什么...'" :focus="focus" :adjust-position="false" @blur="show=false" @keyboardheightchange="getHeight"/>
 			<view class="btn" @click="$u.throttle(onClickChatConfirm,1000)">发送</view>
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import { Component, PropSync,Vue } from "vue-property-decorator";
+	import { Component, PropSync,Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	const textareaData = {
 		val:'',
@@ -21,6 +21,9 @@
             type: Boolean
         })
         show!: Boolean;
+		@Prop({default:''})
+		replyName:string|undefined
+
 		textareaData = {...textareaData}
 		created(){//在实例创建完成后被立即调用
 			

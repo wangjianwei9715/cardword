@@ -23,11 +23,14 @@ export default class navigateManager {
 	}
 	/**
 	 * 跳转资讯详情
-	 * @param articleCode 资讯编号
+	 * @param item 资讯信息
 	 */
-	goInformationDetail(articleCode:string){
+	goInformationDetail(item:any){
+		if(!item) return;
+		const articleCode = item.articleCode;
+		const url = item.video_at&&item.video_at!='' ? 'video' : 'details'
 		uni.navigateTo({
-			url:`/pages/information/details?code=${articleCode}`
+			url:`/pages/information/${url}?code=${articleCode}`
 		})
 	}
 }

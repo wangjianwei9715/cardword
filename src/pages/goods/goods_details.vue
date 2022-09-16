@@ -60,12 +60,9 @@
 					</view>
 				</view>
 				<view class="header">
-					<goodCouponGet :goodCode="goodsData.goodCode" :goodPage="true" :list="getCouponList" />
 					<view class="header-top">
-						<view class="header-top-title">
-							{{goodsData.title}}
-						</view>
-
+						<goodCouponGet :goodCode="goodsData.goodCode" :goodPage="true" :list="getCouponList" />
+						<view class="header-top-title">{{goodsData.title}}</view>
 						<view class="header-top-plan">
 							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
 								<view class="progress-mask"

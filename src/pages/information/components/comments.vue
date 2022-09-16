@@ -15,32 +15,33 @@
 			<view class="chat-header">{{articleData.comment}}条评论</view>
 			<view class="chat-box" v-for="(item,index) in commentsList" :key="index">
 				<view class="chat-item">
-					<muqian-lazyLoad class="chat-avatar" :src="item.avatar" :borderRadius="'50%'"/>
+					<muqian-lazyLoad class="chat-avatar" :src="decodeURIComponent(item.avatar)" :borderRadius="'50%'"/>
 					<view style="width:470rpx">
 						<view class="chat-info">
 							<view class="chat-name">{{item.name}}</view>
 							<view class="chat-time">{{$u.timeFrom(item.created_at)}}</view>
 						</view>
-						<view class="chat-msg" :class="'chat-'+item.id" v-html="item.content" @click="onClickReply(item.id,item.id)"></view>
+						<view class="chat-msg" :class="'chat-'+item.id" v-html="item.content" @click="onClickReply(item,item.id)"></view>
 					</view>
-					<view class="chat-right" @click="$u.throttle(()=>{onClickLike(item)},500)">
+					<view class="chat-right" @click="$u.throttle(()=>{onClickLike(item)},100)">
 						<view :class="item.isLike?'icon-like':'icon-likeno'"></view>
 						<view class="chat-like">{{item.likes}}</view>
 					</view>
 				</view>
 				<view class="chat-item son-item" v-for="(son,x) in item.lower" :key="x">
-					<muqian-lazyLoad class="son-avatar" :src="son.avatar" :borderRadius="'50%'"/>
+					<muqian-lazyLoad class="son-avatar" :src="decodeURIComponent(son.avatar)" :borderRadius="'50%'"/>
 					<view style="width:390rpx">
 						<view class="chat-info son-info">
 							<view class="chat-name">{{son.name}}</view>
 							<view class="chat-time">{{$u.timeFrom(son.created_at)}}</view>
 						</view>
-						<view class="chat-msg" v-if="!son.isDelete" :class="'chat-'+item.id" @click="onClickReply(son.id,item.id)">
-							<view class="chat-hf" v-if="son.replyUserName!=''">回复<view class="hf-name">{{son.replyUserName}}</view></view>:{{son.content}}
+						<view class="chat-msg" v-if="!son.isDelete" :class="'chat-'+son.id" @click="onClickReply(son,item.id)">
+							<view class="chat-hf" v-if="son.replyUserName!=''">回复<text class="hf-name">{{son.replyUserName}}</text>:{{son.content}}</view>
+							<view class="chat-hf" v-else>{{son.content}}</view>
 						</view>
 						<view class="chat-msg" v-else>评论已删除</view>
 					</view>
-					<view class="chat-right" @click="$u.throttle(()=>{onClickLike(son)},500)">
+					<view class="chat-right" @click="$u.throttle(()=>{onClickLike(son)},100)">
 						<view :class="son.isLike?'icon-like':'icon-likeno'"></view>
 						<view class="chat-like">{{son.likes}}</view>
 					</view>
@@ -48,9 +49,9 @@
 				<view class="chat-more" v-if="item.remainNum>0" @click="onClickMoreComments(item.id)">
 					展开全部{{item.remainNum}}条<image style="width:16rpx;height:11rpx;margin-left:8rpx" src="@/static/information/icon_down.png"/>
 				</view>
-				<view class="chat-empty" v-else>- 没有更多了 -</view>
 			</view>
 		</view>
+		<view class="chat-empty" v-show="isFetchEnd">- 没有更多了 -</view>
 	</view>
 </template>
 
@@ -64,7 +65,8 @@
 		articleData:any
 		@Prop({default:{}})
 		commentsList:any
-
+		@Prop({default:false})
+		isFetchEnd:boolean|undefined
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -80,17 +82,8 @@
 				item.likes = res.likes;
 			})
 		}
-		onClickReply(id:number,fatherId:number){
-			const r = '.chat-'+id
-			uni.createSelectorQuery().select(r).boundingClientRect((data:any)=>{//目标节点
-				uni.createSelectorQuery().select(".content").boundingClientRect((res:any)=>{//最外层盒子节点
-					uni.pageScrollTo({
-						duration:0,//过渡时间必须为0，uniapp bug，否则运行到手机会报错
-						scrollTop:res.top - data.top,//滚动到实际距离是元素距离顶部的距离减去最外层盒子的滚动距离
-					})
-				}).exec()
-			}).exec();
-			this.$emit('reply',{replyId:id,fatherId})
+		onClickReply(item:any,fatherId:number){
+			this.$emit('reply',{replyId:item.id,replyName:item.name,fatherId})
 		}
 		onClickMoreComments(id:number){
 			this.$emit('moreComments',id)
@@ -140,6 +133,7 @@
 		color: #7C7C7C;
 	}
 	.desc{
+		width: 100%;
 		font-size: 28rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
@@ -149,6 +143,18 @@
 	::v-deep img{
 		width:670rpx !important;
 		height:auto;
+	}
+	::v-deep h2{
+		line-height: 60rpx;
+		font-size: 30rpx;
+	}
+	::v-deep h3{
+		line-height: 60rpx;
+		font-size: 30rpx;
+	}
+	::v-deep p{
+		word-break:break-all
+		
 	}
 	.chat-content{
 		width: 100%;
@@ -164,7 +170,7 @@
 			width: 100%;
 			margin-top: 32rpx;
 			box-sizing: border-box;
-			padding-bottom: 35rpx;
+			padding-bottom: 10rpx;
 			position: relative;
 			.chat-item{
 				width: 100%;
@@ -250,7 +256,6 @@
 				font-weight: 400;
 				color: #333333;
 				line-height: 33rpx;
-				display: flex;
 			}
 			.hf-name{
 				color:#636363;
@@ -274,14 +279,7 @@
 				font-family: PingFang SC;
 				font-weight: 600;
 				color: #636363;
-			}
-			.chat-empty{
-				width: 100%;
-				text-align: center;
-				font-size: 21rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
-				color: #D2D2D2;
+				margin-bottom: 20rpx;
 			}
 		}
 		.chat-box::after{
@@ -293,5 +291,14 @@
 			right:0;
 			bottom:0;
 		}
+	}
+	.chat-empty{
+		width: 100%;
+		text-align: center;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #D2D2D2;
+		margin:30rpx 0rpx 10rpx 0;
 	}
 </style>

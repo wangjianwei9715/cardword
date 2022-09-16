@@ -49,7 +49,7 @@
 			
 		}
 		onClickJumpUrl(item:any){
-			app.navigateTo.goInformationDetail(item.articleCode)
+			app.navigateTo.goInformationDetail(item)
 		}
 		onClickLike(item:any){
 			app.platform.hasLoginToken(()=>{

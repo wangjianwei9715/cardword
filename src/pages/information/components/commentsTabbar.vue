@@ -27,26 +27,31 @@
 	}
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		@Prop({default:''})
-		articleCode:string|undefined;
 		@Prop({default:{}})
-		nums:any
+		data:any
 		@Prop({default:true})
 		show:any
+		@Prop({default:0})
+		commentNum:number|undefined
 
 		tabbarData:any = {...tabbarData};
-		@Watch('nums')
-		onGoodsDataChanged(val: any, oldVal: any) {
+		@Watch('data')
+		onDataChanged(val: any, oldVal: any) {
 			if(val){
-				console.log(val)
 				this.setTabbarNum(val)
+			}
+		}
+		@Watch('commentNum')
+		onNumChanged(val: any, oldVal: any) {
+			if(val){
+				this.tabbarData.comment.num = val;
 			}
 		}
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-			this.setTabbarNum(this.nums)
+			this.setTabbarNum(this.data)
 		}
 		destroyed(){
 			
@@ -55,9 +60,14 @@
 			this.$emit('chat')
 		}
 		setTabbarNum(data:any){
+			let tab:any = {
+				comment:{num:data.comment||0,boolean:false},
+				likes:{num:data.likes||0,boolean:data.isLikes},
+				favorite:{num:data.favorite||0,boolean:data.isFavorite}
+			}
 			for (const key in this.tabbarData) {
-				this.tabbarData[key].num = data[key].num;
-				this.tabbarData[key].boolean = data[key].boolean;
+				this.tabbarData[key].num = tab[key].num;
+				this.tabbarData[key].boolean = tab[key].boolean;
 			}
 		}
 		onClickTabbar(str:string){
@@ -66,17 +76,18 @@
 			}else if( str == 'likes' || str == 'favorite'){
 				const isLikes = str == 'likes';
 				const url = isLikes ? 'like/or/cancel' : 'favorite/or/unFavorite'
-				app.http.Post(`article/${url}/${this.articleCode}`,{},(res:any)=>{
+				app.http.Post(`article/${url}/${this.data.articleCode}`,{},(res:any)=>{
 					this.tabbarData[str].boolean = isLikes ? res.liked : res.isFavorite;
 					this.tabbarData[str].num = isLikes ? res.likes : res.favorite;
 
 					if(isLikes){
 						const data = {
-							articleCode:this.articleCode,
+							articleCode:this.data.articleCode,
 							isLikes:res.liked,
+							comment:this.tabbarData.comment.num,
 							likes:res.likes
 						}
-						uni.$emit('informationLikes', data)
+						uni.$emit('informationChange', data)
 					}
 					
 				})
