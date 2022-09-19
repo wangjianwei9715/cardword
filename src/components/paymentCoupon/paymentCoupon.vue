@@ -11,15 +11,18 @@
 					<view class="coupon-index">
 						<view class="coupon-left">
 							<view class="coupon-price">￥<text>{{item.amount}}</text></view>
-							<view class="coupon-condition">{{item.merchantName!=''?'店铺':'全平台'}}{{item.goodCode!=''?'指定商品':getCouponType(item.tp,(item.minUseAmount?item.minUseAmount:0))}}</view>
+							<view class="coupon-condition">{{getCouponType(item.tp,(item.minUseAmount?item.minUseAmount:0))}}</view>
 						</view>
 						<view class="coupon-right">
 							<view class="coupon-right-header">
 								<view class="coupon-right-header-left">
-									<view class="coupon-name"><image class="coupon-icon" src="../../static/userinfo/coupon_icon.png"/>{{item.name}}</view>
+									<view class="coupon-name">{{item.name}}</view>
 									<view class="coupon-time">{{dateFormatYMS(item.startAt)}}-{{dateFormatYMS(item.overAt)}}</view>
 								</view>
 								<view :class="checkCoupon(item.id)?'coupon-right-checked':'coupon-right-check'" @click="onClickcheckCoupon(item.id,index)"></view>
+							</view>
+							<view class="coupon-right-bottom">
+								<view class="coupon-right-detail">{{item.goodCode!=''?'指定商品':(item.merchantName!=''?'指定店铺':'平台通用')}}</view>
 							</view>
 						</view>
 					</view>
@@ -88,7 +91,7 @@
 				case 1:
 					return '无门槛';
 				case 2:
-					return '满'+minUseAmount+'减';
+					return '满'+minUseAmount+'可用';
 				case 3:
 					return '打折'
 			}
@@ -243,48 +246,48 @@
 		margin-bottom: 24rpx;
 	}
 	.coupon-index{
-		width: 710rpx;
-		height:216rpx;
-		background:url(../../static/userinfo/coupon_bg.png) no-repeat center;
+		width: 708rpx;
+		height:195rpx;
+		background:url(@/static/userinfo/coupon_bg.png) no-repeat center;
 		background-size: 100% 100%;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		.coupon-left{
-			width:216rpx;
-			height:216rpx;
+			width: 200rpx;
+			height:195rpx;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			flex-wrap: wrap;
-			padding:45rpx 0 49rpx 0;
+			padding:35rpx 0 49rpx 0;
 			.coupon-price{
 				width: 100%;
-				font-size: 30rpx;
-				font-family: Microsoft YaHei;
+				font-size: 29rpx;
+				font-family: PingFang SC;
 				font-weight: 400;
 				color: #FFFFFF;
 				text-align: center;
 				font-weight: bold;
 			}
 			.coupon-price text{
-				font-size: 70rpx;
+				font-size: 54rpx;
 			}
 			.coupon-condition{
 				width: 100%;
 				text-align: center;
-				font-size: 19rpx;
-				font-family: Microsoft YaHei;
+				font-size: 23rpx;
+				font-family: PingFang SC;
 				font-weight: 500;
 				color: #FFFFFF;
 			}
 		}
 		.coupon-right{
-			width: 491rpx;
-			height:216rpx;
+			width: 490rpx;
+			height:195rpx;
 			box-sizing: border-box;
-			padding: 0 24rpx 0 29rpx;
+			padding: 0 30rpx 0 0rpx;
 			.coupon-right-header{
 				width: 100%;
 				height:120rpx;
@@ -294,54 +297,71 @@
 				position: relative;
 				.coupon-right-header-left{
 					width: 350rpx;
-					height:60rpx;
+					height:70rpx;
 					display: flex;
 					align-items: center;
 					flex-wrap: wrap;
-					box-sizing: border-box;
 				}
 				.coupon-name{
 					width: 100%;
-					height:42rpx;
+					height:29rpx;
 					display: flex;
 					align-items: center;
 					font-size: 30rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-					color: #666666;
-				}
-				.coupon-icon{
-					width: 42rpx;
-					height:42rpx;
-					margin-right: 7rpx;
+					font-family: PingFang SC;
+					font-weight: 600;
+					color: #333333;
 				}
 				.coupon-time{
 					width: 100%;
+					font-size: 21rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #88878C;
+					margin-top: 10rpx;
+				}
+			}
+			.coupon-right-bottom{
+				width: 100%;
+				height:60rpx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.coupon-right-detail{
+					height:50rpx;
+					line-height: 50rpx;
 					font-size: 20rpx;
 					font-family: Microsoft YaHei;
 					font-weight: 400;
-					color: #999999;
-					margin-top: 20rpx;
+					color: #B8B7B7;
 				}
 			}
 		}
 	}
 	
 	.coupon-right-check{
-		width: 36rpx;
-		height:36rpx;
+		width: 27rpx;
+		height:27rpx;
 		background:url(../../static/pay/weixuan@2x.png) no-repeat center;
 		background-size: 100% 100%;
+		position: absolute;
+		right:10rpx;
+		top:22rpx
 	}
 	.coupon-right-checked{
-		width: 36rpx;
-		height:36rpx;
-		background:url(../../static/pay/xuanzhong@2x.png) no-repeat center;
+		width: 27rpx;
+		height:27rpx;
+		background:url(../../static/pay/coupon_xz.png) no-repeat center;
 		background-size: 100% 100%;
+		position: absolute;
+		right:10rpx;
+		top:22rpx
 	}
 	.coupon-btn-content{
 		width: 100%;
-		height:110rpx;
+		height:calc(120rpx );
+		height:calc(120rpx + constant(safe-area-inset-bottom));
+		height:calc(120rpx + env(safe-area-inset-bottom));
 		background: #fff;
 		position: fixed;
 		left:0;
@@ -352,17 +372,17 @@
 		z-index: 3;
 	}
 	.coupon-btn{
-		width: 710rpx;
-		height: 88rpx;
-		background: #ff504f;
-		border-radius: 44rpx;
+		width: 694rpx;
+		height: 85rpx;
+		background: #E6384B;
+		border-radius: 5rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 28rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
+		font-size: 33rpx;
+		font-family: PingFang SC;
 		font-weight: 600;
-		color: #ffffff;
+		color: #F6F7FB;
 		line-height: 40rpx;
 	}
 </style>

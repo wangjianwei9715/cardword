@@ -9,7 +9,7 @@
 				<view class="coupon-right">
 					<view class="coupon-right-header">
 						<view class="coupon-right-header-left">
-							<view class="coupon-name"><image class="coupon-icon" src="../../../static/userinfo/coupon_icon.png"/>{{item.name}}</view>
+							<view class="coupon-name">{{item.name}}</view>
 							<view class="coupon-time">{{dateFormatYMS(item.startAt)}}-{{dateFormatYMS(item.overAt)}}</view>
 						</view>
 						<button class="coupon-right-header-btn" @click="onClickGoIndex(item)">去使用</button>
@@ -170,117 +170,110 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:28rpx 20rpx 120rpx 20rpx;
-		padding-bottom: calc(120rpx);
-		padding-bottom: calc(120rpx + constant(safe-area-inset-bottom));
-		padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+		padding-bottom: calc(140rpx);
+		padding-bottom: calc(140rpx + constant(safe-area-inset-bottom));
+		padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
 	}
 	.coupon-content{
-		width: 710rpx;
+		width: 708rpx;
 		box-sizing: border-box;
 		position: relative;
-		margin-bottom: 24rpx;
+		margin-bottom: 11rpx;
 	}
 	.coupon-index{
-		width: 710rpx;
-		height:216rpx;
+		width: 708rpx;
+		height:195rpx;
 		background:url(../../../static/userinfo/coupon_bg.png) no-repeat center;
 		background-size: 100% 100%;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		.coupon-left{
-			width: 216rpx;
-			height:216rpx;
+			width: 200rpx;
+			height:195rpx;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			flex-wrap: wrap;
-			padding:45rpx 0 49rpx 0;
+			padding:35rpx 0 49rpx 0;
 			.coupon-price{
 				width: 100%;
-				font-size: 30rpx;
-				font-family: Microsoft YaHei;
+				font-size: 29rpx;
+				font-family: PingFang SC;
 				font-weight: 400;
 				color: #FFFFFF;
 				text-align: center;
 				font-weight: bold;
 			}
 			.coupon-price text{
-				font-size: 70rpx;
+				font-size: 54rpx;
 			}
 			.coupon-condition{
 				width: 100%;
 				text-align: center;
-				font-size: 20rpx;
-				font-family: Microsoft YaHei;
+				font-size: 23rpx;
+				font-family: PingFang SC;
 				font-weight: 500;
 				color: #FFFFFF;
 			}
 		}
 		.coupon-right{
-			width: 491rpx;
-			height:216rpx;
+			width: 490rpx;
+			height:195rpx;
 			box-sizing: border-box;
-			padding: 0 24rpx 0 29rpx;
+			padding: 0 30rpx 0 0rpx;
 			.coupon-right-header{
 				width: 100%;
-				height:160rpx;
-				border-bottom: 1rpx solid #E7E7E7;
+				height:120rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				position: relative;
 				.coupon-right-header-left{
 					width: 350rpx;
-					height:84rpx;
+					height:70rpx;
 					display: flex;
 					align-items: center;
 					flex-wrap: wrap;
 				}
 				.coupon-name{
 					width: 100%;
-					height:42rpx;
+					height:29rpx;
 					display: flex;
 					align-items: center;
 					font-size: 30rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-					color: #666666;
-				}
-				.coupon-icon{
-					width: 42rpx;
-					height:42rpx;
-					margin-right: 7rpx;
+					font-family: PingFang SC;
+					font-weight: 600;
+					color: #333333;
 				}
 				.coupon-time{
 					width: 100%;
-					font-size: 20rpx;
-					font-family: Microsoft YaHei;
+					font-size: 21rpx;
+					font-family: PingFang SC;
 					font-weight: 400;
-					color: #999999;
-					margin-top: 20rpx;
+					color: #88878C;
+					margin-top: 10rpx;
 				}
 				.coupon-right-header-btn{
-					width: 100rpx;
-					height:34rpx;
-					background: url(../../../static/userinfo/coupon_btn.png) no-repeat center;
-					background-size: 100% 100%;
+					width: 127rpx;
+					height: 47rpx;
+					background: #E6374C;
+					border-radius: 3rpx;
 					text-align: center;
-					line-height: 34rpx;
-					font-size: 20rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-					color: #666666;
-					border-radius: 30rpx;
+					line-height: 47rpx;
+					font-size: 25rpx;
+					font-family: PingFang SC;
+					font-weight: 500;
+					color: #FFFFFF;
 					position: absolute;
-					right:0;
-					top:35rpx
+					right:0rpx;
+					top:27rpx
 				}
 			}
 			.coupon-right-bottom{
 				width: 100%;
-				height:50rpx;
+				height:60rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -310,9 +303,9 @@
 	}
 	.coupon-btn-content{
 		width: 100%;
-		height:calc(100rpx );
-		height:calc(100rpx + constant(safe-area-inset-bottom));
-		height:calc(100rpx + env(safe-area-inset-bottom));
+		height:calc(120rpx );
+		height:calc(120rpx + constant(safe-area-inset-bottom));
+		height:calc(120rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		left:0;
 		bottom:0;
@@ -320,29 +313,32 @@
 		display: flex;
 		box-sizing: border-box;
 		justify-content: space-between;
-		padding:0 42rpx;
-		padding-top: 15rpx;
+		padding:0 28rpx;
+		padding-top: 17rpx;
 	}
 	.coupon-btn{
-		width: 308rpx;
-		height: 70rpx;
+		width: 322rpx;
+		height: 86rpx;
 		background: #FFFFFF;
-		border: 1rpx solid #545659;
-		border-radius: 40rpx;
-		text-align: center;
-		line-height: 70rpx;
-		font-size: 28rpx;
+		border: 1rpx solid #AAAAAA;
+		border-radius: 5rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 33rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
-		color: #545659;
+		color: #333333;
+		margin:0
 	}
 	.btn-exchange{
-		background:#FB4E3E;
-		border:1rpx solid #FB4E3E;
-		color:#fff;
+		background:#E6384B;
+		border:1rpx solid #E6384B;
+		color: #F6F7FB;
+		font-weight: bold;
 	}
 	.coupon-explain{
-		width: 100%;
+		width: 695rpx;
 		height:0;
 		background:#fff;
 		border-bottom-left-radius: 10rpx;
@@ -351,6 +347,8 @@
 		transition:all 0.1s linear;
 		overflow: hidden;
 		padding: 0 25rpx;
+		margin:0 auto;
+		margin-top: -6rpx;
 	}
 	.explain-content{
 		width: 100%;
