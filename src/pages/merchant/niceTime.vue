@@ -144,6 +144,8 @@
         position: absolute;
         top: 0;
         left: 0;
+        border-radius: 5rpx;
+        display: block;
 
     }
 

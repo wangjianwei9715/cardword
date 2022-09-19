@@ -722,7 +722,7 @@
         width: 750rpx;
         /* box-sizing: border-box; */
         padding-top: 53rpx;
-        padding-bottom: 29rpx;
+        padding-bottom: 18rpx;
         background-color: #fff;
         /* height: 110rpx; */
         align-items: center;
