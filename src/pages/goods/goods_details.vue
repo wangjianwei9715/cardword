@@ -394,7 +394,7 @@
 			const data = this.goodsData;
 			// 商品非在售 或 禁用优惠券
 			if(data.state!=1 || (data.bit & 1) == 1) return;
-			app.http.Get(`coupon/merchant/online/good/${data.goodCode}/brief`,{},(res:any)=>{
+			app.http.Get(`dataApi/coupon/merchant/online/good/${data.goodCode}/brief`,{},(res:any)=>{
 				this.getCouponList = res.list||[]
 			})
 		}

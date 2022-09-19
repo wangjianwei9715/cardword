@@ -102,7 +102,7 @@
 				this.chooseId = query.chooseIds;
 				this.goodCode = query.code
 				if(query.random == 'true'){
-					app.http.Get('good/'+this.goodCode+'/select/hasRandom',{},(res:any)=>{
+					app.http.Get('dataApi/good/'+this.goodCode+'/select/hasRandom',{},(res:any)=>{
 						this.hasRandom = res.has;
 					})
 				}
@@ -125,7 +125,7 @@
 		}
 		onClickRandomMx(){
 			if(this.randomList == ''){
-				app.http.Get('good/'+this.goodCode+'/select/randomNo',{},(res:any)=>{
+				app.http.Get('dataApi/good/'+this.goodCode+'/select/randomNo',{},(res:any)=>{
 					this.randomList = res.list;
 					this.showRulePopup = true;
 				})
@@ -146,7 +146,7 @@
 				pageIndex:this.currentPage,
 				pageSize:10
 			}
-			app.http.Get('good/'+this.goodCode+'/cardNo',params,(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodCode+'/cardNo',params,(res:any)=>{
 				if(res.list){
 					this.teamDataList = this.teamDataList.concat(res.list)
 				}else{
@@ -167,7 +167,7 @@
 				pageIndex:this.currentPage,
 				pageSize:10
 			}
-			app.http.Get('good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
+			app.http.Get('dataApi/good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
 				if(res.list){
 					this.teamDataList2 = this.teamDataList2.concat(res.list)
 				}else{
