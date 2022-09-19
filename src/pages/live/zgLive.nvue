@@ -830,7 +830,7 @@ this.viewShow = false
 				console.log('发送给h5l ')
 			},
 			getMerchant(merchantId) {
-				request('merchant/1/detail/' + merchantId, {}, 'get').then(res => {
+				request('dataApi/merchant/1/detail/' + merchantId, {}, 'get').then(res => {
 					this.merchantMessage = res.data
 				})
 			},

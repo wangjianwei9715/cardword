@@ -947,7 +947,7 @@ color: #E6A44F;">下次加油！</text>
       },
       getMerchant() {
         app.http.Get(
-          "merchant/1/detail/" + this.liveData.merchantAlias,
+          "dataApi/merchant/1/detail/" + this.liveData.merchantAlias,
           {},
           res => {
             this.merchantMessage = res.data;
