@@ -38,6 +38,8 @@
 
 		}
 		onClickChatConfirm(){
+			if(this.textareaData.val == '') return;
+			
 			this.$emit('chatConfirm',this.textareaData.val)
 			this.textareaData = {...textareaData}
 		}

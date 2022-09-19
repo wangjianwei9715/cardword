@@ -13,27 +13,27 @@
 					<view class="coupon-right">
 						<view class="coupon-right-header">
 							<view class="coupon-right-header-left">
-								<view class="coupon-name"><image class="coupon-icon" src="../../../static/userinfo/coupon_icon.png"/>{{item.name}}</view>
+								<view class="coupon-name">{{item.name}}</view>
 								<view class="coupon-time">{{dateFormatYMS(item.startAt)}}-{{dateFormatYMS(item.overAt)}}</view>
 							</view>
-							<view :class="item.state==2?'coupon-right-header-ed':'coupon-right-header-over'"></view>
 						</view>
 						<view class="coupon-right-bottom" @click="onClickCheckExplain(item.id)">
-							<view class="coupon-right-detail">查看详情</view>
+							<view class="coupon-right-detail">{{item.goodCode!=''?'指定商品':(item.merchantName!=''?'指定店铺':'平台通用')}}</view>
 							<view :class="checkShowExplain(item.id)?'coupon-right-up':'coupon-right-down'"></view>
 						</view>
 					</view>
 				</view>
 				<view class="coupon-explain" :class="{'show-explain':checkShowExplain(item.id)}">
 					<view class="explain-content">
-						<view class="explain-index">1.{{item.tp==1?'卡享券':'满减券'}}可用于平台所有商品，用户下单时，可选择{{item.tp==1?'卡享券':'满减券'}}按面值抵减商品金额</view>
+						<view v-if="item.goodCode!=''" class="explain-index">1.该券只能用于商品：{{item.goodCode}}</view>
+						<view v-else class="explain-index">1.{{item.tp==1&&!item.merchantName?'卡享券':item.name}}可用于{{item.merchantName?item.merchantName:'平台'}}所有商品，用户下单时，可选择{{item.tp==1?'卡享券':'满减券'}}按面值抵减商品金额</view>
 						<view class="explain-index">2.{{item.tp==1?'卡享券可叠加使用，最低可减至0.1元，但不设找零':'满减券不可叠加使用，不设找零'}}</view>
 						<view class="explain-index">3.不可与其他类型优惠券叠加使用</view>
 						<view class="explain-index">券编号：{{item.code}}</view>
 					</view>
 				</view>
 			</view>
-			
+				
 			<empty v-show="showEmpty" />
 		</view>
 	</view>
@@ -153,111 +153,102 @@
 		width: 710rpx;
 		box-sizing: border-box;
 		position: relative;
-		margin-bottom: 24rpx;
+		margin-bottom: 11rpx;
 	}
 	.coupon-index{
-		width: 710rpx;
-		height:216rpx;
+		width: 708rpx;
+		height:195rpx;
 		background:url(../../../static/userinfo/coupon_bg2.png) no-repeat center;
 		background-size: 100% 100%;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		.coupon-left{
-			width: 216rpx;
-			height:216rpx;
+			width: 200rpx;
+			height:195rpx;
 			box-sizing: border-box;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			flex-wrap: wrap;
-			padding:45rpx 0 49rpx 0;
+			padding:35rpx 0 49rpx 0;
 			.coupon-price{
 				width: 100%;
-				font-size: 30rpx;
-				font-family: Microsoft YaHei;
+				font-size: 29rpx;
+				font-family: PingFang SC;
 				font-weight: 400;
 				color: #FFFFFF;
 				text-align: center;
 				font-weight: bold;
 			}
 			.coupon-price text{
-				font-size: 70rpx;
+				font-size: 54rpx;
 			}
 			.coupon-condition{
 				width: 100%;
 				text-align: center;
-				font-size: 20rpx;
-				font-family: Microsoft YaHei;
+				font-size: 23rpx;
+				font-family: PingFang SC;
 				font-weight: 500;
 				color: #FFFFFF;
 			}
 		}
 		.coupon-right{
-			width: 491rpx;
-			height:216rpx;
+			width: 490rpx;
+			height:195rpx;
 			box-sizing: border-box;
-			padding: 0 24rpx 0 29rpx;
+			padding: 0 30rpx 0 0rpx;
 			.coupon-right-header{
 				width: 100%;
-				height:160rpx;
-				border-bottom: 1rpx solid #E7E7E7;
+				height:120rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				position: relative;
 				.coupon-right-header-left{
 					width: 350rpx;
-					height:84rpx;
+					height:70rpx;
 					display: flex;
 					align-items: center;
 					flex-wrap: wrap;
 				}
 				.coupon-name{
 					width: 100%;
-					height:42rpx;
+					height:29rpx;
 					display: flex;
 					align-items: center;
 					font-size: 30rpx;
-					font-family: Microsoft YaHei;
-					font-weight: 400;
-					color: #666666;
-				}
-				.coupon-icon{
-					width: 42rpx;
-					height:42rpx;
-					margin-right: 7rpx;
+					font-family: PingFang SC;
+					font-weight: 600;
+					color: #333333;
 				}
 				.coupon-time{
 					width: 100%;
-					font-size: 20rpx;
-					font-family: Microsoft YaHei;
+					font-size: 21rpx;
+					font-family: PingFang SC;
 					font-weight: 400;
-					color: #999999;
-					margin-top: 20rpx;
+					color: #88878C;
+					margin-top: 10rpx;
 				}
-				.coupon-right-header-over{
-					width: 87rpx;
-					height:75rpx;
-					background: url(../../../static/userinfo/coupon_over.png) no-repeat center;
-					background-size: 100% 100%;
+				.coupon-right-header-btn{
+					width: 127rpx;
+					height: 47rpx;
+					background: #E6374C;
+					border-radius: 3rpx;
+					text-align: center;
+					line-height: 47rpx;
+					font-size: 25rpx;
+					font-family: PingFang SC;
+					font-weight: 500;
+					color: #FFFFFF;
 					position: absolute;
-					right:-24rpx;
-					top:0
-				}
-				.coupon-right-header-ed{
-					width: 87rpx;
-					height:75rpx;
-					background: url(../../../static/userinfo/coupon_ed.png) no-repeat center;
-					background-size: 100% 100%;
-					position: absolute;
-					right:-24rpx;
-					top:0
+					right:0rpx;
+					top:27rpx
 				}
 			}
 			.coupon-right-bottom{
 				width: 100%;
-				height:50rpx;
+				height:60rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -327,7 +318,7 @@
 		color:#fff;
 	}
 	.coupon-explain{
-		width: 100%;
+		width: 695rpx;
 		height:0;
 		background:#fff;
 		border-bottom-left-radius: 10rpx;
@@ -336,6 +327,8 @@
 		transition:all 0.1s linear;
 		overflow: hidden;
 		padding: 0 25rpx;
+		margin:0 auto;
+		margin-top: -6rpx;
 	}
 	.explain-content{
 		width: 100%;

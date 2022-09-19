@@ -114,7 +114,7 @@ import { Md5 } from "ts-md5";
 				if(item.tp==1){
 					app.navigateTo.goGoodsDetails(item.good.goodCode)
 				}else{
-					this.goMerchantPage(item.alias)
+					this.goMerchantPage(item.merchant.merchantAlias)
 				}
 			}
 		}

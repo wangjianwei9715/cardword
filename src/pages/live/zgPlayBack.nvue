@@ -296,7 +296,7 @@
         };
       },
       getMerchant(merchantId) {
-        request("merchant/1/detail/" + merchantId, {}, "get").then(res => {
+        request("dataApi/merchant/1/detail/" + merchantId, {}, "get").then(res => {
           console.log(res);
           this.merchantMessage = res.data;
         });

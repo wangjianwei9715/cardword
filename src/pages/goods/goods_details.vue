@@ -154,7 +154,7 @@
 				</view>
 			</view>
 			<view class="detail-title">购买须知</view>
-			<view class="detail-bottom-explain">{{buyExplain}}</view>
+			<view class="detail-bottom-explain">商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。</view>
 			<view class="detail-title">常见问题</view>
 			<view class="detail-bottom-explain" v-for="(item,index) in goodsDetailRules" :key="index">
 				<view class="detail-bottom-explain-title">{{item.title}}</view>
@@ -290,8 +290,6 @@
 		// 支付方式
 		payChannel: any = [];
 		showInvitePopup = false;
-		buyExplain =
-			'商家所拆商品全部为原封，上架前会提交原箱/原盒视频，同时也会在直播之前展示原箱/原盒包装。卡片生产商在生产过程中，有机率出现装箱误差，商品详情描述仅供参考，最终拆卡结果以商品实物为准，希望各位用户悉知这种情况的发生。产品宣传图均为发行商官方制作，最终该系列卡片以箱内拆出的实物为准，请各位玩家在购买前知悉。';
 		// 底部抽屉
 		showDrawer = false;
 		source="";
@@ -396,12 +394,12 @@
 			const data = this.goodsData;
 			// 商品非在售 或 禁用优惠券
 			if(data.state!=1 || (data.bit & 1) == 1) return;
-			app.http.Get(`coupon/merchant/online/good/${data.goodCode}/brief`,{},(res:any)=>{
-				this.getCouponList = res.list
+			app.http.Get(`dataApi/coupon/merchant/online/good/${data.goodCode}/brief`,{},(res:any)=>{
+				this.getCouponList = res.list||[]
 			})
 		}
 		getRelative(id:any,params:any){
-			app.http.Get(`good/${id}/relative`,params,(res:any)=>{
+			app.http.Get(`dataApi/good/${id}/relative`,params,(res:any)=>{
 				if(res.state==0 && !this.relativeOnce){
 					this.relativeOnce = true
 					setTimeout(()=>{
