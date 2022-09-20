@@ -7,11 +7,11 @@
                         :src="parsePic(decodeURIComponent(filterImg(item.pic)[0]))" mode="aspectFill"
                         @click='previewImage(filterImg(item.pic),0,"")' />
                     <view class="niceTimeItem-dot flexCenter">{{imageNums(item.pic)}}</view>
-                    <!-- <view class="scoreContainer uni-flex">
+                    <view class="scoreContainer uni-flex">
                         <image :src="levelItem.levelPic" v-for="(levelItem) in filterLevel(item.rarity)"
                             :class="{A:levelItem.level=='A'}" mode="aspectFill" />
-                        <image class="A" src="../../static/merchant/A.png" mode="aspectFill" />
-                    </view> -->
+                        <!-- <image class="A" src="../../static/merchant/A.png" mode="aspectFill" /> -->
+                    </view>
                 </view>
                 <view class="niceTime-name">
                     {{item.name}}
