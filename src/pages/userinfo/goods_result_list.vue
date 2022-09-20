@@ -111,7 +111,7 @@
 			let params = {
 				q:this.searchTetxt,
 				pageIndex:this.currentPage,
-				pageSize:30
+				pageSize:15
 			}
 			app.http.Get('good/'+this.goodCode+'/cardNo',params,(res:any)=>{
 				if(res.list){
@@ -119,7 +119,7 @@
 				}else{
 					this.noMore = true
 				}
-				if(res.list.length<30){
+				if(res.list.length<15){
 					this.noMore = true
 				}
 				this.currentPage++;
@@ -132,7 +132,7 @@
 			let params = {
 				q:this.searchTetxt,
 				pageIndex:this.currentPage,
-				pageSize:30
+				pageSize:15
 			}
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/report',params,(res:any)=>{
 				if(res.list){
@@ -140,7 +140,7 @@
 				}else{
 					this.noMore = true
 				}
-				if(res.list.length<30){
+				if(res.list.length<15){
 					this.noMore = true
 				}
 				this.currentPage++;

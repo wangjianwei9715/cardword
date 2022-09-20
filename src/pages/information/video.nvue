@@ -128,6 +128,7 @@
 				code:'',
 				shareShow: false,
 				shareData:{...shareData},
+				isFetchEnd:false,
 				//下面打🌟号的是必须要的基础字段
 				//下面打💗号的是拥有滑动条的必须字段
 				dataList:[],//用于数据循环的列表🌟💗
@@ -198,17 +199,16 @@
 					this.dataList[k].playIng = true
 				},850)
 				//【2.0版本更新内容】- start
-				var p = k
-				++p
-				await setTimeout( async ()=>{
-					uni.createVideoContext(this.dataList[p].articleCode,this).play()
-					clearTimeout(this.timeout)
-					this.timeout = await setTimeout(()=>{
-						uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
-						uni.createVideoContext(this.dataList[p].articleCode,this).pause()
-						console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
-					},1500)
-				},20)
+				// var p = k+1
+				// await setTimeout( async ()=>{
+				// 	uni.createVideoContext(this.dataList[p].articleCode,this).play()
+				// 	clearTimeout(this.timeout)
+				// 	this.timeout = await setTimeout(()=>{
+				// 		uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
+				// 		uni.createVideoContext(this.dataList[p].articleCode,this).pause()
+				// 		console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
+				// 	},1500)
+				// },20)
 				//【2.0版本更新内容】- end
 				//【此处处理进度条卡住的问题】
 				if(uni.getSystemInfoSync().platform !== 'ios'){
@@ -353,12 +353,18 @@
 						if(uni.getSystemInfoSync().platform == 'ios'){
 							this.k = i//判断了用户没有滑动，确认了用户的确是在看这个视频，然后就赋值啦
 							this.dataList[this.k].state = 'play'
+							if(this.k == this.dataList.length-1){
+								this.getMore()
+							}
 							console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
 						} else {
 							clearTimeout(this.timers);
 							this.timers = setTimeout(()=>{
 								this.k = i//判断了用户没有滑动，确认了用户的确是在看这个视频，然后就赋值啦
 								this.dataList[this.k].state = 'play'
+								if(this.k == this.dataList.length-1){
+									this.getMore()
+								}
 								console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
 							},80)
 						}
@@ -366,12 +372,9 @@
 				}
 			},
 			get(){
-				// 这个方法主要就是用来第一次进入视频播放时用来处理的
-				// this.dataList = userList;//这个就是赋值加载视频啦
 				app.http.Get(`dataApi/article/detail/${this.code}`,{},(res)=>{
-					const data = [{...res.data,isShowProgressBarTime:false}]
+					const data = [{...res.data,isShowProgressBarTime:false,state:'play'}]
 					this.dataList = [...data]
-					this.dataList[0].state = "play";
 					setTimeout(()=>{
 						//这里的延迟是为了避免执行时间太快而直接跳过执行的 bug
 						uni.createVideoContext(this.dataList[0].articleCode,this).seek(0)
@@ -381,16 +384,26 @@
 					setTimeout(()=>{
 						this.dataList[0].playIng = true
 					},500)
-					// var p = 0
-					// setTimeout(()=>{
-					// 	++p
-					// 	uni.createVideoContext(this.dataList[p].articleCode,this).play()
-					// 	setTimeout(()=>{
-					// 		uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
-					// 		uni.createVideoContext(this.dataList[p].articleCode,this).pause()
-					// 		console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
-					// 	},800)
-					// },50)
+					this.getMore()
+				})
+			},
+			getMore(){
+				if(this.isFetchEnd) return;
+				app.http.Get(`dataApi/article/video/detail/list/${this.code}`,{fetchSize:20,tp:100},(res)=>{
+					this.isFetchEnd = res.isFetchEnd;
+					const list = res.list.map((x)=>{
+						return {...x,isShowProgressBarTime:false,state:'pause'}
+					})
+					var p = this.dataList.length;
+					this.dataList = [...this.dataList,...list];
+					setTimeout(()=>{
+						uni.createVideoContext(this.dataList[p].articleCode,this).play()
+						setTimeout(()=>{
+							uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
+							uni.createVideoContext(this.dataList[p].articleCode,this).pause()
+							console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
+						},800)
+					},50)
 				})
 			},
 			//点击播放&&暂停

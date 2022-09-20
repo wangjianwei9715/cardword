@@ -159,7 +159,7 @@
                 app.http.Get(`dataApi/me/shop/get/goodCoupon/${item.id}/code/list`, {}, (res: any) => {
                     console.log(res);
                     const boardString = res.list.join('，')
-                    this.setClipboardData(boardString, `已复制共${item.couponCodeNum}条卡密`)
+                    this.setClipboardData(boardString, `已复制${item.couponCodeNum}条卡密`)
                 })
             }
         }

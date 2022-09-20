@@ -76,13 +76,6 @@
 					</view>
 					<view class="icon-right"></view>
 				</view>
-				<view class="setting" v-if='broadcastActor' @click="onClickNavigateto({url:'/pages/live/myLive'})">
-					<view class="name">
-						<image class="setting-icon" src="../../static/userinfo/v2/liveCamera.png" />
-						我的直播
-					</view>
-					<view class="icon-right"></view>
-				</view>
 				<view class="setting" v-for="item in settingTab" :key="item.id" @click="onClickNavigateto(item)">
 					<view class="name">
 						<image class="setting-icon" :src="item.pic" />
