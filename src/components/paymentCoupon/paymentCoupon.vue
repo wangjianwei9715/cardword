@@ -374,7 +374,7 @@
 	.coupon-btn{
 		width: 694rpx;
 		height: 85rpx;
-		background: #E6384B;
+		background: #FA1644;
 		border-radius: 5rpx;
 		display: flex;
 		align-items: center;
