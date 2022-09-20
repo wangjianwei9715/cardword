@@ -68,6 +68,14 @@
 			</view>
 
 			<view class="orther-setting">
+				
+				<view class="setting" v-if='infoData.merchantActor' @click="onClickNavigateto({url:`/pages/merchant/core?alias=${infoData.merchantActor}&isMerchant=1`})">
+					<view class="name">
+						<image class="setting-icon" src="../../static/userinfo/v2/liveCamera.png" />
+						商家主页
+					</view>
+					<view class="icon-right"></view>
+				</view>
 				<view class="setting" v-if='broadcastActor' @click="onClickNavigateto({url:'/pages/live/myLive'})">
 					<view class="name">
 						<image class="setting-icon" src="../../static/userinfo/v2/liveCamera.png" />
