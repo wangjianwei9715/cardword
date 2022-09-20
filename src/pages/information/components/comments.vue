@@ -21,7 +21,7 @@
 							<view class="chat-name">{{item.name}}</view>
 							<view class="chat-time">{{$u.timeFrom(item.created_at)}}</view>
 						</view>
-						<view class="chat-msg" :class="'chat-'+item.id" v-html="item.content" @click="onClickReply(item,item.id)"></view>
+						<text class="chat-msg" :selectable="true" :class="'chat-'+item.id" v-html="item.content" @click="onClickReply(item,item.id)"></text>
 					</view>
 					<view class="chat-right" @click="$u.throttle(()=>{onClickLike(item)},100)">
 						<view :class="item.isLike?'icon-like':'icon-likeno'"></view>
@@ -36,8 +36,8 @@
 							<view class="chat-time">{{$u.timeFrom(son.created_at)}}</view>
 						</view>
 						<view class="chat-msg" v-if="!son.isDelete" :class="'chat-'+son.id" @click="onClickReply(son,item.id)">
-							<view class="chat-hf" v-if="son.replyUserName!=''">回复<text class="hf-name">{{son.replyUserName}}</text>:{{son.content}}</view>
-							<view class="chat-hf" v-else>{{son.content}}</view>
+							<text class="chat-hf" :selectable="true" v-if="son.replyUserName!=''">回复<text class="hf-name">{{son.replyUserName}}</text>:{{son.content}}</text>
+							<text class="chat-hf" :selectable="true" v-else>{{son.content}}</text>
 						</view>
 						<view class="chat-msg" v-else>评论已删除</view>
 					</view>
@@ -51,7 +51,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="chat-empty" v-show="isFetchEnd">- 没有更多了 -</view>
+		<view class="chat-empty" v-show="articleData.comment>0&&isFetchEnd">- 没有更多了 -</view>
 	</view>
 </template>
 
@@ -77,9 +77,11 @@
 			
 		}
 		onClickLike(item:any){
-			app.http.Post(`article/comment/like/or/cancel/${item.id}`,{},(res:any)=>{
-				item.isLike = res.liked;
-				item.likes = res.likes;
+			app.platform.hasLoginToken(()=>{
+				app.http.Post(`article/comment/like/or/cancel/${item.id}`,{},(res:any)=>{
+					item.isLike = res.liked;
+					item.likes = res.likes;
+				})
 			})
 		}
 		onClickReply(item:any,fatherId:number){

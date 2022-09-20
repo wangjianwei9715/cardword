@@ -1,7 +1,7 @@
 <template>
 	<view class="content" v-show="focus" @touchmove.stop.prevent="move">
 		<view class="input-box" v-show="focus" :style="{transform:`translateY(-${textareaData.height}px)`,'transition-duration': textareaData.duration+'s'}">
-			<textarea class="input" v-model="textareaData.val" :placeholder="replyName!=''?'回复'+replyName:'说点什么...'" :focus="focus" :adjust-position="false" @blur="show=false" @keyboardheightchange="getHeight"/>
+			<textarea class="input" v-model="textareaData.val" :placeholder="replyName!=''?'回复'+replyName:'说点什么...'" :focus="focus" :adjust-position="false" :show-confirm-bar="false" @blur="show=false" @keyboardheightchange="getHeight"/>
 			<view class="btn" @click="$u.throttle(onClickChatConfirm,1000)">发送</view>
 		</view>
 	</view>
@@ -39,7 +39,7 @@
 		}
 		onClickChatConfirm(){
 			if(this.textareaData.val == '') return;
-			
+
 			this.$emit('chatConfirm',this.textareaData.val)
 			this.textareaData = {...textareaData}
 		}
