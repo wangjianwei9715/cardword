@@ -28,6 +28,7 @@
 	.content{
 		width: 100%;
 		box-sizing: border-box;
+		pointer-events: none;
 	}
 	.empty{
 		width: 294rpx;

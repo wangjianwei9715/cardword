@@ -130,17 +130,17 @@
             })
         }
         reqNewData(cb?: any) {
-            uni.showLoading({
-                title: '',
-                mask:true
-            })
+            // uni.showLoading({
+            //     title: '',
+            //     mask:true
+            // })
             app.http.Get('me/shop/coupon/good/list', this.queryParams, (res: any) => {
                 this.shopCouponMoney = res.shopCouponMoney
                 this.totalPage = res.totalPage
                 const list = res.list || []
                 this.queryParams.pageIndex == 1 ? this.goodsList = list : this.goodsList.push(...list)
                 console.log(this.goodsList);
-                uni.hideLoading()
+                // uni.hideLoading()
                 cb && cb()
             })
         }

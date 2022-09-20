@@ -1,5 +1,5 @@
 <template>
-    <view class='content'>
+    <view class='content' style="width:750rpx; overflow-x: hidden">
         <view class="pageTopContainer">
             <view class="status"
                 :style="{paddingTop:app.statusBarHeight*2+'rpx',backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
@@ -63,9 +63,9 @@
                 </view>
             </view>
         </view>
-        <view class="moreContainer" :style="{marginTop:(isMerchant?27:68)+'rpx'}">
+        <view class="moreContainer" :style="{marginTop:(isMerchant?27:68)+'rpx'}"  @click="pageJump('/pages/merchant/niceTime?alias='+alias)">
             <view class="more-left">店铺精彩时刻</view>
-            <view class="more-right" @click="pageJump('/pages/merchant/niceTime?alias='+alias)">更多</view>
+            <view class="more-right">更多</view>
         </view>
         <swiper indicator-dots autoplay circular :interval="3*1000" indicator-active-color="#333333"
             indicator-color="#CAC6C6" class="niceTimeContainer" v-if="niceTimeList&&niceTimeList.length">
@@ -478,6 +478,7 @@
             /* background-color: rgba(0, 0, 0, .6); */
             height: 148rpx;
             align-items: center;
+           
         }
 
         .leftCoupon-item {
@@ -606,7 +607,6 @@
         padding: 0 28rpx;
         flex-wrap: wrap;
         margin-top: 39rpx;
-        z-index: 99;
         .ruleItem {
             width: 33.33%;
             height: 70rpx;
@@ -648,7 +648,6 @@
         width: 750rpx;
         box-sizing: border-box;
         padding: 0 29rpx;
-
         .more-left {
             font-size: 33rpx;
             font-weight: normal;
