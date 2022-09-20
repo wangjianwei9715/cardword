@@ -32,7 +32,7 @@
                 <!-- <view class="followBtton flexCenter" :class="{isFollo:merchantInfo.followed}" v-if="!isMerchant" @click="pageJump('/pages/merchant/info')">关注
                 </view> -->
             </view>
-            <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr}}</view>
+            <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr?merchantInfo.brief_intr:'欢迎来到我的店铺'}}</view>
         </view>
         <view class="couponContainer uni-flex" v-if="!isMerchant&&couponBrief&&couponBrief.length">
             <view class="leftCoupon uni-flex">
