@@ -54,10 +54,10 @@
         </view>
         <view class="ruleContainer" v-if="isMerchant">
             <view class="ruleItem" v-for="(item,index) in merchantRule" :key="index" @click="onClickRule(item)">
-                <view class="rule-left flexCenter" @click="onClickRule(item)">
+                <view class="rule-left flexCenter">
                     <image class="rule-icon" :src="item.icon" :style="{width:item.width+'rpx'}" mode="widthFix" />
                 </view>
-                <view class="rule-right" @click="onClickRule(item)">
+                <view class="rule-right">
                     <view class="rule-name">{{item.name}}</view>
                     <view class="rule-tips">{{item.tipsText}}</view>
                 </view>
