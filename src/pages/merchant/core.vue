@@ -32,7 +32,7 @@
                 <!-- <view class="followBtton flexCenter" :class="{isFollo:merchantInfo.followed}" v-if="!isMerchant" @click="pageJump('/pages/merchant/info')">关注
                 </view> -->
             </view>
-            <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr?merchantInfo.brief_intr:'欢迎来到我的店铺'}}</view>
+            <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr?merchantInfo.brief_intr:'欢迎来到我的店铺!'}}</view>
         </view>
         <view class="couponContainer uni-flex" v-if="!isMerchant&&couponBrief&&couponBrief.length">
             <view class="leftCoupon uni-flex">
@@ -54,10 +54,10 @@
         </view>
         <view class="ruleContainer" v-if="isMerchant">
             <view class="ruleItem" v-for="(item,index) in merchantRule" :key="index" @click="onClickRule(item)">
-                <view class="rule-left flexCenter">
+                <view class="rule-left flexCenter" @click="onClickRule(item)">
                     <image class="rule-icon" :src="item.icon" :style="{width:item.width+'rpx'}" mode="widthFix" />
                 </view>
-                <view class="rule-right">
+                <view class="rule-right" @click="onClickRule(item)">
                     <view class="rule-name">{{item.name}}</view>
                     <view class="rule-tips">{{item.tipsText}}</view>
                 </view>
@@ -290,6 +290,7 @@
                 })
                 return
             }
+            
             this.pageJump(item.url)
         }
         onTagClick(item: any, index: number) {
@@ -605,13 +606,14 @@
         padding: 0 28rpx;
         flex-wrap: wrap;
         margin-top: 39rpx;
-
+        z-index: 99;
         .ruleItem {
             width: 33.33%;
             height: 70rpx;
             margin-bottom: 35rpx;
             display: flex;
             align-items: center;
+            pointer-events: auto;
         }
 
         .rule-left {
