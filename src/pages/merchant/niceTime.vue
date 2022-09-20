@@ -20,7 +20,7 @@
                     <muqian-lazyLoad class="niceTime-avatar"
                         :src="item.avatar?parsePic(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFill" />
                     <view class="niceTime-userName onLine">{{item.userName}}</view>
-                    <view class="niceTime-time">{{getStrDayNumber(item.createTime*1000)}}</view>
+                    <view class="niceTime-time">{{dateFormatMS(item.createTime)}}</view>
                 </view>
             </view>
         </view>
@@ -32,12 +32,13 @@
     import { app } from "@/app";
     import { Component, Watch } from "vue-property-decorator";
     import BaseNode from "../../base/BaseNode.vue";
-    import { parsePic, getStrDayNumber } from "@/tools/util";
+    import { parsePic, getStrDayNumber,dateFormatMS } from "@/tools/util";
     @Component({})
     export default class ClassName extends BaseNode {
         parsePic: any = parsePic;
         defaultAvatar: any = app.defaultAvatar
         getStrDayNumber: any = getStrDayNumber
+        dateFormatMS:any=dateFormatMS
         alias: string = ""
         queryParams: any = {
             pageIndex: 1,
@@ -159,8 +160,8 @@
         font-weight: 400;
         color: #FFFFFF;
         position: absolute;
-        right: 17rpx;
-        bottom: 18rpx;
+        right: 0;
+        bottom: 0;
         opacity: .7;
     }
 
@@ -195,8 +196,8 @@
         -webkit-box-orient: vertical;
         margin-top: 15rpx;
         width: 100%;
-        height: 60rpx;
-        line-height: 30rpx;
+        height: 66rpx;
+        line-height: 36rpx;
         margin-bottom: 30rpx;
     }
 
@@ -210,6 +211,7 @@
         height: 27rpx;
         background: #88CCFA;
         border-radius: 50%;
+        display: block;
         margin-right: 8rpx;
     }
 

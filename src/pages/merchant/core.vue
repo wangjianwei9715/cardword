@@ -574,7 +574,7 @@
         .info-introduction {
             font-size: 23rpx;
             font-weight: 400;
-            color: #7C7C7C;
+            color: #c0c0c0;
             margin-top: 10rpx;
         }
 
