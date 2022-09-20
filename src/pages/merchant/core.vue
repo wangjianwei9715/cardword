@@ -72,7 +72,7 @@
             <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index"
                 style="display: flex;flex-wrap: nowrap;">
                 <image v-for="(sItem,sNndex) in item" class="niceTimeImage" :style="{marginRight:sNndex==2?0:'24rpx'}"
-                    :src="filterImage(decodeURIComponent(sItem.pic))" mode="aspectFill" />
+                    :src="filterImage(decodeURIComponent(sItem))" mode="aspectFill" />
             </swiper-item>
         </swiper>
         <view class="niceTimeContainer" v-else>
@@ -238,8 +238,12 @@
             if (query.alias) this.alias = query.alias
             if (query.isMerchant) this.isMerchant = true
             if (this.isMerchant) this.reqMyMerchantData()
-            if (!this.isMerchant) this.reqMerchantData()
+            if (!this.isMerchant){
+                this.reqCouponBrief()
+                this.reqMerchantData()
+            } 
             this.reqGoodsData()
+            this.reqNiceTime()
             this.onEventUI('refreshMerchantInfo', (res: any) => {
                 console.log("refreshMerchantInfo", res);
                 this.merchantInfo = res
@@ -327,6 +331,8 @@
                 let arr = list.slice(start, start + 3)
                 this.niceTimeList.push(arr)
             }
+            console.log(this.niceTimeList);
+            
         }
         // 跳转商品详情
         onClickJumpDetails(goodCode: any) {
@@ -334,16 +340,16 @@
         }
         reqMyMerchantData() {
             app.http.Get("dataApi/me/shop/home", {}, (res: any) => {
-                this.assignNiceTimeList(res.data.rarity_card || [])
+                
                 this.merchantInfo = res.data
 
             })
         }
         reqMerchantData() {
             app.http.Get(`dataApi/merchant/newII/detail/` + this.alias, {}, (res: any) => {
-                this.assignNiceTimeList(res.data.rarity_card || [])
+                // this.assignNiceTimeList(res.data.rarity_card || [])
                 this.merchantInfo = res.data
-                this.couponBrief = res.data.couponBrief
+                // this.couponBrief = res.data.couponBrief
 
             })
         }
@@ -361,12 +367,21 @@
         //获取商家店铺可领取的优惠券
         reqMerchantCoupon(cb?: any) {
             app.http.Get(`merchant/online/coupon/` + this.alias, this.couponQuery, (res: any) => {
-                console.log(res);
                 this.couponIsFetchEnd = res.isFetchEnd
                 const list = res.list || []
                 this.couponQuery.fetchFrom == 1 ? this.couponList = list : this.couponList.push(...list)
                 this.couponGetDrawerShow = true
                 cb && cb()
+            })
+        }
+        reqCouponBrief(){
+            app.http.Get(`merchant/coupon/brief/${this.alias}`,{},(res:any)=>{
+                this.couponBrief=res.couponBrief
+            })
+        }
+        reqNiceTime(){
+            app.http.Get(`merchant/rarity/card/brief/${this.alias}`,{},(res:any)=>{
+                this.assignNiceTimeList(res.rarity_card|| [])
             })
         }
         reqGoodsData(cb?: any) {
