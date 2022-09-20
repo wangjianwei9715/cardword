@@ -33,7 +33,6 @@
 				</view>
 			</view>
 		</view>
-
 		<view class="header-banner">
 			<statusbar />
 			<view class="tab-header">
@@ -43,6 +42,7 @@
 				</view>
 			</view>
 		</view>
+
 
 		<view class="tab-center">
 			<statusbar />
@@ -69,7 +69,9 @@
 		</view>
 		<!-- #ifndef MP  -->
 		<view class="tabc-content">
-			<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
+			<!-- <u-sticky style="width:100%;padding-bottom:10rpx" bgColor="#FFF" offsetTop="104rpx" :customNavHeight="statusBarHeight"> -->
+				<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
+			<!-- </u-sticky> -->
 		</view>
 
 		<view class="goodslist-index">
@@ -106,6 +108,7 @@
 	} from "ts-md5";
 	@Component({})
 	export default class index extends BaseNode {
+		statusBarHeight = app.statusBarHeight
 		isDuringDate = isDuringDate;
 		indexGoodsType = indexGoodsType;
 		tabList: {
