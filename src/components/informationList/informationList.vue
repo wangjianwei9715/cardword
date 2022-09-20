@@ -55,7 +55,8 @@
 			app.platform.hasLoginToken(()=>{
 				app.http.Post(`article/like/or/cancel/${item.articleCode}`,{},(res:any)=>{
 					item.likes = res.likes;
-					item.isLikes = res.liked
+					item.isLikes = res.liked;
+					uni.$emit('informationChange', item)
 				})
 			})
 		}

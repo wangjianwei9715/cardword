@@ -36,6 +36,18 @@
 		listParams = {...Params};
 		list:any = [];
 		onLoad(query:any) {
+			this.onEventUI("informationChange", (res: any) => {
+				if (res && res.articleCode) {
+					let findItem = this.list.find((item: any) => {
+						return item.articleCode == res.articleCode;
+					});
+					if (findItem) {
+						findItem.isLikes = res.isLikes;
+						findItem.likes = res.likes;
+						findItem.comment = res.comment
+					}
+				}
+			});
 		}
 		onReachBottom() {
 			this.reqNewData() 
@@ -54,7 +66,7 @@
 			if (listParams.noMoreData) {
 				return;
 			}
-			app.http.Get('article/homelist', listParams, (data: any) => {
+			app.http.Get('dataApi/article/homelist', listParams, (data: any) => {
 				if(data.totalPage<=listParams.pageIndex){
 					listParams.noMoreData = true;
 				}
@@ -143,11 +155,12 @@
 	}
 	.box-content{
 		width: 100%;
+		padding-top: 100rpx;
 	}
 	.list-box{
 		width: 100%;
 		background:#fff;
 		box-sizing: border-box;
-		padding-top: 120rpx;
+		margin-top: 40rpx;
 	}
 </style>

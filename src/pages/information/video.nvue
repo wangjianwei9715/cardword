@@ -1,6 +1,9 @@
 <template>
 	<view class="container">
-
+		<view class="navigateBox" :style="{top:deleteHeight+'px'}">
+			<image class="navigateBack" @click="onClickBack" src="@/static/information/live_back.png"></image>
+			<image class="navigateShare" @click="onClickShare" src="@/static/information/live_share.png"></image>
+		</view>
 		
 		<view :style="'width: '+ windowWidth +'px; height: '+ boxStyle.height +'px;'">
 			
@@ -35,17 +38,17 @@
 									（1）:muted="!item.playIng"，
 									（2）@timeupdate="timeupdate($event,i)"
 									（3）把 199 行注释了，
-									（4）:id="item._id"，
-									（5）修改：uni.createVideoContext(this.dataList[this.k]._id + '' + this.k,this) 为
-										uni.createVideoContext(this.dataList[this.k]._id,this)
+									（4）:id="item.articleCode"，
+									（5）修改：uni.createVideoContext(this.dataList[this.k].articleCode + '' + this.k,this) 为
+										uni.createVideoContext(this.dataList[this.k].articleCode,this)
 									（6）在 timeupdate 方法里加入，if(index == this.k){把里面的加一个总的判断}
 								3.其他的下面有详解
-								 -->
+								-->
 								<video
 									:ref="'item'+i"
-									:id="item._id"
+									:id="item.articleCode"
 									:loop="true"
-									:src="item.src"
+									:src="item.video_url"
 									:muted="item.isplay"
 									@play="playIngs(i)"	
 									:enable-progress-gesture="false"
@@ -62,7 +65,7 @@
 								<!-- 这里是封面 -->
 								<image
 								v-if="!item.playIng"
-									:src="item.src+'?x-oss-process=video/snapshot,t_100,f_jpg'" 
+									:src="item.video_url+'?x-oss-process=video/snapshot,t_100,f_jpg'" 
 									:mode="mode"
 									:style="'width: '+ windowWidth +'px; height: '+ (wHeight - deleteHeight) +'px; position: absolute;'"
 								></image>
@@ -70,30 +73,19 @@
 								mode: 图片裁剪、缩放的模式
 								mode 有 14 种模式，其中 5 种是缩放模式，9 种是裁剪模式。
 								https://uniapp.dcloud.io/component/image
-								 -->
+								-->
 							</view>
 							<!-- 直接用 view 就行了，一样是可以覆盖原生组件的 -->
 							<!-- 这个是暂停时出现的图标 -->
-							<view class="videoHover" @click="tapVideoHover(item.state,$event)" :style="boxStyle">
+							<view class="videoHover" @click="tapVideoHover(item)" :style="boxStyle">
 								<image v-if="item.state=='pause'" class="playState" src="@/static/information/play.png"></image>
 							</view>
 							<!-- 最底下的文字部分 -->
 							<view class="content" v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false">
-								<text class="userName" :style="'width: '+ (windowWidth - 90) +'px;'">{{item.title}}</text><!-- i={{i}} -->
-								<text class="words" :style="'width: '+ (windowWidth - 90) +'px;'">{{item.msg}}-{{k+1}}</text><!-- k={{k}} -->
+								<text class="userName" :style="'width: '+ (windowWidth - 90) +'px;'">{{item.title}}{{item.state}}</text><!-- i={{i}} -->
+								<text class="words" :style="'width: '+ (windowWidth - 90) +'px;'" >{{decodeURIComponent(item.content)}}</text><!-- k={{k}} -->
 							</view>
-							<!-- 1.视频预览时的图片，currenttimes：就是获取当前滑块的时间点，如果不需要，可以注释掉 -->
-							<!-- 2.如果使用下面的视频预览的话要注意的是视频链接最好是阿里云上的，因为
-									https://xxxxxxxxx.mp4?x-oss-process=video/snapshot,t_1000,f_jpg
-									这个是阿里云的东西，至于其他的视频截帧我还没有试过。
-									-->
-							<!-- 3.阿里云视频截帧地址：https://help.aliyun.com/document_detail/64555.html -->
-							<image
-							v-if="item.isShowimage == true"
-								:src="item.src+'?x-oss-process=video/snapshot,t_'+ currenttimes +'000,f_jpg'" 
-								mode="aspectFill"
-								:style="'width: 120upx; height: 160upx; border-radius: 10upx; position: absolute; bottom: '+ (ProgressBarBottom + 160) +'upx; left: '+ (currentPositions - 15) +'px;'"
-							></image>
+							
 						</view>
 					</div>
 				</cell>
@@ -117,14 +109,25 @@
 			</view>
 		</view>
 		
+		<nvueShare :visible.sync='shareShow' :shareData='shareData'></nvueShare>
 	</view>
 </template>
 <script>
 	// import userList from './data.js'//这个是假数据
-	
+	import nvueShare from "../live/components/nvueShare.nvue";
+	const app = getApp().globalData.app;
+	const shareData = {
+		shareUrl: "",
+		title: "",
+		summary: "",
+		thumb: ""
+	};
 	export default {
         data() {
 			return {
+				code:'',
+				shareShow: false,
+				shareData:{...shareData},
 				//下面打🌟号的是必须要的基础字段
 				//下面打💗号的是拥有滑动条的必须字段
 				dataList:[],//用于数据循环的列表🌟💗
@@ -168,6 +171,7 @@
 			}
         },
 		components:{
+			nvueShare
 		},
 		watch:{
 			async k(k,old_k){//监听 k 值的变化，可以控制视频的播放与暂停
@@ -175,16 +179,16 @@
 				this.dataList[old_k].state = 'stop'//如果是被滑走的视频，就停止播放
 				this.dataList[old_k].playIng = false//如果视频暂停，就加载封面
 				this.dataList[old_k].isplay = true
-				uni.createVideoContext(this.dataList[old_k]._id,this).play()
+				uni.createVideoContext(this.dataList[old_k].articleCode,this).play()
 				clearTimeout(this.oldVideo)
 				this.oldVideo = await setTimeout(()=>{
-					uni.createVideoContext(this.dataList[old_k]._id,this).seek(0)
-					uni.createVideoContext(this.dataList[old_k]._id,this).pause()
-					console.log('预留第' + (old_k + 1) + '个视频：' + this.dataList[old_k]._id)
+					uni.createVideoContext(this.dataList[old_k].articleCode,this).seek(0)
+					uni.createVideoContext(this.dataList[old_k].articleCode,this).pause()
+					console.log('预留第' + (old_k + 1) + '个视频：' + this.dataList[old_k].articleCode)
 				},500)
 				// 2.0版本已经去掉了下面这一句，视频不用暂停，只需要把声音禁止就行
-				// uni.createVideoContext(this.dataList[old_k]._id + '' + old_k,this).stop()//如果视频暂停，那么旧视频停止，这里的this.dataList[old_k]._id + '' + old_k，后面加 old_k 是为了每一个视频的 id 值不同，这样就可以大程度的避免串音问题
-				uni.createVideoContext(this.dataList[k]._id,this).play();
+				// uni.createVideoContext(this.dataList[old_k].articleCode + '' + old_k,this).stop()//如果视频暂停，那么旧视频停止，这里的this.dataList[old_k].articleCode + '' + old_k，后面加 old_k 是为了每一个视频的 id 值不同，这样就可以大程度的避免串音问题
+				uni.createVideoContext(this.dataList[k].articleCode,this).play();
 				console.log('已经暂停 --> 第' + (old_k + 1) + '个视频～')//提示
 				clearTimeout(this.voice)
 				this.voice = await setTimeout(()=>{
@@ -197,20 +201,20 @@
 				var p = k
 				++p
 				await setTimeout( async ()=>{
-					uni.createVideoContext(this.dataList[p]._id,this).play()
+					uni.createVideoContext(this.dataList[p].articleCode,this).play()
 					clearTimeout(this.timeout)
 					this.timeout = await setTimeout(()=>{
-						uni.createVideoContext(this.dataList[p]._id,this).seek(0)
-						uni.createVideoContext(this.dataList[p]._id,this).pause()
-						console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p]._id)
+						uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
+						uni.createVideoContext(this.dataList[p].articleCode,this).pause()
+						console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
 					},1500)
 				},20)
 				//【2.0版本更新内容】- end
 				//【此处处理进度条卡住的问题】
 				if(uni.getSystemInfoSync().platform !== 'ios'){
 					await setTimeout(()=>{
-						uni.createVideoContext(this.dataList[k]._id,this).pause()
-						uni.createVideoContext(this.dataList[k]._id,this).play()
+						uni.createVideoContext(this.dataList[k].articleCode,this).pause()
+						uni.createVideoContext(this.dataList[k].articleCode,this).play()
 					},100)
 				}
 			}
@@ -219,15 +223,16 @@
 			console.log('回到前台');
 			if(this.dataList.length !== 0){
 				this.dataList[this.k].state = 'play';
-				uni.createVideoContext(this.dataList[this.k]._id,this).play()
+				uni.createVideoContext(this.dataList[this.k].articleCode,this).play()
 			}
 		},
 		onHide(){
 			this.dataList[this.k].state = 'pause';//界面隐藏也要停止播放视频
-			uni.createVideoContext(this.dataList[this.k]._id,this).pause();//暂停以后继续播放
+			uni.createVideoContext(this.dataList[this.k].articleCode,this).pause();//暂停以后继续播放
 			console.log('到后台');
 		},
-		onLoad(){
+		onLoad(query){
+			this.code = query.code;
 			this.platform = uni.getSystemInfoSync().platform
 			var model = uni.getSystemInfoSync().model
 			if(this.platform == 'ios' && (model !== 'iPhone6' || model !== 'iPhone6s' || model !== 'iPhone7' || model !== 'iPhone8')){
@@ -245,22 +250,22 @@
 		onReady() {
 		},
         methods: {
-			
+			onClickBack(){
+				uni.navigateBack({ delta: 1 })
+			},
+			onClickShare(){
+				uni.$u.throttle(()=>{
+					this.shareData = {
+						title: this.dataList[this.k].title,
+						shareUrl: `share/h5/#/pages/live/liveShare`,
+						summary: this.dataList[this.k].title,
+						thumb: decodeURIComponent(this.dataList[this.k].cover)
+					};
+					this.shareShow=true;
+				},1000)
+			},
 			getData(){
-				// 这里就是数据加载完以后再向后端发送数据的地方
-				uni.request({
-					url: 'https://bdb24c6d-8c19-4f80-8e7e-c9c9f037f131.bspapp.com/video',
-					method: 'POST',
-					data:{
-						info: 'get_video'
-					},
-					success: (res) => {
-						var msg = res.data.data
-						for (let i = 0; i < msg.length; i++) {
-							this.dataList.push(msg[i])
-						}
-					}
-				})
+				
 			},
 			touchstart(event){
 				this.dataList[this.k].isShowimage = true //刚触摸的时候就要显示预览视频图片了
@@ -269,10 +274,10 @@
 				this.dotWidth = 10 //让点显示起来更明显一点
 			},
 			touchend(){//当手松开后，跳到最新时间
-				uni.createVideoContext(this.dataList[this.k]._id,this).seek(this.newTime)
+				uni.createVideoContext(this.dataList[this.k].articleCode,this).seek(this.newTime)
 				if(this.dataList[this.k].state == 'pause'){
 					this.dataList[this.k].state = 'play'
-					uni.createVideoContext(this.dataList[this.k]._id,this).play()
+					uni.createVideoContext(this.dataList[this.k].articleCode,this).play()
 				}
 				this.dataList[this.k].isShowProgressBarTime = false //触摸结束后，隐藏时间线
 				this.dataList[this.k].isShowimage = false //触摸结束后，隐藏时间预览
@@ -313,20 +318,6 @@
 						theTime = parseInt(theTime%60);	
 					}
 					this.changeTime = `${Math.round(middle)>9?Math.round(middle):'0'+Math.round(middle)}:${Math.round(theTime)>9?Math.round(theTime):'0'+Math.round(theTime)}`
-					//自动切换视频
-					// if(this.isAutoplay){//true,代表自动播放
-					// 	if(Math.round(currenttime) == this.timeNumber - 1){
-					// 		const dom = uni.requireNativePlugin('dom')
-					// 		let doms = 'item'+(this.k+1)
-					// 		setTimeout(()=>{
-					// 			let el = this.$refs[doms][0]
-					// 			dom.scrollToElement(el,{
-					// 				offset: 0,
-					// 				animated: true
-					// 			})
-					// 		},500)
-					// 	}
-					// }
 				}
 			},
 			getTime(){//得到时间函数
@@ -377,87 +368,74 @@
 			get(){
 				// 这个方法主要就是用来第一次进入视频播放时用来处理的
 				// this.dataList = userList;//这个就是赋值加载视频啦
-				uni.request({
-					url: 'https://bdb24c6d-8c19-4f80-8e7e-c9c9f037f131.bspapp.com/video',
-					method: 'POST',
-					data:{
-						info: 'get_video'
-					},
-					success: async (res) => {
-						var msg = res.data.data
-						console.log(msg)
-						this.dataList = msg
-						this.dataList[0].state = "play";
-						await setTimeout(()=>{
-							//这里的延迟是为了避免执行时间太快而直接跳过执行的 bug
-							uni.createVideoContext(this.dataList[0]._id,this).seek(0)
-							uni.createVideoContext(this.dataList[0]._id,this).play()
-						},200)
-						this.dataList[0].isplay = false
-						await setTimeout(()=>{
-							this.dataList[0].playIng = true
-						},500)
-						var p = 0
-						await setTimeout( async ()=>{
-							++p
-							uni.createVideoContext(this.dataList[p]._id,this).play()
-							await setTimeout(()=>{
-								uni.createVideoContext(this.dataList[p]._id,this).seek(0)
-								uni.createVideoContext(this.dataList[p]._id,this).pause()
-								console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p]._id)
-							},800)
-						},50)
-					}
+				app.http.Get(`dataApi/article/detail/${this.code}`,{},(res)=>{
+					const data = [{...res.data,isShowProgressBarTime:false}]
+					this.dataList = [...data]
+					this.dataList[0].state = "play";
+					setTimeout(()=>{
+						//这里的延迟是为了避免执行时间太快而直接跳过执行的 bug
+						uni.createVideoContext(this.dataList[0].articleCode,this).seek(0)
+						uni.createVideoContext(this.dataList[0].articleCode,this).play()
+					},200)
+					this.dataList[0].isplay = false
+					setTimeout(()=>{
+						this.dataList[0].playIng = true
+					},500)
+					// var p = 0
+					// setTimeout(()=>{
+					// 	++p
+					// 	uni.createVideoContext(this.dataList[p].articleCode,this).play()
+					// 	setTimeout(()=>{
+					// 		uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
+					// 		uni.createVideoContext(this.dataList[p].articleCode,this).pause()
+					// 		console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
+					// 	},800)
+					// },50)
 				})
 			},
 			//点击播放&&暂停
-			tapVideoHover(state,event){
+			tapVideoHover(item){
 				this.dataList[this.k].isShowimage = false
 				this.dataList[this.k].isShowProgressBarTime = false
 				this.ProgressBarOpacity = 0.5
 				this.dotWidth = 0
-				console.log('state--',state);
-				// 1.启用双击点赞 --- start
-				// this.touchNum++;
-				// setTimeout(()=>{
-				// 	if(this.touchNum == 1){
-				// 		if(state=='play'||state=='continue'){
-				// 			this.dataList[this.k].state = 'pause';
-				// 		}else{
-				// 			this.dataList[this.k].state = 'continue';
-				// 		}
-				// 		if(this.dataList[this.k].state == 'continue'){
-				// 			uni.createVideoContext(this.dataList[this.k]._id,this).play();//暂停以后继续播放
-				// 		}
-				// 		if(this.dataList[this.k].state == 'pause'){
-				// 			uni.createVideoContext(this.dataList[this.k]._id,this).pause();//暂停以后继续播放
-				// 		}
-				// 	}
-				// 	if(this.touchNum >= 2){
-				// 		this.doubleLike();
-				// 	}
-				// 	this.touchNum = 0;
-				// },200)
-				// --------------- ending
-				// 2. 不启用双击点赞 start
-				if(state=='play'||state=='continue'){
-					this.dataList[this.k].state = 'pause';
+				if(item.state=='play'){
+					item.state = 'pause';
+					uni.createVideoContext(this.dataList[this.k].articleCode,this).pause();
 				}else{
-					this.dataList[this.k].state = 'continue';
+					item.state = 'play';
+					uni.createVideoContext(this.dataList[this.k].articleCode,this).play();
 				}
-				if(this.dataList[this.k].state == 'continue'){
-					uni.createVideoContext(this.dataList[this.k]._id,this).play();//暂停以后继续播放
-				}
-				if(this.dataList[this.k].state == 'pause'){
-					uni.createVideoContext(this.dataList[this.k]._id,this).pause();//暂停以后继续播放
-				}
-				// --------------- ending
+			
+				console.log(item);
 			},
         }
     }
 </script>
 <style>
 	.container {background-color: #000000;}
+	.navigateBox{
+		width: 750rpx;
+		height:140rpx;
+		position: fixed;
+		top:0px;
+		left:0px;
+		right:0px;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		justify-content: space-between;
+		z-index: 999;
+		padding:0 33rpx;
+	}
+	.navigateBack{
+		width: 21rpx;
+		height:38rpx;
+	}
+	.navigateShare{
+		width: 37rpx;
+		height:37rpx;
+	}
     .item {
 		/* width : 750rpx; */
 		background-color: #000000;
