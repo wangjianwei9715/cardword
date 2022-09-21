@@ -184,8 +184,8 @@ import { Md5 } from "ts-md5";
 				.info-m{
 					display: flex;
 					align-items: center;
-					margin-top: 5rpx;
-					font-size: 21rpx;
+					margin-top: 10rpx;
+					font-size: 23rpx;
 					font-family: PingFang SC;
 					font-weight: 400;
 					color: #7C7C7C;
