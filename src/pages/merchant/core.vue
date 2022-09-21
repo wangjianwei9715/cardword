@@ -1,34 +1,27 @@
 <template>
     <view class='content' style="width:750rpx; overflow-x: hidden">
         <view class="pageTopContainer">
-            <view class="status"
-                :style="{paddingTop:app.statusBarHeight*2+'rpx',backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
+            <view class="status" :style="{paddingTop:app.statusBarHeight*2+'rpx',backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
             </view>
-            <view class="pageTop" ref="pageTop" id="pageTop"
-                :style="{backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
+            <view class="pageTop" ref="pageTop" id="pageTop" :style="{backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
                 <u-icon name="arrow-left" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="22" @click="goBack">
                 </u-icon>
                 <view class="pageTitle" :style="{opacity:scrollTopPercent}">商家中心</view>
-                <u-icon name="share-square" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="28"
-                    @click="onClickShare"></u-icon>
+                <u-icon name="share-square" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="28" @click="onClickShare"></u-icon>
             </view>
         </view>
-        <image :src='parsePic(decodeURIComponent(merchantInfo.back_img))'
-            @click="previewImage([decodeURIComponent(merchantInfo.back_img)],0,'')" mode='aspectFill'
-            class="merchantBanner" />
+        <image :src='parsePic(decodeURIComponent(merchantInfo.back_img))' @click="previewImage([decodeURIComponent(merchantInfo.back_img)],0,'')" mode='aspectFill' class="merchantBanner" />
         <view class="merchantInfoContainer">
             <view class="infoTop uni-flex">
                 <image :src="parsePic(decodeURIComponent(merchantInfo.logo))" mode="aspectFill" class="info-avatar" />
                 <view class="info-message">
                     <view class="info-name">{{merchantInfo.name}}</view>
-                    <view class="info-introduction">{{merchantInfo.region}} · {{merchantInfo.groupGoodNum}}拼成 ·
-                        {{merchantInfo.fans}}粉丝</view>
+                    <view class="info-introduction">{{merchantInfo.region}} · {{merchantInfo.groupGoodNum}}拼成 · {{merchantInfo.fans}}粉丝
+                    </view>
                 </view>
                 <view class="rightEdit flexCenter" v-if="isMerchant" @click="pageJump('/pages/merchant/info')">编辑资料
                 </view>
-                <followButton :follow="merchantInfo.followed" :width="127" v-else
-                    @handleSuccess="($event)=>{merchantInfo.followed=$event.follow,merchantInfo.fans=$event.fans}"
-                    :height="52" :fontSize="29" :newMerchantPage="true" :followID="alias"></followButton>
+                <followButton :follow="merchantInfo.followed" :width="127" v-else @handleSuccess="($event)=>{merchantInfo.followed=$event.follow,merchantInfo.fans=$event.fans}" :height="52" :fontSize="29" :newMerchantPage="true" :followID="alias"></followButton>
                 <!-- <view class="followBtton flexCenter" :class="{isFollo:merchantInfo.followed}" v-if="!isMerchant" @click="pageJump('/pages/merchant/info')">关注
                 </view> -->
             </view>
@@ -36,11 +29,11 @@
         </view>
         <view class="couponContainer uni-flex" v-if="!isMerchant&&couponBrief&&couponBrief.length">
             <view class="leftCoupon uni-flex">
-                <view class="leftCoupon-item" style="margin-left: 14rpx;"
-                    v-for="(item,index) in couponBrief.length==1?[...couponBrief,...couponBrief]:couponBrief"
-                    :key="index" :style="{marginLeft:index==0?`14rpx`:`60rpx`}">
-                    <view class="price"><text style="font-size: 25rpx;">￥</text><text
-                            style="font-weight: bold;">{{item.amount}}</text></view>
+                <view class="leftCoupon-item" style="margin-left: 14rpx;" v-for="(item,index) in couponBrief.length==1?[...couponBrief,...couponBrief]:couponBrief" :key="index" :style="{marginLeft:index==0?`14rpx`:`60rpx`}">
+                    <view class="price">
+                        <text style="font-size: 25rpx;">￥</text>
+                        <text style="font-weight: bold;">{{item.amount}}</text>
+                    </view>
                     <view class="couponRight">
                         <view class="manj">{{item.minUseAmount==0?"无门槛券":`满${item.minUseAmount}元可用`}}</view>
                         <view class="type">{{item.tp==1?'指定商品':"指定店铺"}}</view>
@@ -63,25 +56,22 @@
                 </view>
             </view>
         </view>
-        <view class="moreContainer" :style="{marginTop:(isMerchant?27:68)+'rpx'}"  @click="pageJump('/pages/merchant/niceTime?alias='+alias)">
+        <view class="moreContainer" :style="{marginTop:(isMerchant?27:68)+'rpx'}" @click="pageJump('/pages/merchant/niceTime?alias='+alias)">
             <view class="more-left">店铺精彩时刻</view>
             <view class="more-right">更多</view>
         </view>
-        <swiper indicator-dots autoplay circular :interval="3*1000" indicator-active-color="#333333"
-            indicator-color="#CAC6C6" class="niceTimeContainer" v-if="niceTimeList&&niceTimeList.length">
-            <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index"
-                style="display: flex;flex-wrap: nowrap;">
-                <image v-for="(sItem,sNndex) in item" class="niceTimeImage" :style="{marginRight:sNndex==2?0:'24rpx'}"
-                    :src="filterImage(decodeURIComponent(sItem))" mode="aspectFill" />
-            </swiper-item>
-        </swiper>
-        <view class="niceTimeContainer" v-else>
-            <empty style="position: relative;bottom:240rpx" />
+        <view class="niceTimeContainer" v-if='niceTimeFinish'>
+            <swiper indicator-dots autoplay circular :interval="3*1000" indicator-active-color="#333333" indicator-color="#CAC6C6" style="width:100%;height:100%" v-if="niceTimeList&&niceTimeList.length">
+                <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index" style="display: flex;flex-wrap: nowrap;">
+                    <image v-for="(sItem,sNndex) in item" class="niceTimeImage" :style="{marginRight:sNndex==2?0:'24rpx'}" :src="filterImage(decodeURIComponent(sItem))" mode="aspectFill" />
+                </swiper-item>
+            </swiper>
+            <empty v-if="niceTimeList&&!niceTimeList.length" style="position: relative;bottom:240rpx" />
         </view>
         <view class="tagsContainer">
-            <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list"
-                @click="onTagClick(item,index)">
-                {{item.label}} <text>{{goodsMsg[item.valueKey]}}</text>
+            <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list" @click="onTagClick(item,index)">
+                {{item.label}}
+                <text>{{goodsMsg[item.valueKey]}}</text>
             </view>
         </view>
         <!-- <u-sticky :offsetTop="MAX_HEIGHT*2" v-if="MAX_HEIGHT">
@@ -89,12 +79,10 @@
         </u-sticky> -->
 
         <view class="goodsList">
-            <goodslist :goodsList="goodsList" v-if="goodsList&&goodsList.length" @send="onClickJumpDetails"
-                :presell="false" />
+            <goodslist :goodsList="goodsList" v-if="goodsList&&goodsList.length" @send="onClickJumpDetails" :presell="false" />
         </view>
         <empty v-if='!goodsList.length' style="position: relative;bottom: 50rpx;" />
-        <bottomDrawer title='领取优惠券' :height='571' heightType='rpx' :needSafeArea='true'
-            :showDrawer.sync='receiveCouponShow'>
+        <bottomDrawer title='领取优惠券' :height='571' heightType='rpx' :needSafeArea='true' :showDrawer.sync='receiveCouponShow'>
         </bottomDrawer>
         <couponGetDrawer :couponList="couponList" @lower="lowerCoupon" :showDrawer.sync='couponGetDrawerShow' />
         <share :operationShow.sync='operationShow' :shareData="shareData" />
@@ -213,6 +201,7 @@
         couponIsFetchEnd: boolean = true
         scrollTop: number = 0
         MAX_HEIGHT: number = 0;
+        niceTimeFinish:boolean=false
         private get scrollTopPercent() {
             return this.scrollTop / (this.MAX_HEIGHT * 2)
         }
@@ -231,7 +220,7 @@
                     .select('#pageTop')
                     .boundingClientRect((data: any) => {
                         this.MAX_HEIGHT = data.height
-                        console.log(this.MAX_HEIGHT);
+                        // console.log(this.MAX_HEIGHT);
                     })
                     .exec();
             })
@@ -245,7 +234,7 @@
             this.reqGoodsData()
             this.reqNiceTime()
             this.onEventUI('refreshMerchantInfo', (res: any) => {
-                console.log("refreshMerchantInfo", res);
+                // console.log("refreshMerchantInfo", res);
                 this.merchantInfo = res
             });
 
@@ -324,6 +313,10 @@
             if (pics && pics.length > 1) return this.parsePic(pics[0])
         }
         assignNiceTimeList(list: any) {
+            if(!list.length){
+                this.niceTimeFinish=true
+                return
+            } 
             this.niceTimeList = []
             const copies = Math.ceil(list.length / 3)
             for (let i = 0; i < copies; i++) {
@@ -331,7 +324,8 @@
                 let arr = list.slice(start, start + 3)
                 this.niceTimeList.push(arr)
             }
-            console.log(this.niceTimeList);
+            this.niceTimeFinish=true
+            // console.log(this.niceTimeList);
             
         }
         // 跳转商品详情
@@ -340,17 +334,13 @@
         }
         reqMyMerchantData() {
             app.http.Get("dataApi/me/shop/home", {}, (res: any) => {
-                
                 this.merchantInfo = res.data
 
             })
         }
         reqMerchantData() {
             app.http.Get(`dataApi/merchant/newII/detail/` + this.alias, {}, (res: any) => {
-                // this.assignNiceTimeList(res.data.rarity_card || [])
                 this.merchantInfo = res.data
-                // this.couponBrief = res.data.couponBrief
-
             })
         }
         lowerCoupon() {
@@ -376,12 +366,15 @@
         }
         reqCouponBrief(){
             app.http.Get(`merchant/coupon/brief/${this.alias}`,{},(res:any)=>{
-                this.couponBrief=res.couponBrief
+                console.log("reqCouponBrief",res);
+                this.couponBrief=res.couponBrief || []
             })
         }
         reqNiceTime(){
             app.http.Get(`merchant/rarity/card/brief/${this.alias}`,{},(res:any)=>{
                 this.assignNiceTimeList(res.rarity_card|| [])
+            },(err:any)=>{
+                this.niceTimeFinish=true
             })
         }
         reqGoodsData(cb?: any) {
@@ -399,376 +392,373 @@
 </script>
 
 <style lang="scss">
-    page {
-        font-family: PingFang SC;
+page {
+  font-family: PingFang SC;
+}
+
+@font-face {
+  font-family: BDZongYi-A001;
+  src: url("https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.26/seller/info/1661506714192c1fus35zzh.ttf");
+}
+
+.pageTopContainer {
+  position: fixed;
+  top: 0;
+  z-index: 200;
+
+  .pageTop {
+    background-color: rgba(255, 255, 255, 0);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 0 36rpx;
+    justify-content: space-between;
+    width: 750rpx;
+    height: 88rpx;
+    /* transition: all 0.2s linear; */
+  }
+
+  .btn-back {
+    background: rgba(0, 0, 0, 0);
+    font-family: uniicons;
+    font-size: 46rpx;
+    font-weight: normal;
+    font-style: normal;
+    color: #3c3c3c;
+  }
+
+  .pageTitle {
+    font-size: 32rpx;
+    color: #3c3c3c;
+    position: absolute;
+    font-family: HYQiHei;
+    font-weight: bold;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .rightIcon {
+    width: 40rpx;
+    height: 40rpx;
+    opacity: 0;
+  }
+}
+
+.merchantBanner {
+  display: block;
+  width: 750rpx;
+  z-index: 1;
+  height: 380rpx;
+}
+
+.merchantInfoContainer {
+  width: 716rpx;
+  /* height: 215rpx; */
+  background: #ffffff;
+  box-shadow: 0rpx 1rpx 12rpx 0rpx #a8aaa9;
+  border-radius: 5rpx;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 28rpx 30rpx 30rpx 30rpx;
+  margin-top: -58rpx;
+  z-index: 2;
+}
+
+.couponContainer {
+  width: 706rpx;
+  height: 148rpx;
+  background-size: 100% 100%;
+  background-image: url("../../static/merchant/couponContainer.png");
+  margin-top: 33rpx;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 34rpx 0 20rpx;
+  justify-content: space-between;
+
+  .a {
+  }
+
+  .leftCoupon {
+    width: 480rpx;
+    /* background-color: rgba(0, 0, 0, .6); */
+    height: 148rpx;
+    align-items: center;
+  }
+
+  .leftCoupon-item {
+    width: 490rpx;
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .price {
+    font-size: 38rpx;
+
+    color: #fa1545;
+    margin-right: 14rpx;
+  }
+
+  .couponRight {
+    flex: 1;
+    width: 0;
+
+    .manj {
+      /* max-width: 100%; */
+      /* width: 100%; */
+      font-size: 21rpx;
+      font-weight: bold;
+      color: #333333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    @font-face {
-        font-family: BDZongYi-A001;
-        src: url("https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.26/seller/info/1661506714192c1fus35zzh.ttf");
+    .type {
+      font-size: 20rpx;
+      font-weight: 400;
+      color: #333333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+  }
 
-    .pageTopContainer {
-        position: fixed;
-        top: 0;
-        z-index: 200;
+  .rightReceive {
+    width: 125rpx;
+    font-size: 29rpx;
+    font-weight: bold;
+    color: #f6f7fb;
+    height: 125rpx;
+    background-size: 100% 100%;
+    letter-spacing: 2rpx;
+    background-image: url("../../static/merchant/receiveButton.png");
+  }
+}
 
-        .pageTop {
-            background-color: rgba(255, 255, 255, 0);
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            padding: 0 36rpx;
-            justify-content: space-between;
-            width: 750rpx;
-            height: 88rpx;
-            /* transition: all 0.2s linear; */
-        }
+.infoTop {
+  .info-avatar {
+    width: 111rpx;
+    height: 111rpx;
+    margin-right: 19rpx;
+    border-radius: 5rpx;
+  }
 
-        .btn-back {
+  .info-message {
+    flex: 1;
+    margin-top: 10rpx;
+  }
 
-            background: rgba(0, 0, 0, 0);
-            font-family: uniicons;
-            font-size: 46rpx;
-            font-weight: normal;
-            font-style: normal;
-            color: #3C3C3C;
-        }
+  .info-name {
+    font-size: 29rpx;
+    font-weight: bold;
+    color: #333333;
+  }
 
-        .pageTitle {
-            font-size: 32rpx;
-            color: #3C3C3C;
-            position: absolute;
-            font-family: HYQiHei;
-            font-weight: bold;
-            left: 0;
-            right: 0;
-            margin: auto;
-            text-align: center;
-            pointer-events: none;
-        }
+  .info-introduction {
+    font-size: 23rpx;
+    font-weight: 400;
+    color: #c0c0c0;
+    margin-top: 10rpx;
+  }
 
-        .rightIcon {
-            width: 40rpx;
-            height: 40rpx;
-            opacity: 0;
-        }
-    }
+  .rightEdit {
+    width: 147rpx;
+    height: 52rpx;
+    background: #f2f2f2;
+    border-radius: 3rpx;
+    font-size: 29rpx;
+    font-weight: 500;
+    color: #7c7c7c;
+  }
 
-    .merchantBanner {
-        display: block;
-        width: 750rpx;
-        z-index: 1;
-        height: 380rpx;
-    }
+  .followBtton {
+    width: 127rpx;
+    height: 52rpx;
+    background: #fa1545;
+    border-radius: 3rpx;
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #f6f7fb;
+  }
 
-    .merchantInfoContainer {
-        width: 716rpx;
-        /* height: 215rpx; */
-        background: #FFFFFF;
-        box-shadow: 0rpx 1rpx 12rpx 0rpx #A8AAA9;
-        border-radius: 5rpx;
-        background-color: #fff;
-        box-sizing: border-box;
-        padding: 28rpx 30rpx 30rpx 30rpx;
-        margin-top: -58rpx;
-        z-index: 2;
-    }
+  .isFollo {
+    background: #f2f2f2;
+    color: #7c7c7c;
+  }
+}
 
-    .couponContainer {
-        width: 706rpx;
-        height: 148rpx;
-        background-size: 100% 100%;
-        background-image: url("../../static/merchant/couponContainer.png");
-        margin-top: 33rpx;
-        align-items: center;
-        box-sizing: border-box;
-        padding: 0 34rpx 0 20rpx;
-        justify-content: space-between;
+.merchant-introduction {
+  font-size: 25rpx;
+  font-weight: 400;
+  color: #7c7c7c;
+  margin-top: 17rpx;
+  letter-spacing: 0rpx;
+  /* line-height: 24rpx; */
+}
 
-        .a {}
+.ruleContainer {
+  width: 750rpx;
+  box-sizing: border-box;
+  display: flex;
+  padding: 0 28rpx;
+  flex-wrap: wrap;
+  margin-top: 39rpx;
+  .ruleItem {
+    width: 33.33%;
+    height: 70rpx;
+    margin-bottom: 35rpx;
+    display: flex;
+    align-items: center;
+    pointer-events: auto;
+  }
 
-        .leftCoupon {
-            width: 480rpx;
-            /* background-color: rgba(0, 0, 0, .6); */
-            height: 148rpx;
-            align-items: center;
-           
-        }
+  .rule-left {
+    width: 73rpx;
+    height: 73rpx;
+    background: rgba(230, 228, 227, 0.6);
+    border-radius: 3rpx;
+    margin-right: 14rpx;
+  }
 
-        .leftCoupon-item {
-            width: 490rpx;
-            /* background-color: red; */
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+  .rule-icon {
+    /* width: 36rpx; */
+  }
 
-        .price {
-            font-size: 38rpx;
+  .rule-name {
+    font-size: 27rpx;
+    font-weight: 500;
+    color: #333333;
+  }
 
-            color: #FA1545;
-            margin-right: 14rpx;
-        }
+  .rule-tips {
+    font-size: 23rpx;
+    font-weight: 400;
+    color: #7c7c7c;
+  }
+}
 
-        .couponRight {
-            flex: 1;
-            width: 0;
+.moreContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 750rpx;
+  box-sizing: border-box;
+  padding: 0 29rpx;
+  .more-left {
+    font-size: 33rpx;
+    font-weight: normal;
+    font-style: italic;
+    font-family: BDZongYi-A001;
+    color: #333333;
+  }
 
-            .manj {
-                /* max-width: 100%; */
-                /* width: 100%; */
-                font-size: 21rpx;
-                font-weight: bold;
-                color: #333333;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+  .more-right {
+    position: relative;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    padding-right: 28rpx;
+    color: #7b7a7a;
+  }
 
-            .type {
-                font-size: 20rpx;
-                font-weight: 400;
-                color: #333333;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        }
+  .more-right::after {
+    content: "";
+    display: block;
+    width: 13rpx;
+    height: 21rpx;
+    background-size: 100% 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background-image: url("../../static/merchant/rightIcon.png");
+  }
+}
 
-        .rightReceive {
-            width: 125rpx;
-            font-size: 29rpx;
-            font-weight: bold;
-            color: #F6F7FB;
-            height: 125rpx;
-            background-size: 100% 100%;
-            letter-spacing: 2rpx;
-            background-image: url("../../static/merchant/receiveButton.png");
-        }
-    }
+.niceTimeContainer {
+  width: 695rpx;
+  height: 350rpx;
+  background-size: 100% 100%;
+  background-image: url("../../static/merchant/niceTimeContainer.png");
+  margin-top: 19rpx;
+  box-sizing: border-box;
+  padding: 22rpx 24rpx 0 24rpx;
 
-    .infoTop {
-        .info-avatar {
-            width: 111rpx;
-            height: 111rpx;
-            margin-right: 19rpx;
-            border-radius: 5rpx;
-        }
+  .niceTimeItem {
+    width: 100%;
+    dispaly: flex;
+    /* flex-wrap: nowrap; */
+  }
 
-        .info-message {
-            flex: 1;
-            margin-top: 10rpx;
+  .niceTimeImage {
+    width: 204rpx;
+    height: 265rpx;
+    overflow: hidden;
+    display: block;
+    border-radius: 5rpx;
+    /* background: #E6DDDD; */
+  }
+}
 
-        }
+.niceTimeContainer ::v-deep .uni-swiper-dots {
+  bottom: 24rpx;
+}
 
-        .info-name {
-            font-size: 29rpx;
-            font-weight: bold;
-            color: #333333;
-        }
+.niceTimeContainer ::v-deep .uni-swiper-dot {
+  width: 11rpx;
+  height: 11rpx;
+}
 
-        .info-introduction {
-            font-size: 23rpx;
-            font-weight: 400;
-            color: #c0c0c0;
-            margin-top: 10rpx;
-        }
-
-        .rightEdit {
-            width: 147rpx;
-            height: 52rpx;
-            background: #F2F2F2;
-            border-radius: 3rpx;
-            font-size: 29rpx;
-            font-weight: 500;
-            color: #7C7C7C;
-        }
-
-        .followBtton {
-            width: 127rpx;
-            height: 52rpx;
-            background: #FA1545;
-            border-radius: 3rpx;
-            font-size: 29rpx;
-            font-family: PingFang SC;
-            font-weight: 500;
-            color: #F6F7FB;
-        }
-
-        .isFollo {
-
-            background: #F2F2F2;
-            color: #7C7C7C;
-        }
-    }
-
-    .merchant-introduction {
-        font-size: 25rpx;
-        font-weight: 400;
-        color: #7C7C7C;
-        margin-top: 17rpx;
-        letter-spacing: 0rpx;
-        /* line-height: 24rpx; */
-    }
-
-    .ruleContainer {
-        width: 750rpx;
-        box-sizing: border-box;
-        display: flex;
-        padding: 0 28rpx;
-        flex-wrap: wrap;
-        margin-top: 39rpx;
-        .ruleItem {
-            width: 33.33%;
-            height: 70rpx;
-            margin-bottom: 35rpx;
-            display: flex;
-            align-items: center;
-            pointer-events: auto;
-        }
-
-        .rule-left {
-            width: 73rpx;
-            height: 73rpx;
-            background: rgba(230, 228, 227, .6);
-            border-radius: 3rpx;
-            margin-right: 14rpx;
-        }
-
-        .rule-icon {
-            /* width: 36rpx; */
-        }
-
-        .rule-name {
-            font-size: 27rpx;
-            font-weight: 500;
-            color: #333333;
-        }
-
-        .rule-tips {
-            font-size: 23rpx;
-            font-weight: 400;
-            color: #7C7C7C;
-        }
-    }
-
-    .moreContainer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 750rpx;
-        box-sizing: border-box;
-        padding: 0 29rpx;
-        .more-left {
-            font-size: 33rpx;
-            font-weight: normal;
-            font-style: italic;
-            font-family: BDZongYi-A001;
-            color: #333333;
-        }
-
-        .more-right {
-            position: relative;
-            font-size: 25rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
-            padding-right: 28rpx;
-            color: #7B7A7A;
-        }
-
-        .more-right::after {
-            content: "";
-            display: block;
-            width: 13rpx;
-            height: 21rpx;
-            background-size: 100% 100%;
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-            background-image: url("../../static/merchant/rightIcon.png");
-        }
-    }
-
-    .niceTimeContainer {
-        width: 695rpx;
-        height: 350rpx;
-        background-size: 100% 100%;
-        background-image: url("../../static/merchant/niceTimeContainer.png");
-        margin-top: 19rpx;
-        box-sizing: border-box;
-        padding: 22rpx 24rpx 0 24rpx;
-
-        .niceTimeItem {
-            width: 100%;
-            dispaly: flex;
-            /* flex-wrap: nowrap; */
-        }
-
-        .niceTimeImage {
-            width: 204rpx;
-            height: 265rpx;
-            overflow: hidden;
-            display: block;
-            border-radius: 5rpx;
-            /* background: #E6DDDD; */
-        }
-    }
-
-    .niceTimeContainer ::v-deep .uni-swiper-dots {
-        bottom: 24rpx;
-    }
-
-    .niceTimeContainer ::v-deep .uni-swiper-dot {
-        width: 11rpx;
-        height: 11rpx;
-    }
-
-    .tagsContainer {
-        padding: 0 28rpx;
-        display: flex;
-        /* justify-content: center; */
-        justify-content: space-evenly;
-        /* justify-content: space-between; */
-        width: 750rpx;
-        /* box-sizing: border-box; */
-        padding-top: 53rpx;
-        padding-bottom: 18rpx;
-        background-color: #fff;
-        /* height: 110rpx; */
-        align-items: center;
-        /* margin-top: 61rpx;
+.tagsContainer {
+  padding: 0 28rpx;
+  display: flex;
+  /* justify-content: center; */
+  justify-content: space-evenly;
+  /* justify-content: space-between; */
+  width: 750rpx;
+  /* box-sizing: border-box; */
+  padding-top: 53rpx;
+  padding-bottom: 18rpx;
+  background-color: #fff;
+  /* height: 110rpx; */
+  align-items: center;
+  /* margin-top: 61rpx;
         margin-bottom: 50rpx; */
 
-        .tag {
-            font-size: 27rpx;
-            font-weight: 400;
-            color: #959699;
+  .tag {
+    font-size: 27rpx;
+    font-weight: 400;
+    color: #959699;
 
-            /* margin-right:82rpx; */
-            text {
-                margin-left: 6rpx;
-            }
-        }
-
-        .selectTag {
-            font-size: 31rpx;
-            font-weight: bold;
-            color: #333333;
-        }
+    /* margin-right:82rpx; */
+    text {
+      margin-left: 6rpx;
     }
+  }
 
-    .goodsList {
-        padding: 0 14rpx;
-        box-sizing: border-box;
-        width: 750rpx;
-        background-color: #f5f7fb;
-        padding-top: 20rpx;
-        /* height: 2000rpx; */
-    }
+  .selectTag {
+    font-size: 31rpx;
+    font-weight: bold;
+    color: #333333;
+  }
+}
+
+.goodsList {
+  padding: 0 14rpx;
+  box-sizing: border-box;
+  width: 750rpx;
+  background-color: #f5f7fb;
+  padding-top: 20rpx;
+  /* height: 2000rpx; */
+}
 </style>

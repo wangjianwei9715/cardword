@@ -17,7 +17,7 @@
                     {{item.name}}
                 </view>
                 <view class="niceTime-bottom uni-flex">
-                    <muqian-lazyLoad class="niceTime-avatar"
+                    <image class="niceTime-avatar"
                         :src="item.avatar?parsePic(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFill" />
                     <view class="niceTime-userName onLine">{{item.userName}}</view>
                     <view class="niceTime-time">{{dateFormatMS(item.createTime)}}</view>
