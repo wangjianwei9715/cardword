@@ -61,9 +61,9 @@
             <view class="more-right">更多</view>
         </view>
         <view class="niceTimeContainer" v-if='niceTimeFinish'>
-            <swiper indicator-dots autoplay circular :interval="3*1000" indicator-active-color="#333333" indicator-color="#CAC6C6" style="width:100%;height:100%" v-if="niceTimeList&&niceTimeList.length">
+            <swiper indicator-dots autoplay circular :interval="5*1000" indicator-active-color="#333333" indicator-color="#CAC6C6" style="width:100%;height:100%" v-if="niceTimeList&&niceTimeList.length">
                 <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index" style="display: flex;flex-wrap: nowrap;">
-                    <image v-for="(sItem,sNndex) in item" class="niceTimeImage" :style="{marginRight:sNndex==2?0:'24rpx'}" :src="filterImage(decodeURIComponent(sItem))" mode="aspectFill" />
+                    <image v-for="(sItem,sNndex) in item" class="niceTimeImage" :style="{marginRight:sNndex==2?0:'24rpx'}" :key="'sImg'+sNndex" :src="filterImage(decodeURIComponent(sItem),false)" @click="previewImage(filterImage(decodeURIComponent(sItem),true),0,'')" mode="aspectFill" />
                 </swiper-item>
             </swiper>
             <empty v-if="niceTimeList&&!niceTimeList.length" style="position: relative;bottom:240rpx" />
@@ -258,6 +258,7 @@
         onPageScroll(data: any) {
             this.scrollTop = data.scrollTop
         }
+        
         previewImage(list: any, index: number, key: string = "src") {
             const urls = list.map((item: any) => this.parsePic(key ? item[key] : item));
             uni.previewImage({
@@ -306,9 +307,14 @@
                 url
             })
         }
-        filterImage(picstring: any) {
+        filterImage(picstring: any,privatAll?:boolean) {
             if (!picstring) return ""
             let pics = picstring.split(',')
+            if(privatAll){
+                return pics.map((item:any)=>{
+                    return decodeURIComponent(item)
+                })
+            }
             if (pics && pics.length == 1) return this.parsePic(picstring)
             if (pics && pics.length > 1) return this.parsePic(pics[0])
         }
