@@ -371,7 +371,7 @@
             })
         }
         reqNiceTime(){
-            app.http.Get(`merchant/rarity/card/brief/${this.alias}`,{},(res:any)=>{
+            app.http.Get(`dataApi/merchant/rarity/card/brief/${this.alias}`,{},(res:any)=>{
                 this.assignNiceTimeList(res.rarity_card|| [])
             },(err:any)=>{
                 this.niceTimeFinish=true

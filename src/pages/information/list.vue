@@ -5,55 +5,26 @@
       <view class="tab-header">
         <view class="icon-back" @click="onClickBack"></view>
         <view class="header-title">资讯</view>
-        <view class="header-likes" @click="myLikes">我的点赞</view>
+        <view class="header-icon">
+          <view class="icon-search" @click.prevent="onClickGoSearch"></view>
+          <view class="icon-collect" @click.prevent="onClickMyCollect"></view>
+				</view>
       </view>
-      <view class="header-search">
-        <view class="search-icon"></view>
-        <input
-          class="search-input"
-          type="text"
-          placeholder-style="color:#AAAABB"
-          v-model="searchText"
-          placeholder="搜索"
-          @confirm="onClickSearch"
-          confirm-type="search"
-        />
-      </view>
-      <view class="tabc-content">
-        <tabc
-          :tabc="goodTab"
-          :tabsCheck="goodTabCheck"
-          @tabsClick="onClickListTabs"
-        ></tabc>
-      </view>
+      <u-tabs :list="tabData.list" :current="tabData.current" :itemStyle="tabData.itemStyle" :activeStyle="tabData.activeStyle" :inactiveStyle="tabData.inactiveStyle" lineColor="#ef3333" @click="onClickListTabs"></u-tabs>
     </view>
 
     <view class="live-content">
       <statusbar />
-      <view class="information" >
-        <view
-          class="information-index"
-          v-for="(item, index) in information"
-          :key="index"
-          
-        >
-          <view class="information-top" @click="onClickJumpUrl(item.articleCode,item.cover)">
-            <muqian-lazyLoad class="information-top-image" :src="getGoodsImg(decodeURIComponent(item.cover))">
-					  </muqian-lazyLoad>
-          </view>
-          
-          <view class="information-center">
-            <view class="title" @click="onClickJumpUrl(item.articleCode,item.cover)">{{item.title}}</view>
-            <view class="desc">
-              <view class="desc-index">{{dateFormatMS(item.created_at)}}</view>
-              <view class="desc-index">
-                <view class="icon-pl"></view>{{item.comment}}
-                <view class="icon-dz" :class="{'icon-dzed':item.isLikes}" @click="onClickLikes(index)"></view>{{item.likes}}
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
+      <swiper v-show="tabData.current==0 && AD_List!=''" class="swiper" autoplay="true" circular="true" indicator-active-color="#ffffff">
+				<swiper-item v-for="(item,index) in AD_List" :key="index">
+					<view class="ad-box">
+						<muqian-lazyLoad class="ad-pic" :src="decodeURIComponent(item.pic_url)" mode="aspectFill" @click="onClickSwiper(item)"/>
+					</view>
+				</swiper-item>
+			</swiper>
+
+      <informationList class="list-box" :list="information" />
+      <empty v-show="empty" />
     </view>
   </view>
 </template>
@@ -64,38 +35,65 @@ import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 import { getGoodsImg,dateFormatMS } from "@/tools/util"
+const TabList = [
+  { id: 100, name: "推荐" },
+  { id: 2, name: "卡圈杂谈" },
+  { id: 4, name: "精彩瞬间" },
+  { id: 1, name: "活动公告" },
+  { id: 3, name: "体育快报" }
+]
 @Component({})
 export default class ClassName extends BaseNode {
   getGoodsImg = getGoodsImg;
   dateFormatMS = dateFormatMS;
-  searchText = "";
-  pullDownRefresh = false;
-  goodTab = [
-    { id: 0, name: "最新" },
-    { id: 100, name: "热门" },
-    { id: 1, name: "公告" },
-    { id: 2, name: "卡圈资讯" },
-    { id: 3, name: "体育快报" },
-  ];
-  goodTabCheck = 0;
-  currentPage = 1;
-  pageSize = 20;
-  noMoreData = false;
+  tabData = {
+    list:TabList,
+    current:0,
+    itemStyle:{height: '90rpx',padding:'0rpx 30rpx'},
+    inactiveStyle:{"font-size":"28rpx","color":"#959699","font-weight":"400"},
+    activeStyle:{"font-size":"31rpx","color":"#333","font-weight":"bold"}
+  }
+  AD_List = [];
+  listParams = {
+    pageIndex: 1,
+    pageSize: 10,
+    qt: 0,
+    q:'',
+    noMoreData:false
+  }
   information: any = [];
-  searchData: any = [];
-  scrollId = "";
+  empty = false;
   onLoad(query: any) {
     this.reqNewData();
+    app.http.Get('dataApi/article/showy/list',{},(res:any)=>{
+      this.AD_List = res.list || []
+    })
+
+    this.onEventUI("informationChange", (res: any) => {
+      console.log('change==',res);
+      if (res && res.articleCode) {
+        let findItem = this.information.find((item: any) => {
+          return item.articleCode == res.articleCode;
+        });
+        if (findItem) {
+          findItem.isLikes = res.isLikes;
+          findItem.likes = res.likes;
+          findItem.comment = res.comment
+        }
+      }
+    });
   }
   //   加载更多数据
   onReachBottom() {
     this.reqNewData();
   }
-  onClickListTabs(id: any) {
-    if (id == this.goodTabCheck) {
+  onClickListTabs(item:{[x:string]:any}) {
+    const { tabData } = this;
+    if (item.index == tabData.current) {
       return;
     }
-    this.goodTabCheck = id;
+    this.information = [];
+    tabData.current = item.index;
     this.onClickSearch()
   }
   onClickBack() {
@@ -105,63 +103,47 @@ export default class ClassName extends BaseNode {
   }
   onClickSearch() {
     // 搜索
-    this.currentPage = 1;
-    this.noMoreData = false;
+    const { listParams } = this;
+    listParams.pageIndex = 1;
+    listParams.noMoreData = false;
     this.reqNewData();
   }
-  // 点赞
-  onClickLikes(index:number){
-    if(app.token.accessToken == ''){
-      uni.navigateTo({
-        url:'/pages/login/login'
+  onClickGoSearch(){
+    uni.navigateTo({
+        url:'/pages/information/search'
       })
-      return;
-    }
-    app.http.Post('article/like/or/cancel/'+this.information[index].articleCode,{},(res:any)=>{
-      this.information[index].isLikes = res.liked;
-      this.information[index].likes = res.likes;
-      this.information[index].comment = res.comment
+  }
+  onClickMyCollect(){
+    app.platform.hasLoginToken(()=>{
+      uni.navigateTo({
+        url:'/pages/information/mylikes'
+      })
     })
   }
-  onClickJumpUrl(code: any,cover:any) {
-    uni.navigateTo({
-      url:'/pages/information/details?code='+code+'&pic='+cover
-    })
-  }
-  myLikes(){
-    if(app.token.accessToken == ''){
-      uni.navigateTo({
-        url:'/pages/login/login'
-      })
-      return;
-    }
-    uni.navigateTo({
-      url:'/pages/information/mylikes'
-    })
+  onClickSwiper(item:any){
+    app.navigateTo.goInformationDetail(item,1)
   }
   reqNewData(cb?: Function) {
     // 获取更多商品
-    if (this.noMoreData) {
+    const { listParams } = this;
+    if (listParams.noMoreData) {
       return;
     }
-
-    let params: any = {
-      pageIndex: this.currentPage,
-      pageSize: this.pageSize,
-      qt: this.goodTabCheck,
-      q: encodeURIComponent(this.searchText),
-    };
+    const params = {
+      pageIndex: listParams.pageIndex,
+      pageSize: listParams.pageSize,
+      qt: TabList[this.tabData.current].id,
+      q : encodeURIComponent(listParams.q)
+    }
     app.http.Get("dataApi/article/homelist", params, (data: any) => {
-      if (data.totalPage <= this.currentPage) {
-        this.noMoreData = true;
+      if (data.totalPage <= listParams.pageIndex) {
+        listParams.noMoreData = true;
       }
-      if (this.currentPage == 1) {
-        this.information = [];
-      }
+      this.empty = data.total == 0 
       if (data.list) {
         this.information = [...this.information,...data.list];
       }
-      this.currentPage++;
+      listParams.pageIndex++;
       if (cb) cb();
     });
   }
@@ -170,7 +152,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-  background: $content-bg;
+  background: #fff;
 }
 .content {
   width: 100%;
@@ -210,20 +192,28 @@ page {
   height: 88rpx;
   line-height: 88rpx;
   font-size: 34rpx;
-  font-family: PingFangSC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #000000;
+  font-family: PingFang SC;
+  font-weight: 600;
+  color: #333333;
 }
-.header-likes {
-  height: 94rpx;
-  line-height: 104rpx;
-  font-size: 22rpx;
-  font-family: Microsoft YaHei;
-  font-weight: 400;
-  color: #ababbb;
+.header-icon {
+  height: 88rpx;
+  display: flex;
+  align-items: center;
   position: absolute;
-  right: 20rpx;
+  right: 40rpx;
   top: 0;
+}
+.icon-search{
+  width: 35rpx;
+  height:37rpx;
+  background:url(@/static/information/icon_search.png) no-repeat center /100% 100%;
+}
+.icon-collect{
+  width: 39rpx;
+  height:36rpx;
+  background:url(@/static/information/icon_collect.png) no-repeat center /100% 100%;
+  margin-left: 36rpx;
 }
 .tabc-content {
   width: 100%;
@@ -232,8 +222,7 @@ page {
 .live-content {
   width: 100%;
   box-sizing: border-box;
-  padding: 280rpx 29rpx 20rpx 29rpx;
-
+  padding: 220rpx 0 20rpx 0;
   position: relative;
   z-index: 2;
 }
@@ -268,82 +257,27 @@ page {
   background-size: 100% 100%;
   margin-right: 20rpx;
 }
-.information {
-  width: 100%;
+.swiper {
+  width: 750rpx;
+  height: 333rpx;
+  margin-bottom: 40rpx;
+}
+
+.ad-box {
+  width: 750rpx;
+  height: 333rpx;
+  box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  &-index {
-    width: 330rpx;
-    border-radius: 20rpx;
-    background: #fff;
-    overflow: hidden;
-    margin-bottom: 20rpx;
-  }
-  &-top {
-    width: 330rpx;
-    height: 260rpx;
-    position: relative;
-    &-image {
-      width: 330rpx;
-      height: 260rpx;
-    }
-  }
-  &-center {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 16rpx 20rpx 20rpx 20rpx;
-    font-size: 28rpx;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #14151a;
-    .title{
-      width: 100%;
-      height:80rpx;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-    }
-    .desc{
-      width: 100%;
-      height:40rpx;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .desc-index{
-        height:40rpx;
-        display: flex;
-        align-items: center;
-        font-size: 20rpx;
-        font-family: Microsoft YaHei;
-        font-weight: 400;
-        color: #BDBEC5;
-      }
-      .icon-pl{
-        width: 26rpx;
-        height:24rpx;
-        background:url(../../static/index/pl.png) no-repeat center;
-        background-size: 100% 100%;
-        margin-right: 5rpx;
-      }
-      .icon-dz{
-        width: 24rpx;
-        height:24rpx;
-        background:url(../../static/index/zan.png) no-repeat center;
-        background-size: 100% 100%;
-        margin-right: 5rpx;
-        margin-left: 26rpx;
-      }
-      .icon-dzed{
-        width: 24rpx;
-        height:24rpx;
-        background:url(../../static/index/zan_.png) no-repeat center;
-        background-size: 100% 100%;
-        margin-right: 5rpx;
-        margin-left: 26rpx;
-      }
-    }
-  }
+  align-items: center;
+  justify-content: center;
+}
+.ad-pic {
+  width: 750rpx;
+  height: 333rpx;
+}
+.list-box{
+  width: 100%;
+  background:#fff;
+  box-sizing: border-box;
 }
 </style>

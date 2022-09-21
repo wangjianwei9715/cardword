@@ -71,7 +71,7 @@
 <style lang="scss">
 	.coupon-list{
 		width: 100%;
-		height:40rpx;
+		height:42rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
@@ -84,55 +84,30 @@
 		}
 		.coupon-list-left{
 			width: 600rpx;
-			height:40rpx;
+			height:42rpx;
 			overflow: hidden;
 			display: flex;
 			align-items: center;
 			.coupon-box{
-				height:38rpx;
+				height:42rpx;
 				position: relative;
 				overflow: hidden;
 				margin-right: 20rpx;
 			}
 			.coupon-item{
-				height:38rpx;
+				height:40rpx;
 				box-sizing: border-box;
 				padding:0 20rpx;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				border: 1px solid #fba8b6;
-				border-radius: 5rpx;
-				font-size: 23rpx;
+				border: 1px solid #f2c9ce;
+				background:#FDF2F3;
+				border-radius: 3rpx;
+				font-size: 24rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
 				color: #F53756;
-			}
-			.coupon-box::after{
-				content: '';
-				width: 18rpx;
-				height:18rpx;
-				background:#fff;
-				border-radius: 50%;
-				border:1px solid #fba8b6;
-				position: absolute;
-				left:-9rpx;
-				top:50%;
-				margin-top: -9rpx;
-				box-sizing: border-box;
-			}
-			.coupon-box::before{
-				content: '';
-				width: 18rpx;
-				height:18rpx;
-				background:#fff;
-				border-radius: 50%;
-				border:1px solid #fba8b6;
-				position: absolute;
-				right:-9rpx;
-				top:50%;
-				margin-top: -9rpx;
-				box-sizing: border-box;
 			}
 		}
 		.coupon-list-right{

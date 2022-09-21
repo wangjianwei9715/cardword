@@ -1,36 +1,25 @@
 <template>
-	<view class="content">
+	<view class="content" >
 		<view class="header-banner">
 			<statusbar/>
 			<view class="tab-header">
 				<view class="icon-back" @click="onClickBack"></view>
-				<view class="header-title"></view>
+				<view class="header-title">详情</view>
 				<view class="icon-share" @click="onClickShare"></view>
 			</view>
 		</view>
-		<view style="padding-top:88rpx">
-			<statusbar/>
-		</view>
+		
 		<view class="index">
-			<view class="title">{{articleData.title}}</view>
-			<view class="user">
-				<muqian-lazyLoad class="avatar" :src="articleData.author_logo" :borderRadius="'50%'"/>
-				{{articleData.author}}
+			<view style="padding-top:88rpx">
+				<statusbar/>
 			</view>
-			<view class="time">发布于{{dateFormatMSHMS(articleData.active_at)}}</view>
-			<view class="desc" v-html="decodeURIComponent(articleData.content)"/>
+			<comments :articleData="articleData" :commentsList="commentsList" :isFetchEnd="commentParams.isFetchEnd" @reply="onReply" @moreComments="onMoreComments"/>
 		</view>
-		<view class="bottom-box">
-			<view class="bottom">
-				<view class="input" @click="onClickInput">说点什么吧...</view>
-				<view class="desc-index">
-					<view class="icon-pl"></view>{{articleData.comment}}
-					<view class="icon-dz" :class="{'icon-dzed':articleData.isLikes}" @click="onClickLikes"></view>{{articleData.likes}}
-				</view>
-			</view>
-		</view>
+		
+		<commentsTabbar :data="articleData" :commentNum="articleData.comment" :show="chatData.focus" @comment="onReply" @chat="onReply"/>
+		<commentsTextarea :focus.sync="chatData.focus" :replyName="chatData.replyName" @chatConfirm="onChatConfirm"/>
 
-		<share :operationShow="operationShow" :shareData="shareData"  @operacancel="onClickShareCancel"></share>
+		<share :operationShow="operationShow" :shareData="shareData"  @operacancel="operationShow = false"></share>
 	</view>
 </template>
 
@@ -38,12 +27,29 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import { dateFormatMSHMS } from '@/tools/util'
-	@Component({})
+	import comments from './components/comments.vue'
+	import commentsTabbar from './components/commentsTabbar.vue'
+	import commentsTextarea from './components/commentsTextarea.vue'
+	const commentParams = {
+		fetchFrom:1,
+		fetchSize:10,
+		isFetchEnd:false
+	}
+	const chat = {
+		replyId:0,
+		replyName:'',
+		fatherId:0,
+		focus:false
+	}
+	@Component({
+		components:{
+			comments,
+			commentsTabbar,
+			commentsTextarea
+		}
+	})
 	export default class ClassName extends BaseNode {
-		dateFormatMSHMS = dateFormatMSHMS
 		code = '';
-		cover = '';
 		articleData:any = {};
 		operationShow=false;
 		shareData:any = {
@@ -52,31 +58,23 @@
 			summary:'',    
 			thumb:''       
 		}
+		chatData = {...chat};
+		commentParams = {...commentParams};
+		commentsList:any = [];
+		typeAD = 0;
 		onLoad(query:any) {
 			if(query.code){
 				this.code = query.code;
-				this.cover = query.pic;
+				this.typeAD = query.ad
 				this.getArticleDetail()
 			}
 		}
-		// 点赞
-		onClickLikes(){
-			if(app.token.accessToken == ''){
-				uni.navigateTo({
-					url:'/pages/login/login'
-				})
-				return;
-			}
-			app.http.Post('article/like/or/cancel/'+this.articleData.articleCode,{},(res:any)=>{
-				this.articleData.isLikes = res.liked;
-				this.articleData.likes = res.likes;
-				this.articleData.comment = res.comment
-			})
+		//   加载更多数据
+		onReachBottom() {
+			this.getArticleComment();
 		}
 		onClickBack(){
-			uni.navigateBack({
-				delta: 1
-			});
+			uni.navigateBack({ delta: 1 });
 		}
 		// 分享
 		onClickShare(){
@@ -86,26 +84,87 @@
 						shareUrl:"share/h5/index.html#/pages/information/index?code="+this.code,  
 						title:this.articleData.title,      
 						summary:this.articleData.title,    
-						thumb:decodeURIComponent(this.cover)
+						thumb:decodeURIComponent(this.articleData.cover)
 					}
+					console.log(this.shareData)
 				}
 				this.operationShow = true;
 			}
 		}
-		onClickShareCancel(){
-			this.operationShow = false
-		}
+		// 获取资讯详情
 		getArticleDetail(){
-			app.http.Get('dataApi/article/detail/'+this.code,{},(res:any)=>{
-				this.articleData = res.data
+			app.http.Get('dataApi/article/detail/'+this.code,{channel:Number(this.typeAD)},(res:any)=>{
+				this.articleData = res.data;
+				this.getArticleComment()
 			})
 		}
-		onClickInput(){
-			uni.showToast({
-				title:'评论功能暂未开放',
-				icon:'none'
+		// 获取资讯评论
+		getArticleComment(){
+			const { commentParams } = this;
+			if(commentParams.isFetchEnd){
+				return;
+			}
+			app.http.Get(`dataApi/article/comment/list/${this.code}`,commentParams,(res:any)=>{
+				console.log(res);
+				
+				commentParams.isFetchEnd = res.isFetchEnd;
+				commentParams.fetchFrom += commentParams.fetchSize
+				if(res.list){
+					this.commentsList = [...this.commentsList,...res.list];
+				}
 			})
 		}
+		// 获取更多评论
+		onMoreComments(id:number){
+			const findItem = this.commentsList.find((item:any)=>{
+				return item.id == id;
+			})
+			const params = {
+				fetchFrom:findItem.fetchFrom?findItem.fetchFrom:1,
+				fetchSize:5
+			}
+			app.http.Get(`dataApi/article/comment/morelist/${id}`,params,(res:any)=>{
+				findItem.lower.push(...res.data.list);
+				findItem.remainNum = res.data.remainNum;
+				findItem.fetchFrom = params.fetchFrom+params.fetchSize;
+			})
+		}
+		// 开始回复
+		onReply(res?:any){
+			app.platform.hasLoginToken(()=>{
+				this.chatData = {
+					replyId:res?res.replyId:0,
+					replyName:res?res.replyName:'',
+					fatherId:res?res.fatherId:0,
+					focus:true
+				}
+			})
+		}
+		// 提交评论或回复
+		onChatConfirm(content:string){
+			console.log('评论内容：',content);
+			app.platform.hasLoginToken(()=>{
+				const data = this.chatData;
+				const url = data.replyId == 0 ? `article/comment/issue/${this.code}` : `article/reply/comment/${data.replyId}`;
+				const { articleData } = this;
+				app.http.Post(url,{content},(res:any)=>{
+					articleData.comment++;
+					if(data.replyId==0){
+						this.commentsList.unshift(res.data)
+					}else{
+						let findItem = this.commentsList.find((item: any) => {
+							return item.id == data.fatherId;
+						});
+						findItem.lower.unshift(res.data)
+					}
+					this.chatData = {...chat}
+					uni.showToast({ title:'评论成功', icon:'none' })
+					uni.$emit('informationChange', articleData)
+					console.log(res)
+				})
+			})
+		}
+		
 	}
 </script>
 
@@ -116,52 +175,11 @@
 	}
 	.index{
 		width: 100%;
-		padding: 20rpx 40rpx 120rpx 40rpx;
+		padding: 40rpx 40rpx 0 40rpx;
+		padding-bottom: calc(164rpx);
+		padding-bottom: calc(164rpx + constant(safe-area-inset-bottom));
+		padding-bottom: calc(164rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
-		.title{
-			font-size: 30rpx;
-			font-family: Microsoft YaHei;
-			font-weight: bold;
-			color: #14151A;
-			line-height: 48rpx;
-			margin-bottom: 20rpx;
-		}
-		.user{
-			width: 100%;
-			display: flex;
-			align-items: center;
-			height:50rpx;
-			font-size: 24rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
-			color: #14151A;
-			margin-bottom:10rpx;
-			.avatar{
-				width: 50rpx;
-				height:50rpx;
-				border-radius: 50%;
-				margin-right: 20rpx;
-			}
-		}
-		.time{
-			width: 100%;
-			font-size: 22rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
-			color: #BDBEC5;
-			margin-bottom: 30rpx;
-		}
-		.desc{
-			font-size: 28rpx;
-			font-family: Microsoft YaHei;
-			font-weight: 400;
-			color: #14151A;
-			line-height: 36rpx;
-		}
-	}
-	::v-deep img{
-		width:670rpx !important;
-		height:auto;
 	}
 	.bottom-box{
 		width: 100%;
@@ -232,14 +250,7 @@
 		}
 		
 	}
-	::v-deep h2{
-		line-height: 60rpx;
-		font-size: 30rpx;
-	}
-	::v-deep h3{
-		line-height: 60rpx;
-		font-size: 30rpx;
-	}
+	
 	.header-banner{
 		width: 100%;
 		background:#fff;
@@ -273,9 +284,9 @@
 			height:88rpx;
 			line-height: 88rpx;
 			font-size: 34rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #000000;
+			font-family: PingFang SC;
+			font-weight: 600;
+			color: #333333;
 		}
 		.icon-share{
 			width: 42rpx;
