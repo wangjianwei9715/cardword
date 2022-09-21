@@ -78,12 +78,12 @@
 		onLoad(query: any) {
 			this.reqNewData();
 			this.onEventUI("followAction", (res: any) => {
-				if (res && res.id) {
+				if (res && res.alias) {
 					let findItem = this.publisher.find((item: any) => {
-						return item.id == res.id;
+						return item.alias == res.alias;
 					});
 					if (findItem) {
-						findItem.follow = res.followed;
+						findItem.follow = res.follow;
 						findItem.fans = res.fans;
 					}
 				}

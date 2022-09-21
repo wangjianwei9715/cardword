@@ -156,7 +156,7 @@
 		followSuccess(event: any, item: any) {
 			item.followed = event.follow;
 			item.fans = event.follow ? item.fans + 1 : item.fans - 1;
-			uni.$emit('followAction', item)
+			// uni.$emit('followAction', item)
 		}
 		tabsChange(item: any, index: number) {
 			if(index == this.goodTabV2.index) return;

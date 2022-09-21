@@ -37,9 +37,9 @@
 		onLoad() {
 			this.getFollowList();
 			this.onEventUI('followAction', ((res: any) => {
-				if (!res || !res.id) return
+				if (!res || !res.alias) return
 				const findIndex = this.followList.findIndex((item: any) => {
-					return item.id == res.id
+					return item.alias == res.alias
 				})
 				//取关
 				if (!res.followed && findIndex >= 0) this.followList.splice(findIndex, 1);
