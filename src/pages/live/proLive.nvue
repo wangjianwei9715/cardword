@@ -36,8 +36,8 @@
       <text class="liveCountDown"
         v-if="maskCountDownTips!=''&&(typeof liveData.state!='undefined')">{{maskCountDownTips}}</text>
       <text class="playStart" v-if="isAnchor&&!finishLive" @click="startPreview">开始直播</text>
-      <!-- !isAnchor&&([0,1].includes(liveData.state)) -->
-      <template v-if="false">
+      <!-- -->
+      <template v-if="!isAnchor&&([0,1].includes(liveData.state))">
         <image v-if="!subscribed" src="../../static/live/playTips.png" class="subscribedTips" mode="scaleToFill" @click="onClickSubscribed"/>
         <image v-else src="../../static/live/noneTips.png" class="subscribedTips" mode="scaleToFill" @click="onClickSubscribed"/>
       </template>
