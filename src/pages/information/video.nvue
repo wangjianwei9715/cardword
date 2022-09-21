@@ -1,7 +1,9 @@
 <template>
 	<view class="container">
 		<view class="navigateBox" :style="{top:deleteHeight+'px'}">
-			<image class="navigateBack" @click="onClickBack" src="@/static/information/live_back.png"></image>
+			<view class="navigateBackBox" @click="onClickBack" >
+				<image class="navigateBack" src="@/static/information/live_back.png"></image>
+			</view>
 			<image class="navigateShare" @click="onClickShare" src="@/static/information/live_share.png"></image>
 		</view>
 		
@@ -15,35 +17,6 @@
 					<div :style="'width: '+ windowWidth +'px; height: '+ boxStyle.height +'px;'" @disappear="stop()">
 						<view v-if="Math.abs(k-i)<=1">
 							<view class="root">
-								<!-- 
-								具体视频参数可以参考官方文档
-								说明：
-								1.v-if很关键，这里主要是为了减少 dom 元素【这样才不会加载视频多了闪退】，
-									这里 Math.abs(k-i)<=5 也就是往上预加载 5 个视频，往下预加载 5 
-									个视频这样做的目的是为了让视频能够提前加载但是不播放，在真正滑到位
-									置的时候播放视频。
-									【2.0.1就是  1  Math.abs(k-i)<=1：请勿修改，记住，要不然会提前播放很多视频】
-									
-								2.要注意 @play="playIngs" 里面的 playIngs 方法，这个方法只是在视频播放的时候
-									起效果，我们控制视频播放不是用这个的。这个的主要作用是给视频封面的。我们先用
-									下面的视频封面盖住视频，等到视频播放的时候，我们不要急着直接播放，而是延迟一下下，
-									300-600ms左右。因为视频播放需要一点点时间，这点时间里会黑屏，这个时候我们就用
-									下面的封面盖住，这样用户就不会有从黑屏到有画面的感觉了，但是如果遇到视频太大，缓冲
-									时间太长，还是会出现短暂的黑屏，大部分是不会有黑屏的（这样盖住的话）。
-									
-									【更新记录：2.0版】已经解决了视频黑屏问题，和加载速度慢的情况，如果还是出现了黑屏，
-									意味着此时手滑动的速度，已经超过了视频加载的速度，对于这个问题，建议修改 preloadNumber 
-									变量，当它的值大一点的时候就会提前加载视频，这样用户在滑到视频的时候就不会有停顿感了
-									【注意】：老用户在 video 中增加和修改 
-									（1）:muted="!item.playIng"，
-									（2）@timeupdate="timeupdate($event,i)"
-									（3）把 199 行注释了，
-									（4）:id="item.articleCode"，
-									（5）修改：uni.createVideoContext(this.dataList[this.k].articleCode + '' + this.k,this) 为
-										uni.createVideoContext(this.dataList[this.k].articleCode,this)
-									（6）在 timeupdate 方法里加入，if(index == this.k){把里面的加一个总的判断}
-								3.其他的下面有详解
-								-->
 								<video
 									:ref="'item'+i"
 									:id="item.articleCode"
@@ -63,17 +36,13 @@
 									@timeupdate="timeupdate($event,i)"
 								></video>
 								<!-- 这里是封面 -->
-								<image
+								<!-- <image
 								v-if="!item.playIng"
 									:src="item.video_url+'?x-oss-process=video/snapshot,t_100,f_jpg'" 
 									:mode="mode"
 									:style="'width: '+ windowWidth +'px; height: '+ (wHeight - deleteHeight) +'px; position: absolute;'"
-								></image>
-								<!-- 
-								mode: 图片裁剪、缩放的模式
-								mode 有 14 种模式，其中 5 种是缩放模式，9 种是裁剪模式。
-								https://uniapp.dcloud.io/component/image
-								-->
+								></image> -->
+								
 							</view>
 							<!-- 直接用 view 就行了，一样是可以覆盖原生组件的 -->
 							<!-- 这个是暂停时出现的图标 -->
@@ -82,7 +51,7 @@
 							</view>
 							<!-- 最底下的文字部分 -->
 							<view class="content" v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false">
-								<text class="userName" :style="'width: '+ (windowWidth - 90) +'px;'">{{item.title}}{{item.state}}</text><!-- i={{i}} -->
+								<text class="userName" :style="'width: '+ (windowWidth - 90) +'px;'">{{item.title}}</text><!-- i={{i}} -->
 								<text class="words" :style="'width: '+ (windowWidth - 90) +'px;'" >{{decodeURIComponent(item.content)}}</text><!-- k={{k}} -->
 							</view>
 							
@@ -109,12 +78,13 @@
 			</view>
 		</view>
 		
-		<nvueShare :visible.sync='shareShow' :shareData='shareData'></nvueShare>
+		<nvueShare :visible.sync='shareShow' :shareData='shareData' ></nvueShare>
+		<nTabbar :data="dataList[k]" :commentNum="dataList[k].comment" :deleteHeight="deleteHeight" :show="true"></nTabbar>
 	</view>
 </template>
 <script>
-	// import userList from './data.js'//这个是假数据
 	import nvueShare from "../live/components/nvueShare.nvue";
+	import nTabbar from "./components/nTabbar.nvue";
 	const app = getApp().globalData.app;
 	const shareData = {
 		shareUrl: "",
@@ -138,19 +108,14 @@
 					'width': 0,
 				},
 				k:0,//默认为0🌟💗
-				playIngIds:[],//正在播放的视频id列队，列队用于处理滑动过快导致的跳频问题🌟💗
-				ready:false,//可忽略
 				isDragging: false,//false代表停止滑动🌟💗
 				windowWidth: 0,//获取屏幕宽度🌟💗
 				windowHeight: 0,
-				dex: [0,0],//用于判断是上滑还是下滑，第一个存旧值，第二个存新值【目前在1.0.7已经废弃】
-				currents: 0,//用于左右滑动，0代表视频界面，1代表右滑界面🌟💗
 				platform: '',//用于获取操作系统：ios、android🌟💗
 				playIng: false,//用于视频初始化时是否播放，默认不播放🌟💗
 				videoTime: '',//视频总时长，这个主要用来截取时间数值💗
 				videoTimes: '',//视频时长，用这个来获取时间值，例如：00:30这个时间值💗
 				changeTime: '',//显示滑动进度条时变化的时间💗
-				isShowimage: false,//是否显示封面【1.0.4已废弃，但是意思需要记住】
 				currenttimes: 0,//当前时间💗
 				isShowProgressBarTime: false,//是否拖动进度条，如果拖动（true）则显示进度条时间，否则不显示（false）【1.0.4已废弃，但是意思需要记住】
 				ProgressBarOpacity: 0.7,//进度条不拖动时的默认值，就是透明的💗
@@ -172,43 +137,31 @@
 			}
         },
 		components:{
-			nvueShare
+			nvueShare,
+			nTabbar
 		},
 		watch:{
 			async k(k,old_k){//监听 k 值的变化，可以控制视频的播放与暂停
-				console.log(k)
+				
 				this.dataList[old_k].state = 'stop'//如果是被滑走的视频，就停止播放
 				this.dataList[old_k].playIng = false//如果视频暂停，就加载封面
 				this.dataList[old_k].isplay = true
-				uni.createVideoContext(this.dataList[old_k].articleCode,this).play()
-				clearTimeout(this.oldVideo)
-				this.oldVideo = await setTimeout(()=>{
-					uni.createVideoContext(this.dataList[old_k].articleCode,this).seek(0)
-					uni.createVideoContext(this.dataList[old_k].articleCode,this).pause()
-					console.log('预留第' + (old_k + 1) + '个视频：' + this.dataList[old_k].articleCode)
-				},500)
-				// 2.0版本已经去掉了下面这一句，视频不用暂停，只需要把声音禁止就行
-				// uni.createVideoContext(this.dataList[old_k].articleCode + '' + old_k,this).stop()//如果视频暂停，那么旧视频停止，这里的this.dataList[old_k].articleCode + '' + old_k，后面加 old_k 是为了每一个视频的 id 值不同，这样就可以大程度的避免串音问题
+				this.dataList[k].isplay = false
 				uni.createVideoContext(this.dataList[k].articleCode,this).play();
+				setTimeout(()=>{
+					uni.createVideoContext(this.dataList[old_k].articleCode,this).pause()
+				},200)
 				console.log('已经暂停 --> 第' + (old_k + 1) + '个视频～')//提示
-				clearTimeout(this.voice)
-				this.voice = await setTimeout(()=>{
-					this.dataList[k].isplay = false
-				},300)
-				await setTimeout(()=>{
-					this.dataList[k].playIng = true
-				},850)
+				
 				//【2.0版本更新内容】- start
-				// var p = k+1
-				// await setTimeout( async ()=>{
-				// 	uni.createVideoContext(this.dataList[p].articleCode,this).play()
-				// 	clearTimeout(this.timeout)
-				// 	this.timeout = await setTimeout(()=>{
-				// 		uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
-				// 		uni.createVideoContext(this.dataList[p].articleCode,this).pause()
-				// 		console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
-				// 	},1500)
-				// },20)
+				var p = k+1
+				await setTimeout( async ()=>{
+					uni.createVideoContext(this.dataList[p].articleCode,this).play()
+					setTimeout(()=>{
+						uni.createVideoContext(this.dataList[p].articleCode,this).pause()
+						console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
+					},500)
+				},20)
 				//【2.0版本更新内容】- end
 				//【此处处理进度条卡住的问题】
 				if(uni.getSystemInfoSync().platform !== 'ios'){
@@ -240,7 +193,7 @@
 			} else {
 				this.deleteHeight = 0
 			}
-			
+			console.log('deleteHeight=',this.deleteHeight);
 			this.windowWidth = uni.getSystemInfoSync().screenWidth//获取屏幕宽度
 			this.boxStyle.width = this.windowWidth + 'px'//给宽度加px
 			this.wHeight = uni.getSystemInfoSync().screenHeight;//获取屏幕高度
@@ -268,7 +221,6 @@
 				
 			},
 			touchstart(event){
-				this.dataList[this.k].isShowimage = true //刚触摸的时候就要显示预览视频图片了
 				this.dataList[this.k].isShowProgressBarTime = true //显示时间线
 				this.ProgressBarOpacity = 1 //让滑块显示起来更明显一点
 				this.dotWidth = 10 //让点显示起来更明显一点
@@ -280,7 +232,6 @@
 					uni.createVideoContext(this.dataList[this.k].articleCode,this).play()
 				}
 				this.dataList[this.k].isShowProgressBarTime = false //触摸结束后，隐藏时间线
-				this.dataList[this.k].isShowimage = false //触摸结束后，隐藏时间预览
 				this.ProgressBarOpacity = 0.5 //隐藏起来进度条，不那么明显了
 				this.dotWidth = 0 //隐藏起来进度条，不那么明显了
 			},
@@ -339,8 +290,7 @@
 				return `${middle>9?middle:middle}:${theTime>9?theTime:theTime}`;
 			},
 			playIngs(index) {
-				// console.log(index+'视频开始播放')
-				// this.dataList[index].playIng = true
+				
 			},
 			stop(){
 				// console.log('stop')
@@ -373,42 +323,36 @@
 			},
 			get(){
 				app.http.Get(`dataApi/article/detail/${this.code}`,{},(res)=>{
-					const data = [{...res.data,isShowProgressBarTime:false,state:'play'}]
+					const data = [{...res.data,isShowProgressBarTime:false,state:'play',isplay:false}]
 					this.dataList = [...data]
 					setTimeout(()=>{
-						//这里的延迟是为了避免执行时间太快而直接跳过执行的 bug
 						uni.createVideoContext(this.dataList[0].articleCode,this).seek(0)
 						uni.createVideoContext(this.dataList[0].articleCode,this).play()
 					},200)
-					this.dataList[0].isplay = false
-					setTimeout(()=>{
-						this.dataList[0].playIng = true
-					},500)
 					this.getMore()
 				})
 			},
 			getMore(){
 				if(this.isFetchEnd) return;
-				app.http.Get(`dataApi/article/video/detail/list/${this.code}`,{fetchSize:20,tp:100},(res)=>{
+				app.http.Get(`dataApi/article/video/detail/list/${this.code}`,{fetchSize:20,tp:100},async (res)=>{
 					this.isFetchEnd = res.isFetchEnd;
-					const list = res.list.map((x)=>{
-						return {...x,isShowProgressBarTime:false,state:'pause'}
+					const list = await res.list.map((x)=>{
+						return {...x,isShowProgressBarTime:false,state:'pause',isplay:true}
 					})
 					var p = this.dataList.length;
-					this.dataList = [...this.dataList,...list];
+					this.dataList = await [...this.dataList,...list];
 					setTimeout(()=>{
 						uni.createVideoContext(this.dataList[p].articleCode,this).play()
 						setTimeout(()=>{
 							uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
 							uni.createVideoContext(this.dataList[p].articleCode,this).pause()
 							console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
-						},800)
+						},500)
 					},50)
 				})
 			},
 			//点击播放&&暂停
 			tapVideoHover(item){
-				this.dataList[this.k].isShowimage = false
 				this.dataList[this.k].isShowProgressBarTime = false
 				this.ProgressBarOpacity = 0.5
 				this.dotWidth = 0
@@ -439,7 +383,15 @@
 		flex-direction: row;
 		justify-content: space-between;
 		z-index: 999;
-		padding:0 33rpx;
+		padding:0 33rpx 0 13rpx;
+	}
+	.navigateBackBox{
+		width: 61rpx;
+		height:61rpx;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		justify-content: center;
 	}
 	.navigateBack{
 		width: 21rpx;
