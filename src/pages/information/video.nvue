@@ -51,40 +51,45 @@
 							</view>
 							<!-- 最底下的文字部分 -->
 							<view class="content" v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false">
+								<view class="descBox">
+									<image style="width:50rpx;height:50rpx;border-radius:50%" :src="decodeURIComponent(item.author_logo)" mode="aspectFill"/>
+									<text class="descAuthor">{{item.author}}</text>
+								</view>
 								<text class="userName" :style="'width: '+ (windowWidth - 90) +'px;'">{{item.title}}</text><!-- i={{i}} -->
-								<text class="words" :style="'width: '+ (windowWidth - 90) +'px;'" >{{decodeURIComponent(item.content)}}</text><!-- k={{k}} -->
+								<text class="words" :style="'width: '+ (windowWidth - 90) +'px;'" >{{replaceText(decodeURIComponent(item.content))}}</text><!-- k={{k}} -->
 							</view>
 							
 						</view>
 					</div>
 				</cell>
 			</list>
-			<!-- 1.注意：进度条这类拖拽的东西不能放进block\cell这些循环体中的，要不然touchmove方法会捕捉有误 -->
-			<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'position: absolute; bottom: '+ (ProgressBarBottom + this.windowWidth*0.2)/2 +'px; left: '+ (windowWidth*2 - this.windowWidth*1.35)/2 +'px;'">
-				<text style="font-size: 22px; font-weight: bold; color: #F1F1F1;">{{changeTime}} / {{videoTimes}}</text>
-			</view>
-			<!-- 这里就是进度条了：纯手工进度条，调整位置的话就把他们的 bottom 改成一下就行了 -->
-			<view v-if="isDragging == false" @touchmove="touchmove" @touchend="touchend" @touchstart="touchstart" style="position: absolute; bottom: 0; left: 0;">
-				<!-- 1.这一步必须加，为了适配低端机型 -->
-				<text :style="'width: '+ windowWidth +'px; opacity: 0;'">.</text>
-				<!-- 2.这是未加载的时的右边的灰色部分 -->
-				<view :style="'width: '+ windowWidth +'px; height: 4upx; background-color: #C8C7CC; position: absolute; bottom: '+ ProgressBarBottom +'upx; opacity: '+ ProgressBarOpacity +';'"></view>
-				<!-- 3.这里我采用的分离式办法：就是让滑动样式和不滑动的样式分开，这样相互不干扰，可以避免进度条闪动的问题 -->
-				<!-- 4.注意：isShowProgressBarTime 加入了返回数据中 -->
-				<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false" :style="'width: '+ (currentPosition) +'px; height: 4upx; background-color: #FFFFFF; position: absolute; bottom: '+ ProgressBarBottom +'upx; left: 0; opacity: '+ (ProgressBarOpacity - 0.1) +';'"></view>
-				<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'width: '+ (currentPositions) +'px; height: 8upx; background-color: #FFFFFF; position: absolute; bottom: '+ ProgressBarBottom +'upx; left: 0; opacity: '+ (ProgressBarOpacity + 0.05) +';'"></view>
-				<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false" :style="'width: 4px; height: 4px; background-color: #FFFFFF; border-radius: 10px; position: absolute; bottom: '+ (ProgressBarBottom - 2) +'upx; left: '+ (currentPosition) +'px; opacity: '+ ProgressBarOpacity +';'"></view>
-				<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'width: '+ dotWidth +'px; height: '+ dotWidth +'px; background-color: #FFFFFF; border-radius: 10px; position: absolute; bottom: '+ (ProgressBarBottom - 5) +'upx; left: '+ (currentPositions - 5) +'px; opacity: '+ ProgressBarOpacity +';'"></view>
-			</view>
 		</view>
-		
+		<nTabbar :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" @comment="onReply"></nTabbar>
+		<!-- 这里就是进度条了：纯手工进度条，调整位置的话就把他们的 bottom 改成一下就行了 -->
+		<!-- 1.注意：进度条这类拖拽的东西不能放进block\cell这些循环体中的，要不然touchmove方法会捕捉有误 -->
+		<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'position: absolute; bottom: '+ (proBarBottom + 10) +'px; left: '+ (windowWidth*2 - this.windowWidth*1.35)/2 +'px;'">
+			<text style="font-size: 22px; font-weight: bold; color: #F1F1F1;">{{changeTime}} / {{videoTimes}}</text>
+		</view>
+		<view v-if="isDragging == false" @touchmove="touchmove" @touchend="touchend" @touchstart="touchstart" style="position: fixed; left: 0;z-index:9" :style="{bottom:proBarBottom+'px'}">
+			<!-- 1.这一步必须加，为了适配低端机型 -->
+			<text :style="'width: '+ windowWidth +'px; opacity: 0;'">.</text>
+			<!-- 2.这是未加载的时的右边的灰色部分 -->
+			<view :style="'width: '+ windowWidth +'px; height: 4upx; background-color: #C8C7CC; position: absolute; bottom: '+ ProgressBarBottom +'upx; opacity: '+ ProgressBarOpacity +';'"></view>
+			<!-- 3.这里我采用的分离式办法：就是让滑动样式和不滑动的样式分开，这样相互不干扰，可以避免进度条闪动的问题 -->
+			<!-- 4.注意：isShowProgressBarTime 加入了返回数据中 -->
+			<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false" :style="'width: '+ (currentPosition) +'px; height: 4upx; background-color: #FFFFFF; position: absolute; bottom: '+ ProgressBarBottom +'upx; left: 0; opacity: '+ (ProgressBarOpacity - 0.1) +';'"></view>
+			<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'width: '+ (currentPositions) +'px; height: 8upx; background-color: #FFFFFF; position: absolute; bottom: '+ ProgressBarBottom +'upx; left: 0; opacity: '+ (ProgressBarOpacity + 0.05) +';'"></view>
+			<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false" :style="'width: 4px; height: 4px; background-color: #FFFFFF; border-radius: 10px; position: absolute; bottom: '+ (ProgressBarBottom - 2) +'upx; left: '+ (currentPosition) +'px; opacity: '+ ProgressBarOpacity +';'"></view>
+			<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'width: '+ dotWidth +'px; height: '+ dotWidth +'px; background-color: #FFFFFF; border-radius: 10px; position: absolute; bottom: '+ (ProgressBarBottom - 5) +'upx; left: '+ (currentPositions - 5) +'px; opacity: '+ ProgressBarOpacity +';'"></view>
+		</view>
+		<nTextarea :focus="chatData.focus" :replyName="chatData.replyName" @chatConfirm="onChatConfirm" @blur="onBlur"></nTextarea>
 		<nvueShare :visible.sync='shareShow' :shareData='shareData' ></nvueShare>
-		<nTabbar :data="dataList[k]" :commentNum="dataList[k].comment" :deleteHeight="deleteHeight" :show="true"></nTabbar>
 	</view>
 </template>
 <script>
 	import nvueShare from "../live/components/nvueShare.nvue";
 	import nTabbar from "./components/nTabbar.nvue";
+	import nTextarea from "./components/nTextarea.nvue";
 	const app = getApp().globalData.app;
 	const shareData = {
 		shareUrl: "",
@@ -92,6 +97,12 @@
 		summary: "",
 		thumb: ""
 	};
+	const chat = {
+		replyId:0,
+		replyName:'',
+		fatherId:0,
+		focus:false
+	}
 	export default {
         data() {
 			return {
@@ -99,6 +110,8 @@
 				shareShow: false,
 				shareData:{...shareData},
 				isFetchEnd:false,
+				proBarBottom:0,
+				chatData:{...chat},
 				//下面打🌟号的是必须要的基础字段
 				//下面打💗号的是拥有滑动条的必须字段
 				dataList:[],//用于数据循环的列表🌟💗
@@ -138,7 +151,8 @@
         },
 		components:{
 			nvueShare,
-			nTabbar
+			nTabbar,
+			nTextarea
 		},
 		watch:{
 			async k(k,old_k){//监听 k 值的变化，可以控制视频的播放与暂停
@@ -193,16 +207,32 @@
 			} else {
 				this.deleteHeight = 0
 			}
-			console.log('deleteHeight=',this.deleteHeight);
 			this.windowWidth = uni.getSystemInfoSync().screenWidth//获取屏幕宽度
 			this.boxStyle.width = this.windowWidth + 'px'//给宽度加px
 			this.wHeight = uni.getSystemInfoSync().screenHeight;//获取屏幕高度
+			this.proBarBottom=uni.upx2px(100) + this.deleteHeight
 			this.boxStyle.height = this.wHeight - this.deleteHeight;//改变视频高度
 			this.get()//这一步，加载视频数据
+
+			uni.$on("informationChange", (res) => {
+				if (res && res.articleCode) {
+					let findItem = this.dataList.find((item) => {
+						return item.articleCode == res.articleCode;
+					});
+					if (findItem) {
+						findItem.isLikes = res.isLikes;
+						findItem.likes = res.likes;
+						findItem.comment = res.comment
+					}
+				}
+			});
 		},
 		onReady() {
 		},
         methods: {
+			replaceText(text){
+				return text.replace(/\<p\>/g, '').replace(/\<\/p\>/g,'')
+			},
 			onClickBack(){
 				uni.navigateBack({ delta: 1 })
 			},
@@ -334,7 +364,7 @@
 			},
 			getMore(){
 				if(this.isFetchEnd) return;
-				app.http.Get(`dataApi/article/video/detail/list/${this.code}`,{fetchSize:20,tp:100},async (res)=>{
+				app.http.Get(`dataApi/article/video/detail/list/${this.dataList[this.k].articleCode}`,{fetchSize:10,tp:100},async (res)=>{
 					this.isFetchEnd = res.isFetchEnd;
 					const list = await res.list.map((x)=>{
 						return {...x,isShowProgressBarTime:false,state:'pause',isplay:true}
@@ -366,6 +396,44 @@
 			
 				console.log(item);
 			},
+			// 开始回复
+			onReply(res){
+				app.platform.hasLoginToken(()=>{
+					this.chatData = {
+						replyId:res?res.replyId:0,
+						replyName:res?res.replyName:'',
+						fatherId:res?res.fatherId:0,
+						focus:true
+					}
+				})
+			},
+			onBlur(){
+				this.chatData = {...chat}
+			},
+			// 提交评论或回复
+			onChatConfirm(content){
+				console.log('评论内容：',content);
+				app.platform.hasLoginToken(()=>{
+					const data = this.chatData;
+					const kData = this.dataList[this.k]
+					const url = data.replyId == 0 ? `article/comment/issue/${kData.articleCode}` : `article/reply/comment/${data.replyId}`;
+					app.http.Post(url,{content},(res)=>{
+						kData.comment++;
+						// if(data.replyId==0){
+						// 	this.commentsList.unshift(res.data)
+						// }else{
+						// 	let findItem = this.commentsList.find((item: any) => {
+						// 		return item.id == data.fatherId;
+						// 	});
+						// 	findItem.lower.unshift(res.data)
+						// }
+						this.chatData = {...chat}
+						uni.showToast({ title:'评论成功', icon:'none' })
+						uni.$emit('informationChange', kData)
+						console.log(res)
+					})
+				})
+			}
         }
     }
 </script>
@@ -457,25 +525,43 @@
 		color: red;
 	}
 	.content{
-	  width: 720rpx;
-	  z-index: 99;
-	  position: absolute;
-	  bottom: 30px;
-	  /* justify-content: center; */
-	  padding: 15rpx;
-	  flex-direction: column;
-	  justify-content: flex-start;
-	  color: #ffffff;
+		width: 540rpx;
+		z-index: 99;
+		position: absolute;
+		bottom: 160rpx;
+		/* justify-content: center; */
+		left: 44rpx;
+		flex-direction: column;
+		justify-content: flex-start;
+		color: #ffffff;
+	}
+	.descBox{
+		width: 540rpx;
+		height:50rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+	}
+	.descAuthor{
+		font-size: 27rpx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+		margin-left: 14rpx;
 	}
 	.userName {
-	  font-size: 30rpx;
-	  color: #ffffff;
-	  margin-top: 80upx;
+		font-size: 25rpx;
+		color: #ffffff;
+		margin-top: 18rpx;
+		line-height: 38rpx;
 	}
 	.words {
-	  margin-top: 10rpx;
-	  font-size: 30rpx;
-	  color: #ffffff;
+		font-size: 25rpx;
+		color: #ffffff;
+		line-height: 38rpx;
+		text-overflow: ellipsis; /* 超出部分省略号 */
+    	lines:2; /* 超出固定行数显示省略号 */
 	}
 	.root{
 		background-color: #000000;
