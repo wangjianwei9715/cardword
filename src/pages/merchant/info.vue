@@ -9,12 +9,13 @@
                 <u-icon name="arrow-left" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="20" @click="goBack">
                 </u-icon>
                 <view class="pageTitle" :style="{opacity:scrollTopPercent}">商家信息</view>
-                <u-icon name="camera" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="26"
+                <u-icon name="camera-fill" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="26"
                     @click="menuShow=true"></u-icon>
             </view>
         </view>
         <image class="merchantBanner" @click="menuShow=true" :src="parsePic(decodeURIComponent(merchantInfo.back_img))"
             mode="aspectFill" />
+            <view class="mask"></view>
         <view class="infoContainer">
             <view class="infoItem uni-flex">
                 <view class="infoItem-name">店铺名</view>
@@ -226,7 +227,14 @@
         width: 750rpx;
         height: 353rpx;
     }
-
+    .mask{
+        background-color: rgba(0,0,0,.35);
+        width: 750rpx;
+        height: 353rpx;
+        position: absolute;
+        top:0;
+        z-index: 99;
+    }
     .infoContainer {
         width: 750rpx;
         box-sizing: border-box;
