@@ -589,6 +589,9 @@
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
 						"app-plus": {
+							"bounce":"none",
+							"softinputMode": "adjustPan",
+							"softinputNavBar": "none",
 							"titleNView": false,
 							"background":"#000000"
 						}
