@@ -138,7 +138,9 @@
 				uuid:app.platform.deviceID,
 				os:app.platform.systemInfo.platform,
 				device:app.platform.systemInfo.model,
+				//#ifdef APP-PLUS
 				channel:plus.runtime.channel?plus.runtime.channel:''
+				//#endif
 			};
 			
 			if(this.codeLogin){
@@ -178,7 +180,9 @@
 									uuid:app.platform.deviceID,
 									os:app.platform.systemInfo.platform,
 									device:app.platform.systemInfo.brand+app.platform.systemInfo.model,
+									//#ifdef APP-PLUS
 									channel:plus.runtime.channel?plus.runtime.channel:''
+									//#endif
 								}
 								this.postLogin('user/login/wechat/app',params)
 							},
