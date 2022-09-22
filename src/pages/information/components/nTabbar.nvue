@@ -67,7 +67,7 @@
 		},
 		methods: {
 			onClickChat(){
-				this.$emit('chat')
+				this.$emit('comment')
 			},
 			setTabbarNum(data){
 				let tab = {

@@ -2,7 +2,7 @@
 	<view class="content">
 		
 		<view class="input-box" v-if="focus" :style="{transform:`translateY(-${textareaData.height}px)`}">
-			<textarea class="input" v-model="textareaData.val" :placeholder="replyName!=''?'回复'+replyName:'说点什么...'" :focus="focus" :adjust-position="false" :show-confirm-bar="false" @blur="onBlur" @keyboardheightchange="getHeight"/>
+			<textarea class="input" v-model="textareaData.val" :placeholder="replyName!=''?'回复'+replyName:'说点什么...'" :focus="focus" :adjust-position="false" :show-confirm-bar="false" @blur="onBlur" @focus="getHeight"/>
 			<text class="btn" @click="onClickChatConfirm">发送</text>
 		</view>
 	</view>
@@ -69,6 +69,11 @@
 		justify-content: space-between;
 		padding-left:40rpx;
 		padding-right: 40rpx;
+		transition-property: transform;
+		transition-duration: 0.25s;
+		transition-delay: 0s;
+		justify-content: space-between;
+		transition-timing-function: linear;
 	}
 	.input{
 		width: 520rpx;

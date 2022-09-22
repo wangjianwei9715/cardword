@@ -1,0 +1,31 @@
+<template>
+	<!-- 底部详情 -->
+	<view >
+		
+	</view>
+</template>
+<script>
+	const app = getApp().globalData.app;
+	export default {
+		props: {
+			commentNum: {
+				type: Number,
+				default: 0
+			},
+		},
+		watch: {
+		},
+		mounted() {
+		},
+		data() {
+			return {
+			};
+		},
+		methods: {
+		}
+	};
+</script>
+
+<style lang="scss">
+	
+</style>
