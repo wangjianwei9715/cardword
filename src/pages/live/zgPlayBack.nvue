@@ -230,6 +230,10 @@
 
       },
       pageJump(url, type = "navigateTo") {
+        if(url.indexOf('/pages/goods/goods_details')!=-1){
+          app.navigateTo.goGoodsDetails(this.goodCode,'&source=livePage')
+          return
+        }
         uni[type]({
           url,
           fail: err => {

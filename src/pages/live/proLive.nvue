@@ -739,6 +739,10 @@ color: #E6A44F;">下次加油！</text>
         // if (this.needSendH5Up) this.$emit("liftChat", height);
       },
       pageJump(url, type = "navigateTo") {
+        if(url.indexOf('/pages/goods/goods_details')!=-1){
+          app.navigateTo.goGoodsDetails(this.liveData.goodCode,'&source=livePage')
+          return
+        }
         uni[type]({
           url,
           fail: err => {
