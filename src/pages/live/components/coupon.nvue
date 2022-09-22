@@ -73,17 +73,19 @@ export default {
     goUse(item) {
       if (item.tp == 2 && item.goodCode) {
         console.log("跳转商品页");
-        this.$emit(
-          "pageJump",
-          "/pages/goods/goods_details?id=" + item.goodCode
-        );
+        // this.$emit(
+        //   "pageJump",
+        //   "/pages/goods/goods_details?id=" + item.goodCode
+        // );
+        app.navigateTo.goGoodsDetails(item.goodCode,'&source=livePage')
         return;
       }
       console.log("跳转商家页");
-      this.$emit(
-        "pageJump",
-        "/pages/userinfo/merchant_shopsV2?alias=" + this.alias
-      );
+      // this.$emit(
+      //   "pageJump",
+      //   "/pages/userinfo/merchant_shopsV2?alias=" + this.alias
+      // );
+      app.platform.goMerchantPage(this.alias)
     },
     parseTypeText(item) {
       const { minUseAmount, amount } = item;
