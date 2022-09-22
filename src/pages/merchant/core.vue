@@ -1,92 +1,106 @@
 <template>
-    <view class='content' style="width:750rpx; overflow-x: hidden">
-        <view class="pageTopContainer">
-            <view class="status" :style="{paddingTop:app.statusBarHeight*2+'rpx',backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
-            </view>
-            <view class="pageTop" ref="pageTop" id="pageTop" :style="{backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
-                <u-icon name="arrow-left" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="22" @click="goBack">
-                </u-icon>
-                <view class="pageTitle" :style="{opacity:scrollTopPercent}">商家中心</view>
-                <u-icon name="share-square" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="28" @click="onClickShare"></u-icon>
-            </view>
+  <view class='content' style="width:750rpx; overflow-x: hidden">
+    <view class="pageTopContainer">
+      <view class="status" :style="{paddingTop:app.statusBarHeight*2+'rpx',backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
+      </view>
+      <view class="pageTop" ref="pageTop" id="pageTop" :style="{backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
+        <view class="whiteBack flexCenter" @click="goBack">
+          <image
+          style="width:20rpx;height:36rpx"
+            src="../../static/merchant/back.png"
+            mode="scaleToFill"
+          />
         </view>
-        <image :src='parsePic(decodeURIComponent(merchantInfo.back_img))' @click="previewImage([decodeURIComponent(merchantInfo.back_img)],0,'')" mode='aspectFill' class="merchantBanner" />
-        <view class="merchantInfoContainer">
-            <view class="infoTop uni-flex">
-                <image :src="parsePic(decodeURIComponent(merchantInfo.logo))" mode="aspectFill" class="info-avatar" />
-                <view class="info-message">
-                    <view class="info-name">{{merchantInfo.name}}</view>
-                    <view class="info-introduction">{{merchantInfo.region}} · {{merchantInfo.groupGoodNum}}拼成 · {{merchantInfo.fans}}粉丝
-                    </view>
-                </view>
-                <view class="rightEdit flexCenter" v-if="isMerchant" @click="pageJump('/pages/merchant/info')">编辑资料
-                </view>
-                <followButton :follow="merchantInfo.followed" :width="127" v-else @handleSuccess="($event)=>{merchantInfo.followed=$event.follow,merchantInfo.fans=$event.fans}" :height="52" :fontSize="29" :newMerchantPage="true" :followID="alias"></followButton>
-                <!-- <view class="followBtton flexCenter" :class="{isFollo:merchantInfo.followed}" v-if="!isMerchant" @click="pageJump('/pages/merchant/info')">关注
+        <!-- <u-icon name="arrow-left" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="22" @click="goBack">
+                </u-icon> -->
+        <view class="pageTitle" :style="{opacity:scrollTopPercent}">商家中心</view>
+        <view class="whiteBack flexCenter" @click="onClickShare">
+          <image
+          style="width:33rpx;height:33rpx" 
+            src="../../static/merchant/share.png"
+            mode="scaleToFill"
+          />
+        </view>
+        <!-- <u-icon name="share-square" :color="scrollTopPercent>0.6?'#202124':'#fff'" size="28" @click="onClickShare"></u-icon> -->
+      </view>
+    </view>
+    <image :src='parsePic(decodeURIComponent(merchantInfo.back_img))' @click="previewImage([decodeURIComponent(merchantInfo.back_img)],0,'')" mode='aspectFill' class="merchantBanner" />
+    <view class="merchantInfoContainer">
+      <view class="infoTop uni-flex">
+        <image :src="parsePic(decodeURIComponent(merchantInfo.logo))" mode="aspectFill" class="info-avatar" />
+        <view class="info-message">
+          <view class="info-name">{{merchantInfo.name}}</view>
+          <view class="info-introduction">{{merchantInfo.region}} · {{merchantInfo.groupGoodNum}}拼成 · {{merchantInfo.fans}}粉丝
+          </view>
+        </view>
+        <view class="rightEdit flexCenter" v-if="isMerchant" @click="pageJump('/pages/merchant/info')">编辑资料
+        </view>
+        <followButton :follow="merchantInfo.followed" :width="127" v-else @handleSuccess="($event)=>{merchantInfo.followed=$event.follow,merchantInfo.fans=$event.fans}" :height="52" :fontSize="29" :newMerchantPage="true" :followID="alias"></followButton>
+        <!-- <view class="followBtton flexCenter" :class="{isFollo:merchantInfo.followed}" v-if="!isMerchant" @click="pageJump('/pages/merchant/info')">关注
                 </view> -->
-            </view>
-            <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr?merchantInfo.brief_intr:'欢迎来到我的店铺!'}}</view>
+      </view>
+      <view class="merchant-introduction">店铺简介：{{merchantInfo.brief_intr?merchantInfo.brief_intr:'欢迎来到我的店铺!'}}</view>
+    </view>
+    <view class="couponContainer uni-flex" v-if="!isMerchant&&couponBrief&&couponBrief.length">
+      <view class="leftCoupon uni-flex">
+        <view class="leftCoupon-item" style="margin-left: 14rpx;" v-for="(item,index) in couponBrief.length==1?[...couponBrief,...couponBrief]:couponBrief" :key="index" :style="{marginLeft:index==0?`14rpx`:`60rpx`}">
+          <view class="price">
+            <text style="font-size: 25rpx;">￥</text>
+            <text style="font-weight: bold;">{{item.amount}}</text>
+          </view>
+          <view class="couponRight">
+            <view class="manj">{{item.minUseAmount==0?"无门槛券":`满${item.minUseAmount}元可用`}}</view>
+            <view class="type">{{item.tp==1?'指定商品':"指定店铺"}}</view>
+          </view>
         </view>
-        <view class="couponContainer uni-flex" v-if="!isMerchant&&couponBrief&&couponBrief.length">
-            <view class="leftCoupon uni-flex">
-                <view class="leftCoupon-item" style="margin-left: 14rpx;" v-for="(item,index) in couponBrief.length==1?[...couponBrief,...couponBrief]:couponBrief" :key="index" :style="{marginLeft:index==0?`14rpx`:`60rpx`}">
-                    <view class="price">
-                        <text style="font-size: 25rpx;">￥</text>
-                        <text style="font-weight: bold;">{{item.amount}}</text>
-                    </view>
-                    <view class="couponRight">
-                        <view class="manj">{{item.minUseAmount==0?"无门槛券":`满${item.minUseAmount}元可用`}}</view>
-                        <view class="type">{{item.tp==1?'指定商品':"指定店铺"}}</view>
-                    </view>
-                </view>
-            </view>
-            <view class="rightReceive flexCenter" @click="onClickGetMore">
-                领取<br>更多
-            </view>
-            <!-- <view class="coupon-receive" @click="pageJump('/pages/merchant/couponManage')">领取更多</view> -->
+      </view>
+      <view class="rightReceive flexCenter" @click="onClickGetMore">
+        领取<br>更多
+      </view>
+      <!-- <view class="coupon-receive" @click="pageJump('/pages/merchant/couponManage')">领取更多</view> -->
+    </view>
+    <view class="ruleContainer" v-if="isMerchant">
+      <view class="ruleItem" v-for="(item,index) in merchantRule" :key="index" @click="onClickRule(item)">
+        <view class="rule-left flexCenter">
+          <image class="rule-icon" :src="item.icon" :style="{width:item.width+'rpx'}" mode="widthFix" />
         </view>
-        <view class="ruleContainer" v-if="isMerchant">
-            <view class="ruleItem" v-for="(item,index) in merchantRule" :key="index" @click="onClickRule(item)">
-                <view class="rule-left flexCenter">
-                    <image class="rule-icon" :src="item.icon" :style="{width:item.width+'rpx'}" mode="widthFix" />
-                </view>
-                <view class="rule-right">
-                    <view class="rule-name">{{item.name}}</view>
-                    <view class="rule-tips">{{item.tipsText}}</view>
-                </view>
-            </view>
+        <view class="rule-right">
+          <view class="rule-name">{{item.name}}</view>
+          <view class="rule-tips">{{item.tipsText}}</view>
         </view>
-        <view class="moreContainer" :style="{marginTop:(isMerchant?27:68)+'rpx'}" @click="pageJump('/pages/merchant/niceTime?alias='+alias)">
-            <view class="more-left">店铺精彩时刻</view>
-            <view class="more-right">更多</view>
-        </view>
-        <view class="niceTimeContainer" v-if='niceTimeFinish'>
-            <swiper indicator-dots autoplay circular :interval="5*1000" indicator-active-color="#333333" indicator-color="#CAC6C6" style="width:100%;height:100%" v-if="niceTimeList&&niceTimeList.length">
-                <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index" style="display: flex;flex-wrap: nowrap;">
-                    <image v-for="(sItem,sNndex) in item" class="niceTimeImage" :style="{marginRight:sNndex==2?0:'24rpx'}" :key="'sImg'+sNndex" :src="filterImage(decodeURIComponent(sItem),false)" @click="previewImage(filterImage(decodeURIComponent(sItem),true),0,'')" mode="aspectFill" />
-                </swiper-item>
-            </swiper>
-            <empty v-if="niceTimeList&&!niceTimeList.length" style="position: relative;bottom:240rpx" />
-        </view>
-        <view class="tagsContainer">
-            <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list" @click="onTagClick(item,index)">
-                {{item.label}}
-                <text>{{goodsMsg[item.valueKey]}}</text>
-            </view>
-        </view>
-        <!-- <u-sticky :offsetTop="MAX_HEIGHT*2" v-if="MAX_HEIGHT">
+      </view>
+    </view>
+    <view class="moreContainer" :style="{marginTop:(isMerchant?27:68)+'rpx'}" @click="pageJump('/pages/merchant/niceTime?alias='+alias)">
+      <view class="more-left">店铺精彩时刻</view>
+      <view class="more-right">更多</view>
+    </view>
+    <view class="niceTimeContainer" v-if='niceTimeFinish'>
+      <swiper indicator-dots autoplay circular :interval="5*1000" indicator-active-color="#333333" indicator-color="#CAC6C6" style="width:100%;height:100%" v-if="niceTimeList&&niceTimeList.length">
+        <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index" style="display: flex;flex-wrap: nowrap;">
+          <image v-for="(sItem,sNndex) in item" class="niceTimeImage" :style="{marginRight:sNndex==2?0:'24rpx'}" :key="'sImg'+sNndex" :src="filterImage(decodeURIComponent(sItem),false)" @click="previewImage(filterImage(decodeURIComponent(sItem),true),0,'')" mode="aspectFill" />
+        </swiper-item>
+      </swiper>
+      <empty v-if="niceTimeList&&!niceTimeList.length" style="position: relative;bottom:240rpx" />
+    </view>
+    <view class="tagsContainer">
+      <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list" @click="onTagClick(item,index)">
+        {{item.label}}
+        <text>{{goodsMsg[item.valueKey]}}</text>
+      </view>
+    </view>
+    <!-- <u-sticky :offsetTop="MAX_HEIGHT*2" v-if="MAX_HEIGHT">
             
         </u-sticky> -->
 
-        <view class="goodsList">
-            <goodslist :goodsList="goodsList" v-if="goodsList&&goodsList.length" @send="onClickJumpDetails" :presell="false" />
-        </view>
-        <empty v-if='!goodsList.length' style="position: relative;bottom: 50rpx;" />
-        <bottomDrawer title='领取优惠券' :height='571' heightType='rpx' :needSafeArea='true' :showDrawer.sync='receiveCouponShow'>
-        </bottomDrawer>
-        <couponGetDrawer :couponList="couponList" @lower="lowerCoupon" :showDrawer.sync='couponGetDrawerShow' />
-        <share :operationShow.sync='operationShow' :shareData="shareData" />
+    <view class="goodsList">
+      <goodslist :goodsList="goodsList" v-if="goodsList&&goodsList.length" @send="onClickJumpDetails" :presell="false" />
     </view>
+    <empty v-if='!goodsList.length' style="position: relative;bottom: 50rpx;" />
+    <bottomDrawer title='领取优惠券' :height='571' heightType='rpx' :needSafeArea='true' :showDrawer.sync='receiveCouponShow'>
+    </bottomDrawer>
+    <couponGetDrawer :couponList="couponList" @lower="lowerCoupon" :showDrawer.sync='couponGetDrawerShow' />
+    <share :operationShow.sync='operationShow' :shareData="shareData" />
+  </view>
 </template>
 
 <script lang="ts">
@@ -432,7 +446,16 @@ page {
     font-style: normal;
     color: #3c3c3c;
   }
-
+  .whiteBack {
+    width: 55rpx;
+    height: 55rpx;
+    background: rgba(255, 255, 255, 0.78);
+    border-radius: 50%;
+    image{
+      position:relative;
+      // right:1rpx;
+    }
+  }
   .pageTitle {
     font-size: 32rpx;
     color: #3c3c3c;
