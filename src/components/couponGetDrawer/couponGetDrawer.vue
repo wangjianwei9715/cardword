@@ -11,7 +11,7 @@
                         </view>
                         <view class="item-right">
                             <view class="right-info">
-                                <view class="right-title">{{item.name}}</view>
+                                <view class="right-title u-line-1">{{item.name}}</view>
                                 <view class="right-time">{{item.expire}}</view>
                                 <!-- &&goodPage -->
                                 <view :class="{'right-btn':true,'opacity':(item.state!=1&&goodPage) || item.state==3}" @click="onClickGetCoupon(item)">{{inspectState(item)}}</view>
@@ -126,6 +126,7 @@
                     padding-top: 20rpx;
                 }
                 .right-title{
+                    width: 300rpx;
                     font-size: 29rpx;
                     font-family: PingFang SC;
                     font-weight: 600;

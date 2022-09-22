@@ -301,7 +301,7 @@
 		getCouponList:any = [];
 		onLoad(query: any) {
 			// #ifndef MP
-			const goodCode = query.goodCode
+			const goodCode = query.goodCode ||query.id
 			this.goodCode = goodCode;
 			this.source=query.source
 			this.getGoodData(goodCode,()=>{
