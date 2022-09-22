@@ -3,7 +3,7 @@
         <view class="niceTime">
             <view class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index">
                 <view class="niceTimeItem-top">
-                    <muqian-lazyLoad class="niceTimeItem-img"
+                    <muqian-lazyLoad class="niceTimeItem-img" borderRadius="10rpx 10rpx 0rpx 0rpx"
                         :src="parsePic(decodeURIComponent(filterImg(item.pic)[0]))" mode="aspectFill"
                         @click='previewImage(filterImg(item.pic),0,"")' />
                     <view class="niceTimeItem-dot flexCenter">{{imageNums(item.pic)}}</view>
@@ -131,9 +131,9 @@
         height: 252rpx; */
         width: 355rpx;
         height: 426rpx;
-        background: #333333;
+        /* background: #333333; */
         border-radius: 3rpx;
-        background: #333333;
+        /* background: #333333; */
         position: relative;
         overflow: hidden;
         /* margin-top: 13rpx; */
@@ -221,7 +221,7 @@
         font-weight: 400;
         color: #333333;
         flex: 1;
-        max-width: 200rpx;
+        /* max-width: 200rpx; */
         overflow: hidden;
         text-overflow: ellipsis;
         whitewhite-space: nowrap;
