@@ -103,15 +103,18 @@
 								this.tabbarData[str].boolean = isLikes ? res.liked : res.isFavorite;
 								this.tabbarData[str].num = isLikes ? res.likes : res.favorite;
 
-								if(isLikes){
-									const data = {
-										articleCode:this.data.articleCode,
-										isLikes:res.liked,
-										comment:this.tabbarData.comment.num,
-										likes:res.likes
-									}
-									uni.$emit('informationChange', data)
+								let data = {
+									articleCode:this.data.articleCode,
+									comment:this.tabbarData.comment.num,
 								}
+								if(isLikes){
+									data.isLikes = res.liked;
+									data.likes = res.likes
+								}else{
+									data.favorite = res.favorite;
+									data.isFavorite = res.isFavorite
+								}
+								uni.$emit('informationChange', data)
 								
 							})
 						}

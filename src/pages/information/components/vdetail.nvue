@@ -1,31 +1,338 @@
 <template>
 	<!-- 底部详情 -->
-	<view >
+	<view class="vd-box">
+		<text class="vd-title">{{articleData.title}}</text>
+		<view class="vd-user">
+			<image class="vd-avatar" :src="decodeURIComponent(articleData.author_logo)"/>
+			<view>
+				<text class="vd-name">{{articleData.author}}</text>
+				<text class="vd-time">发布于{{timeFormat(articleData.active_at)}}</text>
+			</view>
+		</view>
+		<text class="vd-desc" v-for="(item,index) in replaceText(decodeURIComponent(articleData.content))" :key="index">{{item}}</text>
+		<u-divider style="width:100%" lineColor="#E8E8E8"></u-divider>
+
+		<view class="chat-content" v-if="articleData.comment>0">
+			<text class="chat-header">{{articleData.comment}}条评论</text>
+			<list style="padding-bottom:120px;margin-top:20rpx" :show-scrollbar="false" ref="commentBox" :pagingEnabled="false" :scrollable="true">
+				<cell v-for="(item,index) in commentsList" :key="index">
+					<view class="chat-item">
+						<image class="chat-avatar" :src="decodeURIComponent(item.avatar)"/>
+						<view style="width:470rpx">
+							<view class="chat-info">
+								<text class="chat-name">{{item.name}}</text>
+								<text class="chat-time">{{timeFrom(item.created_at)}}</text>
+							</view>
+							<text class="chat-msg" :selectable="true" :class="'chat-'+item.id" @click="onClickReply(item,item.id)">{{item.content}}</text>
+						</view>
+						<view class="chat-right" @click="onClickLike(item)">
+							<image style="width:22rpx;height:22rpx" v-if="item.isLike" src="@/static/information/icon_m_liked.png"></image>
+							<image style="width:22rpx;height:22rpx" v-else src="@/static/information/icon_m_like.png"></image>
+							<text class="chat-like">{{item.likes}}</text>
+						</view>
+					</view>
+					<view class="chat-item son-item" v-for="(son,x) in item.lower" :key="x">
+						<image class="son-avatar" :src="decodeURIComponent(son.avatar)"/>
+						<view style="width:390rpx">
+							<view class="chat-info son-info">
+								<text class="chat-name">{{son.name}}</text>
+								<text class="chat-time">{{timeFrom(son.created_at)}}</text>
+							</view>
+							<view style="width:390rpx" class="chat-msg" v-if="!son.isDelete" @click="onClickReply(son,item.id)">
+								<text class="chat-hf" :selectable="true" v-if="son.replyUserName!=''">
+									<text class="chat-text">回复</text>
+									<text class="hf-name">{{son.replyUserName}}</text>
+									<text class="chat-text">:{{son.content}}</text>
+								</text>
+								<text class="chat-hf" :selectable="true" v-else>{{son.content}}</text>
+							</view>
+							<text style="width:390rpx" class="chat-msg" v-else>评论已删除</text>
+						</view>
+						<view class="chat-right" @click="onClickLike(son)">
+							<image style="width:22rpx;height:22rpx" v-if="son.isLike" src="@/static/information/icon_m_liked.png"></image>
+							<image style="width:22rpx;height:22rpx" v-else src="@/static/information/icon_m_like.png"></image>
+							<text class="chat-like">{{son.likes}}</text>
+						</view>
+					</view>
+					<view class="chat-more" v-if="item.remainNum>0" @click="onClickMoreComments(item.id)">
+						展开全部{{item.remainNum}}条<image style="width:16rpx;height:11rpx;margin-left:8rpx" src="@/static/information/icon_down.png"/>
+					</view>
+				</cell>
+			</list>
+			<!-- <view class="chat-box" v-for="(item,index) in commentsList" :key="index"> -->
+				
+			<!-- </view> -->
+		</view>
+		<view class="chat-empty" v-if="articleData.comment>0&&isFetchEnd">- 没有更多了 -</view>
 		<slot></slot>
 	</view>
 </template>
 <script>
 	const app = getApp().globalData.app;
+	const commentParams = {
+		fetchFrom:1,
+		fetchSize:10,
+		isFetchEnd:false
+	}
 	export default {
 		props: {
-			commentNum: {
-				type: Number,
-				default: 0
+			articleData: {
+				type: Object,
+				default: () => {
+					return {};
+				}
 			},
 		},
 		watch: {
+			articleData:function(val){
+				console.log('watch',val);
+				this.commentsList = []
+				this.commentParams = {...commentParams}
+				this.getArticleComment();
+			}
 		},
 		mounted() {
+			uni.$on('commentChange',(r)=>{
+				const data = r.data;
+				const res = r.res
+				if(data.replyId==0){
+					this.commentsList.unshift(res.data)
+				}else{
+					let findItem = this.commentsList.find((item) => {
+						return item.id == data.fatherId;
+					});
+					findItem.lower.unshift(res.data)
+				}
+			})
+			uni.$on('comloadmore',()=>{
+				this.getArticleComment()
+			})
 		},
 		data() {
 			return {
+				commentsList:[],
+				commentParams:{...commentParams}
 			};
 		},
 		methods: {
+			replaceText(text){
+				const msg = text.replace(/\<p\>/g, '').split('</p>');
+				return msg
+			},
+			timeFormat(time){
+				return uni.$u.timeFormat(time,'mm月dd日 hh:MM')
+			},
+			timeFrom(time){
+				return uni.$u.timeFrom(time)
+			},
+			onClickLike(item){
+				uni.$u.throttle(()=>{
+					app.platform.hasLoginToken(()=>{
+						app.http.Post(`article/comment/like/or/cancel/${item.id}`,{},(res)=>{
+							item.isLike = res.liked;
+							item.likes = res.likes;
+						})
+					})
+				},100)
+			},
+			onClickReply(item,fatherId){
+				this.$emit('reply',{replyId:item.id,replyName:item.name,fatherId})
+			},
+			// 获取资讯评论
+			getArticleComment(){
+				const { commentParams } = this;
+				if(commentParams.isFetchEnd){
+					return;
+				}
+				console.log(this.articleData);
+				app.http.Get(`dataApi/article/comment/list/${this.articleData.articleCode}`,commentParams,(res)=>{
+					console.log(res);
+					commentParams.isFetchEnd = res.isFetchEnd;
+					commentParams.fetchFrom += commentParams.fetchSize
+					if(res.list){
+						this.commentsList = [...this.commentsList,...res.list];
+					}
+					uni.$emit('resetLoadmore')
+				})
+			}
 		}
 	};
 </script>
 
 <style lang="scss">
-	
+	.vd-box{
+		width: 670rpx;
+		padding-top: 40rpx;
+	}
+	.vd-title{
+		width: 670rpx;
+		font-size: 38rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #333333;
+		line-height: 48rpx;
+		margin-bottom: 20rpx;
+	}
+	.vd-user{
+		width: 670rpx;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		height:90rpx;
+		margin-bottom:30rpx;
+	}
+	.vd-avatar{
+		width: 90rpx;
+		height:90rpx;
+		border-radius: 50%;
+		margin-right: 28rpx;
+	}
+	.vd-name{
+		width: 670rpx;
+		font-size: 29rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #333333;
+		margin-bottom: 5rpx;
+	}
+	.vd-time{
+		width: 670rpx;
+		font-size: 23rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #7C7C7C;
+	}
+	.vd-desc{
+		width: 670rpx;
+		font-size: 28rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #14151A;
+		line-height: 36rpx;
+	}
+	.chat-content{
+		width: 670rpx;
+	}
+	.chat-header{
+		width: 670rpx;
+		font-size: 29rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #333333;
+	}
+	.chat-item{
+		width: 670rpx;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 20rpx;
+	}
+	.chat-avatar{
+		width: 62rpx;
+		height:62rpx;
+		margin-right: 18rpx;
+		border-radius: 50%;
+	}
+	.chat-info{
+		width: 470rpx;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		flex-direction: row;
+		padding-top: 10rpx;
+	}
+	.chat-name{
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #636363;
+		margin-right: 22rpx;		
+	}	
+	.chat-time{
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #AAAAAA;
+	}
+	.chat-msg{
+		width: 470rpx;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		line-height: 33rpx;
+		margin-top: 10rpx;
+		display: flex;
+	}
+	.chat-right{
+		height:30rpx;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		position: absolute;
+		right:0;
+		top:9rpx;
+	}
+	.chat-like{
+		height:30rpx;
+		line-height: 30rpx;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #AAAAAA;
+		margin-left: 12rpx;
+	}
+	.son-item{
+		padding-left: 80rpx;
+	}
+	.son-avatar{
+		width: 44rpx;
+		height:44rpx;
+		margin-right: 17rpx;
+		border-radius: 50%;
+	}
+	.son-info{
+		width:390rpx;
+		padding-top: 5rpx !important;
+	}
+	.chat-hf{
+		width:390rpx;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		line-height: 33rpx;
+		display: flex;
+		flex-direction: row;
+	}
+	.chat-text{
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		line-height: 33rpx;
+	}
+	.hf-name{
+		color:#636363;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		line-height: 33rpx;
+		margin:0 10rpx
+	}
+	.chat-more{
+		margin-left: 140rpx;
+		height: 41rpx;
+		background: #EFEFEF;
+		border-radius: 3rpx;
+		padding: 0 15rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #636363;
+		margin-bottom: 20rpx;
+	}
 </style>
