@@ -252,6 +252,10 @@
 		},
 		onReady() {
 		},
+		onUnload(){
+			uni.$off('informationChange');
+			uni.$off('resetLoadmore');
+		},
         methods: {
 			replaceText(text){
 				return text.replace(/\<p\>/g, '').replace(/\<\/p\>/g,'')

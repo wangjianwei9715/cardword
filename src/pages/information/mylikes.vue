@@ -37,6 +37,9 @@ export default class ClassName extends BaseNode {
     });
     this.reqNewData();
   }
+  onUnload(){
+			uni.$off('informationChange');
+		}
   //   加载更多数据
   onReachBottom() {
     this.reqNewData();
