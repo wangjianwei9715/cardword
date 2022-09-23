@@ -64,7 +64,7 @@
 		</view>
 		
 		<!-- tabbar -->
-		<nTabbar :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" @comment="onReply"></nTabbar>
+		<nTabbar :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" @comment.prevent="onDetail"></nTabbar>
 		<!-- 这里就是进度条了：纯手工进度条，调整位置的话就把他们的 bottom 改成一下就行了 -->
 		<!-- 1.注意：进度条这类拖拽的东西不能放进block\cell这些循环体中的，要不然touchmove方法会捕捉有误 -->
 		<view v-if="showPlan">
@@ -84,22 +84,26 @@
 				<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'width: '+ dotWidth +'px; height: '+ dotWidth +'px; background-color: #FFFFFF; border-radius: 10px; position: absolute; bottom: '+ (ProgressBarBottom - 5) +'upx; left: '+ (currentPositions - 5) +'px; opacity: '+ ProgressBarOpacity +';'"></view>
 			</view>
 		</view>
-		<!-- 输入框 分享 -->
-		<nTextarea :focus="chatData.focus" :replyName="chatData.replyName" @chatConfirm="onChatConfirm" @blur="onBlur"></nTextarea>
 		<nvueShare :visible.sync='shareShow' :shareData='shareData' ></nvueShare>
 		<!-- 底部详情 -->
 		<view class="popup">
 			<view class="popup-shadow" :style="{height:showDetail?wHeight:0+'px'}" @click="onClosePopup"></view>
 			<view class="popup-content" :style="{height:showDetail?(boxStyle.height-200):0+'px'}">
-
+				<vdetail>
+					<nTabbar v-if="showDetail" :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" :detail="true" @comment="onReply" ></nTabbar>
+				</vdetail>
 			</view>
 		</view>
+		<!-- 输入框 分享 -->
+		<nTextarea :focus="chatData.focus" :replyName="chatData.replyName" @chatConfirm="onChatConfirm" @blur="onBlur">
+		</nTextarea>
 	</view>
 </template>
 <script>
 	import nvueShare from "../live/components/nvueShare.nvue";
 	import nTabbar from "./components/nTabbar.nvue";
 	import nTextarea from "./components/nTextarea.nvue";
+	import vdetail from "./components/vdetail.nvue";
 	const app = getApp().globalData.app;
 	const shareData = {
 		shareUrl: "",
@@ -164,7 +168,8 @@
 		components:{
 			nvueShare,
 			nTabbar,
-			nTextarea
+			nTextarea,
+			vdetail
 		},
 		watch:{
 			async k(k,old_k){//监听 k 值的变化，可以控制视频的播放与暂停
@@ -408,11 +413,13 @@
 			
 				console.log(item);
 			},
-			// 开始回复
-			onReply(res){
+			onDetail(){
 				this.showPlan = false;
 				this.showDetail = true;
 				return;
+			},
+			// 开始回复
+			onReply(res){
 				app.platform.hasLoginToken(()=>{
 					this.chatData = {
 						replyId:res?res.replyId:0,
@@ -450,6 +457,10 @@
 				})
 			},
 			onClosePopup(){
+				if(this.chatData.focus){
+					this.onBlur();
+					return;
+				}
 				this.showDetail=false;
 				setTimeout(()=>{this.showPlan=true},250)
 			}
