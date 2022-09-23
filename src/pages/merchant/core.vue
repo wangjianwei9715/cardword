@@ -339,14 +339,14 @@
             } 
             this.niceTimeList = []
             const copies = Math.ceil(list.length / 3)
+            let end=0
             for (let i = 0; i < copies; i++) {
-                const start = i == 0 ? 0 : i + 2
-                let arr = list.slice(start, start + 3)
+                const start =end
+                end=start + 3
+                let arr = list.slice(start, end)
                 this.niceTimeList.push(arr)
             }
             this.niceTimeFinish=true
-            // console.log(this.niceTimeList);
-            
         }
         // 跳转商品详情
         onClickJumpDetails(goodCode: any) {
@@ -386,7 +386,6 @@
         }
         reqCouponBrief(){
             app.http.Get(`merchant/coupon/brief/${this.alias}`,{},(res:any)=>{
-                console.log("reqCouponBrief",res);
                 this.couponBrief=res.couponBrief || []
             })
         }
