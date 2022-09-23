@@ -222,7 +222,7 @@ export default class ClassName extends BaseNode {
   goodsData: { [x: string]: any } = [];
   onePrice = 0;
   cartData: any = [];
-  gmCheck = true;
+  gmCheck = false;
   operationCardShow = false;
   // 支付方式组件相关
   showPayMent = false;

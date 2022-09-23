@@ -82,9 +82,9 @@
 		<view class="popup">
 			<view class="popup-shadow" :style="{height:showDetail?wHeight:0+'px'}" @click="onClosePopup"></view>
 			<view class="popup-content" :style="{height:showDetail?(boxStyle.height-200):0+'px'}">
-				<list ref="comList" :show-scrollbar="false" :pagingEnabled="false" :scrollable="true" @loadmore="getMoreComment" :loadmoreoffset="1">
+				<list ref="comList" v-if="showDetail" :show-scrollbar="false" :pagingEnabled="false" :scrollable="true" @loadmore="getMoreComment" :loadmoreoffset="1">
 					<cell>
-						<vdetail :articleData="dataList[k]?dataList[k]:{}" @reply="onReply">
+						<vdetail style="padding-top: 40rpx;" :articleData="dataList[k]?dataList[k]:{}" @reply="onReply">
 							<nTabbar v-if="showDetail" :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" :detail="true" @comment="onReply" ></nTabbar>
 						</vdetail>
 					</cell>
@@ -171,14 +171,12 @@
 		},
 		watch:{
 			async k(k,old_k){//监听 k 值的变化，可以控制视频的播放与暂停
-				
-				this.dataList[old_k].state = 'stop'//如果是被滑走的视频，就停止播放
+				this.dataList[old_k].state = 'stop'
 				this.dataList[old_k].isplay = true
 				this.dataList[k].isplay = false
+				uni.createVideoContext(this.dataList[k].articleCode,this).seek(0)
 				uni.createVideoContext(this.dataList[k].articleCode,this).play();
-				setTimeout(()=>{
-					uni.createVideoContext(this.dataList[old_k].articleCode,this).pause()
-				},200)
+				uni.createVideoContext(this.dataList[old_k].articleCode,this).pause()
 				console.log('已经暂停 --> 第' + (old_k + 1) + '个视频～')//提示
 				
 				//【2.0版本更新内容】- start
@@ -188,7 +186,7 @@
 					setTimeout(()=>{
 						uni.createVideoContext(this.dataList[p].articleCode,this).pause()
 						console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
-					},500)
+					},100)
 				},20)
 				//【2.0版本更新内容】- end
 				//【此处处理进度条卡住的问题】
@@ -229,7 +227,6 @@
 			this.get()//这一步，加载视频数据
 
 			uni.$on("informationChange", (res) => {
-				console.log('res===',res);
 				if (res && res.articleCode) {
 					let findItem = this.dataList.find((item) => {
 						return item.articleCode == res.articleCode;
@@ -325,6 +322,7 @@
 						theTime = parseInt(theTime%60);	
 					}
 					this.changeTime = `${Math.round(middle)>9?Math.round(middle):'0'+Math.round(middle)}:${Math.round(theTime)>9?Math.round(theTime):'0'+Math.round(theTime)}`
+					
 				}
 			},
 			getTime(){//得到时间函数
@@ -352,30 +350,32 @@
 				// console.log('stop')
 			},
 			scrolls (event) {
-				this.isDragging = event.isDragging
-				if (!event.isDragging) {//isDragging：判断用户是不是在滑动，滑动：true，停止滑动：false。我们要用户停止滑动时才给 k 赋值，这样就可以避免很多麻烦
-					var i = Math.round(Math.abs(event.contentOffset.y) / (this.wHeight - this.deleteHeight + 1))//先用绝对值取出滑动的距离，然后除以屏幕高度，取一个整，就知道你现在滑动到哪一个视频了
-					if(i !== this.k){//这里加判断是因为这个方法会执行很多次，会造成重复请求，所以这里写一个限制
-						if(uni.getSystemInfoSync().platform == 'ios'){
-							this.k = i//判断了用户没有滑动，确认了用户的确是在看这个视频，然后就赋值啦
-							this.dataList[this.k].state = 'play'
-							if(this.k == this.dataList.length-1){
-								this.getMore()
-							}
-							console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
-						} else {
-							clearTimeout(this.timers);
-							this.timers = setTimeout(()=>{
+				// uni.$u.debounce(()=>{
+					this.isDragging = event.isDragging
+					if (!event.isDragging) {//isDragging：判断用户是不是在滑动，滑动：true，停止滑动：false。我们要用户停止滑动时才给 k 赋值，这样就可以避免很多麻烦
+						var i = Math.round(Math.abs(event.contentOffset.y) / (this.wHeight - this.deleteHeight-uni.upx2px(124) + 1))//先用绝对值取出滑动的距离，然后除以屏幕高度，取一个整，就知道你现在滑动到哪一个视频了
+						if(i !== this.k){//这里加判断是因为这个方法会执行很多次，会造成重复请求，所以这里写一个限制
+							if(uni.getSystemInfoSync().platform == 'ios'){
 								this.k = i//判断了用户没有滑动，确认了用户的确是在看这个视频，然后就赋值啦
 								this.dataList[this.k].state = 'play'
 								if(this.k == this.dataList.length-1){
 									this.getMore()
 								}
 								console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
-							},80)
+							} else {
+								clearTimeout(this.timers);
+								this.timers = setTimeout(()=>{
+									this.k = i//判断了用户没有滑动，确认了用户的确是在看这个视频，然后就赋值啦
+									this.dataList[this.k].state = 'play'
+									if(this.k == this.dataList.length-1){
+										this.getMore()
+									}
+									console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
+								},80)
+							}
 						}
 					}
-				}
+				// },500)
 			},
 			get(){
 				app.http.Get(`dataApi/article/detail/${this.code}`,{},(res)=>{
@@ -389,11 +389,13 @@
 				})
 			},
 			getMore(){
+				console.log('isFetchEnd=',this.isFetchEnd);
 				if(this.isFetchEnd) return;
 				app.http.Get(`dataApi/article/video/detail/list/${this.dataList[this.k].articleCode}`,{fetchSize:10,tp:100},async (res)=>{
+					console.log('more===',res);
 					this.isFetchEnd = res.isFetchEnd;
 					const list = await res.list.map((x)=>{
-						return {...x,isShowProgressBarTime:false,state:'pause',isplay:true}
+						return {...x,isShowProgressBarTime:false,state:'stop',isplay:true}
 					})
 					var p = this.dataList.length;
 					this.dataList = await [...this.dataList,...list];
@@ -403,7 +405,7 @@
 							uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
 							uni.createVideoContext(this.dataList[p].articleCode,this).pause()
 							console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
-						},500)
+						},100)
 					},50)
 				})
 			},
