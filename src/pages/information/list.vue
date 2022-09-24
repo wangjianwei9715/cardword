@@ -83,6 +83,9 @@ export default class ClassName extends BaseNode {
       }
     });
   }
+  onUnload(){
+    uni.$off('informationChange');
+  }
   //   加载更多数据
   onReachBottom() {
     this.reqNewData();

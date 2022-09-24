@@ -49,6 +49,9 @@
 				}
 			});
 		}
+		onUnload(){
+			uni.$off('informationChange');
+		}
 		onReachBottom() {
 			this.reqNewData() 
 		}

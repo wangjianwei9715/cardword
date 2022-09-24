@@ -6,7 +6,7 @@
 		<view class="list-box">
 			<view class="list-index" v-for="(item,index) in couponList" :key="index">
 				<view class="box-left">
-					<muqian-lazyLoad class="coupon-pic" :src="decodeURIComponent(item.tp==1?item.good.pic:item.merchant.merchantLogo)" />
+					<muqian-lazyLoad v-if="item.good||item.merchant" class="coupon-pic" :src="decodeURIComponent(item.tp==1?item.good.pic:item.merchant.merchantLogo)" />
 					<view class="left-info">
 						<view class="info-title u-line-2">{{item.tp==1?item.good.title:'店铺通用券'}}</view>
 						<view class="info-m">

@@ -9,9 +9,7 @@
 		<view :style="'width: '+ windowWidth +'px; height: '+ boxStyle.height +'px;'">
 			
 			<list @loadmore="getData" @scroll="scrolls" :loadmoreoffset="wHeight*1" :show-scrollbar="false" ref="listBox" :pagingEnabled="true" :scrollable="true">
-				<!-- 循环数据 -->
 				<cell v-for="(item,i) in dataList" :key="i">
-					<!-- 用div把视频模组套起来 -->
 					<div :style="'width: '+ windowWidth +'px; height: '+ boxStyle.height +'px;'" @disappear="stop()">
 						<view v-if="Math.abs(k-i)<=1">
 							<view class="root">
@@ -33,16 +31,13 @@
 									:object-fit="item.show_way"
 									@timeupdate="timeupdate($event,i)"
 								></video>
-								<!-- 这里是封面 -->
 								<!-- <image
 								v-if="!item.playIng"
 									:src="item.video_url+'?x-oss-process=video/snapshot,t_100,f_jpg'" 
 									:mode="mode"
 									:style="'width: '+ windowWidth +'px; height: '+ (wHeight - deleteHeight) +'px; position: absolute;'"
 								></image> -->
-								
 							</view>
-							<!-- 直接用 view 就行了，一样是可以覆盖原生组件的 -->
 							<!-- 这个是暂停时出现的图标 -->
 							<view class="videoHover" @click="tapVideoHover(item)" :style="boxStyle">
 								<image v-if="item.state=='pause'" class="playState" src="@/static/information/play.png"></image>
@@ -56,7 +51,6 @@
 								<text class="userName" :style="'width: '+ (windowWidth - 90) +'px;'">{{item.title}}</text><!-- i={{i}} -->
 								<text class="words" :style="'width: '+ (windowWidth - 90) +'px;'" >{{replaceText(decodeURIComponent(item.content))}}</text><!-- k={{k}} -->
 							</view>
-							
 						</view>
 					</div>
 				</cell>
@@ -65,7 +59,6 @@
 		
 		<!-- tabbar -->
 		<nTabbar :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" @comment.prevent="onDetail"></nTabbar>
-		<!-- 这里就是进度条了：纯手工进度条，调整位置的话就把他们的 bottom 改成一下就行了 -->
 		<!-- 1.注意：进度条这类拖拽的东西不能放进block\cell这些循环体中的，要不然touchmove方法会捕捉有误 -->
 		<view v-if="showPlan">
 			<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'position: absolute; bottom: '+ (proBarBottom + 10) +'px; left: '+ (windowWidth*2 - this.windowWidth*1.35)/2 +'px;'">
@@ -76,7 +69,6 @@
 				<text :style="'width: '+ windowWidth +'px; opacity: 0;'">.</text>
 				<!-- 2.这是未加载的时的右边的灰色部分 -->
 				<view :style="'width: '+ windowWidth +'px; height: 4upx; background-color: #C8C7CC; position: absolute; bottom: '+ ProgressBarBottom +'upx; opacity: '+ ProgressBarOpacity +';'"></view>
-				<!-- 3.这里我采用的分离式办法：就是让滑动样式和不滑动的样式分开，这样相互不干扰，可以避免进度条闪动的问题 -->
 				<!-- 4.注意：isShowProgressBarTime 加入了返回数据中 -->
 				<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false" :style="'width: '+ (currentPosition) +'px; height: 4upx; background-color: #FFFFFF; position: absolute; bottom: '+ ProgressBarBottom +'upx; left: 0; opacity: '+ (ProgressBarOpacity - 0.1) +';'"></view>
 				<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'width: '+ (currentPositions) +'px; height: 8upx; background-color: #FFFFFF; position: absolute; bottom: '+ ProgressBarBottom +'upx; left: 0; opacity: '+ (ProgressBarOpacity + 0.05) +';'"></view>
@@ -84,17 +76,22 @@
 				<view v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == true" :style="'width: '+ dotWidth +'px; height: '+ dotWidth +'px; background-color: #FFFFFF; border-radius: 10px; position: absolute; bottom: '+ (ProgressBarBottom - 5) +'upx; left: '+ (currentPositions - 5) +'px; opacity: '+ ProgressBarOpacity +';'"></view>
 			</view>
 		</view>
+		<!-- 分享 -->
 		<nvueShare :visible.sync='shareShow' :shareData='shareData' ></nvueShare>
 		<!-- 底部详情 -->
 		<view class="popup">
 			<view class="popup-shadow" :style="{height:showDetail?wHeight:0+'px'}" @click="onClosePopup"></view>
 			<view class="popup-content" :style="{height:showDetail?(boxStyle.height-200):0+'px'}">
-				<vdetail>
-					<nTabbar v-if="showDetail" :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" :detail="true" @comment="onReply" ></nTabbar>
-				</vdetail>
+				<list ref="comList" v-if="showDetail" :show-scrollbar="false" :pagingEnabled="false" :scrollable="true" @loadmore="getMoreComment" :loadmoreoffset="1">
+					<cell>
+						<vdetail style="padding-top: 40rpx;" :articleData="dataList[k]?dataList[k]:{}" @reply="onReply">
+							<nTabbar v-if="showDetail" :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" :detail="true" @comment="onReply" ></nTabbar>
+						</vdetail>
+					</cell>
+				</list>
 			</view>
 		</view>
-		<!-- 输入框 分享 -->
+		<!-- 输入框 -->
 		<nTextarea :focus="chatData.focus" :replyName="chatData.replyName" @chatConfirm="onChatConfirm" @blur="onBlur">
 		</nTextarea>
 	</view>
@@ -128,6 +125,7 @@
 				chatData:{...chat},
 				showDetail:false,
 				showPlan:true,
+				resetLoadmored:false,
 				//下面打🌟号的是必须要的基础字段
 				//下面打💗号的是拥有滑动条的必须字段
 				dataList:[],//用于数据循环的列表🌟💗
@@ -173,15 +171,12 @@
 		},
 		watch:{
 			async k(k,old_k){//监听 k 值的变化，可以控制视频的播放与暂停
-				
-				this.dataList[old_k].state = 'stop'//如果是被滑走的视频，就停止播放
-				this.dataList[old_k].playIng = false//如果视频暂停，就加载封面
+				this.dataList[old_k].state = 'stop'
 				this.dataList[old_k].isplay = true
 				this.dataList[k].isplay = false
+				uni.createVideoContext(this.dataList[k].articleCode,this).seek(0)
 				uni.createVideoContext(this.dataList[k].articleCode,this).play();
-				setTimeout(()=>{
-					uni.createVideoContext(this.dataList[old_k].articleCode,this).pause()
-				},200)
+				uni.createVideoContext(this.dataList[old_k].articleCode,this).pause()
 				console.log('已经暂停 --> 第' + (old_k + 1) + '个视频～')//提示
 				
 				//【2.0版本更新内容】- start
@@ -191,7 +186,7 @@
 					setTimeout(()=>{
 						uni.createVideoContext(this.dataList[p].articleCode,this).pause()
 						console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
-					},500)
+					},100)
 				},20)
 				//【2.0版本更新内容】- end
 				//【此处处理进度条卡住的问题】
@@ -237,14 +232,29 @@
 						return item.articleCode == res.articleCode;
 					});
 					if (findItem) {
-						findItem.isLikes = res.isLikes;
-						findItem.likes = res.likes;
+						if(res.isLikes){
+							findItem.isLikes = res.isLikes;
+							findItem.likes = res.likes;
+						}else{
+							findItem.favorite = res.favorite;
+							findItem.isFavorite = res.isFavorite;
+						}
 						findItem.comment = res.comment
+						console.log('findItem=',findItem);
 					}
 				}
 			});
+			uni.$on('resetLoadmore',()=>{
+				if(this.resetLoadmored){
+					this.$refs["comList"].resetLoadmore();
+				}
+			})
 		},
 		onReady() {
+		},
+		onUnload(){
+			uni.$off('informationChange');
+			uni.$off('resetLoadmore');
 		},
         methods: {
 			replaceText(text){
@@ -316,6 +326,7 @@
 						theTime = parseInt(theTime%60);	
 					}
 					this.changeTime = `${Math.round(middle)>9?Math.round(middle):'0'+Math.round(middle)}:${Math.round(theTime)>9?Math.round(theTime):'0'+Math.round(theTime)}`
+					
 				}
 			},
 			getTime(){//得到时间函数
@@ -343,30 +354,32 @@
 				// console.log('stop')
 			},
 			scrolls (event) {
-				this.isDragging = event.isDragging
-				if (!event.isDragging) {//isDragging：判断用户是不是在滑动，滑动：true，停止滑动：false。我们要用户停止滑动时才给 k 赋值，这样就可以避免很多麻烦
-					var i = Math.round(Math.abs(event.contentOffset.y) / (this.wHeight - this.deleteHeight + 1))//先用绝对值取出滑动的距离，然后除以屏幕高度，取一个整，就知道你现在滑动到哪一个视频了
-					if(i !== this.k){//这里加判断是因为这个方法会执行很多次，会造成重复请求，所以这里写一个限制
-						if(uni.getSystemInfoSync().platform == 'ios'){
-							this.k = i//判断了用户没有滑动，确认了用户的确是在看这个视频，然后就赋值啦
-							this.dataList[this.k].state = 'play'
-							if(this.k == this.dataList.length-1){
-								this.getMore()
-							}
-							console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
-						} else {
-							clearTimeout(this.timers);
-							this.timers = setTimeout(()=>{
+				// uni.$u.debounce(()=>{
+					this.isDragging = event.isDragging
+					if (!event.isDragging) {//isDragging：判断用户是不是在滑动，滑动：true，停止滑动：false。我们要用户停止滑动时才给 k 赋值，这样就可以避免很多麻烦
+						var i = Math.round(Math.abs(event.contentOffset.y) / (this.wHeight - this.deleteHeight-uni.upx2px(124) + 1))//先用绝对值取出滑动的距离，然后除以屏幕高度，取一个整，就知道你现在滑动到哪一个视频了
+						if(i !== this.k){//这里加判断是因为这个方法会执行很多次，会造成重复请求，所以这里写一个限制
+							if(uni.getSystemInfoSync().platform == 'ios'){
 								this.k = i//判断了用户没有滑动，确认了用户的确是在看这个视频，然后就赋值啦
 								this.dataList[this.k].state = 'play'
 								if(this.k == this.dataList.length-1){
 									this.getMore()
 								}
 								console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
-							},80)
+							} else {
+								clearTimeout(this.timers);
+								this.timers = setTimeout(()=>{
+									this.k = i//判断了用户没有滑动，确认了用户的确是在看这个视频，然后就赋值啦
+									this.dataList[this.k].state = 'play'
+									if(this.k == this.dataList.length-1){
+										this.getMore()
+									}
+									console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
+								},80)
+							}
 						}
 					}
-				}
+				// },500)
 			},
 			get(){
 				app.http.Get(`dataApi/article/detail/${this.code}`,{},(res)=>{
@@ -380,11 +393,13 @@
 				})
 			},
 			getMore(){
+				console.log('isFetchEnd=',this.isFetchEnd);
 				if(this.isFetchEnd) return;
 				app.http.Get(`dataApi/article/video/detail/list/${this.dataList[this.k].articleCode}`,{fetchSize:10,tp:100},async (res)=>{
+					console.log('more===',res);
 					this.isFetchEnd = res.isFetchEnd;
 					const list = await res.list.map((x)=>{
-						return {...x,isShowProgressBarTime:false,state:'pause',isplay:true}
+						return {...x,isShowProgressBarTime:false,state:'stop',isplay:true}
 					})
 					var p = this.dataList.length;
 					this.dataList = await [...this.dataList,...list];
@@ -394,7 +409,7 @@
 							uni.createVideoContext(this.dataList[p].articleCode,this).seek(0)
 							uni.createVideoContext(this.dataList[p].articleCode,this).pause()
 							console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].articleCode)
-						},500)
+						},100)
 					},50)
 				})
 			},
@@ -441,14 +456,7 @@
 					const url = data.replyId == 0 ? `article/comment/issue/${kData.articleCode}` : `article/reply/comment/${data.replyId}`;
 					app.http.Post(url,{content},(res)=>{
 						kData.comment++;
-						// if(data.replyId==0){
-						// 	this.commentsList.unshift(res.data)
-						// }else{
-						// 	let findItem = this.commentsList.find((item: any) => {
-						// 		return item.id == data.fatherId;
-						// 	});
-						// 	findItem.lower.unshift(res.data)
-						// }
+						uni.$emit('commentChange',{res:res,data:data})
 						this.chatData = {...chat}
 						uni.showToast({ title:'评论成功', icon:'none' })
 						uni.$emit('informationChange', kData)
@@ -463,6 +471,10 @@
 				}
 				this.showDetail=false;
 				setTimeout(()=>{this.showPlan=true},250)
+			},
+			getMoreComment(){
+				this.resetLoadmored=true;
+				uni.$emit('comloadmore')
 			}
         }
     }
