@@ -3,7 +3,7 @@
         <view class="niceTime">
             <view class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index">
                 <view class="niceTimeItem-top">
-                    <muqian-lazyLoad class="niceTimeItem-img" borderRadius="10rpx 10rpx 0rpx 0rpx"
+                    <muqian-lazyLoad class="niceTimeItem-img" borderRadius="5rpx 5rpx 0rpx 0rpx"
                         :src="parsePic(decodeURIComponent(filterImg(item.pic)[0]))" mode="aspectFill"
                         @click='previewImage(filterImg(item.pic),0,"")' />
                     <view class="niceTimeItem-dot flexCenter">{{imageNums(item.pic)}}</view>
