@@ -597,6 +597,8 @@
 		color: #ffffff;
 		margin-top: 18rpx;
 		line-height: 38rpx;
+		text-overflow: ellipsis; /* 超出部分省略号 */
+    	lines:1; /* 超出固定行数显示省略号 */
 	}
 	.words {
 		font-size: 25rpx;
