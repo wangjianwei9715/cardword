@@ -63,7 +63,9 @@ export default class ClassName extends BaseNode {
   }
   information: any = [];
   empty = false;
+  appToken = ''
   onLoad(query: any) {
+    this.appToken = app.token.accessToken;
     this.reqNewData();
     app.http.Get('dataApi/article/showy/list',{},(res:any)=>{
       this.AD_List = res.list || []
@@ -82,6 +84,11 @@ export default class ClassName extends BaseNode {
         }
       }
     });
+  }
+  onShow(){
+    if(this.appToken != app.token.accessToken){
+      this.onClickSearch()
+    }
   }
   onUnload(){
     uni.$off('informationChange');
@@ -107,6 +114,7 @@ export default class ClassName extends BaseNode {
   onClickSearch() {
     // 搜索
     const { listParams } = this;
+    this.information = [];
     listParams.pageIndex = 1;
     listParams.noMoreData = false;
     this.reqNewData();
