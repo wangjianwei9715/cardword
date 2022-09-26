@@ -23,7 +23,7 @@
 				</swiper-item>
 			</swiper>
 
-      <informationList class="list-box" :list="information" />
+      <informationList class="list-box" :list="information" :type="tabData.list[tabData.current].id"/>
       <empty v-show="empty" />
     </view>
   </view>
@@ -132,7 +132,7 @@ export default class ClassName extends BaseNode {
     })
   }
   onClickSwiper(item:any){
-    app.navigateTo.goInformationDetail(item,1)
+    app.navigateTo.goInformationDetail(item,100,1)
   }
   reqNewData(cb?: Function) {
     // 获取更多商品

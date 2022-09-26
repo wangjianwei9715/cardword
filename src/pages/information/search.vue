@@ -14,7 +14,7 @@
 		
 		<view class="box-content">
 			<statusbar/>
-			<informationList class="list-box" :list="list" />
+			<informationList class="list-box" :list="list" :type="100" :q="listParams.q"/>
 		</view>
 	</view>
 </template>

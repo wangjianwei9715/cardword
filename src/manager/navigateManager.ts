@@ -23,15 +23,17 @@ export default class navigateManager {
 	}
 	/**
 	 * 跳转资讯详情
-	 * @param item 资讯信息
-	 * @param ad   广告位进入为1
+	 * @param item 	 资讯信息
+	 * @param type   资讯类型 视频资讯需要 广告位传100
+	 * @param ad     广告位进入为1
+	 * @param q      搜索内容可选
 	 */
-	goInformationDetail(item:any,ad=0){
+	goInformationDetail(item:any,type=100,ad=0,q?:string){
 		if(!item) return;
 		const articleCode = item.articleCode;
-		const url = item.video_at&&item.video_at!='' ? 'video' : 'details'
+		const url = item.video_at&&item.video_at!='' ? `video?type=${type}&` : 'details?'
 		uni.navigateTo({
-			url:`/pages/information/${url}?code=${articleCode}&ad=${ad}`
+			url:`/pages/information/${url}code=${articleCode}&ad=${ad}${q&&q!=''?'&q='+q:''}`
 		})
 	}
 }

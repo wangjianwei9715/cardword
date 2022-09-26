@@ -126,6 +126,8 @@
 				showDetail:false,
 				showPlan:true,
 				resetLoadmored:false,
+				searchQ:'',
+				vType:100,
 				//下面打🌟号的是必须要的基础字段
 				//下面打💗号的是拥有滑动条的必须字段
 				dataList:[],//用于数据循环的列表🌟💗
@@ -212,6 +214,8 @@
 		},
 		onLoad(query){
 			this.code = query.code;
+			this.vType = query.type;
+			this.searchQ = query.q || '';
 			this.platform = uni.getSystemInfoSync().platform
 			var model = uni.getSystemInfoSync().model
 			if(this.platform == 'ios' && (model !== 'iPhone6' || model !== 'iPhone6s' || model !== 'iPhone7' || model !== 'iPhone8')){
@@ -394,9 +398,8 @@
 				})
 			},
 			getMore(){
-				console.log('isFetchEnd=',this.isFetchEnd);
 				if(this.isFetchEnd) return;
-				app.http.Get(`dataApi/article/video/detail/list/${this.dataList[this.k].articleCode}`,{fetchSize:10,tp:100},async (res)=>{
+				app.http.Get(`dataApi/article/video/detail/list/${this.dataList[this.k].articleCode}`,{fetchSize:10,tp:this.vType,q:this.searchQ},async (res)=>{
 					console.log('more===',res);
 					this.isFetchEnd = res.isFetchEnd;
 					const list = await res.list.map((x)=>{

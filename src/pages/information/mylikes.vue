@@ -1,6 +1,6 @@
 <template>
   <view class="content">
-    <informationList class="list-box" :list="information" />
+    <informationList class="list-box" :list="information" :type="101"/>
     <empty v-show="empty" />
   </view>
 </template>
