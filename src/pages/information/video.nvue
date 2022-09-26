@@ -325,8 +325,9 @@
 						middle = parseInt(theTime/60);
 						theTime = parseInt(theTime%60);	
 					}
-					this.changeTime = `${Math.round(middle)>9?Math.round(middle):'0'+Math.round(middle)}:${Math.round(theTime)>9?Math.round(theTime):'0'+Math.round(theTime)}`
-					
+					if(!this.dataList[this.k].isShowProgressBarTime){
+						this.changeTime = `${Math.round(middle)>9?Math.round(middle):'0'+Math.round(middle)}:${Math.round(theTime)>9?Math.round(theTime):'0'+Math.round(theTime)}`
+					}
 				}
 			},
 			getTime(){//得到时间函数

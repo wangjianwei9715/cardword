@@ -489,14 +489,30 @@ export default class PlatformManager {
 			uni.$emit("loginSuccess");
 		});
 	}
-	hasLoginToken(cb?:Function){
+	async hasLoginToken(cb?:Function){
 		if(app.token.accessToken == ''){
-			uni.navigateTo({
-				url:'/pages/login/login'
+			const redirect = await this.currentPage();
+			uni.redirectTo({
+				url:`/pages/login/login?redirect=/${redirect}`
 			})
 			return;
 		}
 		cb && cb()
+	}
+	currentPage(){
+		return new Promise((resolve, reject) => {
+			let curPage = getCurrentPages();
+			let route = curPage[curPage.length - 1].route; //获取当前页面的路由
+			let params = curPage[curPage.length - 1].options; //获取当前页面参数，如果有则返回参数的对象，没有参数返回空对象{}
+			let query = '';
+			let keys = Object.keys(params); //获取对象的key 返回对象key的数组
+			if (keys.length > 0) {
+				query = keys.reduce((pre, cur) => {
+					return pre + cur + '=' + params[cur] + '&';
+				}, '?').slice(0, -1);
+			}
+			resolve(route + query)
+		});
 	}
 	lastCharacter(val:string,lastString:string="/"){
 		let newVal = val.charAt(val.length - 1) == lastString ? val.slice(0, val.length - 1) : val;
