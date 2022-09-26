@@ -72,7 +72,6 @@ export default class ClassName extends BaseNode {
     })
 
     this.onEventUI("informationChange", (res: any) => {
-      console.log('change==',res);
       if (res && res.articleCode) {
         let findItem = this.information.find((item: any) => {
           return item.articleCode == res.articleCode;

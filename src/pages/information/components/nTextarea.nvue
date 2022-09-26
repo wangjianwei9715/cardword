@@ -46,7 +46,6 @@
 				this.$emit('blur')
 			},
 			getHeight(event){
-				console.log(event);
 				this.textareaData.height = event.detail.height;
 			}
 		}

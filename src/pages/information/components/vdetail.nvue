@@ -88,7 +88,6 @@
 			this.commentParams = {...commentParams}
 			this.getArticleComment();
 			uni.$on('commentChange',(r)=>{
-				console.log('r===',r);
 				const data = r.data;
 				const res = r.res
 				if(data.replyId==0){
@@ -182,9 +181,7 @@
 				if(commentParams.isFetchEnd){
 					return;
 				}
-				console.log(this.articleData);
 				app.http.Get(`dataApi/article/comment/list/${this.articleData.articleCode}`,commentParams,(res)=>{
-					console.log('list=',res);
 					if(res.list){
 						this.commentsList = commentParams.fetchFrom==1?res.list: [...this.commentsList,...res.list];
 					}

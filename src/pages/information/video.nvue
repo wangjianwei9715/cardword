@@ -244,7 +244,6 @@
 							findItem.isFavorite = res.isFavorite;
 						}
 						findItem.comment = res.comment
-						console.log('findItem=',findItem);
 					}
 				}
 			});
@@ -315,9 +314,7 @@
 				this.changeTime = `${Math.round(middle)>9?Math.round(middle):'0'+Math.round(middle)}:${Math.round(theTime)>9?Math.round(theTime):'0'+Math.round(theTime)}`
 			},
 			timeupdate(event,index){//计算滑块当前位置，计算当前百分小数
-				// console.log(index)
 				if(index == this.k){
-					// console.log(event)
 					var currenttime = event.detail.currentTime
 					this.timeNumber = Math.round(event.detail.duration)
 					this.getTime()
@@ -336,7 +333,6 @@
 			},
 			getTime(){//得到时间函数
 				this.videoTime = this.formatSeconds(this.timeNumber);
-				// console.log(that.videoTime)
 				var msg = []
 				if(this.videoTime !== ''){
 					msg = this.videoTime.split(':')
@@ -400,7 +396,6 @@
 			getMore(){
 				if(this.isFetchEnd) return;
 				app.http.Get(`dataApi/article/video/detail/list/${this.dataList[this.k].articleCode}`,{fetchSize:10,tp:this.vType,q:this.searchQ},async (res)=>{
-					console.log('more===',res);
 					this.isFetchEnd = res.isFetchEnd;
 					const list = await res.list.map((x)=>{
 						return {...x,isShowProgressBarTime:false,state:'stop',isplay:true}
@@ -429,8 +424,6 @@
 					item.state = 'play';
 					uni.createVideoContext(this.dataList[this.k].articleCode,this).play();
 				}
-			
-				console.log(item);
 			},
 			onDetail(){
 				this.showPlan = false;
@@ -464,7 +457,6 @@
 						this.chatData = {...chat}
 						uni.showToast({ title:'评论成功', icon:'none' })
 						uni.$emit('informationChange', kData)
-						console.log(res)
 					})
 				})
 			},
