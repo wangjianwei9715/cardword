@@ -40,13 +40,11 @@
 			
 		}
 		onClickMoreCoupon(){
-			if (app.token.accessToken == '') {
-				uni.navigateTo({ url: '/pages/login/login' })
-				return;
-			}
-			this.getParams = {...paramsInit}
-			this.getCouponList(()=>{
-				this.showDrawer = true;
+			app.platform.hasLoginToken(()=>{
+				this.getParams = {...paramsInit}
+				this.getCouponList(()=>{
+					this.showDrawer = true;
+				})
 			})
 		}
 		getCouponList(cb?:Function){

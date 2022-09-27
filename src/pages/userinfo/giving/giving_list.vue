@@ -8,15 +8,15 @@
 				<view class="icon-search" @click="onClickSearch"></view>
 				<view class="icon-help" @click="onClickShowRule"></view>
 			</view>
-			<view class="header-banner" v-if="sortData!=''">
+			<view class="header-banner">
 				<view class="order-type">
 					<view class="order-type-index" :class="{'type-current':item.type==typeTabCurrent}" v-for="(item,index) in typeTab" :key="index" @click="$u.throttle(()=>{onClickTypeCurrent(item.type)},500)">{{item.name}}</view>
 				</view>
-				<sortTab v-show="typeTabCurrent==2" :sortData="sortData" @postSort="postSort" />
+				<sortTab v-if="typeTabCurrent==2&&sortData!=''" :sortData="sortData" @postSort="postSort" />
 			</view>
 		</view>
 		
-		<view class="box-content">
+		<view class="box-content" :style="typeTabCurrent==1?'padding-top:180rpx;':''">
 			<statusbar/>
 			
 			<view class="card-list" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
@@ -34,7 +34,7 @@
 				</view>
 			</view>
 			
-			<view class="card-box" :style="typeTabCurrent==1?'margin-top:-80rpx':''" v-show="cardSortList!=''">
+			<view class="card-box" v-show="cardSortList!=''">
 				<view class="card-index" v-for="(items,indexs) in cardSortList" :key="indexs" @click="onClickCurrentOrder(items,items.orderCode)">
 					<view class="index-left" :class="{'bingo-name':items.bingo}">{{items.name}}</view>
 					<view  class="index-right">
@@ -47,7 +47,7 @@
 		<view class="giving-bottom">
 			<view v-show="typeTabCurrent==1&&searchText==''" class="giving-bottom-left" @click="onClickMultiple">
 				<view class="multiple" :class="{'multiple-cur':multiple}"></view>
-				<view class="giving-bottom-left-name">全选{{multiple?multipleTotal-excludeNoId.length:0}}条</view>
+				<view class="giving-bottom-left-name">全选{{multipleTotal-excludeNoId.length}}条</view>
 			</view>
 			<view v-show="typeTabCurrent==2||!searchText==''" class="giving-bottom-left"></view>
 			<view class="giving-bottom-right">
@@ -160,6 +160,10 @@
 						this.currentList.push(x.id)
 						this.currentListData.push(data)
 					}
+				}else{
+					if(this.excludeNoId.indexOf(x.id) == -1){
+						this.excludeNoId.push(x.id)
+					}
 				}
 			})
 		}
@@ -265,6 +269,8 @@
 		reqSearchList(){
 			this.currentPage = 1;
 			this.multiple = false;
+			this.cardSortList = [];
+			this.cardList = [];
 			this.currentList= [];
 			this.currentListData = [];
 			this.excludeNoId = [];
