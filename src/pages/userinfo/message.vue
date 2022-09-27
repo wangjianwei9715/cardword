@@ -129,7 +129,7 @@
 		onClickHeli(id:any){
 			// 第三方客服
 			let params = {
-				agentExten:id
+				agentExten:id||''
 			}
 			app.platform.heliService(params)
 		}

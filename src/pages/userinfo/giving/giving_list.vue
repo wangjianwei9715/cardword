@@ -8,22 +8,25 @@
 				<view class="icon-search" @click="onClickSearch"></view>
 				<view class="icon-help" @click="onClickShowRule"></view>
 			</view>
-		    <view class="header-banner" v-if="sortData!=''">
-				<sortTab :sortData="sortData" @postSort="postSort" />
+			<view class="header-banner" v-if="sortData!=''">
+				<view class="order-type">
+					<view class="order-type-index" :class="{'type-current':item.type==typeTabCurrent}" v-for="(item,index) in typeTab" :key="index" @click="$u.throttle(()=>{onClickTypeCurrent(item.type)},500)">{{item.name}}</view>
+				</view>
+				<sortTab v-show="typeTabCurrent==2" :sortData="sortData" @postSort="postSort" />
 			</view>
 		</view>
 		
 		<view class="box-content">
 			<statusbar/>
 			
-			<view class="card-list"  v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
+			<view class="card-list" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
 				<!-- <view class="order-code">
 					<view class="order-code-left"><view class="order-code-box">订单：{{item.orderCode}}</view><view class="order-code-now">{{orderCode==item.orderCode?'当前订单 ':''}}</view></view>
 				</view> -->
 				<view class="card-box">
-					<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs">
+					<view class="card-index" v-for="(items,indexs) in item.noList" :key="indexs" @click="onClickCurrentOrder(items,item.orderCode)">
 						<view class="index-left" :class="{'bingo-name':item.bingo}">{{items.name}}</view>
-						<view  class="index-right" @click="onClickCurrentOrder(items,item.orderCode)">
+						<view  class="index-right">
 							<view class="index-right-currentno" :class="{'index-right-current':checkIDHas(items.id)}"></view>
 						</view>
 					</view>
@@ -31,10 +34,10 @@
 				</view>
 			</view>
 			
-			<view v-show="cardSortList!=''">
-				<view class="card-index" v-for="(items,indexs) in cardSortList" :key="indexs">
+			<view class="card-box" :style="typeTabCurrent==1?'margin-top:-80rpx':''" v-show="cardSortList!=''">
+				<view class="card-index" v-for="(items,indexs) in cardSortList" :key="indexs" @click="onClickCurrentOrder(items,items.orderCode)">
 					<view class="index-left" :class="{'bingo-name':items.bingo}">{{items.name}}</view>
-					<view  class="index-right" @click="onClickCurrentOrder(items,items.orderCode)">
+					<view  class="index-right">
 						<view class="index-right-currentno" :class="{'index-right-current':checkIDHas(items.id)}"></view>
 					</view>
 				</view>
@@ -42,10 +45,11 @@
 		</view>
 		
 		<view class="giving-bottom">
-			<view class="giving-bottom-left" @click="onClickGivingRecord">
-				<view class="giving-record"></view>
-				<view class="giving-bottom-left-name">收增记录</view>
+			<view v-show="typeTabCurrent==1&&searchText==''" class="giving-bottom-left" @click="onClickMultiple">
+				<view class="multiple" :class="{'multiple-cur':multiple}"></view>
+				<view class="giving-bottom-left-name">全选{{multiple?multipleTotal-excludeNoId.length:0}}条</view>
 			</view>
+			<view v-show="typeTabCurrent==2||!searchText==''" class="giving-bottom-left"></view>
 			<view class="giving-bottom-right">
 				<view class="giving-btn" @click="onClickCopyYzm">卡密验证码</view>
 				<view class="giving-btn btn-red" @click="onClickGiving">去赠送</view>
@@ -68,8 +72,14 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		myCardGoodsType = myCardGoodsType;
-		cardList:{[x:string]:any} = [];
-		cardSortList:{[x:string]:any} = [];
+		cardList:any = [];
+		cardSortList:any = [];
+		typeTab = [
+			{name:'当前订单',type:1},
+			{name:'全部订单',type:2}
+		]
+		typeTabCurrent = 1;
+		multiple = false;
 		goodCode = '';
 		orderCode = '';
 		currentPage = 1;
@@ -83,6 +93,8 @@
 		showInvitePopup = false;
 		currentList:any = [];
 		currentListData:any = [];
+		excludeNoId:any = [];
+		multipleTotal = 0;
 		searchText = '';
 		searchEmit = 'givingListSearch'
 		onLoad(query:any) {
@@ -100,7 +112,7 @@
 		}
 		//   加载更多数据
 		onReachBottom() {
-		    this.reqNewData() 
+			this.reqNewData() 
 		}
 		onClickBack(){
 			uni.navigateBack({
@@ -112,11 +124,6 @@
 				url:'/pages/act/ref/ref?searchText='+this.searchText+'&searchEmit='+this.searchEmit
 			})
 		}
-		onClickGivingRecord(){
-			uni.navigateTo({
-				url:'/pages/userinfo/giving/index'
-			})
-		}
 		onClickMore(){
 			this.reqNewData() 
 		}
@@ -126,21 +133,53 @@
 		onClickCancelRulePopup(){
 			this.showRulePopup = false;
 		}
+		onClickMultiple(){
+			this.currentList = [];
+			this.currentListData = [];
+			this.excludeNoId = []
+			if(!this.multiple){
+				if(this.cardList.length>0){
+					for(let i of this.cardList){
+						this.multipleMap(i.noList,i.orderCode)
+					}
+				}else{
+					this.multipleMap(this.cardSortList)
+				}
+			}
+			this.multiple = !this.multiple;
+		}
+		multipleMap(list:any,orderCode?:string){
+			list.map((x:any)=>{
+				if(x.leftTNum>0){
+					let data = {
+						goodOrderCode:orderCode||x.orderCode,
+						noId:x.id,
+						name:x.name,
+					}
+					if(this.currentList.indexOf(x.id) == -1){
+						this.currentList.push(x.id)
+						this.currentListData.push(data)
+					}
+				}
+			})
+		}
 		onClickCurrentOrder(item:any,order:string){
 			if(item.leftTNum<=0){
-				uni.showToast({
-					title:'此编号赠送次数已达上限',
-					icon:'none'
-				})
+				uni.showToast({ title:'此编号赠送次数已达上限', icon:'none' })
 				return;
 			}
 			let idIndex = this.currentList.indexOf(item.id);
+			if(this.multiple){
+				let excIndex = this.excludeNoId.indexOf(item.id);
+				if(excIndex == -1){
+					this.excludeNoId.push(item.id)
+				}else{
+					this.excludeNoId.splice(excIndex,1)
+				}
+			}
 			if(idIndex == -1){
-				if(this.currentList.length>=10){
-					uni.showToast({
-						title:'最多选择十条卡密',
-						icon:'none'
-					})
+				if(!this.multiple && this.currentList.length>=100){
+					uni.showToast({ title:'最多选择一百条卡密', icon:'none' })
 					return;
 				}
 				let data = {
@@ -197,9 +236,11 @@
 				})
 				return;
 			};
-			uni.navigateTo({
-				url:'/pages/userinfo/giving/giving?data='+encodeURIComponent(JSON.stringify(this.currentListData))+'&id='+encodeURIComponent(JSON.stringify(this.currentList))+'&goodCode='+this.goodCode
-			})
+			let url = '/pages/userinfo/giving/giving?data='+encodeURIComponent(JSON.stringify(this.currentListData))+'&id='+encodeURIComponent(JSON.stringify(this.currentList))+'&goodCode='+this.goodCode
+			if(this.multiple){
+				url = `/pages/userinfo/giving/giving?orderCode=${this.orderCode}&excludeNoId=${encodeURIComponent(JSON.stringify(this.excludeNoId))}&data=${encodeURIComponent(JSON.stringify(this.currentListData))}&total=${this.multipleTotal-this.excludeNoId.length}&page=${!this.noMoreData?this.currentPage:1}`
+			}
+			uni.navigateTo({url})
 		}
 		// 复制弹窗关闭
 		onClickInvitePopupCancel(){
@@ -216,10 +257,17 @@
 		checkIDHas(id:number){
 			return this.currentList.indexOf(id) == -1 ? false : true;
 		}
+		onClickTypeCurrent(type:number){
+			if(type == this.typeTabCurrent) return;
+			this.typeTabCurrent = type;
+			this.reqSearchList()
+		}
 		reqSearchList(){
 			this.currentPage = 1;
+			this.multiple = false;
 			this.currentList= [];
 			this.currentListData = [];
+			this.excludeNoId = [];
 			this.noMoreData = false;
 			this.reqNewData()
 		}
@@ -248,6 +296,9 @@
 					if(data.list.length<10){
 						this.cardList[index].hasMore = false;
 					}
+					if(this.multiple){
+						this.multipleMap(data.list)
+					}
 				}
 				
 				if(this.cardList[index].noList.length>=data.total){
@@ -274,8 +325,16 @@
 			if(this.listSort!=''){
 				params.sort = this.listSort
 			}
-			
-			app.http.Get('function/userNo/transfer/good/'+this.goodCode+'/list', params, (data: any) => {
+			let url = `function/userNo/transfer/good/${this.goodCode}/list`
+			if(this.typeTabCurrent == 1){
+				url = `function/userNo/transfer/order/${this.orderCode}/list`;
+				params = {
+					pageIndex: this.currentPage,
+					pageSize:this.pageSize,
+					q:this.searchText
+				}
+			}
+			app.http.Get(url, params, (data: any) => {
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
 				}
@@ -284,15 +343,28 @@
 						this.cardSortList = [];
 						this.cardList = [];
 					}
-					if(this.listSort == ''){
+					if(this.listSort == '' && this.typeTabCurrent==2){
 						this.cardList = this.cardList.concat(data.list);
+						if(this.multiple){
+							for(let i of data.list){
+								this.multipleMap(i.noList,i.orderCode)
+							}
+						}
 					}else{
 						this.cardSortList = this.cardSortList.concat(data.list);
+						this.multipleTotal = data.total
+						if(this.multiple){
+							this.multipleMap(data.list)
+						}
 					}
+
 				}else{
 					this.noMoreData = true;
 				}
 				this.currentPage++;
+				if(this.typeTabCurrent == 1){
+					this.reqNewData()
+				}
 				if(cb) cb()
 			});
 		}
@@ -489,9 +561,9 @@
         position: relative;
         z-index:10;
         box-sizing: border-box;
-        padding:180rpx 15rpx calc(120rpx) 15rpx;
-		padding:180rpx 15rpx calc(120rpx + constant(safe-area-inset-bottom)) 15rpx;
-		padding:180rpx 15rpx calc(120rpx + env(safe-area-inset-bottom)) 15rpx;
+        padding:260rpx 15rpx calc(120rpx) 15rpx;
+		padding:260rpx 15rpx calc(120rpx + constant(safe-area-inset-bottom)) 15rpx;
+		padding:260rpx 15rpx calc(120rpx + env(safe-area-inset-bottom)) 15rpx;
     }
 	.giving-bottom{
 		width: 100%;
@@ -512,16 +584,23 @@
 
 	}
 	.giving-bottom-left{
-		width: 100rpx;
+		width: 120rpx;
 		height:76rpx;
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;
+		margin-top: 10rpx;
 	}
-	.giving-record{
-		width: 45rpx;
-		height:45rpx;
-		background: url(../../../static/userinfo/v2/icon_giving_record.png) no-repeat center;
+	.multiple{
+		width: 34rpx;
+		height:34rpx;
+		background: url(@/static/goods/v2/icon_multiple.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+	.multiple-cur{
+		width: 34rpx;
+		height:34rpx;
+		background: url(@/static/userinfo/v2/icon_current.png) no-repeat center;
 		background-size: 100% 100%;
 	}
 	.giving-bottom-left-name{
@@ -558,5 +637,32 @@
 		border:1px solid $btn-red;
 		background:$btn-red;
 		color:#fff;
+	}
+	.order-type{
+		width: 685rpx;
+		height:62rpx;
+		background:#F2F2F2;
+		margin:0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
+		padding:0 4rpx;
+		margin-bottom: 20rpx;
+	}
+	.order-type-index{
+		width: 338rpx;
+		height:54rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 29rpx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #959699;
+	}
+	.type-current{
+		background:#fff;
+		color:#333;
 	}
 </style>
