@@ -49,7 +49,6 @@ export default class UpdateManager {
   }
 
   initAppUpdate() {
-    if(plus.runtime.channel&&plus.runtime.channel=='huawei') return;
     plus.runtime.getProperty(plus.runtime.appid || '', (widgetInfo) => {
       let myapp = getApp().globalData || {};
       myapp.version = widgetInfo.version

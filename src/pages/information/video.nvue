@@ -256,7 +256,6 @@
 		onReady() {
 		},
 		onUnload(){
-			uni.$off('informationChange');
 			uni.$off('resetLoadmore');
 		},
         methods: {
