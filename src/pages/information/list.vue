@@ -146,13 +146,11 @@ export default class ClassName extends BaseNode {
       q : encodeURIComponent(listParams.q)
     }
     app.http.Get("dataApi/article/homelist", params, (data: any) => {
-      if (data.totalPage <= listParams.pageIndex) {
-        listParams.noMoreData = true;
-      }
-      this.empty = data.total == 0 
-      if (data.list) {
-        this.information = [...this.information,...data.list];
-      }
+      let arr = data.list || [];
+      let list = listParams.pageIndex == 1 ? arr : [...this.information, ...arr];
+      this.information = app.platform.removeDuplicate(list,'articleCode');
+      this.empty = data.total == 0;
+      listParams.noMoreData = data.totalPage <= listParams.pageIndex;
       listParams.pageIndex++;
       if (cb) cb();
     });
