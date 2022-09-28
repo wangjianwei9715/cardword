@@ -847,7 +847,7 @@ page {
   margin-left: 0;
 }
 .goods-money-right {
-  width: 290rpx;
+  width: 200rpx;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
@@ -856,12 +856,14 @@ page {
 .goods-money-right-header {
   width: 100%;
   height: 50rpx;
+  box-sizing: border-box;
   line-height: 50rpx;
   font-size: 21rpx;
   color: #FF2727;
   text-align: center;
   padding-right: 12rpx;
   padding-left: 12rpx;
+  padding-top: 10rpx;
 }
 .goods-money-add {
   margin-right: 12rpx;

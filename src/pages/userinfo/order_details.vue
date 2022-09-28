@@ -381,18 +381,11 @@ import { Md5 } from "ts-md5";
 			app.navigateTo.goGoodsDetails(this.orderData.good.goodCode)
 		}
 		onClickKefu(){
-			if(this.orderData.kefu>0){
-				let params = {
-					agentExten:this.orderData.kefu,
-					businessParam:'goodCode:'+this.orderData.good.goodCode
-				}
-				app.platform.heliService(params)
-			}else{
-				uni.showToast({
-					title:'当前商品暂无客服',
-					icon:'none'
-				})
+			let params = {
+				agentExten:this.orderData.kefu||'',
+				businessParam:'goodCode:'+this.orderData.good.goodCode
 			}
+			app.platform.heliService(params)
 		}
 		onClickOperate(cmd:any){
 			let params:{[x:string]:any}

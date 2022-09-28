@@ -1,6 +1,6 @@
 <template>
   <view class="content">
-    <informationList class="list-box" :list="information" />
+    <informationList class="list-box" :list="information" :type="101"/>
     <empty v-show="empty" />
   </view>
 </template>
@@ -37,9 +37,6 @@ export default class ClassName extends BaseNode {
     });
     this.reqNewData();
   }
-  onUnload(){
-			uni.$off('informationChange');
-		}
   //   加载更多数据
   onReachBottom() {
     this.reqNewData();

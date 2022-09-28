@@ -212,7 +212,7 @@
 		onClickServiceTab(item:any){
 			if(item.name=='联系客服'){
 				let params = {
-					agentExten:this.infoData.kefuUserId[0]
+					agentExten:this.infoData.kefuUserId[0]||''
 				}
 				app.platform.heliService(params)
 			}

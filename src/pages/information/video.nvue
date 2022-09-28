@@ -126,6 +126,8 @@
 				showDetail:false,
 				showPlan:true,
 				resetLoadmored:false,
+				searchQ:'',
+				vType:100,
 				//下面打🌟号的是必须要的基础字段
 				//下面打💗号的是拥有滑动条的必须字段
 				dataList:[],//用于数据循环的列表🌟💗
@@ -212,6 +214,8 @@
 		},
 		onLoad(query){
 			this.code = query.code;
+			this.vType = query.type;
+			this.searchQ = query.q || '';
 			this.platform = uni.getSystemInfoSync().platform
 			var model = uni.getSystemInfoSync().model
 			if(this.platform == 'ios' && (model !== 'iPhone6' || model !== 'iPhone6s' || model !== 'iPhone7' || model !== 'iPhone8')){
@@ -240,7 +244,6 @@
 							findItem.isFavorite = res.isFavorite;
 						}
 						findItem.comment = res.comment
-						console.log('findItem=',findItem);
 					}
 				}
 			});
@@ -253,7 +256,6 @@
 		onReady() {
 		},
 		onUnload(){
-			uni.$off('informationChange');
 			uni.$off('resetLoadmore');
 		},
         methods: {
@@ -311,9 +313,7 @@
 				this.changeTime = `${Math.round(middle)>9?Math.round(middle):'0'+Math.round(middle)}:${Math.round(theTime)>9?Math.round(theTime):'0'+Math.round(theTime)}`
 			},
 			timeupdate(event,index){//计算滑块当前位置，计算当前百分小数
-				// console.log(index)
 				if(index == this.k){
-					// console.log(event)
 					var currenttime = event.detail.currentTime
 					this.timeNumber = Math.round(event.detail.duration)
 					this.getTime()
@@ -325,13 +325,13 @@
 						middle = parseInt(theTime/60);
 						theTime = parseInt(theTime%60);	
 					}
-					this.changeTime = `${Math.round(middle)>9?Math.round(middle):'0'+Math.round(middle)}:${Math.round(theTime)>9?Math.round(theTime):'0'+Math.round(theTime)}`
-					
+					if(!this.dataList[this.k].isShowProgressBarTime){
+						this.changeTime = `${Math.round(middle)>9?Math.round(middle):'0'+Math.round(middle)}:${Math.round(theTime)>9?Math.round(theTime):'0'+Math.round(theTime)}`
+					}
 				}
 			},
 			getTime(){//得到时间函数
 				this.videoTime = this.formatSeconds(this.timeNumber);
-				// console.log(that.videoTime)
 				var msg = []
 				if(this.videoTime !== ''){
 					msg = this.videoTime.split(':')
@@ -393,10 +393,8 @@
 				})
 			},
 			getMore(){
-				console.log('isFetchEnd=',this.isFetchEnd);
 				if(this.isFetchEnd) return;
-				app.http.Get(`dataApi/article/video/detail/list/${this.dataList[this.k].articleCode}`,{fetchSize:10,tp:100},async (res)=>{
-					console.log('more===',res);
+				app.http.Get(`dataApi/article/video/detail/list/${this.dataList[this.k].articleCode}`,{fetchSize:10,tp:this.vType,q:this.searchQ},async (res)=>{
 					this.isFetchEnd = res.isFetchEnd;
 					const list = await res.list.map((x)=>{
 						return {...x,isShowProgressBarTime:false,state:'stop',isplay:true}
@@ -425,8 +423,6 @@
 					item.state = 'play';
 					uni.createVideoContext(this.dataList[this.k].articleCode,this).play();
 				}
-			
-				console.log(item);
 			},
 			onDetail(){
 				this.showPlan = false;
@@ -460,7 +456,6 @@
 						this.chatData = {...chat}
 						uni.showToast({ title:'评论成功', icon:'none' })
 						uni.$emit('informationChange', kData)
-						console.log(res)
 					})
 				})
 			},
@@ -597,6 +592,8 @@
 		color: #ffffff;
 		margin-top: 18rpx;
 		line-height: 38rpx;
+		text-overflow: ellipsis; /* 超出部分省略号 */
+    	lines:1; /* 超出固定行数显示省略号 */
 	}
 	.words {
 		font-size: 25rpx;

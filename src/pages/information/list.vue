@@ -23,7 +23,7 @@
 				</swiper-item>
 			</swiper>
 
-      <informationList class="list-box" :list="information" />
+      <informationList class="list-box" :list="information" :type="tabData.list[tabData.current].id"/>
       <empty v-show="empty" />
     </view>
   </view>
@@ -63,14 +63,15 @@ export default class ClassName extends BaseNode {
   }
   information: any = [];
   empty = false;
+  appToken = ''
   onLoad(query: any) {
+    this.appToken = app.token.accessToken;
     this.reqNewData();
     app.http.Get('dataApi/article/showy/list',{},(res:any)=>{
       this.AD_List = res.list || []
     })
 
     this.onEventUI("informationChange", (res: any) => {
-      console.log('change==',res);
       if (res && res.articleCode) {
         let findItem = this.information.find((item: any) => {
           return item.articleCode == res.articleCode;
@@ -82,6 +83,11 @@ export default class ClassName extends BaseNode {
         }
       }
     });
+  }
+  onShow(){
+    if(this.appToken != app.token.accessToken){
+      this.onClickSearch()
+    }
   }
   onUnload(){
     uni.$off('informationChange');
@@ -107,6 +113,7 @@ export default class ClassName extends BaseNode {
   onClickSearch() {
     // 搜索
     const { listParams } = this;
+    this.information = [];
     listParams.pageIndex = 1;
     listParams.noMoreData = false;
     this.reqNewData();
@@ -124,7 +131,7 @@ export default class ClassName extends BaseNode {
     })
   }
   onClickSwiper(item:any){
-    app.navigateTo.goInformationDetail(item,1)
+    app.navigateTo.goInformationDetail(item,100,1)
   }
   reqNewData(cb?: Function) {
     // 获取更多商品
@@ -139,13 +146,11 @@ export default class ClassName extends BaseNode {
       q : encodeURIComponent(listParams.q)
     }
     app.http.Get("dataApi/article/homelist", params, (data: any) => {
-      if (data.totalPage <= listParams.pageIndex) {
-        listParams.noMoreData = true;
-      }
-      this.empty = data.total == 0 
-      if (data.list) {
-        this.information = [...this.information,...data.list];
-      }
+      let arr = data.list || [];
+      let list = listParams.pageIndex == 1 ? arr : [...this.information, ...arr];
+      this.information = app.platform.removeDuplicate(list,'articleCode');
+      this.empty = data.total == 0;
+      listParams.noMoreData = data.totalPage <= listParams.pageIndex;
       listParams.pageIndex++;
       if (cb) cb();
     });

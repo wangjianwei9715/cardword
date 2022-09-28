@@ -20,7 +20,7 @@
 				</view>
 			</view>
 			<view class="box-index">
-				<view class="box-index-code">卡密信息</view>
+				<view class="box-index-code">卡密信息{{orderCode!=''?`:订单（${orderCode}）中所有卡密${orderTotal}条`:''}}</view>
 				<view class="box-index-name" v-for="(item,index) in orderData" :key="index">{{item.name}}</view>
 			</view>
 		</view>
@@ -56,11 +56,21 @@
 		idData:any = [];
 		userGet = false;
 		goodCode = '';
-		explain = '赠送须知：平台提供卡密赠送功能，仅用于好友之间相互赠送，不得作为其他用途。在赠送时请您仔细核对对方信息，赠送后将无法撤回！请悉知'
+		explain = '赠送须知：平台提供卡密赠送功能，仅用于好友之间相互赠送，不得作为其他用途。在赠送时请您仔细核对对方信息，赠送后将无法撤回！请悉知';
+		orderCode = '';
+		orderTotal = 0;
+		excludeNoId:any = [];
 		onLoad(query:any) {
-			this.orderData = JSON.parse(query.data);
-			this.idData = JSON.parse(query.id);
-			this.goodCode = query.goodCode
+			if(query.orderCode){
+				this.orderCode = query.orderCode;
+				this.orderData = JSON.parse(query.data);
+				this.excludeNoId = JSON.parse(query.excludeNoId);
+				this.orderTotal = query.total;
+			}else{
+				this.orderData = JSON.parse(query.data);
+				this.idData = JSON.parse(query.id);
+				this.goodCode = query.goodCode;
+			}
 		}
 		onShow(){
 			app.platform.getInvitationClipboard((val:string)=>{
@@ -120,30 +130,39 @@
 							})
 							return;
 						}
-						let ts = Math.floor(new Date().getTime()/1000);
-						let idSign = this.idData.join(',');
-						let params = {
-							goodCode:this.goodCode,
-							noId:this.idData,
-							ts:ts,
-							userId:Number(this.userId),
-							sign:Md5.hashStr('applyTransfer_'+ts+'_'+this.goodCode+'_'+idSign+'_'+this.userId)
-						}
-						console.log('applyTransfer_'+ts+'_'+this.goodCode+'_'+idSign+'_'+this.userId)
-						app.http.Post('function/userNo/transfer/applyBatch',params,(res:any)=>{
-							uni.showToast({
-								title:'赠送成功',
-								icon:'none'
-							})
-							uni.switchTab({
-								url: '/pages/index/userinfo'
-							});
-						})
+						this.givingPost();
 					} else if (res.cancel) {
 						console.log('用户点击取消');
 					}
 				}
 			});
+		}
+		givingPost(){
+			let ts = Math.floor(new Date().getTime()/1000);
+			let params:any = {
+				ts:ts,
+				userId:Number(this.userId),
+			}
+			const order = this.orderCode!='';
+			let idSign = order ? this.excludeNoId.join(',') : this.idData.join(',');
+			if(!order){
+				params.goodCode = this.goodCode;
+				params.noId = this.idData;
+			}else{
+				params.orderCode = this.orderCode;
+				params.excludeNoId = this.excludeNoId
+			}
+			params.sign = Md5.hashStr(`applyTransfer_${ts}_${order?this.orderCode:this.goodCode}_${idSign}_${this.userId}`)
+			uni.showLoading({
+				title: '赠送中'
+			});
+			app.http.Post(`function/userNo/transfer/${order?'goodOrder/':''}applyBatch`,params,(res:any)=>{
+				uni.hideLoading()
+				uni.showToast({ title:'赠送成功', icon:'none' })
+				uni.switchTab({
+					url: '/pages/index/userinfo'
+				});
+			})
 		}
 		inputConfirm(val:any){
 			let ts = Math.floor(new Date().getTime()/1000);

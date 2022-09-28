@@ -219,7 +219,7 @@
 			@cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy" />
 
 		<!-- 底部弹窗 -->
-		<bottomDrawer :showDrawer="showDrawer" :title="'拼团规则'" @closeDrawer="onClickCloseDrawer">
+		<bottomDrawer :showDrawer.sync="showDrawer" :title="'拼团规则'">
 			<view class="drawer-box" v-for="(item,index) in goodsDetailHelp" :key="index">
 				<view class="drawer-help" v-html="item.content"></view>
 			</view>
@@ -238,12 +238,8 @@
 </template>
 
 <script lang="ts">
-	import {
-		app
-	} from "@/app";
-	import {
-		Component
-	} from "vue-property-decorator";
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import {
 		getGoodsPintuanDetail,
@@ -251,14 +247,8 @@
 		getGoodsPintuanSpe,
 		getGoodsRandomSpe
 	} from '@/tools/switchUtil';
-	import {
-		goodsDetailRules,
-		goodsDetailHelp
-	} from "@/net/DataRules";
-	import {
-		goodDetailSpe,
-		goodDetailStep
-	} from "@/net/DataExchange"
+	import { goodsDetailRules, goodsDetailHelp } from "@/net/DataRules";
+	import { goodDetailSpe, goodDetailStep } from "@/net/DataExchange"
 	import { Md5 } from "ts-md5";
 	import { parsePic } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
@@ -513,48 +503,30 @@
 		}
 		onClickTipBtn(item: any) {
 			if (item.id == 1) {
-				if (app.token.accessToken == '') {
-					uni.navigateTo({ url: '/pages/login/login' })
-					return;
-				}
-				if (this.goodsData.kefu > 0) {
-					// 第三方客服
+				app.platform.hasLoginToken(()=>{
 					let params = {
-						agentExten:this.goodsData.kefu,
+						agentExten:this.goodsData.kefu||'',
 						businessParam:'goodCode:'+this.goodCode
 					}
 					app.platform.heliService(params)
-				} else {
-					uni.showToast({
-						title: '当前商品暂无客服',
-						icon: 'none'
-					})
-				}
-
+				})
 			}
-
 			if (item.id == 2) {
 				uni.navigateTo({ url: '/pages/userinfo/order_myCard?code=&goodCode=' + this.goodCode })
-
 			}
 		}
 		onClickBack() {
 			uni.navigateBack({ delta: 1 });
 		}
 		onClickShops() {
-			// #ifndef MP
-			if (app.token.accessToken == '') {
-				uni.navigateTo({ url: '/pages/login/login' })
-				return;
-			}
-			// #endif
-			const publisher = this.goodsData.publisher
-			this.goMerchantPage(publisher.alias)
+			app.platform.hasLoginToken(()=>{
+				const publisher = this.goodsData.publisher
+				this.goMerchantPage(publisher.alias)
+			})
 		}
 		onClickAllCard(data ? : any) {
 			const gooData = this.goodsData
 			let url = `/pages/goods/all_good_card?code=${gooData.goodCode}&type=${gooData.pintuan_type}`;
-
 			uni.navigateTo({ url: data ? `${url}&teamId=${data.id}` : url })
 		}
 		// 分享
@@ -610,44 +582,36 @@
 			//#endif
 		}
 		onClickBuy() {
-			if (app.token.accessToken == '') {
+			app.platform.hasLoginToken(()=>{
+				const { goodsData } = this
+				if(this.getPriceStart()) {
+					this.isPullDown(false)
+				}
+				// 自选球队
+				if (goodsData.isSelect) {
+					this.getGoodSelect(() => {
+						this.getGoodSelectBranch();
+						this.getGoodSelectCart()
+						this.choiceTeamData.teamCheckShow = true;
+					})
+					return;
+				}
+				// 自选随机球队
+				if (goodsData.pintuan_type == 11 || goodsData.pintuan_type == 12) {
+					this.getGoodSelectTeamRandom(() => {
+						this.choiceTRData.show = true;
+					})
+					return;
+				}
+				if (this.goodSurplusNum <= 0) {
+					uni.showToast({ title: '该商品已售罄', icon: 'none' })
+					return;
+				}
 				uni.navigateTo({
-					url: '/pages/login/login'
+					url: `confirmorder?data=${encodeURIComponent(JSON.stringify(goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}`
 				})
-				return;
-			}
-			const goodData = this.goodsData
-			if(goodData.isSelect || (goodData.pintuan_type == 11 || goodData.pintuan_type == 12)) {
-				this.isPullDown(false)
-			}
-			// 自选球队
-			if (goodData.isSelect) {
-				this.getGoodSelect(() => {
-					this.getGoodSelectBranch();
-					this.getGoodSelectCart()
-					this.choiceTeamData.teamCheckShow = true;
-				})
-				return;
-			}
-			// 自选随机球队
-			if (goodData.pintuan_type == 11 || goodData.pintuan_type == 12) {
-				this.getGoodSelectTeamRandom(() => {
-					this.choiceTRData.show = true;
-				})
-				return;
-			}
-			if (this.goodSurplusNum <= 0) {
-				uni.showToast({
-					title: '该商品已售罄',
-					icon: 'none'
-				})
-				return;
-			}
-			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(goodData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}`
 			})
 		}
-
 		onClickResult(chooseID: number) {
 			let random = this.goodsData.pintuan_type == 10 ? true : false
 			uni.navigateTo({
@@ -656,15 +620,11 @@
 		}
 		onClickLive() {
 			if(this.source=='livePage') {
-				uni.navigateBack({
-					delta:1
-				})
+				uni.navigateBack({ delta:1 })
 				return
 			}
 			if (this.goodsData.broadcast.third&&this.goodsData.broadcast.third == 1001) {
-				const {
-					publisher
-				} = this.goodsData
+				const { publisher } = this.goodsData
 				app.platform.goZgLive({
 					roomID:this.goodsData.broadcast.roomId,
 					merchantId:publisher.id,
@@ -696,7 +656,8 @@
 			this.getGoodSelect()
 		}
 		getPriceStart() {
-			return this.goodsData.isSelect || this.goodsData.pintuan_type == 11 || this.goodsData.pintuan_type == 12
+			const { goodsData } = this
+			return goodsData.isSelect || goodsData.pintuan_type == 11 || goodsData.pintuan_type == 12
 		}
 		getSelectType() {
 			switch (this.goodsData.pintuan_type) {
@@ -876,10 +837,7 @@
 		}
 		toConfirmorder(params:string){
 			if((this.goodsData.state==0)){
-				uni.showToast({
-					title:'暂未开售',
-					icon:'none'
-				})
+				uni.showToast({ title:'暂未开售', icon:'none' })
 				return;
 			}
 			uni.navigateTo({
@@ -944,13 +902,10 @@
 				str
 			}
 		}
-		onClickCloseDrawer() {
-			this.showDrawer = false;
-		}
 		// 商品剩余数量
 		public get goodSurplusNum() : number {
-			const goodData = this.goodsData;
-			return goodData.totalNum - (goodData.currentNum + goodData.lockNum)
+			const { goodsData } = this;
+			return goodsData.totalNum - (goodsData.currentNum + goodsData.lockNum)
 		}
 	}
 </script>

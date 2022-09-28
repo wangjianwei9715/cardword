@@ -71,27 +71,29 @@
 			}
 		}
 		onClickTabbar(str:string){
-			if(str == 'comment'){
-				this.$emit('comment')
-			}else if( str == 'likes' || str == 'favorite'){
-				const isLikes = str == 'likes';
-				const url = isLikes ? 'like/or/cancel' : 'favorite/or/unFavorite'
-				app.http.Post(`article/${url}/${this.data.articleCode}`,{},(res:any)=>{
-					this.tabbarData[str].boolean = isLikes ? res.liked : res.isFavorite;
-					this.tabbarData[str].num = isLikes ? res.likes : res.favorite;
+			app.platform.hasLoginToken(()=>{
+				if(str == 'comment'){
+					this.$emit('comment')
+				}else if( str == 'likes' || str == 'favorite'){
+					const isLikes = str == 'likes';
+					const url = isLikes ? 'like/or/cancel' : 'favorite/or/unFavorite'
+					app.http.Post(`article/${url}/${this.data.articleCode}`,{},(res:any)=>{
+						this.tabbarData[str].boolean = isLikes ? res.liked : res.isFavorite;
+						this.tabbarData[str].num = isLikes ? res.likes : res.favorite;
 
-					if(isLikes){
-						const data = {
-							articleCode:this.data.articleCode,
-							isLikes:res.liked,
-							comment:this.tabbarData.comment.num,
-							likes:res.likes
+						if(isLikes){
+							const data = {
+								articleCode:this.data.articleCode,
+								isLikes:res.liked,
+								comment:this.tabbarData.comment.num,
+								likes:res.likes
+							}
+							uni.$emit('informationChange', data)
 						}
-						uni.$emit('informationChange', data)
-					}
-					
-				})
-			}
+						
+					})
+				}
+			})
 		}
 		
 	}

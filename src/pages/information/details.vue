@@ -86,7 +86,6 @@
 						summary:this.articleData.title,    
 						thumb:decodeURIComponent(this.articleData.cover)
 					}
-					console.log(this.shareData)
 				}
 				this.operationShow = true;
 			}
@@ -105,8 +104,6 @@
 				return;
 			}
 			app.http.Get(`dataApi/article/comment/list/${this.code}`,commentParams,(res:any)=>{
-				console.log(res);
-				
 				commentParams.isFetchEnd = res.isFetchEnd;
 				commentParams.fetchFrom += commentParams.fetchSize
 				if(res.list){
@@ -160,7 +157,6 @@
 					this.chatData = {...chat}
 					uni.showToast({ title:'评论成功', icon:'none' })
 					uni.$emit('informationChange', articleData)
-					console.log(res)
 				})
 			})
 		}

@@ -56,7 +56,6 @@
 			},
 			deleteHeight:function(val){
 				this.tabHeight = uni.upx2px(124) + val;
-				console.log(val);
 			}
 		},
 		mounted() {
@@ -97,7 +96,6 @@
 						}else if( str == 'likes' || str == 'favorite'){
 							const isLikes = str == 'likes';
 							const url = isLikes ? 'like/or/cancel' : 'favorite/or/unFavorite'
-							console.log(`article/${url}/${this.data.articleCode}`);
 							app.http.Post(`article/${url}/${this.data.articleCode}`,{},(res)=>{
 								this.tabbarData[str].boolean = isLikes ? res.liked : res.isFavorite;
 								this.tabbarData[str].num = isLikes ? res.likes : res.favorite;

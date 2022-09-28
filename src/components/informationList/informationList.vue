@@ -38,7 +38,10 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		list:any;
-
+		@Prop({default:100})
+		type:any;
+		@Prop({default:''})
+		q:any;
 		formatMinute = formatMinute
 		created(){//在实例创建完成后被立即调用
 			
@@ -49,7 +52,7 @@
 			
 		}
 		onClickJumpUrl(item:any){
-			app.navigateTo.goInformationDetail(item)
+			app.navigateTo.goInformationDetail(item,this.type,0,this.q)
 		}
 		onClickLike(item:any){
 			app.platform.hasLoginToken(()=>{

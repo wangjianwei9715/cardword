@@ -72,7 +72,7 @@
 		defaultAvatar = app.defaultAvatar;
 		publisher: any = [];
 		currentPage = 1;
-		pageSize = 20;
+		pageSize = 10;
 		totalPage = 0;
 		liveList = [];
 		onLoad(query: any) {
@@ -99,33 +99,6 @@
 			}
 		}
 		toPage(item: any) {
-			// console.log(item)
-			// const jumpMap: any = {
-			// 	在售: {
-			// 		url: "/pages/goods/goods_details?id=" + item.goodCode
-			// 	},
-			// 	拆卡回放: {
-			// 		fn: app.platform.goWeChatLive,
-			// 		query: {
-			// 			playCode: item.playCode,
-			// 			goodCode: item.goodCode
-			// 		}
-			// 	},
-			// 	直播中: {
-			// 		fn: app.platform.goWeChatLive,
-			// 		query: {
-			// 			playCode: item.playCode,
-			// 			goodCode: item.goodCode
-			// 		}
-			// 	}
-			// };
-			// const aboutPointer = jumpMap[item.stateName];
-			// if (aboutPointer && aboutPointer.fn) aboutPointer.fn(aboutPointer.query);
-			// if (aboutPointer && aboutPointer.url) {
-			// 	uni.navigateTo({
-			// 		url: aboutPointer.url
-			// 	});
-			// }
 			app.navigateTo.goGoodsDetails(item.goodCode)
 		}
 		followSuccess(event: any, item: any) {
@@ -158,22 +131,8 @@
 			app.http.Get("dataApi/merchant/list", params, (data: any) => {
 				this.totalPage = data.totalPage;
 				let arr = data.list || [];
-				// arr.forEach((item: any) => {
-				// 	item.goodList = [];
-				// 	if (item.goodData && Object.keys(item.goodData).length) {
-				// 		item.goodData.saleList = item.goodData.saleList || [];
-				// 		item.goodData.uploadList = item.goodData.uploadList || [];
-				// 		item.goodData.saleList.forEach(
-				// 			(saleItem: any) => (saleItem.stateName = "在售")
-				// 		);
-				// 		item.goodList = [
-				// 			...item.goodData.saleList,
-				// 			...item.goodData.uploadList
-				// 		];
-				// 	}
-				// });
-				if (this.currentPage === 1) this.publisher = [];
-				this.publisher = [...this.publisher, ...arr];
+				let list = this.currentPage == 1 ? arr : [...this.publisher, ...arr];
+				this.publisher = app.platform.removeDuplicate(list,'id')
 				cb && cb();
 			});
 		}

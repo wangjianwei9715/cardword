@@ -588,6 +588,7 @@
 					"style": { 
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
+						"navigationBarTextStyle":"white",
 						"app-plus": {
 							"bounce":"none",
 							"softinputMode": "adjustPan",
