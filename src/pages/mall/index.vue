@@ -633,7 +633,7 @@
 			box-sizing: border-box;
 			padding: 0 12rpx;
 			position: relative;
-			margin-bottom: 8.5 rpx;
+			margin-bottom: 8.5rpx;
 		}
 
 		.point-index:nth-child(3n) {
