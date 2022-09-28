@@ -183,7 +183,7 @@ import { Component } from "vue-property-decorator";
 	.order-list{
 		width: 100%;
 		box-sizing: border-box;
-		padding: 204rpx 20rpx 130rpx 20rpx;
+		padding: 204rpx 14rpx 130rpx 14rpx;
 	}
 	.header-title{
 		font-size: 34rpx;
