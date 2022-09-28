@@ -76,7 +76,7 @@
 		onClickLookCard(item:any){
 			if(item.state!=2) return;
 
-			app.http.Get('me/cardNo/'+item.id+'/hit/pic',{},(res:any)=>{
+			app.http.Get('me/cardNo/'+item.id+'/hit/pic',{partition:item.partition?item.partition:''},(res:any)=>{
 				this.picList = [];
 				let list = res.listCdn || res.list
 				for(let i in list){
