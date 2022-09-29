@@ -34,23 +34,24 @@ export function getGoodsPintuanDetail(state:number){
     }
 }
 // 商品列表拼团形式
-export function getGoodsPintuan(state:number){
+export function getGoodsPintuan(state:number,english=false){
     // 拼团形式 1 随机卡种 2 随机球队 3 随机球员 4 随机卡包 5 随机卡盒  10 自选买队 11 选队随机  
+    const random = english ? 'random' : '随机'
     switch(state){
         case 1:
-            return '随机卡种';
+            return `${random}卡种`;
         case 2:
-            return '随机球队';
+            return `${random}球队`;
         case 3:
-            return '随机球员';
+            return `${random}球员`;
         case 4:
-            return '随机卡盒';
+            return `${random}卡盒`;
         case 5:
-            return '随机卡包';
+            return `${random}卡包`;
         case 10:
             return '自选球队';
         case 11:
-            return '选队随机';
+            return `选队${random}`;
         case 12:
             return '自选卡种';
         default:

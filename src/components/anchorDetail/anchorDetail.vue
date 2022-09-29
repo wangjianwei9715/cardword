@@ -30,7 +30,7 @@
 					</view>
 					<view class="info-title">{{detailData.title}}</view>
 					<view class="goods-info-box">
-						<view class="info-type">{{getGoodsPintuan(detailData.pintuanType)}}</view>
+						<view class="info-type">{{getGoodsPintuan(detailData.pintuanType,true)}}</view>
 						<view class="info-type info-num">{{detailData.specName}}</view>
 					</view>
 					<view class="cuo-go" @click="onClickGoRub()">

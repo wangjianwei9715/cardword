@@ -29,7 +29,7 @@
 						</view>
 					</view>
 					<view class="goods-info-box">
-						<view class="info-type">{{getGoodsPintuan(item.pintuanType)}}</view>
+						<view class="info-type">{{getGoodsPintuan(item.pintuanType,true)}}</view>
 						<view class="info-type info-num">{{item.specName}}</view>
 						<view class="info-waitnum">{{item.waitCuoka}}</view>
 					</view>
