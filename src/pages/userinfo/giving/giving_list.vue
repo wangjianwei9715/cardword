@@ -16,7 +16,7 @@
 			</view>
 		</view>
 		
-		<view class="box-content" :style="typeTabCurrent==1?'padding-top:180rpx;':''">
+		<view class="box-content" :style="typeTabCurrent==1||cardSortList==''?'padding-top:180rpx;':''">
 			<statusbar/>
 			
 			<view class="card-list" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
