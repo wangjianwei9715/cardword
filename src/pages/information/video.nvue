@@ -268,8 +268,8 @@
 			onClickShare(){
 				uni.$u.throttle(()=>{
 					this.shareData = {
+						shareUrl:"share/h5/index.html#/pages/information/index?code="+this.code,
 						title: this.dataList[this.k].title,
-						shareUrl: `share/h5/#/pages/live/liveShare`,
 						summary: this.dataList[this.k].title,
 						thumb: decodeURIComponent(this.dataList[this.k].cover)
 					};
