@@ -20,7 +20,7 @@
 				</view>
 			</view>
 			<view class="box-index">
-				<view class="box-index-code">卡密信息{{orderCode!=''?`:订单（${orderCode}）中所有卡密${orderTotal}条`:''}}</view>
+				<view class="box-index-code">卡密信息{{orderCode!=''?`:订单（${orderCode}）中卡密${orderTotal}条`:''}}</view>
 				<view class="box-index-name" v-for="(item,index) in orderData" :key="index">{{item.name}}</view>
 			</view>
 		</view>

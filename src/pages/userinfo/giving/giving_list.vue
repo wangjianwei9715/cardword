@@ -47,10 +47,9 @@
 		<view class="giving-bottom">
 			<view v-show="typeTabCurrent==1&&searchText==''" class="giving-bottom-left" @click="onClickMultiple">
 				<view class="multiple" :class="{'multiple-cur':multiple}"></view>
-				<view class="giving-bottom-left-name">全选{{multipleTotal-excludeNoId.length}}条</view>
+				<view class="giving-bottom-left-name">{{excludeNoId.length>0?'已':'全'}}选{{multipleTotal-excludeNoId.length}}条</view>
 			</view>
-			<view v-show="typeTabCurrent==2||!searchText==''" class="giving-bottom-left"></view>
-			<view class="giving-bottom-right">
+			<view class="giving-bottom-right" :class="{'no-left':typeTabCurrent==2||searchText!=''}">
 				<view class="giving-btn" @click="onClickCopyYzm">卡密验证码</view>
 				<view class="giving-btn btn-red" @click="onClickGiving">去赠送</view>
 			</view>
@@ -623,6 +622,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+	}
+	.no-left{
+		width: 100%;
+	}
+	.no-left .giving-btn{
+		width: 340rpx;
 	}
 	.giving-btn{
 		width: 280rpx;
