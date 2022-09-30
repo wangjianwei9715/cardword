@@ -40,7 +40,7 @@
 		    this.reqNewData() 
 		}
 		onClickGetPic(item:any){
-			app.http.Get('me/cardNo/'+item.id+'/hit/pic',{},(res:any)=>{
+			app.http.Get(`me/cardNo/${item.uuid&&item.uuid!=''?item.uuid:item.id}/hit/pic`,{},(res:any)=>{
 				this.picList = [];
 				for(let i in res.list){
 					this.picList.push(decodeURIComponent(res.list[i]))
