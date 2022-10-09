@@ -178,6 +178,7 @@
         onClickAgainCreate(item: any) {
             this.createCouponShow = true
             setTimeout(() => {
+				//@ts-ignore
                 this.$refs.merchantCoupon.couponData = {
                     goodCode: this.goodCode,
                     amount: item.amount,
