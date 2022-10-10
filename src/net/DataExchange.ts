@@ -130,7 +130,7 @@ export var palyArray = [
         value: 2
     },
     {
-        name: "随即卡包",
+        name: "随机卡包",
         value: 5
     }
 ]

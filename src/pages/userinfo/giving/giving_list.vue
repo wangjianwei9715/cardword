@@ -15,8 +15,7 @@
 				<sortTab v-if="typeTabCurrent==2&&sortData!=''" :sortData="sortData" @postSort="postSort" />
 			</view>
 		</view>
-		
-		<view class="box-content" :style="typeTabCurrent==1||cardSortList==''?'padding-top:180rpx;':''">
+		<view class="box-content" :class="{'pa180':typeTabCurrent==1||sortData==''}">
 			<statusbar/>
 			
 			<view class="card-list" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
@@ -675,5 +674,8 @@
 	.type-current{
 		background:#fff;
 		color:#333;
+	}
+	.pa180{
+		padding-top:180rpx !important;
 	}
 </style>

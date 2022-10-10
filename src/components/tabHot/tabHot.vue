@@ -1,7 +1,7 @@
 <template>
 	<view class="tab-hot">
 		<view class="tab-hot-box" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(name)">
-			<image class="hot-bg" :src="item.bg.src" :style="`width:${item.bg.width};height:${item.bg.height}`"></image>
+			<view class="hot-bg" :style="`width:${item.bg.width};height:${item.bg.height};background:url(${item.bg.src}) no-repeat center/100% 100%`"></view>
 			<view class="tab-index">
 				<view class="tab-index-left">
 					<view class="tab-hot-boxtitle">{{item.title}}</view>
@@ -109,6 +109,10 @@
 		padding:15rpx 0 0 10rpx;
 		border-radius: 5rpx;
 	}
+	.hot-bg{
+		position: relative;
+		z-index: 2 !important;
+	}
 	.tab-index{
 		width: 100%;
 		height:150rpx;
@@ -117,6 +121,7 @@
 		top:0;
 		display: flex;
 		align-items: center;
+		z-index: 10 !important;
 	}
 	.tab-index-left{
 		width: 134rpx;

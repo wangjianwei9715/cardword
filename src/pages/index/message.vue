@@ -42,7 +42,6 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		dynamicData:any = [];
-		buckedList:any = [];
 		pageIndex = 1;
 		pageSize = 20;
 		noMoreData = false;
@@ -65,8 +64,6 @@
 			this.getMessageList()
 			this.getHeliChat()
 			// #endif
-
-			
 		}
 		getMessageList(){
 			app.http.Get('message/bucketlist',{},(res:any)=>{
@@ -89,7 +86,6 @@
 			uni.navigateTo({
 				url: '/pages/userinfo/dynamic?type='+type
 			})
-			
 		}
 		getTime(second:number){
 			let now = new Date();

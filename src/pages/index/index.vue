@@ -872,7 +872,5 @@
 		box-sizing: border-box;
 		background:$content-bg;
 		padding:20rpx 13rpx 20rpx 13rpx;
-		position: relative;
-		z-index: 2;
 	}
 </style>
