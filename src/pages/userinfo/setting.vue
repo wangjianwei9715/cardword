@@ -105,6 +105,7 @@ export default class ClassName extends BaseNode {
   }
   formatSize() {
     // #ifdef APP-PLUS
+	//@ts-ignore
     plus.cache.calculate((size: any) => {
       if (size <= 0) {
         this.needRemove = false;

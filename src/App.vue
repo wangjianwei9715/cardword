@@ -164,6 +164,7 @@
 						app.platform.deviceID = plus.device.imei.split(",")[0];
 					}
 					if (app.platform.deviceID == "") {
+						//@ts-ignore
 						app.platform.deviceID = uni.getSystemInfoSync().uuid;
 					}
 					app.platform.appLuanch(loginToken);
@@ -234,7 +235,7 @@
 				if (args.indexOf("goodsdetails") != -1) {
 					let index = args.indexOf("=") + 1;
 					let goodCode = args.substring(index);
-					plus.runtime.arguments = null;
+					plus.runtime.arguments = "";
 					app.navigateTo.goGoodsDetails(goodCode)
 					return
 				}
@@ -243,10 +244,9 @@
 					const pages = getCurrentPages();
 					let [jumpType,url]=args.split("=>")
 					if(pages.length){
-						const currentRoute=pages[pages.length-1].route
+						const currentRoute:any=pages[pages.length-1].route
 						if(url.indexOf(currentRoute)!=-1) jumpType='redirectTo'
 					}
-					console.log(url);
 					if(url.indexOf('/pages/live/zgPlayBack')!=-1){
 						app.platform.comeFromOpenPlayBack(url)
 						return
@@ -255,10 +255,10 @@
 					uni[jumpType]({
 						url
 					})
-					plus.runtime.arguments = null;
+					plus.runtime.arguments = "";
 					return
 				}
-				plus.runtime.arguments = null;
+				plus.runtime.arguments = "";
 			}, 500);
 
 			

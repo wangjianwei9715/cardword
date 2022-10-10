@@ -948,6 +948,7 @@
 				{
 					"path": "merchant_join",
 					"style": {
+						"navigationStyle": "custom",
 						"navigationBarTitleText": "商家入驻",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",

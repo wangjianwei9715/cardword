@@ -217,7 +217,7 @@ export default class PlatformManager {
 			if (!jumpType) jumpType = "navigateTo"
 			const pages = getCurrentPages();
 			if (pages.length) {
-				const currentRoute = pages[pages.length - 1].route
+				const currentRoute:any = pages[pages.length - 1].route
 				if (url.indexOf(currentRoute) != -1) jumpType = 'redirectTo'
 			}
 			//@ts-ignore
@@ -501,7 +501,7 @@ export default class PlatformManager {
 	}
 	currentPage(){
 		return new Promise((resolve, reject) => {
-			let curPage = getCurrentPages();
+			let curPage:any = getCurrentPages();
 			let route = curPage[curPage.length - 1].route; //获取当前页面的路由
 			let params = curPage[curPage.length - 1].options; //获取当前页面参数，如果有则返回参数的对象，没有参数返回空对象{}
 			let query = '';
