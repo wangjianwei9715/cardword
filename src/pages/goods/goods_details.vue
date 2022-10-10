@@ -571,6 +571,7 @@
 			//获取当前 Webview 窗口对象
 			const pages = getCurrentPages();  
 			const page = pages[pages.length - 1];  
+			//@ts-ignore
 			const currentWebview = page.$getAppWebview();
 			//根据状态值来切换禁用/开启下拉刷新
 			currentWebview.setStyle({  
