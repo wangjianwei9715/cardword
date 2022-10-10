@@ -11,17 +11,17 @@
 			</swiper>
 		</view>
 		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
-			<view class="goodslist-index" :style="{'width':indexWidth+'rpx'}">
+			<view class="goodslist-index">
 				<muqian-lazyLoad v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
-					<view class="goodslist-pic"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}">
-						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image"  :style="{'width':picWidth+'rpx','height':picHeight+'rpx'}" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx"></muqian-lazyLoad>
+					<view class="goodslist-pic">
+						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx"></muqian-lazyLoad>
 					</view>
-					<view class="goodslist-title u-line-2">
+					<view class="goodslist-title u-line-2 goodslist-padding">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
 						{{item.title}}
 					</view>
-					<view class="goodslist-priceMsg uni-flex">
+					<view class="goodslist-priceMsg uni-flex goodslist-padding">
 						<view class="goodslist-priceMsg-left">
 							￥<text class="price-text">{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
 						</view>
@@ -32,12 +32,14 @@
 							{{getPlan(item,'str')}}
 						</view>
 					</view>
-					<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType(item)}">
-						<view class="progressMask"
-							:style="{width:(100-getPlan(item,'num'))+'%'}"></view>
+					<view class="goodslist-padding">
+						<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType(item)}">
+							<view class="progressMask"
+								:style="{width:(100-getPlan(item,'num'))+'%'}"></view>
+						</view>
 					</view>
 				</view>
-				<view class="goodslist-bottom" @click="onClickSellerShop(item)">
+				<view class="goodslist-bottom goodslist-padding" @click="onClickSellerShop(item)">
 					<view class="bottom-left" :class="{'bottom-left-shu':item.merchantName}">{{getGoodsPintuan(item.pintuan_type)}}</view>
 					<view class="bottom-right" v-show="item.merchantName">
 						<muqian-lazyLoad v-if="item.merchantLogo!=''" class="avart" :src="decodeURIComponent(item.merchantLogo)" borderRadius="50%"/>
@@ -45,7 +47,6 @@
 						<view class="cores"></view>
 					</view>
 				</view>
-				<view class="goodslist-right"></view>
 			</view>
 		</view>
 	</view>
@@ -88,13 +89,6 @@
 		presell: any;
 		@Prop({ default: false })
 		mini: any;
-		@Prop({ default: 356 })
-		indexWidth?: number;
-		@Prop({ default: 328 })
-		picWidth?: number;
-		@Prop({ default: 253 })
-		picHeight?: number;
-
 		dateFormatMSHMS = dateFormatMSHMS;
 		getGoodsImg = getGoodsImg;
 		screenHeight = uni.getSystemInfoSync().windowHeight
@@ -109,7 +103,7 @@
 			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
 			const str = saleRatio > width ? 
 			`${saleRatio}%`:
-			`余${item.totalNum-(item.currentNum+item.lockNum)}/共${item.totalNum}`
+			`${item.totalNum-(item.currentNum+item.lockNum)}/${item.totalNum}`
 			return type=='str' ? str : Math.max(width,saleRatio)
 		}
 		getPriceStart(item: any) {
@@ -160,51 +154,44 @@
 		// width: 20rpx;
 		// width: 300rpx;
 	}
-
+	.goodslist-padding{
+		box-sizing: border-box;
+		padding:0 16rpx
+	}
 	.goodslist {
 		&-index {
-			width: 356rpx;
+			width: 348rpx;
+			height:500rpx;
 			background: #FFFFFF;
 			border-radius: 5rpx;
 			box-sizing: border-box;
-			padding: 12rpx 12rpx 17rpx 12rpx;
-			align-items: center;
-			margin-bottom: 13rpx;
-			// border-radius: 20rpx;
+			margin-bottom: 14rpx;
 			position: relative;
+			padding:0;
 		}
 
 		&-pic {
-			width: 332rpx;
-			height: 253rpx;
+			width: 348rpx;
+			height: 268rpx;
 			margin: 0 auto;
 			overflow: hidden;
 			position: relative;
+			display: flex;
 		}
-
 		&-pic-image {
-			width: 332rpx;
-			height: 253rpx;
+			width: 348rpx;
+			height: 268rpx;
 		}
-
-		&-right {
-			// width: 420rpx;
-			// height: 230rpx;
-			box-sizing: border-box;
-			position: relative;
-		}
-
-
-
 		&-title {
-			height: 65rpx;
-			font-size: 27rpx;
+			height: 80rpx;
+			font-size: 25rpx;
 			font-family: PingFangSC-Regular;
-			font-weight: 400;
+			font-weight: 600;
 			color: #333333;
-			margin-top: 16rpx;
+			margin-top: 19rpx;
 			display: -webkit-box;
-			line-height: 32rpx;
+			line-height: 38rpx;
+			
 		}
 		&-remainder{
 			width: 87rpx;
@@ -225,15 +212,13 @@
 			margin-bottom: -2rpx;
 		}
 		&-progress {
-			background-image: url('../../static/goods/v2/progeessBg.png');
-			background-size: 100% 100%;
+			background: linear-gradient(90deg, #FFB6C5 0%, #FA1545 100%);
 			width: 100%;
 			height: 8rpx;
-			margin-bottom: 10rpx;
+			margin-bottom: 19rpx;
 			position: relative;
 			display: flex;
 			justify-content: flex-end;
-
 			.progressMask {
 				height: inherit;
 				background-color: #F6F7FB;
@@ -242,7 +227,7 @@
 		}
 
 		&-progress-select {
-			background-image: url('../../static/goods/v2/progessBgg_select.png');
+			background: linear-gradient(90deg, #FFB6C5 0%, #FA1545 100%);
 			background-size: 100% 100%;
 		}
 
@@ -253,14 +238,14 @@
 			display: flex;
 			align-items: flex-end;
 			position: relative;
-			margin-bottom: 8rpx;
+			margin-bottom: 11rpx;
 			margin-top: 11rpx;
 			align-items: flex-end;
 
 			.goodslist-priceMsg-left {
 				font-size: 18rpx;
 				font-family: PingFangSC-Regular;
-				font-weight: 500;
+				font-weight: 600;
 				color: #333333;
 				height: 40rpx;
 				display: flex;
@@ -269,17 +254,17 @@
 				text.price-text {
 					font-size: 33rpx;
 					font-family: FZLanTingHeiS-B-GB;
-					font-weight: 400;
+					font-weight: 600;
 					color: #333333;
 					line-height: 38rpx;
-					margin-right: 5rpx;
+					margin-right: 10rpx;
 				}
 
 				text:last-child {
-					font-size: 21rpx;
+					font-size: 23rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 500;
-					color: #999999;
+					color: #959695;
 				}
 			}
 
@@ -287,10 +272,10 @@
 				height: 40rpx;
 				display: flex;
 				align-items: flex-end;
-				font-size: 21rpx;
+				font-size: 23rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #999999;
+				color: #959695;
 			}
 		}
 
@@ -306,7 +291,7 @@
 				font-size: 23rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #999999;
+				color: #959695;
 				position: relative;
 				overflow: hidden;
 				text-overflow: ellipsis;
@@ -323,17 +308,17 @@
 				background:#DADADA;
 			}
 			.bottom-right {
-				width: 210rpx;
+				width: 200rpx;
 				display: flex;
 				align-items: center;
 
 				.avart {
-					width: 31rpx;
-					height: 31rpx;
+					width: 26rpx;
+					height: 26rpx;
 					display: block;
 					overflow: hidden;
 					border-radius: 50%;
-					margin-right: 6rpx;
+					margin-right: 10rpx;
 				}
 
 				.bussName {
@@ -342,7 +327,7 @@
 					font-size: 23rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
-					color: #595959;
+					color: #333;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
@@ -477,8 +462,8 @@
 
 	// 活动轮播
 	.index-swiper {
-		width: 356rpx;
-		height: 473rpx;
+		width: 348rpx;
+		height: 500rpx;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -487,8 +472,8 @@
 	}
 
 	.swiper {
-		width: 356rpx;
-		height: 473rpx;
+		width: 348rpx;
+		height: 500rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: flex-start;
@@ -497,8 +482,8 @@
 	}
 
 	.swiper-image {
-		width: 356rpx;
-		height: 473rpx;
+		width: 348rpx;
+		height: 500rpx;
 		box-sizing: border-box;
 		border-radius: 5rpx;
 	}

@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<!-- 热更新 S -->
 		<view v-if="apkNeedUpdate" class="update-content">
 			<view class="panel-shadow" @touchmove.stop.prevent="doNothing"></view>
 			<view class="panel-bg">
@@ -16,7 +17,6 @@
 					<button v-if="!updateStart" class="download-button" @click="onClickDownload">立即更新</button>
 					<view v-else class="download-text">{{downloadText}}</view>
 				</view>
-
 			</view>
 		</view>
 		<view v-if="wgtUpdate" class="update-content">
@@ -33,52 +33,59 @@
 				</view>
 			</view>
 		</view>
+		<!-- 热更新 E -->
+
+
 		<view class="header-banner">
 			<statusbar />
 			<view class="tab-header">
-				<view class="header-search" @click="onClickSearch">
-					<view class="sousuo-icon"></view>搜索热门系列...
-					<view class="search-icon">搜索</view>
+				<view class="tab-box">
+					<u-tabs :list="TOP_TABS" lineWidth="49rpx" lineHeight="6rpx" :lineColor="`url(${lineBg}) 100% 100%`" :activeStyle="{color:'#333333',fontSize:'44rpx'}" :inactiveStyle="{color:'#959695',fontSize:'44rpx',transform: 'scale(1)'}" :itemStyle="{width:'100rpx',height:'90rpx',padding:'0rpx 20rpx',}" :current="currentIndex" @click="currentIndex=$event.index"></u-tabs>
+				</view>
+				<view class="header-search">
+					<view class="sousuo-icon"></view>
+					<u-notice-bar style="padding-left:80rpx" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="3000"></u-notice-bar>
 				</view>
 			</view>
 		</view>
-
-
 		<view class="tab-center">
 			<statusbar />
-			<!-- #ifndef MP  -->
-			<view class="tab-good-content">
-				<view class="tab-type" v-for="(item,index) in tabList" :key="index">
-					<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
-						<view class="tab-img-content">
-							<image class="tabimg" :src="items.img" mode="" />
+			<swiper :style="{ width: '100%', height: '100vh' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true;refresherEnabled=true" @transition="transitionSwiper">
+				<swiper-item>
+					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchmove="disableTouch=false" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+						<view class="tab-good-content">
+							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index">
+								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
+									<view class="tab-img-content">
+										<image class="tabimg" :class="{'tabimg-all':items.text=='全部拼团'}" :src="items.img" mode=""/>
+									</view>
+									<view class="tabtext">{{items.text}}</view>
+								</view>
+							</view>
+							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-07-26')">
+								<image class="capsule-pic" :src="decodeURIComponent(capsule.pic)" mode="aspectFill"/>
+							</navigator>
+
+							<!-- 卡币商城 热门系列 拆卡围观 -->
+							<tabHot :hotList="hotList" />
 						</view>
-						<view class="tabtext">{{items.text}}</view>
-					</view>
-				</view>
-
-				<navigator class="top-banner-mn" url="/pages/act/card716/index" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-07-26')">
-				</navigator>
-				<!-- <navigator class="top-banner" url="/pages/act/card716/index" hover-class="none" v-if="isDuringDate('2022-07-11', '2022-07-13')">
-				</navigator> -->
-
-				<!-- 卡币商城 热门系列 拆卡围观 -->
-				<tabHot :hotList="hotList" />
-			</view>
-			<!-- #endif -->
+						<view class="goodslist-index">
+							<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
+								@send="onClickJumpDetails" :presell="false" />
+						</view>
+					</scroll-view>
+				</swiper-item>
+				<swiper-item>
+					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchmove="disableTouch=false" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+						<view class="live-content">
+							<liveslist :liveList="liveList" />
+						</view>
+					</scroll-view>
+				</swiper-item>
+			</swiper>
+			
 		</view>
-		<!-- #ifndef MP  -->
-		<view class="tabc-content">
-			<!-- <u-sticky style="width:100%;padding-bottom:10rpx" bgColor="#FFF" offsetTop="104rpx" :customNavHeight="statusBarHeight"> -->
-				<tabs :tabs="goodTab" :tabsCheck="goodTabCheck" @tabsClick="onClickListTabs"></tabs>
-			<!-- </u-sticky> -->
-		</view>
-
-		<view class="goodslist-index">
-			<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
-				@send="onClickJumpDetails" :presell="false" />
-		</view>
-		<!-- #endif -->
+		
 
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess" />
 
@@ -87,12 +94,8 @@
 </template>
 
 <script lang="ts">
-	import {
-		app
-	} from "@/app";
-	import {
-		Component
-	} from "vue-property-decorator";
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
 	import {
 		indexTabList,
@@ -100,23 +103,27 @@
 		indexGoodTab,
 		indexGoodsType
 	} from "@/net/DataExchange"
-	import {
-		isDuringDate
-	} from "@/tools/util"
-	import {
-		Md5
-	} from "ts-md5";
-	@Component({})
+	import { isDuringDate } from "@/tools/util"
+	import { Md5 } from "ts-md5";
+	const TOP_TABS = [{name:'推荐'},{name:'拆卡'}];
+	const lineBg = '../../static/index/v3/tab_line.png'
+	@Component({components: {},})
 	export default class index extends BaseNode {
+		TOP_TABS = TOP_TABS;
+		lineBg = lineBg;
+		noticeList = ['prizm','国宝','盗梦空间'];
 		statusBarHeight = app.statusBarHeight
 		isDuringDate = isDuringDate;
 		indexGoodsType = indexGoodsType;
-		tabList: {
-			[x: string]: any
-		} = indexTabList;
-		hotList: {
-			[x: string]: any
-		} = indexHotList;
+		indexTabList: { [x: string]: any } = {
+			top:[...indexTabList],
+			bottom:indexTabList
+		};
+		capsule = {
+			pic:'',
+			url:''
+		}
+		hotList: { [x: string]: any } = indexHotList;
 		goodTab = indexGoodTab;
 		topAddList: any = [];
 		// 卡币商城 热门系列 拆卡围观
@@ -139,6 +146,18 @@
 		oneLoad = true;
 		showWinningCrad = false;
 		greeted = false;
+		liveList = [];
+		liveDara = {
+			pageIndex:1,
+			pageSize:10,
+			noMoreData:false,
+			liveTabCheck:1
+		}
+		refresherIndex = false;
+		refresherEnabled = true;
+		currentIndex = 0;
+		scrollY = true;
+		disableTouch = false
 		onLoad(query: any) {
 			// let zqWebviewFloat:any = uni.requireNativePlugin("zq-webview-float");
 			// // //显示悬浮窗
@@ -245,18 +264,6 @@
 		onHide() {
 			uni.offNetworkStatusChange((res) => {})
 		}
-		//   下拉刷新
-		onPullDownRefresh() {
-			this.showInitEvent(() => {
-				setTimeout(() => {
-					uni.stopPullDownRefresh();
-				}, 1000)
-			})
-		}
-		//   加载更多数据
-		onReachBottom() {
-			this.reqNewData()
-		}
 		reHomeGet() {
 			if (app.dataApiDomain == '') {
 				setTimeout(() => {
@@ -288,6 +295,12 @@
 		showInitEvent(cb ? : Function) {
 			this.fetchFrom = 1;
 			this.noMoreData = false;
+			this.liveDara = {
+				pageIndex:1,
+				pageSize:10,
+				noMoreData:false,
+				liveTabCheck:1
+			}
 			this.initEvent(() => {
 				if (cb) cb()
 			})
@@ -316,6 +329,7 @@
 				this.reqNewData(() => {
 					if (cb) cb()
 				})
+				this.reqNewLiveData()
 			})
 			
 		}
@@ -325,7 +339,6 @@
 				// #ifndef MP
 				this.topAddList = data.addList || [];
 				this.hotList.broadCast.list = data.broadCast || [];
-				this.hotList.hot.list = data.hotSeries || [];
 				if (app.token.accessToken != '') {
 					// 获取是否中卡信息
 					this.getGreet()
@@ -391,17 +404,18 @@
 		BackLogin(res: any) {
 			uni.$emit('BackLogin');
 		}
-		onClickSearch() {
+		onClickSearch(index:number) {
+			const placeholder = this.noticeList[index] || '';
 			// 搜索
 			uni.navigateTo({
-				url: '/pages/goods/goods_find'
+				url: `/pages/goods/goods_find?placeholder=${placeholder}`
 			})
 		}
 		onClickcancelPaySuccess() {
 			this.showPaySuccess = false;
 		}
 		onClickJumpUrl(item: any) {
-			if (item.text == '发售日历' || item.text == '领券中心') {
+			if (item.text == '卡币商城' || item.text == '领券中心') {
 				if (app.token.accessToken == '') {
 					uni.navigateTo({
 						url: '/pages/login/login'
@@ -424,6 +438,26 @@
 			this.indexSwiper = id == 1 ? true : false;
 			this.goodTabCheck = id
 			this.reqSearchList()
+		}
+		// 切换内容
+		onScrollIndex(event:any){
+			this.refresherEnabled = event.detail.scrollTop<=0
+			this.disableTouch = true
+		}
+		refreshStart(){
+			this.refresherIndex = true
+			this.showInitEvent(() => {
+				setTimeout(() => {
+					this.refresherIndex = false
+				}, 1000)
+			})
+		}
+		transitionSwiper(event:any){
+			this.scrollY = false;
+			this.refresherEnabled = false
+		}
+		animationfinish(event:any){
+			this.currentIndex = event.detail.current;
 		}
 		reqSearchList(cb ? : Function) {
 			this.fetchFrom = 1;
@@ -462,7 +496,21 @@
 				if (cb) cb()
 			});
 		}
-		
+		reqNewLiveData(cb?:Function) {
+			// 获取更多商品
+			const params = this.liveDara;
+			if (params.noMoreData) return ;
+			
+			let url = params.liveTabCheck<5 ? 'dataApi/broadcast' : 'me/broadcast';
+			app.http.Get(url,params,(data:any)=>{
+				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
+				if(params.pageIndex==1) this.liveList = []
+				if(data.list) this.liveList = this.liveList.concat(data.list);
+				params.pageIndex++;
+				if(cb) cb()
+			})
+			
+		}
 	}
 </script>
 
@@ -517,11 +565,15 @@
 		height: 104rpx;
 		display: flex;
 		box-sizing: border-box;
-		padding: 0 20rpx 0 20rpx;
+		padding: 0 35rpx 0 15rpx;
 		z-index: 10;
 		align-items: center;
+		justify-content: space-between;
 	}
-
+	.tab-box{
+		width: 250rpx;
+		height:100rpx
+	}
 	.banner-content {
 		width: 750rpx;
 		height: 190rpx;
@@ -538,6 +590,7 @@
 		box-sizing: border-box;
 		padding: 0;
 		background: #fff;
+		padding-top: 15rpx;
 	}
 
 	.tab-type {
@@ -561,59 +614,42 @@
 
 	.tab-img-content {
 		display: flex;
-		width: 105rpx;
-		height: 105rpx;
-		align-items: flex-start;
-
+		width: 87rpx;
+		height: 87rpx;
+		align-items: center;
+		justify-content: center;
 	}
-
 	.tabimg {
-		width: 105rpx;
-		height: 105rpx;
+		width: 87rpx;
+		height: 85rpx;
 	}
-
+	.tabimg-all{
+		width: 73rpx;
+		height:38rpx
+	}
 	.tabtext {
 		width: 100%;
 		height: 34rpx;
 		font-size: 23rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
-		color: #14151A;
+		color: #333333;
 		text-align: center;
 	}
 
-	.top-banner {
-		width: 722rpx;
-		height: 156rpx;
+	.capsule-box {
+		width: 710rpx;
+		height: 154rpx;
 		margin: 0 auto;
 		box-sizing: border-box;
 		display: flex;
 		margin-top: 10rpx;
-		background: url(../../static/index/v2/top_banner.png) no-repeat center;
-		background-size: 100% 100%;
 		position: relative;
 	}
-	.top-banner-mn {
-		width: 722rpx;
-		height: 187rpx;
-		margin: 0 auto;
-		box-sizing: border-box;
-		display: flex;
-		margin-top: 10rpx;
-		background: url(../../static/index/v2/meina.png) no-repeat center;
-		background-size: 100% 100%;
-		position: relative;
+	.capsule-pic{
+		width: 710rpx;
+		height:154rpx
 	}
-	// .top-ref {
-	// 	width: 80rpx;
-	// 	height: 79rpx;
-	// 	background: url(../../static/index/v2/banner_go.png) no-repeat center;
-	// 	background-size: 100% 100%;
-	// 	position: absolute;
-	// 	right: 43rpx;
-	// 	bottom: 25rpx;
-	// 	animation: bounce-down 1s linear infinite;
-	// }
 
 	@keyframes bounce-down {
 		25% {
@@ -639,8 +675,9 @@
 	.goodslist-index {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 6rpx 14rpx;
-
+		padding: 6rpx 20rpx;
+		padding-top: 20rpx;
+		background: $content-bg;
 	}
 
 	.update-content {
@@ -793,29 +830,24 @@
 	}
 
 	.header-search {
-		width: 100%;
-		height: 65rpx;
-		background: #FFFFFF;
-		border: 2rpx solid $btn-red;
-		border-radius: 40rpx;
-		position: relative;
-		font-size: 28rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #A3A3A3;
-		line-height: 65rpx;
-		box-sizing: border-box;
-		padding-left: 34rpx;
+		width: 383rpx;
+		height: 68rpx;
+		border: 2px solid #333333;
+		border-radius: 5rpx;
 		display: flex;
 		align-items: center;
+		box-sizing: border-box;
+		position: relative;
 	}
 
 	.sousuo-icon {
-		width: 31rpx;
-		height: 32rpx;
-		background: url(../../static/index/v2/sousuo.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-right: 30rpx;
+		position: absolute;
+		left:32rpx;
+		top:50%;
+		margin-top: -13rpx;
+		width: 26rpx;
+		height: 26rpx;
+		background: url(../../static/index/v3/search.png) no-repeat center /100% 100%;
 	}
 
 	.search-icon {
@@ -834,5 +866,13 @@
 		font-weight: 400;
 		color: #FFFFFF;
 		box-sizing: border-box;
+	}
+	.live-content{
+		width: 100%;
+		box-sizing: border-box;
+		background:$content-bg;
+		padding:20rpx 13rpx 20rpx 13rpx;
+		position: relative;
+		z-index: 2;
 	}
 </style>

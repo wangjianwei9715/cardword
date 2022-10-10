@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" focus v-model="searchTetxt" placeholder="搜索商品、店铺" confirm-type="search" @confirm="onClickSearch(searchTetxt)" />
+					<input class="search-input" type="text" focus v-model="searchTetxt" :placeholder="placeholder" confirm-type="search" @confirm="onClickSearch(searchTetxt)" />
 				</view>
 				<view v-if="searchTetxt==''" class="header-right" @click="onClickBack">取消</view>
 				<view v-else class="header-right" @click="onClickSearch(searchTetxt)">搜索</view>
@@ -16,7 +16,7 @@
 			<statusbar/>
 			<view class="search-title" v-show="historyList!=''">历史记录<view class="icon-delete" @click="onClickDelete"></view></view>
 			<view class="search-list" v-show="historyList!=''">
-				<view class="search-index" @click="onClickSearch(item)" v-for="item in historyList" :key="item">{{item}}</view>
+				<view class="search-index" @click="searchGoodList(item)" v-for="item in historyList" :key="item">{{item}}</view>
 			</view>
 			<view class="search-title">热门搜索</view>
 			<view class="search-list">
@@ -76,11 +76,12 @@
 			goodList:[],
 			merchantList:[]
 		}
+		placeholder = '';
 		onLoad(query:any) {
 			let searchData = uni.getStorageSync("searchData");
 			if(searchData) this.historyList = searchData
-			if(query.q) this.searchTetxt = query.q
-			
+			if(query.q) this.searchTetxt = query.q;
+			if(query.placeholder) this.placeholder = query.placeholder;
 			app.http.Get('dataApi/search/heat/list',{},(res:any)=>{
 				this.hotList.goodList = res.data.goodList.splice(0,10);
 				this.hotList.merchantList = res.data.merchantList.splice(0,10);
@@ -107,7 +108,8 @@
 			});
 
 		}
-		onClickSearch(text:string){
+		onClickSearch(search:string){
+			const text = search=='' ? this.placeholder : search;
 			let hideGoods = /[A-Z]{2}\d{7}/g
 			if(hideGoods.test(text)){
 				let code = text.match(hideGoods);
@@ -123,6 +125,7 @@
 					uni.setStorageSync("searchData",searchData)
 				}
 			}
+			
 			this.searchGoodList(text)
 		}
 		searchGoodList(text:string){

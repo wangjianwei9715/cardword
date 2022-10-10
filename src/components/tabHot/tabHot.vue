@@ -1,20 +1,20 @@
 <template>
 	<view class="tab-hot">
-		<view class="tab-hot-box" :class="'tab-hot-box-'+name" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(name)">
-			<view class="tab-hot-boxtitle">{{item.title}}</view>
-			<view class="tab-hot-boxtips">{{name == 'broadCast'?getBroadCastStr(item.list.state):item.tips}}</view>
-			<view class="tab-hot-boxpic-index" v-if="name!='broadCast'">
-				<view class="tab-hot-boxpic-box" v-for="(src,index) in item.list" :key="index" @click="onClickHotTab(src,name)">
-					<muqian-lazyLoad :src="decodeURIComponent(src.pic)" class="tab-hot-boxpic" mode="aspectFit"/>
+		<view class="tab-hot-box" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(name)">
+			<image class="hot-bg" :src="item.bg.src" :style="`width:${item.bg.width};height:${item.bg.height}`"></image>
+			<view class="tab-index">
+				<view class="tab-index-left">
+					<view class="tab-hot-boxtitle">{{item.title}}</view>
+					<view class="tab-hot-boxtips">{{name == 'broadCast'?getBroadCastStr(item.list.state):item.tips}}</view>
 				</view>
-			</view>
-			<view class="tab-hot-boxpic-index" v-else>
-				<view class="tab-hot-boxpic-box" @click="onClickMerchantInfo(item)">
-					<muqian-lazyLoad :src="decodeURIComponent(item.list.merchantLogo)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%"/>
+				<view class="tab-hot-boxpic-index" v-if="name!='broadCast'">
+					<muqian-lazyLoad :src="decodeURIComponent(item.pic)" class="tab-hot-boxpic" mode="aspectFill"/>
 				</view>
-				<view class="tab-hot-boxpic-box live-border" @click="onClickLive(item.list)">
-					<view v-if="item.list.state == 2 || item.list.state == 1" class="live-ing"></view>
-					<muqian-lazyLoad :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%"/>
+				<view class="tab-hot-boxpic-index" v-else>
+					<view class="tab-hot-boxpic-box live-border" @click="onClickLive(item.list)">
+						<view v-if="item.list.state == 2 || item.list.state == 1" class="live-ing"></view>
+						<muqian-lazyLoad :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%"/>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -90,62 +90,69 @@
 	// 拆卡热门
 	.tab-hot{
 		width: 100%;
-		height:185rpx;
+		height:150rpx;
 		box-sizing: border-box;
-		padding: 0 14rpx;
+		padding: 0 20rpx;
 		background: linear-gradient(0deg, $content-bg, #FFFFFF 80%, #FFFFFF);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: 29rpx;
+		margin-top: 15rpx;
 	}
 	.tab-hot-box{
-		width: 238rpx;
-		height:188rpx;
-		background: url(../../static/index/v2/hot_bg.png) no-repeat center;
+		width: 230rpx;
+		height:150rpx;
+		background: #fff;
 		background-size: 100% 100%;
+		position: relative;
+		box-sizing: border-box;
+		padding:15rpx 0 0 10rpx;
+		border-radius: 5rpx;
 	}
-	.tab-hot-box-hot{
-		background: url(../../static/index/v2/hot_bg_2.png) no-repeat center;
-		background-size: 100% 100%;
+	.tab-index{
+		width: 100%;
+		height:150rpx;
+		position: absolute;
+		left:0;
+		top:0;
+		display: flex;
+		align-items: center;
 	}
-	.tab-hot-box-broadCast{
-		background: url(../../static/index/v2/hot_bg_3.png) no-repeat center;
-		background-size: 100% 100%;
+	.tab-index-left{
+		width: 134rpx;
+		height:150rpx;
 	}
 	.tab-hot-boxtitle{
 		width: 100%;
-		height:50rpx;
-		text-align: center;
-		font-size: 29rpx;
+		font-size: 25rpx;
 		font-family: PingFangSC-Medium;
 		font-weight: bold;
 		color: #333333;
-		padding-top: 10rpx;
+		padding-top: 40rpx;
 		box-sizing: border-box;
+		padding-left: 19rpx;
 	}
 	.tab-hot-boxtips{
 		width: 100%;
 		height:35rpx;
-		text-align: center;
-		font-size: 20rpx;
+		font-size: 21rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
-		color: #565656;
+		color: #959695;
+		margin-top: 5rpx;
+		box-sizing: border-box;
+		padding-left: 19rpx;
 	}
 	.tab-hot-boxpic-index{
-		width: 100%;
+		width: 96rpx;
 		box-sizing: border-box;
-		height:84rpx;
-		padding:0 22rpx;
+		height:126rpx;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		margin-top: 5rpx;
 	}
 	.tab-hot-boxpic-box{
-		width: 84rpx;
-		height:84rpx;
+		width: 82rpx;
+		height:82rpx;
 		position: relative;
 	}
 	.live-border{
@@ -153,14 +160,13 @@
 		border-radius: 50%;
 	}
 	.tab-hot-boxpic{
-		width: 84rpx;
-		height:84rpx;
-		position: absolute;
-		left:0;
-		top:0;
+		width: 72rpx;
+		height:126rpx;
 		z-index: 3;
 	}
 	.broadcast-box{
+		width: 82rpx;
+		height:82rpx;
 		border-radius: 50%;
 		overflow: hidden;
 	}

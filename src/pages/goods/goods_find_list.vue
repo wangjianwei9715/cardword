@@ -286,7 +286,7 @@ page {
   // margin:0 auto;
   margin-left: 12rpx;
   white-space: nowrap;
-
+  margin-bottom: 10rpx;
   .scrollItem {
     display: inline-block;
     width: 100rpx;
@@ -508,7 +508,7 @@ page {
 .goods-lists {
   width: 100%;
   box-sizing: border-box;
-  padding: 272rpx 14rpx 60rpx 14rpx;
+  padding: 272rpx 20rpx 60rpx 20rpx;
 }
 
 .sort-shadow {

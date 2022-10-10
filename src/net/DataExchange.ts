@@ -1,38 +1,43 @@
 // 首页tab列表
-export var indexTabList = {
-    tabTop:[
-        {img:'../../static/index/v2/top_icon0.gif',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
-        // {img:'../../static/index/v2/top_icon1.png',text:'发售日历',url:'/pages/act/calendar/list'},
-        {img:'../../static/index/v2/top_icon1.png',text:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
-        {img:'../../static/index/v2/top_icon2.png',text:'资讯公告',url:'/pages/information/list'},
-        {img:'../../static/index/v2/top_icon3.png',text:'商家列表',url:'/pages/userinfo/merchant_list'}
-    ],
-    tabBottom:[
-        {img:'../../static/index/v2/top_icon4.png',text:'活动专区',url:'/pages/goods/goods_assign_list?type=activity'},
-        {img:'../../static/index/v2/top_icon5.png',text:'新手专区',url:'/pages/goods/goods_assign_list?type=cheap'},
-        {img:'../../static/index/v2/top_icon6.png',text:'自选玩法',url:'/pages/goods/goods_assign_list?type=select'},
-        {img:'../../static/index/v2/top_icon7.png',text:'即将拼成',url:'/pages/goods/goods_assign_list?type=progress'}
-    ]
-}
+export var indexTabList = [
+    {img:'../../static/index/v3/icon1.png',text:'卡币商城',url:'/pages/mall/index'},
+    {img:'../../static/index/v3/icon2.png',text:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
+    {img:'../../static/index/v3/icon3.png',text:'资讯公告',url:'/pages/information/list'},
+    {img:'../../static/index/v3/icon4.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
+    {img:'../../static/index/v3/icon5.png',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'}
+]
+
 // 首页hot列表
 export var indexHotList = {
     cardBean:{
-        title:'卡币商城',
-        tips:'卡币兑换好礼',
-        list:[
-            {pic:'../../static/index/v2/cardbean_pic.png'},
-            {pic:'../../static/index/v2/cardbean_hb.png'}
-        ]
+        title:'即将拼成',
+        tips:'进度榜单',
+        pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
+        bg:{
+            src:'../../static/index/v3/HOT.png',
+            width:'104rpx',
+            height:'40rpx'
+        }
     },
     hot:{
-        title:'热门系列',
-        tips:'新系列上市',
-        list:[]
+        title:'新手专区',
+        tips:'入门产品',
+        pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
+        bg:{
+            src:'../../static/index/v3/NEW.png',
+            width:'117rpx',
+            height:'38rpx'
+        }
     },
     broadCast:{
         title:'拆卡围观',
         tips:'正在拆卡',
-        list:[]
+        list:[],
+        bg:{
+            src:'../../static/index/v3/SHOW.png',
+            width:'161rpx',
+            height:'40rpx'
+        }
     }
 }
 // 首页goodTab
