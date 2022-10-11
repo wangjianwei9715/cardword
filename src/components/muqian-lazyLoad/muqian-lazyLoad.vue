@@ -7,13 +7,20 @@
 				}"></image>
 
 		<!-- 加载成功 -->
-		<image class="muqian-image" @click="onClickLazyImage" @load="load" @error="error" v-if="status==1"
+		<image class="muqian-image" @click="onClickLazyImage" @load="load" @error="error" v-if="status==1&&!viewBg"
 			:src="$parsePic(src)" :mode="mode" :style="{
 				opacity:isShow?'1':'0',
 				borderRadius,
 				transition: `opacity ${duration/1000}s ${effect}`
 				}">
 		</image>
+		<view v-else-if="status==1&&viewBg" @click="onClickLazyImage" :style="{
+				borderRadius,
+				transition: `opacity ${duration/1000}s ${effect}`,
+				background:`url(${$parsePic(src)}) no-repeat center/100% 100%`,
+				width:`${width}`,
+				height:`${height}`,
+				}"></view>
 		<!-- 加载失败 -->
 		<image class="muqian-image" v-if="status==2" :src="errorSrc" mode="scaleToFill" :style="{
 			opacity:isShow?'1':'0',
@@ -111,6 +118,10 @@
 			errorSrc: {
 				type: String,
 				default: loadFailImage
+			},
+			viewBg: {
+				type: Boolean,
+				default: false
 			}
 
 		},

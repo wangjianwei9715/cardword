@@ -176,8 +176,8 @@
 		overflow: hidden;
 	}
 	.live-ing{
-		width: 84rpx;
-		height:84rpx;
+		width: 82rpx;
+		height:82rpx;
 		position: absolute;
 		left:0;
 		top:0;

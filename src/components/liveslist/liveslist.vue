@@ -2,17 +2,32 @@
 	<view class="livelist">
 		<view class="livelist-index"  v-for="(item,index) in liveList" :key="index" @click="onClickJumpUrl(item)">
 			<view class="livelist-top" >
-				<muqian-lazyLoad class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic))" >
+				<muqian-lazyLoad class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic))" width="348rpx" height="268rpx" :viewBg="true">
 				</muqian-lazyLoad>
-				<view class="livelist-top-status" :class="item.stateName=='直播中'?'livelist-icon-ing':(item.stateName=='拆卡回放'?'livelist-icon-end':'livelist-icon-wait')">
-					<view class="icon-ing"></view>{{item.stateName}}
+				<view class="livelist-top-statebox" v-if="item.state==2">
+					<image class="livelist-top-statebox-icon" src="@/static/live/v3/live_ing.png"/>
+					<view class="livelist-top-statebox-bg">25人在看</view>
 				</view>
-				<view class="livelist-top-name">
-					<view class="livelist-top-name-title">{{item.merchant}}</view>
-					<view class="livelist-top-name-text">{{item.time}}</view>
+				<view class="livelist-top-statebox" v-else>
+					<view class="livelist-top-statebox-state">{{item.state==1?'预告':'回放'}}</view>
+					<view class="livelist-top-statebox-bg">{{$u.timeFormat(item.startAt,'mm-dd hh:MM')}}</view>
+				</view>
+				
+			</view>
+			<view class="livelist-center">
+				<view class="livelist-center-title u-line-2">{{item.title}}</view>
+				<view class="livelist-center-info">
+					<view class="livelist-center-info-left">
+						<muqian-lazyLoad class="livelist-center-info-avatar" src="" borderRadius="50%"/>
+						{{item.merchant}}
+					</view>
+					<view class="livelist-center-info-right">228观看</view>
 				</view>
 			</view>
-			<view class="livelist-center">{{item.title}}</view>
+			<!-- <view class="livelist-top-name">
+				<view class="livelist-top-name-title">{{item.merchant}}</view>
+				<view class="livelist-top-name-text">{{item.time}}</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -63,21 +78,59 @@
 		justify-content: space-between;
 		flex-wrap: wrap;
 		&-index{
-			width: 356rpx;
+			width: 348rpx;
 			background:#fff;
 			overflow: hidden;
 			margin-bottom: 20rpx;
 		}
 		&-top{
-			width: 328rpx;
-			height:260rpx;
+			width: 348rpx;
+			height:268rpx;
 			position: relative;
 			margin:0 auto;
-			padding-top: 12rpx;
 			box-sizing: border-box;
 			&-image{
-				width: 328rpx;
-				height:253rpx;
+				width: 348rpx;
+				height:268rpx;
+			}
+			&-statebox{
+				height:38rpx;
+				position: absolute;
+				left:15rpx;
+				top:15rpx;
+				display: flex;
+				align-items: center;
+				&-icon{
+					width: 38rpx;
+					height:38rpx;
+					border-radius: 2rpx;
+				}
+				&-bg{
+					height:38rpx;
+					padding: 0 10rpx;
+					box-sizing: border-box;
+					background:rgba(0,0,0,0.38);
+					border-radius: 2rpx;
+					display: flex;
+					align-items: center;
+					font-size: 21rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #FFFFFF;
+				}
+				&-state{
+					width: 38rpx;
+					height:38rpx;
+					background: #FFAE00;
+					border-radius: 2rpx;
+					font-size: 17rpx;
+					font-family: PingFang SC;
+					font-weight: 600;
+					color: #F6F7FB;
+					display: flex;
+					align-items: center;
+					justify-content: center;					
+				}
 			}
 			&-name{
 				width: 328rpx;
@@ -165,13 +218,49 @@
 		}
 		&-center{
 			width: 100%;
+			height:167rpx;
 			box-sizing: border-box;
-			padding:16rpx 20rpx 20rpx 20rpx;
-			font-size: 26rpx;
-			font-family: PingFangSC-Regular;
-			font-weight: 400;
-			color: #333333;
-			word-break:break-all;
+			padding:0 16rpx;
+			&-title{
+				width: 100%;
+				height:90rpx;
+				box-sizing: border-box;
+				padding-top: 10rpx;
+				font-size: 25rpx;
+				font-family: PingFang SC;
+				font-weight: 600;
+				color: #333333;
+				line-height: 38rpx;
+			}
+			&-info{
+				height:77rpx;
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				&-left{
+					height:77rpx;
+					display: flex;
+					align-items: center;
+					font-size: 23rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #333333;
+				}
+				&-right{
+					height:77rpx;
+					line-height: 77rpx;
+					font-size: 23rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #C0C0C0;
+				}
+				&-avatar{
+					width: 37rpx;
+					height:37rpx;
+					margin-right: 13rpx;
+				}
+			}
 		}
 	}
 </style>

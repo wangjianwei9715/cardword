@@ -40,19 +40,20 @@
 			<statusbar />
 			<view class="tab-header">
 				<view class="tab-box">
-					<u-tabs :list="TOP_TABS" lineWidth="49rpx" lineHeight="6rpx" :lineColor="`url(${lineBg}) 100% 100%`" :activeStyle="{color:'#333333',fontSize:'44rpx'}" :inactiveStyle="{color:'#959695',fontSize:'44rpx',transform: 'scale(1)'}" :itemStyle="{width:'100rpx',height:'90rpx',padding:'0rpx 20rpx',}" :current="currentIndex" @click="currentIndex=$event.index"></u-tabs>
+					<u-tabs :list="TOP_TABS" lineWidth="49rpx" lineHeight="6rpx" :lineColor="`url(${lineBg}) 100% 100%`" :activeStyle="{color:'#333333',fontSize:'50rpx',fontFamily:'YouSheBiaoTiHei',transform: 'scale(1,1.1)'}" :inactiveStyle="{color:'#959695',fontSize:'50rpx',fontFamily:'YouSheBiaoTiHei',transform: 'scale(1,1.1)'}" :itemStyle="{width:'100rpx',height:'90rpx',padding:'0rpx 25rpx',}" :current="currentIndex" @click="currentIndex=$event.index"></u-tabs>
 				</view>
 				<view class="header-search">
 					<view class="sousuo-icon"></view>
 					<u-notice-bar style="padding-left:80rpx" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="3000"></u-notice-bar>
 				</view>
 			</view>
+			
 		</view>
 		<view class="tab-center">
 			<statusbar />
-			<swiper :style="{ width: '100%', height: '100vh' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true;refresherEnabled=true" @transition="transitionSwiper">
+			<swiper :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true;refresherEnabled=true" @transition="transitionSwiper">
 				<swiper-item>
-					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchmove="disableTouch=false" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchmove="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<view class="tab-good-content">
 							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
@@ -76,7 +77,8 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchmove="disableTouch=false" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<tabc style="padding:0 70rpx" :tabc="tabData" :tabsCheck="liveDara.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
+					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchmove="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
 						</view>
@@ -111,7 +113,7 @@
 	export default class index extends BaseNode {
 		TOP_TABS = TOP_TABS;
 		lineBg = lineBg;
-		noticeList = ['prizm','国宝','盗梦空间'];
+		noticeList = ['prizm'];
 		statusBarHeight = app.statusBarHeight
 		isDuringDate = isDuringDate;
 		indexGoodsType = indexGoodsType;
@@ -157,7 +159,12 @@
 		refresherEnabled = true;
 		currentIndex = 0;
 		scrollY = true;
-		disableTouch = false
+		disableTouch = false;
+		tabData = [
+			{id:1,name:'直播拆卡'},
+			{id:2,name:'拆卡回放'},
+			{id:3,name:'我的拆卡'}
+		];
 		onLoad(query: any) {
 			// let zqWebviewFloat:any = uni.requireNativePlugin("zq-webview-float");
 			// // //显示悬浮窗
@@ -314,6 +321,11 @@
 				if (res.data.broadcastActor) app.broadcastActor = res.data.broadcastActor
 				if (res.data.newHitNum > 0) this.showWinning();
 			})
+
+			// 获取搜索轮播
+			app.http.Get('advertising/seekRotate/list',{},(res:any)=>{
+
+			})
 		}
 
 		showWinning() {
@@ -431,18 +443,15 @@
 		onClickJumpDetails(goodCode: any) {
 			app.navigateTo.goGoodsDetails(goodCode)
 		}
-		onClickListTabs(id: any) {
-			if (id == this.goodTabCheck) {
-				return;
-			}
-			this.indexSwiper = id == 1 ? true : false;
-			this.goodTabCheck = id
-			this.reqSearchList()
-		}
 		// 切换内容
 		onScrollIndex(event:any){
 			this.refresherEnabled = event.detail.scrollTop<=0
 			this.disableTouch = true
+		}
+		touchmoveScroll(){
+			setTimeout(()=>{
+				this.disableTouch=false
+			},500)
 		}
 		refreshStart(){
 			this.refresherIndex = true
@@ -459,12 +468,17 @@
 		animationfinish(event:any){
 			this.currentIndex = event.detail.current;
 		}
-		reqSearchList(cb ? : Function) {
-			this.fetchFrom = 1;
-			this.noMoreData = false;
-			this.reqNewData(() => {
-				if (cb) cb()
-			})
+		onClickListTabs(id: any) {
+			if (id == this.liveDara.liveTabCheck) {
+				return;
+			}
+			this.liveDara = {
+				pageIndex:1,
+				pageSize:10,
+				noMoreData:false,
+				liveTabCheck:id
+			}
+			this.reqNewLiveData()
 		}
 		reqNewData(cb ? : Function) {
 			// 获取更多商品
@@ -571,7 +585,7 @@
 		justify-content: space-between;
 	}
 	.tab-box{
-		width: 250rpx;
+		width: 290rpx;
 		height:100rpx
 	}
 	.banner-content {
@@ -871,6 +885,6 @@
 		width: 100%;
 		box-sizing: border-box;
 		background:$content-bg;
-		padding:20rpx 13rpx 20rpx 13rpx;
+		padding:20rpx 20rpx 20rpx 20rpx;
 	}
 </style>

@@ -1,3 +1,12 @@
+/*
+ * @FilePath: \jichao_app_2\src\app.ts
+ * @Author: wjw
+ * @Date: 2022-10-10 11:00:00
+ * @LastEditors: 
+ * @LastEditTime: 2022-10-11 16:27:13
+ * Copyright: 2022 .
+ * @Descripttion: 
+ */
 import PlatformManager from "./manager/PlatformManager";
 import PayManager from "./manager/PayManager";
 import navigateManager from "./manager/navigateManager";

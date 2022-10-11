@@ -327,6 +327,10 @@
 		font-family: "hei";
 		src: url("~@/common/Tao/hei.ttf");
 	}
+	@font-face {
+		font-family: "YouSheBiaoTiHei";
+		src: url("~@/common/Tao/YouShe.ttf");
+	}
 
 	// #endif
 	.content {
