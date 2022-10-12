@@ -1,47 +1,33 @@
 <template>
   <view>
-    <view v-if="!newMerchantPage"
-      class="actionItem"
-      :class="{ redAction: !follow }"
-      @click.stop="handleAction"
-      :style="
-        'height:' +
-        height +
-        'rpx;line-height:' +
-        height +
-        'rpx;width:' +
-        width +
-        'rpx;font-size:' +
-        fontSize +
-        'rpx'
-      "
-    >
+    <view v-if="!newMerchantPage" class="actionItem" :class="{ redAction: !follow }" @click.stop="handleAction" :style="
+      'height:' +
+      height +
+      'rpx;' +
+      'width:' +
+      width +
+      'rpx;font-size:' +
+      fontSize +
+      'rpx'
+    ">
 
-      {{ follow ? "已关注" : "关注" }}
+      {{ follow ? textArr[0]:textArr[1] }}
     </view>
-    <view v-else
-    class="followBtton flexCenter" :class="{isFollo:follow}"
-      @click.stop="handleAction"
-      :style="
-        'height:' +
-        height +
-        'rpx;line-height:' +
-        height +
-        'rpx;width:' +
-        width +
-        'rpx;font-size:' +
-        fontSize +
-        'rpx'
-      "
-    >
-    
-      {{ follow ? "已关注" : "关注" }}
+    <view v-else class="followBtton flexCenter" :class="{isFollo:follow}" @click.stop="handleAction" :style="
+      'height:' +
+      height +
+      'rpx;line-height:' +
+      height +
+      'rpx;width:' +
+      width +
+      'rpx;font-size:' +
+      fontSize +
+      'rpx'
+    ">
+
+      {{ follow ? textArr[0]:textArr[1] }}
     </view>
-    <followModal
-      v-if="modalShow"
-      @cancel="modalShow = false"
-      @confirm="followAction"
-    ></followModal>
+    <followModal v-if="modalShow" @cancel="modalShow = false" @confirm="followAction"></followModal>
   </view>
 </template>
 
@@ -75,6 +61,16 @@ export default class ClassName extends BaseComponent {
     default: false,
   })
   newMerchantPage?: any;
+  @Prop({
+    default: () => {
+      return ['已关注', '关注']
+    }
+  })
+  textArr?: any;
+  @Prop({
+    default:"#FA1545"
+  })
+  backBg?:string
   modalShow = false;
   followCopy = false;
   handleAction() {
@@ -83,12 +79,12 @@ export default class ClassName extends BaseComponent {
   }
   followAction() {
     if (!this.followID) return;
-	// merchant/follow/  (oldAPI)
+    // merchant/follow/  (oldAPI)
     app.http.Post("merchant/1/follow/" + this.followID, {}, (res: any) => {
       this.$emit("handleSuccess", res.data);
-      uni.$emit('followAction',{
+      uni.$emit('followAction', {
         ...res.data,
-        alias:this.followID
+        alias: this.followID
       })
       this.modalShow = false;
     });
@@ -99,27 +95,28 @@ export default class ClassName extends BaseComponent {
   mounted() {
     //挂载到实例上去之后调用
   }
-  destroyed() {}
+  destroyed() { }
 }
 </script>
 
 <style lang="scss">
-  .followBtton {
-            width: 127rpx;
-            height: 52rpx;
-            background: #FA1545;
-            border-radius: 3rpx;
-            font-size: 29rpx;
-            font-family: PingFang SC;
-            font-weight: 500;
-            color: #F6F7FB;
-        }
+.followBtton {
+  width: 127rpx;
+  height: 52rpx;
+  background: #FA1545;
+  border-radius: 3rpx;
+  font-size: 29rpx;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #F6F7FB;
+}
 
-        .isFollo {
+.isFollo {
 
-            background: #F2F2F2;
-            color: #7C7C7C;
-        }
+  background: #F2F2F2;
+  color: #7C7C7C;
+}
+
 .actionItem {
   width: 144rpx;
   height: 56rpx;
@@ -128,11 +125,15 @@ export default class ClassName extends BaseComponent {
   box-sizing: border-box;
   font-weight: 400;
   color: #88878c;
-  line-height: 56rpx;
+  // line-height: 56rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   letter-spacing: 1rpx;
   border: 1rpx solid #dbdbdb;
 }
+
 .redAction {
   background: $btn-red;
   border: 1rpx solid $btn-red;
