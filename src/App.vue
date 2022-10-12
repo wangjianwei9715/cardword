@@ -396,4 +396,10 @@
 		justify-content: center;
 		align-items: center;
 	}
+	.bottomSafeArea{
+		opacity: 0;
+		width: 100%;
+		padding-bottom: constant(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
+	}
 </style>
