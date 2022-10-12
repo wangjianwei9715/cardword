@@ -3,7 +3,9 @@
 		<view class="header-banner">
 			<statusbar />
 			<view class="header-top">
-				<view class="header-back" @click="onClickBack"></view>
+				<view class="header-back" @click="onClickBack">
+					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
+				</view>
 				<view class="header-search">
 					<view class="search-icon"></view>
 					<input class="search-input" type="text" v-model="searchText" placeholder="搜索" confirm-type="search"
@@ -339,7 +341,7 @@
 
 	.header-top {
 		width: 100%;
-		height: 104rpx;
+		height: 88rpx;
 		display: flex;
 		box-sizing: border-box;
 		padding: 0 32rpx 0 0;
@@ -363,8 +365,9 @@
 	.header-back {
 		width: 80rpx;
 		height: 88rpx;
-		background: url(../../static/goods/back@2x.png) no-repeat center;
-		background-size: 100% 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.header-tab {

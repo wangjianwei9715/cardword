@@ -17,9 +17,9 @@
 			<view class="livelist-center">
 				<view class="livelist-center-title u-line-2">{{item.title}}</view>
 				<view class="livelist-center-info">
-					<view class="livelist-center-info-left">
+					<view class="livelist-center-info-left ">
 						<muqian-lazyLoad class="livelist-center-info-avatar" src="" borderRadius="50%"/>
-						{{item.merchant}}
+						<view class="livelist-center-info-name u-line-1">{{item.merchant}}</view>
 					</view>
 					<view class="livelist-center-info-right">228观看</view>
 				</view>
@@ -242,6 +242,12 @@
 					height:77rpx;
 					display: flex;
 					align-items: center;
+					font-size: 23rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #333333;
+				}
+				&-name{
 					font-size: 23rpx;
 					font-family: PingFang SC;
 					font-weight: 400;

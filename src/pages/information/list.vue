@@ -3,7 +3,9 @@
     <view class="header-banner">
       <statusbar />
       <view class="tab-header">
-        <view class="icon-back" @click="onClickBack"></view>
+        <view class="icon-back" @click="onClickBack">
+          <image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
+        </view>
         <view class="header-title">资讯</view>
         <view class="header-icon">
           <view class="icon-search" @click.prevent="onClickGoSearch"></view>
@@ -190,11 +192,12 @@ page {
 .icon-back {
   width: 80rpx;
   height: 88rpx;
-  background: url(../../static/goods/back@2x.png) no-repeat center;
-  background-size: 100% 100%;
   position: absolute;
   left: 0;
   top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .header-title {
   height: 88rpx;

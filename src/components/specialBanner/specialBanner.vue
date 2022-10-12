@@ -324,15 +324,6 @@
       top:50%;
       margin-top: -31rpx;
     }
-    .icon-back{
-      width: 80rpx;
-      height:88rpx;
-      background:url(../../static/goods/back@2x.png) no-repeat center;
-      background-size: 100% 100%;
-      position: absolute;
-      left:0;
-      top:0;
-    }
     .swiper-number{
       font-size: 42rpx;
       font-family: PingFangSC-Regular;

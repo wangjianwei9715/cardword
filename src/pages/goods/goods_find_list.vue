@@ -3,7 +3,9 @@
 		<view class="header-banner">
 			<statusbar />
 			<view class="header-top">
-				<view class="header-back" @click="onClickBack"></view>
+				<view class="header-back" @click="onClickBack">
+					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
+				</view>
 				<view class="header-search">
 					<view class="header-search-input" @click="onClickSearch">
 						<view class="sousuo-icon"></view>{{searchText}}
@@ -334,7 +336,7 @@ page {
 
 .header-top {
   width: 100%;
-  height: 104rpx;
+  height: 88rpx;
   display: flex;
   box-sizing: border-box;
   padding: 0 20rpx 0 0;
@@ -390,10 +392,11 @@ page {
   height: 14rpx;
 }
 .header-back {
-  width: 80rpx;
-  height: 88rpx;
-  background: url(../../static/goods/back@2x.png) no-repeat center;
-  background-size: 100% 100%;
+	width: 80rpx;
+	height: 88rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .header-tab {

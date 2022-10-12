@@ -323,9 +323,11 @@
 			})
 
 			// 获取搜索轮播
-			app.http.Get('advertising/seekRotate/list',{},(res:any)=>{
-
-			})
+			// app.http.Get('advertising/seekRotate/list',{},(res:any)=>{
+			// 	this.noticeList = res.list.map((x:{[x:string]:any})=>{
+			// 		return x.name
+			// 	})
+			// })
 		}
 
 		showWinning() {

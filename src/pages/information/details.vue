@@ -1,13 +1,6 @@
 <template>
 	<view class="content" >
-		<view class="header-banner">
-			<statusbar/>
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack"></view>
-				<view class="header-title">详情</view>
-				<view class="icon-share" @click="onClickShare"></view>
-			</view>
-		</view>
+		<navigationShare navigatetoTitle="详情" :shareData="shareData"/>
 		
 		<view class="index">
 			<view style="padding-top:88rpx">
@@ -266,15 +259,6 @@
 			z-index: 10;
 			align-items: center;
 			justify-content: center;
-		}
-		.icon-back{
-			width: 80rpx;
-			height:88rpx;
-			background:url(../../static/goods/back@2x.png) no-repeat center;
-			background-size: 100% 100%;
-			position: absolute;
-			left:0;
-			top:0;
 		}
 		.header-title{
 			height:88rpx;
