@@ -112,7 +112,6 @@ export default {
       stringData: '',
       playCode: "",
       rightTagShow: true,
-      onRequest: false,
     };
   },
   onReady() { },
@@ -168,11 +167,9 @@ export default {
   watch: {
     "videoTime.currentTime": function (val, oldVal) {
       //   console.log(val);
-      if (this.isTouch || this.onRequest) return;
+      if (this.isTouch) return;
       //   if(val<oldVal&&)
-      console.log(val, oldVal, this.chartQuery.toSec);
       if (val > oldVal && val > this.chartQuery.toSec) {
-        this.onRequest = true
         this.chartQuery.fromSec = Math.round(val);
         // this.chartQuery.fromSec=this.chartQuery.fromSec+60>this.videoTime.duration?this.vide
         // this.chartQuery.fromSec += 60;
@@ -186,7 +183,6 @@ export default {
         return
       }
       if (val < this.chartQuery.fromSec) {
-        this.onRequest = true
         this.chartQuery.fromSec = Math.round(val);
         this.restFetch();
         this.getChartList(true);
@@ -213,13 +209,12 @@ export default {
         `funcApi/brodcast/third/common/room/chatlist/${this.roomID}`,
         this.chartQuery,
         res => {
-          console.log("请求的query", this.chartQuery);
-          console.log('获取到的数据', res);
+          // console.log("请求的query", this.chartQuery);
+          // console.log('获取到的数据', res);
           let list = res.list.map(item => {
             item.senderAvatar = item.avatar;
             return item;
           });
-          this.onRequest = false
           setTimeout(() => {
             this.informH5Action(
               "BroadCastChatMessageBack",
@@ -227,16 +222,15 @@ export default {
               true
             );
           }, 500)
-          // if (!res.isFetchEnd) {
-          //   this.chartQuery.fetchFrom += this.chartQuery.fetchSize;
-          //   setTimeout(() => {
-          //     this.getChartList(false, false);
-          //   }, 1500);
-          // }
+          if (!res.isFetchEnd) {
+            this.chartQuery.fetchFrom += this.chartQuery.fetchSize;
+            setTimeout(() => {
+              this.getChartList(false, false);
+            }, 500);
+          }
         },
         err => {
-          this.onRequest = false
-          console.log('请求错误的query', this.chartQuery, key);
+          // console.log('请求错误的query', this.chartQuery, key);
         }
       );
 
@@ -249,7 +243,7 @@ export default {
       uni[type]({
         url,
         fail: err => {
-          console.log("跳转失败", err);
+          // console.log("跳转失败", err);
         }
       });
     },
@@ -286,15 +280,9 @@ export default {
           "funcApi/brodcast/third/1001/roomInfo/" + this.roomID,
           params,
           res => {
-            // this.liveData = res.data;
-            // if (this.liveData.type != 0) this.liveData.goodCode = "";
             this.goodCode = res.data.goodCode
             this.roomLikeNum = res.data.likeNum
-            console.log("直播间信息", res.data);
             this.setShareData(res.data);
-            // this.getMerchant();
-            // this.setShareData(res.data);
-            // resolve(res.data);
           },
           err => {
             reject(err);
@@ -313,7 +301,6 @@ export default {
     },
     getMerchant(merchantId) {
       request("dataApi/merchant/1/detail/" + merchantId, {}, "get").then(res => {
-        console.log(res);
         this.merchantMessage = res.data;
       });
     },
@@ -339,8 +326,6 @@ export default {
     },
     progressTouchCancle(event) {
       this.isTouch = false;
-      console.log(this.videoTime.currentTime);
-
       this.videoContext.seek(this.videoTime.currentTime);
       this.videoContext.play();
     },
