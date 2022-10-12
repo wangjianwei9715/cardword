@@ -86,116 +86,116 @@ export default class ClassName extends BaseComponent {
 }
 </script>
 <style lang='scss'>
-// .goodslistHorizontal {
-//     width: 100%;
-// }
+.goodslistHorizontal {
+    width: 100%;
+}
 
-// .goodsCard {
-//     width: 710rpx;
-//     height: 216rpx;
-//     background: #FFFFFF;
-//     border-radius: 5rpx;
-//     margin-bottom: 14rpx;
-//     display: flex;
-//     box-sizing: border-box;
-//     padding: 20rpx;
-//     align-items: center;
+.goodsCard {
+    width: 710rpx;
+    height: 216rpx;
+    background: #FFFFFF;
+    border-radius: 5rpx;
+    margin-bottom: 14rpx;
+    display: flex;
+    box-sizing: border-box;
+    padding: 20rpx;
+    align-items: center;
 
-//     .goodsImg {
-//         width: 229rpx;
-//         height: 176rpx;
-//         background: #333333;
-//         margin-right: 27rpx;
-//     }
+    .goodsImg {
+        width: 229rpx;
+        height: 176rpx;
+        background: #333333;
+        margin-right: 27rpx;
+    }
 
-//     .goodsRight {
-//         flex: 1;
-//         display: flex;
-//         height: 176rpx;
-//         justify-content: space-between;
-//         flex-direction: column;
+    .goodsRight {
+        flex: 1;
+        display: flex;
+        height: 176rpx;
+        justify-content: space-between;
+        flex-direction: column;
 
-//         .goodsName {
-//             font-size: 25rpx;
-//             font-family: PingFang SC;
-//             font-weight: 400;
-//             color: #333333;
-//             overflow: hidden;
-//             text-overflow: ellipsis;
-//             word-break: break-all;
-//             display: -webkit-box;
-//             -webkit-box-orient: vertical;
-//             line-height: 34rpx;
-//             -webkit-line-clamp: 2;
-//         }
+        .goodsName {
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #333333;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            line-height: 34rpx;
+            -webkit-line-clamp: 2;
+        }
 
-//         .goodsProgress {
-//             justify-content: space-between;
-//             align-items: center;
-//             margin-top: 18rpx;
-//         }
+        .goodsProgress {
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 18rpx;
+        }
 
-//         .progressContainer {
-//             width: 331rpx;
-//             height: 8rpx;
-//             background-color: #f6f7fb;
-//             position: relative;
-//         }
+        .progressContainer {
+            width: 331rpx;
+            height: 8rpx;
+            background-color: #f6f7fb;
+            position: relative;
+        }
 
-//         .progress {
-//             width: 50%;
-//             height: inherit;
-//             background: linear-gradient(90deg, #F4B5C5 0%, #EA3345 100%);
-//         }
+        .progress {
+            width: 50%;
+            height: inherit;
+            background: linear-gradient(90deg, #F4B5C5 0%, #EA3345 100%);
+        }
 
-//         .progressPercnet {
-//             font-size: 23rpx;
-//             font-family: PingFang SC;
-//             font-weight: 400;
-//             color: #959695;
-//         }
+        .progressPercnet {
+            font-size: 23rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #959695;
+        }
 
-//         .goodsPriceContainer {
-//             flex: 1;
-//             font-size: 33rpx;
-//             font-family: PingFang SC;
-//             font-weight: bold;
-//             color: #333333;
+        .goodsPriceContainer {
+            flex: 1;
+            font-size: 33rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #333333;
 
-//             text:first-child {
-//                 font-size: 18rpx;
-//                 font-weight: 400;
-//             }
+            text:first-child {
+                font-size: 18rpx;
+                font-weight: 400;
+            }
 
-//             .decimal {
-//                 font-size: 23rpx;
-//             }
+            .decimal {
+                font-size: 23rpx;
+            }
 
-//             .priceTips {
-//                 font-size: 23rpx;
-//                 font-family: PingFang SC;
-//                 font-weight: 400;
-//                 color: #959695;
-//                 margin-left: 10rpx;
-//             }
-//         }
+            .priceTips {
+                font-size: 23rpx;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: #959695;
+                margin-left: 10rpx;
+            }
+        }
 
-//         .goodsMerchant {
-//             align-items: center;
+        .goodsMerchant {
+            align-items: center;
 
-//             .merchantLogo {
-//                 width: 35rpx;
-//                 height: 35rpx;
-//             }
+            .merchantLogo {
+                width: 35rpx;
+                height: 35rpx;
+            }
 
-//             .merchantName {
-//                 font-size: 23rpx;
-//                 font-family: PingFang SC;
-//                 font-weight: 400;
-//                 color: #333333;
-//                 margin-left: 16rpx;
-//             }
-//         }
-//     }
-// }
+            .merchantName {
+                font-size: 23rpx;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: #333333;
+                margin-left: 16rpx;
+            }
+        }
+    }
+}
 </style>
