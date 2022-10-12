@@ -15,7 +15,7 @@
 				<muqian-lazyLoad v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic">
-						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx"></muqian-lazyLoad>
+						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" ></muqian-lazyLoad>
 					</view>
 					<view class="goodslist-title u-line-2 goodslist-padding">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
@@ -145,6 +145,7 @@
 
 <style lang="scss">
 	.goodsContent {
+		width: 710rpx;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
@@ -160,7 +161,7 @@
 	}
 	.goodslist {
 		&-index {
-			width: 348rpx;
+			width: 349rpx !important;
 			height:500rpx;
 			background: #FFFFFF;
 			border-radius: 5rpx;
@@ -171,15 +172,17 @@
 		}
 
 		&-pic {
-			width: 348rpx;
+			width: 349rpx;
 			height: 268rpx;
 			margin: 0 auto;
 			overflow: hidden;
 			position: relative;
 			display: flex;
+			border-top-left-radius: 5rpx;
+			border-top-right-radius: 5rpx;
 		}
 		&-pic-image {
-			width: 348rpx;
+			width: 349rpx;
 			height: 268rpx;
 		}
 		&-title {
@@ -227,7 +230,7 @@
 		}
 
 		&-progress-select {
-			background: linear-gradient(90deg, #FFB6C5 0%, #FA1545 100%);
+			background: linear-gradient(90deg, #CFC1F3 0%, #7048DD 100%);
 			background-size: 100% 100%;
 		}
 

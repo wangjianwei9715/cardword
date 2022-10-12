@@ -3,7 +3,7 @@
 		<view class="coupon-list" v-if="list!=''">
 			<view class="coupon-list-left">
 				<view class="coupon-box" v-for="(item,index) in list" :key="index">
-					<view class="coupon-item">{{item}}</view>
+					<view class="coupon-item u-border">{{item}}</view>
 				</view>
 			</view>
 			<view class="coupon-list-right" @click="onClickMoreCoupon">领券<image class="icon-r" src="@/static/goods/v2/icon_r.png"/></view>
@@ -81,7 +81,7 @@
 			margin-left: 11rpx;
 		}
 		.coupon-list-left{
-			width: 600rpx;
+			width:550rpx;
 			height:42rpx;
 			overflow: hidden;
 			display: flex;
@@ -93,19 +93,19 @@
 				margin-right: 20rpx;
 			}
 			.coupon-item{
-				height:40rpx;
+				height:37rpx;
+				background: #FBF2F3;
 				box-sizing: border-box;
 				padding:0 20rpx;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				border: 1px solid #f2c9ce;
-				background:#FDF2F3;
+				border-color: #F2C9CE !important;
 				border-radius: 3rpx;
-				font-size: 24rpx;
+				font-size: 25rpx;
 				font-family: PingFang SC;
-				font-weight: 400;
-				color: #F53756;
+				font-weight: 600;
+				color: #FA1545;
 			}
 		}
 		.coupon-list-right{

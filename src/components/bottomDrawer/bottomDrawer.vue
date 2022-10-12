@@ -32,9 +32,7 @@
 		title!:string;
 		@Prop({ default: 60 })
 		height!:number;
-		@Prop({
-			default:'%'
-		})
+		@Prop({ default:'%' })
 		heightType!:string;
 		@Prop({ default: false })
 		needSafeArea!:boolean;

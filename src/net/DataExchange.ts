@@ -76,10 +76,10 @@ export var goodsListType: { [x: string]: any } = {
 export var goodDetailSpe: {
     [x: string]: any
 } = {
-    spec:{id:3,name:'',desc:'拼团规格',icon:''},
-    pintuan_type:{id:1,name:'',desc:'拼团形式',icon:''},
-    random_type:{id:2,name:'',desc:'随机方式',icon:''},
-    spec_str:{id:4,name:'查看',desc:'卡密列表',icon:'../../static/goods/v2/spe_ck.png'}
+    spec:{id:3,name:'',desc:'规格'},
+    pintuan_type:{id:1,name:'',desc:'玩法'},
+    random_type:{id:2,name:'',desc:'随机形式'},
+    num:{id:4,name:'',desc:'卡片数量'}
 };
 /**
  * @goodDetailSpe 商品详情 拼团详情引导图

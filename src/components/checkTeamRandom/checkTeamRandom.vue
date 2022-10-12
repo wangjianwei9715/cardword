@@ -386,8 +386,7 @@
 		margin-top: 0rpx;
 		margin-bottom: 40rpx;
 		.goodslist-progress{
-			background-image: url('../../static/goods/v2/progessBgg_select.png');
-			background-size: 100% 100%;
+			background: linear-gradient(90deg, #CFC1F3 0%, #7048DD 100%);
 			width: 410rpx;
 			height: 9rpx;
 			position: relative;
@@ -619,8 +618,7 @@
 		position: relative;
 		z-index: 6;
 		.goodslist-progress{
-			background-image: url('../../static/goods/v2/progessBgg_select.png');
-			background-size: 100% 100%;
+			background: linear-gradient(90deg, #CFC1F3 0%, #7048DD 100%);
 			width: 100%;
 			height: 10rpx;
 			position: relative;
@@ -744,8 +742,7 @@
 		position: relative;
 		z-index: 6;
 		.goodslist-progress{
-			background-image: url('../../static/goods/v2/progessBgg_select.png');
-			background-size: 100% 100%;
+			background: linear-gradient(90deg, #CFC1F3 0%, #7048DD 100%);
 			width: 100%;
 			height: 10rpx;
 			position: relative;

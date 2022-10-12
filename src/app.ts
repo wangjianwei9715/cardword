@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\app.ts
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
- * @LastEditors: 
- * @LastEditTime: 2022-10-11 16:27:13
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-10-12 11:05:05
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -51,7 +51,7 @@ export module app{
     export let version = '1.0.0';
     export let iosPlatform = false;
     export let update:{[x: string]: any} = {};//更新数据
-    export let defaultAvatar = '/static/index/moren@2x.png';
+    export let defaultAvatar = '@/static/index/moren@2x.png';
     export let payload = '';//unipush跳转参数
     export let requestKey = ''; // 邀请key
     export let familial = false;
