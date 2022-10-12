@@ -66,25 +66,30 @@
 						<goodCouponGet :goodCode="goodsData.goodCode" :goodPage="true" :list="getCouponList" />
 						<view class="header-top-title">{{goodsData.title}}</view>
 						<view class="header-top-plan">
+							<view class="plan-top-line">
+								<view class="plan-top-rank" @click="onClickAvatarRank">
+									<muqian-lazyLoad v-for="index in 3" :key="index" class="plan-top-rank-img" :class="`plan-top-rank-img${index}`" :style="{'z-index':10-index}"  :src="defaultAvatar" mode="aspectFill" :borderRadius="'50%'"/>
+								</view>
+								<view class="header-top-plan-num" v-if="goodsData.state>=2">已完成</view>
+								<view class="header-top-plan-num" v-else>
+									{{planData.str}}
+									<text class="header-top-plan-numbottom">
+										{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
+									</text>
+								</view>
+							</view>
 							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
 								<view class="progress-mask"
 									:style="{width:(100-planData.width)+'%'}">
 								</view>
 							</view>
-							<view class="header-top-plan-num" v-if="goodsData.state>=2">已完成</view>
-							<view class="header-top-plan-num" v-else>
-								{{planData.str}}
-								<view class="header-top-plan-numbottom">
-									{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
-								</view>
-							</view>
+							
 						</view>
 					</view>
 
 					<view class="header-bottom">
 						<view class="header-bottom-index" v-for="item in goodsSpe" :key="item.id"
 							@click="onClickCardPlay(item)">
-							<image class="header-bottom-index-pic" :src="item.icon" />
 							<view class="header-bottom-index-name">{{item.name}}</view>
 							<view class="header-bottom-index-desc">{{item.desc}}</view>
 						</view>
@@ -97,27 +102,25 @@
 			<!-- 邀请新人步骤图 -->
 
 			<!-- 活动展示 -->
-			<goodAct :goodsData="goodsData" />
-
-			<view class="detail-bg" v-if="goodsData.extraDesc">
-				<view class="special-explain">{{goodsData.extraDesc}}</view>
-			</view>
+			<goodAct :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData" />
+			<!-- 头像点击车队 -->
+			<goodChedui :showChedui.sync="showCheduiAva" :cheduiData="cheduiDataAva" :userData="userData" />
 
 			<!-- 卖家信息 -->
 			<view class="detail-bg">
 				<view class="goods-seller" v-if="goodsData.publisher">
-					<view class="goods-seller-left">
+					<view class="goods-seller-desc-js">商品由该商家在平台寄售</view>
+					<view class="goods-seller-left" @click="onClickShops">
 						<muqian-lazyLoad class="goods-seller-left-avatar"
-							:src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):app.defaultAvatar"
-							mode="aspectFill" :borderRadius="'50%'"/>
+							:src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar"
+							mode="aspectFill" :borderRadius="'3rpx'"/>
 						<view class="goods-seller-left-desc">
 							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
 							<view class="goods-seller-left-desc-tips">粉丝{{goodsData.publisher.fans}} |
 								在售{{goodsData.publisher.sale}}</view>
-							<view class="goods-seller-left-desc-js">商品由该商家在平台寄售</view>
 						</view>
+						<view class="goods-seller-right"></view>
 					</view>
-					<view class="goods-seller-right" @click="onClickShops">进店</view>
 				</view>
 			</view>
 
@@ -128,21 +131,14 @@
 						<view class="goods-desc-title-left">拼团详情</view>
 						<view class="goods-desc-title-right" @click.stop="showDrawer = true">
 							拼团规则
-							<image class="goods-desc-title-help" src="../../static/goods/v2/icon_help.png" />
+							<image class="goods-desc-title-help" src="../../static/goods/v2/icon_right_new.png" />
 						</view>
 					</view>
 					<view class="goods-desc-explain">
-						<view class='goods-desc-explain-text' v-for="item in goodsDesc" :key="item.id">
+						<view class="special-explain">{{goodsData.extraDesc}}</view>
+						<!-- <view class='goods-desc-explain-text' v-for="item in goodsDesc" :key="item.id">
 							<view class="explain-desc">{{item}}</view>
-						</view>
-					</view>
-
-					<view class="goods-step-box">
-						<view class="goods-step-index" :class="{'goods-step-index-tips':index<3}"
-							v-for="(item,index) in stepData" :key="index">
-							<image class="goods-step-pic" :src="item.pic" />
-							<view class="goods-step-name">{{item.name}}</view>
-						</view>
+						</view> -->
 					</view>
 				</view>
 			</view>
@@ -246,11 +242,9 @@
 	import {
 		getGoodsPintuanDetail,
 		getGoodsRandom,
-		getGoodsPintuanSpe,
-		getGoodsRandomSpe
 	} from '@/tools/switchUtil';
 	import { goodsDetailRules, goodsDetailHelp } from "@/net/DataRules";
-	import { goodDetailSpe, goodDetailStep } from "@/net/DataExchange"
+	import { goodDetailSpe } from "@/net/DataExchange"
 	import { Md5 } from "ts-md5";
 	import { parsePic } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
@@ -259,10 +253,10 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
+		defaultAvatar = app.defaultAvatar;
 		goodsDetailRules = goodsDetailRules
 		goodsDetailHelp = goodsDetailHelp;
 		goodsSpe = goodDetailSpe;
-		stepData = goodDetailStep;
 		shareObj = {
 			shareShow:false,
 			shareData:{...shareData}
@@ -291,6 +285,11 @@
 		relativeOnce = false;
 		// 可领取优惠券列表
 		getCouponList:any = [];
+		userData = app.data;
+		cheduiData = {};
+		showCheduiDraw = false;
+		cheduiDataAva:any = '';
+		showCheduiAva = false;
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
@@ -316,6 +315,11 @@
 				setTimeout(()=>{
 					this.getRelative(goodCode,relativeParams)
 				},500)
+
+				// 查询购买记录用户
+				// app.http.Get(`good/${this.goodCode}/userSaleTop`,{},(res:any)=>{
+				// 	this.cheduiDataAva = res;
+				// })
 			});
 			// #endif
 		}
@@ -379,6 +383,11 @@
 				let desc = decodeURIComponent(data.good.desc);
 				let newData = desc.indexOf('\n') > -1 ? desc.split('\n') : desc.split('\r');
 				this.goodsDesc = [`拼团 I D ：${goodCode}`, '开售时间：' + uni.$u.timeFormat(data.good.startAt,'yyyy-mm-dd hh:MM:ss'), ...newData];
+				if((data.good.bit & 128) == 128){
+					app.http.Get(`good/${goodCode}/chedui`,{},(res:any)=>{
+						this.cheduiData = res
+					})
+				}
 				cb && cb()
 			})
 		}
@@ -479,28 +488,19 @@
 		 */
 		getGoodsSpe() {
 			let data = this.goodsData;
+			const spec = data.spec.name;
+			const num = data.spec.num+'张'
 			if (this.goodsData.isSelect) {
 				this.goodsSpe = {
-					spec: { id: 3, name: '', desc: '拼团规格' },
-					pintuan_type: { id: 1, name: '自选球队', desc: '拼团形式', icon: '../../static/goods/v2/spe_zx.png' },
-					spec_str: { id: 4, name: '查看', desc: '卡密列表', icon: '../../static/goods/v2/spe_ck.png' }
+					spec: { id: 3, name: spec, desc: '拼团规格' },
+					pintuan_type: { id: 1, name: '自选球队', desc: '拼团形式'},
+					num:{id:4,name:num,desc:'卡片数量'}
 				};
 			} else {
+				this.goodsSpe.spec.name = spec;
+				this.goodsSpe.num.name = num;
 				this.goodsSpe.pintuan_type.name = getGoodsPintuanDetail(data.pintuan_type);
-				this.goodsSpe.pintuan_type.icon = getGoodsPintuanSpe(data.pintuan_type);
 				this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
-				this.goodsSpe.random_type.icon = getGoodsRandomSpe(data.random_type);
-			}
-			this.getSpeNamePic(data.spec.name);
-		}
-		getSpeNamePic(name: string) {
-			this.goodsSpe.spec.name = name;
-			if (name.indexOf('箱') != -1) {
-				this.goodsSpe.spec.icon = '../../static/goods/v2/spe_xiang.png'
-			} else if (name.indexOf('1盒') != -1) {
-				this.goodsSpe.spec.icon = '../../static/goods/v2/spe_he.png'
-			} else {
-				this.goodsSpe.spec.icon = '../../static/goods/v2/spe_duohe.png'
 			}
 		}
 		onClickTipBtn(item: any) {
@@ -887,6 +887,14 @@
 				swiperData.swiperCurrent = index == 0 ? 0 : swiperData.carouselLength;
 			}
 		}
+		// 车队头像点击
+		onClickAvatarRank(){
+			if((this.goodsData.bit & 128) == 128){
+				this.showCheduiDraw = true
+			}else{
+				this.showCheduiAva = true;
+			}
+		}
 		getCountStr(str: any, index: number) {
 			let Str = String(str)
 			return Str.substr(index, 1)
@@ -1082,19 +1090,19 @@
 	}
 
 	.detail-bg {
-		width: 724rpx;
-		border-radius: 5rpx;
+		width: 710rpx;
+		border-radius: 3rpx;
 		background: #fff;
-		margin-bottom: 13rpx;
+		margin-bottom: 14rpx;
 	}
 
 	.header-content {
-		width: 724rpx;
+		width: 710rpx;
 		height: 100rpx;
 		background: url(../../static/goods/v2/price_bg.png) no-repeat center;
 		background-size: 100% 100%;
 		box-sizing: border-box;
-		padding-left: 36rpx;
+		padding-left: 29rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -1117,7 +1125,7 @@
 	}
 
 	.header-price {
-		font-size: 33rpx;
+		font-size: 38rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 500;
 		color: #FFFFFF;
@@ -1126,7 +1134,7 @@
 	}
 
 	.header-price text {
-		font-size: 54rpx;
+		font-size: 63rpx;
 		font-family: Impact;
 		font-weight: 400;
 		color: #FFFFFF;
@@ -1235,7 +1243,7 @@
 	.header {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 0 20rpx;
+		padding: 0 30rpx;
 		padding-bottom: 10rpx;
 	}
 
@@ -1256,12 +1264,11 @@
 
 		&-title {
 			width: 100%;
-			font-size: 33rpx;
+			font-size: 31rpx;
 			font-family: PingFangSC-Regular;
-			font-weight: 400;
+			font-weight: 600;
 			color: #333333;
 			line-height: 48rpx;
-			font-weight: normal !important;
 			word-break:break-all;
 		}
 
@@ -1279,20 +1286,41 @@
 				color: #000000;
 			}
 		}
-
 		&-plan {
 			width: 100%;
-			height: 30rpx;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
 			margin-top: 20rpx;
 			margin-bottom: 20rpx;
-
+			.plan-top-line{
+				width:100%;
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 10rpx;
+				align-items: flex-end;
+				.plan-top-rank{
+					display: flex;
+					align-items: center;
+					padding-left: 13rpx;
+				}
+				.plan-top-rank-img{
+					width:50rpx;
+					height:50rpx;
+					border-radius: 50%;
+					margin-left: -13rpx;
+					position: relative;
+				}
+				.plan-top-rank-img1{
+					border:1px solid #FFCA4A;
+				}
+				.plan-top-rank-img2{
+					border:1px solid #B6B5B5;
+				}
+				.plan-top-rank-img3{
+					border:1px solid #C49465;
+				}
+			}
 			.goodslist-progress {
-				background-image: url('../../static/goods/v2/progeessBg.png');
-				background-size: 100% 100%;
-				width: 480rpx;
+				background: linear-gradient(90deg, #FFB6C5 0%, #FA1545 100%);
+				width: 100%;
 				height: 12rpx;
 				position: relative;
 				display: flex;
@@ -1306,28 +1334,26 @@
 			}
 
 			.goodslist-progress-select {
-				background-image: url('../../static/goods/v2/progessBgg_select.png');
-				background-size: 100% 100%;
+				background: linear-gradient(90deg, #CFC1F3 0%, #7048DD 100%);
 			}
 
 			.header-top-plan-num {
-				width: 190rpx;
 				height: 30rpx;
-				font-size: 24rpx;
+				font-size: 23rpx;
 				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #88878C;
+				font-weight: 600;
+				color: #959695;
 				line-height: 30rpx;
 				text-align: right;
+				margin-bottom: 6rpx;
 			}
 
 			.header-top-plan-numbottom {
-				width: 100%;
 				height: 30rpx;
-				font-size: 20rpx;
+				font-size: 23rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #88878C;
+				color: #C0C0C0;
 				text-align: right;
 			}
 		}
@@ -1382,33 +1408,26 @@
 
 	.header-bottom {
 		width: 100%;
-		height: 158rpx;
+		height: 88rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 
 		&-index {
-			height: 140rpx;
+			height: 88rpx;
 			box-sizing: border-box;
 			text-align: center;
-
-			&-pic {
-				width: 43rpx;
-				height: 43rpx;
-				margin-bottom: 10rpx;
-			}
-
 			&-name {
 				text-align: center;
-				font-size: 24rpx;
+				font-size: 25rpx;
 				font-family: PingFangSC-Regular;
-				font-weight: 400;
+				font-weight: 600;
 				color: #333333;
+				margin-bottom: 5rpx;
 			}
-
 			&-desc {
-				font-size: 24rpx;
+				font-size: 23rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #C0C0C0;
@@ -1421,42 +1440,40 @@
 
 	.goods-seller {
 		width: 100%;
-		height: 160rpx;
 		box-sizing: border-box;
 		border-radius: 5rpx;
-		padding: 0 24rpx;
+		padding:34rpx 30rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		position: relative;
 
 		&-left {
-			width: 580rpx;
-			height: 110rpx;
+			width: 100%;
+			height: 91rpx;
 			display: flex;
 			align-items: center;
 			box-sizing: border-box;
-
+			position: relative;
 			&-avatar {
-				width: 104rpx;
-				height: 104rpx;
-				border-radius: 50%;
-				background: #F5F5F9
+				width: 91rpx;
+				height: 91rpx;
+				border-radius: 3rpx;
 			}
 
 			&-desc {
-				width: 460rpx;
-				height: 110rpx;
+				width: 420rpx;
+				height: 91rpx;
 				box-sizing: border-box;
-				padding: 20rpx 0 4rpx 30rpx;
+				padding: 5rpx 0 4rpx 35rpx;
 				display: flex;
 				flex-wrap: wrap;
 
 				&-name {
 					width: 100%;
-					font-size: 33rpx;
+					font-size: 31rpx;
 					font-family: PingFangSC-Regular;
-					font-weight: 400;
+					font-weight: 600;
 					color: #333333;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -1465,58 +1482,52 @@
 
 				&-tips {
 					width: 100%;
-					font-size: 24rpx;
+					font-size: 25rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
-					color: #88878C;
+					color: #C0C0C0;
 				}
 
-				&-js {
-					height: 28rpx;
-					background: #FBF2F3;
-					font-size: 23rpx;
-					font-family: PingFangSC-Regular;
-					font-weight: 400;
-					color: #F63D47;
-					line-height: 28rpx;
-					display: inline-flex;
-					align-items: center;
-					box-sizing: border-box;
-					padding: 0 16rpx;
-					position: absolute;
-					right: 0;
-					top: 0;
-				}
+				
 
 
 			}
 		}
-
-		&-right {
-			height: 46rpx;
-			background: #fff;
-			border: 1rpx solid #DADADA;
-			border-radius: 5rpx;
-			text-align: center;
-			line-height: 46rpx;
-			font-size: 24rpx;
+		.goods-seller-desc-js {
+			height: 28rpx;
+			background: #FBF2F3;
+			font-size: 23rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
-			color: #88878c;
-			margin-top: 20rpx;
+			color: #F63D47;
+			line-height: 28rpx;
+			display: inline-flex;
+			align-items: center;
 			box-sizing: border-box;
-			padding: 0 20rpx;
+			padding: 0 16rpx;
+			position: absolute;
+			right: 0;
+			top: 0;
+		}
+		&-right {
+			width: 11rpx;
+			height:17rpx;
+			background:url(@/static/goods/v2/icon_right_new.png) no-repeat center;
+			background-size: 100% 100%;
+			position: absolute;
+			right:0;
+			top:19rpx
 		}
 	}
 
 	.goods-desc {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 20rpx 32rpx 30rpx 32rpx;
+		padding: 28rpx 30rpx 30rpx 30rpx;
 
 		&-title {
 			width: 100%;
-			margin-bottom: 20rpx;
+			margin-bottom: 18rpx;
 			display: flex;
 			align-items: flex-end;
 			justify-content: space-between;
@@ -1525,22 +1536,22 @@
 				font-size: 31rpx;
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 600;
-				color: #14151A;
+				color: #333333;
 			}
 
 			.goods-desc-title-right {
 				font-size: 25rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #949398;
+				color: #949494;
 				display: flex;
 				align-items: center;
 			}
 
 			.goods-desc-title-help {
-				width: 23rpx;
-				height: 22rpx;
-				margin-left: 18rpx;
+				width: 11rpx;
+				height:17rpx;
+				margin-left: 21rpx;
 			}
 		}
 
@@ -1738,13 +1749,11 @@
 	// 特殊说明
 	.special-explain {
 		width: 100%;
-		box-sizing: border-box;
-		padding: 22rpx;
-		font-size: 23rpx;
-		font-family: PingFangSC-Regular;
+		font-size: 25rpx;
+		font-family: PingFang SC;
 		font-weight: 400;
-		color: #88878C;
-		line-height: 32rpx;
+		color: #333333;
+		line-height: 37rpx;
 	}
 
 	.detail-bottom-box {

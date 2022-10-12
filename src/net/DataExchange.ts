@@ -81,17 +81,6 @@ export var goodDetailSpe: {
     random_type:{id:2,name:'',desc:'随机形式'},
     num:{id:4,name:'',desc:'卡片数量'}
 };
-/**
- * @goodDetailSpe 商品详情 拼团详情引导图
- *  @value ｛string｝ name 内容
- *  @value ｛string｝ pic  图片地址
- */
-export var goodDetailStep = [
-    {name:'参与拼团',pic:'../../static/goods/v2/step_0.png'},
-    {name:'直播拆卡',pic:'../../static/goods/v2/step_1.png'},
-    {name:'拆卡报告',pic:'../../static/goods/v2/step_2.png'},
-    {name:'中卡发货',pic:'../../static/goods/v2/step_3.png'},
-]
 // 状态
 export var stateArray = [
     {
