@@ -16,7 +16,7 @@
 				</view>
 			</view>
 			<view class="cover-box">
-				<muqian-lazyLoad class="pic-box" :src="decodeURIComponent(item.cover)" borderRadius="3rpx" @click="onClickJumpUrl(item)"/>
+				<muqian-lazyLoad v-if="item" class="pic-box" :src="decodeURIComponent(item.cover)" borderRadius="3rpx" @click="onClickJumpUrl(item)"/>
 				<view v-if="item.video_at && item.video_at!=''" class="video-box">
 					<view class="icon-play"></view>
 					<view class="icon-shadow">

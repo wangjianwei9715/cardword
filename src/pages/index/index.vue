@@ -58,9 +58,9 @@
 							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
 									<view class="tab-img-content">
-										<image class="tabimg" :class="{'tabimg-all':items.text=='全部拼团'}" :src="items.img" mode=""/>
+										<image class="tabimg" :class="{'tabimg-all':items.name=='全部拼团'}" :src="decodeURIComponent(items.icon)" mode=""/>
 									</view>
-									<view class="tabtext">{{items.text}}</view>
+									<view class="tabtext">{{items.name}}</view>
 								</view>
 							</view>
 							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-07-26')">
@@ -118,7 +118,7 @@
 		isDuringDate = isDuringDate;
 		indexGoodsType = indexGoodsType;
 		indexTabList: { [x: string]: any } = {
-			top:[...indexTabList],
+			top:[],
 			bottom:indexTabList
 		};
 		capsule = {
@@ -323,11 +323,13 @@
 			})
 
 			// 获取搜索轮播
-			// app.http.Get('advertising/seekRotate/list',{},(res:any)=>{
-			// 	this.noticeList = res.list.map((x:{[x:string]:any})=>{
-			// 		return x.name
-			// 	})
-			// })
+			app.http.Get('advertising/seekRotate/list',{},(res:any)=>{
+				this.noticeList = res.list
+			})
+			// 获取系列icon
+			app.http.Get('advertising/iconSeries/list',{},(res:any)=>{
+				this.indexTabList.top = res.list
+			})
 		}
 
 		showWinning() {

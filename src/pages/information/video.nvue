@@ -48,8 +48,8 @@
 									<image style="width:50rpx;height:50rpx;border-radius:50%" :src="decodeURIComponent(item.author_logo)" mode="aspectFill"/>
 									<text class="descAuthor">{{item.author}}</text>
 								</view>
-								<text class="userName" :style="'width: '+ (windowWidth - 90) +'px;'">{{item.title}}</text><!-- i={{i}} -->
-								<text class="words" :style="'width: '+ (windowWidth - 90) +'px;'" >{{replaceText(decodeURIComponent(item.content))}}</text><!-- k={{k}} -->
+								<text class="userName" >{{item.title}}</text><!-- i={{i}} -->
+								<text class="words" >{{replaceText(decodeURIComponent(item.content))}}</text><!-- k={{k}} -->
 							</view>
 						</view>
 					</div>
@@ -79,12 +79,12 @@
 		<!-- 分享 -->
 		<nvueShare :visible.sync='shareShow' :shareData='shareData' ></nvueShare>
 		<!-- 底部详情 -->
-		<view class="popup">
+		<view class="popup" :style="{height:showDetail?wHeight:0+'px'}">
 			<view class="popup-shadow" :style="{height:showDetail?wHeight:0+'px'}" @click="onClosePopup"></view>
 			<view class="popup-content" :style="{height:showDetail?(boxStyle.height-200):0+'px'}">
 				<list ref="comList" v-if="showDetail" :show-scrollbar="false" :pagingEnabled="false" :scrollable="true" @loadmore="getMoreComment" :loadmoreoffset="1">
 					<cell>
-						<vdetail style="padding-top: 40rpx;" :articleData="dataList[k]?dataList[k]:{}" @reply="onReply">
+						<vdetail style="padding-top: 40rpx;"  :articleData="dataList[k]?dataList[k]:{}" @reply="onReply">
 							<nTabbar v-if="showDetail" :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" :detail="true" @comment="onReply" ></nTabbar>
 						</vdetail>
 					</cell>
@@ -438,10 +438,12 @@
 						fatherId:res?res.fatherId:0,
 						focus:true
 					}
+					console.log(this.chatData);
 				})
 			},
 			onBlur(){
 				this.chatData = {...chat}
+				uni.hideKeyboard()
 			},
 			// 提交评论或回复
 			onChatConfirm(content){
@@ -588,18 +590,22 @@
 		margin-left: 14rpx;
 	}
 	.userName {
+		width: 540rpx;
 		font-size: 25rpx;
 		color: #ffffff;
 		margin-top: 18rpx;
 		line-height: 38rpx;
-		text-overflow: ellipsis; /* 超出部分省略号 */
-    	lines:1; /* 超出固定行数显示省略号 */
+		overflow: hidden;
+		text-overflow: ellipsis !important;  /* 超出部分省略号 */
+		lines:1;
 	}
 	.words {
+		width: 540rpx;
 		font-size: 25rpx;
 		color: #ffffff;
 		line-height: 38rpx;
-		text-overflow: ellipsis; /* 超出部分省略号 */
+		overflow: hidden;
+		text-overflow: ellipsis !important;  /* 超出部分省略号 */
     	lines:2; /* 超出固定行数显示省略号 */
 	}
 	.root{
@@ -612,6 +618,7 @@
 		bottom:0;
 		left:0;
 		right:0;
+		z-index: 999;
 	}
 	.popup-shadow{
 		width: 750rpx;

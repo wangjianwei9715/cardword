@@ -42,14 +42,16 @@
 				<view class="drawer-header-name">上车最多的前{{cheduiData.totalNum}}名玩家送礼</view>
 				<image style="width:27rpx;height:26rpx" src="@/static/goods/v2/icon_help.png" @click="cheduiHelpShowDrawer=true"></image>
 			</view>
-			<view class="drawer-chedui" v-for="(item,index) in cheduiData.list" :key="index">
-				<view class="chedui-rank-item">
-					<view class="chedui-rank-item-left">
-						<view class="chedui-rank-item-num" :class="`chedui-rank-item-num-${item.index}`">{{item.index}}</view>
-						<image class="chedui-rank-avatar" :src="decodeURIComponent(item.avatar)"/>
-						<view class="chedui-rank-name u-line-1">{{item.userName}}</view>
+			<view class="drawer-center-list">
+				<view class="drawer-chedui" v-for="(item,index) in cheduiData.list" :key="index">
+					<view class="chedui-rank-item">
+						<view class="chedui-rank-item-left">
+							<view class="chedui-rank-item-num" :class="`chedui-rank-item-num-${item.index}`">{{item.index}}</view>
+							<image class="chedui-rank-avatar" :src="decodeURIComponent(item.avatar)"/>
+							<view class="chedui-rank-name u-line-1">{{item.userName}}</view>
+						</view>
+						<view class="chedui-rank-item-reward u-line-1" :class="{'font-bold':item.index<=3}">{{item.name}}</view>
 					</view>
-					<view class="chedui-rank-item-reward u-line-1" :class="{'font-bold':item.index<=3}">{{item.name}}</view>
 				</view>
 			</view>
 			<view class="drawer-bottom">
@@ -323,6 +325,7 @@
 		justify-content: space-between;
 		box-sizing: border-box;
 		padding:0 20rpx;
+		margin-bottom: 40rpx;
 	}
 	.drawer-header-name{
 		font-size: 23rpx;
@@ -331,7 +334,7 @@
 		color: #959695;
 	}
 	.drawer-chedui{
-
+		margin-bottom: 40rpx;
 	}
 	.drawer-bottom{
 		width: 100%;
@@ -345,6 +348,8 @@
 		height: calc(118rpx + env(safe-area-inset-bottom));
 		box-sizing: border-box;
 		padding-top: 20rpx;
+		z-index: 6;
+		background:#fff;
 	}
 	.chedui-rank-item{
 		width: 100%;
@@ -401,5 +406,8 @@
 	}
 	.font-bold{
 		font-weight: bold;
+	}
+	.drawer-center-list{
+		padding-bottom: 200rpx;
 	}
 </style>

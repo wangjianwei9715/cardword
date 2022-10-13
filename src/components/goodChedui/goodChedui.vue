@@ -208,7 +208,7 @@
 		color: #959695;
 	}
 	.drawer-chedui{
-
+		margin-bottom: 40rpx;
 	}
 	.drawer-bottom{
 		width: 100%;

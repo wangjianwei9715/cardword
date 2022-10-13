@@ -2,7 +2,7 @@
 	<view class="content">
 		
 		<view class="input-box" v-if="focus" :style="{transform:`translateY(-${textareaData.height}px)`}">
-			<textarea class="input" v-model="textareaData.val" :placeholder="replyName!=''?'回复'+replyName:'说点什么...'" :focus="focus" :adjust-position="false" :show-confirm-bar="false" @blur="onBlur"  @focus="getHeight" @keyboardheightchange="getHeight"/>
+			<textarea class="input" v-model="textareaData.val" :placeholder="replyName!=''?'回复'+replyName:'说点什么...'" :focus="focus" :adjust-position="false" :show-confirm-bar="false" :auto-blur="true" @blur="onBlur"  @focus="getHeight" @keyboardheightchange="getHeight"/>
 			<text class="btn" @click="onClickChatConfirm">发送</text>
 		</view>
 	</view>
@@ -35,8 +35,8 @@
 		methods: {
 			onClickChatConfirm(){
 				uni.$u.throttle(()=>{
+					uni.hideKeyboard()
 					if(this.textareaData.val == '') return;
-
 					this.$emit('chatConfirm',this.textareaData.val)
 					this.textareaData = {...textareaData}
 				},1000)
@@ -47,6 +47,9 @@
 			},
 			getHeight(event){
 				this.textareaData.height = event.detail.height;
+				if(event.detail.height<=0){
+					this.focus = false
+				}
 			}
 		}
 	};

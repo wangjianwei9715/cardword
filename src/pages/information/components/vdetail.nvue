@@ -31,21 +31,24 @@
 							<text class="chat-like">{{item.likes}}</text>
 						</view>
 					</view>
-					<view class="chat-item son-item" v-for="(son,x) in item.lower" :key="x">
+					<view class="chat-item son-item" v-for="(son,x) in item.lower" :key="x" >
 						<image class="son-avatar" :src="decodeURIComponent(son.avatar)"/>
-						<view style="width:390rpx">
+						<view style="width:390rpx" >
 							<view class="chat-info son-info">
 								<text class="chat-name">{{son.name}}</text>
 								<text class="chat-time">{{timeFrom(son.created_at)}}</text>
 							</view>
-							<view style="width:390rpx" class="chat-msg" v-if="!son.isDelete" @click.stop.prevent="onClickReply(son,item.id)">
+							<view style="width:390rpx" class="chat-msg" v-if="!son.isDelete" >
 								<!-- <rich-text :nodes="richNodes(son)" :selectable="false" v-if="son.replyUserName!=''"></rich-text> -->
-								<text class="chat-hf" :selectable="true" v-if="son.replyUserName!=''">
+								<text class="chat-hf" :selectable="true" v-if="son.replyUserName!='' && platform =='ios'" @click="onClickReply(son,item.id)">
 									<text class="chat-text">回复</text>
 									<text class="hf-name">{{son.replyUserName}}</text>
 									<text class="chat-text2">:{{son.content}}</text>
 								</text>
-								<text class="chat-hf" :selectable="true" v-else>{{son.content}}</text>
+								<text class="chat-hf" :selectable="true" v-else-if="son.replyUserName!=''" @click="onClickReply(son,item.id)">
+									回复 {{son.replyUserName}}:{{son.content}}
+								</text>
+								<text class="chat-hf" :selectable="true" v-else @click="onClickReply(son,item.id)">{{son.content}}</text>
 							</view>
 							<text style="width:390rpx" class="chat-msg" v-else>评论已删除</text>
 						</view>
@@ -83,7 +86,13 @@
 		},
 		watch: {
 		},
+		data() {
+			return {
+				platform:''
+			};
+		},
 		mounted() {
+			this.platform = uni.getSystemInfoSync().platform;
 			this.commentsList = []
 			this.commentParams = {...commentParams}
 			this.getArticleComment();
@@ -157,6 +166,7 @@
 				},100)
 			},
 			onClickReply(item,fatherId){
+				console.log('------------------');
 				uni.$u.throttle(()=>{
 					this.$emit('reply',{replyId:item.id,replyName:item.name,fatherId})
 				},1000)

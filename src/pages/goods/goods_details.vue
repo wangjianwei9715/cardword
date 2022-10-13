@@ -68,7 +68,7 @@
 						<view class="header-top-plan">
 							<view class="plan-top-line">
 								<view class="plan-top-rank" @click="onClickAvatarRank">
-									<muqian-lazyLoad v-for="index in 3" :key="index" class="plan-top-rank-img" :class="`plan-top-rank-img${index}`" :style="{'z-index':10-index}"  :src="defaultAvatar" mode="aspectFill" :borderRadius="'50%'"/>
+									<muqian-lazyLoad v-for="(item,index) in rankAvatarList" :key="index" class="plan-top-rank-img" :class="`plan-top-rank-img${index+1}`" :style="{'z-index':10-index}"  :src="item?decodeURIComponent(item):defaultAvatar" mode="aspectFill" :borderRadius="'50%'"/>
 								</view>
 								<view class="header-top-plan-num" v-if="goodsData.state>=2">已完成</view>
 								<view class="header-top-plan-num" v-else>
@@ -290,6 +290,7 @@
 		showCheduiDraw = false;
 		cheduiDataAva:any = '';
 		showCheduiAva = false;
+		rankAvatarList=['','',''];
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
@@ -317,9 +318,16 @@
 				},500)
 
 				// 查询购买记录用户
-				// app.http.Get(`good/${this.goodCode}/userSaleTop`,{},(res:any)=>{
-				// 	this.cheduiDataAva = res;
-				// })
+				app.http.Get(`good/${this.goodCode}/userSaleTop`,{},(res:any)=>{
+					this.cheduiDataAva = res;
+					if(res.list){
+						res.list.map((x:any)=>{
+							if(x.index<=3){
+								this.rankAvatarList[x.index-1] = x.avatar
+							}
+						})
+					}
+				})
 			});
 			// #endif
 		}
