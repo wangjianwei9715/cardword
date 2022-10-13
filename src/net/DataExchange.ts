@@ -1,11 +1,10 @@
 // 首页tab列表
 export var indexTabList = [
-    {img:'../../static/index/v3/icon1.png',text:'卡币商城',url:'/pages/mall/index'},
-    {img:'../../static/index/v3/icon2.png',text:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
-    {img:'../../static/index/v3/icon3.png',text:'资讯公告',url:'/pages/information/list'},
-    // {img:'../../static/index/v3/icon4.png',text:'商家列表',url:'/pages/userinfo/merchant_list'},
-    {img:'../../static/index/v3/icon4.png',text:'商家列表',url:'/pages/userinfo/merchant_listV2'},
-    {img:'../../static/index/v3/icon5.png',text:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'}
+    {icon:'../../static/index/v3/icon1.png',name:'卡币商城',url:'/pages/mall/index'},
+    {icon:'../../static/index/v3/icon2.png',name:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
+    {icon:'../../static/index/v3/icon3.png',name:'资讯公告',url:'/pages/information/list'},
+    {icon:'../../static/index/v3/icon4.png',name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
+    {icon:'../../static/index/v3/icon5.png',name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'}
 ]
 
 // 首页hot列表
