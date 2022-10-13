@@ -514,8 +514,8 @@ export default class PlatformManager {
 			resolve(route + query)
 		});
 	}
-	pageBack(params?: any) {
-		let delta = 1
+	pageBack(params?:number | UniApp.NavigateBackOptions) {
+		let delta:any = 1
 		const IS_NUMBER = typeof params === 'number'
 		if (!IS_NUMBER && !params) delta = 1
 		if (IS_NUMBER) delta = params
@@ -527,7 +527,8 @@ export default class PlatformManager {
 			})
 			return
 		}
-		const data = IS_NUMBER ? { delta } : { ...params }
+		//@ts-ignore
+		const data:any = IS_NUMBER ? { delta } : { ...params }
 		uni.navigateBack(data)
 
 	}
