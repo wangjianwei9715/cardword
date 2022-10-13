@@ -1,8 +1,7 @@
 <template>
     <view class="content">
         <view class="detailCard">
-            <image class="backImg" mode="aspectFill"
-                :src="$parsePic(decodeURIComponent(seriesDetail.back_img))" />
+            <image class="backImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(seriesDetail.back_img))" />
             <view class="merchantMask"></view>
             <view class="seriesInfo uni-flex">
                 <image class="seriesInfo-avatar" mode="aspectFill"
@@ -13,7 +12,7 @@
                 {{seriesDetail.describe || ""}}
             </view>
         </view>
-        <seriesCard :list="[1,1,1,1,1,1,1,1,1,1]"/>
+        <seriesCard :list="cardList" />
         <scroll-view scroll-x="true" class="tagContainer">
             <view class="uni-flex" style="height:100%;align-items: center;">
                 <view class="tag" v-for="(item,index) in choices" :key="index"
@@ -41,6 +40,7 @@ export default class ClassName extends BaseNode {
         choice: "all"
     }
     isFetchEnd: boolean = true
+    cardList: any = []
     goodsList: any = []
     onLoad(query: any) {
         this.seriesId = query.seriesId
@@ -70,8 +70,8 @@ export default class ClassName extends BaseNode {
         this.refresh()
     }
     reqSeriesCards() {
-        app.http.Get('dataApi/advertising/iconSeries/rarity/card/list/', {}, (res: any) => {
-
+        app.http.Get(`dataApi/advertising/iconSeries/rarity/card/list/${this.seriesId}`, { fetchFrom: 1, fetchSize: 10 }, (res: any) => {
+            this.cardList = res.list || []
         })
     }
     reqSeriesGoods(cb?: any) {
@@ -168,9 +168,8 @@ page {
     width: 100%;
     height: inherit;
     position: absolute;
-    background-color: rgba(255, 255, 255, .41);
+    background-color: rgba(117, 117, 117, .61); 
     top: 0;
-    // opacity: .61;
     left: 0;
 }
 

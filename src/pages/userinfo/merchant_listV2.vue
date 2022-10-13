@@ -5,28 +5,30 @@
             <view class="tab-header">
                 <view class="icon-back" @click="onClickBack"></view>
                 <view class="header-title">商家列表</view>
-                <view class="header-icon">
+                <!-- <view class="header-icon">
                     <view class="icon-share"></view>
-                </view>
+                </view> -->
             </view>
         </view>
 
         <view style="padding-top:88rpx">
             <statusbar />
         </view>
-        <view class="topBanner"></view>
+        <view class="topBanner" @click="toMerchantJoin"></view>
         <view style="background-color: #fff;padding-top: 40rpx;">
             <template v-if="onLiveList&&onLiveList.length">
                 <view class="merchant_title">正在直播</view>
                 <scroll-view scroll-x="true" class="merchantLiveContainer">
-                    <view class="uni-flex">
-                        <view class="merchantItem" v-for="(item,index) in onLiveList" :key="index">
+                    <view class="uni-flex" style="height: 180rpx;align-items: center;">
+                        <view class="merchantItem" v-for="(item,index) in onLiveList" :key="index" @click="onClickJumpUrl(item)">
                             <view class="merchantAvatar_block flexCenter">
                                 <muqian-lazyLoad class="avatar" borderRadius="50%"
                                     :src="$parsePic(decodeURIComponent(item.logo))">
                                 </muqian-lazyLoad>
+                                <view class="liveEffects"></view>
                             </view>
-                            <view class="merchantName">{{item.merchaneName}}</view>
+                            <view class="merchantName">{{item.name}}</view>
+
                         </view>
                     </view>
                 </scroll-view>
@@ -36,9 +38,9 @@
                 <view class="followAllButton flexCenter" v-if="!isAllAttention" @click="onClickAllAttention">一键关注</view>
             </view>
             <view class="hotContainer">
-                <view class="hot_item" v-for="(item,index) in hotRank" :key="index">
+                <view class="hot_item" v-for="(item,index) in hotRank" :key="index" @click="goMerchantPage(item.alias)">
                     <view class="hot_picBlock">
-                        <muqian-lazyLoad class="hot_pic"
+                        <muqian-lazyLoad class="hot_pic" borderRadius="3rpx"
                             :src="$parsePic(decodeURIComponent(item.logo))" />
                         <view class="rankItem" v-if="index<=2" :class="[`rank${index+1}`]">
                             <view class="top">TOP</view>
@@ -53,34 +55,36 @@
             <view class="merchantCard" v-for="(item,index) in merchantList" :key="index"
                 @click="goMerchantPage(item.alias)">
                 <view class="merchantCard_top">
-                    <muqian-lazyLoad class="merchantBack"
-                        :src="'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/seller/info/1661914607170otf4sr6pif.jpg'" />
+                    <muqian-lazyLoad class="merchantBack" borderRadius="3rpx"
+                        :src="$parsePic(decodeURIComponent(item.back_img || item.logo))" />
                     <view class="merchantMask"></view>
-                    <muqian-lazyLoad class="merchantAvatr"
-                        :src="'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/seller/info/1661914607170otf4sr6pif.jpg'" />
+                    <muqian-lazyLoad class="merchantAvatr" borderRadius="3rpx"
+                        :src="$parsePic(decodeURIComponent(item.logo))" />
                     <view class="merchantMsg">
-                        <view class="name">鸾翼球星卡社</view>
-                        <view class="msg">403拼成 · 3699粉丝</view>
+                        <view class="name">{{item.name}}</view>
+                        <view class="msg">{{item.groupGoodNum}}拼成 · {{item.fans}}粉丝</view>
                     </view>
-                    <followButton style="z-index: 2" :followID="item.alias" @handleSuccess="followAction($event,item)"
-                        :width="120" :height="47" :follow="item.followed" :textArr="['已关注','+关注']" />
+                    <followButton hideCancel normClass="v2Button" selectClass="v2SelectButton" style="z-index: 2"
+                        :followID="item.alias" @handleSuccess="followAction($event,item)" :width="120" :height="47"
+                        :follow="item.follow" :textArr="['+关注','已关注']" />
                 </view>
                 <view class="merchantCard_bottom">
-                    <view class="uni-flex reativeBlock" v-if="false">
-                        <view class="goodsItem">
+                    <view class="uni-flex reativeBlock" v-if="item.goodData&&item.goodData.length">
+                        <view class="goodsItem" v-for="(goodsItem,goodsIndex) in item.goodData"
+                            @click.stop="onClickJumpDetails(goodsItem.goodCode)">
                             <view class="goodsImgContainer flexCenter">
                                 <muqian-lazyLoad class="goodsImg" borderRadius="3rpx"
-                                    :src="'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/seller/info/1661914607170otf4sr6pif.jpg'" />
+                                    :src="$parsePic(decodeURIComponent(goodsItem.pic))" />
                             </view>
-                            <view class="goodsName">20-21 National Treasur Hobb 20-21 NationalTreasur Hobb</view>
-                            <view class="goodsPrice">
+                            <view class="goodsName">{{goodsItem.goodName}}</view>
+                            <view class="goodsPrice" v-if="goodsItem.status==1">
                                 <text>￥</text>
-                                <text>56</text>
+                                <text>{{goodsItem.price}}</text>
                             </view>
-                            <view class="goodsSpell" v-if="false">已拼成</view>
+                            <view class="goodsSpell" v-else>已拼成</view>
                         </view>
                     </view>
-                    <view class="noneMsg flexCenter">暂无相关内容~</view>
+                    <view class="noneMsg flexCenter" v-else>暂无相关内容~</view>
                 </view>
             </view>
         </view>
@@ -106,9 +110,20 @@ export default class ClassName extends BaseNode {
         pageSize: 15
     }
     merchantTotalPage: number = 0
-    merchantList: any = [1]
+    merchantList: any = []
     onLoad() {
         this.refreshAll()
+        this.onEventUI("followAction", (res: any) => {
+            if (res && res.alias) {
+                let findItem = this.merchantList.find((item: any) => {
+                    return item.alias == res.alias;
+                });
+                if (findItem) {
+                    findItem.follow = res.follow;
+                    findItem.fans = res.fans;
+                }
+            }
+        });
     }
     onReachBottom() {
         if (this.merchantParams.pageIndex < this.merchantTotalPage) {
@@ -127,9 +142,41 @@ export default class ClassName extends BaseNode {
     }
     onClickAllAttention() {
         //一键关注
-        app.http.Post('merchant/hot/allFollow', {}, (res: any) => {
-            this.isAllAttention = true
+        app.http.Post('merchant/hot/follow/all', {}, (res: any) => {
+            uni.showToast({
+                title: '关注成功'
+            })
+            const list = res.list || []
+            if (!list.length) return
+            this.merchantList.forEach((item: any) => {
+                if (list.includes(item.alias)) {
+                    item.follow = true
+                    item.fans += 1
+                }
+            })
         })
+    }
+    onClickJumpUrl(item: any) {
+        if (item.third && item.third == 1001) {
+            app.platform.goZgLive({
+                roomID: item.roomId,
+                playCode: item.playCode,
+                goodCode: item.goodCode,
+                isAnchor: false,
+                ...item
+            })
+            return
+        }
+        app.platform.goWeChatLive({ playCode: item.playCode, goodCode: item.goodCode })
+    }
+    toMerchantJoin() {
+        uni.navigateTo({
+            url: '/pages/userinfo/merchant_join'
+        })
+    }
+    // 跳转商品详情
+    onClickJumpDetails(goodCode: any) {
+        app.navigateTo.goGoodsDetails(goodCode)
     }
     goLive(item: any) {
         app.platform.goZgLive({
@@ -159,7 +206,7 @@ export default class ClassName extends BaseNode {
         })
     }
     reqNewMerchant(cb?: any) {
-        app.http.Get('dataApi/', this.merchantParams, (res: any) => {
+        app.http.Get('dataApi/merchant/list', this.merchantParams, (res: any) => {
             this.merchantTotalPage = res.totalPage
             const list: any = res.list || []
             this.merchantParams.pageIndex == 1 ? this.merchantList = list : this.merchantList.push(...list)
@@ -176,8 +223,10 @@ page {
 
 .topBanner {
     width: 750rpx;
-    height: 220rpx;
-    background: #BBBCC0;
+    height: 120rpx;
+    // background: #BBBCC0;
+    background-size: 100% 100%;
+    background-image: url('../../static/userinfo/v2/merchantJoin.png');
     // margin-bottom: 40rpx;
 }
 
@@ -219,9 +268,8 @@ page {
             width: 100%;
             height: 220rpx;
             position: absolute;
-            background-color: rgba(255, 255, 255, .61);
+            background-color: rgba(117, 117, 117, .61);
             top: 0;
-            // opacity: .61;
             left: 0;
         }
 
@@ -325,6 +373,7 @@ page {
             font-family: PingFang SC;
             font-weight: 400;
             color: #959695;
+            margin-top: 10rpx;
         }
     }
 }
@@ -440,7 +489,7 @@ page {
     width: 750rpx;
     white-space: nowrap;
     margin-top: 24rpx;
-    margin-bottom: 51rpx;
+    margin-bottom: 31rpx;
 }
 
 .merchantItem {
@@ -449,13 +498,46 @@ page {
 }
 
 .merchantAvatar_block {
-    width: 107rpx;
-    height: 107rpx;
+    width: 108rpx;
+    height: 108rpx;
     background: #DCDCDC;
     border-radius: 50%;
     border: 4rpx solid #ff003e;
-    overflow: hidden;
-    margin-bottom: 17rpx;
+    // overflow: hidden;
+    margin-bottom: 18rpx;
+    position: relative;
+    margin: 0 auto;
+
+    .liveEffects {
+        width: inherit;
+        height: inherit;
+        border-radius: inherit;
+        position: absolute;
+        border: 2rpx solid #ff003e;
+        left: 50%;
+        top: 50%;
+        // transform: translate(-50%, -50%) scale(1.1);
+        -webkit-animation: animate 1s linear infinite;
+    }
+
+    @keyframes animate {
+        0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: translate(-50%, -50%) scale(1.15);
+            opacity: 0.5;
+            /*圆形放大的同时，透明度逐渐减小为0*/
+        }
+
+        100% {
+            transform: translate(-50%, -50%) scale(1.3);
+            opacity: 0;
+            /*圆形放大的同时，透明度逐渐减小为0*/
+        }
+    }
 
     .avatar {
         width: 107rpx;

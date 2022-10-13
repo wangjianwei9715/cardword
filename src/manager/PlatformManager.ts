@@ -134,7 +134,7 @@ export default class PlatformManager {
 		})
 		function jump():void{
 			uni.navigateTo({
-				url:`/pages/live/proLive?roomID=${item.roomID}&merchantId=${item.merchantId}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}&type=${item.type}`
+				url:`/pages/live/proLive?roomID=${item.roomID}&isAnchor=${item.isAnchor}&alias=${item.alias||item.merchantAlias}&type=${item.type}`
 			})
 		}
 	}
