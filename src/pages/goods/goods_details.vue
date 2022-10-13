@@ -68,7 +68,7 @@
 						<view class="header-top-plan">
 							<view class="plan-top-line">
 								<view class="plan-top-rank" @click="onClickAvatarRank">
-									<muqian-lazyLoad v-for="(item,index) in rankAvatarList" :key="index" class="plan-top-rank-img" :class="`plan-top-rank-img${index+1}`" :style="{'z-index':10-index}"  :src="item?decodeURIComponent(item):defaultAvatar" mode="aspectFill" :borderRadius="'50%'"/>
+									<muqian-lazyLoad v-for="(item,index) in rankAvatarList" :key="index" class="plan-top-rank-img" :class="`plan-top-rank-img${index+1}`" :style="{'z-index':3-index}"  :src="item?decodeURIComponent(item):defaultAvatar" mode="aspectFill" :borderRadius="'50%'"/>
 								</view>
 								<view class="header-top-plan-num" v-if="goodsData.state>=2">已完成</view>
 								<view class="header-top-plan-num" v-else>
@@ -124,21 +124,39 @@
 				</view>
 			</view>
 
+			<!-- 购买记录 -->
+			<view class="detail-bg">
+				<view class="goods-desc" style="padding-bottom:8rpx">
+					<view class="goods-desc-title" style="margin-bottom:28rpx">
+						<view class="goods-desc-title-left">购买记录</view>
+					</view>
+					<view class="goods-desc-explain">
+						<view class='goods-desc-explain-text flex-between' style="margin-bottom:20rpx" v-for="(item,index) in buyRecordList" :key="index">
+							<image class="record-item-avatar" :src="decodeURIComponent(item.avatar)" />
+							<view class="record-item-name u-line-1">{{item.userName}}</view>
+							<view class="record-item-title u-line-1">{{goodsData.title}}</view>
+							<view class="record-item-num u-line-1">x{{item.num}}</view>
+							<view class="record-item-time u-line-1">{{$u.timeFrom(item.time)}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
+
 			<!-- 商品详情 -->
 			<view class="detail-bg">
 				<view class="goods-desc">
 					<view class="goods-desc-title">
 						<view class="goods-desc-title-left">拼团详情</view>
 						<view class="goods-desc-title-right" @click.stop="showDrawer = true">
-							拼团规则
-							<image class="goods-desc-title-help" src="../../static/goods/v2/icon_right_new.png" />
+							规则<image class="goods-desc-title-help" src="../../static/goods/v2/icon_right_new.png" />
 						</view>
 					</view>
 					<view class="goods-desc-explain">
 						<view class="special-explain">{{goodsData.extraDesc}}</view>
-						<!-- <view class='goods-desc-explain-text' v-for="item in goodsDesc" :key="item.id">
-							<view class="explain-desc">{{item}}</view>
-						</view> -->
+						<view class='goods-desc-explain-box' v-for="item in goodsDesc" :key="item.id">
+							<view class="explain-name">{{item.name}}</view>
+							<view class="explain-desc">{{item.desc}}</view>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -169,8 +187,6 @@
 			</movable-view>
 		</movable-area>
 
-		<!-- 底部吐司 -->
-		<tips :tipsData="buyRecordList" v-if="buyRecordList!=''"></tips>
 		<!-- 底部按钮 -->
 		<view class="btn-content" v-if="goodsData.state==1||(goodsData.state==0&&getPriceStart())">
 			<view class="btn-content-left">
@@ -261,9 +277,9 @@
 			shareShow:false,
 			shareData:{...shareData}
 		};
+		buyRecordList:any = [];
+		goodsDesc:any = [];
 		favorType = Manager.favorType;
-		buyRecordList = [...Manager.buyRecordList];
-		goodsDesc = [...Manager.goodsDesc];
 		operaData = {...Manager.operaData};
 		countData = {...Manager.countData};
 		swiperData = {...Manager.swiperData};
@@ -300,7 +316,9 @@
 				// 购买记录
 				if (this.goodsData.state == 1) {
 					app.http.Get(`dataApi/good/${goodCode}/buyRecord`, {}, (res: any) => {
-						if (res.list) this.buyRecordList = res.list
+						if (res.list) this.buyRecordList = res.list.filter((x:any,index:number)=>{
+							return index<5
+						})
 					})
 				}
 				// 查询可领取优惠券
@@ -388,9 +406,7 @@
 				this.getGoodsImage();
 				this.getCountDown();
 				this.getGoodsSpe();
-				let desc = decodeURIComponent(data.good.desc);
-				let newData = desc.indexOf('\n') > -1 ? desc.split('\n') : desc.split('\r');
-				this.goodsDesc = [`拼团 I D ：${goodCode}`, '开售时间：' + uni.$u.timeFormat(data.good.startAt,'yyyy-mm-dd hh:MM:ss'), ...newData];
+				this.getGoodsDesc()
 				if((data.good.bit & 128) == 128){
 					app.http.Get(`good/${goodCode}/chedui`,{},(res:any)=>{
 						this.cheduiData = res
@@ -511,6 +527,23 @@
 				this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
 			}
 		}
+		/**
+		 * 商品拼团详情说明
+		 */
+		getGoodsDesc(){
+			const { goodsData } = this; 
+			let desc = decodeURIComponent(goodsData.desc);
+			const newDesc = desc.indexOf('\n') > -1 ? desc.split('\n') : desc.split('\r');
+			const newData = newDesc.map((x:any)=>{
+				let data = x.split('：');
+				return {name:data[0],desc:data[1]}
+			})
+			const IandT = [
+				{name:'拼团编号',desc:`${goodsData.goodCode}`},
+				{name:'开售时间',desc:uni.$u.timeFormat(goodsData.startAt,'yyyy-mm-dd hh:MM:ss')},
+			]
+			this.goodsDesc = [...IandT,...newData]
+		}	
 		onClickTipBtn(item: any) {
 			if (item.id == 1) {
 				app.platform.hasLoginToken(()=>{
@@ -1610,7 +1643,7 @@
 		background: $color-F;
 		z-index: 8;
 		box-sizing: border-box;
-		padding: 19rpx 16rpx 0 0;
+		padding: 19rpx 50rpx 0 0;
 		border-top: 1px solid #F5F5F8;
 		display: flex;
 		justify-content: center;
@@ -1663,7 +1696,7 @@
 			line-height: $btn-height;
 			font-size: $btn-fontSize;
 			border-radius: $btn-radius;
-			font-weight: $btn-weight;
+			font-weight: 600;
 		}
 
 		.random-confirm {
@@ -1762,6 +1795,7 @@
 		font-weight: 400;
 		color: #333333;
 		line-height: 37rpx;
+		margin-bottom: 30rpx;
 	}
 
 	.detail-bottom-box {
@@ -1915,5 +1949,80 @@
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #FFFFFF;
+	}
+	.record-item-avatar{
+		width: 30rpx;
+		height:30rpx;
+		margin-right: 18rpx;
+		border-radius: 50%;
+	}
+	.record-item-name{
+		width: 85rpx;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		margin-right: 20rpx;
+	}
+	.record-item-title{
+		width: 252rpx;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		margin-right: 55rpx;
+	}
+	.record-item-num{
+		width: 80rpx;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+	}
+	.record-item-time{
+		width: 150rpx;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #C0C0C0;
+		text-align: right;
+	}
+	.flex-between{
+		display: flex;
+		justify-content: space-between;
+	}
+	.goods-desc-explain-box{
+		width: 650rpx;
+		display: flex;
+		justify-content: space-between;
+		margin:0 auto;
+		.explain-name{
+			width: 160rpx;
+			height:80rpx;
+			background:#F3F4F7;
+			font-size: 23rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #333333;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom:4rpx;
+		}
+		.explain-desc{
+			width: 487rpx;
+			height:80rpx;
+			background:#F3F4F7;
+			font-size: 23rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #333333;
+			display: flex;
+			align-items: center;
+			box-sizing: border-box;
+			padding:0 38rpx;
+			margin-bottom:4rpx;
+			line-height:30rpx
+		}
 	}
 </style>

@@ -144,14 +144,6 @@ export default class detailsManager {
 		str:''
 	}
 	/**
-	 * @buyRecordList       购买历史记录
-	 */
-	buyRecordList:String[] = []
-	/**
-	 * @goodsDesc       	拼团详情数据
-	 */
-	goodsDesc:String[] = []
-	/**
 	 * @favorType 			是否收藏
 	 */
 	favorType:Boolean = false;
