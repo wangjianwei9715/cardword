@@ -1,6 +1,6 @@
 <template>
 	<view class="tab-hot">
-		<view class="tab-hot-box" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(name)">
+		<view class="tab-hot-box" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(item,name)">
 			<view class="hot-bg" :style="`width:${item.bg.width};height:${item.bg.height};background:url(${item.bg.src}) no-repeat center/100% 100%`"></view>
 			<view class="tab-index">
 				<view class="tab-index-left">
@@ -70,8 +70,9 @@
 				url: "/pages/goods/goods_find_list?hs=" +item.id+'&hsTitle='+item.key||''
 			});  
 		}
-		onClickHotPic(name:string){
-			if(name!='cardBean') return;
+		onClickHotPic(item:any,name:string){
+			const canJumpName=['progress','hot']
+			if(!canJumpName.includes(name)) return;
 			
 			if(app.token.accessToken == ''){
 				uni.navigateTo({
@@ -79,9 +80,13 @@
 				})
 				return;
 			}
+			// console.log(name);
 			uni.navigateTo({
-				url: "/pages/mall/index"
+				url:item.url
 			});  
+			// uni.navigateTo({
+			// 	url: "/pages/mall/index"
+			// });  
 		}
 	}
 </script>
