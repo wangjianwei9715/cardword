@@ -20,7 +20,7 @@
                     @click="onClickTag(item)">{{item}}</view>
             </view>
         </scroll-view>
-        <goodslist :goodsList="goodsList" />
+        <goodslist :goodsList="goodsList" @send="onClickJumpDetails" />
         <empty v-if="goodsList && !goodsList.length"></empty>
     </view>
 </template>
@@ -64,6 +64,10 @@ export default class ClassName extends BaseNode {
         this.queryParams.fetchSize = 20
         this.reqSeriesGoods()
 
+    }
+    // 跳转商品详情
+    onClickJumpDetails(goodCode: any) {
+        app.navigateTo.goGoodsDetails(goodCode)
     }
     onClickTag(item: any) {
         this.queryParams.choice = item == '全部' ? 'all' : item
@@ -168,7 +172,7 @@ page {
     width: 100%;
     height: inherit;
     position: absolute;
-    background-color: rgba(117, 117, 117, .61); 
+    background-color: rgba(117, 117, 117, .61);
     top: 0;
     left: 0;
 }

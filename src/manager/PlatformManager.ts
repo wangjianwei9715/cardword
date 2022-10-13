@@ -520,7 +520,6 @@ export default class PlatformManager {
 		if (!IS_NUMBER && !params) delta = 1
 		if (IS_NUMBER) delta = params
 		let curPage: any = getCurrentPages();
-		// console.log(curPage);
 		if (!curPage || curPage.length <= 1) {
 			uni.switchTab({
 				url: '/pages/index/index'
