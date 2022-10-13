@@ -9,7 +9,7 @@
 					<view class="livelist-top-statebox-bg">25人在看</view>
 				</view>
 				<view class="livelist-top-statebox" v-else>
-					<view class="livelist-top-statebox-state">{{item.state==1?'预告':'回放'}}</view>
+					<view class="livelist-top-statebox-state">{{item.state==3?'回放':'预告'}}</view>
 					<view class="livelist-top-statebox-bg">{{$u.timeFormat(item.startAt,'mm-dd hh:MM')}}</view>
 				</view>
 				

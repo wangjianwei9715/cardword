@@ -51,7 +51,7 @@
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境");
 				// app.localTest = true;  
-				// app.bussinessApiDomain = "http://192.168.8.31:8701/api/v2/";
+				// app.bussinessApiDomain = "http://192.168.8.31:8701/api/v2.1/";
 				// app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2/";
 				// app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境
@@ -263,6 +263,8 @@
 
 			
 			app.platform.getInvitationClipboard((val: string) => {
+				// 识别赠送卡密查询码
+				app.platform.matchInviteRequestKey(val)
 				// 识别优惠券
 				const regular = [/[k][s][j]\w{13}/g,/\w{18}/g];
 				app.platform.matchRequestKey(regular,val,(code:string)=>{

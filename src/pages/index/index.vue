@@ -153,7 +153,8 @@
 			pageIndex:1,
 			pageSize:10,
 			noMoreData:false,
-			liveTabCheck:1
+			liveTabCheck:1,
+			httpUrl:'dataApi/broadcast/list/living'
 		}
 		refresherIndex = false;
 		refresherEnabled = true;
@@ -161,9 +162,9 @@
 		scrollY = true;
 		disableTouch = false;
 		tabData = [
-			{id:1,name:'直播拆卡'},
-			{id:2,name:'拆卡回放'},
-			{id:3,name:'我的拆卡'}
+			{id:1,name:'直播拆卡',http:'dataApi/broadcast/list/living'},
+			{id:2,name:'拆卡回放',http:'dataApi/broadcast/list/playback'},
+			{id:3,name:'我的拆卡',http:'me/broadcast'}
 		];
 		onLoad(query: any) {
 			// let zqWebviewFloat:any = uni.requireNativePlugin("zq-webview-float");
@@ -262,10 +263,6 @@
 			}
 			// #ifdef APP-PLUS
 			this.networkStatusChange()
-			// 判断是否有邀请上线
-			app.platform.getInvitationClipboard((val: string) => {
-				app.platform.matchInviteRequestKey(val)
-			})
 			// #endif
 		}
 		onHide() {
@@ -302,12 +299,8 @@
 		showInitEvent(cb ? : Function) {
 			this.fetchFrom = 1;
 			this.noMoreData = false;
-			this.liveDara = {
-				pageIndex:1,
-				pageSize:10,
-				noMoreData:false,
-				liveTabCheck:1
-			}
+			this.liveDara.pageIndex = 1;
+			this.liveDara.noMoreData = false
 			this.initEvent(() => {
 				if (cb) cb()
 			})
@@ -483,11 +476,16 @@
 			if (id == this.liveDara.liveTabCheck) {
 				return;
 			}
+			if (id == 3 && app.token.accessToken == ''){
+				uni.navigateTo({ url:'/pages/login/login' })
+				return;
+			}
 			this.liveDara = {
 				pageIndex:1,
 				pageSize:10,
 				noMoreData:false,
-				liveTabCheck:id
+				liveTabCheck:id,
+				httpUrl:this.tabData[id-1].http
 			}
 			this.reqNewLiveData()
 		}
@@ -498,9 +496,7 @@
 			}
 			let ts = Math.floor(new Date().getTime() / 1000);
 			let type = this.indexGoodsType[this.goodTabCheck];
-			let params: {
-				[x: string]: any
-			} = {
+			let params: { [x: string]: any } = {
 				fetchFrom: this.fetchFrom,
 				fetchSize: this.fetchSize,
 				ts: ts,
@@ -525,9 +521,8 @@
 			// 获取更多商品
 			const params = this.liveDara;
 			if (params.noMoreData) return ;
-			
-			let url = params.liveTabCheck<5 ? 'dataApi/broadcast' : 'me/broadcast';
-			app.http.Get(url,params,(data:any)=>{
+
+			app.http.Get(params.httpUrl,{pageIndex:params.pageIndex,pageSize:params.pageSize},(data:any)=>{
 				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
 				if(params.pageIndex==1) this.liveList = []
 				if(data.list) this.liveList = this.liveList.concat(data.list);
