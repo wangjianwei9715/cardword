@@ -1,13 +1,17 @@
 <template>
-	<view class="content">
-		<view class="header-banner">
-			<sortTab :sortData="sortData" @postSort="postSort" />
-			<!-- <sortTabCopy/> -->
-		</view>
-		<view class="goods-lists">
-			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
-		</view>
-	</view>
+  <view class="content">
+    <view class="header-banner" v-if="urlType!='cheap'">
+      <sortTab :sortData="sortData" @postSort="postSort" />
+      <!-- <sortTabCopy/> -->
+    </view>
+    <!-- v-if="urlType!='cheap'" -->
+    <view class="goods-lists" v-if="urlType!='cheap'">
+      <goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
+    </view>
+    <view class="newGoods-list" v-if="urlType=='cheap'">
+      <goodslist-horizontal :goodsList="goodsList" @send="onClickJumpDetails"></goodslist-horizontal>
+    </view>
+  </view>
 </template>
 
 <script lang="ts">
@@ -16,6 +20,7 @@ import { Md5 } from "ts-md5";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 import { goodsListType } from "@/net/DataExchange";
+import { parsePic } from "@/tools/util";
 @Component({})
 export default class ClassName extends BaseNode {
   goodsListType = goodsListType;
@@ -77,8 +82,8 @@ export default class ClassName extends BaseNode {
         if (res.isFetchEnd) {
           this.noMoreData = true;
         }
-    
-        if(this.fetchFrom == 1) this.goodsList = [];
+
+        if (this.fetchFrom == 1) this.goodsList = [];
         if (res.goodList) {
           this.goodsList = this.goodsList.concat(res.goodList);
         }
@@ -92,24 +97,29 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 $font-24: 24rpx;
+
 page {
   background: $content-bg;
 }
+
 .content {
   width: 100%;
   box-sizing: border-box;
 }
+
+
+
 .header-banner {
   width: 100%;
   background: #fff;
   box-sizing: border-box;
-  position:fixed;
-  left:0;
+  position: fixed;
+  left: 0;
   // #ifdef H5
-  top:80rpx;
+  top: 80rpx;
   // #endif
   // #ifndef H5
-  top:0;
+  top: 0;
   // #endif
   z-index: 66;
   // z-index: 9;
@@ -120,6 +130,13 @@ page {
   box-sizing: border-box;
   padding: 86rpx 14rpx 60rpx 14rpx;
 }
+
+.newGoods-list {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14rpx 20rpx;
+}
+
 .sort-shadow {
   width: 100%;
   height: 100%;
