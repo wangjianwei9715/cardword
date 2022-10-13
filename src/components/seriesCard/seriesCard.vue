@@ -5,8 +5,10 @@
                 <view class="uni-flex">
                     <view class="cardBlock" v-for="(item,index) in list.slice(0,max)" :key="index"
                         :class="{hasLine:index!=list.slice(0,max).length-1}">
-                        <muqian-lazyLoad class="cardImg" borderRadius="3rpx"
-                            :src="'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/seller/info/1661914607170otf4sr6pif.jpg'" />
+                        <muqian-lazyLoad class="cardImg" borderRadius="3rpx" :src="filterPics(item)"
+                            @click="prviewImages(item)" />
+                        <!-- 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/seller/info/1661914607170otf4sr6pif.jpg' -->
+
                     </view>
                 </view>
             </scroll-view>
@@ -37,6 +39,14 @@ export default class ClassName extends BaseComponent {
     }
     destroyed() {
 
+    }
+    prviewImages(picString: string) {
+        if (!picString) return
+        const picArr: any = picString.split(',').map(item => parsePic(decodeURIComponent(item)))
+        uni.previewImage({
+            current: 0,
+            urls: picArr
+        })
     }
     filterPics(picString: string) {
         if (!picString) return ""
