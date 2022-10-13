@@ -439,6 +439,13 @@
 					return;
 				}
 			}
+			if(item.id){
+				//系列
+				uni.navigateTo({
+				url: `/pages/goods/goods_seriesDetail?seriesId=${item.id}`
+			})
+				return
+			}
 			uni.navigateTo({
 				url: item.url
 			})
