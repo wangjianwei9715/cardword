@@ -20,7 +20,8 @@
                 <view class="merchant_title">正在直播</view>
                 <scroll-view scroll-x="true" class="merchantLiveContainer">
                     <view class="uni-flex" style="height: 180rpx;align-items: center;">
-                        <view class="merchantItem" v-for="(item,index) in onLiveList" :key="index" @click="onClickJumpUrl(item)">
+                        <view class="merchantItem" v-for="(item,index) in onLiveList" :key="index"
+                            @click="onClickJumpUrl(item)">
                             <view class="merchantAvatar_block flexCenter">
                                 <muqian-lazyLoad class="avatar" borderRadius="50%"
                                     :src="$parsePic(decodeURIComponent(item.logo))">
@@ -141,20 +142,23 @@ export default class ClassName extends BaseNode {
         this.reqOnLive()
     }
     onClickAllAttention() {
-        //一键关注
-        app.http.Post('merchant/hot/follow/all', {}, (res: any) => {
-            uni.showToast({
-                title: '关注成功'
-            })
-            const list = res.list || []
-            if (!list.length) return
-            this.merchantList.forEach((item: any) => {
-                if (list.includes(item.alias)) {
-                    item.follow = true
-                    item.fans += 1
-                }
+        app.platform.hasLoginToken(() => {
+            //一键关注
+            app.http.Post('merchant/hot/follow/all', {}, (res: any) => {
+                uni.showToast({
+                    title: '关注成功'
+                })
+                const list = res.list || []
+                if (!list.length) return
+                this.merchantList.forEach((item: any) => {
+                    if (list.includes(item.alias)) {
+                        item.follow = true
+                        item.fans += 1
+                    }
+                })
             })
         })
+
     }
     onClickJumpUrl(item: any) {
         if (item.third && item.third == 1001) {
@@ -170,9 +174,12 @@ export default class ClassName extends BaseNode {
         app.platform.goWeChatLive({ playCode: item.playCode, goodCode: item.goodCode })
     }
     toMerchantJoin() {
-        uni.navigateTo({
-            url: '/pages/userinfo/merchant_join'
+        app.platform.hasLoginToken(() => {
+            uni.navigateTo({
+                url: '/pages/userinfo/merchant_join'
+            })
         })
+
     }
     // 跳转商品详情
     onClickJumpDetails(goodCode: any) {

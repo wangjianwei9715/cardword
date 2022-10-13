@@ -182,12 +182,7 @@
 		onClickNavigateto(item:any){
 			if(item.name=='加入群聊'){
 				this.showPaySuccess = true
-			}else if(item.id==2){
-				uni.navigateTo({
-					url:item.url+`?merchantHelloState=${this.infoData.merchantHelloState}`
-				})
-			}
-			else{
+			}else{
 				uni.navigateTo({
 					url:item.url
 				})

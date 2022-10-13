@@ -53,7 +53,9 @@ export default class ClassName extends BaseComponent {
   })
   newMerchantPage?: any;
   @Prop({
-    default: ['关注', '已关注']
+    default: () => {
+      return ['关注', '已关注']
+    }
   })
   textArr?: any
   @Prop({
@@ -71,8 +73,11 @@ export default class ClassName extends BaseComponent {
   modalShow = false;
   followCopy = false;
   handleAction() {
-    if (!this.follow) this.followAction();
-    if (this.follow) this.modalShow = true;
+    app.platform.hasLoginToken(() => {
+      if (!this.follow) this.followAction();
+      if (this.follow) this.modalShow = true;
+    })
+
   }
   followAction() {
     if (!this.followID) return;
@@ -106,7 +111,7 @@ export default class ClassName extends BaseComponent {
   font-family: PingFang SC;
   font-weight: 500;
   color: #F6F7FB;
-  
+
 }
 
 .isFollo {
