@@ -198,9 +198,7 @@ export default class ClassName extends BaseNode {
         item.fans = event.fans
     }
     onClickBack() {
-        uni.navigateBack({
-            delta: 1
-        })
+        app.platform.pageBack(1)
     }
     reqOnLive() {
         app.http.Get('dataApi/merchant/broadcast/list', {}, (res: any) => {
