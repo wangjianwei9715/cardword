@@ -7,9 +7,9 @@
                     <view class="goodsName">{{item.title}}</view>
                     <view class="goodsProgress uni-flex">
                         <view class="progressContainer">
-                            <view class="progress"></view>
+                            <view class="progress" :style="{width:(100-getPlan(item,'num'))+'%'}"></view>
                         </view>
-                        <view class="progressPercnet">50%</view>
+                        <view class="progressPercnet">{{getPlan(item,'str')}}</view>
                     </view>
                 </view>
                 <view class="goodsRight-bottom uni-flex">
@@ -26,6 +26,10 @@
                         <view class="merchantName">{{item.merchantName}}</view>
                     </view>
                 </view>
+            </view>
+            <view class="rankContainer" v-if="needRank" :class="[`rank${index+1}`,index>=3?'rankOther':'']">
+                <view class="rankTop">TOP</view>
+                <view class="rankNum">{{index+1}}</view>
             </view>
         </view>
     </view>
@@ -56,7 +60,8 @@ import {
 export default class ClassName extends BaseComponent {
     @Prop({ default: [] })
     goodsList: any;
-
+    @Prop({ default: false })
+    needRank: any;
     filterPrice(price: number) {
         let data = {
             integer: 0,
@@ -72,6 +77,14 @@ export default class ClassName extends BaseComponent {
             integer: priceArr[0] + '.',
             decimal: priceArr[1]
         }
+    }
+    getPlan(item: any, type: string) {
+        const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000) / 100;
+        const saleRatio = item.saleRatio > 0 && item.saleRatio < 1 ? Math.round((item.saleRatio) * 10000) / 100 : 0;
+        const str = saleRatio > width ?
+            `${saleRatio}%` :
+            `${item.totalNum - (item.currentNum + item.lockNum)}/${item.totalNum}`
+        return type == 'str' ? str : Math.max(width, saleRatio)
     }
     getPriceStart(item: any) {
         return item.isSelect || item.discount != '' || item.pintuan_type == 11
@@ -90,6 +103,49 @@ export default class ClassName extends BaseComponent {
     width: 100%;
 }
 
+.rankContainer {
+    width: 58rpx;
+    height: 67rpx;
+    background-size: 100% 100%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .rankTop {
+        font-size: 16rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #333333;
+    }
+
+    .rankNum {
+        font-size: 33rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #333333;
+    }
+}
+
+.rank1 {
+    background-image: url('../../static/goods/v2/rank1.png');
+}
+
+.rank2 {
+    background-image: url('../../static/goods/v2/rank2.png');
+}
+
+.rank3 {
+    background-image: url('../../static/goods/v2/rank3.png');
+}
+
+.rankOther {
+    background-image: url('../../static/goods/v2/rankOther.png');
+}
+
 .goodsCard {
     width: 710rpx;
     height: 216rpx;
@@ -100,6 +156,7 @@ export default class ClassName extends BaseComponent {
     box-sizing: border-box;
     padding: 20rpx;
     align-items: center;
+    position: relative;
 
     .goodsImg {
         width: 229rpx;
@@ -136,7 +193,8 @@ export default class ClassName extends BaseComponent {
         }
 
         .progressContainer {
-            width: 331rpx;
+            // width: 331rpx;
+            flex: 1;
             height: 8rpx;
             background-color: #f6f7fb;
             position: relative;
@@ -149,6 +207,7 @@ export default class ClassName extends BaseComponent {
         }
 
         .progressPercnet {
+            margin-left: 30rpx;
             font-size: 23rpx;
             font-family: PingFang SC;
             font-weight: 400;

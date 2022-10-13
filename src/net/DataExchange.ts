@@ -13,7 +13,7 @@ export var indexHotList = {
         title:'即将拼成',
         tips:'进度榜单',
         pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
-        url:'/pages/goods/goods_assign_list?type=progress',
+        url:'/pages/goods/goods_progressRank',
         bg:{
             src:'../../static/index/v3/HOT.png',
             width:'104rpx',

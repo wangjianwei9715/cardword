@@ -2,32 +2,18 @@
     <view class="content">
         <view class="detailCard">
             <image class="backImg" mode="aspectFill"
-                :src="'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/seller/info/1661914607170otf4sr6pif.jpg'" />
+                :src="$parsePic(decodeURIComponent(seriesDetail.back_img))" />
             <view class="merchantMask"></view>
             <view class="seriesInfo uni-flex">
                 <image class="seriesInfo-avatar" mode="aspectFill"
-                    :src="'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/seller/info/1661914607170otf4sr6pif.jpg'" />
-                <view class="seriesInfo-name">PRIZM</view>
+                    :src="$parsePic(decodeURIComponent(seriesDetail.icon))" />
+                <view class="seriesInfo-name">{{seriesDetail.name || "获取中"}}</view>
             </view>
             <view class="seriesInfo-introduction">
-                球星卡是一种印有篮球明星的卡片，在公元1880年，由美国烟草制造商所推出的。早期的球员卡做为买香烟的赠球星卡是一种印有篮球明星的卡片，在公元1880年，由美国烟草制造商所推出的。早期的球员卡做为买香烟的赠....
+                {{seriesDetail.describe || ""}}
             </view>
         </view>
-        <view class="seriesCardContainer">
-            <scroll-view scroll-x="true" class="cardContainer">
-                <view class="uni-flex">
-                    <view class="cardBlock" v-for="(item,index) in 10" :key="index" :class="{hasLine:index!=9}">
-                        <muqian-lazyLoad class="cardImg" borderRadius="3rpx"
-                            :src="'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/seller/info/1661914607170otf4sr6pif.jpg'" />
-                    </view>
-                </view>
-            </scroll-view>
-            <view class="seriesMore">
-                <view>更</view>
-                <view>多</view>
-                <image class="seriesMore-dot" mode="aspectFill" src="../../static/goods/v2/series_icon_right.png" />
-            </view>
-        </view>
+        <seriesCard :list="[1,1,1,1,1,1,1,1,1,1]"/>
         <scroll-view scroll-x="true" class="tagContainer">
             <view class="uni-flex" style="height:100%;align-items: center;">
                 <view class="tag" v-for="(item,index) in choices" :key="index"
@@ -155,69 +141,7 @@ page {
     }
 }
 
-.seriesCardContainer {
-    width: 710rpx;
-    height: 172rpx;
-    background: #FFFFFF;
-    border-radius: 3rpx;
-    display: flex;
-    box-sizing: border-box;
-    padding: 29rpx 0 28rpx 23rpx;
-    align-items: center;
-    position: relative;
-    bottom: 26rpx;
-    justify-content: space-between;
 
-    .seriesMore {
-        font-size: 23rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
-        color: #C0C0C0;
-        display: flex;
-        width: 100rpx;
-        flex-direction: column;
-        align-items: center;
-
-        .seriesMore-dot {
-            width: 7rpx;
-            height: 13rpx;
-            margin-top: 8rpx;
-        }
-    }
-
-    .cardContainer {
-        display: flex;
-        // flex: 1;
-        width: 620rpx;
-        white-space: nowrap;
-
-        .cardBlock {
-            width: 89rpx;
-            height: 115rpx;
-            margin-right: 26rpx;
-            position: relative;
-        }
-
-        .hasLine::after {
-            content: " ";
-            display: block;
-            width: 1rpx;
-            height: 92rpx;
-            background-color: #E2E2E2;
-            position: absolute;
-            right: -14rpx;
-            bottom: 0;
-            margin: auto;
-            top: 0;
-        }
-
-        .cardImg {
-            width: inherit;
-            height: inherit;
-
-        }
-    }
-}
 
 .seriesInfo {
     margin-top: 144rpx;
@@ -244,7 +168,7 @@ page {
     width: 100%;
     height: inherit;
     position: absolute;
-    background-color: rgba(255, 255, 255, .61);
+    background-color: rgba(255, 255, 255, .41);
     top: 0;
     // opacity: .61;
     left: 0;
