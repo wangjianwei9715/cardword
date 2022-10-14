@@ -3,18 +3,22 @@
 		<view class="tab-hot-box" v-for="(item,name) in hotList" :key="name" @click="onClickHotPic(item,name)">
 			<view class="hot-bg" :style="`width:${item.bg.width};height:${item.bg.height};background:url(${item.bg.src}) no-repeat center/100% 100%`"></view>
 			<view class="tab-index">
-				<view class="tab-index-left">
-					<view class="tab-hot-boxtitle">{{item.title}}</view>
-					<view class="tab-hot-boxtips">{{name == 'broadCast'?getBroadCastStr(item.list.state):item.tips}}</view>
-				</view>
-				<view class="tab-hot-boxpic-index" v-if="name!='broadCast'">
-					<muqian-lazyLoad :src="decodeURIComponent(item.pic)" class="tab-hot-boxpic" mode="aspectFill"/>
-				</view>
-				<view class="tab-hot-boxpic-index" v-else>
+				<view class="tab-hot-boxtitle">{{item.title}}</view>
+				<view class="tab-hot-boxtips">{{item.tips}}</view>
+				<view class="tab-hot-boxpic-index" v-if="name=='progress' || name=='hot'" :style="`width:${item.icon.width};height:${item.icon.height};top:${item.icon.top};right:${item.icon.right};background:url(${item.icon.src}) no-repeat center/100% 100%`"
+				></view>
+				<view class="tab-hot-boxpic-index" v-else-if="name=='broadCast'" :style="`top:${item.icon.top};right:${item.icon.right};`">
 					<view class="tab-hot-boxpic-box live-border" @click="onClickLive(item.list)">
 						<view v-if="item.list.state == 2 || item.list.state == 1" class="live-ing"></view>
 						<muqian-lazyLoad :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%"/>
 					</view>
+				</view>
+				<view class="tab-hot-boxpic-index" v-else :style="`width:${item.icon.width};height:${item.icon.height};top:${item.icon.top};right:${item.icon.right};`"
+				>
+					<u-transition class="trans-box" v-for="(item,index) in newGoodsPic" :key="index" :show="item.show" :duration="500" mode="fade-zoom">
+						<image class="new-pic" :src="item.src"></image>
+					</u-transition>
+					<view class="shadow-bg"></view>
 				</view>
 			</view>
 		</view>
@@ -32,11 +36,30 @@
 		hotList:any;
 
 		getBroadCastStr = getBroadCastStr;
+		newGoodsPic = [
+			{show:true,src:'../../static/index/v3/index_icon_t.png'},
+			{show:false,src:'../../static/index/v3/index_icon_f.png'},
+			{show:false,src:'../../static/index/v3/icon3.png'},
+		]
+		transIndex = 0;
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
 			// this.getWidth()
+			setInterval(()=>{
+				if(this.transIndex<this.newGoodsPic.length-1){
+					this.transIndex ++ ;
+				}else{
+					this.transIndex = 0;
+				}
+				this.newGoodsPic = this.newGoodsPic.map((x:any,index:number)=>{
+					if(index==this.transIndex){
+						setTimeout(()=>{this.newGoodsPic[index].show=true},200)
+					}
+					return {show:false,src:x.src}
+				})
+			},5000)
 		}
 		destroyed(){
 			
@@ -95,24 +118,25 @@
 	// 拆卡热门
 	.tab-hot{
 		width: 100%;
-		height:150rpx;
+		height:310rpx;
 		box-sizing: border-box;
 		padding: 0 20rpx;
-		background: linear-gradient(0deg, $content-bg, #FFFFFF 80%, #FFFFFF);
+		background: linear-gradient(0deg, $content-bg, #FFFFFF 100%, #FFFFFF);
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		flex-wrap: wrap;
 		margin-top: 15rpx;
 	}
 	.tab-hot-box{
-		width: 230rpx;
+		width: 350rpx;
 		height:150rpx;
 		background: #fff;
 		background-size: 100% 100%;
 		position: relative;
 		box-sizing: border-box;
-		padding:15rpx 0 0 10rpx;
+		padding:16rpx 0 0 18rpx;
 		border-radius: 5rpx;
+		margin-bottom: 10rpx;
 	}
 	.hot-bg{
 		position: relative;
@@ -124,13 +148,7 @@
 		position: absolute;
 		left:0;
 		top:0;
-		display: flex;
-		align-items: center;
 		z-index: 10 !important;
-	}
-	.tab-index-left{
-		width: 134rpx;
-		height:150rpx;
 	}
 	.tab-hot-boxtitle{
 		width: 100%;
@@ -140,7 +158,7 @@
 		color: #333333;
 		padding-top: 40rpx;
 		box-sizing: border-box;
-		padding-left: 19rpx;
+		padding-left: 38rpx;
 	}
 	.tab-hot-boxtips{
 		width: 100%;
@@ -151,45 +169,39 @@
 		color: #959695;
 		margin-top: 5rpx;
 		box-sizing: border-box;
-		padding-left: 19rpx;
+		padding-left: 38rpx;
 	}
 	.tab-hot-boxpic-index{
-		width: 96rpx;
 		box-sizing: border-box;
-		height:126rpx;
 		display: flex;
 		align-items: center;
+		justify-content: center;
+		position: absolute;
 	}
 	.tab-hot-boxpic-box{
-		width: 82rpx;
-		height:82rpx;
+		width: 100rpx;
+		height:100rpx;
 		position: relative;
 	}
 	.live-border{
-		border:3rpx solid #8e7ae3;
+		border:3rpx solid #FA1545;
 		border-radius: 50%;
 	}
-	.tab-hot-boxpic{
-		width: 72rpx;
-		height:126rpx;
-		z-index: 3;
-	}
 	.broadcast-box{
-		width: 82rpx;
-		height:82rpx;
+		width: 100rpx;
+		height:100rpx;
 		border-radius: 50%;
 		overflow: hidden;
 	}
 	.live-ing{
-		width: 82rpx;
-		height:82rpx;
+		width: 100rpx;
+		height:100rpx;
 		position: absolute;
 		left:0;
 		top:0;
 		z-index: 2;
 		box-sizing: border-box;
-		background:url(../../static/index/v2/live_bg.png) no-repeat center;
-		background-size: 100% 100%;
+		border:1rpx solid #FA1545;
 		border-radius: 50%;
 		-webkit-animation: animate 1s linear infinite;
 	}
@@ -208,5 +220,24 @@
 			opacity: 0;   /*圆形放大的同时，透明度逐渐减小为0*/
 		}
 	}
-
+	.shadow-bg{
+		width: 139rpx;
+		height:6rpx;
+		background:url(@/static/index/v3/index_icon_shadow.png) no-repeat center / 100% 100%;
+		position: absolute;
+		left:0;
+		bottom:0;
+	}
+	.new-pic{
+		width: 98rpx;
+		height:76rpx;
+	}
+	.trans-box{
+		width: 98rpx;
+		height:76rpx;
+		position: absolute;
+		left:50%;
+		margin-left:-49rpx;
+		top:0;
+	}
 </style>

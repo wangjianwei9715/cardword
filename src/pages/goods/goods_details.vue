@@ -542,7 +542,7 @@
 				{name:'拼团编号',desc:`${goodsData.goodCode}`},
 				{name:'开售时间',desc:uni.$u.timeFormat(goodsData.startAt,'yyyy-mm-dd hh:MM:ss')},
 			]
-			this.goodsDesc = [...IandT,...newData]
+			this.goodsDesc = [...IandT,...newData].splice(0,6)
 		}	
 		onClickTipBtn(item: any) {
 			if (item.id == 1) {
@@ -1101,13 +1101,13 @@
 
 	.swiper {
 		width: 750rpx;
-		height: 630rpx;
+		height: 625rpx;
 		background: #F5F5F9;
 	}
 
 	.goods-img-content {
 		width: 750rpx;
-		height: 630rpx;
+		height: 625rpx;
 		background: #F5F5F9;
 		box-sizing: border-box;
 		display: flex;
@@ -1117,7 +1117,7 @@
 
 	.goods-img {
 		width: 750rpx;
-		height: 630rpx;
+		height: 625rpx;
 	}
 
 	.detail-index-bg {

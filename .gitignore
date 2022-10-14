@@ -22,3 +22,7 @@ yarn-error.log*
 *.sw*
 nativeplugins/zego-ZegoExpressUniAppSDK/android/zego_express_sdk-release.aar
 nativeplugins/zego-ZegoExpressUniAppSDK/ios/ZegoExpressEngine.framework/ZegoExpressEngine
+unpackage/res/CustomStoryboard.zip
+unpackage/res/andrio/720x1242.png
+unpackage/res/andrio/1080x1882.png
+unpackage/res/andrio/480x762.png

@@ -42,9 +42,10 @@
 				<view class="tab-box">
 					<u-tabs :list="TOP_TABS" lineWidth="49rpx" lineHeight="6rpx" :lineColor="`url(${lineBg}) 100% 100%`" :activeStyle="{color:'#333333',fontSize:'50rpx',fontFamily:'YouSheBiaoTiHei',transform: 'scale(1,1.1)'}" :inactiveStyle="{color:'#959695',fontSize:'50rpx',fontFamily:'YouSheBiaoTiHei',transform: 'scale(1,1.1)'}" :itemStyle="{width:'100rpx',height:'90rpx',padding:'0rpx 25rpx',}" :current="currentIndex" @click="currentIndex=$event.index"></u-tabs>
 				</view>
-				<view class="header-search">
+				<view class="header-search" @click="onClickLiveSearch">
 					<view class="sousuo-icon"></view>
-					<u-notice-bar style="padding-left:80rpx" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="3000"></u-notice-bar>
+					<view v-show="currentIndex==1" style="padding-left:80rpx;color:#A3A3A3;font-size:25rpx">{{currentIndex==1?liveData.q:''}}</view>
+					<u-notice-bar v-show="currentIndex==0" style="padding-left:80rpx" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="3000"></u-notice-bar>
 				</view>
 			</view>
 			
@@ -77,7 +78,7 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<tabc style="padding:0 70rpx" :tabc="tabData" :tabsCheck="liveDara.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
+					<tabc style="padding:0 70rpx" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchmove="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
@@ -149,10 +150,11 @@
 		showWinningCrad = false;
 		greeted = false;
 		liveList = [];
-		liveDara = {
+		liveData = {
 			pageIndex:1,
 			pageSize:10,
 			noMoreData:false,
+			q:'',
 			liveTabCheck:1,
 			httpUrl:'dataApi/broadcast/list/living'
 		}
@@ -208,6 +210,12 @@
 			this.onEventUI("showPaySuccess", (res) => {
 				this.showPaySuccess = true;
 			});
+			this.onEventUI("liveFind",(res)=>{
+				this.liveData.pageIndex = 1;
+				this.liveData.noMoreData = false;
+				this.liveData.q = res.text
+				this.reqNewLiveData()
+			})
 			uni.$once('appluanchOver', () => {
 				if (this.oneLoad) {
 					this.version = app.version
@@ -299,8 +307,9 @@
 		showInitEvent(cb ? : Function) {
 			this.fetchFrom = 1;
 			this.noMoreData = false;
-			this.liveDara.pageIndex = 1;
-			this.liveDara.noMoreData = false
+			this.liveData.pageIndex = 1;
+			this.liveData.q = '';
+			this.liveData.noMoreData = false
 			this.initEvent(() => {
 				if (cb) cb()
 			})
@@ -420,6 +429,13 @@
 				url: `/pages/goods/goods_find?placeholder=${placeholder}`
 			})
 		}
+		onClickLiveSearch(){
+			if(this.currentIndex==1){
+				uni.navigateTo({
+					url: `/pages/live/live_find?q=${this.liveData.q}`
+				})
+			}
+		}
 		onClickcancelPaySuccess() {
 			this.showPaySuccess = false;
 		}
@@ -473,19 +489,20 @@
 			this.currentIndex = event.detail.current;
 		}
 		onClickListTabs(id: any) {
-			if (id == this.liveDara.liveTabCheck) {
+			if (id == this.liveData.liveTabCheck) {
 				return;
 			}
 			if (id == 3 && app.token.accessToken == ''){
 				uni.navigateTo({ url:'/pages/login/login' })
 				return;
 			}
-			this.liveDara = {
+			this.liveData = {
 				pageIndex:1,
 				pageSize:10,
 				noMoreData:false,
+				q:this.liveData.q,
 				liveTabCheck:id,
-				httpUrl:this.tabData[id-1].http
+				httpUrl:this.tabData[id-1].http,
 			}
 			this.reqNewLiveData()
 		}
@@ -519,10 +536,10 @@
 		}
 		reqNewLiveData(cb?:Function) {
 			// 获取更多商品
-			const params = this.liveDara;
+			const params = this.liveData;
 			if (params.noMoreData) return ;
 
-			app.http.Get(params.httpUrl,{pageIndex:params.pageIndex,pageSize:params.pageSize},(data:any)=>{
+			app.http.Get(params.httpUrl,{q:params.q,pageIndex:params.pageIndex,pageSize:params.pageSize},(data:any)=>{
 				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
 				if(params.pageIndex==1) this.liveList = []
 				if(data.list) this.liveList = this.liveList.concat(data.list);
@@ -893,4 +910,13 @@
 		background:$content-bg;
 		padding:20rpx 20rpx 20rpx 20rpx;
 	}
+	/deep/.uni-scroll-view-refresh{
+		width:750rpx;
+		height:105rpx;
+		background:url(@/static/index/v3/loading.gif) no-repeat center /100% 100%
+	}
+	/deep/.uni-scroll-view-refresh-inner{
+		display: none !important;
+	}
+
 </style>
