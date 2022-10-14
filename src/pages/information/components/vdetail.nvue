@@ -2,13 +2,6 @@
 	<!-- 底部详情 -->
 	<view class="vd-box">
 		<text class="vd-title">{{articleData.title}}</text>
-		<view class="vd-user">
-			<image class="vd-avatar" :src="decodeURIComponent(articleData.author_logo)"/>
-			<view>
-				<text class="vd-name">{{articleData.author}}</text>
-				<text class="vd-time">发布于{{timeFormat(articleData.active_at)}}</text>
-			</view>
-		</view>
 		<text class="vd-desc" v-for="(item,index) in replaceText(decodeURIComponent(articleData.content))" :key="index">{{item}}</text>
 		<u-divider style="width:100%" lineColor="#E8E8E8"></u-divider>
 

@@ -45,7 +45,7 @@
 							<!-- 最底下的文字部分 -->
 							<view class="content" v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false">
 								<view class="descBox">
-									<image style="width:50rpx;height:50rpx;border-radius:50%" :src="decodeURIComponent(item.author_logo)" mode="aspectFill"/>
+									<image style="width:50rpx;height:50rpx;border-radius:50%;overflow: hidden;" :src="decodeURIComponent(item.author_logo)" mode="aspectFill"/>
 									<text class="descAuthor">{{item.author}}</text>
 								</view>
 								<text class="userName" >{{item.title}}</text><!-- i={{i}} -->
@@ -82,9 +82,16 @@
 		<view class="popup" :style="{height:showDetail?wHeight:0+'px'}">
 			<view class="popup-shadow" :style="{height:showDetail?wHeight:0+'px'}" @click="onClosePopup"></view>
 			<view class="popup-content" :style="{height:showDetail?(boxStyle.height-200):0+'px'}">
+				<view class="vd-user">
+					<image class="vd-avatar" :src="decodeURIComponent(dataList[k].author_logo)"/>
+					<view>
+						<text class="vd-name">{{dataList[k].author}}</text>
+						<text class="vd-time">发布于{{timeFormat(dataList[k].active_at)}}</text>
+					</view>
+				</view>
 				<list ref="comList" v-if="showDetail" :show-scrollbar="false" :pagingEnabled="false" :scrollable="true" @loadmore="getMoreComment" :loadmoreoffset="1">
 					<cell>
-						<vdetail style="padding-top: 40rpx;"  :articleData="dataList[k]?dataList[k]:{}" @reply="onReply">
+						<vdetail style="padding-top: 20rpx;"  :articleData="dataList[k]?dataList[k]:{}" @reply="onReply">
 							<nTabbar v-if="showDetail" :data="dataList[k]?dataList[k]:{}" :commentNum="dataList[k]?dataList[k].comment:0" :deleteHeight="deleteHeight" :detail="true" @comment="onReply" ></nTabbar>
 						</vdetail>
 					</cell>
@@ -472,6 +479,9 @@
 			getMoreComment(){
 				this.resetLoadmored=true;
 				uni.$emit('comloadmore')
+			},
+			timeFormat(time){
+				return uni.$u.timeFormat(time,'mm月dd日 hh:MM')
 			}
         }
     }
@@ -642,5 +652,35 @@
 		background:#fff;
 		padding-left:40rpx;
 		padding-right: 40rpx;
+	}
+	.vd-user{
+		width: 670rpx;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		height:90rpx;
+		margin-bottom:40rpx;
+		padding-top: 40rpx;
+	}
+	.vd-avatar{
+		width: 90rpx;
+		height:90rpx;
+		border-radius: 50%;
+		margin-right: 28rpx;
+	}
+	.vd-name{
+		width: 670rpx;
+		font-size: 29rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #333333;
+		margin-bottom: 5rpx;
+	}
+	.vd-time{
+		width: 670rpx;
+		font-size: 23rpx;
+		font-family: Microsoft YaHei;
+		font-weight: 400;
+		color: #7C7C7C;
 	}
 </style>

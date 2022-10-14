@@ -195,6 +195,7 @@
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
 			</view>
+			<view class="btn-cardlist"></view>
 			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm"
 				@click="onClickCopyInviteKey">复制口令给新人</view>
 			<view v-else class="btn-confirm" :class="{'random-confirm':getSelectType()}" @click="onClickBuy()">
@@ -542,7 +543,7 @@
 				{name:'拼团编号',desc:`${goodsData.goodCode}`},
 				{name:'开售时间',desc:uni.$u.timeFormat(goodsData.startAt,'yyyy-mm-dd hh:MM:ss')},
 			]
-			this.goodsDesc = [...IandT,...newData]
+			this.goodsDesc = [...IandT,...newData].splice(0,6)
 		}	
 		onClickTipBtn(item: any) {
 			if (item.id == 1) {
@@ -1101,13 +1102,13 @@
 
 	.swiper {
 		width: 750rpx;
-		height: 630rpx;
+		height: 625rpx;
 		background: #F5F5F9;
 	}
 
 	.goods-img-content {
 		width: 750rpx;
-		height: 630rpx;
+		height: 625rpx;
 		background: #F5F5F9;
 		box-sizing: border-box;
 		display: flex;
@@ -1117,7 +1118,7 @@
 
 	.goods-img {
 		width: 750rpx;
-		height: 630rpx;
+		height: 625rpx;
 	}
 
 	.detail-index-bg {
@@ -1685,7 +1686,20 @@
 				margin-bottom: 0;
 			}
 		}
-
+		.btn-cardlist{
+			width: 150rpx;
+			height: 82rpx;
+			border: 2rpx solid #949494;
+			border-radius: 3rpx;
+			display: flex;
+			align-items: center;
+			font-size: 33rpx;
+			font-family: PingFang SC;
+			font-weight: 600;
+			color: #333333;
+			justify-content: center;
+			box-sizing: border-box;
+		}
 		.btn-confirm {
 			width: inherit;
 			background: $btn-red;
@@ -1700,7 +1714,7 @@
 		}
 
 		.random-confirm {
-			background: #7C4BEA;
+			background: #7048DD;
 		}
 
 	}

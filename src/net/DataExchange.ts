@@ -10,35 +10,71 @@ export var indexTabList = [
 // 首页hot列表
 export var indexHotList = {
     progress:{
-        title:'即将拼成',
-        tips:'进度榜单',
+        title:'拼团进度榜',
+        tips:'快速开拆',
         pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
         url:'/pages/goods/goods_progressRank',
         bg:{
-            src:'../../static/index/v3/HOT.png',
-            width:'104rpx',
-            height:'40rpx'
+            src:'../../static/index/v3/index_f.png',
+            width:'155rpx',
+            height:'46rpx'
+        },
+        icon:{
+            src:'../../static/index/v3/index_icon_f.png',
+            width:'161rpx',
+            height:'103rpx',
+            top:'47rpx',
+            right:'13rpx'
         }
     },
-    hot:{
-        title:'新手专区',
-        tips:'入门产品',
+    new:{
+        title:'最新上架',
+        tips:'新车和预售',
         pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
         url:'/pages/goods/goods_assign_list?type=cheap',
         bg:{
-            src:'../../static/index/v3/NEW.png',
-            width:'117rpx',
-            height:'38rpx'
+            src:'../../static/index/v3/index_n.png',
+            width:'145rpx',
+            height:'45rpx'
+        },
+        icon:{
+            src:'',
+            width:'139rpx',
+            height:'80rpx',
+            top:'44rpx',
+            right:'16rpx'
+        }
+    },
+    hot:{
+        title:'新手体验',
+        tips:'球星卡入门',
+        pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
+        url:'/pages/goods/goods_assign_list?type=cheap',
+        bg:{
+            src:'../../static/index/v3/index_t.png',
+            width:'120rpx',
+            height:'45rpx'
+        },
+        icon:{
+            src:'../../static/index/v3/index_icon_t.png',
+            width:'146rpx',
+            height:'106rpx',
+            top:'35rpx',
+            right:'16rpx'
         }
     },
     broadCast:{
         title:'拆卡围观',
-        tips:'正在拆卡',
+        tips:'入门体验',
         list:[],
         bg:{
-            src:'../../static/index/v3/SHOW.png',
-            width:'161rpx',
-            height:'40rpx'
+            src:'../../static/index/v3/index_b.png',
+            width:'199rpx',
+            height:'45rpx'
+        },
+        icon:{
+            top:'23rpx',
+            right:'29rpx'
         }
     }
 }

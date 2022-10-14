@@ -190,8 +190,16 @@
             },
             "splashscreen" : {
                 "useOriginalMsgbox" : true,
-                "iosStyle" : "common",
-                "androidStyle" : "common"
+                "iosStyle" : "storyboard",
+                "androidStyle" : "default",
+                "ios" : {
+                    "storyboard" : "unpackage/res/CustomStoryboard.zip"
+                },
+                "android" : {
+                    "hdpi" : "unpackage/res/andrio/480x762.png",
+                    "xhdpi" : "unpackage/res/andrio/720x1242.png",
+                    "xxhdpi" : "unpackage/res/andrio/1080x1882.png"
+                }
             }
         },
         /* SDK配置 */
@@ -242,6 +250,12 @@
                     "parameters" : {}
                 }
             }
+        },
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : false,
+			"autoclose" : false,
+			"waiting" : false,
+			"delay" : 0
         }
     },
     "quickapp" : {},

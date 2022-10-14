@@ -39,8 +39,7 @@
                 <view class="followAllButton flexCenter" v-if="!isAllAttention" @click="onClickAllAttention">一键关注</view>
             </view>
             <view class="hotContainer">
-                <view class="hot_item" :style="{marginRight:`${(index+1)%5==0?0:10}rpx`}" v-for="(item,index) in hotRank"
-                    :key="index" @click="goMerchantPage(item.alias)">
+                <view class="hot_item" v-for="(item,index) in hotRank" :key="index" @click="goMerchantPage(item.alias)">
                     <view class="hot_picBlock">
                         <muqian-lazyLoad class="hot_pic" borderRadius="3rpx"
                             :src="$parsePic(decodeURIComponent(item.logo))" />
@@ -390,13 +389,12 @@ page {
     box-sizing: border-box;
     padding: 0 25rpx;
     width: 750rpx;
-    // justify-content: space-between;
+    justify-content: space-between;
     margin-top: 20rpx;
 
     .hot_item {
         width: 131rpx;
         margin-bottom: 30rpx;
-
     }
 
     .hot_picBlock {
