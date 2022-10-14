@@ -55,7 +55,7 @@
 				}
 				this.newGoodsPic = this.newGoodsPic.map((x:any,index:number)=>{
 					if(index==this.transIndex){
-						setTimeout(()=>{this.newGoodsPic[index].show=true},200)
+						setTimeout(()=>{this.newGoodsPic[index].show=true},400)
 					}
 					return {show:false,src:x.src}
 				})
@@ -148,6 +148,7 @@
 		position: absolute;
 		left:0;
 		top:0;
+		display: inline-block;
 		z-index: 10 !important;
 	}
 	.tab-hot-boxtitle{

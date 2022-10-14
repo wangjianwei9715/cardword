@@ -250,6 +250,12 @@
                     "parameters" : {}
                 }
             }
+        },
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : false,
+			"autoclose" : false,
+			"waiting" : false,
+			"delay" : 0
         }
     },
     "quickapp" : {},

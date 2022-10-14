@@ -41,7 +41,11 @@
 			},
 		},
 		onLaunch() {
-			
+			// #ifdef APP-PLUS
+			setTimeout(() => {
+				plus.navigator.closeSplashscreen();
+			}, 2400);
+			// #endif
 			console.log("App Launch");
 			//#ifdef APP-PLUS
 			plus.screen.lockOrientation("portrait-primary"); // 强制竖屏
