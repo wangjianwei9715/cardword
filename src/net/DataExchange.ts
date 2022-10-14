@@ -27,11 +27,11 @@ export var indexHotList = {
             right:'13rpx'
         }
     },
-    new:{
+    fresh:{
         title:'最新上架',
         tips:'新车和预售',
         pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
-        url:'/pages/goods/goods_assign_list?type=new',
+        url:'/pages/goods/goods_assign_list?type=fresh',
         bg:{
             src:'../../static/index/v3/index_n.png',
             width:'145rpx',
@@ -99,7 +99,7 @@ export var goodsListType: { [x: string]: any } = {
     'select': '自选玩法',
     'progress': '即将拼成',
 	'yifen':'一分上组',
-    'new':'最新上架'
+    'fresh':'最新上架'
 }
 /**
  * @goodDetailSpe   商品详情 规格类型

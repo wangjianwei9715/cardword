@@ -81,7 +81,7 @@ export default class ClassName extends BaseNode {
     reqSeriesGoods(cb?: any) {
         app.http.Get(`dataApi/advertising/iconSeries/good/list/${this.seriesId}`, this.queryParams, (res: any) => {
             const dataList = res.list || []
-            this.goodsList = this.queryParams.fetchFrom == 1 ? dataList : [...this.goodsList, ...dataList]
+            this.goodsList = this.queryParams.fetchFrom == 1 ? dataList : this.goodsList.push(...dataList)
             this.isFetchEnd = res.isFetchEnd
             cb && cb()
         })

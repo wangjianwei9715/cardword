@@ -33,7 +33,7 @@ export default class ClassName extends BaseNode {
   };
   goodsList: { [x: string]: any } = [];
   noMoreData = false;
-  newGoodsListType:any=['cheap','new']
+  newGoodsListType:any=['cheap','fresh']
   // fetchFrom:第几个数据开始  fetchSize:取几个数据
   fetchFrom = 1;
   fetchSize = 10;
