@@ -51,7 +51,7 @@ export default class ClassName extends BaseNode {
   tabData = {
     list:TabList,
     current:0,
-    itemStyle:{height: '90rpx',padding:'0rpx 30rpx'},
+    itemStyle:{height: '80rpx',padding:'0rpx 30rpx'},
     inactiveStyle:{"font-size":"28rpx","color":"#959699","font-weight":"400"},
     activeStyle:{"font-size":"31rpx","color":"#333","font-weight":"bold"}
   }
@@ -219,6 +219,7 @@ page {
   width: 35rpx;
   height:37rpx;
   background:url(@/static/information/icon_search.png) no-repeat center /100% 100%;
+  transform: scale(0.9);
 }
 .icon-collect{
   width: 39rpx;
@@ -233,7 +234,7 @@ page {
 .live-content {
   width: 100%;
   box-sizing: border-box;
-  padding: 220rpx 0 20rpx 0;
+  padding: 180rpx 0 20rpx 0;
   position: relative;
   z-index: 2;
 }
@@ -271,7 +272,7 @@ page {
 .swiper {
   width: 750rpx;
   height: 333rpx;
-  margin-bottom: 40rpx;
+  margin-bottom:36rpx;
 }
 
 .ad-box {

@@ -50,7 +50,6 @@
 		width: 710rpx;
 		border-radius: 3rpx;
 		background:#fff;
-		margin-bottom: 13rpx;
 	}
 	.detail-act-box{
 		width: 100%;

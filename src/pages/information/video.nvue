@@ -4,7 +4,9 @@
 			<view class="navigateBackBox" @click="onClickBack" >
 				<image class="navigateBack" src="@/static/information/live_back.png"></image>
 			</view>
-			<image class="navigateShare" @click="onClickShare" src="@/static/information/live_share.png"></image>
+			<view class="navigateShareBox" @click="onClickShare">
+				<image class="navigateShare"  src="@/static/information/live_share.png"></image>
+			</view>
 		</view>
 		<view :style="'width: '+ windowWidth +'px; height: '+ boxStyle.height +'px;'">
 			
@@ -82,7 +84,7 @@
 		<view class="popup" :style="{height:showDetail?wHeight:0+'px'}">
 			<view class="popup-shadow" :style="{height:showDetail?wHeight:0+'px'}" @click="onClosePopup"></view>
 			<view class="popup-content" :style="{height:showDetail?(boxStyle.height-200):0+'px'}">
-				<view class="vd-user">
+				<view class="vd-user" v-if="dataList[k]">
 					<image class="vd-avatar" :src="decodeURIComponent(dataList[k].author_logo)"/>
 					<view>
 						<text class="vd-name">{{dataList[k].author}}</text>
@@ -513,6 +515,15 @@
 	.navigateBack{
 		width: 21rpx;
 		height:38rpx;
+	}
+	.navigateShareBox{
+		width:77rpx;
+		height:77rpx;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		justify-content: center;
+		margin-right: -20rpx;
 	}
 	.navigateShare{
 		width: 37rpx;

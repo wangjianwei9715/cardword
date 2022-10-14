@@ -155,6 +155,7 @@
 						goodOrderCode:orderCode||x.orderCode,
 						noId:x.id,
 						name:x.name,
+						uuid:x.uuid||''
 					}
 					if(this.currentList.indexOf(x.id) == -1){
 						this.currentList.push(x.id)
@@ -190,6 +191,7 @@
 					goodOrderCode:order,
 					noId:item.id,
 					name:item.name,
+					uuid:item.uuid||''
 				}
 				this.currentList.push(item.id)
 				this.currentListData.push(data)
@@ -214,14 +216,21 @@
 				})
 				return;
 			}
+			const data = this.currentListData[0]
+			const hasUUid = data.uuid != '';
+			const url = `function/userNo${hasUUid?'/uuid':''}/transfer/shareNo/create`
 			let ts = Math.floor(new Date().getTime()/1000);
-			let params = {
-				goodOrderCode:this.currentListData[0].goodOrderCode,
-				noId:Number(this.currentListData[0].noId),
+			let params:any = {
+				goodOrderCode:data.goodOrderCode,
 				ts:ts,
-				sign:Md5.hashStr('createShareCode_'+ts+'_'+this.currentListData[0].goodOrderCode+'_'+this.currentListData[0].noId)
+				sign: Md5.hashStr(`createShareCode_${ts}_${data.goodOrderCode}_${hasUUid?data.uuid:data.noId}`)
 			}
-			app.http.Post('function/userNo/transfer/shareNo/create',params,(res:any)=>{
+			if(hasUUid){
+				params.uuid = data.uuid;
+			}else{
+				params.noId = Number(data.noId);
+			}
+			app.http.Post(url,params,(res:any)=>{
 				uni.setClipboardData({
 					data: res.content,
 					showToast:false,

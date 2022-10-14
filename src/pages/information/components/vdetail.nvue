@@ -34,12 +34,10 @@
 							<view style="width:390rpx" class="chat-msg" v-if="!son.isDelete" >
 								<!-- <rich-text :nodes="richNodes(son)" :selectable="false" v-if="son.replyUserName!=''"></rich-text> -->
 								<text class="chat-hf" :selectable="true" v-if="son.replyUserName!='' && platform =='ios'" @click="onClickReply(son,item.id)">
-									<text class="chat-text">回复</text>
-									<text class="hf-name">{{son.replyUserName}}</text>
-									<text class="chat-text2">:{{son.content}}</text>
+									回复 {{son.replyUserName}} {{son.content}}
 								</text>
 								<text class="chat-hf" :selectable="true" v-else-if="son.replyUserName!=''" @click="onClickReply(son,item.id)">
-									回复 {{son.replyUserName}}:{{son.content}}
+									回复 {{son.replyUserName}} {{son.content}}
 								</text>
 								<text class="chat-hf" :selectable="true" v-else @click="onClickReply(son,item.id)">{{son.content}}</text>
 							</view>
@@ -282,7 +280,7 @@
 		font-size: 25rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
-		color: #636363;
+		color: #949494;
 		margin-right: 22rpx;		
 	}	
 	.chat-time{

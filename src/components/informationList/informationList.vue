@@ -15,8 +15,8 @@
 					</view>
 				</view>
 			</view>
-			<view class="cover-box">
-				<muqian-lazyLoad v-if="item" class="pic-box" :src="decodeURIComponent(item.cover)" borderRadius="3rpx" @click="onClickJumpUrl(item)"/>
+			<view class="cover-box" @click="onClickJumpUrl(item)">
+				<muqian-lazyLoad v-if="item" class="pic-box" :src="decodeURIComponent(item.cover)" borderRadius="3rpx" />
 				<view v-if="item.video_at && item.video_at!=''" class="video-box">
 					<view class="icon-play"></view>
 					<view class="icon-shadow">
@@ -147,6 +147,7 @@
 				width: 240rpx;
 				height:160rpx;
 				position: relative;
+				border-radius: 3rpx;
 			}
 			.pic-box{
 				width: 240rpx;
@@ -158,7 +159,8 @@
 				position: absolute;
 				left:0;
 				top:0;
-				background:rgba(0,0,0,0.3)
+				background:rgba(0,0,0,0.3);
+				border-radius: 3rpx;
 			}
 			.icon-play{
 				width: 42rpx;
