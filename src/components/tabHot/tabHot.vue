@@ -64,15 +64,6 @@
 		destroyed(){
 			
 		}
-		onClickMerchantInfo(item:any){
-			if (app.token.accessToken == "") {
-				uni.navigateTo({
-					url: "/pages/login/login"
-				});
-				return;
-			}
-			this.goMerchantPage(item.list.merchantAlias)
-		}
 		onClickLive(item:any){
 			if (item.third && item.third === 1001) {
 				app.platform.goZgLive({
@@ -85,13 +76,6 @@
 				return
 			}
 			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
-		}
-		onClickHotTab(item:any,name:string){
-			if(name!='hot') return;
-
-			uni.navigateTo({
-				url: "/pages/goods/goods_find_list?hs=" +item.id+'&hsTitle='+item.key||''
-			});  
 		}
 		onClickHotPic(item:any,name:string){
 			const canJumpName=['progress','hot']

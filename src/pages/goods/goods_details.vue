@@ -195,6 +195,7 @@
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
 			</view>
+			<view class="btn-cardlist"></view>
 			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm"
 				@click="onClickCopyInviteKey">复制口令给新人</view>
 			<view v-else class="btn-confirm" :class="{'random-confirm':getSelectType()}" @click="onClickBuy()">
@@ -1685,7 +1686,20 @@
 				margin-bottom: 0;
 			}
 		}
-
+		.btn-cardlist{
+			width: 150rpx;
+			height: 82rpx;
+			border: 2rpx solid #949494;
+			border-radius: 3rpx;
+			display: flex;
+			align-items: center;
+			font-size: 33rpx;
+			font-family: PingFang SC;
+			font-weight: 600;
+			color: #333333;
+			justify-content: center;
+			box-sizing: border-box;
+		}
 		.btn-confirm {
 			width: inherit;
 			background: $btn-red;
@@ -1700,7 +1714,7 @@
 		}
 
 		.random-confirm {
-			background: #7C4BEA;
+			background: #7048DD;
 		}
 
 	}
