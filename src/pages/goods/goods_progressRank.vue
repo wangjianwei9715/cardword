@@ -2,7 +2,8 @@
     <view class="content">
         <view class="topBanner"></view>
         <view class="goodsContainer">
-            <goodslist-horizontal @send="onClickJumpDetails" :goodsList="goodsList" :needRank="true"></goodslist-horizontal>
+            <goodslist-horizontal @send="onClickJumpDetails" :goodsList="goodsList" :needRank="true">
+            </goodslist-horizontal>
         </view>
         <empty v-if='goodsList&&!goodsList.length' />
     </view>
@@ -14,12 +15,18 @@ import { Component } from "vue-property-decorator";
 import BaseNode from '../../base/BaseNode.vue';
 @Component({})
 export default class ClassName extends BaseNode {
-    goodsList: any = []
+    goodsList: { [x: string]: any } = [];
+    noMoreData = false;
+    newGoodsListType: any = ['cheap', 'new']
+    // fetchFrom:第几个数据开始  fetchSize:取几个数据
+    fetchFrom = 1;
+    fetchSize = 10;
+    listSort = "";
     onLoad(query: any) {
-
+        this.reqNewData()
     }
     onReachBottom() {
-
+        this.reqNewData();
     }
     onPulldDownRefresh() {
 
@@ -28,8 +35,42 @@ export default class ClassName extends BaseNode {
     onClickJumpDetails(goodCode: any) {
         app.navigateTo.goGoodsDetails(goodCode)
     }
-    reqNewData() {
+    reqSearchList() {
+        this.fetchFrom = 1;
+        this.noMoreData = false;
+        this.reqNewData();
+    }
+    reqNewData(cb?: Function) {
+        // 获取列表
+        if (this.noMoreData) {
+            return;
+        }
 
+        let params: { [x: string]: any } = {
+            fetchFrom: this.fetchFrom,
+            fetchSize: this.fetchSize
+        };
+        // 排序方式
+        if (this.listSort != "") {
+            params.od = this.listSort;
+        }
+
+        app.http.Get(
+            "dataApi/goodlist/forsale/progress",
+            params,
+            (res: any) => {
+                if (res.isFetchEnd) {
+                    this.noMoreData = true;
+                }
+
+                if (this.fetchFrom == 1) this.goodsList = [];
+                if (res.goodList) {
+                    this.goodsList = this.goodsList.concat(res.goodList);
+                }
+                this.fetchFrom += this.fetchSize;
+                if (cb) cb();
+            }
+        );
     }
 
 }

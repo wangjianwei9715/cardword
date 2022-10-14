@@ -78,7 +78,7 @@
 			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
 		}
 		onClickHotPic(item:any,name:string){
-			const canJumpName=['progress','hot']
+			const canJumpName=['progress','hot','new']
 			if(!canJumpName.includes(name)) return;
 			
 			if(app.token.accessToken == ''){

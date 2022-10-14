@@ -33,7 +33,7 @@ export default class ClassName extends BaseNode {
   };
   goodsList: { [x: string]: any } = [];
   noMoreData = false;
-  newGoodsListType: any = ['cheap', 'shelves']
+  newGoodsListType:any=['cheap','new']
   // fetchFrom:第几个数据开始  fetchSize:取几个数据
   fetchFrom = 1;
   fetchSize = 10;
@@ -45,7 +45,7 @@ export default class ClassName extends BaseNode {
     });
     this.reqNewData();
   }
-  private get isNewGoodsList() {
+  private get isNewGoodsList(){
     return this.newGoodsListType.includes(this.urlType)
   }
   onReachBottom() {
