@@ -247,7 +247,7 @@
 
 			.goodslist-priceMsg-left {
 				font-size: 18rpx;
-				font-family: PingFangSC-Regular;
+				font-family: Impact;
 				font-weight: 600;
 				color: #333333;
 				height: 40rpx;
@@ -256,7 +256,7 @@
 
 				text.price-text {
 					font-size: 33rpx;
-					font-family: FZLanTingHeiS-B-GB;
+					font-family: Impact;
 					font-weight: 600;
 					color: #333333;
 					line-height: 38rpx;

@@ -45,7 +45,7 @@
 								<image v-if="item.state=='pause'" class="playState" src="@/static/information/play.png"></image>
 							</view>
 							<!-- 最底下的文字部分 -->
-							<view class="content" v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false">
+							<view class="content" v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false" @click="onDetail">
 								<view class="descBox">
 									<image style="width:50rpx;height:50rpx;border-radius:50%;overflow: hidden;" :src="decodeURIComponent(item.author_logo)" mode="aspectFill"/>
 									<text class="descAuthor">{{item.author}}</text>
