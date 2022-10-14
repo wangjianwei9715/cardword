@@ -55,7 +55,7 @@
 				<swiper-item>
 					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchmove="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<view class="tab-good-content">
-							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index">
+							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index" :class="{justifyStart:index=='top'}">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
 									<view class="tab-img-content">
 										<image class="tabimg" :class="{'tabimg-all':items.name=='全部拼团'}" :src="decodeURIComponent(items.icon)" mode=""/>
@@ -321,7 +321,7 @@
 			})
 			// 获取系列icon
 			app.http.Get('advertising/iconSeries/list',{},(res:any)=>{
-				this.indexTabList.top = res.list
+				this.indexTabList.top=res.list
 			})
 		}
 
@@ -620,8 +620,18 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		
 	}
-
+	.justifyStart{
+		justify-content: flex-start;
+		.tab-index{
+			margin-right:38rpx;
+			
+		}
+		.tab-index:last-child{
+			margin-right: 0;
+		}
+	}
 	.tab-index {
 		width: 105rpx;
 		height: 150rpx;

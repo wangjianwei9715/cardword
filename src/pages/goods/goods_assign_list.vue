@@ -1,14 +1,14 @@
 <template>
   <view class="content">
-    <view class="header-banner" v-if="urlType!='cheap'">
+    <view class="header-banner" v-if="!isNewGoodsList">
       <sortTab :sortData="sortData" @postSort="postSort" />
       <!-- <sortTabCopy/> -->
     </view>
     <!-- v-if="urlType!='cheap'" -->
-    <view class="goods-lists" v-if="urlType!='cheap'">
+    <view class="goods-lists" v-if="!isNewGoodsList">
       <goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
     </view>
-    <view class="newGoods-list" v-if="urlType=='cheap'">
+    <view class="newGoods-list" v-if="isNewGoodsList">
       <goodslist-horizontal :goodsList="goodsList" @send="onClickJumpDetails"></goodslist-horizontal>
     </view>
   </view>
@@ -33,6 +33,7 @@ export default class ClassName extends BaseNode {
   };
   goodsList: { [x: string]: any } = [];
   noMoreData = false;
+  newGoodsListType: any = ['cheap', 'shelves']
   // fetchFrom:第几个数据开始  fetchSize:取几个数据
   fetchFrom = 1;
   fetchSize = 10;
@@ -43,6 +44,9 @@ export default class ClassName extends BaseNode {
       title: this.goodsListType[this.urlType]
     });
     this.reqNewData();
+  }
+  private get isNewGoodsList() {
+    return this.newGoodsListType.includes(this.urlType)
   }
   onReachBottom() {
     this.reqNewData();

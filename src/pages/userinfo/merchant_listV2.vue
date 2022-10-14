@@ -402,7 +402,6 @@ page {
     .hot_picBlock {
         width: 131rpx;
         height: 131rpx;
-        background: #DCDCDC;
         border-radius: 3rpx;
         margin-bottom: 13rpx;
         position: relative;
