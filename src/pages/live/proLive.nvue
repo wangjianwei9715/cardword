@@ -2132,6 +2132,12 @@ export default {
       const sendParams = JSON.stringify({
         params: params
       });
+      if(!this.canEval){
+        setTimeout(()=>{
+          this.informH5Action(actionName,params,isMoreArguments)
+        },500)
+        return
+      }
       this.webView.evalJs(
         `actionSet("${actionName}",${sendParams},${isMoreArguments})`
       );
