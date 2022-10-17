@@ -178,7 +178,7 @@
 		position: relative;
 	}
 	.live-border{
-		border:3rpx solid #FA1545;
+		border:4rpx solid #FA1545;
 		border-radius: 50%;
 	}
 	.broadcast-box{
@@ -191,26 +191,25 @@
 		width: 100rpx;
 		height:100rpx;
 		position: absolute;
-		left:0;
-		top:0;
+		left:50%;
+		top:50%;
 		z-index: 2;
-		box-sizing: border-box;
-		border:1rpx solid #FA1545;
+		border:2rpx solid #FA1545;
 		border-radius: 50%;
 		-webkit-animation: animate 1s linear infinite;
 	}
 
 	@keyframes animate {
 		0%{
-			transform: scale(1);
+			transform: translate(-50%, -50%) scale(1);
 			opacity: 1;  
 		}
 		50%{
-			transform: scale(1.15);  
+			transform: translate(-50%, -50%) scale(1.15);  
 			opacity: 0.5;   /*圆形放大的同时，透明度逐渐减小为0*/
 		}
 		100%{
-			transform: scale(1.3);  
+			transform: translate(-50%, -50%) scale(1.3);  
 			opacity: 0;   /*圆形放大的同时，透明度逐渐减小为0*/
 		}
 	}

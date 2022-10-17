@@ -647,7 +647,7 @@
 	.tab-type {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 0 44rpx 10rpx 44rpx;
+		padding: 0 30rpx 10rpx 30rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -656,7 +656,7 @@
 	.justifyStart{
 		justify-content: flex-start;
 		.tab-index{
-			margin-right:38rpx;
+			margin-right:10rpx;
 			
 		}
 		.tab-index:last-child{
@@ -664,7 +664,7 @@
 		}
 	}
 	.tab-index {
-		width: 105rpx;
+		width: 130rpx;
 		height: 150rpx;
 		display: flex;
 		align-items: flex-start;

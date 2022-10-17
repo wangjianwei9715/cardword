@@ -588,7 +588,9 @@
 			uni.navigateTo({ url: data ? `${url}&teamId=${data.id}` : url })
 		}
 		onClickNiceTime(){
-			uni.navigateTo({ url: `/pages/merchant/niceTime?alias=${this.goodsData.publisher.alias}` })
+			app.platform.hasLoginToken(()=>{
+				uni.navigateTo({ url: `/pages/merchant/niceTime?alias=${this.goodsData.publisher.alias}` })
+			})
 		}
 		// 分享
 		onClickShare() {
