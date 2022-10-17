@@ -103,7 +103,7 @@
 			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
 			const str = saleRatio > width ? 
 			`${saleRatio}%`:
-			`${item.totalNum-(item.currentNum+item.lockNum)}/${item.totalNum}`
+			`余${item.totalNum-(item.currentNum+item.lockNum)}/${item.totalNum}`
 			return type=='str' ? str : Math.max(width,saleRatio)
 		}
 		getPriceStart(item: any) {
@@ -188,8 +188,8 @@
 		&-title {
 			height: 75rpx;
 			font-size: 25rpx;
-			font-family: PingFangSC-Semibold;
-			font-weight: 600;
+			font-family: PingFangSC-Medium;
+			font-weight: 400;
 			color: #333333;
 			margin-top: 19rpx;
 			display: -webkit-box;

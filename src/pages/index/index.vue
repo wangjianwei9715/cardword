@@ -448,7 +448,7 @@
 			this.showPaySuccess = false;
 		}
 		onClickJumpUrl(item: any) {
-			if (item.text == '卡币商城' || item.text == '领券中心') {
+			if (item.name == '卡币商城' || item.name == '领券中心') {
 				if (app.token.accessToken == '') {
 					uni.navigateTo({
 						url: '/pages/login/login'

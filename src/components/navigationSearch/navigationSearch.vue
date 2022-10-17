@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\components\navigationSearch\navigationSearch.vue
  * @Author: wjw
  * @Date: 2022-08-10 11:07:48
- * @LastEditors: 
- * @LastEditTime: 2022-10-12 09:50:45
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-10-17 16:34:08
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -90,7 +90,7 @@
 			line-height: 88rpx;
 			font-size: 34rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
+			font-weight: 600;
 			color: #000000;
 		}
 		.icon-search{

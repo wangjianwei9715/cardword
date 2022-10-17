@@ -1322,9 +1322,9 @@
 
 		&-title {
 			width: 100%;
-			font-size: 31rpx;
-			font-family: PingFangSC-Semibold;
-			font-weight: 600;
+			font-size: 29rpx;
+			font-family: PingFangSC-Medium ;
+			font-weight: 400;
 			color: #333333;
 			line-height: 48rpx;
 			word-break:break-all;
@@ -1488,8 +1488,8 @@
 			&-name {
 				text-align: center;
 				font-size: 25rpx;
-				font-family: PingFangSC-Semibold;
-				font-weight: 600;
+				font-family: PingFangSC-Medium;
+				font-weight: 400;
 				color: #333333;
 				margin-bottom: 5rpx;
 			}
@@ -2046,7 +2046,7 @@
 			height:80rpx;
 			background:#F3F4F7;
 			font-size: 23rpx;
-			font-family: PingFang SC;
+			font-family:PingFangSC-Thin;
 			font-weight: 400;
 			color: #333333;
 			display: flex;
