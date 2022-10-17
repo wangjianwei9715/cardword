@@ -11,6 +11,7 @@
     <view class="newGoods-list" v-if="isNewGoodsList">
       <goodslist-horizontal :goodsList="goodsList" @send="onClickJumpDetails"></goodslist-horizontal>
     </view>
+    <empty v-if='goodsList&&!goodsList.length'/>
   </view>
 </template>
 
