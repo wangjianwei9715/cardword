@@ -60,6 +60,7 @@
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
 									<view class="tab-img-content">
 										<image class="tabimg" :class="{'tabimg-all':items.name=='全部拼团'}" :src="decodeURIComponent(items.icon)" mode=""/>
+										<image v-if="index=='top'&&items.cornerMarkTp>0" class="tabimg-icon" :src="`../../static/index/v3/index_top_icon${items.cornerMarkTp}.png`"></image>
 									</view>
 									<view class="tabtext u-line-1">{{items.name}}</view>
 								</view>
@@ -679,6 +680,14 @@
 		height: 87rpx;
 		align-items: center;
 		justify-content: center;
+		position: relative;
+	}
+	.tabimg-icon{
+		width: 46rpx;
+		height:45rpx;
+		position: absolute;
+		right:-11rpx;
+		top:0;
 	}
 	.tabimg {
 		width: 87rpx;
@@ -934,13 +943,27 @@
 		background:$content-bg;
 		padding:20rpx 20rpx 20rpx 20rpx;
 	}
+	/deep/.uni-scroll-view-refresher{
+		background:$content-bg !important
+	}
 	/deep/.uni-scroll-view-refresh{
-		width:750rpx;
-		height:105rpx;
-		background:url(@/static/index/v3/loading.gif) no-repeat center /100% 100%
+		align-items: flex-end !important;
+	}
+	/deep/.uni-scroll-view-refresh__spinner{
+		display: none;
+		// width:750rpx;
+		// height:105rpx;
+		// background:url(@/static/index/v3/loading.gif) no-repeat center /100% 100%
+	}
+	/deep/.uni-scroll-view-refresh__icon{
+		display: none;
 	}
 	/deep/.uni-scroll-view-refresh-inner{
-		display: none !important;
+		width:750rpx !important;
+		height:105rpx !important;
+		background:url(@/static/index/v3/loading.gif) no-repeat center /100% 100% !important;
+		border-radius: 0;
+		box-shadow:none
 	}
 
 </style>

@@ -248,7 +248,7 @@
 			.goodslist-priceMsg-left {
 				font-size: 18rpx;
 				font-family: Impact;
-				font-weight: 600;
+				font-weight: 400;
 				color: #333333;
 				height: 40rpx;
 				display: flex;
@@ -257,7 +257,7 @@
 				text.price-text {
 					font-size: 33rpx;
 					font-family: Impact;
-					font-weight: 600;
+					font-weight: 400;
 					color: #333333;
 					line-height: 38rpx;
 					margin-right: 10rpx;
