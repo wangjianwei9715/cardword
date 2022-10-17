@@ -52,16 +52,16 @@
 		</view>
 		<view class="tab-center">
 			<statusbar />
-			<swiper :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true;refresherEnabled=true" @transition="transitionSwiper">
+			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true;refresherEnabled=true" @transition="transitionSwiper">
 				<swiper-item>
-					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchmove="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="54" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchmove="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<view class="tab-good-content">
 							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index" :class="{justifyStart:index=='top'}">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
 									<view class="tab-img-content">
 										<image class="tabimg" :class="{'tabimg-all':items.name=='全部拼团'}" :src="decodeURIComponent(items.icon)" mode=""/>
 									</view>
-									<view class="tabtext">{{items.name}}</view>
+									<view class="tabtext u-line-1">{{items.name}}</view>
 								</view>
 							</view>
 							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-07-26')">
@@ -69,19 +69,21 @@
 							</navigator>
 
 							<!-- 卡币商城 热门系列 拆卡围观 -->
-							<tabHot :hotList="hotList" />
+							<tabHot :hotList="hotList" :freshGoodCovers="freshGoodCovers" />
 						</view>
 						<view class="goodslist-index">
 							<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
 								@send="onClickJumpDetails" :presell="false" />
+							<statusbar />
 						</view>
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<tabc style="padding:0 70rpx" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
-					<scroll-view :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchmove="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<tabc style="padding:0 70rpx;background:#fff" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
+					<scroll-view class="index-swiper-scroll" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="54" @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchmove="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
+							<statusbar />
 						</view>
 					</scroll-view>
 				</swiper-item>
@@ -129,6 +131,7 @@
 		hotList: { [x: string]: any } = indexHotList;
 		goodTab = indexGoodTab;
 		topAddList: any = [];
+		freshGoodCovers:any = [];
 		// 卡币商城 热门系列 拆卡围观
 		goodTabCheck = 1;
 		indexSwiper = true;
@@ -228,6 +231,9 @@
 			//#endif
 		}
 		onShow() {
+			// #ifdef APP-PLUS
+			this.networkStatusChange()
+			// #endif
 			// 销毁页面重新加载
 			if (uni.getStorageSync('reLaunch')) {
 				this.showInitEvent(() => {
@@ -269,9 +275,6 @@
 					this.setNewProgress(res.list)
 				})
 			}
-			// #ifdef APP-PLUS
-			this.networkStatusChange()
-			// #endif
 		}
 		onHide() {
 			uni.offNetworkStatusChange((res) => {})
@@ -314,24 +317,27 @@
 				if (cb) cb()
 			})
 		}
-		// 获取是否中卡信息
-		getGreet() {
+		// 获取首页其它只请求一次的接口
+		getIndexOrther() {
 			if (this.greeted) return;
 			this.greeted = true;
-			// 只获取一次
-			app.http.Get('me/greet', {}, (res: any) => {
-				if (res.data.broadcastActor) app.broadcastActor = res.data.broadcastActor
-				if (res.data.newHitNum > 0) this.showWinning();
-			})
-
+			
 			// 获取搜索轮播
-			app.http.Get('advertising/seekRotate/list',{},(res:any)=>{
+			app.http.Get('dataApi/advertising/seekRotate/list',{},(res:any)=>{
 				this.noticeList = res.list
 			})
 			// 获取系列icon
-			app.http.Get('advertising/iconSeries/list',{},(res:any)=>{
-				this.indexTabList.top=res.list
+			app.http.Get('dataApi/advertising/iconSeries/list',{},(res:any)=>{
+				this.indexTabList.top=res.list;
+				console.log(this.indexTabList);
 			})
+			// 获取是否中卡信息
+			if(app.token.accessToken != ''){
+				app.http.Get('me/greet', {}, (res: any) => {
+					if (res.data.broadcastActor) app.broadcastActor = res.data.broadcastActor
+					if (res.data.newHitNum > 0) this.showWinning();
+				})
+			}
 		}
 
 		showWinning() {
@@ -357,10 +363,12 @@
 				// #ifndef MP
 				this.topAddList = data.addList || [];
 				this.hotList.broadCast.list = data.broadCast || [];
-				if (app.token.accessToken != '') {
-					// 获取是否中卡信息
-					this.getGreet()
+				if(data.freshGoodCovers){
+					this.freshGoodCovers = data.freshGoodCovers.map((x:any,index:number)=>{
+						return {show:index==0,src:x}
+					})
 				}
+				this.getIndexOrther()
 				// #endif
 				cb && cb()
 			})
@@ -574,10 +582,16 @@
 	.tab-center {
 		width: 100%;
 		box-sizing: border-box;
-		background: #fff;
 		padding-top: 94rpx;
 	}
-
+	.index-swiper-scroll{
+		// #ifdef APP-PLUS
+		box-sizing: border-box;
+		padding-bottom: calc(94rpx);
+		padding-bottom: calc(94rpx + constant(safe-area-inset-bottom));
+		padding-bottom: calc(94rpx + env(safe-area-inset-bottom));
+		// #endif
+	}
 	.goods-list {
 		width: 100%;
 		background: #fff;

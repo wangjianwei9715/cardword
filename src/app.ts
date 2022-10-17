@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-10-14 10:43:17
+ * @LastEditTime: 2022-10-17 11:30:22
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -29,8 +29,8 @@ export module app{
     export let service_url='';
     export let dataApiDomain='';
 	export let funcApiDomain='';
-    // export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
-    export let launch_url = ['https://service.s777.ka-world.com']
+    export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
+    // export let launch_url = ['https://service.s777.ka-world.com']
     export let H5Url='http://share01.ka-world.com'
     // export let goodShareOrigin=""
     // export let activityShareOrigin=""
@@ -51,7 +51,7 @@ export module app{
     export let version = '1.0.0';
     export let iosPlatform = false;
     export let update:{[x: string]: any} = {};//更新数据
-    export let defaultAvatar = '@/static/index/moren@2x.png';
+    export let defaultAvatar = '/static/index/moren@2x.png';
     export let payload = '';//unipush跳转参数
     export let requestKey = ''; // 邀请key
     export let familial = false;

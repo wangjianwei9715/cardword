@@ -8,14 +8,14 @@
 				<view class="tab-hot-boxpic-index" v-if="name=='progress' || name=='hot'" :style="`width:${item.icon.width};height:${item.icon.height};top:${item.icon.top};right:${item.icon.right};background:url(${item.icon.src}) no-repeat center/100% 100%`"
 				></view>
 				<view class="tab-hot-boxpic-index" v-else-if="name=='broadCast'" :style="`top:${item.icon.top};right:${item.icon.right};`">
-					<view class="tab-hot-boxpic-box live-border" @click="onClickLive(item.list)">
+					<view class="tab-hot-boxpic-box live-border">
 						<view v-if="item.list.state == 2 || item.list.state == 1" class="live-ing"></view>
 						<muqian-lazyLoad :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%"/>
 					</view>
 				</view>
 				<view class="tab-hot-boxpic-index" v-else :style="`width:${item.icon.width};height:${item.icon.height};top:${item.icon.top};right:${item.icon.right};`"
 				>
-					<u-transition class="trans-box" v-for="(item,index) in newGoodsPic" :key="index" :show="item.show" :duration="500" mode="fade-zoom">
+					<u-transition class="trans-box" v-for="(item,index) in freshPic" :key="index" :show="item.show" :duration="500" mode="fade-zoom">
 						<image class="new-pic" :src="item.src"></image>
 					</u-transition>
 					<view class="shadow-bg"></view>
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue } from "vue-property-decorator";
+	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
 	import { getBroadCastStr } from "@/tools/switchUtil";
@@ -34,35 +34,45 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		hotList:any;
+		@Prop({default:[]})
+		freshGoodCovers:any;
 
 		getBroadCastStr = getBroadCastStr;
-		newGoodsPic = [
-			{show:true,src:'../../static/index/v3/index_icon_t.png'},
-			{show:false,src:'../../static/index/v3/index_icon_f.png'},
-			{show:false,src:'../../static/index/v3/icon3.png'},
-		]
+		freshPic:any = [];
+		freshInterval:any;
 		transIndex = 0;
+		@Watch('freshGoodCovers')
+		onDataChanged(val: any, oldVal: any) {
+			if(val){
+				this.freshPic = val;
+				this.freshInterFnc()
+			}
+		}
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
 			// this.getWidth()
-			setInterval(()=>{
-				if(this.transIndex<this.newGoodsPic.length-1){
+			
+		}
+		destroyed(){
+			clearInterval(this.freshInterval)
+		}
+		freshInterFnc(){
+			clearInterval(this.freshInterval)
+			this.freshInterval = setInterval(()=>{
+				if(this.transIndex<this.freshPic.length-1){
 					this.transIndex ++ ;
 				}else{
 					this.transIndex = 0;
 				}
-				this.newGoodsPic = this.newGoodsPic.map((x:any,index:number)=>{
+				this.freshPic = this.freshPic.map((x:any,index:number)=>{
 					if(index==this.transIndex){
-						setTimeout(()=>{this.newGoodsPic[index].show=true},400)
+						setTimeout(()=>{this.freshPic[index].show=true},400)
 					}
 					return {show:false,src:x.src}
 				})
 			},5000)
-		}
-		destroyed(){
-			
 		}
 		onClickLive(item:any){
 			if (item.third && item.third === 1001) {
@@ -79,21 +89,19 @@
 		}
 		onClickHotPic(item:any,name:string){
 			const canJumpName=['progress','hot','fresh']
-			if(!canJumpName.includes(name)) return;
-			
-			if(app.token.accessToken == ''){
-				uni.navigateTo({
-					url:'/pages/login/login'
-				})
+			if(!canJumpName.includes(name)) {
+				if(app.token.accessToken == ''){
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+					return;
+				}
+				this.onClickLive(item.list)
 				return;
-			}
-			// console.log(name);
+			};
 			uni.navigateTo({
 				url:item.url
 			});  
-			// uni.navigateTo({
-			// 	url: "/pages/mall/index"
-			// });  
 		}
 	}
 </script>

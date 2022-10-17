@@ -1,5 +1,5 @@
 <template>
-    <view class="content">
+    <view class="content" v-if="list!=''">
         <view class="seriesCardContainer" :class="{seriesCardContainer_noMore:isFetchEnd}">
             <scroll-view scroll-x="true" class="cardContainer" :class="{flex1:isFetchEnd}">
                 <view class="uni-flex">
@@ -63,6 +63,9 @@ export default class ClassName extends BaseComponent {
 </script>
 
 <style lang="scss">
+.content{
+    width: 100%;
+}
 .seriesCardContainer {
     width: 710rpx;
     height: 172rpx;

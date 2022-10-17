@@ -122,17 +122,18 @@
 						<view class="goods-seller-right"></view>
 					</view>
 				</view>
+				<seriesCard style="width:100%" :list="cardList" @goMore="onClickNiceTime"/>
 			</view>
 
 			<!-- 购买记录 -->
-			<view class="detail-bg">
+			<view class="detail-bg" v-if="buyRecordList!=''">
 				<view class="goods-desc" style="padding-bottom:8rpx">
 					<view class="goods-desc-title" style="margin-bottom:28rpx">
 						<view class="goods-desc-title-left">购买记录</view>
 					</view>
 					<view class="goods-desc-explain">
 						<view class='goods-desc-explain-text flex-between' style="margin-bottom:20rpx" v-for="(item,index) in buyRecordList" :key="index">
-							<image class="record-item-avatar" :src="decodeURIComponent(item.avatar)" />
+							<image class="record-item-avatar" :src="decodeURIComponent(item.avatar||defaultAvatar)" />
 							<view class="record-item-name u-line-1">{{item.userName}}</view>
 							<view class="record-item-title u-line-1">{{goodsData.title}}</view>
 							<view class="record-item-num u-line-1">x{{item.num}}</view>
@@ -310,6 +311,8 @@
 		cheduiDataAva:any = '';
 		showCheduiAva = false;
 		rankAvatarList=['','',''];
+		// 商家好卡
+		cardList = [];
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
@@ -336,6 +339,8 @@
 				}
 				setTimeout(()=>{
 					this.getRelative(goodCode,relativeParams)
+					// 商品精彩时刻
+					this.reqSeriesCards()
 				},500)
 
 				// 查询购买记录用户
@@ -443,6 +448,11 @@
 				this.goodsData.currentNum = res.data.currentNum;
 				this.goodsData.totalNum = res.data.totalNum;
 				this.goodsData.lockNum = res.data.lockNum;
+			})
+		}
+		reqSeriesCards() {
+			app.http.Get(`dataApi/cardCheck/good/rarityCard/list/${this.goodCode}`, {}, (res: any) => {
+				this.cardList = res.list || []
 			})
 		}
 		/**
@@ -574,6 +584,9 @@
 			const gooData = this.goodsData
 			let url = `/pages/goods/all_good_card?code=${gooData.goodCode}&type=${gooData.pintuan_type}`;
 			uni.navigateTo({ url: data ? `${url}&teamId=${data.id}` : url })
+		}
+		onClickNiceTime(){
+			uni.navigateTo({ url: `/pages/merchant/niceTime?alias=${this.goodsData.publisher.alias}` })
 		}
 		// 分享
 		onClickShare() {
@@ -1167,8 +1180,8 @@
 
 	.header-price {
 		font-size: 38rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 500;
+		font-family: Impact;
+		font-weight: 600;
 		color: #FFFFFF;
 		box-sizing: border-box;
 		padding-top: 10rpx;
@@ -1388,7 +1401,16 @@
 				text-align: right;
 				margin-bottom: 6rpx;
 			}
-
+			.header-top-plan-box{
+				display: inline-block;
+				height: 30rpx;
+				font-size: 23rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 600;
+				color: #959695;
+				line-height: 30rpx;
+				text-align: right;
+			}
 			.header-top-plan-numbottom {
 				height: 30rpx;
 				font-size: 23rpx;
