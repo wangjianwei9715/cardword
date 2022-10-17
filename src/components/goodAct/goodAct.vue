@@ -176,6 +176,7 @@
 		width: 710rpx;
 		border-radius: 3rpx;
 		background:#fff;
+		margin-bottom: 14rpx;
 	}
 	.detail-act-box{
 		width: 100%;
@@ -189,7 +190,7 @@
 				height:76rpx;
 				width:82rpx;
 				font-size: 25rpx;
-				font-family: PingFang SC;
+				font-family: PingFangSC-Semibold;
 				font-weight: 600;
 				color: #333333;
 				display: flex;

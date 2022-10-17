@@ -122,7 +122,7 @@
 						<view class="goods-seller-right"></view>
 					</view>
 				</view>
-				<seriesCard style="width:100%" :list="cardList" @goMore="onClickNiceTime"/>
+				<seriesCard style="width:100%" :list="cardList" @goMore="onClickNiceTime" :isFetchEnd="seriesCardEnd"/>
 			</view>
 
 			<!-- 购买记录 -->
@@ -313,6 +313,7 @@
 		rankAvatarList=['','',''];
 		// 商家好卡
 		cardList = [];
+		seriesCardEnd = true;
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
@@ -453,6 +454,7 @@
 		reqSeriesCards() {
 			app.http.Get(`dataApi/cardCheck/good/rarityCard/list/${this.goodCode}`, {}, (res: any) => {
 				this.cardList = res.list || []
+				this.seriesCardEnd = !( res.list && res.list.length>0)
 			})
 		}
 		/**
@@ -1319,7 +1321,7 @@
 		&-title {
 			width: 100%;
 			font-size: 31rpx;
-			font-family: PingFangSC-Regular;
+			font-family: PingFangSC-Semibold;
 			font-weight: 600;
 			color: #333333;
 			line-height: 48rpx;
@@ -1484,7 +1486,7 @@
 			&-name {
 				text-align: center;
 				font-size: 25rpx;
-				font-family: PingFangSC-Regular;
+				font-family: PingFangSC-Semibold;
 				font-weight: 600;
 				color: #333333;
 				margin-bottom: 5rpx;
@@ -1535,7 +1537,7 @@
 				&-name {
 					width: 100%;
 					font-size: 31rpx;
-					font-family: PingFangSC-Regular;
+					font-family: PingFangSC-Semibold;
 					font-weight: 600;
 					color: #333333;
 					overflow: hidden;
@@ -1597,7 +1599,7 @@
 
 			.goods-desc-title-left {
 				font-size: 31rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
+				font-family: PingFangSC-Semibold;
 				font-weight: 600;
 				color: #333333;
 			}
@@ -1715,7 +1717,7 @@
 			display: flex;
 			align-items: center;
 			font-size: 33rpx;
-			font-family: PingFang SC;
+			font-family: PingFangSC-Semibold;
 			font-weight: 600;
 			color: #333333;
 			justify-content: center;
@@ -1731,7 +1733,7 @@
 			width: 395rpx;
 			background: $btn-red;
 			text-align: center;
-			font-family: PingFangSC-Regular;
+			font-family: PingFangSC-Semibold;
 			color: #FFFFFF;
 			height: $btn-height;
 			line-height: $btn-height;

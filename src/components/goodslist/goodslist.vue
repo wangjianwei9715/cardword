@@ -186,9 +186,9 @@
 			height: 268rpx;
 		}
 		&-title {
-			height: 80rpx;
+			height: 75rpx;
 			font-size: 25rpx;
-			font-family: PingFangSC-Regular;
+			font-family: PingFangSC-Semibold;
 			font-weight: 600;
 			color: #333333;
 			margin-top: 19rpx;

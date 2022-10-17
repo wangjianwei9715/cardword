@@ -80,7 +80,7 @@ export default class ClassName extends BaseNode {
         this.refresh()
     }
     reqSeriesCards() {
-        app.http.Get(`dataApi/advertising/iconSeries/rarity/card/list/${this.seriesId}`, { fetchFrom: 1, fetchSize: 10 }, (res: any) => {
+        app.http.Get(`dataApi/advertising/iconSeries/rarity/card/list/${this.seriesId}/brief`, { fetchFrom: 1, fetchSize: 10 }, (res: any) => {
             this.cardList = res.list || []
             this.seriesCardEnd=res.isFetchEnd
         })

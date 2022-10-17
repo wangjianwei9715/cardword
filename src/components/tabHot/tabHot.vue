@@ -16,7 +16,7 @@
 				<view class="tab-hot-boxpic-index" v-else :style="`width:${item.icon.width};height:${item.icon.height};top:${item.icon.top};right:${item.icon.right};`"
 				>
 					<u-transition class="trans-box" v-for="(item,index) in freshPic" :key="index" :show="item.show" :duration="500" mode="fade-zoom">
-						<image class="new-pic" :src="item.src"></image>
+						<image class="new-pic" :src="item.src" mode="aspectFill"></image>
 					</u-transition>
 					<view class="shadow-bg"></view>
 				</view>
@@ -59,6 +59,7 @@
 			clearInterval(this.freshInterval)
 		}
 		freshInterFnc(){
+			this.transIndex = 0;
 			clearInterval(this.freshInterval)
 			this.freshInterval = setInterval(()=>{
 				if(this.transIndex<this.freshPic.length-1){
@@ -146,7 +147,7 @@
 	.tab-hot-boxtitle{
 		width: 100%;
 		font-size: 25rpx;
-		font-family: PingFangSC-Medium;
+		font-family: PingFangSC-Semibold;
 		font-weight: bold;
 		color: #333333;
 		padding-top: 40rpx;
