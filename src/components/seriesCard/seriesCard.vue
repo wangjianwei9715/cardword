@@ -1,10 +1,10 @@
 <template>
     <view class="content">
-        <view class="seriesCardContainer">
-            <scroll-view scroll-x="true" class="cardContainer" :class="{flex1:list.length<=max}">
+        <view class="seriesCardContainer" :class="{seriesCardContainer_noMore:isFetchEnd}">
+            <scroll-view scroll-x="true" class="cardContainer" :class="{flex1:isFetchEnd}">
                 <view class="uni-flex">
-                    <view class="cardBlock" v-for="(item,index) in list.slice(0,max)" :key="index"
-                        :class="{hasLine:index!=list.slice(0,max).length-1}">
+                    <view class="cardBlock" v-for="(item,index) in list" :key="index"
+                        :class="{hasLine:index!=list.length-1}">
                         <muqian-lazyLoad class="cardImg" borderRadius="3rpx" :src="filterPics(item)"
                             @click="prviewImages(item)" />
                         <!-- 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.31/seller/info/1661914607170otf4sr6pif.jpg' -->
@@ -12,7 +12,7 @@
                     </view>
                 </view>
             </scroll-view>
-            <view class="seriesMore" v-if="list.length>max">
+            <view class="seriesMore" v-if="!isFetchEnd" @click="goMore">
                 <view>更</view>
                 <view>多</view>
                 <image class="seriesMore-dot" mode="aspectFill" src="../../static/goods/v2/series_icon_right.png" />
@@ -29,8 +29,10 @@ import { parsePic } from '@/tools/util'
 export default class ClassName extends BaseComponent {
     @Prop({ default: [] })
     list: any;
-    @Prop({ default: 7 })
-    max?: number
+    @Prop({
+        default:true
+    })
+    isFetchEnd?:boolean
     created() {//在实例创建完成后被立即调用
 
     }
@@ -39,6 +41,9 @@ export default class ClassName extends BaseComponent {
     }
     destroyed() {
 
+    }
+    goMore(){
+        this.$emit('goMore')
     }
     prviewImages(picString: string) {
         if (!picString) return
@@ -125,5 +130,8 @@ export default class ClassName extends BaseComponent {
     .flex1 {
         flex: 1;
     }
+}
+.seriesCardContainer_noMore{
+    padding: 29rpx 23rpx 28rpx 23rpx;
 }
 </style>

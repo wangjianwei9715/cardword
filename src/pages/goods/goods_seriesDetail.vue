@@ -12,7 +12,7 @@
                 {{seriesDetail.describe || ""}}
             </view>
         </view>
-        <seriesCard :list="cardList" />
+        <seriesCard :list="cardList" @goMore="goMore" :isFetchEnd="seriesCardEnd" v-if="cardList&&cardList.length"/>
         <scroll-view scroll-x="true" class="tagContainer">
             <view class="uni-flex" style="height:100%;align-items: center;">
                 <view class="tag" v-for="(item,index) in choices" :key="index"
@@ -33,13 +33,14 @@ import BaseNode from '../../base/BaseNode.vue';
 export default class ClassName extends BaseNode {
     seriesId: any = ''
     seriesDetail: any = {}
-    choices: any = ['全部', '6', '213', '123', '13123', '213123123', 'asdasdasd', '123123', '123123213']
+    choices: any = ['全部']
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 20,
         choice: "all"
     }
     isFetchEnd: boolean = true
+    seriesCardEnd:boolean=true
     cardList: any = []
     goodsList: any = []
     onLoad(query: any) {
@@ -65,6 +66,11 @@ export default class ClassName extends BaseNode {
         this.reqSeriesGoods()
 
     }
+    goMore(){
+        uni.navigateTo({
+            url:`/pages/goods/goods_seriesCardList?seriesId=${this.seriesId}`
+        })
+    }
     // 跳转商品详情
     onClickJumpDetails(goodCode: any) {
         app.navigateTo.goGoodsDetails(goodCode)
@@ -76,6 +82,7 @@ export default class ClassName extends BaseNode {
     reqSeriesCards() {
         app.http.Get(`dataApi/advertising/iconSeries/rarity/card/list/${this.seriesId}`, { fetchFrom: 1, fetchSize: 10 }, (res: any) => {
             this.cardList = res.list || []
+            this.seriesCardEnd=res.isFetchEnd
         })
     }
     reqSeriesGoods(cb?: any) {
