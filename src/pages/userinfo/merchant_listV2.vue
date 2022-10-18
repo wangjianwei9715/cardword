@@ -337,7 +337,7 @@ page {
             width: 207rpx;
             height: 163rpx;
             background: #FFFFFF;
-            border: 1px solid #E6E6E6;
+            border: 1rpx solid #E6E6E6;
             border-radius: 3rpx;
             margin-bottom: 12rpx;
         }
@@ -428,7 +428,7 @@ page {
 
     .rankItem {
         width: 40rpx;
-        height: 51rpx;
+        height: 43rpx;
         background-size: 100% 100%;
         position: absolute;
         top: 0;
@@ -502,7 +502,7 @@ page {
 .merchantLiveContainer {
     width: 750rpx;
     white-space: nowrap;
-    margin-top: 24rpx;
+    margin-top: 14rpx;
     margin-bottom: 31rpx;
 }
 
