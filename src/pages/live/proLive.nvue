@@ -31,7 +31,7 @@
       :style="{height:(hasNotchInScreen&&deviceInfo.platform=='ios')?iosHeight:deviceInfo.screenHeight}"
       :src="webViewUrl" />
     <view class="maskTips" :class="{none:!showMask}" @click='informH5Action("closeAllPop")'>
-      <text class="liveTitle">{{liveData.title}}</text>
+      <text class="liveTitle">{{liveData.title || '获取直播标题中'}}</text>
       <text class="liveTips">{{maskCountDownTips!=''?"拆卡倒计时":textTipsMap[String(liveData.state)]}}</text>
       <text class="liveCountDown"
         v-if="maskCountDownTips!=''&&(typeof liveData.state!='undefined')">{{maskCountDownTips}}</text>
@@ -288,7 +288,7 @@ color: #E6A44F;">下次加油！</text>
       <view class="merchant">
         <image class="merchant-img" :src="parsePic(liveData.merchantLogo)" mode="scaleToFill" @click='toMerchant' />
         <view class="merchantMsg" @click='toMerchant'>
-          <text class="merchantName">{{liveData.mechantName}}</text>
+          <text class="merchantName">{{liveData.mechantName || '获取昵称中'}}</text>
           <text class="merchantLike">{{liveData.likeNum}}本场点赞</text>
         </view>
         <text class="liekImg" v-if="!merchantMessage.followed" @click.stop="followed">关注</text>
@@ -388,7 +388,8 @@ color: #E6A44F;">下次加油！</text>
     "KickOut",
     "SendGiftUpdated",
     "SendRoomData",
-    "BackHeartBeat"
+    "BackHeartBeat",
+    
   ]);
   const shareData = Object.freeze({
     shareUrl: "",
@@ -401,6 +402,7 @@ color: #E6A44F;">下次加油！</text>
     { name: "apiCalledResult", cnName: "接口回调" },
     { name: "roomStreamExtraInfoUpdate", cnName: "房间内流附加信息" },
     { name: "publisherQualityUpdate", cnName: "推流质量回调" },
+    {name:"roomStateUpdate",cnName:'房间状态变化通知'}
     // {name:"playerQualityUpdate",cnName:'拉流质量'}
   ];
   export default {
@@ -519,6 +521,9 @@ color: #E6A44F;">下次加油！</text>
         mixerTask: undefined, //混流任务
         mixerStreamID: "0", //混流id
         subscribed: false,//是否开启了开播提醒
+        alreadyOnceSocket:false,//是否已经进行过一次socket连接(无论失败与否)
+        pushFlowStamp:null,
+        isOtherReplaceUser:false
       };
     },
     beforeCreate() {
@@ -673,6 +678,8 @@ color: #E6A44F;">下次加油！</text>
         }
       },
       nowTimeStamp: function (val) {
+        if(!this.alreadyOnceSocket) return
+        if(this.onLive&&this.pushFlowStamp&&!this.isOtherReplaceUser) this.checkPushFlowIsNormal(val)
         if (this.heartBeatStamp == 0 && val - this.inLiveRoomStamp > 15) {
           console.log('进入直播间时长大于15s并且未收到心跳的情况');
           //进入直播间时长大于10s并且未收到心跳的情况
@@ -682,6 +689,7 @@ color: #E6A44F;">下次加油！</text>
         const difference = val - this.heartBeatStamp
         if (difference >= 15) {
           console.log(difference);
+          console.log('是否已经连接过一次了',this.alreadyOnceSocket);
           console.log('超过大于10s为接收到心跳包,等于距离上次接收到心跳过去了10秒钟');
           //超过大于10s为接收到心跳包,等于距离上次接收到心跳过去了10秒钟
           this.reconnectionSocket()
@@ -711,6 +719,23 @@ color: #E6A44F;">下次加油！</text>
         this.stampTimer && clearInterval(this.stampTimer);
         this.heartBeatTimer && clearInterval(this.heartBeatTimer);
         this.reconnectionTimer && clearInterval(this.reconnectionTimer);
+      },
+      //判断推流是否正常
+      checkPushFlowIsNormal(val){
+        console.log('正在直播中，距离上次推流质量回调获取时间',val-this.pushFlowStamp,);
+          if(val-this.pushFlowStamp>=15){
+            this.onLive=false
+            uni.showModal({
+              title:'直播间提示',
+              content:'检测到当前直播间推流异常,请确认网络环境以及账号是否在其他设备登录后重试',
+              showCancel:false,
+              success:({confirm})=>{
+                if(confirm){
+                  app.platform.pageBack()
+                }
+              }
+            })
+          }
       },
       onClickSubscribed(){
         this.UIClickFeedBack()
@@ -925,6 +950,27 @@ color: #E6A44F;">下次加油！</text>
         if (isPack) return time;
         return this.getCountDownTime(time);
       },
+      feedback() {
+      uni.showModal({
+        title: '直播间提示',
+        content: `是否上传本地日志用于排查问题?`,
+        success: ({ confirm }) => {
+          if (confirm) {
+            this.engine.uploadLog().then(res => {
+              app.http.Post('funcApi/brodcast/third/1001/log', {
+                roomID: +this.roomID,
+                zgUid: this.userData.zgUid,
+                userName: this.userData.uname
+              }, (data) => {
+                uni.showToast({
+                  title: '上传成功'
+                })
+              })
+            })
+          }
+        }
+      })
+    },
       toMerchant() {
         app.platform.goMerchantPage(this.liveData.merchantAlias, this.isAnchor)
         // uni.navigateTo({
@@ -1070,6 +1116,7 @@ color: #E6A44F;">下次加油！</text>
             console.log('连接成功！！！！！');
             this.sendWebsocketLogin();
             this.inReconnection = false
+            this.alreadyOnceSocket=true
             uni.hideLoading()
           },
           () => {
@@ -1077,6 +1124,7 @@ color: #E6A44F;">下次加油！</text>
               title: "连接失败",
               icon: "none"
             });
+            this.alreadyOnceSocket=true
             this.isConnectSocket = false;
           }
         );
@@ -1693,18 +1741,6 @@ color: #E6A44F;">下次加油！</text>
         this.informH5Action("BroadCastBilibili_Send", res, false);
       },
       //------------http接口能力----------
-      //开始直播
-      startLive() {
-        // //首次推流获取streamID,改变直播状态
-        // if (this.liveData && this.liveData.state <= 1) {
-        //   request(
-        //     "funcApi/brodcast/third/1001/achor/push/" + this.roomID,
-        //     {},
-        //     "post"
-        //   );
-        //   console.log("主播请求了开始直播的api");
-        // }
-      },
       stopLive() {
         const stopSign = Md5.hashStr(
           "stopPushStream" + `_${this.roomID}_${this.streamID}`
@@ -1717,6 +1753,7 @@ color: #E6A44F;">下次加油！</text>
           "post"
         )
           .then(res => {
+            this.liveData.state = 3
             console.log("结束直播");
           })
           .catch(err => {
@@ -1858,14 +1895,48 @@ color: #E6A44F;">下次加油！</text>
         if (errorCode == 0) {
           console.log(`success:${funcName}:${info}`);
         } else {
-          console.log(`error:${errorCode},${funcName}:${info}`);
+          console.log(typeof errorCode);
+          console.error(`error:${errorCode},${funcName}:${info}`);
+          if(errorCode!==1002050){
+            uni.showModal({
+              title:`错误提示:${errorCode}`,
+              content:info
+            })
+          }
         }
       },
       roomStreamExtraInfoUpdate(roomID, streamList) {
         console.log("房价附加流变化");
       },
+      roomStateUpdate(roomID, state, errorCode, extendedData){
+        console.log('房间状态变化',roomID,state,errorCode,extendedData);
+        if(state==0&&errorCode){
+          //断开与房间之间的连接
+          if(errorCode===1002050){
+            this.isOtherReplaceUser=true
+            uni.showModal({
+              title:'错误提示',
+              content:`已断开与直播间的连接,可能原因：可能是相同用户 ID 在其他设备登录。`,
+              showCancel:false,
+              success:({confirm})=>{
+                if(confirm) app.platform.pageBack()
+              }
+            })
+          }else{
+            uni.showModal({
+              title:`错误提示${errorCode}`,
+              content:`已断开与直播间的连接`,
+              showCancel:false,
+              success:({confirm})=>{
+                if(confirm) app.platform.pageBack()
+              }
+            })
+          }
+        }
+      },
       publisherQualityUpdate(streamID, quality) {
         console.log(quality);
+        this.pushFlowStamp=Math.round(+new Date()/1000)
         if (quality.level == 3) {
           uni.showToast({
             title: "推流质量较差,请检查网络环境",
@@ -1927,9 +1998,6 @@ color: #E6A44F;">下次加油！</text>
               "成功登录即构的直播房间,当前直播状态",
               this.liveData.state
             );
-            // if (this.liveData.state == 2 && !this.isAnchor) {
-            //   this.startPlayingStream(this.streamID);
-            // }
             this.initSocket();
           });
       },
@@ -1987,7 +2055,7 @@ color: #E6A44F;">下次加油！</text>
             this.onLive = true;
             this.liveConfigToolShow = false;
             this.liveConfigToolShow = false;
-            // this.startLive();
+            this.pushFlowStamp=Math.round(+new Date()/1000)
           }
         } catch (err) {
           uni.showToast({
