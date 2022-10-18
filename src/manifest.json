@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.4.18",
+    "versionName" : "3.5.01",
     "versionCode" : 201,
     "transformPx" : false,
     "networkTimeout" : {
@@ -190,8 +190,16 @@
             },
             "splashscreen" : {
                 "useOriginalMsgbox" : true,
-                "iosStyle" : "common",
-                "androidStyle" : "common"
+                "iosStyle" : "storyboard",
+                "androidStyle" : "default",
+                "ios" : {
+                    "storyboard" : "unpackage/res/CustomStoryboard.zip"
+                },
+                "android" : {
+                    "hdpi" : "unpackage/res/andrio/480x762.png",
+                    "xhdpi" : "unpackage/res/andrio/720x1242.png",
+                    "xxhdpi" : "unpackage/res/andrio/1080x1882.png"
+                }
             }
         },
         /* SDK配置 */
