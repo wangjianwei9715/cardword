@@ -7,7 +7,7 @@
                     <view class="goodsName">{{item.title}}</view>
                     <view class="goodsProgress uni-flex">
                         <view class="progressContainer">
-                            <view class="progress" :style="{width:(100-getPlan(item,'num'))+'%'}"></view>
+                            <view class="progress" :style="{width:(getPlan(item,'num'))+'%'}"></view>
                         </view>
                         <view class="progressPercnet">{{getPlan(item,'str')}}</view>
                     </view>
@@ -83,7 +83,7 @@ export default class ClassName extends BaseComponent {
         const saleRatio = item.saleRatio > 0 && item.saleRatio < 1 ? Math.round((item.saleRatio) * 10000) / 100 : 0;
         const str = saleRatio > width ?
             `${saleRatio}%` :
-            `${item.totalNum - (item.currentNum + item.lockNum)}/${item.totalNum}`
+            `余${item.totalNum - (item.currentNum + item.lockNum)}/${item.totalNum}`
         return type == 'str' ? str : Math.max(width, saleRatio)
     }
     getPriceStart(item: any) {

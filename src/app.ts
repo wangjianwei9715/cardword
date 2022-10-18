@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-10-17 11:30:22
+ * @LastEditTime: 2022-10-17 16:44:00
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -22,15 +22,15 @@ export module app{
 
     // 发布环境
     export let localTest=false;
-    export let bussinessApiDomain='https://server.ssltest.ka-world.com/api/v2/';
+    export let bussinessApiDomain='https://server.ssltest.ka-world.com/api/v2.1/';
     // 热更新地址
     export let update_url='http://service.s1.ka-world.com/';
     // 请求的service地址
     export let service_url='';
     export let dataApiDomain='';
 	export let funcApiDomain='';
-    export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
-    // export let launch_url = ['https://service.s777.ka-world.com']
+    // export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
+    export let launch_url = ['https://service.s777.ka-world.com']
     export let H5Url='http://share01.ka-world.com'
     // export let goodShareOrigin=""
     // export let activityShareOrigin=""

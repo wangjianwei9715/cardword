@@ -603,7 +603,7 @@ page {
         line-height: 88rpx;
         font-size: 34rpx;
         font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 400;
+        font-weight: 600;
         color: #000000;
     }
 
