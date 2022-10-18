@@ -66,7 +66,7 @@
           <view class="info-left" style="width:200rpx">货源渠道说明</view>
           <picker :range="cargo_sourceRange" class="flex1" style="width: 100%;" @change="cargoChange($event)">
             <view class="uni-flex alc flex1">
-              <input class="info-input flex1" v-model="merchant.cargo_source" placeholder="请输入" />
+              <input class="info-input flex1" disabled v-model="merchant.cargo_source" placeholder="请输入" />
               <u-icon name='arrow-right' size='11' color='#555674'></u-icon>
             </view>
           </picker>
