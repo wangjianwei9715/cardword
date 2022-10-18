@@ -35,7 +35,7 @@
                 </scroll-view>
             </template>
             <view class="merchant_title">
-                <view style="font-size: 31rpx;">本周热门</view>
+                <view style="font-size: 31rpx;font-weight: bold;">本周热门</view>
                 <view class="followAllButton flexCenter" v-if="!isAllAttention" @click="onClickAllAttention">一键关注</view>
             </view>
             <view class="hotContainer">
@@ -483,7 +483,7 @@ page {
     view {
         // font-size: inherit;
         font-family: inherit;
-        font-weight: inherit;
+        // font-weight: inherit;
         color: inherit;
     }
 }
