@@ -120,6 +120,7 @@ export default class ClassName extends BaseComponent {
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
+        margin-top: 4rpx;
     }
 
     .rankNum {
@@ -127,6 +128,8 @@ export default class ClassName extends BaseComponent {
         font-family: PingFang SC;
         font-weight: bold;
         color: #333333;
+        position: relative;
+        bottom: 12rpx;
     }
 }
 
