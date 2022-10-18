@@ -31,17 +31,15 @@
       :style="{height:(hasNotchInScreen&&deviceInfo.platform=='ios')?iosHeight:deviceInfo.screenHeight}"
       :src="webViewUrl" />
     <view class="maskTips" :class="{none:!showMask}" @click='informH5Action("closeAllPop")'>
-      <text class="liveTitle">{{liveData.title}}</text>
+      <text class="liveTitle">{{liveData.title || '获取直播标题中'}}</text>
       <text class="liveTips">{{maskCountDownTips!=''?"拆卡倒计时":textTipsMap[String(liveData.state)]}}</text>
       <text class="liveCountDown"
         v-if="maskCountDownTips!=''&&(typeof liveData.state!='undefined')">{{maskCountDownTips}}</text>
       <text class="playStart" v-if="isAnchor&&!finishLive" @click="startPreview">开始直播</text>
       <!-- -->
       <template v-if="!isAnchor&&([0,1].includes(liveData.state))">
-        <image v-if="!subscribed" src="../../static/live/playTips.png" class="subscribedTips" mode="scaleToFill"
-          @click="onClickSubscribed" />
-        <image v-else src="../../static/live/noneTips.png" class="subscribedTips" mode="scaleToFill"
-          @click="onClickSubscribed" />
+        <image v-if="!subscribed" src="../../static/live/playTips.png" class="subscribedTips" mode="scaleToFill" @click="onClickSubscribed"/>
+        <image v-else src="../../static/live/noneTips.png" class="subscribedTips" mode="scaleToFill" @click="onClickSubscribed"/>
       </template>
     </view>
 
@@ -290,7 +288,7 @@ color: #E6A44F;">下次加油！</text>
       <view class="merchant">
         <image class="merchant-img" :src="parsePic(liveData.merchantLogo)" mode="scaleToFill" @click='toMerchant' />
         <view class="merchantMsg" @click='toMerchant'>
-          <text class="merchantName">{{liveData.mechantName}}</text>
+          <text class="merchantName">{{liveData.mechantName || '获取昵称中'}}</text>
           <text class="merchantLike">{{liveData.likeNum}}本场点赞</text>
         </view>
         <text class="liekImg" v-if="!merchantMessage.followed" @click.stop="followed">关注</text>
@@ -336,1457 +334,623 @@ color: #E6A44F;">下次加油！</text>
 </template>
 
 <script>
-import ZegoLocalView from "@/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoLocalView";
-import { ZegoScenario } from "@/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressDefines";
-import ZegoRemoteView from "@/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoRemoteView";
-import popup from "./components/popup.nvue";
-import sendCoupon from "./components/sendCoupon.nvue";
-import coupon from "./components/coupon.nvue";
-import fixdInput from "./components/fixdInput.nvue";
-import nvueShare from "./components/nvueShare.nvue";
-import request from "@/net/nuveRequest";
-import permision from "@/js_sdk/wa-permission/permission";
-import { Md5 } from "ts-md5";
-import { PackageBase } from "@/net/PackageBase";
-import { Message } from "@/net/NetDefine";
-import * as proto from "../../net/proto";
-let UIImpactFeedbackGenerator = null;
-let impact = null;
-const app = getApp().globalData.app;
-const textTipsMap = {
-  "0": "拆卡倒计时",
-  "1": "等待主播开播",
-  "2": "主播暂时离开",
-  "3": "直播结束,回放生成中",
-  "-1": "直播过期",
-  "-2": "直播已取消"
-};
-const registerList = Object.freeze([
-  "BackLoginBroadCastRoom1001",
-  // 'BackLike',
-  "BroadCastLike",
-  "BroadCastBilibili_Send",
-  "BackSendChatMessage",
-  "BroadCastChatMessage",
-  "BackSendHongbao",
-  "BroadCastHongbao",
-  "BroadCastHongbaoUpdated",
-  "BackGrabHongbao",
-  "BackSendGift",
-  "BackSendMerchantCoupon",
-  "BroadCastMerchantCoupon",
-  "SendMyPoint",
-  "BackGetMerchantCoupon",
-  "BroadCastLianmaiAllowed",
-  "SendLianmaiApply",
-  "BackApplyLianmai",
-  "BroadCastLianmaiOn",
-  "BroadCastLianmaiOff",
-  "BackActorLianmaiData",
-  "BackActorAgreeLianmaiApply",
-  "BackTerminateLianmai",
-  "BackGmChatBid",
-  "BackGmKickOutRoom",
-  "KickOut",
-  "SendGiftUpdated",
-  "SendRoomData",
-  "BackHeartBeat"
-]);
-const shareData = Object.freeze({
-  shareUrl: "",
-  title: "",
-  summary: "",
-  thumb: ""
-});
-const engineListen = [
-  { name: "roomStreamUpdate", cnName: "房间内流变化" },
-  { name: "apiCalledResult", cnName: "接口回调" },
-  { name: "roomStreamExtraInfoUpdate", cnName: "房间内流附加信息" },
-  { name: "publisherQualityUpdate", cnName: "推流质量回调" },
-  // {name:"playerQualityUpdate",cnName:'拉流质量'}
-];
-export default {
-  components: {
-    ZegoLocalView: ZegoLocalView,
-    ZegoRemoteView: ZegoRemoteView,
-    popup,
-    sendCoupon,
-    coupon,
-    fixdInput,
-    nvueShare
-  },
-  data() {
-    return {
-      webViewUrl: app.liveWebView,
-      shareData: Object.assign({}, shareData),
-      webView: null,
-      canEval: false,
-      webviewStyles: {
-        progress: false
-      },
-      inputText: "",
-      showInput: false,
-      textTipsMap,
-      websocket: "",
-      heartBeatTimer: null,
-      heartBeatStamp: 0,//心跳包接收的时间
-      inLiveRoomStamp: 0,//进入直播间时间
-      socketRoomLoginTimer: null,
-      inReconnection: false,//是否在重连状态
-      isConnectSocket: false,
-      reconnectionTimer: null,
-      isAnchor: false, //是否为主播
-      finishLive: false,
-      onlineNum: 0,
-      nowTimeStamp: Math.round(+new Date() / 1000),
-      stampTimer: null,
-      defaultAvatar: app.defaultAvatar,
-      uniSelect: uni.createSelectorQuery(),
-      deviceInfo: getApp().globalData.app.platform.systemInfo, //设备信息
-      parsePic: getApp().globalData.parsePic,
-      liveCountDown: getApp().globalData.liveCountDown,
-      liveCountDownV2: getApp().globalData.liveCountDownV2,
-      getCountDownTime: getApp().globalData.getCountDownTime,
-      hasNotchInScreen: plus.navigator.hasNotchInScreen(),
-      engine: null, //实例
-      engineListen, //直播监听array
-      roomID: null, //房间id
-      streamID: null, //主播流id
-      lmStreanID: "0", //连麦流id，不能设置未null,undefined，ios会出现闪退
-      lmUser: {},
-      hbShow: false, //红包展示
-      hbPackShow: false,
-      hbTimeDelay: true, //红包延迟
-      showHbList: [],
-      clickPack: null, //展示的红包
-      grablist: [], //手气列表
-      sendCouponShow: false,
-      showCouponList: [],
-      showCoupon: false,
-      shareShow: false,
-      clickCoupon: {},
-      liveType: 0, //0商品直播,1其他直播
-      chartList: [{ height: 0 }, { height: 0 }, { height: 0 }],
-      honbao: {
-        index: -1,
-        list: []
-      },
-      front: false, //摄像头朝向 false后置 true前置
-      mirrorMode: false, //是否开启镜像
-      muted: false, //推流是否静音
-      onPreview: false, //是否在预览状态
-      onLive: false, //是否在直播状态
-      liveConfigToolShow: false, //直播设置show
-      videoConfig: {
-        index: 0,
-        config: [
-          {
-            bitrate: 3000,
-            captureWidth: 720,
-            captureHeight: 1280,
-            encodeWidth: 720,
-            codecID: 1,
-            encodeHeight: 1280,
-            fps: 30
-          },
-          {
-            bitrate: 1000,
-            captureWidth: 480,
-            captureHeight: 640,
-            encodeWidth: 480,
-            encodeHeight: 640,
-            codecID: 1,
-            fps: 20
-          },
-          {
-            bitrate: 600,
-            captureWidth: 240,
-            captureHeight: 320,
-            encodeWidth: 240,
-            encodeHeight: 320,
-            codecID: 1,
-            fps: 15
-          }
-        ]
-      },
-      giftShow: false,
+  import ZegoLocalView from "@/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoLocalView";
+  import { ZegoScenario } from "@/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressDefines";
+  import ZegoRemoteView from "@/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoRemoteView";
+  import popup from "./components/popup.nvue";
+  import sendCoupon from "./components/sendCoupon.nvue";
+  import coupon from "./components/coupon.nvue";
+  import fixdInput from "./components/fixdInput.nvue";
+  import nvueShare from "./components/nvueShare.nvue";
+  import request from "@/net/nuveRequest";
+  import permision from "@/js_sdk/wa-permission/permission";
+  import { Md5 } from "ts-md5";
+  import { PackageBase } from "@/net/PackageBase";
+  import { Message } from "@/net/NetDefine";
+  import * as proto from "../../net/proto";
+  let UIImpactFeedbackGenerator = null;
+  let impact = null;
+  const app = getApp().globalData.app;
+  const textTipsMap = {
+    "0": "拆卡倒计时",
+    "1": "等待主播开播",
+    "2": "主播暂时离开",
+    "3": "直播结束,回放生成中",
+    "-1": "直播过期",
+    "-2": "直播已取消"
+  };
+  const registerList = Object.freeze([
+    "BackLoginBroadCastRoom1001",
+    // 'BackLike',
+    "BroadCastLike",
+    "BroadCastBilibili_Send",
+    "BackSendChatMessage",
+    "BroadCastChatMessage",
+    "BackSendHongbao",
+    "BroadCastHongbao",
+    "BroadCastHongbaoUpdated",
+    "BackGrabHongbao",
+    "BackSendGift",
+    "BackSendMerchantCoupon",
+    "BroadCastMerchantCoupon",
+    "SendMyPoint",
+    "BackGetMerchantCoupon",
+    "BroadCastLianmaiAllowed",
+    "SendLianmaiApply",
+    "BackApplyLianmai",
+    "BroadCastLianmaiOn",
+    "BroadCastLianmaiOff",
+    "BackActorLianmaiData",
+    "BackActorAgreeLianmaiApply",
+    "BackTerminateLianmai",
+    "BackGmChatBid",
+    "BackGmKickOutRoom",
+    "KickOut",
+    "SendGiftUpdated",
+    "SendRoomData",
+    "BackHeartBeat",
+    
+  ]);
+  const shareData = Object.freeze({
+    shareUrl: "",
+    title: "",
+    summary: "",
+    thumb: ""
+  });
+  const engineListen = [
+    { name: "roomStreamUpdate", cnName: "房间内流变化" },
+    { name: "apiCalledResult", cnName: "接口回调" },
+    { name: "roomStreamExtraInfoUpdate", cnName: "房间内流附加信息" },
+    { name: "publisherQualityUpdate", cnName: "推流质量回调" },
+    {name:"roomStateUpdate",cnName:'房间状态变化通知'}
+    // {name:"playerQualityUpdate",cnName:'拉流质量'}
+  ];
+  export default {
+    components: {
+      ZegoLocalView: ZegoLocalView,
+      ZegoRemoteView: ZegoRemoteView,
+      popup,
+      sendCoupon,
+      coupon,
+      fixdInput,
+      nvueShare
+    },
+    data() {
+      return {
+        webViewUrl: app.liveWebView,
+        shareData: Object.assign({}, shareData),
+        webView: null,
+        canEval: false,
+        webviewStyles: {
+          progress: false
+        },
+        inputText: "",
+        showInput: false,
+        textTipsMap,
+        websocket: "",
+        heartBeatTimer: null,
+        heartBeatStamp: 0,//心跳包接收的时间
+        inLiveRoomStamp: 0,//进入直播间时间
+        socketRoomLoginTimer: null,
+        inReconnection: false,//是否在重连状态
+        isConnectSocket: false,
+        reconnectionTimer: null,
+        isAnchor: false, //是否为主播
+        finishLive: false,
+        onlineNum: 0,
+        nowTimeStamp: Math.round(+new Date() / 1000),
+        stampTimer: null,
+        defaultAvatar: app.defaultAvatar,
+        uniSelect: uni.createSelectorQuery(),
+        deviceInfo: getApp().globalData.app.platform.systemInfo, //设备信息
+        parsePic: getApp().globalData.parsePic,
+        liveCountDown: getApp().globalData.liveCountDown,
+        liveCountDownV2: getApp().globalData.liveCountDownV2,
+        getCountDownTime: getApp().globalData.getCountDownTime,
+        hasNotchInScreen: plus.navigator.hasNotchInScreen(),
+        engine: null, //实例
+        engineListen, //直播监听array
+        roomID: null, //房间id
+        streamID: null, //主播流id
+        lmStreanID: "0", //连麦流id，不能设置未null,undefined，ios会出现闪退
+        lmUser: {},
+        hbShow: false, //红包展示
+        hbPackShow: false,
+        hbTimeDelay: true, //红包延迟
+        showHbList: [],
+        clickPack: null, //展示的红包
+        grablist: [], //手气列表
+        sendCouponShow: false,
+        showCouponList: [],
+        showCoupon: false,
+        shareShow: false,
+        clickCoupon: {},
+        liveType: 0, //0商品直播,1其他直播
+        chartList: [{ height: 0 }, { height: 0 }, { height: 0 }],
+        honbao: {
+          index: -1,
+          list: []
+        },
+        front: false, //摄像头朝向 false后置 true前置
+        mirrorMode: false, //是否开启镜像
+        muted: false, //推流是否静音
+        onPreview: false, //是否在预览状态
+        onLive: false, //是否在直播状态
+        liveConfigToolShow: false, //直播设置show
+        videoConfig: {
+          index: 0,
+          config: [
+            {
+              bitrate: 3000,
+              captureWidth: 720,
+              captureHeight: 1280,
+              encodeWidth: 720,
+              codecID: 1,
+              encodeHeight: 1280,
+              fps: 30
+            },
+            {
+              bitrate: 1000,
+              captureWidth: 480,
+              captureHeight: 640,
+              encodeWidth: 480,
+              encodeHeight: 640,
+              codecID: 1,
+              fps: 20
+            },
+            {
+              bitrate: 600,
+              captureWidth: 240,
+              captureHeight: 320,
+              encodeWidth: 240,
+              encodeHeight: 320,
+              codecID: 1,
+              fps: 15
+            }
+          ]
+        },
+        giftShow: false,
 
-      liveData: {}, //直播间信息
-      merchantMessage: {}, //商家
-      websocket: "", //socket版本地址
-      userData: {},
-      systemKickOut: false, //是否为系统强制使用户退出房间
-      keyHeight: 0,
-      pullPattern: "normal", //拉流模式  normal正常模式,mixer混流模式
-      mixerTask: undefined, //混流任务
-      mixerStreamID: "0", //混流id
-      subscribed: false,//是否开启了开播提醒
-    };
-  },
-  beforeCreate() {
-    // #ifdef APP-NVUE
-    const domModule = uni.requireNativePlugin("dom");
-    domModule.addRule("fontFace", {
-      fontFamily: "PingFang SC",
-      src: "https://qnc.qjnice.com/1657095955528PF.ttf"
-    });
-    // #endif
-  },
-  onBackPress() {
-    // uni.hideLoading();
-    // if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0") {
-    //   this.SelfTerminateLianmai();
-    // }
-    // if (this.mixerTask) {
-    //   this.engine.stopMixerTask(this.mixerTask);
-    //   console.log('结束混流');
-    // }
-    // this.stopPreview();
-    // //关闭常亮
-    // uni.setKeepScreenOn({
-    //   keepScreenOn: false
-    // });
-    // this.stopPublishingStream(true);
-    // uni.$off("socketClose", this.socketClose);
-    // uni.offKeyboardHeightChange(this.keyBoardHeightChange);
-    // this.leaveRoom();
-
-    // this.stampTimer && clearInterval(this.stampTimer);
-    // console.log("退出房间");
-  },
-  beforeDestroy() {
-    uni.hideLoading();
-    this.clearAllInterval()
-    if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0") {
-      this.SelfTerminateLianmai();
-    }
-
-    if (this.mixerTask) {
-      this.engine.stopMixerTask(this.mixerTask);
-      console.log('结束混流');
-    }
-    this.stopPreview();
-    //关闭常亮
-    uni.setKeepScreenOn({
-      keepScreenOn: false
-    });
-    this.stopPublishingStream(true);
-    uni.$off("socketClose", this.socketClose);
-    uni.offKeyboardHeightChange(this.keyBoardHeightChange);
-    this.leaveRoom();
-    if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0")
-      this.SelfTerminateLianmai();
-
-    console.log("退出房间");
-  },
-  async onLoad(query) {
-    //进入直播间时间
-    this.inLiveRoomStamp = Math.round(new Date() / 1000)
-    this.$nextTick(() => {
-      this.webView = this.$refs.webView;
-    });
-    //保持常亮
-    uni.setKeepScreenOn({
-      keepScreenOn: true
-    });
-    uni.onKeyboardHeightChange(this.keyBoardHeightChange);
-    //是否为主播
-    if (query.isAnchor == "true") this.isAnchor = true;
-    this.liveType = query.type ? +query.type : 0;
-    //时实时间
-    this.stampTimer = setInterval(() => {
-      this.nowTimeStamp = Math.round(+new Date() / 1000);
-    }, 1000);
-    //监听socket状态
-    uni.$on("socketClose", this.socketClose);
-    this.roomID = query.roomID;
-    this.streamID = query.streamID;
-    //获取直播间数据
-    await this.getLiveData();
-    //获取用户个人信息数据
-    await this.getUserProfile();
-    //创建直播控件实例
-    await this.createEngine();
-    //获取房间内可领取或已领取红包或优惠券
-    this.getRoomRedPackList();
-    //导入ios UIImpactFeedbackGenerator类
-    if (this.deviceInfo.platform == "ios") {
-      UIImpactFeedbackGenerator = plus.ios.importClass(
-        "UIImpactFeedbackGenerator"
-      );
-      impact = new UIImpactFeedbackGenerator();
-      let cache1 = plus.ios.newObject('NSURLCache');
-      let cache = plus.ios.invoke(cache1, 'sharedURLCache');
-      plus.ios.invoke(cache, 'removeAllCachedResponses');
-      plus.ios.invoke(cache, 'setDiskCapacity:', 0);
-      plus.ios.invoke(cache, 'setMemoryCapacity:', 0);
-    }
-    //当前用户为安卓设备并且为主播的情况下获取相机及麦克风权限
-    if (this.deviceInfo.platform == "android" && query.isAnchor == "true") {
-      permision.requestAndroidPermission("android.permission.CAMERA");
-      permision.requestAndroidPermission("android.permission.RECORD_AUDIO");
-    }
-  },
-  watch: {
-    front: function (val) {
-      this.engine.useFrontCamera(val);
-    },
-    mirrorMode: function (val) {
-      if (!this.onLive && !this.onPreview) {
-        this.mirrorMode = !val;
-        uni.showToast({
-          title: "未开播或预览状态下无法更改镜像模式",
-          icon: "none"
-        });
-        return;
-      }
-      if (!val) {
-        //Enumeration members 1:本地和远端都镜像 2:都不镜像 3:仅本地镜像 4:仅远端镜像
-        this.engine.setVideoMirrorMode(2);
-      } else {
-        this.engine.setVideoMirrorMode(this.onLive ? 1 : 3);
-      }
-    },
-    muted: function (val) {
-      this.engine.muteMicrophone(val);
-    },
-    "videoConfig.index": function (val) {
-      if (this.onPreview || this.onLive) this.setVideoConfig();
-    },
-    onLive: function (val) {
-      // console.log(val);
-    },
-    hbPackShow: function (val) {
-      const { clickPack } = this;
-      if ((!val && clickPack.state == 2) || clickPack.state == 99) {
-        const spliceIndex = this.showHbList.findIndex(item => {
-          return item.id == clickPack.id;
-        });
-        if (spliceIndex >= 0) this.showHbList.splice(spliceIndex, 1);
-      }
-    },
-    showCoupon: function (val) {
-      const { clickCoupon } = this;
-      if (!val && clickCoupon.amount) {
-        const spliceIndex = this.showCouponList.findIndex(item => {
-          return +item.id == +clickCoupon.id;
-        });
-        if (spliceIndex >= 0) this.showCouponList.splice(spliceIndex, 1);
-      }
-    },
-    nowTimeStamp: function (val) {
-      if (this.heartBeatStamp == 0 && val - this.inLiveRoomStamp > 15) {
-        console.log('进入直播间时长大于15s并且未收到心跳的情况');
-        //进入直播间时长大于10s并且未收到心跳的情况
-        this.reconnectionSocket()
-        return
-      }
-      const difference = val - this.heartBeatStamp
-      // console.log(difference,val,this.heartBeatStamp);
-      if (difference >= 15) {
-        console.log(difference);
-        console.log('超过大于15s为接收到心跳包,等于距离上次接收到心跳过去了10秒钟');
-        //超过大于10s为接收到心跳包,等于距离上次接收到心跳过去了10秒钟
-        this.reconnectionSocket()
-      }
-    }
-  },
-  computed: {
-    showMask() {
-      return !this.onPreview && !this.onLive;
-    },
-    maskCountDownTips() {
-      const { startAt, state } = this.liveData;
-      if (this.nowTimeStamp > startAt) return ""
-      return this.liveCountDownV2(this.nowTimeStamp, startAt, false);
-    },
-    iosHeight() {
-      return (
-        this.deviceInfo.screenHeight +
-        this.deviceInfo.statusBarHeight +
-        this.deviceInfo.screenHeight -
-        this.deviceInfo.safeArea.bottom
-      );
-    }
-  },
-  methods: {
-    clearAllInterval() {
-      this.stampTimer && clearInterval(this.stampTimer);
-      this.heartBeatTimer && clearInterval(this.heartBeatTimer);
-      this.reconnectionTimer && clearInterval(this.reconnectionTimer);
-    },
-    onClickSubscribed() {
-      this.UIClickFeedBack()
-      if (this.subscribed) {
-        this.SubscribedAction()
-        return
-      }
-      const hasPower = app.platform.judgeIosPermissionPush()
-      this.SubscribedAction()
-    },
-    SubscribedAction() {
-      const url = this.subscribed ? `brodcast/third/1001/user/unsubscribe/` : `brodcast/third/1001/user/subscribe/`
-      app.http.Post('funcApi/' + url + this.roomID, {}, (res) => {
-        console.log(res);
-        this.subscribed = !this.subscribed
-      })
-    },
-    keyBoardHeightChange(obj) {
-      let _heightDiff =
-        this.deviceInfo.screenHeight - this.deviceInfo.windowHeight;
-      let _diff = obj.height - _heightDiff;
-      // 键盘高度
-      let height = (_diff > 0 ? _diff : 0) - 2;
-      this.keyHeight = height;
-      console.log(height, "高度变化", this.keyHeight);
-      // if (this.needSendH5Up) this.$emit("liftChat", height);
-    },
-    pageJump(url, type = "navigateTo") {
-      if (url.indexOf('/pages/goods/goods_details') != -1) {
-        app.navigateTo.goGoodsDetails(this.liveData.goodCode, '&source=livePage')
-        return
-      }
-      uni[type]({
-        url,
-        fail: err => {
-          console.log("跳转失败", err);
-        }
-      });
-    },
-    back() {
-      uni.navigateBack({ delta: 1 });
-    },
-    setShareData(data) {
-      this.shareData = {
-        title: `${data.title}的直播间`,
-        shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/live/liveShare?roomID=${this.roomID
-          }&funcApi=${encodeURIComponent(app.funcApiDomain)}`,
-        summary: `${data.title}的直播间`,
-        thumb: this.parsePic(decodeURIComponent(data.cover))
+        liveData: {}, //直播间信息
+        merchantMessage: {}, //商家
+        websocket: "", //socket版本地址
+        userData: {},
+        systemKickOut: false, //是否为系统强制使用户退出房间
+        keyHeight: 0,
+        pullPattern: "normal", //拉流模式  normal正常模式,mixer混流模式
+        mixerTask: undefined, //混流任务
+        mixerStreamID: "0", //混流id
+        subscribed: false,//是否开启了开播提醒
+        alreadyOnceSocket:false,//是否已经进行过一次socket连接(无论失败与否)
+        pushFlowStamp:null,
+        isOtherReplaceUser:false
       };
     },
-    leaveRoom() {
-      app.sever.isNetOK() && this.leaveOutRoomSocket();
-      console.log(this.userData.uid);
-      if (this.userData.uid && !this.systemKickOut && this.isLogin) {
-        request(
-          "funcApi/brodcast/third/1001/user/logout/" + this.roomID,
-          {
-            uid: this.userData.uid
-          },
-          "post"
-        );
-      }
+    beforeCreate() {
+      // #ifdef APP-NVUE
+      const domModule = uni.requireNativePlugin("dom");
+      domModule.addRule("fontFace", {
+        fontFamily: "PingFang SC",
+        src: "https://qnc.qjnice.com/1657095955528PF.ttf"
+      });
+      // #endif
     },
-    getChartHeight(id) {
+    onBackPress() {
+      // uni.hideLoading();
+      // if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0") {
+      //   this.SelfTerminateLianmai();
+      // }
+      // if (this.mixerTask) {
+      //   this.engine.stopMixerTask(this.mixerTask);
+      //   console.log('结束混流');
+      // }
+      // this.stopPreview();
+      // //关闭常亮
+      // uni.setKeepScreenOn({
+      //   keepScreenOn: false
+      // });
+      // this.stopPublishingStream(true);
+      // uni.$off("socketClose", this.socketClose);
+      // uni.offKeyboardHeightChange(this.keyBoardHeightChange);
+      // this.leaveRoom();
+
+      // this.stampTimer && clearInterval(this.stampTimer);
+      // console.log("退出房间");
+    },
+    beforeDestroy() {
+      uni.hideLoading();
+      this.clearAllInterval()
+      if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0") {
+        this.SelfTerminateLianmai();
+      }
+
+      if (this.mixerTask) {
+        this.engine.stopMixerTask(this.mixerTask);
+        console.log('结束混流');
+      }
+      this.stopPreview();
+      //关闭常亮
+      uni.setKeepScreenOn({
+        keepScreenOn: false
+      });
+      this.stopPublishingStream(true);
+      uni.$off("socketClose", this.socketClose);
+      uni.offKeyboardHeightChange(this.keyBoardHeightChange);
+      this.leaveRoom();
+      if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0")
+        this.SelfTerminateLianmai();
+
+      console.log("退出房间");
+    },
+    async onLoad(query) {
+      //进入直播间时间
+      this.inLiveRoomStamp = Math.round(new Date() / 1000)
       this.$nextTick(() => {
-        uni
-          .createSelectorQuery()
-          .select("#" + id)
-          .boundingClientRect(res => {
-            return res.height * 2 + "rpx";
-          })
-          .exec();
+        this.webView = this.$refs.webView;
       });
-    },
-    upKeyBord() {
-      this.showInput = true;
-    },
-    showConfig() {
-      if (!this.onPreview && !this.onLive) {
-        uni.showToast({
-          title: "请先开始直播或预览",
-          icon: "none"
-        });
-        return;
-      }
-      this.liveConfigToolShow = true;
-    },
-    getLiveData() {
-      return new Promise((resolve, reject) => {
-        const ts = Math.round(+new Date() / 1000);
-        const params = {
-          ts,
-          sign: Md5.hashStr(`1001room_${this.roomID}_${ts}`)
-        };
-        app.http.Get(
-          "funcApi/brodcast/third/1001/roomInfo/" + this.roomID,
-          params,
-          res => {
-            this.liveData = res.data;
-            if (this.liveData.type != 0) this.liveData.goodCode = "";
-            console.log("直播间信息", res.data);
-            const errorStateArr = [3, -1, -2]
-            if (errorStateArr.includes(res.data.state)) {
-              const tips = textTipsMap[String(res.data.state)]
-              uni.showModal({
-                title: '直播间提示',
-                content: tips,
-                showCancel: false,
-                success: ({ confirm }) => {
-                  if (confirm) {
-                    uni.switchTab({
-                      url: "/pages/index/index"
-                    });
-                  }
-                }
-              })
-              reject()
-            }
-            this.getMerchant();
-            this.setShareData(res.data);
-            resolve(res.data);
-          },
-          err => {
-            reject(err);
-          }
+      //保持常亮
+      uni.setKeepScreenOn({
+        keepScreenOn: true
+      });
+      uni.onKeyboardHeightChange(this.keyBoardHeightChange);
+      //是否为主播
+      if (query.isAnchor == "true") this.isAnchor = true;
+      this.liveType = query.type ? +query.type : 0;
+      //时实时间
+      this.stampTimer = setInterval(() => {
+        this.nowTimeStamp = Math.round(+new Date() / 1000);
+      }, 1000);
+      //监听socket状态
+      uni.$on("socketClose", this.socketClose);
+      this.roomID = query.roomID;
+      this.streamID = query.streamID;
+      //获取直播间数据
+      await this.getLiveData();
+      //获取用户个人信息数据
+      await this.getUserProfile();
+      //创建直播控件实例
+      await this.createEngine();
+      //获取房间内可领取或已领取红包或优惠券
+      this.getRoomRedPackList();
+      //导入ios UIImpactFeedbackGenerator类
+      if (this.deviceInfo.platform == "ios") {
+        UIImpactFeedbackGenerator = plus.ios.importClass(
+          "UIImpactFeedbackGenerator"
         );
-      });
+        impact = new UIImpactFeedbackGenerator();
+        let cache1 = plus.ios.newObject('NSURLCache');
+        let cache = plus.ios.invoke(cache1, 'sharedURLCache');
+        plus.ios.invoke(cache, 'removeAllCachedResponses');
+        plus.ios.invoke(cache, 'setDiskCapacity:', 0);
+        plus.ios.invoke(cache, 'setMemoryCapacity:', 0);
+      }
+      //当前用户为安卓设备并且为主播的情况下获取相机及麦克风权限
+      if (this.deviceInfo.platform == "android" && query.isAnchor == "true") {
+        permision.requestAndroidPermission("android.permission.CAMERA");
+        permision.requestAndroidPermission("android.permission.RECORD_AUDIO");
+      }
     },
-    getRedPackList(needRefresh = false) {
-      if (!this.honbao.list.length || needRefresh) {
+    watch: {
+      front: function (val) {
+        this.engine.useFrontCamera(val);
+      },
+      mirrorMode: function (val) {
+        if (!this.onLive && !this.onPreview) {
+          this.mirrorMode = !val;
+          uni.showToast({
+            title: "未开播或预览状态下无法更改镜像模式",
+            icon: "none"
+          });
+          return;
+        }
+        if (!val) {
+          //Enumeration members 1:本地和远端都镜像 2:都不镜像 3:仅本地镜像 4:仅远端镜像
+          this.engine.setVideoMirrorMode(2);
+        } else {
+          this.engine.setVideoMirrorMode(this.onLive ? 1 : 3);
+        }
+      },
+      muted: function (val) {
+        this.engine.muteMicrophone(val);
+      },
+      "videoConfig.index": function (val) {
+        if (this.onPreview || this.onLive) this.setVideoConfig();
+      },
+      onLive: function (val) {
+        // console.log(val);
+      },
+      hbPackShow: function (val) {
+        const { clickPack } = this;
+        if ((!val && clickPack.state == 2) || clickPack.state == 99) {
+          const spliceIndex = this.showHbList.findIndex(item => {
+            return item.id == clickPack.id;
+          });
+          if (spliceIndex >= 0) this.showHbList.splice(spliceIndex, 1);
+        }
+      },
+      showCoupon: function (val) {
+        const { clickCoupon } = this;
+        if (!val && clickCoupon.amount) {
+          const spliceIndex = this.showCouponList.findIndex(item => {
+            return +item.id == +clickCoupon.id;
+          });
+          if (spliceIndex >= 0) this.showCouponList.splice(spliceIndex, 1);
+        }
+      },
+      nowTimeStamp: function (val) {
+        if(!this.alreadyOnceSocket) return
+        if(this.onLive&&this.pushFlowStamp&&!this.isOtherReplaceUser) this.checkPushFlowIsNormal(val)
+        if (this.heartBeatStamp == 0 && val - this.inLiveRoomStamp > 15) {
+          console.log('进入直播间时长大于15s并且未收到心跳的情况');
+          //进入直播间时长大于10s并且未收到心跳的情况
+          this.reconnectionSocket()
+          return
+        }
+        const difference = val - this.heartBeatStamp
+        if (difference >= 15) {
+          console.log(difference);
+          console.log('是否已经连接过一次了',this.alreadyOnceSocket);
+          console.log('超过大于10s为接收到心跳包,等于距离上次接收到心跳过去了10秒钟');
+          //超过大于10s为接收到心跳包,等于距离上次接收到心跳过去了10秒钟
+          this.reconnectionSocket()
+        }
+      }
+    },
+    computed: {
+      showMask() {
+        return !this.onPreview && !this.onLive;
+      },
+      maskCountDownTips() {
+        const { startAt, state } = this.liveData;
+        if (this.nowTimeStamp > startAt) return ""
+        return this.liveCountDownV2(this.nowTimeStamp, startAt, false);
+      },
+      iosHeight() {
+        return (
+          this.deviceInfo.screenHeight +
+          this.deviceInfo.statusBarHeight +
+          this.deviceInfo.screenHeight -
+          this.deviceInfo.safeArea.bottom
+        );
+      }
+    },
+    methods: {
+      clearAllInterval() {
+        this.stampTimer && clearInterval(this.stampTimer);
+        this.heartBeatTimer && clearInterval(this.heartBeatTimer);
+        this.reconnectionTimer && clearInterval(this.reconnectionTimer);
+      },
+      //判断推流是否正常
+      checkPushFlowIsNormal(val){
+        console.log('正在直播中，距离上次推流质量回调获取时间',val-this.pushFlowStamp,);
+          if(val-this.pushFlowStamp>=15){
+            this.onLive=false
+            uni.showModal({
+              title:'直播间提示',
+              content:'检测到当前直播间推流异常,请确认网络环境以及账号是否在其他设备登录后重试',
+              showCancel:false,
+              success:({confirm})=>{
+                if(confirm){
+                  app.platform.pageBack()
+                }
+              }
+            })
+          }
+      },
+      onClickSubscribed(){
+        this.UIClickFeedBack()
+        if(this.subscribed){
+          this.SubscribedAction()
+          return
+        }
+        const hasPower=app.platform.judgeIosPermissionPush()
+        this.SubscribedAction()
+      },
+      SubscribedAction(){
+        const url=this.subscribed?`brodcast/third/1001/user/unsubscribe/`:`brodcast/third/1001/user/subscribe/`
+        app.http.Post('funcApi/'+url+this.roomID,{},(res)=>{
+          console.log(res);
+          this.subscribed=!this.subscribed
+        })
+      },
+      keyBoardHeightChange(obj) {
+        let _heightDiff =
+          this.deviceInfo.screenHeight - this.deviceInfo.windowHeight;
+        let _diff = obj.height - _heightDiff;
+        // 键盘高度
+        let height = (_diff > 0 ? _diff : 0) - 2;
+        this.keyHeight = height;
+        console.log(height, "高度变化", this.keyHeight);
+        // if (this.needSendH5Up) this.$emit("liftChat", height);
+      },
+      pageJump(url, type = "navigateTo") {
+        if(url.indexOf('/pages/goods/goods_details')!=-1){
+          app.navigateTo.goGoodsDetails(this.liveData.goodCode,'&source=livePage')
+          return
+        }
+        uni[type]({
+          url,
+          fail: err => {
+            console.log("跳转失败", err);
+          }
+        });
+      },
+      back() {
+        uni.navigateBack({ delta: 1 });
+      },
+      setShareData(data) {
+        this.shareData = {
+          title: `${data.title}的直播间`,
+          shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/live/liveShare?roomID=${this.roomID
+            }&funcApi=${encodeURIComponent(app.funcApiDomain)}`,
+          summary: `${data.title}的直播间`,
+          thumb: this.parsePic(decodeURIComponent(data.cover))
+        };
+      },
+      leaveRoom() {
+        app.sever.isNetOK() && this.leaveOutRoomSocket();
+        console.log(this.userData.uid);
+        if (this.userData.uid && !this.systemKickOut && this.isLogin) {
+          request(
+            "funcApi/brodcast/third/1001/user/logout/" + this.roomID,
+            {
+              uid: this.userData.uid
+            },
+            "post"
+          );
+        }
+      },
+      getChartHeight(id) {
+        this.$nextTick(() => {
+          uni
+            .createSelectorQuery()
+            .select("#" + id)
+            .boundingClientRect(res => {
+              return res.height * 2 + "rpx";
+            })
+            .exec();
+        });
+      },
+      upKeyBord() {
+        this.showInput = true;
+      },
+      showConfig() {
+        if (!this.onPreview && !this.onLive) {
+          uni.showToast({
+            title: "请先开始直播或预览",
+            icon: "none"
+          });
+          return;
+        }
+        this.liveConfigToolShow = true;
+      },
+      getLiveData() {
+        return new Promise((resolve, reject) => {
+          const ts = Math.round(+new Date() / 1000);
+          const params = {
+            ts,
+            sign: Md5.hashStr(`1001room_${this.roomID}_${ts}`)
+          };
+          app.http.Get(
+            "funcApi/brodcast/third/1001/roomInfo/" + this.roomID,
+            params,
+            res => {
+              this.liveData = res.data;
+              if (this.liveData.type != 0) this.liveData.goodCode = "";
+              console.log("直播间信息", res.data);
+              const errorStateArr = [3, -1, -2]
+              if (errorStateArr.includes(res.data.state)) {
+                const tips = textTipsMap[String(res.data.state)]
+                uni.showModal({
+                  title: '直播间提示',
+                  content: tips,
+                  showCancel: false,
+                  success: ({ confirm }) => {
+                    if (confirm) {
+                      uni.switchTab({
+                        url: "/pages/index/index"
+                      });
+                    }
+                  }
+                })
+                reject()
+              }
+              this.getMerchant();
+              this.setShareData(res.data);
+              resolve(res.data);
+            },
+            err => {
+              reject(err);
+            }
+          );
+        });
+      },
+      getRedPackList(needRefresh = false) {
+        if (!this.honbao.list.length || needRefresh) {
+          app.http.Get(
+            `funcApi/brodcast/third/common/room/menu/hongbaolist/${this.roomID}`,
+            { uid: this.userData.uid },
+            res => {
+              this.honbao.list = res.list || [];
+              this.honbao.index = -1;
+            }
+          );
+        }
+      },
+      //获取房间内可领取红包以及优惠券列表
+      getRoomRedPackList() {
+        if (!this.userData.uid) return;
         app.http.Get(
-          `funcApi/brodcast/third/common/room/menu/hongbaolist/${this.roomID}`,
+          `funcApi/brodcast/third/common/room/clicklist/${this.roomID}`,
           { uid: this.userData.uid },
           res => {
-            this.honbao.list = res.list || [];
-            this.honbao.index = -1;
+            console.log("房间内可领取的红包列表优惠券列表", res);
+            this.showHbList = (res.hongbao || []).filter(item => {
+              return !item.myGrabPoint
+            });
+            this.showCouponList = res.coupon || [];
+            // uni.$emit("listChange", this.hb.list, this.coupon.list);
           }
         );
-      }
-    },
-    //获取房间内可领取红包以及优惠券列表
-    getRoomRedPackList() {
-      if (!this.userData.uid) return;
-      app.http.Get(
-        `funcApi/brodcast/third/common/room/clicklist/${this.roomID}`,
-        { uid: this.userData.uid },
-        res => {
-          console.log("房间内可领取的红包列表优惠券列表", res);
-          this.showHbList = (res.hongbao || []).filter(item => {
-            return !item.myGrabPoint
-          });
-          this.showCouponList = res.coupon || [];
-          // uni.$emit("listChange", this.hb.list, this.coupon.list);
-        }
-      );
-    },
-    onGrabClick(item, index) {
-      if (item.state == 0) {
-        uni.showToast({
-          title: "红包还未开抢",
-          icon: "none"
-        });
-        return;
-      }
-      // this.pack.index = index;
-      this.grabHongbao(item.id);
-    },
-    //查看手气
-    previewHbSq() {
-      app.http.Get(
-        `funcApi/brodcast/third/common/room/1/${this.roomID}/hongbao/${this.clickPack.id
-        }/grablist`,
-        { uid: this.userData.uid },
-        res => {
-          this.grablist = res.list || [];
-          this.clickPack.preview = true;
-          this.clickPack.grab = false;
-        }
-      );
-    },
-    //发送红包
-    onClickSendPack() {
-      if (this.honbao.index < 0) {
-        uni.showToast({
-          title: "请选择发送的红包类型",
-          icon: "none",
-          mask: true
-        });
-        return;
-      }
-      uni.showModal({
-        title: "提示",
-        content: "确认发送红包吗",
-        success: ({ confirm }) => {
-          if (confirm) {
-            const honbaoTpId = this.honbao.list[this.honbao.index].id;
-            const delayMinute = this.hbTimeDelay ? 2 : 0;
-            this.sendHonb(honbaoTpId, delayMinute);
-            this.hbShow = false;
-          }
-        }
-      });
-    },
-    hbCountDown(item, isPack = false) {
-      const time = +item.startTime - this.nowTimeStamp;
-      if (time <= 0) {
-        item.startTime = 0;
-        item.state = 1;
-        return 0;
-      }
-      if (isPack) return time;
-      return this.getCountDownTime(time);
-    },
-    toMerchant() {
-      app.platform.goMerchantPage(this.liveData.merchantAlias, this.isAnchor)
-      // uni.navigateTo({
-      //   url:
-      //     "/pages/userinfo/merchant_shopsV2?alias=" +
-      //     this.liveData.merchantAlias
-      // });
-    },
-    showPackAction() {
-      const clickPack = this.showHbList[0]
-      this.clickPack = {
-        ...clickPack,
-        isOpen: false,
-        grab: false,
-        preview: false
-      };
-      if (clickPack.myGrabPoint) {
-        this.clickPack.grab = true
-        this.clickPack.isOpen = true
-        this.clickPack.state = 2
-      }
-      // myGrabPoint
-      this.hbPackShow = true;
-    },
-    getMerchant() {
-      app.http.Get(
-        "dataApi/merchant/1/detail/" + this.liveData.merchantAlias,
-        {},
-        res => {
-          this.merchantMessage = res.data;
-        }
-      );
-    },
-    followed() {
-      this.UIClickFeedBack();
-      app.http.Post(
-        "merchant/1/follow/" + this.liveData.merchantAlias,
-        {},
-        res => {
-          this.merchantMessage.followed = res.data.follow;
-        }
-      );
-    },
-    //ui触感反馈(单次)
-    UIClickFeedBack() {
-      if (this.deviceInfo.platform == "ios") {
-        impact.prepare();
-        impact.init(1);
-        impact.impactOccurred();
-        // this.webView.evalJs(`actionSet("8888",${JSON.stringify(app.token)},false)`)
-      } else {
-        uni.vibrateShort();
-      }
-    },
-    confirmStop() {
-      uni.showModal({
-        title: "直播间提示",
-        content: "确认结束直播?",
-        success: ({ cancel, confirm }) => {
-          if (confirm) {
-            this.stopPublishingStream();
-            this.stopPreview();
-            this.stopLive();
-            this.finishLive = true;
-          }
-        }
-      });
-    },
-    //--------------红包------------------
-    onClickHb(item, index) {
-      if (this.honbao.index == index) return;
-      this.honbao.index = index;
-    },
-    // ------------socket功能---------
-    //创建socketMessage包并发送
-    sendSocketMsg(packName, valueObject = null) {
-      return new Promise((resolve, reject) => {
-        if (app.sever && app.sever.isNetOK()) {
-          let msg = new proto.message[packName]();
-          if (valueObject && Object.keys(valueObject).length) {
-            Object.keys(valueObject).forEach((key, index) => {
-              msg[key] = valueObject[key];
-            });
-          }
-          // console.log(packName, msg);
-          let buffer = proto.message[packName].encode(msg).finish();
-          let pack = new PackageBase(Message[packName]);
-          pack.d(buffer).to(app.sever);
-          resolve({
-            pack,
-            buffer
-          });
-        } else {
+      },
+      onGrabClick(item, index) {
+        if (item.state == 0) {
           uni.showToast({
-            title: "连接状态异常",
+            title: "红包还未开抢",
             icon: "none"
           });
-          this.socketClose()
+          return;
         }
-      });
-    },
-    //socket回调统一处理
-    checkBack(res) {
-      return new Promise((resolve, reject) => {
-        if (res.msg) {
-          const noTipsError = ["不存在的红包", "红包抢光了"];
-          if (noTipsError.includes(res.msg)) {
-            reject(res.msg);
-            return;
-          }
-          uni.showToast({
-            title: res.msg,
-            icon: "none"
-          });
-          reject(res.msg);
-        } else {
-          resolve(res);
-        }
-      });
-    },
-    //初始化scocket
-    initSocket(isFirst = true) {
-      if (!this.websocket) return;
-      this.heartBeatTimer && clearInterval(this.heartBeatTimer);
-      this.heartBeatTimer = setInterval(() => {
-        this.sendHeartBeat();
-      }, 6 * 1000);
-      this.connectSever();
-    },
-    //连接sockey
-    connectSever() {
-      console.log('链接中');
-      app.sever && app.sever.close();
-      console.log(this.websocket);
-      app.sever.setServerInfo({
-        ip: this.websocket
-      });
-      app.sever.connect(
-        () => {
-          app.sever.registerHandlers(this, registerList, true);
-          this.sendHeartBeat();
-          this.heartBeatStamp = Math.round(new Date() / 1000)
-          console.log('连接成功！！！！！');
-          this.sendWebsocketLogin();
-          this.inReconnection = false
-          uni.hideLoading()
-        },
-        () => {
-          uni.showToast({
-            title: "连接失败",
-            icon: "none"
-          });
-          this.isConnectSocket = false;
-        }
-      );
-    },
-    //监听倒socket断开的回调
-    socketClose(res) {
-      console.log("socket断开了");
-      //监听到断线
-      this.isConnectSocket = false;
-      // this.reconnectionTimer && clearInterval(this.reconnectionTimer);
-      this.reconnectionSocket();
-    },
-    //重连socket
-    reconnectionSocket() {
-      if (this.inReconnection) return;
-      app.sever && app.sever.close();
-      uni.showLoading({
-        title: "连接中"
-      });
-      this.isConnectSocket = false;
-      this.inReconnection = true
-      console.log('开始重连');
-      this.reconnectionTimer && clearInterval(this.reconnectionTimer);
-      this.reconnectionTimer = setInterval(() => {
-        console.log("断线重连中", new Date());
-        this.initSocket(false);
-      }, 3000);
-    },
-    //心跳包
-    sendHeartBeat() {
-      if (app.sever && app.sever.isNetOK()) {
-        this.sendSocketMsg("HeartBeat", {
-          time: new Date().getTime()
-        }).then(res => {
-          console.log('发送心跳');
-        }).catch(err => {
-          console.log('心跳发送失败', err);
-        });
-      }
-    },
-    BackHeartBeat(res) {
-      console.log('心跳包回调', res, Math.round(new Date() / 1000));
-      this.heartBeatStamp = res//记录存储上次心跳包回调时间戳
-    },
-    //-----------socket房间功能----------
-    //登录房间socket
-    sendWebsocketLogin() {
-      this.sendSocketMsg("LoginBroadCastRoom1001", {
-        roomId: +this.roomID,
-        uid: this.userData.uid,
-        token: this.userData.socketToken
-      }).then(res => {
-        this.isConnectSocket = true;
-        this.reconnectionTimer && clearInterval(this.reconnectionTimer);
-      });
-    },
-    //登录回调
-    BackLoginBroadCastRoom1001(res) {
-      console.log("登陆房间回调", res);
-      if (res.msg) {
-        uni.showModal({
-          title: "直播间提示",
-          content: res.msg,
-          showCancel: false,
-          success: ({ confirm, cancel }) => {
-            if (confirm) {
-              uni.navigateBack({ delta: 1 });
-            }
-          }
-        });
-        // this.socketRoomLoginTimer && clearTimeout(this.socketRoomLoginTimer);
-        // this.socketRoomLoginTimer = setTimeout(() => {
-        //   console.log("socket重新登录房间中");
-        //   this.sendWebsocketLogin();
-        // }, 500);
-      } else {
-
-        uni.hideLoading();
-        const { gm, point, applyLianmai } = res;
-        this.gm = gm ?? false;
-        this.point = point ?? 0;
-        this.applyLianmai = applyLianmai ?? false;
-        this.informH5Action("isGM", gm, false);
-        this.informH5Action("canLM", applyLianmai, false);
-        this.evalMethods();
-      }
-    },
-    //房间人数变化
-    SendRoomData(res) {
-      console.log("房间人数变化", res);
-      this.onlineNum = res.online
-    },
-    //离开房间
-    leaveOutRoomSocket() {
-      this.sendSocketMsg("LogoutBroadCastRoom1001", {
-        roomId: +this.roomID
-      }).then(res => {
-        getApp().globalData.destroyServe();
-        console.log("socket离开房间");
-        this.isConnectSocket = false;
-      });
-      // app.sever.unregisterHandlers(this)
-    },
-    //----------socket消息弹幕等-------
-    //发送消息
-    sendTalk(content = "", isThanks = false) {
-      if (!content) {
-        uni.showToast({
-          title: "发送的内容不能为空",
-          icon: "none"
-        });
-        return;
-      }
-      if (content.length > 100) {
-        uni.showToast({
-          title: "发送的内容长度超出限制",
-          icon: "none"
-        });
-        return;
-      }
-      uni.showLoading({
-        title: "发送中"
-      });
-      if (isThanks) this.hbPackShow = false
-      this.UIClickFeedBack();
-      // console.log(content);
-      this.sendSocketMsg("RequestSendChatMessage", {
-        content
-      })
-        .then(res => {
-          uni.hideLoading();
-          // console.log("发送成功!!!");
-        })
-        .catch(err => {
-          uni.hideLoading();
-        });
-      this.inputText = "";
-      this.showInput = false;
-    },
-
-    BackSendChatMessage(res) {
-      console.log("消息发送回调", res);
-      this.checkBack(res);
-    },
-    BroadCastChatMessage(res) {
-      console.log("我收到了消息", res);
-      // this.webView.evalJs(`actionSet("BroadCastChatMessageBack",${JSON.stringify({params:res})},false)`)
-      this.informH5Action("BroadCastChatMessageBack", res, false);
-    },
-    //------------------socket红包---------------
-    sendHonb(giftTpId, delayMinute) {
-      console.log(giftTpId, delayMinute);
-      this.sendSocketMsg("RequestSendHongbao", {
-        giftTpId: giftTpId,
-        delayMinute
-      });
-    },
-    BackSendHongbao(res) {
-      //发送红包回调
-      console.log("发送红包回调", res);
-      this.checkBack(res).then(back => {
-        console.log("发送红包回调", res);
-      });
-    },
-    BroadCastHongbao(res) {
-      //广播红包
-      console.log("广播红包", res);
-      let { list } = res;
-      let countDownList = []; //倒计时新红包列表
-      let unCountDownList = []; //立即可领新红包列表
-      let unCountDownIndex = -1; //可立即可领红包插入索引
-      //刚进直播间http协议获取到的红包已经排序完成了只需要
-      for (let i = 0, len = list.length; i < len; i++) {
-        if (list[i].startTime) {
-          Number(list[i].startTime);
-          list[i].state = 0;
-          countDownList.push(list[i]);
-        } else {
-          unCountDownList.push(list[i]);
-        }
-      }
-      if (!this.showHbList.length) {
-        this.showHbList.push(...unCountDownList, ...countDownList);
-        return;
-      }
-      for (let i = 0, len = this.showHbList.length; i < len; i++) {
-        //找到倒计时红包索引
-        if (this.showHbList[i].state != 0) {
-          unCountDownIndex = i;
-          break;
-        }
-      }
-      if (unCountDownIndex == -1 && unCountDownList.length) {
-        //未找到并且新红包中有可立即可领的
-        this.showHbList.unshift(...unCountDownList);
-      }
-      if (unCountDownIndex >= 0 && unCountDownList.length) {
-        //找到
-        this.showHbList.splice(unCountDownIndex, 0, ...unCountDownList);
-      }
-      //插入一次倒计时红包
-      this.showHbList.push(...countDownList);
-    },
-    BroadCastHongbaoUpdated(res) {
-      //广播红包状态
-      console.log("广播红包状态", res);
-      // this.informH5Action('BroadCastHongbaoUpdated', res, false)
-    },
-    grabHongbao(hongbaoId) {
-      //抢红包
-      this.UIClickFeedBack();
-      this.sendSocketMsg("RequestGrabHongbao", {
-        hongbaoId: Number(hongbaoId)
-      });
-    },
-    BackGrabHongbao(res) {
-      //抢红包回调
-      this.checkBack(res)
-        .then(back => {
-          console.log("抢红包回调", res);
-          this.clickPack.myGrabPoint = res.point;
-          this.clickPack.isOpen = true;
-          this.clickPack.grab = true;
-          this.clickPack.state = 2;
-        })
-        .catch(err => {
-          console.log(err);
-          const errorMsgList = ["不存在的红包", "红包抢光了", "您已抢过红包了"];
-          if (errorMsgList.includes(err)) {
-            this.clickPack.state = 99; //99代表领完
-            this.clickPack.isOpen = true;
-            this.clickPack.preview = false;
+        // this.pack.index = index;
+        this.grabHongbao(item.id);
+      },
+      //查看手气
+      previewHbSq() {
+        app.http.Get(
+          `funcApi/brodcast/third/common/room/1/${this.roomID}/hongbao/${this.clickPack.id
+          }/grablist`,
+          { uid: this.userData.uid },
+          res => {
+            this.grablist = res.list || [];
+            this.clickPack.preview = true;
             this.clickPack.grab = false;
-
-            this.hbPackShow = true;
           }
-        });
-    },
-    //------------------发送优惠券---------------
-    sendCoupon(sendItem) {
-      console.log("发送的优惠券的参数", sendItem);
-      uni.showLoading();
-      this.sendSocketMsg("RequestSendMerchantCoupon", sendItem).then(res => {
-        uni.hideLoading();
-        uni.showToast({
-          title: "发送成功"
-        });
-        this.sendCouponShow = false;
-      });
-    },
-    BackSendMerchantCoupon(res) {
-      console.log("发送优惠券回调", res);
-      this.checkBack(res).catch(err => { });
-    },
-    BroadCastMerchantCoupon(res) {
-      console.log("广播优惠券", res);
-      let { list } = res;
-      let countDownList = []; //倒计时新红包列表
-      let unCountDownList = []; //立即可领新红包列表
-      let unCountDownIndex = -1; //可立即可领红包插入索引
-      //刚进直播间http协议获取到的红包已经排序完成了只需要
-      for (let i = 0, len = list.length; i < len; i++) {
-        // console.log("优惠券对象", list[i]);
-        if (list[i].disappear) {
-          continue;
-        }
-        if (list[i].startTime) {
-          Number(list[i].startTime);
-          list[i].state = 0;
-          countDownList.push(list[i]);
-        } else {
-          unCountDownList.push(list[i]);
-        }
-      }
-      console.log(this.showCouponList.length);
-      if (!this.showCouponList.length) {
-        this.showCouponList.push(...unCountDownList, ...countDownList);
-        return;
-      }
-      for (let i = 0, len = this.showCouponList.length; i < len; i++) {
-        //找到倒计时红包索引
-        if (this.showCouponList[i].state != 0) {
-          unCountDownIndex = i;
-          break;
-        }
-      }
-      if (unCountDownIndex == -1 && unCountDownList.length) {
-        //未找到并且新红包中有可立即可领的
-        this.showCouponList.unshift(...unCountDownList);
-      }
-      if (unCountDownIndex >= 0 && unCountDownList.length) {
-        //找到
-        this.showCouponList.splice(unCountDownIndex, 0, ...unCountDownList);
-      }
-      //插入一次倒计时红包
-      this.showCouponList.push(...countDownList);
-      // this.informH5Action('BroadCastMerchantCoupon', res)
-    },
-    //抢券
-    getQuan(id) {
-      this.clickCoupon = this.showCouponList[0];
-      this.UIClickFeedBack();
-      this.sendSocketMsg("RequestGetMerchantCoupon", {
-        id
-      });
-    },
-    //抢券回调
-    BackGetMerchantCoupon(res) {
-      this.checkBack(res)
-        .then(res => {
-          console.log("抢券成功");
-          this.clickCoupon = { ...res.coupon, id: this.clickCoupon.id };
-          this.showCoupon = true;
-        })
-        .catch(err => {
-          console.log("抢券失败", err);
-          const failMsg = ["很遗憾,已经领完了", "优惠券未找到或已经领完"];
-          console.log(this.clickCoupon, this.showCouponList);
-
-          if (failMsg.includes(err)) {
-            const failGetIndex = this.showCouponList.findIndex(item => {
-              return +this.clickCoupon.id == +item.id;
-              // console.log(
-              //   item,
-              //   item.id,
-              //   this.clickCoupon.id,
-              //   +this.clickCoupon.id == +item.id
-              // );
-              // +this.clickCoupon.id == +item.id;
-            });
-            setTimeout(() => {
-              console.log("需要删除的索引", failGetIndex);
-            }, 3000);
-            if (failGetIndex >= 0) this.showCouponList.splice(failGetIndex, 1);
-          } else {
-            this.clickCoupon = {};
-          }
-          // this.informH5Action('getCouponFail', res)
-        });
-      console.log("抢券回调", res);
-    },
-    //-------------socket连麦
-    async sendLianMai() {
-      //申请连麦
-      if (!this.applyLianmai) {
-        uni.showToast({
-          title: "直播间暂未开启连麦功能",
-          icon: "none"
-        });
-        return;
-      }
-      if (!this.onLive) {
-        uni.showToast({
-          title: '主播还未开启直播',
-          icon: 'none',
-        })
-        return
-      }
-      console.log("申请连麦了");
-      uni.showLoading({
-        title: ""
-      });
-      await this.checkAndroidAudioPower();
-      this.sendSocketMsg("RequestApplyLianmai", {});
-    },
-    checkAndroidAudioPower() {
-      return new Promise(async (resolve, reject) => {
-        if (this.deviceInfo.platform == "ios") resolve();
-        if (this.deviceInfo.platform == "android") {
-          //获取一下连麦的权限
-          const audioPower = await permision.requestAndroidPermission(
-            "android.permission.RECORD_AUDIO"
-          );
-          uni.hideLoading();
-          if (audioPower == -1) {
-            uni.showModal({
-              title: "直播间提示",
-              content:
-                "连麦需要开启APP录音权限,请前往权限管理开启APP录音权限后重试",
-              showCancel: true,
-              success: ({ confirm, cancel }) => {
-                if (cancel) {
-                  // throw new Error();
-                  reject("未开启麦克风权限");
-                } else {
-                  permision.gotoAppPermissionSetting();
-                }
-              }
-            });
-          } else if (audioPower == 1) {
-            resolve();
-          }
-          console.log("麦克风权限", audioPower);
-        }
-      });
-    },
-    BackApplyLianmai(res) {
-      //申请连麦回调
-      console.log("申请连麦回调", res);
-      uni.hideLoading();
-      this.checkBack(res).then(res => {
-        uni.showToast({
-          title: "申请成功"
-        });
-      });
-    },
-    anchorEndOperationLM() {
-      //主播切换是否可以连麦
-      this.UIClickFeedBack();
-      this.sendSocketMsg("RequestSwitchLianmaiAllow");
-    },
-    BroadCastLianmaiAllowed(res) {
-      //广播是否可以连麦
-      console.log(res);
-      this.checkBack(res).then(data => {
-        // console.log('广播是否可以连麦', res);
-        this.applyLianmai = res.allowed;
-        this.informH5Action("canLM", res.allowed, false);
-        // this.informH5Action('canLM', res.allowed, false)
-      });
-    },
-    SendLianmaiApply(res) {
-      // 发送给主播有人申请连麦
-      console.log("发送给主播有人申请连麦", res);
-      this.checkBack(res).then(data => {
-        this.informH5Action("SendLianmaiApply", res);
-      });
-    },
-    BroadCastLianmaiOn(res) {
-      //广播有人连麦了
-      console.log("广播有人连麦了", res);
-      this.checkBack(res).then(data => {
-        this.informH5Action("BroadCastLianmaiOn", res);
-        this.lmStreanID = res.streamId;
-        this.lmUser = res;
-        if (res.uid == this.userData.uid) {
-          //是自己连麦
-          uni.showModal({
-            title: "直播间提示",
-            content: "主播已同意申请的连麦,是否立即连麦",
-            success: ({ cancel, confirm }) => {
-              if (cancel) {
-                this.SelfTerminateLianmai();
-              }
-              if (confirm) {
-                //推流
-                this.pushLm();
-              }
-            }
-          });
-        }
-        // this.informH5Action("BroadCastLianmaiOn", res);
-      });
-    },
-    BroadCastLianmaiOff(res) {
-      //广播连麦结束
-      console.log("广播连麦结束", res);
-      this.checkBack(res).then(data => {
-        if (this.lmUser.uid == this.userData.uid) {
-          this.stopPublishingStream(false, true);
-        }
-        this.informH5Action("BroadCastLianmaiOff", res);
-        this.lmStreanID = "0";
-      });
-    },
-    BackActorLianmaiData(res) {
-      //返回主播连麦数据
-      console.log("返回主播连麦数据", res);
-      this.checkBack(res).then(data => {
-        this.informH5Action("BackActorLianmaiData", res);
-      });
-    },
-    ActorRequestLianmaiData(res) {
-      //获取连麦列表
-      this.sendSocketMsg("ActorRequestLianmaiData", {});
-    },
-    ActorAgreeLianmaiApply(uid) {
-      //主播同意连麦
-      if (!this.onLive) {
-        uni.showToast({
-          title: "您还未开启直播",
-          icon: "none"
-        });
-        return;
-      }
-      this.sendSocketMsg("ActorAgreeLianmaiApply", { uid });
-    },
-    BackActorAgreeLianmaiApply(res) {
-      //主播同意连麦的回调
-      console.log("主播同意连麦的回调", res);
-      this.checkBack(res);
-    },
-    ActorTerminateLianmai() {
-      //主播结束连麦
-      this.sendSocketMsg("ActorTerminateLianmai");
-    },
-    BackTerminateLianmai(res) {
-      //主播结束连麦的回调
-      console.log("主播结束连麦的回调", res);
-    },
-    SelfTerminateLianmai() {
-      //连麦者结束连麦
-
-      this.sendSocketMsg("SelfTerminateLianmai");
-    },
-    GmChatBid(uid, name) {
-      //禁言
-      uni.showLoading();
-      console.log(uid ? { uid } : { name });
-      // return
-      this.sendSocketMsg("GmChatBid", uid ? { uid } : { name });
-    },
-
-    BackGmChatBid(res) {
-      //禁言的回调
-      console.log("禁言的回调", res);
-      this.checkBack(res).then(data => {
-        uni.showToast({
-          title: "禁言成功"
-        });
-      });
-    },
-    BackGmKickOutRoom(res) {
-      //踢出房间的回调
-      console.log("踢出房间的回调", JSON.stringify(res));
-      this.checkBack(res).then(data => {
-        uni.showToast({
-          title: "踢出房间成功"
-        });
-      });
-    },
-    GmKickOutRoom(uid, name) {
-      //管理员进行踢出房间操作
-      this.sendSocketMsg("GmKickOutRoom", uid ? { uid } : { name });
-    },
-    KickOut(res) {
-      console.log("被踢出房间的通知", JSON.stringify(res));
-      this.systemKickOut = true;
-      if (res.why == '直播已结束') {
-        this.liveData.state = 3
-      }
-      uni.showModal({
-        title: "提示",
-        content: res.why,
-        showCancel: false,
-        success: res => {
-          this.stopPlayingStream(this.streamID);
-          if (this.lmStreanID != "0") this.stopPlayingStream(this.lmStreanID);
-          if (this.lmUser.uid == this.userData.uid)
-            this.stopPublishingStream(false, true);
-          if (res.confirm) {
-            // this.leaveRoom()
-            uni.switchTab({
-              url: "/pages/index/index"
-            });
-          }
-        }
-      });
-    },
-    //点赞
-    addLike(likeNum) {
-      console.log("发送的点赞数量", likeNum);
-      this.sendSocketMsg("RequestLike", {
-        num: +likeNum
-      });
-    },
-    BroadCastLike(res) {
-      console.log("最终点赞数量", res.finalLikeNum);
-      this.liveData.likeNum = res.finalLikeNum;
-      this.informH5Action(
-        "hasOtherManClickLike",
-        [this.liveData.likeNum, res.list],
-        true
-      );
-    },
-    //-----------------发送礼物---------------
-    SendMyPoint(res) {
-      console.log("卡币数量变化", res);
-      this.point = res.point;
-      this.informH5Action("myPointGet", res.point);
-    },
-    sendGift(giftTpId, num, target = 0) {
-      console.log("礼物发送中");
-      this.UIClickFeedBack()
-      this.sendSocketMsg("RequestSendGift", {
-        giftTpId,
-        num,
-        target
-      });
-    },
-    SendGiftUpdated(res) {
-      console.log("免费礼物的通知", res);
-      this.informH5Action("freeGiftGet", res);
-    },
-    BackSendGift(res) {
-      //赠送礼物回调
-      console.log("赠送礼物回调", res);
-      this.checkBack(res)
-        .then(back => {
-          console.log("赠送礼物回调", res);
-          this.informH5Action("giftSendSocketBack", {
-            success: true
-          });
-        })
-        .catch(err => {
-          this.informH5Action("giftSendSocketBack", {
-            success: false,
-            msg: err.msg
-          });
-        });
-    },
-    BroadCastBilibili_Send(res) {
-      console.log("广播礼物", res);
-      this.informH5Action("BroadCastBilibili_Send", res, false);
-    },
-    //------------http接口能力----------
-    //开始直播
-    startLive() {
-      // //首次推流获取streamID,改变直播状态
-      // if (this.liveData && this.liveData.state <= 1) {
-      //   request(
-      //     "funcApi/brodcast/third/1001/achor/push/" + this.roomID,
-      //     {},
-      //     "post"
-      //   );
-      //   console.log("主播请求了开始直播的api");
-      // }
-    },
-    stopLive() {
-      const stopSign = Md5.hashStr(
-        "stopPushStream" + `_${this.roomID}_${this.streamID}`
-      );
-      request(
-        "funcApi/brodcast/third/1001/achor/stopPush/" + this.roomID,
-        {
-          sign: stopSign
-        },
-        "post"
-      )
-        .then(res => {
-          console.log("结束直播");
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    async getUserProfile() {
-      try {
-        console.log('请求登录直播间');
-        const tokenRespone = await request(
-          "funcApi/brodcast/third/1001/user/login/" + this.roomID,
-          {
-            version: "1.0.0"
-          },
-          "post"
         );
-        console.log("直播间用户登录数据", tokenRespone);
-        this.websocket = tokenRespone.websocket;
-        this.subscribed = tokenRespone.subscribed
-        this.userData = tokenRespone.data;
-        this.streamID = tokenRespone.data.streamId;
-        // console.log("直播间用户登录数据66666666");
-        // console.log(JSON.stringify(tokenRespone));
-
-        // this.initSocket(true)
-        this.isLogin = true;
-      } catch (err) {
-        if (err == "禁止登录") {
-          uni.showModal({
-            title: "提示",
-            content: "你已被禁止登录该直播间",
-            showCancel: false,
-            success: res => {
-              if (res.confirm) {
-                uni.switchTab({
-                  url: "/pages/index/index",
-                  fail: fail => {
-                    console.log("jumpFail", fail);
-                  }
-                });
-              }
-            }
+      },
+      //发送红包
+      onClickSendPack() {
+        if (this.honbao.index < 0) {
+          uni.showToast({
+            title: "请选择发送的红包类型",
+            icon: "none",
+            mask: true
           });
+          return;
         }
-        console.log(err);
-      }
-    },
-    //--------------直播API----------------------------
-    //创建实例
-    async createEngine() {
-      try {
-        const profile = {
-          appID: 839105423,
-          appSign:
-            "7266392b844ecfc13069c0ca68f22b621dbeb4de34b050b32fae98b22c34d502",
-          scenario: 2
-        };
-        this.engine = await getApp().globalData.ZegoExpressEngine.createEngineWithProfile(
-          profile
-        );
-        this.addEngineListen();
-
-      } catch (err) {
-        console.log("错误", err);
-      }
-    },
-    feedback() {
+        uni.showModal({
+          title: "提示",
+          content: "确认发送红包吗",
+          success: ({ confirm }) => {
+            if (confirm) {
+              const honbaoTpId = this.honbao.list[this.honbao.index].id;
+              const delayMinute = this.hbTimeDelay ? 2 : 0;
+              this.sendHonb(honbaoTpId, delayMinute);
+              this.hbShow = false;
+            }
+          }
+        });
+      },
+      hbCountDown(item, isPack = false) {
+        const time = +item.startTime - this.nowTimeStamp;
+        if (time <= 0) {
+          item.startTime = 0;
+          item.state = 1;
+          return 0;
+        }
+        if (isPack) return time;
+        return this.getCountDownTime(time);
+      },
+      feedback() {
       uni.showModal({
         title: '直播间提示',
         content: `是否上传本地日志用于排查问题?`,
@@ -1807,786 +971,1657 @@ export default {
         }
       })
     },
-    addEngineListen() {
-      for (let i = 0, len = this.engineListen.length; i < len; i++) {
-        if (!this[this.engineListen[i].name]) continue;
-        this.engine.on(
-          this.engineListen[i].name,
-          this[this.engineListen[i].name]
+      toMerchant() {
+        app.platform.goMerchantPage(this.liveData.merchantAlias, this.isAnchor)
+        // uni.navigateTo({
+        //   url:
+        //     "/pages/userinfo/merchant_shopsV2?alias=" +
+        //     this.liveData.merchantAlias
+        // });
+      },
+      showPackAction() {
+        const clickPack = this.showHbList[0]
+        this.clickPack = {
+          ...clickPack,
+          isOpen: false,
+          grab: false,
+          preview: false
+        };
+        if (clickPack.myGrabPoint) {
+          this.clickPack.grab = true
+          this.clickPack.isOpen = true
+          this.clickPack.state = 2
+        }
+        // myGrabPoint
+        this.hbPackShow = true;
+      },
+      getMerchant() {
+        app.http.Get(
+          "dataApi/merchant/1/detail/" + this.liveData.merchantAlias,
+          {},
+          res => {
+            this.merchantMessage = res.data;
+          }
         );
-        if (i == this.engineListen.length - 1) {
-          //这里的既构登录使用接口返回里的zgUid
-          //进行既构的直播间登录
-          console.log('机构user ID', this.userData.zgUid);
-          this.loginRoom(
-            this.userData.zgUid,
-            this.userData.uname,
-            this.userData.token
-          );
+      },
+      followed() {
+        this.UIClickFeedBack();
+        app.http.Post(
+          "merchant/1/follow/" + this.liveData.merchantAlias,
+          {},
+          res => {
+            this.merchantMessage.followed = res.data.follow;
+          }
+        );
+      },
+      //ui触感反馈(单次)
+      UIClickFeedBack() {
+        if (this.deviceInfo.platform == "ios") {
+          impact.prepare();
+          impact.init(1);
+          impact.impactOccurred();
+          // this.webView.evalJs(`actionSet("8888",${JSON.stringify(app.token)},false)`)
+        } else {
+          uni.vibrateShort();
         }
-      }
-    },
-    async offEngineListen() {
-      await this.engine.logoutRoom(this.roomID);
-      this.engine = undefined;
-      await getApp().globalData.ZegoExpressEngine.destroyEngine();
-      // for (let i = 0, len = this.engineListen.length; i < len; i++) {
-      //   if (!this[this.engineListen[i].name]) continue;
-      //   this.engine.off(
-      //     this.engineListen[i].name,
-      //     this[this.engineListen[i].name]
-      //   );
-      //   if (i == this.engineListen.length - 1) {
-      //     console.log("监听器销毁完成");
-
-      //   }
-      // }
-    },
-    //流变化的回调
-    roomStreamUpdate(roomID, updateType, streamList) {
-      console.log(
-        `房间号${roomID},有${updateType == 0 ? "Add" : "del"}流,`,
-        streamList
-      );
-      // if()
-      streamList.forEach((item, index) => {
-        const { streamID } = item;
-        if (roomID != this.roomID) return;
-        if (streamID == this.streamID && updateType == 0) {
-          //主播开播
-          if (!this.isAnchor) this.startPlayingStream(streamID);
-        }
-        if (streamID == this.streamID && updateType == 1) {
-          //主播结束推流
-          this.stopPlayingStream(streamID);
-          //用户结束连麦
-          if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0")
-            this.SelfTerminateLianmai();
-          // this.stopPublishingStream(false,)
-        }
-        if (streamID != this.streamID && updateType == 0) {
-          //连麦流
-          // if (this.isAnchor && this.pullPattern === "mixer") {
-          //   //模式为混流模式
-          //   this.setMixerTask();
-          // }
-          console.log("有新增的连麦流,开始拉连麦流");
-          this.startPlayingStream(streamID);
-        }
-        if (streamID != this.streamID && updateType == 1) {
-          //连麦流结束推流
-          this.stopPlayingStream(streamID);
-        }
-      });
-    },
-    apiCalledResult(errorCode, funcName, info) {
-
-      if (errorCode == 0) {
-        console.log(`success:${funcName}:${info}`);
-      } else {
-        console.log(`error:${errorCode},${funcName}:${info}`);
-      }
-    },
-    roomStreamExtraInfoUpdate(roomID, streamList) {
-      console.log("房价附加流变化");
-    },
-    publisherQualityUpdate(streamID, quality) {
-      console.log(quality);
-      if (quality.level == 3) {
-        uni.showToast({
-          title: "推流质量较差,请检查网络环境",
-          icon: "none",
-          duration: 2500
+      },
+      confirmStop() {
+        uni.showModal({
+          title: "直播间提示",
+          content: "确认结束直播?",
+          success: ({ cancel, confirm }) => {
+            if (confirm) {
+              this.stopPublishingStream();
+              this.stopPreview();
+              this.stopLive();
+              this.finishLive = true;
+            }
+          }
         });
-      }
-      if (quality.level == 4) {
-        uni.showToast({
-          title: "推流中断,请检查是否连接至互联网",
-          icon: "none",
-          duration: 2500
+      },
+      //--------------红包------------------
+      onClickHb(item, index) {
+        if (this.honbao.index == index) return;
+        this.honbao.index = index;
+      },
+      // ------------socket功能---------
+      //创建socketMessage包并发送
+      sendSocketMsg(packName, valueObject = null) {
+        return new Promise((resolve, reject) => {
+          if (app.sever && app.sever.isNetOK()) {
+            let msg = new proto.message[packName]();
+            if (valueObject && Object.keys(valueObject).length) {
+              Object.keys(valueObject).forEach((key, index) => {
+                msg[key] = valueObject[key];
+              });
+            }
+            // console.log(packName, msg);
+            let buffer = proto.message[packName].encode(msg).finish();
+            let pack = new PackageBase(Message[packName]);
+            pack.d(buffer).to(app.sever);
+            resolve({
+              pack,
+              buffer
+            });
+          } else {
+            uni.showToast({
+              title: "连接状态异常",
+              icon: "none"
+            });
+            this.socketClose()
+          }
         });
-      }
-    },
-    playerQualityUpdate(streamID, quality) {
-      console.log('拉流质量', quality);
-    },
-    changeVideoConfig() {
-      this.videoConfig.index == 2
-        ? (this.videoConfig.index = 0)
-        : (this.videoConfig.index += 1);
-    },
-    //设置相机参数
-    async setVideoConfig() {
-      const config = this.videoConfig.config[this.videoConfig.index];
-      console.log("推流相机参数", config);
+      },
+      //socket回调统一处理
+      checkBack(res) {
+        return new Promise((resolve, reject) => {
+          if (res.msg) {
+            const noTipsError = ["不存在的红包", "红包抢光了"];
+            if (noTipsError.includes(res.msg)) {
+              reject(res.msg);
+              return;
+            }
+            uni.showToast({
+              title: res.msg,
+              icon: "none"
+            });
+            reject(res.msg);
+          } else {
+            resolve(res);
+          }
+        });
+      },
+      //初始化scocket
+      initSocket(isFirst = true) {
+        if (!this.websocket) return;
+        this.heartBeatTimer && clearInterval(this.heartBeatTimer);
+        this.heartBeatTimer = setInterval(() => {
+          this.sendHeartBeat();
+        }, 6 * 1000);
+        this.connectSever();
+      },
+      //连接sockey
+      connectSever() {
+        console.log('链接中');
+        app.sever && app.sever.close();
+        console.log(this.websocket);
+        app.sever.setServerInfo({
+          ip: this.websocket
+        });
+        app.sever.connect(
+          () => {
+            app.sever.registerHandlers(this, registerList, true);
+            this.sendHeartBeat();
+            this.heartBeatStamp = Math.round(new Date() / 1000)
+            console.log('连接成功！！！！！');
+            this.sendWebsocketLogin();
+            this.inReconnection = false
+            this.alreadyOnceSocket=true
+            uni.hideLoading()
+          },
+          () => {
+            uni.showToast({
+              title: "连接失败",
+              icon: "none"
+            });
+            this.alreadyOnceSocket=true
+            this.isConnectSocket = false;
+          }
+        );
+      },
+      //监听倒socket断开的回调
+      socketClose(res) {
+        console.log("socket断开了");
+        //监听到断线
+        this.isConnectSocket = false;
+        // this.reconnectionTimer && clearInterval(this.reconnectionTimer);
+        this.reconnectionSocket();
+      },
+      //重连socket
+      reconnectionSocket() {
+        if (this.inReconnection) return;
+        app.sever && app.sever.close();
+        uni.showLoading({
+          title: "连接中"
+        });
+        this.isConnectSocket = false;
+        this.inReconnection = true
+        console.log('开始重连');
+        this.reconnectionTimer && clearInterval(this.reconnectionTimer);
+        this.reconnectionTimer = setInterval(() => {
+          console.log("断线重连中", new Date());
+          this.initSocket(false);
+        }, 3000);
+      },
+      //心跳包
+      sendHeartBeat() {
+        if (app.sever && app.sever.isNetOK()) {
+          this.sendSocketMsg("HeartBeat", {
+            time: new Date().getTime()
+          }).then(res => {
+            console.log('发送心跳');
+          }).catch(err => {
+            console.log('心跳发送失败', err);
+          });
+        }
+      },
+      BackHeartBeat(res) {
+        console.log('心跳包回调', res, Math.round(new Date() / 1000));
+        this.heartBeatStamp = res//记录存储上次心跳包回调时间戳
+      },
+      //-----------socket房间功能----------
+      //登录房间socket
+      sendWebsocketLogin() {
+        this.sendSocketMsg("LoginBroadCastRoom1001", {
+          roomId: +this.roomID,
+          uid: this.userData.uid,
+          token: this.userData.socketToken
+        }).then(res => {
+          this.isConnectSocket = true;
+          this.reconnectionTimer && clearInterval(this.reconnectionTimer);
+        });
+      },
+      //登录回调
+      BackLoginBroadCastRoom1001(res) {
+        console.log("登陆房间回调", res);
+        if (res.msg) {
+          uni.showModal({
+            title: "直播间提示",
+            content: res.msg,
+            showCancel: false,
+            success: ({ confirm, cancel }) => {
+              if (confirm) {
+                uni.navigateBack({ delta: 1 });
+              }
+            }
+          });
+          // this.socketRoomLoginTimer && clearTimeout(this.socketRoomLoginTimer);
+          // this.socketRoomLoginTimer = setTimeout(() => {
+          //   console.log("socket重新登录房间中");
+          //   this.sendWebsocketLogin();
+          // }, 500);
+        } else {
 
-      this.engine.setVideoConfig(config);
-      // this.engine.setCameraZoomFactor(1)//变焦
-      // this.engine.getCameraMaxZoomFactor().then(res=>{
-      //   console.log("最大变焦数getCameraMaxZoomFactor",res);
-      // })
-    },
-    //推连麦流
-    pushLm() {
-      if (this.lmStreanID == "0") return;
-      this.engine.enableCamera(false); //关闭摄像头
-      this.startPublishingStream(this.lmStreanID);
-      // setTimeout(()=>{
-      //   // this.setMixerTask()
-      // },1000)
-    },
-    //登录房间
-
-    loginRoom(userID, userName, token) {
-      let user = {
-        userID,
-        userName
-      };
-      console.log(userID, userName, token);
-      this.engine
-        .loginRoom(this.roomID + "", user, {
-          token,
-          isUserStatusNotify: true
+          uni.hideLoading();
+          const { gm, point, applyLianmai } = res;
+          this.gm = gm ?? false;
+          this.point = point ?? 0;
+          this.applyLianmai = applyLianmai ?? false;
+          this.informH5Action("isGM", gm, false);
+          this.informH5Action("canLM", applyLianmai, false);
+          this.evalMethods();
+        }
+      },
+      //房间人数变化
+      SendRoomData(res) {
+        console.log("房间人数变化", res);
+        this.onlineNum = res.online
+      },
+      //离开房间
+      leaveOutRoomSocket() {
+        this.sendSocketMsg("LogoutBroadCastRoom1001", {
+          roomId: +this.roomID
+        }).then(res => {
+          getApp().globalData.destroyServe();
+          console.log("socket离开房间");
+          this.isConnectSocket = false;
+        });
+        // app.sever.unregisterHandlers(this)
+      },
+      //----------socket消息弹幕等-------
+      //发送消息
+      sendTalk(content = "", isThanks = false) {
+        if (!content) {
+          uni.showToast({
+            title: "发送的内容不能为空",
+            icon: "none"
+          });
+          return;
+        }
+        if (content.length > 100) {
+          uni.showToast({
+            title: "发送的内容长度超出限制",
+            icon: "none"
+          });
+          return;
+        }
+        uni.showLoading({
+          title: "发送中"
+        });
+        if (isThanks) this.hbPackShow = false
+        this.UIClickFeedBack();
+        // console.log(content);
+        this.sendSocketMsg("RequestSendChatMessage", {
+          content
         })
-        .then(res => {
-          console.log(
-            "成功登录即构的直播房间,当前直播状态",
-            this.liveData.state
-          );
-          // this.startPlayingStream(this.streamID)
-          // if (this.liveData.state == 2 && !this.isAnchor) {
-          //   this.startPlayingStream(this.streamID);
-          // }
-          this.initSocket();
-        });
-    },
-    destroyEngine() {
-      this.offEngineListen();
-    },
-    //预览
-    async startPreview() {
-      try {
-        await this.setVideoConfig();
-        await this.engine.startPreview();
+          .then(res => {
+            uni.hideLoading();
+            // console.log("发送成功!!!");
+          })
+          .catch(err => {
+            uni.hideLoading();
+          });
+        this.inputText = "";
+        this.showInput = false;
+      },
 
-        this.engine.useFrontCamera(this.front);
-        this.engine.muteMicrophone(this.muted);
-        this.liveConfigToolShow = true;
-        this.onPreview = true;
-        console.log("开始预览");
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    //停止预览
-    async stopPreview() {
-      //   this.appendActionInfo("Stop Preview");
-      await this.engine.stopPreview();
-      this.onPreview = false;
-    },
-    //主播确认开始推流
-    async anchorConfirmPush(streamID) {
-      try {
-        //首次推流获取streamID,改变直播状态
-        if (this.liveData && this.liveData.state <= 1) {
-          await request(
-            "funcApi/brodcast/third/1001/achor/push/" + this.roomID,
-            {},
+      BackSendChatMessage(res) {
+        console.log("消息发送回调", res);
+        this.checkBack(res);
+      },
+      BroadCastChatMessage(res) {
+        console.log("我收到了消息", res);
+        // this.webView.evalJs(`actionSet("BroadCastChatMessageBack",${JSON.stringify({params:res})},false)`)
+        this.informH5Action("BroadCastChatMessageBack", res, false);
+      },
+      //------------------socket红包---------------
+      sendHonb(giftTpId, delayMinute) {
+        console.log(giftTpId, delayMinute);
+        this.sendSocketMsg("RequestSendHongbao", {
+          giftTpId: giftTpId,
+          delayMinute
+        });
+      },
+      BackSendHongbao(res) {
+        //发送红包回调
+        console.log("发送红包回调", res);
+        this.checkBack(res).then(back => {
+          console.log("发送红包回调", res);
+        });
+      },
+      BroadCastHongbao(res) {
+        //广播红包
+        console.log("广播红包", res);
+        let { list } = res;
+        let countDownList = []; //倒计时新红包列表
+        let unCountDownList = []; //立即可领新红包列表
+        let unCountDownIndex = -1; //可立即可领红包插入索引
+        //刚进直播间http协议获取到的红包已经排序完成了只需要
+        for (let i = 0, len = list.length; i < len; i++) {
+          if (list[i].startTime) {
+            Number(list[i].startTime);
+            list[i].state = 0;
+            countDownList.push(list[i]);
+          } else {
+            unCountDownList.push(list[i]);
+          }
+        }
+        if (!this.showHbList.length) {
+          this.showHbList.push(...unCountDownList, ...countDownList);
+          return;
+        }
+        for (let i = 0, len = this.showHbList.length; i < len; i++) {
+          //找到倒计时红包索引
+          if (this.showHbList[i].state != 0) {
+            unCountDownIndex = i;
+            break;
+          }
+        }
+        if (unCountDownIndex == -1 && unCountDownList.length) {
+          //未找到并且新红包中有可立即可领的
+          this.showHbList.unshift(...unCountDownList);
+        }
+        if (unCountDownIndex >= 0 && unCountDownList.length) {
+          //找到
+          this.showHbList.splice(unCountDownIndex, 0, ...unCountDownList);
+        }
+        //插入一次倒计时红包
+        this.showHbList.push(...countDownList);
+      },
+      BroadCastHongbaoUpdated(res) {
+        //广播红包状态
+        console.log("广播红包状态", res);
+        // this.informH5Action('BroadCastHongbaoUpdated', res, false)
+      },
+      grabHongbao(hongbaoId) {
+        //抢红包
+        this.UIClickFeedBack();
+        this.sendSocketMsg("RequestGrabHongbao", {
+          hongbaoId: Number(hongbaoId)
+        });
+      },
+      BackGrabHongbao(res) {
+        //抢红包回调
+        this.checkBack(res)
+          .then(back => {
+            console.log("抢红包回调", res);
+            this.clickPack.myGrabPoint = res.point;
+            this.clickPack.isOpen = true;
+            this.clickPack.grab = true;
+            this.clickPack.state = 2;
+          })
+          .catch(err => {
+            console.log(err);
+            const errorMsgList = ["不存在的红包", "红包抢光了", "您已抢过红包了"];
+            if (errorMsgList.includes(err)) {
+              this.clickPack.state = 99; //99代表领完
+              this.clickPack.isOpen = true;
+              this.clickPack.preview = false;
+              this.clickPack.grab = false;
+
+              this.hbPackShow = true;
+            }
+          });
+      },
+      //------------------发送优惠券---------------
+      sendCoupon(sendItem) {
+        console.log("发送的优惠券的参数", sendItem);
+        uni.showLoading();
+        this.sendSocketMsg("RequestSendMerchantCoupon", sendItem).then(res => {
+          uni.hideLoading();
+          uni.showToast({
+            title: "发送成功"
+          });
+          this.sendCouponShow = false;
+        });
+      },
+      BackSendMerchantCoupon(res) {
+        console.log("发送优惠券回调", res);
+        this.checkBack(res).catch(err => { });
+      },
+      BroadCastMerchantCoupon(res) {
+        console.log("广播优惠券", res);
+        let { list } = res;
+        let countDownList = []; //倒计时新红包列表
+        let unCountDownList = []; //立即可领新红包列表
+        let unCountDownIndex = -1; //可立即可领红包插入索引
+        //刚进直播间http协议获取到的红包已经排序完成了只需要
+        for (let i = 0, len = list.length; i < len; i++) {
+          // console.log("优惠券对象", list[i]);
+          if (list[i].disappear) {
+            continue;
+          }
+          if (list[i].startTime) {
+            Number(list[i].startTime);
+            list[i].state = 0;
+            countDownList.push(list[i]);
+          } else {
+            unCountDownList.push(list[i]);
+          }
+        }
+        console.log(this.showCouponList.length);
+        if (!this.showCouponList.length) {
+          this.showCouponList.push(...unCountDownList, ...countDownList);
+          return;
+        }
+        for (let i = 0, len = this.showCouponList.length; i < len; i++) {
+          //找到倒计时红包索引
+          if (this.showCouponList[i].state != 0) {
+            unCountDownIndex = i;
+            break;
+          }
+        }
+        if (unCountDownIndex == -1 && unCountDownList.length) {
+          //未找到并且新红包中有可立即可领的
+          this.showCouponList.unshift(...unCountDownList);
+        }
+        if (unCountDownIndex >= 0 && unCountDownList.length) {
+          //找到
+          this.showCouponList.splice(unCountDownIndex, 0, ...unCountDownList);
+        }
+        //插入一次倒计时红包
+        this.showCouponList.push(...countDownList);
+        // this.informH5Action('BroadCastMerchantCoupon', res)
+      },
+      //抢券
+      getQuan(id) {
+        this.clickCoupon = this.showCouponList[0];
+        this.UIClickFeedBack();
+        this.sendSocketMsg("RequestGetMerchantCoupon", {
+          id
+        });
+      },
+      //抢券回调
+      BackGetMerchantCoupon(res) {
+        this.checkBack(res)
+          .then(res => {
+            console.log("抢券成功");
+            this.clickCoupon = { ...res.coupon, id: this.clickCoupon.id };
+            this.showCoupon = true;
+          })
+          .catch(err => {
+            console.log("抢券失败", err);
+            const failMsg = ["很遗憾,已经领完了", "优惠券未找到或已经领完"];
+            console.log(this.clickCoupon, this.showCouponList);
+
+            if (failMsg.includes(err)) {
+              const failGetIndex = this.showCouponList.findIndex(item => {
+                return +this.clickCoupon.id == +item.id;
+                // console.log(
+                //   item,
+                //   item.id,
+                //   this.clickCoupon.id,
+                //   +this.clickCoupon.id == +item.id
+                // );
+                // +this.clickCoupon.id == +item.id;
+              });
+              setTimeout(() => {
+                console.log("需要删除的索引", failGetIndex);
+              }, 3000);
+              if (failGetIndex >= 0) this.showCouponList.splice(failGetIndex, 1);
+            } else {
+              this.clickCoupon = {};
+            }
+            // this.informH5Action('getCouponFail', res)
+          });
+        console.log("抢券回调", res);
+      },
+      //-------------socket连麦
+      async sendLianMai() {
+        //申请连麦
+        if (!this.applyLianmai) {
+          uni.showToast({
+            title: "直播间暂未开启连麦功能",
+            icon: "none"
+          });
+          return;
+        }
+        if (!this.onLive) {
+          uni.showToast({
+            title: '主播还未开启直播',
+            icon: 'none',
+          })
+          return
+        }
+        console.log("申请连麦了");
+        uni.showLoading({
+          title: ""
+        });
+        await this.checkAndroidAudioPower();
+        this.sendSocketMsg("RequestApplyLianmai", {});
+      },
+      checkAndroidAudioPower() {
+        return new Promise(async (resolve, reject) => {
+          if (this.deviceInfo.platform == "ios") resolve();
+          if (this.deviceInfo.platform == "android") {
+            //获取一下连麦的权限
+            const audioPower = await permision.requestAndroidPermission(
+              "android.permission.RECORD_AUDIO"
+            );
+            uni.hideLoading();
+            if (audioPower == -1) {
+              uni.showModal({
+                title: "直播间提示",
+                content:
+                  "连麦需要开启APP录音权限,请前往权限管理开启APP录音权限后重试",
+                showCancel: true,
+                success: ({ confirm, cancel }) => {
+                  if (cancel) {
+                    // throw new Error();
+                    reject("未开启麦克风权限");
+                  } else {
+                    permision.gotoAppPermissionSetting();
+                  }
+                }
+              });
+            } else if (audioPower == 1) {
+              resolve();
+            }
+            console.log("麦克风权限", audioPower);
+          }
+        });
+      },
+      BackApplyLianmai(res) {
+        //申请连麦回调
+        console.log("申请连麦回调", res);
+        uni.hideLoading();
+        this.checkBack(res).then(res => {
+          uni.showToast({
+            title: "申请成功"
+          });
+        });
+      },
+      anchorEndOperationLM() {
+        //主播切换是否可以连麦
+        this.UIClickFeedBack();
+        this.sendSocketMsg("RequestSwitchLianmaiAllow");
+      },
+      BroadCastLianmaiAllowed(res) {
+        //广播是否可以连麦
+        console.log(res);
+        this.checkBack(res).then(data => {
+          // console.log('广播是否可以连麦', res);
+          this.applyLianmai = res.allowed;
+          this.informH5Action("canLM", res.allowed, false);
+          // this.informH5Action('canLM', res.allowed, false)
+        });
+      },
+      SendLianmaiApply(res) {
+        // 发送给主播有人申请连麦
+        console.log("发送给主播有人申请连麦", res);
+        this.checkBack(res).then(data => {
+          this.informH5Action("SendLianmaiApply", res);
+        });
+      },
+      BroadCastLianmaiOn(res) {
+        //广播有人连麦了
+        console.log("广播有人连麦了", res);
+        this.checkBack(res).then(data => {
+          this.informH5Action("BroadCastLianmaiOn", res);
+          this.lmStreanID = res.streamId;
+          this.lmUser = res;
+          if (res.uid == this.userData.uid) {
+            //是自己连麦
+            uni.showModal({
+              title: "直播间提示",
+              content: "主播已同意申请的连麦,是否立即连麦",
+              success: ({ cancel, confirm }) => {
+                if (cancel) {
+                  this.SelfTerminateLianmai();
+                }
+                if (confirm) {
+                  //推流
+                  this.pushLm();
+                }
+              }
+            });
+          }
+          // this.informH5Action("BroadCastLianmaiOn", res);
+        });
+      },
+      BroadCastLianmaiOff(res) {
+        //广播连麦结束
+        console.log("广播连麦结束", res);
+        this.checkBack(res).then(data => {
+          if (this.lmUser.uid == this.userData.uid) {
+            this.stopPublishingStream(false, true);
+          }
+          this.informH5Action("BroadCastLianmaiOff", res);
+          this.lmStreanID = "0";
+        });
+      },
+      BackActorLianmaiData(res) {
+        //返回主播连麦数据
+        console.log("返回主播连麦数据", res);
+        this.checkBack(res).then(data => {
+          this.informH5Action("BackActorLianmaiData", res);
+        });
+      },
+      ActorRequestLianmaiData(res) {
+        //获取连麦列表
+        this.sendSocketMsg("ActorRequestLianmaiData", {});
+      },
+      ActorAgreeLianmaiApply(uid) {
+        //主播同意连麦
+        if (!this.onLive) {
+          uni.showToast({
+            title: "您还未开启直播",
+            icon: "none"
+          });
+          return;
+        }
+        this.sendSocketMsg("ActorAgreeLianmaiApply", { uid });
+      },
+      BackActorAgreeLianmaiApply(res) {
+        //主播同意连麦的回调
+        console.log("主播同意连麦的回调", res);
+        this.checkBack(res);
+      },
+      ActorTerminateLianmai() {
+        //主播结束连麦
+        this.sendSocketMsg("ActorTerminateLianmai");
+      },
+      BackTerminateLianmai(res) {
+        //主播结束连麦的回调
+        console.log("主播结束连麦的回调", res);
+      },
+      SelfTerminateLianmai() {
+        //连麦者结束连麦
+
+        this.sendSocketMsg("SelfTerminateLianmai");
+      },
+      GmChatBid(uid, name) {
+        //禁言
+        uni.showLoading();
+        console.log(uid ? { uid } : { name });
+        // return
+        this.sendSocketMsg("GmChatBid", uid ? { uid } : { name });
+      },
+
+      BackGmChatBid(res) {
+        //禁言的回调
+        console.log("禁言的回调", res);
+        this.checkBack(res).then(data => {
+          uni.showToast({
+            title: "禁言成功"
+          });
+        });
+      },
+      BackGmKickOutRoom(res) {
+        //踢出房间的回调
+        console.log("踢出房间的回调", JSON.stringify(res));
+        this.checkBack(res).then(data => {
+          uni.showToast({
+            title: "踢出房间成功"
+          });
+        });
+      },
+      GmKickOutRoom(uid, name) {
+        //管理员进行踢出房间操作
+        this.sendSocketMsg("GmKickOutRoom", uid ? { uid } : { name });
+      },
+      KickOut(res) {
+        console.log("被踢出房间的通知", JSON.stringify(res));
+        this.systemKickOut = true;
+        if (res.why == '直播已结束') {
+          this.liveData.state = 3
+        }
+        uni.showModal({
+          title: "提示",
+          content: res.why,
+          showCancel: false,
+          success: res => {
+            this.stopPlayingStream(this.streamID);
+            if (this.lmStreanID != "0") this.stopPlayingStream(this.lmStreanID);
+            if (this.lmUser.uid == this.userData.uid)
+              this.stopPublishingStream(false, true);
+            if (res.confirm) {
+              // this.leaveRoom()
+              uni.switchTab({
+                url: "/pages/index/index"
+              });
+            }
+          }
+        });
+      },
+      //点赞
+      addLike(likeNum) {
+        console.log("发送的点赞数量", likeNum);
+        this.sendSocketMsg("RequestLike", {
+          num: +likeNum
+        });
+      },
+      BroadCastLike(res) {
+        console.log("最终点赞数量", res.finalLikeNum);
+        this.liveData.likeNum = res.finalLikeNum;
+        this.informH5Action(
+          "hasOtherManClickLike",
+          [this.liveData.likeNum, res.list],
+          true
+        );
+      },
+      //-----------------发送礼物---------------
+      SendMyPoint(res) {
+        console.log("卡币数量变化", res);
+        this.point = res.point;
+        this.informH5Action("myPointGet", res.point);
+      },
+      sendGift(giftTpId, num, target = 0) {
+        console.log("礼物发送中");
+        this.UIClickFeedBack()
+        this.sendSocketMsg("RequestSendGift", {
+          giftTpId,
+          num,
+          target
+        });
+      },
+      SendGiftUpdated(res) {
+        console.log("免费礼物的通知", res);
+        this.informH5Action("freeGiftGet", res);
+      },
+      BackSendGift(res) {
+        //赠送礼物回调
+        console.log("赠送礼物回调", res);
+        this.checkBack(res)
+          .then(back => {
+            console.log("赠送礼物回调", res);
+            this.informH5Action("giftSendSocketBack", {
+              success: true
+            });
+          })
+          .catch(err => {
+            this.informH5Action("giftSendSocketBack", {
+              success: false,
+              msg: err.msg
+            });
+          });
+      },
+      BroadCastBilibili_Send(res) {
+        console.log("广播礼物", res);
+        this.informH5Action("BroadCastBilibili_Send", res, false);
+      },
+      //------------http接口能力----------
+      stopLive() {
+        const stopSign = Md5.hashStr(
+          "stopPushStream" + `_${this.roomID}_${this.streamID}`
+        );
+        request(
+          "funcApi/brodcast/third/1001/achor/stopPush/" + this.roomID,
+          {
+            sign: stopSign
+          },
+          "post"
+        )
+          .then(res => {
+            this.liveData.state = 3
+            console.log("结束直播");
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      async getUserProfile() {
+        try {
+          console.log('请求登录直播间');
+          const tokenRespone = await request(
+            "funcApi/brodcast/third/1001/user/login/" + this.roomID,
+            {
+              version: "1.0.0"
+            },
             "post"
           );
-          console.log("主播请求了开始直播的api");
+          console.log("直播间用户登录数据", tokenRespone);
+          this.websocket = tokenRespone.websocket;
+          this.subscribed = tokenRespone.subscribed
+          this.userData = tokenRespone.data;
+          this.streamID = tokenRespone.data.streamId;
+          // console.log("直播间用户登录数据66666666");
+          // console.log(JSON.stringify(tokenRespone));
+
+          // this.initSocket(true)
+          this.isLogin = true;
+        } catch (err) {
+          if (err == "禁止登录") {
+            uni.showModal({
+              title: "提示",
+              content: "你已被禁止登录该直播间",
+              showCancel: false,
+              success: res => {
+                if (res.confirm) {
+                  uni.switchTab({
+                    url: "/pages/index/index",
+                    fail: fail => {
+                      console.log("jumpFail", fail);
+                    }
+                  });
+                }
+              }
+            });
+          }
+          console.log(err);
         }
-        await this.startPublishingStream(streamID)
-      } catch (err) {
-        // uni.showToast({
-        //   title:err.m
+      },
+      //--------------直播API----------------------------
+      //创建实例
+      async createEngine() {
+        try {
+          const profile = {
+            appID: 839105423,
+            appSign:
+              "7266392b844ecfc13069c0ca68f22b621dbeb4de34b050b32fae98b22c34d502",
+            scenario: 2
+          };
+          this.engine = await getApp().globalData.ZegoExpressEngine.createEngineWithProfile(
+            profile
+          );
+          this.addEngineListen();
+        } catch (err) {
+          console.log("错误", err);
+        }
+      },
+      addEngineListen() {
+        for (let i = 0, len = this.engineListen.length; i < len; i++) {
+          if (!this[this.engineListen[i].name]) continue;
+          this.engine.on(
+            this.engineListen[i].name,
+            this[this.engineListen[i].name]
+          );
+          if (i == this.engineListen.length - 1) {
+            //这里的既构登录使用接口返回里的zgUid
+            //进行既构的直播间登录
+
+            this.loginRoom(
+              this.userData.zgUid,
+              this.userData.uname,
+              this.userData.token
+            );
+          }
+        }
+      },
+      async offEngineListen() {
+        await this.engine.logoutRoom(this.roomID);
+        this.engine = undefined;
+        await getApp().globalData.ZegoExpressEngine.destroyEngine();
+        // for (let i = 0, len = this.engineListen.length; i < len; i++) {
+        //   if (!this[this.engineListen[i].name]) continue;
+        //   this.engine.off(
+        //     this.engineListen[i].name,
+        //     this[this.engineListen[i].name]
+        //   );
+        //   if (i == this.engineListen.length - 1) {
+        //     console.log("监听器销毁完成");
+
+        //   }
+        // }
+      },
+      //流变化的回调
+      roomStreamUpdate(roomID, updateType, streamList) {
+        console.log(
+          `房间号${roomID},有${updateType == 0 ? "Add" : "del"}流,`,
+          streamList
+        );
+        // if()
+        streamList.forEach((item, index) => {
+          const { streamID } = item;
+          if (roomID != this.roomID) return;
+          if (streamID == this.streamID && updateType == 0) {
+            //主播开播
+            if (!this.isAnchor) this.startPlayingStream(streamID);
+          }
+          if (streamID == this.streamID && updateType == 1) {
+            //主播结束推流
+            this.stopPlayingStream(streamID);
+            //用户结束连麦
+            if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0")
+              this.SelfTerminateLianmai();
+            // this.stopPublishingStream(false,)
+          }
+          if (streamID != this.streamID && updateType == 0) {
+            //连麦流
+            // if (this.isAnchor && this.pullPattern === "mixer") {
+            //   //模式为混流模式
+            //   this.setMixerTask();
+            // }
+            console.log("有新增的连麦流,开始拉连麦流");
+            this.startPlayingStream(streamID);
+          }
+          if (streamID != this.streamID && updateType == 1) {
+            //连麦流结束推流
+            this.stopPlayingStream(streamID);
+          }
+        });
+      },
+      apiCalledResult(errorCode, funcName, info) {
+        if (errorCode == 0) {
+          console.log(`success:${funcName}:${info}`);
+        } else {
+          console.log(typeof errorCode);
+          console.error(`error:${errorCode},${funcName}:${info}`);
+          if(errorCode!==1002050){
+            uni.showModal({
+              title:`错误提示:${errorCode}`,
+              content:info
+            })
+          }
+        }
+      },
+      roomStreamExtraInfoUpdate(roomID, streamList) {
+        console.log("房价附加流变化");
+      },
+      roomStateUpdate(roomID, state, errorCode, extendedData){
+        console.log('房间状态变化',roomID,state,errorCode,extendedData);
+        if(state==0&&errorCode){
+          //断开与房间之间的连接
+          if(errorCode===1002050){
+            this.isOtherReplaceUser=true
+            uni.showModal({
+              title:'错误提示',
+              content:`已断开与直播间的连接,可能原因：可能是相同用户 ID 在其他设备登录。`,
+              showCancel:false,
+              success:({confirm})=>{
+                if(confirm) app.platform.pageBack()
+              }
+            })
+          }else{
+            uni.showModal({
+              title:`错误提示${errorCode}`,
+              content:`已断开与直播间的连接`,
+              showCancel:false,
+              success:({confirm})=>{
+                if(confirm) app.platform.pageBack()
+              }
+            })
+          }
+        }
+      },
+      publisherQualityUpdate(streamID, quality) {
+        console.log(quality);
+        this.pushFlowStamp=Math.round(+new Date()/1000)
+        if (quality.level == 3) {
+          uni.showToast({
+            title: "推流质量较差,请检查网络环境",
+            icon: "none",
+            duration: 2500
+          });
+        }
+        if (quality.level == 4) {
+          uni.showToast({
+            title: "推流中断,请检查是否连接至互联网",
+            icon: "none",
+            duration: 2500
+          });
+        }
+      },
+      playerQualityUpdate(streamID, quality) {
+        console.log('拉流质量', quality);
+      },
+      changeVideoConfig() {
+        this.videoConfig.index == 2
+          ? (this.videoConfig.index = 0)
+          : (this.videoConfig.index += 1);
+      },
+      //设置相机参数
+      async setVideoConfig() {
+        const config = this.videoConfig.config[this.videoConfig.index];
+        console.log("推流相机参数", config);
+
+        this.engine.setVideoConfig(config);
+        // this.engine.setCameraZoomFactor(1)//变焦
+        // this.engine.getCameraMaxZoomFactor().then(res=>{
+        //   console.log("最大变焦数getCameraMaxZoomFactor",res);
         // })
-      }
-    },
-    //开始推流
-    async startPublishingStream(streamID) {
-      try {
-        this.engine.startPublishingStream(streamID);
-        this.engine.getVideoConfig().then(res => {
-          console.log("相机参数获取的getVideoConfig", res);
-        })
-        if (streamID == this.streamID) {
-          this.onLive = true;
-          this.liveConfigToolShow = false;
-          this.liveConfigToolShow = false;
-          // this.startLive();
+      },
+      //推连麦流
+      pushLm() {
+        if (this.lmStreanID == "0") return;
+        this.engine.enableCamera(false); //关闭摄像头
+        this.startPublishingStream(this.lmStreanID);
+        // setTimeout(()=>{
+        //   // this.setMixerTask()
+        // },1000)
+      },
+      //登录房间
+
+      loginRoom(userID, userName, token) {
+        let user = {
+          userID,
+          userName
+        };
+        console.log(userID, userName, token);
+        this.engine
+          .loginRoom(this.roomID + "", user, {
+            token,
+            isUserStatusNotify: true
+          })
+          .then(res => {
+            console.log(
+              "成功登录即构的直播房间,当前直播状态",
+              this.liveData.state
+            );
+            this.initSocket();
+          });
+      },
+      destroyEngine() {
+        this.offEngineListen();
+      },
+      //预览
+      async startPreview() {
+        try {
+          await this.setVideoConfig();
+          await this.engine.startPreview();
+
+          this.engine.useFrontCamera(this.front);
+          this.engine.muteMicrophone(this.muted);
+          this.liveConfigToolShow = true;
+          this.onPreview = true;
+          console.log("开始预览");
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        uni.showToast({
-          title: "推流错误",
-          icon: "none"
+      },
+      //停止预览
+      async stopPreview() {
+        //   this.appendActionInfo("Stop Preview");
+        await this.engine.stopPreview();
+        this.onPreview = false;
+      },
+      //主播确认开始推流
+      async anchorConfirmPush(streamID) {
+        try {
+          //首次推流获取streamID,改变直播状态
+          if (this.liveData && this.liveData.state <= 1) {
+            await request(
+              "funcApi/brodcast/third/1001/achor/push/" + this.roomID,
+              {},
+              "post"
+            );
+            console.log("主播请求了开始直播的api");
+          }
+          await this.startPublishingStream(streamID)
+        } catch (err) {
+          // uni.showToast({
+          //   title:err.m
+          // })
+        }
+      },
+      //开始推流
+      async startPublishingStream(streamID) {
+        try {
+          this.engine.startPublishingStream(streamID);
+          this.engine.getVideoConfig().then(res => {
+            console.log("相机参数获取的getVideoConfig", res);
+          })
+          if (streamID == this.streamID) {
+            this.onLive = true;
+            this.liveConfigToolShow = false;
+            this.liveConfigToolShow = false;
+            this.pushFlowStamp=Math.round(+new Date()/1000)
+          }
+        } catch (err) {
+          uni.showToast({
+            title: "推流错误",
+            icon: "none"
+          });
+        }
+      },
+      //结束推流
+      async stopPublishingStream(isLeave, isLmStream = false) {
+        console.log("结束推流");
+        // this.appendActionInfo(`Stop Publishing Stream`);
+        await this.stopPreview();
+        await this.engine.stopPublishingStream();
+        if (!isLmStream) this.onLive = false;
+        if (isLeave) this.destroyEngine();
+        // this.stopPreview()
+      },
+      //拉流
+      async startPlayingStream(streamID) {
+        console.log("拉的流id", streamID);
+        //   this.appendActionInfo(`Start Playing Stream: streamID:${streamID}`);
+        try {
+          this.engine.startPlayingStream(streamID, {
+            resourceMode: 2 //3:RTC  2:L3
+          });
+          console.log("已经拉流了");
+          if (this.streamID == streamID) this.onLive = true;
+        } catch (err) {
+          console.log(err);
+        }
+      },
+      //结束拉流
+      stopPlayingStream(streamID) {
+        this.engine.stopPlayingStream(streamID);
+        if (this.streamID == streamID) this.onLive = false;
+      },
+      //混流任务
+      async setMixerTask() {
+        // return
+        // if (this.mixerTask) {
+        //   console.log("存在上一次混流任务");
+        //   await this.engine.stopMixerTask(this.mixerTask);
+        //   this.mixerTask = undefined;
+        // }
+        const videoConfig = this.videoConfig.config[this.videoConfig.index];
+        const { encodeWidth, encodeHeight } = videoConfig;
+        //主流
+        const mainInput = {
+          contentType: 1, //混合流内容类型 1:video;0:audio
+          streamID: this.streamID,
+          isAudioFocus: false,
+          layout: {
+            x: 0,
+            y: 0,
+            width: encodeWidth,
+            height: encodeHeight / 2
+          }
+        };
+        //连麦流
+        const lmInput = {
+          contentType: 1,
+          streamID: this.lmStreanID,
+          isAudioFocus: false,
+          layout: {
+            x: 0,
+            y: encodeHeight / 2,
+            width: encodeWidth,
+            height: encodeHeight / 2
+          }
+        };
+        //混流任务对象
+        this.mixerTask = {
+          taskID: this.streamID + "_" + this.lmStreanID,
+          videoConfig: {
+            fps: 30,
+            width: encodeWidth,
+            height: encodeHeight
+          },
+          inputList: [], //混流输入对象
+          outputList: [{ target: this.streamID + '_' + this.lmStreanID }], //混流输出
+          enableSoundLevel: true
+        };
+        this.mixerTask.inputList.push(mainInput);
+        this.mixerTask.inputList.push(lmInput);
+        // if (this.isAnchor) this.mixerTask.inputList.push(mainInput);
+        // if (!this.isAnchor) this.mixerTask.inputList.push(lmInput);
+        console.log("混流对象任务", this.mixerTask);
+        let mixerRes = await this.engine.startMixerTask(this.mixerTask); //开始混流任务
+        if (mixerRes.errorCode) {
+          uni.showToast({
+            title: `error:${mixerRes.errorCode}`,
+            icon: 'none'
+          })
+          return
+        }
+        console.log("混流成功", mixerRes);
+      },
+      //设置镜像
+      setVideoImage() {
+        this.engine.setVideoMirrorMode(1);
+      },
+      handleMessage(event) {
+        //接收webViewPostMessage
+        const { data } = event.detail;
+        const resData = data[0];
+        const paramsIsArray = resData.params instanceof Array;
+        if (!this[resData.action]) return;
+        paramsIsArray && resData.isMoreArguments
+          ? this[resData.action](...resData.params)
+          : this[resData.action](resData.params);
+      },
+      //调用h5Vue内部methods方法
+      informH5Action(actionName, params = "", isMoreArguments = false) {
+        const sendParams = JSON.stringify({
+          params: params
         });
-      }
-    },
-    //结束推流
-    async stopPublishingStream(isLeave, isLmStream = false) {
-      console.log("结束推流");
-      // this.appendActionInfo(`Stop Publishing Stream`);
-      await this.stopPreview();
-      await this.engine.stopPublishingStream();
-      if (!isLmStream) this.onLive = false;
-      if (isLeave) this.destroyEngine();
-      // this.stopPreview()
-    },
-    //拉流
-    async startPlayingStream(streamID) {
-      console.log("拉的流id", streamID);
-      //   this.appendActionInfo(`Start Playing Stream: streamID:${streamID}`);
-      try {
-        this.engine.startPlayingStream(streamID, {
-          resourceMode: 2 //3:RTC  2:L3
-        });
-        console.log("已经拉流了");
-        if (this.streamID == streamID) this.onLive = true;
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    //结束拉流
-    stopPlayingStream(streamID) {
-      this.engine.stopPlayingStream(streamID);
-      if (this.streamID == streamID) this.onLive = false;
-    },
-    //混流任务
-    async setMixerTask() {
-      // return
-      // if (this.mixerTask) {
-      //   console.log("存在上一次混流任务");
-      //   await this.engine.stopMixerTask(this.mixerTask);
-      //   this.mixerTask = undefined;
-      // }
-      const videoConfig = this.videoConfig.config[this.videoConfig.index];
-      const { encodeWidth, encodeHeight } = videoConfig;
-      //主流
-      const mainInput = {
-        contentType: 1, //混合流内容类型 1:video;0:audio
-        streamID: this.streamID,
-        isAudioFocus: false,
-        layout: {
-          x: 0,
-          y: 0,
-          width: encodeWidth,
-          height: encodeHeight / 2
+        this.webView.evalJs(
+          `actionSet("${actionName}",${sendParams},${isMoreArguments})`
+        );
+        console.log("发送给h5l ");
+      },
+      showPack(key) {
+        if (key == "hbShow" && !this.honbao.list.length) {
+          this.getRedPackList(); //后续放到click事件中
         }
-      };
-      //连麦流
-      const lmInput = {
-        contentType: 1,
-        streamID: this.lmStreanID,
-        isAudioFocus: false,
-        layout: {
-          x: 0,
-          y: encodeHeight / 2,
-          width: encodeWidth,
-          height: encodeHeight / 2
+        this[key] = true;
+      },
+      evalMethods() {
+        if (!this.canEval) {
+          setTimeout(() => {
+            this.evalMethods();
+          }, 50);
+          return;
         }
-      };
-      //混流任务对象
-      this.mixerTask = {
-        taskID: this.streamID + "_" + this.lmStreanID,
-        videoConfig: {
-          fps: 30,
-          width: encodeWidth,
-          height: encodeHeight
-        },
-        inputList: [], //混流输入对象
-        outputList: [{ target: this.streamID + '_' + this.lmStreanID }], //混流输出
-        enableSoundLevel: true
-      };
-      this.mixerTask.inputList.push(mainInput);
-      this.mixerTask.inputList.push(lmInput);
-      // if (this.isAnchor) this.mixerTask.inputList.push(mainInput);
-      // if (!this.isAnchor) this.mixerTask.inputList.push(lmInput);
-      console.log("混流对象任务", this.mixerTask);
-      let mixerRes = await this.engine.startMixerTask(this.mixerTask); //开始混流任务
-      if (mixerRes.errorCode) {
-        uni.showToast({
-          title: `error:${mixerRes.errorCode}`,
-          icon: 'none'
-        })
-        return
+        console.log("eval成功");
+        this.webView.evalJs(`setFuncApi('${app.funcApiDomain}')`);
+        this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`);
+        this.webView.evalJs(
+          `setAllData(${JSON.stringify({
+            ...this.liveData,
+            ...this.merchantMsg,
+            ...this.userData,
+            gm: this.gm,
+            point: this.point,
+            roomID: this.roomID,
+            applyLianmai: this.applyLianmai,
+            isAnchor: this.isAnchor
+          })})`
+        );
+        this.informH5Action("isGM", this.gm, false);
+      },
+      canEvalAction(canEval) {
+        console.log("webView页加载了可以eval了");
+        this.canEval = true;
+      },
+      share() {
+        this.shareShow = true;
       }
-      console.log("混流成功", mixerRes);
-    },
-    //设置镜像
-    setVideoImage() {
-      this.engine.setVideoMirrorMode(1);
-    },
-    handleMessage(event) {
-      //接收webViewPostMessage
-      const { data } = event.detail;
-      const resData = data[0];
-      const paramsIsArray = resData.params instanceof Array;
-      if (!this[resData.action]) return;
-      paramsIsArray && resData.isMoreArguments
-        ? this[resData.action](...resData.params)
-        : this[resData.action](resData.params);
-    },
-    //调用h5Vue内部methods方法
-    informH5Action(actionName, params = "", isMoreArguments = false) {
-      const sendParams = JSON.stringify({
-        params: params
-      });
-      if(!this.canEval){
-        setTimeout(()=>{
-          this.informH5Action(actionName,params,isMoreArguments)
-        },500)
-        return
-      }
-      this.webView.evalJs(
-        `actionSet("${actionName}",${sendParams},${isMoreArguments})`
-      );
-      console.log("发送给h5l ");
-    },
-    showPack(key) {
-      if (key == "hbShow" && !this.honbao.list.length) {
-        this.getRedPackList(); //后续放到click事件中
-      }
-      this[key] = true;
-    },
-    evalMethods() {
-      if (!this.canEval) {
-        setTimeout(() => {
-          this.evalMethods();
-        }, 50);
-        return;
-      }
-      console.log("eval成功");
-      this.webView.evalJs(`setFuncApi('${app.funcApiDomain}')`);
-      this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`);
-      this.webView.evalJs(
-        `setAllData(${JSON.stringify({
-          ...this.liveData,
-          ...this.merchantMsg,
-          ...this.userData,
-          gm: this.gm,
-          point: this.point,
-          roomID: this.roomID,
-          applyLianmai: this.applyLianmai,
-          isAnchor: this.isAnchor
-        })})`
-      );
-      this.informH5Action("isGM", this.gm, false);
-    },
-    canEvalAction(canEval) {
-      console.log("webView页加载了可以eval了");
-      this.canEval = true;
-    },
-    share() {
-      this.shareShow = true;
     }
-  }
-};
+  };
 </script>
 
 <style>
-.webView {
-  position: fixed;
-  top: 0;
-  width: 750rpx;
-  height: 100%;
-  /* background-color: red; */
-}
+  .webView {
+    position: fixed;
+    top: 0;
+    width: 750rpx;
+    height: 100%;
+    /* background-color: red; */
+  }
 
-.maskVideo {
-  background-image: -webkit-linear-gradient(top,
-      rgba(0, 0, 0, 0) 2%,
-      rgba(0, 0, 0, 1) 30%);
-}
+  .maskVideo {
+    background-image: -webkit-linear-gradient(top,
+        rgba(0, 0, 0, 0) 2%,
+        rgba(0, 0, 0, 1) 30%);
+  }
 
-.liveContainer {
-  font-family: PingFang SC;
-  width: 750rpx;
-  overflow: hidden;
-  align-items: center;
-  background-color: black;
-}
+  .liveContainer {
+    font-family: PingFang SC;
+    width: 750rpx;
+    overflow: hidden;
+    align-items: center;
+    background-color: black;
+  }
 
-.none {
-  opacity: 0;
-}
+  .none {
+    opacity: 0;
+  }
 
-.show {
-  opacity: 1;
-}
+  .show {
+    opacity: 1;
+  }
 
-.userView {
-  position: fixed;
-  width: 750rpx;
-}
+  .userView {
+    position: fixed;
+    width: 750rpx;
+  }
 
-.liveSet {
-  width: 750rpx;
-  background: rgba(0, 0, 0, 0.68);
-  position: fixed;
-  bottom: 0;
-  padding: 0 73rpx;
-  align-items: center;
-}
+  .liveSet {
+    width: 750rpx;
+    background: rgba(0, 0, 0, 0.68);
+    position: fixed;
+    bottom: 0;
+    padding: 0 73rpx;
+    align-items: center;
+  }
 
-.liveSetBlock {
-  width: 630rpx;
-  /* background-color: red; */
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 70rpx;
-}
+  .liveSetBlock {
+    width: 630rpx;
+    /* background-color: red; */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 70rpx;
+  }
 
-.liveSetImg {
-  width: 52rpx;
-  height: 36rpx;
-}
+  .liveSetImg {
+    width: 52rpx;
+    height: 36rpx;
+  }
 
-.liveSetText {
-  font-size: 29rpx;
-  font-family: PingFang SC;
-  font-weight: 400;
-  color: #ffffff;
-  margin-top: 12rpx;
-}
+  .liveSetText {
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: 12rpx;
+  }
 
-.redText {
-  color: #ef3333;
-}
+  .redText {
+    color: #ef3333;
+  }
 
-.confirmStart {
-  width: 282rpx;
-  height: 77rpx;
-  background: #ef3333;
-  border-radius: 5rpx;
-  text-align: center;
-  font-size: 33rpx;
-  font-family: PingFang SC;
-  font-weight: 600;
-  color: #ffffff;
-  line-height: 77rpx;
-  margin-top: 62rpx;
-}
+  .confirmStart {
+    width: 282rpx;
+    height: 77rpx;
+    background: #ef3333;
+    border-radius: 5rpx;
+    text-align: center;
+    font-size: 33rpx;
+    font-family: PingFang SC;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 77rpx;
+    margin-top: 62rpx;
+  }
 
-.topRight {
-  flex-direction: row;
-  align-items: center;
-}
+  .topRight {
+    flex-direction: row;
+    align-items: center;
+  }
 
-.onlineNum {
-  color: #fffefe;
-  font-size: 24rpx;
-  margin-right: 20rpx;
-}
+  .onlineNum {
+    color: #fffefe;
+    font-size: 24rpx;
+    margin-right: 20rpx;
+  }
 
-.overLive {
-  width: 73rpx;
-  height: 73rpx;
-  background: rgba(0, 0, 0, 0.28);
-  border-radius: 50%;
-  text-align: center;
-  line-height: 73rpx;
-  font-size: 24rpx;
-  font-family: PingFang SC;
-  font-weight: bold;
-  color: #fffefe;
-  /* position: fixed; */
-  /* right: 27rpx; */
-}
+  .overLive {
+    width: 73rpx;
+    height: 73rpx;
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 73rpx;
+    font-size: 24rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #fffefe;
+    /* position: fixed; */
+    /* right: 27rpx; */
+  }
 
-.topClose {
-  width: 35rpx;
-  height: 35rpx;
-}
+  .topClose {
+    width: 35rpx;
+    height: 35rpx;
+  }
 
-.blur {
-  position: fixed;
-  width: 750rpx;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-}
+  .blur {
+    position: fixed;
+    width: 750rpx;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
 
-.maskTips {
-  position: fixed;
-  top: 0;
-  align-items: center;
-  width: 750rpx;
-  background-color: rgba(0, 0, 0, 0);
-  /* background: red; */
-  top: 328rpx;
-}
+  .maskTips {
+    position: fixed;
+    top: 0;
+    align-items: center;
+    width: 750rpx;
+    background-color: rgba(0, 0, 0, 0);
+    /* background: red; */
+    top: 328rpx;
+  }
 
-.liveTitle {
-  font-size: 38rpx;
-  font-family: PingFang SC;
-  font-weight: 400;
-  color: #ffffff;
-  /* margin-top: 382rpx; */
-  /* position: fixed; */
-}
+  .liveTitle {
+    font-size: 38rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+    /* margin-top: 382rpx; */
+    /* position: fixed; */
+  }
 
-.liveTips {
-  font-size: 29rpx;
-  font-family: PingFang SC;
-  font-weight: 400;
-  color: #c7c7c7;
-  margin-top: 50rpx;
-  margin-bottom: 6rpx;
-}
+  .liveTips {
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #c7c7c7;
+    margin-top: 50rpx;
+    margin-bottom: 6rpx;
+  }
 
-.liveCountDown {
-  font-size: 63rpx;
-  font-family: PingFang SC;
-  font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 30rpx;
-  /* letter-spacing: 3rpx; */
-}
+  .liveCountDown {
+    font-size: 63rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 30rpx;
+    /* letter-spacing: 3rpx; */
+  }
 
-.playStart {
-  width: 220rpx;
-  height: 59rpx;
-  background: #e05750;
-  border-radius: 3rpx;
-  text-align: center;
-  line-height: 59rpx;
-  font-size: 33rpx;
-  font-family: PingFang SC;
-  font-weight: 400;
-  color: #fffefe;
-}
+  .playStart {
+    width: 220rpx;
+    height: 59rpx;
+    background: #e05750;
+    border-radius: 3rpx;
+    text-align: center;
+    line-height: 59rpx;
+    font-size: 33rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #fffefe;
+  }
 
-.subscribedTips {
-  width: 282rpx;
-  height: 77rpx;
-  margin-top: 20rpx;
-}
+  .subscribedTips {
+    width: 282rpx;
+    height: 77rpx;
+    margin-top: 20rpx;
+  }
 
-.liveBackCover {
-  position: fixed;
-  width: 750rpx;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
+  .liveBackCover {
+    position: fixed;
+    width: 750rpx;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 
-.nomTxt {
-  font-size: 21rpx;
+  .nomTxt {
+    font-size: 21rpx;
 
-  font-weight: 400;
-  color: #ffffff;
-}
+    font-weight: 400;
+    color: #ffffff;
+  }
 
-.maskPack {
-  position: fixed;
-  z-index: 999;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  align-items: center;
+  .maskPack {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
 
-}
+  }
 
-.hbPack {
-  width: 475.3rpx;
-  height: 711.2rpx;
-  /* background-color: red; */
-  margin-top: 335rpx;
-  align-items: center;
-}
+  .hbPack {
+    width: 475.3rpx;
+    height: 711.2rpx;
+    /* background-color: red; */
+    margin-top: 335rpx;
+    align-items: center;
+  }
 
-.close {
-  width: 53rpx;
-  height: 53rpx;
-  /* margin-top: 80rpx; */
-  bottom: 0;
-  position: absolute;
-}
+  .close {
+    width: 53rpx;
+    height: 53rpx;
+    /* margin-top: 80rpx; */
+    bottom: 0;
+    position: absolute;
+  }
 
-.packBg {
-  width: 475.3rpx;
-  height: 620.6rpx;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
+  .packBg {
+    width: 475.3rpx;
+    height: 620.6rpx;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
-.packAvatar {
-  width: 90rpx;
-  height: 90rpx;
-  border-radius: 50%;
-  margin-top: 77rpx;
-}
+  .packAvatar {
+    width: 90rpx;
+    height: 90rpx;
+    border-radius: 50%;
+    margin-top: 77rpx;
+  }
 
-.packName {
-  font-size: 29rpx;
-  font-weight: 500;
-  color: #ffffff;
-  margin-top: 21rpx;
-}
+  .packName {
+    font-size: 29rpx;
+    font-weight: 500;
+    color: #ffffff;
+    margin-top: 21rpx;
+  }
 
-.qiangBlock {
-  width: 166rpx;
-  height: 169rpx;
-  /* background-color: red; */
-  margin-top: 110rpx;
-  align-items: center;
-  justify-content: center;
-}
+  .qiangBlock {
+    width: 166rpx;
+    height: 169rpx;
+    /* background-color: red; */
+    margin-top: 110rpx;
+    align-items: center;
+    justify-content: center;
+  }
 
-.packS {
-  font-size: 53rpx;
-  font-family: PingFang SC;
-  font-weight: bold;
-  color: #d32e2e;
-  text-align: center;
-}
+  .packS {
+    font-size: 53rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #d32e2e;
+    text-align: center;
+  }
 
-.packGet {
-  font-size: 28rpx;
-  font-family: PingFang SC;
-  font-weight: 400;
-  text-align: center;
-  color: #d32e2e;
-  /* bottom:10rpx; */
-}
+  .packGet {
+    font-size: 28rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    text-align: center;
+    color: #d32e2e;
+    /* bottom:10rpx; */
+  }
 
-.packPrice {
-  flex-direction: row;
-  align-items: center;
-  margin-top: 21rpx;
-}
+  .packPrice {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 21rpx;
+  }
 
-.thanksButton {
-  width: 352rpx;
-  height: 81rpx;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  bottom: 150rpx;
-  /* margin-top: 70rpx; */
-}
+  .thanksButton {
+    width: 352rpx;
+    height: 81rpx;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 150rpx;
+    /* margin-top: 70rpx; */
+  }
 
-.iosThanksButton {
-  margin-top: 50rpx;
-}
+  .iosThanksButton {
+    margin-top: 50rpx;
+  }
 
-.sqView {
-  width: 360rpx;
-  height: 350rpx;
-  /* background-color: red; */
-  margin-top: 39rpx;
-}
+  .sqView {
+    width: 360rpx;
+    height: 350rpx;
+    /* background-color: red; */
+    margin-top: 39rpx;
+  }
 
-.sqItem {
-  flex-direction: row;
-  margin-bottom: 21rpx;
-  align-items: center;
-}
+  .sqItem {
+    flex-direction: row;
+    margin-bottom: 21rpx;
+    align-items: center;
+  }
 
-.fixedInput {
-  position: fixed;
-  opacity: 1;
-  width: 750rpx;
-  height: 100rpx;
-  background-color: #fff;
-  flex-direction: row;
-  align-items: center;
-  transition-property: transform;
-  transition-duration: 0.25s;
-  transition-delay: 0s;
-  justify-content: space-between;
-  transition-timing-function: linear;
-  padding: 0 20rpx;
-  /* transform: translateY(0) */
-}
+  .fixedInput {
+    position: fixed;
+    opacity: 1;
+    width: 750rpx;
+    height: 100rpx;
+    background-color: #fff;
+    flex-direction: row;
+    align-items: center;
+    transition-property: transform;
+    transition-duration: 0.25s;
+    transition-delay: 0s;
+    justify-content: space-between;
+    transition-timing-function: linear;
+    padding: 0 20rpx;
+    /* transform: translateY(0) */
+  }
 
-.showInput {
-  border-radius: 30rpx;
-  width: 540rpx;
-  /* background-color: red; */
-  background-color: #f3f3f5;
-  font-size: 24rpx;
-  padding: 0 30rpx;
-  height: 60rpx;
-}
+  .showInput {
+    border-radius: 30rpx;
+    width: 540rpx;
+    /* background-color: red; */
+    background-color: #f3f3f5;
+    font-size: 24rpx;
+    padding: 0 30rpx;
+    height: 60rpx;
+  }
 
-.inputSubmit {
-  width: 140rpx;
-  height: 60rpx;
-  background-image: linear-gradient(to bottom, #ef3333, #eb6141);
-  border-radius: 25px;
-  margin-left: 30rpx;
-  color: #fff;
-  font-size: 30rpx;
-  text-align: center;
-  line-height: 60rpx;
-  text-align: center;
-}
+  .inputSubmit {
+    width: 140rpx;
+    height: 60rpx;
+    background-image: linear-gradient(to bottom, #ef3333, #eb6141);
+    border-radius: 25px;
+    margin-left: 30rpx;
+    color: #fff;
+    font-size: 30rpx;
+    text-align: center;
+    line-height: 60rpx;
+    text-align: center;
+  }
 
-.bottomContainer {
-  position: fixed;
-  height: 500rpx;
-  background-color: red;
-  padding: 0 24rpx;
-  flex-direction: column;
-  justify-content: flex-end;
-}
+  .bottomContainer {
+    position: fixed;
+    height: 500rpx;
+    background-color: red;
+    padding: 0 24rpx;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
 
-.bottomChatContainer {
-  position: absolute;
-  bottom: 90rpx;
-  background-color: yellow;
-  height: 370rpx;
-  margin-bottom: 33rpx;
-}
+  .bottomChatContainer {
+    position: absolute;
+    bottom: 90rpx;
+    background-color: yellow;
+    height: 370rpx;
+    margin-bottom: 33rpx;
+  }
 
-.chartBlock {
-  /* height: 57rpx; */
-  background: rgba(0, 0, 0, 0.28);
-  border-radius: 29rpx;
-  flex-direction: row;
-  padding: 12rpx 10rpx;
-  justify-content: flex-start;
-  /* max-width: 580rpx; */
-}
+  .chartBlock {
+    /* height: 57rpx; */
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: 29rpx;
+    flex-direction: row;
+    padding: 12rpx 10rpx;
+    justify-content: flex-start;
+    /* max-width: 580rpx; */
+  }
 
-.chartImg {
-  width: 46rpx;
-  height: 46rpx;
-  background: #ffffff;
-  border-radius: 50%;
-  margin-right: 4rpx;
-}
+  .chartImg {
+    width: 46rpx;
+    height: 46rpx;
+    background: #ffffff;
+    border-radius: 50%;
+    margin-right: 4rpx;
+  }
 
-.chartMsg {
-  padding: 6rpx 10rpx;
-  /* margin: 10rpx 0; */
-  /* border-radius: 10rpx; */
-  /* background-color: rgba(0, 0, 0, 0.3); */
-}
+  .chartMsg {
+    padding: 6rpx 10rpx;
+    /* margin: 10rpx 0; */
+    /* border-radius: 10rpx; */
+    /* background-color: rgba(0, 0, 0, 0.3); */
+  }
 
-.lin-msg-name {
-  font-size: 26rpx;
-  color: #a1e4fc;
-  background-color: rgba(0, 0, 0, 0);
-}
+  .lin-msg-name {
+    font-size: 26rpx;
+    color: #a1e4fc;
+    background-color: rgba(0, 0, 0, 0);
+  }
 
-.lin-msg-content {
-  font-size: 26rpx;
-  color: #ffffff;
-  background-color: rgba(0, 0, 0, 0);
-}
+  .lin-msg-content {
+    font-size: 26rpx;
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0);
+  }
 
-/* .chartName {
+  /* .chartName {
     font-size: 27rpx;
     font-family: PingFang SC;
     font-weight: 500;
@@ -2600,404 +2635,404 @@ export default {
     color: #fff;
   } */
 
-.bottomInputContainer {
-  width: 704rpx;
-  justify-content: space-between;
-  flex-direction: row;
-}
+  .bottomInputContainer {
+    width: 704rpx;
+    justify-content: space-between;
+    flex-direction: row;
+  }
 
-.input {
-  width: 324rpx;
-  height: 64rpx;
-  background: rgba(0, 0, 0, 0.28);
-  border-radius: 32rpx;
-  font-size: 25rpx;
-  font-family: PingFang SC;
-  font-weight: 400;
-  line-height: 64rpx;
-  padding-left: 38rpx;
-  color: #c7c7c7;
-  lines: 1;
-  text-overflow: ellipsis;
-}
+  .input {
+    width: 324rpx;
+    height: 64rpx;
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: 32rpx;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    line-height: 64rpx;
+    padding-left: 38rpx;
+    color: #c7c7c7;
+    lines: 1;
+    text-overflow: ellipsis;
+  }
 
-.rightMenu {
-  flex-direction: row;
-  align-items: center;
-}
+  .rightMenu {
+    flex-direction: row;
+    align-items: center;
+  }
 
-.menuImg {
-  width: 50rpx;
-  height: 48rpx;
-  margin-left: 40rpx;
-}
+  .menuImg {
+    width: 50rpx;
+    height: 48rpx;
+    margin-left: 40rpx;
+  }
 
-.fixedPackContainer {
-  height: 68rpx;
-  /* margin-top: 37rpx; */
-  position: absolute;
-  flex-direction: row;
-  align-items: center;
-  position: fixed;
-  left: 29rpx;
-  /* top: 100rpx; */
-}
+  .fixedPackContainer {
+    height: 68rpx;
+    /* margin-top: 37rpx; */
+    position: absolute;
+    flex-direction: row;
+    align-items: center;
+    position: fixed;
+    left: 29rpx;
+    /* top: 100rpx; */
+  }
 
-.fixedPack {
-  width: 54rpx;
-  height: 75rpx;
-  margin-right: 32rpx;
-  /* background-color: red; */
-}
+  .fixedPack {
+    width: 54rpx;
+    height: 75rpx;
+    margin-right: 32rpx;
+    /* background-color: red; */
+  }
 
-.floatPackAvatar {
-  width: 26rpx;
-  height: 26rpx;
-  border-radius: 50%;
-  position: absolute;
-  left: 16rpx;
-  top: 18rpx;
-}
+  .floatPackAvatar {
+    width: 26rpx;
+    height: 26rpx;
+    border-radius: 50%;
+    position: absolute;
+    left: 16rpx;
+    top: 18rpx;
+  }
 
-.surplusNum {
-  width: 24rpx;
-  height: 24rpx;
-  font-size: 22rpx;
-  color: #fff;
-  border-radius: 50%;
-  background-color: #e89229;
-  text-align: center;
-  position: absolute;
-  right: 0;
-  top: 0rpx;
-  line-height: 24rpx;
-}
+  .surplusNum {
+    width: 24rpx;
+    height: 24rpx;
+    font-size: 22rpx;
+    color: #fff;
+    border-radius: 50%;
+    background-color: #e89229;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    top: 0rpx;
+    line-height: 24rpx;
+  }
 
-.packCountDown {
-  font-size: 17rpx;
-  font-family: PingFang SC;
-  font-weight: 400;
-  color: #ffffff;
-  line-height: 83rpx;
-  text-align: center;
-  line-height: 18rpx;
-  width: 54rpx;
-  height: 18rpx;
-  background: rgba(19, 18, 25, 0.63);
-  border-radius: 8rpx;
-  position: absolute;
-  bottom: 4rpx;
-  left: 2rpx;
-}
+  .packCountDown {
+    font-size: 17rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 83rpx;
+    text-align: center;
+    line-height: 18rpx;
+    width: 54rpx;
+    height: 18rpx;
+    background: rgba(19, 18, 25, 0.63);
+    border-radius: 8rpx;
+    position: absolute;
+    bottom: 4rpx;
+    left: 2rpx;
+  }
 
-.giftContainer {
-  width: 750rpx;
-  padding: 0 22rpx;
-  height: 440rpx;
-  margin-top: 27rpx;
-  /* background-color: red; */
-  flex-direction: row;
-  flex-wrap: wrap;
-}
+  .giftContainer {
+    width: 750rpx;
+    padding: 0 22rpx;
+    height: 440rpx;
+    margin-top: 27rpx;
+    /* background-color: red; */
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 
-.giftItem {
-  width: 170rpx;
-  height: 263rpx;
-  background-color: rgba(255, 255, 255, 0.28);
-  border-radius: 3rpx;
-  margin-right: 8rpx;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 9rpx;
-  /* box-sizing: border-box; */
-}
+  .giftItem {
+    width: 170rpx;
+    height: 263rpx;
+    background-color: rgba(255, 255, 255, 0.28);
+    border-radius: 3rpx;
+    margin-right: 8rpx;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 9rpx;
+    /* box-sizing: border-box; */
+  }
 
-.giftImg {
-  width: 144rpx;
-  height: 144rpx;
-  border-radius: 3rpx;
-}
+  .giftImg {
+    width: 144rpx;
+    height: 144rpx;
+    border-radius: 3rpx;
+  }
 
-.giftName {
-  font-size: 26rpx;
+  .giftName {
+    font-size: 26rpx;
 
-  font-weight: 600;
-  color: #fff;
-  margin: 8rpx 0;
-}
+    font-weight: 600;
+    color: #fff;
+    margin: 8rpx 0;
+  }
 
-.giftPrice {
-  width: 170rpx;
-  height: 43rpx;
-  /* background-color: #fe5432; */
-  line-height: 43rpx;
-  text-align: center;
-  font-size: 24rpx;
+  .giftPrice {
+    width: 170rpx;
+    height: 43rpx;
+    /* background-color: #fe5432; */
+    line-height: 43rpx;
+    text-align: center;
+    font-size: 24rpx;
 
-  font-weight: 400;
-  color: #fff;
-}
+    font-weight: 400;
+    color: #fff;
+  }
 
-.giftFree {
-  width: 60rpx;
-  height: 32rpx;
-  background: #f5c125;
-  border-radius: 3rpx;
-  font-size: 20rpx;
+  .giftFree {
+    width: 60rpx;
+    height: 32rpx;
+    background: #f5c125;
+    border-radius: 3rpx;
+    font-size: 20rpx;
 
-  font-weight: 400;
-  color: #ffffff;
-  text-align: center;
-  position: absolute;
-  left: 0;
-  top: 0;
-  line-height: 32rpx;
-}
+    font-weight: 400;
+    color: #ffffff;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+    line-height: 32rpx;
+  }
 
-.freeNum {
-  width: 32rpx;
-  height: 32rpx;
-  background: #dc4931;
-  border-radius: 50%;
-  text-align: center;
-  right: 0;
-  top: 0;
-  line-height: 32rpx;
-  position: absolute;
-  font-size: 20rpx;
+  .freeNum {
+    width: 32rpx;
+    height: 32rpx;
+    background: #dc4931;
+    border-radius: 50%;
+    text-align: center;
+    right: 0;
+    top: 0;
+    line-height: 32rpx;
+    position: absolute;
+    font-size: 20rpx;
 
-  font-weight: 400;
-  color: #ffffff;
-}
+    font-weight: 400;
+    color: #ffffff;
+  }
 
-.f29 {
-  font-size: 29rpx;
-}
+  .f29 {
+    font-size: 29rpx;
+  }
 
-.bigFont {
-  font-size: 31rpx;
+  .bigFont {
+    font-size: 31rpx;
 
-  font-weight: 600;
-}
+    font-weight: 600;
+  }
 
-.bg {
-  position: absolute;
-}
+  .bg {
+    position: absolute;
+  }
 
-.flexCenter {
-  justify-content: center;
-  align-items: center;
-}
+  .flexCenter {
+    justify-content: center;
+    align-items: center;
+  }
 
-.row {
-  flex-direction: row;
-}
+  .row {
+    flex-direction: row;
+  }
 
-.video {
-  width: 750rpx;
-  /* height: ; */
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
+  .video {
+    width: 750rpx;
+    /* height: ; */
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 
-.top {
-  position: fixed;
-  /* width: 750rpx; */
-  padding: 0 29rpx;
-  width: 750rpx;
-  background-color: rgba(0, 0, 0, 0);
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
+  .top {
+    position: fixed;
+    /* width: 750rpx; */
+    padding: 0 29rpx;
+    width: 750rpx;
+    background-color: rgba(0, 0, 0, 0);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-.submit {
-  width: 702rpx;
-  height: 92rpx;
-  background-color: #ff404d;
-  border-radius: 5rpx;
-  /* margin: 0 auto; */
-  /* align-content: center; */
-}
+  .submit {
+    width: 702rpx;
+    height: 92rpx;
+    background-color: #ff404d;
+    border-radius: 5rpx;
+    /* margin: 0 auto; */
+    /* align-content: center; */
+  }
 
-.publicTop {
-  height: 97rpx;
-  width: 750rpx;
+  .publicTop {
+    height: 97rpx;
+    width: 750rpx;
 
-  border-bottom: 1rpx solid rgba(232, 232, 232, 0.18);
-  align-items: center;
-  justify-content: center;
-}
+    border-bottom: 1rpx solid rgba(232, 232, 232, 0.18);
+    align-items: center;
+    justify-content: center;
+  }
 
-.publicTopText {
-  font-size: 33rpx;
+  .publicTopText {
+    font-size: 33rpx;
 
-  font-weight: 600;
-  color: #ffffff;
-}
+    font-weight: 600;
+    color: #ffffff;
+  }
 
-.hbContainer {
-  width: 750rpx;
-  padding: 0 24rpx;
-  height: 465rpx;
-  margin-top: 31rpx;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
+  .hbContainer {
+    width: 750rpx;
+    padding: 0 24rpx;
+    height: 465rpx;
+    margin-top: 31rpx;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 
-.scroll-Y {
-  /* width: 750rpx; */
-  /* padding: 0 24rpx; */
-  /* height: 465rpx; */
-  /* margin-top: 31rpx; */
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
+  .scroll-Y {
+    /* width: 750rpx; */
+    /* padding: 0 24rpx; */
+    /* height: 465rpx; */
+    /* margin-top: 31rpx; */
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 
-.price {
-  flex-direction: row;
-  align-items: center;
-}
+  .price {
+    flex-direction: row;
+    align-items: center;
+  }
 
-.packItem {
-  width: 335rpx;
-  height: 145rpx;
-  font-size: 29rpx;
+  .packItem {
+    width: 335rpx;
+    height: 145rpx;
+    font-size: 29rpx;
 
-  font-weight: 400;
-  color: #ffffff;
-  margin-bottom: 15rpx;
-  display: flex;
-  align-items: center;
-  /* background-color: red; */
-  justify-content: space-between;
-  position: relative;
-  flex-direction: row;
-  justify-content: space-between;
-}
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 15rpx;
+    display: flex;
+    align-items: center;
+    /* background-color: red; */
+    justify-content: space-between;
+    position: relative;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-.packItem-left {
-  width: 190rpx;
-  height: 145rpx;
-}
+  .packItem-left {
+    width: 190rpx;
+    height: 145rpx;
+  }
 
-.anchorPoint {
-  width: 43rpx;
-  height: 21rpx;
-  background: #232323;
-  border-radius: 10rpx;
-  position: absolute;
-  right: 0rpx;
-  top: 0rpx;
-  z-index: 9;
-}
+  .anchorPoint {
+    width: 43rpx;
+    height: 21rpx;
+    background: #232323;
+    border-radius: 10rpx;
+    position: absolute;
+    right: 0rpx;
+    top: 0rpx;
+    z-index: 9;
+  }
 
-.packItem-right {
-  width: 145rpx;
-  height: 145rpx;
-  flex-direction: column;
-}
+  .packItem-right {
+    width: 145rpx;
+    height: 145rpx;
+    flex-direction: column;
+  }
 
-.pack {
-  width: 120rpx;
-  height: 124rpx;
-}
+  .pack {
+    width: 120rpx;
+    height: 124rpx;
+  }
 
-.checkContainer {
-  flex-direction: row;
-  justify-content: center;
-  display: flex;
-  /* justify-content: space-around; */
-  /* margin: 26rpx 0; */
-  margin-top: 44rpx;
-  margin-bottom: 40rpx;
-  width: 750rpx;
-}
+  .checkContainer {
+    flex-direction: row;
+    justify-content: center;
+    display: flex;
+    /* justify-content: space-around; */
+    /* margin: 26rpx 0; */
+    margin-top: 44rpx;
+    margin-bottom: 40rpx;
+    width: 750rpx;
+  }
 
-.checkItem {
-  display: flex;
-  align-items: center;
-  font-size: 29rpx;
+  .checkItem {
+    display: flex;
+    align-items: center;
+    font-size: 29rpx;
 
-  font-weight: 400;
-  color: #ffffff;
-  flex-direction: row;
-  align-items: center;
-  margin-right: 63rpx;
-}
+    font-weight: 400;
+    color: #ffffff;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 63rpx;
+  }
 
-.noRightCheckItem {
-  margin-right: 0;
-  margin-left: 40rpx;
-}
+  .noRightCheckItem {
+    margin-right: 0;
+    margin-left: 40rpx;
+  }
 
-.check {
-  width: 28rpx;
-  height: 28rpx;
-  border-radius: 50%;
-  border: 2rpx solid #ffffff;
-  margin-right: 13rpx;
-  /* display: block; */
-}
+  .check {
+    width: 28rpx;
+    height: 28rpx;
+    border-radius: 50%;
+    border: 2rpx solid #ffffff;
+    margin-right: 13rpx;
+    /* display: block; */
+  }
 
-.checkImg {
-  border: 0rpx solid #ffffff;
-}
+  .checkImg {
+    border: 0rpx solid #ffffff;
+  }
 
-.merchant {
-  /* width: 344rpx; */
-  padding: 0 10rpx 0 6rpx;
-  height: 72rpx;
-  /* top: 0; */
-  /* position: absolute; */
-  background: rgba(0, 0, 0, 0.38);
-  border-radius: 36rpx;
-  flex-direction: row;
-  align-items: center;
-}
+  .merchant {
+    /* width: 344rpx; */
+    padding: 0 10rpx 0 6rpx;
+    height: 72rpx;
+    /* top: 0; */
+    /* position: absolute; */
+    background: rgba(0, 0, 0, 0.38);
+    border-radius: 36rpx;
+    flex-direction: row;
+    align-items: center;
+  }
 
-.merchant-img {
-  width: 61rpx;
-  height: 61rpx;
-  /* display: block; */
-  border-radius: 50%;
-  margin-right: 10rpx;
-}
+  .merchant-img {
+    width: 61rpx;
+    height: 61rpx;
+    /* display: block; */
+    border-radius: 50%;
+    margin-right: 10rpx;
+  }
 
-.merchantMsg {
-  color: #fff;
-  margin-right: 16rpx;
-}
+  .merchantMsg {
+    color: #fff;
+    margin-right: 16rpx;
+  }
 
-.merchantName {
-  font-size: 25rpx;
+  .merchantName {
+    font-size: 25rpx;
 
-  font-weight: 600;
-  color: #ffffff;
-}
+    font-weight: 600;
+    color: #ffffff;
+  }
 
-.merchantLike {
-  font-size: 20rpx;
+  .merchantLike {
+    font-size: 20rpx;
 
-  font-weight: 300;
-  color: #ffffff;
-}
+    font-weight: 300;
+    color: #ffffff;
+  }
 
-.liekImg {
-  width: 94rpx;
-  height: 50rpx;
-  border-radius: 30rpx;
-  background-image: linear-gradient(to right, #ff0025, #ff4058);
-  text-align: center;
-  line-height: 50rpx;
-  font-size: 29rpx;
+  .liekImg {
+    width: 94rpx;
+    height: 50rpx;
+    border-radius: 30rpx;
+    background-image: linear-gradient(to right, #ff0025, #ff4058);
+    text-align: center;
+    line-height: 50rpx;
+    font-size: 29rpx;
 
-  font-weight: 600;
-  color: #ffffff;
-}
+    font-weight: 600;
+    color: #ffffff;
+  }
 </style>

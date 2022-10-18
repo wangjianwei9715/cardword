@@ -187,6 +187,23 @@ export default class PlatformManager {
 		// #endif
 
 	}
+	pageBack(params?:number | UniApp.NavigateBackOptions) {
+		let delta:any = 1
+		const IS_NUMBER = typeof params === 'number'
+		if (!IS_NUMBER && !params) delta = 1
+		if (IS_NUMBER) delta = params
+		let curPage: any = getCurrentPages();
+		if (!curPage || curPage.length <= 1) {
+			uni.switchTab({
+				url: '/pages/index/index'
+			})
+			return
+		}
+		//@ts-ignore
+		const data:any = IS_NUMBER ? { delta } : { ...params }
+		uni.navigateBack(data)
+
+	}
 	launchMiniQiYeProgramLive(id: string, goodCode: string) {
 		plus.share.getServices(res => {
 			let sweixin = res.find(i => i.id === 'weixin')
