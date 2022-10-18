@@ -148,6 +148,7 @@
 		width: 710rpx;
 		display: flex;
 		flex-wrap: wrap;
+		box-sizing: border-box;
 		justify-content: space-between;
 	}
 
@@ -161,7 +162,7 @@
 	}
 	.goodslist {
 		&-index {
-			width: 349rpx !important;
+			width: 350rpx !important;
 			height:500rpx;
 			background: #FFFFFF;
 			border-radius: 5rpx;
@@ -172,7 +173,7 @@
 		}
 
 		&-pic {
-			width: 349rpx;
+			width: 350rpx;
 			height: 268rpx;
 			margin: 0 auto;
 			overflow: hidden;
@@ -182,7 +183,7 @@
 			border-top-right-radius: 5rpx;
 		}
 		&-pic-image {
-			width: 349rpx;
+			width: 350rpx;
 			height: 268rpx;
 		}
 		&-title {

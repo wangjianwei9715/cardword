@@ -67,12 +67,16 @@
 						<view class="header-top-title">{{goodsData.title}}</view>
 						<view class="header-top-plan">
 							<view class="plan-top-line">
-								<view class="plan-top-rank" @click="onClickAvatarRank">
-									<muqian-lazyLoad v-for="(item,index) in rankAvatarList" :key="index" class="plan-top-rank-img" :class="`plan-top-rank-img${index+1}`" :style="{'z-index':3-index}"  :src="item?decodeURIComponent(item):defaultAvatar" mode="aspectFill" :borderRadius="'50%'"/>
+								<view class="header-top-plan-num" >
+									<text class="header-top-plan-numbottom">
+										{{goodsData.state>=2?'拼团已完成':'拼团进行中'}}
+									</text>
 								</view>
-								<view class="header-top-plan-num" v-if="goodsData.state>=2">已完成</view>
-								<view class="header-top-plan-num" v-else>
-									{{planData.str}}
+								<view class="header-top-plan-num" >
+									<view class="header-top-plan-num-str" v-if="planData.showMsg">
+										剩余 <u-count-to :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="500" :fontSize="16" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}
+									</view>
+									<view class="header-top-plan-num-str" v-else v-html="planData.str"></view>
 									<text class="header-top-plan-numbottom">
 										{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
 									</text>
@@ -103,8 +107,6 @@
 
 			<!-- 活动展示 -->
 			<goodAct :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData" />
-			<!-- 头像点击车队 -->
-			<goodChedui :showChedui.sync="showCheduiAva" :cheduiData="cheduiDataAva" :userData="userData" />
 
 			<!-- 卖家信息 -->
 			<view class="detail-bg">
@@ -309,7 +311,6 @@
 		cheduiData = {};
 		showCheduiDraw = false;
 		cheduiDataAva:any = '';
-		showCheduiAva = false;
 		rankAvatarList=['','',''];
 		// 商家好卡
 		cardList = [];
@@ -532,8 +533,8 @@
 			if (this.goodsData.isSelect) {
 				this.goodsSpe = {
 					spec: { id: 3, name: spec, desc: '拼团规格' },
-					pintuan_type: { id: 1, name: '自选球队', desc: '拼团形式'},
-					num:{id:4,name:num,desc:'卡片数量'}
+					num:{id:4,name:num,desc:'卡片数量'},
+					pintuan_type: { id: 1, name: '自选球队', desc: '拼团形式'}
 				};
 			} else {
 				this.goodsSpe.spec.name = spec;
@@ -945,14 +946,6 @@
 				swiperData.swiperCurrent = index == 0 ? 0 : swiperData.carouselLength;
 			}
 		}
-		// 车队头像点击
-		onClickAvatarRank(){
-			if((this.goodsData.bit & 128) == 128){
-				this.showCheduiDraw = true
-			}else{
-				this.showCheduiAva = true;
-			}
-		}
 		getCountStr(str: any, index: number) {
 			let Str = String(str)
 			return Str.substr(index, 1)
@@ -963,12 +956,11 @@
 		getPlan(item:any){
 			const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000)/100;
 			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
-			const str = saleRatio > width ? 
-			`${saleRatio}%`:
-			`余${this.goodSurplusNum}/共${item.totalNum}`;
+			const str = `${saleRatio}%`;
 			this.planData = {
 				width:Math.max(width,saleRatio),
-				str
+				str,
+				showMsg:width>=saleRatio
 			}
 		}
 		// 商品剩余数量
@@ -1070,7 +1062,7 @@
 
 	.pic-content {
 		width: 750rpx;
-		height: 630rpx;
+		height: 578rpx;
 		box-sizing: border-box;
 		position: relative;
 	}
@@ -1118,13 +1110,13 @@
 
 	.swiper {
 		width: 750rpx;
-		height: 625rpx;
+		height: 578rpx;
 		background: #F5F5F9;
 	}
 
 	.goods-img-content {
 		width: 750rpx;
-		height: 625rpx;
+		height: 578rpx;
 		background: #F5F5F9;
 		box-sizing: border-box;
 		display: flex;
@@ -1134,7 +1126,7 @@
 
 	.goods-img {
 		width: 750rpx;
-		height: 625rpx;
+		height: 578rpx;
 	}
 
 	.detail-index-bg {
@@ -1352,34 +1344,23 @@
 				width:100%;
 				display: flex;
 				justify-content: space-between;
-				margin-bottom: 10rpx;
+				margin-bottom: 6rpx;
 				align-items: flex-end;
 				.plan-top-rank{
+					height:30rpx;
+					line-height: 30rpx;
 					display: flex;
 					align-items: center;
-					padding-left: 13rpx;
-				}
-				.plan-top-rank-img{
-					width:50rpx;
-					height:50rpx;
-					border-radius: 50%;
-					margin-left: -13rpx;
-					position: relative;
-				}
-				.plan-top-rank-img1{
-					border:1px solid #FFCA4A;
-				}
-				.plan-top-rank-img2{
-					border:1px solid #B6B5B5;
-				}
-				.plan-top-rank-img3{
-					border:1px solid #C49465;
+					font-size: 23rpx;
+					font-family: PingFangSC-Regular;
+					font-weight: 400;
+					color: #C0C0C0;
 				}
 			}
 			.goodslist-progress {
 				background: linear-gradient(90deg, #FFB6C5 0%, #FA1545 100%);
 				width: 100%;
-				height: 12rpx;
+				height: 8rpx;
 				position: relative;
 				display: flex;
 				justify-content: flex-end;
@@ -1397,18 +1378,28 @@
 
 			.header-top-plan-num {
 				height: 30rpx;
-				font-size: 23rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 600;
 				color: #959695;
 				line-height: 30rpx;
 				text-align: right;
 				margin-bottom: 6rpx;
+				display: flex;
+				align-items: center;
+			}
+			.header-top-plan-num-str{
+				height:30rpx;
+				line-height: 30rpx;
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #C0C0C0;
 			}
 			.header-top-plan-box{
 				display: inline-block;
 				height: 30rpx;
-				font-size: 23rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 600;
 				color: #959695;
@@ -1417,7 +1408,7 @@
 			}
 			.header-top-plan-numbottom {
 				height: 30rpx;
-				font-size: 23rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #C0C0C0;
@@ -1494,7 +1485,7 @@
 				margin-bottom: 5rpx;
 			}
 			&-desc {
-				font-size: 23rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #C0C0C0;
@@ -1549,7 +1540,7 @@
 
 				&-tips {
 					width: 100%;
-					font-size: 25rpx;
+					font-size: 24rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: #C0C0C0;
@@ -1583,7 +1574,8 @@
 			background-size: 100% 100%;
 			position: absolute;
 			right:0;
-			top:19rpx
+			top:50%;
+			margin-top:-8.5rpx
 		}
 	}
 
@@ -1607,10 +1599,10 @@
 			}
 
 			.goods-desc-title-right {
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #949494;
+				color: #c0c0c0;
 				display: flex;
 				align-items: center;
 			}
@@ -1835,11 +1827,11 @@
 	// 特殊说明
 	.special-explain {
 		width: 100%;
-		font-size: 25rpx;
+		font-size: 26rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #333333;
-		line-height: 37rpx;
+		line-height: 40rpx;
 		margin-bottom: 30rpx;
 	}
 
@@ -2045,8 +2037,8 @@
 			width: 160rpx;
 			height:80rpx;
 			background:#F3F4F7;
-			font-size: 23rpx;
-			font-family:PingFangSC-Thin;
+			font-size: 24rpx;
+			font-family:PingFangSC-Light;
 			font-weight: 400;
 			color: #333333;
 			display: flex;
@@ -2058,8 +2050,8 @@
 			width: 487rpx;
 			height:80rpx;
 			background:#F3F4F7;
-			font-size: 23rpx;
-			font-family: PingFang SC;
+			font-size: 24rpx;
+			font-family:PingFangSC-Light;
 			font-weight: 400;
 			color: #333333;
 			display: flex;

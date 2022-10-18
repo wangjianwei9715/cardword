@@ -73,7 +73,7 @@
 					}
 					return {show:false,src:x.src}
 				})
-			},5000)
+			},4500)
 		}
 		onClickLive(item:any){
 			if (item.third && item.third === 1001) {

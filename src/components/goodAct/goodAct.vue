@@ -213,7 +213,7 @@
 				font-family: PingFang SC;
 				font-weight: 400;
 				color: #333333;
-				margin:22rpx 0;
+				margin:24rpx 0;
 			}
 		}
 		.detail-act-index{

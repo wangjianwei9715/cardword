@@ -116,9 +116,9 @@ export var goodDetailSpe: {
     [x: string]: any
 } = {
     spec:{id:3,name:'',desc:'规格'},
+    num:{id:4,name:'',desc:'卡片数量'},
     pintuan_type:{id:1,name:'',desc:'玩法'},
-    random_type:{id:2,name:'',desc:'随机形式'},
-    num:{id:4,name:'',desc:'卡片数量'}
+    random_type:{id:2,name:'',desc:'随机形式'}
 };
 // 状态
 export var stateArray = [

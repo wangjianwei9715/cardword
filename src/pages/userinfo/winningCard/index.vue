@@ -1,6 +1,6 @@
 <template>
 	<view class="list-content">
-		<view class="list-index" @click="onClickWinningSwiper(item.index)" v-for="(item,index) in codeList" :key="index">
+		<view class="list-index" @click="onClickWinningSwiper(item.uuid,index)" v-for="(item,index) in codeList" :key="index">
 			<view class="list-pic-box">
 				<view class="icon-new" v-show="item.new"></view>
 				<muqian-lazyLoad class="list-pic" :src="decodeURIComponent(item.pic)"/>
@@ -27,11 +27,11 @@
 	export default class ClassName extends BaseNode {
 		codeList:any = [];
 		listParams:{[x:string]:any} = {
-			pageIndex:1,
 			pageSize:10,
 			noMoreData:false,
 			total:0,
-			empty:false
+			empty:false,
+			scrollId:''
 		}
 		onLoad(query:any) {
 			this.reqNewData();
@@ -40,15 +40,10 @@
 		onReachBottom() {
 			this.reqNewData() 
 		}
-		onClickWinningSwiper(index:number){
+		onClickWinningSwiper(uuid:string,index:number){
 			uni.navigateTo({
-				url:'/pages/userinfo/winningCard/swiper?index='+index+'&total='+this.listParams.total
+				url:`/pages/userinfo/winningCard/swiper?uuid=${uuid}&total=${this.listParams.total}&index=${index+1}`
 			})
-		}
-		againReqNewData(){
-			this.listParams.pageIndex = 1;
-			this.listParams.noMoreData = false;
-			this.reqNewData()
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多数据
@@ -56,17 +51,18 @@
 			if (params.noMoreData) {
 				return;
 			}
-			app.http.Get('me/hitNo/list', params, (data: any) => {
+			let pageParams:any = { pageSize:params.pageSize }
+			if(params.scrollId!='')	pageParams.scrollId = params.scrollId
+			
+			app.http.Get('me/hitNo/list', pageParams, (data: any) => {
 				params.total = data.total;
-				params.empty = data.total == 0
-				params.noMoreData = data.totalPage <= params.pageIndex;
-				if(params.pageIndex == 1) this.codeList = [];
+				params.empty = data.total == 0;
+				params.noMoreData = data.end;
 				if(data.list){
-					let list = params.pageIndex == 1 ? data.list : [...this.codeList,...data.list];
-					this.codeList = app.platform.removeDuplicate(list,'index');
+					let list = [...this.codeList,...data.list];
+					this.codeList = app.platform.removeDuplicate(list,'uuid');
 				}
-
-				params.pageIndex += 1;
+				params.scrollId = data.scrollId || ''
 				if(cb) cb()
 			});
 		}

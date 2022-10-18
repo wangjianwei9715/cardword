@@ -141,7 +141,8 @@ export default class detailsManager {
 	 */
 	planData:any = {
 		width:0,
-		str:''
+		str:'',
+		showMsg:true
 	}
 	/**
 	 * @favorType 			是否收藏
