@@ -67,14 +67,12 @@
 						<view class="header-top-title">{{goodsData.title}}</view>
 						<view class="header-top-plan">
 							<view class="plan-top-line">
-								<view class="header-top-plan-num" >
-									<text class="header-top-plan-numbottom">
-										{{goodsData.state>=2?'拼团已完成':'拼团进行中'}}
-									</text>
+								<view class="header-top-plan-num-state" >
+									{{goodsData.state>=2?'拼团已完成':'拼团进行中'}}
 								</view>
 								<view class="header-top-plan-num" >
 									<view class="header-top-plan-num-str" v-if="planData.showMsg">
-										剩余 <u-count-to :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="500" :fontSize="16" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}
+										<view class="header-shengyu">剩余</view><u-count-to :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1500" :fontSize="16" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}
 									</view>
 									<view class="header-top-plan-num-str" v-else v-html="planData.str"></view>
 									<text class="header-top-plan-numbottom">
@@ -83,11 +81,8 @@
 								</view>
 							</view>
 							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
-								<view class="progress-mask"
-									:style="{width:(100-planData.width)+'%'}">
-								</view>
+								<view class="progress-mask" :style="{width:(100-planData.width)+'%'}"> </view>
 							</view>
-							
 						</view>
 					</view>
 
@@ -198,9 +193,7 @@
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="btn-cardlist" @click="onClickAllCard">
-				<image class="cardlist-icon" src="@/static/goods/v2/icon_list_v3.png"></image>LIST
-			</view>
+			<view class="btn-cardlist" @click="onClickAllCard"> 卡片列表 </view>
 			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm"
 				@click="onClickCopyInviteKey">复制口令给新人</view>
 			<view v-else class="btn-confirm" :style="{width:`${tipBtn.length==2?'310rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType()}" @click="onClickBuy()">
@@ -1338,13 +1331,13 @@
 		}
 		&-plan {
 			width: 100%;
-			margin-top: 20rpx;
+			margin-top: 14rpx;
 			margin-bottom: 20rpx;
 			.plan-top-line{
 				width:100%;
 				display: flex;
 				justify-content: space-between;
-				margin-bottom: 6rpx;
+				margin-bottom: 10rpx;
 				align-items: flex-end;
 				.plan-top-rank{
 					height:30rpx;
@@ -1380,13 +1373,24 @@
 				height: 30rpx;
 				font-size: 24rpx;
 				font-family: PingFangSC-Regular;
-				font-weight: 600;
-				color: #959695;
+				font-weight: 400;
+				color: #C0C0C0;
 				line-height: 30rpx;
 				text-align: right;
 				margin-bottom: 6rpx;
 				display: flex;
 				align-items: center;
+			}
+			.header-top-plan-num-state{
+				height: 30rpx;
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #C0C0C0;
+				text-align: right;
+				margin-bottom: 2rpx;
+				display: flex;
+				align-items: baseline;
 			}
 			.header-top-plan-num-str{
 				height:30rpx;
@@ -1395,6 +1399,19 @@
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #C0C0C0;
+				display: flex;
+				align-items: baseline;
+			}
+			.header-shengyu{
+				height:30rpx;
+				line-height: 30rpx;
+				font-size: 24rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #C0C0C0;
+				display: flex;
+				align-items: baseline;
+				margin-right: 6rpx;
 			}
 			.header-top-plan-box{
 				display: inline-block;
