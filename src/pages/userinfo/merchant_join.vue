@@ -446,8 +446,7 @@ export default class ClassName extends BaseNode {
   font-family: Microsoft YaHei;
   color: #ffffff;
   position: fixed;
-  bottom: calc(64rpx + constant(safe-area-inset-bottom));
-  bottom: calc(64rpx + env(safe-area-inset-bottom));
+  bottom: 64rpx;
   left: 50%;
   margin-left: -334rpx;
   height: $btn-height;
@@ -458,9 +457,10 @@ export default class ClassName extends BaseNode {
 }
 
 .safeBottom {
-  width: 100%;
-  height: calc(156rpx + constant(safe-area-inset-bottom) + 88rpx);
-  height: calc(156rpx + env(safe-area-inset-bottom) + 88rpx);
+  width: 750rpx;
+  height: 244rpx;
+  padding-bottom:constant(safe-area-inset-bottom);
+  padding-bottom:env(safe-area-inset-bottom);
   opacity: 0;
 }
 

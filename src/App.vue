@@ -56,7 +56,7 @@
 				//   console.log("开发环境");
 				// app.localTest = true;  
 				// app.bussinessApiDomain = "http://192.168.8.35:8701/api/v2.1/";
-				// app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2/";
+				// app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2.1/";
 				// app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
@@ -399,7 +399,12 @@
 		box-shadow: 0 0px;
 		transform: translateY(1px);
 	}
-
+	.bottomSafeArea{
+		opacity: 0;
+		width: 100%;
+		padding-bottom: constant(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
+	}
 	/* #endif */
 	.flexCenter{
 		display: flex;
