@@ -81,7 +81,7 @@ export default class ClassName extends BaseComponent {
 
     .seriesMore {
         display: flex;
-        width: 100rpx;
+        width: 66rpx;
         flex-direction: column;
         align-items: center;
         .seriesMore-msg{
@@ -96,9 +96,6 @@ export default class ClassName extends BaseComponent {
             margin-top: 8rpx;
         }
     }
-
-
-
     .cardContainer {
         display: flex;
         width: 620rpx;
