@@ -74,8 +74,8 @@ export default class ClassName extends BaseComponent {
             return data
         }
         return {
-            integer: priceArr[0] + '.',
-            decimal: priceArr[1]
+            integer: priceArr[0] ,
+            decimal: '.'+priceArr[1]
         }
     }
     getPlan(item: any, type: string) {

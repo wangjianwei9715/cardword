@@ -35,16 +35,17 @@
                 </scroll-view>
             </template>
             <view class="merchant_title">
-                <view>本周热门</view>
+                <view style="font-size: 31rpx;font-weight: bold;">本周热门</view>
                 <view class="followAllButton flexCenter" v-if="!isAllAttention" @click="onClickAllAttention">一键关注</view>
             </view>
             <view class="hotContainer">
-                <view class="hot_item" v-for="(item,index) in hotRank" :key="index" @click="goMerchantPage(item.alias)">
+                <view class="hot_item" :style="{marginRight:(index+1)%5==0?`0rpx`:`32rpx`}"
+                    v-for="(item,index) in hotRank" :key="index" @click="goMerchantPage(item.alias)">
                     <view class="hot_picBlock">
                         <muqian-lazyLoad class="hot_pic" borderRadius="3rpx"
                             :src="$parsePic(decodeURIComponent(item.logo))" />
-                        <view class="rankItem" v-if="index<=2" :class="[`rank${index+1}`]">
-                            <view class="top">TOP</view>
+                        <view class="rankItem flexCenter" v-if="index<=2" :class="[`rank${index+1}`]">
+                            <!-- <view class="top">TOP</view> -->
                             <view class="rank">{{index+1}}</view>
                         </view>
                     </view>
@@ -273,7 +274,7 @@ page {
             width: 100%;
             height: 220rpx;
             position: absolute;
-            background-color: rgba(117, 117, 117, .61);
+            background-color: rgba(0, 0, 0, .33);
             top: 0;
             left: 0;
         }
@@ -389,17 +390,18 @@ page {
     box-sizing: border-box;
     padding: 0 25rpx;
     width: 750rpx;
-    justify-content: space-between;
+    // justify-content: space-between;
     margin-top: 20rpx;
 
     .hot_item {
-        width: 131rpx;
+        width: 115rpx;
         margin-bottom: 30rpx;
+        // margin-right: 32rpx;
     }
 
     .hot_picBlock {
-        width: 131rpx;
-        height: 131rpx;
+        width: 115rpx;
+        height: 115rpx;
         border-radius: 3rpx;
         margin-bottom: 13rpx;
         position: relative;
@@ -414,7 +416,8 @@ page {
     }
 
     .hot_name {
-        font-size: 25rpx;
+
+        font-size: 23rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
@@ -446,7 +449,7 @@ page {
             color: #333333;
             text-align: center;
             position: relative;
-            bottom: 8rpx;
+            bottom: 4rpx;
 
         }
     }
@@ -476,14 +479,21 @@ page {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    view {
+        // font-size: inherit;
+        font-family: inherit;
+        // font-weight: inherit;
+        color: inherit;
+    }
 }
 
 .followAllButton {
-    width: 141rpx;
+    width: 130rpx;
     height: 46rpx;
     border: 1rpx solid #C0C0C0;
     border-radius: 3rpx;
-    font-size: 23rpx;
+    font-size: 22.92rpx;
     font-family: PingFang SC;
     font-weight: 400;
     color: #333333;
@@ -497,13 +507,13 @@ page {
 }
 
 .merchantItem {
-    width: 126rpx;
-    margin-right: 38rpx;
+    width: 100rpx;
+    margin-right: 50rpx;
 }
 
 .merchantAvatar_block {
-    width: 108rpx;
-    height: 108rpx;
+    width: 100rpx;
+    height: 100rpx;
     background: #DCDCDC;
     border-radius: 50%;
     border: 4rpx solid #ff003e;
@@ -511,6 +521,11 @@ page {
     margin-bottom: 18rpx;
     position: relative;
     margin: 0 auto;
+
+    .avatar {
+        width: 100rpx;
+        height: 100rpx;
+    }
 
     .liveEffects {
         width: inherit;
@@ -543,20 +558,17 @@ page {
         }
     }
 
-    .avatar {
-        width: 107rpx;
-        height: 107rpx;
-    }
 }
 
 .merchantName {
-    font-size: 25rpx;
+    font-size: 22rpx;
     font-family: PingFang SC;
     font-weight: 400;
     color: #333333;
     width: 126rpx;
     text-align: center;
     margin: 0 auto;
+    margin-top: 10rpx;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

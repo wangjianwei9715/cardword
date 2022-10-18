@@ -179,7 +179,7 @@ page {
     width: 100%;
     height: inherit;
     position: absolute;
-    background-color: rgba(117, 117, 117, .61);
+    background-color: rgba(0, 0, 0, .33);
     top: 0;
     left: 0;
 }
