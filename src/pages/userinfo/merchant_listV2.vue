@@ -424,6 +424,7 @@ page {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-align: center;
     }
 
     .rankItem {
