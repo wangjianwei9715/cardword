@@ -45,7 +45,7 @@
 				<view class="header-search" @click="onClickLiveSearch">
 					<view class="sousuo-icon"></view>
 					<view v-show="currentIndex==1" style="padding-left:80rpx;color:#A3A3A3;font-size:25rpx">{{currentIndex==1?liveData.q:''}}</view>
-					<u-notice-bar v-show="currentIndex==0" style="padding-left:80rpx" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="3000"></u-notice-bar>
+					<u-notice-bar v-show="currentIndex==0" style="padding-left:80rpx" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
 				</view>
 			</view>
 			
@@ -80,8 +80,8 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<tabc style="padding:0 70rpx;background:#fff" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 					<scroll-view class="index-swiper-scroll" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="54" @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchmove="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+						<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
 							<statusbar />
@@ -480,7 +480,7 @@
 		touchmoveScroll(){
 			setTimeout(()=>{
 				this.disableTouch=false
-			},500)
+			},100)
 		}
 		refreshStart(){
 			this.refresherIndex = true
@@ -583,14 +583,14 @@
 	.tab-center {
 		width: 100%;
 		box-sizing: border-box;
-		padding-top: 94rpx;
+		padding-top: 104rpx;
 	}
 	.index-swiper-scroll{
 		// #ifdef APP-PLUS
 		box-sizing: border-box;
-		padding-bottom: calc(94rpx);
-		padding-bottom: calc(94rpx + constant(safe-area-inset-bottom));
-		padding-bottom: calc(94rpx + env(safe-area-inset-bottom));
+		padding-bottom: calc(104rpx);
+		padding-bottom: calc(104rpx + constant(safe-area-inset-bottom));
+		padding-bottom: calc(104rpx + env(safe-area-inset-bottom));
 		// #endif
 	}
 	.goods-list {
@@ -936,6 +936,14 @@
 		font-weight: 400;
 		color: #FFFFFF;
 		box-sizing: border-box;
+	}
+	.live-tabc{
+		padding:0 70rpx;
+		background:#fff;
+		box-sizing:border-box;
+		border-left:20rpx solid #F6F7FB;
+		border-right:20rpx solid #F6F7FB;
+		margin-top: 20rpx;
 	}
 	.live-content{
 		width: 100%;

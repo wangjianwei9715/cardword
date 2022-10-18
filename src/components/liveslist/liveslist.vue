@@ -78,19 +78,19 @@
 		justify-content: space-between;
 		flex-wrap: wrap;
 		&-index{
-			width: 348rpx;
+			width: 349rpx;
 			background:#fff;
 			overflow: hidden;
-			margin-bottom: 20rpx;
+			margin-bottom: 14rpx;
 		}
 		&-top{
-			width: 348rpx;
+			width: 349rpx;
 			height:268rpx;
 			position: relative;
 			margin:0 auto;
 			box-sizing: border-box;
 			&-image{
-				width: 348rpx;
+				width: 349rpx;
 				height:268rpx;
 			}
 			&-statebox{

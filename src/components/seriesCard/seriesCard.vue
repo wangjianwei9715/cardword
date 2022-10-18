@@ -13,9 +13,9 @@
                 </view>
             </scroll-view>
             <view class="seriesMore" v-if="!isFetchEnd" @click="goMore">
-                <view>更</view>
-                <view>多</view>
-                <image class="seriesMore-dot" mode="aspectFill" src="../../static/goods/v2/series_icon_right.png" />
+                <view class="seriesMore-msg">更</view>
+                <view class="seriesMore-msg">多</view>
+                <image class="seriesMore-dot" mode="aspectFill" src="../../static/goods/v2/icon_right_new.png" />
             </view>
         </view>
     </view>
@@ -80,18 +80,19 @@ export default class ClassName extends BaseComponent {
     justify-content: space-between;
 
     .seriesMore {
-        font-size: 23rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
-        color: #C0C0C0;
         display: flex;
         width: 100rpx;
         flex-direction: column;
         align-items: center;
-
+        .seriesMore-msg{
+            font-size: 24rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #C0C0C0;
+        }
         .seriesMore-dot {
-            width: 7rpx;
-            height: 13rpx;
+            width: 11rpx;
+			height:17rpx;
             margin-top: 8rpx;
         }
     }
@@ -115,7 +116,7 @@ export default class ClassName extends BaseComponent {
             display: block;
             width: 1rpx;
             height: 92rpx;
-            background-color: #E2E2E2;
+            background-color: #eeeeee;
             position: absolute;
             right: -14rpx;
             bottom: 0;
