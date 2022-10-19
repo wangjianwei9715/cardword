@@ -282,7 +282,9 @@ page {
 }
 
 .goods-scroll {
-  width: 96%;
+  width: 100%;
+  padding:0 20rpx;
+  box-sizing: border-box;
   height: 140rpx;
   display: flex;
   // margin:0 auto;
@@ -511,7 +513,7 @@ page {
 .goods-lists {
   width: 100%;
   box-sizing: border-box;
-  padding: 272rpx 20rpx 60rpx 20rpx;
+  padding: 272rpx 0 60rpx 0;
 }
 
 .sort-shadow {

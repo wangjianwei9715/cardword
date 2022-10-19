@@ -133,7 +133,7 @@ page {
 .goods-lists {
   width: 100%;
   box-sizing: border-box;
-  padding: 86rpx 14rpx 60rpx 14rpx;
+  padding: 86rpx 0 60rpx 0;
 }
 
 .newGoods-list {
