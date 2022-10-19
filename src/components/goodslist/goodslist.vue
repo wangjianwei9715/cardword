@@ -146,9 +146,11 @@
 <style lang="scss">
 	.goodsContent {
 		width: 100%;
+		box-sizing: border-box;
+		padding: 6rpx 20rpx;
+		background: $content-bg;
 		display: flex;
 		flex-wrap: wrap;
-		box-sizing: border-box;
 		justify-content: space-between;
 	}
 	.goodslist-padding{

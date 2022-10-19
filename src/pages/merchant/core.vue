@@ -782,7 +782,6 @@ page {
 }
 
 .goodsList {
-  padding: 0 14rpx;
   box-sizing: border-box;
   width: 750rpx;
   background-color: #f5f7fb;

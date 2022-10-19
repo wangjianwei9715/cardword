@@ -72,11 +72,10 @@
 							<!-- 卡币商城 热门系列 拆卡围观 -->
 							<tabHot :hotList="hotList" :freshGoodCovers="freshGoodCovers" />
 						</view>
-						<view class="goodslist-list-box">
-							<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
-								@send="onClickJumpDetails" :presell="false" />
-							<statusbar />
-						</view>
+						<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
+							@send="onClickJumpDetails" :presell="false" />
+						<statusbar />
+
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
@@ -652,6 +651,7 @@
 		padding: 0;
 		background: #fff;
 		padding-top: 15rpx;
+		margin-bottom: 20rpx;
 	}
 
 	.tab-type {
@@ -748,14 +748,6 @@
 	.tabc-content {
 		width: 100%;
 		margin: 10rpx 0;
-		background: $content-bg;
-	}
-
-	.goodslist-list-box {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 6rpx 20rpx;
-		padding-top: 20rpx;
 		background: $content-bg;
 	}
 
