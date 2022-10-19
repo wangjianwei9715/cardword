@@ -60,9 +60,7 @@
 			
 			
 			uni.$emit('liveFind',{text:text})
-			uni.switchTab({
-				url: '/pages/index/live'
-			})
+			this.onClickBack()
 			
 		}
 	}

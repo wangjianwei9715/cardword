@@ -44,7 +44,7 @@
 				</view>
 				<view class="header-search" @click="onClickLiveSearch">
 					<view class="sousuo-icon"></view>
-					<view v-show="currentIndex==1" style="padding-left:80rpx;color:#A3A3A3;font-size:25rpx">{{currentIndex==1?liveData.q:''}}</view>
+					<view v-show="currentIndex==1" style="padding-left:80rpx;color:#A3A3A3;font-size:25rpx">{{currentIndex==1?(liveData.q||'商品/商家/直播'):''}}</view>
 					<u-notice-bar v-show="currentIndex==0" style="padding-left:80rpx" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
 				</view>
 			</view>
@@ -72,7 +72,7 @@
 							<!-- 卡币商城 热门系列 拆卡围观 -->
 							<tabHot :hotList="hotList" :freshGoodCovers="freshGoodCovers" />
 						</view>
-						<view class="goodslist-index">
+						<view class="goodslist-list-box">
 							<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
 								@send="onClickJumpDetails" :presell="false" />
 							<statusbar />
@@ -751,7 +751,7 @@
 		background: $content-bg;
 	}
 
-	.goodslist-index {
+	.goodslist-list-box {
 		width: 100%;
 		box-sizing: border-box;
 		padding: 6rpx 20rpx;

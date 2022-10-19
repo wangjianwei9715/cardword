@@ -70,15 +70,10 @@
 								<view class="header-top-plan-num-state" >
 									{{goodsData.state>=2?'拼团已完成':'拼团进行中'}}
 								</view>
-								<view class="header-top-plan-num" >
-									<view class="header-top-plan-num-str" v-if="planData.showMsg">
-										<view class="header-shengyu">剩余</view><u-count-to :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1500" :fontSize="16" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}
-									</view>
-									<view class="header-top-plan-num-str" v-else v-html="planData.str"></view>
-									<text class="header-top-plan-numbottom">
-										{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
-									</text>
+								<view class="header-top-plan-num-str" v-if="planData.showMsg">
+									<view class="header-shengyu">剩余</view><u-count-to :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1500" :fontSize="16" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
 								</view>
+								<view class="header-top-plan-num-state" v-else > {{planData.str}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
 							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
 								<view class="progress-mask" :style="{width:(100-planData.width)+'%'}"> </view>
@@ -200,11 +195,11 @@
 				{{goodsData.isSelect?'选择编号':'立即购买'}}
 			</view>
 		</view>
-		<view class="btn-contented" :class="{'joined':goodsData.joined}" v-else-if="goodsData.state>=2">
-			<view class="btn-content-left" v-if="goodsData.joined">
-				<view class="btn-content-left-index" @click="onClickTipBtn({id:2})">
-					<image class="icon-order" :src="'../../static/goods/v2/icon_order.png'" mode="aspectFill" />
-					<view class="btn-content-left-index-name">卡密</view>
+		<view class="btn-contented joined" v-else-if="goodsData.state>=2">
+			<view class="btn-content-left">
+				<view class="btn-content-left-index" @click="onClickAllCard">
+					<image class="icon-order" :src="'../../static/goods/v2/icon_list_v3.png'" mode="aspectFill" />
+					<view class="btn-content-left-index-name">卡片列表</view>
 				</view>
 			</view>
 			<view class="btn-pt" @click="onClickResult(0)">拼团结果</view>
@@ -1388,7 +1383,7 @@
 				font-weight: 400;
 				color: #C0C0C0;
 				text-align: right;
-				margin-bottom: 2rpx;
+				margin-bottom: 0rpx;
 				display: flex;
 				align-items: baseline;
 			}

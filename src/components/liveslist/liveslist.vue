@@ -103,14 +103,16 @@
 				&-icon{
 					width: 38rpx;
 					height:38rpx;
-					border-radius: 2rpx;
+					border-top-left-radius: 2rpx;
+					border-bottom-left-radius: 2rpx;
 				}
 				&-bg{
 					height:38rpx;
 					padding: 0 10rpx;
 					box-sizing: border-box;
 					background:rgba(0,0,0,0.38);
-					border-radius: 2rpx;
+					border-top-right-radius: 2rpx;
+					border-bottom-right-radius: 2rpx;
 					display: flex;
 					align-items: center;
 					font-size: 21rpx;
@@ -122,7 +124,8 @@
 					width: 38rpx;
 					height:38rpx;
 					background: #FFAE00;
-					border-radius: 2rpx;
+					border-top-left-radius: 2rpx;
+					border-bottom-left-radius: 2rpx;
 					font-size: 17rpx;
 					font-family: PingFang SC;
 					font-weight: 600;
