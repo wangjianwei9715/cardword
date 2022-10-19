@@ -665,6 +665,15 @@
 					}
 				},
 				{
+					"path": "backSearch",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#fff", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#fff" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
 					"path": "video",
 					"style": { 
 						"navigationStyle": "custom",

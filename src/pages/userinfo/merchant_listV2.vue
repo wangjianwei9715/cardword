@@ -5,16 +5,16 @@
             <view class="tab-header">
                 <view class="icon-back" @click="onClickBack"></view>
                 <view class="header-title">商家列表</view>
-                <!-- <view class="header-icon">
+                <view class="header-icon" @click="onClickSearch">
                     <view class="icon-share"></view>
-                </view> -->
+                </view>
             </view>
         </view>
 
         <view style="padding-top:88rpx">
             <statusbar />
         </view>
-        <view class="topBanner" @click="toMerchantJoin"></view>
+        <view class="topBanner" @click.stop="toMerchantJoin"></view>
         <view style="background-color: #fff;padding-top: 40rpx;">
             <template v-if="onLiveList&&onLiveList.length">
                 <view class="merchant_title">正在直播</view>
@@ -109,7 +109,8 @@ export default class ClassName extends BaseNode {
     hotRank: any = []
     merchantParams: any = {
         pageIndex: 1,
-        pageSize: 15
+        pageSize: 15,
+        q:""
     }
     merchantTotalPage: number = 0
     merchantList: any = []
@@ -126,6 +127,10 @@ export default class ClassName extends BaseNode {
                 }
             }
         });
+        this.onEventUI("onConfirmSearch",(res:any)=>{
+            this.merchantParams.q=res
+            this.onSearchMerchant()
+        })
     }
     onReachBottom() {
         if (this.merchantParams.pageIndex < this.merchantTotalPage) {
@@ -141,6 +146,10 @@ export default class ClassName extends BaseNode {
         this.reqNewMerchant()
         this.reqHotRank()
         this.reqOnLive()
+    }
+    onSearchMerchant(){
+        this.merchantParams.pageIndex=1
+        this.reqNewMerchant()
     }
     onClickAllAttention() {
         app.platform.hasLoginToken(() => {
@@ -173,6 +182,11 @@ export default class ClassName extends BaseNode {
             return
         }
         app.platform.goWeChatLive({ playCode: item.playCode, goodCode: item.goodCode })
+    }
+    onClickSearch() {
+        uni.navigateTo({
+            url: `/pages/information/backSearch?searchText=${this.merchantParams.q}`
+        })
     }
     toMerchantJoin() {
         app.platform.hasLoginToken(() => {
@@ -230,10 +244,9 @@ page {
 .topBanner {
     width: 750rpx;
     height: 120rpx;
-    // background: #BBBCC0;
+    position: relative;
     background-size: 100% 100%;
     background-image: url('../../static/userinfo/v2/merchantJoin.png');
-    // margin-bottom: 40rpx;
 }
 
 .merchantContainer {
