@@ -47,7 +47,7 @@
 							<!-- 最底下的文字部分 -->
 							<view class="content" v-if="dataList.length !== 0 && dataList[k].isShowProgressBarTime == false" @click="onDetail">
 								<view class="descBox">
-									<image style="width:50rpx;height:50rpx;border-radius:50%;overflow: hidden;" :src="decodeURIComponent(item.author_logo)" mode="aspectFill"/>
+									<image style="width:50rpx;height:50rpx;border-radius:500px;overflow: hidden;" :src="decodeURIComponent(item.author_logo)" mode="aspectFill"/>
 									<text class="descAuthor">{{item.author}}</text>
 								</view>
 								<text class="userName" >{{item.title}}</text><!-- i={{i}} -->
@@ -669,7 +669,7 @@
 		display: flex;
 		align-items: center;
 		flex-direction: row;
-		height:90rpx;
+		height:130rpx;
 		margin-bottom:40rpx;
 		padding-top: 40rpx;
 	}
