@@ -15,13 +15,18 @@
             </view>
             <view class="rankTr" v-for="(item,index) in rankList">
                 <view class="rankTd flexCenter rankNum" :class="[index<=2?`rank${index+1}`:'']">{{index+1}}</view>
-                <view class="rankTd">{{item.name}}</view>
                 <view class="rankTd">
-                    <view>已获取：999</view>
-                    <view>冻结中：99999</view>
+                    <muqian-lazyLoad :src="item.userAvatar?$parsePic(decodeURIComponent(item.userAvatar)):defaultAvatar"/>
+                    <view>
+                        {{item.userName}}
+                    </view>
                 </view>
-                <view class="rankTd" @click="prviewImages(item.pic)">
-                    <muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic))" />
+                <view class="rankTd">
+                    <view>已获取：{{item.get_score}}</view>
+                    <view>冻结中：{{item.lock_score}}</view>
+                </view>
+                <view class="rankTd" @click="prviewImages(item.awardPic_url)">
+                    <muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
                 </view>
             </view>
         </view>
@@ -60,10 +65,16 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '../../../base/BaseNode.vue';
-import {parsePic} from '@/tools/util'
+import { parsePic } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
     descriptionShow: boolean = false
+    defaultAvatar:any=app.defaultAvatar
+    rankQuery: any = {
+        fetchFrom: 1,
+        fetchSize: 30
+    }
+    isFetchEnd: any = true
     rankList: any = []
     actProgress: any = [
         { name: '拼团新系列', description: '获取活动积分', zhTime: '10.20 12:00' },
@@ -71,6 +82,7 @@ export default class ClassName extends BaseNode {
         { name: '名单核算', description: '公示中奖名单', zhTime: '10.25 12:00' },
         { name: '幸运抽奖', description: '直播抽取奖励', zhTime: '10.30 12:00' }
     ]
+    myRank: any = {}
     onLoad(query: any) {
         app.platform.hasLoginToken(() => {
             this.reqMyRank()
@@ -78,11 +90,16 @@ export default class ClassName extends BaseNode {
             this.reqRewardList()
         })
     }
-    onReachBottom() {
-
+    onPullDownRefresh() {
+        this.rankQuery.fetchFrom = 1
+        this.reqAllRank(() => {
+            uni.stopPullDownRefresh()
+        })
     }
-    onPulldDownRefresh() {
-
+    onReachBottom() {
+        if (this.isFetchEnd) return
+        this.rankQuery.fetchFrom += this.rankQuery.fetchSize
+        this.reqAllRank()
     }
     prviewImages(picString: string) {
         if (!picString) return
@@ -108,15 +125,18 @@ export default class ClassName extends BaseNode {
 
         })
     }
-    reqAllRank() {
-        app.http.Get('dataApi', {}, (res: any) => {
-            this.rankList = res.list || []
+    reqAllRank(cb?: any) {
+        app.http.Get('dataApi', this.rankQuery, (res: any) => {
+            this.isFetchEnd = res.isFetchEnd
+            const dataList = res.list || []
+            this.rankList = this.rankQuery.fetchFrom == 1 ? dataList : [...this.rankList, ...dataList]
+            cb && cb()
         })
     }
     //我的rank
     reqMyRank() {
-        app.http.Get('dataApi/', {}, (res: any) => {
-
+        app.http.Get('dataApi/selectRank/home', {}, (res: any) => {
+            this.myRank = res.data || {}
         })
     }
 
@@ -134,13 +154,16 @@ page {
 .rankContainer {
     width: 100%;
 }
-.rewardContainer{
+
+.rewardContainer {
     display: flex;
     box-sizing: border-box;
 }
-.actProgressContainer{
+
+.actProgressContainer {
     display: flex;
 }
+
 .rankTr {
     display: flex;
     align-items: center;

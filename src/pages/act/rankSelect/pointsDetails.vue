@@ -15,30 +15,28 @@ export default class ClassName extends BaseNode {
         pageSize: 20
     }
     list: any = []
+    isFetchEnd: any = true
     totalPage: number = 0;
 
     onLoad(query: any) {
         this.reqNewData()
     }
-    onReachBottom() {
-        if (this.queryParams.pageIndex < this.totalPage) {
-            this.queryParams.pageIndex += 1
-            this.reqNewData()
-        }
-    }
-    onPulldDownRefresh() {
-        this.queryParams.pageIndex = 1
+    onPullDownRefresh() {
+        this.queryParams.fetchFrom = 1
         this.reqNewData(() => {
-            setTimeout(() => {
-                uni.stopPullDownRefresh()
-            }, 500)
+            uni.stopPullDownRefresh()
         })
     }
+    onReachBottom() {
+        if (this.isFetchEnd) return
+        this.queryParams.fetchFrom += this.queryParams.fetchSize
+        this.reqNewData()
+    }
     reqNewData(cb?: any) {
-        app.http.Get('dataApi/', this.queryParams, (res: any) => {
-            const list = res.list || []
-            this.queryParams.pageIndex == 1 ? this.list = list : this.list.push(...list)
-            this.totalPage = res.totalPage
+        app.http.Get('dataApi/selectRank/score/record', this.queryParams, (res: any) => {
+            this.isFetchEnd = res.isFetchEnd
+            const dataList = res.list || []
+            this.list = this.queryParams.fetchFrom == 1 ? dataList : [...this.list, ...dataList]
             cb && cb()
         })
     }

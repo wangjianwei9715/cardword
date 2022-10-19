@@ -573,18 +573,19 @@
 					}
 				},
 				{
-					"path": "rank2022/index",
+					"path": "rankSelect/index",
 					"style": {
+						"navigationStyle": "custom",
 						"navigationBarTitleText": "活动",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": true,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
 				{
-					"path": "rank2022/pointsDetails",
+					"path": "rankSelect/pointsDetails",
 					"style": {
 						"navigationBarTitleText": "积分明细",
 						"navigationBarBackgroundColor": "#ffffff",
@@ -595,7 +596,7 @@
 					}
 				},
 				{
-					"path": "rank2022/description",
+					"path": "rankSelect/description",
 					"style": {
 						"navigationBarTitleText": "活动说明",
 						"navigationBarBackgroundColor": "#ffffff",
@@ -606,7 +607,7 @@
 					}
 				},
 				{
-					"path": "rank2022/live",
+					"path": "rankSelect/live",
 					"style": {
 						"navigationBarTitleText": "活动详情",
 						"navigationBarBackgroundColor": "#ffffff",
