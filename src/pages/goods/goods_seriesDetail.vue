@@ -9,10 +9,13 @@
                 <view class="seriesInfo-name">{{seriesDetail.name || "获取中"}}</view>
             </view>
             <view class="seriesInfo-introduction">
-                {{seriesDetail.describe || ""}}
+                <view class="introduction">
+                    {{seriesDetail.describe || ""}}
+                </view>
             </view>
         </view>
-        <seriesCard :list="cardList" @goMore="goMore" :isFetchEnd="seriesCardEnd" v-if="cardList&&cardList.length"/>
+        <seriesCard :list="cardList" @goMore="goMore" :isFetchEnd="seriesCardEnd" v-if="cardList&&cardList.length" />
+        <!-- v-if="choices&&choices.length>2" -->
         <scroll-view scroll-x="true" class="tagContainer">
             <view class="uni-flex" style="height:100%;align-items: center;">
                 <view class="tag" v-for="(item,index) in choices" :key="index"
@@ -20,7 +23,8 @@
                     @click="onClickTag(item)">{{item}}</view>
             </view>
         </scroll-view>
-        <goodslist :goodsList="goodsList" @send="onClickJumpDetails" />
+        <goodslist :class="{noOther:!cardList.length&&choices.length>2,hasOther:cardList.length || choices.length>2}"
+            :goodsList="goodsList" @send="onClickJumpDetails" />
         <empty v-if="goodsList && !goodsList.length"></empty>
     </view>
 </template>
@@ -40,7 +44,7 @@ export default class ClassName extends BaseNode {
         choice: "all"
     }
     isFetchEnd: boolean = true
-    seriesCardEnd:boolean=true
+    seriesCardEnd: boolean = true
     cardList: any = []
     goodsList: any = []
     onLoad(query: any) {
@@ -66,9 +70,9 @@ export default class ClassName extends BaseNode {
         this.reqSeriesGoods()
 
     }
-    goMore(){
+    goMore() {
         uni.navigateTo({
-            url:`/pages/goods/goods_seriesCardList?seriesId=${this.seriesId}`
+            url: `/pages/goods/goods_seriesCardList?seriesId=${this.seriesId}`
         })
     }
     // 跳转商品详情
@@ -82,7 +86,7 @@ export default class ClassName extends BaseNode {
     reqSeriesCards() {
         app.http.Get(`dataApi/advertising/iconSeries/rarity/card/list/${this.seriesId}/brief`, { fetchFrom: 1, fetchSize: 10 }, (res: any) => {
             this.cardList = res.list || []
-            this.seriesCardEnd=res.isFetchEnd
+            this.seriesCardEnd = res.isFetchEnd
         })
     }
     reqSeriesGoods(cb?: any) {
@@ -108,6 +112,16 @@ page {
     background-color: #f6f7fb;
 }
 
+.hasOther {
+    position: relative;
+    bottom: 26rpx;
+    margin-top: 14rpx;
+}
+
+.noOther {
+    margin-top: 14rpx;
+}
+
 .detailCard {
     width: 750rpx;
     height: 380rpx;
@@ -131,7 +145,9 @@ page {
     display: flex;
     align-items: center;
     padding: 0 30rpx;
-    margin: 14rpx auto;
+    margin: 0 auto;
+    margin-top: 14rpx;
+    // margin: 14rpx auto;
     position: relative;
     white-space: nowrap;
     bottom: 26rpx;
@@ -165,6 +181,7 @@ page {
         height: 100rpx;
         border-radius: 3rpx;
         margin-right: 28rpx;
+        background-color: #fff;
     }
 
     .seriesInfo-name {
@@ -185,19 +202,28 @@ page {
 }
 
 .seriesInfo-introduction {
-    font-size: 25rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
-    color: #E6E6E6;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 66rpx;
+    // background-color: red;
+
     padding: 0 36rpx;
     margin-top: 34rpx;
     position: relative;
     line-height: 32rpx;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+
+    .introduction {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #E6E6E6;
+    }
 }
 </style>
