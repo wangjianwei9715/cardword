@@ -50,6 +50,11 @@ export default {
         disableTouch: {
             type: Boolean,
             default: uni.$u.props.columnNotice.disableTouch
+        },
+        // flex-end
+        flexEnd:{
+            type: Boolean,
+            default:false
         }
     }
 }

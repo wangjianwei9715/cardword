@@ -1,15 +1,15 @@
 <template>
-	<view class="good-act-content" v-if="goodsActData!=''">
+	<view class="good-act-content" v-if="goodsActData!=''||cheduiData.list!=''">
 		<view class="detail-act-box">
-			<view v-show="cheduiData.list" class="act-box" style="border-bottom: 1px solid #E6E6E6;" @click.prevent="cheduiShowDrawer=true">
+			<view v-show="cheduiData.list" class="act-box" :class="{'hasAct':goodsActData!=''}" @click.prevent="cheduiShowDrawer=true">
 				<view class="act-box-name chedui-name">车队</view>
 				<view class="act-box-desc flex-between">
 					<view class="act-box-desc-item flex-between">车队排行榜前{{cheduiData.totalNum}}名送礼品!</view>
-					<u-notice-bar style="padding:0;max-width:180rpx" :text="rewardList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="3000"></u-notice-bar>
+					<u-notice-bar style="padding:0;max-width:180rpx;text-align:right" :fontSize="'25rpx'" :text="rewardList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="3000" :flexEnd="true"></u-notice-bar>
 				</view>
 				<view class="detail-act-right"></view>
 			</view>
-			<view class="act-box" @click.prevent="onClickActHelp">
+			<view class="act-box" @click.prevent="onClickActHelp" v-show="goodsActData!=''">
 				<view class="act-box-name">活动</view>
 				<view class="act-box-desc" >
 					<view class="act-box-desc-item u-line-1" v-for="(item,index) in goodsActData" :key="index">
@@ -61,7 +61,7 @@
 						<image class="chedui-rank-avatar" :src="decodeURIComponent(userData.avatar)"/>
 						<view class="chedui-rank-name u-line-1">{{userData.name}}</view>
 					</view>
-					<view class="chedui-rank-item-reward u-line-1">{{cheduiData.myRank>0?cheduiData.list[cheduiData.myRank].name:'-'}}</view>
+					<view class="chedui-rank-item-reward u-line-1">{{cheduiData.myRank>0?cheduiData.list[cheduiData.myRank-1].name:'-'}}</view>
 				</view>
 			</view>
 		</bottomDrawer>
@@ -181,7 +181,7 @@
 	.detail-act-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:0 30rpx 0 30rpx;
+		padding:2rpx 30rpx;
 		.act-box{
 			width: 100%;
 			min-height:76rpx;
@@ -209,11 +209,14 @@
 				justify-content: space-between;
 			}
 			.act-box-desc-item{
+				height:76rpx;
+				display: flex !important;
+				align-items: center;
+				box-sizing: border-box;
 				font-size: 25rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
 				color: #333333;
-				margin:24rpx 0;
 			}
 		}
 		.detail-act-index{
@@ -315,7 +318,7 @@
 		background:url(../../static/goods/v2/icon_right_new.png) no-repeat center;
 		background-size: 100% 100%;
 		margin-left: 10rpx;
-		margin-top: 29.5rpx;
+		margin-top: 33rpx;
 	}
 	.drawer-header{
 		width: 100%;
@@ -340,7 +343,7 @@
 	.drawer-bottom{
 		width: 100%;
 		position: absolute;
-		border-top: 1px solid #E2E2E2;
+		border-top: 1rpx solid #E2E2E2;
 		left:0;
 		bottom:0;
 		display: flex;
@@ -393,7 +396,7 @@
 		margin-right: 29rpx;
 	}
 	.chedui-rank-name{
-		width: 300rpx;
+		width: 250rpx;
 		font-size: 25rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
@@ -410,5 +413,8 @@
 	}
 	.drawer-center-list{
 		padding-bottom: 200rpx;
+	}
+	.hasAct{
+		border-bottom: 1rpx solid #E6E6E6;
 	}
 </style>

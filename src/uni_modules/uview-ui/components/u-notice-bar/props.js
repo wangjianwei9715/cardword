@@ -1,3 +1,12 @@
+/*
+ * @FilePath: \jichao_app_2\src\uni_modules\uview-ui\components\u-notice-bar\props.js
+ * @Author: wjw
+ * @Date: 2022-08-24 16:29:44
+ * @LastEditors: 
+ * @LastEditTime: 2022-10-19 14:33:24
+ * Copyright: 2022 .
+ * @Descripttion: 
+ */
 export default {
     props: {
         // 显示的内容，数组
@@ -65,6 +74,10 @@ export default {
         linkType: {
             type: String,
             default: uni.$u.props.noticeBar.linkType
+        },
+        flexEnd:{
+            type: Boolean,
+            default:false
         }
     }
 }

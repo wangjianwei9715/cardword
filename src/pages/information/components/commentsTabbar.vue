@@ -150,7 +150,7 @@
 					height:33rpx;
 				}
 				.pic-likes{
-					width: 33rpx;
+					width: 35rpx;
 					height:34rpx;
 				}
 				.pic-favorite{
