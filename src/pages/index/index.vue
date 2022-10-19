@@ -585,6 +585,12 @@
 
 	.tab-center {
 		width: 100%;
+		height:100%;
+		position: fixed;
+		left:0;
+		top:0;
+		right:0;
+		overflow: hidden;
 		box-sizing: border-box;
 		padding-top: 104rpx;
 	}
