@@ -47,6 +47,7 @@ export function formatGold(number: number, symbol = ',', interval = 3) {//返回
 	}
 	return result;
 }
+
 export function getUrlDataFN(urlStr:string) {
 	// 定义一个空对象以储存数据
 	const urlObj:any = {}
@@ -117,7 +118,7 @@ export function dateFormatYMSHM(time: number | string) {
 	return result;
 }
 // 时间戳 月日时分秒
-export function dateFormatMSHMS(time: number | string) {
+export function dateFormatMSHMS(time: number | string,type?:string) {
 	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
 	var year = date.getFullYear();
 	var month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -127,6 +128,7 @@ export function dateFormatMSHMS(time: number | string) {
 	var second = ("0" + date.getSeconds()).slice(-2);
 	// 拼接
 	var result = month + "月" + sdate + "日 " + hour + ":" + minute;
+	if(type=='-') result=month + "-" + sdate + " " + hour + ":" + minute;
 	// var result =  month + "月" + sdate + "日 " + hour + ":" + minute //+ ":" + second
 	// 返回
 	return result;
