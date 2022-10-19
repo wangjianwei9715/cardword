@@ -4,12 +4,20 @@
             <muqian-lazyLoad class="goodsImg" borderRadius="3rpx" :src="$parsePic(decodeURIComponent(item.pic))" />
             <view class="goodsRight">
                 <view class="goodsRight-top">
-                    <view class="goodsName">{{item.title}}</view>
-                    <view class="goodsProgress uni-flex">
+                    <view class="goodsName" :class="{onLineOver:isOneLine}">{{item.title}}</view>
+                    <view v-if="item.state==0 || item.state == -1" class="startTime">
+                        {{dateFormatMSHMS(item.startAt)+'开售'}}
+                    </view>
+                    <view class="goodsProgress uni-flex" v-else>
                         <view class="progressContainer">
                             <view class="progress" :style="{width:(getPlan(item,'num'))+'%'}"></view>
                         </view>
-                        <view class="progressPercnet">{{getPlan(item,'str')}}</view>
+                        <view class="progressPercnet">{{getPlan(item,'num')+'%'}}</view>
+                    </view>
+                    <view class="goodsType" v-if="isOneLine">
+                        <view>{{getGoodsPintuan(item.pintuan_type)}}</view>
+                        <!-- <view class="goodsTypeLine"></view>
+                        <view>1箱</view> -->
                     </view>
                 </view>
                 <view class="goodsRight-bottom uni-flex">
@@ -42,7 +50,8 @@ import {
 } from "vue-property-decorator";
 import BaseComponent from "@/base/BaseComponent.vue";
 import {
-    dateFormatMSHMS
+    dateFormatMSHMS,
+    dateFormatMS
 } from "@/tools/util"
 import {
     getGoodsImg
@@ -62,6 +71,14 @@ export default class ClassName extends BaseComponent {
     goodsList: any;
     @Prop({ default: false })
     needRank: any;
+    @Prop({ default: "normal" })
+    type?: string;
+    getGoodsPintuan = getGoodsPintuan
+    dateFormatMSHMS: any = dateFormatMSHMS
+    private get isOneLine() {
+        //@ts-ignore
+        return ['fresh', 'cheap'].includes(this.type)
+    }
     filterPrice(price: number) {
         let data = {
             integer: 0,
@@ -74,8 +91,8 @@ export default class ClassName extends BaseComponent {
             return data
         }
         return {
-            integer: priceArr[0] ,
-            decimal: '.'+priceArr[1]
+            integer: priceArr[0],
+            decimal: '.' + priceArr[1]
         }
     }
     getPlan(item: any, type: string) {
@@ -189,10 +206,22 @@ export default class ClassName extends BaseComponent {
             -webkit-line-clamp: 2;
         }
 
+        .onLineOver {
+            -webkit-line-clamp: 1;
+        }
+
         .goodsProgress {
             justify-content: space-between;
             align-items: center;
             margin-top: 18rpx;
+        }
+
+        .startTime {
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: 600;
+            color: #454645;
+            margin-top: 17rpx;
         }
 
         .progressContainer {
@@ -214,7 +243,34 @@ export default class ClassName extends BaseComponent {
             font-size: 23rpx;
             font-family: PingFang SC;
             font-weight: 400;
+            width: 60rpx;
+            // background-color: red;
+            text-align: right;
             color: #959695;
+            white-space: nowrap;
+        }
+
+        .goodsType {
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #959695;
+            display: flex;
+            align-items: center;
+            margin-top: 10rpx;
+            view{
+                font-size: inherit;
+                font-family: inherit;
+                font-weight: inherit;
+                color: inherit;
+            }
+        }
+
+        .goodsTypeLine {
+            width: 2rpx;
+            height: 21rpx;
+            background-color: #959695;
+            margin: 0 16rpx;
         }
 
         .goodsPriceContainer {
