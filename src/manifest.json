@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.5.01",
+    "versionName" : "3.5.02",
     "versionCode" : 201,
     "transformPx" : false,
     "networkTimeout" : {
@@ -250,6 +250,12 @@
                     "parameters" : {}
                 }
             }
+        },
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : false,
+            "autoclose" : false,
+            "waiting" : false,
+            "delay" : 0
         }
     },
     "quickapp" : {},
