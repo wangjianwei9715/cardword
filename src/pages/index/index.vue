@@ -44,7 +44,7 @@
 				</view>
 				<view class="header-search" @click="onClickLiveSearch">
 					<view class="sousuo-icon"></view>
-					<view v-show="currentIndex==1" style="padding-left:80rpx;color:#A3A3A3;font-size:25rpx">{{currentIndex==1?liveData.q:''}}</view>
+					<view v-show="currentIndex==1" style="padding-left:80rpx;color:#A3A3A3;font-size:25rpx">{{currentIndex==1?(liveData.q||'商品/商家/直播'):''}}</view>
 					<u-notice-bar v-show="currentIndex==0" style="padding-left:80rpx" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
 				</view>
 			</view>
@@ -72,11 +72,10 @@
 							<!-- 卡币商城 热门系列 拆卡围观 -->
 							<tabHot :hotList="hotList" :freshGoodCovers="freshGoodCovers" />
 						</view>
-						<view class="goodslist-index">
-							<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
-								@send="onClickJumpDetails" :presell="false" />
-							<statusbar />
-						</view>
+						<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
+							@send="onClickJumpDetails" :presell="false" />
+						<statusbar />
+
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
@@ -652,6 +651,7 @@
 		padding: 0;
 		background: #fff;
 		padding-top: 15rpx;
+		margin-bottom: 20rpx;
 	}
 
 	.tab-type {
@@ -748,14 +748,6 @@
 	.tabc-content {
 		width: 100%;
 		margin: 10rpx 0;
-		background: $content-bg;
-	}
-
-	.goodslist-index {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 6rpx 20rpx;
-		padding-top: 20rpx;
 		background: $content-bg;
 	}
 

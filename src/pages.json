@@ -744,27 +744,7 @@
 		},
 		{
 			"root": "pages/userinfo",
-			"pages": [{
-					"path": "merchant_shops",
-					"style": {
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "merchant_shopsV2",
-					"style": {
-						"navigationBarTitleText": "商家店铺",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-
+			"pages": [
 				{
 					"path": "order_list",
 					"style": {
@@ -954,17 +934,6 @@
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path": "merchant_list",
-					"style": {
-						"navigationBarTitleText": "商家列表",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 					}
 				},
 				{

@@ -145,16 +145,13 @@
 
 <style lang="scss">
 	.goodsContent {
-		width: 710rpx;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 6rpx 20rpx;
+		background: $content-bg;
 		display: flex;
 		flex-wrap: wrap;
-		box-sizing: border-box;
 		justify-content: space-between;
-	}
-
-	.goodslist-index-show {
-		// width: 20rpx;
-		// width: 300rpx;
 	}
 	.goodslist-padding{
 		box-sizing: border-box;
@@ -162,18 +159,22 @@
 	}
 	.goodslist {
 		&-index {
-			width: 350rpx !important;
+			width: 349rpx;
 			height:500rpx;
 			background: #FFFFFF;
 			border-radius: 5rpx;
 			box-sizing: border-box;
-			margin-bottom: 14rpx;
 			position: relative;
 			padding:0;
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			margin-bottom: 14rpx;
+			overflow: hidden;
 		}
 
 		&-pic {
-			width: 350rpx;
+			width: 349rpx;
 			height: 268rpx;
 			margin: 0 auto;
 			overflow: hidden;
@@ -183,7 +184,7 @@
 			border-top-right-radius: 5rpx;
 		}
 		&-pic-image {
-			width: 350rpx;
+			width: 349rpx;
 			height: 268rpx;
 		}
 		&-title {
@@ -466,17 +467,15 @@
 
 	// 活动轮播
 	.index-swiper {
-		width: 348rpx;
+		width: 349rpx;
 		height: 500rpx;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		margin-right: 10rpx;
-		margin-bottom: 10rpx;
 	}
 
 	.swiper {
-		width: 348rpx;
+		width: 349rpx;
 		height: 500rpx;
 		box-sizing: border-box;
 		display: flex;
@@ -486,7 +485,7 @@
 	}
 
 	.swiper-image {
-		width: 348rpx;
+		width: 349rpx;
 		height: 500rpx;
 		box-sizing: border-box;
 		border-radius: 5rpx;
