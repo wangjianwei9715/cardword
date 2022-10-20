@@ -337,7 +337,10 @@
 		font-family: "YouSheBiaoTiHei";
 		src: url("~@/common/Tao/YouShe.ttf");
 	}
-
+	@font-face {
+		font-family: "ArialBold";
+		src: url("~@/common/Tao/Futura.ttf");
+	}
 	// #endif
 	.content {
 		display: flex;

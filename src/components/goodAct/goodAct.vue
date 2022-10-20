@@ -1,5 +1,6 @@
 <template>
-	<view class="good-act-content" v-if="goodsActData!=''||cheduiData.list!=''">
+	<view class="good-act-content" v-if="goodsActData!=''||(cheduiData.list&&cheduiData.list!='')">
+		
 		<view class="detail-act-box">
 			<view v-show="cheduiData.list" class="act-box" :class="{'hasAct':goodsActData!=''}" @click.prevent="cheduiShowDrawer=true;isPullDown(false)">
 				<view class="act-box-name chedui-name">车队</view>
@@ -194,7 +195,7 @@
 	.detail-act-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:2rpx 30rpx;
+		padding:7rpx 30rpx;
 		.act-box{
 			width: 100%;
 			min-height:76rpx;

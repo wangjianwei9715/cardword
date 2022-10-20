@@ -48,7 +48,8 @@
 					<view class="header-right">
 						<view class="icon-end">{{goodsData.state==0?'距开售':'距结束'}}</view>
 						<view class="countdown-content">
-							<view v-if="countData.countDay>0" class="countdown-index">{{countData.countDay}}</view>
+							<view class="countdown-index-2">{{`${countData.countDay>0?countData.countDay+'天 ':''}${countData.countHour} : ${countData.countMinute} : ${countData.countSecond}`}}</view>
+							<!-- <view v-if="countData.countDay>0" class="countdown-index">{{countData.countDay}}</view>
 							<view v-if="countData.countDay>0" class="countdown-index countdown-day">天</view>
 							<view class="countdown-index">{{getCountStr(countData.countHour,0)}}</view>
 							<view class="countdown-index">{{getCountStr(countData.countHour,1)}}</view>
@@ -57,7 +58,7 @@
 							<view class="countdown-index">{{getCountStr(countData.countMinute,1)}}</view>
 							<view class="countdown-icon">:</view>
 							<view class="countdown-index">{{getCountStr(countData.countSecond,0)}}</view>
-							<view class="countdown-index">{{getCountStr(countData.countSecond,1)}}</view>
+							<view class="countdown-index">{{getCountStr(countData.countSecond,1)}}</view> -->
 						</view>
 					</view>
 				</view>
@@ -71,7 +72,7 @@
 									{{goodsData.state>=2?'拼团已完成':'拼团进行中'}}
 								</view>
 								<view class="header-top-plan-num-str" v-if="planData.showMsg">
-									<view class="header-shengyu">剩余</view><u-count-to :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1500" :fontSize="16" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
+									<view class="header-shengyu">剩余</view><u-count-to :style="{'font-family':'ArialBold','letter-spacing':'-2rpx'}" :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1500" :fontSize="15" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
 								</view>
 								<view class="header-top-plan-num-state" v-else > {{planData.str}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
@@ -105,7 +106,7 @@
 					<view class="goods-seller-left" @click="onClickShops">
 						<muqian-lazyLoad class="goods-seller-left-avatar"
 							:src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar"
-							mode="aspectFill" :borderRadius="'3rpx'"/>
+							mode="aspectFill" :borderRadius="'50%'"/>
 						<view class="goods-seller-left-desc">
 							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
 							<view class="goods-seller-left-desc-tips">粉丝{{goodsData.publisher.fans}} |
@@ -188,7 +189,9 @@
 					<view class="btn-content-left-index-name">{{item.name}}</view>
 				</view>
 			</view>
-			<view class="btn-cardlist" @click="onClickAllCard"> 卡片列表 </view>
+			<view class="btn-cardlist" @click="onClickAllCard">
+				<image class="cardlist-icon" src="@/static/goods/v2/icon_list_v3.png"></image>列表 
+			</view>
 			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm"
 				@click="onClickCopyInviteKey">复制口令给新人</view>
 			<view v-else class="btn-confirm" :style="{width:`${tipBtn.length==2?'310rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType()}" @click="onClickBuy()">
@@ -1061,9 +1064,9 @@
 		align-items: center;
 		position: absolute;
 		right: 14rpx;
-		bottom: 54rpx;
+		bottom: 44rpx;
 		border-radius: 40rpx;
-		background: #B0B0B0;
+		background: rgba(49,49,49,0.3);
 		box-sizing: border-box;
 		padding: 0 18rpx
 	}
@@ -1170,9 +1173,8 @@
 		box-sizing: border-box;
 		padding-top: 10rpx;
 	}
-
 	.header-price text {
-		font-size: 63rpx;
+		font-size: 50rpx;
 		font-family: Impact;
 		font-weight: 400;
 		color: #FFFFFF;
@@ -1241,7 +1243,8 @@
 		font-family: PingFangSC-Regular;
 		font-weight: 500;
 		color: #FFFFFF;
-		margin-bottom: 15rpx;
+		margin-bottom: 10rpx;
+		margin-top: 5rpx;
 	}
 
 	.countdown-content {
@@ -1258,14 +1261,25 @@
 		text-align: center;
 		line-height: 36rpx;
 		font-size: 23rpx;
-		font-family: eryaxindahei;
+		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #FFFFFF;
-		background: #000;
+		// background: #000;
 		border-radius: 3rpx;
 		margin-right: 4rpx;
 	}
-
+	.countdown-index-2{
+		height: 36rpx;
+		text-align: center;
+		line-height: 36rpx;
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular;
+		font-weight: 600;
+		color: #FFFFFF;
+		// background: #000;
+		border-radius: 3rpx;
+		margin-right: 4rpx;
+	}
 	.countdown-day {
 		margin-right: 10rpx !important;
 	}
@@ -1281,8 +1295,8 @@
 	.header {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 0 30rpx;
-		padding-bottom: 10rpx;
+		padding: 0 30rpx ;
+		padding-bottom: 13rpx;
 	}
 
 	.header-top-id {
@@ -1298,7 +1312,7 @@
 	.header-top {
 		width: 100%;
 		box-sizing: border-box;
-		padding-top: 30rpx;
+		padding-top: 27rpx;
 
 		&-title {
 			width: 100%;
@@ -1326,8 +1340,8 @@
 		}
 		&-plan {
 			width: 100%;
-			margin-top: 14rpx;
-			margin-bottom: 20rpx;
+			margin-top: 16rpx;
+			margin-bottom: 23rpx;
 			.plan-top-line{
 				width:100%;
 				display: flex;
@@ -1494,7 +1508,7 @@
 				font-family: PingFangSC-Medium;
 				font-weight: 400;
 				color: #333333;
-				margin-bottom: 5rpx;
+				margin-bottom: 3rpx;
 			}
 			&-desc {
 				font-size: 24rpx;
@@ -1538,18 +1552,16 @@
 				padding: 5rpx 0 4rpx 35rpx;
 				display: flex;
 				flex-wrap: wrap;
-
 				&-name {
 					width: 100%;
-					font-size: 31rpx;
-					font-family: PingFangSC-Semibold;
-					font-weight: 600;
+					font-size: 30rpx;
+					font-family: PingFangSC-Medium;
+					font-weight: 400;
 					color: #333333;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
 				}
-
 				&-tips {
 					width: 100%;
 					font-size: 24rpx;
@@ -1557,10 +1569,6 @@
 					font-weight: 400;
 					color: #C0C0C0;
 				}
-
-				
-
-
 			}
 		}
 		.goods-seller-desc-js {
@@ -1722,9 +1730,9 @@
 			border-radius: 3rpx;
 			display: flex;
 			align-items: center;
-			font-size: 33rpx;
+			font-size: 29rpx;
 			font-family: PingFangSC-Semibold;
-			font-weight: 600;
+			font-weight:400;
 			color: #333333;
 			justify-content: center;
 			box-sizing: border-box;
@@ -1838,11 +1846,11 @@
 	// 特殊说明
 	.special-explain {
 		width: 100%;
-		font-size: 26rpx;
+		font-size: 27rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #333333;
-		line-height: 40rpx;
+		line-height: 43rpx;
 		margin-bottom: 30rpx;
 	}
 

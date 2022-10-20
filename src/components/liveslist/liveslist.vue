@@ -2,7 +2,7 @@
 	<view class="livelist">
 		<view class="livelist-index"  v-for="(item,index) in liveList" :key="index" @click="onClickJumpUrl(item)">
 			<view class="livelist-top" >
-				<muqian-lazyLoad class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic))" width="348rpx" height="268rpx" :viewBg="true">
+				<muqian-lazyLoad class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic))" width="349rpx" height="268rpx" :viewBg="true" borderRadius="5rpx 5rpx 0 0">
 				</muqian-lazyLoad>
 				<view class="livelist-top-statebox" v-if="item.state==2">
 					<image class="livelist-top-statebox-icon" src="@/static/live/v3/live_ing.gif"/>
@@ -75,6 +75,7 @@
 	.livelist{
 		width: 100%;
 		display: flex;
+		box-sizing: border-box;
 		justify-content: space-between;
 		flex-wrap: wrap;
 		&-index{
@@ -92,6 +93,7 @@
 			&-image{
 				width: 349rpx;
 				height:268rpx;
+				box-sizing: border-box;
 			}
 			&-statebox{
 				height:38rpx;

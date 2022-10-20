@@ -40,12 +40,12 @@
 			<statusbar />
 			<view class="tab-header">
 				<view class="tab-box">
-					<u-tabs :list="TOP_TABS" lineWidth="49rpx" lineHeight="6rpx" :lineColor="`url(${lineBg}) 100% 100%`" :activeStyle="{color:'#333333',fontSize:'50rpx',fontFamily:'YouSheBiaoTiHei',transform: 'scale(1,1.1)'}" :inactiveStyle="{color:'#959695',fontSize:'50rpx',fontFamily:'YouSheBiaoTiHei',transform: 'scale(1,1.1)'}" :itemStyle="{width:'100rpx',height:'90rpx',padding:'0rpx 25rpx',}" :current="currentIndex" @click="currentIndex=$event.index"></u-tabs>
+					<u-tabs :list="TOP_TABS" lineWidth="49rpx" lineHeight="6rpx" :lineColor="`url(${lineBg}) 100% 100%`" :activeStyle="{color:'#333333',fontSize:'50rpx',fontFamily:'YouSheBiaoTiHei',transform: 'scale(1,1.1)'}" :inactiveStyle="{color:'#959695',fontSize:'50rpx',fontFamily:'YouSheBiaoTiHei',transform: 'scale(1,1.1)'}" :itemStyle="{width:'100rpx',height:'100rpx',padding:'0rpx 25rpx',}" :current="currentIndex" @click="currentIndex=$event.index"></u-tabs>
 				</view>
 				<view class="header-search" @click="onClickLiveSearch">
 					<view class="sousuo-icon"></view>
 					<view v-show="currentIndex==1" style="padding-left:80rpx;color:#A3A3A3;font-size:25rpx">{{currentIndex==1?(liveData.q||'商品/商家/直播'):''}}</view>
-					<u-notice-bar v-show="currentIndex==0" style="padding-left:80rpx" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
+					<u-notice-bar v-show="currentIndex==0" style="padding-left:80rpx;" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
 				</view>
 			</view>
 			
@@ -54,7 +54,7 @@
 			<statusbar />
 			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true;refresherEnabled=true" @transition="transitionSwiper">
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll" :class="{'transRef':transRef}" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="54" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll" :class="{'transRef':transRef}" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<view class="tab-good-content">
 							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index" :class="{justifyStart:index=='top'}">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
@@ -65,7 +65,7 @@
 									<view class="tabtext u-line-1">{{items.name}}</view>
 								</view>
 							</view>
-							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-07-26')">
+							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-11-26')">
 								<image class="capsule-pic" :src="decodeURIComponent(capsule.pic)" mode="aspectFill"/>
 							</navigator>
 
@@ -79,7 +79,7 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="54"  @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45"  @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
@@ -125,8 +125,8 @@
 			bottom:indexTabList
 		};
 		capsule = {
-			pic:'',
-			url:''
+			pic:'../../static/index/mp_mini.jpg',
+			url:'../../static/index/mp_mini.jpg'
 		}
 		hotList: { [x: string]: any } = indexHotList;
 		goodTab = indexGoodTab;
@@ -509,6 +509,9 @@
 		}
 		animationfinish(event:any){
 			this.currentIndex = event.detail.current;
+			// if(event.detail.current == 1){
+			// 	if(this.liveData.liveTabCheck == 1 && this.liveList.length==0)
+			// }
 		}
 		onClickListTabs(id: any) {
 			if (id == this.liveData.liveTabCheck) {
@@ -584,15 +587,12 @@
 	page {
 		background: $content-bg
 	}
-
 	.content {
 		width: 100%;
 	}
-
 	.absolute {
 		position: relative;
 	}
-
 	.tab-center {
 		width: 100%;
 		height:100%;
@@ -738,9 +738,64 @@
 	}
 	.capsule-pic{
 		width: 710rpx;
-		height:154rpx
+		height:154rpx;
+		position: relative;
+	}
+	.capsule-pic::after {	//这里开始实现效果
+		content:"";
+		position: absolute;
+		width:200rpx;
+		height:100%;
+		top:0;
+		left:-100%;
+		overflow: hidden;
+		background: -moz-linear-gradient(left,
+		rgba(255, 255, 255, 0)25%,
+		rgba(255, 255, 255, .2)50%,
+		rgba(255, 255, 255, 0)75%);
+		background: -webkit-gradient(linear, left top, right top,
+		color-stop(25%, rgba(255, 255, 255, 0)),
+		color-stop(50%, rgba(255, 255, 255, .2)),
+		color-stop(75%, rgba(255, 255, 255, 0)));
+		background: -webkit-linear-gradient(left,
+		rgba(255, 255, 255, 0)25%, 
+		rgba(255, 255, 255, .2)50%, 
+		rgba(255, 255, 255, 0)75%);
+		background: -o-linear-gradient(left, 
+		rgba(255, 255, 255, 0)25%, 
+		rgba(255, 255, 255, .2)50%, 
+		rgba(255, 255, 255, 0)75%);
+		transform: skewX(-45deg);
+		-webkit-transform: skewX(-45deg);
+		-moz-transform: skewX(-45deg);
+		animation:tolight 3s infinite  linear;
+		-webkit-animation:tolight 3s infinite  linear;
 	}
 
+	/*光影划过动画*/
+	@keyframes tolight
+	{
+		30% {
+			left:-100%;
+		}
+		60% {
+			left:50%;
+		}
+		100% {
+			left:200%;
+		}
+	}
+	@-webkit-keyframes tolight {
+		30% {
+			left:-100%;
+		}
+		60% {
+			left:50%;
+		}
+		100% {
+			left:200%;
+		}
+	}
 	@keyframes bounce-down {
 		25% {
 			-webkit-transform: translateY(-5rpx);
@@ -970,23 +1025,28 @@
 		align-items: flex-end !important;
 	}
 	/deep/.uni-scroll-view-refresh__spinner{
-		display: none;
-		// width:750rpx;
-		// height:105rpx;
-		// background:url(@/static/index/v3/loading.gif) no-repeat center /100% 100%
+		width:50rpx !important;
+		height:50rpx !important;
 	}
 	/deep/.uni-scroll-view-refresh__icon{
 		display: none;
 	}
 	/deep/.uni-scroll-view-refresh-inner{
-		width:750rpx !important;
-		height:105rpx !important;
-		background:url(@/static/index/v3/loading.gif) no-repeat center /100% 100% !important;
-		border-radius: 0;
+		
+		background:rgba(0,0,0,0);
 		box-shadow:none
 	}
-
+	/deep/.uni-scroll-view-refresh__spinner>circle{
+		width: 50rpx !important;
+		height:50rpx !important;
+		stroke-width:6 !important;
+		color:#e2e2e2 !important;
+	}
 	.transRef /deep/.uni-scroll-view-refresher{
 		transition: all 0.5s ease-out;
+	}
+	/deep/.u-tabs__wrapper__nav__line{
+		border-radius: 0 !important;
+		bottom:18rpx !important
 	}
 </style>
