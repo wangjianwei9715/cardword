@@ -1,7 +1,7 @@
 <template>
 	<view class="good-act-content" v-if="goodsActData!=''||cheduiData.list!=''">
 		<view class="detail-act-box">
-			<view v-show="cheduiData.list" class="act-box" :class="{'hasAct':goodsActData!=''}" @click.prevent="cheduiShowDrawer=true">
+			<view v-show="cheduiData.list" class="act-box" :class="{'hasAct':goodsActData!=''}" @click.prevent="cheduiShowDrawer=true;isPullDown(false)">
 				<view class="act-box-name chedui-name">车队</view>
 				<view class="act-box-desc flex-between">
 					<view class="act-box-desc-item flex-between">车队排行榜前{{cheduiData.totalNum}}名送礼品!</view>
@@ -37,7 +37,7 @@
 		</bottomDrawer>
 
 		<!-- 车队排行榜 -->
-		<bottomDrawer :showDrawer="showChedui" :title="'车队排行榜'" @closeDrawer="cheduiShowDrawer=false" :needSafeArea="true" :padding="'0rpx 0rpx'">
+		<bottomDrawer :showDrawer="showChedui" :title="'车队排行榜'" @closeDrawer="cheduiShowDrawer=false;isPullDown(true)" :needSafeArea="true" :padding="'0rpx 0rpx'">
 			<view class="drawer-header">
 				<view class="drawer-header-name">上车最多的前{{cheduiData.totalNum}}名玩家送礼</view>
 				<image style="width:27rpx;height:26rpx" src="@/static/goods/v2/icon_help.png" @click="cheduiHelpShowDrawer=true"></image>
@@ -222,7 +222,6 @@
 				justify-content: space-between;
 			}
 			.act-box-desc-item{
-				height:76rpx;
 				display: flex !important;
 				align-items: center;
 				box-sizing: border-box;
@@ -230,6 +229,7 @@
 				font-family: PingFang SC;
 				font-weight: 400;
 				color: #333333;
+				margin:20rpx 0;
 			}
 		}
 		.detail-act-index{
@@ -331,7 +331,7 @@
 		background:url(../../static/goods/v2/icon_right_new.png) no-repeat center;
 		background-size: 100% 100%;
 		margin-left: 10rpx;
-		margin-top: 33rpx;
+		margin-top: 30rpx;
 	}
 	.drawer-header{
 		width: 100%;

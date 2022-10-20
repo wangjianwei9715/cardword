@@ -157,7 +157,7 @@
 	}
 	.tab-hot-boxtitle{
 		width: 100%;
-		font-size: 25rpx;
+		font-size: 26rpx;
 		font-family: PingFangSC-Semibold;
 		font-weight: bold;
 		color: #333333;
@@ -168,7 +168,7 @@
 	.tab-hot-boxtips{
 		width: 100%;
 		height:35rpx;
-		font-size: 21rpx;
+		font-size: 22rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #959695;

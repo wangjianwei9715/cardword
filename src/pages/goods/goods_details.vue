@@ -1490,7 +1490,7 @@
 			text-align: center;
 			&-name {
 				text-align: center;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Medium;
 				font-weight: 400;
 				color: #333333;
