@@ -15,8 +15,8 @@
             </view>
         </view>
         <seriesCard :list="cardList" @goMore="goMore" :isFetchEnd="seriesCardEnd" v-if="cardList&&cardList.length" />
-        <!-- v-if="choices&&choices.length>2" -->
-        <scroll-view scroll-x="true" class="tagContainer">
+        <!--  -->
+        <scroll-view scroll-x="true" class="tagContainer" v-if="choices&&choices.length>2">
             <view class="uni-flex" style="height:100%;align-items: center;">
                 <view class="tag" v-for="(item,index) in choices" :key="index"
                     :class="{selectTag:queryParams.choice==item || (queryParams.choice=='all'&&item=='全部')}"

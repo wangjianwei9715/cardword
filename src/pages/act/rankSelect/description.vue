@@ -1,32 +1,201 @@
 <template>
 	<view class="content">
+		<view class="descriptionContainer">
+			<view class="topTagContainer">
+				<view class="tagItem">
+					<image src="../../../static/act/rankSelect/desCar.png" />
+					<view class="tagTitle positionCenter">参与拼团</view>
+					<view class="tagDes positionCenter">21-22select</view>
+				</view>
+				<view class="tagItem">
+					<image src="../../../static/act/rankSelect/desZs.png" />
+					<view class="tagTitle positionCenter">拼团成功</view>
+					<view class="tagDes positionCenter">获取积分</view>
+				</view>
+				<view class="tagItem">
+					<image src="../../../static/act/rankSelect/desGift.png" />
+					<view class="tagTitle positionCenter">入榜成功</view>
+					<view class="tagDes positionCenter">抽取奖励</view>
+				</view>
+			</view>
+			<view class="desLine"></view>
+			<view class="des_content" v-html="des">
+
+			</view>
+			<view class="des_title">
+				积分说明
+			</view>
+			<view class="des_content">
+				一.如何获取积分
+			</view>
+			<view class="des_content">
+				活动期间，参与卡世界21-22select系列拼团，根据不同拼团形式、卡种倍数、球员倍数、球队倍数结算发放给用户 <br />
+				【拼团期间将会冻结此订单的积分，拼团成功后发放至用户，拼团失败则会扣除对应订单冻结的积分】
+			</view>
+			<view class="des_content">
+				二.卡密倍数
+			</view>
+			<view class="des_content red">
+				卡种基础分：{{pointConfig.cardSetBasicsScore || '获取中'}}<br />
+				球员基础分：{{pointConfig.playerBasicsScore || '获取中'}}<br />
+				球队基础分：{{pointConfig.teamBasicsScore || '获取中'}}<br />
+			</view>
+			<view class="des_title">
+			</view>
+			<view class="des_content">
+				2.倍数说明<br />
+				关键字倍数
+			</view>
+			<view class="des_content red" v-if="pointConfig.cardSet_multiple&&pointConfig.cardSet_multiple.length">
+				<view v-for="(item,index) in pointConfig.cardSet_multiple">
+					{{item.multiple}}倍：{{item.keyword.join('、')}}
+				</view>
+			</view>
+			<view class="des_title">
+			</view>
+			<view class="des_content">球员倍数</view>
+			<view class="des_content red" v-if="pointConfig.player_multiple&&pointConfig.player_multiple.length">
+				<view v-for="(item,index) in pointConfig.player_multiple">
+					{{item.multiple}}倍：{{item.keyword.join('、')}}
+				</view>
+			</view>
+			<view class="des_title">
+			</view>
+			<view class="des_content">球队倍数</view>
+			<view class="des_content red" v-if="pointConfig.team_multiple&&pointConfig.team_multiple.length">
+				<view v-for="(item,index) in pointConfig.team_multiple">
+					{{item.multiple}}倍：{{item.keyword.join('、')}}
+				</view>
+			</view>
+			<view class="des_gray">*活动最终解释权归卡世界平台所有</view>
+		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import { app } from "@/app";
-	import { Component } from "vue-property-decorator";
-	import BaseNode from '../../../base/BaseNode.vue';
-	@Component({})
-	export default class ClassName extends BaseNode {
-
-		onLoad(query:any) {
-			
-		}
-        onReachBottom(){
-
-        }
-        onPulldDownRefresh(){
-            
-        }
+import { app } from "@/app";
+import { Component } from "vue-property-decorator";
+import BaseNode from '../../../base/BaseNode.vue';
+@Component({})
+export default class ClassName extends BaseNode {
+	pointConfig: any = {}
+	des: string =
+		`
+	活动期间，参与<text style="color:#FA1545">21-22select</text>系列拼团的用户，将根据拼团的 类型获得相应的积分奖励【拼团期间活动积分为冻结状态， 拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结 积分中扣除】
+	<br/>
+	活动截至<text style="color:#FA1545">入榜前X</text>的用户将获得特殊奖励
+	<br/>
+	额外奖励：<text style="color:#FA1545">排名前500名</text>的用户，平台将直播随机抽取N名用户 
+	`
+	onLoad(query: any) {
 
 	}
+	onReachBottom() {
+
+	}
+	onPulldDownRefresh() {
+
+	}
+
+}
 </script>
 
 <style lang="scss">
 page {
-    background: $content-bg;
-    width: 750rpx;
-    overflow-x: hidden;
+	background: $content-bg;
+	width: 750rpx;
+	overflow-x: hidden;
+}
+
+.descriptionContainer {
+	width: 710rpx;
+	box-sizing: border-box;
+	padding: 38rpx 30rpx 34rpx 30rpx;
+	background: #FFFFFF;
+	border-radius: 3rpx;
+	margin-top: 20rpx;
+
+	.des_title {
+		font-size: 23rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #333333;
+		margin-bottom: 10rpx;
+	}
+
+	.des_content {
+		font-size: 23rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		line-height: 36rpx;
+		letter-spacing: 2rpx;
+	}
+
+	.des_gray {
+		font-size: 19rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #949494;
+		margin-top: 25rpx;
+	}
+
+	.red {
+		color: #FA1545;
+	}
+}
+
+.desLine {
+	width: 650rpx;
+	height: 1rpx;
+	background: #C0C0C0;
+	margin-top: 105rpx;
+	margin-bottom: 33rpx;
+}
+
+.topTagContainer {
+	display: flex;
+	justify-content: space-between;
+	padding: 0 40rpx;
+
+	.tagItem {
+		width: 68rpx;
+		height: 68rpx;
+		position: relative;
+
+		image {
+			width: inherit;
+			height: inherit;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+	}
+
+	.tagTitle {
+		white-space: nowrap;
+		text-align: center;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		top: 74rpx;
+	}
+
+	.tagDes {
+		white-space: nowrap;
+		text-align: center;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+		top: 108rpx;
+	}
+
+	.positionCenter {
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%, 0);
+	}
 }
 </style>

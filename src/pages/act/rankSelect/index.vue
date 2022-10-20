@@ -18,7 +18,7 @@
             </view>
         </view>
         <view class="rankBanner">
-            <view class="hdsm flexCenter">
+            <view class="hdsm flexCenter" @click="pageJump('/pages/act/rankSelect/description')">
                 活动<br />
                 说明
             </view>
@@ -50,7 +50,7 @@
         </view>
         <view class="luckContainer">
             <view class="luck_font">前500名参与幸运大抽奖！</view>
-            <view class="luck_look flexCenter">查看</view>
+            <view class="luck_look flexCenter" @click="pageJump('/pages/act/rankSelect/draw')">查看</view>
         </view>
         <view class="actProgressContainer">
             <view class="progress_item" :class="{progress_itemHasLine:index!=3}" v-for="(item,index) in actProgress"
@@ -63,7 +63,7 @@
         <view class="rankContainer">
             <view class="rank_top">
                 <view class="rank_title">21-22 SELECT积分榜</view>
-                <view class="rank_pointText" @click="onClickGoPoint">查看积分明细</view>
+                <view class="rank_pointText" @click="pageJump('/pages/act/rankSelect/pointsDetails')">查看积分明细</view>
             </view>
             <view class="rank_line"></view>
             <view class="rank_tr rank_tr_myRank">
@@ -97,7 +97,7 @@
                 <view class="rank_header_item">奖励</view>
             </view>
 
-            <view class="rank_tr" v-for="(item,index) in rankList">
+            <view class="rank_tr" :calss="{rank_my:item.isMy}" v-for="(item,index) in rankList">
                 <view class="rankTd flexCenter rankNum" :class="[index<=2?`rank${index+1}`:'']">{{index>2?(index+1):""}}
                 </view>
                 <muqian-lazyLoad class="rankAvatar" borderRadius="50%"
@@ -136,7 +136,6 @@
                     卡种基础分：{{pointConfig.cardSetBasicsScore || '获取中'}}<br />
                     球员基础分：{{pointConfig.playerBasicsScore || '获取中'}}<br />
                     球队基础分：{{pointConfig.teamBasicsScore || '获取中'}}<br />
-
                 </view>
                 <view class="des_title">
                 </view>
@@ -269,9 +268,9 @@ export default class ClassName extends BaseNode {
             urls: picArr
         })
     }
-    onClickGoPoint() {
+    pageJump(url: string) {
         uni.navigateTo({
-            url: "/pages/act/rankSelect/pointsDetails"
+            url
         })
     }
     onClickKef() {
@@ -292,7 +291,8 @@ export default class ClassName extends BaseNode {
     }
     reqRewardList() {
         app.http.Get('dataApi/selectRank/award/list', {}, (res: any) => {
-
+                console.log(res);
+                
         })
     }
     reqAllRank(cb?: any) {
@@ -305,8 +305,18 @@ export default class ClassName extends BaseNode {
     }
     reqPointConfig() {
         app.http.Get(`dataApi/selectRank/multiple/config`, {}, (res: any) => {
-            console.log(res);
 
+            Object.keys(res.data).map((key: any) => {
+                console.log(key);
+                
+                //@ts-ignore
+                if (typeof res.data[key] == 'null') {
+                    res.data[key] = []
+                }
+            })
+            console.log(res.data);
+
+            this.pointConfig=res.data
         })
     }
     //我的rank
@@ -487,6 +497,7 @@ page {
         font-family: PingFang SC;
         font-weight: 600;
         color: #FFFEFE;
+        line-height: 24rpx;
         text-shadow: 0rpx 8rpx 13rpx #56160C;
     }
 
@@ -798,6 +809,10 @@ page {
     }
 }
 
+.rank_my {
+    outline: 4rpx solid #FA1545;
+}
+
 .rank_tr_myRank {
     margin-bottom: 46rpx;
     height: 160rpx;
@@ -808,7 +823,7 @@ page {
     .leftCorner {
         width: 112rpx;
         height: 32rpx;
-        background: linear-gradient(106deg, rgba(252, 235, 160, 0.63), rgba(172, 105, 40, 0.63), rgba(248, 238, 167, 0.63), rgba(138, 84, 7, 0.63), rgba(251, 236, 170, 0.63));
+        background: linear-gradient(106deg, rgba(172, 105, 40, 0.63), rgba(248, 238, 167, 0.63), rgba(138, 84, 7, 0.63));
         border-radius: 3rpx 0rpx 3rpx 0rpx;
         position: absolute;
         left: 0;
@@ -860,8 +875,9 @@ page {
     width: 750rpx;
     background-color: #fa1545;
     position: fixed;
-    height: calc(120rpx + constant(safe-area-inset-bottom));
-    height: calc(120rpx + env(safe-area-inset-bottom));
+    height: 120rpx;
+    // height: calc(120rpx + constant(safe-area-inset-bottom));
+    // height: calc(120rpx + env(safe-area-inset-bottom));
     bottom: 0;
     left: 0;
 

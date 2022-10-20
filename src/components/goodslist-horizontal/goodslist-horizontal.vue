@@ -233,17 +233,17 @@ export default class ClassName extends BaseComponent {
         }
 
         .progress {
-            width: 50%;
+            // width: 50%;
             height: inherit;
             background: linear-gradient(90deg, #F4B5C5 0%, #EA3345 100%);
         }
 
         .progressPercnet {
-            margin-left: 30rpx;
+            margin-left: 18rpx;
             font-size: 23rpx;
             font-family: PingFang SC;
             font-weight: 400;
-            width: 60rpx;
+            width: 86rpx;
             // background-color: red;
             text-align: right;
             color: #959695;
