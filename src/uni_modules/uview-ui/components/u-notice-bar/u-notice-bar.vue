@@ -17,6 +17,7 @@
 				:disable-touch="disableTouch"
 				:fontSize="fontSize"
 				:duration="duration"
+				:flexEnd="flexEnd"
 				@close="close"
 				@click="click"
 			></u-column-notice>

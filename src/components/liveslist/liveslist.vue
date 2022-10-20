@@ -5,7 +5,7 @@
 				<muqian-lazyLoad class="livelist-top-image" :src="getGoodsImg(decodeURIComponent(item.pic))" width="348rpx" height="268rpx" :viewBg="true">
 				</muqian-lazyLoad>
 				<view class="livelist-top-statebox" v-if="item.state==2">
-					<image class="livelist-top-statebox-icon" src="@/static/live/v3/live_ing.png"/>
+					<image class="livelist-top-statebox-icon" src="@/static/live/v3/live_ing.gif"/>
 					<view class="livelist-top-statebox-bg">25人在看</view>
 				</view>
 				<view class="livelist-top-statebox" v-else>

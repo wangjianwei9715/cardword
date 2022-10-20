@@ -13,7 +13,7 @@
 		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
 			<view class="goodslist-index">
 				<muqian-lazyLoad v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
-				<view @click="onClickJumpUrl(item.goodCode)">
+				<view class="goodslist-index-box" @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic">
 						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0"></muqian-lazyLoad>
 					</view>
@@ -166,13 +166,13 @@
 			box-sizing: border-box;
 			position: relative;
 			padding:0;
-			display: flex;
-			justify-content: space-between;
-			flex-wrap: wrap;
 			margin-bottom: 14rpx;
 			overflow: hidden;
 		}
-
+		&-index-box{
+			height:430rpx;
+			margin-bottom: 14rpx;
+		}
 		&-pic {
 			width: 349rpx;
 			height: 268rpx;
@@ -220,7 +220,6 @@
 			background: linear-gradient(90deg, #FFB6C5 0%, #FA1545 100%);
 			width: 100%;
 			height: 8rpx;
-			margin-bottom: 19rpx;
 			position: relative;
 			display: flex;
 			justify-content: flex-end;

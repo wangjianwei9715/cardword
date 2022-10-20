@@ -4,13 +4,14 @@
 			<view class="hot-bg" :style="`width:${item.bg.width};height:${item.bg.height};background:url(${item.bg.src}) no-repeat center/100% 100%`"></view>
 			<view class="tab-index">
 				<view class="tab-hot-boxtitle">{{item.title}}</view>
-				<view class="tab-hot-boxtips">{{item.tips}}</view>
+				<view class="tab-hot-boxtips">{{name!='broadCast'?item.tips:item.list.merchantName}}</view>
 				<view class="tab-hot-boxpic-index" v-if="name=='progress' || name=='hot'" :style="`width:${item.icon.width};height:${item.icon.height};top:${item.icon.top};right:${item.icon.right};background:url(${item.icon.src}) no-repeat center/100% 100%`"
 				></view>
 				<view class="tab-hot-boxpic-index" v-else-if="name=='broadCast'" :style="`top:${item.icon.top};right:${item.icon.right};`">
 					<view class="tab-hot-boxpic-box live-border">
 						<view v-if="item.list.state == 2 || item.list.state == 1" class="live-ing"></view>
-						<muqian-lazyLoad :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%"/>
+						<muqian-lazyLoad :src="decodeURIComponent(item.list.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%" width="100rpx" height="100rpx" :viewBg="true"/>
+						<view class="tab-hot-live-state">{{liveState(item.list.state)}}</view>
 					</view>
 				</view>
 				<view class="tab-hot-boxpic-index" v-else :style="`width:${item.icon.width};height:${item.icon.height};top:${item.icon.top};right:${item.icon.right};`"
@@ -104,6 +105,16 @@
 				url:item.url
 			});  
 		}
+		liveState(state:number):string{
+			switch(state){
+				case 2:
+					return '直播中';
+				case 3:
+					return '回放';
+				default:
+					return '待直播'
+			}
+		}
 	}
 </script>
 
@@ -146,7 +157,7 @@
 	}
 	.tab-hot-boxtitle{
 		width: 100%;
-		font-size: 25rpx;
+		font-size: 26rpx;
 		font-family: PingFangSC-Semibold;
 		font-weight: bold;
 		color: #333333;
@@ -157,7 +168,7 @@
 	.tab-hot-boxtips{
 		width: 100%;
 		height:35rpx;
-		font-size: 21rpx;
+		font-size: 22rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #959695;
@@ -176,6 +187,24 @@
 		width: 100rpx;
 		height:100rpx;
 		position: relative;
+	}
+	.tab-hot-live-state{
+		width: 68rpx;
+		height: 23rpx;
+		background: #FB315C;
+		border-radius: 3rpx;
+		font-size: 17rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		left:50%;
+		margin-left: -34rpx;
+		bottom:-9rpx;
+		z-index:3;
 	}
 	.live-border{
 		border:4rpx solid #FA1545;

@@ -136,15 +136,16 @@
 	}
 	.desc{
 		width: 100%;
-		font-size: 28rpx;
+		font-size: 30rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #14151A;
-		line-height: 36rpx;
+		line-height: 44rpx;
 	}
 	::v-deep img{
 		width:670rpx !important;
 		height:auto;
+		margin:10rpx 0;
 	}
 	::v-deep h2{
 		line-height: 60rpx;

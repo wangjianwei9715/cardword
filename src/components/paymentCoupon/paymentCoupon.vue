@@ -22,7 +22,7 @@
 								<view :class="checkCoupon(item.id)?'coupon-right-checked':'coupon-right-check'" @click="onClickcheckCoupon(item.id,index)"></view>
 							</view>
 							<view class="coupon-right-bottom">
-								<view class="coupon-right-detail">{{item.goodCode!=''?'指定商品':(item.merchantName!=''?'指定店铺':'平台通用')}}</view>
+								<view class="coupon-right-detail">{{item.goodCode!=''?'指定商品':(item.merchantName&&item.merchantName!=''?'指定店铺':'平台通用')}}</view>
 							</view>
 						</view>
 					</view>

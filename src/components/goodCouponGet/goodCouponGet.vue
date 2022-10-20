@@ -103,9 +103,9 @@
 				justify-content: center;
 				border-color: #F2C9CE !important;
 				border-radius: 3rpx;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFang SC;
-				font-weight: 600;
+				font-weight: 400;
 				color: #FA1545;
 			}
 		}

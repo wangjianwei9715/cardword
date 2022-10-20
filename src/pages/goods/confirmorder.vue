@@ -1264,6 +1264,8 @@ page {
   bottom: 0;
   left:0;
   background: #ffffff;
+  box-sizing: border-box;
+  padding:0 50rpx 0 30rpx;
 }
 .bottom-content {
   width: 100%;
@@ -1288,7 +1290,6 @@ page {
   height: 88rpx;
   background: #cecfd3;
   border-radius: 4rpx;
-  margin-right: 16rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1300,9 +1301,8 @@ page {
 }
 
 .btn-payment2 {
-  width: 426rpx;
+  width: 360rpx;
   background: $btn-red;
-  margin-right: 16rpx;
   font-family: PingFangSC-Regular;
   color: #FFFFFF;
   box-sizing: border-box;

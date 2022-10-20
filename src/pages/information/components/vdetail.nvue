@@ -10,7 +10,7 @@
 			<list style="padding-bottom:120px;margin-top:20rpx" :show-scrollbar="false" ref="commentBox" :pagingEnabled="false" :scrollable="true">
 				<cell v-for="(item,index) in commentsList" :key="index">
 					<view class="chat-item">
-						<image class="chat-avatar" :src="decodeURIComponent(item.avatar)"/>
+						<image class="chat-avatar" :src="item.avatar&&item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar"/>
 						<view style="width:470rpx">
 							<view class="chat-info">
 								<text class="chat-name">{{item.name}}</text>
@@ -25,7 +25,7 @@
 						</view>
 					</view>
 					<view class="chat-item son-item" v-for="(son,x) in item.lower" :key="x" >
-						<image class="son-avatar" :src="decodeURIComponent(son.avatar)"/>
+						<image class="son-avatar" :src="son.avatar&&son.avatar!=''?decodeURIComponent(son.avatar):defaultAvatar"/>
 						<view style="width:390rpx" >
 							<view class="chat-info son-info">
 								<text class="chat-name">{{son.name}}</text>
@@ -79,10 +79,12 @@
 		},
 		data() {
 			return {
+				defaultAvatar:app.defaultAvatar,
 				platform:''
 			};
 		},
 		mounted() {
+			this.defaultAvatar = app.defaultAvatar;
 			this.platform = uni.getSystemInfoSync().platform;
 			this.commentsList = []
 			this.commentParams = {...commentParams}

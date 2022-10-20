@@ -12,7 +12,7 @@
           <view class="icon-collect" @click.prevent="onClickMyCollect"></view>
 				</view>
       </view>
-      <u-tabs :list="tabData.list" :current="tabData.current" :itemStyle="tabData.itemStyle" :activeStyle="tabData.activeStyle" :inactiveStyle="tabData.inactiveStyle" lineColor="#ef3333" @click="onClickListTabs"></u-tabs>
+      <u-tabs :list="tabData.list" :current="tabData.current" :itemStyle="tabData.itemStyle" :activeStyle="tabData.activeStyle" :inactiveStyle="tabData.inactiveStyle" :lineWidth="0" @click="onClickListTabs"></u-tabs>
     </view>
 
     <view class="live-content">
@@ -51,7 +51,7 @@ export default class ClassName extends BaseNode {
   tabData = {
     list:TabList,
     current:0,
-    itemStyle:{height: '80rpx',padding:'0rpx 30rpx'},
+    itemStyle:{height: '50rpx',padding:'0rpx 30rpx 20rpx 30rpx'},
     inactiveStyle:{"font-size":"28rpx","color":"#959699","font-weight":"400"},
     activeStyle:{"font-size":"31rpx","color":"#333","font-weight":"bold"}
   }
@@ -234,7 +234,7 @@ page {
 .live-content {
   width: 100%;
   box-sizing: border-box;
-  padding: 180rpx 0 20rpx 0;
+  padding: 160rpx 0 20rpx 0;
   position: relative;
   z-index: 2;
 }

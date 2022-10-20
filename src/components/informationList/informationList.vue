@@ -106,7 +106,7 @@
 				.time{
 					height:20rpx;
 					line-height: 20rpx;
-					font-size: 21rpx;
+					font-size: 22rpx;
 					font-family: PingFang SC;
 					font-weight: 400;
 					color: #AAAAAA;
@@ -119,7 +119,7 @@
 					height:20rpx;
 					display: flex;
 					align-items: center;
-					font-size: 21rpx;
+					font-size: 22rpx;
 					font-family: PingFang SC;
 					font-weight: 400;
 					color: #AAAAAA;
@@ -131,14 +131,14 @@
 					margin-right: 8rpx;
 				}
 				.icon-lk{
-					width: 22rpx;
-					height:22rpx;
+					width: 24rpx;
+					height:24rpx;
 					margin-right: 10rpx;
 					background:url(@/static/information/icon_m_like.png) no-repeat center / 100% 100%;
 				}
 				.icon-lked{
-					width: 22rpx;
-					height:22rpx;
+					width: 24rpx;
+					height:24rpx;
 					margin-right: 10rpx;
 					background:url(@/static/information/icon_m_liked.png) no-repeat center / 100% 100%;
 				}
@@ -171,6 +171,7 @@
 				top:50%;
 				margin-left: -21rpx;
 				margin-top: -23.5rpx;
+				transform: scale(0.9);
 			}
 			.icon-shadow{
 				width:240rpx;

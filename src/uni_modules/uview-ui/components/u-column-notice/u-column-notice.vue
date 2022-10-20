@@ -28,6 +28,7 @@
 				v-for="(item, index) in text"
 				:key="index"
 				class="u-notice__swiper__item"
+				:class="{'u-notice__flexend':flexEnd}"
 			>
 				<text
 					class="u-notice__swiper__item__text u-line-1"
@@ -72,6 +73,7 @@
 	 * @property {Boolean}			step			direction = row时，是否使用步进形式滚动 （ 默认 false ）
 	 * @property {String | Number}	duration		滚动一个周期的时间长，单位ms （ 默认 1500 ）
 	 * @property {Boolean}			disableTouch	是否禁止用手滑动切换   目前HX2.6.11，只支持App 2.5.5+、H5 2.5.5+、支付宝小程序、字节跳动小程序 （ 默认 true ）
+	 * @property {Boolean}			flexEnd			flex-end
 	 * @example 
 	 */
 	export default {
@@ -156,5 +158,8 @@
 				}
 			}
 		}
+	}
+	.u-notice__flexend{
+		justify-content: flex-end !important;
 	}
 </style>

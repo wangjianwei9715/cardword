@@ -1490,7 +1490,7 @@
 			text-align: center;
 			&-name {
 				text-align: center;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFangSC-Medium;
 				font-weight: 400;
 				color: #333333;
@@ -1704,15 +1704,15 @@
 			}
 
 			.icon-kf {
-				width: 37rpx;
-				height: 38rpx;
+				width: 38rpx;
+				height: 36rpx;
 				margin-bottom: 3rpx;
 			}
 
 			.icon-order {
 				width: 37rpx;
-				height: 41rpx;
-				margin-bottom: 0;
+				height: 36rpx;
+				margin-bottom: 3rpx;
 			}
 		}
 		.btn-cardlist{
@@ -1756,17 +1756,16 @@
 
 	.btn-contented {
 		width: 100%;
-		height: calc(100rpx + env(safe-area-inset-bottom));
+		height: calc(120rpx + env(safe-area-inset-bottom));
 		position: fixed;
 		bottom: 0;
 		left: 0;
 		background: $color-F;
 		z-index: 8;
 		box-sizing: border-box;
-		padding: 0 16rpx;
+		padding: 19rpx 50rpx 0 0;
 		border-top: 1px solid #F5F5F8;
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
 		padding-bottom: constant(safe-area-inset-bottom);
 		padding-bottom: env(safe-area-inset-bottom);
@@ -1886,7 +1885,7 @@
 
 	.detail-bottom-explain {
 		font-family: PingFangSC-Regular;
-		font-size: 27rpx;
+		font-size: 26rpx;
 		font-weight: 500;
 		color: #818080;
 		line-height: 40rpx;
