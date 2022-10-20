@@ -84,6 +84,7 @@
 			};
 		},
 		mounted() {
+			this.defaultAvatar = app.defaultAvatar;
 			this.platform = uni.getSystemInfoSync().platform;
 			this.commentsList = []
 			this.commentParams = {...commentParams}

@@ -1704,15 +1704,15 @@
 			}
 
 			.icon-kf {
-				width: 37rpx;
-				height: 38rpx;
+				width: 38rpx;
+				height: 36rpx;
 				margin-bottom: 3rpx;
 			}
 
 			.icon-order {
 				width: 37rpx;
-				height: 41rpx;
-				margin-bottom: 0;
+				height: 36rpx;
+				margin-bottom: 3rpx;
 			}
 		}
 		.btn-cardlist{
