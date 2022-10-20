@@ -48,17 +48,8 @@
 					<view class="header-right">
 						<view class="icon-end">{{goodsData.state==0?'距开售':'距结束'}}</view>
 						<view class="countdown-content">
-							<view class="countdown-index-2">{{`${countData.countDay>0?countData.countDay+'天 ':''}${countData.countHour} : ${countData.countMinute} : ${countData.countSecond}`}}</view>
-							<!-- <view v-if="countData.countDay>0" class="countdown-index">{{countData.countDay}}</view>
-							<view v-if="countData.countDay>0" class="countdown-index countdown-day">天</view>
-							<view class="countdown-index">{{getCountStr(countData.countHour,0)}}</view>
-							<view class="countdown-index">{{getCountStr(countData.countHour,1)}}</view>
-							<view class="countdown-icon">:</view>
-							<view class="countdown-index">{{getCountStr(countData.countMinute,0)}}</view>
-							<view class="countdown-index">{{getCountStr(countData.countMinute,1)}}</view>
-							<view class="countdown-icon">:</view>
-							<view class="countdown-index">{{getCountStr(countData.countSecond,0)}}</view>
-							<view class="countdown-index">{{getCountStr(countData.countSecond,1)}}</view> -->
+							<view v-if="countData.countDay>0" class="countdown-index countdown-day">{{countData.countDay}}<text>天</text></view>
+							<view class="countdown-index">{{`${countData.countHour} : ${countData.countMinute} : ${countData.countSecond}`}}</view>
 						</view>
 					</view>
 				</view>
@@ -1256,19 +1247,6 @@
 	}
 
 	.countdown-index {
-		width: 30rpx;
-		height: 36rpx;
-		text-align: center;
-		line-height: 36rpx;
-		font-size: 23rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #FFFFFF;
-		// background: #000;
-		border-radius: 3rpx;
-		margin-right: 4rpx;
-	}
-	.countdown-index-2{
 		height: 36rpx;
 		text-align: center;
 		line-height: 36rpx;
@@ -1276,14 +1254,18 @@
 		font-family: PingFangSC-Regular;
 		font-weight: 600;
 		color: #FFFFFF;
-		// background: #000;
 		border-radius: 3rpx;
 		margin-right: 4rpx;
 	}
 	.countdown-day {
 		margin-right: 10rpx !important;
 	}
-
+	.countdown-day text{
+		font-size: 24rpx;
+		font-family: PingFangSC-Regular;
+		color: #FFFFFF;
+		font-weight: 400;
+	}
 	.countdown-icon {
 		font-size: 22rpx;
 		font-family: PingFangSC-Medium, PingFang SC;
@@ -1291,14 +1273,12 @@
 		color: $color-F;
 		margin: 0 1rpx;
 	}
-
 	.header {
 		width: 100%;
 		box-sizing: border-box;
 		padding: 0 30rpx ;
 		padding-bottom: 13rpx;
 	}
-
 	.header-top-id {
 		width: 100%;
 		font-size: 24rpx;

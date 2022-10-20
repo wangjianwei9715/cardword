@@ -48,8 +48,8 @@
 					<view class="chedui-rank-item">
 						<view class="chedui-rank-item-left">
 							<view class="chedui-rank-item-num" :class="`chedui-rank-item-num-${item.index}`">{{item.index}}</view>
-							<image class="chedui-rank-avatar" :src="decodeURIComponent(item.avatar)"/>
-							<view class="chedui-rank-name u-line-1">{{item.userName}}</view>
+							<image class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar}`"/>
+							<view class="chedui-rank-name u-line-1">{{item.userName||'虚位以待'}}</view>
 						</view>
 						<view class="chedui-rank-item-reward u-line-1" :class="{'font-bold':item.index<=3}">{{item.name}}</view>
 					</view>
@@ -62,7 +62,7 @@
 						<image class="chedui-rank-avatar" :src="decodeURIComponent(userData.avatar)"/>
 						<view class="chedui-rank-name u-line-1">{{userData.name}}</view>
 					</view>
-					<view class="chedui-rank-item-reward u-line-1">{{cheduiData.myRank>0?cheduiData.list[cheduiData.myRank-1].name:'-'}}</view>
+					<view class="chedui-rank-item-reward u-line-1">{{cheduiData.myRank>0?cheduiData.list[cheduiData.myRank-1].name:'未上榜'}}</view>
 				</view>
 			</view>
 		</bottomDrawer>
@@ -106,7 +106,8 @@
 		discountMsg:any = {}
 		rewardList = [];
 		cheduiHelpShowDrawer = false;
-		helpOne = {}
+		helpOne = {};
+		defaultAvatar = app.defaultAvatar
 		@Watch('goodsData')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){

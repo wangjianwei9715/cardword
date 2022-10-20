@@ -303,7 +303,7 @@
 			}
 			.bottom-left-shu::after{
 				content: '';
-				width: 2rpx;
+				width: 1rpx;
 				height:20rpx;
 				position: absolute;
 				right:0;

@@ -54,7 +54,7 @@
 			<statusbar />
 			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true;refresherEnabled=true" @transition="transitionSwiper">
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll" :class="{'transRef':transRef}" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<view class="tab-good-content">
 							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index" :class="{justifyStart:index=='top'}">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
@@ -79,7 +79,7 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45"  @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45"  @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
@@ -172,7 +172,6 @@
 			{id:2,name:'拆卡回放',http:'dataApi/broadcast/list/playback'},
 			{id:3,name:'我的拆卡',http:'me/broadcast'}
 		];
-		transRef = false;
 		onLoad(query: any) {
 			// let zqWebviewFloat:any = uni.requireNativePlugin("zq-webview-float");
 			// // //显示悬浮窗
@@ -494,12 +493,10 @@
 			},100)
 		}
 		refreshStart(){
-			this.transRef = true;
 			this.refresherIndex = true
 			this.showInitEvent(() => {
 				setTimeout(() => {
 					this.refresherIndex = false;
-					this.transRef = false
 				}, 1000)
 			})
 		}
@@ -729,7 +726,7 @@
 
 	.capsule-box {
 		width: 710rpx;
-		height: 154rpx;
+		height: 155rpx;
 		margin: 0 auto;
 		box-sizing: border-box;
 		display: flex;
@@ -738,7 +735,7 @@
 	}
 	.capsule-pic{
 		width: 710rpx;
-		height:154rpx;
+		height:155rpx;
 		position: relative;
 	}
 	.capsule-pic::after {	//这里开始实现效果
@@ -1043,7 +1040,7 @@
 		color:#e2e2e2 !important;
 	}
 	.transRef /deep/.uni-scroll-view-refresher{
-		transition: all 0.5s ease-out;
+		transition: height 0.5s ease-out;
 	}
 	/deep/.u-tabs__wrapper__nav__line{
 		border-radius: 0 !important;
