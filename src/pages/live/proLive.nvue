@@ -1035,6 +1035,7 @@ color: #E6A44F;">下次加油！</text>
               this.stopPreview();
               this.stopLive();
               this.finishLive = true;
+              this.pushFlowStamp=null
             }
           }
         });
@@ -2071,6 +2072,7 @@ color: #E6A44F;">下次加油！</text>
         await this.stopPreview();
         await this.engine.stopPublishingStream();
         if (!isLmStream) this.onLive = false;
+        if(isLmStream) this.pushFlowStamp=null
         if (isLeave) this.destroyEngine();
         // this.stopPreview()
       },
