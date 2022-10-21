@@ -29,20 +29,21 @@
                 预览
             </view>
             <view class="reward_line"></view>
-            <view class="rollStaticContent">
-                <view class="rollContent rollAnim" id='rollContent' :animation="animationData">
-                    <view class="rollItem" v-for="(item,index) in 50" :key="index+'rollOne'">
+            <view class="rollStaticContent" id='rollStaticContent'>
+                <!-- rollAnim -->
+                <view class="rollContent" id='rollContent' :animation="animationData">
+                    <view class="rollItem" v-for="(item,index) in awardList" :key="index+'rollOne'">
                         <image class="rollReward" borderRadius="3rpx"
-                            :src="decodeURIComponent('http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg')" />
+                            :src="$parsePic(decodeURIComponent(item.pic_url))" />
                         <view class="rewardLevel flexCenter">
-                            {{`第${index+1}名`}}
+                            {{(item.start_rank==item.end_rank)?`第${item.start_rank}名`:`第${item.start_rank}-${item.end_rank}名`}}
                         </view>
                     </view>
-                    <view class="rollItem" v-for="(item,index) in 50" :key="index+'rollTwo'">
+                    <view class="rollItem" v-for="(item,index) in awardList" :key="index+'rollTwo'">
                         <image class="rollReward" borderRadius="3rpx"
-                            :src="decodeURIComponent('http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg')" />
+                            :src="$parsePic(decodeURIComponent(item.pic_url))" />
                         <view class="rewardLevel flexCenter">
-                            {{`第${index+1}名`}}
+                            {{(item.start_rank==item.end_rank)?`第${item.start_rank}名`:`第${item.start_rank}-${item.end_rank}名`}}
                         </view>
                     </view>
                 </view>
@@ -90,7 +91,7 @@
             <view class="rank_header">
                 <view class="rank_header_item" style="margin-right:81rpx">排行</view>
                 <view class="rank_header_item" style="margin-right:122rpx">用户名</view>
-                <view class="rank_header_item flex1 hasQuestion" @click="descriptionShow=true">
+                <view class="rank_header_item flex1 hasQuestion" @click="reqPointConfig">
                     积分
                     <image src="../../../static/act/rankSelect/wh.png" />
                 </view>
@@ -102,12 +103,12 @@
                 </view>
                 <muqian-lazyLoad class="rankAvatar" borderRadius="50%"
                     :src="item.avatar?$parsePic(decodeURIComponent(item.avatar)):defaultAvatar" />
-                <view class="rankName">{{item.userName}}</view>
+                <view class="rankName line2">{{item.userName}}</view>
                 <view class="rankPoint">
                     <view class="get">已获取：{{item.get_score}}</view>
                     <view class="freeze">冻结中：{{item.lock_score}}</view>
                 </view>
-                <muqian-lazyLoad class="rankReward" borderRadius="3rpx"
+                <muqian-lazyLoad class="rankReward" borderRadius="3rpx" @click="prviewImages(item.awardPic_url)"
                     :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
             </view>
             <view style="opacity:0;height:36rpx"></view>
@@ -185,6 +186,8 @@ export default class ClassName extends BaseNode {
         fetchFrom: 1,
         fetchSize: 30
     }
+    awardList: any = []
+    duration: any = 60 * 1000
     app = app
     isFetchEnd: any = true
     rankList: any = []
@@ -200,10 +203,10 @@ export default class ClassName extends BaseNode {
     animation: any = null
     animationData: any = {}
     shareData: any = {
-        shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/act/rankSelect/index`,
+        shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/act/rankSelect`,
         title: "SELECT登顶计划",
         summary: "SELECT登顶计划",
-        thumb: ""
+        thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.21/seller/info/1666340825471m0k5sxd2ln.jpg"
     };
     pointConfig: any = {
 
@@ -218,7 +221,7 @@ export default class ClassName extends BaseNode {
         app.platform.hasLoginToken(() => {
             this.reqMyRank()
             this.reqAllRank()
-            this.reqPointConfig()
+            
             this.reqRewardList()
         })
         this.$nextTick(() => {
@@ -229,18 +232,7 @@ export default class ClassName extends BaseNode {
                     this.MAX_HEIGHT = data.height
                 })
                 .exec();
-            query.select("#rollContent").boundingClientRect((data: any) => {
-                // console.log(data);
-                // const width: number = data.width
-                // let animation = uni.createAnimation({
-                //     duration: 20000,
-                //     timingFunction: "linear",
-                //     delay: 0
-                // })
-                // this.animation = animation
-                // this.animation.translateX(0-(width)).step()
-                // this.animationData = this.animation.export()
-            }).exec()
+
         })
         setInterval(() => {
             this.nowTimeStamp = Math.round(+new Date() / 1000)
@@ -259,6 +251,54 @@ export default class ClassName extends BaseNode {
         if (this.isFetchEnd) return
         this.rankQuery.fetchFrom += this.rankQuery.fetchSize
         this.reqAllRank()
+    }
+    getRollWidth() {
+        return new Promise((resolve, reject) => {
+            const query: any = uni.createSelectorQuery().in(this)
+            let longWidth: any = 0
+            let smallWidth: any = 0
+            let timer: any = null
+            query.select("#rollContent").boundingClientRect((data: any) => {
+                longWidth = data.width
+
+            }).exec()
+            query.select("#rollStaticContent").boundingClientRect((data: any) => {
+                smallWidth = data.width
+            }).exec()
+            timer = setInterval(() => {
+                if (longWidth && smallWidth) {
+                    clearInterval(timer)
+                    resolve(longWidth - smallWidth)
+                }
+            }, 100)
+        })
+    }
+    startAnimation(width: any) {
+
+        setInterval(() => {
+            this.setZeroDurationAnimation()
+            this.animation.translateX(0).step()
+            this.animationData = this.animation.export()
+            setTimeout(() => {
+                this.setDurationAnimation(this.duration)
+                this.animation.translateX(0 - (width)).step()
+                this.animationData = this.animation.export()
+            }, 100)
+        }, this.duration)
+    }
+    setZeroDurationAnimation() {
+        this.animation = uni.createAnimation({
+            duration: 0,
+            timingFunction: "linear",
+            delay: 0
+        })
+    }
+    setDurationAnimation(duration: number) {
+        this.animation = uni.createAnimation({
+            duration: this.duration,
+            timingFunction: "linear",
+            delay: 500
+        })
     }
     prviewImages(picString: string) {
         if (!picString) return
@@ -291,8 +331,18 @@ export default class ClassName extends BaseNode {
     }
     reqRewardList() {
         app.http.Get('dataApi/selectRank/award/list', {}, (res: any) => {
-                console.log(res);
-                
+            this.awardList = res.list || []
+            if (this.awardList.length&&this.awardList.length>=7) {
+                this.$nextTick(() => {
+                    this.getRollWidth().then((width: any) => {
+                        this.setDurationAnimation(this.duration)
+                        this.animation.translateX(0 - (width)).step()
+                        this.animationData = this.animation.export()
+                        this.startAnimation(width)
+                    })
+                })
+            }
+
         })
     }
     reqAllRank(cb?: any) {
@@ -308,15 +358,15 @@ export default class ClassName extends BaseNode {
 
             Object.keys(res.data).map((key: any) => {
                 console.log(key);
-                
+
                 //@ts-ignore
                 if (typeof res.data[key] == 'null') {
                     res.data[key] = []
                 }
             })
             console.log(res.data);
-
-            this.pointConfig=res.data
+            this.descriptionShow=true
+            this.pointConfig = res.data
         })
     }
     //我的rank
@@ -398,6 +448,7 @@ page {
                 font-family: PingFang SC;
                 font-weight: 400;
                 color: #FFFFFF;
+                white-space: nowrap;
             }
         }
     }
@@ -780,12 +831,23 @@ page {
         width: 140rpx;
     }
 
+    .line2 {
+        text-overflow: -o-ellipsis-lastline;
+        overflow: hidden; //溢出内容隐藏
+        text-overflow: ellipsis; //文本溢出部分用省略号表示
+        display: -webkit-box; //特别显示模式
+        -webkit-line-clamp: 2; //行数
+        line-clamp: 2;
+        -webkit-box-orient: vertical; //盒子中内容竖直排列
+    }
+
     .rankPoint {
         display: flex;
         flex-direction: column;
         flex: 1;
         // background-color: red;
         text-align: center;
+
         .get {
             font-size: 23rpx;
             font-family: PingFang SC;

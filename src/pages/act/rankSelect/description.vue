@@ -72,12 +72,16 @@
 		<view class="spRewardsContainer">
 			<view class="title">特殊奖励</view>
 			<view class="rewardsContainer">
-				<view class="rewardItem" v-for="(item,index) in 9">
-					<muqian-lazyLoad :src="''" class="rewardImage" borderRadius="3rpx"></muqian-lazyLoad>
-					<view class="rewardRank">第{{index+1}}名</view>
+				<view class="rewardItem" v-for="(item,index) in awardList">
+					<muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic_url))" class="rewardImage" @click="prviewImages(item.pic_url)" borderRadius="3rpx">
+					</muqian-lazyLoad>
+					<view class="rewardRank">
+						{{(item.start_rank==item.end_rank)?`第${item.start_rank}名`:`第${item.start_rank}-${item.end_rank}名`}}
+					</view>
 				</view>
 			</view>
 			<view class="title" style="margin-top: 60rpx">入榜奖励</view>
+			<image class="canLucky" src="../../../static/act/rankSelect/canLucky.png" />
 			<view class="tips">活动截至后入榜前500名抽取n位幸运用户进行幸运抽奖</view>
 		</view>
 	</view>
@@ -87,9 +91,11 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '../../../base/BaseNode.vue';
+import { parsePic, dateFormatMSHMS } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
 	pointConfig: any = {}
+	awardList:any=[]
 	des: string =
 		`
 	活动期间，参与<text style="color:#FA1545">21-22select</text>系列拼团的用户，将根据拼团的 类型获得相应的积分奖励【拼团期间活动积分为冻结状态， 拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结 积分中扣除】
@@ -99,13 +105,42 @@ export default class ClassName extends BaseNode {
 	额外奖励：<text style="color:#FA1545">排名前500名</text>的用户，平台将直播随机抽取N名用户 
 	`
 	onLoad(query: any) {
-
+		this.reqPointConfig()
+		this.reqRewardList()
 	}
 	onReachBottom() {
 
 	}
 	onPulldDownRefresh() {
 
+	}
+	prviewImages(picString: string) {
+		if (!picString) return
+		const picArr: any = picString.split(',').map(item => parsePic(decodeURIComponent(item)))
+		uni.previewImage({
+			current: 0,
+			urls: picArr
+		})
+	}
+	reqRewardList() {
+		app.http.Get('dataApi/selectRank/award/list', {}, (res: any) => {
+			this.awardList = res.list || []
+
+		})
+	}
+	reqPointConfig() {
+		app.http.Get(`dataApi/selectRank/multiple/config`, {}, (res: any) => {
+
+			Object.keys(res.data).map((key: any) => {
+				console.log(key);
+
+				//@ts-ignore
+				if (typeof res.data[key] == 'null') {
+					res.data[key] = []
+				}
+			})
+			this.pointConfig = res.data
+		})
 	}
 
 }
@@ -116,6 +151,11 @@ page {
 	background: $content-bg;
 	width: 750rpx;
 	overflow-x: hidden;
+}
+
+.canLucky {
+	width: 207rpx;
+	height: 207rpx;
 }
 
 .descriptionContainer {
@@ -172,6 +212,7 @@ page {
 	padding: 34rpx 30rpx 35rpx 30rpx;
 	margin-top: 20rpx;
 	margin-bottom: 40rpx;
+
 	.title {
 		font-size: 29rpx;
 		font-family: PingFang SC;
