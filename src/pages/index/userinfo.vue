@@ -176,7 +176,6 @@
 					this.orderTab['toPay'].num = 0
 				}
 				if(cb) cb()
-
 			});
 		}
 		onClickNavigateto(item:any){
@@ -202,7 +201,6 @@
 			uni.navigateTo({
 				url:'/pages/userinfo/user_info?data='+encodeURIComponent(JSON.stringify(this.infoData))
 			})
-
 		}
 		onClickOrderList(id:number){
 			uni.navigateTo({
@@ -346,6 +344,7 @@
 				font-weight: bold;
 				color: #FFFFFF;
 				margin-bottom: 10rpx;
+				text-align: center;
 			}
 			.header-tab-index-name{
 				font-size: 27rpx;

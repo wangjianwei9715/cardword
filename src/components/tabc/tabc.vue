@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\components\tabc\tabc.vue
+ * @Author: wjw
+ * @Date: 2022-09-21 13:58:27
+ * @LastEditors: 
+ * @LastEditTime: 2022-10-20 17:05:11
+ * Copyright: 2022 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="list">
 		<view :class="[{'index':true,'current':tabsCheck==item.id},'index-'+item.id]" v-for="item in tabc" :key="item.id" @click="onClickIndex(item.id)">{{item.name}}</view>
@@ -44,13 +53,13 @@
 	.index{
 		height:90rpx;
 		line-height: 90rpx;
-		font-size: 29rpx;
+		font-size: 28rpx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;
 		color: #959699;
 	}
 	.current{
-		font-size: 33rpx;
+		font-size: 30rpx;
 		font-family: PingFangSC-Medium;
 		font-weight: bold;
 		color: #333;

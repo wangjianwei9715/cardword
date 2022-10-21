@@ -1,5 +1,6 @@
 <template>
-	<view class="good-act-content" v-if="goodsActData!=''||cheduiData.list!=''">
+	<view class="good-act-content" v-if="goodsActData!=''||(cheduiData.list&&cheduiData.list!='')">
+		
 		<view class="detail-act-box">
 			<view v-show="cheduiData.list" class="act-box" :class="{'hasAct':goodsActData!=''}" @click.prevent="cheduiShowDrawer=true;isPullDown(false)">
 				<view class="act-box-name chedui-name">车队</view>
@@ -47,8 +48,8 @@
 					<view class="chedui-rank-item">
 						<view class="chedui-rank-item-left">
 							<view class="chedui-rank-item-num" :class="`chedui-rank-item-num-${item.index}`">{{item.index}}</view>
-							<image class="chedui-rank-avatar" :src="decodeURIComponent(item.avatar)"/>
-							<view class="chedui-rank-name u-line-1">{{item.userName}}</view>
+							<image class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar}`"/>
+							<view class="chedui-rank-name u-line-1">{{item.userName||'虚位以待'}}</view>
 						</view>
 						<view class="chedui-rank-item-reward u-line-1" :class="{'font-bold':item.index<=3}">{{item.name}}</view>
 					</view>
@@ -61,7 +62,7 @@
 						<image class="chedui-rank-avatar" :src="decodeURIComponent(userData.avatar)"/>
 						<view class="chedui-rank-name u-line-1">{{userData.name}}</view>
 					</view>
-					<view class="chedui-rank-item-reward u-line-1">{{cheduiData.myRank>0?cheduiData.list[cheduiData.myRank-1].name:'-'}}</view>
+					<view class="chedui-rank-item-reward u-line-1">{{cheduiData.myRank>0?cheduiData.list[cheduiData.myRank-1].name:'未上榜'}}</view>
 				</view>
 			</view>
 		</bottomDrawer>
@@ -105,7 +106,8 @@
 		discountMsg:any = {}
 		rewardList = [];
 		cheduiHelpShowDrawer = false;
-		helpOne = {}
+		helpOne = {};
+		defaultAvatar = app.defaultAvatar
 		@Watch('goodsData')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){
@@ -194,7 +196,7 @@
 	.detail-act-box{
 		width: 100%;
 		box-sizing: border-box;
-		padding:2rpx 30rpx;
+		padding:7rpx 30rpx;
 		.act-box{
 			width: 100%;
 			min-height:76rpx;

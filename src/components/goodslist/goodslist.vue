@@ -190,13 +190,12 @@
 		&-title {
 			height: 75rpx;
 			font-size: 25rpx;
-			font-family: PingFangSC-Medium;
+			font-family: PingFangSC-Light;
 			font-weight: 400;
 			color: #333333;
-			margin-top: 19rpx;
+			margin-top: 10rpx;
 			display: -webkit-box;
 			line-height: 38rpx;
-			
 		}
 		&-remainder{
 			width: 87rpx;
@@ -243,25 +242,26 @@
 			align-items: flex-end;
 			position: relative;
 			margin-bottom: 11rpx;
-			margin-top: 11rpx;
+			margin-top: 16rpx;
 			align-items: flex-end;
 
 			.goodslist-priceMsg-left {
-				font-size: 18rpx;
-				font-family: Impact;
-				font-weight: 400;
+				font-size: 21rpx;
+				font-family: ArialBold !important;
+				font-weight: 600;
 				color: #333333;
 				height: 40rpx;
 				display: flex;
 				align-items: flex-end;
 
 				text.price-text {
-					font-size: 33rpx;
-					font-family: Impact;
+					font-size: 31rpx;
+					font-family: ArialBold !important;
 					font-weight: 400;
 					color: #333333;
 					line-height: 38rpx;
 					margin-right: 10rpx;
+					letter-spacing:-2rpx;
 				}
 
 				text:last-child {
@@ -288,7 +288,7 @@
 			align-items: center;
 			display: flex;
 			width: 100%;
-			padding-bottom: 12rpx;
+			padding-bottom: 8rpx;
 
 			.bottom-left {
 				width: 102rpx;
@@ -303,7 +303,7 @@
 			}
 			.bottom-left-shu::after{
 				content: '';
-				width: 2rpx;
+				width: 1rpx;
 				height:20rpx;
 				position: absolute;
 				right:0;
@@ -317,8 +317,8 @@
 				align-items: center;
 
 				.avart {
-					width: 26rpx;
-					height: 26rpx;
+					width: 34rpx;
+					height: 34rpx;
 					display: block;
 					overflow: hidden;
 					border-radius: 50%;
@@ -326,7 +326,7 @@
 				}
 
 				.bussName {
-					width: 160rpx;
+					width: 146rpx;
 					position: relative;
 					font-size: 23rpx;
 					font-family: PingFangSC-Regular;
@@ -339,9 +339,9 @@
 
 				.cores {
 					display: block;
-					width: 13rpx;
-					height: 21rpx;
-					background-image: url('../../static/goods/v2/icon_right.png');
+					width: 11rpx;
+					height: 17rpx;
+					background-image: url('../../static/goods/v2/icon_right_new.png');
 					background-size: 100% 100%;
 					position: relative;
 				}
