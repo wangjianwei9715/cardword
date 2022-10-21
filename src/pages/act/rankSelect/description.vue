@@ -69,6 +69,17 @@
 			</view>
 			<view class="des_gray">*活动最终解释权归卡世界平台所有</view>
 		</view>
+		<view class="spRewardsContainer">
+			<view class="title">特殊奖励</view>
+			<view class="rewardsContainer">
+				<view class="rewardItem" v-for="(item,index) in 9">
+					<muqian-lazyLoad :src="''" class="rewardImage" borderRadius="3rpx"></muqian-lazyLoad>
+					<view class="rewardRank">第{{index+1}}名</view>
+				</view>
+			</view>
+			<view class="title" style="margin-top: 60rpx">入榜奖励</view>
+			<view class="tips">活动截至后入榜前500名抽取n位幸运用户进行幸运抽奖</view>
+		</view>
 	</view>
 </template>
 
@@ -151,6 +162,57 @@ page {
 	background: #C0C0C0;
 	margin-top: 105rpx;
 	margin-bottom: 33rpx;
+}
+
+.spRewardsContainer {
+	width: 710rpx;
+	background: #FFFFFF;
+	border-radius: 3rpx;
+	box-sizing: border-box;
+	padding: 34rpx 30rpx 35rpx 30rpx;
+	margin-top: 20rpx;
+	margin-bottom: 40rpx;
+	.title {
+		font-size: 29rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		margin-bottom: 20rpx;
+		color: #333333;
+	}
+
+	.tips {
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
+	}
+
+	.rewardsContainer {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+
+		.rewardItem {
+			margin-bottom: 22rpx;
+			width: 207rpx;
+
+			.rewardImage {
+				width: inherit;
+				height: 207rpx;
+				background: #DFDFDF;
+				border-radius: 3rpx;
+				margin-bottom: 15rpx;
+			}
+
+			.rewardRank {
+				text-align: center;
+				font-size: 25rpx;
+				font-family: PingFang SC;
+				font-weight: 400;
+				color: #333333;
+			}
+		}
+	}
 }
 
 .topTagContainer {

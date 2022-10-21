@@ -784,7 +784,8 @@ page {
         display: flex;
         flex-direction: column;
         flex: 1;
-
+        // background-color: red;
+        text-align: center;
         .get {
             font-size: 23rpx;
             font-family: PingFang SC;
