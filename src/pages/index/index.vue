@@ -105,8 +105,6 @@
 	import {
 		indexTabList,
 		indexHotList,
-		indexGoodTab,
-		indexGoodsType
 	} from "@/net/DataExchange"
 	import { isDuringDate } from "@/tools/util"
 	import { Md5 } from "ts-md5";
@@ -116,10 +114,9 @@
 	export default class index extends BaseNode {
 		TOP_TABS = TOP_TABS;
 		lineBg = lineBg;
-		noticeList = ['prizm'];
+		noticeList = [''];
 		statusBarHeight = app.statusBarHeight
 		isDuringDate = isDuringDate;
-		indexGoodsType = indexGoodsType;
 		indexTabList: { [x: string]: any } = {
 			top:[],
 			bottom:indexTabList
@@ -129,11 +126,8 @@
 			url:'../../static/index/mp_mini.jpg'
 		}
 		hotList: { [x: string]: any } = indexHotList;
-		goodTab = indexGoodTab;
 		topAddList: any = [];
 		freshGoodCovers:any = [];
-		// 卡币商城 热门系列 拆卡围观
-		goodTabCheck = 1;
 		indexSwiper = true;
 		goodsList: any = [];
 		// fetchFrom:第几个数据开始  fetchSize:取几个数据
@@ -159,7 +153,8 @@
 			noMoreData:false,
 			q:'',
 			liveTabCheck:1,
-			httpUrl:'dataApi/broadcast/list/living'
+			httpUrl:'dataApi/broadcast/list/living',
+			once:true
 		}
 		refresherIndex = false;
 		refresherEnabled = true;
@@ -350,7 +345,6 @@
 				})
 			}
 		}
-
 		showWinning() {
 			this.showWinningCrad = true;
 			uni.hideTabBar()
@@ -366,7 +360,6 @@
 				})
 				this.reqNewLiveData()
 			})
-			
 		}
 		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
@@ -506,9 +499,6 @@
 		}
 		animationfinish(event:any){
 			this.currentIndex = event.detail.current;
-			// if(event.detail.current == 1){
-			// 	if(this.liveData.liveTabCheck == 1 && this.liveList.length==0)
-			// }
 		}
 		onClickListTabs(id: any) {
 			if (id == this.liveData.liveTabCheck) {
@@ -525,6 +515,7 @@
 				q:this.liveData.q,
 				liveTabCheck:id,
 				httpUrl:this.tabData[id-1].http,
+				once:false
 			}
 			this.reqNewLiveData()
 		}
@@ -534,15 +525,14 @@
 				return;
 			}
 			let ts = Math.floor(new Date().getTime() / 1000);
-			let type = this.indexGoodsType[this.goodTabCheck];
 			let params: { [x: string]: any } = {
 				fetchFrom: this.fetchFrom,
 				fetchSize: this.fetchSize,
 				ts: ts,
-				s: Md5.hashStr('kww_goodlist_sign_' + type + '_' + this.fetchFrom + '_' + this.fetchSize + '_' +
+				s: Md5.hashStr('kww_goodlist_sign_main_' + this.fetchFrom + '_' + this.fetchSize + '_' +
 					ts + '_2022')
 			}
-			app.http.Get("dataApi/goodlist/forsale/" + type, params, (data: any) => {
+			app.http.Get("dataApi/goodlist/forsale/main", params, (data: any) => {
 				if (data.isFetchEnd) {
 					this.noMoreData = true;
 				}
@@ -565,6 +555,10 @@
 				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
 				if(params.pageIndex==1) this.liveList = []
 				if(data.list) this.liveList = this.liveList.concat(data.list);
+				if(params.once && params.liveTabCheck==1 && data.total == 0){
+					this.onClickListTabs(2)
+				}
+				params.once = false;
 				params.pageIndex++;
 				if(cb) cb()
 			})

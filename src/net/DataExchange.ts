@@ -78,20 +78,6 @@ export var indexHotList = {
         }
     }
 }
-// 首页goodTab
-export var indexGoodTab = [
-    {id:1,name:'推荐'},
-    {id:2,name:'篮球'},
-    {id:3,name:'足球'},
-    {id:4,name:'其他'}
-]
-// 首页列表类型 1:推荐 2:篮球 3:足球 4:其他
-export var indexGoodsType: { [x: number]: any } = {
-    1: 'main',
-    2: 'basketball',
-    3: 'football',
-    4: 'othersport'
-}
 // 商品列表类型
 export var goodsListType: { [x: string]: any } = {
     'activity': '活动专区',
