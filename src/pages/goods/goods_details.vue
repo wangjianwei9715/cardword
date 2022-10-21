@@ -293,7 +293,6 @@
 		cheduiData = {};
 		showCheduiDraw = false;
 		cheduiDataAva:any = '';
-		rankAvatarList=['','',''];
 		// 商家好卡
 		cardList = [];
 		seriesCardEnd = true;
@@ -326,18 +325,6 @@
 					// 商品精彩时刻
 					this.reqSeriesCards()
 				},500)
-
-				// 查询购买记录用户
-				app.http.Get(`good/${this.goodCode}/userSaleTop`,{},(res:any)=>{
-					this.cheduiDataAva = res;
-					if(res.list){
-						res.list.map((x:any)=>{
-							if(x.index<=3){
-								this.rankAvatarList[x.index-1] = x.avatar
-							}
-						})
-					}
-				})
 			});
 			// #endif
 		}
