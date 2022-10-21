@@ -22,7 +22,7 @@
                     <view class="goodsBottom">
                         <view class="goodsType">{{getGoodsPintuan(item.pintuan_type)}}</view>
                         <view class="goodsTime">
-                            <view class="time">{{dateFormatMSHMS(item.startAt)}}</view>
+                            <view class="time">{{dateFormatMSHMS(item.created_at)}}</view>
                             <view class="point"
                                 :class="{get:item.scoreState==1,freeze:item.scoreState==0,deduction:item.scoreState==2}">
                                 {{filterText(item)}}</view>
