@@ -181,6 +181,9 @@ page {
 		color: #333333;
 		line-height: 36rpx;
 		letter-spacing: 2rpx;
+		view{
+            font-size: inherit;
+        }
 	}
 
 	.des_gray {
@@ -240,7 +243,7 @@ page {
 			.rewardImage {
 				width: inherit;
 				height: 207rpx;
-				background: #DFDFDF;
+				// background: #DFDFDF;
 				border-radius: 3rpx;
 				margin-bottom: 15rpx;
 			}

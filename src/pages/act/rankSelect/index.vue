@@ -39,7 +39,7 @@
                             {{(item.start_rank==item.end_rank)?`第${item.start_rank}名`:`第${item.start_rank}-${item.end_rank}名`}}
                         </view>
                     </view>
-                    <view class="rollItem" v-for="(item,index) in awardList" :key="index+'rollTwo'">
+                    <view class="rollItem" v-for="(item,index) in awardList" :key="index+'rollTwo'" v-if="awardList.length>=7">
                         <image class="rollReward" borderRadius="3rpx"
                             :src="$parsePic(decodeURIComponent(item.pic_url))" />
                         <view class="rewardLevel flexCenter">
@@ -72,7 +72,7 @@
                 <muqian-lazyLoad class="rankAvatar" borderRadius="50%"
                     :src="myRank.avatar?$parsePic(decodeURIComponent(myRank.avatar)):defaultAvatar" />
                 <view class="rankMyInfo" style="width: 160rpx;">
-                    <view class="myInfo" style="margin-bottom:12rpx;">{{myRank.userName||"获取中"}}</view>
+                    <view class="myInfo line1" style="margin-bottom:12rpx;">{{myRank.userName||"获取中"}}</view>
                     <view class="myInfo">{{myRank.isPass?`第${myRank.rank}名`:"未入榜"}}</view>
                 </view>
                 <view class="rankPoint">
@@ -98,11 +98,11 @@
                 <view class="rank_header_item">奖励</view>
             </view>
 
-            <view class="rank_tr" :calss="{rank_my:item.isMy}" v-for="(item,index) in rankList">
+            <view class="rank_tr" :class="{rank_my:item.isMy}" v-for="(item,index) in rankList">
                 <view class="rankTd flexCenter rankNum" :class="[index<=2?`rank${index+1}`:'']">{{index>2?(index+1):""}}
                 </view>
                 <muqian-lazyLoad class="rankAvatar" borderRadius="50%"
-                    :src="item.avatar?$parsePic(decodeURIComponent(item.avatar)):defaultAvatar" />
+                    :src="item.avatar?$parsePic(decodeURIComponent(item.avatar)):(item.userName=='虚位以待'?'/static/goods/v2/waitAvatar.png':defaultAvatar)" />
                 <view class="rankName line2">{{item.userName}}</view>
                 <view class="rankPoint">
                     <view class="get">已获取：{{item.get_score}}</view>
@@ -115,9 +115,9 @@
         </view>
         <view class="safeArea"></view>
         <view class="bottomContainer">
-            <view class="buttonItem flexCenter">
+            <view class="buttonItem flexCenter" @click="onClickGoBuy">
                 <image src="../../../static/act/rankSelect/add.png" />
-                <view class="button flexCenter" @click="onClickGoBuy">参与拼团</view>
+                <view class="button flexCenter">参与拼团</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
@@ -221,7 +221,7 @@ export default class ClassName extends BaseNode {
         app.platform.hasLoginToken(() => {
             this.reqMyRank()
             this.reqAllRank()
-            
+
             this.reqRewardList()
         })
         this.$nextTick(() => {
@@ -332,7 +332,7 @@ export default class ClassName extends BaseNode {
     reqRewardList() {
         app.http.Get('dataApi/selectRank/award/list', {}, (res: any) => {
             this.awardList = res.list || []
-            if (this.awardList.length&&this.awardList.length>=7) {
+            if (this.awardList.length && this.awardList.length >= 7) {
                 this.$nextTick(() => {
                     this.getRollWidth().then((width: any) => {
                         this.setDurationAnimation(this.duration)
@@ -365,7 +365,7 @@ export default class ClassName extends BaseNode {
                 }
             })
             console.log(res.data);
-            this.descriptionShow=true
+            this.descriptionShow = true
             this.pointConfig = res.data
         })
     }
@@ -422,7 +422,7 @@ page {
             flex-wrap: nowrap;
             width: 101rpx;
             height: 101rpx;
-            background: #FFFFFF;
+            // background: #FFFFFF;
             border-radius: 3rpx;
             position: relative;
             overflow: hidden;
@@ -580,6 +580,10 @@ page {
         color: #333333;
         line-height: 36rpx;
         letter-spacing: 2rpx;
+
+        view {
+            font-size: inherit;
+        }
     }
 
     .red {
@@ -909,14 +913,20 @@ page {
         display: flex;
         flex-direction: column;
         margin-right: 8rpx;
-        // background-color: red;
-
+        white-space: nowrap;
 
         .myInfo {
             font-size: 25rpx;
             font-family: PingFang SC;
             font-weight: 400;
             color: #333333;
+
+        }
+
+        .line1 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 }
