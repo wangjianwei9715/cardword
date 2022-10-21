@@ -358,7 +358,6 @@
 				this.reqNewData(() => {
 					if (cb) cb()
 				})
-				this.reqNewLiveData()
 			})
 		}
 		getHome(cb?:Function){
@@ -498,6 +497,11 @@
 			this.refresherEnabled = false
 		}
 		animationfinish(event:any){
+			if(event.detail.current==1){
+				this.liveData.pageIndex = 1;
+				this.liveData.noMoreData = false;
+				this.reqNewLiveData()
+			}
 			this.currentIndex = event.detail.current;
 		}
 		onClickListTabs(id: any) {

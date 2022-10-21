@@ -48,8 +48,14 @@
 					<view class="chedui-rank-item">
 						<view class="chedui-rank-item-left">
 							<view class="chedui-rank-item-num" :class="`chedui-rank-item-num-${item.index}`">{{item.index}}</view>
-							<image class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar}`"/>
-							<view class="chedui-rank-name u-line-1">{{item.userName||'虚位以待'}}</view>
+							<view class="chedui-avatar-box" :class="`chedui-avatar-box${item.index}`">
+								<image v-if="item.occupy" class="chedui-rank-avatar" :src="`${item.avatar&&item.avatar!=''?decodeURIComponent(item.avatar):defaultAvatar}`"/>
+								<image v-else class="chedui-rank-avatar" :src="waitAvatar"/>
+							</view>
+							<view class="chedui-rank-name" v-if="item.occupy">
+								<view class="chedui-rank-n u-line-1">{{item.userName}}</view>
+								<view class="chedui-rank-jf u-line-1">积分 {{item.amount}}</view>
+							</view>
 						</view>
 						<view class="chedui-rank-item-reward u-line-1" :class="{'font-bold':item.index<=3}">{{item.name}}</view>
 					</view>
@@ -60,7 +66,10 @@
 					<view class="chedui-rank-item-left">
 						<view class="chedui-rank-item-num">{{cheduiData.myRank>0?cheduiData.myRank:'-'}}</view>
 						<image class="chedui-rank-avatar" :src="decodeURIComponent(userData.avatar)"/>
-						<view class="chedui-rank-name u-line-1">{{userData.name}}</view>
+						<view class="chedui-rank-name">
+							<view class="chedui-rank-n u-line-1">{{userData.name||''}}</view>
+							<view class="chedui-rank-jf u-line-1">积分 {{cheduiData.myAmount}}</view>
+						</view>
 					</view>
 					<view class="chedui-rank-item-reward u-line-1">{{cheduiData.myRank>0?cheduiData.list[cheduiData.myRank-1].name:'未上榜'}}</view>
 				</view>
@@ -107,7 +116,8 @@
 		rewardList = [];
 		cheduiHelpShowDrawer = false;
 		helpOne = {};
-		defaultAvatar = app.defaultAvatar
+		defaultAvatar = app.defaultAvatar;
+		waitAvatar = '../../static/goods/v2/waitAvatar.png'
 		@Watch('goodsData')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){
@@ -353,7 +363,7 @@
 		color: #959695;
 	}
 	.drawer-chedui{
-		margin-bottom: 40rpx;
+		margin-bottom: 37rpx;
 	}
 	.drawer-bottom{
 		width: 100%;
@@ -372,7 +382,7 @@
 	}
 	.chedui-rank-item{
 		width: 100%;
-		height:78rpx;
+		height:85rpx;
 		padding-right: 50rpx;
 		box-sizing: border-box;
 		display: flex;
@@ -380,13 +390,13 @@
 		justify-content: space-between;
 	}
 	.chedui-rank-item-left{
-		height:78rpx;
+		height:85rpx;
 		display: flex;
 		align-items: center;
 	}
 	.chedui-rank-item-num{
 		width: 69rpx;
-		height:78rpx;
+		height:85rpx;
 		font-size: 38rpx;
 		font-family: Impact;
 		font-weight: 400;
@@ -404,18 +414,63 @@
 	.chedui-rank-item-num-3{
 		color:#E0B48D
 	}
-	.chedui-rank-avatar{
-		width: 78rpx;
-		height: 78rpx;
+	.chedui-avatar-box{
+		width: 85rpx;
+		height: 85rpx;
+		box-sizing: border-box;
 		border-radius: 50%;
 		margin-right: 29rpx;
 	}
+	.chedui-avatar-box1{
+		width: 89rpx;
+		height:89rpx;
+		background: linear-gradient(-39deg, #F2D89E, #F8ECCC, #D7CA9C);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.chedui-avatar-box2{
+		width: 89rpx;
+		height:89rpx;
+		background: linear-gradient(-39deg, #B6B5B4, #E4E2DE, #B6B5B4);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.chedui-avatar-box3{
+		width: 89rpx;
+		height:89rpx;
+		background: linear-gradient(-39deg, #C7A085, #F7DBBB, #BF9B76);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.chedui-rank-avatar{
+		width: 85rpx;
+		height: 85rpx;
+		box-sizing: border-box;
+		border-radius: 50%;
+	}
 	.chedui-rank-name{
 		width: 250rpx;
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+	.chedui-rank-n{
+		width: 100%;
 		font-size: 25rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #333333;
+		margin-bottom: 5rpx;
+	}
+	.chedui-rank-jf{
+		width: 100%;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #C0C0C0;
 	}
 	.chedui-rank-item-reward{
 		font-size: 25rpx;

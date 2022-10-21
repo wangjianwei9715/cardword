@@ -377,7 +377,7 @@
 				if (data.joined) {
 					this.tipBtn = [
 						{ id: 1, name: '客服', url: '../../static/goods/v2/icon_kefu.png', class: 'kf' }, 
-						{ id: 2, name: '卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
+						{ id: 2, name: '我的卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
 					]
 				}
 				// 倒计时
