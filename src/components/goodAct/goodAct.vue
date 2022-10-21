@@ -65,7 +65,9 @@
 				<view class="chedui-rank-item">
 					<view class="chedui-rank-item-left">
 						<view class="chedui-rank-item-num">{{cheduiData.myRank>0?cheduiData.myRank:'-'}}</view>
-						<image class="chedui-rank-avatar" :src="decodeURIComponent(userData.avatar)"/>
+						<view class="chedui-avatar-box" :class="`chedui-avatar-box${cheduiData.myRank}`">
+							<image class="chedui-rank-avatar" :src="decodeURIComponent(userData.avatar)"/>
+						</view>
 						<view class="chedui-rank-name">
 							<view class="chedui-rank-n u-line-1">{{userData.name||''}}</view>
 							<view class="chedui-rank-jf u-line-1">积分 {{cheduiData.myAmount}}</view>
