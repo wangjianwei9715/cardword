@@ -121,7 +121,7 @@
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-        <bottomDrawer :showDrawer.sync="descriptionShow" needSafeArea :height="790" heightType="rpx" title="积分说明">
+        <bottomDrawer :showDrawer.sync="descriptionShow" :needSafeArea="true" padding="24rpx 20rpx 120rpx 20rpx" :height="790" heightType="rpx" title="积分说明">
             <view class="descriptionContainer">
                 <view class="des_title">
                     一.如何获取积分
