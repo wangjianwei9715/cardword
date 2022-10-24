@@ -54,10 +54,10 @@
 			//#endif
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境");
-				app.localTest = true;  
-				app.bussinessApiDomain = "http://192.168.8.35:8701/api/v2.1/";
-				// app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2.1/";
-				app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
+				// app.localTest = true;  
+				// app.bussinessApiDomain = "http://192.168.8.31:8701/api/v2/";
+				// app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2/";
+				// app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
 			}
@@ -267,8 +267,6 @@
 
 			
 			app.platform.getInvitationClipboard((val: string) => {
-				// 识别赠送卡密查询码
-				app.platform.matchInviteRequestKey(val)
 				// 识别优惠券
 				const regular = [/[k][s][j]\w{13}/g,/\w{18}/g];
 				app.platform.matchRequestKey(regular,val,(code:string)=>{
@@ -333,14 +331,7 @@
 		font-family: "hei";
 		src: url("~@/common/Tao/hei.ttf");
 	}
-	@font-face {
-		font-family: "YouSheBiaoTiHei";
-		src: url("~@/common/Tao/YouShe.ttf");
-	}
-	@font-face {
-		font-family: "ArialBold";
-		src: url("~@/common/Tao/Futura.ttf");
-	}
+
 	// #endif
 	.content {
 		display: flex;
@@ -402,6 +393,13 @@
 		box-shadow: 0 0px;
 		transform: translateY(1px);
 	}
+
+	
+	.flexCenter{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 	.bottomSafeArea{
 		opacity: 0;
 		width: 100%;
@@ -409,9 +407,4 @@
 		padding-bottom: env(safe-area-inset-bottom);
 	}
 	/* #endif */
-	.flexCenter{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
 </style>
