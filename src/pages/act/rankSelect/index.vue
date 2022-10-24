@@ -321,7 +321,8 @@ export default class ClassName extends BaseNode {
     }
     onClickGoBuy() {
         uni.navigateTo({
-            url: '/pages/goods/goods_find_list?classType=100'
+            // url: '/pages/goods/goods_find_list?classType=100'
+            url:'/pages/act/rankSelect/goodsList'
         })
     }
     checkImage(item: any, index: number) {
