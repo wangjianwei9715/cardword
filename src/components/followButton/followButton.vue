@@ -11,7 +11,7 @@
       'rpx'
     ">
 
-      {{ follow ? textArr[0]:textArr[1] }}
+      {{ follow ? textArr[1]:textArr[0] }}
     </view>
     <view v-else class="followBtton flexCenter" :class="{isFollo:follow}" @click.stop="handleAction" :style="
       'height:' +
@@ -25,7 +25,7 @@
       'rpx'
     ">
 
-      {{ follow ? textArr[0]:textArr[1] }}
+      {{ follow ? textArr[1]:textArr[0] }}
     </view>
     <followModal v-if="modalShow" @cancel="modalShow = false" @confirm="followAction"></followModal>
   </view>
