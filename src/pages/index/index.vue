@@ -333,7 +333,7 @@
 				this.noticeList = res.list
 			})
 			// 获取系列icon
-			app.http.Get('dataApi/advertising/iconSeries/list',{},(res:any)=>{
+			app.http.Get('dataApi/advertising/iconSeries/brief',{},(res:any)=>{
 				this.indexTabList.top=res.list;
 				console.log(this.indexTabList);
 			})

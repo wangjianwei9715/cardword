@@ -25,10 +25,10 @@
 			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow'>
 				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index' @click="clickSerie(item,index)">
 					<view class="frameImage">
-						<muqian-lazyLoad class="seriesImg" :src="decodeURIComponent(item.pic_url)" mode="aspectFit"></muqian-lazyLoad>
+						<muqian-lazyLoad class="seriesImg" :src="decodeURIComponent(item.icon)" mode="aspectFit"></muqian-lazyLoad>
 					</view>
 					<view class="seriesText" :class="{selectSearchText:clickSerieItem&&clickSerieItem.id==item.id}">
-						{{item.title}}
+						{{item.name}}
 					</view>
 				</view>
 			</scroll-view>
@@ -174,7 +174,7 @@
 		}
 		clickSerie(item: any, index ? : number) {
 			this.clickSerieItem = this.clickSerieItem.id == item.id ? {} : item;
-			this.searchText = item.title
+			this.searchText = item.name
 			this.reqSearchList();
 		}
 		onReachBottom() {
@@ -197,7 +197,7 @@
 		onClickListTabs(index: number) {
 			if (this.classifyOpt == index) return;
 			this.classifyOpt = index;
-			
+			this.reqNewSeries();
 			this.reqSearchList();
 		}
 		onClickJumpDetails(goodCode: any) {
@@ -205,9 +205,10 @@
 		}
 		reqNewSeries() {
 			app.http.Get(
-				"dataApi/series/hot/list", {
-					pageIndex: 1,
-					pageSize: 100
+				"dataApi/advertising/iconSeries/list", {
+					fetchFrom: 1,
+					fetchSize: 100,
+					tp:this.classifyOpt!=100?(this.classifyOpt==0?100:this.classifyOpt):0
 				},
 				(res: any) => {
 					this.seriesList = res.list || [];

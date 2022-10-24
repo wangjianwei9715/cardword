@@ -1,22 +1,31 @@
 <template>
   <view>
-    <view v-if="!newMerchantPage" class="flexCenter" :class="[!follow?normClass:selectClass,normClass]"
-      @click.stop="handleAction" :style="{
-        width:`${width}rpx`,
-        height:`${height}rpx`,
-        fontSize:`${fontSize}rpx`,
-        transform:`scale(${hideCancel&&follow?0:1})`
-      }">
+    <view v-if="!newMerchantPage" class="actionItem" :class="{ redAction: !follow }" @click.stop="handleAction" :style="
+      'height:' +
+      height +
+      'rpx;' +
+      'width:' +
+      width +
+      'rpx;font-size:' +
+      fontSize +
+      'rpx'
+    ">
 
-      {{ follow ? textArr[1] : textArr[0] }}
+      {{ follow ? textArr[1]:textArr[0] }}
     </view>
-    <view v-else class="followBtton flexCenter" :class="{isFollo:follow}" @click.stop="handleAction" :style="{
-      width:`${width}rpx`,
-      height:`${height}rpx`,
-      fontSize:`${fontSize}rpx`
-    }">
+    <view v-else class="followBtton flexCenter" :class="{isFollo:follow}" @click.stop="handleAction" :style="
+      'height:' +
+      height +
+      'rpx;line-height:' +
+      height +
+      'rpx;width:' +
+      width +
+      'rpx;font-size:' +
+      fontSize +
+      'rpx'
+    ">
 
-      {{ follow ? textArr[1] :textArr[0] }}
+      {{ follow ? textArr[1]:textArr[0] }}
     </view>
     <followModal v-if="modalShow" @cancel="modalShow = false" @confirm="followAction"></followModal>
   </view>
@@ -54,30 +63,19 @@ export default class ClassName extends BaseComponent {
   newMerchantPage?: any;
   @Prop({
     default: () => {
-      return ['关注', '已关注']
+      return ['已关注', '关注']
     }
   })
-  textArr?: any
+  textArr?: any;
   @Prop({
-    default: "actionItem"
+    default:"#FA1545"
   })
-  normClass?: string
-  @Prop({
-    default: "redAction"
-  })
-  selectClass?: string
-  @Prop({
-    default: false
-  })
-  hideCancel?: boolean
+  backBg?:string
   modalShow = false;
   followCopy = false;
   handleAction() {
-    app.platform.hasLoginToken(() => {
-      if (!this.follow) this.followAction();
-      if (this.follow) this.modalShow = true;
-    })
-
+    if (!this.follow) this.followAction();
+    if (this.follow) this.modalShow = true;
   }
   followAction() {
     if (!this.followID) return;
@@ -111,7 +109,6 @@ export default class ClassName extends BaseComponent {
   font-family: PingFang SC;
   font-weight: 500;
   color: #F6F7FB;
-
 }
 
 .isFollo {
@@ -128,26 +125,13 @@ export default class ClassName extends BaseComponent {
   box-sizing: border-box;
   font-weight: 400;
   color: #88878c;
-  line-height: 56rpx;
+  // line-height: 56rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   letter-spacing: 1rpx;
   border: 1rpx solid #dbdbdb;
-}
-
-.v2Button {
-  width: 120rpx;
-  height: 47rpx;
-  background: #FA1545;
-  border: 1rpx solid #FA1545;
-  border-radius: 3rpx;
-  font-size: 29rpx;
-  font-family: PingFang SC;
-  font-weight: 500;
-  color: #F6F7FB;
-}
-
-.v2SelectButton {
-  background-color: #fff;
 }
 
 .redAction {
