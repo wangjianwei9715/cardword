@@ -9,7 +9,7 @@
             </view>
         </view>
         <view class="title">积分明细</view>
-        <view class="pointCard" v-for="(item,index) in list" :key="index">
+        <view class="pointCard" v-for="(item,index) in list" :key="index" @click="toGoods(item)">
             <view class="pointCard_top">
                 <view>{{item.merchantName}}</view>
                 <view>{{orderGoodsStateStr({good:item})}}</view>
@@ -77,6 +77,9 @@ export default class ClassName extends BaseNode {
         if (scoreState == 0) return `冻结中${score}`
         if (scoreState == 1) return `+${score}`
         if (scoreState == 2) return `扣除冻结${score}`
+    }
+    toGoods(item:any){
+        app.navigateTo.goGoodsDetails(item.goodCode)
     }
     //我的rank
     reqMyRank() {
