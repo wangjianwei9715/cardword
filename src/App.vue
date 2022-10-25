@@ -58,7 +58,7 @@
 				// app.bussinessApiDomain = "http://192.168.8.31:8701/api/v2.1/";
 				// app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2.1/";
 				// app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
-				// 正式服测试环境
+				// 正式服测试环境 
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
 			}
 			uni.setStorageSync("openAppTime", Math.round(+new Date() / 1000)); //存储打开app时间
@@ -67,8 +67,10 @@
 				app.platform.clearCache()
 				//#endif
 				uni.setStorageSync("webViewVersion",app.webViewVersion)
+				uni.setStorageSync('launchData',{})
 			}else{
 				uni.setStorageSync("webViewVersion",app.webViewVersion)
+				uni.setStorageSync('launchData',{})
 			}
 			app.needPushIdentifier =
 				uni.getStorageSync("needPushIdentifier") == 1 ? false : true;
