@@ -36,9 +36,11 @@
         <view class="title">{{isLottery?'幸运名单':'幸运奖池'}}</view>
         <view class="rewardContainer" v-if="!isLottery">
             <muqian-lazyLoad class="reward"
-                @click="prviewImages('http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg')"
+                @click="prviewImages('/static/goods/v2/waitAvatar.png')"
                 :style="{marginRight:(index+1)%3==0?`0rpx`:`14rpx`}" borderRadius="3rpx" v-for="(item,index) in 9"
-                :src="decodeURIComponent('http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg')" />
+                :src="decodeURIComponent('/static/goods/v2/waitAvatar.png')" />
+                <!-- http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg
+http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg -->
         </view>
         <view v-else class="luckyContainer" style="margin-bottom: 20rpx;">
             <view class="myRank" v-for="(item,index) in luckyList">
