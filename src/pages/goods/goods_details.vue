@@ -1685,7 +1685,7 @@
 			}
 
 			.icon-order {
-				width: 37rpx;
+				width: 38rpx;
 				height: 36rpx;
 				margin-bottom: 3rpx;
 			}
