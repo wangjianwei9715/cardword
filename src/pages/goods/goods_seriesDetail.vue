@@ -1,9 +1,9 @@
 <template>
     <view class="content">
-        <view class="detailCard">
+        <view class="detailCard" :style="{height:(380+(statusBarHeight*2))+'rpx'}">
             <image class="backImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(seriesDetail.back_img))" />
             <view class="merchantMask"></view>
-            <view class="seriesInfo uni-flex">
+            <view class="seriesInfo uni-flex" :style="{marginTop:(144+(statusBarHeight*2))+'rpx'}">
                 <image class="seriesInfo-avatar" mode="aspectFill"
                     :src="$parsePic(decodeURIComponent(seriesDetail.icon))" />
                 <view class="seriesInfo-name">{{seriesDetail.name || "获取中"}}</view>
@@ -36,6 +36,7 @@ import BaseNode from '../../base/BaseNode.vue';
 @Component({})
 export default class ClassName extends BaseNode {
     seriesId: any = ''
+    statusBarHeight=app.statusBarHeight;
     seriesDetail: any = {}
     choices: any = ['全部']
     queryParams: any = {
