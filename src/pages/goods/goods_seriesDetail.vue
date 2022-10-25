@@ -209,7 +209,7 @@ page {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    height: 66rpx;
+    height: 70rpx;
     // background-color: red;
 
     padding: 0 36rpx;

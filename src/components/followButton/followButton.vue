@@ -61,7 +61,7 @@ export default class ClassName extends BaseComponent {
   newMerchantPage?: any;
   @Prop({
     default: () => {
-      return ['已关注', '关注']
+      return ['关注', '已关注']
     }
   })
   textArr?: any;
