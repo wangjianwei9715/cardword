@@ -21,7 +21,7 @@
                 </view>
             </view>
         </view>
-        <empty v-if="!seriesCardList.length" />
+        <empty v-if="seriesCardList&&!seriesCardList.length" />
     </view>
 </template>
 
@@ -61,6 +61,7 @@ export default class ClassName extends BaseNode {
         this.reqNewData()
     }
     filterImg(pic: string) {
+        if(!pic) return
         let pics = pic.split(',')
         return pics
     }
@@ -88,7 +89,7 @@ export default class ClassName extends BaseNode {
         app.http.Get(`dataApi/advertising/iconSeries/rarity/card/list/${this.seriesId}`, this.queryParams, (res: any) => {
             this.isFetchEnd = res.isFetchEnd
             const dataList = res.list || []
-            this.seriesCardList = this.queryParams.fetchFrom == 1 ? dataList : this.seriesCardList.push(...dataList)
+            this.queryParams.fetchFrom == 1 ? this.seriesCardList=dataList : this.seriesCardList.push(...dataList)
             cb && cb()
         })
     }
