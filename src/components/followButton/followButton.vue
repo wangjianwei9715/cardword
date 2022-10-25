@@ -1,19 +1,17 @@
 <template>
   <view>
     <view v-if="!newMerchantPage" class="actionItem" :class="{ redAction: !follow }" @click.stop="handleAction" :style="
-      'height:' +
-      height +
-      'rpx;' +
-      'width:' +
-      width +
-      'rpx;font-size:' +
-      fontSize +
-      'rpx'
+      `
+          height:${height}rpx;
+          width:${width}rpx;
+          fontSize:${fontSize}rpx;
+          opacity:${hideCancel?(follow?0:1):1};
+        `
     ">
 
-      {{ follow ? textArr[1]:textArr[0] }}
+      {{ follow ? textArr[1] : textArr[0] }}
     </view>
-    <view v-else class="followBtton flexCenter" :class="{isFollo:follow}" @click.stop="handleAction" :style="
+    <view v-else class="followBtton flexCenter" :class="{ isFollo: follow }" @click.stop="handleAction" :style="
       'height:' +
       height +
       'rpx;line-height:' +
@@ -25,7 +23,7 @@
       'rpx'
     ">
 
-      {{ follow ? textArr[1]:textArr[0] }}
+      {{ follow ? textArr[1] : textArr[0] }}
     </view>
     <followModal v-if="modalShow" @cancel="modalShow = false" @confirm="followAction"></followModal>
   </view>
@@ -68,9 +66,13 @@ export default class ClassName extends BaseComponent {
   })
   textArr?: any;
   @Prop({
-    default:"#FA1545"
+    default: "#FA1545"
   })
-  backBg?:string
+  backBg?: string
+  @Prop({
+    default: false
+  })
+  hideCancel?: boolean
   modalShow = false;
   followCopy = false;
   handleAction() {
