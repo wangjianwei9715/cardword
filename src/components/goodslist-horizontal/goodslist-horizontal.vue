@@ -1,21 +1,21 @@
 <template>
     <view class="goodslistHorizontal">
-        <view class="goodsCard" v-for="(item,index) in goodsList" :key="index" @click="onClickJumpUrl(item.goodCode)">
+        <view class="goodsCard" v-for="(item, index) in goodsList" :key="index" @click="onClickJumpUrl(item.goodCode)">
             <muqian-lazyLoad class="goodsImg" borderRadius="3rpx" :src="$parsePic(decodeURIComponent(item.pic))" />
             <view class="goodsRight">
                 <view class="goodsRight-top">
-                    <view class="goodsName" :class="{onLineOver:isOneLine}">{{item.title}}</view>
-                    <view v-if="item.state==0 || item.state == -1" class="startTime">
-                        {{dateFormatMSHMS(item.startAt)+'开售'}}
+                    <view class="goodsName" :class="{ onLineOver: isOneLine }">{{ item.title }}</view>
+                    <view v-if="item.state == 0 || item.state == -1" class="startTime">
+                        {{ dateFormatMSHMS(item.startAt) + '开售' }}
                     </view>
                     <view class="goodsProgress uni-flex" v-else>
                         <view class="progressContainer">
-                            <view class="progress" :style="{width:(getPlan(item,'num'))+'%'}"></view>
+                            <view class="progress" :style="{ width: (getPlan(item, 'num')) + '%' }"></view>
                         </view>
-                        <view class="progressPercnet">{{getPlan(item,'num')+'%'}}</view>
+                        <view class="progressPercnet">{{ getPlan(item, 'num') + '%' }}</view>
                     </view>
                     <view class="goodsType" v-if="isOneLine">
-                        <view>{{getGoodsPintuan(item.pintuan_type)}}</view>
+                        <view>{{ getGoodsPintuan(item.pintuan_type) }}</view>
                         <!-- <view class="goodsTypeLine"></view>
                         <view>1箱</view> -->
                     </view>
@@ -23,21 +23,21 @@
                 <view class="goodsRight-bottom uni-flex">
                     <view class="goodsPriceContainer">
                         <text>￥</text>
-                        <text>{{filterPrice(item.price).integer}}</text>
+                        <text>{{ filterPrice(item.price).integer }}</text>
                         <text class="decimal"
-                            v-if="filterPrice(item.price).decimal">{{filterPrice(item.price).decimal}}</text>
-                        <text class="priceTips">{{getPriceStart(item)?'起':''}}</text>
+                            v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
+                        <text class="priceTips">{{ getPriceStart(item) ? '起' : '' }}</text>
                     </view>
                     <view class="goodsMerchant uni-flex" @click.stop="onClickSellerShop(item)">
                         <muqian-lazyLoad class="merchantLogo" borderRadius="50%"
                             :src="$parsePic(decodeURIComponent(item.merchantLogo))" />
-                        <view class="merchantName">{{item.merchantName}}</view>
+                        <view class="merchantName">{{ item.merchantName }}</view>
                     </view>
                 </view>
             </view>
-            <view class="rankContainer" v-if="needRank" :class="[`rank${index+1}`,index>=3?'rankOther':'']">
+            <view class="rankContainer" v-if="needRank" :class="[`rank${index + 1}`, index >= 3 ? 'rankOther' : '']">
                 <view class="rankTop">TOP</view>
-                <view class="rankNum">{{index+1}}</view>
+                <view class="rankNum">{{ index + 1 }}</view>
             </view>
         </view>
     </view>
@@ -193,10 +193,10 @@ export default class ClassName extends BaseComponent {
         flex-direction: column;
 
         .goodsName {
-            font-size: 25rpx;
-            font-family: PingFang SC;
-            font-weight: 400;
-            color: #333333;
+            // font-size: 25rpx;
+            // font-family: PingFang SC;
+            // font-weight: 400;
+            // color: #333333;
             overflow: hidden;
             text-overflow: ellipsis;
             word-break: break-all;
@@ -204,6 +204,10 @@ export default class ClassName extends BaseComponent {
             -webkit-box-orient: vertical;
             line-height: 34rpx;
             -webkit-line-clamp: 2;
+            font-size: 25rpx;
+            font-family: PingFangSC-Light;
+            font-weight: 400;
+            color: #333333;
         }
 
         .onLineOver {
@@ -258,7 +262,8 @@ export default class ClassName extends BaseComponent {
             display: flex;
             align-items: center;
             margin-top: 10rpx;
-            view{
+
+            view {
                 font-size: inherit;
                 font-family: inherit;
                 font-weight: inherit;
@@ -275,14 +280,21 @@ export default class ClassName extends BaseComponent {
 
         .goodsPriceContainer {
             flex: 1;
-            font-size: 33rpx;
+            // font-size: 33rpx;
             font-family: PingFang SC;
             font-weight: bold;
             color: #333333;
+            font-size: 31rpx;
+            font-family: ArialBold !important;
+            font-weight: 400;
+            color: #333333;
+            // line-height: 38rpx;
+            // margin-right: 10rpx;
+            letter-spacing: -2rpx;
 
             text:first-child {
                 font-size: 18rpx;
-                font-weight: 400;
+                font-weight: 600;
             }
 
             .decimal {
@@ -290,11 +302,15 @@ export default class ClassName extends BaseComponent {
             }
 
             .priceTips {
-                font-size: 23rpx;
-                font-family: PingFang SC;
-                font-weight: 400;
-                color: #959695;
+                // font-size: 23rpx;
+                // font-family: PingFang SC;
+                // font-weight: 400;
+                // color: #959695;
                 margin-left: 10rpx;
+                font-size: 23rpx;
+                font-family: PingFangSC-Regular;
+                font-weight: 500;
+                color: #959695;
             }
         }
 
