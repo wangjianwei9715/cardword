@@ -77,7 +77,7 @@ export default class ClassName extends BaseComponent {
   followCopy = false;
   handleAction() {
     if (!this.follow) this.followAction();
-    if (this.follow) this.modalShow = true;
+    if (this.follow&&!this.hideCancel) this.modalShow = true;
   }
   followAction() {
     if (!this.followID) return;
