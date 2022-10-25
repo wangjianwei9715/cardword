@@ -2,7 +2,7 @@
     "version" : "1",
     "prompt" : "template",
     "title" : "服务协议和隐私政策",
-    "message" : "请仔细阅读并理解我们的<a href=\"https://www.ka-world.com/share/h5/index.html#/pages/xieyi/user_agreement\">《用户协议》</a>和<a href=\"https://www.ka-world.com/share/h5/index.html#/pages/xieyi/user_privacy\">《隐私政策》</a>，，包括但不限于收集您的设备和个人信息。点击”同意“开始接受我们的服务。",
+    "message" : "请仔细阅读并理解我们的<a href=\"https://www.ka-world.com/share/h5/index.html#/pages/xieyi/user_agreement\">《用户协议》</a>和<a href=\"https://www.ka-world.com/share/h5/index.html#/pages/xieyi/user_privacy\">《隐私政策》</a>，，包括但不限于收集您的设备和个人信息（包括IMEI、MEID、Aadroid ID、IMSI、GUID、MAC地址）。点击”同意“开始接受我们的服务。",
     "buttonAccept" : "同意",
     "buttonRefuse" : "暂不使用",
     "styles" : {
