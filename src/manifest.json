@@ -190,8 +190,8 @@
             },
             "splashscreen" : {
                 "useOriginalMsgbox" : true,
-                "iosStyle" : "storyboard",
-                "androidStyle" : "default",
+                "iosStyle" : "common",
+                "androidStyle" : "common",
                 "ios" : {
                     "storyboard" : "unpackage/res/CustomStoryboard.zip"
                 },
@@ -250,12 +250,6 @@
                     "parameters" : {}
                 }
             }
-        },
-        "splashscreen" : {
-            "alwaysShowBeforeRender" : false,
-            "autoclose" : false,
-            "waiting" : false,
-            "delay" : 0
         }
     },
     "quickapp" : {},
