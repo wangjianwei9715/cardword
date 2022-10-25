@@ -420,7 +420,7 @@ export default class PlatformManager {
 
 			app.bussinessApiDomain = bussinessApiDomain + "/api/v2.1/";
 			app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2.1/":bussinessApiDomain + "/api/v2.1/"
-			app.funcApiDomain = res.app.funcApiDomain?funcApiDomain + "/api/v2.1/":bussinessApiDomain + "/api/v2.1/"
+			app.funcApiDomain = res.app.funcApiDomain?funcApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
 			// app.goodShareOrigin = goodShareOrigin
 			// app.activityShareOrigin = activityShareOrigin
 			if (cb) cb()

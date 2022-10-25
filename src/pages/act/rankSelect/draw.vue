@@ -14,17 +14,17 @@
         <view class="myRank">
             <view class="myRank_avatarContainer">
                 <muqian-lazyLoad class="myRank_avatar" borderRadius="50%"
-                    :src="myRank.avatar?$parsePic(decodeURIComponent(myRank.avatar)):defaultAvatar" />
+                    :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
                 <view class="myRank_rank">
-                    <view class="myRank_rank_linback flexCenter">{{myRank.isPass?myRank.rank:'未入榜'}}</view>
+                    <view class="myRank_rank_linback flexCenter">{{ myRank.isPass ? myRank.rank : '未入榜' }}</view>
                 </view>
             </view>
             <view class="myRank_point">
-                <view class="now">{{myRank.userName || '获取中'}}</view>
-                <view class="point">累计获取积分:{{myRank.get_score}}</view>
+                <view class="now">{{ myRank.userName || '获取中' }}</view>
+                <view class="point">累计获取积分:{{ myRank.get_score }}</view>
             </view>
             <muqian-lazyLoad class="myRank_Award" borderRadius="3rpx"
-                :src="myRank.isPass?'../../../static/act/rankSelect/canLucky.png':'../../../static/act/rankSelect/noneLucky.png'" />
+                :src="myRank.isPass ? '../../../static/act/rankSelect/canLucky.png' : '../../../static/act/rankSelect/noneLucky.png'" />
             <!-- <view class="myRank_name">
                 {{myRank.userName || '获取中'}}
             </view>
@@ -33,29 +33,29 @@
                 <view class="point">已获得{{myRank.get_score}}活动积分</view>
             </view> -->
         </view>
-        <view class="title">{{isLottery?'幸运名单':'幸运奖池'}}</view>
+        <view class="title">{{ isLottery ? '幸运名单' : '幸运奖池' }}</view>
         <view class="rewardContainer" v-if="!isLottery">
-            <muqian-lazyLoad class="reward"
-                @click="prviewImages('/static/goods/v2/waitAvatar.png')"
-                :style="{marginRight:(index+1)%3==0?`0rpx`:`14rpx`}" borderRadius="3rpx" v-for="(item,index) in 9"
-                :src="decodeURIComponent('/static/goods/v2/waitAvatar.png')" />
-                <!-- http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg
+            <muqian-lazyLoad class="reward" @click="prviewImages(item.pic)"
+                :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `14rpx` }" borderRadius="3rpx"
+                v-for="(item, index) in luckyAwards" :src="decodeURIComponent(item.pic)" />
+            <!-- http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg
 http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg -->
         </view>
         <view v-else class="luckyContainer" style="margin-bottom: 20rpx;">
-            <view class="myRank" v-for="(item,index) in luckyList">
+            <view class="myRank" v-for="(item, index) in luckyList">
                 <view class="myRank_avatarContainer">
                     <muqian-lazyLoad class="myRank_avatar" borderRadius="50%"
-                        :src="item.avatar?$parsePic(decodeURIComponent(item.avatar)):defaultAvatar" />
+                        :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar" />
                     <view class="myRank_rank">
-                        <view class="myRank_rank_linback flexCenter">{{item.isPass?item.rank:'未入榜'}}</view>
+                        <view class="myRank_rank_linback flexCenter">{{ item.isPass ? item.rank : '未入榜' }}</view>
                     </view>
                 </view>
                 <view class="myRank_point">
-                    <view class="now" style="margin-bottom:0rpx;">{{item.userName || '获取中'}}</view>
+                    <view class="now" style="margin-bottom:0rpx;">{{ item.userName || '获取中' }}</view>
                     <!-- <view class="point">累计获取积分:{{item.get_score}}</view> -->
                 </view>
-                <muqian-lazyLoad @click="prviewImages(item.pic)" class="myRank_Award" borderRadius="3rpx" :src="$parsePic(decodeURIComponent(item.pic))" />
+                <muqian-lazyLoad @click="prviewImages(item.pic)" class="myRank_Award" borderRadius="3rpx"
+                    :src="$parsePic(decodeURIComponent(item.pic))" />
             </view>
         </view>
     </view>
@@ -71,7 +71,10 @@ export default class ClassName extends BaseNode {
     defaultAvatar = app.defaultAvatar
     myRank: any = {}
     isLottery: boolean = false
-    luckyList:any=[]
+    luckyList: any = []
+    luckyAwards: any = [
+        { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg' }
+    ]
     onLoad(query: any) {
         this.reqMyRank()
     }

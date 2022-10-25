@@ -26,6 +26,15 @@
 				<view @click="getElementScollTop" style="color: #02a7f0;text-decoration:underline;font-size: 23rpx;margin-bottom:10rpx;">查看奖励</view>
 			</view>
 			<view class="des_title">
+				活动时间说明
+			</view>
+			<view class="des_content">
+				10.25~11.8    获取积分<br/>
+				11.9~11.18    积分解冻期<br/>
+				11.19 0:00    榜单结算<br/>
+				11.20 15:00    幸运大抽奖<br/>
+			</view>
+			<view class="des_title" style="margin-top:10rpx">
 				积分说明
 			</view>
 			<view class="des_content">
@@ -70,7 +79,7 @@
 					{{ item.multiple }}倍：{{ item.keyword.join('、') }}
 				</view>
 			</view>
-			<view class="des_gray">*活动最终解释权归卡世界平台所有</view>
+			<!-- <view class="des_gray">*活动最终解释权归卡世界平台所有</view> -->
 		</view>
 		<view class="spRewardsContainer">
 			<view class="title">特殊奖励</view>
@@ -86,12 +95,26 @@
 						}}
 					</view>
 					<view class="rewardName u-line-1">
-						凯德·坎宁安FA新秀年签字球衣
+						{{item.name}}
 					</view>
 				</view>
 			</view>
 			<view class="title" style="margin-top: 60rpx">入榜奖励</view>
-			<image class="canLucky" src="../../../static/act/rankSelect/canLucky.png" />
+			<view class="rewardsContainer">
+				<view class="rewardItem" v-for="(item, index) in luckList"
+					:style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `16rpx` }">
+					<muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic))" class="rewardImage"
+						@click="prviewImages(item.pic)" borderRadius="3rpx">
+					</muqian-lazyLoad>
+					<view class="rewardRank">
+						{{item.rank}}
+					</view>
+					<view class="rewardName u-line-1">
+						{{item.name}}
+					</view>
+				</view>
+			</view>
+			<!-- <image class="canLucky" src="../../../static/act/rankSelect/canLucky.png" /> -->
 			<view class="tips">活动截至后入榜前500名抽取n位幸运用户进行幸运抽奖</view>
 			<view class="tips" @click="openRanDom">抽奖网站:<text style="color: #02a7f0;text-decoration:underline;margin-left:6rpx">random.org</text></view>
 		</view>
@@ -115,6 +138,11 @@ export default class ClassName extends BaseNode {
 	<br/>
 	幸运大抽奖：<text style="color:#FA1545">排名前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取 
 	`
+	luckList:any=[
+		{pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png',name:'抽取10张100元券',rank:"第1-50名"},
+		{pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png',name:'抽取10张100元券',rank:"第1-200名"},
+		{pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg',name:"抽取Select原盒一盒",rank:"第1-500名"}
+	]
 	onLoad(query: any) {
 		this.reqPointConfig()
 		this.reqRewardList()
@@ -288,7 +316,7 @@ page {
 				font-weight: 400;
 				text-align: center;
 				margin-top: 10rpx;
-				font-size: 25rpx;
+				font-size: 24rpx;
 				font-family: PingFang SC;
 				color: #333333;
 			}
