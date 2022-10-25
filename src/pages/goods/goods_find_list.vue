@@ -514,7 +514,8 @@ page {
 .goods-lists {
   width: 100%;
   box-sizing: border-box;
-  padding: 272rpx 0 60rpx 0;
+  padding: 250rpx 0 60rpx 0;
+  overflow-x: hidden;
 }
 
 .sort-shadow {
