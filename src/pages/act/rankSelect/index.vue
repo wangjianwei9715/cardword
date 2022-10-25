@@ -17,9 +17,10 @@
                 </view>
             </view>
         </view>
-        <view class="topStatus" style="width:750rpx;background-color: #060405;" :style="{height:app.statusBarHeight + 'px'}"></view>
+        <view class="topStatus" style="width:750rpx;background-color: #060405;"
+            :style="{ height: app.statusBarHeight + 'px' }"></view>
         <view class="rankBanner">
-            <image src='../../../static/act/rankSelect/rankBanner.jpg'/>
+            <image src='../../../static/act/rankSelect/rankBanner.jpg' />
             <view class="hdsm flexCenter" @click="pageJump('/pages/act/rankSelect/description')">
                 活动<br />
                 说明
@@ -35,18 +36,20 @@
                 <!-- rollAnim -->
                 <view class="rollContent" id='rollContent' :animation="animationData">
                     <view class="rollItem" v-for="(item, index) in awardList" :key="index + 'rollOne'">
-                        <image class="rollReward" borderRadius="3rpx"
-                            :src="$parsePic(decodeURIComponent(item.pic_url))" />
+                        <image class="rollReward" :src="$parsePic(decodeURIComponent(item.pic_url))" />
                         <view class="rewardLevel flexCenter">
-                            {{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` : `第${item.start_rank}-${item.end_rank}名` }}
+                            {{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` :
+                                    `第${item.start_rank}-${item.end_rank}名`
+                            }}
                         </view>
                     </view>
                     <view class="rollItem" v-for="(item, index) in awardList" :key="index + 'rollTwo'"
                         v-if="awardList.length >= 7">
-                        <image class="rollReward" borderRadius="3rpx"
-                            :src="$parsePic(decodeURIComponent(item.pic_url))" />
+                        <image class="rollReward" :src="$parsePic(decodeURIComponent(item.pic_url))" />
                         <view class="rewardLevel flexCenter">
-                            {{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` : `第${item.start_rank}-${item.end_rank}名` }}
+                            {{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` :
+                                    `第${item.start_rank}-${item.end_rank}名`
+                            }}
                         </view>
                     </view>
                 </view>
@@ -57,12 +60,14 @@
             <view class="luck_look flexCenter" @click="pageJump('/pages/act/rankSelect/draw')">查看</view>
         </view>
         <view class="actProgressContainer">
-            <view class="progress_item" :class="{ progress_itemHasLine: index != 3 }" v-for="(item, index) in actProgress"
-                :key="index">
+            <view class="progress_item" :class="{ progress_itemHasLine: index != 3 }"
+                v-for="(item, index) in actProgress" :key="index">
                 <image :src="`/static/act/rankSelect/${checkImage(item, index)}.png`" />
                 <view class="progress_title positionCenter">{{ item.name }}</view>
                 <view class="progress_time positionCenter">
-                    {{ isNumber(item.timeStamp) ? dateFormatMSHMS(item.timeStamp, '.') : `${dateFormatMS(item.timeStamp[0],'.')}~${dateFormatMS(item.timeStamp[1],'.')}` }}
+                    {{ isNumber(item.timeStamp) ? dateFormatMSHMS(item.timeStamp, '.') :
+                            `${dateFormatMS(item.timeStamp[0], '.')}~${dateFormatMS(item.timeStamp[1], '.')}`
+                    }}
                 </view>
             </view>
         </view>
@@ -104,7 +109,9 @@
             </view>
 
             <view class="rank_tr" :class="{ rank_my: item.isMy }" v-for="(item, index) in rankList">
-                <view class="rankTd flexCenter rankNum" :class="[index <= 2 ? `rank${index + 1}` : '']">{{ index > 2 ? (index + 1) : "" }}
+                <view class="rankTd flexCenter rankNum" :class="[index <= 2 ? `rank${index + 1}` : '']">{{ index > 2 ?
+                        (index + 1) : ""
+                }}
                 </view>
                 <muqian-lazyLoad class="rankAvatar" borderRadius="50%"
                     :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
@@ -150,7 +157,8 @@
                     2.倍数说明<br />
                     关键字倍数
                 </view>
-                <view class="des_content red" v-if="pointConfig.cardSet_multiple && pointConfig.cardSet_multiple.length">
+                <view class="des_content red"
+                    v-if="pointConfig.cardSet_multiple && pointConfig.cardSet_multiple.length">
                     <view v-for="(item, index) in pointConfig.cardSet_multiple">
                         {{ item.multiple }}倍：{{ item.keyword.join('、') }}
                     </view>
@@ -330,7 +338,7 @@ export default class ClassName extends BaseNode {
         uni.navigateTo({
             // url: '/pages/goods/goods_find_list?classType=100'
             // url: '/pages/act/rankSelect/goodsList'
-            url:'/pages/goods/goods_seriesDetail?seriesId=3'
+            url: '/pages/goods/goods_seriesDetail?seriesId=3'
         })
     }
     isNumber(data: any) {
@@ -442,14 +450,19 @@ page {
             margin-right: 9rpx;
 
             .rollReward {
-                width: inherit;
-                height: inherit;
+                width: 101rpx;
+                height: 101rpx;
                 position: absolute;
                 top: 0;
-                bottom: 0;
+                // bottom: 0;
+                z-index: -1;
+                // background-color: red;
+                border-radius: 3rpx;
+                display: block;
             }
 
             .rewardLevel {
+                z-index: 33;
                 width: 101rpx;
                 height: 24rpx;
                 background: rgba(0, 0, 0, .38);
@@ -548,11 +561,13 @@ page {
     background-size: 100% 100%;
     // background-image: url('../../../static/act/rankSelect/rankBanner.jpg');
     position: relative;
-    image{
+
+    image {
         width: inherit;
         height: inherit;
         position: absolute;
     }
+
     .hdsm {
         width: 73rpx;
         height: 81rpx;
