@@ -9,7 +9,7 @@
 					<view class="livelist-top-statebox-bg">25人在看</view>
 				</view>
 				<view class="livelist-top-statebox" v-else>
-					<view class="livelist-top-statebox-state">{{item.state==3?'回放':'预告'}}</view>
+					<view class="livelist-top-statebox-state" :class="{'hf-bg':item.state==3}">{{item.state==3?'回放':'预告'}}</view>
 					<view class="livelist-top-statebox-bg">{{$u.timeFormat(item.startAt,'mm-dd hh:MM')}}</view>
 				</view>
 				
@@ -135,6 +135,9 @@
 					display: flex;
 					align-items: center;
 					justify-content: center;					
+				}
+				.hf-bg{
+					background:#24a3fc !important
 				}
 			}
 			&-name{
