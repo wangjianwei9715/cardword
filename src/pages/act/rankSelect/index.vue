@@ -26,7 +26,7 @@
                 说明
             </view>
         </view>
-        <view class="rewardContainer">
+        <view class="rewardContainer" style="position: relative;bottom: 30rpx;">
             <view class="reward_font">
                 奖励<br />
                 预览
@@ -55,11 +55,11 @@
                 </view>
             </view>
         </view>
-        <view class="luckContainer">
+        <view class="luckContainer" style="position: relative;bottom: 30rpx;">
             <view class="luck_font">前500名参与幸运大抽奖！</view>
             <view class="luck_look flexCenter" @click="pageJump('/pages/act/rankSelect/draw')">查看</view>
         </view>
-        <view class="actProgressContainer">
+        <view class="actProgressContainer" style="position: relative;bottom: 30rpx;">
             <view class="progress_item" :class="{ progress_itemHasLine: index != 3 }"
                 v-for="(item, index) in actProgress" :key="index">
                 <image :src="`/static/act/rankSelect/${checkImage(item, index)}.png`" />
@@ -71,7 +71,7 @@
                 </view>
             </view>
         </view>
-        <view class="rankContainer">
+        <view class="rankContainer" style="position: relative;bottom: 30rpx;">
             <view class="rank_top">
                 <view class="rank_title">21-22 SELECT积分榜</view>
                 <view class="rank_pointText" @click="pageJump('/pages/act/rankSelect/pointsDetails')">查看积分明细</view>
@@ -557,7 +557,7 @@ page {
 
 .rankBanner {
     width: 750rpx;
-    height: 388rpx;
+    height: 453rpx;
     background-size: 100% 100%;
     // background-image: url('../../../static/act/rankSelect/rankBanner.jpg');
     position: relative;
@@ -702,7 +702,7 @@ page {
     box-sizing: border-box;
     align-items: center;
     padding: 0 32rpx;
-
+    
     .reward_font {
         font-size: 54rpx;
         font-family: YouSheBiaoTiHei;
