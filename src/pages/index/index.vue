@@ -65,11 +65,12 @@
 									<view class="tabtext u-line-1">{{items.name}}</view>
 								</view>
 							</view>
-							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-11-26')">
-								<image class="capsule-pic" :src="decodeURIComponent(capsule.pic)" mode="aspectFill"/>
+							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-12-26')">
+								<image class="capsule-pic1" :src="decodeURIComponent(capsule.pic1)" mode="aspectFill"/>
+								<image class="capsule-pic2" :src="decodeURIComponent(capsule.pic2)" mode="aspectFill"/>
 							</navigator>
 
-							<!-- 卡币商城 热门系列 拆卡围观 -->
+							<!-- 拼团进度 最新上架 新手体验 拆卡围观 -->
 							<tabHot :hotList="hotList" :freshGoodCovers="freshGoodCovers" />
 						</view>
 						<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
@@ -122,8 +123,9 @@
 			bottom:indexTabList
 		};
 		capsule = {
-			pic:'../../static/index/mp_mini.jpg',
-			url:'../../static/index/mp_mini.jpg'
+			pic1:'../../static/index/v3/index_ad_banner.png',
+			pic2:'../../static/index/v3/index_ad_banner2.png?v=2',
+			url:'/pages/act/rankSelect/index'
 		}
 		hotList: { [x: string]: any } = indexHotList;
 		topAddList: any = [];
@@ -731,12 +733,23 @@
 		margin-top: 10rpx;
 		position: relative;
 	}
-	.capsule-pic{
+	.capsule-pic1{
 		width: 710rpx;
 		height:155rpx;
-		position: relative;
+		position: absolute;
+		left:0;
+		top:0;
+		z-index: 5;
 	}
-	.capsule-pic::after {	//这里开始实现效果
+	.capsule-pic2{
+		width: 710rpx;
+		height:155rpx;
+		position: absolute;
+		left:0;
+		top:0;
+		z-index: 4;
+	}
+	.capsule-pic2::after {	//这里开始实现效果
 		content:"";
 		position: absolute;
 		width:200rpx;
@@ -746,25 +759,25 @@
 		overflow: hidden;
 		background: -moz-linear-gradient(left,
 		rgba(255, 255, 255, 0)25%,
-		rgba(255, 255, 255, .2)50%,
+		rgba(255, 255, 255, .6)50%,
 		rgba(255, 255, 255, 0)75%);
 		background: -webkit-gradient(linear, left top, right top,
 		color-stop(25%, rgba(255, 255, 255, 0)),
-		color-stop(50%, rgba(255, 255, 255, .2)),
+		color-stop(50%, rgba(255, 255, 255, .6)),
 		color-stop(75%, rgba(255, 255, 255, 0)));
 		background: -webkit-linear-gradient(left,
 		rgba(255, 255, 255, 0)25%, 
-		rgba(255, 255, 255, .2)50%, 
+		rgba(255, 255, 255, .6)50%, 
 		rgba(255, 255, 255, 0)75%);
 		background: -o-linear-gradient(left, 
 		rgba(255, 255, 255, 0)25%, 
-		rgba(255, 255, 255, .2)50%, 
+		rgba(255, 255, 255, .6)50%, 
 		rgba(255, 255, 255, 0)75%);
 		transform: skewX(-45deg);
 		-webkit-transform: skewX(-45deg);
 		-moz-transform: skewX(-45deg);
-		animation:tolight 3s infinite  linear;
-		-webkit-animation:tolight 3s infinite  linear;
+		animation:tolight 5s infinite  linear;
+		-webkit-animation:tolight 5s infinite  linear;
 	}
 
 	/*光影划过动画*/
@@ -774,7 +787,7 @@
 			left:-100%;
 		}
 		60% {
-			left:50%;
+			left:60%;
 		}
 		100% {
 			left:200%;
@@ -785,7 +798,7 @@
 			left:-100%;
 		}
 		60% {
-			left:50%;
+			left:60%;
 		}
 		100% {
 			left:200%;
@@ -1038,7 +1051,7 @@
 		color:#e2e2e2 !important;
 	}
 	.transRef /deep/.uni-scroll-view-refresher{
-		transition: height 0.5s ease-out;
+		transition: height 0.2s ease-out;
 	}
 	/deep/.u-tabs__wrapper__nav__line{
 		border-radius: 0 !important;
