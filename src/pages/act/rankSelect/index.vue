@@ -62,7 +62,7 @@
                 <image :src="`/static/act/rankSelect/${checkImage(item, index)}.png`" />
                 <view class="progress_title positionCenter">{{ item.name }}</view>
                 <view class="progress_time positionCenter">
-                    {{ isNumber(item.timeStamp) ? dateFormatMSHMS(item.timeStamp, '-') : `${dateFormatMS(item.timeStamp[0])}~${dateFormatMS(item.timeStamp[1])}` }}
+                    {{ isNumber(item.timeStamp) ? dateFormatMSHMS(item.timeStamp, '.') : `${dateFormatMS(item.timeStamp[0],'.')}~${dateFormatMS(item.timeStamp[1],'.')}` }}
                 </view>
             </view>
         </view>
@@ -122,7 +122,7 @@
         <view class="bottomContainer">
             <view class="buttonItem flexCenter" @click="onClickGoBuy">
                 <image src="../../../static/act/rankSelect/add.png" />
-                <view class="button flexCenter">参与拼团</view>
+                <view class="button flexCenter">立即上车SELECT</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
@@ -329,7 +329,8 @@ export default class ClassName extends BaseNode {
     onClickGoBuy() {
         uni.navigateTo({
             // url: '/pages/goods/goods_find_list?classType=100'
-            url: '/pages/act/rankSelect/goodsList'
+            // url: '/pages/act/rankSelect/goodsList'
+            url:'/pages/goods/goods_seriesDetail?seriesId=3'
         })
     }
     isNumber(data: any) {

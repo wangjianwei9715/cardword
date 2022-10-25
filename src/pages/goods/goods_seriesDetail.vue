@@ -3,7 +3,7 @@
         <view class="detailCard" :style="{height:(380+(statusBarHeight*2))+'rpx'}">
             <image class="backImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(seriesDetail.back_img))" />
             <view class="merchantMask"></view>
-            <view class="seriesInfo uni-flex" :style="{marginTop:(144+(statusBarHeight*2))+'rpx'}">
+            <view class="seriesInfo uni-flex" :style="{marginTop:(120+(statusBarHeight*2))+'rpx'}">
                 <image class="seriesInfo-avatar" mode="aspectFill"
                     :src="$parsePic(decodeURIComponent(seriesDetail.icon))" />
                 <view class="seriesInfo-name">{{seriesDetail.name || "获取中"}}</view>
