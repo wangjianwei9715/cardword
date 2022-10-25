@@ -4,13 +4,13 @@
             <view class="niceTimeItem" v-for="(item,index) in seriesCardList" :key="index">
                 <view class="niceTimeItem-top">
                     <muqian-lazyLoad class="niceTimeItem-img" borderRadius="5rpx 5rpx 0rpx 0rpx"
-                        :src="parsePic(decodeURIComponent(filterImg(item)[0]))" mode="aspectFill"
-                        @click='previewImage(filterImg(item),0,"")' />
-                    <view class="niceTimeItem-dot flexCenter">{{imageNums(item)}}</view>
+                        :src="parsePic(decodeURIComponent(filterImg(item.pic)[0]))" mode="aspectFill"
+                        @click='previewImage(filterImg(item.pic),0,"")' />
+                    <view class="niceTimeItem-dot flexCenter">{{imageNums(item.pic)}}</view>
                     <view class="scoreContainer uni-flex">
                     </view>
                 </view>
-                <!-- <view class="niceTime-name">
+                <view class="niceTime-name">
                     {{item.name}}
                 </view>
                 <view class="niceTime-bottom uni-flex">
@@ -18,7 +18,7 @@
                         :src="item.avatar?parsePic(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFill" />
                     <view class="niceTime-userName onLine">{{item.userName}}</view>
                     <view class="niceTime-time">{{dateFormatMS(item.createTime)}}</view>
-                </view> -->
+                </view>
             </view>
         </view>
         <empty v-if="!seriesCardList.length" />
@@ -112,8 +112,8 @@ page {
 .niceTimeItem {
 
     width: 356rpx;
-    height: 426rpx;
-    // height: 588rpx;
+    // height: 426rpx;
+    height: 588rpx;
     /* background-color: red; */
     background: #FFFFFF;
     border-radius: 5rpx;
