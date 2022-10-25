@@ -32,7 +32,7 @@
                 预览
             </view>
             <view class="reward_line"></view>
-            <view class="rollStaticContent" id='rollStaticContent'>
+            <view class="rollStaticContent" id='rollStaticContent' v-if="awardShow">
                 <!-- rollAnim -->
                 <view class="rollContent" id='rollContent' :animation="animationData">
                     <view class="rollItem" v-for="(item, index) in awardList" :key="index + 'rollOne'">
@@ -187,9 +187,10 @@
 
 <script lang="ts">
 import { app } from "@/app";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import BaseNode from '../../../base/BaseNode.vue';
 import { parsePic, dateFormatMSHMS, dateFormatMS } from '@/tools/util'
+
 @Component({})
 export default class ClassName extends BaseNode {
     operationShow: boolean = false
@@ -202,6 +203,7 @@ export default class ClassName extends BaseNode {
         fetchSize: 30
     }
     awardList: any = []
+    awardShow: boolean = false
     duration: any = 60 * 1000
     app = app
     isFetchEnd: any = true
@@ -226,19 +228,39 @@ export default class ClassName extends BaseNode {
     pointConfig: any = {
 
     }
+    width: number = 0
+    startAnimationTimer: any = null
     nowTimeStamp: number = Math.round(+new Date() / 1000)
     private get scrollTopPercent() {
         return this.scrollTop / (this.MAX_HEIGHT * 2)
     }
-
+    @Watch('awardShow')
+    onShowChanged(val: any, oldVal: any) {
+        if (!val) return
+        if (this.awardList.length && this.awardList.length >= 7) {
+            this.$nextTick(() => {
+                this.getRollWidth().then((width: any) => {
+                    this.width = width
+                    this.setDurationAnimation(this.duration)
+                    this.animation.translateX(0 - (width)).step()
+                    this.animationData = this.animation.export()
+                    this.startAnimation()
+                })
+            })
+        }
+    }
+    onShow() {
+    }
     onLoad(query: any) {
-
+        this.onEventUI("resetAn", (res) => {
+            this.resetAn()
+        });
         app.platform.hasLoginToken(() => {
             this.reqMyRank()
             this.reqAllRank()
-
-            this.reqRewardList()
+            this.resetAn()
         })
+
         this.$nextTick(() => {
             const query: any = uni.createSelectorQuery().in(this)
             query
@@ -255,6 +277,10 @@ export default class ClassName extends BaseNode {
     }
     onPageScroll(data: any) {
         this.scrollTop = data.scrollTop
+    }
+    resetAn() {
+        this.awardList = []
+        this.reqRewardList()
     }
     onPullDownRefresh() {
         this.rankQuery.fetchFrom = 1
@@ -288,15 +314,17 @@ export default class ClassName extends BaseNode {
             }, 100)
         })
     }
-    startAnimation(width: any) {
+    startAnimation(isFirst?: any) {
+        this.startAnimationTimer && clearInterval(this.startAnimationTimer)
+        this.startAnimationTimer = setInterval(() => {
+            console.log(3444444);
 
-        setInterval(() => {
             this.setZeroDurationAnimation()
             this.animation.translateX(0).step()
             this.animationData = this.animation.export()
             setTimeout(() => {
                 this.setDurationAnimation(this.duration)
-                this.animation.translateX(0 - (width)).step()
+                this.animation.translateX(0 - (this.width)).step()
                 this.animationData = this.animation.export()
             }, 100)
         }, this.duration)
@@ -351,18 +379,11 @@ export default class ClassName extends BaseNode {
         return TIME_DIFF >= 0 ? item.sIcon : item.icon
     }
     reqRewardList() {
+        this.awardShow = false
         app.http.Get('dataApi/selectRank/award/list', {}, (res: any) => {
             this.awardList = res.list || []
-            if (this.awardList.length && this.awardList.length >= 7) {
-                this.$nextTick(() => {
-                    this.getRollWidth().then((width: any) => {
-                        this.setDurationAnimation(this.duration)
-                        this.animation.translateX(0 - (width)).step()
-                        this.animationData = this.animation.export()
-                        this.startAnimation(width)
-                    })
-                })
-            }
+            this.awardShow = true
+
 
         })
     }
@@ -702,7 +723,7 @@ page {
     box-sizing: border-box;
     align-items: center;
     padding: 0 32rpx;
-    
+
     .reward_font {
         font-size: 54rpx;
         font-family: YouSheBiaoTiHei;

@@ -19,6 +19,9 @@ export default class ClassName extends BaseNode {
     onPulldDownRefresh() {
 
     }
+    beforeDestroy(): void {
+        uni.$emit('resetAn')
+    }
     onClickLive() {
         app.platform.goZgLive({
             // roomID: item.id,
