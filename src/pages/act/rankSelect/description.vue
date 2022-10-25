@@ -19,8 +19,11 @@
 				</view>
 			</view>
 			<view class="desLine"></view>
-			<view class="des_content" v-html="des">
+			<view>
+				<view class="des_content" v-html="des">
 
+				</view>
+				<view @click="getElementScollTop" style="color: #02a7f0;text-decoration:underline;font-size: 23rpx;margin-bottom:10rpx;">查看奖励</view>
 			</view>
 			<view class="des_title">
 				积分说明
@@ -36,9 +39,9 @@
 				二.卡密倍数
 			</view>
 			<view class="des_content red">
-				卡种基础分：{{pointConfig.cardSetBasicsScore || '获取中'}}<br />
-				球员基础分：{{pointConfig.playerBasicsScore || '获取中'}}<br />
-				球队基础分：{{pointConfig.teamBasicsScore || '获取中'}}<br />
+				卡种基础分：{{ pointConfig.cardSetBasicsScore || '获取中' }}<br />
+				球员基础分：{{ pointConfig.playerBasicsScore || '获取中' }}<br />
+				球队基础分：{{ pointConfig.teamBasicsScore || '获取中' }}<br />
 			</view>
 			<view class="des_title">
 			</view>
@@ -46,25 +49,25 @@
 				2.倍数说明<br />
 				关键字倍数
 			</view>
-			<view class="des_content red" v-if="pointConfig.cardSet_multiple&&pointConfig.cardSet_multiple.length">
-				<view v-for="(item,index) in pointConfig.cardSet_multiple">
-					{{item.multiple}}倍：{{item.keyword.join('、')}}
+			<view class="des_content red" v-if="pointConfig.cardSet_multiple && pointConfig.cardSet_multiple.length">
+				<view v-for="(item, index) in pointConfig.cardSet_multiple">
+					{{ item.multiple }}倍：{{ item.keyword.join('、') }}
 				</view>
 			</view>
 			<view class="des_title">
 			</view>
 			<view class="des_content">球员倍数</view>
-			<view class="des_content red" v-if="pointConfig.player_multiple&&pointConfig.player_multiple.length">
-				<view v-for="(item,index) in pointConfig.player_multiple">
-					{{item.multiple}}倍：{{item.keyword.join('、')}}
+			<view class="des_content red" v-if="pointConfig.player_multiple && pointConfig.player_multiple.length">
+				<view v-for="(item, index) in pointConfig.player_multiple">
+					{{ item.multiple }}倍：{{ item.keyword.join('、') }}
 				</view>
 			</view>
 			<view class="des_title">
 			</view>
 			<view class="des_content">球队倍数</view>
-			<view class="des_content red" v-if="pointConfig.team_multiple&&pointConfig.team_multiple.length">
-				<view v-for="(item,index) in pointConfig.team_multiple">
-					{{item.multiple}}倍：{{item.keyword.join('、')}}
+			<view class="des_content red" v-if="pointConfig.team_multiple && pointConfig.team_multiple.length">
+				<view v-for="(item, index) in pointConfig.team_multiple">
+					{{ item.multiple }}倍：{{ item.keyword.join('、') }}
 				</view>
 			</view>
 			<view class="des_gray">*活动最终解释权归卡世界平台所有</view>
@@ -72,17 +75,25 @@
 		<view class="spRewardsContainer">
 			<view class="title">特殊奖励</view>
 			<view class="rewardsContainer">
-				<view class="rewardItem" v-for="(item,index) in awardList" :style="{marginRight:((index+1)%3==0)?`0rpx`:`16rpx`}">
-					<muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic_url))" class="rewardImage" @click="prviewImages(item.pic_url)" borderRadius="3rpx">
+				<view class="rewardItem" v-for="(item, index) in awardList"
+					:style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `16rpx` }">
+					<muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic_url))" class="rewardImage"
+						@click="prviewImages(item.pic_url)" borderRadius="3rpx">
 					</muqian-lazyLoad>
 					<view class="rewardRank">
-						{{(item.start_rank==item.end_rank)?`第${item.start_rank}名`:`第${item.start_rank}-${item.end_rank}名`}}
+						{{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` :
+								`第${item.start_rank}-${item.end_rank}名`
+						}}
+					</view>
+					<view class="rewardName u-line-1">
+						凯德·坎宁安FA新秀年签字球衣
 					</view>
 				</view>
 			</view>
 			<view class="title" style="margin-top: 60rpx">入榜奖励</view>
 			<image class="canLucky" src="../../../static/act/rankSelect/canLucky.png" />
 			<view class="tips">活动截至后入榜前500名抽取n位幸运用户进行幸运抽奖</view>
+			<view class="tips" @click="openRanDom">抽奖网站:<text style="color: #02a7f0;text-decoration:underline;margin-left:6rpx">random.org</text></view>
 		</view>
 	</view>
 </template>
@@ -95,14 +106,14 @@ import { parsePic, dateFormatMSHMS } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
 	pointConfig: any = {}
-	awardList:any=[]
+	awardList: any = []
 	des: string =
 		`
-	活动期间，参与<text style="color:#FA1545">21-22select</text>系列拼团的用户，将根据拼团的 类型获得相应的积分奖励【拼团期间活动积分为冻结状态， 拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结 积分中扣除】
+	活动期间，参与<text style="color:#FA1545">21-22select</text>拼团的用户，将根据拼团的类型获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
 	<br/>
-	活动截至<text style="color:#FA1545">入榜前X</text>的用户将获得特殊奖励
+	活动截至<text style="color:#FA1545">入榜前50名</text>的用户将获得特殊奖励
 	<br/>
-	额外奖励：<text style="color:#FA1545">排名前500名</text>的用户，平台将直播随机抽取N名用户 
+	幸运大抽奖：<text style="color:#FA1545">排名前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取 
 	`
 	onLoad(query: any) {
 		this.reqPointConfig()
@@ -121,6 +132,22 @@ export default class ClassName extends BaseNode {
 			current: 0,
 			urls: picArr
 		})
+	}
+	getElementScollTop() {
+		const query: any = uni.createSelectorQuery()
+		query
+			.select('.spRewardsContainer')
+			.boundingClientRect((data: any) => {
+				let pageScrollTop: any = Math.round(data.top)
+				uni.pageScrollTo({
+					scrollTop: pageScrollTop, //滚动的距离
+					duration: 300, //过渡时间
+				})
+			})
+			.exec()
+	}
+	openRanDom(){
+		plus.runtime.openURL('https://www.random.org')
 	}
 	reqRewardList() {
 		app.http.Get('dataApi/selectRank/award/list', {}, (res: any) => {
@@ -181,9 +208,10 @@ page {
 		color: #333333;
 		line-height: 36rpx;
 		letter-spacing: 2rpx;
-		view{
-            font-size: inherit;
-        }
+
+		view {
+			font-size: inherit;
+		}
 	}
 
 	.des_gray {
@@ -239,6 +267,7 @@ page {
 		.rewardItem {
 			margin-bottom: 22rpx;
 			width: 207rpx;
+
 			.rewardImage {
 				width: inherit;
 				height: 207rpx;
@@ -249,9 +278,18 @@ page {
 
 			.rewardRank {
 				text-align: center;
-				font-size: 25rpx;
+				font-size: 23rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
+				color: #333333;
+			}
+
+			.rewardName {
+				font-weight: 400;
+				text-align: center;
+				margin-top: 10rpx;
+				font-size: 25rpx;
+				font-family: PingFang SC;
 				color: #333333;
 			}
 		}
