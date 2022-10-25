@@ -1,9 +1,9 @@
 <template>
     <view class="content">
-        <view class="detailCard" :style="{height:(380+(statusBarHeight*2))+'rpx'}">
+        <view class="detailCard" :style="{height:(380+(36*2))+'rpx'}">
             <image class="backImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(seriesDetail.back_img))" />
             <view class="merchantMask"></view>
-            <view class="seriesInfo uni-flex" :style="{marginTop:(120+(statusBarHeight*2))+'rpx'}">
+            <view class="seriesInfo uni-flex" :style="{marginTop:(130+(36*2))+'rpx'}">
                 <image class="seriesInfo-avatar" mode="aspectFill"
                     :src="$parsePic(decodeURIComponent(seriesDetail.icon))" />
                 <view class="seriesInfo-name">{{seriesDetail.name || "获取中"}}</view>
@@ -213,7 +213,7 @@ page {
     // background-color: red;
 
     padding: 0 36rpx;
-    margin-top: 34rpx;
+    margin-top: 44rpx;
     position: relative;
     line-height: 32rpx;
 
