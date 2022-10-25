@@ -22,7 +22,7 @@
 		</view>
 		<view class="goods-lists">
 			<statusbar />
-			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow'>
+			<scroll-view class="goods-scroll" scroll-x="true" v-if='seriesShow' v-show="seriesList!=''">
 				<view class="scrollItem" v-for="(item,index) in seriesList" :key='index' @click="clickSerie(item,index)">
 					<view class="frameImage">
 						<muqian-lazyLoad class="seriesImg" :src="decodeURIComponent(item.icon)" mode="aspectFit"></muqian-lazyLoad>
