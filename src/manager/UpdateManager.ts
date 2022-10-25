@@ -86,9 +86,6 @@ export default class UpdateManager {
                         force: false
                       }, () => {
                         console.log('install success...');
-                        uni.removeStorageSync('launchUrl');
-                        uni.removeStorageSync('configLaunchUrl');
-                        uni.removeStorageSync('launchData');
                         uni.showModal({
                           title: '更新完毕',
                           content: '立刻重启应用完成更新。',

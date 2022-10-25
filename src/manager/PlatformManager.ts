@@ -389,20 +389,29 @@ export default class PlatformManager {
 	appLuanch(loginToken: any, cb?: Function) {
 		if(app.localTest) return;
 		
-		let launchData = uni.getStorageSync("launchData");
-		if (launchData!='' && (Math.round(new Date().getTime()/1000)-launchData.time<3600)){
-			this.setLaunchData(launchData,loginToken)
-		} else {
-			// launchUrl             储存打乱顺序后的launch
-			// configLaunchUrl       access保存的launch数据
-			app.service_url = uni.getStorageSync('launchUrl') || ''
-			const configLaunchUrl = uni.getStorageSync("configLaunchUrl");
-			const sortData = configLaunchUrl?configLaunchUrl:app.launch_url;
-			const launchUrl = sortData.sort(() => { return Math.random() - 0.5; });
+		// let launchData = uni.getStorageSync("launchData");
+		// if (launchData!='' && (Math.round(new Date().getTime()/1000)-launchData.time<3600)){
+		// 	this.setLaunchData(launchData,loginToken)
+		// } else {
+		// 	// launchUrl             储存打乱顺序后的launch
+		// 	// configLaunchUrl       access保存的launch数据
+		// 	app.service_url = uni.getStorageSync('launchUrl') || ''
+		// 	const configLaunchUrl = uni.getStorageSync("configLaunchUrl");
+		// 	const sortData = configLaunchUrl?configLaunchUrl:app.launch_url;
+		// 	const launchUrl = sortData.sort(() => { return Math.random() - 0.5; });
 			
-			let params = { name: "卡世界", version: app.version, uuid: app.platform.deviceID, };
-			this.postLaunch(loginToken,launchUrl,params,()=>{ if(cb) cb() })
-		}
+		// 	let params = { name: "卡世界", version: app.version, uuid: app.platform.deviceID, };
+		// 	this.postLaunch(loginToken,launchUrl,params,()=>{ if(cb) cb() })
+		// }
+		// launchUrl             储存打乱顺序后的launch
+		// configLaunchUrl       access保存的launch数据
+		app.service_url = uni.getStorageSync('launchUrl') || ''
+		const configLaunchUrl = uni.getStorageSync("configLaunchUrl");
+		const sortData = configLaunchUrl?configLaunchUrl:app.launch_url;
+		const launchUrl = sortData.sort(() => { return Math.random() - 0.5; });
+		
+		let params = { name: "卡世界", version: app.version, uuid: app.platform.deviceID, };
+		this.postLaunch(loginToken,launchUrl,params,()=>{ if(cb) cb() })
 		
 	}
 	postLaunch(loginToken:any,launchUrl:any,params:any,cb:Function){

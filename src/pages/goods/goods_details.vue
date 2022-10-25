@@ -63,7 +63,7 @@
 									{{goodsData.state>=2?'拼团已完成':'拼团进行中'}}
 								</view>
 								<view class="header-top-plan-num-str" v-if="planData.showMsg">
-									<view class="header-shengyu">剩余</view><u-count-to :style="{'font-family':'ArialBold','letter-spacing':'-2rpx'}" :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1500" :fontSize="15" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
+									<view class="header-shengyu">剩余</view><u-count-to :style="{'font-family':'ArialBold','letter-spacing':'-2rpx'}" :start-val="goodsData.totalNum" :end-val="goodSurplusNum" :duration="1000" :fontSize="15" :bold="true" color="#333"></u-count-to>/{{goodsData.totalNum}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}
 								</view>
 								<view class="header-top-plan-num-state" v-else > {{planData.str}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
