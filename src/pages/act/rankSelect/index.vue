@@ -17,7 +17,9 @@
                 </view>
             </view>
         </view>
+        <view class="topStatus" style="width:750rpx;background-color: #060405;" :style="{height:app.statusBarHeight + 'px'}"></view>
         <view class="rankBanner">
+            <image src='../../../static/act/rankSelect/rankBanner.jpg'/>
             <view class="hdsm flexCenter" @click="pageJump('/pages/act/rankSelect/description')">
                 活动<br />
                 说明
@@ -543,9 +545,13 @@ page {
     width: 750rpx;
     height: 388rpx;
     background-size: 100% 100%;
-    background-image: url('../../../static/act/rankSelect/rankBanner.jpg');
+    // background-image: url('../../../static/act/rankSelect/rankBanner.jpg');
     position: relative;
-
+    image{
+        width: inherit;
+        height: inherit;
+        position: absolute;
+    }
     .hdsm {
         width: 73rpx;
         height: 81rpx;
