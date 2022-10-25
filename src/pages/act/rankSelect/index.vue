@@ -2,17 +2,17 @@
     <view class="content">
         <view class="pageTopContainer">
             <view class="status"
-                :style="{paddingTop:app.statusBarHeight+'px',backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
+                :style="{ paddingTop: app.statusBarHeight + 'px', backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
             </view>
             <view class="pageTop" ref="pageTop" id="pageTop"
-                :style="{backgroundColor:`rgba(255,255,255,${scrollTopPercent})`}">
-                <image class="back" :class="{filterBlack:scrollTopPercent>0.6}"
+                :style="{ backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
+                <image class="back" :class="{ filterBlack: scrollTopPercent > 0.6 }"
                     src="../../../static/act/rankSelect/back.png" @click="app.platform.pageBack()" />
-                <view class="pageTitle" :style="{opacity:scrollTopPercent}">SELECT登顶计划</view>
+                <view class="pageTitle" :style="{ opacity: scrollTopPercent }">SELECT登顶计划</view>
                 <view style="display: flex;align-items: center;">
-                    <image class="share" :class="{filterBlack:scrollTopPercent>0.6}"
-                        src="../../../static/act/rankSelect/share.png" @click="operationShow=true" />
-                    <image class="kefu" :class="{filterBlack:scrollTopPercent>0.6}"
+                    <image class="share" :class="{ filterBlack: scrollTopPercent > 0.6 }"
+                        src="../../../static/act/rankSelect/share.png" @click="operationShow = true" />
+                    <image class="kefu" :class="{ filterBlack: scrollTopPercent > 0.6 }"
                         src="../../../static/act/rankSelect/kefu.png" @click="onClickKef" />
                 </view>
             </view>
@@ -32,18 +32,19 @@
             <view class="rollStaticContent" id='rollStaticContent'>
                 <!-- rollAnim -->
                 <view class="rollContent" id='rollContent' :animation="animationData">
-                    <view class="rollItem" v-for="(item,index) in awardList" :key="index+'rollOne'">
+                    <view class="rollItem" v-for="(item, index) in awardList" :key="index + 'rollOne'">
                         <image class="rollReward" borderRadius="3rpx"
                             :src="$parsePic(decodeURIComponent(item.pic_url))" />
                         <view class="rewardLevel flexCenter">
-                            {{(item.start_rank==item.end_rank)?`第${item.start_rank}名`:`第${item.start_rank}-${item.end_rank}名`}}
+                            {{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` : `第${item.start_rank}-${item.end_rank}名` }}
                         </view>
                     </view>
-                    <view class="rollItem" v-for="(item,index) in awardList" :key="index+'rollTwo'" v-if="awardList.length>=7">
+                    <view class="rollItem" v-for="(item, index) in awardList" :key="index + 'rollTwo'"
+                        v-if="awardList.length >= 7">
                         <image class="rollReward" borderRadius="3rpx"
                             :src="$parsePic(decodeURIComponent(item.pic_url))" />
                         <view class="rewardLevel flexCenter">
-                            {{(item.start_rank==item.end_rank)?`第${item.start_rank}名`:`第${item.start_rank}-${item.end_rank}名`}}
+                            {{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` : `第${item.start_rank}-${item.end_rank}名` }}
                         </view>
                     </view>
                 </view>
@@ -54,11 +55,13 @@
             <view class="luck_look flexCenter" @click="pageJump('/pages/act/rankSelect/draw')">查看</view>
         </view>
         <view class="actProgressContainer">
-            <view class="progress_item" :class="{progress_itemHasLine:index!=3}" v-for="(item,index) in actProgress"
+            <view class="progress_item" :class="{ progress_itemHasLine: index != 3 }" v-for="(item, index) in actProgress"
                 :key="index">
-                <image :src="`/static/act/rankSelect/${checkImage(item,index)}.png`" />
-                <view class="progress_title positionCenter">{{item.name}}</view>
-                <view class="progress_time positionCenter">{{dateFormatMSHMS(item.timeStamp,'-')}}</view>
+                <image :src="`/static/act/rankSelect/${checkImage(item, index)}.png`" />
+                <view class="progress_title positionCenter">{{ item.name }}</view>
+                <view class="progress_time positionCenter">
+                    {{ isNumber(item.timeStamp) ? dateFormatMSHMS(item.timeStamp, '-') : `${dateFormatMS(item.timeStamp[0])}~${dateFormatMS(item.timeStamp[1])}` }}
+                </view>
             </view>
         </view>
         <view class="rankContainer">
@@ -70,14 +73,14 @@
             <view class="rank_tr rank_tr_myRank">
                 <view class="leftCorner flexCenter">我的成绩</view>
                 <muqian-lazyLoad class="rankAvatar" borderRadius="50%"
-                    :src="myRank.avatar?$parsePic(decodeURIComponent(myRank.avatar)):defaultAvatar" />
+                    :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
                 <view class="rankMyInfo" style="width: 160rpx;">
-                    <view class="myInfo line1" style="margin-bottom:12rpx;">{{myRank.userName||"获取中"}}</view>
-                    <view class="myInfo">{{myRank.isPass?`第${myRank.rank}名`:"未入榜"}}</view>
+                    <view class="myInfo line1" style="margin-bottom:12rpx;">{{ myRank.userName || "获取中" }}</view>
+                    <view class="myInfo">{{ myRank.isPass ? `第${myRank.rank}名` : "未入榜" }}</view>
                 </view>
                 <view class="rankPoint">
-                    <view class="get">已获取：{{myRank.get_score!=undefined?myRank.get_score:'获取中'}}</view>
-                    <view class="freeze">冻结中：{{myRank.lock_score!=undefined?myRank.lock_score:'获取中'}}</view>
+                    <view class="get">已获取：{{ myRank.get_score != undefined ? myRank.get_score : '获取中' }}</view>
+                    <view class="freeze">冻结中：{{ myRank.lock_score != undefined ? myRank.lock_score : '获取中' }}</view>
                 </view>
                 <muqian-lazyLoad v-if="myRank.isPass" class="rankReward" borderRadius="3rpx"
                     :src="$parsePic(decodeURIComponent(myRank.awardPic))" />
@@ -85,7 +88,7 @@
                 <view class="rankMyInfo" v-else>
                     <view class="myInfo" style="margin-bottom:12rpx;font-size: 23rpx;">距离入榜还需</view>
                     <view class="myInfo" style="font-size: 23rpx;">
-                        {{myRank.passScore!=undefined?myRank.passScore:'获取中'}}</view>
+                        {{ myRank.passScore != undefined ? myRank.passScore : '获取中' }}</view>
                 </view>
             </view>
             <view class="rank_header">
@@ -98,15 +101,15 @@
                 <view class="rank_header_item">奖励</view>
             </view>
 
-            <view class="rank_tr" :class="{rank_my:item.isMy}" v-for="(item,index) in rankList">
-                <view class="rankTd flexCenter rankNum" :class="[index<=2?`rank${index+1}`:'']">{{index>2?(index+1):""}}
+            <view class="rank_tr" :class="{ rank_my: item.isMy }" v-for="(item, index) in rankList">
+                <view class="rankTd flexCenter rankNum" :class="[index <= 2 ? `rank${index + 1}` : '']">{{ index > 2 ? (index + 1) : "" }}
                 </view>
                 <muqian-lazyLoad class="rankAvatar" borderRadius="50%"
-                    :src="item.avatar?$parsePic(decodeURIComponent(item.avatar)):(item.userName=='虚位以待'?'/static/goods/v2/waitAvatar.png':defaultAvatar)" />
-                <view class="rankName line2">{{item.userName}}</view>
+                    :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
+                <view class="rankName line2">{{ item.userName }}</view>
                 <view class="rankPoint">
-                    <view class="get">已获取：{{item.get_score}}</view>
-                    <view class="freeze">冻结中：{{item.lock_score}}</view>
+                    <view class="get">已获取：{{ item.get_score }}</view>
+                    <view class="freeze">冻结中：{{ item.lock_score }}</view>
                 </view>
                 <muqian-lazyLoad class="rankReward" borderRadius="3rpx" @click="prviewImages(item.awardPic_url)"
                     :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
@@ -121,7 +124,8 @@
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-        <bottomDrawer :showDrawer.sync="descriptionShow" :needSafeArea="true" padding="24rpx 20rpx 120rpx 20rpx" :height="790" heightType="rpx" title="积分说明">
+        <bottomDrawer :showDrawer.sync="descriptionShow" :needSafeArea="true" padding="24rpx 20rpx 120rpx 20rpx"
+            :height="790" heightType="rpx" title="积分说明">
             <view class="descriptionContainer">
                 <view class="des_title">
                     一.如何获取积分
@@ -134,9 +138,9 @@
                     二.卡密倍数
                 </view>
                 <view class="des_content red">
-                    卡种基础分：{{pointConfig.cardSetBasicsScore || '获取中'}}<br />
-                    球员基础分：{{pointConfig.playerBasicsScore || '获取中'}}<br />
-                    球队基础分：{{pointConfig.teamBasicsScore || '获取中'}}<br />
+                    卡种基础分：{{ pointConfig.cardSetBasicsScore || '获取中' }}<br />
+                    球员基础分：{{ pointConfig.playerBasicsScore || '获取中' }}<br />
+                    球队基础分：{{ pointConfig.teamBasicsScore || '获取中' }}<br />
                 </view>
                 <view class="des_title">
                 </view>
@@ -144,25 +148,25 @@
                     2.倍数说明<br />
                     关键字倍数
                 </view>
-                <view class="des_content red" v-if="pointConfig.cardSet_multiple&&pointConfig.cardSet_multiple.length">
-                    <view v-for="(item,index) in pointConfig.cardSet_multiple">
-                        {{item.multiple}}倍：{{item.keyword.join('、')}}
+                <view class="des_content red" v-if="pointConfig.cardSet_multiple && pointConfig.cardSet_multiple.length">
+                    <view v-for="(item, index) in pointConfig.cardSet_multiple">
+                        {{ item.multiple }}倍：{{ item.keyword.join('、') }}
                     </view>
                 </view>
                 <view class="des_title">
                 </view>
                 <view class="des_content">球员倍数</view>
-                <view class="des_content red" v-if="pointConfig.player_multiple&&pointConfig.player_multiple.length">
-                    <view v-for="(item,index) in pointConfig.player_multiple">
-                        {{item.multiple}}倍：{{item.keyword.join('、')}}
+                <view class="des_content red" v-if="pointConfig.player_multiple && pointConfig.player_multiple.length">
+                    <view v-for="(item, index) in pointConfig.player_multiple">
+                        {{ item.multiple }}倍：{{ item.keyword.join('、') }}
                     </view>
                 </view>
                 <view class="des_title">
                 </view>
                 <view class="des_content">球队倍数</view>
-                <view class="des_content red" v-if="pointConfig.team_multiple&&pointConfig.team_multiple.length">
-                    <view v-for="(item,index) in pointConfig.team_multiple">
-                        {{item.multiple}}倍：{{item.keyword.join('、')}}
+                <view class="des_content red" v-if="pointConfig.team_multiple && pointConfig.team_multiple.length">
+                    <view v-for="(item, index) in pointConfig.team_multiple">
+                        {{ item.multiple }}倍：{{ item.keyword.join('、') }}
                     </view>
                 </view>
             </view>
@@ -175,12 +179,13 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '../../../base/BaseNode.vue';
-import { parsePic, dateFormatMSHMS } from '@/tools/util'
+import { parsePic, dateFormatMSHMS, dateFormatMS } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
     operationShow: boolean = false
     descriptionShow: boolean = false
     defaultAvatar: any = app.defaultAvatar
+    dateFormatMS = dateFormatMS
     dateFormatMSHMS = dateFormatMSHMS
     rankQuery: any = {
         fetchFrom: 1,
@@ -192,10 +197,10 @@ export default class ClassName extends BaseNode {
     isFetchEnd: any = true
     rankList: any = []
     actProgress: any = [
-        { name: '拼团新系列', description: '获取活动积分', timeStamp: 1666108800, sIcon: 'sBuy' },
-        { name: '冻结积分', description: '结算最终积分', timeStamp: 1666411200, icon: 'lock', sIcon: 'sLock' },
-        { name: '名单核算', description: '公示中奖名单', timeStamp: 1666670400, icon: 'order', sIcon: 'sOrder' },
-        { name: '幸运抽奖', description: '直播抽取奖励', timeStamp: 1667102400, icon: 'gift', sIcon: 'sGift' }
+        { name: '拼团新系列', description: '获取积分', timeStamp: [1666627200, 1667923199], sIcon: 'sBuy' },
+        { name: '冻结积分', description: '积分解冻期', timeStamp: [1667923200, 1668787199], icon: 'lock', sIcon: 'sLock' },
+        { name: '名单核算', description: '榜单结算', timeStamp: 1668787200, icon: 'order', sIcon: 'sOrder' },
+        { name: '幸运抽奖', description: '幸运大抽奖', timeStamp: 1668927600, icon: 'gift', sIcon: 'sGift' }
     ]
     myRank: any = {}
     scrollTop: number = 0
@@ -322,12 +327,16 @@ export default class ClassName extends BaseNode {
     onClickGoBuy() {
         uni.navigateTo({
             // url: '/pages/goods/goods_find_list?classType=100'
-            url:'/pages/act/rankSelect/goodsList'
+            url: '/pages/act/rankSelect/goodsList'
         })
+    }
+    isNumber(data: any) {
+        return typeof data === 'number'
     }
     checkImage(item: any, index: number) {
         if (!item.icon) return item.sIcon
-        const TIME_DIFF: any = this.nowTimeStamp - item.timeStamp
+        const ItemStamp = this.isNumber(item.timeStamp) ? item.timeStamp : item.timeStamp[0]
+        const TIME_DIFF: any = this.nowTimeStamp - ItemStamp
         return TIME_DIFF >= 0 ? item.sIcon : item.icon
     }
     reqRewardList() {
