@@ -236,6 +236,7 @@ export default class ClassName extends BaseNode {
     }
     @Watch('awardShow')
     onShowChanged(val: any, oldVal: any) {
+        console.log('当前val:', val);
         if (!val) return
         if (this.awardList.length && this.awardList.length >= 7) {
             this.$nextTick(() => {
@@ -280,6 +281,7 @@ export default class ClassName extends BaseNode {
     }
     resetAn() {
         this.awardList = []
+        this.awardShow=false
         this.reqRewardList()
     }
     onPullDownRefresh() {
@@ -299,19 +301,25 @@ export default class ClassName extends BaseNode {
             let longWidth: any = 0
             let smallWidth: any = 0
             let timer: any = null
-            query.select("#rollContent").boundingClientRect((data: any) => {
-                longWidth = data.width
+            setTimeout(() => {
+                query.select("#rollContent").boundingClientRect((data: any) => {
+                    console.log(data);
 
-            }).exec()
-            query.select("#rollStaticContent").boundingClientRect((data: any) => {
-                smallWidth = data.width
-            }).exec()
-            timer = setInterval(() => {
-                if (longWidth && smallWidth) {
-                    clearInterval(timer)
-                    resolve(longWidth - smallWidth)
-                }
-            }, 100)
+                    longWidth = data.width
+
+                }).exec()
+                query.select("#rollStaticContent").boundingClientRect((data: any) => {
+                    console.log(data);
+
+                    smallWidth = data.width
+                }).exec()
+                timer = setInterval(() => {
+                    if (longWidth && smallWidth) {
+                        clearInterval(timer)
+                        resolve(longWidth - smallWidth)
+                    }
+                }, 100)
+            }, 200)
         })
     }
     startAnimation(isFirst?: any) {

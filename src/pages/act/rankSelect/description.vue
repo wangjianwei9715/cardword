@@ -150,9 +150,12 @@ export default class ClassName extends BaseNode {
 	onReachBottom() {
 
 	}
-	beforeDestroy(){
-		uni.$emit('resetAn')
-	}
+	// onUnload(){
+	// 	uni.$emit('resetAn')
+	// }
+	// beforeDestroy(){
+	// 	uni.$emit('resetAn')
+	// }
 	onPulldDownRefresh() {
 
 	}

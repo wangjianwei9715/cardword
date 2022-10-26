@@ -65,9 +65,6 @@ export default class ClassName extends BaseNode {
         this.queryParams.fetchFrom += this.queryParams.fetchSize
         this.reqSeriesGoods()
     }
-    onUnload(): void {
-        uni.$emit('resetAn')
-    }
     refresh() {
         this.queryParams.fetchFrom = 1
         this.queryParams.fetchSize = 20

@@ -84,9 +84,9 @@ export default class ClassName extends BaseNode {
     onPulldDownRefresh() {
 
     }
-    beforeDestroy(): void {
-        uni.$emit('resetAn')
-    }
+    // beforeDestroy(): void {
+    //     uni.$emit('resetAn')
+    // }
     prviewImages(picString: string) {
         if (!picString) return
         const picArr: any = picString.split(',').map(item => parsePic(decodeURIComponent(item)))

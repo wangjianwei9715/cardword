@@ -66,9 +66,9 @@ export default class ClassName extends BaseNode {
             uni.stopPullDownRefresh()
         })
     }
-    beforeDestroy(): void {
-        uni.$emit('resetAn')
-    }
+    // beforeDestroy(): void {
+    //     uni.$emit('resetAn')
+    // }
     onReachBottom() {
         if (this.isFetchEnd) return
         this.queryParams.fetchFrom += this.queryParams.fetchSize
