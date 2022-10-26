@@ -96,7 +96,7 @@
 			<view class="title">特殊奖励</view>
 			<view class="rewardsContainer">
 				<view class="rewardItem" v-for="(item, index) in awardList"
-					:style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `16rpx` }">
+					:style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `14rpx` }">
 					<muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic_url))" class="rewardImage"
 						@click="prviewImages(item.pic_url)" borderRadius="3rpx">
 					</muqian-lazyLoad>
@@ -113,7 +113,7 @@
 			<view class="title" style="margin-top: 60rpx">入榜奖励</view>
 			<view class="rewardsContainer">
 				<view class="rewardItem" v-for="(item, index) in luckList"
-					:style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `16rpx` }">
+					:style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `14rpx` }">
 					<muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic))" class="rewardImage"
 						@click="prviewImages(item.pic)" borderRadius="3rpx">
 					</muqian-lazyLoad>
