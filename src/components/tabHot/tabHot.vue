@@ -4,7 +4,7 @@
 			<view class="hot-bg" :style="`width:${item.bg.width};height:${item.bg.height};background:url(${item.bg.src}) no-repeat center/100% 100%`"></view>
 			<view class="tab-index">
 				<view class="tab-hot-boxtitle">{{item.title}}</view>
-				<view class="tab-hot-boxtips">{{name!='broadCast'?item.tips:item.list.merchantName}}</view>
+				<view class="tab-hot-boxtips u-line-1">{{name!='broadCast'?item.tips:item.list.merchantName}}</view>
 				<view class="tab-hot-boxpic-index" v-if="name=='progress' || name=='hot'" :style="`width:${item.icon.width};height:${item.icon.height};top:${item.icon.top};right:${item.icon.right};background:url(${item.icon.src}) no-repeat center/100% 100%`"
 				></view>
 				<view class="tab-hot-boxpic-index" v-else-if="name=='broadCast'" :style="`top:${item.icon.top};right:${item.icon.right};`">
@@ -166,7 +166,7 @@
 		padding-left: 38rpx;
 	}
 	.tab-hot-boxtips{
-		width: 100%;
+		width: 200rpx;
 		height:35rpx;
 		font-size: 22rpx;
 		font-family: PingFangSC-Regular;

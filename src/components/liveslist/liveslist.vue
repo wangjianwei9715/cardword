@@ -6,7 +6,7 @@
 				</muqian-lazyLoad>
 				<view class="livelist-top-statebox" v-if="item.state==2">
 					<image class="livelist-top-statebox-icon" src="@/static/live/v3/live_ing.gif"/>
-					<view class="livelist-top-statebox-bg">25人在看</view>
+					<view class="livelist-top-statebox-bg">{{item.viewNum||0}}人在看</view>
 				</view>
 				<view class="livelist-top-statebox" v-else>
 					<view class="livelist-top-statebox-state" :class="{'hf-bg':item.state==3}">{{item.state==3?'回放':'预告'}}</view>
@@ -21,7 +21,7 @@
 						<muqian-lazyLoad class="livelist-center-info-avatar" :src="decodeURIComponent(item.merchantLogo)" borderRadius="50%"/>
 						<view class="livelist-center-info-name u-line-1">{{item.merchant}}</view>
 					</view>
-					<view class="livelist-center-info-right">228观看</view>
+					<view class="livelist-center-info-right">{{item.viewNum||0}}观看</view>
 				</view>
 			</view>
 			<!-- <view class="livelist-top-name">

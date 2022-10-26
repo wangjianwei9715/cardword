@@ -517,17 +517,14 @@
 		 */
 		getGoodsDesc(){
 			const { goodsData } = this; 
-			let desc = decodeURIComponent(goodsData.desc);
-			const newDesc = desc.indexOf('\n') > -1 ? desc.split('\n') : desc.split('\r');
-			const newData = newDesc.map((x:any)=>{
-				let data = x.indexOf('：')!=-1?x.split('：'):x.split(':');
-				return {name:data[0],desc:data[1]}
-			})
-			const IandT = [
-				{name:'拼团编号',desc:`${goodsData.goodCode}`},
+			this.goodsDesc = [
+				{name:'拼团系列',desc:`${goodsData.serieTitle}`},
 				{name:'开售时间',desc:uni.$u.timeFormat(goodsData.startAt,'yyyy-mm-dd hh:MM:ss')},
+				{name:'拼团编号',desc:`${goodsData.goodCode}`},
+				{name:'产品规格',desc:`${goodsData.spec.content}`},
+				{name:'拼团份数',desc:`${goodsData.totalNum}份`},
+				{name:'拼团时间',desc:`${(goodsData.overAt-goodsData.startAt)/86400}天`},
 			]
-			this.goodsDesc = [...IandT,...newData].splice(0,6)
 		}	
 		onClickTipBtn(item: any) {
 			if (item.id == 1) {

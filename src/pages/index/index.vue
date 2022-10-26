@@ -52,9 +52,9 @@
 		</view>
 		<view class="tab-center">
 			<statusbar />
-			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true;refresherEnabled=true" @transition="transitionSwiper">
+			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true" @transition="transitionSwiper">
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-with-animation="true" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart" >
 						<view class="tab-good-content">
 							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index" :class="{justifyStart:index=='top'}">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
@@ -80,7 +80,7 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45"  @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="refresherEnabled" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45"  @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
@@ -159,10 +159,8 @@
 			once:true
 		}
 		refresherIndex = false;
-		refresherEnabled = true;
 		currentIndex = 0;
 		scrollY = true;
-		scrollTop = 0;
 		disableTouch = false;
 		tabData = [
 			{id:1,name:'直播拆卡',http:'dataApi/broadcast/list/living'},
@@ -478,7 +476,6 @@
 		}
 		// 切换内容
 		onScrollIndex(event:any){
-			this.refresherEnabled = event.detail.scrollTop<=0
 			this.disableTouch = true
 		}
 		touchmoveScroll(){
@@ -496,7 +493,6 @@
 		}
 		transitionSwiper(event:any){
 			this.scrollY = false;
-			this.refresherEnabled = false
 		}
 		animationfinish(event:any){
 			if(event.detail.current==1){
