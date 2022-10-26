@@ -1898,7 +1898,7 @@ color: #E6A44F;">下次加油！</text>
         } else {
           console.log(typeof errorCode);
           console.error(`error:${errorCode},${funcName}:${info}`);
-          if(errorCode!==1002050){
+          if(errorCode!==1002050 || errorCode!==1002001){
             uni.showModal({
               title:`错误提示:${errorCode}`,
               content:info
