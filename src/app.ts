@@ -34,8 +34,8 @@ export module app{
     export let H5Url='http://share01.ka-world.com'
     // export let goodShareOrigin=""
     // export let activityShareOrigin=""
-    export let liveWebView='http://share01.ka-world.com/live/#/pages/liveStreaming/tools'
-    export let playBackWebView='http://share01.ka-world.com/live/#/pages/liveStreaming/chart'
+    export let liveWebView='http://www.ka-world.com/live/#/pages/liveStreaming/tools'
+    export let playBackWebView='http://www.ka-world.com/live/#/pages/liveStreaming/chart'
     export let webViewVersion="1.5"
     export let statusBarHeight:any = 0;
     export let platform = PlatformManager.getIns();
