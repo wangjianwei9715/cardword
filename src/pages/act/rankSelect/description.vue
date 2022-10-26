@@ -35,6 +35,14 @@
 				11.20 15:00    幸运大抽奖<br/>
 			</view>
 			<view class="des_title" style="margin-top:10rpx">
+				排行榜说明
+			</view>
+
+			<view class="des_content">
+				活动截止后，拼团购买21-22select系列将不再获得积分，冻结的积分会根据拼团是否成功录入或从冻结状态扣除<br/>
+				排行榜每小时更新一次
+			</view>
+			<view class="des_title" style="margin-top:10rpx">
 				积分说明
 			</view>
 			<view class="des_content">
@@ -54,8 +62,11 @@
 			</view>
 			<view class="des_title">
 			</view>
+			<view class="des_content red">
+				例：基础分以拼团规格为单位.若拼团规格为1盒基础分为1，则规格为2盒的基础分为2，单箱基础分为12，以此类推
+			</view>
 			<view class="des_content">
-				2.倍数说明<br />
+				三.倍数说明<br />
 				关键字倍数
 			</view>
 			<view class="des_content red" v-if="pointConfig.cardSet_multiple && pointConfig.cardSet_multiple.length">
