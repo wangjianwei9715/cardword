@@ -206,8 +206,7 @@ page {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    height: 70rpx;
-    // background-color: red;
+    height: 74rpx;
 
     padding: 0 36rpx;
     margin-top: 44rpx;
@@ -225,6 +224,7 @@ page {
         font-family: PingFang SC;
         font-weight: 400;
         color: #E6E6E6;
+        position: relative;bottom: 2rpx;
     }
 }
 </style>
