@@ -387,7 +387,7 @@
 				this.getGoodsSpe();
 				this.getGoodsDesc()
 				if((data.good.bit & 128) == 128){
-					app.http.Get(`good/${goodCode}/chedui`,{},(res:any)=>{
+					app.http.Get(`dataApi/good/${goodCode}/chedui`,{},(res:any)=>{
 						this.cheduiData = res
 					})
 				}
