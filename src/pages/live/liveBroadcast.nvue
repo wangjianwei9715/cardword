@@ -1,0 +1,171 @@
+<template>
+    <view>
+        {{ currentTimeStamp }}
+    </view>
+</template>
+<script>
+//---zg组件
+import ZegoLocalView from "@/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoLocalView";
+import { ZegoScenario } from "@/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressDefines";
+import ZegoRemoteView from "@/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoRemoteView";
+//---页面组件
+import popup from "./components/popup.nvue";
+import sendCoupon from "./components/sendCoupon.nvue";
+import coupon from "./components/coupon.nvue";
+import fixdInput from "./components/fixdInput.nvue";
+import nvueShare from "./components/nvueShare.nvue";
+//---功能
+import { $toast, $confirm, nowTime, goIndex } from './utils/tools'
+import permision from "@/js_sdk/wa-permission/permission";
+import { Md5 } from "ts-md5";
+import { PackageBase } from "@/net/PackageBase";
+import { Message } from "@/net/NetDefine";
+import * as proto from "../../net/proto";
+//---静态数据
+import { textTipsMap, registerList, shareData, engineListen, ZG_PROFILE } from "./utils/staticData"
+//---接口
+import { getLiveRoomData, getMerchantMessage, getUserProfile } from './utils/request'
+//注册app模块
+const app = getApp().globalData.app;
+const parsePic = getApp().globalData.parsePic
+//setTime_setInterval
+let currentTimeStampTimer = null
+export default {
+    data() {
+        return {
+            webView: null,//webView实例
+            engine: null,//直播实例
+            enterRoomTimeStamp: null,
+            currentTimeStamp: Math.round(new Date() / 1000),
+            parsePic,
+            shareData: {},
+            merchantMessage: {},//主播信息
+            userProfile: {
+                websocket: "",//ws地址
+                subscribed: false,//是否订阅
+                data: {
+                    isKickOut: false//是否被剔除直播间
+                },//profile
+            },
+            liveData: {},//房间信息
+            roomID: null, //房间id
+            streamID: null, //主播流id
+            lmStreanID: "0", //连麦流id，不能设置未null,undefined，ios会出现闪退
+        }
+    },
+    async onLoad(query) {
+        try {
+            await this.enterRoomNormalOperation(query)
+            const PromiseAllData = await Promise.all(
+                [
+                    getLiveRoomData(query.roomID),
+                    getMerchantMessage(query.alias),
+                    getUserProfile(query.roomID)
+                ]
+            )
+            const [liveDataResponse, merchantMessage, userDataResponse] = PromiseAllData
+            this.setLiveRoomData(liveDataResponse)
+            this.setUserProfile(userDataResponse)
+            this.merchantMessage = merchantMessage
+        } catch (err) {
+            err ?? $confirm(err.message || err, '直播间提示', false).then(() => goIndex())
+        }
+    },
+    computed: {
+    },
+    watch: {
+        currentTimeStamp: function (val, oldVal) {
+        }
+    },
+    methods: {
+        //不影响进程堵塞的方法
+        async enterRoomNormalOperation(query) {
+            try {
+                this.enterRoomTimeStamp = nowTime()
+                this.setCurrentTimeStamp()
+                this.$nextTick(() => {
+                    this.webView = this.$refs.webView;
+                });
+                //保持常亮
+                uni.setKeepScreenOn({
+                    keepScreenOn: true
+                });
+                //监听键盘高度变化
+                uni.onKeyboardHeightChange(this.keyBoardHeightChange);
+                // uni.$on("socketClose", this.socketClose);
+                this.roomID = query.roomID;
+                this.streamID = query.streamID;
+            } catch (err) {
+                throw new Error(err.message || err)
+            }
+        },
+        //键盘高度变化
+        keyBoardHeightChange(event) {
+
+        },
+        async createEngine() {
+            this.engine = await getApp().globalData.ZegoExpressEngine.createEngineWithProfile(
+                profile: ZG_PROFILE
+            );
+            this.addEngineListen();
+        },
+        // addEngineListen() {
+        //     for (let i = 0, len = engineListen.length; i < len; i++) {
+        //         if (!this[engineListen[i].name]) continue;
+        //         this.engine.on(
+        //             engineListen[i].name,
+        //             this[engineListen[i].name]
+        //         );
+        //         if (i == engineListen.length - 1) {
+        //             //这里的既构登录使用接口返回里的zgUid
+        //             //进行既构的直播间登录
+
+        //             this.loginRoom(
+        //                 this.userData.zgUid,
+        //                 this.userData.uname,
+        //                 this.userData.token
+        //             );
+        //         }
+        //     }
+        // },
+        setCurrentTimeStamp() {
+            currentTimeStampTimer && clearInterval(currentTimeStampTimer)
+            currentTimeStampTimer = setInterval(() => {
+                this.currentTimeStamp = nowTime()
+            }, 1000)
+        },
+        //
+        setLiveRoomData(res) {
+            const { data } = res
+            this.liveData = data;
+            if (this.liveData.type != 0) this.liveData.goodCode = "";
+            const MUST_LEAVEROOM_STATE = [3, -1, -2] //不能进入直播间的状态
+            if (MUST_LEAVEROOM_STATE.includes(data.state)) {
+                const tips = textTipsMap[String(data.state)]
+                $confirm(tips, '直播间提示', false).then(res => { goIndex() })
+                throw new Error()
+                return
+            }
+            this.setShareData(data);
+        },
+        setUserProfile(res) {
+            this.userProfile = res
+            this.userProfile.data.isKickOut = false
+        },
+        setShareData(data) {
+            this.shareData = {
+                title: `${data.title}的直播间`,
+                shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/live/liveShare?roomID=${this.roomID
+                    }&funcApi=${encodeURIComponent(app.funcApiDomain)}`,
+                summary: `${data.title}的直播间`,
+                thumb: this.parsePic(decodeURIComponent(data.cover))
+            };
+        },
+    }
+}
+</script>
+
+
+<style>
+
+</style>
