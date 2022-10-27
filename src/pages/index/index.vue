@@ -484,12 +484,20 @@
 			},100)
 		}
 		refreshStart(){
-			this.refresherIndex = true
-			this.showInitEvent(() => {
+			this.refresherIndex = true;
+			const currentLive = this.currentIndex==1;
+			let refresh = currentLive?this.reqNewLiveData:this.showInitEvent
+			if(currentLive){
+				this.liveData.pageIndex = 1;
+				this.liveData.noMoreData = false;
+			}
+
+			refresh(() => {
 				setTimeout(() => {
 					this.refresherIndex = false;
 				}, 1000)
 			})
+			
 		}
 		transitionSwiper(event:any){
 			this.scrollY = false;
