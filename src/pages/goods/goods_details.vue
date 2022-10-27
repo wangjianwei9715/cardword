@@ -137,7 +137,7 @@
 						</view>
 					</view>
 					<view class="goods-desc-explain">
-						<view class="special-explain">{{goodsData.extraDesc}}</view>
+						<view class="special-explain" v-html="goodsData.extraDesc"></view>
 						<view class='goods-desc-explain-box' v-for="item in goodsDesc" :key="item.id">
 							<view class="explain-name">{{item.name}}</view>
 							<view class="explain-desc">{{item.desc}}</view>
@@ -517,11 +517,19 @@
 		 */
 		getGoodsDesc(){
 			const { goodsData } = this; 
+			const desc = decodeURIComponent(goodsData.desc);
+			const newDesc = desc.indexOf('\n') > -1 ? desc.split('\n') : desc.split('\r');
+			const series = { serieTitle:'', spec:'' }
+			newDesc.map((x:any)=>{
+				let data = x.indexOf('：')!=-1?x.split('：'):x.split(':');
+				if(data[0] == '拼团系列') series.serieTitle = data[1];
+				if(data[0] == '拼团规格') series.spec = data[1];
+			})
 			this.goodsDesc = [
-				{name:'拼团系列',desc:`${goodsData.serieTitle}`},
+				{name:'拼团系列',desc:`${series.serieTitle||goodsData.serieTitle}`},
 				{name:'开售时间',desc:uni.$u.timeFormat(goodsData.startAt,'yyyy-mm-dd hh:MM:ss')},
 				{name:'拼团编号',desc:`${goodsData.goodCode}`},
-				{name:'产品规格',desc:`${goodsData.spec.content}`},
+				{name:'产品规格',desc:`${series.spec||goodsData.spec.content}`},
 				{name:'拼团份数',desc:`${goodsData.totalNum}份`},
 				{name:'拼团时间',desc:`${(goodsData.overAt-goodsData.startAt)/86400}天`},
 			]
@@ -1816,6 +1824,7 @@
 		color: #333333;
 		line-height: 43rpx;
 		margin-bottom: 30rpx;
+		white-space:pre-wrap
 	}
 
 	.detail-bottom-box {
@@ -2018,7 +2027,7 @@
 		margin:0 auto;
 		.explain-name{
 			width: 160rpx;
-			height:80rpx;
+			min-height:80rpx;
 			background:#F3F4F7;
 			font-size: 24rpx;
 			font-family:PingFangSC-Light;
@@ -2031,7 +2040,7 @@
 		}
 		.explain-desc{
 			width: 487rpx;
-			height:80rpx;
+			min-height:80rpx;
 			background:#F3F4F7;
 			font-size: 24rpx;
 			font-family:PingFangSC-Light;
@@ -2040,9 +2049,9 @@
 			display: flex;
 			align-items: center;
 			box-sizing: border-box;
-			padding:0 38rpx;
+			padding:20rpx 38rpx;
 			margin-bottom:4rpx;
-			line-height:30rpx
+			line-height:35rpx;
 		}
 	}
 </style>

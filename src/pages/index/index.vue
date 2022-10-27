@@ -696,8 +696,8 @@
 		position: relative;
 	}
 	.tabimg-icon{
-		width: 46rpx;
-		height:45rpx;
+		width: 50rpx;
+		height:39rpx;
 		position: absolute;
 		right:-11rpx;
 		top:0;
