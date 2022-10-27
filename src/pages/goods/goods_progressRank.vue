@@ -2,7 +2,7 @@
     <view class="content">
         <view class="topBanner"></view>
         <view class="goodsContainer">
-            <goodslist-horizontal @send="onClickJumpDetails" :goodsList="goodsList" :needRank="true">
+            <goodslist-horizontal @send="onClickJumpDetails" :lockNum="false" :goodsList="goodsList" :needRank="true">
             </goodslist-horizontal>
         </view>
         <empty v-if='goodsList&&!goodsList.length' />

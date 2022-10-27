@@ -417,35 +417,29 @@
 		color:#E0B48D
 	}
 	.chedui-avatar-box{
-		width: 85rpx;
-		height: 85rpx;
+		width: 92rpx;
+		height:92rpx;
 		box-sizing: border-box;
 		border-radius: 50%;
 		margin-right: 29rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 	.chedui-avatar-box1{
-		width: 89rpx;
-		height:89rpx;
+		width: 92rpx;
+		height:92rpx;
 		background: linear-gradient(-39deg, #F2D89E, #F8ECCC, #D7CA9C);
-		display: flex;
-		align-items: center;
-		justify-content: center;
 	}
 	.chedui-avatar-box2{
-		width: 89rpx;
-		height:89rpx;
+		width: 92rpx;
+		height:92rpx;
 		background: linear-gradient(-39deg, #B6B5B4, #E4E2DE, #B6B5B4);
-		display: flex;
-		align-items: center;
-		justify-content: center;
 	}
 	.chedui-avatar-box3{
-		width: 89rpx;
-		height:89rpx;
+		width: 92rpx;
+		height:92rpx;
 		background: linear-gradient(-39deg, #C7A085, #F7DBBB, #BF9B76);
-		display: flex;
-		align-items: center;
-		justify-content: center;
 	}
 	.chedui-rank-avatar{
 		width: 85rpx;
@@ -454,7 +448,7 @@
 		border-radius: 50%;
 	}
 	.chedui-rank-name{
-		width: 250rpx;
+		width: 240rpx;
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;

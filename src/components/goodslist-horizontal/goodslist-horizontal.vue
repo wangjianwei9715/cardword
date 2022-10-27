@@ -71,6 +71,8 @@ export default class ClassName extends BaseComponent {
     goodsList: any;
     @Prop({ default: false })
     needRank: any;
+    @Prop({ default: true })
+    lockNum: any;
     @Prop({ default: "normal" })
     type?: string;
     getGoodsPintuan = getGoodsPintuan
@@ -96,7 +98,7 @@ export default class ClassName extends BaseComponent {
         }
     }
     getPlan(item: any, type: string) {
-        const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000) / 100;
+        const width = Math.round((Number(this.lockNum?item.lockNum:0) + Number(item.currentNum)) / Number(item.totalNum) * 10000) / 100;
         const saleRatio = item.saleRatio > 0 && item.saleRatio < 1 ? Math.round((item.saleRatio) * 10000) / 100 : 0;
         const str = saleRatio > width ?
             `${saleRatio}%` :
