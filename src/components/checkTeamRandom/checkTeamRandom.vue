@@ -18,7 +18,7 @@
 							</view>
 							<view class="header-top-plan-num">
 								余{{teamRandomData[currentIndex].totalNum-(teamRandomData[currentIndex].currentNum+teamRandomData[currentIndex].lockNum)}}/共{{teamRandomData[currentIndex].totalNum}}
-								<view class="header-top-plan-numbottom">{{teamRandomData[currentIndex].lockNum>0?'('+teamRandomData[currentIndex].lockNum+'未付款)':''}}</view>
+								<view class="header-top-plan-numbottom" v-show="teamRandomData[currentIndex].lockNum>0">{{teamRandomData[currentIndex].lockNum>0?'('+teamRandomData[currentIndex].lockNum+'未付款)':''}}</view>
 							</view>
 						</view>
 					</view>
@@ -387,7 +387,7 @@
 		margin-bottom: 40rpx;
 		.goodslist-progress{
 			background: linear-gradient(90deg, #CFC1F3 0%, #7048DD 100%);
-			width: 410rpx;
+			width: 270rpx;
 			height: 9rpx;
 			position: relative;
 			display: flex;
@@ -398,9 +398,8 @@
 				width: 0%;
 			}
 		}
-		
 		.header-top-plan-num{
-			width: 170rpx;
+			width: 250rpx;
 			height:30rpx;
 			font-size: 20rpx;
 			font-family: PingFangSC-Regular;
@@ -408,11 +407,15 @@
 			color: #88878C;
 			line-height: 30rpx;
 			text-align: right;
+			display: flex;
+			justify-content: flex-end;
+			align-items: flex-end;
 		}
 		.header-top-plan-numbottom{
-			width: 100%;
+			display: inline-block;
 			height:30rpx;
-			font-size: 17rpx;
+			font-size: 20rpx;
+			line-height: 30rpx;
 			font-family: PingFangSC-Regular;
 			font-weight: 400;
 			color: #88878C;
