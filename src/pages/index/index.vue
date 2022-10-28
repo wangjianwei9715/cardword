@@ -154,15 +154,15 @@
 			pageSize:10,
 			noMoreData:false,
 			q:'',
-			liveTabCheck:1,
-			httpUrl:'dataApi/broadcast/list/living',
-			once:true
+			liveTabCheck:0,
+			httpUrl:'dataApi/broadcast/list/all'
 		}
 		refresherIndex = false;
 		currentIndex = 0;
 		scrollY = true;
 		disableTouch = false;
 		tabData = [
+			{id:0,name:'全部',http:'dataApi/broadcast/list/all'},
 			{id:1,name:'直播拆卡',http:'dataApi/broadcast/list/living'},
 			{id:2,name:'拆卡回放',http:'dataApi/broadcast/list/playback'},
 			{id:3,name:'我的拆卡',http:'me/broadcast'}
@@ -524,8 +524,7 @@
 				noMoreData:false,
 				q:this.liveData.q,
 				liveTabCheck:id,
-				httpUrl:this.tabData[id-1].http,
-				once:false
+				httpUrl:this.tabData[id].http
 			}
 			this.reqNewLiveData()
 		}
@@ -565,10 +564,6 @@
 				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
 				if(params.pageIndex==1) this.liveList = []
 				if(data.list) this.liveList = this.liveList.concat(data.list);
-				if(params.once && params.liveTabCheck==1 && data.total == 0){
-					this.onClickListTabs(2)
-				}
-				params.once = false;
 				params.pageIndex++;
 				if(cb) cb()
 			})

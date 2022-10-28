@@ -2049,7 +2049,7 @@
 			display: flex;
 			align-items: center;
 			box-sizing: border-box;
-			padding:20rpx 38rpx;
+			padding:5rpx 38rpx;
 			margin-bottom:4rpx;
 			line-height:35rpx;
 		}
