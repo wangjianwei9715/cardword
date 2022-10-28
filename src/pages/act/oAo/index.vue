@@ -8,7 +8,7 @@
                 :style="{ backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
                 <image class="back" :class="{ filterBlack: scrollTopPercent > 0.6 }"
                     src="../../../static/act/rankSelect/back.png" @click="app.platform.pageBack()" />
-                <view class="pageTitle" :style="{ opacity: scrollTopPercent }">SELECT登顶计划</view>
+                <view class="pageTitle" :style="{ opacity: scrollTopPercent }">one and one</view>
                 <view style="display: flex;align-items: center;">
                     <image class="share" :class="{ filterBlack: scrollTopPercent > 0.6 }"
                         src="../../../static/act/rankSelect/share.png" @click="operationShow = true" />

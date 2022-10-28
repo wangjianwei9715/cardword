@@ -577,6 +577,7 @@ color: #E6A44F;">下次加油！</text>
       uni.$off("socketClose", this.socketClose);
       uni.offKeyboardHeightChange(this.keyBoardHeightChange);
       this.leaveRoom();
+      this.offEngineListen();
       if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0")
         this.SelfTerminateLianmai();
 
@@ -1036,7 +1037,7 @@ color: #E6A44F;">下次加油！</text>
               this.stopLive();
               this.finishLive = true;
               this.pushFlowStamp=null
-            }
+            } 
           }
         });
       },
@@ -2010,7 +2011,6 @@ color: #E6A44F;">下次加油！</text>
         try {
           await this.setVideoConfig();
           await this.engine.startPreview();
-
           this.engine.useFrontCamera(this.front);
           this.engine.muteMicrophone(this.muted);
           this.liveConfigToolShow = true;
@@ -2073,7 +2073,7 @@ color: #E6A44F;">下次加油！</text>
         await this.engine.stopPublishingStream();
         if (!isLmStream) this.onLive = false;
         if(isLmStream) this.pushFlowStamp=null
-        if (isLeave) this.destroyEngine();
+        // if (isLeave) this.destroyEngine();
         // this.stopPreview()
       },
       //拉流
