@@ -1022,14 +1022,17 @@ page {
     }
 
     .rankReward {
-        width: 105rpx;
+        width: 125rpx;
         height: 105rpx;
         // background: #421D17;
         border-radius: 3rpx;
+        line-height: 30rpx;
+        // linh
         font-size: 22rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #FFFFFF;
+        text-align: center;
     }
 }
 
