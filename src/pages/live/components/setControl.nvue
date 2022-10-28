@@ -1,0 +1,151 @@
+<template>
+    <!-- v-if="liveConfigToolShow" -->
+    <view class="liveSet" v-if="liveConfigToolShow"
+        :style="{ height: 318 + (deviceInfo.screenHeight - deviceInfo.safeArea.bottom) + 'rpx' }">
+        <view class="liveSetBlock">
+            <view class="liveSetItem" @click="changeVideoConfig">
+                <text class="liveSetText">{{ videoConfig.config[videoConfig.index].encodeWidth }}P</text>
+                <text class="liveSetText">清晰度</text>
+            </view>
+            <view class="liveSetItem" @click="changeFront">
+                <image class="liveSetImg" :src="front ? '../../static/live/round_s.png' : '../../static/live/round.png'"
+                    mode="scaleToFill" />
+                <text class="liveSetText" :class="{ redText: front }">翻转</text>
+            </view>
+            <view class="liveSetItem" @click="changeMirrorMode">
+                <image class="liveSetImg"
+                    :src="mirrorMode ? '../../static/live/mirrorImage_s.png' : '../../static/live/mirrorImage.png'"
+                    mode="scaleToFill" />
+                <text class="liveSetText" :class="{ redText: mirrorMode }">镜像</text>
+            </view>
+            <view class="liveSetItem" @click="changeMuted">
+                <image class="liveSetImg" :src="muted ? '../../static/live/audo_s.png' : '../../static/live/audo.png'"
+                    mode="scaleToFill" />
+                <text class="liveSetText" :class="{ redText: muted }">静音</text>
+            </view>
+        </view>
+        <text class="confirmStart"
+            @click='onLive ? $emit("update:liveConfigToolShow", false) : $emit("anchorConfirmPush", videoConfig)'>{{
+        onLive
+            ? '关闭设置' : '确认开始'
+            }}</text>
+    </view>
+</template>
+<script>
+import { videoConfig } from '../utils/staticData'
+export default {
+    name: '',
+    components: {
+
+    },
+    mixins: [],
+    props: {
+        liveConfigToolShow: {
+            type: Boolean,
+            default: false
+        },
+        onLive: {
+            type: Boolean,
+            default: false
+        },
+        onPreview: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data() {
+        return {
+            deviceInfo: getApp().globalData.app.platform.systemInfo, //设备信息
+            front: false,//朝向
+            muted: false,//静音
+            mirrorMode: false,//镜像
+            videoConfig
+        }
+    },
+    computed: {
+
+    },
+    watch: {
+
+    },
+    mounted() {
+
+    },
+    methods: {
+        changeFront() {
+            this.front = !this.front
+            this.$emit('changeFront', this.front)
+        },
+        changeMirrorMode() {
+            if (!this.onLive && !this.onPreview) {
+                uni.showToast({
+                    title: "未开播或预览状态下无法更改镜像模式",
+                    icon: "none"
+                });
+                return;
+            }
+            this.mirrorMode = !this.mirrorMode
+            this.$emit('changeMirrorMode', this.mirrorMode)
+        },
+        changeMuted() {
+            this.muted = !this.muted
+            this.$emit('changeMuted', this.muted)
+        }
+    }
+};
+</script>
+<style>
+.liveSet {
+    width: 750rpx;
+    background: rgba(0, 0, 0, 0.68);
+    position: fixed;
+    bottom: 0;
+    padding: 0 73rpx;
+    align-items: center;
+}
+
+.liveSetBlock {
+    width: 630rpx;
+    /* background-color: red; */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 70rpx;
+}
+
+.liveSetItem {
+    align-items: center;
+}
+
+.liveSetImg {
+    width: 52rpx;
+    height: 36rpx;
+}
+
+.liveSetText {
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: 12rpx;
+    text-align: center;
+}
+
+.redText {
+    color: #ef3333;
+}
+
+.confirmStart {
+    width: 282rpx;
+    height: 77rpx;
+    background: #ef3333;
+    border-radius: 5rpx;
+    text-align: center;
+    font-size: 33rpx;
+    font-family: PingFang SC;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 77rpx;
+    margin-top: 62rpx;
+}
+</style>

@@ -10,5 +10,15 @@ export default {
                 num: +likeNum
             });
         },
+        showConfig() {
+            if (!this.onPreview && !this.onLive) {
+                uni.showToast({
+                    title: "请先开始直播或预览",
+                    icon: "none"
+                });
+                return;
+            }
+            this.liveConfigToolShow = true;
+        },
     }
 }

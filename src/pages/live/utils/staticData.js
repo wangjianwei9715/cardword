@@ -56,3 +56,35 @@ export const engineListen = [
     { name: "roomStateUpdate", cnName: '房间状态变化通知' }
     // {name:"playerQualityUpdate",cnName:'拉流质量'}
 ];
+export const videoConfig = {
+    index: 0,
+    config: [
+        {
+            bitrate: 3000,
+            captureWidth: 720,
+            captureHeight: 1280,
+            encodeWidth: 720,
+            codecID: 1,
+            encodeHeight: 1280,
+            fps: 30
+        },
+        {
+            bitrate: 1000,
+            captureWidth: 480,
+            captureHeight: 640,
+            encodeWidth: 480,
+            encodeHeight: 640,
+            codecID: 1,
+            fps: 20
+        },
+        {
+            bitrate: 600,
+            captureWidth: 240,
+            captureHeight: 320,
+            encodeWidth: 240,
+            encodeHeight: 320,
+            codecID: 1,
+            fps: 15
+        }
+    ]
+}
