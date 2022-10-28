@@ -71,7 +71,7 @@
 			</view>
 			<view class="des_content red" v-if="pointConfig.cardSet_multiple && pointConfig.cardSet_multiple.length">
 				<view v-for="(item, index) in pointConfig.cardSet_multiple">
-					{{ item.multiple }}倍：{{ item.keyword.join('、') }}
+					{{ item.describe || item.multiple }}倍：{{ item.keyword.join('、') }}
 				</view>
 			</view>
 			<view class="des_title">
@@ -79,7 +79,7 @@
 			<view class="des_content">球员倍数</view>
 			<view class="des_content red" v-if="pointConfig.player_multiple && pointConfig.player_multiple.length">
 				<view v-for="(item, index) in pointConfig.player_multiple">
-					{{ item.multiple }}倍：{{ item.keyword.join('、') }}
+					{{ item.describe || item.multiple }}倍：{{ item.keyword.join('、') }}
 				</view>
 			</view>
 			<view class="des_title">
@@ -87,7 +87,7 @@
 			<view class="des_content">球队倍数</view>
 			<view class="des_content red" v-if="pointConfig.team_multiple && pointConfig.team_multiple.length">
 				<view v-for="(item, index) in pointConfig.team_multiple">
-					{{ item.multiple }}倍：{{ item.keyword.join('、') }}
+					{{ item.describe || item.multiple }}倍：{{ item.keyword.join('、') }}
 				</view>
 			</view>
 			<!-- <view class="des_gray">*活动最终解释权归卡世界平台所有</view> -->
