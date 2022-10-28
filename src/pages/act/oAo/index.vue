@@ -17,23 +17,17 @@
                 </view>
             </view>
         </view>
-        <!-- <view class="topStatus" style="width:750rpx;background-color: #060405;"
-            :style="{ height: app.statusBarHeight + 'px' }"></view> -->
+        <view class="topStatus" style="width:750rpx;background-color: #071321;"
+            :style="{ height: app.statusBarHeight + 'px' }"></view>
         <view class="rankBanner">
-            <image src='../../../static/act/rankSelect/rankBanner.jpg' />
-            <view class="hdsm flexCenter" @click="pageJump('/pages/act/rankSelect/description')">
-                活动<br />
-                说明
+            <image src='../../../static/act/oAo/rankBanner.jpg' />
+            <view class="hdsm" @click="pageJump('/pages/act/oAo/description')">
             </view>
+            <view class="pointDetail" @click="pageJump('/pages/act/oAo/pointsDetails')"></view>
         </view>
-        <view class="rewardContainer" style="position: relative;bottom: 30rpx;">
-            <view class="reward_font">
-                奖励<br />
-                预览
-            </view>
-            <view class="reward_line"></view>
-            <view class="rollStaticContent" id='rollStaticContent' v-if="awardShow">
-                <!-- rollAnim -->
+        <!-- style="position: relative;bottom: 30rpx;" -->
+        <view class="rewardContainer" style="position: relative;bottom: 190rpx;">
+            <view class="reward_left rollStaticContent" id='rollStaticContent' v-if="awardShow">
                 <view class="rollContent" id='rollContent' :animation="animationData">
                     <view class="rollItem" v-for="(item, index) in awardList" :key="index + 'rollOne'">
                         <image class="rollReward" :src="$parsePic(decodeURIComponent(item.pic_url))" />
@@ -54,15 +48,22 @@
                     </view>
                 </view>
             </view>
+            <view class="reward_right" @click="pageJump('/pages/act/oAo/draw')">
+                <view class="machine"></view>
+                <view class="rightMsg">
+                    <view class="rightMsg_top">
+                        <image src="../../../static/act/oAo/rankBl.png"></image>
+                        等待直播
+                    </view>
+                    <view class="rightMsg_big">入榜前500名</view>
+                    <view class="rightMsg_bottom">直播抽取幸运奖励</view>
+                </view>
+            </view>
         </view>
-        <view class="luckContainer" style="position: relative;bottom: 30rpx;">
-            <view class="luck_font">前500名参与幸运大抽奖！</view>
-            <view class="luck_look flexCenter" @click="pageJump('/pages/act/rankSelect/draw')">查看</view>
-        </view>
-        <view class="actProgressContainer" style="position: relative;bottom: 30rpx;">
+        <view class="actProgressContainer" style="position: relative;bottom: 190rpx;">
             <view class="progress_item" :class="{ progress_itemHasLine: index != 3 }"
                 v-for="(item, index) in actProgress" :key="index">
-                <image :src="`/static/act/rankSelect/${checkImage(item, index)}.png`" />
+                <image :src="`/static/act/oAo/${checkImage(item, index)}.png`" />
                 <view class="progress_title positionCenter">{{ item.name }}</view>
                 <view class="progress_time positionCenter">
                     {{ isNumber(item.timeStamp) ? dateFormatMSHMS(item.timeStamp, '.') :
@@ -71,12 +72,17 @@
                 </view>
             </view>
         </view>
-        <view class="rankContainer" style="position: relative;bottom: 30rpx;">
-            <view class="rank_top">
-                <view class="rank_title">21-22 SELECT积分榜</view>
-                <view class="rank_pointText" @click="pageJump('/pages/act/rankSelect/pointsDetails')">查看积分明细</view>
+        <!-- <view class="luckContainer" style="position: relative;bottom: 30rpx;">
+            <view class="luck_font">前500名参与幸运大抽奖！</view>
+            <view class="luck_look flexCenter" @click="pageJump('/pages/act/rankSelect/draw')">查看</view>
+        </view>
+         -->
+        <view class="rankContainer" style="position: relative;bottom: 190rpx;">
+            <view class="rank_top flexCenter">
+                <!-- <view class="rank_title">21-22 ONE AND ONE冲线榜单</view> -->
+                <!-- <view class="rank_pointText" @click="pageJump('/pages/act/rankSelect/pointsDetails')">查看积分明细</view> -->
             </view>
-            <view class="rank_line"></view>
+            <!-- <view class="rank_line"></view> -->
             <view class="rank_tr rank_tr_myRank">
                 <view class="leftCorner flexCenter">我的成绩</view>
                 <muqian-lazyLoad class="rankAvatar" borderRadius="50%"
@@ -115,32 +121,38 @@
                 </view>
                 <muqian-lazyLoad class="rankAvatar" borderRadius="50%"
                     :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
-                <view class="rankName line2">{{ item.userName }}</view>
+                <view class="rankName">{{ item.userName }}</view>
                 <view class="rankPoint">
                     <view class="get">已获取：{{ item.get_score }}</view>
                     <view class="freeze">冻结中：{{ item.lock_score }}</view>
                 </view>
-                <muqian-lazyLoad class="rankReward" borderRadius="3rpx" @click="prviewImages(item.awardPic_url)"
-                    :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
+                <view class="rankReward flexCenter">{{item.awardName}}</view>
+                <!-- <muqian-lazyLoad class="rankReward" borderRadius="3rpx" @click="prviewImages(item.awardPic_url)"
+                    :src="$parsePic(decodeURIComponent(item.awardPic_url))" /> -->
             </view>
             <view style="opacity:0;height:36rpx"></view>
         </view>
         <view class="safeArea"></view>
         <view class="bottomContainer">
-            <view class="buttonItem flexCenter" @click="onClickGoBuy">
+            <view class="bottom_left flexCenter" @click="pageJump('/pages/act/rankSelect/index')">查看select榜</view>
+            <view class="bottom_right flexCenter">
+                <image src="../../../static/act/rankSelect/add.png" />
+                立即上车
+            </view>
+            <!-- <view class="buttonItem flexCenter" @click="onClickGoBuy">
                 <image src="../../../static/act/rankSelect/add.png" />
                 <view class="button flexCenter">立即上车SELECT</view>
-            </view>
-            <view class="bottomSafeArea"></view>
+            </view> -->
+            <!-- <view class="bottomSafeArea"></view> -->
         </view>
         <bottomDrawer :showDrawer.sync="descriptionShow" :needSafeArea="true" padding="24rpx 20rpx 120rpx 20rpx"
             :height="790" heightType="rpx" title="积分说明">
             <view class="descriptionContainer">
                 <view class="des_title">
-                    一.如何获取积分
+                    一.如何获取积分 
                 </view>
                 <view class="des_content">
-                    活动期间，参与卡世界21-22select系列拼团，根据不同拼团形式、卡种倍数、球员倍数、球队倍数结算发放给用户 <br />
+                    活动期间，参与卡世界21-22one and one系列拼团，根据不同拼团形式、卡种倍数、球员倍数、球队倍数结算发放给用户 <br />
                     【拼团期间将会冻结此订单的积分，拼团成功后发放至用户，拼团失败则会扣除对应订单冻结的积分】
                 </view>
                 <view class="des_title">
@@ -200,7 +212,8 @@ export default class ClassName extends BaseNode {
     dateFormatMSHMS = dateFormatMSHMS
     rankQuery: any = {
         fetchFrom: 1,
-        fetchSize: 30
+        fetchSize: 30,
+        activityTp: 2
     }
     awardList: any = []
     awardShow: boolean = false
@@ -238,7 +251,7 @@ export default class ClassName extends BaseNode {
     onShowChanged(val: any, oldVal: any) {
         console.log('当前val:', val);
         if (!val) return
-        if (this.awardList.length && this.awardList.length >= 7) {
+        if (this.awardList.length && this.awardList.length >= 3) {
             this.$nextTick(() => {
                 this.getRollWidth().then((width: any) => {
                     this.width = width
@@ -253,9 +266,9 @@ export default class ClassName extends BaseNode {
     onShow() {
     }
     onLoad(query: any) {
-        this.onEventUI("resetAn", (res) => {
-            this.resetAn()
-        });
+        // this.onEventUI("resetAn", (res) => {
+        //     this.resetAn()
+        // });
         app.platform.hasLoginToken(() => {
             this.reqMyRank()
             this.reqAllRank()
@@ -281,13 +294,13 @@ export default class ClassName extends BaseNode {
     }
     resetAn() {
         this.awardList = []
-        this.awardShow=false
+        this.awardShow = false
         this.reqRewardList()
     }
     onPullDownRefresh() {
         this.rankQuery.fetchFrom = 1
         this.reqAllRank(() => {
-            uni.stopPullDownRefresh() 
+            uni.stopPullDownRefresh()
         })
     }
     onReachBottom() {
@@ -388,7 +401,7 @@ export default class ClassName extends BaseNode {
     }
     reqRewardList() {
         this.awardShow = false
-        app.http.Get('dataApi/selectRank/award/list', {}, (res: any) => {
+        app.http.Get('dataApi/selectRank/award/list', { activityTp: 2 }, (res: any) => {
             this.awardList = res.list || []
             this.awardShow = true
 
@@ -404,7 +417,7 @@ export default class ClassName extends BaseNode {
         })
     }
     reqPointConfig() {
-        app.http.Get(`dataApi/selectRank/multiple/config`, {}, (res: any) => {
+        app.http.Get(`dataApi/selectRank/multiple/config`, { activityTp: 2 }, (res: any) => {
 
             Object.keys(res.data).map((key: any) => {
                 console.log(key);
@@ -421,7 +434,7 @@ export default class ClassName extends BaseNode {
     }
     //我的rank
     reqMyRank() {
-        app.http.Get('dataApi/selectRank/my/data', {}, (res: any) => {
+        app.http.Get('dataApi/selectRank/my/data', { activityTp: 2 }, (res: any) => {
             this.myRank = res.data || {}
         })
     }
@@ -432,17 +445,13 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    background: #421d17;
+    background: #0a2647;
     width: 750rpx;
     overflow-x: hidden;
 }
 
 .rollStaticContent {
-    // width: 750rpx;
-    flex: 1;
-    height: 101rpx;
-    // height: 208rpx;
-    // background-size: 100% 100%;
+    height: 98rpx;
     overflow: hidden;
     position: relative;
 
@@ -467,20 +476,21 @@ page {
         bottom: 0;
         height: inherit;
         margin: auto;
+        align-items: center;
 
         .rollItem {
             flex-wrap: nowrap;
-            width: 101rpx;
-            height: 101rpx;
-            // background: #FFFFFF;
+            width: 98rpx;
+            height: 98rpx;
             border-radius: 3rpx;
             position: relative;
             overflow: hidden;
-            margin-right: 9rpx;
+            // margin-right: 9rpx;
+            margin-left: 12rpx;
 
             .rollReward {
-                width: 101rpx;
-                height: 101rpx;
+                width: 98rpx;
+                height: 98rpx;
                 position: absolute;
                 top: 0;
                 // bottom: 0;
@@ -499,7 +509,7 @@ page {
                 position: absolute;
                 bottom: 0;
                 left: 0;
-                font-size: 19rpx;
+                font-size: 16rpx;
                 font-family: PingFang SC;
                 font-weight: 400;
                 color: #FFFFFF;
@@ -586,7 +596,7 @@ page {
 
 .rankBanner {
     width: 750rpx;
-    height: 453rpx;
+    height: 787rpx;
     background-size: 100% 100%;
     // background-image: url('../../../static/act/rankSelect/rankBanner.jpg');
     position: relative;
@@ -598,19 +608,23 @@ page {
     }
 
     .hdsm {
-        width: 73rpx;
-        height: 81rpx;
+        width: 249rpx;
+        height: 59rpx;
         position: absolute;
-        right: 5rpx;
-        top: 163rpx;
+        right: 0rpx;
+        top: 121rpx;
         background-size: 100% 100%;
-        background-image: url('../../../static/act/rankSelect/hdsm.png');
-        font-size: 21rpx;
-        font-family: PingFang SC;
-        font-weight: 600;
-        color: #FFFEFE;
-        line-height: 24rpx;
-        text-shadow: 0rpx 8rpx 13rpx #56160C;
+        background-image: url('../../../static/act/oAo/rule.png');
+    }
+
+    .pointDetail {
+        width: 224rpx;
+        height: 59rpx;
+        position: absolute;
+        right: 0rpx;
+        top: 185rpx;
+        background-size: 100% 100%;
+        background-image: url('../../../static/act/oAo/pointDetail.png');
     }
 
     // 
@@ -653,25 +667,30 @@ page {
 }
 
 .rankContainer {
-    width: 710rpx;
-    background: #6E1E11;
+    width: 722rpx;
+    // background: #6E1E11;
+    background: linear-gradient(90deg, #1EDEF5, #2866C3, #1EDEF5);
+    box-shadow: 0rpx 1rpx 0rpx 0rpx #12A9BA;
     border-radius: 3rpx;
     box-sizing: border-box;
-    padding: 0 30rpx;
+    padding: 0 15rpx;
 
     .rank_top {
         display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
-        padding-top: 37rpx;
+        width: 658rpx;
+        height: 97rpx;
+        background-size: 100% 100%;
+        background-image: url('../../../static/act/oAo/fontBak.png');
+        margin: 0 auto;
+        // padding-top: 37rpx;
     }
 
     .rank_title {
-        font-size: 33rpx;
-        font-family: PingFang SC;
-        font-weight: bold;
-        color: #FFF6D6;
-        letter-spacing: 4rpx;
+        font-size: 41rpx;
+        font-family: FZLanTingHei-HC-GBK;
+        font-weight: 400;
+        color: #FFFFFF;
+        // letter-spacing: 4rpx;
     }
 
     .rank_pointText {
@@ -723,14 +742,76 @@ page {
 }
 
 .rewardContainer {
-    width: 710rpx;
-    height: 133rpx;
-    background: #9B8885;
-    border-radius: 3rpx;
+    width: 723rpx;
+    height: 188rpx;
+    // background: #9B8885;
+    // border-radius: 3rpx;
+    background-size: 100% 100%;
+    background-image: url('../../../static/act/oAo/award.png');
     display: flex;
     box-sizing: border-box;
-    align-items: center;
-    padding: 0 32rpx;
+    // align-items: center;
+    padding: 0 18rpx 10rpx 18rpx;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    .reward_left {
+        width: 338rpx;
+        height: 116rpx;
+        // background-color: rgba(255, 255, 255, .5);
+        box-sizing: border-box;
+    }
+
+    .reward_right {
+        width: 338rpx;
+        height: 116rpx;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 20rpx 18rpx;
+        justify-content: space-between;
+
+        .machine {
+            width: 92rpx;
+            height: 84rpx;
+            background-size: 100% 100%;
+            background-image: url("../../../static/act/oAo/machine.png");
+        }
+
+        .rightMsg {
+            text-align: right;
+        }
+
+        .rightMsg_top {
+            display: flex;
+            align-items: center;
+            font-size: 16rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #FFFFFF;
+            justify-content: flex-end;
+
+            image {
+                width: 23rpx;
+                height: 18rpx;
+                margin-right: 7rpx;
+            }
+        }
+
+        .rightMsg_big {
+            font-size: 28rpx;
+            font-weight: 600;
+            color: #FFFFFF;
+            font-family: PingFang SC;
+        }
+
+        .rightMsg_bottom {
+            font-size: 19rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #FFFFFF;
+        }
+    }
 
     .reward_font {
         font-size: 54rpx;
@@ -783,16 +864,19 @@ page {
 
 .actProgressContainer {
     display: flex;
-    width: 750rpx;
+    width: 722rpx;
+    height: 207rpx;
+    background-size: 100% 100%;
+    background-image: url("../../../static/act/oAo/timeProgress.png");
     box-sizing: border-box;
-    padding: 0 70rpx;
+    padding: 33rpx 45rpx 0 45rpx;
     justify-content: space-between;
-    margin-top: 36rpx;
-    margin-bottom: 100rpx;
+    margin-top: 11rpx;
+    margin-bottom: 10rpx;
 
     .progress_item {
-        width: 74rpx;
-        height: 74rpx;
+        width: 102rpx;
+        height: 85rpx;
         position: relative;
         white-space: nowrap;
 
@@ -808,12 +892,12 @@ page {
     .progress_itemHasLine::after {
         content: "";
         display: block;
-        width: 113rpx;
-        height: 7rpx;
-        background: #92736F;
+        width: 90rpx;
+        height: 5rpx;
+        background: #12c6da;
         border-radius: 3rpx;
         position: absolute;
-        left: 74rpx;
+        left: 102rpx;
         top: 0;
         bottom: 0;
         margin: auto;
@@ -821,19 +905,19 @@ page {
 
     .progress_title {
 
-        font-size: 23rpx;
-        font-family: PingFang SC;
-        font-weight: bold;
+        font-size: 22rpx;
+        font-family: FZLanTingHei-R-GBK;
+        font-weight: 400;
         color: #FFFFFF;
         top: 86rpx;
     }
 
     .progress_time {
-        font-size: 20rpx;
-        font-family: PingFang SC;
+        font-size: 16rpx;
+        font-family: FZLanTingHei-R-GBK;
         font-weight: 400;
-        color: #FFFFFF;
-        top: 124rpx;
+        color: #00BCD4;
+        top: 114rpx;
     }
 
     .positionCenter {
@@ -846,10 +930,11 @@ page {
 .rank_tr {
     display: flex;
     align-items: center;
-    width: 650rpx;
-    height: 160rpx;
-    background: #FFFFFF;
-    box-shadow: 0rpx 4rpx 13rpx 0rpx #56160C;
+    width: 692rpx;
+    height: 140rpx;
+    background: linear-gradient(90deg, #0F2D5B, #001637);
+    // background: #FFFFFF;
+    // box-shadow: 0rpx 4rpx 13rpx 0rpx #56160C;
     border-radius: 3rpx;
     position: relative;
     box-sizing: border-box;
@@ -858,42 +943,49 @@ page {
     margin-bottom: 13rpx;
 
     .rankNum {
-        width: 58rpx;
-        height: 53rpx;
+        width: 63rpx;
+        height: 84rpx;
         background-size: 100% 100%;
         margin-right: 40rpx;
-        font-size: 39rpx;
-        font-family: Impact;
+        font-size: 45rpx;
+        font-family: FZDaHei-B02S;
         font-weight: 400;
-        color: #333333;
+        color: #FFFFFF;
     }
 
     .rank1 {
-        background-image: url("../../../static/act/rankSelect/rank1.png");
+        position: relative;
+        top: 10rpx;
+        background-image: url("../../../static/act/oAo/rank1.png");
     }
 
     .rank2 {
-        background-image: url("../../../static/act/rankSelect/rank2.png");
+        position: relative;
+        top: 10rpx;
+        background-image: url("../../../static/act/oAo/rank2.png");
     }
 
     .rank3 {
-        background-image: url("../../../static/act/rankSelect/rank3.png");
+        position: relative;
+        top: 10rpx;
+        background-image: url("../../../static/act/oAo/rank3.png");
     }
 
     .rankAvatar {
-        width: 50rpx;
-        height: 50rpx;
+        width: 68rpx;
+        height: 68rpx;
         // background: #421D17;
         border-radius: 50%;
-        margin-right: 16rpx;
+        margin-right: 20rpx;
     }
 
     .rankName {
-        font-size: 23rpx;
+        font-size: 24rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #333333;
-        width: 140rpx;
+        color: #fff;
+        width: 90rpx;
+        white-space: nowrap;
     }
 
     .line2 {
@@ -914,18 +1006,18 @@ page {
         text-align: center;
 
         .get {
-            font-size: 23rpx;
+            font-size: 22rpx;
             font-family: PingFang SC;
             font-weight: 400;
-            color: #6E1E11;
+            color: #FFF600;
             margin-bottom: 10rpx;
         }
 
         .freeze {
-            font-size: 23rpx;
+            font-size: 22rpx;
             font-family: PingFang SC;
             font-weight: 400;
-            color: #A0BED8;
+            color: #BBBBBB;
         }
     }
 
@@ -934,32 +1026,36 @@ page {
         height: 105rpx;
         // background: #421D17;
         border-radius: 3rpx;
+        font-size: 22rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
     }
 }
 
 .rank_my {
-    outline: 4rpx solid #FA1545;
+    outline: 4rpx solid #fee571;
 }
 
 .rank_tr_myRank {
     margin-bottom: 46rpx;
-    height: 160rpx;
+    height: 152rpx;
     box-sizing: border-box;
-    padding: 31rpx 17rpx 24rpx 20rpx;
+    padding: 51rpx 17rpx 24rpx 20rpx;
     align-items: center;
 
     .leftCorner {
-        width: 112rpx;
-        height: 32rpx;
-        background: linear-gradient(106deg, rgba(172, 105, 40, 0.63), rgba(248, 238, 167, 0.63), rgba(138, 84, 7, 0.63));
-        border-radius: 3rpx 0rpx 3rpx 0rpx;
+        width: 109rpx;
+        height: 33rpx;
+        background: linear-gradient(90deg, #C1976F, #FEF1C7, #CCA27C);
+        border-radius: 0rpx 0rpx 5rpx 0rpx;
         position: absolute;
         left: 0;
         top: 0;
         font-size: 21rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #421D17;
+        color: #0C2853;
     }
 
     .rankAvatar {
@@ -980,7 +1076,7 @@ page {
             font-size: 25rpx;
             font-family: PingFang SC;
             font-weight: 400;
-            color: #333333;
+            color: #fff;
 
         }
 
@@ -1007,31 +1103,64 @@ page {
 
 .bottomContainer {
     width: 750rpx;
-    background-color: #fa1545;
+    background-color: #1CCCE4;
     position: fixed;
-    height: 120rpx;
+    height: 149rpx;
     // height: calc(120rpx + constant(safe-area-inset-bottom));
     // height: calc(120rpx + env(safe-area-inset-bottom));
     bottom: 0;
     left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    box-sizing: border-box;
+    padding: 0 14rpx;
 
-    .buttonItem {
-        height: 120rpx;
+    .bottom_left {
+        width: 335rpx;
+        height: 135rpx;
+        background-size: 100% 100%;
+        background-image: url('../../../static/act/oAo/bottomLeft.png');
+        font-size: 33rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
+    }
+
+    .bottom_right {
+        width: 335rpx;
+        height: 135rpx;
+        background-size: 100% 100%;
+        background-image: url('../../../static/act/oAo/bottomRight.png');
+        font-size: 33rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
 
         image {
             width: 42rpx;
             height: 42rpx;
-            margin-right: 17rpx;
+            margin-right: 4rpx;
         }
     }
 
-    .button {
-        font-size: 33rpx;
-        font-family: PingFang SC;
-        font-weight: bold;
-        color: #FFFFFF;
-        letter-spacing: 4rpx;
-    }
+    // .buttonItem {
+    //     height: 120rpx;
+
+    //     image {
+    //         width: 42rpx;
+    //         height: 42rpx;
+    //         margin-right: 17rpx;
+    //     }
+    // }
+
+    // .button {
+    //     font-size: 33rpx;
+    //     font-family: PingFang SC;
+    //     font-weight: bold;
+    //     color: #FFFFFF;
+    //     letter-spacing: 4rpx;
+    // }
 }
 
 .alc {

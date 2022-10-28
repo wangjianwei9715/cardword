@@ -35,3 +35,6 @@ export const getUserProfile = (roomID) => {
         version: "1.0.0"
     }, 'Post')
 }
+export const logOutRoom = (roomID, uid) => {
+    return factoryPromise(`funcApi/brodcast/third/1001/user/logout/${roomID}`, { uid }, 'Post')
+}

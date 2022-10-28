@@ -1,6 +1,34 @@
 <template>
     <view>
-        {{ currentTimeStamp }}
+        <!-- 封面 -->
+        <template>
+            <image class="fillUp" :src="parsePic(liveData.cover)" :style="[fillHeight]" mode="aspectFill" />
+            <view class="fillUp blur" :style="[fillHeight]" blurEffect="light">
+            </view>
+        </template>
+        <!-- webview -->
+        <web-view class='webView' ref='webView' :webview-styles="webviewStyles" @onPostMessage="handleMessage"
+            :style="{ height: (hasNotchInScreen && deviceInfo.platform == 'ios') ? iosHeight : deviceInfo.screenHeight }"
+            :src="webViewUrl" />
+        <!-- 头部主播信息及在线人数等 -->
+        <view class="merchantContainer" :style="{ top: (56 + deviceInfo.statusBarHeight) + 'rpx' }">
+            <view class="merchantInfo">
+                <image class="merchantInfo_img" :src="parsePic(liveData.merchantLogo)" mode="scaleToFill"
+                    @click='toMerchant' />
+                <view class="merchantInfo_msg" @click='toMerchant'>
+                    <text class="merchantInfo_name">{{ liveData.mechantName || '获取昵称中' }}</text>
+                    <text class="merchantInfo_like">{{ liveData.likeNum }}本场点赞</text>
+                </view>
+                <text class="merchantInfo_follow" v-if="!merchantMessage.followed" @click.stop="followed">关注</text>
+            </view>
+            <!-- 结束及关闭 -->
+            <view class='topRightWrap'>
+                <text class='topRightWrap_online'>{{ onlineNum || "获取中" }}在线</text>
+                <text class="topRightWrap_overLive" v-if="isAnchor && onLive" @click="confirmStop">结束</text>
+                <image @click='back' v-if='!isAnchor || (isAnchor && (!onPreview && !onLive))'
+                    class='topRightWrap_close' src="/static/live/close.png" mode="scaleToFill" />
+            </view>
+        </view>
     </view>
 </template>
 <script>
@@ -16,33 +44,43 @@ import fixdInput from "./components/fixdInput.nvue";
 import nvueShare from "./components/nvueShare.nvue";
 //---功能
 import { $toast, $confirm, nowTime, goIndex } from './utils/tools'
+import LiveSocket from './utils/socket'
 import permision from "@/js_sdk/wa-permission/permission";
-import { Md5 } from "ts-md5";
-import { PackageBase } from "@/net/PackageBase";
-import { Message } from "@/net/NetDefine";
-import * as proto from "../../net/proto";
+import socketBack from './mixins/socketBack'
+import webView from './mixins/webView'
 //---静态数据
 import { textTipsMap, registerList, shareData, engineListen, ZG_PROFILE } from "./utils/staticData"
 //---接口
-import { getLiveRoomData, getMerchantMessage, getUserProfile } from './utils/request'
+import { getLiveRoomData, getMerchantMessage, getUserProfile, logOutRoom } from './utils/request'
 //注册app模块
 const app = getApp().globalData.app;
 const parsePic = getApp().globalData.parsePic
 //setTime_setInterval
 let currentTimeStampTimer = null
 export default {
+    mixins: [socketBack, webView],
     data() {
         return {
+            webViewUrl: app.liveWebView,
+            deviceInfo: getApp().globalData.app.platform.systemInfo, //设备信息
+            hasNotchInScreen: plus.navigator.hasNotchInScreen(),//是否有刘海
+            canEval: false,
+            webviewStyles: {
+                progress: false
+            },
             webView: null,//webView实例
             engine: null,//直播实例
             enterRoomTimeStamp: null,
+            LiveSocket: null,
             currentTimeStamp: Math.round(new Date() / 1000),
             parsePic,
             shareData: {},
             merchantMessage: {},//主播信息
+            isAnchor: false,
             userProfile: {
                 websocket: "",//ws地址
                 subscribed: false,//是否订阅
+                gm: false,//是否是管理员
                 data: {
                     isKickOut: false//是否被剔除直播间
                 },//profile
@@ -51,6 +89,9 @@ export default {
             roomID: null, //房间id
             streamID: null, //主播流id
             lmStreanID: "0", //连麦流id，不能设置未null,undefined，ios会出现闪退
+            applyLianmai: false,//是否开启连麦功能
+            onPreview: false,
+            onLive: false,
         }
     },
     async onLoad(query) {
@@ -67,11 +108,34 @@ export default {
             this.setLiveRoomData(liveDataResponse)
             this.setUserProfile(userDataResponse)
             this.merchantMessage = merchantMessage
+            await this.createEngine()
+            await this.loginZgRoom()
+            this.initSocket()
         } catch (err) {
-            err ?? $confirm(err.message || err, '直播间提示', false).then(() => goIndex())
+            err && $confirm(err.message || err, '直播间提示', false).then(() => goIndex())
         }
     },
+    beforeDestroy() {
+        this.leaveRoom()
+        this.LiveSocket && this.LiveSocket.destroy()
+    },
     computed: {
+        iosHeight() {
+            return (
+                this.deviceInfo.screenHeight +
+                this.deviceInfo.statusBarHeight +
+                this.deviceInfo.screenHeight -
+                this.deviceInfo.safeArea.bottom
+            );
+        },
+        showMask() {
+            return !this.onPreview && !this.onLive;
+        },
+        fillHeight() {
+            return {
+                height: this.deviceInfo.screenHeight + 'px'
+            }
+        }
     },
     watch: {
         currentTimeStamp: function (val, oldVal) {
@@ -95,6 +159,7 @@ export default {
                 // uni.$on("socketClose", this.socketClose);
                 this.roomID = query.roomID;
                 this.streamID = query.streamID;
+                if (query.isAnchor == "true") this.isAnchor = true;
             } catch (err) {
                 throw new Error(err.message || err)
             }
@@ -105,29 +170,53 @@ export default {
         },
         async createEngine() {
             this.engine = await getApp().globalData.ZegoExpressEngine.createEngineWithProfile(
-                profile: ZG_PROFILE
+                { profile: ZG_PROFILE }
             );
-            this.addEngineListen();
-        },
-        // addEngineListen() {
-        //     for (let i = 0, len = engineListen.length; i < len; i++) {
-        //         if (!this[engineListen[i].name]) continue;
-        //         this.engine.on(
-        //             engineListen[i].name,
-        //             this[engineListen[i].name]
-        //         );
-        //         if (i == engineListen.length - 1) {
-        //             //这里的既构登录使用接口返回里的zgUid
-        //             //进行既构的直播间登录
+            await this.addEngineListen();
+            console.log('创建监听器完成');
 
-        //             this.loginRoom(
-        //                 this.userData.zgUid,
-        //                 this.userData.uname,
-        //                 this.userData.token
-        //             );
-        //         }
-        //     }
-        // },
+        },
+        addEngineListen() {
+            return new Promise((re, rj) => {
+                for (let i = 0, len = engineListen.length; i < len; i++) {
+                    if (this[engineListen[i].name]) {
+                        this.engine.on(
+                            engineListen[i].name,
+                            this[engineListen[i].name]
+                        );
+                    }
+                    (i == engineListen.length - 1) && re()
+                }
+            })
+        },
+        async loginZgRoom() {
+            try {
+                const user = {
+                    userID: this.userProfile.data.zgUid,
+                    userName: this.userProfile.data.uname
+                }
+                await this.engine.loginRoom(this.roomID + "", user, {
+                    token: this.userProfile.data.token,
+                    isUserStatusNotify: true
+                })
+            } catch (err) {
+                throw new Error(err)
+            }
+        },
+        //初始化scocket
+        initSocket() {
+            this.LiveSocket.connectSever()
+        },
+
+        leaveRoom() {
+            this.LiveSocket.logOut()
+            this.apiLeaveRoom()
+        },
+        apiLeaveRoom() {
+            if (this.userProfile.data.uid && !this.userProfile.data.systemKickOut) {
+                logOutRoom(this.roomID, this.userProfile.data.uid)
+            }
+        },
         setCurrentTimeStamp() {
             currentTimeStampTimer && clearInterval(currentTimeStampTimer)
             currentTimeStampTimer = setInterval(() => {
@@ -151,6 +240,8 @@ export default {
         setUserProfile(res) {
             this.userProfile = res
             this.userProfile.data.isKickOut = false
+            this.userProfile.gm = false
+            this.LiveSocket = new LiveSocket({ ws: res.websocket, roomId: this.roomID, uid: this.userProfile.data.uid, token: this.userProfile.data.socketToken, }, this)
         },
         setShareData(data) {
             this.shareData = {
@@ -161,11 +252,162 @@ export default {
                 thumb: this.parsePic(decodeURIComponent(data.cover))
             };
         },
+        showWebView() {
+            if (!this.canEval) {
+                setTimeout(() => {
+                    this.showWebView();
+                }, 50);
+                return;
+            }
+            this.webView.evalJs(`setFuncApi('${app.funcApiDomain}')`);
+            this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`);
+            this.webView.evalJs(
+                `setAllData(${JSON.stringify({
+                    ...this.liveData,
+                    ...this.merchantMsg,
+                    ...this.userProfile.data,
+                    gm: this.userProfile.gm,
+                    point: this.userProfile.point,
+                    roomID: this.roomID,
+                    applyLianmai: this.applyLianmai,
+                    isAnchor: this.isAnchor
+                })})`
+            );
+            this.informH5Action("isGM", this.userProfile.gm, false);
+            this.informH5Action("canLM", this.applyLianmai, false);
+        },
+        
+        //调用h5Vue内部methods方法
+        informH5Action(actionName, params = "", isMoreArguments = false) {
+            const sendParams = JSON.stringify({
+                params: params
+            });
+            this.webView.evalJs(
+                `actionSet("${actionName}",${sendParams},${isMoreArguments})`
+            );
+            console.log("发送给h5l ");
+        },
+        handleMessage(event) {
+            //接收webViewPostMessage
+            const { data } = event.detail;
+            const resData = data[0];
+            const paramsIsArray = resData.params instanceof Array;
+            if (!this[resData.action]) return;
+            paramsIsArray && resData.isMoreArguments
+                ? this[resData.action](...resData.params)
+                : this[resData.action](resData.params);
+        },
     }
 }
 </script>
 
 
 <style>
+.webView {
+    position: fixed;
+    top: 0;
+    width: 750rpx;
+    height: 100%;
+}
 
+.fillUp {
+    position: fixed;
+    width: 750rpx;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.blur {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.merchantContainer {
+    position: fixed;
+    padding: 0 29rpx;
+    width: 750rpx;
+    background-color: rgba(0, 0, 0, 0);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.merchantInfo {
+    padding: 0 10rpx 0 6rpx;
+    height: 72rpx;
+    background: rgba(0, 0, 0, 0.38);
+    border-radius: 36rpx;
+    flex-direction: row;
+    align-items: center;
+}
+
+.merchantInfo_img {
+    width: 61rpx;
+    height: 61rpx;
+    /* display: block; */
+    border-radius: 50%;
+    margin-right: 10rpx;
+}
+
+.merchantInfo_msg {
+    color: #fff;
+    margin-right: 16rpx;
+}
+
+.merchantInfo_name {
+    font-size: 25rpx;
+
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.merchantInfo_like {
+    font-size: 20rpx;
+
+    font-weight: 300;
+    color: #ffffff;
+}
+
+.merchantInfo_follow {
+    width: 94rpx;
+    height: 50rpx;
+    border-radius: 30rpx;
+    background-image: linear-gradient(to right, #ff0025, #ff4058);
+    text-align: center;
+    line-height: 50rpx;
+    font-size: 29rpx;
+
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.topRightWrap {
+    flex-direction: row;
+    align-items: center;
+}
+
+.topRightWrap_online {
+    color: #fffefe;
+    font-size: 24rpx;
+    margin-right: 20rpx;
+}
+
+.topRightWrap_overLive {
+    width: 73rpx;
+    height: 73rpx;
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 73rpx;
+    font-size: 24rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #fffefe;
+}
+
+.topRightWrap_close {
+    width: 35rpx;
+    height: 35rpx;
+}
 </style>
