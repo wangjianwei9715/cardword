@@ -123,7 +123,7 @@
 	import { parsePic } from "@/tools/util";
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import muqianLazyLoad from "../muqian-lazyLoad/muqian-lazyLoad.vue";
+	import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
 	const cardNoParams = {
 		pageIndex:1,
 		pageSize:30,
@@ -150,7 +150,7 @@
 		detailData:any;
 
 		defaultAvatar = app.defaultAvatar;
-		defultPic = '../../static/goods/drawcard/default.png';
+		defultPic = '../../../static/goods/drawcard/default.png';
 		showUlist = false;
 		userList:any = [];
 		userParams = {...userParams}
@@ -548,7 +548,7 @@
 		.icon-rc {
 			width: 55rpx;
 			height: 56rpx;
-			background: url(../../static/anchor/icon_rc.png) no-repeat center;
+			background: url(@/static/anchor/icon_rc.png) no-repeat center;
 			background-size: 100% 100%;
 			position: absolute;
 			left: 34rpx;
@@ -567,7 +567,7 @@
 			justify-content: center;
 		}
 		.dangban {
-			background: url("../../static/goods/drawcard/card_dangban.png") no-repeat center;
+			background: url(@/static/goods/drawcard/card_dangban.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		.movable-box-sp{
@@ -709,19 +709,19 @@
 			}
 		}
 		.movable-box-silver {
-			background: url(../../static/goods/drawcard/card_silver.png) no-repeat center;
+			background: url(@/static/goods/drawcard/card_silver.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		.movable-box-red {
-			background: url(../../static/goods/drawcard/card_red.png) no-repeat center;
+			background: url(@/static/goods/drawcard/card_red.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		.movable-box-blue{
-			background: url(../../static/goods/drawcard/card_blue.png) no-repeat center;
+			background: url(@/static/goods/drawcard/card_blue.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		.movable-box-gold {
-			background: url(../../static/goods/drawcard/card_gold.png) no-repeat center;
+			background: url(@/static/goods/drawcard/card_gold.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		.card-shadow{
@@ -731,23 +731,23 @@
 			bottom:0;
 			left:50%;
 			margin-left: -249.5rpx;
-			background: url("../../static/anchor/sd_mb.png") no-repeat center;
+			background: url(@/static/anchor/sd_mb.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		.card-shadow-silver{
-			background: url(../../static/anchor/sd_silver.png) no-repeat center;
+			background: url(@/static/anchor/sd_silver.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		.card-shadow-red{
-			background: url(../../static/anchor/sd_red.png) no-repeat center;
+			background: url(@/static/anchor/sd_red.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		.card-shadow-blue{
-			background: url(../../static/anchor/sd_blue.png) no-repeat center;
+			background: url(@/static/anchor/sd_blue.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		.card-shadow-gold{
-			background: url(../../static/anchor/sd_gold.png) no-repeat center;
+			background: url(@/static/anchor/sd_gold.png) no-repeat center;
 			background-size: 100% 100%;
 		}
 		// 卡密详情
@@ -814,7 +814,7 @@
 	.ulist-box{
 		width: 1109rpx;
 		height:649rpx;
-		background:url(../../static/anchor/popup_bg.png) no-repeat center / 100% 100%;
+		background:url(@/static/anchor/popup_bg.png) no-repeat center / 100% 100%;
 		position: fixed;
 		left:50%;
 		margin-left: -554.5rpx;
@@ -837,7 +837,7 @@
 				top:59rpx;
 				width: 37rpx;
 				height:35rpx;
-				background: url(../../static/anchor/close.png) no-repeat center / 100% 100%;
+				background: url(@/static/anchor/close.png) no-repeat center / 100% 100%;
 			}
 		}
 		.ulist-list{
@@ -867,7 +867,7 @@
 				.ulist-info{
 					width: 911rpx;
 					height:218rpx;
-					background: url(../../static/anchor/popup_box.png) no-repeat center / 100% 100%;
+					background: url(@/static/anchor/popup_box.png) no-repeat center / 100% 100%;
 					box-sizing: border-box;
 					padding:0rpx 70rpx;
 					display: flex;
@@ -934,7 +934,7 @@
 					.ulist-btn{
 						width: 203rpx;
 						height:78rpx;
-						background: url(../../static/anchor/popup_btn.png) no-repeat center / 100% 100%;
+						background: url(@/static/anchor/popup_btn.png) no-repeat center / 100% 100%;
 						font-size: 27rpx;
 						font-family: PingFang SC;
 						font-weight: 600;
