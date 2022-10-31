@@ -4,7 +4,8 @@
             <muqian-lazyLoad class="myRank_avatar" borderRadius="50%" :src="myRank.avatar?$parsePic(decodeURIComponent(myRank.avatar)):defaultAvatar"/>
             <view class="myRank_name">{{myRank.userName || '获取中'}}</view>
             <view class="myRank_point">
-                <view class="now">{{myRank.isPass?`当前排名：${myRank.rank}`:'未上榜'}}</view>
+                <!-- <view class="now">{{myRank.isPass?`当前排名：${myRank.rank}`:'未上榜'}}</view> -->
+                <view class="now">{{myRank.rank?`当前排名：${myRank.rank}` :'获取中'}}</view>
                 <view class="point">已获得{{myRank.get_score}}活动积分</view>
             </view>
         </view>

@@ -16,7 +16,8 @@
                 <muqian-lazyLoad class="myRank_avatar" borderRadius="50%"
                     :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
                 <view class="myRank_rank">
-                    <view class="myRank_rank_linback flexCenter">{{ myRank.isPass ? myRank.rank : '未入榜' }}</view>
+                    <!-- <view class="myRank_rank_linback flexCenter">{{ myRank.isPass ? myRank.rank : '未入榜' }}</view> -->
+                    <view class="myRank_rank_linback flexCenter">{{myRank.rank || '获取中'}}</view>
                 </view>
             </view>
             <view class="myRank_point">

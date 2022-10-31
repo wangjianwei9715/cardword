@@ -89,7 +89,8 @@
                     :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
                 <view class="rankMyInfo" style="width: 160rpx;">
                     <view class="myInfo line1" style="margin-bottom:12rpx;">{{ myRank.userName || "获取中" }}</view>
-                    <view class="myInfo">{{ myRank.isPass ? `第${myRank.rank}名` : "未入榜" }}</view>
+                    <!-- <view class="myInfo">{{ myRank.isPass ? `第${myRank.rank}名` : "未入榜" }}</view> -->
+                    <view class="myInfo">{{`第${myRank.rank}名`}}</view>
                 </view>
                 <view class="rankPoint">
                     <view class="get">已获取：{{ myRank.get_score != undefined ? myRank.get_score : '获取中' }}</view>
@@ -126,7 +127,7 @@
                     <view class="get">已获取：{{ item.get_score }}</view>
                     <view class="freeze">冻结中：{{ item.lock_score }}</view>
                 </view>
-                <view class="rankReward flexCenter">{{item.awardName}}</view>
+                <view class="rankReward flexCenter" @click="prviewImages(item.awardPic_url)">{{item.awardName}}</view>
                 <!-- <muqian-lazyLoad class="rankReward" borderRadius="3rpx" @click="prviewImages(item.awardPic_url)"
                     :src="$parsePic(decodeURIComponent(item.awardPic_url))" /> -->
             </view>

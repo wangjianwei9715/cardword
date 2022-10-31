@@ -83,7 +83,8 @@
                     :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
                 <view class="rankMyInfo" style="width: 160rpx;">
                     <view class="myInfo line1" style="margin-bottom:12rpx;">{{ myRank.userName || "获取中" }}</view>
-                    <view class="myInfo">{{ myRank.isPass ? `第${myRank.rank}名` : "未入榜" }}</view>
+                    <!-- <view class="myInfo">{{ myRank.isPass ? `第${myRank.rank}名` : "未入榜" }}</view> -->
+                    <view class="myInfo">{{myRank.rank?`第${myRank.rank}名`:'获取中'}}</view>
                 </view>
                 <view class="rankPoint">
                     <view class="get">已获取：{{ myRank.get_score != undefined ? myRank.get_score : '获取中' }}</view>
