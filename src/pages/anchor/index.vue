@@ -47,12 +47,19 @@
 	import { getGoodsPintuan } from "@/tools/switchUtil";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import anchorDetail from './components/anchorDetail/anchorDetail.vue';
+	import anchorRubCard from './components/anchorRubCard/anchorRubCard.vue'
 	const paramsInit = {
 		pageIndex:1,
 		pageSize:20,
 		totalPage:2
 	}
-	@Component({})
+	@Component({
+		components:{
+			anchorDetail,
+			anchorRubCard
+		}
+	})
 	export default class ClassName extends BaseNode {
 		getGoodsPintuan = getGoodsPintuan
 		merchantData:{[x:string]:any} = {
