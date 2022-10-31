@@ -17,13 +17,14 @@
                 </view>
             </view>
         </view>
-        <view class="topStatus" style="width:750rpx;background-color: #071321;"
-            :style="{ height: app.statusBarHeight + 'px' }"></view>
+        <!-- <view class="topStatus" style="width:750rpx;background-color: #071321;"
+            :style="{ height: (app.statusBarHeight-60) + 'px' }"></view> -->
         <view class="rankBanner">
             <image src='../../../static/act/oAo/rankBanner.jpg' />
             <view class="hdsm" @click="pageJump('/pages/act/oAo/description')">
             </view>
-            <view class="pointDetail" @click="pageJump('/pages/act/oAo/pointsDetails')"></view>
+            <view class="pointDetail"
+                @click="pageJump('/pages/act/oAo/pointsDetails')"></view>
         </view>
         <!-- style="position: relative;bottom: 30rpx;" -->
         <view class="rewardContainer" style="position: relative;bottom: 190rpx;">
@@ -90,7 +91,7 @@
                 <view class="rankMyInfo" style="width: 160rpx;">
                     <view class="myInfo line1" style="margin-bottom:12rpx;">{{ myRank.userName || "获取中" }}</view>
                     <!-- <view class="myInfo">{{ myRank.isPass ? `第${myRank.rank}名` : "未入榜" }}</view> -->
-                    <view class="myInfo">{{`第${myRank.rank}名`}}</view>
+                    <view class="myInfo">{{ `第${myRank.rank}名` }}</view>
                 </view>
                 <view class="rankPoint">
                     <view class="get">已获取：{{ myRank.get_score != undefined ? myRank.get_score : '获取中' }}</view>
@@ -127,7 +128,7 @@
                     <view class="get">已获取：{{ item.get_score }}</view>
                     <view class="freeze">冻结中：{{ item.lock_score }}</view>
                 </view>
-                <view class="rankReward flexCenter" @click="prviewImages(item.awardPic_url)">{{item.awardName}}</view>
+                <view class="rankReward flexCenter" @click="prviewImages(item.awardPic_url)">{{ item.awardName }}</view>
                 <!-- <muqian-lazyLoad class="rankReward" borderRadius="3rpx" @click="prviewImages(item.awardPic_url)"
                     :src="$parsePic(decodeURIComponent(item.awardPic_url))" /> -->
             </view>
@@ -150,7 +151,7 @@
             :height="790" heightType="rpx" title="积分说明">
             <view class="descriptionContainer">
                 <view class="des_title">
-                    一.如何获取积分 
+                    一.如何获取积分
                 </view>
                 <view class="des_content">
                     活动期间，参与卡世界21-22one and one系列拼团，根据不同拼团形式、卡种倍数、球员倍数、球队倍数结算发放给用户 <br />
@@ -402,7 +403,7 @@ export default class ClassName extends BaseNode {
     }
     reqRewardList() {
         this.awardShow = false
-        app.http.Get('dataApi/selectRank/award/list', { isLucky:0,activityTp: 2 }, (res: any) => {
+        app.http.Get('dataApi/selectRank/award/list', { isLucky: 0, activityTp: 2 }, (res: any) => {
             this.awardList = res.list || []
             this.awardShow = true
 
@@ -613,7 +614,7 @@ page {
         height: 59rpx;
         position: absolute;
         right: 0rpx;
-        top: 121rpx;
+        top: 181rpx;
         background-size: 100% 100%;
         background-image: url('../../../static/act/oAo/rule.png');
     }
@@ -623,7 +624,7 @@ page {
         height: 59rpx;
         position: absolute;
         right: 0rpx;
-        top: 185rpx;
+        top: 245rpx;
         background-size: 100% 100%;
         background-image: url('../../../static/act/oAo/pointDetail.png');
     }
