@@ -112,7 +112,7 @@
 					});
 				});
 			});
-			uni.$on("reLogin", () => {
+			uni.$on("reLogin", (query:string) => {
 				try {
 					uni.removeStorageSync("token");
 				} catch (e) {
@@ -121,7 +121,7 @@
 				app.data = {};
 				// #ifdef APP-PLUS
 				uni.navigateTo({
-					url: "/pages/login/login",
+					url: `/pages/login/login?${query || ""}`,
 				});
 				// #endif
 			});

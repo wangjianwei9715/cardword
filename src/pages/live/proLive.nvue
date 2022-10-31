@@ -1032,11 +1032,9 @@ color: #E6A44F;">下次加油！</text>
           content: "确认结束直播?",
           success: ({ cancel, confirm }) => {
             if (confirm) {
-              this.stopPublishingStream();
-              this.stopPreview();
+              
               this.stopLive();
-              this.finishLive = true;
-              this.pushFlowStamp=null
+              
             } 
           }
         });
@@ -1755,6 +1753,10 @@ color: #E6A44F;">下次加油！</text>
           "post"
         )
           .then(res => {
+            this.stopPublishingStream();
+              this.stopPreview();
+              this.finishLive = true;
+              this.pushFlowStamp=null
             this.liveData.state = 3
             console.log("结束直播");
           })

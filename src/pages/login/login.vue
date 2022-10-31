@@ -72,13 +72,16 @@
 		popupHid = true;
 		iosLogin = app.iosPlatform;
 		redirect:string=''
+		return:boolean=false
 		onLoad(query:any) {
 			if(query.redirect) this.redirect=query.redirect
+			if(query.return) this.return=true
 		}
 		bindPickerChange(val:any){
 			this.phoneTypeIndex = val.detail.value;
 		}
 		onBackPress(type:any){
+			if(this.return) return
 			uni.switchTab({
 				url:'/pages/index/index'
 			})
@@ -248,6 +251,10 @@
 			app.http.Post('user/domain',{content:encodeURIComponent(domian)})
 		}
 		loginSuccessJump(){
+			if(this.return){
+				app.platform.pageBack(1)
+				return
+			}
 			if(!this.redirect){
 				this.toIndex()
 				return
