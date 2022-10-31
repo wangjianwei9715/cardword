@@ -252,6 +252,7 @@
 			}
 			.goods-title{
 				width: 345rpx;
+				height:78rpx;
 				margin:0 auto;
 				font-size: 29rpx;
 				font-family: PingFang SC;
