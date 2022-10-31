@@ -23,23 +23,24 @@
 				<view class="des_content" v-html="des">
 
 				</view>
-				<view @click="getElementScollTop" style="color: #02a7f0;text-decoration:underline;font-size: 23rpx;margin-bottom:10rpx;">查看奖励</view>
+				<view @click="getElementScollTop"
+					style="color: #02a7f0;text-decoration:underline;font-size: 23rpx;margin-bottom:10rpx;">查看奖励</view>
 			</view>
 			<view class="des_title">
 				活动时间说明
 			</view>
 			<view class="des_content">
-				10.25~11.8    获取积分<br/>
-				11.9~11.18    积分解冻期<br/>
-				11.19 0:00    榜单结算<br/>
-				11.20 15:00    幸运大抽奖<br/>
+				10.25~11.8 获取积分<br />
+				11.9~11.18 积分解冻期<br />
+				11.19 0:00 榜单结算<br />
+				11.20 15:00 幸运大抽奖<br />
 			</view>
 			<view class="des_title" style="margin-top:10rpx">
 				排行榜说明
 			</view>
 
 			<view class="des_content">
-				活动截止后，拼团购买21-22select系列将不再获得积分，冻结的积分会根据拼团是否成功录入或从冻结状态扣除<br/>
+				活动截止后，拼团购买21-22select系列将不再获得积分，冻结的积分会根据拼团是否成功录入或从冻结状态扣除<br />
 				排行榜每小时更新一次
 			</view>
 			<view class="des_title" style="margin-top:10rpx">
@@ -71,7 +72,7 @@
 			</view>
 			<view class="des_content red" v-if="pointConfig.cardSet_multiple && pointConfig.cardSet_multiple.length">
 				<view v-for="(item, index) in pointConfig.cardSet_multiple">
-					{{ item.describe || item.multiple }}倍：{{ item.keyword.join('、') }}
+					{{ item.multiple }}倍{{ item.describe ? `(${item.describe})` : '' }}：{{ item.keyword.join('、') }}
 				</view>
 			</view>
 			<view class="des_title">
@@ -79,7 +80,7 @@
 			<view class="des_content">球员倍数</view>
 			<view class="des_content red" v-if="pointConfig.player_multiple && pointConfig.player_multiple.length">
 				<view v-for="(item, index) in pointConfig.player_multiple">
-					{{ item.describe || item.multiple }}倍：{{ item.keyword.join('、') }}
+					{{ item.multiple }}倍{{ item.describe ? `(${item.describe})` : '' }}：{{ item.keyword.join('、') }}
 				</view>
 			</view>
 			<view class="des_title">
@@ -87,7 +88,7 @@
 			<view class="des_content">球队倍数</view>
 			<view class="des_content red" v-if="pointConfig.team_multiple && pointConfig.team_multiple.length">
 				<view v-for="(item, index) in pointConfig.team_multiple">
-					{{  item.describe || item.multiple }}倍：{{ item.keyword.join('、') }}
+					{{ item.multiple }}倍{{ item.describe ? `(${item.describe})` : '' }}：{{ item.keyword.join('、') }}
 				</view>
 			</view>
 			<!-- <view class="des_gray">*活动最终解释权归卡世界平台所有</view> -->
@@ -106,7 +107,7 @@
 						}}
 					</view>
 					<view class="rewardName u-line-1">
-						{{item.name}}
+						{{ item.name }}
 					</view>
 				</view>
 			</view>
@@ -118,16 +119,17 @@
 						@click="prviewImages(item.pic)" borderRadius="3rpx">
 					</muqian-lazyLoad>
 					<view class="rewardRank">
-						{{item.rank}}
+						{{ item.rank }}
 					</view>
 					<view class="rewardName u-line-1">
-						{{item.name}}
+						{{ item.name }}
 					</view>
 				</view>
 			</view>
 			<!-- <image class="canLucky" src="../../../static/act/rankSelect/canLucky.png" /> -->
 			<view class="tips">活动截至后入榜前500名抽取n位幸运用户进行幸运抽奖</view>
-			<view class="tips" @click="openRanDom">抽奖网站:<text style="color: #02a7f0;text-decoration:underline;margin-left:6rpx">random.org</text></view>
+			<view class="tips" @click="openRanDom">抽奖网站:<text
+					style="color: #02a7f0;text-decoration:underline;margin-left:6rpx">random.org</text></view>
 		</view>
 	</view>
 </template>
@@ -149,10 +151,10 @@ export default class ClassName extends BaseNode {
 	<br/>
 	幸运大抽奖：<text style="color:#FA1545">排名前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取 
 	`
-	luckList:any=[
-		{pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png',name:'抽取10张100元券',rank:"第1-50名"},
-		{pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png',name:'抽取10张100元券',rank:"第1-200名"},
-		{pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg',name:"抽取Select原盒一盒",rank:"第1-500名"}
+	luckList: any = [
+		{ pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png', name: '抽取10张100元券', rank: "第1-50名" },
+		{ pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png', name: '抽取10张100元券', rank: "第1-200名" },
+		{ pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg', name: "抽取Select原盒一盒", rank: "第1-500名" }
 	]
 	onLoad(query: any) {
 		this.reqPointConfig()
@@ -191,7 +193,7 @@ export default class ClassName extends BaseNode {
 			})
 			.exec()
 	}
-	openRanDom(){
+	openRanDom() {
 		plus.runtime.openURL('https://www.random.org')
 	}
 	reqRewardList() {
