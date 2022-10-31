@@ -2,16 +2,21 @@
 	<view class="content" v-if="rubCardShow">
 		<!-- 顶部导航 -->
 		<view class="anchor-navigation">
-			<view class="navigation-cut" @click="onClickCheckUlist()">
-				<view class="cut-num">{{detailData.waitCuoka}}</view>
-				<view class="cut-box">
-					<view class="avatar-bg">
-						<muqian-lazyLoad class="avatar" :src="userData.avatar==''?defaultAvatar:decodeURIComponent(userData.avatar)" borderRadius="50%"  />
+			<view class="navigation-left">
+				<view class="navigation-cut" @click="onClickCheckUlist()">
+					<view class="cut-num">{{detailData.waitCuoka}}</view>
+					<view class="cut-box">
+						<view class="avatar-bg">
+							<muqian-lazyLoad class="avatar" :src="userData.avatar==''?defaultAvatar:decodeURIComponent(userData.avatar)" borderRadius="50%"  />
+						</view>
+						<view class="cut-box-name u-line-1">{{userData.userName==''?'请选择':userData.userName}}</view>
+						<view class="user-choice"></view>
 					</view>
-					<view class="cut-box-name u-line-1">{{userData.userName==''?'请选择':userData.userName}}</view>
-					<view class="user-choice"></view>
 				</view>
+
+				<view class="navigation-giving" @click="givingData.show=true">附赠</view>
 			</view>
+			
 			<view class="navigation-back" @click.prevent="onClickBack()">
 				<text class="back-tips">THE CARDS WORLD</text>
 				<text class="back-text">退出</text>
@@ -90,10 +95,12 @@
 		<view class="popup-shadow" v-show="showUlist">
 			<view class="ulist-box">
 				<view class="ulist-header">
-					等待搓卡
+					<view class="ulist-header-tab">
+						<view :class="{'ulist-tab-index':true,'tab-current':tabCurrent==item.index}" v-for="item in ulistTab" :key="item.index" @click="tabCurrent=item.index">{{item.name}}</view>
+					</view>
 					<view class="ulist-close" @click="showUlist = false"></view>
 				</view>
-				<scroll-view class="ulist-list" scroll-y="true" @scrolltolower="getUserlist()">
+				<scroll-view v-show="tabCurrent==1" class="ulist-list" scroll-y="true" @scrolltolower="getUserlist()">
 					<view class="ulist-index" v-for="(item,index) in userList" :key="index">
 						<view class="ulist-num">{{index+1}}</view>
 						<view class="ulist-info">
@@ -112,6 +119,25 @@
 						</view>
 					</view>
 				</scroll-view>
+			</view>
+		</view>
+		<!-- ######### -->
+
+		<!-- 赠送组数 -->
+		<view class="giving-shadow" v-show="givingData.show">
+			<view class="giving-box">
+				<view class="giving-box-header">
+					赠送<muqian-lazyLoad v-if="userData.avatar!=''" class="giving-avatar" :src="userData.avatar==''?defaultAvatar:decodeURIComponent(userData.avatar)" borderRadius="50%"  />{{userData.userName}}
+				</view>
+				<view class="giving-center">
+					<view class="giving-num-btn" @click="onClickGivingNum('reduce')"><view class="giving-reduce"></view></view>
+					<input class="giving-num-box" v-model="givingData.num" />
+					<ivew class="giving-num-btn" @click="onClickGivingNum('add')"><view class="giving-add"></view></ivew>
+				</view>
+				<view class="giving-bottom">
+					<view class="giving-bottom-btn" @click="givingData.show=false">取消</view>
+					<view class="giving-bottom-btn">赠送</view>
+				</view>
 			</view>
 		</view>
 		<!-- ######### -->
@@ -142,6 +168,14 @@
 		pageSize:50,
 		noMoreData:false
 	}
+	const ulistTab = [
+		{index:1,name:'等待搓卡'},
+		{index:2,name:'搓卡记录'}
+	]
+	const givingData = {
+		show:false,
+		num:1
+	}
 	@Component({components: { muqianLazyLoad },})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
@@ -149,6 +183,9 @@
 		@Prop()
 		detailData:any;
 
+		ulistTab = ulistTab;
+		tabCurrent = 1;
+		givingData = {...givingData};
 		defaultAvatar = app.defaultAvatar;
 		defultPic = '../../../static/goods/drawcard/default.png';
 		showUlist = false;
@@ -305,6 +342,14 @@
 				}
 			});
 		}
+		onClickGivingNum(type:string){
+			const { givingData } = this;
+			if(type=='add'){
+				givingData.num++;
+			}else if(type=='reduce'&&givingData.num>1){
+				givingData.num--;
+			}
+		}
 		getProgress():number{
 			let item = this.detailData;
 			return Math.floor(((item.lockNum+item.currentNum)/item.totalNum) * 100)
@@ -344,6 +389,26 @@
 		box-sizing: border-box;
 		padding:0rpx 17rpx 0rpx 17rpx;
 		position: relative;
+		.navigation-left{
+			width: 487rpx;
+			height:71rpx;
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.navigation-giving{
+				width: 137rpx;
+				height:71rpx;
+				background:url(@/static/anchor/cut_zsbg.png) no-repeat center / 100% 100%;
+				font-size: 33rpx;
+				font-family: PingFang SC;
+				font-weight: 400;
+				color: #333333;
+				line-height: 50rpx;
+				text-align: center;
+				margin-top: 30rpx;
+			}
+		}
 		.navigation-cut{
 			width: 287rpx;
 			height:71rpx;
@@ -827,10 +892,26 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-size: 42rpx;
-			font-family: PingFang SC;
-			font-weight: 600;
-			color: #FFFFFF;
+			.ulist-header-tab{
+				width: 100%;
+				box-sizing: border-box;
+				height: 130rpx;
+				padding:0 300rpx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.ulist-tab-index{
+					height: 130rpx;
+					line-height: 130rpx;
+					font-size: 42rpx;
+					font-family: PingFang SC;
+					font-weight: 600;
+					color: #959695;
+				}
+				.tab-current{
+					color:#ffffff
+				}
+			}
 			.ulist-close{
 				position: absolute;
 				right:64rpx;
@@ -949,5 +1030,110 @@
 			}
 		}
 	}
-
+	.giving-shadow{
+		width: 100%;
+		height:100%;
+		position: fixed;
+		left:0;
+		right:0;
+		top:0;
+		bottom: 0;
+		background: rgba(0,0,0,0.61);
+		z-index: 999;
+	}
+	.giving-box{
+		width: 534rpx;
+		height:360rpx;
+		background: #505255;
+		border-radius: 3rpx;
+		position: absolute;
+		top:50%;
+		left:50%;
+		margin-left: -267rpx;
+		margin-top: -200rpx;
+	}
+	.giving-box-header{
+		width: 100%;
+		height:125rpx;
+		display: flex;
+		box-sizing: border-box;
+		align-items: center;
+		justify-content: center;
+		font-size: 31rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #FFFFFF;
+		.giving-avatar{
+			width: 43rpx;
+			height:43rpx;
+			margin:0 13rpx 0 33rpx;
+		}
+	}
+	.giving-center{
+		width: 100%;
+		box-sizing: border-box;
+		height:104rpx;
+		padding:0 71rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.giving-num-btn{
+			width: 56rpx;
+			height:56rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.giving-reduce{
+				width: 56rpx;
+				height:12rpx;
+				background: url(@/static/anchor/icon_reduce.png) no-repeat center /100% 100%;
+			}
+			.giving-add{
+				width: 56rpx;
+				height:56rpx;
+				background: url(@/static/anchor/icon_add.png) no-repeat center /100% 100%;
+			}
+		}
+		.giving-num-box{
+			width: 220rpx;
+			height:104rpx !important;
+			margin:0;
+			padding:0;
+			box-sizing: border-box;
+			background: #919191;
+			border-radius: 3rpx;
+			font-size: 104rpx;
+			font-family: PingFang SC;
+			font-weight: 600;
+			color: #FFFFFF;
+			display: flex;
+			align-items: center;
+			text-align: center;
+			max-height: 104rpx !important;
+			min-height: 104rpx !important;
+		}
+	}
+	.giving-bottom{
+		width: 100%;
+		height:130rpx;
+		box-sizing: border-box;
+		padding:0 30rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.giving-bottom-btn{
+			width: 203rpx;
+			height:78rpx;
+			background: url(@/static/anchor/popup_btn.png) no-repeat center / 100% 100%;
+			font-size: 27rpx;
+			font-family: PingFang SC;
+			font-weight: 600;
+			color: #FFFFFF;
+			text-shadow: 1px 2px 2px #313132;
+			text-align: center;
+			line-height: 68rpx;
+			box-sizing: border-box;
+			letter-spacing:2rpx
+		}
+	}
 </style>
