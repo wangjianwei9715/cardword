@@ -11,8 +11,6 @@ const request = (url, params = {}, method = 'GET') => {
 		if (url.indexOf('funcApi/') != -1) {
 			url = url.substring(8);
 			baseURL = app.funcApiDomain || app.bussinessApiDomain;
-			console.log(baseURL);
-			// if (!app.localTest) 
 		}
 	}
 	return new Promise((resolve, reject) => {
@@ -20,7 +18,6 @@ const request = (url, params = {}, method = 'GET') => {
 		let header = {
 			token: app.token.accessToken,
 		}
-		console.log(header);
 		uni.request({
 			url: finUrl,
 			data: params,
@@ -29,6 +26,30 @@ const request = (url, params = {}, method = 'GET') => {
 			success: (res) => {
 				if (res.data.code != 0) {
 					const noneTips = ['禁止登录']
+					
+					// console.log(res);
+					if (res.data.code == 1100) {
+						uni.showModal({
+							title: '信息无效',
+							content: '登录信息无效，请重新登录',
+							showCancel: false,
+							success: (event) => {
+								uni.$emit('reLogin',`return=true`);
+							}
+						});
+						return
+					}
+					if (res.data.code == 1101) {
+						uni.showModal({
+							title: '信息过期',
+							content: '登录状态已过期，点击 确定 自动刷新',
+							showCancel: false,
+							success: (event) => {
+								uni.$emit('refreshToken');
+							}
+						});
+						return
+					}
 					if (!noneTips.includes(res.data.msg)) {
 						uni.showToast({
 							title: res.data.msg,
@@ -41,6 +62,7 @@ const request = (url, params = {}, method = 'GET') => {
 				resolve(res.data)
 			},
 			fail: (err) => {
+
 				reject(err)
 			}
 		})
