@@ -35,9 +35,9 @@
         </view>
         <view class="title">{{ isLottery ? '幸运名单' : '幸运奖池' }}</view>
         <view class="rewardContainer" v-if="!isLottery">
-            <muqian-lazyLoad class="reward" @click="prviewImages(item.pic)"
+            <muqian-lazyLoad class="reward" @click="prviewImages(item.pic_url)"
                 :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `14rpx` }" borderRadius="3rpx"
-                v-for="(item, index) in luckyAwards" :src="decodeURIComponent(item.pic)" />
+                v-for="(item, index) in luckyAwards" :src="decodeURIComponent(item.pic_url)" />
             <!-- http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg
 http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg -->
         </view>
@@ -70,11 +70,12 @@ export default class ClassName extends BaseNode {
     isLottery: boolean = false
     luckyList: any = []
     luckyAwards: any = [
-        { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg' }
+        // { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg' }
     ]
     onLoad(query: any) {
         this.reqMyRank()
         this.reqLuckyList()
+        this.reqRewardList()
     }
     onReachBottom() {
 
@@ -94,14 +95,20 @@ export default class ClassName extends BaseNode {
         })
     }
     reqLuckyList() {
-        app.http.Get(`dataApi/selectRank/lucky/user/list`, {fetchFrom:1,fetchSize:500,activityTp:2}, (res: any) => {
-            this.luckyList=res.list || []
-            if(this.luckyList.length) this.isLottery=true
+        app.http.Get(`dataApi/selectRank/lucky/user/list`, { fetchFrom: 1, fetchSize: 500, activityTp: 2 }, (res: any) => {
+            this.luckyList = res.list || []
+            if (this.luckyList.length) this.isLottery = true
+        })
+    }
+    reqRewardList() {
+        app.http.Get('dataApi/selectRank/award/list', { isLucky: 1, activityTp: 2 }, (res: any) => {
+            this.luckyAwards = res.list || []
+
         })
     }
     //我的rank
     reqMyRank() {
-        app.http.Get('dataApi/selectRank/my/data', {activityTp:2}, (res: any) => {
+        app.http.Get('dataApi/selectRank/my/data', { activityTp: 2 }, (res: any) => {
             this.myRank = res.data || {}
         })
     }

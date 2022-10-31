@@ -388,7 +388,7 @@ export default class ClassName extends BaseNode {
     }
     reqRewardList() {
         this.awardShow = false
-        app.http.Get('dataApi/selectRank/award/list', {}, (res: any) => {
+        app.http.Get('dataApi/selectRank/award/list', {isLucky:0,activityTp:1}, (res: any) => {
             this.awardList = res.list || []
             this.awardShow = true
 
@@ -404,7 +404,7 @@ export default class ClassName extends BaseNode {
         })
     }
     reqPointConfig() {
-        app.http.Get(`dataApi/selectRank/multiple/config`, {}, (res: any) => {
+        app.http.Get(`dataApi/selectRank/multiple/config`, {activityTp:1}, (res: any) => {
 
             Object.keys(res.data).map((key: any) => {
                 console.log(key);

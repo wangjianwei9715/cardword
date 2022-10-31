@@ -115,11 +115,13 @@
 			<view class="rewardsContainer">
 				<view class="rewardItem" v-for="(item, index) in luckList"
 					:style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `14rpx` }">
-					<muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic))" class="rewardImage"
-						@click="prviewImages(item.pic)" borderRadius="3rpx">
+					<muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic_url))" class="rewardImage"
+						@click="prviewImages(item.pic_url)" borderRadius="3rpx">
 					</muqian-lazyLoad>
 					<view class="rewardRank">
-						{{ item.rank }}
+						{{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` :
+								`第${item.start_rank}-${item.end_rank}名`
+						}}
 					</view>
 					<view class="rewardName u-line-1">
 						{{ item.name }}
@@ -152,13 +154,14 @@ export default class ClassName extends BaseNode {
 	幸运大抽奖：<text style="color:#FA1545">排名前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取 
 	`
 	luckList: any = [
-		{ pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png', name: '抽取10张100元券', rank: "第1-50名" },
-		{ pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png', name: '抽取10张100元券', rank: "第1-200名" },
-		{ pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg', name: "抽取Select原盒一盒", rank: "第1-500名" }
+		// { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png', name: '抽取10张100元券', rank: "第1-50名" },
+		// { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png', name: '抽取10张100元券', rank: "第1-200名" },
+		// { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg', name: "抽取Select原盒一盒", rank: "第1-500名" }
 	]
 	onLoad(query: any) {
 		this.reqPointConfig()
 		this.reqRewardList()
+		this.reqRewardListTwo()
 	}
 	onReachBottom() {
 
@@ -197,13 +200,18 @@ export default class ClassName extends BaseNode {
 		plus.runtime.openURL('https://www.random.org')
 	}
 	reqRewardList() {
-		app.http.Get('dataApi/selectRank/award/list', {}, (res: any) => {
+		app.http.Get('dataApi/selectRank/award/list', {isLucky: 0, activityTp: 1}, (res: any) => {
 			this.awardList = res.list || []
 
 		})
 	}
+	reqRewardListTwo() {
+        app.http.Get('dataApi/selectRank/award/list', { isLucky: 1, activityTp: 1 }, (res: any) => {
+            this.luckList = res.list || []
+        })
+    }
 	reqPointConfig() {
-		app.http.Get(`dataApi/selectRank/multiple/config`, {}, (res: any) => {
+		app.http.Get(`dataApi/selectRank/multiple/config`, {activityTp:1}, (res: any) => {
 
 			Object.keys(res.data).map((key: any) => {
 				console.log(key);

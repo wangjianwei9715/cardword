@@ -401,7 +401,7 @@ export default class ClassName extends BaseNode {
     }
     reqRewardList() {
         this.awardShow = false
-        app.http.Get('dataApi/selectRank/award/list', { activityTp: 2 }, (res: any) => {
+        app.http.Get('dataApi/selectRank/award/list', { isLucky:0,activityTp: 2 }, (res: any) => {
             this.awardList = res.list || []
             this.awardShow = true
 

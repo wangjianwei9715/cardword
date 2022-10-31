@@ -50,7 +50,8 @@ export default class ClassName extends BaseNode {
     defaultAvatar: any = app.defaultAvatar
     queryParams: any = {
         fetchFrom: 1,
-        fetchSize: 20
+        fetchSize: 20,
+        activityTp:1
     }
     list: any = []
     isFetchEnd: any = true
@@ -86,7 +87,7 @@ export default class ClassName extends BaseNode {
     }
     //我的rank
     reqMyRank() {
-        app.http.Get('dataApi/selectRank/my/data', {}, (res: any) => {
+        app.http.Get('dataApi/selectRank/my/data', {activityTp:1}, (res: any) => {
             this.myRank = res.data || {}
         })
     }

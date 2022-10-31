@@ -7,7 +7,7 @@ import {
 	getUrlDataFN
 } from "../tools/util";
 import { headersData,opSignData,opSignOtherData } from "@/net/DataHttp"
-const debounceData = ['dataApi/point/exchange/goodlist']
+const debounceData = ['dataApi/point/exchange/goodlist','dataApi/selectRank/award/list']
 export default class HttpRequest {
     private static instance: HttpRequest;
 	private axiosInstance:AxiosInstance;
@@ -268,6 +268,8 @@ export default class HttpRequest {
 		});
 	}
 	Get(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function) {
+		console.log(reqUrl);
+		
 		// 防止列表请求还未响应时重复请求 响应拦截器内删除
 		if(this.debounceUrl == reqUrl && debounceData.indexOf(reqUrl) == -1) return;
 		this.debounceUrl = reqUrl;
@@ -277,7 +279,6 @@ export default class HttpRequest {
 			p.push(`${key}=${newParams[key]}`);
 		}
 		var strParams = p.join('&');
-		
 		this.axiosInstance.get(reqUrl+'?'+strParams).then((response) => {
 			if (response.data&&response.data.code==0) {
 				if (cb) cb(response.data);
