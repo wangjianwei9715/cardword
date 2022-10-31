@@ -136,7 +136,7 @@
         <view class="safeArea"></view>
         <view class="bottomContainer">
             <view class="bottom_left flexCenter" @click="pageJump('/pages/act/rankSelect/index')">查看select榜</view>
-            <view class="bottom_right flexCenter">
+            <view class="bottom_right flexCenter" @click="onClickGoBuy">
                 <image src="../../../static/act/rankSelect/add.png" />
                 立即上车
             </view>
@@ -226,7 +226,7 @@ export default class ClassName extends BaseNode {
         { name: '获取积分', description: '获取积分', timeStamp: [1667059200, 1668441599], sIcon: 'sBuy' },
         { name: '积分解冻期', description: '积分解冻期', timeStamp: [1668441600, 1669305599], icon: 'lock', sIcon: 'sLock' },
         { name: '榜单结算', description: '榜单结算', timeStamp: 1669305600, icon: 'order', sIcon: 'sOrder' },
-        { name: '幸运大抽奖', description: '幸运大抽奖', timeStamp: 1669446000, icon: 'gift', sIcon: 'sGift' }
+        { name: '幸运大抽奖', description: '幸运大抽奖', timeStamp: 1669359600, icon: 'gift', sIcon: 'sGift' }
     ]
     myRank: any = {}
     scrollTop: number = 0
@@ -388,7 +388,7 @@ export default class ClassName extends BaseNode {
         uni.navigateTo({
             // url: '/pages/goods/goods_find_list?classType=100'
             // url: '/pages/act/rankSelect/goodsList'
-            url: '/pages/goods/goods_seriesDetail?seriesId=3'
+            url: '/pages/goods/goods_seriesDetail?seriesId=16'
         })
     }
     isNumber(data: any) {
