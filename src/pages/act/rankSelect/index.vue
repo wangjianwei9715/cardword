@@ -212,7 +212,7 @@ export default class ClassName extends BaseNode {
         { name: '获取积分', description: '获取积分', timeStamp: [1666627200, 1667923199], sIcon: 'sBuy' },
         { name: '积分解冻期', description: '积分解冻期', timeStamp: [1667923200, 1668787199], icon: 'lock', sIcon: 'sLock' },
         { name: '榜单结算', description: '榜单结算', timeStamp: 1668787200, icon: 'order', sIcon: 'sOrder' },
-        { name: '幸运大抽奖', description: '幸运大抽奖', timeStamp: 1668927600, icon: 'gift', sIcon: 'sGift' }
+        { name: '幸运大抽奖', description: '幸运大抽奖', timeStamp: 1669014000, icon: 'gift', sIcon: 'sGift' }
     ]
     myRank: any = {}
     scrollTop: number = 0

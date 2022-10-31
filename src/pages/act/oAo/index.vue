@@ -8,7 +8,7 @@
                 :style="{ backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
                 <image class="back" :class="{ filterBlack: scrollTopPercent > 0.6 }"
                     src="../../../static/act/rankSelect/back.png" @click="app.platform.pageBack()" />
-                <view class="pageTitle" :style="{ opacity: scrollTopPercent }">one and one</view>
+                <view class="pageTitle" :style="{ opacity: scrollTopPercent }">ONE AND ONE</view>
                 <view style="display: flex;align-items: center;">
                     <image class="share" :class="{ filterBlack: scrollTopPercent > 0.6 }"
                         src="../../../static/act/rankSelect/share.png" @click="operationShow = true" />
@@ -233,10 +233,10 @@ export default class ClassName extends BaseNode {
     animation: any = null
     animationData: any = {}
     shareData: any = {
-        shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/act/rankSelect`,
-        title: "SELECT登顶计划",
-        summary: "SELECT登顶计划",
-        thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.21/seller/info/1666340825471m0k5sxd2ln.jpg"
+        shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/act/oAo`,
+        title: "ONE AND ONE",
+        summary: "ONE AND ONE",
+        thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.31/check/card/0/16671843614444zjvbjpmfn.jpg"
     };
     pointConfig: any = {
 

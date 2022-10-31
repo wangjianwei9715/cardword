@@ -46,16 +46,13 @@ http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40a
                 <view class="myRank_avatarContainer">
                     <muqian-lazyLoad class="myRank_avatar" borderRadius="50%"
                         :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar" />
-                    <view class="myRank_rank">
-                        <view class="myRank_rank_linback flexCenter">{{ item.isPass ? item.rank : '未入榜' }}</view>
-                    </view>
                 </view>
                 <view class="myRank_point">
                     <view class="now" style="margin-bottom:0rpx;">{{ item.userName || '获取中' }}</view>
                     <!-- <view class="point">累计获取积分:{{item.get_score}}</view> -->
                 </view>
-                <muqian-lazyLoad @click="prviewImages(item.pic)" class="myRank_Award" borderRadius="3rpx"
-                    :src="$parsePic(decodeURIComponent(item.pic))" />
+                <muqian-lazyLoad @click="prviewImages(item.awardPic_url)" class="myRank_Award" borderRadius="3rpx"
+                    :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
             </view>
         </view>
     </view>
@@ -77,6 +74,7 @@ export default class ClassName extends BaseNode {
     ]
     onLoad(query: any) {
         this.reqMyRank()
+        this.reqLuckyList()
     }
     onReachBottom() {
 
@@ -93,6 +91,12 @@ export default class ClassName extends BaseNode {
         uni.previewImage({
             current: 0,
             urls: picArr
+        })
+    }
+    reqLuckyList() {
+        app.http.Get(`dataApi/selectRank/lucky/user/list`, {fetchFrom:1,fetchSize:500,activityTp:2}, (res: any) => {
+            this.luckyList=res.list || []
+            if(this.luckyList.length) this.isLottery=true
         })
     }
     //我的rank
