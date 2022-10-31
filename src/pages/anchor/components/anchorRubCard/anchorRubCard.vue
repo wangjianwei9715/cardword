@@ -136,7 +136,7 @@
 				</view>
 				<view class="giving-bottom">
 					<view class="giving-bottom-btn" @click="givingData.show=false">取消</view>
-					<view class="giving-bottom-btn">赠送</view>
+					<view class="giving-bottom-btn" @click="onClickGiving">赠送</view>
 				</view>
 			</view>
 		</view>
@@ -349,6 +349,18 @@
 			}else if(type=='reduce'&&givingData.num>1){
 				givingData.num--;
 			}
+		}
+		// 确认赠送
+		onClickGiving(){
+			uni.showModal({
+				title: '提示',
+				content: '是否确认赠送',
+				success: (res)=> {
+					if (res.confirm) {
+						
+					}
+				}
+			});
 		}
 		getProgress():number{
 			let item = this.detailData;
