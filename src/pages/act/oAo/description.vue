@@ -40,7 +40,7 @@
 
 			<view class="des_content">
 				活动截止后，拼团购买21-22one and one系列将不再获得积分，冻结的积分会根据拼团是否成功录入或从冻结状态扣除<br/>
-				排行榜每小时更新一次
+				排行榜每30分钟更新一次
 			</view>
 			<view class="des_title" style="margin-top:10rpx">
 				积分说明
@@ -63,7 +63,7 @@
 			<view class="des_title">
 			</view>
 			<view class="des_content red">
-				例：基础分以拼团规格为单位.若拼团规格为1盒基础分为1，则规格为2盒的基础分为2，单箱基础分为12，以此类推
+				例：基础分以拼团规格为单位.若拼团规格为1盒基础分为1，则规格为2盒的基础分为2，单箱基础分为10，以此类推
 			</view>
 			<view class="des_content">
 				三.倍数说明<br />
@@ -94,7 +94,7 @@
 		</view>
 		<view class="spRewardsContainer">
 			<view class="title uni-flex" style="align-items: center;">
-				特殊奖励
+				名次奖励
 				<text class="tips">(第一名奖励预计活动结束后30天内发货)</text>
 			</view>
 			<view class="rewardsContainer">
@@ -113,7 +113,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="title" style="margin-top: 60rpx">入榜奖励</view>
+			<view class="title" style="margin-top: 60rpx">幸运大抽奖</view>
 			<view class="rewardsContainer">
 				<view class="rewardItem" v-for="(item, index) in luckList"
 					:style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `14rpx` }">
