@@ -67,10 +67,8 @@
 				app.platform.clearCache()
 				//#endif
 				uni.setStorageSync("webViewVersion",app.webViewVersion)
-				uni.setStorageSync('launchData',{})
 			}else{
 				uni.setStorageSync("webViewVersion",app.webViewVersion)
-				uni.setStorageSync('launchData',{})
 			}
 			app.needPushIdentifier =
 				uni.getStorageSync("needPushIdentifier") == 1 ? false : true;

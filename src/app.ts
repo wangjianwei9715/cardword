@@ -36,7 +36,7 @@ export module app{
     // export let activityShareOrigin=""
     export let liveWebView='http://www.ka-world.com/live/#/pages/liveStreaming/tools'
     export let playBackWebView='http://www.ka-world.com/live/#/pages/liveStreaming/chart'
-    export let webViewVersion="1.5"
+    export let webViewVersion="1.6"
     export let statusBarHeight:any = 0;
     export let platform = PlatformManager.getIns();
 	export let payment = PayManager.getIns();

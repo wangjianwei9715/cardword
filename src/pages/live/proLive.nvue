@@ -286,7 +286,7 @@ color: #E6A44F;">下次加油！</text>
     </view>
     <view class="top" :style="{ top: 56 + deviceInfo.statusBarHeight + 'rpx' }">
       <view class="merchant">
-        <image class="merchant-img" :src="parsePic(liveData.merchantLogo)" mode="scaleToFill" @click='toMerchant' />
+        <image class="merchant-img" :src="parsePic(liveData.merchantLogo)" mode="aspectFill" @click='toMerchant' />
         <view class="merchantMsg" @click='toMerchant'>
           <text class="merchantName">{{liveData.mechantName || '获取昵称中'}}</text>
           <text class="merchantLike">{{liveData.likeNum}}本场点赞</text>
@@ -1858,6 +1858,7 @@ color: #E6A44F;">下次加油！</text>
         //   }
         // }
       },
+      
       //流变化的回调
       roomStreamUpdate(roomID, updateType, streamList) {
         console.log(
@@ -1937,6 +1938,9 @@ color: #E6A44F;">下次加油！</text>
             })
           }
         }
+      },
+      shieldEffectsAction(bol){
+        uni.setStorageSync('liveShieldEffects',bol)
       },
       publisherQualityUpdate(streamID, quality) {
         console.log(quality);
@@ -2207,7 +2211,8 @@ color: #E6A44F;">下次加油！</text>
             point: this.point,
             roomID: this.roomID,
             applyLianmai: this.applyLianmai,
-            isAnchor: this.isAnchor
+            isAnchor: this.isAnchor,
+            shieldEffects:uni.getStorageSync('liveShieldEffects') || false
           })})`
         );
         this.informH5Action("isGM", this.gm, false);
