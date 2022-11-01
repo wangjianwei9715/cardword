@@ -51,6 +51,7 @@ export default class UpdateManager {
   initAppUpdate() {
     plus.runtime.getProperty(plus.runtime.appid || '', (widgetInfo) => {
       let myapp = getApp().globalData || {};
+      const os = uni.getSystemInfoSync().platform;
       myapp.version = widgetInfo.version
       app.version = myapp.version
       app.updateDebug = uni.getStorageSync("updateDebug");
@@ -59,7 +60,7 @@ export default class UpdateManager {
         debug: app.updateDebug,
         name: widgetInfo.name,
         version: widgetInfo.version,
-        os: uni.getSystemInfoSync().platform
+        os: os
       }, (res: any) => {
         let data = res.data
         console.log('AppUpdate-data===', data);
@@ -86,14 +87,20 @@ export default class UpdateManager {
                         force: false
                       }, () => {
                         console.log('install success...');
+                    
                         uni.showModal({
                           title: '更新完毕',
-                          content: '立刻重启应用完成更新。',
+                          content: `${os == 'android'?'请重新打开应用完成更新。':'立刻重启应用完成更新。'}`,
                           showCancel: false,
                           success: (result) => {
-                            setTimeout(() => {
-                              plus.runtime.restart();
-                            }, 500)
+                            if(os == 'android'){
+                              plus.runtime.quit()
+                            }else{
+                              setTimeout(() => {
+                                plus.runtime.restart();
+                              }, 500)
+                            }
+                            
                           }
                         });
                       }, (result) => {

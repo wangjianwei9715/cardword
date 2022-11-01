@@ -317,70 +317,6 @@
 			"root": "pages/act",
 			"pages": [
 				{
-					"path": "playGroup/index", 
-					"style": {
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#103b83",
-						"backgroundColorBottom": "#103b83",
-						"backgroundColor":"#103b83",
-						"app-plus": {
-							"softinputNavBar": "none"
-						}
-					}
-				},
-				{
-					"path": "playGroup/give", 
-					"style": {
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#fff",
-						"backgroundColorBottom": "#fff",
-						"app-plus": {
-							"softinputNavBar": "none"
-						}
-					}
-				},
-				{
-					"path": "playGroup/giveList", 
-					"style": {
-						"navigationBarTitleText": "收赠记录",
-						"enablePullDownRefresh": true,
-						"navigationBarBackgroundColor":"#ffffff",
-						"backgroundColorTop": "#fff",
-						"backgroundColorBottom": "#fff",
-						"app-plus": {
-							"softinputNavBar": "none"
-						}
-					}
-				},
-				{
-					"path": "playGroup/logList", 
-					"style": {
-						"navigationBarTitleText": "参与记录",
-						"enablePullDownRefresh": true,
-						"navigationBarBackgroundColor":"#ffffff",
-						"backgroundColorTop": "#ffffff",
-						"backgroundColorBottom": "#ffffff",
-						"app-plus": {
-							"softinputNavBar": "none"
-						}
-					}
-				},
-				{
-					"path": "playGroup/rule", 
-					"style": {
-						"navigationBarTitleText": "活动规则",
-						"enablePullDownRefresh": false,
-						"navigationBarBackgroundColor":"#ffffff",
-						"backgroundColorTop": "#fff",
-						"backgroundColorBottom": "#fff",
-						"app-plus": {
-							"softinputNavBar": "none"
-						}
-					}
-				},
-				{
 					"path": "ref/ref",
 					"style": {
 						"navigationStyle": "custom",
@@ -499,49 +435,7 @@
 						"backgroundColorBottom": "#F4F5F9" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
-				
 				{
-					"path": "card716/index",
-					"style": {
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#CEE0F5", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#CEE0F5" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "card716/reward_record",
-					"style": {
-						"navigationBarTitleText": "抽奖明细",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "card716/live",
-					"style": {
-						"navigationBarTitleText": "卡展直播",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "card716/invite",
-					"style": {
-						"navigationBarTitleText": "邀请函",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#4B4962", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#1E1E2F" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},{
 					"path": "spCard/index",
 					"style": {
 						"navigationBarTitleText": "集SP卡密",
