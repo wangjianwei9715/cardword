@@ -238,7 +238,7 @@ export default class ClassName extends BaseNode {
         shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/act/oAo`,
         title: "ONE AND ONE",
         summary: "ONE AND ONE",
-        thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.21/seller/info/1666340825471m0k5sxd2ln.jpg"
+        thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.11.01/check/card/0/16672667267676nj6h6gksq.jpg"
     };
     pointConfig: any = {
 
