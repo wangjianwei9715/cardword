@@ -87,20 +87,18 @@ export default class UpdateManager {
                         force: false
                       }, () => {
                         console.log('install success...');
-                    
                         uni.showModal({
                           title: '更新完毕',
-                          content: `${os == 'android'?'请重新打开应用完成更新。':'立刻重启应用完成更新。'}`,
+                          content: '立刻重启应用完成更新。',
                           showCancel: false,
                           success: (result) => {
-                            if(os == 'android'){
-                              plus.runtime.quit()
-                            }else{
+                            // if(os == 'android'){
+                            //   plus.runtime.quit()
+                            // }else{
                               setTimeout(() => {
                                 plus.runtime.restart();
                               }, 500)
-                            }
-                            
+                            // }
                           }
                         });
                       }, (result) => {
