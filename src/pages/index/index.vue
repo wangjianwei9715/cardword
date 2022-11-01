@@ -66,8 +66,7 @@
 								</view>
 							</view>
 							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2022-07-12', '2022-12-26')">
-								<image class="capsule-pic1" :src="decodeURIComponent(capsule.pic1)" mode="aspectFill"/>
-								<image class="capsule-pic2" :src="decodeURIComponent(capsule.pic2)" mode="aspectFill"/>
+								<image class="capsule-pic1" :src="decodeURIComponent(capsule.pic)" mode="aspectFill"/>
 							</navigator>
 
 							<!-- 拼团进度 最新上架 新手体验 拆卡围观 -->
@@ -123,9 +122,8 @@
 			bottom:indexTabList
 		};
 		capsule = {
-			pic1:'../../static/index/v3/index_ad_banner.png',
-			pic2:'../../static/index/v3/index_ad_banner2.png?v=2',
-			url:'/pages/act/rankSelect/index'
+			pic:'../../static/index/v3/index_ad_banner.gif',
+			url:'/pages/act/oAo/index'
 		}
 		hotList: { [x: string]: any } = indexHotList;
 		topAddList: any = [];
@@ -154,15 +152,15 @@
 			pageSize:10,
 			noMoreData:false,
 			q:'',
-			liveTabCheck:0,
-			httpUrl:'dataApi/broadcast/list/all'
+			liveTabCheck:1,
+			httpUrl:'dataApi/broadcast/list/living',
+			once:true
 		}
 		refresherIndex = false;
 		currentIndex = 0;
 		scrollY = true;
 		disableTouch = false;
 		tabData = [
-			{id:0,name:'全部',http:'dataApi/broadcast/list/all'},
 			{id:1,name:'直播拆卡',http:'dataApi/broadcast/list/living'},
 			{id:2,name:'拆卡回放',http:'dataApi/broadcast/list/playback'},
 			{id:3,name:'我的拆卡',http:'me/broadcast'}
@@ -524,7 +522,8 @@
 				noMoreData:false,
 				q:this.liveData.q,
 				liveTabCheck:id,
-				httpUrl:this.tabData[id].http
+				httpUrl:this.tabData[id-1].http,
+				once:false
 			}
 			this.reqNewLiveData()
 		}
@@ -564,6 +563,10 @@
 				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
 				if(params.pageIndex==1) this.liveList = []
 				if(data.list) this.liveList = this.liveList.concat(data.list);
+				if(params.once && params.liveTabCheck==1 && data.total == 0){
+					this.onClickListTabs(2)
+				}
+				params.once = false;
 				params.pageIndex++;
 				if(cb) cb()
 			})

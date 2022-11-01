@@ -303,13 +303,7 @@
 			this.source=query.source
 			this.getGoodData(goodCode,()=>{
 				// 购买记录
-				if (this.goodsData.state == 1) {
-					app.http.Get(`dataApi/good/${goodCode}/buyRecord`, {}, (res: any) => {
-						if (res.list) this.buyRecordList = res.list.filter((x:any,index:number)=>{
-							return index<5
-						})
-					})
-				}
+				this.getBuyRecord()
 				// 查询可领取优惠券
 				setTimeout(()=>{
 					this.queryCoupon()
@@ -352,6 +346,7 @@
 		//   下拉刷新
 		onPullDownRefresh() {
 			this.getGoodData(this.goodCode,() => {
+				this.getBuyRecord()
 				uni.stopPullDownRefresh();
 			})
 		}
@@ -393,6 +388,16 @@
 				}
 				cb && cb()
 			})
+		}
+		getBuyRecord(){
+			// 购买记录
+			if (this.goodsData.state == 1) {
+				app.http.Get(`dataApi/good/${this.goodCode}/buyRecord`, {}, (res: any) => {
+					if (res.list) this.buyRecordList = res.list.filter((x:any,index:number)=>{
+						return index<5
+					})
+				})
+			}
 		}
 		queryCoupon(){
 			const data = this.goodsData;
@@ -498,7 +503,7 @@
 		getGoodsSpe() {
 			let data = this.goodsData;
 			const spec = data.spec.name;
-			const num = data.spec.num+'张'
+			const num = data.spec.num==-1?'暂无':data.spec.num+'张'
 			if (this.goodsData.isSelect) {
 				this.goodsSpe = {
 					spec: { id: 3, name: spec, desc: '拼团规格' },

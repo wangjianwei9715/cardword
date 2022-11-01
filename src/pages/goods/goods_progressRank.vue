@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\goods\goods_progressRank.vue
+ * @Author: wjw
+ * @Date: 2022-11-01 11:45:57
+ * @LastEditors: 
+ * @LastEditTime: 2022-11-01 13:47:10
+ * Copyright: 2022 .
+ * @Descripttion: 
+-->
 <template>
     <view class="content">
         <view class="topBanner"></view>
@@ -28,17 +37,21 @@ export default class ClassName extends BaseNode {
     onReachBottom() {
         this.reqNewData();
     }
-    onPulldDownRefresh() {
-
+    onPullDownRefresh() {
+        this.reqSearchList(()=>{
+            uni.stopPullDownRefresh();
+        })
     }
     // 跳转商品详情
     onClickJumpDetails(goodCode: any) {
         app.navigateTo.goGoodsDetails(goodCode)
     }
-    reqSearchList() {
+    reqSearchList(cb?:Function) {
         this.fetchFrom = 1;
         this.noMoreData = false;
-        this.reqNewData();
+        this.reqNewData(()=>{
+            cb&&cb()
+        });
     }
     reqNewData(cb?: Function) {
         // 获取列表

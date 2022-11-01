@@ -49,13 +49,21 @@ export default class ClassName extends BaseNode {
   private get isNewGoodsList(){
     return this.newGoodsListType.includes(this.urlType)
   }
+  //   下拉刷新
+  onPullDownRefresh() {
+    this.reqSearchList(() => {
+      uni.stopPullDownRefresh();
+    })
+  }
   onReachBottom() {
     this.reqNewData();
   }
-  reqSearchList() {
+  reqSearchList(cb?:Function) {
     this.fetchFrom = 1;
     this.noMoreData = false;
-    this.reqNewData();
+    this.reqNewData(()=>{
+      cb&&cb()
+    });
   }
   // 跳转商品详情
   onClickJumpDetails(goodCode: any) {

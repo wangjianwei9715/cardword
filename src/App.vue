@@ -243,7 +243,6 @@
 					app.navigateTo.goGoodsDetails(goodCode)
 					return
 				}
-				//navigateTo=>/pages/act/playGroup/index?helpCode=666
 				if(args.indexOf("=>")!=-1){
 					const pages = getCurrentPages();
 					let [jumpType,url]=args.split("=>")
@@ -286,18 +285,6 @@
 						}
 					})
 				})
-				//识别球员组合助力
-				const PLAY_GROUP=`亲，复制这段口令打开ka世界帮我助力集球员`
-				if(val.indexOf(PLAY_GROUP)!=-1){
-					const helpCode=val.replace(PLAY_GROUP,'')
-					const mineGetHelpCode=uni.getStorageSync('mineGetHelpCode')
-					if(mineGetHelpCode && mineGetHelpCode==helpCode){
-						return
-					}
-					app.platform.checkPageJump('/pages/act/playGroup/index?helpCode='+helpCode).then(()=>{
-						app.platform.setClipboardEmpty()
-					})
-				}
 			})
 			// #endif
 		},
