@@ -204,6 +204,39 @@ export default class PlatformManager {
 		uni.navigateBack(data)
 
 	}
+	//ui触觉反馈(单次)
+	UIClickFeedBack (){
+    	if (app.platform.systemInfo.platform == "ios") {
+    	    let UIImpactFeedbackGenerator = plus.ios.importClass(
+    	        "UIImpactFeedbackGenerator"
+    	    );
+    	    let generator = new UIImpactFeedbackGenerator();
+    	    //因为系统准备触觉反馈需要一段时间，Apple 建议，触发触觉效果之前，在你的生成器 (generator) 内调用 prepare() 方法。如果你不这么做的话，在视觉效果和对应的震动之间确实会有一个小小的延迟
+    	    generator.prepare();
+    	    generator.init(1);
+    	    generator.impactOccurred();
+    	} else {
+			//@ts-ignore
+    	    uni.vibrateShort();
+    	}
+	}
+	//ios信息触觉反馈
+	UINotificationFeedBack(type?:string)  {
+    	//仅ios
+    	if (app.platform.systemInfo.platform !== 'ios') return
+		if(!type) type='success'
+    	const typeMap:any = {
+    	    'success': 0,
+    	    'warning': 1,
+    	    'error': 2
+    	}
+    	let UINotificationFeedbackGenerator = plus.ios.importClass(
+    	    "UINotificationFeedbackGenerator"
+    	);
+    	let generator = new UINotificationFeedbackGenerator().init();
+    	generator.prepare();
+    	generator.notificationOccurred(typeMap[type] ?? 0)
+	}
 	launchMiniQiYeProgramLive(id: string, goodCode: string) {
 		plus.share.getServices(res => {
 			let sweixin = res.find(i => i.id === 'weixin')
