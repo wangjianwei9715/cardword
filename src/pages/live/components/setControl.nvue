@@ -76,6 +76,12 @@ export default {
             this.front = !this.front
             this.$emit('changeFront', this.front)
         },
+        changeVideoConfig() {
+            this.videoConfig.index == 2
+                ? (this.videoConfig.index = 0)
+                : (this.videoConfig.index += 1);
+            this.$emit('changeResolution', this.videoConfig.index)
+        },
         changeMirrorMode() {
             if (!this.onLive && !this.onPreview) {
                 uni.showToast({

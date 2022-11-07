@@ -1,3 +1,11 @@
+<!--
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2022-10-28 17:43:36
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2022-11-01 15:26:12
+ * @FilePath: \card-world\src\pages\live\liveBroadcast.nvue
+ * @Description:直播主页(即构api错误无需在catch中捕获处理) //当前写到确认开始直播
+-->
 <template>
     <view>
         <!-- 预设主播端预览播放器 -->
@@ -39,8 +47,9 @@
         </view>
         <!-- 清晰度设置控件 -->
         <setControl :liveConfigToolShow.sync="liveConfigToolShow" :onLive="onLive" :onPreview="onPreview"
-            @anchorConfirmPush="anchorConfirmPush" @changeFront="($event) => { engine.useFrontCamera($event) }"
-            @changeMirrorMode="mirrorModeChange" @changeMuted="($event) => { engine.muteMicrophone($event) }" />
+            @changeResolution="changeResolution" @anchorConfirmPush="anchorConfirmPush"
+            @changeFront="($event) => { engine.useFrontCamera($event) }" @changeMirrorMode="mirrorModeChange"
+            @changeMuted="($event) => { engine.muteMicrophone($event) }" />
     </view>
 </template>
 <script>
@@ -66,7 +75,7 @@ import webView from './mixins/webView'
 //---静态数据
 import { textTipsMap, registerList, shareData, engineListen, ZG_PROFILE, videoConfig } from "./utils/staticData"
 //---接口
-import { getLiveRoomData, getMerchantMessage, getUserProfile, logOutRoom } from './utils/request'
+import { getLiveRoomData, getMerchantMessage, getUserProfile, logOutRoom, startLiveBroadcast } from './utils/request'
 //注册app模块
 const app = getApp().globalData.app;
 const parsePic = getApp().globalData.parsePic
@@ -82,6 +91,8 @@ export default {
         return {
             webViewUrl: app.liveWebView,
             deviceInfo,
+            UIClickFeedBack: app.platform.UIClickFeedBack,
+            UINotificationFeedBack: app.platform.UINotificationFeedBack,
             hasNotchInScreen,
             liveCountDownV2,
             canEval: false,
@@ -103,7 +114,7 @@ export default {
                 subscribed: false,//是否订阅
                 gm: false,//是否是管理员
                 data: {
-                    isKickOut: false//是否被剔除直播间
+                    isKickOut: false//是否被踢出直播间
                 },//profile
             },
             liveData: {},//房间信息
@@ -240,30 +251,74 @@ export default {
         },
         //预览
         async startPreview() {
-            try {
-                await this.setVideoConfig();
-                await this.engine.startPreview();
-                this.engine.useFrontCamera(false);
-                this.engine.muteMicrophone(false);
-                this.liveConfigToolShow = true;
-                this.onPreview = true;
-                //     console.log("开始预览");
-            } catch (err) {
-                //     console.log(err);
-            }
+            await this.setVideoConfig();
+            await this.engine.startPreview();
+            this.engine.useFrontCamera(false);
+            this.engine.muteMicrophone(false);
+            this.liveConfigToolShow = true;
+            this.onPreview = true;
         },
         //设置相机参数
-        async setVideoConfig() {
-            const config = videoConfig.config[videoConfig.index];
+        async setVideoConfig(index) {
+            const config = videoConfig.config[index ?? videoConfig.index];
             this.engine.setVideoConfig(config);
+        },
+        roomStreamUpdate(roomID, updateType, streamList) {
+            if (roomID != this.roomID) return;//以防万一zg推送了不是该房间的流
+            //updateType 0:ADD 1:DEL
+            streamList.forEach(item => {
+                const { streamID } = item;
+                if (updateType == 0) this.addStreamUpdate()
+                if (updateType == 1) this.delStreamUpdate()
+            })
+        },
+        addStreamUpdate(streamID) {
+
+        },
+        delStreamUpdate(streamID) {
+
+        },
+        changeResolution(index) {
+            this.setVideoConfig(index)
         },
         mirrorModeChange(val) {
             //Enumeration members 1:本地和远端都镜像 2:都不镜像 3:仅本地镜像 4:仅远端镜像
             if (val) this.engine.setVideoMirrorMode(this.onLive ? 1 : 3);
             if (!val) this.engine.setVideoMirrorMode(2);
         },
-        anchorConfirmPush() {
+        //主播确认开始推流
+        async anchorConfirmPush() {
+            try {
+                //首次推流获取streamID,改变直播状态
+                if (this.liveData && this.liveData.state <= 1) {
+                    await startLiveBroadcast(this.roomID)
+                }
+                await this.startPublishingStream(this.streamID)
+            } catch (err) {
 
+            }
+        },
+        //开始推流
+        async startPublishingStream(streamID) {
+            await this.engine.startPublishingStream(streamID);
+            //推流ID与直播间主ID相同
+            if (streamID == this.streamID) {
+                this.onLive = true;
+                this.liveConfigToolShow = false;
+                // this.pushFlowStamp=Math.round(+new Date()/1000)
+            }
+        },
+        //拉流
+        async startPlayingStream(streamID) {
+            this.engine.startPlayingStream(streamID, {
+                resourceMode: 2 //3:RTC  2:L3
+            });
+            if (this.streamID == streamID) this.onLive = true;
+        },
+        //结束拉流
+        stopPlayingStream(streamID) {
+            this.engine.stopPlayingStream(streamID);
+            if (this.streamID == streamID) this.onLive = false;
         },
         apiCalledResult(errorCode, funcName, info) {
             if (errorCode == 0) {
@@ -291,6 +346,9 @@ export default {
             if (this.userProfile.data.uid && !this.userProfile.data.systemKickOut) {
                 logOutRoom(this.roomID, this.userProfile.data.uid)
             }
+        },
+        followed() {
+            this.UINotificationFeedBack('success')
         },
         setCurrentTimeStamp() {
             currentTimeStampTimer && clearInterval(currentTimeStampTimer)

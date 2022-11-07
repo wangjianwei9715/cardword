@@ -1,6 +1,13 @@
+/*
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2022-10-27 15:19:30
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2022-11-01 15:30:13
+ * @FilePath: \card-world\src\pages\live\utils\request.js
+ * @Description:
+ */
 import { Md5 } from "ts-md5";
 import { nowTime } from './tools'
-//把回调模式处理成promise模式,直播页面容易调试处理
 const app = getApp().globalData.app
 const requestMethods = ['Get', 'Post']
 const factoryPromise = (url, data = {}, method = 'Get') => {
@@ -37,4 +44,7 @@ export const getUserProfile = (roomID) => {
 }
 export const logOutRoom = (roomID, uid) => {
     return factoryPromise(`funcApi/brodcast/third/1001/user/logout/${roomID}`, { uid }, 'Post')
+}
+export const startLiveBroadcast=(roomID)=>{
+    return factoryPromise(`funcApi/brodcast/third/1001/achor/push/${roomID}`,'Post')
 }

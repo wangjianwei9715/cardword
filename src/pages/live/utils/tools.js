@@ -1,9 +1,10 @@
+const deviceInfo = getApp().globalData.app.platform.systemInfo //设备信息
 export const nowTime = () => {
     return Math.round(new Date() / 1000)
 }
-export const goIndex=()=>{
+export const goIndex = () => {
     uni.switchTab({
-        url:'/pages/index/index'
+        url: '/pages/index/index'
     })
 }
 export const $confirm = (content = "提示", title = "直播间提示", showCancel = true) => {
