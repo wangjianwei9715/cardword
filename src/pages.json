@@ -590,6 +590,96 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
+				},
+				{
+					"path": "worldCup/index",
+					"style": {
+						"navigationBarTitleText": "世界杯",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "worldCup/pointDetail",
+					"style": {
+						"navigationBarTitleText": "世界杯积分明细",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "worldCup/description",
+					"style": {
+						"navigationBarTitleText": "世界杯活动说明",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "worldCup/beanMall",
+					"style": {
+						"navigationBarTitleText": "世界豆商店",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "worldCup/beanLog",
+					"style": {
+						"navigationBarTitleText": "兑换明细",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "worldCup/quze",
+					"style": {
+						"navigationBarTitleText": "激情大抽奖",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "worldCup/quzeLog",
+					"style": {
+						"navigationBarTitleText": "抽奖记录",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "worldCup/draw",
+					"style": {
+						"navigationBarTitleText": "世界杯竞猜",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "worldCup/drawLog",
+					"style": {
+						"navigationBarTitleText": "世界杯竞猜明细",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true
+					}
+				},
+				{
+					"path": "worldCup/live",
+					"style": {
+						"navigationBarTitleText": "幸运抽奖",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
 				}
 				
             ]
