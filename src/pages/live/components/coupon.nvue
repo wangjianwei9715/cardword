@@ -12,9 +12,9 @@
         <text class="p">￥</text>
         <text class="pNum">{{coupon.amount || 0}}</text>
       </view>
-      <text class="minAm">{{parseTypeText(coupon) || '555 '}}</text>
+      <text class="minAm">{{parseTypeText(coupon) || '-'}}</text>
       <text class="purpose">{{coupon.tp==1?'店铺券':'商品券'}}</text>
-      <text class="timeSecion">{{coupon.durExp || ' 555'}}</text>
+      <text class="timeSecion">{{coupon.durExp || '-'}}</text>
       <text class="toUse" @click='goUse(coupon)'>去使用</text>
       <image class="close" @click="$emit('update:visible', false)" src="/static/live/redPack_close.png" mode="scaleToFill" />
     </view>
@@ -89,6 +89,7 @@ export default {
     },
     parseTypeText(item) {
       const { minUseAmount, amount } = item;
+      if(!minUseAmount) return '无门槛'
       if (minUseAmount >= 0 && minUseAmount < amount) return "无门槛";
       if (minUseAmount >= 0 && minUseAmount >= amount)
         return `满${minUseAmount}元可用`;
