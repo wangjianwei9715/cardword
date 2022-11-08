@@ -637,7 +637,7 @@
 					}
 				},
 				{
-					"path": "worldCup/quze",
+					"path": "worldCup/quiz",
 					"style": {
 						"navigationBarTitleText": "激情大抽奖",
 						"navigationBarBackgroundColor": "#ffffff",
@@ -646,7 +646,7 @@
 					}
 				},
 				{
-					"path": "worldCup/quzeLog",
+					"path": "worldCup/quizLog",
 					"style": {
 						"navigationBarTitleText": "抽奖记录",
 						"navigationBarBackgroundColor": "#ffffff",
@@ -676,6 +676,15 @@
 					"path": "worldCup/live",
 					"style": {
 						"navigationBarTitleText": "幸运抽奖",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "worldCup/award",
+					"style": {
+						"navigationBarTitleText": "礼物明细",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false

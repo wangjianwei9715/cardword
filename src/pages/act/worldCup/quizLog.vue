@@ -10,31 +10,30 @@ import BaseNode from '@/base/BaseNode.vue';
 @Component({})
 export default class ClassName extends BaseNode {
     queryParams: any = {
-        pageIndex: 1,
-        pageSize: 20
+        fetchFrom: 1,
+        fetchSize: 20,
     }
     list: any = []
-    totalPage: number = 0
+    isFetchEnd: boolean = true
     onLoad(query: any) {
         this.reqNewData()
     }
     onReachBottom() {
-        if (this.queryParams.pageIndex < this.totalPage) {
-            this.queryParams.pageIndex += 1
-            this.reqNewData()
-        }
+        if (this.isFetchEnd) return
+        this.queryParams.fetchFrom += this.queryParams.fetchSize
+        this.reqNewData()
     }
     onPulldDownRefresh() {
-        this.queryParams.pageIndex = 1
+        this.queryParams.fetchFrom = 1
         this.reqNewData(() => {
             uni.stopPullDownRefresh()
         })
     }
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi`, this.queryParams, (res: any) => {
+        app.http.Get(`dataApi/worldCup/bean/guessing/record`, this.queryParams, (res: any) => {
             const list = res.list || []
-            this.totalPage = res.totalPage
-            this.queryParams.pageIndex == 1 ? this.list = list : this.list.push(...list)
+            this.isFetchEnd = res.totalPage
+            this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
             cb && cb()
         })
     }

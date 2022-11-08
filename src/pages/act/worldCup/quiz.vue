@@ -15,10 +15,9 @@ export default class ClassName extends BaseNode {
     }
     list: any = []
     isFetchEnd: boolean = true
+    quizBeanConfList: any = []
     onLoad(query: any) {
-        app.platform.hasLoginToken(() => {
-            this.reqNewData()
-        })
+        this.reqNewData()
     }
     onReachBottom() {
         if (this.isFetchEnd) return
@@ -31,8 +30,23 @@ export default class ClassName extends BaseNode {
             uni.stopPullDownRefresh()
         })
     }
+    joinQuiz(ScheduleId?: any) {
+        app.http.Post(`worldCup/bean/guessing/go/${ScheduleId}`, {}, (res: any) => {
+            app.platform.UINotificationFeedBack('success')
+            uni.showToast({
+                title: '投注成功',
+                icon: 'none'
+            })
+            this.reqNewData()
+        })
+    }
+    reqQuizBeanConfig() {
+        app.http.Get(`dataApi/admin/register`, {}, (res: any) => {
+            this.quizBeanConfList = res.list || []
+        })
+    }
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi/worldCup/bean/lottery/go/record`, this.queryParams, (res: any) => {
+        app.http.Get(`dataApi`, this.queryParams, (res: any) => {
             const list = res.list || []
             this.isFetchEnd = res.totalPage
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
