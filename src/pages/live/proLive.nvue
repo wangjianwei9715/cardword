@@ -152,9 +152,7 @@
       <view class="hbPack">
         <!--  -->
         <image v-if="!clickPack.isOpen" class="packBg" src="../../static/live/hb.png" mode="scaleToFill" />
-        <!--  -->
-        <image v-if="clickPack.grab" class="packBg" src="../../static/live/Grab.png" mode="scaleToFill" />
-        <image v-if="clickPack.state==99" class="packBg" src="../../static/live/Grab.png" mode="scaleToFill" />
+        <image v-if="(clickPack.grab || clickPack.state==99) && !clickPack.preview" class="packBg" src="../../static/live/Grab.png" mode="scaleToFill" />
         <image v-if="clickPack.preview" class="packBg" src="../../static/live/preview.png" mode="scaleToFill" />
         <!-- 未开启状态 -->
         <!--  -->
@@ -897,6 +895,7 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
             this.grablist = res.list || [];
             this.clickPack.preview = true;
             this.clickPack.grab = false;
+            console.log(this.clickPack);
           }
         );
       },
