@@ -95,8 +95,7 @@
     <!-- 发送优惠券 -->
     <sendCoupon :keyHeight='keyHeight' @sendCoupon="sendCoupon" :alias="liveData.merchantAlias"
       :visible.sync="sendCouponShow" />
-    <coupon @pageJump='pageJump' :userAvatar='userData.avatar' :visible.sync="showCoupon"
-      :alias="liveData.merchantAlias" :coupon='clickCoupon' />
+    
     <!-- 礼物 -->
     <popup :visible.sync="giftShow" :height="696">
       <view class="publicTop">
@@ -236,9 +235,9 @@
           <text style="font-size: 34rpx;
 font-family: PingFang SC;
 font-weight: bold;
-color: #E6A44F;">红包已领完</text>
+color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?clickPack.tips:'红包已抢完'}}</text>
           <text style="font-size: 25rpx;
-color: #E6A44F;">下次加油！</text>
+color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}卡币`:'下次加油！'}}</text>
           <text style="font-size: 34rpx;
           font-family: PingFang SC;
           font-weight: bold;
@@ -317,8 +316,6 @@ color: #E6A44F;">下次加油！</text>
         <text class="packCountDown" v-if="showHbList[0].state==0">{{hbCountDown(showHbList[0])}}</text>
       </view>
       <view class="fixedPack" v-if="showCouponList.length" @click="getQuan(showCouponList[0].id)">
-
-        <!-- /static/live/smallCouponV3.png -->
         <image class="bg" style="width:54rpx;height:67rpx"
           src="https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.07.28/cardlist/0/1658987803961d8nieko2t.png"
           mode="scaleToFill" />
@@ -330,6 +327,10 @@ color: #E6A44F;">下次加油！</text>
       @send="sendTalk(inputText)" :showInput.sync='showInput' v-model='inputText' :needSend='true'
       placeholder='说点什么吧...' />
     <nvueShare :visible.sync='shareShow' :shareData='shareData'></nvueShare>
+    <u-overlay :show="showCoupon" :opacity="0.4" :duration="0">
+      <coupon @pageJump='pageJump' :userAvatar='userData.avatar' :visible.sync="showCoupon"
+      :alias="liveData.merchantAlias" :coupon='clickCoupon' />
+    </u-overlay>
   </view>
 </template>
 
@@ -523,7 +524,8 @@ color: #E6A44F;">下次加油！</text>
         subscribed: false,//是否开启了开播提醒
         alreadyOnceSocket:false,//是否已经进行过一次socket连接(无论失败与否)
         pushFlowStamp:null,
-        isOtherReplaceUser:false
+        isOtherReplaceUser:false,
+        grabRedEnvelope:false,//抢红包锁
       };
     },
     beforeCreate() {
@@ -536,26 +538,6 @@ color: #E6A44F;">下次加油！</text>
       // #endif
     },
     onBackPress() {
-      // uni.hideLoading();
-      // if (this.lmUser.uid == this.userData.uid && this.lmStreanID != "0") {
-      //   this.SelfTerminateLianmai();
-      // }
-      // if (this.mixerTask) {
-      //   this.engine.stopMixerTask(this.mixerTask);
-      //   console.log('结束混流');
-      // }
-      // this.stopPreview();
-      // //关闭常亮
-      // uni.setKeepScreenOn({
-      //   keepScreenOn: false
-      // });
-      // this.stopPublishingStream(true);
-      // uni.$off("socketClose", this.socketClose);
-      // uni.offKeyboardHeightChange(this.keyBoardHeightChange);
-      // this.leaveRoom();
-
-      // this.stampTimer && clearInterval(this.stampTimer);
-      // console.log("退出房间");
     },
     beforeDestroy() {
       uni.hideLoading();
@@ -1159,14 +1141,14 @@ color: #E6A44F;">下次加油！</text>
           this.sendSocketMsg("HeartBeat", {
             time: new Date().getTime()
           }).then(res => {
-            console.log('发送心跳');
+            // console.log('发送心跳');
           }).catch(err => {
             console.log('心跳发送失败', err);
           });
         }
       },
       BackHeartBeat(res) {
-        console.log('心跳包回调', res, Math.round(new Date() / 1000));
+        // console.log('心跳包回调', res, Math.round(new Date() / 1000));
         this.heartBeatStamp = res//记录存储上次心跳包回调时间戳
       },
       //-----------socket房间功能----------
@@ -1335,10 +1317,11 @@ color: #E6A44F;">下次加油！</text>
       },
       grabHongbao(hongbaoId) {
         //抢红包
+        if(this.grabRedEnvelope) return
+        this.grabRedEnvelope=true
+        uni.showLoading()
         this.UIClickFeedBack();
-        this.sendSocketMsg("RequestGrabHongbao", {
-          hongbaoId: Number(hongbaoId)
-        });
+        this.sendSocketMsg("RequestGrabHongbao", {hongbaoId: Number(hongbaoId)});
       },
       BackGrabHongbao(res) {
         //抢红包回调
@@ -1349,6 +1332,8 @@ color: #E6A44F;">下次加油！</text>
             this.clickPack.isOpen = true;
             this.clickPack.grab = true;
             this.clickPack.state = 2;
+            this.grabRedEnvelope=false
+            uni.hideLoading()
           })
           .catch(err => {
             console.log(err);
@@ -1358,8 +1343,10 @@ color: #E6A44F;">下次加油！</text>
               this.clickPack.isOpen = true;
               this.clickPack.preview = false;
               this.clickPack.grab = false;
-
+              this.clickPack.tips=err
               this.hbPackShow = true;
+              this.grabRedEnvelope=false
+              uni.hideLoading()
             }
           });
       },
@@ -1425,11 +1412,11 @@ color: #E6A44F;">下次加油！</text>
       },
       //抢券
       getQuan(id) {
-        this.clickCoupon = this.showCouponList[0];
-        this.UIClickFeedBack();
-        this.sendSocketMsg("RequestGetMerchantCoupon", {
-          id
-        });
+        uni.$u.throttle(()=>{
+            this.clickCoupon = this.showCouponList[0];
+            this.UIClickFeedBack();
+            this.sendSocketMsg("RequestGetMerchantCoupon", {id});
+        },500)
       },
       //抢券回调
       BackGetMerchantCoupon(res) {
@@ -1440,29 +1427,15 @@ color: #E6A44F;">下次加油！</text>
             this.showCoupon = true;
           })
           .catch(err => {
-            console.log("抢券失败", err);
             const failMsg = ["很遗憾,已经领完了", "优惠券未找到或已经领完"];
-            console.log(this.clickCoupon, this.showCouponList);
-
             if (failMsg.includes(err)) {
               const failGetIndex = this.showCouponList.findIndex(item => {
                 return +this.clickCoupon.id == +item.id;
-                // console.log(
-                //   item,
-                //   item.id,
-                //   this.clickCoupon.id,
-                //   +this.clickCoupon.id == +item.id
-                // );
-                // +this.clickCoupon.id == +item.id;
               });
-              setTimeout(() => {
-                console.log("需要删除的索引", failGetIndex);
-              }, 3000);
               if (failGetIndex >= 0) this.showCouponList.splice(failGetIndex, 1);
             } else {
               this.clickCoupon = {};
             }
-            // this.informH5Action('getCouponFail', res)
           });
         console.log("抢券回调", res);
       },
@@ -2677,7 +2650,7 @@ color: #E6A44F;">下次加油！</text>
   }
 
   .fixedPackContainer {
-    height: 68rpx;
+    height: 72rpx;
     /* margin-top: 37rpx; */
     position: absolute;
     flex-direction: row;
