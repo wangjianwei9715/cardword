@@ -4,12 +4,11 @@ export default {
         canEvalAction(canEval) {
             this.canEval = true;
         },
-        //点赞
-        addLike(likeNum) {
-            this.LiveSocket.send("RequestLike", {
-                num: +likeNum
-            });
+        //抬起键盘
+        upKeyBord() {
+            this.showInput = true;
         },
+        
         showConfig() {
             if (!this.onPreview && !this.onLive) {
                 uni.showToast({
@@ -20,5 +19,6 @@ export default {
             }
             this.liveConfigToolShow = true;
         },
+        
     }
 }

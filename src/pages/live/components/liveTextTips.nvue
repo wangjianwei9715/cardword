@@ -6,7 +6,7 @@
         <text class="liveCountDown" v-if="maskCountDownTips != '' && (typeof liveData.state != 'undefined')">{{
                 maskCountDownTips
         }}</text>
-        <text class="playStart" v-if="isAnchor && !finishLive" @click="$emit('startPreview')">开始直播</text>
+        <text class="playStart" v-if="isAnchor && liveData.state != 3" @click="$emit('startPreview')">开始直播</text>
         <!-- -->
         <template v-if="!isAnchor && ([0, 1].includes(liveData.state))">
             <image v-if="!subscribed" src="../../../static/live/playTips.png" class="subscribedTips" mode="scaleToFill"
@@ -38,6 +38,10 @@ export default {
         subscribed: {
             type: Boolean,
             default: false
+        },
+        maskCountDownTips: {
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -46,7 +50,6 @@ export default {
         }
     },
     computed: {
-
     },
     watch: {
 

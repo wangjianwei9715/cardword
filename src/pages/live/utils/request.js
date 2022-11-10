@@ -45,6 +45,9 @@ export const getUserProfile = (roomID) => {
 export const logOutRoom = (roomID, uid) => {
     return factoryPromise(`funcApi/brodcast/third/1001/user/logout/${roomID}`, { uid }, 'Post')
 }
-export const startLiveBroadcast=(roomID)=>{
-    return factoryPromise(`funcApi/brodcast/third/1001/achor/push/${roomID}`,'Post')
+export const startLiveBroadcast = (roomID) => {
+    return factoryPromise(`funcApi/brodcast/third/1001/achor/push/${roomID}`, {}, 'Post')
+}
+export const stopLiveBroadcast = (roomID, data) => {
+    return factoryPromise(`funcApi/brodcast/third/1001/achor/stopPush/${roomID}`, data, 'Post')
 }

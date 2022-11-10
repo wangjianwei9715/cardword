@@ -8,11 +8,19 @@
 -->
 <template>
     <view>
+        <!-- 预设房间主流播放器 -->
+        <view v-if="!isAnchor">
+            <zego-remote-view :streamID="streamID" :viewMode="1" :style="[fillHeight, fillWidth]">
+            </zego-remote-view>
+        </view>
         <!-- 预设主播端预览播放器 -->
         <view v-if="isAnchor">
             <zego-local-view class="fillUp" :style="[fillHeight, fillWidth]" :viewMode="1">
             </zego-local-view>
         </view>
+        <!-- 预设连麦播放器 -->
+        <zego-remote-view :streamID="lmStreanID" :viewMode="1" style="opacity: 0;width: 0rpx;height: 0rpx;">
+        </zego-remote-view>
         <!-- 封面 -->
         <template>
             <image class="fillUp" :src="parsePic(liveData.cover)" :class="{ none: !showMask }" :style="[fillHeight]"
@@ -24,12 +32,12 @@
         <web-view class='webView' ref='webView' :webview-styles="webviewStyles" @onPostMessage="handleMessage"
             :style="{ height: (hasNotchInScreen && deviceInfo.platform == 'ios') ? iosHeight : deviceInfo.screenHeight }"
             :src="webViewUrl" />
-        <liveTextTips :liveData="liveData" :class="{ none: !showMask }" :isAnchor="isAnchor" :subscribed="subscribed"
-            @startPreview="startPreview" />
+        <liveTextTips :liveData="liveData" :maskCountDownTips="maskCountDownTips" :class="{ none: !showMask }"
+            :isAnchor="isAnchor" :subscribed="subscribed" @startPreview="startPreview" />
         <!-- 头部主播信息及在线人数等 -->
         <view class="merchantContainer" :style="{ top: (56 + deviceInfo.statusBarHeight) + 'rpx' }">
             <view class="merchantInfo">
-                <image class="merchantInfo_img" :src="parsePic(liveData.merchantLogo)" mode="scaleToFill"
+                <image class="merchantInfo_img" :src="parsePic(liveData.merchantLogo)" mode="aspectFill"
                     @click='toMerchant' />
                 <view class="merchantInfo_msg" @click='toMerchant'>
                     <text class="merchantInfo_name">{{ liveData.mechantName || '获取昵称中' }}</text>
@@ -42,7 +50,7 @@
                 <text class='topRightWrap_online'>{{ onlineNum || "获取中" }}在线</text>
                 <text class="topRightWrap_overLive" v-if="isAnchor && onLive" @click="confirmStop">结束</text>
                 <image @click='back' v-if='!isAnchor || (isAnchor && (!onPreview && !onLive))'
-                    class='topRightWrap_close' src="/static/live/close.png" mode="scaleToFill" />
+                    class='topRightWrap_close' src="/static/live/close.png" mode="aspectFill" />
             </view>
         </view>
         <!-- 清晰度设置控件 -->
@@ -50,6 +58,10 @@
             @changeResolution="changeResolution" @anchorConfirmPush="anchorConfirmPush"
             @changeFront="($event) => { engine.useFrontCamera($event) }" @changeMirrorMode="mirrorModeChange"
             @changeMuted="($event) => { engine.muteMicrophone($event) }" />
+        <!-- input组件 -->
+        <fixdInput :keyHeight='keyHeight' @liftChat='informH5Action("liftChat",$event)' :needSendH5Up='true'
+            @send="sendTalk(inputText)" :showInput.sync='showInput' v-model='inputText' :needSend='true'
+            placeholder='说点什么吧...' />
     </view>
 </template>
 <script>
@@ -71,11 +83,13 @@ import { $toast, $confirm, nowTime, goIndex } from './utils/tools'
 import LiveSocket from './utils/socket'
 import permision from "@/js_sdk/wa-permission/permission";
 import socketBack from './mixins/socketBack'
+import socketSend from './mixins/socketSend'
 import webView from './mixins/webView'
+import { Md5 } from "ts-md5";
 //---静态数据
 import { textTipsMap, registerList, shareData, engineListen, ZG_PROFILE, videoConfig } from "./utils/staticData"
 //---接口
-import { getLiveRoomData, getMerchantMessage, getUserProfile, logOutRoom, startLiveBroadcast } from './utils/request'
+import { getLiveRoomData, getMerchantMessage, getUserProfile, logOutRoom, startLiveBroadcast, stopLiveBroadcast } from './utils/request'
 //注册app模块
 const app = getApp().globalData.app;
 const parsePic = getApp().globalData.parsePic
@@ -85,8 +99,8 @@ const liveCountDownV2 = getApp().globalData.liveCountDownV2
 //setTime_setInterval
 let currentTimeStampTimer = null
 export default {
-    mixins: [socketBack, webView],
-    components: { ZegoLocalView, ZegoRemoteView, liveTextTips, setControl },
+    mixins: [socketBack, socketSend, webView],
+    components: { ZegoLocalView, ZegoRemoteView, liveTextTips, setControl, fixdInput },
     data() {
         return {
             webViewUrl: app.liveWebView,
@@ -96,6 +110,9 @@ export default {
             hasNotchInScreen,
             liveCountDownV2,
             canEval: false,
+            keyHeight: 0,
+            inputText: "",
+            showInput: false,
             webviewStyles: {
                 progress: false
             },
@@ -119,8 +136,8 @@ export default {
             },
             liveData: {},//房间信息
             roomID: null, //房间id
-            streamID: null, //主播流id
-            lmStreanID: "0", //连麦流id，不能设置未null,undefined，ios会出现闪退
+            streamID: "0", //房间主流id,不能设置未null，ios会出现闪退
+            lmStreanID: "0", //连麦流id，不能设置未null，ios会出现闪退
             applyLianmai: false,//是否开启连麦功能
             onPreview: false,
             onLive: false,
@@ -202,7 +219,6 @@ export default {
                 uni.onKeyboardHeightChange(this.keyBoardHeightChange);
                 // uni.$on("socketClose", this.socketClose);
                 this.roomID = query.roomID;
-                this.streamID = query.streamID;
                 if (query.isAnchor == "true") this.isAnchor = true;
             } catch (err) {
                 throw new Error(err.message || err)
@@ -210,7 +226,12 @@ export default {
         },
         //键盘高度变化
         keyBoardHeightChange(event) {
-
+            const _heightDiff =
+                this.deviceInfo.screenHeight - this.deviceInfo.windowHeight;
+            const _diff = event.height - _heightDiff;
+            // 键盘高度
+            const height = (_diff > 0 ? _diff : 0) - 2;
+            this.keyHeight = height;
         },
         async createEngine() {
             this.engine = await getApp().globalData.ZegoExpressEngine.createEngineWithProfile(ZG_PROFILE);
@@ -264,19 +285,23 @@ export default {
             this.engine.setVideoConfig(config);
         },
         roomStreamUpdate(roomID, updateType, streamList) {
+            console.log(streamList);
             if (roomID != this.roomID) return;//以防万一zg推送了不是该房间的流
             //updateType 0:ADD 1:DEL
             streamList.forEach(item => {
                 const { streamID } = item;
-                if (updateType == 0) this.addStreamUpdate()
-                if (updateType == 1) this.delStreamUpdate()
+                if (updateType == 0) this.addStreamUpdate(streamID)
+                if (updateType == 1) this.delStreamUpdate(streamID)
             })
         },
-        addStreamUpdate(streamID) {
-
+        addStreamUpdate(captureStreamID) {
+            const isMainstream_userNotAnchor = captureStreamID == this.streamID && !this.isAnchor//用户捕获到主流
+            const isLianMai_userNotInitiator = captureStreamID != this.streamID//非连麦发起者捕获到流
+            if (isMainstream_userNotAnchor || isLianMai_userNotInitiator) this.startPlayingStream(captureStreamID);
         },
-        delStreamUpdate(streamID) {
-
+        delStreamUpdate(captureStreamID) {
+            this.engine.stopPlayingStream(captureStreamID);
+            if (this.streamID == captureStreamID) this.onLive = false;
         },
         changeResolution(index) {
             this.setVideoConfig(index)
@@ -294,12 +319,14 @@ export default {
                     await startLiveBroadcast(this.roomID)
                 }
                 await this.startPublishingStream(this.streamID)
+                console.log('成功推流');
             } catch (err) {
 
             }
         },
         //开始推流
         async startPublishingStream(streamID) {
+            console.log('推流ID', streamID);
             await this.engine.startPublishingStream(streamID);
             //推流ID与直播间主ID相同
             if (streamID == this.streamID) {
@@ -307,6 +334,33 @@ export default {
                 this.liveConfigToolShow = false;
                 // this.pushFlowStamp=Math.round(+new Date()/1000)
             }
+        },
+        //主播确认结束
+        confirmStop() {
+            $confirm('是否结束直播?', '直播间提示').then(() => this.stopLive())
+        },
+        //结束api操作
+        stopLive() {
+            const sign = Md5.hashStr(
+                "stopPushStream" + `_${this.roomID}_${this.streamID}`
+            );
+            stopLiveBroadcast(this.roomID, { sign }).then(() => {
+                // this.finishLive = true;
+                // this.pushFlowStamp = null
+                this.stopPublishingStream();
+                this.liveData.state = 3
+            })
+        },
+        async stopPublishingStream(isLmStream = false) {
+            await this.stopPreview();
+            await this.engine.stopPublishingStream();
+            if (!isLmStream) this.onLive = false;
+            // if (isLmStream) this.pushFlowStamp = null
+        },
+        //停止预览
+        async stopPreview() {
+            await this.engine.stopPreview();
+            this.onPreview = false;
         },
         //拉流
         async startPlayingStream(streamID) {
@@ -370,6 +424,7 @@ export default {
             this.setShareData(data);
         },
         setUserProfile(res) {
+            this.streamID = res.data.streamId;
             this.userProfile = res
             this.userProfile.data.isKickOut = false
             this.userProfile.gm = false
