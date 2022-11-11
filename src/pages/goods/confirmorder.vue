@@ -462,7 +462,7 @@ export default class ClassName extends BaseNode {
     }else if(this.payRandomTeamData!=''){
       price = this.keepTwoDecimal(this.getRandomTotalPrice() - this.couponTotalPrice)
     }else{
-      price = this.keepTwoDecimal(this.freeNum>0?(this.freeNum>=this.moneyNum?0:((this.moneyNum - this.freeNum)*(this.onePrice - this.couponTotalPrice))):(this.moneyNum * this.onePrice - this.couponTotalPrice))
+      price = this.keepTwoDecimal(this.freeNum>0?(this.freeNum>=this.moneyNum?0:((this.moneyNum - this.freeNum)*(this.onePrice )- this.couponTotalPrice)):(this.moneyNum * this.onePrice - this.couponTotalPrice))
     }
     return price
   }
