@@ -2,9 +2,9 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-10-27 15:19:30
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-01 15:30:13
+ * @LastEditTime: 2022-11-11 11:48:01
  * @FilePath: \card-world\src\pages\live\utils\request.js
- * @Description:
+ * @Description:API
  */
 import { Md5 } from "ts-md5";
 import { nowTime } from './tools'
@@ -50,4 +50,7 @@ export const startLiveBroadcast = (roomID) => {
 }
 export const stopLiveBroadcast = (roomID, data) => {
     return factoryPromise(`funcApi/brodcast/third/1001/achor/stopPush/${roomID}`, data, 'Post')
+}
+export const getRoomPackCouponList = (roomID, uid) => {
+    return factoryPromise(`funcApi/brodcast/third/common/room/clicklist/${roomID}`, { uid }, "Get")
 }

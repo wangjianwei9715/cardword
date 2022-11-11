@@ -1,0 +1,130 @@
+<!--
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2022-11-11 10:39:16
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2022-11-11 11:59:14
+ * @FilePath: \card-world\src\pages\live\components\suspension.nvue
+ * @Description: 红包或优惠券可抢提示组件
+-->
+<template>
+    <view class="fixedPackContainer" :style="{ top: (165 + deviceInfo.statusBarHeight) + 'rpx' }">
+        <view class="fixedPack" v-if="showHbList.length" @click="showPackAction">
+            <image class="bg pack" src="/static/live/smallPackV3.png" mode="aspectFill" />
+            <image class="floatPackAvatar"
+                :src="showHbList[0].senderAvatar ? decodeURIComponent(showHbList[0].senderAvatar) : defaultAvatar"
+                mode="aspectFill" />
+            <text class="surplusNum" v-if="showHbList.length > 1">{{ showHbList.length }}</text>
+            <text class="packCountDown" v-if="showHbList[0].state == 0">{{ hbCountDown(showHbList[0]) }}</text>
+        </view>
+        <view class="fixedPack" v-if="showCouponList.length" @click="onClickCoupon(showCouponList[0].id)">
+            <image class="bg pack" src="/static/live/smallCouponV3.png" mode="aspectFill" />
+            <text class="surplusNum" v-if="showCouponList.length > 1">{{ showCouponList.length }}</text>
+            <text class="packCountDown" v-if="showCouponList[0].state == 0">{{ hbCountDown(showCouponList[0]) }}</text>
+        </view>
+    </view>
+</template>
+<script>
+export default {
+    props: {
+        showHbList: {
+            type: Array,
+            default: () => {
+                return []
+            }
+        },
+        showCouponList: {
+            type: Array,
+            default: () => {
+                return []
+            }
+        },
+        currentTimeStamp: {
+            type: Number,
+            default: 0
+        }
+
+    },
+    data() {
+        return {
+            defaultAvatar: getApp().globalData.app.defaultAvatar,
+            deviceInfo: getApp().globalData.app.platform.systemInfo,
+            getCountDownTime: getApp().globalData.getCountDownTime,
+        }
+    },
+    mounted() {
+
+    },
+    methods: {
+        hbCountDown(item, isPackOpen = false) {
+            const time = +item.startTime - this.currentTimeStamp;
+            if (time <= 0) {
+                item.startTime = 0;
+                item.state = 1;
+                return 0;
+            }
+            if (isPackOpen) return time;
+            return this.getCountDownTime(time);
+        },
+        //抢券
+        onClickCoupon(id) {
+            this.$emit('onClickCoupon', id)
+        },
+    }
+}    
+</script>
+<style>
+.fixedPackContainer {
+    height: 72rpx;
+    position: absolute;
+    flex-direction: row;
+    align-items: center;
+    position: fixed;
+    left: 29rpx;
+}
+
+.bg {
+    position: absolute;
+}
+
+.pack {
+    width: 54rpx;
+    height: 67rpx
+}
+
+.surplusNum {
+    width: 24rpx;
+    height: 24rpx;
+    font-size: 22rpx;
+    color: #fff;
+    border-radius: 50%;
+    background-color: #e89229;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    top: 0rpx;
+    line-height: 24rpx;
+}
+
+.packCountDown {
+    font-size: 17rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 83rpx;
+    text-align: center;
+    line-height: 18rpx;
+    width: 54rpx;
+    height: 18rpx;
+    background: rgba(19, 18, 25, 0.63);
+    border-radius: 8rpx;
+    position: absolute;
+    bottom: 4rpx;
+    left: 2rpx;
+}
+
+.fixedPack {
+    width: 54rpx;
+    height: 75rpx;
+    margin-right: 32rpx;
+}
+</style>

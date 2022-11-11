@@ -1,4 +1,12 @@
-import { $confirm, $toast } from '../utils/tools'
+/*
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2022-10-28 10:07:21
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2022-11-11 11:52:20
+ * @FilePath: \card-world\src\pages\live\mixins\socketBack.js
+ * @Description: socket接收回调
+ */
+import { $confirm, $toast, packInsertAlgorithm } from '../utils/tools'
 //socket回调
 export default {
     data() {
@@ -90,6 +98,37 @@ export default {
                     url: "/pages/index/index"
                 });
             })
+        },
+        BackSendMerchantCoupon(res) {
+            this.checkBack(res).then(() => {
+                uni.hideLoading();
+                $toast.success('发送成功')
+            })
+        },
+        BroadCastMerchantCoupon(res) {
+            console.log("广播优惠券", res);
+            this.showCouponList = packInsertAlgorithm(res.list, this.showCouponList)
+        },
+        //抢券回调
+        BackGetMerchantCoupon(res) {
+            this.checkBack(res)
+                .then(res => {
+                    console.log("抢券成功");
+                    this.clickCoupon = { ...res.coupon, id: this.clickCoupon.id };
+                    this.showCoupon = true;
+                })
+                .catch(err => {
+                    const failMsg = ["很遗憾,已经领完了", "优惠券未找到或已经领完"];
+                    if (failMsg.includes(err)) {
+                        const failGetIndex = this.showCouponList.findIndex(item => {
+                            return +this.clickCoupon.id == +item.id;
+                        });
+                        if (failGetIndex >= 0) this.showCouponList.splice(failGetIndex, 1);
+                    } else {
+                        this.clickCoupon = {};
+                    }
+                });
+            console.log("抢券回调", res);
         },
     }
 }

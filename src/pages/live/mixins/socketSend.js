@@ -1,3 +1,11 @@
+/*
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2022-11-10 18:04:55
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2022-11-11 12:01:51
+ * @FilePath: \card-world\src\pages\live\mixins\socketSend.js
+ * @Description:socket发送
+ */
 import { $confirm, $toast } from '../utils/tools'
 const app = getApp().globalData.app
 //socket发送
@@ -16,13 +24,13 @@ export default {
                 num: +likeNum
             });
         },
+        //禁言
         GmChatBid(uid, name) {
-            //禁言
             uni.showLoading();
             this.LiveSocket.send("GmChatBid", uid ? { uid } : { name });
         },
+        //管理员进行踢出房间操作
         GmKickOutRoom(uid, name) {
-            //管理员进行踢出房间操作
             this.LiveSocket.send("GmKickOutRoom", uid ? { uid } : { name });
         },
         //发送消息
@@ -40,5 +48,21 @@ export default {
             this.inputText = "";
             this.showInput = false;
         },
+        //发送优惠券
+        sendCoupon(sendItem) {
+            console.log("发送的优惠券的参数", sendItem);
+            uni.showLoading();
+            this.LiveSocket.send("RequestSendMerchantCoupon", sendItem).then(() => {
+                this.sendCouponShow = false;
+            });
+        },
+        //抢券
+        onClickCoupon(id) {
+            uni.$u.throttle(() => {
+                this.clickCoupon = this.showCouponList[0];
+                app.platform.UIClickFeedBack()
+                this.LiveSocket.send("RequestGetMerchantCoupon", { id });
+            }, 500)
+        }
     }
 }

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-10-28 17:43:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-01 15:26:12
+ * @LastEditTime: 2022-11-11 11:42:17
  * @FilePath: \card-world\src\pages\live\liveBroadcast.nvue
  * @Description:直播主页(即构api错误无需在catch中捕获处理) //当前写到确认开始直播
 -->
@@ -53,15 +53,21 @@
                     class='topRightWrap_close' src="/static/live/close.png" mode="aspectFill" />
             </view>
         </view>
+        <suspension :currentTimeStamp="currentTimeStamp" :showCouponList="showCouponList" :showHbList="showHbList" @onClickCoupon="onClickCoupon"/>
+        <!-- 发送优惠券 -->
+        <sendCoupon :keyHeight='keyHeight' @sendCoupon="sendCoupon" :alias="liveData.merchantAlias"
+            :visible.sync="sendCouponShow" />
         <!-- 清晰度设置控件 -->
         <setControl :liveConfigToolShow.sync="liveConfigToolShow" :onLive="onLive" :onPreview="onPreview"
             @changeResolution="changeResolution" @anchorConfirmPush="anchorConfirmPush"
             @changeFront="($event) => { engine.useFrontCamera($event) }" @changeMirrorMode="mirrorModeChange"
             @changeMuted="($event) => { engine.muteMicrophone($event) }" />
         <!-- input组件 -->
-        <fixdInput :keyHeight='keyHeight' @liftChat='informH5Action("liftChat",$event)' :needSendH5Up='true'
+        <fixdInput :keyHeight='keyHeight' @liftChat='informH5Action("liftChat", $event)' :needSendH5Up='true'
             @send="sendTalk(inputText)" :showInput.sync='showInput' v-model='inputText' :needSend='true'
             placeholder='说点什么吧...' />
+        <!-- 遮罩层 -->
+        <!-- <u-overlay :show="overlayShow"></u-overlay> -->
     </view>
 </template>
 <script>
@@ -77,7 +83,7 @@ import fixdInput from "./components/fixdInput.nvue";
 import nvueShare from "./components/nvueShare.nvue";
 import liveTextTips from "./components/liveTextTips.nvue"
 import setControl from "./components/setControl.nvue"
-
+import suspension from './components/suspension'
 //---功能
 import { $toast, $confirm, nowTime, goIndex } from './utils/tools'
 import LiveSocket from './utils/socket'
@@ -89,7 +95,7 @@ import { Md5 } from "ts-md5";
 //---静态数据
 import { textTipsMap, registerList, shareData, engineListen, ZG_PROFILE, videoConfig } from "./utils/staticData"
 //---接口
-import { getLiveRoomData, getMerchantMessage, getUserProfile, logOutRoom, startLiveBroadcast, stopLiveBroadcast } from './utils/request'
+import { getLiveRoomData, getMerchantMessage, getUserProfile, logOutRoom, startLiveBroadcast, stopLiveBroadcast, getRoomPackCouponList } from './utils/request'
 //注册app模块
 const app = getApp().globalData.app;
 const parsePic = getApp().globalData.parsePic
@@ -100,7 +106,7 @@ const liveCountDownV2 = getApp().globalData.liveCountDownV2
 let currentTimeStampTimer = null
 export default {
     mixins: [socketBack, socketSend, webView],
-    components: { ZegoLocalView, ZegoRemoteView, liveTextTips, setControl, fixdInput },
+    components: { ZegoLocalView, ZegoRemoteView, liveTextTips, setControl, fixdInput, sendCoupon, suspension },
     data() {
         return {
             webViewUrl: app.liveWebView,
@@ -116,6 +122,10 @@ export default {
             webviewStyles: {
                 progress: false
             },
+            sendCouponShow: false,
+            showCouponList: [],
+            clickCoupon:{},
+            showHbList: [],
             webView: null,//webView实例
             engine: null,//直播实例
             enterRoomTimeStamp: null,
@@ -160,6 +170,7 @@ export default {
             this.merchantMessage = merchantMessage
             await this.createEngine()
             await this.loginZgRoom()
+            await this.getRoomRedPackCouponList();
             this.initSocket()
         } catch (err) {
             err && $confirm(err.message || err, '直播间提示', false).then(() => goIndex())
@@ -172,6 +183,7 @@ export default {
     },
     computed: {
         iosHeight() {
+            console.log(this.deviceInfo, this.deviceInfo, this.deviceInfo, this.deviceInfo);
             return (
                 this.deviceInfo.screenHeight +
                 this.deviceInfo.statusBarHeight +
@@ -438,6 +450,17 @@ export default {
                 summary: `${data.title}的直播间`,
                 thumb: this.parsePic(decodeURIComponent(data.cover))
             };
+        },
+        //获取房间内可领取红包以及优惠券列表
+        getRoomRedPackCouponList() {
+            if (!this.userProfile.data.uid) return;
+            getRoomPackCouponList(this.roomID, this.userProfile.data.uid).then(res => {
+                console.log('可领取列表', res);
+                this.showHbList = (res.hongbao || []).filter(item => {
+                    return !item.myGrabPoint
+                });
+                this.showCouponList = res.coupon || [];
+            })
         },
         showWebView() {
             if (!this.canEval) {

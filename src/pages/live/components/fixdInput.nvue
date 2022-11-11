@@ -1,9 +1,12 @@
 <template>
-  <view class="fixedInput" :style="{bottom:0,transform:`translateY(-${keyHeight}px)`}" v-if='showInput'>
+  <view class="fixedInput" :style="{ bottom: 0, transform: `translateY(-${keyHeight}px)` }" v-if='showInput'>
 
-    <input v-if='type=="digit"' class="showInput" @input='onInput' type="digit" ref="fixInput"  v-model="valueModel" :adjust-position='false' placeholder-style="color:#706f73" :placeholder="placeholder">
-    <input v-if='type!="digit"' class="showInput" @input='onInput' type="text" ref="fixInput" @confirm='$emit("send")' confirm-type='send' v-model="valueModel" :adjust-position='false' placeholder-style="color:#706f73" :placeholder="placeholder">
-    <text class="inputSubmit" @click='sendTalk'>{{needSend?'发送':'完成'}}</text>
+    <input v-if='type == "digit"' class="showInput" @input='onInput' type="digit" ref="fixInput" v-model="valueModel"
+      :adjust-position='false' placeholder-style="color:#706f73" :placeholder="placeholder">
+    <input v-if='type != "digit"' class="showInput" @input='onInput' type="text" ref="fixInput" @confirm='$emit("send")'
+      confirm-type='send' v-model="valueModel" :adjust-position='false' placeholder-style="color:#706f73"
+      :placeholder="placeholder">
+    <text class="inputSubmit" @click='sendTalk'>{{ needSend ? '发送' : '完成' }}</text>
   </view>
 </template>
 <script>
@@ -54,37 +57,32 @@ export default {
     };
   },
   beforeDestroy() {
-    // uni.offKeyboardHeightChange(this.keyBoardHeightChange);
   },
   mounted() {
-    // console.log('初始化发送优惠券界面',this.showInput);
-    // uni.onKeyboardHeightChange(this.keyBoardHeightChange);
   },
   computed: {
     valueModel: {
-      get: function() {
+      get: function () {
         // console.log("getValue", this.value);
         return this.value;
       },
-      set: function(val) {
+      set: function (val) {
         this.$emit("handlerValueChange", val);
       }
     }
   },
   watch: {
-    keyHeight: function(val, oldVal) {
-      // console.log("keyHeight变化", val,oldVal);
+    keyHeight: function (val, oldVal) {
       if (this.needSendH5Up) this.$emit("liftChat", val);
       if (val < 0 && val < oldVal) {
-        console.log("收起键盘blur");
-        this.$refs.fixInput.blur();
+        this.$refs.fixInput && this.$refs.fixInput.blur();
         this.$emit("update:showInput", false);
       }
     },
-    showInput: function(val) {
+    showInput: function (val) {
       if (val) {
         setTimeout(() => {
-          this.$refs.fixInput.focus();
+          this.$refs.fixInput && this.$refs.fixInput.focus();
         }, 50);
       }
     }
@@ -92,7 +90,6 @@ export default {
   },
   methods: {
     onInput(event) {
-      //   console.log(event.detail.value);
       if (!this.value) this.$emit("keyValueChange", event.detail.value);
     },
     keyBoardHeightChange(obj) {
@@ -102,10 +99,9 @@ export default {
       // 键盘高度
       let height = (_diff > 0 ? _diff : 0) - 2;
       this.keyHeight = height;
-      console.log(height, "高度变化", this.keyHeight);
     },
     sendTalk(value) {
-      this.$refs.fixInput.blur();
+      this.$refs.fixInput && this.$refs.fixInput.blur();
       if (!this.needSend) {
         this.$emit("update:showInput", false);
         return;

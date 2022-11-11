@@ -1,15 +1,16 @@
 {
-	"pages": [{
+	"pages": [
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false,
-				"disableScroll":true,
+				"disableScroll": true,
 				"backgroundColorTop": "#FFFFFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 				"backgroundColorBottom": "#F6F7FB", //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 				"app-plus": {
-                    "bounce": "none" //关闭窗口回弹效果
-                }
+					"bounce": "none" //关闭窗口回弹效果
+				}
 			}
 		},
 		{
@@ -25,8 +26,8 @@
 			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false,
-				"app-plus":{
-					"bounce":"none"
+				"app-plus": {
+					"bounce": "none"
 				}
 			}
 		},
@@ -53,7 +54,6 @@
 				"enablePullDownRefresh": false
 			}
 		},
-
 		{
 			"path": "pages/live/proLive",
 			"style": {
@@ -65,8 +65,18 @@
 			}
 		},
 		{
+			"path": "pages/live/liveBroadcast",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
 			"path": "pages/live/zgPlayBack",
-			"style": { 
+			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false,
 				"app-plus": {
@@ -90,7 +100,6 @@
 				"app-plus": {
 					"softinputMode": "adjustPan"
 				}
-
 			}
 		},
 		{
@@ -129,8 +138,7 @@
 					"softinputMode": "adjustPan"
 				}
 			}
-		}
-		,
+		},
 		{
 			"path": "pages/drawCard/drawCard",
 			"style": {
@@ -146,10 +154,10 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
-		"pageOrientation":"auto",
-		"app-plus":{
-			"pullToRefresh":{
-				"style":"circle"
+		"pageOrientation": "auto",
+		"app-plus": {
+			"pullToRefresh": {
+				"style": "circle"
 			}
 		}
 	},
@@ -162,7 +170,8 @@
 		"height": "56px",
 		"spacing": "4px",
 		"iconWidth": "28px",
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/index/index",
 				"iconPath": "static/index/v3/tab1.png",
 				"selectedIconPath": "static/index/v3/tab1_.png",
@@ -194,14 +203,16 @@
 			"^uni-(.*)": "@/components/uni-$1.vue"
 		}
 	},
-	"subPackages": [{
+	"subPackages": [
+		{
 			"root": "pages/goods",
-			"pages": [{
+			"pages": [
+				{
 					"path": "goods_details",
 					"style": {
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": true,
-						"onReachBottomDistance":999,
+						"onReachBottomDistance": 999,
 						"backgroundColorTop": "#FFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
@@ -282,7 +293,6 @@
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
-				
 				{
 					"path": "goods_ref",
 					"style": {
@@ -456,8 +466,7 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				}
-				,
+				},
 				{
 					"path": "spCard/record_award",
 					"style": {
@@ -535,7 +544,8 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				},{
+				},
+				{
 					"path": "oAo/index",
 					"style": {
 						"navigationStyle": "custom",
@@ -592,8 +602,9 @@
 					}
 				},
 				{
-					"path": "worldCup/index",
+					"path": "worldCup/container",
 					"style": {
+						"navigationStyle": "custom",
 						"navigationBarTitleText": "世界杯",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
@@ -619,15 +630,6 @@
 					}
 				},
 				{
-					"path": "worldCup/beanMall",
-					"style": {
-						"navigationBarTitleText": "世界豆商店",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true
-					}
-				},
-				{
 					"path": "worldCup/beanLog",
 					"style": {
 						"navigationBarTitleText": "兑换明细",
@@ -637,30 +639,12 @@
 					}
 				},
 				{
-					"path": "worldCup/quiz",
-					"style": {
-						"navigationBarTitleText": "激情大抽奖",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
 					"path": "worldCup/quizLog",
 					"style": {
 						"navigationBarTitleText": "抽奖记录",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": true
-					}
-				},
-				{
-					"path": "worldCup/draw",
-					"style": {
-						"navigationBarTitleText": "世界杯竞猜",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false
 					}
 				},
 				{
@@ -690,12 +674,12 @@
 						"enablePullDownRefresh": false
 					}
 				}
-				
-            ]
+			]
 		},
 		{
 			"root": "pages/information",
-			"pages": [{
+			"pages": [
+				{
 					"path": "list",
 					"style": {
 						"navigationStyle": "custom",
@@ -711,12 +695,11 @@
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
 						"app-plus": {
-							"bounce":"none",
-							"scrollIndicator":"none",
+							"bounce": "none",
+							"scrollIndicator": "none",
 							"softinputMode": "adjustPan",
 							"softinputNavBar": "none"
 						}
-
 					}
 				},
 				{
@@ -728,7 +711,8 @@
 						"backgroundColorTop": "#ffffff", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#ffffff" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				},{
+				},
+				{
 					"path": "search",
 					"style": {
 						"navigationStyle": "custom",
@@ -748,26 +732,25 @@
 				},
 				{
 					"path": "video",
-					"style": { 
+					"style": {
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
-						"navigationBarTextStyle":"white",
+						"navigationBarTextStyle": "white",
 						"app-plus": {
-							"bounce":"none",
+							"bounce": "none",
 							"softinputMode": "adjustPan",
 							"softinputNavBar": "none",
 							"titleNView": false,
-							"background":"#000000"
+							"background": "#000000"
 						}
-						
-						
 					}
 				}
 			]
 		},
 		{
 			"root": "pages/mall",
-			"pages": [{
+			"pages": [
+				{
 					"path": "index",
 					"style": {
 						"navigationBarTitleText": "卡币商城",
@@ -812,7 +795,6 @@
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				}
-
 			]
 		},
 		{
@@ -1212,7 +1194,6 @@
 				{
 					"path": "couponManage",
 					"style": {
-						
 						"navigationBarTitleText": "优惠券管理",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
@@ -1257,9 +1238,7 @@
 						"backgroundColorBottom": "#FFFFFF" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				}
-				
 			]
 		}
 	]
 }
-
