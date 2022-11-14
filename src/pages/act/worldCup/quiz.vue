@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 16:21:04
+ * @LastEditTime: 2022-11-14 18:06:29
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -28,8 +28,8 @@
                             <view class="manyNum">已有{{ item.guessPeopleNum }}人参与</view>
                         </view>
                         <view class="teamBlock">
-                            <muqian-lazyLoad class="teamImg" :src="$parsePic(decodeURIComponent(item.home_logo))" />
-                            <view class="teamName u-line-1">{{ item.home_team }}</view>
+                            <muqian-lazyLoad class="teamImg" :src="$parsePic(decodeURIComponent(item.away_logo))" />
+                            <view class="teamName u-line-1">{{ item.away_team }}</view>
                         </view>
                     </view>
                 </view>
@@ -46,8 +46,9 @@
                         <view class="answer" v-for="(answer, answerIndex) in question.answers"
                             @click="onClickAnswer(item, question, answer)"
                             :style="{ marginRight: (answerIndex + 1) % 3 == 0 ? `0rpx` : `20rpx` }">
-                            <view class="answer_top flexCenter" :class="{ answer_top_select: item.isLike }">
+                            <view class="answer_top flexCenter" :class="{ answer_top_select: answer.isLike }">
                                 <text>{{ answer.name }}</text>
+                                <view class="correct" v-if="answer.answerId==question.correctId"></view>
                             </view>
                             <view class="answer_bottom flexCenter">{{ answer.multiple }}倍</view>
                         </view>
@@ -62,31 +63,43 @@
                     }}</view>
             </view>
         </view>
-        <u-popup :show="popShow" @close="popShow = false" mode="center">
-            <view>
-                <view>
-                    {{ clickSchedule.home_team }}VS{{ clickSchedule.away_team }}
+        <u-popup :show="popShow" :round="20" @close="popShow = false" mode="bottom">
+            <view class="quizPopup">
+                <view class="quiz_title flexCenter">确认投入情况</view>
+                <view class="quiz_team">
+                    <view class="teamContainer">
+                        <view class="team">
+                            <muqian-lazyLoad class="logo"
+                                :src="$parsePic(decodeURIComponent(clickSchedule.home_logo))" />
+                            <view class="teamName">{{ clickSchedule.home_team }}</view>
+                        </view>
+                        <view class="vs">VS</view>
+                        <view class="team">
+                            <muqian-lazyLoad class="logo"
+                                :src="$parsePic(decodeURIComponent(clickSchedule.away_logo))" />
+                            <view class="teamName">{{ clickSchedule.away_team }}</view>
+                        </view>
+                    </view>
+                    <view class="quiz_team_info">
+                        <view class="left">{{ clickQuestion.title }}：{{ clickAnswer.name }}</view>
+                        <view class="right">已投：{{ clickAnswer.betNum }}</view>
+                    </view>
                 </view>
-                <view>
-                    {{ clickQuestion.title }}:{{ clickAnswer.name }} (已投:{{ clickAnswer.betNum }})
+                <view class="quiz_numContainer">
+                    <view class="chips flexCenter" :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `8rpx` }"
+                        :class="{ chips_select: item.isSelect }" v-for="(item, index) in assignBeanList" :key="index"
+                        @click="onClickBean(item)">{{ item.isCustom ? '最大投入:' : '' }}{{ item.num }}</view>
+                    <view class="chips_tips">
+                        <view class="left">当前倍率：{{ clickAnswer.multiple }}</view>
+                        <view class="right">投入上限：{{ clickQuestion.topBetNum }}</view>
+                    </view>
                 </view>
-                <view>
-                    当前倍率:{{ clickAnswer.multiple }}<br />
-                    投注上限:{{ clickQuestion.topBetNum }}
-                    剩余可投:{{ clickQuestion.topBetNum - clickAnswer.betNum }}
+                <view class="quiz_buttonContainer">
+                    <view class="button flexCenter" @click="popShow = false">取消</view>
+                    <view class="button button_green flexCenter" @click="confirmQuiz">确定</view>
                 </view>
-                <view>
-                    投注选项
-                    <button :class="{ red: item == selectBeanNum }" v-for="(item, index) in quizBeanConfList"
-                        @click="selectBeanNum = item, isCustom = false">{{ item }}</button>
-                    <button :class="{ red: clickQuestion.topBetNum - clickAnswer.betNum == selectBeanNum && isCustom }"
-                        @click="selectBeanNum = clickQuestion.topBetNum - clickAnswer.betNum, isCustom = true">最大投入:{{
-                                clickQuestion.topBetNum - clickAnswer.betNum
-                        }}</button>
-                </view>
-                <button @click="popShow = false">取消</button>
-                <button @click="confirmQuiz">{{ clickAnswer.betNum ? '追加' : '投注' }}</button>
             </view>
+            <view class="bottomSafeArea"></view>
         </u-popup>
     </view>
 </template>
@@ -107,6 +120,7 @@ export default class ClassName extends BaseNode {
     list: any = []
     isFetchEnd: boolean = true
     quizBeanConfList: any = []
+    assignBeanList: any = []
     popShow: boolean = false
     tagData: any = {
         index: 0,
@@ -116,7 +130,6 @@ export default class ClassName extends BaseNode {
     clickQuestion: any = {}
     clickAnswer: any = {}
     selectBeanNum: number = 0
-    isCustom: boolean = false
     stateOption: any = {
         1: '进行中',
         2: '待结算',
@@ -145,7 +158,6 @@ export default class ClassName extends BaseNode {
         this.reqNewData()
     }
     confirmQuiz() {
-
         if (!this.selectBeanNum) {
             uni.showToast({
                 title: '请选择投注数量',
@@ -180,7 +192,16 @@ export default class ClassName extends BaseNode {
     }
     filterQuestionText(state: any, question: any) {
         if (state == 1) return '进行中'
-        if (question.win_num && typeof question.win_num != undefined) return question.win_num
+        const winNum_isUnde = typeof question.win_num == undefined
+        if (winNum_isUnde) return '未参与'
+        if (!winNum_isUnde) return question.win_num >= 0 ? `+${question.win_num}` : question.win_num
+    }
+    onClickBean(item: any) {
+        this.assignBeanList.forEach((element: any) => {
+            element.isSelect = false
+        });
+        item.isSelect = true
+        this.selectBeanNum = item.num
     }
     onClickAnswer(schedule: any, question: any, answer: any) {
         if (schedule.state != 1) return
@@ -198,8 +219,26 @@ export default class ClassName extends BaseNode {
             this.clickAnswer.multiple = res.data.multiple
             this.clickAnswer.betNum = res.data.betNum || 0
             this.selectBeanNum = 0
+            this.beanConfArray()
             this.popShow = true
         })
+    }
+    beanConfArray() {
+        if (!this.clickSchedule.id || !this.clickQuestion.id || !this.clickAnswer.answerId) this.assignBeanList = []
+        let list: any = this.quizBeanConfList.map((item: any) => {
+            return {
+                num: item,
+                isCustom: false,
+                isSelect: false
+            }
+        })
+        list.push({
+            num: (this.clickQuestion.topBetNum || 0) - (this.clickAnswer.betNum || 0),
+            isCustom: true,
+            isSelect: false
+        })
+        this.assignBeanList = list
+        // return list
     }
     reqQuizBeanConfig() {
         app.http.Get(`dataApi/worldCup/bean/guessing/bet/cfg`, {}, (res: any) => {
@@ -391,11 +430,15 @@ page {
         font-size: 42rpx;
         font-family: YouSheBiaoTiHei;
         font-weight: 400;
+        text-align: center;
+        flex: 1;
         color: #FFFFFF;
     }
 
     .question_state {
+        min-width: 130rpx;
         font-size: 22rpx;
+        text-align: right;
         color: #FFFFFF;
     }
 }
@@ -418,10 +461,21 @@ page {
         width: inherit;
         height: 54rpx;
         background-color: #fff;
+        position: relative;
 
         text {
             font-size: 28rpx;
             color: #0A0A0A;
+        }
+
+        .correct {
+            width: 27rpx;
+            height: 27rpx;
+            top: 0;bottom: 0;margin: auto;
+            left: 10rpx;
+            background: linear-gradient(90deg, #FF414B, #FF977F);
+            border-radius: 50%;
+            position: absolute;
         }
     }
 
@@ -440,6 +494,137 @@ page {
         width: inherit;
         font-size: 20rpx;
         color: #0A0A0A;
+    }
+}
+
+.quizPopup {
+    width: 750rpx;
+    background-color: #fff;
+    border-radius: 20rpx 20rpx 0rpx 0rpx;
+    box-sizing: border-box;
+
+    .quiz_title {
+        font-size: 34rpx;
+        font-weight: bold;
+        color: #333333;
+        height: 100rpx;
+    }
+
+    .quiz_team {
+        width: inherit;
+        height: 242rpx;
+        background-size: 100% 100%;
+        background-image: url('/static/act/worldCup/quizBack.png');
+        box-sizing: border-box;
+        padding: 21rpx 60rpx 0 60rpx;
+
+        .teamContainer {
+            height: 164rpx;
+            background: #FFFFFF;
+            border-radius: 10rpx;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 109rpx;
+            align-items: center;
+
+            .team {
+                width: 84rpx;
+                position: relative;
+                height: 84rpx;
+
+                .logo {
+                    width: 84rpx;
+                    height: 84rpx;
+                    display: block;
+                }
+
+                .teamName {
+                    position: absolute;
+                    font-size: 28rpx;
+                    color: #6A6969;
+                    left: 50%;
+                    white-space: nowrap;
+                    transform: translate(-50%, 0);
+                }
+            }
+        }
+
+        .vs {
+            font-size: 88rpx;
+            font-family: FZLanTingHei-R-GBK;
+            font-weight: 400;
+            color: #2063B5;
+        }
+
+        .quiz_team_info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 28rpx;
+            font-weight: 400;
+            color: #FFFFFF;
+            margin-top: 12rpx;
+        }
+    }
+
+    .quiz_numContainer {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 32rpx;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 20rpx;
+        align-content: flex-start;
+
+        .chips {
+            width: 221rpx;
+            height: 83rpx;
+            background: #FFFFFF;
+            border: 2rpx solid #D7D7D7;
+            border-radius: 10rpx;
+            font-size: 28rpx;
+            color: #1C1C1C;
+            margin-bottom: 20rpx;
+        }
+
+        .chips_select {
+            color: #35BD2A;
+            border: 2rpx solid #2EAB24;
+        }
+
+        .chips_tips {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            font-size: 28rpx;
+            justify-content: space-between;
+            color: #1C1C1C;
+            margin-bottom: 40rpx;
+        }
+    }
+
+    .quiz_buttonContainer {
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 32rpx;
+        margin-bottom: 16rpx;
+        justify-content: space-between;
+
+        .button {
+            width: 310rpx;
+            height: 75rpx;
+            border: 1rpx solid #000000;
+            border-radius: 10rpx;
+            font-size: 30rpx;
+            color: #000000;
+        }
+
+        .button_green {
+            background: #238E1A;
+            border: 1rpx solid #238E1A;
+            color: #fff;
+        }
     }
 }
 </style>

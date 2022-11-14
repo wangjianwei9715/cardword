@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:31:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 16:24:10
+ * @LastEditTime: 2022-11-14 17:08:49
  * @FilePath: \card-world\src\pages\act\worldCup\beanMall.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -36,7 +36,7 @@
                     <view class="mall_remaining flexCenter">{{ item.leftNum }}份</view>
                 </view>
                 <view class="mall_name u-line-2">{{ item.name || '获取中' }}</view>
-                <view class="mall_exchange flexCenter">
+                <view class="mall_exchange flexCenter" @click="onClickExchange(item)">
                     <text>{{ item.price || '获取中' }}</text>
                     <image src="/static/act/worldCup/smallBean.png" />
                 </view>
@@ -143,6 +143,10 @@ export default class ClassName extends BaseNode {
             urls: picArr
         })
     }
+    onClickExchange(item: any) {
+        this.selectGoods = item
+        this.beforeExchange()
+    }
     beforeExchange() {
         if (this.selectGoods.leftNum <= 0) {
             uni.showModal({
@@ -164,7 +168,7 @@ export default class ClassName extends BaseNode {
             title: '提示',
             content: '确认兑换后将扣除相应的世界豆',
             success: (result: any) => {
-                if (result.confirm) this.exchangeGoods()
+                if (result.confirm) this.exchangeGoods(this.selectGoods.id)
             }
         })
     }
@@ -177,6 +181,9 @@ export default class ClassName extends BaseNode {
                 title: '兑换成功',
                 icon: 'success'
             })
+        }, (err: any) => {
+            this.queryParams.fetchFrom = 1
+            this.reqNewData()
         })
     }
     reqNewData(cb?: any) {
@@ -207,6 +214,7 @@ page {
     box-sizing: border-box;
     padding: 16rpx;
     display: flex;
+    align-content: flex-start;
     flex-wrap: wrap;
 }
 
@@ -244,9 +252,10 @@ page {
     width: inherit;
     height: 216rpx;
     background: #FFFFFF;
-    border-radius: 3rpx;
+    border-radius: 5rpx;
     position: relative;
     overflow: hidden;
+    margin-bottom: 23rpx;
 
     .leftCorner {
         width: 85rpx;

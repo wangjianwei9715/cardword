@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 16:19:19
+ * @LastEditTime: 2022-11-14 16:56:00
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -13,7 +13,6 @@
             <view class="status"
                 :style="{ paddingTop: app.statusBarHeight + 'px', backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
             </view>
-
             <view class="pageTop" ref="pageTop" id="pageTop"
                 :style="{ backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
                 <image class="back" :class="{ filterBlack: scrollTopHidden }" src="/static/act/rankSelect/back.png"
@@ -22,20 +21,20 @@
                     :class="{ pointer_none: scrollTopHidden }" @click="onClickGetBean">
                     <image class="beanIcon" src="/static/act/worldCup/smallBeanCube.png" />
                     <view class="beanPoint">{{ myData.worldBean == undefined ? '获取中' : myData.worldBean }}</view>
-                    <u-icon size="37rpx" name="plus-circle-fill" color="#fff"></u-icon>
+                    <image src="/static/act/worldCup/add.png" class="icon"></image>
                 </view>
                 <view style="flex:1"></view>
                 <navigator :url="`/pages/act/worldCup/pointDetail?searchType=${tabIndex}`" hover-class="none">
                     <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
                         :class="{ pointer_none: scrollTopHidden }">
-                        <u-icon size="37rpx" name="file-text-fill" color="#fff"></u-icon>
+                        <image src="/static/act/worldCup/order.png" class="icon"></image>
                         <view class="label">明细</view>
                     </view>
                 </navigator>
                 <navigator url="/pages/act/worldCup/description" hover-class="none">
                     <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
                         :class="{ pointer_none: scrollTopHidden }">
-                        <u-icon size="37rpx" name="question-circle-fill" color="#fff"></u-icon>
+                        <image src="/static/act/worldCup/qustion.png" class="icon"></image>
                         <view class="label">规则</view>
                     </view>
                 </navigator>
@@ -116,7 +115,7 @@
                             class="bold">1
                         </text>个世界豆</view>
                     <view class="limit">每日上限:<text class="bold">({{ exchangeBeanConfig.exchangeNum }}/{{
-                    exchangeBeanConfig.dayMaxExchange
+                            exchangeBeanConfig.dayMaxExchange
                     }})</text>
                     </view>
                 </view>
@@ -262,6 +261,7 @@ export default class ClassName extends BaseNode {
         uni.$u.throttle(() => {
             const isOverTime = this.isOverThisTime(item.date)
             if (item.isSignIn || isOverTime) return
+            if (this.timeStamp < item.date) return
             app.http.Post(`worldCup/bean/task/signIn`, {}, (res: any) => {
                 this.reqSignList()
                 this.reqWorldBean()
@@ -372,6 +372,11 @@ page {
         width: 750rpx;
         height: 88rpx;
         /* transition: all 0.2s linear; */
+    }
+
+    .icon {
+        width: 36rpx;
+        height: 36rpx;
     }
 
     .menuContainer {

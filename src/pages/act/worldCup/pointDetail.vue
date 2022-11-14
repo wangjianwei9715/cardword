@@ -55,7 +55,7 @@
                     <view class="result">竞猜项:{{ item.questionName }}</view>
                     <view class="option">选择项:{{ item.answerName }}</view>
                     <view class="point">
-                        <view class="num" :class="{ num_neg: item.worldBean < 0 }">{{ (item.worldBean >= 0 ? '+' : '-')
+                        <view class="num" :class="{ num_neg: item.worldBean < 0 }">{{ (item.worldBean >= 0 ? '+' : '')
                                 +
                                 item.worldBean
                         }}</view>
@@ -113,8 +113,9 @@
                             <view class="goodsType">1件</view>
                             <view class="goodsTime">
                                 <view class="time">{{ dateFormatMSHMS(item.exchange_at) }}</view>
-                                <view class="point uni-flex" style="align-items:center;" :class="{ get: item.useBean >= 0, deduction: item.useBean <= 2 }">
-                                    {{ (item.useBean >= 0 ? '+' : '-')
+                                <view class="point uni-flex" style="align-items:center;"
+                                    :class="{ get: item.useBean >= 0, deduction: item.useBean <= 2 }">
+                                    {{ (item.useBean >= 0 ? '+' : '')
                                             +
                                             item.useBean
                                     }}
