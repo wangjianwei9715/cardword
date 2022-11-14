@@ -179,7 +179,8 @@ import { Md5 } from "ts-md5";
 		onceLoad = true;
 		// 猜你喜欢
 		likeGoodList:any = [];
-		relativeOnce = false
+		relativeOnce = false;
+		retryNum = 0;
 		onLoad(query:any) {
 			if(query.code){
 				this.orderCode = query.code;
@@ -341,6 +342,15 @@ import { Md5 } from "ts-md5";
 					uni.navigateTo({
 						url:`/pages/goods/drawCard?code=${this.orderCode}&data=${encodeURIComponent(JSON.stringify(res.list))}&num=${res.total}&hasNumber=${res.hasNumber}&picType=${type}&sp=${res.sp}`
 					})
+				}else{
+					if( res.retry && this.retryNum==0 ){
+						uni.showLoading({title:'加载中'})
+						setTimeout(()=>{
+							this.retryNum++;
+							this.getNoShowList()
+							uni.hideLoading();
+						},2000)
+					}
 				}
 			})
 		}
