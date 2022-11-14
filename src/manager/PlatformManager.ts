@@ -206,7 +206,8 @@ export default class PlatformManager {
 	}
 	//ui触觉反馈(单次)
 	UIClickFeedBack (){
-    	if (app.platform.systemInfo.platform == "ios") {
+		// #ifdef APP-PLUS
+		if (app.platform.systemInfo.platform == "ios") {
     	    let UIImpactFeedbackGenerator = plus.ios.importClass(
     	        "UIImpactFeedbackGenerator"
     	    );
@@ -219,9 +220,12 @@ export default class PlatformManager {
 			//@ts-ignore
     	    uni.vibrateShort();
     	}
+		// #endif
+    	
 	}
 	//ios信息触觉反馈
 	UINotificationFeedBack(type?:string)  {
+		// #ifdef APP-PLUS
     	//仅ios
     	if (app.platform.systemInfo.platform !== 'ios') return
 		if(!type) type='success'
@@ -236,6 +240,7 @@ export default class PlatformManager {
     	let generator = new UINotificationFeedbackGenerator().init();
     	generator.prepare();
     	generator.notificationOccurred(typeMap[type] ?? 0)
+		// #endif
 	}
 	launchMiniQiYeProgramLive(id: string, goodCode: string) {
 		plus.share.getServices(res => {
