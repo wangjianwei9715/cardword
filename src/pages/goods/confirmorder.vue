@@ -580,24 +580,27 @@ export default class ClassName extends BaseNode {
     
   }
   postPay(url:string,params:any,data:any){
+    console.log('data===',data);
+    
     app.http.Post(url, params, (res: any) => {
+      const goodOrderCode = res.goodOrderCode
       uni.hideLoading();
       // 预测球队
       if(this.getBitDisableGuess()){
-        app.http.Post('me/order/guess/name/'+res.goodOrderCode,{name:this.guessList[this.guessCheckTeam].name})
+        app.http.Post('me/order/guess/name/'+goodOrderCode,{name:this.guessList[this.guessCheckTeam].name})
       }
       if(res.price<=0){
-        this.redirectToOrder(res.goodOrderCode)
+        this.redirectToOrder(goodOrderCode)
       }else{
 		    //data.channel=='alipay' (before)
         if (data.channel == "alipay_h5" || data.channel == "alipay") {
           if(res.appPayRequest){
             app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest),()=>{
-              this.redirectToOrder(res.goodOrderCode)
+              this.redirectToOrder(goodOrderCode)
             });
           }else if (res.alipay.orderInfo != "") {
-            app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,res.goodOrderCode,()=>{
-              this.redirectToOrder(res.goodOrderCode)
+            app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,goodOrderCode,()=>{
+              this.redirectToOrder(goodOrderCode)
             });
           }
         } else {
@@ -607,7 +610,7 @@ export default class ClassName extends BaseNode {
             }else{
               app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
             }
-            this.redirectToOrder(res.goodOrderCode)
+            this.redirectToOrder(goodOrderCode)
           }
         }
       }

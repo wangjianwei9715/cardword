@@ -7,7 +7,6 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-	import { Md5 } from "ts-md5";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	@Component({})
@@ -25,18 +24,8 @@
 				return;
 			}
 
-			let ts = Math.floor(new Date().getTime()/1000);
-			let params = {
-				ts:ts,
-				code:this.searchText,
-				sign:Md5.hashStr('viewShareNo_'+this.searchText+'_'+ts)
-			}
-			app.http.Post('function/userNo/transfer/shareNo/view',params,(res:any)=>{
-				if(res.good){ 
-					uni.navigateTo({
-						url:'/pages/userinfo/giving/code_details?data='+decodeURIComponent(JSON.stringify(res))
-					})
-				}
+			uni.navigateTo({
+				url:'/pages/userinfo/giving/code_details?code='+this.searchText
 			})
 		}
 		
