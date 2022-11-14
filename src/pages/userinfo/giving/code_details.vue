@@ -41,6 +41,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	import { dateFormatYMSHM } from "@/tools/util";
+import { Md5 } from "ts-md5";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		dateFormatYMSHM = dateFormatYMSHM;
@@ -53,29 +54,35 @@
 			leftTransferNum:{name:'剩余可赠送次数',desc:''}
 		}
 		onLoad(query:any) {
-			if(query.data){
-				this.codeData = JSON.parse(query.data);
-
-				for (const key in this.descInfo) {
-					if (Object.prototype.hasOwnProperty.call(this.codeData, key)) {
-						if(key == 'shareAt'){
-							this.descInfo[key].desc = this.dateFormatYMSHM(this.codeData[key]);
-						}else{
-							this.descInfo[key].desc = this.codeData[key]+'次';
+			let ts = Math.floor(new Date().getTime()/1000);
+			let params = {
+				ts:ts,
+				code:query.code,
+				sign:Md5.hashStr('viewShareNo_'+query.code+'_'+ts)
+			}
+			app.http.Post('function/userNo/transfer/shareNo/view',params,(res:any)=>{
+				if(res.good){ 
+					this.codeData = res;
+					for (const key in this.descInfo) {
+						if (Object.prototype.hasOwnProperty.call(this.codeData, key)) {
+							if(key == 'shareAt'){
+								this.descInfo[key].desc = this.dateFormatYMSHM(this.codeData[key]);
+							}else{
+								this.descInfo[key].desc = this.codeData[key]+'次';
+							}
+						}
+					}
+					for (const key in this.descInfo) {
+						if (Object.prototype.hasOwnProperty.call(this.codeData.owner, key)) {
+							this.descInfo[key].desc = this.codeData.owner[key];
 						}
 					}
 				}
-				for (const key in this.descInfo) {
-					if (Object.prototype.hasOwnProperty.call(this.codeData.owner, key)) {
-						this.descInfo[key].desc = this.codeData.owner[key];
-					}
-				}
-			}
-			
+			})
 		}
 		onClickBack(){
 			uni.navigateBack({
-			    delta: 1
+				delta: 1
 			});
 		}
 		

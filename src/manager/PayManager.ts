@@ -21,7 +21,6 @@ export default class PayManager {
 		this.payQmfAndroid.payWx(payRequest,(res:any)=>{});
 	}
 	paymentAlipay(type:any,orderInfo:string,goodOrder?:string,cb?:Function){
-		console.log('orderInfo========',orderInfo,'&type==',type)
 		let alipay_H5 = false 
 
 		if(alipay_H5){
@@ -29,12 +28,10 @@ export default class PayManager {
 				url:'/pages/webView/index?url='+encodeURIComponent(orderInfo)+'&orderCode='+goodOrder
 			})
 		}else{
-			console.log(type,'type')
-			//加了个type=='h5'
 			if(type=='ysepay'||type=='qmf' ||type == "qmf_divide"||type=='h5'){
 				// 渠道H5支付
-				plus.runtime.openURL(orderInfo)
 				if(cb) cb()
+				plus.runtime.openURL(orderInfo)
 			}else{
 				uni.requestPayment({
 					provider:'alipay',   //alipay
