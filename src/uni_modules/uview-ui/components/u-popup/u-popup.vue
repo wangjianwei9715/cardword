@@ -3,6 +3,7 @@
 		<u-overlay
 			:show="show"
 			@click="overlayClick"
+			:zIndex="zIndex"
 			v-if="overlay"
 			:duration="overlayDuration"
 			:customStyle="overlayStyle"
