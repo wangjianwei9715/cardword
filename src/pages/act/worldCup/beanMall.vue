@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:31:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 17:08:49
+ * @LastEditTime: 2022-11-14 18:12:35
  * @FilePath: \card-world\src\pages\act\worldCup\beanMall.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,7 @@
                 <picker :range="odSearchArr" range-key="label"
                     :value="filterPickerData(odSearchArr, queryParams.od, 'index')"
                     @change="pickerChange($event, odSearchArr, 'od')">
-                    <view class="select" style="width: 210rpx">
+                    <view class="select">
                         <view class="select_text">{{ filterPickerData(odSearchArr, queryParams.od) }}</view>
                         <u-icon name="arrow-down-fill" color="#000" size="18rpx"></u-icon>
                     </view>
@@ -126,6 +126,7 @@ export default class ClassName extends BaseNode {
     }
     pickerChange(event: any, range: any, assignKey: string) {
         const index: number = event.detail.value
+        if(this.queryParams[assignKey]==range[index].value) return
         this.queryParams[assignKey] = range[index].value
         this.queryParams.fetchFrom = 1
         this.reqNewData()
@@ -225,7 +226,7 @@ page {
     margin-bottom: 20rpx;
 
     .select {
-        width: 194rpx;
+        width: 216rpx;
         height: 52rpx;
         background: #E9EDEC;
         border-radius: 5rpx;

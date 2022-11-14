@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 18:06:29
+ * @LastEditTime: 2022-11-14 18:10:09
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -48,7 +48,7 @@
                             :style="{ marginRight: (answerIndex + 1) % 3 == 0 ? `0rpx` : `20rpx` }">
                             <view class="answer_top flexCenter" :class="{ answer_top_select: answer.isLike }">
                                 <text>{{ answer.name }}</text>
-                                <view class="correct" v-if="answer.answerId==question.correctId"></view>
+                                <view class="correct" v-if="answer.answerId == question.correctId"></view>
                             </view>
                             <view class="answer_bottom flexCenter">{{ answer.multiple }}倍</view>
                         </view>
@@ -96,7 +96,7 @@
                 </view>
                 <view class="quiz_buttonContainer">
                     <view class="button flexCenter" @click="popShow = false">取消</view>
-                    <view class="button button_green flexCenter" @click="confirmQuiz">确定</view>
+                    <view class="button button_green flexCenter" @click="$u.throttle(confirmQuiz, 500)">确定</view>
                 </view>
             </view>
             <view class="bottomSafeArea"></view>
@@ -471,7 +471,9 @@ page {
         .correct {
             width: 27rpx;
             height: 27rpx;
-            top: 0;bottom: 0;margin: auto;
+            top: 0;
+            bottom: 0;
+            margin: auto;
             left: 10rpx;
             background: linear-gradient(90deg, #FF414B, #FF977F);
             border-radius: 50%;
