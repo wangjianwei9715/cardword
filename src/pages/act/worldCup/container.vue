@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 13:42:36
+ * @LastEditTime: 2022-11-14 16:19:19
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -25,7 +25,7 @@
                     <u-icon size="37rpx" name="plus-circle-fill" color="#fff"></u-icon>
                 </view>
                 <view style="flex:1"></view>
-                <navigator url="/pages/act/worldCup/pointDetail" hover-class="none">
+                <navigator :url="`/pages/act/worldCup/pointDetail?searchType=${tabIndex}`" hover-class="none">
                     <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
                         :class="{ pointer_none: scrollTopHidden }">
                         <u-icon size="37rpx" name="file-text-fill" color="#fff"></u-icon>
@@ -74,18 +74,24 @@
                         <image src="/static/act/worldCup/smallBeanCube.png" />
                     </view>
                     <view class="signDayContainer" :class="{ bt: signList.length == 7 }">
-                        <view class="signItem" v-for="(item, index) in signList" :key="index"
+                        <!--  -->
+                        <view class="signItem" v-for="(item, index) in signList" :key="index" @click="onClickSign(item)"
+                            :class="{ signItem_dis: isOverThisTime(item.date) && !item.isSignIn }"
                             :style="{ marginRight: ((index + 1) % 7 == 0) ? `0rpx` : `10rpx` }">
                             <view class="point">+{{ item.worldBean }}</view>
-                            <view class="day">周一</view>
+                            <view class="day">{{ weekDay(item.date, 1) }}</view>
+                            <view class="signMask flexCenter" v-if="isOverThisTime(item.date) || item.isSignIn">
+                                <image v-if="item.isSignIn" src="/static/act/worldCup/sign.png" />
+                                <image v-if="!item.isSignIn" src="/static/act/worldCup/noneSign.png" />
+                            </view>
                         </view>
                     </view>
                 </view>
                 <view class="taskContainer">
                     <view class="taskItem" v-for="(item, index) in taskList" :key="index"
-                        :class="{ borderBottom: index == (taskList.length - 1) }">
+                        :class="{ borderBottom: index < (taskList.length - 1) }">
                         <view class="task_left">
-                            <view class="title">{{ item.name }}{{ item.plan ? `(${item.plan})` : "" }}</view>
+                            <view class="title">{{ item.name || '获取中' }}{{ item.plan ? `(${item.plan})` : "" }}</view>
                             <view class="beanPoint">
                                 +{{ item.beanNum }}
                                 <image src="/static/act/worldCup/smallBeanCube.png" />
@@ -99,15 +105,34 @@
             </view>
             <view class="bottomSafeArea"></view>
         </u-popup>
-        <!-- <bottomDrawer :showDrawer.sync="taskShow">
-
-        </bottomDrawer> -->
+        <u-popup :show="exchangeShow" :round="25" @close="exchangeShow = false" mode="center" :zIndex="999">
+            <view class="exchangeContainer">
+                <view class="title">卡币兑换世界豆</view>
+                <view class="exchange_input flexCenter">
+                    <input type="digit" placeholder="输入需要兑换的世界豆数量" v-model="worldBeanNum">
+                </view>
+                <view class="exchange_tips">
+                    <view class="can"><text class="bold">{{ exchangeBeanConfig.pointToOneBean }}</text>卡币兑换<text
+                            class="bold">1
+                        </text>个世界豆</view>
+                    <view class="limit">每日上限:<text class="bold">({{ exchangeBeanConfig.exchangeNum }}/{{
+                    exchangeBeanConfig.dayMaxExchange
+                    }})</text>
+                    </view>
+                </view>
+                <view class="exchange_button">
+                    <view class="button flexCenter" @click="exchangeShow = false">取消</view>
+                    <view class="button button_green flexCenter" @click="onClickExchangeBean">确定</view>
+                </view>
+            </view>
+        </u-popup>
     </view>
 </template>
 
 <script lang="ts">
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
+import { weekDay } from '@/tools/util'
 import BaseNode from '@/base/BaseNode.vue';
 import rank from './rank.vue'
 import beanMall from './beanMall.vue'
@@ -154,14 +179,24 @@ export default class ClassName extends BaseNode {
     scrollTop: number = 0
     MAX_HEIGHT: number = 0
     app: any = app
+    weekDay = weekDay
     myData: any = {
         worldBean: 0
     }
     taskList: any = []
     taskShow: boolean = false
-    signList: any = []
+    exchangeShow: boolean = false
+    signList: any = [];
     signInNum: number = 0
     myGetWorldBean: number = 0
+    timeStamp: number = Math.round(+new Date() / 1000)
+    stampTimer: any = null
+    exchangeBeanConfig: any = {
+        exchangeNum: 0, //已兑换世界豆数量
+        dayMaxExchange: 0, //每日兑换上限(世界豆)
+        pointToOneBean: 0, //100卡币兑换1个世界豆
+    }
+    worldBeanNum: any = null
     public get scrollTopPercent() {
         return this.scrollTop / (this.MAX_HEIGHT * 2)
     }
@@ -180,8 +215,14 @@ export default class ClassName extends BaseNode {
                     this.MAX_HEIGHT = data.height
                 })
                 .exec();
-
         })
+        this.stampTimer && clearInterval(this.stampTimer)
+        this.stampTimer = setInterval(() => {
+            this.timeStamp = Math.round(+new Date() / 1000)
+        }, 1000)
+    }
+    onUnload(): void {
+        this.stampTimer && clearInterval(this.stampTimer)
     }
     onShow() {
         app.platform.hasLoginToken(() => {
@@ -201,11 +242,53 @@ export default class ClassName extends BaseNode {
         //@ts-ignore
         this.$refs[refKey] && this.$refs[refKey].onReachBottomCom && this.$refs[refKey].onReachBottomCom()
     }
+    onClickExchangeBean() {
+        if (!this.worldBeanNum) {
+            uni.showToast({
+                title: '请输入正确的世界豆数量',
+                icon: 'none'
+            })
+            return
+        }
+        uni.showModal({
+            title: '提示',
+            content: '确认兑换后将扣除相应的卡币',
+            success: (result: any) => {
+                if (result.confirm) this.exchanteBean()
+            }
+        })
+    }
+    onClickSign(item: any) {
+        uni.$u.throttle(() => {
+            const isOverTime = this.isOverThisTime(item.date)
+            if (item.isSignIn || isOverTime) return
+            app.http.Post(`worldCup/bean/task/signIn`, {}, (res: any) => {
+                this.reqSignList()
+                this.reqWorldBean()
+                uni.showToast({
+                    title: '签到成功'
+                })
+            })
+        }, 500)
+    }
+    getZeroStamp(time: number) {
+        if (!time) return
+        return Math.round(+new Date(new Date(time * 1000).toLocaleDateString()).getTime() / 1000)
+    }
+    isOverThisTime(judgmentTime: number) {
+        const nowTimeZeroStamp: any = this.getZeroStamp(this.timeStamp)
+        return nowTimeZeroStamp > judgmentTime
+    }
     onClickTask(item: any) {
         if (item.isSuccess) return
         if (item.path == `/pages/act/worldCup/container`) {
             this.taskShow = false
             this.tabChange({}, 1)
+            return
+        }
+        if (item.path == 'reqBeanExchange') {
+            this.taskShow = false
+            this.reqBeanExchange()
             return
         }
         uni.navigateTo({
@@ -217,18 +300,23 @@ export default class ClassName extends BaseNode {
         this.tabIndex = index
     }
     async onClickGetBean() {
-        const promiseAllData: any = await Promise.all([this.reqDayTask(), this.reqSignList()])
-        const taskData = promiseAllData[0]
-        const signData = promiseAllData[1]
-        this.signList = signData.data.daySignIn || []
-        this.signInNum = signData.data.SignInNum || 0
-        this.myGetWorldBean = signData.myGetWorldBean || 0
-        this.taskList = taskData.list || []
+        await Promise.all([this.reqDayTask(), this.reqSignList()])
         this.taskShow = true
+    }
+    exchanteBean() {
+        app.http.Post(`worldCup/bean/point/exchange`, { worldBeanNum: +this.worldBeanNum }, (res: any) => {
+            uni.showToast({
+                title: '兑换成功'
+            })
+            this.reqWorldBean()
+            app.platform.UINotificationFeedBack('success')
+            this.exchangeShow = false
+        })
     }
     reqDayTask() {
         return new Promise((resolve, reject) => {
             app.http.Get(`dataApi/worldCup/bean/day/task`, {}, (res: any) => {
+                this.taskList = (res.list || []).filter((item: any) => item)
                 resolve(res)
             })
         })
@@ -236,8 +324,18 @@ export default class ClassName extends BaseNode {
     reqSignList() {
         return new Promise((resolve, reject) => {
             app.http.Get(`dataApi/worldCup/bean/daySignIn/data`, {}, (res: any) => {
+                this.signList = res.data.daySignIn || []
+                this.signInNum = res.data.signInNum || 0
+                this.myGetWorldBean = res.data.myGetWorldBean || 0
                 resolve(res)
             })
+        })
+    }
+    reqBeanExchange() {
+        app.http.Get(`dataApi/worldCup/bean/point/exchange`, {}, (res: any) => {
+            this.exchangeBeanConfig = res.data
+            this.worldBeanNum = null
+            this.exchangeShow = true
         })
     }
     reqWorldBean(cb?: any) {
@@ -416,6 +514,86 @@ page {
     }
 }
 
+.exchangeContainer {
+    width: 550rpx;
+    height: 432rpx;
+    background: #FFFFFF;
+    border-radius: 25rpx;
+    box-sizing: border-box;
+    padding: 0 45rpx;
+
+    .title {
+        font-size: 34rpx;
+        font-weight: bold;
+        color: #333333;
+        width: 100%;
+        text-align: center;
+        margin-top: 40rpx;
+        margin-bottom: 44rpx;
+    }
+
+    .exchange_input {
+        width: 100%;
+        height: 57rpx;
+        background: #FFFFFF;
+        border: 1rpx solid #ABABAB;
+        box-sizing: border-box;
+        padding: 0 47rpx;
+        border-radius: 3rpx;
+
+        input {
+            width: 100%;
+            font-size: 28rpx;
+            color: #333333;
+        }
+    }
+
+    .exchange_tips {
+        margin-top: 16rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .can {
+            font-size: 28rpx;
+            font-weight: normal;
+            color: #333333;
+        }
+
+        .limit {
+            font-size: 24rpx;
+            font-weight: normal;
+            color: #333333;
+        }
+    }
+
+    .exchange_button {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 100rpx;
+
+        .button {
+            width: 210rpx;
+            height: 66rpx;
+            border: 1rpx solid #000000;
+            border-radius: 33rpx;
+            font-size: 28rpx;
+            color: #000000;
+            background: #fff;
+        }
+
+        .button_green {
+            border: 1rpx solid #1C6515;
+            background: #1C6515;
+            color: #fff;
+        }
+    }
+}
+
 .safeTop {
     height: 84rpx;
     pointer-events: none;
@@ -472,7 +650,6 @@ page {
         flex-wrap: nowrap;
 
         .signItem {
-            // margin-right: 10rpx;
             width: 86rpx;
             height: 102rpx;
             background: linear-gradient(90deg, #FFF1B4, #FFF4B9);
@@ -484,6 +661,7 @@ page {
 
             font-weight: 400;
             color: #F7A000;
+            position: relative;
 
             .point {
                 font-size: 26rpx;
@@ -492,6 +670,26 @@ page {
             .day {
                 font-size: 20rpx;
                 margin-top: 6rpx;
+            }
+        }
+
+        .signItem_dis {
+            background: linear-gradient(90deg, #E7E7E7, #E4E4E4);
+            color: #C9C8C6;
+        }
+
+        .signMask {
+            position: absolute;
+            width: inherit;
+            height: inherit;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, .3);
+            border-radius: inherit;
+
+            image {
+                width: 80rpx;
+                height: 55rpx;
             }
         }
 

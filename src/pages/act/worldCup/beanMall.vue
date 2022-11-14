@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:31:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 11:30:48
+ * @LastEditTime: 2022-11-14 16:24:10
  * @FilePath: \card-world\src\pages\act\worldCup\beanMall.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,7 +30,7 @@
             <view class="mallItem" v-for="(item, index) in list" :key="index"
                 :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `14rpx` }">
                 <view class="mall_imgBlock">
-                    <muqian-lazyLoad class="mall_img" borderRadius="3rpx"
+                    <muqian-lazyLoad class="mall_img" borderRadius="3rpx" @click="prviewImages(item.pic)"
                         :src="$parsePic(decodeURIComponent(item.pic))" />
                     <view class="leftCorner flexCenter">限兑:{{ item.user_max_transaction || '获取中' }}</view>
                     <view class="mall_remaining flexCenter">{{ item.leftNum }}份</view>
@@ -49,6 +49,7 @@
 import { app } from "@/app";
 import { Component, Prop } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
+import { parsePic } from "@/tools/util"
 @Component({})
 export default class ClassName extends BaseNode {
     @Prop({ default: 0 })
@@ -61,6 +62,7 @@ export default class ClassName extends BaseNode {
     }
     list: any = []
     isFetchEnd: boolean = true
+    parsePic = parsePic
     selectGoods: any = {
 
     }
@@ -132,6 +134,14 @@ export default class ClassName extends BaseNode {
         // const data: any = range.find((item: any) => item.value === value)
         const index: number = range.findIndex((item: any) => item.value === value)
         return returnType == "index" ? index : (range[index].label || "默认排序")
+    }
+    prviewImages(picString: string) {
+        if (!picString) return
+        const picArr: any = picString.split(',').map(item => parsePic(decodeURIComponent(item)))
+        uni.previewImage({
+            current: 0,
+            urls: picArr
+        })
     }
     beforeExchange() {
         if (this.selectGoods.leftNum <= 0) {

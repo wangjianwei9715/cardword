@@ -450,6 +450,25 @@ export function liveCountDownV2(startDate: number, endDate: number = 0, mmbol: b
 		return day + hour + minute + (!day && !hour && !minute ? second : '')
 	}
 }
+export const weekDay = function (time: number, type?: number) {
+	const weekNum: number = new Date(time*1000).getDay();
+	const week: any = {
+		0: '星期天',
+		1: '星期一',
+		2: '星期二',
+		3: '星期三',
+		4: '星期四',
+		5: '星期五',
+		6: '星期六'
+	}
+	let weekDay = week[weekNum]
+	if (!weekDay) return '日期错误'
+	if (type == 1) {
+		weekDay = weekDay.replace(/星期/g, '周')
+		weekDay = weekDay.replace(/天/g, '日')
+	}
+	return weekDay;
+}
 // 正则每3位数字添加逗号
 export function toThousands(num = 0) {
 	return num.toString().replace(/\d+/, function (n) {
