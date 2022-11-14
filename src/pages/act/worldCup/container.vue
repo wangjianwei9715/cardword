@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 16:56:00
+ * @LastEditTime: 2022-11-14 18:18:40
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -298,6 +298,10 @@ export default class ClassName extends BaseNode {
     tabChange(item: any, index: number) {
         if (index == this.tabIndex) return
         this.tabIndex = index
+        uni.pageScrollTo({
+            scrollTop: 0,
+            duration: 0,
+        })
     }
     async onClickGetBean() {
         await Promise.all([this.reqDayTask(), this.reqSignList()])
