@@ -2,14 +2,31 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:31:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-11 17:27:52
+ * @LastEditTime: 2022-11-14 11:30:48
  * @FilePath: \card-world\src\pages\act\worldCup\beanMall.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
         <view class="mallContainer">
-            <view class="selectRow"></view>
+            <view class="selectRow">
+                <picker :range="odSearchArr" range-key="label"
+                    :value="filterPickerData(odSearchArr, queryParams.od, 'index')"
+                    @change="pickerChange($event, odSearchArr, 'od')">
+                    <view class="select" style="width: 210rpx">
+                        <view class="select_text">{{ filterPickerData(odSearchArr, queryParams.od) }}</view>
+                        <u-icon name="arrow-down-fill" color="#000" size="18rpx"></u-icon>
+                    </view>
+                </picker>
+                <picker :range="beanSearchArr" range-key="label"
+                    :value="filterPickerData(beanSearchArr, queryParams.beanLimit, 'index')"
+                    @change="pickerChange($event, beanSearchArr, 'beanLimit')">
+                    <view class="select">
+                        <view class="select_text">{{ filterPickerData(beanSearchArr, queryParams.beanLimit) }}</view>
+                        <u-icon name="arrow-down-fill" color="#000" size="18rpx"></u-icon>
+                    </view>
+                </picker>
+            </view>
             <view class="mallItem" v-for="(item, index) in list" :key="index"
                 :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `14rpx` }">
                 <view class="mall_imgBlock">
@@ -30,16 +47,67 @@
 
 <script lang="ts">
 import { app } from "@/app";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 @Component({})
 export default class ClassName extends BaseNode {
+    @Prop({ default: 0 })
+    bean!: number;
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 20,
+        od: "",
+        beanLimit: ":"
     }
     list: any = []
     isFetchEnd: boolean = true
+    selectGoods: any = {
+
+    }
+    odSearchArr: any = [
+        {
+            label: '默认排序',
+            value: ""
+        },
+        {
+            label: '世界豆从高到低',
+            value: 'bean:desc'
+        },
+        {
+            label: '世界豆从低到高',
+            value: 'bean:asc'
+        },
+        {
+            label: '兑换数从高到低',
+            value: 'exchange:desc'
+        },
+        {
+            label: '兑换数从低到高',
+            value: 'exchange:asc'
+        }
+    ]
+    beanSearchArr: any = [
+        {
+            label: '全部世界豆',
+            value: ":"
+        },
+        {
+            label: '1-100',
+            value: '1:100'
+        },
+        {
+            label: '101-1000',
+            value: '101:1000'
+        },
+        {
+            label: '1001-3000',
+            value: '1001:3000'
+        },
+        {
+            label: '3000以上',
+            value: '3000:'
+        }
+    ]
     mounted(query: any) {
         this.reqNewData()
     }
@@ -54,9 +122,47 @@ export default class ClassName extends BaseNode {
             uni.stopPullDownRefresh()
         })
     }
+    pickerChange(event: any, range: any, assignKey: string) {
+        const index: number = event.detail.value
+        this.queryParams[assignKey] = range[index].value
+        this.queryParams.fetchFrom = 1
+        this.reqNewData()
+    }
+    filterPickerData(range: any, value: any, returnType?: string) {
+        // const data: any = range.find((item: any) => item.value === value)
+        const index: number = range.findIndex((item: any) => item.value === value)
+        return returnType == "index" ? index : (range[index].label || "默认排序")
+    }
+    beforeExchange() {
+        if (this.selectGoods.leftNum <= 0) {
+            uni.showModal({
+                title: '提示',
+                content: `剩余份数不足`,
+                showCancel: false,
+            })
+            return
+        }
+        if (!this.bean || (this.bean < this.selectGoods.price)) {
+            uni.showModal({
+                title: '提示',
+                content: `世界豆不足，无法兑换，可提高排名或完成每日任务获取`,
+                showCancel: false,
+            })
+            return
+        }
+        uni.showModal({
+            title: '提示',
+            content: '确认兑换后将扣除相应的世界豆',
+            success: (result: any) => {
+                if (result.confirm) this.exchangeGoods()
+            }
+        })
+    }
     exchangeGoods(id?: any) {
         app.http.Post(`worldCup/bean/shop/exchange/${id}`, {}, (res: any) => {
             app.platform.UINotificationFeedBack('success')
+            this.selectGoods.leftNum -= 1
+            this.$emit('getNewBean')
             uni.showToast({
                 title: '兑换成功',
                 icon: 'success'
@@ -66,7 +172,7 @@ export default class ClassName extends BaseNode {
     reqNewData(cb?: any) {
         app.http.Get(`dataApi/worldCup/bean/shop/good/list`, this.queryParams, (res: any) => {
             const list = res.list || []
-            this.isFetchEnd = res.totalPage
+            this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
             cb && cb()
         })
@@ -97,7 +203,26 @@ page {
 .selectRow {
     width: inherit;
     height: 52rpx;
+    display: flex;
     margin-bottom: 20rpx;
+
+    .select {
+        width: 194rpx;
+        height: 52rpx;
+        background: #E9EDEC;
+        border-radius: 5rpx;
+        margin-right: 15rpx;
+        box-sizing: border-box;
+        padding: 0 10rpx;
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .select_text {
+        font-size: 24rpx;
+        color: #262626;
+    }
 }
 
 .mallItem {

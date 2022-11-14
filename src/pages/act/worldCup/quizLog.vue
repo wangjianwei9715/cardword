@@ -32,7 +32,7 @@ export default class ClassName extends BaseNode {
     reqNewData(cb?: any) {
         app.http.Get(`dataApi/worldCup/bean/guessing/record`, this.queryParams, (res: any) => {
             const list = res.list || []
-            this.isFetchEnd = res.totalPage
+            this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
             cb && cb()
         })

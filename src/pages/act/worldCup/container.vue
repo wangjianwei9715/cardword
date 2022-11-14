@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-11 18:05:44
+ * @LastEditTime: 2022-11-14 13:42:36
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -16,22 +16,25 @@
 
             <view class="pageTop" ref="pageTop" id="pageTop"
                 :style="{ backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
-                <image class="back" :class="{ filterBlack: scrollTopPercent > 0.6 }"
-                    src="/static/act/rankSelect/back.png" @click="app.platform.pageBack()" />
-                <view class="menuContainer" :style="{ opacity: 1 - scrollTopPercent }">
+                <image class="back" :class="{ filterBlack: scrollTopHidden }" src="/static/act/rankSelect/back.png"
+                    @click="app.platform.pageBack()" />
+                <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
+                    :class="{ pointer_none: scrollTopHidden }" @click="onClickGetBean">
                     <image class="beanIcon" src="/static/act/worldCup/smallBeanCube.png" />
                     <view class="beanPoint">{{ myData.worldBean == undefined ? '获取中' : myData.worldBean }}</view>
                     <u-icon size="37rpx" name="plus-circle-fill" color="#fff"></u-icon>
                 </view>
                 <view style="flex:1"></view>
                 <navigator url="/pages/act/worldCup/pointDetail" hover-class="none">
-                    <view class="menuContainer" :style="{ opacity: 1 - scrollTopPercent }">
+                    <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
+                        :class="{ pointer_none: scrollTopHidden }">
                         <u-icon size="37rpx" name="file-text-fill" color="#fff"></u-icon>
                         <view class="label">明细</view>
                     </view>
                 </navigator>
                 <navigator url="/pages/act/worldCup/description" hover-class="none">
-                    <view class="menuContainer" :style="{ opacity: 1 - scrollTopPercent }">
+                    <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
+                        :class="{ pointer_none: scrollTopHidden }">
                         <u-icon size="37rpx" name="question-circle-fill" color="#fff"></u-icon>
                         <view class="label">规则</view>
                     </view>
@@ -44,9 +47,8 @@
             <view class="topTips">{{ tabBar[tabIndex].tips }}</view>
         </view>
         <view class="componentsContainer">
-            <component :is="tabBar[tabIndex].ref" :ref="tabBar[tabIndex].ref"></component>
-            <!-- <rank ref="rank" v-show="tabIndex == 0" />
-            <beanMall v-show="tabIndex == 3" /> -->
+            <component :is="tabBar[tabIndex].ref" :ref="tabBar[tabIndex].ref" :bean="myData.worldBean || 0"
+                @getNewBean="reqWorldBean"></component>
         </view>
         <view class="tabBarContainer">
             <view class="tabBar">
@@ -60,7 +62,46 @@
             <view class="bottomSafeArea">
             </view>
         </view>
+        <u-popup :show="taskShow" :round="20" @close="taskShow = false" mode="bottom" :safeAreaInsetBottom="false">
+            <view class="popContainer">
+                <image class="containerTitle" src="/static/act/worldCup/beanGetTitle.png"></image>
+                <view class="safeTop"></view>
+                <view class="signContainer">
+                    <view class="leftCorner flexCenter">我的成绩<image src="/static/act/worldCup/smallQuestion.png"></image>
+                    </view>
+                    <view class="signTop">
+                        累计签到{{ signInNum }}天，共获得{{ myGetWorldBean }}
+                        <image src="/static/act/worldCup/smallBeanCube.png" />
+                    </view>
+                    <view class="signDayContainer" :class="{ bt: signList.length == 7 }">
+                        <view class="signItem" v-for="(item, index) in signList" :key="index"
+                            :style="{ marginRight: ((index + 1) % 7 == 0) ? `0rpx` : `10rpx` }">
+                            <view class="point">+{{ item.worldBean }}</view>
+                            <view class="day">周一</view>
+                        </view>
+                    </view>
+                </view>
+                <view class="taskContainer">
+                    <view class="taskItem" v-for="(item, index) in taskList" :key="index"
+                        :class="{ borderBottom: index == (taskList.length - 1) }">
+                        <view class="task_left">
+                            <view class="title">{{ item.name }}{{ item.plan ? `(${item.plan})` : "" }}</view>
+                            <view class="beanPoint">
+                                +{{ item.beanNum }}
+                                <image src="/static/act/worldCup/smallBeanCube.png" />
+                            </view>
+                        </view>
+                        <view class="taskButton flexCenter" :class="{ taskButton_dis: item.isSuccess }"
+                            @click="onClickTask(item)">
+                            {{ item.isSuccess ? '已完成' : '去完成' }}</view>
+                    </view>
+                </view>
+            </view>
+            <view class="bottomSafeArea"></view>
+        </u-popup>
+        <!-- <bottomDrawer :showDrawer.sync="taskShow">
 
+        </bottomDrawer> -->
     </view>
 </template>
 
@@ -109,19 +150,28 @@ export default class ClassName extends BaseNode {
             ref: 'beanMall'
         }
     ]
-    tabIndex: number = 1
+    tabIndex: number = 0
     scrollTop: number = 0
     MAX_HEIGHT: number = 0
     app: any = app
-    myData: any = {}
+    myData: any = {
+        worldBean: 0
+    }
     taskList: any = []
-    private get scrollTopPercent() {
+    taskShow: boolean = false
+    signList: any = []
+    signInNum: number = 0
+    myGetWorldBean: number = 0
+    public get scrollTopPercent() {
         return this.scrollTop / (this.MAX_HEIGHT * 2)
     }
+    public get scrollTopHidden() {
+        return (this.scrollTop / (this.MAX_HEIGHT * 2)) > 0.6
+    }
+    public get scrollTopOpacity() {
+        return 1 - (this.scrollTop / (this.MAX_HEIGHT * 2))
+    }
     onLoad() {
-        app.platform.hasLoginToken(() => {
-            this.reqNewData()
-        })
         this.$nextTick(() => {
             const query: any = uni.createSelectorQuery().in(this)
             query
@@ -131,6 +181,11 @@ export default class ClassName extends BaseNode {
                 })
                 .exec();
 
+        })
+    }
+    onShow() {
+        app.platform.hasLoginToken(() => {
+            this.reqWorldBean()
         })
     }
     onPageScroll(data: any) {
@@ -146,19 +201,48 @@ export default class ClassName extends BaseNode {
         //@ts-ignore
         this.$refs[refKey] && this.$refs[refKey].onReachBottomCom && this.$refs[refKey].onReachBottomCom()
     }
+    onClickTask(item: any) {
+        if (item.isSuccess) return
+        if (item.path == `/pages/act/worldCup/container`) {
+            this.taskShow = false
+            this.tabChange({}, 1)
+            return
+        }
+        uni.navigateTo({
+            url: item.path
+        })
+    }
     tabChange(item: any, index: number) {
         if (index == this.tabIndex) return
         this.tabIndex = index
     }
+    async onClickGetBean() {
+        const promiseAllData: any = await Promise.all([this.reqDayTask(), this.reqSignList()])
+        const taskData = promiseAllData[0]
+        const signData = promiseAllData[1]
+        this.signList = signData.data.daySignIn || []
+        this.signInNum = signData.data.SignInNum || 0
+        this.myGetWorldBean = signData.myGetWorldBean || 0
+        this.taskList = taskData.list || []
+        this.taskShow = true
+    }
     reqDayTask() {
-        app.http.Get(`dataApi/worldCup/bean/day/task`, {}, (res: any) => {
-            this.taskList = res.list
+        return new Promise((resolve, reject) => {
+            app.http.Get(`dataApi/worldCup/bean/day/task`, {}, (res: any) => {
+                resolve(res)
+            })
         })
     }
-    reqNewData(cb?: any) {
+    reqSignList() {
+        return new Promise((resolve, reject) => {
+            app.http.Get(`dataApi/worldCup/bean/daySignIn/data`, {}, (res: any) => {
+                resolve(res)
+            })
+        })
+    }
+    reqWorldBean(cb?: any) {
         app.http.Get(`dataApi/worldCup/bean/me/data`, {}, (res: any) => {
-            this.myData = res.data
-
+            this.myData.worldBean = res.data.worldBean || 0
         })
     }
 
@@ -169,6 +253,10 @@ export default class ClassName extends BaseNode {
 page {
     font-family: PingFang SC;
     background-color: rgba(37, 76, 30, 1);
+}
+
+.pointer_none {
+    pointer-events: none;
 }
 
 .pageTopContainer {
@@ -218,6 +306,7 @@ page {
         margin-left: 6rpx;
         flex: 1;
         margin-right: 9rpx;
+
     }
 
     .btn-back {
@@ -305,6 +394,170 @@ page {
     bottom: 0;
     background: #10590A;
     z-index: 10;
+}
+
+.popContainer {
+    width: 750rpx;
+    min-height: 986rpx;
+    background: linear-gradient(90deg, #238E1A, #37C32C, #238E1A);
+    border-radius: 20rpx 20rpx 0rpx 0rpx;
+    box-sizing: border-box;
+    padding: 0 20rpx;
+
+    .containerTitle {
+        width: 470rpx;
+        height: 199rpx;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        margin: auto;
+        pointer-events: none;
+    }
+}
+
+.safeTop {
+    height: 84rpx;
+    pointer-events: none;
+}
+
+.signContainer {
+    width: 708rpx;
+    height: 180rpx;
+    background: #FFFFFF;
+    border-radius: 10rpx;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 22rpx;
+
+    .leftCorner {
+        width: 137rpx;
+        height: 38rpx;
+        background: linear-gradient(90deg, #C1976F, #FEF1C7, #CCA27C);
+        border-radius: 10rpx 0rpx 5rpx 0rpx;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 20rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #0C2853;
+
+        image {
+            width: 26rpx;
+            height: 26rpx;
+            margin-left: 4rpx;
+        }
+    }
+
+    .signTop {
+        height: 56rpx;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 22rpx;
+        font-weight: 400;
+        color: #222121;
+
+        image {
+            width: 21rpx;
+            height: 23rpx;
+            margin-left: 2rpx;
+        }
+    }
+
+    .signDayContainer {
+        display: flex;
+        flex-wrap: nowrap;
+
+        .signItem {
+            // margin-right: 10rpx;
+            width: 86rpx;
+            height: 102rpx;
+            background: linear-gradient(90deg, #FFF1B4, #FFF4B9);
+            border-radius: 10rpx;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 400;
+            color: #F7A000;
+
+            .point {
+                font-size: 26rpx;
+            }
+
+            .day {
+                font-size: 20rpx;
+                margin-top: 6rpx;
+            }
+        }
+
+        // justify-content: space-between;
+    }
+
+    .bt {
+        justify-content: space-between;
+    }
+}
+
+.taskContainer {
+    width: 708rpx;
+    // height: 692rpx;
+    background: #FFFFFF;
+    border-radius: 10rpx;
+    margin-top: 17rpx;
+    box-sizing: border-box;
+    padding: 0 23rpx 0 28rpx;
+
+    .taskItem {
+        height: 136rpx;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .borderBottom {
+        border-bottom: 1rpx solid #9CE196;
+    }
+
+    .task_left {
+        .title {
+            font-size: 26rpx;
+            font-weight: 400;
+            color: #222121;
+        }
+
+        .beanPoint {
+            font-size: 26rpx;
+            font-weight: 400;
+            color: #2EAC24;
+            margin-top: 8rpx;
+
+            image {
+                width: 21rpx;
+                height: 23rpx;
+                margin-left: 3rpx;
+            }
+        }
+    }
+
+    .taskButton {
+        width: 160rpx;
+        height: 56rpx;
+        background: linear-gradient(0deg, #FFD117, #FFEC19);
+        border-radius: 28rpx;
+        font-size: 26rpx;
+        font-weight: 400;
+        color: #212121
+    }
+
+    .taskButton_dis {
+        background: linear-gradient(0deg, #DFE3F0, #C8CBE2);
+    }
 }
 
 .tabBar {

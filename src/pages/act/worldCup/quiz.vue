@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-11 18:26:51
+ * @LastEditTime: 2022-11-14 10:56:47
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -45,7 +45,7 @@
                     <view class="answerContainer">
                         <view class="answer" v-for="(answer, answerIndex) in question.answers"
                             @click="onClickAnswer(item, question, answer)"
-                            :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `20rpx` }">
+                            :style="{ marginRight: (answerIndex + 1) % 3 == 0 ? `0rpx` : `20rpx` }">
                             <view class="answer_top flexCenter" :class="{ answer_top_select: item.isLike }">
                                 <text>{{ answer.name }}</text>
                             </view>
@@ -93,10 +93,12 @@
 
 <script lang="ts">
 import { app } from "@/app";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 @Component({})
 export default class ClassName extends BaseNode {
+    @Prop({ default: 0 })
+    bean!: number;
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 5,
@@ -143,6 +145,14 @@ export default class ClassName extends BaseNode {
         this.reqNewData()
     }
     confirmQuiz() {
+
+        if (!this.selectBeanNum) {
+            uni.showToast({
+                title: '请选择投注数量',
+                icon: 'none'
+            })
+            return
+        }
         this.joinQuiz(this.clickSchedule.id, this.clickAnswer.answerId, this.selectBeanNum)
         return
         uni.showModal({
@@ -164,7 +174,8 @@ export default class ClassName extends BaseNode {
             })
             this.queryParams.fetchFrom = 1
             this.reqNewData()
-            this.popShow=false
+            this.popShow = false
+            this.$emit('getNewBean')
         })
     }
     filterQuestionText(state: any, question: any) {
@@ -172,13 +183,21 @@ export default class ClassName extends BaseNode {
         if (question.win_num && typeof question.win_num != undefined) return question.win_num
     }
     onClickAnswer(schedule: any, question: any, answer: any) {
+        if (schedule.state != 1) return
+        if (!this.bean) {
+            uni.showToast({
+                title: '世界豆数量不足',
+                icon: 'none'
+            })
+            return
+        }
         this.clickSchedule = schedule
         this.clickQuestion = question
         this.clickAnswer = answer
         app.http.Get(`dataApi/worldCup/bean/guessing/answer/bet/data/${answer.answerId}`, {}, (res: any) => {
             this.clickAnswer.multiple = res.data.multiple
             this.clickAnswer.betNum = res.data.betNum || 0
-            this.selectBeanNum=0
+            this.selectBeanNum = 0
             this.popShow = true
         })
     }
@@ -190,7 +209,7 @@ export default class ClassName extends BaseNode {
     reqNewData(cb?: any) {
         app.http.Get(`dataApi/worldCup/bean/guessing/list`, this.queryParams, (res: any) => {
             const list = res.list || []
-            this.isFetchEnd = res.totalPage
+            this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
             cb && cb()
         })
