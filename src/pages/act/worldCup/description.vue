@@ -21,7 +21,7 @@
                 排行榜说明
             </view>
             <view class="des_content">
-                活动截止后，拼团购买21-22one and one系列将不再获得积分，冻结的积分会根据拼团是否成功录入或从冻结状态扣除<br />
+                <!-- 活动截止后，拼团购买21-22one and one系列将不再获得积分，冻结的积分会根据拼团是否成功录入或从冻结状态扣除<br /> -->
                 排行榜每30分钟更新一次
             </view>
             <view class="des_title" style="margin-top:10rpx">
@@ -81,12 +81,12 @@
         <view class="descriptionContainer" v-if="descriptionType == 1">
             <view>
                 <view class="des_content">
-                    活动期间，参与世界杯竞猜，将根据竞猜的倍数获得相应的
+                    活动期间，参与【激情预测】，将根据预测的倍数获得相应的
                     世界豆奖励【参与期间扣除世界豆，截止投入后将无法继续
-                    投入，公布结果后猜中的用户世界豆将以相应的倍数返还，
-                    猜错则不返还】每次竞猜用户将根据对应的选项进行投入,用户也可以在未达到投入上限的情况下进行追加投入
+                    投入，公布结果后猜中的用户世界豆将以相应的倍数发放，
+                    猜错则不返还】每次预测用户将根据对应的选项进行投入,用户
+                    也可以在未达到投入上限的情况下进行追加投入
                 </view>
-
             </view>
             <view class="des_title" style="margin-top:10rpx">
                 倍数说明
@@ -98,29 +98,30 @@
         <view class="descriptionContainer" v-if="descriptionType == 2">
             <view>
                 <view class="des_content">
-                    活动期间，参与激情大抽奖，每日早上九点开放，晚上8:50截
-                    止，9点平台将公布中奖结果（公布时间存在延迟1-2分钟，请
-                    耐心等待结果公布
+                    活动期间参与【激情大抽奖】，每日早上九点开放晚上8:50
+                    截止，每晚9点平台将公布中奖结果（公布时间存在延迟1-2
+                    分钟，请耐心等待结果公布），开放期间，用户可以解锁奖券
+                    每人每日可解锁6张，公布结果后会公示奖品的兑换码，兑换
+                    码一致则为中奖
+                    奖池内容将不定期更新，世界杯结束后（12月19日起），页面将保留3天，用户可自行分配剩余世界豆的使用途径
                 </view>
-
-            </view>
-            <view class="des_title" style="margin-top:10rpx">
-                奖池说明
-            </view>
-            <view class="des_content">
-                奖池内容将不定期更新，世界杯结束后，激情抽奖将保留10
-
-                天，用户可自行分配剩余世界豆的使用途径
             </view>
         </view>
         <view class="descriptionContainer" v-if="descriptionType == 3">
             <view>
                 <view class="des_content">
-                    活动期间，可通过竞猜、每日任务获取世界豆，世界豆可在
-                    世界豆商城中兑换对应奖励。
-                    世界杯结束后，世界豆商店将持续开放10天，用户可自行分
-                    配世界豆的使用
+                    活动期间，可通过竞猜、每日任务获取世界豆，世界豆可在世界豆商城中兑换对应奖励。世界杯结束后（12月19日起），世界豆商店将持续开放3天，用户可自行分配世界豆的使用途径
                 </view>
+            </view>
+        </view>
+        <view class="descriptionContainer" style="margin-top: 0;margin-bottom:80rpx">
+            <view class="des_content">
+                <text class="red">*</text>
+                活动结束后，【世界豆商店】仍持续开放3天，
+
+                用户可自行分配剩余世界豆的使用途径，3天后剩余世界豆
+
+                将以卡币形式自动返还至用户账号
             </view>
         </view>
     </view>
@@ -135,7 +136,11 @@ import { parsePic, dateFormatMSHMS } from '@/tools/util'
 export default class ClassName extends BaseNode {
     pointConfig: any = {}
     awardList: any = []
-    des: string = `​活动期间，参与平台任意足球系列拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】<br/>活动截至<text style="color:#FA1545">入榜前50名</text>的用户将获得对应的名次奖励幸运大抽奖：排名<text style="color:#FA1545">前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取`;
+    des: string = `​
+活动期间，参与平台任意足球系列拼团的用户，将根据拼团
+的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
+活动截至入榜<text style="color:#FA1545">前50</text>的用户将获得对应的名次奖励
+幸运大抽奖：排名<text style="color:#FA1545">前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取`;
     luckList: any = [
     ]
     descriptionType: number = 0
