@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 18:10:09
+ * @LastEditTime: 2022-11-15 10:31:14
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -475,8 +475,10 @@ page {
             bottom: 0;
             margin: auto;
             left: 10rpx;
-            background: linear-gradient(90deg, #FF414B, #FF977F);
-            border-radius: 50%;
+            background-size: 100% 100%;
+            background-image: url('/static/act/worldCup/guessBall.png');
+            // background: linear-gradient(90deg, #FF414B, #FF977F);
+            // border-radius: 50%;
             position: absolute;
         }
     }

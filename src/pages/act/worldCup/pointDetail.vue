@@ -78,8 +78,8 @@
                 <view class="drawCard_bottom">
                     <view class="couponItem">
                         <view class="coupon">
-                            <view class="left">兑奖码</view>
-                            <view class="right">{{ item.code }}</view>
+                            <view class="left flexCenter">兑奖码</view>
+                            <view class="right flexCenter">{{ item.code }}</view>
                         </view>
                         <view style="flex:1"></view>
                         <muqian-lazyLoad v-if="item.is_lucky && item.pic_url"
@@ -113,11 +113,8 @@
                             <view class="goodsType">1件</view>
                             <view class="goodsTime">
                                 <view class="time">{{ dateFormatMSHMS(item.exchange_at) }}</view>
-                                <view class="point uni-flex" style="align-items:center;"
-                                    :class="{ get: item.useBean >= 0, deduction: item.useBean <= 2 }">
-                                    {{ (item.useBean >= 0 ? '+' : '')
-                                            +
-                                            item.useBean
+                                <view class="point uni-flex" style="align-items:center;" :class="{ blue: true }">
+                                    {{ '-' + item.useBean
                                     }}
                                     <image src="/static/act/worldCup/smallBeanCube.png"
                                         style="width:21rpx;height:23rpx;margin-left:4rpx" />
@@ -358,6 +355,10 @@ page {
             .deduction {
                 color: #FFA800;
             }
+
+            .blue {
+                color: #5782FD;
+            }
         }
     }
 }
@@ -461,6 +462,10 @@ page {
     padding: 24rpx 26rpx 40rpx 36rpx;
 
     .drawCard_top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10rpx;
+
         .left {
             font-size: 25rpx;
             font-family: PingFang SC;
@@ -480,12 +485,12 @@ page {
         width: 100%;
         height: 1rpx;
         background: #C0C0C0;
-        margin-bottom: 12rpx;
+        // margin-bottom: 12rpx;
     }
 
     .drawCard_bottom {
         display: flex;
-
+        margin-top: 12rpx;
         .couponItem {
             width: 100%;
             align-items: center;

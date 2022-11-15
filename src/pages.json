@@ -608,7 +608,11 @@
 						"navigationBarTitleText": "世界杯",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+						
 					}
 				},
 				{
@@ -623,7 +627,7 @@
 				{
 					"path": "worldCup/description",
 					"style": {
-						"navigationBarTitleText": "世界杯活动说明",
+						"navigationBarTitleText": "活动说明",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false

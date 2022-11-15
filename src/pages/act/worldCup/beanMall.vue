@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:31:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 18:12:35
+ * @LastEditTime: 2022-11-15 10:26:50
  * @FilePath: \card-world\src\pages\act\worldCup\beanMall.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -297,6 +297,7 @@ page {
     font-weight: normal;
     color: #FFFFFF;
     line-height: 30rpx;
+    text-align: center;
     margin-top: 16rpx;
     height: 62rpx;
 }

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-15 10:08:19
+ * @LastEditTime: 2022-11-15 14:47:20
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -66,7 +66,7 @@
                 <image class="containerTitle" src="/static/act/worldCup/beanGetTitle.png"></image>
                 <view class="safeTop"></view>
                 <view class="signContainer">
-                    <view class="leftCorner flexCenter">我的成绩<image src="/static/act/worldCup/smallQuestion.png"></image>
+                    <view class="leftCorner flexCenter">每日签到<image src="/static/act/worldCup/smallQuestion.png"></image>
                     </view>
                     <view class="signTop">
                         累计签到{{ signInNum }}天，共获得{{ myGetWorldBean }}
@@ -600,8 +600,8 @@ page {
         }
 
         .button_green {
-            border: 1rpx solid #1C6515;
-            background: #1C6515;
+            border: 1rpx solid #238E1A;
+            background: #238E1A;
             color: #fff;
         }
     }

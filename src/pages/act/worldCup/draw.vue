@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:33:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-11 17:32:22
+ * @LastEditTime: 2022-11-15 14:45:13
  * @FilePath: \card-world\src\pages\act\worldCup\draw.vue
  * @Description: draw
 -->
@@ -24,15 +24,21 @@
             </view>
             <view class="drawTop">
                 <view class="left">我的奖券</view>
-                <view class="right">待解锁:{{ dayLotteryNum }}</view>
+                <view class="right">{{ isPubilsh ? '共计奖券' : '待解锁' }}:{{ isPubilsh ? (myCodeList.length || 0)
+                        : dayLotteryNum
+                }}
+                </view>
             </view>
             <view class="couponContainer">
                 <view class="coupon" :class="{ coupon_get: item.is_lucky }" v-for="(item, index) in myCodeList"
                     :key="index">
-                    <view class="left flexCenter">{{ item.code }}</view>
-                    <view class="right flexCenter">{{ isPubilsh ? (item.is_lucky ? '中奖' : '未中奖') : '未开奖' }}</view>
+                    <view class="left flexCenter">{{ item.code || "" }}</view>
+                    <view class="right flexCenter">{{ isPubilsh ? (item.is_lucky ? '中奖' : '未中奖') : '未开奖'
+                    }}</view>
                 </view>
             </view>
+            <view v-if="!isPubilsh" class="unlockButton flexCenter" :class="{ unlockButton_dis: dayLotteryNum == 0 }"
+                @click="$u.throttle(onClickCoupon, 500)">{{ dayLotteryNum > 0 ? "解锁奖券" : "今日已全部解锁" }}</view>
         </view>
     </view>
 </template>
@@ -47,10 +53,28 @@ export default class ClassName extends BaseNode {
     prizePoolList: any = []
     myCodeList: any = []
     dayLotteryNum: number = 0
+    lotteryPrice: number = 0
     mounted(query: any) {
         app.platform.hasLoginToken(() => {
             this.reqTodayPrizePool()
-            this.reqMyCode()
+        })
+    }
+    onClickCoupon() {
+        if (this.isPubilsh) return
+        if (!this.dayLotteryNum) return
+        uni.showModal({
+            title: '提示',
+            content: `确认使用”${this.lotteryPrice}“世界豆解锁一张奖券`,
+            success: (result: any) => {
+                if (result.confirm) this.unlock()
+            }
+        })
+    }
+    unlock() {
+        app.http.Post(`worldCup/bean/lottery/go`, {}, (res: any) => {
+            this.$emit('getNewBean')
+            this.dayLotteryNum = res.dayLotteryNum
+            this.myCodeList.push({ code: res.getCode, is_lucky: false })
         })
     }
     reqMyCode() {
@@ -62,7 +86,9 @@ export default class ClassName extends BaseNode {
     reqTodayPrizePool(cb?: any) {
         app.http.Get(`dataApi/worldCup/bean/lottery/day/award`, {}, (res: any) => {
             this.isPubilsh = res.isPubilsh
+            this.lotteryPrice = res.lotteryPrice
             this.prizePoolList = res.list || []
+            this.reqMyCode()
         })
     }
 
@@ -126,13 +152,32 @@ page {
         color: #FFFFFF;
         height: 32rpx;
         line-height: 30rpx;
+        text-align: center;
     }
+}
+
+.unlockButton {
+    width: 676rpx;
+    height: 75rpx;
+    background: #238E1A;
+    border-radius: 10rpx;
+    font-size: 32rpx;
+    font-weight: normal;
+    color: #FFFFFF;
+    margin-top: 4rpx;
+}
+
+.unlockButton_dis {
+    background: #D3D3D4;
+    color: #636363;
 }
 
 .couponContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+
+
 
     .coupon {
         width: 332rpx;
