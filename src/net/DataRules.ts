@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-10-26 15:51:09
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-11-11 14:30:54
+ * @LastEditTime: 2022-11-15 10:27:56
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -18,10 +18,11 @@ export var guessRules = {
  * @cheduiHelp 车队排行榜 说明
  */
 export var cheduiHelp = [
-    {content:'2.礼品在商品拼团成功后发放，优惠券类礼品自动发放至我的-优惠券，实物类礼品请联系商家发放。'},
-    {content:'3.优惠券类礼品有使用期限，请获奖玩家尽快使用'},
-    {content:'4.若该商品拼团失败或下架，则本活动作废，不再发放榜单奖励'},
-    {content:'5.本活动由商家发起，礼品由商家提供'}
+    {content:'2.若积分相同，则先到达该积分值的用户排名在前。'},
+    {content:'3.礼品在商品拼团成功后发放，优惠券类礼品自动发放至我的-优惠券，实物类礼品请联系商家发放。'},
+    {content:'4.优惠券类礼品有使用期限，请获奖玩家尽快使用'},
+    {content:'5.若该商品拼团失败或下架，则本活动作废，不再发放榜单奖励'},
+    {content:'6.本活动由商家发起，礼品由商家提供'}
 ]
 /**
  * @goodsDetailRules 商品详情 常见问题
