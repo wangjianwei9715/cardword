@@ -769,8 +769,7 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
         };
       },
       leaveRoom() {
-        
-        
+        if(this.systemKickOut) getApp().globalData.destroyServe();
         if (this.userData.uid && !this.systemKickOut && this.isLogin) {
           console.log('注销推出房间');
           app.sever.isNetOK() && this.leaveOutRoomSocket();
