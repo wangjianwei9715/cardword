@@ -1,12 +1,12 @@
 <template>
     <view class="content">
-        <view class="descriptionContainer">
+        <view class="descriptionContainer" v-if="descriptionType == 0">
             <view>
                 <view class="des_content" v-html="des">
 
                 </view>
-                <view @click="getElementScollTop"
-                    style="color: #02a7f0;text-decoration:underline;font-size: 23rpx;margin-bottom:10rpx;">查看奖励</view>
+                <!-- <view @click="getElementScollTop"
+                    style="color: #02a7f0;text-decoration:underline;font-size: 23rpx;margin-bottom:10rpx;">查看奖励</view> -->
             </view>
             <view class="des_title">
                 活动时间说明
@@ -20,7 +20,6 @@
             <view class="des_title" style="margin-top:10rpx">
                 排行榜说明
             </view>
-
             <view class="des_content">
                 活动截止后，拼团购买21-22one and one系列将不再获得积分，冻结的积分会根据拼团是否成功录入或从冻结状态扣除<br />
                 排行榜每30分钟更新一次
@@ -73,12 +72,56 @@
                     {{ item.multiple }}倍{{ item.describe ? `(${item.describe})` : '' }}：{{ item.keyword.join('、') }}
                 </view>
             </view>
-            <!-- <view class="des_gray">*活动最终解释权归卡世界平台所有</view> -->
         </view>
-        <view class="spRewardsContainer">
+        <view class="spRewardsContainer" v-if="descriptionType == 0">
             <view class="tips">活动截至后入榜前500名抽取n位幸运用户进行幸运抽奖</view>
             <view class="tips" @click="openRanDom">抽奖网站:<text
                     style="color: #02a7f0;text-decoration:underline;margin-left:6rpx">random.org</text></view>
+        </view>
+        <view class="descriptionContainer" v-if="descriptionType == 1">
+            <view>
+                <view class="des_content">
+                    活动期间，参与世界杯竞猜，将根据竞猜的倍数获得相应的
+                    世界豆奖励【参与期间扣除世界豆，截止投入后将无法继续
+                    投入，公布结果后猜中的用户世界豆将以相应的倍数返还，
+                    猜错则不返还】每次竞猜用户将根据对应的选项进行投入,用户也可以在未达到投入上限的情况下进行追加投入
+                </view>
+
+            </view>
+            <view class="des_title" style="margin-top:10rpx">
+                倍数说明
+            </view>
+            <view class="des_content">
+                倍数将根据实际客观情况产生调整，用户预测成功获得的世界豆取决于投注时的赔率，修改后的赔率只影响修改后参与投入的结果，不影响之前投注的赔数
+            </view>
+        </view>
+        <view class="descriptionContainer" v-if="descriptionType == 2">
+            <view>
+                <view class="des_content">
+                    活动期间，参与激情大抽奖，每日早上九点开放，晚上8:50截
+                    止，9点平台将公布中奖结果（公布时间存在延迟1-2分钟，请
+                    耐心等待结果公布
+                </view>
+
+            </view>
+            <view class="des_title" style="margin-top:10rpx">
+                奖池说明
+            </view>
+            <view class="des_content">
+                奖池内容将不定期更新，世界杯结束后，激情抽奖将保留10
+
+                天，用户可自行分配剩余世界豆的使用途径
+            </view>
+        </view>
+        <view class="descriptionContainer" v-if="descriptionType == 3">
+            <view>
+                <view class="des_content">
+                    活动期间，可通过竞猜、每日任务获取世界豆，世界豆可在
+                    世界豆商城中兑换对应奖励。
+                    世界杯结束后，世界豆商店将持续开放10天，用户可自行分
+                    配世界豆的使用
+                </view>
+            </view>
         </view>
     </view>
 </template>
@@ -92,18 +135,14 @@ import { parsePic, dateFormatMSHMS } from '@/tools/util'
 export default class ClassName extends BaseNode {
     pointConfig: any = {}
     awardList: any = []
-    des: string =
-        `
-	活动期间，参与<text style="color:#FA1545">21-22one and one</text>拼团的用户，将根据拼团的类型获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
-	<br/>
-	活动截至<text style="color:#FA1545">入榜前50名</text>的用户将获得特殊奖励
-	<br/>
-	幸运大抽奖：<text style="color:#FA1545">排名前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取 
-	`
+    des: string = `​活动期间，参与平台任意足球系列拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】<br/>活动截至<text style="color:#FA1545">入榜前50名</text>的用户将获得对应的名次奖励幸运大抽奖：排名<text style="color:#FA1545">前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取`;
     luckList: any = [
     ]
+    descriptionType: number = 0
     onLoad(query: any) {
-        this.reqPointConfig()
+        this.descriptionType = +query.searchType
+        if (this.descriptionType == 0) this.reqPointConfig()
+        // this.reqPointConfig()
     }
     onReachBottom() {
 
@@ -120,9 +159,9 @@ export default class ClassName extends BaseNode {
         })
     }
     getElementScollTop() {
-        uni.navigateTo({
-            url:'/pages/act/worldCup/award'
-        })
+        // uni.navigateTo({
+        //     url: '/pages/act/worldCup/award'
+        // })
         // const query: any = uni.createSelectorQuery()
         // query
         //     .select('.spRewardsContainer')
@@ -139,7 +178,7 @@ export default class ClassName extends BaseNode {
         plus.runtime.openURL('https://www.random.org')
     }
     reqPointConfig() {
-        app.http.Get(`dataApi/selectRank/multiple/config`, { activityTp: 2 }, (res: any) => {
+        app.http.Get(`dataApi/selectRank/multiple/config`, { activityTp: 3 }, (res: any) => {
 
             Object.keys(res.data).map((key: any) => {
                 console.log(key);
@@ -171,7 +210,7 @@ page {
 .descriptionContainer {
     width: 710rpx;
     box-sizing: border-box;
-    padding: 38rpx 30rpx 34rpx 30rpx;
+    padding: 18rpx 30rpx 34rpx 30rpx;
     background: #FFFFFF;
     border-radius: 3rpx;
     margin-top: 20rpx;

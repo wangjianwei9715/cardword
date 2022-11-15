@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-14 18:18:40
+ * @LastEditTime: 2022-11-15 10:08:19
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -31,7 +31,7 @@
                         <view class="label">明细</view>
                     </view>
                 </navigator>
-                <navigator url="/pages/act/worldCup/description" hover-class="none">
+                <navigator :url="`/pages/act/worldCup/description?searchType=${tabIndex}`" hover-class="none">
                     <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
                         :class="{ pointer_none: scrollTopHidden }">
                         <image src="/static/act/worldCup/qustion.png" class="icon"></image>
@@ -530,7 +530,7 @@ page {
     border-radius: 25rpx;
     box-sizing: border-box;
     padding: 0 45rpx;
-
+    position: relative;
     .title {
         font-size: 34rpx;
         font-weight: bold;
@@ -559,10 +559,10 @@ page {
 
     .exchange_tips {
         margin-top: 16rpx;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
+        // display: flex;
+        // justify-content: space-between;
+        // align-items: center;
+        flex-wrap: nowrap;
         .bold {
             font-weight: bold;
         }
@@ -574,6 +574,7 @@ page {
         }
 
         .limit {
+            white-space: nowrap;
             font-size: 24rpx;
             font-weight: normal;
             color: #333333;
@@ -583,7 +584,10 @@ page {
     .exchange_button {
         display: flex;
         justify-content: space-between;
-        margin-top: 100rpx;
+        position: absolute;
+        width: 450rpx;
+        bottom: 45rpx;
+        // margin-top: 100rpx;
 
         .button {
             width: 210rpx;
