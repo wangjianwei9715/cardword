@@ -95,13 +95,13 @@ export default class ClassName extends BaseNode {
 		plus.runtime.openURL('https://www.random.org')
 	}
 	reqRewardList() {
-		app.http.Get('dataApi/selectRank/award/list', {isLucky:0,activityTp:2}, (res: any) => {
+		app.http.Get('dataApi/selectRank/award/list', {isLucky:0,activityTp:3}, (res: any) => {
 			this.awardList = res.list || []
 
 		})
 	}
 	reqRewardListTwo() {
-        app.http.Get('dataApi/selectRank/award/list', { isLucky: 1, activityTp: 2 }, (res: any) => {
+        app.http.Get('dataApi/selectRank/award/list', { isLucky: 1, activityTp: 3 }, (res: any) => {
             this.luckList = res.list || []
         })
     }
