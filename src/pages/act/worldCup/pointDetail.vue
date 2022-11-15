@@ -48,7 +48,7 @@
                 <view class="quizCard_top uni-flex jb">
                     <view class="time">{{ dateFormatMSHMS(item.created_at) }}</view>
                     <view class="title">{{ item.matchTeam }}</view>
-                    <view class="type">猜中奖励</view>
+                    <view class="type">{{item.worldBean>=0?'猜中奖励':'参与竞猜'}}</view>
                 </view>
                 <view class="quizCard_line uni-flex jb"></view>
                 <view class="quizCard_bottom uni-flex jb">

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-15 10:31:14
+ * @LastEditTime: 2022-11-15 16:40:52
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -184,8 +184,10 @@ export default class ClassName extends BaseNode {
                 title: '投注成功',
                 icon: 'none'
             })
-            this.queryParams.fetchFrom = 1
-            this.reqNewData()
+            setTimeout(() => {
+                this.queryParams.fetchFrom = 1
+                this.reqNewData()
+            }, 200)
             this.popShow = false
             this.$emit('getNewBean')
         })
