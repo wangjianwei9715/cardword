@@ -2,13 +2,18 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-15 14:47:20
+ * @LastEditTime: 2022-11-15 14:58:53
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
 <template>
     <view class="content">
         <image class="bg-img" src="/static/act/worldCup/back.png"></image>
+        <!-- 缓存头图防止第一次切换闪图 -->
+        <image src='/static/act/worldCup/topBanner.png' class="none" />
+        <image src='/static/act/worldCup/topGuess.png' class="none" />
+        <image src='/static/act/worldCup/topDraw.png' class="none" />
+        <image src='/static/act/worldCup/topMall.png' class="none" />
         <view class="pageTopContainer">
             <view class="status"
                 :style="{ paddingTop: app.statusBarHeight + 'px', backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
@@ -115,7 +120,7 @@
                             class="bold">1
                         </text>个世界豆</view>
                     <view class="limit">每日上限:<text class="bold">({{ exchangeBeanConfig.exchangeNum }}/{{
-                            exchangeBeanConfig.dayMaxExchange
+                    exchangeBeanConfig.dayMaxExchange
                     }})</text>
                     </view>
                 </view>
@@ -357,6 +362,16 @@ page {
     background-color: rgba(37, 76, 30, 1);
 }
 
+.none {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
 .pointer_none {
     pointer-events: none;
 }
@@ -531,6 +546,7 @@ page {
     box-sizing: border-box;
     padding: 0 45rpx;
     position: relative;
+
     .title {
         font-size: 34rpx;
         font-weight: bold;
@@ -563,6 +579,7 @@ page {
         // justify-content: space-between;
         // align-items: center;
         flex-wrap: nowrap;
+
         .bold {
             font-weight: bold;
         }

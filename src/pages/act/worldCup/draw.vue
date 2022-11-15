@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:33:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-15 14:45:13
+ * @LastEditTime: 2022-11-15 15:01:10
  * @FilePath: \card-world\src\pages\act\worldCup\draw.vue
  * @Description: draw
 -->
@@ -18,8 +18,8 @@
                     :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `14rpx` }">
                     <muqian-lazyLoad borderRadius="3rpx" class="awards_img"
                         :src="$parsePic(decodeURIComponent(item.pic))" />
-                    <view class="awards_name u-line-1">{{ item.name }}</view>
-                    <view class="awards_name u-line-1">{{ item.code }}</view>
+                    <view class="awards_name u-line-2">{{ item.name }}</view>
+                    <view class="awards_code flexCenter" v-if="isPubilsh">{{ item.code || '' }}</view>
                 </view>
             </view>
             <view class="drawTop">
@@ -150,9 +150,19 @@ page {
     .awards_name {
         font-size: 26rpx;
         color: #FFFFFF;
-        height: 32rpx;
+        height: 62rpx;
         line-height: 30rpx;
         text-align: center;
+    }
+
+    .awards_code {
+        width: 216rpx;
+        height: 56rpx;
+        background: #FFFFFF;
+        border-radius: 5rpx;
+        font-size: 22rpx;
+        color: #151515;
+        margin-top: 10rpx;
     }
 }
 
