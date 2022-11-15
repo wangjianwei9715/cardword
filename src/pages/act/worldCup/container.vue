@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-15 14:58:53
+ * @LastEditTime: 2022-11-15 17:57:24
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -296,6 +296,7 @@ export default class ClassName extends BaseNode {
             this.reqBeanExchange()
             return
         }
+        this.taskShow = false
         uni.navigateTo({
             url: item.path
         })
