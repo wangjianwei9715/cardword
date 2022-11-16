@@ -404,6 +404,7 @@ page {
             font-weight: bold;
             color: #333333;
             width: 33.33%;
+            white-space: nowrap;
         }
 
         .type {
