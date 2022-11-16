@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:33:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 15:26:54
+ * @LastEditTime: 2022-11-16 17:06:38
  * @FilePath: \card-world\src\pages\act\worldCup\draw.vue
  * @Description: draw
 -->
@@ -19,12 +19,12 @@
                     <muqian-lazyLoad borderRadius="3rpx" class="awards_img"
                         :src="$parsePic(decodeURIComponent(item.pic))" @click="prviewImages(item.pic)" />
                     <view class="awards_name u-line-2">{{ item.name }}</view>
-                    <view class="awards_code flexCenter" v-if="isPubilsh">{{ item.code || '' }}</view>
+                    <view class="awards_code flexCenter" v-if="isPublish">{{ item.code || '' }}</view>
                 </view>
             </view>
             <view class="drawTop">
                 <view class="left">我的奖券</view>
-                <view class="right">{{ isPubilsh ? '共计奖券' : '待解锁' }}:{{ isPubilsh ? (myCodeList.length || 0)
+                <view class="right">{{ isPublish ? '共计奖券' : '待解锁' }}:{{ isPublish ? (myCodeList.length || 0)
                         : dayLotteryNum
                 }}
                 </view>
@@ -33,11 +33,11 @@
                 <view class="coupon" :class="{ coupon_get: item.is_lucky }" v-for="(item, index) in myCodeList"
                     :key="index">
                     <view class="left flexCenter">{{ item.code || "" }}</view>
-                    <view class="right flexCenter">{{ isPubilsh ? (item.is_lucky ? '中奖' : '未中奖') : '未开奖'
+                    <view class="right flexCenter">{{ isPublish ? (item.is_lucky ? '中奖' : '未中奖') : '未开奖'
                     }}</view>
                 </view>
             </view>
-            <view v-if="!isPubilsh" class="unlockButton flexCenter"
+            <view v-if="!isPublish" class="unlockButton flexCenter"
                 :class="{ unlockButton_dis: dayLotteryNum == 0 && requestSuccess }"
                 @click="$u.throttle(onClickCoupon, 500)">{{ (dayLotteryNum > 0) ? "解锁奖券" : "今日已全部解锁" }}
             </view>
@@ -53,7 +53,7 @@ import { parsePic } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
     parsePic = parsePic
-    isPubilsh: boolean = false
+    isPublish: boolean = false
     prizePoolList: any = []
     myCodeList: any = []
     dayLotteryNum: number = 0
@@ -73,7 +73,7 @@ export default class ClassName extends BaseNode {
 
     }
     onClickCoupon() {
-        if (this.isPubilsh) return
+        if (this.isPublish) return
         if (!this.dayLotteryNum) return
         uni.showModal({
             title: '提示',
@@ -106,7 +106,7 @@ export default class ClassName extends BaseNode {
     }
     reqTodayPrizePool(cb?: any) {
         app.http.Get(`dataApi/worldCup/bean/lottery/day/award`, {}, (res: any) => {
-            this.isPubilsh = res.isPubilsh
+            this.isPublish = res.isPublish
             this.lotteryPrice = res.lotteryPrice
             this.prizePoolList = res.list || []
             this.requestSuccess = true
