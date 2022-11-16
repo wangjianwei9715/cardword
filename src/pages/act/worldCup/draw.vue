@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:33:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 13:47:00
+ * @LastEditTime: 2022-11-16 15:21:19
  * @FilePath: \card-world\src\pages\act\worldCup\draw.vue
  * @Description: draw
 -->
@@ -17,7 +17,7 @@
                 <view class="awards" v-for="(item, index) in prizePoolList" :key="index"
                     :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `14rpx` }">
                     <muqian-lazyLoad borderRadius="3rpx" class="awards_img"
-                        :src="$parsePic(decodeURIComponent(item.pic))" />
+                        :src="$parsePic(decodeURIComponent(item.pic))" @click="prviewImages(item.pic)" />
                     <view class="awards_name u-line-2">{{ item.name }}</view>
                     <view class="awards_code flexCenter" v-if="isPubilsh">{{ item.code || '' }}</view>
                 </view>
@@ -49,8 +49,10 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
+import { parsePic } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
+    parsePic = parsePic
     isPubilsh: boolean = false
     prizePoolList: any = []
     myCodeList: any = []
@@ -61,6 +63,12 @@ export default class ClassName extends BaseNode {
         app.platform.hasLoginToken(() => {
             this.reqTodayPrizePool()
         })
+    }
+    onPullDownRefreshCom() {
+        this.reqTodayPrizePool(() => {
+            uni.stopPullDownRefresh()
+        })
+
     }
     onClickCoupon() {
         if (this.isPubilsh) return
@@ -80,6 +88,14 @@ export default class ClassName extends BaseNode {
             this.myCodeList.push({ code: res.getCode, is_lucky: false })
         })
     }
+    prviewImages(picString: string) {
+        if (!picString) return
+        const picArr: any = picString.split(',').map(item => parsePic(decodeURIComponent(item)))
+        uni.previewImage({
+            current: 0,
+            urls: picArr
+        })
+    }
     reqMyCode() {
         app.http.Get(`dataApi/worldCup/bean/lottery/day/my/code`, {}, (res: any) => {
             this.dayLotteryNum = res.dayLotteryNum
@@ -93,6 +109,7 @@ export default class ClassName extends BaseNode {
             this.prizePoolList = res.list || []
             this.requestSuccess = true
             this.reqMyCode()
+            cb && cb()
         })
     }
 

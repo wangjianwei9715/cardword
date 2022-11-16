@@ -608,7 +608,7 @@
 						"navigationBarTitleText": "世界杯",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": true,
 						"app-plus": {
 							"bounce": "none"
 						}

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 14:47:00
+ * @LastEditTime: 2022-11-16 15:19:42
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -53,7 +53,7 @@
         <view class="componentsContainer">
             <component :is="tabBar[tabIndex].ref" :ref="tabBar[tabIndex].ref" :bean="myData.worldBean || 0"
                 @getNewBean="reqWorldBean"></component>
-                <view class="bottomSafeArea"></view>
+            <view class="bottomSafeArea"></view>
         </view>
         <view class="tabBarContainer">
             <view class="tabBar">
@@ -72,7 +72,8 @@
                 <image class="containerTitle" src="/static/act/worldCup/beanGetTitle.png"></image>
                 <view class="safeTop"></view>
                 <view class="signContainer">
-                    <view class="leftCorner flexCenter" @click.stop="signRuleShow=true">每日签到<image src="/static/act/worldCup/smallQuestion.png"></image>
+                    <view class="leftCorner flexCenter" @click.stop="signRuleShow = true">每日签到<image
+                            src="/static/act/worldCup/smallQuestion.png"></image>
                     </view>
                     <view class="signTop">
                         累计签到{{ signInNum }}天，共获得{{ myGetWorldBean }}
@@ -97,7 +98,7 @@
                         :class="{ borderBottom: index < (taskList.length - 1) }">
                         <view class="task_left">
                             <view class="title">{{ item.name || '获取中' }}{{ item.plan ? `(${item.plan})` : "" }}</view>
-                            <view class="beanPoint" :style="{opacity:item.beanNum?1:0}">
+                            <view class="beanPoint" :style="{ opacity: item.beanNum ? 1 : 0 }">
                                 +{{ item.beanNum }}
                                 <image src="/static/act/worldCup/smallBeanCube.png" />
                             </view>
@@ -111,7 +112,8 @@
             <view class="bottomSafeArea"
                 style="background: linear-gradient(90deg, #238E1A, #37C32C, #238E1A);opacity: 1;"></view>
         </u-popup>
-        <u-modal :show="signRuleShow" title="签到规则" :content='signRule' confirmText="关闭" @confirm="signRuleShow=false"></u-modal>
+        <u-modal :show="signRuleShow" title="签到规则" :content='signRule' confirmText="关闭" @confirm="signRuleShow = false">
+        </u-modal>
         <u-popup :show="exchangeShow" :round="25" @close="exchangeShow = false" mode="center" :zIndex="999">
             <view class="exchangeContainer">
                 <view class="title">卡币兑换世界豆</view>
@@ -248,10 +250,15 @@ export default class ClassName extends BaseNode {
     onPageScroll(data: any) {
         this.scrollTop = data.scrollTop
     }
-    onPulldDownRefresh() {
+    onPullDownRefresh() {
         const refKey: string = this.tabBar[this.tabIndex].ref
         //@ts-ignore
-        this.$refs[refKey] && this.$refs[refKey].onPulldDownRefreshCom && this.$refs[refKey].onPulldDownRefreshCom()
+        if (!this.$refs[refKey] || !this.$refs[refKey].onPullDownRefreshCom){
+            uni.stopPullDownRefresh()
+            return
+        }
+        //@ts-ignore
+        this.$refs[refKey] && this.$refs[refKey].onPullDownRefreshCom && this.$refs[refKey].onPullDownRefreshCom()
     }
     onReachBottom() {
         const refKey: string = this.tabBar[this.tabIndex].ref
