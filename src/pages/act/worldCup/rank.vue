@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 15:14:54
+ * @LastEditTime: 2022-11-16 18:12:58
  * @FilePath: \card-world\src\pages\act\worldCup\rank.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -151,7 +151,7 @@ export default class ClassName extends BaseNode {
         { name: '获取积分', description: '获取积分', timeStamp: [1668787200, 1671551999], sIcon: 'sBall' },
         { name: '积分解冻期', description: '积分解冻期', timeStamp: [1671552000, 1672415999], icon: 'ball', sIcon: 'sBall' },
         { name: '榜单结算', description: '榜单结算', timeStamp: 1672416000, icon: 'ball', sIcon: 'sBall' },
-        { name: '幸运大抽奖', description: '幸运大抽奖', timeStamp: 1641106800, icon: 'ball', sIcon: 'sBall' }
+        { name: '幸运大抽奖', description: '幸运大抽奖', timeStamp: 1672642800, icon: 'ball', sIcon: 'sBall' }
     ]
     startAnimationTimer: any = null
     nowTimeStamp: any = Math.round(+new Date() / 1000)
