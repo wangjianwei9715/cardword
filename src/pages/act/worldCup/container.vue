@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 15:26:38
+ * @LastEditTime: 2022-11-16 15:59:18
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -539,7 +539,7 @@ page {
 .componentsContainer {
     width: 750rpx;
     overflow-x: hidden;
-    min-height: 1560rpx;
+    // min-height: 1560rpx;
     background-size: 100% 100%;
     // background-image: url('/static/act/worldCup/back.png');
     position: relative;
