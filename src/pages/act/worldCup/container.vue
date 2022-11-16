@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 14:10:47
+ * @LastEditTime: 2022-11-16 14:39:20
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -23,7 +23,7 @@
                 <image class="back" :class="{ filterBlack: scrollTopHidden }" src="/static/act/rankSelect/back.png"
                     @click="app.platform.pageBack()" />
                 <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
-                    :class="{ pointer_none: scrollTopHidden }" @click="$u.throttle(onClickGetBean,500)">
+                    :class="{ pointer_none: scrollTopHidden }" @click="$u.throttle(onClickGetBean, 500)">
                     <image class="beanIcon" src="/static/act/worldCup/smallBeanCube.png" />
                     <view class="beanPoint">{{ myData.worldBean == undefined ? '获取中' : myData.worldBean }}</view>
                     <image src="/static/act/worldCup/add.png" class="icon"></image>
@@ -71,7 +71,7 @@
                 <image class="containerTitle" src="/static/act/worldCup/beanGetTitle.png"></image>
                 <view class="safeTop"></view>
                 <view class="signContainer">
-                    <view class="leftCorner flexCenter">每日签到<image src="/static/act/worldCup/smallQuestion.png"></image>
+                    <view class="leftCorner flexCenter" @click.stop="signRuleShow=true">每日签到<image src="/static/act/worldCup/smallQuestion.png"></image>
                     </view>
                     <view class="signTop">
                         累计签到{{ signInNum }}天，共获得{{ myGetWorldBean }}
@@ -96,7 +96,7 @@
                         :class="{ borderBottom: index < (taskList.length - 1) }">
                         <view class="task_left">
                             <view class="title">{{ item.name || '获取中' }}{{ item.plan ? `(${item.plan})` : "" }}</view>
-                            <view class="beanPoint" style="{opacity:item.beanNum?1:0}">
+                            <view class="beanPoint" :style="{opacity:item.beanNum?1:0}">
                                 +{{ item.beanNum }}
                                 <image src="/static/act/worldCup/smallBeanCube.png" />
                             </view>
@@ -110,6 +110,7 @@
             <view class="bottomSafeArea"
                 style="background: linear-gradient(90deg, #238E1A, #37C32C, #238E1A);opacity: 1;"></view>
         </u-popup>
+        <u-modal :show="signRuleShow" title="签到规则" :content='signRule' confirmText="关闭" @confirm="signRuleShow=false"></u-modal>
         <u-popup :show="exchangeShow" :round="25" @close="exchangeShow = false" mode="center" :zIndex="999">
             <view class="exchangeContainer">
                 <view class="title">卡币兑换世界豆</view>
@@ -120,7 +121,7 @@
                     <view class="can"><text class="bold">{{ exchangeBeanConfig.pointToOneBean }}</text>卡币兑换<text
                             class="bold">1
                         </text>个世界豆</view>
-                    <view class="limit">每日上限:<text class="bold">({{ exchangeBeanConfig.exchangeNum }}/{{
+                    <view class="limit">上限:<text class="bold">({{ exchangeBeanConfig.exchangeNum }}/{{
                             exchangeBeanConfig.dayMaxExchange
                     }})</text>
                     </view>
@@ -154,6 +155,15 @@ import draw from './draw.vue'
 })
 
 export default class ClassName extends BaseNode {
+    signRuleShow: boolean = false
+    signRule: string = `第一天：5世界豆
+    第二天：10世界豆
+    第三天：15世界豆
+    第四天：25世界豆
+    第五天：30世界豆
+    后续N天：30世界豆
+    中途断开从第一天开始
+    `
     tabBar: any = [
         {
             label: `荣耀\n榜单`,
@@ -259,6 +269,13 @@ export default class ClassName extends BaseNode {
         if (rep.test(this.worldBeanNum)) {
             uni.showToast({
                 title: '请输入整数',
+                icon: 'none'
+            })
+            return
+        }
+        if (this.worldBeanNum > (this.exchangeBeanConfig.dayMaxExchange - this.exchangeBeanConfig.exchangeNum)) {
+            uni.showToast({
+                title: '兑换数量以超上限，请重新输入',
                 icon: 'none'
             })
             return

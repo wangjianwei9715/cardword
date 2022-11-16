@@ -47,13 +47,13 @@
             <view class="quizCard" v-for="(item, index) in list" :key="index">
                 <view class="quizCard_top uni-flex jb">
                     <view class="time">{{ dateFormatMSHMS(item.created_at) }}</view>
-                    <view class="title">{{ item.matchTeam }}</view>
+                    <view class="title flexCenter">{{ item.matchTeam }}</view>
                     <view class="type">{{ item.worldBean >= 0 ? '猜中奖励' : '参与竞猜' }}</view>
                 </view>
                 <view class="quizCard_line uni-flex jb"></view>
                 <view class="quizCard_bottom uni-flex jb">
                     <view class="result">竞猜项:{{ item.questionName }}</view>
-                    <view class="option">选择项:{{ item.answerName }}</view>
+                    <view class="option flexCenter">选择项:{{ item.answerName }}</view>
                     <view class="point">
                         <view class="num" :class="{ num_neg: item.worldBean < 0 }">{{ (item.worldBean >= 0 ? '+' : '')
                                 +
@@ -394,7 +394,8 @@ page {
         .time {
             font-size: 22rpx;
             font-weight: 400;
-            color: #949494
+            color: #949494;
+            width: 33.33%;
         }
 
         .title {
@@ -402,6 +403,7 @@ page {
             font-family: PingFang SC;
             font-weight: bold;
             color: #333333;
+            width: 33.33%;
         }
 
         .type {
@@ -409,6 +411,8 @@ page {
             font-family: PingFang SC;
             font-weight: bold;
             color: #333333;
+            width: 33.33%;
+            text-align: right;
         }
     }
 
@@ -430,6 +434,7 @@ page {
             font-family: PingFang SC;
             font-weight: bold;
             color: #949494;
+            width: 33.33%;
         }
 
         .option {
@@ -437,12 +442,14 @@ page {
             font-family: PingFang SC;
             font-weight: bold;
             color: #949494;
+            width: 33.33%;
         }
 
         .point {
             display: flex;
             align-items: center;
-
+            justify-content:flex-end;
+            width: 33.33%;
             image {
                 width: 21rpx;
                 height: 23rpx;
