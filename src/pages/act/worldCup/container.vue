@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 14:39:20
+ * @LastEditTime: 2022-11-16 14:47:00
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -53,6 +53,7 @@
         <view class="componentsContainer">
             <component :is="tabBar[tabIndex].ref" :ref="tabBar[tabIndex].ref" :bean="myData.worldBean || 0"
                 @getNewBean="reqWorldBean"></component>
+                <view class="bottomSafeArea"></view>
         </view>
         <view class="tabBarContainer">
             <view class="tabBar">

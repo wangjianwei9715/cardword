@@ -8,15 +8,15 @@
                 <!-- <view @click="getElementScollTop"
                     style="color: #02a7f0;text-decoration:underline;font-size: 23rpx;margin-bottom:10rpx;">查看奖励</view> -->
             </view>
-            <view class="des_title">
+            <!-- <view class="des_title">
                 活动时间说明
-            </view>
-            <view class="des_content">
+            </view> -->
+            <!-- <view class="des_content">
                 10.30~11.14 获取积分<br />
                 11.15~11.24 积分解冻期<br />
                 11.25 0:00 榜单结算<br />
                 11.26 15:00 幸运大抽奖<br />
-            </view>
+            </view> -->
             <view class="des_title" style="margin-top:10rpx">
                 排行榜说明
             </view>
@@ -24,7 +24,7 @@
                 <!-- 活动截止后，拼团购买21-22one and one系列将不再获得积分，冻结的积分会根据拼团是否成功录入或从冻结状态扣除<br /> -->
                 排行榜每30分钟更新一次
             </view>
-            <view class="des_title" style="margin-top:10rpx">
+            <!-- <view class="des_title" style="margin-top:10rpx">
                 积分说明
             </view>
             <view class="des_content">
@@ -36,34 +36,35 @@
             </view>
             <view class="des_content">
                 二.卡密倍数
-            </view>
+            </view> -->
             <view class="des_content red">
-                卡种基础分：{{ pointConfig.cardSetBasicsScore || '获取中' }}<br />
+                <!-- 卡种基础分：{{ pointConfig.cardSetBasicsScore || '获取中' }}<br />
                 球员基础分：{{ pointConfig.playerBasicsScore || '获取中' }}<br />
-                球队基础分：{{ pointConfig.teamBasicsScore || '获取中' }}<br />
+                球队基础分：{{ pointConfig.teamBasicsScore || '获取中' }}<br /> -->
             </view>
             <view class="des_title">
             </view>
-            <view class="des_content red">
+            <!-- <view class="des_content red">
                 例：基础分以拼团规格为单位.若拼团规格为1盒基础分为1，则规格为2盒的基础分为2，单箱基础分为10，以此类推
-            </view>
+            </view> -->
             <view class="des_content">
                 三.倍数说明<br />
-                关键字倍数
+                积分倍数：1.5倍*单价
             </view>
-            <view class="des_content red" v-if="pointConfig.cardSet_multiple && pointConfig.cardSet_multiple.length">
+            <view class="des_content">卡密倍数</view>
+            <view class="des_content red" v-if="pointConfig.all_multiple && pointConfig.all_multiple.length">
+                <view v-for="(item, index) in pointConfig.all_multiple">
+                    {{ item.multiple }}倍{{ item.describe ? `(${item.describe})` : '' }}：{{ item.keyword.join('、') }}
+                </view>
+            </view>
+            <!-- <view class="des_content red" v-if="pointConfig.cardSet_multiple && pointConfig.cardSet_multiple.length">
                 <view v-for="(item, index) in pointConfig.cardSet_multiple">
                     {{ item.multiple }}倍{{ item.describe ? `(${item.describe})` : '' }}：{{ item.keyword.join('、') }}
                 </view>
             </view>
             <view class="des_title">
             </view>
-            <view class="des_content">球员倍数</view>
-            <view class="des_content red" v-if="pointConfig.player_multiple && pointConfig.player_multiple.length">
-                <view v-for="(item, index) in pointConfig.player_multiple">
-                    {{ item.multiple }}倍{{ item.describe ? `(${item.describe})` : '' }}：{{ item.keyword.join('、') }}
-                </view>
-            </view>
+            
             <view class="des_title">
             </view>
             <view class="des_content">球队倍数</view>
@@ -71,7 +72,7 @@
                 <view v-for="(item, index) in pointConfig.team_multiple">
                     {{ item.multiple }}倍{{ item.describe ? `(${item.describe})` : '' }}：{{ item.keyword.join('、') }}
                 </view>
-            </view>
+            </view> -->
         </view>
         <view class="spRewardsContainer" v-if="descriptionType == 0">
             <view class="tips">活动截至后入榜前500名抽取n位幸运用户进行幸运抽奖</view>
