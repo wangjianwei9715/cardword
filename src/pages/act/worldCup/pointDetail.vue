@@ -444,6 +444,7 @@ page {
             font-weight: bold;
             color: #949494;
             width: 33.33%;
+            white-space: nowrap;
         }
 
         .point {
