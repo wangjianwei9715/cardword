@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:31:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-15 10:26:50
+ * @LastEditTime: 2022-11-16 13:50:00
  * @FilePath: \card-world\src\pages\act\worldCup\beanMall.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -155,6 +155,7 @@ export default class ClassName extends BaseNode {
                 content: `剩余份数不足`,
                 showCancel: false,
             })
+            app.platform.UINotificationFeedBack('error')
             return
         }
         if (!this.bean || (this.bean < this.selectGoods.price)) {
@@ -163,6 +164,7 @@ export default class ClassName extends BaseNode {
                 content: `世界豆不足，无法兑换，可提高排名或完成每日任务获取`,
                 showCancel: false,
             })
+            app.platform.UINotificationFeedBack('error')
             return
         }
         uni.showModal({

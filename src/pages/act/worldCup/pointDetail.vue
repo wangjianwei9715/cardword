@@ -48,7 +48,7 @@
                 <view class="quizCard_top uni-flex jb">
                     <view class="time">{{ dateFormatMSHMS(item.created_at) }}</view>
                     <view class="title">{{ item.matchTeam }}</view>
-                    <view class="type">{{item.worldBean>=0?'猜中奖励':'参与竞猜'}}</view>
+                    <view class="type">{{ item.worldBean >= 0 ? '猜中奖励' : '参与竞猜' }}</view>
                 </view>
                 <view class="quizCard_line uni-flex jb"></view>
                 <view class="quizCard_bottom uni-flex jb">
@@ -68,8 +68,8 @@
             <view class="blockTitle">抽奖明细</view>
             <view class="drawCard" v-for="(item, index) in list" :key="index">
                 <view class="drawCard_top">
-                    <view class="left" @click="onClickLookWul(item)">{{ item.is_lucky ? '抽中' : '未抽中' }}{{ (item.tp == 1
-                            && item.is_lucky) ? `（点击查看发货详情）` : ""
+                    <view class="left" @click="onClickLookWul(item)">{{ drawStateParse(item) }}{{ (item.tp == 1
+                            && item.state == 3) ? `（点击查看发货详情）` : ""
                     }}
                     </view>
                     <view class="right">{{ dateFormatMSHMS(item.created_at) }}</view>
@@ -82,14 +82,17 @@
                             <view class="right flexCenter">{{ item.code }}</view>
                         </view>
                         <view style="flex:1"></view>
-                        <muqian-lazyLoad v-if="item.is_lucky && item.pic_url"
+                        <muqian-lazyLoad v-if="item.state == 3 && item.pic_url"
                             :src="$parsePic(decodeURIComponent(item.pic_url))" class="gift" borderRadius="3rpx" />
                         <view class="tips">
-                            <template v-if="!item.is_lucky">
+                            <template v-if="item.state == 1">
+                                暂未开奖
+                            </template>
+                            <template v-if="item.state == 2">
                                 很遗憾<br />
                                 未抽中奖励
                             </template>
-                            <template v-else>
+                            <template v-if="item.state == 3">
                                 {{ item.name }}
                             </template>
                         </view>
@@ -208,6 +211,14 @@ export default class ClassName extends BaseNode {
         if (scoreState == 0) return `冻结中${score}`
         if (scoreState == 1) return `+${score}`
         if (scoreState == 2) return `扣除冻结${score}`
+    }
+    drawStateParse(item: any) {
+        const stateMap: any = {
+            1: "未开奖",
+            2: "未中奖",
+            3: "中奖"
+        }
+        return stateMap[item.state] || ""
     }
     toGoods(item: any) {
         app.navigateTo.goGoodsDetails(item.goodCode)
@@ -491,6 +502,7 @@ page {
     .drawCard_bottom {
         display: flex;
         margin-top: 12rpx;
+
         .couponItem {
             width: 100%;
             align-items: center;

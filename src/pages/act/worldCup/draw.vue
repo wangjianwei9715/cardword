@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:33:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-15 15:01:10
+ * @LastEditTime: 2022-11-16 13:47:00
  * @FilePath: \card-world\src\pages\act\worldCup\draw.vue
  * @Description: draw
 -->
@@ -37,8 +37,10 @@
                     }}</view>
                 </view>
             </view>
-            <view v-if="!isPubilsh" class="unlockButton flexCenter" :class="{ unlockButton_dis: dayLotteryNum == 0 }"
-                @click="$u.throttle(onClickCoupon, 500)">{{ dayLotteryNum > 0 ? "解锁奖券" : "今日已全部解锁" }}</view>
+            <view v-if="!isPubilsh" class="unlockButton flexCenter"
+                :class="{ unlockButton_dis: dayLotteryNum == 0 && requestSuccess }"
+                @click="$u.throttle(onClickCoupon, 500)">{{ (dayLotteryNum > 0) ? "解锁奖券" : "今日已全部解锁" }}
+            </view>
         </view>
     </view>
 </template>
@@ -54,6 +56,7 @@ export default class ClassName extends BaseNode {
     myCodeList: any = []
     dayLotteryNum: number = 0
     lotteryPrice: number = 0
+    requestSuccess: boolean = false
     mounted(query: any) {
         app.platform.hasLoginToken(() => {
             this.reqTodayPrizePool()
@@ -64,7 +67,7 @@ export default class ClassName extends BaseNode {
         if (!this.dayLotteryNum) return
         uni.showModal({
             title: '提示',
-            content: `确认使用”${this.lotteryPrice}“世界豆解锁一张奖券`,
+            content: `确认使用“${this.lotteryPrice}”世界豆解锁一张奖券`,
             success: (result: any) => {
                 if (result.confirm) this.unlock()
             }
@@ -88,6 +91,7 @@ export default class ClassName extends BaseNode {
             this.isPubilsh = res.isPubilsh
             this.lotteryPrice = res.lotteryPrice
             this.prizePoolList = res.list || []
+            this.requestSuccess = true
             this.reqMyCode()
         })
     }
@@ -174,6 +178,7 @@ page {
     font-size: 32rpx;
     font-weight: normal;
     color: #FFFFFF;
+    margin: 0 auto;
     margin-top: 4rpx;
 }
 

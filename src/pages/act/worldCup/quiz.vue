@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-15 16:40:52
+ * @LastEditTime: 2022-11-16 14:04:39
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -36,8 +36,8 @@
                 <view class="questionContainer" v-for="(question, questionIndex) in item.questions">
                     <view class="question_top">
                         <!-- :style="{ opacity: item.state >= 2 ? 1 : 0 }" -->
-                        <view class="haoManyGuessIt">{{ question.hitNum
-                        }}人猜中
+                        <view class="haoManyGuessIt">{{ queryParams.tp == 1 ? `进行中` : `${question.hitNum}人猜中`
+                        }}
                         </view>
                         <view class="question_title">{{ question.title }}</view>
                         <view class="question_state">{{ filterQuestionText(item.state, question) }}</view>
@@ -165,18 +165,15 @@ export default class ClassName extends BaseNode {
             })
             return
         }
-        this.joinQuiz(this.clickSchedule.id, this.clickAnswer.answerId, this.selectBeanNum)
-        return
         uni.showModal({
             title: '提示',
-            content: '确认投注？',
-            success: (data: any) => {
-                if (data.confirm) {
-                    this.joinQuiz(this.clickSchedule.id, this.clickAnswer.answerId, this.selectBeanNum)
-                }
+            content: '确认投注?',
+            success: (result: any) => {
+                if (result.confirm) this.joinQuiz(this.clickSchedule.id, this.clickAnswer.answerId, this.selectBeanNum)
             }
         })
     }
+
     joinQuiz(scheduleId: any, answerId: any, worldBean: any) {
         app.http.Post(`worldCup/bean/guessing/go/${scheduleId}`, { answerId, worldBean }, (res: any) => {
             app.platform.UINotificationFeedBack('success')
@@ -190,12 +187,23 @@ export default class ClassName extends BaseNode {
             }, 200)
             this.popShow = false
             this.$emit('getNewBean')
+        }, (err: any) => {
+            app.platform.UINotificationFeedBack('error')
+            setTimeout(() => {
+                this.queryParams.fetchFrom = 1
+                this.reqNewData()
+                this.popShow = false
+            }, 200)
         })
+    }
+    hasOneLike(answers: any) {
+        const likesArray: any = answers.filter((item: any) => item.isLike)
+        return likesArray.length > 0
     }
     filterQuestionText(state: any, question: any) {
         if (state == 1) return '进行中'
         const winNum_isUnde = typeof question.win_num == undefined
-        if (winNum_isUnde) return '未参与'
+        if (winNum_isUnde || this.hasOneLike(question.answers)) return '未参与'
         if (!winNum_isUnde) return question.win_num >= 0 ? `+${question.win_num}` : question.win_num
     }
     onClickBean(item: any) {
@@ -438,7 +446,7 @@ page {
     }
 
     .question_state {
-        min-width: 130rpx;
+        min-width: 180rpx;
         font-size: 22rpx;
         text-align: right;
         color: #FFFFFF;
@@ -538,6 +546,8 @@ page {
                 width: 84rpx;
                 position: relative;
                 height: 84rpx;
+                position: relative;
+                bottom: 6rpx;
 
                 .logo {
                     width: 84rpx;

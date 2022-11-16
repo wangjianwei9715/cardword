@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-15 17:57:24
+ * @LastEditTime: 2022-11-16 13:34:55
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -96,7 +96,7 @@
                         :class="{ borderBottom: index < (taskList.length - 1) }">
                         <view class="task_left">
                             <view class="title">{{ item.name || '获取中' }}{{ item.plan ? `(${item.plan})` : "" }}</view>
-                            <view class="beanPoint">
+                            <view class="beanPoint" style="{opacity:item.beanNum?1:0}">
                                 +{{ item.beanNum }}
                                 <image src="/static/act/worldCup/smallBeanCube.png" />
                             </view>
@@ -107,20 +107,21 @@
                     </view>
                 </view>
             </view>
-            <view class="bottomSafeArea"></view>
+            <view class="bottomSafeArea"
+                style="background: linear-gradient(90deg, #238E1A, #37C32C, #238E1A);opacity: 1;"></view>
         </u-popup>
         <u-popup :show="exchangeShow" :round="25" @close="exchangeShow = false" mode="center" :zIndex="999">
             <view class="exchangeContainer">
                 <view class="title">卡币兑换世界豆</view>
                 <view class="exchange_input flexCenter">
-                    <input type="digit" placeholder="输入需要兑换的世界豆数量" v-model="worldBeanNum">
+                    <input type="number" placeholder="输入需要兑换的世界豆数量" v-model="worldBeanNum">
                 </view>
                 <view class="exchange_tips">
                     <view class="can"><text class="bold">{{ exchangeBeanConfig.pointToOneBean }}</text>卡币兑换<text
                             class="bold">1
                         </text>个世界豆</view>
                     <view class="limit">每日上限:<text class="bold">({{ exchangeBeanConfig.exchangeNum }}/{{
-                    exchangeBeanConfig.dayMaxExchange
+                            exchangeBeanConfig.dayMaxExchange
                     }})</text>
                     </view>
                 </view>
@@ -250,6 +251,14 @@ export default class ClassName extends BaseNode {
         if (!this.worldBeanNum) {
             uni.showToast({
                 title: '请输入正确的世界豆数量',
+                icon: 'none'
+            })
+            return
+        }
+        const rep: any = /[\.]/;
+        if (rep.test(this.worldBeanNum)) {
+            uni.showToast({
+                title: '请输入整数',
                 icon: 'none'
             })
             return
