@@ -1987,6 +1987,13 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
       },
       //预览
       async startPreview() {
+        if(!this.isLogin || !this.isConnectSocket){
+          uni.showToast({
+            title:'连接异常',
+            icon:'none'
+          })
+          return
+        }
         try {
           await this.setVideoConfig();
           await this.engine.startPreview();
