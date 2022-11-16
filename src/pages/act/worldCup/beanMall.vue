@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:31:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 15:22:09
+ * @LastEditTime: 2022-11-16 15:26:49
  * @FilePath: \card-world\src\pages\act\worldCup\beanMall.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -121,7 +121,9 @@ export default class ClassName extends BaseNode {
     onPullDownRefreshCom() {
         this.queryParams.fetchFrom = 1
         this.reqNewData(() => {
-            uni.stopPullDownRefresh()
+            setTimeout(() => {
+                uni.stopPullDownRefresh()
+            }, 300)
         })
     }
     pickerChange(event: any, range: any, assignKey: string) {

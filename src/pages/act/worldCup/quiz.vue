@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 15:20:22
+ * @LastEditTime: 2022-11-16 15:26:42
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -147,7 +147,9 @@ export default class ClassName extends BaseNode {
     onPullDownRefreshCom() {
         this.queryParams.fetchFrom = 1
         this.reqNewData(() => {
-            uni.stopPullDownRefresh()
+            setTimeout(() => {
+                uni.stopPullDownRefresh()
+            }, 300)
         })
     }
     onClickTag(item: any, index: number) {

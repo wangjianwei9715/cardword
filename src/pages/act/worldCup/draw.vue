@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:33:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 15:21:19
+ * @LastEditTime: 2022-11-16 15:26:54
  * @FilePath: \card-world\src\pages\act\worldCup\draw.vue
  * @Description: draw
 -->
@@ -66,7 +66,9 @@ export default class ClassName extends BaseNode {
     }
     onPullDownRefreshCom() {
         this.reqTodayPrizePool(() => {
-            uni.stopPullDownRefresh()
+            setTimeout(() => {
+                uni.stopPullDownRefresh()
+            }, 300)
         })
 
     }

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 15:19:42
+ * @LastEditTime: 2022-11-16 15:26:38
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -98,7 +98,7 @@
                         :class="{ borderBottom: index < (taskList.length - 1) }">
                         <view class="task_left">
                             <view class="title">{{ item.name || '获取中' }}{{ item.plan ? `(${item.plan})` : "" }}</view>
-                            <view class="beanPoint" :style="{ opacity: item.beanNum ? 1 : 0 }">
+                            <view class="beanPoint" v-if="item.beanNum">
                                 +{{ item.beanNum }}
                                 <image src="/static/act/worldCup/smallBeanCube.png" />
                             </view>
@@ -253,8 +253,10 @@ export default class ClassName extends BaseNode {
     onPullDownRefresh() {
         const refKey: string = this.tabBar[this.tabIndex].ref
         //@ts-ignore
-        if (!this.$refs[refKey] || !this.$refs[refKey].onPullDownRefreshCom){
-            uni.stopPullDownRefresh()
+        if (!this.$refs[refKey] || !this.$refs[refKey].onPullDownRefreshCom) {
+            setTimeout(() => {
+                uni.stopPullDownRefresh()
+            }, 300)
             return
         }
         //@ts-ignore
