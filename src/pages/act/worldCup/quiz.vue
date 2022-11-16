@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 14:04:39
+ * @LastEditTime: 2022-11-16 14:16:22
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -203,7 +203,7 @@ export default class ClassName extends BaseNode {
     filterQuestionText(state: any, question: any) {
         if (state == 1) return '进行中'
         const winNum_isUnde = typeof question.win_num == undefined
-        if (winNum_isUnde || this.hasOneLike(question.answers)) return '未参与'
+        if (winNum_isUnde || !this.hasOneLike(question.answers)) return '未参与'
         if (!winNum_isUnde) return question.win_num >= 0 ? `+${question.win_num}` : question.win_num
     }
     onClickBean(item: any) {

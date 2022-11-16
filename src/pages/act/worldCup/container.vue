@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 13:34:55
+ * @LastEditTime: 2022-11-16 14:10:47
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -23,7 +23,7 @@
                 <image class="back" :class="{ filterBlack: scrollTopHidden }" src="/static/act/rankSelect/back.png"
                     @click="app.platform.pageBack()" />
                 <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
-                    :class="{ pointer_none: scrollTopHidden }" @click="onClickGetBean">
+                    :class="{ pointer_none: scrollTopHidden }" @click="$u.throttle(onClickGetBean,500)">
                     <image class="beanIcon" src="/static/act/worldCup/smallBeanCube.png" />
                     <view class="beanPoint">{{ myData.worldBean == undefined ? '获取中' : myData.worldBean }}</view>
                     <image src="/static/act/worldCup/add.png" class="icon"></image>
