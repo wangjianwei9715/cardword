@@ -1,12 +1,15 @@
 <template>
     <view class="content">
-        <view class="videoContainer">
-            <!-- <image class="backBg" src="../../../static/act/rankSelect/rankBanner.jpg" /> -->
-            <view class="liveState">等待直播</view>
+        <view class="videoContainer" @click="goLiveRoom">
+            <template v-if="liveData.roomId">
+                <image class="backBg" :src="$parsePic(decodeURIComponent(liveData.pic))" mode="aspectFill" />
+                <view class="mask"></view>
+            </template>
+            <view class="liveState">{{ liveData.roomId ? textTipsMap[liveData.state + ""] : "等待直播" }}</view>
             <view class="videoPlay">
 
             </view>
-            <view class="livePlayTips">平台暂未开启直播</view>
+            <view class="livePlayTips">{{ liveData.roomId ? liveData.title : "平台暂未开启直播" }}</view>
         </view>
         <view class="tipsContainer flexCenter">
             活动截止后入榜前500名用户抽取幸运奖励
@@ -17,7 +20,7 @@
                     :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
                 <view class="myRank_rank">
                     <!-- <view class="myRank_rank_linback flexCenter">{{ myRank.isPass ? myRank.rank : '未入榜' }}</view> -->
-                    <view class="myRank_rank_linback flexCenter">{{myRank.rank || '获取中'}}</view>
+                    <view class="myRank_rank_linback flexCenter">{{ myRank.rank || '获取中' }}</view>
                 </view>
             </view>
             <view class="myRank_point">
@@ -36,9 +39,9 @@
         </view>
         <view class="title">{{ isLottery ? '幸运名单' : '幸运奖池' }}</view>
         <view class="rewardContainer" v-if="!isLottery">
-            <muqian-lazyLoad class="reward" @click="prviewImages(item.pic)"
+            <muqian-lazyLoad class="reward" @click="prviewImages(item.pic_url)"
                 :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `14rpx` }" borderRadius="3rpx"
-                v-for="(item, index) in luckyAwards" :src="decodeURIComponent(item.pic)" />
+                v-for="(item, index) in luckyAwards" :src="decodeURIComponent(item.pic_url)" />
             <!-- http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg
 http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40aujsim.jpg -->
         </view>
@@ -47,9 +50,6 @@ http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40a
                 <view class="myRank_avatarContainer">
                     <muqian-lazyLoad class="myRank_avatar" borderRadius="50%"
                         :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar" />
-                    <!-- <view class="myRank_rank">
-                        <view class="myRank_rank_linback flexCenter">{{ item.isPass ? item.rank : '未入榜' }}</view>
-                    </view> -->
                 </view>
                 <view class="myRank_point">
                     <view class="now" style="margin-bottom:0rpx;">{{ item.userName || '获取中' }}</view>
@@ -63,6 +63,14 @@ http://cdn.ka-world.com/admin/debug/2022.10.19/goods/pintuan0/1666158537827qw40a
 </template>
 
 <script lang="ts">
+const textTipsMap = {
+    "0": "等待直播",
+    "1": "正在直播",
+    "2": "正在直播",
+    "3": "直播结束",
+    "-1": "直播过期",
+    "-2": "直播已取消"
+};
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '../../../base/BaseNode.vue';
@@ -70,15 +78,19 @@ import { parsePic } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
     defaultAvatar = app.defaultAvatar
+    textTipsMap: any = textTipsMap
     myRank: any = {}
     isLottery: boolean = false
     luckyList: any = []
     luckyAwards: any = [
-        { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg' }
+        // { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png' }, { pic: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg' }
     ]
+    liveData: any = {}
     onLoad(query: any) {
         this.reqMyRank()
         this.reqLuckyList()
+        this.reqRewardList()
+        this.reqLiveRoom()
     }
     onReachBottom() {
 
@@ -89,6 +101,18 @@ export default class ClassName extends BaseNode {
     // beforeDestroy(): void {
     //     uni.$emit('resetAn')
     // }
+    goLiveRoom() {
+        if (!this.liveData.roomId) return
+        if (this.liveData.roomId && this.liveData.third == 1001) {
+            app.platform.goZgLive({
+                roomID: this.liveData.roomId,
+                isAnchor: false,
+                goodCode:""
+            })
+            return
+        }
+        app.platform.goWeChatLive({playCode:this.liveData.playCode,goodCode:""})
+    }
     prviewImages(picString: string) {
         if (!picString) return
         const picArr: any = picString.split(',').map(item => parsePic(decodeURIComponent(item)))
@@ -98,14 +122,26 @@ export default class ClassName extends BaseNode {
         })
     }
     reqLuckyList() {
-        app.http.Get(`dataApi/selectRank/lucky/user/list`, {fetchFrom:1,fetchSize:500,activityTp:1}, (res: any) => {
-            this.luckyList=res.list || []
-            if(this.luckyList.length) this.isLottery=true
+        app.http.Get(`dataApi/selectRank/lucky/user/list`, { fetchFrom: 1, fetchSize: 500, activityTp: 1 }, (res: any) => {
+            this.luckyList = res.list || []
+            if (this.luckyList.length) this.isLottery = true
+        })
+    }
+    reqRewardList() {
+        app.http.Get('dataApi/selectRank/award/list', { isLucky: 1, activityTp: 1 }, (res: any) => {
+            this.luckyAwards = res.list || []
+
+        })
+    }
+    reqLiveRoom() {
+        app.http.Get(`dataApi/selectRank/get/braodcast`, { activityTp: 1 }, (res: any) => {
+            console.log(res);
+            this.liveData = res.data
         })
     }
     //我的rank
     reqMyRank() {
-        app.http.Get('dataApi/selectRank/my/data', {activityTp:1}, (res: any) => {
+        app.http.Get('dataApi/selectRank/my/data', { activityTp: 1 }, (res: any) => {
             this.myRank = res.data || {}
         })
     }
@@ -143,6 +179,18 @@ page {
         bottom: 0;
         z-index: 0;
     }
+
+    .mask {
+        width: inherit;
+        height: inherit;
+        position: absolute;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, .3);
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+    }
 }
 
 .liveState {
@@ -152,6 +200,7 @@ page {
     color: #FFFFFF;
     left: 21rpx;
     top: 34rpx;
+    z-index: 2;
     position: absolute;
 }
 
@@ -161,7 +210,7 @@ page {
     height: 133rpx;
     background-size: 100% 100%;
     background-image: url('../../../static/act/rankSelect/play.png');
-
+    z-index: 2;
     margin: 0 auto;
     margin-top: 114rpx;
     position: relative;
@@ -176,6 +225,7 @@ page {
     margin-top: 48rpx;
     text-align: center;
     position: relative;
+    z-index: 2;
 }
 
 .tipsContainer {
