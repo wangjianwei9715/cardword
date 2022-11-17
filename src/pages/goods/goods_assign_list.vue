@@ -20,7 +20,7 @@ import { app } from "@/app";
 import { Md5 } from "ts-md5";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
-import { goodsListType } from "@/net/DataExchange";
+import { goodsListType } from "@/tools/DataExchange";
 import { parsePic } from "@/tools/util";
 @Component({})
 export default class ClassName extends BaseNode {

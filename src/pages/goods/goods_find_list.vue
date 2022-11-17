@@ -56,7 +56,7 @@
 	import {
 		stateArray,
 		palyArray
-	} from "@/net/DataExchange";
+	} from "@/tools/DataExchange";
 	@Component({})
 	export default class ClassName extends BaseNode {
 		searchText = "";

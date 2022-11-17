@@ -123,7 +123,7 @@
 	import {
 		getGoodsImg,dateFormat
 	} from "../../tools/util";
-	import {orderState} from "@/net/DataExchange"
+	import {orderState} from "@/tools/DataExchange"
 	import { orderStateDesc,orderGoodsStateStr,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
 import { Md5 } from "ts-md5";
 	@Component({})

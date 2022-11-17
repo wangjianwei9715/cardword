@@ -44,7 +44,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import { guessRules } from "@/net/DataRules";
+	import { guessRules } from "@/tools/DataRules";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})

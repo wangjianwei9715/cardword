@@ -46,7 +46,7 @@
           </view>
         </view>
       </view>
-      <view class="huo-dong-bg" v-show="goodsData.discount && cartData.length == 0" >
+      <scroll-view class="huo-dong-bg" :scroll-x="true" v-show="goodsData.discount && cartData.length == 0" >
         <view
           class="item-youhui-bg"
           v-for="(item, index) in goodsData.discount"
@@ -55,7 +55,7 @@
         >
           {{ item.content }}
         </view>
-      </view>
+      </scroll-view>
       <!-- 选队随机 自选卡种 -->
       <view class="randomh-box" v-show="payRandomTeamData!=''" >
         <view class="randomh-index" v-for="(item,index) in payRandomTeamData" :key="index">
@@ -928,12 +928,12 @@ page {
   height: 108rpx;
   background: #ffffff;
   display: flex;
-  flex-direction: row;
+  white-space: nowrap;
   align-items: center;
-  justify-content: flex-start;
-  box-sizing: border-box;
   margin:0 auto;
   border-top: 2rpx solid #F5F5F5;
+  box-sizing: border-box;
+  padding-top: 32rpx;
 }
 // 自选卡种 选队随机
 .randomh-box{
@@ -1124,6 +1124,7 @@ page {
   width: fit-content;
   display: inline-flex;
   margin-right: 28rpx;
+  display: inline-block;
 }
 .current-discount{
   font-size: 23rpx;
