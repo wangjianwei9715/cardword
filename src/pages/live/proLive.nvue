@@ -555,6 +555,7 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
       });
       this.stopPublishingStream(true);
       uni.$off("socketClose", this.socketClose);
+      uni.$off("loginSuccess",this.loginSuccess)
       uni.offKeyboardHeightChange(this.keyBoardHeightChange);
       this.leaveRoom();
       this.offEngineListen();
@@ -583,6 +584,7 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
       }, 1000);
       //监听socket状态
       uni.$on("socketClose", this.socketClose);
+      uni.$on("loginSuccess",this.loginSuccess)
       this.roomID = query.roomID;
       this.streamID = query.streamID;
       //获取直播间数据
@@ -2172,6 +2174,20 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
         }
         this[key] = true;
       },
+      refreshToken(){
+        uni.$emit("refreshToken")
+      },
+      reLogin(){
+        uni.$emit('reLogin',`return=true`);
+      },
+      loginSuccess(){
+        this.webView.evalJs(`setToken(${JSON.stringify(app.token)})`);
+        uni.showModal({
+          title:'直播间提示',
+          content:'请重新尝试',
+          showCancel:false
+        })
+      },
       evalMethods() {
         if (!this.canEval) {
           setTimeout(() => {
@@ -2192,7 +2208,8 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
             roomID: this.roomID,
             applyLianmai: this.applyLianmai,
             isAnchor: this.isAnchor,
-            shieldEffects:uni.getStorageSync('liveShieldEffects') || false
+            shieldEffects:uni.getStorageSync('liveShieldEffects') || false,
+            isTest:app.localTest
           })})`
         );
         this.informH5Action("isGM", this.gm, false);
