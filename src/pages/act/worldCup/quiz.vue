@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-17 14:22:34
+ * @LastEditTime: 2022-11-17 18:13:45
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -15,7 +15,7 @@
                         <view class="group flexCenter">
                             <text>{{ item.schedule }}</text>
                         </view>
-                        <view class="state">{{ stateOption[item.state] }}</view>
+                        <view class="state">{{ item.state==1?`截止:${dateFormat(item.end_time)}`:stateOption[item.state] }}</view>
                     </view>
                     <view class="schedule_confrontation">
                         <view class="teamBlock">
@@ -110,6 +110,7 @@
 import { app } from "@/app";
 import { Component, Prop } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
+import {dateFormat} from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
     @Prop({ default: 0 })
@@ -119,6 +120,7 @@ export default class ClassName extends BaseNode {
         fetchSize: 5,
         tp: 1
     }
+    dateFormat=dateFormat
     list: any = []
     isFetchEnd: boolean = true
     quizBeanConfList: any = []
