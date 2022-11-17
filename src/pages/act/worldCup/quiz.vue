@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 18:27:28
+ * @LastEditTime: 2022-11-17 13:40:23
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -36,7 +36,7 @@
                 <view class="questionContainer" v-for="(question, questionIndex) in item.questions">
                     <view class="question_top">
                         <!-- :style="{ opacity: item.state >= 2 ? 1 : 0 }" -->
-                        <view class="haoManyGuessIt">{{ queryParams.tp == 1 ? `进行中` : `${question.hitNum}人猜中`
+                        <view class="haoManyGuessIt">{{ queryParams.tp == 1 ? `${question.total_buy_user || 0}人参与` : `${question.hitNum}人猜中`
                         }}
                         </view>
                         <view class="question_title">{{ question.title }}</view>
@@ -294,7 +294,7 @@ page {
 
 .quiz_schedule {
     width: 681rpx;
-    height: 376rpx;
+    height: 326rpx;
     background-color: #fff;
     border-radius: 5rpx;
     position: relative;
@@ -381,14 +381,15 @@ page {
 
         .teamImg {
             width: inherit;
-            height: 154rpx;
+            height: 101rpx;
+            border: 1rpx solid #eff9ff;
 
         }
 
         .teamName {
             font-size: 24rpx;
             color: #939191;
-            margin-top: 8rpx;
+            margin-top: 12rpx;
             text-align: center;
         }
     }
@@ -548,15 +549,15 @@ page {
             align-items: center;
 
             .team {
-                width: 84rpx;
+                width: 101rpx;
                 position: relative;
-                height: 84rpx;
+                height: 67rpx;
                 position: relative;
                 bottom: 6rpx;
 
                 .logo {
-                    width: 84rpx;
-                    height: 84rpx;
+                    width: 101rpx;
+                    height: 67rpx;
                     display: block;
                 }
 

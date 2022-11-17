@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 15:59:18
+ * @LastEditTime: 2022-11-17 14:11:16
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -70,7 +70,13 @@
         <u-popup :show="taskShow" :round="20" @close="taskShow = false" mode="bottom" :safeAreaInsetBottom="false">
             <view class="popContainer">
                 <image class="containerTitle" src="/static/act/worldCup/beanGetTitle.png"></image>
-                <view class="safeTop"></view>
+                <view class="safeTop">
+                    <navigator :url="`/pages/act/worldCup/pointDetail?searchType=4`" hover-class="none">
+                        <view class="leftTitle flexCenter">获取明细</view>
+                    </navigator>
+
+                </view>
+
                 <view class="signContainer">
                     <view class="leftCorner flexCenter" @click.stop="signRuleShow = true">每日签到<image
                             src="/static/act/worldCup/smallQuestion.png"></image>
@@ -663,7 +669,19 @@ page {
 
 .safeTop {
     height: 84rpx;
-    pointer-events: none;
+    // pointer-events: none;
+    position: relative;
+
+    .leftTitle {
+        font-size: 24rpx;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        right: 20rpx;
+        bottom: 6rpx;
+    }
 }
 
 .signContainer {

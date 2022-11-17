@@ -101,7 +101,7 @@
             </view>
         </template>
         <template v-if="searchType == 3">
-            <view class="blockTitle">积分明细</view>
+            <view class="blockTitle">兑换明细</view>
             <view class="pointCard" v-for="(item, index) in list" :key="index">
                 <view class="pointCard_top">
                     <view @click="onClickLookWul(item)">兑换成功{{ item.tp == 1 ? `（点击查看发货详情）` : "" }}</view>
@@ -125,6 +125,23 @@
                             </view>
                         </view>
                     </view>
+                </view>
+            </view>
+        </template>
+        <template v-if="searchType == 4">
+            <view class="blockTitle">世界豆明细</view>
+            <view class="beanCard" v-for="(item, index) in list" :key="index">
+                <view class="left">
+                    <view class="beanName">{{ item.name }}</view>
+                    <view class="beanTime">{{ dateFormatMSHMS(item.created_at) }} </view>
+                </view>
+                <view class="right" :class="{ sp: item.worldBeanNum < 0 }">
+                    {{ (item.worldBeanNum >= 0 ? '+' : '')
+                            +
+                            item.worldBeanNum
+                    }}
+                    <image src="/static/act/worldCup/smallBeanCube.png"
+                        style="width:21rpx;height:23rpx;margin-left:4rpx" />
                 </view>
             </view>
         </template>
@@ -181,6 +198,13 @@ export default class ClassName extends BaseNode {
         3: {
             title: '兑换明细',
             logUrl: 'dataApi/worldCup/bean/shop/exchange/record',
+            myUrl: 'dataApi/worldCup/bean/me/data',
+            params: {
+            }
+        },
+        4: {
+            title: "世界豆明细",
+            logUrl: 'worldCup/bean/userGet/record',
             myUrl: 'dataApi/worldCup/bean/me/data',
             params: {
             }
@@ -450,8 +474,9 @@ page {
         .point {
             display: flex;
             align-items: center;
-            justify-content:flex-end;
+            justify-content: flex-end;
             width: 33.33%;
+
             image {
                 width: 21rpx;
                 height: 23rpx;
@@ -612,6 +637,49 @@ page {
             color: #333333;
             text-align: right;
         }
+    }
+}
+
+.beanCard {
+    width: 710rpx;
+    height: 104rpx;
+    background: #FFFFFF;
+    border-radius: 3rpx;
+    box-sizing: border-box;
+    margin-bottom: 8rpx;
+    padding: 0rpx 35rpx;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+
+    .left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .beanName {
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .beanTime {
+            font-size: 22rpx;
+            color: #949494;
+        }
+    }
+
+    .right {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 25rpx;
+        align-items: center;
+        color: #FA1545;
+    }
+
+    .sp {
+        color: #5782FD;
     }
 }
 </style>
