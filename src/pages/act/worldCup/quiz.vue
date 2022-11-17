@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-17 13:40:23
+ * @LastEditTime: 2022-11-17 14:22:34
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -36,10 +36,12 @@
                 <view class="questionContainer" v-for="(question, questionIndex) in item.questions">
                     <view class="question_top">
                         <!-- :style="{ opacity: item.state >= 2 ? 1 : 0 }" -->
-                        <view class="haoManyGuessIt">{{ queryParams.tp == 1 ? `${question.total_buy_user || 0}人参与` : `${question.hitNum}人猜中`
+                        <view class="haoManyGuessIt">{{ queryParams.tp == 1 ? `${question.total_buy_user || 0}人参与` :
+                        `${question.hitNum}人猜中`
                         }}
                         </view>
-                        <view class="question_title">{{ question.title }}</view>
+                        <view class="question_title u-line-1" @click="showTitle(question.title)">{{ question.title }}
+                        </view>
                         <view class="question_state">{{ filterQuestionText(item.state, question) }}</view>
                     </view>
                     <view class="answerContainer">
@@ -59,7 +61,7 @@
             <view class="schedule_situation">
                 <view class="tag flexCenter" :class="{ selectTag: index == tagData.index }"
                     v-for="(item, index) in tagData.list" :key="index" @click="onClickTag(item, index)">{{
-                            item.label
+                    item.label
                     }}</view>
             </view>
         </view>
@@ -236,6 +238,13 @@ export default class ClassName extends BaseNode {
             this.selectBeanNum = 0
             this.beanConfArray()
             this.popShow = true
+        })
+    }
+    showTitle(title: string) {
+        uni.showModal({
+            title: '竞猜题目',
+            content: title,
+            showCancel: false
         })
     }
     beanConfArray() {

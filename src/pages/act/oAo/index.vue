@@ -80,8 +80,6 @@
          -->
         <view class="rankContainer" style="position: relative;bottom: 190rpx;">
             <view class="rank_top flexCenter">
-                <!-- <view class="rank_title">21-22 ONE AND ONE冲线榜单</view> -->
-                <!-- <view class="rank_pointText" @click="pageJump('/pages/act/rankSelect/pointsDetails')">查看积分明细</view> -->
             </view>
             <!-- <view class="rank_line"></view> -->
             <view class="rank_tr rank_tr_myRank">
