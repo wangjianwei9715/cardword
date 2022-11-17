@@ -1,9 +1,9 @@
 /*
- * @FilePath: \jichao_app_2\src\net\DataRules.ts
+ * @FilePath: \jichao_app_2\src\tools\DataRules.ts
  * @Author: wjw
  * @Date: 2022-10-26 15:51:09
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-11-15 10:27:56
+ * @LastEditTime: 2022-11-17 09:46:10
  * Copyright: 2022 .
  * @Descripttion: 
  */

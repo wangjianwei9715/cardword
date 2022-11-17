@@ -1,6 +1,6 @@
 // 首页tab列表
 export var indexTabList = [
-    {icon:'../../static/index/v3/icon1.png',name:'卡币商城',url:'/pages/mall/index'},
+    {icon:'../../static/index/v3/icon1.png',name:'卡币商城',url:'/pages/drawCard/drawCard'},
     {icon:'../../static/index/v3/icon2.png',name:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
     {icon:'../../static/index/v3/icon3.png',name:'资讯公告',url:'/pages/information/list'},
     {icon:'../../static/index/v3/icon4.png',name:'商家列表',url:'/pages/userinfo/merchant_listV2'},

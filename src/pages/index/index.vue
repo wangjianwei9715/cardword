@@ -105,7 +105,7 @@
 	import {
 		indexTabList,
 		indexHotList,
-	} from "@/net/DataExchange"
+	} from "@/tools/DataExchange"
 	import { isDuringDate } from "@/tools/util"
 	import { Md5 } from "ts-md5";
 	const TOP_TABS = [{name:'推荐'},{name:'拆卡'}];

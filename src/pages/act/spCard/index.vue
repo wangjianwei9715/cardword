@@ -73,7 +73,7 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-	import { spCardRule } from "@/net/DataRules";
+	import { spCardRule } from "@/tools/DataRules";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	@Component({})

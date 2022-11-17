@@ -107,7 +107,7 @@
 	import BaseNode from "../../base/BaseNode.vue";
 	import {
 		mallExchangeRule
-	} from "@/net/DataRules";
+	} from "@/tools/DataRules";
 	import {
 		toThousands
 	} from "@/tools/util";

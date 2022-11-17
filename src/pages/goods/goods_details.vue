@@ -247,8 +247,8 @@
 		getGoodsPintuanDetail,
 		getGoodsRandom,
 	} from '@/tools/switchUtil';
-	import { goodsDetailRules, goodsDetailHelp } from "@/net/DataRules";
-	import { goodDetailSpe } from "@/net/DataExchange"
+	import { goodsDetailRules, goodsDetailHelp } from "@/tools/DataRules";
+	import { goodDetailSpe } from "@/tools/DataExchange"
 	import { Md5 } from "ts-md5";
 	import { parsePic } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
