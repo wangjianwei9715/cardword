@@ -53,7 +53,7 @@
                 <view class="quizCard_line uni-flex jb"></view>
                 <view class="quizCard_bottom uni-flex jb">
                     <view class="result u-line-1" @click="showTitle(item.questionName)">竞猜项:{{ item.questionName }}</view>
-                    <view class="option flexCenter">选择项:{{ item.answerName }}</view>
+                    <view class="option flexCenter">选择项:{{ item.answerName }}({{item.betMultiple}}倍)</view>
                     <view class="point">
                         <view class="num" :class="{ num_neg: item.worldBean < 0 }">{{ (item.worldBean >= 0 ? '+' : '')
                                 +
