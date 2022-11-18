@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:33:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-16 17:06:38
+ * @LastEditTime: 2022-11-18 14:23:46
  * @FilePath: \card-world\src\pages\act\worldCup\draw.vue
  * @Description: draw
 -->
@@ -199,6 +199,7 @@ page {
     color: #FFFFFF;
     margin: 0 auto;
     margin-top: 4rpx;
+    margin-bottom: 30rpx;
 }
 
 .unlockButton_dis {

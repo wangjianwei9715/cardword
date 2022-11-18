@@ -132,7 +132,7 @@
             <view class="blockTitle">世界豆明细</view>
             <view class="beanCard" v-for="(item, index) in list" :key="index">
                 <view class="left">
-                    <view class="beanName">{{ item.name }}</view>
+                    <view class="beanName u-line-1">{{ item.name }}</view>
                     <view class="beanTime">{{ dateFormatMSHMS(item.created_at) }} </view>
                 </view>
                 <view class="right" :class="{ sp: item.worldBeanNum < 0 }">
@@ -669,6 +669,7 @@ page {
             font-family: PingFang SC;
             font-weight: bold;
             color: #333333;
+            flex:1;
         }
 
         .beanTime {
