@@ -107,7 +107,11 @@ export default class ClassName extends BaseNode {
             app.platform.goZgLive({
                 roomID: this.liveData.roomId,
                 isAnchor: false,
-                goodCode:""
+                state:this.liveData.state,
+                playCode:this.liveData.playCode,
+                goodCode:this.liveData.goodCode,
+                alias:this.liveData.merchantAlias,
+                type:2
             })
             return
         }
@@ -122,7 +126,7 @@ export default class ClassName extends BaseNode {
         })
     }
     reqLuckyList() {
-        app.http.Get(`dataApi/selectRank/lucky/user/list`, { fetchFrom: 1, fetchSize: 500, activityTp: 2 }, (res: any) => {
+        app.http.Get(`dataApi/selectRank/lucky/user/list`, { fetchFrom: 1, fetchSize: 500, activityTp: 3 }, (res: any) => {
             this.luckyList = res.list || []
             if (this.luckyList.length) this.isLottery = true
         })

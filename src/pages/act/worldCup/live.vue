@@ -107,7 +107,11 @@ export default class ClassName extends BaseNode {
             app.platform.goZgLive({
                 roomID: this.liveData.roomId,
                 isAnchor: false,
-                goodCode:""
+                state:this.liveData.state,
+                playCode:this.liveData.playCode,
+                goodCode:this.liveData.goodCode,
+                alias:this.liveData.merchantAlias,
+                type:2
             })
             return
         }
