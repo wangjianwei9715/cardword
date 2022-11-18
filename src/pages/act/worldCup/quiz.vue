@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-17 18:13:45
+ * @LastEditTime: 2022-11-18 10:39:04
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -15,7 +15,7 @@
                         <view class="group flexCenter">
                             <text>{{ item.schedule }}</text>
                         </view>
-                        <view class="state">{{ item.state==1?`截止:${dateFormat(item.end_time)}`:stateOption[item.state] }}</view>
+                        <view class="state">{{ item.state==1?`截止竞猜:${$u.timeFormat(item.end_time,'mm-dd hh:MM')}`:stateOption[item.state] }}</view>
                     </view>
                     <view class="schedule_confrontation">
                         <view class="teamBlock">
