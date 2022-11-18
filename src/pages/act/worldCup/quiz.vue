@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-18 10:38:02
+ * @LastEditTime: 2022-11-18 11:27:31
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -36,7 +36,7 @@
                 <view class="questionContainer" v-for="(question, questionIndex) in item.questions">
                     <view class="question_top">
                         <!-- :style="{ opacity: item.state >= 2 ? 1 : 0 }" -->
-                        <view class="haoManyGuessIt">{{ queryParams.tp == 1 ? `${question.total_buy_user || 0}人参与` :
+                        <view class="haoManyGuessIt">{{ (item.state == 1 || item.state==2) ? `${question.total_buy_user || 0}人参与` :
                                 `${question.hitNum}人猜中`
                         }}
                         </view>
@@ -209,8 +209,8 @@ export default class ClassName extends BaseNode {
     filterQuestionText(state: any, question: any) {
         if (state == 1) return '进行中'
         const winNum_isUnde = typeof question.win_num == undefined
-        if (winNum_isUnde || !this.hasOneLike(question.answers)) return '未参与'
-        if (state == 2) return '待结算'
+        if (!this.hasOneLike(question.answers) && (state==2 || state==3)) return '未参与'
+        if(state==2) return '待结算'
         if (!winNum_isUnde) {
             if (question.win_num == 0) return '未猜中'
             return question.win_num > 0 ? `+${question.win_num}` : question.win_num
