@@ -52,7 +52,7 @@
                 </view>
                 <view class="quizCard_line uni-flex jb"></view>
                 <view class="quizCard_bottom uni-flex jb">
-                    <view class="result">竞猜项:{{ item.questionName }}</view>
+                    <view class="result u-line-1" @click="showTitle(item.questionName)">竞猜项:{{ item.questionName }}</view>
                     <view class="option flexCenter">选择项:{{ item.answerName }}</view>
                     <view class="point">
                         <view class="num" :class="{ num_neg: item.worldBean < 0 }">{{ (item.worldBean >= 0 ? '+' : '')
@@ -243,6 +243,13 @@ export default class ClassName extends BaseNode {
             3: "中奖"
         }
         return stateMap[item.state] || ""
+    }
+    showTitle(title: string) {
+        uni.showModal({
+            title: '竞猜题目',
+            content: title,
+            showCancel: false
+        })
     }
     toGoods(item: any) {
         app.navigateTo.goGoodsDetails(item.goodCode)

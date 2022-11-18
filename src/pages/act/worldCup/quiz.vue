@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-18 10:39:04
+ * @LastEditTime: 2022-11-18 10:38:02
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -15,7 +15,7 @@
                         <view class="group flexCenter">
                             <text>{{ item.schedule }}</text>
                         </view>
-                        <view class="state">{{ item.state==1?`截止竞猜:${$u.timeFormat(item.end_time,'mm-dd hh:MM')}`:stateOption[item.state] }}</view>
+                        <view class="state">{{ item.state == 1 ? `截止竞猜:${$u.timeFormat(item.end_time, "mm-dd hh: MM")}`:stateOption[item.state] }}</view>
                     </view>
                     <view class="schedule_confrontation">
                         <view class="teamBlock">
@@ -37,7 +37,7 @@
                     <view class="question_top">
                         <!-- :style="{ opacity: item.state >= 2 ? 1 : 0 }" -->
                         <view class="haoManyGuessIt">{{ queryParams.tp == 1 ? `${question.total_buy_user || 0}人参与` :
-                        `${question.hitNum}人猜中`
+                                `${question.hitNum}人猜中`
                         }}
                         </view>
                         <view class="question_title u-line-1" @click="showTitle(question.title)">{{ question.title }}
@@ -61,7 +61,7 @@
             <view class="schedule_situation">
                 <view class="tag flexCenter" :class="{ selectTag: index == tagData.index }"
                     v-for="(item, index) in tagData.list" :key="index" @click="onClickTag(item, index)">{{
-                    item.label
+                            item.label
                     }}</view>
             </view>
         </view>
@@ -110,7 +110,7 @@
 import { app } from "@/app";
 import { Component, Prop } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
-import {dateFormat} from '@/tools/util'
+import { dateFormat } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
     @Prop({ default: 0 })
@@ -120,7 +120,7 @@ export default class ClassName extends BaseNode {
         fetchSize: 5,
         tp: 1
     }
-    dateFormat=dateFormat
+    dateFormat = dateFormat
     list: any = []
     isFetchEnd: boolean = true
     quizBeanConfList: any = []
@@ -210,6 +210,7 @@ export default class ClassName extends BaseNode {
         if (state == 1) return '进行中'
         const winNum_isUnde = typeof question.win_num == undefined
         if (winNum_isUnde || !this.hasOneLike(question.answers)) return '未参与'
+        if (state == 2) return '待结算'
         if (!winNum_isUnde) {
             if (question.win_num == 0) return '未猜中'
             return question.win_num > 0 ? `+${question.win_num}` : question.win_num
