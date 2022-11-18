@@ -40,7 +40,7 @@
       <view class="rightIcon" @click="shareShow=true">
         <image style="width: 42rpx;height: 37rpx;" src="../../static/live/v2/share.png" mode="scaleToFill" />
       </view>
-      <view class="rightIcon" @click="showGoods">
+      <view class="rightIcon" @click="showGoods" :class="{none:liveType==1}">
         <image style="width: 50rpx;height: 49rpx;" src="../../static/live/goods.png" mode="scaleToFill" />
       </view>
     </view>
@@ -112,6 +112,7 @@ export default {
       stringData: '',
       playCode: "",
       rightTagShow: true,
+      liveType:0,
     };
   },
   onReady() { },
@@ -282,6 +283,7 @@ export default {
           res => {
             this.goodCode = res.data.goodCode
             this.roomLikeNum = res.data.likeNum
+            this.liveType=res.data.type
             this.setShareData(res.data);
           },
           err => {
@@ -426,6 +428,9 @@ export default {
 </script>
 
 <style>
+.none{
+  opacity:0;
+}
 .full {
   /* background-color: black; */
   position: fixed;
