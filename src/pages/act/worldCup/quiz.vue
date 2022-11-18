@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-18 11:27:31
+ * @LastEditTime: 2022-11-18 15:42:10
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -83,7 +83,7 @@
                         </view>
                     </view>
                     <view class="quiz_team_info">
-                        <view class="left">{{ clickQuestion.title }}：{{ clickAnswer.name }}</view>
+                        <view class="left u-line-1" @click="showAll(`${clickQuestion.title}:${clickAnswer.name}`)">{{ clickQuestion.title }}：{{ clickAnswer.name }}</view>
                         <view class="right">已投：{{ clickAnswer.betNum }}</view>
                     </view>
                 </view>
@@ -247,6 +247,13 @@ export default class ClassName extends BaseNode {
         uni.showModal({
             title: '竞猜题目',
             content: title,
+            showCancel: false
+        })
+    }
+    showAll(str:string){
+        uni.showModal({
+            title: '完整内容',
+            content: str,
             showCancel: false
         })
     }
@@ -598,6 +605,9 @@ page {
             font-weight: 400;
             color: #FFFFFF;
             margin-top: 12rpx;
+            .left{
+                max-width: 480rpx;
+            }
         }
     }
 
