@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-18 15:42:10
+ * @LastEditTime: 2022-11-21 09:33:00
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -280,11 +280,15 @@ export default class ClassName extends BaseNode {
         })
     }
     reqNewData(cb?: any) {
+        uni.showLoading({
+            title:""
+        })
         app.http.Get(`dataApi/worldCup/bean/guessing/list`, this.queryParams, (res: any) => {
             const list = res.list || []
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
             cb && cb()
+            uni.hideLoading()
         })
     }
 
