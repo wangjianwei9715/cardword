@@ -32,7 +32,7 @@
       :src="webViewUrl" />
     <view class="maskTips" :class="{none:!showMask}" @click='informH5Action("closeAllPop")'>
       <text class="liveTitle">{{liveData.title || '获取直播标题中'}}</text>
-      <text class="liveTips">{{maskCountDownTips!=''?"拆卡倒计时":textTipsMap[String(liveData.state)]}}</text>
+      <text class="liveTips">{{maskCountDownTips!=''?(liveData.type != 0?"开播倒计时":"拆卡倒计时"):textTipsMap[String(liveData.state)]}}</text>
       <text class="liveCountDown"
         v-if="maskCountDownTips!=''&&(typeof liveData.state!='undefined')">{{maskCountDownTips}}</text>
       <text class="playStart" v-if="isAnchor&&!finishLive" @click="startPreview">开始直播</text>
