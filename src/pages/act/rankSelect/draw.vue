@@ -111,7 +111,7 @@ export default class ClassName extends BaseNode {
                 playCode:this.liveData.playCode,
                 goodCode:this.liveData.goodCode,
                 alias:this.liveData.merchantAlias,
-                type:2
+                type:1
             })
             return
         }
@@ -126,7 +126,7 @@ export default class ClassName extends BaseNode {
         })
     }
     reqLuckyList() {
-        app.http.Get(`dataApi/selectRank/lucky/user/list`, { fetchFrom: 1, fetchSize: 500, activityTp: 3 }, (res: any) => {
+        app.http.Get(`dataApi/selectRank/lucky/user/list`, { fetchFrom: 1, fetchSize: 500, activityTp:1 }, (res: any) => {
             this.luckyList = res.list || []
             if (this.luckyList.length) this.isLottery = true
         })
