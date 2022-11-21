@@ -138,16 +138,14 @@
 					"softinputMode": "adjustPan"
 				}
 			}
-		},
-		{
-			"path": "pages/drawCard/drawCard",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false
-			}
 		}
+		// ,{
+		// 	"path": "pages/drawCard/drawCard",
+		// 	"style": {
+		// 		"navigationStyle": "custom",
+		// 		"enablePullDownRefresh": false
+		// 	}
+		// }
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

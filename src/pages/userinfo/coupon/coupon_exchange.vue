@@ -1,8 +1,17 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\userinfo\coupon\coupon_exchange.vue
+ * @Author: wjw
+ * @Date: 2022-08-24 17:06:44
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-21 14:21:06
+ * Copyright: 2022 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="content">
 		<view class="exchange-rules" v-for="(item,index) in rules" :key="index">{{item}}</view>
 		<input class="exchange-input" v-model="exchangeVal" placeholder="请输入18位兑换码" />
-		<button class="exchange-btn" @click="onClickExchange">立即兑换</button>
+		<button class="exchange-btn" @click="$u.throttle(onClickExchange,1000)">立即兑换</button>
 	</view>
 </template>
 
