@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\app.ts
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-10-31 16:57:37
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2022-11-22 15:14:32
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -36,7 +36,7 @@ export module app{
     // export let activityShareOrigin=""
     export let liveWebView='http://www.ka-world.com/live/#/pages/liveStreaming/tools'
     export let playBackWebView='http://www.ka-world.com/live/#/pages/liveStreaming/chart'
-    export let webViewVersion="1.6"
+    export let webViewVersion="1.7"
     export let statusBarHeight:any = 0;
     export let platform = PlatformManager.getIns();
 	export let payment = PayManager.getIns();
