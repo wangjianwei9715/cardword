@@ -103,11 +103,6 @@
 		<!-- 输入框 -->
 		<nTextarea :focus="chatData.focus" :replyName="chatData.replyName" @chatConfirm="onChatConfirm" @blur="onBlur">
 		</nTextarea>
-
-		<!-- <view class="upmore-box">
-			<image class="upmore-bg" src="@/static/information/more_bg.png"/>
-			<image class="upmore-icon" src="@/static/information/more_icon.png"/>
-		</view> -->
 	</view>
 </template>
 <script>
@@ -698,44 +693,5 @@
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #7C7C7C;
-	}
-	.upmore-box{
-		width: 250rpx;
-		height:400rpx;
-		position: fixed;
-		left: 50%;
-		margin-left: -125rpx;
-		top:50%;
-		margin-top: -250rpx;
-	}
-	.upmore-bg{
-		width: 160rpx;
-		height:324rpx;
-		margin:0 auto;
-	}
-	.upmore-icon{
-		width: 122rpx;
-		height:104rpx;
-		position: absolute;
-		left:110rpx;
-		top:193rpx;
-		animation-name:container; 
-		animation-duration:1s; /*动画时间*/
-		animation-timing-function:linear;
-		animation-iteration-count:3
-	}
-	@keyframes container{
-		0%{
-			transform: translate3d(0,0,0); /*设置只在Z轴上移动*/
-		}
-		25%{
-			transform: translate3d(0,-100rpx,0);
-		}
-		50%{
-			transform: translate3d(0,-170rpx,0);
-		}
-		100%{
-			transform: translate3d(0,-220rpx,0);
-		}
 	}
 </style>
