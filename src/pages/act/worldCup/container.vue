@@ -64,8 +64,8 @@
                     </text>
                 </view>
             </view>
-            <view class="bottomSafeArea">
-            </view>
+            <!-- <view class="bottomSafeArea">
+            </view> -->
         </view>
         <u-popup :show="taskShow" :round="20" @close="taskShow = false" mode="bottom" :safeAreaInsetBottom="false">
             <view class="popContainer">
