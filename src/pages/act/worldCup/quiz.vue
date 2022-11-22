@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-21 09:33:00
+ * @LastEditTime: 2022-11-22 18:01:49
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -146,7 +146,7 @@ export default class ClassName extends BaseNode {
     onReachBottomCom() {
         if (this.isFetchEnd) return
         this.queryParams.fetchFrom += this.queryParams.fetchSize
-        this.reqNewData()
+        this.reqNewData(null,true)
     }
     onPullDownRefreshCom() {
         this.queryParams.fetchFrom = 1
@@ -161,7 +161,7 @@ export default class ClassName extends BaseNode {
         this.tagData.index = index
         this.queryParams.tp = this.tagData.list[this.tagData.index].value
         this.queryParams.fetchFrom = 1
-        this.reqNewData()
+        this.reqNewData(null,true)
     }
     confirmQuiz() {
         if (!this.selectBeanNum) {
@@ -189,7 +189,7 @@ export default class ClassName extends BaseNode {
             })
             setTimeout(() => {
                 this.queryParams.fetchFrom = 1
-                this.reqNewData()
+                this.reqNewData(null,false)
             }, 200)
             this.popShow = false
             this.$emit('getNewBean')
@@ -197,7 +197,7 @@ export default class ClassName extends BaseNode {
             app.platform.UINotificationFeedBack('error')
             setTimeout(() => {
                 this.queryParams.fetchFrom = 1
-                this.reqNewData()
+                this.reqNewData(null,false)
                 this.popShow = false
             }, 200)
         })
@@ -279,16 +279,20 @@ export default class ClassName extends BaseNode {
             this.quizBeanConfList = res.list || []
         })
     }
-    reqNewData(cb?: any) {
-        uni.showLoading({
+    reqNewData(cb?: any,showLoading?:boolean) {
+        if(showLoading){
+            uni.showLoading({
             title:""
         })
+        }
         app.http.Get(`dataApi/worldCup/bean/guessing/list`, this.queryParams, (res: any) => {
             const list = res.list || []
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
             cb && cb()
-            uni.hideLoading()
+            if(showLoading){
+                uni.hideLoading()
+            }
         })
     }
 
@@ -497,11 +501,11 @@ page {
     }
 
     .answer_top {
-        width: inherit;
+        width: 212rpx;
         height: 54rpx;
         background-color: #fff;
         position: relative;
-
+        border-radius: 5rpx 5rpx 0 0 ;
         text {
             font-size: 28rpx;
             color: #0A0A0A;
@@ -534,9 +538,10 @@ page {
     .answer_bottom {
         flex: 1;
         background: linear-gradient(0deg, #FFFFFF, #E5E5E5);
-        width: inherit;
+        width: 100%;
         font-size: 20rpx;
         color: #0A0A0A;
+        border-radius: 0 0 5rpx 5rpx;
     }
 }
 
