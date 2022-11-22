@@ -757,9 +757,11 @@ export default class PlatformManager {
 		return cpResult > 0 ? true : false;
 	}
 	heliService(params:object){
-		uni.navigateTo({
-			url: '/pages/talk/index?url_params='+JSON.stringify(params)
-		})
+		if(app.data.userId){
+			uni.navigateTo({
+				url: '/pages/talk/index?url_params='+JSON.stringify(params)
+			})
+		}
 	}
 	// 字符修剪
 	trimString = (str: string, char: string): string => str.split(char).filter(Boolean).join();
