@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:32:37
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-22 18:01:49
+ * @LastEditTime: 2022-11-23 15:25:50
  * @FilePath: \card-world\src\pages\act\worldCup\quiz.vue
  * @Description: quiz
 -->
@@ -88,7 +88,7 @@
                     </view>
                 </view>
                 <view class="quiz_numContainer">
-                    <view class="chips flexCenter" :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `8rpx` }"
+                    <view class="chips flexCenter" :style="{ marginRight: (index + 1) % 3 == 0 ? `0rpx` : `6rpx` }"
                         :class="{ chips_select: item.isSelect }" v-for="(item, index) in assignBeanList" :key="index"
                         @click="onClickBean(item)">{{ item.isCustom ? '最大投注:' : '' }}{{ item.num }}</view>
                     <view class="chips_tips">
