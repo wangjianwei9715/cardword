@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-17 14:11:16
+ * @LastEditTime: 2022-11-24 14:52:33
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -14,39 +14,29 @@
         <image src='/static/act/worldCup/topGuess.png' class="none" />
         <image src='/static/act/worldCup/topDraw.png' class="none" />
         <image src='/static/act/worldCup/topMall.png' class="none" />
-        <view class="pageTopContainer">
-            <view class="status"
-                :style="{ paddingTop: app.statusBarHeight + 'px', backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
-            </view>
-            <view class="pageTop" ref="pageTop" id="pageTop"
-                :style="{ backgroundColor: `rgba(255,255,255,${scrollTopPercent})` }">
-                <image class="back" :class="{ filterBlack: scrollTopHidden }" src="/static/act/rankSelect/back.png"
-                    @click="app.platform.pageBack()" />
-                <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
-                    :class="{ pointer_none: scrollTopHidden }" @click="$u.throttle(onClickGetBean, 500)">
+        <transitionNav ref='transitionNav' :needIconShadow="false" :title="tabBar[tabIndex].label.replace('\n', '')">
+            <template slot="slotLeft">
+                <view class="menuContainer" style="position:relative;right:30rpx"
+                    @click="$u.throttle(onClickGetBean, 500)">
                     <image class="beanIcon" src="/static/act/worldCup/smallBeanCube.png" />
                     <view class="beanPoint">{{ myData.worldBean == undefined ? '获取中' : myData.worldBean }}</view>
                     <image src="/static/act/worldCup/add.png" class="icon"></image>
                 </view>
                 <view style="flex:1"></view>
                 <navigator :url="`/pages/act/worldCup/pointDetail?searchType=${tabIndex}`" hover-class="none">
-                    <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
-                        :class="{ pointer_none: scrollTopHidden }">
+                    <view class="menuContainer">
                         <image src="/static/act/worldCup/order.png" class="icon"></image>
                         <view class="label">明细</view>
                     </view>
                 </navigator>
                 <navigator :url="`/pages/act/worldCup/description?searchType=${tabIndex}`" hover-class="none">
-                    <view class="menuContainer" :style="{ opacity: scrollTopOpacity }"
-                        :class="{ pointer_none: scrollTopHidden }">
+                    <view class="menuContainer">
                         <image src="/static/act/worldCup/qustion.png" class="icon"></image>
                         <view class="label">规则</view>
                     </view>
                 </navigator>
-
-                <view class="pageTitle" :style="{ opacity: scrollTopPercent }">{{ tabBar[tabIndex].label }}</view>
-            </view>
-        </view>
+            </template>
+        </transitionNav>
         <view class="topBanner" :style="{ backgroundImage: `url('${tabBar[tabIndex].topBanner}')` }">
             <view class="topTips">{{ tabBar[tabIndex].tips }}</view>
         </view>
@@ -200,8 +190,6 @@ export default class ClassName extends BaseNode {
         }
     ]
     tabIndex: number = 0
-    scrollTop: number = 0
-    MAX_HEIGHT: number = 0
     app: any = app
     weekDay = weekDay
     myData: any = {
@@ -221,25 +209,7 @@ export default class ClassName extends BaseNode {
         pointToOneBean: 0, //100卡币兑换1个世界豆
     }
     worldBeanNum: any = null
-    public get scrollTopPercent() {
-        return this.scrollTop / (this.MAX_HEIGHT * 2)
-    }
-    public get scrollTopHidden() {
-        return (this.scrollTop / (this.MAX_HEIGHT * 2)) > 0.6
-    }
-    public get scrollTopOpacity() {
-        return 1 - (this.scrollTop / (this.MAX_HEIGHT * 2))
-    }
     onLoad() {
-        this.$nextTick(() => {
-            const query: any = uni.createSelectorQuery().in(this)
-            query
-                .select('#pageTop')
-                .boundingClientRect((data: any) => {
-                    this.MAX_HEIGHT = data.height
-                })
-                .exec();
-        })
         this.stampTimer && clearInterval(this.stampTimer)
         this.stampTimer = setInterval(() => {
             this.timeStamp = Math.round(+new Date() / 1000)
@@ -254,7 +224,9 @@ export default class ClassName extends BaseNode {
         })
     }
     onPageScroll(data: any) {
-        this.scrollTop = data.scrollTop
+        //@ts-ignore
+        this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
+        // this.scrollTop = data.scrollTop
     }
     onPullDownRefresh() {
         const refKey: string = this.tabBar[this.tabIndex].ref
