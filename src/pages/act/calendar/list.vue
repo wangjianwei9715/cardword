@@ -83,20 +83,23 @@ import { Md5 } from "ts-md5";
 		httpIng = true;
 		detailIndex = -1;
 		onLoad(query:any) {
-			let date = new Date().getMonth();
-			this.monthIndex = date +1;
-			this.initEvent()
-			this.againReqNewData()
+			this.$nextTick(()=>{
+				let date = new Date().getMonth();
+				this.monthIndex = date +1;
+				this.scrollLeftPx = date * 50;
+				this.initEvent()
+				this.againReqNewData()
 
-			this.onEventUI('detailLike',(res)=>{
-				if(this.detailIndex>=0){
-					this.calendaList[this.detailIndex].isLikes = res;
-					if(res){
-						this.calendaList[this.detailIndex].likes++;
-					}else{
-						this.calendaList[this.detailIndex].likes--;
+				this.onEventUI('detailLike',(res)=>{
+					if(this.detailIndex>=0){
+						this.calendaList[this.detailIndex].isLikes = res;
+						if(res){
+							this.calendaList[this.detailIndex].likes++;
+						}else{
+							this.calendaList[this.detailIndex].likes--;
+						}
 					}
-				}
+				})
 			})
 		}
 		onShow(){
