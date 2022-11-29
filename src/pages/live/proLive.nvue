@@ -844,6 +844,7 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
               resolve(res.data);
             },
             err => {
+
               reject(err);
             }
           );
@@ -1760,10 +1761,9 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
           // this.initSocket(true)
           this.isLogin = true;
         } catch (err) {
-          if (err == "禁止登录") {
-            uni.showModal({
+          uni.showModal({
               title: "提示",
-              content: "你已被禁止登录该直播间",
+              content:err == "禁止登录"?"你已被禁止登录该直播间":err,
               showCancel: false,
               success: res => {
                 if (res.confirm) {
@@ -1776,8 +1776,7 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
                 }
               }
             });
-          }
-          console.log(err);
+            throw new Error("直播间获取用户信息错误")
         }
       },
       //--------------直播API----------------------------

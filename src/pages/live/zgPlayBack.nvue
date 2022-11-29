@@ -121,7 +121,7 @@ export default {
     this.stringData = query.data
     this.roomID = +query.roomID;
     this.playCode = query.playCode
-    this.getMerchant(query.alias);
+    // this.getMerchant(query.alias);
     this.getLiveData()
     uni.getSystemInfo({
       success: res => {
@@ -284,6 +284,9 @@ export default {
             this.goodCode = res.data.goodCode
             this.roomLikeNum = res.data.likeNum
             this.liveType=res.data.type
+            this.merchantMessage.alias=res.data.merchantAlias
+            this.merchantMessage.name=res.data.mechantName
+            this.merchantMessage.logo=res.data.merchantLogo
             this.setShareData(res.data);
           },
           err => {
