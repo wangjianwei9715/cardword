@@ -260,14 +260,14 @@
 			});
 			if (this.goodsList != '') {
 				this.getHome()
-				let list = this.goodsList.map((x: any) => {
-					return x.goodCode;
-				})
-				app.http.Post('dataApi/good/progress/list', {
-					list: list
-				}, (res: any) => {
-					this.setNewProgress(res.list)
-				})
+				// let list = this.goodsList.map((x: any) => {
+				// 	return x.goodCode;
+				// })
+				// app.http.Post('dataApi/good/progress/list', {
+				// 	list: list
+				// }, (res: any) => {
+				// 	this.setNewProgress(res.list)
+				// })
 			}
 		}
 		onHide() {
@@ -380,18 +380,18 @@
 				icon: 'none'
 			})
 		}
-		setNewProgress(list: any) {
-			for (let i in list) {
-				for (let t in this.goodsList) {
-					if (list[i].code == this.goodsList[t].goodCode) {
-						this.goodsList[t].lockNum = list[i].lockNum
-						this.goodsList[t].currentNum = list[i].currentNum
-						this.goodsList[t].totalNum = list[i].totalNum
-						this.goodsList[t].saleRatio = list[i].saleRatio
-					}
-				}
-			}
-		}
+		// setNewProgress(list: any) {
+		// 	for (let i in list) {
+		// 		for (let t in this.goodsList) {
+		// 			if (list[i].code == this.goodsList[t].goodCode) {
+		// 				this.goodsList[t].lockNum = list[i].lockNum
+		// 				this.goodsList[t].currentNum = list[i].currentNum
+		// 				this.goodsList[t].totalNum = list[i].totalNum
+		// 				this.goodsList[t].saleRatio = list[i].saleRatio
+		// 			}
+		// 		}
+		// 	}
+		// }
 		updateShow() {
 			uni.hideTabBar();
 			this.updateMsg = decodeURIComponent(app.update.apkData.msg);
