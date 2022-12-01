@@ -39,7 +39,7 @@ export default class ossUtils {
         return suffix;
     }
     getFileName(filename: any) {
-        console.log('filename:', filename)
+        // console.log('filename:', filename)
         return new Date().getTime() + Math.random().toString(36).substring(3, 20) + this._getSuffix(filename)
     }
     getImage(sourceType='album'):Promise<string> {
@@ -54,9 +54,10 @@ export default class ossUtils {
             })
         });
     }
-    getImages():Promise<string | string[]> {
+    getImages(count?:number):Promise<string | string[]> {
         return new Promise((resolve) => {
             uni.chooseImage({
+                count:count ?? 9,
                 sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
                 sourceType: ['album'],
                 success: (res) => {
@@ -64,6 +65,20 @@ export default class ossUtils {
                 }
             })
         });
+    }
+    getVideo(sourceType=['album']):Promise<string | string[]>{
+        return new Promise((resolve,reject)=>{
+            uni.chooseVideo({
+                sourceType,
+                compressed:true,
+                success:(res:any)=>{
+                    resolve(res.tempFilePath)
+                },
+                fail:(err)=>{
+                    reject(err)
+                }
+            })
+        })
     }
     getToken(){
         if (!this.osstoken.expire_at || (new Date().getTime() / 1000) >= this.osstoken.expire_at) {
