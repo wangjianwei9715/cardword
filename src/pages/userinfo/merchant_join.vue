@@ -97,8 +97,9 @@
         <view class="info-index">
           <view class="info-left">社群情况</view>
         </view>
-        <u--textarea class="textarea" v-model="merchant.active_platform" placeholder="请描述主要活动的平台" :heigth="57"
+        <u--textarea class="textarea" v-model="merchant.active_platform" placeholder="请输入" :heigth="57"
           :maxlength="-1" :showConfirmBar="false" confirmType="done"></u--textarea>
+          <view class="tips" style="margin-top:20rpx">请描述主要活动的平台</view>
         <view class="imgContainer uni-flex" style="margin-top:40rpx">
           <image class="info-img" v-for="(item, index) in merchant.colony_pics"
             :src="parsePic(decodeURIComponent(item))" mode="aspectFill" @longtap="delResources('colony_pics', index)" />
