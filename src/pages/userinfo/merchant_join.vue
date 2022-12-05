@@ -14,7 +14,7 @@
     <view style="padding-top:88rpx">
       <statusbar />
     </view>
-    <template v-if='merchantHelloState == 0'>
+    <template v-if='(merchantHelloState == 0)'>
       <view class="title" style="margin-top: 30rpx;">入驻流程</view>
       <view class="step-content">
         <view class="step-index" v-for="(item, index) in stepData" :key="index">
@@ -130,7 +130,7 @@
       <view class="safeBottom"></view>
       <button class="info-btn" @click="onClickConfirm">提交</button>
     </template>
-    <template v-else>
+    <template v-if="(merchantHelloState != 0)">
       <view class="alreadySubmit" :class="[`joinState${merchantHelloState}`]"></view>
       <view class="alreadyTips">
         {{
@@ -252,7 +252,7 @@ export default class ClassName extends BaseNode {
   has_public_accountOptions: any = has_public_accountOptions;
   cargo_sourceRange: any = cargo_sourceRange;
   // alreadySubmit: Boolean = false
-  merchantHelloState: number = 0
+  merchantHelloState: number = -1
   reason: string = ""
   sign: any = null
   private get isRealShow() {
@@ -646,6 +646,7 @@ export default class ClassName extends BaseNode {
   bottom: 64rpx;
   left: 50%;
   margin-left: -334rpx;
+  z-index: 3;
   height: $btn-height;
   line-height: $btn-height;
   font-size: $btn-fontSize;
@@ -685,6 +686,7 @@ export default class ClassName extends BaseNode {
   border-radius: 3rpx;
   display: block;
   margin-bottom: 16rpx;
+  z-index: 2;
 }
 
 .alreadySubmit {
