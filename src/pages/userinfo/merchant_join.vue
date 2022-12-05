@@ -97,8 +97,8 @@
         <view class="info-index">
           <view class="info-left">社群情况</view>
         </view>
-        <u--textarea class="textarea" v-model="merchant.active_platform" placeholder="请输入" :heigth="57"
-          :maxlength="-1" :showConfirmBar="false" confirmType="done"></u--textarea>
+        <u--textarea class="textarea"  v-model="merchant.active_platform" placeholder="请输入" :heigth="57"
+          :maxlength="200" count :showConfirmBar="false" confirmType="done"></u--textarea>
           <view class="tips" style="margin-top:20rpx">请描述主要活动的平台</view>
         <view class="imgContainer uni-flex" style="margin-top:40rpx">
           <image class="info-img" v-for="(item, index) in merchant.colony_pics"
@@ -120,12 +120,12 @@
           <view class="info-left flex1">库存情况描述</view>
         </view>
         <u--textarea class="textarea" v-model="merchant.inventory_description" placeholder="简单描述一下当前的库存情况"
-          heigth="211rpx" :maxlength="-1" :showConfirmBar="false" confirmType="done"></u--textarea>
+          heigth="211rpx" :maxlength="200" count :showConfirmBar="false" confirmType="done"></u--textarea>
         <view class="info-index noneBorder">
           <view class="info-left flex1">近三个月开卡强度</view>
         </view>
         <u--textarea class="textarea" v-model="merchant.open_card_description" placeholder="简单描述近三个月的开卡情况"
-          heigth="211rpx" :maxlength="-1" :showConfirmBar="false" confirmType="done"></u--textarea>
+          heigth="211rpx" :maxlength="200" count :showConfirmBar="false" confirmType="done"></u--textarea>
         <view class="info-tip">提交信息后我们将在1个工作日内和您取得联系</view>
       </view>
       <view class="safeBottom"></view>
