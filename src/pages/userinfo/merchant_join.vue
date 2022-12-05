@@ -107,7 +107,7 @@
             mode="aspectFill" />
         </view>
         <view class="tips" style="margin-bottom:40rpx">图片上传【举例:抖音、微信社群截图、月销总额截图,最大6张】</view>
-        <view class="imgContainer uni-flex">
+        <view class="imgContainer uni-flex" style="z-index: 1;">
           <image class="info-img" v-if="!merchant.open_card_video" @click="onClickUpload('Video', 'open_card_video')"
             src="../../static/userinfo/v2/addImage.png" mode="scaleToFill" />
           <view @longtap="delResources('open_card_video')" v-else>
@@ -128,7 +128,7 @@
         <view class="info-tip">提交信息后我们将在1个工作日内和您取得联系</view>
       </view>
       <view class="safeBottom"></view>
-      <button class="info-btn" @click="onClickConfirm">提交</button>
+      <cover-view class="info-btn" @click="onClickConfirm">提交</cover-view>
     </template>
     <template v-if="(merchantHelloState != 0)">
       <view class="alreadySubmit" :class="[`joinState${merchantHelloState}`]"></view>
