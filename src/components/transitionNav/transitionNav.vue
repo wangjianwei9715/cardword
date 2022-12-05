@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-24 14:49:59
+ * @LastEditTime: 2022-12-05 17:43:35
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -315,9 +315,10 @@ export default {
 }
 
 .leftBackContainer {
-    width: 55rpx;
+    width: 19rpx;
     height: 55rpx;
     border-radius: 50%;
+    margin-right: 14rpx;
     display: flex;
     align-items: center;
     justify-content: center;
