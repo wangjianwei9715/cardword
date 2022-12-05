@@ -165,7 +165,7 @@ const has_public_accountOptions: any = [
   },
   {
     label: "没有，但愿意配合开通",
-    value: 0
+    value: 2
   }
 ];
 const checkMap = {
