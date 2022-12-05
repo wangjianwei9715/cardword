@@ -1721,24 +1721,14 @@ color: #E6A44F;">{{clickPack.tips=='您已抢过红包了'?`${clickPack.point}�
         const stopSign = Md5.hashStr(
           "stopPushStream" + `_${this.roomID}_${this.streamID}`
         );
-        request(
-          "funcApi/brodcast/third/1001/achor/stopPush/" + this.roomID,
-          {
-            sign: stopSign
-          },
-          "post"
-        )
-          .then(res => {
-            this.stopPublishingStream();
+        app.http.Post(`funcApi/brodcast/third/1001/achor/stopPush/${this.roomID}`,{sign:stopSign},(res)=>{
+              this.stopPublishingStream();
               this.stopPreview();
               this.finishLive = true;
               this.pushFlowStamp=null
             this.liveData.state = 3
             console.log("结束直播");
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        })
       },
       async getUserProfile() {
         try {

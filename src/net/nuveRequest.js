@@ -1,3 +1,11 @@
+/*
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2022-10-13 10:13:22
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2022-12-05 17:26:04
+ * @FilePath: \card-world\src\net\nuveRequest.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 const app = getApp().globalData.app
 const httpReg = /^http(s)?/
 const request = (url, params = {}, method = 'GET') => {
@@ -28,7 +36,7 @@ const request = (url, params = {}, method = 'GET') => {
 					const noneTips = ['禁止登录']
 					
 					// console.log(res);
-					if (res.data.code == 1100) {
+					if ([1100,1101,1102,1103,1104].includes(res.data.code)) {
 						uni.showModal({
 							title: '信息无效',
 							content: '登录信息无效，请重新登录',
@@ -39,17 +47,17 @@ const request = (url, params = {}, method = 'GET') => {
 						});
 						return
 					}
-					if (res.data.code == 1101) {
-						uni.showModal({
-							title: '信息过期',
-							content: '登录状态已过期，点击 确定 自动刷新',
-							showCancel: false,
-							success: (event) => {
-								uni.$emit('refreshToken');
-							}
-						});
-						return
-					}
+					// if () {
+					// 	uni.showModal({
+					// 		title: '信息过期',
+					// 		content: '登录状态已过期，点击 确定 自动刷新',
+					// 		showCancel: false,
+					// 		success: (event) => {
+					// 			uni.$emit('refreshToken');
+					// 		}
+					// 	});
+					// 	return
+					// }
 					if (!noneTips.includes(res.data.msg)) {
 						uni.showToast({
 							title: res.data.msg,
