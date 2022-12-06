@@ -224,7 +224,7 @@ export default class HttpRequest {
 				if (!findError) return response
 				if (findError.checkMsg && response.data.msg !== findError.checkMsg) return response;
 				uni.$u.debounce(() => {
-					findError.execute(response);
+					response.config.url?.indexOf('brodcast/third/1001/achor/stopPush') != -1 ? reLoginAction() : findError.execute(response);
 				}, 200);
 				return findError.reject ? Promise.reject(response) : response;
 			}
