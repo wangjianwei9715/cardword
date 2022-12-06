@@ -42,6 +42,10 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { dateFormatYMS } from '@/tools/util'
+	const everyData = [
+		{ name: 'tp', val: 1, errMsg: '不同类型优惠券不能叠加使用' },
+		{ name: 'overlay', val:true, errMsg: '此优惠券不能叠加使用' }
+	]
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
@@ -54,6 +58,7 @@
 		checkCouponList:any = [];
 		checkTp = 0;
 		checkPrice = 0;
+		checkOverlay = true;
 		confirmList:any = [];
 		confirmPrice = 0;
 		confirmTp = 0;
@@ -108,60 +113,33 @@
 		onClickcheckCoupon(id:any,index:any){
 			let checkindex = this.checkCouponList.indexOf(id)
 
-			// 是否已选择优惠券
+			// 还未选择该优惠券
 			if(checkindex == -1){
-				// 同类型不可以叠加
-				if(!this.couponList[index].overlay){
-					if(this.checkTp == 0){
-						this.checkTp = this.couponList[index].tp
-						this.checkCouponList = [id];
-						this.checkPrice = this.couponList[index].amount
-						return;
-					}else{
-						uni.showToast({
-							title:'此优惠券不能叠加使用',
-							position:'top',
-							icon:'none'
-						})
-						return;
-					}
-				}
-
-				if(this.checkTp == 0){
-					this.checkTp = this.couponList[index].tp
-				}else if(this.checkTp!=this.couponList[index].tp){
-					uni.showToast({
-						title:'不同类型优惠券不能叠加使用',
-						position:'top',
-						icon:'none'
-					})
-					return;
-				}
-				
-
-				// 满减不能叠加
-				if(this.checkTp==2){
+				const data = this.couponList[index];
+				if(this.checkTp!=1||!this.checkOverlay){
+					this.checkTp = data.tp
 					this.checkCouponList = [id];
-					this.checkPrice = this.couponList[index].amount
-					return;
+					this.checkPrice = data.amount;
+					this.checkOverlay = data.overlay;
+					return;                            
+				}else{
+					for (const i of everyData) {
+						if (!data[i.name] === i.val) {
+							uni.showToast({ title:i.errMsg, position:'top', icon:'none' })
+							return false;
+						}
+					}
+					this.checkPrice+=data.amount;
+					this.checkCouponList.push(id);
 				}
-
-				if(this.checkTp==1){
-					this.checkPrice+=this.couponList[index].amount
-				}
-				this.checkCouponList.push(id);
-				
 			}else{
 				if(this.checkTp==1||this.checkTp==2){
 					this.checkPrice-=this.couponList[index].amount
 				}
-
-				
 				this.checkCouponList.splice(checkindex,1)
 				if(this.checkCouponList.length==0){
 					this.checkTp = 0
 				}
-
 			}
 		}
 		checkCoupon(id:any){
