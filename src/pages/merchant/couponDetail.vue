@@ -245,8 +245,8 @@
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
+            // -webkit-line-clamp: 2;
+            // line-clamp: 2;
             /* background-color: red; */
             height: 70rpx;
             -webkit-box-orient: vertical;

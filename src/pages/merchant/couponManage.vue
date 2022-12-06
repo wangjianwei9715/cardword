@@ -22,10 +22,10 @@
         <view class="msgItem" v-if="queryParams.tp==1">
             <image class="msg-img" :src="parsePic(decodeURIComponent(logo))" mode="aspectFill" />
             <view class="msg-right">
-                <view class="msg-name">
+                <view class="msg-name" style="margin-bottom: 10rpx;flex: none;">
                     店铺通用券
                 </view>
-                <view class="msg-cumulative">累计使用<text style="color:#e9114f">{{shopCouponMoney}}</text>元</view>
+                <view class="msg-cumulative" style="flex:1">累计使用<text style="color:#e9114f">{{shopCouponMoney}}</text>元</view>
                 <view class="msg-action uni-flex">
                     <view class="actionButton flexCenter" @click="pageJump(`/pages/merchant/couponDetail`)">
                         查看
@@ -42,8 +42,9 @@
                 <view class="msg-name">
                     {{item.title}}
                 </view>
-                <view class="msg-cumulative">累计使用<text style="color:#e9114f">{{item.totalCouponMoney}}</text>元</view>
+                
                 <view class="msg-action uni-flex">
+                    <view class="msg-cumulative">累计使用<text style="color:#e9114f">{{item.totalCouponMoney}}</text>元</view>
                     <view class="actionButton flexCenter"
                         @click="pageJump(`/pages/merchant/couponDetail?goodCode=${item.goodCode}&logo=${item.pic}&goodName=${item.title}&totalCouponMoney=${item.totalCouponMoney}&merchantCouponMoney=${item.merchantCouponMoney}`)">
                         查看
@@ -203,13 +204,14 @@
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
-        text-overflow: -o-ellipsis-lastline;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        margin-bottom: 10rpx;
+        flex: 1;
+        // text-overflow: -o-ellipsis-lastline;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
+        // display: -webkit-box;
+        // -webkit-line-clamp: 2;
+        // line-clamp: 2;
+        // margin-bottom: 10rpx;
     }
 
     .msg-right {
@@ -231,6 +233,7 @@
     .msg-action {
         width: 100%;
         justify-content: flex-end;
+        align-items: center;
     }
 
     .actionButton {

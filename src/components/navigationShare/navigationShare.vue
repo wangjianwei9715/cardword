@@ -45,9 +45,10 @@
 			
 		}
 		onClickBack(){
-			uni.navigateBack({
-				delta: 1
-			});
+			app.platform.pageBack()
+			// uni.navigateBack({
+			// 	delta: 1
+			// });
 		}
 		// 分享
 		onClickShare(){
