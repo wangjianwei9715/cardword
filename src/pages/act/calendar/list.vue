@@ -75,7 +75,7 @@ import { Md5 } from "ts-md5";
 		calendaList:{[x:string]:any} = [];
 		swiperIndex = 3;
 		yearData = [
-			2019,2020,2021,2022
+			2019,2020,2021,2022,2023
 		]
 		monthIndex = 1;
 		scrollLeft = false;
@@ -84,9 +84,12 @@ import { Md5 } from "ts-md5";
 		detailIndex = -1;
 		onLoad(query:any) {
 			this.$nextTick(()=>{
-				let date = new Date().getMonth();
-				this.monthIndex = date +1;
-				this.scrollLeftPx = date * 50;
+				let date = new Date();
+				this.yearData.map((x:number,index:number)=>{
+					(x==date.getFullYear()) && (this.swiperIndex = index)
+				})
+				this.monthIndex = date.getMonth() +1;
+				this.scrollLeftPx = date.getMonth() * 50;
 				this.initEvent()
 				this.againReqNewData()
 
