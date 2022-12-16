@@ -1,9 +1,9 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-10-13 10:13:22
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-05 17:26:04
- * @FilePath: \card-world\src\net\nuveRequest.js
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-12-09 11:24:00
+ * @FilePath: \jichao_app_2\src\net\nuveRequest.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 const app = getApp().globalData.app
@@ -22,9 +22,12 @@ const request = (url, params = {}, method = 'GET') => {
 		}
 	}
 	return new Promise((resolve, reject) => {
-		const finUrl = isCustomUrl ? url : baseURL + url
+		const finUrl = isCustomUrl ? url : baseURL + url;
+		const ksjUserId = uni.getStorageSync('ksjUserId');
 		let header = {
 			token: app.token.accessToken,
+			version:app.version,
+			ksjUserId
 		}
 		uni.request({
 			url: finUrl,
