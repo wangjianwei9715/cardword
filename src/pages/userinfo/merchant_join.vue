@@ -129,7 +129,7 @@
         <view class="info-tip">提交信息后我们将在1个工作日内和您取得联系</view>
       </view>
       <view class="safeBottom"></view>
-      <cover-view class="info-btn" @click="onClickConfirm">提交</cover-view>
+      <button class="info-btn" @click="onClickConfirm">提交</button>
     </template>
     <template v-if="(merchantHelloState != 0)">
       <view class="alreadySubmit" :class="[`joinState${merchantHelloState}`]"></view>
