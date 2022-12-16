@@ -34,6 +34,7 @@ export namespace DarwCard{
         number:number;
         pic:string;
         player:string;
-        rc:boolean
+        rc:boolean;
+        [x:string]:any
     }
 }
