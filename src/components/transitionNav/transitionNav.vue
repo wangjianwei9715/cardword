@@ -2,12 +2,12 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-05 17:43:35
+ * @LastEditTime: 2022-12-16 18:16:44
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
 <template>
-    <view class="pageTopContainer" :style="{ zIndex, backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
+    <view id="pageTopContainer" class="pageTopContainer" :style="{ zIndex, backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
         <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px', }">
         </view>
         <view id="pageTop" class="pageTop">
@@ -161,7 +161,7 @@ export default {
     },
     computed: {
         scrollTopPercent() {
-            return this.scrollTop / (this.MAX_HEIGHT * 2)
+            return this.scrollTop / (this.MAX_HEIGHT * 1.4)
         },
         opacityStyle() {
             return {
@@ -174,10 +174,10 @@ export default {
             }
         },
         navBackGroundShow() {
-            return (this.scrollTop / (this.MAX_HEIGHT * 2)) > 0.6
+            return (this.scrollTop / (this.MAX_HEIGHT * 1.4)) > 0.6
         },
         scrollTopOpacity() {
-            return 1 - (this.scrollTop / (this.MAX_HEIGHT * 2))
+            return 1 - (this.scrollTop / (this.MAX_HEIGHT * 1.4))
         },
         toolsList() {
             const list = this.needRightTools.map(key => toolsMap[key])
@@ -208,9 +208,10 @@ export default {
             this.$nextTick(() => {
                 const query = uni.createSelectorQuery().in(this)
                 query
-                    .select('#pageTop')
+                    .select('#pageTopContainer')
                     .boundingClientRect((data) => {
                         this.MAX_HEIGHT = data.height
+                        this.$emit('getNavHeight',data.height)
                     })
                     .exec();
             })
@@ -344,6 +345,8 @@ export default {
 }
 
 .whiteBack {
+    width: 55rpx;
+    height: 55rpx;
     background: rgba(255, 255, 255, 0.78);
 }
 
