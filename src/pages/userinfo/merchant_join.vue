@@ -26,26 +26,27 @@
       <view class="info-content">
         <view class="info-index">
           <view class="info-left">姓名</view>
-          <input class="info-input" v-model="merchant.name" placeholder="请输入姓名" />
+          <input :adjust-position="false" class="info-input" v-model="merchant.name" placeholder="请输入姓名" />
         </view>
         <view class="info-index">
           <view class="info-left">店铺名称</view>
-          <input class="info-input" v-model="merchant.shop" placeholder="请输入店铺名称" />
+          <input :adjust-position="false" class="info-input" v-model="merchant.shop" placeholder="请输入店铺名称" />
         </view>
         <view class="info-index">
           <view class="info-left">联系方式</view>
-          <input class="info-input" v-model="merchant.phone" placeholder="请输入联系手机" />
+          <input :adjust-position="false" class="info-input" v-model="merchant.phone" placeholder="请输入联系手机" />
         </view>
         <view class="info-index">
           <view class="info-left">微信号</view>
-          <input class="info-input" v-model="merchant.contact" placeholder="请输入微信号" />
+          <input :adjust-position="false" class="info-input" v-model="merchant.contact" placeholder="请输入微信号" />
         </view>
         <view class="info-index">
           <view class="info-left" style="width:300rpx">是否拥有对公账户</view>
           <picker :range="has_public_accountOptions" class="flex1" style="width: 100%;" range-key='label'
             @change="pickerChange($event, has_public_accountOptions, merchant, 'has_public_account')">
             <view class="uni-flex alc flex1">
-              <input class="info-input flex1" disabled :value="has_public_accountLabel" placeholder="请选择" />
+              <input :adjust-position="false" class="info-input flex1" disabled :value="has_public_accountLabel"
+                placeholder="请选择" />
               <u-icon name='arrow-right' size='11' color='#555674'></u-icon>
             </view>
           </picker>
@@ -59,8 +60,8 @@
           <picker :range="isRealOptions" class="flex1" style="width: 100%;" range-key='label'
             @change="pickerChange($event, isRealOptions, merchant, 'isReal')">
             <view class="uni-flex alc flex1">
-              <input class="info-input flex1" disabled :value="filterPickLabel(merchant.isReal, isRealOptions)"
-                placeholder="请选择" />
+              <input :adjust-position="false" class="info-input flex1" disabled
+                :value="filterPickLabel(merchant.isReal, isRealOptions)" placeholder="请选择" />
               <u-icon name='arrow-right' size='11' color='#555674'></u-icon>
             </view>
           </picker>
@@ -68,7 +69,7 @@
         </view>
         <view class="info-index" v-if="merchant.isReal == 1">
           <view class="info-left" style="width:200rpx">店铺详细地址</view>
-          <input class="info-input" v-model="merchant.address" placeholder="请输入店铺详细地址" />
+          <input :adjust-position="false" class="info-input" v-model="merchant.address" placeholder="请输入店铺详细地址" />
         </view>
         <view class="info-index">
           <view class="info-left" style="width:200rpx">货源渠道</view>
@@ -76,7 +77,8 @@
             @change="pickerChange($event, cargo_sourceRange, merchant, 'cargo_source', '')" class="flex1"
             style="width: 100%;">
             <view class="uni-flex alc flex1">
-              <input class="info-input flex1" disabled v-model="merchant.cargo_source" placeholder="请输入" />
+              <input :adjust-position="false" class="info-input flex1" disabled v-model="merchant.cargo_source"
+                placeholder="请输入" />
               <u-icon name='arrow-right' size='11' color='#555674'></u-icon>
             </view>
           </picker>
@@ -84,7 +86,8 @@
         </view>
         <view class="info-index" v-if="merchant.cargo_source == '其他'">
           <view class="info-left" style="width:200rpx">货源渠道说明</view>
-          <input class="info-input" v-model="merchant.cargo_source_description" placeholder="请输入货源渠道说明" />
+          <input :adjust-position="false" class="info-input" v-model="merchant.cargo_source_description"
+            placeholder="请输入货源渠道说明" />
         </view>
         <view class="info-index noneBorder">
           <view class="info-left flex1">上传营业执照</view>
@@ -97,9 +100,9 @@
         <view class="info-index">
           <view class="info-left">社群情况</view>
         </view>
-        <u--textarea class="textarea"  v-model="merchant.active_platform" placeholder="请输入" :heigth="57"
+        <u--textarea u--textarea class="textarea" :adjust-position="false" v-model="merchant.active_platform" placeholder="请输入" :heigth="57"
           :maxlength="200" count :showConfirmBar="false" confirmType="done"></u--textarea>
-          <view class="tips" style="margin-top:20rpx">请描述主要活动的平台</view>
+        <view class="tips" style="margin-top:20rpx">请描述主要活动的平台</view>
         <view class="imgContainer uni-flex" style="margin-top:40rpx">
           <image class="info-img" v-for="(item, index) in merchant.colony_pics"
             :src="parsePic(decodeURIComponent(item))" mode="aspectFill" @longtap="delResources('colony_pics', index)" />
@@ -119,18 +122,22 @@
         <view class="info-index noneBorder">
           <view class="info-left flex1">库存情况描述</view>
         </view>
-        <u--textarea class="textarea" v-model="merchant.inventory_description" placeholder="简单描述一下当前的库存情况"
-          heigth="211rpx" :maxlength="200" count :showConfirmBar="false" confirmType="done"></u--textarea>
+        <u--textarea :adjust-position="false" class="textarea" v-model="merchant.inventory_description"
+          placeholder="简单描述一下当前的库存情况" heigth="211rpx" :maxlength="200" count :showConfirmBar="false"
+          confirmType="done"></u--textarea>
         <view class="info-index noneBorder">
           <view class="info-left flex1">近三个月开卡强度</view>
         </view>
-        <u--textarea class="textarea" v-model="merchant.open_card_description" placeholder="简单描述近三个月的开卡情况"
-          heigth="211rpx" :maxlength="200" count :showConfirmBar="false" confirmType="done"></u--textarea>
+        <u--textarea :adjust-position="false" class="textarea" v-model="merchant.open_card_description"
+          placeholder="简单描述近三个月的开卡情况" heigth="211rpx" :maxlength="200" count :showConfirmBar="false"
+          confirmType="done"></u--textarea>
         <view class="info-tip">提交信息后我们将在1个工作日内和您取得联系</view>
       </view>
+      <!-- <cover-view v-if="deviceInfo.platform=='android'" class="info-btn" @click="onClickConfirm">提交</cover-view> -->
+      <button  class="info-btn" @click="onClickConfirm">提交</button>
       <view class="safeBottom"></view>
-      <button class="info-btn" @click="onClickConfirm">提交</button>
     </template>
+    
     <template v-if="(merchantHelloState != 0)">
       <view class="alreadySubmit" :class="[`joinState${merchantHelloState}`]"></view>
       <view class="alreadyTips">
@@ -230,6 +237,7 @@ const cargo_sourceRange: any = ["睿卡", "美盘", "香港", "淘宝", "其他"
 export default class ClassName extends BaseNode {
   stepData = ["提交个人信息", "等待客服联系", "对接入驻材料", "入驻成功"];
   parsePic: any = parsePic
+  deviceInfo:any=app.platform.systemInfo;
   merchant: any = {
     name: "",
     shop: "",
@@ -247,6 +255,7 @@ export default class ClassName extends BaseNode {
     inventory_description: "",//库存情况描述
     open_card_description: "",//近三个月开卡强度描述
   };
+  keyHeight:any=0;
   ossutils = ossUtils.getInstance();
   checkMap: any = Object.assign({}, checkMap)
   isRealOptions: any = isRealOptions;
@@ -276,7 +285,19 @@ export default class ClassName extends BaseNode {
     app.http.Get('dataApi/me/merchant/hello/state', {}, (res: any) => {
       this.merchantHelloState = res.helloState
       if (res.reason) this.reason = res.reason
+      uni.onKeyboardHeightChange(this.keyBoardHeightChange);
     })
+  }
+  //键盘高度变化
+  keyBoardHeightChange(event:any) {
+    const _heightDiff =
+      this.deviceInfo.screenHeight - this.deviceInfo.windowHeight;
+    const _diff = event.height - _heightDiff;
+    // 键盘高度
+    const height = (_diff > 0 ? _diff : 0) - 2;
+    this.keyHeight = height;
+    console.log(this.keyHeight);
+    
   }
   pickerChange(event: any, range: any, assignData: any, assignDataKey: any, valueKey = 'value') {
     const index = +event.detail.value
@@ -400,6 +421,10 @@ export default class ClassName extends BaseNode {
     app.platform.heliService(params)
   }
   onClickConfirm() {
+    if(this.merchantHelloState!=0){
+      app.platform.pageBack()
+      return 
+    }
     const deepData = JSON.parse(JSON.stringify(this.merchant));
     deepData.open_card_videos = [deepData.open_card_video];
     if (deepData.isReal != 1) deepData.address = ""
@@ -636,7 +661,11 @@ export default class ClassName extends BaseNode {
   font-weight: 400;
   color: #c7c8c8;
 }
-
+.hidden{
+  width: 0;
+  height: 0;top: 0;left: 0;
+  opacity: 0;
+}
 .info-btn {
   width: 668rpx;
   background: #fb4e3e;
