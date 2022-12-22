@@ -2,14 +2,19 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:19:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-20 10:24:17
+ * @LastEditTime: 2022-12-22 11:18:25
  * @FilePath: \card-world\src\pages\mall\pay.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
+        <view @click="onClickChangeAddress">
+            {{ addressData.district || '' }}
+            {{ addressData.name || '' }}
+            {{ addressData.phone || '' }}
+        </view>
         <button @click="isReadAgreement = true">阅读购买协议</button>
-        <button>支付</button>
+        <button class="payButton" @click="onClickPay">支付</button>
     </view>
 </template>
 
@@ -26,9 +31,7 @@ export default class ClassName extends BaseNode {
     orderCode: string = ""//订单编号
     onLoad(query: any) {
         this.ID = query.id
-        if (query.code) {
-            this.orderCode = query.code
-        }
+        this.getDefaultAddress()
     }
     onClickPay() {
         if (!this.addressData.id) {
@@ -57,14 +60,20 @@ export default class ClassName extends BaseNode {
         })
         app.http.Post(`point/good/toBuy/${this.ID}`, { deliveryId: this.addressData.id }, (res: any) => {
             this.orderCode = res.orderCode
-            //订单创建成功跳转支付宝支付
-            app.payment.paymentAlipay('alipay', res.alipay.orderInfo)
             setTimeout(() => {
                 uni.redirectTo({
                     url: `/pages/mall/orderDetail?orderCode=${res.orderCode}`
                 })
             }, 500)
+            //订单创建成功跳转支付宝支付
+            app.payment.paymentAlipay('alipay', res.alipay.orderInfo)
+
         })
+    }
+    onClickChangeAddress() {
+        uni.navigateTo({
+            url: "/pages/userinfo/setting_addresses?type=order",
+        });
     }
     getDefaultAddress() {
         this.onEventUI("addressSelect", (data) => {
@@ -88,5 +97,12 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
+.payButton {
+    background-color: #ec808d;
+    color: #fff;
+}
 
+.payButton_dis {
+    background-color: #aaaaaa;
+}
 </style>

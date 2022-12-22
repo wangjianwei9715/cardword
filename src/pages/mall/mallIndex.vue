@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 17:50:05
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-22 15:10:47
+ * @LastEditTime: 2022-12-22 15:21:57
  * @FilePath: \card-world\src\pages\mall\mallIndex.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -74,18 +74,6 @@
         </view>
         <empty v-if="goodsList && !goodsList.length" />
         <view class="bottomSafeArea"></view>
-        <!-- <view class="pages">
-            <view @click="toGoodsDetail(item)" v-for="(item, index) in goodsList" :key="index">
-                {{ item.name }}
-                <u-count-down v-if="item.start_at > 0" style="opacity:0;" :time="item.start_at"
-                    @change="itemTimeChange($event, item)" :millisecond="false" format="HH:mm:ss"></u-count-down>
-                {{
-        Object.keys(item.startTimeInfo).length && item.start_at > nowTimeStamp ?
-            `${item.startTimeInfo.days}天${item.startTimeInfo.hours}小时${item.startTimeInfo.minutes}分钟${item.startTimeInfo.seconds}秒`
-            : ""
-                }}
-            </view>
-        </view> -->
         <!-- <logisticsPop :visible.sync="visible" logisticsCode="SF666666" /> -->
     </view>
 </template>
@@ -243,12 +231,7 @@ export default class ClassName extends BaseNode {
     }
     reqNewData(cb?: any) {
         app.http.Get(`dataApi/point/exchange/goodlist`, this.queryParams, (res: any) => {
-            const list = (res.list || []).map((item: any) => {
-                return {
-                    ...item,
-
-                }
-            })
+            const list = res.list || []
             this.totalPage = res.totalPage
             this.queryParams.pageIndex == 1 ? this.goodsList = list : this.goodsList.push(...list)
             cb && cb()
