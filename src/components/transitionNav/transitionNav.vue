@@ -2,12 +2,13 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-16 18:16:44
+ * @LastEditTime: 2022-12-22 15:17:21
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
 <template>
-    <view id="pageTopContainer" class="pageTopContainer" :style="{ zIndex, backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
+    <view id="pageTopContainer" class="pageTopContainer"
+        :style="{ zIndex, backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
         <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px', }">
         </view>
         <view id="pageTop" class="pageTop">
@@ -69,11 +70,11 @@ import nvueShare from "@/pages/live/components/nvueShare.nvue"
 const app = getApp().globalData.app;
 const parsePic = getApp().globalData.parsePic;
 const deviceInfo = getApp().globalData.app.platform.systemInfo;
-const toolsMap = {
+let toolsMap = {
     "客服": {
         action: "onClickKef",
         emitAction: "",
-        icon: "/static/index/v3/kefu.png",
+        icon: "/static/mall/kef.png",
         icon_black: "/static/goods/v2/icon_kefu.png",
         style: {
             width: "36rpx",
@@ -147,6 +148,12 @@ export default {
             default: () => {
                 return ['light', 'dark']
             }
+        },
+        toolsMapCustomNew: {
+            type: Object,
+            default: () => {
+                return {}
+            }
         }
 
     },
@@ -196,6 +203,9 @@ export default {
     },
     mounted() {
         this.init()
+        if (Object.keys(this.toolsMapCustomNew).length) {
+            toolsMap = Object.assign(toolsMap, this.toolsMapCustomNew)
+        }
     },
     methods: {
         init() {
@@ -211,7 +221,7 @@ export default {
                     .select('#pageTopContainer')
                     .boundingClientRect((data) => {
                         this.MAX_HEIGHT = data.height
-                        this.$emit('getNavHeight',data.height)
+                        this.$emit('getNavHeight', data.height)
                     })
                     .exec();
             })
