@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\tools\DataRules.ts
  * @Author: wjw
  * @Date: 2022-10-26 15:51:09
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-11-17 09:46:10
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2022-12-22 15:15:07
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -49,7 +49,8 @@ export var goodsDetailHelp = [
 export var mallExchangeRule = [
     {content:'玩家可消耗相应数量的卡币兑换心仪的奖品，兑换奖品前需填写并确认默认邮寄地址。'},
     {content:'若兑换实物类奖品，请联系客服，核实邮寄地址后寄出（包邮）；若兑换优惠券类奖品，将在2小时内自动发放至我的-优惠券，有效期为60天，请注意查收。'},
-    {content:'所有奖品兑换后可在奖品明细中查看详情，兑换成功后无法取消，奖品将不定期更新。'}
+    {content:'所有奖品兑换后可在奖品明细中查看详情，兑换成功后无法取消，奖品将不定期更新。'},
+    {content:'中国港澳台地区以及海外暂时无法发货，部分地区若受疫情影。'}
 ]
 /**
  * @goodsDetailHelp 集sp卡密 活动规则
