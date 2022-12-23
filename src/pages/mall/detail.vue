@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:08:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-22 17:24:22
+ * @LastEditTime: 2022-12-23 14:25:57
  * @FilePath: \card-world\src\pages\mall\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -63,6 +63,7 @@
             <muqian-lazyLoad class="img" borderRadius="3rpx" v-for="(item, index) in goodsDetail.pic" :key="index"
                 :src="$parsePic(decodeURIComponent(item))"></muqian-lazyLoad>
         </view>
+        <view class="bottomSafeArea" style="height:150rpx"></view>
         <view class="bottomFixedPay">
             <view class="payContainer">
                 <view class="payInfo">
@@ -74,18 +75,6 @@
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-        <!-- <view>{{ goodsDetail.name }}</view>
-        <view>{{ goodsPrice }}</view>
-        <view v-if="goodsDetail.leftNum != -1">剩余{{ goodsDetail.leftNum }}</view>
-        <view v-if="goodsDetail.limit_num > 0">限兑{{ goodsDetail.limit_num }}</view>
-        <view>当前个人卡币{{ meBeanPoint }}</view>
-        <view v-if="goodsDetail.start_at > 0 && nowTimeStamp < goodsDetail.start_at">
-            距开始
-            {{
-                    liveCountDownV2(nowTimeStamp, goodsDetail.start_at, false)
-            }}
-        </view>
-        <button class="payButton" :class="{ payButton_dis: !canExchange }" @click="onClickExchange">支付</button> -->
         <u-popup mode="center" :show="exchangeModal" @close="exchangeModal = false">
             <view>
                 <button @click="onClickPayBeanPoint">确认兑换</button>
@@ -142,7 +131,7 @@ export default class ClassName extends BaseNode {
         if (this.goodsDetail.start_at && this.nowTimeStamp < this.goodsDetail.start_at) bol = false
         return bol
     }
-    private get payText(){
+    private get payText() {
         if (this.goodsDetail.limit_num != 0 && this.goodsDetail.limit_num <= this.goodsDetail.buy_num) return '兑换已上限'
         return '立即支付'
     }
@@ -168,7 +157,7 @@ export default class ClassName extends BaseNode {
             return
         }
         //混合支付以及实物商品
-        if (this.goodsDetail.pay_tp == 2 || this.goodsDetail.tp == 1) {
+        if (this.goodsDetail.pay_tp == 2 || this.goodsDetail.goodTp == 2) {
             uni.navigateTo({
                 url: `/pages/mall/pay?id=${this.ID}`
             })
