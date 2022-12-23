@@ -527,7 +527,7 @@ import { Md5 } from "ts-md5";
 				params.nativeSdk = 'qmf_android'
 			}
 			app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
-				if(data.channel=='alipay'){
+				if(data.channel=='alipay' || data.channel=='alipay_h5'){
 					if(res.appPayRequest){
 						app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
 						this.onClickCancelPay()
