@@ -731,6 +731,55 @@
 			"root": "pages/mall",
 			"pages": [
 				{
+					"path": "mallIndex",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "卡币商城",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path": "goodsDetail",
+					"style": {
+						// "navigationStyle": "custom",
+						"navigationBarTitleText": "卡币商城",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path": "exchangeLog",
+					"style": {
+						// "navigationStyle": "custom",
+						"navigationBarTitleText": "兑换记录",
+						"enablePullDownRefresh": true,
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path": "pay",
+					"style": {
+						// "navigationStyle": "custom",
+						"navigationBarTitleText": "确认订单",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path": "rule",
+					"style": {
+						// "navigationStyle": "custom",
+						"navigationBarTitleText": "卡币规则",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path": "orderDetail",
+					"style": {
+						// "navigationStyle": "custom",
+						"navigationBarTitleText": "订单详情",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
 					"path": "index",
 					"style": {
 						"navigationBarTitleText": "卡币商城",

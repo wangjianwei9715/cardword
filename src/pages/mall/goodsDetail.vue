@@ -8,9 +8,7 @@
 -->
 <template>
     <view class="content">
-        <u-skeleton rows="4" style="width: 690rpx;" :rowsWidth="[`690rpx`, `690rpx`, `690rpx`, `690rpx`]"
-            :rowsHeight="[`280rpx`, `40rpx`, `200rpx`, `600rpx`]" :title="false"
-            :loading="!goodsDetail.id"></u-skeleton>
+        <u-skeleton rows="4" style="width: 690rpx" :rowsWidth="[`690rpx`, `690rpx`, `690rpx`, `690rpx`]" :rowsHeight="[`280rpx`, `40rpx`, `200rpx`, `600rpx`]" :title="false" :loading="!goodsDetail.id"></u-skeleton>
         <view class="topImage">
             <image mode="aspectFill" :src="$parsePic(decodeURIComponent(goodsDetail.logo))"></image>
         </view>
@@ -20,35 +18,31 @@
                 <view class="goodsInfoBottom_left">
                     <view class="price">{{ goodsPrice }}</view>
                     <view class="numBlock" v-if="isOnCountDown">
-                        <view class="numBlock_left flexCenter">剩{{ goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum
-                        }}份</view>
-                        <view class="numBlock_right flexCenter">限兑{{ goodsDetail.limit_num == 0
-                                ? "∞" : goodsDetail.limit_num
-                        }}份</view>
+                        <view class="numBlock_left flexCenter">剩{{ goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum }}份</view>
+                        <view class="numBlock_right flexCenter">限兑{{ goodsDetail.limit_num == 0 ? "∞" : goodsDetail.limit_num }}份</view>
                     </view>
                 </view>
                 <view class="goodsInfoBottom_right">
                     <template v-if="isOnCountDown">
                         <view class="tips">距离开始</view>
                         <view class="timeBlockContainer">
-                            <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).hours">{{ time }}
+                            <view class="timeBlock flexCenter" v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).hours">{{ time }}
                             </view>
                             <view class="colon">:</view>
-                            <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).minutes">{{ time }}
+                            <view class="timeBlock flexCenter" v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).minutes">{{ time }}
                             </view>
                             <view class="colon">:</view>
-                            <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).seconds">{{ time }}
+                            <view class="timeBlock flexCenter" v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).seconds">{{ time }}
                             </view>
                         </view>
                     </template>
                     <template v-else>
                         <view class="tips">
-                            剩余{{ goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum }}限兑{{ goodsDetail.limit_num == 0
-                                    ? "∞" : `${goodsDetail.buy_num}/${goodsDetail.limit_num}`
-                            }}
+                            剩余{{ goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum }}限兑{{
+                goodsDetail.limit_num == 0
+                  ? "∞"
+                  : `${goodsDetail.buy_num}/${goodsDetail.limit_num}`
+              }}
                         </view>
                     </template>
                 </view>
@@ -60,24 +54,29 @@
         </view>
         <view class="goodsImgListContainer" v-if="goodsDetail.pic && goodsDetail.pic.length">
             <view class="title">商品详情</view>
-            <muqian-lazyLoad class="img" borderRadius="3rpx" v-for="(item, index) in goodsDetail.pic" :key="index"
-                :src="$parsePic(decodeURIComponent(item))"></muqian-lazyLoad>
+            <muqian-lazyLoad class="img" borderRadius="3rpx" v-for="(item, index) in goodsDetail.pic" :key="index" :src="$parsePic(decodeURIComponent(item))"></muqian-lazyLoad>
         </view>
-        <view class="bottomSafeArea" style="height:150rpx"></view>
+        <view class="bottomSafeArea" style="height: 150rpx"></view>
         <view class="bottomFixedPay">
             <view class="payContainer">
                 <view class="payInfo">
                     <view class="price">{{ goodsPrice }}</view>
                     <view class="myPoint">当前卡币:{{ meBeanPoint }}</view>
                 </view>
-                <view class="exchangeButton flexCenter" @click="onClickExchange"
-                    :class="{ exchangeButton_dis: !canExchange }">{{ payText }}</view>
+                <view class="exchangeButton flexCenter" @click="onClickExchange" :class="{ exchangeButton_dis: !canExchange }">{{ payText }}</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-        <u-popup mode="center" :show="exchangeModal" @close="exchangeModal = false">
-            <view>
-                <button @click="onClickPayBeanPoint">确认兑换</button>
+        <u-popup mode="center" closeable round="3rpx" :show="exchangeModal" @close="exchangeModal = false" :safeAreaInsetBottom="false">
+            <view class="coninExchange">
+                <image class="exchangeImg" :src="$parsePic(decodeURIComponent(goodsDetail.logo))" mode="aspectFill" />
+                <view class="exchangeGoodsPrice">
+                    <view class="exchangeText">兑换所需：<text style="color: #e53b4b">{{ goodsDetail.price }}卡币</text></view>
+                    <view class="exchangeText">当前卡币：<text>{{ meBeanPoint }}</text></view>
+                </view>
+                <view class="exchangeModalButton flexCenter" @click="onClickPayBeanPoint">确认兑换</view>
+                <view class="exchangeTips">确认兑换后积分/支付金额将不予退回</view>
+                <!-- <button @click="onClickPayBeanPoint">确认兑换</button> -->
             </view>
         </u-popup>
     </view>
@@ -86,58 +85,76 @@
 <script lang="ts">
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
-import BaseNode from '@/base/BaseNode.vue';
-import { liveCountDownV2 } from '@/tools/util'
+import BaseNode from "@/base/BaseNode.vue";
+import { liveCountDownV2 } from "@/tools/util";
 @Component({})
 export default class ClassName extends BaseNode {
-    ID: any = null
-    goodsDetail: any = {}
-    timer: any = null
-    meBeanPoint: number = 0
+    ID: any = null;
+    goodsDetail: any = {};
+    timer: any = null;
+    meBeanPoint: number = 0;
     liveCountDownV2: any = liveCountDownV2;
-    exchangeModal: boolean = false
-    nowTimeStamp: any = Math.round(+new Date() / 1000)
+    exchangeModal: boolean = false;
+    nowTimeStamp: any = Math.round(+new Date() / 1000);
     onLoad(query: any) {
         this.timer = setInterval(() => {
-            this.getNewTime()
-        }, 1000)
+            this.getNewTime();
+        }, 1000);
         app.platform.hasLoginToken(() => {
-            this.ID = query.id
-            this.reqMeCardBean()
-        })
+            this.ID = query.id;
+            this.reqMeCardBean();
+        });
     }
     onShow() {
-        this.reqNewData()
+        this.reqNewData();
     }
     onUnload(): void {
-        clearInterval(this.timer)
+        clearInterval(this.timer);
     }
     getNewTime() {
-        this.nowTimeStamp = Math.round(+new Date() / 1000)
+        this.nowTimeStamp = Math.round(+new Date() / 1000);
     }
     private get goodsPrice() {
-        if (!this.goodsDetail.id) return ""
-        return `${this.goodsDetail.price}卡币${this.goodsDetail.pay_tp == 2 ? `+${this.goodsDetail.money}元` : ""}`
+        if (!this.goodsDetail.id) return "";
+        return `${this.goodsDetail.price}卡币${
+            this.goodsDetail.pay_tp == 2 ? `+${this.goodsDetail.money}元` : ""
+        }`;
     }
     private get isOnCountDown() {
-        return (this.goodsDetail.start_at && this.goodsDetail.start_at > 0 && this.nowTimeStamp < this.goodsDetail.start_at)
+        return (
+            this.goodsDetail.start_at &&
+            this.goodsDetail.start_at > 0 &&
+            this.nowTimeStamp < this.goodsDetail.start_at
+        );
     }
     private get canExchange() {
-        let bol: boolean = true
-        if (!this.goodsDetail.id) bol = false
-        if (this.goodsDetail.state == 0) bol = false
-        if (this.goodsDetail.leftNum == 0) bol = false
-        if (this.goodsDetail.limit_num != 0 && this.goodsDetail.limit_num <= this.goodsDetail.buy_num) bol = false
-        if (this.goodsDetail.start_at && this.nowTimeStamp < this.goodsDetail.start_at) bol = false
-        return bol
+        let bol: boolean = true;
+        if (!this.goodsDetail.id) bol = false;
+        if (this.goodsDetail.state == 0) bol = false;
+        if (this.goodsDetail.leftNum == 0) bol = false;
+        if (
+            this.goodsDetail.limit_num != 0 &&
+            this.goodsDetail.limit_num <= this.goodsDetail.buy_num
+        )
+            bol = false;
+        if (
+            this.goodsDetail.start_at &&
+            this.nowTimeStamp < this.goodsDetail.start_at
+        )
+            bol = false;
+        return bol;
     }
     private get payText() {
-        if (this.goodsDetail.limit_num != 0 && this.goodsDetail.limit_num <= this.goodsDetail.buy_num) return '兑换已上限'
-        return '立即支付'
+        if (
+            this.goodsDetail.limit_num != 0 &&
+            this.goodsDetail.limit_num <= this.goodsDetail.buy_num
+        )
+            return "兑换已上限";
+        return "立即支付";
     }
     goodsDetailTimeChange(event: any, item: any) {
         // console.log(event, item);
-        item.startTimeInfo = event
+        item.startTimeInfo = event;
     }
     //点击立即兑换操作
     onClickExchange() {
@@ -146,45 +163,52 @@ export default class ClassName extends BaseNode {
             //     title: '当前不可兑换',
             //     icon: 'none'
             // })
-            return
+            return;
         }
         if (this.meBeanPoint < this.goodsDetail.price) {
             uni.showToast({
-                title: '很遗憾您的卡币不足暂时无法兑换~',
-                icon: 'none'
-            })
-            app.platform.UINotificationFeedBack('error')
-            return
+                title: "很遗憾您的卡币不足暂时无法兑换~",
+                icon: "none",
+            });
+            app.platform.UINotificationFeedBack("error");
+            return;
         }
         //混合支付以及实物商品
         if (this.goodsDetail.pay_tp == 2 || this.goodsDetail.goodTp == 2) {
             uni.navigateTo({
-                url: `/pages/mall/pay?id=${this.ID}`
-            })
-            return
+                url: `/pages/mall/pay?id=${this.ID}`,
+            });
+            return;
         }
         //卡币支付
         if (this.goodsDetail.pay_tp == 1) {
-            this.exchangeModal = true
-            return
+            this.exchangeModal = true;
+            return;
         }
     }
     //卡币兑换的虚拟类商品确认支付
     onClickPayBeanPoint() {
-        app.http.Post(`point/exchange/exchange/${this.ID}`, {}, (res: any) => {
-            app.platform.UINotificationFeedBack('success');
-            this.exchangeModal = false
-            uni.showToast({
-                title: '兑换成功'
-            })
-            this.meBeanPoint = res.point
-            this.reqNewData()
+        if(!this.exchangeModal) return
+        uni.showLoading({
+            title:"",
+            mask:true
         })
+        app.http.Post(`point/exchange/exchange/${this.ID}`, {}, (res: any) => {
+            this.exchangeModal = false;
+            uni.hideLoading()
+            app.platform.UINotificationFeedBack("success");
+            
+            uni.showToast({
+                title: "兑换成功",
+            });
+            this.meBeanPoint = res.point;
+            this.reqNewData();
+        });
     }
     onClickGoExchangeLog() {
         uni.navigateTo({
-            url: `/pages/mall/record_award`
-        })
+            url: `/pages/mall/record_award`,
+        });
     }
     //获取个人卡币
     reqMeCardBean(cb?: Function) {
@@ -195,31 +219,41 @@ export default class ClassName extends BaseNode {
     }
     //获取商品详情
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi/point/exchange/good/detail/${this.ID}`, {}, (res: any) => {
-            this.goodsDetail = res.data
-        })
+        app.http.Get(
+            `dataApi/point/exchange/good/detail/${this.ID}`,
+            {},
+            (res: any) => {
+                this.goodsDetail = res.data;
+            }
+        );
     }
     getCountDownInfo(nowTimeStamp: number, endTimeStamp: number) {
-        if (!endTimeStamp) endTimeStamp = Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
-            1) / 1000)
-        let times: any = new Date(endTimeStamp * 1000).getTime() - new Date(nowTimeStamp * 1000).getTime();
-        let ss: any = Math.floor(times / 1000)
+        if (!endTimeStamp)
+            endTimeStamp = Math.round(
+                (new Date(new Date().toLocaleDateString()).getTime() +
+                    24 * 60 * 60 * 1000 -
+                    1) /
+                    1000
+            );
+        let times: any =
+            new Date(endTimeStamp * 1000).getTime() -
+            new Date(nowTimeStamp * 1000).getTime();
+        let ss: any = Math.floor(times / 1000);
         let hh = this.formatNumberZero(Math.floor(ss / 3600));
         ss %= 3600;
-        let mm = this.formatNumberZero((Math.floor(ss / 60)));
+        let mm = this.formatNumberZero(Math.floor(ss / 60));
         ss %= 60;
         ss = this.formatNumberZero(ss);
         const timeInfo: any = {
-            hours: String(hh).split(''),
-            minutes: String(mm).split(''),
-            seconds: String(ss).split('')
-        }
-        return timeInfo
+            hours: String(hh).split(""),
+            minutes: String(mm).split(""),
+            seconds: String(ss).split(""),
+        };
+        return timeInfo;
     }
     formatNumberZero(val: any) {
-        return val < 10 ? "0" + val : val
+        return val < 10 ? "0" + val : val;
     }
-
 }
 </script>
 
@@ -238,11 +272,56 @@ page {
         height: inherit;
     }
 }
-
+.coninExchange {
+    width: 525rpx;
+    border-radius: 3rpx;
+    box-sizing: border-box;
+    padding: 60rpx 80rpx 40rpx 80rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .exchangeGoodsPrice {
+        min-width: 316rpx;
+        display: flex;
+        flex-direction: column;
+    }
+    .exchangeImg {
+        width: 367rpx;
+        height: 367rpx;
+        border-radius: 3rpx;
+        margin-bottom: 38rpx;
+    }
+    .exchangeText {
+        font-size: 29rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #333333;
+    }
+    .exchangeModalButton {
+        width: 451rpx;
+        height: 90rpx;
+        background: #fa1545;
+        border-radius: 3rpx;
+        font-size: 33rpx;
+        font-family: PingFang SC;
+        font-weight: 600;
+        letter-spacing: 4rpx;
+        color: #ffffff;
+        margin-top: 46rpx;
+        margin-bottom: 18rpx;
+    }
+    .exchangeTips {
+        font-size: 23rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #949494;
+        white-space: nowrap;
+    }
+}
 .goodsInfoContainer {
     width: 710rpx;
     min-height: 214rpx;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 3rpx;
     margin-top: -84rpx;
     z-index: 2;
@@ -269,7 +348,7 @@ page {
                 font-size: 33rpx;
                 font-family: PingFang SC;
                 font-weight: 600;
-                color: #E53B4B;
+                color: #e53b4b;
             }
 
             .numBlock {
@@ -281,12 +360,13 @@ page {
                 font-size: 20rpx;
                 font-family: PingFang SC;
                 font-weight: 400;
-                color: #FFFFFF;
+                color: #ffffff;
                 display: flex;
                 white-space: nowrap;
                 margin-top: 12rpx;
 
                 .numBlock_left {
+                    font-size: 20rpx;
                     width: 80rpx;
                     background-color: #000000;
                 }
@@ -294,10 +374,10 @@ page {
                 .numBlock_right {
                     flex: 1;
                     background-color: #ffffff;
-                    color: #E53B4B;
-
+                    color: #e53b4b;
+                    font-size: 20rpx;
                     border-radius: 0rpx 15rpx 16rpx 0rpx;
-                    border: 1rpx solid #E53B4B;
+                    border: 1rpx solid #e53b4b;
                 }
             }
         }
@@ -409,7 +489,6 @@ page {
         padding: 20rpx 34rpx 30rpx 34rpx;
         justify-content: space-between;
 
-
         .payInfo {
             display: flex;
             flex-direction: column;
@@ -428,20 +507,20 @@ page {
                 font-size: 23rpx;
                 font-family: PingFang SC;
                 font-weight: 400;
-                color: #949494
+                color: #949494;
             }
         }
 
         .exchangeButton {
             width: 308rpx;
             height: 82rpx;
-            background: #FA1545;
+            background: #fa1545;
             border-radius: 3rpx;
             font-size: 33rpx;
             font-family: PingFang SC;
             font-weight: 600;
             letter-spacing: 4rpx;
-            color: #FFFFFF;
+            color: #ffffff;
         }
 
         .exchangeButton_dis {

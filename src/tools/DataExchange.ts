@@ -172,5 +172,36 @@ export var orderState = {
     '10': '未中卡',
     '-1': '超时未支付'
 }
-
+export const mallStateMap: any = {
+    "0": {
+        tip: "已发放",
+        introduction: '',
+        userTip: '已完成'
+    },
+    "1": {
+        tip: "等待平台发货",
+        introduction: '平台将陆续发货，请耐心等待请留意物流信息',
+        userTip: '待收货'
+    },
+    "2": {
+        tip: "平台已发货",
+        introduction: '平台已发货，请留意物流信息',
+        userTip: '待收货'
+    },
+    "3": {
+        tip: "用户确认收货",
+        userTip: '已完成'
+    },
+    "-1": {
+        tip: "等待支付完成"
+    }
+}
+export const mallStatusMap: any = {
+    "0": "订单创建",
+    "1": "等待支付",
+    "2": "支付完成",
+    "-1": "支付超时",
+    "-2": "支付已取消",
+    "-3":"已退款"
+}
 

@@ -50,7 +50,7 @@
             </view>
         </view>
         <payment :showPayMent="showPayMent" :payChannel="mallPayChannel" @cancelPay="showPayMent = false"
-            :payPrice="0.01" :countTime="0" @pay="onClickPayGoods" />
+            :payPrice="goodsDetail.money" :countTime="0" @pay="onClickPayGoods" />
         <view class="bottomFixedPay">
             <view class="payContainer">
                 <view class="payInfo">
@@ -139,21 +139,21 @@ export default class ClassName extends BaseNode {
     }
     onClickPayGoods(event: any) {
         //进入创建支付订单流程
-        uni.$u.throttle(() => {
-            this.creatOrder(event.channel == "alipay" ? "default" : event.channel, false)
-        }, 1000)
+        this.creatOrder(event.channel == "alipay" ? "default" : event.channel, false)
     }
     //创建订单
     creatOrder(channel?: string, isTrueGoods?: boolean) {
         uni.showLoading({
             title: ""
         })
+        this.showPayMent=false
         app.http.Post(`point/good/toBuy/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
             this.orderCode = res.orderCode
             uni.hideLoading()
-            app.platform.UINotificationFeedBack('success')
+            
             if (isTrueGoods) {
                 //实物
+                app.platform.UINotificationFeedBack('success')
                 uni.showModal({
                     title: '卡币商城提示',
                     content: "兑换成功！",
@@ -164,7 +164,7 @@ export default class ClassName extends BaseNode {
                 })
             } else {
                 //订单创建成功跳转支付宝支付
-                app.payment.paymentAlipay(res.pay_tp, res.alipay.orderInfo, res.orderCode, () => {
+                app.payment.paymentAlipay(res.sdk, res.alipay.orderInfo, res.orderCode, () => {
                     this.toOrderDetail()
                 });
             }
@@ -172,7 +172,7 @@ export default class ClassName extends BaseNode {
     }
     toOrderDetail() {
         uni.redirectTo({
-            url: `/pages/mall/orderDetail?orderCode=${this.orderCode}`
+            url: `/pages/mall/orderDetail?orderCode=${this.orderCode}&pay_tp=${this.goodsDetail.pay_tp}`
         })
     }
     onClickChangeAddress() {
