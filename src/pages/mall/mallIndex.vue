@@ -8,7 +8,7 @@
 -->
 <template>
     <view class="content">
-        <transitionNav @getNavHeight="getNavHeight" @onClickRule="pageJump(`/pages/mall/mallRule`)"
+        <transitionNav @getNavHeight="getNavHeight" @onClickRule="pageJump(`/pages/mall/rule`)"
             :toolsMapCustomNew="custonRightIcon" ref='transitionNav' :needRightTools="['客服','卡币规则']"
             :needIconShadow="false" title="卡币商城">
             <template slot="slotLeft">
@@ -24,22 +24,22 @@
                     <image src="@/static/mall/dotRight.png"></image>
                 </view>
             </view>
-            <view class="myInfo_right" @click="pageJump(`/pages/mall/record_award`)">
+            <view class="myInfo_right" @click="pageJump(`/pages/mall/exchangeLog`)">
                 <view class="myInfo_right_gift"></view>
                 <view class="myInfo_right_font">
                     兑换<br>明细
                 </view>
             </view>
         </view>
-        <u-swiper class="mallSwiper" :list="list3" indicator indicatorMode="line" circular></u-swiper>
-        <u-sticky v-if="navHeight" :customNavHeight="navHeight">
-            <view class="uTabs">
-                <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)"
-                    v-for="(item, index) in tab.list">{{ item.name }}</view>
-            </view>
-        </u-sticky>
+        <u-swiper v-if="swiperList.length" @click="onClickSwiper" class="mallSwiper" :list="swiperList" keyName="pic" indicator indicatorMode="line" circular></u-swiper>
+        <view class="uTabs">
+         <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)" v-for="(item, index) in tab.list">{{ item.name }}</view>
+        </view>
+        <!-- <u-sticky v-if="navHeight" :customNavHeight="navHeight">
+            
+        </u-sticky> -->
         <view class="goodsContainer">
-            <view class="goodsItem" @click="pageJump(`/pages/mall/detail?id=${item.id}`)"
+            <view class="goodsItem" @click="pageJump(`/pages/mall/goodsDetail?id=${item.id}`)"
                 v-for="(item, index) in goodsList" :key="index">
                 <view class="goodsItem_top">
                     <muqian-lazyLoad class="logo" borderRadius="3rpx"
@@ -62,7 +62,7 @@
                 <view class="goodsItem_bottom">
                     <view class="goodsName">{{ item.name }}</view>
                     <view class="goodsPriceBlock">
-                        <view class="money" v-if="item.pay_tp == 2">{{ item.price }}卡币</view>
+                        <view class="rmbMoney money" v-if="item.pay_tp == 2">{{ item.price }}卡币</view>
                         <view class="goodsPriceBlock_bottom">
                             <view class="money">{{ item.pay_tp == 2 ? `+${item.money}元` : `${item.price}卡币` }}</view>
                             <view class="leftNum" v-if='item.limit_num != 0 || item.leftNum != -1'>剩余{{ item.leftNum }}
@@ -82,6 +82,7 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
+import {parsePic} from '@/tools/util'
 const custonRightIcon = {
     "卡币规则": {
         emitAction: "onClickRule",
@@ -95,11 +96,7 @@ const custonRightIcon = {
 }
 @Component({})
 export default class ClassName extends BaseNode {
-    list3: any = [
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.12.16/luckdraw/0/167115924208198rhetzoo.jpg',
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.12.16/luckdraw/0/167115924208198rhetzoo.jpg',
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.12.16/luckdraw/0/167115924208198rhetzoo.jpg',
-    ]
+    swiperList: any = []
     custonRightIcon: any = custonRightIcon
     app: any = app
     // visible: boolean = false
@@ -143,6 +140,7 @@ export default class ClassName extends BaseNode {
         app.platform.hasLoginToken(() => {
             this.reqNewData()
             this.reqMeCardBean()
+            this.reqSwiperData()
         })
     }
     onShow() {
@@ -177,10 +175,11 @@ export default class ClassName extends BaseNode {
             this.nowTimeStamp = Math.round(+new Date() / 1000)
         }, 1000)
     }
-    onClickSwiper(item: any) {
-        if (!item.path) return
+    onClickSwiper(index: number) {
+        const item:any=this.swiperList[index]
+        if (!item.jump_url) return
         uni.navigateTo({
-            url: item.path
+            url: item.jump_url
         })
     }
     getCountDownInfo(nowTimeStamp: number, endTimeStamp: number) {
@@ -226,8 +225,13 @@ export default class ClassName extends BaseNode {
     }
     //获取轮播图
     reqSwiperData() {
-        app.http.Get(`dataApi`, {}, (res: any) => {
-
+        app.http.Get(`dataApi/point/banner/list`, {}, (res: any) => {
+            this.swiperList=(res.list||[]).map((item:any)=>{
+                return {
+                    ...item,
+                    pic:parsePic(decodeURIComponent(item.pic))
+                }
+            })
         })
     }
     reqNewData(cb?: any) {
@@ -373,7 +377,7 @@ page {
     border-radius: 5rpx;
     margin-bottom: 12rpx;
     box-sizing: border-box;
-    padding-bottom: 28rpx;
+    padding-bottom: 24rpx;
     display: flex;
     flex-direction: column;
 }
@@ -438,6 +442,12 @@ page {
                 font-size: 21rpx;
             }
         }
+        &_leftFont{
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #FFFFFF;
+        }
     }
 }
 
@@ -476,12 +486,16 @@ page {
             color: #999999;
         }
     }
-
+    .rmbMoney{
+        position: relative;
+        top: 6rpx;
+    }
     .money {
         font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #F91E44;
+        position: relative;
     }
 }
 </style>
