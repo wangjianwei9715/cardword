@@ -296,11 +296,13 @@
 		// 商家好卡
 		cardList = [];
 		seriesCardEnd = true;
+		AD_id=null;
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
 			this.goodCode = goodCode;
 			this.source=query.source
+			this.AD_id = query.AD_id || null;
 			this.getGoodData(goodCode,()=>{
 				// 购买记录
 				this.getBuyRecord()
@@ -651,9 +653,7 @@
 					uni.showToast({ title: '该商品已售罄', icon: 'none' })
 					return;
 				}
-				uni.navigateTo({
-					url: `confirmorder?data=${encodeURIComponent(JSON.stringify(goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}`
-				})
+				this.navigateToConfirmOrder('')
 			})
 		}
 		onClickResult(chooseID: number) {
@@ -826,21 +826,17 @@
 		onClickSettlement() {
 			const { choiceTeamData } = this;
 			if (choiceTeamData.cartData.available == 0) return;
-			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&cart=${encodeURIComponent(JSON.stringify(choiceTeamData.cartData))}&payChannel=${encodeURIComponent(
-						JSON.stringify(this.payChannel))}`
-			})
+			const params = `&cart=${encodeURIComponent(JSON.stringify(choiceTeamData.cartData))}`;
+			this.navigateToConfirmOrder(params)
 			this.onClickTeamCheckCancel()
 		}
 		// 包队
 		onClickBaodui() {
 			const { choiceTeamData } = this;
 			let price = this.getBranchPrice(choiceTeamData.branchData)
-			const teamCheckData = choiceTeamData.teamData[choiceTeamData.teamCheckIndex]
-			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&baodui=${teamCheckData.id}&price=${price}&baoduiName=${teamCheckData.name}&payChannel=${encodeURIComponent(JSON.stringify(this
-						.payChannel))}`
-			})
+			const teamCheckData = choiceTeamData.teamData[choiceTeamData.teamCheckIndex];
+			const params = `&baodui=${teamCheckData.id}&price=${price}&baoduiName=${teamCheckData.name}`;
+			this.navigateToConfirmOrder(params)
 			this.onClickTeamCheckCancel()
 		}
 		getBranchPrice(list: any) {
@@ -852,9 +848,8 @@
 		}
 		// 购买剩余随机
 		onClickBuyRandomGood() {
-			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}&payRandomPrice=${this.choiceTeamData.randomMode.good.price}`
-			})
+			const params = `&payRandomPrice=${this.choiceTeamData.randomMode.good.price}`;
+			this.navigateToConfirmOrder(params)
 		}
 		// 自选球队随机 我要选队 我要选卡种
 		getGoodSelectTeamRandom(cb ? : Function) {
@@ -881,10 +876,14 @@
 				uni.showToast({ title:'暂未开售', icon:'none' })
 				return;
 			}
-			uni.navigateTo({
-				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}${params}`
-			})
+			this.navigateToConfirmOrder(params)
 			this.onClickteamRandomCancel()
+		}
+		navigateToConfirmOrder(params:string){
+			const AD_id = this.AD_id?`&AD_id=${this.AD_id}`:''
+			uni.navigateTo({
+				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}${params}${AD_id}`
+			})
 		}
 		onClickteamRandomCancel() {
 			this.isPullDown(true)

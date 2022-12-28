@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-12-14 15:31:28
+ * @LastEditTime: 2022-12-16 15:26:33
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -144,7 +144,7 @@
     changeMove:any = {};
     cardMove:boolean = false;
     cardData = { step:0, total:0 };
-    codeList:Array<string|DarwCard.Code>=['',];
+    codeList:Array<string|DarwCard.Code>=[];
     drawerData = {
       show:false,
       check:1,
@@ -157,7 +157,7 @@
       initCode.map((x:DarwCard.Code)=>{
         x.pic = parsePic(decodeURIComponent(x.pic))
       });
-      this.codeList = [...this.codeList,...initCode]
+      this.codeList = ['',...initCode]
       this.cardData.total = query.num;
       this.initData.goodOrder = query.code;
       

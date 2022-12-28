@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view class="drawer-shadow" v-show="showDrawer" @click="onClickCloseDrawer"></view>
+        <view class="drawer-shadow" :style="{background:shadowBg}" v-show="showDrawer" @click="onClickCloseDrawer"></view>
         <view class="drawer-content" :class="{'show-drawer':showDrawer,'needSafeAreaContent':needSafeArea}" :style="'height:'+height+heightType">
 			<view class="drawer-header">
 				{{title}}
@@ -40,6 +40,8 @@
 		padding!:string;
 		@Prop({ default: '#ffffff' })
         drawerBg!:string
+		@Prop({ default: 'rgba(0,0,0,0.5)' })
+        shadowBg?:string
 		created(){//在实例创建完成后被立即调用
 			
 		}
