@@ -8,9 +8,22 @@
 -->
 <template>
     <view>
-        <u-popup :show="showValue" :round="10" mode="bottom" @close="showValue = false">
-            <view>
-                <text>人生若只如初见，何事秋风悲画扇</text>
+        <u-popup :show="showValue" :round="5" mode="bottom" closeable @close="showValue = false">
+            <view class="logPopContainer">
+                <view class="logPopBody">
+                    <view class="logPop_title flexCenter">物流信息</view>
+                    <view class="logPop_code">
+                        <view class="code">{{ logisticsInfo.name || '获取中' }} {{ logisticsInfo.no || '获取中' }}</view>
+                        <view class="copy" @click="onClickCopy">复制</view>
+                    </view>
+                    <view class="logPop_content">
+                        <u-steps direction="column" dot>
+                            <u-steps-item :title="item.content" v-for="(item, index) in logisticsInfo.list"
+                                :desc="item.time"></u-steps-item>
+                        </u-steps>
+                    </view>
+                </view>
+                <view class="bottomSafeArea"></view>
             </view>
         </u-popup>
     </view>
@@ -27,14 +40,15 @@ export default class ClassName extends BaseComponent {
     }) showValue!: Boolean;
 
     @Prop({ default: "" })
-    logisticsCode!: string;
-
-
+    code!: string;
     logisticsInfo: any = {
+        list: []
     }
     @Watch('visible')
     onVisibleChange(val: boolean, oldVal: boolean) {
-        if (!val) this.logisticsInfo = {}
+        if (!val) this.logisticsInfo = {
+            list: []
+        }
         if (val) {
             this.getLogistics()
         }
@@ -48,11 +62,22 @@ export default class ClassName extends BaseComponent {
     destroyed() {
 
     }
+    onClickCopy() {
+        if (!this.logisticsInfo.no) return
+        uni.setClipboardData({
+            data: this.logisticsInfo.no,
+            showToast: false,
+            success: () => {
+                uni.showToast({
+                    title: "已复制",
+                    icon: 'none'
+                })
+            }
+        });
+    }
     getLogistics() {
-        console.log(this.logisticsCode);
-        
-        if (!this.logisticsCode) return
-        app.http.Get('me/orderInfo/wuliu/' + this.logisticsCode, {}, (res: any) => {
+        if (!this.code) return
+        app.http.Get('me/orderInfo/wuliu/' + this.code, {}, (res: any) => {
             this.logisticsInfo = {
                 name: res.data.wuliuName,
                 no: res.data.no,
@@ -63,6 +88,51 @@ export default class ClassName extends BaseComponent {
 }
 </script>
 
-<style>
+<style lang="scss">
+.logPopContainer {
+    border-radius: 5rpx 5rpx 0 0;
+    background-color: #fff;
+    width: 750rpx;
+}
 
+.logPopBody {
+    height: 790rpx;
+    width: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+.logPop_title {
+    height: 100rpx;
+    border-bottom: 1rpx solid rgba(174, 173, 173, .2);
+    font-size: 33rpx;
+    font-family: PingFang SC;
+    font-weight: 600;
+    color: #333333;
+}
+
+.logPop_code {
+    height: 90rpx;
+    width: inherit;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 50rpx;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    border-bottom: 1rpx solid #E6E6E6;
+
+    .code {
+        flex: 1;
+    }
+}
+
+.logPop_content {
+    flex: 1;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 20rpx 30rpx 0rpx 30rpx;
+}
 </style>

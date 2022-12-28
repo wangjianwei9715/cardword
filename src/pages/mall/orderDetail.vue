@@ -10,17 +10,11 @@
   <view class="content" v-if="orderDetail.code">
     <view class="pageTop">
       <view class="bigState">{{ topTip }}</view>
-      <view class="smallTips" v-if="orderDetail.status == 1"
-        >订单将于{{ closeCountDown }}秒后关闭</view
-      >
+      <view class="smallTips" v-if="orderDetail.status == 1">订单将于{{ closeCountDown }}秒后关闭</view>
       <view class="smallTips" v-if="introduction">{{ introduction }}</view>
     </view>
     <view class="publickBlock goodsContainer">
-      <image
-        class="goodsImg"
-        mode="aspectFill"
-        :src="$parsePic(decodeURIComponent(orderDetail.logo))"
-      ></image>
+      <image class="goodsImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(orderDetail.logo))"></image>
       <view class="goodsRightInfo">
         <view class="goodsName">
           <view class="name u-line-2">{{ orderDetail.name }}</view>
@@ -56,18 +50,13 @@
       <view class="addressIcon"></view>
       <view class="addressInfo">
         <template>
-          <view class="addressInfo_lineone"
-            >{{ orderDetail.receiver.name }} {{ orderDetail.receiver.phone }}</view
-          >
+          <view class="addressInfo_lineone">{{ orderDetail.receiver.name }} {{ orderDetail.receiver.phone }}</view>
           <view class="addressInfo_linetwo">{{ orderDetail.receiver.address }}</view>
         </template>
       </view>
       <!-- <view class="dotRight"></view> -->
     </view>
-    <view
-      class="publickBlock priceContainer"
-      :class="{ payInfoContainer: orderDetail.goodTp == 2 }"
-    >
+    <view class="publickBlock priceContainer" :class="{ payInfoContainer: orderDetail.goodTp == 2 }">
       <view class="priceItem">
         <view>订单编号</view>
         <view>{{ orderCode }}</view>
@@ -94,35 +83,18 @@
     <view class="bottomFixedPay">
       <view class="payContainer">
         <template v-if="orderDetail.status == 1 && pay_tp == 2">
-          <view class="exchangeButton flexCenter" @click="cancelOrderHandle"
-            >取消订单</view
-          >
-          <view
-            class="exchangeButton exchangeButton_red flexCenter"
-            @click="showPayMent = true"
-            >立即支付</view
-          >
+          <view class="exchangeButton flexCenter" @click="cancelOrderHandle">取消订单</view>
+          <view class="exchangeButton exchangeButton_red flexCenter" @click="showPayMent = true">立即支付</view>
         </template>
         <template v-if="orderDetail.status == 2 && orderDetail.goodTp == 2">
           <view class="exchangeButton flexCenter" @click="onClickWuliu">查看物流</view>
-          <view
-            v-if="orderDetail.state == 2"
-            class="exchangeButton exchangeButton_red flexCenter"
-            @click="confirmReceipt"
-            >确认收货</view
-          >
+          <view v-if="orderDetail.state == 2" class="exchangeButton exchangeButton_red flexCenter" @click="confirmReceipt">确认收货</view>
         </template>
       </view>
       <view class="bottomSafeArea"></view>
     </view>
-    <payment
-      :showPayMent="showPayMent"
-      :payChannel="mallPayChannel"
-      @cancelPay="showPayMent = false"
-      :payPrice="orderDetail.payMoney"
-      :countTime="closeCountDown < 0 ? 0 : closeCountDown"
-      @pay="onClickPayGoods"
-    />
+    <payment :showPayMent="showPayMent" :payChannel="mallPayChannel" @cancelPay="showPayMent = false" :payPrice="orderDetail.payMoney" :countTime="closeCountDown < 0 ? 0 : closeCountDown" @pay="onClickPayGoods" />
+    <logisticsPop :visible.sync="visible" :code="orderDetail.wuliuCode" />
   </view>
 </template>
 
@@ -158,6 +130,7 @@ export default class ClassName extends BaseNode {
   stampTimer: any = null;
   showPayMent: boolean = false;
   mallPayChannel: any = mallPayChannel;
+  visible:boolean=false
   onLoad(query: any) {
     this.orderCode = query.orderCode;
     this.pay_tp = +query.pay_tp;
@@ -191,7 +164,10 @@ export default class ClassName extends BaseNode {
   }
   onUnload() {
     this.stampTimer && clearInterval(this.stampTimer);
-    uni.$emit("mallOrderChange", { code: this.orderCode, orderDetail: this.orderDetail });
+    uni.$emit("mallOrderChange", {
+      code: this.orderCode,
+      orderDetail: this.orderDetail,
+    });
   }
   startStampTimer() {
     this.stampTimer && clearInterval(this.stampTimer);
@@ -217,9 +193,10 @@ export default class ClassName extends BaseNode {
       });
       return;
     }
-    uni.navigateTo({
-      url: "/pages/userinfo/order_logistics?code=" + this.orderDetail.wuliuCode,
-    });
+    this.visible=true
+    // uni.navigateTo({
+    //   url: "/pages/userinfo/order_logistics?code=" + this.orderDetail.wuliuCode,
+    // });
   }
   confirmReceipt() {
     uni.showModal({
@@ -262,21 +239,33 @@ export default class ClassName extends BaseNode {
     );
   }
   receiptAction() {
-    app.http.Post(`point/exchange/order/receive/${this.orderCode}`, {}, (res: any) => {
-      this.orderDetail.state = 3;
-      this.reqNewData();
-    });
+    app.http.Post(
+      `point/exchange/order/receive/${this.orderCode}`,
+      {},
+      (res: any) => {
+        this.orderDetail.state = 3;
+        this.reqNewData();
+      }
+    );
   }
   cancelOrder() {
-    app.http.Post(`point/exchange/order/cancel/${this.orderCode}`, {}, (res: any) => {
-      this.orderDetail.status = -2;
-      this.reqNewData();
-    });
+    app.http.Post(
+      `point/exchange/order/cancel/${this.orderCode}`,
+      {},
+      (res: any) => {
+        this.orderDetail.status = -2;
+        this.reqNewData();
+      }
+    );
   }
   reqNewData(cb?: any) {
-    app.http.Get(`dataApi/point/order/detail/${this.orderCode}`, {}, (res: any) => {
-      this.orderDetail = res.data;
-    });
+    app.http.Get(
+      `dataApi/point/order/detail/${this.orderCode}`,
+      {},
+      (res: any) => {
+        this.orderDetail = res.data;
+      }
+    );
   }
 }
 </script>

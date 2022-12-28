@@ -3,87 +3,49 @@
     <view class="searchContainer topWhich">
       <view class="searchItem flexCenter" @click="onClickShowPicker('goodTpShow')">
         {{ leftText }}
-        <u-icon
-          name="arrow-down"
-          style="margin-left: 6rpx"
-          color="#000"
-          size="24rpx"
-        ></u-icon>
+        <u-icon name="arrow-down" style="margin-left: 6rpx" color="#000" size="24rpx"></u-icon>
       </view>
       <view class="searchItem flexCenter" @click="onClickShowPicker('stateShow')">
         {{ rightText }}
-        <u-icon
-          name="arrow-down"
-          style="margin-left: 6rpx"
-          color="#000"
-          size="24rpx"
-        ></u-icon>
+        <u-icon name="arrow-down" style="margin-left: 6rpx" color="#000" size="24rpx"></u-icon>
       </view>
     </view>
     <view class="fakerZw"></view>
-    <view
-      class="logWrap"
-      v-for="(item, index) in awardList"
-      :key="index"
-      @click="
-        pageJump(`/pages/mall/orderDetail?orderCode=${item.code}&pay_tp=${item.pay_tp}`)
-      "
-    >
+    <view class="logWrap" v-for="(item, index) in awardList" :key="index" @click="
+  pageJump(`/pages/mall/orderDetail?orderCode=${item.code}&pay_tp=${item.pay_tp}`)
+">
       <view class="goodsInfoWrap">
-        <muqian-lazyLoad
-          borderRadius="3rpx"
-          @click="onClickPreviewImage($parsePic(decodeURIComponent(item.logo)))"
-          class="img"
-          :src="$parsePic(decodeURIComponent(item.logo))"
-        />
+        <muqian-lazyLoad borderRadius="3rpx" @click="onClickPreviewImage($parsePic(decodeURIComponent(item.logo)))"
+          class="img" :src="$parsePic(decodeURIComponent(item.logo))" />
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
             <view class="name u-line-1">{{ item.name }}</view>
             <view class="state">{{
-              item.status == 2
-                ? mallStateMap[String(item.state)].tip
-                : mallStatusMap[String(item.status)]
-            }}</view>
+    item.status == 2
+      ? mallStateMap[String(item.state)].tip
+      : mallStatusMap[String(item.status)]
+}}</view>
           </view>
           <view class="goodsInfoWrap_right_exchangeTime">{{
-            dateFormatMSHMS(item.exchangeAt)
-          }}</view>
+    dateFormatMSHMS(item.exchangeAt)
+}}</view>
           <view class="goodsInfoWrap_right_price">{{ goodsPrice(item) }}</view>
         </view>
       </view>
       <view class="buttonWrap">
         <template v-if="item.status == 2 && item.goodTp == 2">
-          <view class="normalButton flexCenter" @click.stop="onClickWuliu(item)"
-            >查看物流</view
-          >
-          <view
-            class="normalButton redButton flexCenter"
-            @click.stop="onClickConfirmReceipt(item)"
-            v-if="item.state == 2"
-            >确认收货</view
-          >
+          <view class="normalButton flexCenter" @click.stop="onClickWuliu(item)">查看物流</view>
+          <view class="normalButton redButton flexCenter" @click.stop="onClickConfirmReceipt(item)"
+            v-if="item.state == 2">确认收货</view>
         </template>
       </view>
     </view>
     <empty v-if="!awardList.length" />
-    <u-picker
-      ref="goodTpShowPicker"
-      keyName="label"
-      @confirm="confirmSelect($event, 'goodTp')"
-      :show="goodTpShow"
-      :columns="goodTpOption"
-      @close="goodTpShow = false"
-      @cancel="goodTpShow = false"
-    ></u-picker>
-    <u-picker
-      ref="stateShowPicker"
-      keyName="label"
-      @confirm="confirmSelect($event, 'state')"
-      :show="stateShow"
-      :columns="stateOption"
-      @close="stateShow = false"
-      @cancel="stateShow = false"
-    ></u-picker>
+    <u-picker ref="goodTpShowPicker" keyName="label" @confirm="confirmSelect($event, 'goodTp')" :show="goodTpShow"
+      :columns="goodTpOption" @close="goodTpShow = false" @cancel="goodTpShow = false"></u-picker>
+    <u-picker ref="stateShowPicker" keyName="label" @confirm="confirmSelect($event, 'state')" :show="stateShow"
+      :columns="stateOption" @close="stateShow = false" @cancel="stateShow = false"></u-picker>
+    <logisticsPop :visible.sync="visible" :code="wuliuCode" />
   </view>
 </template>
 
@@ -123,10 +85,12 @@ export default class ClassName extends BaseNode {
   goodTpShow: boolean = false;
   stateOption: any = [[], stateOption, []];
   stateShow: boolean = false;
+  visible: boolean = false
+  wuliuCode: string = ""
   onLoad(query: any) {
     this.reqNewData();
     this.onEventUI("mallOrderChange", (res: any) => {
-      if(res.code) this.changeOrderDetail(res.code,res.orderDetail)
+      if (res.code) this.changeOrderDetail(res.code, res.orderDetail)
     });
   }
   onPullDownRefresh() {
@@ -143,7 +107,7 @@ export default class ClassName extends BaseNode {
       this.reqNewData();
     }
   }
-  onShow() {}
+  onShow() { }
   private get leftText() {
     const findItem: any = goodTpOption.find(
       (item: any) => item.value == this.queryParams.goodTp
@@ -156,13 +120,13 @@ export default class ClassName extends BaseNode {
     );
     return findItem.label;
   }
-  changeOrderDetail(code:string,orderDetail:any){
-    const index:number=this.awardList.findIndex((item:any)=>{
-      return item.code==code
+  changeOrderDetail(code: string, orderDetail: any) {
+    const index: number = this.awardList.findIndex((item: any) => {
+      return item.code == code
     })
-    if(index==-1) return
-    this.awardList[index].state=orderDetail.state
-    this.awardList[index].status=orderDetail.status
+    if (index == -1) return
+    this.awardList[index].state = orderDetail.state
+    this.awardList[index].status = orderDetail.status
   }
   goodsPrice(item: any) {
     return `${item.pay_tp == 2 ? `￥${item.money}+` : ""}${item.price}卡币`;
@@ -191,15 +155,6 @@ export default class ClassName extends BaseNode {
       current: 0,
       indicator: "number",
     });
-  }
-  onClickLogistics(item: any) {
-    if (!item.wuliuCode) {
-      uni.showToast({
-        title: "暂未发货",
-        icon: "none",
-      });
-      return;
-    }
   }
   pageJump(url: string) {
     uni.navigateTo({
@@ -245,9 +200,8 @@ export default class ClassName extends BaseNode {
       });
       return;
     }
-    uni.navigateTo({
-      url: "/pages/userinfo/order_logistics?code=" + item.wuliuCode,
-    });
+    this.wuliuCode = item.wuliuCode
+    this.visible = true
   }
   reqNewData(cb?: Function) {
     app.http.Get("dataApi/point/exchange/myRecordlist", this.queryParams, (res: any) => {
@@ -267,11 +221,13 @@ page {
   font-family: PingFang SC;
   background-color: #f6f7fb;
 }
+
 .fakerZw {
   opacity: 0;
   height: 94rpx;
   margin-bottom: 14rpx;
 }
+
 .searchContainer {
   padding: 0 40rpx;
   width: 750rpx;
@@ -283,6 +239,7 @@ page {
   display: flex;
   align-items: center;
   box-sizing: border-box;
+
   .searchItem {
     width: 50%;
     font-size: 27rpx;
@@ -291,15 +248,18 @@ page {
     color: #333333;
   }
 }
+
 /* #ifndef APP-PLUS */
 .topWhich {
   top: 88rpx;
 }
+
 /* #endif */
 /* #ifdef APP-PLUS */
 .topWhich {
   top: 0rpx;
 }
+
 /* #endif */
 
 .logWrap {
@@ -310,9 +270,11 @@ page {
   box-sizing: border-box;
   padding: 25rpx 30rpx 34rpx 30rpx;
   margin-bottom: 14rpx;
+
   .goodsInfoWrap {
     height: 133rpx;
     display: flex;
+
     .img {
       width: 173rpx;
       height: 133rpx;
@@ -320,10 +282,12 @@ page {
       margin-right: 27rpx;
     }
   }
+
   .goodsInfoWrap_right {
     display: flex;
     flex: 1;
     flex-direction: column;
+
     &_exchangeTime {
       flex: 1;
       font-size: 23rpx;
@@ -331,9 +295,11 @@ page {
       font-weight: 400;
       color: #949494;
     }
+
     &_goodsName {
       display: flex;
       align-items: center;
+
       .name {
         flex: 1;
         font-size: 25rpx;
@@ -341,6 +307,7 @@ page {
         font-weight: 400;
         color: #333333;
       }
+
       .state {
         font-size: 25rpx;
         font-family: PingFang SC;
@@ -348,6 +315,7 @@ page {
         color: #fa1545;
       }
     }
+
     &_price {
       font-size: 25rpx;
       font-family: PingFang SC;
@@ -355,11 +323,13 @@ page {
       color: #fa1545;
     }
   }
+
   .buttonWrap {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
     .normalButton {
       margin-top: 34rpx;
       width: 205rpx;
@@ -372,6 +342,7 @@ page {
       color: #333333;
       margin-left: 35rpx;
     }
+
     .redButton {
       color: #fff;
       background: #fa1545;
