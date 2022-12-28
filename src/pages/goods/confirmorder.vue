@@ -255,8 +255,10 @@ export default class ClassName extends BaseNode {
   payRandomTeamData:any = [];
   // 代搓卡
   cuokaOpne = false;
+  AD_id=null
   onLoad(query: any) {
     if (query.data) {
+      this.AD_id = query.AD_id || null;
       this.goodsData = JSON.parse(query.data);
       this.payChannel = JSON.parse(query.payChannel);
       // 剩余随机
@@ -539,7 +541,9 @@ export default class ClassName extends BaseNode {
       delivery: this.addressData.id,
     };
     let url = "good/topay/" + this.goodsData.goodCode;
-
+    if(this.AD_id){
+      params.source = JSON.stringify({tp:1,sourceId:this.AD_id})
+    }
     if(uni.getSystemInfoSync().platform === "android"){
       params.nativeSdk = 'qmf_android'
     }

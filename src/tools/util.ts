@@ -379,6 +379,26 @@ const formatNumberZero = (val: any) => {
 	return val < 10 ? "0" + val : val
 }
 //倒计时
+export function formatterCountDown(countDown: number) {
+	let day = String(Math.floor(countDown / 3600 / 24));
+	let day_num = countDown - 3600 * 24 * Number(day);
+	let hour =
+		Math.floor(day_num / 3600) < 10 ?
+		"0" + Math.floor(day_num / 3600) :
+		Math.floor(day_num / 3600);
+	let minute =
+		Math.floor((day_num - 3600 * Number(hour)) / 60) < 10 ?
+		"0" + Math.floor((day_num - 3600 * Number(hour)) / 60) :
+		Math.floor((day_num - 3600 * Number(hour)) / 60);
+	let second =
+		Math.floor((day_num - 3600 * Number(hour)) % 60) < 10 ?
+		"0" + Math.floor((day_num - 3600 * Number(hour)) % 60) :
+		Math.floor((day_num - 3600 * Number(hour)) % 60);
+	return (
+		(Number(day) > 0 ? day + "天 " : "") + hour + ":" + minute + ":" + second
+	);
+}
+//倒计时
 export function countDown(startDate: number, endDate: number = 0, mmbol: boolean = true) {
 	if (!endDate) endDate = Math.round((new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 -
 		1) / 1000)

@@ -95,6 +95,7 @@
 		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess" />
 
 		<winningCardPopup :showWinningCrad="showWinningCrad" @closeWinning="closeWinning" />
+		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
 	</view>
 </template>
 
@@ -165,6 +166,10 @@
 			{id:2,name:'拆卡回放',http:'dataApi/broadcast/list/playback'},
 			{id:3,name:'我的拆卡',http:'me/broadcast'}
 		];
+		openScreenData = {
+			show:false,
+			data:{}
+		};
 		onLoad(query: any) {
 			// let zqWebviewFloat:any = uni.requireNativePlugin("zq-webview-float");
 			// // //显示悬浮窗
@@ -342,6 +347,17 @@
 					if (res.data.newHitNum > 0) this.showWinning();
 				})
 			}
+			// 开屏商品广告
+			const openScreenCode = uni.getStorageSync('openScreenCode') || []
+			app.http.Post('openscreen/ad/get',{already_good_codes:openScreenCode},(res:any)=>{
+				uni.setStorageSync('openScreenCode',[...openScreenCode,res.data.good_code]);
+				if(res.data){
+					this.openScreenData ={
+						show:true,
+						data:res.data
+					}
+				}
+			})
 		}
 		showWinning() {
 			this.showWinningCrad = true;

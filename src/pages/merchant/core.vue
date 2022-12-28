@@ -166,6 +166,14 @@
             valueKey: '',
             url: "/pages/anchor/index",
             bit: 4
+        }, {
+            icon: '/static/merchant/cuoka.png',
+            name: '在售管理',
+            tipsText: '商品管理',
+            width: 41,
+            valueKey: '',
+            url: "/pages/merchant/goods_sale",
+            bit: 32
         }]
         goodsList: any = []
         goodsTotalPage: number = 0
