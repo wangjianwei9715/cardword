@@ -34,7 +34,7 @@
 					<view class="drawer-help-cd">1、使用规则：使用权重卡可在一定时间内根据面额增加商品的权重值，从而提升商品排序，单个商品可叠加使用。若商品在使用期间内拼成或失效，剩余时间将被作废。</view>
 				</view>
 				<view class="drawer-helpmsg">
-					<view class="drawer-help-cd">2、您每月可获得{{monthly_cards.length}}张权重卡，当月1日5:00自动发放，内容如下：</view>
+					<view class="drawer-help-cd">2、您每月可获得{{getWeightLength}}张权重卡，当月1日5:00自动发放，内容如下：</view>
 				</view>
 				<view class="drawer-helpmsg" v-for="(item,index) in monthly_cards" :key="index">
 					<view class="drawer-help-cd">{{item.weight}}权重（{{item.hour}}小时）*{{item.amount}}</view>
@@ -131,7 +131,10 @@
 				}
 			});
 		}
-		
+		public get getWeightLength() :number {
+			const length = this.monthly_cards.reduce((sum:number,e:any) => sum + e.amount,0 )
+			return length;
+		}
 		public get getChoiceParams() : any {
 			const findList = this.equitycard.filter((x:any)=>x.num>0) || [];
 			if(findList.length==0){
@@ -357,7 +360,6 @@
 		padding-bottom: calc(280rpx + constant(safe-area-inset-bottom));
 		padding-bottom: calc(280rpx + env(safe-area-inset-bottom));
 		display: flex;
-		justify-content: space-between;
 		flex-wrap: wrap;
 	}
 	.drawer-center-item{
@@ -365,6 +367,7 @@
 		height:286rpx;
 		box-sizing: border-box;
 		margin-bottom: 30rpx;
+		margin-right:30rpx;
 		.drawer-item-box{
 			width: 216rpx;
 			height:216rpx;
@@ -423,6 +426,9 @@
 			align-items: center;
 			justify-content: center;
 		}
+	}
+	.drawer-center-item:nth-child(3n){
+		margin-right: 0rpx;
 	}
 	.drawer-item-operate{
 		width: 100%;

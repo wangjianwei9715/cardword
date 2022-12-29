@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-12-28 14:10:26
+ * @LastEditTime: 2022-12-28 14:27:23
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -162,7 +162,7 @@
         .item-title{
             width: 100%;
             font-size: 25rpx;
-            height:60rpx;
+            height:68rpx;
             font-family: PingFang SC;
             font-weight: 400;
             color: #333333;
