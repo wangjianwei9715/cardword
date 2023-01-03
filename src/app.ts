@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\app.ts
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-11-22 15:14:32
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-01-03 17:54:37
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -30,7 +30,7 @@ export module app{
     export let dataApiDomain='';
 	export let funcApiDomain='';
     export let launch_url=['https://service.s824.ka-world.com','https://service.s387.ka-world.com','https://service.s189.ka-world.com','https://service.s1.ka-world.com'];
-    // export let launch_url = ['https://service.s777.ka-world.com']
+    // export let launch_url = ['http://service.s777.ka-world.com']
     export let H5Url='http://share01.ka-world.com'
     // export let goodShareOrigin=""
     // export let activityShareOrigin=""

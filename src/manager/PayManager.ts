@@ -28,7 +28,7 @@ export default class PayManager {
 				url:'/pages/webView/index?url='+encodeURIComponent(orderInfo)+'&orderCode='+goodOrder
 			})
 		}else{
-			if(type=='ysepay'||type=='qmf' ||type == "qmf_divide"||type=='h5'){
+			if(['ysepay','qmf','qmf_divide','h5'].includes(type)){
 				// 渠道H5支付
 				if(cb) cb()
 				plus.runtime.openURL(orderInfo)
@@ -57,8 +57,7 @@ export default class PayManager {
 		// 银盛pay
 		if(type=='ysepay'){
 			plus.share.getServices(res => {
-				let sweixin = res.find(i => i.id === 'weixin')
-				console.log('getServices==',encodeURIComponent(JSON.stringify(orderInfo)))
+				let sweixin = res.find(i => i.id === "weixin")
 				if (sweixin) {
 					sweixin.launchMiniProgram({
 						id: 'gh_5cf45dd26926',
