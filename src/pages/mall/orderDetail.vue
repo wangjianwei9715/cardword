@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-22 11:44:47
+ * @LastEditTime: 2023-01-04 09:49:06
  * @FilePath: \card-world\src\pages\mall\orderDetail.vue
  * @Description: 订单详情
 -->
@@ -24,10 +24,10 @@
           <text class="symbol" v-if="pay_tp == 2">￥</text>
           <!-- 5555+99999999卡币 -->
           {{
-            pay_tp == 2
-              ? `${orderDetail.payMoney}+${orderDetail.point}卡币`
-              : `${orderDetail.point}卡币`
-          }}
+    pay_tp == 2
+      ? `${orderDetail.payMoney}+${orderDetail.point}卡币`
+      : `${orderDetail.point}卡币`
+}}
         </view>
       </view>
     </view>
@@ -68,32 +68,34 @@
       <view class="priceItem">
         <view>创建时间</view>
         <view style="color: #949494">{{
-          $u.timeFormat(orderDetail.created_at, "yyyy-mm-dd hh:MM:ss")
-        }}</view>
+    $u.timeFormat(orderDetail.created_at, "yyyy-mm-dd hh:MM:ss")
+}}</view>
       </view>
       <view class="priceItem" v-if="orderDetail.goodTp == 2">
         <view>发货时间</view>
         <view style="color: #949494">{{
-          orderDetail.deliver_at > 0
-            ? $u.timeFormat(orderDetail.deliver_at, "yyyy-mm-dd hh:MM:ss")
-            : "-"
-        }}</view>
+    orderDetail.deliver_at > 0
+      ? $u.timeFormat(orderDetail.deliver_at, "yyyy-mm-dd hh:MM:ss")
+      : "-"
+}}</view>
       </view>
     </view>
     <view class="bottomFixedPay">
-      <view class="payContainer">
+      <view class="payContainer" :class="{ jb: orderDetail.status != 2, center: orderDetail.status == 2 && orderDetail.state != 2 }">
         <template v-if="orderDetail.status == 1 && pay_tp == 2">
           <view class="exchangeButton flexCenter" @click="cancelOrderHandle">取消订单</view>
           <view class="exchangeButton exchangeButton_red flexCenter" @click="showPayMent = true">立即支付</view>
         </template>
         <template v-if="orderDetail.status == 2 && orderDetail.goodTp == 2">
           <view class="exchangeButton flexCenter" @click="onClickWuliu">查看物流</view>
-          <view v-if="orderDetail.state == 2" class="exchangeButton exchangeButton_red flexCenter" @click="confirmReceipt">确认收货</view>
+          <view v-if="orderDetail.state == 2" class="exchangeButton exchangeButton_red flexCenter"
+            @click="confirmReceipt">确认收货</view>
         </template>
       </view>
       <view class="bottomSafeArea"></view>
     </view>
-    <payment :showPayMent="showPayMent" :payChannel="mallPayChannel" @cancelPay="showPayMent = false" :payPrice="orderDetail.payMoney" :countTime="closeCountDown < 0 ? 0 : closeCountDown" @pay="onClickPayGoods" />
+    <payment :showPayMent="showPayMent" :payChannel="mallPayChannel" @cancelPay="showPayMent = false"
+      :payPrice="orderDetail.payMoney" :countTime="closeCountDown < 0 ? 0 : closeCountDown" @pay="onClickPayGoods" />
     <logisticsPop :visible.sync="visible" :code="orderDetail.wuliuCode" />
   </view>
 </template>
@@ -130,7 +132,7 @@ export default class ClassName extends BaseNode {
   stampTimer: any = null;
   showPayMent: boolean = false;
   mallPayChannel: any = mallPayChannel;
-  visible:boolean=false
+  visible: boolean = false
   onLoad(query: any) {
     this.orderCode = query.orderCode;
     this.pay_tp = +query.pay_tp;
@@ -193,7 +195,7 @@ export default class ClassName extends BaseNode {
       });
       return;
     }
-    this.visible=true
+    this.visible = true
     // uni.navigateTo({
     //   url: "/pages/userinfo/order_logistics?code=" + this.orderDetail.wuliuCode,
     // });
@@ -274,6 +276,7 @@ export default class ClassName extends BaseNode {
 page {
   background-color: #f6f7fb;
 }
+
 .pageTop {
   box-sizing: border-box;
   padding: 0 20rpx;
@@ -291,6 +294,7 @@ page {
     font-weight: 600;
     color: #ffffff;
   }
+
   .smallTips {
     font-size: 21rpx;
     font-family: PingFang SC;
@@ -298,6 +302,7 @@ page {
     color: #ffffff;
   }
 }
+
 .publickBlock {
   width: 710rpx;
   box-sizing: border-box;
@@ -331,6 +336,7 @@ page {
       font-weight: 400;
       color: #333333;
       display: flex;
+
       .name {
         font-size: 25rpx;
         font-family: PingFang SC;
@@ -338,6 +344,7 @@ page {
         color: #333333;
         flex: 1;
       }
+
       .state {
         font-size: 25rpx;
         font-family: PingFang SC;
@@ -359,12 +366,14 @@ page {
     }
   }
 }
+
 .priceContainer {
   padding: 35rpx 30rpx 36rpx 33rpx;
   display: flex;
   height: 195rpx;
   justify-content: space-between;
   flex-direction: column;
+
   .priceItem {
     display: flex;
     justify-content: space-between;
@@ -374,9 +383,11 @@ page {
     color: #333333;
   }
 }
+
 .payInfoContainer {
   height: 244rpx;
 }
+
 .addressContainer {
   height: 140rpx;
   padding: 34rpx 34rpx 36rpx 30rpx;
@@ -419,11 +430,20 @@ page {
     height: 29rpx;
   }
 }
+
 .bottomFixedPay {
   width: 750rpx;
   position: fixed;
   bottom: 0;
   background-color: #fff;
+
+  .jb {
+    justify-content: space-between;
+  }
+
+  .center {
+    justify-content: center;
+  }
 
   .payContainer {
     display: flex;
@@ -432,7 +452,8 @@ page {
     // height: 130rpx;
     align-items: center;
     padding: 0 34rpx 0 34rpx;
-    justify-content: space-between;
+    // justify-content: space-between;
+
     .exchangeButton {
       margin: 20rpx 0;
       width: 311rpx;
@@ -445,6 +466,7 @@ page {
       border-radius: 3rpx;
       letter-spacing: 4rpx;
     }
+
     .exchangeButton_red {
       background: #e53b4b;
       border: 2rpx solid #e53b4b;

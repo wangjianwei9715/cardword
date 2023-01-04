@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 17:50:05
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-22 17:41:20
+ * @LastEditTime: 2023-01-04 10:30:15
  * @FilePath: \card-world\src\pages\mall\mallIndex.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -38,6 +38,9 @@
         <!-- <u-sticky v-if="navHeight" :customNavHeight="navHeight">
             
         </u-sticky> -->
+        <u-skeleton rows="4" style="width: 690rpx" :rowsWidth="[`690rpx`, `690rpx`, `690rpx`, `690rpx`]"
+            :rowsHeight="[`252rpx`, `252rpx`, `252rpx`, `252rpx`]" :title="false"
+            :loading="!successRequest"></u-skeleton>
         <view class="goodsContainer">
             <view class="goodsItem" @click="pageJump(`/pages/mall/goodsDetail?id=${item.id}`)"
                 v-for="(item, index) in goodsList" :key="index">
@@ -72,7 +75,7 @@
                 </view>
             </view>
         </view>
-        <empty v-if="goodsList && !goodsList.length" />
+        <empty v-if="goodsList && !goodsList.length&&successRequest" />
         <view class="bottomSafeArea"></view>
         <!-- <logisticsPop :visible.sync="visible" logisticsCode="SF666666" /> -->
     </view>
@@ -112,6 +115,7 @@ export default class ClassName extends BaseNode {
         tp: 100,
         state: 1
     }
+    successRequest:boolean=false
     tab: any = {
         index: 0,
         list: [
@@ -158,7 +162,7 @@ export default class ClassName extends BaseNode {
     onReachBottom() {
         if (this.queryParams.pageIndex < this.totalPage) {
             this.queryParams.pageIndex += 1
-            this.reqNewData()
+            this.reqNewData(()=>{},false)
         }
     }
     onPageScroll(data: any) {
@@ -208,7 +212,7 @@ export default class ClassName extends BaseNode {
         this.queryParams.tp = item.value
         this.queryParams.pageIndex = 1
         this.reqNewData(() => {
-        })
+        },false)
 
     }
     pageJump(url: string) {
@@ -234,12 +238,16 @@ export default class ClassName extends BaseNode {
             })
         })
     }
-    reqNewData(cb?: any) {
+    reqNewData(cb?: any,isRefresh?:boolean) {
+        if(isRefresh) this.successRequest=false
         app.http.Get(`dataApi/point/exchange/goodlist`, this.queryParams, (res: any) => {
             const list = res.list || []
             this.totalPage = res.totalPage
             this.queryParams.pageIndex == 1 ? this.goodsList = list : this.goodsList.push(...list)
+            this.successRequest=true
             cb && cb()
+        },(err:any)=>{
+            this.successRequest=true
         })
     }
 

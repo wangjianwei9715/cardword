@@ -2,13 +2,15 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:08:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-23 14:25:57
+ * @LastEditTime: 2023-01-04 10:23:28
  * @FilePath: \card-world\src\pages\mall\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <u-skeleton rows="4" style="width: 690rpx" :rowsWidth="[`690rpx`, `690rpx`, `690rpx`, `690rpx`]" :rowsHeight="[`280rpx`, `40rpx`, `200rpx`, `600rpx`]" :title="false" :loading="!goodsDetail.id"></u-skeleton>
+        <u-skeleton rows="4" style="width: 690rpx" :rowsWidth="[`690rpx`, `690rpx`, `690rpx`, `690rpx`]"
+            :rowsHeight="[`280rpx`, `40rpx`, `200rpx`, `600rpx`]" :title="false"
+            :loading="!goodsDetail.id"></u-skeleton>
         <view class="topImage">
             <image mode="aspectFill" :src="$parsePic(decodeURIComponent(goodsDetail.logo))"></image>
         </view>
@@ -18,31 +20,37 @@
                 <view class="goodsInfoBottom_left">
                     <view class="price">{{ goodsPrice }}</view>
                     <view class="numBlock" v-if="isOnCountDown">
-                        <view class="numBlock_left flexCenter">剩{{ goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum }}份</view>
-                        <view class="numBlock_right flexCenter">限兑{{ goodsDetail.limit_num == 0 ? "∞" : goodsDetail.limit_num }}份</view>
+                        <view class="numBlock_left flexCenter">剩{{ goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum
+}}份</view>
+                        <view class="numBlock_right flexCenter">限兑{{ goodsDetail.limit_num == 0 ? "∞" :
+        goodsDetail.limit_num
+}}份</view>
                     </view>
                 </view>
                 <view class="goodsInfoBottom_right">
                     <template v-if="isOnCountDown">
                         <view class="tips">距离开始</view>
                         <view class="timeBlockContainer">
-                            <view class="timeBlock flexCenter" v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).hours">{{ time }}
+                            <view class="timeBlock flexCenter"
+                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).hours">{{ time }}
                             </view>
                             <view class="colon">:</view>
-                            <view class="timeBlock flexCenter" v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).minutes">{{ time }}
+                            <view class="timeBlock flexCenter"
+                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).minutes">{{ time }}
                             </view>
                             <view class="colon">:</view>
-                            <view class="timeBlock flexCenter" v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).seconds">{{ time }}
+                            <view class="timeBlock flexCenter"
+                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).seconds">{{ time }}
                             </view>
                         </view>
                     </template>
                     <template v-else>
                         <view class="tips">
                             剩余{{ goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum }}限兑{{
-                goodsDetail.limit_num == 0
-                  ? "∞"
-                  : `${goodsDetail.buy_num}/${goodsDetail.limit_num}`
-              }}
+        goodsDetail.limit_num == 0
+            ? "∞"
+            : `${goodsDetail.buy_num}/${goodsDetail.limit_num}`
+}}
                         </view>
                     </template>
                 </view>
@@ -54,7 +62,8 @@
         </view>
         <view class="goodsImgListContainer" v-if="goodsDetail.pic && goodsDetail.pic.length">
             <view class="title">商品详情</view>
-            <muqian-lazyLoad class="img" borderRadius="3rpx" v-for="(item, index) in goodsDetail.pic" :key="index" :src="$parsePic(decodeURIComponent(item))"></muqian-lazyLoad>
+            <muqian-lazyLoad class="img" borderRadius="3rpx" v-for="(item, index) in goodsDetail.pic" :key="index"
+                :src="$parsePic(decodeURIComponent(item))"></muqian-lazyLoad>
         </view>
         <view class="bottomSafeArea" style="height: 150rpx"></view>
         <view class="bottomFixedPay">
@@ -63,11 +72,13 @@
                     <view class="price">{{ goodsPrice }}</view>
                     <view class="myPoint">当前卡币:{{ meBeanPoint }}</view>
                 </view>
-                <view class="exchangeButton flexCenter" @click="onClickExchange" :class="{ exchangeButton_dis: !canExchange }">{{ payText }}</view>
+                <view class="exchangeButton flexCenter" @click="onClickExchange"
+                    :class="{ exchangeButton_dis: !canExchange }">{{ payText }}</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-        <u-popup mode="center" closeable round="3rpx" :show="exchangeModal" @close="exchangeModal = false" :safeAreaInsetBottom="false">
+        <u-popup mode="center" closeable round="3rpx" :show="exchangeModal" @close="exchangeModal = false"
+            :safeAreaInsetBottom="false">
             <view class="coninExchange">
                 <image class="exchangeImg" :src="$parsePic(decodeURIComponent(goodsDetail.logo))" mode="aspectFill" />
                 <view class="exchangeGoodsPrice">
@@ -116,9 +127,8 @@ export default class ClassName extends BaseNode {
     }
     private get goodsPrice() {
         if (!this.goodsDetail.id) return "";
-        return `${this.goodsDetail.price}卡币${
-            this.goodsDetail.pay_tp == 2 ? `+${this.goodsDetail.money}元` : ""
-        }`;
+        return `${this.goodsDetail.price}卡币${this.goodsDetail.pay_tp == 2 ? `+${this.goodsDetail.money}元` : ""
+            }`;
     }
     private get isOnCountDown() {
         return (
@@ -188,16 +198,16 @@ export default class ClassName extends BaseNode {
     }
     //卡币兑换的虚拟类商品确认支付
     onClickPayBeanPoint() {
-        if(!this.exchangeModal) return
+        if (!this.exchangeModal) return
         uni.showLoading({
-            title:"",
-            mask:true
+            title: "",
+            mask: true
         })
         app.http.Post(`point/exchange/exchange/${this.ID}`, {}, (res: any) => {
             this.exchangeModal = false;
             uni.hideLoading()
             app.platform.UINotificationFeedBack("success");
-            
+
             uni.showToast({
                 title: "兑换成功",
             });
@@ -233,7 +243,7 @@ export default class ClassName extends BaseNode {
                 (new Date(new Date().toLocaleDateString()).getTime() +
                     24 * 60 * 60 * 1000 -
                     1) /
-                    1000
+                1000
             );
         let times: any =
             new Date(endTimeStamp * 1000).getTime() -
@@ -272,6 +282,7 @@ page {
         height: inherit;
     }
 }
+
 .coninExchange {
     width: 525rpx;
     border-radius: 3rpx;
@@ -280,23 +291,27 @@ page {
     display: flex;
     flex-direction: column;
     align-items: center;
+
     .exchangeGoodsPrice {
         min-width: 316rpx;
         display: flex;
         flex-direction: column;
     }
+
     .exchangeImg {
         width: 367rpx;
         height: 367rpx;
         border-radius: 3rpx;
         margin-bottom: 38rpx;
     }
+
     .exchangeText {
         font-size: 29rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
     }
+
     .exchangeModalButton {
         width: 451rpx;
         height: 90rpx;
@@ -310,6 +325,7 @@ page {
         margin-top: 46rpx;
         margin-bottom: 18rpx;
     }
+
     .exchangeTips {
         font-size: 23rpx;
         font-family: PingFang SC;
@@ -318,6 +334,7 @@ page {
         white-space: nowrap;
     }
 }
+
 .goodsInfoContainer {
     width: 710rpx;
     min-height: 214rpx;

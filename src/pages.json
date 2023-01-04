@@ -734,6 +734,7 @@
 					"path": "mallIndex",
 					"style": {
 						"navigationStyle": "custom",
+						"enablePullDownRefresh": true,
 						"navigationBarTitleText": "卡币商城",
 						"navigationBarBackgroundColor": "#ffffff"
 					}
