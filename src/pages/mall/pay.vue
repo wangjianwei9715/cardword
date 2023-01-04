@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:19:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-23 15:29:00
+ * @LastEditTime: 2023-01-04 11:32:44
  * @FilePath: \card-world\src\pages\mall\pay.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,8 +29,8 @@
                     <text class="symbol" v-if="goodsDetail.pay_tp == 2">￥</text>
                     <!-- 5555+99999999卡币 -->
                     {{ goodsDetail.pay_tp == 2 ? `${goodsDetail.money}+${goodsDetail.price}卡币` :
-                            `${goodsDetail.price}卡币`
-                    }}
+        `${goodsDetail.price}卡币`
+}}
                 </view>
             </view>
         </view>
@@ -44,9 +44,8 @@
                 <text>购买须知</text>
             </view>
             <view class="readContent">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida
-                dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. Sociis
-                natoque penatibus et magnis dis parturient
+                兑换商品不支持退款、退货服务；确认兑换并支付后积分/支付金额将不予退回<br />
+                查看详情<text @click="instructionsShow=true">《购买须知》</text>
             </view>
         </view>
         <payment :showPayMent="showPayMent" :payChannel="mallPayChannel" @cancelPay="showPayMent = false"
@@ -64,7 +63,14 @@
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-
+        <u-popup mode="bottom" closeable round="3rpx" :show="instructionsShow" @close="instructionsShow = false"
+            :safeAreaInsetBottom="false">
+            <view class="instructionsContainer">
+                <view class="instructionsContainer-title">购买须知</view>
+                <view class="instructionsContainer-desc" v-for="(item, index) in explain" :key="index">{{ item }}
+                </view>
+            </view>
+        </u-popup>
         <!--   -->
         <!-- <view @click="onClickChangeAddress">
             {{ addressData.district || '' }}
@@ -98,6 +104,17 @@ const mallPayChannel: any = [
 ]
 @Component({})
 export default class ClassName extends BaseNode {
+    explain = [
+        '1、请确认您购买的产品信息，并在正确填写您的收货地址信息后进行订单支付;',
+        '2、订单提交前，若您有信息需要修改，请在订单确认页面直接修改，订单提交后，订单信息将无法修改',
+        '3、提请注意:除卡具等周边产品外， 卡世界平台兑换类所售相关产品，因其产品属性及价值的特殊性，不适用“七天无理由退换“之规定，均不支持无理由退换货;',
+        '4、提请注意:如果您是末满18周岁的未成年人，请在监护人的陪同、指导下购买本产品。已满18周岁的成年人，因任何原因不具备完全民事行为能力的，参照适用本协议之未成年人使用条款之相关约定购买本产品。我们可能会依照平台用户协议，在您支付之前要求您上传一些相关信息，我们会对您的信息保密，请您理解并支持',
+        '5、上述信息确认后，您可以点击“继续支付”进入支付环节，订单支付完成后页面会显示您的订单号。提交订单表示您已经阅读并接受了商城的“使用条款”、“隐私政策”及“退換货政策”',
+        '6、由于在线销售存在库存更新网络延时的情况，可能会导致您完成订单支付后订单商品已被兑换完提示缺货的情况。如遇该类情况，售后人员会及时通知您，为您进行退款。给您造成的不便，还请谅解',
+        '7、兑换成功后，平台将在7个工作日内进行发货；收货地址为用户默认收货地址，兑换前请核实收货地址，若要修改收货地址请在兑换后24小时内联系客服进行修改。',
+        '8、商户发货后，如用户未在以下时限内手动确认收货，系统会自动确认收货。①物流发货地址在中国大陆地区:14天;②物流发货地址非中国大陆地区:30天。'
+    ]
+    instructionsShow: boolean = false
     goodsDetail: any = {}
     mallPayChannel: any = mallPayChannel;
     ID: any = null
@@ -146,11 +163,11 @@ export default class ClassName extends BaseNode {
         uni.showLoading({
             title: ""
         })
-        this.showPayMent=false
+        this.showPayMent = false
         app.http.Post(`point/good/toBuy/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
             this.orderCode = res.orderCode
             uni.hideLoading()
-            
+
             if (isTrueGoods) {
                 //实物
                 app.platform.UINotificationFeedBack('success')
@@ -296,6 +313,33 @@ page {
     }
 }
 
+.instructionsContainer {
+    height: 1100rpx;
+    box-sizing: border-box;
+    padding: 40rpx 32rpx;
+
+    &-title {
+        width: 100%;
+        font-size: 28rpx;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 600;
+        color: #14151A;
+        margin-bottom: 20rpx;
+    }
+
+    &-desc {
+        font-size: 24rpx;
+        font-family: PingFangSC-Regular,
+            PingFang SC;
+        font-weight: 400;
+        color: #7D8288;
+        line-height: 40rpx;
+    }
+
+    border-radius: 3rpx;
+
+}
+
 .priceContainer {
     display: flex;
     justify-content: space-between;
@@ -335,6 +379,10 @@ page {
         font-weight: 400;
         color: #333333;
         margin-top: 22rpx;
+
+        text {
+            font-weight: 600;
+        }
     }
 
     .bottom-gm-gx {

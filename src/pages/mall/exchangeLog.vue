@@ -15,7 +15,7 @@
   pageJump(`/pages/mall/orderDetail?orderCode=${item.code}&pay_tp=${item.pay_tp}`)
 ">
       <view class="goodsInfoWrap">
-        <muqian-lazyLoad borderRadius="3rpx" @click="onClickPreviewImage($parsePic(decodeURIComponent(item.logo)))"
+        <muqian-lazyLoad borderRadius="3rpx" @click.stop="onClickPreviewImage($parsePic(decodeURIComponent(item.logo)))"
           class="img" :src="$parsePic(decodeURIComponent(item.logo))" />
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
@@ -45,7 +45,7 @@
       :columns="goodTpOption" @close="goodTpShow = false" @cancel="goodTpShow = false"></u-picker>
     <u-picker ref="stateShowPicker" keyName="label" @confirm="confirmSelect($event, 'state')" :show="stateShow"
       :columns="stateOption" @close="stateShow = false" @cancel="stateShow = false"></u-picker>
-    <logisticsPop :visible.sync="visible" :code="wuliuCode" />
+    :code="wuliuCode" />
   </view>
 </template>
 
