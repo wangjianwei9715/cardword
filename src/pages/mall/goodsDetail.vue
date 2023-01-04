@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:08:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-04 10:23:28
+ * @LastEditTime: 2023-01-04 10:48:29
  * @FilePath: \card-world\src\pages\mall\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -62,7 +62,7 @@
         </view>
         <view class="goodsImgListContainer" v-if="goodsDetail.pic && goodsDetail.pic.length">
             <view class="title">商品详情</view>
-            <muqian-lazyLoad class="img" borderRadius="3rpx" v-for="(item, index) in goodsDetail.pic" :key="index"
+            <muqian-lazyLoad class="img" borderRadius="3rpx" @click="onClickPreviewImage(index)" v-for="(item, index) in goodsDetail.pic" :key="index"
                 :src="$parsePic(decodeURIComponent(item))"></muqian-lazyLoad>
         </view>
         <view class="bottomSafeArea" style="height: 150rpx"></view>
@@ -97,7 +97,7 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from "@/base/BaseNode.vue";
-import { liveCountDownV2 } from "@/tools/util";
+import { liveCountDownV2, parsePic } from "@/tools/util";
 @Component({})
 export default class ClassName extends BaseNode {
     ID: any = null;
@@ -213,6 +213,16 @@ export default class ClassName extends BaseNode {
             });
             this.meBeanPoint = res.point;
             this.reqNewData();
+        });
+    }
+    onClickPreviewImage(index: number) {
+        const urls:any=this.goodsDetail.pic.map((src:any)=>{
+            return parsePic(decodeURIComponent(src))
+        })
+        uni.previewImage({
+            urls,
+            current: index,
+            indicator: "number"
         });
     }
     onClickGoExchangeLog() {

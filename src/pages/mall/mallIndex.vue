@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 17:50:05
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-04 10:30:15
+ * @LastEditTime: 2023-01-04 11:03:59
  * @FilePath: \card-world\src\pages\mall\mallIndex.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -47,7 +47,7 @@
                 <view class="goodsItem_top">
                     <muqian-lazyLoad class="logo" borderRadius="3rpx"
                         :src="$parsePic(decodeURIComponent(item.logo))"></muqian-lazyLoad>
-                    <view class="startTimeBlock">
+                    <view class="startTimeBlock" v-if="item.start_at>0">
                         <view class="startTimeBlock_leftFont">{{ item.start_at > nowTimeStamp ? '距离开始' : '开抢中' }}</view>
                         <view class="startTimeBlock_rightCountDown"
                             v-if="item.start_at && item.start_at > 0 && nowTimeStamp < item.start_at">
