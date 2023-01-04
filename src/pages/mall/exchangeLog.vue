@@ -45,7 +45,7 @@
       :columns="goodTpOption" @close="goodTpShow = false" @cancel="goodTpShow = false"></u-picker>
     <u-picker ref="stateShowPicker" keyName="label" @confirm="confirmSelect($event, 'state')" :show="stateShow"
       :columns="stateOption" @close="stateShow = false" @cancel="stateShow = false"></u-picker>
-    :code="wuliuCode" />
+    <logisticsPop :visible.sync="visible" :code="wuliuCode" />
   </view>
 </template>
 
