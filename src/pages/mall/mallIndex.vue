@@ -38,8 +38,8 @@
         <!-- <u-sticky v-if="navHeight" :customNavHeight="navHeight">
             
         </u-sticky> -->
-        <u-skeleton rows="4" style="width: 690rpx" :rowsWidth="[`690rpx`, `690rpx`, `690rpx`, `690rpx`]"
-            :rowsHeight="[`252rpx`, `252rpx`, `252rpx`, `252rpx`]" :title="false"
+        <u-skeleton rows="4" style="width: 690rpx" :rowsWidth="[`690rpx`, `690rpx`, `690rpx`, `690rpx`,`690rpx`]"
+            :rowsHeight="[`252rpx`, `252rpx`, `252rpx`, `252rpx`,`500rpx`]" :title="false"
             :loading="!successRequest"></u-skeleton>
         <view class="goodsContainer">
             <view class="goodsItem" @click="pageJump(`/pages/mall/goodsDetail?id=${item.id}`)"

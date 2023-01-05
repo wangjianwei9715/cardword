@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-04 09:49:06
+ * @LastEditTime: 2023-01-04 16:36:02
  * @FilePath: \card-world\src\pages\mall\orderDetail.vue
  * @Description: 订单详情
 -->
@@ -81,7 +81,7 @@
       </view>
     </view>
     <view class="bottomFixedPay">
-      <view class="payContainer" :class="{ jb: orderDetail.status != 2, center: orderDetail.status == 2 && orderDetail.state != 2 }">
+      <view class="payContainer jb" :class="{ center: orderDetail.status == 2 && orderDetail.state != 2 }">
         <template v-if="orderDetail.status == 1 && pay_tp == 2">
           <view class="exchangeButton flexCenter" @click="cancelOrderHandle">取消订单</view>
           <view class="exchangeButton exchangeButton_red flexCenter" @click="showPayMent = true">立即支付</view>
