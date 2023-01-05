@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 17:50:05
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-04 11:03:59
+ * @LastEditTime: 2023-01-05 15:26:28
  * @FilePath: \card-world\src\pages\mall\mallIndex.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -31,15 +31,17 @@
                 </view>
             </view>
         </view>
-        <u-swiper v-if="swiperList.length" @click="onClickSwiper" class="mallSwiper" :list="swiperList" keyName="pic" indicator indicatorMode="line" circular></u-swiper>
+        <u-swiper v-if="swiperList.length" @click="onClickSwiper" class="mallSwiper" :list="swiperList" keyName="pic"
+            indicator indicatorMode="line" circular></u-swiper>
         <view class="uTabs">
-         <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)" v-for="(item, index) in tab.list">{{ item.name }}</view>
+            <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)"
+                v-for="(item, index) in tab.list">{{ item.name }}</view>
         </view>
         <!-- <u-sticky v-if="navHeight" :customNavHeight="navHeight">
             
         </u-sticky> -->
-        <u-skeleton rows="4" style="width: 690rpx" :rowsWidth="[`690rpx`, `690rpx`, `690rpx`, `690rpx`,`690rpx`]"
-            :rowsHeight="[`252rpx`, `252rpx`, `252rpx`, `252rpx`,`500rpx`]" :title="false"
+        <u-skeleton rows="4" style="width: 690rpx" :rowsWidth="[`690rpx`, `690rpx`, `690rpx`, `690rpx`, `690rpx`]"
+            :rowsHeight="[`252rpx`, `252rpx`, `252rpx`, `252rpx`, `500rpx`]" :title="false"
             :loading="!successRequest"></u-skeleton>
         <view class="goodsContainer">
             <view class="goodsItem" @click="pageJump(`/pages/mall/goodsDetail?id=${item.id}`)"
@@ -47,7 +49,7 @@
                 <view class="goodsItem_top">
                     <muqian-lazyLoad class="logo" borderRadius="3rpx"
                         :src="$parsePic(decodeURIComponent(item.logo))"></muqian-lazyLoad>
-                    <view class="startTimeBlock" v-if="item.start_at>0">
+                    <view class="startTimeBlock" v-if="item.start_at > 0">
                         <view class="startTimeBlock_leftFont">{{ item.start_at > nowTimeStamp ? '距离开始' : '开抢中' }}</view>
                         <view class="startTimeBlock_rightCountDown"
                             v-if="item.start_at && item.start_at > 0 && nowTimeStamp < item.start_at">
@@ -75,7 +77,7 @@
                 </view>
             </view>
         </view>
-        <empty v-if="goodsList && !goodsList.length&&successRequest" />
+        <empty v-if="goodsList && !goodsList.length && successRequest" />
         <view class="bottomSafeArea"></view>
         <!-- <logisticsPop :visible.sync="visible" logisticsCode="SF666666" /> -->
     </view>
@@ -85,7 +87,7 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
-import {parsePic} from '@/tools/util'
+import { parsePic } from '@/tools/util'
 const custonRightIcon = {
     "卡币规则": {
         emitAction: "onClickRule",
@@ -115,7 +117,7 @@ export default class ClassName extends BaseNode {
         tp: 100,
         state: 1
     }
-    successRequest:boolean=false
+    successRequest: boolean = false
     tab: any = {
         index: 0,
         list: [
@@ -162,7 +164,7 @@ export default class ClassName extends BaseNode {
     onReachBottom() {
         if (this.queryParams.pageIndex < this.totalPage) {
             this.queryParams.pageIndex += 1
-            this.reqNewData(()=>{},false)
+            this.reqNewData(() => { }, false)
         }
     }
     onPageScroll(data: any) {
@@ -180,7 +182,7 @@ export default class ClassName extends BaseNode {
         }, 1000)
     }
     onClickSwiper(index: number) {
-        const item:any=this.swiperList[index]
+        const item: any = this.swiperList[index]
         if (!item.jump_url) return
         uni.navigateTo({
             url: item.jump_url
@@ -212,7 +214,7 @@ export default class ClassName extends BaseNode {
         this.queryParams.tp = item.value
         this.queryParams.pageIndex = 1
         this.reqNewData(() => {
-        },false)
+        }, false)
 
     }
     pageJump(url: string) {
@@ -230,24 +232,24 @@ export default class ClassName extends BaseNode {
     //获取轮播图
     reqSwiperData() {
         app.http.Get(`dataApi/point/banner/list`, {}, (res: any) => {
-            this.swiperList=(res.list||[]).map((item:any)=>{
+            this.swiperList = (res.list || []).map((item: any) => {
                 return {
                     ...item,
-                    pic:parsePic(decodeURIComponent(item.pic))
+                    pic: parsePic(decodeURIComponent(item.pic))
                 }
             })
         })
     }
-    reqNewData(cb?: any,isRefresh?:boolean) {
-        if(isRefresh) this.successRequest=false
+    reqNewData(cb?: any, isRefresh?: boolean) {
+        if (isRefresh) this.successRequest = false
         app.http.Get(`dataApi/point/exchange/goodlist`, this.queryParams, (res: any) => {
             const list = res.list || []
             this.totalPage = res.totalPage
             this.queryParams.pageIndex == 1 ? this.goodsList = list : this.goodsList.push(...list)
-            this.successRequest=true
+            this.successRequest = true
             cb && cb()
-        },(err:any)=>{
-            this.successRequest=true
+        }, (err: any) => {
+            this.successRequest = true
         })
     }
 
@@ -450,7 +452,8 @@ page {
                 font-size: 21rpx;
             }
         }
-        &_leftFont{
+
+        &_leftFont {
             font-size: 21rpx;
             font-family: PingFang SC;
             font-weight: 400;
@@ -494,10 +497,12 @@ page {
             color: #999999;
         }
     }
-    .rmbMoney{
+
+    .rmbMoney {
         position: relative;
         top: 6rpx;
     }
+
     .money {
         font-size: 25rpx;
         font-family: PingFang SC;

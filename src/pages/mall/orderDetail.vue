@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-04 16:36:02
+ * @LastEditTime: 2023-01-05 15:39:17
  * @FilePath: \card-world\src\pages\mall\orderDetail.vue
  * @Description: 订单详情
 -->
@@ -59,7 +59,8 @@
     <view class="publickBlock priceContainer" :class="{ payInfoContainer: orderDetail.goodTp == 2 }">
       <view class="priceItem">
         <view>订单编号</view>
-        <view>{{ orderCode }}</view>
+        <u-tooltip color="#333333" :text="orderCode" overlay>
+        </u-tooltip>
       </view>
       <view class="priceItem">
         <view>支付方式</view>
@@ -97,6 +98,7 @@
     <payment :showPayMent="showPayMent" :payChannel="mallPayChannel" @cancelPay="showPayMent = false"
       :payPrice="orderDetail.payMoney" :countTime="closeCountDown < 0 ? 0 : closeCountDown" @pay="onClickPayGoods" />
     <logisticsPop :visible.sync="visible" :code="orderDetail.wuliuCode" />
+    
   </view>
 </template>
 

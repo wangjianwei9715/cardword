@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:08:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-05 11:49:12
+ * @LastEditTime: 2023-01-05 15:27:47
  * @FilePath: \card-world\src\pages\mall\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -20,11 +20,8 @@
                 <view class="goodsInfoBottom_left">
                     <view class="price">{{ goodsPrice }}</view>
                     <view class="numBlock" v-if="isOnCountDown">
-                        <view class="numBlock_left flexCenter">剩{{ goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum
-}}份</view>
-                        <view class="numBlock_right flexCenter">限兑{{ goodsDetail.limit_num == 0 ? "∞" :
-        goodsDetail.limit_num
-}}份</view>
+                        <view class="numBlock_left flexCenter">剩{{goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum}}份</view>
+                        <view class="numBlock_right flexCenter">限兑{{goodsDetail.limit_num == 0 ? "∞" :goodsDetail.limit_num}}份</view>
                     </view>
                 </view>
                 <view class="goodsInfoBottom_right">
@@ -47,10 +44,10 @@
                     <template v-else>
                         <view class="tips">
                             剩余{{ goodsDetail.leftNum == -1 ? "∞" : goodsDetail.leftNum }} 限兑{{
-        goodsDetail.limit_num == 0
-            ? "∞"
-            : `${goodsDetail.buy_num}/${goodsDetail.limit_num}`
-}}
+                                goodsDetail.limit_num == 0
+                                    ? "∞"
+                                    : `${goodsDetail.buy_num}/${goodsDetail.limit_num}`
+                            }}
                         </view>
                     </template>
                 </view>
@@ -471,7 +468,7 @@ page {
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
-        white-space:pre-wrap
+        white-space: pre-wrap
     }
 }
 
