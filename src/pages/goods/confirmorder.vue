@@ -542,7 +542,7 @@ export default class ClassName extends BaseNode {
     };
     let url = "good/topay/" + this.goodsData.goodCode;
     if(this.AD_id){
-      params.source = JSON.stringify({tp:1,sourceId:this.AD_id})
+      params.source = {tp:1,sourceId:String(this.AD_id)}
     }
     if(uni.getSystemInfoSync().platform === "android"){
       params.nativeSdk = 'qmf_android'

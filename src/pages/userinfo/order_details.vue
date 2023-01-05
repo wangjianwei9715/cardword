@@ -60,7 +60,7 @@
 
 			<!-- 预测卡密 -->
 			<!-- order 订单 state 订单状态  guessFreeNum 剩余免单次数 guessNum 预测正确数量 guessName 预测球队名字-->
-			<stepGuess v-if="guessType" :state="orderData.good.state" :guessState="guessState" :order="true" :freeNum="guessFreeNum" :guessNum="guessNum" :guessName="guessName" :surplusNum="surplusNum" :guessSuccess="guessSuccess" @onClickSuccessHide="onClickSuccessHide"/>
+			<stepGuess v-if="guessType" :state="orderData.good.state" :guessState="guessState" :order="true" :freeNum="guessFreeNum" :guessNum="guessNum" :guessName="guessName" :surplusNum="surplusNum" :guessSuccess="guessSuccess" @onClickSuccessHide="guessSuccess=false"/>
 			<!-- 预测卡密 -->
 
 			<!-- 我的编号 -->
@@ -111,7 +111,7 @@
 
 		<payment :showPayMent="showPayMent" :payChannel="payChannel" @cancelPay="onClickCancelPay" :payPrice="orderData.price" :countTime="countDown" @pay="onClickPayGoods" />
 
-		<paymentSuccess :showPaySuccess="showPaySuccess" @cancelPaySuccess="onClickcancelPaySuccess"/>
+		<paymentSuccess :showPaySuccess="showPaySuccess" @cancelPaySuccess="showPaySuccess=false"/>
 	</view>
 </template>
 
@@ -182,12 +182,8 @@ import { Md5 } from "ts-md5";
 		relativeOnce = false;
 		retryNum = 0;
 		onLoad(query:any) {
-			if(query.code){
-				this.orderCode = query.code;
-			}
-			if(query.waitPay){
-				this.clickToPay = true
-			}
+			this.orderCode = query.code ?? '';
+			this.clickToPay = query.waitPay ?? false;
 			setTimeout(()=>{
 				this.initEvent(()=>{
 					if(this.clickToPay){
@@ -232,14 +228,13 @@ import { Md5 } from "ts-md5";
 					if(cb) cb()
 				});
 				uni.hideLoading();
-				
 			},1000)
 		}
 		initEvent(cb?:Function){
 			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
 				this.onceLoad = false;
 				this.orderData = res.data
-				this.payChannel = res.data.good.payChannel?res.data.good.payChannel:[]
+				this.payChannel = res.data.good.payChannel??[]
 				this.countDown = res.data.leftSec
 				this.getCountDown();
 				uni.setNavigationBarTitle({
@@ -431,7 +426,6 @@ import { Md5 } from "ts-md5";
 			if(cmd == 'toPay'){
 				this.showPayMent = true
 			}
-
 			if(cmd=='receive_good'){
 				uni.showModal({
 					title: '提示',
@@ -454,7 +448,6 @@ import { Md5 } from "ts-md5";
 				});
 				
 			}
-
 			if(cmd=='cancel'){
 				uni.showModal({
 					title: '提示',
@@ -476,8 +469,6 @@ import { Md5 } from "ts-md5";
 					}
 				});
 			}
-
-			
 		}
 		onClickComplain(){
 			uni.navigateTo({
@@ -516,10 +507,9 @@ import { Md5 } from "ts-md5";
 				title: '加载中'
 			});
 
-			
 			let params:any = {
-				channelId:data.channelId?data.channelId:'',
-      			channel: data.channel,
+				channelId:data.channelId??'',
+				channel: data.channel,
 				delivery:0,
 				num:Number(this.orderData.num)
 			}
@@ -527,15 +517,15 @@ import { Md5 } from "ts-md5";
 				params.nativeSdk = 'qmf_android'
 			}
 			app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
-				if(data.channel=='alipay' || data.channel=='alipay_h5'){
+				if(['alipay','alipay_h5'].includes(data.channel)){
 					if(res.appPayRequest){
 						app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
 						this.onClickCancelPay()
 					}else if(res.alipay.orderInfo!=''){
 						this.clickToPay = true;
 						uni.hideLoading()
-						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
 						this.onClickCancelPay()
+						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
 					}
 				}else{
 					if(res.wechat){
@@ -551,18 +541,11 @@ import { Md5 } from "ts-md5";
 		keepTwoDecimal(num: any) {
 			var result = parseFloat(num);
 			if (isNaN(result)) {
-			alert("传递参数错误，请检查！");
-			return false;
+				alert("传递参数错误，请检查！");
+				return false;
 			}
 			result = Math.round(num * 100) / 100;
 			return result > 0 ? result : 0;
-		}
-		// 支付成功弹窗关闭
-		onClickcancelPaySuccess(){
-			this.showPaySuccess = false;
-		}
-		onClickSuccessHide(){
-			this.guessSuccess = false;
 		}
 	}
 </script>

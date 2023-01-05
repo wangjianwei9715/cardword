@@ -575,7 +575,7 @@ export default class PlatformManager {
 					return pre + cur + '=' + params[cur] + '&';
 				}, '?').slice(0, -1);
 			}
-			resolve(route + query)
+			resolve(encodeURIComponent(route + query))
 		});
 	}
 	lastCharacter(val:string,lastString:string="/"){
@@ -769,6 +769,15 @@ export default class PlatformManager {
 	removeDuplicate(arr:any, uniId:string){
 		const res = new Map();
 		return arr.filter((item:any) => !res.has(item[uniId]) && res.set(item[uniId], 1));
+	}
+	/**
+	 * 删除数组A在数组B中的重复值
+	 */
+	removeArrRepeat(arrA:CustomArray,arrB:CustomArray) : CustomArray {
+		const Arr = arrA.filter(items => {
+			if (!arrB.includes(items)) return items;
+		})
+		return Arr;
 	}
 	// 重复数
 	findRepeatNumber(nums:CustomArray){

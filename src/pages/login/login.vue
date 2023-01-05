@@ -74,7 +74,7 @@
 		redirect:string=''
 		return:boolean=false
 		onLoad(query:any) {
-			if(query.redirect) this.redirect=query.redirect
+			if(query.redirect) this.redirect=decodeURIComponent(query.redirect)
 			if(query.return) this.return=true
 		}
 		bindPickerChange(val:any){

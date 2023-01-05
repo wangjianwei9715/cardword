@@ -348,14 +348,12 @@
 				})
 			}
 			// 开屏商品广告
-			const openScreenCode = uni.getStorageSync('openScreenCode') || []
+			const openScreenCode = uni.getStorageSync('openScreenCode') || [];
 			app.http.Post('openscreen/ad/get',{already_good_codes:openScreenCode},(res:any)=>{
-				uni.setStorageSync('openScreenCode',[...openScreenCode,res.data.good_code]);
 				if(res.data){
-					this.openScreenData ={
-						show:true,
-						data:res.data
-					}
+					const storageCode = app.platform.removeArrRepeat(openScreenCode,res.not_sale_good_codes??[])
+					uni.setStorageSync('openScreenCode',[...storageCode,res.data.good_code]);
+					this.openScreenData = { show:true, data:res.data }
 				}
 			})
 		}
