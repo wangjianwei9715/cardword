@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:08:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-04 17:58:11
+ * @LastEditTime: 2023-01-05 11:49:12
  * @FilePath: \card-world\src\pages\mall\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -58,7 +58,7 @@
         </view>
         <view class="descriptionContainer" v-if="goodsDetail.describe">
             <view class="title">温馨提示</view>
-            <view class="desContent">{{ goodsDetail.describe }}</view>
+            <view class="desContent" v-html="goodsDetail.describe"></view>
         </view>
         <view class="goodsImgListContainer" v-if="goodsDetail.pic && goodsDetail.pic.length">
             <view class="title">商品详情</view>
@@ -471,6 +471,7 @@ page {
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
+        white-space:pre-wrap
     }
 }
 
