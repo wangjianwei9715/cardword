@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 17:50:05
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-06 16:35:39
+ * @LastEditTime: 2023-01-06 16:43:41
  * @FilePath: \card-world\src\pages\mall\mallIndex.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -281,7 +281,7 @@ page {
     background-image: url("@/static/mall/myPointBack.png");
     background-size: 100% 100%;
     margin-top: -48rpx;
-    margin-bottom: 12rpx;
+    // margin-bottom: 12rpx;
     box-sizing: border-box;
     padding: 22rpx;
     display: flex;
@@ -340,7 +340,7 @@ page {
 .mallSwiper {
     width: 710rpx;
     height: 155rpx;
-    margin-bottom: 12rpx;
+    // margin-bottom: 12rpx;
 }
 
 .uTabs {
@@ -350,7 +350,7 @@ page {
     align-items: center;
     height: 80rpx;
     background-color: #f6f7fb;
-
+    margin: 6rpx 0;
     .tabsItem {
         width: 25%;
         text-align: center;
