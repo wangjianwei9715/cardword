@@ -534,15 +534,15 @@ export default class ClassName extends BaseNode {
     // 1：支付宝 2：微信
     if (data == "") return;
     uni.showLoading({ title: "加载中"});
-
+    const goodCode = this.goodsData.goodCode;
     let params: any = {
-      channelId: data.channelId ? data.channelId : "",
+      channelId: data.channelId ?? "",
       channel: data.channel,
       delivery: this.addressData.id,
     };
-    let url = "good/topay/" + this.goodsData.goodCode;
-    if(this.AD_id){
-      params.source = {tp:1,sourceId:String(this.AD_id)}
+    let url = `good/topay/${goodCode}`;
+    if(this.baoduiId != 0||this.cartData != ""||this.payRandomPrice>0){
+      url = `good/topay/${goodCode}/select`;
     }
     if(uni.getSystemInfoSync().platform === "android"){
       params.nativeSdk = 'qmf_android'
@@ -551,48 +551,35 @@ export default class ClassName extends BaseNode {
       // 包队
       params.teamId = this.baoduiId;
       params.num = 1;
-      url = "good/topay/" + this.goodsData.goodCode + "/select";
     } else if (this.cartData != "") {
-       // 自选球队
-      let id = [];
-      for (let i in this.cartData.list) {
-        if (!this.cartData.list[i].soldOut && !this.cartData.list[i].lock) {
-          id.push(this.cartData.list[i].noId);
-        }
-      }
-      params.id = id;
-      url = "good/topay/" + this.goodsData.goodCode + "/select";
+      // 自选球队
+      params.id = this.cartData.list.map((x:any)=>{
+        if(!x.soldOut && !x.lock) return x.noId
+      });
     } else if (this.payRandomTeamData != '') {
       params.list = this.payRandomTeamData.map((x:any)=>{
         return { id:x.id, num:Number(x.num) }
       })
-      url = "good/topay/" + this.goodsData.goodCode + "/optional";
+      url = `good/topay/${goodCode}/optional`;
     } else {
       // 普通支付
       if(this.selectRanId!=0) params.teamId = this.selectRanId;
       params.num = Number(this.moneyNum);
-      if (this.payRandomPrice > 0) {
-        url = "good/topay/" + this.goodsData.goodCode + "/select";
-      }
     }
     // 是否使用优惠券
     if (this.checkCouponList != "") {
       params.couponIdList = this.checkCouponList;
     }
-
     this.postPay(url,params,data)
     
   }
   postPay(url:string,params:any,data:any){
-    console.log('data===',data);
-    
-    app.http.Post(url, params, (res: any) => {
+    app.http.Post(url, params, async (res: any) => {
       const goodOrderCode = res.goodOrderCode
       uni.hideLoading();
-      // 预测球队
-      if(this.getBitDisableGuess()){
-        app.http.Post('me/order/guess/name/'+goodOrderCode,{name:this.guessList[this.guessCheckTeam].name})
-      }
+      // 订单额外数据
+      await this.orderSupply(goodOrderCode);
+      
       if(res.price<=0){
         this.redirectToOrder(goodOrderCode)
       }else{
@@ -619,6 +606,21 @@ export default class ClassName extends BaseNode {
         }
       }
     });
+  }
+  orderSupply(orderCode:string){
+    return new Promise((resolve, reject) => {
+      // 订单额外数据
+      const params:any = {
+        guessName:this.getBitDisableGuess()?this.guessList[this.guessCheckTeam].name:'',
+      }
+      if(this.AD_id){
+        params.source = {tp:1,sourceId:String(this.AD_id)}
+      }
+      app.http.Post(`me/order/supply/${orderCode}`,params,(res:any)=>{
+        resolve(res)
+      })
+    });
+    
   }
   cuokaSet(state:boolean){
     app.http.Post('my/cuoka/state/good/switch/'+this.goodsData.goodCode,{state:state?1:-1},()=>{
