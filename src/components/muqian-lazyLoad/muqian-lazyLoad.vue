@@ -1,5 +1,5 @@
 <template>
-	<view class="muqian-content">
+	<view class="muqian-content" v-if="src!=''">
 		<!-- 加载中 -->
 		<image :src="loadSrc" class="muqian-image muqain-load" @load="init" mode="aspectFit" :style="{
 				opacity:isShow?'0':'1',
