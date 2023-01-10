@@ -325,6 +325,23 @@
 			"root": "pages/act",
 			"pages": [
 				{
+					"path": "imm/index",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB",
+						"backgroundColorBottom": "#F6F7FB"
+					}
+				},
+				{
+					"path": "imm/rule",
+					"style": {
+						"navigationBarTitleText": "规则说明",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
 					"path": "ref/ref",
 					"style": {
 						"navigationStyle": "custom",
@@ -588,7 +605,6 @@
 						"app-plus": {
 							"bounce": "none"
 						}
-						
 					}
 				},
 				{
