@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 16:49:02
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-10 18:08:43
+ * @LastEditTime: 2023-01-10 18:14:01
  * @FilePath: \card-world\src\components\previewImage\previewImage.vue
  * @Description: kww图片预览组件,可以展示图片名称,传参参考uni.previewImage
  * @注意:current不传默认0,无法传递字符串,urls可传单图片字符串
@@ -18,7 +18,7 @@
 <template>
     <view class="previewImageContainer">
         <u-overlay class="overlay" :duration="200" :opacity="0.8" :show="showSwiper" @click="onClickAll">
-            <swiper class="preSwiper" :duration="200" :current="current">
+            <swiper class="preSwiper" :duration="200" :circular="loop" :current="current">
                 <swiper-item class="preSwiper_item" v-for="(item, index) in urls" :key="index">
                     <view class="img">
                         <image mode="widthFix" @longtap.stop="longTapImg(item)" :src="item.src" />
@@ -45,6 +45,7 @@ export default class ClassName extends BaseComponent {
     urls: any = []
     current: number = 0
     isLongTap: boolean = false
+    loop: boolean = false;
     mounted(): void {
     }
     longTapImg(item: any) {
@@ -103,6 +104,7 @@ export default class ClassName extends BaseComponent {
                 }
             })
         }
+        this.loop = options.loop ?? false
         this.current = options.current ?? 0
         this.urls = deepUrls
         this.showSwiper = true
