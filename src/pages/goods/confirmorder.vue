@@ -101,7 +101,7 @@
       <!--  -->
       <!-- 预测卡密 -->
       <!-- freeNum 免单次数  checkTeam 预测球队  guessList 球队列表  teamCheck 球队选择-->
-      <confirmorderGuess v-if="getBitDisableGuess()"  :freeNum="freeNum>=moneyNum?(freeNum-moneyNum):0" :checkTeam="guessCheckTeam" :teamList="guessList" :lastGuess="lastGuess" @teamCheck="onClickGuessTeamCheck" @onScrolltolower="onScrolltolower" />
+      <confirmorderGuess v-if="getBitDisableGuess"  :freeNum="freeNum>=moneyNum?(freeNum-moneyNum):0" :checkTeam="guessCheckTeam" :teamList="guessList" :lastGuess="lastGuess" @teamCheck="onClickGuessTeamCheck" @onScrolltolower="onScrolltolower" />
       <!-- 预测卡密 -->
       <view class="yunfei-info top-order" >
         <view class="yunfei-item">
@@ -113,7 +113,7 @@
         </view>
         <view class="yunfei-item">
           <text class="item-name">优惠券</text>
-          <view class="item-name" v-if="getBitDisableCoupon(goodsData.bit)">
+          <view class="item-name" v-if="getBitDisableCoupon">
             此商品优惠券不可用
           </view>
           <view class="item-name" v-else @click="onClickCheckCoupon">
@@ -188,7 +188,7 @@
     <cardplay
       :operationShow="operationCardShow"
       :operaType="3"
-      @operacancel="onClickCardCancel"
+      @operacancel="operationCardShow=false"
     />
     <payment
       :showPayMent="showPayMent"
@@ -201,7 +201,7 @@
     <paymentCoupon
       :showPayMentCoupon="showPayMentCoupon"
       :couponList="couponList"
-      @cancelCoupon="onClickcCancelCoupon"
+      @cancelCoupon="showPayMentCoupon=false"
       @couponConfirm="onClickCouponConfirm"
     />
   </view>
@@ -338,22 +338,6 @@ export default class ClassName extends BaseNode {
       this.getOnePrice();
     }
   }
-  // 判断是否禁用优惠券
-  getBitDisableCoupon(bit: any) {
-    if ((bit & 1) == 1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  // 是否开启预测球队
-  getBitDisableGuess() {
-    if ((this.goodsData.bit & 8) == 8) {
-      return true;
-    } else {
-      return false;
-    }
-  }
   // 预测球队列表分页
   onScrolltolower(){
     if(this.guessNoMoreData){
@@ -371,7 +355,6 @@ export default class ClassName extends BaseNode {
       if(data.list){
         this.guessList = this.guessList.concat(data.list);
       }
-      
       this.guessCurrentPage++;
     });
   }
@@ -418,7 +401,7 @@ export default class ClassName extends BaseNode {
       this.onePrice = this.goodsData.price;
     }
 
-    if (this.getBitDisableCoupon(this.goodsData.bit) || this.couponNumNo) {
+    if (this.getBitDisableCoupon || this.couponNumNo) {
       return;
     }
     // 获取可用优惠券数量
@@ -476,21 +459,11 @@ export default class ClassName extends BaseNode {
     return price
   }
   onClickCutDown() {
-    if (this.moneyNum > 1) {
-      this.moneyNum--;
-    } else {
-      return;
-    }
+    this.moneyNum>1 && this.moneyNum--;
     this.getOnePrice();
   }
-
   onClickAdd() {
-    if (this.moneyNum >= this.maxNum) {
-      this.moneyNum = this.maxNum;
-      return;
-    } else {
-      this.moneyNum++;
-    }
+    this.moneyNum<this.maxNum && this.moneyNum++;
     this.getOnePrice();
   }
   onClickAddress() {
@@ -500,20 +473,13 @@ export default class ClassName extends BaseNode {
   }
   onClickToPay() {
     if (this.addressData == "") {
-      uni.showToast({
-        title: "请先选择地址",
-        icon: "none",
-      });
+      uni.showToast({ title: "请先选择地址", icon: "none"});
       return;
     }
     if (!this.gmCheck) {
-      uni.showToast({
-        title: "请先确认购买须知",
-        icon: "none",
-      });
+      uni.showToast({ title: "请先确认购买须知", icon: "none"});
       return;
     }
-    let params: { [x: string]: any };
     this.showPayMent = true;
   }
   keepTwoDecimal(num: any) {
@@ -611,7 +577,7 @@ export default class ClassName extends BaseNode {
     return new Promise((resolve, reject) => {
       // 订单额外数据
       const params:any = {
-        guessName:this.getBitDisableGuess()?this.guessList[this.guessCheckTeam].name:'',
+        guessName:this.getBitDisableGuess?this.guessList[this.guessCheckTeam].name:'',
       }
       if(this.AD_id){
         params.source = {tp:1,sourceId:String(this.AD_id)}
@@ -632,26 +598,17 @@ export default class ClassName extends BaseNode {
       url: `/pages/userinfo/order_details?code=${order}&waitPay=true`,
     });
   }
-  onClickCardCancel() {
-    this.operationCardShow = false;
-  }
   // 选择优惠券
   onClickCheckCoupon() {
     if (this.couponNum > 0) {
       this.showPayMentCoupon = true;
     }
   }
-  // 取消选择优惠券
-  onClickcCancelCoupon() {
-    this.showPayMentCoupon = false;
-  }
   // 确认选择优惠券
   onClickCouponConfirm(data: any) {
     this.showPayMentCoupon = false;
-
-    if (data == "") {
-      return;
-    }
+    if (data == "") return;
+    
     this.checkCouponList = data.list;
     this.checkCouponPrice = data.price;
     this.getConditionPrice();
@@ -673,12 +630,19 @@ export default class ClassName extends BaseNode {
     }
     this.couponTotalPrice = price;
   }
-
   // 预测球队
   onClickGuessTeamCheck(index:number){
     if(this.guessCheckTeam!=index){
       this.guessCheckTeam = index;
     }
+  }
+  // 预测免单
+  public get getBitDisableGuess() : boolean {
+    return (this.goodsData.bit & 8) == 8
+  }
+  // 判断是否禁用优惠券
+  public get getBitDisableCoupon() : boolean {
+    return (this.goodsData.bit & 1) == 1
   }
 }
 </script>
