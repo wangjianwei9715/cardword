@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 15:11:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-11 16:16:33
+ * @LastEditTime: 2023-01-11 16:36:28
  * @FilePath: \card-world\src\pages\act\imm\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -40,6 +40,8 @@
                 <view class="tips">{{ rankTag.list[rankTag.index].tips }}</view>
                 <view class="lookLive flexCenter" v-if="rankTag.index == 1" @click="getLiveData">观看直播</view>
             </view>
+            <u-skeleton rows="10" style="width: 650rpx" :rowsWidth="rowsWidth" :rowsHeight="rowsHeight" :title="false"
+                :loading="!requestSuccess"></u-skeleton>
             <template v-if="rankTag.index == 0">
                 <view class="rank_tr" :class="{ rank_my: item.isMy }" v-for="(item, index) in rankList">
                     <view class="rank_num" :class="[index <= 2 ? `rank${index + 1}` : '']">{{ index > 2 ?
@@ -117,6 +119,9 @@ import BaseNode from '@/base/BaseNode.vue';
 import { parsePic, dateFormatMSHMS, dateFormatMS } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
+    rowsHeight: any = new Array(10).fill('135rpx');
+    rowsWidth: any = new Array(10).fill('650rpx');
+    requestSuccess: boolean = false;
     rankQuery: any = {
         fetchFrom: 1,
         fetchSize: 100,
@@ -169,10 +174,10 @@ export default class ClassName extends BaseNode {
         return typeof data === 'number'
     }
     goLiveRoom() {
-        if (!this.liveData.roomId){
+        if (!this.liveData.roomId) {
             uni.showToast({
-                title:'直播暂未开始',
-                icon:'none'
+                title: '直播暂未开始',
+                icon: 'none'
             })
             return
         }
@@ -215,12 +220,13 @@ export default class ClassName extends BaseNode {
     }
     reqRewardList() {
         app.http.Get('dataApi/selectRank/lucky/award/list', { activityTp: 4 }, (res: any) => {
+            this.requestSuccess=true
             this.awardList = res.list || []
-
         })
     }
     reqAllRank(cb?: any) {
         app.http.Get('dataApi/selectRank/list', this.rankQuery, (res: any) => {
+            this.requestSuccess=true
             this.isFetchEnd = res.isFetchEnd
             const dataList = res.list || []
             this.rankList = this.rankQuery.fetchFrom == 1 ? dataList : [...this.rankList, ...dataList]
