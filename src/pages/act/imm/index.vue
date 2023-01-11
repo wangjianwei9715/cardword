@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 15:11:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-11 16:08:43
+ * @LastEditTime: 2023-01-11 16:16:33
  * @FilePath: \card-world\src\pages\act\imm\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,7 +21,7 @@
             <view class="topOne"></view>
             <view class="topTwo"></view>
             <view class="pd"></view>
-            <view class="goBuy flexCenter"  @click="onClickGoBuy">立即上车</view>
+            <view class="goBuy flexCenter" @click="onClickGoBuy">立即上车</view>
             <!-- <u-button text="立即上车"
                 style="position:absolute ;bottom:0;width:200rpx;left:0;right:0;margin:auto;"></u-button> -->
         </view>
@@ -38,7 +38,7 @@
             </view>
             <view class="rank_tips" :class="{ jb: rankTag.index == 1 }">
                 <view class="tips">{{ rankTag.list[rankTag.index].tips }}</view>
-                <view class="lookLive flexCenter" v-if="rankTag.index == 1">观看直播</view>
+                <view class="lookLive flexCenter" v-if="rankTag.index == 1" @click="getLiveData">观看直播</view>
             </view>
             <template v-if="rankTag.index == 0">
                 <view class="rank_tr" :class="{ rank_my: item.isMy }" v-for="(item, index) in rankList">
@@ -131,7 +131,8 @@ export default class ClassName extends BaseNode {
     defaultAvatar: any = app.defaultAvatar
     awardList: any = []
     myRank: any = {}
-    seriesId:any=3
+    liveData: any = {}
+    seriesId: any = 3
     rankTag: any = {
         index: 0,
         list: [
@@ -140,7 +141,7 @@ export default class ClassName extends BaseNode {
         ]
     }
     onLoad(query: any) {
-        if(query.seriesId) this.seriesId=query.seriesId
+        if (query.seriesId) this.seriesId = query.seriesId
         app.platform.hasLoginToken(() => {
             this.reqAllRank()
             this.reqMyRank()
@@ -166,6 +167,34 @@ export default class ClassName extends BaseNode {
     }
     isNumber(data: any) {
         return typeof data === 'number'
+    }
+    goLiveRoom() {
+        if (!this.liveData.roomId){
+            uni.showToast({
+                title:'直播暂未开始',
+                icon:'none'
+            })
+            return
+        }
+        if (this.liveData.roomId && this.liveData.third == 1001) {
+            app.platform.goZgLive({
+                roomID: this.liveData.roomId,
+                isAnchor: false,
+                state: this.liveData.state,
+                playCode: this.liveData.playCode,
+                goodCode: this.liveData.goodCode,
+                alias: this.liveData.merchantAlias,
+                type: 1
+            })
+            return
+        }
+        app.platform.goWeChatLive({ playCode: this.liveData.playCode, goodCode: "" })
+    }
+    getLiveData() {
+        app.http.Get(`dataApi/selectRank/get/braodcast`, { activityTp: 4 }, (res: any) => {
+            this.liveData = res.data
+            this.goLiveRoom()
+        })
     }
     onClickGoBuy() {
         uni.navigateTo({
@@ -382,7 +411,8 @@ page {
     justify-content: center;
     margin-bottom: 22rpx;
     align-items: center;
-    .tips{
+
+    .tips {
         font-size: 23rpx;
     }
 }
