@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 15:11:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-11 15:55:05
+ * @LastEditTime: 2023-01-11 16:08:43
  * @FilePath: \card-world\src\pages\act\imm\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,8 +21,8 @@
             <view class="topOne"></view>
             <view class="topTwo"></view>
             <view class="pd"></view>
-            <view class="goBuy flexCenter">立即上车</view>
-            <!-- <u-button text="立即上车" @click="onClickGoBuy"
+            <view class="goBuy flexCenter"  @click="onClickGoBuy">立即上车</view>
+            <!-- <u-button text="立即上车"
                 style="position:absolute ;bottom:0;width:200rpx;left:0;right:0;margin:auto;"></u-button> -->
         </view>
         <view class="rankContainer">
@@ -131,6 +131,7 @@ export default class ClassName extends BaseNode {
     defaultAvatar: any = app.defaultAvatar
     awardList: any = []
     myRank: any = {}
+    seriesId:any=3
     rankTag: any = {
         index: 0,
         list: [
@@ -139,6 +140,7 @@ export default class ClassName extends BaseNode {
         ]
     }
     onLoad(query: any) {
+        if(query.seriesId) this.seriesId=query.seriesId
         app.platform.hasLoginToken(() => {
             this.reqAllRank()
             this.reqMyRank()
@@ -167,7 +169,7 @@ export default class ClassName extends BaseNode {
     }
     onClickGoBuy() {
         uni.navigateTo({
-            url: '/pages/goods/goods_seriesDetail?seriesId=3'
+            url: `/pages/goods/goods_seriesDetail?seriesId=${this.seriesId}`
         })
     }
     onClickTagChange(item: any, index: number) {
