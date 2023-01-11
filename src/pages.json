@@ -329,8 +329,8 @@
 					"style": {
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#F6F7FB",
-						"backgroundColorBottom": "#F6F7FB"
+						"backgroundColorTop": "#1b2d35",
+						"backgroundColorBottom": "#1b2d35"
 					}
 				},
 				{

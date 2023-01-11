@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 15:11:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-10 17:47:30
+ * @LastEditTime: 2023-01-11 15:55:05
  * @FilePath: \card-world\src\pages\act\imm\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,69 +17,82 @@
             </template>
         </transitionNav>
         <view class="topBannerContainer">
-            <u-button text="立即上车" @click="onClickGoBuy"
-                style="position:absolute ;bottom:0;width:200rpx;left:0;right:0;margin:auto;"></u-button>
+            <image class="topBanner" src="@/static/act/imm/topBanner.png" />
+            <view class="topOne"></view>
+            <view class="topTwo"></view>
+            <view class="pd"></view>
+            <view class="goBuy flexCenter">立即上车</view>
+            <!-- <u-button text="立即上车" @click="onClickGoBuy"
+                style="position:absolute ;bottom:0;width:200rpx;left:0;right:0;margin:auto;"></u-button> -->
         </view>
-        <view class="rank_tag">
-            <view class="tag_item" :class="{ tag_item_select: rankTag.index == index }"
-                v-for="(item, index) in rankTag.list" @click="onClickTagChange(item, index)">
-                <view class="tag_title">{{ item.label }}</view>
-                <view class="tag_time">{{ isNumber(item.timeStamp) ?dateFormatMSHMS(item.timeStamp, '.') :
-                `${dateFormatMS(item.timeStamp[0], '.')}~${dateFormatMS(item.timeStamp[1], '.')}`
-                }} {{ item.timeTips || "" }}</view>
-            </view>
-        </view>
-        <view class="rank_tips">
-            <view class="tips">{{ rankTag.list[rankTag.index].tips }}</view>
-            <view class="lookLive" v-if="rankTag.index == 1">观看直播</view>
-        </view>
-        <template v-if="rankTag.index == 0">
-            <view class="rank_tr" :class="{ rank_my: item.isMy }" v-for="(item, index) in rankList">
-                <view class="rank_num">{{ index+ 1 }}</view>
-                <muqian-lazyLoad class="rank_avatar" borderRadius="50%"
-                    :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
-                <view class="rank_pointInfo">
-                    <view class="rank_userName">{{ item.userName }}</view>
-                    <view class="rank_point" v-if="item.userName !== '虚位以待'">
-                        {{`积分${item.get_score}(冻结${item.lock_score})`}}
-                    </view>
+        <view class="rankContainer">
+            <view class="rank_tag">
+                <view class="tag_item"
+                    :class="{ tag_left: index == 0, tag_right: index == 1, tag_left_noselect: index == 0 && rankTag.index !== index, tag_right_noselect: index == 1 && rankTag.index !== index }"
+                    v-for="(item, index) in rankTag.list" @click="onClickTagChange(item, index)">
+                    <view class="tag_title">{{ item.label }}</view>
+                    <view class="tag_time">{{ isNumber(item.timeStamp) ?dateFormatMSHMS(item.timeStamp, '.') :
+                    `${dateFormatMS(item.timeStamp[0], '.')}~${dateFormatMS(item.timeStamp[1], '.')}`
+                    }} {{ item.timeTips || "" }}</view>
                 </view>
-                <muqian-lazyLoad class="rank_reward" borderRadius="3rpx" @click="previewImage(item)"
-                    :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
             </view>
-        </template>
-        <template v-if="rankTag.index == 1">
-            <view class="draw_tr" v-for="(item, index) in awardList" :key="index">
-                <view class="draw_infoContainer">
-                    <muqian-lazyLoad class="draw_img" borderRadius="3rpx"
-                        :src="$parsePic(decodeURIComponent(item.pic_url))" />
-                    <view class="draw_infoRight">
-                        <view class="draw_name">{{ item.name }}</view>
-                        <view class="draw_condition">
-                            <view>抽奖数量:1</view>
-                            <view>参与条件:前500名</view>
+            <view class="rank_tips" :class="{ jb: rankTag.index == 1 }">
+                <view class="tips">{{ rankTag.list[rankTag.index].tips }}</view>
+                <view class="lookLive flexCenter" v-if="rankTag.index == 1">观看直播</view>
+            </view>
+            <template v-if="rankTag.index == 0">
+                <view class="rank_tr" :class="{ rank_my: item.isMy }" v-for="(item, index) in rankList">
+                    <view class="rank_num" :class="[index <= 2 ? `rank${index + 1}` : '']">{{ index > 2 ?
+                        (index + 1) : ""
+                    }}
+                    </view>
+                    <muqian-lazyLoad class="rank_avatar" borderRadius="50%"
+                        :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
+                    <view class="rank_pointInfo">
+                        <view class="rank_userName">{{ item.userName }}</view>
+                        <view class="rank_point" v-if="item.userName !== '虚位以待'">
+                            {{`积分${item.get_score || 0}(冻结${item.lock_score || 0})`}}
+                        </view>
+                    </view>
+                    <muqian-lazyLoad class="rank_reward" borderRadius="3rpx" @click="previewImage(item)"
+                        :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
+                </view>
+            </template>
+            <template v-if="rankTag.index == 1">
+                <view class="draw_tr" v-for="(item, index) in awardList" :key="index">
+                    <view class="draw_infoContainer" :class="{ border: item.luckyUsers && item.luckyUsers.length }">
+                        <muqian-lazyLoad class="draw_img" borderRadius="3rpx" @click="previewImage(item)"
+                            :src="$parsePic(decodeURIComponent(item.pic))" />
+                        <view class="draw_infoRight">
+                            <view class="draw_name">{{ item.name }}</view>
+                            <view class="draw_condition">
+                                <view style="margin-right:30rpx">抽奖数量:{{ item.num || 0 }}</view>
+                                <view>参与条件:{{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` :
+                                    `第${item.start_rank}-${item.end_rank}名`
+                                }}</view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="draw_onPrize" v-if="item.luckyUsers && item.luckyUsers.length">
+                        <view class="prize_item gray">中奖用户:</view>
+                        <view class="prize_item" v-for="(prizeItem, prizeIndex) in item.luckyUsers">
+                            <muqian-lazyLoad borderRadius="50%" class="avatar"
+                                :src="prizeItem.avatar ? $parsePic(decodeURIComponent(prizeItem.avatar)) : defaultAvatar" />
+                            <view class="name">{{ prizeItem.userName }}</view>
                         </view>
                     </view>
                 </view>
-                <view class="draw_onPrize">
-                    <view class="prize_item gray">中奖用户:</view>
-                    <view class="prize_item" v-for="(prizeItem, prizeIndex) in 10">
-                        <muqian-lazyLoad borderRadius="50%" class="avatar"
-                            :src="$parsePic(decodeURIComponent('https://ka-world.oss-cn-shanghai.aliyuncs.com/images/1673338643088ez638ekfaf'))" />
-                        <view class="name">张*</view>
-                    </view>
-                </view>
-            </view>
-        </template>
+            </template>
+        </view>
         <view class="bottomSafeArea" style="height:140rpx"></view>
         <view class="bottomFixedPay">
             <view class="payContainer">
-                <view class="rank_num">{{ myRank.rank || '获取中' }}</view>
+                <view class="rank_num">{{ myRank.rank || '500+' }}</view>
                 <muqian-lazyLoad borderRadius="50%" class="rank_avatar"
                     :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar"></muqian-lazyLoad>
                 <view class="rank_pointInfo">
-                    <view class="rank_userName">{{ myRank.userName }}</view>
-                    <view class="rank_point">{{`积分${myRank.get_score}(冻结${myRank.lock_score})`}}</view>
+                    <view class="rank_userName">{{ myRank.userName || "获取中" }}</view>
+                    <view class="rank_point">{{`积分${myRank.get_score || 0}(冻结${myRank.lock_score || 0})`}}</view>
                 </view>
                 <template v-if="rankTag.index == 0">
                     <muqian-lazyLoad class="rank_reward" borderRadius="3rpx" v-if="myRank.isPass"
@@ -91,7 +104,7 @@
                         {{ myRank.isPass ? `当前排名\n可参与抽奖` : `当前排名\n不可参与抽奖` }}</view>
                 </template>
             </view>
-            <view class="bottomSafeArea"></view>
+            <!-- <view class="bottomSafeArea"></view> -->
         </view>
         <previewImage ref="previewImage" />
     </view>
@@ -106,7 +119,8 @@ import { parsePic, dateFormatMSHMS, dateFormatMS } from '@/tools/util'
 export default class ClassName extends BaseNode {
     rankQuery: any = {
         fetchFrom: 1,
-        fetchSize: 30
+        fetchSize: 100,
+        activityTp: 4
     }
     parsePic = parsePic
     rankList: any = []
@@ -125,9 +139,10 @@ export default class ClassName extends BaseNode {
         ]
     }
     onLoad(query: any) {
-        this.reqAllRank()
-        this.reqMyRank()
-        this.reqRewardList()
+        app.platform.hasLoginToken(() => {
+            this.reqAllRank()
+            this.reqMyRank()
+        })
     }
     onPageScroll(data: any) {
         //@ts-ignore
@@ -157,16 +172,18 @@ export default class ClassName extends BaseNode {
     }
     onClickTagChange(item: any, index: number) {
         if (this.rankTag.index == index) return
+        if (index == 0) this.reqAllRank()
+        if (index == 1) this.reqRewardList()
         this.rankTag.index = index
     }
     previewImage(item: any) {
         //@ts-ignore
         this.$refs.previewImage.show({
-            urls: [{ src: this.parsePic(decodeURIComponent(item.awardPic_url)), title: item.awardName }]
+            urls: [{ src: this.parsePic(decodeURIComponent(item.awardPic_url || item.pic)), title: item.awardName || item.name }]
         })
     }
     reqRewardList() {
-        app.http.Get('dataApi/selectRank/award/list', { isLucky: 0, activityTp: 1 }, (res: any) => {
+        app.http.Get('dataApi/selectRank/lucky/award/list', { activityTp: 4 }, (res: any) => {
             this.awardList = res.list || []
 
         })
@@ -181,7 +198,7 @@ export default class ClassName extends BaseNode {
     }
     //我的rank
     reqMyRank() {
-        app.http.Get('dataApi/selectRank/my/data', {}, (res: any) => {
+        app.http.Get('dataApi/selectRank/my/data', { activityTp: 4 }, (res: any) => {
             this.myRank = res.data || {}
         })
     }
@@ -191,39 +208,115 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    background: #2a2a40;
+    background: #1b2d35;
     font-family: PingFang SC;
 }
 
 .rightTitle {
-    font-size: 35rpx;
+    font-size: 29rpx;
     font-family: PingFang SC;
-    font-weight: 600;
+    font-weight: 400;
     color: #FFFFFF;
 }
 
 .topBannerContainer {
     width: 750rpx;
-    height: 400rpx;
-    background-image: url('@/static/act/rankSelect/rankBanner.jpg');
+    height: 450rpx;
+    // background-image: url('@/static/act/imm/topBanner.png');
     background-size: 100% 100%;
     position: relative;
+
+    .topBanner {
+        width: 750rpx;
+        height: 385rpx;
+        position: absolute;
+        top: 0;
+    }
+
+    .topOne {
+        width: 377rpx;
+        height: 100rpx;
+        background-image: url('@/static/act/imm/topOne.png');
+        background-size: 100% 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        top: 102rpx;
+    }
+
+    .topTwo {
+        width: 648rpx;
+        height: 115rpx;
+        background-image: url('@/static/act/imm/topTwo.png');
+        background-size: 100% 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        top: 217rpx;
+    }
+}
+
+.pd {
+    width: 750rpx;
+    height: 152rpx;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-image: url('@/static/act/imm/dpd.png');
+    background-size: 100% 100%;
+}
+
+.goBuy {
+    width: 246rpx;
+    height: 80rpx;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background-image: url('@/static/act/imm/button.png');
+    background-size: 100% 100%;
+    font-size: 33rpx;
+    font-weight: 600;
+    color: #FEFEFE;
 }
 
 .bottomFixedPay {
     width: 750rpx;
     position: fixed;
     bottom: 0;
-    background-color: #fff;
+    background-color: #F1075A;
 
     .payContainer {
         display: flex;
         box-sizing: border-box;
         width: inherit;
-        height: 130rpx;
+        height: 135rpx;
         align-items: center;
-        padding: 20rpx 34rpx 30rpx 34rpx;
+        padding: 0rpx 67rpx 0rpx 48rpx;
         justify-content: space-between;
+
+        .rank_num {
+            font-size: 39rpx;
+            font-family: Impact;
+            font-weight: 400;
+            background-size: 100% 100%;
+            color: #FFFFFF;
+        }
+
+        .rank_pointInfo {
+            .rank_userName {
+                color: #fff;
+                font-size: 26rpx;
+            }
+
+            .rank_point {
+                color: #fff;
+                font-size: 26rpx;
+            }
+        }
     }
 }
 
@@ -231,128 +324,146 @@ page {
     display: flex;
     align-items: center;
     width: 650rpx;
-    height: 160rpx;
+    height: 135rpx;
     background: #FFFFFF;
     box-shadow: 0rpx 4rpx 13rpx 0rpx #56160C;
     border-radius: 3rpx;
     position: relative;
     box-sizing: border-box;
-    padding: 0 20rpx;
+    padding: 0rpx 17rpx 0rpx 20rpx;
     align-items: center;
-    margin-bottom: 13rpx;
+    margin-bottom: 15rpx;
+}
 
-    // .rankNum {
-    //     width: 58rpx;
-    //     height: 53rpx;
-    //     background-size: 100% 100%;
-    //     margin-right: 40rpx;
-    //     font-size: 39rpx;
-    //     font-family: Impact;
-    //     font-weight: 400;
-    //     color: #333333;
-    // }
+.rank_num {
+    width: 60rpx;
+    height: 54rpx;
+    font-size: 39rpx;
+    font-family: Impact;
+    font-weight: 400;
+    background-size: 100% 100%;
+    color: #333333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    // .rank1 {
-    //     background-image: url("../../../static/act/rankSelect/rank1.png");
-    // }
+.rank1 {
+    background-image: url("@/static/act/imm/rank1.png");
+}
 
-    // .rank2 {
-    //     background-image: url("../../../static/act/rankSelect/rank2.png");
-    // }
+.rank2 {
+    background-image: url("@/static/act/imm/rank2.png");
+}
 
-    // .rank3 {
-    //     background-image: url("../../../static/act/rankSelect/rank3.png");
-    // }
+.rank3 {
+    background-image: url("@/static/act/imm/rank3.png");
+}
 
-    // .rankAvatar {
-    //     width: 50rpx;
-    //     height: 50rpx;
-    //     // background: #421D17;
-    //     border-radius: 50%;
-    //     margin-right: 16rpx;
-    // }
-
-    // .rankName {
-    //     font-size: 23rpx;
-    //     font-family: PingFang SC;
-    //     font-weight: 400;
-    //     color: #333333;
-    //     width: 140rpx;
-    // }
-
-    // .line2 {
-    //     text-overflow: -o-ellipsis-lastline;
-    //     overflow: hidden; //溢出内容隐藏
-    //     text-overflow: ellipsis; //文本溢出部分用省略号表示
-    //     display: -webkit-box; //特别显示模式
-    //     -webkit-line-clamp: 2; //行数
-    //     line-clamp: 2;
-    //     -webkit-box-orient: vertical; //盒子中内容竖直排列
-    // }
-
-    // .rankPoint {
-    //     display: flex;
-    //     flex-direction: column;
-    //     flex: 1;
-    //     // background-color: red;
-    //     text-align: center;
-
-    //     .get {
-    //         font-size: 23rpx;
-    //         font-family: PingFang SC;
-    //         font-weight: 400;
-    //         color: #6E1E11;
-    //         margin-bottom: 10rpx;
-    //     }
-
-    //     .freeze {
-    //         font-size: 23rpx;
-    //         font-family: PingFang SC;
-    //         font-weight: 400;
-    //         color: #A0BED8;
-    //     }
-    // }
-
-    // .rankReward {
-    //     width: 105rpx;
-    //     height: 105rpx;
-    //     // background: #421D17;
-    //     border-radius: 3rpx;
-    // }
+.rank_avatar {
+    width: 60rpx;
+    height: 60rpx;
+    margin-left: 32rpx;
+    margin-right: 20rpx;
 }
 
 .rank_tips {
-    color: #fff;
-    font-size: 24rpx;
+    width: inherit;
+    box-sizing: border-box;
+    padding: 0 30rpx;
     display: flex;
+    font-size: 23rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FEFEFE;
+    margin-top: 28rpx;
+    justify-content: center;
+    margin-bottom: 22rpx;
+    align-items: center;
+    .tips{
+        font-size: 23rpx;
+    }
+}
+
+.jb {
     justify-content: space-between;
+}
+
+.lookLive {
+    width: 125rpx;
+    height: 44rpx;
+    font-size: 23rpx;
+    border: 2rpx solid #FFFFFF;
+    border-radius: 21rpx;
+}
+
+.rankContainer {
+    width: 710rpx;
+    background: #44436A;
+    border-radius: 18rpx 18rpx 3rpx 3rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 10rpx;
+    margin-top: 20rpx;
 }
 
 .rank_tag {
     display: flex;
     color: #fff;
-    width: 750rpx;
     box-sizing: border-box;
-    // height: 100rpx;
-    margin: 20rpx 0;
+    // margin: 20rpx 0;
+    position: relative;
+    height: 110rpx;
+    width: inherit;
 
     .tag_item {
-        width: 50%;
+        width: 372rpx;
+        height: 110rpx;
+        background-size: 100% 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        color: #fff;
+        color: #FFF6D6;
+        position: absolute;
+        justify-content: center;
     }
 
     .tag_item_select {
-        color: #fa0a64;
+        color: #F1075A;
+    }
+
+    .tag_title {
+        font-size: 33rpx;
+        font-family: PingFang SC;
+        font-weight: 600;
+    }
+
+    .tag_time {
+        font-size: 21rpx;
+        font-family: PingFang SC;
+    }
+
+    .tag_left {
+        left: 0;
+    }
+
+    .tag_left_noselect {
+        background-image: url("@/static/act/imm/leftSelect.png");
+        color: #F1075A;
+    }
+
+    .tag_right_noselect {
+        background-image: url("@/static/act/imm/rightSelect.png");
+        color: #F1075A;
+    }
+
+    .tag_right {
+        right: 0;
     }
 }
 
-.rank_avatar {
-    width: 100rpx;
-    height: 100rpx;
-}
+
 
 .rank_pointInfo {
     display: flex;
@@ -361,24 +472,29 @@ page {
     flex: 1;
 
     .rank_userName {
-        color: #000;
-        font-size: 28rpx;
+        color: #333333;
+        font-size: 23rpx;
         font-weight: 600;
     }
 
     .rank_point {
-        color: #000;
-        font: 26rpx;
+        color: #949494;
+        font-size: 23rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
     }
 }
 
 .rank_reward {
-    width: 120rpx;
-    height: 120rpx;
+    width: 105rpx;
+    height: 105rpx;
 }
 
 .rank_normal {
-    color: #000;
+    font-size: 26rpx;
+    font-family: PingFang SC;
+    font-weight: 600;
+    color: #FFFFFF;
 }
 
 .canDraw {
@@ -386,46 +502,64 @@ page {
 }
 
 .noDraw {
-    color: #c8b2b2;
-    white-space: pre-wrap
+    white-space: pre-wrap;
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 600;
+    color: #FFFFFF;
 }
 
 .draw_tr {
     width: 650rpx;
+    // height: 223rpx;
     background: #FFFFFF;
+    box-shadow: 0rpx 4rpx 13rpx 0rpx #44436A;
     border-radius: 3rpx;
     position: relative;
     box-sizing: border-box;
-    padding: 20rpx;
-    margin-bottom: 13rpx;
-    border-radius: 10rpx;
+    padding: 20rpx 20rpx 0rpx 23rpx;
+    margin-bottom: 15rpx;
 
     .draw_infoContainer {
         display: flex;
 
+        margin-bottom: 16rpx;
+
         .draw_img {
-            width: 100rpx;
-            height: 100rpx;
+            width: 113rpx;
+            height: 113rpx;
+            margin-right: 36rpx;
         }
+    }
+
+    .border {
+        border-bottom: 1rpx solid #E6E6E6;
+        padding-bottom: 20rpx;
     }
 
     .draw_infoRight {
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        // justify-content: space-between;
     }
 
     .draw_name {
-        color: #000;
+        font-size: 25rpx;
+        font-family: PingFang SC;
         font-weight: 600;
+        color: #333333;
+        margin-bottom: 20rpx;
     }
 
     .draw_condition {
-        color: #c8b2b2;
+        font-size: 21rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #949494;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        // justify-content: space-between;
     }
 
     .draw_onPrize {
@@ -435,21 +569,24 @@ page {
 
         .prize_item {
             width: 25%;
-            color: #000;
+            color: #333333;
             display: flex;
             align-items: center;
-            font-size: 24rpx;
             margin-bottom: 6rpx;
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            margin-bottom: 18rpx;
 
             .avatar {
-                width: 40rpx;
-                height: 40rpx;
-                margin-right: 6rpx;
+                width: 34rpx;
+                height: 34rpx;
+                margin-right: 20rpx;
             }
         }
 
         .gray {
-            color: #c8b2b2;
+            color: #949494;
         }
     }
 }
