@@ -50,6 +50,12 @@ export default class ossUtils {
                 sourceType: [sourceType],
                 success: (res) => {
                     resolve(res.tempFilePaths[0])
+                },
+                fail:(res:any)=>{
+                    uni.showToast({
+                        title:'请确认已打开相册权限',
+                        icon:'none'
+                    })
                 }
             })
         });
@@ -62,6 +68,12 @@ export default class ossUtils {
                 sourceType: ['album'],
                 success: (res) => {
                     resolve(res.tempFilePaths)
+                },
+                fail:(res:any)=>{
+                    uni.showToast({
+                        title:'请确认已打开相册权限',
+                        icon:'none'
+                    })
                 }
             })
         });
