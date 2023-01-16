@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 15:11:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-16 17:24:02
+ * @LastEditTime: 2023-01-16 17:57:05
  * @FilePath: \card-world\src\pages\act\imm\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -33,7 +33,7 @@
                     <view class="tag_title">{{ item.label }}</view>
                     <view class="tag_time">{{ isNumber(item.timeStamp) ?dateFormatMSHMS(item.timeStamp, '.') :
                     `${dateFormatMS(item.timeStamp[0], '.')}~${dateFormatMS(item.timeStamp[1], '.')}`
-                    }} {{ item.timeTips || "" }}</view>
+                    }} {{ parseTips(item.timeTips) || "" }}</view>
                 </view>
             </view>
             <view class="rank_tips" :class="{ jb: rankTag.index == 1 }">
@@ -88,7 +88,7 @@
                             <view class="prize_item">
                                 <view class="name">暂未开奖</view>
                             </view>
-                            
+
                         </template>
                     </view>
                 </view>
@@ -147,11 +147,12 @@ export default class ClassName extends BaseNode {
     liveData: any = {}
     seriesId: any = 3
     roomId: any = null;
+    nowTimeStamp: number = Math.round(+new Date() / 1000)
     rankTag: any = {
         index: 0,
         list: [
-            { label: '积分榜单', timeStamp: [1666627200, 1667923199], tips: "参与任意拼团获取积分，21-22IMM积分翻倍", timeTips: '(进行中)' },
-            { label: '幸运抽奖', timeStamp: 1668787200, tips: "前500名参与幸运大抽奖" }
+            { label: '积分榜单', timeStamp: [1673884800, 1675180799], tips: "参与任意拼团获取积分，21-22IMM积分翻倍", timeTips: '(进行中)' },
+            { label: '幸运抽奖', timeStamp: 1676358000, tips: "前500名参与幸运大抽奖", timeTips: "" }
         ]
     }
     onLoad(query: any) {
@@ -161,6 +162,9 @@ export default class ClassName extends BaseNode {
             this.reqAllRank()
             this.reqMyRank()
         })
+    }
+    onShow() {
+        this.nowTimeStamp = Math.round(+new Date() / 1000);
     }
     onPageScroll(data: any) {
         //@ts-ignore
@@ -182,6 +186,17 @@ export default class ClassName extends BaseNode {
     }
     isNumber(data: any) {
         return typeof data === 'number'
+    }
+    parseTips(tips: string) {
+        if (!tips) return ""
+        const ActivityPeriod: any = [1673884800, 1675180799]//活动期
+        const ThawPeriod: any = [1675180800, 1676044799]//解冻期
+        const DrawPeriod: number = 1676358000//抽奖日期
+        if (this.nowTimeStamp < ActivityPeriod[0]) return "(暂未开始)";
+        if (this.nowTimeStamp >= ActivityPeriod[0] && this.nowTimeStamp <= ActivityPeriod[1]) return "(进行中)";
+        if (this.nowTimeStamp >= ThawPeriod[0] && this.nowTimeStamp <= ThawPeriod[1]) return "(榜单解冻期)";
+        if (this.nowTimeStamp > ThawPeriod[1] && this.nowTimeStamp < DrawPeriod) return "(已定榜)";
+        if (this.nowTimeStamp >= DrawPeriod) return "(已定榜)";
     }
     goLiveRoom() {
         if (!this.liveData.roomId) {
@@ -647,7 +662,8 @@ page {
                 height: 34rpx;
                 margin-right: 20rpx;
             }
-            .name{
+
+            .name {
                 font-size: 21rpx;
             }
         }

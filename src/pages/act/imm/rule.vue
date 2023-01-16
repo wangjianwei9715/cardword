@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 16:18:45
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-11 16:04:14
+ * @LastEditTime: 2023-01-16 17:46:16
  * @FilePath: \card-world\src\pages\act\imm\rule.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -66,7 +66,7 @@ export default class ClassName extends BaseNode {
     rule: any = [
         {
             title: "1.规则说明",
-            desc: `2023.01.18~2023.02.03，参与任意拼团可获得积分<span style="color:#FA1545">(拼团成功前为冻结积分，拼成后转为正常积分，未拼成则扣除）</span>，活动结束后10天为积分解冻期，无法再获得新的积分。2023.02.13正式定榜，根据榜单排名发放奖励。`
+            desc: `2023.01.17~2023.01.31，参与任意拼团可获得积分<span style="color:#FA1545">(拼团成功前为冻结积分，拼成后转为正常积分，未拼成则扣除）</span>，活动结束后10天为积分解冻期，无法再获得新的积分。2023.02.11 00:00点正式定榜，根据榜单排名发放奖励。`
         },
         {
             title: "2.参与21-22IMM系列获取积分翻倍！",
@@ -84,7 +84,7 @@ export default class ClassName extends BaseNode {
     drawRule: any = [
         {
             title: "1.规则说明",
-            desc: `2023.02.13定榜后，前1000名用户可参与幸运抽奖，排名越高可抽取奖励越多，抽奖时间为2023.02.14 15:00`
+            desc: `2023.02.11 00:00点定榜后，前1000名用户可参与幸运抽奖，排名越高可抽取奖励越多，抽奖时间为2023.02.14 15:00`
         },
         {
             title: "2.抽奖形式",
