@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 15:11:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-16 10:02:18
+ * @LastEditTime: 2023-01-16 11:39:53
  * @FilePath: \card-world\src\pages\act\imm\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -443,7 +443,7 @@ page {
     flex-direction: column;
     align-items: center;
     padding-bottom: 10rpx;
-    margin-top: 20rpx;
+    margin-top: 37rpx;
 }
 
 .rank_tag {
@@ -591,12 +591,15 @@ page {
     }
 
     .draw_condition {
-        font-size: 21rpx;
+        
         font-family: PingFang SC;
         font-weight: 400;
         color: #949494;
         display: flex;
         align-items: center;
+        view{
+            font-size: 21rpx;
+        }
         // justify-content: space-between;
     }
 
