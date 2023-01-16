@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 15:11:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-16 11:39:53
+ * @LastEditTime: 2023-01-16 17:24:02
  * @FilePath: \card-world\src\pages\act\imm\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -62,26 +62,34 @@
             </template>
             <template v-if="rankTag.index == 1">
                 <view class="draw_tr" v-for="(item, index) in awardList" :key="index">
-                    <view class="draw_infoContainer" :class="{ border: item.luckyUsers && item.luckyUsers.length }">
+                    <view class="draw_infoContainer border">
                         <muqian-lazyLoad class="draw_img" borderRadius="3rpx" @click="previewImage(item)"
                             :src="$parsePic(decodeURIComponent(item.pic))" />
                         <view class="draw_infoRight">
                             <view class="draw_name">{{ item.name }}</view>
                             <view class="draw_condition">
-                                <view style="margin-right:30rpx">抽奖数量:{{ item.num || 0 }}</view>
-                                <view>参与条件:{{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` :
+                                <view style="margin-right:30rpx">抽奖数量：{{ item.num || 0 }}</view>
+                                <view>参与条件：{{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` :
                                     `第${item.start_rank}-${item.end_rank}名`
                                 }}</view>
                             </view>
                         </view>
                     </view>
-                    <view class="draw_onPrize" v-if="item.luckyUsers && item.luckyUsers.length">
-                        <view class="prize_item gray">中奖用户:</view>
-                        <view class="prize_item" v-for="(prizeItem, prizeIndex) in item.luckyUsers">
-                            <muqian-lazyLoad borderRadius="50%" class="avatar"
-                                :src="prizeItem.avatar ? $parsePic(decodeURIComponent(prizeItem.avatar)) : defaultAvatar" />
-                            <view class="name">{{ prizeItem.userName }}</view>
-                        </view>
+                    <view class="draw_onPrize">
+                        <view class="prize_item gray">中奖用户 :</view>
+                        <template v-if="item.luckyUsers && item.luckyUsers.length">
+                            <view class="prize_item" v-for="(prizeItem, prizeIndex) in item.luckyUsers">
+                                <muqian-lazyLoad borderRadius="50%" class="avatar"
+                                    :src="prizeItem.avatar ? $parsePic(decodeURIComponent(prizeItem.avatar)) : defaultAvatar" />
+                                <view class="name">{{ prizeItem.userName }}</view>
+                            </view>
+                        </template>
+                        <template v-else>
+                            <view class="prize_item">
+                                <view class="name">暂未开奖</view>
+                            </view>
+                            
+                        </template>
                     </view>
                 </view>
             </template>
@@ -138,6 +146,7 @@ export default class ClassName extends BaseNode {
     myRank: any = {}
     liveData: any = {}
     seriesId: any = 3
+    roomId: any = null;
     rankTag: any = {
         index: 0,
         list: [
@@ -147,6 +156,7 @@ export default class ClassName extends BaseNode {
     }
     onLoad(query: any) {
         if (query.seriesId) this.seriesId = query.seriesId
+        if (query.roomId) this.roomId = query.roomId
         app.platform.hasLoginToken(() => {
             this.reqAllRank()
             this.reqMyRank()
@@ -196,10 +206,21 @@ export default class ClassName extends BaseNode {
         app.platform.goWeChatLive({ playCode: this.liveData.playCode, goodCode: "" })
     }
     getLiveData() {
-        app.http.Get(`dataApi/selectRank/get/braodcast`, { activityTp: 4 }, (res: any) => {
-            this.liveData = res.data
-            this.goLiveRoom()
+        if (!this.roomId) {
+            uni.showToast({
+                title: '暂未开启直播',
+                icon: 'none'
+            })
+            return
+        }
+        app.platform.goZgLive({
+            roomID: +this.roomId,
+            isAnchor: false
         })
+        // app.http.Get(`dataApi/selectRank/get/braodcast`, { activityTp: 4 }, (res: any) => {
+        //     this.liveData = res.data
+        //     this.goLiveRoom()
+        // })
     }
     onClickGoBuy() {
         uni.navigateTo({
@@ -220,13 +241,13 @@ export default class ClassName extends BaseNode {
     }
     reqRewardList() {
         app.http.Get('dataApi/selectRank/lucky/award/list', { activityTp: 4 }, (res: any) => {
-            this.requestSuccess=true
+            this.requestSuccess = true
             this.awardList = res.list || []
         })
     }
     reqAllRank(cb?: any) {
         app.http.Get('dataApi/selectRank/list', this.rankQuery, (res: any) => {
-            this.requestSuccess=true
+            this.requestSuccess = true
             this.isFetchEnd = res.isFetchEnd
             const dataList = res.list || []
             this.rankList = this.rankQuery.fetchFrom == 1 ? dataList : [...this.rankList, ...dataList]
@@ -258,14 +279,14 @@ page {
 
 .topBannerContainer {
     width: 750rpx;
-    height: 450rpx;
+    height: 500rpx;
     // background-image: url('@/static/act/imm/topBanner.png');
     background-size: 100% 100%;
     position: relative;
 
     .topBanner {
         width: 750rpx;
-        height: 385rpx;
+        height: 435rpx;
         position: absolute;
         top: 0;
     }
@@ -279,19 +300,19 @@ page {
         left: 0;
         right: 0;
         margin: auto;
-        top: 102rpx;
+        top: 140rpx;
     }
 
     .topTwo {
-        width: 648rpx;
-        height: 115rpx;
+        width: 588rpx;
+        height: 126rpx;
         background-image: url('@/static/act/imm/topTwo.png');
         background-size: 100% 100%;
         position: absolute;
         left: 0;
         right: 0;
         margin: auto;
-        top: 217rpx;
+        top: 253rpx;
     }
 }
 
@@ -591,15 +612,17 @@ page {
     }
 
     .draw_condition {
-        
+
         font-family: PingFang SC;
         font-weight: 400;
         color: #949494;
         display: flex;
         align-items: center;
-        view{
+
+        view {
             font-size: 21rpx;
         }
+
         // justify-content: space-between;
     }
 
@@ -623,6 +646,9 @@ page {
                 width: 34rpx;
                 height: 34rpx;
                 margin-right: 20rpx;
+            }
+            .name{
+                font-size: 21rpx;
             }
         }
 
