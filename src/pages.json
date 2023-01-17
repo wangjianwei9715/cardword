@@ -669,6 +669,16 @@
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false
 					}
+				},
+				{
+					"path": "yearRabbit/list",
+					"style": {
+						"navigationBarTitleText": "兔年大促",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"transparentTitle":"auto",
+						"enablePullDownRefresh": true
+					}
 				}
 			]
 		},
