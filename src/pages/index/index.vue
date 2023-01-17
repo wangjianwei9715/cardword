@@ -124,7 +124,7 @@
 		};
 		capsule = {
 			pic:'../../static/index/v3/capsule_.png',
-			url:'/pages/act/imm/index'
+			url:'/pages/act/imm/index?seriesId=20&roomId='
 		}
 		hotList: { [x: string]: any } = indexHotList;
 		topAddList: any = [];

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 15:11:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-16 17:57:05
+ * @LastEditTime: 2023-01-17 15:38:36
  * @FilePath: \card-world\src\pages\act\imm\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -222,8 +222,37 @@ export default class ClassName extends BaseNode {
     }
     getLiveData() {
         if (!this.roomId) {
+            app.http.Get('dataApi/home', {}, (res: any) => {
+                let addList: any = res.addList || []
+                if (addList.length) {
+                    const fineItem: any = addList.find((item: any) => {
+                        return item.target.page.indexOf('act/imm/index') != -1
+                    })
+                    if (fineItem) {
+                        const page: string = fineItem.target.page;
+                        let urlStr = page.split('?')[1]
+                        let obj: any = {};
+                        let paramsArr = urlStr.split('&')
+                        for (let i = 0, len = paramsArr.length; i < len; i++) {
+                            // 再通过 = 将每一个参数分割为 key:value 的形式
+                            let arr = paramsArr[i].split('=')
+                            obj[arr[0]] = arr[1];
+                        }
+                        this.roomId = obj.roomId
+                        if(obj.seriesId) this.seriesId=obj.seriesId
+                    }
+                }
+                this.goLive()
+            })
+
+            return
+        }
+        this.goLive()
+    }
+    goLive() {
+        if (!this.roomId) {
             uni.showToast({
-                title: '暂未开启直播',
+                title: "暂未开启直播",
                 icon: 'none'
             })
             return
@@ -232,10 +261,6 @@ export default class ClassName extends BaseNode {
             roomID: +this.roomId,
             isAnchor: false
         })
-        // app.http.Get(`dataApi/selectRank/get/braodcast`, { activityTp: 4 }, (res: any) => {
-        //     this.liveData = res.data
-        //     this.goLiveRoom()
-        // })
     }
     onClickGoBuy() {
         uni.navigateTo({
