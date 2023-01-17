@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 16:18:45
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-16 17:46:16
- * @FilePath: \card-world\src\pages\act\imm\rule.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-01-17 15:44:13
+ * @FilePath: \jichao_app_2\src\pages\act\imm\rule.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -84,7 +84,7 @@ export default class ClassName extends BaseNode {
     drawRule: any = [
         {
             title: "1.规则说明",
-            desc: `2023.02.11 00:00点定榜后，前1000名用户可参与幸运抽奖，排名越高可抽取奖励越多，抽奖时间为2023.02.14 15:00`
+            desc: `2023.02.11 00:00点定榜后，前100名用户可参与幸运抽奖，排名越高可抽取奖励越多，抽奖时间为2023.02.14 15:00`
         },
         {
             title: "2.抽奖形式",
