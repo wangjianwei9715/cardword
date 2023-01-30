@@ -582,9 +582,13 @@ export default class ClassName extends BaseNode {
       if(this.AD_id){
         params.source = {tp:1,sourceId:String(this.AD_id)}
       }
-      app.http.Post(`me/order/supply/${orderCode}`,params,(res:any)=>{
-        resolve(res)
-      })
+      if(app.platform.objectValueAllEmpty(params)){
+        resolve(true)
+      }else{
+        app.http.Post(`me/order/supply/${orderCode}`,params,(res:any)=>{
+          resolve(res)
+        })
+      }
     });
     
   }

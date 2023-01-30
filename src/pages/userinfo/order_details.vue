@@ -2,8 +2,8 @@
 	<view class="content" >
 		<!-- 头部状态 -->
 		<view class="header">
-			<view class="header-state">{{orderState[orderData.state]}}</view>
-			<view class="header-state-desc">{{orderData.state==1?'订单将于'+countDownStr+'后关闭':orderStateDesc(orderData)}}</view>
+			<view class="header-state">{{orderRefund?'已退款':orderState[orderData.state]}}</view>
+			<view class="header-state-desc" v-if="!orderRefund">{{orderData.state==1?'订单将于'+countDownStr+'后关闭':orderStateDesc(orderData)}}</view>
 		</view>
 		
 		<view class="order-box">
@@ -103,7 +103,7 @@
 		</view>
 
 		<!-- 底部按钮 -->
-		<view class="bottom-btn" v-if="operateData!=''">
+		<view class="bottom-btn" v-if="operateData!='' && !orderRefund">
 			<view class="small-btn-content" >
 				<view class="mini-btn left" :class="{'right':index+1==operateData.length}" v-for="(item,index) in operateData" :key="index" @click="onClickOperate(item.cmd)">{{item.name}}</view>
 			</view>
@@ -217,6 +217,9 @@ import { Md5 } from "ts-md5";
 		}
 		onHide(){
 			clearInterval(this.countDownInter);
+		}
+		public get orderRefund() : boolean {
+			return this.orderData.refund
 		}
 		clickPayShowLoading(cb?:Function){
 			uni.showLoading({
@@ -547,6 +550,8 @@ import { Md5 } from "ts-md5";
 			result = Math.round(num * 100) / 100;
 			return result > 0 ? result : 0;
 		}
+		
+		
 	}
 </script>
 

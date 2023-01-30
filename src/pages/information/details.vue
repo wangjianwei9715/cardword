@@ -69,24 +69,16 @@
 		onClickBack(){
 			uni.navigateBack({ delta: 1 });
 		}
-		// 分享
-		onClickShare(){
-			if(!this.operationShow){
-				if(this.shareData.shareUrl==''){
-					this.shareData = {
-						shareUrl:"share/h5/index.html#/pages/information/index?code="+this.code,  
-						title:this.articleData.title,      
-						summary:this.articleData.title,    
-						thumb:decodeURIComponent(this.articleData.cover)
-					}
-				}
-				this.operationShow = true;
-			}
-		}
 		// 获取资讯详情
 		getArticleDetail(){
 			app.http.Get('dataApi/article/detail/'+this.code,{channel:Number(this.typeAD)},(res:any)=>{
 				this.articleData = res.data;
+				this.shareData = {
+					shareUrl:"share/h5/index.html#/pages/information/index?code="+this.code,  
+					title:res.data.title,      
+					summary:res.data.title,    
+					thumb:decodeURIComponent(res.data.cover)
+				}
 				this.getArticleComment()
 			})
 		}

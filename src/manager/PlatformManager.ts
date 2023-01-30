@@ -790,6 +790,15 @@ export default class PlatformManager {
 		}
 		return -1;
 	}
+	objectValueAllEmpty(object:any){
+		var isEmpty = true;
+		Object.keys(object).forEach((x:any)=>{
+			if(object[x] != null && object[x] !=''){
+				isEmpty = false;
+			}
+		});
+		return isEmpty;
+	}
 	isPullDown(isPull:boolean) {
 		//#ifdef APP-PLUS
 		//获取当前 Webview 窗口对象
