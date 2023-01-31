@@ -426,48 +426,30 @@ export default class PlatformManager {
 	// }
 	appLuanch(loginToken: any, cb?: Function) {
 		if(app.localTest) return;
-		
-		// let launchData = uni.getStorageSync("launchData");
-		// if (launchData!='' && (Math.round(new Date().getTime()/1000)-launchData.time<3600)){
-		// 	this.setLaunchData(launchData,loginToken)
-		// } else {
-		// 	// launchUrl             储存打乱顺序后的launch
-		// 	// configLaunchUrl       access保存的launch数据
-		// 	app.service_url = uni.getStorageSync('launchUrl') || ''
-		// 	const configLaunchUrl = uni.getStorageSync("configLaunchUrl");
-		// 	const sortData = configLaunchUrl?configLaunchUrl:app.launch_url;
-		// 	const launchUrl = sortData.sort(() => { return Math.random() - 0.5; });
-			
-		// 	let params = { name: "卡世界", version: app.version, uuid: app.platform.deviceID, };
-		// 	this.postLaunch(loginToken,launchUrl,params,()=>{ if(cb) cb() })
-		// }
 		// launchUrl             储存打乱顺序后的launch
 		// configLaunchUrl       access保存的launch数据
 		app.service_url = uni.getStorageSync('launchUrl') || ''
-		const configLaunchUrl = uni.getStorageSync("configLaunchUrl");
-		const sortData = configLaunchUrl?configLaunchUrl:app.launch_url;
+		const sortData = uni.getStorageSync("configLaunchUrl") || app.launch_url;
 		const launchUrl = sortData.sort(() => { return Math.random() - 0.5; });
-		
-		let params = { name: "卡世界", version: app.version, uuid: app.platform.deviceID, };
+		const params = { name: "卡世界", version: app.version, uuid: app.platform.deviceID, };
 		this.postLaunch(loginToken,launchUrl,params,()=>{ if(cb) cb() })
 		
 	}
 	postLaunch(loginToken:any,launchUrl:any,params:any,cb:Function){
-		let url = app.service_url != ''? app.service_url : this.lastCharacter(launchUrl[this.urlIndex]);
-		app.http.Post(url + "/api/app/launch", params, (res: any) => {
-			console.log("post  /api/app/launch=", res);
+		const url = app.service_url || this.lastCharacter(launchUrl[this.urlIndex]);
+		app.http.Post(`${url}/api/app/launch`, params, (res: any) => {
+			const App = res.app;
 			app.service_url = url;
 			// bussinessApiDomain     主接口域名
 			// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
-			let bussinessApiDomain = this.lastCharacter(res.app.bussinessApiDomain);
-			let dataApiDomain = this.lastCharacter(res.app.dataApiDomain);
-			let funcApiDomain= this.lastCharacter(res.app.funcApiDomain)
+			let bussinessApiDomain = this.lastCharacter(App.bussinessApiDomain);
+			let dataApiDomain = this.lastCharacter(App.dataApiDomain);
+			let funcApiDomain= this.lastCharacter(App.funcApiDomain)
 			// let goodShareOrigin = this.lastCharacter(res.shareDomain?res.shareDomain.good:"")
 			// let activityShareOrigin = this.lastCharacter(res.shareDomain?res.shareDomain.activity:"")
-
-			app.bussinessApiDomain = bussinessApiDomain + "/api/v2.1/";
-			app.dataApiDomain = res.app.dataApiDomain?dataApiDomain + "/api/v2.1/":bussinessApiDomain + "/api/v2.1/"
-			app.funcApiDomain = res.app.funcApiDomain?funcApiDomain + "/api/v2/":bussinessApiDomain + "/api/v2/"
+			app.bussinessApiDomain = `${bussinessApiDomain}${app.requestVersion}`;
+			app.dataApiDomain = `${App.dataApiDomain?dataApiDomain:bussinessApiDomain}${app.requestVersion}`;
+			app.funcApiDomain = `${App.funcApiDomain?funcApiDomain:bussinessApiDomain}/api/v2/`;
 			// app.goodShareOrigin = goodShareOrigin
 			// app.activityShareOrigin = activityShareOrigin
 			if (cb) cb()
@@ -477,9 +459,9 @@ export default class PlatformManager {
 			uni.setStorageSync('appluanchOver', 1)
 			setTimeout(()=>{ uni.$emit('appluanchOver') },500)
 			// #ifdef APP-PLUS
-			app.update_url = url + "/api/";
+			app.update_url = `${url}/api/`;
 			if (app.platform.systemInfo.platform == 'ios') {
-				app.iosPlatform = app.platform.validateVersion(app.version,res.app.pingguo)
+				app.iosPlatform = app.platform.validateVersion(app.version,App.pingguo)
 			}
 			app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
 			// #endif
@@ -495,9 +477,6 @@ export default class PlatformManager {
 			});
 			// this.setShareUrl()
 			if (loginToken) this.getAccess()
-			
-			// console.log("bussinessApiDomain==========", app.bussinessApiDomain);
-			// console.log("dataApiDomain==========", app.dataApiDomain);
 		},()=>{
 			let launchData = uni.getStorageSync("launchData");
 			if(launchData!=''){

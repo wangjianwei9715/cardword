@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-01-03 17:54:37
+ * @LastEditTime: 2023-01-31 14:54:00
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -19,10 +19,10 @@ export module app{
     };
     export let sever:SocketServer;
     export let socketInfo = {tcp:'',tcpToken:''};
-
+    export let requestVersion = '/api/v2.1/';
     // 发布环境
     export let localTest=false;
-    export let bussinessApiDomain='https://server.ssl1.ka-world.com/api/v2.1/';
+    export let bussinessApiDomain=`https://server.ssl1.ka-world.com${requestVersion}`;
     // 热更新地址
     export let update_url='http://service.s1.ka-world.com/';
     // 请求的service地址
