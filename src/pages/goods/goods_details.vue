@@ -163,7 +163,7 @@
 			</view>
 		</view>
 		<!-- 猜你喜欢 -->
-		<guessYouLikeIt :goodsList="likeGoodList" />
+		<guessYouLikeIt v-if="goodCode" :goodCode="goodCode" />
 		<!-- 直播可拖动控件 -->
 		<movable-area class="movable-area" v-if="goodsData.broadcast">
 			<movable-view class="movable-content" direction="all" x="530rpx" y="750rpx">
@@ -284,9 +284,7 @@
 		showDrawer = false;
 		source="";
 		// 猜你喜欢
-		likeGoodList:any = [];
 		planData = {...Manager.planData}
-		relativeOnce = false;
 		// 可领取优惠券列表
 		getCouponList:any = [];
 		userData = app.data;
@@ -310,14 +308,7 @@
 				setTimeout(()=>{
 					this.queryCoupon()
 				},200)
-				// 猜你喜欢
-				let ts = Math.floor(new Date().getTime()/1000);
-				let relativeParams = {
-					ts:ts,
-					s:Md5.hashStr(`kww_goodrelative_sign_${goodCode}_${ts}_2022`)
-				}
 				setTimeout(()=>{
-					this.getRelative(goodCode,relativeParams)
 					// 商品精彩时刻
 					this.reqSeriesCards()
 				},500)
@@ -407,18 +398,6 @@
 			if((data.state!=1&&data.state!=0) || (data.bit & 1) == 1) return;
 			app.http.Get(`dataApi/coupon/merchant/online/good/${data.goodCode}/brief`,{},(res:any)=>{
 				this.getCouponList = res.list||[]
-			})
-		}
-		getRelative(id:any,params:any){
-			app.http.Get(`dataApi/good/${id}/relative`,params,(res:any)=>{
-				if(res.state==0 && !this.relativeOnce){
-					this.relativeOnce = true
-					setTimeout(()=>{
-						this.getRelative(id,params)
-					},500)
-					return;
-				}
-				this.likeGoodList = res.state == 1 && res.goodList ? res.goodList : []
 			})
 		}
 		getProgress() {

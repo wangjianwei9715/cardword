@@ -25,16 +25,39 @@
 	import {
 		getGoodsImg
 	} from "../../tools/util";
+	import { Md5 } from "ts-md5";
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		@Prop({default:[]})
-		goodsList:any;
+		@Prop({default:''})
+		goodCode:any;
 
-		getGoodsImg = getGoodsImg
+		getGoodsImg = getGoodsImg;
+		relativeOnce = false;
+		goodsList = [];
 		created(){//在实例创建完成后被立即调用
-			
+			setTimeout(()=>{
+				const ts = Math.floor(new Date().getTime()/1000);
+				const relativeParams = {
+					ts,
+					s:Md5.hashStr(`kww_goodrelative_sign_${this.goodCode}_${ts}_2022`)
+				}
+				this.getRelative(relativeParams)
+			},500)
 		}
 		mounted(){//挂载到实例上去之后调用
+		}
+		getRelative(params:any){
+			if(this.goodCode=='') return;
+			app.http.Get(`dataApi/good/${this.goodCode}/relative`,params,(res:any)=>{
+				if(res.state==0&& !this.relativeOnce){
+					this.relativeOnce = true
+					setTimeout(()=>{
+						this.getRelative(params)
+					},500)
+					return;
+				}
+				this.goodsList = res.state == 1 && res.goodList ? res.goodList : []
+			})
 		}
 		getPlan(item:any){
 			return Math.floor((Number(item.lockNum)+Number(item.currentNum))/Number(item.totalNum)*100)+'%'

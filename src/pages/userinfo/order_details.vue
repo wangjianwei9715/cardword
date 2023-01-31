@@ -99,7 +99,7 @@
 			</view>
 
 			<!-- 猜你喜欢 -->
-			<guessYouLikeIt :goodsList="likeGoodList" />
+			<guessYouLikeIt v-if="orderData.good&&orderData.good.goodCode" :goodCode="orderData.good.goodCode" />
 		</view>
 
 		<!-- 底部按钮 -->
@@ -177,9 +177,6 @@ import { Md5 } from "ts-md5";
 		surplusNum = 0;
 		optionList:any = [];
 		onceLoad = true;
-		// 猜你喜欢
-		likeGoodList:any = [];
-		relativeOnce = false;
 		retryNum = 0;
 		onLoad(query:any) {
 			this.orderCode = query.code ?? '';
@@ -259,14 +256,6 @@ import { Md5 } from "ts-md5";
 						}
 					})
 				}
-				// 猜你喜欢
-				let ts = Math.floor(new Date().getTime()/1000);
-				let relativeParams = {
-					ts:ts,
-					s:Md5.hashStr(`kww_goodrelative_sign_${res.data.good.goodCode}_${ts}_2022`)
-				}
-				this.getRelative(res.data.good.goodCode,relativeParams)
-				// 
 				// 预测卡密
 				if(res.data.guess){
 					this.guessType = true;
@@ -305,18 +294,6 @@ import { Md5 } from "ts-md5";
 				if(cb && !res.data.wait) cb()
 			})
 			
-		}
-		getRelative(id:number,params:any){
-			app.http.Get(`good/${id}/relative`,params,(res:any)=>{
-				if(res.state==0&& !this.relativeOnce){
-					this.relativeOnce = true
-					setTimeout(()=>{
-						this.getRelative(id,params)
-					},500)
-					return;
-				}
-				this.likeGoodList = res.state == 1 && res.goodList ? res.goodList : []
-			})
 		}
 		// 获取解锁卡密效果
 		getNoShowList(){
