@@ -146,7 +146,7 @@
 			return {
 				goods_code:this.goodCode,
 				card_list:findList.map((x:any)=>{
-					return {card_id:x.card_id,count:x.num}
+					return {weight:x.weight,hour:x.hour,count:x.num}
 				})
 			} 
 		}
