@@ -769,6 +769,25 @@ export default class PlatformManager {
 		}
 		return -1;
 	}
+	// 数组重复值警告
+	refrain(arr:any) {
+		try {
+			const list = arr.map((x:any)=>{
+				return JSON.stringify(x)
+			})
+			list.forEach((x:any,index:number) => {
+				if(list.indexOf(x,index+1)!=-1){
+					throw new Error(`${x}`);
+				}
+			});
+		} catch (error) {
+			uni.showToast({
+				title:`包含重复值${error}`,
+				icon:'none',
+				duration:10000
+			});
+		}
+	}
 	objectValueAllEmpty(object:any){
 		var isEmpty = true;
 		Object.keys(object).forEach((x:any)=>{

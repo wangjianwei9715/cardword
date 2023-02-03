@@ -47,6 +47,7 @@
 		searchText = '';
 		searchEmit = 'orderMyCard';
 		typeTabClick = false;
+		debug = app.updateDebug == 'on'
 		onLoad(query:any) {
 			this.orderCode = query.code;
 			this.goodCode = query.goodCode;
@@ -134,6 +135,7 @@
 				if(data.list){
 					this.cardList = this.cardList.concat(data.list);
 				}
+				this.debug && app.platform.refrain(this.cardList);
 				this.typeTabClick = false;
 				this.currentPage++;
 				if(cb) cb()
