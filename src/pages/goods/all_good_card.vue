@@ -95,7 +95,7 @@
 					if(this.currentPage==1) this.teamDataList =  []
 					this.teamDataList = this.teamDataList.concat(data.list);
 				}
-				this.debug && this.refrain(this.teamDataList);
+				this.debug && app.platform.refrain(this.teamDataList);
 				this.currentPage++;
 				if(cb) cb()
 			});
@@ -126,7 +126,7 @@
 				if(data.list){
 					this.teamDataList = this.teamDataList.concat(data.list);
 				}
-				this.debug && this.refrain(this.teamDataList);
+				this.debug && app.platform.refrain(this.teamDataList);
 				this.scrollId = data.scrollId?data.scrollId:'';
 				this.scrollIdSt = data.timeStamp;
 				this.currentPage++;
@@ -144,26 +144,7 @@
 				this.searchData()
 			}
 		}
-		refrain(arr:any) {
-			const list = arr.map((x:any)=>{
-				return JSON.stringify(x)
-			})
-            let result = [];
-            for (let i = 0; i < list.length; i++) {
-                let curNum = list[i];
-                if (list.indexOf(curNum, i+1) != -1) {
-                    result.push(curNum);
-                }
-            }
-			const refrain:any = Array.from(new Set(result));
-			if(refrain!=''){
-				uni.showToast({
-					title:`包含重复值${refrain[0]}`,
-					icon:'none',
-					duration:10000
-				})
-			}
-		}
+		
 		onClickTranslate() {
 			this.english = !this.english
 		}

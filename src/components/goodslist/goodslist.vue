@@ -76,7 +76,8 @@
 	} from "ts-md5";
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		getGoodsPintuan = getGoodsPintuan
+		getGoodsPintuan = getGoodsPintuan;
+		getPlan = app.goods.listPlan;
 		@Prop({ default: [] })
 		goodsList: any;
 		@Prop({ default: '' })
@@ -97,14 +98,6 @@
 		created() { //在实例创建完成后被立即调用
 		}
 		mounted() { //挂载到实例上去之后调用
-		}
-		getPlan(item:any,type:string){
-			const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000)/100;
-			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
-			const str = saleRatio > width ? 
-			`${saleRatio}%`:
-			`余${item.totalNum-(item.currentNum+item.lockNum)}/${item.totalNum}`
-			return type=='str' ? str : Math.max(width,saleRatio)
 		}
 		getPriceStart(item: any) {
 			return item.isSelect || item.discount != '' || item.pintuan_type == 11

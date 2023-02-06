@@ -36,4 +36,7 @@ export default class navigateManager {
 			url:`/pages/information/${url}code=${articleCode}&ad=${ad}${q&&q!=''?'&q='+q:''}`
 		})
 	}
+	navigateBack() {
+		uni.navigateBack({ delta: 1 });
+	}
 }

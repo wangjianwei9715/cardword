@@ -67,6 +67,7 @@ import {
 } from "ts-md5";
 @Component({})
 export default class ClassName extends BaseComponent {
+    getPlan = app.goods.listPlan;
     @Prop({ default: [] })
     goodsList: any;
     @Prop({ default: false })
@@ -96,14 +97,6 @@ export default class ClassName extends BaseComponent {
             integer: priceArr[0],
             decimal: '.' + priceArr[1]
         }
-    }
-    getPlan(item: any, type: string) {
-        const width = Math.round((Number(this.lockNum?item.lockNum:0) + Number(item.currentNum)) / Number(item.totalNum) * 10000) / 100;
-        const saleRatio = item.saleRatio > 0 && item.saleRatio < 1 ? Math.round((item.saleRatio) * 10000) / 100 : 0;
-        const str = saleRatio > width ?
-            `${saleRatio}%` :
-            `余${item.totalNum - (item.currentNum + item.lockNum)}/${item.totalNum}`
-        return type == 'str' ? str : Math.max(width, saleRatio)
     }
     getPriceStart(item: any) {
         return item.isSelect || item.discount != '' || item.pintuan_type == 11

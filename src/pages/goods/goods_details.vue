@@ -1,10 +1,19 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\goods\goods_details.vue
+ * @Author: wjw
+ * @Date: 2023-01-04 15:59:01
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-02-06 15:20:56
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
 		<!-- #ifndef MP -->
 		<view class="header-banner">
 			<statusbar />
 			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
+				<view class="icon-back" @click="navigateBack">
 					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
 				</view>
 				<view class="header-title">商品详情</view>
@@ -40,11 +49,11 @@
 			<view class="detail-bg">
 				<view class="header-content-end" v-if="goodsData.state>=2">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text
-							class="price-qi">{{getPriceStart()?'起':''}}</text></view>
+							class="price-qi">{{getPriceStart?'起':''}}</text></view>
 				</view>
-				<view class="header-content" :class="{'random-bg':getSelectType()}" v-else-if="goodsData.state==1||goodsData.state==0">
+				<view class="header-content" :class="{'random-bg':getSelectType}" v-else-if="goodsData.state==1||goodsData.state==0">
 					<view class="header-price">¥<text>{{goodsData.price}}</text><text
-							class="price-qi">{{getPriceStart()?'起':''}}</text></view>
+							class="price-qi">{{getPriceStart?'起':''}}</text></view>
 					<view class="header-right">
 						<view class="icon-end">{{goodsData.state==0?'距开售':'距结束'}}</view>
 						<view class="countdown-content">
@@ -67,7 +76,7 @@
 								</view>
 								<view class="header-top-plan-num-state" v-else > {{planData.str}}{{goodsData.lockNum>0?'('+goodsData.lockNum+'未付款)':''}}</view>
 							</view>
-							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType()}">
+							<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType}">
 								<view class="progress-mask" :style="{width:(100-planData.width)+'%'}"> </view>
 							</view>
 						</view>
@@ -173,7 +182,7 @@
 		</movable-area>
 
 		<!-- 底部按钮 -->
-		<view class="btn-content" v-if="goodsData.state==1||(goodsData.state==0&&getPriceStart())">
+		<view class="btn-content" v-if="goodsData.state==1||(goodsData.state==0&&getPriceStart)">
 			<view class="btn-content-left">
 				<view class="btn-content-left-index" v-for="item in tipBtn" :key="item.id" @click="onClickTipBtn(item)">
 					<image :class="'icon-'+item.class" :src="item.url" mode="aspectFill" />
@@ -185,7 +194,7 @@
 			</view>
 			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm"
 				@click="onClickCopyInviteKey">复制口令给新人</view>
-			<view v-else class="btn-confirm" :style="{width:`${tipBtn.length==2?'310rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType()}" @click="onClickBuy()">
+			<view v-else class="btn-confirm" :style="{width:`${tipBtn.length==2?'310rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType}" @click="onClickBuy()">
 				{{goodsData.isSelect?'选择编号':'立即购买'}}
 			</view>
 		</view>
@@ -208,7 +217,7 @@
 		<checkTeamPay :teamCheckShow="choiceTeamData.teamCheckShow" :choiceTeamData="choiceTeamData"
 			@teamPaycancel="onClickTeamCheckCancel" @teamCheck="onClickTeamCheck" @branchCheck="onClickBranchCheck"
 			@cartDel="onClickDeleteCart" @joinCart="joinCart" @baodui="onClickBaodui" @settlement="onClickSettlement"
-			@buyRandomGood="onClickBuyRandomGood" @randomCountOver="onChangeRandomGood" />
+			@buyRandomGood="onClickBuyRandomGood" @randomCountOver="getGoodSelect" />
 
 		<!-- 自选球队随机 -->
 		<checkTeamRandom :teamRandomShow="choiceTRData.show" :teamRandomData="choiceTRData.data"
@@ -218,7 +227,7 @@
 
 		<!-- 邀请新人活动弹窗 -->
 		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668"
-			@cancelInvitePopup="onClickInvitePopupCancel" @popupBtn="onClickInviteCopy" />
+			@cancelInvitePopup="showInvitePopup=false" @popupBtn="onClickInviteCopy" />
 
 		<!-- 底部弹窗 -->
 		<bottomDrawer :showDrawer.sync="showDrawer" :title="'拼团规则'">
@@ -250,13 +259,15 @@
 	import { goodsDetailRules, goodsDetailHelp } from "@/tools/DataRules";
 	import { goodDetailSpe } from "@/tools/DataExchange"
 	import { Md5 } from "ts-md5";
-	import { parsePic } from "@/tools/util";
+	import { parsePic,secondsFormat } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
 	const Manager =  detailsManager.getIns();
 	const shareData = { shareUrl: '', title: '', summary: '', thumb: '' }
 	@Component({})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
+		navigateBack = app.navigateTo.navigateBack;
+		isPullDown = app.platform.isPullDown;
 		defaultAvatar = app.defaultAvatar;
 		goodsDetailRules = goodsDetailRules
 		goodsDetailHelp = goodsDetailHelp;
@@ -301,7 +312,7 @@
 			this.goodCode = goodCode;
 			this.source=query.source
 			this.AD_id = query.AD_id || null;
-			this.getGoodData(goodCode,()=>{
+			this.getGoodData(()=>{
 				// 购买记录
 				this.getBuyRecord()
 				// 查询可领取优惠券
@@ -316,39 +327,24 @@
 			// #endif
 		}
 		onShow() {
-			// #ifndef MP
 			if (this.goodsData != '') {
-				this.getGoodData(this.goodCode);
+				this.getGoodData();
 			}
-			// #endif
-			uni.getNetworkType({
-				success: (res) => {
-					if (res.networkType == 'none') {
-						uni.showModal({
-							title: '提示',
-							content: '当前无网络服务，请开启网络',
-							success: function(res) {}
-						});
-					}
-				}
-			});
-		}
-		onHide() {
-			uni.offNetworkStatusChange((res) => {});
 		}
 		//   下拉刷新
 		onPullDownRefresh() {
-			this.getGoodData(this.goodCode,() => {
+			this.getGoodData(() => {
 				this.getBuyRecord()
 				uni.stopPullDownRefresh();
 			})
 		}
 		// 数据详情赋值
-		getGoodData(goodCode: any,cb?:Function) {
+		getGoodData(cb?:Function) {
 			const { countData } = this;
+			const goodCode = this.goodCode;
 			clearInterval(countData.countInterval);
-			let ts = Math.floor(new Date().getTime()/1000);
-			let params = {
+			const ts = Math.floor(new Date().getTime()/1000);
+			const params = {
 				ts:ts,
 				s:Md5.hashStr(`kww_good_sign_${goodCode}_${ts}_2022`)
 			}
@@ -360,25 +356,25 @@
 				}
 				this.favorType = data.favorite>0;
 				this.goodsData = data.good;
-				this.getPlan(this.goodsData);
 				this.payChannel = data.payChannel || [];
+				this.planData = app.goods.detailsPlan(this.goodsData);
+				this.goodsDesc = app.goods.setGoodsDesc(this.goodsData)
 				if (data.joined) {
 					this.tipBtn = [
 						{ id: 1, name: '客服', url: '../../static/goods/v2/icon_kefu.png', class: 'kf' }, 
 						{ id: 2, name: '我的卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
 					]
 				}
-				// 倒计时
-				countData.countDown = data.good.state == 0? ( data.good.leftsec - (data.good.overAt - data.good.startAt)): data.good.leftsec;
-				this.getGoodsImage();
-				this.getCountDown();
-				this.getGoodsSpe();
-				this.getGoodsDesc()
 				if((data.good.bit & 128) == 128){
 					app.http.Get(`dataApi/good/${goodCode}/chedui`,{},(res:any)=>{
 						this.cheduiData = res
 					})
 				}
+				// 倒计时
+				countData.countDown = data.good.state == 0? ( data.good.leftsec - (data.good.overAt - data.good.startAt)): data.good.leftsec;
+				this.getGoodsImage();
+				this.getCountDown();
+				this.getGoodsSpe();
 				cb && cb()
 			})
 		}
@@ -418,58 +414,29 @@
 		 */
 		getGoodsImage() {
 			const { picData } = this;
-			const goodsPic = this.goodsData.pic
-			let pic:any = decodeURIComponent(goodsPic.carousel);
-			let carousel: any = [];
-			if (pic.indexOf(',') == -1) {
-				carousel.push(parsePic(pic))
-			} else {
-				carousel = pic.split(',')
-				carousel = carousel.map((x:any)=>{
-					return parsePic(x)
-				})
-			}
+			const goodsPic = this.goodsData.pic;
+			const carousel = picFormat(goodsPic.carousel);
 			this.swiperData.carouselLength = carousel.length;
-			let yuanfeng = goodsPic.yuanfeng ? decodeURIComponent(goodsPic.yuanfeng).split(',') : [];
-			yuanfeng = yuanfeng.map((x:any)=>{
-				return parsePic(x)
-			})
-			picData.detailImg = [...yuanfeng];
-			picData.carousel = [...carousel, ...yuanfeng];
-		}
-		/**
-		 * 倒计时时间计算
-		 */
-		getTime() {
-			const { countData } = this;
-			let day = String(Math.floor(countData.countDown / 3600 / 24));
-			let day_num = countData.countDown - 3600 * 24 * Number(day)
-			let hour = Math.floor((day_num) / 3600) < 10 ? '0' + Math.floor((day_num) / 3600) : Math.floor((day_num) /
-				3600);
-			let minute = Math.floor((day_num - 3600 * Number(hour)) / 60) < 10 ? '0' + Math.floor((day_num - 3600 *
-				Number(hour)) / 60) : Math.floor((day_num - 3600 * Number(hour)) / 60);
-			let second = Math.floor((day_num - 3600 * Number(hour)) % 60) < 10 ? '0' + Math.floor((day_num - 3600 *
-				Number(hour)) % 60) : Math.floor((day_num - 3600 * Number(hour)) % 60);
-			if (Number(day) > 0) {
-				countData.countDay = day;
+			picData.detailImg = [...picFormat(goodsPic.yuanfeng)];
+			picData.carousel = [...carousel,...picData.detailImg];
+
+			function picFormat(pic:string){
+				return pic ? decodeURIComponent(pic).split(',').map(x => parsePic(x)) : [];
 			}
-			countData.countHour = hour;
-			countData.countMinute = minute;
-			countData.countSecond = second
 		}
 		/**
 		 * 倒计时定时器
 		 */
 		getCountDown() {
 			const { countData } = this;
-			this.getTime()
+			setCountDownStr()
 			countData.countInterval = this.scheduler(() => {
-				if (this.countData.countDown > 0) {
-					this.countData.countDown--;
-					this.getTime()
+				if (countData.countDown > 0) {
+					countData.countDown--;
+					setCountDownStr()
 				} else {
 					if(this.goodsData.state == 0){
-						this.getGoodData(this.goodCode);
+						this.getGoodData();
 					}
 					if (this.goodsData.state == 1) {
 						this.goodsData.state = -99
@@ -477,12 +444,20 @@
 					clearInterval(countData.countInterval)
 				}
 			}, 1);
+
+			function setCountDownStr() {
+				const { day, hour, minute, second } = secondsFormat(countData.countDown);
+				countData.countDay = day;
+				countData.countHour = hour;
+				countData.countMinute = minute;
+				countData.countSecond = second
+			}
 		}
 		/**
 		 * 商品规格、配置、形式
 		 */
 		getGoodsSpe() {
-			let data = this.goodsData;
+			const data = this.goodsData;
 			const spec = data.spec.name;
 			const num = data.spec.num==-1?'暂无':data.spec.num+'张'
 			if (this.goodsData.isSelect) {
@@ -498,28 +473,6 @@
 				this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
 			}
 		}
-		/**
-		 * 商品拼团详情说明
-		 */
-		getGoodsDesc(){
-			const { goodsData } = this; 
-			const desc = decodeURIComponent(goodsData.desc);
-			const newDesc = desc.indexOf('\n') > -1 ? desc.split('\n') : desc.split('\r');
-			const series = { serieTitle:'', spec:'' }
-			newDesc.map((x:any)=>{
-				let data = x.indexOf('：')!=-1?x.split('：'):x.split(':');
-				if(data[0] == '拼团系列') series.serieTitle = data[1];
-				if(data[0] == '拼团规格') series.spec = data[1];
-			})
-			this.goodsDesc = [
-				{name:'拼团系列',desc:`${series.serieTitle||goodsData.serieTitle}`},
-				{name:'开售时间',desc:uni.$u.timeFormat(goodsData.startAt,'yyyy-mm-dd hh:MM:ss')},
-				{name:'拼团编号',desc:`${goodsData.goodCode}`},
-				{name:'产品规格',desc:`${series.spec||goodsData.spec.content}`},
-				{name:'拼团份数',desc:`${goodsData.totalNum}份`},
-				{name:'拼团时间',desc:`${(goodsData.overAt-goodsData.startAt)/86400}天`},
-			]
-		}	
 		onClickTipBtn(item: any) {
 			if (item.id == 1) {
 				app.platform.hasLoginToken(()=>{
@@ -533,9 +486,6 @@
 			if (item.id == 2) {
 				uni.navigateTo({ url: '/pages/userinfo/order_myCard?code=&goodCode=' + this.goodCode })
 			}
-		}
-		onClickBack() {
-			uni.navigateBack({ delta: 1 });
 		}
 		onClickShops() {
 			app.platform.hasLoginToken(()=>{
@@ -590,26 +540,10 @@
 				indicator: "number"
 			});
 		}
-		isPullDown(isPull:boolean) {
-			//#ifdef APP-PLUS
-			//获取当前 Webview 窗口对象
-			const pages = getCurrentPages();  
-			const page = pages[pages.length - 1];  
-			//@ts-ignore
-			const currentWebview = page.$getAppWebview();
-			//根据状态值来切换禁用/开启下拉刷新
-			currentWebview.setStyle({  
-				pullToRefresh: {  
-					support: isPull,  
-					style: 'circle'
-				}  
-			});  
-			//#endif
-		}
 		onClickBuy() {
 			app.platform.hasLoginToken(()=>{
 				const { goodsData } = this
-				if(this.getPriceStart()) {
+				if(this.getPriceStart) {
 					this.isPullDown(false)
 				}
 				// 自选球队
@@ -669,24 +603,6 @@
 			if (item.id <= 2) {
 				operaData.operaShow = true;
 				operaData.operaType = item.id
-			}
-		}
-		// 随机倒计时结束
-		onChangeRandomGood() {
-			this.getGoodSelect()
-		}
-		getPriceStart() {
-			const { goodsData } = this
-			return goodsData.isSelect || goodsData.pintuan_type == 11 || goodsData.pintuan_type == 12
-		}
-		getSelectType() {
-			switch (this.goodsData.pintuan_type) {
-				case 10:
-				case 11:
-				case 12:
-					return true;
-				default:
-					return false
 			}
 		}
 		// 自选球队 我要选队
@@ -882,14 +798,9 @@
 				});
 			})
 		}
-		// 复制弹窗关闭
-		onClickInvitePopupCancel() {
-			this.showInvitePopup = false;
-		}
-		// 
 		onClickInviteCopy(type: any) {
 			plus.runtime.openURL("weixin://");
-			this.onClickInvitePopupCancel();
+			this.showInvitePopup = false;
 		}
 		onChangeSwiperCurrent(event: any) {
 			const { swiperData } = this
@@ -903,22 +814,12 @@
 				swiperData.swiperCurrent = index == 0 ? 0 : swiperData.carouselLength;
 			}
 		}
-		getCountStr(str: any, index: number) {
-			let Str = String(str)
-			return Str.substr(index, 1)
+		public get getSelectType() : boolean{
+			return [10,11,12].includes(this.goodsData.pintuan_type)
 		}
-		/**
-		 * 设置进度
-		 */
-		getPlan(item:any){
-			const width = Math.round((Number(item.lockNum) + Number(item.currentNum)) / Number(item.totalNum) * 10000)/100;
-			const saleRatio = item.saleRatio>0&&item.saleRatio<1?Math.round((item.saleRatio)*10000)/100:0;
-			const str = `${saleRatio}%`;
-			this.planData = {
-				width:Math.max(width,saleRatio),
-				str,
-				showMsg:width>=saleRatio
-			}
+		public get getPriceStart() : boolean {
+			const { goodsData } = this
+			return goodsData.isSelect || goodsData.pintuan_type == 11 || goodsData.pintuan_type == 12
 		}
 		// 商品剩余数量
 		public get goodSurplusNum() : number {
