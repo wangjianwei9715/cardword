@@ -3,13 +3,14 @@
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-01-31 14:54:00
+ * @LastEditTime: 2023-02-03 15:30:34
  * Copyright: 2022 .
  * @Descripttion: 
  */
 import PlatformManager from "./manager/PlatformManager";
 import PayManager from "./manager/PayManager";
 import navigateManager from "./manager/navigateManager";
+import goodsManager from "./manager/goodsManager";
 import HttpRequest from "./net/HttpRequest";
 import { SocketServer } from "./net/SocketServer";
 export module app{
@@ -42,6 +43,7 @@ export module app{
 	export let payment = PayManager.getIns();
     export let http =  HttpRequest.getIns();
     export let navigateTo =  navigateManager.getIns();
+    export let goods =  goodsManager.getIns();
     export let refreshIng = false;
     export let needPushIdentifier = true;
     export let protobuf:any = null; 

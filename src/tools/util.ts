@@ -287,6 +287,19 @@ export function getStrByMinutes(num: number) {//返回 hh:mm
 	let strTime = hours + ':' + minutes;
 	return strTime;
 }
+export function secondsFormat(seconds:number){
+	const day = Math.floor(seconds / 3600 / 24);
+	const daySurplus = seconds - (3600 * 24 * day)
+	const hour = Math.floor((daySurplus) / 3600);
+	const minute = Math.floor((daySurplus - 3600 * hour) / 60);
+	const second = Math.floor((daySurplus - 3600 * hour) % 60);
+	return {
+		day,
+		hour:hour<10?`0${hour}`:hour,
+		minute:minute<10?`0${minute}`:minute,
+		second:second<10?`0${second}`:second
+	}
+}
 export function getGoodsImg(img: string) {  //返回图片
 	if (img.indexOf(',') == -1) {
 		return img
