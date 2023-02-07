@@ -57,7 +57,7 @@
 								<view class="chedui-rank-jf u-line-1">积分 {{item.amount}}</view>
 							</view>
 						</view>
-						<view class="chedui-rank-item-reward u-line-1" :class="{'font-bold':item.index<=3}">{{item.name}}</view>
+						<view class="chedui-rank-item-reward u-line-2" :class="{'font-bold':item.index<=3}">{{item.name}}</view>
 					</view>
 				</view>
 			</view>
