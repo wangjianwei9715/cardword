@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-12-28 14:27:23
+ * @LastEditTime: 2023-02-07 10:41:22
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -20,7 +20,7 @@
                     <view class="item-title u-line-2">{{item.title}}</view>
                     <view class="item-info-bottom">
                         <view class="item-price">
-                            ￥<text class="text-price">{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
+                            ￥<text class="text-price">{{item.price}}</text><text>{{goodsManaager.hasLowestPrice(item)?' 起':''}}</text>
                         </view>
                         <view class="item-num">余{{item.totalNum-(item.currentNum+item.lockNum)}}/{{item.totalNum}}</view>
                     </view>
@@ -58,6 +58,7 @@
     })
     export default class ClassName extends BaseNode {
         goGoodsDetails = app.navigateTo.goGoodsDetails;
+        goodsManaager = app.goods;
         listParams = {...ListInitParams};
         listData = [];
         equitycard = [];
@@ -100,9 +101,6 @@
                 this.showUpWeight = true
             })
         }
-        getPriceStart(item: any) {
-			return item.isSelect || item.discount != '' || item.pintuan_type == 11
-		}
     }
 </script>
 

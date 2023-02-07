@@ -14,7 +14,7 @@
 							{{item.tp==1?item.good.merchantName:item.merchant.merchantName}}
 						</view>
 						<view class="info-bottom" v-if="item.tp==1">
-							<text>￥</text><text class="price-text">{{item.good.price}}</text>{{getPriceStart(item.good)?' 起':''}}
+							<text>￥</text><text class="price-text">{{item.good.price}}</text>{{goodsManaager.hasLowestPrice(item.good)?' 起':''}}
 						</view>
 						<view class="info-bottom" v-else>店铺全商品通用</view>
 					</view>
@@ -37,6 +37,7 @@ import { Md5 } from "ts-md5";
 	import BaseNode from '../../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
+		goodsManaager = app.goods;
 		tabData = [
 			{id:'all',name:'全部'},
 			{id:'merchant',name:'店铺券'},
@@ -122,9 +123,6 @@ import { Md5 } from "ts-md5";
 			if(item.state == 3) return '已使用';
 			let msg = item.state == 1? '领券' : (item.tp==1?'去使用':'进店使用');
 			return msg;
-		}
-		getPriceStart(item: any) {
-			return item.isSelect || item.discount != '' || item.pintuan_type == 11
 		}
 	}
 </script>

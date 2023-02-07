@@ -22,7 +22,7 @@
                             <text>{{ filterPrice(item.price).integer }}</text>
                             <text class="decimal"
                                 v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
-                            <text class="priceTips">{{ getPriceStart(item) ? '起' : '' }}</text>
+                            <text class="priceTips">{{ goodsManaager.hasLowestPrice(item) ? '起' : '' }}</text>
                         </view>
                         <view class="goodsMerchant uni-flex" @click.stop="onClickSellerShop(item)">
                             <muqian-lazyLoad class="merchantLogo" borderRadius="50%"
@@ -48,6 +48,7 @@ import BaseNode from "../../../base/BaseNode.vue";
 import { dateFormatMSHMS } from "@/tools/util"
 @Component({})
 export default class ClassName extends BaseNode {
+  goodsManaager = app.goods;
   dateFormatMSHMS = dateFormatMSHMS;
   goodsList:any = [];
   noMoreData = false;
@@ -104,9 +105,6 @@ export default class ClassName extends BaseNode {
         integer: priceArr[0],
         decimal: '.' + priceArr[1]
     }
-  }
-  getPriceStart(item: any) {
-    return item.isSelect || item.discount != '' || item.pintuan_type == 11
   }
   // 跳转商品详情
   onClickJumpDetails(goodCode: any) {

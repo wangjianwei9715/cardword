@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-02-06 15:20:56
+ * @LastEditTime: 2023-02-07 10:30:42
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -357,8 +357,8 @@
 				this.favorType = data.favorite>0;
 				this.goodsData = data.good;
 				this.payChannel = data.payChannel || [];
-				this.planData = app.goods.detailsPlan(this.goodsData);
-				this.goodsDesc = app.goods.setGoodsDesc(this.goodsData)
+				this.planData = Manager.detailsPlan(this.goodsData);
+				this.goodsDesc = Manager.setGoodsDesc(this.goodsData)
 				if (data.joined) {
 					this.tipBtn = [
 						{ id: 1, name: '客服', url: '../../static/goods/v2/icon_kefu.png', class: 'kf' }, 

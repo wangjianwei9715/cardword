@@ -23,19 +23,19 @@
 					</view>
 					<view class="goodslist-priceMsg uni-flex goodslist-padding">
 						<view class="goodslist-priceMsg-left">
-							￥<text class="price-text">{{item.price}}</text><text>{{getPriceStart(item)?' 起':''}}</text>
+							￥<text class="price-text">{{item.price}}</text><text>{{goodsManaager.hasLowestPrice(item)?' 起':''}}</text>
 						</view>
 						<view v-if="item.state==0 || item.state == -1" class="goodslist-priceMsg-right">
 							{{dateFormatMSHMS(item.startAt)}}开售
 						</view>
 						<view v-else :id="item.goodCode" class="goodslist-priceMsg-right goodslist-plan-desc">
-							{{getPlan(item,'str')}}
+							{{goodsManaager.listPlan(item,'str')}}
 						</view>
 					</view>
 					<view class="goodslist-padding">
-						<view class="goodslist-progress" :class="{'goodslist-progress-select':getSelectType(item)}">
+						<view class="goodslist-progress" :class="{'goodslist-progress-select':goodsManaager.ifSelectType(item)}">
 							<view class="progressMask"
-								:style="{width:(100-getPlan(item,'num'))+'%'}"></view>
+								:style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
 						</view>
 					</view>
 				</view>
@@ -77,7 +77,7 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		getGoodsPintuan = getGoodsPintuan;
-		getPlan = app.goods.listPlan;
+		goodsManaager = app.goods;
 		@Prop({ default: [] })
 		goodsList: any;
 		@Prop({ default: '' })
@@ -96,21 +96,15 @@
 		showPlan: any = []
 		valid = true
 		created() { //在实例创建完成后被立即调用
+			
 		}
 		mounted() { //挂载到实例上去之后调用
-		}
-		getPriceStart(item: any) {
-			return item.isSelect || item.discount != '' || item.pintuan_type == 11
 		}
 		onClickJumpUrl(id: any) {
 			this.$emit("send", id);
 		}
-		getSelectType(item: any) {
-			return item.pintuan_type == 10 || item.pintuan_type == 11 || item.pintuan_type == 12
-		}
 		onClickSellerShop(item: any) {
 			if(!item.merchantName) return;
-			console.log(item);
 			this.goMerchantPage(item.merchantAlias)
 		}
 		onClickTopJumpUrl(url: any) {

@@ -10,9 +10,9 @@
                     </view>
                     <view class="goodsProgress uni-flex" v-else>
                         <view class="progressContainer">
-                            <view class="progress" :style="{ width: (getPlan(item, 'num')) + '%' }"></view>
+                            <view class="progress" :style="{ width: (goodsManaager.listPlan(item, 'num')) + '%' }"></view>
                         </view>
-                        <view class="progressPercnet">{{ getPlan(item, 'num') + '%' }}</view>
+                        <view class="progressPercnet">{{ goodsManaager.listPlan(item, 'num') + '%' }}</view>
                     </view>
                     <view class="goodsType" v-if="isOneLine">
                         <view>{{ getGoodsPintuan(item.pintuan_type) }}</view>
@@ -26,7 +26,7 @@
                         <text>{{ filterPrice(item.price).integer }}</text>
                         <text class="decimal"
                             v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
-                        <text class="priceTips">{{ getPriceStart(item) ? '起' : '' }}</text>
+                        <text class="priceTips">{{ goodsManaager.hasLowestPrice(item) ? '起' : '' }}</text>
                     </view>
                     <view class="goodsMerchant uni-flex" @click.stop="onClickSellerShop(item)">
                         <muqian-lazyLoad class="merchantLogo" borderRadius="50%"
@@ -67,7 +67,7 @@ import {
 } from "ts-md5";
 @Component({})
 export default class ClassName extends BaseComponent {
-    getPlan = app.goods.listPlan;
+    goodsManaager = app.goods;
     @Prop({ default: [] })
     goodsList: any;
     @Prop({ default: false })
@@ -97,9 +97,6 @@ export default class ClassName extends BaseComponent {
             integer: priceArr[0],
             decimal: '.' + priceArr[1]
         }
-    }
-    getPriceStart(item: any) {
-        return item.isSelect || item.discount != '' || item.pintuan_type == 11
     }
     onClickSellerShop(item: any) {
         if (!item.merchantName) return;
