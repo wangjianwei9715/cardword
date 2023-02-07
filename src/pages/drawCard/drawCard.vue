@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-12-16 15:26:33
+ * @LastEditTime: 2023-02-07 15:50:52
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -154,7 +154,7 @@
     defultPic:string = '../../static/goods/drawcard/default.png';
     onLoad(query:any){
       const initCode = JSON.parse(query.data);
-      initCode.map((x:DarwCard.Code)=>{
+      initCode.forEach((x:DarwCard.Code)=>{
         x.pic = parsePic(decodeURIComponent(x.pic))
       });
       this.codeList = ['',...initCode]

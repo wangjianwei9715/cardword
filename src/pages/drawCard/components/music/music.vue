@@ -41,8 +41,8 @@
 		show!:Boolean
 
 		musicList = [
-			{id:1,name:'鸡舞',singer:'蔡徐坤',choice:false,play:false,src:'../../static/drawCard/music/jiwu.mp3'},
-			{id:2,name:'wait wait wait',singer:'蔡徐坤',choice:false,play:false,src:'../../static/drawCard/music/Wait.mp3'},
+			{id:1,name:'wait wait wait',singer:'蔡徐坤',choice:false,play:false,src:'../../static/drawCard/music/Wait.mp3'},
+			{id:2,name:'鸡舞',singer:'蔡徐坤',choice:false,play:false,src:'../../static/drawCard/music/jiwu.mp3'},
 			{id:3,name:'You Bring Me Joy',singer:'ErGuuu',choice:false,play:false,src:'../../static/drawCard/music/ErGuuu.mp3'},
 			{id:4,name:'迷恋',singer:'梅卡德尔',choice:false,play:false,src:'../../static/drawCard/music/milian.mp3'},
 		]
@@ -72,7 +72,7 @@
 			}else{
 				item.choice = true;
 				item.play = initPlay;
-				this.musicList.map((x:Music)=>{
+				this.musicList.forEach((x:Music)=>{
 					x.id!=item.id && (x.choice=false,x.play=false);
 				});
 				this.$emit('musicChange',item.name);
@@ -85,7 +85,7 @@
 			const item = this.musicList.find((x:Music)=>{
 				return x.id == this.storage.id
 			})
-			return item==undefined ? this.musicList[0] : item
+			return item ?? this.musicList[0] 
 		}
 		public get InitMusicPlay() : boolean {
 			return this.storage ? this.storage.play : true 

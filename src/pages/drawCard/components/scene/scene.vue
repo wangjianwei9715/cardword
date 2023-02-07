@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-17 15:05:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-12-14 15:40:32
+ * @LastEditTime: 2023-02-07 15:47:53
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -57,7 +57,7 @@
 		onClickSceneChoice(item:Scene){
 			
 			if(!item.choice){
-				this.sceneList.map((x:Scene)=>{
+				this.sceneList.forEach((x:Scene)=>{
 					x.choice = item.id==x.id
 				});
 				uni.setStorageSync('sceneChoice',item);
@@ -69,7 +69,7 @@
 			const item = this.sceneList.find((x:Scene)=>{
 				return x.id == uni.getStorageSync('sceneChoice').id
 			})
-			return item==undefined ? this.sceneList[this.picType==1?1:0] : item
+			return item ?? this.sceneList[this.picType==1?1:0] 
 		}
 		
 	}
