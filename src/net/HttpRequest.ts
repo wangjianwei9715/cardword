@@ -47,10 +47,6 @@ const errorCodeMap: any = {
 		reject: true,
 		execute: reLoginAction,
 	},
-	1101: {
-		reject: true,
-		execute: refreshToken,
-	},
 	1102: {
 		reject: true,
 		execute: refreshToken,
