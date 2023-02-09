@@ -93,7 +93,7 @@ export default class ClassName extends BaseNode {
         box-sizing: border-box;
         display: flex;
         align-items: center;
-        // justify-content: space-between;
+        // justity-content: space-between;
         border-bottom: 1px solid #f1f1f4;
 
         .name {
@@ -116,7 +116,7 @@ export default class ClassName extends BaseNode {
             height: 98rpx;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justity-content: flex-end;
             font-size: 24rpx;
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;

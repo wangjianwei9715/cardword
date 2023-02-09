@@ -2,14 +2,19 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-02-09 11:41:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-02-09 14:35:45
+ * @LastEditTime: 2023-02-09 15:48:06
  * @FilePath: \card-world\src\pages\userinfo\user_identity.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <u-loading-page :loading="showLoadin && !authSuccessShow" loadingMode="semicircle" loading-text="认证中"
-            loading-color="#fe3e58" icon-size="146rpx"></u-loading-page>
+        <u-loading-page :loading="showLoadin && !authSuccessShow"  loading-text="认证中"
+            loading-color="#fe3e58" icon-size="146rpx">
+            <view>
+                <view class="bigAuth">认证中</view>
+                <view class="tips">实名信息即将核验完成，请勿离开或关闭当前页面</view>
+            </view>
+        </u-loading-page>
         <view class="submitForm" v-if="!showLoadin && !authSuccessShow">
             <view class="topTips">为了保障您的账号安全，请完成认证，认证信息将用于身份核实，我们会对信息进行严格保密</view>
             <view class="formItem uni-flex">
@@ -23,9 +28,9 @@
             <view class="formItem uni-flex">
                 <view class="label">身份证号</view>
                 <view class="rightInput flexCenter">
-                    <input type="idcard" :maxlength="18" v-model.trim="identityParams.identifyNum" placeholder="输入身份证号"
-                        @blur="identifyNumBlur = true" />
-                    <view class="errorTips" v-if="identifyNumTipsShow">请填写正确的身份证号</view>
+                    <input type="idcard" :maxlength="18" v-model.trim="identityParams.identityNum" placeholder="输入身份证号"
+                        @blur="identityNumBlur = true" />
+                    <view class="errorTips" v-if="identityNumTipsShow">请填写正确的身份证号</view>
                 </view>
             </view>
             <view class="buyReadTop" @click="isReadAgreement = !isReadAgreement">
@@ -50,16 +55,16 @@ import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 const realNameReg = /^[\u00B7\u3007\u3400-\u9FFF\uE000-\uF8FF\uF900-\uFAFF\u{20000}-\u{2FFFF}\u{30000}-\u{3FFFF}]+$/u
-const identifyNumReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+const identityNumReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
 @Component({})
 export default class ClassName extends BaseNode {
     isReadAgreement: boolean = false
     identityParams: any = {
         realName: "",
-        identifyNum: ""
+        identityNum: ""
     }
     realNameBlur: boolean = false
-    identifyNumBlur: boolean = false
+    identityNumBlur: boolean = false
     showLoadin: boolean = false//认证loading bol
     authSuccessShow: boolean = false//认证成功bol
     delayTimer: any = null
@@ -71,15 +76,15 @@ export default class ClassName extends BaseNode {
         if (!realNameReg.test(this.identityParams.realName)) return true
         return false
     }
-    public get identifyNumTipsShow() {
-        if (!this.identifyNumBlur) return false
-        if (!this.identityParams.identifyNum) return true
-        if (!identifyNumReg.test(this.identityParams.identifyNum)) return true
+    public get identityNumTipsShow() {
+        if (!this.identityNumBlur) return false
+        if (!this.identityParams.identityNum) return true
+        if (!identityNumReg.test(this.identityParams.identityNum)) return true
         return false
     }
     public get canSubmit() {
         let oneNotHasValue = Object.values(this.identityParams).includes("")
-        return !oneNotHasValue && !this.identifyNumTipsShow && !this.realNameTipsShow
+        return !oneNotHasValue && !this.identityNumTipsShow && !this.realNameTipsShow
     }
     onLoad(query: any) {
     }
@@ -104,7 +109,7 @@ export default class ClassName extends BaseNode {
         }
         this.showLoadin = true
         this.delayTimer && clearTimeout(this.delayTimer)
-        this.delayTimer = setTimeout(this.authentication, 100)
+        this.delayTimer = setTimeout(this.authentication, 1000)
     }
     authentication() {
         app.http.Post("me/authentication", this.identityParams, (res: any) => {
@@ -186,7 +191,7 @@ export default class ClassName extends BaseNode {
     align-items: center;
     height: 120rpx;
 
-    // justify-content: space-between;
+    // justity-content: space-between;
     .label {}
 
     .rightInput {
@@ -220,5 +225,12 @@ export default class ClassName extends BaseNode {
     .icon {
         margin-top: 100rpx;
     }
+}
+.bigAuth{
+    color: #333333;
+    font-weight: bold;
+    font-size: 40rpx;
+    margin-bottom: 20rpx;
+    text-align: center;
 }
 </style>
