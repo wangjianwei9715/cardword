@@ -3,15 +3,11 @@
 		<view class="header-banner">
 			<statusbar />
 			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
+				<view class="icon-back" @click="navigateBack">
 					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
 				</view>
-				<view :class="chooseId==0?'header-title':'header-title2'" @click="onClickGroupBookingResult()">拼团结果
-					<view class="cross-line-down" v-if="chooseId==0" />
-				</view>
-				<view :class="chooseId==0?'header-title2':'header-title'" style="margin-left: 112rpx;"
-					@click="onClickSplitCardsReport()">拆卡报告
-					<view class="cross-line-down" v-if="chooseId==1" />
+				<view v-for="(item,index) in tabList" :key="index" :class="chooseId==index?'header-title':'header-title2'" @click="onClickTab(index)" :style="{marginLeft:index==1?'112rpx':''}">{{item}}
+					<view class="cross-line-down" v-if="chooseId==index" />
 				</view>
 				<view v-if="hasRandom" class="random-tab" @click="onClickRandomMx">剩余组明细</view>
 			</view>
@@ -23,51 +19,32 @@
 		<view class="tab-header">
 			<view class="header-search">
 				<view class="search-icon"></view>
-				<input class="search-input" type="text" placeholder-style="color:#AAAABB" v-model="searchTetxt" placeholder="搜索"  @confirm="onClickSearch(searchTetxt)" confirm-type="search" />
+				<input class="search-input" type="text" placeholder-style="color:#AAAABB" v-model="searchQ" placeholder="搜索"  @confirm="reqSearchList()" confirm-type="search" />
 			</view>
 		</view>
 		
-
-		<!-- 拼团结果 -->
-		<view v-if="chooseId==0" class="result-index">
+		<view class="result-index">
 			<view v-if="teamDataList.length==0" class="empty">暂无数据</view>
-
 			<view class="card-index" v-for="(item,index) in teamDataList" :key="index">
-				<view class="left" style="width:100%">
+				<view class="left" :style="{width:chooseId==0?'100%':''}">
 					<view class="title"><muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}</view>
 					<view class="desc">{{item.no}}</view>
-					<view class="time">{{dateFormat(item.time)}}</view>
-				</view>
-			</view>
-		</view>
-
-		<!-- 拆卡报告 -->
-		<view v-if="chooseId==1" class="result-index">
-			
-			<view v-if="teamDataList2.length==0" class="empty">暂无数据</view>
-
-			<view class="card-index" v-for="(item,index) in teamDataList2" :key="index">
-				<view class="left">
-					<view class="title"><muqian-lazyLoad class="title-img" :src="item.avatar!=''?getGoodsImg(decodeURIComponent(item.avatar)):defaultAvatar" mode="aspectFit" :borderRadius="'50%'"></muqian-lazyLoad> {{item.userName}}</view>
-					<view class="desc">{{item.no}}</view>
-					<view class="time">{{dateFormat(item.time)}}</view>
+					<view class="time">{{$u.timeFormat(item.time,'yyyy-mm-dd hh:MM:ss')}}</view>
 				</view>
 
-				<view class="right"><muqian-lazyLoad class="right-img" :src="replacePic(getGoodsImg(decodeURIComponent(item.pic)))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
+				<view class="right" v-show="chooseId==1"><muqian-lazyLoad class="right-img" :src="replacePic(getGoodsImg(decodeURIComponent(item.pic)))"  @click="onClickPreviewCard(decodeURIComponent(item.pic))" mode="aspectFit"></muqian-lazyLoad></view>
 			</view>
 		</view>
 
 
 		<view class="payment" v-show="showRulePopup">
 		<view class="payment-showdow"></view>
-			
-			
 			<view class="rules-popup" >
 				<view class="popup-title">剩余组明细</view>
 				<view class="popup-scllor">
 					<view class="popup-rules" v-for="(item,index) in randomList" :key="index">{{index+1}}.{{item.name}}</view>
 				</view>
-				<view class="popup-close" @click="onClickCancelRule"></view>
+				<view class="popup-close" @click="showRulePopup = false"></view>
 			</view>
 		</view>
 	</view>
@@ -75,31 +52,34 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-	import {
-		Component
-	} from "vue-property-decorator";
+	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import {
-		dateFormat,getGoodsImg, parsePic
-	} from "../../tools/util";
+	import { getGoodsImg, parsePic } from "../../tools/util";
+	const Tab = {
+		0:'拼团结果',
+		1:'拆卡报告'
+	}
+	const ListParams = {
+		pageIndex:1,
+		pageSize:10,
+	}
 	@Component({})
 	export default class ClassName extends BaseNode {
+		navigateBack = app.navigateTo.navigateBack;
 		parsePic = parsePic;
+		getGoodsImg = getGoodsImg;
 		defaultAvatar = app.defaultAvatar;
-		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
+		tabList = Tab;
+		chooseId = 0;
 		goodCode = '';
 		teamDataList = [];
-		teamDataList2 = [];
-		getGoodsImg = getGoodsImg;
-		dateFormat = dateFormat;
-		currentPage = 1;
+		listParams = {...ListParams};
+		searchQ = '';
 		noMore = false;
-		searchTetxt = "";
 		hasRandom = false;
 		showRulePopup = false;
 		randomList:any = [];
 		onLoad(query: any) {
-			
 			if (query.chooseIds) {
 				this.chooseId = query.chooseIds;
 				this.goodCode = query.code
@@ -108,22 +88,39 @@
 						this.hasRandom = res.has;
 					})
 				}
-
-				if(this.chooseId==0){
-					this.getTpCardNo()
-				}else{
-					this.getTpCardNoResult()
-				}
+				this.getList()
 			}
-			
 		}
 		//   加载更多数据
 		onReachBottom() {
-			if(this.chooseId==0){
-				this.getTpCardNo()
-			}else{
-				this.getTpCardNoResult()
-			}
+			this.getList()
+		}
+		getList(){
+			if(this.noMore) return;
+			const { listParams } = this;
+			const httpUrl = this.chooseId==0 ? 'cardNo' : 'cardNoResult';
+			app.http.Get(`dataApi/good/${this.goodCode}/${httpUrl}`,{...listParams,q:this.searchQ},(res:any)=>{
+				if(res.list){
+					this.teamDataList = this.teamDataList.concat(res.list)
+				}
+				if(listParams.pageIndex>=res.totalPage){
+					this.noMore = true
+				}
+				listParams.pageIndex++;
+			})
+		}
+		resetList(){
+			this.listParams = {...ListParams}
+			this.noMore = false;
+			this.teamDataList = [];
+		}
+		reqSearchList(){
+			this.resetList();
+			this.getList()
+		}
+		onClickTab(index:number) {
+			this.chooseId = index;
+			this.reqSearchList()
 		}
 		onClickRandomMx(){
 			if(this.randomList == ''){
@@ -134,95 +131,10 @@
 			}else{
 				this.showRulePopup = true;
 			}
-			
-		}
-		onClickCancelRule(){
-			this.showRulePopup = false;
-		}
-		getTpCardNo(){
-			if(this.noMore){
-				return;
-			}
-			let params = {
-				q:this.searchTetxt,
-				pageIndex:this.currentPage,
-				pageSize:10
-			}
-			app.http.Get('dataApi/good/'+this.goodCode+'/cardNo',params,(res:any)=>{
-				if(res.list){
-					this.teamDataList = this.teamDataList.concat(res.list)
-				}else{
-					this.noMore = true
-				}
-				if(res.list.length<10){
-					this.noMore = true
-				}
-				this.currentPage++;
-			})
-		}
-		getTpCardNoResult(){
-			if(this.noMore){
-				return;
-			}
-			let params = {
-				q:this.searchTetxt,
-				pageIndex:this.currentPage,
-				pageSize:10
-			}
-			app.http.Get('dataApi/good/'+this.goodCode+'/cardNoResult',params,(res:any)=>{
-				if(res.list){
-					this.teamDataList2 = this.teamDataList2.concat(res.list)
-				}else{
-					this.noMore = true
-				}
-				if(res.list.length<10){
-					this.noMore = true
-				}
-				this.currentPage++;
-			})
-		}
-		onClickBack() {
-			uni.navigateBack({
-				delta: 1
-			});
-		}
-
-		onClickGroupBookingResult() {
-			this.resetInfo()
-			this.chooseId = 0;
-			this.getTpCardNo()
-		}
-
-		onClickSplitCardsReport() {
-			this.resetInfo()
-			this.chooseId = 1;
-			this.getTpCardNoResult()
-		}
-		resetInfo(){
-			this.currentPage = 1;
-			this.noMore = false;
-			this.teamDataList = [];
-			this.teamDataList2 = []
-		}
-		onClickSearch(text:string){
-			if(this.chooseId==0){
-				// 拼团结果
-				this.resetInfo()
-				this.getTpCardNo()
-			}else{
-				// 拆卡报告
-				this.resetInfo()
-				this.getTpCardNoResult()
-			}
 		}
 		onClickPreviewCard(pic:any){
-			let url = pic.split(',')
-			url = url.map((x:any)=>{
-				return parsePic(x)
-			})
-			uni.previewImage({
-				urls:url
-			});
+			const urls = pic.split(',').map( (x:any) => parsePic(x))
+			uni.previewImage({ urls });
 		}
 		replacePic(str:string){
 			return str.indexOf('#thumb') == -1 ? str : str.replace('#thumb','.thumb')
