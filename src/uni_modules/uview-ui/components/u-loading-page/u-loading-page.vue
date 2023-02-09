@@ -11,7 +11,7 @@
             display: 'flex',
         }"
     >
-        <view class="u-loading-page">
+        <view class="u-loading-page" @click="$emit('onClickPage')">
             <view class="u-loading-page__warpper">
                 <view class="u-loading-page__warpper__loading-icon">
                     <image

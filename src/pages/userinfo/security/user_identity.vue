@@ -2,17 +2,22 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-02-09 11:41:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-02-09 16:59:35
+ * @LastEditTime: 2023-02-09 17:24:39
  * @FilePath: \card-world\src\pages\userinfo\user_identity.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <u-loading-page :loading="showLoadin && !authSuccessShow" loading-text="认证中" loading-color="#fe3e58"
+        <u-loading-page :loading="showLoadin && !authSuccessShow" @onClickPage="onClickLoadingPage"
+            :image="authError ? '/static/userinfo/identity/error_big.png' : ''" loading-color="#fe3e58"
             icon-size="146rpx">
             <view>
-                <view class="bigAuth">认证中</view>
-                <view class="tips">实名信息即将核验完成，请勿离开或关闭当前页面</view>
+                <view class="bigAuth">{{ authError?'认证失败': '认证中' }}</view>
+                <view class="tips">
+                    {{
+    authError?`${errorTips}(点击任意处返回)`: `实名信息即将核验完成，请勿离开或关闭当前页面`
+                    }}
+                </view>
             </view>
         </u-loading-page>
         <template v-if="!showLoadin && !authSuccessShow">
@@ -22,7 +27,7 @@
                     <view class="label">真实姓名</view>
                     <view class="rightInput flexCenter">
                         <input type="text" v-model.trim="identityParams.realName" placeholder="输入真实姓名"
-                            @blur="realNameBlur = true" @focus="realNameBlur=true"/>
+                            @blur="realNameBlur = true" @focus="realNameBlur = true" />
                         <view class="errorTips" v-if="realNameTipsShow">请填写正确的姓名</view>
                     </view>
                 </view>
@@ -31,7 +36,7 @@
                     <view class="label">身份证号</view>
                     <view class="rightInput flexCenter">
                         <input type="idcard" :maxlength="18" v-model.trim="identityParams.identityNum"
-                            placeholder="输入身份证号" @blur="identityNumBlur = true" @focus="identityNumBlur=true"/>
+                            placeholder="输入身份证号" @blur="identityNumBlur = true" @focus="identityNumBlur = true" />
                         <view class="errorTips" v-if="identityNumTipsShow">请填写正确的身份证号</view>
                     </view>
                 </view>
@@ -47,7 +52,6 @@
         </template>
         <view class="successPage" v-if="authSuccessShow">
             <view class="successIcon">
-
             </view>
             <view class="bigAuth">认证成功</view>
             <view class="tips">页面将在{{ closeCountDown }}s后关闭</view>
@@ -71,6 +75,8 @@ export default class ClassName extends BaseNode {
     realNameBlur: boolean = false
     identityNumBlur: boolean = false
     showLoadin: boolean = false//认证loading bol
+    authError: boolean = false//认证是否错误
+    errorTips: string = ""//错误信息
     authSuccessShow: boolean = false//认证成功bol
     delayTimer: any = null
     closeTimer: any = null
@@ -106,21 +112,27 @@ export default class ClassName extends BaseNode {
             })
             return
         }
-        
+        this.authError = false
         this.showLoadin = true
         this.delayTimer && clearTimeout(this.delayTimer)
         this.delayTimer = setTimeout(this.authentication, 1000)
     }
+    onClickLoadingPage() {
+        this.showLoadin = false
+        this.errorTips = ""
+    }
     authentication() {
         app.http.Post("me/authentication", this.identityParams, (res: any) => {
             this.showLoadin = false
+            this.authError = false
             this.authSuccessShow = true
             this.startCloseTimer()
             setTimeout(() => {
                 uni.$emit("identityAuthGet")
             }, 500)
         }, (err: any) => {
-            this.showLoadin = false
+            this.errorTips = err || ""
+            this.authError = true
             this.authSuccessShow = false
         })
     }
@@ -279,7 +291,7 @@ page {
     flex-direction: column;
     align-items: center;
 
-    .successIcon{
+    .successIcon {
         width: 112rpx;
         height: 112rpx;
         margin-top: 330rpx;
