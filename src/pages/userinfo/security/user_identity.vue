@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-02-09 11:41:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-02-09 16:24:11
+ * @LastEditTime: 2023-02-09 16:44:27
  * @FilePath: \card-world\src\pages\userinfo\user_identity.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -98,6 +98,7 @@ export default class ClassName extends BaseNode {
         this.closeTimer && clearInterval(this.closeTimer)
     }
     submit() {
+        if (!this.canSubmit) return
         if (!this.isReadAgreement) {
             uni.showToast({
                 title: "请先阅读勾选,《实名认证服务协议》",
@@ -105,13 +106,7 @@ export default class ClassName extends BaseNode {
             })
             return
         }
-        if (!this.canSubmit) {
-            uni.showToast({
-                title: "请填写正确信息",
-                icon: 'none'
-            })
-            return
-        }
+        
         this.showLoadin = true
         this.delayTimer && clearTimeout(this.delayTimer)
         this.delayTimer = setTimeout(this.authentication, 1000)
