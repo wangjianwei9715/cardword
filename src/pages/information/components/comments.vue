@@ -8,7 +8,7 @@
 				<view class="time">发布于{{$u.timeFormat(articleData.active_at,'mm月dd日 hh:MM')}}</view>
 			</view>
 		</view>
-		<view class="desc" v-html="decodeURIComponent(articleData.content)"/>
+		<rich-text class="desc" :nodes="decodeURIComponent(articleData.content)" @itemclick="articlePreviewImage"/>
 		<u-divider style="width:100%" lineColor="#E8E8E8"></u-divider>
 
 		<view class="chat-content" v-show="articleData.comment>0">
@@ -89,6 +89,14 @@
 		}
 		onClickMoreComments(id:number){
 			this.$emit('moreComments',id)
+		}
+		articlePreviewImage(e:any){
+			const item = e.detail.node;
+			if(item.name=='img'){
+				uni.previewImage({ 
+					urls: [item.attrs.src]
+				});
+			}
 		}
 	}
 </script>
