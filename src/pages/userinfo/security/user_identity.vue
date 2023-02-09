@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-02-09 11:41:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-02-09 16:44:27
+ * @LastEditTime: 2023-02-09 16:59:35
  * @FilePath: \card-world\src\pages\userinfo\user_identity.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,7 @@
                     <view class="label">真实姓名</view>
                     <view class="rightInput flexCenter">
                         <input type="text" v-model.trim="identityParams.realName" placeholder="输入真实姓名"
-                            @blur="realNameBlur = true" />
+                            @blur="realNameBlur = true" @focus="realNameBlur=true"/>
                         <view class="errorTips" v-if="realNameTipsShow">请填写正确的姓名</view>
                     </view>
                 </view>
@@ -31,7 +31,7 @@
                     <view class="label">身份证号</view>
                     <view class="rightInput flexCenter">
                         <input type="idcard" :maxlength="18" v-model.trim="identityParams.identityNum"
-                            placeholder="输入身份证号" @blur="identityNumBlur = true" />
+                            placeholder="输入身份证号" @blur="identityNumBlur = true" @focus="identityNumBlur=true"/>
                         <view class="errorTips" v-if="identityNumTipsShow">请填写正确的身份证号</view>
                     </view>
                 </view>
@@ -267,6 +267,7 @@ page {
         .errorTips {
             position: absolute;
             bottom: -38rpx;
+            font-size: 20rpx;
             left: 0;
             color: #f24422;
         }
