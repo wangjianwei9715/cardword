@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-02-09 11:41:27
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-02-09 16:36:14
+ * @LastEditTime: 2023-02-10 15:53:36
  * @FilePath: \card-world\src\pages\userinfo\user_identity.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,7 @@
         
         <view class="desc">2 个人信息处理与用途</view>
         <view class="desc">2.1 为对申请实名认证的账号进行审核和安全验证，你同意使用公司提供的实名认证服务，即公司通过身份证件信息验证核验你的身份，以确保账号实名认证人。</view>
-        <view class="desc">2.2 为提升实名认证服务的准确性和安全性，<text class="desc desc_weight">你同意授权公司及其合作的服务商（此处为公司名）核验你的身份信息并做出必要处理。你理解并同意公司及其合作的服务商可以将你在使用本服务时提供的身份信息（例如：姓名、身份证号），在法律法规允许或政府机关授权机构存储的信息进行比对核验。关于实名信息的收集、使用、存储、传输、共享（如适用）与保护，我们将按照法律法规的规定，保护你的个人信息及隐私安全。</text></view>
+        <view class="desc">2.2 为提升实名认证服务的准确性和安全性，<text class="desc desc_weight">你同意授权公司及其合作的服务商（阿里云）核验你的身份信息并做出必要处理。你理解并同意公司及其合作的服务商可以将你在使用本服务时提供的身份信息（例如：姓名、身份证号），在法律法规允许或政府机关授权机构存储的信息进行比对核验。关于实名信息的收集、使用、存储、传输、共享（如适用）与保护，我们将按照法律法规的规定，保护你的个人信息及隐私安全。</text></view>
         <view class="desc">2.3<text class="desc desc_weight">你承诺提供的信息合法、有效、真实、准确并完整，不采取任何违法违规、不正当或欺骗手段使用实名认证服务。</text></view>
         <view class="desc">2.4 公司将严格按照法律法规保护你的个人信息。</view>
         
