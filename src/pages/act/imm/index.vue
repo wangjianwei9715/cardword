@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-01-10 15:11:49
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-17 15:40:26
- * @FilePath: \card-world\src\pages\act\imm\index.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-02-14 17:23:51
+ * @FilePath: \jichao_app_2\src\pages\act\imm\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -152,7 +152,7 @@ export default class ClassName extends BaseNode {
         index: 0,
         list: [
             { label: '积分榜单', timeStamp: [1673884800, 1675180799], tips: "参与任意拼团获取积分，21-22IMM积分翻倍", timeTips: '(进行中)' },
-            { label: '幸运抽奖', timeStamp: 1676358000, tips: "前500名参与幸运大抽奖", timeTips: "" }
+            { label: '幸运抽奖', timeStamp: 1676444400, tips: "前500名参与幸运大抽奖", timeTips: "" }
         ]
     }
     onLoad(query: any) {

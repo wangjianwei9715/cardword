@@ -4,12 +4,9 @@
 </style>
 <script lang="ts">
 	import Vue from "vue";
-	import {
-		app
-	} from "./app";
+	import { app } from "./app";
 	import ZegoExpressEngine from "@/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressEngine";
 	import HttpRequest from "./net/HttpRequest";
-	import UpdateManager from "./manager/UpdateManager";
 	import {
 		parsePic,
 		liveCountDown,
@@ -17,12 +14,7 @@
 		getCountDownTime,
 		calculate,
 	} from "./tools/util";
-	import {
-		SocketServer
-	} from "@/net/SocketServer";
-	import {
-		Md5
-	} from "ts-md5";
+	import { SocketServer } from "@/net/SocketServer";
 	import * as proto from "./net/proto";
 	export default Vue.extend({
 		mpType: "app",
@@ -55,8 +47,8 @@
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境");
 				// app.localTest = true;  
-				// app.bussinessApiDomain = "http://192.168.8.31:8701/api/v2.1/";
-				// app.bussinessApiDomain = "https://server.ssltest.ka-world.com/api/v2.1/";
+				// app.bussinessApiDomain = `http://192.168.8.63:8701${app.requestVersion}`;
+				// app.bussinessApiDomain = `https://server.ssltest.ka-world.com${app.requestVersion}`;
 				// app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境 
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
@@ -117,11 +109,9 @@
 					console.log(e);
 				}
 				app.data = {};
-				// #ifdef APP-PLUS
 				uni.navigateTo({
 					url: `/pages/login/login?${query || ""}`,
 				});
-				// #endif
 			});
 			// #ifdef APP-PLUS
 			// #endif

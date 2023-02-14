@@ -4,35 +4,17 @@
       <statusbar />
       <view class="tab-header">
         <view class="header-search">
-          <searchinput
-            :searchText="searchText"
-            @clicksearch="onClickSearch"
-          ></searchinput>
+          <searchinput :searchText="searchText" @clicksearch="onClickSearch" ></searchinput>
         </view>
         <view class="header-right" @click="onClickBack">取消</view>
       </view>
 
       <view class="header-sort">
-        <view
-          class="header-sort-index"
-          v-for="item in sortData"
-          :key="item.id"
-          @click="onClickSort(item)"
-        >
+        <view class="header-sort-index" v-for="item in sortData" :key="item.id" @click="onClickSort(item)" >
           {{ item.name }}
           <view class="header-sort-icon">
-            <view
-              :class="{
-                'icon-sort-upn': item.sort != 1,
-                'icon-sort-up': item.sort == 1,
-              }"
-            ></view>
-            <view
-              :class="{
-                'icon-sort-downn': item.sort != 2,
-                'icon-sort-down': item.sort == 2,
-              }"
-            ></view>
+            <view :class="{ 'icon-sort-upn': item.sort != 1, 'icon-sort-up': item.sort == 1, }" ></view>
+            <view :class="{ 'icon-sort-downn': item.sort != 2, 'icon-sort-down': item.sort == 2, }" ></view>
           </view>
         </view>
       </view>
