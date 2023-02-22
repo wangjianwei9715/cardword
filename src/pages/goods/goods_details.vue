@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-02-07 10:30:42
+ * @LastEditTime: 2023-02-21 15:29:46
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -146,7 +146,7 @@
 						</view>
 					</view>
 					<view class="goods-desc-explain">
-						<view class="special-explain" v-html="goodsData.extraDesc"></view>
+						<view class="special-explain">{{goodsData.extraDesc}}</view>
 						<view class='goods-desc-explain-box' v-for="item in goodsDesc" :key="item.id">
 							<view class="explain-name">{{item.name}}</view>
 							<view class="explain-desc">{{item.desc}}</view>
@@ -232,7 +232,7 @@
 		<!-- 底部弹窗 -->
 		<bottomDrawer :showDrawer.sync="showDrawer" :title="'拼团规则'">
 			<view class="drawer-box" v-for="(item,index) in goodsDetailHelp" :key="index">
-				<view class="drawer-help" v-html="item.content"></view>
+				<view class="drawer-help">{{item.content}}</view>
 			</view>
 		</bottomDrawer>
 
