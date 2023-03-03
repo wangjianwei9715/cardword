@@ -397,7 +397,7 @@ import { Md5 } from "ts-md5";
 			}
 			if(cmd == 'wuliu'){
 				uni.navigateTo({
-					url:'/pages/userinfo/order_logistics?code='+this.orderData.wuliuCode
+					url:`/pages/userinfo/order_logistics?code=${this.orderData.wuliuCode}&zitiWuliuExplain=${this.orderData.zitiWuliuExplain || ""}`
 				})
 			}
 			if(cmd == 'drawCard'){

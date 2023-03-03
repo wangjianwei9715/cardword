@@ -15,18 +15,20 @@
 	export default class ClassName extends BaseNode {
 		goodsCode = '';
 		wlInfo:{[x:string]:any} = {};
-
+		zitiWuliuExplain:string=""
 		onLoad(query: any) {
+			this.zitiWuliuExplain=query.zitiWuliuExplain || ""
 			if(query.code){
 				this.goodsCode = query.code;
 				this.getWuliu()
 			}
+			
 		}
 		getWuliu(){
 			if(this.goodsCode == 'ffffffffffff'){
 				this.wlInfo = {
 					post_name:'自提快递',
-					post_no:'已自提',
+					post_no:this.zitiWuliuExplain||'已自提',
 					list:''
 				}
 				return;

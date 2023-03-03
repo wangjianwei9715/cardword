@@ -171,7 +171,7 @@
 			} else if (cmd.indexOf("wuliu") != -1) {
 				let wuliucode = cmd.slice(6);
 				uni.navigateTo({
-					url: "/pages/userinfo/order_logistics?code=" + wuliucode,
+					url: `/pages/userinfo/order_logistics?code=${wuliucode}&zitiWuliuExplain=${item.zitiWuliuExplain || ""}`,
 				});
 			}
 			if (cmd == "toPay") {
