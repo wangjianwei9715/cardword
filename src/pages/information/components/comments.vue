@@ -8,7 +8,10 @@
 				<view class="time">发布于{{$u.timeFormat(articleData.active_at,'mm月dd日 hh:MM')}}</view>
 			</view>
 		</view>
-		<rich-text class="desc" :nodes="decodeURIComponent(articleData.content)" @itemclick="articlePreviewImage"/>
+		<view v-for="(content, index) in contentArr" :key="index">
+			<rich-text class="desc" :nodes="content" @itemclick="articlePreviewImage"/>
+			<video class="desc-video" :direction="0" :poster="`${videoArr[index]}?x-oss-process=video/snapshot,t_0,f_jpg`" v-if="videoArr[index] !== null" :src="videoArr[index]" controls></video>
+		</view>
 		<u-divider style="width:100%" lineColor="#E8E8E8"></u-divider>
 
 		<view class="chat-content" v-show="articleData.comment>0">
@@ -56,7 +59,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue } from "vue-property-decorator";
+	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
 	@Component({})
@@ -67,14 +70,36 @@
 		commentsList:any
 		@Prop({default:false})
 		isFetchEnd:boolean|undefined
+
+		nodes:any = '';
+		contentArr:any = [];
+		videoArr:any = [];
+		@Watch('articleData')
+		onWatchArticleData(val:any){
+			if(val){
+				this.nodes = decodeURIComponent(this.articleData.content);
+				this.parseVideo()
+			}
+		}
 		created(){//在实例创建完成后被立即调用
-			
 		}
 		mounted(){//挂载到实例上去之后调用
-			
 		}
 		destroyed(){
-			
+		}
+		parseVideo() {
+			const arr = this.nodes.split('</iframe>');
+			const reg = /<iframe([\s\S]*)/g;
+			for (let i in arr) {
+				const item = arr[i];
+				const urlMatch = item.match(/<iframe[\s\S]*src=\"(.*?)\"/);
+				if (urlMatch && urlMatch.length > 1) {
+					this.videoArr[i] = urlMatch[1];
+				} else {
+					this.videoArr[i] = null;
+				}
+				this.contentArr[i] = item.replace(reg, '');
+			}
 		}
 		onClickLike(item:any){
 			app.platform.hasLoginToken(()=>{
@@ -150,6 +175,9 @@
 		color: #14151A;
 		line-height: 60rpx;
 		letter-spacing:2rpx;
+	}
+	.desc-video{
+		width: 670rpx;
 	}
 	::v-deep img{
 		width:670rpx !important;

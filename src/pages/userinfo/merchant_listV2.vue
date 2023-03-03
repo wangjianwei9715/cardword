@@ -109,7 +109,7 @@ export default class ClassName extends BaseNode {
     hotRank: any = []
     merchantParams: any = {
         pageIndex: 1,
-        pageSize: 15,
+        pageSize: 10,
         q:""
     }
     merchantTotalPage: number = 0
