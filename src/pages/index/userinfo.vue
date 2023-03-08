@@ -114,7 +114,7 @@
 			go:{id:2,name:'已付款',num:0},
 			toDeliver:{id:3,name:'待发货',num:0},
 			toTake:{id:4,name:'待收货',num:0},
-			fail:{id:5,name:'已完成',num:0}
+			finish:{id:5,name:'已完成',num:0}
 		};
 		serviceTab:{[x: string]: any} = {
 			coupon:{id:1,name:'优惠券',url:'/pages/userinfo/coupon/coupon'},

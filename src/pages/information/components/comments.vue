@@ -24,7 +24,7 @@
 							<view class="chat-name">{{item.name}}</view>
 							<view class="chat-time">{{$u.timeFrom(item.created_at)}}</view>
 						</view>
-						<text class="chat-msg" :selectable="true" :class="'chat-'+item.id" v-html="item.content" @click="onClickReply(item,item.id)"></text>
+						<text class="chat-msg" :selectable="true" :class="'chat-'+item.id" @click="onClickReply(item,item.id)">{{item.content}}</text>
 					</view>
 					<view class="chat-right" @click="$u.throttle(()=>{onClickLike(item)},100)">
 						<view :class="item.isLike?'icon-like':'icon-likeno'"></view>
@@ -71,14 +71,23 @@
 		@Prop({default:false})
 		isFetchEnd:boolean|undefined
 
-		nodes:any = '';
 		contentArr:any = [];
 		videoArr:any = [];
 		@Watch('articleData')
 		onWatchArticleData(val:any){
 			if(val){
-				this.nodes = decodeURIComponent(this.articleData.content);
-				this.parseVideo()
+				const arr = decodeURIComponent(this.articleData.content).split('</iframe>');
+				const reg = /<iframe([\s\S]*)/g;
+				for (let i in arr) {
+					const item = arr[i];
+					const urlMatch = item.match(/<iframe[\s\S]*src=\"(.*?)\"/);
+					if (urlMatch && urlMatch.length > 1) {
+						this.videoArr[i] = urlMatch[1];
+					} else {
+						this.videoArr[i] = null;
+					}
+					this.contentArr[i] = item.replace(reg, '');
+				}
 			}
 		}
 		created(){//在实例创建完成后被立即调用
@@ -86,20 +95,6 @@
 		mounted(){//挂载到实例上去之后调用
 		}
 		destroyed(){
-		}
-		parseVideo() {
-			const arr = this.nodes.split('</iframe>');
-			const reg = /<iframe([\s\S]*)/g;
-			for (let i in arr) {
-				const item = arr[i];
-				const urlMatch = item.match(/<iframe[\s\S]*src=\"(.*?)\"/);
-				if (urlMatch && urlMatch.length > 1) {
-					this.videoArr[i] = urlMatch[1];
-				} else {
-					this.videoArr[i] = null;
-				}
-				this.contentArr[i] = item.replace(reg, '');
-			}
 		}
 		onClickLike(item:any){
 			app.platform.hasLoginToken(()=>{
