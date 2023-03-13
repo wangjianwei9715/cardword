@@ -42,7 +42,7 @@
         alias: string = ""
         queryParams: any = {
             pageIndex: 1,
-            pageSize: 20
+            pageSize: 10
         }
         totalPage: number = 0
         niceTimeList: any = []
