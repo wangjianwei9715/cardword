@@ -29,8 +29,7 @@
                         <text class="priceTips">{{ goodsManaager.hasLowestPrice(item) ? '起' : '' }}</text>
                     </view>
                     <view class="goodsMerchant uni-flex" @click.stop="onClickSellerShop(item)">
-                        <muqian-lazyLoad class="merchantLogo" borderRadius="50%"
-                            :src="$parsePic(decodeURIComponent(item.merchantLogo))" />
+                        <merchantAvatar :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
                         <view class="merchantName">{{ item.merchantName }}</view>
                     </view>
                 </view>
@@ -319,7 +318,6 @@ export default class ClassName extends BaseComponent {
                 font-family: PingFang SC;
                 font-weight: 400;
                 color: #333333;
-                margin-left: 16rpx;
             }
         }
     }

@@ -42,7 +42,7 @@
 				<view class="goodslist-bottom goodslist-padding" @click="onClickSellerShop(item)">
 					<view class="bottom-left" :class="{'bottom-left-shu':item.merchantName}">{{getGoodsPintuan(item.pintuan_type)}}</view>
 					<view class="bottom-right" v-show="item.merchantName">
-						<muqian-lazyLoad v-if="item.merchantLogo!=''" class="avart" :src="decodeURIComponent(item.merchantLogo)" borderRadius="50%"/>
+						<merchantAvatar :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
 						<view class="bussName">{{item.merchantName}}</view>
 						<view class="cores"></view>
 					</view>
@@ -302,16 +302,6 @@
 				width: 200rpx;
 				display: flex;
 				align-items: center;
-
-				.avart {
-					width: 34rpx;
-					height: 34rpx;
-					display: block;
-					overflow: hidden;
-					border-radius: 50%;
-					margin-right: 10rpx;
-				}
-
 				.bussName {
 					width: 146rpx;
 					position: relative;

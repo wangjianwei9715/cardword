@@ -29,7 +29,10 @@
       <view class="infoTop uni-flex">
         <image :src="parsePic(decodeURIComponent(merchantInfo.logo))" mode="aspectFill" class="info-avatar" />
         <view class="info-message">
-          <view class="info-name">{{merchantInfo.name}}</view>
+          <view class="info-name">
+            {{merchantInfo.name}}
+            <merchantLevel :level="merchantInfo.level"/>
+          </view>
           <view class="info-introduction">{{merchantInfo.region}} · {{merchantInfo.groupGoodNum}}拼成 · {{merchantInfo.fans}}粉丝
           </view>
         </view>
@@ -596,6 +599,9 @@ page {
     font-size: 29rpx;
     font-weight: bold;
     color: #333333;
+    display: flex;
+		align-items: center;
+    flex-wrap: wrap;
   }
 
   .info-introduction {
@@ -732,7 +738,7 @@ page {
 
   .niceTimeItem {
     width: 100%;
-    dispaly: flex;
+    display: flex;
     /* flex-wrap: nowrap; */
   }
 

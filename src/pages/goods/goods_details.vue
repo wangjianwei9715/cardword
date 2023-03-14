@@ -3,7 +3,16 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-02-21 15:29:46
+ * @LastEditTime: 2023-03-14 09:44:52
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
+<!--
+ * @FilePath: \jichao_app_2\src\pages\goods\goods_details.vue
+ * @Author: wjw
+ * @Date: 2023-01-04 15:59:01
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-03-13 17:40:06
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -108,7 +117,10 @@
 							:src="goodsData.publisher.avatar!=''?decodeURIComponent(goodsData.publisher.avatar):defaultAvatar"
 							mode="aspectFill" :borderRadius="'50%'"/>
 						<view class="goods-seller-left-desc">
-							<view class="goods-seller-left-desc-name">{{goodsData.publisher.name}}</view>
+							<view class="goods-seller-left-desc-name">
+								{{goodsData.publisher.name}}
+								<merchantLevel :level="goodsData.publisher.level"/>
+							</view>
 							<view class="goods-seller-left-desc-tips">粉丝{{goodsData.publisher.fans}} |
 								在售{{goodsData.publisher.sale}}</view>
 						</view>
@@ -1402,10 +1414,10 @@
 			}
 
 			&-desc {
-				width: 420rpx;
+				width: 520rpx;
 				height: 91rpx;
 				box-sizing: border-box;
-				padding: 5rpx 0 4rpx 35rpx;
+				padding: 0 0 4rpx 35rpx;
 				display: flex;
 				flex-wrap: wrap;
 				&-name {
@@ -1417,7 +1429,10 @@
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+					display: flex;
+					align-items: center;
 				}
+				
 				&-tips {
 					width: 100%;
 					font-size: 24rpx;
