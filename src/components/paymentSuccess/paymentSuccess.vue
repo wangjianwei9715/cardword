@@ -5,7 +5,9 @@
 			<view class="popup-icon1" v-if="!showJoin"></view>
 			<view class="popup-text1">{{showJoin?'加入群聊':'支付成功'}}</view>
 			<view class="popup-icon2"></view>
-			<view class="popup-icon3"></view>
+			<view class="popup-icon3">
+				<image style="width: 372rpx; height:373rpx;" :src="`../../static/index/v3/qun${random}.jpg`"/>
+			</view>
 			<view class="popup-text2">截图微信扫码加入社群</view>
 			<view class="popup-text3">不定期送福利</view>
 			<view class="popup-close" @click="onClickCancelPay"></view>
@@ -24,14 +26,12 @@
 		@Prop({default:false})
 		showJoin!:boolean|undefined;
 
-
-
-		
+		random = ''
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-			
+			this.random = Math.random()>0.5?'1':'2'
 		}
 		destroyed(){
 			
@@ -115,8 +115,6 @@
 			.popup-icon3{
 				width: 372rpx;
 				height:373rpx;
-				background:url('https://ka-world.oss-cn-shanghai.aliyuncs.com/newYear2022/qun.jpg') no-repeat center;
-				background-size: 100% 100%;
 				margin:0 auto;
 				margin-bottom: 31rpx;
 			}
