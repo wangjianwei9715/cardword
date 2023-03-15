@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-14 09:44:52
+ * @LastEditTime: 2023-03-15 11:23:51
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -107,7 +107,14 @@
 
 			<!-- 活动展示 -->
 			<goodAct :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData" />
-
+			
+			<!-- 预售商品 -->
+			<view class="detail-bg" v-if="goodsData.book">
+				<view class="book-box">
+					<view class="book-tips">预售</view>
+					{{`该产品正式发售时间为${$u.timeFormat(goodsData.book.saleAt,'yyyy年mm月dd日')}，最晚拆卡时间为${$u.timeFormat(goodsData.book.latestLiveAt,'yyyy年mm月dd日')}。超过最晚拆卡时间且距拼成时间＞${goodsData.book.hour1}小时未拆卡补偿订单金额${goodsData.book.compensate1}%无门槛优惠券；＞${goodsData.book.hour2}小时未拆卡全额退款。`}}
+				</view>
+			</view>
 			<!-- 卖家信息 -->
 			<view class="detail-bg">
 				<view class="goods-seller" v-if="goodsData.publisher">
@@ -1951,6 +1958,30 @@
 			padding:5rpx 38rpx;
 			margin-bottom:4rpx;
 			line-height:35rpx;
+		}
+	}
+	.book-box{
+		width: 100%;
+		box-sizing: border-box;
+		padding: 28rpx 30rpx 30rpx 30rpx;
+		font-family: PingFang SC;
+		font-size: 21rpx;
+		font-weight: 400;
+		color: #949494;
+		line-height: 36rpx;
+		.book-tips{
+			width: 60rpx;
+			height: 30rpx;
+			background: #5BC64E;
+			border-radius: 3rpx;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 23rpx;
+			font-family: PingFang SC;
+			font-weight: 600;
+			color: #FFFFFF;
+			margin-right: 10rpx;
 		}
 	}
 </style>

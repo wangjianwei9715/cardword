@@ -73,7 +73,7 @@ import { Md5 } from "ts-md5";
 				s: Md5.hashStr(`kww_coupon_sign_${this.tabCurrent}_${params.fetchFrom}_${params.fetchSize}_${ts}_2022`)
 			}
 			params.requestIng = true;
-			app.http.Get(`coupon/merchant/online/tp/${this.tabCurrent}`,{...params,...params_t},(data:any)=>{
+			app.http.Get(`dataApi/coupon/merchant/online/tp/${this.tabCurrent}`,{...params,...params_t},(data:any)=>{
 				params.requestIng = false;
 				params.noMoreData = data.isFetchEnd;
 				this.showEmpty = !data.list && params.fetchFrom == 1;
