@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-15 14:28:17
+ * @LastEditTime: 2023-03-16 15:10:00
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -112,7 +112,7 @@
 			<view class="detail-bg" v-if="goodsData.book">
 				<view class="book-box">
 					<view class="book-tips">预售</view>
-					{{`该产品正式发售时间为${$u.timeFormat(goodsData.book.saleAt,'yyyy年mm月dd日')}，最晚拆卡时间为${$u.timeFormat(goodsData.book.latestLiveAt,'yyyy年mm月dd日')}。超过最晚拆卡时间且距拼成时间＞${goodsData.book.hour1}小时未拆卡补偿订单实付金额${goodsData.book.compensate1}%无门槛优惠券；＞${goodsData.book.hour2}小时未拆卡全额退款。`}}
+					{{`该产品正式发售时间为${$u.timeFormat(goodsData.book.saleAt,'yyyy年mm月dd日')}，最晚拆卡时间为${$u.timeFormat(goodsData.book.latestLiveAt,'yyyy年mm月dd日')}。超过最晚拆卡时间且距拼成时间＞${goodsData.book.hour1}小时未拆卡补偿订单实付金额${goodsData.book.compensate1}%无门槛优惠券；＞${goodsData.book.hour2}小时未拆卡则拼团失败全额退款。`}}
 				</view>
 			</view>
 			<!-- 卖家信息 -->
