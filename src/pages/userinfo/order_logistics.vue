@@ -27,7 +27,7 @@
 		getWuliu(){
 			if(this.goodsCode == 'ffffffffffff'){
 				this.wlInfo = {
-					post_name:this.zitiWuliuExplain?'已自提':'字体快递',
+					post_name:this.zitiWuliuExplain?'已自提':'自提快递',
 					post_no:this.zitiWuliuExplain||'已自提',
 					list:''
 				}
