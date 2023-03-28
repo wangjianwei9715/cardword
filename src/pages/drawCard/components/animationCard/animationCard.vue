@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-28 17:34:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-12-14 14:00:42
+ * @LastEditTime: 2023-03-28 15:10:21
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -22,6 +22,7 @@
 <script lang="ts">
 	import { Component,Prop,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	type SvgaRenderParams = { svga: string; svgaSrc: string; loops: number; cb?: () => void; };
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
@@ -35,6 +36,7 @@
 		animationLoopsOver = false;
 		animationOver = false;
 		animationTimeout = false;
+		svgaPlayer=null;
 		@Watch('start')
 		onChangeStart(val:any){
 			if(val){
@@ -50,34 +52,41 @@
 		destroyed(){
 		}
 		animationStart(){
-			this.svgaRender('svga',"/static/drawCard/svga_y.svga",1,()=>{
-				this.animationLoopsOver = true;
-				setTimeout(()=>{
-					if(this.animationStep<this.animationData.length){
-						this.animationStep ++ ;
-						this.animationLoopsOver = false;
-						this.animationStart()
-					}else{
-						this.animationOver = true;
-						// this.svgaRender('sm','/static/drawCard/svga_sm.svga',1)
-						setTimeout(() => {
-							this.$emit('animationOver')
-						}, 1500);
-					}
-				},1000)
+			this.svgaRender({
+				svga:"svga",
+				svgaSrc:"/static/drawCard/svga_y.svga",
+				loops:1,
+				cb:()=>{
+					this.animationLoopsOver = true;
+					setTimeout(()=>{
+						if(this.animationStep<this.animationData.length){
+							this.animationStep ++ ;
+							this.animationLoopsOver = false;
+							this.animationStart()
+						}else{
+							this.animationOver = true;
+							// this.svgaRender('sm','/static/drawCard/svga_sm.svga',1)
+							setTimeout(() => {
+								this.$emit('animationOver')
+							}, 1500);
+						}
+					},1000)
+				}
 			})
 		}
-		svgaRender(svga:string,svga_src:string,loops:number,cb?:Function){
-			this.$refs[svga].render(async (parser:any, player:any) => {
-				const videoItem = await parser.load(svga_src);
-				await player.setVideoItem(videoItem);
-				player.loops = loops;
-				player.clearsAfterStop = true
-				player.startAnimation()
-				player.onFinished(() => {
-					cb && cb()					
-				})
-			})
+		async svgaRender({ svga, svgaSrc, loops, cb }: SvgaRenderParams) { 
+			try { 
+				const { render } = this.$refs[svga]; 
+				const [parser, player] = await render(); 
+				const videoItem = await parser.load(svgaSrc); 
+				await player.setVideoItem(videoItem); 
+				player.loops = loops; 
+				player.clearsAfterStop = true; 
+				player.startAnimation(); 
+				player.onFinished(() => cb && cb()); 
+			} catch (e) { 
+				console.error(e); 
+			} 
 		}
 	}
 </script>

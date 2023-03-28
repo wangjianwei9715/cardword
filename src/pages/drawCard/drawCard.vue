@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-02-07 15:50:52
+ * @LastEditTime: 2023-03-28 14:50:05
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -162,10 +162,10 @@
       this.initData.goodOrder = query.code;
       
       if(query.num<=30){
-        this.InitEvent(query)
+        this.initEvent(query)
       }else{
         this.reqNewData(()=>{
-          this.InitEvent(query)
+          this.initEvent(query)
         })
       }
       if(query.picType == 1){
@@ -181,43 +181,54 @@
     onClickBack(){
       uni.navigateBack({delta:1})
     }
-    InitEvent(query:any){
-      if(query.hasNumber){ this.drawerData.tab.push({ id: 2, name: "按限编排序" }) }
+    initEvent(query: any): void { 
+      this.initDrawerTab(query);
       this.sceneData.picType = query.picType || 0;
-
-      const storageSwitch = uni.getStorageSync('animationSwitch');
-      if(typeof(storageSwitch)=='boolean') this.animationSwitch = storageSwitch;
-      
-      const { initData } = this
-      initData.initInterval = setInterval(() => {
-        if (initData.startTime < 100) {
-          if(initData.startTime <95){
-            initData.startTime++;
-          }else if(initData.noMoreData || this.cardData.total<=30){
-            initData.startTime++;
-          }
-        } else {
-          clearInterval(initData.initInterval);
-          setTimeout(() => { initData.start = true; }, 1000);
-        }
-      }, 10);
+      this.initAnimationSwitch();
+      this.initStartTime(); 
+    }
+    // 封装初始化抽屉标签的方法 private 
+    initDrawerTab(query: any): void { 
+      if(query.hasNumber) { this.drawerData.tab.push({ id: 2, name: "按限编排序" }); } 
+    }
+    // 封装初始化动画开关的方法 private 
+    initAnimationSwitch(): void { 
+      const storageSwitch = uni.getStorageSync('animationSwitch'); 
+      if(typeof(storageSwitch) === 'boolean') { this.animationSwitch = storageSwitch; } 
+    }
+    // 封装初始化 startTime 的方法 private 
+    initStartTime(): void { 
+      const { initData } = this; 
+      initData.initInterval = setInterval(() => { 
+        if (initData.startTime < 100) { 
+          if(initData.startTime <95){ 
+            initData.startTime++; 
+          }else if(initData.noMoreData || this.cardData.total<=30){ 
+            initData.startTime++; 
+          } 
+        } else { 
+          clearInterval(initData.initInterval); setTimeout(() => { initData.start = true; }, 1000); 
+        } 
+      }, 10); 
     }
     onClickNavigation(item:{ type:string; name:string; }){
       if(item.type=='scene') this.sceneData.show=true ;
       if(item.type=='music') this.musicData.show=true ;
-      if(item.type=='ani'){
-        if(this.animationStart) return;
-        uni.showModal({
-          title: '提示',
-          content: `是否${this.animationSwitch?'关闭':'开启'}动画`,
-          success: (res) => {
-            if (res.confirm) {
-              this.animationSwitch = !this.animationSwitch
-              uni.setStorageSync('animationSwitch',this.animationSwitch);
-            } 
-          }
-        });
-      }
+      if(item.type=='ani') this.onClickAnimation();
+    }
+    // 封装点击动画按钮的方法 private 
+    onClickAnimation(): void { 
+      if(this.animationStart) { return; } 
+      uni.showModal({ 
+        title: '提示', 
+        content: `是否${this.animationSwitch ? '关闭' : '开启'}动画`, 
+        success: (res) => { 
+          if (res.confirm) { 
+            this.animationSwitch = !this.animationSwitch; 
+            uni.setStorageSync('animationSwitch',this.animationSwitch); 
+          } 
+        } 
+      }); 
     }
     /**移动数据初始化 */
     InitMoveData(){
@@ -234,10 +245,8 @@
     }
     /**移动结束 计算位置 */
     picTouchEnd() {
-      const iX = this.moveData.x_init;
-      const iY = this.moveData.y_init;
-      const mX = this.changeMove.x;
-      const mY = this.changeMove.y;
+      const { x_init: iX, y_init: iY } = this.moveData; 
+      const { x: mX, y: mY } = this.changeMove; 
       this.moveData.x = mX;
       this.moveData.y = mY;
       setTimeout(() => {

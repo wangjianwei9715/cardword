@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-16 15:10:00
+ * @LastEditTime: 2023-03-28 16:01:30
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -417,9 +417,10 @@
 		}
 		getProgress() {
 			app.http.Get(`dataApi/good/${this.goodCode}/progress`, {}, (res: any) => {
-				this.goodsData.currentNum = res.data.currentNum;
-				this.goodsData.totalNum = res.data.totalNum;
-				this.goodsData.lockNum = res.data.lockNum;
+				const { data } = res;
+				this.goodsData.currentNum = data.currentNum;
+				this.goodsData.totalNum = data.totalNum;
+				this.goodsData.lockNum = data.lockNum;
 			})
 		}
 		reqSeriesCards() {
@@ -432,10 +433,10 @@
 		 * 设置商品图片
 		 */
 		getGoodsImage() {
-			const { picData } = this;
-			const goodsPic = this.goodsData.pic;
+			const { picData, goodsData, swiperData } = this;
+			const goodsPic = goodsData.pic;
 			const carousel = picFormat(goodsPic.carousel);
-			this.swiperData.carouselLength = carousel.length;
+			swiperData.carouselLength = carousel.length;
 			picData.detailImg = [...picFormat(goodsPic.yuanfeng)];
 			picData.carousel = [...carousel,...picData.detailImg];
 
@@ -447,18 +448,17 @@
 		 * 倒计时定时器
 		 */
 		getCountDown() {
-			const { countData } = this;
+			const { countData,goodsData } = this;
 			setCountDownStr()
 			countData.countInterval = this.scheduler(() => {
 				if (countData.countDown > 0) {
 					countData.countDown--;
 					setCountDownStr()
 				} else {
-					if(this.goodsData.state == 0){
+					if(goodsData.state == 0){
 						this.getGoodData();
-					}
-					if (this.goodsData.state == 1) {
-						this.goodsData.state = -99
+					} else if (goodsData.state == 1) {
+						goodsData.state = -99
 					}
 					clearInterval(countData.countInterval)
 				}
@@ -476,20 +476,22 @@
 		 * 商品规格、配置、形式
 		 */
 		getGoodsSpe() {
-			const data = this.goodsData;
-			const spec = data.spec.name;
-			const num = data.spec.num==-1?'暂无':data.spec.num+'张'
-			if (this.goodsData.isSelect) {
+			const { goodsData, goodsSpe } = this;
+			const { spec, num, pintuan_type, random_type } = goodsSpe;
+			const specName = goodsData.spec.name;
+			const numValue = goodsData.spec.num === -1 ? '暂无' : goodsData.spec.num + '张';
+
+			if (goodsData.isSelect) {
 				this.goodsSpe = {
-					spec: { id: 3, name: spec, desc: '拼团规格' },
-					num:{id:4,name:num,desc:'卡片数量'},
-					pintuan_type: { id: 1, name: '自选球队', desc: '拼团形式'}
+					spec: { id: 3, name: specName, desc: '拼团规格' },
+					num: { id: 4, name: numValue, desc: '卡片数量' },
+					pintuan_type: { id: 1, name: '自选球队', desc: '拼团形式' }
 				};
 			} else {
-				this.goodsSpe.spec.name = spec;
-				this.goodsSpe.num.name = num;
-				this.goodsSpe.pintuan_type.name = getGoodsPintuanDetail(data.pintuan_type);
-				this.goodsSpe.random_type.name = getGoodsRandom(data.random_type);
+				spec.name = specName;
+				num.name = numValue;
+				pintuan_type.name = getGoodsPintuanDetail(goodsData.pintuan_type);
+				random_type.name = getGoodsRandom(goodsData.random_type);
 			}
 		}
 		onClickTipBtn(item: any) {
@@ -559,34 +561,37 @@
 				indicator: "number"
 			});
 		}
-		onClickBuy() {
-			app.platform.hasLoginToken(()=>{
-				const { goodsData } = this
-				if(this.getPriceStart) {
-					this.isPullDown(false)
-				}
-				// 自选球队
-				if (goodsData.isSelect) {
-					this.getGoodSelect(() => {
-						this.getGoodSelectBranch();
-						this.getGoodSelectCart()
-						this.choiceTeamData.teamCheckShow = true;
-					})
-					return;
-				}
-				// 自选随机球队
-				if (goodsData.pintuan_type == 11 || goodsData.pintuan_type == 12) {
-					this.getGoodSelectTeamRandom(() => {
-						this.choiceTRData.show = true;
-					})
-					return;
-				}
-				if (this.goodSurplusNum <= 0) {
-					uni.showToast({ title: '该商品已售罄', icon: 'none' })
-					return;
-				}
-				this.navigateToConfirmOrder('')
-			})
+		onClickBuy() { 
+			app.platform.hasLoginToken(() => {
+				const { goodsData, getPriceStart, goodSurplusNum } = this; 
+				if (getPriceStart) { this.isPullDown(false) } 
+				if (goodsData.isSelect) { 
+					// 处理购买自选球队 
+					this.handleSelectTeam() 
+				} else if ([11, 12].includes(goodsData.pintuan_type)) { 
+					// 处理购买自选随机球队 
+					this.handleSelectTeamRandom() 
+				} else if (goodSurplusNum <= 0) { 
+					// 售罄
+					uni.showToast({ title: '该商品已售罄', icon: 'none' }) 
+					return 
+				} else { 
+					// 普通类型购买
+					this.navigateToConfirmOrder() 
+				} 
+			}) 
+		}
+		// 处理购买自选球队 
+		handleSelectTeam() { 
+			this.getGoodSelect(() => { 
+				this.getGoodSelectBranch(); 
+				this.getGoodSelectCart();
+				this.choiceTeamData.teamCheckShow = true;
+			}) 
+		}
+		// 处理购买自选随机球队 
+		handleSelectTeamRandom() { 
+			this.getGoodSelectTeamRandom(() => { this.choiceTRData.show = true }) 
 		}
 		onClickResult(chooseID: number) {
 			let random = this.goodsData.pintuan_type == 10 ? true : false
@@ -594,28 +599,28 @@
 				url: `goods_result_list?chooseIds=${chooseID}&code=${this.goodCode}&random=${random}`
 			})
 		}
-		onClickLive() {
-			if(this.source=='livePage') {
-				uni.navigateBack({ delta:1 })
-				return
+		onClickLive() { 
+			if (this.source=='livePage') { 
+				uni.navigateBack({ delta: 1 }); 
+				return 
 			}
-			if (this.goodsData.broadcast.third&&this.goodsData.broadcast.third == 1001) {
-				const { publisher } = this.goodsData
-				app.platform.goZgLive({
-					roomID:this.goodsData.broadcast.roomId,
-					merchantId:publisher.id,
-					state:this.goodsData.broadcast.state,
-					playCode:this.goodsData.broadcast.playCode,
-					isAnchor:false,
-					goodCode: this.goodsData.goodCode,
-					alias:publisher.alias
-				})
-				return
-			}
-			app.platform.goWeChatLive({
-				playCode: this.goodsData.broadcast.playCode,
-				goodCode: this.goodsData.goodCode
-			})
+			const { broadcast, publisher } = this.goodsData; 
+			if (broadcast.third && broadcast.third === 1001) { 
+				app.platform.goZgLive({ 
+					roomID: broadcast.roomId, 
+					merchantId: publisher.id, 
+					state: broadcast.state, 
+					playCode: broadcast.playCode, 
+					isAnchor: false, 
+					goodCode: this.goodsData.goodCode, 
+					alias: publisher.alias 
+				}) 
+			} else { 
+				app.platform.goWeChatLive({ 
+					playCode: broadcast.playCode, 
+					goodCode: this.goodsData.goodCode 
+				}) 
+			} 
 		}
 		onClickCardPlay(item: any) {
 			const { operaData } = this;
@@ -793,7 +798,7 @@
 			this.navigateToConfirmOrder(params)
 			this.onClickteamRandomCancel()
 		}
-		navigateToConfirmOrder(params:string){
+		navigateToConfirmOrder(params=''){
 			const AD_id = this.AD_id?`&AD_id=${this.AD_id}`:''
 			uni.navigateTo({
 				url: `confirmorder?data=${encodeURIComponent(JSON.stringify(this.goodsData))}&payChannel=${encodeURIComponent(JSON.stringify(this.payChannel))}${params}${AD_id}`
