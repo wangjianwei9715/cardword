@@ -3,20 +3,29 @@
  * @Author: wjw
  * @Date: 2023-03-24 11:12:43
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-24 14:53:45
+ * @LastEditTime: 2023-03-29 13:42:34
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="content">
 		<view class="apply-box">
-			<u-cell-group :border="false">
-				<u-cell :border="false" :titleStyle="titleStyle" title="开票商家" :value="data.merchantName"></u-cell>
-				<u-cell :border="false" :titleStyle="titleStyle" title="可开票金额" :value="data.amount"></u-cell>
-				<u-cell :border="false" :titleStyle="titleStyle" title="发票类型" value="普通发票"></u-cell>
-				<u-cell :border="false" :titleStyle="titleStyle" title="发票抬头" value="个人"></u-cell>
+			<u-cell-group :border="false" >
+				<u-cell :border="false" :titleStyle="titleStyle"  title="开票商家">
+					<text slot="value" class="cell-value">{{data.merchantName}}</text>
+				</u-cell>
+				<u-cell :border="false" :titleStyle="titleStyle" title="可开票金额">
+					<text slot="value" class="cell-value">{{data.amount}}</text>
+				</u-cell>
+				<u-cell :border="false" :titleStyle="titleStyle" title="发票类型">
+					<text slot="value" class="cell-value">普通发票</text>
+				</u-cell>
+				<u-cell :border="false" :titleStyle="titleStyle" title="发票抬头">
+					<text slot="value" class="cell-value">个人</text>
+				</u-cell>
 				<u-cell :border="false" :titleStyle="titleStyle" title="申请开票金额">
 					<input slot="value" type="digit" class="search-input" v-model="applyAmount" />
+					<image slot="right-icon" src="@/static/goods/rightCor.png" style="width:11rpx;height:17rpx"></image>
 				</u-cell>
 			</u-cell-group>
 		</view>
@@ -32,8 +41,9 @@
 	export default class ClassName extends BaseNode {
 		data:any = {};
 		titleStyle = {
-			color:'#909399',
-			fontSize:'16rpx'
+			color:'#88878C',
+			fontSize:'25rpx',
+			fontFamily: 'PingFang SC'
 		}
 		applyAmount = 0;
 		onLoad(query:any) {
@@ -65,7 +75,7 @@
 		background:#F6F7F8;
 	}
 	.btn-confirm {
-		width: 690rpx;
+		width: 710rpx;
 		background: $btn-red;
 		text-align: center;
 		font-family: PingFangSC-Semibold;
@@ -77,14 +87,24 @@
 		font-weight: 600;
 	}
 	.apply-box{
-		width: 690rpx;
+		width: 710rpx;
 		box-sizing: border-box;
 		padding:10rpx 20rpx;
 		background:#fff;
-		margin:30rpx auto;
+		margin:15rpx auto 35rpx;
 		border-radius: 5rpx;
 	}
 	.search-input{
 		text-align: right;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #333333;
+	}
+	.cell-value{
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #333333;
 	}
 </style>

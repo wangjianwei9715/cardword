@@ -14,8 +14,18 @@
 		<view class="box-content">
 			<statusbar/>
 			<view class="invoice-box" v-for="(item,index) in invoiceList" :key="index">
-				{{item.merchantName}}可开票{{item.amount}}已开票{{item.amount1}}申请中{{item.amount2}}
-				<view @click="onClickApplyfor(item)">申请开票</view>
+				<view class="box-top">
+					<view class="top-left">
+						<muqian-lazyLoad class="top-avatar" v-if="item.merchantLogo!=''" :src="item.merchantLogo" borderRadius="50%" ></muqian-lazyLoad>
+						{{item.merchantName}}
+					</view>
+					<view class="top-right" @click="onClickApplyfor(item)">申请开票</view>
+				</view>
+				<view class="box-bottom">
+					<view class="bottom-row">可开票：{{item.amount}}</view>
+					<view class="bottom-row">已开票：{{item.amount1}}</view>
+					<view class="bottom-row" v-show="item.amount2>0">申请中：{{item.amount2}}</view>
+				</view>
 			</view>
 		</view>
 		<empty v-show="empty" />
@@ -162,9 +172,62 @@
 		background: #FFFFFF;
 		border-radius: 10px;
 		box-sizing: border-box;
-		padding:5rpx 28rpx;
+		padding:5rpx 20rpx;
 	}
 	.invoice-box{
-
+		width: 710rpx;
+		box-sizing: border-box;
+		padding:30rpx 30rpx 15rpx 30rpx;
+		background: #FFFFFF;
+		border-radius: 5rpx;
+		margin-bottom: 14rpx;
+		.box-top{
+			width: 100%;
+			height:62rpx;
+			display: flex;
+			align-items:center;
+			justify-content: space-between;
+		}
+		.top-left{
+			height:62rpx;
+			display: flex;
+			align-items: center;
+			font-size: 25rpx;
+			font-family: PingFang SC;
+			font-weight: 600;
+			color: #333333;
+		}
+		.top-avatar{
+			width: 62rpx;
+			height:62rpx;
+			margin-right: 20rpx;
+		}
+		.top-right{
+			width: 180rpx;
+			height: 49rpx;
+			background: #FA1545;
+			border-radius: 3rpx;
+			font-size: 25rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #FFFFFF;
+			text-align: center;
+			line-height: 49rpx;
+		}
+		.box-bottom{
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			margin-top: 25rpx;
+		}
+		.bottom-row{
+			width: 50%;
+			font-size: 23rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #88878C;
+			margin-bottom: 15rpx;
+		}
 	}
 </style>
