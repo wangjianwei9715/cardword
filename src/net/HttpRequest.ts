@@ -1,3 +1,12 @@
+/*
+ * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
+ * @Author: wjw
+ * @Date: 2022-12-09 11:24:22
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-03-29 10:40:19
+ * Copyright: 2023 .
+ * @Descripttion: 
+ */
 import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
 import { data } from 'browserslist';
@@ -337,27 +346,23 @@ export default class HttpRequest {
 			}
 		});
 	}
-	setOpSign(config: any, msg: any, type?: any) {
-		let str = ''
+	setOpSign(config: any, sign: string, needOpKey:boolean) { 
+		let str = ''; 
 		if (config.data) {
 			for (let i in config.data) {
-				if (config.data[i] != undefined && typeof (config.data[i]) != 'object') {
-					str += i + '=' + config.data[i] + '&'
-				}
-			}
-			str = str.substring(0, str.lastIndexOf('&'));
-			config.data.rawStr = app.opKey + '_' + str + '_' + msg
+				if (config.data[i] !== undefined && typeof(config.data[i]) !== 'object') { 
+					str += `${i}=${config.data[i]}&`; 
+				} 
+			} 
+			str = str.slice(0, -1); 
+			config.data.rawStr = `${app.opKey}_${str}_${sign}`; 
 		} else {
-			str = config.url.split('?')[1];
-			config.url += '&rawStr=' + str + '_' + msg
-		}
-		if (type) {
-			config.headers['opSign'] = Md5.hashStr(str + '_' + msg)
-			return;
-		} else {
-			config.headers['opSign'] = Md5.hashStr(app.opKey + '_' + str + '_' + msg)
-			return;
-		}
-
+			str = config.url.split('?')[1]; 
+			config.url += `&rawStr=${str}_${sign}`; 
+		} 
+		const opSign = needOpKey ? `${app.opKey}_${str}_${sign}` : `${decodeURIComponent(str)}_${sign}`; 
+		config.headers['opSign'] = Md5.hashStr(opSign); 
+		return; 
 	}
+	
 }
