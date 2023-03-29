@@ -132,7 +132,7 @@
 			let date:any = new Date()
 			let params={
 				highlight:1,
-				q:text,
+				q:encodeURIComponent(text),
 				timeStamp:Date.parse(date)/1000,
 				state:1,
 				pageSize:20
