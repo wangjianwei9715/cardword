@@ -83,6 +83,14 @@
 					</view>
 					<view class="icon-right"></view>
 				</view>
+				<navigator v-if="invoice.open" url="/pages/userinfo/invoice/index" hover-class="none">
+					<view class="setting">
+						<view class="name">
+							<image class="setting-icon" src="" />开票入口
+						</view>
+						<view class="icon-right"></view>
+					</view>
+				</navigator>
 			</view>
 
 		</view>
@@ -130,6 +138,10 @@
 			{id:4,name:'用户协议',url:'/pages/userinfo/user_agreement',pic:'../../static/userinfo/v2/icon_b_agreement.png'}
 		]
 		showPaySuccess = false;
+		invoice = {
+			open:false,
+			request:false
+		}
 		onLoad(query:any) {
 			this.onEventUI('updateToken',()=>{
 				this.initPageData();
@@ -174,6 +186,12 @@
 				}
 				if(!data.toPay){
 					this.orderTab['toPay'].num = 0
+				}
+				if(!this.invoice.request){
+					app.http.Post('me/invoice/ask/open',{},(res:any)=>{
+						this.invoice.request = true;
+						this.invoice.open = res.open
+					})
 				}
 				if(cb) cb()
 			});

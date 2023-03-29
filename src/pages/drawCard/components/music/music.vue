@@ -62,24 +62,23 @@
 			this.innerAudioContext.loop = true;
 			this.onClickMusicChoice(this.InitMusicItem,this.InitMusicPlay)
 		}
-		onClickMusicChoice(item:Music,initPlay=true){
-			const { innerAudioContext } = this;
+		onClickMusicChoice(item:Music, initPlay = true) { 
+			const { innerAudioContext, musicList, $emit } = this;
 
-			if(item.choice){
-				if(item.play) innerAudioContext.pause();
-				else innerAudioContext.play();
-				item.play = !item.play;
-			}else{
-				item.choice = true;
-				item.play = initPlay;
-				this.musicList.forEach((x:Music)=>{
-					x.id!=item.id && (x.choice=false,x.play=false);
-				});
-				this.$emit('musicChange',item.name);
-				innerAudioContext.src= item.src;
-				item.play && innerAudioContext.play()
-			}
-			uni.setStorageSync('musicChoice',item);
+			if (item.choice) { 
+				item.play ? innerAudioContext.pause() : innerAudioContext.play(); 
+				item.play = !item.play; 
+			} else { 
+				item.choice = true; 
+				item.play = initPlay; 
+				musicList.forEach((x) => { 
+					if (x.id !== item.id) { x.choice = false; x.play = false; } 
+				}); 
+				$emit('musicChange', item.name); 
+				innerAudioContext.src = item.src; 
+				item.play && innerAudioContext.play(); 
+			} 
+			uni.setStorageSync('musicChoice', item); 
 		}
 		public get InitMusicItem() : Music {
 			const item = this.musicList.find((x:Music)=>{

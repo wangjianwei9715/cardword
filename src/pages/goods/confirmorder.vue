@@ -291,15 +291,7 @@ export default class ClassName extends BaseNode {
     }
     app.http.Get("me/delivery", {}, (res: any) => {
       if (res.list) {
-        for (let i in res.list) {
-          if (res.list[i].default) {
-            this.addressData = res.list[i];
-            return;
-          }
-        }
-        if (this.addressData == "") {
-          this.addressData = res.list[0];
-        }
+        this.addressData = res.list.find((x:any)=>x.default) || res.list[0];
       }
     });
     this.onEventUI("addressSelect", (data) => {
@@ -544,8 +536,7 @@ export default class ClassName extends BaseNode {
       const goodOrderCode = res.goodOrderCode
       uni.hideLoading();
       // 订单额外数据
-      await this.orderSupply(goodOrderCode);
-      
+      await this.supplyOrderData(goodOrderCode);
       if(res.price<=0){
         this.redirectToOrder(goodOrderCode)
       }else{
@@ -573,14 +564,13 @@ export default class ClassName extends BaseNode {
       }
     });
   }
-  orderSupply(orderCode:string){
+  supplyOrderData(orderCode:string){
     return new Promise((resolve, reject) => {
+      const { getBitDisableGuess, guessList, guessCheckTeam, AD_id } = this;
       // 订单额外数据
       const params:any = {
-        guessName:this.getBitDisableGuess?this.guessList[this.guessCheckTeam].name:'',
-      }
-      if(this.AD_id){
-        params.source = {tp:1,sourceId:String(this.AD_id)}
+        guessName:getBitDisableGuess?guessList[guessCheckTeam].name:'',
+        source:AD_id?{tp:1,sourceId:String(AD_id)}:undefined
       }
       if(app.platform.objectValueAllEmpty(params)){
         resolve(true)
@@ -590,7 +580,6 @@ export default class ClassName extends BaseNode {
         })
       }
     });
-    
   }
   cuokaSet(state:boolean){
     app.http.Post('my/cuoka/state/good/switch/'+this.goodsData.goodCode,{state:state?1:-1},()=>{
