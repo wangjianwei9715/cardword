@@ -140,7 +140,7 @@
 		showPaySuccess = false;
 		invoice = {
 			open:false,
-			request:false
+			request:true
 		}
 		onLoad(query:any) {
 			this.onEventUI('updateToken',()=>{
