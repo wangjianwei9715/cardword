@@ -225,8 +225,10 @@
 				pageSize: 10,
 				tp:classifyOpt!=100?(classifyOpt==0?100:classifyOpt):0,
 				q:clickSerieItem.id ? '' : encodeURIComponent(searchText),
-				hs:clickSerieItem.id||undefined,
 			};
+			if(clickSerieItem.id){
+				params.hs = clickSerieItem.id
+			}
 			if (type == "reach") {
 				params.scrollId = this.scrollId;
 				params.st = this.scrollIdSt;
