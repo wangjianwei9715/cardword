@@ -32,7 +32,7 @@
 			<view class="drawer-box">
 				<view class="drawer-helpmsg">
 					<view class="drawer-help-title">{{rulesData.title}}</view>
-					<view class="drawer-help-content" v-html="rulesData.content"></view>
+					<view class="drawer-help-content">{{rulesData.content}}</view>
 				</view>
 			</view>
     	</bottomDrawer>
@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
+	import { Component, Prop,Vue,Watch,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { guessRules } from "@/tools/DataRules";
 	@Component({})
@@ -50,8 +50,9 @@
 		freeNum:number|undefined;
 		@Prop({default:[]})
 		teamList:object|undefined;
-		@Prop({default:0})
-		checkTeam:number|undefined;
+		@PropSync("checkTeam",{
+			type:Number
+		}) checkTeamNumber!: Number;
 		@Prop({default:''})
 		lastGuess:string|undefined;
 
@@ -72,7 +73,7 @@
 			this.showDrawer = false;
 		}
 		onClickTeamCheck(index:number){
-			this.$emit('teamCheck',index)
+			this.checkTeamNumber = index;
 			// if(this.checkTeam==index) return;
 			// this.checkTeam = index;
 		}
