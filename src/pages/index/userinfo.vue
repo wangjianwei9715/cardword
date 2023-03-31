@@ -7,8 +7,8 @@
 					<view class="header-icon-right"></view>
 				</view>
 				<view class="header-top-right">
-					<view class="icon-setting" @click="onClickSetting"></view>
-					<view class="icon-xiaoxi" @click="onClickMessage"><view class="xiaoxi-num" v-if="infoData.unReadMsg>0">{{infoData.unReadMsg>99?'99+':infoData.unReadMsg}}</view></view>
+					<view class="icon-setting" @click="navigateTo('/pages/userinfo/setting')"></view>
+					<view class="icon-xiaoxi" @click="navigateTo('/pages/userinfo/message')"><view class="xiaoxi-num" v-if="infoData.unReadMsg>0">{{infoData.unReadMsg>99?'99+':infoData.unReadMsg}}</view></view>
 				</view>
 			</view>
 			<view class="header-center">
@@ -96,7 +96,7 @@
 		</view>
 		
 
-		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess"/>
+		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true"/>
 	</view>
 </template>
 
@@ -139,7 +139,7 @@
 		]
 		showPaySuccess = false;
 		invoice = {
-			open:false,
+			open:true,
 			request:true
 		}
 		onLoad(query:any) {
@@ -155,32 +155,23 @@
 		}
 		initPageData(cb?:Function){
 			if(app.token.accessToken == ''){
-				uni.navigateTo({
-					url:'/pages/login/login'
-				})
+				this.navigateTo('/pages/login/login')
 				return;
 			}
 			app.http.Get('me/home',{},(res:any)=>{
-				let data = res.data;
+				const data = res.data;
 				this.infoData = data;
-				this.infoData.avatar = decodeURIComponent(data.avatar)
 				app.familial = data.familial;
-				this.serviceTab.giving.num = data.unReadGoodNo;
-
-				// 卡币 我的中卡
-				for (const key in this.walletTab) {
-					if (Object.prototype.hasOwnProperty.call(data, key)) {
+				this.$set(this.infoData, 'avatar', decodeURIComponent(res.data.avatar));
+				this.$set(this.serviceTab.giving, 'num', res.data.unReadGoodNo);
+				for (const key in data) {
+					if (this.walletTab.hasOwnProperty(key)) {
 						this.walletTab[key].num = data[key];
 					}
-				}
-				for (const key in this.orderTab) {
-					if (Object.prototype.hasOwnProperty.call(data, key)) {
+					if (this.orderTab.hasOwnProperty(key)) {
 						this.orderTab[key].num = key == 'toPay'? data[key].num:data[key];
 					}
-				}
-				// 关注 收藏
-				for (const key in this.headerTab) {
-					if (Object.prototype.hasOwnProperty.call(data, key)) {
+					if (this.headerTab.hasOwnProperty(key)) {
 						this.headerTab[key].num = data[key];
 					}
 				}
@@ -200,56 +191,34 @@
 			if(item.name=='加入群聊'){
 				this.showPaySuccess = true
 			}else{
-				uni.navigateTo({
-					url:item.url
-				})
+				this.navigateTo(item.url)
 			}
 		}
-		onClickSetting(){
-			uni.navigateTo({
-				url:'/pages/userinfo/setting'
-			})
-		}
-		onClickMessage(){
-			uni.navigateTo({
-				url:'/pages/userinfo/message'
-			})
+		navigateTo(url:string) {
+			uni.navigateTo({ url: url });
 		}
 		onClickUserInfo(){
-			uni.navigateTo({
-				url:'/pages/userinfo/user_info?data='+encodeURIComponent(JSON.stringify(this.infoData))
-			})
+			this.navigateTo(`/pages/userinfo/user_info?data=${encodeURIComponent(JSON.stringify(this.infoData))}`)
 		}
 		onClickOrderList(id:number){
-			uni.navigateTo({
-				url:'/pages/userinfo/order_list?type='+id
-			})
+			this.navigateTo(`/pages/userinfo/order_list?type=${id}`)
+		}
+		onClickOrderListMp(item:any){
+			this.navigateTo(`/pages/userinfo/order_list?type=${this.orderTab[item].id}`)
 		}
 		onClickServiceTab(item:any){
 			if(item.name=='联系客服'){
-				let params = {
-					agentExten:''
-				}
+				let params = { agentExten:'' }
 				app.platform.heliService(params)
 			}
 			if(item.url!=''){
-				uni.navigateTo({
-					url:item.url
-				})
+				this.navigateTo(item.url)
 			}else{
 				uni.showToast({
 					title:item.tips,
 					icon:'none'
 				})
 			}
-		}
-		onClickOrderListMp(item:any){
-			uni.navigateTo({
-				url:'/pages/userinfo/order_list?type='+this.orderTab[item].id
-			})
-		}
-		onClickcancelPaySuccess(){
-			this.showPaySuccess = false;
 		}
 		
 	}

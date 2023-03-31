@@ -92,7 +92,7 @@
 		</view>
 		
 
-		<paymentSuccess :showPaySuccess="showPaySuccess" :showJoin="true" @cancelPaySuccess="onClickcancelPaySuccess" />
+		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
 
 		<winningCardPopup :showWinningCrad="showWinningCrad" @closeWinning="closeWinning" />
 		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
@@ -458,9 +458,6 @@
 					url: `/pages/live/live_find?q=${this.liveData.q}`
 				})
 			}
-		}
-		onClickcancelPaySuccess() {
-			this.showPaySuccess = false;
 		}
 		onClickJumpUrl(item: any) {
 			if (item.name == '卡币商城' || item.name == '领券中心') {
