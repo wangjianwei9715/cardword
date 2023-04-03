@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-28 17:34:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-28 15:10:21
+ * @LastEditTime: 2023-04-03 10:47:26
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -36,7 +36,6 @@
 		animationLoopsOver = false;
 		animationOver = false;
 		animationTimeout = false;
-		svgaPlayer=null;
 		@Watch('start')
 		onChangeStart(val:any){
 			if(val){
@@ -74,16 +73,16 @@
 				}
 			})
 		}
-		async svgaRender({ svga, svgaSrc, loops, cb }: SvgaRenderParams) { 
+		svgaRender({ svga, svgaSrc, loops, cb }: SvgaRenderParams) { 
 			try { 
-				const { render } = this.$refs[svga]; 
-				const [parser, player] = await render(); 
-				const videoItem = await parser.load(svgaSrc); 
-				await player.setVideoItem(videoItem); 
-				player.loops = loops; 
-				player.clearsAfterStop = true; 
-				player.startAnimation(); 
-				player.onFinished(() => cb && cb()); 
+				this.$refs[svga].render(async(parser:any, player:any)=>{
+					const videoItem = await parser.load(svgaSrc); 
+					await player.setVideoItem(videoItem); 
+					player.loops = loops; 
+					player.clearsAfterStop = true; 
+					player.startAnimation(); 
+					player.onFinished(() => cb && cb()); 
+				}); 
 			} catch (e) { 
 				console.error(e); 
 			} 
