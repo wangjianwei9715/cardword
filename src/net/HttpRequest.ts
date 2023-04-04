@@ -1,3 +1,12 @@
+/*
+ * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
+ * @Author: wjw
+ * @Date: 2022-12-09 11:24:22
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-03-30 09:57:37
+ * Copyright: 2023 .
+ * @Descripttion: 
+ */
 import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
 import { data } from 'browserslist';
@@ -65,6 +74,13 @@ const errorCodeMap: any = {
 	},
 
 }
+const excludeUrls = ["user/login/phone", "user/code", "user/forget"];
+const opSignMap:any = { 
+	'短信验证码': (config:any) => `opk_smscode_${config.data.phone}_${config.data.type}`,
+	'确认收货': (config:any) => `opk_${app.opKey}_receive_good_${config.data.code}`, 
+	'绑定Push': (config:any) => `opk_${app.opKey}_${plus.push.getClientInfo().clientid}`, 
+	'客服发送消息': (config:any) => `opk_${app.opKey}_${config.data.bucketId}_${config.data.picUrl || ''}_${config.data.content || ''} `
+};
 export default class HttpRequest {
 	private static instance: HttpRequest;
 	private axiosInstance: AxiosInstance;
@@ -126,86 +142,72 @@ export default class HttpRequest {
 		// 添加请求拦截器
 		this.axiosInstance.interceptors.request.use((config) => {
 			// 在发送请求之前做些什么
-			if (app.opKey == '') {
-				app.opKey = uni.getStorageSync('app_opk')
-			}
-			config.baseURL = app.bussinessApiDomain
-			let url = config.url + '';
+			const { opKey, bussinessApiDomain, dataApiDomain, funcApiDomain, version, update_url, localTest } = app; 
 			const ksjUserId = uni.getStorageSync('ksjUserId');
 			if (!uni.$u.test.isEmpty(ksjUserId)) {
 				config.headers['ksjUserId'] = ksjUserId;
 			}
-			if (app.version != '' && app.version != '1.0.0') {
-				config.headers['version'] = app.version;
+			if (version != '' && version != '1.0.0') {
+				config.headers['version'] = version;
 			}
-			if (url.indexOf("user/login/phone") == -1 && url.indexOf("user/code") == -1 && url.indexOf("user/forget") == -1) {//验证码、刷新、登录 首页接口不需要token &&config.url!='xingqiu/refresh_lists'&&config.url!='xingqiu/index_act'
-				if (!config.headers['token'] && app.token.accessToken != '') {
-					config.headers['token'] = app.token.accessToken;
-				}
+			app.opKey = opKey || uni.getStorageSync('app_opk'); 
+			let url = config.url + '';
+			config.baseURL = bussinessApiDomain; 
+
+			//验证码、刷新、登录 首页接口不需要token
+			if (!excludeUrls.some(str => url.indexOf(str) !== -1)) { 
+				if (!config.headers['token'] && app.token.accessToken !== '') { 
+					config.headers['token'] = app.token.accessToken; 
+				} 
 			}
-			for (let i in this.headersData) {
-				const data = this.headersData[i]
-				if (url.indexOf(`${data.url}`) != -1) {
-					config.headers[`${data.name}`] = `${data.msg}`;
-				}
+			for (const data of this.headersData) { 
+				if (url.indexOf(data.url) !== -1) { 
+					config.headers[data.name] = data.msg; 
+				} 
 			}
 			// config.data数据+sign统一处理opSign
-			for (let i in this.opSignData) {
-				const data = this.opSignData[i]
-				if (url.indexOf(`${data.url}`) != -1) {
-					this.setOpSign(config, data.sign, data.needOpKey)
-				}
+			for (const data of this.opSignData) { 
+				if (url.indexOf(data.url) !== -1) { 
+					this.setOpSign(config, data.sign, data.needOpKey); 
+				} 
 			}
 			// 需要单独处理额外数据的opSign
-			for (let i in this.opSignOtherData) {
-				const data = this.opSignOtherData[i]
-				if (url.indexOf(`${data.url}`) != -1) {
-					let opSign;
-					switch (data.name) {
-						case '短信验证码':
-							opSign = `opk_smscode_${config.data.phone}_${config.data.type}`;
-							break;
-						case '确认收货':
-							opSign = `opk_${app.opKey}_receive_good_${config.data.code}`;
-							break;
-						case '绑定Push':
-							//#ifdef APP-PLUS
-							opSign = `opk_${app.opKey}_${plus.push.getClientInfo().clientid}`;
-							break;
-						//#endif
-						case '客服发送消息':
-							opSign = `opk_${app.opKey}_${config.data.bucketId}_${config.data.picUrl || ''}_${config.data.content || ''}`;
-							break;
-						default:
-							opSign = ''
-					};
-					config.headers['opSign'] = Md5.hashStr(opSign)
-				}
+			for (const data of this.opSignOtherData) { 
+				if (url.indexOf(data.url) !== -1) { 
+					const opSignFn = opSignMap[data.name]; 
+					if (opSignFn) { 
+						config.headers['opSign'] = Md5.hashStr(opSignFn(config)); 
+					} 
+				} 
 			}
-			if (url.indexOf("app/update") != -1) {
-				config.baseURL = app.update_url
+
+			switch (true) { 
+				case url.indexOf("app/update") !== -1: 
+					config.baseURL = update_url;
+					break; 
+				case url.indexOf("dataApi/") !== -1: 
+					config.url = url.substring(8);
+					if (dataApiDomain !== '' && !localTest) { 
+						config.baseURL = dataApiDomain; 
+					} 
+					break; 
+				case url.indexOf('funcApi/') !== -1: 
+					config.url = url.substring(8); 
+					config.baseURL = funcApiDomain || domain; 
+					if (funcApiDomain && !localTest) { 
+						config.baseURL = funcApiDomain; 
+					} 
+					break; 
+				case url.indexOf("app/launch") !== -1 || url.indexOf("app/onlinecfg") !== -1: 
+					config.baseURL = ''; 
+					break; 
 			}
-			if (url.indexOf("dataApi/") != -1) {
-				config.url = url.substring(8);
-				if (app.dataApiDomain == '' && !app.localTest) return;
-				if (!app.localTest) config.baseURL = app.dataApiDomain;
-			}
-			if (url.indexOf('funcApi/') != -1) {
-				config.url = url.substring(8);
-				config.baseURL = app.funcApiDomain || domain
-				if (!app.localTest) {
-					config.baseURL = app.funcApiDomain;
-				}
-			}
-			if (url.indexOf("app/launch") != -1 || url.indexOf("app/onlinecfg") != -1) {
-				config.baseURL = ''
-			}
+			
 			if (url.indexOf("/relative") != -1) {
 				const data = getUrlDataFN(url)
 				config.headers['ts'] = data.ts;
 				config.headers['s'] = data.s;
 			}
-			// console.log('请求开始：config===',config);
 			return config;
 		}, function (error) {
 			// 对请求错误做些什么
@@ -337,27 +339,23 @@ export default class HttpRequest {
 			}
 		});
 	}
-	setOpSign(config: any, msg: any, type?: any) {
-		let str = ''
+	setOpSign(config: any, sign: string, needOpKey:boolean) { 
+		let str = ''; 
 		if (config.data) {
 			for (let i in config.data) {
-				if (config.data[i] != undefined && typeof (config.data[i]) != 'object') {
-					str += i + '=' + config.data[i] + '&'
-				}
-			}
-			str = str.substring(0, str.lastIndexOf('&'));
-			config.data.rawStr = app.opKey + '_' + str + '_' + msg
+				if (config.data[i] !== undefined && typeof(config.data[i]) !== 'object') { 
+					str += `${i}=${config.data[i]}&`; 
+				} 
+			} 
+			str = str.slice(0, -1); 
+			config.data.rawStr = `${app.opKey}_${str}_${sign}`; 
 		} else {
-			str = config.url.split('?')[1];
-			config.url += '&rawStr=' + str + '_' + msg
-		}
-		if (type) {
-			config.headers['opSign'] = Md5.hashStr(str + '_' + msg)
-			return;
-		} else {
-			config.headers['opSign'] = Md5.hashStr(app.opKey + '_' + str + '_' + msg)
-			return;
-		}
-
+			str = config.url.split('?')[1]; 
+			// config.url += `&rawStr=${str}_${sign}`; 
+		} 
+		const opSign = needOpKey ? `${app.opKey}_${str}_${sign}` : `${decodeURIComponent(str)}_${sign}`; 
+		config.headers['opSign'] = Md5.hashStr(opSign); 
+		return; 
 	}
+	
 }

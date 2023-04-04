@@ -226,7 +226,13 @@ export default class ClassName extends BaseNode {
         })
     }
     reqNewMerchant(cb?: any) {
-        app.http.Get('dataApi/merchant/list', this.merchantParams, (res: any) => {
+        const {pageIndex, pageSize, q} = this.merchantParams;
+        const params = {
+            pageIndex,
+            pageSize,
+            q:encodeURIComponent(q)
+        }
+        app.http.Get('dataApi/merchant/list', params, (res: any) => {
             this.merchantTotalPage = res.totalPage
             const list: any = res.list || []
             this.merchantParams.pageIndex == 1 ? this.merchantList = list : this.merchantList.push(...list)

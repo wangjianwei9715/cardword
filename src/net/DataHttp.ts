@@ -6,14 +6,14 @@ export var headersData = [
 
 // opSign
 export var opSignData = [
-    {url:'search/ebay',sign:'searchSecret',needOpKey:true}, 
-    {url:'good/topay/',sign:'payGoodCode',needOpKey:false}, 
-    {url:'order/topay/',sign:'payGoodOrder',needOpKey:false},
-    {url:'activity/invite/requestKey',sign:'inviteKey',needOpKey:false},
-    {url:'activity/invite/getKey',sign:'inviteGetKey',needOpKey:false},
-    {url:'user/login/wechat/app',sign:'wechat',needOpKey:true},
-    {url:'user/login/apple',sign:'apple',needOpKey:true},
-    {url:'search/good',sign:'searchSecret',needOpKey:true}
+    {url:'search/ebay',sign:'searchSecret',needOpKey:false}, 
+    {url:'good/topay/',sign:'payGoodCode',needOpKey:true}, 
+    {url:'order/topay/',sign:'payGoodOrder',needOpKey:true},
+    {url:'activity/invite/requestKey',sign:'inviteKey',needOpKey:true},
+    {url:'activity/invite/getKey',sign:'inviteGetKey',needOpKey:true},
+    {url:'user/login/wechat/app',sign:'wechat',needOpKey:false},
+    {url:'user/login/apple',sign:'apple',needOpKey:false},
+    {url:'search/good',sign:'searchSecret',needOpKey:false}
 ]
 
 // opSignOther

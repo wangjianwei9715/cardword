@@ -111,7 +111,7 @@
 
 		<payment :showPayMent="showPayMent" :payChannel="payChannel" @cancelPay="onClickCancelPay" :payPrice="orderData.price" :countTime="countDown" @pay="onClickPayGoods" />
 
-		<paymentSuccess :showPaySuccess="showPaySuccess" @cancelPaySuccess="showPaySuccess=false"/>
+		<paymentSuccess :showPaySuccess.sync="showPaySuccess"/>
 	</view>
 </template>
 

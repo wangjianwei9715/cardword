@@ -100,6 +100,12 @@
 				</list>
 			</view>
 		</view>
+
+		<view class="upslide" :class="{'upslide-show':upslideShow}">
+			<image class="upslide-pic" src="@/static/information/more_bg.png"/>
+			<image class="upslide-hand" src="@/static/information/more_icon.png"/>
+			<text class="upslide-name">上滑查看更多视频</text>
+		</view>
 		<!-- 输入框 -->
 		<nTextarea :focus="chatData.focus" :replyName="chatData.replyName" @chatConfirm="onChatConfirm" @blur="onBlur">
 		</nTextarea>
@@ -170,8 +176,8 @@
 				timeout: "",//🌟用来阻止 setTimeout()方法
 				voice: "",//🌟用来阻止 setTimeout()方法
 				oldVideo: "",
-				
 				timers: "",
+				upslideShow:false
 			}
         },
 		components:{
@@ -222,6 +228,7 @@
 			console.log('到后台');
 		},
 		onLoad(query){
+			this.upslideInit()
 			this.code = query.code;
 			this.vType = query.type;
 			this.searchQ = query.q || '';
@@ -268,6 +275,16 @@
 			uni.$off('resetLoadmore');
 		},
         methods: {
+			upslideInit(){
+				this.upslideShow = uni.getStorageSync('upslideShow') !== false;
+				console.log('d-',uni.getStorageSync('upslideShow') !== false);
+				if(this.upslideShow){
+					uni.setStorageSync('upslideShow',false);
+					setTimeout(()=>{
+						this.upslideShow=false;
+					},3000)
+				}
+			},
 			replaceText(text){
 				return text.replace(/\<p\>/g, '').replace(/\<\/p\>/g,'')
 			},
@@ -489,7 +506,9 @@
     }
 </script>
 <style>
-	.container {background-color: #000000;}
+	.container {
+		background-color: #000000;
+	}
 	.navigateBox{
 		width: 750rpx;
 		height:140rpx;
@@ -694,4 +713,53 @@
 		font-weight: 400;
 		color: #7C7C7C;
 	}
+	.upslide{
+		width: 220rpx;
+		height:400rpx;
+		position: fixed;
+		left:265rpx;
+		top:500rpx;
+		transition: all 0.3s;
+		opacity: 0;
+	}
+	.upslide-show{
+		opacity: 1;
+	}
+	.upslide-name{
+		width: 220rpx;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #FFFEFE;
+		text-align: center;
+	}
+	.upslide-pic{
+		width: 160rpx;
+		height:324rpx;
+		margin-left:26rpx;
+		margin-bottom: 25rpx;
+	}
+	.upslide-hand{
+		width: 122rpx;
+		height:104rpx;
+		position: absolute;
+		right:-35rpx;
+		top:193rpx;
+		animation-name: slide-top;
+		animation-duration: 1s;
+		animation-timing-function: linear;
+		animation-iteration-count: 2;
+	}
+	@keyframes slide-top {
+		0% {
+			top:193rpx
+		}
+		70% {
+			top:0rpx
+		}
+		100% {
+			top:0rpx
+		}
+	}
+
 </style>

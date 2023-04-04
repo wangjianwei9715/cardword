@@ -10,19 +10,21 @@
 			</view>
 			<view class="popup-text2">截图微信扫码加入社群</view>
 			<view class="popup-text3">不定期送福利</view>
-			<view class="popup-close" @click="onClickCancelPay"></view>
+			<view class="popup-close" @click="show=false"></view>
 		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
+	import { Component, Prop,Vue,Watch,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import {getCountDownTime} from '@/tools/util';
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		@Prop({default:false})
-		showPaySuccess!:boolean;
+		@PropSync("showPaySuccess",{
+			type:Boolean
+		}) show!: boolean;
+		@Prop({default:''})
 		@Prop({default:false})
 		showJoin!:boolean|undefined;
 
@@ -36,10 +38,6 @@
 		destroyed(){
 			
 		}
-		onClickCancelPay(){
-			this.$emit("cancelPaySuccess");
-		}
-		
 	}
 </script>
 

@@ -69,7 +69,7 @@
 			
 			let date:any = new Date()
 			let params={
-				q:text,
+				q:encodeURIComponent(text),
 				timeStamp:Date.parse(date)/1000,
 				pageSize:30
 			}
@@ -90,7 +90,7 @@
 					return;
 				}
 				uni.navigateTo({
-					url: '/pages/goods/goods_ref?data='+encodeURIComponent(JSON.stringify(res))+'&q='+text
+					url: '/pages/goods/goods_ref?data='+encodeURIComponent(JSON.stringify(res))+'&q='+encodeURIComponent(text)
 				})
 			})
 		}

@@ -43,7 +43,7 @@ export default class ClassName extends BaseNode {
     { id: 2, name: "时间", sort:0 , sortName:'saleAt' },
   ];
   onLoad(query: any) {
-    this.searchText = query.q;
+    this.searchText = decodeURIComponent(query.q);
     this.searchData = JSON.parse(query.data);
     this.goodsList = this.searchData.list;
     this.scrollId = this.searchData.scrollId;
@@ -68,7 +68,7 @@ export default class ClassName extends BaseNode {
     this.searchIng = true;
     let date:any = new Date()
     let params: { [x: string]: any } = {
-      q:this.searchText,
+      q:encodeURIComponent(this.searchText),
       timeStamp:Date.parse(date)/1000,
       pageSize:30
     };

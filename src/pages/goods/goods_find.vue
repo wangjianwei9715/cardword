@@ -132,7 +132,7 @@
 			let date:any = new Date()
 			let params={
 				highlight:1,
-				q:text,
+				q:encodeURIComponent(text),
 				timeStamp:Date.parse(date)/1000,
 				state:1,
 				pageSize:20
@@ -140,7 +140,7 @@
 			// #ifndef MP
 			app.http.Get('dataApi/search/good',params,(res:any)=>{
 				uni.redirectTo({
-					url: `/pages/goods/goods_find_list?data=${encodeURIComponent(JSON.stringify(res))}&q=${text}`
+					url: `/pages/goods/goods_find_list?data=${encodeURIComponent(JSON.stringify(res))}&q=${encodeURIComponent(text)}`
 				})
 			})
 			// #endif

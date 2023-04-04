@@ -124,7 +124,7 @@
 		tagParams: any = {};
 		onLoad(query: any) {
 			if (query.q) {
-				this.searchText = query.q;
+				this.searchText = decodeURIComponent(query.q);
 			}
 			if (query.classType) {
 				this.classifyOpt = query.classType;
@@ -157,7 +157,7 @@
 				}, 10);
 				this.reqNewSeries();
 			} else {
-				  this.reqNewData("default");
+				this.reqNewData("default");
 				this.reqNewSeries();
 			}
 			
@@ -216,36 +216,32 @@
 			);
 		}
 		reqNewData(type: string, cb ? : Function) {
+			const {goodTabCheck, classifyOpt, clickSerieItem, searchText, tagParams} = this;
 			if (this.noMoreData) return;
-
-			let reach = type == "reach"? true : false;
 			this.isRequest = true;
 			// 获取列表
-			let params: {
-				[x: string]: any;
-			} = {
-				state: Number(this.goodTabCheck),
-				pageSize: 10
+			let params: { [x: string]: any; } = {
+				state: Number(goodTabCheck),
+				pageSize: 10,
+				tp:classifyOpt!=100?(classifyOpt==0?100:classifyOpt):0,
+				q:clickSerieItem.id ? '' : encodeURIComponent(searchText),
 			};
-			params.tp = this.classifyOpt!=100?(this.classifyOpt==0?100:this.classifyOpt):0
-			params.q = this.clickSerieItem.id ? '' : this.searchText
-			if (this.clickSerieItem.id) {
-				params.hs = this.clickSerieItem.id;
+			if(clickSerieItem.id){
+				params.hs = clickSerieItem.id
 			}
-			if (reach) {
+			if (type == "reach") {
 				params.scrollId = this.scrollId;
 				params.st = this.scrollIdSt;
 				params.sn = Md5.hashStr(
 					this.scrollIdSt + this.scrollId + "scrollSearchGood"
 				);
 			}
-			
-			let date: any = new Date();
+			const date: any = new Date();
 			params.timeStamp = Date.parse(date) / 1000;
 			app.http.Get(
 				"dataApi/search/good", {
 					...params,
-					...this.tagParams
+					...tagParams
 				},
 				(res: any) => {
 					if (res.end) {
