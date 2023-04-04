@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-03-24 13:35:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-04 09:37:44
+ * @LastEditTime: 2023-04-04 16:08:52
  * @FilePath: \card-world\src\pages\act\portable\exhibition\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -63,8 +63,7 @@
                 </view>
                 <view :id="`commId_${son.id}`" class="comBlock comBlock_son"
                     @touchstart.stop="touchAction($event, son, item, sonIndex, true)"
-                    @touchend.stop="touchAction($event, son, item, sonIndex, true)"
-                    @click.stop="onClickCom(item, son)"
+                    @touchend.stop="touchAction($event, son, item, sonIndex, true)" @click.stop="onClickCom(item, son)"
                     v-for="(son, sonIndex) in item.lower" :class="{
                         heightLight_an: queryParams.noteCommentId && son.id == queryParams.noteCommentId && isScrollEnd,
                         hold: onClickTap && touchId == son.id
@@ -87,7 +86,8 @@
                                     回复
                                     <text class="replyName">{{ son.replyUserName }}</text>
                                 </template>
-                                {{ son.content }}</view>
+                                {{ son.content }}
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -242,7 +242,7 @@ export default class ClassName extends BaseNode {
     }
     public get inputPlaceholder() {
         if (this.clickCom.id) {
-            return `回复 ${this.clickSon.userName||this.clickCom.userName}`
+            return `回复 ${this.clickSon.userName || this.clickCom.userName}`
         }
         return "说点什么..."
     }
@@ -359,7 +359,7 @@ export default class ClassName extends BaseNode {
         app.platform.pageBack()
     }
     onClickCom(item: any, son: any) {
-        console.log(item,son);
+        console.log(item, son);
         if (this.onClickTap || this.touchId) return
         this.focus = true
         if (!item.id) return
@@ -380,13 +380,19 @@ export default class ClassName extends BaseNode {
                     app.http.Post("portableCard/works/comment/delete/" + item.id, {}, () => {
                         if (isSon) {
                             fatherItem.lower.splice(index, 1)
+                            const findIndex = fatherItem.lowerIds.findIndex((id: number) => id == item.id)
+                            if (findIndex >= 0) fatherItem.lowerIds.splice(findIndex, 1)
                             this.formData.commentNum -= 1
                         } else {
-                            // this.commList.splice(index, 1)
-                            setTimeout(() => {
-                                this.queryParams.fetchFrom = 1
-                                this.getCommByWorks()
-                            }, 250)
+                            const findIndex = this.topComIds.findIndex((id: number) => id == item.id)
+                            if (findIndex >= 0) this.topComIds.splice(findIndex, 1)
+                            const delNum = 1 + (item.lower ? item.lower.length : 0) + item.remainNum
+                            this.formData.commentNum-=delNum
+                            this.commList.splice(index,1)
+                            // setTimeout(() => {
+                            //     this.queryParams.fetchFrom = 1
+                            //     this.getCommByWorks()
+                            // }, 250)
                         }
                     })
                 }
@@ -520,8 +526,6 @@ export default class ClassName extends BaseNode {
                 if (!has) this.topComIds.push(item.id)
                 return !has
             })
-            console.log(list);
-            
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.commList = list : this.commList.push(...list)
             if (this.queryParams.noteCommentId && !this.isScrollEnd) {
