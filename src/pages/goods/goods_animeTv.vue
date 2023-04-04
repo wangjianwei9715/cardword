@@ -159,7 +159,7 @@ export default class ClassName extends BaseNode {
                     id: item.id,
                     name: item.title,
                     //@ts-ignore
-                    pic_url: this.$parsePic(item.pic_url),
+                    pic_url: this.$parsePic(decodeURIComponent(item.pic_url)),
                 }
             })
         })
