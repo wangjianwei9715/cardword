@@ -236,7 +236,7 @@ export default {
 		// 获取所有标签的尺寸
 		resize() {
 			// 如果不存在list，则不处理
-			if (this.list.length === 0) {
+			if (this.list.length === 0 || this.innerCurrent<0) {
 				return
 			}
 			Promise.all([this.getTabsRect(), this.getAllItemRect()]).then(([tabsRect, itemRect = []]) => {
