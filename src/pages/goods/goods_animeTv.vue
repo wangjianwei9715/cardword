@@ -18,7 +18,7 @@
                 <view class="goodsInfo">
                     <view class="name u-line-1">{{ item.title }}</view>
                     <view class="typePro">
-                        <view class="type">{{ getGoodsPintuan(item.pintuan_type) }}</view>
+                        <view class="type flexCenter">{{ getGoodsPintuan(item.pintuan_type) }}</view>
                         <view class="progress">
                             <view class="proRed" :style="{ width: (goodsManaager.listPlan(item, 'num')) + '%' }"></view>
                             <view class="text">{{ goodsManaager.listPlan(item, 'str') }}</view>
@@ -271,10 +271,11 @@ page{
                 color: #949494;
                 padding: 0rpx 6rpx;
                 height: 28rpx;
-                line-height: 28rpx;
+                // line-height: 28rpx;
                 background: #E6E6E6;
                 border-radius: 3rpx;
                 margin-right: 17rpx;
+                vertical-align: bottom;
             }
 
             .progress {
@@ -302,9 +303,10 @@ page{
                     font-family: PingFang SC;
                     font-weight: 400;
                     color: #333333;
-                    line-height: 28rpx;
+                    // line-height: 28rpx;
                     z-index: 2;
                     position: relative;
+                    vertical-align: bottom;
                 }
             }
         }
