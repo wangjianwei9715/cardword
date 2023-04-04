@@ -46,10 +46,10 @@
 			//#endif
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境");
-				// app.localTest = true;  
-				// app.bussinessApiDomain = `http://192.168.8.63:8701${app.requestVersion}`;
-				// app.bussinessApiDomain = `https://server.ssltest.ka-world.com${app.requestVersion}`;
-				// app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
+				app.localTest = true;  
+				// app.bussinessApiDomain = `http://192.168.8.6:8701${app.requestVersion}`;
+				app.bussinessApiDomain = `https://server.ssltest.ka-world.com${app.requestVersion}`;
+				app.funcApiDomain = "https://functest.ssl.ka-world.com/api/v2/";
 				// 正式服测试环境 
 				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
 			}

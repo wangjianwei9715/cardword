@@ -269,6 +269,18 @@
 					}
 				},
 				{
+					"path": "goods_animeTv",
+					"style": {
+						"navigationBarTitleText": "动漫影视专区",
+						"navigationBarBackgroundColor": "#ffffff",
+						"transparentTitle": "auto",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
 					"path": "goods_assign_list",
 					"style": {
 						"navigationBarTitleText": "",
@@ -679,7 +691,122 @@
 						"transparentTitle":"auto",
 						"enablePullDownRefresh": true
 					}
+				},
+				{
+					"path": "portable/container",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "3倍积分 入榜夺礼",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#1a3439",
+						"backgroundColorBottom": "#1a3439",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "portable/rule",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "3倍积分 入榜夺礼",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "portable/award",
+					"style": {
+						"navigationBarTitleText": "奖励预览",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "portable/rank/detail",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "积分明细",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#1a3439",
+						"backgroundColorBottom": "#1a3439",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "portable/rank/live",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "直播入口",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#1a3439",
+						"backgroundColorBottom": "#1a3439",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "portable/exhibition/release",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "发布",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#1a3439",
+						"backgroundColorBottom": "#1a3439",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "portable/exhibition/detail",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "详情",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"softinputNavBar": "none",
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "portable/exhibition/my",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "我的",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#1a3439",
+						"backgroundColorBottom": "#1a3439",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
 				}
+				
 			]
 		},
 		{

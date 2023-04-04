@@ -22,12 +22,12 @@ export function parsePic(src: string) {
  * @param keepNum Number 保留N位小数
  * @returns String
  */
-export function formatNumber(number: number, keepNum = 0) {//
+export function formatNumber(number: number, keepNum = 0,type="cn") {//
 	let result = '' + number;
 	if (number >= 100000000) {
 		result = (number / 100000000).toFixed(keepNum) + '亿'
 	} else if (number >= 10000) {
-		result = (number / 10000).toFixed(keepNum) + '万'
+		result = (number / 10000).toFixed(keepNum) + (type=="cn"?'万':'w')
 	}
 	return result;
 }
@@ -48,9 +48,9 @@ export function formatGold(number: number, symbol = ',', interval = 3) {//返回
 	return result;
 }
 
-export function getUrlDataFN(urlStr:string) {
+export function getUrlDataFN(urlStr: string) {
 	// 定义一个空对象以储存数据
-	const urlObj:any = {}
+	const urlObj: any = {}
 	// 检查url中是否携带数据
 	if (urlStr.indexOf('?') === -1) return null
 	// 找到 '?' 对应的下标
@@ -63,16 +63,16 @@ export function getUrlDataFN(urlStr:string) {
 	dataArr.forEach(str => {
 		// 判断数组内的字符串是否有 '='
 		if (str.indexOf('=') === -1) {
-		// 如没有 '=' , 则将此字符串作为对象内键值对的键, 键值对的值为 undefined
-		urlObj[str] = undefined // { e: undefined }
+			// 如没有 '=' , 则将此字符串作为对象内键值对的键, 键值对的值为 undefined
+			urlObj[str] = undefined // { e: undefined }
 		} else {
-		// 如果有 '='
-		// 通过 '=' 将此字符串截取成两段字符串（不推荐使用 split 分割, 因为数据中可能携带多个 '=' ）
-		const innerArrIndex = str.indexOf('=')
-		const key = str.substring(0, innerArrIndex)
-		const value = str.substr(innerArrIndex + 1)
-		// 以截取后的两段字符串作为对象的键值对
-		urlObj[key] = value // {a: '1', b: '2', c: '', d: 'xxx'}
+			// 如果有 '='
+			// 通过 '=' 将此字符串截取成两段字符串（不推荐使用 split 分割, 因为数据中可能携带多个 '=' ）
+			const innerArrIndex = str.indexOf('=')
+			const key = str.substring(0, innerArrIndex)
+			const value = str.substr(innerArrIndex + 1)
+			// 以截取后的两段字符串作为对象的键值对
+			urlObj[key] = value // {a: '1', b: '2', c: '', d: 'xxx'}
 		}
 	})
 	// 返回对象
@@ -118,7 +118,7 @@ export function dateFormatYMSHM(time: number | string) {
 	return result;
 }
 // 时间戳 月日时分秒
-export function dateFormatMSHMS(time: number | string,type?:string) {
+export function dateFormatMSHMS(time: number | string, type?: string) {
 	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
 	var year = date.getFullYear();
 	var month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -128,7 +128,7 @@ export function dateFormatMSHMS(time: number | string,type?:string) {
 	var second = ("0" + date.getSeconds()).slice(-2);
 	// 拼接
 	var result = month + "月" + sdate + "日 " + hour + ":" + minute;
-	if(type) result=month + type + sdate + " " + hour + ":" + minute;
+	if (type) result = month + type + sdate + " " + hour + ":" + minute;
 	// var result =  month + "月" + sdate + "日 " + hour + ":" + minute //+ ":" + second
 	// 返回
 	return result;
@@ -162,13 +162,13 @@ export function dateFormatYMS(time: number | string) {
 	return result;
 }
 // 时间戳 月日
-export function dateFormatMS(time: number | string,type?:string) {
+export function dateFormatMS(time: number | string, type?: string) {
 	var date = new Date(Number(time) * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
 	var month = ("0" + (date.getMonth() + 1)).slice(-2);
 	var sdate = ("0" + date.getDate()).slice(-2);
 	// 拼接
 	var result = month + "-" + sdate
-	if(type) result = month + type + sdate
+	if (type) result = month + type + sdate
 	return result;
 }
 // 时间换算
@@ -260,7 +260,7 @@ export function formatMinute(value: any) {//返回 mm:ss
 	let result = "";
 	result = (secondTime >= 10 ? '' : '0') + secondTime;
 	result = (minuteTime >= 10 ? '' : '0') + minuteTime + ":" + result;
-	if(hoursTime>0){
+	if (hoursTime > 0) {
 		result = (hoursTime >= 10 ? '' : '0') + hoursTime + ":" + result;
 	}
 	return result;
@@ -287,7 +287,7 @@ export function getStrByMinutes(num: number) {//返回 hh:mm
 	let strTime = hours + ':' + minutes;
 	return strTime;
 }
-export function secondsFormat(seconds:number){
+export function secondsFormat(seconds: number) {
 	const day = Math.floor(seconds / 3600 / 24);
 	const daySurplus = seconds - (3600 * 24 * day)
 	const hour = Math.floor((daySurplus) / 3600);
@@ -295,9 +295,9 @@ export function secondsFormat(seconds:number){
 	const second = Math.floor((daySurplus - 3600 * hour) % 60);
 	return {
 		day,
-		hour:hour<10?`0${hour}`:hour,
-		minute:minute<10?`0${minute}`:minute,
-		second:second<10?`0${second}`:second
+		hour: hour < 10 ? `0${hour}` : hour,
+		minute: minute < 10 ? `0${minute}` : minute,
+		second: second < 10 ? `0${second}` : second
 	}
 }
 export function getGoodsImg(img: string) {  //返回图片
@@ -397,16 +397,16 @@ export function formatterCountDown(countDown: number) {
 	let day_num = countDown - 3600 * 24 * Number(day);
 	let hour =
 		Math.floor(day_num / 3600) < 10 ?
-		"0" + Math.floor(day_num / 3600) :
-		Math.floor(day_num / 3600);
+			"0" + Math.floor(day_num / 3600) :
+			Math.floor(day_num / 3600);
 	let minute =
 		Math.floor((day_num - 3600 * Number(hour)) / 60) < 10 ?
-		"0" + Math.floor((day_num - 3600 * Number(hour)) / 60) :
-		Math.floor((day_num - 3600 * Number(hour)) / 60);
+			"0" + Math.floor((day_num - 3600 * Number(hour)) / 60) :
+			Math.floor((day_num - 3600 * Number(hour)) / 60);
 	let second =
 		Math.floor((day_num - 3600 * Number(hour)) % 60) < 10 ?
-		"0" + Math.floor((day_num - 3600 * Number(hour)) % 60) :
-		Math.floor((day_num - 3600 * Number(hour)) % 60);
+			"0" + Math.floor((day_num - 3600 * Number(hour)) % 60) :
+			Math.floor((day_num - 3600 * Number(hour)) % 60);
 	return (
 		(Number(day) > 0 ? day + "天 " : "") + hour + ":" + minute + ":" + second
 	);
@@ -484,7 +484,7 @@ export function liveCountDownV2(startDate: number, endDate: number = 0, mmbol: b
 	}
 }
 export const weekDay = function (time: number, type?: number) {
-	const weekNum: number = new Date(time*1000).getDay();
+	const weekNum: number = new Date(time * 1000).getDay();
 	const week: any = {
 		0: '星期天',
 		1: '星期一',
@@ -501,6 +501,36 @@ export const weekDay = function (time: number, type?: number) {
 		weekDay = weekDay.replace(/天/g, '日')
 	}
 	return weekDay;
+}
+export function getDateDiff(dateTimeStamp: number) {
+
+	var minute = 1000 * 60;
+	var hour = minute * 60;
+	var day = hour * 24;
+	var halfamonth = day * 15;
+	var month = day * 30;
+
+	var now = new Date().getTime();
+	var diffValue = now - dateTimeStamp;
+	if (diffValue < 0) {
+		//若日期不符则弹出窗口告之
+		//alert("结束日期不能小于开始日期！");
+	}
+	var monthC: any = diffValue / month;
+	var weekC: any = diffValue / (7 * day);
+	var dayC: any = diffValue / day;
+	var hourC: any = diffValue / hour;
+	var minC: any = diffValue / minute;
+	var result: string = ""
+	if (monthC >= 1 || weekC >= 1 || dayC >= 1) {
+		return uni.$u.timeFormat(dateTimeStamp, 'mm-dd hh:MM');
+	} else if (hourC >= 1) {
+		result = parseInt(hourC) + "个小时前";
+	} else if (minC >= 1) {
+		result = parseInt(minC) + "分钟前";
+	} else
+		result = "刚刚";
+	return result;
 }
 // 正则每3位数字添加逗号
 export function toThousands(num = 0) {

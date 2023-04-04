@@ -59,6 +59,11 @@ export default {
 		keyName: {
 			type: String,
 			default: uni.$u.props.tabs.keyName
-		}
+		},
+        //自定义模式（仅限于自定义样式无法达到需求时)
+        customType:{
+            type:String,
+            default:""
+        }
     }
 }
