@@ -14,7 +14,7 @@
         </view>
         <view class="goodsList">
             <view class="anGoods" v-for="(item, index) in goodsList" :key="index" @click="onClickGoods(item)">
-                <muqian-lazyLoad class="pic" :src="$parsePic(decodeURIComponent(item.pic))"></muqian-lazyLoad>
+                <muqian-lazyLoad class="pic" borderRadius="3rpx" :src="$parsePic(decodeURIComponent(item.pic))"></muqian-lazyLoad>
                 <view class="goodsInfo">
                     <view class="name u-line-1">{{ item.title }}</view>
                     <view class="typePro">
@@ -104,10 +104,12 @@ export default class ClassName extends BaseNode {
             this.reqNewData()
         }
     }
-    onPulldDownRefresh() {
+    onPullDownRefresh() {
         this.queryParams.pageIndex = 1
         this.reqNewData(() => {
-            uni.stopPullDownRefresh()
+            setTimeout(()=>{
+                uni.stopPullDownRefresh()
+            },500)
         })
     }
     onClickGoods(item: any) {
@@ -177,11 +179,14 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
+page{
+    background-color: #fff;
+}
 .topArea {
     width: 750rpx;
     height: 485rpx;
     background-size: 100% 100%;
-    background-image: url("@/static/goods/animeTvTop.png");
+    background-image: url("@/static/goods/animeTvTopNew.png");
     position: relative;
 }
 
@@ -276,11 +281,13 @@ export default class ClassName extends BaseNode {
                 height: 28rpx;
                 background: #E6E6E6;
                 border-radius: 3rpx;
-                padding: 0 9rpx;
+                // padding: 0 9rpx;
                 position: relative;
-
+                width: 152rpx;
                 overflow: hidden;
-
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 .proRed {
                     background-color: #FA1545;
                     position: absolute;
