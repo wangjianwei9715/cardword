@@ -86,7 +86,7 @@
 				<navigator v-if="invoice.open" url="/pages/userinfo/invoice/index" hover-class="none">
 					<view class="setting">
 						<view class="name">
-							<image class="setting-icon" src="" />开票入口
+							<image class="setting-icon" src="@/static/userinfo/v2/icon_b_invoice.png" />开票入口
 						</view>
 						<view class="icon-right"></view>
 					</view>
@@ -139,8 +139,8 @@
 		]
 		showPaySuccess = false;
 		invoice = {
-			open:true,
-			request:true
+			open:false,
+			request:false
 		}
 		onLoad(query:any) {
 			this.onEventUI('updateToken',()=>{

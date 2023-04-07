@@ -303,7 +303,7 @@ export default class ClassName extends BaseNode {
     if (this.getBitDisableCoupon) {
       return '此商品优惠券不可用';
     } else {
-      const couponPrice = this.checkCouponPrice > 0 ? "-¥" + this.checkCouponPrice : this.couponNum;
+      const couponPrice = this.checkCouponPrice > 0 ? `-¥${this.checkCouponPrice}`  : this.couponNum;
       return couponPrice;
     }
   }
