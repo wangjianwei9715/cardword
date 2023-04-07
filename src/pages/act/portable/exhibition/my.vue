@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-03-24 14:26:01
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-03 11:25:47
+ * @LastEditTime: 2023-04-07 15:35:50
  * @FilePath: \card-world\src\pages\act\portable\exhibition\my.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -140,10 +140,12 @@ export default class ClassName extends BaseNode {
         this.reqDataByTag()
         uni.$on("likeChange", this.likeChange)
         uni.$on("delWorks", this.onDelWorkds)
+        uni.$on("refreshMyWorks",this.refreshMyWorks)
     }
     onUnload(): void {
         uni.$off("likeChange", this.likeChange)
         uni.$off("delWorks", this.onDelWorkds)
+        uni.$off("refreshMyWorks",this.refreshMyWorks)
     }
     onPageScroll(data: any) {
         //@ts-ignore
@@ -161,6 +163,14 @@ export default class ClassName extends BaseNode {
         this.reqDataByTag(() => {
             uni.stopPullDownRefresh()
         })
+    }
+    refreshMyWorks(){
+        this.tag.list[0].queryParams.fetchFrom=1
+        this.tag.list[0].isFetchEnd=true
+        this.reqDataByTag(null,0)
+        // app.http.Get("dataApi/portableCard/works/my/list",this.tag.list[0].queryParams,(res:any)=>{
+
+        // })
     }
     likeChange(data: any) {
         if (!data.id) return
@@ -225,8 +235,8 @@ export default class ClassName extends BaseNode {
         }
 
     }
-    reqDataByTag(cb?: any) {
-        const nowTag = this.tag.list[this.tag.index]
+    reqDataByTag(cb?: any,specifyIndex=-1) {
+        const nowTag = this.tag.list[specifyIndex==-1?this.tag.index:specifyIndex]
         app.http.Get(nowTag.url, nowTag.queryParams, (res: any) => {
             const list = res.list || []
             nowTag.isFetchEnd = res.isFetchEnd

@@ -50,18 +50,21 @@ export default class Upload {
             }
         })
     }
-    getImages(count = 1, sourceType = ['album', 'camera']) {
+    getImages(count = 1,fileDir:string, sourceType = ['album']) {
         return new Promise((resolve, reject) => {
             uni.chooseImage({
                 sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-                sourceType: ['camera', 'album'],
+                sourceType: sourceType,
                 count,
                 success: (res) => {
                     resolve(res.tempFilePaths)
                 },
                 fail: (err) => {
-                    if (err.errMsg == 'chooseImage:fail cancel') {
+                    if (err.errMsg.includes("cancel") || err.errMsg.includes("用户取消")) {
                         reject('取消上传')
+                    }
+                    if (err.errMsg.includes("No Permission")) {
+                        reject("没有权限,请开启相应app权限")
                     }
                     reject(err.errMsg)
                 }
@@ -70,6 +73,7 @@ export default class Upload {
     }
     async upLoadImagePath(...params: any) {
         try {
+            //@ts-ignore
             const fileList = await this.getImages(...params); // 选择图片
             const sign = await this.ossutils.getSTS(); // 获取签名等信息
             uni.showLoading({
@@ -107,9 +111,9 @@ export default class Upload {
             uni.hideLoading()
         }
     }
-    async uploadImgs(count :number, fileDir:string, sourceType =['album', 'camera']) {
-        const result = await this.upLoadImagePath(count, fileDir, sourceType);
-        return result;
+    async uploadImgs(count: number, fileDir: string, sourceType = ['album']) {
+            const result = await this.upLoadImagePath(count, fileDir, sourceType);
+            return result;
     }
     async uploadVideo(fileDir = "") {
         const result = await this.upLoadVideoPath(fileDir);

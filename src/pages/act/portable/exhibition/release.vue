@@ -93,11 +93,14 @@ export default class ClassName extends BaseNode {
         }
         //@ts-ignore
         const COUNT: any = countMap[keyName] - this[keyName].length
-        const picArr: any = await Upload.getInstance().uploadImgs(COUNT, "exhibition", [""])
-        picArr.forEach((pic: any) => {
+        const picArr: any = await Upload.getInstance().uploadImgs(COUNT, "exhibition", ["album"])
+        if (picArr){
+            picArr.forEach((pic: any) => {
             //@ts-ignore
             this[keyName].push(pic)
         });
+        }
+        
 
     }
     startTimer() {
@@ -113,7 +116,10 @@ export default class ClassName extends BaseNode {
         }, 1000)
     }
     goToActIndex() {
-        app.platform.pageBack()
+        app.platform.pageBack(this.id?2:1)
+        if(this.id){
+            uni.$emit("refreshMyWorks")
+        }
     }
     submit() {
         if (!this.canSubmit) return

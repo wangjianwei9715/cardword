@@ -53,7 +53,7 @@ export default class ClassName extends BaseNode {
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 20,
-        activityTp: 3
+        activityTp: 5
     }
     orderGoodsStateStr = orderGoodsStateStr
     getGoodsPintuan = getGoodsPintuan
@@ -75,7 +75,7 @@ export default class ClassName extends BaseNode {
         this.queryParams.fetchFrom += this.queryParams.fetchSize
         this.reqNewData()
     }
-    onPulldDownRefresh() {
+    onPullDownRefresh() {
         this.queryParams.fetchFrom = 1
         this.reqNewData(() => {
             uni.stopPullDownRefresh()
