@@ -12,7 +12,7 @@
 						<view class="music-index-name u-line-1">{{item.name}}</view>
 						<view class="music-index-singer">{{item.singer}}</view>
 					</view>
-					<view class="music-index-right" @click="onClickMusicChoice(item)">
+					<view class="music-index-right" @click="playMusic(item)">
 						<view v-if="!item.choice" class="music-choice">选择</view>
 						<view v-else-if="!item.play" class="music-play"></view>
 						<view v-else class="music-pause"></view>
@@ -40,14 +40,14 @@
 		@PropSync("popupShow",{type:Boolean})
 		show!:Boolean
 
-		musicList = [
+		musicList:Music[] = [
 			{id:1,name:'wait wait wait',singer:'蔡徐坤',choice:false,play:false,src:'../../static/drawCard/music/Wait.mp3'},
 			{id:2,name:'鸡舞',singer:'蔡徐坤',choice:false,play:false,src:'../../static/drawCard/music/jiwu.mp3'},
 			{id:3,name:'You Bring Me Joy',singer:'ErGuuu',choice:false,play:false,src:'../../static/drawCard/music/ErGuuu.mp3'},
 			{id:4,name:'迷恋',singer:'梅卡德尔',choice:false,play:false,src:'../../static/drawCard/music/milian.mp3'},
 		]
 		innerAudioContext:any;
-		storage:any;
+		storage: Music | null = null;
 		mounted(){
 			this.$nextTick(()=>{
 				this.InitMusic()
@@ -56,15 +56,27 @@
 		destroyed(){
 			this.innerAudioContext.destroy()
 		}
-		InitMusic(){
-			this.storage = uni.getStorageSync('musicChoice');
-			this.innerAudioContext = uni.createInnerAudioContext();
-			this.innerAudioContext.loop = true;
-			this.onClickMusicChoice(this.InitMusicItem,this.InitMusicPlay)
+		public get InitMusicItem() : Music {
+			const item = this.musicList.find((x)=>{
+				return x.id == this.storage?.id
+			})
+			return item ?? this.musicList[0] 
 		}
-		onClickMusicChoice(item:Music, initPlay = true) { 
-			const { innerAudioContext, musicList, $emit } = this;
-
+		public get InitMusicPlay() : boolean {
+			return this.storage?.play ?? true 
+		}
+		InitMusic(){
+			try {
+				this.storage = uni.getStorageSync('musicChoice');
+				this.innerAudioContext = uni.createInnerAudioContext();
+				this.innerAudioContext.loop = true;
+				this.playMusic(this.InitMusicItem,this.InitMusicPlay)
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		playMusic(item:Music, initPlay = true) { 
+			const { innerAudioContext, musicList } = this;
 			if (item.choice) { 
 				item.play ? innerAudioContext.pause() : innerAudioContext.play(); 
 				item.play = !item.play; 
@@ -74,20 +86,11 @@
 				musicList.forEach((x) => { 
 					if (x.id !== item.id) { x.choice = false; x.play = false; } 
 				}); 
-				$emit('musicChange', item.name); 
+				this.$emit('musicChange', item.name); 
 				innerAudioContext.src = item.src; 
 				item.play && innerAudioContext.play(); 
 			} 
 			uni.setStorageSync('musicChoice', item); 
-		}
-		public get InitMusicItem() : Music {
-			const item = this.musicList.find((x:Music)=>{
-				return x.id == this.storage.id
-			})
-			return item ?? this.musicList[0] 
-		}
-		public get InitMusicPlay() : boolean {
-			return this.storage ? this.storage.play : true 
 		}
 	}
 </script>

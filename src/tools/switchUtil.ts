@@ -104,8 +104,10 @@ export function orderGoodsStateStr(data:any) {
         case 5:
             return '待上传拆卡报告';
         case 6:
-            return '待发货';
+            return '拆卡结果审核中';
         case 7:
+            return '待发货';
+        case 8:
             return '发货完成';
         case -100:
             return '系统下架';

@@ -491,7 +491,6 @@ export default class ClassName extends BaseNode {
   keepTwoDecimal(num: any) {
     var result = parseFloat(num);
     if (isNaN(result)) {
-      alert("传递参数错误，请检查！");
       return 0;
     }
     result = Math.round(num * 100) / 100;
