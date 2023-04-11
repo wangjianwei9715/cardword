@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-03 11:22:45
+ * @LastEditTime: 2023-04-07 17:40:18
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -26,8 +26,10 @@
             </view>
         </view>
         <view class="componentsContainer">
-            <component :is="tabBar[tabIndex].ref" :ref="tabBar[tabIndex].ref" :seriesId="seriesId" :roomId="roomId">
-            </component>
+            <rank v-show="tabIndex==0" ref="rank"/>
+            <exhibition v-show="tabIndex==1" ref="exhibition"/>
+            <!-- <component :is="tabBar[tabIndex].ref" :ref="tabBar[tabIndex].ref" :seriesId="seriesId" :roomId="roomId">
+            </component> -->
             <view class="bottomSafeArea"></view>
         </view>
         <view class="safe" style="height:140rpx"></view>

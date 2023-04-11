@@ -74,7 +74,7 @@
                         <view class="draw_infoRight">
                             <view class="draw_name">{{ item.awardName || "获取中" }}</view>
                             <view class="draw_condition">
-                                <view>{{ item.declare || "说明" }}</view>
+                                <view>{{ item.declare || "" }}</view>
                             </view>
                         </view>
                     </view>
