@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-03-24 13:35:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-04 16:08:52
+ * @LastEditTime: 2023-04-12 10:26:27
  * @FilePath: \card-world\src\pages\act\portable\exhibition\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,7 @@
         </view>
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
         <view class="swiper">
-            <u-swiper height="750rpx" :interval="3000" radius="1rpx" :list="pics" @click="onClickSwiper"></u-swiper>
+            <u-swiper imgMode="aspectFit" bgColor="#000" height="750rpx" :interval="3000" radius="1rpx" :list="pics" @click="onClickSwiper"></u-swiper>
         </view>
         <view class="contentContainer">
             <view class="title">{{ formData.title || "获取中" }}</view>
