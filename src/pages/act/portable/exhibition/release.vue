@@ -168,7 +168,7 @@ page {
 .title {
     font-size: 27rpx;
     font-family: PingFang SC;
-    font-weight: 600;
+    font-weight: bold;
     color: #FFFFFF;
     letter-spacing: 2rpx;
     margin-bottom: 12rpx;
@@ -267,7 +267,7 @@ page {
     .title {
         font-size: 33rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #FFFFFF;
         letter-spacing: 2rpx;
     }
@@ -280,7 +280,7 @@ page {
 .successTips {
     font-size: 33rpx;
     font-family: PingFang SC;
-    font-weight: 600;
+    font-weight: bold;
     color: #FFFFFF;
     letter-spacing: 2rpx;
     margin-top: 20rpx;
@@ -292,7 +292,7 @@ page {
     background: #FA1545;
     font-size: 33rpx;
     font-family: PingFang SC;
-    font-weight: 600;
+    font-weight: bold;
     color: #FFFFFF;
     margin-top: 120rpx;
 }

@@ -153,7 +153,7 @@ page {
             .name {
                 font-size: 29rpx;
                 font-family: PingFang SC;
-                font-weight: 600;
+                font-weight: bold;
                 color: #333333;
                 margin-bottom: 18rpx;
             }

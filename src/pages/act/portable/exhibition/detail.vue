@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-03-24 13:35:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-12 10:26:27
+ * @LastEditTime: 2023-04-12 15:02:00
  * @FilePath: \card-world\src\pages\act\portable\exhibition\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -637,7 +637,7 @@ export default class ClassName extends BaseNode {
     .title {
         font-size: 27rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #333333;
         margin-bottom: 30rpx;
         margin-top: 35rpx;
@@ -693,7 +693,7 @@ export default class ClassName extends BaseNode {
 .commentNum {
     font-size: 29rpx;
     font-family: PingFang SC;
-    font-weight: 600;
+    font-weight: bold;
     color: #333333;
     flex: 1;
 }
@@ -808,7 +808,7 @@ export default class ClassName extends BaseNode {
                 .wrap {
                     font-size: 21rpx;
                     font-family: PingFang SC;
-                    font-weight: 600;
+                    font-weight: bold;
                     color: #636363;
                     background: #EFEFEF;
                     border-radius: 3rpx;
@@ -875,7 +875,7 @@ export default class ClassName extends BaseNode {
         .wrap {
             font-size: 21rpx;
             font-family: PingFang SC;
-            font-weight: 600;
+            font-weight: bold;
             color: #636363;
             background: #EFEFEF;
             border-radius: 3rpx;
@@ -1020,7 +1020,7 @@ export default class ClassName extends BaseNode {
     .title {
         font-size: 35rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #7C7C7C;
     }
 
@@ -1051,7 +1051,7 @@ export default class ClassName extends BaseNode {
     .title {
         font-size: 33rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #FFFFFF;
         letter-spacing: 2rpx;
     }

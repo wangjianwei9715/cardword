@@ -276,7 +276,7 @@ page {
     .tag_select {
         font-size: 33rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #FA1545;
     }
 }
@@ -369,7 +369,7 @@ page {
                 color: #fff;
                 font-size: 25rpx;
                 font-family: PingFang SC;
-                font-weight: 600;
+                font-weight: bold;
                 color: #333333;
                 margin-top: 16rpx;
                 line-height: 38rpx;
@@ -468,7 +468,7 @@ page {
                 margin-top: 70rpx;
                 font-size: 25rpx;
                 font-family: PingFang SC;
-                font-weight: 600;
+                font-weight: bold;
                 color: #FF0038;
             }
 
@@ -533,7 +533,7 @@ page {
             .why {
                 font-size: 25rpx;
                 font-family: PingFang SC;
-                font-weight: 600;
+                font-weight: bold;
                 color: #333333;
             }
 

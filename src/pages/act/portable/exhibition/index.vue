@@ -23,9 +23,9 @@
                 </view>
                 <view class="sj">最后希望卡迷们踊跃投稿，玩得开心。</view>
                 <view class="logos">
-                    <image class="logo" src="@/static/act/portable/logo2.png"></image>
+                    <image class="logo" src="@/static/act/portable/logo2_90x.png"></image>
                     <view class="title" style="font-size: 34rpx;margin: 0 14rpx;">X</view>
-                    <image class="logo" src="@/static/act/portable/logo1.png"></image>
+                    <image class="logo" src="@/static/act/portable/logo1_90x.png"></image>
                 </view>
                 <view class="center">本活动由卡世界官方与魔球社联合企划</view>
             </view>
@@ -304,7 +304,7 @@ page {
     .title {
         font-size: 25rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #FFFFFF;
         margin-bottom: 10rpx;
 
@@ -364,7 +364,7 @@ page {
     .lookAll {
         font-size: 25rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         text-decoration: underline;
         color: #FFFFFF;
         text-align: center;
@@ -384,8 +384,10 @@ page {
     margin-top: 56rpx;
     position: relative;
     width: 750rpx;
-
+    justify-content: center;
     .tag {
+        width: 18%;
+        text-align: center;
         font-size: 28rpx;
         font-family: PingFang SC;
         font-weight: 400;
@@ -396,7 +398,7 @@ page {
     .tag_select {
         font-size: 33rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #FA1545;
     }
 
@@ -452,7 +454,7 @@ page {
                 color: #fff;
                 font-size: 25rpx;
                 font-family: PingFang SC;
-                font-weight: 600;
+                font-weight: bold;
                 color: #333333;
                 margin-top: 16rpx;
                 line-height: 38rpx;
@@ -567,7 +569,7 @@ page {
         .draw_name {
             font-size: 25rpx;
             font-family: PingFang SC;
-            font-weight: 600;
+            font-weight: bold;
             color: #333333;
             margin-bottom: 20rpx;
         }
@@ -640,7 +642,7 @@ page {
     .title {
         font-size: 33rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #FFFFFF;
         letter-spacing: 2rpx;
     }

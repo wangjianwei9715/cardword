@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-07 17:40:18
+ * @LastEditTime: 2023-04-12 14:58:02
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -60,7 +60,8 @@ export default class ClassName extends BaseNode {
             ref: 'rank'
         },
         {
-            label: `卡世界×魔球社联合企划线上卡展`,
+            // 卡世界×魔球社联合企划线上卡展
+            label: `线上卡展`,
             topBanner: '/static/act/worldCup/topGuess.png',
             ref: 'exhibition',
         }
@@ -215,7 +216,7 @@ page {
         margin: 0 20rpx;
         font-size: 25rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #FFFFFF;
         letter-spacing: 2rpx;
         text-align: center;

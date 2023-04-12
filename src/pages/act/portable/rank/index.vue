@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-03 14:54:35
+ * @LastEditTime: 2023-04-12 14:56:42
  * @FilePath: \jichao_app_2\src\pages\act\worldCup\rank.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -20,7 +20,7 @@
         </view>
         <view class="rankContainer">
             <view class="rankTopTitle">
-                <view class="title">积分明细</view>
+                <view class="title">积分榜单</view>
                 <view class="tips">进行中（3.16-3.17）</view>
                 <view class="line"></view>
                 <navigator url="/pages/act/portable/rank/detail" hover-class="none" class="sp-tips-index sp-tips-index2">
@@ -274,7 +274,7 @@ page {
         .title {
             font-size: 33rpx;
             font-family: PingFang SC;
-            font-weight: 600;
+            font-weight: bold;
             color: #FFFFFF;
             margin-bottom: 10rpx;
         }
@@ -334,7 +334,7 @@ page {
     .tag_title {
         font-size: 33rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
     }
 
     .tag_time {
@@ -366,7 +366,7 @@ page {
 .rank_userName {
     color: #333333;
     font-size: 23rpx;
-    font-weight: 600;
+    font-weight: bold;
     width: 90rpx;
     white-space: nowrap;
     margin-right: 25rpx;
@@ -380,7 +380,7 @@ page {
 .rank_normal {
     font-size: 26rpx;
     font-family: PingFang SC;
-    font-weight: 600;
+    font-weight: bold;
     color: #FFFFFF;
 }
 
@@ -469,7 +469,7 @@ page {
     view {
         font-size: 33rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #FFFFFF;
         letter-spacing: 2rpx;
     }

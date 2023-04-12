@@ -163,7 +163,7 @@ page {
     .des_title {
         font-size: 30rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #333333;
         margin-bottom: 10rpx;
     }
@@ -185,7 +185,7 @@ page {
 
     .sTitle {
         color: #333333;
-        font-weight: 600;
+        font-weight: bold;
         font-family: PingFang SC;
         font-size: 23rpx;
         letter-spacing: 2rpx;
@@ -225,7 +225,7 @@ page {
     .title {
         font-size: 29rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         margin-bottom: 20rpx;
         color: #333333;
     }

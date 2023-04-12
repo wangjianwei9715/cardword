@@ -211,7 +211,7 @@ page{
     .menu_select {
         // color: #fb374e;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #FA1545;
         font-size: 31rpx;
     }
@@ -337,7 +337,7 @@ page{
 
                 text:first-child {
                     font-size: 18rpx;
-                    font-weight: 600;
+                    font-weight: bold;
                 }
 
                 .decimal {

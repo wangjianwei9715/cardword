@@ -225,7 +225,7 @@ page {
     .draw_name {
         font-size: 25rpx;
         font-family: PingFang SC;
-        font-weight: 600;
+        font-weight: bold;
         color: #333333;
         margin-bottom: 20rpx;
     }
