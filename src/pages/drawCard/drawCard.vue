@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-28 14:50:05
+ * @LastEditTime: 2023-04-11 11:05:19
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -152,6 +152,10 @@
       code:[]
     };
     defultPic:string = '../../static/goods/drawcard/default.png';
+    /**是否最后一张卡片 */
+    public get DrawCardOver():boolean {
+      return this.cardData.step  >= this.cardData.total;
+    }
     onLoad(query:any){
       const initCode = JSON.parse(query.data);
       initCode.forEach((x:DarwCard.Code)=>{
@@ -276,10 +280,10 @@
       }
     }
     drawerDataSort(){
-      let data:[] = JSON.parse(JSON.stringify(this.codeList)).slice(1,this.cardData.step+1);
+      const data:any = this.codeList.slice(1,this.cardData.step+1);
       if(this.drawerData.check == 2){
         data.sort((a:DarwCard.Code, b:DarwCard.Code) => {
-          if(b.number == 0 || a.number == 0){
+          if(b.number === 0 || a.number === 0){
             return b.number - a.number
           }else{
             return a.number - b.number
@@ -289,27 +293,22 @@
       this.drawerData.code = data
     }
     reqNewData(cb?:Function){
-      const { initData } = this;
+      const { pageIndex, pageSize, noMoreData, goodOrder } = this.initData;
       // 获取更多商品
-      if (initData.noMoreData||this.cardData.total<=30) {
-        return;
-      }
-      let params:{[x:string]:number} = {
-        pageIndex: initData.pageIndex,
-        pageSize:initData.pageSize
-      }
-      app.http.Get(`me/orderInfo/buyer/${initData.goodOrder}/noShowList`, params, (data: any) => {
+      if (noMoreData||this.cardData.total<=30)  return;
+
+      app.http.Get(`me/orderInfo/buyer/${goodOrder}/noShowList`, { pageIndex, pageSize }, (data: any) => {
         if(data.list){
-          let listData = data.list.map((x:DarwCard.Code)=>{
+          const listData = data.list.map((x:DarwCard.Code)=>{
             x.pic = parsePic(decodeURIComponent(x.pic))
           })
           this.codeList = [...this.codeList,...listData];
         }
-        if(data.totalPage<=initData.pageIndex){
-          initData.noMoreData = true;
+        if(data.totalPage<=pageIndex){
+          this.initData.noMoreData = true;
           if(cb) cb()
         }else{
-          initData.pageIndex++;
+          this.initData.pageIndex++;
           setTimeout(()=>{
             this.reqNewData(cb)
           },10)
@@ -319,11 +318,6 @@
     ifNameTooLong(name:string):boolean{
       return name.length>8?true:false
     }
-    /**是否最后一张卡片 */
-    public get DrawCardOver():boolean {
-      return this.cardData.step  >= this.cardData.total;
-    }
-    
   }
   
 

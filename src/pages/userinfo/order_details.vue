@@ -231,53 +231,50 @@ import { Md5 } from "ts-md5";
 			},1000)
 		}
 		initEvent(cb?:Function){
-			app.http.Get('me/orderInfo/buyer/'+this.orderCode,{},(res:any)=>{
+			const {orderCode} = this;
+			app.http.Get(`me/orderInfo/buyer/${orderCode}`,{},(res:any)=>{
+				const data = res.data;
 				this.onceLoad = false;
-				this.orderData = res.data
-				this.payChannel = res.data.good.payChannel??[]
-				this.countDown = res.data.leftSec
+				this.orderData = data
+				this.payChannel = data.good.payChannel??[]
+				this.countDown = data.leftSec
 				this.getCountDown();
-				uni.setNavigationBarTitle({
-					title: res.data.stateName
-				});
-				this.getGoodDesc(res.data);
-				this.operateData = this.orderSetOperate(res.data);
-				this.detailPic = parsePic(getGoodsImg(decodeURIComponent(res.data.good.pic)))
-				if(res.data.good.pintuanType>10){
-					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/option',{},(res:any)=>{
+				uni.setNavigationBarTitle({ title: data.stateName });
+				this.getGoodDesc(data);
+				this.operateData = this.orderSetOperate(data);
+				this.detailPic = parsePic(getGoodsImg(decodeURIComponent(data.good.pic)))
+				if(data.good.pintuanType>10){
+					app.http.Get(`me/orderInfo/buyer/${orderCode}/option`,{},(res:any)=>{
 						this.optionList = res.list || []
 					})
 				}
-				this.cartList = [];
-				if(res.data.showSelectNo){
-					app.http.Get('me/orderInfo/buyer/'+this.orderCode+'/selectList',{pageIndex:1,pageSize:50},(res:any)=>{
+				if(data.showSelectNo){
+					app.http.Get(`me/orderInfo/buyer/${orderCode}/selectList`,{pageIndex:1,pageSize:50},(res:any)=>{
 						if(res.list){
 							this.cartList = res.list
 						}
 					})
 				}
 				// 预测卡密
-				if(res.data.guess){
+				if(data.guess){
+					const { leftNum, bingoNum, guess, surplusNum, state } = data.guess;
 					this.guessType = true;
-					this.guessFreeNum = res.data.guess.leftNum;
-					this.guessNum = res.data.guess.bingoNum;
-					this.guessName = res.data.guess.guess;
-					this.surplusNum = res.data.good.state>=2? res.data.guess.surplusNum:0;
-					this.guessState = res.data.guess.state
-					if(res.data.guess.state == 0 && res.data.state > 1){
+					this.guessFreeNum = leftNum;
+					this.guessNum = bingoNum;
+					this.guessName = guess;
+					this.surplusNum = data.good.state>=2?surplusNum:0;
+					this.guessState = state
+					if(state == 0 && data.state > 1){
 						setTimeout(()=>{
 							this.initEvent();
 						},500)
 					}
 				}
-				if(res.data.state==1){
-					console.log('订单待支付')
-					return;
-				}
+				
 				setTimeout(()=>{
-					this.clickToPay = !res.data.wait ? false : true
+					this.clickToPay = !data.wait ? false : true
 				},1000)
-				if(res.data.wait){
+				if(data.wait){
 					uni.showLoading({ title:'数据加载中请稍后' })
 					// 继续请求数据
 					setTimeout(()=>{
@@ -288,17 +285,17 @@ import { Md5 } from "ts-md5";
 				}else{
 					uni.hideLoading()
 				}
-				if(res.data.noList){
-					this.cardList = res.data.noList.length>5?res.data.noList.splice(0,5):res.data.noList
+				if(data.noList){
+					const { noList } = data;
+					this.cardList = noList.length>5?noList.splice(0,5):noList
 				}
-				if(cb && !res.data.wait) cb()
+				if(cb && !data.wait) cb()
 			})
 			
 		}
 		// 获取解锁卡密效果
 		getNoShowList(){
-			let orderRich = app.orderRich;
-			if(!orderRich) {
+			if(!app.orderRich) {
 				uni.showToast({
 					title:'卡密特效未开启',
 					icon:'none'
@@ -313,7 +310,7 @@ import { Md5 } from "ts-md5";
 			// }
 			app.http.Get(`me/orderInfo/buyer/${this.orderCode}/noShowList${listtype}`,{pageIndex:1,pageSize:30},(res:any)=>{
 				if(res.total>0){
-					let type = this.orderData.good.title.indexOf('足球')!=-1?1:0
+					const type = this.orderData.good.title.indexOf('足球')!=-1?1:0
 					uni.navigateTo({
 						url:`/pages/goods/drawCard?code=${this.orderCode}&data=${encodeURIComponent(JSON.stringify(res.list))}&num=${res.total}&hasNumber=${res.hasNumber}&picType=${type}&sp=${res.sp}`
 					})
@@ -469,7 +466,7 @@ import { Md5 } from "ts-md5";
 			});
 		}
 		onClcikResult(chooseID:any){
-			let random = this.orderData.good.state>0?true:false
+			const random = this.orderData.good.state>0?true:false
 			uni.navigateTo({
 				url: '/pages/userinfo/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode+'&order='+this.orderData.code+'&random='+random
 			})
@@ -521,8 +518,7 @@ import { Md5 } from "ts-md5";
 		keepTwoDecimal(num: any) {
 			var result = parseFloat(num);
 			if (isNaN(result)) {
-				alert("传递参数错误，请检查！");
-				return false;
+				return 0;
 			}
 			result = Math.round(num * 100) / 100;
 			return result > 0 ? result : 0;
