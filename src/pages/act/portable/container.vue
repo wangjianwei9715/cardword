@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-12 14:58:02
+ * @LastEditTime: 2023-04-12 15:08:15
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -94,7 +94,7 @@ export default class ClassName extends BaseNode {
         if (!this.$refs[refKey] || !this.$refs[refKey].onPullDownRefreshCom) {
             setTimeout(() => {
                 uni.stopPullDownRefresh()
-            }, 300)
+            }, 500)
             return
         }
         //@ts-ignore
