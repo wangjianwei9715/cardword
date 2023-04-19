@@ -3,17 +3,17 @@
  * @Author: wjw
  * @Date: 2022-11-28 17:34:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-03 10:47:26
+ * @LastEditTime: 2023-04-19 17:04:57
  * Copyright: 2022 .
  * @Descripttion: 
 -->
 <template>
 	<view class="cardBox">
-		<image class="cardBox-gif" v-show="cardMove||animationTimeout" src="/static/drawCard/_000.gif"/>
-		<!-- <l-svga class="cardBox-sm" ref="sm"></l-svga> -->
-		<view class="cardBox-bg" :class="{'anmition-over':animationOver}">
-			<l-svga class="cardBox-svga" ref="svga"></l-svga>
-			<view class="cardBox-index" v-show="animationLoopsOver">{{animationData[animationStep-1]}}</view>
+		<image class="cardBox-gif" v-if="cardMove||animation.timeout" src="/static/drawCard/_000.gif"/>
+		<view class="cardBox-bg" :class="{'anmition-over':animation.over}">
+			<view class="cardBox-index" :class="{'show-card':animation.LoopsOver}">
+				<image class="cardBox-position" :src="animation.image"/>
+			</view>
 		</view>
 		<slot></slot>
 	</view>
@@ -22,70 +22,69 @@
 <script lang="ts">
 	import { Component,Prop,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	type SvgaRenderParams = { svga: string; svgaSrc: string; loops: number; cb?: () => void; };
+	import { map } from "../../utils/map";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
 		start?:Boolean;
 		@Prop({default:false})
 		cardMove?:Boolean;
-		@Prop({default:[]})
+		@Prop({default:{}})
 		animationData:any;
 		
-		animationStep = 1;
-		animationLoopsOver = false;
-		animationOver = false;
-		animationTimeout = false;
+		animation = {
+			step:1,
+			LoopsOver:false,
+			over:false,
+			timeout:false,
+			image:''
+		}
 		@Watch('start')
 		onChangeStart(val:any){
 			if(val){
-				this.animationTimeout=true
+				this.animation.LoopsOver = false;
+				this.animation.over = false;
+				this.animation.timeout=true
 				setTimeout(() => {
+					this.animation.timeout=false
 					this.animationStart();
-					this.animationTimeout=false
-				}, 500);
+				}, 800);
 			}
 		}
 		mounted(){
 		}
 		destroyed(){
 		}
-		animationStart(){
-			this.svgaRender({
-				svga:"svga",
-				svgaSrc:"/static/drawCard/svga_y.svga",
-				loops:1,
-				cb:()=>{
-					this.animationLoopsOver = true;
-					setTimeout(()=>{
-						if(this.animationStep<this.animationData.length){
-							this.animationStep ++ ;
-							this.animationLoopsOver = false;
-							this.animationStart()
-						}else{
-							this.animationOver = true;
-							// this.svgaRender('sm','/static/drawCard/svga_sm.svga',1)
-							setTimeout(() => {
-								this.$emit('animationOver')
-							}, 1500);
-						}
-					},1000)
-				}
-			})
+		public get getImageSrc():string{
+			const stepStr = map.setpMap[this.animation.step];
+			const animationVal = this.animationData[stepStr];
+			let src = ''
+			if(stepStr === 'rc' && animationVal){
+				src = 'icon_rc' 
+			}else{
+				const srcMap = stepStr==='team'?map.teamMap:map.positionMap;
+				src = srcMap[animationVal];
+			}
+			return `/static/drawCard/animation/${src}.png`
 		}
-		svgaRender({ svga, svgaSrc, loops, cb }: SvgaRenderParams) { 
-			try { 
-				this.$refs[svga].render(async(parser:any, player:any)=>{
-					const videoItem = await parser.load(svgaSrc); 
-					await player.setVideoItem(videoItem); 
-					player.loops = loops; 
-					player.clearsAfterStop = true; 
-					player.startAnimation(); 
-					player.onFinished(() => cb && cb()); 
-				}); 
-			} catch (e) { 
-				console.error(e); 
-			} 
+		animationStart(){
+			this.animation.LoopsOver = true;
+			this.animation.image = this.getImageSrc;
+			const length = this.animationData.rc?3:2;
+			setTimeout(()=>{
+				if(this.animation.step<length){
+					this.animation.step ++ ;
+					this.animation.LoopsOver = false;
+					setTimeout(()=>{
+						this.animationStart()
+					},300)
+				}else{
+					this.animation.over = true;
+					setTimeout(() => {
+						this.$emit('animationOver')
+					}, 600);
+				}
+			},1000)
 		}
 	}
 </script>
@@ -135,16 +134,28 @@
 		height:820rpx;
 	}
 	.cardBox-index{
-		width: 200rpx;
-		height:200rpx;
+		width: 332rpx;
+		height:332rpx;
 		position: absolute;
 		left:50%;
 		top:50%;
-		margin-top: -110rpx;
-		margin-left: -100rpx;
+		margin-top: -182rpx;
+		margin-left: -166rpx;
 		text-align: center;
 		line-height: 200rpx;
 		color:#fff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transition: all 0.3s;
+	}
+	.show-card{
+		opacity: 1;
+	}
+	.cardBox-position{
+		width: 332rpx;
+		height:332rpx;
 	}
 	.anmition-over{
 		// animation-name:clipPath; 

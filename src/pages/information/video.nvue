@@ -745,10 +745,7 @@
 		position: absolute;
 		right:-35rpx;
 		top:193rpx;
-		animation-name: slide-top;
-		animation-duration: 1s;
-		animation-timing-function: linear;
-		animation-iteration-count: 2;
+		animation: slide-top 1s linear 2;
 	}
 	@keyframes slide-top {
 		0% {
