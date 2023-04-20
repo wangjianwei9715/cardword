@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-19 13:34:50
+ * @LastEditTime: 2023-04-20 15:40:53
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -19,8 +19,8 @@
         <view class="drawcard-start-time">卡密即将开启（{{ initData.startTime }}%）</view>
       </view>
     </view>
-    <image class="video-bg" src="/static/goods/drawcard/black_bg.jpg"/>
-    <l-svga v-if="!sceneData.showDefault" class="video-bg" ref="svga"></l-svga>
+    <image class="video-bg" :src="bgImage"/>
+    <l-svga v-if="!sceneData.showDefault&&animationSwitch" class="video-bg" ref="svga"></l-svga>
     
     <view class="draw-box"> 
       <!-- 顶部导航 -->
@@ -139,7 +139,7 @@
     /**动画开关 */
     animationSwitch:boolean = true;
     animationStart:boolean = false;
-    sceneData = { show:false, picType:0, bg:'', showDefault:false, firstLoad:true };
+    sceneData = { show:false, picType:0, bg:'', showDefault:false, firstLoad:true,svgaOpen:false };
     musicData = { show:false, name:'' };
     moveData = { x:0, y:0, x_init:0, y_init:0, };
     changeMove:any = {};
@@ -166,6 +166,13 @@
       const list = this.codeList.slice(this.cardData.step,Math.min(this.cardData.step+2,endNum));
       return list
     }
+    public get bgImage() : string {
+      const _default = '/static/goods/drawcard/black_bg.jpg';
+      if(!this.sceneData.showDefault && !this.sceneData.svgaOpen){
+        return `/static/drawCard/${this.sceneData.bg}.jpg`
+      }
+      return _default
+    } 
     onLoad(query:any){
       const initCode = JSON.parse(query.data);
       initCode.forEach((x:DarwCard.Code,index:number)=>{
@@ -209,7 +216,12 @@
     // 封装初始化动画开关的方法 private 
     initAnimationSwitch(): void { 
       const storageSwitch = uni.getStorageSync('animationSwitch'); 
-      if(typeof(storageSwitch) === 'boolean') { this.animationSwitch = storageSwitch; } 
+      if(typeof(storageSwitch) === 'boolean') { 
+        this.animationSwitch = storageSwitch; 
+      }else if(app.platform.systemInfo.platform == 'android'){
+        this.animationSwitch = false
+      } 
+      
     }
     // 封装初始化 startTime 的方法 private 
     initStartTime(): void { 
@@ -230,26 +242,29 @@
     // 背景选择
     sceneChange(event:string){
       const { firstLoad } = this.sceneData;
-      if( !firstLoad && event!='' ){
+      if( !firstLoad && event!='' && this.animationSwitch ){
         uni.showLoading({title: "场景生成中"});
       }
       this.sceneData.showDefault = (event=='');
       this.sceneData.firstLoad = false;
+      this.sceneData.svgaOpen = false
       if(!this.sceneData.showDefault){
         this.sceneData.bg=event;
-        setTimeout(()=>{
-          this.svgaRender(event);
-        },500)
+        if(this.animationSwitch){
+          setTimeout(()=>{
+            this.svgaRender(`/static/drawCard/${event}.svga`);
+          },500)
+        }
       }
     }
 		svgaRender(svgaSrc:any) { 
-
 			this.$refs['svga'].render(async (parser:any, player:any) => {
 				const videoItem = await parser.load(svgaSrc);
 				await player.setVideoItem(videoItem);
         player.clearsAfterStop = true
 				player.startAnimation();
         uni.hideLoading();
+        this.sceneData.svgaOpen = true
 			})
 		}
     // 封装点击动画按钮的方法 private 
@@ -261,7 +276,16 @@
         success: (res) => { 
           if (res.confirm) { 
             this.animationSwitch = !this.animationSwitch; 
+            if(!this.animationSwitch){
+              this.sceneData.svgaOpen = false;
+            }
             uni.setStorageSync('animationSwitch',this.animationSwitch); 
+            if(this.animationSwitch &&!this.sceneData.showDefault){
+              setTimeout(()=>{
+                uni.showLoading({title: "动画开启中"});
+                this.svgaRender(`/static/drawCard/${this.sceneData.bg}.svga`);
+              },500)
+            }
           } 
         } 
       }); 
@@ -338,14 +362,15 @@
       if (noMoreData||this.cardData.total<=30)  return;
 
       app.http.Get(`me/orderInfo/buyer/${goodOrder}/noShowList`, { pageIndex, pageSize }, (data: any) => {
-        if(data.list){
-          const listData = data.list;
+        if (data.list) {
           const index = this.codeList.length;
-          listData.forEach((x:DarwCard.Code,i:number)=>{
-            x.pic = parsePic(decodeURIComponent(x.pic));
-            x['index'] = index+i;
-          })
-          this.codeList = [...this.codeList,...listData];
+          this.codeList.push(
+            ...data.list.map(({ pic, ...rest }:DarwCard.Code, i:number) => ({
+              ...rest,
+              pic: parsePic(decodeURIComponent(pic)),
+              index: index + i
+            }))
+          );
         }
         if(data.totalPage<=pageIndex){
           this.initData.noMoreData = true;
@@ -355,7 +380,7 @@
           setTimeout(()=>{
             this.reqNewData();
             cb && cb();
-          },10)
+          },100)
         }
       });
     }

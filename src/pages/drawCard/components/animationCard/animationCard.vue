@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-28 17:34:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-19 17:04:57
+ * @LastEditTime: 2023-04-20 15:33:17
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -59,6 +59,9 @@
 			const stepStr = map.setpMap[this.animation.step];
 			const animationVal = this.animationData[stepStr];
 			let src = ''
+			if(animationVal==''){
+				return src
+			}
 			if(stepStr === 'rc' && animationVal){
 				src = 'icon_rc' 
 			}else{
@@ -68,8 +71,13 @@
 			return `/static/drawCard/animation/${src}.png`
 		}
 		animationStart(){
-			this.animation.LoopsOver = true;
 			this.animation.image = this.getImageSrc;
+			if(this.animation.image==''){
+				this.animation.step ++ ;
+				this.animationStart()
+				return;
+			}
+			this.animation.LoopsOver = true;
 			const length = this.animationData.rc?3:2;
 			setTimeout(()=>{
 				if(this.animation.step<length){
