@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-20 15:51:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-20 17:49:17
+ * @LastEditTime: 2023-04-21 13:37:46
  * @FilePath: \card-world\src\pages\merchant\guide.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -16,6 +16,7 @@
                     <u-icon color="#63647f" size="26rpx" name="arrow-right"></u-icon>
                 </view>
             </view>
+            <empty v-if="!list || !list.length"/>
         </view>
     </view>
 </template>

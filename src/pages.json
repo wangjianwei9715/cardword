@@ -1477,7 +1477,7 @@
 				{
 					"path": "guide",
 					"style": {
-						"navigationBarTitleText": "移动端商家指南",
+						"navigationBarTitleText": "商家指南",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false
