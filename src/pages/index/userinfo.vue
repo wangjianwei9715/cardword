@@ -83,6 +83,13 @@
 					</view>
 					<view class="icon-right"></view>
 				</view>
+				<view class="setting" v-if='infoData.merchantActor'  @click="onClickNavigateto({url:`/pages/merchant/guide`})">
+					<view class="name">
+						<image class="setting-icon" src="../../static/userinfo/v2/guide.png" />
+						商家指南
+					</view>
+					<view class="icon-right"></view>
+				</view>
 				<navigator v-if="invoice.open" url="/pages/userinfo/invoice/index" hover-class="none">
 					<view class="setting">
 						<view class="name">
