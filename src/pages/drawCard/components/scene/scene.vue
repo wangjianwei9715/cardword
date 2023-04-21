@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-17 15:05:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-02-07 15:47:53
+ * @LastEditTime: 2023-04-19 11:40:30
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -34,6 +34,7 @@
 		id:number;
 		name:string;
 		choice:boolean;
+		enable:boolean;
 		pic:string;
 		sceneBg:string
 	}
@@ -45,9 +46,12 @@
 		picType!:number
 		
 		sceneList:Array<Scene> = [
-			{id:1,name:'篮球场',choice:false,pic:'../../static/drawCard/scene_bg1.jpg',sceneBg:'../../static/drawCard/scene_1.apng'},
-			{id:2,name:'足球场',choice:false,pic:'../../static/drawCard/scene_bg2.jpg',sceneBg:'../../static/drawCard/scene_2.webp'},
-			{id:3,name:'赛博朋克',choice:false,pic:'../../static/drawCard/scene_bg3.jpg',sceneBg:'../../static/drawCard/scene_3.apng'}
+			{id:1,name:'篮球场',choice:false,enable:true,pic:'/static/drawCard/scene_bg1.jpg',sceneBg:'bj_001'},
+			{id:2,name:'足球场',choice:false,enable:true,pic:'/static/drawCard/scene_bg2.jpg',sceneBg:'bj_002'},
+			{id:3,name:'赛博朋克',choice:false,enable:true,pic:'/static/drawCard/scene_bg3.jpg',sceneBg:'bj_003'},
+			{id:4,name:'标准',choice:false,enable:true,pic:'/static/goods/drawcard/black_bg.jpg',sceneBg:''},
+			{id:5,name:'二次元',choice:false,enable:false,pic:'/static/drawCard/scene_bg0.jpg',sceneBg:''},
+			{id:6,name:'敬请期待',choice:false,enable:false,pic:'/static/drawCard/scene_bg0.jpg',sceneBg:''},
 		]
 		mounted(){
 			this.$nextTick(()=>{
@@ -55,7 +59,7 @@
 			})
 		}
 		onClickSceneChoice(item:Scene){
-			
+			if(!item.enable) return;
 			if(!item.choice){
 				this.sceneList.forEach((x:Scene)=>{
 					x.choice = item.id==x.id
@@ -78,7 +82,7 @@
 <style lang="scss" scoped>
 	.scene-popup{
 		width: 100%;
-		height:740rpx;
+		height:1040rpx;
 		.scene-navigation{
 		width: 100%;
 		height:100rpx;
@@ -110,6 +114,7 @@
 			display: flex;
 			justify-content: flex-start;
 			flex-wrap: wrap;
+			overflow: auto;
 			.scene-index{
 				width: 210rpx;
 				margin-bottom: 42rpx;

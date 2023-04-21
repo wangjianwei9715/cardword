@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-11 11:05:19
+ * @LastEditTime: 2023-04-20 15:40:53
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -19,7 +19,8 @@
         <view class="drawcard-start-time">卡密即将开启（{{ initData.startTime }}%）</view>
       </view>
     </view>
-    <image class="video-bg" :src="sceneData.bg"/>
+    <image class="video-bg" :src="bgImage"/>
+    <l-svga v-if="!sceneData.showDefault&&animationSwitch" class="video-bg" ref="svga"></l-svga>
     
     <view class="draw-box"> 
       <!-- 顶部导航 -->
@@ -34,28 +35,28 @@
         </view>
       </view>
       <!-- 场景选择 -->
-      <scene :popupShow.sync="sceneData.show" :picType="sceneData.picType" @sceneChange="sceneData.bg=$event"/>
+      <scene :popupShow.sync="sceneData.show" :picType="sceneData.picType" @sceneChange="sceneChange"/>
       <!-- 音乐选择 -->
-      <music :popupShow.sync="musicData.show" @musicChange="musicData.name=$event"/>
+      <!-- <music :popupShow.sync="musicData.show" @musicChange="musicData.name=$event"/> -->
       <!-- 卡片拖动控件 -->
 			<movable-area class="movable-area">
 				<movable-view
 					class="movable-content"
-          :class="{ 'end-pic': index < cardData.step}"
-          :disabled=" index != cardData.step || index >= cardData.total || animationStart"
-          v-for="(item, index) in codeList"
-					:key="index"
+          :disabled=" item.index != cardData.step || DrawCardOver || animationStart"
+          v-for="item in showList"
+					:key="item.index"
 					direction="all"
           :animation="true"
-          :x="index == cardData.step ? moveData.x : moveData.x_init"
-					:y="index == cardData.step ? moveData.y : moveData.y_init"
-          :style="'z-index:' + (999 - index)"
+          :x="item.index == cardData.step ? moveData.x : moveData.x_init"
+					:y="item.index == cardData.step ? moveData.y : moveData.y_init"
+          :style="'z-index:' + (999 - item.index)"
           @change="onChangeMovable"
           @touchstart.prevent="picTouchStart"
           @touchend.prevent="picTouchEnd"
 				>
-          <view v-if="index == 0" class="movable-box dangban" ></view>
-          <animationCard v-else-if="item.color=='gold'&&animationSwitch&&index<cardData.step+5" :start="index==cardData.step&&animationStart" :cardMove="index==cardData.step+1&&cardMove" :animationData="[item.color,item.name,item.rc]" @animationOver="animationStart=false">
+          <view v-if="item.index == 0" class="movable-box dangban" ></view>
+          <view v-else-if="item.index==cardData.step+1&&animationStart"></view>
+          <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==cardData.step+1&&cardMove" :animationData="{team:item.cartoonCfg.team,position:item.cartoonCfg.posit,rc:item.rc}" @animationOver="animationStart=false">
             <view class="movable-box movable-box-gold">
               <view class="movable-pic-bg"></view>
               <image class="movable-pic" :src="item.pic||defultPic"/>
@@ -63,9 +64,9 @@
             </view>
           </animationCard>
 					<view 
-            v-else-if="index<cardData.step+5" 
+            v-else 
             class="movable-box"
-            :class="[(index == cardData.step + 1)&&item.color=='gold'?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
+            :class="[(item.index == cardData.step + 1)&&item.color=='gold'?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
           >
             <view class="movable-pic-bg"></view>
             <image class="movable-pic" :src="item.pic||defultPic"/>
@@ -75,7 +76,7 @@
 			</movable-area>
       
       <view class="bottom-box">
-        <view class="cardname">{{animationStart?'':codeList[cardData.step].name}}</view>
+        <view class="cardname">{{this.cardname}}</view>
         <view class="cardstep">
           <view class="card-step-box" @click="drawerDataSort(),drawerData.show=true">
             {{cardData.step}}/<text class="card-step-num">{{cardData.total}}</text>
@@ -124,7 +125,7 @@
     }> = [
       {type:'scene',name:'场景'},
       {type:'ani',name:'动画'},
-      {type:'music',name:'音乐'}
+      // {type:'music',name:'音乐'}
     ];
     initData:DarwCard.Init = {
       initInterval:'',
@@ -138,13 +139,13 @@
     /**动画开关 */
     animationSwitch:boolean = true;
     animationStart:boolean = false;
-    sceneData = { show:false, picType:0, bg:'' };
+    sceneData = { show:false, picType:0, bg:'', showDefault:false, firstLoad:true,svgaOpen:false };
     musicData = { show:false, name:'' };
     moveData = { x:0, y:0, x_init:0, y_init:0, };
     changeMove:any = {};
     cardMove:boolean = false;
     cardData = { step:0, total:0 };
-    codeList:Array<string|DarwCard.Code>=[];
+    codeList:Array<any|DarwCard.Code>=[];
     drawerData = {
       show:false,
       check:1,
@@ -156,12 +157,29 @@
     public get DrawCardOver():boolean {
       return this.cardData.step  >= this.cardData.total;
     }
+    public get cardname() : string {
+      if(this.cardData.step===0) return '拖动卡片解锁卡密';
+      return this.animationStart?'':this.codeList[this.cardData.step].name
+    }
+    public get showList(): Array<any|DarwCard.Code>{
+      const endNum = this.codeList.length;
+      const list = this.codeList.slice(this.cardData.step,Math.min(this.cardData.step+2,endNum));
+      return list
+    }
+    public get bgImage() : string {
+      const _default = '/static/goods/drawcard/black_bg.jpg';
+      if(!this.sceneData.showDefault && !this.sceneData.svgaOpen){
+        return `/static/drawCard/${this.sceneData.bg}.jpg`
+      }
+      return _default
+    } 
     onLoad(query:any){
       const initCode = JSON.parse(query.data);
-      initCode.forEach((x:DarwCard.Code)=>{
+      initCode.forEach((x:DarwCard.Code,index:number)=>{
         x.pic = parsePic(decodeURIComponent(x.pic))
+        x['index'] = index+1
       });
-      this.codeList = ['',...initCode]
+      this.codeList = [{index:0},...initCode]
       this.cardData.total = query.num;
       this.initData.goodOrder = query.code;
       
@@ -198,18 +216,19 @@
     // 封装初始化动画开关的方法 private 
     initAnimationSwitch(): void { 
       const storageSwitch = uni.getStorageSync('animationSwitch'); 
-      if(typeof(storageSwitch) === 'boolean') { this.animationSwitch = storageSwitch; } 
+      if(typeof(storageSwitch) === 'boolean') { 
+        this.animationSwitch = storageSwitch; 
+      }else if(app.platform.systemInfo.platform == 'android'){
+        this.animationSwitch = false
+      } 
+      
     }
     // 封装初始化 startTime 的方法 private 
     initStartTime(): void { 
       const { initData } = this; 
       initData.initInterval = setInterval(() => { 
         if (initData.startTime < 100) { 
-          if(initData.startTime <95){ 
-            initData.startTime++; 
-          }else if(initData.noMoreData || this.cardData.total<=30){ 
-            initData.startTime++; 
-          } 
+          initData.startTime++; 
         } else { 
           clearInterval(initData.initInterval); setTimeout(() => { initData.start = true; }, 1000); 
         } 
@@ -220,6 +239,34 @@
       if(item.type=='music') this.musicData.show=true ;
       if(item.type=='ani') this.onClickAnimation();
     }
+    // 背景选择
+    sceneChange(event:string){
+      const { firstLoad } = this.sceneData;
+      if( !firstLoad && event!='' && this.animationSwitch ){
+        uni.showLoading({title: "场景生成中"});
+      }
+      this.sceneData.showDefault = (event=='');
+      this.sceneData.firstLoad = false;
+      this.sceneData.svgaOpen = false
+      if(!this.sceneData.showDefault){
+        this.sceneData.bg=event;
+        if(this.animationSwitch){
+          setTimeout(()=>{
+            this.svgaRender(`/static/drawCard/${event}.svga`);
+          },500)
+        }
+      }
+    }
+		svgaRender(svgaSrc:any) { 
+			this.$refs['svga'].render(async (parser:any, player:any) => {
+				const videoItem = await parser.load(svgaSrc);
+				await player.setVideoItem(videoItem);
+        player.clearsAfterStop = true
+				player.startAnimation();
+        uni.hideLoading();
+        this.sceneData.svgaOpen = true
+			})
+		}
     // 封装点击动画按钮的方法 private 
     onClickAnimation(): void { 
       if(this.animationStart) { return; } 
@@ -229,7 +276,16 @@
         success: (res) => { 
           if (res.confirm) { 
             this.animationSwitch = !this.animationSwitch; 
+            if(!this.animationSwitch){
+              this.sceneData.svgaOpen = false;
+            }
             uni.setStorageSync('animationSwitch',this.animationSwitch); 
+            if(this.animationSwitch &&!this.sceneData.showDefault){
+              setTimeout(()=>{
+                uni.showLoading({title: "动画开启中"});
+                this.svgaRender(`/static/drawCard/${this.sceneData.bg}.svga`);
+              },500)
+            }
           } 
         } 
       }); 
@@ -241,30 +297,38 @@
       this.moveData = { x:x, y:y, x_init:x, y_init:y }
     }
     picTouchStart(){
+      if(this.DrawCardOver){
+        uni.$u.throttle(()=>{
+          uni.showToast({ title:'已经是最后一张了', icon:'none' })
+        },3000)
+      }
+      
       !this.animationStart && (this.cardMove=true)
     }
     /**移动中 */
     onChangeMovable(event:any) {
-      this.changeMove = event.detail;
+      if(event.detail.source=='touch'){
+        this.changeMove = event.detail;
+      }
     }
     /**移动结束 计算位置 */
     picTouchEnd() {
+      if(this.DrawCardOver || this.animationStart) return;
       const { x_init: iX, y_init: iY } = this.moveData; 
       const { x: mX, y: mY } = this.changeMove; 
       this.moveData.x = mX;
       this.moveData.y = mY;
+      
       setTimeout(() => {
-        let move_x = Math.abs(mX - iX);
-        let move_Y = Math.abs(mY - iY);
+        const move_x = Math.abs(mX - iX);
+        const move_Y = Math.abs(mY - iY);
         if(move_x>uni.upx2px(220) || move_Y>uni.upx2px(300)){
-          if(!this.DrawCardOver){
-            this.cardData.step++;
-            const nextItem = this.codeList[this.cardData.step]
-            if(['gold','SP'].includes((nextItem as DarwCard.Code).color)) uni.vibrateLong({});
-            // 特效卡并且动画开启
-            if((nextItem as DarwCard.Code).color=='gold'&&this.animationSwitch){
-              this.animationStart = true;
-            }
+          this.cardData.step++;
+          const nextItem = this.codeList[this.cardData.step]
+          if(['gold','SP'].includes((nextItem as DarwCard.Code).color)) uni.vibrateLong({});
+          // 特效卡并且动画开启
+          if((nextItem as DarwCard.Code).color=='gold'&&this.animationSwitch){
+            this.animationStart = true;
           }
         }
         this.moveData.x = this.moveData.x_init;
@@ -298,11 +362,15 @@
       if (noMoreData||this.cardData.total<=30)  return;
 
       app.http.Get(`me/orderInfo/buyer/${goodOrder}/noShowList`, { pageIndex, pageSize }, (data: any) => {
-        if(data.list){
-          const listData = data.list.map((x:DarwCard.Code)=>{
-            x.pic = parsePic(decodeURIComponent(x.pic))
-          })
-          this.codeList = [...this.codeList,...listData];
+        if (data.list) {
+          const index = this.codeList.length;
+          this.codeList.push(
+            ...data.list.map(({ pic, ...rest }:DarwCard.Code, i:number) => ({
+              ...rest,
+              pic: parsePic(decodeURIComponent(pic)),
+              index: index + i
+            }))
+          );
         }
         if(data.totalPage<=pageIndex){
           this.initData.noMoreData = true;
@@ -310,14 +378,16 @@
         }else{
           this.initData.pageIndex++;
           setTimeout(()=>{
-            this.reqNewData(cb)
-          },10)
+            this.reqNewData();
+            cb && cb();
+          },100)
         }
       });
     }
     ifNameTooLong(name:string):boolean{
       return name.length>8?true:false
     }
+    
   }
   
 
@@ -470,13 +540,13 @@
     position: absolute;
     top:8rpx;
     right:10rpx;
-    background: url(@/static/drawCard/pic_bg.png) no-repeat center / 100% 100%;
+    background: url(@/static/drawCard/pic_bg_silver.png) no-repeat center / 100% 100%;
     z-index: 1;
   }
   .movable-pic {
-    width:428rpx;
+    width:454rpx;
     height:626rpx;
-    margin: 10rpx 43rpx 0 57rpx;
+    margin: 10rpx 10rpx 0 42rpx;
     position: relative;
     z-index: 2;
   }
@@ -488,7 +558,7 @@
     text-align: center;
     line-height: 90rpx;
     color:#fff;
-    font-size: 46rpx;
+    font-size: 43rpx;
     font-family: PingFang SC;
     font-weight: 600;
     position: relative;
@@ -519,6 +589,15 @@
   .movable-box-gold {
     background: url(../../static/drawCard/card_gold.gif) no-repeat center -30rpx;
     background-size: 100% 100%;
+  }
+  .movable-box-red .movable-pic-bg{
+    background: url(@/static/drawCard/pic_bg_red.png) no-repeat center / 100% 100%;
+  }
+  .movable-box-blue .movable-pic-bg{
+    background: url(@/static/drawCard/pic_bg_blue.png) no-repeat center / 100% 100%;
+  }
+  .movable-box-gold .movable-pic-bg{
+    background: url(@/static/drawCard/pic_bg_gold.png) no-repeat center / 100% 100%;
   }
   .container{
     animation-name:container; 

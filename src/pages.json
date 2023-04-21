@@ -139,13 +139,13 @@
 				}
 			}
 		}
-		// ,{
-		// 	"path": "pages/drawCard/drawCard",
-		// 	"style": {
-		// 		"navigationStyle": "custom",
-		// 		"enablePullDownRefresh": false
-		// 	}
-		// }
+		,{
+			"path": "pages/drawCard/drawCard",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
