@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-20 17:49:20
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-21 10:58:06
+ * @LastEditTime: 2023-04-21 16:46:18
  * @FilePath: \card-world\src\pages\merchant\guideDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -79,11 +79,11 @@ export default class ClassName extends BaseNode {
 }
 
 .desc {
-    font-size: 32rpx;
+    font-size: 28rpx;
     font-family: Microsoft YaHei;
     font-weight: 400;
     color: #14151A;
-    line-height: 60rpx;
+    line-height: 50rpx;
     letter-spacing: 2rpx;
 }
 
