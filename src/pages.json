@@ -1475,6 +1475,24 @@
 					}
 				},
 				{
+					"path": "guide",
+					"style": {
+						"navigationBarTitleText": "移动端商家指南",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "guideDetail",
+					"style": {
+						"navigationBarTitleText": "指南详情",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "goods_sale",
 					"style": {
 						"navigationBarTitleText": "在售管理",
