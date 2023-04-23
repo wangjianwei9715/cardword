@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-20 15:51:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-21 13:37:46
+ * @LastEditTime: 2023-04-21 17:24:38
  * @FilePath: \card-world\src\pages\merchant\guide.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,7 +12,7 @@
             <view class="guideWrap" v-for="(item, index) in list">
                 <view class="type">{{ item.title }}</view>
                 <view class="question" v-for="(son, sonIndex) in (item.question || [])" @click="goToDetail(son.id)">
-                    <view class="title">{{ son.title }}</view>
+                    <view class="title u-line-1">{{ son.title }}</view>
                     <u-icon color="#63647f" size="26rpx" name="arrow-right"></u-icon>
                 </view>
             </view>
