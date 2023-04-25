@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-17 15:05:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-19 11:40:30
+ * @LastEditTime: 2023-04-25 14:47:00
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -145,7 +145,7 @@
 			.scene-btn{
 				width: 152rpx;
 				height: 52rpx;
-				border: 1rpx solid #FFFFFF;
+				border: 1px solid #FFFFFF;
 				border-radius: 3rpx;
 				display: flex;
 				box-sizing: border-box;

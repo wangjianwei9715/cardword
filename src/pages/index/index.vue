@@ -183,7 +183,7 @@
 				this.initLiveData(res.text)
 				this.reqNewLiveList()
 			})
-			this.initIndex()
+			this.onLoadIndex()
 			//#ifdef APP-PLUS
 			plus.webview.prefetchURL(app.liveWebView)//预载直播控件webview
 			//#endif
