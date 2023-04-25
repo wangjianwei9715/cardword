@@ -28,11 +28,11 @@ export var indexHotList = {
         }
     },
     fresh:{
-        title:'动漫专区',
-        tips:'跨越次元之旅',
+        title:'最新上架',
+        tips:'新车和预售',
         pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
-        // url:'/pages/goods/goods_assign_list?type=fresh',
-        url:"/pages/goods/goods_animeTv",
+        url:'/pages/goods/goods_assign_list?type=fresh',
+        // url:"/pages/goods/goods_animeTv",
         bg:{
             src:'../../static/index/v3/index_n.png',
             width:'145rpx',

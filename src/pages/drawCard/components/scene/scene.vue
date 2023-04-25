@@ -12,7 +12,7 @@
 		<u-popup :show="popupShow" @close="show=false" :round="5" :safeAreaInsetBottom="true" bgColor="#13121A" :overlayOpacity="0.1">
 			<view class="scene-popup">
 				<view class="scene-navigation">
-					选择场景
+					选择背景
 					<view class="scene-close" @click="show=false"></view>
 				</view>
 				<view class="scene-list">
@@ -50,8 +50,7 @@
 			{id:2,name:'足球场',choice:false,enable:true,pic:'/static/drawCard/scene_bg2.jpg',sceneBg:'bj_002'},
 			{id:3,name:'赛博朋克',choice:false,enable:true,pic:'/static/drawCard/scene_bg3.jpg',sceneBg:'bj_003'},
 			{id:4,name:'标准',choice:false,enable:true,pic:'/static/goods/drawcard/black_bg.jpg',sceneBg:''},
-			{id:5,name:'二次元',choice:false,enable:false,pic:'/static/drawCard/scene_bg0.jpg',sceneBg:''},
-			{id:6,name:'敬请期待',choice:false,enable:false,pic:'/static/drawCard/scene_bg0.jpg',sceneBg:''},
+			{id:5,name:'敬请期待',choice:false,enable:false,pic:'/static/drawCard/scene_bg0.jpg',sceneBg:''},
 		]
 		mounted(){
 			this.$nextTick(()=>{

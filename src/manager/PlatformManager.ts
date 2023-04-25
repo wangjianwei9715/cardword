@@ -438,13 +438,14 @@ export default class PlatformManager {
 	postLaunch(loginToken:any,launchUrl:any,params:any,cb:Function){
 		const url = app.service_url || this.lastCharacter(launchUrl[this.urlIndex]);
 		app.http.Post(`${url}/api/app/launch`, params, (res: any) => {
+			uni.setStorageSync('launchUrl', url)
 			const App = res.app;
 			app.service_url = url;
 			// bussinessApiDomain     主接口域名
 			// dataApiDomain          数据接口域名 如果为空 使用bussinessApiDomain
-			let bussinessApiDomain = this.lastCharacter(App.bussinessApiDomain);
-			let dataApiDomain = this.lastCharacter(App.dataApiDomain);
-			let funcApiDomain= this.lastCharacter(App.funcApiDomain)
+			const bussinessApiDomain = this.lastCharacter(App.bussinessApiDomain);
+			const dataApiDomain = this.lastCharacter(App.dataApiDomain);
+			const funcApiDomain= this.lastCharacter(App.funcApiDomain)
 			// let goodShareOrigin = this.lastCharacter(res.shareDomain?res.shareDomain.good:"")
 			// let activityShareOrigin = this.lastCharacter(res.shareDomain?res.shareDomain.activity:"")
 			app.bussinessApiDomain = `${bussinessApiDomain}${app.requestVersion}`;
@@ -453,11 +454,6 @@ export default class PlatformManager {
 			// app.goodShareOrigin = goodShareOrigin
 			// app.activityShareOrigin = activityShareOrigin
 			if (cb) cb()
-			uni.setStorageSync("launchConfig", res);
-			uni.setStorageSync('launchUrl', url)
-			// 延时调用避免一开始接收不到
-			uni.setStorageSync('appluanchOver', 1)
-			setTimeout(()=>{ uni.$emit('appluanchOver') },500)
 			// #ifdef APP-PLUS
 			app.update_url = `${url}/api/`;
 			if (app.platform.systemInfo.platform == 'ios') {
@@ -508,10 +504,6 @@ export default class PlatformManager {
 		app.update = !app.iosPlatform ? UpdateManager.getInstance() : {};
 		// this.setShareUrl()
 		// #endif
-		uni.setStorageSync('appluanchOver', 1)
-		setTimeout(()=>{
-			uni.$emit('appluanchOver')
-		},500)
 		if (loginToken) this.getAccess()
 	}
 	getAccess(){
@@ -809,6 +801,18 @@ export default class PlatformManager {
 			}  
 		});  
 		//#endif
+	}
+	getNetworkType(){
+		uni.getNetworkType({
+			success: (res) => {
+				if (res.networkType == 'none') {
+					uni.showModal({
+						title: '提示',
+						content: '当前无网络服务，请开启网络'
+					});
+				}
+			}
+		});
 	}
 	phoneAspect(): boolean {
 		let aspect = this.systemInfo.windowHeight / this.systemInfo.windowWidth > 1.8 ? true : false

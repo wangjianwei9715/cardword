@@ -110,7 +110,7 @@
 		}
 		onClickSearch(search:string){
 			const text = search=='' ? this.placeholder : search;
-			let hideGoods = /[A-Z]{2}\d{7}/g
+			let hideGoods = /[A-Z]{2}[A-Za-z0-9]{7}/g
 			if(hideGoods.test(text)){
 				let code = text.match(hideGoods);
 				this.goGoodDetail(code)
