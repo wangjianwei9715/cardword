@@ -35,7 +35,6 @@
 		</view>
 		<!-- 热更新 E -->
 
-
 		<view class="header-banner">
 			<statusbar />
 			<view class="tab-header">
@@ -48,13 +47,12 @@
 					<u-notice-bar v-show="currentIndex==0" style="padding-left:80rpx;" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
 				</view>
 			</view>
-			
 		</view>
 		<view class="tab-center">
 			<statusbar />
 			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true" @transition="transitionSwiper">
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-with-animation="true" @scrolltolower="reqNewData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart" >
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-with-animation="true" @scrolltolower="reqNewMainList()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart" >
 						<view class="tab-good-content">
 							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index" :class="{justifyStart:index=='top'}">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
@@ -68,18 +66,16 @@
 							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2023-04-25', '2023-05-07')">
 								<image class="capsule-pic1" :src="decodeURIComponent(capsule.pic)" mode="aspectFill"/>
 							</navigator>
-
 							<!-- 拼团进度 最新上架 新手体验 拆卡围观 -->
 							<tabHot :hotList="hotList" :freshGoodCovers="freshGoodCovers" />
 						</view>
 						<goodslist :goodsList="goodsList" :topAddList="topAddList" :indexSwiper="indexSwiper"
 							@send="onClickJumpDetails" :presell="false" />
 						<statusbar />
-
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45"  @scrolltolower="reqNewLiveData()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45"  @scrolltolower="reqNewLiveList()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
@@ -88,13 +84,10 @@
 					</scroll-view>
 				</swiper-item>
 			</swiper>
-			
 		</view>
 		
-
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
-
-		<winningCardPopup :showWinningCrad="showWinningCrad" @closeWinning="closeWinning" />
+		<winningCardPopup :show.sync="showWinningCrad" />
 		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
 	</view>
 </template>
@@ -133,9 +126,11 @@
 		indexSwiper = true;
 		goodsList: any = [];
 		// fetchFrom:第几个数据开始  fetchSize:取几个数据
-		fetchFrom = 1;
-		fetchSize = 10;
-		noMoreData = false;
+		listParams = {
+			fetchFrom:1,
+			fetchSize:10,
+			noMoreData:false
+		}
 		apkNeedUpdate = false;
 		updateStart = false;
 		downloadText = '下载中：0 MB/0 MB, 0%';
@@ -145,7 +140,6 @@
 		onNetWorkFunc: any;
 		showPaySuccess = false;
 		version = '';
-		oneLoad = true;
 		showWinningCrad = false;
 		greeted = false;
 		liveList = [];
@@ -172,40 +166,13 @@
 			data:{}
 		};
 		onLoad(query: any) {
-			// let zqWebviewFloat:any = uni.requireNativePlugin("zq-webview-float");
-			// // //显示悬浮窗
-			// zqWebviewFloat.show({
-			//     url: "http://192.168.8.26:8080/#/pages/liveStreaming/float",//设置悬浮窗webview加载的远程url，必传参数
-			//     width:250,//设置悬浮窗宽度默认值：400
-			//     height: 400,//设置悬浮窗高度默认值：400
-			//     scrollX: false,//设置悬浮窗是否有水平滚动条默认值：false
-			//     scrollY: false,//设置悬浮窗是否有垂直滚动条默认值：false
-			//     removable: true,//设置悬浮窗是否支持拖拽移动默认值：true
-			//     resizeable: true,//设置悬浮窗是否支持拖拽调整大小默认值：true
-			//     clickPass: true,//悬浮窗是否穿透点击事件作用在webview中默认值：true
-			//     dragPass: true,//悬浮窗是否穿透触摸事件作用在webview中默认值：true
-			//     dragWidth: 50//悬浮窗拖拽调整大小时，四个角的可拖拽区域大小默认值：50
-			// },function(data:any){//回调函数
-			//     console.log(data);
-			// })
-			// zqWebviewFloat.wakeUp();
-			// zqWebviewFloat.destory();
-			// console.log(zqWebviewFloat.show);
-			// if (app.update.apkNeedUpdate) {
-			// 	this.updateShow();
-			// 	return;
-			// }
-// uni.preloadPage({
-// 				url: "/pages/live/floatVideo"
-// 			})
 			let listeners = ['BackLogin']
 			this.register(listeners);
-
 			this.onEventUI("apkNeedUpdate", () => {
 				this.updateShow();
 			});
 			this.onEventUI("wgtNeedUpdate", () => {
-				this.wgtUpdateShow();
+				this.wgtUpdate = true;
 			});
 			this.onEventUI("wgtUpdateNum", (res) => {
 				this.wgtUpNum = res;
@@ -214,18 +181,10 @@
 				this.showPaySuccess = true;
 			});
 			this.onEventUI("liveFind",(res)=>{
-				this.liveData.pageIndex = 1;
-				this.liveData.noMoreData = false;
-				this.liveData.q = res.text
-				this.reqNewLiveData()
+				this.initLiveData(res.text)
+				this.reqNewLiveList()
 			})
-			uni.$once('appluanchOver', () => {
-				if (this.oneLoad) {
-					this.version = app.version
-					this.showInitEvent()
-					this.oneLoad = false;
-				}
-			})
+			this.onLoadIndex()
 			//#ifdef APP-PLUS
 			plus.webview.prefetchURL(app.liveWebView)//预载直播控件webview
 			//#endif
@@ -236,70 +195,38 @@
 			// #endif
 			// 销毁页面重新加载
 			if (uni.getStorageSync('reLaunch')) {
-				this.showInitEvent(() => {
+				this.initIndex(() => {
 					uni.removeStorageSync('reLaunch')
 				})
 			}
-			// 避免部分机型uni.$once监听不到
-			if (this.oneLoad && uni.getStorageSync('appluanchOver') == 1) {
-				this.reHomeGet()
-			}
-			// #ifndef MP
-			if (app.localTest) {
-				//开发环境
-				if (this.oneLoad) {
-					this.version = app.version
-					this.showInitEvent()
-					this.oneLoad = false;
-				}
-			}
-			// #endif
-			uni.getNetworkType({
-				success: (res) => {
-					if (res.networkType == 'none') {
-						uni.showModal({
-							title: '提示',
-							content: '当前无网络服务，请开启网络'
-						});
-					}
-				}
-			});
-			if (this.goodsList != '') {
+			app.platform.getNetworkType()
+			if (this.goodsList.length) {
 				this.getHome()
-				// let list = this.goodsList.map((x: any) => {
-				// 	return x.goodCode;
-				// })
-				// app.http.Post('dataApi/good/progress/list', {
-				// 	list: list
-				// }, (res: any) => {
-				// 	this.setNewProgress(res.list)
-				// })
 			}
 		}
 		onHide() {
 			uni.offNetworkStatusChange((res) => {})
 		}
-		// onTabItemTap(e:any) {
-		// 	console.log(e);
-			
-		// 	if(e.index==0 && this.currentIndex ==0){
-		// 		setTimeout(()=>{
-		// 			this.refreshStart()
-		// 		},300)
-		// 	}
-		// 	// e的返回格式为json对象： {"index":0,"text":"首页","pagePath":"pages/index/index"}
-		// }
-		reHomeGet() {
-			if (app.dataApiDomain == '') {
+		private onLoadIndex() {
+			if (app.dataApiDomain == '' && !app.localTest) {
 				setTimeout(() => {
-					this.reHomeGet()
+					this.onLoadIndex()
 				}, 100);
 				return;
 			}
-			uni.removeStorageSync('appluanchOver')
 			this.version = app.version
-			this.showInitEvent()
-			this.oneLoad = false;
+			this.initIndex()
+		}
+		private initIndex(cb ? : Function) {
+			this.listParams.fetchFrom = 1;
+			this.listParams.noMoreData = false;
+			this.initLiveData()
+			this.getHome(()=> this.reqNewMainList(() => cb && cb()))
+		}
+		private initLiveData(q=''){
+			this.liveData.pageIndex = 1;
+			this.liveData.q = q;
+			this.liveData.noMoreData = false
 		}
 		// 监听网络
 		networkStatusChange() {
@@ -317,21 +244,10 @@
 			})
 			// #endif
 		}
-		showInitEvent(cb ? : Function) {
-			this.fetchFrom = 1;
-			this.noMoreData = false;
-			this.liveData.pageIndex = 1;
-			this.liveData.q = '';
-			this.liveData.noMoreData = false
-			this.initEvent(() => {
-				if (cb) cb()
-			})
-		}
 		// 获取首页其它只请求一次的接口
 		getIndexOrther() {
 			if (this.greeted) return;
 			this.greeted = true;
-			
 			// 获取搜索轮播
 			app.http.Get('dataApi/advertising/seekRotate/list',{},(res:any)=>{
 				this.noticeList = res.list
@@ -345,7 +261,10 @@
 			if(app.token.accessToken != ''){
 				app.http.Get('me/greet', {}, (res: any) => {
 					if (res.data.broadcastActor) app.broadcastActor = res.data.broadcastActor
-					if (res.data.newHitNum > 0) this.showWinning();
+					if (res.data.newHitNum > 0) {
+						this.showWinningCrad = true;
+						uni.hideTabBar()
+					};
 				})
 			}
 			// 开屏商品广告
@@ -358,25 +277,9 @@
 				}
 			})
 		}
-		showWinning() {
-			this.showWinningCrad = true;
-			uni.hideTabBar()
-		}
-		closeWinning() {
-			this.showWinningCrad = false
-			uni.showTabBar()
-		}
-		initEvent(cb ? : Function) {
-			this.getHome(()=>{
-				this.reqNewData(() => {
-					if (cb) cb()
-				})
-			})
-		}
 		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				uni.hideLoading()
-				// #ifndef MP
 				this.topAddList = data.addList || [];
 				this.hotList.broadCast.list = data.broadCast || [];
 				if(data.freshGoodCovers){
@@ -385,35 +288,52 @@
 					})
 				}
 				this.getIndexOrther()
-				// #endif
 				cb && cb()
 			})
 		}
-		onClickMiniGood() {
-			uni.showToast({
-				title: '商品正在筹备中',
-				icon: 'none'
+		reqNewMainList(cb ? : Function) {
+			const { fetchFrom, fetchSize, noMoreData } = this.listParams
+			if (noMoreData) return;
+
+			const ts = Math.floor(new Date().getTime() / 1000);
+			const params: { [x: string]: any } = {
+				fetchFrom,
+				fetchSize,
+				ts: ts,
+				s:Md5.hashStr(`kww_goodlist_sign_main_${fetchFrom}_${fetchSize}_${ts}_2022`)
+			}
+			app.http.Get("dataApi/goodlist/forsale/main", params, (data: any) => {
+				this.listParams.noMoreData = data.isFetchEnd;
+				if (fetchFrom == 1) this.goodsList = [];
+
+				if (data.goodList) {
+					const list = fetchFrom == 1 ? data.goodList : [...this.goodsList,...data.goodList];
+					this.goodsList = app.platform.removeDuplicate(list,'goodCode')
+				}
+				this.listParams.fetchFrom += fetchSize;
+				cb && cb()
+			});
+		}
+		reqNewLiveList(cb?:Function) {
+			const { q, pageIndex, pageSize, noMoreData, httpUrl, once, liveTabCheck } = this.liveData; 
+			if (noMoreData) return ;
+
+			app.http.Get(httpUrl,{q,pageIndex,pageSize},(data:any)=>{
+				if(data.totalPage<=pageIndex) this.liveData.noMoreData = true;
+				if(pageIndex==1) this.liveList = []
+				if(data.list) this.liveList = this.liveList.concat(data.list);
+				if(once && liveTabCheck==1 && data.total == 0){
+					this.onClickListTabs(2)
+				}
+				this.liveData.once = false;
+				this.liveData.pageIndex++;
+				if(cb) cb()
 			})
 		}
-		// setNewProgress(list: any) {
-		// 	for (let i in list) {
-		// 		for (let t in this.goodsList) {
-		// 			if (list[i].code == this.goodsList[t].goodCode) {
-		// 				this.goodsList[t].lockNum = list[i].lockNum
-		// 				this.goodsList[t].currentNum = list[i].currentNum
-		// 				this.goodsList[t].totalNum = list[i].totalNum
-		// 				this.goodsList[t].saleRatio = list[i].saleRatio
-		// 			}
-		// 		}
-		// 	}
-		// }
 		updateShow() {
 			uni.hideTabBar();
 			this.updateMsg = decodeURIComponent(app.update.apkData.msg);
 			this.apkNeedUpdate = true;
-		}
-		wgtUpdateShow() {
-			this.wgtUpdate = true;
 		}
 		onClickDownload() {
 			// #ifdef APP-PLUS
@@ -461,7 +381,7 @@
 			}
 		}
 		onClickJumpUrl(item: any) {
-			if (item.name == '卡币商城' || item.name == '领券中心') {
+			if (['卡币商城','领券中心'].includes(item.name)) {
 				if (app.token.accessToken == '') {
 					uni.navigateTo({
 						url: '/pages/login/login'
@@ -472,8 +392,8 @@
 			if(item.id){
 				//系列
 				uni.navigateTo({
-				url: `/pages/goods/goods_seriesDetail?seriesId=${item.id}`
-			})
+					url: `/pages/goods/goods_seriesDetail?seriesId=${item.id}`
+				})
 				return
 			}
 			uni.navigateTo({
@@ -496,7 +416,7 @@
 		refreshStart(){
 			this.refresherIndex = true;
 			const currentLive = this.currentIndex==1;
-			let refresh = currentLive?this.reqNewLiveData:this.showInitEvent
+			let refresh = currentLive?this.reqNewLiveList:this.initIndex
 			if(currentLive){
 				this.liveData.pageIndex = 1;
 				this.liveData.noMoreData = false;
@@ -516,7 +436,7 @@
 			if(event.detail.current==1){
 				this.liveData.pageIndex = 1;
 				this.liveData.noMoreData = false;
-				this.reqNewLiveData()
+				this.reqNewLiveList()
 			}
 			this.currentIndex = event.detail.current;
 		}
@@ -537,53 +457,9 @@
 				httpUrl:this.tabData[id-1].http,
 				once:false
 			}
-			this.reqNewLiveData()
+			this.reqNewLiveList()
 		}
-		reqNewData(cb ? : Function) {
-			// 获取更多商品
-			if (this.noMoreData) {
-				return;
-			}
-			let ts = Math.floor(new Date().getTime() / 1000);
-			let params: { [x: string]: any } = {
-				fetchFrom: this.fetchFrom,
-				fetchSize: this.fetchSize,
-				ts: ts,
-				s: Md5.hashStr('kww_goodlist_sign_main_' + this.fetchFrom + '_' + this.fetchSize + '_' +
-					ts + '_2022')
-			}
-			app.http.Get("dataApi/goodlist/forsale/main", params, (data: any) => {
-				if (data.isFetchEnd) {
-					this.noMoreData = true;
-				}
-				if (this.fetchFrom == 1) this.goodsList = [];
-
-				if (data.goodList) {
-					let list = this.fetchFrom == 1 ? data.goodList : [...this.goodsList,...data.goodList];
-					this.goodsList = app.platform.removeDuplicate(list,'goodCode')
-				}
-				this.fetchFrom += this.fetchSize;
-				if (cb) cb()
-			});
-		}
-		reqNewLiveData(cb?:Function) {
-			// 获取更多商品
-			const params = this.liveData;
-			if (params.noMoreData) return ;
-
-			app.http.Get(params.httpUrl,{q:params.q,pageIndex:params.pageIndex,pageSize:params.pageSize},(data:any)=>{
-				if(data.totalPage<=params.pageIndex) params.noMoreData = true;
-				if(params.pageIndex==1) this.liveList = []
-				if(data.list) this.liveList = this.liveList.concat(data.list);
-				if(params.once && params.liveTabCheck==1 && data.total == 0){
-					this.onClickListTabs(2)
-				}
-				params.once = false;
-				params.pageIndex++;
-				if(cb) cb()
-			})
-			
-		}
+		
 	}
 </script>
 

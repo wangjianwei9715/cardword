@@ -270,7 +270,10 @@ import { Md5 } from "ts-md5";
 						},500)
 					}
 				}
-				
+				if(data.state==1){
+					console.log('订单待支付')
+					return;
+				}
 				setTimeout(()=>{
 					this.clickToPay = !data.wait ? false : true
 				},1000)

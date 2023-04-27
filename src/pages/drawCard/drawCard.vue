@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-20 15:40:53
+ * @LastEditTime: 2023-04-24 10:16:28
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -102,6 +102,12 @@
           </view>
         </view>
       </bottomDrawer>
+
+      <u-modal :show="switchModel.show"  title="提示" :showCancelButton="true" @confirm="onConfirmSwitch" @cancel="switchModel.show=false">
+        <view class="slot-content" style="text-align:center">
+          <rich-text :nodes="switchModel.text"></rich-text>
+        </view>
+      </u-modal>
     </view>
   </view>
 </template>
@@ -123,8 +129,8 @@
         type:string;
         name:string;
     }> = [
-      {type:'scene',name:'场景'},
-      {type:'ani',name:'动画'},
+      {type:'scene',name:'背景'},
+      {type:'ani',name:'特效'},
       // {type:'music',name:'音乐'}
     ];
     initData:DarwCard.Init = {
@@ -139,7 +145,7 @@
     /**动画开关 */
     animationSwitch:boolean = true;
     animationStart:boolean = false;
-    sceneData = { show:false, picType:0, bg:'', showDefault:false, firstLoad:true,svgaOpen:false };
+    sceneData = { show:false, picType:0, bg:'', showDefault:false,svgaOpen:false };
     musicData = { show:false, name:'' };
     moveData = { x:0, y:0, x_init:0, y_init:0, };
     changeMove:any = {};
@@ -153,6 +159,10 @@
       code:[]
     };
     defultPic:string = '../../static/goods/drawcard/default.png';
+    switchModel = {
+      show:false,
+      text:''
+    }
     /**是否最后一张卡片 */
     public get DrawCardOver():boolean {
       return this.cardData.step  >= this.cardData.total;
@@ -174,6 +184,7 @@
       return _default
     } 
     onLoad(query:any){
+      this.initEvent(query)
       const initCode = JSON.parse(query.data);
       initCode.forEach((x:DarwCard.Code,index:number)=>{
         x.pic = parsePic(decodeURIComponent(x.pic))
@@ -182,14 +193,7 @@
       this.codeList = [{index:0},...initCode]
       this.cardData.total = query.num;
       this.initData.goodOrder = query.code;
-      
-      if(query.num<=30){
-        this.initEvent(query)
-      }else{
-        this.reqNewData(()=>{
-          this.initEvent(query)
-        })
-      }
+      this.reqNewData();
       if(query.picType == 1){
         this.defultPic = '../../static/goods/drawcard/default_.png';
       }      
@@ -198,6 +202,7 @@
       })
     }
     destroyed(){
+      uni.hideLoading();
       clearInterval(this.initData.initInterval)
     }
     onClickBack(){
@@ -221,7 +226,6 @@
       }else if(app.platform.systemInfo.platform == 'android'){
         this.animationSwitch = false
       } 
-      
     }
     // 封装初始化 startTime 的方法 private 
     initStartTime(): void { 
@@ -237,16 +241,19 @@
     onClickNavigation(item:{ type:string; name:string; }){
       if(item.type=='scene') this.sceneData.show=true ;
       if(item.type=='music') this.musicData.show=true ;
-      if(item.type=='ani') this.onClickAnimation();
+      if(item.type=='ani'){
+        this.switchModel = {
+          show:true,
+          text:`是否${this.animationSwitch ? '关闭' : '开启'}特效<br/>(<span style="color:red">部分机型容易导致卡顿</span>)`
+        }
+      }
     }
     // 背景选择
     sceneChange(event:string){
-      const { firstLoad } = this.sceneData;
-      if( !firstLoad && event!='' && this.animationSwitch ){
+      if( event!='' && this.animationSwitch ){
         uni.showLoading({title: "场景生成中"});
       }
       this.sceneData.showDefault = (event=='');
-      this.sceneData.firstLoad = false;
       this.sceneData.svgaOpen = false
       if(!this.sceneData.showDefault){
         this.sceneData.bg=event;
@@ -261,34 +268,27 @@
 			this.$refs['svga'].render(async (parser:any, player:any) => {
 				const videoItem = await parser.load(svgaSrc);
 				await player.setVideoItem(videoItem);
-        player.clearsAfterStop = true
+        player.clearsAfterStop = true;
+        player.setContentMode('Fill')
 				player.startAnimation();
         uni.hideLoading();
         this.sceneData.svgaOpen = true
 			})
 		}
-    // 封装点击动画按钮的方法 private 
-    onClickAnimation(): void { 
-      if(this.animationStart) { return; } 
-      uni.showModal({ 
-        title: '提示', 
-        content: `是否${this.animationSwitch ? '关闭' : '开启'}动画`, 
-        success: (res) => { 
-          if (res.confirm) { 
-            this.animationSwitch = !this.animationSwitch; 
-            if(!this.animationSwitch){
-              this.sceneData.svgaOpen = false;
-            }
-            uni.setStorageSync('animationSwitch',this.animationSwitch); 
-            if(this.animationSwitch &&!this.sceneData.showDefault){
-              setTimeout(()=>{
-                uni.showLoading({title: "动画开启中"});
-                this.svgaRender(`/static/drawCard/${this.sceneData.bg}.svga`);
-              },500)
-            }
-          } 
-        } 
-      }); 
+    // 点击动画按钮的方法 
+    onConfirmSwitch(){
+      this.animationSwitch = !this.animationSwitch; 
+      if(!this.animationSwitch){
+        this.sceneData.svgaOpen = false;
+      }
+      uni.setStorageSync('animationSwitch',this.animationSwitch); 
+      if(this.animationSwitch &&!this.sceneData.showDefault){
+        setTimeout(()=>{
+          uni.showLoading({title: "特效开启中"});
+          this.svgaRender(`/static/drawCard/${this.sceneData.bg}.svga`);
+        },500)
+      }
+      this.switchModel.show = false
     }
     /**移动数据初始化 */
     InitMoveData(){
@@ -324,15 +324,18 @@
         const move_Y = Math.abs(mY - iY);
         if(move_x>uni.upx2px(220) || move_Y>uni.upx2px(300)){
           this.cardData.step++;
-          const nextItem = this.codeList[this.cardData.step]
-          if(['gold','SP'].includes((nextItem as DarwCard.Code).color)) uni.vibrateLong({});
+          const step = this.cardData.step;
+          const item:DarwCard.Code = this.codeList[step];
+          if(!this.DrawCardOver && ['gold','SP'].includes(this.codeList[step+1].color)){
+            uni.vibrateLong({})
+          }
           // 特效卡并且动画开启
-          if((nextItem as DarwCard.Code).color=='gold'&&this.animationSwitch){
+          if(item.color=='gold'&&this.animationSwitch){
             this.animationStart = true;
           }
         }
-        this.moveData.x = this.moveData.x_init;
-        this.moveData.y = this.moveData.y_init;
+        this.moveData.x = iX;
+        this.moveData.y = iY;
         this.cardMove = false;
       }, 50);
     }
@@ -356,7 +359,7 @@
       }
       this.drawerData.code = data
     }
-    reqNewData(cb?:Function){
+    reqNewData(){
       const { pageIndex, pageSize, noMoreData, goodOrder } = this.initData;
       // 获取更多商品
       if (noMoreData||this.cardData.total<=30)  return;
@@ -374,12 +377,10 @@
         }
         if(data.totalPage<=pageIndex){
           this.initData.noMoreData = true;
-          if(cb) cb()
         }else{
           this.initData.pageIndex++;
           setTimeout(()=>{
             this.reqNewData();
-            cb && cb();
           },100)
         }
       });
@@ -558,7 +559,7 @@
     text-align: center;
     line-height: 90rpx;
     color:#fff;
-    font-size: 43rpx;
+    font-size: 41rpx;
     font-family: PingFang SC;
     font-weight: 600;
     position: relative;
@@ -684,7 +685,7 @@
     width: 100%;
     text-align: center;
     margin-top: 18rpx;
-    font-size: 17rpx;
+    font-size: 19rpx;
     font-family: PingFang SC;
     font-weight: 400;
     color: #FFFFFF;

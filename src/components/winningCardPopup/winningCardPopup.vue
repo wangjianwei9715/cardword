@@ -1,5 +1,5 @@
 <template>
-	<view class="winning" v-show="showWinningCrad">
+	<view class="winning" v-show="show">
 		<view class="winning-showdow" ></view>
 		<view class="winning-popup">
 			<image class="winning-img" :class="{'img-show':showImg}" src="../../static/index/v2/drawCard.png" />
@@ -10,17 +10,17 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
+	import { Component,Watch,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import {getCountDownTime} from '@/tools/util';
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		@Prop({default:false})
-		showWinningCrad!:boolean;
-
+		@PropSync("show",{
+			type:Boolean
+		}) showSync!: Boolean;
+		
 		showImg = false;
 		showBtn = false;
-		@Watch('showWinningCrad')
+		@Watch('show')
 		onGoodsDataChanged(val: any, oldVal: any) {
 			if(val){
 				setTimeout(()=>{
@@ -49,7 +49,8 @@
 		onClickCloseWinning(){
 			this.showImg = false;
 			this.showBtn = false;
-			this.$emit('closeWinning')
+			this.showSync = false;
+			uni.showTabBar()
 		}
 	}
 </script>
