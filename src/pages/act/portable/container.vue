@@ -56,13 +56,13 @@ export default class ClassName extends BaseNode {
     tabBar: any = [
         {
             label: `榜单活动`,
-            topBanner: '/static/act/worldCup/topBanner.png',
+            topBanner: '',
             ref: 'rank'
         },
         {
             // 卡世界×魔球社联合企划线上卡展
             label: `线上卡展`,
-            topBanner: '/static/act/worldCup/topGuess.png',
+            topBanner: '',
             ref: 'exhibition',
         }
     ]

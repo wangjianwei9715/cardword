@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-28 17:34:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-20 15:33:17
+ * @LastEditTime: 2023-04-26 17:57:52
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -30,7 +30,7 @@
 		@Prop({default:false})
 		cardMove?:Boolean;
 		@Prop({default:{}})
-		animationData:any;
+		data:any;
 		
 		animation = {
 			step:1,
@@ -57,7 +57,7 @@
 		}
 		public get getImageSrc():string{
 			const stepStr = map.setpMap[this.animation.step];
-			const animationVal = this.animationData[stepStr];
+			const animationVal = this.data[stepStr];
 			let src = ''
 			if(animationVal==''){
 				return src
@@ -78,7 +78,7 @@
 				return;
 			}
 			this.animation.LoopsOver = true;
-			const length = this.animationData.rc?3:2;
+			const length = this.data.rc?3:2;
 			setTimeout(()=>{
 				if(this.animation.step<length){
 					this.animation.step ++ ;
@@ -89,7 +89,7 @@
 				}else{
 					this.animation.over = true;
 					setTimeout(() => {
-						this.$emit('animationOver')
+						this.$emit('over')
 					}, 600);
 				}
 			},1000)
