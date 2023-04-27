@@ -2,11 +2,15 @@
 	<view class="winning" v-show="show">
 		<view class="winning-showdow" ></view>
 		<view class="winning-popup">
-			<muqian-lazyLoad @click="onClickGoGoods" class="winning-img" :class="{'img-show':showImg}" :src="decodeURIComponent(goodData.pic_url)" />
+			<view class="winning-img"  :class="{'img-show':showImg}">
+				<muqian-lazyLoad @click="onClickGoGoods" class="img" :style="goodData.style || ''" :src="decodeURIComponent(goodData.pic_url)" />
+				<!-- 得物活动特殊处理 -->
+				<image @click="onClickGoGoods" src="@/static/act/dewu/adButton.png" style="width:400rpx;height:113rpx;margin: 0 auto;display: block;margin-top: -70rpx;" v-if="goodData.act&&goodData.act==='dewu'"/>
+			</view>
 			<view class="close-box">
 				<image @click="onClickClose" class="close-img" src="@/static/index/close.png"/>
 			</view>
-			<view class="pop-box" @click="no_pop = !no_pop">
+			<view class="pop-box" @click="no_pop = !no_pop" v-if="!goodData.hideThreeDay">
 				<view class="icon-pop" :class="{ 'icon-pop-choice': no_pop }" ></view>三天内不再接收此类弹窗
 			</view>
 		</view>
@@ -24,7 +28,6 @@
 		}) showSync!: Boolean;
 		@Prop({default:''})
 		goodData!:any;
-
 		goGoodsDetails = app.navigateTo.goGoodsDetails;
 		showImg = false;
 		no_pop = false;
@@ -46,13 +49,20 @@
 			
 		}
 		onClickGoGoods(){
+			if(this.goodData.isAct){
+				uni.navigateTo({
+					url:this.goodData.url
+				})
+				this.showSync = false;
+				return
+			}
 			this.openscreenReport(true,false)
 			this.showSync = false;
 			this.goGoodsDetails(this.goodData.good_code,`&AD_id=${this.goodData.ad_id}`)
 		}
 		onClickClose(){
 			this.showSync = false;
-			this.openscreenReport()
+			if(!this.goodData.isAct) this.openscreenReport()
 		}
 		openscreenReport(click=false,close=true){
 			const params = {
@@ -87,11 +97,16 @@
 			margin-top: -500rpx;
 			z-index: 99999999;
 			.winning-img{
-				width: 548rpx;
-				height:748rpx;
+				// width: 548rpx;
+				// height:748rpx;
 				transition: all 0.5s;
 				margin:0 auto;
 				transform: scale(0);
+				.img{
+					width: 548rpx;
+					height:748rpx;
+					margin: 0 auto;
+				}
 			}
 			.img-show{
 				transform: scale(1);
