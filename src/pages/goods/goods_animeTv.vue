@@ -1,7 +1,7 @@
 <template>
     <view class="content">
         <view class="topArea">
-            <view class="menuContainer">
+            <view class="menuContainer" v-if="seriesType.list && seriesType.list.length">
                 <u-tabs @change="onClickTag" :lineWidth="0" :lineHeight="0" :list="seriesType.list" :scrollable="true"
                     customType="goods_animeTv" :current="seriesType.index">
                 </u-tabs>
@@ -14,7 +14,8 @@
         </view>
         <view class="goodsList">
             <view class="anGoods" v-for="(item, index) in goodsList" :key="index" @click="onClickGoods(item)">
-                <muqian-lazyLoad class="pic" borderRadius="3rpx" :src="$parsePic(decodeURIComponent(item.pic))"></muqian-lazyLoad>
+                <muqian-lazyLoad class="pic" borderRadius="3rpx"
+                    :src="$parsePic(decodeURIComponent(item.pic))"></muqian-lazyLoad>
                 <view class="goodsInfo">
                     <view class="name u-line-1">{{ item.title }}</view>
                     <view class="typePro">
@@ -93,8 +94,14 @@ export default class ClassName extends BaseNode {
                 label: "单价"
             }
         ]
+
     }
+    seriesId: any = null
     onLoad(query: any) {
+        if (query.seriesId) {
+            this.seriesId=+query.seriesId
+            this.queryParams.st = +query.seriesId
+        }
         this.getAnimeTvSeriesType()
         this.reqNewData()
     }
@@ -107,9 +114,9 @@ export default class ClassName extends BaseNode {
     onPullDownRefresh() {
         this.queryParams.pageIndex = 1
         this.reqNewData(() => {
-            setTimeout(()=>{
+            setTimeout(() => {
                 uni.stopPullDownRefresh()
-            },500)
+            }, 500)
         })
     }
     onClickGoods(item: any) {
@@ -162,6 +169,12 @@ export default class ClassName extends BaseNode {
                     pic_url: this.$parsePic(decodeURIComponent(item.pic_url)),
                 }
             })
+            if (this.seriesId) {
+                const index = this.seriesType.list.findIndex((item: any) => {
+                    return item.id == this.seriesId
+                })
+                if (index >= 0) this.seriesType.index = index
+            }
         })
     }
     reqNewData(cb?: any) {
@@ -170,7 +183,6 @@ export default class ClassName extends BaseNode {
             const list = res.goodList || []
             this.isEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.goodsList = list : this.goodsList.push(...list)
-            // this.queryParams.pageIndex == 1 ? this.goodsList = list : this.goodsList.push(...list)
             cb && cb()
         })
     }
@@ -179,9 +191,10 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
-page{
+page {
     background-color: #fff;
 }
+
 .topArea {
     width: 750rpx;
     height: 485rpx;
@@ -289,6 +302,7 @@ page{
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
                 .proRed {
                     background-color: #FA1545;
                     position: absolute;

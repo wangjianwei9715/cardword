@@ -65,7 +65,7 @@
 									<view class="tabtext u-line-1">{{items.name}}</view>
 								</view>
 							</view>
-							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2023-01-17', '2023-02-11')">
+							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2023-04-25', '2023-05-07')">
 								<image class="capsule-pic1" :src="decodeURIComponent(capsule.pic)" mode="aspectFill"/>
 							</navigator>
 
@@ -123,8 +123,9 @@
 			bottom:indexTabList
 		};
 		capsule = {
-			pic:'../../static/index/v3/capsule_.png',
-			url:'/pages/act/imm/index?seriesId=20&roomId='
+			pic:'../../static/index/v3/dewu.png',
+			// url:'/pages/act/imm/index?seriesId=20&roomId='
+			url:'/pages/act/dewu/index'
 		}
 		hotList: { [x: string]: any } = indexHotList;
 		topAddList: any = [];

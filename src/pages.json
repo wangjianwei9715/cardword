@@ -805,6 +805,88 @@
 							"bounce": "none"
 						}
 					}
+				},
+				{
+					"path": "dewu/index",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "得物卡牌评级",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#000",
+						"backgroundColorBottom": "#000",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "dewu/rule",
+					"style": {
+						"navigationBarBackgroundColor": "#000000",
+						"navigationBarTitleText": "规则说明",
+						"navigationBarTextStyle": "white",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#000",
+						"backgroundColorBottom": "#000",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "pokemon/index",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "训练家积分榜",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#1a3439",
+						"backgroundColorBottom": "#1a3439",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "pokemon/rule",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "活动规则",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#1a3439",
+						"backgroundColorBottom": "#1a3439",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "pokemon/award",
+					"style": {
+						"navigationBarTitleText": "奖励预览",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "pokemon/detail",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "积分明细",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
 				}
 				
 			]
