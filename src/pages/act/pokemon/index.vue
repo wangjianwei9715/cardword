@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-27 15:36:14
+ * @LastEditTime: 2023-04-27 17:15:36
  * @FilePath: \jichao_app_2\src\pages\act\worldCup\rank.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,23 +11,23 @@
         <transitionNav ref='transitionNav' :statusBarStyleArray="['dark', 'light']" :needIconShadow="true" title="训练家积分榜">
         </transitionNav>
         <view class="topBannerContainer">
-            <view class="banner"></view>
-            <navigator :url="`/pages/act/pokemon/rule`" hover-class="none" class="sp-tips-index sp-tips-index2">
-                <view class="rule"></view>
+        <view class="banner"></view>
+        <navigator :url="`/pages/act/pokemon/rule`" hover-class="none" class="sp-tips-index sp-tips-index2">
+            <view class="rule"></view>
             </navigator>
         </view>
         <view class="liveContainer flexCenter">
             <view class="title">榜单前10可获得丰厚奖励</view>
             <!-- <navigator :url="`/pages/act/pokemon/live?roomId=${roomId}`" hover-class="none"
-                class="sp-tips-index sp-tips-index2">
-                <view class="entrance"></view>
-            </navigator> -->
+                            class="sp-tips-index sp-tips-index2">
+                            <view class="entrance"></view>
+                        </navigator> -->
 
         </view>
         <view class="rankContainer">
             <view class="rankContainer_top">
                 <view class="title"></view>
-                <view class="text">进行中 3.16-3.17</view>
+                <view class="text">{{ parseTips().tips || "" }} {{parseTips().time || ""}}</view>
                 <navigator :url="`/pages/act/pokemon/detail`" hover-class="none" class="sp-tips-index sp-tips-index2">
                     <view class="jfmx">积分明细</view>
                 </navigator>
@@ -59,7 +59,7 @@
                         <muqian-lazyLoad class="rank_avatar" borderRadius="50%"
                             :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
                         <view class="rank_userName">{{ item.userName }}</view>
-                        <view class="rankPoint" v-if="item.get_score || item.lock_score">
+                    <view class="rankPoint" v-if="item.get_score || item.lock_score">
                             <view class="get">已获取：{{ item.get_score }}</view>
                             <view class="freeze">冻结中：{{ item.lock_score }}</view>
                         </view>
@@ -67,7 +67,7 @@
                         <muqian-lazyLoad class="rank_reward" v-if="item.awardPic_url" borderRadius="3rpx"
                             @click="previewImage(item)" :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
                         <!-- <image v-else src="@/static/act/pokemon/luck.png" class="rank_reward"
-                            style="border-radius: 3rpx;" /> -->
+                                        style="border-radius: 3rpx;" /> -->
                     </view>
                 </view>
             </scroll-view>
@@ -93,6 +93,7 @@ export default class ClassName extends BaseNode {
     }
     seriesId: number = 0
     roomId: number = 0
+    nowTimeStamp: any = Math.round(+new Date() / 1000)
     onLoad(query: any) {
 
         app.platform.hasLoginToken(() => {
@@ -106,6 +107,37 @@ export default class ClassName extends BaseNode {
         uni.navigateTo({
             url: `/pages/goods/goods_animeTv?seriesId=${this.seriesId}`
         })
+    }
+    isNumber(data: any) {
+        return typeof data === 'number'
+    }
+    parseTips() {
+        const ActivityPeriod: any = [1682870400, 1684079999]//积分获取
+        const ThawPeriod: any = [1684080000, 1684943999]//积分解冻
+        const DrawPeriod: number = 1684944000//榜单结算
+        if (this.nowTimeStamp < ActivityPeriod[0]) {
+            return { tips: "暂未开始", time: "05.01-05.25" }
+        };
+        if (this.nowTimeStamp >= ActivityPeriod[0] && this.nowTimeStamp <= ActivityPeriod[1]) {
+            return { tips: "积分获取", time: "05.01-05.14" }
+        }
+        if (this.nowTimeStamp >= ThawPeriod[0] && this.nowTimeStamp <= ThawPeriod[1]) {
+            return {
+                tips: "积分解冻", time: "05.15-05.24"
+            }
+        };
+        if (this.nowTimeStamp > ThawPeriod[1] && this.nowTimeStamp < DrawPeriod) {
+            return {
+                tips: "榜单结算",
+                time: "05.25"
+            }
+        };
+        if (this.nowTimeStamp >= DrawPeriod) {
+            return {
+                tips: "榜单结算",
+                time: "05.25"
+            }
+        }
     }
     previewImage(item: any) {
         //@ts-ignore

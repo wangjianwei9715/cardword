@@ -279,7 +279,7 @@
 					style:{
 						width:"596rpx",
 						height:"593rpx",
-						marginTop:"-120rpx"
+						marginTop:"80rpx"
 					},
 					url:"/pages/act/dewu/index",
 					hideThreeDay:true,
