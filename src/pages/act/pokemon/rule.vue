@@ -1,28 +1,24 @@
 <template>
     <view class="content">
-        <navigationShare navigatetoTitle="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward"/>
-        <view :style="{ height: 88+'rpx', paddingTop: app.statusBarHeight+'px' }"></view>
+        <navigationShare navigatetoTitle="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward" />
+        <view :style="{ height: 88 + 'rpx', paddingTop: app.statusBarHeight + 'px' }"></view>
         <view class="descriptionContainer">
             <view class="des_title">
                 积分榜单：
             </view>
             <view class="des_content">
-                活动期间，参与平台拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
+                活动期间，参与平台宝可梦系列拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
                 <br />
                 <br />
-                活动截至入榜前50的用户将获得对应的名次奖励
+                活动截至入榜前10的用户将获得对应的名次奖励
                 <br />
                 <br />
-                <!-- <view class="tips">活动截至后入榜前500名抽取n位幸运用户进行幸运抽奖</view> -->
-                <!-- <view class="tips" @click="openRanDom">抽奖网站:<text
-                        style="color: #02a7f0;text-decoration:underline;margin-left:6rpx">random.org</text></view>
-                <br> -->
                 <text style="color:red">*</text>活动截止后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
                 <br />
                 <text style="color:red">*</text>榜单每30分钟更新一次<br>
                 <br />
-                <view class="sTitle"><text style="color:red">*</text>积分倍数：</view>
-                商品拼团积分=1*单价
+                <view class="sTitle"><text style="color:red">*</text>积分计算：</view>
+                积分单价比为1:1
                 <br />
             </view>
             <view class="des_content">

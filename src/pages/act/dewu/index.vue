@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-27 13:42:48
+ * @LastEditTime: 2023-04-27 16:15:16
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -124,6 +124,15 @@
         </view>
         <view class="desc">此外，得物评级实行全程监控，实验室高精设备辅助评分，并且提供上门取货，物流比送到国外安全得多、快得多；每张卡牌都由2位评级师交叉评分</view>
         <image src="@/static/act/dewu/dewulc.png" style="width: 665rpx;height: 557rpx;margin-top: 30rpx;"></image>
+        <view class="blockTitle blockTitle3"></view>
+        <view class="desc">1.每张得物35pt免费卡牌评级券可免费评级一张卡片，<text
+                style="color:#00feff;font-weight: bold;">仅限35pt及以下卡片可用，暂不支持厚卡及其他规格。</text>有效期至2023.05.07，过期作废。</view>
+        <view class="desc">2.用户在卡世界app兑换成功后，通过活动页面专属入口跳转到得物app领取评级券</view>
+        <view class="desc">3.获得评级券的用户可登录得物app，通过 探索-鉴别服务-评级卡服务 按照操作流程进行评级。</view>
+        <view class="imgContainer">
+            <image mode="aspectFill" @click="prvImgRule(index)" v-for="(item, index) in picsRule" :key="index" :src="item">
+            </image>
+        </view>
         <view class="blockTitle blockTitle2"></view>
         <view class="cardList">
             <image v-for="(item, index) in pics" :src="item" @click="prvImg(index)" />
@@ -135,7 +144,7 @@
             <view class="coupon" :class="{ coupon3: selectItem.nameTwo }"></view>
             <!-- <view class="title">确认兑换</view> -->
             <view class="text">是否消耗{{ selectItem.price }}卡币兑换</view>
-            <view class="text">{{ selectItem.name || "" }}</view>
+            <view class="text">{{ "得物" + selectItem.name || "" }}</view>
             <view class="text" v-if="selectItem.nameTwo">{{ selectItem.nameTwo || "" }}</view>
             <view style="flex:1"></view>
             <view class="exchangeModalButton green" @click="submitExchange"></view>
@@ -143,7 +152,7 @@
         </view>
         <view class="modal successModal" :class="{ modal_show: successBoxShow }"
             :style="{ top: statusBarHeight + 340 + 'rpx' }">
-            <view class="coupon" :class="{ coupon3: selectItem.nameTwo}"></view>
+            <view class="coupon" :class="{ coupon3: selectItem.nameTwo }"></view>
             <view class="title">恭喜您，兑换成功</view>
             <view class="text">（同时在得物app下单5张卡牌评级，额外附赠1张评级包邮券！）</view>
             <!-- <view style="flex:1"></view> -->
@@ -169,7 +178,7 @@ const shareData = {
     shareUrl: `share/${app.bussinessApiDomain == "https://server.ssltest.ka-world.com/api/v2.1/" ? "testH5" : "h5"}/#/pages/act/dewu`,
     title: "得物卡牌评级 限时兑换",
     summary: "原价:33元/张 现价:18卡币/张",
-    thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.04.26/narticle/16825007942552cjydpgdbd.png"
+    thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.04.27/template/0/1682583297909b3x5cv87l.jpg"
 }
 const navRule = {
     "规则": {
@@ -183,12 +192,12 @@ const navRule = {
     }
 }
 const one = {
-    name: "得物免费卡牌评级券x1",
+    name: "35pt免费卡牌评级券x1",
     iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Ffast.dewu.com%252Fnezha-plus%252Fdetail%252F63355374167c22c6ca0bb439%253FisAllowVideoAutoPlay%253D1%2526eTId%253D1682318723413-a766b70e-f788-83ee-4850-abbdd0dc4556%2526dFId%253D660e656b907b1b20306fd25c44db9ab0%2526browser_name%253Dsafari%2526m_brand%253Diphone%2526os_version%253D${os_version}%2526phone_os%253DiPhone%2526eFrom%253Dhttps%25253A%25252F%25252Fcdn-fast.dewu.com%25252Fnezha-plus%25252Fdetail%25252F63355374167c22c6ca0bb439`,
     androidLink: "dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F63355374167c22c6ca0bb439%253FisAllowVideoAutoPlay%253D1",
 }
 const two = {
-    name: "得物免费卡牌评级券x2",
+    name: "35pt免费卡牌评级券x2",
     nameTwo: "卡牌评级回寄包邮券x1",
     iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F61df95ff55692a2045b4a616%253FisAllowVideoAutoPlay%253D1`,
     androidLink: "dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F61df95ff55692a2045b4a616%253FisAllowVideoAutoPlay%253D1",
@@ -204,6 +213,10 @@ const pics = [
     "../../../static/act/dewu/card7.png",
     "../../../static/act/dewu/card8.png"
 ]
+const picsRule = [
+    "../../../static/act/dewu/rule1.png",
+    "../../../static/act/dewu/rule2.png"
+]
 @Component({})
 export default class ClassName extends BaseNode {
     statusBarHeight = app.statusBarHeight
@@ -211,6 +224,7 @@ export default class ClassName extends BaseNode {
     one = one
     two = two
     pics = pics
+    picsRule = picsRule
     list: any = []
     selectItem: any = {}
     exchangeBoxShow: boolean = false
@@ -274,6 +288,12 @@ export default class ClassName extends BaseNode {
     prvImg(index: number) {
         uni.previewImage({
             urls: this.pics,
+            current: index
+        })
+    }
+    prvImgRule(index: number) {
+        uni.previewImage({
+            urls: this.picsRule,
             current: index
         })
     }
@@ -637,11 +657,31 @@ page {
     margin-bottom: 21rpx;
 }
 
+.imgContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-top: 40rpx;
+    width: 650rpx;
+    image {
+        display: block;
+        width: 49%;
+    }
+}
+
 .blockTitle2 {
     width: 265rpx;
     height: 79rpx;
     background-image: url("@/static/act/dewu/desc2.png");
-    margin-top: 20rpx;
+    margin-top: 50rpx;
+    margin-bottom: 36rpx;
+}
+
+.blockTitle3 {
+    width: 417rpx;
+    height: 52rpx;
+    background-image: url("@/static/act/dewu/desc3.png");
+    margin-top: 53rpx;
     margin-bottom: 36rpx;
 }
 
@@ -970,5 +1010,4 @@ page {
 
 .green {
     // background-color: #4dcdcc;
-}
-</style>
+}</style>

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-27 11:56:17
+ * @LastEditTime: 2023-04-27 15:36:14
  * @FilePath: \jichao_app_2\src\pages\act\worldCup\rank.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,7 +17,7 @@
             </navigator>
         </view>
         <view class="liveContainer flexCenter">
-            <view class="title">榜单前500名可参与幸运抽奖</view>
+            <view class="title">榜单前10可获得丰厚奖励</view>
             <!-- <navigator :url="`/pages/act/pokemon/live?roomId=${roomId}`" hover-class="none"
                 class="sp-tips-index sp-tips-index2">
                 <view class="entrance"></view>
@@ -44,7 +44,7 @@
                             <view class="freeze">冻结中：{{ myRank.lock_score }}</view>
                         </view>
                         <muqian-lazyLoad v-if="myRank.isPass" class="rankReward" borderRadius="3rpx"
-                            :src="myRank.awardPic ? $parsePic(decodeURIComponent(myRank.awardPic)) : 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.04.25/template/0/1682415396940w5zwe6hpnc.png'"></muqian-lazyLoad>
+                            :src="$parsePic(decodeURIComponent(myRank.awardPic))"></muqian-lazyLoad>
                         <view class="rank_right" v-else>
                             <view style="margin-bottom: 10rpx;">距离入榜还需</view>
                             <view>{{ myRank.passScore }}</view>
@@ -66,8 +66,8 @@
                         <view v-else style="flex:1"></view>
                         <muqian-lazyLoad class="rank_reward" v-if="item.awardPic_url" borderRadius="3rpx"
                             @click="previewImage(item)" :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
-                        <image v-else src="@/static/act/pokemon/luck.png" class="rank_reward"
-                            style="border-radius: 3rpx;" />
+                        <!-- <image v-else src="@/static/act/pokemon/luck.png" class="rank_reward"
+                            style="border-radius: 3rpx;" /> -->
                     </view>
                 </view>
             </scroll-view>

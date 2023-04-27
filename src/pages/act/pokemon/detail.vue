@@ -16,7 +16,7 @@
             </view>
         </view>
         <view class="pointBlock flexCenter"></view>
-        <view class="darContainer">
+        <view class="darContainer" v-if="list&&list.length">
             <view class="pixelContainer">
                 <view class="pointCard" v-for="(item, index) in list" :key="index" @click="toGoods(item)">
                     <view class="pointCard_top">

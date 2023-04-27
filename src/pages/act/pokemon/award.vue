@@ -121,18 +121,18 @@ export default class ClassName extends BaseNode {
         })
     }
     reqRewardList() {
-        app.http.Get('dataApi/selectRank/award/list', { way: 0, activityTp: 5 }, (res: any) => {
+        app.http.Get('dataApi/selectRank/award/list', { way: 0, activityTp: 6 }, (res: any) => {
             this.awardList = res.list || []
 
         })
     }
     reqRewardListTwo() {
-        app.http.Get('dataApi/selectRank/award/list', { way: 1, activityTp: 5 }, (res: any) => {
+        app.http.Get('dataApi/selectRank/award/list', { way: 1, activityTp: 6 }, (res: any) => {
             this.luckList = res.list || []
         })
     }
     reqRewardListWay() {
-        app.http.Get('dataApi/selectRank/award/list', { way: 2, activityTp: 5 }, (res: any) => {
+        app.http.Get('dataApi/selectRank/award/list', { way: 2, activityTp: 6 }, (res: any) => {
             this.wayList = res.list || []
         })
     }
