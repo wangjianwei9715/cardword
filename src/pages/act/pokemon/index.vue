@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-27 17:28:54
+ * @LastEditTime: 2023-04-27 17:56:34
  * @FilePath: \jichao_app_2\src\pages\act\worldCup\rank.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,15 +19,15 @@
         <view class="liveContainer flexCenter">
             <view class="title">榜单前10可获得丰厚奖励</view>
             <!-- <navigator :url="`/pages/act/pokemon/live?roomId=${roomId}`" hover-class="none"
-                            class="sp-tips-index sp-tips-index2">
-                            <view class="entrance"></view>
-                        </navigator> -->
+                                        class="sp-tips-index sp-tips-index2">
+                                        <view class="entrance"></view>
+                                    </navigator> -->
 
         </view>
         <view class="rankContainer">
             <view class="rankContainer_top">
                 <view class="title"></view>
-                <view class="text">{{ parseTips().tips || "" }} {{parseTips().time || ""}}</view>
+                <view class="text">{{ parseTips().tips || "" }} {{ parseTips().time || "" }}</view>
                 <navigator :url="`/pages/act/pokemon/detail`" hover-class="none" class="sp-tips-index sp-tips-index2">
                     <view class="jfmx">积分明细</view>
                 </navigator>
@@ -67,14 +67,16 @@
                         <muqian-lazyLoad class="rank_reward" v-if="item.awardPic_url" borderRadius="3rpx"
                             @click="previewImage(item)" :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
                         <!-- <image v-else src="@/static/act/pokemon/luck.png" class="rank_reward"
-                                        style="border-radius: 3rpx;" /> -->
+                                                    style="border-radius: 3rpx;" /> -->
                     </view>
                 </view>
+                <view style="height:80rpx"></view>
             </scroll-view>
-            <view class="rankContainer_bottom flexCenter" @click="goBuy">
-                <view class="goBuy"></view>
-            </view>
+
             <previewImage ref="previewImage" />
+        </view>
+        <view class="rankContainerBottom flexCenter" @click="goBuy">
+            <view class="goBuy"></view>
         </view>
     </view>
 </template>
@@ -162,7 +164,7 @@ export default class ClassName extends BaseNode {
 <style lang="scss">
 page {
     font-family: PingFang SC;
-    // background-color: #fcd805;
+    background-color: #9f9f9f;
 }
 
 .topBannerContainer {
@@ -290,7 +292,7 @@ page {
 
 .rankContainer {
     width: 750rpx;
-    height: 1260rpx;
+    // height: 1260rpx;
     background: #9f9f9f;
     display: flex;
     flex-direction: column;
@@ -381,25 +383,6 @@ page {
         }
     }
 
-    &_bottom {
-        // width: 100%;
-        width: 736rpx;
-        left: 0;
-        right: 0;
-        margin: auto;
-        height: 128rpx;
-        background-size: 100% 100%;
-        background-image: url("@/static/act/pokemon/blue_bg.png");
-        position: fixed;
-        bottom: 0;
-
-        .goBuy {
-            width: 412rpx;
-            height: 94rpx;
-            background-size: 100% 100%;
-            background-image: url("@/static/act/pokemon/goBuy.png");
-        }
-    }
 
     &_rank {
         width: 100%;
@@ -419,6 +402,25 @@ page {
 }
 
 
+.rankContainerBottom {
+    // width: 100%;
+    width: 736rpx;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 128rpx;
+    background-size: 100% 100%;
+    background-image: url("@/static/act/pokemon/blue_bg.png");
+    position: fixed;
+    bottom: 0;
+
+    .goBuy {
+        width: 412rpx;
+        height: 94rpx;
+        background-size: 100% 100%;
+        background-image: url("@/static/act/pokemon/goBuy.png");
+    }
+}
 
 .rank_userName {
     color: #333333;
