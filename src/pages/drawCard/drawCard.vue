@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-24 10:16:28
+ * @LastEditTime: 2023-04-26 18:01:23
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -56,7 +56,7 @@
 				>
           <view v-if="item.index == 0" class="movable-box dangban" ></view>
           <view v-else-if="item.index==cardData.step+1&&animationStart"></view>
-          <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==cardData.step+1&&cardMove" :animationData="{team:item.cartoonCfg.team,position:item.cartoonCfg.posit,rc:item.rc}" @animationOver="animationStart=false">
+          <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==cardData.step+1&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="animationStart=false">
             <view class="movable-box movable-box-gold">
               <view class="movable-pic-bg"></view>
               <image class="movable-pic" :src="item.pic||defultPic"/>
