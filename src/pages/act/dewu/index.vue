@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-27 16:15:16
+ * @LastEditTime: 2023-04-27 17:49:00
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,12 +17,12 @@
 <template>
     <view class="content">
         <transitionNav ref='transitionNav' @onClickRule="onClickRule" :shareData="shareData" :toolsMapCustomNew="navRule"
-            :needIconShadow="false" :needRightTools="['规则', '分享']" title="得物卡牌评级 限时兑换">
+            :needIconShadow="false" :needRightTools="['规则', '分享']" title="得物卡牌评级 限量兑换">
         </transitionNav>
         <view class="topBanner">
             <view class="tipOne">
                 <view>得物卡牌评级</view>
-                <view>限时兑换</view>
+                <view>限量兑换</view>
             </view>
             <view class="tipTwo">
                 <view>原价：33元/张</view>
@@ -176,7 +176,7 @@ if (plus.os.name == "iOS") {
 const Over_time = 1683129599
 const shareData = {
     shareUrl: `share/${app.bussinessApiDomain == "https://server.ssltest.ka-world.com/api/v2.1/" ? "testH5" : "h5"}/#/pages/act/dewu`,
-    title: "得物卡牌评级 限时兑换",
+    title: "得物卡牌评级 限量兑换",
     summary: "原价:33元/张 现价:18卡币/张",
     thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.04.27/template/0/1682583297909b3x5cv87l.jpg"
 }
