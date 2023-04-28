@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-28 15:51:44
+ * @LastEditTime: 2023-04-28 16:06:28
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -117,7 +117,7 @@
                 </view>
                 <view class="shine"></view>
             </view>
-            <view class="tipBlock flexCenter">若同时下单5张卡牌评级，额外附赠1张评级包邮券！</view>
+            <view class="tipBlock flexCenter">若同时下单5张卡牌评级，额外附赠1张得物免费卡牌评级券！</view>
             <view class="tips">（下单后，7个工作日内发放至用户得物账号）</view>
         </view>
         <view class="blockTitle blockTitle1"></view>
