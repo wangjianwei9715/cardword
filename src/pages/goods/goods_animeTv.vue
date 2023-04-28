@@ -276,7 +276,7 @@ page {
         .name {
             font-size: 25rpx;
             font-family: PingFang SC;
-            font-weight: 400;
+            font-weight: bold;
             color: #333333;
             margin-bottom: 20rpx;
         }
