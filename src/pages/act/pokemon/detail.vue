@@ -154,7 +154,7 @@ page {
         bottom: 70rpx;
         display: flex;
         box-sizing: border-box;
-        padding: 0rpx 40rpx;
+        padding: 0rpx 38rpx;
         display: flex;
         align-items: center;
         background-size: 100% 100%;
@@ -163,7 +163,7 @@ page {
         .avatar {
             width: 80rpx;
             height: 80rpx;
-            margin-right: 31rpx;
+            margin-right: 30rpx;
         }
 
         .rankInfo {

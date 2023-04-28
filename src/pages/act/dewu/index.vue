@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-27 17:49:00
+ * @LastEditTime: 2023-04-28 10:50:39
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -128,7 +128,7 @@
         <view class="desc">1.每张得物35pt免费卡牌评级券可免费评级一张卡片，<text
                 style="color:#00feff;font-weight: bold;">仅限35pt及以下卡片可用，暂不支持厚卡及其他规格。</text>有效期至2023.05.07，过期作废。</view>
         <view class="desc">2.用户在卡世界app兑换成功后，通过活动页面专属入口跳转到得物app领取评级券</view>
-        <view class="desc">3.获得评级券的用户可登录得物app，通过 探索-鉴别服务-评级卡服务 按照操作流程进行评级。</view>
+        <view class="desc">3.获得评级券的用户可登录得物app，通过 探索-鉴别服务-评级卡服务或搜索【卡牌评级】 按照操作流程进行评级。</view>
         <view class="imgContainer">
             <image mode="aspectFill" @click="prvImgRule(index)" v-for="(item, index) in picsRule" :key="index" :src="item">
             </image>
@@ -178,7 +178,7 @@ const shareData = {
     shareUrl: `share/${app.bussinessApiDomain == "https://server.ssltest.ka-world.com/api/v2.1/" ? "testH5" : "h5"}/#/pages/act/dewu`,
     title: "得物卡牌评级 限量兑换",
     summary: "原价:33元/张 现价:18卡币/张",
-    thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.04.27/template/0/1682583297909b3x5cv87l.jpg"
+    thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.04.28/luckdraw/0/1682648659261en8jkrxelu.jpg"
 }
 const navRule = {
     "规则": {
