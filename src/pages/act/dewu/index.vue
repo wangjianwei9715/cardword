@@ -180,7 +180,7 @@ const Over_time = 1683129599
 const shareData = {
     shareUrl: `share/${app.bussinessApiDomain == "https://server.ssltest.ka-world.com/api/v2.1/" ? "testH5" : "h5"}/#/pages/act/dewu`,
     title: "得物卡牌评级 限量兑换",
-    summary: "原价:33元/张 现价:18卡币/张",
+    summary: "仅需18卡币，开启评级新体验",
     thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.04.28/luckdraw/0/1682648659261en8jkrxelu.jpg"
 }
 const navRule = {
