@@ -65,6 +65,9 @@
 			app.needPushIdentifier =
 				uni.getStorageSync("needPushIdentifier") == 1 ? false : true;
 			const loginToken = uni.getStorageSync("token");
+			// #ifndef APP-PLUS
+			app.platform.appLuanch(loginToken);
+			// #endif
 			if (loginToken) {
 				app.token = JSON.parse(loginToken);
 			}
@@ -201,9 +204,7 @@
 			// #endif
 			app.protobuf = proto;
 			app.sever = new SocketServer();
-			// #ifndef APP-PLUS
-			app.platform.appLuanch(loginToken);
-			// #endif
+			
 
 			uni.onTabBarMidButtonTap(() => {
 				// 监听tabbar中间发起按钮
