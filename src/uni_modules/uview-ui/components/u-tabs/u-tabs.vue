@@ -38,7 +38,7 @@
 									display: 'flex',
 									position:'relative',
 									justifyContent: 'center', alignItems: 'center',
-									padding:'0 5rpx',
+									padding:'0 8rpx',
 									borderRadius: '3rpx',
 									// paddingLeft:index==0?'20rpx':'5rpx',
 									// paddingRight:index==list.length-1?'20rpx':'5rpx',
@@ -50,7 +50,7 @@
 								<image :src="item.pic_url" mode="aspectFill"
 								 style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: 186rpx;height: 100rpx;z-index: 1;border-radius: 3rpx;"></image>
 								<text v-if="innerCurrent!=index" 
-								style="font-size: 25rpx;font-family: PingFang SC;font-weight: bold;color: #FFFFFF;z-index: 3;
+								style="font-size: 30rpx;font-family: PingFang SC;font-weight: bold;color: #FFFFFF;z-index: 3;
 								">{{ item[keyName]}}</text>
 							</view>
 						</template>
