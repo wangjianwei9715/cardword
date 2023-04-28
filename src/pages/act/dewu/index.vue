@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-28 14:36:37
+ * @LastEditTime: 2023-04-28 15:51:44
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -83,8 +83,8 @@
             </template>
             <template v-else>
                 <!-- 倒计时 -->
-                <view class="couponButton dis flexCenter" v-if="item.start_at > nowTimeStamp">倒计时{{ countDown(item.start_at)
-                }}
+                <view class="couponButton dis flexCenter" v-if="item.start_at > nowTimeStamp">{{ countDown(item.start_at)
+                }}后开抢
                 </view>
                 <!-- 未兑换且已结束 -->
                 <view class="couponButton dis flexCenter" v-if="nowTimeStamp > Over_time && item.buy_num == 0">兑换截止</view>
@@ -129,7 +129,7 @@
         <image src="@/static/act/dewu/dewulc.png" style="width: 665rpx;height: 557rpx;margin-top: 30rpx;"></image>
         <view class="blockTitle blockTitle3"></view>
         <view class="desc">1.每张得物35pt免费卡牌评级券可免费评级一张卡片，<text
-                style="color:#00feff;font-weight: bold;">仅仅限35pt及以下卡片可用,</text>有效期至2023.05.07，过期作废。</view>
+                style="color:#00feff;font-weight: bold;">仅限35pt及以下卡片可用,</text>有效期至2023.05.07，过期作废。</view>
         <view class="desc">2.用户在卡世界app兑换成功后，通过活动页面专属入口跳转到得物app领取评级券</view>
         <view class="desc">3.获得评级券的用户可登录得物app，通过 探索-鉴别服务-评级卡服务或直接在购买页搜索【卡牌评级】 按照操作流程进行评级。</view>
         <view class="imgContainer">
@@ -278,10 +278,10 @@ export default class ClassName extends BaseNode {
             strList.push(`${day}天`)
         }
         if (strList.length != 0 || +hour > 0) {
-            strList.push(`${hour}小时`)
+            strList.push(`${hour}时`)
         }
         if (+minute > 0 || strList.length != 0) {
-            strList.push(`${minute}分钟`)
+            strList.push(`${minute}分`)
         }
         if (+second > 0 || strList.length != 0) {
             strList.push(`${second}秒`)
