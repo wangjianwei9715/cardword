@@ -33,12 +33,13 @@
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
 								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']"
 								:style="{
-									width: '162rpx',
-									height: '87rpx',
+									width: '186rpx',
+									height: '100rpx',
 									display: 'flex',
 									position:'relative',
 									justifyContent: 'center', alignItems: 'center',
 									padding:'0 5rpx',
+									borderRadius: '3rpx',
 									// paddingLeft:index==0?'20rpx':'5rpx',
 									// paddingRight:index==list.length-1?'20rpx':'5rpx',
 									overflow:'hidden'
@@ -47,7 +48,7 @@
 									backgroundImage: `url(${item.pic_url})` -->
 									<view v-if="innerCurrent!=index" style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: inherit;height: inherit;background-color: rgba(0,0,0,.61);z-index: 2;"></view>
 								<image :src="item.pic_url" mode="aspectFill"
-								 style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: 162rpx;height: 87rpx;z-index: 1;"></image>
+								 style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: 186rpx;height: 100rpx;z-index: 1;border-radius: 3rpx;"></image>
 								<text v-if="innerCurrent!=index" 
 								style="font-size: 25rpx;font-family: PingFang SC;font-weight: bold;color: #FFFFFF;z-index: 3;
 								">{{ item[keyName]}}</text>

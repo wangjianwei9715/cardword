@@ -99,7 +99,7 @@ export default class ClassName extends BaseNode {
     seriesId: any = null
     onLoad(query: any) {
         if (query.seriesId) {
-            this.seriesId=+query.seriesId
+            this.seriesId = +query.seriesId
             this.queryParams.st = +query.seriesId
         }
         this.getAnimeTvSeriesType()
@@ -142,9 +142,17 @@ export default class ClassName extends BaseNode {
         }
     }
     onClickTag(item: any) {
-        this.queryParams = Object.assign({}, queryParams)
-        this.queryParams.st = item.id
-        this.seriesType.index = item.index
+        if (this.queryParams.st == item.id) {
+            this.queryParams = Object.assign({}, queryParams)
+            delete this.queryParams.st
+            this.seriesType.index = -1
+        } else {
+            this.queryParams = Object.assign({}, queryParams)
+            this.queryParams.st = item.id
+            this.seriesType.index = item.index
+        }
+        console.log(this.queryParams);
+        
         this.reqNewData()
     }
     onClickGoodsMenu(item: any, index: number) {
@@ -217,7 +225,7 @@ page {
         // margin-right: 10rpx;
         font-size: 28rpx;
         font-family: PingFang SC;
-        font-weight: 400;
+        font-weight: bold;
         color: #959699;
     }
 
@@ -235,7 +243,7 @@ page {
 }
 
 .menuContainer {
-    bottom: 8rpx;
+    bottom: -6rpx;
     position: absolute;
     width: 100%;
     box-sizing: border-box;

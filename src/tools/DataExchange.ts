@@ -36,8 +36,8 @@ export var indexHotList = {
         // url:'/pages/goods/goods_assign_list?type=fresh',
         url:"/pages/goods/goods_animeTv",
         bg:{
-            src:'../../static/index/v3/index_n.png',
-            width:'145rpx',
+            src:'../../static/index/v3/Anime.png',
+            width:'197rpx',
             height:'45rpx'
         },
         icon:{
