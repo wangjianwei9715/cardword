@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-28 10:50:39
+ * @LastEditTime: 2023-04-28 11:50:54
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -43,9 +43,12 @@
                             <view class="name">免费卡牌评级券</view>
                             <view class="time">2023.5.7前可用</view>
                         </view>
-                        <view class="right">
+                        <view class="right" style="position: relative;bottom: 2rpx;">
                             <view class="free">免费</view>
-                            <view class="wmk">无门槛</view>
+                            <view class="wmk">限35pt</view>
+                            <view class="wmk">及以下</view>
+                            <!-- <view class="wmk">及以下可用</view> -->
+                            
                         </view>
                     </view>
                 </view>
@@ -84,7 +87,7 @@
                 }}
                 </view>
                 <!-- 未兑换且已结束 -->
-                <view class="couponButton dis flexCenter" v-if="nowTimeStamp > Over_time && item.buy_num == 0">活动已结束</view>
+                <view class="couponButton dis flexCenter" v-if="nowTimeStamp > Over_time && item.buy_num == 0">兑换截止</view>
                 <!-- 已兑换且已结束 -->
                 <view class="couponButton red flexCenter" @click="onClickGoApp(item)"
                     v-if="nowTimeStamp > Over_time && item.buy_num > 0">去得物APP领取并使用
@@ -126,9 +129,9 @@
         <image src="@/static/act/dewu/dewulc.png" style="width: 665rpx;height: 557rpx;margin-top: 30rpx;"></image>
         <view class="blockTitle blockTitle3"></view>
         <view class="desc">1.每张得物35pt免费卡牌评级券可免费评级一张卡片，<text
-                style="color:#00feff;font-weight: bold;">仅限35pt及以下卡片可用，暂不支持厚卡及其他规格。</text>有效期至2023.05.07，过期作废。</view>
+                style="color:#00feff;font-weight: bold;">仅仅限35pt及以下卡片可用，暂不支持厚卡及其他规格。</text>有效期至2023.05.07，过期作废。</view>
         <view class="desc">2.用户在卡世界app兑换成功后，通过活动页面专属入口跳转到得物app领取评级券</view>
-        <view class="desc">3.获得评级券的用户可登录得物app，通过 探索-鉴别服务-评级卡服务或搜索【卡牌评级】 按照操作流程进行评级。</view>
+        <view class="desc">3.获得评级券的用户可登录得物app，通过 探索-鉴别服务-评级卡服务或直接在购买页搜索【卡牌评级】 按照操作流程进行评级。</view>
         <view class="imgContainer">
             <image mode="aspectFill" @click="prvImgRule(index)" v-for="(item, index) in picsRule" :key="index" :src="item">
             </image>
@@ -192,12 +195,12 @@ const navRule = {
     }
 }
 const one = {
-    name: "35pt免费卡牌评级券x1",
+    name: "得物免费卡牌评级券x1",
     iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Ffast.dewu.com%252Fnezha-plus%252Fdetail%252F63355374167c22c6ca0bb439%253FisAllowVideoAutoPlay%253D1%2526eTId%253D1682318723413-a766b70e-f788-83ee-4850-abbdd0dc4556%2526dFId%253D660e656b907b1b20306fd25c44db9ab0%2526browser_name%253Dsafari%2526m_brand%253Diphone%2526os_version%253D${os_version}%2526phone_os%253DiPhone%2526eFrom%253Dhttps%25253A%25252F%25252Fcdn-fast.dewu.com%25252Fnezha-plus%25252Fdetail%25252F63355374167c22c6ca0bb439`,
     androidLink: "dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F63355374167c22c6ca0bb439%253FisAllowVideoAutoPlay%253D1",
 }
 const two = {
-    name: "35pt免费卡牌评级券x2",
+    name: "得物免费卡牌评级券x2",
     nameTwo: "卡牌评级回寄包邮券x1",
     iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F61df95ff55692a2045b4a616%253FisAllowVideoAutoPlay%253D1`,
     androidLink: "dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F61df95ff55692a2045b4a616%253FisAllowVideoAutoPlay%253D1",
@@ -298,6 +301,7 @@ export default class ClassName extends BaseNode {
         })
     }
     onClickExchange(item: any) {
+        if(this.exchangeLock) return
         app.platform.hasLoginToken(() => {
             const checkMap: any = {
                 "start_at": {
@@ -587,7 +591,7 @@ page {
             }
 
             .wmk {
-                font-size: 19rpx;
+                font-size: 17rpx;
                 font-family: FZLanTingHeiS-R-GB;
                 font-weight: 400;
                 color: #2C2C2C;

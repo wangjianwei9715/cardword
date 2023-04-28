@@ -572,7 +572,7 @@
 						"navigationBarBackgroundColor": "#000000",
 						"navigationBarTitleText": "规则说明",
 						"navigationBarTextStyle": "white",
-						"enablePullDownRefresh": true,
+						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#000",
 						"backgroundColorBottom": "#000",
 						"app-plus": {

@@ -236,9 +236,10 @@
 				if(args.indexOf("=>")!=-1){
 					const pages = getCurrentPages();
 					let [jumpType,url]=args.split("=>")
+					if(!url) return
 					if(pages.length){
 						const currentRoute:any=pages[pages.length-1].route
-						if(url.indexOf(currentRoute)!=-1) jumpType='redirectTo'
+						if(url&&url.indexOf(currentRoute)!=-1) jumpType='redirectTo'
 					}
 					if(url.indexOf('/pages/live/zgPlayBack')!=-1){
 						app.platform.comeFromOpenPlayBack(url)
