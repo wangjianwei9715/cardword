@@ -259,7 +259,8 @@ export default class ClassName extends BaseNode {
       this.payRandomTeamData = JSON.parse(query.payRandomTeam)
     }
     if(query.selectRanId){
-      this.selectRanId = Number(query.selectRanId)
+      this.selectRanId = Number(query.selectRanId);
+      this.goodsData.price = Number(query.randomPrice);
     }
     this.getOnePrice();
     

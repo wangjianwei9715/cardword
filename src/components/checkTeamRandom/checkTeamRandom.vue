@@ -82,7 +82,7 @@
 						剩余随机列表
 						<view v-if="teamrandomGood.state==2 && teamrandomRemainder.totalAward>0" class="teamtion-bottom-drawer-bg">额外奖品</view>
 					</view>
-					<view class="teamtion-bottom-btn right-btn" v-if="teamrandomGood.state==2" @click="onClickGoodBuy">立即购买</view>
+					<view class="teamtion-bottom-btn right-btn" v-if="teamrandomGood.state==2" @click="onClickRandomBuy">立即购买</view>
 					<view class="teamtion-bottom-btn multiple-empty" v-else>{{teamrandomGood.state==0?'暂未开始':randomCountStr+'后开启'}}</view>
 				</view>
 			</view>
@@ -221,8 +221,8 @@
 			this.multiple = false;
 			this.multipleCurrent = [];
 		}
-		onClickGoodBuy(){
-			this.$emit('goodBuy',this.teamRandomData[this.currentIndex].id);
+		onClickRandomBuy(){
+			this.$emit('randomBuy',this.teamRandomData[this.currentIndex]);
 		}
 		getPlan(data:any){
 			let width = Math.floor((Number(data.lockNum)+Number(data.currentNum))/Number(data.totalNum)*100);
