@@ -51,7 +51,7 @@
 					<view class="name">合计：</view><view class="info order-totalprice">￥{{orderData.price}}</view>
 				</view>
 			</view>
-			<view class="buyer-cotnent" v-if="cartList!=''">
+			<view class="buyer-cotnent" v-if="cartList.length && cardList.length==0">
 				<view class="card-header">
 					<view class="card-header-title">已选编号</view>
 				</view>

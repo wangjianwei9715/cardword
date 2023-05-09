@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-26 18:01:23
+ * @LastEditTime: 2023-05-08 17:43:35
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -20,7 +20,6 @@
       </view>
     </view>
     <image class="video-bg" :src="bgImage"/>
-    <l-svga v-if="!sceneData.showDefault&&animationSwitch" class="video-bg" ref="svga"></l-svga>
     
     <view class="draw-box"> 
       <!-- 顶部导航 -->
@@ -35,7 +34,7 @@
         </view>
       </view>
       <!-- 场景选择 -->
-      <scene :popupShow.sync="sceneData.show" :picType="sceneData.picType" @sceneChange="sceneChange"/>
+      <scene :popupShow.sync="sceneData.show" :picType="sceneData.picType" @sceneChange="sceneData.bg=$event"/>
       <!-- 音乐选择 -->
       <!-- <music :popupShow.sync="musicData.show" @musicChange="musicData.name=$event"/> -->
       <!-- 卡片拖动控件 -->
@@ -145,7 +144,7 @@
     /**动画开关 */
     animationSwitch:boolean = true;
     animationStart:boolean = false;
-    sceneData = { show:false, picType:0, bg:'', showDefault:false,svgaOpen:false };
+    sceneData = { show:false, picType:0, bg:''};
     musicData = { show:false, name:'' };
     moveData = { x:0, y:0, x_init:0, y_init:0, };
     changeMove:any = {};
@@ -178,8 +177,9 @@
     }
     public get bgImage() : string {
       const _default = '/static/goods/drawcard/black_bg.jpg';
-      if(!this.sceneData.showDefault && !this.sceneData.svgaOpen){
-        return `/static/drawCard/${this.sceneData.bg}.jpg`
+      if(this.sceneData.bg){
+        
+        return `/static/drawCard/${this.sceneData.bg}.${this.animationSwitch?'gif':'jpg'}`
       }
       return _default
     } 
@@ -242,52 +242,17 @@
       if(item.type=='scene') this.sceneData.show=true ;
       if(item.type=='music') this.musicData.show=true ;
       if(item.type=='ani'){
+        const text = `是否${this.animationSwitch ? '关闭' : '开启'}特效${!this.animationSwitch?'<br/>(<span style="color:red">部分机型容易导致卡顿</span>)':''}`;
         this.switchModel = {
           show:true,
-          text:`是否${this.animationSwitch ? '关闭' : '开启'}特效<br/>(<span style="color:red">部分机型容易导致卡顿</span>)`
+          text
         }
       }
     }
-    // 背景选择
-    sceneChange(event:string){
-      if( event!='' && this.animationSwitch ){
-        uni.showLoading({title: "场景生成中"});
-      }
-      this.sceneData.showDefault = (event=='');
-      this.sceneData.svgaOpen = false
-      if(!this.sceneData.showDefault){
-        this.sceneData.bg=event;
-        if(this.animationSwitch){
-          setTimeout(()=>{
-            this.svgaRender(`/static/drawCard/${event}.svga`);
-          },500)
-        }
-      }
-    }
-		svgaRender(svgaSrc:any) { 
-			this.$refs['svga'].render(async (parser:any, player:any) => {
-				const videoItem = await parser.load(svgaSrc);
-				await player.setVideoItem(videoItem);
-        player.clearsAfterStop = true;
-        player.setContentMode('Fill')
-				player.startAnimation();
-        uni.hideLoading();
-        this.sceneData.svgaOpen = true
-			})
-		}
     // 点击动画按钮的方法 
     onConfirmSwitch(){
       this.animationSwitch = !this.animationSwitch; 
-      if(!this.animationSwitch){
-        this.sceneData.svgaOpen = false;
-      }
       uni.setStorageSync('animationSwitch',this.animationSwitch); 
-      if(this.animationSwitch &&!this.sceneData.showDefault){
-        setTimeout(()=>{
-          uni.showLoading({title: "特效开启中"});
-          this.svgaRender(`/static/drawCard/${this.sceneData.bg}.svga`);
-        },500)
-      }
       this.switchModel.show = false
     }
     /**移动数据初始化 */
