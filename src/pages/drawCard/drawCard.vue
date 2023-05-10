@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-08 17:43:35
+ * @LastEditTime: 2023-05-09 17:52:35
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -58,6 +58,7 @@
           <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==cardData.step+1&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="animationStart=false">
             <view class="movable-box movable-box-gold">
               <view class="movable-pic-bg"></view>
+              <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
               <image class="movable-pic" :src="item.pic||defultPic"/>
               <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
             </view>
@@ -68,6 +69,7 @@
             :class="[(item.index == cardData.step + 1)&&item.color=='gold'?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
           >
             <view class="movable-pic-bg"></view>
+            <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
             <image class="movable-pic" :src="item.pic||defultPic"/>
             <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
           </view>
@@ -500,6 +502,20 @@
     height: 795rpx;
     position: relative;
   }
+  .movable-rc{
+    width: 80rpx;
+    height:80rpx;
+    position: absolute;
+    top:29rpx;
+    right:27rpx;
+    z-index: 2;
+  }
+  .icon-rc-blue{
+    background:url(@/static/drawCard/rc_blue.png) no-repeat center / 100% 100%;
+  }
+  .icon-rc-gold{
+    background:url(@/static/drawCard/rc_gold.png) no-repeat center / 100% 100%;
+  }
   .movable-pic-bg{
     width:508rpx;
     height: 722rpx;
@@ -600,7 +616,7 @@
     margin-left: -262rpx;
   }
   .cardname{
-    width: 524rpx;
+    width: 520rpx;
     height: 152rpx;
     background: rgba(0,0,0,0.36);
     border: 2rpx solid #FFFFFF;
