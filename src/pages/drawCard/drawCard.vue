@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-09 17:52:35
+ * @LastEditTime: 2023-05-10 17:51:51
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -59,7 +59,7 @@
             <view class="movable-box movable-box-gold">
               <view class="movable-pic-bg"></view>
               <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
-              <image class="movable-pic" :src="item.pic||defultPic"/>
+              <image class="movable-pic" :src="item.newPic||defultPic" @error="parseImage()"/>
               <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
             </view>
           </animationCard>
@@ -68,9 +68,10 @@
             class="movable-box"
             :class="[(item.index == cardData.step + 1)&&item.color=='gold'?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
           >
+            <view ></view>
             <view class="movable-pic-bg"></view>
             <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
-            <image class="movable-pic" :src="item.pic||defultPic"/>
+            <image class="movable-pic" :src="item.newPic||defultPic" @error="parseImage()"/>
             <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
           </view>
 				</movable-view>
@@ -189,7 +190,7 @@
       this.initEvent(query)
       const initCode = JSON.parse(query.data);
       initCode.forEach((x:DarwCard.Code,index:number)=>{
-        x.pic = parsePic(decodeURIComponent(x.pic))
+        x['newPic'] = parsePic(decodeURIComponent(x.pic))
         x['index'] = index+1
       });
       this.codeList = [{index:0},...initCode]
@@ -206,6 +207,17 @@
     destroyed(){
       uni.hideLoading();
       clearInterval(this.initData.initInterval)
+    }
+    parseImage(){
+      console.log('图片资源过期，重新生成');
+      
+      this.codeList.forEach((x:DarwCard.Code,index:number)=>{
+        if(index>=this.cardData.step){
+          x.newPic = parsePic(decodeURIComponent(x.pic))
+        }
+      });
+      console.log('codelist=',this.codeList);
+      
     }
     onClickBack(){
       uni.navigateBack({delta:1})
@@ -337,7 +349,8 @@
           this.codeList.push(
             ...data.list.map(({ pic, ...rest }:DarwCard.Code, i:number) => ({
               ...rest,
-              pic: parsePic(decodeURIComponent(pic)),
+              pic,
+              newPic: parsePic(decodeURIComponent(pic)),
               index: index + i
             }))
           );
@@ -526,28 +539,39 @@
     z-index: 1;
   }
   .movable-pic {
-    width:454rpx;
-    height:626rpx;
-    margin: 10rpx 10rpx 0 42rpx;
+    width:484rpx;
+    height:658rpx;
+    margin: 10rpx 10rpx 0 16rpx;
     position: relative;
     z-index: 2;
   }
   .movable-name{
-    width: 100%;
+    width: 484rpx;
     box-sizing: border-box;
-    padding:0 50rpx;
-    height: 90rpx;
+    height: 96rpx;
     text-align: center;
     line-height: 90rpx;
     color:#fff;
     font-size: 41rpx;
     font-family: PingFang SC;
     font-weight: 600;
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    z-index: 4;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
+    bottom:67rpx;
+    left:16rpx;
+    background: url(@/static/drawCard/card_b_silver.png) no-repeat center / 100% 100%;
+  }
+  .movable-box-red .movable-name{
+    background: url(@/static/drawCard/card_b_red.png) no-repeat center / 100% 100%;
+  }
+  .movable-box-blue .movable-name{
+    background: url(@/static/drawCard/card_b_blue.png) no-repeat center / 100% 100%;
+  }
+  .movable-box-gold .movable-name{
+    background: url(@/static/drawCard/card_b_gold.png) no-repeat center / 100% 100%;
   }
   .long-name{
     font-size: 34rpx;

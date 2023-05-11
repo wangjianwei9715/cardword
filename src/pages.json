@@ -1210,6 +1210,46 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
+				},{
+					"path": "locker/index",
+					"style": {
+						"navigationBarTitleText": "寄存柜",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},{
+					"path": "locker/fancy",
+					"style": {
+						"navigationBarTitleText": "精美卡片",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},{
+					"path": "locker/fancy_pay",
+					"style": {
+						"navigationBarTitleText": "确认订单",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},{
+					"path": "locker/fancy_order",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
 				}
 				
 				

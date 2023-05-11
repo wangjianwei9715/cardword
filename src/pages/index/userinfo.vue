@@ -12,7 +12,9 @@
 				</view>
 			</view>
 			<view class="header-center">
-				<muqian-lazyLoad @click="onClickUserInfo" class="user-avatar" :src="infoData.avatar?infoData.avatar:defaultAvatar" mode="aspectFit" :borderRadius="'50%'" />
+				<view class="avatar-border">
+					<muqian-lazyLoad @click="onClickUserInfo" class="user-avatar" :src="infoData.avatar?infoData.avatar:defaultAvatar" mode="aspectFit" :borderRadius="'50%'" />
+				</view>
 				<view class="header-tab-box">
 					<view class="header-tab-index" v-for="item in headerTab" :key="item.id" @click="onClickServiceTab(item)">
 						<view class="header-tab-index-num">{{item.num}}</view>
@@ -118,7 +120,8 @@
 		broadcastActor=app.broadcastActor;
 		headerTab:{[x: string]: any} = {
 			follows:{id:1,name:'关注',num:0,url:'/pages/userinfo/user_follow'},
-			favorite:{id:2,name:'收藏',num:0,url:'/pages/userinfo/user_collect'}
+			favorite:{id:2,name:'收藏',num:0,url:'/pages/userinfo/user_collect'},
+			// cabinetCard:{id:3,name:'寄存柜',num:0,url:'/pages/userinfo/locker/fancy'}
 		};
 		walletTab:{[x: string]: any} = {
 			point:{id:1,name:'卡币',num:0,pic:'../../static/userinfo/v2/icon_tab_gold.png',url:'/pages/mall/mallIndex'},
@@ -142,7 +145,7 @@
 			{id:1,name:'加入群聊',url:'',pic:'../../static/userinfo/v2/icon_b_groupchat.png'},
 			{id:2,name:'商家入驻',url:'/pages/userinfo/merchant_join',pic:'../../static/userinfo/v2/icon_b_merchant.png'},
 			{id:3,name:'关于我们',url:'/pages/userinfo/about_us',pic:'../../static/userinfo/v2/icon_b_us.png'},
-			{id:4,name:'用户协议',url:'/pages/userinfo/user_agreement',pic:'../../static/userinfo/v2/icon_b_agreement.png'}
+			{id:4,name:'用户协议',url:'/pages/userinfo/user_agreement',pic:'../../static/userinfo/v2/icon_b_agreement.png'},
 		]
 		showPaySuccess = false;
 		invoice = {
@@ -244,11 +247,11 @@
 	}
 	.user-header{
 		width: 750rpx;
-		height:354rpx;
-		background:url(../../static/order/top_bg.png) no-repeat center;
+		height:396rpx;
+		background:url(@/static/userinfo/bg.png) no-repeat center;
 		background-size: 100% 100%;
 		box-sizing: border-box;
-		padding-top: 80rpx;
+		padding-top: 112rpx;
 		.header-top{
 			width: 100%;
 			height:42rpx;
@@ -263,8 +266,8 @@
 				display: flex;
 				align-items: center;
 				font-size: 33rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 500;
+				font-family: PingFangSC-Semibold;
+				font-weight: 600;
 				color: #FFFFFF;
 			}
 			.header-icon-right{
@@ -317,11 +320,20 @@
 			box-sizing: border-box;
 			align-items: center;
 			padding:0 30rpx;
+			.avatar-border{
+				width: 146rpx;
+				height:146rpx;
+				border:2px solid #BBBBBB;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-right: 50rpx;
+			}
 			.user-avatar{
 				width: 125rpx;
 				height:125rpx;
 				border-radius: 50%;
-				margin-right: 50rpx;
 			}
 			.header-tab-box{
 				height:80rpx;
