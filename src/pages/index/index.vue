@@ -52,7 +52,7 @@
 			<statusbar />
 			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true" @transition="transitionSwiper">
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-with-animation="true" @scrolltolower="reqNewMainList()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart" >
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewMainList()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart" >
 						<view class="tab-good-content">
 							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index" :class="{justifyStart:index=='top'}">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
@@ -75,7 +75,7 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45"  @scrolltolower="reqNewLiveList()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" @scrolltolower="reqNewLiveList" @scroll="onScrollIndex" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
@@ -165,6 +165,9 @@
 			show:false,
 			data:{}
 		};
+		tabClick = false;
+		scrollFresh = false;
+		scrollTop = 0;
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
@@ -206,6 +209,19 @@
 		}
 		onHide() {
 			uni.offNetworkStatusChange((res) => {})
+		}
+		onTabItemTap(item:any){
+			if(item.index!=0) return;
+			if (this.tabClick) { 
+				this.scrollTop=0;
+				this.refreshStart(()=>{
+					this.scrollTop=1;
+				})
+            }
+            this.tabClick = true
+            setTimeout(() => {
+                this.tabClick = false 
+            }, 500)
 		}
 		private onLoadIndex() {
 			if (app.dataApiDomain == '' && !app.localTest) {
@@ -255,7 +271,6 @@
 			// 获取系列icon
 			app.http.Get('dataApi/advertising/iconSeries/brief',{},(res:any)=>{
 				this.indexTabList.top=res.list;
-				console.log(this.indexTabList);
 			})
 			// 获取是否中卡信息
 			if(app.token.accessToken != ''){
@@ -427,14 +442,22 @@
 		}
 		// 切换内容
 		onScrollIndex(event:any){
+			this.scrollFresh = false
+			if(event.detail.scrollTop<=-45 && !this.refresherIndex){
+				this.scrollFresh = true;
+				return;
+			}
 			this.disableTouch = true
 		}
 		touchmoveScroll(){
+			if(this.scrollFresh){
+				this.refreshStart();
+			}
 			setTimeout(()=>{
-				this.disableTouch=false
+				this.disableTouch=false;
 			},100)
 		}
-		refreshStart(){
+		refreshStart(cb?:Function){
 			this.refresherIndex = true;
 			const currentLive = this.currentIndex==1;
 			let refresh = currentLive?this.reqNewLiveList:this.initIndex
@@ -442,11 +465,12 @@
 				this.liveData.pageIndex = 1;
 				this.liveData.noMoreData = false;
 			}
-
+			this.scrollFresh = false;
 			refresh(() => {
 				setTimeout(() => {
 					this.refresherIndex = false;
 				}, 1000)
+				cb&&cb()
 			})
 			
 		}

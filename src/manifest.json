@@ -2,8 +2,8 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.4.37",
-    "versionCode" : 202,
+    "versionName" : "3.4.38",
+    "versionCode" : 203,
     "transformPx" : false,
     "networkTimeout" : {
         "request" : 5000,

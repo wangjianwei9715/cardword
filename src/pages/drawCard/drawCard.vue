@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-10 17:51:51
+ * @LastEditTime: 2023-05-11 17:01:48
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -274,6 +274,7 @@
       let x = uni.upx2px(611);
       let y = uni.upx2px(880);
       this.moveData = { x:x, y:y, x_init:x, y_init:y }
+      
     }
     picTouchStart(){
       if(this.DrawCardOver){
@@ -539,9 +540,9 @@
     z-index: 1;
   }
   .movable-pic {
-    width:484rpx;
-    height:658rpx;
-    margin: 10rpx 10rpx 0 16rpx;
+    width:496rpx;
+    height:662rpx;
+    margin: 10rpx 0 0 16rpx;
     position: relative;
     z-index: 2;
   }
@@ -635,7 +636,7 @@
   .bottom-box{
     width: 524rpx;
     position: fixed;
-    bottom:160rpx;
+    top:1170rpx;
     left:50%;
     margin-left: -262rpx;
   }
