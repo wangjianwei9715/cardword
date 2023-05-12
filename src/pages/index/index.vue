@@ -75,7 +75,7 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" @scrolltolower="reqNewLiveList" @scroll="onScrollIndex" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewLiveList" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
@@ -168,6 +168,7 @@
 		tabClick = false;
 		scrollFresh = false;
 		scrollTop = 0;
+		scrollTopNum = 0;
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
@@ -212,10 +213,11 @@
 		}
 		onTabItemTap(item:any){
 			if(item.index!=0) return;
-			if (this.tabClick) { 
+			if (this.tabClick && this.scrollTopNum>0) { 
 				this.scrollTop=0;
 				this.refreshStart(()=>{
 					this.scrollTop=1;
+					this.scrollTopNum = 0;
 				})
             }
             this.tabClick = true
@@ -443,9 +445,14 @@
 		// 切换内容
 		onScrollIndex(event:any){
 			this.scrollFresh = false
-			if(event.detail.scrollTop<=-45 && !this.refresherIndex){
-				this.scrollFresh = true;
-				return;
+			if(!this.refresherIndex){
+				if(event.detail.scrollTop<=-45){
+					this.scrollFresh = true;
+					return;
+				}
+				if(event.detail.scrollTop>0 && this.scrollTopNum==0){
+					this.scrollTopNum = event.detail.scrollTop;
+				}
 			}
 			this.disableTouch = true
 		}
