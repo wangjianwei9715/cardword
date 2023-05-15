@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-23 11:53:06
+ * @LastEditTime: 2023-05-04 11:10:43
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -241,8 +241,8 @@
 		<!-- 自选球队随机 -->
 		<checkTeamRandom :teamRandomShow="choiceTRData.show" :teamRandomData="choiceTRData.data"
 			:teamrandomGood="choiceTRData.rData" :teamrandomRemainder="choiceTRData.remainder" :type="goodsData.pintuan_type"
-			@teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamRandomBuy"
-			@goodBuy="onClickRandomBuy" @randomCountOver="getGoodSelectTeamRandom" />
+			@teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamBuy"
+			@randomBuy="onClickTeamRandomBuy" @randomCountOver="getGoodSelectTeamRandom" />
 
 		<!-- 邀请新人活动弹窗 -->
 		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668"
@@ -782,12 +782,13 @@
 		}
 
 		// 选队随机支付
-		onClickTeamRandomBuy(data: any) {
+		onClickTeamBuy(data: any) {
 			const params = `&payRandomTeam=${encodeURIComponent(JSON.stringify(data))}`
 			this.toConfirmorder(params)
 		}
-		onClickRandomBuy(id: number) {
-			const params = `&selectRanId=${id}`
+		// 选队随机 剩余随机支付
+		onClickTeamRandomBuy(data:any) {
+			const params = `&selectRanId=${data.id}&randomPrice=${data.price}`
 			this.toConfirmorder(params)
 		}
 		toConfirmorder(params:string){

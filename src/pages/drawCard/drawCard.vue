@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-26 18:01:23
+ * @LastEditTime: 2023-05-15 13:37:37
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -20,7 +20,6 @@
       </view>
     </view>
     <image class="video-bg" :src="bgImage"/>
-    <l-svga v-if="!sceneData.showDefault&&animationSwitch" class="video-bg" ref="svga"></l-svga>
     
     <view class="draw-box"> 
       <!-- 顶部导航 -->
@@ -35,7 +34,7 @@
         </view>
       </view>
       <!-- 场景选择 -->
-      <scene :popupShow.sync="sceneData.show" :picType="sceneData.picType" @sceneChange="sceneChange"/>
+      <scene :popupShow.sync="sceneData.show" :picType="sceneData.picType" @sceneChange="sceneData.bg=$event"/>
       <!-- 音乐选择 -->
       <!-- <music :popupShow.sync="musicData.show" @musicChange="musicData.name=$event"/> -->
       <!-- 卡片拖动控件 -->
@@ -59,7 +58,8 @@
           <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==cardData.step+1&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="animationStart=false">
             <view class="movable-box movable-box-gold">
               <view class="movable-pic-bg"></view>
-              <image class="movable-pic" :src="item.pic||defultPic"/>
+              <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
+              <image class="movable-pic" :src="item.newPic||defultPic" @error="parseImage()"/>
               <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
             </view>
           </animationCard>
@@ -68,15 +68,17 @@
             class="movable-box"
             :class="[(item.index == cardData.step + 1)&&item.color=='gold'?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
           >
+            <view ></view>
             <view class="movable-pic-bg"></view>
-            <image class="movable-pic" :src="item.pic||defultPic"/>
+            <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
+            <image class="movable-pic" :src="item.newPic||defultPic" @error="parseImage()"/>
             <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
           </view>
 				</movable-view>
 			</movable-area>
       
-      <view class="bottom-box">
-        <view class="cardname">{{this.cardname}}</view>
+      <view class="bottom-box" :style="{'top':`${fitPosition.boxTop}rpx`}">
+        <view class="cardname"><text class="cardname-clamp">{{this.cardname}}</text></view>
         <view class="cardstep">
           <view class="card-step-box" @click="drawerDataSort(),drawerData.show=true">
             {{cardData.step}}/<text class="card-step-num">{{cardData.total}}</text>
@@ -145,7 +147,7 @@
     /**动画开关 */
     animationSwitch:boolean = true;
     animationStart:boolean = false;
-    sceneData = { show:false, picType:0, bg:'', showDefault:false,svgaOpen:false };
+    sceneData = { show:false, picType:0, bg:''};
     musicData = { show:false, name:'' };
     moveData = { x:0, y:0, x_init:0, y_init:0, };
     changeMove:any = {};
@@ -162,6 +164,10 @@
     switchModel = {
       show:false,
       text:''
+    };
+    fitPosition = {
+      height:880,
+      boxTop:1170
     }
     /**是否最后一张卡片 */
     public get DrawCardOver():boolean {
@@ -178,25 +184,15 @@
     }
     public get bgImage() : string {
       const _default = '/static/goods/drawcard/black_bg.jpg';
-      if(!this.sceneData.showDefault && !this.sceneData.svgaOpen){
-        return `/static/drawCard/${this.sceneData.bg}.jpg`
+      if(this.sceneData.bg){
+        
+        return `/static/drawCard/${this.sceneData.bg}.${this.animationSwitch?'gif':'jpg'}`
       }
       return _default
     } 
     onLoad(query:any){
+      this.fitCardPosition();
       this.initEvent(query)
-      const initCode = JSON.parse(query.data);
-      initCode.forEach((x:DarwCard.Code,index:number)=>{
-        x.pic = parsePic(decodeURIComponent(x.pic))
-        x['index'] = index+1
-      });
-      this.codeList = [{index:0},...initCode]
-      this.cardData.total = query.num;
-      this.initData.goodOrder = query.code;
-      this.reqNewData();
-      if(query.picType == 1){
-        this.defultPic = '../../static/goods/drawcard/default_.png';
-      }      
       this.$nextTick(() => {
         this.InitMoveData();
       })
@@ -208,11 +204,41 @@
     onClickBack(){
       uni.navigateBack({delta:1})
     }
+    fitCardPosition(){
+      const { model, windowHeight, windowWidth } = app.platform.systemInfo;
+      if(model.indexOf('iPhone')!==-1 && (windowHeight/windowWidth)<2){
+        this.fitPosition.height = 740;
+        this.fitPosition.boxTop = 1010;
+      }
+    }
+    parseImage(){
+      console.log('图片资源过期，重新生成');
+      this.codeList.forEach((x:DarwCard.Code,index:number)=>{
+        if(index>=this.cardData.step){
+          x.newPic = parsePic(decodeURIComponent(x.pic))
+        }
+      });
+    }
     initEvent(query: any): void { 
-      this.initDrawerTab(query);
       this.sceneData.picType = query.picType || 0;
+      if(query.picType == 1){
+        this.defultPic = '../../static/goods/drawcard/default_.png';
+      } 
+      this.initDrawerTab(query);
       this.initAnimationSwitch();
       this.initStartTime(); 
+      this.initCodeList(query);
+    }
+    initCodeList(query: any){
+      const initList = JSON.parse(query.data);
+      initList.forEach((x:DarwCard.Code,index:number)=>{
+        x['newPic'] = parsePic(decodeURIComponent(x.pic))
+        x['index'] = index+1
+      });
+      this.codeList = [{index:0},...initList]
+      this.cardData.total = query.num;
+      this.initData.goodOrder = query.code;
+      query.num>30 && this.reqNewData();
     }
     // 封装初始化抽屉标签的方法 private 
     initDrawerTab(query: any): void { 
@@ -242,59 +268,25 @@
       if(item.type=='scene') this.sceneData.show=true ;
       if(item.type=='music') this.musicData.show=true ;
       if(item.type=='ani'){
+        const text = `是否${this.animationSwitch ? '关闭' : '开启'}特效${!this.animationSwitch?'<br/>(<span style="color:red">部分机型容易导致卡顿</span>)':''}`;
         this.switchModel = {
           show:true,
-          text:`是否${this.animationSwitch ? '关闭' : '开启'}特效<br/>(<span style="color:red">部分机型容易导致卡顿</span>)`
+          text
         }
       }
     }
-    // 背景选择
-    sceneChange(event:string){
-      if( event!='' && this.animationSwitch ){
-        uni.showLoading({title: "场景生成中"});
-      }
-      this.sceneData.showDefault = (event=='');
-      this.sceneData.svgaOpen = false
-      if(!this.sceneData.showDefault){
-        this.sceneData.bg=event;
-        if(this.animationSwitch){
-          setTimeout(()=>{
-            this.svgaRender(`/static/drawCard/${event}.svga`);
-          },500)
-        }
-      }
-    }
-		svgaRender(svgaSrc:any) { 
-			this.$refs['svga'].render(async (parser:any, player:any) => {
-				const videoItem = await parser.load(svgaSrc);
-				await player.setVideoItem(videoItem);
-        player.clearsAfterStop = true;
-        player.setContentMode('Fill')
-				player.startAnimation();
-        uni.hideLoading();
-        this.sceneData.svgaOpen = true
-			})
-		}
     // 点击动画按钮的方法 
     onConfirmSwitch(){
       this.animationSwitch = !this.animationSwitch; 
-      if(!this.animationSwitch){
-        this.sceneData.svgaOpen = false;
-      }
       uni.setStorageSync('animationSwitch',this.animationSwitch); 
-      if(this.animationSwitch &&!this.sceneData.showDefault){
-        setTimeout(()=>{
-          uni.showLoading({title: "特效开启中"});
-          this.svgaRender(`/static/drawCard/${this.sceneData.bg}.svga`);
-        },500)
-      }
       this.switchModel.show = false
     }
     /**移动数据初始化 */
     InitMoveData(){
       let x = uni.upx2px(611);
-      let y = uni.upx2px(880);
+      let y = uni.upx2px(this.fitPosition.height);
       this.moveData = { x:x, y:y, x_init:x, y_init:y }
+      
     }
     picTouchStart(){
       if(this.DrawCardOver){
@@ -362,7 +354,7 @@
     reqNewData(){
       const { pageIndex, pageSize, noMoreData, goodOrder } = this.initData;
       // 获取更多商品
-      if (noMoreData||this.cardData.total<=30)  return;
+      if (noMoreData) return;
 
       app.http.Get(`me/orderInfo/buyer/${goodOrder}/noShowList`, { pageIndex, pageSize }, (data: any) => {
         if (data.list) {
@@ -370,7 +362,8 @@
           this.codeList.push(
             ...data.list.map(({ pic, ...rest }:DarwCard.Code, i:number) => ({
               ...rest,
-              pic: parsePic(decodeURIComponent(pic)),
+              pic,
+              newPic: parsePic(decodeURIComponent(pic)),
               index: index + i
             }))
           );
@@ -535,6 +528,20 @@
     height: 795rpx;
     position: relative;
   }
+  .movable-rc{
+    width: 80rpx;
+    height:80rpx;
+    position: absolute;
+    top:29rpx;
+    right:27rpx;
+    z-index: 2;
+  }
+  .icon-rc-blue{
+    background:url(@/static/drawCard/rc_blue.png) no-repeat center / 100% 100%;
+  }
+  .icon-rc-gold{
+    background:url(@/static/drawCard/rc_gold.png) no-repeat center / 100% 100%;
+  }
   .movable-pic-bg{
     width:508rpx;
     height: 722rpx;
@@ -545,28 +552,39 @@
     z-index: 1;
   }
   .movable-pic {
-    width:454rpx;
-    height:626rpx;
-    margin: 10rpx 10rpx 0 42rpx;
+    width:496rpx;
+    height:662rpx;
+    margin: 10rpx 0 0 16rpx;
     position: relative;
     z-index: 2;
   }
   .movable-name{
-    width: 100%;
+    width: 484rpx;
     box-sizing: border-box;
-    padding:0 50rpx;
-    height: 90rpx;
+    height: 96rpx;
     text-align: center;
     line-height: 90rpx;
     color:#fff;
     font-size: 41rpx;
     font-family: PingFang SC;
     font-weight: 600;
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    z-index: 4;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
+    bottom:67rpx;
+    left:16rpx;
+    background: url(@/static/drawCard/card_b_silver.png) no-repeat center / 100% 100%;
+  }
+  .movable-box-red .movable-name{
+    background: url(@/static/drawCard/card_b_red.png) no-repeat center / 100% 100%;
+  }
+  .movable-box-blue .movable-name{
+    background: url(@/static/drawCard/card_b_blue.png) no-repeat center / 100% 100%;
+  }
+  .movable-box-gold .movable-name{
+    background: url(@/static/drawCard/card_b_gold.png) no-repeat center / 100% 100%;
   }
   .long-name{
     font-size: 34rpx;
@@ -630,27 +648,32 @@
   .bottom-box{
     width: 524rpx;
     position: fixed;
-    bottom:160rpx;
     left:50%;
     margin-left: -262rpx;
   }
   .cardname{
-    width: 524rpx;
+    width: 520rpx;
     height: 152rpx;
     background: rgba(0,0,0,0.36);
     border: 2rpx solid #FFFFFF;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 26rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
     box-sizing: border-box;
-    color: #FFFFFF;
-    line-height: 38rpx;
     padding:0 28rpx;
     overflow: hidden;
     word-break:break-all
+  }
+  .cardname-clamp{
+    font-size: 26rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 38rpx;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
   .cardstep{
     width: 100%;

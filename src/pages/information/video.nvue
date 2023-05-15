@@ -719,7 +719,6 @@
 		position: fixed;
 		left:265rpx;
 		top:500rpx;
-		transition: all 0.3s;
 		opacity: 0;
 	}
 	.upslide-show{
@@ -745,18 +744,6 @@
 		position: absolute;
 		right:-35rpx;
 		top:193rpx;
-		animation: slide-top 1s linear 2;
-	}
-	@keyframes slide-top {
-		0% {
-			top:193rpx
-		}
-		70% {
-			top:0rpx
-		}
-		100% {
-			top:0rpx
-		}
 	}
 
 </style>
