@@ -1,33 +1,8 @@
 <template>
     <view class="content">
-        <navigationShare navigatetoTitle="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward"/>
-        <view :style="{ height: 88+'rpx', paddingTop: app.statusBarHeight+'px' }"></view>
+        <navigationShare navigatetoTitle="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward" />
+        <view :style="{ height: 88 + 'rpx', paddingTop: app.statusBarHeight + 'px' }"></view>
         <view class="descriptionContainer">
-            <!-- <view class="topTagContainer">
-				<view class="tagItem">
-					<image src="../../../static/act/rankSelect/desCar.png" />
-					<view class="tagTitle positionCenter">参与拼团</view>
-					<view class="tagDes positionCenter">21-22select</view>
-				</view>
-				<view class="tagItem">
-					<image src="../../../static/act/rankSelect/desZs.png" />
-					<view class="tagTitle positionCenter">拼团成功</view>
-					<view class="tagDes positionCenter">获取积分</view>
-				</view>
-				<view class="tagItem">
-					<image src="../../../static/act/rankSelect/desGift.png" />
-					<view class="tagTitle positionCenter">入榜成功</view>
-					<view class="tagDes positionCenter">抽取奖励</view>
-				</view>
-			</view>
-			<view class="desLine"></view> -->
-            <!-- <view>
-                <view class="des_content" v-html="des">
-
-                </view>
-                <view @click="getElementScollTop"
-                    style="color: #02a7f0;text-decoration:underline;font-size: 23rpx;margin-bottom:10rpx;">查看奖励</view>
-            </view> -->
             <view class="des_title">
                 积分榜单：
             </view>
@@ -42,9 +17,11 @@
                 <view class="tips" @click="openRanDom">抽奖网站:<text
                         style="color: #02a7f0;text-decoration:underline;margin-left:6rpx">random.org</text></view>
                 <br>
-                <text style="color:red">*</text>活动截止后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
+                <text style="color:red">*</text>进入积分解冻环节后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
                 <br />
                 <text style="color:red">*</text>榜单每30分钟更新一次<br>
+                <br />
+                <text style="color:red">*</text>考虑到参与手提系列预售的卡迷，积分计算开始时间调整为5月12日
                 <br />
                 <view class="sTitle"><text style="color:red">*</text>积分倍数：</view>
                 普通商品拼团积分*1倍单价，21-22flawless系列（21-22手提）积分*3倍单价
@@ -55,39 +32,55 @@
             </view>
 
             <view class="des_content">
-                活动期间，参与【线上手提卡展】投稿活动，在本次手提系列活动期间，卡迷们可以发布自己和手提系列卡片的相关照片、视频，说说自己和卡片的故事，或者点赞评论他人的优质内容以获取活动奖励，希望老卡迷们早日收到自己心水的卡，新卡迷们能涨涨经验，感受一下手提系列的魅力
+                参与【线上手提卡展】投稿活动，在本次手提系列活动期间，卡迷们可以发布自己和手提系列卡片的相关照片、视频，说说自己和卡片的故事，或者点赞评论他人的优质内容以获取活动奖励，希望老卡迷们早日收到自己心水的卡，新卡迷们能涨涨经验，感受一下手提系列的魅力
             </view>
             <view class="sTitle"><text style="color:red">*</text>投稿要求：</view>
             <view class="des_content">
-                发布手提系列卡片的照片以及文案内容，可以是自己收藏的（提交审核内容时提供卡片和账号id合拍,此活动须完成实名认证）
+                发布手提系列卡片的照片以及文案内容，可以是自己收藏的（提交审核内容时提供卡片和账号id合拍），也可以不是自己收藏的（非本人收藏无需上传），但是要和手提系列相关（此活动须完成实名认证）
             </view>
             <view class="sTitle"><text style="color:red">*</text>投稿须知：</view>
             <view class="des_content">
-                每日6:00-18:00审核通道开启可提交投稿内容审核，其余时间关闭
+                活动期间每日6:00-18:00审核通道开启可提交投稿内容审核，其余时间关闭
+            </view>
+            <view class="des_content">
+                截止日为【6月9日 0:00】，截止日后将冻结点赞量以及停止投稿审核
             </view>
             <view class="sTitle"><text style="color:red">*</text>奖励内容：</view>
             <view class="des_content">
-                1.每日前10名通过审核的用户：
-                奖励XX榜单积分+XXX优惠券
+                1.每日前10名通过审核的用户：奖励50榜单积分+8元无门槛优惠券
             </view>
             <view class="des_content">
-                2.每日点赞他人作品：
-                奖励XX榜单积分/次（限每日前10次）
+                2.点赞随机+榜单积分（10积分/次，每人每日上限5次）
             </view>
             <view class="des_content">
-                3.每日评论他人作品：
-                奖励XX榜单积分/次（限每日前5次）
+                3.评论随机+榜单积分（10积分/次，每人每日上限5次）
             </view>
             <view class="des_content">
-                4.作品累计受到点赞数量超过XXX：
-                奖励XXX榜单积分+XXX无门槛优惠券
+                每日投稿奖励截止至5月29日 0:00前
+            </view>
+            <view class="sTitle" style="margin-top: 26rpx;">
+                <text style="color:red">*</text>活动结束后颁发奖励<br>
             </view>
             <view class="des_content">
-                5.作品累计受到点赞数量超过XXX：
-                奖励XXX榜单积分+XXX无门槛优惠券
+                1.最佳摄影奖:最佳拍摄内容（联合评选）
             </view>
             <view class="des_content">
-                活动结束后颁发奖励
+                2.优质内容奖:综合叙事内容（联合评选）
+            </view>
+            <view class="des_content">
+                3.最高人气奖:累计点赞最高
+            </view>
+            <view class="des_content">
+                4.最佳手提奖:手提系列点赞最高
+            </view>
+            <view class="des_content" style="margin-top: 26rpx;">
+                获奖信息将在平台资讯公告以及魔球社公众号中公布
+            </view>
+            <view class="des_content red" style="margin-top: 26rpx;">
+                注意事项：参与活动需完成实名认证
+            </view>
+            <view class="des_content"  style="margin-top: 26rpx;">
+                发货说明：实物商品平台将在1-30天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系客服安排发货
             </view>
 
         </view>
