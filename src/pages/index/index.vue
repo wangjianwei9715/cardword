@@ -280,27 +280,6 @@
 				})
 			}
 			// 开屏商品广告
-			//得物活动弹窗(===========)
-			const [start,end]=[1682870400,1683129599]//正式
-			// const [start,end]=[1682648744,1683129599]//测试
-			const dewuAdLastOpen=uni.getStorageSync("dewuAdLastOpen")||0
-			if (start<=Math.round(+new Date()/1000)&&Math.round(+new Date()/1000)<=end && new Date(dewuAdLastOpen).toDateString() !== new Date().toDateString()){
-				uni.setStorageSync("dewuAdLastOpen",+new Date())
-				this.openScreenData = { show:true, data:{
-					pic_url:"../../../../../../static/act/dewu/ad.png",
-					style:{
-						width:"596rpx",
-						height:"593rpx",
-						marginTop:"80rpx"
-					},
-					url:"/pages/act/dewu/index",
-					hideThreeDay:true,
-					isAct:true,
-					act:"dewu" 
-				} }
-				return
-			}
-			//===========
 			const openScreenCode = uni.getStorageSync('openScreenCode') || [];
 			app.http.Post('openscreen/ad/get',{already_good_codes:openScreenCode},(res:any)=>{
 				if(res.data){

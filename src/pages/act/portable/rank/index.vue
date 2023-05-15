@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-12 14:56:42
+ * @LastEditTime: 2023-05-15 16:36:54
  * @FilePath: \jichao_app_2\src\pages\act\worldCup\rank.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,7 +21,7 @@
         <view class="rankContainer">
             <view class="rankTopTitle">
                 <view class="title">积分榜单</view>
-                <view class="tips">进行中（3.16-3.17）</view>
+                <view class="tips">{{ parseTips().tips || "" }} {{ parseTips().time || "" }}</view>
                 <view class="line"></view>
                 <navigator url="/pages/act/portable/rank/detail" hover-class="none" class="sp-tips-index sp-tips-index2">
                     <view class="lookDetail">查看积分明细</view>
@@ -99,6 +99,42 @@ export default class ClassName extends BaseNode {
         uni.navigateTo({
             url: `/pages/goods/goods_seriesDetail?seriesId=${this.seriesId}`
         })
+    }
+    parseTips() {
+        const ActivityPeriod: any = [1683820800, 1685289599]//积分获取
+        const ThawPeriod: any = [1685289600, 1686153599]//积分解冻
+        const DrawPeriod: number = 1686153600//榜单结算
+        const LivePeriod: number = 1686294000//直播
+        const nowTimeStamp = Math.round(+new Date() / 1000)
+        if (nowTimeStamp < ActivityPeriod[0]) {
+            return { tips: "暂未开始", time: "05.12-05.28" }
+        };
+        if (nowTimeStamp >= ActivityPeriod[0] && nowTimeStamp <= ActivityPeriod[1]) {
+            return { tips: "积分获取", time: "05.12-05.28" }
+        }
+        if (nowTimeStamp >= ThawPeriod[0] && nowTimeStamp <= ThawPeriod[1]) {
+            return {
+                tips: "积分解冻", time: "05.29-06.07"
+            }
+        };
+        if (nowTimeStamp > ThawPeriod[1] && nowTimeStamp < DrawPeriod) {
+            return {
+                tips: "榜单结算",
+                time: "06.08"
+            }
+        };
+        if (nowTimeStamp > DrawPeriod && nowTimeStamp <= LivePeriod) {
+            return {
+                tips: "直播抽奖",
+                time: "06-09 15:00"
+            }
+        }
+        if (nowTimeStamp >= DrawPeriod) {
+            return {
+                tips: "榜单结算",
+                time: "06.08"
+            }
+        }
     }
     previewImage(item: any) {
         //@ts-ignore
@@ -473,4 +509,5 @@ page {
         color: #FFFFFF;
         letter-spacing: 2rpx;
     }
-}</style>
+}
+</style>
