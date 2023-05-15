@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-11 17:01:48
+ * @LastEditTime: 2023-05-15 13:37:37
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -77,8 +77,8 @@
 				</movable-view>
 			</movable-area>
       
-      <view class="bottom-box">
-        <view class="cardname">{{this.cardname}}</view>
+      <view class="bottom-box" :style="{'top':`${fitPosition.boxTop}rpx`}">
+        <view class="cardname"><text class="cardname-clamp">{{this.cardname}}</text></view>
         <view class="cardstep">
           <view class="card-step-box" @click="drawerDataSort(),drawerData.show=true">
             {{cardData.step}}/<text class="card-step-num">{{cardData.total}}</text>
@@ -164,6 +164,10 @@
     switchModel = {
       show:false,
       text:''
+    };
+    fitPosition = {
+      height:880,
+      boxTop:1170
     }
     /**是否最后一张卡片 */
     public get DrawCardOver():boolean {
@@ -187,19 +191,8 @@
       return _default
     } 
     onLoad(query:any){
+      this.fitCardPosition();
       this.initEvent(query)
-      const initCode = JSON.parse(query.data);
-      initCode.forEach((x:DarwCard.Code,index:number)=>{
-        x['newPic'] = parsePic(decodeURIComponent(x.pic))
-        x['index'] = index+1
-      });
-      this.codeList = [{index:0},...initCode]
-      this.cardData.total = query.num;
-      this.initData.goodOrder = query.code;
-      this.reqNewData();
-      if(query.picType == 1){
-        this.defultPic = '../../static/goods/drawcard/default_.png';
-      }      
       this.$nextTick(() => {
         this.InitMoveData();
       })
@@ -208,25 +201,44 @@
       uni.hideLoading();
       clearInterval(this.initData.initInterval)
     }
+    onClickBack(){
+      uni.navigateBack({delta:1})
+    }
+    fitCardPosition(){
+      const { model, windowHeight, windowWidth } = app.platform.systemInfo;
+      if(model.indexOf('iPhone')!==-1 && (windowHeight/windowWidth)<2){
+        this.fitPosition.height = 740;
+        this.fitPosition.boxTop = 1010;
+      }
+    }
     parseImage(){
       console.log('图片资源过期，重新生成');
-      
       this.codeList.forEach((x:DarwCard.Code,index:number)=>{
         if(index>=this.cardData.step){
           x.newPic = parsePic(decodeURIComponent(x.pic))
         }
       });
-      console.log('codelist=',this.codeList);
-      
-    }
-    onClickBack(){
-      uni.navigateBack({delta:1})
     }
     initEvent(query: any): void { 
-      this.initDrawerTab(query);
       this.sceneData.picType = query.picType || 0;
+      if(query.picType == 1){
+        this.defultPic = '../../static/goods/drawcard/default_.png';
+      } 
+      this.initDrawerTab(query);
       this.initAnimationSwitch();
       this.initStartTime(); 
+      this.initCodeList(query);
+    }
+    initCodeList(query: any){
+      const initList = JSON.parse(query.data);
+      initList.forEach((x:DarwCard.Code,index:number)=>{
+        x['newPic'] = parsePic(decodeURIComponent(x.pic))
+        x['index'] = index+1
+      });
+      this.codeList = [{index:0},...initList]
+      this.cardData.total = query.num;
+      this.initData.goodOrder = query.code;
+      query.num>30 && this.reqNewData();
     }
     // 封装初始化抽屉标签的方法 private 
     initDrawerTab(query: any): void { 
@@ -272,7 +284,7 @@
     /**移动数据初始化 */
     InitMoveData(){
       let x = uni.upx2px(611);
-      let y = uni.upx2px(880);
+      let y = uni.upx2px(this.fitPosition.height);
       this.moveData = { x:x, y:y, x_init:x, y_init:y }
       
     }
@@ -342,7 +354,7 @@
     reqNewData(){
       const { pageIndex, pageSize, noMoreData, goodOrder } = this.initData;
       // 获取更多商品
-      if (noMoreData||this.cardData.total<=30)  return;
+      if (noMoreData) return;
 
       app.http.Get(`me/orderInfo/buyer/${goodOrder}/noShowList`, { pageIndex, pageSize }, (data: any) => {
         if (data.list) {
@@ -636,7 +648,6 @@
   .bottom-box{
     width: 524rpx;
     position: fixed;
-    top:1170rpx;
     left:50%;
     margin-left: -262rpx;
   }
@@ -648,15 +659,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 26rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
     box-sizing: border-box;
-    color: #FFFFFF;
-    line-height: 38rpx;
     padding:0 28rpx;
     overflow: hidden;
     word-break:break-all
+  }
+  .cardname-clamp{
+    font-size: 26rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 38rpx;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
   .cardstep{
     width: 100%;
