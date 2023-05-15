@@ -2,18 +2,15 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-05-15 16:37:41
+ * @LastEditTime: 2023-05-15 16:56:04
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
 <template>
     <view class="content">
-        <transitionNav ref='transitionNav' :needIconShadow="false" :title="tabBar[tabIndex].label.replace('\n', '')">
+        <transitionNav ref='transitionNav' @navBackGroundShowChange="navBackGroundShowChange" :needIconShadow="false" :title="tabBar[tabIndex].label.replace('\n', '')">
             <template slot="slotRight">
-                <!-- <navigator url="/pages/act/imm/rule" hover-class="none" class="sp-tips-index sp-tips-index2">
-                    
-                </navigator> -->
-                <view class="rightTitle" style="color:#fff" @click="onClickRule">规则说明</view>
+                <view class="rightTitle" :style="{color:topHasBack?'#333':'#fff'}" @click="onClickRule">规则说明</view>
             </template>
         </transitionNav>
         <view class="topBanner">
@@ -70,6 +67,7 @@ export default class ClassName extends BaseNode {
     app: any = app
     timeStamp: number = Math.round(+new Date() / 1000)
     stampTimer: any = null
+    topHasBack:boolean=false
     onLoad(query: any) {
         this.stampTimer && clearInterval(this.stampTimer)
         this.stampTimer = setInterval(() => {
@@ -105,6 +103,9 @@ export default class ClassName extends BaseNode {
         //@ts-ignore
         this.$refs[refKey] && this.$refs[refKey].onReachBottomCom && this.$refs[refKey].onReachBottomCom()
     }
+    navBackGroundShowChange(event:any){
+        this.topHasBack=event
+    }
     checkAuditTime(beginTime: string, endTime: string) {
         var nowDate = new Date();
         var beginDate = new Date(nowDate);
@@ -129,7 +130,7 @@ export default class ClassName extends BaseNode {
     onClickRule(){
         uni.navigateTo({
             url:"/pages/act/portable/rule",
-            animationType:"slide-in-bottom"
+            // animationType:"slide-in-bottom"
         })
     }
     tabChange(item: any, index: number) {
