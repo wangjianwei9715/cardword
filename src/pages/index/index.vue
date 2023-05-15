@@ -165,7 +165,6 @@
 			show:false,
 			data:{}
 		};
-		tabClick = false;
 		scrollFresh = false;
 		scrollTop = 0;
 		scrollTopNum = 0;
@@ -213,17 +212,13 @@
 		}
 		onTabItemTap(item:any){
 			if(item.index!=0) return;
-			if (this.tabClick && this.scrollTopNum>0) { 
+			if (this.scrollTopNum>0) { 
 				this.scrollTop=0;
 				this.refreshStart(()=>{
 					this.scrollTop=1;
 					this.scrollTopNum = 0;
 				})
             }
-            this.tabClick = true
-            setTimeout(() => {
-                this.tabClick = false 
-            }, 500)
 		}
 		private onLoadIndex() {
 			if (app.dataApiDomain == '' && !app.localTest) {
@@ -451,7 +446,7 @@
 					this.scrollFresh = true;
 					return;
 				}
-				if(event.detail.scrollTop>0 && this.scrollTopNum==0){
+				if(event.detail.scrollTop>=0){
 					this.scrollTopNum = event.detail.scrollTop;
 				}
 			}
