@@ -48,20 +48,24 @@
 		destroyed(){
 			
 		}
+		close(){
+			this.showSync = false;
+			uni.showTabBar()
+		}
 		onClickGoGoods(){
 			if(this.goodData.isAct){
 				uni.navigateTo({
 					url:this.goodData.url
 				})
-				this.showSync = false;
+				this.close()
 				return
 			}
 			this.openscreenReport(true,false)
-			this.showSync = false;
+			this.close()
 			this.goGoodsDetails(this.goodData.good_code,`&AD_id=${this.goodData.ad_id}`)
 		}
 		onClickClose(){
-			this.showSync = false;
+			this.close()
 			if(!this.goodData.isAct) this.openscreenReport()
 		}
 		openscreenReport(click=false,close=true){
@@ -87,7 +91,7 @@
 			top:0;
 			left:0;
 			z-index:999;
-			background: rgba(0, 0, 0, 0.8);
+			background: rgba(0, 0, 0, 0.5);
 		}
 		&-popup{
 			width: 100%;
@@ -136,18 +140,18 @@
 			color: #FFFFFF;
 		}
 		.icon-pop{
-			width: 28rpx;
-			height: 28rpx;
+			width:40rpx;
+			height: 40rpx;
 			background: url(../../static/userinfo/weixuan@2x.png) no-repeat center;
 			background-size: 100% 100%;
-			margin-right: 24rpx;
+			margin-right: 16rpx;
 		}
 		.icon-pop-choice{
-			width: 28rpx;
-			height: 28rpx;
+			width: 40rpx;
+			height: 40rpx;
 			background: url(../../static/userinfo/pay_gou.png) no-repeat center;
 			background-size: 100% 100%;
-			margin-right: 24rpx;
+			margin-right: 16rpx;
 		}
 	}
 	

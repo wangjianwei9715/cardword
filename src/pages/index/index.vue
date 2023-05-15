@@ -311,7 +311,8 @@
 				if(res.data){
 					const storageCode = app.platform.removeArrRepeat(openScreenCode,res.not_sale_good_codes??[])
 					uni.setStorageSync('openScreenCode',[...storageCode,res.data.good_code]);
-					this.openScreenData = { show:true, data:res.data }
+					this.openScreenData = { show:true, data:res.data };
+					uni.hideTabBar()
 				}
 			})
 		}
