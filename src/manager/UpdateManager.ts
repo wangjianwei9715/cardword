@@ -68,7 +68,7 @@ export default class UpdateManager {
           //强制更新代码，需要ui界面禁止用户触摸等操作
           this.apkNeedUpdate = true;
           this.apkData = data;
-          uni.$emit('apkNeedUpdate');
+          uni.$emit('apkNeedUpdate',widgetInfo.version);
         } else if (data.update && data.wgt_url && data.wgt_url != '') {
           console.log('############downloadFile###########', data.wgt_url);
           uni.showModal({
@@ -77,7 +77,7 @@ export default class UpdateManager {
             showCancel: false,
             success: (result) => {
               if (result.confirm) {
-                uni.$emit('wgtNeedUpdate');
+                uni.$emit('wgtNeedUpdate',widgetInfo.version);
                 let wgtDownload = uni.downloadFile({
                   url: data.wgt_url,
                   success: (downloadResult) => {

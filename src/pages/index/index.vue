@@ -179,10 +179,12 @@
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
-			this.onEventUI("apkNeedUpdate", () => {
+			this.onEventUI("apkNeedUpdate", (version:string) => {
+				this.version = version;
 				this.updateShow();
 			});
-			this.onEventUI("wgtNeedUpdate", () => {
+			this.onEventUI("wgtNeedUpdate", (version:string) => {
+				this.version = version;
 				this.wgtUpdate = true;
 			});
 			this.onEventUI("wgtUpdateNum", (res) => {
@@ -234,13 +236,13 @@
             }
 		}
 		private onLoadIndex() {
-			if (app.dataApiDomain == '' && !app.localTest) {
-				setTimeout(() => {
-					this.onLoadIndex()
-				}, 100);
-				return;
-			}
-			this.version = app.version
+			// if (app.dataApiDomain == '' && !app.localTest) {
+			// 	setTimeout(() => {
+			// 		this.onLoadIndex()
+			// 	}, 100);
+			// 	return;
+			// }
+			
 			this.initIndex()
 		}
 		private initIndex(cb ? : Function) {
