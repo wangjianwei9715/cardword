@@ -2,15 +2,16 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-05-15 16:56:04
+ * @LastEditTime: 2023-05-16 11:11:47
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
 <template>
     <view class="content">
-        <transitionNav ref='transitionNav' @navBackGroundShowChange="navBackGroundShowChange" :needIconShadow="false" :title="tabBar[tabIndex].label.replace('\n', '')">
+        <transitionNav ref='transitionNav' @navBackGroundShowChange="navBackGroundShowChange" :needIconShadow="false"
+            :title="tabBar[tabIndex].label.replace('\n', '')">
             <template slot="slotRight">
-                <view class="rightTitle" :style="{color:topHasBack?'#333':'#fff'}" @click="onClickRule">规则说明</view>
+                <view class="rightTitle" :style="{ color: topHasBack ? '#333' : '#fff' }" @click="onClickRule">规则说明</view>
             </template>
         </transitionNav>
         <view class="topBanner">
@@ -23,8 +24,8 @@
             </view>
         </view>
         <view class="componentsContainer">
-            <rank v-show="tabIndex==0" :seriesId="seriesId" :roomId="roomId" ref="rank"/>
-            <exhibition v-show="tabIndex==1" :seriesId="seriesId" :roomId="roomId" ref="exhibition"/>
+            <rank v-show="tabIndex == 0" :seriesId="seriesId" :roomId="roomId" ref="rank" />
+            <exhibition v-show="tabIndex == 1" :seriesId="seriesId" :roomId="roomId" ref="exhibition" />
             <!-- <component :is="tabBar[tabIndex].ref" :ref="tabBar[tabIndex].ref" :seriesId="seriesId" :roomId="roomId">
             </component> -->
             <view class="bottomSafeArea"></view>
@@ -67,7 +68,7 @@ export default class ClassName extends BaseNode {
     app: any = app
     timeStamp: number = Math.round(+new Date() / 1000)
     stampTimer: any = null
-    topHasBack:boolean=false
+    topHasBack: boolean = false
     onLoad(query: any) {
         this.stampTimer && clearInterval(this.stampTimer)
         this.stampTimer = setInterval(() => {
@@ -81,6 +82,9 @@ export default class ClassName extends BaseNode {
         this.stampTimer && clearInterval(this.stampTimer)
     }
     onShow() {
+        // #ifdef APP-PLUS
+        plus.navigator.setStatusBarStyle("light");
+        // #endif
     }
     onPageScroll(data: any) {
         //@ts-ignore
@@ -103,8 +107,8 @@ export default class ClassName extends BaseNode {
         //@ts-ignore
         this.$refs[refKey] && this.$refs[refKey].onReachBottomCom && this.$refs[refKey].onReachBottomCom()
     }
-    navBackGroundShowChange(event:any){
-        this.topHasBack=event
+    navBackGroundShowChange(event: any) {
+        this.topHasBack = event
     }
     checkAuditTime(beginTime: string, endTime: string) {
         var nowDate = new Date();
@@ -127,9 +131,9 @@ export default class ClassName extends BaseNode {
             this.$refs.exhibition.canPush = this.checkAuditTime("06:00", "18:00")
         }
     }
-    onClickRule(){
+    onClickRule() {
         uni.navigateTo({
-            url:"/pages/act/portable/rule",
+            url: "/pages/act/portable/rule",
             // animationType:"slide-in-bottom"
         })
     }
@@ -137,7 +141,7 @@ export default class ClassName extends BaseNode {
         if (index == this.tabIndex) return
         this.tabIndex = index
         if (index == 1) {
-            this.$nextTick(()=>{
+            this.$nextTick(() => {
                 this.checkTime()
             })
         }
