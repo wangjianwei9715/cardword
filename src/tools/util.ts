@@ -78,6 +78,25 @@ export function getUrlDataFN(urlStr: string) {
 	// 返回对象
 	return urlObj
 }
+export function getDirection(startX:number, startY:number, endX:number, endY:number) {
+	const X = endX - startX
+	const Y = endY - startY
+	let direction = ''
+	if (Math.abs(X) > Math.abs(Y)) {
+		if (X > 0) {
+			direction = 'right'
+		} else {
+			direction = 'left'
+		}
+	} else {
+		if (Y > 0) {
+			direction = 'down'
+		} else {
+			direction = 'up'
+		}
+	}
+	return direction
+}
 export function isDuringDate(beginDateStr: string, endDateStr: string) {
 	var curDate = new Date(),
 		beginDate = new Date(beginDateStr),

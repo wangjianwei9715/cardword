@@ -50,7 +50,7 @@
 		</view>
 		<view class="tab-center">
 			<statusbar />
-			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true" @transition="transitionSwiper">
+			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch||currentIndex==1" duration="200" @change="animationfinish" @animationfinish="scrollY=true" @transition="transitionSwiper">
 				<swiper-item>
 					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewMainList()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart" >
 						<view class="tab-good-content">
@@ -75,7 +75,7 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewLiveList" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewLiveList" @scroll="onScrollIndex"  @touchstart="liveTouchStart" @touchmove="liveTouchMove" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
 						<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
@@ -100,7 +100,7 @@
 		indexTabList,
 		indexHotList,
 	} from "@/tools/DataExchange"
-	import { isDuringDate } from "@/tools/util"
+	import { isDuringDate,getDirection } from "@/tools/util"
 	import { Md5 } from "ts-md5";
 	const TOP_TABS = [{name:'推荐'},{name:'拆卡'}];
 	const lineBg = '../../static/index/v3/tab_line.png'
@@ -111,6 +111,7 @@
 		noticeList = [''];
 		statusBarHeight = app.statusBarHeight
 		isDuringDate = isDuringDate;
+		getDirection = getDirection;
 		indexTabList: { [x: string]: any } = {
 			top:[],
 			bottom:indexTabList
@@ -168,6 +169,13 @@
 		scrollFresh = false;
 		scrollTop = 0;
 		scrollTopNum = 0;
+		liveTouch = {
+			startX: 0, // 手指起始坐标
+			startY: 0,
+			endX: 0, // 手指结束坐标
+			endY: 0,
+		}
+		showIndex = false;
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
@@ -193,6 +201,9 @@
 			//#endif
 		}
 		onShow() {
+			setTimeout(()=>{
+				this.showIndex = true;
+			},500)
 			// #ifdef APP-PLUS
 			this.networkStatusChange()
 			// #endif
@@ -208,10 +219,12 @@
 			}
 		}
 		onHide() {
+			this.showIndex = false;
 			uni.offNetworkStatusChange((res) => {})
 		}
 		onTabItemTap(item:any){
-			if(item.index!=0) return;
+			if(item.index!=0 || !this.showIndex) return;
+			
 			if (this.scrollTopNum>0) { 
 				this.scrollTop=0;
 				this.refreshStart(()=>{
@@ -432,12 +445,38 @@
 			this.disableTouch = true
 		}
 		touchmoveScroll(){
+			if(this.currentIndex==1){
+				const { startX, startY, endX, endY } = this.liveTouch;
+				const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+				if(distance<100 || endX==0 || endY==0) return;
+				
+				const direction = this.getDirection(startX, startY, endX, endY)
+				const { liveTabCheck } = this.liveData;
+				if (direction === 'left' && liveTabCheck<3) {
+					this.onClickListTabs(liveTabCheck+1)
+				} else if (direction === 'right') {
+					if(liveTabCheck>1){
+						this.onClickListTabs(liveTabCheck-1)
+					}else{
+						this.currentIndex = 0;
+						console.log(this.currentIndex);
+					}
+				}
+			}
 			if(this.scrollFresh){
 				this.refreshStart();
 			}
 			setTimeout(()=>{
 				this.disableTouch=false;
 			},100)
+		}
+		liveTouchStart(e:any){
+			this.liveTouch.startX = e.touches[0].clientX;
+			this.liveTouch.startY = e.touches[0].clientY
+		}
+		liveTouchMove(e:any){
+			this.liveTouch.endX = e.touches[0].clientX;
+			this.liveTouch.endY = e.touches[0].clientY
 		}
 		refreshStart(cb?:Function){
 			this.refresherIndex = true;
@@ -486,7 +525,6 @@
 			}
 			this.reqNewLiveList()
 		}
-		
 	}
 </script>
 
