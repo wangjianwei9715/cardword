@@ -23,7 +23,7 @@
                     @click="onClickTag(item)">{{item}}</view>
             </view>
         </scroll-view>
-        <goodslist :class="{noOther:!cardList.length&&choices.length>2,hasOther:cardList.length || choices.length>2}"
+        <goodslist :class="{noOther:!cardList.length&&!cardList.length,hasOther:cardList.length || choices.length>2}"
             :goodsList="goodsList" @send="onClickJumpDetails" />
         <empty v-if="goodsList && !goodsList.length"></empty>
     </view>
