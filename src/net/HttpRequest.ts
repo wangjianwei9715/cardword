@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-30 09:57:37
+ * @LastEditTime: 2023-05-18 17:23:55
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -13,7 +13,7 @@ import { data } from 'browserslist';
 import { Md5 } from 'ts-md5';
 import {
 	objKeySort,
-	getUrlDataFN
+	getUrlData
 } from "../tools/util";
 import { headersData, opSignData, opSignOtherData } from "@/net/DataHttp"
 const debounceData = ['dataApi/point/exchange/goodlist', 'dataApi/selectRank/award/list']
@@ -141,6 +141,7 @@ export default class HttpRequest {
 		});
 		// 添加请求拦截器
 		this.axiosInstance.interceptors.request.use((config) => {
+			
 			// 在发送请求之前做些什么
 			const { opKey, bussinessApiDomain, dataApiDomain, funcApiDomain, version, update_url, localTest } = app; 
 			const ksjUserId = uni.getStorageSync('ksjUserId');
@@ -153,7 +154,6 @@ export default class HttpRequest {
 			app.opKey = opKey || uni.getStorageSync('app_opk'); 
 			let url = config.url + '';
 			config.baseURL = bussinessApiDomain; 
-
 			//验证码、刷新、登录 首页接口不需要token
 			if (!excludeUrls.some(str => url.indexOf(str) !== -1)) { 
 				if (!config.headers['token'] && app.token.accessToken !== '') { 
@@ -180,7 +180,6 @@ export default class HttpRequest {
 					} 
 				} 
 			}
-
 			switch (true) { 
 				case url.indexOf("app/update") !== -1: 
 					config.baseURL = update_url;
@@ -204,7 +203,7 @@ export default class HttpRequest {
 			}
 			
 			if (url.indexOf("/relative") != -1) {
-				const data = getUrlDataFN(url)
+				const data = getUrlData(url);
 				config.headers['ts'] = data.ts;
 				config.headers['s'] = data.s;
 			}
