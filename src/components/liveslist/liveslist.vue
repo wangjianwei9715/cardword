@@ -6,7 +6,7 @@
 				</muqian-lazyLoad>
 				<view class="livelist-top-statebox" v-if="item.state==2">
 					<image class="livelist-top-statebox-icon" src="@/static/live/v3/live_ing.gif"/>
-					<view class="livelist-top-statebox-bg">{{item.viewNum||0}}人在看</view>
+					<view class="livelist-top-statebox-bg">{{item.onlineNum||0}}人在看</view>
 				</view>
 				<view class="livelist-top-statebox" v-else>
 					<view class="livelist-top-statebox-state" :class="{'hf-bg':item.state==3}">{{item.state==3?'回放':'预告'}}</view>
