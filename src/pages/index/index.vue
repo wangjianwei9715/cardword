@@ -50,9 +50,9 @@
 		</view>
 		<view class="tab-center">
 			<statusbar />
-			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch||currentIndex==1" duration="200" @change="animationfinish" @animationfinish="scrollY=true" @transition="transitionSwiper">
+			<swiper class="index-swiper" :style="{ width: '100%', height: '100vh',overflow:'hidden' }" :current="currentIndex" :disable-touch="disableTouch" duration="200" @change="animationfinish" @animationfinish="scrollY=true" @transition="transitionSwiper">
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewMainList()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart" >
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewMainList()" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart()" >
 						<view class="tab-good-content">
 							<view class="tab-type" v-for="(item,index) in indexTabList" :key="index" :class="{justifyStart:index=='top'}">
 								<view class="tab-index" v-for="(items,indexs) in item" :key="indexs" @click="onClickJumpUrl(items)">
@@ -75,7 +75,7 @@
 					</scroll-view>
 				</swiper-item>
 				<swiper-item>
-					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewLiveList" @scroll="onScrollIndex"  @touchstart="liveTouchStart" @touchmove="liveTouchMove" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart">
+					<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: '100vh' }" :scroll-y="scrollY" :refresher-threshold="45" :scroll-top="scrollTop" :scroll-with-animation="true" @scrolltolower="reqNewLiveList" @scroll="onScrollIndex" @touchend="touchmoveScroll" :refresher-enabled="true" :refresher-triggered="refresherIndex" @refresherrefresh="refreshStart()">
 						<tabc class="live-tabc" :tabc="tabData" :tabsCheck="liveData.liveTabCheck" @tabsClick="onClickListTabs"></tabc>
 						<view class="live-content">
 							<liveslist :liveList="liveList" />
@@ -236,20 +236,20 @@
             }
 		}
 		private onLoadIndex() {
-			// if (app.dataApiDomain == '' && !app.localTest) {
-			// 	setTimeout(() => {
-			// 		this.onLoadIndex()
-			// 	}, 100);
-			// 	return;
-			// }
-			
+			if (app.dataApiDomain == '' && !app.localTest) {
+				setTimeout(() => {
+					this.onLoadIndex()
+				}, 100);
+				return;
+			}
 			this.initIndex()
 		}
 		private initIndex(cb ? : Function) {
 			this.listParams.fetchFrom = 1;
 			this.listParams.noMoreData = false;
 			this.initLiveData()
-			this.getHome(()=> this.reqNewMainList(() => cb && cb()))
+			this.reqNewMainList()
+			this.getHome(()=> cb && cb())
 		}
 		private initLiveData(q=''){
 			this.liveData.pageIndex = 1;
@@ -447,24 +447,24 @@
 			this.disableTouch = true
 		}
 		touchmoveScroll(){
-			if(this.currentIndex==1){
-				const { startX, startY, endX, endY } = this.liveTouch;
-				const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-				if(distance<100 || endX==0 || endY==0) return;
+			// if(this.currentIndex==1){
+			// 	const { startX, startY, endX, endY } = this.liveTouch;
+			// 	const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+			// 	if(distance<100 || endX==0 || endY==0) return;
 				
-				const direction = this.getDirection(startX, startY, endX, endY)
-				const { liveTabCheck } = this.liveData;
-				if (direction === 'left' && liveTabCheck<3) {
-					this.onClickListTabs(liveTabCheck+1)
-				} else if (direction === 'right') {
-					if(liveTabCheck>1){
-						this.onClickListTabs(liveTabCheck-1)
-					}else{
-						this.currentIndex = 0;
-						console.log(this.currentIndex);
-					}
-				}
-			}
+			// 	const direction = this.getDirection(startX, startY, endX, endY)
+			// 	const { liveTabCheck } = this.liveData;
+			// 	if (direction === 'left' && liveTabCheck<3) {
+			// 		this.onClickListTabs(liveTabCheck+1)
+			// 	} else if (direction === 'right') {
+			// 		if(liveTabCheck>1){
+			// 			this.onClickListTabs(liveTabCheck-1)
+			// 		}else{
+			// 			this.currentIndex = 0;
+			// 			console.log(this.currentIndex);
+			// 		}
+			// 	}
+			// }
 			if(this.scrollFresh){
 				this.refreshStart();
 			}
@@ -481,21 +481,22 @@
 			this.liveTouch.endY = e.touches[0].clientY
 		}
 		refreshStart(cb?:Function){
-			this.refresherIndex = true;
-			const currentLive = this.currentIndex==1;
-			let refresh = currentLive?this.reqNewLiveList:this.initIndex
-			if(currentLive){
-				this.liveData.pageIndex = 1;
-				this.liveData.noMoreData = false;
-			}
-			this.scrollFresh = false;
-			refresh(() => {
-				setTimeout(() => {
-					this.refresherIndex = false;
-				}, 1000)
-				cb&&cb()
-			})
-			
+			uni.$u.throttle(()=>{
+				this.refresherIndex = true;
+				const currentLive = this.currentIndex==1;
+				let refresh = currentLive?this.reqNewLiveList:this.initIndex
+				if(currentLive){
+					this.liveData.pageIndex = 1;
+					this.liveData.noMoreData = false;
+				}
+				this.scrollFresh = false;
+				refresh(() => {
+					setTimeout(() => {
+						this.refresherIndex = false;
+					}, 1000)
+					cb&&cb()
+				})
+			},1000)
 		}
 		transitionSwiper(event:any){
 			this.scrollY = false;
