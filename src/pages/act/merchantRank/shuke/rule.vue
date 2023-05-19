@@ -27,6 +27,7 @@
             </view>
             <view class="des_content">
                 活动期间内满3000积分即可兑换剃须刀1台
+                <image src="@/static/act/merchantRank/shuke/txd.png"></image>
                 <br />
                 共计30台（先到先到每人限1次）
                 <br />
