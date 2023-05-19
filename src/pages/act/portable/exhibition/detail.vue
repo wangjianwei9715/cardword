@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-03-24 13:35:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-04-12 15:02:00
+ * @LastEditTime: 2023-05-16 15:04:43
  * @FilePath: \card-world\src\pages\act\portable\exhibition\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -149,7 +149,7 @@
             </view>
         </template>
         <view class="safeBottom"></view>
-        <u-overlay :zIndex="1000" :opacity="0.4" :show="focus" @click="inputHide"></u-overlay>
+        <u-overlay :zIndex="1000" :opacity="0.4" :show="focus&&keyBoardHeigh>0" @click="inputHide"></u-overlay>
         <view class="trueFixInput" :class="{ pointerAuto: keyBoardHeigh > 0 }"
             :style="{ bottom: 0, transform: `translateY(-${keyBoardHeigh}px)`, opacity: keyBoardHeigh > 0 ? 1 : 0 }">
             <textarea confirm-type="send" class="input" type="text" :placeholder="inputPlaceholder" :adjust-position="false"

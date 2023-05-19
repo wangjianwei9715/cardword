@@ -85,7 +85,7 @@
       </swiper>
       <empty v-if="niceTimeList&&!niceTimeList.length" style="position: relative;bottom:240rpx" />
     </view>
-    <view class="tagsContainer">
+    <view class="tagsContainer" id="tagsContainer">
       <view class="tag" :class="{selectTag:index==tag.index}" v-for="(item,index) in tag.list" @click="onTagClick(item,index)">
         {{item.label}}
         <text>{{goodsMsg[item.valueKey]}}</text>
@@ -256,8 +256,15 @@
                 this.reqCouponBrief()
                 this.reqMerchantData()
             } 
-            this.reqGoodsData()
             this.reqNiceTime()
+            if (query.tp && +query.tp>0){
+              const index=this.tag.list.findIndex((item:any)=>{
+                return item.value==+query.tp
+              })
+              if (index>=0) this.onTagClick(this.tag.list[index],index,true)
+            }else{
+              this.reqGoodsData()
+            }
             this.onEventUI('refreshMerchantInfo', (res: any) => {
                 // console.log("refreshMerchantInfo", res);
                 this.merchantInfo = res
@@ -292,7 +299,22 @@
             });
         }
         goBack() {
-            uni.navigateBack({ delta: 1 })
+            app.platform.pageBack(1)
+        }
+        scrollToTp() {
+          this.$nextTick(()=>{
+            uni
+              .createSelectorQuery()
+              .select("#tagsContainer")
+              .boundingClientRect((res) => {
+                  if (res && res.top) {
+                      uni.pageScrollTo({
+                          duration: 150,
+                          scrollTop: res.top - app.statusBarHeight-30
+                      })
+                  }
+              }).exec();
+          })
         }
         onClickShare() {
             this.shareData.shareUrl += `?alias=${this.alias}`
@@ -312,12 +334,12 @@
             
             this.pageJump(item.url)
         }
-        onTagClick(item: any, index: number) {
-            if (this.tag.index === index) return
+        onTagClick(item: any, index: number,scroll?:boolean) {
+            if (this.tag.index === index&&!scroll) return
             this.tag.index = index
             this.goodsQuery.pageIndex = 1
             this.goodsQuery.tp = item.value
-            this.reqGoodsData()
+            this.reqGoodsData(scroll?this.scrollToTp:null)
         }
         pageJump(url: string, type?: any) {
             if (url == '/pages/merchant/couponManage') {
@@ -414,7 +436,11 @@
                 this.goodsTotalPage = res.totalPage
                 this.goodsMsg = res
                 delete this.goodsMsg.list
-                cb && cb()
+                if (cb){
+                  setTimeout(()=>{
+                    cb && cb()
+                  },200)
+                }
             })
         }
 
