@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-05-19 15:33:03
+ * @LastEditTime: 2023-05-19 16:15:59
  * @FilePath: \jichao_app_2\src\pages\act\worldCup\rank.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -173,24 +173,12 @@ export default class ClassName extends BaseNode {
                 tips: "积分解冻", time: "05.27-06.02"
             }
         };
-        if (nowTimeStamp > ThawPeriod[1] && nowTimeStamp < DrawPeriod) {
+        if (nowTimeStamp > ThawPeriod[1]) {
             return {
                 tips: "榜单结算",
                 time: "06.03"
             }
         };
-        // if (nowTimeStamp > DrawPeriod && nowTimeStamp <= LivePeriod) {
-        //     return {
-        //         tips: "直播抽奖",
-        //         time: "06-09 15:00"
-        //     }
-        // }
-        // if (nowTimeStamp >= DrawPeriod) {
-        //     return {
-        //         tips: "榜单结算",
-        //         time: "06.08"
-        //     }
-        // }
     }
     onClickRule() {
         uni.navigateTo({
