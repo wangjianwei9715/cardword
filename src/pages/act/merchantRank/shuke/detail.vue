@@ -7,7 +7,7 @@
         </view> -->
         <view class="pageBg">
             <image src="@/static/act/merchantRank/shuke/bg.png" />
-            <image style="transform: rotateX(180deg);" src="@/static/act/merchantRank/shuke/bg.png" />
+            <!-- <image style="transform: rotateX(180deg);" src="@/static/act/merchantRank/shuke/bg.png" /> -->
         </view>
         <view class="nav">
             <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px' }"></view>
@@ -21,23 +21,20 @@
                 </view>
             </view>
         </view>
-        <view class="t1"></view>
-        <view class="pointCotainer" style="position: relative;">
-            <view class="t2" v-for="item in num || 1"></view>
-            <!-- <view class="t2"></view> -->
-            <view class="pointP">
-                <view class="myRank">
-                    <muqian-lazyLoad class="avatar" borderRadius="50%"
-                        :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
-                    <view class="rankInfo">
-                        <view class="name">{{ myRank.userName }}</view>
-                        <view class="rank">当前排名:{{ myRank.rank }}</view>
-                    </view>
-                    <view class="rankPoint">
-                        <view style="margin-bottom: 18rpx;color: #E74B82;">已获取:{{ myRank.get_score }}</view>
-                        <view style="color: #A0BED8;">冻结积分:{{ myRank.lock_score }}</view>
-                    </view>
+        <view class="pointContainer">
+            <view class="myRank">
+                <muqian-lazyLoad class="avatar" borderRadius="50%"
+                    :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
+                <view class="rankInfo">
+                    <view class="name">{{ myRank.userName }}</view>
+                    <view class="rank">当前排名:{{ myRank.rank }}</view>
                 </view>
+                <view class="rankPoint">
+                    <view style="margin-bottom: 18rpx;color: #E74B82;">已获取:{{ myRank.get_score }}</view>
+                    <view style="color: #A0BED8;">冻结积分:{{ myRank.lock_score }}</view>
+                </view>
+            </view>
+            <scroll-view class="scv"  :scroll-y="true" @scrolltolower="reachBottom">
                 <view class="pointCard" v-for="(item, index) in list" :key="index" @click="toGoods(item)">
                     <view class="pointCard_top">
                         <view>{{ item.merchantName }}</view>
@@ -62,10 +59,9 @@
                     </view>
                 </view>
                 <view class="noMore" v-if="isFetchEnd">暂无更多活动订单</view>
-            </view>
+            </scroll-view>
         </view>
-        <view class="t3"></view>
-        
+        <view class="bottomSafeArea"></view>
     </view>
 </template>
 
@@ -90,7 +86,7 @@ export default class ClassName extends BaseNode {
     defaultAvatar: any = app.defaultAvatar
     isFetchEnd: boolean = true
     myRank: any = {}
-    num:number=1
+    num: number = 1
     onLoad(query: any) {
         this.reqNewData()
         this.reqMyRank()
@@ -109,6 +105,12 @@ export default class ClassName extends BaseNode {
         this.reqNewData(() => {
             uni.stopPullDownRefresh()
         })
+    }
+    reachBottom(){
+        console.log(6666);
+        if (this.isFetchEnd) return
+        this.queryParams.fetchFrom += this.queryParams.fetchSize
+        this.reqNewData()
     }
     filterText(item: any) {
         const score: any = item.score
@@ -136,7 +138,6 @@ export default class ClassName extends BaseNode {
             const list = res.list || []
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
-            this.num = Math.ceil(this.list.length / 6)
             cb && cb()
         })
     }
@@ -169,29 +170,14 @@ page {
     }
 }
 
-.t1 {
-    width: 710rpx;
-    height: 110rpx;
-    position: relative;
-    background-size: 100% 100%;
-    margin-top: 31rpx;
-    background-image: url("@/static/act/merchantRank/shuke/t1t1.png");
-}
 
-.t2 {
-    width: 710rpx;
-    height: 1406rpx;
+.pointContainer {
+    margin-top: 30rpx;
     position: relative;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/shuke/t2t2.png");
-}
-
-.t3 {
     width: 710rpx;
-    height: 100rpx;
-    position: relative;
+    height: 1616rpx;
     background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/shuke/t3t3.png");
+    background-image: url("@/static/act/merchantRank/shuke/detailBack.png");
 }
 
 .topBanner {
@@ -258,6 +244,7 @@ page {
 .myRank {
     width: 650rpx;
     height: 160rpx;
+
     background: rgba(255, 255, 255, 0.66);
     border-radius: 3rpx;
     box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(231, 75, 130, .66);
@@ -268,8 +255,8 @@ page {
     padding: 0rpx 30rpx;
     display: flex;
     align-items: center;
-    margin-bottom: 50rpx;
-    margin-top: 10rpx;
+    // margin-bottom: 50rpx;
+    margin-top: 123rpx;
 
     .avatar {
         width: 94rpx;
@@ -314,6 +301,14 @@ page {
     }
 }
 
+.scv {
+    width: 650rpx;
+    max-height: 1240rpx;
+    margin: 0 auto;
+    margin-top: 51rpx;
+    // background-color: red;
+}
+
 .bg {
     width: 750rpx;
 }
@@ -324,6 +319,7 @@ page {
     font-weight: 400;
     color: #fff;
     margin: 50rpx auto;
+    text-align: center;
 }
 
 .pointCard {
