@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.4.40",
+    "versionName" : "3.4.42",
     "versionCode" : 203,
     "transformPx" : false,
     "networkTimeout" : {
@@ -31,7 +31,6 @@
             "Payment" : {},
             "FaceID" : {},
             "OAuth" : {},
-            "Maps" : {},
             "Geolocation" : {},
             "Share" : {},
             "Push" : {},
