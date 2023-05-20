@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-05-16 14:58:07
+ * @LastEditTime: 2023-05-20 18:26:12
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -126,10 +126,10 @@ export default class ClassName extends BaseNode {
     }
     checkTime() {
         //@ts-ignore
-        if (this.$refs.exhibition && this.$refs.exhibition.canPush != undefined) {
-            //@ts-ignore
-            this.$refs.exhibition.canPush = this.checkAuditTime("06:00", "18:00")
-        }
+        // if (this.$refs.exhibition && this.$refs.exhibition.canPush != undefined) {
+        //     //@ts-ignore
+        //     this.$refs.exhibition.canPush = this.checkAuditTime("06:00", "18:00")
+        // }
     }
     onClickRule() {
         uni.navigateTo({
