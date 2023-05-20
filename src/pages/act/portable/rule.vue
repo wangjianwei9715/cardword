@@ -43,7 +43,7 @@
                 活动期间每日6:00-18:00审核通道开启可提交投稿内容审核，其余时间关闭
             </view>
             <view class="des_content">
-                截止日为【6月9日 0:00】，截止日后将冻结点赞量以及停止投稿审核
+                截止日为【7月1日 0:00】，截止日后将冻结点赞量以及停止投稿审核
             </view>
             <view class="sTitle"><text style="color:red">*</text>奖励内容：</view>
             <view class="des_content">
