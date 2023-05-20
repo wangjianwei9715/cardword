@@ -56,7 +56,7 @@
                 3.评论随机+榜单积分（10积分/次，每人每日上限5次）
             </view>
             <view class="des_content">
-                每日投稿奖励截止至5月29日 0:00前
+                每日投稿奖励截止至6月19日 0:00前
             </view>
             <view class="sTitle" style="margin-top: 26rpx;">
                 <text style="color:red">*</text>活动结束后颁发奖励<br>
