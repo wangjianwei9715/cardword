@@ -292,7 +292,7 @@ page {
     padding: 28rpx 40rpx 30rpx 30rpx;
     // overflow-y: auto;
     width: 709rpx;
-    max-height: 275rpx;
+    // max-height: 275rpx;
     overflow: hidden;
     height: auto;
     background: #4A5B5D;
@@ -314,7 +314,8 @@ page {
 
         // white-space: pre-wrap;
         view {
-            font-size: 21rpx;
+            font-size: 24rpx;
+            line-height: 38rpx;
             font-family: PingFang SC;
             font-weight: 400;
             color: #FFFFFF;
@@ -351,7 +352,7 @@ page {
     }
 
     .desc_hide {
-        height: 120rpx;
+        // height: 120rpx;
         overflow: hidden;
         text-overflow: ellipsis;
         line-clamp: 4;
@@ -374,7 +375,7 @@ page {
 
 .introduction_show {
     transition: max-height 0.3s;
-    max-height: 1075rpx;
+    max-height: 1275rpx;
 }
 
 .tagContainer {
