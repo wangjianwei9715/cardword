@@ -63,7 +63,7 @@
 									<view class="tabtext u-line-1">{{items.name}}</view>
 								</view>
 							</view>
-							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2023-04-25', '2023-05-07')">
+							<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2023-05-20', '2023-07-02')">
 								<image class="capsule-pic1" :src="decodeURIComponent(capsule.pic)" mode="aspectFill"/>
 							</navigator>
 							<!-- 拼团进度 最新上架 新手体验 拆卡围观 -->
@@ -117,9 +117,9 @@
 			bottom:indexTabList
 		};
 		capsule = {
-			pic:'../../static/index/v3/dewu.png',
+			pic:'../../static/index/v3/1.png',
 			// url:'/pages/act/imm/index?seriesId=20&roomId='
-			url:'/pages/act/dewu/index'
+			url:'/pages/act/portable/container?seriesId=29&roomId='
 		}
 		hotList: { [x: string]: any } = indexHotList;
 		topAddList: any = [];
