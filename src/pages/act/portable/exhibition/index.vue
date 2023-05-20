@@ -12,6 +12,7 @@
                 <view class="sj">
                     随着21-22Flawless系列的发售，不知不觉Flawless已经陪伴卡迷们走过了10个年头，21-22赛季也迎来了NBA的75周年，相信去年的Flawless勒布朗·詹姆斯的Triple
                     Logoman可以说也是吊足了卡迷们的胃口。</view>
+               <template v-if="!hideDesc">
                 <view class="sj">
                     那么你是在什么时候入坑的球星卡呢，我们不妨回过头来想想，自己当初是如何喜欢上收集球星卡的呢，那时候的玩家们，恨不得攒一周的零花钱，去到卡店，买一包球星卡，拆开之前还要祈祷能够抽出自己喜欢的球星，到现在，我们在卡世界里参与拼团，隔着屏幕和不认识的卡迷们一起期待能拆出各自想要的卡;那么对你来说有没有一些卡，它可以是很稀有、价值很高，或者是一套你最喜欢球星的卡，又或者是一张很普通但对你来说很有意义的卡。
                 </view>
@@ -27,7 +28,7 @@
                     <view class="title" style="font-size: 34rpx;margin: 0 14rpx;">X</view>
                     <image class="logo" src="@/static/act/portable/logo1_90x.png"></image>
                 </view>
-                <view class="center">本活动由卡世界官方与魔球社联合企划</view>
+                <view class="center">本活动由卡世界官方与魔球社联合企划</view></template>
             </view>
             <view class="lookAll" @click="hideDesc = !hideDesc">{{ hideDesc ? "查看全部" : "收起" }}</view>
         </view>
@@ -352,7 +353,6 @@ page {
     }
 
     .desc_hide {
-        // height: 120rpx;
         overflow: hidden;
         text-overflow: ellipsis;
         line-clamp: 4;
@@ -386,6 +386,7 @@ page {
     position: relative;
     width: 750rpx;
     justify-content: center;
+
     .tag {
         width: 18%;
         text-align: center;
