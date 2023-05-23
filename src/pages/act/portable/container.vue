@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-11 13:44:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-05-20 18:26:12
+ * @LastEditTime: 2023-05-23 17:55:56
  * @FilePath: \card-world\src\pages\act\worldCup\container.vue
  * @Description: 
 -->
@@ -75,6 +75,7 @@ export default class ClassName extends BaseNode {
             this.timeStamp = Math.round(+new Date() / 1000)
             this.checkTime()
         }, 1000)
+        if (query.index&&typeof +query.index=="number") this.tabIndex=+query.index
         if (query.seriesId) this.seriesId = +query.seriesId
         if (query.roomId) this.roomId = +query.roomId
     }
