@@ -556,23 +556,16 @@ export default class ClassName extends BaseNode {
       if(res.price<=0){
         this.redirectToOrder(goodOrderCode)
       }else{
-		    //data.channel=='alipay' (before)
-        if (data.channel == "alipay_h5" || data.channel == "alipay") {
-          if(res.appPayRequest){
-            app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest),()=>{
-              this.redirectToOrder(goodOrderCode)
-            });
-          }else if (res.alipay.orderInfo != "") {
-            app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,goodOrderCode,()=>{
-              this.redirectToOrder(goodOrderCode)
-            });
-          }
+        if (['alipay','alipay_h5'].includes(data.channel)) {
+          app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,()=>{
+            this.redirectToOrder(goodOrderCode)
+          });
         } else {
           if (res.wechat) {
             if(res.appPayRequest){
               app.payment.paymentWxQmfSdk(JSON.stringify(res.appPayRequest));
             }else{
-              app.payment.paymentWxpay(res.pay_type, res.wechat, () => {});
+              app.payment.paymentWxpay(res.wechat, () => {});
             }
             this.redirectToOrder(goodOrderCode)
           }
