@@ -194,7 +194,7 @@
 			}
 			app.http.Post(`me/cabinet/card/topay/order/${this.orderCode}`,params,(res:any)=>{
 				if (res.alipay.orderInfo != "") {
-					app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,res.orderCode);
+					app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo);
 					this.showPayMent = false;
 				}
 			})

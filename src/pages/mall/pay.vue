@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:19:36
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-04 11:32:44
- * @FilePath: \card-world\src\pages\mall\pay.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-05-23 12:19:19
+ * @FilePath: \jichao_app_2\src\pages\mall\pay.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -181,7 +181,7 @@ export default class ClassName extends BaseNode {
                 })
             } else {
                 //订单创建成功跳转支付宝支付
-                app.payment.paymentAlipay(res.sdk, res.alipay.orderInfo, res.orderCode, () => {
+                app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo,() => {
                     this.toOrderDetail()
                 });
             }

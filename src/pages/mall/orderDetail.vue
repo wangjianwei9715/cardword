@@ -237,7 +237,7 @@ export default class ClassName extends BaseNode {
         uni.hideLoading();
         this.showPayMent = false;
         //订单创建成功跳转支付宝支付
-        app.payment.paymentAlipay(res.sdk, res.alipay.orderInfo, res.orderCode);
+        app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo);
         this.reqNewData();
       }
     );

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-09 11:07:08
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-10 15:49:18
+ * @LastEditTime: 2023-05-23 13:37:50
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -113,7 +113,7 @@
 			app.http.Post(`me/cabinet/card/topay/${this.fancyData.id}`,params,(res:any)=>{
 				const order = res.orderCode;
 				if (res.alipay.orderInfo != "") {
-					app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,order,()=>{
+					app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo,()=>{
 						this.redirectToOrder(order)
 					});
 				}

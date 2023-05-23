@@ -301,21 +301,16 @@
 			}
 			app.http.Post("order/topay/" + this.payItem.code, params, (res: any) => {
 				//data.channel=='alipay' (before)
-				if (data.channel == "alipay_h5" || data.channel == "alipay") {
-					if (res.appPayRequest) {
-						app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
-						this.onClickCancelPay();
-					} else if (res.alipay.orderInfo != "") {
-						this.clickToPay = true;
-						uni.hideLoading();
-						app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo);
-						this.onClickCancelPay();
-					}
+				if (['alipay','alipay_h5'].includes(data.channel)) {
+					this.clickToPay = true;
+					uni.hideLoading();
+					app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo);
+					this.onClickCancelPay();
 				} else {
 					if (res.wechat) {
 						this.clickToPay = true;
 						uni.hideLoading();
-						app.payment.paymentWxpay(res.pay_type, res.wechat);
+						app.payment.paymentWxpay(res.wechat);
 						this.onClickCancelPay();
 					}
 				}
