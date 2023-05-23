@@ -22,7 +22,7 @@ export default class PayManager {
 	}
 	paymentAlipay(h5CashierAddress:string,orderInfo:string,cb?:Function){
 		
-		if(h5CashierAddress!=''){
+		if(h5CashierAddress){
 			if(cb) cb()
 			plus.runtime.openURL(h5CashierAddress)
 		}else{

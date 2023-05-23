@@ -498,20 +498,15 @@ import { Md5 } from "ts-md5";
 			}
 			app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
 				if(['alipay','alipay_h5'].includes(data.channel)){
-					if(res.appPayRequest){
-						app.payment.paymentAlipayQmfSdk(JSON.stringify(res.appPayRequest));
-						this.onClickCancelPay()
-					}else if(res.alipay.orderInfo!=''){
-						this.clickToPay = true;
-						uni.hideLoading()
-						this.onClickCancelPay()
-						app.payment.paymentAlipay(res.pay_type,res.alipay.orderInfo)
-					}
+					this.clickToPay = true;
+					uni.hideLoading()
+					this.onClickCancelPay()
+					app.payment.paymentAlipay(res.h5CashierAddress,res.alipay.orderInfo)
 				}else{
 					if(res.wechat){
 						this.clickToPay = true;
 						uni.hideLoading()
-						app.payment.paymentWxpay(res.pay_type,res.wechat)
+						app.payment.paymentWxpay(res.wechat)
 						this.onClickCancelPay()
 					}
 				}

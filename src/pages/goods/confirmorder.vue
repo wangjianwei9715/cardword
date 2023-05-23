@@ -557,7 +557,7 @@ export default class ClassName extends BaseNode {
         this.redirectToOrder(goodOrderCode)
       }else{
         if (['alipay','alipay_h5'].includes(data.channel)) {
-          app.payment.paymentAlipay(res.pay_type, res.alipay.orderInfo,()=>{
+          app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo,()=>{
             this.redirectToOrder(goodOrderCode)
           });
         } else {
