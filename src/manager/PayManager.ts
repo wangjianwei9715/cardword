@@ -1,3 +1,12 @@
+/*
+ * @FilePath: \jichao_app_2\src\manager\PayManager.ts
+ * @Author: wjw
+ * @Date: 2023-05-23 15:29:20
+ * @LastEditors: 
+ * @LastEditTime: 2023-05-24 10:42:19
+ * Copyright: 2023 .
+ * @Descripttion: 
+ */
 import { app } from "@/app";
 import permision from "@/js_sdk/wa-permission/permission"
 import { CBC } from "crypto-ts/src/mode/CBC";
@@ -21,7 +30,6 @@ export default class PayManager {
 		this.payQmfAndroid.payWx(payRequest,(res:any)=>{});
 	}
 	paymentAlipay(h5CashierAddress:string,orderInfo:string,cb?:Function){
-		
 		if(h5CashierAddress){
 			if(cb) cb()
 			plus.runtime.openURL(h5CashierAddress)
@@ -39,8 +47,6 @@ export default class PayManager {
 			});
 			if(cb) cb()
 		}
-		// return;
-		// orderInfo.indexOf('https://')!=-1
 	}
 	paymentWxpay(orderInfo:any,cb?:Function){
 		let order = {
