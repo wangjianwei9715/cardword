@@ -42,6 +42,7 @@
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { dateFormatYMS } from '@/tools/util'
+	import { app } from "@/app";
 	const everyData = [
 		{ name: 'tp', val: 1, errMsg: '不同类型优惠券不能叠加使用' },
 		{ name: 'overlay', val:true, errMsg: '此优惠券不能叠加使用' }
@@ -53,6 +54,7 @@
 		@Prop({default:[]})
 		couponList!:any
 
+		isPullDown = app.platform.isPullDown;
 		dateFormatYMS = dateFormatYMS;
 		showPopup = false;
 		checkCouponList:any = [];
@@ -66,13 +68,15 @@
 		onShowChanged(val: any, oldVal: any){
 			if(val){
 				setTimeout(()=>{
-					this.showPopup = true
+					this.showPopup = true;
+					this.isPullDown(false)
 				},100)
 			}else{
 				this.checkCouponList= JSON.parse(JSON.stringify(this.confirmList))
 				this.checkTp = this.confirmTp
 				this.checkPrice = this.confirmPrice
-				this.showPopup = false
+				this.showPopup = false;
+				this.isPullDown(true)
 			}
 			
 		}

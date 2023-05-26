@@ -689,6 +689,43 @@
 							"bounce": "none"
 						}
 					}
+				},
+				{
+					"path": "collectSpCard/index",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "收集特卡",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "collectSpCard/rule",
+					"style": {
+						"navigationBarTitleText": "活动规则",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "collectSpCard/record",
+					"style": {
+						"navigationBarTitleText": "奖品记录",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
 				}
 				
 			]
