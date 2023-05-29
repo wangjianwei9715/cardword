@@ -3,9 +3,7 @@
 		<view class="header-banner">
 			<view class="content" :style="'height:'+statusBarHeight+'px'"></view>
 			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
+				<view class="icon-back" @click="onClickBack">&#xe582;</view>
 				<view class="header-title">{{title}}</view>
 				<view class="header-icon" v-if="custom">
 					<slot name="right"></slot>
@@ -86,21 +84,25 @@
 			justify-content: center;
 		}
 		.icon-back{
-			width: 80rpx;
-			height: 88rpx;
 			position: absolute;
-			left: 0;
-			top: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			left: 18rpx;
+			top: 50%;
+			margin-top: -25rpx;
+			width: 50rpx;
+			height: 50rpx;
+			background-color: rgb(255, 255, 255);
+			font-family: uniicons;
+			font-size: 46rpx;
+			font-weight: normal;
+			font-style: normal;
+			color: #000;
 		}
 		.header-title{
 			height:88rpx;
 			line-height: 80rpx;
-			font-size: 32rpx;
+			font-size: 34rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 600;
+			font-weight: 400;
 			color: #000000;
 		}
 		.icon-share{
