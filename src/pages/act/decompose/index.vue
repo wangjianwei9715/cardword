@@ -1,21 +1,16 @@
 <template>
 	<view class="content">
-		<view class="header">
-			<statusbar style="background:#fff" />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">卡片分解</view>
+		<navigationBar title="卡片分解" :custom="true">
+			<template slot="right">
 				<view class="icon-help" @click="onClickShowRule"></view>
-			</view>
-		    <view class="header-tab">
-		        <tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
-		    </view>
-		</view>
-		
+			</template>
+			<template slot="bottom">
+				<view class="header-tab">
+					<tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
+				</view>
+			</template>
+		</navigationBar>
 		<view class="box-content">
-			<statusbar/>
 			<view class="box-index" v-for="(item,index) in goodsList" :key="index" @click="onClickCardList(item)">
 				
 				<view class="index-header">商品编号:{{item.goodCode}}</view>

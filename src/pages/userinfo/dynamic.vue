@@ -1,17 +1,11 @@
 <template>
 	<view>
-		<view class="header-banner">
-			<statusbar />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">消息</view>
+		<navigationBar title="消息" :custom="true">
+			<template slot="right">
 				<view v-if="bucketName == 'trade'" class="header-likes" @click="onClickReadAll">一键已读</view>
-			</view>
-		</view>
+			</template>
+		</navigationBar>
 		<view class="dynamic-content">
-			<statusbar />
 			<view class="dynamic-item" @click="onClickDynamic(index,item.pagePath,item.msgId)"
 				v-for="(item,index) in dynamicData" :key="item.msgId">
 				<view class="left">
@@ -173,7 +167,7 @@
 	.dynamic-content {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 110rpx 0 0 0;
+		padding: 10rpx 0 0 0;
 		position: relative;
 		z-index: 2;
 	}
@@ -319,14 +313,13 @@
 	}
 
 	.header-likes {
+		width: 200rpx;
 		height: 94rpx;
 		line-height: 104rpx;
 		font-size: 22rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #ababbb;
-		position: absolute;
-		right: 20rpx;
-		top: 0;
+		text-align: right;
 	}
 </style>

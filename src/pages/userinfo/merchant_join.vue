@@ -1,19 +1,10 @@
 <template>
   <view class="content">
-    <view class="header-banner">
-      <statusbar />
-      <view class="tab-header">
-        <view class="icon-back" @click="onClickBack(true)"></view>
-        <view class="header-title">商家入驻</view>
-        <view class="header-icon">
-          <view class="icon-share" @click="onClickKef"></view>
-        </view>
-      </view>
-    </view>
-
-    <view style="padding-top:88rpx">
-      <statusbar />
-    </view>
+    <navigationBar title="商家入驻" :custom="true">
+			<template slot="right">
+        <view class="icon-share" @click="onClickKef"></view>
+			</template>
+		</navigationBar>
     <template v-if='(merchantHelloState == 0)'>
       <view class="title" style="margin-top: 30rpx;">入驻流程</view>
       <view class="step-content">

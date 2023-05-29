@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-29 11:23:25
+ * @LastEditTime: 2023-05-29 11:56:39
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -19,7 +19,7 @@
 <template>
 	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
 		<navigationBar title="商品详情" :custom="true">
-			<template>
+			<template slot="right">
 				<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
 				<view class="icon-share" @click="onClickShare"></view>
 			</template>

@@ -1,14 +1,5 @@
 <template>
 	<view class="content">
-		<!-- <view class="header-banner">
-			<statusbar/>
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack"></view>
-				<view class="header-title">在线客服</view>
-				<view class="goods-show" @click="operationShow = true" ><text class="icon-ui-dian">&#xe537;</text></view>
-			</view>
-			
-		</view> -->
 		
 		<scroll-view class="msg-content" @refresherrefresh="onScrollPull" scroll-y refresher-enabled refresher-background="#F4F3F2"
 			:style="{'height':`${scrollHeight}px`}" :scroll-top="scrollTop" :refresher-triggered="triggered" @click="onClickMessage">

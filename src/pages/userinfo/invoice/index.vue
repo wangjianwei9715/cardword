@@ -1,18 +1,11 @@
 <template>
 	<view class="content">
-		<view class="header">
-			<statusbar style="background:#fff" />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">开票管理</view>
+		<navigationBar title="开票管理" :custom="true">
+			<template slot="right">
 				<view class="icon-kf" @click="onClickHeliService"></view>
-			</view>
-		</view>
-		
+			</template>
+		</navigationBar>
 		<view class="box-content">
-			<statusbar/>
 			<view class="invoice-box" v-for="(item,index) in invoiceList" :key="index">
 				<view class="box-top">
 					<view class="top-left">
@@ -161,11 +154,7 @@
 	.box-content{
         width: 100%;
         position: relative;
-        z-index:10;
         box-sizing: border-box;
-        padding:110rpx 20rpx calc(120rpx ) 20rpx;
-		padding:110rpx 20rpx calc(120rpx + constant(safe-area-inset-bottom)) 20rpx;
-		padding:110rpx 20rpx calc(120rpx + env(safe-area-inset-bottom)) 20rpx;
     }
 	.box-index{
 		width: 100%;

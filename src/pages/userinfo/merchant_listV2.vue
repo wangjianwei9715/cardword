@@ -1,19 +1,10 @@
 <template>
     <view class="content">
-        <view class="header-banner">
-            <statusbar />
-            <view class="tab-header">
-                <view class="icon-back" @click="onClickBack"></view>
-                <view class="header-title">商家列表</view>
-                <view class="header-icon" @click="onClickSearch">
-                    <view class="icon-share"></view>
-                </view>
-            </view>
-        </view>
-
-        <view style="padding-top:88rpx">
-            <statusbar />
-        </view>
+        <navigationBar title="商家列表" :custom="true">
+			<template slot="right">
+                <view class="icon-share" @click="onClickSearch"></view>
+			</template>
+		</navigationBar>
         <view class="topBanner" @click.stop="toMerchantJoin"></view>
         <view style="background-color: #fff;padding-top: 40rpx;">
             <template v-if="onLiveList&&onLiveList.length">

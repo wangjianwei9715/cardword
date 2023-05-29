@@ -8,11 +8,12 @@
 				</view>
 				<view class="header-title">{{title}}</view>
 				<view class="header-icon" v-if="custom">
-					<slot></slot>
+					<slot name="right"></slot>
 				</view>
 				<view class="icon-share" v-else-if='shareData' @click="onClickShare"></view>
 				<view class='right-text' v-else @click="onClickRightText">{{rightText}}</view>
 			</view>
+			<slot name="bottom"></slot>
 		</view>
 		<view :style="{ height: 88 + 'rpx', paddingTop: statusBarHeight + 'px' }"></view>
 		<share v-if='shareData' :operationShow="operationShow" :shareData="shareData"  @operacancel="onClickShareCancel"></share>
@@ -71,7 +72,7 @@
 		left:0;
 		top:0;
 		box-sizing: border-box ;
-		z-index: 10;
+		z-index: 20;
 		border-bottom: 1px solid #F4F3F2;
 		.tab-header{
 			width: 100%;
@@ -96,8 +97,8 @@
 		}
 		.header-title{
 			height:88rpx;
-			line-height: 88rpx;
-			font-size: 34rpx;
+			line-height: 80rpx;
+			font-size: 32rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 600;
 			color: #000000;

@@ -1,22 +1,16 @@
 <template>
   <view class="content">
-    <view class="header-banner">
-      <statusbar />
-      <view class="tab-header">
-        <view class="icon-back" @click="onClickBack">
-          <image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-        </view>
-        <view class="header-title">资讯</view>
-        <view class="header-icon">
-          <view class="icon-search" @click.prevent="onClickGoSearch"></view>
-          <view class="icon-collect" @click.prevent="onClickMyCollect"></view>
-				</view>
-      </view>
-      <u-tabs :list="tabData.list" :current="tabData.current" :itemStyle="tabData.itemStyle" :activeStyle="tabData.activeStyle" :inactiveStyle="tabData.inactiveStyle" :lineWidth="0" @click="onClickListTabs"></u-tabs>
-    </view>
+    <navigationBar title="资讯" :custom="true">
+			<template slot="right">
+				<view class="icon-search" @click.prevent="onClickGoSearch"></view>
+        <view class="icon-collect" @click.prevent="onClickMyCollect"></view>
+			</template>
+      <template slot="bottom">
+        <u-tabs :list="tabData.list" :current="tabData.current" :itemStyle="tabData.itemStyle" :activeStyle="tabData.activeStyle" :inactiveStyle="tabData.inactiveStyle" :lineWidth="0" @click="onClickListTabs"></u-tabs>
+      </template>
+		</navigationBar>
 
     <view class="live-content">
-      <statusbar />
       <swiper v-show="tabData.current==0 && AD_List!=''" class="swiper" autoplay="true" circular="true" indicator-active-color="#ffffff">
 				<swiper-item v-for="(item,index) in AD_List" :key="index">
 					<view class="ad-box">
@@ -234,7 +228,7 @@ page {
 .live-content {
   width: 100%;
   box-sizing: border-box;
-  padding: 160rpx 0 20rpx 0;
+  padding: 100rpx 0 20rpx 0;
   position: relative;
   z-index: 2;
 }
