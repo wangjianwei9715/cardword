@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-29 13:32:43
+ * @LastEditTime: 2023-05-29 13:41:45
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -858,7 +858,25 @@
 
 		// background:$content-bg
 	}
+	.icon-collect {
+		width: 44rpx;
+		height: 41rpx;
+		background: url(../../static/goods/v2/icon_collect.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-right: 40rpx;
+	}
 
+	.icon-favored {
+		background: url(../../static/goods/v2/icon_collect_.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+
+	.icon-share {
+		width: 38rpx;
+		height: 37rpx;
+		background: url(../../static/goods/v2/icon_share.png) no-repeat center;
+		background-size: 100% 100%;
+	}
 	.pic-content {
 		width: 750rpx;
 		height: 578rpx;

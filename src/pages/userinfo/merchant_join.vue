@@ -676,4 +676,9 @@ export default class ClassName extends BaseNode {
   line-height: 60rpx;
   margin-top: 47rpx;
 }
+.icon-share {
+    width: 46rpx;
+    height:46rpx;
+    background: url(@/static/userinfo/v2/kef.png) no-repeat center / 100% 100%;
+}
 </style>

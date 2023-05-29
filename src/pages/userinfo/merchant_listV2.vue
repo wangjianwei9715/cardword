@@ -599,5 +599,9 @@ page {
 .merchantItem:first-child {
     margin-left: 25rpx;
 }
-
+.icon-share {
+    width: 46rpx;
+    height:46rpx;
+    background: url(@/static/userinfo/v2/icon_search.png) no-repeat center / 100% 100%;
+}
 </style>
