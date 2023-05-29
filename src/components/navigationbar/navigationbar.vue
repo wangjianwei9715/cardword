@@ -1,16 +1,23 @@
 <template>
-	<view style="width: 100%;">
-		<view class="status-bar" :style="'height:'+statusBarHeight+'px'"/>
-		<view v-if="isShow" class="self-nav" :style="'top:'+statusBarHeight+'px'">
-			<button v-if="isShowBack" @click="onClickNavigateBack" class="btn-back" :style="'color:'+titleColor+';'">&#xe582;</button>
-			<view class="title" :style="'color:'+titleColor+';'">{{title}}</view>
-			<button v-if="isShowRightBtn" class="right-text" :style="'color:'+rightColor+';font-size:'+rightFont+'px;'"
-				@click="onClickRightBtn()">{{rightText}}
-			</button>
+	<view>
+		<view class="header-banner">
+			<view class="content" :style="'height:'+statusBarHeight+'px'"></view>
+			<view class="tab-header">
+				<view class="icon-back" @click="onClickBack">
+					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
+				</view>
+				<view class="header-title">{{title}}</view>
+				<view class="header-icon" v-if="custom">
+					<slot></slot>
+				</view>
+				<view class="icon-share" v-else-if='shareData' @click="onClickShare"></view>
+				<view class='right-text' v-else @click="onClickRightText">{{rightText}}</view>
+			</view>
 		</view>
-		<view class="status-bar-empty"  :style="'padding-top:'+statusBarHeight+'rpx'"></view>
-		<view v-if="isShow" class="nav-empty"/>
+		<view :style="{ height: 88 + 'rpx', paddingTop: statusBarHeight + 'px' }"></view>
+		<share v-if='shareData' :operationShow="operationShow" :shareData="shareData"  @operacancel="onClickShareCancel"></share>
 	</view>
+	
 </template>
 
 <script lang="ts">
@@ -19,23 +26,16 @@
 	import { app } from "@/app";
 	@Component({})
 	export default class navigationbar extends BaseComponent {
-		@Prop({ default: '#3C3C3C' })
-		titleColor!: string;
 		@Prop({ default: '' })
 		title!: string;
-		@Prop({ default: '' })
-		rightText!: string;
-		@Prop({ default: true })
-		isShowBack!: boolean;
-		@Prop({ default: true })
-		isShow!: boolean;
 		@Prop({ default: false })
-		isShowRightBtn!: boolean;
-		@Prop({ default: '#3C3C3C' })
-		rightColor!: string;
-		@Prop({ default: '22' })
-		rightFont!: string;
-		
+		custom?: Boolean;
+		@Prop({ default: '' })
+		shareData?:any;
+		@Prop({ default: '' })
+		rightText?:string;
+
+		operationShow=false;
 		statusBarHeight = app.statusBarHeight;
 		created(){//在实例创建完成后被立即调用
 		}
@@ -45,85 +45,88 @@
 		destroyed(){
 			
 		}
-		onClickNavigateBack(){
-			uni.navigateBack({})
+		onClickBack(){
+			app.platform.pageBack()
 		}
-		onClickRightBtn(){
-			this.$emit("navclick");
+		// 分享
+		onClickShare(){
+			if(!this.operationShow){
+				this.operationShow = true
+			}
 		}
-		
+		onClickShareCancel(){
+			this.operationShow = false
+		}
+		onClickRightText(){
+			this.$emit('onClickRightText')
+		}
 	}
 </script>
 
-<style>
-	.status-bar{
+<style lang="scss">
+	.header-banner{
 		width: 100%;
-		position:fixed;
-		top: 0;
-		z-index: 99;
-	}
-	.status-bar-empty{
-		width: 100%;
-		height:auto;
-		position:relative;
-		z-index: 0;
-		display: flex;
-		align-items: center;
-	}
-	.nav-empty{
-		width: 100%;
-		height:88rpx;
-		position:relative;
-		z-index: 0;
-		display: flex;
-		align-items: center;
-	}
-	.self-nav{
-		width: 100%;
-		height:88rpx;
-		position:fixed;
-		z-index: 99;
-		display: flex;
-		align-items: center;
 		background:#fff;
-	}
-	.btn-back {
-		height: 40px;
-		background:rgba(0, 0, 0, 0);
-		position: absolute;
-		left: 0;
-		padding: 0 8px;
-		box-sizing: border-box;
-
-		font-family: uniicons;
-		font-size: 23px;
-		font-weight: normal;
-		font-style: normal;
-		line-height: 40px;
-		color: #3C3C3C;
-	}
-	.title{
-		height: 40px;
-		font-size: 16px;
-		color: #3C3C3C;
-		line-height: 40px;
-		margin: auto;
-		font-family: HYQiHei;
-		font-weight: bold;
-	}
-	.right-text{
-		height: 40px;
-		background:rgba(0, 0, 0, 0);
-		position: absolute;
-		right:0;
-		padding: 0 8px;
-		box-sizing: border-box;
-
-		font-family: HYQiHei;
-		font-weight: bold;
-		font-style: normal;
-		font-size: 22px;
-		color: #3C3C3C;
-		line-height: 40px;
+		position: fixed;
+		left:0;
+		top:0;
+		box-sizing: border-box ;
+		z-index: 10;
+		border-bottom: 1px solid #F4F3F2;
+		.tab-header{
+			width: 100%;
+			height:88rpx;
+			display: flex;
+			box-sizing: border-box;
+			padding:0 30rpx;
+			position: relative;
+			z-index: 10;
+			align-items: center;
+			justify-content: center;
+		}
+		.icon-back{
+			width: 80rpx;
+			height: 88rpx;
+			position: absolute;
+			left: 0;
+			top: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.header-title{
+			height:88rpx;
+			line-height: 88rpx;
+			font-size: 34rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 600;
+			color: #000000;
+		}
+		.icon-share{
+			width: 38rpx;
+			height:37rpx;
+			position: absolute;
+			right:32rpx;
+			top:50%;
+			margin-top: -19rpx;
+			background:url(../../static/goods/v2/icon_share.png) no-repeat center;
+			background-size: 100% 100%;
+		}
+		.right-text{
+			font-size: 28rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #333333;
+			position: absolute;
+			right:32rpx;
+		}
+		.header-icon {
+			height: 88rpx;
+			display: flex;
+			align-items: center;
+			position: absolute;
+			right: 40rpx;
+			top: 0;
+		}
 	}
 </style>

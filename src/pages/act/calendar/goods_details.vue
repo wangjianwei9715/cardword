@@ -1,9 +1,6 @@
 <template>
 	<view class="calendar-content" >
-		<navigationShare navigatetoTitle="产品详情" :shareData="shareData"/>
-		<view style="padding-top:88rpx">
-			<statusbar/>
-		</view>
+		<navigationBar title="产品详情" :shareData="shareData"/>
 		<!-- 商品图片 -->
 		<view class="pic-content">
 			<swiper class="swiper" :indicator-dots="goodsImg.length>1" autoplay="true" circular="true" indicator-active-color="#ffffff">

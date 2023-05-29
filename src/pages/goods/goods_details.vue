@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-04 11:10:43
+ * @LastEditTime: 2023-05-29 11:23:25
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -18,25 +18,12 @@
 -->
 <template>
 	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
-		<!-- #ifndef MP -->
-		<view class="header-banner">
-			<statusbar />
-			<view class="tab-header">
-				<view class="icon-back" @click="navigateBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">商品详情</view>
-				<view class="header-icon">
-					<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
-					<view class="icon-share" @click="onClickShare"></view>
-				</view>
-			</view>
-		</view>
-
-		<view style="padding-top:88rpx">
-			<statusbar />
-		</view>
-		<!-- #endif -->
+		<navigationBar title="商品详情" :custom="true">
+			<template>
+				<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
+				<view class="icon-share" @click="onClickShare"></view>
+			</template>
+		</navigationBar>
 		<!-- 商品图片价格 -->
 		<view class="pic-content">
 			<swiper class="swiper" :current="swiperData.swiperCurrent" autoplay="true" circular="true"
@@ -348,6 +335,7 @@
 		onShow() {
 			if (this.goodsData != '') {
 				this.getGoodData();
+				this.onClickteamRandomCancel()
 			}
 		}
 		//   下拉刷新
@@ -796,8 +784,8 @@
 				uni.showToast({ title:'暂未开售', icon:'none' })
 				return;
 			}
-			this.navigateToConfirmOrder(params)
-			this.onClickteamRandomCancel()
+			this.navigateToConfirmOrder(params);
+			this.choiceTRData.show = false;
 		}
 		navigateToConfirmOrder(params=''){
 			const AD_id = this.AD_id?`&AD_id=${this.AD_id}`:''

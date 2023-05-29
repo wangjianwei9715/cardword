@@ -1,6 +1,15 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\userinfo\setting_name.vue
+ * @Author: wjw
+ * @Date: 2022-08-24 16:29:43
+ * @LastEditors: 
+ * @LastEditTime: 2023-05-29 11:24:06
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="content">
-		<navigationbar :isShowRightBtn="true" @navclick="onClickConfirm" title='修改昵称' rightText='保存' rightColor="#14151A" rightFont="12"/>
+		<navigationBar title='修改昵称' rightText='保存' @onClickRightText="onClickConfirm"/>
 
 		<view class="index">
 			<input maxlength="12" class="input" v-model="newName" placeholder="请输入昵称" />
