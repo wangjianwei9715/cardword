@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-29 11:56:39
+ * @LastEditTime: 2023-05-29 13:32:43
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -857,78 +857,6 @@
 		box-sizing: border-box;
 
 		// background:$content-bg
-	}
-
-	.header-banner {
-		width: 100%;
-		background: #fff;
-		position: fixed;
-		left: 0;
-		top: 0;
-		box-sizing: border-box;
-		z-index: 10;
-		border-bottom: 1px solid #F4F3F2;
-
-		.tab-header {
-			width: 100%;
-			height: 88rpx;
-			display: flex;
-			box-sizing: border-box;
-			padding: 0 30rpx;
-			position: relative;
-			z-index: 10;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.icon-back {
-			width: 80rpx;
-			height: 88rpx;
-			position: absolute;
-			left: 0;
-			top: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.header-title {
-			height: 88rpx;
-			line-height: 88rpx;
-			font-size: $font-34;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #000000;
-		}
-
-		.header-icon {
-			height: 88rpx;
-			display: flex;
-			align-items: center;
-			position: absolute;
-			right: 40rpx;
-			top: 0;
-		}
-
-		.icon-collect {
-			width: 44rpx;
-			height: 41rpx;
-			background: url(../../static/goods/v2/icon_collect.png) no-repeat center;
-			background-size: 100% 100%;
-			margin-right: 40rpx;
-		}
-
-		.icon-favored {
-			background: url(../../static/goods/v2/icon_collect_.png) no-repeat center;
-			background-size: 100% 100%;
-		}
-
-		.icon-share {
-			width: 38rpx;
-			height: 37rpx;
-			background: url(../../static/goods/v2/icon_share.png) no-repeat center;
-			background-size: 100% 100%;
-		}
 	}
 
 	.pic-content {

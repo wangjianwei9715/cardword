@@ -259,59 +259,6 @@
 		position: relative;
 	}
 
-	.icon-new {
-		width: 11rpx;
-		height: 11rpx;
-		background: #FD0000;
-		border-radius: 50%;
-		position: absolute;
-		top: 50%;
-		margin-top: 20rpx;
-		right: 0;
-	}
-
-	.header-banner {
-		width: 100%;
-		background: #ffffff;
-		position: fixed;
-		left: 0;
-		top: 0;
-		box-sizing: border-box;
-		z-index: 9;
-	}
-
-	.tab-header {
-		width: 100%;
-		height: 94rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding: 0 20rpx;
-		z-index: 10;
-		align-items: center;
-		justify-content: center;
-		position: relative;
-	}
-
-	.icon-back {
-		width: 80rpx;
-		height: 88rpx;
-		position: absolute;
-		left: 0;
-		top: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.header-title {
-		height: 88rpx;
-		line-height: 88rpx;
-		font-size: 34rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #000000;
-	}
-
 	.header-likes {
 		width: 200rpx;
 		height: 94rpx;

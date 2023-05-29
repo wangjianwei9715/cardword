@@ -161,54 +161,6 @@ page {
 .content {
   width: 100%;
 }
-
-.header-banner {
-  width: 100%;
-  background: #ffffff;
-  position: fixed;
-  left: 0;
-  top: 0;
-  box-sizing: border-box;
-  z-index: 9;
-}
-.tab-header {
-  width: 100%;
-  height: 94rpx;
-  display: flex;
-  box-sizing: border-box;
-  padding: 0 20rpx;
-  z-index: 10;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.icon-back {
-  width: 80rpx;
-  height: 88rpx;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.header-title {
-  height: 88rpx;
-  line-height: 88rpx;
-  font-size: 34rpx;
-  font-family: PingFang SC;
-  font-weight: 600;
-  color: #333333;
-}
-.header-icon {
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  position: absolute;
-  right: 40rpx;
-  top: 0;
-}
 .icon-search{
   width: 35rpx;
   height:37rpx;
