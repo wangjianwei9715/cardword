@@ -1,22 +1,17 @@
 <template>
 	<view class="content">
-		<view class="header">
-			<statusbar style="background:#fff" />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">收赠卡密</view>
+		<navigationBar title="收赠卡密" :custom="true">
+			<template slot="right">
 				<view class="icon-search" @click="onClickSearch"></view>
 				<view class="icon-help" @click="onClickShowRule"></view>
-			</view>
-		    <view class="header-tab">
-		        <tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
-		    </view>
-		</view>
-		
+			</template>
+			<template slot="bottom">
+				<view class="header-tab">
+					<tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
+				</view>
+			</template>
+		</navigationBar>
 		<view class="box-content">
-			<statusbar/>
 			<givingCardList :codeList="codeList" :type="tabCheck" />
 		</view>
 
@@ -128,66 +123,22 @@
 		height:100%;
 		background:#F6F7F8;
 	}
-	.tab-header{
-		width: 100%;
-		height:88rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding:0 30rpx;
-		position: relative;
-		z-index: 10;
-		align-items: center;
-		justify-content: center;
-		background:#fff;
-	}
-	.icon-back{
-		width: 80rpx;
-		height: 88rpx;
-		position: absolute;
-		left: 0;
-		top: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.header-title{
-		height:88rpx;
-		line-height: 88rpx;
-		font-size: 34rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #000000;
-	}
 	.icon-search{
 		width: 40rpx;
 		height:40rpx;
-		position: absolute;
-		right:92rpx;
-		top:50%;
-		margin-top: -20rpx;
+		margin-right: 30rpx;
 		background:url(../../../static/userinfo/v2/icon_search.png) no-repeat center;
 		background-size: 100% 100%;
 	}
 	.icon-help{
 		width: 40rpx;
 		height:40rpx;
-		position: absolute;
-		right:32rpx;
-		top:50%;
-		margin-top: -20rpx;
 		background:url(../../../static/userinfo/v2/help.png) no-repeat center;
 		background-size: 100% 100%;
 	}
 	.content{
 		width: 100%;
 		box-sizing:border-box;
-	}
-	.header{
-	    width: 100%;
-	    position: fixed;
-	    left:0;
-	    top:0;
-	    z-index: 99;
 	}
 	.header-tab{
 		width: 100%;
@@ -201,11 +152,10 @@
 	.box-content{
         width: 100%;
         position: relative;
-        z-index:10;
         box-sizing: border-box;
-        padding:180rpx 20rpx calc(120rpx ) 20rpx;
-		padding:180rpx 20rpx calc(120rpx + constant(safe-area-inset-bottom)) 20rpx;
-		padding:180rpx 20rpx calc(120rpx + env(safe-area-inset-bottom)) 20rpx;
+        padding:90rpx 20rpx calc(120rpx ) 20rpx;
+		padding:90rpx 20rpx calc(120rpx + constant(safe-area-inset-bottom)) 20rpx;
+		padding:90rpx 20rpx calc(120rpx + env(safe-area-inset-bottom)) 20rpx;
     }
 	.box-index{
 		width: 100%;

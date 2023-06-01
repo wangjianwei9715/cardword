@@ -1,19 +1,12 @@
 <template>
 	<view class="content">
-		<view class="header">
-			<statusbar style="background:#fff" />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">确认赠送</view>
+		<navigationBar title="确认赠送" :custom="true">
+			<template slot="right">
 				<view class="icon-help" @click="onClickShowRule"></view>
-			</view>
-		</view>
-		
+			</template>
+		</navigationBar>
 		<view class="box-content">
 			<statusbar/>
-
 			<view class="box-index">
 				<view class="box-index-id">请输入收方ID</view>
 				<u-code-input v-model="userId" :maxlength="9" @finish="inputConfirm" size="56rpx" height="82rpx" space="15rpx" borderColor="#767676" fontSize="48rpx" color="#333333" :bold="true"></u-code-input>
@@ -193,36 +186,6 @@
 		height:100%;
 		background:#F6F7F8;
 	}
-	.tab-header{
-		width: 100%;
-		height:88rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding:0 30rpx;
-		position: relative;
-		z-index: 10;
-		align-items: center;
-		justify-content: center;
-		background:#fff;
-	}
-	.icon-back{
-		width: 80rpx;
-		height: 88rpx;
-		position: absolute;
-		left: 0;
-		top: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.header-title{
-		height:88rpx;
-		line-height: 88rpx;
-		font-size: 34rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #000000;
-	}
 	.icon-search{
 		width: 40rpx;
 		height:40rpx;
@@ -236,32 +199,12 @@
 	.icon-help{
 		width: 40rpx;
 		height:40rpx;
-		position: absolute;
-		right:32rpx;
-		top:50%;
-		margin-top: -20rpx;
 		background:url(../../../static/userinfo/v2/help.png) no-repeat center;
 		background-size: 100% 100%;
 	}
 	.content{
 		width: 100%;
 		box-sizing:border-box;
-	}
-	.header{
-	    width: 100%;
-	    position: fixed;
-	    left:0;
-	    top:0;
-	    z-index: 99;
-	}
-	.header-tab{
-		width: 100%;
-	    background:#fff;
-		height:90rpx;
-		margin-top: -10rpx;
-		box-sizing: border-box;
-		border-bottom: 1px solid #F1F1F4;
-	    padding:0 100rpx;
 	}
 	.box-content{
         width: 100%;

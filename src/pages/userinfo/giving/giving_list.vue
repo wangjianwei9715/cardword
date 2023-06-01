@@ -1,25 +1,20 @@
 <template>
 	<view class="content">
-		<view class="header">
-			<statusbar style="background:#fff" />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">可赠送的卡密</view>
+		<navigationBar title="可赠送的卡密" :custom="true">
+			<template slot="right">
 				<view class="icon-search" @click="onClickSearch"></view>
 				<view class="icon-help" @click="onClickShowRule"></view>
-			</view>
-			<view class="header-banner">
-				<view class="order-type">
-					<view class="order-type-index" :class="{'type-current':item.type==typeTabCurrent}" v-for="(item,index) in typeTab" :key="index" @click="$u.throttle(()=>{onClickTypeCurrent(item.type)},500)">{{item.name}}</view>
+			</template>
+			<template slot="bottom">
+				<view class="header-banner">
+					<view class="order-type">
+						<view class="order-type-index" :class="{'type-current':item.type==typeTabCurrent}" v-for="(item,index) in typeTab" :key="index" @click="$u.throttle(()=>{onClickTypeCurrent(item.type)},500)">{{item.name}}</view>
+					</view>
+					<sortTab v-if="typeTabCurrent==2&&sortData!=''" :sortData="sortData" @postSort="postSort" />
 				</view>
-				<sortTab v-if="typeTabCurrent==2&&sortData!=''" :sortData="sortData" @postSort="postSort" />
-			</view>
-		</view>
+			</template>
+		</navigationBar>
 		<view class="box-content" :class="{'pa180':typeTabCurrent==1||sortData==''}">
-			<statusbar/>
-			
 			<view class="card-list" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
 				<!-- <view class="order-code">
 					<view class="order-code-left"><view class="order-code-box">订单：{{item.orderCode}}</view><view class="order-code-now">{{orderCode==item.orderCode?'当前订单 ':''}}</view></view>
@@ -388,62 +383,18 @@
 </script>
 
 <style lang="scss">
-	.header{
-	    width: 100%;
-	    position: fixed;
-	    left:0;
-	    top:0;
-	    z-index: 99;
-	}
-	.icon-back{
-		width: 80rpx;
-		height: 88rpx;
-		position: absolute;
-		left: 0;
-		top: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.header-title{
-		height:88rpx;
-		line-height: 88rpx;
-		font-size: 34rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #000000;
-	}
 	.icon-search{
 		width: 40rpx;
 		height:40rpx;
-		position: absolute;
-		right:92rpx;
-		top:50%;
-		margin-top: -20rpx;
+		margin-right: 30rpx;
 		background:url(../../../static/userinfo/v2/icon_search.png) no-repeat center;
 		background-size: 100% 100%;
 	}
 	.icon-help{
 		width: 40rpx;
 		height:40rpx;
-		position: absolute;
-		right:32rpx;
-		top:50%;
-		margin-top: -20rpx;
 		background:url(../../../static/userinfo/v2/help.png) no-repeat center;
 		background-size: 100% 100%;
-	}
-	.tab-header{
-		width: 100%;
-		height:88rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding:0 30rpx;
-		position: relative;
-		z-index: 10;
-		align-items: center;
-		justify-content: center;
-		background:#fff;
 	}
 	.header-banner{
 		width: 100%;
@@ -577,9 +528,9 @@
         position: relative;
         z-index:10;
         box-sizing: border-box;
-        padding:260rpx 15rpx calc(120rpx) 15rpx;
-		padding:260rpx 15rpx calc(120rpx + constant(safe-area-inset-bottom)) 15rpx;
-		padding:260rpx 15rpx calc(120rpx + env(safe-area-inset-bottom)) 15rpx;
+        padding:160rpx 15rpx calc(120rpx) 15rpx;
+		padding:160rpx 15rpx calc(120rpx + constant(safe-area-inset-bottom)) 15rpx;
+		padding:160rpx 15rpx calc(120rpx + env(safe-area-inset-bottom)) 15rpx;
     }
 	.giving-bottom{
 		width: 100%;
@@ -688,6 +639,6 @@
 		color:#333;
 	}
 	.pa180{
-		padding-top:180rpx !important;
+		padding-top:88rpx !important;
 	}
 </style>

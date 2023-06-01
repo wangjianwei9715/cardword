@@ -212,7 +212,10 @@
 						"enablePullDownRefresh": true,
 						"onReachBottomDistance": 999,
 						"backgroundColorTop": "#FFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorBottom": "#F6F7FB", //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"app-plus": {
+							"bounce": "none"
+						}
 					}
 				},
 				{
@@ -689,6 +692,43 @@
 							"bounce": "none"
 						}
 					}
+				},
+				{
+					"path": "collectSpCard/index",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "收集特卡",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "collectSpCard/rule",
+					"style": {
+						"navigationBarTitleText": "活动规则",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "collectSpCard/record",
+					"style": {
+						"navigationBarTitleText": "奖品记录",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
 				}
 				
 			]
@@ -1121,7 +1161,7 @@
 						"navigationBarBackgroundColor": "#ffffff",
 						"transparentTitle": "auto",
 						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true,
+						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}

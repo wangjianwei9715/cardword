@@ -1,19 +1,10 @@
 <template>
     <view class="content">
-        <view class="header-banner">
-            <statusbar />
-            <view class="tab-header">
-                <view class="icon-back" @click="onClickBack"></view>
-                <view class="header-title">商家列表</view>
-                <view class="header-icon" @click="onClickSearch">
-                    <view class="icon-share"></view>
-                </view>
-            </view>
-        </view>
-
-        <view style="padding-top:88rpx">
-            <statusbar />
-        </view>
+        <navigationBar title="商家列表" :custom="true">
+			<template slot="right">
+                <view class="icon-share" @click="onClickSearch"></view>
+			</template>
+		</navigationBar>
         <view class="topBanner" @click.stop="toMerchantJoin"></view>
         <view style="background-color: #fff;padding-top: 40rpx;">
             <template v-if="onLiveList&&onLiveList.length">
@@ -608,75 +599,9 @@ page {
 .merchantItem:first-child {
     margin-left: 25rpx;
 }
-
-.header-banner {
-    width: 100%;
-    background: #fff;
-    position: fixed;
-    left: 0;
-    top: 0;
-    box-sizing: border-box;
-    z-index: 10;
-    border-bottom: 1px solid #F4F3F2;
-
-    .tab-header {
-        width: 100%;
-        height: 88rpx;
-        display: flex;
-        box-sizing: border-box;
-        padding: 0 30rpx;
-        position: relative;
-        z-index: 10;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .icon-back {
-        width: 80rpx;
-        height: 88rpx;
-        background: url(../../static/goods/back@2x.png) no-repeat center;
-        background-size: 100% 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-    }
-
-    .header-title {
-        height: 88rpx;
-        line-height: 88rpx;
-        font-size: 34rpx;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 600;
-        color: #000000;
-    }
-
-    .header-icon {
-        height: 88rpx;
-        display: flex;
-        align-items: center;
-        position: absolute;
-        right: 40rpx;
-        top: 0;
-    }
-
-    .icon-collect {
-        width: 44rpx;
-        height: 41rpx;
-        background: url(../../static/goods/v2/icon_collect.png) no-repeat center;
-        background-size: 100% 100%;
-        margin-right: 40rpx;
-    }
-
-    .icon-favored {
-        background: url(../../static/goods/v2/icon_collect_.png) no-repeat center;
-        background-size: 100% 100%;
-    }
-
-    .icon-share {
-        width: 46rpx;
-        height: 46rpx;
-        background: url(../../static/userinfo/v2/icon_search.png) no-repeat center;
-        background-size: 100% 100%;
-    }
+.icon-share {
+    width: 46rpx;
+    height:46rpx;
+    background: url(@/static/userinfo/v2/icon_search.png) no-repeat center / 100% 100%;
 }
 </style>

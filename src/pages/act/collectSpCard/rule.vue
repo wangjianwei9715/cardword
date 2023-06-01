@@ -1,27 +1,37 @@
 <template>
     <view class="content">
-        <navigationBar title="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward" />
         <view class="descriptionContainer">
             <view class="des_title">
-                积分榜单：
+                活动规则：
             </view>
             <view class="des_content">
-                活动期间，参与平台宝可梦系列拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
+                活动时间：2023.06.20-2023.07.10。活动期间，玩家参与拼团，在卡密特效玩法中有概率获得特殊样式的特卡，为本活动的活动道具（跳过卡密特效仍可获得），卡密单价越高出现概率越大，集齐指定特卡卡组即可领取丰厚奖励。也可将特卡赠与他人。
                 <br />
+				<br />
+				<view class="sTitle">特别说明：<text style="color:red">获得的特卡将在拼团成功后累计，拼团失败则不累计。活动结束前获得的特卡，若活动结束后拼成也可累计至本活动，奖励正常发放；活动结束后在卡密特效玩法中仍可见特卡，但不再累计至本活动，并关闭特卡转赠功能</text></view>
+                <view class="sTitle">赠送特卡：</view>特卡累计至活动后（即拼团成功后）可赠送他人，收到特卡的用户实时累计。赠送特卡仅赠送活动道具而非相应卡密。
                 <br />
-                活动截至入榜前10的用户将获得对应的名次奖励
-                <br />
-                <br />
-                <text style="color:red">*</text>活动截止后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
-                <br />
-                <text style="color:red">*</text>榜单每30分钟更新一次<br>
-                <br />
-                <view class="sTitle"><text style="color:red">*</text>积分计算：</view>
-                积分单价比为1:1
-                <br />
-            </view>
-            <view class="des_content">
-                发货说明：实物商品平台将在1-30天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系客服安排发货
+				<br />
+                <view class="sTitle">奖励规则：</view>
+				1、活动共xxx种特卡卡组，每种卡组设置独立奖品，奖品可重复获得，越早集齐玩家获得的奖励也更为丰厚丰厚。
+				<br />
+				<view class="sTitle"></view>
+				2、集齐后（即最后一张特卡拼团成功，或收到他人赠送的最后一张特卡）奖品将自动发放并扣除该组特卡，优惠券类奖品自动发放至 我的-优惠券 页面，实物奖品需通过 活动页-我的记录-奖品记录 页面中提交发货申请。
+				<br />
+				<view class="sTitle">3、排名说明：</view>特卡在拼团成功后累计至活动，集齐排名按最后集齐的一张特卡实际累计至活动的时间排序。
+				<br />
+				<br />
+				<view class="sTitle">特别情形1）购买时间更早但实际累计至活动时间更晚，则按实际累计至活动的时间排名</view>
+				举例：张三、李四已集齐火焰特卡中除詹姆斯外的其他特卡。张三在A拼团中，获得詹姆斯火焰特卡，购买时间为5月1日10:00，拼成并累计至活动的时间为5月1日12:00；李四在B拼团中，获得詹姆斯火焰特卡，购买时间为5月1日10:30，拼成并累计至活动的时间为5月1日11:00。李四的集齐的最后一张特卡更早累计至活动，此种情况李四为第一名集齐，张三为第二名集齐
+				<br />
+				<br />
+				<view class="sTitle">特别情形2）同一拼团有两名用户集齐了相同卡组，则按相应卡密的购买时间排名。</view>
+				举例：张三、李四已集齐火焰特卡中除詹姆斯外的其他特卡。张三在A拼团中，获得詹姆斯火焰特卡，购买时间为5月1日10:00，拼成并累计至活动的时间为5月1日12:00；李四在A拼团中，获得詹姆斯火焰特卡，购买时间为5月1日10:30，拼成并累计至活动的时间为5月1日12:00。两名玩家在同一拼团完成火焰特卡卡组收集，此种情况为集齐最后一张特卡的订单越早排名越前，故张三为第一名，李四为第二名。
+				<br />
+				<br />
+				<view class="sTitle">特别情形3）购买时间更早且拼团还在进行中，道具暂未累计至活动，但他人通过别人赠送的形式集齐了特卡，则按实际累计至活动的时间排名</view>
+				举例：张三、李四已集齐火焰特卡中除詹姆斯外的其他特卡。张三在A拼团中，获得詹姆斯火焰特卡，购买时间为5月1日10:00，拼成并累计至活动的时间为5月1日12:00；李四在5月1日11:00收到了他人赠送的詹姆斯火焰特卡。此种情况李四的火焰特卡更早累计至活动，故李四为第一名，张三为第二名。
+				<br />
             </view>
 
         </view>
@@ -32,28 +42,10 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '../../../base/BaseNode.vue';
-import { parsePic, dateFormatMSHMS } from '@/tools/util'
 @Component({})
 export default class ClassName extends BaseNode {
-    pointConfig: any = {}
-    awardList: any = []
     app = app
-    des: string =
-        `
-	活动期间，参与<text style="color:#FA1545">21-22one and one</text>拼团的用户，将根据拼团的类型获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
-	<br/>
-	活动截至<text style="color:#FA1545">入榜前50名</text>的用户将获得特殊奖励
-	<br/>
-	幸运大抽奖：<text style="color:#FA1545">排名前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取 
-	`
-    luckList: any = [
-        // {pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png',name:'抽取10张100元券',rank:"第1-50名"},
-        // {pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png',name:'抽取10张100元券',rank:"第1-200名"},
-        // {pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg',name:"抽取Select原盒一盒",rank:"第1-500名"}
-    ]
     onLoad(query: any) {
-        this.reqRewardList()
-        this.reqRewardListTwo()
     }
     onReachBottom() {
 
@@ -61,46 +53,7 @@ export default class ClassName extends BaseNode {
     onPulldDownRefresh() {
 
     }
-    prviewImages(picString: string) {
-        if (!picString) return
-        const picArr: any = picString.split(',').map(item => parsePic(decodeURIComponent(item)))
-        uni.previewImage({
-            current: 0,
-            urls: picArr
-        })
-    }
-    getElementScollTop() {
-        const query: any = uni.createSelectorQuery()
-        query
-            .select('.spRewardsContainer')
-            .boundingClientRect((data: any) => {
-                let pageScrollTop: any = Math.round(data.top)
-                uni.pageScrollTo({
-                    scrollTop: pageScrollTop, //滚动的距离
-                    duration: 300, //过渡时间
-                })
-            })
-            .exec()
-    }
-    openRanDom() {
-        plus.runtime.openURL('https://www.random.org')
-    }
-    onClickAward() {
-        uni.navigateTo({
-            url: "/pages/act/pokemon/award"
-        })
-    }
-    reqRewardList() {
-        app.http.Get('dataApi/selectRank/award/list', { isLucky: 0, activityTp: 6 }, (res: any) => {
-            this.awardList = res.list || []
-
-        })
-    }
-    reqRewardListTwo() {
-        app.http.Get('dataApi/selectRank/award/list', { isLucky: 1, activityTp: 6 }, (res: any) => {
-            this.luckList = res.list || []
-        })
-    }
+	
 }
 </script>
 

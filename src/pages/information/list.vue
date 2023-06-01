@@ -1,22 +1,16 @@
 <template>
   <view class="content">
-    <view class="header-banner">
-      <statusbar />
-      <view class="tab-header">
-        <view class="icon-back" @click="onClickBack">
-          <image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-        </view>
-        <view class="header-title">资讯</view>
-        <view class="header-icon">
-          <view class="icon-search" @click.prevent="onClickGoSearch"></view>
-          <view class="icon-collect" @click.prevent="onClickMyCollect"></view>
-				</view>
-      </view>
-      <u-tabs :list="tabData.list" :current="tabData.current" :itemStyle="tabData.itemStyle" :activeStyle="tabData.activeStyle" :inactiveStyle="tabData.inactiveStyle" :lineWidth="0" @click="onClickListTabs"></u-tabs>
-    </view>
+    <navigationBar title="资讯" :custom="true">
+			<template slot="right">
+				<view class="icon-search" @click.prevent="onClickGoSearch"></view>
+        <view class="icon-collect" @click.prevent="onClickMyCollect"></view>
+			</template>
+      <template slot="bottom">
+        <u-tabs :list="tabData.list" :current="tabData.current" :itemStyle="tabData.itemStyle" :activeStyle="tabData.activeStyle" :inactiveStyle="tabData.inactiveStyle" :lineWidth="0" @click="onClickListTabs"></u-tabs>
+      </template>
+		</navigationBar>
 
     <view class="live-content">
-      <statusbar />
       <swiper v-show="tabData.current==0 && AD_List!=''" class="swiper" autoplay="true" circular="true" indicator-active-color="#ffffff">
 				<swiper-item v-for="(item,index) in AD_List" :key="index">
 					<view class="ad-box">
@@ -167,54 +161,6 @@ page {
 .content {
   width: 100%;
 }
-
-.header-banner {
-  width: 100%;
-  background: #ffffff;
-  position: fixed;
-  left: 0;
-  top: 0;
-  box-sizing: border-box;
-  z-index: 9;
-}
-.tab-header {
-  width: 100%;
-  height: 94rpx;
-  display: flex;
-  box-sizing: border-box;
-  padding: 0 20rpx;
-  z-index: 10;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.icon-back {
-  width: 80rpx;
-  height: 88rpx;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.header-title {
-  height: 88rpx;
-  line-height: 88rpx;
-  font-size: 34rpx;
-  font-family: PingFang SC;
-  font-weight: 600;
-  color: #333333;
-}
-.header-icon {
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  position: absolute;
-  right: 40rpx;
-  top: 0;
-}
 .icon-search{
   width: 35rpx;
   height:37rpx;
@@ -234,7 +180,7 @@ page {
 .live-content {
   width: 100%;
   box-sizing: border-box;
-  padding: 160rpx 0 20rpx 0;
+  padding: 100rpx 0 20rpx 0;
   position: relative;
   z-index: 2;
 }

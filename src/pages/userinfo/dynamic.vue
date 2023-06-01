@@ -1,17 +1,11 @@
 <template>
 	<view>
-		<view class="header-banner">
-			<statusbar />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">消息</view>
+		<navigationBar title="消息" :custom="true">
+			<template slot="right">
 				<view v-if="bucketName == 'trade'" class="header-likes" @click="onClickReadAll">一键已读</view>
-			</view>
-		</view>
+			</template>
+		</navigationBar>
 		<view class="dynamic-content">
-			<statusbar />
 			<view class="dynamic-item" @click="onClickDynamic(index,item.pagePath,item.msgId)"
 				v-for="(item,index) in dynamicData" :key="item.msgId">
 				<view class="left">
@@ -173,7 +167,7 @@
 	.dynamic-content {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 110rpx 0 0 0;
+		padding: 10rpx 0 0 0;
 		position: relative;
 		z-index: 2;
 	}
@@ -265,68 +259,14 @@
 		position: relative;
 	}
 
-	.icon-new {
-		width: 11rpx;
-		height: 11rpx;
-		background: #FD0000;
-		border-radius: 50%;
-		position: absolute;
-		top: 50%;
-		margin-top: 20rpx;
-		right: 0;
-	}
-
-	.header-banner {
-		width: 100%;
-		background: #ffffff;
-		position: fixed;
-		left: 0;
-		top: 0;
-		box-sizing: border-box;
-		z-index: 9;
-	}
-
-	.tab-header {
-		width: 100%;
-		height: 94rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding: 0 20rpx;
-		z-index: 10;
-		align-items: center;
-		justify-content: center;
-		position: relative;
-	}
-
-	.icon-back {
-		width: 80rpx;
-		height: 88rpx;
-		position: absolute;
-		left: 0;
-		top: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.header-title {
-		height: 88rpx;
-		line-height: 88rpx;
-		font-size: 34rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #000000;
-	}
-
 	.header-likes {
+		width: 200rpx;
 		height: 94rpx;
 		line-height: 104rpx;
 		font-size: 22rpx;
 		font-family: Microsoft YaHei;
 		font-weight: 400;
 		color: #ababbb;
-		position: absolute;
-		right: 20rpx;
-		top: 0;
+		text-align: right;
 	}
 </style>

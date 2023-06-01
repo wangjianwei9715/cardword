@@ -1,18 +1,11 @@
 <template>
 	<view class="content">
-		<view class="header">
-			<statusbar style="background:#fff" />
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">开票管理</view>
+		<navigationBar title="开票管理" :custom="true">
+			<template slot="right">
 				<view class="icon-kf" @click="onClickHeliService"></view>
-			</view>
-		</view>
-		
+			</template>
+		</navigationBar>
 		<view class="box-content">
-			<statusbar/>
 			<view class="invoice-box" v-for="(item,index) in invoiceList" :key="index">
 				<view class="box-top">
 					<view class="top-left">
@@ -97,36 +90,6 @@
 		height:100%;
 		background:#F6F7F8;
 	}
-	.tab-header{
-		width: 100%;
-		height:88rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding:0 30rpx;
-		position: relative;
-		z-index: 10;
-		align-items: center;
-		justify-content: center;
-		background:#fff;
-	}
-	.icon-back{
-		width: 80rpx;
-		height: 88rpx;
-		position: absolute;
-		left: 0;
-		top: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.header-title{
-		height:88rpx;
-		line-height: 88rpx;
-		font-size: 34rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #000000;
-	}
 	.icon-kf{
 		width: 38rpx;
 		height: 36rpx;
@@ -142,30 +105,10 @@
 		width: 100%;
 		box-sizing:border-box;
 	}
-	.header{
-	    width: 100%;
-	    position: fixed;
-	    left:0;
-	    top:0;
-	    z-index: 99;
-	}
-	.header-tab{
-		width: 100%;
-	    background:#fff;
-		height:90rpx;
-		margin-top: -10rpx;
-		box-sizing: border-box;
-		border-bottom: 1px solid #F1F1F4;
-	    padding:0 100rpx;
-	}
 	.box-content{
         width: 100%;
         position: relative;
-        z-index:10;
         box-sizing: border-box;
-        padding:110rpx 20rpx calc(120rpx ) 20rpx;
-		padding:110rpx 20rpx calc(120rpx + constant(safe-area-inset-bottom)) 20rpx;
-		padding:110rpx 20rpx calc(120rpx + env(safe-area-inset-bottom)) 20rpx;
     }
 	.box-index{
 		width: 100%;

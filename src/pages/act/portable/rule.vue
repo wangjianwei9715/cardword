@@ -1,7 +1,6 @@
 <template>
     <view class="content">
-        <navigationShare navigatetoTitle="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward" />
-        <view :style="{ height: 88 + 'rpx', paddingTop: app.statusBarHeight + 'px' }"></view>
+        <navigationBar title="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward" />
         <view class="descriptionContainer">
             <view class="des_title">
                 积分榜单：

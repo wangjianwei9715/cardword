@@ -1,11 +1,8 @@
 <template>
 	<view class="content" >
-		<navigationShare navigatetoTitle="详情" :shareData="shareData"/>
+		<navigationBar title="详情" :shareData="shareData"/>
 		
 		<view class="index">
-			<view style="padding-top:88rpx">
-				<statusbar/>
-			</view>
 			<comments :articleData="articleData" :commentsList="commentsList" :isFetchEnd="commentParams.isFetchEnd" @reply="onReply" @moreComments="onMoreComments"/>
 		</view>
 		

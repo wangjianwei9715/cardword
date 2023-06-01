@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-04 11:10:43
+ * @LastEditTime: 2023-05-29 13:41:45
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -18,25 +18,12 @@
 -->
 <template>
 	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
-		<!-- #ifndef MP -->
-		<view class="header-banner">
-			<statusbar />
-			<view class="tab-header">
-				<view class="icon-back" @click="navigateBack">
-					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
-				</view>
-				<view class="header-title">商品详情</view>
-				<view class="header-icon">
-					<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
-					<view class="icon-share" @click="onClickShare"></view>
-				</view>
-			</view>
-		</view>
-
-		<view style="padding-top:88rpx">
-			<statusbar />
-		</view>
-		<!-- #endif -->
+		<navigationBar title="商品详情" :custom="true">
+			<template slot="right">
+				<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
+				<view class="icon-share" @click="onClickShare"></view>
+			</template>
+		</navigationBar>
 		<!-- 商品图片价格 -->
 		<view class="pic-content">
 			<swiper class="swiper" :current="swiperData.swiperCurrent" autoplay="true" circular="true"
@@ -348,6 +335,7 @@
 		onShow() {
 			if (this.goodsData != '') {
 				this.getGoodData();
+				this.onClickteamRandomCancel()
 			}
 		}
 		//   下拉刷新
@@ -796,8 +784,8 @@
 				uni.showToast({ title:'暂未开售', icon:'none' })
 				return;
 			}
-			this.navigateToConfirmOrder(params)
-			this.onClickteamRandomCancel()
+			this.navigateToConfirmOrder(params);
+			this.choiceTRData.show = false;
 		}
 		navigateToConfirmOrder(params=''){
 			const AD_id = this.AD_id?`&AD_id=${this.AD_id}`:''
@@ -870,79 +858,25 @@
 
 		// background:$content-bg
 	}
-
-	.header-banner {
-		width: 100%;
-		background: #fff;
-		position: fixed;
-		left: 0;
-		top: 0;
-		box-sizing: border-box;
-		z-index: 10;
-		border-bottom: 1px solid #F4F3F2;
-
-		.tab-header {
-			width: 100%;
-			height: 88rpx;
-			display: flex;
-			box-sizing: border-box;
-			padding: 0 30rpx;
-			position: relative;
-			z-index: 10;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.icon-back {
-			width: 80rpx;
-			height: 88rpx;
-			position: absolute;
-			left: 0;
-			top: 0;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.header-title {
-			height: 88rpx;
-			line-height: 88rpx;
-			font-size: $font-34;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #000000;
-		}
-
-		.header-icon {
-			height: 88rpx;
-			display: flex;
-			align-items: center;
-			position: absolute;
-			right: 40rpx;
-			top: 0;
-		}
-
-		.icon-collect {
-			width: 44rpx;
-			height: 41rpx;
-			background: url(../../static/goods/v2/icon_collect.png) no-repeat center;
-			background-size: 100% 100%;
-			margin-right: 40rpx;
-		}
-
-		.icon-favored {
-			background: url(../../static/goods/v2/icon_collect_.png) no-repeat center;
-			background-size: 100% 100%;
-		}
-
-		.icon-share {
-			width: 38rpx;
-			height: 37rpx;
-			background: url(../../static/goods/v2/icon_share.png) no-repeat center;
-			background-size: 100% 100%;
-		}
+	.icon-collect {
+		width: 44rpx;
+		height: 41rpx;
+		background: url(../../static/goods/v2/icon_collect.png) no-repeat center;
+		background-size: 100% 100%;
+		margin-right: 40rpx;
 	}
 
+	.icon-favored {
+		background: url(../../static/goods/v2/icon_collect_.png) no-repeat center;
+		background-size: 100% 100%;
+	}
+
+	.icon-share {
+		width: 38rpx;
+		height: 37rpx;
+		background: url(../../static/goods/v2/icon_share.png) no-repeat center;
+		background-size: 100% 100%;
+	}
 	.pic-content {
 		width: 750rpx;
 		height: 578rpx;

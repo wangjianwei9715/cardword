@@ -1,7 +1,15 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\userinfo\setting_sign.vue
+ * @Author: wjw
+ * @Date: 2022-08-24 16:29:43
+ * @LastEditors: 
+ * @LastEditTime: 2023-05-29 11:24:52
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="content">
-		<navigationbar :isShowRightBtn="true" @navclick="onClickConfirm" title='个性签名' rightText='保存' rightColor="#14151A" rightFont="12"/>
-
+		<navigationBar title='个性签名' rightText='保存' @onClickRightText="onClickConfirm"/>
 		<textarea class="initiate-desc" :maxlength='100' v-model="newSign" placeholder="请输入个性签名..." />
 
 	</view>

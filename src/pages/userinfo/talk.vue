@@ -1,14 +1,5 @@
 <template>
 	<view class="content">
-		<!-- <view class="header-banner">
-			<statusbar/>
-			<view class="tab-header">
-				<view class="icon-back" @click="onClickBack"></view>
-				<view class="header-title">在线客服</view>
-				<view class="goods-show" @click="operationShow = true" ><text class="icon-ui-dian">&#xe537;</text></view>
-			</view>
-			
-		</view> -->
 		
 		<scroll-view class="msg-content" @refresherrefresh="onScrollPull" scroll-y refresher-enabled refresher-background="#F4F3F2"
 			:style="{'height':`${scrollHeight}px`}" :scroll-top="scrollTop" :refresher-triggered="triggered" @click="onClickMessage">
@@ -625,45 +616,6 @@ import { formatDateToHour, formatDateToYear } from "@/tools/util";
 		display: flex !important;
 		align-items: center !important;
 	}
-	.header-banner{
-		width: 100%;
-		background:#fff;
-		position: fixed;
-		left:0;
-		top:0;
-		box-sizing: border-box ;
-		z-index: 10;
-		border-bottom: 1px solid #F4F3F2;
-	}
-	.tab-header{
-		width: 100%;
-		height:80rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding:0 30rpx;
-		position: relative;
-		z-index: 10;
-		align-items: center;
-		justify-content: center;
-	}
-	.icon-back{
-		width: 40rpx;
-		height:44rpx;
-		background:url(../../static/goods/back@2x.png) no-repeat center;
-		background-size: 100% 100%;
-		position: absolute;
-		left:30rpx;
-		top:20rpx;
-	}
-	.header-title{
-		height:80rpx;
-		line-height: 80rpx;
-		font-size: 32rpx;
-		font-family: HYQiHei;
-		font-weight: bold;
-		color: #3B3B3B;
-	}
-
 	.nego-center {
 		width: 100%;
 		height: 264rpx;
