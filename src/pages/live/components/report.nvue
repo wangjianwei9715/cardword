@@ -1,0 +1,273 @@
+<!--
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-05-31 17:43:59
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-06-01 15:21:28
+ * @FilePath: \card-world\src\pages\live\components\report.nvue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<template>
+    <popup :visible.sync='visible' :height="showReason ? 778+keyHeight : 661+keyHeight">
+        <view class="reportContainer" :style="{height:showReason?`${778+keyHeight}rpx`:`${661+keyHeight}rpx`}">
+            <view class="title">
+                <text class="title_text">{{tp==1?"举报直播":"举报回放"}}</text>
+            </view>
+            <view class="menuContainer" v-if="!showReason">
+                <view class="menuItem" v-for="(item, index) in reason_tp_list" @click="choice(item)" :key="index">
+                    <text class="menuItem_text">{{ item.label }}</text>
+                </view>
+            </view>
+            <view class="reasonContainer" v-else>
+                <text class="reason_title">举报原因</text>
+                <view class="reason_choiceedContainer">
+                    <text class="select_reason">{{selectReason.label}}</text>
+                    <text class="reset" @click="showReason = false,selectReason={},reason=''">重选</text>
+                </view>
+                <text class="reason_title">举报描述</text>
+                <textarea :maxlength="-1" v-model="reason" class="reason_input_block" :adjust-position="false"></textarea>
+            </view>
+            <view class="submitContainer">
+                <view class="submit" @click="submit">
+                    <text class="submit_text">提交</text>
+                </view>
+            </view>
+        </view>
+        <!-- <fixdInput :keyHeight='keyHeight' :showInput.sync='showInput' @keyValueChange='keyValueChange'/> -->
+    </popup>
+    
+</template>
+<script>
+import popup from "./popup.nvue";
+import fixdInput from "./fixdInput.nvue";
+const app = getApp().globalData.app;
+const reason_tp_list = [
+    {
+        label: "违法违禁",
+        value: 1
+    },
+    {
+        label: "淫秽色情",
+        value: 2
+    },
+    {
+        label: "引导线下转账",
+        value: 3
+    },
+    {
+        label: "录像/盗播",
+        value: 4
+    },
+    {
+        label: "暴力、赌博",
+        value: 5
+    },
+    {
+        label: "敏感信息",
+        value: 6
+    },
+    {
+        label: "诱导刷礼",
+        value: 7
+    },
+    {
+        label: "侮辱谩骂",
+        value: 8
+    },
+    {
+        label: "其他",
+        value: 100
+    }
+]
+export default {
+    components: {
+        popup,
+        fixdInput
+    },
+    props: {
+        visible: {
+            type: Boolean,
+            default: false
+        },
+        keyHeight: {
+            type: Number,
+            default: -2
+        },
+        tp:{
+            type: Number,
+            default: 1
+        }
+
+    },
+    watch: {
+        visible: function (val) {
+            if (!val) {
+                this.$emit("update:visible", val);
+                this.showInput = false
+            }
+            // if (val && !this.goodsList.length) this.getGoodsList();
+        },
+        keyHeight:function(val){
+            console.log(val);
+        }
+    },
+    mounted() {
+    },
+    data() {
+        return {
+            showInput: false,
+            reason_tp_list,
+            showReason: false,
+            selectReason:{},
+            reason:null
+        };
+    },
+
+    methods: {
+        choice(item) {
+            this.showReason = true
+            this.selectReason=item
+        },
+        submit(){
+            if(!this.selectReason.value||!this.reason){
+                uni.showToast({
+                    title:"请完善举报信息",
+                    icon:"none"
+                })
+                return
+            }
+            app.http.Post("funcApi/brodcast/third/1001/room/report/"+this.$parent.roomID,{
+                tp:this.tp,
+                reason_tp:this.selectReason.value,
+                reason:this.reason
+            },(res)=>{
+                uni.showToast({
+                    title:"举报成功"
+                })
+                this.$emit("update:visible", false);
+            })
+        }
+    }
+};
+</script>
+<style >
+.reportContainer {
+    width: 750rpx;
+    background-color: #13121a;
+    position: relative;
+    height: 661rpx;
+}
+
+.reportContainer_reason {
+    height: 778rpx;
+}
+
+.title {
+    width: 750rpx;
+    height: 102rpx;
+    border-bottom: 1rpx solid rgba(232, 232, 232, .18);
+    align-items: center;
+    justify-content: center;
+}
+
+.title_text {
+    font-size: 32rpx;
+    font-family: PingFangSC;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.menuContainer {
+    padding: 0rpx 25rpx;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 37rpx;
+    /* padding-bottom: 110rpx; */
+}
+
+.menuItem {
+    width: 219rpx;
+    height: 72rpx;
+    background: #949494;
+    border-radius: 3rpx;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 26rpx;
+}
+
+.menuItem_text {
+    font-size: 25rpx;
+    font-family: PingFangSC;
+    font-weight: 500;
+    color: #FFFFFF;
+}
+
+.submitContainer {
+    width: 750rpx;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 20rpx;
+}
+
+.submit {
+    width: 702rpx;
+    height: 92rpx;
+    background: #FF404D;
+    border-radius: 5rpx;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.submit_text {
+    font-size: 33rpx;
+    font-family: PingFangSC;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.reasonContainer {
+    padding: 0rpx 25rpx;
+    margin-top: 31rpx;
+}
+
+.reason_title {
+    font-size: 23rpx;
+    font-family: PingFangSC;
+    font-weight: 300;
+    color: #C0C0C0;
+}
+
+.reason_choiceedContainer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20rpx;
+    margin-bottom: 14rpx;
+}
+
+.select_reason {
+    font-size: 25rpx;
+    font-family: PingFangSC;
+    font-weight: 400;
+    color: #FFFFFF;
+}
+
+.reset {
+    font-size: 25rpx;
+    font-family: Adobe Heiti Std;
+    font-weight: normal;
+    color: #FA1545;
+}
+
+.reason_input_block {
+    height: 242rpx;
+    background: #FFFFFF;
+    border-radius: 3rpx;
+    margin-top: 13rpx;
+    font-size: 24rpx;
+    padding: 10rpx;
+}
+</style>

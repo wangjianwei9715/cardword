@@ -1,49 +1,65 @@
 <template>
   <view class="full">
-    <video :src="decodeURIComponent(playBackData.media_url)" @click='showControls=!showControls'
-      :style='{height:screenHeight+"px"}' class='video' id='video' ref='video' show-play-btn='false'
+    <video :src="decodeURIComponent(playBackData.media_url)" @click='showControls = !showControls'
+      :style='{ height: screenHeight + "px" }' class='video' id='video' ref='video' show-play-btn='false'
       :show-center-play-btn="false" object-fit='cover' controls='false' @timeupdate='timeupdate' autoplay='true'
-      @play='onPlay=true' @ended='onPlay=false' @pause='onPlay=false'></video>
+      @play='onPlay = true' @ended='onPlay = false' @pause='onPlay = false'></video>
 
     <web-view class='webView' ref='webView'
-      :style="{height:(hasNotchInScreen&&deviceInfo.platform=='ios')?iosHeight:deviceInfo.screenHeight}"
-      @click='showControls=!showControls' :webview-styles="webviewStyles" @onPostMessage="handleMessage"
+      :style="{ height: (hasNotchInScreen && deviceInfo.platform == 'ios') ? iosHeight : deviceInfo.screenHeight }"
+      @click='showControls = !showControls' :webview-styles="webviewStyles" @onPostMessage="handleMessage"
       :src="webViewUrl" />
-    <image class='close' src='../../static/live/v2/close.png' :style="{top:76+statusBarHeight+'rpx'}" @click='nvBack' />
+    <image class='close' src='../../static/live/v2/close.png' :style="{ top: 76 + statusBarHeight + 'rpx' }" @click='nvBack' />
     <!-- :style="{bottom:100+safeAreaBottomHeight+'rpx'}" -->
 
 
-    <view class='merchant' :style="{top:56+statusBarHeight+'rpx'}" @click='toMerchant'>
+    <view class='merchant' :style="{ top: 56 + statusBarHeight + 'rpx' }" @click='toMerchant'>
       <image :src='decodeURIComponent(merchantMessage.logo)' class='merchant_avatar' mode='aspectFill' />
       <view class='merchant_name'>
-        <text class='merchant_name_text'>{{merchantMessage.name}}</text>
-        <text class='merchant_name_like'>{{roomLikeNum}}本场点赞</text>
+        <text class='merchant_name_text'>{{ merchantMessage.name }}</text>
+        <text class='merchant_name_like'>{{ roomLikeNum }}本场点赞</text>
       </view>
     </view>
-    <view class="control" :style="{bottom:38+safeAreaBottomHeight+'rpx'}" :class='{opacity:!showControls}'>
+    <view class="control" :style="{ bottom: 38 + safeAreaBottomHeight + 'rpx' }" :class='{ opacity: !showControls }'>
       <image v-if='!onPlay' class="play" src='../../static/live/v2/play.png' @click='onClickPlay' />
       <image v-if='onPlay' class="stop" src='../../static/live/v2/stop.png' @click='onClickPlay' />
-      <text class='videoTime'>{{getCountDownTimeHour(videoTime.currentTime)}}</text>
+      <text class='videoTime'>{{ getCountDownTimeHour(videoTime.currentTime) }}</text>
       <view class="canTouchProgress" id='canTouchProgress' @touchstart='progressTouchStart' @click='progressClick'
         @touchmove='progressMove' @touchend='progressTouchCancle'>
         <view class='progressLine'></view>
         <view class="progress" ref='progress'>
-          <view class="progress-play" :style='{width:progressWidth}'></view>
+          <view class="progress-play" :style='{ width: progressWidth }'></view>
           <view class="progress-dot"></view>
         </view>
       </view>
 
-      <text class='videoTime' style='margin-right:4rpx'>{{getCountDownTimeHour(videoTime.duration)}}</text>
-      <text class='Rate' v-if="rightTagShow" @click='changeRate'>{{rateOption[rateOptionIndex]}}x</text>
+      <text class='videoTime' style='margin-right:4rpx'>{{ getCountDownTimeHour(videoTime.duration) }}</text>
+      <text class='Rate' v-if="rightTagShow" @click='changeRate'>{{ rateOption[rateOptionIndex] }}x</text>
     </view>
-    <view class="rightContainer" v-if="rightTagShow" :style="{bottom:120+safeAreaBottomHeight+'rpx'}">
-      <view class="rightIcon" @click="shareShow=true">
+    <view class="rightContainer" v-if="rightTagShow" :style="{ bottom: 120 + safeAreaBottomHeight + 'rpx' }">
+      <!-- <view class="rightIcon" @click="shareShow=true">
         <image style="width: 42rpx;height: 37rpx;" src="../../static/live/v2/share.png" mode="scaleToFill" />
+      </view> -->
+      <view class="rightIcon" @click="showTools=true">
+        <image style="width: 45rpx;height: 10rpx;" src="../../static/live/v2/dot.png" mode="scaleToFill" />
       </view>
-      <view class="rightIcon" @click="showGoods" :class="{none:liveType==1}">
+      <view class="rightIcon" @click="showGoods" :class="{ none: liveType == 1 }">
         <image style="width: 50rpx;height: 49rpx;" src="../../static/live/goods.png" mode="scaleToFill" />
       </view>
     </view>
+    <popup :visible.sync='showTools' :height="140">
+        <view class="toolsContainer">
+          <view class="toolItem" @click="shareShow=true">
+            <image class="img" style="width: 42rpx;height: 37rpx;" src="../../static/live/v2/share.png" mode="scaleToFill"></image>
+            <text class="toolItem_text">分享</text>
+          </view>
+          <view class="toolItem" @click="reportShow=true">
+            <image class="img" style="width: 42rpx;height: 40rpx;" src="../../static/live/v2/report.png" mode="scaleToFill"></image>
+            <text class="toolItem_text">举报</text>
+          </view>
+        </view>
+    </popup>
+    <report :visible.sync='reportShow' :tp="2" :keyHeight="keyHeight"></report>
     <nvueShare :visible.sync='shareShow' :shareData='shareData'></nvueShare>
   </view>
 </template>
@@ -52,10 +68,14 @@
 import request from "@/net/nuveRequest";
 import nvueShare from "./components/nvueShare.nvue";
 import { Md5 } from "ts-md5";
+import popup from "./components/popup.nvue"
+import report from "./components/report.nvue"
 const app = getApp().globalData.app;
 export default {
   components: {
-    nvueShare
+    nvueShare,
+    popup,
+    report
   },
   //   nvueShare
   // },
@@ -64,7 +84,9 @@ export default {
       playBackData: {
         media_url: ""
       },
+      showTools:false,
       shareShow: false,
+      reportShow:false,
       webViewUrl: app.playBackWebView,
       // app.liveWebView,
       webView: null,
@@ -112,7 +134,8 @@ export default {
       stringData: '',
       playCode: "",
       rightTagShow: true,
-      liveType:0,
+      liveType: 0,
+      keyHeight:0,
     };
   },
   onReady() { },
@@ -148,7 +171,11 @@ export default {
           })
           .exec();
       }, 500);
+      uni.onKeyboardHeightChange(this.keyBoardHeightChange);
     });
+  },
+  beforeDestroy(){
+    uni.offKeyboardHeightChange(this.keyBoardHeightChange);
   },
   computed: {
     progressWidth() {
@@ -248,6 +275,14 @@ export default {
         }
       });
     },
+    keyBoardHeightChange(obj) {
+      let _heightDiff =
+        this.deviceInfo.screenHeight - this.deviceInfo.windowHeight;
+      let _diff = obj.height - _heightDiff;
+      // 键盘高度
+      let height = (_diff > 0 ? _diff : 0) - 2;
+      this.keyHeight = height;
+    },
     showRightTag(bol) {
       this.rightTagShow = bol
     },
@@ -283,10 +318,10 @@ export default {
           res => {
             this.goodCode = res.data.goodCode
             this.roomLikeNum = res.data.likeNum
-            this.liveType=res.data.type
-            this.merchantMessage.alias=res.data.merchantAlias
-            this.merchantMessage.name=res.data.mechantName
-            this.merchantMessage.logo=res.data.merchantLogo
+            this.liveType = res.data.type
+            this.merchantMessage.alias = res.data.merchantAlias
+            this.merchantMessage.name = res.data.mechantName
+            this.merchantMessage.logo = res.data.merchantLogo
             this.setShareData(res.data);
           },
           err => {
@@ -431,9 +466,10 @@ export default {
 </script>
 
 <style>
-.none{
-  opacity:0;
+.none {
+  opacity: 0;
 }
+
 .full {
   /* background-color: black; */
   position: fixed;
@@ -462,7 +498,7 @@ export default {
   height: 73rpx;
   /* background: rgba(0, 0, 0, .28); */
   border-radius: 50%;
-  margin-top: 30rpx;
+  /* margin-top: 20rpx; */
   align-items: center;
   justify-content: center;
 }
@@ -643,5 +679,23 @@ export default {
   color: #fffefe;
   /* justify-content: center;
   text-align: center; */
+}
+.toolsContainer{
+  width: 750rpx;
+  height: 180rpx;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding:30rpx 80rpx;
+  align-items: center;
+  justify-content: flex-start;
+}
+.toolItem{
+  align-items: center;
+  margin-right: 90rpx;
+}
+.toolItem_text{
+  font-size: 24rpx;
+  color: #fff;
+  margin-top: 20rpx;
 }
 </style>

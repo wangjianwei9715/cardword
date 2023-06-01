@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-03-24 13:35:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-05-16 15:04:43
+ * @LastEditTime: 2023-06-01 16:15:47
  * @FilePath: \card-world\src\pages\act\portable\exhibition\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,8 @@
         </view>
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
         <view class="swiper">
-            <u-swiper imgMode="aspectFit" bgColor="#000" height="750rpx" :interval="3000" radius="1rpx" :list="pics" @click="onClickSwiper"></u-swiper>
+            <u-swiper imgMode="aspectFit" bgColor="#000" height="750rpx" :interval="3000" radius="1rpx" :list="pics"
+                @click="onClickSwiper"></u-swiper>
         </view>
         <view class="contentContainer">
             <view class="title">{{ formData.title || "获取中" }}</view>
@@ -40,9 +41,9 @@
                 @touchstart="touchAction($event, item, {}, index, false)"
                 @touchend="touchAction($event, item, {}, index, false)">
                 <view class="comBlock" :id="`commId_${item.id}`" :class="{
-                    heightLight_an: queryParams.noteCommentId && item.id == queryParams.noteCommentId && isScrollEnd,
-                    hold: onClickTap && touchId == item.id
-                }">
+                        heightLight_an: queryParams.noteCommentId && item.id == queryParams.noteCommentId && isScrollEnd,
+                        hold: onClickTap && touchId == item.id
+                    }">
                     <muqian-lazyLoad class="avatar"
                         :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
                         borderRadius="50%" />
@@ -65,9 +66,9 @@
                     @touchstart.stop="touchAction($event, son, item, sonIndex, true)"
                     @touchend.stop="touchAction($event, son, item, sonIndex, true)" @click.stop="onClickCom(item, son)"
                     v-for="(son, sonIndex) in item.lower" :class="{
-                        heightLight_an: queryParams.noteCommentId && son.id == queryParams.noteCommentId && isScrollEnd,
-                        hold: onClickTap && touchId == son.id
-                    }">
+                            heightLight_an: queryParams.noteCommentId && son.id == queryParams.noteCommentId && isScrollEnd,
+                            hold: onClickTap && touchId == son.id
+                        }">
                     <muqian-lazyLoad class="avatar"
                         :src="son.avatar ? $parsePic(decodeURIComponent(son.avatar)) : defaultAvatar" borderRadius="50%" />
                     <view class="rightWrap">
@@ -149,7 +150,7 @@
             </view>
         </template>
         <view class="safeBottom"></view>
-        <u-overlay :zIndex="1000" :opacity="0.4" :show="focus&&keyBoardHeigh>0" @click="inputHide"></u-overlay>
+        <u-overlay :zIndex="1000" :opacity="0.4" :show="focus && keyBoardHeigh > 0" @click="inputHide"></u-overlay>
         <view class="trueFixInput" :class="{ pointerAuto: keyBoardHeigh > 0 }"
             :style="{ bottom: 0, transform: `translateY(-${keyBoardHeigh}px)`, opacity: keyBoardHeigh > 0 ? 1 : 0 }">
             <textarea confirm-type="send" class="input" type="text" :placeholder="inputPlaceholder" :adjust-position="false"
@@ -167,8 +168,10 @@ import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import { formatNumber, getDateDiff } from "@/tools/util"
+import { comment_reason_tp } from "@/tools/DataExchange"
 @Component({})
 export default class ClassName extends BaseNode {
+    comment_reason_tp = comment_reason_tp
     id: any = null
     isMy: boolean = false
     defaultAvatar: any = app.defaultAvatar
@@ -272,7 +275,8 @@ export default class ClassName extends BaseNode {
             this.lontapTimer && clearTimeout(this.lontapTimer)
             this.lontapTimer = setTimeout(() => {
                 console.log("按住了0.7s");
-                if (item.host || this.isMy) this.longtapCom(item, fatherItem, index, isSon)
+                // if (item.host || this.isMy) this.longtapCom(item, fatherItem, index, isSon) 
+                this.longtapCom(item, fatherItem, index, isSon)
             }, 700)
             this.tapTimer = setTimeout(() => {
                 this.onClickTap = true
@@ -286,21 +290,27 @@ export default class ClassName extends BaseNode {
         console.log("longtapCom", item);
         this.touchId = item.id
         this.longtapItem = item
+        let buttons = [
+            {
+                title: "举报"
+            }
+        ]
+        if (item.host || this.isMy) buttons.push({ title: '删除' })
         //#ifdef APP-PLUS
         app.platform.UIClickFeedBack()
         plus.nativeUI.actionSheet(
             {
                 cancel: "取消",
-                buttons: [
-                    {
-                        title: "删除"
-                    }
-                ]
+                buttons,
             },
             (e: any) => {
+                if (e.index == 0) return
                 this.touchId = 0
                 this.onClickTap = false
-                if (e.index == 1) {
+                const title: string = buttons[e.index - 1].title
+                if (title == "举报") {
+                    this.pickUpActionSheet(item)
+                } else if (title == "删除") {
                     this.delCom(item, fatherItem, index, isSon)
                 }
             }
@@ -313,6 +323,34 @@ export default class ClassName extends BaseNode {
     }
     nonAction() {
         return
+    }
+    pickUpActionSheet(item:any) {
+        //#ifdef APP-PLUS
+        plus.nativeUI.actionSheet({
+            cancel: "取消",
+            buttons: this.comment_reason_tp.map((item: any) => {
+                return {
+                    title: item.label
+                }
+            })
+        },(e:any)=>{
+            if (e.index==0) return
+            const value=this.comment_reason_tp[e.index-1].value
+            if (!value || !item.id){
+                uni.showToast({
+                    title:"举报失败",
+                    icon:"none"
+                })
+                return
+            }
+            app.http.Post("comment/report/"+item.id,{tp:2,reason_tp:value},(res:any)=>{
+                uni.showToast({
+                    title:"举报成功",
+                    icon:"none"
+                })
+            })
+        })
+        //#endif
     }
     onClickFakerInput() {
         if (this.sayContent == "") {
@@ -387,8 +425,8 @@ export default class ClassName extends BaseNode {
                             const findIndex = this.topComIds.findIndex((id: number) => id == item.id)
                             if (findIndex >= 0) this.topComIds.splice(findIndex, 1)
                             const delNum = 1 + (item.lower ? item.lower.length : 0) + item.remainNum
-                            this.formData.commentNum-=delNum
-                            this.commList.splice(index,1)
+                            this.formData.commentNum -= delNum
+                            this.commList.splice(index, 1)
                             // setTimeout(() => {
                             //     this.queryParams.fetchFrom = 1
                             //     this.getCommByWorks()

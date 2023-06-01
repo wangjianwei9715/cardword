@@ -207,4 +207,42 @@ export const mallStatusMap: any = {
     "-2": "支付已取消",
     "-3":"已退款"
 }
+export const comment_reason_tp:any=[
+    {
+        label:"站外导流",
+        value:1
+    },
+    {
+        label:"违法违规",
+        value:2
+    },
+    {
+        label:"色情低俗",
+        value:3
+    },
+    {
+        label:"广告",
+        value:4
+    },
+    {
+        label:"不友善、引战",
+        value:5
+    },
+    {
+        label:"时政不实信息",
+        value:6
+    },
+    {
+        label:"涉未成年人",
+        value:7
+    },
+    {
+        label:"内容不相关",
+        value:8
+    },
+    {
+        label:"其他",
+        value:100
+    }
+]
 
