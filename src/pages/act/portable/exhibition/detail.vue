@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-03-24 13:35:49
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-01 16:15:47
+ * @LastEditTime: 2023-06-02 09:37:25
  * @FilePath: \card-world\src\pages\act\portable\exhibition\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -304,12 +304,12 @@ export default class ClassName extends BaseNode {
                 buttons,
             },
             (e: any) => {
-                if (e.index == 0) return
                 this.touchId = 0
                 this.onClickTap = false
+                if (e.index == 0) return
                 const title: string = buttons[e.index - 1].title
                 if (title == "举报") {
-                    this.pickUpActionSheet(item)
+                    this.pickUpActionSheet(item) 
                 } else if (title == "删除") {
                     this.delCom(item, fatherItem, index, isSon)
                 }
