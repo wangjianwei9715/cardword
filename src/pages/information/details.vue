@@ -122,6 +122,13 @@
 		// 提交评论或回复
 		onChatConfirm(content:string){
 			console.log('评论内容：',content);
+			if (!content){
+				uni.showToast({
+					title:"请输入评论内容",
+					icon:"none"
+				})
+				return
+			}
 			app.platform.hasLoginToken(()=>{
 				const data = this.chatData;
 				const url = data.replyId == 0 ? `article/comment/issue/${this.code}` : `article/reply/comment/${data.replyId}`;
