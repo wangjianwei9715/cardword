@@ -10,7 +10,7 @@
 					<tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
 				</view>
 			</template>
-		</navigationBar>
+		</navigationbar>
 		<view class="box-content">
 			<givingCardList :codeList="codeList" :type="tabCheck" />
 		</view>

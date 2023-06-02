@@ -4,7 +4,7 @@
 			<template slot="right">
         <view class="icon-share" @click="onClickKef"></view>
 			</template>
-		</navigationBar>
+		</navigationbar>
     <template v-if='(merchantHelloState == 0)'>
       <view class="title" style="margin-top: 30rpx;">入驻流程</view>
       <view class="step-content">

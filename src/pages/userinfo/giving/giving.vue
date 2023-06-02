@@ -4,7 +4,7 @@
 			<template slot="right">
 				<view class="icon-help" @click="onClickShowRule"></view>
 			</template>
-		</navigationBar>
+		</navigationbar>
 		<view class="box-content">
 			<statusbar/>
 			<view class="box-index">

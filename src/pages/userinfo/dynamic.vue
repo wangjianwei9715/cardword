@@ -4,7 +4,7 @@
 			<template slot="right">
 				<view v-if="bucketName == 'trade'" class="header-likes" @click="onClickReadAll">一键已读</view>
 			</template>
-		</navigationBar>
+		</navigationbar>
 		<view class="dynamic-content">
 			<view class="dynamic-item" @click="onClickDynamic(index,item.pagePath,item.msgId)"
 				v-for="(item,index) in dynamicData" :key="item.msgId">

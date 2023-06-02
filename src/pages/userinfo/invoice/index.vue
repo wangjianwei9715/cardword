@@ -4,7 +4,7 @@
 			<template slot="right">
 				<view class="icon-kf" @click="onClickHeliService"></view>
 			</template>
-		</navigationBar>
+		</navigationbar>
 		<view class="box-content">
 			<view class="invoice-box" v-for="(item,index) in invoiceList" :key="index">
 				<view class="box-top">

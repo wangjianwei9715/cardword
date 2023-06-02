@@ -13,7 +13,7 @@
 					<sortTab v-if="typeTabCurrent==2&&sortData!=''" :sortData="sortData" @postSort="postSort" />
 				</view>
 			</template>
-		</navigationBar>
+		</navigationbar>
 		<view class="box-content" :class="{'pa180':typeTabCurrent==1||sortData==''}">
 			<view class="card-list" v-show="cardList.length>0" v-for="(item,index) in cardList" :key="index">
 				<!-- <view class="order-code">

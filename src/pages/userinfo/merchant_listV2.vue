@@ -4,7 +4,7 @@
 			<template slot="right">
                 <view class="icon-share" @click="onClickSearch"></view>
 			</template>
-		</navigationBar>
+		</navigationbar>
         <view class="topBanner" @click.stop="toMerchantJoin"></view>
         <view style="background-color: #fff;padding-top: 40rpx;">
             <template v-if="onLiveList&&onLiveList.length">
