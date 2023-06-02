@@ -786,6 +786,9 @@ export default class PlatformManager {
 		});
 		return isEmpty;
 	}
+	currentTimestamp():number{
+		return Math.round(+new Date() / 1000);
+	}
 	isPullDown(isPull:boolean) {
 		//#ifdef APP-PLUS
 		//获取当前 Webview 窗口对象

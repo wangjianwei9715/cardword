@@ -109,6 +109,7 @@
         width: 100%;
         position: relative;
         box-sizing: border-box;
+		padding-top: 20rpx;
     }
 	.box-index{
 		width: 100%;
@@ -123,6 +124,7 @@
 		padding:30rpx 30rpx 15rpx 30rpx;
 		background: #FFFFFF;
 		border-radius: 5rpx;
+		margin:0 auto;	
 		margin-bottom: 14rpx;
 		.box-top{
 			width: 100%;

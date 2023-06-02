@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-15 13:37:37
+ * @LastEditTime: 2023-06-02 11:04:26
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -54,26 +54,11 @@
           @touchend.prevent="picTouchEnd"
 				>
           <view v-if="item.index == 0" class="movable-box dangban" ></view>
-          <view v-else-if="item.index==cardData.step+1&&animationStart"></view>
-          <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==cardData.step+1&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="animationStart=false">
-            <view class="movable-box movable-box-gold">
-              <view class="movable-pic-bg"></view>
-              <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
-              <image class="movable-pic" :src="item.newPic||defultPic" @error="parseImage()"/>
-              <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
-            </view>
+          <view v-else-if="item.index==nextStep(1)&&animationStart"></view>
+          <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==nextStep(1)&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="animationStart=false">
+            <cardBox :item="item" :defultPic="defultPic" @errorPic="parseImage()"/>
           </animationCard>
-					<view 
-            v-else 
-            class="movable-box"
-            :class="[(item.index == cardData.step + 1)&&item.color=='gold'?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
-          >
-            <view ></view>
-            <view class="movable-pic-bg"></view>
-            <view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
-            <image class="movable-pic" :src="item.newPic||defultPic" @error="parseImage()"/>
-            <view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
-          </view>
+          <cardBox v-else :item="item" :defultPic="defultPic" :animation="(item.index==nextStep(1))&&item.color=='gold'" @errorPic="parseImage()"/>
 				</movable-view>
 			</movable-area>
       
@@ -122,8 +107,9 @@
   import music from './components/music/music.vue'
   import scene from './components/scene/scene.vue'
   import animationCard from './components/animationCard/animationCard.vue'
+  import cardBox from './components/cardBox/cardBox.vue'
   @Component({
-    components:{music,scene,animationCard}
+    components:{music,scene,animationCard,cardBox}
   })
 	export default class ClassName extends BaseNode {
     parsePic = parsePic;
@@ -179,7 +165,7 @@
     }
     public get showList(): Array<any|DarwCard.Code>{
       const endNum = this.codeList.length;
-      const list = this.codeList.slice(this.cardData.step,Math.min(this.cardData.step+2,endNum));
+      const list = this.codeList.slice(this.cardData.step,Math.min(this.nextStep(2),endNum));
       return list
     }
     public get bgImage() : string {
@@ -189,7 +175,7 @@
         return `/static/drawCard/${this.sceneData.bg}.${this.animationSwitch?'gif':'jpg'}`
       }
       return _default
-    } 
+    }
     onLoad(query:any){
       this.fitCardPosition();
       this.initEvent(query)
@@ -203,6 +189,9 @@
     }
     onClickBack(){
       uni.navigateBack({delta:1})
+    }
+    nextStep(num:number){
+      return this.cardData.step + num;
     }
     fitCardPosition(){
       const { model, windowHeight, windowWidth } = app.platform.systemInfo;
@@ -339,7 +328,7 @@
       }
     }
     drawerDataSort(){
-      const data:any = this.codeList.slice(1,this.cardData.step+1);
+      const data:any = this.codeList.slice(1,this.nextStep(1));
       if(this.drawerData.check == 2){
         data.sort((a:DarwCard.Code, b:DarwCard.Code) => {
           if(b.number === 0 || a.number === 0){
@@ -377,9 +366,6 @@
           },100)
         }
       });
-    }
-    ifNameTooLong(name:string):boolean{
-      return name.length>8?true:false
     }
     
   }
@@ -524,127 +510,14 @@
     height: 795rpx;
   }
   .movable-box {
-    width: 528rpx;
-    height: 795rpx;
-    position: relative;
-  }
-  .movable-rc{
-    width: 80rpx;
-    height:80rpx;
-    position: absolute;
-    top:29rpx;
-    right:27rpx;
-    z-index: 2;
-  }
-  .icon-rc-blue{
-    background:url(@/static/drawCard/rc_blue.png) no-repeat center / 100% 100%;
-  }
-  .icon-rc-gold{
-    background:url(@/static/drawCard/rc_gold.png) no-repeat center / 100% 100%;
-  }
-  .movable-pic-bg{
-    width:508rpx;
-    height: 722rpx;
-    position: absolute;
-    top:8rpx;
-    right:10rpx;
-    background: url(@/static/drawCard/pic_bg_silver.png) no-repeat center / 100% 100%;
-    z-index: 1;
-  }
-  .movable-pic {
-    width:496rpx;
-    height:662rpx;
-    margin: 10rpx 0 0 16rpx;
-    position: relative;
-    z-index: 2;
-  }
-  .movable-name{
-    width: 484rpx;
-    box-sizing: border-box;
-    height: 96rpx;
-    text-align: center;
-    line-height: 90rpx;
-    color:#fff;
-    font-size: 41rpx;
-    font-family: PingFang SC;
-    font-weight: 600;
-    position: absolute;
-    z-index: 4;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    bottom:67rpx;
-    left:16rpx;
-    background: url(@/static/drawCard/card_b_silver.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-red .movable-name{
-    background: url(@/static/drawCard/card_b_red.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-blue .movable-name{
-    background: url(@/static/drawCard/card_b_blue.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-gold .movable-name{
-    background: url(@/static/drawCard/card_b_gold.png) no-repeat center / 100% 100%;
-  }
-  .long-name{
-    font-size: 34rpx;
-  }
+		width: 528rpx;
+		height: 795rpx;
+		position: relative;
+	}
   .dangban {
-    background: url("../../static/drawCard/card_dangban.png") no-repeat 8rpx 8rpx;
-    background-size: 513rpx 722rpx;
-  }
-  .movable-box-silver {
-    background: url(../../static/drawCard/card_silver.png) no-repeat center -30rpx;
-    background-size: 100% 100%;
-  }
-  .movable-box-red {
-    background: url(../../static/drawCard/card_red.gif) no-repeat center -30rpx;
-    background-size: 100% 100%;
-  }
-  .movable-box-blue{
-    background: url(../../static/drawCard/card_blue.gif) no-repeat center -30rpx;
-    background-size: 100% 100%;
-  }
-  .movable-box-gold {
-    background: url(../../static/drawCard/card_gold.gif) no-repeat center -30rpx;
-    background-size: 100% 100%;
-  }
-  .movable-box-red .movable-pic-bg{
-    background: url(@/static/drawCard/pic_bg_red.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-blue .movable-pic-bg{
-    background: url(@/static/drawCard/pic_bg_blue.png) no-repeat center / 100% 100%;
-  }
-  .movable-box-gold .movable-pic-bg{
-    background: url(@/static/drawCard/pic_bg_gold.png) no-repeat center / 100% 100%;
-  }
-  .container{
-    animation-name:container; 
-    animation-duration:1s; /*动画时间*/
-  }
-
-  @keyframes container{
-    0%,
-    100%,
-    20%,
-    50%,
-    80% {
-    transition-timing-function: cubic-bezier(0.215,.61,.355,1); /*贝塞尔曲线 ： X1 Y1 X2 Y2*/
-    transform: translate3d(0,0,0); /*设置只在Z轴上移动*/
-    }
-    40%,
-    43%{
-    transition-timing-function: cubic-bezier(0.755,0.50,0.855,0.060);
-    transform: translate3d(0,-30px,0);
-    }
-    70%{
-    transition-timing-function: cubic-bezier(0.755,0.050,0.855,0.060);
-    transform: translate3d(0,-15px,0);
-    }
-    90%{
-    transform: translate3d(0,-3px,0);
-    }
-  }
+		background: url(@/static/drawCard/card_dangban.png) no-repeat 8rpx 8rpx;
+		background-size: 513rpx 722rpx;
+	}
   .bottom-box{
     width: 524rpx;
     position: fixed;
