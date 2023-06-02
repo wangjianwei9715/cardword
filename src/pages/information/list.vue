@@ -8,7 +8,7 @@
       <template slot="bottom">
         <u-tabs :list="tabData.list" :current="tabData.current" :itemStyle="tabData.itemStyle" :activeStyle="tabData.activeStyle" :inactiveStyle="tabData.inactiveStyle" :lineWidth="0" @click="onClickListTabs"></u-tabs>
       </template>
-		</navigationBar>
+		</navigationbar>
 
     <view class="live-content">
       <swiper v-show="tabData.current==0 && AD_List!=''" class="swiper" autoplay="true" circular="true" indicator-active-color="#ffffff">

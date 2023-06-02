@@ -3,7 +3,7 @@
 		<navigationbar title="详情" :shareData="shareData"/>
 		
 		<view class="index">
-			<comments :articleData="articleData" :commentsList="commentsList" :isFetchEnd="commentParams.isFetchEnd" @reply="onReply" @moreComments="onMoreComments"/>
+			<comments ref="comments" :articleData="articleData" :commentsList="commentsList" :isFetchEnd="commentParams.isFetchEnd" @reply="onReply" @moreComments="onMoreComments"/>
 		</view>
 		
 		<commentsTabbar :data="articleData" :commentNum="articleData.comment" :show="chatData.focus" @comment="onReply" @chat="onReply"/>
@@ -65,6 +65,12 @@
 		}
 		onClickBack(){
 			uni.navigateBack({ delta: 1 });
+		}
+		onPageScroll() {
+			//@ts-ignore
+			this.$refs.comments.tapTimer && clearTimeout(this.$refs.comments.tapTimer)
+			//@ts-ignore
+			this.$refs.comments.lontapTimer && clearTimeout(this.$refs.comments.lontapTimer)
 		}
 		// 获取资讯详情
 		getArticleDetail(){

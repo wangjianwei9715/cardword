@@ -42,7 +42,8 @@
 									<text class="descAuthor">{{ item.author }}</text>
 								</view>
 								<text class="userName">{{ item.title }}</text><!-- i={{i}} -->
-								<text class="words">{{ replaceText(decodeURIComponent(item.content)) }}</text><!-- k={{k}} -->
+								<text class="words">{{ replaceText(decodeURIComponent(item.content))
+								}}</text><!-- k={{k}} -->
 							</view>
 						</view>
 					</div>
@@ -96,12 +97,13 @@
 					</view>
 				</view>
 				<list ref="comList" v-if="showDetail" :show-scrollbar="false" :pagingEnabled="false" :scrollable="true"
-					@loadmore="getMoreComment" :loadmoreoffset="1">
+					@loadmore="getMoreComment" :loadmoreoffset="1" @scroll="listscroll">
 					<cell>
-						<vdetail style="padding-top: 20rpx;" :articleData="dataList[k] ? dataList[k] : {}" @reply="onReply">
+						<vdetail ref="vdetail" style="padding-top: 20rpx;" :articleData="dataList[k] ? dataList[k] : {}"
+							@reply="onReply">
 							<nTabbar v-if="showDetail" :data="dataList[k] ? dataList[k] : {}"
-								:commentNum="dataList[k] ? dataList[k].comment : 0" :deleteHeight="deleteHeight" :detail="true"
-								@comment="onReply"></nTabbar>
+								:commentNum="dataList[k] ? dataList[k].comment : 0" :deleteHeight="deleteHeight"
+								:detail="true" @comment="onReply"></nTabbar>
 						</vdetail>
 					</cell>
 				</list>
@@ -282,6 +284,12 @@ export default {
 		uni.$off('resetLoadmore');
 	},
 	methods: {
+		listscroll(e) {
+			//@ts-ignore
+			this.$refs.vdetail.tapTimer && clearTimeout(this.$refs.vdetail.tapTimer)
+			//@ts-ignore
+			this.$refs.vdetail.lontapTimer && clearTimeout(this.$refs.vdetail.lontapTimer)
+		},
 		upslideInit() {
 			this.upslideShow = uni.getStorageSync('upslideShow') !== false;
 			console.log('d-', uni.getStorageSync('upslideShow') !== false);
