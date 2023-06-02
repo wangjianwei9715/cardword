@@ -1,6 +1,6 @@
 <template>
   <view class="content">
-    <navigationBar title="资讯" :custom="true">
+    <navigationbar title="资讯" :custom="true">
 			<template slot="right">
 				<view class="icon-search" @click.prevent="onClickGoSearch"></view>
         <view class="icon-collect" @click.prevent="onClickMyCollect"></view>

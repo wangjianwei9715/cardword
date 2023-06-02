@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<navigationBar title="开票管理" :custom="true">
+		<navigationbar title="开票管理" :custom="true">
 			<template slot="right">
 				<view class="icon-kf" @click="onClickHeliService"></view>
 			</template>

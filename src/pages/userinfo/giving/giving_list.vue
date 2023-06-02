@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<navigationBar title="可赠送的卡密" :custom="true">
+		<navigationbar title="可赠送的卡密" :custom="true">
 			<template slot="right">
 				<view class="icon-search" @click="onClickSearch"></view>
 				<view class="icon-help" @click="onClickShowRule"></view>

@@ -55,12 +55,15 @@ export default class detailsManager {
 	 * @url			{String}	图标
 	 * @class		{String}	class名
 	 */
-    tipBtn: { [x: string]: any } = [{
-		id: 1,
-		name: '客服',
-		url: '../../static/goods/v2/icon_kefu.png',
-		class: 'kf'
-	}]
+    tipBtn: { [x: string]: any }[] = [
+		{
+			id: 1,
+			name: '客服',
+			url: '../../static/goods/v2/icon_kefu.png',
+			class: 'kf'
+		},
+		{ id: 2, name: '我的卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
+	]
 	/**
 	 * @operaData           {Object}    拼团形式随机方式等内容数据
 	 * @operaType 			{Int}   	玩法类型 1:拼团形式 2:随机方式

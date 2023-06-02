@@ -1,6 +1,6 @@
 <template>
 	<view class="content" >
-		<navigationBar title="详情" :shareData="shareData"/>
+		<navigationbar title="详情" :shareData="shareData"/>
 		
 		<view class="index">
 			<comments :articleData="articleData" :commentsList="commentsList" :isFetchEnd="commentParams.isFetchEnd" @reply="onReply" @moreComments="onMoreComments"/>

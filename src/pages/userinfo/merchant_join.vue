@@ -1,6 +1,6 @@
 <template>
   <view class="content">
-    <navigationBar title="商家入驻" :custom="true">
+    <navigationbar title="商家入驻" :custom="true">
 			<template slot="right">
         <view class="icon-share" @click="onClickKef"></view>
 			</template>

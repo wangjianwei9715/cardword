@@ -9,7 +9,7 @@
 -->
 <template>
 	<view class="content">
-		<navigationBar title='修改昵称' rightText='保存' @onClickRightText="onClickConfirm"/>
+		<navigationbar title='修改昵称' rightText='保存' @onClickRightText="onClickConfirm"/>
 
 		<view class="index">
 			<input maxlength="12" class="input" v-model="newName" placeholder="请输入昵称" />

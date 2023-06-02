@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-29 13:41:45
+ * @LastEditTime: 2023-06-02 16:22:53
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -18,7 +18,7 @@
 -->
 <template>
 	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
-		<navigationBar title="商品详情" :custom="true">
+		<navigationbar title="商品详情" :custom="true">
 			<template slot="right">
 				<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
 				<view class="icon-share" @click="onClickShare"></view>
@@ -268,7 +268,7 @@
 	import { parsePic,secondsFormat } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
 	const Manager =  detailsManager.getIns();
-	const shareData = { shareUrl: '', title: '', summary: '', thumb: '' }
+	class shareData { shareUrl:string =''; title:string =''; summary:string =''; thumb:string ='' }
 	@Component({})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
@@ -280,7 +280,7 @@
 		goodsSpe = goodDetailSpe;
 		shareObj = {
 			shareShow:false,
-			shareData:{...shareData}
+			shareData:new shareData()
 		};
 		buyRecordList:any = [];
 		goodsDesc:any = [];
@@ -289,7 +289,7 @@
 		countData = {...Manager.countData};
 		swiperData = {...Manager.swiperData};
 		picData = {...Manager.picData}
-		tipBtn = {...Manager.tipBtn};
+		tipBtn = [Manager.tipBtn[0]];
 		goodCode = '';
 		goodsData: any = [];
 		choiceTeamData = {...Manager.choiceTeamData};
@@ -347,12 +347,11 @@
 		}
 		// 数据详情赋值
 		getGoodData(cb?:Function) {
-			const { countData } = this;
 			const goodCode = this.goodCode;
-			clearInterval(countData.countInterval);
-			const ts = Math.floor(new Date().getTime()/1000);
+			clearInterval(this.countData.countInterval);
+			const ts = app.platform.currentTimestamp();
 			const params = {
-				ts:ts,
+				ts,
 				s:Md5.hashStr(`kww_good_sign_${goodCode}_${ts}_2022`)
 			}
 			app.http.Get(`dataApi/good/${goodCode}/detail`, params, (data: any) => {
@@ -366,19 +365,15 @@
 				this.payChannel = data.payChannel || [];
 				this.planData = Manager.detailsPlan(this.goodsData);
 				this.goodsDesc = Manager.setGoodsDesc(this.goodsData)
-				if (data.joined) {
-					this.tipBtn = [
-						{ id: 1, name: '客服', url: '../../static/goods/v2/icon_kefu.png', class: 'kf' }, 
-						{ id: 2, name: '我的卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
-					]
-				}
-				if((data.good.bit & 128) == 128){
+				data.joined && (this.tipBtn = Manager.tipBtn)
+				const { bit, state, leftsec, overAt, startAt } = data.good;
+				if((bit & 128) == 128){
 					app.http.Get(`dataApi/good/${goodCode}/chedui`,{},(res:any)=>{
 						this.cheduiData = res
 					})
 				}
 				// 倒计时
-				countData.countDown = data.good.state == 0? ( data.good.leftsec - (data.good.overAt - data.good.startAt)): data.good.leftsec;
+				this.countData.countDown = state == 0 ? (leftsec-(overAt-startAt)) : leftsec;
 				this.getGoodsImage();
 				this.getCountDown();
 				this.getGoodsSpe();
@@ -404,17 +399,16 @@
 			})
 		}
 		getProgress() {
-			app.http.Get(`dataApi/good/${this.goodCode}/progress`, {}, (res: any) => {
-				const { data } = res;
+			app.http.Get(`dataApi/good/${this.goodCode}/progress`, {}, ({data}:any) => {
 				this.goodsData.currentNum = data.currentNum;
 				this.goodsData.totalNum = data.totalNum;
 				this.goodsData.lockNum = data.lockNum;
 			})
 		}
 		reqSeriesCards() {
-			app.http.Get(`dataApi/cardCheck/good/rarityCard/list/${this.goodCode}`, {}, (res: any) => {
-				this.cardList = res.list || []
-				this.seriesCardEnd = !( res.list && res.list.length>0)
+			app.http.Get(`dataApi/cardCheck/good/rarityCard/list/${this.goodCode}`, {}, ({list}: any) => {
+				this.cardList = list || []
+				this.seriesCardEnd = !( list && list.length>0)
 			})
 		}
 		/**
@@ -503,9 +497,9 @@
 			})
 		}
 		onClickAllCard(data ? : any) {
-			const gooData = this.goodsData
-			let url = `/pages/goods/all_good_card?code=${gooData.goodCode}&type=${gooData.pintuan_type}`;
-			uni.navigateTo({ url: data ? `${url}&teamId=${data.id}` : url })
+			const { goodCode, pintuan_type} = this.goodsData;
+			const url = `/pages/goods/all_good_card?code=${goodCode}&type=${pintuan_type}${data?`&teamId=${data.id}`:''}`;
+			uni.navigateTo({ url })
 		}
 		onClickNiceTime(){
 			app.platform.hasLoginToken(()=>{
@@ -515,14 +509,14 @@
 		// 分享
 		onClickShare() {
 			const { shareObj } = this;
-			const { goodsData } = this;
+			const { goodCode, title, pic} = this.goodsData;
 			if (!shareObj.shareShow) {
 				if (shareObj.shareData.shareUrl == '') {
 					shareObj.shareData = {
-						shareUrl: `share/h5/#/pages/goods/goods_details?id=${goodsData.goodCode}`,
-						title: goodsData.title,
-						summary: goodsData.title,
-						thumb: goodsData.pic.thumb||this.picData.carousel[0]
+						shareUrl: `share/h5/#/pages/goods/goods_details?id=${goodCode}`,
+						title,
+						summary: title,
+						thumb: pic.thumb||this.picData.carousel[0]
 					}
 				}
 				shareObj.shareShow = true
@@ -709,49 +703,35 @@
 		}
 		// 加入购物车
 		joinCart() {
-			const { choiceTeamData } = this;
-			if (choiceTeamData.branchData[choiceTeamData.branchCheckIndex].soldOut) {
-				uni.showToast({
-					title: '该商品已售罄',
-					icon: 'none'
-				})
-				return;
-			}
-			if (choiceTeamData.branchData[choiceTeamData.branchCheckIndex].lock) {
-				uni.showToast({
-					title: '该商品暂时不能支付',
-					icon: 'none'
-				})
+			const item = this.choiceTeamData.branchData[this.choiceTeamData.branchCheckIndex];
+			if (item.soldOut || item.lock) {
+				uni.showToast({ title: item.soldOut?'该商品已售罄':'该商品暂时不能支付', icon: 'none' })
 				return;
 			}
 			app.http.Post(`good/select/cart/${this.goodCode}/add`, {
-				id: [choiceTeamData.branchData[choiceTeamData.branchCheckIndex].id]
+				id: [item.id]
 			}, (res: any) => {
 				this.getGoodSelectCart()
 			})
 		}
 		onClickSettlement() {
-			const { choiceTeamData } = this;
-			if (choiceTeamData.cartData.available == 0) return;
-			const params = `&cart=${encodeURIComponent(JSON.stringify(choiceTeamData.cartData))}`;
+			const { cartData } = this.choiceTeamData;
+			if (cartData.available == 0) return;
+			const params = `&cart=${encodeURIComponent(JSON.stringify(cartData))}`;
 			this.navigateToConfirmOrder(params)
 			this.onClickTeamCheckCancel()
 		}
 		// 包队
 		onClickBaodui() {
-			const { choiceTeamData } = this;
-			let price = this.getBranchPrice(choiceTeamData.branchData)
-			const teamCheckData = choiceTeamData.teamData[choiceTeamData.teamCheckIndex];
+			const { branchData, teamData, teamCheckIndex} = this.choiceTeamData;
+			let price = this.getBranchPrice(branchData)
+			const teamCheckData = teamData[teamCheckIndex];
 			const params = `&baodui=${teamCheckData.id}&price=${price}&baoduiName=${teamCheckData.name}`;
 			this.navigateToConfirmOrder(params)
 			this.onClickTeamCheckCancel()
 		}
 		getBranchPrice(list: any) {
-			let price = 0;
-			for (let i in list) {
-				price += list[i].price
-			}
-			return price;
+			return list.reduce((total:number, item:any) => total + item.price, 0);
 		}
 		// 购买剩余随机
 		onClickBuyRandomGood() {

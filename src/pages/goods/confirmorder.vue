@@ -235,37 +235,36 @@ export default class ClassName extends BaseNode {
   cuokaOpne = false;
   AD_id=null
   onLoad(query: any) {
-    if (!query.data) return;
-    this.AD_id = query.AD_id ?? null; 
-    this.goodsData = JSON.parse(query.data); 
-    this.payChannel = JSON.parse(query.payChannel);
+    const { data, AD_id, payChannel, payRandomPrice, baodui, price, baoduiName, cart, payRandomTeam, selectRanId, randomPrice } = query;
+    if (!data) return;
+    this.AD_id = AD_id ?? null; 
+    this.goodsData = JSON.parse(data); 
+    this.payChannel = JSON.parse(payChannel);
     // 剩余随机
-    if (query.payRandomPrice) {
-      this.payRandomPrice = query.payRandomPrice;
-      this.goodsData.price = query.payRandomPrice;
+    if (payRandomPrice) {
+      this.payRandomPrice = payRandomPrice;
+      this.goodsData.price = payRandomPrice;
     }
     // 包队
-    if (query.baodui) {
-      this.baoduiId = Number(query.baodui);
-      this.goodsData.price = query.price;
-      this.baoduiName = query.baoduiName;
+    if (baodui) {
+      this.baoduiId = Number(baodui);
+      this.goodsData.price = price;
+      this.baoduiName = baoduiName;
     }
     // 购物车
-    if (query.cart) {
-      this.cartData = JSON.parse(query.cart);
+    if (cart) {
+      this.cartData = JSON.parse(cart);
     }
     // 选队随机
-    if(query.payRandomTeam){
-      this.payRandomTeamData = JSON.parse(query.payRandomTeam)
+    if(payRandomTeam){
+      this.payRandomTeamData = JSON.parse(payRandomTeam)
     }
-    if(query.selectRanId){
-      this.selectRanId = Number(query.selectRanId);
-      this.goodsData.price = Number(query.randomPrice);
+    if(selectRanId){
+      this.selectRanId = Number(selectRanId);
+      this.goodsData.price = Number(randomPrice);
     }
-    this.getOnePrice();
-    
     this.maxNum =  this.goodsData.totalNum -(this.goodsData.currentNum + this.goodsData.lockNum);
-
+    this.getOnePrice();
     this.getNoRichShow();
     app.http.Get("me/delivery", {}, (res: any) => {
       if (res.list) {
@@ -310,9 +309,9 @@ export default class ClassName extends BaseNode {
   }
   // 优惠金额
   public get freeDiscount() {
-    const freePrice = this.freeNum >= this.moneyNum ? this.moneyNum * this.goodsData.price : this.freeNum * this.goodsData.price;
+    const freePrice = this.freeNum >= this.moneyNum ? this.moneyNum * this.goodsData.price : this.freeNum * this.onePrice;
     const subPrice = (this.moneyNum - this.freeNum) * (this.goodsData.price - this.onePrice);
-    return this.keepTwoDecimal(this.freeNum > 0 ? (freePrice >= subPrice ? freePrice : subPrice) : subPrice);
+    return this.keepTwoDecimal(this.freeNum > 0 ? (freePrice+subPrice) : subPrice);
   }
   // 预测免单
   public get getBitDisableGuess() : boolean {
@@ -403,18 +402,14 @@ export default class ClassName extends BaseNode {
   }
 
   getOnePrice() {
-    if (this.goodsData.discount) {
-      if (this.moneyNum < this.goodsData.discount[0].minNum) {
-        this.onePrice = this.goodsData.price;
-      } else {
-        for (let i in this.goodsData.discount) {
-          if (this.moneyNum >= this.goodsData.discount[i].minNum) {
-            this.onePrice = this.goodsData.discount[i].price;
-          }
+    const { price, discount } = this.goodsData;
+    this.onePrice = price;
+    if(discount){
+      discount.forEach((x:any)=>{
+        if(this.moneyNum >= x.minNum){
+          this.onePrice = x.price;
         }
-      }
-    } else {
-      this.onePrice = this.goodsData.price;
+      })
     }
     this.conditionList()
   }

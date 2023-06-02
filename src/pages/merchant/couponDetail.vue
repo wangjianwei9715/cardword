@@ -1,6 +1,6 @@
 <template>
     <view class='content' @click="clickTagIndex=-1">
-        <navigationBar :title="goodCode?'指定商品券':'店铺通用券'" rightText='新建'
+        <navigationbar :title="goodCode?'指定商品券':'店铺通用券'" rightText='新建'
             @onClickRightText="onClickRightText" />
         <view class="goodsContainer" v-if="goodCode">
             <image class="good-image" :src="parsePic(decodeURIComponent(logo))" mode="aspectFill" />
