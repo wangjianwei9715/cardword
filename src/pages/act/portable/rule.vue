@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <navigationBar title="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward" />
+        <navigationbar title="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward" />
         <view class="descriptionContainer">
             <view class="des_title">
                 积分榜单：

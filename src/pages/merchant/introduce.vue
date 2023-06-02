@@ -1,6 +1,6 @@
 <template>
     <view class='content'>
-        <navigationBar title="店铺简介" rightText='完成' @onClickRightText="onClickRightText" />
+        <navigationbar title="店铺简介" rightText='完成' @onClickRightText="onClickRightText" />
 
         <view class="inputContainer flexCenter">
             <u--textarea v-model='brief_intr' style="height: 90%;" confirmType='done' @confirm="onClickRightText"

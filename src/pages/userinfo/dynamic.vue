@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<navigationBar title="消息" :custom="true">
+		<navigationbar title="消息" :custom="true">
 			<template slot="right">
 				<view v-if="bucketName == 'trade'" class="header-likes" @click="onClickReadAll">一键已读</view>
 			</template>

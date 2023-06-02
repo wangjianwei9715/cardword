@@ -16,7 +16,6 @@
 		<view :style="{ height: 88 + 'rpx', paddingTop: statusBarHeight + 'px' }"></view>
 		<share v-if='shareData' :operationShow="operationShow" :shareData="shareData"  @operacancel="onClickShareCancel"></share>
 	</view>
-	
 </template>
 
 <script lang="ts">

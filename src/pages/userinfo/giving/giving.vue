@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<navigationBar title="确认赠送" :custom="true">
+		<navigationbar title="确认赠送" :custom="true">
 			<template slot="right">
 				<view class="icon-help" @click="onClickShowRule"></view>
 			</template>

@@ -9,7 +9,7 @@
 -->
 <template>
 	<view class="content">
-		<navigationBar title='个性签名' rightText='保存' @onClickRightText="onClickConfirm"/>
+		<navigationbar title='个性签名' rightText='保存' @onClickRightText="onClickConfirm"/>
 		<textarea class="initiate-desc" :maxlength='100' v-model="newSign" placeholder="请输入个性签名..." />
 
 	</view>
