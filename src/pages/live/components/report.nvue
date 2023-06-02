@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-05-31 17:43:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-01 15:21:28
+ * @LastEditTime: 2023-06-02 16:20:54
  * @FilePath: \card-world\src\pages\live\components\report.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -24,7 +24,7 @@
                     <text class="reset" @click="showReason = false,selectReason={},reason=''">重选</text>
                 </view>
                 <text class="reason_title">举报描述</text>
-                <textarea :maxlength="-1" v-model="reason" class="reason_input_block" :adjust-position="false"></textarea>
+                <textarea :maxlength="150" v-model="reason" class="reason_input_block" :adjust-position="false"></textarea>
             </view>
             <view class="submitContainer">
                 <view class="submit" @click="submit">
@@ -103,11 +103,13 @@ export default {
             if (!val) {
                 this.$emit("update:visible", val);
                 this.showInput = false
+            }else{
+                this.showReason=false
+                this.reason=""
             }
             // if (val && !this.goodsList.length) this.getGoodsList();
         },
         keyHeight:function(val){
-            console.log(val);
         }
     },
     mounted() {

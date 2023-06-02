@@ -333,7 +333,7 @@ color: #E6A44F;">{{ clickPack.tips == '您已抢过红包了' ? `${clickPack.poi
     <nvueShare :visible.sync='shareShow' :shareData='shareData'></nvueShare>
     <report :visible.sync='reportShow' :keyHeight='keyHeight' />
     <u-overlay :show="reportTipsShow" :opacity="0.4" :duration="0">
-      <view class="violationContainer">
+      <view class="violationContainer" :style="{height:deviceInfo.screenHeight}">
         <view class="violation">
           <text class="violation_title">违规提醒</text>
           <text class="violation_text">{{reportReasionTips}}</text>
