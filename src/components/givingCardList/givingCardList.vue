@@ -18,30 +18,22 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import BaseComponent from "@/base/BaseComponent.vue";
 import { dateFormatMSHMS } from "@/tools/util";
+import { app } from "@/app";
 @Component({})
 export default class ClassName extends BaseComponent {
-  @Prop({
-    default: [],
-  })
-  codeList: any;
-  @Prop({
-    default: 1,
-  })
-  type: number|undefined;
-  dateFormatMSHMS = dateFormatMSHMS;
-  
-  created() {
-    //在实例创建完成后被立即调用
-  }
-  mounted() {
-    
-  }
-  onClickGivingOrder(item:any){
-	  uni.navigateTo({
-		  url:'/pages/userinfo/order_details?code='+item.orderCode
-	  })
-  }
-  
+	@Prop({
+		default: [],
+	})
+	codeList: any;
+	@Prop({
+		default: 1,
+	})
+	type: number|undefined;
+	dateFormatMSHMS = dateFormatMSHMS;
+	onClickGivingOrder(item:any){
+		app.navigateTo.goOrderDetails(item.orderCode)
+	}
+
 }
 </script>
 

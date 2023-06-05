@@ -155,19 +155,12 @@
 			this.againReqNewData();
 		}
 		onClickOrder(code: any) {
-			uni.navigateTo({
-				url: "/pages/userinfo/order_details?code=" + code,
-			});
+			app.navigateTo.goOrderDetails(code)
 		}
 		onClickOperate(item: any, cmd: any) {
-			let code = item.code;
-			let params: {
-				[x: string]: any
-			};
+			const { code } = item;
 			if (cmd == "view") {
-				uni.navigateTo({
-					url: "/pages/userinfo/order_details?code=" + code,
-				});
+				this.onClickOrder(code)
 			} else if (cmd.indexOf("wuliu") != -1) {
 				let wuliucode = cmd.slice(6);
 				uni.navigateTo({
@@ -207,10 +200,7 @@
 					content: "是否确认已经收货？",
 					success: (res) => {
 						if (res.confirm) {
-							params = {
-								code: code,
-							};
-							app.http.Post("me/order/buyer/receive_good", params, (res: any) => {
+							app.http.Post("me/order/buyer/receive_good", {code}, (res: any) => {
 								uni.showToast({
 									title: "收货成功",
 									icon: "none",
@@ -227,10 +217,7 @@
 					content: "是否取消支付该订单？",
 					success: (res) => {
 						if (res.confirm) {
-							params = {
-								code: code,
-							};
-							app.http.Post("me/order/buyer/cancel", params, (res: any) => {
+							app.http.Post("me/order/buyer/cancel", {code}, (res: any) => {
 								uni.showToast({
 									title: "取消成功",
 									icon: "none",
@@ -248,10 +235,7 @@
 					content: "是否删除该订单？",
 					success: (res) => {
 						if (res.confirm) {
-							params = {
-								code: code,
-							};
-							app.http.Post("me/order/buyer/delete_order", params, (res: any) => {
+							app.http.Post("me/order/buyer/delete_order", {code}, (res: any) => {
 								uni.showToast({
 									title: "删除成功",
 									icon: "none",
