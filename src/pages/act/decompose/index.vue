@@ -9,7 +9,7 @@
 					<tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
 				</view>
 			</template>
-		</navigationBar>
+		</navigationbar>
 		<view class="box-content">
 			<view class="box-index" v-for="(item,index) in goodsList" :key="index" @click="onClickCardList(item)">
 				

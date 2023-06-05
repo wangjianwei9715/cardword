@@ -21,7 +21,7 @@
 				@touchstart="touchAction($event, item, {}, index, false)"
 				@touchend="touchAction($event, item, {}, index, false)">
 				<view class="chat-item">
-					<muqian-lazyLoad class="chat-avatar" :src="decodeURIComponent(item.avatar)" :borderRadius="'50%'" />
+					<muqian-lazyLoad class="chat-avatar" :src="item.avatar?decodeURIComponent(item.avatar):defaultAvatar" :borderRadius="'50%'" />
 					<view style="width:470rpx">
 						<view class="chat-info">
 							<view class="chat-name">{{ item.name }}</view>
@@ -38,7 +38,7 @@
 				<view class="chat-item son-item" v-for="(son, x) in item.lower" :key="x"
 					@touchstart="touchAction($event, son, item, x, true)"
 					@touchend="touchAction($event, son, item, x, true)">
-					<muqian-lazyLoad class="son-avatar" :src="decodeURIComponent(son.avatar)" :borderRadius="'50%'" />
+					<muqian-lazyLoad class="son-avatar" :src="son.avatar?decodeURIComponent(son.avatar):defaultAvatar" :borderRadius="'50%'" />
 					<view style="width:390rpx">
 						<view class="chat-info son-info">
 							<view class="chat-name">{{ son.name }}</view>
@@ -83,6 +83,7 @@ export default class ClassName extends BaseComponent {
 
 	contentArr: any = [];
 	videoArr: any = [];
+	defaultAvatar: any = app.defaultAvatar
 	@Watch('articleData')
 	onWatchArticleData(val: any) {
 		if (val) {
