@@ -599,9 +599,7 @@ export default class ClassName extends BaseNode {
     })
   }
   redirectToOrder(order:string){
-    uni.redirectTo({
-      url: `/pages/userinfo/order_details?code=${order}&waitPay=true`,
-    });
+    app.navigateTo.goOrderDetails(order,'&waitPay=true',true)
   }
   // 选择优惠券
   onClickCheckCoupon() {

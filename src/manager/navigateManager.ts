@@ -22,6 +22,19 @@ export default class navigateManager {
 		})
 	}
 	/**
+	 * 跳转订单详情
+	 * @param orderCode 订单编号 
+	 * @param orther   额外参数   &a=b
+	 * @param redirect  重定向 默认false
+	 */
+	goOrderDetails(orderCode:string,orther='',redirect=false){
+		if(!orderCode) return;
+		const _NavigateTo = redirect ? uni.redirectTo : uni.navigateTo
+		_NavigateTo({
+			url: `/pages/userinfo/order_details?code=${orderCode}${orther}`,
+		});
+	}
+	/**
 	 * 跳转资讯详情
 	 * @param item 	 资讯信息
 	 * @param type   资讯类型 视频资讯需要 广告位传100
