@@ -18,8 +18,8 @@
 		<view class="chat-content" v-show="articleData.comment > 0">
 			<view class="chat-header">{{ articleData.comment }}条评论</view>
 			<view class="chat-box" v-for="(item, index) in commentsList" :key="index"
-				@touchstart="touchAction($event, item, {}, index, false)"
-				@touchend="touchAction($event, item, {}, index, false)">
+				@touchstart="touchAction($event, item)"
+				@touchend="touchAction($event, item)">
 				<view class="chat-item">
 					<muqian-lazyLoad class="chat-avatar" :src="item.avatar?decodeURIComponent(item.avatar):defaultAvatar" :borderRadius="'50%'" />
 					<view style="width:470rpx">
@@ -36,8 +36,8 @@
 					</view>
 				</view>
 				<view class="chat-item son-item" v-for="(son, x) in item.lower" :key="x"
-					@touchstart="touchAction($event, son, item, x, true)"
-					@touchend="touchAction($event, son, item, x, true)">
+					@touchstart="touchAction($event, son)"
+					@touchend="touchAction($event, son)">
 					<muqian-lazyLoad class="son-avatar" :src="son.avatar?decodeURIComponent(son.avatar):defaultAvatar" :borderRadius="'50%'" />
 					<view style="width:390rpx">
 						<view class="chat-info son-info">

@@ -128,7 +128,7 @@
 		// 提交评论或回复
 		onChatConfirm(content:string){
 			console.log('评论内容：',content);
-			if (!content){
+			if (!content||!content.replace(/\s/g,"")){
 				uni.showToast({
 					title:"请输入评论内容",
 					icon:"none"

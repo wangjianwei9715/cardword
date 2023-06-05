@@ -23,7 +23,7 @@
 				<view :class="['icon-collect',{'icon-favored':favorType}]" @click="onClickFavor"></view>
 				<view class="icon-share" @click="onClickShare"></view>
 			</template>
-		</navigationBar>
+		</navigationbar>
 		<!-- 商品图片价格 -->
 		<view class="pic-content">
 			<swiper class="swiper" :current="swiperData.swiperCurrent" autoplay="true" circular="true"
