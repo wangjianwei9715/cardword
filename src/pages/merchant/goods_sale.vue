@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-02-07 10:41:22
+ * @LastEditTime: 2023-06-06 10:49:44
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -31,7 +31,7 @@
                 <view class="item-rank">权重：{{item.rank}}位</view>
                 <view class="item-btn-box">
                     <view class="item-btn btn-details" @click="goGoodsDetails(item.goodCode)">详情</view>
-                    <view class="item-btn btn-extract" @click="onClickShowUpWeight(item)">提权</view>
+                    <view class="item-btn btn-extract" @click="onClickShowUpWeight(item.goodCode)">提权</view>
                 </view>
             </view>
         </view>
@@ -90,9 +90,9 @@
                 if (cb) cb();
             });
         }
-        onClickShowUpWeight(item:any){
-            app.http.Get('me/shop/equitycard/list',{pageIndex:1,pageSize:10},(res:any)=>{
-                this.goodCode = item.goodCode;
+        onClickShowUpWeight(goodCode:string){
+            app.http.Get('me/shop/equitycard/list',{goodCode,pageIndex:1,pageSize:10},(res:any)=>{
+                this.goodCode = goodCode;
                 this.short_description = res.short_description;
                 this.monthly_cards = res.monthly_cards
                 this.equitycard = res.list.map((x:any)=>{
