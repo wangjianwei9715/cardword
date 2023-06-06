@@ -197,6 +197,10 @@ export const mallStateMap: any = {
     },
     "-1": {
         tip: "等待支付完成"
+    },
+    "-2":{
+        tip: "奖品发放失败",
+        userTip: '奖品发放失败'
     }
 }
 export const mallStatusMap: any = {
