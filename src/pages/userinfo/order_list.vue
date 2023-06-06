@@ -8,7 +8,7 @@
 				</view>
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" v-model="searchText" placeholder="搜索" confirm-type="search"
+					<input class="search-input" type="text" v-model="listParams.q" placeholder="搜索" confirm-type="search"
 						@confirm="onInputSearch" />
 				</view>
 			</view>
@@ -35,41 +35,41 @@
 		Component
 	} from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
+	const OperateMap:{[x:string]:any} = {
+		"receive_good":{
+			content:'是否确认已经收货？',
+			url:'me/order/buyer/receive_good',
+			toast:'收货成功'
+		},
+		"cancel":{
+			content:'是否取消支付该订单？',
+			url:'me/order/buyer/cancel',
+			toast:'取消成功'
+		},
+		"buy_delete_order":{
+			content:'是否删除该订单？',
+			url:'me/order/buyer/delete_order',
+			toast:'删除成功'
+		},
+	}
 	@Component({})
 	export default class ClassName extends BaseNode {
-		searchText = "";
-		orderTab = [{
-				id: 0,
-				name: "全部"
-			},
-			{
-				id: 1,
-				name: "待支付"
-			},
-			{
-				id: 2,
-				name: "已付款"
-			},
-			{
-				id: 3,
-				name: "待发货"
-			},
-			{
-				id: 4,
-				name: "待收货"
-			},
-			{
-				id: 5,
-				name: "已完成"
-			},
+		orderTab = [
+			{ id: 0, name: "全部" },
+			{ id: 1, name: "待支付" },
+			{ id: 2, name: "已付款" },
+			{ id: 3, name: "待发货" },
+			{ id: 4, name: "待收货" },
+			{ id: 5, name: "已完成" }, 
 		];
 		orderTabCheck = 0;
-		currentPage = 1;
-		pageSize = 20;
-		noMoreData = false;
-		orderList: {
-			[x: string]: any
-		} = [];
+		listParams = {
+			q:'',
+			pageIndex:1,
+			pageSize:20,
+			noMoreData:false
+		}
+		orderList: { [x: string]: any } = [];
 		showPayMent = false;
 		countTime = 0;
 		payItem = {
@@ -93,8 +93,8 @@
 		}
 		//   下拉刷新
 		onPullDownRefresh() {
-			this.currentPage = 1;
-			this.noMoreData = false;
+			this.listParams.pageIndex = 1;
+			this.listParams.noMoreData = false;
 			this.reqNewData(() => {
 				uni.stopPullDownRefresh();
 			});
@@ -115,42 +115,36 @@
 		}
 		reqNewData(cb ? : Function) {
 			// 获取更多商品
-			if (this.noMoreData) {
-				return;
-			}
-			let params: {
-				[x: string]: any
-			} = {
+			const { q, noMoreData, ...rest } = this.listParams;
+			if (noMoreData) return;
+
+			const params = {
 				tp: this.orderTabCheck,
-				pageIndex: this.currentPage,
-				pageSize: this.pageSize,
-			};
-			if (this.searchText != "") {
-				params.q = encodeURIComponent(this.searchText);
+				...rest,
+				q:encodeURIComponent(q)
 			}
 			app.http.Get("me/order/buyer/orderList", params, (data: any) => {
-				if (this.currentPage == 1) this.orderList = [];
+				if (rest.pageIndex == 1) this.orderList = [];
 				if (data.list) {
 					this.showEmpty = false;
 					this.orderList = this.orderList.concat(data.list);
 				}
-				if (!data.list && this.currentPage == 1) {
+				if (!data.list && rest.pageIndex == 1) {
 					this.showEmpty = true;
 				}
-				if (!data.list || data.list.length < this.pageSize) {
-					this.noMoreData = true;
+				if (!data.list || data.list.length < rest.pageSize) {
+					this.listParams.noMoreData = true;
 				}
-				this.currentPage++;
+				this.listParams.pageIndex++;
 				if (cb) cb();
 			});
 		}
 		againReqNewData() {
-			this.currentPage = 1;
+			this.listParams.pageIndex = 1;
 			this.orderList = [];
-			this.noMoreData = false;
+			this.listParams.noMoreData = false;
 			this.reqNewData();
 		}
-
 		onInputSearch() {
 			this.againReqNewData();
 		}
@@ -158,101 +152,54 @@
 			app.navigateTo.goOrderDetails(code)
 		}
 		onClickOperate(item: any, cmd: any) {
-			const { code } = item;
+			const { code:orderCode, zitiWuliuExplain="", good, leftSec, num=0, price=0 } = item;
 			if (cmd == "view") {
-				this.onClickOrder(code)
+				this.onClickOrder(orderCode)
 			} else if (cmd.indexOf("wuliu") != -1) {
 				let wuliucode = cmd.slice(6);
 				uni.navigateTo({
-					url: `/pages/userinfo/order_logistics?code=${wuliucode}&zitiWuliuExplain=${item.zitiWuliuExplain || ""}`,
+					url: `/pages/userinfo/order_logistics?code=${wuliucode}&zitiWuliuExplain=${zitiWuliuExplain}`,
 				});
 			}
 			if (cmd == "toPay") {
-				this.payChannel = item.good.payChannel;
-				this.countTime = item.leftSec;
-				this.payItem.num = Number(item.num);
-				this.payItem.code = code;
-				this.payItem.price = item.price;
+				this.payChannel = good.payChannel;
+				this.countTime = leftSec;
+				this.payItem = {
+					num:Number(num),
+					code:orderCode,
+					price
+				}
 				this.showPayMent = true;
 			}
 			if (cmd == "appraise") {
 				uni.navigateTo({
-					url: "/pages/userinfo/orderevaluate?code=" +
-						code +
-						"&data=" +
-						decodeURIComponent(JSON.stringify(item.good)),
+					url:`/pages/userinfo/orderevaluate?code=${orderCode}&data=${decodeURIComponent(JSON.stringify(good))}`
 				});
 			}
 			if (cmd == "resultCard") {
-				let random = item.good.state > 0 ? true : false;
 				uni.navigateTo({
-					url: "/pages/userinfo/goods_result_list?chooseIds=1&code=" +
-						item.good.goodCode +
-						"&order=" +
-						item.code +
-						"&random=" +
-						random,
+					url:`/pages/userinfo/goods_result_list?chooseIds=1&code=${good.goodCode}&order=${orderCode}&random=${good.state>0}`
 				});
 			}
-			if (cmd == "receive_good") {
+			if (["receive_good","cancel","buy_delete_order"].includes(cmd)) {
+				const data = OperateMap[cmd];
 				uni.showModal({
 					title: "提示",
-					content: "是否确认已经收货？",
+					content: data.content,
 					success: (res) => {
 						if (res.confirm) {
-							app.http.Post("me/order/buyer/receive_good", {code}, (res: any) => {
-								uni.showToast({
-									title: "收货成功",
-									icon: "none",
-								});
+							app.http.Post(data.url, {code:orderCode}, (res: any) => {
+								uni.showToast({ title: data.toast, icon: "none", });
 								this.againReqNewData();
 							});
-						} else if (res.cancel) {}
-					},
-				});
-			}
-			if (cmd == "cancel") {
-				uni.showModal({
-					title: "提示",
-					content: "是否取消支付该订单？",
-					success: (res) => {
-						if (res.confirm) {
-							app.http.Post("me/order/buyer/cancel", {code}, (res: any) => {
-								uni.showToast({
-									title: "取消成功",
-									icon: "none",
-								});
-								this.againReqNewData();
-							});
-						} else if (res.cancel) {}
-					},
-				});
-			}
-
-			if (cmd == "buy_delete_order") {
-				uni.showModal({
-					title: "提示",
-					content: "是否删除该订单？",
-					success: (res) => {
-						if (res.confirm) {
-							app.http.Post("me/order/buyer/delete_order", {code}, (res: any) => {
-								uni.showToast({
-									title: "删除成功",
-									icon: "none",
-								});
-								this.againReqNewData();
-							});
-						} else if (res.cancel) {}
+						}
 					},
 				});
 			}
 		}
 		onClickBack() {
-			uni.navigateBack({
-				delta: 1,
-			});
+			app.navigateTo.navigateBack()
 		}
-
 		onClickListTabs(id: number) {
 			if (id == this.orderTabCheck) {
 				return;
@@ -266,17 +213,14 @@
 			this.showPayMent = false;
 			this.againReqNewData();
 		}
-		onClickPayGoods(data: any) {
+		onClickPayGoods({channelId="",channel}: any) {
 			// 1：支付宝 2：微信
-			if (data == "") {
-				return;
-			}
-			uni.showLoading({
-				title: "加载中",
-			});
+			if (channel == "")  return;
+
+			uni.showLoading({ title: "加载中" });
 			let params: any = {
-				channelId: data.channelId ? data.channelId : "",
-				channel: data.channel,
+				channelId,
+				channel,
 				delivery: 0,
 				num: this.payItem.num,
 			};
@@ -285,7 +229,7 @@
 			}
 			app.http.Post("order/topay/" + this.payItem.code, params, (res: any) => {
 				//data.channel=='alipay' (before)
-				if (['alipay','alipay_h5'].includes(data.channel)) {
+				if (['alipay','alipay_h5'].includes(channel)) {
 					this.clickToPay = true;
 					uni.hideLoading();
 					app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo);

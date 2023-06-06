@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="box-content">
 		<navigationSearch :navigatetoTitle="'该商品的卡密'" :searchText="searchText" :searchEmit="searchEmit"/>
 		<statusbar/>
 		<view class="header-banner" >
@@ -10,7 +10,7 @@
 		</view>
 		<view class="card-box">
 			<view class="card-index" v-for="(items,indexs) in cardList" :key="indexs">
-				<text class="index-left" :selectable="true" :class="{'bingo-name':items.bingo}" v-html="getNameReward(items.name)"></text>
+				<text class="index-left" :selectable="true" :class="{'bingo-name':items.bingo}">{{getNameReward(items.name)}}</text>
 				<view  class="index-right" :class="{'winning-card':items.state==2}" @click="onClickLookCard(items)">
 					{{items.content}}
 				</view>
@@ -168,7 +168,7 @@
 		margin-bottom: 20rpx;
 	}
 	
-	.content{
+	.box-content{
 		width: 100%;
 		box-sizing:border-box;
 		padding-top: 108rpx;
