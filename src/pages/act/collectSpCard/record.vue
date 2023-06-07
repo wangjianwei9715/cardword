@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 14:33:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-26 15:08:37
+ * @LastEditTime: 2023-06-05 15:11:53
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -13,6 +13,16 @@
 			<tabc :tabc="tabData" :tabsCheck="tabCheck" @tabsClick="onClickListTabs"></tabc>
 		</view>
 		<empty v-show="empty" />
+
+		<u-modal :show="wuliu.show" title="填写物流信息" :showConfirmButton="false">
+			<view slot="default">
+				<view>{{wuliu.data}}</view>
+				<view>
+					<view class="give-button" @click="onClickAddress">修改地址</view>
+					<view class="give-button">确认赠送</view>
+				</view>
+			</view>
+		</u-modal>
 	</view>
 </template>
 
@@ -21,8 +31,8 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	const urlMap:{[key:number]:string} = {
-		1:'me/cabinet/card/deliver/list',
-		2:'me/cabinet/card/deliver/list'
+		1:'activity/teka/award/record',
+		2:'activity/teka/collect/record'
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -38,12 +48,32 @@
 		}
 		list = [];
 		empty = false;
+		wuliu = {
+			show:true,
+			data:{}
+		}
         onLoad(query:any) {
-			this.reqNewData() 
+			this.reqNewData();
+			app.http.Get("me/delivery", {}, (res: any) => {
+				if (res.list) {
+					this.wuliu.data = res.list.find((x:any)=>x.default) || res.list[0];
+				}
+			});
+			this.onEventUI("addressSelect", (data) => {
+				this.wuliu.data = data.data;
+			});
 		}
 		//   加载更多数据
 		onReachBottom() {
 			this.reqNewData() 
+		}
+		onClickAddress() {
+			uni.navigateTo({
+				url: "/pages/userinfo/setting_addresses?type=act",
+			});
+		}
+		goOrder(orderCode:string){
+			app.navigateTo.goOrderDetails(orderCode)
 		}
 		onClickListTabs(id:number){
 			if(id==this.tabCheck){
