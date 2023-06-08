@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-05-20 14:38:51
+ * @LastEditTime: 2023-06-08 10:39:51
  * @FilePath: \jichao_app_2\src\pages\act\worldCup\rank.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -339,61 +339,6 @@ page {
             top: 48rpx;
             text-decoration: underline;
         }
-    }
-}
-
-.rank_tag {
-    display: flex;
-    color: #fff;
-    box-sizing: border-box;
-    // margin: 20rpx 0;
-    position: relative;
-    height: 110rpx;
-    width: inherit;
-
-    .tag_item {
-        width: 372rpx;
-        height: 110rpx;
-        background-size: 100% 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        color: #FFF6D6;
-        position: absolute;
-        justify-content: center;
-    }
-
-    .tag_item_select {
-        color: #F1075A;
-    }
-
-    .tag_title {
-        font-size: 33rpx;
-        font-family: PingFang SC;
-        font-weight: bold;
-    }
-
-    .tag_time {
-        font-size: 21rpx;
-        font-family: PingFang SC;
-    }
-
-    .tag_left {
-        left: 0;
-    }
-
-    .tag_left_noselect {
-        background-image: url("@/static/act/imm/leftSelect.png");
-        color: #F1075A;
-    }
-
-    .tag_right_noselect {
-        background-image: url("@/static/act/imm/rightSelect.png");
-        color: #F1075A;
-    }
-
-    .tag_right {
-        right: 0;
     }
 }
 
