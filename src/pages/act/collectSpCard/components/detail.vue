@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-07 17:52:02
+ * @LastEditTime: 2023-06-08 11:49:42
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -192,10 +192,9 @@
 			this.initGroupGiveNum()
 		}
 		giveCard(){
-			this.giveClose()
 			const { targetUserId } = this.giveData;
 			const list = this.groupDetail.filter((x:any)=> x.giveNum>0).map((x:any)=>{
-				return {tekaId:x.id,num:Number(x.giveNum)}
+				return {tekaId:x.id,num:x.giveNum}
 			})
 			app.http.Post(
 				`activity/teka/give`,
@@ -464,7 +463,7 @@
 		text-align: center;
 	}
 	.redfont{
-		color:#F63D47
+		color:#fa1545
 	}
 	.give-bottom{
 		position: fixed;

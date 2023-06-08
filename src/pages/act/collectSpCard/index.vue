@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-07 17:06:22
+ * @LastEditTime: 2023-06-08 09:22:16
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -87,7 +87,9 @@
 			
 		}
 		onShow(){
-			// this.getGroupList()
+			app.platform.hasLoginToken(()=>{
+				this.getGroupList()
+			})
 		}
 		onPullDownRefresh() {
 			// this.getGroupList((() => {
