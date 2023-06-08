@@ -1,25 +1,8 @@
 <template>
     <view class="content">
-        <view class="spRewardsContainer">
-            <view class="title">榜单奖励</view>
-            <view class="rewardsContainer">
-                <view class="rewardItem" v-for="(item, index) in awardList"
-                    :style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `14rpx` }">
-                    <muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic_url))" class="rewardImage"
-                        @click="prviewImages(item.pic_url)" borderRadius="3rpx">
-                    </muqian-lazyLoad>
-                    <view class="rewardRank">
-                        {{ (item.start_rank == item.end_rank) ? `第${item.start_rank}名` :
-                            `第${item.start_rank}-${item.end_rank}名`
-                        }}
-                    </view>
-                    <view class="rewardName u-line-1">
-                        {{ item.name }}
-                    </view>
-                </view>
-            </view>
+        <navigationbar title="规则说明" rightText="奖励预览" rightFont="12" @onClickRightText="onClickAward" />
+        <view class="descriptionContainer" v-html="ruleHtmlMap[activityTp] || ''">
         </view>
-
     </view>
 </template>
 
@@ -32,24 +15,51 @@ import { parsePic, dateFormatMSHMS } from '@/tools/util'
 export default class ClassName extends BaseNode {
     pointConfig: any = {}
     awardList: any = []
-    des: string =
-        `
-	活动期间，参与<text style="color:#FA1545">21-22one and one</text>拼团的用户，将根据拼团的类型获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
-	<br/>
-	活动截至<text style="color:#FA1545">入榜前50名</text>的用户将获得特殊奖励
-	<br/>
-	幸运大抽奖：<text style="color:#FA1545">排名前500名</text>的用户，平台将以直播的形式进行丰厚奖励抽取 
-	`
+    app = app
     luckList: any = [
-        // {pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png',name:'抽取10张100元券',rank:"第1-50名"},
-        // {pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686598531v77703ivaa.png',name:'抽取10张100元券',rank:"第1-200名"},
-        // {pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg',name:"抽取Select原盒一盒",rank:"第1-500名"}
     ]
-    wayList: any = []
+    activityTp: number = 0
+    ruleHtmlMap: any = {
+        7: `<view class="des_title">
+                积分榜单：
+            </view>
+            <br/>
+            <view class="des_content">
+                活动期间，参与【舒克球星卡社】拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
+                <br />
+                <br />
+                活动截至入<text style="color:red">榜前15</text>的用户将获得对应的名次奖励
+                <br />
+                <br />
+                <text style="color:red">*</text>进入积分解冻环节后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
+                <br />
+                <text style="color:red">*</text>榜单每30分钟更新一次<br>
+                <br />
+                <text style="color:red">*</text>积分倍数：积分单价比为1:1
+                <br />
+            </view>
+            <br />
+            <br />
+            <view class="des_title">
+                积分兑好礼：
+            </view>
+            <br/>
+            <view class="des_content">
+                活动期间内满3000积分即可兑换剃须刀1台
+                <image style="width:100%" src="../../static/act/merchantRank/shuke/txd.png"></image>
+                <br />
+                共计30台（先到先得每人限1次）
+                <br />
+                <br />
+                领取方式：查看商家主页联系商家客服领取
+            </view>
+            <br />
+            <view class="des_content">
+                发货说明：实物奖品商家将在活动结束后1-7天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系商家安排发货
+            </view>`
+    }
     onLoad(query: any) {
-        this.reqRewardList()
-        this.reqRewardListTwo()
-        this.reqRewardListWay()
+        if (query.activityTp) this.activityTp = +query.activityTp
     }
     onReachBottom() {
 
@@ -83,26 +93,9 @@ export default class ClassName extends BaseNode {
     }
     onClickAward() {
         uni.navigateTo({
-            url: "/pages/act/portable/award"
+            url: "/pages/act/merchantRank/publicAward?activityTp=" + this.activityTp
         })
     }
-    reqRewardList() {
-        app.http.Get('dataApi/selectRank/award/list', { way: 0, activityTp: 7 }, (res: any) => {
-            this.awardList = res.list || []
-
-        })
-    }
-    reqRewardListTwo() {
-        app.http.Get('dataApi/selectRank/award/list', { way: 1, activityTp: 7 }, (res: any) => {
-            this.luckList = res.list || []
-        })
-    }
-    reqRewardListWay() {
-        app.http.Get('dataApi/selectRank/award/list', { way: 2, activityTp: 7 }, (res: any) => {
-            this.wayList = res.list || []
-        })
-    }
-
 }
 </script>
 
@@ -118,7 +111,7 @@ page {
     height: 207rpx;
 }
 
-.descriptionContainer {
+.content ::v-deep .descriptionContainer {
     width: 710rpx;
     box-sizing: border-box;
     padding: 38rpx 30rpx 34rpx 30rpx;
