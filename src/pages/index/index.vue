@@ -119,7 +119,7 @@
 		capsule = {
 			pic:'../../static/index/v3/1.png',
 			// url:'/pages/act/imm/index?seriesId=20&roomId='
-			url:'/pages/act/portable/container?seriesId=29&roomId='
+			url:'/pages/act/collectSpCard/index'
 		}
 		hotList: { [x: string]: any } = indexHotList;
 		topAddList: any = [];

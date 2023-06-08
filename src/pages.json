@@ -145,6 +145,13 @@
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
+		},{
+			"path": "pages/forum/index",
+			"style": {
+				"navigationBarTitleText": "上传视频",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {
@@ -696,11 +703,13 @@
 				{
 					"path": "collectSpCard/index",
 					"style": {
-						"navigationStyle": "custom",
 						"navigationBarTitleText": "收集特卡",
 						"navigationBarBackgroundColor": "#ffffff",
+						"transparentTitle": "auto",
 						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
+						"enablePullDownRefresh": true,
+						"backgroundColorTop": "#201921", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#000", //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 						"app-plus": {
 							"bounce": "none"
 						}
