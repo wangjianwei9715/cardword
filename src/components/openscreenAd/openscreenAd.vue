@@ -5,7 +5,7 @@
 			<view class="winning-img"  :class="{'img-show':showImg}">
 				<muqian-lazyLoad @click="onClickGoGoods" class="img" :style="goodData.style || ''" :src="decodeURIComponent(goodData.pic_url)" />
 				<!-- 得物活动特殊处理 -->
-				<image @click="onClickGoGoods" src="@/static/act/dewu/adButton.png" style="width:400rpx;height:113rpx;margin: 0 auto;display: block;margin-top: -70rpx;" v-if="goodData.act&&goodData.act==='dewu'"/>
+				<!-- <image @click="onClickGoGoods" src="@/static/act/dewu/adButton.png" style="width:400rpx;height:113rpx;margin: 0 auto;display: block;margin-top: -70rpx;" v-if="goodData.act&&goodData.act==='dewu'"/> -->
 			</view>
 			<view class="close-box">
 				<image @click="onClickClose" class="close-img" src="@/static/index/close.png"/>
