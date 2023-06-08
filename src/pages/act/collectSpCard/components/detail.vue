@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-08 11:49:42
+ * @LastEditTime: 2023-06-08 14:42:51
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -20,7 +20,6 @@
 				</view>
 			</view>
 			<view class="detail-center">
-				<view class="detail-icon-bz"></view>
 				<view class="detail-card" v-for="(item,index) in groupDetail" :key="index">
 					<view class="card-mark" :class="item.collectNum>0?'icon-has':'icon-nhas'">
 						<view class="card-mark-text">{{item.collectNum>0?`${item.collectNum<100?'拥有':''}${item.collectNum}`:'未拥有'}}</view>
@@ -41,6 +40,7 @@
 					</view>
 				</view>
 			</view>
+			<view class="detail-icon-bz"></view>
 		</view>
 		<view v-show="giveData.start" class="give-bottom" :class="{'usable':giveData.total>0}" @click="onClickShowGiveModal">赠送好友</view>
 		<!-- 排名弹窗 -->
@@ -55,10 +55,10 @@
 						</view>
 						<view class="popup-item-box" v-for="(userItem,userIndex) in userRewardRank(item)" :key="userIndex">
 							<view class="popup-item-left">
-								<muqian-lazyLoad class="popup-item-avatar" :src="decodeURIComponent(item.pic)" mode="aspectFill" borderRadius="50%"></muqian-lazyLoad>
+								<muqian-lazyLoad class="popup-item-avatar" :src="userItem.avatar?decodeURIComponent(userItem.avatar):defaultAvatar" mode="aspectFill" borderRadius="50%"></muqian-lazyLoad>
 								<view class="popup-item-info">
 									<view class="info-name">{{userItem.userName}}</view>
-									<view class="info-time">集齐时间:{{$u.timeFormat(userItem.created_at,'yyyy-mm-dd hh:MM')}}</view>
+									<view class="info-time">集齐时间:{{userItem.created_at===0?'-':$u.timeFormat(userItem.created_at,'yyyy-mm-dd hh:MM')}}</view>
 								</view>
 							</view>
 							<muqian-lazyLoad class="popup-item-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill" borderRadius="5rpx" @click="previewImage(item)"></muqian-lazyLoad>
@@ -99,6 +99,12 @@
 		targetUserId:string|number = '';
 		total:number = 0;
 	}
+	class userRank {
+		userName:string = "虚位以待";
+		avatar:string =  ""; 
+		rank:number = 0; 
+		created_at:number = 0
+	}
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:{}})
@@ -109,6 +115,7 @@
 		groupDetail!:any;
 
 		isPullDown = app.platform.isPullDown;
+		defaultAvatar = app.defaultAvatar;
 		rankParams = new rankParams();
 		userRank:any[] = [];
 		rankPopupShow = false;
@@ -126,35 +133,35 @@
 			})
 		}
 		getUserRank(cb?:Function){
-			this.userRank = [
-				{ "userName": "hhh1", "avatar": "11", "rank": 1, "created_at": 1,  },
-				{ "userName": "222", "avatar": "11", "rank": 2, "created_at": 1,  },
-				{ "userName": "ew3", "avatar": "11", "rank": 3, "created_at": 1,  },
-				{ "userName": "asaf", "avatar": "11", "rank": 4, "created_at": 1,  },
-				{ "userName": "qweq", "avatar": "11", "rank": 5, "created_at": 1,  },
-			]
-			cb?.()
-			// const { rankParams } = this;
-			// if(rankParams.isFetchEnd) return;
+			const { rankParams } = this;
+			if(rankParams.isFetchEnd) return;
 
-			// app.http.Get(
-			// 	`dataApi/activity/teka/group/rank/list/${this.getCurrentGroup.id}`,
-			// 	rankParams,
-			// 	({list, isFetchEnd}:any)=>{
-			// 		list && this.userRank.push(list);
-			// 		this.rankParams.fetchFrom += rankParams.fetchSize;
-			// 		this.rankParams.isFetchEnd = isFetchEnd;
-			// 		cb?.()
-			// 	}
-			// )
+			app.http.Get(
+				`dataApi/activity/teka/group/rank/list/${this.getCurrentGroup.id}`,
+				rankParams,
+				({list, isFetchEnd}:any)=>{
+					list && this.userRank.push(list);
+					this.rankParams.fetchFrom += rankParams.fetchSize;
+					this.rankParams.isFetchEnd = isFetchEnd;
+					cb?.()
+				}
+			)
 		}
 		initGroupGiveNum(){
 			this.groupDetail.forEach((element:any) => element.giveNum = 0 );
 		}
 		userRewardRank({rankStart,rankEnd}:any) : any[] {
-			return this.userRank.filter((x)=>{
+			const rankLength = (rankEnd-rankStart+1);
+			let list = this.userRank.filter((x)=>{
 				return x.rank>=rankStart && (rankEnd==0?true:x.rank<=rankEnd)
 			});
+			if(list.length < rankLength || (list.length===0 && rankEnd===0)){
+				const num = rankEnd===0 ? 1 : rankLength-list.length;
+				for(let i=0;i<num;i++){
+					list.push(new userRank())
+				}
+			}
+			return list;
 		}
 		onClickUserRank(){
 			app.platform.UIClickFeedBack()
@@ -215,6 +222,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
+		position: relative;
 		.detail-header{
 			width: 649rpx;
 			height:183rpx;
@@ -280,13 +288,16 @@
 			padding:4rpx 20rpx 50rpx 20rpx;
 			display: flex;
 			flex-wrap: wrap;
-			justify-content: space-between;
 		}
 		.detail-card{
 			width: 183rpx;
 			height:300rpx;
 			position: relative;
 			margin-top: 60rpx;
+			margin-right: 30rpx;
+		}
+		.detail-card:nth-child(3n){
+			margin-right: 0;
 		}
 		.card-mark{
 			width: 74rpx;
@@ -346,9 +357,9 @@
 			height:139rpx;
 			background:url(@/static/act/collectSpCard/icon_bz.png) no-repeat center / 100% 100%;
 			position: absolute;
-			z-index: 3;
-			top:-82rpx;
-			left:-40rpx;
+			z-index: 6;
+			top:48rpx;
+			left:10rpx;
 		}
 	}
 	.popup-box{

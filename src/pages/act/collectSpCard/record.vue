@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 14:33:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-08 11:48:21
+ * @LastEditTime: 2023-06-08 13:31:51
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -344,7 +344,7 @@
 			font-weight: bold;
 		}
 		.red-font{
-			color:#F63D47
+			color:#fa1545
 		}
 	}
 	.group-info-right{
