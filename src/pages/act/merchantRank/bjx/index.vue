@@ -128,16 +128,16 @@ export default class ClassName extends BaseNode {
         // })
     }
     parseTips() {
-        const ActivityPeriod: any = [1686326400, 1686931199]//积分获取
+        const ActivityPeriod: any = [1686240000, 1686931199]//积分获取
         const ThawPeriod: any = [1686931200, 1688227199]//积分解冻
         const DrawPeriod: number = 1688227200//榜单结算
         // const LivePeriod: number = 1686294000//直播
         const nowTimeStamp = Math.round(+new Date() / 1000)
         if (nowTimeStamp < ActivityPeriod[0]) {
-            return { tips: "暂未开始", time: "06.10-06.16" }
+            return { tips: "暂未开始", time: "06.09-06.16" }
         };
         if (nowTimeStamp >= ActivityPeriod[0] && nowTimeStamp <= ActivityPeriod[1]) {
-            return { tips: "积分获取", time: "06.10-06.16" }
+            return { tips: "积分获取", time: "06.09-06.16" }
         }
         if (nowTimeStamp >= ThawPeriod[0] && nowTimeStamp <= ThawPeriod[1]) {
             return {
