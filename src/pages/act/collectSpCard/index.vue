@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-07 17:06:22
+ * @LastEditTime: 2023-06-08 13:33:17
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -49,58 +49,28 @@
 	export default class ClassName extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
 		groupCurrent = 0;
-		groupList:groupItem[] = [
-			{id: 1, name: '绝杀特卡', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg', maxSetNum: 10,  collectedSetNum: 1, startAt: 1,start:true},
-			{id: 2, name: '火焰特卡', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png', maxSetNum: 0,  collectedSetNum: 5, startAt: 1,start:true},
-			{id: 3, name: '时刻特卡', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685343611785mkp72m7wqz.jpg', maxSetNum: 15,  collectedSetNum: 0, startAt: 1,start:false},
-			{id: 4, name: '聚光灯特卡', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png', maxSetNum: 8,  collectedSetNum: 2, startAt: 1,start:true},
-			{id: 5, name: '钻石特卡', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg', maxSetNum: 5,  collectedSetNum: 4, startAt: 1,start:true},
-			{id: 6, name: '绝杀6', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685343611785mkp72m7wqz.jpg', maxSetNum: 20,  collectedSetNum: 5, startAt: 1,start:true},
-			{id: 7, name: '绝杀7', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg', maxSetNum: 0,  collectedSetNum: 0, startAt: 1,start:false},
-			{id: 8, name: '绝杀8', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png', maxSetNum: 50,  collectedSetNum: 10, startAt: 1,start:true},
-			{id: 9, name: '绝杀9', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685343611785mkp72m7wqz.jpg', maxSetNum: 10,  collectedSetNum: 2, startAt: 1,start:true},
-			{id: 10, name: '绝杀10', pic: 'http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png', maxSetNum: 20,  collectedSetNum: 8, startAt: 1,start:true},
-		];
-		groupReward:any[] = [
-			{ "name": "iphone 14", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "rankStart": 1, "rankEnd": 1, "isHigh": true },
-			{ "name": "ssss2", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg", "rankStart": 2, "rankEnd": 3, "isHigh": true },
-			{ "name": "ssss3", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "rankStart": 4, "rankEnd": 6, "isHigh": true },
-			{ "name": "ssss4", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685343611785mkp72m7wqz.jpg", "rankStart": 7, "rankEnd": 10, "isHigh": true },
-			{ "name": "ssss5", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg", "rankStart": 11, "rankEnd": 20, "isHigh": true },
-			{ "name": "ssss6", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685343611785mkp72m7wqz.jpg", "rankStart": 21, "rankEnd": 0, "isHigh": true },
-		];
-		groupDetail:any[] = [
-			{ "id": 1, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 1 ,"giveNum":0},
-			{ "id": 2, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 0 ,"giveNum":0},
-			{ "id": 3, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 5 ,"giveNum":0},
-			{ "id": 4, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 9 ,"giveNum":0},
-			{ "id": 5, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 12 ,"giveNum":0},
-			{ "id": 6, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 0 ,"giveNum":0},
-			{ "id": 1, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 1 ,"giveNum":0},
-			{ "id": 2, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 0 ,"giveNum":0},
-			{ "id": 3, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 5 ,"giveNum":0},
-			{ "id": 4, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 9 ,"giveNum":0},
-			{ "id": 5, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 12 ,"giveNum":0},
-			{ "id": 6, "name": "勒布朗詹姆斯", "pic": "http://cdn.ka-world.com/admin/debug/2023.05.26/goods/pintuan0/1685081767360vtzheesya.png", "collectNum": 0 ,"giveNum":0}
-		];
+		groupList:groupItem[] = [];
+		groupReward:any[] = [];
+		groupDetail:any[] = [];
         onLoad(query:any) {
 			
 		}
 		onShow(){
-			// this.getGroupList()
+			app.platform.hasLoginToken(()=>{
+				this.getGroupList()
+			})
 		}
 		onPullDownRefresh() {
-			// this.getGroupList((() => {
+			this.getGroupList((() => {
 				setTimeout(() => {
 					uni.stopPullDownRefresh()
 				}, 500)
-			// }))
+			}))
 		}
 		public get getCurrentGroup() : groupItem {
 			return this.groupList.length ? this.groupList[this.groupCurrent]
 			: { id: 0, name: '', pic: '', maxSetNum: 0, collectedSetNum: 0, startAt: 0, };
 		}
-		
 		getGroupList(cb?:Function){
 			app.http.Get('dataApi/activity/teka/home',{},({list}:any)=>{
 				this.groupList = list.map((x:any)=>{
@@ -131,8 +101,8 @@
 			)
 		}
 		onChangeGroup(){
-			// const start = !this.getCurrentGroup.start && ( app.platform.currentTimestamp() >= this.getCurrentGroup.startAt);
-			// start ? this.getGroupList() : this.getReward(true);
+			const start = !this.getCurrentGroup.start && ( app.platform.currentTimestamp() >= this.getCurrentGroup.startAt);
+			start ? this.getGroupList() : this.getReward(true);
 		}
 		
 	}
