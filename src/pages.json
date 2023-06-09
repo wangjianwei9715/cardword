@@ -625,8 +625,8 @@
 						"navigationBarBackgroundColor": "#fff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#e4a1cd",
-						"backgroundColorBottom": "#e4a1cd",
+						"backgroundColorTop": "#00000",
+						"backgroundColorBottom": "#000000",
 						"app-plus": {
 							"bounce": "none"
 						}
@@ -640,8 +640,8 @@
 						"navigationBarBackgroundColor": "#fff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#e4a1cd",
-						"backgroundColorBottom": "#e4a1cd",
+						"backgroundColorTop": "#000000",
+						"backgroundColorBottom": "#000000",
 						"app-plus": {
 							"bounce": "none"
 						}

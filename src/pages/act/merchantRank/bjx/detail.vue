@@ -1,25 +1,11 @@
 <template>
     <view class="content">
-
-        <!-- <transitionNav ref='transitionNav' :needIconShadow="false" title="积分明细" />
-        <view class="topBanner">
-            
-        </view> -->
-        <view class="pageBg">
-            <image src="@/static/act/merchantRank/shuke/bg.png" />
-            <!-- <image style="transform: rotateX(180deg);" src="@/static/act/merchantRank/shuke/bg.png" /> -->
-        </view>
         <view class="nav">
             <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px' }"></view>
             <view class="pageBack" @click="app.platform.pageBack()"></view>
         </view>
+        <view class="faker" :style="{ height: app.statusBarHeight / 2.4 + 'px' }"></view>
         <view class="topBanner">
-            <view class="rule" @click="onClickRule">
-                <view class="ruleBlock flexCenter">
-                    <view class="txt">规则</view>
-                    <view class="txt">说明</view>
-                </view>
-            </view>
         </view>
         <view class="pointContainer">
             <view class="myRank">
@@ -76,7 +62,7 @@ export default class ClassName extends BaseNode {
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 20,
-        activityTp: 7
+        activityTp: 8
     }
     app: any = app
     orderGoodsStateStr = orderGoodsStateStr
@@ -129,7 +115,7 @@ export default class ClassName extends BaseNode {
         app.navigateTo.goGoodsDetails(item.goodCode)
     }
     reqMyRank() {
-        app.http.Get(`dataApi/selectRank/my/data`, { activityTp: 7 }, (res: any) => {
+        app.http.Get(`dataApi/selectRank/my/data`, { activityTp: 8 }, (res: any) => {
             this.myRank = res.data
         })
     }
@@ -147,7 +133,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    background-color: #e4a1cd;
+    background-color: #000000;
     font-family: PingFang SC;
     width: 750rpx;
     overflow-x: hidden;
@@ -174,10 +160,10 @@ page {
 .pointContainer {
     margin-top: 30rpx;
     position: relative;
-    width: 710rpx;
-    height: 1616rpx;
+    width: 735rpx;
+    height: 1707rpx;
     background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/shuke/detailBack.png");
+    background-image: url("@/static/act/merchantRank/bjx/detailBack.png");
 }
 
 .topBanner {
@@ -185,35 +171,35 @@ page {
     height: 541rpx;
     background-size: 100% 100%;
     position: relative;
-    background-image: url("@/static/act/merchantRank/shuke/topBanner.png");
+    background-image: url("@/static/act/merchantRank/bjx/topBanner.png");
 
-    .rule {
-        width: 122rpx;
-        height: 279rpx;
-        background-size: 100% 100%;
-        background-image: url("@/static/act/merchantRank/shuke/rule.png");
-        position: absolute;
-        top: 59rpx;
-        right: 0;
+    // .rule {
+    //     width: 122rpx;
+    //     height: 279rpx;
+    //     background-size: 100% 100%;
+    //     background-image: url("@/static/act/merchantRank/shuke/rule.png");
+    //     position: absolute;
+    //     top: 59rpx;
+    //     right: 0;
 
-        .ruleBlock {
-            width: 100rpx;
-            height: 90rpx;
-            margin-top: 18rpx;
-            margin-left: 2rpx;
-            // background-color: rgba(0, 0, 0, .3);
-            flex-direction: column;
+    //     .ruleBlock {
+    //         width: 100rpx;
+    //         height: 90rpx;
+    //         margin-top: 18rpx;
+    //         margin-left: 2rpx;
+    //         // background-color: rgba(0, 0, 0, .3);
+    //         flex-direction: column;
 
-            .txt {
-                font-size: 21rpx;
-                font-family: PingFang SC;
-                font-weight: bold;
-                color: #FFFFFF;
-                line-height: 24rpx;
-                text-shadow: 0rpx 0rpx 8rpx #E92677;
-            }
-        }
-    }
+    //         .txt {
+    //             font-size: 21rpx;
+    //             font-family: PingFang SC;
+    //             font-weight: bold;
+    //             color: #FFFFFF;
+    //             line-height: 24rpx;
+    //             text-shadow: 0rpx 0rpx 8rpx #E92677;
+    //         }
+    //     }
+    // }
 
     // z-index: 3;
 }
@@ -247,7 +233,7 @@ page {
 
     background: rgba(255, 255, 255, 0.66);
     border-radius: 3rpx;
-    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(231, 75, 130, .66);
+    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(98, 209, 247, .66);
     margin: auto;
     bottom: 70rpx;
     display: flex;
@@ -303,7 +289,7 @@ page {
 
 .scv {
     width: 650rpx;
-    max-height: 1240rpx;
+    max-height: 1280rpx;
     margin: 0 auto;
     margin-top: 51rpx;
     // background-color: red;
