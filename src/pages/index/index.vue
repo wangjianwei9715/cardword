@@ -34,7 +34,6 @@
 			</view>
 		</view>
 		<!-- 热更新 E -->
-
 		<view class="header-banner">
 			<statusbar />
 			<view class="tab-header">
@@ -119,7 +118,7 @@
 		capsule = {
 			pic:'../../static/index/v3/1.png',
 			// url:'/pages/act/imm/index?seriesId=20&roomId='
-			url:'/pages/act/collectSpCard/index'
+			url:'/pages/act/portable/container?seriesId=29&roomId='
 		}
 		hotList: { [x: string]: any } = indexHotList;
 		topAddList: any = [];
