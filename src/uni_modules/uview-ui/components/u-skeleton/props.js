@@ -54,6 +54,10 @@ export default {
         avatarShape: {
             type: String,
             default: uni.$u.props.skeleton.avatarShape
+        },
+        custom: {
+            type: Boolean,
+            default: uni.$u.props.skeleton.custom
         }
     }
 }
