@@ -12,6 +12,7 @@ export default class PlatformManager {
 	imei = '';
 	deviceID = '';
 	isIos = false;
+	generator = null;
 	urlIndex = 0;
 	private constructor() {
 		this.deviceID = this.systemInfo.deviceId;
@@ -205,17 +206,20 @@ export default class PlatformManager {
 
 	}
 	//ui触觉反馈(单次)
-	UIClickFeedBack (){
+	UIClickFeedBack (style?:number){
 		// #ifdef APP-PLUS
 		if (app.platform.systemInfo.platform == "ios") {
-    	    let UIImpactFeedbackGenerator = plus.ios.importClass(
-    	        "UIImpactFeedbackGenerator"
-    	    );
-    	    let generator = new UIImpactFeedbackGenerator();
+    	   if(!this.generator){
+				let UIImpactFeedbackGenerator=plus.ios.importClass("UIImpactFeedbackGenerator")
+				this.generator=new UIImpactFeedbackGenerator()
+		   	}
     	    //因为系统准备触觉反馈需要一段时间，Apple 建议，触发触觉效果之前，在你的生成器 (generator) 内调用 prepare() 方法。如果你不这么做的话，在视觉效果和对应的震动之间确实会有一个小小的延迟
-    	    generator.prepare();
-    	    generator.init(1);
-    	    generator.impactOccurred();
+    	    //@ts-ignore
+			this.generator.prepare();
+			//@ts-ignore
+    	    this.generator.init(style,1);
+			//@ts-ignore
+    	    this.generator.impactOccurred();
     	} else {
 			//@ts-ignore
     	    uni.vibrateShort();

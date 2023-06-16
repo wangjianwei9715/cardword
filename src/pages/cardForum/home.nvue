@@ -88,9 +88,9 @@
                 </view>
                 <!-- #endif -->
                 <!-- #ifndef APP-NVUE -->
-                <uv-waterfall v-model="list" :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8"
+                <!-- <uv-waterfall v-model="list" :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8"
                     column-width="40">
-                </uv-waterfall>
+                </uv-waterfall> -->
                 <!-- #endif -->
                 <!-- #ifdef APP-NVUE -->
                 <waterfalls column-count="2" ref="waterfalls2" left-gap="10" :height="scrollViewHeight + 'px'"
@@ -138,7 +138,7 @@
 </template>
 <script>
 import waterfalls from "./components/waterfalls.vue"
-import uvWaterfall from './components/uv-waterfall/uv-waterfall.vue'
+// import uvWaterfall from './components/uv-waterfall/uv-waterfall.vue'
 const imgs = [
     'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200',
     'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200',
@@ -165,7 +165,7 @@ const app = getApp().globalData.app;
 export default {
     components: {
         waterfalls,
-        uvWaterfall
+        // uvWaterfall
     },
     // mixins: [mixin],
     data() {
