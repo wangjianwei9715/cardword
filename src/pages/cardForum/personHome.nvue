@@ -46,7 +46,7 @@
                 <swiper-item>
                     <waterfalls ref="waterfall1" fixFreezing="true" :refresh="false" left-gap="10" right-gap="10"
                         column-gap="8" :always-scrollable-vertical="true">
-                        <cell v-for="(item, index) in list" class="waterfall-item-cell">
+                        <cell v-for="(item, index) in list2" class="waterfall-item-cell">
                             <view class="waterfall-item">
                                 <view class="waterfall-item__image">
                                     <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
@@ -113,6 +113,12 @@ export default {
                 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/760f1341-6a13-4e01-91e2-f6a2c69b8490.jpg?imageView2/2/w/200' },
                 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/4f1c7d52e6ab48b8a1f10c75c08dc421.jpg?imageView2/2/w/200' },
                 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/9740T20210822233025348.jpg?imageView2/2/w/200' },
+            ],
+            list2: [
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/2c9607d02842139323fe9c2e86b4305a.jpg?imageView2/2/w/200' },
             ]
         }
     },
@@ -129,7 +135,8 @@ export default {
     watch: {
         "tags.index": function (val) {
             console.log(val);
-            this.listSetSpecialEffects("waterfall"+val)
+            // this.$refs["waterfall" + val].goTop()
+            this.listSetSpecialEffects("waterfall" + val)
         }
     },
     mounted() {

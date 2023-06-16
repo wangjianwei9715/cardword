@@ -2,12 +2,13 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-16 15:22:12
+ * @LastEditTime: 2023-06-16 16:06:20
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: nvue瀑布流,仅限于nvue使用
 -->
 <template>
     <!-- #ifdef APP-NVUE -->
+    <!-- fixFreezing -->
     <waterfall @scroll="scroll" ref="water" bounce="true" :column-count="columnCount" :fixFreezing="fixFreezing"
         :show-scrollbar="false" column-width="auto" :column-gap="columnGap" :left-gap="leftGap" :right-gap="rightGap"
         @loadmore="scrolltolower" :style="{ height: height, position: 'relative' }">
@@ -15,6 +16,9 @@
             <!-- <text>Refreshing...</text> -->
             <loading-indicator></loading-indicator>
         </refresh>
+        <header>
+            <div ref="goTop"></div>
+        </header>
         <slot></slot>
     </waterfall>
     <!-- #endif -->
@@ -92,7 +96,16 @@ export default {
                 headerHeight: height
             });
             // #endif
-            console.log("设置swiperChange",listId,height);
+            console.log("设置swiperChange", listId, height);
+        },
+        goTop() {
+            // #ifdef APP-NVUE
+            console.log(this.$refs.goTop);
+            dom.scrollToElement(this.$refs.goTop, {
+                animated: false//无动画
+            })
+            // #endif
+            console.log("goTopgoTop");
         },
         scroll(event) {
             this.$emit("scroll", event)
