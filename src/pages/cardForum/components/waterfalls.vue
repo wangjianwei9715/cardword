@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-16 16:06:20
+ * @LastEditTime: 2023-06-16 16:14:03
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: nvue瀑布流,仅限于nvue使用
 -->
@@ -13,7 +13,6 @@
         :show-scrollbar="false" column-width="auto" :column-gap="columnGap" :left-gap="leftGap" :right-gap="rightGap"
         @loadmore="scrolltolower" :style="{ height: height, position: 'relative' }">
         <refresh v-if="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'" class="refresh">
-            <!-- <text>Refreshing...</text> -->
             <loading-indicator></loading-indicator>
         </refresh>
         <header>

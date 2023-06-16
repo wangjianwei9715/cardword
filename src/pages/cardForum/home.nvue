@@ -1,5 +1,5 @@
 <template>
-    <view class="content">
+    <view class="content" style="display: flex;width: 750rpx;flex-direction: column;align-items: center;">
         <!-- <view class="fakerView" :style="{ height: navHeight + tabsHeight + 'px' }"></view> -->
         <view class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></view>
         <view class="fixedTop" id="fixedTop">
@@ -8,69 +8,26 @@
                 <view :style="{ height: app.statusBarHeight + 'px' }"></view>
                 <view class="nav">
                     <view class="navSearchWrap" @click="pageJump('/pages/cardForum/search')">
-                        <input class="navInput" type="text" v-model="searchText" placeholder="搜你想搜..." disabled />
+                        <input class="navInput" type="text" :value="nowTabText" placeholder="搜你想搜..." disabled />
                         <view class="nav_search flexCenter">搜索</view>
                     </view>
                     <view class="camera" @click.stop="actionSheet = true">发布</view>
                 </view>
             </view>
-            <u-tabs :duration="300" class="tabs" id="tabs" :current="tabIndex" @click="tagClick" :list="list1"
+            <u-tabs :duration="300" class="tabs" id="tabs" :current="tabs.index" @click="tabClick" :list="tabs.list"
                 ref="tabs"></u-tabs>
         </view>
 
-        <swiper :duration="300" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }" :current="tabIndex"
-            @change="swiperChange">
-            <swiper-item class="swiperItem">
-                关注
-                <!-- #ifdef APP-NVUE -->
-                <waterfalls column-count="2" :ref="'waterfalls0'" left-gap="10" :height="scrollViewHeight + 'px'"
-                    right-gap="10" column-gap="8" :always-scrollable-vertical="true" @loadmore="getRandomData"
-                    @refresh="onRefresh('waterfalls0')">
-                    <cell v-for="(item, index) in list" class="waterfall-item-cell" @click="goToDetail(item)">
-                        <view class="waterfall-item">
-                            <view class="waterfall-item__image">
-                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
-                            </view>
-                            <view class="waterfall-item__ft">
-                                <view class="waterfall-item__ft__title">
-                                    <text class="value">{{ item.title }}</text>
-                                </view>
-                                <view class="waterfall-item__ft__desc uv-line-2">
-                                    <text class="value">{{ item.desc }}</text>
-                                </view>
-                            </view>
-                        </view>
-                    </cell>
-                </waterfalls>
-                <!-- #endif -->
-            </swiper-item>
-            <swiper-item class="swiperItem">
-                推荐
-                <!-- #ifdef APP-NVUE -->
-                <waterfalls column-count="2" left-gap="10" :height="scrollViewHeight + 'px'" right-gap="10" column-gap="8"
-                    :always-scrollable-vertical="true" @loadmore="getRandomData">
-                    <cell v-for="(item, index) in list" class="waterfall-item-cell">
-                        <view class="waterfall-item">
-                            <view class="waterfall-item__image">
-                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
-                            </view>
-                            <view class="waterfall-item__ft">
-                                <view class="waterfall-item__ft__title">
-                                    <text class="value">{{ item.title }}</text>
-                                </view>
-                                <view class="waterfall-item__ft__desc uv-line-2">
-                                    <text class="value">{{ item.desc }}</text>
-                                </view>
-                            </view>
-                        </view>
-                    </cell>
-                </waterfalls>
-                <!-- #endif -->
-            </swiper-item>
-            <swiper-item class="swiperItem">
-                SHOW卡
+        <swiper :duration="300" v-if="initFinish" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }"
+            :current="tabs.index" @change="swiperChange">
+            <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <!-- #ifndef APP-NVUE -->
-                <view class="hotTopicWrap">
+                {{ tab.name }}
+                {{ tab.list }}
+                <!-- #endif -->
+                <cardSkeleton :loading="!tab.firstReqEnd" />
+                <!-- #ifndef APP-NVUE -->
+                <view class="hotTopicWrap" v-if="tabIndex == 2 && tab.firstReqEnd">
                     <view class="hotTopicRow">
                         <text class="hotTopicRow_title">热门话题</text>
                         <text class="hotTopicRow_title" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
@@ -87,16 +44,11 @@
                     </scroll-view>
                 </view>
                 <!-- #endif -->
-                <!-- #ifndef APP-NVUE -->
-                <!-- <uv-waterfall v-model="list" :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8"
-                    column-width="40">
-                </uv-waterfall> -->
-                <!-- #endif -->
                 <!-- #ifdef APP-NVUE -->
-                <waterfalls column-count="2" ref="waterfalls2" left-gap="10" :height="scrollViewHeight + 'px'"
-                    right-gap="10" column-gap="8" :always-scrollable-vertical="true" @refresh="onRefresh('waterfalls2')"
-                    @loadmore="getRandomData">
-                    <header>
+                <waterfalls column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="10"
+                    :height="scrollViewHeight + 'px'" right-gap="10" column-gap="8" :always-scrollable-vertical="true"
+                    @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)">
+                    <header v-if="tabIndex == 2">
                         <view class="hotTopicWrap">
                             <view class="hotTopicRow">
                                 <text class="hotTopicRow_title">热门话题</text>
@@ -112,7 +64,7 @@
                             </scroll-view>
                         </view>
                     </header>
-                    <cell v-for="(item, index) in list" class="waterfall-item-cell">
+                    <cell v-for="(item, index) in tab.list" class="waterfall-item-cell" @click="goToDetail(item)">
                         <view class="waterfall-item">
                             <view class="waterfall-item__image">
                                 <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
@@ -128,8 +80,8 @@
                         </view>
                     </cell>
                 </waterfalls>
-
                 <!-- #endif -->
+
             </swiper-item>
         </swiper>
         <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
@@ -138,20 +90,18 @@
 </template>
 <script>
 import waterfalls from "./components/waterfalls.vue"
+import cardSkeleton from "./components/cardSkeleton.vue"
 // import uvWaterfall from './components/uv-waterfall/uv-waterfall.vue'
-const imgs = [
-    'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200',
-    'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200',
-    'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200',
-    'https://images.cardhobby.com/2c9607d02842139323fe9c2e86b4305a.jpg?imageView2/2/w/200',
-    'https://images.cardhobby.com/e18c950220664d2ea430fcea7a514770.jpg?imageView2/2/w/200',
-    'https://images.cardhobby.com/C4AC6C305E3543C39297A8B876EFE13D.jpg?imageView2/2/w/200',
-    'https://images.cardhobby.com/1f22e3dc5679da68c24e8e28f72a9192.jpg?imageView2/2/w/200',
-    'https://images.cardhobby.com/760f1341-6a13-4e01-91e2-f6a2c69b8490.jpg?imageView2/2/w/200',
-    'https://images.cardhobby.com/4f1c7d52e6ab48b8a1f10c75c08dc421.jpg?imageView2/2/w/200',
-    'https://images.cardhobby.com/9740T20210822233025348.jpg?imageView2/2/w/200',
-    
-]
+const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200' },
+{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200' },
+{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200' },
+{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/2c9607d02842139323fe9c2e86b4305a.jpg?imageView2/2/w/200' },
+{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/e18c950220664d2ea430fcea7a514770.jpg?imageView2/2/w/200' },
+{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/C4AC6C305E3543C39297A8B876EFE13D.jpg?imageView2/2/w/200' },
+{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1f22e3dc5679da68c24e8e28f72a9192.jpg?imageView2/2/w/200' },
+{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/760f1341-6a13-4e01-91e2-f6a2c69b8490.jpg?imageView2/2/w/200' },
+{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/4f1c7d52e6ab48b8a1f10c75c08dc421.jpg?imageView2/2/w/200' },
+{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/9740T20210822233025348.jpg?imageView2/2/w/200' },]
 const actionsList = [
     {
         name: "动态",
@@ -162,53 +112,63 @@ const actionsList = [
     }
 ]
 const app = getApp().globalData.app;
+const defaultTagObj = {
+    queryParams: {
+        pageIndex: 1,
+        pageSize: 15,
+        q: ""
+    },
+    totalPage: 10,
+    firstReqEnd: false,
+    list: []
+}
 export default {
     components: {
         waterfalls,
-        // uvWaterfall
+        cardSkeleton
     },
-    // mixins: [mixin],
     data() {
         return {
             app,
             actionsList,
             actionSheet: false,
-            list: [],
-            loadStatus: 'loadmore',
+            firstReqEnd: false,
+            initFinish: false,
             searchText: "",
             navHeight: 0,
             tabsHeight: 0,
             scrollViewHeight: 0,
             fixedTopHeight: 0,
-            tabIndex: 2,
-            queryParams: {
-                pageIndex: 1,
-                pageSize: 20,
-                q: ""
-            },
-            list1: [{
-                name: '关注',
+            tabs: {
+                index: 1,
+                list: [{
+                    name: '关注',
+                }, {
+                    name: '推荐',
 
-            }, {
-                name: '推荐',
-            }, {
-                name: 'SHOW卡'
-            }, {
-                name: '视频'
-            }, {
-                name: '卡册'
-            }, {
-                name: '交流'
-            }, {
-                name: '篮球'
-            }]
+                }, {
+                    name: 'SHOW卡',
+
+                }, {
+                    name: '视频',
+
+                }, {
+                    name: '卡册',
+
+                }, {
+                    name: '交流',
+
+                }, {
+                    name: '篮球',
+
+                }]
+            }
         }
     },
-    onLoad() {
+    async onLoad() {
         this.$nextTick(async () => {
             this.fixedTopHeight = await this.getDomHeight("#fixedTop")
             console.log(await this.getDomHeight("#tabs"));
-
             // this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - (uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom)
             // #ifdef APP-NVUE
             this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - plus.navigator.getSafeAreaInsets().deviceBottom - 56
@@ -223,20 +183,25 @@ export default {
             // #ifdef H5
             this.scrollViewHeight = 666
             // #endif
+
         })
-        this.getRandomData();
+        await this.initTab()
+        this.reqNewData()
     },
-    onReachBottom() {
-        if (this.loadStatus == 'loadmore')
-            this.getRandomData();
+    computed: {
+        nowTabText() {
+            return this.tabs.list[this.tabs.index].queryParams.q
+        }
     },
     watch: {
-        tabIndex: function (val) {
+        'tabs.index': function (val) {
+            if (this.tabs.list[val].list.length == 0 && !this.tabs.list[val].firstReqEnd) {
+                this.tabs.list[val].queryParams.pageIndex = 1
+                //请求数据
+                this.reqNewData()
+            }
             if (val == 2) {
-                console.log(3333);
                 uni.setTabBarStyle({
-                    // color:"#ffffff",
-                    // selectedColor:""
                     backgroundColor: "#0c0014"
                 })
             } else {
@@ -247,23 +212,34 @@ export default {
         }
     },
     methods: {
+        async initTab() {
+            this.tabs.list.forEach((item, index) => {
+                const deepData = JSON.parse(JSON.stringify(defaultTagObj))
+                this.$set(this.tabs.list, index, { ...deepData, ...item })
+            })
+            this.initFinish = true
+            return
+        },
         pageJump(url) {
             uni.navigateTo({
                 url,
                 events: {
                     receive: (data) => {
-                        // console.log(data);
-                        if (this.searchText != data.searchTetxt) {
-                            this.firstReqEnd = false
-                            this.queryParams.pageIndex = 1
-                            this.queryParams.q = data.searchText
-                            // this.reqNewData()
-                            this.searchText = data.searchText
+                        const nowTab = this.tabs.list[this.tabs.index]
+                        if (nowTab.queryParams.q != data.searchTetxt) {
+                            nowTab.firstReqEnd = false
+                            nowTab.queryParams.pageIndex = 1
+                            nowTab.queryParams.q = data.searchText
+                            nowTab.list = []
+                            console.log(this.tabs.list[this.tabs.index])
+                            setTimeout(() => {
+                                this.reqNewData()
+                            }, 300)
                         }
                     }
                 },
                 success: (res) => {
-                    res.eventChannel.emit('defaultText', { searchText: this.searchText })
+                    res.eventChannel.emit('defaultText', { searchText: this.nowTabText })
                 }
             })
         },
@@ -285,12 +261,12 @@ export default {
             })
         },
         swiperChange(event) {
-            this.tabIndex = event.detail.current
+            this.tabs.index = event.detail.current
         },
-        tagClick(event) {
+        tabClick(event) {
             // console.log(event);
-            if (event.index == this.tabIndex) return
-            this.tabIndex = event.index
+            if (event.index == this.tabs.index) return
+            this.tabs.index = event.index
         },
         onSelectAction(item) {
             if (item.url) {
@@ -299,40 +275,49 @@ export default {
                 })
             }
         },
-        onRefresh(refsKey) {
-            // console.log(this.$refs[refsKey].hideRefresh());
-            setTimeout(() => {
-                this.$refs[refsKey].hideRefresh()
-            }, 500)
+        refreshData(index) {
+            const nowTab = this.tabs.list[index]
+            nowTab.pageIndex = 1
+            this.reqNewData(() => {
+                const key = "waterfalls" + index
+                setTimeout(() => {
+                    this.$refs[key]?.[0]?.hideRefresh?.()
+                }, 500)
+            })
         },
-        // 获取随机数据
-        getRandomData() {
-            this.loadStatus = 'loading';
-            // 模拟异步
-            setTimeout(() => {
-                for (let i = 0; i < 10; i++) {
-                    this.list.push(this.getItem(i));
-                }
-            }, 200)
-        },
-        getImage() {
-            const index = Math.floor(Math.random() * 10);
-            return imgs[index];
-        },
-        getItem(i) {
-            return {
-                id: i,
-                image: this.getImage(),
-                title: i % 2 == 0 ? `(${this.list.length + 1})标题标题标题` : `(${this.list.length + 1})内容内容`,
-                desc: i % 2 == 0 ? `(${this.list.length + 1})66666` : `(${this.list.length + 1})内容内容内容`
+        loadmoreData(index) {
+            const nowTab = this.tabs.list[index]
+            if (nowTab.queryParams.pageIndex < nowTab.totalPage) {
+                nowTab.queryParams.pageIndex += 1
+                this.reqNewData()
             }
+        },
+        reqNewData(cb) {
+            this.tabs.list[this.tabs.index].list.push(...mockList)
+            this.tabs.list[this.tabs.index].firstReqEnd = true
+            cb && cb()
+            return
+            const query = this.tabs.list[this.tabs.index].queryParams
+            app.http.Get("/dataApi", query, (res) => {
+                this.tabs.list[this.tabs.index].firstReqEnd = true
+                cb && cb()
+            }, (err) => {
+                this.tabs.list[this.tabs.index].firstReqEnd = true
+            })
         }
     }
 }
 </script>
 <style scoped lang="scss">
 $show-lines: 1;
+
 // @import '@/uni_modules/uv-ui-tools/libs/css/variable.scss';
+// #ifndef APP-NVUE 
+page {
+    background-color: #f2f2f2;
+}
+
+// #endif 
 
 .content {
     flex-direction: column;
@@ -395,7 +380,9 @@ $show-lines: 1;
 
 .swiperItem {
     // height: 600rpx;
-    // align-items: center;
+    align-items: center;
+
+    // width: 100%;
 }
 
 .fixedTop {
