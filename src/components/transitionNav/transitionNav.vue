@@ -2,13 +2,13 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2022-12-22 15:17:21
+ * @LastEditTime: 2023-06-16 14:26:39
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
 <template>
     <view id="pageTopContainer" class="pageTopContainer"
-        :style="{ zIndex, backgroundColor: `rgba(${navColor},${scrollTopPercent})` }">
+        :style="{ zIndex, backgroundColor: scrollTopPercent >= 1 ? `rgb(${navColor})` : `rgba(${navColor},${scrollTopPercent})` }">
         <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px', }">
         </view>
         <view id="pageTop" class="pageTop">
@@ -168,11 +168,11 @@ export default {
     },
     computed: {
         scrollTopPercent() {
-            return this.scrollTop / (this.MAX_HEIGHT * 1.4)
+            return this.scrollTop / (this.MAX_HEIGHT.toFixed(2) * 1.4)
         },
         opacityStyle() {
             return {
-                opacity: this.scrollTopPercent
+                opacity: this.scrollTopPercent > 1 ? 1 : this.scrollTopPercent
             }
         },
         opacityStyleRevers() {
@@ -213,15 +213,13 @@ export default {
             if (this.changeStatusBarStyle) {
                 plus.navigator.setStatusBarStyle(this.statusBarStyleArray[0]);
             }
-
             // #endif
             this.$nextTick(() => {
-                const query = uni.createSelectorQuery().in(this)
-                query
+                uni.createSelectorQuery()
                     .select('#pageTopContainer')
-                    .boundingClientRect((data) => {
-                        this.MAX_HEIGHT = data.height
-                        this.$emit('getNavHeight', data.height)
+                    .boundingClientRect((rect) => {
+                        this.MAX_HEIGHT = rect.height
+                        this.$emit('getNavHeight', rect.height)
                     })
                     .exec();
             })
