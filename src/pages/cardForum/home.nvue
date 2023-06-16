@@ -1,0 +1,503 @@
+<template>
+    <view class="content">
+        <!-- <view class="fakerView" :style="{ height: navHeight + tabsHeight + 'px' }"></view> -->
+        <view class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></view>
+        <view class="fixedTop" id="fixedTop">
+
+            <view class="navBar" id="navBar" ref="navBar">
+                <view :style="{ height: app.statusBarHeight + 'px' }"></view>
+                <view class="nav">
+                    <view class="navSearchWrap" @click="pageJump('/pages/cardForum/search')">
+                        <input class="navInput" type="text" v-model="searchText" placeholder="搜你想搜..." disabled />
+                        <view class="nav_search flexCenter">搜索</view>
+                    </view>
+                    <view class="camera" @click.stop="actionSheet = true">发布</view>
+                </view>
+            </view>
+            <u-tabs :duration="300" class="tabs" id="tabs" :current="tabIndex" @click="tagClick" :list="list1"
+                ref="tabs"></u-tabs>
+        </view>
+
+        <swiper :duration="300" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }" :current="tabIndex"
+            @change="swiperChange">
+            <swiper-item class="swiperItem">
+                关注
+                <!-- #ifdef APP-NVUE -->
+                <waterfalls column-count="2" :ref="'waterfalls0'" left-gap="10" :height="scrollViewHeight + 'px'"
+                    right-gap="10" column-gap="8" :always-scrollable-vertical="true" @loadmore="getRandomData"
+                    @refresh="onRefresh('waterfalls0')">
+                    <cell v-for="(item, index) in list" class="waterfall-item-cell" @click="goToDetail(item)">
+                        <view class="waterfall-item">
+                            <view class="waterfall-item__image">
+                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
+                            </view>
+                            <view class="waterfall-item__ft">
+                                <view class="waterfall-item__ft__title">
+                                    <text class="value">{{ item.title }}</text>
+                                </view>
+                                <view class="waterfall-item__ft__desc uv-line-2">
+                                    <text class="value">{{ item.desc }}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </cell>
+                </waterfalls>
+                <!-- #endif -->
+            </swiper-item>
+            <swiper-item class="swiperItem">
+                推荐
+                <!-- #ifdef APP-NVUE -->
+                <waterfalls column-count="2" left-gap="10" :height="scrollViewHeight + 'px'" right-gap="10" column-gap="8"
+                    :always-scrollable-vertical="true" @loadmore="getRandomData">
+                    <cell v-for="(item, index) in list" class="waterfall-item-cell">
+                        <view class="waterfall-item">
+                            <view class="waterfall-item__image">
+                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
+                            </view>
+                            <view class="waterfall-item__ft">
+                                <view class="waterfall-item__ft__title">
+                                    <text class="value">{{ item.title }}</text>
+                                </view>
+                                <view class="waterfall-item__ft__desc uv-line-2">
+                                    <text class="value">{{ item.desc }}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </cell>
+                </waterfalls>
+                <!-- #endif -->
+            </swiper-item>
+            <swiper-item class="swiperItem">
+                SHOW卡
+                <!-- #ifndef APP-NVUE -->
+                <view class="hotTopicWrap">
+                    <view class="hotTopicRow">
+                        <text class="hotTopicRow_title">热门话题</text>
+                        <text class="hotTopicRow_title" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
+                    </view>
+                    <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
+                        <view class="scrollTopicWarp">
+                            <view class="topicItem"></view>
+                            <view class="topicItem"></view>
+                            <view class="topicItem"></view>
+                            <view class="topicItem"></view>
+                            <view class="topicItem"></view>
+                            <view class="topicItem"></view>
+                        </view>
+                    </scroll-view>
+                </view>
+                <!-- #endif -->
+                <!-- #ifndef APP-NVUE -->
+                <uv-waterfall v-model="list" :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8"
+                    column-width="40">
+                </uv-waterfall>
+                <!-- #endif -->
+                <!-- #ifdef APP-NVUE -->
+                <waterfalls column-count="2" ref="waterfalls2" left-gap="10" :height="scrollViewHeight + 'px'"
+                    right-gap="10" column-gap="8" :always-scrollable-vertical="true" @refresh="onRefresh('waterfalls2')"
+                    @loadmore="getRandomData">
+                    <header>
+                        <view class="hotTopicWrap">
+                            <view class="hotTopicRow">
+                                <text class="hotTopicRow_title">热门话题</text>
+                                <text class="hotTopicRow_title" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
+                            </view>
+                            <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
+                                <view class="topicItem"></view>
+                                <view class="topicItem"></view>
+                                <view class="topicItem"></view>
+                                <view class="topicItem"></view>
+                                <view class="topicItem"></view>
+                                <view class="topicItem"></view>
+                            </scroll-view>
+                        </view>
+                    </header>
+                    <cell v-for="(item, index) in list" class="waterfall-item-cell">
+                        <view class="waterfall-item">
+                            <view class="waterfall-item__image">
+                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
+                            </view>
+                            <view class="waterfall-item__ft">
+                                <view class="waterfall-item__ft__title">
+                                    <text class="value">{{ item.title }}</text>
+                                </view>
+                                <view class="waterfall-item__ft__desc uv-line-2">
+                                    <text class="value">{{ item.desc }}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </cell>
+                </waterfalls>
+
+                <!-- #endif -->
+            </swiper-item>
+        </swiper>
+        <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
+            @close="actionSheet = false"></u-action-sheet>
+    </view>
+</template>
+<script>
+import waterfalls from "./components/waterfalls.vue"
+import uvWaterfall from './components/uv-waterfall/uv-waterfall.vue'
+const imgs = [
+    'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200',
+    'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200',
+    'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200',
+    'https://images.cardhobby.com/2c9607d02842139323fe9c2e86b4305a.jpg?imageView2/2/w/200',
+    'https://images.cardhobby.com/e18c950220664d2ea430fcea7a514770.jpg?imageView2/2/w/200',
+    'https://images.cardhobby.com/C4AC6C305E3543C39297A8B876EFE13D.jpg?imageView2/2/w/200',
+    'https://images.cardhobby.com/1f22e3dc5679da68c24e8e28f72a9192.jpg?imageView2/2/w/200',
+    'https://images.cardhobby.com/760f1341-6a13-4e01-91e2-f6a2c69b8490.jpg?imageView2/2/w/200',
+    'https://images.cardhobby.com/4f1c7d52e6ab48b8a1f10c75c08dc421.jpg?imageView2/2/w/200',
+    'https://images.cardhobby.com/9740T20210822233025348.jpg?imageView2/2/w/200',
+    
+]
+const actionsList = [
+    {
+        name: "动态",
+        url: "/pages/cardForum/release"
+    }, {
+        name: "卡册",
+        subname: "制作图片对应卡种的高质量卡册，适用于凑套等"
+    }
+]
+const app = getApp().globalData.app;
+export default {
+    components: {
+        waterfalls,
+        uvWaterfall
+    },
+    // mixins: [mixin],
+    data() {
+        return {
+            app,
+            actionsList,
+            actionSheet: false,
+            list: [],
+            loadStatus: 'loadmore',
+            searchText: "",
+            navHeight: 0,
+            tabsHeight: 0,
+            scrollViewHeight: 0,
+            fixedTopHeight: 0,
+            tabIndex: 2,
+            queryParams: {
+                pageIndex: 1,
+                pageSize: 20,
+                q: ""
+            },
+            list1: [{
+                name: '关注',
+
+            }, {
+                name: '推荐',
+            }, {
+                name: 'SHOW卡'
+            }, {
+                name: '视频'
+            }, {
+                name: '卡册'
+            }, {
+                name: '交流'
+            }, {
+                name: '篮球'
+            }]
+        }
+    },
+    onLoad() {
+        this.$nextTick(async () => {
+            this.fixedTopHeight = await this.getDomHeight("#fixedTop")
+            console.log(await this.getDomHeight("#tabs"));
+
+            // this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - (uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom)
+            // #ifdef APP-NVUE
+            this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - plus.navigator.getSafeAreaInsets().deviceBottom - 56
+            console.log(uni.getSystemInfoSync());
+            console.log(plus.navigator.getSafeAreaInsets());
+            console.log("app.platform.systemInfo.screenHeight:", app.platform.systemInfo.screenHeight);
+            console.log("this.fixedTopHeight:", this.fixedTopHeight);
+            console.log("uni.getSystemInfoSync().safeArea.bottom", uni.getSystemInfoSync().safeArea.bottom);
+            console.log("tabbarHeight:", uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom);
+            console.log("this.scrollViewHeight:", this.scrollViewHeight);
+            // #endif
+            // #ifdef H5
+            this.scrollViewHeight = 666
+            // #endif
+        })
+        this.getRandomData();
+    },
+    onReachBottom() {
+        if (this.loadStatus == 'loadmore')
+            this.getRandomData();
+    },
+    watch: {
+        tabIndex: function (val) {
+            if (val == 2) {
+                console.log(3333);
+                uni.setTabBarStyle({
+                    // color:"#ffffff",
+                    // selectedColor:""
+                    backgroundColor: "#0c0014"
+                })
+            } else {
+                uni.setTabBarStyle({
+                    backgroundColor: "#ffffff"
+                })
+            }
+        }
+    },
+    methods: {
+        pageJump(url) {
+            uni.navigateTo({
+                url,
+                events: {
+                    receive: (data) => {
+                        // console.log(data);
+                        if (this.searchText != data.searchTetxt) {
+                            this.firstReqEnd = false
+                            this.queryParams.pageIndex = 1
+                            this.queryParams.q = data.searchText
+                            // this.reqNewData()
+                            this.searchText = data.searchText
+                        }
+                    }
+                },
+                success: (res) => {
+                    res.eventChannel.emit('defaultText', { searchText: this.searchText })
+                }
+            })
+        },
+        getDomHeight(dom) {
+            return new Promise((re, rj) => {
+                uni.createSelectorQuery()
+                    .select(dom)
+                    .boundingClientRect((rect) => {
+                        if (rect) {
+                            re && re(rect.height)
+                        }
+                    })
+                    .exec();
+            })
+        },
+        goToDetail(item) {
+            uni.navigateTo({
+                url: "/pages/cardForum/detail?id=" + item.id
+            })
+        },
+        swiperChange(event) {
+            this.tabIndex = event.detail.current
+        },
+        tagClick(event) {
+            // console.log(event);
+            if (event.index == this.tabIndex) return
+            this.tabIndex = event.index
+        },
+        onSelectAction(item) {
+            if (item.url) {
+                uni.navigateTo({
+                    url: item.url
+                })
+            }
+        },
+        onRefresh(refsKey) {
+            // console.log(this.$refs[refsKey].hideRefresh());
+            setTimeout(() => {
+                this.$refs[refsKey].hideRefresh()
+            }, 500)
+        },
+        // 获取随机数据
+        getRandomData() {
+            this.loadStatus = 'loading';
+            // 模拟异步
+            setTimeout(() => {
+                for (let i = 0; i < 10; i++) {
+                    this.list.push(this.getItem(i));
+                }
+            }, 200)
+        },
+        getImage() {
+            const index = Math.floor(Math.random() * 10);
+            return imgs[index];
+        },
+        getItem(i) {
+            return {
+                id: i,
+                image: this.getImage(),
+                title: i % 2 == 0 ? `(${this.list.length + 1})标题标题标题` : `(${this.list.length + 1})内容内容`,
+                desc: i % 2 == 0 ? `(${this.list.length + 1})66666` : `(${this.list.length + 1})内容内容内容`
+            }
+        }
+    }
+}
+</script>
+<style scoped lang="scss">
+$show-lines: 1;
+// @import '@/uni_modules/uv-ui-tools/libs/css/variable.scss';
+
+.content {
+    flex-direction: column;
+}
+
+/* #ifdef APP-NVUE */
+.waterfall-item {
+    background: #fff;
+    margin-bottom: 14rpx;
+}
+
+/* #endif */
+.waterfall-item__ft {
+    padding: 20rpx;
+    background: #fff;
+
+
+
+
+}
+
+.waterfall-item__image {
+    width: 300rpx;
+}
+
+.fakerView {
+    // background-color: red;
+    width: 750rpx;
+}
+
+
+
+.waterfall-item__ft__title {
+    margin-bottom: 10rpx;
+    line-height: 48rpx;
+    font-weight: 700;
+
+    // .value {
+    //     font-size: 32rpx;
+    //     color: #303133;
+    // }
+}
+
+/* #ifdef APP-NVUE */
+.waterfall-item__ft__desc {
+    font-size: 28rpx;
+    color: #606266;
+}
+
+/* #endif */
+.waterfall-item__ft__btn {
+    padding: 10rpx 0;
+}
+
+.swiperContainer {
+    width: 750rpx;
+    // background-color: red;
+    // flex: 1;
+}
+
+.swiperItem {
+    // height: 600rpx;
+    // align-items: center;
+}
+
+.fixedTop {
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+}
+
+.navBar {
+    width: 750rpx;
+    // position: fixed;
+    // top: 0;
+    // z-index: 999;
+    background-color: #fff;
+
+}
+
+.scroller {
+    width: 750rpx;
+    background-color: red;
+}
+
+.nav {
+    // box-sizing: border-box;
+    padding: 20rpx 35rpx;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    // height: 88rpx;
+    justify-content: space-between;
+}
+
+.nav_search {
+    font-weight: bold;
+    height: 50rpx;
+    background-color: #fb374e;
+    color: #fff;
+    width: 100rpx;
+    border-radius: 6rpx;
+}
+
+.navSearchWrap {
+    width: 570rpx;
+    height: 60rpx;
+    border: 2rpx solid #797979;
+    border-radius: 6rpx;
+    // box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10rpx;
+    align-items: center;
+    flex-direction: row;
+}
+
+.navInput {
+    color: #000;
+    width: 200rpx;
+}
+
+.flexCenter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hotTopicWrap {
+    width: 750rpx;
+    padding: 0 20rpx;
+    border: 1rpx solid #f2f2f2;
+    // background-color: #fff;
+    // position: fixed;
+    height: 200rpx;
+    // position: absolute;
+    // top: 0;
+}
+
+.hotTopicRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hotTopicScroll {
+    width: 700rpx;
+    flex-direction: row;
+    display: flex;
+    // flex-wrap: nowrap;
+
+}
+
+.scrollTopicWarp {
+    flex-direction: row;
+    display: flex;
+    /* #ifdef H5 */
+    white-space: nowrap;
+    /* #endif */
+}
+
+.topicItem {
+    width: 150rpx;
+    height: 50rpx;
+    background-color: red;
+    margin-right: 20rpx;
+}
+</style>

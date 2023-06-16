@@ -1,0 +1,259 @@
+<template>
+    <list fixFreezing="true" bounce="false" id="pageId" @scroll="scroll">
+        <cell>
+            <div id="topContainer">
+                <div class="userInfoWrap" id="userInfoWrap">
+                    <div class="falekTop" :style="{ height: navHeight + 'px' }"></div>
+                    <div class="userInfo">
+                        <image class="userInfo_avatar"
+                            src="https://images.cardhobby.com/1DCC08DB2E014820BA93AA802FC1F618.jpg?imageView2/2/w/200">
+                        </image>
+                        <div class="userInfo_msg">
+                            <div class="userInfo_name">
+                                <text class="name">爷就是拽</text>
+                            </div>
+                            <div class="userInfo_ip">
+                                <text>IP属地：浙江省</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background-color: #fff;" id="tabs">
+                    <u-tabs :duration="300" :current="tags.index" :list="tags.list"></u-tabs>
+                </div>
+            </div>
+            <swiper :current="tags.index" :style="{ height: scrollViewHeight + 'px' }" @change="swiperChange">
+                <swiper-item>
+                    <waterfalls ref="waterfall0" fixFreezing="true" :refresh="false" left-gap="10" right-gap="10"
+                        column-gap="8" :always-scrollable-vertical="true" @loadmore="loadmore">
+                        <cell v-for="(item, index) in list" class="waterfall-item-cell">
+                            <view class="waterfall-item">
+                                <view class="waterfall-item__image">
+                                    <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
+                                </view>
+                                <view class="waterfall-item__ft">
+                                    <view class="waterfall-item__ft__title">
+                                        <text class="value">{{ item.title }}</text>
+                                    </view>
+                                    <view class="waterfall-item__ft__desc uv-line-2">
+                                        <text class="value">{{ item.desc }}</text>
+                                    </view>
+                                </view>
+                            </view>
+                        </cell>
+                    </waterfalls>
+                </swiper-item>
+                <swiper-item>
+                    <waterfalls ref="waterfall1" fixFreezing="true" :refresh="false" left-gap="10" right-gap="10"
+                        column-gap="8" :always-scrollable-vertical="true">
+                        <cell v-for="(item, index) in list" class="waterfall-item-cell">
+                            <view class="waterfall-item">
+                                <view class="waterfall-item__image">
+                                    <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
+                                </view>
+                                <view class="waterfall-item__ft">
+                                    <view class="waterfall-item__ft__title">
+                                        <text class="value">{{ item.title }}</text>
+                                    </view>
+                                    <view class="waterfall-item__ft__desc uv-line-2">
+                                        <text class="value">{{ item.desc }}</text>
+                                    </view>
+                                </view>
+                            </view>
+                        </cell>
+                    </waterfalls>
+                </swiper-item>
+            </swiper>
+        </cell>
+        <div style="position: fixed;background-color: #fff;width: 750rpx;"
+            :style="{ top: navHeight + 'px', opacity: stickyTabs ? 1 : 0 }">
+            <u-tabs :duration="300" :current="tags.index" :list="tags.list" ref="tabs"></u-tabs>
+        </div>
+        <transitionNav ref="transitionNav" title="爷就是拽" @getNavHeight="getNavHeight"></transitionNav>
+    </list>
+</template>
+<!--  -->
+<script>
+import transitionNav from "@/components/transitionNav/transitionNav"
+import waterfalls from "./components/waterfalls.vue"
+const app = getApp().globalData.app;
+export default {
+    name: '',
+    components: {
+        transitionNav,
+        waterfalls
+    },
+    mixins: [],
+    props: {
+
+    },
+    data() {
+        return {
+            app,
+            navHeight: 0,
+            scrollViewHeight: 0,
+            stickyTabs: false,
+            topHeight: 0,
+            tags: {
+                index: 0,
+                list: [
+                    { name: "动态" },
+                    { name: "卡册" },
+                    { name: "中卡" }
+                ]
+            },
+            list: [
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/2c9607d02842139323fe9c2e86b4305a.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/e18c950220664d2ea430fcea7a514770.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/C4AC6C305E3543C39297A8B876EFE13D.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1f22e3dc5679da68c24e8e28f72a9192.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/760f1341-6a13-4e01-91e2-f6a2c69b8490.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/4f1c7d52e6ab48b8a1f10c75c08dc421.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/9740T20210822233025348.jpg?imageView2/2/w/200' },
+            ]
+        }
+    },
+    computed: {
+        tabsType() {
+            // if (this.stickyTabs) {
+            //     return { top: this.navHeight + 'px' }
+            // } else {
+            //     return {}
+            // }
+            return { top: 0 + 'px' }
+        }
+    },
+    watch: {
+        "tags.index": function (val) {
+            console.log(val);
+            this.listSetSpecialEffects("waterfall"+val)
+        }
+    },
+    mounted() {
+    },
+    onLoad() {
+        this.scrollViewHeight = app.platform.systemInfo.screenHeight
+        this.$nextTick(async () => {
+            this.topHeight = await this.getDomHeight("#topContainer")
+            this.listSetSpecialEffects("waterfall0")
+        })
+    },
+    methods: {
+        getNavHeight(height) {
+            this.navHeight = height
+
+            this.$nextTick(async () => {
+                // this.topHeight = await this.getDomHeight("#userInfoWrap")
+                // #ifdef APP_PLUS
+                this.scrollViewHeight = app.platform.systemInfo.screenHeight
+                // - topHeight - this.navHeight
+                // #endif
+
+            })
+        },
+        listSetSpecialEffects(refKey) {
+            this.$refs[refKey] && this.$refs[refKey].swiperChange("pageId", this.topHeight)
+        },
+        swiperChange(event) {
+            this.tags.index = event.detail.current
+        },
+        async scroll(event) {
+            //想要渐变导航栏就用下面的代码
+            this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll({
+                scrollTop: -event.contentOffset.y.toFixed(2)
+            })
+            // console.log(-event.contentOffset.y);
+            const dom = await this.getDomInfo("#tabs")
+            // console.log(dom.top);
+            // if (this.stickyTabs) return
+            this.stickyTabs = dom.top <= this.navHeight
+        },
+        pageJump(url) {
+            uni.navigateTo({
+                url: url
+            })
+        },
+        loadmore() {
+            this.list.push(...this.list)
+        },
+        refresh() {
+            setTimeout(() => {
+                this.$refs.waterfall.hideRefresh()
+            }, 500)
+        },
+        getDomHeight(dom) {
+            return new Promise((re, rj) => {
+                uni.createSelectorQuery()
+                    .select(dom)
+                    .boundingClientRect((rect) => {
+                        if (rect) {
+                            re && re(rect.height)
+                        }
+                    })
+                    .exec();
+            })
+        },
+        getDomInfo(dom) {
+            return new Promise((re, rj) => {
+                uni.createSelectorQuery()
+                    .select(dom)
+                    .boundingClientRect((rect) => {
+                        if (rect) {
+                            re && re(rect)
+                        }
+                    })
+                    .exec();
+            })
+        },
+    }
+};
+</script>
+<style lang='scss'>
+.userInfoWrap {
+    width: 750rpx;
+    height: 400rpx;
+    // position: relative;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    background-color: red;
+}
+
+.fixImg {
+    position: fixed;
+    width: 750rpx;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.userInfo {
+    z-index: 1;
+    width: 600rpx;
+    display: flex;
+    flex-direction: row;
+    // background-color: red;
+}
+
+.userInfo_avatar {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+}
+
+.stickyHeader {
+    position: sticky;
+    // top: 0;
+    // background-color: #fff;
+}
+
+.userInfo_msg {
+    flex: 1;
+    flex-direction: column;
+}
+</style>

@@ -1,0 +1,245 @@
+<template>
+    <div style="position: fixed;top:0;bottom:0;left:0;right:0">
+        <div class="topicTopWrap" id="topicTopWrap">
+            <div class="fakerTop" :style="{ height: navHeight + 'px' }"></div>
+            <div class="topicsItem">
+                <image class="image" src="https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg"
+                    borderRadius="3rpx"></image>
+                <div class="rightInfo">
+                    <text class="title">#勒布朗勒布朗</text>
+                    <div class="bottomInfo">
+                        <text class="num">2323篇动态</text>
+                        <div class="push flexCenter">发布</div>
+                    </div>
+                </div>
+            </div>
+            <u-tabs :duration="300" class="tabs" id="tabs" :current="tags.index" :list="tags.list" ref="tabs"></u-tabs>
+        </div>
+        <!-- #ifndef APP-NVUE -->
+        <div @click="pageJump('/pages/cardForum/topics/act?id=')">
+            广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告</div>
+        <!-- #endif -->
+        <swiper :duration="300" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }" :current="tags.index"
+            @change="swiperChange">
+            <swiper-item class="swiperItem">
+
+                <waterfalls ref="waterfall" @scroll="scroll" @loadmore="loadmore" @refresh="refresh" left-gap="10"
+                    :height="scrollViewHeight + 'px'" right-gap="10" column-gap="8" :always-scrollable-vertical="true">
+                    <header>
+                        <div @click="pageJump('/pages/cardForum/topics/act?id=')">
+                            广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告</div>
+                    </header>
+                    <cell v-for="(item, index) in list" class="waterfall-item-cell">
+                        <view class="waterfall-item">
+                            <view class="waterfall-item__image">
+                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
+                            </view>
+                            <view class="waterfall-item__ft">
+                                <view class="waterfall-item__ft__title">
+                                    <text class="value">{{ item.title }}</text>
+                                </view>
+                                <view class="waterfall-item__ft__desc uv-line-2">
+                                    <text class="value">{{ item.desc }}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </cell>
+                </waterfalls>
+            </swiper-item>
+            <swiper-item class="swiperItem">
+                <waterfalls ref="waterfall" @scroll="scroll" @loadmore="loadmore" @refresh="refresh" left-gap="10"
+                    :height="scrollViewHeight + 'px'" right-gap="10" column-gap="8" :always-scrollable-vertical="true">
+                    <header>
+                    </header>
+                    <cell v-for="(item, index) in list" class="waterfall-item-cell">
+                        <view class="waterfall-item">
+                            <view class="waterfall-item__image">
+                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
+                            </view>
+                            <view class="waterfall-item__ft">
+                                <view class="waterfall-item__ft__title">
+                                    <text class="value">{{ item.title }}</text>
+                                </view>
+                                <view class="waterfall-item__ft__desc uv-line-2">
+                                    <text class="value">{{ item.desc }}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </cell>
+                </waterfalls>
+            </swiper-item>
+        </swiper>
+
+        <transitionNav ref="transitionNav" title="#勒布朗勒布朗" @getNavHeight="getNavHeight"></transitionNav>
+    </div>
+</template>
+<script>
+import transitionNav from "@/components/transitionNav/transitionNav.vue"
+import waterfalls from "../components/waterfalls.vue"
+const app = getApp().globalData.app;
+export default {
+    name: '',
+    components: {
+        transitionNav,
+        waterfalls
+    },
+    mixins: [],
+    props: {
+
+    },
+    data() {
+        return {
+            scrollViewHeight: 0,
+            app,
+            navHeight: 0,
+            tags: {
+                index: 0,
+                list: [
+                    {
+                        name: "热门"
+                    },
+                    { name: "最新" }
+                ]
+            },
+            list: [
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/2c9607d02842139323fe9c2e86b4305a.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/e18c950220664d2ea430fcea7a514770.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/C4AC6C305E3543C39297A8B876EFE13D.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1f22e3dc5679da68c24e8e28f72a9192.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/760f1341-6a13-4e01-91e2-f6a2c69b8490.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/4f1c7d52e6ab48b8a1f10c75c08dc421.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/9740T20210822233025348.jpg?imageView2/2/w/200' },
+            ]
+        }
+    },
+    computed: {
+
+    },
+    watch: {
+
+    },
+    onLoad() {
+
+    },
+    methods: {
+        getNavHeight(height) {
+            this.navHeight = height
+            this.$nextTick(async () => {
+                const topHeight = await this.getDomHeight("#topicTopWrap")
+                // #ifdef APP_PLUS
+                this.scrollViewHeight = app.platform.systemInfo.screenHeight - topHeight - this.navHeight
+                // #endif
+
+            })
+        },
+        scroll(event) {
+            //想要渐变导航栏就用下面的代码
+            // this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll({
+            //     scrollTop: -event.contentOffset.y
+            // })
+        },
+        pageJump(url) {
+            uni.navigateTo({
+                url: url
+            })
+        },
+        swiperChange(event) {
+            this.tags.index = event.detail.current
+        },
+        loadmore() {
+            return
+            this.list.push(...this.list)
+        },
+        refresh() {
+            setTimeout(() => {
+                this.$refs.waterfall.hideRefresh()
+            }, 500)
+        },
+        getDomHeight(dom) {
+            return new Promise((re, rj) => {
+                uni.createSelectorQuery()
+                    .select(dom)
+                    .boundingClientRect((rect) => {
+                        if (rect) {
+                            re && re(rect.height)
+                        }
+                    })
+                    .exec();
+            })
+        },
+    }
+};
+</script>
+<style lang="scss">
+.fakerTop {
+    width: 750rpx;
+    opacity: 0;
+}
+
+.tabs {
+    /* position: -webkit-sticky; */
+    /* position: sticky;
+    top: 200px; */
+    /* Safari */
+}
+
+.topicTopWrap {
+    width: 750rpx;
+    /* height: 500rpx; */
+    background-color: red;
+}
+
+.topicsItem {
+    width: 700rpx;
+    display: flex;
+    align-items: center;
+    margin-bottom: 22rpx;
+    flex-direction: row;
+    height: 140rpx;
+
+
+}
+
+.image {
+    width: 88rpx;
+    height: 88rpx;
+    margin-right: 20rpx;
+}
+
+.num {
+    color: #aaaaaa;
+}
+
+.bottomInfo {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.push {
+    padding: 10rpx 30rpx;
+    background-color: #fb374e;
+    color: #fff;
+}
+
+.rightInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+
+
+}
+
+.title {
+    color: #000;
+    font-weight: bold;
+}
+</style>

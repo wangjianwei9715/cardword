@@ -1,0 +1,36 @@
+<template>
+    <div>
+        666666666
+    </div>
+</template>
+<script>
+export default {
+    name: '',
+    components: {
+
+    },
+    mixins: [],
+    props: {
+
+    },
+    data() {
+        return {
+
+        }
+    },
+    computed: {
+
+    },
+    watch: {
+
+    },
+    mounted() {
+
+    },
+    methods: {
+
+    }
+};
+</script>
+<style>
+</style>

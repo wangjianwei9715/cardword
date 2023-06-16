@@ -1,3 +1,11 @@
+/*
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-06-13 10:58:55
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-06-15 17:35:39
+ * @FilePath: \card-world\src\pages.json
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 {
 	"pages": [
 		{
@@ -92,6 +100,26 @@
 			}
 		},
 		{
+			"path": "pages/cardForum/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "卡圈",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/cardForum/home",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "卡圈",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录",
@@ -138,14 +166,15 @@
 					"softinputMode": "adjustPan"
 				}
 			}
-		}
-		,{
+		},
+		{
 			"path": "pages/drawCard/drawCard",
 			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
 			}
-		},{
+		},
+		{
 			"path": "pages/forum/index",
 			"style": {
 				"navigationBarTitleText": "上传视频",
@@ -187,6 +216,12 @@
 				"iconPath": "static/index/v3/tab2.png",
 				"selectedIconPath": "static/index/v3/tab2_.png",
 				"text": "功能"
+			},
+			{
+				"pagePath": "pages/cardForum/home",
+				"iconPath": "static/index/v3/tab2.png",
+				"selectedIconPath": "static/index/v3/tab2_.png",
+				"text": "卡圈"
 			},
 			{
 				"pagePath": "pages/index/message",
@@ -592,7 +627,8 @@
 							"bounce": "none"
 						}
 					}
-				},{
+				},
+				{
 					"path": "merchantRank/publicAward",
 					"style": {
 						"navigationBarTitleText": "奖励预览",
@@ -686,7 +722,6 @@
 						}
 					}
 				}
-				
 			]
 		},
 		{
@@ -1243,7 +1278,8 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				},{
+				},
+				{
 					"path": "invoice/index",
 					"style": {
 						"navigationStyle": "custom",
@@ -1251,7 +1287,8 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				},{
+				},
+				{
 					"path": "invoice/apply_for",
 					"style": {
 						"navigationBarTitleText": "申请开票",
@@ -1261,7 +1298,8 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				},{
+				},
+				{
 					"path": "locker/index",
 					"style": {
 						"navigationBarTitleText": "寄存柜",
@@ -1271,7 +1309,8 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				},{
+				},
+				{
 					"path": "locker/fancy",
 					"style": {
 						"navigationBarTitleText": "精美卡片",
@@ -1281,7 +1320,8 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				},{
+				},
+				{
 					"path": "locker/fancy_pay",
 					"style": {
 						"navigationBarTitleText": "确认订单",
@@ -1291,7 +1331,8 @@
 						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
-				},{
+				},
+				{
 					"path": "locker/fancy_order",
 					"style": {
 						"navigationBarTitleText": "",
@@ -1302,8 +1343,6 @@
 						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				}
-				
-				
 			]
 		},
 		{
@@ -1421,6 +1460,79 @@
 						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#FFFFFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#FFFFFF" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/cardForum",
+			"pages": [
+				{
+					"path": "release",
+					"style": {
+						"navigationBarTitleText": "发布卡圈",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "search",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "卡圈搜索",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "detail",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "卡圈详情",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "personHome",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "他人主页",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "topics/list",
+					"style": {
+						"navigationBarTitleText": "话题列表",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "topics/detail",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "话题详情",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "topics/act",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "话题活动",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
 					}
 				}
 			]
