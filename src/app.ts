@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\app.ts
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-17 16:58:47
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-06-19 17:19:05
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -11,6 +11,7 @@ import PlatformManager from "./manager/PlatformManager";
 import PayManager from "./manager/PayManager";
 import navigateManager from "./manager/navigateManager";
 import goodsManager from "./manager/goodsManager";
+import userManager from "./manager/userManager"
 import HttpRequest from "./net/HttpRequest";
 import { SocketServer } from "./net/SocketServer";
 export module app{
@@ -45,6 +46,7 @@ export module app{
     export let http =  HttpRequest.getIns();
     export let navigateTo =  navigateManager.getIns();
     export let goods =  goodsManager.getIns();
+    export let user =  userManager.getIns();
     export let refreshIng = false;
     export let needPushIdentifier = true;
     export let protobuf:any = null; 

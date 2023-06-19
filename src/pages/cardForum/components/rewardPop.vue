@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 13:34:00
+ * @LastEditTime: 2023-06-19 15:12:56
  * @FilePath: \card-world\src\pages\cardForum\components\rewardTool.vue
  * @Description: 卡圈的打赏组件
 -->
@@ -99,12 +99,13 @@ export default class ClassName extends BaseComponent {
     code?: string;
     @Prop({
         default: () => {
-            return {}
+            return {} as CardForum.RewardUserInfo
         }
     })
-    userInfo?: CardForum.RewardUserInfo | any;
+    //@ts-ignore
+    userInfo: CardForum.RewardUserInfo;
     reawrdOptions: Array<Reward> = reawrdOptions
-    nowSelectOption: Reward | any = {}
+    nowSelectOption: Reward = {} as Reward
     showGive: boolean = false
     onClickOption(item: Reward) {
         if (item.type == 1) {
