@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 17:53:47
+ * @LastEditTime: 2023-06-19 18:10:37
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -18,6 +18,9 @@
                         class="topAvatar"></image>
                     <view class="topName u-line-1">{{ forumDetail.userName || "获取中" }}</view>
                 </view>
+                <view class="flex1"></view>
+                <view class="follow flexCenter" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{ isFollow ? '已关注'
+                    : '关注' }}</view>
                 <!-- <view @click="actionSheetShow = true" v-if="isMy">
                     <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>
                 </view> -->
@@ -163,6 +166,7 @@ import { formatNumber, getDateDiff } from "@/tools/util"
 import rewardPop from "./components/rewardPop.vue"
 import CardForum from "./interface/public";
 import { UserStreamline } from "@/manager/userManager"
+import { followActionByUser } from "./func/index"
 enum ForumBit {
     IS_PERSON = 1,//本人
     IS_FOLLOW = 2,//关注
@@ -388,7 +392,9 @@ export default class ClassName extends BaseNode {
             content: `是否删除"${item.content.length <= 15 ? item.content : item.content.slice(0, 15) + "..."}"评论?`,
             success: (res: any) => {
                 if (res.confirm) {
-                    app.http.Post("portableCard/works/comment/delete/" + item.id, {}, () => {
+                    // cardCircle/comment/delete/
+                    // portableCard/works/comment/delete/
+                    app.http.Post("cardCircle/comment/delete/" + item.id, {}, () => {
                         if (isSon) {
                             fatherItem.lower.splice(index, 1)
                             this.forumDetail.commentNum -= 1
@@ -416,6 +422,11 @@ export default class ClassName extends BaseNode {
     onClickCollect() {
         app.http.Post(`cardCircle/${this.isCollection ? 'un/' : ''}collect/${this.code}`, {}, (res: any) => {
             this.forumDetail.bit ^= ForumBit.IS_COLLECTION;
+        })
+    }
+    onClickFollow() {
+        followActionByUser(this.forumDetail.userId, this.isFollow).then(() => {
+            this.forumDetail.bit ^= ForumBit.IS_FOLLOW;
         })
     }
     onClickLoadMore(item: CardForum.CommentFather) {
@@ -525,6 +536,22 @@ export default class ClassName extends BaseNode {
 .swiper {
     width: 750rpx;
     height: 750rpx;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.follow {
+    width: 80rpx;
+    height: 40rpx;
+    color: #fff;
+    background-color: #fb374e;
+}
+
+.follow_dis {
+    color: #fff;
+    background-color: #c9d0d7;
 }
 
 .contentContainer {
