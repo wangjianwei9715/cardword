@@ -19,11 +19,14 @@
         </view>
 
         <swiper :duration="300" v-if="initFinish" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }"
-            :current="tabs.index" @change="swiperChange">
+            :current="tabs.index" @change="swiperChange" @animationfinish="swiperChangeAnimationfinish"
+            @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <!-- #ifndef APP-NVUE -->
                 {{ tab.name }}
-                {{ tab.list }}
+                <div v-for="(item,index) in tab.list" @click="goToDetail(item)">
+                    {{ item.title }},{{ item.desc }}
+                </div>
                 <!-- #endif -->
                 <cardSkeleton :loading="!tab.firstReqEnd" />
                 <!-- #ifndef APP-NVUE -->
@@ -162,7 +165,8 @@ export default {
                     name: '篮球',
 
                 }]
-            }
+            },
+            trTimmer: null
         }
     },
     async onLoad() {
@@ -261,7 +265,17 @@ export default {
             })
         },
         swiperChange(event) {
+            // console.log("swiperChange", event);
             this.tabs.index = event.detail.current
+        },
+        swiperChangeAnimationfinish(event) {
+            // console.log("动画结束", event);
+        },
+        swiperTransition(event) {
+            // this.trTimmer && clearTimeout(this.trTimmer)
+            // this.trTimmer = setTimeout(() => {
+            //     console.log("swiperTransition", event);
+            // }, 10)
         },
         tabClick(event) {
             // console.log(event);

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-15 17:30:30
+ * @LastEditTime: 2023-06-19 09:51:35
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,8 +23,8 @@
                 </view> 
             </view>
         </scroll-view>
-        <vote :show.sync="showVote" />
-        <topics :show.sync="showTopics" @select="onSelectTopic" />
+        <votePop :show.sync="showVote" />
+        <topicsPop :show.sync="showTopics" @select="onSelectTopic" />
     </view>
 </template>
 
@@ -32,8 +32,8 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
-import vote from "./components/vote.vue"
-import topics from "./components/topics.vue"
+import votePop from "./components/votePop.vue"
+import topicsPop from "./components/topicsPop.vue"
 import CardForum from "./interface/public";
 import ppp from "./components/ppp.vue"
 import Upload from "@/tools/upload"
@@ -45,8 +45,8 @@ interface CardForumRelease {
 
 @Component({
     components: {
-        vote,
-        topics,
+        votePop,
+        topicsPop,
         shmilyDragImage,
         ppp
     }

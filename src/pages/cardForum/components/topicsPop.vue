@@ -4,7 +4,7 @@
  * @LastEditors: lsj a1353474135@163.com
  * @LastEditTime: 2023-06-13 16:22:54
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
- * @Description: 卡圈的投票组件
+ * @Description: 卡圈的话题pop组件
 -->
 <template>
     <view class="content">

@@ -2,14 +2,14 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-13 16:08:41
+ * @LastEditTime: 2023-06-19 10:18:18
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的投票组件
 -->
 <template>
     <view class="content">
-        <u-overlay :show="show">
-            <u-popup :show="show" @close="showValue = false" :closeable="true" :closeOnClickOverlay="false">
+        <u-overlay :show="showValue">
+            <u-popup :show="showValue" @close="showValue = false" :closeable="true" :closeOnClickOverlay="false">
                 <view class="voteContainer">
                     <view class="vote_top flexCenter">
                         <view class="title">发起投票</view>

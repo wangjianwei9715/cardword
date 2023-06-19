@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-15 17:40:07
+ * @LastEditTime: 2023-06-19 09:54:58
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,8 +14,7 @@
             <view class="nav">
                 <view class="back" @click="goBack"></view>
                 <view @click="goPersonHome" style="display:flex">
-                    <image 
-                        :src="formData.avatar ? $parsePic(decodeURIComponent(formData.avatar)) : app.defaultAvatar"
+                    <image :src="formData.avatar ? $parsePic(decodeURIComponent(formData.avatar)) : app.defaultAvatar"
                         class="topAvatar"></image>
                     <view class="topName u-line-1">{{ formData.userName || "获取中" }}</view>
                 </view>
@@ -47,6 +46,33 @@
             <view class="time">发布于 {{ $u.timeFormat(formData.created_at, 'mm-dd hh:MM') }}</view>
             <view class="line"></view>
         </view>
+        <view class="fixInputContainer">
+            <view class="wrap">
+                <view class="fakerInput">{{ "说你想说..." }}</view>
+                <view class="toolsWrap">
+                    <view class="toolsItem">
+                        <image src="@/static/act/portable/talk.png" />
+                        <view class="num">{{ formatNumber(formData.commentNum || 0, 2, "en") }}(打赏)</view>
+                    </view>
+                    <view class="toolsItem">
+                        <image src="@/static/act/portable/talk.png" />
+                        <view class="num">{{ formatNumber(formData.commentNum || 0, 2, "en") }}(点赞)</view>
+                    </view>
+                    <view class="toolsItem">
+                        <image src="@/static/act/portable/talk.png" />
+                        <view class="num">{{ formatNumber(formData.commentNum || 0, 2, "en") }}(评论)</view>
+                    </view>
+                    <view class="toolsItem" @click="$u.throttle(() => { }, 1000)">
+                        <image v-if="!formData.isLiked" src="@/static/act/portable/dz_black.png" />
+                        <image v-else src="@/static/act/portable/dz_red.png" />
+                        <view class="num">{{ formatNumber(formData.likeNum || 0, 2, "en") }}(收藏)</view>
+                    </view>
+                </view>
+            </view>
+
+        </view>
+        <view class="safeBottom"></view>
+        <reward-pop :show.sync="rewardShow"></reward-pop>
     </view>
 </template>
 
@@ -54,11 +80,18 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
+import { formatNumber, getDateDiff } from "@/tools/util"
+import rewardPop from "./components/rewardPop.vue"
 @Component({
+    components: {
+        rewardPop
+    }
 })
 export default class ClassName extends BaseNode {
     app = app
     showVote: boolean = true
+    rewardShow:boolean=true
+    formatNumber = formatNumber
     formData: any = {
 
     }
@@ -162,5 +195,81 @@ export default class ClassName extends BaseNode {
         height: 1rpx;
         background: #E8E8E8;
     }
+}
+
+.fixInputContainer {
+    width: 750rpx;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1rpx solid #E8E8E8;
+    background-color: #fff;
+
+    .wrap {
+        height: 124rpx;
+        width: inherit;
+        box-sizing: border-box;
+        padding: 0 44rpx;
+        display: flex;
+        align-items: center;
+
+        .fakerInput {
+            width: 340rpx;
+            height: 63rpx;
+            background: #EFEFEF;
+            border-radius: 3rpx;
+            box-sizing: border-box;
+            padding: 0 30rpx;
+            display: flex;
+            align-items: center;
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            margin-right: 30rpx;
+            font-weight: 400;
+            overflow: hidden;
+            color: #88878C;
+        }
+
+        .toolsWrap {
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toolsItem {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            height: 64rpx;
+
+            image {
+                width: 35rpx;
+                height: 34rpx;
+            }
+
+            .num {
+                position: absolute;
+                font-size: 23rpx;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: #333333;
+                line-height: 30rpx;
+                bottom: 0;
+            }
+        }
+    }
+}
+
+.safeBottom {
+    width: 750rpx;
+    height: 124rpx;
+    opacity: 0;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+    pointer-events: none;
 }
 </style>
