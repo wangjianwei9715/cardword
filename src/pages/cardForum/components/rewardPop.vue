@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 10:39:52
+ * @LastEditTime: 2023-06-19 13:34:00
  * @FilePath: \card-world\src\pages\cardForum\components\rewardTool.vue
  * @Description: 卡圈的打赏组件
 -->
@@ -52,6 +52,7 @@ interface Reward {
     type: number;
     /** type 2时,卡币赠送数量 */
     num?: number;
+    tp?: number;
 }
 const reawrdOptions: Array<Reward> = [
     {
@@ -61,26 +62,31 @@ const reawrdOptions: Array<Reward> = [
     {
         title: "赠送卡币",
         type: 2,
+        tp: 1,
         num: 5
     },
     {
         title: "赠送卡币",
         type: 2,
+        tp: 2,
         num: 10
     },
     {
         title: "赠送卡币",
         type: 2,
+        tp: 3,
         num: 50
     },
     {
         title: "赠送卡币",
         type: 2,
+        tp: 4,
         num: 100
     },
     {
         title: "赠送卡币",
         type: 2,
+        tp: 5,
         num: 500
     }
 ]
@@ -89,8 +95,8 @@ export default class ClassName extends BaseComponent {
     @PropSync("show", {
         type: Boolean
     }) showValue!: Boolean;
-    @Prop({ default: 0 })
-    id?: number;
+    @Prop({ default: "" })
+    code?: string;
     @Prop({
         default: () => {
             return {}
@@ -104,7 +110,10 @@ export default class ClassName extends BaseComponent {
         if (item.type == 1) {
             //跳转赠送卡密
             uni.navigateTo({
-                url: `/pages/cardForum/kami/list`
+                url: `/pages/cardForum/kami/list?code=${this.code}`,
+                success: (res) => {
+                    res.eventChannel.emit('receiveUserInfo', this.userInfo)
+                }
             })
             return
         }
@@ -119,10 +128,12 @@ export default class ClassName extends BaseComponent {
             return
         }
         this.showGive = false
-        uni.showToast({
-            title: "赠送成功"
+        app.http.Post(`cardCircle/send/point/${this.code}`, { tp: this.nowSelectOption.tp }, (res: any) => {
+            uni.showToast({
+                title: "赠送成功"
+            })
+            app.platform.UINotificationFeedBack("success")
         })
-        app.platform.UINotificationFeedBack("success")
     }
 }
 </script>

@@ -22,13 +22,8 @@
             :current="tabs.index" @change="swiperChange" @animationfinish="swiperChangeAnimationfinish"
             @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
-                <!-- #ifndef APP-NVUE -->
-                {{ tab.name }}
-                <div v-for="(item,index) in tab.list" @click="goToDetail(item)">
-                    {{ item.title }},{{ item.desc }}
-                </div>
-                <!-- #endif -->
                 <cardSkeleton :loading="!tab.firstReqEnd" />
+
                 <!-- #ifndef APP-NVUE -->
                 <view class="hotTopicWrap" v-if="tabIndex == 2 && tab.firstReqEnd">
                     <view class="hotTopicRow">
@@ -46,6 +41,13 @@
                         </view>
                     </scroll-view>
                 </view>
+                <!-- #endif -->
+                <!-- #ifndef APP-NVUE -->
+                <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
+                    @scrolltolower="loadmoreData(tabIndex)">
+                    <waterfalls style="width:750rpx" v-if="tab.list.length" v-model="tab.list" :add-time="50"
+                        column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40"></waterfalls>
+                </scroll-view>
                 <!-- #endif -->
                 <!-- #ifdef APP-NVUE -->
                 <waterfalls column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="10"
