@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 09:54:58
+ * @LastEditTime: 2023-06-19 11:52:49
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -50,7 +50,7 @@
             <view class="wrap">
                 <view class="fakerInput">{{ "说你想说..." }}</view>
                 <view class="toolsWrap">
-                    <view class="toolsItem">
+                    <view class="toolsItem" @click="rewardShow = true">
                         <image src="@/static/act/portable/talk.png" />
                         <view class="num">{{ formatNumber(formData.commentNum || 0, 2, "en") }}(打赏)</view>
                     </view>
@@ -72,7 +72,9 @@
 
         </view>
         <view class="safeBottom"></view>
-        <reward-pop :show.sync="rewardShow"></reward-pop>
+        <reward-pop :code="code"
+            :userInfo="{ userName: '爷特么就是拽', userId: 100926120, avatar: 'http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685343611785mkp72m7wqz.jpg?x-oss-process=image/resize,p_50' }"
+            :show.sync="rewardShow"></reward-pop>
     </view>
 </template>
 
@@ -90,13 +92,17 @@ import rewardPop from "./components/rewardPop.vue"
 export default class ClassName extends BaseNode {
     app = app
     showVote: boolean = true
-    rewardShow:boolean=true
+    rewardShow: boolean = false
+    code: string = ""
     formatNumber = formatNumber
     formData: any = {
 
     }
     pics: Array<string> = ["https://i.ebayimg.com/thumbs/images/g/Cr0AAOSwkHdkfj7U/s-l300.webp", "https://i.ebayimg.com/thumbs/images/g/lL0AAOSwhA9kfU3A/s-l300.webp"]
     onLoad(query: any) {
+        this.code = query.code || "mockCode"
+        console.log(this.code);
+        
     }
     goPersonHome() {
         uni.navigateTo({

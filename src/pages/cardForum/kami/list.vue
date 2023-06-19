@@ -1,5 +1,31 @@
+<!--
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-06-19 10:37:43
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-06-19 11:12:47
+ * @FilePath: \card-world\src\pages\cardForum\kami\list.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
     <view class="content">
+        <view class="goodsCard" v-for="(item, index) in list">
+            <view class="merchantWrap">
+                <muqian-lazyLoad :src="item.merchantLogo" class="merchantAvatar" borderRadius="50%"></muqian-lazyLoad>
+                <view class="merchantName">{{ item.merchantName }}</view>
+            </view>
+            <view class="goodsWrap uni-flex">
+                <muqian-lazyLoad class="goodsPic" :src="item.pic"></muqian-lazyLoad>
+                <view class="goodsInfo">
+                    <view class="goodsName u-line-2">{{ item.goodsName }}</view>
+                    <view class="price">￥{{ item.price }}起</view>
+                </view>
+            </view>
+            <view class="bottomWrap uni-flex">
+                <view class="kamiNum">卡密数量：10</view>
+                <view class="giveButton flexCenter" @click="onClickGive(item)">去赠送</view>
+            </view>
+        </view>
+        <empty v-if="!list || !list.length" />
     </view>
 </template>
 
@@ -7,16 +33,49 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
+import CardForum from "../interface/public";
+interface KamiGoods {
+    /**商品名称 */
+    goodsName: string
+    /**商品编号 */
+    goodCode: string
+    /**商家头像 */
+    merchantLogo: string
+    /**商家名称 */
+    merchantName: string
+    /**拼团类型 */
+    pintuan_type: number
+    /**商品单价 */
+    price: number
+    /**商品图片 */
+    pic: string
+}
 @Component({})
 export default class ClassName extends BaseNode {
     queryParams: any = {
         pageIndex: 1,
         pageSize: 20
     }
-    list: any = []
+    list: Array<KamiGoods> = [{
+        goodsName: "假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假",
+        goodCode: "SB250",
+        merchantLogo: "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg?x-oss-process=image/resize,p_50",
+        merchantName: "mock商家",
+        pintuan_type: 1,
+        price: 1,
+        pic: "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg?x-oss-process=image/resize,p_50"
+    }]
     totalPage: number = 0
+    receiveUserInfo: CardForum.RewardUserInfo | any = {}
+    code: string = ""
     onLoad(query: any) {
-        // this.reqNewData()
+        this.code = query.code
+        //@ts-ignore
+        const eventChannel = this.getOpenerEventChannel();
+        eventChannel.on('receiveUserInfo', (data: any) => {
+            if (data) this.receiveUserInfo = data
+            console.log(this.receiveUserInfo);
+        })
     }
     onReachBottom() {
         if (this.queryParams.pageIndex < this.totalPage) {
@@ -28,6 +87,17 @@ export default class ClassName extends BaseNode {
         this.queryParams.pageIndex = 1
         this.reqNewData(() => {
             uni.stopPullDownRefresh()
+        })
+    }
+    onClickGive(item: KamiGoods) {
+        uni.navigateTo({
+            url: `/pages/cardForum/kami/give?code=${this.code}`,
+            success: (res) => {
+                res.eventChannel.emit('receiveInfo', {
+                    ...this.receiveUserInfo,
+                    goodCode: item.goodCode
+                })
+            }
         })
     }
     reqNewData(cb?: any) {
@@ -42,4 +112,58 @@ export default class ClassName extends BaseNode {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+page {
+    background-color: #f2f2f2;
+}
+
+.goodsCard {
+    width: 720rpx;
+    box-sizing: border-box;
+    padding: 20rpx;
+    background-color: #fff;
+    margin-top: 20rpx;
+}
+
+.merchantWrap {
+    border-bottom: 1rpx solid #f2f2f2;
+    padding-bottom: 10rpx;
+    display: flex;
+    align-items: center;
+
+    .merchantAvatar {
+        width: 50rpx;
+        height: 50rpx;
+        border-radius: 50%;
+        margin-right: 10rpx;
+    }
+}
+
+.goodsWrap {
+    margin-top: 20rpx;
+
+    .goodsPic {
+        width: 200rpx;
+        height: 200rpx;
+        display: block;
+    }
+
+    .goodsInfo {
+        flex: 1;
+        margin-left: 20rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
+.bottomWrap {
+    margin-top: 20rpx;
+    justify-content: space-between;
+
+    .giveButton {
+        background-color: #fb374e;
+        color: #fff;
+    }
+}
+</style>

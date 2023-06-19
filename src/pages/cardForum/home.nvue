@@ -1,22 +1,22 @@
 <template>
-    <view class="content" style="display: flex;width: 750rpx;flex-direction: column;align-items: center;">
+    <div class="content" style="display: flex;width: 750rpx;flex-direction: column;align-items: center;">
         <!-- <view class="fakerView" :style="{ height: navHeight + tabsHeight + 'px' }"></view> -->
-        <view class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></view>
-        <view class="fixedTop" id="fixedTop">
+        <div class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></div>
+        <div class="fixedTop" id="fixedTop">
 
-            <view class="navBar" id="navBar" ref="navBar">
-                <view :style="{ height: app.statusBarHeight + 'px' }"></view>
-                <view class="nav">
-                    <view class="navSearchWrap" @click="pageJump('/pages/cardForum/search')">
+            <div class="navBar" id="navBar" ref="navBar">
+                <div :style="{ height: app.statusBarHeight + 'px' }"></div>
+                <div class="nav">
+                    <div class="navSearchWrap" @click="pageJump('/pages/cardForum/search')">
                         <input class="navInput" type="text" :value="nowTabText" placeholder="搜你想搜..." disabled />
-                        <view class="nav_search flexCenter">搜索</view>
-                    </view>
-                    <view class="camera" @click.stop="actionSheet = true">发布</view>
-                </view>
-            </view>
+                        <div class="nav_search flexCenter">搜索</div>
+                    </div>
+                    <div class="camera" @click.stop="actionSheet = true">发布</div>
+                </div>
+            </div>
             <u-tabs :duration="300" class="tabs" id="tabs" :current="tabs.index" @click="tabClick" :list="tabs.list"
                 ref="tabs"></u-tabs>
-        </view>
+        </div>
 
         <swiper :duration="300" v-if="initFinish" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }"
             :current="tabs.index" @change="swiperChange" @animationfinish="swiperChangeAnimationfinish"
@@ -52,35 +52,35 @@
                     :height="scrollViewHeight + 'px'" right-gap="10" column-gap="8" :always-scrollable-vertical="true"
                     @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)">
                     <header v-if="tabIndex == 2">
-                        <view class="hotTopicWrap">
-                            <view class="hotTopicRow">
+                        <div class="hotTopicWrap">
+                            <div class="hotTopicRow">
                                 <text class="hotTopicRow_title">热门话题</text>
                                 <text class="hotTopicRow_title" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
-                            </view>
+                            </div>
                             <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
-                                <view class="topicItem"></view>
-                                <view class="topicItem"></view>
-                                <view class="topicItem"></view>
-                                <view class="topicItem"></view>
-                                <view class="topicItem"></view>
-                                <view class="topicItem"></view>
+                                <div class="topicItem"></div>
+                                <div class="topicItem"></div>
+                                <div class="topicItem"></div>
+                                <div class="topicItem"></div>
+                                <div class="topicItem"></div>
+                                <div class="topicItem"></div>
                             </scroll-view>
-                        </view>
+                        </div>
                     </header>
                     <cell v-for="(item, index) in tab.list" class="waterfall-item-cell" @click="goToDetail(item)">
-                        <view class="waterfall-item">
-                            <view class="waterfall-item__image">
+                        <div class="waterfall-item">
+                            <div class="waterfall-item__image">
                                 <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
-                            </view>
-                            <view class="waterfall-item__ft">
-                                <view class="waterfall-item__ft__title">
+                            </div>
+                            <div class="waterfall-item__ft">
+                                <div class="waterfall-item__ft__title">
                                     <text class="value">{{ item.title }}</text>
-                                </view>
-                                <view class="waterfall-item__ft__desc uv-line-2">
+                                </div>
+                                <div class="waterfall-item__ft__desc uv-line-2">
                                     <text class="value">{{ item.desc }}</text>
-                                </view>
-                            </view>
-                        </view>
+                                </div>
+                            </div>
+                        </div>
                     </cell>
                 </waterfalls>
                 <!-- #endif -->
@@ -89,7 +89,7 @@
         </swiper>
         <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
             @close="actionSheet = false"></u-action-sheet>
-    </view>
+    </div>
 </template>
 <script>
 import waterfalls from "./components/waterfalls.vue"
@@ -261,7 +261,7 @@ export default {
         },
         goToDetail(item) {
             uni.navigateTo({
-                url: "/pages/cardForum/detail?id=" + item.id
+                url: "/pages/cardForum/detail?code=" + item.code
             })
         },
         swiperChange(event) {
