@@ -2,14 +2,14 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-20 14:54:46
+ * @LastEditTime: 2023-06-20 18:20:53
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
 <template>
     <!-- #ifndef APP-NVUE -->
     <view class="uv-waterfall">
-        <view class="uv-waterfall__gap_left" style="width:10rpx"></view>
+        <view class="uv-waterfall__gap_left" style="width:10rpx;opcity:0"></view>
         <view id="uv-waterfall-1" class="uv-waterfall__column">
             <slot name="list1"></slot>
             <!-- slot示例 -->
@@ -38,34 +38,36 @@
                 </view>
             </view>
         </view>
-        <view class="uv-waterfall__gap_center" style="width:10rpx"></view>
+        <view class="uv-waterfall__gap_center" style="width:10rpx;opcity:0"></view>
         <view id="uv-waterfall-2" class="uv-waterfall__column">
             <slot name="list2"></slot>
             <!-- slot示例 -->
             <view>
-                <view v-for="(item, index) in list2" :key="item.id" class="waterfall-item" @click="goToDetail(item)">
-                    <view class="waterfall-item__image">
-                        <image :src="item.image" mode="widthFix" class="waterfall-item__image_img">
-                        </image>
-                    </view>
-                    <view class="waterfall-item__ft">
-                        <view class="waterfall-item__ft__title">
-                            <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
+                <view v-for="(item, index) in list2" :key="item.id" class="waterfall-item-grayWrap">
+                    <view class="waterfall-item" @click="goToDetail(item)">
+                        <view class="waterfall-item__image">
+                            <image :src="item.image" mode="widthFix" class="waterfall-item__image_img">
+                            </image>
                         </view>
-                    </view>
-                    <view class="waterfall-item__bottom">
-                        <image class="waterfall-item__bottom__avatar"></image>
-                        <text
-                            class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
-                        <view class="likeWrap">
-                            <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
-                            <text class="likeNum">40</text>
+                        <view class="waterfall-item__ft">
+                            <view class="waterfall-item__ft__title">
+                                <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
+                            </view>
+                        </view>
+                        <view class="waterfall-item__bottom">
+                            <image class="waterfall-item__bottom__avatar"></image>
+                            <text
+                                class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
+                            <view class="likeWrap">
+                                <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                <text class="likeNum">40</text>
+                            </view>
                         </view>
                     </view>
                 </view>
             </view>
         </view>
-        <view class="uv-waterfall__gap_right" style="width:10rpx">
+        <view class="uv-waterfall__gap_right" style="width:10rpx;opcity:0">
         </view>
     </view>
     <!-- #endif -->
@@ -431,6 +433,9 @@ $uvui-nvue-style: true !default;
 
 .waterfall-item__image_img {
     width: 360rpx;
+    // ##ifndef APP-NVUE
+    width: 100%;
+    // #endif
 }
 
 .waterfall-item__ft__title {
@@ -460,7 +465,7 @@ $uvui-nvue-style: true !default;
     box-sizing: border-box;
     // #endif
     width: 360rpx;
-    padding: 0 15rpx 0 17rpx;
+    padding: 0 12rpx 0 17rpx;
     padding-bottom: 29rpx;
     align-items: center;
 }
@@ -498,11 +503,12 @@ $uvui-nvue-style: true !default;
     font-family: PingFang SC;
     font-weight: 400;
     color: #8D8D8D;
-    margin-left: 10rpx;
+    margin-left: 8rpx;
 }
+
 //兼容nvue下cell上下间距无法调整
 .waterfall-item-grayWrap {
     padding-bottom: 10rpx;
-    background-color: #f6f7fb;
+    // background-color: #f6f7fb;
 }
 </style>

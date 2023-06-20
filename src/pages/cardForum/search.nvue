@@ -1,100 +1,77 @@
 <template>
     <div class="content" style="display: flex;width: 750rpx;flex-direction: column;align-items: center;">
-        <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack"></image>
+        <!-- <view class="fakerView" :style="{ height: navHeight + tabsHeight + 'px' }"></view> -->
         <div class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></div>
-        <div class="fixedTop" id="fixedTop" :style="{ backgroundColor: `rgba(255,255,255,${isShowKa ? 0 : 1})` }">
+        <div class="fixedTop" id="fixedTop">
             <div class="navBar" id="navBar" ref="navBar">
                 <div :style="{ height: app.statusBarHeight + 'px' }"></div>
                 <div class="nav">
-                    <div class="navSearchWrap" :class="{navSearchWrap_showka:isShowKa}" @click="pageJump('/pages/cardForum/search')">
-                        <input class="navInput" type="text" placeholder="搜你想搜..." disabled />
-                        <div class="nav_search flexCenter" :class="{nav_search_showka:isShowKa}">
-                            <text class="nav_search_text flexCenter">搜索</text>
-                        </div>
+                    <div class="navBackOpacity" @click="app.platform.pageBack()">
+                        <image class="navBack" src="@/static/index/v3/icon_back.png"></image>
                     </div>
-                    <div class="camera" @click.stop="actionSheet = true">
-                        <image v-if="!isShowKa" src="@/static/cardForum/camera.png" class="camera_img"></image>
-                        <image v-if="isShowKa" src="@/static/cardForum/showKa_camera.png" class="camera_img">
-                        </image>
-                        <text class="camera_txt" :style="{ color: isShowKa ? '#ffffff' : '#333333' }">发布</text>
+                    <div class="navSearchWrap">
+                        <image class="searchFdj" src="@/static/cardForum/sousuo@2x.png"></image>
+                        <input class="navInput" ref="input" @focus="onSearch = true" type="text" v-model="searchText"
+                            placeholder="搜你想搜..." />
+                        <image v-if="searchText" @click="searchText = '', onSearch = true" class="search-remove"
+                            src="@/static/cardForum/searchClose.png" />
                     </div>
+                    <text class="searchText" @click="onClickSearch">搜索</text>
                 </div>
             </div>
-            <u-tabs :duration="300" :lineColor="`url('../../static/index/v3/tab_line.png') 100% 100%`"
+            <u-tabs v-if="!onSearch" style="width:750rpx" :duration="300"
+                :lineColor="`url('../../static/index/v3/tab_line.png') 100% 100%`"
                 :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
         </div>
-
-        <swiper :duration="300" v-if="initFinish" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }"
+        <template v-if="onSearch">
+            <view class="bigText">
+                <text class="bigText_text">搜索记录</text>
+                <image src="@/static/cardForum/del.png" class="bigText_img" @click="clearLog"></image>
+            </view>
+            <view class="keywordsWrap">
+                <view class="keywords flexCenter u-line-1" v-for="(item) in cardSearchLog" @click="onClickKey(item)">
+                    <text class="keywords_text">{{ item.s }}</text>
+                </view>
+            </view>
+            <view class="bigText" style="margin-top: 40rpx;">
+                <text class="bigText_text">热门搜索</text>
+            </view>
+        </template>
+        <!-- transform: `scale(${onSearch ? 0 : 1})`  -->
+        <swiper :duration="300" class="swiperContainer" v-if="!onSearch" :style="{ height: scrollViewHeight + 'px' }"
             :current="tabs.index" @change="swiperChange" @animationfinish="swiperChangeAnimationfinish"
             @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
                 <!-- #ifndef APP-NVUE -->
-                <view class="hotTopicWrap" v-if="isShowKa && tab.firstReqEnd">
-                    <view class="hotTopicRow">
-                        <text class="hotTopicRow_title">热门话题</text>
-                        <text class="hotTopicRow_title" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
-                    </view>
-                    <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
-                        <view class="scrollTopicWarp">
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                        </view>
-                    </scroll-view>
-                </view>
-                <!-- #endif -->
-                <!-- #ifndef APP-NVUE -->
                 <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                     @scrolltolower="loadmoreData(tabIndex)">
-                    <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
+                    <waterfalls style="width:750rpx;padding-top: 10rpx;"
+                        v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')" v-model="tab.list"
                         :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40">
                     </waterfalls>
+                    <template v-if="tab.type == 'topics'">
+                        <topicList></topicList>
+                    </template>
                 </scroll-view>
                 <!-- #endif -->
                 <!-- #ifdef APP-NVUE -->
-                <waterfalls column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="5"
-                    :height="scrollViewHeight + 'px'" :value="tab.list" right-gap="5" column-gap="5"
-                    :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
-                    style="padding-top: 10rpx;">
-                    <template v-slot:header v-if="tabIndex == 2">
-                        <header>
-                            <div class="hotTopicWrap">
-                                <div class="hotTopicRow">
-                                    <text class="hotTopicRow_title">热门话题</text>
-                                    <text class="hotTopicRow_title"
-                                        @click="pageJump('/pages/cardForum/topics/list')">全部</text>
-                                </div>
-                                <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                </scroll-view>
-                            </div>
-                        </header>
-                    </template>
+                <waterfalls column-count="2" v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')"
+                    :ref="`waterfalls${tabIndex}`" left-gap="5" :height="scrollViewHeight + 'px'" :value="tab.list"
+                    right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
+                    @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
                 </waterfalls>
                 <!-- #endif -->
-
             </swiper-item>
         </swiper>
-        <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
-            @close="actionSheet = false"></u-action-sheet>
     </div>
 </template>
 <script>
 import waterfalls from "./components/waterfalls.vue"
 import cardSkeleton from "./components/cardSkeleton.vue"
-// import { getTopics } from "./func/index.ts"
-// import uvWaterfall from './components/uv-waterfall/uv-waterfall.vue'
+import topicList from "./components/topicList.vue"
 const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200' },
@@ -105,62 +82,52 @@ const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/760f1341-6a13-4e01-91e2-f6a2c69b8490.jpg?imageView2/2/w/200' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/4f1c7d52e6ab48b8a1f10c75c08dc421.jpg?imageView2/2/w/200' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/9740T20210822233025348.jpg?imageView2/2/w/200' },]
-const actionsList = [
-    {
-        name: "动态",
-        url: "/pages/cardForum/release"
-    }, {
-        name: "卡册",
-        subname: "制作图片对应卡种的高质量卡册，适用于凑套等"
-    }
-]
 const tabsList = [
     {
-        name: '关注',
-    }, {
-        name: '推荐',
+        name: '综合',
 
     }, {
-        name: 'SHOW卡',
+        name: '热门',
 
     }, {
-        name: '视频',
+        name: '最新',
 
     }, {
-        name: '卡册',
-
+        name: '话题',
+        type: "topics"
     }, {
-        name: '交流',
-
-    }, {
-        name: '篮球',
+        name: '用户',
+        type: "user",
+        url: "cardCircle/search/user"
 
     }
 ]
 const app = getApp().globalData.app;
 const defaultTagObj = {
-    // queryParams: {
-    //     pageIndex: 1,
-    //     pageSize: 15,
-    //     q: ""
-    // },
-    // totalPage: 10,
+    queryParams: {
+        fetchFrom: 1,
+        fetchSize: 15,
+        q: "",
+        od: "",
+        timeStamp: 0
+    },
     isFetchEnd: true,
-    firstReqEnd: false,
     list: []
 }
 export default {
     components: {
         waterfalls,
-        cardSkeleton
+        cardSkeleton,
+        topicList
     },
     data() {
         return {
             app,
-            actionsList,
+            cardSearchLog: [],
             actionSheet: false,
             firstReqEnd: false,
             initFinish: false,
+            onSearch: false,
             searchText: "",
             navHeight: 0,
             tabsHeight: 0,
@@ -168,46 +135,35 @@ export default {
             fixedTopHeight: 0,
             hotTopics: [],
             tabs: {
-                index: 2,
+                index: 3,
                 list: []
             },
+            hotList: [],
             trTimmer: null
         }
     },
     async onLoad() {
         this.$nextTick(async () => {
-            this.fixedTopHeight = await this.getDomHeight("#fixedTop")
-            console.log(await this.getDomHeight("#tabs"));
-            // this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - (uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom)
-            // #ifdef APP-NVUE
-            this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - plus.navigator.getSafeAreaInsets().deviceBottom - 56
-            console.log(uni.getSystemInfoSync());
-            console.log(plus.navigator.getSafeAreaInsets());
-            console.log("app.platform.systemInfo.screenHeight:", app.platform.systemInfo.screenHeight);
-            console.log("this.fixedTopHeight:", this.fixedTopHeight);
-            console.log("uni.getSystemInfoSync().safeArea.bottom", uni.getSystemInfoSync().safeArea.bottom);
-            console.log("tabbarHeight:", uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom);
-            console.log("this.scrollViewHeight:", this.scrollViewHeight);
-            // #endif
-            // #ifdef H5
-            this.scrollViewHeight = 666
-            // #endif
+            await this.setHeight()
         })
         await this.initTab()
-        this.reqNewData(true)
+        this.getLog()
+        this.reqNewData()
     },
     computed: {
+        nowTabText() {
+            return this.tabs.list[this.tabs.index].queryParams.q
+        },
         current() {
             return this.tabs.list[this.tabs.index]
-        },
-        isShowKa() {
-            return this.tabs.index === 2
         }
     },
     watch: {
         'tabs.index': function (val) {
-            if (this.tabs.list[val].list.length == 0) {
-                this.reqNewData(true)
+            if (this.tabs.list[val].list.length == 0 && !this.tabs.list[val].firstReqEnd) {
+                this.tabs.list[val].queryParams.pageIndex = 1
+                //请求数据
+                this.reqNewData()
             }
             if (val == 2) {
                 uni.setTabBarStyle({
@@ -219,6 +175,26 @@ export default {
                     backgroundColor: "#ffffff"
                 })
             }
+        },
+        "onSearch": {
+            handler(newVal, oldName) {
+                // #ifdef APP-NVUE
+                if (newVal) {
+                    setTimeout(() => {
+                        this.$refs.input.focus()
+                    }, 200)
+                } else {
+
+                    setTimeout(() => {
+                        this.$refs.input.blur()
+                    }, 200)
+                }
+                // #endif
+                // #ifndef APP-NVUE
+                this.fixedTopHeight = 99
+                // #endif 
+            },
+            immediate: true
         }
     },
     methods: {
@@ -230,11 +206,62 @@ export default {
             this.initFinish = true
             return
         },
+        async setHeight() {
+            this.fixedTopHeight = await this.getDomHeight("#fixedTop")
+            // #ifdef APP-NVUE
+            this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight
+            // - plus.navigator.getSafeAreaInsets().deviceBottom
+            // #endif
+            // #ifdef H5
+            this.scrollViewHeight = 666
+            // #endif
+        },
         getTopicsList() {
+        },
+        async onClickSearch() {
+            if (this.searchText) {
+                const stamp = Math.round(+new Date() / 1000)
+                const item = this.cardSearchLog.find((item) => {
+                    return item.s == this.searchText
+                })
+                if (item) item.stamp = stamp
+                if (!item) this.cardSearchLog.push({ s: this.searchText, stamp })
+                uni.setStorageSync("cardForumSearchLog", this.cardSearchLog || [])
+                this.onSearch = false
+                await this.initTab()
+                this.reqNewData()
+            } else {
+                uni.showToast({
+                    title: "输入你想搜索的内容",
+                    icon: "none"
+                })
+            }
+
+            //获取新数据
+        },
+        clearLog() {
+            this.cardSearchLog = []
+            uni.setStorageSync("cardForumSearchLog", this.cardSearchLog)
+        },
+        getLog() {
+            const log = uni.getStorageSync("cardForumSearchLog")
+            if (log && log.length) {
+                this.cardSearchLog = log.sort((x, y) => {
+                    return y.stamp - x.stamp
+                })
+            }
+            console.log(this.cardSearchLog);
+        },
+        getHot() {
+            app.http.Get("dataApi/cardCircle/hot/search/list", {}, (res) => {
+                this.hotList = res.list.map((item) => {
+                    return item.content || ""
+                })
+            })
         },
         pageJump(url) {
             uni.navigateTo({
-                url
+                url,
             })
         },
         getDomHeight(dom) {
@@ -256,6 +283,11 @@ export default {
         },
         clearSeach() {
             this.current.queryParams.q = ""
+        },
+        onClickKey(item) {
+            console.log(item)
+            this.searchText = item.s
+            this.onClickSearch()
         },
         swiperChange(event) {
             // console.log("swiperChange", event);
@@ -283,21 +315,29 @@ export default {
             }
         },
         refreshData(index) {
-            this.reqNewData(true)
+            const nowTab = this.tabs.list[index]
+            nowTab.pageIndex = 1
+            this.reqNewData(() => {
+                const key = "waterfalls" + index
+                setTimeout(() => {
+                    this.$refs[key]?.[0]?.hideRefresh?.()
+                }, 500)
+            })
         },
         loadmoreData(index) {
             const nowTab = this.tabs.list[index]
-            if (!nowTab.isFetchEnd) this.reqNewData()
+            if (nowTab.queryParams.pageIndex < nowTab.totalPage) {
+                nowTab.queryParams.pageIndex += 1
+                this.reqNewData()
+            }
         },
-        reqNewData(isRefresh = false, cb) {
-            this.current.firstReqEnd = false
-            if (isRefresh) this.current.list = []
+        reqNewData(cb) {
             this.current.list.push(...mockList)
             this.current.firstReqEnd = true
             cb && cb()
             return
-            const query = this.current.queryParams
-            app.http.Get("/dataApi", query, (res) => {
+            const defaultUrl = "cardCircle/search/dt"
+            app.http.Get(`/dataApi/${this.current.url || dedefaultUrlfa}`, this.current.queryParams, (res) => {
                 this.current.firstReqEnd = true
                 cb && cb()
             }, (err) => {
@@ -313,7 +353,7 @@ $show-lines: 1;
 // @import '@/uni_modules/uv-ui-tools/libs/css/variable.scss';
 // #ifndef APP-NVUE 
 page {
-    background-color: #f2f2f2;
+    background-color: #ffffff;
 }
 
 // #endif 
@@ -330,15 +370,7 @@ page {
 
 .swiperContainer {
     width: 750rpx;
-    // background-color: red;
     // flex: 1;
-}
-
-.showKaBack {
-    width: 750rpx;
-    height: 1980rpx;
-    position: fixed;
-    top: 0;
 }
 
 .swiperItem {
@@ -360,7 +392,7 @@ page {
     // position: fixed;
     // top: 0;
     // z-index: 999;
-    // background-color: #fff;
+    background-color: #fff;
 
 }
 
@@ -385,12 +417,8 @@ page {
     height: 49rpx;
     background: #FA1545;
     border-radius: 5rpx;
+}
 
-}
-.nav_search_showka{
-    background-color: rgba(0,0,0,0);
-    border-left:3rpx solid #ffffff;
-}
 .nav_search_text {
     font-size: 25rpx;
     font-family: PingFang SC;
@@ -411,9 +439,9 @@ page {
 }
 
 .search-remove {
-    width: 15rpx;
-    height: 14rpx;
-
+    width: 32rpx;
+    height: 32rpx;
+    margin-right: 23rpx;
 }
 
 .camera {
@@ -439,31 +467,55 @@ page {
     top: 8rpx;
 }
 
-.navSearchWrap {
-    width: 588rpx;
+.navBackOpacity {
+    width: 40rpx;
     height: 73rpx;
-    border: 3rpx solid #333333;
-    border-radius: 5rpx;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    // background-color: red;
+}
+
+.navBack {
+    width: 21rpx;
+    height: 38rpx;
+}
+
+.navSearchWrap {
+    width: 566rpx;
+    height: 73rpx;
+    // border: 3rpx solid #333333;
+    border-radius: 3rpx;
+    background-color: #F5F5F5;
     // box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    padding: 0 10rpx;
+    // padding: 0 10rpx;
+    // margin-left: 18rpx;
     align-items: center;
     flex-direction: row;
 }
-.navSearchWrap_showka{
-    border: 3rpx solid #ffffff;
+
+.searchText {
+    font-size: 27rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
 }
+
+.searchFdj {
+    width: 26rpx;
+    height: 26rpx;
+    margin-left: 32rpx;
+    margin-right: 14rpx;
+}
+
 .navInput {
     color: #000;
-    // width: 400rpx;
     flex: 1;
-    // background-color: red;
     font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    padding: 0 10rpx;
-    // color: #C0C0C0;
 }
 
 .flexCenter {
@@ -475,7 +527,7 @@ page {
 .hotTopicWrap {
     width: 750rpx;
     padding: 0 20rpx;
-    // border: 1rpx solid #f2f2f2;
+    border: 1rpx solid #f2f2f2;
     // background-color: #fff;
     // position: fixed;
     height: 200rpx;
@@ -517,5 +569,63 @@ page {
     height: 100rpx;
     // background-color: #000;
     background-image: url("../../static/cardForum/camera.png");
+}
+
+.bigText {
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 750rpx;
+    // box-sizing: border-box;
+    // letter-spacing: 4rpx;
+    margin-bottom: 23rpx;
+    margin-top: 35rpx;
+    padding: 0 34rpx;
+}
+
+.bigText_text {
+    font-size: 31rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+
+}
+
+.bigText_img {
+    width: 32rpx;
+    height: 32rpx;
+}
+
+.keywordsWrap {
+    width: 750rpx;
+    // box-sizing: border-box;
+    padding: 0 33rpx;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+}
+
+.keywords {
+    height: 48rpx;
+    padding: 0 16rpx;
+    background-color: #F5F5F5;
+    border-radius: 3rpx 0rpx 0rpx 0rpx;
+    margin-right: 16rpx;
+    margin-bottom: 16rpx;
+    // #ifndef APP-NVUE
+    max-width: 250rpx;
+    // #endif
+}
+
+.keywords_text {
+    color: #757575;
+    line-height: 48rpx;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+
 }
 </style>

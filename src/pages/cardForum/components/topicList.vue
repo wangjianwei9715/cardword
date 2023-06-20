@@ -1,0 +1,192 @@
+<template>
+    <view class="content">
+        <view class="topicsItem" v-for="(item, index) in list">
+            <!-- #ifndef APP-NVUE -->
+            <muqian-lazyLoad class="image"
+                :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
+                borderRadius="3rpx"></muqian-lazyLoad>
+            <!-- #endif -->
+            <!-- #ifdef APP-NVUE -->
+            <image class="image" :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
+                borderRadius="3rpx"></image>
+            <!-- #endif -->
+            <view class="rightInfo">
+                <view class="titleWrap">
+                    <text class="title">#{{ item.name }}</text>
+                    <text class="act">活动</text>
+                </view>
+                <text class="desc u-line-1">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                <view class="flex1"></view>
+                <view class="bottomInfo">
+                    <text class="num">{{ item.totalUseNum }}篇动态</text>
+                    <text class="push flexCenter">发布</text>
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+<script>
+export default {
+    name: '',
+    components: {
+
+    },
+    mixins: [],
+    props: {
+
+    },
+    data() {
+        return {
+            list: []
+        }
+    },
+    computed: {
+
+    },
+    watch: {
+
+    },
+    mounted() {
+        this.list = [
+            {
+                name: "秀卡-詹姆斯",
+                id: 1,
+                isActivity: true
+            },
+            {
+                name: "问价",
+                id: 2,
+                isActivity: false
+            },
+            {
+                name: "我的第一张卡",
+                id: 3,
+                isActivity: false
+            },
+            {
+                name: "我的卡在哪里",
+                id: 5,
+                isActivity: false
+            },
+            {
+                name: "我的卡屌不屌",
+                id: 6,
+                isActivity: false
+            }
+        ]
+    },
+    methods: {
+
+    }
+};
+</script>
+<style lang='scss' scoped>
+.flex1 {
+    flex: 1;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 0 35rpx;
+}
+
+.topicsItem {
+    width: 100%;
+    // width: 700rpx;
+    height: 161rpx;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40rpx;
+    flex-direction: row;
+
+
+}
+
+.image {
+    width: 161rpx;
+    height: 161rpx;
+    border-radius: 3rpx;
+    margin-right: 46rpx;
+}
+
+.rightInfo {
+    height: 161rpx;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.desc {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #959695;
+    // flex: 1;
+}
+
+.title {
+    color: #000;
+    font-weight: bold;
+}
+
+.num {
+    color: #aaaaaa;
+}
+
+.titleWrap {
+    display: flex;
+    flex-direction: row;
+}
+
+.title {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    margin-right: 14rpx;
+}
+
+.act {
+    width: 71rpx;
+    height: 32rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    text-align: center;
+    font-size: 20rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 32rpx;
+}
+
+.bottomInfo {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-direction: row;
+}
+
+.num {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #C0C0C0;
+}
+
+.push {
+    // width: 40rpx;
+    // height: 20rpx;
+    width: 109rpx;
+    height: 51rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 51rpx;
+}
+</style>
