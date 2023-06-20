@@ -89,9 +89,11 @@ export default {
     },
     data() {
         return {
+            id: 0,
             scrollViewHeight: 0,
             app,
             navHeight: 0,
+            topicDetail: {},
             tags: {
                 index: 0,
                 list: [
@@ -121,8 +123,9 @@ export default {
     watch: {
 
     },
-    onLoad() {
-
+    onLoad(query) {
+        this.id = +query.id
+        this.reqDetail()
     },
     methods: {
         getNavHeight(height) {
@@ -170,6 +173,11 @@ export default {
                     .exec();
             })
         },
+        reqDetail() {
+            app.http.Get("dataApi/cardCircle/topic/detail/" + this.id, {}, (res) => {
+                this.topicDetail = res.data
+            })
+        }
     }
 };
 </script>

@@ -15,7 +15,7 @@
             <view class="rightInfo">
                 <view class="title">#{{ item.name }}</view>
                 <view class="bottomInfo">
-                    <view class="num">{{ item.cardCircleNum }}篇动态</view>
+                    <view class="num">{{ item.totalUseNum }}篇动态</view>
                     <view class="push flexCenter">发布</view>
                 </view>
             </view>
@@ -27,25 +27,28 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
+import { getTopics } from "../func/index"
 @Component({})
 export default class ClassName extends BaseNode {
     queryParams: any = {
-        pageIndex: 1,
-        pageSize: 15
+        fetchFrom: 1,
+        fetchSize: 15,
+        timeStamp: 0,
+        q: "",
+        od: 'issue_72'
     }
     list: any = []
-    totalPage: number = 0
+    isFetchEnd: boolean = false
     onLoad(query: any) {
         this.reqNewData()
     }
     onReachBottom() {
-        if (this.queryParams.pageIndex < this.totalPage) {
-            this.queryParams.pageIndex += 1
-            this.reqNewData()
-        }
+        if (this.isFetchEnd) return
+        this.queryParams.fetchFrom += this.queryParams.fetchSize
+        this.reqNewData()
     }
     onPullDownRefresh() {
-        this.queryParams.pageIndex = 1
+        this.queryParams.fetchFrom = 1
         this.reqNewData(() => {
             uni.stopPullDownRefresh()
         })
@@ -83,12 +86,12 @@ export default class ClassName extends BaseNode {
                 isActivity: false
             }
         ]
+        this.queryParams.timeStamp = Math.round(+new Date() / 1000)
         return
-        app.http.Get(`dataApi`, this.queryParams, (res: any) => {
+        getTopics(this.queryParams).then((res: any) => {
             const list = res.list || []
-            this.totalPage = res.totalPage
-            this.queryParams.pageIndex == 1 ? this.list = list : this.list.push(...list)
-            cb && cb()
+            this.isFetchEnd = res.isFetchEnd
+            this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
         })
     }
 

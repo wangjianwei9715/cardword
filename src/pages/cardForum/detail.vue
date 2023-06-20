@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 18:10:37
+ * @LastEditTime: 2023-06-20 14:08:17
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,8 +19,15 @@
                     <view class="topName u-line-1">{{ forumDetail.userName || "获取中" }}</view>
                 </view>
                 <view class="flex1"></view>
-                <view class="follow flexCenter" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{ isFollow ? '已关注'
+                <view class="follow flexCenter" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{
+                    isFollow ? '已关注'
                     : '关注' }}</view>
+                <!-- v-if="!isPerson"
+                v-if="isPerson" -->
+                <view @click="actionSheetShow = true">
+                    <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>
+                </view>
+                <u-icon name="share-square" color="#6c6969" size="28" @click="operationShow = true"></u-icon>
                 <!-- <view @click="actionSheetShow = true" v-if="isMy">
                     <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>
                 </view> -->
@@ -155,6 +162,11 @@
             <view class="send flexCenter" @click.stop="$u.throttle(sendCom, 1000)">发送</view>
         </view>
         <reward-pop :code="code" :userInfo="authorInfo" :show.sync="rewardShow"></reward-pop>
+        <share @report="pageJump(`/pages/cardForum/report?code=${code}&userId=${forumDetail.userId}&source=1`)"
+            :shareData="{}" :extra="[{ img: '/static/share/lianjie@2x.png', text: '举报', scene: '', emit: 'report' }]"
+            :operationShow.sync="operationShow"></share>
+        <u-action-sheet :actions="PersonSheet" :show="actionSheetShow" cancelText="取消" :closeOnClickAction="true"
+            @close="actionSheetShow = false" @select="onSelectActionSheet"></u-action-sheet>
     </view>
 </template>
 
@@ -167,6 +179,17 @@ import rewardPop from "./components/rewardPop.vue"
 import CardForum from "./interface/public";
 import { UserStreamline } from "@/manager/userManager"
 import { followActionByUser } from "./func/index"
+interface Sheet {
+    name: string;
+    subname?: string;
+    color?: string;
+    behavior?: string;
+}
+const PersonSheet: Array<Sheet> = [
+    { name: "设为可见/设为私密", behavior: "setPrivate" },
+    { name: "编辑内容", behavior: "goEdit" },
+    { name: "删除此动态", behavior: "deleteForum", color: "#fb374e" }
+]
 enum ForumBit {
     IS_PERSON = 1,//本人
     IS_FOLLOW = 2,//关注
@@ -186,9 +209,6 @@ export default class ClassName extends BaseNode {
     app = app
     getDateDiff = getDateDiff
     keyBoardHeigh: number = -2
-    focus: boolean = false
-    showVote: boolean = true
-    rewardShow: boolean = false
     code: string = ""
     sayContent: string = ""
     formatNumber = formatNumber
@@ -197,15 +217,20 @@ export default class ClassName extends BaseNode {
     pics: Array<string> = []
     queryParams: CardForum.QueryByFetch = queryParams
     commList: Array<CardForum.CommentFather> = []
-    isFetchEnd: boolean = true
     clickCom: CardForum.CommentFather = {} as CardForum.CommentFather
     clickSon: CardForum.Comment = {} as CardForum.Comment
     touchId: number = 0
     onClickTap: boolean = false
     isScrollEnd: boolean = false
+    operationShow: boolean = false
+    focus: boolean = false
+    rewardShow: boolean = false
+    actionSheetShow: boolean = false
+    isFetchEnd: boolean = true
     tapTimer: number = 0
     lontapTimer: number = 0
     userInfo: UserStreamline = {} as UserStreamline
+    PersonSheet = PersonSheet
     onLoad(query: any) {
         app.platform.hasLoginToken(async () => {
             this.code = query.code || "mockCode"
@@ -213,6 +238,11 @@ export default class ClassName extends BaseNode {
             this.userInfo = await app.user.getUserInfo()
         })
 
+    }
+    onReachBottom() {
+        if (this.isFetchEnd) return
+        this.queryParams.fetchFrom += this.queryParams.fetchSize
+        this.getCommByWorks()
     }
     public get isPerson(): boolean {
         return (this.forumDetail.bit & ForumBit.IS_PERSON) === ForumBit.IS_PERSON
@@ -408,6 +438,41 @@ export default class ClassName extends BaseNode {
             }
         })
     }
+    onSelectActionSheet(item: Sheet) {
+        console.log(item);
+        if (item.behavior) {
+            //@ts-ignore
+            this[item.behavior] && this[item.behavior]()
+            return
+        }
+    }
+    goEdit() {
+        this.pageJump("/pages/cardForum/release?code=" + this.code)
+    }
+    //删除作品
+    deleteForum() {
+        uni.showModal({
+            title: "提示",
+            content: "是否删除该作品?",
+            success: (res: any) => {
+                if (res.confirm) {
+                    // app.http.Post("")
+                }
+            }
+        })
+    }
+    //设置为私密
+    setPrivate() {
+        uni.showModal({
+            title: "提示",
+            content: "是否将作品设为私密或可见（后续文档更新后根据变量来显示）",
+            success: (res: any) => {
+                if (res.confirm) {
+                    // app.http.Post("")
+                }
+            }
+        })
+    }
     nonAction() {
         return
     }
@@ -446,6 +511,11 @@ export default class ClassName extends BaseNode {
             item.lower.push(...list || [])
             item.remainNum = res.remainNum || 0
             item.loading = false
+        })
+    }
+    pageJump(url: string) {
+        uni.navigateTo({
+            url,
         })
     }
     getCommByWorks() {

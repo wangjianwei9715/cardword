@@ -3,7 +3,7 @@
 		<view class="operation-shadow" v-show="operationShow" @click="onClickOperaCancel"></view>
 		<view class="operation-content" :class="operationShow?'operation-show':''">
 			<view class="operation-index">
-				<view class="operation-btn" @click="operationStart(item.scene)" v-for="item in operationData" :key="item.id"> 
+				<view class="operation-btn" @click="operationStart(item)" v-for="item in operationData" :key="item.id"> 
 					<image class="operation-img" :src="item.img" mode=""></image>
 					<view class="operation-text">{{item.text}}</view>
 				</view>
@@ -29,6 +29,10 @@
 
 		@Prop({ default: [] })
 		shareData!:wxShare.shareData;
+		@Prop({ default: ()=>{
+			return []
+		} })
+		extra!:Array<Object>;
 		
 		operationData:any = [
 			{img:'/static/share/weixin@2x.png',text:'微信好友',scene:'WXSceneSession'},
@@ -39,6 +43,9 @@
 			
 		}
 		mounted(){//挂载到实例上去之后调用
+			if(this.extra&&this.extra.length){
+				this.operationData.push(...this.extra)
+			}
 			
 		}
 		destroyed(){
@@ -115,11 +122,16 @@
 		// 	if(list && list.length) bol=true
 		// 	return bol
 		// }
-		operationStart(scene:any){
-			if(scene==''){
+		operationStart(item:any){
+			if(item.emit){
+				this.$emit(item.emit)
+				this.onClickOperaCancel()
+				return
+			}
+			if(item.scene==''){
 				this.setClipboardData()
 			}else{
-				this.weChatShare(scene)
+				this.weChatShare(item.scene)
 			}
 			this.onClickOperaCancel()
 		}

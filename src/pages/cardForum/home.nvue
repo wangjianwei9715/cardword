@@ -9,21 +9,27 @@
                 <div class="nav">
                     <div class="navSearchWrap" @click="pageJump('/pages/cardForum/search')">
                         <input class="navInput" type="text" :value="nowTabText" placeholder="搜你想搜..." disabled />
-                        <div class="nav_search flexCenter">搜索</div>
+                        <div class="nav_search flexCenter">
+                            <text class="nav_search_text flexCenter">搜索</text>
+                        </div>
                     </div>
-                    <div class="camera" @click.stop="actionSheet = true">发布</div>
+                    <div class="camera" @click.stop="actionSheet = true">
+                        <image src="@/static/cardForum/camera.png" class="camera_img"></image>
+                        <text class="camera_txt">发布</text>
+                    </div>
                 </div>
             </div>
-            <u-tabs :duration="300" class="tabs" id="tabs" :current="tabs.index" @click="tabClick" :list="tabs.list"
-                ref="tabs"></u-tabs>
+            <u-tabs :duration="300" :lineColor="`url('../../static/index/v3/tab_line.png') 100% 100%`"
+                :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
+                :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
+                :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
         </div>
 
         <swiper :duration="300" v-if="initFinish" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }"
             :current="tabs.index" @change="swiperChange" @animationfinish="swiperChangeAnimationfinish"
             @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
-                <cardSkeleton :loading="!tab.firstReqEnd" />
-
+                <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
                 <!-- #ifndef APP-NVUE -->
                 <view class="hotTopicWrap" v-if="tabIndex == 2 && tab.firstReqEnd">
                     <view class="hotTopicRow">
@@ -50,40 +56,28 @@
                 </scroll-view>
                 <!-- #endif -->
                 <!-- #ifdef APP-NVUE -->
-                <waterfalls column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="10"
-                    :height="scrollViewHeight + 'px'" right-gap="10" column-gap="8" :always-scrollable-vertical="true"
-                    @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)">
-                    <header v-if="tabIndex == 2">
-                        <div class="hotTopicWrap">
-                            <div class="hotTopicRow">
-                                <text class="hotTopicRow_title">热门话题</text>
-                                <text class="hotTopicRow_title" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
-                            </div>
-                            <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
-                                <div class="topicItem"></div>
-                                <div class="topicItem"></div>
-                                <div class="topicItem"></div>
-                                <div class="topicItem"></div>
-                                <div class="topicItem"></div>
-                                <div class="topicItem"></div>
-                            </scroll-view>
-                        </div>
-                    </header>
-                    <cell v-for="(item, index) in tab.list" class="waterfall-item-cell" @click="goToDetail(item)">
-                        <div class="waterfall-item">
-                            <div class="waterfall-item__image">
-                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
-                            </div>
-                            <div class="waterfall-item__ft">
-                                <div class="waterfall-item__ft__title">
-                                    <text class="value">{{ item.title }}</text>
+                <waterfalls column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="5"
+                    :height="scrollViewHeight + 'px'" :value="tab.list" right-gap="5" column-gap="5"
+                    :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)">
+                    <template v-slot:header v-if="tabIndex == 2">
+                        <header>
+                            <div class="hotTopicWrap">
+                                <div class="hotTopicRow">
+                                    <text class="hotTopicRow_title">热门话题</text>
+                                    <text class="hotTopicRow_title"
+                                        @click="pageJump('/pages/cardForum/topics/list')">全部</text>
                                 </div>
-                                <div class="waterfall-item__ft__desc uv-line-2">
-                                    <text class="value">{{ item.desc }}</text>
-                                </div>
+                                <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
+                                    <div class="topicItem"></div>
+                                    <div class="topicItem"></div>
+                                    <div class="topicItem"></div>
+                                    <div class="topicItem"></div>
+                                    <div class="topicItem"></div>
+                                    <div class="topicItem"></div>
+                                </scroll-view>
                             </div>
-                        </div>
-                    </cell>
+                        </header>
+                    </template>
                 </waterfalls>
                 <!-- #endif -->
 
@@ -96,6 +90,7 @@
 <script>
 import waterfalls from "./components/waterfalls.vue"
 import cardSkeleton from "./components/cardSkeleton.vue"
+// import { getTopics } from "./func/index.ts"
 // import uvWaterfall from './components/uv-waterfall/uv-waterfall.vue'
 const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200' },
@@ -114,6 +109,29 @@ const actionsList = [
     }, {
         name: "卡册",
         subname: "制作图片对应卡种的高质量卡册，适用于凑套等"
+    }
+]
+const tabsList = [
+    {
+        name: '关注',
+    }, {
+        name: '推荐',
+
+    }, {
+        name: 'SHOW卡',
+
+    }, {
+        name: '视频',
+
+    }, {
+        name: '卡册',
+
+    }, {
+        name: '交流',
+
+    }, {
+        name: '篮球',
+
     }
 ]
 const app = getApp().globalData.app;
@@ -144,29 +162,10 @@ export default {
             tabsHeight: 0,
             scrollViewHeight: 0,
             fixedTopHeight: 0,
+            hotTopics: [],
             tabs: {
                 index: 1,
-                list: [{
-                    name: '关注',
-                }, {
-                    name: '推荐',
-
-                }, {
-                    name: 'SHOW卡',
-
-                }, {
-                    name: '视频',
-
-                }, {
-                    name: '卡册',
-
-                }, {
-                    name: '交流',
-
-                }, {
-                    name: '篮球',
-
-                }]
+                list: []
             },
             trTimmer: null
         }
@@ -189,7 +188,6 @@ export default {
             // #ifdef H5
             this.scrollViewHeight = 666
             // #endif
-
         })
         await this.initTab()
         this.reqNewData()
@@ -197,6 +195,9 @@ export default {
     computed: {
         nowTabText() {
             return this.tabs.list[this.tabs.index].queryParams.q
+        },
+        current() {
+            return this.tabs.list[this.tabs.index]
         }
     },
     watch: {
@@ -210,6 +211,7 @@ export default {
                 uni.setTabBarStyle({
                     backgroundColor: "#0c0014"
                 })
+                this.getTopicsList()
             } else {
                 uni.setTabBarStyle({
                     backgroundColor: "#ffffff"
@@ -219,12 +221,18 @@ export default {
     },
     methods: {
         async initTab() {
-            this.tabs.list.forEach((item, index) => {
+            tabsList.forEach((item, index) => {
                 const deepData = JSON.parse(JSON.stringify(defaultTagObj))
                 this.$set(this.tabs.list, index, { ...deepData, ...item })
             })
             this.initFinish = true
             return
+        },
+        getTopicsList() {
+            // getTopics({ fetchFrom: 1, fetchSize: 15, timeStamp: Math.round(+new Date() / 1000), od: "heat" }).then(res => {
+            //     // console.log(res);
+            //     this.hotTopics = res.list
+            // })
         },
         pageJump(url) {
             uni.navigateTo({
@@ -237,7 +245,6 @@ export default {
                             nowTab.queryParams.pageIndex = 1
                             nowTab.queryParams.q = data.searchText
                             nowTab.list = []
-                            console.log(this.tabs.list[this.tabs.index])
                             setTimeout(() => {
                                 this.reqNewData()
                             }, 300)
@@ -309,16 +316,16 @@ export default {
             }
         },
         reqNewData(cb) {
-            this.tabs.list[this.tabs.index].list.push(...mockList)
-            this.tabs.list[this.tabs.index].firstReqEnd = true
+            this.current.list.push(...mockList)
+            this.current.firstReqEnd = true
             cb && cb()
             return
-            const query = this.tabs.list[this.tabs.index].queryParams
+            const query = this.current.queryParams
             app.http.Get("/dataApi", query, (res) => {
-                this.tabs.list[this.tabs.index].firstReqEnd = true
+                this.current.firstReqEnd = true
                 cb && cb()
             }, (err) => {
-                this.tabs.list[this.tabs.index].firstReqEnd = true
+                this.current.firstReqEnd = true
             })
         }
     }
@@ -365,6 +372,10 @@ page {
 }
 
 
+.tabs {
+
+    // background-color: red;
+}
 
 .waterfall-item__ft__title {
     margin-bottom: 10rpx;
@@ -405,6 +416,7 @@ page {
     position: fixed;
     top: 0;
     background-color: #fff;
+    padding-bottom: 8rpx;
 }
 
 .navBar {
@@ -423,7 +435,8 @@ page {
 
 .nav {
     // box-sizing: border-box;
-    padding: 20rpx 35rpx;
+    // padding: 20rpx 35rpx;
+    padding: 27rpx 25rpx 0 32rpx;
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -432,19 +445,49 @@ page {
 }
 
 .nav_search {
+    width: 98rpx;
+    height: 49rpx;
+    background: #FA1545;
+    border-radius: 5rpx;
+
+}
+
+.nav_search_text {
+    font-size: 25rpx;
+    font-family: PingFang SC;
     font-weight: bold;
-    height: 50rpx;
-    background-color: #fb374e;
-    color: #fff;
-    width: 100rpx;
-    border-radius: 6rpx;
+    line-height: 49rpx;
+    color: #FFFFFF;
+}
+
+.camera {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 73rpx;
+}
+
+.camera_img {
+    width: 56rpx;
+    height: 43rpx;
+
+}
+
+.camera_txt {
+    font-size: 19rpx;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    position: relative;
+    top: 8rpx;
 }
 
 .navSearchWrap {
-    width: 570rpx;
-    height: 60rpx;
-    border: 2rpx solid #797979;
-    border-radius: 6rpx;
+    width: 588rpx;
+    height: 73rpx;
+    border: 3rpx solid #333333;
+    border-radius: 5rpx;
     // box-sizing: border-box;
     display: flex;
     justify-content: space-between;
@@ -455,7 +498,14 @@ page {
 
 .navInput {
     color: #000;
-    width: 200rpx;
+    // width: 400rpx;
+    flex: 1;
+    // background-color: red;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    padding: 0 10rpx;
+    // color: #C0C0C0;
 }
 
 .flexCenter {

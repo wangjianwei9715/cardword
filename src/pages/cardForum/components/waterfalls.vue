@@ -2,56 +2,70 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 14:28:55
+ * @LastEditTime: 2023-06-20 14:54:46
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
 <template>
     <!-- #ifndef APP-NVUE -->
     <view class="uv-waterfall">
-        <view class="uv-waterfall__gap_left" :style="[gapLeftStyle]"></view>
+        <view class="uv-waterfall__gap_left" style="width:10rpx"></view>
         <view id="uv-waterfall-1" class="uv-waterfall__column">
             <slot name="list1"></slot>
             <!-- slot示例 -->
             <view>
-                <view v-for="(item, index) in list1" :key="item.id" class="waterfall-item" @click="goToDetail(item)">
-                    <view class="waterfall-item__image">
-                        <image :src="item.image" mode="widthFix" :style="{ width: '250rpx' }">
-                        </image>
-                    </view>
-                    <view class="waterfall-item__ft">
-                        <view class="waterfall-item__ft__title">
-                            <text class="value">{{ item.title }}</text>
+                <view v-for="(item, index) in list1" :key="item.id" class="waterfall-item-grayWrap">
+                    <view class="waterfall-item" @click="goToDetail(item)">
+                        <view class="waterfall-item__image">
+                            <image :src="item.image" mode="widthFix" class="waterfall-item__image_img">
+                            </image>
                         </view>
-                        <view class="waterfall-item__ft__desc uv-line-2">
-                            <text class="value">{{ item.desc }}</text>
+                        <view class="waterfall-item__ft">
+                            <view class="waterfall-item__ft__title">
+                                <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
+                            </view>
+                        </view>
+                        <view class="waterfall-item__bottom">
+                            <image class="waterfall-item__bottom__avatar"></image>
+                            <text
+                                class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
+                            <view class="likeWrap">
+                                <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                <text class="likeNum">40</text>
+                            </view>
                         </view>
                     </view>
                 </view>
             </view>
         </view>
-        <view class="uv-waterfall__gap_center" :style="[gapCenterStyle]"></view>
+        <view class="uv-waterfall__gap_center" style="width:10rpx"></view>
         <view id="uv-waterfall-2" class="uv-waterfall__column">
             <slot name="list2"></slot>
             <!-- slot示例 -->
             <view>
-                <view v-for="(item, index) in list2" :key="item.id" @click="goToDetail(item)" class="waterfall-item">
+                <view v-for="(item, index) in list2" :key="item.id" class="waterfall-item" @click="goToDetail(item)">
                     <view class="waterfall-item__image">
-                        <image :src="item.image" mode="widthFix" :style="{ width: '250rpx' }">
+                        <image :src="item.image" mode="widthFix" class="waterfall-item__image_img">
                         </image>
                     </view>
                     <view class="waterfall-item__ft">
                         <view class="waterfall-item__ft__title">
-                            <text class="value">{{ item.title }}</text>
+                            <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
                         </view>
-                        <view class="waterfall-item__ft__desc uv-line-2">
-                            <text class="value">{{ item.desc }}</text>
+                    </view>
+                    <view class="waterfall-item__bottom">
+                        <image class="waterfall-item__bottom__avatar"></image>
+                        <text
+                            class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
+                        <view class="likeWrap">
+                            <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                            <text class="likeNum">40</text>
                         </view>
                     </view>
                 </view>
             </view>
         </view>
-        <view class="uv-waterfall__gap_right" :style="[gapRightStyle]">
+        <view class="uv-waterfall__gap_right" style="width:10rpx">
         </view>
     </view>
     <!-- #endif -->
@@ -66,7 +80,28 @@
         <header>
             <div ref="goTop"></div>
         </header>
-        <slot></slot>
+        <slot name="header"></slot>
+        <cell v-for="(item, index) in value" class="waterfall-item-grayWrap">
+            <div class="waterfall-item">
+                <div class="waterfall-item__image">
+                    <image :src="item.image" class="waterfall-item__image_img" mode="widthFix"></image>
+                </div>
+                <div class="waterfall-item__ft">
+                    <div class="waterfall-item__ft__title">
+                        <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
+                    </div>
+                </div>
+                <div class="waterfall-item__bottom">
+                    <image class="waterfall-item__bottom__avatar"></image>
+                    <text
+                        class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
+                    <div class="likeWrap">
+                        <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                        <text class="likeNum">40</text>
+                    </div>
+                </div>
+            </div>
+        </cell>
     </waterfall>
     <!-- #endif -->
 </template>
@@ -109,7 +144,7 @@ export default {
         },
         columnGap: {
             type: [Number, String],
-            default: 20
+            default: 40
         },
         leftGap: {
             type: [Number, String],
@@ -379,5 +414,95 @@ $uvui-nvue-style: true !default;
         height: auto;
         // #endif
     }
+}
+
+.waterfall-item {
+    width: 360rpx;
+    background-color: #ffffff;
+    // margin-bottom: 10rpx;
+    border-radius: 5rpx;
+    overflow: hidden;
+}
+
+.waterfall-item__image {
+    width: 360rpx;
+
+}
+
+.waterfall-item__image_img {
+    width: 360rpx;
+}
+
+.waterfall-item__ft__title {
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+    width: 360rpx;
+    padding: 0 21rpx 0 17rpx;
+    margin-bottom: 32rpx;
+    margin-top: 20rpx;
+}
+
+.waterfall-item__ft__title__value {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    line-height: 33rpx;
+
+}
+
+.waterfall-item__bottom {
+    display: flex;
+    flex-direction: row;
+
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+    width: 360rpx;
+    padding: 0 15rpx 0 17rpx;
+    padding-bottom: 29rpx;
+    align-items: center;
+}
+
+.waterfall-item__bottom__avatar {
+    width: 36rpx;
+    height: 36rpx;
+    background: #FA1545;
+    border-radius: 50%;
+    margin-right: 15rpx;
+}
+
+.waterfall-item__bottom__userName {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #707070;
+    flex: 1;
+}
+
+.likeWrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.likeImg {
+    width: 28rpx;
+    height: 24rpx;
+}
+
+.likeNum {
+    font-size: 23rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #8D8D8D;
+    margin-left: 10rpx;
+}
+//兼容nvue下cell上下间距无法调整
+.waterfall-item-grayWrap {
+    padding-bottom: 10rpx;
+    background-color: #f6f7fb;
 }
 </style>

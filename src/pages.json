@@ -1507,6 +1507,15 @@
 					}
 				},
 				{
+					"path": "report",
+					"style": {
+						"navigationBarTitleText": "举报动态",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "topics/list",
 					"style": {
 						"navigationBarTitleText": "话题列表",
