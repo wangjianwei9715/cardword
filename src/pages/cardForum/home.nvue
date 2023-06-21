@@ -1,14 +1,96 @@
 <template>
     <div class="content" style="display: flex;width: 750rpx;flex-direction: column;align-items: center;">
-        <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack"></image>
-        <div class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></div>
-        <div class="fixedTop" id="fixedTop" :style="{ backgroundColor: `rgba(255,255,255,${isShowKa ? 0 : 1})` }">
+        <!--  -->
+        <swiper :duration="300" :style="{ height: app.platform.systemInfo.screenHeight + 'px' }" v-if="initFinish"
+            class="swiperContainer" :current="tabs.index" @change="swiperChange" @transition="swiperTransition">
+            <!-- @animationfinish="swiperChangeAnimationfinish" -->
+            <!-- @touchstart="swipertouchmove" @touchend="swipertouchmove" -->
+            <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
+                <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack" v-if="tabIndex === 2"></image>
+                <div style="position:absolute;display:flex;flex-direction:column;align-items:center;"
+                    :style="{ height: scrollViewHeight + 'px', top: fixedTopHeight + 'px' }">
+                    <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
+                    <!-- #ifndef APP-NVUE -->
+                    <view class="hotTopicWrap" v-if="isShowKa && tab.firstReqEnd">
+                        <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
+                        <view class="hotTopicRow">
+                            <image src="@/static/cardForum/star.png" class="star"></image>
+                            <text class="hotTopicRow_title">热门话题</text>
+                            <div class="flex1"></div>
+                            <text class="hotTopicRow_all" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
+                            <u-icon size="24rpx" color="#ffffff" name="arrow-right"></u-icon>
+                        </view>
+                        <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
+                            <view class="scrollTopicWarp">
+                                <view class="faker_topicItem"></view>
+                                <view class="topicItem" v-for="item in 10">
+                                    <image class="topicItem_img"></image>
+                                    <text class="topiceActCorner">活动</text>
+                                    <text class="topicItem_title">爷就是拽拽奥斯卡但是...奥斯卡但是...</text>
+                                    <text class="topicItem_dt">999篇动态</text>
+                                </view>
+                            </view>
+                        </scroll-view>
+                    </view>
+                    <view class="adWrap" v-if="isShowKa && tab.firstReqEnd">
+                        <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
+                    </view>
+                    <!-- #endif -->
+                    <!-- #ifndef APP-NVUE -->
+                    <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
+                        @scrolltolower="loadmoreData(tabIndex)">
+                        <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
+                            :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40">
+                        </waterfalls>
+                    </scroll-view>
+                    <!-- #endif -->
+                    <!-- #ifdef APP-NVUE -->
+                    <waterfalls column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="5"
+                        :height="scrollViewHeight + 'px'" :value="tab.list" right-gap="5" column-gap="5"
+                        :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
+                        @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
+                        <template v-slot:header v-if="tabIndex == 2 && tab.firstReqEnd">
+                            <header style="align-items: center;">
+                                <div class="hotTopicWrap">
+                                    <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
+                                    <div class="hotTopicRow">
+                                        <image src="@/static/cardForum/star.png" class="star"></image>
+                                        <text class="hotTopicRow_title">热门话题</text>
+                                        <div class="flex1"></div>
+                                        <text class="hotTopicRow_all"
+                                            @click="pageJump('/pages/cardForum/topics/list')">全部</text>
+                                        <u-icon size="24rpx" color="#ffffff" name="arrow-right"></u-icon>
+                                    </div>
+                                    <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
+                                        <view class="faker_topicItem"></view>
+                                        <view class="topicItem" v-for="item in 10">
+                                            <image class="topicItem_img"></image>
+                                            <text class="topiceActCorner">活动</text>
+                                            <text class="topicItem_title">爷就是拽拽奥斯卡但是...奥斯卡但是...</text>
+                                            <text class="topicItem_dt">999篇动态</text>
+                                        </view>
+                                    </scroll-view>
+                                </div>
+                                <div class="adWrap">
+                                    <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
+                                </div>
+                            </header>
+                        </template>
+                    </waterfalls>
+                    <!-- #endif -->
+                </div>
+
+            </swiper-item>
+        </swiper>
+        <div class="fixedTop" id="fixedTop" :style="{ backgroundColor: `rgba(255,255,255,${isShowKa ? 0 : navOpacity})` }">
             <div class="navBar" id="navBar" ref="navBar">
                 <div :style="{ height: app.statusBarHeight + 'px' }"></div>
                 <div class="nav">
-                    <div class="navSearchWrap" :class="{navSearchWrap_showka:isShowKa}" @click="pageJump('/pages/cardForum/search')">
+                    <div class="navSearchWrap" :class="{ navSearchWrap_showka: isShowKa }"
+                        @click="pageJump('/pages/cardForum/search')">
                         <input class="navInput" type="text" placeholder="搜你想搜..." disabled />
-                        <div class="nav_search flexCenter" :class="{nav_search_showka:isShowKa}">
+                        <div class="nav_search flexCenter" :class="{ nav_search_showka: isShowKa }"
+                            :style="{ backgroundColor: `rgba(250, 21, 69, ${isShowKa ? 0 : navOpacity})` }">
                             <text class="nav_search_text flexCenter">搜索</text>
                         </div>
                     </div>
@@ -25,69 +107,9 @@
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
         </div>
-
-        <swiper :duration="300" v-if="initFinish" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }"
-            :current="tabs.index" @change="swiperChange" @animationfinish="swiperChangeAnimationfinish"
-            @transition="swiperTransition">
-            <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
-                <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
-                <!-- #ifndef APP-NVUE -->
-                <view class="hotTopicWrap" v-if="isShowKa && tab.firstReqEnd">
-                    <view class="hotTopicRow">
-                        <text class="hotTopicRow_title">热门话题</text>
-                        <text class="hotTopicRow_title" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
-                    </view>
-                    <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
-                        <view class="scrollTopicWarp">
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                            <view class="topicItem"></view>
-                        </view>
-                    </scroll-view>
-                </view>
-                <!-- #endif -->
-                <!-- #ifndef APP-NVUE -->
-                <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
-                    @scrolltolower="loadmoreData(tabIndex)">
-                    <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
-                        :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40">
-                    </waterfalls>
-                </scroll-view>
-                <!-- #endif -->
-                <!-- #ifdef APP-NVUE -->
-                <waterfalls column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="5"
-                    :height="scrollViewHeight + 'px'" :value="tab.list" right-gap="5" column-gap="5"
-                    :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
-                    style="padding-top: 10rpx;">
-                    <template v-slot:header v-if="tabIndex == 2">
-                        <header>
-                            <div class="hotTopicWrap">
-                                <div class="hotTopicRow">
-                                    <text class="hotTopicRow_title">热门话题</text>
-                                    <text class="hotTopicRow_title"
-                                        @click="pageJump('/pages/cardForum/topics/list')">全部</text>
-                                </div>
-                                <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                    <div class="topicItem"></div>
-                                </scroll-view>
-                            </div>
-                        </header>
-                    </template>
-                </waterfalls>
-                <!-- #endif -->
-
-            </swiper-item>
-        </swiper>
         <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
             @close="actionSheet = false"></u-action-sheet>
+
     </div>
 </template>
 <script>
@@ -167,6 +189,7 @@ export default {
             scrollViewHeight: 0,
             fixedTopHeight: 0,
             hotTopics: [],
+            dx: 0,
             tabs: {
                 index: 2,
                 list: []
@@ -177,17 +200,17 @@ export default {
     async onLoad() {
         this.$nextTick(async () => {
             this.fixedTopHeight = await this.getDomHeight("#fixedTop")
-            console.log(await this.getDomHeight("#tabs"));
+            // console.log(await this.getDomHeight("#tabs"));
             // this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - (uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom)
             // #ifdef APP-NVUE
             this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - plus.navigator.getSafeAreaInsets().deviceBottom - 56
-            console.log(uni.getSystemInfoSync());
-            console.log(plus.navigator.getSafeAreaInsets());
-            console.log("app.platform.systemInfo.screenHeight:", app.platform.systemInfo.screenHeight);
-            console.log("this.fixedTopHeight:", this.fixedTopHeight);
-            console.log("uni.getSystemInfoSync().safeArea.bottom", uni.getSystemInfoSync().safeArea.bottom);
-            console.log("tabbarHeight:", uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom);
-            console.log("this.scrollViewHeight:", this.scrollViewHeight);
+            // console.log(uni.getSystemInfoSync());
+            // console.log(plus.navigator.getSafeAreaInsets());
+            // console.log("app.platform.systemInfo.screenHeight:", app.platform.systemInfo.screenHeight);
+            // console.log("this.fixedTopHeight:", this.fixedTopHeight);
+            // console.log("uni.getSystemInfoSync().safeArea.bottom", uni.getSystemInfoSync().safeArea.bottom);
+            // console.log("tabbarHeight:", uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom);
+            // console.log("this.scrollViewHeight:", this.scrollViewHeight);
             // #endif
             // #ifdef H5
             this.scrollViewHeight = 666
@@ -202,7 +225,25 @@ export default {
         },
         isShowKa() {
             return this.tabs.index === 2
+        },
+        navOpacity() {
+            // return 1
+            if (this.tabs.index <= 1) {
+                return (app.platform.systemInfo.screenWidth - this.dx) / app.platform.systemInfo.screenWidth
+            }
+            if (this.isShowKa) {
+                if (this.dx <= app.platform.systemInfo.screenWidth && this.dx >= app.platform.systemInfo.screenWidth - 30) return 0
+                console.log((Math.abs(this.dx)) / app.platform.systemInfo.screenWidth);
+                return (Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
+            }
+            if (this.tabs.index > 2 && this.dx < 0) {
+                return (app.platform.systemInfo.screenWidth - Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
+            } else {
+                return 1
+            }
+
         }
+
     },
     watch: {
         'tabs.index': function (val) {
@@ -210,14 +251,24 @@ export default {
                 this.reqNewData(true)
             }
             if (val == 2) {
-                uni.setTabBarStyle({
-                    backgroundColor: "#0c0014"
+                // uni.setTabBarStyle({
+                //     backgroundColor: "#0c0014"
+                // })
+                uni.hideTabBar({
+                    animation: true
                 })
+                // #ifdef APP-NVUE
+                plus.navigator.setStatusBarStyle("light");
+                // #endif
                 this.getTopicsList()
             } else {
-                uni.setTabBarStyle({
-                    backgroundColor: "#ffffff"
-                })
+                uni.showTabBar({ animation: true })
+                // #ifdef APP-NVUE
+                plus.navigator.setStatusBarStyle("dark");
+                // #endif
+                // uni.setTabBarStyle({
+                //     backgroundColor: "#ffffff"
+                // }) 
             }
         }
     },
@@ -258,17 +309,24 @@ export default {
             this.current.queryParams.q = ""
         },
         swiperChange(event) {
-            // console.log("swiperChange", event);
+            console.log("swiperChangeChange了了了");
+            this.dx = 0
             this.tabs.index = event.detail.current
+        },
+        transitionend(event) {
+            console.log("66666666", event);
         },
         swiperChangeAnimationfinish(event) {
             // console.log("动画结束", event);
+            // this.tabs.index = event.detail.current
+        },
+        swipertouchmove(event) {
+            // console.log("swipertouchmove",event);
         },
         swiperTransition(event) {
-            // this.trTimmer && clearTimeout(this.trTimmer)
-            // this.trTimmer = setTimeout(() => {
-            //     console.log("swiperTransition", event);
-            // }, 10)
+            // console.log("swiperTransition", event,app.platform.systemInfo.screenWidth);
+            // console.log("swiperTransition", event.detail.dx);
+            this.dx = event.detail.dx
         },
         tabClick(event) {
             // console.log(event);
@@ -284,6 +342,9 @@ export default {
         },
         refreshData(index) {
             this.reqNewData(true)
+            setTimeout(() => {
+                this.$refs['waterfalls' + index][0].hideRefresh()
+            }, 500);
         },
         loadmoreData(index) {
             const nowTab = this.tabs.list[index]
@@ -317,6 +378,9 @@ page {
 }
 
 // #endif 
+.flex1 {
+    flex: 1;
+}
 
 .content {
     flex-direction: column;
@@ -330,22 +394,22 @@ page {
 
 .swiperContainer {
     width: 750rpx;
-    // background-color: red;
-    // flex: 1;
+    position: fixed;
+    top: 0;
 }
 
 .showKaBack {
     width: 750rpx;
     height: 1980rpx;
-    position: fixed;
+    position: absolute;
     top: 0;
+    // transition-property: opacity;
+    // transition-duration: 0.2s;
 }
 
 .swiperItem {
-    // height: 600rpx;
     align-items: center;
-
-    // width: 100%;
+    position: absolute;
 }
 
 .fixedTop {
@@ -387,10 +451,13 @@ page {
     border-radius: 5rpx;
 
 }
-.nav_search_showka{
-    background-color: rgba(0,0,0,0);
-    border-left:3rpx solid #ffffff;
+
+.nav_search_showka {
+    // background-color: rgba(250, 21, 69, 0);
+    border-left: 3rpx solid #ffffff;
+    border-radius: 0rpx;
 }
+
 .nav_search_text {
     font-size: 25rpx;
     font-family: PingFang SC;
@@ -436,7 +503,7 @@ page {
     font-weight: 500;
     color: #333333;
     position: relative;
-    top: 8rpx;
+    top: 4rpx;
 }
 
 .navSearchWrap {
@@ -451,9 +518,11 @@ page {
     align-items: center;
     flex-direction: row;
 }
-.navSearchWrap_showka{
+
+.navSearchWrap_showka {
     border: 3rpx solid #ffffff;
 }
+
 .navInput {
     color: #000;
     // width: 400rpx;
@@ -473,26 +542,61 @@ page {
 }
 
 .hotTopicWrap {
-    width: 750rpx;
-    padding: 0 20rpx;
-    // border: 1rpx solid #f2f2f2;
-    // background-color: #fff;
-    // position: fixed;
-    height: 200rpx;
-    // position: absolute;
-    // top: 0;
+    width: 740rpx;
+    // padding: 0 20rpx;
+    height: 303rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hotTopicWrap_img {
+    position: absolute;
+    width: 740rpx;
+
+    height: 303rpx;
+    top: 0;
+    left: 0;
 }
 
 .hotTopicRow {
     flex-direction: row;
-    justify-content: space-between;
+    // justify-content: space-between;
     align-items: center;
+    // #ifdef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+    width: 740rpx;
+    padding: 0 38rpx;
+    margin-top: 31rpx;
+}
+
+.star {
+    width: 28rpx;
+    height: 26rpx;
+    margin-right: 10rpx;
+}
+
+.hotTopicRow_title {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.hotTopicRow_all {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    margin-right: 14rpx;
 }
 
 .hotTopicScroll {
-    width: 700rpx;
+    width: 710rpx;
     flex-direction: row;
     display: flex;
+    margin-top: 42rpx;
     // flex-wrap: nowrap;
 
 }
@@ -500,22 +604,92 @@ page {
 .scrollTopicWarp {
     flex-direction: row;
     display: flex;
-    /* #ifdef H5 */
+    width: 710rpx;
+    flex-wrap: nowrap;
+    // #ifndef APP-NVUE
     white-space: nowrap;
-    /* #endif */
+    // #endif
+}
+
+.faker_topicItem {
+    width: 40rpx;
+    opacity: 0;
+}
+
+.topiceActCorner {
+    width: 52rpx;
+    height: 23rpx;
+    background: #FA1545;
+    border-radius: 1rpx;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 17rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 23rpx;
+
 }
 
 .topicItem {
-    width: 150rpx;
-    height: 50rpx;
-    background-color: red;
-    margin-right: 20rpx;
+    width: 101rpx;
+    height: 200rpx;
+    // background-color: #ffffff;
+    margin-right: 67rpx;
+    // border-radius: 1rpx;
+    position: relative;
 }
 
-.testImg {
-    width: 100rpx;
-    height: 100rpx;
-    // background-color: #000;
-    background-image: url("../../static/cardForum/camera.png");
+.topicItem_img {
+    width: 101rpx;
+    height: 101rpx;
+    border-radius: 1rpx;
+    background-color: #ffffff;
+}
+
+.topicItem_title_wrap {
+    width: 101rpx;
+    // height: 30rpx;
+    margin-top: 10rpx;
+    background-color: red;
+}
+
+.topicItem_title {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    width: 101rpx;
+    // #ifdef APP-NVUE
+    lines: 1;
+    text-overflow: ellipsis;
+    // #endif
+
+}
+
+.topicItem_dt {
+    width: 101rpx;
+    text-align: center;
+    font-size: 19rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #C0C0C0;
+}
+
+.adWrap {
+    width: 740rpx;
+    height: 208rpx;
+    margin-bottom: 8rpx;
+}
+
+.adWrap_img {
+    position: absolute;
+    width: 740rpx;
+    height: 208rpx;
+    top: 0;
+    left: 0;
 }
 </style>
