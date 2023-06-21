@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-20 18:20:53
+ * @LastEditTime: 2023-06-21 09:28:54
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -433,7 +433,7 @@ $uvui-nvue-style: true !default;
 
 .waterfall-item__image_img {
     width: 360rpx;
-    // ##ifndef APP-NVUE
+    // #ifndef APP-NVUE
     width: 100%;
     // #endif
 }
