@@ -45,7 +45,7 @@
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="5"
+                    <waterfalls :refreshColor="isShowKa?'#ffffff':''" column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="5"
                         :height="scrollViewHeight + 'px'" :value="tab.list" right-gap="5" column-gap="5"
                         :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
                         @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
@@ -652,7 +652,7 @@ page {
 .topicItem_title_wrap {
     width: 101rpx;
     // height: 30rpx;
-    margin-top: 10rpx;
+    
     background-color: red;
 }
 
@@ -663,6 +663,7 @@ page {
     color: #FFFFFF;
     text-align: center;
     width: 101rpx;
+    margin-top: 10rpx;
     // #ifdef APP-NVUE
     lines: 1;
     text-overflow: ellipsis;
@@ -677,6 +678,7 @@ page {
     font-family: PingFang SC;
     font-weight: 400;
     color: #C0C0C0;
+    margin-top: 6rpx;
 }
 
 .adWrap {

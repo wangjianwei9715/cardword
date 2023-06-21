@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-21 09:28:54
+ * @LastEditTime: 2023-06-21 12:00:31
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -77,7 +77,7 @@
         :show-scrollbar="false" column-width="auto" :column-gap="columnGap" :left-gap="leftGap" :right-gap="rightGap"
         @loadmore="scrolltolower" :style="{ height: height, position: 'relative' }">
         <refresh v-if="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'" class="refresh">
-            <loading-indicator></loading-indicator>
+            <loading-indicator :style="[refreshColor ? { color: refreshColor } : {}]"></loading-indicator>
         </refresh>
         <header>
             <div ref="goTop"></div>
@@ -176,10 +176,15 @@ export default {
             type: [Boolean],
             default: true
         },
+        refreshColor: {
+            type: String,
+            default: ""
+        },
         fixFreezing: {
             type: [Boolean, String],
             default: "false"
-        }
+        },
+
     },
     data() {
         return {
