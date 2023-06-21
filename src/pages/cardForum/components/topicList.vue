@@ -15,10 +15,11 @@
                     <text class="title">#{{ item.name }}</text>
                     <text class="act">活动</text>
                 </view>
-                <text class="desc u-line-1">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                <text class="desc">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
                 <view class="flex1"></view>
                 <view class="bottomInfo">
                     <text class="num">{{ item.totalUseNum }}篇动态</text>
+                    <!-- <view class="flex1"></view> -->
                     <text class="push flexCenter">发布</text>
                 </view>
             </view>
@@ -87,6 +88,7 @@ export default {
 
 .content {
     display: flex;
+    width: 750rpx;
     flex-direction: column;
     padding: 0 35rpx;
 }
@@ -122,6 +124,11 @@ export default {
     font-family: PingFang SC;
     font-weight: 400;
     color: #959695;
+    width: 500rpx;
+    // #ifdef APP-NVUE
+    lines: 2;
+    text-overflow: ellipsis;
+    // #endif
     // flex: 1;
 }
 
@@ -161,7 +168,9 @@ export default {
 }
 
 .bottomInfo {
-    width: 100%;
+    // width: 100%;
+    width: 500rpx;
+    // background-color: red;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;

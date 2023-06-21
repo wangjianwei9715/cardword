@@ -63,6 +63,9 @@
                     right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
                     @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
                 </waterfalls>
+                <template v-if="tab.type == 'topics'">
+                    <topicList></topicList>
+                </template>
                 <!-- #endif -->
             </swiper-item>
         </swiper>
