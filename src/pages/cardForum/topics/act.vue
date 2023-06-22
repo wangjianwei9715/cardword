@@ -2,36 +2,66 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-15 17:02:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-15 17:24:39
+ * @LastEditTime: 2023-06-21 14:08:20
  * @FilePath: \card-world\src\pages\cardForum\topics\act.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
         <navigationbar title="挑战话题" rightText="查看往期" @onClickRightText="onClickRightText"></navigationbar>
-        <div class="titleWrap">本期话题</div>
-        <div class="titleWrap">
-            <div class="title">排名奖励</div>
-            <div class="rightText">我的最高获赞188</div>
-        </div>
-        <div class="rankWrap" v-for="(item, index) in 10">
-            <div class="rankNum">{{ index + 1 }}</div>
+        <view class="titleWrap">
+            <view class="block"></view>
+            <view class="title">本期话题</view>
+            <view class="smallTitle">（进行中 10.30~11.5）</view>
+        </view>
+        <view class="topicsItem">
+            <image class="topicsItem_img" :src="'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'">
+            </image>
+            <view class="rightInfo">
+                <view class="topicsItem_title">
+                    <text class="title">##勒布朗詹姆斯</text>
+                    <!-- <text class="act">活动</text> -->
+                </view>
+                <!-- #ifdef APP-NVUE -->
+                <text class="desc">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                <!-- #endif -->
+                <!-- #ifndef APP-NVUE -->
+                <text class="desc u-line-2">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                <!-- #endif -->
+                <view class="flex1"></view>
+                <view class="bottomInfo">
+                    <text class="num">99篇动态</text>
+                    <!-- <view class="flex1"></view> -->
+                    <text class="push flexCenter">发布</text>
+                </view>
+            </view>
+        </view>
+        <view class="titleWrap" style="margin-bottom: 20rpx;">
+            <view class="block"></view>
+            <view class="title">排名奖励</view>
+            <view class="flex1"></view>
+            <view class="gray">我的最高获赞188</view>
+            <!-- <view class="smallTitle">（进行中 10.30~11.5）</view> -->
+        </view>
+        <view class="rankWrap" v-for="(item, index) in 10">
+            <view class="rankNum">{{ index + 1 }}</view>
             <muqian-lazyLoad :src="app.defaultAvatar" borderRadius="50%" class="avatar"></muqian-lazyLoad>
-            <div class="userInfo">
-                <div class="userName">xxxxxxxx</div>
-                <div class="likeNum">199获赞</div>
-            </div>
-            <div class="award">100元无门槛券</div>
-        </div>
-        <div class="titleWrap">
-            <div class="title">规则说明</div>
-            <!-- <div class="rightText">我的最高获赞188</div> -->
-        </div>
-        <div>
-            1、本期活动时间：2020.01.01-2020.01.01。活动期间，用户发布本话题动态即可参与，活动结束后点赞数最高的x位用户获得相应奖励。
-            2、若发布多个本话题动态，则取点赞数最高的作品参与；若两名或多名用户点赞数相同，则按发布时间排名。
-            3、活动截至后，优惠券奖品自动发放，实物类奖品请联系客服发放
-        </div>
+            <view class="userInfo">
+                <view class="userName">xxxxxxxx</view>
+                <view class="likeNum">199获赞 ＞</view>
+            </view>
+            <view class="flex1"></view>
+            <view class="award">100元无门槛券</view>
+        </view>
+        <view class="titleWrap" style="margin-bottom: 18rpx;">
+            <view class="block"></view>
+            <view class="title">规则说明</view>
+        </view>
+        <view class="rule">
+            1、本期活动时间：2020.01.01-2020.01.01。活动期间，用户发布本话题动态即可参与，活动结束后点赞数最高的x位用户获得相应奖励。<br><br>
+            2、若发布多个本话题动态，则取点赞数最高的作品参与；若两名或多名用户点赞数相同，则按发布时间排名。<br><br>
+            3、活动截至后，优惠券奖品自动发放，实物类奖品请联系客服发放<br><br>
+        </view>
     </view>
 </template>
 
@@ -63,9 +93,9 @@ export default class ClassName extends BaseNode {
             uni.stopPullDownRefresh()
         })
     }
-    onClickRightText(){
+    onClickRightText() {
         uni.navigateTo({
-            url:"/pages/cardForum/topics/list"
+            url: "/pages/cardForum/topics/list"
         })
     }
     reqNewData(cb?: any) {
@@ -81,29 +111,75 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
+.flex1 {
+    flex: 1;
+}
+
 .titleWrap {
     width: 750rpx;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-end;
+    box-sizing: border-box;
+    padding: 0 35rpx;
+    height: 30rpx;
+    vertical-align: text-bottom;
+    margin-top: 24rpx;
+
+    .block {
+        width: 8rpx;
+        height: 18rpx;
+        background: #FA1545;
+        border-radius: 2rpx;
+        margin-right: 10rpx;
+    }
+
+    .title {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #333333;
+        margin-right: 4rpx;
+        // display: table-cell;
+        // vertical-align: bottom;
+    }
+
+    .smallTitle {
+        font-size: 21rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #333333;
+        vertical-align: bottom;
+    }
+
+    .gray {
+        font-size: 17rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #C0C0C0;
+    }
 }
 
 .rankWrap {
     box-sizing: border-box;
-    padding: 0 25rpx;
+    padding: 0 35rpx;
     width: 750rpx;
-    margin-bottom: 20rpx;
+    margin-bottom: 34rpx;
     display: flex;
     align-items: center;
 
     .rankNum {
-        width: 100rpx;
+        width: 44rpx;
+        font-size: 33rpx;
+        font-family: Impact;
+        font-weight: 400;
+        color: #333333;
         text-align: center;
+        margin-right: 10rpx;
     }
 
     .avatar {
-        width: 66rpx;
-        height: 66rpx;
+        width: 65rpx;
+        height: 65rpx;
         margin-right: 20rpx;
     }
 
@@ -115,7 +191,138 @@ export default class ClassName extends BaseNode {
     }
 
     .userName {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #8D8D8D;
         margin-bottom: 6rpx;
     }
+
+    .likeNum {
+        font-size: 21rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #959695;
+    }
+
+    .award {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #333333;
+    }
+}
+
+.topicsItem {
+    width: 750rpx;
+    height: 161rpx;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40rpx;
+    flex-direction: row;
+    padding: 0 35rpx;
+    margin-top: 26rpx;
+}
+
+.topicsItem_img {
+    width: 161rpx;
+    height: 161rpx;
+    // background-color: red;
+    border-radius: 3rpx;
+    margin-right: 46rpx;
+}
+
+.rightInfo {
+    height: 161rpx;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    // background-color: red;
+
+    .topicsItem_title {
+        .title {
+            font-size: 33rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #333333;
+            margin-right: 14rpx;
+        }
+    }
+}
+
+.desc {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #959695;
+    // width: 500rpx;
+    // #ifdef APP-NVUE
+    lines: 2;
+    text-overflow: ellipsis;
+    // #endif
+    // flex: 1;
+}
+
+.num {
+    color: #aaaaaa;
+}
+
+
+
+
+
+.act {
+    width: 71rpx;
+    height: 32rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    text-align: center;
+    font-size: 20rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 32rpx;
+}
+
+.bottomInfo {
+    // width: 100%;
+    // width: 500rpx;
+    // background-color: red;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-direction: row;
+}
+
+.num {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #C0C0C0;
+}
+
+.push {
+    // width: 40rpx;
+    // height: 20rpx;
+    width: 109rpx;
+    height: 51rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 51rpx;
+}
+
+.rule {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    line-height: 38rpx;
+    padding: 0 56rpx;
 }
 </style>

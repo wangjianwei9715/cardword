@@ -83,7 +83,7 @@
             <div ref="goTop"></div>
         </header>
         <slot name="header"></slot>
-        <cell v-for="(item, index) in value" class="waterfall-item-grayWrap">
+        <cell v-for="(item, index) in value" class="waterfall-item-grayWrap" @click="goToDetail(item)">
             <div class="waterfall-item">
                 <div class="waterfall-item__image">
                     <image :src="item.image" class="waterfall-item__image_img" mode="widthFix"></image>
@@ -146,15 +146,15 @@ export default {
         },
         columnGap: {
             type: [Number, String],
-            default: 40
+            default: 5
         },
         leftGap: {
             type: [Number, String],
-            default: 0
+            default: 5
         },
         rightGap: {
             type: [Number, String],
-            default: 0
+            default: 5
         },
         showScrollbar: {
             type: [Boolean],

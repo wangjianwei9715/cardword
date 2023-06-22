@@ -1,80 +1,69 @@
 <template>
-    <div style="position: fixed;top:0;bottom:0;left:0;right:0">
-        <div class="topicTopWrap" id="topicTopWrap">
-            <div class="fakerTop" :style="{ height: navHeight + 'px' }"></div>
-            <div class="topicsItem">
-                <image class="image" src="https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg"
-                    borderRadius="3rpx"></image>
-                <div class="rightInfo">
-                    <text class="title">#勒布朗勒布朗</text>
-                    <div class="bottomInfo">
-                        <text class="num">2323篇动态</text>
-                        <div class="push flexCenter">发布</div>
+    <list fixFreezing="true" bounce="false" id="pageId" @scroll="scroll">
+        <cell>
+            <div id="topContainer" style="flex-direction: column;align-items: center;display: flex;">
+                <div style="flex-direction: column;align-items: center;display: flex;background-color: #fff">
+                    <div :style="{ height: navHeight + 'px' }"></div>
+                    <view class="topicsItem">
+                        <image class="topicsItem_img"
+                            :src="'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'">
+                        </image>
+                        <view class="rightInfo">
+                            <view>
+                                <text class="topicsItem_title">##勒布朗詹姆斯</text>
+                                <!-- <text class="act">活动</text> -->
+                            </view>
+                            <!-- #ifdef APP-NVUE -->
+                            <text
+                                class="desc">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                            <!-- #endif -->
+                            <!-- #ifndef APP-NVUE -->
+                            <text
+                                class="desc u-line-2">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                            <!-- #endif -->
+                            <view class="flex1"></view>
+                            <view class="bottomInfo">
+                                <text class="num">99篇动态</text>
+                                <!-- <view class="flex1"></view> -->
+                                <text class="push flexCenter">发布</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="line"></view>
+                    <div style="background-color: #fff;" id="tabs">
+                        <u-tabs :duration="300" :current="tags.index" :list="tags.list"></u-tabs>
+                    </div>
+                    <div class="acWrap" id="acWrap">
+                        <text class="iNeedPush">我要发布</text>
                     </div>
                 </div>
+
             </div>
-            <u-tabs :duration="300" class="tabs" id="tabs" :current="tags.index" :list="tags.list" ref="tabs"></u-tabs>
+            <swiper style="position: relative;" :current="tags.index" :style="{ height: scrollViewHeight + 'px' }"
+                @change="swiperChange">
+                <swiper-item>
+                    <waterfalls ref="waterfall0" :value="list" fixFreezing="true" :refresh="false"
+                        :always-scrollable-vertical="true" @loadmore="loadmore">
+                    </waterfalls>
+                </swiper-item>
+                <swiper-item>
+                    <waterfalls ref="waterfall1" :value="list" fixFreezing="true" :refresh="false"
+                        :always-scrollable-vertical="true">
+                    </waterfalls>
+                </swiper-item>
+            </swiper>
+        </cell>
+        <cell :style="{ height: acWrapHeight + 'px' }"></cell>
+        <!-- ; -->
+        <div style="position: fixed;width: 750rpx;background-color: #fff" :style="{ top: navHeight + 'px', opacity: stickyTabs ? 1 : 0 }">
+            <u-tabs :duration="300" :current="tags.index" :list="tags.list" ref="tabs"></u-tabs>
         </div>
-        <!-- #ifndef APP-NVUE -->
-        <div @click="pageJump('/pages/cardForum/topics/act?id=')">
-            广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告</div>
-        <!-- #endif -->
-        <swiper :duration="300" class="swiperContainer" :style="{ height: scrollViewHeight + 'px' }" :current="tags.index"
-            @change="swiperChange">
-            <swiper-item class="swiperItem">
-
-                <waterfalls ref="waterfall" @scroll="scroll" @loadmore="loadmore" @refresh="refresh" left-gap="10"
-                    :height="scrollViewHeight + 'px'" right-gap="10" column-gap="8" :always-scrollable-vertical="true">
-                    <header>
-                        <div @click="pageJump('/pages/cardForum/topics/act?id=')">
-                            广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告广告</div>
-                    </header>
-                    <cell v-for="(item, index) in list" class="waterfall-item-cell">
-                        <view class="waterfall-item">
-                            <view class="waterfall-item__image">
-                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
-                            </view>
-                            <view class="waterfall-item__ft">
-                                <view class="waterfall-item__ft__title">
-                                    <text class="value">{{ item.title }}</text>
-                                </view>
-                                <view class="waterfall-item__ft__desc uv-line-2">
-                                    <text class="value">{{ item.desc }}</text>
-                                </view>
-                            </view>
-                        </view>
-                    </cell>
-                </waterfalls>
-            </swiper-item>
-            <swiper-item class="swiperItem">
-                <waterfalls ref="waterfall" @scroll="scroll" @loadmore="loadmore" @refresh="refresh" left-gap="10"
-                    :height="scrollViewHeight + 'px'" right-gap="10" column-gap="8" :always-scrollable-vertical="true">
-                    <header>
-                    </header>
-                    <cell v-for="(item, index) in list" class="waterfall-item-cell">
-                        <view class="waterfall-item">
-                            <view class="waterfall-item__image">
-                                <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
-                            </view>
-                            <view class="waterfall-item__ft">
-                                <view class="waterfall-item__ft__title">
-                                    <text class="value">{{ item.title }}</text>
-                                </view>
-                                <view class="waterfall-item__ft__desc uv-line-2">
-                                    <text class="value">{{ item.desc }}</text>
-                                </view>
-                            </view>
-                        </view>
-                    </cell>
-                </waterfalls>
-            </swiper-item>
-        </swiper>
-
-        <transitionNav ref="transitionNav" title="#勒布朗勒布朗" @getNavHeight="getNavHeight"></transitionNav>
-    </div>
+        <transitionNav ref="transitionNav" title="爷就是拽" @getNavHeight="getNavHeight"></transitionNav>
+    </list>
 </template>
+<!--  -->
 <script>
-import transitionNav from "@/components/transitionNav/transitionNav.vue"
+import transitionNav from "@/components/transitionNav/transitionNav"
 import waterfalls from "../components/waterfalls.vue"
 const app = getApp().globalData.app;
 export default {
@@ -89,17 +78,17 @@ export default {
     },
     data() {
         return {
-            id: 0,
-            scrollViewHeight: 0,
             app,
             navHeight: 0,
-            topicDetail: {},
+            scrollViewHeight: 0,
+            stickyTabs: false,
+            topHeight: 0,
+            acWrapHeight: 0,
+            listSetSpecialEffectsHeight: 0,
             tags: {
                 index: 0,
                 list: [
-                    {
-                        name: "热门"
-                    },
+                    { name: "热门" },
                     { name: "最新" }
                 ]
             },
@@ -114,47 +103,87 @@ export default {
                 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/760f1341-6a13-4e01-91e2-f6a2c69b8490.jpg?imageView2/2/w/200' },
                 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/4f1c7d52e6ab48b8a1f10c75c08dc421.jpg?imageView2/2/w/200' },
                 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/9740T20210822233025348.jpg?imageView2/2/w/200' },
+            ],
+            list2: [
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200' },
+                { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/2c9607d02842139323fe9c2e86b4305a.jpg?imageView2/2/w/200' },
             ]
         }
     },
     computed: {
-
+        tabsType() {
+            // if (this.stickyTabs) {
+            //     return { top: this.navHeight + 'px' }
+            // } else {
+            //     return {}
+            // }
+            return { top: 0 + 'px' }
+        }
     },
     watch: {
-
+        "tags.index": function (val) {
+            console.log(val);
+            // this.$refs["waterfall" + val].goTop()
+            this.listSetSpecialEffects("waterfall" + val)
+        }
     },
-    onLoad(query) {
-        this.id = +query.id
-        this.reqDetail()
+    mounted() {
+    },
+    onLoad() {
+
+        this.$nextTick(async () => {
+            this.topHeight = await this.getDomHeight("#topContainer")
+            this.acWrapHeight = await this.getDomHeight("#acWrap")
+            console.log(app.platform.systemInfo.screenHeight);
+            this.listSetSpecialEffectsHeight = this.topHeight + this.acWrapHeight
+            // #ifdef APP_PLUS
+            this.scrollViewHeight = app.platform.systemInfo.screenHeight
+            // #endif
+            // #ifdef H5
+            this.scrollViewHeight = app.platform.systemInfo.screenHeight
+            // #endif
+            this.listSetSpecialEffects("waterfall0")
+        })
     },
     methods: {
         getNavHeight(height) {
             this.navHeight = height
+
             this.$nextTick(async () => {
-                const topHeight = await this.getDomHeight("#topicTopWrap")
+                // this.topHeight = await this.getDomHeight("#userInfoWrap")
                 // #ifdef APP_PLUS
-                this.scrollViewHeight = app.platform.systemInfo.screenHeight - topHeight - this.navHeight
+                this.scrollViewHeight = app.platform.systemInfo.screenHeight
+                // - topHeight - this.navHeight
                 // #endif
 
             })
         },
-        scroll(event) {
+        listSetSpecialEffects(refKey) {
+            this.$refs[refKey] && this.$refs[refKey].swiperChange("pageId", this.topHeight+this.navHeight)
+        },
+        swiperChange(event) {
+            this.tags.index = event.detail.current
+        },
+        async scroll(event) {
             //想要渐变导航栏就用下面的代码
             // this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll({
-            //     scrollTop: -event.contentOffset.y
+            //     scrollTop: -event.contentOffset.y.toFixed(2)
             // })
+            // console.log(-event.contentOffset.y);
+            const dom = await this.getDomInfo("#tabs")
+            // console.log(dom.top);
+            // if (this.stickyTabs) return
+            this.stickyTabs = dom.top <= this.navHeight
         },
         pageJump(url) {
             uni.navigateTo({
                 url: url
             })
         },
-        swiperChange(event) {
-            this.tags.index = event.detail.current
-        },
         loadmore() {
-            return
-            this.list.push(...this.list)
+            // this.list.push(...this.list)
         },
         refresh() {
             setTimeout(() => {
@@ -173,81 +202,207 @@ export default {
                     .exec();
             })
         },
-        reqDetail() {
-            app.http.Get("dataApi/cardCircle/topic/detail/" + this.id, {}, (res) => {
-                this.topicDetail = res.data
+        getDomInfo(dom) {
+            return new Promise((re, rj) => {
+                uni.createSelectorQuery()
+                    .select(dom)
+                    .boundingClientRect((rect) => {
+                        if (rect) {
+                            re && re(rect)
+                        }
+                    })
+                    .exec();
             })
-        }
+        },
     }
 };
 </script>
-<style lang="scss">
-.fakerTop {
-    width: 750rpx;
-    opacity: 0;
+<style lang='scss'>
+.flex1 {
+    flex: 1;
 }
 
-.tabs {
-    /* position: -webkit-sticky; */
-    /* position: sticky;
-    top: 200px; */
-    /* Safari */
-}
-
-.topicTopWrap {
+.userInfoWrap {
     width: 750rpx;
-    /* height: 500rpx; */
+    height: 400rpx;
+    // position: relative;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
     background-color: red;
 }
 
+.fixImg {
+    position: fixed;
+    width: 750rpx;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.userInfo {
+    z-index: 1;
+    width: 600rpx;
+    display: flex;
+    flex-direction: row;
+    // background-color: red;
+}
+
+.userInfo_avatar {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+}
+
+.stickyHeader {
+    position: sticky;
+    // top: 0;
+    // background-color: #fff;
+}
+
+.userInfo_msg {
+    flex: 1;
+    flex-direction: column;
+}
+
+.line {
+    width: 683rpx;
+    height: 1rpx;
+    background: #E6E6E6;
+    margin-top: 26rpx;
+}
+
 .topicsItem {
-    width: 700rpx;
+    width: 750rpx;
+    height: 161rpx;
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
     display: flex;
     align-items: center;
-    margin-bottom: 22rpx;
+    margin-bottom: 40rpx;
     flex-direction: row;
-    height: 140rpx;
+    padding: 0 35rpx;
+    margin-top: 26rpx;
+}
+
+.topicsItem_img {
+    width: 161rpx;
+    height: 161rpx;
+    // background-color: red;
+    border-radius: 3rpx;
+    margin-right: 46rpx;
+}
+
+.rightInfo {
+    height: 161rpx;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    // background-color: red;
 
 
 }
 
-.image {
-    width: 88rpx;
-    height: 88rpx;
-    margin-right: 20rpx;
+.topicsItem_title {
+    font-size: 33rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    margin-right: 14rpx;
+}
+
+.desc {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #959695;
+    // width: 500rpx;
+    // #ifdef APP-NVUE
+    lines: 2;
+    text-overflow: ellipsis;
+    // #endif
+    // flex: 1;
 }
 
 .num {
     color: #aaaaaa;
 }
 
+
+
+
+
+.act {
+    width: 71rpx;
+    height: 32rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    text-align: center;
+    font-size: 20rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 32rpx;
+}
+
 .bottomInfo {
-    width: 100%;
+    // width: 100%;
+    // width: 500rpx;
+    // background-color: red;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     flex-direction: row;
 }
 
+.num {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #C0C0C0;
+}
+
 .push {
-    padding: 10rpx 30rpx;
-    background-color: #fb374e;
-    color: #fff;
-}
-
-.rightInfo {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-
-
-
-}
-
-.title {
-    color: #000;
+    // width: 40rpx;
+    // height: 20rpx;
+    width: 109rpx;
+    height: 51rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    font-size: 25rpx;
+    font-family: PingFang SC;
     font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 51rpx;
+}
+
+.acWrap {
+    width: 730rpx;
+    height: 200rpx;
+    background: #415459;
+    border-radius: 5rpx;
+    margin-top: 10rpx;
+    margin-bottom: 10rpx;
+    position: relative;
+}
+
+.iNeedPush {
+    width: 168rpx;
+    height: 57rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    position: absolute;
+    top: 75rpx;
+    right: 48rpx;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    text-align: center;
+    line-height: 57rpx;
+    color: #FFFFFF;
 }
 </style>

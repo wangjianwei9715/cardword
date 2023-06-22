@@ -1,26 +1,32 @@
 <template>
     <view class="content">
-        <view class="topicsItem" v-for="(item, index) in list">
+        <view class="topicsItem" v-for="(item, index) in list" @click="goToDetail(item)">
             <!-- #ifndef APP-NVUE -->
-            <muqian-lazyLoad class="image"
+            <muqian-lazyLoad class="topiceImage"
                 :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
                 borderRadius="3rpx"></muqian-lazyLoad>
             <!-- #endif -->
             <!-- #ifdef APP-NVUE -->
-            <image class="image" :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
-                borderRadius="3rpx"></image>
+            <image class="topiceImage"
+                :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'" borderRadius="3rpx">
+            </image>
             <!-- #endif -->
             <view class="rightInfo">
                 <view class="titleWrap">
                     <text class="title">#{{ item.name }}</text>
                     <text class="act">活动</text>
                 </view>
+                <!-- #ifdef APP-NVUE -->
                 <text class="desc">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                <!-- #endif -->
+                <!-- #ifndef APP-NVUE -->
+                <text class="desc u-line-2">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                <!-- #endif -->
                 <view class="flex1"></view>
                 <view class="bottomInfo">
                     <text class="num">{{ item.totalUseNum }}篇动态</text>
                     <!-- <view class="flex1"></view> -->
-                    <text class="push flexCenter">发布</text>
+                    <text class="pushButton flexCenter">发布</text>
                 </view>
             </view>
         </view>
@@ -77,7 +83,11 @@ export default {
         ]
     },
     methods: {
-
+        goToDetail(item) {
+            uni.navigateTo({
+                url: "/pages/cardForum/topics/detail"
+            })
+        }
     }
 };
 </script>
@@ -90,6 +100,9 @@ export default {
     display: flex;
     width: 750rpx;
     flex-direction: column;
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
     padding: 0 35rpx;
 }
 
@@ -105,7 +118,7 @@ export default {
 
 }
 
-.image {
+.topiceImage {
     width: 161rpx;
     height: 161rpx;
     border-radius: 3rpx;
@@ -184,7 +197,7 @@ export default {
     color: #C0C0C0;
 }
 
-.push {
+.pushButton {
     // width: 40rpx;
     // height: 20rpx;
     width: 109rpx;
@@ -197,5 +210,8 @@ export default {
     color: #FFFFFF;
     text-align: center;
     line-height: 51rpx;
+    // #ifndef APP-NVUE
+    display: block;
+    // #endif
 }
 </style>

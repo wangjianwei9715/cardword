@@ -2,13 +2,14 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-15 14:12:47
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-15 15:33:59
+ * @LastEditTime: 2023-06-21 13:36:42
  * @FilePath: \card-world\src\pages\cardForum\topicList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <view class="topicsItem" v-for="(item, index) in list" @click="goToDetail">
+        <topicList style="margin-top: 20rpx;"></topicList>
+        <!-- <view class="topicsItem" v-for="(item, index) in list" @click="goToDetail">
             <muqian-lazyLoad class="image"
                 :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
                 borderRadius="3rpx"></muqian-lazyLoad>
@@ -19,7 +20,7 @@
                     <view class="push flexCenter">发布</view>
                 </view>
             </view>
-        </view>
+        </view> -->
     </view>
 </template>
 
@@ -28,7 +29,12 @@ import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import { getTopics } from "../func/index"
-@Component({})
+import topicList from "../components/topicList.vue"
+@Component({
+    components: {
+        topicList
+    }
+})
 export default class ClassName extends BaseNode {
     queryParams: any = {
         fetchFrom: 1,
