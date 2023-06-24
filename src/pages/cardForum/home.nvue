@@ -11,43 +11,41 @@
                     :style="{ height: scrollViewHeight + 'px', top: fixedTopHeight + 'px' }">
                     <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
                     <!-- #ifndef APP-NVUE -->
-                    <view class="hotTopicWrap" v-if="isShowKa && tab.firstReqEnd">
-                        <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
-                        <view class="hotTopicRow">
-                            <image src="@/static/cardForum/star.png" class="star"></image>
-                            <text class="hotTopicRow_title">热门话题</text>
-                            <div class="flex1"></div>
-                            <text class="hotTopicRow_all" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
-                            <u-icon size="24rpx" color="#ffffff" name="arrow-right"></u-icon>
-                        </view>
-                        <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
-                            <view class="scrollTopicWarp">
-                                <view class="faker_topicItem"></view>
-                                <view class="topicItem" v-for="item in 10">
-                                    <image class="topicItem_img"></image>
-                                    <text class="topiceActCorner">活动</text>
-                                    <text class="topicItem_title">爷就是拽拽奥斯卡但是...奥斯卡但是...</text>
-                                    <text class="topicItem_dt">999篇动态</text>
-                                </view>
-                            </view>
-                        </scroll-view>
-                    </view>
-                    <view class="adWrap" v-if="isShowKa && tab.firstReqEnd">
-                        <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
-                    </view>
-                    <!-- #endif -->
-                    <!-- #ifndef APP-NVUE -->
                     <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                         @scrolltolower="loadmoreData(tabIndex)">
+                        <view class="hotTopicWrap" v-if="isShowKa && tab.firstReqEnd">
+                            <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
+                            <view class="hotTopicRow">
+                                <image src="@/static/cardForum/star.png" class="star"></image>
+                                <text class="hotTopicRow_title">热门话题</text>
+                                <div class="flex1"></div>
+                                <text class="hotTopicRow_all" @click="pageJump('/pages/cardForum/topics/list')">全部</text>
+                                <u-icon size="24rpx" color="#ffffff" name="arrow-right"></u-icon>
+                            </view>
+                            <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
+                                <view class="scrollTopicWarp">
+                                    <view class="faker_topicItem"></view>
+                                    <view class="topicItem" v-for="item in 10">
+                                        <image class="topicItem_img"></image>
+                                        <text class="topiceActCorner">活动</text>
+                                        <text class="topicItem_title">爷就是拽拽奥斯卡但是...奥斯卡但是...</text>
+                                        <text class="topicItem_dt">999篇动态</text>
+                                    </view>
+                                </view>
+                            </scroll-view>
+                        </view>
+                        <view class="adWrap" v-if="isShowKa && tab.firstReqEnd">
+                            <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
+                        </view>
                         <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
                             :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40">
                         </waterfalls>
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls :refreshColor="isShowKa?'#ffffff':''" column-count="2" v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" left-gap="5"
-                        :height="scrollViewHeight + 'px'" :value="tab.list" right-gap="5" column-gap="5"
-                        :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
+                    <waterfalls :refreshColor="isShowKa ? '#ffffff' : ''" column-count="2" v-if="tab.list.length"
+                        :ref="`waterfalls${tabIndex}`" left-gap="5" :height="scrollViewHeight + 'px'" :value="tab.list"
+                        right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
                         @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
                         <template v-slot:header v-if="tabIndex == 2 && tab.firstReqEnd">
                             <header style="align-items: center;">
@@ -167,7 +165,7 @@ const defaultTagObj = {
     //     q: ""
     // },
     // totalPage: 10,
-    isFetchEnd: true,
+    isFetchEnd: false,
     firstReqEnd: false,
     list: []
 }
@@ -341,10 +339,11 @@ export default {
             }
         },
         refreshData(index) {
+
             this.reqNewData(true)
             setTimeout(() => {
                 this.$refs['waterfalls' + index][0].hideRefresh()
-            }, 500);
+            }, 200);
         },
         loadmoreData(index) {
             const nowTab = this.tabs.list[index]
@@ -352,8 +351,11 @@ export default {
         },
         reqNewData(isRefresh = false, cb) {
             this.current.firstReqEnd = false
-            if (isRefresh) this.current.list = []
-            this.current.list.push(...mockList)
+            if (isRefresh) {
+                this.current.list = []
+                this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
+            }
+            this.current.list.push(...uni.$u.randomArray(mockList))
             this.current.firstReqEnd = true
             cb && cb()
             return
@@ -652,7 +654,7 @@ page {
 .topicItem_title_wrap {
     width: 101rpx;
     // height: 30rpx;
-    
+
     background-color: red;
 }
 

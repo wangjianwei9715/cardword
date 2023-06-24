@@ -31,7 +31,7 @@
         <text
             class="u-textarea__count"
             :style="{
-                'background-color': disabled ? 'transparent' : '#fff',
+                'background-color': disabled ? 'transparent' : 'inherit',
             }"
             v-if="count"
             >{{ innerValue.length }}/{{ maxlength }}</text

@@ -9,16 +9,31 @@
 <template>
     <view class="content">
         <u-overlay :show="showValue">
-            <u-popup :show="showValue" @close="showValue = false" :closeable="true" :closeOnClickOverlay="false">
+            <u-popup :safeAreaInsetBottom="false" :show="showValue" :closeOnClickOverlay="false">
                 <view class="voteContainer">
                     <view class="vote_top flexCenter">
                         <view class="title">发起投票</view>
+                        <view class="close" @click="showValue = false"></view>
+                    </view>
+                    <input class="input_title" placeholder="添加投票标题吧~（最多30字）"></input>
+                    <view class="optionsWrap">
+                        <view class="name">选项一</view>
+                        <view class="input_option">
+                            <input placeholder="添加投票标题吧~（最多15字）" :maxlength="15"></input>
+                            <view class="del">删除</view>
+                        </view>
+                    </view>
+                    <view class="addOptionWrap">
+                        <view class="addImg"></view>
+                        <view class="addText">添加选项</view>
                     </view>
                     <view class="bottom_row">
                         <view class="clearBtn flexCenter" @click="onClickClear">清空</view>
                         <view class="finishBtn flexCenter" @click="onClickFinishEdit">完成编辑</view>
                     </view>
+                    <view class="bottomSafeArea"></view>
                 </view>
+
             </u-popup>
         </u-overlay>
     </view>
@@ -70,42 +85,145 @@ export default class ClassName extends BaseComponent {
 .voteContainer {
     width: 750rpx;
     background-color: #000000;
-    height: 900rpx;
+    height: 1143rpx;
     position: relative;
+    display: flex;
+    box-sizing: border-box;
+    padding: 0 20rpx;
+    flex-direction: column;
 }
 
 .vote_top {
-    width: 750rpx;
-    height: 100rpx;
+    // width: 750rpx;
+    width: 100%;
+    // height: 100rpx;
+    margin-top: 38rpx;
+    margin-bottom: 56rpx;
+    position: relative;
 
     .title {
-        color: #fff;
-        font-size: 30rpx;
+        font-size: 33rpx;
+        font-family: PingFang SC;
         font-weight: bold;
+        color: #ffffff;
+    }
+
+    .close {
+        width: 30rpx;
+        height: 30rpx;
+        background-size: 100% 100%;
+        background-image: url("@/static/cardForum/popClose.png");
+        position: absolute;
+        right: 17rpx;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+    }
+}
+
+.input_title {
+    width: 100%;
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #ffffff;
+    padding-bottom: 17rpx;
+    border-bottom: 1rpx solid #3F3F3F;
+    margin-bottom: 75rpx;
+}
+
+.optionsWrap {
+    display: flex;
+    // align-items: center;
+    margin-bottom: 85rpx;
+
+    .name {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FFFFFF;
+        margin-right: 21rpx;
+    }
+
+    .input_option {
+
+        padding-bottom: 18rpx;
+        flex: 1;
+        border-bottom: 1rpx solid #3F3F3F;
+        display: flex;
+
+        input {
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #ffffff;
+            flex: 1;
+        }
+
+        .del {
+            font-size: 22rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #FFFFFF;
+            margin-left: 10rpx;
+        }
     }
 }
 
 .bottom_row {
     position: absolute;
     bottom: 0;
-    width: 750rpx;
+    left: 0;
+    width: 100%;
     box-sizing: border-box;
-    padding: 0 20rpx;
+    padding: 0 35rpx;
     justify-content: space-between;
     display: flex;
-
+    align-items: center;
+    padding-bottom: 20rpx;
     .clearBtn {
-        width: 120rpx;
-        height: 80rpx;
-        color: #fff;
-        border: 1rpx solid #fff;
+        width: 189rpx;
+        height: 93rpx;
+        border: 1rpx solid #C0C0C0;
+        border-radius: 5rpx;
+        font-size: 33rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FFFFFF;
     }
 
     .finishBtn {
-        width: 540rpx;
-        height: 80rpx;
-        color: #fff;
-        background-color: #fb374e;
+        width: 465rpx;
+        height: 92rpx;
+        background: #FA1545;
+        border-radius: 5rpx;
+        font-size: 33rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FFFFFF;
+        border: 1rpx solid #FA1545;
+    }
+}
+
+.addOptionWrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+
+    .addImg {
+        background-size: 100% 100%;
+        background-image: url("@/static/cardForum/release/addVote.png");
+        width: 23rpx;
+        height: 23rpx;
+    }
+
+    .addText {
+        font-size: 22rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FFFFFF;
+        margin-left: 10rpx;
     }
 }
 </style>

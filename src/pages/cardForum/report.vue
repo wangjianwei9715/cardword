@@ -7,15 +7,18 @@
                 {{ v }}
             </view>
         </view>
-        <view class="title">举报描述（选填）</view>
+        <view class="title" style="margin-top: 20rpx;">举报描述（选填）</view>
         <view class="txtArea">
-            <u-textarea confirmType="done" v-model="formData.reason" class="input" count maxlength="200"></u-textarea>
+            <u-textarea confirmType="done" placeholder="提供更多信息助于处理~" style="background-color: #F5F5F5;"
+                v-model="formData.reason" class="input" count maxlength="200"></u-textarea>
         </view>
         <view class="title">举证图片（选填）</view>
+        <view class="imageContainer">
+            <view class="imageWrap flexCenter"></view>
+        </view>
         <view class="fixedWrap">
             <view class="contentWrap">
                 <view class="submit flexCenter" @click="submit">提交</view>
-                <!-- <view class="tips">表达赞赏/认同/鼓励，赠送后发放至作者账户且不可退回</view> -->
             </view>
             <view class="bottomSafeArea"></view>
         </view>
@@ -85,34 +88,63 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
+.content {
+    width: 750rpx;
+    box-sizing: border-box;
+}
+
+.title {
+    margin-top: 10rpx;
+    width: inherit;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    box-sizing: border-box;
+    padding: 0 20rpx;
+    margin-bottom: 20rpx;
+}
+
 .reportReasonWrap {
     display: flex;
     flex-wrap: wrap;
     box-sizing: border-box;
-    padding: 0 40rpx;
+    width: inherit;
+    padding: 0 20rpx;
     justify-content: space-between;
 
     .reportReason {
-        width: 300rpx;
-        margin-top: 20rpx;
-        height: 100rpx;
-        color: #7f7f7f;
-        background-color: #fcfcfc;
+        width: 351rpx;
+        height: 69rpx;
+        background: #F5F5F5;
+        border-radius: 3rpx;
+        margin-bottom: 10rpx;
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #707070;
     }
 
     .reportReason_select {
-        background-color: rgba(251, 55, 78, .3);
-        color: #fb374e;
+        background: #FFE8E8;
+        color: #FA1545;
     }
 }
 
 .input {
-    background-color: #fcfcfc;
-    height: 300rpx;
-    width: 690rpx;
-    margin-top: 20rpx;
+    // background-color: #fcfcfc;
+    // background-color: #F5F5F5;
+    height: 332rpx;
+    width: 711rpx;
+    // width: 690rpx;
+    // margin-top: 20rpx;
     box-sizing: border-box;
     padding: 20rpx;
+    font-size: 25rpx;
+    border: 0;
+    // .u-textarea__count{
+    //     background-color: inherit;
+    // }
 }
 
 .fixedWrap {
@@ -174,5 +206,34 @@ export default class ClassName extends BaseNode {
         font-size: 24rpx;
         margin-top: 10rpx;
     }
+}
+
+.imageContainer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 750rpx;
+    box-sizing: border-box;
+    padding: 0 20rpx;
+}
+
+.imageWrap {
+    width: 129rpx;
+    height: 129rpx;
+    border: 2rpx dashed #E6E6E6;
+    margin-right: 10rpx;
+    position: relative;
+}
+
+.imageWrap::after {
+    content: "";
+    width: 43rpx;
+    height: 43rpx;
+    background-size: 100% 100%;
+    background-image: url("@/static/cardForum/addImage.png");
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
 }
 </style>

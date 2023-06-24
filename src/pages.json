@@ -1470,9 +1470,12 @@
 				{
 					"path": "release",
 					"style": {
+						"navigationStyle": "custom",
 						"navigationBarTitleText": "发布卡圈",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
+						"backgroundColorTop": "#000000", 
+						"backgroundColorBottom": "#000000", 
 						"enablePullDownRefresh": false
 					}
 				},

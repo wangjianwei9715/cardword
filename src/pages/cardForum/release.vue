@@ -8,21 +8,67 @@
 -->
 <template>
     <view class="content">
-        <view class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
+        <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff"></navigationbar>
+        <!-- <view class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp v-model="pics" @heightChange="heightChange" />
-            <!-- <shmilyDragImage @addImage="addImage('pics')" :cols="4" :number="6" v-model="pics" /> -->
+        </view> -->
+        <input type="text" class="input_title" v-model="formData.title" placeholder="添加一个有趣的标题吧~（选填）"
+            placeholderStyle="color: #959695;font-size:29rpx">
+        <textarea placeholderStyle="color: #959695;font-size:23rpx" :maxlength="-1" height="326rpx" confirmType="done"
+            class="input_content" placeholder="分享一下您的球星卡收藏..（选填)"></textarea>
+        <view class="associationWrap" @click="showTopics = true">
+            <image class="ass_img" src="@/static/cardForum/release/topic.png" style="width: 30rpx;height:30rpx"></image>
+            <view class="ass_title">关联话题</view>
+            <view class="flex1"></view>
+            <view class="ass_right"></view>
         </view>
-
-        <input type="text" v-model="formData.title" placeholder="请输入标题">
-        <input type="text" v-model="formData.content" placeholder="请输入内容">
-        <view @click="showTopics = true">关联话题</view>
+        <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll">
+            <view class="topicScrollWrap">
+                <view class="topicItem flexCenter" v-for="item in 10">
+                    <text>#秀卡-詹姆斯</text>
+                </view>
+            </view>
+        </scroll-view>
+        <view class="associationWrap">
+            <image class="ass_img" src="@/static/cardForum/release/goods.png" style="width: 30rpx;height:30rpx"></image>
+            <view class="ass_title">关联好物</view>
+            <view class="flex1"></view>
+            <view class="ass_right"></view>
+        </view>
+        <scroll-view scroll-x="true" :show-scrollbar="false" class="haowuGoods">
+            <view class="haowuGoodsWrap">
+                <view class="goodsItem flexCenter" v-for="item in 10">
+                    <image class="pic"></image>
+                    <view class="goodsInfo u-line-2">22-23 篮球 Panini 整箱皇冠+22-23 16包 ...22-23 篮球 Panini 整箱皇冠+22-23 16包
+                        ...22-23 篮球 Panini
+                        整箱皇冠+22-23 16包 ...</view>
+                    <view class="close"></view>
+                </view>
+            </view>
+        </scroll-view>
+        <view class="associationWrap" @click="showVote = true">
+            <image class="ass_img" src="@/static/cardForum/release/vote.png" style="width: 30rpx;height:30rpx"></image>
+            <view class="ass_title">发起投票</view>
+            <view class="flex1"></view>
+            <view class="ass_right"></view>
+        </view>
         <scroll-view scroll-x="true" class="topicsList">
             <view class="uni-flex">
                 <view class="topicsItem" v-for="(item, index) in relatedTopics" :key="index">
                     # {{ item.name }}
-                </view> 
+                </view>
             </view>
         </scroll-view>
+        <view class="bottomWrap">
+            <view class="buttonWrap">
+                <view class="draft">
+                    <image src="@/static/cardForum/release/caogao.png"></image>
+                    <text>存草稿</text>
+                </view>
+                <view class="submit flexCenter">发布动态</view>
+            </view>
+            <view class="bottomSafeArea"></view>
+        </view>
         <votePop :show.sync="showVote" />
         <topicsPop :show.sync="showTopics" @select="onSelectTopic" />
     </view>
@@ -129,14 +175,32 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
+page {
+    background-color: #000;
+}
+
 .content {
     width: 750rpx;
+    box-sizing: border-box;
+    padding: 0 20rpx;
 }
 
 .pushContainer {
     // padding: 0 24rpx;
     box-sizing: border-box;
     width: 750rpx;
+}
+
+.input_title {
+    width: 100%;
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #ffffff;
+    padding-bottom: 20rpx;
+    border-bottom: 1rpx solid #f3f3f3;
+    // width: 750rpx;
+    // box-sizing: border-box;
 }
 
 .topicsList {
@@ -175,5 +239,167 @@ export default class ClassName extends BaseNode {
 
 .flex1 {
     flex: 1;
+}
+
+.input_content {
+    background-color: #000;
+    width: 100%;
+    font-size: 23rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+
+    margin-top: 24rpx;
+    height: 326rpx;
+    border: none;
+    color: #ffffff;
+    border-bottom: 1rpx solid #3F3F3F;
+}
+
+.associationWrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 28rpx;
+
+    .ass_img {
+        display: block;
+    }
+
+    .ass_title {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #C0C0C0;
+        margin-left: 11rpx;
+    }
+
+    .ass_right {
+        width: 19rpx;
+        height: 29rpx;
+        background-size: 100% 100%;
+        background-image: url("@/static/cardForum/release/right.png");
+    }
+}
+
+.topicScroll {
+    width: 100%;
+}
+
+.topicScrollWrap {
+    width: 100%;
+    // background-color: #fff;
+    height: 50rpx;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    margin-top: 20rpx;
+
+    .topicItem {
+        // width: 241rpx;
+        padding: 0 20rpx;
+        height: 50rpx;
+        background: #3F3F3F;
+        border-radius: 3rpx;
+        margin-right: 20rpx;
+        font-size: 23rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #C0C0C0;
+
+        .act {
+            color: #FA1545;
+            margin-left: 8rpx;
+        }
+    }
+}
+
+.haowuGoodsWrap {
+    width: 100%;
+    height: 103rpx;
+    margin-top: 23rpx;
+
+    .goodsItem {
+        width: 466rpx;
+        height: 103rpx;
+        background: #3F3F3F;
+        border-radius: 3rpx;
+        box-sizing: border-box;
+        padding: 10rpx 22rpx 10rpx 11rpx;
+        align-items: center;
+        display: flex;
+
+        .pic {
+            width: 108rpx;
+            height: 83rpx;
+            background: #FA1545;
+            border-radius: 1rpx;
+            margin-right: 12rpx;
+        }
+
+        .goodsInfo {
+            font-size: 20rpx;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #E6E6E6;
+            line-height: 25rpx;
+            flex: 1;
+            // display: flex;
+        }
+
+        .close {
+            margin-left: 48rpx;
+            background-size: 100% 100%;
+            background-image: url("@/static/cardForum/release/goodsClose.png");
+            width: 26rpx;
+            height: 26rpx;
+        }
+    }
+}
+
+.bottomWrap {
+    position: fixed;
+    bottom: 0;
+    width: inherit;
+
+    .buttonWrap {
+        display: flex;
+        box-sizing: border-box;
+        width: inherit;
+        padding: 0 35rpx;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 44rpx;
+
+        .draft {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            image {
+                width: 48rpx;
+                height: 48rpx;
+                margin-bottom: 8rpx;
+            }
+
+            text {
+                font-size: 21rpx;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: #C0C0C0;
+            }
+        }
+
+        .submit {
+            width: 575rpx;
+            height: 92rpx;
+            background: #FA1545;
+            border-radius: 5rpx;
+            font-size: 33rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #FFFFFF;
+            letter-spacing: 2rpx;
+        }
+    }
 }
 </style>

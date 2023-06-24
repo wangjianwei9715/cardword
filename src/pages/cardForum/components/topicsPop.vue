@@ -9,16 +9,18 @@
 <template>
     <view class="content">
         <u-overlay :show="showValue">
-            <u-popup :show="showValue" @close="showValue = false" :closeable="false" :closeOnClickOverlay="false">
+            <u-popup :safeAreaInsetBottom="false" :show="showValue" @close="showValue = false" :closeable="false" :closeOnClickOverlay="false">
                 <view class="topicsContainer">
                     <view class="searchWrap">
                         <view class="search">
-                            <input type="text" @input="onInput" v-model="queryParams.q">
+                            <image src="@/static/cardForum/release/search.png" mode="scaleToFill" />
+                            <input type="text" class="input" @input="onInput" v-model="queryParams.q" placeholder="搜索话题...">
                         </view>
                         <view class="cancel" @click="showValue = false">取消</view>
                     </view>
                     <scroll-view class="topicsScroll" :scroll-y="true" @scrolltolower="scrolltolower">
-                        <view class="topicsItem" v-for="(item, index) in list" @click="$emit('select', item),showValue=false">
+                        <view class="topicsItem" v-for="(item, index) in list"
+                            @click="$emit('select', item), showValue = false">
                             <muqian-lazyLoad class="image"
                                 :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
                                 borderRadius="50%"></muqian-lazyLoad>
@@ -27,7 +29,9 @@
                                 <view class="num">{{ item.cardCircleNum }}篇动态</view>
                             </view>
                         </view>
+                        
                     </scroll-view>
+                    <view class="bottomSafeArea"></view>
                 </view>
             </u-popup>
         </u-overlay>
@@ -112,10 +116,12 @@ export default class ClassName extends BaseComponent {
 .topicsContainer {
     width: 750rpx;
     background-color: #000000;
-    height: 900rpx;
+    height: 1143rpx;
     position: relative;
     box-sizing: border-box;
     padding: 0 20rpx;
+    display: flex;
+    flex-direction: column;
 }
 
 .searchWrap {
@@ -125,33 +131,55 @@ export default class ClassName extends BaseComponent {
     margin-top: 20rpx;
 
     .search {
-        width: 500rpx;
-        height: 60rpx;
-        background-color: #333333;
+        width: 632rpx;
+        height: 73rpx;
+        background: #3F3F3F;
+        border-radius: 3rpx;
         align-items: center;
         display: flex;
+        box-sizing: border-box;
+        padding: 0 27rpx;
+
+        image {
+            width: 33rpx;
+            height: 35rpx;
+        }
+
+        .input {
+            font-size: 23rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #ffffff;
+            flex: 1;
+            margin-left: 20rpx;
+        }
     }
 
     .cancel {
-        color: #fff;
+        font-size: 27rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #E6E6E6;
     }
 }
 
 .topicsScroll {
-    background-color: #333333;
+    // background-color: #333333;
     margin-top: 30rpx;
-    height: 760rpx;
+    flex: 1;
 }
 
 .topicsItem {
     display: flex;
     align-items: center;
-    margin-bottom: 22rpx;
+    margin-bottom: 34rpx;
+    width: inherit;
+    box-sizing: border-box;
 
     .image {
-        width: 88rpx;
-        height: 88rpx;
-        margin-right: 20rpx;
+        width: 85rpx;
+        height: 85rpx;
+        margin-right: 21rpx;
     }
 
     .rightInfo {
@@ -161,12 +189,17 @@ export default class ClassName extends BaseComponent {
         justify-content: center;
 
         .title {
-            color: #fff;
+            font-size: 25rpx;
+            font-family: PingFang SC;
             font-weight: bold;
+            color: #FFFFFF;
         }
 
         .num {
-            color: #aaaaaa;
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #C0C0C0;
         }
     }
 }

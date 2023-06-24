@@ -9,15 +9,18 @@
 <template>
     <view class="content">
         <u-overlay :show="showValue">
-            <u-popup :show="showValue" @close="showValue = false" :closeable="true" :closeOnClickOverlay="false">
+            <!-- @close="showValue = false" :closeable="true"  -->
+            <u-popup :show="showValue" :closeOnClickOverlay="false">
                 <view class="rewardContainer">
                     <view class="reward_top flexCenter">
                         <view class="title">赠送礼物</view>
+                        <view class="close"></view>
                     </view>
                     <view class="rewardChoiceWrap">
                         <view class="rewardOption flexCenter" v-for="(item, index) in reawrdOptions"
                             @click="onClickOption(item)">
-                            {{ item.type == 1 ? item.title : `赠送${item.num}卡币` }}
+                            <view class="reward_text">{{ item.type == 1 ? item.title : `赠送${item.num}卡币` }}</view>
+                            <image class="reward_img"></image>
                         </view>
                     </view>
                     <view class="desc">表达赞赏/认同/鼓励，赠送后发放至作者账户且不可退回</view>
@@ -143,20 +146,35 @@ export default class ClassName extends BaseComponent {
 .rewardContainer {
     width: 750rpx;
     background-color: #fff;
-    height: 600rpx;
+    height: 584rpx;
     position: relative;
 }
 
 .reward_top {
     width: 750rpx;
-    height: 100rpx;
+    // height: 100rpx;
+    margin-top: 38rpx;
+    margin-bottom: 56rpx;
+    position: relative;
 
     .title {
-        color: #000;
-        font-size: 30rpx;
+        font-size: 33rpx;
+        font-family: PingFang SC;
         font-weight: bold;
+        color: #333333;
     }
 
+    .close {
+        width: 30rpx;
+        height: 30rpx;
+        background-size: 100% 100%;
+        background-image: url("@/static/cardForum/popClose.png");
+        position: absolute;
+        right: 17rpx;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+    }
 
 }
 
@@ -262,21 +280,41 @@ export default class ClassName extends BaseComponent {
     box-sizing: border-box;
     width: 750rpx;
     // heigh;
-    padding: 0 30rpx;
+    padding: 0 20rpx;
     justify-content: space-between;
 
     .rewardOption {
-        width: 330rpx;
-        height: 90rpx;
-        color: #000;
-        margin-bottom: 34rpx;
-        border: 1rpx solid #000;
+        width: 328rpx;
+        height: 89rpx;
+        border: 1rpx solid #C0C0C0;
+        border-radius: 3rpx;
+        margin-bottom: 20rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .reward_text {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #333333;
+        margin-right: 17rpx;
+    }
+
+    .reward_img {
+        width: 36rpx;
+        height: 36rpx;
+        background: #333333;
+        border-radius: 50%;
     }
 }
 
 .desc {
-    color: #dddddd;
-    font-size: 22rpx;
+    font-size: 20rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #C0C0C0;
     text-align: center;
     margin-top: 10rpx;
 }

@@ -14,10 +14,10 @@
                 <view class="merchantName">{{ item.merchantName }}</view>
             </view>
             <view class="goodsWrap uni-flex">
-                <muqian-lazyLoad class="goodsPic" :src="item.pic"></muqian-lazyLoad>
+                <muqian-lazyLoad class="goodsPic" borderRadius="3rpx" :src="item.pic"></muqian-lazyLoad>
                 <view class="goodsInfo">
                     <view class="goodsName u-line-2">{{ item.goodsName }}</view>
-                    <view class="price">￥{{ item.price }}起</view>
+                    <view class="price">￥{{ item.price }}<text class="font">起</text></view>
                 </view>
             </view>
             <view class="bottomWrap uni-flex">
@@ -114,37 +114,45 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    background-color: #f2f2f2;
+    background-color: #f6f7fb;
 }
 
 .goodsCard {
-    width: 720rpx;
+    width: 710rpx;
     box-sizing: border-box;
-    padding: 20rpx;
+    padding: 25rpx 35rpx 32rpx 35rpx;
     background-color: #fff;
     margin-top: 20rpx;
 }
 
 .merchantWrap {
     border-bottom: 1rpx solid #f2f2f2;
-    padding-bottom: 10rpx;
+    padding-bottom: 16rpx;
     display: flex;
     align-items: center;
 
     .merchantAvatar {
-        width: 50rpx;
-        height: 50rpx;
+        width: 40rpx;
+        height: 40rpx;
         border-radius: 50%;
         margin-right: 10rpx;
+    }
+
+    .merchantName {
+        font-size: 21rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #959695;
     }
 }
 
 .goodsWrap {
-    margin-top: 20rpx;
+    margin-top: 28rpx;
 
     .goodsPic {
-        width: 200rpx;
-        height: 200rpx;
+        width: 183rpx;
+        height: 141rpx;
+        border-radius: 3rpx;
         display: block;
     }
 
@@ -155,15 +163,50 @@ page {
         flex-direction: column;
         justify-content: space-between;
     }
+
+    .goodsName {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #333333;
+    }
+
+    .price {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #333333;
+    }
+
+    .font {
+        font-size: 21rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #C0C0C0;
+        margin-left: 4rpx;
+    }
 }
 
 .bottomWrap {
-    margin-top: 20rpx;
+    margin-top: 39rpx;
     justify-content: space-between;
 
     .giveButton {
-        background-color: #fb374e;
-        color: #fff;
+        width: 149rpx;
+        height: 60rpx;
+        background: #FA1545;
+        border-radius: 3rpx;
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FFFFFF;
+    }
+
+    .kamiNum {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #333333;
     }
 }
 </style>

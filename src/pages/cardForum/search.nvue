@@ -1,7 +1,11 @@
 <template>
     <div class="content" style="display: flex;width: 750rpx;flex-direction: column;align-items: center;">
         <!-- <view class="fakerView" :style="{ height: navHeight + tabsHeight + 'px' }"></view> -->
+        <div class="hideGetReactWrap">
+            <text class="hideText" :id="`searchLog${index}`" v-for="(item, index) in cardSearchLog">{{ item.s }}</text>
+        </div>
         <div class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></div>
+
         <div class="fixedTop" id="fixedTop">
             <div class="navBar" id="navBar" ref="navBar">
                 <div :style="{ height: app.statusBarHeight + 'px' }"></div>
@@ -31,8 +35,8 @@
                 <image src="@/static/cardForum/del.png" class="bigText_img" @click="clearLog"></image>
             </view>
             <view class="keywordsWrap">
-                <view class="keywords flexCenter u-line-1" v-for="(item) in cardSearchLog" @click="onClickKey(item)">
-                    <text class="keywords_text">{{ item.s }}</text>
+                <view class="keywords flexCenter" v-for="(item) in cardSearchLogCopy" @click="onClickKey(item)">
+                    <text class="keywords_text" :style="{ width: item.width + 'px' }">{{ item.s }}</text>
                 </view>
             </view>
             <view class="bigText" style="margin-top: 40rpx;">
@@ -127,10 +131,11 @@ export default {
         return {
             app,
             cardSearchLog: [],
+            cardSearchLogCopy: [],
             actionSheet: false,
             firstReqEnd: false,
             initFinish: false,
-            onSearch: false,
+            onSearch: true,
             searchText: "",
             navHeight: 0,
             tabsHeight: 0,
@@ -179,6 +184,24 @@ export default {
                 })
             }
         },
+        cardSearchLog: function (val) {
+            this.$nextTick(() => {
+                this.cardSearchLogCopy = []
+                setTimeout(() => {
+                    val.forEach(async (item, index) => {
+                        const res = await this.getDom('#searchLog' + index)
+                        if (res.width > 150) {
+                            item.width = 150
+                        }
+                        else {
+                            item.width = res.width + 8
+                        }
+                        this.cardSearchLogCopy.push(item)
+                    })
+                }, 100)
+
+            })
+        },
         "onSearch": {
             handler(newVal, oldName) {
                 // #ifdef APP-NVUE
@@ -192,6 +215,9 @@ export default {
                         this.$refs.input.blur()
                     }, 200)
                 }
+                this.$nextTick(() => {
+                    this.setHeight()
+                })
                 // #endif
                 // #ifndef APP-NVUE
                 this.fixedTopHeight = 99
@@ -253,7 +279,7 @@ export default {
                     return y.stamp - x.stamp
                 })
             }
-            console.log(this.cardSearchLog);
+            // console.log(this.cardSearchLog);
         },
         getHot() {
             app.http.Get("dataApi/cardCircle/hot/search/list", {}, (res) => {
@@ -274,6 +300,19 @@ export default {
                     .boundingClientRect((rect) => {
                         if (rect) {
                             re && re(rect.height)
+                        }
+                    })
+                    .exec();
+            })
+        },
+        getDom(dom) {
+            return new Promise((re, rj) => {
+                console.log(dom);
+                uni.createSelectorQuery()
+                    .select(dom)
+                    .boundingClientRect((rect) => {
+                        if (rect) {
+                            re && re(rect)
                         }
                     })
                     .exec();
@@ -360,6 +399,22 @@ page {
 }
 
 // #endif 
+.hideGetReactWrap {
+    position: fixed;
+    top: 0;
+    opacity: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    // transform: scale(0);
+
+}
+
+.hideText {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #757575;
+}
 
 .content {
     flex-direction: column;
@@ -618,6 +673,9 @@ page {
     border-radius: 3rpx 0rpx 0rpx 0rpx;
     margin-right: 16rpx;
     margin-bottom: 16rpx;
+
+    // width: 300rpx;
+    flex-flow: row wrap;
     // #ifndef APP-NVUE
     max-width: 250rpx;
     // #endif
@@ -629,6 +687,10 @@ page {
     font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: 400;
-
+    text-align: center;
+    // #ifdef APP-NVUE
+    lines: 1;
+    text-overflow: ellipsis;
+    // #endif
 }
 </style>

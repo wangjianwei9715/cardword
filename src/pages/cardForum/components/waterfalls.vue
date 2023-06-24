@@ -17,7 +17,10 @@
                 <view v-for="(item, index) in list1" :key="item.id" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="item.image" mode="widthFix" class="waterfall-item__image_img">
+                            <image :src="item.image + '?x-oss-process=image/resize,p_1'"
+                                style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
+                            </image>
+                            <image v-if="item.mode" :src="item.image" :mode="item.mode" class="waterfall-item__image_img">
                             </image>
                         </view>
                         <view class="waterfall-item__ft">
@@ -46,7 +49,10 @@
                 <view v-for="(item, index) in list2" :key="item.id" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="item.image" mode="widthFix" class="waterfall-item__image_img">
+                            <image :src="item.image + '?x-oss-process=image/resize,p_1'"
+                                style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
+                            </image>
+                            <image v-if="item.mode" :src="item.image" :mode="item.mode" class="waterfall-item__image_img">
                             </image>
                         </view>
                         <view class="waterfall-item__ft">
@@ -83,10 +89,17 @@
             <div ref="goTop"></div>
         </header>
         <slot name="header"></slot>
-        <cell v-for="(item, index) in value" class="waterfall-item-grayWrap" @click="goToDetail(item)">
-            <div class="waterfall-item">
+        <image v-for="(item, index) in value" :src="item.image + '?x-oss-process=image/resize,p_1'"
+            style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)">
+        </image>
+        <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)">
+            <div class="waterfall-item" v-if="item.mode">
                 <div class="waterfall-item__image">
-                    <image :src="item.image" class="waterfall-item__image_img" mode="widthFix"></image>
+                    <image v-if="item.mode == 'widthFix'" :src="item.image" class="waterfall-item__image_img"
+                        mode="widthFix">
+                    </image>
+                    <image v-if="item.mode == 'aspectFit'" style="height:440rpx" :src="item.image"
+                        class="waterfall-item__image_img" mode="aspectFit"></image>
                 </div>
                 <div class="waterfall-item__ft">
                     <div class="waterfall-item__ft__title">
@@ -108,6 +121,8 @@
     <!-- #endif -->
 </template>
 <script>
+const MAX_HEIGHT = uni.upx2px(440)
+const MIN_HEIGHT = uni.upx2px(246)
 import mixin from './function/mixin.js'
 // #ifdef APP-NVUE
 const dom = weex.requireModule('dom')
@@ -195,6 +210,7 @@ export default {
             refreshing: false
         }
     },
+
     computed: {
         // 破坏value变量引用，否则数据会保持不变
         copyValue() {
@@ -292,6 +308,17 @@ export default {
         },
         scrolltolower() {
             this.$emit("loadmore")
+        },
+        imageLoad(event, item) {
+            // console.log(event);
+            if (event.detail.height > MAX_HEIGHT) {
+                item.mode = "aspectFit"
+            } else {
+                item.mode = "widthFix"
+            }
+            // #ifdef APP-NVUE
+            this.tempList.push(item)
+            // #endif
         },
         // 拆分数据
         async splitData() {
@@ -440,6 +467,7 @@ $uvui-nvue-style: true !default;
     width: 360rpx;
     // #ifndef APP-NVUE
     width: 100%;
+    max-height: 439rpx;
     // #endif
 }
 
