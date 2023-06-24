@@ -36,45 +36,79 @@
 									width: '186rpx',
 									height: '100rpx',
 									display: 'flex',
-									position:'relative',
+									position: 'relative',
 									justifyContent: 'center', alignItems: 'center',
-									padding:'0 8rpx',
+									padding: '0 8rpx',
 									borderRadius: '3rpx',
-									// paddingLeft:index==0?'20rpx':'5rpx',
-									// paddingRight:index==list.length-1?'20rpx':'5rpx',
-									overflow:'hidden'
+									overflow: 'hidden'
 								}">
-								<!-- backgroundSize: '100% 100%',
-									backgroundImage: `url(${item.pic_url})` -->
-									<view v-if="innerCurrent!=index" style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: inherit;height: inherit;background-color: rgba(0,0,0,.61);z-index: 2;"></view>
+								<view v-if="innerCurrent != index"
+									style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: inherit;height: inherit;background-color: rgba(0,0,0,.61);z-index: 2;">
+								</view>
 								<image :src="item.pic_url" mode="aspectFill"
-								 style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: 186rpx;height: 100rpx;z-index: 1;border-radius: 3rpx;"></image>
-								<text v-if="innerCurrent!=index" 
-								style="font-size: 30rpx;font-family: PingFang SC;font-weight: bold;color: #FFFFFF;z-index: 3;
-								">{{ item[keyName]}}</text>
+									style="position: absolute;top:0;left: 0;bottom: 0;right: 0;margin: auto;width: 186rpx;height: 100rpx;z-index: 1;border-radius: 3rpx;">
+								</image>
+								<text v-if="innerCurrent != index" style="font-size: 30rpx;font-family: PingFang SC;font-weight: bold;color: #FFFFFF;z-index: 3;
+								">{{ item[keyName] }}</text>
 							</view>
 						</template>
+						<template v-if="customType == 'showKa'">
+							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
+								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
+								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1 }]"
+								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
+								<text v-if="index != 2"
+									:class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
+									class="u-tabs__wrapper__nav__item__text" :style="[textStyle(index)]">{{ item[keyName]
+									}}</text>
 
+								<view class="showKa" v-if="index == 2">
+									<slot name="showKa"></slot>
+								</view>
+								<u-badge :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
+									:isDot="item.badge && item.badge.isDot || propsBadge.isDot"
+									:value="item.badge && item.badge.value || propsBadge.value"
+									:max="item.badge && item.badge.max || propsBadge.max"
+									:type="item.badge && item.badge.type || propsBadge.type"
+									:showZero="item.badge && item.badge.showZero || propsBadge.showZero"
+									:bgColor="item.badge && item.badge.bgColor || propsBadge.bgColor"
+									:color="item.badge && item.badge.color || propsBadge.color"
+									:shape="item.badge && item.badge.shape || propsBadge.shape"
+									:numberType="item.badge && item.badge.numberType || propsBadge.numberType"
+									:inverted="item.badge && item.badge.inverted || propsBadge.inverted"
+									customStyle="margin-left: 4px;"></u-badge>
+							</view>
+						</template>
 						<!-- #ifdef APP-NVUE -->
-						<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" :style="[{
-							width: $u.addUnit(lineWidth),
-							height: $u.addUnit(lineHeight),
-							background: lineColor,
-							backgroundSize: lineBgSize,
-						}]">
-							<!-- #endif -->
-							<!-- #ifndef APP-NVUE -->
+						<template v-if="customType == ''">
 							<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" :style="[{
 								width: $u.addUnit(lineWidth),
-								transform: `translate(${lineOffsetLeft}px)`,
-								transitionDuration: `${firstTime ? 0 : duration}ms`,
 								height: $u.addUnit(lineHeight),
 								background: lineColor,
 								backgroundSize: lineBgSize,
 							}]">
-								<!-- #endif -->
 							</view>
+						</template>
+						<template v-if="customType == 'showKa' || customType == 'cardForum'">
+							<image class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" src="@/static/cardForum/line.png" :style="[{
+								width: $u.addUnit(lineWidth),
+								height: $u.addUnit(lineHeight),
+							}]"></image>
+						</template>
+						<!-- #endif -->
+						<!-- #ifndef APP-NVUE -->
+						<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" :style="[{
+							width: $u.addUnit(lineWidth),
+							transform: `translate(${lineOffsetLeft}px)`,
+							transitionDuration: `${firstTime ? 0 : duration}ms`,
+							height: $u.addUnit(lineHeight),
+							background: lineColor,
+							backgroundSize: lineBgSize,
+						}]">
 						</view>
+						<!-- #endif -->
+
+					</view>
 				</scroll-view>
 			</view>
 			<slot name="right" />
@@ -237,7 +271,7 @@ export default {
 		// 获取所有标签的尺寸
 		resize() {
 			// 如果不存在list，则不处理
-			if (this.list.length === 0 || this.innerCurrent<0) {
+			if (this.list.length === 0 || this.innerCurrent < 0) {
 				return
 			}
 			Promise.all([this.getTabsRect(), this.getAllItemRect()]).then(([tabsRect, itemRect = []]) => {

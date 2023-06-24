@@ -55,10 +55,11 @@
         </cell>
         <cell :style="{ height: acWrapHeight + 'px' }"></cell>
         <!-- ; -->
-        <div style="position: fixed;width: 750rpx;background-color: #fff" :style="{ top: navHeight + 'px', opacity: stickyTabs ? 1 : 0 }">
+        <div style="position: fixed;width: 750rpx;background-color: #fff"
+            :style="{ top: navHeight + 'px', opacity: stickyTabs ? 1 : 0 }">
             <u-tabs :duration="300" :current="tags.index" :list="tags.list" ref="tabs"></u-tabs>
         </div>
-        <transitionNav ref="transitionNav" title="爷就是拽" @getNavHeight="getNavHeight"></transitionNav>
+        <transitionNav ref="transitionNav"  @getNavHeight="getNavHeight"></transitionNav>
     </list>
 </template>
 <!--  -->
@@ -66,6 +67,7 @@
 import transitionNav from "@/components/transitionNav/transitionNav"
 import waterfalls from "../components/waterfalls.vue"
 const app = getApp().globalData.app;
+const ACMARGIN = uni.upx2px(20)
 export default {
     name: '',
     components: {
@@ -83,6 +85,7 @@ export default {
             scrollViewHeight: 0,
             stickyTabs: false,
             topHeight: 0,
+            tabsHeight: 0,
             acWrapHeight: 0,
             listSetSpecialEffectsHeight: 0,
             tags: {
@@ -133,44 +136,43 @@ export default {
     },
     onLoad() {
 
-        this.$nextTick(async () => {
-            this.topHeight = await this.getDomHeight("#topContainer")
-            this.acWrapHeight = await this.getDomHeight("#acWrap")
-            console.log(app.platform.systemInfo.screenHeight);
-            this.listSetSpecialEffectsHeight = this.topHeight + this.acWrapHeight
-            // #ifdef APP_PLUS
-            this.scrollViewHeight = app.platform.systemInfo.screenHeight
-            // #endif
-            // #ifdef H5
-            this.scrollViewHeight = app.platform.systemInfo.screenHeight
-            // #endif
-            this.listSetSpecialEffects("waterfall0")
-        })
+        // this.$nextTick(async () => {
+
+        // })
     },
     methods: {
         getNavHeight(height) {
             this.navHeight = height
-
+            console.log(height);
             this.$nextTick(async () => {
-                // this.topHeight = await this.getDomHeight("#userInfoWrap")
+                this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll({
+                    scrollTop: 500
+                })
+                this.topHeight = await this.getDomHeight("#topContainer")
+                this.acWrapHeight = await this.getDomHeight("#acWrap")
+                this.tabsHeight = await this.getDomHeight("#tabs")
+                console.log(app.platform.systemInfo.screenHeight);
+                this.listSetSpecialEffectsHeight = this.topHeight + this.acWrapHeight
                 // #ifdef APP_PLUS
-                this.scrollViewHeight = app.platform.systemInfo.screenHeight
-                // - topHeight - this.navHeight
+                this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.navHeight - this.tabsHeight
                 // #endif
+                // #ifdef H5
+                this.scrollViewHeight = app.platform.systemInfo.screenHeight
+                // #endif
+                console.log(this.scrollViewHeight);
+                this.listSetSpecialEffects("waterfall0")
 
             })
         },
         listSetSpecialEffects(refKey) {
-            this.$refs[refKey] && this.$refs[refKey].swiperChange("pageId", this.topHeight+this.navHeight)
+            this.$refs[refKey] && this.$refs[refKey].swiperChange("pageId", this.topHeight - this.acWrapHeight-plus.navigator.getSafeAreaInsets().deviceBottom)
         },
         swiperChange(event) {
             this.tags.index = event.detail.current
         },
         async scroll(event) {
             //想要渐变导航栏就用下面的代码
-            // this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll({
-            //     scrollTop: -event.contentOffset.y.toFixed(2)
-            // })
+
             // console.log(-event.contentOffset.y);
             const dom = await this.getDomInfo("#tabs")
             // console.log(dom.top);

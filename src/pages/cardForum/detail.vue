@@ -58,9 +58,9 @@
                 @touchstart="touchAction($event, item, {}, index, false)"
                 @touchend="touchAction($event, item, {}, index, false)">
                 <view class=" comBlock" :id="`commId_${item.id}`" :class="{
-                        heightLight_an: queryParams.noteCommentId && item.id == queryParams.noteCommentId && isScrollEnd,
-                        hold: onClickTap && touchId == item.id
-                    }">
+                    heightLight_an: queryParams.noteCommentId && item.id == queryParams.noteCommentId && isScrollEnd,
+                    hold: onClickTap && touchId == item.id
+                }">
                     <muqian-lazyLoad class="avatar"
                         :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : app.defaultAvatar"
                         borderRadius="50%" />
@@ -82,9 +82,9 @@
                     @touchstart.stop="touchAction($event, son, item, sonIndex, true)"
                     @touchend.stop="touchAction($event, son, item, sonIndex, true)" @click.stop="onClickCom(item, son)"
                     :class="{
-                            heightLight_an: queryParams.noteCommentId && son.id == queryParams.noteCommentId && isScrollEnd,
-                            hold: onClickTap && touchId == son.id
-                        }">
+                        heightLight_an: queryParams.noteCommentId && son.id == queryParams.noteCommentId && isScrollEnd,
+                        hold: onClickTap && touchId == son.id
+                    }">
                     <muqian-lazyLoad class="avatar"
                         :src="son.avatar ? $parsePic(decodeURIComponent(son.avatar)) : app.defaultAvatar"
                         borderRadius="50%" />

@@ -100,10 +100,17 @@
                     </div>
                 </div>
             </div>
-            <u-tabs :duration="300" :lineColor="`url('../../static/index/v3/tab_line.png') 100% 100%`"
-                :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
-                :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
-                :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
+            <u-tabs style="width: 750rpx;" customType="showKa" :duration="300"
+            lineWidth="49rpx"
+            lineHeight="6rpx"
+                :activeStyle="{ color: '#333333', fontSize: '27rpx',transform:'scale(1.22)', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
+                :inactiveStyle="{ color: '#959695', fontSize: '27rpx',transform:'scale(1)', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
+                :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs">
+                <template v-slot:showKa>
+                    <image class="showKaImage" v-if="!isShowKa" src="@/static/cardForum/showKa.png"></image>
+                    <image class="showKaImage" v-else src="@/static/cardForum/showKa_select.png"></image>
+                </template>
+            </u-tabs>
         </div>
         <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
             @close="actionSheet = false"></u-action-sheet>
@@ -198,17 +205,8 @@ export default {
     async onLoad() {
         this.$nextTick(async () => {
             this.fixedTopHeight = await this.getDomHeight("#fixedTop")
-            // console.log(await this.getDomHeight("#tabs"));
-            // this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - (uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom)
             // #ifdef APP-NVUE
             this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - plus.navigator.getSafeAreaInsets().deviceBottom - 56
-            // console.log(uni.getSystemInfoSync());
-            // console.log(plus.navigator.getSafeAreaInsets());
-            // console.log("app.platform.systemInfo.screenHeight:", app.platform.systemInfo.screenHeight);
-            // console.log("this.fixedTopHeight:", this.fixedTopHeight);
-            // console.log("uni.getSystemInfoSync().safeArea.bottom", uni.getSystemInfoSync().safeArea.bottom);
-            // console.log("tabbarHeight:", uni.getSystemInfoSync().screenHeight - uni.getSystemInfoSync().safeArea.bottom);
-            // console.log("this.scrollViewHeight:", this.scrollViewHeight);
             // #endif
             // #ifdef H5
             this.scrollViewHeight = 666
@@ -226,7 +224,7 @@ export default {
         },
         navOpacity() {
             // return 1
-            if (this.tabs.index <= 1) {
+            if (this.tabs.index == 1) {
                 return (app.platform.systemInfo.screenWidth - this.dx) / app.platform.systemInfo.screenWidth
             }
             if (this.isShowKa) {
@@ -234,7 +232,7 @@ export default {
                 console.log((Math.abs(this.dx)) / app.platform.systemInfo.screenWidth);
                 return (Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
             }
-            if (this.tabs.index > 2 && this.dx < 0) {
+            if (this.tabs.index === 3 && this.dx < 0) {
                 return (app.platform.systemInfo.screenWidth - Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
             } else {
                 return 1
@@ -695,5 +693,9 @@ page {
     height: 208rpx;
     top: 0;
     left: 0;
+}
+.showKaImage{
+	width: 153rpx;
+	height: 35rpx;
 }
 </style>
