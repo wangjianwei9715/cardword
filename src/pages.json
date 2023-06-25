@@ -1567,6 +1567,58 @@
 					}
 				}
 			]
+		},
+		{
+			"root": "pages/illustration",
+			"pages":[
+				{
+					"path": "index",
+					"style": {
+						"navigationBarTitleText": "图鉴卡册",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "seriesSelect",
+					"style": {
+						"navigationBarTitleText": "选择系列",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "seriesDetail",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "系列详情",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "seriesFilter",
+					"style": {
+						"navigationBarTitleText": "筛选",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				}
+			]
 		}
 	]
 }
