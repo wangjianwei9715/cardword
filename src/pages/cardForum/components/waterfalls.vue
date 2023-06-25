@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-25 10:16:39
+ * @LastEditTime: 2023-06-25 10:52:51
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -28,7 +28,7 @@
                                 <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
                             </view>
                         </view>
-                        <view class="waterfall-item__bottom">
+                        <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
                             <image class="waterfall-item__bottom__avatar"></image>
                             <text
                                 class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
@@ -60,7 +60,7 @@
                                 <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
                             </view>
                         </view>
-                        <view class="waterfall-item__bottom">
+                        <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
                             <image class="waterfall-item__bottom__avatar"></image>
                             <text
                                 class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
@@ -106,7 +106,7 @@
                         <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
                     </div>
                 </div>
-                <div class="waterfall-item__bottom">
+                <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
                     <image class="waterfall-item__bottom__avatar"></image>
                     <text
                         class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
@@ -273,6 +273,14 @@ export default {
         onrefresh() {
             this.$emit("refresh")
             this.refreshing = true
+        },
+        goToUserProfile(event, item) {
+            // #ifdef APP-NVUE
+            event.stopPropagation();
+            // #endif
+            uni.navigateTo({
+                url: "/pages/cardForum/personHome"
+            })
         },
         goToDetail(item) {
             uni.navigateTo({

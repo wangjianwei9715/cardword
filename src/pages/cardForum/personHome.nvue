@@ -3,23 +3,46 @@
         <cell>
             <div id="topContainer">
                 <div class="userInfoWrap" id="userInfoWrap">
-                    <div class="falekTop" :style="{ height: navHeight + 'px' }"></div>
+                    <div class="fakeTop" :style="{ height: navHeight + 'px' }"></div>
                     <div class="userInfo">
                         <image class="userInfo_avatar"
                             src="https://images.cardhobby.com/1DCC08DB2E014820BA93AA802FC1F618.jpg?imageView2/2/w/200">
                         </image>
                         <div class="userInfo_msg">
                             <div class="userInfo_name">
-                                <text class="name">爷就是拽</text>
+                                <text class="userInfo_name_text">爷就是拽</text>
+                                <text class="userInfo_name_title">超级欧皇</text>
                             </div>
                             <div class="userInfo_ip">
-                                <text>IP属地：浙江省</text>
+                                <text class="userInfo_ip_text">IP属地：浙江省</text>
                             </div>
                         </div>
                     </div>
+                    <div class="descWrap">
+                        <text class="desc_text">我是签名我是签名我是签名我是签名我是签名我是签名我是签名</text>
+                    </div>
+                    <div class="userDataWrap">
+                        <div class="userData_data">
+                            <div class="userData_item">
+                                <text class="userData_num">0</text>
+                                <text class="userData_name">粉丝</text>
+                            </div>
+                            <div class="userData_item">
+                                <text class="userData_num">0</text>
+                                <text class="userData_name">关注</text>
+                            </div>
+                            <div class="userData_item">
+                                <text class="userData_num">0</text>
+                                <text class="userData_name">点赞/收藏</text>
+                            </div>
+                        </div>
+                        <div class="flex1"></div>
+                        <text class="userData_follow">关注</text>
+                    </div>
                 </div>
-                <div style="background-color: #fff;" id="tabs">
-                    <u-tabs :duration="300" :current="tags.index" :list="tags.list"></u-tabs>
+                <div style="background-color: #fff;" id="tabs" class="tabsWrap">
+                    <u-tabs customType="cardForum" class="tabs" :duration="300" :current="tags.index"
+                        :list="tags.list"></u-tabs>
                 </div>
             </div>
             <swiper :current="tags.index" :style="{ height: scrollViewHeight + 'px' }" @change="swiperChange">
@@ -69,7 +92,8 @@
             :style="{ top: navHeight + 'px', opacity: stickyTabs ? 1 : 0 }">
             <u-tabs :duration="300" :current="tags.index" :list="tags.list" ref="tabs"></u-tabs>
         </div>
-        <transitionNav ref="transitionNav" title="爷就是拽" @getNavHeight="getNavHeight"></transitionNav>
+        <transitionNav :needIconShadow="false" :needRightTools="['分享']" ref="transitionNav" title="爷就是拽"
+            @getNavHeight="getNavHeight"></transitionNav>
     </list>
 </template>
 <!--  -->
@@ -142,17 +166,18 @@ export default {
     mounted() {
     },
     onLoad() {
-        this.scrollViewHeight = app.platform.systemInfo.screenHeight
-        this.$nextTick(async () => {
-            this.topHeight = await this.getDomHeight("#topContainer")
-            this.listSetSpecialEffects("waterfall0")
-        })
+        // this.scrollViewHeight = app.platform.systemInfo.screenHeight
+        // this.$nextTick(async () => {
+
+        // })
     },
     methods: {
         getNavHeight(height) {
             this.navHeight = height
 
             this.$nextTick(async () => {
+                this.topHeight = await this.getDomHeight("#topContainer")
+                this.listSetSpecialEffects("waterfall0")
                 // this.topHeight = await this.getDomHeight("#userInfoWrap")
                 // #ifdef APP_PLUS
                 this.scrollViewHeight = app.platform.systemInfo.screenHeight
@@ -221,12 +246,13 @@ export default {
 <style lang='scss'>
 .userInfoWrap {
     width: 750rpx;
-    height: 400rpx;
+    // height: 583rpx;
     // position: relative;
     flex-direction: column;
     align-items: center;
     display: flex;
-    background-color: red;
+    background-color: #333333;
+    padding-bottom: 71rpx;
 }
 
 .fixImg {
@@ -241,16 +267,23 @@ export default {
 
 .userInfo {
     z-index: 1;
-    width: 600rpx;
+    width: 750rpx;
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+    padding: 0 35rpx;
     display: flex;
     flex-direction: row;
+    margin-top: 24rpx;
+    flex: 1;
     // background-color: red;
 }
 
 .userInfo_avatar {
-    width: 100rpx;
-    height: 100rpx;
+    width: 108rpx;
+    height: 108rpx;
     border-radius: 50%;
+    margin-right: 25rpx;
 }
 
 .stickyHeader {
@@ -263,4 +296,126 @@ export default {
     flex: 1;
     flex-direction: column;
 }
-</style>
+
+.userInfo_name {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.userInfo_name_text {
+    font-size: 31rpx;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #FFFFFF;
+}
+
+.userInfo_name_title {
+    width: 114rpx;
+    height: 33rpx;
+    background: #FFFFFF;
+    border-radius: 3rpx;
+    font-size: 31rpx;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    text-align: center;
+    line-height: 33rpx;
+    margin-left: 23rpx;
+}
+
+.userInfo_ip_text {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+}
+
+.descWrap {
+    width: 750rpx;
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+    padding: 0 35rpx;
+    margin-top: 38rpx;
+}
+
+.desc_text {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 34rpx;
+
+}
+
+.userDataWrap {
+    display: flex;
+    flex-direction: row;
+    width: 750rpx;
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+    padding: 0 35rpx;
+    margin-top: 60rpx;
+    // justify-content: space-between;
+}
+
+.userData_item {
+    // background-color: red;
+    display: flex;
+    flex-direction: column;
+}
+
+.userData_num {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.userData_name {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.userData_data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 400rpx;
+}
+
+.tabsWrap {
+    width: 750rpx;
+    height: 103rpx;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabs {
+    width: 500rpx;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.userData_follow {
+    width: 140rpx;
+    height: 62rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 62rpx;
+}</style>
