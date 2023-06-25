@@ -1,5 +1,5 @@
 <template>
-    <list fixFreezing="true" bounce="false" id="pageId" @scroll="scroll">
+    <list fixFreezing="true" bounce="false" id="pageId" @scroll="scroll" :show-scrollbar="false">
         <cell>
             <div id="topContainer">
                 <div class="userInfoWrap" id="userInfoWrap">
@@ -41,32 +41,18 @@
                     </div>
                 </div>
                 <div style="background-color: #fff;" id="tabs" class="tabsWrap">
-                    <u-tabs customType="cardForum" class="tabs" :duration="300" :current="tags.index"
-                        :list="tags.list"></u-tabs>
+                    <u-tabs customType="cardForum" :itemStyle="{ width: '160rpx', height: '74rpx' }" class="tabs"
+                        :duration="300" :current="tags.index" :list="tags.list"></u-tabs>
                 </div>
             </div>
-            <swiper :current="tags.index" :style="{ height: scrollViewHeight + 'px' }" @change="swiperChange">
-                <swiper-item>
-                    <waterfalls ref="waterfall0" fixFreezing="true" :refresh="false" left-gap="10" right-gap="10"
-                        column-gap="8" :always-scrollable-vertical="true" @loadmore="loadmore">
-                        <cell v-for="(item, index) in list" class="waterfall-item-cell">
-                            <view class="waterfall-item">
-                                <view class="waterfall-item__image">
-                                    <image :src="item.image" style="width:300rpx" mode="widthFix"></image>
-                                </view>
-                                <view class="waterfall-item__ft">
-                                    <view class="waterfall-item__ft__title">
-                                        <text class="value">{{ item.title }}</text>
-                                    </view>
-                                    <view class="waterfall-item__ft__desc uv-line-2">
-                                        <text class="value">{{ item.desc }}</text>
-                                    </view>
-                                </view>
-                            </view>
-                        </cell>
+            <swiper :current="tags.index" :style="{ height: scrollViewHeight + 'px' }" @change="swiperChange" style="margin-top: 10rpx;">
+                <swiper-item style="width:750rpx">
+                    <!-- @loadmore="loadmore" -->
+                    <waterfalls ref="waterfall0" :value="list" fixFreezing="true" :refresh="false"
+                        :always-scrollable-vertical="true" left-gap="5" right-gap="5" column-gap="5">
                     </waterfalls>
                 </swiper-item>
-                <swiper-item>
+                <swiper-item style="width:750rpx">
                     <waterfalls ref="waterfall1" fixFreezing="true" :refresh="false" left-gap="10" right-gap="10"
                         column-gap="8" :always-scrollable-vertical="true">
                         <cell v-for="(item, index) in list2" class="waterfall-item-cell">
@@ -88,9 +74,10 @@
                 </swiper-item>
             </swiper>
         </cell>
-        <div style="position: fixed;background-color: #fff;width: 750rpx;"
+        <div style="position: fixed;background-color: #fff;width: 750rpx;" class="tabsWrap"
             :style="{ top: navHeight + 'px', opacity: stickyTabs ? 1 : 0 }">
-            <u-tabs :duration="300" :current="tags.index" :list="tags.list" ref="tabs"></u-tabs>
+            <u-tabs customType="cardForum" :itemStyle="{ width: '160rpx', height: '74rpx' }" class="tabs" :duration="300"
+                :current="tags.index" :list="tags.list"></u-tabs>
         </div>
         <transitionNav :needIconShadow="false" :needRightTools="['分享']" ref="transitionNav" title="爷就是拽"
             @getNavHeight="getNavHeight"></transitionNav>
@@ -117,6 +104,8 @@ export default {
             navHeight: 0,
             scrollViewHeight: 0,
             stickyTabs: false,
+            tabsHeight: 0,
+            userInfoWrapHeight: 0,
             topHeight: 0,
             tags: {
                 index: 0,
@@ -147,14 +136,6 @@ export default {
         }
     },
     computed: {
-        tabsType() {
-            // if (this.stickyTabs) {
-            //     return { top: this.navHeight + 'px' }
-            // } else {
-            //     return {}
-            // }
-            return { top: 0 + 'px' }
-        }
     },
     watch: {
         "tags.index": function (val) {
@@ -177,17 +158,19 @@ export default {
 
             this.$nextTick(async () => {
                 this.topHeight = await this.getDomHeight("#topContainer")
-                this.listSetSpecialEffects("waterfall0")
+                this.tabsHeight = await this.getDomHeight("#tabs")
+                this.userInfoWrapHeight = await this.getDomHeight("#userInfoWrap")
                 // this.topHeight = await this.getDomHeight("#userInfoWrap")
                 // #ifdef APP_PLUS
-                this.scrollViewHeight = app.platform.systemInfo.screenHeight
+                this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.navHeight - this.tabsHeight
                 // - topHeight - this.navHeight
                 // #endif
+                this.listSetSpecialEffects("waterfall0")
 
             })
         },
         listSetSpecialEffects(refKey) {
-            this.$refs[refKey] && this.$refs[refKey].swiperChange("pageId", this.topHeight)
+            this.$refs[refKey] && this.$refs[refKey].swiperChange("pageId", this.userInfoWrapHeight - this.navHeight)
         },
         swiperChange(event) {
             this.tags.index = event.detail.current
@@ -418,4 +401,5 @@ export default {
     color: #FFFFFF;
     text-align: center;
     line-height: 62rpx;
-}</style>
+}
+</style>
