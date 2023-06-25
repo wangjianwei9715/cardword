@@ -6,28 +6,7 @@
 				<scroll-view :scroll-x="scrollable" :scroll-left="scrollLeft" scroll-with-animation
 					class="u-tabs__wrapper__scroll-view" :show-scrollbar="false" ref="u-tabs__wrapper__scroll-view">
 					<view class="u-tabs__wrapper__nav" ref="u-tabs__wrapper__nav">
-						<template v-if="customType == ''">
-							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
-								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
-								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1 }]"
-								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
-								<text :class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
-									class="u-tabs__wrapper__nav__item__text" :style="[textStyle(index)]">{{ item[keyName]
-									}}</text>
-								<u-badge :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
-									:isDot="item.badge && item.badge.isDot || propsBadge.isDot"
-									:value="item.badge && item.badge.value || propsBadge.value"
-									:max="item.badge && item.badge.max || propsBadge.max"
-									:type="item.badge && item.badge.type || propsBadge.type"
-									:showZero="item.badge && item.badge.showZero || propsBadge.showZero"
-									:bgColor="item.badge && item.badge.bgColor || propsBadge.bgColor"
-									:color="item.badge && item.badge.color || propsBadge.color"
-									:shape="item.badge && item.badge.shape || propsBadge.shape"
-									:numberType="item.badge && item.badge.numberType || propsBadge.numberType"
-									:inverted="item.badge && item.badge.inverted || propsBadge.inverted"
-									customStyle="margin-left: 4px;"></u-badge>
-							</view>
-						</template>
+						
 						<template v-if="customType == 'goods_animeTv'">
 							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
@@ -52,7 +31,7 @@
 								">{{ item[keyName] }}</text>
 							</view>
 						</template>
-						<template v-if="customType == 'showKa'">
+						<template v-else-if="customType == 'showKa'">
 							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
 								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1 }]"
@@ -65,6 +44,28 @@
 								<view class="showKa" v-if="index == 2">
 									<slot name="showKa"></slot>
 								</view>
+								<u-badge :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
+									:isDot="item.badge && item.badge.isDot || propsBadge.isDot"
+									:value="item.badge && item.badge.value || propsBadge.value"
+									:max="item.badge && item.badge.max || propsBadge.max"
+									:type="item.badge && item.badge.type || propsBadge.type"
+									:showZero="item.badge && item.badge.showZero || propsBadge.showZero"
+									:bgColor="item.badge && item.badge.bgColor || propsBadge.bgColor"
+									:color="item.badge && item.badge.color || propsBadge.color"
+									:shape="item.badge && item.badge.shape || propsBadge.shape"
+									:numberType="item.badge && item.badge.numberType || propsBadge.numberType"
+									:inverted="item.badge && item.badge.inverted || propsBadge.inverted"
+									customStyle="margin-left: 4px;"></u-badge>
+							</view>
+						</template>
+						<template v-else>
+							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
+								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
+								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1 }]"
+								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
+								<text :class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
+									class="u-tabs__wrapper__nav__item__text" :style="[textStyle(index)]">{{ item[keyName]
+									}}</text>
 								<u-badge :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
 									:isDot="item.badge && item.badge.isDot || propsBadge.isDot"
 									:value="item.badge && item.badge.value || propsBadge.value"
