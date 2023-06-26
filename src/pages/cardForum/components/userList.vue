@@ -1,37 +1,38 @@
 <template>
-    <view class="content">
+    <view class="content" style="margin-top:20rpx">
         <view class="topicsItem" v-for="(item, index) in value" @click="goToDetail(item)">
             <!-- #ifndef APP-NVUE -->
-            <muqian-lazyLoad class="topiceImage" :src="$parsePic(decodeURIComponent(item.pic))"
-                borderRadius="3rpx"></muqian-lazyLoad>
+            <muqian-lazyLoad class="topiceImage"
+                :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
+                borderRadius="50%"></muqian-lazyLoad>
             <!-- #endif -->
             <!-- #ifdef APP-NVUE -->
-            <image class="topiceImage" :src="$parsePic(decodeURIComponent(item.pic))" borderRadius="3rpx">
+            <image class="topiceImage" :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
+                borderRadius="3rpx">
             </image>
             <!-- #endif -->
             <view class="rightInfo">
                 <view class="titleWrap">
-                    <text class="title">#{{ item.name }}</text>
-                    <text class="act">活动</text>
+                    <text class="title">{{ item.name }}</text>
+                    <!-- <text class="act">活动</text> -->
                 </view>
                 <!-- #ifdef APP-NVUE -->
-                <text class="desc">{{ item.intro }}</text>
+                <text class="desc">粉丝{{ item.fans || 0 }}{{ item.dtNum ? ` | 动态${item.dtNum}` : '' }}</text>
                 <!-- #endif -->
                 <!-- #ifndef APP-NVUE -->
-                <text class="desc u-line-2">{{ item.intro }}</text>
+                <text class="desc u-line-2">粉丝{{ item.fans }}{{ item.dtNum ? ` | 动态${item.dtNum}` : '' }}</text>
                 <!-- #endif -->
-                <view class="flex1"></view>
-                <view class="bottomInfo">
-                    <text class="num">{{ formatNumber(item.totalUseNum, 2) }}篇动态</text>
-                    <!-- <view class="flex1"></view> -->
-                    <text class="pushButton flexCenter" @click.stop="onClickPush($event, item)">发布</text>
-                </view>
+                <!-- <view class="flex1"></view> -->
+
             </view>
+            <text class="follow" :class="{ follow_dis: item.isFollow }" @click.stop="onClickFollow(item)">{{ item.isFollow ?
+                '取关' : '关注' }}</text>
         </view>
     </view>
 </template>
 <script>
 import { releaseByTopic, formatNumber } from "../func/index.js"
+// import { followActionByUser } from "../func/index.ts"
 export default {
     name: '',
     components: {
@@ -46,8 +47,9 @@ export default {
     },
     data() {
         return {
-            list: [],
             formatNumber,
+            defaultAvatar: getApp().globalData.app.defaultAvatar,
+            list: []
         }
     },
     computed: {
@@ -57,33 +59,6 @@ export default {
 
     },
     mounted() {
-        // this.list = [
-        //     {
-        //         name: "秀卡-詹姆斯",
-        //         id: 1,
-        //         isActivity: true
-        //     },
-        //     {
-        //         name: "问价",
-        //         id: 2,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的第一张卡",
-        //         id: 3,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的卡在哪里",
-        //         id: 5,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的卡屌不屌",
-        //         id: 6,
-        //         isActivity: false
-        //     }
-        // ]
     },
     methods: {
         onClickPush(event, item) {
@@ -92,10 +67,18 @@ export default {
             // #endif
             releaseByTopic(item.id)
         },
+        onClickFollow(event, item) {
+            // #ifdef APP-NVUE
+            event.stopPropagation();
+            // #endif
+            // followActionByUser(item.userId).then(() => {
+            //     item.isFollow = !item.isFollow
+            // })
+        },
         goToDetail(item) {
 
             uni.navigateTo({
-                url: "/pages/cardForum/topics/detail"
+                url: "/pages/cardForum/personHome?userId=" + item.userId
             })
         }
     }
@@ -122,22 +105,26 @@ export default {
     height: 161rpx;
     display: flex;
     align-items: center;
-    margin-bottom: 40rpx;
+    margin-bottom: 20rpx;
     flex-direction: row;
+    background-color: #fff;
+    border-radius: 3rpx;
 
 
 }
 
 .topiceImage {
-    width: 161rpx;
-    height: 161rpx;
-    border-radius: 3rpx;
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
     margin-right: 46rpx;
+    margin-left: 20rpx;
 }
 
 .rightInfo {
-    height: 161rpx;
-    flex: 1;
+    // height: 161rpx;
+    // flex: 1;
+    width: 360rpx;
     display: flex;
     flex-direction: column;
 }
@@ -190,6 +177,24 @@ export default {
     line-height: 32rpx;
 }
 
+.follow {
+    width: 120rpx;
+    height: 52rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 52rpx;
+    margin-right: 20rpx;
+}
+
+.follow_dis {
+    background: #c9d0d7;
+}
+
 .bottomInfo {
     // width: 100%;
     width: 500rpx;
@@ -223,5 +228,4 @@ export default {
     // #ifndef APP-NVUE
     display: block;
     // #endif
-}
-</style>
+}</style>

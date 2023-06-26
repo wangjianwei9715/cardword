@@ -5,36 +5,34 @@
                 <div style="flex-direction: column;align-items: center;display: flex;background-color: #fff">
                     <div :style="{ height: navHeight + 'px' }"></div>
                     <view class="topicsItem">
-                        <image class="topicsItem_img"
-                            :src="'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'">
+                        <image class="topicsItem_img" :src="$parsePic(decodeURIComponent(data.pic))">
                         </image>
                         <view class="rightInfo">
                             <view>
-                                <text class="topicsItem_title">##勒布朗詹姆斯</text>
+                                <text class="topicsItem_title">#{{ data.name || "获取中" }}</text>
                                 <!-- <text class="act">活动</text> -->
                             </view>
                             <!-- #ifdef APP-NVUE -->
-                            <text
-                                class="desc">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                            <text class="desc">{{ data.intro }}</text>
                             <!-- #endif -->
                             <!-- #ifndef APP-NVUE -->
-                            <text
-                                class="desc u-line-2">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</text>
+                            <text class="desc u-line-2">{{ data.intro }}</text>
                             <!-- #endif -->
                             <view class="flex1"></view>
                             <view class="bottomInfo">
-                                <text class="num">99篇动态</text>
+                                <!-- formatNumber(data.totalUseNum, 2) -->
+                                <text class="num">{{ data.totalUseNum }}篇动态</text>
                                 <!-- <view class="flex1"></view> -->
-                                <text class="push flexCenter">发布</text>
+                                <text class="push flexCenter" @click="release">发布</text>
                             </view>
                         </view>
                     </view>
                     <view class="line"></view>
                     <div style="background-color: #fff;" id="tabs">
-                        <u-tabs :duration="300" :current="tags.index" :list="tags.list"></u-tabs>
+                        <u-tabs customType="cardForum" :duration="300" :current="tags.index" :list="tags.list"></u-tabs>
                     </div>
                     <div class="acWrap" id="acWrap">
-                        <text class="iNeedPush">我要发布</text>
+                        <text class="iNeedPush" @click="release">我要发布</text>
                     </div>
                 </div>
 
@@ -57,15 +55,16 @@
         <!-- ; -->
         <div style="position: fixed;width: 750rpx;background-color: #fff"
             :style="{ top: navHeight + 'px', opacity: stickyTabs ? 1 : 0 }">
-            <u-tabs :duration="300" :current="tags.index" :list="tags.list" ref="tabs"></u-tabs>
+            <u-tabs customType="cardForum" :duration="300" :current="tags.index" :list="tags.list" ref="tabs"></u-tabs>
         </div>
-        <transitionNav ref="transitionNav"  @getNavHeight="getNavHeight"></transitionNav>
+        <transitionNav ref="transitionNav" @getNavHeight="getNavHeight"></transitionNav>
     </list>
 </template>
 <!--  -->
 <script>
 import transitionNav from "@/components/transitionNav/transitionNav"
 import waterfalls from "../components/waterfalls.vue"
+import { releaseByTopic, formatNumber } from "../func/index"
 const app = getApp().globalData.app;
 const ACMARGIN = uni.upx2px(20)
 export default {
@@ -81,6 +80,7 @@ export default {
     data() {
         return {
             app,
+            formatNumber,
             navHeight: 0,
             scrollViewHeight: 0,
             stickyTabs: false,
@@ -112,7 +112,9 @@ export default {
                 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200' },
                 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200' },
                 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/2c9607d02842139323fe9c2e86b4305a.jpg?imageView2/2/w/200' },
-            ]
+            ],
+            id: 0,
+            data: {}
         }
     },
     computed: {
@@ -134,8 +136,9 @@ export default {
     },
     mounted() {
     },
-    onLoad() {
-
+    onLoad(query) {
+        this.id = +query.id
+        this.reqNewData()
         // this.$nextTick(async () => {
 
         // })
@@ -164,8 +167,11 @@ export default {
 
             })
         },
+        release() {
+            releaseByTopic(this.data.id)
+        },
         listSetSpecialEffects(refKey) {
-            this.$refs[refKey] && this.$refs[refKey].swiperChange("pageId", this.topHeight - this.acWrapHeight-plus.navigator.getSafeAreaInsets().deviceBottom)
+            this.$refs[refKey] && this.$refs[refKey].swiperChange("pageId", this.topHeight - this.acWrapHeight - plus.navigator.getSafeAreaInsets().deviceBottom)
         },
         swiperChange(event) {
             this.tags.index = event.detail.current
@@ -216,6 +222,11 @@ export default {
                     .exec();
             })
         },
+        reqNewData() {
+            app.http.Get("dataApi/cardCircle/topic/detail/" + this.id, {}, (res) => {
+                this.data = res.data
+            })
+        }
     }
 };
 </script>

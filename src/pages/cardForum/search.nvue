@@ -4,6 +4,9 @@
         <div class="hideGetReactWrap">
             <text class="hideText" :id="`searchLog${index}`" v-for="(item, index) in cardSearchLog">{{ item.s }}</text>
         </div>
+        <div class="hideGetReactWrap">
+            <text class="hideText" :id="`hotSearchLog${index}`" v-for="(item, index) in hotList">{{ item.content }}</text>
+        </div>
         <div class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></div>
 
         <div class="fixedTop" id="fixedTop">
@@ -41,14 +44,16 @@
             </view>
             <view class="bigText" style="margin-top: 40rpx;">
                 <text class="bigText_text">热门搜索</text>
+                <view class="keywords flexCenter" v-for="(item) in hotSearchCopy" @click="onClickKey(item)">
+                    <text class="keywords_text" :style="{ width: item.width + 'px' }">{{ item.content }}</text>
+                </view>
             </view>
         </template>
         <!-- transform: `scale(${onSearch ? 0 : 1})`  -->
-        <swiper :duration="300" class="swiperContainer" v-if="!onSearch" :style="{ height: scrollViewHeight + 'px' }"
-            :current="tabs.index" @change="swiperChange" @animationfinish="swiperChangeAnimationfinish"
-            @transition="swiperTransition">
+        <swiper class="swiperContainer" v-if="!onSearch" :style="{ height: scrollViewHeight + 'px' }" :current="tabs.index"
+            @change="swiperChange" @animationfinish="swiperChangeAnimationfinish" @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
-                <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
+                <!-- <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" /> -->
                 <!-- #ifndef APP-NVUE -->
                 <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                     @scrolltolower="loadmoreData(tabIndex)">
@@ -57,7 +62,10 @@
                         :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40">
                     </waterfalls>
                     <template v-if="tab.type == 'topics'">
-                        <topicList></topicList>
+                        <topicList :value="tab.list"></topicList>
+                    </template>
+                    <template v-if="tab.type == 'user'">
+                        <userList :value="tab.list"></userList>
                     </template>
                 </scroll-view>
                 <!-- #endif -->
@@ -68,7 +76,10 @@
                     @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
                 </waterfalls>
                 <template v-if="tab.type == 'topics'">
-                    <topicList></topicList>
+                    <topicList :value="tab.list"></topicList>
+                </template>
+                <template v-if="tab.type == 'user'">
+                    <userList :value="tab.list"></userList>
                 </template>
                 <!-- #endif -->
             </swiper-item>
@@ -79,29 +90,23 @@
 import waterfalls from "./components/waterfalls.vue"
 import cardSkeleton from "./components/cardSkeleton.vue"
 import topicList from "./components/topicList.vue"
-const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/32ac7886-2c11-4920-8e7a-742d436e62c7.jpg?imageView2/2/w/200' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/f70a3862fc224c94a1672c28940b34e3.jpg?imageView2/2/w/200' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/2c9607d02842139323fe9c2e86b4305a.jpg?imageView2/2/w/200' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/e18c950220664d2ea430fcea7a514770.jpg?imageView2/2/w/200' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/C4AC6C305E3543C39297A8B876EFE13D.jpg?imageView2/2/w/200' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/1f22e3dc5679da68c24e8e28f72a9192.jpg?imageView2/2/w/200' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/760f1341-6a13-4e01-91e2-f6a2c69b8490.jpg?imageView2/2/w/200' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/4f1c7d52e6ab48b8a1f10c75c08dc421.jpg?imageView2/2/w/200' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", image: 'https://images.cardhobby.com/9740T20210822233025348.jpg?imageView2/2/w/200' },]
+import userList from "./components/userList.vue"
+import { Md5 } from "ts-md5";
+import { mockList } from "./func/index.js"
 const tabsList = [
     {
         name: '综合',
-
+        od: "def"
     }, {
         name: '热门',
-
+        od: "hot"
     }, {
         name: '最新',
-
+        od: "fresh"
     }, {
         name: '话题',
-        type: "topics"
+        type: "topics",
+        url: "cardCircle/topic/list"
     }, {
         name: '用户',
         type: "user",
@@ -119,13 +124,16 @@ const defaultTagObj = {
         timeStamp: 0
     },
     isFetchEnd: true,
+    scrollId: "",
+    timeStamp: 0,
     list: []
 }
 export default {
     components: {
         waterfalls,
         cardSkeleton,
-        topicList
+        topicList,
+        userList
     },
     data() {
         return {
@@ -135,18 +143,18 @@ export default {
             actionSheet: false,
             firstReqEnd: false,
             initFinish: false,
-            onSearch: true,
+            onSearch: false,
             searchText: "",
             navHeight: 0,
             tabsHeight: 0,
             scrollViewHeight: 0,
             fixedTopHeight: 0,
-            hotTopics: [],
             tabs: {
-                index: 3,
+                index: 4,
                 list: []
             },
             hotList: [],
+            hotSearchCopy: [],
             trTimmer: null
         }
     },
@@ -156,7 +164,8 @@ export default {
         })
         await this.initTab()
         this.getLog()
-        this.reqNewData()
+        this.getHot()
+        // this.reqNewData()
     },
     computed: {
         nowTabText() {
@@ -197,6 +206,24 @@ export default {
                             item.width = res.width + 8
                         }
                         this.cardSearchLogCopy.push(item)
+                    })
+                }, 100)
+
+            })
+        },
+        hotList: function (val) {
+            this.$nextTick(() => {
+                this.hotSearchCopy = []
+                setTimeout(() => {
+                    val.forEach(async (item, index) => {
+                        const res = await this.getDom('#hotSearchLog' + index)
+                        if (res.width > 150) {
+                            item.width = 150
+                        }
+                        else {
+                            item.width = res.width + 8
+                        }
+                        this.hotSearchCopy.push(item)
                     })
                 }, 100)
 
@@ -258,7 +285,7 @@ export default {
                 uni.setStorageSync("cardForumSearchLog", this.cardSearchLog || [])
                 this.onSearch = false
                 await this.initTab()
-                this.reqNewData()
+                this.refreshData(this.tabs.index)
             } else {
                 uni.showToast({
                     title: "输入你想搜索的内容",
@@ -357,8 +384,9 @@ export default {
             }
         },
         refreshData(index) {
-            const nowTab = this.tabs.list[index]
-            nowTab.pageIndex = 1
+            // const nowTab = this.tabs.list[index]
+            // nowTab.pageIndex = 1
+            this.current.queryParams.fetchFrom = 1
             this.reqNewData(() => {
                 const key = "waterfalls" + index
                 setTimeout(() => {
@@ -374,13 +402,30 @@ export default {
             }
         },
         reqNewData(cb) {
+            //---------mock---------
             this.current.list.push(...mockList)
             this.current.firstReqEnd = true
             cb && cb()
-            return
+            //---------mock------------
             const defaultUrl = "cardCircle/search/dt"
-            app.http.Get(`/dataApi/${this.current.url || dedefaultUrlfa}`, this.current.queryParams, (res) => {
+            if (this.searchText) this.current.queryParams.q = this.searchText
+            if (this.current.od) this.current.queryParams.od = this.current.od
+            if (this.current.scrollId) this.current.queryParams.scrollId = this.current.scrollId
+            if (this.current.stamp) this.current.queryParams.st = this.current.stamp
+            if (!this.current.type) {
+                this.current.queryParams.sn = Md5.hashStr(`${this.current.stamp}+${this.current.scrollId}+”scrollSearchTujian”`)
+            }
+            if (this.current.type == "topics") {
+                this.current.queryParams.od = "issue_72:asc"
+            }
+            this.current.queryParams.timeStamp = Math.round(+new Date() / 1000)
+            app.http.Get(`dataApi/${this.current.url || defaultUrl}`, this.current.queryParams, (res) => {
                 this.current.firstReqEnd = true
+                this.current.isFetchEnd = res.isFetchEnd ?? res.end
+                this.current.scrollId = res.scrollId || ""
+                this.current.timeStamp = res.timeStamp || 0
+                const list = res.list || []
+                this.current.queryParams.fetchFrom == 1 ? this.current.list = list : this.current.list.push(...list)
                 cb && cb()
             }, (err) => {
                 this.current.firstReqEnd = true
@@ -395,7 +440,7 @@ $show-lines: 1;
 // @import '@/uni_modules/uv-ui-tools/libs/css/variable.scss';
 // #ifndef APP-NVUE 
 page {
-    background-color: #ffffff;
+    background-color: #f5f7fb;
 }
 
 // #endif 

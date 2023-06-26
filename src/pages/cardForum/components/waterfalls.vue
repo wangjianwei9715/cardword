@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-25 10:52:51
+ * @LastEditTime: 2023-06-26 10:38:55
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -14,13 +14,13 @@
             <slot name="list1"></slot>
             <!-- slot示例 -->
             <view>
-                <view v-for="(item, index) in list1" :key="item.id" class="waterfall-item-grayWrap">
+                <view v-for="(item, index) in list1" :key="item.code" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="item.image + '?x-oss-process=image/resize,p_1'"
+                            <image :src="item.cover + '?x-oss-process=image/resize,p_1'"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
-                            <image v-if="item.mode" :src="item.image" :mode="item.mode" class="waterfall-item__image_img">
+                            <image v-if="item.mode" :src="item.cover" :mode="item.mode" class="waterfall-item__image_img">
                             </image>
                         </view>
                         <view class="waterfall-item__ft">
@@ -29,12 +29,12 @@
                             </view>
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
-                            <image class="waterfall-item__bottom__avatar"></image>
-                            <text
-                                class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
+                            <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                                :src="item.avatar || defaultAvatar"></image>
+                            <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                             <view class="likeWrap">
                                 <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
-                                <text class="likeNum">40</text>
+                                <text class="likeNum">{{ item.likeNum }}</text>
                             </view>
                         </view>
                     </view>
@@ -46,13 +46,13 @@
             <slot name="list2"></slot>
             <!-- slot示例 -->
             <view>
-                <view v-for="(item, index) in list2" :key="item.id" class="waterfall-item-grayWrap">
+                <view v-for="(item, index) in list2" :key="item.code" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="item.image + '?x-oss-process=image/resize,p_1'"
+                            <image :src="item.cover + '?x-oss-process=image/resize,p_1'"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
-                            <image v-if="item.mode" :src="item.image" :mode="item.mode" class="waterfall-item__image_img">
+                            <image v-if="item.mode" :src="item.cover" :mode="item.mode" class="waterfall-item__image_img">
                             </image>
                         </view>
                         <view class="waterfall-item__ft">
@@ -61,12 +61,12 @@
                             </view>
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
-                            <image class="waterfall-item__bottom__avatar"></image>
-                            <text
-                                class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
+                            <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                                :src="item.avatar || defaultAvatar"></image>
+                            <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                             <view class="likeWrap">
                                 <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
-                                <text class="likeNum">40</text>
+                                <text class="likeNum">{{ item.likeNum }}</text>
                             </view>
                         </view>
                     </view>
@@ -79,26 +79,27 @@
     <!-- #endif -->
     <!-- #ifdef APP-NVUE -->
     <!-- fixFreezing -->
-    <waterfall @scroll="scroll" ref="water" bounce="true" :column-count="columnCount" :fixFreezing="fixFreezing"
-        :show-scrollbar="false" column-width="auto" :column-gap="columnGap" :left-gap="leftGap" :right-gap="rightGap"
-        @loadmore="scrolltolower" :style="{ height: height, position: 'relative' }">
+    <waterfall @scroll="scroll" ref="water" bounce="true" isSwiperList="true" :column-count="columnCount"
+        :fixFreezing="fixFreezing" :show-scrollbar="false" column-width="auto" :column-gap="columnGap" :left-gap="leftGap"
+        :right-gap="rightGap" @loadmore="scrolltolower">
         <refresh v-if="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'" class="refresh">
-            <loading-indicator :style="[refreshColor ? { color: refreshColor } : {}]"></loading-indicator>
+            <loading-indicator :style="[refreshColor ? {} : {}]"></loading-indicator>
         </refresh>
         <header>
-            <div ref="goTop"></div>
+            <div ref="goTop" style="width: 0;height: 0;"></div>
         </header>
         <slot name="header"></slot>
-        <image v-for="(item, index) in value" :src="item.image + '?x-oss-process=image/resize,p_1'"
+        <image v-for="(item, index) in value" :src="item.cover + '?x-oss-process=image/resize,p_1'"
             style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)">
         </image>
+        <slot name="cell"></slot>
         <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)">
             <div class="waterfall-item" v-if="item.mode">
                 <div class="waterfall-item__image">
-                    <image v-if="item.mode == 'widthFix'" :src="item.image" class="waterfall-item__image_img"
+                    <image v-if="item.mode == 'widthFix'" :src="item.cover" class="waterfall-item__image_img"
                         mode="widthFix">
                     </image>
-                    <image v-if="item.mode == 'aspectFit'" style="height:440rpx" :src="item.image"
+                    <image v-if="item.mode == 'aspectFit'" style="height:440rpx" :src="item.cover"
                         class="waterfall-item__image_img" mode="aspectFit"></image>
                 </div>
                 <div class="waterfall-item__ft">
@@ -107,12 +108,12 @@
                     </div>
                 </div>
                 <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
-                    <image class="waterfall-item__bottom__avatar"></image>
-                    <text
-                        class="waterfall-item__bottom__userName u-line-1">我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷我是一个大卡迷</text>
+                    <image class="waterfall-item__bottom__avatar" mode="aspectFill" :src="item.avatar || defaultAvatar">
+                    </image>
+                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                     <div class="likeWrap">
                         <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
-                        <text class="likeNum">40</text>
+                        <text class="likeNum">{{ item.likeNum }}</text>
                     </div>
                 </div>
             </div>
@@ -208,7 +209,8 @@ export default {
             list2: [],
             // 临时列表
             tempList: [],
-            refreshing: false
+            refreshing: false,
+            defaultAvatar: getApp().globalData.app.defaultAvatar
         }
     },
 
@@ -268,6 +270,7 @@ export default {
         this.tempList = this.$uv.deepClone(this.copyValue)
         this.splitData()
         // #endif
+        // console.log(this.$refs.water);
     },
     methods: {
         onrefresh() {
@@ -298,8 +301,9 @@ export default {
             // #ifdef APP-NVUE
             this.$refs.water.setSpecialEffects({
                 id: listId,
-                headerHeight: height
+                headerHeight: height.toFixed(2)
             });
+            // console.log(this.$refs.water.setSpecialEffects);
             // #endif
             console.log("设置swiperChange", listId, height);
         },
@@ -320,11 +324,13 @@ export default {
         },
         imageLoad(event, item) {
             const widthFixHeight = (WIDTH / event.detail.width) * event.detail.height
+            // console.log(widthFixHeight,MAX_HEIGHT);
             if (widthFixHeight > MAX_HEIGHT) {
                 item.mode = "aspectFit"
             } else {
                 item.mode = "widthFix"
             }
+            // console.log(item)
             // #ifdef APP-NVUE
             this.tempList.push(item)
             // #endif
@@ -444,6 +450,7 @@ $uvui-nvue-style: true !default;
     align-items: center;
     width: 750rpx;
     height: 80rpx;
+    background-color: rgba(0, 0, 0, 0)
 }
 
 .uv-waterfall {
@@ -478,6 +485,7 @@ $uvui-nvue-style: true !default;
     width: 100%;
     max-height: 439rpx;
     // #endif
+    border-radius: 5rpx;
 }
 
 .waterfall-item__ft__title {
@@ -515,7 +523,7 @@ $uvui-nvue-style: true !default;
 .waterfall-item__bottom__avatar {
     width: 36rpx;
     height: 36rpx;
-    background: #FA1545;
+    // background: #FA1545;
     border-radius: 50%;
     margin-right: 15rpx;
 }

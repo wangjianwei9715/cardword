@@ -30,6 +30,7 @@ declare module CardForum {
         /* 累计参与用户 */
         userUseNum?: number;
         isActivity?: boolean;
+        formList?:boolean
     }
     interface ActionItem {
         name: string;

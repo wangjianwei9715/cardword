@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-20 14:08:17
+ * @LastEditTime: 2023-06-26 15:24:10
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -24,7 +24,7 @@
                     : '关注' }}</view>
                 <!-- v-if="!isPerson"
                 v-if="isPerson" -->
-                <view @click="actionSheetShow = true">
+                <view @click="actionSheetShow = true" v-if="isPerson">
                     <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>
                 </view>
                 <u-icon name="share-square" color="#6c6969" size="28" @click="operationShow = true"></u-icon>
@@ -36,24 +36,59 @@
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
         <view class="swiper">
             <!-- @click="onClickSwiper -->
-            <u-swiper imgMode="aspectFit" :indicator="true" bgColor="#000" height="750rpx" :interval="3000" radius="1rpx"
-                :list="pics"></u-swiper>
+            <u-swiper imgMode="aspectFit" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"
+                :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
         </view>
+        <view class="dotContainer" :style="{ width: dotContainerWidth + 'px' }">
+            <view class="indicatorScroll" :style="{ left: scrollLeft + 'px' }">
+                <view :id="`dot${index}`" class="dot" :class="{ dot_big: pics.length > 5 && swiperCurrent === index }"
+                    v-for="(item, index) in pics.length">
+                    <image v-if="index === swiperCurrent" style="width:16rpx;height:13rpx"
+                        src="@/static/cardForum/dot_red.png">
+                    </image>
+                    <image v-else style="width:16rpx;height:13rpx" src="@/static/cardForum/dot.png"></image>
+                </view>
+            </view>
+        </view>
+
         <view class="contentContainer">
-            <view class="title">{{ forumDetail.title || "获取中" }}</view>
+            <view class="title">{{ forumDetail.title }}</view>
             <u-read-more :showHeight="180" closeText="全部" color="#000">
                 <view class="desc">{{ forumDetail.content || "" }}</view>
             </u-read-more>
-
-            <view class="time">发布于 {{ $u.timeFormat(forumDetail.created_at, 'mm-dd hh:MM') }}</view>
+            <view class="topicsContainer" v-if="forumDetail.topic && forumDetail.topic.length">
+                <text v-for="item in forumDetail.topic.split('#')">#{{ item }}</text>
+            </view>
+            <view class="haowuGoodsWrap" v-if="forumDetail.good && forumDetail.good.goodCode"
+                @click="app.navigateTo.goGoodsDetails(forumDetail.good.goodCode)">
+                <view class="goodsItem flexCenter">
+                    <image class="pic" mode="aspectFill" :src="$parsePic(decodeURIComponent(forumDetail.good.cover))">
+                    </image>
+                    <view class="goodsInfo u-line-2">{{ forumDetail.good.title }}</view>
+                </view>
+            </view>
+            <view class="time">编辑于 {{ $u.timeFormat(forumDetail.created_at, 'mm-dd hh:MM') }} {{ forumDetail.location ||
+                "地球上的某个地方" }}</view>
             <view class="line"></view>
+            <view class="voteContainer" v-if="forumDetail.vote && forumDetail.vote.voteTitle">
+                <view class="voteTitle">投票：{{ forumDetail.vote.voteTitle }}</view>
+                <view class="voteOption" v-for="(item, index) in forumDetail.vote.options" @click="onClickVote(item)">
+                    <view class="voteGray" :style="{ width: (item.poll / voteTotal) * 100 + '%' }"
+                        :class="{ voteGray_select: forumDetail.vote.myOption === item.optionId }"></view>
+                    <view class="voteFont" :class="{ voteFont_select: forumDetail.vote.myOption === item.optionId }">{{
+                        item.content }}
+                    </view>
+                    <view class="voteNum" v-if="forumDetail.vote.myOption"
+                        :class="{ voteFont_select: forumDetail.vote.myOption === item.optionId }">{{ item.poll }}
+                    </view>
+                </view>
+            </view>
         </view>
         <view class="commentContainer">
             <view class="comTop">
-                <view class="commentNum">{{ forumDetail.commentNum }}条评论</view>
-                <view class="tips">*请勿在评论区泄露您的个人信息以及交易信息</view>
+                <view class="commentNum">{{ forumDetail.commentNum || 0 }}条评论</view>
+                <!-- <view class="tips">*请勿在评论区泄露您的个人信息以及交易信息</view> -->
             </view>
-            <!--  -->
             <view class="comWrap" v-for="(item, index) in commList"
                 @touchstart="touchAction($event, item, {}, index, false)"
                 @touchend="touchAction($event, item, {}, index, false)">
@@ -132,21 +167,22 @@
                 <view class="fakerInput u-line-1" @click="onClickFakerInput">{{ fakerInputVal }}</view>
                 <view class="toolsWrap">
                     <view class="toolsItem" @click="rewardShow = true">
-                        <image src="@/static/act/portable/talk.png" />
-                        <view class="num">{{ formatNumber(forumDetail.commentNum || 0, 2, "en") }}(打赏)</view>
+                        <image src="@/static/cardForum/gift.png" style="width:34rpx;height:37rpx" />
+                        <view class="num">打赏</view>
                     </view>
-                    <view class="toolsItem">
-                        <image src="@/static/act/portable/talk.png" />
-                        <view class="num">{{ formatNumber(forumDetail.commentNum || 0, 2, "en") }}(点赞)</view>
+                    <view class="toolsItem" @click="$u.throttle(() => { onClickLike }, 1000)">
+                        <image v-if="!isLike" src="@/static/cardForum/detail_dz.png" style="width:38rpx;height:32rpx" />
+                        <image v-else src="@/static/cardForum/detail_dz_s.png" style="width:38rpx;height:32rpx" />
+                        <view class="num">{{ formatNumber(forumDetail.commentNum || 0, 2, "en") }}</view>
                     </view>
-                    <view class="toolsItem">
-                        <image src="@/static/act/portable/talk.png" />
-                        <view class="num">{{ formatNumber(forumDetail.commentNum || 0, 2, "en") }}(评论)</view>
+                    <view class="toolsItem" @click="onClickFakerInput">
+                        <image src="@/static/cardForum/comm.png" style="width:35rpx;height:33rpx" />
+                        <view class="num">{{ formatNumber(forumDetail.commentNum || 0, 2, "en") }}</view>
                     </view>
-                    <view class="toolsItem" @click="$u.throttle(() => { }, 1000)">
-                        <image v-if="!isLike" src="@/static/act/portable/dz_black.png" />
-                        <image v-else src="@/static/act/portable/dz_red.png" />
-                        <view class="num">{{ formatNumber(forumDetail.likeNum || 0, 2, "en") }}(收藏)</view>
+                    <view class="toolsItem" @click="$u.throttle(() => { onClickCollect }, 1000)">
+                        <image v-if="!isCollection" src="@/static/cardForum/sc.png" style="width:36rpx;height:34rpx" />
+                        <image v-else src="@/static/cardForum/sc_s.png" style="width:36rpx;height:34rpx" />
+                        <view class="num">{{ formatNumber(forumDetail.likeNum || 0, 2, "en") }}</view>
                     </view>
                 </view>
             </view>
@@ -162,6 +198,7 @@
             <view class="send flexCenter" @click.stop="$u.throttle(sendCom, 1000)">发送</view>
         </view>
         <reward-pop :code="code" :userInfo="authorInfo" :show.sync="rewardShow"></reward-pop>
+        <recGift :show.sync="recGiftShow"></recGift>
         <share @report="pageJump(`/pages/cardForum/report?code=${code}&userId=${forumDetail.userId}&source=1`)"
             :shareData="{}" :extra="[{ img: '/static/share/lianjie@2x.png', text: '举报', scene: '', emit: 'report' }]"
             :operationShow.sync="operationShow"></share>
@@ -178,7 +215,8 @@ import { formatNumber, getDateDiff } from "@/tools/util"
 import rewardPop from "./components/rewardPop.vue"
 import CardForum from "./interface/public";
 import { UserStreamline } from "@/manager/userManager"
-import { followActionByUser } from "./func/index"
+import { followActionByUser, } from "./func/index"
+import recGift from "./components/recGift.vue"
 interface Sheet {
     name: string;
     subname?: string;
@@ -202,7 +240,8 @@ const queryParams: CardForum.QueryByFetch = {
 }
 @Component({
     components: {
-        rewardPop
+        rewardPop,
+        recGift
     }
 })
 export default class ClassName extends BaseNode {
@@ -214,7 +253,18 @@ export default class ClassName extends BaseNode {
     formatNumber = formatNumber
     forumDetail: CardForum.ForumDetail = {} as CardForum.ForumDetail
     authorInfo: CardForum.RewardUserInfo = {} as CardForum.RewardUserInfo
-    pics: Array<string> = []
+    pics: Array<string> = [
+        'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg',
+        'http://cdn.ka-world.com/admin/2023.06.26/goods/pintuan0/16877444345160g177cxxvv.jpeg',
+        'http://cdn.ka-world.com/admin/2023.06.26/goods/CL5842680/0/1687741972912rcg5fj6jr.jpg',
+        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.06.02/narticle/0/1685695514132vkqnegiq08.png',
+        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/0/1677040405260bb682jm0np.jpg',
+        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2022.10.26/narticle/0/1666765013856gr7mut3izc.jpg',
+        'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1641519378736jhpa2j19gh.png',
+        'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/16415196284582jjy5sfnnk.png',
+        'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1640856712466ieazib579.jpg',
+        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/16770400681038j7gxlupox.jpg',
+    ]
     queryParams: CardForum.QueryByFetch = queryParams
     commList: Array<CardForum.CommentFather> = []
     clickCom: CardForum.CommentFather = {} as CardForum.CommentFather
@@ -226,18 +276,22 @@ export default class ClassName extends BaseNode {
     focus: boolean = false
     rewardShow: boolean = false
     actionSheetShow: boolean = false
+    recGiftShow:boolean=false
     isFetchEnd: boolean = true
     tapTimer: number = 0
     lontapTimer: number = 0
+    swiperCurrent: number = 0
     userInfo: UserStreamline = {} as UserStreamline
     PersonSheet = PersonSheet
+    dotWidth: any = uni.upx2px(24)
+    dotContainerWidth: any = uni.upx2px(24) * 5
     onLoad(query: any) {
         app.platform.hasLoginToken(async () => {
             this.code = query.code || "mockCode"
+            this.reqNewData()
             this.getCommByWorks()
             this.userInfo = await app.user.getUserInfo()
         })
-
     }
     onReachBottom() {
         if (this.isFetchEnd) return
@@ -264,6 +318,22 @@ export default class ClassName extends BaseNode {
     }
     public get fakerInputVal() {
         return this.sayContent || "说点什么..."
+    }
+    public get scrollLeft() {
+        if (this.swiperCurrent <= 3) return 0
+        if (this.swiperCurrent == this.pics.length - 1 && this.pics.length > 5) {
+            return -(this.dotWidth * (this.swiperCurrent - 4))
+        }
+        if (this.swiperCurrent > 3 && this.pics.length > 5) return -(this.dotWidth * (this.swiperCurrent - 3))
+
+    }
+    public get voteTotal() {
+        if (!this.forumDetail.vote.myOption) return 0
+        let total = 0
+        this.forumDetail.vote.options.forEach((item => {
+            total += item.poll
+        }))
+        return total
     }
     keyBoardHeightChange(obj: any) {
         this.keyBoardHeigh = obj.detail.height
@@ -301,10 +371,15 @@ export default class ClassName extends BaseNode {
         }
         this.pushOrReply(this.clickSon.id || this.clickCom.id || 0, this.clickCom)
     }
+    onClickVote(item: any) {
+        if (this.forumDetail.vote.myOption) return
+        this.forumDetail.vote.myOption = item.optionId
+        item.poll += 1
+    }
     //发布评论或回复
     pushOrReply(id: number, item: CardForum.CommentFather) {
         // cardCircle/comment
-        const requestUrl = `portableCard/works/${id == 0 ? "issue" : "reply"}/comment/${id || this.code}`
+        const requestUrl = `cardCircle/comment/${id == 0 ? "issue" : "reply"}/comment/${id || this.code}`
         app.http.Post(requestUrl, { content: this.sayContent }, (res: any) => {
             const same = {
                 id: res.lastCommentId as number,
@@ -344,7 +419,7 @@ export default class ClassName extends BaseNode {
     }
     goPersonHome() {
         uni.navigateTo({
-            url: "/pages/cardForum/personHome?userId="
+            url: "/pages/cardForum/personHome?userId=" + this.forumDetail.userId
         })
     }
     onClickCom(item: CardForum.CommentFather, son: CardForum.Comment | null) {
@@ -500,8 +575,7 @@ export default class ClassName extends BaseNode {
         item.queryParams.fetchFrom += 10
         let params = item.queryParams
         if (this.queryParams.noteCommentId) params.noteCommentId = this.queryParams.noteCommentId
-        // dataApi/cardCircle/comment/more/
-        app.http.Get(`dataApi/portableCard/draft/comment/more/${item.id}`, params, (res: any) => {
+        app.http.Get(`dataApi/cardCircle/comment/more/${item.id}`, params, (res: any) => {
             const list = (res.list || []).filter((lowerItem: any) => {
                 const index = item.lower.findIndex((item: CardForum.Comment) => {
                     return item.id == lowerItem.id
@@ -518,9 +592,11 @@ export default class ClassName extends BaseNode {
             url,
         })
     }
+    swiperChange(event: any) {
+        this.swiperCurrent = event.current
+    }
     getCommByWorks() {
-        // `dataApi/cardCircle/comment/list/` + this.code
-        app.http.Get(`dataApi/portableCard/works/comment/39`, this.queryParams, (res: any) => {
+        app.http.Get(`dataApi/cardCircle/comment/list/` + this.code, this.queryParams, (res: any) => {
             const list = (res.list as Array<CardForum.CommentFather> || []).filter((item: CardForum.CommentFather) => {
                 if (item.remainNum) item.isFetchEnd = item.remainNum <= 0
                 if (!item.remainNum) item.isFetchEnd = true
@@ -587,25 +663,26 @@ export default class ClassName extends BaseNode {
     }
 
     .topAvatar {
-        width: 42rpx;
-        height: 42rpx;
+        width: 61rpx;
+        height: 61rpx;
         border-radius: 50%;
         margin-left: 50rpx;
         margin-right: 20rpx;
     }
 
     .topName {
-        font-size: 25rpx;
+        font-size: 27rpx;
         font-family: PingFang SC;
-        font-weight: 400;
+        font-weight: 500;
         color: #333333;
         flex: 1;
+        line-height: 61rpx;
     }
 }
 
 .swiper {
     width: 750rpx;
-    height: 750rpx;
+    height: 946rpx;
 }
 
 .flex1 {
@@ -613,10 +690,15 @@ export default class ClassName extends BaseNode {
 }
 
 .follow {
-    width: 80rpx;
-    height: 40rpx;
-    color: #fff;
-    background-color: #fb374e;
+    width: 128rpx;
+    height: 50rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    font-size: 29rpx;
+    margin-right: 34rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
 }
 
 .follow_dis {
@@ -624,10 +706,130 @@ export default class ClassName extends BaseNode {
     background-color: #c9d0d7;
 }
 
+.topicsContainer {
+    width: 100%;
+    box-sizing: border-box;
+
+    // padding: 0 20rpx;
+    text {
+        margin-right: 10rpx;
+        font-size: 33rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #333333;
+        line-height: 42rpx;
+        color: #1E46A1;
+    }
+}
+
+.haowuGoodsWrap {
+    width: 100%;
+    height: 103rpx;
+    margin-top: 26rpx;
+
+    .goodsItem {
+        width: 401rpx;
+        height: 97rpx;
+        border: 1rpx solid rgba(149, 150, 149, .6);
+        background-color: #ffffff;
+        border-radius: 3px;
+        box-sizing: border-box;
+        padding: 10rpx;
+        align-items: center;
+        display: flex;
+
+        .pic {
+            width: 102rpx;
+            height: 79rpx;
+            // background: #FA1545;
+            border-radius: 1rpx;
+            margin-right: 12rpx;
+        }
+
+        .goodsInfo {
+            font-size: 22rpx;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #333333;
+            line-height: 25rpx;
+            flex: 1;
+            // display: flex;
+        }
+
+    }
+}
+
+.voteContainer {
+    margin-top: 33rpx;
+
+    .voteTitle {
+        font-size: 29rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #333333;
+        line-height: 25rpx;
+        margin-bottom: 26rpx;
+    }
+
+    .voteOption {
+        width: 710rpx;
+        height: 66rpx;
+        background: #F5F5F5;
+        border-radius: 3rpx;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 30rpx;
+        position: relative;
+        margin-bottom: 15rpx;
+        overflow: hidden;
+
+        .voteFont {
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #333333;
+            flex: 1;
+            z-index: 4;
+        }
+
+        .voteNum {
+            font-size: 23rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #333333;
+            z-index: 4;
+        }
+
+        .voteFont_select {
+            color: #FA1545;
+        }
+
+        .voteNum_select {
+            color: #FA1545;
+        }
+
+        .voteGray {
+            z-index: 2;
+            width: 0%;
+            height: 66rpx;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: #E6E6E6;
+            transition: width 0.6s;
+        }
+
+        .voteGray_select {
+            background-color: #FFE8E8;
+        }
+    }
+}
+
 .contentContainer {
     width: 750rpx;
     box-sizing: border-box;
-    padding: 0rpx 43rpx;
+    padding: 0rpx 21rpx;
 
     .title {
         font-size: 27rpx;
@@ -685,7 +887,7 @@ export default class ClassName extends BaseNode {
         align-items: center;
 
         .fakerInput {
-            width: 340rpx;
+            width: 313rpx;
             height: 63rpx;
             background: #EFEFEF;
             border-radius: 3rpx;
@@ -700,6 +902,7 @@ export default class ClassName extends BaseNode {
             font-weight: 400;
             overflow: hidden;
             color: #88878C;
+
         }
 
         .toolsWrap {
@@ -716,11 +919,6 @@ export default class ClassName extends BaseNode {
             position: relative;
             height: 64rpx;
 
-            image {
-                width: 35rpx;
-                height: 34rpx;
-            }
-
             .num {
                 position: absolute;
                 font-size: 23rpx;
@@ -729,9 +927,57 @@ export default class ClassName extends BaseNode {
                 color: #333333;
                 line-height: 30rpx;
                 bottom: 0;
+                white-space: nowrap;
             }
         }
     }
+}
+
+.dotContainer {
+    // background-color: rgba(0, 0, 0, .3);
+    // width: 116rpx;
+    margin-top: 27rpx;
+    height: 13rpx;
+    position: relative;
+    overflow: hidden;
+}
+
+.indicatorScroll {
+    // width: 114rpx;
+    white-space: nowrap;
+
+    // height: 16rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    transition: left 0.3s;
+
+    .dot {
+        width: 24rpx;
+        height: 13rpx;
+        display: inline-block;
+        position: relative;
+        transition: transform 0.5s;
+
+        image {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            margin: auto;
+        }
+    }
+
+    .dot_big {
+        transform: scale(1.3);
+    }
+
+    .dot_select {
+        background-image: url("@/static/cardForum/dot_red.png");
+    }
+
 }
 
 .safeBottom {
@@ -759,7 +1005,7 @@ export default class ClassName extends BaseNode {
     margin-bottom: 30rpx;
     width: inherit;
     box-sizing: border-box;
-    padding: 0 43rpx;
+    padding: 0 21rpx;
 }
 
 .commentNum {

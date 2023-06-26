@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 15:12:56
+ * @LastEditTime: 2023-06-26 14:23:19
  * @FilePath: \card-world\src\pages\cardForum\components\rewardTool.vue
  * @Description: 卡圈的打赏组件
 -->
@@ -14,7 +14,7 @@
                 <view class="rewardContainer">
                     <view class="reward_top flexCenter">
                         <view class="title">赠送礼物</view>
-                        <view class="close"></view>
+                        <view class="close" @click="showValue = false"></view>
                     </view>
                     <view class="rewardChoiceWrap">
                         <view class="rewardOption flexCenter" v-for="(item, index) in reawrdOptions"
@@ -132,7 +132,7 @@ export default class ClassName extends BaseComponent {
             return
         }
         this.showGive = false
-        app.http.Post(`cardCircle/send/point/${this.code}`, { tp: this.nowSelectOption.tp }, (res: any) => {
+        app.http.Post(`cardCircle/give/point/${this.code}`, { tp: this.nowSelectOption.tp }, (res: any) => {
             uni.showToast({
                 title: "赠送成功"
             })
@@ -192,7 +192,9 @@ export default class ClassName extends BaseComponent {
     transform: scale(0);
     transition: transform 0.2s;
     pointer-events: none;
-
+    border-radius: 3rpx;
+    box-sizing:border-box;
+    padding-top:30rpx;
     .title {
         color: #000;
         text-align: center;
@@ -233,8 +235,8 @@ export default class ClassName extends BaseComponent {
             width: 200rpx;
             height: 60rpx;
             color: #fff;
-            background-color: #fb374e;
-            border: 1rpx solid #fb374e;
+            background-color: #ff003d;
+            border: 1rpx solid #ff003d;
         }
 
         .submit_cancel {
@@ -270,7 +272,7 @@ export default class ClassName extends BaseComponent {
         width: 540rpx;
         height: 80rpx;
         color: #fff;
-        background-color: #fb374e;
+        background-color: #ff003d;
     }
 }
 

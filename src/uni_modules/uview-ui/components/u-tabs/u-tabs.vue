@@ -6,7 +6,7 @@
 				<scroll-view :scroll-x="scrollable" :scroll-left="scrollLeft" scroll-with-animation
 					class="u-tabs__wrapper__scroll-view" :show-scrollbar="false" ref="u-tabs__wrapper__scroll-view">
 					<view class="u-tabs__wrapper__nav" ref="u-tabs__wrapper__nav">
-						
+
 						<template v-if="customType == 'goods_animeTv'">
 							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
@@ -91,22 +91,33 @@
 							</view>
 						</template>
 						<template v-if="customType == 'showKa' || customType == 'cardForum'">
-							<image class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" src="@/static/cardForum/line.png" :style="[{
-								width: $u.addUnit(lineWidth),
-								height: $u.addUnit(lineHeight),
-							}]"></image>
+							<image class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line"
+								src="@/static/cardForum/line.png" :style="[{
+									width: $u.addUnit(lineWidth),
+									height: $u.addUnit(lineHeight),
+								}]"></image>
 						</template>
 						<!-- #endif -->
 						<!-- #ifndef APP-NVUE -->
-						<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" :style="[{
-							width: $u.addUnit(lineWidth),
-							transform: `translate(${lineOffsetLeft}px)`,
-							transitionDuration: `${firstTime ? 0 : duration}ms`,
-							height: $u.addUnit(lineHeight),
-							background: lineColor,
-							backgroundSize: lineBgSize,
-						}]">
+						<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" v-if="customType == ''"
+							:style="[{
+								width: $u.addUnit(lineWidth),
+								transform: `translate(${lineOffsetLeft}px)`,
+								transitionDuration: `${firstTime ? 0 : duration}ms`,
+								height: $u.addUnit(lineHeight),
+								background: lineColor,
+								backgroundSize: lineBgSize,
+							}]">
 						</view>
+						<template v-if="customType == 'showKa' || customType == 'cardForum'">
+							<image class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line"
+								src="@/static/cardForum/line.png" :style="[{
+									width: $u.addUnit(lineWidth),
+									transform: `translate(${lineOffsetLeft}px)`,
+									transitionDuration: `${firstTime ? 0 : duration}ms`,
+									height: $u.addUnit(lineHeight),
+								}]"></image>
+						</template>
 						<!-- #endif -->
 
 					</view>

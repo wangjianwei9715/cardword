@@ -2,20 +2,26 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 10:41:00
+ * @LastEditTime: 2023-06-26 14:58:19
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff"></navigationbar>
-        <!-- <view class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
-            <ppp v-model="pics" @heightChange="heightChange" />
-        </view> -->
-        <input type="text" class="input_title" v-model="formData.title" placeholder="添加一个有趣的标题吧~（选填）"
-            placeholderStyle="color: #959695;font-size:29rpx">
-        <textarea placeholderStyle="color: #959695;font-size:23rpx" :maxlength="-1" height="326rpx" confirmType="done"
-            class="input_content" placeholder="分享一下您的球星卡收藏..（选填)"></textarea>
+        <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
+        </navigationbar>
+        <view class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
+            <ppp v-model="pics" @heightChange="heightChange" @addImage="addImage('pics')" />
+        </view>
+        <input type="text" class="input_title" v-model.trim="formData.title" placeholder="添加一个有趣的标题吧~（选填）"
+            placeholderStyle="color: #959695;font-size:29rpx" :maxlength="80">
+        <view class="topicWrap" v-if="selectTopics.length">
+            <view class="glTopic" v-for="(item, index) in selectTopics" @click="delSelectTopic(item, index)">
+                #{{ item.name }}
+            </view>
+        </view>
+        <textarea placeholderStyle="color: #959695;font-size:23rpx" v-model.trim="formData.content" :maxlength="3000"
+            height="326rpx" confirmType="done" class="input_content" placeholder="分享一下您的球星卡收藏..（选填)"></textarea>
         <view class="associationWrap" @click="showTopics = true">
             <image class="ass_img" src="@/static/cardForum/release/topic.png" style="width: 30rpx;height:30rpx"></image>
             <view class="ass_title">关联话题</view>
@@ -24,53 +30,50 @@
         </view>
         <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll">
             <view class="topicScrollWrap">
-                <view class="topicItem flexCenter" v-for="item in 10">
-                    <text>#秀卡-詹姆斯</text>
+                <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in relatedTopics">
+                    <text>#{{ item.name }}</text>
                 </view>
             </view>
         </scroll-view>
-        <view class="associationWrap">
+        <view class="associationWrap" @click="showGoods = true" style="margin-top: 40rpx;">
             <image class="ass_img" src="@/static/cardForum/release/goods.png" style="width: 30rpx;height:30rpx"></image>
             <view class="ass_title">关联好物</view>
             <view class="flex1"></view>
             <view class="ass_right"></view>
         </view>
-        <scroll-view scroll-x="true" :show-scrollbar="false" class="haowuGoods">
-            <view class="haowuGoodsWrap">
-                <view class="goodsItem flexCenter" v-for="item in 10">
-                    <image class="pic"></image>
-                    <view class="goodsInfo u-line-2">22-23 篮球 Panini 整箱皇冠+22-23 16包 ...22-23 篮球 Panini 整箱皇冠+22-23 16包
-                        ...22-23 篮球 Panini
-                        整箱皇冠+22-23 16包 ...</view>
-                    <view class="close"></view>
-                </view>
+        <view class="haowuGoodsWrap" v-if="selectGoods.goodCode">
+            <view class="goodsItem flexCenter">
+                <image class="pic" :src="$parsePic(decodeURIComponent(selectGoods.cover))"></image>
+                <view class="goodsInfo u-line-2">{{ selectGoods.title }}</view>
+                <view class="close" @click="selectGoods.goodCode = ''"></view>
             </view>
-        </scroll-view>
-        <view class="associationWrap" @click="showVote = true">
+        </view>
+        <view class="associationWrap" @click="showVote = true"
+            style="border-bottom: 1rpx solid #3F3F3F;padding-bottom: 30rpx;">
             <image class="ass_img" src="@/static/cardForum/release/vote.png" style="width: 30rpx;height:30rpx"></image>
             <view class="ass_title">发起投票</view>
             <view class="flex1"></view>
+            <view class="voteTitle">{{ formData.voteTitle }}</view>
             <view class="ass_right"></view>
         </view>
-        <scroll-view scroll-x="true" class="topicsList">
-            <view class="uni-flex">
-                <view class="topicsItem" v-for="(item, index) in relatedTopics" :key="index">
-                    # {{ item.name }}
-                </view>
-            </view>
-        </scroll-view>
+        <view class="privateContainer" @click="onClickState">
+            <view class="radio" v-if="formData.state === 1"></view>
+            <view class="radio_check" v-if="formData.state === 2"></view>
+            <view class="private_text">仅自己可见</view>
+        </view>
         <view class="bottomWrap">
             <view class="buttonWrap">
-                <view class="draft">
+                <view class="draft" @click="onClickSaveDraft">
                     <image src="@/static/cardForum/release/caogao.png"></image>
                     <text>存草稿</text>
                 </view>
-                <view class="submit flexCenter">发布动态</view>
+                <view class="submit flexCenter" @click="onClickSubmit">发布动态</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-        <votePop :show.sync="showVote" />
+        <votePop :show.sync="showVote" @finish="voteFinish" @clear="voteClear" />
         <topicsPop :show.sync="showTopics" @select="onSelectTopic" />
+        <goods :show.sync="showGoods" @select="onSelectGoods" />
     </view>
 </template>
 
@@ -83,40 +86,92 @@ import topicsPop from "./components/topicsPop.vue"
 import CardForum from "./interface/public";
 import ppp from "./components/ppp.vue"
 import Upload from "@/tools/upload"
-import shmilyDragImage from "@/components/shmily-drag-image/shmily-drag-image.vue"
-interface CardForumRelease {
-    title: string;
-    content: string;
+import goods from "./components/goods.vue"
+import { storageDraft } from "./func"
+enum State {
+    Public = 1,
+    Private = 2
 }
-
+enum Tp {
+    Pic = 1,
+    Video = 2
+}
+interface CardForumRelease {
+    title?: string;
+    content?: string;
+    cover: string;
+    url: Array<string>;
+    topicId?: Array<number>;
+    goodCode?: string;
+    voteTitle?: string;
+    voteOptions?: Array<string>;
+    state: State;
+    tp: Tp;
+}
+const formData: CardForumRelease = {
+    title: "",
+    content: "",
+    cover: "",
+    url: [],
+    topicId: [],
+    goodCode: "",
+    voteTitle: "",
+    voteOptions: [],
+    state: 1,
+    tp: 1
+}
 @Component({
     components: {
         votePop,
         topicsPop,
-        shmilyDragImage,
-        ppp
+        ppp,
+        goods
     }
 })
 export default class ClassName extends BaseNode {
     showVote: boolean = false
     showTopics: boolean = false
+    showGoods: boolean = false
     imgUploadHeight: number = 0
-    pics: Array<string> = [
-        "https://i.ebayimg.com/thumbs/images/g/zycAAOSwAUlkg6zl/s-l500.jpg",
-        "https://i.ebayimg.com/thumbs/images/g/zycAAOSwAUlkg6zl/s-l500.jpg",
-        "https://i.ebayimg.com/thumbs/images/g/zycAAOSwAUlkg6zl/s-l500.jpg",
-        "https://i.ebayimg.com/thumbs/images/g/zycAAOSwAUlkg6zl/s-l500.jpg",
-        "https://i.ebayimg.com/thumbs/images/g/zycAAOSwAUlkg6zl/s-l500.jpg"]
-    formData: CardForumRelease = {
-        title: "",
-        content: ""
-    }
+    pics: Array<string> = []
+    formData: CardForumRelease = Object.assign({}, formData) as CardForumRelease
     relatedTopics: Array<CardForum.Topics> = []//关联话题
+    selectTopics: Array<CardForum.Topics> = []//已选择的关联话题
+    selectGoods: any = {
+        cover: "",
+        title: "",
+        goodCode: ""
+    }
+    draftId: string = ""
     onLoad(query: any) {
+
         this.reqTopics()
+        if (query.topicId) this.reqTopicDetail(+query.topicId)
     }
     onSelectTopic(item: CardForum.Topics) {
-        console.log(item);
+        const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
+            return orgItem.id == item.id
+        })
+        if (findIndex >= 0) return
+        const orgIndex: number = this.relatedTopics.findIndex((orgItem: any) => {
+            return orgItem.id == item.id
+        })
+        if (orgIndex >= 0) {
+            this.relatedTopics.splice(orgIndex, 1)
+            item.formList = true
+        }
+        this.selectTopics.push(item)
+    }
+    delSelectTopic(item: any, index: number) {
+        if (item.formList) {
+            this.relatedTopics.unshift(item)
+        }
+        this.selectTopics.splice(index, 1)
+    }
+    onSelectGoods(item: any) {
+        this.selectGoods.goodCode = item.goodCode
+        this.selectGoods.cover = item.cover
+        this.selectGoods.title = item.title
     }
     async addImage(keyName: string) {
         const countMap: any = {
@@ -132,11 +187,83 @@ export default class ClassName extends BaseNode {
                 this[keyName].push(pic)
             });
         }
-
-
     }
     heightChange(height: number) {
         this.imgUploadHeight = height + 20
+    }
+    async onClickSaveDraft() {
+        await this.assignFormData(false)
+        await storageDraft(this.formData, "dynamic", "")
+        uni.showModal({
+            title: "提示",
+            content: "已保存至草稿箱",
+            success: (res: any) => {
+                if (res.confirm) {
+                    app.platform.pageBack()
+                }
+            }
+        })
+    }
+    assignFormData(check?: boolean): Promise<any> {
+        return new Promise((re, rj) => {
+            if (check) {
+                if (!this.pics.length) {
+                    uni.showToast({
+                        title: "至少上传一张图片或视频",
+                        icon: "none"
+                    })
+                    rj()
+                    return
+                }
+            }
+            console.log(this.pics);
+            
+            if (this.pics.length) this.formData.cover = this.pics[0]
+            if (this.pics.length > 1) {
+                this.formData.url = this.pics.slice(1, this.pics.length)
+            }
+            this.formData.topicId = this.selectTopics.map((item: any) => {
+                return item.id
+            })
+            if (this.selectGoods.goodCode) this.formData.goodCode = this.selectGoods.goodCode
+            re && re(true)
+        })
+    }
+    voteFinish(voteData: any) {
+        console.log(voteData);
+        this.formData.voteTitle = voteData.title
+        this.formData.voteOptions = voteData.options.map((item: any) => {
+            return item.label
+        })
+    }
+    voteClear() {
+        this.formData.voteTitle = ""
+        this.formData.voteOptions = []
+    }
+    onClickState() {
+        this.formData.state == 1 ? this.formData.state = 2 : this.formData.state = 1
+        console.log(this.formData.state);
+
+    }
+    async onClickSubmit() {
+        await this.assignFormData(true)
+        app.http.Post("cardCircle/issue", this.formData, () => {
+            uni.showModal({
+                title: "提示",
+                content: "发布成功",
+                success: (res: any) => {
+                    if (res.confirm) {
+                        app.platform.pageBack()
+                    }
+                }
+            })
+        })
+        // this.formData.url=
+    }
+    reqTopicDetail(id: number) {
+        app.http.Get("dataApi/cardCircle/topic/detail/" + id, {}, (res: any) => {
+            this.onSelectTopic({ ...res.data, id })
+        })
     }
     reqTopics() {
         // app.http.Get("dataApi/", {}, (res: any) => {
@@ -188,6 +315,7 @@ page {
 .pushContainer {
     // padding: 0 24rpx;
     box-sizing: border-box;
+    pointer-events: none;
     width: 750rpx;
 }
 
@@ -198,7 +326,7 @@ page {
     font-weight: bold;
     color: #ffffff;
     padding-bottom: 20rpx;
-    border-bottom: 1rpx solid #f3f3f3;
+    border-bottom: 1rpx solid #3F3F3F;
     // width: 750rpx;
     // box-sizing: border-box;
 }
@@ -244,7 +372,7 @@ page {
 .input_content {
     background-color: #000;
     width: 100%;
-    font-size: 23rpx;
+    font-size: 26rpx;
     font-family: PingFang SC;
     font-weight: 400;
 
@@ -271,6 +399,14 @@ page {
         font-weight: bold;
         color: #C0C0C0;
         margin-left: 11rpx;
+    }
+
+    .voteTitle {
+        font-size: 23rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #959695;
+        margin-right: 6rpx;
     }
 
     .ass_right {
@@ -331,13 +467,13 @@ page {
         .pic {
             width: 108rpx;
             height: 83rpx;
-            background: #FA1545;
+            // background: #FA1545;
             border-radius: 1rpx;
             margin-right: 12rpx;
         }
 
         .goodsInfo {
-            font-size: 20rpx;
+            font-size: 22rpx;
             font-family: PingFang SC;
             font-weight: 500;
             color: #E6E6E6;
@@ -360,6 +496,7 @@ page {
     position: fixed;
     bottom: 0;
     width: inherit;
+    background-color: #000000;
 
     .buttonWrap {
         display: flex;
@@ -400,6 +537,61 @@ page {
             color: #FFFFFF;
             letter-spacing: 2rpx;
         }
+    }
+}
+
+.topicWrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 750rpx;
+    margin-top: 10rpx;
+    box-sizing: border-box;
+    padding: 0 20rpx;
+
+    .glTopic {
+        color: #ff003d;
+        font-size: 32rpx;
+        font-weight: bold;
+        font-family: PingFang SC;
+        margin-right: 8rpx;
+        margin-bottom: 4rpx;
+    }
+}
+
+.privateContainer {
+    width: 750rpx;
+    box-sizing: border-box;
+    padding: 0 20rpx;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    display: flex;
+    margin-top: 30rpx;
+
+    .radio {
+        width: 23rpx;
+        height: 23rpx;
+        border: 2rpx solid #C0C0C0;
+        border-radius: 50%;
+        margin-right: 11rpx;
+    }
+
+    .radio_check {
+        width: 25rpx;
+        height: 25rpx;
+        background-size: 100% 100%;
+        background-image: url("@/static/cardForum/redCheck.png");
+        margin-right: 11rpx;
+        // border: 2rpx solid rgba(0, 0, 0, 0);
+    }
+
+    .private_text {
+        font-size: 21rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #C0C0C0;
     }
 }
 </style>

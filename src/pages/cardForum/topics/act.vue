@@ -2,13 +2,13 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-15 17:02:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-21 14:08:20
+ * @LastEditTime: 2023-06-25 10:00:25
  * @FilePath: \card-world\src\pages\cardForum\topics\act.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <navigationbar title="挑战话题" rightText="查看往期" @onClickRightText="onClickRightText"></navigationbar>
+        <navigationbar title="挑战话题" rightText="查看往期" borderBottom="none" @onClickRightText="onClickRightText"></navigationbar>
         <view class="titleWrap">
             <view class="block"></view>
             <view class="title">本期话题</view>

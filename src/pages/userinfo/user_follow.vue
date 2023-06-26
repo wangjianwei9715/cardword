@@ -1,9 +1,10 @@
 <template>
 	<view class="followContent">
-		<u-sticky bgColor="#fff">
+		<!-- <u-sticky bgColor="#fff">
 			<u-tabs :list="tab.list" :current="tab.index" @click="onClickTab"></u-tabs>
-		</u-sticky>
-		<view class='follow uni-flex' v-for="(item, index) in currentList" :key='index' @click='toDetail(item)'>
+		</u-sticky> -->
+		<!-- view. -->
+		<!-- <view class='follow uni-flex' v-for="(item, index) in currentList" :key='index' @click='toDetail(item)'>
 			<template>
 				<muqian-lazyLoad :src='decodeURIComponent(item.logo)' class="follow-avart" mode="aspectFill" />
 				<view class="follow-info uni-flex">
@@ -15,7 +16,7 @@
 						@handleSuccess='followSuccess($event, item, index)'></followButton>
 				</view>
 			</template>
-		</view>
+		</view> -->
 		<!-- <empty v-if='empty'></empty> -->
 	</view>
 </template>
@@ -60,7 +61,7 @@ export default class ClassName extends BaseNode {
 	};
 	empty = false;
 	tab: FollowTab = {
-		index: 1,
+		index: 0,
 		list: []
 	}
 	@Watch('tab.index')

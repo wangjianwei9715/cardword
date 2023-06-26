@@ -2,25 +2,14 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-15 14:12:47
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-21 13:36:42
+ * @LastEditTime: 2023-06-26 09:39:56
  * @FilePath: \card-world\src\pages\cardForum\topicList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <topicList style="margin-top: 20rpx;"></topicList>
-        <!-- <view class="topicsItem" v-for="(item, index) in list" @click="goToDetail">
-            <muqian-lazyLoad class="image"
-                :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
-                borderRadius="3rpx"></muqian-lazyLoad>
-            <view class="rightInfo">
-                <view class="title">#{{ item.name }}</view>
-                <view class="bottomInfo">
-                    <view class="num">{{ item.totalUseNum }}篇动态</view>
-                    <view class="push flexCenter">发布</view>
-                </view>
-            </view>
-        </view> -->
+        <topicList style="margin-top: 20rpx;" :value="list"></topicList>
+        <empty v-if="!list.length"></empty>
     </view>
 </template>
 
@@ -65,35 +54,35 @@ export default class ClassName extends BaseNode {
         })
     }
     reqNewData(cb?: any) {
-        this.list = [
-            {
-                name: "秀卡-詹姆斯",
-                id: 1,
-                isActivity: true
-            },
-            {
-                name: "问价",
-                id: 2,
-                isActivity: false
-            },
-            {
-                name: "我的第一张卡",
-                id: 3,
-                isActivity: false
-            },
-            {
-                name: "我的卡在哪里",
-                id: 5,
-                isActivity: false
-            },
-            {
-                name: "我的卡屌不屌",
-                id: 6,
-                isActivity: false
-            }
-        ]
-        this.queryParams.timeStamp = Math.round(+new Date() / 1000)
-        return
+        // this.list = [
+        //     {
+        //         name: "秀卡-詹姆斯",
+        //         id: 1,
+        //         isActivity: true
+        //     },
+        //     {
+        //         name: "问价",
+        //         id: 2,
+        //         isActivity: false
+        //     },
+        //     {
+        //         name: "我的第一张卡",
+        //         id: 3,
+        //         isActivity: false
+        //     },
+        //     {
+        //         name: "我的卡在哪里",
+        //         id: 5,
+        //         isActivity: false
+        //     },
+        //     {
+        //         name: "我的卡屌不屌",
+        //         id: 6,
+        //         isActivity: false
+        //     }
+        // ]
+        // this.queryParams.timeStamp = Math.round(+new Date() / 1000)
+        // return
         getTopics(this.queryParams).then((res: any) => {
             const list = res.list || []
             this.isFetchEnd = res.isFetchEnd

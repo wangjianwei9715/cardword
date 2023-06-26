@@ -2,40 +2,38 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 10:18:18
+ * @LastEditTime: 2023-06-25 17:58:50
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的投票组件
 -->
 <template>
     <view class="content">
-        <u-overlay :show="showValue">
-            <u-popup :safeAreaInsetBottom="false" :show="showValue" :closeOnClickOverlay="false">
-                <view class="voteContainer">
-                    <view class="vote_top flexCenter">
-                        <view class="title">发起投票</view>
-                        <view class="close" @click="showValue = false"></view>
-                    </view>
-                    <input class="input_title" placeholder="添加投票标题吧~（最多30字）"></input>
-                    <view class="optionsWrap">
-                        <view class="name">选项一</view>
-                        <view class="input_option">
-                            <input placeholder="添加投票标题吧~（最多15字）" :maxlength="15"></input>
-                            <view class="del">删除</view>
-                        </view>
-                    </view>
-                    <view class="addOptionWrap">
-                        <view class="addImg"></view>
-                        <view class="addText">添加选项</view>
-                    </view>
-                    <view class="bottom_row">
-                        <view class="clearBtn flexCenter" @click="onClickClear">清空</view>
-                        <view class="finishBtn flexCenter" @click="onClickFinishEdit">完成编辑</view>
-                    </view>
-                    <view class="bottomSafeArea"></view>
+        <u-popup :safeAreaInsetBottom="false" @close="showValue = false" :show="showValue" :closeOnClickOverlay="true">
+            <view class="voteContainer">
+                <view class="vote_top flexCenter">
+                    <view class="title">发起投票</view>
+                    <view class="close" @click="showValue = false"></view>
                 </view>
+                <input class="input_title" v-model.trim="voteData.title" placeholder="添加投票标题吧~（最多30字）"></input>
+                <view class="optionsWrap" v-for="(item, index) in voteData.options">
+                    <view class="name">选项{{ NumMap[index + 1] }}</view>
+                    <view class="input_option">
+                        <input placeholder="请填写选项（最多15字）" v-model.trim="item.label" :maxlength="15"></input>
+                        <view class="del" v-if="index > 1" @click="deleteOptions(index)">删除</view>
+                    </view>
+                </view>
+                <view class="addOptionWrap" @click="insertOptions" v-if="voteData.options.length <= MAX_OPTIONS_LENGTH">
+                    <view class="addImg"></view>
+                    <view class="addText">添加选项</view>
+                </view>
+                <view class="bottom_row">
+                    <view class="clearBtn flexCenter" @click="onClickClear">清空</view>
+                    <view class="finishBtn flexCenter" @click="onClickFinishEdit">完成编辑</view>
+                </view>
+                <view class="bottomSafeArea"></view>
+            </view>
 
-            </u-popup>
-        </u-overlay>
+        </u-popup>
     </view>
 </template>
 
@@ -54,16 +52,26 @@ interface VoteOption {
 }
 const MIN_OPTIONS_LENGTH = 2//最小
 const MAX_OPTIONS_LENGTH = 5//最大
+const NumMap: any = {
+    1: "一",
+    2: "二",
+    3: "三",
+    4: "四",
+    5: "五"
+}
 const voteData: Vote = {
     title: "",
-    options: []
+    options: [{ label: "" }, { label: "" }]
 }
 @Component({})
 export default class ClassName extends BaseComponent {
     @PropSync("show", {
         type: Boolean
     }) showValue!: Boolean;
-    voteData: Vote = Object.assign({}, voteData)
+    voteData: Vote = uni.$u.deepMerge({}, uni.$u.deepClone(voteData))
+    MAX_OPTIONS_LENGTH = MAX_OPTIONS_LENGTH
+    MIN_OPTIONS_LENGTH = MIN_OPTIONS_LENGTH
+    NumMap = NumMap
     insertOptions() {
         if (this.voteData.options.length >= MAX_OPTIONS_LENGTH) return
         this.voteData.options.push({ label: "" })
@@ -73,10 +81,29 @@ export default class ClassName extends BaseComponent {
         this.voteData.options.splice(index, 1)
     }
     onClickClear() {
-        this.voteData = Object.assign({}, voteData)
+        this.voteData = uni.$u.deepMerge({}, uni.$u.deepClone(voteData))
+        this.$emit("clear")
     }
     onClickFinishEdit() {
-
+        console.log(this.voteData);
+        if (!this.voteData.title) {
+            uni.showToast({
+                title: "请检查填写是否完整",
+                icon: "none"
+            })
+            return
+        }
+        for (let i = 0; i < this.voteData.options.length; i++) {
+            if (!this.voteData.options[i].label) {
+                uni.showToast({
+                    title: "请检查填写是否完整",
+                    icon: "none"
+                })
+                return
+            }
+        }
+        this.$emit("finish", this.voteData)
+        this.showValue = false
     }
 }
 </script>
@@ -181,6 +208,7 @@ export default class ClassName extends BaseComponent {
     display: flex;
     align-items: center;
     padding-bottom: 20rpx;
+
     .clearBtn {
         width: 189rpx;
         height: 93rpx;

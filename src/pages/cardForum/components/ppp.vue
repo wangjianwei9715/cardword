@@ -1,22 +1,22 @@
 <template>
-    <div class="con">
+    <div class="con" style="pointer-events: none;">
         <template v-if="viewWidth">
             <movable-area class="area" :style="{ height: areaHeight }" @mouseenter="mouseenter" @mouseleave="mouseleave">
                 <movable-view v-for="(item, index) in imageList" :key="item.id" class="view" direction="all" :y="item.y"
                     :x="item.x" :damping="40" :disabled="item.disable" @change="onChange($event, item)"
                     @touchstart="touchstart(item, $event)" @mousedown="touchstart(item)"
                     @touchend="touchend($event, item, index)" @mouseup="touchend($event, item)" :style="{
-                            width: viewWidth + 'px',
-                            height: viewWidth + 'px',
-                            'z-index': item.zIndex,
-                            opacity: item.opacity
-                        }">
+                        width: viewWidth + 'px',
+                        height: viewWidth + 'px',
+                        'z-index': item.zIndex,
+                        opacity: item.opacity
+                    }">
                     <div class="area-con" :style="{
-                            width: childWidth,
-                            height: childWidth,
-                            borderRadius: borderRadius + 'rpx',
-                            transform: 'scale(' + item.scale + ')'
-                        }">
+                        width: childWidth,
+                        height: childWidth,
+                        borderRadius: borderRadius + 'rpx',
+                        transform: 'scale(' + item.scale + ')'
+                    }">
                         <image class="pre-image" :src="parsePic(decodeURIComponent(item.src))" mode="aspectFill"></image>
 
                     </div>
@@ -26,9 +26,11 @@
                     @click="addImages">
                     <div class="add-wrap"
                         :style="{ width: childWidth, height: childWidth, borderRadius: borderRadius + 'rpx' }">
-                        <image style="width: 54rpx;height: 54rpx;"
+                        <!-- <image style="width: 54rpx;height: 54rpx;"
                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAA2CAYAAACMRWrdAAABIUlEQVRoQ+2a2w2DMAxFeQzWrsMUbadAsEw3S1CqVgppKwLX8BEOP4iHTXx8uUgWdVXoVhdaV0VhSmf7vr/H8V3XzY6V3P9iD+nYOI5P7/01LMI596AwoZV0TIBXIUWFXhKLFBWYSFGhhxQN6SFFQ5i4ogITKSr0cEVDekjRECauqMBEigq9U7piOk2yAti27SUe5ljlTfPEQ6KZecTvwl4P3ytvOv06R2HDMNzes7+6aRrvnHvtf50L13Lp50rx88zcvNlS3JpwKQ67XyK04nq2nFbk/LqVjin0TvmBNgQ2S4UUDcliHgpMpKjQwxUN6SFFQ5i4ogITKSr0cEVDekjRECauqMAsVoph+hVPtYr5+03p9tbYQ96xrYtT4ootbAJGVxxVTapVswAAAABJRU5ErkJggg==">
-                        </image>
+                        </image> -->
+                        <image style="width: 43rpx;height: 43rpx;" src="@/static/cardForum/addImage_gray.png"></image>
+                        <text>添加图片</text>
                     </div>
                 </div>
             </movable-area>
@@ -79,7 +81,7 @@ export default {
         // 图片列数
         cols: {
             type: Number,
-            default: 3
+            default: 4
         },
         // 图片圆角，单位 rpx
         borderRadius: {
@@ -562,12 +564,13 @@ export default {
 
     .area {
         width: 100%;
-
+        
         .view {
             display: flex;
             justify-content: center;
             align-items: center;
             pointer-events: auto;
+
             .area-con {
                 position: relative;
                 overflow: hidden;
@@ -624,23 +627,33 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-
+            pointer-events: auto;
             .add-wrap {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background-color: #eeeeee;
+                background-color: #3F3F3F;
+                flex-direction: column;
+
+                text {
+                    font-size: 21rpx;
+                    font-family: PingFang SC;
+                    font-weight: 400;
+                    color: #8D8D8D;
+                    display: block;
+                }
             }
         }
     }
 
     .deleteBlock {
         width: 750rpx;
-        height: 200rpx;
+        height: 180rpx;
         position: fixed;
         color: #fff;
         bottom: -240rpx;
-        background-color: red;
+        background-color: #fa1545;
+        z-index: 999;
         transition: bottom 0.3s linear;
     }
 }
