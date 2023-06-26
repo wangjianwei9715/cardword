@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 10:38:55
+ * @LastEditTime: 2023-06-26 16:03:20
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -99,8 +99,8 @@
                     <image v-if="item.mode == 'widthFix'" :src="item.cover" class="waterfall-item__image_img"
                         mode="widthFix">
                     </image>
-                    <image v-if="item.mode == 'aspectFit'" style="height:440rpx" :src="item.cover"
-                        class="waterfall-item__image_img" mode="aspectFit"></image>
+                    <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
+                        :src="item.cover" class="waterfall-item__image_img" mode="aspectFit"></image>
                 </div>
                 <div class="waterfall-item__ft">
                     <div class="waterfall-item__ft__title">
@@ -327,6 +327,7 @@ export default {
             // console.log(widthFixHeight,MAX_HEIGHT);
             if (widthFixHeight > MAX_HEIGHT) {
                 item.mode = "aspectFit"
+                item.width = (event.detail.width / event.detail.height) * MAX_HEIGHT
             } else {
                 item.mode = "widthFix"
             }
@@ -476,7 +477,11 @@ $uvui-nvue-style: true !default;
 
 .waterfall-item__image {
     width: 360rpx;
-
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    border-radius: 5rpx;
+    overflow: hidden;
 }
 
 .waterfall-item__image_img {
@@ -485,7 +490,8 @@ $uvui-nvue-style: true !default;
     width: 100%;
     max-height: 439rpx;
     // #endif
-    border-radius: 5rpx;
+    // border-radius: 5rpx;
+    background-color: #ffffff;
 }
 
 .waterfall-item__ft__title {
