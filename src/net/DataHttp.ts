@@ -13,7 +13,9 @@ export var opSignData = [
     {url:'activity/invite/getKey',sign:'inviteGetKey',needOpKey:true},
     {url:'user/login/wechat/app',sign:'wechat',needOpKey:false},
     {url:'user/login/apple',sign:'apple',needOpKey:false},
-    {url:'search/good',sign:'searchSecret',needOpKey:false}
+    {url:'search/good',sign:'searchSecret',needOpKey:false},
+    {url:'cardCircle/search/dt',sign:'searchSecret',needOpKey:false},
+    {url:'cardCircle/search/user',sign:'searchSecret',needOpKey:false}
 ]
 
 // opSignOther
