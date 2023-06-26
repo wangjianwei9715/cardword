@@ -12,7 +12,20 @@ export function formatNumber(number, keepNum = 0, type = "cn") {//
     }
     return result;
 }
-
+const DRAFT_STORAGE_KEY = "cardForum_draft"
+//获取草稿箱
+export function getDraftList(type) {
+    let list = uni.getStorageSync(DRAFT_STORAGE_KEY) || []
+    if (!list || !list.length) return []
+    if (type !== "all") {
+        list = list.filter((item) => {
+            return item.type == type
+        })
+    }
+    return list.sort((x, y) => {
+        return y.stamp - x.stamp
+    })
+}
 export const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.26/goods/pintuan0/16877444345160g177cxxvv.jpeg' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.26/goods/CL5842680/0/1687741972912rcg5fj6jr.jpg' },

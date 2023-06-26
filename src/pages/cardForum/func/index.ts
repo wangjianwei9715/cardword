@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 10:24:55
+ * @LastEditTime: 2023-06-26 17:53:34
  * @FilePath: \card-world\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -29,7 +29,7 @@ export interface Report {
 //话题
 export function getTopics(params: Object): Promise<any> {
     return new Promise((resolve, reject) => {
-        app.http.Post(`cardCircle/topic/list`, params, (res: any) => {
+        app.http.Get(`dataApi/cardCircle/topic/list`, params, (res: any) => {
             resolve(res)
         }, (err: any) => {
             reject(err)
@@ -78,6 +78,14 @@ export function getDraftList(type: ("cardBook" | "dynamic" | "all")): Array<any>
     return list.sort((x: any, y: any) => {
         return y.stamp - x.stamp
     })
+}
+//获取草稿data
+export function getDraftDetail(draftId: string) {
+    const list = getDraftList("all")
+    const findItem = list.find((item: any) => {
+        return item.draftId === draftId
+    })
+    return findItem.data
 }
 //存储草稿箱
 export function storageDraft(data: any, type: ("cardBook" | "dynamic"), draftId?: string): Promise<Boolean> {
