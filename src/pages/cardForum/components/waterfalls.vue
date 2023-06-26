@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 16:03:20
+ * @LastEditTime: 2023-06-26 16:33:14
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -78,20 +78,23 @@
     </view>
     <!-- #endif -->
     <!-- #ifdef APP-NVUE -->
-    <!-- fixFreezing -->
-    <waterfall @scroll="scroll" ref="water" bounce="true" isSwiperList="true" :column-count="columnCount"
-        :fixFreezing="fixFreezing" :show-scrollbar="false" column-width="auto" :column-gap="columnGap" :left-gap="leftGap"
-        :right-gap="rightGap" @loadmore="scrolltolower">
+
+    <waterfall @scroll="scroll" ref="water" bounce="true" :column-count="columnCount" :fixFreezing="fixFreezing"
+        :show-scrollbar="false" :column-width="WIDTH" :column-gap="GAP" :left-gap="GAP" :right-gap="GAP"
+        @loadmore="scrolltolower" :always-scrollable-vertical="true" :height="height">
         <refresh v-if="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'" class="refresh">
             <loading-indicator :style="[refreshColor ? {} : {}]"></loading-indicator>
         </refresh>
         <header>
             <div ref="goTop" style="width: 0;height: 0;"></div>
         </header>
+        <header>
+            <image v-for="(item, index) in value" :src="item.cover + '?x-oss-process=image/resize,p_1'"
+                style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)">
+            </image>
+        </header>
         <slot name="header"></slot>
-        <image v-for="(item, index) in value" :src="item.cover + '?x-oss-process=image/resize,p_1'"
-            style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)">
-        </image>
+
         <slot name="cell"></slot>
         <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)">
             <div class="waterfall-item" v-if="item.mode">
@@ -125,6 +128,7 @@
 const MAX_HEIGHT = uni.upx2px(440)
 const WIDTH = uni.upx2px(360)
 const MIN_HEIGHT = uni.upx2px(246)
+const GAP = uni.upx2px(10)
 import mixin from './function/mixin.js'
 // #ifdef APP-NVUE
 const dom = weex.requireModule('dom')
@@ -207,6 +211,7 @@ export default {
         return {
             list1: [],
             list2: [],
+            GAP,
             // 临时列表
             tempList: [],
             refreshing: false,
