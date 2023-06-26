@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 16:33:14
+ * @LastEditTime: 2023-06-26 19:20:27
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -17,10 +17,13 @@
                 <view v-for="(item, index) in list1" :key="item.code" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="item.cover + '?x-oss-process=image/resize,p_1'"
+                            <image :src="$parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
-                            <image v-if="item.mode" :src="item.cover" :mode="item.mode" class="waterfall-item__image_img">
+                            <image v-if="item.mode" :src="$parsePic(decodeURIComponent(item.cover))" :mode="item.mode"
+                                class="waterfall-item__image_img">
+                            </image>
+                            <image v-else style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
                         </view>
                         <view class="waterfall-item__ft">
@@ -49,10 +52,13 @@
                 <view v-for="(item, index) in list2" :key="item.code" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="item.cover + '?x-oss-process=image/resize,p_1'"
+                            <image :src="$parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
-                            <image v-if="item.mode" :src="item.cover" :mode="item.mode" class="waterfall-item__image_img">
+                            <image v-if="item.mode" :src="$parsePic(decodeURIComponent(item.cover))" :mode="item.mode"
+                                class="waterfall-item__image_img">
+                            </image>
+                            <image v-else style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
                         </view>
                         <view class="waterfall-item__ft">
@@ -89,7 +95,8 @@
             <div ref="goTop" style="width: 0;height: 0;"></div>
         </header>
         <header>
-            <image v-for="(item, index) in value" :src="item.cover + '?x-oss-process=image/resize,p_1'"
+            <image v-for="(item, index) in value"
+                :src="$parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
                 style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)">
             </image>
         </header>
@@ -99,11 +106,12 @@
         <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)">
             <div class="waterfall-item" v-if="item.mode">
                 <div class="waterfall-item__image">
-                    <image v-if="item.mode == 'widthFix'" :src="item.cover" class="waterfall-item__image_img"
-                        mode="widthFix">
+                    <image v-if="item.mode == 'widthFix'" :src="$parsePic(decodeURIComponent(item.cover))"
+                        class="waterfall-item__image_img" mode="widthFix">
                     </image>
                     <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
-                        :src="item.cover" class="waterfall-item__image_img" mode="aspectFit"></image>
+                        :src="$parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="aspectFit">
+                    </image>
                 </div>
                 <div class="waterfall-item__ft">
                     <div class="waterfall-item__ft__title">
@@ -314,12 +322,12 @@ export default {
         },
         goTop() {
             // #ifdef APP-NVUE
-            console.log(this.$refs.goTop);
+            // console.log(this.$refs.goTop);
             dom.scrollToElement(this.$refs.goTop, {
                 animated: false//无动画
             })
             // #endif
-            console.log("goTopgoTop");
+            // console.log("goTopgoTop");
         },
         scroll(event) {
             this.$emit("scroll", event)
@@ -328,6 +336,7 @@ export default {
             this.$emit("loadmore")
         },
         imageLoad(event, item) {
+            console.log(event);
             const widthFixHeight = (WIDTH / event.detail.width) * event.detail.height
             // console.log(widthFixHeight,MAX_HEIGHT);
             if (widthFixHeight > MAX_HEIGHT) {
@@ -571,5 +580,4 @@ $uvui-nvue-style: true !default;
 .waterfall-item-grayWrap {
     padding-bottom: 10rpx;
     // background-color: #f6f7fb;
-}
-</style>
+}</style>
