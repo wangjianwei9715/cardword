@@ -536,6 +536,106 @@ export function toThousands(num = 0) {
 		return n.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
 	});
 };
+
+const multipliers: { [key: number]: number } = {
+	0: 23,
+	1: 25,
+	2: 27,
+};
+
+export function decodeNoCode(code: string,seqIndex:number): string {
+	const sCodeBs: string[] = [code[0], code[2], code[4], code[6], code[8], code[10]];
+	const sCode: string = sCodeBs.join("");
+
+	const seqBs: string[] = [code[1], code[3], code[5], code[7], code[9], code[11]];
+	let TMP: string;
+	if (seqBs[0] === "G" || seqBs[0] === "I" || seqBs[0] === "K") {
+		seqBs[0] = String.fromCharCode(seqBs[0].charCodeAt(0) - 6);
+
+		TMP = seqBs[5];
+		seqBs[5] = seqBs[0];
+		seqBs[0] = TMP;
+
+		TMP = seqBs[4];
+		seqBs[4] = seqBs[2];
+		seqBs[2] = TMP;
+
+		TMP = seqBs[3];
+		seqBs[3] = seqBs[1];
+		seqBs[1] = TMP;
+	} else if (seqBs[0] === "H" || seqBs[0] === "J" || seqBs[0] === "L") {
+		seqBs[0] = String.fromCharCode(seqBs[0].charCodeAt(0) - 6);
+
+		TMP = seqBs[5];
+		seqBs[5] = seqBs[0];
+		seqBs[0] = TMP;
+
+		TMP = seqBs[4];
+		seqBs[4] = seqBs[1];
+		seqBs[1] = TMP;
+
+		TMP = seqBs[3];
+		seqBs[3] = seqBs[2];
+		seqBs[2] = TMP;
+	}
+
+	const seqStr: string = seqBs.join("");
+	const v: number = parseInt(seqStr, 16);
+	const iv: number = v;
+	const ss: number = iv % 10000;
+	const number: number = Math.floor((iv - ss) / 10000);
+	const noCode = generateNoCode(sCode, number,seqIndex);
+	return noCode;
+}
+
+function generateNoCode(sCode: string, number: number, seqIndex: number): string {
+	if (seqIndex <= 0) {
+		seqIndex = 1;
+	}
+
+	const multiplier: number = multipliers[sCode.charCodeAt(0) % 3];
+
+	const seed: number = number * 10000 + seqIndex * multiplier;
+
+	let hex: any = seed.toString(16).toUpperCase();
+	if (hex.length < 6) {
+		hex = "0".repeat(6 - hex.length) + hex;
+	}
+	const bs: string[] = Array(13).fill("");
+
+	for (let i = 0; i < 6; i++) {
+		bs[i * 2 + 1] = sCode[i];
+	}
+	for (let i = 0; i < 6; i++) {
+		bs[i * 2 + 1 + 1] = hex[i];
+	}
+
+	if (hex[5] >= "A" && hex[0] <= "9") {
+		let TMP: string = bs[12];
+		bs[12] = bs[2];
+		bs[2] = TMP;
+
+		if (hex[5] % 2 === 0) {
+		TMP = bs[10];
+		bs[10] = bs[4];
+		bs[4] = TMP;
+
+		TMP = bs[8];
+		bs[8] = bs[6];
+		bs[6] = TMP;
+		} else {
+		TMP = bs[10];
+		bs[10] = bs[6];
+		bs[6] = TMP;
+
+		TMP = bs[8];
+		bs[8] = bs[4];
+		bs[4] = TMP;
+		}
+		bs[2] = String.fromCharCode(bs[2].charCodeAt(0) + 6);
+	}
+	return bs.slice(1).join("");
+}
 //加法函数 用来得到精确的加法结果   
 const add = (a: any, b: any) => {
 	var c, d, e;

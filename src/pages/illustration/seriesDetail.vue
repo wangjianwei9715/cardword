@@ -1,0 +1,242 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\illustration\seriesDetail.vue
+ * @Author: wjw
+ * @Date: 2023-06-16 17:01:28
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-25 10:31:15
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
+<template>
+	<view class="content">
+		<view class="top-header">
+			<muqian-lazyLoad class="series-bg" :src="decodeURIComponent(seriesData.main.backPic)" />
+			<transitionNav ref='transitionNav' @navBackGroundShowChange="navBackGroundShowChange" :needIconShadow="false" >
+				<template slot="slotRight">
+					<view :class="topHasBack?'icon-replace-back':'icon-replace'" @click="onClickSeriesSelect"></view>
+				</template>
+			</transitionNav>
+			<view class="header-info">
+				<view class="header-info-l">
+					<muqian-lazyLoad class="series-logo" borderRadius="3rpx" :src="decodeURIComponent(seriesData.main.logo)" />
+					<view class="series-info-box">
+						<view class="series-info-name">{{seriesData.main.year}} {{seriesData.main.name}}</view>
+						<view class="series-info-num">图鉴完成度：{{seriesData.main.numLoaded}}/{{seriesData.main.numAll}}</view>
+					</view>
+				</view>
+				<view class="series-follow" :class="{'followed':seriesData.followed}" @click="onClickFollow">{{seriesData.followed?'已关注':'关注'}}</view>
+			</view>
+		</view>
+		<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
+			<u-tabs 
+				:list="tabsData.list" :current="tabsData.current" @change="onChangeTabs" lineWidth="375rpx" lineHeight="6rpx" lineColor="#FA1545"
+				:itemStyle="{width:'375rpx',height:'78rpx',lineHeight:'72rpx',padding:0,background:'#fff'}"
+				:activeStyle="{color: '#333333',fontSize: '33rpx',fontWeight:'600'}" 
+				:inactiveStyle="{color: '#959695',fontSize: '27rpx'}" 
+			/>
+		</u-sticky>
+		<cardSetList :seriesCode="seriesCode" :search="seriesData.search" :reachNum.sync="reachNum"/>
+	</view>
+</template>
+
+<script lang="ts">
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
+	import BaseNode from '../../base/BaseNode.vue';
+	import { SeriesDetail } from './constants/interface'
+	import cardSetList from './detail/cardSetList.vue'
+	@Component({
+		components:{cardSetList}
+	})
+	export default class ClassName extends BaseNode {
+		statusBarHeight = app.statusBarHeight;
+		tabsData = {
+			list:[{name:'图鉴'},{name:'玩家卡册'}],
+			current:0
+		}
+		seriesCode = "";
+		seriesData:SeriesDetail = {
+			"code":0,
+			"followed": false, //当前用户是否已关注此系列
+			"main": { //data
+				"name": "Flawless", //sport_type
+				"year": "21-22", //year
+				"logo": "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg", //logo
+				"backPic": "http://cdn.ka-world.com/admin/debug/2023.06.08/goods/CL511202K/0/1686202542691lu5s05g33.jpg", //backPic
+				"numLoaded": 0, 
+				"numAll": 0, 
+			},
+			"search": { //data
+				"cardSets": '', //显示后台翻译过的卡种，展示72小时内点击量最高的20条内容（含详细筛选），未翻译的卡种不显示
+				"players": '', //该系列下筛选点击次数最多的前20个球员，展示72小时内点击量最高的20条内容
+				"seqs": '' //该系列下筛选点击次数最多的前20条限编，展示72小时内点击量最高的20条内容
+			}
+		};
+		refresherTriggered = false;
+		topHasBack = false;
+		reachNum = 0;
+		onLoad(query: any) {
+			if(query.seriesCode) this.seriesCode = query.seriesCode;
+			this.onEventUI("seriesSelect", (res) => {
+				this.seriesCode = res;
+				this.initEvent()
+				this.reachNum = 0;
+			});
+			this.initEvent()
+		}
+		//   加载更多数据
+		onReachBottom() {
+			this.reachNum ++;
+		}
+		onPageScroll(data: any) {
+			//@ts-ignore
+			this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
+		}
+		navBackGroundShowChange(event: any) {
+			this.topHasBack = event
+		}
+		initEvent(){
+			this.getSeriesDetail();
+		}
+		getSeriesDetail(){
+			app.http.Get(`dataApi/cardIllustration/detail/serie/${this.seriesCode}`,{},(res:any)=>{
+				this.seriesData = res;
+				uni.setNavigationBarTitle({
+					title: `${res.main.year} ${ res.main.name}`
+				});
+			})
+		}
+		onClickFollow(){
+			const type = this.seriesData.followed ? 'unfollow' : 'follow';
+			app.http.Post(`cardIllustration/serie/${this.seriesCode}/${type}`,{},(res:any)=>{
+				!this.seriesData.followed && uni.showToast({ title: '关注成功', icon:'none' });
+				this.seriesData.followed = !this.seriesData.followed;
+			})
+		}
+		
+		onChangeTabs(event:any){
+			console.log(event);
+			
+		}
+		onClickSeriesSelect(){
+			uni.navigateTo({
+				url:'seriesSelect?back=true'
+			})
+		}
+		
+	}
+</script>
+
+<style lang="scss">
+	page{
+        background:#F6F7F8;
+    }
+	.content{
+		width: 100%;
+		height:100%;
+		box-sizing: border-box;
+	}
+	.top-header{
+		width: 100%;
+		height:368rpx;
+		background:#000000;
+		position: relative;
+	}
+	.series-bg{
+		width: 100%;
+		height:368rpx;
+		position: absolute;
+		left:0;
+		top:0;
+		z-index: 3;
+	}
+	.header-info{
+		width: 100%;
+		height:104rpx;
+		box-sizing: border-box;
+		padding: 0 35rpx;
+		position: absolute;
+		left:0;
+		bottom:67rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		z-index: 5;
+	}
+	.header-info-l{
+		width: 550rpx;
+		height:104rpx;
+		display: flex;
+		align-items: center;
+	}
+	.series-logo{
+		width: 104rpx;
+		height: 104rpx;
+		border-radius: 3rpx;
+	}
+	.series-info-box{
+		height:104rpx;
+		width: 416rpx;
+		margin-left: 29rpx;
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		box-sizing: border-box;
+		padding: 2rpx 0 10rpx 0;
+	}
+	.series-info-name{
+		width: 100%;
+		font-size: 33rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #FFFFFF;
+	}
+	.series-info-num{
+		width: 100%;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+	.series-follow{
+		width: 122rpx;
+		height:51rpx;
+		background: #FA1545;
+		border-radius: 3rpx;
+		text-align: center;
+		line-height: 51rpx;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 600;
+		color: #FFFFFF;
+		box-sizing: border-box;
+	}
+	.followed{
+		background: #fff;
+		color:#909090;
+		font-weight: 400;
+	}
+	.icon-replace{
+		width: 46rpx;
+		height:32rpx;
+		background:url(@/static/illustration/icon_replace.png) no-repeat center / 100% 100%;
+	}
+	.icon-replace-back{
+		width: 46rpx;
+		height:32rpx;
+		background:url(@/static/illustration/icon_replace_.png) no-repeat center / 100% 100%;
+	}
+	.fixed-top /deep/ .u-tabs__wrapper__nav__line{
+		bottom:0
+	}
+	.series-center{
+		width: 100%;
+		height:2000rpx;
+		background:yellow;
+		box-sizing: border-box;
+		position: relative;
+		z-index: 1;
+		overflow: auto;
+	}
+	
+</style>
