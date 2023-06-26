@@ -45,9 +45,8 @@
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
                     <waterfalls :refreshColor="isShowKa ? '#ffffff' : ''" column-count="2" v-if="tab.list.length"
-                        :ref="`waterfalls${tabIndex}`" left-gap="5" :height="scrollViewHeight + 'px'" :value="tab.list"
-                        right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
-                        @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
+                        :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'" :value="tab.list"
+                        @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
                         <template v-slot:header v-if="tabIndex == 2 && tab.firstReqEnd">
                             <header style="align-items: center;">
                                 <div class="hotTopicWrap">
@@ -396,17 +395,15 @@ export default {
         },
         reqNewData(isRefresh = false, cb) {
             //===========mock==========
-            this.current.firstReqEnd = false
-            if (isRefresh) {
-                this.current.list = []
-                this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
-            }
-            this.current.list.push(...uni.$u.randomArray(mockList))
-            this.current.firstReqEnd = true
-            cb && cb()
+            // this.current.firstReqEnd = false
+            // if (isRefresh) {
+            //     this.current.list = []
+            //     this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
+            // }
+            // this.current.list.push(...uni.$u.randomArray(mockList))
+            // this.current.firstReqEnd = true
+            // cb && cb()
             //===========mock==========
-
-            // return
             const query = this.current.queryParams
             app.http.Get("dataApi/cardCircle/list", { tag: this.current.tag }, (res) => {
                 this.current.firstReqEnd = res.isFetchEnd

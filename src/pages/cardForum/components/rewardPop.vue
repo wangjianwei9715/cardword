@@ -2,44 +2,42 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 14:23:19
+ * @LastEditTime: 2023-06-26 18:45:43
  * @FilePath: \card-world\src\pages\cardForum\components\rewardTool.vue
  * @Description: 卡圈的打赏组件
 -->
 <template>
     <view class="content">
-        <u-overlay :show="showValue">
-            <!-- @close="showValue = false" :closeable="true"  -->
-            <u-popup :show="showValue" :closeOnClickOverlay="false">
-                <view class="rewardContainer">
-                    <view class="reward_top flexCenter">
-                        <view class="title">赠送礼物</view>
-                        <view class="close" @click="showValue = false"></view>
+        <u-popup :show="showValue" :closeOnClickOverlay="true" @close="showValue=false">
+            <view class="rewardContainer">
+                <view class="reward_top flexCenter">
+                    <view class="title">赠送礼物</view>
+                    <view class="close" @click="showValue = false"></view>
+                </view>
+                <view class="rewardChoiceWrap">
+                    <view class="rewardOption flexCenter" v-for="(item, index) in reawrdOptions"
+                        @click="onClickOption(item)">
+                        <view class="reward_text">{{ item.type == 1 ? item.title : `赠送${item.num}卡币` }}</view>
+                        <image class="reward_img"></image>
                     </view>
-                    <view class="rewardChoiceWrap">
-                        <view class="rewardOption flexCenter" v-for="(item, index) in reawrdOptions"
-                            @click="onClickOption(item)">
-                            <view class="reward_text">{{ item.type == 1 ? item.title : `赠送${item.num}卡币` }}</view>
-                            <image class="reward_img"></image>
-                        </view>
-                    </view>
-                    <view class="desc">表达赞赏/认同/鼓励，赠送后发放至作者账户且不可退回</view>
                 </view>
-            </u-popup>
-            <view class="giveModal" :class="{ giveModal_show: showGive }">
-                <view class="title">提示</view>
-                <view class="tips">确认赠送{{ nowSelectOption.num }}卡币</view>
-                <view class="userWrap">
-                    <view class="to">To:</view>
-                    <image class="avatar"></image>
-                    <view class="userName">{{ userInfo.userName || "小卡迷" }}</view>
-                </view>
-                <view class="bottomWrap">
-                    <view class="submit submit_cancel flexCenter" @click="showGive = false">先不了</view>
-                    <view class="submit flexCenter" @click="$u.throttle(onClickGive, 1000)">确认赠送</view>
-                </view>
+                <view class="desc">表达赞赏/认同/鼓励，赠送后发放至作者账户且不可退回</view>
             </view>
-        </u-overlay>
+        </u-popup>
+        <view class="giveModal" :class="{ giveModal_show: showGive }">
+            <view class="title">提示</view>
+            <view class="tips">确认赠送{{ nowSelectOption.num }}卡币</view>
+            <view class="userWrap">
+                <view class="to">To:</view>
+                <image class="avatar"
+                    :src="userInfo.avatar ? $parsePic(decodeURIComponent(userInfo.avatar)) : defaultAvatar"></image>
+                <view class="userName">{{ userInfo.userName || "小卡迷" }}</view>
+            </view>
+            <view class="bottomWrap">
+                <view class="submit submit_cancel flexCenter" @click.stop="showGive = false">先不了</view>
+                <view class="submit flexCenter" @click.stop="$u.throttle(onClickGive, 1000)">确认赠送</view>
+            </view>
+        </view>
     </view>
 </template>
 
@@ -108,6 +106,7 @@ export default class ClassName extends BaseComponent {
     //@ts-ignore
     userInfo: CardForum.RewardUserInfo;
     reawrdOptions: Array<Reward> = reawrdOptions
+    defaultAvatar = app.defaultAvatar
     nowSelectOption: Reward = {} as Reward
     showGive: boolean = false
     onClickOption(item: Reward) {
@@ -193,8 +192,9 @@ export default class ClassName extends BaseComponent {
     transition: transform 0.2s;
     pointer-events: none;
     border-radius: 3rpx;
-    box-sizing:border-box;
-    padding-top:30rpx;
+    box-sizing: border-box;
+    padding-top: 30rpx;
+
     .title {
         color: #000;
         text-align: center;

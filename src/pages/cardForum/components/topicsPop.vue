@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-25 19:27:54
+ * @LastEditTime: 2023-06-26 18:01:05
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的话题pop组件
 -->
@@ -25,7 +25,7 @@
                             :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
                             borderRadius="50%"></muqian-lazyLoad>
                         <view class="rightInfo">
-                            <view class="title">#{{ item.name }}</view>
+                            <view class="title">{{ item.name }}</view>
                             <view class="num">{{ item.cardCircleNum }}篇动态</view>
                         </view>
                     </view>
@@ -61,7 +61,7 @@ export default class ClassName extends BaseComponent {
         fetchFrom: 1,
         fetchSize: 15,
         q: "",
-        od: "issue_72:asc"
+        od: "issue_72:desc"
     }
     totalPage: number = 0
     timer: number = 0

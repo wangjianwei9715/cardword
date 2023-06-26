@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 14:58:19
+ * @LastEditTime: 2023-06-26 18:54:14
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,7 +17,7 @@
             placeholderStyle="color: #959695;font-size:29rpx" :maxlength="80">
         <view class="topicWrap" v-if="selectTopics.length">
             <view class="glTopic" v-for="(item, index) in selectTopics" @click="delSelectTopic(item, index)">
-                #{{ item.name }}
+                {{ item.name }}
             </view>
         </view>
         <textarea placeholderStyle="color: #959695;font-size:23rpx" v-model.trim="formData.content" :maxlength="3000"
@@ -28,10 +28,12 @@
             <view class="flex1"></view>
             <view class="ass_right"></view>
         </view>
-        <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll">
+        <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll"
+            v-if="relatedTopics && relatedTopics.length">
             <view class="topicScrollWrap">
                 <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in relatedTopics">
-                    <text>#{{ item.name }}</text>
+                    <text>{{ item.name }}</text>
+                    <text class="act" v-if="item.activity">活动</text>
                 </view>
             </view>
         </scroll-view>
@@ -87,7 +89,7 @@ import CardForum from "./interface/public";
 import ppp from "./components/ppp.vue"
 import Upload from "@/tools/upload"
 import goods from "./components/goods.vue"
-import { storageDraft } from "./func"
+import { storageDraft, getDraftDetail } from "./func"
 enum State {
     Public = 1,
     Private = 2
@@ -147,6 +149,12 @@ export default class ClassName extends BaseNode {
 
         this.reqTopics()
         if (query.topicId) this.reqTopicDetail(+query.topicId)
+        if (query.draftId) {
+            this.formData = getDraftDetail(query.draftId) as CardForumRelease
+            // this.selectGoods = this.formData.selectGoods
+            this.pics = [this.formData.cover, ...this.formData.url]
+
+        }
     }
     onSelectTopic(item: CardForum.Topics) {
         const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
@@ -217,7 +225,7 @@ export default class ClassName extends BaseNode {
                 }
             }
             console.log(this.pics);
-            
+
             if (this.pics.length) this.formData.cover = this.pics[0]
             if (this.pics.length > 1) {
                 this.formData.url = this.pics.slice(1, this.pics.length)
@@ -266,36 +274,36 @@ export default class ClassName extends BaseNode {
         })
     }
     reqTopics() {
-        // app.http.Get("dataApi/", {}, (res: any) => {
-        //     this.relatedTopics = res.list || []
-        // })
-        this.relatedTopics = [
-            {
-                name: "秀卡-詹姆斯",
-                id: 1,
-                isActivity: true
-            },
-            {
-                name: "问价",
-                id: 2,
-                isActivity: false
-            },
-            {
-                name: "我的第一张卡",
-                id: 3,
-                isActivity: false
-            },
-            {
-                name: "我的卡在哪里",
-                id: 5,
-                isActivity: false
-            },
-            {
-                name: "我的卡屌不屌",
-                id: 6,
-                isActivity: false
-            }
-        ]
+        app.http.Get("dataApi/cardCircle/topic/list", { fetchFrom: 1, fetchSize: 15, od: "issue_72:desc" }, (res: any) => {
+            this.relatedTopics = res.list || []
+        })
+        // this.relatedTopics = [
+        //     {
+        //         name: "秀卡-詹姆斯",
+        //         id: 1,
+        //         isActivity: true
+        //     },
+        //     {
+        //         name: "问价",
+        //         id: 2,
+        //         isActivity: false
+        //     },
+        //     {
+        //         name: "我的第一张卡",
+        //         id: 3,
+        //         isActivity: false
+        //     },
+        //     {
+        //         name: "我的卡在哪里",
+        //         id: 5,
+        //         isActivity: false
+        //     },
+        //     {
+        //         name: "我的卡屌不屌",
+        //         id: 6,
+        //         isActivity: false
+        //     }
+        // ]
     }
 
 }

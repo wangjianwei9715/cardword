@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 10:37:43
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 11:12:47
+ * @LastEditTime: 2023-06-26 18:27:01
  * @FilePath: \card-world\src\pages\cardForum\kami\list.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,18 +10,21 @@
     <view class="content">
         <view class="goodsCard" v-for="(item, index) in list">
             <view class="merchantWrap">
-                <muqian-lazyLoad :src="item.merchantLogo" class="merchantAvatar" borderRadius="50%"></muqian-lazyLoad>
-                <view class="merchantName">{{ item.merchantName }}</view>
+                <muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.seller.avatar))" class="merchantAvatar"
+                    borderRadius="50%"></muqian-lazyLoad>
+                <view class="merchantName">{{ item.seller.name }}</view>
             </view>
             <view class="goodsWrap uni-flex">
-                <muqian-lazyLoad class="goodsPic" borderRadius="3rpx" :src="item.pic"></muqian-lazyLoad>
+                <muqian-lazyLoad class="goodsPic" borderRadius="3rpx"
+                    :src="$parsePic(decodeURIComponent(item.good.pic))"></muqian-lazyLoad>
                 <view class="goodsInfo">
-                    <view class="goodsName u-line-2">{{ item.goodsName }}</view>
-                    <view class="price">￥{{ item.price }}<text class="font">起</text></view>
+                    <view class="goodsName u-line-2">{{ item.good.title }}</view>
+                    <view class="price">￥{{ item.price }}</view>
+                    <!-- <text class="font">起</text> -->
                 </view>
             </view>
             <view class="bottomWrap uni-flex">
-                <view class="kamiNum">卡密数量：10</view>
+                <view class="kamiNum">卡密数量：{{ item.num }}</view>
                 <view class="giveButton flexCenter" @click="onClickGive(item)">去赠送</view>
             </view>
         </view>
@@ -54,17 +57,9 @@ interface KamiGoods {
 export default class ClassName extends BaseNode {
     queryParams: any = {
         pageIndex: 1,
-        pageSize: 20
+        pageSize: 10
     }
-    list: Array<KamiGoods> = [{
-        goodsName: "假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假假",
-        goodCode: "SB250",
-        merchantLogo: "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg?x-oss-process=image/resize,p_50",
-        merchantName: "mock商家",
-        pintuan_type: 1,
-        price: 1,
-        pic: "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg?x-oss-process=image/resize,p_50"
-    }]
+    list: Array<any> = []
     totalPage: number = 0
     receiveUserInfo: CardForum.RewardUserInfo | any = {}
     code: string = ""
@@ -76,6 +71,7 @@ export default class ClassName extends BaseNode {
             if (data) this.receiveUserInfo = data
             console.log(this.receiveUserInfo);
         })
+        this.reqNewData()
     }
     onReachBottom() {
         if (this.queryParams.pageIndex < this.totalPage) {
@@ -101,7 +97,7 @@ export default class ClassName extends BaseNode {
         })
     }
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi`, this.queryParams, (res: any) => {
+        app.http.Get(`dataApi/cardNo/transfer/good/list`, this.queryParams, (res: any) => {
             const list = res.list || []
             this.totalPage = res.totalPage
             this.queryParams.pageIndex == 1 ? this.list = list : this.list.push(...list)

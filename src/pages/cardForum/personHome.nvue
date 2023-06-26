@@ -19,7 +19,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="descWrap">
+                    <div class="descWrap" v-if="userInfo.sign">
                         <text class="desc_text">{{ userInfo.sign }}</text>
                     </div>
                     <div class="userDataWrap">
@@ -43,21 +43,26 @@
                 </div>
                 <div class="gundonDiv" ref="gundonDiv"></div>
                 <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
-                    <u-tabs customType="cardForum" :itemStyle="{ width: '160rpx', height: '74rpx' }" class="tabs"
-                        :duration="300" :current="tags.index" :list="tags.list"></u-tabs>
+                    <u-tabs customType="cardForum" class="tabs" :duration="300" :current="tabs.index"
+                        :list="tabs.list"></u-tabs>
                 </div>
             </div>
-            <swiper :current="tags.index" :style="{ height: scrollViewHeight + 'px' }" @change="swiperChange"
+            <swiper :current="tabs.index" :style="{ height: scrollViewHeight + 'px' }" @change="swiperChange"
                 style="margin-top: 10rpx;">
-                <swiper-item style="width:750rpx">
-                    <!-- @loadmore="loadmore" -->
-                    <waterfalls ref="waterfall0" @scroll="waterScroll" :value="list" fixFreezing="true" :refresh="false"
-                        :always-scrollable-vertical="true" left-gap="5" right-gap="5" column-gap="5">
-                    </waterfalls>
-                </swiper-item>
-                <swiper-item style="width:750rpx">
-                    <waterfalls ref="waterfall1" fixFreezing="true" :refresh="false" left-gap="10" right-gap="10"
-                        column-gap="8" :always-scrollable-vertical="true">
+                <swiper-item style="width:750rpx" v-for="(tab, tabIndex) in tabs.list">
+                    <waterfalls :ref="`waterfalls${tabIndex}`" @scroll="waterScroll" :value="tab.list" :refresh="false"
+                        @loadmore="loadmore">
+                        <template v-slot:cell v-if="tab.name == '动态' && isMine && draftListByDynamic.lengt">
+                            <cell class="draftWrap">
+                                <image class="draftWrapImage"
+                                    src="https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200">
+                                </image>
+                                <div class="shadow">
+                                    <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
+                                </div>
+
+                            </cell>
+                        </template>
                     </waterfalls>
                 </swiper-item>
             </swiper>
@@ -73,10 +78,42 @@ const dom = weex.requireModule('dom')
 // #endif
 import transitionNav from "@/components/transitionNav/transitionNav"
 import waterfalls from "./components/waterfalls.vue"
-import { mockList } from "./func/index.js"
+import { mockList, getDraftList } from "./func/index.js"
 const app = getApp().globalData.app;
 let waterY = -5
 let agoListY = 0
+const mineTabs = [
+    {
+        name: '动态',
+        url: "cardCircle/list/me/dongtai"
+    },
+    {
+        name: '卡册',
+        url: "cardCircle/list/me/kace"
+    },
+    {
+        name: '收藏',
+        url: "cardCircle/list/me/collect"
+    },
+    {
+        name: '赞过',
+        url: "cardCircle/list/me/like"
+    },
+    {
+        name: '足迹',
+        url: "cardCircle/list/me/track"
+    }
+]
+const defaultTagObj = {
+    isFetchEnd: false,
+    firstReqEnd: false,
+    queryParams: {
+        fetchFrom: 1,
+        fetchSize: 15,
+        q: ""
+    },
+    list: []
+}
 export default {
     name: '',
     components: {
@@ -99,53 +136,74 @@ export default {
             onTouch: false,
             defaultAvatar: app.defaultAvatar,
             userInfo: {},
-            tags: {
+            tabs: {
                 index: 0,
-                list: [
-                    { name: "动态" },
-                    { name: "卡册" },
-                    { name: "中卡" }
-                ]
+                list: []
             },
             list: [
                 ...mockList
             ],
             userId: 0,
-            isMine: false
+            isMine: true,
+            draftListByDynamic: [],
+            draftListByCardBook: []
         }
     },
     computed: {
+        current() {
+            return this.tabs.list[this.tabs.index]
+        }
     },
     watch: {
-        "tags.index": function (val) {
-            console.log(val);
-            // this.$refs["waterfall" + val].goTop()
-            this.listSetSpecialEffects("waterfall" + val)
+        "tabs.index": function (val) {
+            if (this.tabs.list[val]?.list && (this.tabs.list[val].list.length == 0)) {
+                this.reqData(true)
+            }
+            this.listSetSpecialEffects(this.tabs.index)
         }
     },
     mounted() {
     },
     onLoad(query) {
         this.userId = +query.userId
-        this.isMine = query.isMine == "1"
+        // this.isMine = query.isMine == "1" //后续解除注释
+        if (this.isMine) {
+            this.draftListByDynamic = getDraftList("dynamic")
+            console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
+            this.draftListByCardBook = getDraftList("cardBook")
+        }
+        // console.log(this.draftList);
         this.getUserInfo()
     },
     methods: {
         getNavHeight(height) {
             this.navHeight = height
+            setTimeout(() => {
+                this.$nextTick(async () => {
+                    this.topHeight = await this.getDomHeight("#topContainer")
+                    this.tabsHeight = await this.getDomHeight("#tabs")
+                    this.userInfoWrapHeight = await this.getDomHeight("#userInfoWrap")
+                    // #ifdef APP_PLUS
+                    this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.navHeight - this.tabsHeight
+                    // #endif
+                    // this.getUserInfo()
+                    this.initTab()
+                })
+            }, 100)
 
-            this.$nextTick(async () => {
-                this.topHeight = await this.getDomHeight("#topContainer")
-                this.tabsHeight = await this.getDomHeight("#tabs")
-                this.userInfoWrapHeight = await this.getDomHeight("#userInfoWrap")
-                // this.topHeight = await this.getDomHeight("#userInfoWrap")
-                // #ifdef APP_PLUS
-                this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.navHeight - this.tabsHeight
-                // - topHeight - this.navHeight
-                // #endif
-                this.listSetSpecialEffects("waterfall0")
 
-            })
+        },
+        initTab() {
+            if (this.isMine) {
+                let mineTabsDeep = uni.$u.deepClone(mineTabs);
+                mineTabsDeep.forEach((item, index) => {
+                    this.$set(this.tabs.list, index, { ...uni.$u.deepClone(defaultTagObj), ...item })
+                })
+            } else {
+
+            }
+            this.reqData(false)
+            console.log(this.tabs);
         },
         waterScroll(event) {
             if (app.platform.systemInfo.platform == "android") {
@@ -167,6 +225,9 @@ export default {
                             animated: false
                         })
                         waterY = -200
+                        this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll({
+                            scrollTop: 0
+                        })
                     }
                 }
             }
@@ -182,11 +243,20 @@ export default {
             }
 
         },
-        listSetSpecialEffects(refKey) {
-            this.$refs[refKey] && this.$refs[refKey].swiperChange("pageId", this.userInfoWrapHeight - this.navHeight)
+        listSetSpecialEffects(index) {
+            this.$nextTick(() => {
+                console.log(this.navHeight);
+                console.log(this.topHeight);
+                console.log(this.tabsHeight);
+                console.log(this.userInfoWrapHeight);
+                this.$refs[`waterfalls${index}`] && this.$refs[`waterfalls${index}`][0].swiperChange("pageId", this.userInfoWrapHeight - this.navHeight)
+            })
+        },
+        goTopRef(index) {
+            this.$refs[`waterfalls${index}`] && this.$refs[`waterfalls${index}`][0].goTop()
         },
         swiperChange(event) {
-            this.tags.index = event.detail.current
+            this.tabs.index = event.detail.current
         },
         async scroll(event) {
             //想要渐变导航栏就用下面的代码
@@ -205,7 +275,10 @@ export default {
             })
         },
         loadmore() {
-            this.list.push(...this.list)
+            // this.list.push(...this.list)
+            if (this.current.isFetchEnd) return
+            this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
+            this.reqData(false)
         },
         refresh() {
             setTimeout(() => {
@@ -241,6 +314,34 @@ export default {
                     .exec();
             })
         },
+        reqData(isRefresh = false, cb) {
+            //------------mock------------
+            this.current.firstReqEnd = false
+            if (isRefresh) {
+                this.current.list = []
+                this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
+            }
+            this.current.list.push(...uni.$u.randomArray(mockList))
+            this.current.firstReqEnd = true
+            this.listSetSpecialEffects(this.tabs.index)
+            cb && cb()
+            //------------mock------------
+            app.http.Get(`dataApi/${this.current.url}`, this.current.queryParams, (res) => {
+                const list = res.list || []
+                this.current.firstReqEnd = true
+                this.current.isFetchEnd = res.isFetchEnd
+                if (isRefresh) {
+                    this.current.list = []
+                    this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
+                }
+                this.current.list.push(...list)
+                this.current.firstReqEnd = true
+                if (this.current.fetchFrom == 1) this.listSetSpecialEffects(this.tabs.index)
+                cb && cb()
+            }, (err) => {
+                this.current.firstReqEnd = true
+            })
+        }
     }
 };
 </script>
@@ -339,6 +440,7 @@ export default {
     // #endif
     padding: 0 35rpx;
     margin-top: 38rpx;
+    // height: 70rpx;
 }
 
 .desc_text {
@@ -419,5 +521,36 @@ export default {
     color: #FFFFFF;
     text-align: center;
     line-height: 62rpx;
+}
+
+.draftWrap {
+    width: 360rpx;
+    height: 287rpx;
+    position: relative;
+    border-radius: 3rpx;
+    margin-bottom: 10rpx;
+}
+
+.draftWrapImage {
+    position: absolute;
+    width: 360rpx;
+    height: 277rpx;
+    left: 0;
+    top: 0;
+    border-radius: 3rpx;
+}
+
+.shadow {
+    position: absolute;
+    width: 360rpx;
+    height: 277rpx;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, .5);
+    align-items: center;
+}
+
+.caogaoIcon {
+    // width: ;
 }
 </style>

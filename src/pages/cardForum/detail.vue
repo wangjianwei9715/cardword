@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 15:24:10
+ * @LastEditTime: 2023-06-26 18:46:31
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -54,7 +54,7 @@
         <view class="contentContainer">
             <view class="title">{{ forumDetail.title }}</view>
             <u-read-more :showHeight="180" closeText="全部" color="#000">
-                <view class="desc">{{ forumDetail.content || "" }}</view>
+                <view class="desc" v-if="forumDetail.content">{{ forumDetail.content }}</view>
             </u-read-more>
             <view class="topicsContainer" v-if="forumDetail.topic && forumDetail.topic.length">
                 <text v-for="item in forumDetail.topic.split('#')">#{{ item }}</text>
@@ -170,19 +170,19 @@
                         <image src="@/static/cardForum/gift.png" style="width:34rpx;height:37rpx" />
                         <view class="num">打赏</view>
                     </view>
-                    <view class="toolsItem" @click="$u.throttle(() => { onClickLike }, 1000)">
+                    <view class="toolsItem" @click="$u.throttle(() => { onClickLike() }, 1000)">
                         <image v-if="!isLike" src="@/static/cardForum/detail_dz.png" style="width:38rpx;height:32rpx" />
                         <image v-else src="@/static/cardForum/detail_dz_s.png" style="width:38rpx;height:32rpx" />
-                        <view class="num">{{ formatNumber(forumDetail.commentNum || 0, 2, "en") }}</view>
+                        <view class="num">{{ formatNumber(forumDetail.likeNum || 0, 2, "en") }}</view>
                     </view>
                     <view class="toolsItem" @click="onClickFakerInput">
                         <image src="@/static/cardForum/comm.png" style="width:35rpx;height:33rpx" />
                         <view class="num">{{ formatNumber(forumDetail.commentNum || 0, 2, "en") }}</view>
                     </view>
-                    <view class="toolsItem" @click="$u.throttle(() => { onClickCollect }, 1000)">
+                    <view class="toolsItem" @click="$u.throttle(() => { onClickCollect() }, 1000)">
                         <image v-if="!isCollection" src="@/static/cardForum/sc.png" style="width:36rpx;height:34rpx" />
                         <image v-else src="@/static/cardForum/sc_s.png" style="width:36rpx;height:34rpx" />
-                        <view class="num">{{ formatNumber(forumDetail.likeNum || 0, 2, "en") }}</view>
+                        <view class="num">{{ formatNumber(forumDetail.collectNum || 0, 2, "en") }}</view>
                     </view>
                 </view>
             </view>
@@ -254,16 +254,16 @@ export default class ClassName extends BaseNode {
     forumDetail: CardForum.ForumDetail = {} as CardForum.ForumDetail
     authorInfo: CardForum.RewardUserInfo = {} as CardForum.RewardUserInfo
     pics: Array<string> = [
-        'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg',
-        'http://cdn.ka-world.com/admin/2023.06.26/goods/pintuan0/16877444345160g177cxxvv.jpeg',
-        'http://cdn.ka-world.com/admin/2023.06.26/goods/CL5842680/0/1687741972912rcg5fj6jr.jpg',
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.06.02/narticle/0/1685695514132vkqnegiq08.png',
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/0/1677040405260bb682jm0np.jpg',
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2022.10.26/narticle/0/1666765013856gr7mut3izc.jpg',
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1641519378736jhpa2j19gh.png',
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/16415196284582jjy5sfnnk.png',
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1640856712466ieazib579.jpg',
-        'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/16770400681038j7gxlupox.jpg',
+        // 'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg',
+        // 'http://cdn.ka-world.com/admin/2023.06.26/goods/pintuan0/16877444345160g177cxxvv.jpeg',
+        // 'http://cdn.ka-world.com/admin/2023.06.26/goods/CL5842680/0/1687741972912rcg5fj6jr.jpg',
+        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.06.02/narticle/0/1685695514132vkqnegiq08.png',
+        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/0/1677040405260bb682jm0np.jpg',
+        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2022.10.26/narticle/0/1666765013856gr7mut3izc.jpg',
+        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1641519378736jhpa2j19gh.png',
+        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/16415196284582jjy5sfnnk.png',
+        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1640856712466ieazib579.jpg',
+        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/16770400681038j7gxlupox.jpg',
     ]
     queryParams: CardForum.QueryByFetch = queryParams
     commList: Array<CardForum.CommentFather> = []
@@ -276,7 +276,7 @@ export default class ClassName extends BaseNode {
     focus: boolean = false
     rewardShow: boolean = false
     actionSheetShow: boolean = false
-    recGiftShow:boolean=false
+    recGiftShow: boolean = false
     isFetchEnd: boolean = true
     tapTimer: number = 0
     lontapTimer: number = 0
@@ -373,8 +373,11 @@ export default class ClassName extends BaseNode {
     }
     onClickVote(item: any) {
         if (this.forumDetail.vote.myOption) return
-        this.forumDetail.vote.myOption = item.optionId
-        item.poll += 1
+        app.http.Post("cardCircle/user/vote/" + this.code, { optionId: item.optionId }, () => {
+            this.forumDetail.vote.myOption = item.optionId
+            item.poll += 1
+        })
+
     }
     //发布评论或回复
     pushOrReply(id: number, item: CardForum.CommentFather) {
@@ -556,11 +559,15 @@ export default class ClassName extends BaseNode {
     }
     onClickLike() {
         app.http.Post(`cardCircle/${this.isLike ? 'un/' : ''}like/${this.code}`, {}, (res: any) => {
+            if (this.isLike) this.forumDetail.likeNum -= 1
+            if (!this.isLike) this.forumDetail.likeNum += 1
             this.forumDetail.bit ^= ForumBit.IS_LIKE;
         })
     }
     onClickCollect() {
         app.http.Post(`cardCircle/${this.isCollection ? 'un/' : ''}collect/${this.code}`, {}, (res: any) => {
+            if (this.isCollection) this.forumDetail.collectNum -= 1
+            if (!this.isCollection) this.forumDetail.collectNum += 1
             this.forumDetail.bit ^= ForumBit.IS_COLLECTION;
         })
     }
@@ -842,6 +849,7 @@ export default class ClassName extends BaseNode {
     }
 
     .desc {
+        width: 100%;
         font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
@@ -877,7 +885,7 @@ export default class ClassName extends BaseNode {
     bottom: 0;
     border-top: 1rpx solid #E8E8E8;
     background-color: #fff;
-
+    z-index: 5;
     .wrap {
         height: 124rpx;
         width: inherit;

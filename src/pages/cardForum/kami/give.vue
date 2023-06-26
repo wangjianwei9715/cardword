@@ -2,12 +2,14 @@
     <view class="content">
         <view class="kamiWrap" v-for="(item, index) in list">
             <view class="kamiPrice">
-                <view class="price">卡密单价:￥{{ item.price }}</view>
-                <view class="original" @click="onClickOrder(item)">订单></view>
+                <view class="price">卡密单价:
+                    <text style="font-weight: bold;margin-left: 8rpx;">￥{{ item.price }}</text>
+                </view>
+                <view class="original" @click="onClickOrder(item)">订单 ></view>
             </view>
             <view class="kamiNameWrap" @click="onClickSelect(item)">
                 <view class="name">{{ item.name }}</view>
-                <view class="select_none" :class="{ select: selectIds.includes(item.id) }"></view>
+                <view class="select" :class="{ select_select: selectIds.includes(item.id) }"></view>
             </view>
         </view>
         <view class="fixedWrap">
@@ -208,7 +210,7 @@ page {
 
     .contentWrap {
         width: 750rpx;
-        height: 260rpx;
+        height: 288rpx;
         box-sizing: border-box;
         padding: 0 20rpx;
     }
@@ -219,19 +221,41 @@ page {
         // padding: 0rpx 20rpx;
         padding-top: 40rpx;
 
+        .To {
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #333333;
+        }
+
         // margin-top: 40rpx;
         .avatar {
-            width: 50rpx;
-            height: 50rpx;
+            width: 52rpx;
+            height: 52rpx;
             border-radius: 50%;
+            margin: 0 10rpx;
         }
 
         .userName {
-            color: #000;
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #333333;
+            margin-right: 10rpx;
         }
 
         .userId {
-            color: #b7b7b7;
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #959695;
+        }
+
+        .selectNum {
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #333333;
         }
 
         .flex1 {
@@ -239,24 +263,32 @@ page {
         }
 
         .bigNum {
+            font-size: 24rpx;
             font-weight: bold;
         }
     }
 
     .submit {
         width: 100%;
-        background-color: #fb374e;
         color: #fff;
         font-weight: bold;
-        margin-top: 20rpx;
-        height: 80rpx;
+        margin-top: 23rpx;
+        height: 92rpx;
+        background: #FA1545;
+        border-radius: 5rpx;
+        font-size: 33rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FFFFFF;
     }
 
     .tips {
+        font-size: 20rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #C0C0C0;
+        margin-top: 22rpx;
         text-align: center;
-        color: #b7b7b7;
-        font-size: 24rpx;
-        margin-top: 10rpx;
     }
 }
 
@@ -264,45 +296,67 @@ page {
     width: 750rpx;
     box-sizing: border-box;
     padding: 0 30rpx;
-    margin-top: 20rpx;
+    margin-top: 35rpx;
 }
 
 .kamiPrice {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 10rpx;
 
     .price,
     .original {
-        color: #aaaaaa;
+        font-size: 21rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #707070;
     }
 }
 
 .kamiNameWrap {
     background-color: #fff;
-    padding: 20rpx;
-    box-sizing: border-box;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+    // width: 710px;
+    height: 152rpx;
+    background: #FFFFFF;
+    border-radius: 3rpx;
+    padding: 30rpx 25rpx;
+    box-sizing: border-box;
 
     .name {
-        width: 580rpx;
+        // height: 90px;
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #707070;
+        line-height: 33rpx;
+        flex: 1;
     }
 
     .select {
-        width: 40rpx;
-        height: 40rpx;
-        background-image: url("@/static/live/redCheck.png");
-        background-size: 100% 100%;
+        width: 47rpx;
+        height: 47rpx;
+        border: 1rpx solid #959695;
+        border-radius: 50%;
+        margin-left: 65rpx;
     }
 
-    .select_none {
-        width: 40rpx;
-        height: 40rpx;
-        outline: 1rpx solid #f2f2f2;
-        border-radius: 50%;
+    .select_select {
+        background-image: url("@/static/cardForum/kamiCheck.png");
+        background-size: 100% 100%;
+        border: none;
+
     }
+
+    // .select_none {
+    //     width: 47prx;
+    //     height: 47rpx;
+
+    // }
 }
 
 .giveModal {
@@ -314,11 +368,14 @@ page {
     right: 0;
     margin: auto;
     top: 350rpx;
-    // z-index: 10076;
+    z-index: 10076;
     box-sizing: border-box;
-    // transform: scale(0);
-    // transition: transform 0.2s;
-    // pointer-events: none;
+    transform: scale(0);
+    transition: transform 0.2s;
+    pointer-events: none;
+    border-radius: 3rpx;
+    box-sizing: border-box;
+    padding-top: 30rpx;
 
     .title {
         color: #000;
@@ -360,8 +417,8 @@ page {
             width: 200rpx;
             height: 60rpx;
             color: #fff;
-            background-color: #fb374e;
-            border: 1rpx solid #fb374e;
+            background-color: #ff003d;
+            border: 1rpx solid #ff003d;
         }
 
         .submit_cancel {

@@ -11,8 +11,8 @@
             <!-- #endif -->
             <view class="rightInfo">
                 <view class="titleWrap">
-                    <text class="title">#{{ item.name }}</text>
-                    <text class="act">活动</text>
+                    <text class="title">{{ item.name }}</text>
+                    <text class="act" v-if="item.activity">活动</text>
                 </view>
                 <!-- #ifdef APP-NVUE -->
                 <text class="desc">{{ item.intro }}</text>

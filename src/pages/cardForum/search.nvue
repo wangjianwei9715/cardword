@@ -143,14 +143,14 @@ export default {
             actionSheet: false,
             firstReqEnd: false,
             initFinish: false,
-            onSearch: false,
+            onSearch: true,
             searchText: "",
             navHeight: 0,
             tabsHeight: 0,
             scrollViewHeight: 0,
             fixedTopHeight: 0,
             tabs: {
-                index: 4,
+                index: 0,
                 list: []
             },
             hotList: [],
@@ -403,17 +403,17 @@ export default {
         },
         reqNewData(cb) {
             //---------mock---------
-            this.current.list.push(...mockList)
-            this.current.firstReqEnd = true
-            cb && cb()
+            // this.current.list.push(...mockList)
+            // this.current.firstReqEnd = true
+            // cb && cb()
             //---------mock------------
             const defaultUrl = "cardCircle/search/dt"
             if (this.searchText) this.current.queryParams.q = this.searchText
             if (this.current.od) this.current.queryParams.od = this.current.od
             if (this.current.scrollId) this.current.queryParams.scrollId = this.current.scrollId
             if (this.current.stamp) this.current.queryParams.st = this.current.stamp
-            if (!this.current.type) {
-                this.current.queryParams.sn = Md5.hashStr(`${this.current.stamp}+${this.current.scrollId}+”scrollSearchTujian”`)
+            if (!this.current.type&&this.current.queryParams.scrollId) {
+                this.current.queryParams.sn = Md5.hashStr(`${this.current.stamp}+${this.current.scrollId}+scrollSearchTujian`)
             }
             if (this.current.type == "topics") {
                 this.current.queryParams.od = "issue_72:asc"
