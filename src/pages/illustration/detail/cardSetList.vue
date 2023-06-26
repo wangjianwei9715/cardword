@@ -4,7 +4,7 @@
             <view class="operate-filter"> 
                 <view class="input-box">
                     <view class="search-icon"></view>
-                    <input class="input-operate" placeholder="搜索球员/卡种/限编球队"/>
+                    <input class="input-operate" v-model="listQ" placeholder="搜索球员/卡种/限编球队" @confirm="againList()"/>
                 </view>
                 <view class="filter-box" @click="onClickGoFilter">
                     <image class="icon-filter" src="@/static/illustration/icon_filter.png"/>筛选
@@ -16,27 +16,38 @@
             <view class="operate-line flex-line">
                 <view class="line-title">卡种</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.cardSets)}" v-for="(item,index) in cardSetTab" :key="index" @click="onClickSelectTab(item,select.cardSets)">{{item}}</view>
+                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.cardSets)}" v-for="(item,index) in search.cardSets" :key="index" @click="onClickSelectTab(item,select.cardSets)">{{item.name}}</view>
                 </scroll-view>
             </view>
             <view class="operate-line flex-line">
                 <view class="line-title">球员</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.players)}" v-for="(item,index) in cardSetTab" :key="index" @click="onClickSelectTab(item,select.players)">{{item}}</view>
+                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.players)}" v-for="(item,index) in search.players" :key="index" @click="onClickSelectTab(item,select.players)">{{item.name}}</view>
                 </scroll-view>
             </view>
             <view class="operate-line flex-line">
                 <view class="line-title">限编</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.seqs)}" v-for="(item,index) in cardSetTab" :key="index" @click="onClickSelectTab(item,select.seqs)">{{item}}</view>
+                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.seqs)}" v-for="(item,index) in search.seqs" :key="index" @click="onClickSelectTab(item,select.seqs)">{{item.name}}</view>
                 </scroll-view>
             </view>
         </view>
         <view class="card-list">
-            <view class="card-index" v-for="(item,index) in cardSetList" :key="index">
-                <muqian-lazyLoad v-if="item.frontPic" class="card-pic" :src="decodeURIComponent(item.frontPic)" />
-                <view v-else></view>
+            <view class="card-index" v-for="(item,index) in cardSetList" :key="index" @click="onClickCard(item,index)">
+                <muqian-lazyLoad v-if="item.frontPic" class="card-pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
+                <view v-else class="card-wait-up">
+                    <view>
+                        <view class="wait-pic"></view>
+                        <view class="wait-bc">
+                            <view class="icon-add"></view>我来补充
+                        </view>
+                        <view class="wait-kb">
+                            可获卡币<view class="icon-kb"></view>
+                        </view>
+                    </view>
+                </view>
                 <view class="card-info">
+                    <muqian-lazyLoad class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(item.teamLogo)" />
                     <view class="card-player">{{item.player}}</view>
                     <view class="card-set">{{item.cardSet}}</view>
                     <view class="card-logo-box">
@@ -67,10 +78,12 @@
 		seriesCode!:string;
         @Prop({default:{}})
 		search!:any;
+        @Prop({default:0})
+        numAll!:number
         @PropSync("reachNum",{type:Number})
         reachNumber!:Number
 
-        statusBarHeight = app.statusBarHeight;
+        listQ="";
         list = [
             {id:0,name:'全部'},
             {id:1,name:'已有图鉴'},
@@ -89,45 +102,79 @@
             fontWeight: 400,
             color: '#959695'
         }
-        refresherTriggered = false;
-        cardSetTab = [
-            '星云','黑折','logoman签','闪回签','名人堂签','大家发挥就好','星云','黑折','logoman签','闪回签','名人堂签',
-        ]
-        select = {
+        select:{[x:string]:any} = {
             cardSets:[],
             players:[],
             seqs:[]
         }
-        cardSetList = [
-            { 
-                "code": "11",  //编号code
-                "cardSet": "Craftsmen Press Proof Black",
-                "player": "勒布朗·詹姆斯",
-                "team":"湖人",
-                "number":10,
-                "seq":1, //限编
-                "seqIndex":1, //第几编
-                "frontPic":"http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg",
-                "cardSetLogo":"", 
-            }
-        ]
+        cardSetList = [];
         listOrther = new ListOrther();
+        filterList = [];
+        listParams = {};
         @Watch('reachNum')
 		onReachNumChanged(val: any, oldVal: any){
             this.againList(val)
+		}
+        @Watch('seriesCode')
+		onSeriesCodeChanged(val: any, oldVal: any){
+            if(oldVal&&val!=oldVal){
+                this.againList()
+            }
 		}
 		created(){//在实例创建完成后被立即调用
 			
 		}
 		mounted(){//挂载到实例上去之后调用
+            uni.$on("seriesFilter",(res:any)=>{
+                const list:any = [...res];
+                this.select = {
+                    cardSets:[],
+                    players:[],
+                    seqs:[]
+                }
+                Object.keys(this.search).forEach((x:any)=>{
+                    this.search[x].forEach((y:any)=>{
+                        list.forEach((t:any,index:number)=>{
+                            if(y.nameId == t.nameId){
+                                this.$set(this.select, x, app.platform.removeDuplicate([...this.select[x],t],'nameId'));
+                                list.splice(index,1)
+                            }
+                        })
+                    })
+                })
+                this.filterList = list;
+                this.againList()
+            })
 			this.getSeriesGroup()
 		}
         selectTab(item:any,list:string[]){
-            return list.includes(item)
+            let repeat = false;
+			list.forEach((x:any)=>{
+                if(x.nameId == item.nameId){
+                    repeat = true;
+                }
+			})
+			return repeat
         }
         onClickGoFilter(){
+            const { cardSets, players, seqs } = this.select;
+            const removeDuplicate= app.platform.removeDuplicate([...cardSets,...players,...seqs,...this.filterList],'nameId')
+            const list = encodeURIComponent(JSON.stringify(removeDuplicate))
+
             uni.navigateTo({
-                url:`/pages/illustration/seriesFilter?seriesCode=${this.seriesCode}`
+                url:`/pages/illustration/seriesFilter?seriesCode=${this.seriesCode}&selectList=${list}`
+            })
+        }
+        onClickCard(item:any,index:number){
+            const { scrollId, st } = this.listOrther;
+            const cardList = this.cardSetList.map((x:any)=>x.code);
+            const httpParams = {
+                url:`dataApi/cardIllustration/series/${this.seriesCode}/search/no`,
+                scrollId,
+                st,
+            }
+            uni.navigateTo({
+                url:`/pages/illustration/cardSetUpload?noCode=${item.code}&nowIndex=${(index+1)}&indexAll=${this.numAll}&cardList=${encodeURIComponent(JSON.stringify(cardList))}&params=${encodeURIComponent(JSON.stringify(this.listParams))}&httpParams=${encodeURIComponent(JSON.stringify(httpParams))}`
             })
         }
         againList(val=0){
@@ -154,29 +201,33 @@
         getSeriesGroup(){
             const { scrollId, st } = this.listOrther;
             const ts = Math.floor(new Date().getTime()/1000);
-            const _url = scrollId ? `scrollId=${scrollId}&st=${st}` : `ts=${ts}`
+            const _url = scrollId ? `scrollId=${scrollId}&st=${st}&pageSize=10` : `ts=${ts}&noSplit=1`
             const sn = Md5.hashStr(`${scrollId?st:ts}_${scrollId?`${scrollId}_`:''}scrollSearchTujian`);
             
+            const rookieList:any = this.filterList.filter((x:any)=> x.rookie);
+            const signList:any = this.filterList.filter((x:any)=> x.signature);
+
             const params = {
                 pageSize:10,
-                q:'',
-                numberFrom:null,
-                numberEnd:null,
+                q:this.listQ,
                 tp:this.current,
-                rookie:null,
-                signature:null,
-                players:null,
-                teams:null,
-                cardSets:null,
-                seqs:null
+                rookie:rookieList.length?(rookieList[0].name=="新秀"?1:2):0,
+                signature:signList.length?(signList[0].name=="签字"?1:2):0,
+                players:this.select.players.map((x:any)=> x.nameId) || null,
+                teams:this.filterList.filter((x:any)=>x.team).map((x:any)=>x.nameId) || null,
+                cardSets:this.select.cardSets.map((x:any)=> x.nameId) || null,
+                seqs:this.select.seqs.map((x:any)=> x.nameId) || null
             }
-            app.http.Post(`dataApi/cardIllustration/serie/${this.seriesCode}/search/no?${_url}&sn=${sn}`,params,(res:any)=>{
+            this.listParams = params;
+            app.http.Post(`dataApi/cardIllustration/series/${this.seriesCode}/search/no?${_url}&sn=${sn}`,params,(res:any)=>{
                 if(res.list){
                     this.cardSetList = scrollId ? [...this.cardSetList,...res.list] : res.list;
                     this.listOrther.scrollId = res.scrollId;
                     this.listOrther.st = ts;
+                }else if(res.total==0){
+                    this.cardSetList = [];
                 }
-                this.listOrther.end = res.end;
+                this.listOrther.end = res.end || res.list.length<10;
             })
         }
 	}
@@ -311,6 +362,60 @@
         width: 175rpx;
         height: 227rpx;
         border-radius: 3rpx;
+        box-sizing: border-box;
+    }
+    .card-wait-up{
+        width: 175rpx;
+        height: 227rpx;
+        border-radius: 3rpx;
+        border: 1px dashed #C0C0C0;
+        box-sizing: border-box;
+        background: #E6E6E6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        .wait-pic{
+            width: 71rpx;
+            height:64rpx;
+            border-radius: 3rpx;
+            margin:0 auto;
+            margin-bottom: 16rpx;
+            background: url(@/static/illustration/icon_wait.png) no-repeat center / 100% 100%;
+        }
+        .wait-bc{
+            width: 100%;
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #959695;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .icon-add{
+            width: 18rpx;
+            height:18rpx;
+            background: url(@/static/illustration/icon_add_.png) no-repeat center / 100% 100%;
+            margin-right: 6rpx;
+        }
+        .wait-kb{
+            width: 100%;
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #C0C0C0;
+            margin-top: 10rpx;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .icon-kb{
+            width: 23rpx;
+            height:23rpx;
+            background: url(@/static/illustration/icon_kab.png) no-repeat center / 100% 100%;
+            margin-left: 5rpx;
+        }
     }
     .card-info{
         width: 535rpx;
@@ -318,6 +423,15 @@
         box-sizing: border-box;
         padding:25rpx;
         position: relative;
+        overflow: hidden;
+    }
+    .card-teamlogo{
+        width: 300rpx;
+        height:300rpx;
+        position: absolute;
+        bottom:-100rpx;
+        right:-100rpx;
+        opacity: 0.5;
     }
     .card-player{
         font-size: 25rpx;

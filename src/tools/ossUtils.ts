@@ -39,8 +39,8 @@ export default class ossUtils {
         return suffix;
     }
     getFileName(filename: any) {
-        // console.log('filename:', filename)
-        return new Date().getTime() + Math.random().toString(36).substring(3, 20) + this._getSuffix(filename)
+        console.log('filename:', filename)
+        return new Date().getTime() + Math.random().toString(36).substring(3, 20) + this._getSuffix(filename.name)
     }
     getImage(sourceType='album'):Promise<string> {
         return new Promise((resolve, reject) => {

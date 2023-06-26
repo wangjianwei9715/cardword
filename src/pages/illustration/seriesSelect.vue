@@ -33,27 +33,8 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
 	export default class ClassName extends BaseNode {
-		sideTab = [
-			{name:'22-23',num:55},
-			{name:'21-22',num:54},
-			{name:'20-21',num:53},
-			{name:'18-19',num:52},
-			{name:'16-17',num:51},
-		];
-		seriesList:any = [
-			{ 
-				"title": '22-23篮球',
-				"isFetchEnd": false,
-				"list":[
-					{
-						"code": 'string',
-						"name": 'Flawlesss', 
-						"logo": 'http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg', 
-						"percent": 5 // 完整度百分之
-					}
-				]
-			}
-		];
+		sideTab = [];
+		seriesList:any = [];
 		current = 0;
 		back = false;
 		onLoad(query: any) {

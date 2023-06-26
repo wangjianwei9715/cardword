@@ -1617,6 +1617,18 @@
 							"bounce": "none"
 						}
 					}
+				},
+				{
+					"path": "cardSetUpload",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
 				}
 			]
 		}
