@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 19:20:27
+ * @LastEditTime: 2023-06-26 19:27:13
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -33,7 +33,7 @@
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
                             <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                :src="item.avatar || defaultAvatar"></image>
+                                :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
                             <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                             <view class="likeWrap">
                                 <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
@@ -68,7 +68,7 @@
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
                             <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                :src="item.avatar || defaultAvatar"></image>
+                                :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
                             <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                             <view class="likeWrap">
                                 <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
@@ -119,7 +119,7 @@
                     </div>
                 </div>
                 <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
-                    <image class="waterfall-item__bottom__avatar" mode="aspectFill" :src="item.avatar || defaultAvatar">
+                    <image class="waterfall-item__bottom__avatar" mode="aspectFill" :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                     </image>
                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                     <div class="likeWrap">
@@ -580,4 +580,5 @@ $uvui-nvue-style: true !default;
 .waterfall-item-grayWrap {
     padding-bottom: 10rpx;
     // background-color: #f6f7fb;
-}</style>
+}
+</style>
