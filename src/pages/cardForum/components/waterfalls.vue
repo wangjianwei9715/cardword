@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 19:27:13
+ * @LastEditTime: 2023-06-27 11:31:49
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -14,13 +14,13 @@
             <slot name="list1"></slot>
             <!-- slot示例 -->
             <view>
-                <view v-for="(item, index) in list1" :key="item.code" class="waterfall-item-grayWrap">
+                <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
                             <image :src="$parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
-                            <image v-if="item.mode" :src="$parsePic(decodeURIComponent(item.cover))" :mode="item.mode"
+                            <image v-if="item.mode" style="width:360rpx" :src="$parsePic(decodeURIComponent(item.cover))" :mode="item.mode"
                                 class="waterfall-item__image_img">
                             </image>
                             <image v-else style="width:360rpx;height:430rpx;background-color: #fff;">
@@ -49,13 +49,13 @@
             <slot name="list2"></slot>
             <!-- slot示例 -->
             <view>
-                <view v-for="(item, index) in list2" :key="item.code" class="waterfall-item-grayWrap">
+                <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
                             <image :src="$parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
-                            <image v-if="item.mode" :src="$parsePic(decodeURIComponent(item.cover))" :mode="item.mode"
+                            <image v-if="item.mode" style="width:360rpx" :src="$parsePic(decodeURIComponent(item.cover))" :mode="item.mode"
                                 class="waterfall-item__image_img">
                             </image>
                             <image v-else style="width:360rpx;height:430rpx;background-color: #fff;">
@@ -106,7 +106,7 @@
         <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)">
             <div class="waterfall-item" v-if="item.mode">
                 <div class="waterfall-item__image">
-                    <image v-if="item.mode == 'widthFix'" :src="$parsePic(decodeURIComponent(item.cover))"
+                    <image v-if="item.mode == 'widthFix'" style="width: 360rpx;" :src="$parsePic(decodeURIComponent(item.cover))"
                         class="waterfall-item__image_img" mode="widthFix">
                     </image>
                     <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
