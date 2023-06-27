@@ -1,0 +1,307 @@
+<template>
+	<view class="index-hot">
+		<view class="hot-box" @click="onClickHot()">
+			<u-transition class="hot-p-b" v-for="(item,index) in freshPic" :key="index" :show="item.show" :duration="500" mode="fade-zoom">
+				<image class="hot-pic" :src="decodeURIComponent(item.icon)" mode="aspectFill"></image>
+			</u-transition>
+			<view class="hot-b"></view>
+			<image class="hot-name" src="@/static/index/hot/title_h.png"/>
+			<view class="hot-desc">大家都在玩～</view>
+		</view>
+		<view class="right">
+			<view class="live-box">
+				<view class="live-title">
+					<image class="live-name" src="@/static/index/hot/title_live.png"/>
+					<view class="live-desc">一起来围观</view>
+				</view>
+				<view class="live-index">
+					<view class="tab-hot-boxpic-box live-border" v-for="(item,index) in broadCastList" :key="index" @click="onClickLive(item)">
+						<view v-if="item.state == 2 || item.state == 1" class="live-ing"></view>
+						<muqian-lazyLoad :src="decodeURIComponent(item.pic)" class="tab-hot-boxpic broadcast-box" mode="aspectFill" borderRadius="50%" width="100rpx" height="100rpx" :viewBg="true"/>
+						<view class="tab-hot-live-state u-line-1">{{item.merchantName}}</view>
+					</view>
+				</view>
+			</view>
+			<view class="bottom">
+				<navigator url="/pages/goods/goods_assign_list?type=cheap" hover-class="none" class="bottom-box">
+					<image class="p1" src="@/static/index/hot/p_1.png"/>
+					<image class="title1" src="@/static/index/hot/title_x.png"/>
+				</navigator>
+				<navigator url="/pages/goods/goods_progressRank" hover-class="none"  class="bottom-box">
+					<image class="p2" src="@/static/index/hot/p_2.png"/>
+					<image class="title2" src="@/static/index/hot/title_j.png"/>
+				</navigator>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script lang="ts">
+	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
+	import BaseComponent from "@/base/BaseComponent.vue";
+	import { app } from "@/app";
+	@Component({})
+	export default class ClassName extends BaseComponent {
+		@Prop({default:[]})
+		hot:any;
+		@Prop({default:[]})
+		broadCastList:any;
+
+		freshPic:any = [];
+		freshInterval:any;
+		transIndex = 0;
+		@Watch('hot')
+		onDataChanged(val: any, oldVal: any) {
+			if(val){
+				this.freshPic = val.map((x:any,index:number)=>{
+					if(index==this.transIndex){
+						setTimeout(()=>{this.freshPic[index].show=true},400)
+					}
+					return {show:false,icon:x.icon,id:x.id}
+				})
+				this.freshInterFnc()
+			}
+		}
+		created(){//在实例创建完成后被立即调用
+			
+		}
+		mounted(){//挂载到实例上去之后调用
+			console.log(this.broadCastList);
+			
+		}
+		freshInterFnc(){
+			this.transIndex = 0;
+			clearInterval(this.freshInterval)
+			this.freshInterval = setInterval(()=>{
+				if(this.transIndex<this.freshPic.length-1){
+					this.transIndex ++ ;
+				}else{
+					this.transIndex = 0;
+				}
+				this.freshPic.forEach((x:any,index:number)=>{
+					if(index==this.transIndex){
+						setTimeout(()=>{this.freshPic[index].show=true},400)
+					}else{
+						x.show = false;
+					}
+				})
+			},4500)
+		}
+		onClickLive(item:any){
+			if(app.token.accessToken == ''){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+				return;
+			}
+			if (item.third && item.third === 1001) {
+				app.platform.goZgLive({
+					roomID: item.roomId,
+					merchantId: item.merchantId,
+					playCode:item.playCode,
+					isAnchor: false,
+					...item
+				})
+				return
+			}
+			app.platform.goWeChatLive({playCode:item.playCode,goodCode:item.goodCode})
+		}
+		onClickHot(){
+			uni.navigateTo({
+				url:`/pages/goods/goods_seriesDetail?seriesId=${this.freshPic[this.transIndex].id}`
+			})
+		}
+	}
+</script>
+
+<style lang="scss">
+	.index-hot{
+		width: 100%;
+		height:360rpx;
+		box-sizing: border-box;
+		padding:0 20rpx;
+		display: flex;
+		justify-content: space-between;
+		.hot-box{
+			width: 260rpx;
+			height:360rpx;
+			background: url(@/static/index/hot/bg_1.png) no-repeat center / 100% 100%;
+			position:relative;
+			box-sizing: border-box;
+			padding-top: 272rpx;
+			padding-left: 25rpx;
+			.hot-p-b{
+				width: 167rpx;
+				height:167rpx;
+				position: absolute;
+				top:34rpx;
+				left:47rpx;
+				z-index: 2;
+			}
+			.hot-pic{
+				width: 167rpx;
+				height:167rpx;
+			}
+			.hot-b{
+				width: 209rpx;
+				height:51rpx;
+				background: url(@/static/index/hot/hot_b.png) no-repeat center / 100% 100%;
+				position: absolute;
+				top:204rpx;
+				left:26rpx;
+				z-index: 1;
+			}
+			.hot-name{
+				width: 108rpx;
+				height:26rpx;
+			}
+			.hot-desc{
+				margin-top: 5rpx;
+				font-size: 21rpx;
+				font-family: PingFang SC;
+				font-weight: 400;
+				color: #959695;
+			}
+		}
+		.right{
+			width: 442rpx;
+			height:360rpx;
+			.live-box{
+				width: 442rpx;
+				height:176rpx;
+				background: url(@/static/index/hot/bg_2.png) no-repeat center / 100% 100%;
+				margin-bottom: 8rpx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				box-sizing: border-box;
+				padding: 0 28rpx;
+			}
+			.live-title{
+				width: 160rpx;
+				height:176rpx;
+				box-sizing: border-box;
+				padding-top: 58rpx;
+			}
+			.live-name{
+				width: 109rpx;
+				height:26rpx;
+			}
+			.live-desc{
+				font-size: 21rpx;
+				font-family: PingFang SC;
+				font-weight: 400;
+				color: #959695;
+				margin-top: 6rpx;
+			}
+			.live-index{
+				width: 230rpx;
+				height:176rpx;
+				box-sizing: border-box;
+				padding-top: 38rpx;
+				display: flex;
+				justify-content: space-between;
+			}
+			.tab-hot-boxpic-box{
+				width: 97rpx;
+				height:97rpx;
+				position: relative;
+			}
+			.tab-hot-live-state{
+				width: 97rpx;
+				height: 25rpx;
+				background: #FA1545;
+				border: 2rpx solid #FFFFFF;
+				border-radius: 3rpx;
+				font-size: 16rpx;
+				font-family: PingFang SC;
+				font-weight: 400;
+				color: #FFFFFF;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				position: absolute;
+				left:0;
+				bottom:-9rpx;
+				z-index:3;
+			}
+			.live-border{
+				border:4rpx solid #FA1545;
+				border-radius: 50%;
+			}
+			.broadcast-box{
+				width: 97rpx;
+				height:97rpx;
+				border-radius: 50%;
+				overflow: hidden;
+			}
+			.live-ing{
+				width: 97rpx;
+				height:97rpx;
+				position: absolute;
+				left:50%;
+				top:50%;
+				z-index: 2;
+				border:2rpx solid #FA1545;
+				border-radius: 50%;
+				-webkit-animation: animate 1s linear infinite;
+			}
+
+			@keyframes animate {
+				0%{
+					transform: translate(-50%, -50%) scale(1);
+					opacity: 1;  
+				}
+				50%{
+					transform: translate(-50%, -50%) scale(1.15);  
+					opacity: 0.5;   /*圆形放大的同时，透明度逐渐减小为0*/
+				}
+				100%{
+					transform: translate(-50%, -50%) scale(1.3);  
+					opacity: 0;   /*圆形放大的同时，透明度逐渐减小为0*/
+				}
+			}
+		}
+		.bottom{
+			width: 442rpx;
+			height:176rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.bottom-box{
+				width: 217rpx;
+				height:176rpx;
+				background: url(@/static/index/hot/bg_3.png) no-repeat center / 100% 100%;
+				position: relative;
+			}
+			.p1{
+				width: 132rpx;
+				height:95rpx;
+				position: absolute;
+				top:23rpx;
+				left:44rpx
+			}
+			.p2{
+				width: 157rpx;
+				height:80rpx;
+				position: absolute;
+				top:28rpx;
+				left:37rpx;
+			}
+			.title1{
+				width: 109rpx;
+				height:26rpx;
+				position: absolute;
+				left:54rpx;
+				bottom:24rpx
+			}
+			.title2{
+				width: 108rpx;
+				height:26rpx;
+				position: absolute;
+				left:55rpx;
+				bottom:24rpx
+			}
+		}
+	}
+</style>

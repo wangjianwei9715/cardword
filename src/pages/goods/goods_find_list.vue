@@ -32,7 +32,7 @@
 					</view>
 				</view>
 			</scroll-view>
-			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" />
+			<goodslist :goodsList="goodsList" @send="onClickJumpDetails" :presell="false" :nomore="noMoreData" />
 			<empty v-if="goodsList&&!goodsList.length&&!isRequest" />
 		</view>
 	</view>

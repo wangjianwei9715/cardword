@@ -4,10 +4,10 @@
 			<statusbar/>
 			<view class="header">
 				<view class="icon-close" @click="onClickClose()"></view>
-				<view class="header-right">
+				<navigator url="/pages/illustration/report/error" class="header-right" hover-class="none">
 					<view class="icon-error"></view>
 					<view class="error-text">报错有奖</view>
-				</view>
+				</navigator>
 			</view>
 		</view>
 		<view class="center">

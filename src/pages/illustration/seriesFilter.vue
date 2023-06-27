@@ -177,7 +177,8 @@
 			})
 		}
 		onClickClearQ(index:number){
-			this.paramsMap[index].params.q = ""
+			this.paramsMap[index].params.q = "";
+			this.onConfirmInput(index)
 		}
 		loadmore(event:any){
 			event.status = "loading";

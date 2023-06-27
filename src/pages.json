@@ -1,9 +1,9 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 11:34:27
- * @FilePath: \card-world\src\pages.json
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-27 15:17:39
+ * @FilePath: \jichao_app_2\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 {
@@ -60,6 +60,13 @@
 		},
 		{
 			"path": "pages/live/live_find",
+			"style": {
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/live/list",
 			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false
@@ -206,43 +213,33 @@
 		}
 	},
 	"tabBar": {
-		"color": "#888888",
+		"color": "#959495",
 		"selectedColor": "#333333",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"fontSize": "10px",
+		"fontSize": "16px",
 		"height": "56px",
 		"spacing": "4px",
 		"iconWidth": "28px",
 		"list": [
 			{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/index/v3/tab1.png",
-				"selectedIconPath": "static/index/v3/tab1_.png",
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/index/service",
-				"iconPath": "static/index/v3/tab2.png",
-				"selectedIconPath": "static/index/v3/tab2_.png",
-				"text": "功能"
+				"pagePath": "pages/illustration/index",
+				"text": "图鉴"
 			},
 			{
 				"pagePath": "pages/cardForum/home",
-				"iconPath": "static/index/v3/tab2.png",
-				"selectedIconPath": "static/index/v3/tab2_.png",
 				"text": "卡圈"
 			},
 			{
 				"pagePath": "pages/index/message",
-				"iconPath": "static/index/v3/tab3.png",
-				"selectedIconPath": "static/index/v3/tab3_.png",
 				"text": "消息"
 			},
 			{
-				"pagePath": "pages/index/userinfo_v3",
-				"iconPath": "static/index/v3/tab4.png",
-				"selectedIconPath": "static/index/v3/tab4_.png",
+				"pagePath": "pages/index/userinfo",
 				"text": "我的"
 			}
 		]
@@ -1632,6 +1629,42 @@
 					"path": "cardSetUpload",
 					"style": {
 						"navigationStyle": "custom",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "report/error",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "report/record",
+					"style": {
+						"navigationBarTitleText": "报错记录",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "report/detail",
+					"style": {
+						"navigationBarTitleText": "报错详情",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
