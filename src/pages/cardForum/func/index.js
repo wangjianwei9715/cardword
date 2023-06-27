@@ -1,3 +1,12 @@
+/*
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-06-25 20:11:24
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-06-27 14:34:40
+ * @FilePath: \card-world\src\pages\cardForum\func\index.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+const app = getApp().globalData.app
 export function releaseByTopic(id) {
     uni.navigateTo({
         url: `/pages/cardForum/release?topicId=${id}`
@@ -24,6 +33,16 @@ export function getDraftList(type) {
     }
     return list.sort((x, y) => {
         return y.stamp - x.stamp
+    })
+}
+//关注话题
+export function followTopic(id) {
+    return new Promise((re, rj) => {
+        app.http.Post(`cardCircle/follow/topic/` + id, {}, () => {
+            re && re(true)
+        }, (err) => {
+            rj(err)
+        })
     })
 }
 export const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg' },

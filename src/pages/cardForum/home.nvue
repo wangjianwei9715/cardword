@@ -146,7 +146,8 @@ const actionsList = [
 const tabsList = [
     {
         name: '关注',
-        tag: 'follow'
+        tag: 'follow',
+        url: 'cardCircle/list/me/follow'
     }, {
         name: '推荐',
         tag: 'all'
@@ -181,11 +182,10 @@ const tabsList = [
 ]
 const app = getApp().globalData.app;
 const defaultTagObj = {
-    // queryParams: {
-    //     pageIndex: 1,
-    //     pageSize: 15,
-    //     q: ""
-    // },
+    queryParams: {
+        fetchFrom: 1,
+        fetchSize: 15,
+    },
     // totalPage: 10,
     isFetchEnd: false,
     firstReqEnd: false,
@@ -387,8 +387,8 @@ export default {
             }, 200);
         },
         loadmoreData(index) {
-            const nowTab = this.tabs.list[index]
-            if (!nowTab.isFetchEnd) this.reqNewData()
+            // const nowTab = this.tabs.list[index]
+            if (!this.current.isFetchEnd) this.reqNewData()
         },
         onClickTopic(item) {
             releaseByTopic(item.id)
@@ -404,9 +404,17 @@ export default {
             // this.current.firstReqEnd = true
             // cb && cb()
             //===========mock==========
-            const query = this.current.queryParams
-            app.http.Get("dataApi/cardCircle/list", { tag: this.current.tag }, (res) => {
-                this.current.firstReqEnd = res.isFetchEnd
+            let query = {
+                tag: this.current.tag
+            }
+            if (this.current.name == '关注') {
+                query = {
+                    ...this.current.queryParams,
+                    ...query
+                }
+            }
+            app.http.Get(`dataApi/${this.current.url || "cardCircle/list"}`, query, (res) => {
+                this.current.isFetchEnd = res.isFetchEnd
                 if (isRefresh) {
                     this.current.list = []
                     this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
@@ -417,6 +425,7 @@ export default {
             }, (err) => {
                 this.current.firstReqEnd = true
             })
+            console.log(this.current);
         }
     }
 }

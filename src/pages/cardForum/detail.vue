@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 18:46:31
+ * @LastEditTime: 2023-06-27 14:42:41
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,12 +19,12 @@
                     <view class="topName u-line-1">{{ forumDetail.userName || "获取中" }}</view>
                 </view>
                 <view class="flex1"></view>
-                <view class="follow flexCenter" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{
+                <view class="follow flexCenter" v-if="!isPerson" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{
                     isFollow ? '已关注'
                     : '关注' }}</view>
                 <!-- v-if="!isPerson"
                 v-if="isPerson" -->
-                <view @click="actionSheetShow = true" v-if="isPerson">
+                <view @click="actionSheetShow = true" v-if="isPerson" style="margin-right: 20rpx;">
                     <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>
                 </view>
                 <u-icon name="share-square" color="#6c6969" size="28" @click="operationShow = true"></u-icon>
@@ -39,7 +39,7 @@
             <u-swiper imgMode="aspectFit" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"
                 :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
         </view>
-        <view class="dotContainer" :style="{ width: dotContainerWidth + 'px' }">
+        <view class="dotContainer" :style="{ width: dotContainerWidth + 'px' }" v-if="pics.length > 1">
             <view class="indicatorScroll" :style="{ left: scrollLeft + 'px' }">
                 <view :id="`dot${index}`" class="dot" :class="{ dot_big: pics.length > 5 && swiperCurrent === index }"
                     v-for="(item, index) in pics.length">
@@ -57,7 +57,7 @@
                 <view class="desc" v-if="forumDetail.content">{{ forumDetail.content }}</view>
             </u-read-more>
             <view class="topicsContainer" v-if="forumDetail.topic && forumDetail.topic.length">
-                <text v-for="item in forumDetail.topic.split('#')">#{{ item }}</text>
+                <text v-for="item in forumDetail.topic">{{ item }}</text>
             </view>
             <view class="haowuGoodsWrap" v-if="forumDetail.good && forumDetail.good.goodCode"
                 @click="app.navigateTo.goGoodsDetails(forumDetail.good.goodCode)">
@@ -166,7 +166,7 @@
             <view class="wrap">
                 <view class="fakerInput u-line-1" @click="onClickFakerInput">{{ fakerInputVal }}</view>
                 <view class="toolsWrap">
-                    <view class="toolsItem" @click="rewardShow = true">
+                    <view class="toolsItem" @click="isPerson ? recGiftShow = true : rewardShow = true">
                         <image src="@/static/cardForum/gift.png" style="width:34rpx;height:37rpx" />
                         <view class="num">打赏</view>
                     </view>
@@ -382,10 +382,10 @@ export default class ClassName extends BaseNode {
     //发布评论或回复
     pushOrReply(id: number, item: CardForum.CommentFather) {
         // cardCircle/comment
-        const requestUrl = `cardCircle/comment/${id == 0 ? "issue" : "reply"}/comment/${id || this.code}`
+        const requestUrl = `cardCircle/comment/${id == 0 ? "issue" : "reply"}/${id || this.code}`
         app.http.Post(requestUrl, { content: this.sayContent }, (res: any) => {
             const same = {
-                id: res.lastCommentId as number,
+                id: res.commentId as number,
                 userName: this.userInfo.userName || "小卡迷",
                 avatar: this.userInfo.avatar || app.defaultAvatar,
                 isLiked: false,
@@ -886,6 +886,7 @@ export default class ClassName extends BaseNode {
     border-top: 1rpx solid #E8E8E8;
     background-color: #fff;
     z-index: 5;
+
     .wrap {
         height: 124rpx;
         width: inherit;

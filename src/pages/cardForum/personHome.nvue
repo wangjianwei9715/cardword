@@ -126,6 +126,7 @@ export default {
     },
     data() {
         return {
+            $parsePic: getApp().globalData.parsePic,
             app,
             navHeight: 0,
             scrollViewHeight: 0,

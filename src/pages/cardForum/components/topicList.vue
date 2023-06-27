@@ -12,7 +12,8 @@
             <view class="rightInfo">
                 <view class="titleWrap">
                     <text class="title">{{ item.name }}</text>
-                    <text class="act" v-if="item.activity">活动</text>
+                    <text class="act" v-if="item.activity && !old">活动</text>
+                    <text class="act" v-if="old && item.isMy">活动</text>
                 </view>
                 <!-- #ifdef APP-NVUE -->
                 <text class="desc">{{ item.intro }}</text>
@@ -22,9 +23,15 @@
                 <!-- #endif -->
                 <view class="flex1"></view>
                 <view class="bottomInfo">
-                    <text class="num">{{ formatNumber(item.totalUseNum, 2) }}篇动态</text>
-                    <!-- <view class="flex1"></view> -->
-                    <text class="pushButton flexCenter" @click.stop="onClickPush($event, item)">发布</text>
+                    <template v-if="!old">
+                        <text class="num">{{ formatNumber(item.totalUseNum, 2) }}篇动态</text>
+                        <text class="pushButton flexCenter" @click.stop="onClickPush($event, item)">发布</text>
+                    </template>
+                    <template v-if="old">
+                        <text class="num">{{ stateMap[item.state] }} {{ $u.timeFormat(item.start_at, "mm-dd") }} ~ {{
+                            $u.timeFormat(item.end_at, "mm-dd") }} </text>
+                        <text class="num">{{ item.peopleNum || 0 }}人参与</text>
+                    </template>
                 </view>
             </view>
         </view>
@@ -32,6 +39,11 @@
 </template>
 <script>
 import { releaseByTopic, formatNumber } from "../func/index.js"
+const stateMap = {
+    0: "未开始",
+    1: "进行中",
+    2: '已结束'
+}
 export default {
     name: '',
     components: {
@@ -43,9 +55,14 @@ export default {
             type: Array,
             default: () => []
         },
+        old: {
+            type: Boolean,
+            default: false
+        },
     },
     data() {
         return {
+            stateMap,
             list: [],
             formatNumber,
         }
@@ -57,33 +74,6 @@ export default {
 
     },
     mounted() {
-        // this.list = [
-        //     {
-        //         name: "秀卡-詹姆斯",
-        //         id: 1,
-        //         isActivity: true
-        //     },
-        //     {
-        //         name: "问价",
-        //         id: 2,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的第一张卡",
-        //         id: 3,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的卡在哪里",
-        //         id: 5,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的卡屌不屌",
-        //         id: 6,
-        //         isActivity: false
-        //     }
-        // ]
     },
     methods: {
         onClickPush(event, item) {
@@ -93,9 +83,14 @@ export default {
             releaseByTopic(item.id)
         },
         goToDetail(item) {
-
+            if (this.old) {
+                uni.navigateTo({
+                    url: "/pages/cardForum/topics/act?id=" + item.id
+                })
+                return
+            }
             uni.navigateTo({
-                url: "/pages/cardForum/topics/detail"
+                url: "/pages/cardForum/topics/detail?id=" + item.id
             })
         }
     }
