@@ -1,6 +1,15 @@
 <!--
  * @FilePath: \jichao_app_2\src\pages\illustration\seriesDetail.vue
  * @Author: wjw
+ * @Date: 2023-06-21 11:20:35
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-26 14:44:25
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
+<!--
+ * @FilePath: \jichao_app_2\src\pages\illustration\seriesDetail.vue
+ * @Author: wjw
  * @Date: 2023-06-16 17:01:28
  * @LastEditors: Please set LastEditors
  * @LastEditTime: 2023-06-25 10:31:15
@@ -35,7 +44,7 @@
 				:inactiveStyle="{color: '#959695',fontSize: '27rpx'}" 
 			/>
 		</u-sticky>
-		<cardSetList :seriesCode="seriesCode" :search="seriesData.search" :reachNum.sync="reachNum"/>
+		<cardSetList v-show="tabsData.current==0" :numAll="seriesData.main.numAll" :seriesCode="seriesCode" :search="seriesData.search" :reachNum.sync="reachNum"/>
 	</view>
 </template>
 
@@ -59,12 +68,12 @@
 			"code":0,
 			"followed": false, //当前用户是否已关注此系列
 			"main": { //data
-				"name": "Flawless", //sport_type
-				"year": "21-22", //year
-				"logo": "http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg", //logo
-				"backPic": "http://cdn.ka-world.com/admin/debug/2023.06.08/goods/CL511202K/0/1686202542691lu5s05g33.jpg", //backPic
+				"name": "", //sport_type
+				"year": "", //year
+				"logo": "", //logo
+				"backPic": "", //backPic
 				"numLoaded": 0, 
-				"numAll": 0, 
+				"numAll":0, 
 			},
 			"search": { //data
 				"cardSets": '', //显示后台翻译过的卡种，展示72小时内点击量最高的20条内容（含详细筛选），未翻译的卡种不显示
@@ -80,7 +89,6 @@
 			this.onEventUI("seriesSelect", (res) => {
 				this.seriesCode = res;
 				this.initEvent()
-				this.reachNum = 0;
 			});
 			this.initEvent()
 		}
@@ -99,7 +107,7 @@
 			this.getSeriesDetail();
 		}
 		getSeriesDetail(){
-			app.http.Get(`dataApi/cardIllustration/detail/serie/${this.seriesCode}`,{},(res:any)=>{
+			app.http.Get(`dataApi/cardIllustration/detail/series/${this.seriesCode}`,{},(res:any)=>{
 				this.seriesData = res;
 				uni.setNavigationBarTitle({
 					title: `${res.main.year} ${ res.main.name}`
@@ -108,7 +116,7 @@
 		}
 		onClickFollow(){
 			const type = this.seriesData.followed ? 'unfollow' : 'follow';
-			app.http.Post(`cardIllustration/serie/${this.seriesCode}/${type}`,{},(res:any)=>{
+			app.http.Post(`cardIllustration/series/${this.seriesCode}/${type}`,{},(res:any)=>{
 				!this.seriesData.followed && uni.showToast({ title: '关注成功', icon:'none' });
 				this.seriesData.followed = !this.seriesData.followed;
 			})
@@ -116,7 +124,7 @@
 		
 		onChangeTabs(event:any){
 			console.log(event);
-			
+			this.tabsData.current = event.index
 		}
 		onClickSeriesSelect(){
 			uni.navigateTo({

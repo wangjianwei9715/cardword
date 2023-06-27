@@ -10,11 +10,12 @@ export default class Upload {
         }
         return Upload.instance
     }
-    uploadFile(fileList: any, sign: any, fileDir = "") {
+    uploadFile(file: any, sign: any, fileDir = "") {
         return new Promise((resolve, reject) => {
+            const fileList = file.tempFilePaths;
             let arr: any = []
             for (let i = 0; i < fileList.length; i++) {
-                const fileName = "images/mini/" + fileDir + this.ossutils.getFileName(fileList[i]); // 自定义上传后的文件名称
+                const fileName = "images/app/" + fileDir + this.ossutils.getFileName(file.tempFiles[i]); // 自定义上传后的文件名称
                 uni.uploadFile({
                     url: sign.host,
                     filePath: fileList[i],
@@ -57,7 +58,7 @@ export default class Upload {
                 sourceType: sourceType,
                 count,
                 success: (res) => {
-                    resolve(res.tempFilePaths)
+                    resolve(res)
                 },
                 fail: (err) => {
                     if (err.errMsg.includes("cancel") || err.errMsg.includes("用户取消")) {
@@ -74,12 +75,12 @@ export default class Upload {
     async upLoadImagePath(...params: any) {
         try {
             //@ts-ignore
-            const fileList = await this.getImages(...params); // 选择图片
+            const fileRes:any = await this.getImages(...params); // 选择图片
             const sign = await this.ossutils.getSTS(); // 获取签名等信息
             uni.showLoading({
                 title: '上传图片中...'
             });
-            const imgUrls = await this.uploadFile(fileList, sign, params[1])
+            const imgUrls = await this.uploadFile(fileRes, sign, params[1])
             return imgUrls
         } catch (err) {
             //@ts-ignore

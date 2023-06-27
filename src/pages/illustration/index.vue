@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-25 20:18:33
+ * @LastEditTime: 2023-06-26 15:20:45
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -29,7 +29,7 @@
 					<u-cell :title="`${item.year} ${item.serie}`" :titleStyle="titleStyle" :border="false">
 						<view slot="value" class="cell-value">详细图鉴<image class="cell-right" src="@/static/goods/v2/icon_right_new.png"/></view>
 					</u-cell>
-					<view class="series-card">{{item.name}}({{item.cardSet}})</view>
+					<view class="series-card u-line-2">{{item.name}}</view>
 				</view>
 			</view>
 			<view class="series-nolist">
@@ -64,30 +64,8 @@
 			padding:'0'
 		}
 		listParams = new ListParams()
-		hotSeriesList = [{ 
-            "code": 'IYJEL3', //IYJEL3
-            "name": 'flawess', //flawess
-            "year": '19-20', //19-20
-            "logo": 'http://cdn.ka-world.com/admin/debug/2023.05.29/goods/pintuan0/1685348082327rg7zpaz63r.jpg', 
-            "percent": 5 //完整度百分之
-        }];
-		seriesLst = [
-			{ 
-				"serieCode": 'string', 
-				"serie": 'FLAWLESS',
-				"year": '21-22', 
-				"logo": 'http://cdn.ka-world.com/admin/debug/2023.06.08/goods/CL511202K/0/1686202542691lu5s05g33.jpg', 
-				"cardSet": 'Craftsmen Press Proof Black', 
-				"name": '黑折', 
-				"cardSetNameId":12,//卡种id 
-				"noList": [
-					{
-						"noCode": 'string' ,
-						"pic": 'http://cdn.ka-world.com/admin/debug/2023.06.08/goods/CL6496266/0/16861966212777mydxcs6k.jpg' 
-					}
-				]
-			}
-		];
+		hotSeriesList = [];
+		seriesLst = [];
 		onLoad(query: any) {
 			this.initEvent()
 		}
@@ -111,7 +89,7 @@
 		}
 		getSeries(){
 			if(this.listParams.isFetchEnd) return;
-			app.http.Get('dataApi/cardIllustration/list/series',this.listParams,(res:any)=>{
+			app.http.Get('dataApi/cardIllustration/list/cardSet/hot',this.listParams,(res:any)=>{
 				if(res.list){
 					this.seriesLst = this.listParams.fetchFrom==1 ? res.list : [...this.seriesLst,...res.list];
 				};
