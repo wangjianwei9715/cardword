@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 19:18:41
+ * @LastEditTime: 2023-06-27 19:46:36
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -17,8 +17,8 @@
                 <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="thumbnail(item.cover)"
-                                style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
+                            <image :src="thumbnail(item.cover)" style="opacity:0;width:0px;height:0px;position:absolute"
+                                @load="imageLoad($event, item)">
                             </image>
                             <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
                                 :mode="item.mode" class="waterfall-item__image_img">
@@ -70,8 +70,8 @@
                 <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="thumbnail(item.cover)"
-                                style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
+                            <image :src="thumbnail(item.cover)" style="opacity:0;width:0px;height:0px;position:absolute"
+                                @load="imageLoad($event, item)">
                             </image>
                             <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
                                 :mode="item.mode" class="waterfall-item__image_img">
@@ -131,8 +131,7 @@
             <div ref="goTop" style="width: 0;height: 0;"></div>
         </header>
         <header>
-            <image v-for="(item, index) in value"
-                :src="thumbnail(item.cover)"
+            <image v-for="(item, index) in value" :src="thumbnail(item.cover)"
                 style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)"
                 @error="imageLoadError($event, item)">
             </image>
@@ -140,7 +139,8 @@
         <slot name="header"></slot>
 
         <slot name="cell"></slot>
-        <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)">
+        <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)"
+            @appear="comAppear($event, item.code)">
             <div class="waterfall-item" v-if="item.mode">
                 <div class="waterfall-item__image">
                     <image v-if="item.mode == 'widthFix'" style="width: 360rpx;"
@@ -193,6 +193,8 @@ const MAX_HEIGHT = uni.upx2px(440)
 const WIDTH = uni.upx2px(360)
 const MIN_HEIGHT = uni.upx2px(246)
 const GAP = uni.upx2px(10)
+const app = getApp().globalData.app
+let exposureList = []
 import mixin from './function/mixin.js'
 // #ifdef APP-NVUE
 const dom = weex.requireModule('dom')
@@ -283,6 +285,10 @@ export default {
         detailBack: {
             type: Boolean,
             default: false
+        },
+        needExposure: {
+            type: Boolean,
+            default: false
         }
 
     },
@@ -296,7 +302,8 @@ export default {
             parsePic: getApp().globalData.parsePic,
             refreshing: false,
             defaultAvatar: getApp().globalData.app.defaultAvatar,
-            pushTimer: 0
+            pushTimer: 0,
+
         }
     },
 
@@ -362,6 +369,19 @@ export default {
         onrefresh() {
             this.$emit("refresh")
             this.refreshing = true
+        },
+        comAppear(event, code) {
+            if (this.needExposure) {
+                exposureList.push(code)
+                uni.$u.debounce(() => {
+                    this.exposureAction && this.exposureAction()
+                }, 5000)
+            }
+        },
+        exposureAction() {
+            const newArray = [...new Set(exposureList)];
+            console.log("发送的newArray", newArray);
+            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray }, () => { })
         },
         goToUserProfile(event, item) {
             // #ifdef APP-NVUE
