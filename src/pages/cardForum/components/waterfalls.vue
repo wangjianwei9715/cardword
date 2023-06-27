@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 11:31:49
+ * @LastEditTime: 2023-06-27 13:43:49
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -17,11 +17,11 @@
                 <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="$parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
+                            <image :src="parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
-                            <image v-if="item.mode" style="width:360rpx" :src="$parsePic(decodeURIComponent(item.cover))" :mode="item.mode"
-                                class="waterfall-item__image_img">
+                            <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
+                                :mode="item.mode" class="waterfall-item__image_img">
                             </image>
                             <image v-else style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
@@ -33,7 +33,7 @@
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
                             <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
+                                :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
                             <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                             <view class="likeWrap">
                                 <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
@@ -52,11 +52,11 @@
                 <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="$parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
+                            <image :src="parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
-                            <image v-if="item.mode" style="width:360rpx" :src="$parsePic(decodeURIComponent(item.cover))" :mode="item.mode"
-                                class="waterfall-item__image_img">
+                            <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
+                                :mode="item.mode" class="waterfall-item__image_img">
                             </image>
                             <image v-else style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
@@ -68,7 +68,7 @@
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
                             <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
+                                :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
                             <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                             <view class="likeWrap">
                                 <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
@@ -96,7 +96,7 @@
         </header>
         <header>
             <image v-for="(item, index) in value"
-                :src="$parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
+                :src="parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
                 style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)">
             </image>
         </header>
@@ -106,11 +106,11 @@
         <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)">
             <div class="waterfall-item" v-if="item.mode">
                 <div class="waterfall-item__image">
-                    <image v-if="item.mode == 'widthFix'" style="width: 360rpx;" :src="$parsePic(decodeURIComponent(item.cover))"
-                        class="waterfall-item__image_img" mode="widthFix">
+                    <image v-if="item.mode == 'widthFix'" style="width: 360rpx;"
+                        :src="parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="widthFix">
                     </image>
                     <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
-                        :src="$parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="aspectFit">
+                        :src="parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="aspectFit">
                     </image>
                 </div>
                 <div class="waterfall-item__ft">
@@ -119,7 +119,8 @@
                     </div>
                 </div>
                 <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
-                    <image class="waterfall-item__bottom__avatar" mode="aspectFill" :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
+                    <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                        :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                     </image>
                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                     <div class="likeWrap">
@@ -222,6 +223,7 @@ export default {
             GAP,
             // 临时列表
             tempList: [],
+            parsePic: getApp().globalData.parsePic,
             refreshing: false,
             defaultAvatar: getApp().globalData.app.defaultAvatar
         }
