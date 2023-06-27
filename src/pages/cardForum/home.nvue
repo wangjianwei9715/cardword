@@ -44,7 +44,7 @@
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls :refreshColor="isShowKa ? '#ffffff' : ''" column-count="2" v-if="tab.list.length"
+                    <waterfalls :needExposure="true" :refreshColor="isShowKa ? '#ffffff' : ''" column-count="2" v-if="tab.list.length"
                         :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'" :value="tab.list"
                         @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
                         <template v-slot:header v-if="tabIndex == 2 && tab.firstReqEnd">

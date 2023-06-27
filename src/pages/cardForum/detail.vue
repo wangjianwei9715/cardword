@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 18:38:06
+ * @LastEditTime: 2023-06-27 19:51:20
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -543,6 +543,13 @@ export default class ClassName extends BaseNode {
             success: (res: any) => {
                 if (res.confirm) {
                     // app.http.Post("")
+                    app.http.Post("cardCircle/delete/" + this.code, {}, () => {
+                        uni.showToast({
+                            title: "删除成功",
+                            icon: "none"
+                        })
+                        app.platform.pageBack()
+                    })
                 }
             }
         })
@@ -551,7 +558,7 @@ export default class ClassName extends BaseNode {
     setPrivate() {
         uni.showModal({
             title: "提示",
-            content: `是否将作品设为${this.private?"可见":"私密"}`,
+            content: `是否将作品设为${this.private ? "可见" : "私密"}`,
             success: (res: any) => {
                 if (res.confirm) {
                     app.http.Post(`cardCircle/set/${this.private ? 'pub' : 'pri'}/${this.code}`, {}, () => {
