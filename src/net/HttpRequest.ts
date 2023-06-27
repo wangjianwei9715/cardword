@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-18 17:23:55
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-06-27 11:38:48
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -311,6 +311,7 @@ export default class HttpRequest {
 					icon: 'none',
 					duration: 2000
 				});
+				errorCb&&errorCb()
 			}
 		}).catch((error: any) => {
 			if (reqUrl == 'dataApi/home') {
