@@ -49,6 +49,10 @@
 				</view>
 			</view>
 		</view>
+		<empty v-show="empty"/>
+		<view style="width:750rpx;margin-top:20rpx">
+			<u-loadmore v-show="nomore&&goodsList.length>0" :line="true" status="nomore" />
+		</view>
 	</view>
 </template>
 
@@ -90,11 +94,15 @@
 		presell: any;
 		@Prop({ default: false })
 		mini: any;
+		@Prop({ default: false })
+		empty?: any;
+		@Prop({ default: false })
+		nomore?: any;
 		dateFormatMSHMS = dateFormatMSHMS;
 		getGoodsImg = getGoodsImg;
 		screenHeight = uni.getSystemInfoSync().windowHeight
 		showPlan: any = []
-		valid = true
+		valid = true;
 		created() { //在实例创建完成后被立即调用
 			
 		}

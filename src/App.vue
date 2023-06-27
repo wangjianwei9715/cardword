@@ -320,6 +320,10 @@
 		font-family: "ArialBold";
 		src: url("~@/common/Tao/Futura.ttf");
 	}
+	.uni-tabbar__label{
+		font-weight: bold;
+		font-weight: PingFangSC-Semibold;
+	}
 	// #endif
 	.content {
 		display: flex;

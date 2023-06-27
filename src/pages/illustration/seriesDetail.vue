@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-21 11:20:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-26 14:44:25
+ * @LastEditTime: 2023-06-26 19:52:29
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -29,7 +29,7 @@
 				<view class="header-info-l">
 					<muqian-lazyLoad class="series-logo" borderRadius="3rpx" :src="decodeURIComponent(seriesData.main.logo)" />
 					<view class="series-info-box">
-						<view class="series-info-name">{{seriesData.main.year}} {{seriesData.main.name}}</view>
+						<view class="series-info-name u-line-2">{{seriesData.main.year}} {{seriesData.main.name}}</view>
 						<view class="series-info-num">图鉴完成度：{{seriesData.main.numLoaded}}/{{seriesData.main.numAll}}</view>
 					</view>
 				</view>

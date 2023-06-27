@@ -1,86 +1,26 @@
 // 首页tab列表
-export var indexTabList = [
+export var indexSwiperFront = [
+    {icon:'../../static/index/v3/icon5.png',name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
+    {icon:'../../static/index/v3/icon2.png',name:'动漫专区',url:"/pages/goods/goods_animeTv",},
+    {icon:'../../static/index/v3/icon3.png',name:'玩家卡册',url:'/pages/information/list'},
+    {icon:'../../static/index/v3/icon4.png',name:'查卡价',url:'/pages/act/service/ref'},
     {icon:'../../static/index/v3/icon1.png',name:'卡币商城',url:'/pages/mall/mallIndex'},
-    {icon:'../../static/index/v3/icon2.png',name:'领券中心',url:'/pages/userinfo/coupon/coupon_get'},
-    {icon:'../../static/index/v3/icon3.png',name:'资讯公告',url:'/pages/information/list'},
-    {icon:'../../static/index/v3/icon4.png',name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
-    {icon:'../../static/index/v3/icon5.png',name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'}
 ]
-
-// 首页hot列表
-export var indexHotList = {
-    progress:{
-        title:'拼团进度榜',
-        tips:'快速开拆',
-        pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
-        url:'/pages/goods/goods_progressRank',
-        bg:{
-            src:'../../static/index/v3/index_f.png',
-            width:'155rpx',
-            height:'46rpx'
-        },
-        icon:{
-            src:'../../static/index/v3/index_icon_f.png',
-            width:'161rpx',
-            height:'103rpx',
-            top:'47rpx',
-            right:'13rpx'
-        }
-    },
-    fresh:{
-        // title:'最新上架',
-        title:'动漫专区',
-        // tips:'新车和预售',
-        tips:"跨越次元之旅",
-        pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
-        // url:'/pages/goods/goods_assign_list?type=fresh',
-        url:"/pages/goods/goods_animeTv",
-        bg:{
-            src:'../../static/index/v3/Anime.png',
-            width:'197rpx',
-            height:'45rpx'
-        },
-        icon:{
-            src:'',
-            width:'139rpx',
-            height:'80rpx',
-            top:'44rpx',
-            right:'16rpx'
-        }
-    },
-    hot:{
-        title:'新手体验',
-        tips:'球星卡入门',
-        pic:'http://cdn.ka-world.com/admin/2022.10.05/goods/pintuan0/1664909622406h0bq65q4rt.jpg',
-        url:'/pages/goods/goods_assign_list?type=cheap',
-        bg:{
-            src:'../../static/index/v3/index_t.png',
-            width:'120rpx',
-            height:'45rpx'
-        },
-        icon:{
-            src:'../../static/index/v3/index_icon_t.png',
-            width:'146rpx',
-            height:'106rpx',
-            top:'35rpx',
-            right:'16rpx'
-        }
-    },
-    broadCast:{
-        title:'拆卡围观',
-        tips:'入门体验',
-        list:[],
-        bg:{
-            src:'../../static/index/v3/index_b.png',
-            width:'199rpx',
-            height:'45rpx'
-        },
-        icon:{
-            top:'23rpx',
-            right:'29rpx'
-        }
-    }
-}
+// 首页tab列表
+export var indexSwiperBack = [
+    {icon:'../../static/index/v3/icon5.png',name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
+    {icon:'../../static/index/v3/icon2.png',name:'领券中心',url:"/pages/userinfo/coupon/coupon_get",},
+    {icon:'../../static/index/v3/icon3.png',name:'发售日历',url:'/pages/act/calendar/list'},
+]
+export const goodsTabs = [
+    {name:'关注',id:1,url:'from_followed_merchant'},
+    {name:'热门',id:2,url:'main'},
+    {name:'篮球',id:3,url:'basketball'},
+    {name:'足球',id:4,url:'football'},
+    {name:'动漫影视',id:5,url:'animeTv'},
+    {name:'综合体育',id:6,url:'zhty'},
+    {name:'其他',id:7,url:'other'},
+]
 // 商品列表类型
 export var goodsListType: { [x: string]: any } = {
     'activity': '活动专区',
