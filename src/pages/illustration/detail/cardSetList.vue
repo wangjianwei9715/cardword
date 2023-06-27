@@ -58,7 +58,7 @@
             </view>
         </view>
 
-        <u-loadmore v-show="listOrther.end" status="nomore" />
+        <u-loadmore v-show="listOrther.end" status="nomore" line/>
     </view>
 </template>
 
@@ -190,11 +190,15 @@
             this.againList()
         }
         onClickSelectTab(item:any,list:string[]){
-            const index = list.indexOf(item);
-            if(index == -1){
+            let repeat = false;
+			list.forEach((x:any,index:number)=>{
+                if(x.nameId == item.nameId){
+                    repeat = true;
+                    list.splice(index,1)
+                }
+			})
+            if(!repeat){
                 list.push(item);
-            }else{
-                list.splice(index,1)
             }
             this.againList()
         }

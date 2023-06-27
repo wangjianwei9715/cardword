@@ -40,7 +40,7 @@
 				</scroll-view>
 			</view>
 		</view>
-		<u-loadmore v-show="listParams.isFetchEnd" status="nomore" />
+		<u-loadmore v-show="listParams.isFetchEnd" status="nomore" line/>
 	</view>
 </template>
 

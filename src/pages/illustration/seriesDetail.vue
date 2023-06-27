@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-21 11:20:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-26 19:52:29
+ * @LastEditTime: 2023-06-27 16:24:45
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -33,7 +33,7 @@
 						<view class="series-info-num">图鉴完成度：{{seriesData.main.numLoaded}}/{{seriesData.main.numAll}}</view>
 					</view>
 				</view>
-				<view class="series-follow" :class="{'followed':seriesData.followed}" @click="onClickFollow">{{seriesData.followed?'已关注':'关注'}}</view>
+				<view class="series-follow" :class="{'followed':seriesData.followed}" @click="$u.throttle(onClickFollow,1000)">{{seriesData.followed?'已关注':'关注'}}</view>
 			</view>
 		</view>
 		<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
@@ -121,9 +121,7 @@
 				this.seriesData.followed = !this.seriesData.followed;
 			})
 		}
-		
 		onChangeTabs(event:any){
-			console.log(event);
 			this.tabsData.current = event.index
 		}
 		onClickSeriesSelect(){
