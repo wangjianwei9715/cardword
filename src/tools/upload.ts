@@ -84,8 +84,8 @@ export default class Upload {
                 title: '上传图片中...'
             });
             // #ifdef APP-PLUS
-            fileRes.tempFilePaths.forEach((path:any,index:number) => {
-                fileRes.tempFiles[index].name=this.getName(path)
+            fileRes.tempFilePaths.forEach((path: any, index: number) => {
+                fileRes.tempFiles[index].name = this.getName(path)
             });
             // #endif
             const imgUrls = await this.uploadFile(fileRes, sign, params[1])
@@ -126,6 +126,8 @@ export default class Upload {
                 tempFiles: [res[0].tempFile]
             }, sign, fileDir, "video")
             // #endif
+            console.log(res[0]);
+
             uni.hideLoading()
             return {
                 path: path[0],
@@ -134,6 +136,8 @@ export default class Upload {
             }
         } catch (err) {
             uni.hideLoading()
+            //@ts-ignore
+            throw new Error(err.message)
         }
     }
     async uploadImgs(count: number, fileDir: string, sourceType = ['album']) {

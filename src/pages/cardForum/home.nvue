@@ -27,7 +27,7 @@
                                     <view class="faker_topicItem"></view>
                                     <view class="topicItem" v-for="item in hotTopics" @click="onClickTopic(item)">
                                         <image mode="aspectFill" class="topicItem_img"
-                                            :src="$parsePic(decodeURIComponent(item.pic))"></image>
+                                            :src="parsePic(decodeURIComponent(item.pic))"></image>
                                         <text class="topicItem_title">{{ item.name }}</text>
                                         <text class="topicItem_dt">{{ item.totalUseNum }}篇动态</text>
                                         <text class="topiceActCorner" v-if="item.activity">活动</text>
@@ -63,7 +63,7 @@
                                         <view class="faker_topicItem"></view>
                                         <view class="topicItem" v-for="item in hotTopics" @click="onClickTopic(item)">
                                             <image mode="aspectFill" class="topicItem_img"
-                                                :src="$parsePic(decodeURIComponent(item.pic))"></image>
+                                                :src="parsePic(decodeURIComponent(item.pic))"></image>
                                             <text class="topicItem_title">{{ item.name }}</text>
                                             <text class="topicItem_dt">{{ item.totalUseNum }}篇动态</text>
                                             <text class="topiceActCorner" v-if="item.activity">活动</text>
@@ -198,6 +198,7 @@ export default {
     },
     data() {
         return {
+            parsePic:getApp().globalData.parsePic,
             app,
             actionsList,
             actionSheet: false,

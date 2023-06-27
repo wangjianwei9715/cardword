@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-25 19:23:41
+ * @LastEditTime: 2023-06-27 18:53:50
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的话题pop组件
 -->
@@ -22,7 +22,7 @@
                     <view class="topicsItem" v-for="(item, index) in list"
                         @click="$emit('select', item), showValue = false">
                         <muqian-lazyLoad class="image"
-                            :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
+                            :src="$parsePic(decodeURIComponent(item.cover))"
                             borderRadius="3rpx"></muqian-lazyLoad>
                         <view class="rightInfo">
                             <view class="title u-line-1">{{ item.title }}</view>

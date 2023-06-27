@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 16:56:53
+ * @LastEditTime: 2023-06-27 19:18:41
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -17,7 +17,7 @@
                 <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
+                            <image :src="thumbnail(item.cover)"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
                             <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
@@ -32,13 +32,31 @@
                             </view>
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
-                            <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
-                            <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
-                            <view class="likeWrap">
-                                <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
-                                <text class="likeNum">{{ item.likeNum }}</text>
-                            </view>
+                            <template v-if="showUser">
+                                <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                                    :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
+                                <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
+                                <view class="likeWrap">
+                                    <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                    <text class="likeNum">{{ item.likeNum }}</text>
+                                </view>
+                            </template>
+                            <template v-if="!showUser">
+                                <view class="likeWrap" style="margin-right: 44rpx;">
+                                    <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
+                                        class="likeImg"></image>
+                                    <text class="likeNum">{{ item.viewNum }}</text>
+                                </view>
+                                <view class="likeWrap">
+                                    <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                    <text class="likeNum">{{ item.likeNum }}</text>
+                                </view>
+                                <template v-if="isMine && item.status && item.status == 2">
+                                    <view style="flex:1"></view>
+                                    <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                                    </image>
+                                </template>
+                            </template>
                         </view>
                     </view>
                 </view>
@@ -52,7 +70,7 @@
                 <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
+                            <image :src="thumbnail(item.cover)"
                                 style="opacity:0;width:0px;height:0px;position:absolute" @load="imageLoad($event, item)">
                             </image>
                             <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
@@ -67,13 +85,31 @@
                             </view>
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
-                            <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
-                            <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
-                            <view class="likeWrap">
-                                <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
-                                <text class="likeNum">{{ item.likeNum }}</text>
-                            </view>
+                            <template v-if="showUser">
+                                <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                                    :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
+                                <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
+                                <view class="likeWrap">
+                                    <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                    <text class="likeNum">{{ item.likeNum }}</text>
+                                </view>
+                            </template>
+                            <template v-if="!showUser">
+                                <view class="likeWrap" style="margin-right: 44rpx;">
+                                    <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
+                                        class="likeImg"></image>
+                                    <text class="likeNum">{{ item.viewNum }}</text>
+                                </view>
+                                <view class="likeWrap">
+                                    <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                    <text class="likeNum">{{ item.likeNum }}</text>
+                                </view>
+                                <template v-if="isMine && item.status && item.status == 2">
+                                    <view style="flex:1"></view>
+                                    <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                                    </image>
+                                </template>
+                            </template>
                         </view>
                     </view>
                 </view>
@@ -96,8 +132,9 @@
         </header>
         <header>
             <image v-for="(item, index) in value"
-                :src="parsePic(decodeURIComponent(item.cover)) + '?x-oss-process=image/resize,p_1'"
-                style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)">
+                :src="thumbnail(item.cover)"
+                style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)"
+                @error="imageLoadError($event, item)">
             </image>
         </header>
         <slot name="header"></slot>
@@ -119,14 +156,32 @@
                     </div>
                 </div>
                 <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
-                    <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                        :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
-                    </image>
-                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
-                    <div class="likeWrap">
-                        <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
-                        <text class="likeNum">{{ item.likeNum }}</text>
-                    </div>
+                    <template v-if="showUser">
+                        <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                            :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
+                        </image>
+                        <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
+                        <div class="likeWrap">
+                            <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                            <text class="likeNum">{{ item.likeNum }}</text>
+                        </div>
+                    </template>
+                    <template v-if="!showUser">
+                        <view class="likeWrap" style="margin-right: 44rpx;">
+                            <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx" class="likeImg">
+                            </image>
+                            <text class="likeNum">{{ item.viewNum }}</text>
+                        </view>
+                        <view class="likeWrap">
+                            <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                            <text class="likeNum">{{ item.likeNum }}</text>
+                        </view>
+                        <template v-if="isMine && item.status && item.status == 2">
+                            <view style="flex:1"></view>
+                            <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                            </image>
+                        </template>
+                    </template>
                 </div>
             </div>
         </cell>
@@ -214,6 +269,21 @@ export default {
             type: [Boolean, String],
             default: "false"
         },
+        //是否展示底部用户信息
+        showUser: {
+            type: Boolean,
+            default: true
+        },
+        //是否是我的
+        isMine: {
+            type: Boolean,
+            default: false
+        },
+        //点进详情页，点击用户头像是否返回上一级页面
+        detailBack: {
+            type: Boolean,
+            default: false
+        }
 
     },
     data() {
@@ -298,12 +368,12 @@ export default {
             event.stopPropagation();
             // #endif
             uni.navigateTo({
-                url: "/pages/cardForum/personHome?userId="+item.userId
+                url: `/pages/cardForum/personHome?userId=${item.userId}&isMine=${item.isMe ? 1 : 0}`
             })
         },
         goToDetail(item) {
             uni.navigateTo({
-                url: "/pages/cardForum/detail?code=" + item.code
+                url: `/pages/cardForum/detail?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
             })
         },
         hideRefresh() {
@@ -348,6 +418,24 @@ export default {
             } else {
                 item.mode = "widthFix"
             }
+            // #ifndef APP-NVUE
+            this.pushTimer && clearTimeout(this.pushTimer)
+            this.pushTimer = setTimeout(() => {
+                this.$forceUpdate()
+            }, 200)
+            // #endif
+            // #ifdef APP-NVUE
+            this.tempList.push(item)
+            // #endif
+        },
+        thumbnail(cover) {
+            if (!cover) return cover
+            let deCover = this.parsePic(decodeURIComponent(cover))
+            const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
+            if (isVideoSnapshot) return deCover
+            return deCover + "?x-oss-process=image/resize,p_1"
+        },
+        imageLoadError(event, item) {
             // #ifndef APP-NVUE
             this.pushTimer && clearTimeout(this.pushTimer)
             this.pushTimer = setTimeout(() => {

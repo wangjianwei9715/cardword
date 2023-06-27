@@ -2,35 +2,57 @@
     <div class="con" style="pointer-events: none;">
         <template v-if="viewWidth">
             <movable-area class="area" :style="{ height: areaHeight }" @mouseenter="mouseenter" @mouseleave="mouseleave">
-                <movable-view v-for="(item, index) in imageList" :key="item.id" class="view" direction="all" :y="item.y"
-                    :x="item.x" :damping="40" :disabled="item.disable" @change="onChange($event, item)"
-                    @touchstart="touchstart(item, $event)" @mousedown="touchstart(item)"
-                    @touchend="touchend($event, item, index)" @mouseup="touchend($event, item)" :style="{
-                        width: viewWidth + 'px',
-                        height: viewWidth + 'px',
-                        'z-index': item.zIndex,
-                        opacity: item.opacity
-                    }">
-                    <div class="area-con" :style="{
-                        width: childWidth,
-                        height: childWidth,
-                        borderRadius: borderRadius + 'rpx',
-                        transform: 'scale(' + item.scale + ')'
-                    }">
-                        <image class="pre-image" :src="parsePic(decodeURIComponent(item.src))" mode="aspectFill"></image>
+                <template v-if="type == 1">
+                    <movable-view v-for="(item, index) in imageList" :key="item.id" class="view" direction="all" :y="item.y"
+                        :x="item.x" :damping="40" :disabled="item.disable" @change="onChange($event, item)"
+                        @touchstart="touchstart(item, $event)" @mousedown="touchstart(item)"
+                        @touchend="touchend($event, item, index)" @mouseup="touchend($event, item)" :style="{
+                            width: viewWidth + 'px',
+                            height: viewWidth + 'px',
+                            'z-index': item.zIndex,
+                            opacity: item.opacity
+                        }">
+                        <div class="area-con" :style="{
+                            width: childWidth,
+                            height: childWidth,
+                            borderRadius: borderRadius + 'rpx',
+                            transform: 'scale(' + item.scale + ')'
+                        }">
+                            <image class="pre-image" :src="parsePic(decodeURIComponent(item.src))" mode="aspectFill">
+                            </image>
 
-                    </div>
-                </movable-view>
+                        </div>
+                    </movable-view>
+                </template>
+                <template v-if="type == 2">
+                    <movable-view v-for="(item, index) in imageList" :key="item.id" class="view" direction="all" :y="item.y"
+                        :x="item.x" :damping="40" :disabled="item.disable" @change="onChange($event, item)"
+                        @touchstart="touchstart(item, $event)" @mousedown="touchstart(item)"
+                        @touchend="touchend($event, item, index)" @mouseup="touchend($event, item)" :style="{
+                            width: viewWidth + 'px',
+                            height: viewWidth + 'px',
+                            'z-index': item.zIndex,
+                            opacity: item.opacity
+                        }">
+                        <div class="area-con" :style="{
+                            width: childWidth,
+                            height: childWidth,
+                            borderRadius: borderRadius + 'rpx',
+                            transform: 'scale(' + item.scale + ')'
+                        }">
+                            <image class="pre-image" :src="parsePic(decodeURIComponent(item.src))" mode="aspectFill">
+                            </image>
+
+                        </div>
+                    </movable-view>
+                </template>
                 <div class="add" v-if="imageList.length < number"
                     :style="{ top: add.y, left: add.x, width: viewWidth + 'px', height: viewWidth + 'px' }"
                     @click="addImages">
                     <div class="add-wrap"
                         :style="{ width: childWidth, height: childWidth, borderRadius: borderRadius + 'rpx' }">
-                        <!-- <image style="width: 54rpx;height: 54rpx;"
-                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAA2CAYAAACMRWrdAAABIUlEQVRoQ+2a2w2DMAxFeQzWrsMUbadAsEw3S1CqVgppKwLX8BEOP4iHTXx8uUgWdVXoVhdaV0VhSmf7vr/H8V3XzY6V3P9iD+nYOI5P7/01LMI596AwoZV0TIBXIUWFXhKLFBWYSFGhhxQN6SFFQ5i4ogITKSr0cEVDekjRECauqMBEigq9U7piOk2yAti27SUe5ljlTfPEQ6KZecTvwl4P3ytvOv06R2HDMNzes7+6aRrvnHvtf50L13Lp50rx88zcvNlS3JpwKQ67XyK04nq2nFbk/LqVjin0TvmBNgQ2S4UUDcliHgpMpKjQwxUN6SFFQ5i4ogITKSr0cEVDekjRECauqMAsVoph+hVPtYr5+03p9tbYQ96xrYtT4ootbAJGVxxVTapVswAAAABJRU5ErkJggg==">
-                        </image> -->
                         <image style="width: 43rpx;height: 43rpx;" src="@/static/cardForum/addImage_gray.png"></image>
-                        <text>添加图片</text>
+                        <text>{{ addText }}</text>
                     </div>
                 </div>
             </movable-area>
@@ -112,6 +134,14 @@ export default {
         delImage: {
             type: Function,
             default: null
+        },
+        type: {
+            type: Number,
+            default: 1
+        },
+        addText: {
+            type: String,
+            default: "添加图片或视频"
         }
     },
     data() {
@@ -249,6 +279,7 @@ export default {
                 if (x >= this.colsValue) return;
                 let y = Math.floor((e.detail.y + this.viewWidth / 2) / this.viewWidth);
                 let index = this.colsValue * y + x;
+                if (this.type == 2) return
                 if (item.index != index && index < this.imageList.length) {
                     this.changeStatus = false;
                     for (let obj of this.imageList) {
@@ -287,6 +318,7 @@ export default {
                             });
                         }, 0);
                     }
+
                     // console.log('bbb', JSON.parse(JSON.stringify(item)));
                     this.sortList();
                 }
@@ -447,7 +479,17 @@ export default {
             }
         },
         delImageHandle(item, index) {
-            this.imageList.splice(index, 1);
+            // console.log(this.imageList[index]);
+            const isVideo = this.imageList[index].src.indexOf("isVideo") >= 0
+            if (this.type === 2) {
+                this.$emit(isVideo ? "delVideo" : "delVideoCover")
+            }
+            if (this.type === 2 && isVideo) {
+                this.imageList.splice(0, this.imageList.length)
+            } else {
+                this.imageList.splice(index, 1);
+            }
+
             for (let obj of this.imageList) {
                 if (obj.index > item.index) {
                     obj.index -= 1;
@@ -564,7 +606,7 @@ export default {
 
     .area {
         width: 100%;
-        
+
         .view {
             display: flex;
             justify-content: center;
@@ -628,6 +670,7 @@ export default {
             justify-content: center;
             align-items: center;
             pointer-events: auto;
+
             .add-wrap {
                 display: flex;
                 justify-content: center;

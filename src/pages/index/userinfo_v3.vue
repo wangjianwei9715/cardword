@@ -49,7 +49,7 @@
             <view class="menuItem" v-for="(item, key) in walletTab" @click="onClickFourTool(item)">
                 <image class="icon"></image>
                 <view class="label">{{ item.name }}</view>
-                <view class="num">{{ item.num }}</view>
+                <view class="num" v-if="key!='kami'">{{ item.num }}</view>
                 <view class="rightIcon"></view>
             </view>
         </view>

@@ -7,12 +7,12 @@
                     <div class="fakeTop" :style="{ height: navHeight + 'px' }"></div>
                     <div class="userInfo">
                         <image class="userInfo_avatar" mode="aspectFill"
-                            :src="userInfo.avatar ? $parsePic(decodeURIComponent(userInfo.avatar)) : defaultAvatar">
+                            :src="userInfo.avatar ? parsePic(decodeURIComponent(userInfo.avatar)) : defaultAvatar">
                         </image>
                         <div class="userInfo_msg">
                             <div class="userInfo_name">
                                 <text class="userInfo_name_text">{{ userInfo.userName }}</text>
-                                <text class="userInfo_name_title">{{ userInfo.title }}</text>
+                                <text class="userInfo_name_title" v-if="userInfo.title">{{ userInfo.title }}</text>
                             </div>
                             <div class="userInfo_ip">
                                 <text class="userInfo_ip_text">IP属地：{{ userInfo.location || '未知' }}</text>
@@ -43,15 +43,15 @@
                 </div>
                 <div class="gundonDiv" ref="gundonDiv"></div>
                 <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
-                    <u-tabs customType="cardForum" class="tabs" :duration="300" :current="tabs.index"
+                    <u-tabs customType="cardForum" @click="tabClick" class="tabs" :duration="300" :current="tabs.index"
                         :list="tabs.list"></u-tabs>
                 </div>
             </div>
             <swiper :current="tabs.index" :style="{ height: scrollViewHeight + 'px' }" @change="swiperChange"
                 style="margin-top: 10rpx;">
                 <swiper-item style="width:750rpx" v-for="(tab, tabIndex) in tabs.list">
-                    <waterfalls :ref="`waterfalls${tabIndex}`" @scroll="waterScroll" :value="tab.list" :refresh="false"
-                        @loadmore="loadmore">
+                    <waterfalls :detailBack="true" :isMine="isMine" :showUser="false" :ref="`waterfalls${tabIndex}`" @scroll="waterScroll"
+                        :value="tab.list" :refresh="false" @loadmore="loadmore">
                         <template v-slot:cell v-if="tab.name == '动态' && isMine && draftListByDynamic.lengt">
                             <cell class="draftWrap">
                                 <image class="draftWrapImage"
@@ -104,12 +104,28 @@ const mineTabs = [
         url: "cardCircle/list/me/track"
     }
 ]
+const otherTabs = [
+    {
+        name: '动态',
+        url: "cardCircle/list/user/dongtai/"
+    },
+    {
+        name: '卡册',
+        url: "cardCircle/list/user/kace/"
+    },
+    {
+        name: '中卡',
+        url: "cardCircle/user/hit/card/list/"
+    },
+]
 const defaultTagObj = {
     isFetchEnd: false,
     firstReqEnd: false,
     queryParams: {
         fetchFrom: 1,
         fetchSize: 15,
+        // pageSize: 10,//中卡才有效
+        scrollId: "",//中卡才有效
         q: ""
     },
     list: []
@@ -126,7 +142,7 @@ export default {
     },
     data() {
         return {
-            $parsePic: getApp().globalData.parsePic,
+            parsePic: getApp().globalData.parsePic,
             app,
             navHeight: 0,
             scrollViewHeight: 0,
@@ -145,7 +161,7 @@ export default {
                 ...mockList
             ],
             userId: 0,
-            isMine: true,
+            isMine: false,
             draftListByDynamic: [],
             draftListByCardBook: []
         }
@@ -167,10 +183,10 @@ export default {
     },
     onLoad(query) {
         this.userId = +query.userId
-        // this.isMine = query.isMine == "1" //后续解除注释
+        this.isMine = query.isMine == "1" //后续解除注释
         if (this.isMine) {
             this.draftListByDynamic = getDraftList("dynamic")
-            console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
+            // console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
             this.draftListByCardBook = getDraftList("cardBook")
         }
         // console.log(this.draftList);
@@ -184,8 +200,11 @@ export default {
                     this.topHeight = await this.getDomHeight("#topContainer")
                     this.tabsHeight = await this.getDomHeight("#tabs")
                     this.userInfoWrapHeight = await this.getDomHeight("#userInfoWrap")
-                    // #ifdef APP_PLUS
+                    // #ifdef APP-PLUS
                     this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.navHeight - this.tabsHeight
+                    // #endif
+                    // #ifdef H5
+                    this.scrollViewHeight = 666
                     // #endif
                     // this.getUserInfo()
                     this.initTab()
@@ -194,6 +213,11 @@ export default {
 
 
         },
+        tabClick(event) {
+            // console.log(event);
+            if (event.index == this.tabs.index) return
+            this.tabs.index = event.index
+        },
         initTab() {
             if (this.isMine) {
                 let mineTabsDeep = uni.$u.deepClone(mineTabs);
@@ -201,7 +225,10 @@ export default {
                     this.$set(this.tabs.list, index, { ...uni.$u.deepClone(defaultTagObj), ...item })
                 })
             } else {
-
+                let tabsDeep = uni.$u.deepClone(otherTabs);
+                tabsDeep.forEach((item, index) => {
+                    this.$set(this.tabs.list, index, { ...uni.$u.deepClone(defaultTagObj), ...item })
+                })
             }
             this.reqData(false)
             console.log(this.tabs);
@@ -317,27 +344,29 @@ export default {
         },
         reqData(isRefresh = false, cb) {
             //------------mock------------
-            this.current.firstReqEnd = false
-            if (isRefresh) {
-                this.current.list = []
-                this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
-            }
-            this.current.list.push(...uni.$u.randomArray(mockList))
-            this.current.firstReqEnd = true
-            this.listSetSpecialEffects(this.tabs.index)
-            cb && cb()
+            // this.current.firstReqEnd = false
+            // if (isRefresh) {
+            //     this.current.list = []
+            //     this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
+            // }
+            // this.current.list.push(...uni.$u.randomArray(mockList))
+            // this.current.firstReqEnd = true
+            // this.listSetSpecialEffects(this.tabs.index)
+            // cb && cb()
             //------------mock------------
-            app.http.Get(`dataApi/${this.current.url}`, this.current.queryParams, (res) => {
+            app.http.Get(`dataApi/${this.current.url}${this.isMine ? "" : this.userId}`, this.current.queryParams, (res) => {
                 const list = res.list || []
+                console.log(list);
                 this.current.firstReqEnd = true
                 this.current.isFetchEnd = res.isFetchEnd
+                if (res.scrollId) this.current.queryParams.scrollId = res.scrollId
                 if (isRefresh) {
                     this.current.list = []
                     this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
                 }
                 this.current.list.push(...list)
                 this.current.firstReqEnd = true
-                if (this.current.fetchFrom == 1) this.listSetSpecialEffects(this.tabs.index)
+                this.listSetSpecialEffects(this.tabs.index)
                 cb && cb()
             }, (err) => {
                 this.current.firstReqEnd = true
@@ -347,6 +376,12 @@ export default {
 };
 </script>
 <style lang='scss'>
+// #ifndef APP-NVUE
+page {
+    background-color: #f6f7fb;
+}
+
+// #endif
 .userInfoWrap {
     width: 750rpx;
     // height: 583rpx;

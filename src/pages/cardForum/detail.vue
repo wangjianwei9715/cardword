@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 14:42:41
+ * @LastEditTime: 2023-06-27 18:38:06
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -285,7 +285,11 @@ export default class ClassName extends BaseNode {
     PersonSheet = PersonSheet
     dotWidth: any = uni.upx2px(24)
     dotContainerWidth: any = uni.upx2px(24) * 5
+    userBack: boolean = false
+    private: boolean = false
     onLoad(query: any) {
+        this.userBack = query.back == "true"
+        this.private = query.private == "1"
         app.platform.hasLoginToken(async () => {
             this.code = query.code || "mockCode"
             this.reqNewData()
@@ -421,6 +425,10 @@ export default class ClassName extends BaseNode {
         })
     }
     goPersonHome() {
+        if (this.userBack) {
+            app.platform.pageBack()
+            return
+        }
         uni.navigateTo({
             url: "/pages/cardForum/personHome?userId=" + this.forumDetail.userId
         })
@@ -543,10 +551,16 @@ export default class ClassName extends BaseNode {
     setPrivate() {
         uni.showModal({
             title: "提示",
-            content: "是否将作品设为私密或可见（后续文档更新后根据变量来显示）",
+            content: `是否将作品设为${this.private?"可见":"私密"}`,
             success: (res: any) => {
                 if (res.confirm) {
-                    // app.http.Post("")
+                    app.http.Post(`cardCircle/set/${this.private ? 'pub' : 'pri'}/${this.code}`, {}, () => {
+                        this.private = !this.private
+                        uni.showToast({
+                            title: "操作成功",
+                            icon: "none"
+                        })
+                    })
                 }
             }
         })

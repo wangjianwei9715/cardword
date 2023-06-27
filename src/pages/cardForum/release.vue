@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 18:54:14
+ * @LastEditTime: 2023-06-27 19:08:43
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,7 +11,8 @@
         <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
         </navigationbar>
         <view class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
-            <ppp v-model="pics" @heightChange="heightChange" @addImage="addImage('pics')" />
+            <ppp :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics" @heightChange="heightChange"
+                @addImage="addImage('pics')" @delVideo="delVideo" @delVideoCover="delVideoCover" />
         </view>
         <input type="text" class="input_title" v-model.trim="formData.title" placeholder="添加一个有趣的标题吧~（选填）"
             placeholderStyle="color: #959695;font-size:29rpx" :maxlength="80">
@@ -98,6 +99,9 @@ enum Tp {
     Pic = 1,
     Video = 2
 }
+const ADD_PIC_VIDEO = "添加图片或视频"
+const ADD_PIC = "添加图片"
+const ADD_COVER = "添加封面"
 interface CardForumRelease {
     title?: string;
     content?: string;
@@ -109,6 +113,7 @@ interface CardForumRelease {
     voteOptions?: Array<string>;
     state: State;
     tp: Tp;
+    video_at?: number;
 }
 const formData: CardForumRelease = {
     title: "",
@@ -136,6 +141,7 @@ export default class ClassName extends BaseNode {
     showGoods: boolean = false
     imgUploadHeight: number = 0
     pics: Array<string> = []
+    videoPath: string = ""
     formData: CardForumRelease = Object.assign({}, formData) as CardForumRelease
     relatedTopics: Array<CardForum.Topics> = []//关联话题
     selectTopics: Array<CardForum.Topics> = []//已选择的关联话题
@@ -144,6 +150,8 @@ export default class ClassName extends BaseNode {
         title: "",
         goodCode: ""
     }
+    addText: string = ADD_PIC_VIDEO
+    maxNum: number = 9
     draftId: string = ""
     onLoad(query: any) {
 
@@ -182,19 +190,91 @@ export default class ClassName extends BaseNode {
         this.selectGoods.title = item.title
     }
     async addImage(keyName: string) {
-        const countMap: any = {
-            "pics": 6,
-            "auditPics": 1
+        if (this.pics.length == 0) {
+            // #ifdef APP-PLUS
+            plus.nativeUI.actionSheet(
+                {
+                    cancel: "取消",
+                    buttons: [{
+                        title: "照片"
+                    }, {
+                        title: "视频"
+                    }],
+                },
+                (e: any) => {
+                    console.log(e);
+                    if (e.index == 0) return
+                    if (e.index === 1) this.choiceType(keyName, "img")
+                    if (e.index === 2) this.choiceType(keyName, "video")
+                }
+            );
+            // #endif
+            // #ifndef APP-PLUS
+            this.choiceType(keyName, "video")
+            // #endif
+        } else {
+            if (this.addText === ADD_PIC) this.choiceType(keyName, "img")
+            if (this.addText === ADD_COVER) this.choiceType(keyName, "videoCover")
         }
-        //@ts-ignore
-        const COUNT: any = countMap[keyName] - this[keyName].length
-        const picArr: any = await Upload.getInstance().uploadImgs(COUNT, "exhibition", ["album"])
-        if (picArr) {
-            picArr.forEach((pic: any) => {
+
+    }
+    async choiceType(keyName: string, type: string) {
+        try {
+            const countMap: any = {
+                "pics": 9,
+                // "auditPics": 1
+            }
+            if (type == "img") {
                 //@ts-ignore
-                this[keyName].push(pic)
-            });
+                const COUNT: any = countMap[keyName] - this[keyName].length
+                const picArr: any = await Upload.getInstance().uploadImgs(COUNT, "exhibition", ["album"])
+                if (picArr) {
+                    picArr.forEach((pic: any) => {
+                        //@ts-ignore
+                        this[keyName].push(pic)
+                    });
+                    this.addText = ADD_PIC
+                    this.maxNum = 9
+                    this.formData.tp = 1
+                }
+            } else if (type == "video") {
+
+                const videoRes: any = await Upload.getInstance().uploadVideo("cardForumVideo")
+                console.log(videoRes);
+
+                this.formData.video_at = Math.floor(videoRes.duration)
+                this.videoPath = decodeURIComponent(videoRes.path)
+                this.formData.cover = encodeURIComponent(decodeURIComponent(videoRes.path) + `?x-oss-process=video/snapshot,t_1000,m_fast`)
+                // console.log(this.formData.cover);
+                this.formData.tp = 2
+                this.pics = [this.formData.cover, this.formData.cover + `&isVideo=true`]
+                this.maxNum = 2
+            } else if (type == "videoCover") {
+                const picArr: any = await Upload.getInstance().uploadImgs(1, "exhibition", ["album"])
+                this.pics.unshift(picArr[0])
+            }
+        } catch (err) {
+            uni.showToast({
+                //@ts-ignore
+                title: err.message,
+                icon: "none"
+            })
+            console.log(err);
+
         }
+    }
+    delVideo() {
+        this.videoPath = ""
+        this.formData.video_at = 0
+        // this.pics.splice(0, this.pics.length)
+        this.maxNum = 9
+        this.addText = ADD_PIC_VIDEO
+        // console.log(this.pics);
+
+    }
+    delVideoCover() {
+        this.formData.cover = ""
+        this.addText = ADD_COVER
     }
     heightChange(height: number) {
         this.imgUploadHeight = height + 20
@@ -223,12 +303,21 @@ export default class ClassName extends BaseNode {
                     rj()
                     return
                 }
+                if (this.formData.tp == 2 && this.pics.length < 2) {
+                    uni.showToast({
+                        title: "请上传视频或视频封面",
+                        icon: "none"
+                    })
+                    rj()
+                    return
+                }
             }
-            console.log(this.pics);
+            // console.log(this.pics);
 
             if (this.pics.length) this.formData.cover = this.pics[0]
             if (this.pics.length > 1) {
-                this.formData.url = this.pics.slice(1, this.pics.length)
+                if (this.formData.tp === 1) this.formData.url = this.pics.slice(1, this.pics.length)
+                if (this.formData.tp === 2) this.formData.url = [encodeURIComponent(this.videoPath)]
             }
             this.formData.topicId = this.selectTopics.map((item: any) => {
                 return item.id
