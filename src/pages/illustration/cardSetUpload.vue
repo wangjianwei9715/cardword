@@ -4,7 +4,7 @@
 			<statusbar/>
 			<view class="header">
 				<view class="icon-close" @click="onClickClose()"></view>
-				<navigator url="/pages/illustration/report/error" class="header-right" hover-class="none">
+				<navigator v-show="noData.illustration" :url="`/pages/illustration/report/error?code=${noCode}`" class="header-right" hover-class="none">
 					<view class="icon-error"></view>
 					<view class="error-text">报错有奖</view>
 				</navigator>
@@ -57,14 +57,7 @@
 		defaultAvatar = app.defaultAvatar;
 		noCode="";
 		noData={
-			illustration:{
-				"frontPic": "", //year
-				"backPic": "", //logo
-				"author": { //没有则代表是系统上传
-					"name": "",
-					"avatar": ""
-				}
-			},
+			illustration:null,
 			text:{
 				"cardSet": "", 
 				"player": "", 
@@ -110,6 +103,7 @@
 			})
 		}
 		onClickPeerTo(index:number){
+			if(index===this.noData.text.seqIndex-1) return;
 			this.clearPic()
 			app.http.Get(`cardIllustration/rich/detail/no/${this.noCode}/peer/to/${index+1}`,{},(res:any)=>{
 				this.noCode = res.text.code;
@@ -168,22 +162,25 @@
                 title: '提示',
                 content: '确认上传图鉴?',
                 success: (res: any) => {
-					app.http.Post(`cardIllustration/pictorial/upload/${this.noCode}/authorize`,{},(res:any)=>{
-						if(res.token){
-							const params = {
-								token:res.token,
-								frontPic:decodeURIComponent(this.frontPic),
-								backPic:decodeURIComponent(this.backPic)||""
+					if(res.confirm){
+						app.http.Post(`cardIllustration/pictorial/upload/${this.noCode}/authorize`,{},(res:any)=>{
+							if(res.token){
+								const params = {
+									token:res.token,
+									frontPic:decodeURIComponent(this.frontPic),
+									backPic:decodeURIComponent(this.backPic)||""
+								}
+								app.http.Post(`cardIllustration/pictorial/upload/${this.noCode}`,params,(res:any)=>{
+									uni.showToast({
+										title:'提交成功,请等待审核',
+										icon:'none'
+									});
+									this.clearPic();
+									this.getNoDetail();
+								})
 							}
-							app.http.Post(`cardIllustration/pictorial/upload/${this.noCode}`,params,(res:any)=>{
-								uni.showToast({
-									title:'提交成功,请等待审核',
-									icon:'none'
-								});
-								this.getNoDetail();
-							})
-						}
-					})
+						})
+					}
                 }
             })
 		}

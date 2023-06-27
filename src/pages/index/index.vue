@@ -1,38 +1,7 @@
 <template>
 	<view class="content">
 		<!-- 热更新 S -->
-		<view v-if="apkNeedUpdate" class="update-content">
-			<view class="panel-shadow" @touchmove.stop.prevent="doNothing"></view>
-			<view class="panel-bg">
-				<view class="panel-title">
-					<view class="panel-title-text">版本更新公告</view>
-					<view class="panel-title-ver">V{{version}}</view>
-				</view>
-				<view class="panel-content">
-					<view class="progress-msg">
-						<text>
-							{{updateMsg}}
-						</text>
-					</view>
-					<button v-if="!updateStart" class="download-button" @click="onClickDownload">立即更新</button>
-					<view v-else class="download-text">{{downloadText}}</view>
-				</view>
-			</view>
-		</view>
-		<view v-if="wgtUpdate" class="update-content">
-			<view class="panel-shadow"></view>
-			<view class="panel-bg">
-				<view class="panel-title">
-					<view class="panel-title-text">正在更新</view>
-					<view class="panel-title-ver">V{{version}}</view>
-				</view>
-				<view class="panel-content">
-					<view class="progress-content"><progress :percent="wgtUpNum" active-mode="forwards" active
-							stroke-width="6" border-radius="20px" activeColor="#FB4E3E" /></view>
-					<view class="progress-wait">正在更新中，请您耐心等待...</view>
-				</view>
-			</view>
-		</view>
+		<update/>
 		<!-- 热更新 E -->
 		<view class="header-banner">
 			<statusbar />
@@ -125,15 +94,8 @@
 			fetchSize:10,
 			noMoreData:false
 		}
-		apkNeedUpdate = false;
-		updateStart = false;
-		downloadText = '下载中：0 MB/0 MB, 0%';
-		updateMsg = '暂无';
-		wgtUpdate = false;
-		wgtUpNum = 0;
 		onNetWorkFunc: any;
 		showPaySuccess = false;
-		version = '';
 		showWinningCrad = false;
 		greeted = false;
 		openScreenData = {
@@ -143,21 +105,9 @@
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
-			this.onEventUI("apkNeedUpdate", (version:string) => {
-				this.version = version;
-				this.updateShow();
-			});
-			this.onEventUI("wgtNeedUpdate", (version:string) => {
-				this.version = version;
-				this.wgtUpdate = true;
-			});
-			this.onEventUI("wgtUpdateNum", (res) => {
-				this.wgtUpNum = res;
-			});
 			this.onEventUI("showPaySuccess", (res) => {
 				this.showPaySuccess = true;
 			});
-			
 			this.onLoadIndex()
 			//#ifdef APP-PLUS
 			// plus.webview.prefetchURL(app.liveWebView)//预载直播控件webview
@@ -293,45 +243,10 @@
 					const list = fetchFrom == 1 ? data.goodList : [...this.goodsList,...data.goodList];
 					this.goodsList = app.platform.removeDuplicate(list,'goodCode')
 				}
-				if(this.goodsList.length==0){
-					this.goodsListEmpty = true;
-				}
+				this.goodsListEmpty = this.goodsList.length==0;
 				this.listParams.fetchFrom += fetchSize;
 				cb && cb()
 			});
-		}
-		updateShow() {
-			uni.hideTabBar();
-			this.updateMsg = decodeURIComponent(app.update.apkData.msg);
-			this.apkNeedUpdate = true;
-		}
-		onClickDownload() {
-			// #ifdef APP-PLUS
-			if (uni.getSystemInfoSync().platform == 'ios') {
-				plus.runtime.openURL('https://itunes.apple.com/cn/app/id1593158816?mt=8')
-				return;
-			}
-			let downloadTask = uni.downloadFile({
-				url: app.update.apkData.pkg_url,
-				success: (downloadResult) => {
-					if (downloadResult.statusCode === 200) {
-						let path: any = downloadResult.tempFilePath;
-						plus.runtime.install(path, {
-							force: true
-						});
-					}
-				},
-				fail: (result) => {
-					console.error('install fail...', result);
-				}
-			});
-			this.updateStart = true;
-			downloadTask.onProgressUpdate((result: UniApp.OnProgressDownloadResult) => {
-				let downMB = Math.floor(result.totalBytesWritten / 1024 / 1024) + ' MB/' + Math.floor(result
-					.totalBytesExpectedToWrite / 1024 / 1024) + ' MB'
-				this.downloadText = '下载中：' + downMB + ', ' + result.progress + '%';
-			});
-			// #endif
 		}
 		BackLogin(res: any) {
 			uni.$emit('BackLogin');

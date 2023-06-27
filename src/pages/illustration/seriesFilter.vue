@@ -240,10 +240,12 @@
 				title: "提示",
 				content: "是否清空所有已选项",
 				success: (data: any) => {
-					this.selectList.forEach((x:any)=>{
-						this.clearTp(x)
-					})
-					this.selectList = []
+					if(data.confirm){
+						this.selectList.forEach((x:any)=>{
+							this.clearTp(x)
+						})
+						this.selectList = []
+					}
 				}
 			})
 		}
