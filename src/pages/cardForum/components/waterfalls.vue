@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 13:43:49
+ * @LastEditTime: 2023-06-27 16:37:57
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -23,7 +23,7 @@
                             <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
                                 :mode="item.mode" class="waterfall-item__image_img">
                             </image>
-                            <image v-else style="width:360rpx;height:430rpx;background-color: #fff;">
+                            <image v-else class="defaultImg" style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
                         </view>
                         <view class="waterfall-item__ft">
@@ -58,7 +58,7 @@
                             <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
                                 :mode="item.mode" class="waterfall-item__image_img">
                             </image>
-                            <image v-else style="width:360rpx;height:430rpx;background-color: #fff;">
+                            <image v-else class="defaultImg" style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
                         </view>
                         <view class="waterfall-item__ft">
@@ -225,7 +225,8 @@ export default {
             tempList: [],
             parsePic: getApp().globalData.parsePic,
             refreshing: false,
-            defaultAvatar: getApp().globalData.app.defaultAvatar
+            defaultAvatar: getApp().globalData.app.defaultAvatar,
+            pushTimer: 0
         }
     },
 
@@ -338,7 +339,7 @@ export default {
             this.$emit("loadmore")
         },
         imageLoad(event, item) {
-            console.log(event);
+            // console.log(event);
             const widthFixHeight = (WIDTH / event.detail.width) * event.detail.height
             // console.log(widthFixHeight,MAX_HEIGHT);
             if (widthFixHeight > MAX_HEIGHT) {
@@ -347,7 +348,12 @@ export default {
             } else {
                 item.mode = "widthFix"
             }
-            // console.log(item)
+            // #ifndef APP-NVUE
+            this.pushTimer && clearTimeout(this.pushTimer)
+            this.pushTimer = setTimeout(() => {
+                this.$forceUpdate()
+            }, 200)
+            // #endif
             // #ifdef APP-NVUE
             this.tempList.push(item)
             // #endif
