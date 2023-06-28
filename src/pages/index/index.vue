@@ -297,11 +297,9 @@
 	}
 	.tab-center {
 		width: 100%;
-		height:100%;
 		box-sizing: border-box;
 		padding-top: 104rpx;
-		padding-bottom:104rpx;
-		padding-bottom: calc(104rpx + constant(safe-area-inset-bottom));
+		padding-bottom:20rpx;
 	}
 	.goods-list {
 		width: 100%;
@@ -311,7 +309,6 @@
 		justify-content: space-between;
 		padding: 30rpx
 	}
-
 	.header-banner {
 		width: 100%;
 		background: #fff;
@@ -321,7 +318,6 @@
 		box-sizing: border-box;
 		z-index: 9;
 	}
-
 	.tab-header {
 		width: 750rpx;
 		height: 104rpx;
@@ -346,7 +342,6 @@
 		display: flex;
 		padding: 0 20rpx;
 	}
-
 	.tab-good-content {
 		width: 100%;
 		box-sizing: border-box;
@@ -463,131 +458,6 @@
 		margin: 10rpx 0;
 		background: $content-bg;
 	}
-	.update-content {
-		width: 100%;
-		height: 100%;
-		position: fixed;
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 9999;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.panel-shadow {
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		background: rgba(0, 0, 0, 0.3);
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 1001
-	}
-	.panel-bg {
-		width: 500rpx;
-		height: auto;
-		border-radius: 40rpx;
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 0;
-		z-index: 1002;
-	}
-	.panel-title {
-		width: 500rpx;
-		height: 188rpx;
-		background: url(../../static/index/update_bg.png) no-repeat center;
-		background-size: 100% 100%;
-		display: flex;
-		flex-wrap: wrap;
-		box-sizing: border-box;
-		padding: 50rpx 0 20rpx 0;
-	}
-	.panel-title-text {
-		width: 100%;
-		text-align: center;
-		font-size: 43rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #FFFFFF;
-	}
-	.panel-title-ver {
-		width: 100%;
-		text-align: center;
-		font-size: 24rpx;
-		font-family: FZLanTingHeiS-B-GB;
-		font-weight: 400;
-		color: #FFFFFF;
-	}
-
-	.panel-content {
-		width: 500rpx;
-		height: 420rpx;
-		box-sizing: border-box;
-		background: #fff;
-		text-align: center;
-		border-bottom-left-radius: 40rpx;
-		border-bottom-right-radius: 40rpx;
-	}
-
-	.panel-content text {
-		width: 440rpx;
-		height: auto;
-		font-size: 28rpx;
-		color: #9397A7;
-		line-height: 40rpx;
-		text-align: left;
-	}
-
-	.progress-content {
-		width: 374rpx;
-		margin: 0 auto;
-		margin-top: 150rpx;
-		border-radius: 7px;
-		overflow: hidden;
-	}
-
-	.progress-msg {
-		margin: 80rpx auto;
-	}
-
-	.progress-wait {
-		width: 100%;
-		text-align: center;
-		font-size: 18rpx;
-		font-family: Adobe Heiti Std;
-		font-weight: normal;
-		color: #C0C0C0;
-		margin-top: 18rpx;
-	}
-
-	.download-button {
-		width: 400rpx;
-		height: 88rpx;
-		background: #FB4E3E;
-		border-radius: 44rpx;
-		margin-top: 10rpx;
-
-		font-size: 28rpx;
-		color: #FFFFFF;
-		line-height: 88rpx;
-	}
-
-	.download-text {
-		height: 88rpx;
-		margin-top: 10rpx;
-
-		font-size: 28rpx;
-		color: #292929;
-		line-height: 88rpx;
-	}
-
 	.goods-card-content-scroll {
 		width: 100%;
 		height: 250rpx;

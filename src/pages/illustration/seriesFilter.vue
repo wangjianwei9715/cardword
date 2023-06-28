@@ -93,9 +93,16 @@
 			2:{params:this.teamParams,url:'team'},
 			3:{params:this.seqParams,url:'seq'}
 		}
+		tp=0;
 		onLoad(query: any) {
 			this.seriesCode = query.seriesCode;
 			this.selectList = JSON.parse(query.selectList);
+			if(query.tp&&query.tp!=0){
+				this.tp=query.tp;
+				this.sideTab.forEach((x:any)=>{
+					x.show = x.id==query.tp
+				})
+			}
 			const rookieList:any = this.selectList.filter((x:any)=> x.rookie);
             const signList:any = this.selectList.filter((x:any)=> x.signature);
 			this.sideTab[4].tp = rookieList.length?rookieList[0].name:null;
@@ -106,6 +113,8 @@
 			})
 		}
 		public get showTab() : object {
+			console.log(this.sideTab);
+			
 			return this.sideTab.filter((x:any)=>x.show)
 		}
 		orientationInit() {
@@ -126,7 +135,7 @@
 					if(x.id<=4){
 						x.num = res.data[x.type];
 					}else if([5,6].includes(x.id)){
-						x.show = res.data[x.type];
+						x.show = res.data[x.type] && this.tp==0;
 					}
 				})
 				Object.keys(this.paramsMap).forEach((x:any)=>{
@@ -135,6 +144,7 @@
 			})
 		}
 		getListOfIndex(index:number){
+			if(!this.sideTab[index].show) return;
 			const item = this.paramsMap[index];
 			const params = item.params;
 			app.http.Get(`dataApi/cardIllustration/series/${this.seriesCode}/search/options/${item.url}`,params,(res:any)=>{
@@ -192,7 +202,8 @@
 					this.selectList.splice(index,1);
 				}
 			})
-			!repeat && this.selectList.push({...item,team:item.id==3})
+			!repeat && this.selectList.push({...item,team:item.id==3});
+			app.platform.UIClickFeedBack()
 		}
 		selectHasItem(item:any){
 			let repeat = false;
@@ -384,9 +395,7 @@
 		.cardset-item{
 			width: 100%;
 			box-sizing: border-box;
-			min-height: 66rpx;
 			padding:10rpx 20rpx;
-			line-height: 40rpx;
 			font-size: 25rpx;
 			font-family: PingFang SC;
 			font-weight: 400;

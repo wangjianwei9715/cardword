@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-27 15:17:39
+ * @LastEditTime: 2023-06-28 15:11:37
  * @FilePath: \jichao_app_2\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,7 +13,6 @@
 			"style": {
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false,
-				"disableScroll": true,
 				"backgroundColorTop": "#FFFFFF", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 				"backgroundColorBottom": "#F6F7FB", //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 				"app-plus": {
@@ -27,6 +26,18 @@
 				"navigationBarTitleText": "消息",
 				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/illustration/index",
+			"style": {
+				"navigationBarTitleText": "图鉴卡册",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"bounce": "none"
+				}
 			}
 		},
 		{
@@ -1578,18 +1589,7 @@
 		{
 			"root": "pages/illustration",
 			"pages":[
-				{
-					"path": "index",
-					"style": {
-						"navigationBarTitleText": "图鉴卡册",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
+				
 				{
 					"path": "seriesSelect",
 					"style": {
@@ -1665,6 +1665,30 @@
 					"path": "report/detail",
 					"style": {
 						"navigationBarTitleText": "报错详情",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "album/selectCard",
+					"style": {
+						"navigationBarTitleText": "制作卡册",
+						"navigationBarBackgroundColor": "#000000",
+						"navigationBarTextStyle": "white",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "album/selectNo",
+					"style": {
+						"navigationBarTitleText": "",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,

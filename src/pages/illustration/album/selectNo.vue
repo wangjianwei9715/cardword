@@ -1,9 +1,9 @@
 <!--
- * @FilePath: \jichao_app_2\src\pages\illustration\seriesDetail.vue
+ * @FilePath: \jichao_app_2\src\pages\illustration\album\selectNo.vue
  * @Author: wjw
  * @Date: 2023-06-21 11:20:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-28 15:14:32
+ * @LastEditTime: 2023-06-28 15:10:33
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -18,58 +18,30 @@
 -->
 <template>
 	<view class="content">
-		<view class="top-header">
-			<muqian-lazyLoad class="series-bg" :src="decodeURIComponent(seriesData.main.backPic)" />
-			<transitionNav ref='transitionNav' @navBackGroundShowChange="navBackGroundShowChange" :needIconShadow="false" :title="`${seriesData.main.year} ${seriesData.main.name}`">
-				<template slot="slotRight">
-					<view :class="topHasBack?'icon-replace-back':'icon-replace'" @click="onClickSeriesSelect"></view>
-				</template>
-			</transitionNav>
-			<view class="header-info">
-				<view class="header-info-l">
-					<muqian-lazyLoad class="series-logo" borderRadius="3rpx" :src="decodeURIComponent(seriesData.main.logo)" />
-					<view class="series-info-box">
-						<view class="series-info-name u-line-2">{{seriesData.main.year}} {{seriesData.main.name}}</view>
-						<view class="series-info-num">图鉴完成度：{{seriesData.main.numLoaded}}/{{seriesData.main.numAll}}</view>
-					</view>
-				</view>
-				<view class="series-follow" :class="{'followed':seriesData.followed}" @click="$u.throttle(onClickFollow,1000)">{{seriesData.followed?'已关注':'关注'}}</view>
-			</view>
-		</view>
-		<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
+		<!-- <u-sticky>
 			<u-tabs 
-				:list="tabsData.list" :current="tabsData.current" @change="onChangeTabs" lineWidth="375rpx" lineHeight="6rpx" lineColor="#FA1545"
-				:itemStyle="{width:'375rpx',height:'78rpx',lineHeight:'72rpx',padding:0,background:'#fff'}"
-				:activeStyle="{color: '#333333',fontSize: '33rpx',fontWeight:'600'}" 
-				:inactiveStyle="{color: '#959695',fontSize: '27rpx'}" 
+				:list="tabsData.list" :current="tabsData.current" @change="onChangeTabs" lineHeight="0" 
+				:itemStyle="{width:'250rpx',height:'78rpx',lineHeight:'72rpx',padding:0,background:'#fff'}"
+				:activeStyle="{color: '#FA1545',fontSize: '29rpx',fontWeight:'600'}" 
+				:inactiveStyle="{color: '#959695',fontSize: '29rpx',fontWeight:'600'}" 
 			/>
-		</u-sticky>
-		<filterCardList v-show="tabsData.current==0" :numAll="seriesData.main.numAll" :seriesCode="seriesCode" :search="seriesData.search" :reachNum.sync="reachNum"/>
-		<view v-show="tabsData.current==1" class="post-box">
-			<view class="header">
-				<view class="input-box">
-					<view class="icon-search"></view>
-					<input class="search-input" v-model="postSearch" :adjust-position="false" placeholder="搜索球员/卡种/限编球队"/>
-				</view>
-			</view>
-			<view class="btn-publish" @click="onClickGoPublish"></view>
-		</view>
+		</u-sticky> -->
+		<filterNoList :seriesCode="seriesCode" :tp="tabsData.current" :search="seriesData.search" :reachNum.sync="reachNum"/>
 	</view>
 </template>
 
 <script lang="ts">
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
-	import BaseNode from '../../base/BaseNode.vue';
-	import { SeriesDetail } from './constants/interface'
-	import filterCardList from './components/filterCardList.vue'
+	import BaseNode from '@/base/BaseNode.vue';
+	import { SeriesDetail } from '../constants/interface'
+	import filterNoList from '../components/filterNoList.vue'
 	@Component({
-		components:{filterCardList}
+		components:{filterNoList}
 	})
 	export default class ClassName extends BaseNode {
-		statusBarHeight = app.statusBarHeight;
-		tabsData = {
-			list:[{name:'图鉴'},{name:'玩家卡册'}],
+        tabsData = {
+			list:[{name:'自定义查找'},{name:'按卡种查找'},{name:'按球员查找'}],
 			current:0
 		}
 		seriesCode = "";
@@ -90,62 +62,29 @@
 				"seqs": '' //该系列下筛选点击次数最多的前20条限编，展示72小时内点击量最高的20条内容
 			}
 		};
-		refresherTriggered = false;
-		topHasBack = false;
 		reachNum = 0;
-		postSearch = "";
 		onLoad(query: any) {
 			if(query.seriesCode) this.seriesCode = query.seriesCode;
-			this.onEventUI("seriesSelect", (res) => {
-				this.seriesCode = res.code;
-				this.initEvent()
-			});
-			this.initEvent()
+			this.initEvent();
 		}
 		//   加载更多数据
 		onReachBottom() {
 			this.reachNum ++;
 		}
-		onPageScroll(data: any) {
-			//@ts-ignore
-			this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
-		}
-		navBackGroundShowChange(event: any) {
-			this.topHasBack = event
-		}
 		initEvent(){
 			this.getSeriesDetail();
+		}
+        onChangeTabs(event:any){
+			this.tabsData.current = event.index
 		}
 		getSeriesDetail(){
 			app.http.Get(`dataApi/cardIllustration/detail/series/${this.seriesCode}`,{},(res:any)=>{
 				this.seriesData = res;
+				uni.setNavigationBarTitle({
+					title: `${res.main.year} ${ res.main.name}`
+				});
 			})
 		}
-		onClickFollow(){
-			app.platform.hasLoginToken(()=>{
-				const type = this.seriesData.followed ? 'unfollow' : 'follow';
-				app.http.Post(`cardIllustration/series/${this.seriesCode}/${type}`,{},(res:any)=>{
-					!this.seriesData.followed && uni.showToast({ title: '关注成功', icon:'none' });
-					this.seriesData.followed = !this.seriesData.followed;
-				})
-			})
-		}
-		onChangeTabs(event:any){
-			this.tabsData.current = event.index
-		}
-		onClickSeriesSelect(){
-			uni.navigateTo({
-				url:'seriesSelect?back=true'
-			})
-		}
-		onClickGoPublish(){
-			app.platform.hasLoginToken(()=>{
-				uni.navigateTo({
-					url:`/pages/illustration/album/selectCard?seriesCode=${this.seriesCode}&name=${this.seriesData.main.name}`
-				})
-			})
-		}
-		
 	}
 </script>
 
