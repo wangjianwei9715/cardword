@@ -1,0 +1,291 @@
+<template>
+	<view>
+		<view class="tabbar" :class="{ 'tabbarDetail': detail }" :style="{ 'height': tabHeight + 'px' }">
+			<view class="tabbar-chat" :class="{ 'chatDetail': detail }" @click="onClickChat"><text
+					class="chat-text">说点什么...</text></view>
+			<view class="tabbar-gn">
+				<view class="tabbar-item" @click="onClickLike">
+					<view class="pic-box">
+						<image class="pic-likes" v-if="!$Parent().isLike && !isSon"
+							src="@/static/information/live_like.png" />
+						<image class="pic-likes" v-if="!$Parent().isLike && isSon"
+							src="@/static/information/icon_t_like.png" />
+						<image class="pic-likes" v-if="$Parent().isLike" src="@/static/information/icon_t_liked.png" />
+					</view>
+					<text class="num" :class="{ 'numDetail': detail }">{{ data.likeNum }}</text>
+				</view>
+				<view class="tabbar-item">
+					<view class="pic-box">
+						<image v-if="!isSon" class="pic-comment" src="@/static/information/live_pl.png" />
+						<image v-if="isSon" class="pic-comment" src="@/static/information/icon_t_pl.png" />
+					</view>
+					<text class="num" :class="{ 'numDetail': detail }">{{ data.commentNum }}</text>
+				</view>
+				<view class="tabbar-item" @click="onClickCollect">
+					<view class="pic-box">
+
+						<image class="pic-favorite" v-if="!$Parent().isCollection && !isSon"
+							src="@/static/information/live_collect.png" />
+						<image class="pic-favorite" v-if="!$Parent().isCollection && isSon"
+							src="@/static/information/icon_t_collect.png" />
+
+						<image class="pic-likes" v-if="$Parent().isCollection"
+							src="@/static/information/icon_t_collectd.png" />
+
+					</view>
+					<text class="num" :class="{ 'numDetail': detail }">{{ data.collectNum }}</text>
+				</view>
+			</view>
+		</view>
+
+
+	</view>
+</template>
+<script>
+const app = getApp().globalData.app;
+// const tabbarData = {
+// 	comment: { pic: '../../../static/information/live_pl.png', piced: '', num: 0, boolean: false },
+// 	likes: { pic: '../../../static/information/live_like.png', piced: '../../../static/information/icon_t_liked.png', num: 0, boolean: false },
+// 	favorite: { pic: '../../../static/information/live_collect.png', piced: '../../../static/information/icon_t_collectd.png', num: 0, boolean: false }
+// }
+export default {
+	props: {
+		commentNum: {
+			type: Number,
+			default: 0
+		},
+		deleteHeight: {
+			type: Number,
+			default: 0
+		},
+		show: {
+			type: Boolean,
+			default: true
+		},
+		data: {
+			type: Object,
+			default: () => {
+				return {};
+			}
+		},
+		detail: {
+			type: Boolean,
+			default: false
+		},
+		isSon: {
+			type: Boolean,
+			default: false
+		}
+	},
+	watch: {
+		data: function (val) {
+			// this.setTabbarNum(val)
+		},
+		commentNum: function (val) {
+			// this.tabbarData.comment.num = val;
+		},
+		deleteHeight: function (val) {
+			this.tabHeight = uni.upx2px(124) + val;
+		}
+	},
+	mounted() {
+		this.tabHeight = uni.upx2px(124) + this.deleteHeight
+	},
+	data() {
+		return {
+			// tabbarData: { ...tabbarData },
+
+			tabHeight: 0
+		};
+	},
+	computed: {
+		// Parent() {
+		// 	return this.$parent.$parent
+		// }
+	},
+	methods: {
+		getIcon(boolean, name) {
+			let url = '../../static/information/';
+			if (name == 'comment') return `${url}icon_t_pl.png`;
+
+			return `${url}icon_t_${name == 'likes' ? 'like' : 'collect'}${boolean ? 'd' : ''}.png`
+		},
+		onClickChat() {
+			this.$emit('comment')
+		},
+		// setTabbarNum(data) {
+		// 	let tab = {
+		// 		comment: { num: data.comment || 0, boolean: false },
+		// 		likes: { num: data.likes || 0, boolean: data.isLikes },
+		// 		favorite: { num: data.favorite || 0, boolean: data.isFavorite }
+		// 	}
+		// 	for (const key in this.tabbarData) {
+		// 		this.tabbarData[key].num = tab[key].num;
+		// 		this.tabbarData[key].boolean = tab[key].boolean;
+		// 	}
+		// },
+		$Parent() {
+			// #ifdef APP-NVUE
+			if (this.isSon) return this.$parent.$parent
+			return this.$parent
+			// #endif
+			// #ifndef APP-NVUE
+			return this.$parent.$parent
+			// #endif
+		},
+		onClickLike() {
+			console.log(this.$Parent().$options.name);
+			app.http.Post(`cardCircle/${this.$Parent().isLike ? 'un/' : ''}like/${this.data.code}`, {}, (res) => {
+				console.log("请求成功");
+				if (this.$Parent().isLike) this.data.likeNum -= 1
+				if (!this.$Parent().isLike) this.data.likeNum += 1
+				this.data.bit ^= this.$Parent().ForumBit.IS_LIKE;
+			})
+
+		},
+		onClickCollect() {
+			// uni.$u.throttle(() => {
+
+			// }, 500)
+			app.http.Post(`cardCircle/${this.$Parent().isCollection ? 'un/' : ''}collect/${this.data.code}`, {}, (res) => {
+				if (this.$Parent().isCollection) this.data.collectNumx -= 1
+				if (!this.$Parent().isCollection) this.data.collectNum += 1
+				this.data.bit ^= this.$Parent().ForumBit.IS_COLLECTION;
+			})
+		},
+		onClickTabbar(str) {
+			// uni.$u.throttle(() => {
+			// 	app.platform.hasLoginToken(() => {
+			// 		if (str == 'comment') {
+			// 			this.$emit('comment')
+			// 		} else if (str == 'likes' || str == 'favorite') {
+			// 			const isLikes = str == 'likes';
+			// 			// console.log(this.$parent.name);
+			// 			console.log(this.$Parent().isLike);
+			// 			// const url = isLikes ? 'like/or/cancel' : 'favorite/or/unFavorite'
+
+
+			// 			// app.http.Post(`article/${url}/${this.data.articleCode}`, {}, (res) => {
+			// 			// 	this.tabbarData[str].boolean = isLikes ? res.liked : res.isFavorite;
+			// 			// 	this.tabbarData[str].num = isLikes ? res.likes : res.favorite;
+
+			// 			// 	let data = {
+			// 			// 		articleCode: this.data.articleCode,
+			// 			// 		comment: this.tabbarData.comment.num,
+			// 			// 	}
+			// 			// 	if (isLikes) {
+			// 			// 		data.isLikes = res.liked;
+			// 			// 		data.likes = res.likes
+			// 			// 	} else {
+			// 			// 		data.favorite = res.favorite;
+			// 			// 		data.isFavorite = res.isFavorite
+			// 			// 	}
+			// 			// 	uni.$emit('informationChange', data)
+
+			// 			// })
+			// 		}
+			// 	})
+			// }, 500)
+		}
+	}
+};
+</script>
+
+<style lang="scss">
+.tabbar {
+	width: 750rpx;
+	height: 124rpx;
+	background: #272727;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding-left: 44rpx;
+	padding-right: 44rpx;
+	padding-top: 30rpx;
+	z-index: 8;
+}
+
+.tabbarDetail {
+	background: #fff;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #E8E8E8;
+}
+
+.tabbar-chat {
+	width: 332rpx;
+	height: 63rpx;
+	background: #555555;
+	border-radius: 3rpx;
+	line-height: 63rpx;
+	padding: 0 30rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.chatDetail {
+	background: #EFEFEF;
+}
+
+.chat-text {
+	font-size: 25rpx;
+	font-family: PingFang SC;
+	font-weight: 400;
+	color: #88878C;
+}
+
+.tabbar-gn {
+	width: 250rpx;
+	height: 80rpx;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.tabbar-item {
+	width: 50rpx;
+	height: 80rpx;
+
+}
+
+.pic-box {
+	width: 50rpx;
+	height: 43rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.pic-comment {
+	width: 35rpx;
+	height: 33rpx;
+}
+
+.pic-likes {
+	width: 35rpx;
+	height: 34rpx;
+}
+
+.pic-favorite {
+	width: 37rpx;
+	height: 35rpx;
+}
+
+.num {
+	width: 50rpx;
+	font-size: 23rpx;
+	font-family: PingFang SC;
+	font-weight: 400;
+	color: #FFFFFF;
+	text-align: center;
+}
+
+.numDetail {
+	color: #333333;
+}
+</style>

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-25 20:11:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 14:34:40
+ * @LastEditTime: 2023-06-28 15:46:07
  * @FilePath: \card-world\src\pages\cardForum\func\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -42,6 +42,16 @@ export function followTopic(id) {
             re && re(true)
         }, (err) => {
             rj(err)
+        })
+    })
+}
+//关注用户
+export function followActionByUser(userId, isFollow) {
+    return new Promise((resolve, reject) => {
+        app.http.Post(`cardCircle/${isFollow ? 'un/' : ''}follow/user/${userId}`, {}, (res) => {
+            resolve(true)
+        }, (err) => {
+            reject(false)
         })
     })
 }

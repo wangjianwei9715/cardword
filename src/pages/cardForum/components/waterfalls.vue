@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 19:46:36
+ * @LastEditTime: 2023-06-28 15:35:53
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -31,7 +31,7 @@
                                 <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
                             </view>
                         </view>
-                        <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
+                        <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
                             <template v-if="showUser">
                                 <image class="waterfall-item__bottom__avatar" mode="aspectFill"
                                     :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
@@ -45,7 +45,7 @@
                                 <view class="likeWrap" style="margin-right: 44rpx;">
                                     <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
                                         class="likeImg"></image>
-                                    <text class="likeNum">{{ item.viewNum }}</text>
+                                    <text class="likeNum">{{ item.clickNum }}</text>
                                 </view>
                                 <view class="likeWrap">
                                     <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
@@ -84,7 +84,7 @@
                                 <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
                             </view>
                         </view>
-                        <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
+                        <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
                             <template v-if="showUser">
                                 <image class="waterfall-item__bottom__avatar" mode="aspectFill"
                                     :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
@@ -98,7 +98,7 @@
                                 <view class="likeWrap" style="margin-right: 44rpx;">
                                     <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
                                         class="likeImg"></image>
-                                    <text class="likeNum">{{ item.viewNum }}</text>
+                                    <text class="likeNum">{{ item.clickNum }}</text>
                                 </view>
                                 <view class="likeWrap">
                                     <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
@@ -155,7 +155,7 @@
                         <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
                     </div>
                 </div>
-                <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)">
+                <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
                     <template v-if="showUser">
                         <image class="waterfall-item__bottom__avatar" mode="aspectFill"
                             :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
@@ -170,7 +170,7 @@
                         <view class="likeWrap" style="margin-right: 44rpx;">
                             <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx" class="likeImg">
                             </image>
-                            <text class="likeNum">{{ item.viewNum }}</text>
+                            <text class="likeNum">{{ item.clickNum }}</text>
                         </view>
                         <view class="likeWrap">
                             <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
@@ -289,6 +289,10 @@ export default {
         needExposure: {
             type: Boolean,
             default: false
+        },
+        showBottom: {
+            type: Boolean,
+            default: true
         }
 
     },
@@ -393,8 +397,15 @@ export default {
         },
         goToDetail(item) {
             uni.navigateTo({
-                url: `/pages/cardForum/detail?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
+                url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
             })
+            // if (item.video_at > 0) {
+
+            //     return
+            // }
+            // uni.navigateTo({
+            //     url: `/pages/cardForum/detail?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
+            // })
         },
         hideRefresh() {
             this.refreshing = false

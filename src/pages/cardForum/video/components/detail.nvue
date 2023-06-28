@@ -1,0 +1,147 @@
+<template>
+    <!-- <div class="popContainer" :style="{ height: fullHeight + 'px' }">
+
+    </div> -->
+    <u-overlay :show="show" @click="show = false">
+        <!-- <div class="popWrap" ref="popWrap"></div> -->
+        <u-popup :show="show">
+            <view class="wrap">
+                <view class="vd-user" v-if="forumDetail">
+                    <image class="vd-avatar" :src="decodeURIComponent(forumDetail.avatar)" />
+                    <view>
+                        <text class="vd-name_zuozhe">{{ forumDetail.userName }}</text>
+                        <text class="vd-time">发布于{{ $u.timeFormat(forumDetail.created_at) }} IP属地:{{ forumDetail.location ||
+                            "未知"
+                        }}</text>
+                    </view>
+                </view>
+            </view>
+        </u-popup>
+    </u-overlay>
+</template>
+<script>
+// #ifdef APP-NVUE
+const dom = weex.requireModule('dom')
+const animation = uni.requireNativePlugin('animation')
+// #endif
+export default {
+    name: '',
+    components: {
+
+    },
+    mixins: [],
+    props: {
+        forumDetail: {
+            tpye: Object,
+            default: () => {
+                return {}
+            }
+        }
+    },
+    data() {
+        return {
+            show: true,
+            fullHeight: uni.getSystemInfoSync().screenHeight
+        }
+    },
+    computed: {
+
+    },
+    watch: {
+
+    },
+    mounted() {
+        // setTimeout(() => {
+        //     animation.transition(this.$refs.popWrap, {
+        //         styles: {
+        //             transform: `translateY(0)`
+        //         },
+        //         duration: 300, //ms
+        //         timingFunction: "ease-in"
+        //     })
+        // }, 1000)
+    },
+    methods: {
+
+    }
+};
+</script>
+<style>
+.popContainer {
+    position: fixed;
+    bottom: 0;
+    width: 750rpx;
+    background-color: rgba(0, 0, 0, .3);
+}
+
+.popWrap {
+    width: 750rpx;
+    background-color: #ffffff;
+    position: absolute;
+    bottom: 0;
+    /* bottom: -300px; */
+    transform: translateY(400px);
+    height: 600rpx;
+
+}
+
+.wrap {
+    height: 800rpx;
+    display: flex;
+    align-items: center;
+    width: 750rpx;
+}
+
+.vd-title {
+    width: 670rpx;
+    font-size: 38rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    line-height: 48rpx;
+    margin-top: 20rpx;
+    /* margin-bottom: 20rpx; */
+}
+
+.vd-user {
+    width: 670rpx;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    height: 90rpx;
+    margin-bottom: 30rpx;
+}
+
+.vd-avatar {
+    width: 90rpx;
+    height: 90rpx;
+    border-radius: 50%;
+    margin-right: 28rpx;
+}
+
+.vd-name {
+    width: 670rpx;
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 5rpx;
+}
+
+.vd-time {
+    width: 670rpx;
+    font-size: 23rpx;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #7C7C7C;
+}
+
+.vd-desc {
+    width: 670rpx;
+    font-size: 28rpx;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #14151A;
+    line-height: 36rpx;
+}
+</style>

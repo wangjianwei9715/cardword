@@ -44,9 +44,10 @@
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls :needExposure="true" :refreshColor="isShowKa ? '#ffffff' : ''" column-count="2" v-if="tab.list.length"
-                        :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'" :value="tab.list"
-                        @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
+                    <waterfalls :needExposure="true" :refreshColor="isShowKa ? '#ffffff' : ''" column-count="2"
+                        v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'"
+                        :value="tab.list" @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
+                        style="padding-top: 10rpx;">
                         <template v-slot:header v-if="tabIndex == 2 && tab.firstReqEnd">
                             <header style="align-items: center;">
                                 <div class="hotTopicWrap">
@@ -198,7 +199,7 @@ export default {
     },
     data() {
         return {
-            parsePic:getApp().globalData.parsePic,
+            parsePic: getApp().globalData.parsePic,
             app,
             actionsList,
             actionSheet: false,
@@ -414,19 +415,21 @@ export default {
                     ...query
                 }
             }
+            if (isRefresh) {
+                query.flush = 1
+            }
             app.http.Get(`dataApi/${this.current.url || "cardCircle/list"}`, query, (res) => {
                 this.current.isFetchEnd = res.isFetchEnd
                 if (isRefresh) {
                     this.current.list = []
                     this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
                 }
-                this.current.list.push(...res.list)
+                this.current.list.push(...res.list || [])
                 this.current.firstReqEnd = true
                 cb && cb()
             }, (err) => {
                 this.current.firstReqEnd = true
             })
-            console.log(this.current);
         }
     }
 }

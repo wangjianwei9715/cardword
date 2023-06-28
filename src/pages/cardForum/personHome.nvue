@@ -50,8 +50,9 @@
             <swiper :current="tabs.index" :style="{ height: scrollViewHeight + 'px' }" @change="swiperChange"
                 style="margin-top: 10rpx;">
                 <swiper-item style="width:750rpx" v-for="(tab, tabIndex) in tabs.list">
-                    <waterfalls :detailBack="true" :isMine="isMine" :showUser="false" :ref="`waterfalls${tabIndex}`" @scroll="waterScroll"
-                        :value="tab.list" :refresh="false" @loadmore="loadmore">
+                    <waterfalls :showBottom="tab.name != '中卡'" :detailBack="true" :isMine="isMine" :showUser="false"
+                        :ref="`waterfalls${tabIndex}`" @scroll="waterScroll" :value="tab.list" :refresh="false"
+                        @loadmore="loadmore">
                         <template v-slot:cell v-if="tab.name == '动态' && isMine && draftListByDynamic.lengt">
                             <cell class="draftWrap">
                                 <image class="draftWrapImage"
@@ -355,7 +356,17 @@ export default {
             // cb && cb()
             //------------mock------------
             app.http.Get(`dataApi/${this.current.url}${this.isMine ? "" : this.userId}`, this.current.queryParams, (res) => {
-                const list = res.list || []
+                const list = (res.list || []).map(item => {
+                    if (this.current.name == '中卡') {
+                        return {
+                            cover: item.pic.split(",")[0],
+                            title: item.name,
+                            type: "中卡",
+                            pic: item.pic
+                        }
+                    }
+                    return item
+                })
                 console.log(list);
                 this.current.firstReqEnd = true
                 this.current.isFetchEnd = res.isFetchEnd

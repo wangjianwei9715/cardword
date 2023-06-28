@@ -3,17 +3,17 @@
         <view class="topicsItem" v-for="(item, index) in value" @click="goToDetail(item)">
             <!-- #ifndef APP-NVUE -->
             <muqian-lazyLoad class="topiceImage"
-                :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
+                :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
                 borderRadius="50%"></muqian-lazyLoad>
             <!-- #endif -->
             <!-- #ifdef APP-NVUE -->
-            <image class="topiceImage" :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
+            <image class="topiceImage" :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
                 borderRadius="3rpx">
             </image>
             <!-- #endif -->
             <view class="rightInfo">
                 <view class="titleWrap">
-                    <text class="title">{{ item.name }}</text>
+                    <text class="title">{{ item.userName }}</text>
                     <!-- <text class="act">活动</text> -->
                 </view>
                 <!-- #ifdef APP-NVUE -->
@@ -25,13 +25,14 @@
                 <!-- <view class="flex1"></view> -->
 
             </view>
-            <text class="follow" :class="{ follow_dis: item.isFollow }" @click.stop="onClickFollow(item)">{{ item.isFollow ?
-                '取关' : '关注' }}</text>
+            <text class="follow" :class="{ follow_dis: item.isFollow }" @click.stop="onClickFollow($event, item)">{{
+                item.isFollow ?
+                '已关注' : '关注' }}</text>
         </view>
     </view>
 </template>
 <script>
-import { releaseByTopic, formatNumber } from "../func/index.js"
+import { releaseByTopic, formatNumber, followActionByUser } from "../func/index.js"
 // import { followActionByUser } from "../func/index.ts"
 export default {
     name: '',
@@ -49,6 +50,7 @@ export default {
         return {
             formatNumber,
             defaultAvatar: getApp().globalData.app.defaultAvatar,
+            parsePic: getApp().globalData.parsePic,
             list: []
         }
     },
@@ -71,9 +73,9 @@ export default {
             // #ifdef APP-NVUE
             event.stopPropagation();
             // #endif
-            // followActionByUser(item.userId).then(() => {
-            //     item.isFollow = !item.isFollow
-            // })
+            followActionByUser(item.userId).then(() => {
+                item.isFollow = !item.isFollow
+            })
         },
         goToDetail(item) {
 
@@ -100,7 +102,7 @@ export default {
 }
 
 .topicsItem {
-    width: 100%;
+    // width: 100%;
     // width: 700rpx;
     height: 161rpx;
     display: flex;
@@ -228,4 +230,5 @@ export default {
     // #ifndef APP-NVUE
     display: block;
     // #endif
-}</style>
+}
+</style>

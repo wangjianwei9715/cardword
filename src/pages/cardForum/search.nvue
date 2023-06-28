@@ -1,11 +1,12 @@
 <template>
-    <div class="content" style="display: flex;width: 750rpx;flex-direction: column;align-items: center;">
+    <div class="content"
+        style="display: flex;width: 750rpx;flex-direction: column;align-items: center;background-color: #ffffff;">
         <!-- <view class="fakerView" :style="{ height: navHeight + tabsHeight + 'px' }"></view> -->
         <div class="hideGetReactWrap">
             <text class="hideText" :id="`searchLog${index}`" v-for="(item, index) in cardSearchLog">{{ item.s }}</text>
         </div>
         <div class="hideGetReactWrap">
-            <text class="hideText" :id="`hotSearchLog${index}`" v-for="(item, index) in hotList">{{ item.content }}</text>
+            <text class="hideText" :id="`hotSearchLog${index}`" v-for="(item, index) in hotList">{{ item.s }}</text>
         </div>
         <div class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></div>
 
@@ -32,7 +33,7 @@
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
         </div>
-        <template v-if="onSearch">
+        <view v-if="onSearch" style="background-color: #ffffff;">
             <view class="bigText">
                 <text class="bigText_text">搜索记录</text>
                 <image src="@/static/cardForum/del.png" class="bigText_img" @click="clearLog"></image>
@@ -44,18 +45,20 @@
             </view>
             <view class="bigText" style="margin-top: 40rpx;">
                 <text class="bigText_text">热门搜索</text>
+            </view>
+            <view class="keywordsWrap">
                 <view class="keywords flexCenter" v-for="(item) in hotSearchCopy" @click="onClickKey(item)">
-                    <text class="keywords_text" :style="{ width: item.width + 'px' }">{{ item.content }}</text>
+                    <text class="keywords_text" :style="{ width: item.width + 'px' }">{{ item.s }}</text>
                 </view>
             </view>
-        </template>
-        <!-- transform: `scale(${onSearch ? 0 : 1})`  -->
+
+        </view>
         <swiper class="swiperContainer" v-if="!onSearch" :style="{ height: scrollViewHeight + 'px' }" :current="tabs.index"
             @change="swiperChange" @animationfinish="swiperChangeAnimationfinish" @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <!-- <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" /> -->
                 <!-- #ifndef APP-NVUE -->
-                <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
+                <scroll-view :scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                     @scrolltolower="loadmoreData(tabIndex)">
                     <waterfalls style="width:750rpx;padding-top: 10rpx;"
                         v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')" v-model="tab.list"
@@ -75,12 +78,15 @@
                     right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
                     @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
                 </waterfalls>
-                <template v-if="tab.type == 'topics'">
-                    <topicList :value="tab.list"></topicList>
-                </template>
-                <template v-if="tab.type == 'user'">
-                    <userList :value="tab.list"></userList>
-                </template>
+                <scroll-view v-if="tab.type == 'topics' || tab.type == 'user'" :scroll-y="true"
+                    :style="{ height: scrollViewHeight + 'px' }" @scrolltolower="loadmoreData(tabIndex)">
+                    <template v-if="tab.type == 'topics'">
+                        <topicList :value="tab.list"></topicList>
+                    </template>
+                    <template v-if="tab.type == 'user'">
+                        <userList :value="tab.list"></userList>
+                    </template>
+                </scroll-view>
                 <!-- #endif -->
             </swiper-item>
         </swiper>
@@ -177,7 +183,7 @@ export default {
     },
     watch: {
         'tabs.index': function (val) {
-            if (this.tabs.list[val].list.length == 0 && !this.tabs.list[val].firstReqEnd) {
+            if (this.tabs.list[val].list.length == 0) {
                 this.tabs.list[val].queryParams.pageIndex = 1
                 //请求数据
                 this.reqNewData()
@@ -214,13 +220,13 @@ export default {
         hotList: function (val) {
             this.$nextTick(() => {
                 this.hotSearchCopy = []
+                // console.log("valvalvalvalvalval", val);
                 setTimeout(() => {
                     val.forEach(async (item, index) => {
-                        const res = await this.getDom('#hotSearchLog' + index)
+                        const res = await this.getDom(`#hotSearchLog${index}`)
                         if (res.width > 150) {
                             item.width = 150
-                        }
-                        else {
+                        } else {
                             item.width = res.width + 8
                         }
                         this.hotSearchCopy.push(item)
@@ -311,7 +317,9 @@ export default {
         getHot() {
             app.http.Get("dataApi/cardCircle/hot/search/list", {}, (res) => {
                 this.hotList = res.list.map((item) => {
-                    return item.content || ""
+                    return {
+                        s: item.content || ""
+                    }
                 })
             })
         },
@@ -412,7 +420,7 @@ export default {
             if (this.current.od) this.current.queryParams.od = this.current.od
             if (this.current.scrollId) this.current.queryParams.scrollId = this.current.scrollId
             if (this.current.stamp) this.current.queryParams.st = this.current.stamp
-            if (!this.current.type&&this.current.queryParams.scrollId) {
+            if (!this.current.type && this.current.queryParams.scrollId) {
                 this.current.queryParams.sn = Md5.hashStr(`${this.current.stamp}+${this.current.scrollId}+scrollSearchTujian`)
             }
             if (this.current.type == "topics") {
@@ -425,7 +433,8 @@ export default {
                 this.current.scrollId = res.scrollId || ""
                 this.current.timeStamp = res.timeStamp || 0
                 const list = res.list || []
-                this.current.queryParams.fetchFrom == 1 ? this.current.list = list : this.current.list.push(...list)
+                this.current.queryParams.fetchFrom == 1 ? this.current.list = list : this.current.list.push(...list || [])
+                console.log(this.current.list);
                 cb && cb()
             }, (err) => {
                 this.current.firstReqEnd = true
@@ -439,9 +448,9 @@ $show-lines: 1;
 
 // @import '@/uni_modules/uv-ui-tools/libs/css/variable.scss';
 // #ifndef APP-NVUE 
-page {
-    background-color: #f5f7fb;
-}
+// page {
+//     background-color: #f5f7fb;
+// }
 
 // #endif 
 .hideGetReactWrap {
@@ -468,11 +477,13 @@ page {
 .fakerView {
     // background-color: red;
     width: 750rpx;
+    opacity: 0;
 }
 
 
 .swiperContainer {
     width: 750rpx;
+    background-color: #f5f7fb;
     // flex: 1;
 }
 
@@ -528,17 +539,6 @@ page {
     font-weight: bold;
     line-height: 49rpx;
     color: #FFFFFF;
-}
-
-.search-icon {
-    width: 31rpx;
-    height: 31rpx;
-    margin: 0 10rpx;
-    margin-right: 16rpx;
-    // position: relative;
-    background-color: #dbdbdb;
-    // right: 20rpx;
-    border-radius: 50%;
 }
 
 .search-remove {
