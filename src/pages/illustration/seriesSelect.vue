@@ -76,7 +76,7 @@
 		}
 		onClickSeries(item:any){
 			if(this.back){
-				uni.$emit('seriesSelect',item.code);
+				uni.$emit('seriesSelect',{code:item.code,name:item.name});
 				app.navigateTo.navigateBack()
 			}else{
 				uni.redirectTo({

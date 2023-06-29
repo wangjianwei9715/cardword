@@ -4,7 +4,7 @@
             <view class="operate-filter"> 
                 <view class="input-box">
                     <view class="search-icon"></view>
-                    <input class="input-operate" v-model="listQ" placeholder="搜索球员/卡种/限编球队" @confirm="againList()"/>
+                    <input class="input-operate" :adjust-position="false" v-model="listQ" placeholder="搜索球员/卡种/限编球队" @confirm="againList()"/>
                 </view>
                 <view class="filter-box" @click="onClickGoFilter">
                     <image class="icon-filter" src="@/static/illustration/icon_filter.png"/>筛选
@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Watch,PropSync } from "vue-property-decorator";
+	import { Component, Prop,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
     import { app } from "@/app";
     import { Md5 } from "ts-md5";
@@ -80,8 +80,6 @@
 		search!:any;
         @Prop({default:0})
         numAll!:number
-        @PropSync("reachNum",{type:Number})
-        reachNumber!:Number
 
         listQ="";
         list = [
@@ -111,10 +109,6 @@
         listOrther = new ListOrther();
         filterList = [];
         listParams = {};
-        @Watch('reachNum')
-		onReachNumChanged(val: any, oldVal: any){
-            this.againList(val)
-		}
         @Watch('seriesCode')
 		onSeriesCodeChanged(val: any, oldVal: any){
             if(oldVal&&val!=oldVal){
@@ -148,13 +142,9 @@
 			this.getSeriesGroup()
 		}
         selectTab(item:any,list:string[]){
-            let repeat = false;
-			list.forEach((x:any)=>{
-                if(x.nameId == item.nameId){
-                    repeat = true;
-                }
+			return list.some((x:any)=>{
+                return x.nameId == item.nameId
 			})
-			return repeat
         }
         onClickGoFilter(){
             const { cardSets, players, seqs } = this.select;
@@ -166,15 +156,17 @@
             })
         }
         onClickCard(item:any,index:number){
-            const { scrollId, st } = this.listOrther;
-            const cardList = this.cardSetList.map((x:any)=>x.code);
-            const httpParams = {
-                url:`dataApi/cardIllustration/series/${this.seriesCode}/search/no`,
-                scrollId,
-                st,
-            }
-            uni.navigateTo({
-                url:`/pages/illustration/cardSetUpload?noCode=${item.code}&nowIndex=${(index+1)}&indexAll=${this.numAll}&cardList=${encodeURIComponent(JSON.stringify(cardList))}&params=${encodeURIComponent(JSON.stringify(this.listParams))}&httpParams=${encodeURIComponent(JSON.stringify(httpParams))}`
+            app.platform.hasLoginToken(()=>{
+                const { scrollId, st } = this.listOrther;
+                const cardList = this.cardSetList.map((x:any)=>x.code);
+                const httpParams = {
+                    url:`dataApi/cardIllustration/series/${this.seriesCode}/search/no`,
+                    scrollId,
+                    st,
+                }
+                uni.navigateTo({
+                    url:`/pages/illustration/cardSetUpload?noCode=${item.code}&nowIndex=${(index+1)}&indexAll=${this.numAll}&cardList=${encodeURIComponent(JSON.stringify(cardList))}&params=${encodeURIComponent(JSON.stringify(this.listParams))}&httpParams=${encodeURIComponent(JSON.stringify(httpParams))}`
+                })
             })
         }
         againList(val=0){
@@ -189,20 +181,23 @@
             this.current = event.index;
             this.againList()
         }
-        onClickSelectTab(item:any,list:string[]){
-            let repeat = false;
-			list.forEach((x:any,index:number)=>{
-                if(x.nameId == item.nameId){
-                    repeat = true;
-                    list.splice(index,1)
-                }
-			})
-            if(!repeat){
-                list.push(item);
+        onClickSelectTab(item: any, list: string[]) { 
+            const repeatIndex = list.findIndex((x: any) => x.nameId === item.nameId);
+            if (repeatIndex !== -1) { 
+                list.splice(repeatIndex, 1); 
+            } else {
+                list.push(item)
             }
-            this.againList()
+            console.log(repeatIndex);
+            
+            app.platform.UIClickFeedBack(); 
+            this.againList(); 
         }
         getSeriesGroup(){
+            if(this.listOrther.end) return;
+            uni.showLoading({
+				title: '加载中'
+			});
             const { scrollId, st } = this.listOrther;
             const ts = Math.floor(new Date().getTime()/1000);
             const _url = scrollId ? `scrollId=${scrollId}&st=${st}&pageSize=10` : `ts=${ts}&noSplit=1`
@@ -231,6 +226,7 @@
                 }else if(res.total==0){
                     this.cardSetList = [];
                 }
+                uni.hideLoading();
                 this.listOrther.end = res.end || res.list.length<10;
             })
         }

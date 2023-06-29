@@ -105,7 +105,7 @@
 		onClickPeerTo(index:number){
 			if(index===this.noData.text.seqIndex-1) return;
 			this.clearPic()
-			app.http.Get(`cardIllustration/rich/detail/no/${this.noCode}/peer/to/${index+1}`,{},(res:any)=>{
+			app.http.Get(`dataApi/cardIllustration/rich/detail/no/${this.noCode}/peer/to/${index+1}`,{},(res:any)=>{
 				this.noCode = res.text.code;
 				this.noData = {
 					illustration:res.illustration,

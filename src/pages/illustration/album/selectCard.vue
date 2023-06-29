@@ -1,0 +1,243 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\illustration\album\selectCard.vue
+ * @Author: wjw
+ * @Date: 2023-06-26 19:47:38
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-29 11:00:14
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
+<template>
+	<view class="album-card-content">
+		<view class="tips">请尽可能添加您想收集的整套卡组LIST，以便查看收集进度</view>
+		<view class="series-box" v-for="(item,index) in selectSeries" :key="index">
+			<view class="header">
+				<view class="title">{{item.name}}</view>
+				<view class="icon-sub" @click="selectSeries.splice(index,1)"></view>
+			</view>
+			<view class="no-box" v-for="(noItem,noIndex) in item.noList" :key="noIndex">
+				<view class="card-team">
+					<view class="team">NO.{{noItem.number}} {{noItem.team}}</view>
+					<view v-show="!noItem.split" class="icon-clear" @click="item.noList.splice(noIndex,1)"></view>
+					<view v-show="!noItem.split" class="split" @click="onClickSplitNo(index,noIndex)">拆分限编</view>
+					<view v-show="noItem.split" class="split-c" @click="onClickSplitCancel(index,noItem)">取消拆分</view>
+				</view>
+				<view class="player">{{noItem.player}}</view>
+				<view class="cardset">{{noItem.split?noItem.seqIndex+'/'+noItem.seq:noItem.seq}}编，{{noItem.cardSet}}</view>
+			</view>
+			<view class="add-no" @click="onClickSelectNo(item)">+添加卡种</view>
+		</view>
+		<view class="series-box">
+			<view class="header">
+				<view class="title">请选择系列</view>
+				<view class="icon-add" @click="onClickSeriesSelect"></view>
+			</view>
+		</view>
+		<albumBottom :canNext="getSeriesNolistLength"/>
+	</view>
+</template>
+
+<script lang="ts">
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
+	import BaseNode from '../../../base/BaseNode.vue';
+	import albumBottom from '../components/albumBottom.vue'
+	@Component({
+		components:{albumBottom}
+	})
+	export default class ClassName extends BaseNode {
+		selectSeries:any = []
+		onLoad(query: any) {
+			if(query.seriesCode){
+				this.selectSeries = [{seriesCode:query.seriesCode,name:query.name,noList:[]}]
+			}
+			this.onEventUI("seriesSelect", (res) => {
+				const repeat = this.selectSeries.some((x:any)=>{
+					if(x.seriesCode == res.code){
+						uni.showToast({ title:'已选择此系列', icon:'none' })
+						return true
+					}
+				})
+				!repeat && this.selectSeries.push({seriesCode:res.code,name:res.name,noList:[]})
+			});
+			this.onEventUI("albumNoList",(res:any)=>{
+				this.selectSeries.forEach((x:any)=>{
+					if(x.seriesCode === res.code){
+						x.noList = app.platform.removeDuplicate([...x.noList,...res.list],'code')
+					}
+				})
+			})
+		}
+		public get getSeriesNolistLength() : boolean {
+			return this.selectSeries.some((x:any)=> x.noList.length>0)
+		}
+		onClickSplitNo(index:number,noIndex:number){
+			const list = this.selectSeries[index].noList;
+			const { seq ,seqIndex, ...rest } = list[noIndex];
+			this.selectSeries[index].noList.splice(noIndex,1);
+			for(let i=seq ; i>0 ; i--){
+				this.selectSeries[index].noList.splice(noIndex,0,{...rest,seqIndex:i,seq,split:true});
+			}
+		}
+		onClickSplitCancel(index:number,noItem:any){
+			const list = this.selectSeries[index].noList;
+			list.some((x:any,index:number)=>{
+				if(x.code==noItem.code){
+					x.split = false;
+					list.splice(index+1,x.seq-1)
+					return true;
+				}
+			})
+		}
+		onClickSeriesSelect(){
+			uni.navigateTo({
+				url:'/pages/illustration/seriesSelect?back=true'
+			})
+		}
+		onClickSelectNo(item:any){
+			uni.navigateTo({
+				url:`/pages/illustration/album/selectNo?seriesCode=${item.seriesCode}`
+			})
+		}
+	}
+</script>
+
+<style lang="scss">
+	page{
+        background:#000000;
+    }
+	.album-card-content{
+		padding-bottom: calc(159rpx + env(safe-area-inset-bottom));;
+	}
+	.tips{
+		width: 100%;
+		height:62rpx;
+		background: #272727;
+		font-size: 23rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #C0C0C0;
+		padding:0 20rpx;
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
+	}
+	.series-box{
+		width: 100%;
+		box-sizing: border-box;
+		padding:0 20rpx;
+		margin-bottom: 20rpx;
+		.header{
+			width: 100%;
+			height:86rpx;
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.title{
+				font-size: 25rpx;
+				font-family: PingFang SC;
+				font-weight: 600;
+				color: #C0C0C0;
+			}
+			.icon-add{
+				width: 37rpx;
+				height:37rpx;
+				background: url(@/static/illustration/album/icon_add.png) no-repeat center/ 100% 100%;
+			}
+			.icon-sub{
+				width: 37rpx;
+				height:37rpx;
+				background: url(@/static/illustration/album/icon_sub.png) no-repeat center/ 100% 100%;
+			}
+			
+		}
+		.no-box{
+			width: 100%;
+			box-sizing: border-box;
+			background: #272727;
+			border-radius: 3rpx;
+			padding:20rpx;
+			margin-bottom: 20rpx;
+			.card-team{
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				height:36rpx;
+				position: relative;
+				.split{
+					height: 34rpx;
+					background: #707070;
+					border: 1px solid #D8D8D8;
+					font-size: 17rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #FFFFFF;
+					position: absolute;
+					right:63rpx;
+					top:1rpx;
+					box-sizing: border-box;
+					padding:0 10rpx;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
+				.split-c{
+					height: 34rpx;
+					background: #707070;
+					border: 1px solid #D8D8D8;
+					font-size: 17rpx;
+					font-family: PingFang SC;
+					font-weight: 400;
+					color: #FFFFFF;
+					box-sizing: border-box;
+					padding:0 10rpx;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
+			}
+			.team{
+				font-size: 21rpx;
+				font-family: PingFang SC;
+				font-weight: 600;
+				color: #FFFFFF;
+			}
+			.icon-clear{
+				width: 32rpx;
+				height:32rpx;
+				background: url(@/static/illustration/album/icon_sub.png) no-repeat center/ 100% 100%;
+			}
+			.player{
+				font-size: 21rpx;
+				font-family: PingFang SC;
+				font-weight: 600;
+				color: #FFFFFF;
+				margin-top: 12rpx;
+			}
+			.cardset{
+				font-size: 21rpx;
+				font-family: PingFang SC;
+				font-weight: 600;
+				color: #C0C0C0;
+				margin-top: 20rpx;
+				line-height: 36rpx;
+				word-break: break-all;
+			}
+		}
+		.add-no{
+			width: 100%;
+			height:75rpx;
+			border: 1px dashed rgba(230, 230, 230, 0.6);
+			border-radius: 5rpx;
+			font-size: 25rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #C0C0C0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+</style>
