@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-29 10:49:31
+ * @LastEditTime: 2023-06-29 18:27:46
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -194,6 +194,9 @@
                 </div>
             </div>
         </cell>
+        <header style="margin-top:20rpx">
+            <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了" />
+        </header>
     </waterfall>
     <!-- #endif -->
 </template>
@@ -300,6 +303,10 @@ export default {
             default: false
         },
         showBottom: {
+            type: Boolean,
+            default: true
+        },
+        isFetchEnd: {
             type: Boolean,
             default: true
         }
@@ -733,7 +740,8 @@ $uvui-nvue-style: true !default;
     align-items: center;
     justify-content: center;
 }
-.videoIcon{
+
+.videoIcon {
     position: relative;
     left: 2rpx;
 }

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 15:23:04
+ * @LastEditTime: 2023-06-29 17:28:01
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的话题pop组件
 -->
@@ -16,15 +16,18 @@
                     <view class="close" @click="showValue = false"></view>
                 </view>
                 <scroll-view class="giftScroll" :scroll-y="true" @scrolltolower="scrolltolower">
-                    <view class="giftItem">
-                        <image class="avatar"></image>
+                    <view class="giftItem" v-for="(item, index) in list">
+                        <image class="avatar"
+                            :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
+                        </image>
                         <view class="centerInfo">
-                            <view class="userName">邓格拉斯</view>
+                            <view class="userName">{{ item.userName }}</view>
                             <view class="giftName">
                                 <text class="name">赠送了你一份礼物</text>
-                                <text class="time">2分钟前</text>
+                                <text class="time">{{ timeDiff(item.created_at) }}</text>
+                                <!-- defaultAvatar -->
                             </view>
-                            <view class="giftWrap">卡密:詹姆斯詹姆斯 银折银折卡是打卡大卡收到货卡11...
+                            <view class="giftWrap" @click="onClickItem(item)">{{ item.content }}
                                 <text class="look">点击查看</text>
                             </view>
                         </view>
@@ -40,20 +43,19 @@
 </template>
 
 <script lang="ts">
-import { Component, PropSync, Watch } from "vue-property-decorator";
+import { Component, PropSync, Watch, Prop } from "vue-property-decorator";
 import BaseComponent from '@/base/BaseComponent.vue';
 import { app } from "@/app";
 import CardForum from "../interface/public";
-// interface Query {
-//     pageIndex: number;
-//     pageSize: number;
-//     q: string;
-// }
 @Component({})
 export default class ClassName extends BaseComponent {
     @PropSync("show", {
         type: Boolean
     }) showValue!: Boolean;
+
+    @Prop({ default: "" })
+    code?: string;
+
     @Watch('showValue')
     onShowChanged(val: boolean) {
         if (val && !this.list.length) this.reqList()
@@ -62,9 +64,10 @@ export default class ClassName extends BaseComponent {
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 15,
-        q: "",
-        od: "issue_72:asc"
+        // q: "",
+        // od: "issue_72:asc"
     }
+    defaultAvatar = app.defaultAvatar
     totalPage: number = 0
     timer: number = 0
     isFetchEnd: boolean = true
@@ -74,6 +77,17 @@ export default class ClassName extends BaseComponent {
             this.reqList()
         }
     }
+    onClickItem(item: any) {
+        if (item.tp == 1) {
+            uni.navigateTo({
+                url: "/pages/userinfo/giving/index?index=1"
+            })
+        } else if (item.tp == 2) {
+            uni.navigateTo({
+                url: "/pages/mall/record_point"
+            })
+        }
+    }
     onInput() {
         this.timer && clearTimeout(this.timer)
         this.timer = setTimeout(() => {
@@ -81,39 +95,15 @@ export default class ClassName extends BaseComponent {
             this.reqList()
         }, 500)
     }
+    timeDiff(time: number) {
+        return uni.$u.timeFrom(time, "mm-dd")
+    }
     reqList() {
-        app.http.Get("dataApi/cardCircle/topic/list", this.queryParams, (res: any) => {
+        app.http.Get("dataApi/cardCircle/get/gift/list/" + this.code, this.queryParams, (res: any) => {
             const list = res.list || []
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
         })
-        this.list = [
-            {
-                name: "秀卡-詹姆斯",
-                id: 1,
-                isActivity: true
-            },
-            {
-                name: "问价",
-                id: 2,
-                isActivity: false
-            },
-            {
-                name: "我的第一张卡",
-                id: 3,
-                isActivity: false
-            },
-            {
-                name: "我的卡在哪里",
-                id: 5,
-                isActivity: false
-            },
-            {
-                name: "我的卡屌不屌",
-                id: 6,
-                isActivity: false
-            }
-        ]
     }
 }
 </script>
@@ -184,6 +174,7 @@ export default class ClassName extends BaseComponent {
     .centerInfo {
         // flex: 1;
         width: 440rpx;
+
         .userName {
             font-size: 25rpx;
             font-family: PingFang SC;
@@ -235,9 +226,10 @@ export default class ClassName extends BaseComponent {
         display: block;
         background: #FA1545;
     }
-    
+
 }
-.flex1{
+
+.flex1 {
     flex: 1;
 }
 </style>

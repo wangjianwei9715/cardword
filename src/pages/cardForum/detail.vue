@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-28 18:12:49
+ * @LastEditTime: 2023-06-29 17:36:53
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -166,7 +166,7 @@
             <view class="wrap">
                 <view class="fakerInput u-line-1" @click="onClickFakerInput">{{ fakerInputVal }}</view>
                 <view class="toolsWrap">
-                    <view class="toolsItem" @click="isPerson ? recGiftShow = true : rewardShow = true">
+                    <view class="toolsItem" @click="rewardShow = true">
                         <image src="@/static/cardForum/gift.png" style="width:34rpx;height:37rpx" />
                         <view class="num">打赏</view>
                     </view>
@@ -198,7 +198,7 @@
             <view class="send flexCenter" @click.stop="$u.throttle(sendCom, 1000)">发送</view>
         </view>
         <reward-pop :code="code" :userInfo="authorInfo" :show.sync="rewardShow"></reward-pop>
-        <recGift :show.sync="recGiftShow"></recGift>
+        <recGift :code="code" :show.sync="recGiftShow"></recGift>
         <share @report="pageJump(`/pages/cardForum/report?code=${code}&userId=${forumDetail.userId}&source=1`)"
             :shareData="{}" :extra="[{ img: '/static/share/lianjie@2x.png', text: '举报', scene: '', emit: 'report' }]"
             :operationShow.sync="operationShow"></share>
@@ -215,7 +215,7 @@ import { formatNumber, getDateDiff } from "@/tools/util"
 import rewardPop from "./components/rewardPop.vue"
 import CardForum from "./interface/public";
 import { UserStreamline } from "@/manager/userManager"
-import { followActionByUser, } from "./func/index"
+import { followActionByUser, getForumDetail } from "./func/index"
 import recGift from "./components/recGift.vue"
 interface Sheet {
     name: string;
@@ -253,18 +253,7 @@ export default class ClassName extends BaseNode {
     formatNumber = formatNumber
     forumDetail: CardForum.ForumDetail = {} as CardForum.ForumDetail
     authorInfo: CardForum.RewardUserInfo = {} as CardForum.RewardUserInfo
-    pics: Array<string> = [
-        // 'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg',
-        // 'http://cdn.ka-world.com/admin/2023.06.26/goods/pintuan0/16877444345160g177cxxvv.jpeg',
-        // 'http://cdn.ka-world.com/admin/2023.06.26/goods/CL5842680/0/1687741972912rcg5fj6jr.jpg',
-        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.06.02/narticle/0/1685695514132vkqnegiq08.png',
-        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/0/1677040405260bb682jm0np.jpg',
-        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2022.10.26/narticle/0/1666765013856gr7mut3izc.jpg',
-        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1641519378736jhpa2j19gh.png',
-        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/16415196284582jjy5sfnnk.png',
-        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1640856712466ieazib579.jpg',
-        // 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/16770400681038j7gxlupox.jpg',
-    ]
+    pics: Array<string> = []
     queryParams: CardForum.QueryByFetch = queryParams
     commList: Array<CardForum.CommentFather> = []
     clickCom: CardForum.CommentFather = {} as CardForum.CommentFather
@@ -650,7 +639,7 @@ export default class ClassName extends BaseNode {
         })
     }
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi/cardCircle/detail/` + this.code, {}, (res: any) => {
+        getForumDetail(this.code).then((res: any) => {
             this.forumDetail = res.data as CardForum.ForumDetail || {}
             this.authorInfo = {
                 userId: this.forumDetail.userId,
@@ -660,6 +649,15 @@ export default class ClassName extends BaseNode {
             this.pics = res.data.url.split(",").filter(Boolean).map((url: string) => {
                 //@ts-ignore
                 return this.$parsePic(decodeURIComponent(url))
+            })
+        }).catch((err: any) => {
+            uni.showModal({
+                title: "提示",
+                content: err.msg,
+                showCancel: false,
+                success: (res: any) => {
+                    if (res.confirm) app.platform.pageBack()
+                }
             })
         })
     }

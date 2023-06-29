@@ -2,12 +2,13 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 14:33:51
+ * @LastEditTime: 2023-06-29 16:26:17
  * @FilePath: \card-world\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { app } from "@/app"
 import CardForum from "../interface/public"
+import { parsePic } from "@/tools/util"
 export enum CardForumReportSource {
     /**动态 */
     BY_DYNAMIC = 1,
@@ -74,6 +75,43 @@ export function reportAction(form: Report): Promise<Boolean> {
 }
 function getStamp() {
     return Math.round(+new Date() / 1000)
+}
+
+//获取视频地址
+export function getVideoPath(url: string): string {
+    const urlList = url.split(",")
+    for (let index = 0; index < urlList.length; index++) {
+        const path = parsePic(decodeURIComponent(urlList[index]))
+        if (uni.$u.test.video(path) && path.indexOf("x-oss-process=video/snapshot") < 0) return path
+    }
+    return ""
+}
+const Detail_State_Map: any = {
+    "1": "",
+    "2": "该动态已私密",
+    "-1": "该动态已删除",
+    "9999": "未知的动态状态"
+}
+export function getForumDetail(code: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        app.http.Get(`dataApi/cardCircle/detail/${code}`, {}, (res: any) => {
+            if (res.state != 1) {
+                uni.$emit("forumDetailError", res.state)
+                reject({
+                    state: res.state,
+                    msg: Detail_State_Map[String(res.state || "9999")]
+                })
+                return
+            } else {
+                resolve(res)
+            }
+        }, (err: any) => {
+            reject({
+                state: undefined,
+                msg: err
+            })
+        })
+    })
 }
 const DRAFT_STORAGE_KEY = "cardForum_draft"
 //获取草稿箱

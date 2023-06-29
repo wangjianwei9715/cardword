@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-25 20:11:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-28 15:46:07
+ * @LastEditTime: 2023-06-29 16:27:08
  * @FilePath: \card-world\src\pages\cardForum\func\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -52,6 +52,41 @@ export function followActionByUser(userId, isFollow) {
             resolve(true)
         }, (err) => {
             reject(false)
+        })
+    })
+}
+export function getVideoPath(url) {
+    const urlList = url.split(",")
+    for (let index = 0; index < urlList.length; index++) {
+        const path = getApp().globalData.parsePic(decodeURIComponent(urlList[index]))
+        if (uni.$u.test.video(path) && path.indexOf("x-oss-process=video/snapshot") < 0) return path
+    }
+    return ""
+}
+const Detail_State_Map = {
+    "1": "",
+    "2": "该动态已私密",
+    "-1": "该动态已删除",
+    "9999": "未知的动态状态"
+}
+export function getForumDetail(code) {
+    return new Promise((resolve, reject) => {
+        app.http.Get(`dataApi/cardCircle/detail/${code}`, {}, (res) => {
+            if (res.state != 1) {
+                uni.$emit("forumDetailError", res.state)
+                reject({
+                    state: res.state,
+                    msg: Detail_State_Map[String(res.state || "9999")]
+                })
+                return
+            } else {
+                resolve(res)
+            }
+        }, (err) => {
+            reject({
+                state: undefined,
+                msg: err
+            })
         })
     })
 }

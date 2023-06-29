@@ -191,6 +191,7 @@ const animation = uni.requireNativePlugin('animation')
 // #endif
 const app = getApp().globalData.app
 import nTabbar from "./nTabbar.nvue"
+import { getForumDetail } from "@/pages/cardForum/func/index.js"
 const queryParams = {
     fetchFrom: 1,
     fetchSize: 10
@@ -426,7 +427,7 @@ export default {
             this.getCommByWorks()
         },
         getDetail() {
-            app.http.Get(`dataApi/cardCircle/detail/${this.forumDetail.code}`, {}, (res) => {
+            getForumDetail(this.forumDetail.code).then(res => {
                 console.log("动态详情", res);
                 this.forumDetail.good = res.data.good
                 this.forumDetail.vote = res.data.vote
@@ -434,7 +435,12 @@ export default {
                 this.forumDetail.topic = res.data.topic
                 this.forumDetail.content = res.data.content
                 this.forumDetail.hasDetail = true
+            }).catch(err => {
+                console.log("处理错误", err);
             })
+            // app.http.Get(`dataApi/cardCircle/detail/${this.forumDetail.code}`, {}, (res) => {
+
+            // })
         },
         getCommByWorks() {
             app.http.Get(`dataApi/cardCircle/comment/list/` + this.forumDetail.code, this.queryParams, (res) => {
