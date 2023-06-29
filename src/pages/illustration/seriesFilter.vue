@@ -24,7 +24,7 @@
 						</view>
 
 						<view class="right-list" v-if="[2,3,4].includes(item.id)">
-							<view class="player-item u-line-1" :class="{'current-card':selectHasItem(card)}" v-for="(card,cindex) in item.list" :key="cindex" @click="onClickSelectItem(card)">{{card.name}}</view>
+							<view class="player-item u-line-1" :class="{'current-card':selectHasItem(card)}" v-for="(card,cindex) in item.list" :key="cindex" @click="onClickSelectItem(card,item.id)">{{card.name}}</view>
 							<u-loadmore :status="item.status" line @loadmore="loadmore(item)"/>
 						</view>
 
@@ -194,12 +194,12 @@
 			event.status = "loading";
 			this.getListOfIndex(event.id-1)
 		}
-		onClickSelectItem(item: any) { 
+		onClickSelectItem(item: any,id=1) { 
 			const repeatIndex = this.selectList.findIndex((x: any) => x.nameId === item.nameId); 
 			if (repeatIndex !== -1) { 
 				this.selectList.splice(repeatIndex, 1); 
 			} else { 
-				this.selectList.push({ ...item, team: item.id === 3 }); 
+				this.selectList.push({ ...item, team: id === 3 }); 
 			} 
 			app.platform.UIClickFeedBack(); 
 		}
@@ -243,7 +243,6 @@
 		}
 		onClickClearAll(){
 			uni.showModal({
-				title: "提示",
 				content: "是否清空所有已选项",
 				success: (data: any) => {
 					if(data.confirm){

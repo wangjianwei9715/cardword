@@ -54,19 +54,25 @@
 			})
 		}
 		getYearSportsSeries(){
-			app.http.Get('dataApi/cardIllustration/list/sports/series',{year:this.currentItem.name,fetchSize:10},({list}:any)=>{
+			app.http.Get('dataApi/cardIllustration/list/sports/series',{year:this.currentItem.name,fetchSize:9},({list}:any)=>{
 				this.seriesList = list || []
 			})
 		}
 		getSeriesMore(index:any){
+			if(this.seriesList[index].isFetchEnd) return;
+			uni.showLoading({ title: '加载中' });
 			const params = {
 				year:this.currentItem.name,
 				sport:this.seriesList[index].sport,
 				fetchFrom:this.seriesList[index].list.length+1,
-				fetchSize:10
+				fetchSize:9
 			}
 			app.http.Get('dataApi/cardIllustration/list/series',params,(res:any)=>{
-
+				this.seriesList[index].list = [...this.seriesList[index].list,...res.list];
+				this.seriesList[index].isFetchEnd = res.isFetchEnd;
+				setTimeout(() => {
+					uni.hideLoading();
+				}, 100);
 			})
 		}
 		onClickTab(index:number){
@@ -102,6 +108,7 @@
 		left:0;
 		top:0;
 		box-sizing: border-box;
+		overflow: hidden;
 	}
 	.side-left{
 		width: 200rpx;
@@ -111,6 +118,7 @@
 		top:0;
 		box-sizing: border-box;
 		padding:20rpx 0;
+		overflow: auto;
 	}
 	.side-right{
 		width: 550rpx;
@@ -151,6 +159,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding: 0 24rpx;
+		padding-bottom: 30rpx;
 		.scroll-header{
 			width: 100%;
 			height:80rpx;

@@ -210,7 +210,8 @@
                 const indexOf = this.selectNo.indexOf(index);
                 this.selectNo.splice(indexOf,1)
             }else{
-                this.selectNo.push(index)
+                this.selectNo.push(index);
+                app.platform.UIClickFeedBack(); 
             }
         }
         // sampleIsSelect(index:number,sampleIndex:number){
@@ -299,7 +300,9 @@
                 }else if(res.total==0){
                     this.cardSetList = [];
                 }
-                uni.hideLoading();
+                setTimeout(() => {
+					uni.hideLoading();
+				}, 100);
                 this.listOrther.end = res.end || res.list.length<10;
             })
         }

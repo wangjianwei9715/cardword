@@ -49,7 +49,7 @@
                 <view class="card-info">
                     <muqian-lazyLoad class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(item.teamLogo)" />
                     <view class="card-player">{{item.player}}</view>
-                    <view class="card-set">{{item.cardSet}}</view>
+                    <view class="card-set u-line-2">{{item.cardSet}}</view>
                     <view class="card-logo-box">
                         <view v-if="item.seq<25" class="logo-seq" :class="`logo-seq-${item.seq}`">{{item.seq}}编</view>
                         <image v-if="item.cardSetLogo" class="logo-pic" :src="decodeURIComponent(item.cardSetLogo)"/>
@@ -78,8 +78,6 @@
 		seriesCode!:string;
         @Prop({default:{}})
 		search!:any;
-        @Prop({default:0})
-        numAll!:number
 
         listQ="";
         list = [
@@ -109,6 +107,7 @@
         listOrther = new ListOrther();
         filterList = [];
         listParams = {};
+        total = 0;
         @Watch('seriesCode')
 		onSeriesCodeChanged(val: any, oldVal: any){
             if(oldVal&&val!=oldVal){
@@ -165,7 +164,7 @@
                     st,
                 }
                 uni.navigateTo({
-                    url:`/pages/illustration/cardSetUpload?noCode=${item.code}&nowIndex=${(index+1)}&indexAll=${this.numAll}&cardList=${encodeURIComponent(JSON.stringify(cardList))}&params=${encodeURIComponent(JSON.stringify(this.listParams))}&httpParams=${encodeURIComponent(JSON.stringify(httpParams))}`
+                    url:`/pages/illustration/cardSetUpload?noCode=${item.code}&nowIndex=${(index+1)}&indexAll=${this.total}&cardList=${encodeURIComponent(JSON.stringify(cardList))}&params=${encodeURIComponent(JSON.stringify(this.listParams))}&httpParams=${encodeURIComponent(JSON.stringify(httpParams))}`
                 })
             })
         }
@@ -195,9 +194,7 @@
         }
         getSeriesGroup(){
             if(this.listOrther.end) return;
-            uni.showLoading({
-				title: '加载中'
-			});
+            uni.showLoading({ title: '加载中' });
             const { scrollId, st } = this.listOrther;
             const ts = Math.floor(new Date().getTime()/1000);
             const _url = scrollId ? `scrollId=${scrollId}&st=${st}&pageSize=10` : `ts=${ts}&noSplit=1`
@@ -205,7 +202,8 @@
             
             const rookieList:any = this.filterList.filter((x:any)=> x.rookie);
             const signList:any = this.filterList.filter((x:any)=> x.signature);
-
+            console.log(this.filterList);
+            
             const params = {
                 pageSize:10,
                 q:this.listQ,
@@ -226,7 +224,10 @@
                 }else if(res.total==0){
                     this.cardSetList = [];
                 }
-                uni.hideLoading();
+                this.total = res.total;
+                setTimeout(() => {
+					uni.hideLoading();
+				}, 100);
                 this.listOrther.end = res.end || res.list.length<10;
             })
         }

@@ -1714,6 +1714,16 @@
 							"bounce": "none"
 						}
 					}
+				},
+				{
+					"path": "album/picUpload",
+					"style": {
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
 				}
 			]
 		}
