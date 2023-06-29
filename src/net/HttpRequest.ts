@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 11:38:48
+ * @LastEditTime: 2023-06-29 16:29:03
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -311,7 +311,7 @@ export default class HttpRequest {
 					icon: 'none',
 					duration: 2000
 				});
-				errorCb&&errorCb()
+				errorCb&&errorCb(response.data.msg)
 			}
 		}).catch((error: any) => {
 			if (reqUrl == 'dataApi/home') {
