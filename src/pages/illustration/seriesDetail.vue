@@ -1,21 +1,3 @@
-<!--
- * @FilePath: \jichao_app_2\src\pages\illustration\seriesDetail.vue
- * @Author: wjw
- * @Date: 2023-06-21 11:20:35
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-28 15:14:32
- * Copyright: 2023 .
- * @Descripttion: 
--->
-<!--
- * @FilePath: \jichao_app_2\src\pages\illustration\seriesDetail.vue
- * @Author: wjw
- * @Date: 2023-06-16 17:01:28
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-25 10:31:15
- * Copyright: 2023 .
- * @Descripttion: 
--->
 <template>
 	<view class="content">
 		<view class="top-header">
@@ -44,7 +26,7 @@
 				:inactiveStyle="{color: '#959695',fontSize: '27rpx'}" 
 			/>
 		</u-sticky>
-		<filterCardList v-show="tabsData.current==0" :numAll="seriesData.main.numAll" :seriesCode="seriesCode" :search="seriesData.search" :reachNum.sync="reachNum"/>
+		<filterCardList ref="filterCardList" v-show="tabsData.current==0" :numAll="seriesData.main.numAll" :seriesCode="seriesCode" :search="seriesData.search"/>
 		<view v-show="tabsData.current==1" class="post-box">
 			<view class="header">
 				<view class="input-box">
@@ -92,7 +74,6 @@
 		};
 		refresherTriggered = false;
 		topHasBack = false;
-		reachNum = 0;
 		postSearch = "";
 		onLoad(query: any) {
 			if(query.seriesCode) this.seriesCode = query.seriesCode;
@@ -104,7 +85,7 @@
 		}
 		//   加载更多数据
 		onReachBottom() {
-			this.reachNum ++;
+			this.$refs.filterCardList.againList(1)
 		}
 		onPageScroll(data: any) {
 			//@ts-ignore

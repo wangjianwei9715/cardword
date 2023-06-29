@@ -26,7 +26,7 @@
 				:inactiveStyle="{color: '#959695',fontSize: '29rpx',fontWeight:'600'}" 
 			/>
 		</u-sticky> -->
-		<filterNoList :seriesCode="seriesCode" :tp="tabsData.current" :search="seriesData.search" :reachNum.sync="reachNum"/>
+		<filterNoList ref="filterNolist" :seriesCode="seriesCode" :tp="tabsData.current" :search="seriesData.search"/>
 	</view>
 </template>
 
@@ -62,14 +62,13 @@
 				"seqs": '' //该系列下筛选点击次数最多的前20条限编，展示72小时内点击量最高的20条内容
 			}
 		};
-		reachNum = 0;
 		onLoad(query: any) {
 			if(query.seriesCode) this.seriesCode = query.seriesCode;
 			this.initEvent();
 		}
 		//   加载更多数据
 		onReachBottom() {
-			this.reachNum ++;
+			this.$refs.filterNolist.againList(1)
 		}
 		initEvent(){
 			this.getSeriesDetail();

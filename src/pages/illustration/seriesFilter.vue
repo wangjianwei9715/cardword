@@ -194,39 +194,34 @@
 			event.status = "loading";
 			this.getListOfIndex(event.id-1)
 		}
-		onClickSelectItem(item:any){
-			let repeat = false;
-			this.selectList.forEach((x:any,index:number)=>{
-				if(x.nameId == item.nameId){
-					repeat = true;
-					this.selectList.splice(index,1);
-				}
-			})
-			!repeat && this.selectList.push({...item,team:item.id==3});
-			app.platform.UIClickFeedBack()
+		onClickSelectItem(item: any) { 
+			const repeatIndex = this.selectList.findIndex((x: any) => x.nameId === item.nameId); 
+			if (repeatIndex !== -1) { 
+				this.selectList.splice(repeatIndex, 1); 
+			} else { 
+				this.selectList.push({ ...item, team: item.id === 3 }); 
+			} 
+			app.platform.UIClickFeedBack(); 
 		}
 		selectHasItem(item:any){
-			let repeat = false;
-			this.selectList.forEach((x:any)=>{
-				if(x.nameId == item.nameId){
-					repeat = true;
-				}
+			return this.selectList.some((x:any)=>{
+				return x.nameId == item.nameId
 			})
-			return repeat
 		}
 		showBadge(item:any){
 			return item.id<=4 ? this.selectHasTabs(item.list) : item.tp!=null
 		}
 		selectHasTabs(list:any){
-			let repeat = false;
-			this.selectList.forEach((x:any)=>{
-				list.forEach((y:any)=>{
-					if(x.nameId == y.nameId){
-						repeat = true;
-					}
-				})
-			})
-			return repeat
+			const nameIds = new Set();
+			for (const x of this.selectList) {
+				nameIds.add(x.nameId);
+			}
+			for (const y of list) {
+				if (nameIds.has(y.nameId)) {
+					return true;
+				}
+			}
+			return false;
 		}
 		onClickFilterTab(item:any,tab:string){
 			const findContent = item.tp;

@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Watch,PropSync } from "vue-property-decorator";
+	import { Component, Prop,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
     import { app } from "@/app";
     import { Md5 } from "ts-md5";
@@ -80,8 +80,6 @@
 		search!:any;
         @Prop({default:0})
         numAll!:number
-        @PropSync("reachNum",{type:Number})
-        reachNumber!:Number
 
         listQ="";
         list = [
@@ -111,10 +109,6 @@
         listOrther = new ListOrther();
         filterList = [];
         listParams = {};
-        @Watch('reachNum')
-		onReachNumChanged(val: any, oldVal: any){
-            this.againList(val)
-		}
         @Watch('seriesCode')
 		onSeriesCodeChanged(val: any, oldVal: any){
             if(oldVal&&val!=oldVal){
@@ -148,13 +142,9 @@
 			this.getSeriesGroup()
 		}
         selectTab(item:any,list:string[]){
-            let repeat = false;
-			list.forEach((x:any)=>{
-                if(x.nameId == item.nameId){
-                    repeat = true;
-                }
+			return list.some((x:any)=>{
+                return x.nameId == item.nameId
 			})
-			return repeat
         }
         onClickGoFilter(){
             const { cardSets, players, seqs } = this.select;
@@ -191,19 +181,17 @@
             this.current = event.index;
             this.againList()
         }
-        onClickSelectTab(item:any,list:string[]){
-            let repeat = false;
-			list.forEach((x:any,index:number)=>{
-                if(x.nameId == item.nameId){
-                    repeat = true;
-                    list.splice(index,1)
-                }
-			})
-            if(!repeat){
-                list.push(item);
+        onClickSelectTab(item: any, list: string[]) { 
+            const repeatIndex = list.findIndex((x: any) => x.nameId === item.nameId);
+            if (repeatIndex !== -1) { 
+                list.splice(repeatIndex, 1); 
+            } else {
+                list.push(item)
             }
-            app.platform.UIClickFeedBack()
-            this.againList()
+            console.log(repeatIndex);
+            
+            app.platform.UIClickFeedBack(); 
+            this.againList(); 
         }
         getSeriesGroup(){
             if(this.listOrther.end) return;

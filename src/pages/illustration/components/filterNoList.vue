@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Watch,PropSync } from "vue-property-decorator";
+	import { Component, Prop,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
     import { app } from "@/app";
     import { Md5 } from "ts-md5";
@@ -126,8 +126,6 @@
         numAll!:number
         @Prop({default:0})
         tp!:number
-        @PropSync("reachNum",{type:Number})
-        reachNumber!:Number
 
         isPullDown = app.platform.isPullDown;
         listQ="";
@@ -140,10 +138,6 @@
         selectNo:any = [];
         // selectSample:any = {};
         showPopup = false;
-        @Watch('reachNum')
-		onReachNumChanged(val: any, oldVal: any){
-            this.againList(val)
-		}
         @Watch('seriesCode')
 		onSeriesCodeChanged(val: any, oldVal: any){
             if(oldVal&&val!=oldVal){
@@ -187,10 +181,7 @@
         }
         onClickPopup(){
             if(this.selectNo.length == 0){
-                uni.showToast({
-                    title:'未选择卡种',
-                    icon:'none'
-                })
+                uni.showToast({ title:'未选择卡种', icon:'none' })
                 return;
             }
             this.isPullDown(false);
@@ -201,18 +192,18 @@
             this.showPopup = false;
         }
         onClickConfirm(){
+            if(this.selectNo.length==0){
+                uni.showToast({ title:'未选择卡种', icon:'none' })
+                return;
+            }
             this.closePopup();
             uni.$emit('albumNoList',{list:this.getSelectList,code:this.seriesCode});
 			app.navigateTo.navigateBack()
         }
         selectTab(item:any,list:string[]){
-            let repeat = false;
-			list.forEach((x:any)=>{
-                if(x.nameId == item.nameId){
-                    repeat = true;
-                }
+			return list.some((x:any)=>{
+                return x.nameId == item.nameId
 			})
-			return repeat
         }
         onClickSelectNo(index:number){
             if(this.selectNo.includes(index)){
@@ -268,18 +259,14 @@
             }
         }
         onClickSelectTab(item:any,list:string[]){
-            let repeat = false;
-			list.forEach((x:any,index:number)=>{
-                if(x.nameId == item.nameId){
-                    repeat = true;
-                    list.splice(index,1)
-                }
-			})
-            if(!repeat){
-                list.push(item);
+            const repeatIndex = list.findIndex((x: any) => x.nameId === item.nameId);
+            if (repeatIndex !== -1) { 
+                list.splice(repeatIndex, 1); 
+            } else {
+                list.push(item)
             }
-            app.platform.UIClickFeedBack();
-            this.againList()
+            app.platform.UIClickFeedBack(); 
+            this.againList(); 
         }
         getSeriesGroup(){
             if(this.listOrther.end) return;

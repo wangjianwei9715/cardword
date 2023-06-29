@@ -3,12 +3,12 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-28 18:13:35
+ * @LastEditTime: 2023-06-29 11:00:14
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
-	<view class="content">
+	<view class="album-card-content">
 		<view class="tips">请尽可能添加您想收集的整套卡组LIST，以便查看收集进度</view>
 		<view class="series-box" v-for="(item,index) in selectSeries" :key="index">
 			<view class="header">
@@ -33,6 +33,7 @@
 				<view class="icon-add" @click="onClickSeriesSelect"></view>
 			</view>
 		</view>
+		<albumBottom :canNext="getSeriesNolistLength"/>
 	</view>
 </template>
 
@@ -40,7 +41,10 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
-	@Component({})
+	import albumBottom from '../components/albumBottom.vue'
+	@Component({
+		components:{albumBottom}
+	})
 	export default class ClassName extends BaseNode {
 		selectSeries:any = []
 		onLoad(query: any) {
@@ -48,11 +52,10 @@
 				this.selectSeries = [{seriesCode:query.seriesCode,name:query.name,noList:[]}]
 			}
 			this.onEventUI("seriesSelect", (res) => {
-				let repeat = false;
-				this.selectSeries.forEach((x:any,index:number)=>{
+				const repeat = this.selectSeries.some((x:any)=>{
 					if(x.seriesCode == res.code){
 						uni.showToast({ title:'已选择此系列', icon:'none' })
-						repeat = true;
+						return true
 					}
 				})
 				!repeat && this.selectSeries.push({seriesCode:res.code,name:res.name,noList:[]})
@@ -65,6 +68,9 @@
 				})
 			})
 		}
+		public get getSeriesNolistLength() : boolean {
+			return this.selectSeries.some((x:any)=> x.noList.length>0)
+		}
 		onClickSplitNo(index:number,noIndex:number){
 			const list = this.selectSeries[index].noList;
 			const { seq ,seqIndex, ...rest } = list[noIndex];
@@ -75,13 +81,11 @@
 		}
 		onClickSplitCancel(index:number,noItem:any){
 			const list = this.selectSeries[index].noList;
-			list.forEach((x:any,index:number)=>{
+			list.some((x:any,index:number)=>{
 				if(x.code==noItem.code){
-					if(x.seqIndex==1){
-						x.split = false;
-					}else{
-						this.selectSeries[index].noList.splice(index,1)
-					}
+					x.split = false;
+					list.splice(index+1,x.seq-1)
+					return true;
 				}
 			})
 		}
@@ -102,6 +106,9 @@
 	page{
         background:#000000;
     }
+	.album-card-content{
+		padding-bottom: calc(159rpx + env(safe-area-inset-bottom));;
+	}
 	.tips{
 		width: 100%;
 		height:62rpx;
