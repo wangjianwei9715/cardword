@@ -251,7 +251,14 @@ export default {
     },
     watch: {
         "forumDetail.code": function (val) {
-            this.getCommByWorks()
+            this.commList = []
+            this.queryParams.fetchFrom = 1
+        },
+        show: function (val) {
+            if (val) {
+                if (!this.forumDetail.hasDetail) this.getDetail()
+                if (!this.commList.length) this.getCommByWorks()
+            }
         }
     },
     mounted() {
@@ -418,8 +425,20 @@ export default {
             this.queryParams.fetchFrom += this.queryParams.fetchSize
             this.getCommByWorks()
         },
+        getDetail() {
+            app.http.Get(`dataApi/cardCircle/detail/${this.forumDetail.code}`, {}, (res) => {
+                console.log("动态详情", res);
+                this.forumDetail.good = res.data.good
+                this.forumDetail.vote = res.data.vote
+                this.forumDetail.location = res.data.location
+                this.forumDetail.topic = res.data.topic
+                this.forumDetail.content = res.data.content
+                this.forumDetail.hasDetail = true
+            })
+        },
         getCommByWorks() {
             app.http.Get(`dataApi/cardCircle/comment/list/` + this.forumDetail.code, this.queryParams, (res) => {
+                // console.log("详情结果",res);
                 const list = (res.list || []).filter((item) => {
                     if (item.remainNum) item.isFetchEnd = item.remainNum <= 0
                     if (!item.remainNum) item.isFetchEnd = true
@@ -467,7 +486,7 @@ export default {
 }
 
 .wrap {
-    height: 1200rpx;
+    height: 1100rpx;
     display: flex;
     align-items: center;
     flex-direction: column;
