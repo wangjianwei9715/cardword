@@ -492,7 +492,7 @@ export default {
     flex-direction: row;
     height: 90rpx;
     margin-bottom: 30rpx;
-    // #ifdef APP-NVUE
+    // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
     margin-top: 30rpx;
@@ -549,7 +549,7 @@ export default {
 .topicsContainer {
     // width: 670rpx;
     width: 750rpx;
-    // #ifdef APP-NVUE
+    // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
     padding: 0 21rpx;
@@ -574,7 +574,7 @@ export default {
     height: 103rpx;
     margin-top: 26rpx;
     width: 750rpx;
-    // #ifdef APP-NVUE
+    // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
     padding: 0 21rpx;
@@ -618,7 +618,7 @@ export default {
 
 .voteContainer {
     width: 750rpx;
-    // #ifdef APP-NVUE
+    // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
     padding: 0 21rpx;
@@ -706,9 +706,6 @@ export default {
     box-sizing: border-box;
     // #endif
     width: 750rpx;
-    // #ifdef APP-NVUE
-    box-sizing: border-box;
-    // #endif
     padding: 0 21rpx;
     // padding: 0 21rpx;
 }
@@ -923,7 +920,7 @@ export default {
 .trueFixInput {
     width: 750rpx;
     // height: 100rpx;
-    // #ifdef APP-NVUE
+    // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
     padding: 20rpx 26rpx;
@@ -951,7 +948,7 @@ export default {
     // height: 63rpx;
     background: #EFEFEF;
     border-radius: 3rpx;
-    // #ifdef APP-NVUE
+    // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
     padding: 10rpx 30rpx;

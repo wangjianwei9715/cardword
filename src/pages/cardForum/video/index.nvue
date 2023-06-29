@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-28 10:12:28
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-29 14:05:44
+ * @LastEditTime: 2023-06-29 14:16:12
  * @FilePath: \card-world\src\pages\cardForum\video\index.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,14 +17,14 @@
             </view>
         </view>
         <view :style="'width: ' + windowWidth + 'px; height: ' + boxStyle.height + 'px;'">
-
-            <list @loadmore="getData" @scroll="scrolls" :loadmoreoffset="wHeight * 1" :show-scrollbar="false" ref="listBox"
+            <list @loadmore="getData" bounce="true" @scroll="scrolls" :loadmoreoffset="wHeight * 1" :show-scrollbar="false" ref="listBox"
                 :pagingEnabled="true" :scrollable="true">
                 <cell v-for="(item, i) in dataList" :key="i">
                     <div :style="'width: ' + windowWidth + 'px; height: ' + boxStyle.height + 'px;'" @disappear="stop()">
                         <view v-if="Math.abs(k - i) <= 1">
                             <view class="root">
                                 <video :ref="'item' + i" :id="item.code" :loop="true" :src="getVideoPath(item.url)"
+                                    :poster="getVideoPath(item.url) + '?x-oss-process=video/snapshot,t_1000,m_fast'"
                                     :muted="item.isplay" @play="playIngs(i)" :enable-progress-gesture="false"
                                     :page-gesture="false" :controls="false" :http-cache="true" :show-loading="false"
                                     :show-fullscreen-btn="false" :show-center-play-btn="false" :style="boxStyle"
