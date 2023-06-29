@@ -13,6 +13,7 @@
 		liveCountDownV2,
 		getCountDownTime,
 		calculate,
+		formatNumber
 	} from "./tools/util";
 	import { SocketServer } from "@/net/SocketServer";
 	import * as proto from "./net/proto";
@@ -27,6 +28,7 @@
 			getCountDownTime,
 			calculate,
 			ZegoExpressEngine,
+			formatNumber,
 			destroyServe: () => {
 				app.sever.isNetOK() && app.sever.close();
 				app.sever = new SocketServer();
