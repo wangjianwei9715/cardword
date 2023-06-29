@@ -183,6 +183,7 @@ export default {
     mounted() {
     },
     onLoad(query) {
+        if (query.tabIndex) this.tabs.index = +query.tabIndex
         this.userId = +query.userId
         this.isMine = query.isMine == "1" //后续解除注释
         if (this.isMine) {

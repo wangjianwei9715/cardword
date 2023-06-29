@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-28 15:35:53
+ * @LastEditTime: 2023-06-29 10:49:31
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -25,6 +25,9 @@
                             </image>
                             <image v-else class="defaultImg" style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
+                            <view class="videoIconWrap" v-if="item.video_at">
+                                <u-icon class="videoIcon" color="#ffffff" size="34rpx" name="play-right-fill"></u-icon>
+                            </view>
                         </view>
                         <view class="waterfall-item__ft">
                             <view class="waterfall-item__ft__title">
@@ -78,6 +81,9 @@
                             </image>
                             <image v-else class="defaultImg" style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
+                            <view class="videoIconWrap" v-if="item.video_at">
+                                <u-icon class="videoIcon" color="#ffffff" size="34rpx" name="play-right-fill"></u-icon>
+                            </view>
                         </view>
                         <view class="waterfall-item__ft">
                             <view class="waterfall-item__ft__title">
@@ -149,6 +155,9 @@
                     <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
                         :src="parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="aspectFit">
                     </image>
+                    <view class="videoIconWrap" v-if="item.video_at">
+                        <u-icon class="videoIcon" color="#ffffff" size="32rpx" name="play-right-fill"></u-icon>
+                    </view>
                 </div>
                 <div class="waterfall-item__ft">
                     <div class="waterfall-item__ft__title">
@@ -396,16 +405,18 @@ export default {
             })
         },
         goToDetail(item) {
-            uni.navigateTo({
-                url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
-            })
-            // if (item.video_at > 0) {
-
-            //     return
-            // }
             // uni.navigateTo({
-            //     url: `/pages/cardForum/detail?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
+            //     url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
             // })
+            if (item.video_at > 0) {
+                uni.navigateTo({
+                    url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
+                })
+                return
+            }
+            uni.navigateTo({
+                url: `/pages/cardForum/detail?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
+            })
         },
         hideRefresh() {
             this.refreshing = false
@@ -623,6 +634,7 @@ $uvui-nvue-style: true !default;
     align-items: center;
     border-radius: 5rpx;
     overflow: hidden;
+    position: relative;
 }
 
 .waterfall-item__image_img {
@@ -707,5 +719,22 @@ $uvui-nvue-style: true !default;
 .waterfall-item-grayWrap {
     padding-bottom: 10rpx;
     // background-color: #f6f7fb;
+}
+
+.videoIconWrap {
+    position: absolute;
+    right: 20rpx;
+    top: 20rpx;
+    width: 50rpx;
+    height: 50rpx;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, .3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.videoIcon{
+    position: relative;
+    left: 2rpx;
 }
 </style>

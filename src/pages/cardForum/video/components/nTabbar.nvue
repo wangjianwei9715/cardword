@@ -6,11 +6,10 @@
 			<view class="tabbar-gn">
 				<view class="tabbar-item" @click="onClickLike">
 					<view class="pic-box">
-						<image class="pic-likes" v-if="!$Parent().isLike && !isSon"
-							src="@/static/information/live_like.png" />
-						<image class="pic-likes" v-if="!$Parent().isLike && isSon"
+						<image class="pic-likes" v-if="!Parent.isLike && !isSon" src="@/static/information/live_like.png" />
+						<image class="pic-likes" v-if="!Parent.isLike && isSon"
 							src="@/static/information/icon_t_like.png" />
-						<image class="pic-likes" v-if="$Parent().isLike" src="@/static/information/icon_t_liked.png" />
+						<image class="pic-likes" v-if="Parent.isLike" src="@/static/information/icon_t_liked.png" />
 					</view>
 					<text class="num" :class="{ 'numDetail': detail }">{{ data.likeNum }}</text>
 				</view>
@@ -24,12 +23,12 @@
 				<view class="tabbar-item" @click="onClickCollect">
 					<view class="pic-box">
 
-						<image class="pic-favorite" v-if="!$Parent().isCollection && !isSon"
+						<image class="pic-favorite" v-if="!Parent.isCollection && !isSon"
 							src="@/static/information/live_collect.png" />
-						<image class="pic-favorite" v-if="!$Parent().isCollection && isSon"
+						<image class="pic-favorite" v-if="!Parent.isCollection && isSon"
 							src="@/static/information/icon_t_collect.png" />
 
-						<image class="pic-likes" v-if="$Parent().isCollection"
+						<image class="pic-likes" v-if="Parent.isCollection"
 							src="@/static/information/icon_t_collectd.png" />
 
 					</view>
@@ -90,12 +89,14 @@ export default {
 	},
 	mounted() {
 		this.tabHeight = uni.upx2px(124) + this.deleteHeight
+		if (this.$parent) this.getParent(this.$parent)
 	},
 	data() {
 		return {
 			// tabbarData: { ...tabbarData },
 
-			tabHeight: 0
+			tabHeight: 0,
+			Parent: {isLike:false}
 		};
 	},
 	computed: {
@@ -124,22 +125,29 @@ export default {
 		// 		this.tabbarData[key].boolean = tab[key].boolean;
 		// 	}
 		// },
-		$Parent() {
-			// #ifdef APP-NVUE
-			if (this.isSon) return this.$parent.$parent
-			return this.$parent
-			// #endif
-			// #ifndef APP-NVUE
-			return this.$parent.$parent
-			// #endif
+		getParent(parent) {
+			if (parent.$options.name == "CardForumVideoPage") {
+				this.Parent = parent
+				return
+			} else {
+				this.getParent(parent.$parent)
+			}
 		},
+		// Parent {
+		// 	// #ifdef APP-NVUE
+		// 	if (this.isSon) return this.$parent.$parent
+		// 	return this.$parent
+		// 	// #endif
+		// 	// #ifndef APP-NVUE
+		// 	return this.$parent.$parent
+		// 	// #endif
+		// },
 		onClickLike() {
-			console.log(this.$Parent().$options.name);
-			app.http.Post(`cardCircle/${this.$Parent().isLike ? 'un/' : ''}like/${this.data.code}`, {}, (res) => {
+			app.http.Post(`cardCircle/${this.Parent.isLike ? 'un/' : ''}like/${this.data.code}`, {}, (res) => {
 				console.log("请求成功");
-				if (this.$Parent().isLike) this.data.likeNum -= 1
-				if (!this.$Parent().isLike) this.data.likeNum += 1
-				this.data.bit ^= this.$Parent().ForumBit.IS_LIKE;
+				if (this.Parent.isLike) this.data.likeNum -= 1
+				if (!this.Parent.isLike) this.data.likeNum += 1
+				this.data.bit ^= this.Parent.ForumBit.IS_LIKE;
 			})
 
 		},
@@ -147,10 +155,10 @@ export default {
 			// uni.$u.throttle(() => {
 
 			// }, 500)
-			app.http.Post(`cardCircle/${this.$Parent().isCollection ? 'un/' : ''}collect/${this.data.code}`, {}, (res) => {
-				if (this.$Parent().isCollection) this.data.collectNumx -= 1
-				if (!this.$Parent().isCollection) this.data.collectNum += 1
-				this.data.bit ^= this.$Parent().ForumBit.IS_COLLECTION;
+			app.http.Post(`cardCircle/${this.Parent.isCollection ? 'un/' : ''}collect/${this.data.code}`, {}, (res) => {
+				if (this.Parent.isCollection) this.data.collectNumx -= 1
+				if (!this.Parent.isCollection) this.data.collectNum += 1
+				this.data.bit ^= this.Parent.ForumBit.IS_COLLECTION;
 			})
 		},
 		onClickTabbar(str) {
@@ -161,7 +169,7 @@ export default {
 			// 		} else if (str == 'likes' || str == 'favorite') {
 			// 			const isLikes = str == 'likes';
 			// 			// console.log(this.$parent.name);
-			// 			console.log(this.$Parent().isLike);
+			// 			console.log(this.Parent.isLike);
 			// 			// const url = isLikes ? 'like/or/cancel' : 'favorite/or/unFavorite'
 
 

@@ -2,13 +2,13 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-28 10:12:28
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-28 15:32:59
+ * @LastEditTime: 2023-06-29 14:05:44
  * @FilePath: \card-world\src\pages\cardForum\video\index.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="container">
-        <view class="navigateBox" :style="{ top: deleteHeight + 'px' }">
+        <view class="navigateBox" :style="{ top: statusBarHeight + 'px' }">
             <view class="navigateBackBox" @click="onClickBack">
                 <image class="navigateBack" src="@/static/information/live_back.png"></image>
             </view>
@@ -94,7 +94,7 @@
         <!-- 分享 -->
         <nvueShare :visible.sync='shareShow' :shareData='shareData'></nvueShare>
         <!-- 底部详情 -->
-        <view class="popup" :style="{ height: showDetail ? wHeight : 0 + 'px' }">
+        <!-- <view class="popup" :style="{ height: showDetail ? wHeight : 0 + 'px' }">
             <view class="popup-shadow" :style="{ height: showDetail ? wHeight : 0 + 'px' }" @click="onClosePopup"></view>
             <view class="popup-content" :style="{ height: showDetail ? (boxStyle.height - boxGapHeight) : 0 + 'px' }">
                 <list ref="comList" v-if="showDetail" :show-scrollbar="false" :pagingEnabled="false" :scrollable="true"
@@ -109,9 +109,10 @@
                     </cell>
                 </list>
             </view>
-        </view>
+        </view> -->
         <!-- view.detail -->
-        <!-- <detailPop :forumDetail.sync="dataList[k]"></detailPop> -->
+        <detailPop :eventPenetrationEnabled="showDetail" :show.sync="showDetail" :forumDetail.sync="dataList[k]"
+            ref="detailPop"></detailPop>
         <view class="upslide" :class="{ 'upslide-show': upslideShow }">
             <image class="upslide-pic" src="@/static/information/more_bg.png" />
             <image class="upslide-hand" src="@/static/information/more_icon.png" />
@@ -153,6 +154,7 @@ export default {
     data() {
         return {
             boxGapHeight,
+            statusBarHeight: app.statusBarHeight,
             code: '',
             ForumBit,
             shareShow: false,
@@ -272,16 +274,20 @@ export default {
     },
     onLoad(query) {
         this.upslideInit()
+        uni.onKeyboardHeightChange(this.keyBoardHeightChange);
         this.code = query.code;
         this.vType = query.type;
         this.searchQ = query.q || '';
         this.platform = uni.getSystemInfoSync().platform
         var model = uni.getSystemInfoSync().model
-        if (this.platform == 'ios' && (model !== 'iPhone6' || model !== 'iPhone6s' || model !== 'iPhone7' || model !== 'iPhone8')) {
-            this.deleteHeight = 32//有 tabbar的 修改这里可以改变视频高度
-        } else {
-            this.deleteHeight = 0
-        }
+        // if (this.platform == 'ios' && (model !== 'iPhone6' || model !== 'iPhone6s' || model !== 'iPhone7' || model !== 'iPhone8')) {
+        //     this.deleteHeight = 32//有 tabbar的 修改这里可以改变视频高度
+        // } else {
+        //     this.deleteHeight = 0
+        // }
+        // #ifdef APP-NVUE
+        this.deleteHeight = plus.navigator.getSafeAreaInsets().deviceBottom / 2
+        // #endif
         this.windowWidth = uni.getSystemInfoSync().screenWidth//获取屏幕宽度
         this.boxStyle.width = this.windowWidth + 'px'//给宽度加px
         this.wHeight = uni.getSystemInfoSync().screenHeight;//获取屏幕高度
@@ -316,6 +322,7 @@ export default {
     },
     onUnload() {
         uni.$off('resetLoadmore');
+        uni.offKeyboardHeightChange(this.keyBoardHeightChange);
     },
 
     methods: {
@@ -422,6 +429,9 @@ export default {
                 msg = this.videoTime.split(':')
             }
             this.videoTimes = `${msg[0] > 9 ? msg[0] : '0' + msg[0]}:${msg[1] > 9 ? msg[1] : '0' + msg[1]}`;
+        },
+        keyBoardHeightChange(obj) {
+            this.$refs.detailPop && this.$refs.detailPop.keyBoardHeightChange(obj)
         },
         formatSeconds(value) {//获取时间函数
             let theTime = parseInt(value);// 秒
@@ -614,7 +624,7 @@ export default {
 
 .navigateBox {
     width: 750rpx;
-    height: 140rpx;
+    height: 100rpx;
     position: fixed;
     top: 0px;
     left: 0px;

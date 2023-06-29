@@ -23,7 +23,7 @@
                 <!-- #endif -->
                 <view class="flex1"></view>
                 <view class="bottomInfo">
-                    <template v-if="!old">
+                    <template v-if="!old">  
                         <text class="num">{{ formatNumber(item.totalUseNum, 2) }}篇动态</text>
                         <text class="pushButton flexCenter" @click.stop="onClickPush($event, item)">发布</text>
                     </template>
@@ -119,7 +119,7 @@ export default {
     align-items: center;
     margin-bottom: 40rpx;
     flex-direction: row;
-
+    background-color: #ffffff;
 
 }
 
