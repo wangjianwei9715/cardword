@@ -26,7 +26,7 @@
 				:inactiveStyle="{color: '#959695',fontSize: '27rpx'}" 
 			/>
 		</u-sticky>
-		<filterCardList ref="filterCardList" v-show="tabsData.current==0" :numAll="seriesData.main.numAll" :seriesCode="seriesCode" :search="seriesData.search"/>
+		<filterCardList ref="filterCardList" v-show="tabsData.current==0" :seriesCode="seriesCode" :search="seriesData.search"/>
 		<view v-show="tabsData.current==1" class="post-box">
 			<view class="header">
 				<view class="input-box">

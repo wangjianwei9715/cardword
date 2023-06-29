@@ -95,7 +95,6 @@
 				return;
 			}
 			uni.showModal({
-                title: '提示',
                 content: '是否提交报错?',
                 success: (res: any) => {
                     if (res.confirm){

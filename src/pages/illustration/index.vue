@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-26 15:20:45
+ * @LastEditTime: 2023-06-29 12:08:42
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -49,7 +49,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	class ListParams {
-		noSize=5;
+		noSize=10;
 		fetchFrom=1;
 		fetchSize=10;
 		isFetchEnd=false
@@ -89,12 +89,16 @@
 		}
 		getSeries(){
 			if(this.listParams.isFetchEnd) return;
+			uni.showLoading({ title: '加载中' });
 			app.http.Get('dataApi/cardIllustration/list/cardSet/hot',this.listParams,(res:any)=>{
 				if(res.list){
 					this.seriesLst = this.listParams.fetchFrom==1 ? res.list : [...this.seriesLst,...res.list];
 				};
 				this.listParams.isFetchEnd = res.isFetchEnd;
 				this.listParams.fetchFrom += this.listParams.fetchSize;
+				setTimeout(() => {
+					uni.hideLoading();
+				}, 100);
 			})
 		}
 		onClickPreviewImage(pic:any[],index: number) {

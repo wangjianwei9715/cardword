@@ -159,7 +159,6 @@
 		onClickUpload(){
 			if(!this.frontPic) return;
 			uni.showModal({
-                title: '提示',
                 content: '确认上传图鉴?',
                 success: (res: any) => {
 					if(res.confirm){

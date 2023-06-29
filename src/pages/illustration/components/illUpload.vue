@@ -81,7 +81,7 @@
 			this.peCurrent = index;
 		}
 		async addImage(type:string) {
-			const pic:any = await Upload.getInstance().uploadImgs(1, "illustration", ["album"]);
+			const pic:any = await Upload.getInstance().uploadImgs(1, "illustration", ["album","camera"]);
 			type=="front" && (this.frontImg = pic[0]);
 			type=="back" && (this.backImg = pic[0]);
 		}

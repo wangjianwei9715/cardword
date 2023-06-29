@@ -4,7 +4,7 @@
 			<view class="content" :style="'height:' + statusBarHeight + 'px'"></view>
 			<view class="tab-header">
 				<view class="icon-back" :style="{color:backColor}" @click="onClickBack">&#xe582;</view>
-				<view class="header-title">{{ title }}</view>
+				<view class="header-title" :style="{color:backColor}">{{ title }}</view>
 				<view class="header-icon" v-if="custom">
 					<slot name="right"></slot>
 				</view>

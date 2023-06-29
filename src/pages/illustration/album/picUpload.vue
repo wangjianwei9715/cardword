@@ -1,39 +1,23 @@
 <!--
- * @FilePath: \jichao_app_2\src\pages\illustration\album\selectCard.vue
+ * @FilePath: \jichao_app_2\src\pages\illustration\album\picUpload.vue
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-29 11:54:53
+ * @LastEditTime: 2023-06-29 14:38:14
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="album-card-content">
-		<view class="tips">请尽可能添加您想收集的整套卡组LIST，以便查看收集进度</view>
-		<view class="series-box" v-for="(item,index) in selectSeries" :key="index">
-			<view class="header">
-				<view class="title">{{item.name}}</view>
-				<view class="icon-sub" @click="selectSeries.splice(index,1)"></view>
-			</view>
-			<view class="no-box" v-for="(noItem,noIndex) in item.noList" :key="noIndex">
-				<view class="card-team">
-					<view class="team">NO.{{noItem.number}} {{noItem.team}}</view>
-					<view v-show="!noItem.split" class="icon-clear" @click="item.noList.splice(noIndex,1)"></view>
-					<view v-show="!noItem.split" class="split" @click="onClickSplitNo(index,noIndex)">拆分限编</view>
-					<view v-show="noItem.split" class="split-c" @click="onClickSplitCancel(index,noItem)">取消拆分</view>
-				</view>
-				<view class="player">{{noItem.player}}</view>
-				<view class="cardset">{{noItem.split?noItem.seqIndex+'/'+noItem.seq:noItem.seq}}编，{{noItem.cardSet}}</view>
-			</view>
-			<view class="add-no" @click="onClickSelectNo(item)">+添加卡种</view>
+		<navigationbar title="上传卡片" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true">
+			<template slot="right">
+				<view class="icon-help" @click="onClickShowRule"></view>
+			</template>
+		</navigationbar>
+		<view class="list" v-for="(item,index) in selectSeries" :key="index">
+			<view class="tips">{{item.name}}</view>
 		</view>
-		<view class="series-box">
-			<view class="header">
-				<view class="title">请选择系列</view>
-				<view class="icon-add" @click="onClickSeriesSelect"></view>
-			</view>
-		</view>
-		<albumBottom :canNext="getSeriesNolistLength" :data="selectSeries" :step="1" @next="onClickNext()"/>
+		<albumBottom :canNext="getSeriesNolistLength" :data="selectSeries" :percent="picPercent" :step="2" @next="onClickNext()"/>
 	</view>
 </template>
 
@@ -48,51 +32,13 @@
 	export default class ClassName extends BaseNode {
 		selectSeries:any = []
 		onLoad(query: any) {
-			if(query.seriesCode){
-				this.selectSeries = [{seriesCode:query.seriesCode,name:query.name,noList:[]}]
-			}
-			this.onEventUI("seriesSelect", (res) => {
-				const repeat = this.selectSeries.some((x:any)=>{
-					if(x.seriesCode == res.code){
-						uni.showToast({ title:'已选择此系列', icon:'none' })
-						return true
-					}
-				})
-				!repeat && this.selectSeries.push({seriesCode:res.code,name:res.name,noList:[]})
-			});
-			this.onEventUI("albumNoList",(res:any)=>{
-				this.selectSeries.forEach((x:any)=>{
-					if(x.seriesCode === res.code){
-						x.noList = app.platform.removeDuplicate([...x.noList,...res.list],'code')
-					}
-				})
-			})
+			this.selectSeries = JSON.parse(query.selectSeries)
 		}
 		public get getSeriesNolistLength() : boolean {
 			return this.selectSeries.some((x:any)=> x.noList.length>0)
 		}
-		onClickSplitNo(index:number,noIndex:number){
-			const list = this.selectSeries[index].noList;
-			const { seq ,seqIndex, ...rest } = list[noIndex];
-			this.selectSeries[index].noList.splice(noIndex,1);
-			for(let i=seq ; i>0 ; i--){
-				this.selectSeries[index].noList.splice(noIndex,0,{...rest,seqIndex:i,seq,split:true});
-			}
-		}
-		onClickSplitCancel(index:number,noItem:any){
-			const list = this.selectSeries[index].noList;
-			list.some((x:any,index:number)=>{
-				if(x.code==noItem.code){
-					x.split = false;
-					list.splice(index+1,x.seq-1)
-					return true;
-				}
-			})
-		}
-		onClickSeriesSelect(){
-			uni.navigateTo({
-				url:'/pages/illustration/seriesSelect?back=true'
-			})
+		public get picPercent() : number {
+			return 1
 		}
 		onClickSelectNo(item:any){
 			uni.navigateTo({
@@ -100,9 +46,7 @@
 			})
 		}
 		onClickNext(){
-			uni.navigateTo({
-				url:`/pages/illustration/album/picUpload?selectSeries=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
-			})
+			
 		}
 	}
 </script>

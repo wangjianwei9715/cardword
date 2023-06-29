@@ -1,22 +1,31 @@
 <template>
 	<view class="album-bottom">
-		<view class="left">
+		<view class="left" @click="onClickSave">
 			<view class="icon-save"></view>
 			<view class="msg">存草稿</view>
 		</view>
-		<view class="btn" :class="{'btn-red':canNext}" @click="onClickNext">下一步</view>
+		<view class="btn" :class="{'btn-red':canNext}" @click="onClickNext">
+			下一步
+			<view class="percent" v-show="step==2">当前收集进度{{percent}}%</view>
+		</view>
 	</view>
 </template>
 
 <script lang="ts">
-	import { Component, Prop ,PropSync} from "vue-property-decorator";
+	import { Component, Prop} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
-	import Upload from "@/tools/upload"
+	import { storageDraft } from '@/pages/cardForum/func/index'
 	@Component({ components: { muqianLazyLoad },})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
 		canNext!:boolean
+		@Prop({default:1})
+		step!:number
+		@Prop({default:0})
+		percent!:number
+		@Prop({default:[]})
+		data!:any
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -28,7 +37,20 @@
 		}
 		onClickNext(){
 			if(!this.canNext) return;
-			this.$emit('next')
+			this.$emit('next');
+		}
+		onClickSave(){
+			if(!this.canNext) return;
+			uni.showModal({
+                content: '确认保存至草稿箱吗?',
+                success: (res: any) => {
+                    if (res.confirm){
+						storageDraft({step:this.step,data:this.data},"cardBook");
+						uni.showToast({ title:"草稿保存成功",icon:"none" });
+						uni.switchTab({ url: '/pages/index/userinfo' });
+					}
+                }
+            })
 		}
 	}
 </script>
@@ -82,6 +104,17 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex-wrap: wrap;
+		box-sizing: border-box;
+		padding:10rpx 0;
+		.percent{
+			width: 100%;
+			text-align: center;
+			font-size: 20rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #FFFFFF;
+		}
 	}
 	.btn-red{
 		background: #FA1545 !important;
