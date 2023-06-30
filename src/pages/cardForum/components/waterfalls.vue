@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 16:42:03
+ * @LastEditTime: 2023-06-30 16:52:02
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -507,7 +507,9 @@ export default {
             this.$emit("loadmore")
         },
         imageLoad(event, item) {
+            // #ifdef APP-NVUE
             if (item.mode || item.width) return
+            // #endif
             const widthFixHeight = (WIDTH / event.detail.width) * event.detail.height
             // console.log(widthFixHeight,MAX_HEIGHT);
             if (widthFixHeight > MAX_HEIGHT) {
