@@ -140,14 +140,14 @@ export default class Upload {
             throw new Error(err.message)
         }
     }
-    async uploadTempFile(path: string, fileDir: string) {
+    async uploadTempFile(path: string, fileDir: string, fileName?: string) {
+        // fileName h5下使用
         try {
             console.log("需要上传的path", path);
-
             const sign = await this.ossutils.getSTS(); // 获取签名等信息
             const res: any = await this.uploadFile({
                 tempFilePaths: [path],
-                tempFiles: [{ name: this.getName(path) }]
+                tempFiles: [{ name: fileName }]
             }, sign, fileDir, "video")
             return res[0]
         } catch (err) {
@@ -178,8 +178,8 @@ export default class Upload {
             title: '上传图片中...'
         });
         const fileRes = [{
-            tempFilePaths:[filePath],
-            tempFiles:[filePath]
+            tempFilePaths: [filePath],
+            tempFiles: [filePath]
         }]
         const imgUrls = await this.uploadFile(fileRes, sign, 'TemporaryFile')
         return imgUrls

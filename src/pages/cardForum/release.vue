@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 14:55:38
+ * @LastEditTime: 2023-06-30 15:06:46
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -280,7 +280,7 @@ export default class ClassName extends BaseNode {
                 if (tempVideo.errCode) return
                 this.tempVideoFile = tempVideo
                 this.videoPath = tempVideo.tempFilePath
-                this.formData.video_at = tempVideo.duration
+                this.formData.video_at = Math.floor(tempVideo.duration)
                 this.formData.tp = Tp.Video
                 this.pics = [tempVideo.tempFilePath]
                 this.addText = ADD_COVER
@@ -536,9 +536,14 @@ export default class ClassName extends BaseNode {
         if (this.formData.tp == Tp.Video && this.formData.localVideo) {
             if (this.isTempVideo) {
                 //临时的视频路径(上传至阿里云)
-                const videoPath: any = await Upload.getInstance().uploadTempFile(this.videoPath, "cardForumVideo/")
+                const videoPath: any = await Upload.getInstance().uploadTempFile(this.videoPath, "cardForumVideo/", this.tempVideoFile.name || "video.mp4")
                 console.log("上传到阿里云的视频路径:", videoPath);
                 if (!this.formData.cover) this.formData.cover = encodeURIComponent(decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast")
+                // #ifdef H5
+                if (this.formData.cover.indexOf("blob:http") >= 0) {
+                    this.formData.cover = encodeURIComponent(decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast")
+                }
+                // #endif
                 this.formData.url = [videoPath]
             }
         }
