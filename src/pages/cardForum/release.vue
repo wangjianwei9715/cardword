@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 14:11:14
+ * @LastEditTime: 2023-06-30 14:55:38
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -276,17 +276,17 @@ export default class ClassName extends BaseNode {
                 }
             } else if (type == "video") {
                 const tempVideo: any = await Upload.getInstance().getVideoTempFile()
+                console.log(tempVideo);
+                if (tempVideo.errCode) return
                 this.tempVideoFile = tempVideo
                 this.videoPath = tempVideo.tempFilePath
                 this.formData.video_at = tempVideo.duration
-                console.log(tempVideo);
                 this.formData.tp = Tp.Video
                 this.pics = [tempVideo.tempFilePath]
                 this.addText = ADD_COVER
                 this.maxNum = 2
                 this.formData.localVideo = true
                 this.isTempVideo = true
-                return
                 return
                 const videoRes: any = await Upload.getInstance().uploadVideo("cardForumVideo/")
                 console.log(videoRes);
@@ -560,13 +560,31 @@ export default class ClassName extends BaseNode {
         }, (err: any) => {
             //发布失败
             // this.videoPath=
-            if (this.formData.tp == Tp.Video) {
-                this.pics = [this.formData.cover, ...this.formData.url]
-                this.formData.localVideo = false
-                this.isTempVideo = false
-                this.onClickSaveDraft()
-            }
+            // if (this.formData.tp == Tp.Video) {
+            //     this.pics = [this.formData.cover, ...this.formData.url]
+            //     this.formData.localVideo = false
+            //     this.isTempVideo = false
+            //     this.onClickSaveDraft()
+            // }
+            //发布失败保存至草稿箱
             uni.hideLoading()
+            this.formData.localVideo = false
+            this.isTempVideo = false
+            console.log("保存的草稿箱data", this.formData);
+            storageDraft(this.formData, "dynamic", this.draftId || "").then(() => {
+                uni.showModal({
+                    title: '提示',
+                    content: `发布失败:${err},已保存至草稿箱`,
+                    showCancel: false,
+                    success: (res: any) => {
+                        if (res.confirm) {
+                            app.platform.pageBack()
+                        }
+                    }
+                })
+            })
+
+
         })
         // this.formData.url=
     }
