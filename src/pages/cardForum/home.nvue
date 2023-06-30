@@ -116,7 +116,7 @@
                 </template>
             </u-tabs>
         </div>
-        <div class="showKaBottom" ref="showKaBottom">
+        <div class="showKaBottom" ref="showKaBottom" v-if="tabs.index==2">
             <div class="showKaTabBar">
                 <text class="tabbar_item">首页</text>
                 <text class="tabbar_item">拼团</text>
@@ -279,14 +279,14 @@ export default {
                         animation: false,
                         success: () => {
                             // #ifdef APP-NVUE
-                            const ref = this.$refs['showKaBottom']
-                            const duration = 0
-                            animation.transition(ref, {
-                                styles: {
-                                    opacity: `1`
-                                },
-                                duration
-                            })
+                            // const ref = this.$refs['showKaBottom']
+                            // const duration = 0
+                            // animation.transition(ref, {
+                            //     styles: {
+                            //         opacity: `1`
+                            //     },
+                            //     duration
+                            // })
                             plus.navigator.setStatusBarStyle("light");
                             // #endif
                         }
