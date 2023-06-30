@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 13:37:15
+ * @LastEditTime: 2023-06-30 13:52:31
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,8 +10,14 @@
     <view class="content">
         <cover-view style="width:750rpx;backgroundColor:#000000;position: fixed;
         top: 0;" :style="{ height: navHeight + 'px' }">
-            <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
-            </navigationbar>
+            <!-- <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
+            </navigationbar> -->
+            <cover-view :style="{ height: app.statusBarHeight + 'px' }"></cover-view>
+            <cover-view class="tabHeader" style="width:750rpx;height:88rpx;display: flex;align-items: center;">
+                <cover-view :style="{ color: '#fff' }" @click="app.platform.pageBack()">
+                    <cover-image style="width: 19rpx;height: 35rpx;margin-left: 30rpx;" src="@/static/index/v3/back.png"></cover-image>
+                </cover-view>
+            </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
         <album v-if="albumRelease" ref="albumRelease" :list="albumList" />
@@ -146,6 +152,7 @@ const formData: CardForumRelease = {
     }
 })
 export default class ClassName extends BaseNode {
+    app = app
     navHeight = navHeight
     showVote: boolean = false
     showTopics: boolean = false
@@ -514,7 +521,7 @@ export default class ClassName extends BaseNode {
         this.pics = []
     }
     async onClickSubmit() {
-        await this.assignFormData(true)
+        // await this.assignFormData(true)
         await this.assignFormData(!this.albumRelease)
         if (this.albumRelease) {
             //@ts-ignore
@@ -863,5 +870,24 @@ page {
         font-weight: 400;
         color: #C0C0C0;
     }
+}
+
+.icon-back {
+    position: absolute;
+    left: 18rpx;
+    top: 50%;
+    margin-top: -25rpx;
+    width: 50rpx;
+    height: 50rpx;
+    // background-color: rgba(255, 255, 255, 0);
+    font-family: uniicons;
+    font-size: 46rpx;
+    font-weight: normal;
+    font-style: normal;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
 }
 </style>
