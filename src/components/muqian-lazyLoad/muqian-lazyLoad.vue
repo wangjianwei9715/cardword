@@ -7,14 +7,14 @@
 				}"></image>
 
 		<!-- 加载成功 -->
-		<image class="muqian-image" @click="onClickLazyImage" @load="load" @error="error" v-if="status==1&&!viewBg"
+		<image class="muqian-image" @click="onClickLazyImage($parsePic(src))" @load="load" @error="error" v-if="status==1&&!viewBg"
 			:src="$parsePic(src)" :mode="mode" :style="{
 				opacity:isShow?'1':'0',
 				borderRadius,
 				transition: `opacity ${duration/1000}s ${effect}`
 				}">
 		</image>
-		<view v-else-if="status==1&&viewBg" @click="onClickLazyImage" :style="{
+		<view v-else-if="status==1&&viewBg" @click="onClickLazyImage($parsePic(src))" :style="{
 				borderRadius,
 				transition: `opacity ${duration/1000}s ${effect}`,
 				background:`url(${$parsePic(src)}) no-repeat center/100% 100%`,
@@ -122,6 +122,10 @@
 			viewBg: {
 				type: Boolean,
 				default: false
+			},
+			preview:{
+				type:Boolean,
+				default: false
 			}
 
 		},
@@ -147,8 +151,14 @@
 			this.$emit('destroyed')
 		},
 		methods: {
-			onClickLazyImage() {
-				this.$emit('click')
+			onClickLazyImage(pic) {
+				if(this.preview){
+					uni.previewImage({
+						urls: [pic]
+					});
+				}else{
+					this.$emit('click')
+				}
 			},
 			load() {
 				if (this.minTimeOut == 0) {

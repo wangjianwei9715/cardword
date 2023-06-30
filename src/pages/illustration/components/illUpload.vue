@@ -7,7 +7,7 @@
 			</view>
 		</view>
 		<view v-show="peCurrent==0" class="img-box">
-			<muqian-lazyLoad v-if="illustration&&illustration.frontPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.frontPic)" borderRadius="3rpx"/>
+			<muqian-lazyLoad v-if="illustration&&illustration.frontPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.frontPic)" borderRadius="3rpx" :preview="true"/>
 			<view v-else-if="!frontPic" class="up-box" @click="addImage('front')">
 				<view class="up-center">
 					<view class="icon-upload"></view>
@@ -25,7 +25,7 @@
 			</view>
 		</view>
 		<view v-show="peCurrent==1" class="img-box">
-			<muqian-lazyLoad v-if="illustration&&illustration.backPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.backPic)" borderRadius="3rpx"/>
+			<muqian-lazyLoad v-if="illustration&&illustration.backPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.backPic)" borderRadius="3rpx" :preview="true"/>
 			<view v-else-if="!backPic" class="up-box" @click="addImage('back')">
 				<view class="up-center">
 					<view class="icon-upload"></view>

@@ -98,7 +98,7 @@
 			this.getSeriesDetail();
 		}
 		getSeriesDetail(){
-			app.http.Get(`dataApi/cardIllustration/detail/series/${this.seriesCode}`,{},(res:any)=>{
+			app.http.Get(`dataApi/cardIllustration/series/detail/${this.seriesCode}`,{},(res:any)=>{
 				this.seriesData = res;
 			})
 		}

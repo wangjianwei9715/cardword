@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-29 11:54:53
+ * @LastEditTime: 2023-06-30 11:20:59
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -60,20 +60,38 @@
 				})
 				!repeat && this.selectSeries.push({seriesCode:res.code,name:res.name,noList:[]})
 			});
-			this.onEventUI("albumNoList",(res:any)=>{
-				this.selectSeries.forEach((x:any)=>{
+			this.onEventUI("albumNoList", async (res:any)=>{
+				await this.maxNoTotal(res.list.length);
+
+				const codeList = this.getSeriesNoCode(res.code);
+				this.selectSeries.some((x:any)=>{
 					if(x.seriesCode === res.code){
-						x.noList = app.platform.removeDuplicate([...x.noList,...res.list],'code')
+						res.list.forEach((item:any)=>{
+							if(!codeList.includes(item.code)){
+								x.noList.push(item)
+							}
+						})
+						return true;
 					}
 				})
 			})
 		}
+		public get listTotal() : number {
+			const total = this.selectSeries.reduce((total:number, x:any) => total + x.noList.length, 0);
+			return total
+		}
 		public get getSeriesNolistLength() : boolean {
 			return this.selectSeries.some((x:any)=> x.noList.length>0)
 		}
-		onClickSplitNo(index:number,noIndex:number){
+		getSeriesNoCode(seriesCode:string) {
+			return this.selectSeries.filter((x:any)=>{
+				return x.seriesCode == seriesCode;
+			}).map((x:any)=>x.code)
+		}
+		async onClickSplitNo(index:number,noIndex:number){
 			const list = this.selectSeries[index].noList;
 			const { seq ,seqIndex, ...rest } = list[noIndex];
+			await this.maxNoTotal(seq);
 			this.selectSeries[index].noList.splice(noIndex,1);
 			for(let i=seq ; i>0 ; i--){
 				this.selectSeries[index].noList.splice(noIndex,0,{...rest,seqIndex:i,seq,split:true});
@@ -102,6 +120,16 @@
 		onClickNext(){
 			uni.navigateTo({
 				url:`/pages/illustration/album/picUpload?selectSeries=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
+			})
+		}
+		maxNoTotal(num:number): Promise<any> {
+			return new Promise((resolve, reject) => {
+				if(num + this.listTotal > 500){
+					uni.showToast({title:"最多支持500张，请重新选择",icon:"none"});
+					reject();
+					return;
+				}
+				resolve && resolve(true)
 			})
 		}
 	}
