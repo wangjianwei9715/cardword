@@ -157,6 +157,23 @@ export default class Upload {
             throw new Error(err.message)
         }
     }
+    async uploadTemporaryFile(filePath: string) {
+        try {
+            const sign = await this.ossutils.getSTS(); // 获取签名等信息
+            uni.showLoading({
+                title: '上传图片中...'
+            });
+            const fileRes = [{
+                tempFilePaths:[filePath],
+                tempFiles:[{name:filePath}]
+            }]
+            const imgUrls = await this.uploadFile(fileRes, sign, 'TemporaryFile')
+            return imgUrls
+        } catch (err) {
+            //@ts-ignore
+            throw new Error(err.message)
+        }
+    }
     async getVideoTempFile() {
         let res: any = await uni.chooseVideo({
             sourceType: ["album"],
@@ -171,17 +188,5 @@ export default class Upload {
     async uploadVideo(fileDir = "") {
         const result = await this.upLoadVideoPath(fileDir);
         return result;
-    }
-    async uploadTemporaryFile(filePath: string) {
-        const sign = await this.ossutils.getSTS(); // 获取签名等信息
-        uni.showLoading({
-            title: '上传图片中...'
-        });
-        const fileRes = [{
-            tempFilePaths: [filePath],
-            tempFiles: [filePath]
-        }]
-        const imgUrls = await this.uploadFile(fileRes, sign, 'TemporaryFile')
-        return imgUrls
     }
 }

@@ -9,7 +9,9 @@
 			</transitionNav>
 			<view class="header-info">
 				<view class="header-info-l">
-					<muqian-lazyLoad class="series-logo" borderRadius="3rpx" :src="decodeURIComponent(seriesData.main.logo)" />
+					<view class="series-logo">
+						<muqian-lazyLoad class="logo" borderRadius="3rpx" :src="decodeURIComponent(seriesData.main.logo)" />
+					</view>
 					<view class="series-info-box">
 						<view class="series-info-name u-line-2">{{seriesData.main.year}} {{seriesData.main.name}}</view>
 						<view class="series-info-num">图鉴完成度：{{seriesData.main.numLoaded}}/{{seriesData.main.numAll}}</view>
@@ -34,6 +36,9 @@
 					<input class="search-input" v-model="postSearch" :adjust-position="false" placeholder="搜索球员/卡种/限编球队"/>
 				</view>
 			</view>
+			<waterfalls :value="albumList"></waterfalls>
+			<empty v-show="listParams.empty"/>
+			<u-loadmore v-show="listParams.nomore" status="nomore" line/>
 			<view class="btn-publish" @click="onClickGoPublish"></view>
 		</view>
 	</view>
@@ -45,8 +50,15 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	import { SeriesDetail } from './constants/interface'
 	import filterCardList from './components/filterCardList.vue'
+	import waterfalls from "@/pages/cardForum/components/waterfalls.vue"
+	class ListParams {
+		pageIndex:number=1;
+		pageSize:number=10;
+		noMoreData:boolean=false;
+		empty=false
+	}
 	@Component({
-		components:{filterCardList}
+		components:{filterCardList,waterfalls}
 	})
 	export default class ClassName extends BaseNode {
 		statusBarHeight = app.statusBarHeight;
@@ -75,6 +87,8 @@
 		refresherTriggered = false;
 		topHasBack = false;
 		postSearch = "";
+		albumList = [];
+		listParams = new ListParams();
 		onLoad(query: any) {
 			if(query.seriesCode) this.seriesCode = query.seriesCode;
 			this.onEventUI("seriesSelect", (res) => {
@@ -85,7 +99,11 @@
 		}
 		//   加载更多数据
 		onReachBottom() {
-			this.$refs.filterCardList.againList(1)
+			if(this.tabsData.current==0){
+				this.$refs.filterCardList.againList(1)
+			}else{
+				this.reqAlbumList()
+			}
 		}
 		onPageScroll(data: any) {
 			//@ts-ignore
@@ -125,6 +143,20 @@
 					url:`/pages/illustration/album/selectCard?seriesCode=${this.seriesCode}&name=${this.seriesData.main.name}`
 				})
 			})
+		}
+		reqAlbumList(cb?: Function) {
+			// 获取更多商品
+			const { pageIndex, pageSize, noMoreData,empty } = this.listParams;
+			if (noMoreData || empty)  return;
+
+			app.http.Get('cardIllustration/err/my', {pageIndex,pageSize}, (data: any) => {
+				let arr = data.list || [];
+				this.albumList = pageIndex == 1 ? arr : [...this.albumList, ...arr];
+				this.listParams.empty = data.total == 0;
+				this.listParams.noMoreData = data.isFetchEnd && data.total>0;
+				this.listParams.pageIndex++;
+				if (cb) cb();
+			});
 		}
 		
 	}
@@ -176,6 +208,11 @@
 		width: 104rpx;
 		height: 104rpx;
 		border-radius: 3rpx;
+		background:$pic-bg;
+		.logo{
+			width: 104rpx;
+			height: 104rpx;
+		}
 	}
 	.series-info-box{
 		height:104rpx;
@@ -252,7 +289,7 @@
 		}
 		.input-box{
 			width: 100%;
-			height:73rpx;
+			height:69rpx;
 			background: #F5F5F5;
 			border-radius: 3rpx;
 			position: relative;

@@ -28,7 +28,7 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
-	class listParams {
+	class ListParams {
 		pageIndex:number=1;
 		pageSize:number=10;
 		noMoreData:boolean=false
@@ -43,7 +43,7 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		recordList = [];
-		listParams = new listParams();
+		listParams = new ListParams();
 		empty = false;
 		nomore = false
 		onLoad(query: any) {

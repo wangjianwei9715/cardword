@@ -43,9 +43,9 @@
 			if(!this.canNext) return;
 			uni.showModal({
                 content: '确认保存至草稿箱吗?',
-                success: (res: any) => {
+                success: async (res: any) => {
                     if (res.confirm){
-						storageDraft({step:this.step,data:this.data},"cardBook");
+						await storageDraft({step:this.step,list:this.data},"cardBook");
 						uni.showToast({ title:"草稿保存成功",icon:"none" });
 						uni.switchTab({ url: '/pages/index/userinfo' });
 					}

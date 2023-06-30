@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-30 11:19:35
+ * @LastEditTime: 2023-06-30 15:28:59
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -38,14 +38,17 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
-		list!:any[];
+		albumList!:any[];
 
 		identify = "";
 		provePic = "";
 		coverPic = "";
+		restParams:any = {};
+		list:any = [];
 		mounted(){
+			this.list = this.albumList.flatMap(({ noList }) => noList);
 			this.identify=uni.$u.guid(8);
-			this.coverPic = this.list[0].frontPic;
+			this.coverPic = this.hasPicList[0].frontPic;
 		}
 		public get noNum() : number {
 			return this.list.length
@@ -59,7 +62,7 @@
 		}
 		public get percentMsg() : string {
 			const have = this.hasPicList.length;
-			return `${Math.floor((have/this.noNum)*100)}%（${have}/${this.noNum})`
+			return `${((have/this.noNum)*100).toFixed(2)}%（${have}/${this.noNum})`
 		}
 		async addImage() {
 			const picList:any = await Upload.getInstance().uploadImgs(1, "prove", ["album","camera"]);
@@ -71,41 +74,66 @@
 		async changeProve(){
 			this.provePic = await this.addImage()
 		}
-		publish({content,cover,url,...rest}:any){
+		publish({content,cover,url,title,...rest}:any){
 			if(this.provePic==""){
 				uni.showToast({title:'请上传证明图片',icon:'none'})
 				return;
 			}
 			const params = {
 				identify:this.identify,
-				provePic:this.provePic,
+				title,
 				cover:this.coverPic,
-				description:content,
+				provePic:this.provePic,
+				description:encodeURIComponent(content),
 				picNum:this.picNum,
 				noNum:this.noNum,
-				...rest
 			}
+			this.restParams = rest;
 			app.http.Post('cardIllustration/album/publish/prepare',params,(res:any)=>{
-				this.publishUpload(res.uploadToken)
+				this.prepare(res.uploadToken)
+			},(err:any)=>{
+				this.revokePublish()
 			})
 		}
-		publishUpload(uploadToken:string){
+		prepare(uploadToken:string){
 			const PostLength = Math.ceil(this.noNum/MaxNos);
-			this.postPublicUpload(uploadToken,PostLength,0);
+			this.publishUpload(uploadToken,PostLength,0);
 		}
-		postPublicUpload(uploadToken:string,PostLength:number,nowNum:number){
+		publishUpload(uploadToken:string,PostLength:number,nowNum:number){
 			const maxList = this.list.length;
 			const list = [...this.list].splice((nowNum*200),Math.min(200,maxList-(nowNum*200)));
-			const nos = list.map((x:any)=>{
-				return {code:x.code,seqIndex:x.seqIndex,frontPic:x.frontPic,backPic:x.backPic};
+			const codes = list.filter((x:any)=>{
+				return !x.split && x.frontPic=="";
 			})
-			app.http.Post('cardIllustration/album/publish/upload',{uploadToken,nos},(res:any)=>{
+			const nos = list.filter((x:any)=>{
+				return x.split || x.frontPic
+			})
+			const params = {
+				uploadToken,
+				codes:codes.map((x:any)=>x.code),
+				nos:nos.map((x:any)=>{
+					return {code:x.code,seqIndex:x.seqIndex,frontPic:x.frontPic,backPic:x.backPic};
+				})
+			}
+			app.http.Post('cardIllustration/album/publish/upload',params,(res:any)=>{
 				if(nowNum+1>=PostLength){
-					uni.showToast({ title:"发布成功，请等待审核",icon:"none" });
-					uni.switchTab({ url: '/pages/index/userinfo' });
+					this.publicComplete(uploadToken)
 				}else{
-					this.postPublicUpload(uploadToken,PostLength,nowNum+1);
+					this.publishUpload(uploadToken,PostLength,nowNum+1);
 				}
+			},(err:any)=>{
+				this.revokePublish()
+			})
+		}
+		publicComplete(uploadToken:string){
+			const params = {
+				uploadToken,
+				identify:this.identify,
+				...this.restParams
+			}
+			app.http.Post('cardIllustration/album/publish/complete',params,(res:any)=>{
+				uni.showToast({ title:"发布成功，请等待审核",icon:"none" });
+				uni.switchTab({ url: '/pages/index/userinfo' });
 			},(err:any)=>{
 				this.revokePublish()
 			})
@@ -113,6 +141,7 @@
 		revokePublish(){
 			app.http.Post('cardIllustration/album/publish/revoke',{identify:this.identify},(res:any)=>{
 				this.identify = uni.$u.guid(8);
+				uni.showToast({ title:"发布失败，请重新发布",icon:"none" });
 			})
 		}
 	}

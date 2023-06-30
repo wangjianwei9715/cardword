@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-30 10:52:07
+ * @LastEditTime: 2023-06-30 15:00:02
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -62,6 +62,9 @@
 		selectSeries:any = [];
 		segmentCheck = false;
 		onLoad(query: any) {
+			if (query.draftList) {
+				this.selectSeries = JSON.parse(query.draftList)
+			}
 			this.selectSeries = JSON.parse(query.selectSeries).map((x:any)=>{
 				x.noList= x.noList.map((element:any) => {
 					return {...element,frontPic:"",backPic:""}
@@ -111,12 +114,8 @@
 			}
 		}
 		onClickNext(){
-			let album:any = [];
-			this.selectSeries.forEach((x:any)=>{
-				album.push(...x.noList)
-			})
 			uni.navigateTo({
-				url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(album))}`
+				url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
 			})
 		}
 	}

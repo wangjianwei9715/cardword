@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-30 11:20:59
+ * @LastEditTime: 2023-06-30 14:57:21
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -19,7 +19,7 @@
 				<view class="card-team">
 					<view class="team">NO.{{noItem.number}} {{noItem.team}}</view>
 					<view v-show="!noItem.split" class="icon-clear" @click="item.noList.splice(noIndex,1)"></view>
-					<view v-show="!noItem.split" class="split" @click="onClickSplitNo(index,noIndex)">拆分限编</view>
+					<view v-show="!noItem.split&&noItem.seq>0" class="split" @click="onClickSplitNo(index,noIndex)">拆分限编</view>
 					<view v-show="noItem.split" class="split-c" @click="onClickSplitCancel(index,noItem)">取消拆分</view>
 				</view>
 				<view class="player">{{noItem.player}}</view>
@@ -48,6 +48,9 @@
 	export default class ClassName extends BaseNode {
 		selectSeries:any = []
 		onLoad(query: any) {
+			if (query.draftList) {
+				this.selectSeries = JSON.parse(query.draftList)
+			}
 			if(query.seriesCode){
 				this.selectSeries = [{seriesCode:query.seriesCode,name:query.name,noList:[]}]
 			}
@@ -140,7 +143,7 @@
         background:#000000;
     }
 	.album-card-content{
-		padding-bottom: calc(159rpx + env(safe-area-inset-bottom));;
+		padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
 	}
 	.tips{
 		width: 100%;
