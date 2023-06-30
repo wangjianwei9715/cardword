@@ -215,23 +215,7 @@ export default {
     methods: {
         getNavHeight(height) {
             this.navHeight = height
-            setTimeout(() => {
-                this.$nextTick(async () => {
-                    this.topHeight = await this.getDomHeight("#topContainer")
-                    this.tabsHeight = await this.getDomHeight("#tabs")
-                    this.userInfoWrapHeight = await this.getDomHeight("#userInfoWrap")
-                    // #ifdef APP-PLUS
-                    this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.navHeight - this.tabsHeight
-                    // #endif
-                    // #ifdef H5
-                    this.scrollViewHeight = 666
-                    // #endif
-                    this.getUserInfo()
-
-                })
-            }, 100)
-
-
+            this.getUserInfo()
         },
         tabClick(event) {
             // console.log(event);
@@ -353,11 +337,30 @@ export default {
                     .exec();
             })
         },
+        setDomHeight() {
+            setTimeout(() => {
+                this.$nextTick(async () => {
+                    this.topHeight = await this.getDomHeight("#topContainer")
+                    this.tabsHeight = await this.getDomHeight("#tabs")
+                    this.userInfoWrapHeight = await this.getDomHeight("#userInfoWrap")
+                    // #ifdef APP-PLUS
+                    this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.navHeight - this.tabsHeight
+                    // #endif
+                    // #ifdef H5
+                    this.scrollViewHeight = 666
+                    // #endif
+                    this.initTab()
+                })
+            }, 100)
+        },
         getUserInfo() {
             const url = this.isMine ? `cardCircle/me/home` : `cardCircle/user/home`
             app.http.Get(`dataApi/${url}`, { userId: this.userId }, (res) => {
                 this.userInfo = res.data
-                this.initTab()
+                this.setDomHeight()
+
+            }, () => {
+                this.setDomHeight()
             })
         },
         getDomInfo(dom) {

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 18:41:20
+ * @LastEditTime: 2023-06-30 19:30:10
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -158,7 +158,7 @@
         </header>
         <slot name="header"></slot>
         <header>
-            <empty v-if="!value.length&&showEmpty"></empty>
+            <empty v-if="!value.length && showEmpty"></empty>
         </header>
         <slot name="cell"></slot>
         <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)"
@@ -212,6 +212,7 @@
         </cell>
         <header style="margin-top:50rpx" v-if="tempList.length">
             <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了" />
+            <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </header>
     </waterfall>
     <!-- #endif -->
@@ -339,9 +340,9 @@ export default {
             type: Number,
             default: 0
         },
-        showEmpty:{
-            type:Boolean,
-            default:true
+        showEmpty: {
+            type: Boolean,
+            default: true
         }
 
     },
@@ -356,6 +357,7 @@ export default {
             refreshing: false,
             defaultAvatar: getApp().globalData.app.defaultAvatar,
             pushTimer: 0,
+            safeBottomHeight: 0,
 
         }
     },
@@ -416,8 +418,9 @@ export default {
         this.tempList = this.$uv.deepClone(this.copyValue)
         this.splitData()
         // #endif
-        console.log(this.value);
-        // console.log(this.$refs.water);
+        // #ifdef APP-NVUE
+        this.safeBottomHeight = plus.navigator.getSafeAreaInsets().deviceBottom
+        // #endif
     },
     methods: {
         onrefresh() {
