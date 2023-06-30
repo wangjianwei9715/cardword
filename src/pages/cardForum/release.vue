@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 15:06:46
+ * @LastEditTime: 2023-06-30 16:13:43
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,8 +23,8 @@
         <view :style="{ height: navHeight + 'px' }"></view>
         <album v-if="albumRelease" ref="albumRelease" :list="albumList" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
-            <ppp :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics" @heightChange="heightChange"
-                @addImage="addImage('pics')" @delVideo="delVideo" @delVideoCover="delVideoCover" />
+            <ppp v-if="showPPP" :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics"
+                @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
         </view>
         <input type="text" class="input_title" v-model.trim="formData.title" placeholder="添加一个有趣的标题吧~（选填）"
             placeholderStyle="color: #959695;font-size:29rpx" :maxlength="80">
@@ -155,6 +155,7 @@ const formData: CardForumRelease = {
 export default class ClassName extends BaseNode {
     app = app
     navHeight = navHeight
+    showPPP: boolean = true
     showVote: boolean = false
     showTopics: boolean = false
     showGoods: boolean = false
@@ -195,6 +196,7 @@ export default class ClassName extends BaseNode {
         if (query.albumList) {
             this.albumList = JSON.parse(query.albumList)
         }
+        uni.$on("cardForumDelVideo", this.cardForumDelVideo)
     }
     public get albumRelease(): boolean {
         return this.albumList.length > 0
@@ -223,6 +225,15 @@ export default class ClassName extends BaseNode {
         this.selectGoods.goodCode = item.goodCode
         this.selectGoods.cover = item.cover
         this.selectGoods.title = item.title
+    }
+    cardForumDelVideo() {
+        console.log("删除video");
+        this.showPPP = false
+        this.resetByInitial()
+        this.pics = []
+        setTimeout(() => {
+            this.showPPP = true
+        }, 300)
     }
     async addImage(keyName: string) {
         if (this.pics.length == 0) {
@@ -325,18 +336,22 @@ export default class ClassName extends BaseNode {
         this.showVote = true
     }
     delVideo() {
-        this.videoPath = ""
-        this.formData.video_at = 0
-        // this.pics.splice(0, this.pics.length)
-        this.maxNum = 9
-        this.addText = ADD_PIC_VIDEO
-        // console.log(this.pics);
+        this.showPPP = false
+        setTimeout(() => {
+            this.showPPP = true
+        }, 100)
+        // this.videoPath = ""
+        // this.formData.video_at = 0
+        // // this.pics.splice(0, this.pics.length)
+        // this.maxNum = 9
+        // this.addText = ADD_PIC_VIDEO
+        // // console.log(this.pics);
 
     }
-    delVideoCover() {
-        this.formData.cover = ""
-        this.addText = ADD_COVER
-    }
+    // delVideoCover() {
+    //     this.formData.cover = ""
+    //     this.addText = ADD_COVER
+    // }
     heightChange(height: number) {
         this.imgUploadHeight = height + 20
     }
@@ -523,6 +538,7 @@ export default class ClassName extends BaseNode {
     resetByInitial() {
         this.resetByPic()
         this.addText = ADD_PIC_VIDEO
+        this.formData.localVideo = false
         this.pics = []
     }
     async onClickSubmit() {

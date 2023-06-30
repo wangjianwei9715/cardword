@@ -45,10 +45,16 @@
                             <image v-if="!getVideoPath(item.src)" class="pre-image"
                                 :src="parsePic(decodeURIComponent(item.src))" mode="aspectFill">
                             </image>
-                            <video @click="onClickVideo" ref="videoMine" id="videoMine" v-if="getVideoPath(item.src)" @play="videoPlay"
-                                class="pre-image" :auto-play="false" :enable-progress-gesture="false" :controls="false"
-                                :loop="false" :muted="true" :autoplay="false"
-                                :src="parsePic(decodeURIComponent(item.src))"></video>
+                            <view v-if="getVideoPath(item.src)" class="pre-image">
+                                <video @click="onClickVideo" ref="videoMine" id="videoMine" @play="videoPlay"
+                                    class="pre-image" :auto-play="false" :enable-progress-gesture="false" :controls="false"
+                                    :loop="false" :muted="true" :autoplay="false"
+                                    :src="parsePic(decodeURIComponent(item.src))">
+                                    <cover-view @click="onClickVideo(getVideoPath(item.src))"
+                                        style="width:100%;height:100%;border-color: red;position: absolute;left: 0;top: 0;"></cover-view>
+                                </video>
+                            </view>
+
                         </div>
                     </movable-view>
                 </template>
@@ -168,7 +174,8 @@ export default {
             changeStatus: true,
             preStatus: true,
             first: true,
-            onMove: false
+            onMove: false,
+            autoPlay: false,
         };
     },
     computed: {
@@ -269,11 +276,16 @@ export default {
         onClickVideo() {
             console.log("77777777777");
         },
-        videoPlay() {
-            console.log(9999999);
-            // console.log(this.$refs.videoMine[0].play);
-            // const videoContext = uni.createVideoContext("videoMine")
-            // console.log(videoContext);
+        onClickVideo(path) {
+            console.log(path);
+            uni.navigateTo({
+                url: "/pages/cardForum/videoPlay?path=" + encodeURIComponent(path)
+            })
+        },
+        videoPlay(event) {
+            console.log(event, 9999999);
+            const cpoyPath = getVideoPath(this.imageList.map(item => item.src).join(","))
+            console.log(cpoyPath);
         },
         getSrc(item) {
             if (this.keyName !== null) {
@@ -497,15 +509,12 @@ export default {
         },
         delImageHandle(item, index) {
             // console.log(this.imageList[index]);
-            const isVideo = this.imageList[index].src.indexOf("isVideo") >= 0
+            // const isVideo = this.imageList[index].src.indexOf("isVideo") >= 0
             if (this.type === 2) {
-                this.$emit(isVideo ? "delVideo" : "delVideoCover")
+                // this.$emit(isVideo ? "delVideo" : "delVideoCover")
+                this.$emit("delVideo")
             }
-            if (this.type === 2 && isVideo) {
-                this.imageList.splice(0, this.imageList.length)
-            } else {
-                this.imageList.splice(index, 1);
-            }
+            this.imageList.splice(index, 1);
 
             for (let obj of this.imageList) {
                 if (obj.index > item.index) {
@@ -638,6 +647,7 @@ export default {
                 .pre-image {
                     width: 100%;
                     height: 100%;
+                    position: relative;
                 }
 
                 .first-con {
