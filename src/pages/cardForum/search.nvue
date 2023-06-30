@@ -57,9 +57,11 @@
             @change="swiperChange" @animationfinish="swiperChangeAnimationfinish" @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <!-- <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" /> -->
+                
                 <!-- #ifndef APP-NVUE -->
                 <scroll-view :scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                     @scrolltolower="loadmoreData(tabIndex)">
+                    <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                     <waterfalls style="width:750rpx;padding-top: 10rpx;"
                         v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')" v-model="tab.list"
                         :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40">
@@ -73,6 +75,7 @@
                 </scroll-view>
                 <!-- #endif -->
                 <!-- #ifdef APP-NVUE -->
+                <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                 <waterfalls column-count="2" v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')"
                     :ref="`waterfalls${tabIndex}`" left-gap="5" :height="scrollViewHeight + 'px'" :value="tab.list"
                     right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
@@ -88,6 +91,7 @@
                     </template>
                 </scroll-view>
                 <!-- #endif -->
+                
             </swiper-item>
         </swiper>
     </div>
@@ -99,6 +103,7 @@ import topicList from "./components/topicList.vue"
 import userList from "./components/userList.vue"
 import { Md5 } from "ts-md5";
 import { mockList } from "./func/index.js"
+import empty from "@/components/empty/empty.vue"
 const tabsList = [
     {
         name: '综合',
@@ -139,7 +144,8 @@ export default {
         waterfalls,
         cardSkeleton,
         topicList,
-        userList
+        userList,
+        empty
     },
     data() {
         return {
