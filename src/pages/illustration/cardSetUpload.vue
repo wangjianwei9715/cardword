@@ -23,7 +23,7 @@
 					<view class="card-title">{{noData.text.player}}</view>
 					<view class="card-set u-line-2">{{noData.text.cardSet}}</view>
 					<view class="card-seq">
-						<view v-if="noData.text.seq<25" class="card-seq-item" :class="`logo-seq-${noData.text.seq}`">{{noData.text.seq}}编</view>
+						<view v-if="noData.text.seq<25&&noData.text.seq>0" class="card-seq-item" :class="`logo-seq-${noData.text.seq}`">{{noData.text.seq}}编</view>
 					</view>
 				</view>
 				<view v-if="noData.illustration && noData.illustration.author" class="upload-author">
@@ -80,8 +80,8 @@
 		onLoad(query: any) {
 			this.noCode = query.noCode;
 			this.numData = {
-				now:query.nowIndex,
-				all:query.indexAll
+				now:Number(query.nowIndex),
+				all:Number(query.indexAll)
 			};
 			this.cardList = JSON.parse(query.cardList);
 			this.httpParams = JSON.parse(query.httpParams);

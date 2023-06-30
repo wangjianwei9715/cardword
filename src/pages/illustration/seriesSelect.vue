@@ -11,7 +11,9 @@
 							<view class="scroll-header">{{item.title}}</view>
 							<view class="series-list">
 								<view class="series-index" v-for="(litem,lindex) in item.list" :key="lindex" @click="onClickSeries(litem)">
-									<muqian-lazyLoad class="series-pic" borderRadius="3rpx" :src="decodeURIComponent(litem.logo)" />
+									<view class="series-pic">
+										<muqian-lazyLoad class="pic" borderRadius="3rpx" :src="decodeURIComponent(litem.logo)" />
+									</view>
 									<view class="series-name">{{litem.name}}</view>
 									<view class="series-percent">完整度{{litem.percent}}%</view>
 								</view>
@@ -190,6 +192,12 @@
 			width: 126rpx;
 			height:126rpx;
 			margin:0 auto;
+			border-radius: 3rpx;
+			background:$pic-bg;
+			.pic{
+				width: 126rpx;
+				height:126rpx;
+			}
 		}
 		.series-name{
 			width: 100%;

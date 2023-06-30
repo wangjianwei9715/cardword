@@ -11,7 +11,7 @@
                 </view>
             </view>
             <view class="operate-line">
-                <u-tabs :list="list" :current="current" lineHeight="0" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" itemStyle="padding:0;height:41rpx;margin-right:34rpx" @change="onChangeTabs"></u-tabs>
+                <u-tabs :list="list" :current="current" lineHeight="0" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" itemStyle="padding:0;height:41rpx;margin-right:40rpx" @change="onChangeTabs"></u-tabs>
             </view>
             <view class="operate-line flex-line">
                 <view class="line-title">卡种</view>
@@ -34,7 +34,9 @@
         </view>
         <view class="card-list">
             <view class="card-index" v-for="(item,index) in cardSetList" :key="index" @click="onClickCard(item,index)">
-                <muqian-lazyLoad v-if="item.frontPic" class="card-pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
+                <view v-if="item.frontPic" class="card-pic">
+                    <muqian-lazyLoad v-if="item.frontPic" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
+                </view>
                 <view v-else class="card-wait-up">
                     <view>
                         <view class="wait-pic"></view>
@@ -51,7 +53,7 @@
                     <view class="card-player">{{item.player}}</view>
                     <view class="card-set u-line-2">{{item.cardSet}}</view>
                     <view class="card-logo-box">
-                        <view v-if="item.seq<25" class="logo-seq" :class="`logo-seq-${item.seq}`">{{item.seq}}编</view>
+                        <view v-if="item.seq<25&&item.seq>0" class="logo-seq" :class="`logo-seq-${item.seq}`">{{item.seq}}编</view>
                         <image v-if="item.cardSetLogo" class="logo-pic" :src="decodeURIComponent(item.cardSetLogo)"/>
                     </view>
                 </view>
@@ -251,14 +253,13 @@
 	}
     .scroll-operate{
         width: 100%;
-        height:362rpx;
         background:#fff;
         box-sizing: border-box;
-        padding:34rpx 0 0 34rpx;
+        padding:34rpx 0 24rpx 33rpx;
     }
     .operate-filter{
         width: 100%;
-        height:73rpx;
+        height:69rpx;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -267,7 +268,7 @@
     }
     .input-box{
         width: 566rpx;
-        height: 73rpx;
+        height: 69rpx;
         background:#F5F5F5;
         border-radius:3rpx;
         box-sizing: border-box;
@@ -276,7 +277,7 @@
     }
     .input-operate{
         width: 100%;
-        height: 73rpx;
+        height: 69rpx;
         font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
@@ -294,27 +295,26 @@
         height:26rpx;
         display: flex;
         align-items: center;
-        font-size: 25rpx;
+        font-size: 27rpx;
         font-family: PingFang SC;
         font-weight: 600;
         color: #707070;
     }
     .icon-filter{
         width: 25rpx;
-        height:26rpx;
-        margin-right: 8rpx;
+        height:27rpx;
+        margin-right: 10rpx;
     }
-	
     .operate-line{
         width: 100%;
         height:41rpx;
-        margin-top: 20rpx;
+        margin-top: 21rpx;
     }
     .flex-line{
         display: flex;
     }
     .line-title{
-        width: 83rpx;
+        width: 94rpx;
         font-size: 27rpx;
         font-family: PingFang SC;
         font-weight: 600;
@@ -324,23 +324,23 @@
         line-height: 41rpx;
     }
     .line-scroll{
-        width:633rpx;
+        width:622rpx;
         white-space: nowrap;
     }
     .line-scroll-box{
-        height:41rpx;
+        height:44rpx;
         box-sizing: border-box;
         background: #F5F5F5;
         border-radius: 1rpx;
         text-align: center;
-        line-height: 41rpx;
-        padding:0 12rpx;
+        line-height: 44rpx;
+        padding:0 18rpx;
         font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #959695;
         display: inline-block;
-        margin-right: 15rpx;
+        margin-right: 24rpx;
     }
     .current{
         background: #FFE8E8;
@@ -349,25 +349,30 @@
     .card-list{
         width: 100%;
         box-sizing: border-box;
-        padding:15rpx 20rpx;
+        padding:20rpx;
     }
     .card-index{
 		width: 100%;
-        height:227rpx;
+        height:253rpx;
         border-radius: 3rpx;
         background: #fff;
         display: flex;
-        margin-bottom: 15rpx;
+        margin-bottom: 20rpx;
 	}
     .card-pic{
-        width: 175rpx;
-        height: 227rpx;
+        width: 180rpx;
+        height: 253rpx;
         border-radius: 3rpx;
         box-sizing: border-box;
+        background:$pic-bg;
+        .pic{
+            width: 180rpx;
+            height: 253rpx;
+        }
     }
     .card-wait-up{
-        width: 175rpx;
-        height: 227rpx;
+        width: 180rpx;
+        height: 253rpx;
         border-radius: 3rpx;
         border: 1px dashed #C0C0C0;
         box-sizing: border-box;
@@ -419,10 +424,10 @@
         }
     }
     .card-info{
-        width: 535rpx;
-        height:227rpx;
+        width: 530rpx;
+        height:253rpx;
         box-sizing: border-box;
-        padding:25rpx;
+        padding:30rpx 40rpx;
         position: relative;
         overflow: hidden;
     }
@@ -432,29 +437,30 @@
         position: absolute;
         bottom:-100rpx;
         right:-100rpx;
-        opacity: 0.5;
+        opacity: 0.2;
     }
     .card-player{
         font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 600;
         color: #333333;
-        margin-bottom: 15rpx;
+        margin-bottom: 20rpx;
     }
     .card-set{
         font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
+        word-break: break-all;
     }
     .card-logo-box{
         width: 100%;
         height:31rpx;
         position: absolute;
-        bottom:18rpx;
+        bottom:30rpx;
         left:0;
         box-sizing: border-box;
-        padding: 0 25rpx;
+        padding: 0 40rpx;
         display: flex;
         align-items: center;
     }

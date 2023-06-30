@@ -379,7 +379,7 @@
     }
     .operate-filter{
         width: 100%;
-        height:73rpx;
+        height:69rpx;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -388,7 +388,7 @@
     }
     .input-box{
         width: 566rpx;
-        height: 73rpx;
+        height: 69rpx;
         background:#F5F5F5;
         border-radius:3rpx;
         box-sizing: border-box;
@@ -397,7 +397,7 @@
     }
     .input-operate{
         width: 100%;
-        height: 73rpx;
+        height: 69rpx;
         font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
@@ -415,28 +415,28 @@
         height:26rpx;
         display: flex;
         align-items: center;
-        font-size: 25rpx;
+        font-size: 27rpx;
         font-family: PingFang SC;
         font-weight: 600;
         color: #707070;
     }
     .icon-filter{
         width: 25rpx;
-        height:26rpx;
-        margin-right: 8rpx;
+        height:27rpx;
+        margin-right: 10rpx;
     }
 	
     .operate-line{
         width: 100%;
         height:41rpx;
-        margin-top: 20rpx;
+        margin-top: 21rpx;
     }
     .flex-line{
         display: flex;
     }
     .line-title{
-        width: 83rpx;
-        font-size: 25rpx;
+        width: 94rpx;
+        font-size: 27rpx;
         font-family: PingFang SC;
         font-weight: 600;
         color: #333333;
@@ -445,23 +445,23 @@
         line-height: 41rpx;
     }
     .line-scroll{
-        width:633rpx;
+        width:622rpx;
         white-space: nowrap;
     }
     .line-scroll-box{
-        height:41rpx;
+        height:44rpx;
         box-sizing: border-box;
         background: #F5F5F5;
         border-radius: 1rpx;
         text-align: center;
-        line-height: 41rpx;
-        padding:0 12rpx;
-        font-size: 23rpx;
+        line-height: 44rpx;
+        padding:0 18rpx;
+        font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #959695;
         display: inline-block;
-        margin-right: 15rpx;
+        margin-right: 24rpx;
     }
     .current{
         background: #FFE8E8;

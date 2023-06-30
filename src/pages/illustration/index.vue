@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-29 12:08:42
+ * @LastEditTime: 2023-06-30 12:20:07
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -15,7 +15,9 @@
 			</u-cell>
 			<view class="hot-box">
 				<view class="hot-index" v-for="(item,index) in hotSeriesList" :key="index" @click="onClickGoDetail(item.code)">
-					<muqian-lazyLoad class="hot-pic" borderRadius="3rpx" :src="decodeURIComponent(item.logo)" />
+					<view class="hot-pic">
+						<muqian-lazyLoad class="pic" borderRadius="3rpx" :src="decodeURIComponent(item.logo)" />
+					</view>
 					<view class="hot-desc">{{item.year}}</view>
 					<view class="hot-desc">{{item.name}}</view>
 					<view class="hot-percent">完整度{{item.percent}}%</view>
@@ -162,6 +164,12 @@
 			width: 126rpx;
 			height:126rpx;
 			margin-bottom: 10rpx;
+			border-radius: 3rpx;
+			background:$pic-bg;
+			.pic{
+				width: 126rpx;
+				height:126rpx;
+			}
 		}
 		.hot-desc{
 			width: 100%;

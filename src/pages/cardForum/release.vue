@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 15:06:46
- * @FilePath: \card-world\src\pages\cardForum\release.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-30 15:44:19
+ * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -21,7 +21,7 @@
             </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
-        <album v-if="albumRelease" ref="albumRelease" :list="albumList" />
+        <album v-if="albumRelease" ref="albumRelease" :albumList="albumList" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics" @heightChange="heightChange"
                 @addImage="addImage('pics')" @delVideo="delVideo" @delVideoCover="delVideoCover" />
@@ -375,7 +375,11 @@ export default class ClassName extends BaseNode {
                 }
             }
             await this.assignFormData(false)
-            await storageDraft(this.formData, "dynamic", this.draftId || "")
+            const Draft = {
+                ...this.formData,
+                list:this.albumList
+            }
+            await storageDraft(Draft, this.albumRelease?"cardBook":"dynamic", "")
             uni.showModal({
                 title: "提示",
                 content: "已保存至草稿箱",
@@ -410,8 +414,6 @@ export default class ClassName extends BaseNode {
                 //     return
                 // }
             }
-            console.log(this.pics, getVideoPath(this.pics[0]));
-
             if (this.pics.length && !getVideoPath(this.pics[0])) this.formData.cover = this.pics[0]
             if (this.pics.length == 1 && getVideoPath(this.pics[0])) this.formData.url = [encodeURIComponent(this.videoPath)]
             if (this.pics.length > 1) {
