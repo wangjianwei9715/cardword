@@ -27,7 +27,7 @@
                     <text class="searchText" @click="onClickSearch">搜索</text>
                 </div>
             </div>
-            <u-tabs v-if="!onSearch" style="width:750rpx" :duration="300"
+            <u-tabs v-if="!onSearch" type="cardForum" style="width:750rpx" :duration="300"
                 :lineColor="`url('../../static/index/v3/tab_line.png') 100% 100%`"
                 :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
@@ -57,7 +57,7 @@
             @change="swiperChange" @animationfinish="swiperChangeAnimationfinish" @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <!-- <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" /> -->
-                
+
                 <!-- #ifndef APP-NVUE -->
                 <scroll-view :scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                     @scrolltolower="loadmoreData(tabIndex)">
@@ -81,17 +81,18 @@
                     right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
                     @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
                 </waterfalls>
+                <template v-if="tab.type == 'topics'">
+                    <topicList :value="tab.list"></topicList>
+                </template>
                 <scroll-view v-if="tab.type == 'topics' || tab.type == 'user'" :scroll-y="true"
                     :style="{ height: scrollViewHeight + 'px' }" @scrolltolower="loadmoreData(tabIndex)">
-                    <template v-if="tab.type == 'topics'">
-                        <topicList :value="tab.list"></topicList>
-                    </template>
+
                     <template v-if="tab.type == 'user'">
                         <userList :value="tab.list"></userList>
                     </template>
                 </scroll-view>
                 <!-- #endif -->
-                
+
             </swiper-item>
         </swiper>
     </div>

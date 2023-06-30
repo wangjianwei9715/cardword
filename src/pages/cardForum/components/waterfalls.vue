@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 17:04:05
+ * @LastEditTime: 2023-06-30 18:41:20
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -157,7 +157,9 @@
             </image>
         </header>
         <slot name="header"></slot>
-
+        <header>
+            <empty v-if="!value.length&&showEmpty"></empty>
+        </header>
         <slot name="cell"></slot>
         <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)"
             @appear="comAppear($event, item.code)">
@@ -208,7 +210,7 @@
                 </div>
             </div>
         </cell>
-        <header style="margin-top:20rpx">
+        <header style="margin-top:50rpx" v-if="tempList.length">
             <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了" />
         </header>
     </waterfall>
@@ -223,12 +225,16 @@ const app = getApp().globalData.app
 let exposureList = []
 import mixin from './function/mixin.js'
 import { delDraftDetail } from "../func/index.js"
+import empty from "@/components/empty/empty.vue"
 // #ifdef APP-NVUE
 const dom = weex.requireModule('dom')
 // #endif
 export default {
     name: 'waterfalls',
     mixins: [mixin],
+    components: {
+        empty
+    },
     props: {
         // 瀑布流数据
         // #ifdef VUE2
@@ -332,6 +338,10 @@ export default {
         viewUserId: {
             type: Number,
             default: 0
+        },
+        showEmpty:{
+            type:Boolean,
+            default:true
         }
 
     },

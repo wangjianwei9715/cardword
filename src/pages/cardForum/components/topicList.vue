@@ -2,11 +2,11 @@
     <view class="content">
         <view class="topicsItem" v-for="(item, index) in value" @click="goToDetail(item)">
             <!-- #ifndef APP-NVUE -->
-            <muqian-lazyLoad class="topiceImage" :src="$parsePic(decodeURIComponent(item.pic))"
+            <muqian-lazyLoad class="topiceImage" :src="parsePic(decodeURIComponent(item.pic))"
                 borderRadius="3rpx"></muqian-lazyLoad>
             <!-- #endif -->
             <!-- #ifdef APP-NVUE -->
-            <image class="topiceImage" :src="$parsePic(decodeURIComponent(item.pic))" borderRadius="3rpx">
+            <image class="topiceImage" :src="parsePic(decodeURIComponent(item.pic))" borderRadius="3rpx">
             </image>
             <!-- #endif -->
             <view class="rightInfo">
@@ -23,7 +23,7 @@
                 <!-- #endif -->
                 <view class="flex1"></view>
                 <view class="bottomInfo">
-                    <template v-if="!old">  
+                    <template v-if="!old">
                         <text class="num">{{ formatNumber(item.totalUseNum, 2) }}篇动态</text>
                         <text class="pushButton flexCenter" @click.stop="onClickPush($event, item)">发布</text>
                     </template>
@@ -62,6 +62,7 @@ export default {
     },
     data() {
         return {
+            parsePic: getApp().globalData.parsePic,
             stateMap,
             list: [],
             formatNumber,
@@ -74,6 +75,7 @@ export default {
 
     },
     mounted() {
+        console.log(this.value);
     },
     methods: {
         onClickPush(event, item) {
@@ -108,18 +110,22 @@ export default {
     // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
-    padding: 0 35rpx;
+    // padding: 0 35rpx;
 }
 
 .topicsItem {
-    width: 100%;
-    // width: 700rpx;
-    height: 161rpx;
+    // width: 100%;
+    width: 750rpx;
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+    // height: 161rpx;
     display: flex;
     align-items: center;
-    margin-bottom: 40rpx;
+    // margin-bottom: 20rpx;
     flex-direction: row;
     background-color: #ffffff;
+    padding: 20rpx 35rpx;
 
 }
 
@@ -187,9 +193,10 @@ export default {
 
 .bottomInfo {
     // width: 100%;
-    width: 500rpx;
+    // width: 500rpx;
     // background-color: red;
     display: flex;
+    flex: 1;
     justify-content: space-between;
     align-items: flex-end;
     flex-direction: row;

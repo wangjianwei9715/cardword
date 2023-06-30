@@ -47,11 +47,11 @@
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
                     <waterfalls :needExposure="true" :refreshColor="isShowKa ? '#ffffff' : ''" column-count="2"
-                        v-if="tab.list.length" :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'"
+                        v-if="tab.firstReqEnd" :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'"
                         :value="tab.list" @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
                         style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
-                        <template v-slot:header v-if="tabIndex == 2 && tab.firstReqEnd">
-                            <header style="align-items: center;">
+                        <template v-slot:header>
+                            <header style="align-items: center;" v-if="tabIndex == 2 && tab.firstReqEnd">
                                 <div class="hotTopicWrap">
                                     <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
                                     <div class="hotTopicRow">
@@ -79,7 +79,7 @@
                             </header>
                         </template>
                     </waterfalls>
-                    <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
+
                     <!-- #endif -->
 
                 </div>
@@ -116,7 +116,7 @@
                 </template>
             </u-tabs>
         </div>
-        <div class="showKaBottom" ref="showKaBottom" v-if="tabs.index==2">
+        <div class="showKaBottom" ref="showKaBottom" v-if="tabs.index == 2">
             <div class="showKaTabBar">
                 <text class="tabbar_item">首页</text>
                 <text class="tabbar_item">拼团</text>
@@ -227,6 +227,11 @@ export default {
     },
     async onLoad() {
         // console.log(77777);
+
+        await this.initTab()
+        this.reqNewData(true)
+    },
+    onShow() {
         this.$nextTick(async () => {
             this.fixedTopHeight = await this.getDomHeight("#fixedTop")
             // #ifdef APP-NVUE
@@ -237,8 +242,6 @@ export default {
             this.scrollViewHeight = 666
             // #endif
         })
-        await this.initTab()
-        this.reqNewData(true)
     },
     computed: {
         current() {
@@ -387,11 +390,12 @@ export default {
             }
         },
         refreshData(index) {
-
-            this.reqNewData(true)
             setTimeout(() => {
-                this.$refs['waterfalls' + index][0].hideRefresh()
-            }, 200);
+                this.reqNewData(true)
+                setTimeout(() => {
+                    this.$refs['waterfalls' + index][0].hideRefresh()
+                }, 200);
+            }, 300)
         },
         loadmoreData(index) {
             // const nowTab = this.tabs.list[index]

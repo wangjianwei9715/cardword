@@ -38,9 +38,10 @@
                             </div>
                         </div>
                         <div class="flex1"></div>
-                        <text class="userData_follow" :class="{userData_follow_dis:userInfo.isFollow}" @click="onClickFollow" v-if="!isMine">{{
-                            userInfo.isFollow ? '已关注' :
-                            '关注' }}</text>
+                        <text class="userData_follow" :class="{ userData_follow_dis: userInfo.isFollow }"
+                            @click="onClickFollow" v-if="!isMine">{{
+                                userInfo.isFollow ? '已关注' :
+                                '关注' }}</text>
                         <text class="userData_edit" v-else @click="pageJump('/pages/userinfo/user_info_v3')">编辑资料</text>
                     </div>
                 </div>
@@ -55,7 +56,7 @@
                 <swiper-item style="width:750rpx" v-for="(tab, tabIndex) in tabs.list">
                     <waterfalls :viewUserId="userId" :showBottom="tab.name != '中卡'" :detailBack="true" :isMine="isMine"
                         :showUser="false" :ref="`waterfalls${tabIndex}`" @scroll="waterScroll" :value="tab.list"
-                        :refresh="false" @loadmore="loadmore">
+                        :refresh="false" @loadmore="loadmore" :showEmpty="!isMine">
                         <template v-slot:cell v-if="tab.name == '动态' || tab.name == '卡册' && isMine">
                             <cell class="draftWrap" v-if="tab.name == '动态' && draftListByDynamic.length"
                                 @click="pageJump('/pages/cardForum/draftList')">
@@ -225,7 +226,7 @@ export default {
                     this.scrollViewHeight = 666
                     // #endif
                     this.getUserInfo()
-                    this.initTab()
+
                 })
             }, 100)
 
@@ -352,8 +353,10 @@ export default {
             })
         },
         getUserInfo() {
-            app.http.Get("dataApi/cardCircle/user/home", { userId: this.userId }, (res) => {
+            const url = this.isMine ? `cardCircle/me/home` : `cardCircle/user/home`
+            app.http.Get(`dataApi/${url}`, { userId: this.userId }, (res) => {
                 this.userInfo = res.data
+                this.initTab()
             })
         },
         getDomInfo(dom) {
@@ -660,4 +663,5 @@ page {
     font-family: PingFang SC;
     font-weight: 400;
     color: #ECEFF6;
-}</style>
+}
+</style>
