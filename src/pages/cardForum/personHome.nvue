@@ -53,15 +53,27 @@
                     <waterfalls :showBottom="tab.name != '中卡'" :detailBack="true" :isMine="isMine" :showUser="false"
                         :ref="`waterfalls${tabIndex}`" @scroll="waterScroll" :value="tab.list" :refresh="false"
                         @loadmore="loadmore">
-                        <template v-slot:cell v-if="tab.name == '动态' && isMine && draftListByDynamic.lengt">
-                            <cell class="draftWrap">
-                                <image class="draftWrapImage"
-                                    src="https://images.cardhobby.com/1bca1e81d8af42d081984ba4890f0bc4.jpg?imageView2/2/w/200">
+                        <template v-slot:cell v-if="tab.name == '动态' || tab.name == '卡册' && isMine">
+                            <cell class="draftWrap" v-if="tab.name == '动态' && draftListByDynamic.length" @click="pageJump('/pages/cardForum/draftList')">
+                                <image class="draftWrapImage" v-if="draftListByDynamic[0].cover"
+                                    :src="decodeURIComponent(draftListByDynamic[0].cover)">
                                 </image>
                                 <div class="shadow">
                                     <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
+                                    <text class="caogaoTitle">草稿箱</text>
+                                    <text class="caogaoText">有{{ draftListByDynamic.length }}篇动态待发布</text>
                                 </div>
 
+                            </cell>
+                            <cell class="draftWrap" v-if="tab.name == '卡册' && draftListByCardBook.length" @click="pageJump('/pages/cardForum/draftList')">
+                                <image class="draftWrapImage" v-if="draftListByCardBook[0].cover"
+                                    :src="decodeURIComponent(draftListByCardBook[0].cover)">
+                                </image>
+                                <div class="shadow">
+                                    <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
+                                    <text class="caogaoTitle">草稿箱</text>
+                                    <text class="caogaoText">有{{ draftListByCardBook.length }}篇动态待发布</text>
+                                </div>
                             </cell>
                         </template>
                     </waterfalls>
@@ -188,7 +200,7 @@ export default {
         this.isMine = query.isMine == "1" //后续解除注释
         if (this.isMine) {
             this.draftListByDynamic = getDraftList("dynamic")
-            // console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
+            console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
             this.draftListByCardBook = getDraftList("cardBook")
         }
         // console.log(this.draftList);
@@ -599,6 +611,24 @@ page {
 }
 
 .caogaoIcon {
-    // width: ;
+    margin-top: 74rpx;
+    width: 61rpx;
+    height: 55rpx;
+}
+
+.caogaoTitle {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #ECEFF6;
+    margin-top: 17rpx;
+    margin-bottom: 10rpx;
+}
+
+.caogaoText {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #ECEFF6;
 }
 </style>

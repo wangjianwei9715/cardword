@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-29 14:13:07
+ * @LastEditTime: 2023-06-30 14:06:20
  * @FilePath: \jichao_app_2\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -1492,23 +1492,23 @@
 						"navigationBarTitleText": "发布卡圈",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
-						"backgroundColorTop": "#000000", 
-						"backgroundColorBottom": "#000000", 
+						"backgroundColorTop": "#000000",
+						"backgroundColorBottom": "#000000",
 						"enablePullDownRefresh": false
 					}
 				},
 				{
 					"path": "search",
 					"style": {
-						"background":"#ffffff",
+						"background": "#ffffff",
 						"navigationStyle": "custom",
 						"navigationBarTitleText": "卡圈搜索",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-						"app-plus" : {
-							"background":"#FFFFFF"
-						} 
+						"app-plus": {
+							"background": "#FFFFFF"
+						}
 					}
 				},
 				{
@@ -1601,13 +1601,20 @@
 							"background": "#000000"
 						}
 					}
+				},
+				{
+					"path": "draftList",
+					"style": {
+						"navigationBarTitleText": "草稿箱",
+						"enablePullDownRefresh": false,
+						"navigationBarTextStyle": "black"
+					}
 				}
 			]
 		},
 		{
 			"root": "pages/illustration",
-			"pages":[
-				
+			"pages": [
 				{
 					"path": "seriesSelect",
 					"style": {
