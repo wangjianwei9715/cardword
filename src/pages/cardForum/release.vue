@@ -1,15 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
-<<<<<<< HEAD
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 16:20:23
+ * @LastEditTime: 2023-06-30 17:44:02
  * @FilePath: \card-world\src\pages\cardForum\release.vue
-=======
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-30 15:44:19
- * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
->>>>>>> 63db2ff7a85c7b68818e2137a7682fe735780a8f
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -186,7 +180,16 @@ export default class ClassName extends BaseNode {
     onLoad(query: any) {
         // query.draftId = "uacuag"//测试
         console.log(getDraftList("dynamic"));
+        // plus.gallery.pick(() => {
 
+        // }, () => {
+
+        // }, {
+        //     filter: "none",
+        //     multiple: true,
+        //     maximum: 9
+
+        // })
         this.reqTopics()
         if (query.code) {
             this.code = query.code
@@ -374,12 +377,13 @@ export default class ClassName extends BaseNode {
                 this.maxNum = 2
                 this.addText = ADD_COVER
             } else {
-                this.pics = res.data.url.split(",").map((item: any) => {
-                    return item
-                })
+
                 this.maxNum = 9
                 this.addText = ADD_PIC
             }
+            this.pics = res.data.url.split(",").map((item: any) => {
+                return item
+            })
             this.formData.state = res.data.state
             this.formData.voteTitle = res.data.vote.voteTitle || ""
             // this.formData.vote=res.data.vote
@@ -398,9 +402,9 @@ export default class ClassName extends BaseNode {
             await this.assignFormData(false)
             const Draft = {
                 ...this.formData,
-                list:this.albumList
+                list: this.albumList
             }
-            await storageDraft(Draft, this.albumRelease?"cardBook":"dynamic", this.draftId || "")
+            await storageDraft(Draft, this.albumRelease ? "cardBook" : "dynamic", this.draftId || "")
             uni.showModal({
                 title: "提示",
                 content: "已保存至草稿箱",

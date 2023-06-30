@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-28 10:12:28
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-29 15:12:57
+ * @LastEditTime: 2023-06-30 17:41:57
  * @FilePath: \card-world\src\pages\cardForum\video\index.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,6 +11,11 @@
         <view class="navigateBox" :style="{ top: statusBarHeight + 'px' }">
             <view class="navigateBackBox" @click="onClickBack">
                 <image class="navigateBack" src="@/static/information/live_back.png"></image>
+            </view>
+            <view style="flex:1;"></view>
+            <view class="navigateShareBox" style="margin-right: 10rpx;" @click="actionSheetShow = true"
+                v-if="current.bit & 1 === 1">
+                <u-icon size="46rpx" color="#ffffff" name="more-dot-fill"></u-icon>
             </view>
             <view class="navigateShareBox" @click="onClickShare">
                 <image class="navigateShare" src="@/static/information/live_share.png"></image>
@@ -121,6 +126,8 @@
         <!-- 输入框 -->
         <!-- <nTextarea :focus="chatData.focus" :replyName="chatData.replyName" @chatConfirm="onChatConfirm" @blur="onBlur">
         </nTextarea> -->
+        <u-action-sheet :actions="PersonSheet" :show="actionSheetShow" cancelText="取消" :closeOnClickAction="true"
+            @close="actionSheetShow = false" @select="onSelectActionSheet"></u-action-sheet>
     </view>
 </template>
 <script>
@@ -149,10 +156,17 @@ const chat = {
     fatherId: 0,
     focus: false
 }
+const PersonSheet = [
+    { name: "设为可见/设为私密", behavior: "setPrivate" },
+    { name: "编辑内容", behavior: "goEdit" },
+    { name: "删除此动态", behavior: "deleteForum", color: "#fb374e" }
+]
 export default {
     name: "CardForumVideoPage",
     data() {
         return {
+            PersonSheet,
+            actionSheetShow: false,
             boxGapHeight,
             statusBarHeight: app.statusBarHeight,
             code: '',
@@ -203,7 +217,8 @@ export default {
             timers: "",
             upslideShow: false,
             parsePic: getApp().globalData.parsePic,
-            userInfo: {}
+            userInfo: {},
+
         }
     },
     components: {
@@ -326,6 +341,57 @@ export default {
     },
 
     methods: {
+        onSelectActionSheet(item) {
+            console.log(item);
+            if (item.behavior) {
+                //@ts-ignore
+                this[item.behavior] && this[item.behavior]()
+                return
+            }
+        },
+        goEdit() {
+            uni.navigateTo({
+                url: "/pages/cardForum/release?code=" + this.current.code
+            })
+            // this.pageJump("/pages/cardForum/release?code=" + this.current.code)
+        },
+        //删除作品
+        deleteForum() {
+            uni.showModal({
+                title: "提示",
+                content: "是否删除该作品?",
+                success: (res) => {
+                    if (res.confirm) {
+                        // app.http.Post("")
+                        app.http.Post("cardCircle/delete/" + this.current.code, {}, () => {
+                            uni.showToast({
+                                title: "删除成功",
+                                icon: "none"
+                            })
+                            app.platform.pageBack()
+                        })
+                    }
+                }
+            })
+        },
+        //设置为私密
+        setPrivate() {
+            uni.showModal({
+                title: "提示",
+                content: `是否将作品设为${this.private ? "可见" : "私密"}`,
+                success: (res) => {
+                    if (res.confirm) {
+                        app.http.Post(`cardCircle/set/${this.private ? 'pub' : 'pri'}/${this.current.code}`, {}, () => {
+                            this.private = !this.private
+                            uni.showToast({
+                                title: "操作成功",
+                                icon: "none"
+                            })
+                        })
+                    }
+                }
+            })
+        },
         listscroll(e) {
             //@ts-ignore
             this.$refs.vdetail.tapTimer && clearTimeout(this.$refs.vdetail.tapTimer)
@@ -636,7 +702,7 @@ export default {
     display: flex;
     align-items: center;
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     z-index: 999;
     padding: 0 33rpx 0 13rpx;
 }

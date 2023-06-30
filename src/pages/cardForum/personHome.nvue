@@ -38,7 +38,8 @@
                             </div>
                         </div>
                         <div class="flex1"></div>
-                        <text class="userData_follow">关注</text>
+                        <text class="userData_follow" v-if="!isMine">关注</text>
+                        <text class="userData_edit" v-else @click="pageJump('/pages/')">编辑资料</text>
                     </div>
                 </div>
                 <div class="gundonDiv" ref="gundonDiv"></div>
@@ -582,6 +583,20 @@ page {
     color: #FFFFFF;
     text-align: center;
     line-height: 62rpx;
+}
+
+.userData_edit {
+    width: 176rpx;
+    height: 62rpx;
+    background-color: rgba(0, 0, 0, 0.38);
+    border: 1rpx solid #E6E6E6;
+    border-radius: 3rpx;
+    font-size: 29rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    text-align: center;
+    line-height: 62rpx;
+    color: #FFFFFF;
 }
 
 .draftWrap {
