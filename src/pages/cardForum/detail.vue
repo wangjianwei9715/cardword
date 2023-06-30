@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 15:11:49
+ * @LastEditTime: 2023-06-30 16:57:53
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -276,9 +276,11 @@ export default class ClassName extends BaseNode {
     dotContainerWidth: any = uni.upx2px(24) * 5
     userBack: boolean = false
     private: boolean = false
+    fromUserId: number = 0
     onLoad(query: any) {
         this.userBack = query.back == "true"
         this.private = query.private == "1"
+        if (query.fromUserId) this.fromUserId = +query.fromUserId
         app.platform.hasLoginToken(async () => {
             this.code = query.code || "mockCode"
             this.reqNewData()
@@ -414,7 +416,7 @@ export default class ClassName extends BaseNode {
         })
     }
     goPersonHome() {
-        if (this.userBack) {
+        if (this.userBack && this.fromUserId == this.authorInfo.userId) {
             app.platform.pageBack()
             return
         }

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 16:52:02
+ * @LastEditTime: 2023-06-30 17:04:05
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -328,6 +328,10 @@ export default {
         type: {
             type: String,
             default: ""
+        },
+        viewUserId: {
+            type: Number,
+            default: 0
         }
 
     },
@@ -468,7 +472,11 @@ export default {
                 return
             }
             uni.navigateTo({
-                url: `/pages/cardForum/detail?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
+                url: `/pages/cardForum/detail?` +
+                    `code=${item.code}` +
+                    `&back=${this.detailBack}` +
+                    `&private=${item.status && item.status == 2 ? 1 : 0}` +
+                    `${this.viewUserId ? `&fromUserId=${this.viewUserId}` : ''}`
             })
         },
         parseTime(time) {
