@@ -169,7 +169,7 @@ export default class ClassName extends BaseNode {
     tempVideoFile: any = {}
     isTempVideo: boolean = false//是否是临时video路径(未将视频保存至本地)
     onLoad(query: any) {
-        query.draftId = "uacuag"//测试
+        // query.draftId = "uacuag"//测试
         console.log(getDraftList("dynamic"));
 
         this.reqTopics()
