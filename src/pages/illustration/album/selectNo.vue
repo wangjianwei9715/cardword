@@ -3,16 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-21 11:20:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-28 15:10:33
- * Copyright: 2023 .
- * @Descripttion: 
--->
-<!--
- * @FilePath: \jichao_app_2\src\pages\illustration\seriesDetail.vue
- * @Author: wjw
- * @Date: 2023-06-16 17:01:28
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-25 10:31:15
+ * @LastEditTime: 2023-06-29 17:09:04
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -77,7 +68,7 @@
 			this.tabsData.current = event.index
 		}
 		getSeriesDetail(){
-			app.http.Get(`dataApi/cardIllustration/detail/series/${this.seriesCode}`,{},(res:any)=>{
+			app.http.Get(`dataApi/cardIllustration/series/detail/${this.seriesCode}`,{},(res:any)=>{
 				this.seriesData = res;
 				uni.setNavigationBarTitle({
 					title: `${res.main.year} ${ res.main.name}`

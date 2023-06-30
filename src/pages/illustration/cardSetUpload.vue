@@ -26,9 +26,9 @@
 						<view v-if="noData.text.seq<25" class="card-seq-item" :class="`logo-seq-${noData.text.seq}`">{{noData.text.seq}}编</view>
 					</view>
 				</view>
-				<view v-if="noData.illustration" class="upload-author">
-					由 <muqian-lazyLoad  class="upload-author-avatar" :src="decodeURIComponent(noData.illustration.author?noData.illustration.author.avatar:defaultAvatar)" borderRadius="50%"/>
-					<text class="upload-author-name">{{noData.illustration.author?noData.illustration.author.name:"系统"}}</text>提供
+				<view v-if="noData.illustration && noData.illustration.author" class="upload-author">
+					由 <muqian-lazyLoad  class="upload-author-avatar" :src="decodeURIComponent(noData.illustration.author.avatar)" borderRadius="50%"/>
+					<text class="upload-author-name">{{noData.illustration.author.name}}</text>提供
 				</view>
 			</view>
 		</view>
@@ -54,7 +54,6 @@
 		components:{illUpload}
 	})
 	export default class ClassName extends BaseNode {
-		defaultAvatar = app.defaultAvatar;
 		noCode="";
 		noData={
 			illustration:null,
@@ -95,7 +94,7 @@
 			app.navigateTo.navigateBack()
 		}
 		getNoDetail(){
-			app.http.Get(`dataApi/cardIllustration/rich/detail/no/${this.noCode}`,{},(res:any)=>{
+			app.http.Get(`dataApi/cardIllustration/no/detail/rich/${this.noCode}`,{},(res:any)=>{
 				this.noData = {
 					illustration:res.illustration,
 					text:res.text
@@ -105,7 +104,7 @@
 		onClickPeerTo(index:number){
 			if(index===this.noData.text.seqIndex-1) return;
 			this.clearPic()
-			app.http.Get(`dataApi/cardIllustration/rich/detail/no/${this.noCode}/peer/to/${index+1}`,{},(res:any)=>{
+			app.http.Get(`dataApi/cardIllustration/no/detail/rich/${this.noCode}/peer/to/${index+1}`,{},(res:any)=>{
 				this.noCode = res.text.code;
 				this.noData = {
 					illustration:res.illustration,

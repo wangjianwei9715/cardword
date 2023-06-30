@@ -87,13 +87,13 @@
         ]
         current = 0;
         activeStyle={
-            fontSize: '25rpx',
+            fontSize: '27rpx',
             fontFamily: 'PingFang SC',
             fontWeight: 600,
             color: '#FA1545'
         }
         inactiveStyle={
-            fontSize: '25rpx',
+            fontSize: '27rpx',
             fontFamily: 'PingFang SC',
             fontWeight: 400,
             color: '#959695'
@@ -315,7 +315,7 @@
     }
     .line-title{
         width: 83rpx;
-        font-size: 25rpx;
+        font-size: 27rpx;
         font-family: PingFang SC;
         font-weight: 600;
         color: #333333;
@@ -335,7 +335,7 @@
         text-align: center;
         line-height: 41rpx;
         padding:0 12rpx;
-        font-size: 23rpx;
+        font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #959695;
@@ -349,7 +349,7 @@
     .card-list{
         width: 100%;
         box-sizing: border-box;
-        padding:20rpx;
+        padding:15rpx 20rpx;
     }
     .card-index{
 		width: 100%;

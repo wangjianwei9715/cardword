@@ -113,8 +113,6 @@
 			})
 		}
 		public get showTab() : object {
-			console.log(this.sideTab);
-			
 			return this.sideTab.filter((x:any)=>x.show)
 		}
 		orientationInit() {

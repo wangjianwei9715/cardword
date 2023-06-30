@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-29 14:38:14
+ * @LastEditTime: 2023-06-30 10:52:07
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -11,18 +11,47 @@
 	<view class="album-card-content">
 		<navigationbar title="上传卡片" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true">
 			<template slot="right">
-				<view class="icon-help" @click="onClickShowRule"></view>
+				<view class="segment" @click="segmentCheck=!segmentCheck">
+					<view class="check" :class="{'check_':segmentCheck}"></view>
+					自动抠图
+				</view>
 			</template>
 		</navigationbar>
 		<view class="list" v-for="(item,index) in selectSeries" :key="index">
 			<view class="tips">{{item.name}}</view>
+			<view class="card-box" v-for="(noItem,noIndex) in item.noList" :key="noIndex">
+				<view class="header">
+					<text class="text">{{noItem.split?noItem.seqIndex+"/":""}}{{noItem.seq}}编 {{noItem.player}}，</text>
+					{{noItem.cardSet}}
+				</view>
+				<view class="pic-box">
+					<view class="pic-index" v-if="noItem.frontPic">
+						<muqian-lazyLoad class="pic" :src="decodeURIComponent(noItem.frontPic)" mode="aspectFit"/>
+						<view class="pic-close" @click="noItem.frontPic=''"></view>
+					</view>
+					<view class="upload-box" v-else @click="onClickAddImg(index,noIndex,'front')">
+						<image class="icon-add" src="@/static/illustration/album/add.png"/>
+						<view class="upload-msg">上传正面</view>
+					</view>
+
+					<view class="pic-index" v-if="noItem.backPic">
+						<muqian-lazyLoad class="pic" :src="decodeURIComponent(noItem.backPic)" mode="aspectFit"/>
+						<view class="pic-close" @click="noItem.backPic=''"></view>
+					</view>
+					<view class="upload-box" v-else @click="onClickAddImg(index,noIndex,'back')">
+						<image class="icon-add" src="@/static/illustration/album/add.png"/>
+						<view class="upload-msg">上传反面</view>
+					</view>
+				</view>
+			</view>
 		</view>
-		<albumBottom :canNext="getSeriesNolistLength" :data="selectSeries" :percent="picPercent" :step="2" @next="onClickNext()"/>
+		<albumBottom :canNext="uploadPercent>0" :data="selectSeries" :percent="uploadPercent" :step="2" @next="onClickNext()"/>
 	</view>
 </template>
 
 <script lang="ts">
 	import { app } from "@/app";
+	import Upload from "@/tools/upload";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	import albumBottom from '../components/albumBottom.vue'
@@ -30,23 +59,65 @@
 		components:{albumBottom}
 	})
 	export default class ClassName extends BaseNode {
-		selectSeries:any = []
+		selectSeries:any = [];
+		segmentCheck = false;
 		onLoad(query: any) {
-			this.selectSeries = JSON.parse(query.selectSeries)
+			this.selectSeries = JSON.parse(query.selectSeries).map((x:any)=>{
+				x.noList= x.noList.map((element:any) => {
+					return {...element,frontPic:"",backPic:""}
+				});
+				return x
+			})
 		}
-		public get getSeriesNolistLength() : boolean {
-			return this.selectSeries.some((x:any)=> x.noList.length>0)
+		public get uploadPercent() : string {
+			const total = this.selectSeries.reduce((total:number,x:any)=>{
+				return total + x.noList.filter((item:any) => item.frontPic).length;
+			},0)
+			const percent = total==0?'0':((total/this.listTotal)*100).toFixed(2);
+			return percent
 		}
-		public get picPercent() : number {
-			return 1
+		public get listTotal() : number {
+			const total = this.selectSeries.reduce((total:number, x:any) => total + x.noList.length, 0);
+			return total
 		}
 		onClickSelectNo(item:any){
 			uni.navigateTo({
 				url:`/pages/illustration/album/selectNo?seriesCode=${item.seriesCode}`
 			})
 		}
+		async onClickAddImg(index:number,noIndex:number,type:string){
+			const list:any =  await this.addImg(1);
+			const path = await this.segment(list[0])
+			if(type=='front'){
+				this.selectSeries[index].noList[noIndex].frontPic = path
+			}else{
+				this.selectSeries[index].noList[noIndex].backPic = path
+			}
+		}
+		async addImg(length:number){
+			const picList:any = await Upload.getInstance().uploadImgs(length, "report", ["album","camera"]);
+			return picList
+		}
+		async segment(pic:string){
+			try {
+				if(!this.segmentCheck) return decodeURIComponent(pic)
+				
+				app.http.Post("cardIllustration/image/upload/segment",{pic:decodeURIComponent(pic)}, async (res:any)=>{
+					const picList:any = await Upload.getInstance().uploadTemporaryFile(res.pic);
+					return decodeURIComponent(picList[0])
+				})
+			} catch (err) {
+				uni.showToast({ title:"上传失败请重试", icon: 'none' })
+			}
+		}
 		onClickNext(){
-			
+			let album:any = [];
+			this.selectSeries.forEach((x:any)=>{
+				album.push(...x.noList)
+			})
+			uni.navigateTo({
+				url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(album))}`
+			})
 		}
 	}
 </script>
@@ -56,137 +127,112 @@
         background:#000000;
     }
 	.album-card-content{
-		padding-bottom: calc(159rpx + env(safe-area-inset-bottom));;
-	}
-	.tips{
-		width: 100%;
-		height:62rpx;
-		background: #272727;
-		font-size: 23rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #C0C0C0;
-		padding:0 20rpx;
-		display: flex;
-		align-items: center;
-		box-sizing: border-box;
-	}
-	.series-box{
-		width: 100%;
-		box-sizing: border-box;
-		padding:0 20rpx;
-		margin-bottom: 20rpx;
-		.header{
-			width: 100%;
-			height:86rpx;
-			box-sizing: border-box;
+		padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
+		.segment{
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
-			.title{
+			font-size: 23rpx;
+			color:#fff;
+		}
+		.check{
+            width: 36rpx;
+            height:36rpx;
+            border: 1px solid #C0C0C0;
+            border-radius: 50%;
+			margin-right: 15rpx;
+			margin-top: 2rpx;
+        }
+        .check_{
+            border: none;
+            background:url(@/static/illustration/album/icon_g.png) no-repeat center / 100% 100%;
+        }
+	}
+	.list{
+		.tips{
+			width: 100%;
+			height:62rpx;
+			background: #272727;
+			font-size: 23rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #C0C0C0;
+			padding:0 20rpx;
+			display: flex;
+			align-items: center;
+			box-sizing: border-box;
+		}
+		.card-box{
+			width: 100%;
+			box-sizing: border-box;
+			padding:20rpx;
+		}
+		.header{
+			width: 100%;
+			margin-bottom: 26rpx;
+			font-size: 25rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #707070;
+			.text{
 				font-size: 25rpx;
 				font-family: PingFang SC;
 				font-weight: 600;
 				color: #C0C0C0;
 			}
-			.icon-add{
-				width: 37rpx;
-				height:37rpx;
-				background: url(@/static/illustration/album/icon_add.png) no-repeat center/ 100% 100%;
-			}
-			.icon-sub{
-				width: 37rpx;
-				height:37rpx;
-				background: url(@/static/illustration/album/icon_sub.png) no-repeat center/ 100% 100%;
-			}
-			
 		}
-		.no-box{
+		.pic-box{
 			width: 100%;
-			box-sizing: border-box;
-			background: #272727;
+			height:232rpx;
+			display: flex;
+		}
+		.pic-index{
+			width: 165rpx;
+			height:232rpx;
+			position: relative;
+			margin-right: 25rpx;
+		}
+		.pic{
+			width: 165rpx;
+			height:232rpx;
 			border-radius: 3rpx;
-			padding:20rpx;
-			margin-bottom: 20rpx;
-			.card-team{
-				width: 100%;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				height:36rpx;
-				position: relative;
-				.split{
-					height: 34rpx;
-					background: #707070;
-					border: 1px solid #D8D8D8;
-					font-size: 17rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
-					color: #FFFFFF;
-					position: absolute;
-					right:63rpx;
-					top:1rpx;
-					box-sizing: border-box;
-					padding:0 10rpx;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-				}
-				.split-c{
-					height: 34rpx;
-					background: #707070;
-					border: 1px solid #D8D8D8;
-					font-size: 17rpx;
-					font-family: PingFang SC;
-					font-weight: 400;
-					color: #FFFFFF;
-					box-sizing: border-box;
-					padding:0 10rpx;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-				}
-			}
-			.team{
-				font-size: 21rpx;
-				font-family: PingFang SC;
-				font-weight: 600;
-				color: #FFFFFF;
-			}
-			.icon-clear{
-				width: 32rpx;
-				height:32rpx;
-				background: url(@/static/illustration/album/icon_sub.png) no-repeat center/ 100% 100%;
-			}
-			.player{
-				font-size: 21rpx;
-				font-family: PingFang SC;
-				font-weight: 600;
-				color: #FFFFFF;
-				margin-top: 12rpx;
-			}
-			.cardset{
-				font-size: 21rpx;
-				font-family: PingFang SC;
-				font-weight: 600;
-				color: #C0C0C0;
-				margin-top: 20rpx;
-				line-height: 36rpx;
-				word-break: break-all;
-			}
 		}
-		.add-no{
-			width: 100%;
-			height:75rpx;
-			border: 1px dashed rgba(230, 230, 230, 0.6);
-			border-radius: 5rpx;
-			font-size: 25rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
-			color: #C0C0C0;
+		.pic-close{
+			width: 30rpx;
+			height:30rpx;
+			position: absolute;
+			right:8rpx;
+			top:8rpx;
+			background: url(@/static/illustration/album/close.png) no-repeat center /100% 100%;
+		}
+		.upload-box{
+			width: 165rpx;
+			height: 232rpx;
+			border-radius: 3rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			margin-right: 25rpx;
+			flex-wrap: wrap;
+			padding:60rpx 0;
+			box-sizing: border-box;
+			border: 2rpx dashed rgba(230, 230, 230, 0.6);
+		}
+		.upload-msg{
+			width: 100%;
+			font-size: 21rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #8D8D8D;
+			text-align: center;
+		}
+		.icon-add{
+			width: 41rpx;
+			height:41rpx;
+		}
+		.martop40{
+			margin-top: 40rpx;
 		}
 	}
+	
+
 </style>

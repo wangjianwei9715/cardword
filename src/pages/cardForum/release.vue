@@ -1,23 +1,24 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 19:08:43
- * @FilePath: \card-world\src\pages\cardForum\release.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-06-30 10:40:53
+ * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
         <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
         </navigationbar>
-        <view class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
+        <album v-if="albumRelease" ref="albumRelease" :list="albumList"/>
+        <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics" @heightChange="heightChange"
                 @addImage="addImage('pics')" @delVideo="delVideo" @delVideoCover="delVideoCover" />
         </view>
         <input type="text" class="input_title" v-model.trim="formData.title" placeholder="添加一个有趣的标题吧~（选填）"
             placeholderStyle="color: #959695;font-size:29rpx" :maxlength="80">
         <view class="topicWrap" v-if="selectTopics.length">
-            <view class="glTopic" v-for="(item, index) in selectTopics" @click="delSelectTopic(item, index)">
+            <view class="glTopic" v-for="(item, index) in selectTopics" :key="index" @click="delSelectTopic(item, index)">
                 {{ item.name }}
             </view>
         </view>
@@ -32,7 +33,7 @@
         <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll"
             v-if="relatedTopics && relatedTopics.length">
             <view class="topicScrollWrap">
-                <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in relatedTopics">
+                <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in relatedTopics" :key="index">
                     <text>{{ item.name }}</text>
                     <text class="act" v-if="item.activity">活动</text>
                 </view>
@@ -90,6 +91,7 @@ import CardForum from "./interface/public";
 import ppp from "./components/ppp.vue"
 import Upload from "@/tools/upload"
 import goods from "./components/goods.vue"
+import album from "./components/album.vue"
 import { storageDraft, getDraftDetail } from "./func"
 enum State {
     Public = 1,
@@ -132,7 +134,8 @@ const formData: CardForumRelease = {
         votePop,
         topicsPop,
         ppp,
-        goods
+        goods,
+        album
     }
 })
 export default class ClassName extends BaseNode {
@@ -152,17 +155,22 @@ export default class ClassName extends BaseNode {
     }
     addText: string = ADD_PIC_VIDEO
     maxNum: number = 9
-    draftId: string = ""
+    draftId: string = "";
+    albumList:any[] = [];
     onLoad(query: any) {
-
         this.reqTopics()
         if (query.topicId) this.reqTopicDetail(+query.topicId)
         if (query.draftId) {
             this.formData = getDraftDetail(query.draftId) as CardForumRelease
             // this.selectGoods = this.formData.selectGoods
             this.pics = [this.formData.cover, ...this.formData.url]
-
         }
+        if(query.albumList){
+            this.albumList = JSON.parse(query.albumList)
+        }
+    }
+    public get albumRelease() : boolean {
+        return this.albumList.length>0
     }
     onSelectTopic(item: CardForum.Topics) {
         const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
@@ -343,7 +351,11 @@ export default class ClassName extends BaseNode {
 
     }
     async onClickSubmit() {
-        await this.assignFormData(true)
+        await this.assignFormData(!this.albumRelease)
+        if(this.albumRelease){
+            this.$refs.albumRelease.publish(this.formData)
+            return;
+        }
         app.http.Post("cardCircle/issue", this.formData, () => {
             uni.showModal({
                 title: "提示",
