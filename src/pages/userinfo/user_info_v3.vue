@@ -41,7 +41,7 @@ export default class ClassName extends BaseNode {
     defaultAvatar = app.defaultAvatar
     settingTab: { [x: string]: any } = {
         avatar: { id: 1, name: "头像", avatar: '', desc: '' },
-        name: { id: 2, name: "昵称", desc: '' },
+        userName: { id: 2, name: "昵称", desc: '' },
         sign: { id: 3, name: "签名", desc: '' },
         pub_card: { id: 8, name: "公开我的中卡", desc: '', bol: false },
         // sex:{ id: 4, name: "性别", desc:''},

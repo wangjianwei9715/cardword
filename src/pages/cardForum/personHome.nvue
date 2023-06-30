@@ -38,7 +38,9 @@
                             </div>
                         </div>
                         <div class="flex1"></div>
-                        <text class="userData_follow" v-if="!isMine">关注</text>
+                        <text class="userData_follow" :class="{userData_follow_dis:userInfo.isFollow}" @click="onClickFollow" v-if="!isMine">{{
+                            userInfo.isFollow ? '已关注' :
+                            '关注' }}</text>
                         <text class="userData_edit" v-else @click="pageJump('/pages/userinfo/user_info_v3')">编辑资料</text>
                     </div>
                 </div>
@@ -93,7 +95,7 @@ const dom = weex.requireModule('dom')
 // #endif
 import transitionNav from "@/components/transitionNav/transitionNav"
 import waterfalls from "./components/waterfalls.vue"
-import { mockList, getDraftList } from "./func/index.js"
+import { mockList, getDraftList, followActionByUser } from "./func/index.js"
 const app = getApp().globalData.app;
 let waterY = -5
 let agoListY = 0
@@ -206,7 +208,7 @@ export default {
             this.draftListByCardBook = getDraftList("cardBook")
         }
         // console.log(this.draftList);
-        this.getUserInfo()
+
     },
     methods: {
         getNavHeight(height) {
@@ -222,7 +224,7 @@ export default {
                     // #ifdef H5
                     this.scrollViewHeight = 666
                     // #endif
-                    // this.getUserInfo()
+                    this.getUserInfo()
                     this.initTab()
                 })
             }, 100)
@@ -243,7 +245,9 @@ export default {
             } else {
                 let tabsDeep = uni.$u.deepClone(otherTabs);
                 tabsDeep.forEach((item, index) => {
-                    this.$set(this.tabs.list, index, { ...uni.$u.deepClone(defaultTagObj), ...item })
+                    if (index <= 1 || (index == 2 && this.userInfo.pub_card)) {
+                        this.$set(this.tabs.list, index, { ...uni.$u.deepClone(defaultTagObj), ...item })
+                    }
                 })
             }
             this.reqData(false)
@@ -255,6 +259,12 @@ export default {
                 waterY = event.contentOffset.y
             }
 
+        },
+        onClickFollow() {
+            followActionByUser(this.userInfo.userId, this.userInfo.isFollow).then(() => {
+                this.userInfo.isFollow ? this.userInfo.fans -= 1 : this.userInfo.fans += 1
+                this.userInfo.isFollow = !this.userInfo.isFollow
+            })
         },
         listTouchMove(event) {
             if (app.platform.systemInfo.platform == "android") {
@@ -585,6 +595,10 @@ page {
     line-height: 62rpx;
 }
 
+.userData_follow_dis {
+    background-color: #c9d0d7;
+}
+
 .userData_edit {
     width: 176rpx;
     height: 62rpx;
@@ -646,5 +660,4 @@ page {
     font-family: PingFang SC;
     font-weight: 400;
     color: #ECEFF6;
-}
-</style>
+}</style>
