@@ -140,6 +140,30 @@ export default class Upload {
             throw new Error(err.message)
         }
     }
+    async uploadTempFile(path: string, fileDir: string) {
+        try {
+            console.log("需要上传的path", path);
+
+            const sign = await this.ossutils.getSTS(); // 获取签名等信息
+            const res: any = await this.uploadFile({
+                tempFilePaths: [path],
+                tempFiles: [{ name: this.getName(path) }]
+            }, sign, fileDir, "video")
+            return res[0]
+        } catch (err) {
+            console.log("错误", err);
+
+            //@ts-ignore
+            throw new Error(err.message)
+        }
+    }
+    async getVideoTempFile() {
+        let res: any = await uni.chooseVideo({
+            sourceType: ["album"],
+        })
+        res = res.filter(Boolean)
+        return res[0]
+    }
     async uploadImgs(count: number, fileDir: string, sourceType = ['album']) {
         const result = await this.upLoadImagePath(count, fileDir, sourceType);
         return result;
