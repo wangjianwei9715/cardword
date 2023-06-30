@@ -1,5 +1,6 @@
 <template>
     <div class="con" style="pointer-events: none;">
+
         <template v-if="viewWidth">
             <movable-area class="area" :style="{ height: areaHeight }" @mouseenter="mouseenter" @mouseleave="mouseleave">
                 <template v-if="type == 1">
@@ -40,9 +41,14 @@
                             borderRadius: borderRadius + 'rpx',
                             transform: 'scale(' + item.scale + ')'
                         }">
-                            <image class="pre-image" :src="parsePic(decodeURIComponent(item.src))" mode="aspectFill">
+                            <!--  -->
+                            <image v-if="!getVideoPath(item.src)" class="pre-image"
+                                :src="parsePic(decodeURIComponent(item.src))" mode="aspectFill">
                             </image>
-
+                            <video @click="onClickVideo" ref="videoMine" id="videoMine" v-if="getVideoPath(item.src)" @play="videoPlay"
+                                class="pre-image" :auto-play="false" :enable-progress-gesture="false" :controls="false"
+                                :loop="false" :muted="true" :autoplay="false"
+                                :src="parsePic(decodeURIComponent(item.src))"></video>
                         </div>
                     </movable-view>
                 </template>
@@ -67,6 +73,7 @@
 <script>
 import { parsePic } from "@/tools/util";
 import { app } from "@/app"
+import { getVideoPath } from "../func"
 export default {
     emits: ["input", "update:modelValue"],
     props: {
@@ -147,6 +154,7 @@ export default {
     data() {
         return {
             parsePic,
+            getVideoPath,
             imageList: [],
             width: 0,
             add: {
@@ -258,6 +266,15 @@ export default {
         query.exec();
     },
     methods: {
+        onClickVideo() {
+            console.log("77777777777");
+        },
+        videoPlay() {
+            console.log(9999999);
+            // console.log(this.$refs.videoMine[0].play);
+            // const videoContext = uni.createVideoContext("videoMine")
+            // console.log(videoContext);
+        },
         getSrc(item) {
             if (this.keyName !== null) {
                 return parsePic(decodeURIComponent(item[this.keyName]));

@@ -353,6 +353,7 @@ export default class ClassName extends BaseNode {
     async onClickSubmit() {
         await this.assignFormData(!this.albumRelease)
         if(this.albumRelease){
+			//@ts-ignore
             this.$refs.albumRelease.publish(this.formData)
             return;
         }
