@@ -1,13 +1,13 @@
 <template>
-    <popup :visible.sync='visible' background='#fff' :height='340'>
-        <view class="operation-index">
-            <view class="operation-btn" @click="operationStart(item.scene)" v-for="item in operationData" :key="item.id">
-                <image class="operation-img" :src="item.img" mode=""></image>
-                <text class="operation-text">{{item.text}}</text>
-            </view>
-        </view>
-        <text class="operation-cancel" @click="onClickOperaCancel">取消</text>
-    </popup>
+  <popup :visible.sync='visible' background='#fff' :height='340'>
+    <view class="operation-index">
+      <view class="operation-btn" @click="operationStart(item.scene)" v-for="item in operationData" :key="item.id">
+        <image class="operation-img" :src="item.img" mode=""></image>
+        <text class="operation-text">{{ item.text }}</text>
+      </view>
+    </view>
+    <text class="operation-cancel" @click="onClickOperaCancel">取消</text>
+  </popup>
 </template>
 
 <script>
@@ -22,11 +22,15 @@ export default {
       type: Boolean,
       default: false
     },
-    shareData:{
-        type:Object,
-        default:()=>{
-            return {}
-        }
+    shareData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    report: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -47,9 +51,15 @@ export default {
     };
   },
   mounted() {
+    if (this.report) {
+      this.operationData.push({ img: '/static/share/lianjie@2x.png', text: '举报', scene: '', emit: 'report' })
+    }
+    // if (this.extra && this.extra.length) {
+    //   this.operationData.push(...this.extra)
+    // }
   },
   watch: {
-    visible: function(val) {
+    visible: function (val) {
       if (!val) {
         this.$emit("update:visible", val);
       }
@@ -59,23 +69,23 @@ export default {
     onClickOperaCancel() {
       this.$emit("update:visible", false);
     },
-    canShare(url){
-			const goodsShareUrl=['/pages/goods/goods_details','/pages/calendar/goods_details','/pages/live/liveShare']
-			let bol=true
-			// const list=goodsShareUrl.filter((item)=>{
-			// 	return url.indexOf(item)!=-1
-			// })
-			// if(list && list.length) bol=true
-			return bol
-		},
+    canShare(url) {
+      const goodsShareUrl = ['/pages/goods/goods_details', '/pages/calendar/goods_details', '/pages/live/liveShare']
+      let bol = true
+      // const list=goodsShareUrl.filter((item)=>{
+      // 	return url.indexOf(item)!=-1
+      // })
+      // if(list && list.length) bol=true
+      return bol
+    },
     setClipboardData() {
-      if(!this.canShare(this.shareData.shareUrl)){
-				uni.showToast({
-					title:'分享维护中',
-					icon:'none'
-				})
-				return
-			}
+      if (!this.canShare(this.shareData.shareUrl)) {
+        uni.showToast({
+          title: '分享维护中',
+          icon: 'none'
+        })
+        return
+      }
       uni.setClipboardData({
         data: this.shareData.shareUrl,
         showToast: false,
@@ -91,14 +101,14 @@ export default {
       uni.showLoading({
         title: "加载中"
       });
-      if(!this.canShare(this.shareData.shareUrl)){
-				uni.showToast({
-					title:'分享维护中',
-					icon:'none'
-				})
-				return
-			}
-      setTimeout(function() {
+      if (!this.canShare(this.shareData.shareUrl)) {
+        uni.showToast({
+          title: '分享维护中',
+          icon: 'none'
+        })
+        return
+      }
+      setTimeout(function () {
         uni.hideLoading();
       }, 2000);
       console.log(this.shareData);
@@ -113,12 +123,17 @@ export default {
         success: res => {
           console.log("success:" + JSON.stringify(res));
         },
-        fail: function(err) {
+        fail: function (err) {
           console.log("fail:" + JSON.stringify(err));
         }
       });
     },
     operationStart(scene) {
+      if (item.emit) {
+        this.$emit(item.emit)
+        this.onClickOperaCancel()
+        return
+      }
       if (scene == "") {
         this.setClipboardData();
       } else {
@@ -141,6 +156,7 @@ export default {
   align-items: center;
   justify-content: space-between;
 }
+
 .operation-btn {
   width: 120rpx;
   height: 170rpx;
@@ -149,17 +165,20 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
 }
+
 .operation-img {
   width: 120rpx;
   height: 120rpx;
   margin-bottom: 14rpx;
 }
+
 .operation-text {
   width: 750rpx;
   text-align: center;
   font-size: 22rpx;
   color: #3b3b3b;
 }
+
 .operation-cancel {
   width: 750rpx;
   height: 106rpx;
@@ -171,6 +190,7 @@ export default {
   color: #a9abb4;
   border-top: 1px solid #f4f3f2;
 }
+
 .operation-cancel {
   width: 750rpx;
   height: 106rpx;

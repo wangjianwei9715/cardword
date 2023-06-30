@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 14:32:41
+ * @LastEditTime: 2023-06-30 18:58:45
  * @FilePath: \card-world\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -26,6 +26,8 @@ export interface Report {
     pic: Array<string>
     /**违规类型(16标志位) */
     tpBit: number;
+    /**动态或卡册编号 */
+    dtCode: string;
 }
 //话题
 export function getTopics(params: Object): Promise<any> {

@@ -29,6 +29,8 @@
 
 		@Prop({ default: [] })
 		shareData!:wxShare.shareData;
+		@Prop({ default: false })
+		report!:boolean;
 		@Prop({ default: ()=>{
 			return []
 		} })
@@ -43,6 +45,9 @@
 			
 		}
 		mounted(){//挂载到实例上去之后调用
+			if(this.report){
+				this.operationData.push({ img: '/static/share/lianjie@2x.png', text: '举报', scene: '', emit: 'report' })
+			}
 			if(this.extra&&this.extra.length){
 				this.operationData.push(...this.extra)
 			}

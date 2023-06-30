@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-16 14:26:39
+ * @LastEditTime: 2023-06-30 19:11:23
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -52,11 +52,11 @@
         </view>
         <template v-if='needRightTools.includes("分享")'>
             <!-- #ifndef APP-NVUE -->
-            <share :operationShow.sync="operationShow" :shareData="shareData">
+            <share :operationShow.sync="operationShow" :shareData="shareData" :report="report" @report="$emit('report')">
             </share>
             <!--  #endif -->
             <!-- #ifdef APP-NVUE -->
-            <nvueShare :visible.sync="operationShow" :shareData="shareData">
+            <nvueShare :visible.sync="operationShow" :shareData="shareData" :report="report" @report="$emit('report')">
             </nvueShare>
             <!--  #endif -->
         </template>
@@ -154,6 +154,10 @@ export default {
             default: () => {
                 return {}
             }
+        },
+        report:{
+            type:Boolean,
+            default:false
         }
 
     },

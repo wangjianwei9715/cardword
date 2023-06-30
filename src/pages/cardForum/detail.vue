@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 16:57:53
+ * @LastEditTime: 2023-06-30 19:14:15
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -199,9 +199,8 @@
         </view>
         <reward-pop :code="code" :userInfo="authorInfo" :show.sync="rewardShow"></reward-pop>
         <recGift :code="code" :show.sync="recGiftShow"></recGift>
-        <share @report="pageJump(`/pages/cardForum/report?code=${code}&userId=${forumDetail.userId}&source=1`)"
-            :shareData="{}" :extra="[{ img: '/static/share/lianjie@2x.png', text: '举报', scene: '', emit: 'report' }]"
-            :operationShow.sync="operationShow"></share>
+        <share @report="pageJump(`/pages/cardForum/report?code=${code}&byInformer=${forumDetail.userId}&source=1`)"
+            :shareData="{}" :report="true" :operationShow.sync="operationShow"></share>
         <u-action-sheet :actions="PersonSheet" :show="actionSheetShow" cancelText="取消" :closeOnClickAction="true"
             @close="actionSheetShow = false" @select="onSelectActionSheet"></u-action-sheet>
     </view>

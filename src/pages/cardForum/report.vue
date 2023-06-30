@@ -10,11 +10,12 @@
         <view class="title" style="margin-top: 20rpx;">举报描述（选填）</view>
         <view class="txtArea">
             <u-textarea confirmType="done" placeholder="提供更多信息助于处理~" style="background-color: #F5F5F5;"
-                v-model="formData.reason" class="input" count maxlength="200"></u-textarea>
+                v-model="formData.reason" class="input" count :maxlength="200"></u-textarea>
         </view>
         <view class="title">举证图片（选填）</view>
         <view class="imageContainer">
-            <view class="imageWrap flexCenter"></view>
+            <image class="imageWrap flexCenter" v-for="(item) in formData.pic" :src="decodeURIComponent(item)"></image>
+            <view class="imageWrap imageWrap_add flexCenter" @click="addImage" v-if="formData.pic.length <= 2"></view>
         </view>
         <view class="fixedWrap">
             <view class="contentWrap">
@@ -31,6 +32,7 @@ import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import { Report, reportAction } from "./func"
+import Upload from "@/tools/upload"
 type ReportReasonMap = {
     [key: number]: string;
 };
@@ -60,27 +62,36 @@ export default class ClassName extends BaseNode {
         source: 1,
         reason: "",
         pic: [],
-        tpBit: 0
+        tpBit: 0,
+        dtCode: ""
     }
     onLoad(query: any) {
-        query.code && (this.code = query.code)
-        query.source && (this.formData.source += query.source)
+        if (query.code) {
+            this.code = query.code;
+            this.formData.dtCode = query.code
+        }
+        query.source && (this.formData.source = +query.source)
+        query.byInformer && (this.formData.byInformer = +query.byInformer)
     }
     onClickReason(bit: number): void {
         this.formData.tpBit ^= +bit
     }
+    async addImage() {
+        const picArr: any = await Upload.getInstance().uploadImgs(3 - this.formData.pic.length, "cardForumReport/", ["album"])
+        this.formData.pic.push(...picArr)
+    }
     submit() {
         reportAction(this.formData).then((res: Boolean) => {
-            uni.showToast({
-                title: "举报成功",
-                icon: "none"
+            uni.showModal({
+                title: "提示",
+                content: "感谢您的举报反馈",
+                showCancel:false,
+                success: (res: any) => {
+                    if (res.confirm) {
+                        app.platform.pageBack()
+                    }
+                }
             })
-            app.platform.pageBack()
-        })
-    }
-    reqNewData(cb?: any): void {
-        app.http.Get(`dataApi`, {}, (res: any) => {
-
         })
     }
 
@@ -219,12 +230,16 @@ export default class ClassName extends BaseNode {
 .imageWrap {
     width: 129rpx;
     height: 129rpx;
-    border: 2rpx dashed #E6E6E6;
     margin-right: 10rpx;
     position: relative;
 }
 
-.imageWrap::after {
+.imageWrap_add {
+
+    border: 2rpx dashed #E6E6E6;
+}
+
+.imageWrap_add::after {
     content: "";
     width: 43rpx;
     height: 43rpx;

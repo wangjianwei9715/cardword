@@ -86,7 +86,8 @@
             </swiper>
         </cell>
         <transitionNav :needIconShadow="false" :needRightTools="['分享']" ref="transitionNav" title="爷就是拽"
-            @getNavHeight="getNavHeight"></transitionNav>
+            @getNavHeight="getNavHeight" :report="!isMine"
+            @report="pageJump(`/pages/cardForum/report?byInformer=${this.userInfo.userId}&source=4`)"></transitionNav>
     </list>
 </template>
 <!--  -->
