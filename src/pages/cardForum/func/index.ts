@@ -128,12 +128,12 @@ export function getDraftList(type: ("cardBook" | "dynamic" | "all")): Array<any>
     })
 }
 //获取草稿data
-export function getDraftDetail(draftId: string) {
+export function getDraftDetail(draftId: string): any {
     const list = getDraftList("all")
     const findItem = list.find((item: any) => {
         return item.draftId === draftId
     })
-    return findItem.data
+    return findItem ? findItem.data : {}
 }
 //删除草稿
 export function delDraftDetail(draftId: string) {

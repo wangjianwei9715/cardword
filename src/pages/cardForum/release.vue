@@ -1,16 +1,20 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-30 10:40:53
- * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-06-30 13:37:15
+ * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
-        </navigationbar>
-        <album v-if="albumRelease" ref="albumRelease" :list="albumList"/>
+        <cover-view style="width:750rpx;backgroundColor:#000000;position: fixed;
+        top: 0;" :style="{ height: navHeight + 'px' }">
+            <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
+            </navigationbar>
+        </cover-view>
+        <view :style="{ height: navHeight + 'px' }"></view>
+        <album v-if="albumRelease" ref="albumRelease" :list="albumList" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics" @heightChange="heightChange"
                 @addImage="addImage('pics')" @delVideo="delVideo" @delVideoCover="delVideoCover" />
@@ -33,7 +37,8 @@
         <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll"
             v-if="relatedTopics && relatedTopics.length">
             <view class="topicScrollWrap">
-                <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in relatedTopics" :key="index">
+                <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in relatedTopics"
+                    :key="index">
                     <text>{{ item.name }}</text>
                     <text class="act" v-if="item.activity">活动</text>
                 </view>
@@ -52,8 +57,7 @@
                 <view class="close" @click="selectGoods.goodCode = ''"></view>
             </view>
         </view>
-        <view class="associationWrap" @click="showVote = true"
-            style="border-bottom: 1rpx solid #3F3F3F;padding-bottom: 30rpx;">
+        <view class="associationWrap" @click="onClickVote" style="border-bottom: 1rpx solid #3F3F3F;padding-bottom: 30rpx;">
             <image class="ass_img" src="@/static/cardForum/release/vote.png" style="width: 30rpx;height:30rpx"></image>
             <view class="ass_title">发起投票</view>
             <view class="flex1"></view>
@@ -71,7 +75,7 @@
                     <image src="@/static/cardForum/release/caogao.png"></image>
                     <text>存草稿</text>
                 </view>
-                <view class="submit flexCenter" @click="onClickSubmit">发布动态</view>
+                <view class="submit flexCenter" @click="onClickSubmit">{{ code ? "保存" : "发布" }}动态</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
@@ -92,7 +96,7 @@ import ppp from "./components/ppp.vue"
 import Upload from "@/tools/upload"
 import goods from "./components/goods.vue"
 import album from "./components/album.vue"
-import { storageDraft, getDraftDetail } from "./func"
+import { storageDraft, getDraftList, getDraftDetail, getVideoPath, delDraftDetail } from "./func"
 enum State {
     Public = 1,
     Private = 2
@@ -104,6 +108,7 @@ enum Tp {
 const ADD_PIC_VIDEO = "添加图片或视频"
 const ADD_PIC = "添加图片"
 const ADD_COVER = "添加封面"
+const navHeight: any = app.statusBarHeight + uni.upx2px(88)
 interface CardForumRelease {
     title?: string;
     content?: string;
@@ -116,6 +121,7 @@ interface CardForumRelease {
     state: State;
     tp: Tp;
     video_at?: number;
+    localVideo?: boolean
 }
 const formData: CardForumRelease = {
     title: "",
@@ -127,7 +133,8 @@ const formData: CardForumRelease = {
     voteTitle: "",
     voteOptions: [],
     state: 1,
-    tp: 1
+    tp: 1,
+    localVideo: true
 }
 @Component({
     components: {
@@ -139,6 +146,7 @@ const formData: CardForumRelease = {
     }
 })
 export default class ClassName extends BaseNode {
+    navHeight = navHeight
     showVote: boolean = false
     showTopics: boolean = false
     showGoods: boolean = false
@@ -155,22 +163,33 @@ export default class ClassName extends BaseNode {
     }
     addText: string = ADD_PIC_VIDEO
     maxNum: number = 9
-    draftId: string = "";
-    albumList:any[] = [];
+    draftId: string = ""
+    albumList: any[] = [];
+    code: string = ""
+    tempVideoFile: any = {}
+    isTempVideo: boolean = false//是否是临时video路径(未将视频保存至本地)
     onLoad(query: any) {
+        query.draftId = "uacuag"//测试
+        console.log(getDraftList("dynamic"));
+
         this.reqTopics()
+        if (query.code) {
+            this.code = query.code
+            this.getDetail()
+            return
+        }
         if (query.topicId) this.reqTopicDetail(+query.topicId)
         if (query.draftId) {
-            this.formData = getDraftDetail(query.draftId) as CardForumRelease
-            // this.selectGoods = this.formData.selectGoods
-            this.pics = [this.formData.cover, ...this.formData.url]
+            this.draftId = query.draftId
+            this.processDrafts()
+
         }
-        if(query.albumList){
+        if (query.albumList) {
             this.albumList = JSON.parse(query.albumList)
         }
     }
-    public get albumRelease() : boolean {
-        return this.albumList.length>0
+    public get albumRelease(): boolean {
+        return this.albumList.length > 0
     }
     onSelectTopic(item: CardForum.Topics) {
         const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
@@ -235,7 +254,7 @@ export default class ClassName extends BaseNode {
             if (type == "img") {
                 //@ts-ignore
                 const COUNT: any = countMap[keyName] - this[keyName].length
-                const picArr: any = await Upload.getInstance().uploadImgs(COUNT, "exhibition", ["album"])
+                const picArr: any = await Upload.getInstance().uploadImgs(COUNT, "cardForumPic/", ["album"])
                 if (picArr) {
                     picArr.forEach((pic: any) => {
                         //@ts-ignore
@@ -243,22 +262,38 @@ export default class ClassName extends BaseNode {
                     });
                     this.addText = ADD_PIC
                     this.maxNum = 9
-                    this.formData.tp = 1
+                    this.formData.tp = Tp.Pic
+                    this.formData.localVideo = false
+                    this.isTempVideo = false
                 }
             } else if (type == "video") {
-
-                const videoRes: any = await Upload.getInstance().uploadVideo("cardForumVideo")
+                const tempVideo: any = await Upload.getInstance().getVideoTempFile()
+                this.tempVideoFile = tempVideo
+                this.videoPath = tempVideo.tempFilePath
+                this.formData.video_at = tempVideo.duration
+                console.log(tempVideo);
+                this.formData.tp = Tp.Video
+                this.pics = [tempVideo.tempFilePath]
+                this.addText = ADD_COVER
+                this.maxNum = 2
+                this.formData.localVideo = true
+                this.isTempVideo = true
+                return
+                return
+                const videoRes: any = await Upload.getInstance().uploadVideo("cardForumVideo/")
                 console.log(videoRes);
 
                 this.formData.video_at = Math.floor(videoRes.duration)
                 this.videoPath = decodeURIComponent(videoRes.path)
                 this.formData.cover = encodeURIComponent(decodeURIComponent(videoRes.path) + `?x-oss-process=video/snapshot,t_1000,m_fast`)
-                // console.log(this.formData.cover);
-                this.formData.tp = 2
+                // console.log(this.formData.cover); 
+                this.formData.tp = Tp.Video
                 this.pics = [this.formData.cover, this.formData.cover + `&isVideo=true`]
                 this.maxNum = 2
             } else if (type == "videoCover") {
-                const picArr: any = await Upload.getInstance().uploadImgs(1, "exhibition", ["album"])
+                const picArr: any = await Upload.getInstance().uploadImgs(1, "cardForumPic/", ["album"])
+                console.log(picArr);
+
                 this.pics.unshift(picArr[0])
             }
         } catch (err) {
@@ -270,6 +305,16 @@ export default class ClassName extends BaseNode {
             console.log(err);
 
         }
+    }
+    onClickVote() {
+        if (this.code) {
+            uni.showToast({
+                title: "投票不允许修改",
+                icon: "none"
+            })
+            return
+        }
+        this.showVote = true
     }
     delVideo() {
         this.videoPath = ""
@@ -287,18 +332,55 @@ export default class ClassName extends BaseNode {
     heightChange(height: number) {
         this.imgUploadHeight = height + 20
     }
+    getDetail() {
+        app.http.Get(`cardCircle/me/detail/${this.code}`, {}, (res: any) => {
+            console.log(res);
+            this.formData.title = res.data.title
+            this.formData.content = res.data.content
+            this.formData.tp = res.data.tp
+            this.selectGoods = res.data.good
+            if (this.formData.tp == Tp.Video) {
+                this.videoPath = getVideoPath(res.data.url)
+                this.formData.video_at = res.data.video_at || 0
+                this.maxNum = 2
+                this.addText = ADD_COVER
+            } else {
+                this.pics = res.data.url.split(",").map((item: any) => {
+                    return item
+                })
+                this.maxNum = 9
+                this.addText = ADD_PIC
+            }
+            this.formData.state = res.data.state
+            this.formData.voteTitle = res.data.vote.voteTitle || ""
+            // this.formData.vote=res.data.vote
+        })
+    }
     async onClickSaveDraft() {
-        await this.assignFormData(false)
-        await storageDraft(this.formData, "dynamic", "")
-        uni.showModal({
-            title: "提示",
-            content: "已保存至草稿箱",
-            success: (res: any) => {
-                if (res.confirm) {
-                    app.platform.pageBack()
+        try {
+            if (this.formData.localVideo && this.formData.tp == Tp.Video) {
+                if (this.isTempVideo) {
+                    const tempFilePath: string = getVideoPath(this.pics.join(",")) //临时路径,app关闭后消失
+                    const savedFilePath: any = await this.saveVideo(tempFilePath)
+                    this.pics[this.pics.length - 1] = savedFilePath //保存至app文件目录下不可见的本地视频缓存路径//保存至app文件目录下不可见的本地视频缓存路径
+                    this.videoPath = savedFilePath
                 }
             }
-        })
+            await this.assignFormData(false)
+            await storageDraft(this.formData, "dynamic", this.draftId || "")
+            uni.showModal({
+                title: "提示",
+                content: "已保存至草稿箱",
+                showCancel: false,
+                success: (res: any) => {
+                    if (res.confirm) {
+                        app.platform.pageBack()
+                    }
+                }
+            })
+        } catch (err) {
+
+        }
     }
     assignFormData(check?: boolean): Promise<any> {
         return new Promise((re, rj) => {
@@ -311,31 +393,49 @@ export default class ClassName extends BaseNode {
                     rj()
                     return
                 }
-                if (this.formData.tp == 2 && this.pics.length < 2) {
-                    uni.showToast({
-                        title: "请上传视频或视频封面",
-                        icon: "none"
-                    })
-                    rj()
-                    return
-                }
+                // if (this.formData.tp == Tp.Video && this.pics.length < 2) {
+                //     uni.showToast({
+                //         title: "请上传视频或视频封面",
+                //         icon: "none"
+                //     })
+                //     rj()
+                //     return
+                // }
             }
-            // console.log(this.pics);
+            console.log(this.pics, getVideoPath(this.pics[0]));
 
-            if (this.pics.length) this.formData.cover = this.pics[0]
+            if (this.pics.length && !getVideoPath(this.pics[0])) this.formData.cover = this.pics[0]
+            if (this.pics.length == 1 && getVideoPath(this.pics[0])) this.formData.url = [encodeURIComponent(this.videoPath)]
             if (this.pics.length > 1) {
-                if (this.formData.tp === 1) this.formData.url = this.pics.slice(1, this.pics.length)
-                if (this.formData.tp === 2) this.formData.url = [encodeURIComponent(this.videoPath)]
+                if (this.formData.tp === Tp.Pic) this.formData.url = this.pics.slice(1, this.pics.length)
+                if (this.formData.tp === Tp.Video) this.formData.url = [encodeURIComponent(this.videoPath)]
             }
             this.formData.topicId = this.selectTopics.map((item: any) => {
                 return item.id
             })
             if (this.selectGoods.goodCode) this.formData.goodCode = this.selectGoods.goodCode
+            console.log("this.formData", this.formData);
+
             re && re(true)
         })
     }
+    saveVideo(tempFilePath: string) {
+        return new Promise((re, rj) => {
+            uni.saveFile({
+                tempFilePath: tempFilePath,
+                success: (res: any) => {
+                    re(res.savedFilePath)
+
+                },
+                fail: (err: any) => {
+                    rj(err)
+                    // throw new Error(err)
+                }
+            })
+        })
+    }
     voteFinish(voteData: any) {
-        console.log(voteData);
+        // console.log(voteData);
         this.formData.voteTitle = voteData.title
         this.formData.voteOptions = voteData.options.map((item: any) => {
             return item.label
@@ -346,27 +446,115 @@ export default class ClassName extends BaseNode {
         this.formData.voteOptions = []
     }
     onClickState() {
-        this.formData.state == 1 ? this.formData.state = 2 : this.formData.state = 1
+        this.formData.state == State.Public ? this.formData.state = State.Private : this.formData.state = State.Public
         console.log(this.formData.state);
 
     }
+    processDrafts() {
+        const data = getDraftDetail(this.draftId) as CardForumRelease
+        if (!Object.keys(data).length) return
+        this.formData = data
+        console.log("草稿的内容", this.formData);
+        // this.selectGoods = this.formData.selectGoods
+        this.pics = [this.formData.cover, ...this.formData.url].filter(Boolean)
+        if (this.formData.tp == Tp.Video && this.formData.localVideo) {
+            const videoPath: string = getVideoPath(decodeURIComponent(this.pics.join(",")))
+            if (videoPath) {
+                //寻找本地保存的视频是否还存在
+                uni.getSavedFileList({
+                    success: (res: any) => {
+                        console.log(res, videoPath);
+                        const findItem: any = res.fileList.find((item: any) => {
+                            return item.filePath === videoPath
+                        })
+                        //不存在了
+                        if (!findItem || !findItem.filePath) {
+                            this.resetByInitial()
+                            uni.showModal({
+                                title: "提示",
+                                content: "草稿中的视频已失效,请重新上传",
+                                showCancel: false
+                            })
+                        } else {
+                            //存在
+                            // if(this.formData.c)
+                            this.resetByVideo()
+                            this.videoPath = findItem.filePath
+                            this.isTempVideo = true
+                        }
+                    }
+                })
+            }
+        }
+    }
+    delDraftDetailAction() {
+        //删除草稿
+        delDraftDetail(this.draftId)
+        //删除本地文件视频
+        if (this.formData.tp == Tp.Video && this.formData.localVideo) {
+            uni.removeSavedFile({
+                filePath: this.videoPath
+            })
+        }
+    }
+    resetByPic() {
+        this.formData.tp = Tp.Pic
+        this.isTempVideo = false
+        this.maxNum = 9
+        this.addText = ADD_PIC
+    }
+    resetByVideo() {
+        this.formData.tp = Tp.Video
+        this.maxNum = 2
+        this.addText = ADD_COVER
+    }
+    resetByInitial() {
+        this.resetByPic()
+        this.addText = ADD_PIC_VIDEO
+        this.pics = []
+    }
     async onClickSubmit() {
+        await this.assignFormData(true)
         await this.assignFormData(!this.albumRelease)
-        if(this.albumRelease){
-			//@ts-ignore
+        if (this.albumRelease) {
+            //@ts-ignore
             this.$refs.albumRelease.publish(this.formData)
             return;
         }
-        app.http.Post("cardCircle/issue", this.formData, () => {
+        if (this.formData.tp == Tp.Video && this.formData.localVideo) {
+            if (this.isTempVideo) {
+                //临时的视频路径(上传至阿里云)
+                const videoPath: any = await Upload.getInstance().uploadTempFile(this.videoPath, "cardForumVideo/")
+                console.log("上传到阿里云的视频路径:", videoPath);
+                if (!this.formData.cover) this.formData.cover = encodeURIComponent(decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast")
+                this.formData.url = [videoPath]
+            }
+        }
+        console.log("最终的表单", this.formData);
+        const url = this.code ? `cardCircle/edit/${this.code}` : `cardCircle/issue`
+        app.http.Post(url, this.formData, () => {
+            uni.hideLoading()
             uni.showModal({
                 title: "提示",
-                content: "发布成功",
+                content: `${this.code ? '编辑' : '发布'}成功`,
+                showCancel: false,
                 success: (res: any) => {
                     if (res.confirm) {
+                        if (this.draftId) this.delDraftDetailAction()
                         app.platform.pageBack()
                     }
                 }
             })
+        }, (err: any) => {
+            //发布失败
+            // this.videoPath=
+            if (this.formData.tp == Tp.Video) {
+                this.pics = [this.formData.cover, ...this.formData.url]
+                this.formData.localVideo = false
+                this.isTempVideo = false
+                this.onClickSaveDraft()
+            }
+            uni.hideLoading()
         })
         // this.formData.url=
     }
@@ -379,35 +567,7 @@ export default class ClassName extends BaseNode {
         app.http.Get("dataApi/cardCircle/topic/list", { fetchFrom: 1, fetchSize: 15, od: "issue_72:desc" }, (res: any) => {
             this.relatedTopics = res.list || []
         })
-        // this.relatedTopics = [
-        //     {
-        //         name: "秀卡-詹姆斯",
-        //         id: 1,
-        //         isActivity: true
-        //     },
-        //     {
-        //         name: "问价",
-        //         id: 2,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的第一张卡",
-        //         id: 3,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的卡在哪里",
-        //         id: 5,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的卡屌不屌",
-        //         id: 6,
-        //         isActivity: false
-        //     }
-        // ]
     }
-
 }
 </script>
 
