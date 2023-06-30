@@ -39,7 +39,7 @@
                         </div>
                         <div class="flex1"></div>
                         <text class="userData_follow" v-if="!isMine">关注</text>
-                        <text class="userData_edit" v-else @click="pageJump('/pages/')">编辑资料</text>
+                        <text class="userData_edit" v-else @click="pageJump('/pages/userinfo/user_info_v3')">编辑资料</text>
                     </div>
                 </div>
                 <div class="gundonDiv" ref="gundonDiv"></div>
