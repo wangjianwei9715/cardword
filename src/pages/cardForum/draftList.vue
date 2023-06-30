@@ -1,7 +1,7 @@
 <template>
     <view class="content">
         <view style="width:750rpx;margin-top: 10rpx;">
-            <waterfalls :value="draftList" :showUser="false" type="draftList"></waterfalls>
+            <waterfalls v-model="draftList" :showUser="false" @refreshDraft="refreshDraft" type="draftList"></waterfalls>
         </view>
     </view>
 </template>
@@ -20,18 +20,23 @@ import waterfalls from "./components/waterfalls.vue"
 export default class ClassName extends BaseNode {
     draftList: any = []
     onLoad(query: any) {
-        this.draftList = getDraftList("all")
-        console.log(this.draftList);
-        this.draftList = this.draftList.map((item: any) => {
-            return {
-                cover: item.data.cover || "",
-                title: item.data.title
-            }
-        })
+        this.reqNewData()
+    }
+    refreshDraft() {
+        this.reqNewData()
     }
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi`, {}, (res: any) => {
-
+        this.draftList = []
+        // this.draftList = getDraftList("all")
+        // console.log(this.draftList);
+        this.draftList = getDraftList("all").map((item: any) => {
+            return {
+                cover: item.data.cover || "",
+                title: item.data.title,
+                create_at: item.stamp,
+                type: item.type,
+                draftId: item.draftId
+            }
         })
     }
 

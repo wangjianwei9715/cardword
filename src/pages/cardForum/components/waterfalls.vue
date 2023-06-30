@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-29 18:27:46
+ * @LastEditTime: 2023-06-30 14:41:43
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -44,7 +44,7 @@
                                     <text class="likeNum">{{ item.likeNum }}</text>
                                 </view>
                             </template>
-                            <template v-if="!showUser">
+                            <template v-if="!showUser && type != 'draftList'">
                                 <view class="likeWrap" style="margin-right: 44rpx;">
                                     <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
                                         class="likeImg"></image>
@@ -59,6 +59,13 @@
                                     <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
                                     </image>
                                 </template>
+                            </template>
+                            <template v-if="type == 'draftList'">
+                                <view class="likeNum">{{ parseTime(item.create_at) }}</view>
+                                <view style="flex:1"></view>
+                                <view @click.stop="onClickDeleteDraft(item)">
+                                    <u-icon size="36rpx" name="trash"></u-icon>
+                                </view>
                             </template>
                         </view>
                     </view>
@@ -100,7 +107,7 @@
                                     <text class="likeNum">{{ item.likeNum }}</text>
                                 </view>
                             </template>
-                            <template v-if="!showUser">
+                            <template v-if="!showUser && type != 'draftList'">
                                 <view class="likeWrap" style="margin-right: 44rpx;">
                                     <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
                                         class="likeImg"></image>
@@ -115,6 +122,13 @@
                                     <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
                                     </image>
                                 </template>
+                            </template>
+                            <template v-if="type == 'draftList'">
+                                <view class="likeNum">{{ parseTime(item.create_at) }}</view>
+                                <view style="flex:1"></view>
+                                <view @click.stop="onClickDeleteDraft(item)">
+                                    <u-icon size="36rpx" name="trash"></u-icon>
+                                </view>
                             </template>
                         </view>
                     </view>
@@ -208,6 +222,7 @@ const GAP = uni.upx2px(10)
 const app = getApp().globalData.app
 let exposureList = []
 import mixin from './function/mixin.js'
+import { delDraftDetail } from "../func/index.js"
 // #ifdef APP-NVUE
 const dom = weex.requireModule('dom')
 // #endif
@@ -309,6 +324,10 @@ export default {
         isFetchEnd: {
             type: Boolean,
             default: true
+        },
+        type: {
+            type: String,
+            default: ""
         }
 
     },
@@ -398,12 +417,25 @@ export default {
                 }, 5000)
             }
         },
+        onClickDeleteDraft(item) {
+            uni.showModal({
+                title: "提示",
+                content: "是否删除此草稿?",
+                success: (res) => {
+                    if (res.confirm) {
+                        delDraftDetail(item.draftId)
+                        this.$emit("refreshDraft")
+                    }
+                }
+            })
+        },
         exposureAction() {
             const newArray = [...new Set(exposureList)];
             console.log("发送的newArray", newArray);
             app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray }, () => { })
         },
         goToUserProfile(event, item) {
+            if (this.type == "draftList") return
             // #ifdef APP-NVUE
             event.stopPropagation();
             // #endif
@@ -415,6 +447,12 @@ export default {
             // uni.navigateTo({
             //     url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
             // })
+            if (this.type == "draftList") {
+                uni.navigateTo({
+                    url: "/pages/cardForum/release?draftId=" + item.draftId
+                })
+                return
+            }
             if (item.video_at > 0) {
                 uni.navigateTo({
                     url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
@@ -424,6 +462,9 @@ export default {
             uni.navigateTo({
                 url: `/pages/cardForum/detail?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
             })
+        },
+        parseTime(time) {
+            return uni.$u.timeFormat(time, "mm-dd")
         },
         hideRefresh() {
             this.refreshing = false

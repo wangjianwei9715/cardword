@@ -55,19 +55,18 @@
                         @loadmore="loadmore">
                         <template v-slot:cell v-if="tab.name == '动态' || tab.name == '卡册' && isMine">
                             <cell class="draftWrap" v-if="tab.name == '动态' && draftListByDynamic.length" @click="pageJump('/pages/cardForum/draftList')">
-                                <image class="draftWrapImage" v-if="draftListByDynamic[0].cover"
-                                    :src="decodeURIComponent(draftListByDynamic[0].cover)">
+                                <image class="draftWrapImage" v-if="draftListByDynamic[0].data.cover"
+                                    :src="decodeURIComponent(draftListByDynamic[0].data.cover)" mode="aspectFill">
                                 </image>
                                 <div class="shadow">
                                     <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
                                     <text class="caogaoTitle">草稿箱</text>
                                     <text class="caogaoText">有{{ draftListByDynamic.length }}篇动态待发布</text>
                                 </div>
-
                             </cell>
                             <cell class="draftWrap" v-if="tab.name == '卡册' && draftListByCardBook.length" @click="pageJump('/pages/cardForum/draftList')">
-                                <image class="draftWrapImage" v-if="draftListByCardBook[0].cover"
-                                    :src="decodeURIComponent(draftListByCardBook[0].cover)">
+                                <image class="draftWrapImage" v-if="draftListByCardBook[0].data.cover"
+                                    :src="decodeURIComponent(draftListByCardBook[0].data.cover)" mode="aspectFill">
                                 </image>
                                 <div class="shadow">
                                     <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
