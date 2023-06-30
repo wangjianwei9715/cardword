@@ -32,6 +32,7 @@ export default class ClassName extends BaseNode {
         this.draftList = getDraftList("all").map((item: any) => {
             return {
                 cover: item.data.cover || "",
+                url: item.data.url,
                 title: item.data.title,
                 create_at: item.stamp,
                 type: item.type,

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 14:41:43
+ * @LastEditTime: 2023-06-30 16:25:01
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -424,6 +424,13 @@ export default {
                 success: (res) => {
                     if (res.confirm) {
                         delDraftDetail(item.draftId)
+                        // #ifdef APP-PLUS
+                        if (item.video_at > 0 && item.url.length) {
+                            uni.removeSavedFile({
+                                filePath: decodeURIComponent(item.url[0])
+                            })
+                        }
+                        // #endif
                         this.$emit("refreshDraft")
                     }
                 }
