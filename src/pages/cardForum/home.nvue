@@ -10,7 +10,7 @@
                 <div style="position:absolute;display:flex;flex-direction:column;align-items:center;"
                     :style="{ height: scrollViewHeight + 'px', top: fixedTopHeight + 'px' }">
                     <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
-                    <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
+
                     <!-- #ifndef APP-NVUE -->
                     <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                         @scrolltolower="loadmoreData(tabIndex)">
@@ -42,6 +42,7 @@
                         <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
                             :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40">
                         </waterfalls>
+                        <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
@@ -78,7 +79,9 @@
                             </header>
                         </template>
                     </waterfalls>
+                    <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                     <!-- #endif -->
+
                 </div>
 
             </swiper-item>
