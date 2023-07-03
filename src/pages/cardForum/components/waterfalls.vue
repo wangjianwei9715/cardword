@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-03 09:44:30
+ * @LastEditTime: 2023-07-03 15:24:45
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -40,7 +40,9 @@
                                     :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
                                 <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                                 <view class="likeWrap">
-                                    <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                    <image
+                                        :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                        class="likeImg"></image>
                                     <text class="likeNum">{{ item.likeNum }}</text>
                                 </view>
                             </template>
@@ -51,7 +53,9 @@
                                     <text class="likeNum">{{ item.clickNum }}</text>
                                 </view>
                                 <view class="likeWrap">
-                                    <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                    <image
+                                        :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                        class="likeImg"></image>
                                     <text class="likeNum">{{ item.likeNum }}</text>
                                 </view>
                                 <template v-if="isMine && item.status && item.status == 2">
@@ -103,7 +107,9 @@
                                     :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
                                 <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                                 <view class="likeWrap">
-                                    <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                    <image
+                                        :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                        class="likeImg"></image>
                                     <text class="likeNum">{{ item.likeNum }}</text>
                                 </view>
                             </template>
@@ -114,7 +120,9 @@
                                     <text class="likeNum">{{ item.clickNum }}</text>
                                 </view>
                                 <view class="likeWrap">
-                                    <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                                    <image
+                                        :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                        class="likeImg"></image>
                                     <text class="likeNum">{{ item.likeNum }}</text>
                                 </view>
                                 <template v-if="isMine && item.status && item.status == 2">
@@ -187,7 +195,9 @@
                         </image>
                         <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                         <div class="likeWrap">
-                            <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                            <image
+                                :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                class="likeImg"></image>
                             <text class="likeNum">{{ item.likeNum }}</text>
                         </div>
                     </template>
@@ -198,7 +208,9 @@
                             <text class="likeNum">{{ item.clickNum }}</text>
                         </view>
                         <view class="likeWrap">
-                            <image src="@/static/cardForum/unLike.png" class="likeImg"></image>
+                            <image
+                                :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                class="likeImg"></image>
                             <text class="likeNum">{{ item.likeNum }}</text>
                         </view>
                         <template v-if="isMine && item.status && item.status == 2">
@@ -224,6 +236,7 @@ const MIN_HEIGHT = uni.upx2px(246)
 const GAP = uni.upx2px(10)
 const app = getApp().globalData.app
 let exposureList = []
+const LIEK = 4
 import mixin from './function/mixin.js'
 import { delDraftDetail } from "../func/index.js"
 import empty from "@/components/empty/empty.vue"
@@ -434,6 +447,9 @@ export default {
                     this.exposureAction && this.exposureAction()
                 }, 5000)
             }
+        },
+        isLike(item) {
+            return item.bit & LIEK === LIEK
         },
         onClickDeleteDraft(item) {
             uni.showModal({
