@@ -16,7 +16,10 @@
 			<statusbar />
 			<view class="live-content">
 				<liveslist :liveList="liveList" />
-				<statusbar />
+			</view>
+			<empty style="background:#F6F7FB" v-show="empty"/>
+			<view style="width:750rpx;margin-top:20rpx">
+				<u-loadmore v-show="liveData.noMoreData&&liveList.length>0" :line="true" status="nomore" />
 			</view>
 		</view>
 	</view>
@@ -43,12 +46,16 @@
 			httpUrl:'dataApi/broadcast/list/living',
 			once:true
 		}
+		empty = false;
 		onLoad(query:any) {
 			this.onEventUI("liveFind",(res)=>{
 				this.initLiveData(res.text)
 				this.reqNewLiveList()
 			})
 			this.reqNewLiveList()
+		}
+		onReachBottom() {
+			this.reqNewLiveList();
 		}
 		private initLiveData(q=''){
 			this.liveData.pageIndex = 1;
@@ -100,6 +107,7 @@
 				if(once && liveTabCheck==1 && data.total == 0){
 					this.onClickListTabs(2)
 				}
+				this.empty = data.total == 0;
 				this.liveData.once = false;
 				this.liveData.pageIndex++;
 				if(cb) cb()
@@ -211,6 +219,7 @@
 		height:100%;
 		box-sizing: border-box;
 		padding-top: 194rpx;
+		background: $content-bg
 	}
 	.live-tabc{
 		padding:0 70rpx;

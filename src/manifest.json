@@ -294,7 +294,8 @@
         }
     },
     "uniStatistics" : {
-        "enable" : true
+        "enable" : true,
+        "version" : "1"
     },
     "h5" : {
         "uniStatistics" : {

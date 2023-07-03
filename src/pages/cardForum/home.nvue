@@ -266,6 +266,10 @@ export default {
             // #ifdef H5
             this.scrollViewHeight = 666
             // #endif
+            if(uni.getStorageSync('showKace')){
+                this.tabs.index = 4;
+                uni.removeStorageSync('showKace');
+            }
         })
     },
     computed: {

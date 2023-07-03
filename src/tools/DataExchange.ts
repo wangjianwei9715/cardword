@@ -1,16 +1,16 @@
 // 首页tab列表
 export var indexSwiperFront = [
-    {icon:'../../static/index/v3/icon5.png',name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
-    {icon:'../../static/index/v3/icon2.png',name:'动漫专区',url:"/pages/goods/goods_animeTv",},
-    {icon:'../../static/index/v3/icon3.png',name:'玩家卡册',url:'/pages/information/list'},
-    {icon:'../../static/index/v3/icon4.png',name:'查卡价',url:'/pages/act/service/ref'},
-    {icon:'../../static/index/v3/icon1.png',name:'卡币商城',url:'/pages/mall/mallIndex'},
+    {icon:'../../static/index/v3/icon5.png',needLogin:false,name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
+    {icon:'../../static/index/v3/icon2.png',needLogin:false,name:'动漫专区',url:"/pages/goods/goods_animeTv",},
+    {icon:'../../static/index/v3/icon3.png',needLogin:false,name:'玩家卡册',url:'/pages/information/list'},
+    {icon:'../../static/index/v3/icon4.png',needLogin:false,name:'查卡价',url:'/pages/act/service/ref'},
+    {icon:'../../static/index/v3/icon1.png',needLogin:true,name:'卡币商城',url:'/pages/mall/mallIndex'},
 ]
 // 首页tab列表
 export var indexSwiperBack = [
-    {icon:'../../static/index/v3/icon5.png',name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
-    {icon:'../../static/index/v3/icon2.png',name:'领券中心',url:"/pages/userinfo/coupon/coupon_get",},
-    {icon:'../../static/index/v3/icon3.png',name:'发售日历',url:'/pages/act/calendar/list'},
+    {icon:'../../static/index/v3/icon5.png',needLogin:true,name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
+    {icon:'../../static/index/v3/icon2.png',needLogin:true,name:'领券中心',url:"/pages/userinfo/coupon/coupon_get",},
+    {icon:'../../static/index/v3/icon3.png',needLogin:true,name:'发售日历',url:'/pages/act/calendar/list'},
 ]
 export const goodsTabs = [
     {name:'关注',id:1,url:'from_followed_merchant'},

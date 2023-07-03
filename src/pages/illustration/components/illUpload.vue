@@ -15,7 +15,7 @@
 						<view class="icon-add"></view>我来补充
 					</view>
 					<view class="up-c-kb">
-						可获x卡币<view class="icon-kb"></view>
+						可获{{reward}}卡币
 					</view>
 				</view>
 			</view>
@@ -54,6 +54,8 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:{}})
 		illustration?:any;
+		@Prop({default:0})
+		reward!:number
 		@PropSync("frontPic",{type:String})
 		frontImg?:string;
 		@PropSync("backPic",{type:String})
