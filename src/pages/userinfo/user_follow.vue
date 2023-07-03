@@ -1,5 +1,43 @@
 <template>
-	<view class="followContent">
+	<view class="content">
+		<view class="tabsContainer">
+			<view class="tabs" @click="onClickTab(index)" v-for="(item, index) in tab.list"
+				:class="{ tabs_select: index == tab.index }">
+				{{ item.name }}
+			</view>
+		</view>
+		<view class="listContainer">
+			<template v-if="tab.index == 0">
+				<view class="userItem" v-for="(item, index) in currentList" :key="index" @click="goPersonHome(item)">
+					<muqian-lazyLoad class="avatar"
+						:src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
+						borderRadius="50%"></muqian-lazyLoad>
+					<view class="userInfo">
+						<view class="userName">{{ item.userName }}</view>
+						<view class="userData">
+							粉丝{{ item.fans }}丨动态1
+						</view>
+					</view>
+					<view class="followButton flexCenter" @click.stop="onClickFollow(item, index, 0)">已关注</view>
+				</view>
+			</template>
+			<template v-if="tab.index == 1">
+				<view class="userItem" v-for="(item, index) in currentList" :key='index' @click='toDetail(item)'>
+					<muqian-lazyLoad :src='decodeURIComponent(item.logo)' class="avatar" mode="aspectFill" />
+					<view class="userInfo">
+						<view class="userName">{{ item.name }}</view>
+						<view class="userData">在售{{ item.sale_num }}件</view>
+					</view>
+					<!-- <followButton :follow='item.follow || true' :followID='item.alias'
+							@handleSuccess='followSuccess($event, item, index)'></followButton> -->
+					<view class="followButton flexCenter" @click.stop="onClickFollow(item, index, 1)">
+						已关注
+
+					</view>
+				</view>
+			</template>
+			<empty v-if="!currentList.length"></empty>
+		</view>
 		<!-- <u-sticky bgColor="#fff">
 			<u-tabs :list="tab.list" :current="tab.index" @click="onClickTab"></u-tabs>
 		</u-sticky> -->
@@ -30,6 +68,7 @@ import {
 	Watch
 } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
+import { followActionByUser } from "@/pages/cardForum/func"
 interface Tab {
 	name: string;
 	url: string;
@@ -48,7 +87,7 @@ const queryParams = {
 const tabList = [
 	{ name: "用户", url: "cardCircle/me/follow/user" },
 	{ name: "商家", url: "me/follows/list" },
-	{ name: "话题", url: "cardCircle/follow/topic" },
+	{ name: "话题", url: "cardCircle/me/follow/topic" },
 	{ name: "图鉴", url: "cardCircle/follow/tujian" }
 ]
 @Component({})
@@ -59,6 +98,7 @@ export default class ClassName extends BaseNode {
 		pageIndex: 1,
 		pageSize: 20
 	};
+	defaultAvatar = app.defaultAvatar
 	empty = false;
 	tab: FollowTab = {
 		index: 0,
@@ -97,6 +137,36 @@ export default class ClassName extends BaseNode {
 			}, 500)
 		})
 	}
+	goPersonHome(item: any) {
+		uni.navigateTo({
+			url: "/pages/cardForum/personHome?userId=" + item.userId
+		})
+	}
+	onClickFollow(item: any, index: number, tabIndex: number) {
+		uni.showModal({
+			title: '提示',
+			content: "确认不再关注?",
+			success: (res: any) => {
+				if (res.confirm) {
+					if (tabIndex == 0) {
+						followActionByUser(item.userId, true).then(() => {
+							this.tab.list[tabIndex] && this.tab.list[tabIndex].dataList.length && this.tab.list[tabIndex].dataList.splice(index, 1)
+						})
+					}
+					if (tabIndex == 1) {
+						app.http.Post("merchant/1/follow/" + item.alias, {}, (res: any) => {
+							// this.$emit("handleSuccess", res.data);
+							uni.$emit('followAction', {
+								...res.data,
+								alias: item.alias
+							})
+							this.tab.list[tabIndex] && this.tab.list[tabIndex].dataList.length && this.tab.list[tabIndex].dataList.splice(index, 1)
+						});
+					}
+				}
+			}
+		})
+	}
 	onReachBottom() {
 		if (this.current.isFetchEnd) return
 		this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
@@ -112,8 +182,8 @@ export default class ClassName extends BaseNode {
 	public get current() {
 		return this.tab.list[this.tab.index]
 	}
-	onClickTab(tab: any) {
-		(this.tab.index != tab.index) && (this.tab.index = tab.index)
+	onClickTab(index: any) {
+		(this.tab.index != index) && (this.tab.index = index)
 	}
 	reqData(cb?: Function): void {
 		app.http.Get(this.current.url, this.current.queryParams, (res: any) => {
@@ -152,8 +222,84 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang='scss'>
-.followContent {
-	padding: 0 41rpx;
+.tabsContainer {
+	display: flex;
+	flex-wrap: nowrap;
+	width: 750rpx;
+	margin-top: 34rpx;
+
+	.tabs {
+		width: 25%;
+		font-size: 27rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #959695;
+		text-align: center;
+		padding-bottom: 13rpx;
+	}
+
+	.tabs_select {
+		font-size: 27rpx;
+		font-family: PingFang SC;
+		font-weight: bold;
+		color: #333333;
+		border-bottom: 6rpx solid #FA1545;
+	}
+}
+
+.listContainer {
+	width: 750rpx;
+	box-sizing: border-box;
+	padding: 0 34rpx;
+}
+
+.userItem {
+	display: flex;
+	align-items: center;
+	margin-top: 52rpx;
+
+	.avatar {
+		width: 73rpx;
+		height: 73rpx;
+		// background: #FA1545;
+		border-radius: 50%;
+		margin-right: 22rpx;
+	}
+
+	.userInfo {
+		flex: 1;
+		justify-content: center;
+		display: flex;
+		flex-direction: column;
+
+		.userName {
+			font-size: 25rpx;
+			font-family: PingFang SC;
+			font-weight: bold;
+			color: #333333;
+			margin-bottom: 8rpx;
+		}
+
+		.userData {
+			font-size: 21rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #C0C0C0;
+		}
+
+
+	}
+
+	.followButton {
+		width: 115rpx;
+		height: 48rpx;
+		border: 1rpx solid #C0C0C0;
+		border-radius: 3rpx;
+		font-size: 25rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #C0C0C0;
+	}
 }
 
 .follow {
