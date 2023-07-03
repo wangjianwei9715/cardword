@@ -1,6 +1,7 @@
 <template>
     <view class="content">
-        <transitionNav @getNavHeight="getNavHeight" @navigateTo="navigateTo(`/pages/userinfo/setting`)" :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
+        <transitionNav @getNavHeight="getNavHeight" @navigateTo="navigateTo(`/pages/userinfo/setting`)"
+            :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
             <view class="userInfo" @click="navigateTo(`/pages/cardForum/personHome?isMine=1&userId=${infoData.userId}`)">
@@ -24,20 +25,21 @@
                 <view class="userData_data">
                     <view class="userData_item"
                         @click="navigateTo(`/pages/cardForum/personHome?isMine=1&userId=${infoData.userId}`)">
-                        <text class="userData_num">{{ userInfo.fans || 0 }}</text>
+                        <text class="userData_num">{{ formatNumber(infoData.dtNum || 0, 1) }}</text>
                         <text class="userData_name">动态</text>
                     </view>
                     <view class="userData_item">
-                        <text class="userData_num">{{ userInfo.fans || 0 }}</text>
+                        <text class="userData_num">{{ formatNumber(infoData.fans || 0, 1) }}</text>
                         <text class="userData_name">粉丝</text>
                     </view>
                     <view class="userData_item" @click="navigateTo(`/pages/userinfo/user_follow`)">
-                        <text class="userData_num">{{ userInfo.follow || 0 }}</text>
+                        <text class="userData_num">{{ formatNumber(infoData.follows || 0, 1) }}</text>
                         <text class="userData_name">关注</text>
                     </view>
                     <view class="userData_item"
                         @click="navigateTo(`/pages/cardForum/personHome?isMine=1&userId=${infoData.userId}&tabIndex=${2}`)">
-                        <text class="userData_num">{{ userInfo.like || 0 }}</text>
+                        <text class="userData_num">{{ formatNumber((infoData.like || 0) + (infoData.favorite || 0), 1)
+                        }}</text>
                         <text class="userData_name">点赞/收藏</text>
                     </view>
                 </view>
@@ -227,6 +229,7 @@
 <script lang="ts">
 import { Component } from "vue-property-decorator";
 import BaseNode from '../../base/BaseNode.vue';
+import { formatNumber } from "@/tools/util"
 import { app } from "@/app";
 let toolsMap = {
     "设置": {
@@ -243,7 +246,8 @@ let toolsMap = {
 }
 @Component({})
 export default class ClassName extends BaseNode {
-    toolsMapCustomNew=toolsMap
+    formatNumber = formatNumber
+    toolsMapCustomNew = toolsMap
     infoData: { [x: string]: any } = [];
     defaultAvatar = app.defaultAvatar;
     broadcastActor = app.broadcastActor;
