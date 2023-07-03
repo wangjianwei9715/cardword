@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 19:30:10
+ * @LastEditTime: 2023-07-03 09:44:30
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -26,7 +26,7 @@
                             <image v-else class="defaultImg" style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
                             <view class="videoIconWrap" v-if="item.video_at">
-                                <u-icon class="videoIcon" color="#ffffff" size="34rpx" name="play-right-fill"></u-icon>
+                                <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
                             </view>
                         </view>
                         <view class="waterfall-item__ft">
@@ -89,7 +89,7 @@
                             <image v-else class="defaultImg" style="width:360rpx;height:430rpx;background-color: #fff;">
                             </image>
                             <view class="videoIconWrap" v-if="item.video_at">
-                                <u-icon class="videoIcon" color="#ffffff" size="34rpx" name="play-right-fill"></u-icon>
+                                <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
                             </view>
                         </view>
                         <view class="waterfall-item__ft">
@@ -172,7 +172,7 @@
                         :src="parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="aspectFit">
                     </image>
                     <view class="videoIconWrap" v-if="item.video_at">
-                        <u-icon class="videoIcon" color="#ffffff" size="32rpx" name="play-right-fill"></u-icon>
+                        <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
                     </view>
                 </div>
                 <div class="waterfall-item__ft">
@@ -804,8 +804,8 @@ $uvui-nvue-style: true !default;
     position: absolute;
     right: 20rpx;
     top: 20rpx;
-    width: 50rpx;
-    height: 50rpx;
+    width: 40rpx;
+    height: 40rpx;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, .3);
     display: flex;
