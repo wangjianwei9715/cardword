@@ -49,6 +49,26 @@ export default class navigateManager {
 			url:`/pages/information/${url}code=${articleCode}&ad=${ad}${q&&q!=''?'&q='+q:''}`
 		})
 	}
+	addNavigate(target: any) {
+		if (target.goodCode != '') {
+			this.goGoodsDetails(target.goodCode)
+			return;
+		} else if (target.url != '') {
+			uni.navigateTo({
+				url: '/pages/act/outLink/outLink?url=' + decodeURIComponent(target.url)
+			})
+			return;
+		} else if (target.page != '') {
+			if (decodeURIComponent(target.page) == '社群') {
+				uni.$emit('showPaySuccess')
+				return;
+			}
+			uni.navigateTo({
+				url: decodeURIComponent(target.page)
+			})
+			return;
+		}
+	}
 	navigateBack() {
 		uni.navigateBack({ delta: 1 });
 	}
