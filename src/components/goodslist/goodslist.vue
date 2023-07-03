@@ -1,10 +1,10 @@
 <template name="goodslist">
 	<view class="goodsContent">
 		<!-- 首页轮播 -->
-		<view class="index-swiper" v-if="indexSwiper&&topAddList!=''">
+		<view class="index-swiper" v-if="indexSwiper&&indexAddList!=''">
 			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="5000" :duration="500"
 				:circular="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'">
-				<swiper-item v-for="(item,index) in topAddList" :key="index">
+				<swiper-item v-for="(item,index) in indexAddList" :key="index">
 					<muqian-lazyLoad class="swiper-image" :src="decodeURIComponent(item.pic)"
 						@click="onClickTopJumpUrl(item.target)" borderRadius="5rpx"></muqian-lazyLoad>
 				</swiper-item>
@@ -85,7 +85,7 @@
 		@Prop({ default: [] })
 		goodsList: any;
 		@Prop({ default: '' })
-		topAddList ? : any;
+		indexAddList ? : any;
 		@Prop({ default: false })
 		indexSwiper ? : any;
 		@Prop({ default: false })
@@ -115,25 +115,8 @@
 			if(!item.merchantName) return;
 			this.goMerchantPage(item.merchantAlias)
 		}
-		onClickTopJumpUrl(url: any) {
-			if (url.goodCode != '') {
-				app.navigateTo.goGoodsDetails(url.goodCode)
-				return;
-			} else if (url.url != '') {
-				uni.navigateTo({
-					url: '/pages/act/outLink/outLink?url=' + decodeURIComponent(url.url)
-				})
-				return;
-			} else if (url.page != '') {
-				if (decodeURIComponent(url.page) == '社群') {
-					uni.$emit('showPaySuccess')
-					return;
-				}
-				uni.navigateTo({
-					url: decodeURIComponent(url.page)
-				})
-				return;
-			}
+		onClickTopJumpUrl(target: any) {
+			app.navigateTo.addNavigate(target)
 		}
 	}
 </script>

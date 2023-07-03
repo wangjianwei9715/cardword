@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-03 16:20:13
- * @FilePath: \card-world\src\pages\cardForum\release.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-03 17:16:35
+ * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -21,7 +21,7 @@
             </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
-        <album v-if="albumRelease" ref="albumRelease" :albumList="albumList" />
+        <publish v-if="albumRelease" ref="albumRelease" :albumList="albumList" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp v-if="showPPP" :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics"
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
@@ -102,7 +102,7 @@ import CardForum from "./interface/public";
 import ppp from "./components/ppp.vue"
 import Upload from "@/tools/upload"
 import goods from "./components/goods.vue"
-import album from "./components/album.vue"
+import publish from "./components/album/publish.vue"
 import { storageDraft, getDraftList, getDraftDetail, getVideoPath, delDraftDetail } from "./func"
 enum State {
     Public = 1,
@@ -149,7 +149,7 @@ const formData: CardForumRelease = {
         topicsPop,
         ppp,
         goods,
-        album
+        publish
     }
 })
 export default class ClassName extends BaseNode {

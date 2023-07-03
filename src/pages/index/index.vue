@@ -16,9 +16,9 @@
 		</view>
 		<view class="tab-center">
 			<statusbar />
-			<navigator class="capsule-box" :url="capsule.url" hover-class="none" v-if="isDuringDate('2023-05-20', '2023-07-02')">
-				<image class="capsule-pic1" :src="decodeURIComponent(capsule.pic)" mode="aspectFill"/>
-			</navigator>
+			<view class="capsule-box" @click="onClickAddJump(item.target)" v-for="(item,index) in addList.top" :key="index">
+				<image class="capsule-pic1" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
+			</view>
 			
 			<view class="tab-good-content">
 				<swiper class="tab-swiper" :current="tabSwiperCurrent" @change="e=> tabSwiperCurrent=e.detail.current">
@@ -49,7 +49,7 @@
 				:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 6rpx'}"
 				:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 6rpx'}"
 			></u-tabs>
-			<goodslist :goodsList="goodsList" :topAddList="goodsTabCurrent==1?topAddList:[]" :indexSwiper="indexSwiper"
+			<goodslist :goodsList="goodsList" :indexAddList="goodsTabCurrent==1?addList.index:[]" :indexSwiper="indexSwiper"
 				@send="onClickJumpDetails" :presell="false" :empty="goodsListEmpty" :nomore="listParams.noMoreData" />
 				
 		</view>
@@ -84,7 +84,12 @@
 		}
 		hot = [];
 		broadCastList:any = [];
+		addList:any = {
+			top:[],
+			index:[]
+		}
 		topAddList: any = [];
+		indexAddList: any = [];
 		indexSwiper = true;
 		goodsList: any = [];
 		goodsListEmpty = false;
@@ -149,6 +154,9 @@
 			this.listParams.noMoreData = false;
 			this.reqNewMainList()
 		}
+		onClickAddJump(target:any){
+			app.navigateTo.addNavigate(target)
+		}
 		// 监听网络
 		networkStatusChange() {
 			// #ifdef APP-PLUS
@@ -201,9 +209,13 @@
 		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
 				uni.hideLoading()
-				this.topAddList = data.addList || [];
+				if(data.addList){
+					this.addList = {
+						top:data.addList.filter((x:any)=>x.location==3) || [],
+						index:data.addList.filter((x:any)=>x.location==0) || []
+					}
+				}
 				this.broadCastList = data.broadCast || [];
-				
 				this.getIndexOrther()
 				cb && cb()
 			})
