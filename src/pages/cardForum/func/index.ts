@@ -59,6 +59,10 @@ export function followTopic(id: number): Promise<Boolean> {
 export function followActionByUser(userId: number, isFollow: boolean): Promise<Boolean> {
     return new Promise((resolve, reject) => {
         app.http.Post(`cardCircle/${isFollow ? 'un/' : ''}follow/user/${userId}`, {}, (res: any) => {
+            uni.$emit("userFollow", {
+                userId: userId,
+                data: res.data || {}
+            })
             resolve(true)
         }, (err: any) => {
             reject(false)

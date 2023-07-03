@@ -58,6 +58,10 @@ export function followTopic(id) {
 export function followActionByUser(userId, isFollow) {
     return new Promise((resolve, reject) => {
         app.http.Post(`cardCircle/${isFollow ? 'un/' : ''}follow/user/${userId}`, {}, (res) => {
+            uni.$emit("userFollow", {
+                userId: userId,
+                data: res.data || {}
+            })
             resolve(true)
         }, (err) => {
             reject(false)
