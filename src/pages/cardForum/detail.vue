@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-03 18:10:48
+ * @LastEditTime: 2023-07-03 18:12:38
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -105,7 +105,7 @@
                                 <view class="name u-line-1" style="flex:1">{{ item.userName }}</view>
 
                                 <view style="display: flex;align-items: center;"
-                                    @click.stop="$u.throttle(() => { onClickCommLike(item) }, 1000)">
+                                    @click.stop="$u.throttle(() => { onClickCommLike(item) }, 500)">
                                     <view class="dz" :class="{ dzs: item.isLiked }"></view>
                                     <view class="num">{{ formatNumber(item.likeNum, 2, "en") }}</view>
                                 </view>
@@ -133,7 +133,7 @@
                                 <view class="name u-line-1" style="flex:1">{{ son.userName }}</view>
                                 <!-- <view class="time">{{ getDateDiff(son.created_at * 1000) }}</view> -->
                                 <view style="display: flex;align-items: center;"
-                                    @click.stop="$u.throttle(() => { onClickCommLike(son) }, 1000)">
+                                    @click.stop="$u.throttle(() => { onClickCommLike(son) }, 500)">
                                     <view class="dz" :class="{ dzs: son.isLiked }"></view>
                                     <view class="num">{{ formatNumber(son.likeNum, 2, "en") }}</view>
                                 </view>
@@ -376,7 +376,7 @@ export default class ClassName extends BaseNode {
     onClickCommLike(item: any) {
         app.http.Post(`cardCircle/comment/${item.isLiked ? "un/" : ""}like/${item.id}`, {}, () => {
             item.isLiked ? item.likeNum -= 1 : item.likeNum += 1
-            item.isLiked = !item.isLike
+            item.isLiked = !item.isLiked
         })
     }
     onClickVote(item: any) {
