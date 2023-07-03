@@ -135,11 +135,11 @@
         </div>
         <div class="showKaBottom" ref="showKaBottom" v-if="tabs.index == 2">
             <div class="showKaTabBar">
-                <text class="tabbar_item">首页</text>
-                <text class="tabbar_item">拼团</text>
+                <text class="tabbar_item" @click="switchTo('/pages/index/index')">首页</text>
+                <text class="tabbar_item" @click="switchTo('/pages/illustration/index')">图鉴</text>
                 <text class="tabbar_item">卡圈</text>
-                <text class="tabbar_item">消息</text>
-                <text class="tabbar_item">我的</text>
+                <text class="tabbar_item" @click="switchTo('/pages/index/message')">消息</text>
+                <text class="tabbar_item" @click="switchTo('/pages/index/userinfo_v3')">我的</text>
             </div>
             <div :style="{ height: bottomSafeArea + 'px' }"></div>
         </div>
@@ -263,6 +263,9 @@ export default {
                 uni.removeStorageSync('showKace');
             }
         })
+        if (this.tabs.index == 2) {
+            uni.hideTabBar({ animation: false })
+        }
     },
     computed: {
         current() {
@@ -389,6 +392,14 @@ export default {
                     url: item.url
                 })
             }
+        },
+        switchTo(url) {
+            uni.switchTab({
+                url,
+                success: (res) => {
+                    uni.showTabBar({ animation: false })
+                }
+            })
         },
         refreshData(index) {
             setTimeout(() => {
