@@ -39,10 +39,10 @@
                         <view class="adWrap" v-if="isShowKa && topicAcList && topicAcList.length">
                             <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
                             <swiper style="width: 730rpx;">
-                                <swiper-item v-for="(item, index) in topicAcList" :key="index" style="position: relative;"
+                                <swiper-item v-for="(item, index) in topicAcList" :key="index" style="position: relative;width: 730rpx;height:200rpx"
                                     @click="onClickTopicAct($event, item)">
                                     <image :src="item.pic" class="swiperPic" mode="aspectFill"></image>
-                                    <text class="topPushButton flexCenter"
+                                    <text class="topPushButton"
                                         @click="onClickPushTopic($event, item)">我要发布</text>
                                 </swiper-item>
                             </swiper>
@@ -84,11 +84,11 @@
                                 </div>
                                 <div class="adWrap" v-if="isShowKa && topicAcList && topicAcList.length">
                                     <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
-                                    <swiper style="width: 730rpx;">
+                                    <swiper style="width: 730rpx;width: 730rpx;height:200rpx">
                                         <swiper-item v-for="(item, index) in topicAcList" :key="index"
                                             style="position: relative;" @click="onClickTopicAct($event, item)">
-                                            <image :src="item.pic" class="swiperPic" mode="aspectFill"></image>
-                                            <text class="topPushButton flexCenter"
+                                            <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic" mode="aspectFill"></image>
+                                            <text class="topPushButton"
                                                 @click="onClickPushTopic($event, item)">我要发布</text>
                                         </swiper-item>
                                     </swiper>
@@ -787,13 +787,16 @@ page {
     height: 57rpx;
     background: #FA1545;
     border-radius: 3rpx;
-    position: absolute;
+    
     right: 50rpx;
     top: 74rpx;
     font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #FFFFFF;
+    text-align: center;
+    line-height: 57rpx;
+    position: absolute;
 }
 
 .adWrap_img {
@@ -807,6 +810,9 @@ page {
 .swiperPic {
     width: 730rpx;
     height: 200rpx;
+    // position: absolute;
+    // left: 0;
+    // top:0;
 }
 
 .showKaImage {
