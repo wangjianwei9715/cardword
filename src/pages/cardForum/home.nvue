@@ -241,14 +241,6 @@ export default {
             trTimmer: null,
             bottomSafeArea: 0,
             topicAcList: [
-                {
-                    id: 2,
-                    pic: "https://images.cardhobby.com/0DF31F909C8F41E0A9CE541155B77DB1.jpg"
-                },
-                {
-                    id: 3,
-                    pic: "https://images.cardhobby.com/0DF31F909C8F41E0A9CE541155B77DB1.jpg"
-                }
             ]
         }
     },
@@ -266,7 +258,7 @@ export default {
             // #ifdef H5
             this.scrollViewHeight = 666
             // #endif
-            if(uni.getStorageSync('showKace')){
+            if (uni.getStorageSync('showKace')) {
                 this.tabs.index = 4;
                 uni.removeStorageSync('showKace');
             }
@@ -424,7 +416,7 @@ export default {
         },
         reqTopicAc() {
             app.http.Get(`dataApi/cardCircle/topic/banner/list`, {}, (res) => {
-                // this.topicAcList = res.list || []
+                this.topicAcList = res.list || []
             })
         },
         reqNewData(isRefresh = false, cb) {
