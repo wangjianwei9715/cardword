@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <transitionNav @getNavHeight="getNavHeight" :needIconShadow="false"></transitionNav>
+        <transitionNav @getNavHeight="getNavHeight" @navigateTo="navigateTo(`/pages/userinfo/setting`)" :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
             <view class="userInfo" @click="navigateTo(`/pages/cardForum/personHome?isMine=1&userId=${infoData.userId}`)">
@@ -49,7 +49,7 @@
             <view class="menuItem" v-for="(item, key) in walletTab" @click="onClickFourTool(item)">
                 <image class="icon"></image>
                 <view class="label">{{ item.name }}</view>
-                <view class="num" v-if="key!='kami'">{{ item.num }}</view>
+                <view class="num" v-if="key != 'kami'">{{ item.num }}</view>
                 <view class="rightIcon"></view>
             </view>
         </view>
@@ -228,8 +228,22 @@
 import { Component } from "vue-property-decorator";
 import BaseNode from '../../base/BaseNode.vue';
 import { app } from "@/app";
+let toolsMap = {
+    "设置": {
+        action: "",
+        emitAction: "navigateTo",
+        icon: "/static/userinfo/v2/icon_setting.png",
+        icon_black: "/static/userinfo/v2/icon_setting.png",
+        style: {
+            width: "42rpx",
+            height: "42rpx",
+        }
+
+    }
+}
 @Component({})
 export default class ClassName extends BaseNode {
+    toolsMapCustomNew=toolsMap
     infoData: { [x: string]: any } = [];
     defaultAvatar = app.defaultAvatar;
     broadcastActor = app.broadcastActor;
