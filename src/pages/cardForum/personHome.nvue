@@ -1,6 +1,6 @@
 <template>
-    <list fixFreezing="true" bounce="false" id="pageId" @scroll="scroll" :show-scrollbar="false" @touchstart="listTouch"
-        @touchend="listTouch" @touchmove="listTouchMove">
+    <list fixFreezing="true" bounce="false" id="pageId" ref="pageList" @scroll="scroll" :show-scrollbar="false"
+        @touchstart="listTouch" @touchend="listTouch" @touchmove="listTouchMove">
         <cell>
             <div id="topContainer">
                 <div class="userInfoWrap" id="userInfoWrap">
@@ -85,7 +85,7 @@
                 </swiper-item>
             </swiper>
         </cell>
-        <transitionNav :needIconShadow="false" :needRightTools="['分享']" ref="transitionNav" title="爷就是拽"
+        <transitionNav :needIconShadow="false" :needRightTools="['分享']" ref="transitionNav" :title="userInfo.userName"
             @getNavHeight="getNavHeight" :report="!isMine"
             @report="pageJump(`/pages/cardForum/report?byInformer=${this.userInfo.userId}&source=4`)"></transitionNav>
     </list>
@@ -200,15 +200,18 @@ export default {
     },
     mounted() {
     },
-    onLoad(query) {
-        if (query.tabIndex) this.tabs.index = +query.tabIndex
-        this.userId = +query.userId
-        this.isMine = query.isMine == "1" //后续解除注释
+    onShow() {
         if (this.isMine) {
             this.draftListByDynamic = getDraftList("dynamic")
             console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
             this.draftListByCardBook = getDraftList("cardBook")
         }
+    },
+    onLoad(query) {
+        if (query.tabIndex) this.tabs.index = +query.tabIndex
+        this.userId = +query.userId
+        this.isMine = query.isMine == "1" //后续解除注释
+
         // console.log(this.draftList);
 
     },
@@ -239,6 +242,9 @@ export default {
             this.reqData(false)
             console.log(this.tabs);
         },
+        showWater(tab) {
+            return tab.list.length || (tab.name == "动态" && this.isMine && this.draftListByDynamic.length) || (tab.name == "卡册" && this.isMine && this.draftListByCardBook.length)
+        },
         waterScroll(event) {
             if (app.platform.systemInfo.platform == "android") {
                 console.log("waterScroll", event.contentOffset);
@@ -257,14 +263,14 @@ export default {
                 if (this.onTouch) {
 
                     const gap = event.changedTouches[0].screenY - agoListY
-                    console.log(gap);
-                    if (gap > 1 && waterY >= -5) {
+                    console.log(gap, waterY, this.stickyTabs);
+                    if (gap > 1 && waterY >= -5 && this.stickyTabs) {
                         console.log("滚动", this.$refs.tabsWrap);
                         dom.scrollToElement(this.$refs.tabsWrap, {
                             offset: 0,
                             animated: false
                         })
-                        waterY = -200
+                        waterY = 0
                         this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll({
                             scrollTop: 0
                         })
@@ -293,7 +299,7 @@ export default {
             })
         },
         goTopRef(index) {
-            this.$refs[`waterfalls${index}`] && this.$refs[`waterfalls${index}`][0].goTop()
+            // this.$refs[`waterfalls${index}`] && this.$refs[`waterfalls${index}`][0].goTop()
         },
         swiperChange(event) {
             this.tabs.index = event.detail.current
@@ -307,7 +313,7 @@ export default {
             const dom = await this.getDomInfo("#tabs")
             // console.log(dom.top);
             // if (this.stickyTabs) return
-            this.stickyTabs = dom.top <= this.navHeight
+            this.stickyTabs = dom.top <= this.navHeight-1
         },
         pageJump(url) {
             uni.navigateTo({

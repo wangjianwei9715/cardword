@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-03 15:24:45
+ * @LastEditTime: 2023-07-03 15:43:14
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -465,6 +465,7 @@ export default {
                             })
                         }
                         // #endif
+                        // this.delData(item.)
                         this.$emit("refreshDraft")
                     }
                 }
@@ -542,6 +543,14 @@ export default {
         },
         scrolltolower() {
             this.$emit("loadmore")
+        },
+        delData(code) {
+            const index = this.tempList.findIndex(item => {
+                return item.code == code
+            })
+            if (index >= 0) {
+                this.tempList.splice(index, 1)
+            }
         },
         imageLoad(event, item) {
             // #ifdef APP-NVUE
