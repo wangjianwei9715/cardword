@@ -47,8 +47,10 @@
                 </div>
                 <div class="gundonDiv" ref="gundonDiv"></div>
                 <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
-                    <u-tabs customType="cardForum" @click="tabClick" class="tabs" :duration="300" :current="tabs.index"
-                        :list="tabs.list"></u-tabs>
+                    <u-tabs customType="cardForum" style="width:750rpx" :itemStyle="{ width: `150rpx`, height: `80rpx` }"
+                        :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
+                        :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs"
+                        :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
                 </div>
             </div>
             <swiper :current="tabs.index" :style="{ height: scrollViewHeight + 'px' }" @change="swiperChange"
@@ -313,7 +315,7 @@ export default {
             const dom = await this.getDomInfo("#tabs")
             // console.log(dom.top);
             // if (this.stickyTabs) return
-            this.stickyTabs = dom.top <= this.navHeight-1
+            this.stickyTabs = dom.top <= this.navHeight - 1
         },
         pageJump(url) {
             uni.navigateTo({

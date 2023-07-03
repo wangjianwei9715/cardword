@@ -27,8 +27,7 @@
                     <text class="searchText" @click="onClickSearch">搜索</text>
                 </div>
             </div>
-            <u-tabs v-if="!onSearch" type="cardForum" style="width:750rpx" :duration="300"
-                :lineColor="`url('../../static/index/v3/tab_line.png') 100% 100%`"
+            <u-tabs v-if="!onSearch" customType="cardForum" style="width:750rpx" :itemStyle="{ width: `150rpx`,height:`90rpx` }"
                 :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
@@ -82,7 +81,7 @@
                     @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
                 </waterfalls>
                 <template v-if="tab.type == 'topics'">
-                    <topicList :value="tab.list"></topicList>
+                    <topicList :value="tab.list" style="margin-top: 10rpx;"></topicList>
                 </template>
                 <scroll-view v-if="tab.type == 'topics' || tab.type == 'user'" :scroll-y="true"
                     :style="{ height: scrollViewHeight + 'px' }" @scrolltolower="loadmoreData(tabIndex)">
