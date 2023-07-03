@@ -159,6 +159,12 @@ export default class PlatformManager {
 			alias: obj.alias
 		})
 	}
+	pageScrollTop(){
+		uni.pageScrollTo({
+			scrollTop: 0,
+			duration: 100
+		});
+	}
 	clearCache(){
 		//@ts-ignore
 		plus.cache.clear(() => {});
