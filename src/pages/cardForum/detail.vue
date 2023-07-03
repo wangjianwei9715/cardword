@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-03 18:02:51
+ * @LastEditTime: 2023-07-03 18:10:48
  * @FilePath: \card-world\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -102,14 +102,18 @@
                     <view class="rightWrap">
                         <view class="msgInfo" @click.stop="onClickCom(item, null)">
                             <view class="top">
-                                <view class="name u-line-1" style="max-width: 350rpx;">{{ item.userName }}</view>
-                                <view class="time">{{ getDateDiff(item.created_at * 1000) }}</view>
-                                <view style="display: flex;align-items: center;">
+                                <view class="name u-line-1" style="flex:1">{{ item.userName }}</view>
+
+                                <view style="display: flex;align-items: center;"
+                                    @click.stop="$u.throttle(() => { onClickCommLike(item) }, 1000)">
                                     <view class="dz" :class="{ dzs: item.isLiked }"></view>
                                     <view class="num">{{ formatNumber(item.likeNum, 2, "en") }}</view>
                                 </view>
                             </view>
                             <view class="contentMsg">{{ item.content }}</view>
+                            <view class="timeInfo">
+                                {{ getDateDiff(item.created_at * 1000) }} {{ item.location || "未知" }}
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -126,9 +130,10 @@
                     <view class="rightWrap">
                         <view class="msgInfo">
                             <view class="top">
-                                <view class="name u-line-1" style="max-width: 350rpx;">{{ son.userName }}</view>
-                                <view class="time">{{ getDateDiff(son.created_at * 1000) }}</view>
-                                <view style="display: flex;align-items: center;">
+                                <view class="name u-line-1" style="flex:1">{{ son.userName }}</view>
+                                <!-- <view class="time">{{ getDateDiff(son.created_at * 1000) }}</view> -->
+                                <view style="display: flex;align-items: center;"
+                                    @click.stop="$u.throttle(() => { onClickCommLike(son) }, 1000)">
                                     <view class="dz" :class="{ dzs: son.isLiked }"></view>
                                     <view class="num">{{ formatNumber(son.likeNum, 2, "en") }}</view>
                                 </view>
@@ -139,6 +144,9 @@
                                     <text class="replyName">{{ son.replyUserName }}</text>
                                 </template>
                                 {{ son.content }}
+                            </view>
+                            <view class="timeInfo">
+                                {{ getDateDiff(son.created_at * 1000) }} {{ item.location || "未知" }}
                             </view>
                         </view>
                     </view>
@@ -170,7 +178,7 @@
                         <image src="@/static/cardForum/gift.png" style="width:34rpx;height:37rpx" />
                         <view class="num">打赏</view>
                     </view>
-                    <view class="toolsItem" @click="$u.throttle(() => { onClickLike() }, 1000)">
+                    <view class="toolsItem" @click="$u.throttle(() => { onClickLike() }, 500)">
                         <image v-if="!isLike" src="@/static/cardForum/detail_dz.png" style="width:38rpx;height:32rpx" />
                         <image v-else src="@/static/cardForum/detail_dz_s.png" style="width:38rpx;height:32rpx" />
                         <view class="num">{{ formatNumber(forumDetail.likeNum || 0, 2, "en") }}</view>
@@ -179,7 +187,7 @@
                         <image src="@/static/cardForum/comm.png" style="width:35rpx;height:33rpx" />
                         <view class="num">{{ formatNumber(forumDetail.commentNum || 0, 2, "en") }}</view>
                     </view>
-                    <view class="toolsItem" @click="$u.throttle(() => { onClickCollect() }, 1000)">
+                    <view class="toolsItem" @click="$u.throttle(() => { onClickCollect() }, 500)">
                         <image v-if="!isCollection" src="@/static/cardForum/sc.png" style="width:36rpx;height:34rpx" />
                         <image v-else src="@/static/cardForum/sc_s.png" style="width:36rpx;height:34rpx" />
                         <view class="num">{{ formatNumber(forumDetail.collectNum || 0, 2, "en") }}</view>
@@ -364,6 +372,12 @@ export default class ClassName extends BaseNode {
             return
         }
         this.pushOrReply(this.clickSon.id || this.clickCom.id || 0, this.clickCom)
+    }
+    onClickCommLike(item: any) {
+        app.http.Post(`cardCircle/comment/${item.isLiked ? "un/" : ""}like/${item.id}`, {}, () => {
+            item.isLiked ? item.likeNum -= 1 : item.likeNum += 1
+            item.isLiked = !item.isLike
+        })
     }
     onClickVote(item: any) {
         if (this.forumDetail.vote.myOption) return
@@ -1290,5 +1304,14 @@ export default class ClassName extends BaseNode {
 
 .pointerAuto {
     pointer-events: auto;
+}
+
+.timeInfo {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #AAAAAA;
+    margin-top: 20rpx;
+    // margin-left: 22rpx;
 }
 </style>
