@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-26 18:01:05
+ * @LastEditTime: 2023-07-03 15:03:13
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的话题pop组件
 -->
@@ -21,12 +21,11 @@
                 <scroll-view class="topicsScroll" :scroll-y="true" @scrolltolower="scrolltolower">
                     <view class="topicsItem" v-for="(item, index) in list"
                         @click="$emit('select', item), showValue = false">
-                        <muqian-lazyLoad class="image"
-                            :src="item.pic || 'https://i.ebayimg.com/thumbs/images/g/eQcAAOSwZYFkhwXd/s-l500.jpg'"
+                        <muqian-lazyLoad class="image" :src="$parsePic(decodeURIComponent(item.pic))"
                             borderRadius="50%"></muqian-lazyLoad>
                         <view class="rightInfo">
                             <view class="title">{{ item.name }}</view>
-                            <view class="num">{{ item.cardCircleNum }}篇动态</view>
+                            <view class="num">{{ item.totalUseNum }}篇动态</view>
                         </view>
                     </view>
 
@@ -56,7 +55,7 @@ export default class ClassName extends BaseComponent {
     onShowChanged(val: boolean) {
         if (val && !this.list.length) this.reqList()
     }
-    list: Array<CardForum.Topics> = []
+    list: Array<any> = []
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 15,
