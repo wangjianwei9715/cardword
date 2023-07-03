@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-03 16:42:35
+ * @LastEditTime: 2023-07-03 16:57:37
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -237,6 +237,7 @@ const MIN_HEIGHT = uni.upx2px(246)
 const GAP = uni.upx2px(10)
 const app = getApp().globalData.app
 let exposureList = []
+let alreadyList = []
 const LIEK = 4
 import mixin from './function/mixin.js'
 import { delDraftDetail } from "../func/index.js"
@@ -473,9 +474,13 @@ export default {
             })
         },
         exposureAction() {
-            const newArray = [...new Set(exposureList)];
-            console.log("发送的newArray", newArray);
-            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray }, () => { })
+            const newArray = [...new Set(exposureList)].filter((code) => {
+                return !alreadyList.includes(code)
+            });
+            if (!newArray || !newArray.length) return
+            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray }, () => {
+                alreadyList.push(...newArray)
+            })
         },
         goToUserProfile(event, item) {
             if (this.type == "draftList") return
