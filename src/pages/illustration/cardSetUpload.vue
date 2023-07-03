@@ -18,7 +18,7 @@
 					<view class="header-num">{{numData.now}}/{{numData.all}}</view>
 					<view class="icon-right" @click="onClickNext"></view>
 				</view>
-				<illUpload :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic"/>
+				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic"/>
 				<view class="upload-card-info">
 					<view class="card-title">{{noData.text.player}}</view>
 					<view class="card-set u-line-2">{{noData.text.cardSet}}</view>

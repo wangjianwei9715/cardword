@@ -259,13 +259,20 @@
 			})
 		}
 		onClickJumpUrl(item: any) {
-			if (['卡币商城','领券中心','商家列表','领券中心','发售日历'].includes(item.name)) {
+			if (item.needLogin) {
 				if (app.token.accessToken == '') {
 					uni.navigateTo({
 						url: '/pages/login/login'
 					})
 					return;
 				}
+			}
+			if(item.name=="玩家卡册"){
+				uni.setStorageSync('showKace', true);
+				uni.switchTab({
+					url: '/pages/cardForum/home'
+				});
+				return;
 			}
 			uni.navigateTo({
 				url: item.url

@@ -45,7 +45,7 @@
                             <view class="icon-add"></view>我来补充
                         </view>
                         <view class="wait-kb">
-                            可获卡币<view class="icon-kb"></view>
+                            可获卡币
                         </view>
                     </view>
                 </view>
@@ -72,7 +72,7 @@
                             <view class="icon-add"></view>我来补充
                         </view>
                         <view class="wait-kb">
-                            可获卡币<view class="icon-kb"></view>
+                            可获卡币
                         </view>
                     </view>
                 </view>
