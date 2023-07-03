@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-30 14:57:21
+ * @LastEditTime: 2023-06-30 18:43:30
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -54,7 +54,7 @@
 			if(query.seriesCode){
 				this.selectSeries = [{seriesCode:query.seriesCode,name:query.name,noList:[]}]
 			}
-			this.onEventUI("seriesSelect", (res) => {
+			this.onEventUI("albumSelect", (res) => {
 				const repeat = this.selectSeries.some((x:any)=>{
 					if(x.seriesCode == res.code){
 						uni.showToast({ title:'已选择此系列', icon:'none' })
@@ -112,7 +112,7 @@
 		}
 		onClickSeriesSelect(){
 			uni.navigateTo({
-				url:'/pages/illustration/seriesSelect?back=true'
+				url:'/pages/illustration/seriesSelect?back=true&album=true'
 			})
 		}
 		onClickSelectNo(item:any){

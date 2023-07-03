@@ -12,6 +12,7 @@
             </view>
             <view class="operate-line">
                 <u-tabs :list="list" :current="current" lineHeight="0" :activeStyle="activeStyle" :inactiveStyle="inactiveStyle" itemStyle="padding:0;height:41rpx;margin-right:40rpx" @change="onChangeTabs"></u-tabs>
+                <view class="layout" :class="{'layout2':layoutLine==2}" @click="layoutLine=layoutLine==2?1:2"></view>
             </view>
             <view class="operate-line flex-line">
                 <view class="line-title">卡种</view>
@@ -32,7 +33,7 @@
                 </scroll-view>
             </view>
         </view>
-        <view class="card-list">
+        <view v-show="layoutLine==1" class="card-list">
             <view class="card-index" v-for="(item,index) in cardSetList" :key="index" @click="onClickCard(item,index)">
                 <view v-if="item.frontPic" class="card-pic">
                     <muqian-lazyLoad v-if="item.frontPic" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
@@ -59,8 +60,35 @@
                 </view>
             </view>
         </view>
+        <view v-show="layoutLine==2" class="layou2-list">
+            <view class="list-index" v-for="(item,index) in cardSetList" :key="index" @click="onClickCard(item,index)">
+                <view v-if="item.frontPic" class="pic-box">
+                    <muqian-lazyLoad v-if="item.frontPic" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
+                </view>
+                <view v-else class="upload">
+                    <view>
+                        <view class="wait-pic"></view>
+                        <view class="wait-bc">
+                            <view class="icon-add"></view>我来补充
+                        </view>
+                        <view class="wait-kb">
+                            可获卡币<view class="icon-kb"></view>
+                        </view>
+                    </view>
+                </view>
+                <view class="bottom">
+                    <view class="player u-line-1">{{cardSetTitle(item)}}</view>
+                    <view class="setcard u-line-2">
+                        <image v-if="item.cardSetLogo" class="logo" :src="decodeURIComponent(item.cardSetLogo)"/>
+                        {{item.cardSet}}
+                    </view>
+                </view>
+            </view>
+        </view>
 
         <u-loadmore v-show="listOrther.end" status="nomore" line/>
+
+        <view class="back-top" @click="pageScrollTop"></view>
     </view>
 </template>
 
@@ -81,6 +109,7 @@
         @Prop({default:{}})
 		search!:any;
 
+        pageScrollTop = app.platform.pageScrollTop;
         listQ="";
         list = [
             {id:0,name:'全部'},
@@ -110,6 +139,7 @@
         filterList = [];
         listParams = {};
         total = 0;
+        layoutLine = 1;
         @Watch('seriesCode')
 		onSeriesCodeChanged(val: any, oldVal: any){
             if(oldVal&&val!=oldVal){
@@ -142,6 +172,9 @@
             })
 			this.getSeriesGroup()
 		}
+        cardSetTitle(item:any){
+            return `${item.seq==0?"无限":item.seq}编 ${item.player}`
+        }
         selectTab(item:any,list:string[]){
 			return list.some((x:any)=>{
                 return x.nameId == item.nameId
@@ -309,6 +342,19 @@
         width: 100%;
         height:41rpx;
         margin-top: 21rpx;
+        position: relative;
+        .layout{
+            width: 27rpx;
+            height:28rpx;
+            background:url(@/static/illustration/layout_1.png) no-repeat center/ 100% 100%;
+            position: absolute;
+            top:50%;
+            margin-top: -14rpx;
+            right:34rpx;
+        }
+        .layout2{
+            background:url(@/static/illustration/layout_2.png) no-repeat center/ 100% 100%;
+        }
     }
     .flex-line{
         display: flex;
@@ -374,9 +420,9 @@
         width: 180rpx;
         height: 253rpx;
         border-radius: 3rpx;
-        border: 1px dashed #C0C0C0;
+        border: 1px dashed #DFDFDF;
         box-sizing: border-box;
-        background: #E6E6E6;
+        background: #F5F5F5;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -488,5 +534,119 @@
         height: 31rpx;
         border-radius: 1rpx;
         margin-left: 20rpx;
+    }
+    .layou2-list{
+        width: 100%;
+        box-sizing: border-box;
+        padding:20rpx 24rpx;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        .list-index{
+            width: 341rpx;
+            height:650rpx;
+            margin-bottom: 20rpx;
+            background:#fff;
+            .pic-box{
+                width: 341rpx;
+                height:479rpx;
+                border-radius: 3rpx 3rpx 0rpx 0rpx;
+                background:$pic-bg;
+                overflow: hidden;
+            }
+            .pic{
+                width: 341rpx;
+                height:479rpx;
+            }
+            .bottom{
+                width: 100%;
+                height:171rpx;
+                box-sizing: border-box;
+                padding:20rpx;
+                .player{
+                    width: 100%;
+                    font-size: 25rpx;
+                    font-family: PingFang SC;
+                    font-weight: 600;
+                    color: #333333;
+                    margin-bottom: 20rpx;
+                }
+                .setcard{
+                    display: flex;
+                    font-size: 25rpx;
+                    font-family: PingFang SC;
+                    font-weight: 400;
+                    color: #333333;
+                    word-break: break-all;
+                }
+                .logo{
+                    width: 67rpx;
+                    height:28rpx;
+                    margin-right: 6rpx;
+                }
+            }
+            .upload{
+                width: 341rpx;
+                height:479rpx;
+                border-radius: 3rpx 3rpx 0rpx 0rpx;
+                background:#F5F5F5;
+                border: 1px dashed #DFDFDF;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .wait-pic{
+                width: 107rpx;
+                height:96rpx;
+                border-radius: 3rpx;
+                margin:0 auto;
+                margin-bottom: 31rpx;
+                background: url(@/static/illustration/icon_wait.png) no-repeat center / 100% 100%;
+            }
+            .wait-bc{
+                width: 100%;
+                font-size: 29rpx;
+                font-family: PingFang SC;
+                font-weight: 500;
+                color: #959695;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .icon-add{
+                width: 28rpx;
+                height:28rpx;
+                background: url(@/static/illustration/icon_add__.png) no-repeat center / 100% 100%;
+                margin-right: 6rpx;
+            }
+            .wait-kb{
+                width: 100%;
+                font-size: 25rpx;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: #C0C0C0;
+                margin-top: 10rpx;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .icon-kb{
+                width: 23rpx;
+                height:23rpx;
+                background: url(@/static/illustration/icon_kab.png) no-repeat center / 100% 100%;
+                margin-left: 5rpx;
+            }
+        }
+    }
+    .back-top{
+        width: 112rpx;
+        height:112rpx;
+        background: url(@/static/illustration/top.png) no-repeat center / 100% 100%;
+        position: fixed;
+        bottom:36rpx;
+        bottom:calc(36rpx + constant(safe-area-inset-bottom));
+        right: 15rpx;
+        z-index: 66;
     }
 </style>

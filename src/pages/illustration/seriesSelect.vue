@@ -39,9 +39,10 @@
 		seriesList:any = [];
 		current = 0;
 		back = false;
+		album = false;
 		onLoad(query: any) {
 			if(query.back) this.back = true;
-			
+			if(query.album) this.album = true;
 			this.getYearList(()=>{
 				this.getYearSportsSeries()
 			})
@@ -84,7 +85,7 @@
 		}
 		onClickSeries(item:any){
 			if(this.back){
-				uni.$emit('seriesSelect',{code:item.code,name:item.name});
+				uni.$emit(`${this.album?"albumSelect":"seriesSelect"}`,{code:item.code,name:item.name});
 				app.navigateTo.navigateBack()
 			}else{
 				uni.redirectTo({

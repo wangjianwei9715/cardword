@@ -33,10 +33,10 @@
 			<view class="header">
 				<view class="input-box">
 					<view class="icon-search"></view>
-					<input class="search-input" v-model="postSearch" :adjust-position="false" placeholder="搜索球员/卡种/限编球队"/>
+					<input class="search-input" v-model="postSearch" :adjust-position="false" placeholder="搜索球员/卡种/限编球队" @confirm="againAlbum()"/>
 				</view>
 			</view>
-			<waterfalls :value="albumList"></waterfalls>
+            <waterfalls v-if="tabsData.current==1" :value="albumList"></waterfalls>
 			<empty v-show="listParams.empty"/>
 			<u-loadmore v-show="listParams.nomore" status="nomore" line/>
 			<view class="btn-publish" @click="onClickGoPublish"></view>
@@ -52,8 +52,8 @@
 	import filterCardList from './components/filterCardList.vue'
 	import waterfalls from "@/pages/cardForum/components/waterfalls.vue"
 	class ListParams {
-		pageIndex:number=1;
 		pageSize:number=10;
+		scrollId:string="";
 		noMoreData:boolean=false;
 		empty=false
 	}
@@ -87,7 +87,7 @@
 		refresherTriggered = false;
 		topHasBack = false;
 		postSearch = "";
-		albumList = [];
+		albumList:any = [];
 		listParams = new ListParams();
 		onLoad(query: any) {
 			if(query.seriesCode) this.seriesCode = query.seriesCode;
@@ -95,7 +95,7 @@
 				this.seriesCode = res.code;
 				this.initEvent()
 			});
-			this.initEvent()
+			this.initEvent();
 		}
 		//   加载更多数据
 		onReachBottom() {
@@ -129,8 +129,14 @@
 				})
 			})
 		}
-		onChangeTabs(event:any){
-			this.tabsData.current = event.index
+		onChangeTabs({index}:any){
+			if(this.tabsData.current == index) return;
+			this.tabsData.current = index
+			if(index == 0){
+				this.albumList = [];
+			}else{
+				this.againAlbum()
+			}
 		}
 		onClickSeriesSelect(){
 			uni.navigateTo({
@@ -144,17 +150,28 @@
 				})
 			})
 		}
+		againAlbum(){
+			this.listParams = new ListParams();
+			this.reqAlbumList()
+		}
 		reqAlbumList(cb?: Function) {
 			// 获取更多商品
-			const { pageIndex, pageSize, noMoreData,empty } = this.listParams;
+			const { pageSize,scrollId, noMoreData,empty } = this.listParams;
 			if (noMoreData || empty)  return;
-
-			app.http.Get('cardIllustration/err/my', {pageIndex,pageSize}, (data: any) => {
+			let params:any = {
+				pageSize
+			}
+			if(scrollId==""){
+				params.q = this.postSearch
+			}else{
+				params.scrollId = scrollId
+			}
+			app.http.Get(`cardIllustration/list/series/${this.seriesCode}/album`, params, (data: any) => {
 				let arr = data.list || [];
-				this.albumList = pageIndex == 1 ? arr : [...this.albumList, ...arr];
+				this.albumList = scrollId == "" ? arr : [...this.albumList, ...arr];
 				this.listParams.empty = data.total == 0;
 				this.listParams.noMoreData = data.isFetchEnd && data.total>0;
-				this.listParams.pageIndex++;
+				this.listParams.scrollId = data.scrollId
 				if (cb) cb();
 			});
 		}
@@ -286,6 +303,7 @@
 			box-sizing: border-box;
 			padding:20rpx;
 			background:#fff; 
+			margin-bottom: 20rpx;
 		}
 		.input-box{
 			width: 100%;
