@@ -2,8 +2,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-04 11:55:11
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-04 15:54:04
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -34,8 +34,8 @@
             </view>
         </view>
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
-        
-        <albumSwiper v-if="forumDetail.tp==3" :code="code" :swiperCurrent.sync="swiperCurrent" />
+
+        <albumSwiper v-if="forumDetail.tp == 3" :code="code" :swiperCurrent.sync="swiperCurrent" />
         <view class="swiper" v-else>
             <!-- @click="onClickSwiper -->
             <u-swiper imgMode="aspectFit" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"
@@ -44,7 +44,7 @@
         <view class="dotContainer" :style="{ width: dotContainerWidth + 'px' }" v-if="pics.length > 1">
             <view class="indicatorScroll" :style="{ left: scrollLeft + 'px' }">
                 <view :id="`dot${index}`" class="dot" :class="{ dot_big: pics.length > 5 && swiperCurrent === index }"
-                    v-for="(item, index) in pics.length" :key="index"> 
+                    v-for="(item, index) in pics.length" :key="index">
                     <image v-if="index === swiperCurrent" style="width:16rpx;height:13rpx"
                         src="@/static/cardForum/dot_red.png">
                     </image>
@@ -209,7 +209,8 @@
         </view>
         <reward-pop :code="code" :userInfo="authorInfo" :show.sync="rewardShow"></reward-pop>
         <recGift :code="code" :show.sync="recGiftShow"></recGift>
-        <share @report="pageJump(`/pages/cardForum/report?code=${code}&byInformer=${forumDetail.userId}&source=1`)"
+        <share
+            @report="pageJump(`/pages/cardForum/report?code=${code}&byInformer=${forumDetail.userId}&source=${forumDetail.tp == 3 ? 1 : 2}`)"
             :shareData="{}" :report="true" :operationShow.sync="operationShow"></share>
         <u-action-sheet :actions="PersonSheet" :show="actionSheetShow" cancelText="取消" :closeOnClickAction="true"
             @close="actionSheetShow = false" @select="onSelectActionSheet"></u-action-sheet>
@@ -343,6 +344,7 @@ export default class ClassName extends BaseNode {
     }
     keyBoardHeightChange(obj: any) {
         this.keyBoardHeigh = obj.detail.height
+        if (obj.detail.height <= 0) this.inputHide()
     }
     inputHide() {
         this.clearClickCom()
