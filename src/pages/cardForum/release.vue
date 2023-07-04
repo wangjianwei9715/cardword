@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 14:31:51
+ * @LastEditTime: 2023-07-04 17:13:26
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -184,6 +184,10 @@ export default class ClassName extends BaseNode {
     oldTopicIds: Array<number> = []
     userId: number = 0
     onLoad(query: any) {
+        // Upload.getInstance().uploadImgByNetWork("https://ka-world.oss-cn-shanghai.aliyuncs.com/video/app/cardForumVideo1687854408286baf13u4coq.mp4?x-oss-process=video/snapshot,t_1000,m_fast").then((path:any)=>{
+        //     console.log(path);
+
+        // })
         app.platform.hasLoginToken(() => {
             app.user.getUserInfo().then((userInfo: any) => {
                 this.userId = userInfo.userId
@@ -221,6 +225,13 @@ export default class ClassName extends BaseNode {
         if (orgIndex >= 0) {
             this.relatedTopics.splice(orgIndex, 1)
             item.formList = true
+        }
+        if (this.selectTopics.length >= 15) {
+            uni.showToast({
+                title: "最多关联15条话题"，
+                icon: "none"
+            })
+            return
         }
         this.selectTopics.push(item)
     }
@@ -601,7 +612,7 @@ export default class ClassName extends BaseNode {
     }
     delDraftDetailAction() {
         //删除草稿
-        delDraftDetail(this.draftId,this.userId)
+        delDraftDetail(this.draftId, this.userId)
         //删除本地文件视频
         if (this.formData.tp == Tp.Video && this.formData.localVideo) {
             uni.removeSavedFile({
