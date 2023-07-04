@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-25 20:11:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 14:41:22
+ * @LastEditTime: 2023-07-04 16:47:38
  * @FilePath: \card-world\src\pages\cardForum\func\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -26,11 +26,9 @@ const DRAFT_STORAGE_KEY = "cardForum_draft"
 export function getDraftList(type, userId) {
     let list = uni.getStorageSync(DRAFT_STORAGE_KEY) || []
     if (!list || !list.length) return []
-    if (type !== "all") {
-        list = list.filter((item) => {
-            return item.type == type && item.userId === userId
-        })
-    }
+    list = list.filter((item) => {
+        return (type == "all" ? true : item.type == type) && (userId ? item.userId === userId : true)
+    })
     return list.sort((x, y) => {
         return y.stamp - x.stamp
     })
