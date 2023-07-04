@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-03 17:16:35
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-04 11:42:13
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,8 @@
             <!-- <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
             </navigationbar> -->
             <cover-view :style="{ height: app.statusBarHeight + 'px' }"></cover-view>
-            <cover-view class="tabHeader" style="width:750rpx;height:88rpx;display: flex;align-items: center;">
+            <cover-view class="tabHeader"
+                style="width:750rpx;height:88rpx;display: flex;align-items: center;flex-direction: row;">
                 <cover-view :style="{ color: '#fff' }" @click="app.platform.pageBack()">
                     <cover-image style="width: 19rpx;height: 35rpx;margin-left: 30rpx;"
                         src="@/static/index/v3/back.png"></cover-image>
@@ -295,6 +296,66 @@ export default class ClassName extends BaseNode {
                     this.isTempVideo = false
                 }
             } else if (type == "video") {
+
+                if (app.platform.systemInfo.platform == "android") {
+                    plus.gallery.pick((res: any) => {
+                        console.log("res", res);
+                        uni.getVideoInfo({
+                            src: res.files[0],
+                            success: (data: any) => {
+                                console.log("视频信息", data);
+                                if (data.size >= 300 * 1024) {
+                                    uni.showLoading({
+                                        title: "视频处理中",
+                                        mask: true
+                                    })
+                                    uni.compressVideo({
+                                        src: res.files[0],
+                                        quality: "high",
+                                        success: (qua: any) => {
+                                            console.log("压缩后的", qua);
+                                            this.tempVideoFile = { ...data, ...qua }
+                                            this.videoPath = qua.tempFilePath
+                                            this.formData.video_at = Math.floor(data.duration)
+                                            this.formData.tp = Tp.Video
+                                            this.pics = [qua.tempFilePath]
+                                            this.addText = ADD_COVER
+                                            this.maxNum = 2
+                                            this.formData.localVideo = true
+                                            this.isTempVideo = true
+                                        },
+                                        complete: (fin: any) => {
+                                            console.log("压缩结束", fin);
+                                            uni.hideLoading()
+                                        },
+                                        fail: (err: any) => {
+                                            console.log("压缩错误信息", err);
+
+                                        }
+                                    })
+                                } else {
+                                    this.tempVideoFile = data
+                                    this.videoPath = res.files[0]
+                                    this.formData.video_at = Math.floor(data.duration)
+                                    this.formData.tp = Tp.Video
+                                    this.pics = [res.files[0]]
+                                    this.addText = ADD_COVER
+                                    this.maxNum = 2
+                                    this.formData.localVideo = true
+                                    this.isTempVideo = true
+                                }
+
+                            }
+                        })
+                    }, (err: any) => {
+
+                    }, {
+                        filter: "video",
+                        multiple: true,
+                        maximum: 1
+                    })
+                    return
+                }
                 const tempVideo: any = await Upload.getInstance().getVideoTempFile()
                 console.log(tempVideo);
                 if (tempVideo.errCode) return
@@ -554,71 +615,90 @@ export default class ClassName extends BaseNode {
         this.pics = []
     }
     async onClickSubmit() {
-        // await this.assignFormData(true)
-        await this.assignFormData(!this.albumRelease)
-        if (this.albumRelease) {
-            //@ts-ignore
-            this.$refs.albumRelease.publish(this.formData)
-            return;
-        }
-        if (this.formData.tp == Tp.Video && this.formData.localVideo) {
-            if (this.isTempVideo) {
-                //临时的视频路径(上传至阿里云)
-                const videoPath: any = await Upload.getInstance().uploadTempFile(this.videoPath, "cardForumVideo/", this.tempVideoFile.name || "video.mp4")
-                console.log("上传到阿里云的视频路径:", videoPath);
-                if (!this.formData.cover) this.formData.cover = encodeURIComponent(decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast")
-                // #ifdef H5
-                if (this.formData.cover.indexOf("blob:http") >= 0) {
-                    this.formData.cover = encodeURIComponent(decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast")
-                }
-                // #endif
-                this.formData.url = [videoPath]
-            }
-        }
-        console.log("最终的表单", this.formData);
-        const url = this.code ? `cardCircle/edit/${this.code}` : `cardCircle/issue`
-        app.http.Post(url, this.formData, () => {
-            uni.hideLoading()
-            uni.showModal({
-                title: "提示",
-                content: `${this.code ? '编辑' : '发布'}成功`,
-                showCancel: false,
-                success: (res: any) => {
-                    if (res.confirm) {
-                        if (this.draftId) this.delDraftDetailAction()
-                        app.platform.pageBack()
-                    }
-                }
+        try {
+            // await this.assignFormData(true)
+            uni.showLoading({
+                title: ""
             })
-        }, (err: any) => {
-            //发布失败
-            // this.videoPath=
-            // if (this.formData.tp == Tp.Video) {
-            //     this.pics = [this.formData.cover, ...this.formData.url]
-            //     this.formData.localVideo = false
-            //     this.isTempVideo = false
-            //     this.onClickSaveDraft()
-            // }
-            //发布失败保存至草稿箱
-            uni.hideLoading()
-            this.formData.localVideo = false
-            this.isTempVideo = false
-            console.log("保存的草稿箱data", this.formData);
-            storageDraft(this.formData, "dynamic", this.draftId || "").then(() => {
+            await this.assignFormData(!this.albumRelease)
+            if (this.albumRelease) {
+                //@ts-ignore
+                this.$refs.albumRelease.publish(this.formData)
+                return;
+            }
+            if (this.formData.tp == Tp.Video && this.formData.localVideo) {
+                if (this.isTempVideo) {
+                    //临时的视频路径(上传至阿里云)
+                    const videoPath: any = await Upload.getInstance().uploadTempFile(this.videoPath, "cardForumVideo/", "video", this.tempVideoFile.name || "video.mp4")
+                    console.log("上传到阿里云的视频路径:", videoPath);
+                    if (!this.formData.cover) {
+                        //截帧
+                        // const cover: string = decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast"
+                        // console.log("截帧图片地址", cover);
+
+                        // //截帧后的图片上传oss
+                        // const coverPath: any = await Upload.getInstance().uploadTempFile(cover, "cardForumVideoCover/", "images", `${Math.round(+new Date() / 1000)}cover.jpg`)
+                        // console.log("截帧图片oss地址", coverPath);
+
+                        this.formData.cover = encodeURIComponent(decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast")
+                    }
+                    // #ifdef H5
+                    if (this.formData.cover.indexOf("blob:http") >= 0) {
+                        this.formData.cover = encodeURIComponent(decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast")
+                    }
+                    // #endif
+                    this.formData.url = [videoPath]
+                }
+            }
+            console.log("最终的表单", this.formData);
+            const url = this.code ? `cardCircle/edit/${this.code}` : `cardCircle/issue`
+            app.http.Post(url, this.formData, () => {
+                uni.hideLoading()
                 uni.showModal({
-                    title: '提示',
-                    content: `发布失败:${err},已保存至草稿箱`,
+                    title: "提示",
+                    content: `${this.code ? '编辑' : '发布'}成功`,
                     showCancel: false,
                     success: (res: any) => {
                         if (res.confirm) {
+                            if (this.draftId) this.delDraftDetailAction()
                             app.platform.pageBack()
                         }
                     }
                 })
+            }, (err: any) => {
+                //发布失败
+                // this.videoPath=
+                // if (this.formData.tp == Tp.Video) {
+                //     this.pics = [this.formData.cover, ...this.formData.url]
+                //     this.formData.localVideo = false
+                //     this.isTempVideo = false
+                //     this.onClickSaveDraft()
+                // }
+                //发布失败保存至草稿箱
+                uni.hideLoading()
+                this.formData.localVideo = false
+                this.isTempVideo = false
+                console.log("保存的草稿箱data", this.formData);
+                storageDraft(this.formData, "dynamic", this.draftId || "").then(() => {
+                    uni.showModal({
+                        title: '提示',
+                        content: `发布失败:${err},已保存至草稿箱`,
+                        showCancel: false,
+                        success: (res: any) => {
+                            if (res.confirm) {
+                                app.platform.pageBack()
+                            }
+                        }
+                    })
+                })
+
+
             })
+        } catch (err) {
+            console.log("错误错误错误", err);
 
-
-        })
+            uni.hideLoading()
+        }
         // this.formData.url=
     }
     reqTopicDetail(id: number) {

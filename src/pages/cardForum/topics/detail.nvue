@@ -34,7 +34,7 @@
                         <u-tabs customType="cardForum" @click="tabClick" :duration="300" :current="tabs.index"
                             :list="tabs.list"></u-tabs>
                     </div>
-                    <div class="acWrap" id="acWrap" @click="goToAct">
+                    <div class="acWrap" id="acWrap" v-if="data.banner" @click="goToAct">
                         <image class="acImage" mode="aspectFill" :src="parsePic(decodeURIComponent(data.banner))"></image>
                         <text class="iNeedPush" @click.stop="release">我要发布</text>
                     </div>
