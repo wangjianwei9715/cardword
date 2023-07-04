@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\illustration\report\error.vue
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-27 17:05:51
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-04 15:59:24
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -22,7 +22,7 @@
 				</view>
 			</view>
 			<view class="title">添加描述（必填)</view>
-			<u--textarea v-model="desc" height="350rpx" placeholder="请描述错误原因，审核通过后获得10卡币" count :maxlength="200" border="bottom" confirmType="done"></u--textarea>
+			<u--textarea v-model="desc" height="410rpx"  placeholder="请描述错误原因，审核通过后获得10卡币" count :maxlength="200" border="bottom" confirmType="done"></u--textarea>
 			<view class="title martop40">请上传正确图片（选填)</view>
 			<view class="pic-box">
 				<view class="pic-index" v-if="frontPic">
