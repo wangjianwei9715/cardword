@@ -93,6 +93,7 @@
 			if(query.seriesCode) this.seriesCode = query.seriesCode;
 			this.onEventUI("seriesSelect", (res) => {
 				this.seriesCode = res.code;
+				this.postSearch = "";
 				this.initEvent()
 			});
 			this.initEvent();

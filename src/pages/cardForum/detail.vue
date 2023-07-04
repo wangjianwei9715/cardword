@@ -2,9 +2,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-03 18:12:38
- * @FilePath: \card-world\src\pages\cardForum\release.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-04 11:55:11
+ * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -34,7 +34,9 @@
             </view>
         </view>
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
-        <view class="swiper">
+        
+        <albumSwiper v-if="forumDetail.tp==3" :code="code" :swiperCurrent.sync="swiperCurrent" />
+        <view class="swiper" v-else>
             <!-- @click="onClickSwiper -->
             <u-swiper imgMode="aspectFit" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"
                 :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
@@ -42,7 +44,7 @@
         <view class="dotContainer" :style="{ width: dotContainerWidth + 'px' }" v-if="pics.length > 1">
             <view class="indicatorScroll" :style="{ left: scrollLeft + 'px' }">
                 <view :id="`dot${index}`" class="dot" :class="{ dot_big: pics.length > 5 && swiperCurrent === index }"
-                    v-for="(item, index) in pics.length">
+                    v-for="(item, index) in pics.length" :key="index"> 
                     <image v-if="index === swiperCurrent" style="width:16rpx;height:13rpx"
                         src="@/static/cardForum/dot_red.png">
                     </image>
@@ -224,6 +226,7 @@ import CardForum from "./interface/public";
 import { UserStreamline } from "@/manager/userManager"
 import { followActionByUser, getForumDetail } from "./func/index"
 import recGift from "./components/recGift.vue"
+import albumSwiper from "./components/album/albumSwiper.vue"
 interface Sheet {
     name: string;
     subname?: string;
@@ -248,7 +251,8 @@ const queryParams: CardForum.QueryByFetch = {
 @Component({
     components: {
         rewardPop,
-        recGift
+        recGift,
+        albumSwiper
     }
 })
 export default class ClassName extends BaseNode {

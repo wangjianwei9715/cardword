@@ -1,9 +1,9 @@
 <!--
- * @FilePath: \jichao_app_2\src\pages\cardForum\components\album.vue
+ * @FilePath: \jichao_app_2\src\pages\cardForum\components\album\publish.vue
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-03 09:42:15
+ * @LastEditTime: 2023-07-04 13:56:33
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -30,15 +30,15 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop} from "vue-property-decorator";
+	import { Component, Prop,PropSync} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import Upload from "@/tools/upload";
 	import { app } from "@/app";
 	const MaxNos = 200;
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		@Prop({default:[]})
-		albumList!:any[];
+		@PropSync("albumList",{type:Array})
+		codeList!:any[]
 
 		identify = "";
 		provePic = "";
@@ -46,10 +46,11 @@
 		restParams:any = {};
 		list:any = [];
 		intervalQuery:any = "";
+		code = "";
 		mounted(){
-			this.list = this.albumList.flatMap(({ noList }) => noList);
+			this.list = this.codeList.flatMap(({ noList }) => noList);
 			this.identify=uni.$u.guid(8);
-			this.coverPic = this.hasPicList[0].frontPic;
+			this.coverPic = this.hasPicList.length ? this.hasPicList[0].frontPic : "";
 		}
 		public get noNum() : number {
 			return this.list.length
@@ -75,6 +76,16 @@
 		async changeProve(){
 			this.provePic = await this.addImage()
 		}
+		prepareEdit(code:string){
+			this.code = code;
+			this.getAlbumDetail()
+		}
+		getAlbumDetail(){
+			app.http.Get(`cardIllustration/album/edit/detail/${this.code}`,{},({data}:any)=>{
+				this.coverPic = data.cover;
+				this.provePic = data.provePic;
+			})
+		}
 		publish({content,cover,url,title,...rest}:any){
 			if(this.provePic==""){
 				uni.showToast({title:'请上传证明图片',icon:'none'})
@@ -91,12 +102,12 @@
 			}
 			this.restParams = rest;
 			app.http.Post('cardIllustration/album/publish/prepare',params,(res:any)=>{
-				this.prepare(res.uploadToken)
+				this.preparePublis(res.uploadToken)
 			},(err:any)=>{
 				this.revokePublish()
 			})
 		}
-		prepare(uploadToken:string){
+		preparePublis(uploadToken:string){
 			const PostLength = Math.ceil(this.noNum/MaxNos);
 			this.publishUpload(uploadToken,PostLength,0);
 		}

@@ -17,19 +17,19 @@
             <view class="operate-line flex-line">
                 <view class="line-title">卡种</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.cardSets)}" v-for="(item,index) in search.cardSets" :key="index" @click="onClickSelectTab(item,select.cardSets)">{{item.name}}</view>
+                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.cardSets)}" v-for="(item,index) in search.cardSets" :key="index" @click="onClickSelectTab(item,select.cardSets,'cardSet')">{{item.name}}</view>
                 </scroll-view>
             </view>
             <view class="operate-line flex-line">
                 <view class="line-title">球员</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.players)}" v-for="(item,index) in search.players" :key="index" @click="onClickSelectTab(item,select.players)">{{item.name}}</view>
+                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.players)}" v-for="(item,index) in search.players" :key="index" @click="onClickSelectTab(item,select.players,'player')">{{item.name}}</view>
                 </scroll-view>
             </view>
             <view class="operate-line flex-line">
                 <view class="line-title">限编</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.seqs)}" v-for="(item,index) in search.seqs" :key="index" @click="onClickSelectTab(item,select.seqs)">{{item.name}}</view>
+                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.seqs)}" v-for="(item,index) in search.seqs" :key="index" @click="onClickSelectTab(item,select.seqs,'seq')">{{item.name}}</view>
                 </scroll-view>
             </view>
         </view>
@@ -41,12 +41,7 @@
                 <view v-else class="card-wait-up">
                     <view>
                         <view class="wait-pic"></view>
-                        <view class="wait-bc">
-                            <view class="icon-add"></view>我来补充
-                        </view>
-                        <view class="wait-kb">
-                            可获卡币
-                        </view>
+                        <view class="wait-kb">上传可得{{item.point}}卡币</view>
                     </view>
                 </view>
                 <view class="card-info">
@@ -68,12 +63,7 @@
                 <view v-else class="upload">
                     <view>
                         <view class="wait-pic"></view>
-                        <view class="wait-bc">
-                            <view class="icon-add"></view>我来补充
-                        </view>
-                        <view class="wait-kb">
-                            可获卡币
-                        </view>
+                        <view class="wait-kb">上传可得{{item.point}}卡币</view>
                     </view>
                 </view>
                 <view class="bottom">
@@ -102,6 +92,11 @@
         scrollId = "";
         end = false;
     }
+    class Select {
+        cardSets=[];
+        players=[];
+        seqs=[]
+    }
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:""})
@@ -129,11 +124,7 @@
             fontWeight: 400,
             color: '#959695'
         }
-        select:{[x:string]:any} = {
-            cardSets:[],
-            players:[],
-            seqs:[]
-        }
+        select:{[x:string]:any} = new Select()
         cardSetList = [];
         listOrther = new ListOrther();
         filterList = [];
@@ -143,20 +134,15 @@
         @Watch('seriesCode')
 		onSeriesCodeChanged(val: any, oldVal: any){
             if(oldVal&&val!=oldVal){
+                this.listQ = "";
+                this.initEventSelect();
                 this.againList()
             }
-		}
-		created(){//在实例创建完成后被立即调用
-			
 		}
 		mounted(){//挂载到实例上去之后调用
             uni.$on("seriesFilter",(res:any)=>{
                 const list:any = [...res];
-                this.select = {
-                    cardSets:[],
-                    players:[],
-                    seqs:[]
-                }
+                this.initEventSelect();
                 Object.keys(this.search).forEach((x:any)=>{
                     this.search[x].forEach((y:any)=>{
                         list.forEach((t:any,index:number)=>{
@@ -174,6 +160,10 @@
 		}
         cardSetTitle(item:any){
             return `${item.seq==0?"无限":item.seq}编 ${item.player}`
+        }
+        initEventSelect(){
+            this.select = new Select();
+            this.filterList=[];
         }
         selectTab(item:any,list:string[]){
 			return list.some((x:any)=>{
@@ -215,12 +205,12 @@
             this.current = event.index;
             this.againList()
         }
-        onClickSelectTab(item: any, list: string[]) { 
+        onClickSelectTab(item: any, list: string[],type:string) { 
             const repeatIndex = list.findIndex((x: any) => x.nameId === item.nameId);
             if (repeatIndex !== -1) { 
                 list.splice(repeatIndex, 1); 
             } else {
-                list.push(item)
+                list.push({...item,type})
             }
             console.log(repeatIndex);
             
@@ -237,8 +227,6 @@
             
             const rookieList:any = this.filterList.filter((x:any)=> x.rookie);
             const signList:any = this.filterList.filter((x:any)=> x.signature);
-            console.log(this.filterList);
-            
             const params = {
                 pageSize:10,
                 q:this.listQ,
@@ -246,7 +234,7 @@
                 rookie:rookieList.length?(rookieList[0].name=="新秀"?1:2):0,
                 signature:signList.length?(signList[0].name=="签字"?1:2):0,
                 players:this.select.players.map((x:any)=> x.nameId) || null,
-                teams:this.filterList.filter((x:any)=>x.team).map((x:any)=>x.nameId) || null,
+                teams:this.filterList.filter((x:any)=>x.type=="team").map((x:any)=>x.nameId) || null,
                 cardSets:this.select.cardSets.map((x:any)=> x.nameId) || null,
                 seqs:this.select.seqs.map((x:any)=> x.nameId) || null
             }
@@ -428,11 +416,11 @@
         justify-content: center;
         flex-wrap: wrap;
         .wait-pic{
-            width: 71rpx;
-            height:64rpx;
+            width: 91rpx;
+            height:78rpx;
             border-radius: 3rpx;
             margin:0 auto;
-            margin-bottom: 16rpx;
+            margin-bottom: 20rpx;
             background: url(@/static/illustration/icon_wait.png) no-repeat center / 100% 100%;
         }
         .wait-bc{
@@ -453,7 +441,7 @@
         }
         .wait-kb{
             width: 100%;
-            font-size: 21rpx;
+            font-size: 23rpx;
             font-family: PingFang SC;
             font-weight: 400;
             color: #C0C0C0;
@@ -597,8 +585,8 @@
                 flex-wrap: wrap;
             }
             .wait-pic{
-                width: 107rpx;
-                height:96rpx;
+                width: 113rpx;
+                height:98rpx;
                 border-radius: 3rpx;
                 margin:0 auto;
                 margin-bottom: 31rpx;

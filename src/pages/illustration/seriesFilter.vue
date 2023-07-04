@@ -19,12 +19,12 @@
 							<view class="input-close" @click="onClickClearQ(index)"></view>
 						</view>
 						<view class="right-list" v-if="item.id==1">
-							<view class="cardset-item u-line-2" :class="{'current-card':selectHasItem(card)}" v-for="(card,cindex) in item.list" :key="cindex" @click="onClickSelectItem(card)">{{card.name}}</view>
+							<view class="cardset-item u-line-2" :class="{'current-card':selectHasItem(card)}" v-for="(card,cindex) in item.list" :key="cindex" @click="onClickSelectItem(card,item)">{{card.name}}</view>
 							<u-loadmore :status="item.status" line @loadmore="loadmore(item)"/>
 						</view>
 
 						<view class="right-list" v-if="[2,3,4].includes(item.id)">
-							<view class="player-item u-line-1" :class="{'current-card':selectHasItem(card)}" v-for="(card,cindex) in item.list" :key="cindex" @click="onClickSelectItem(card,item.id)">{{card.name}}</view>
+							<view class="player-item u-line-1" :class="{'current-card':selectHasItem(card)}" v-for="(card,cindex) in item.list" :key="cindex" @click="onClickSelectItem(card,item)">{{card.name}}</view>
 							<u-loadmore :status="item.status" line @loadmore="loadmore(item)"/>
 						</view>
 
@@ -192,12 +192,12 @@
 			event.status = "loading";
 			this.getListOfIndex(event.id-1)
 		}
-		onClickSelectItem(item: any,id=1) { 
-			const repeatIndex = this.selectList.findIndex((x: any) => x.nameId === item.nameId); 
+		onClickSelectItem(card: any,item:any) { 
+			const repeatIndex = this.selectList.findIndex((x: any) => x.nameId === card.nameId); 
 			if (repeatIndex !== -1) { 
 				this.selectList.splice(repeatIndex, 1); 
 			} else { 
-				this.selectList.push({ ...item, team: id === 3 }); 
+				this.selectList.push({ ...card ,type:item.type }); 
 			} 
 			app.platform.UIClickFeedBack(); 
 		}
@@ -207,19 +207,12 @@
 			})
 		}
 		showBadge(item:any){
-			return item.id<=4 ? this.selectHasTabs(item.list) : item.tp!=null
+			return item.id<=4 ? this.selectHasTabs(item.type) : item.tp!=null
 		}
-		selectHasTabs(list:any){
-			const nameIds = new Set();
-			for (const x of this.selectList) {
-				nameIds.add(x.nameId);
-			}
-			for (const y of list) {
-				if (nameIds.has(y.nameId)) {
-					return true;
-				}
-			}
-			return false;
+		selectHasTabs(type:string){
+			return this.selectList.some((x:any)=>{
+				return x.type == type
+			})
 		}
 		onClickFilterTab(item:any,tab:string){
 			const findContent = item.tp;

@@ -18,7 +18,7 @@
 					<view class="header-num">{{numData.now}}/{{numData.all}}</view>
 					<view class="icon-right" @click="onClickNext"></view>
 				</view>
-				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic"/>
+				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic" :uploadable="noData.uploadable"/>
 				<view class="upload-card-info">
 					<view class="card-title">{{noData.text.player}}</view>
 					<view class="card-set u-line-2">{{noData.text.cardSet}}</view>
@@ -40,7 +40,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view v-show="!noData.illustration" class="up-btn" :class="{'up-ok':frontPic}" @click="onClickUpload">补充图鉴</view>
+		<view v-show="!noData.illustration" class="up-btn" :class="{'up-ok':frontPic}" @click="onClickUpload">{{noData.uploadable?"补充图鉴":"请等待审核"}}</view>
 	</view>
 </template>
 
@@ -66,7 +66,8 @@
 				"seqIndex": 0, //第几编
 				"number":0,//编号
 				"peer": [] //1编到seq 每个编号图鉴的上传情况  0 未上传 1 部分上传 2 全部上传
-			}
+			},
+			uploadable:true
 		};
 		numData = {
 			now:0,
@@ -97,7 +98,8 @@
 			app.http.Get(`dataApi/cardIllustration/no/detail/rich/${this.noCode}`,{},(res:any)=>{
 				this.noData = {
 					illustration:res.illustration,
-					text:res.text
+					text:res.text,
+					uploadable:res.uploadable
 				}
 			})
 		}
@@ -108,7 +110,8 @@
 				this.noCode = res.text.code;
 				this.noData = {
 					illustration:res.illustration,
-					text:res.text
+					text:res.text,
+					uploadable:res.uploadable
 				}
 			})
 		}
@@ -137,7 +140,7 @@
 			this.getNewDetail()
 		}
 		getNewDetail(){
-			this.noCode = this.cardList[this.numData.now-1]
+			this.noCode = this.cardList[this.numData.now-1];
 			this.getNoDetail()
 		}
 		getDetail(cb?:Function){
@@ -156,7 +159,7 @@
 			})
 		}
 		onClickUpload(){
-			if(!this.frontPic) return;
+			if(!this.frontPic || !this.noData.uploadable) return;
 			uni.showModal({
                 content: '确认上传图鉴?',
                 success: (res: any) => {

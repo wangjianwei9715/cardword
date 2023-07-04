@@ -13,19 +13,19 @@
             <view class="operate-line flex-line" v-show="tp!=2">
                 <view class="line-title">卡种</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.cardSets)}" v-for="(item,index) in search.cardSets" :key="index" @click="onClickSelectTab(item,select.cardSets)">{{item.name}}</view>
+                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.cardSets)}" v-for="(item,index) in search.cardSets" :key="index" @click="onClickSelectTab(item,select.cardSets,'cardSet')">{{item.name}}</view>
                 </scroll-view>
             </view>
             <view class="operate-line flex-line" v-show="tp!=1">
                 <view class="line-title">球员</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.players)}" v-for="(item,index) in search.players" :key="index" @click="onClickSelectTab(item,select.players)">{{item.name}}</view>
+                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.players)}" v-for="(item,index) in search.players" :key="index" @click="onClickSelectTab(item,select.players,'player')">{{item.name}}</view>
                 </scroll-view>
             </view>
             <view class="operate-line flex-line" v-show="tp==0">
                 <view class="line-title">限编</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.seqs)}" v-for="(item,index) in search.seqs" :key="index" @click="onClickSelectTab(item,select.seqs)">{{item.name}}</view>
+                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.seqs)}" v-for="(item,index) in search.seqs" :key="index" @click="onClickSelectTab(item,select.seqs,'seq')">{{item.name}}</view>
                 </scroll-view>
             </view>
         </view>
@@ -259,12 +259,12 @@
                 // this.getNoGroup()
             }
         }
-        onClickSelectTab(item:any,list:string[]){
+        onClickSelectTab(item:any,list:string[],type:string){
             const repeatIndex = list.findIndex((x: any) => x.nameId === item.nameId);
             if (repeatIndex !== -1) { 
                 list.splice(repeatIndex, 1); 
             } else {
-                list.push(item)
+                list.push({...item,type})
             }
             app.platform.UIClickFeedBack(); 
             this.againList(); 

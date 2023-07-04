@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 11:42:13
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-04 13:56:08
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,7 @@
             </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
-        <publish v-if="albumRelease" ref="albumRelease" :albumList="albumList" />
+        <publish v-if="albumRelease" ref="albumRelease" :albumList.sync="albumList" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp v-if="showPPP" :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics"
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
@@ -111,7 +111,8 @@ enum State {
 }
 enum Tp {
     Pic = 1,
-    Video = 2
+    Video = 2,
+    Album = 3
 }
 const ADD_PIC_VIDEO = "添加图片或视频"
 const ADD_PIC = "添加图片"
@@ -209,7 +210,7 @@ export default class ClassName extends BaseNode {
         uni.$on("cardForumDelVideo", this.cardForumDelVideo)
     }
     public get albumRelease(): boolean {
-        return this.albumList.length > 0
+        return this.albumList.length > 0 || this.formData.tp==3
     }
     onSelectTopic(item: CardForum.Topics) {
         const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
@@ -431,8 +432,13 @@ export default class ClassName extends BaseNode {
             this.formData.title = res.data.title
             this.formData.content = res.data.content
             this.formData.tp = res.data.tp
-            this.selectGoods = res.data.good
-            if (this.formData.tp == Tp.Video) {
+            this.selectGoods = res.data.good;
+            if (this.albumRelease) {
+                this.$nextTick(()=>{
+                    //@ts-ignore
+                    this.$refs.albumRelease.prepareEdit(this.code)
+                })
+            } else if (this.formData.tp == Tp.Video) {
                 this.videoPath = getVideoPath(res.data.url)
                 this.formData.video_at = res.data.video_at || 0
                 this.maxNum = 2

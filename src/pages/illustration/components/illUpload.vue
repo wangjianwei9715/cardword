@@ -33,7 +33,7 @@
 						<view class="icon-add"></view>我来补充
 					</view>
 					<view class="up-c-kb">
-						可获x卡币<view class="icon-kb"></view>
+						可获{{reward}}卡币
 					</view>
 				</view>
 			</view>
@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop ,PropSync} from "vue-property-decorator";
+	import { Component, Prop ,PropSync,Watch} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
 	import Upload from "@/tools/upload"
@@ -56,12 +56,18 @@
 		illustration?:any;
 		@Prop({default:0})
 		reward!:number
+		@Prop({default:true})
+		uploadable!:boolean
 		@PropSync("frontPic",{type:String})
 		frontImg?:string;
 		@PropSync("backPic",{type:String})
 		backImg?:string;
 		peTab = ['正面','反面'];
 		peCurrent = 0;
+		@Watch("illustration")
+		onChangeIllustration(){
+			this.peCurrent = 0;
+		}
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -83,6 +89,7 @@
 			this.peCurrent = index;
 		}
 		async addImage(type:string) {
+			if(!this.uploadable) return;
 			const pic:any = await Upload.getInstance().uploadImgs(1, "illustration", ["album","camera"]);
 			type=="front" && (this.frontImg = pic[0]);
 			type=="back" && (this.backImg = pic[0]);
