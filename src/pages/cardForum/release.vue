@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-04 13:56:08
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-04 14:31:51
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -131,6 +131,7 @@ interface CardForumRelease {
     tp: Tp;
     video_at?: number;
     localVideo?: boolean
+    topicArr?: any
 }
 const formData: CardForumRelease = {
     title: "",
@@ -141,6 +142,7 @@ const formData: CardForumRelease = {
     goodCode: "",
     voteTitle: "",
     voteOptions: [],
+    topicArr: [],
     state: 1,
     tp: 1,
     localVideo: true
@@ -179,6 +181,7 @@ export default class ClassName extends BaseNode {
     code: string = ""
     tempVideoFile: any = {}
     isTempVideo: boolean = false//是否是临时video路径(未将视频保存至本地)
+    oldTopicIds: Array<number> = []
     onLoad(query: any) {
         // query.draftId = "uacuag"//测试
         console.log(getDraftList("dynamic"));
@@ -210,7 +213,7 @@ export default class ClassName extends BaseNode {
         uni.$on("cardForumDelVideo", this.cardForumDelVideo)
     }
     public get albumRelease(): boolean {
-        return this.albumList.length > 0 || this.formData.tp==3
+        return this.albumList.length > 0 || this.formData.tp == 3
     }
     onSelectTopic(item: CardForum.Topics) {
         const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
@@ -434,7 +437,7 @@ export default class ClassName extends BaseNode {
             this.formData.tp = res.data.tp
             this.selectGoods = res.data.good;
             if (this.albumRelease) {
-                this.$nextTick(()=>{
+                this.$nextTick(() => {
                     //@ts-ignore
                     this.$refs.albumRelease.prepareEdit(this.code)
                 })
@@ -453,6 +456,14 @@ export default class ClassName extends BaseNode {
             })
             this.formData.state = res.data.state
             this.formData.voteTitle = res.data.vote.voteTitle || ""
+            this.selectTopics = (res.data.topic || []).map((item: any) => {
+                this.oldTopicIds.push(item.topicId)
+                return {
+                    id: item.topicId,
+                    name: item.topicName,
+                    isActivity: item.activity
+                }
+            })
             // this.formData.vote=res.data.vote
         })
     }
@@ -655,6 +666,16 @@ export default class ClassName extends BaseNode {
                     // #endif
                     this.formData.url = [videoPath]
                 }
+            }
+            if (this.code && this.selectTopics.length) {
+                let topicArr: any = []
+                topicArr = this.selectTopics.map((item: any) => {
+                    return {
+                        topicId: item.id,
+                        isNew: this.oldTopicIds.includes(item.id)
+                    }
+                })
+                this.formData.topicArr = topicArr
             }
             console.log("最终的表单", this.formData);
             const url = this.code ? `cardCircle/edit/${this.code}` : `cardCircle/issue`
