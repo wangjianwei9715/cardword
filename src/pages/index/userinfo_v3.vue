@@ -11,7 +11,8 @@
                 <view class="userInfo_msg">
                     <view class="userInfo_name">
                         <text class="userInfo_name_text">{{ infoData.name }}</text>
-                        <text class="userInfo_name_title">{{ infoData.title || "碉堡" }}</text>
+                        <text class="userInfo_name_title" @click.stop="navigateTo(`/pages/userinfo/level`)">{{
+                            infoData.title || "碉堡" }}</text>
                     </view>
                     <view class="userInfo_ip">
                         <text class="userInfo_ip_text">IP属地：{{ infoData.location || '未知' }}</text>

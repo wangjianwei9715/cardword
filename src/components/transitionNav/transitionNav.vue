@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 19:11:23
+ * @LastEditTime: 2023-07-04 14:29:37
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -36,6 +36,7 @@
                 :class="{ slotHidden: scrollTopPercent >= 1 }">
                 <slot name="slotLeft" />
             </view>
+            <slot name="custom" />
             <view class="toolsContainer">
                 <slot name="slotRight" />
                 <view class="tools" @click="onClickTools(item)" :class="{ whiteBack: needIconShadow }"
