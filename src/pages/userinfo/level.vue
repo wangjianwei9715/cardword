@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 15:41:15
+ * @LastEditTime: 2023-07-04 16:30:57
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -39,16 +39,34 @@
                 <view class="rightIcon"></view>
             </view>
             <view class="expWrap">
-                <view class="expWrap_show" :style="{width:'20%'}"></view>
+                <view class="expWrap_show" :style="{ width: '20%' }"></view>
             </view>
         </view>
         <view class="taskContainer">
-            <view class="titleWrap">
+            <view class="titleWrap" style="margin-bottom: 32rpx;">
                 <view class="title">每日任务</view>
                 <view class="titleTip">每日0:00重置</view>
             </view>
-            <view class="taskItem">
+            <view class="taskItem" v-for="(item, index) in taskList" :key="index">
+                <image :src="item.icon" class="taskIcon"></image>
+                <view class="taskInfo">
+                    <view class="taskName">{{ item.name }}</view>
+                    <view class="taskNum">+{{ item.exp }}阅卡值</view>
+                </view>
 
+                <view class="taskRight" v-if="item.id === 1"
+                    style="flex-direction: column;align-items: flex-end;display: flex;">
+                    <view class="signButton flexCenter" @click="onClickSign">{{ item.isSuccess ? "已签到" : '签到' }}</view>
+                    <view class="tips">连续签到5天后翻倍，当前{{ signInDay }}天</view>
+                </view>
+                <view class="taskRight" v-if="item.id != 1" @click="onClickTask(item)">
+                    <view class="stateWrap">
+                        <text class="stateText" :class="{ stateTextSuccess: item.isSuccess }">{{ item.isSuccess ? "完成" :
+                            "未完成"
+                        }}</text>
+                        <view v-if="!item.isSuccess" class="goIcon"></view>
+                    </view>
+                </view>
             </view>
         </view>
         <view class="limitContainer">
@@ -65,6 +83,27 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
+const taskIcons: any = {
+    1: {
+        icon: "../../static/userinfo/v3/qd.png"
+    },
+    2: {
+        icon: "../../static/userinfo/v3/fb.png",
+        url: "/pages/cardForum/home"
+    },
+    3: {
+        icon: "../../static/userinfo/v3/pl.png",
+        url: "/pages/cardForum/home"
+    },
+    4: {
+        icon: "../../static/userinfo/v3/xx.png",
+        url: "/pages/cardForum/home"
+    },
+    5: {
+        icon: "../../static/userinfo/v3/fx.png",
+        url: "/pages/cardForum/home"
+    },
+}
 @Component({})
 export default class ClassName extends BaseNode {
     app = app
@@ -74,12 +113,32 @@ export default class ClassName extends BaseNode {
     onLoad(query: any) {
         this.reqTaskList()
     }
+    onClickTask(item: any) {
+        if (!item.isSuccess) {
+            uni.switchTab({
+                url: taskIcons[item.id].url
+            })
+        }
+    }
+    onClickSign() {
+        app.http.Post("cardCircle/level/signIn", {}, () => {
+            uni.showToast({
+                title: "签到成功",
+                icon: "none"
+            })
+            app.platform.UINotificationFeedBack("success")
+            this.reqTaskList()
+        })
+    }
     reqTaskList() {
         app.http.Get(`dataApi/cardCircle/level/day/task/list`, {}, (res: any) => {
             console.log(res);
             this.signInDay = res.signInDay
             this.taskList = (res.list || []).sort((x: any, y: any) => {
                 return x.id - y.id
+            }).map((item: any) => {
+                item.icon = taskIcons[item.id].icon
+                return item
             })
             console.log(this.taskList);
 
@@ -111,7 +170,7 @@ page {
     background: #FFFFFF;
     border-radius: 3rpx;
     box-sizing: border-box;
-    padding: 42rpx 26rpx 42rpx 37rpx;
+    padding: 42rpx 26rpx 2rpx 37rpx;
     margin-top: -40rpx;
 }
 
@@ -311,6 +370,86 @@ page {
         height: 10rpx;
         background: linear-gradient(90deg, #FA1545 0%, #5211AB 98%);
         border-radius: 5rpx;
+    }
+}
+
+.taskItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40rpx;
+
+    .taskIcon {
+        width: 72rpx;
+        height: 72rpx;
+        margin-right: 30rpx;
+    }
+
+    .taskInfo {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+
+        .taskName {
+            font-size: 25rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 10rpx;
+        }
+
+        .taskNum {
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #C0C0C0;
+        }
+    }
+
+    .stateWrap {
+        display: flex;
+        align-items: center;
+
+        .stateText {
+            font-size: 23rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #959695;
+        }
+
+        .stateTextSuccess {
+            font-size: 23rpx;
+            font-family: PingFang SC;
+            font-weight: 400;
+            color: #C0C0C0;
+        }
+
+        .goIcon {
+            width: 23rpx;
+            height: 23rpx;
+            background-size: 100% 100%;
+            background-image: url("@/static/userinfo/v3/icon2.png");
+            margin-left: 9rpx;
+        }
+    }
+
+    .signButton {
+        width: 119rpx;
+        height: 44rpx;
+        background: #FA1545;
+        border-radius: 3rpx;
+        font-size: 23rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FFFFFF;
+        margin-bottom: 8rpx;
+    }
+
+    .tips {
+        font-size: 19rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #C0C0C0;
     }
 }
 </style>
