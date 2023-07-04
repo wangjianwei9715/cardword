@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 17:13:26
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-04 17:37:04
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,7 @@
             </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
-        <publish v-if="albumRelease" ref="albumRelease" :albumList.sync="albumList" />
+        <publish v-if="albumRelease" ref="albumRelease" :albumList.sync="albumList" @albumEditDetail="albumEditDetail"/>
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp v-if="showPPP" :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics"
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
@@ -190,6 +190,7 @@ export default class ClassName extends BaseNode {
         // })
         app.platform.hasLoginToken(() => {
             app.user.getUserInfo().then((userInfo: any) => {
+                this.eventAlbum();
                 this.userId = userInfo.userId
                 this.reqTopics()
                 if (query.code) {
@@ -213,6 +214,12 @@ export default class ClassName extends BaseNode {
     }
     public get albumRelease(): boolean {
         return this.albumList.length > 0 || this.formData.tp == 3
+    }
+    eventAlbum(){
+        uni.$on("editAlbum",(res:any)=> this.albumList=res )
+    }
+    albumEditDetail(data:any){
+        this.setSelectTopics(data.topic)
     }
     onSelectTopic(item: CardForum.Topics) {
         const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
@@ -462,15 +469,18 @@ export default class ClassName extends BaseNode {
             })
             this.formData.state = res.data.state
             this.formData.voteTitle = res.data.vote.voteTitle || ""
-            this.selectTopics = (res.data.topic || []).map((item: any) => {
-                this.oldTopicIds.push(item.topicId)
-                return {
-                    id: item.topicId,
-                    name: item.topicName,
-                    isActivity: item.activity
-                }
-            })
+            this.setSelectTopics(res.data.topic)
             // this.formData.vote=res.data.vote
+        })
+    }
+    setSelectTopics(topic:any){
+        this.selectTopics = (topic || []).map((item: any) => {
+            this.oldTopicIds.push(item.topicId)
+            return {
+                id: item.topicId,
+                name: item.topicName,
+                isActivity: item.activity
+            }
         })
     }
     async onClickSaveDraft() {

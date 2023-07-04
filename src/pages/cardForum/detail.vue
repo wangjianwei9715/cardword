@@ -2,8 +2,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 16:04:42
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-04 17:33:10
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -35,13 +35,13 @@
         </view>
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
 
-        <albumSwiper v-if="forumDetail.tp == 3" :code="code" :swiperCurrent.sync="swiperCurrent" />
+        <albumSwiper v-if="isAlbum" :code="code" :swiperCurrent.sync="swiperCurrent" />
         <view class="swiper" v-else>
             <!-- @click="onClickSwiper -->
             <u-swiper imgMode="aspectFit" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"
                 :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
         </view>
-        <view class="dotContainer" :style="{ width: dotContainerWidth + 'px' }" v-if="pics.length > 1">
+        <view class="dotContainer" :style="{ width: dotContainerWidth + 'px' }" v-if="pics.length > 1 || !isAlbum">
             <view class="indicatorScroll" :style="{ left: scrollLeft + 'px' }">
                 <view :id="`dot${index}`" class="dot" :class="{ dot_big: pics.length > 5 && swiperCurrent === index }"
                     v-for="(item, index) in pics.length" :key="index">
@@ -305,6 +305,9 @@ export default class ClassName extends BaseNode {
         if (this.isFetchEnd) return
         this.queryParams.fetchFrom += this.queryParams.fetchSize
         this.getCommByWorks()
+    }
+    public get isAlbum(): boolean {
+        return this.forumDetail.tp==3
     }
     public get isPerson(): boolean {
         return (this.forumDetail.bit & ForumBit.IS_PERSON) === ForumBit.IS_PERSON
