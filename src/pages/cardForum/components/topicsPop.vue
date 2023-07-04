@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-03 15:03:13
+ * @LastEditTime: 2023-07-04 16:35:55
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的话题pop组件
 -->
@@ -84,33 +84,6 @@ export default class ClassName extends BaseComponent {
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
         })
-        this.list = [
-            {
-                name: "秀卡-詹姆斯",
-                id: 1,
-                isActivity: true
-            },
-            {
-                name: "问价",
-                id: 2,
-                isActivity: false
-            },
-            {
-                name: "我的第一张卡",
-                id: 3,
-                isActivity: false
-            },
-            {
-                name: "我的卡在哪里",
-                id: 5,
-                isActivity: false
-            },
-            {
-                name: "我的卡屌不屌",
-                id: 6,
-                isActivity: false
-            }
-        ]
     }
 }
 </script>
@@ -167,9 +140,9 @@ export default class ClassName extends BaseComponent {
 }
 
 .topicsScroll {
-    // background-color: #333333;
     margin-top: 30rpx;
-    flex: 1;
+    height: 986rpx;
+    // flex: 1;
 }
 
 .topicsItem {
