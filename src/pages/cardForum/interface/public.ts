@@ -66,7 +66,7 @@ declare module CardForum {
         /**内容 */
         content: string,
         /**参与的话题，一个#代表一个话题 */
-        topic: string,
+        topic: any,
         /**1 图文，2 视频，3 卡册 */
         readonly tp: number,
         /**图片或视频地址，多个逗号隔开 */

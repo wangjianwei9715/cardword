@@ -19,7 +19,7 @@
 
 		</template> -->
 		<view class="topicsContainer" v-if="articleData.topic && articleData.topic.length">
-			<text class="topicsItem" v-for="item in articleData.topic">{{ item }}</text>
+			<text @click="pageJump(`/pages/cardForum/topics/detail?id=${item.topicId}`)" class="topicsItem" v-for="item in articleData.topic">{{ item.topicName }}</text>
 		</view>
 		<view class="haowuGoodsWrap" v-if="articleData.good && articleData.good.goodCode"
 			@click="app.navigateTo.goGoodsDetails(articleData.good.goodCode)">
@@ -272,6 +272,11 @@ export default {
 				})
 			}
 
+		},
+		pageJump(url){
+			uni.navigateTo({
+				url
+			})
 		},
 		onClickLike(item) {
 			uni.$u.throttle(() => {
