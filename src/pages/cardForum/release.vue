@@ -182,35 +182,30 @@ export default class ClassName extends BaseNode {
     tempVideoFile: any = {}
     isTempVideo: boolean = false//是否是临时video路径(未将视频保存至本地)
     oldTopicIds: Array<number> = []
+    userId: number = 0
     onLoad(query: any) {
-        // query.draftId = "uacuag"//测试
-        console.log(getDraftList("dynamic"));
-        // plus.gallery.pick(() => {
+        app.platform.hasLoginToken(() => {
+            app.user.getUserInfo().then((userInfo: any) => {
+                this.userId = userInfo.userId
+                this.reqTopics()
+                if (query.code) {
+                    this.code = query.code
+                    this.getDetail()
+                    return
+                }
+                if (query.topicId) this.reqTopicDetail(+query.topicId)
+                if (query.draftId) {
+                    this.draftId = query.draftId
+                    this.processDrafts()
 
-        // }, () => {
+                }
+                if (query.albumList) {
+                    this.albumList = JSON.parse(query.albumList)
+                }
+                uni.$on("cardForumDelVideo", this.cardForumDelVideo)
+            })
+        })
 
-        // }, {
-        //     filter: "none",
-        //     multiple: true,
-        //     maximum: 9
-
-        // })
-        this.reqTopics()
-        if (query.code) {
-            this.code = query.code
-            this.getDetail()
-            return
-        }
-        if (query.topicId) this.reqTopicDetail(+query.topicId)
-        if (query.draftId) {
-            this.draftId = query.draftId
-            this.processDrafts()
-
-        }
-        if (query.albumList) {
-            this.albumList = JSON.parse(query.albumList)
-        }
-        uni.$on("cardForumDelVideo", this.cardForumDelVideo)
     }
     public get albumRelease(): boolean {
         return this.albumList.length > 0 || this.formData.tp == 3
@@ -568,7 +563,7 @@ export default class ClassName extends BaseNode {
 
     }
     processDrafts() {
-        const data = getDraftDetail(this.draftId) as CardForumRelease
+        const data = getDraftDetail(this.draftId, this.userId) as CardForumRelease
         if (!Object.keys(data).length) return
         this.formData = data
         console.log("草稿的内容", this.formData);
@@ -606,7 +601,7 @@ export default class ClassName extends BaseNode {
     }
     delDraftDetailAction() {
         //删除草稿
-        delDraftDetail(this.draftId)
+        delDraftDetail(this.draftId,this.userId)
         //删除本地文件视频
         if (this.formData.tp == Tp.Video && this.formData.localVideo) {
             uni.removeSavedFile({

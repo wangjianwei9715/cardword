@@ -204,9 +204,9 @@ export default {
     },
     onShow() {
         if (this.isMine) {
-            this.draftListByDynamic = getDraftList("dynamic")
+            this.draftListByDynamic = getDraftList("dynamic", this.userId)
             console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
-            this.draftListByCardBook = getDraftList("cardBook")
+            this.draftListByCardBook = getDraftList("cardBook", this.userId)
         }
     },
     onLoad(query) {

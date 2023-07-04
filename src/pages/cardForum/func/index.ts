@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 18:58:45
+ * @LastEditTime: 2023-07-04 14:36:56
  * @FilePath: \card-world\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -121,12 +121,12 @@ export function getForumDetail(code: string): Promise<any> {
 }
 const DRAFT_STORAGE_KEY = "cardForum_draft"
 //获取草稿箱
-export function getDraftList(type: ("cardBook" | "dynamic" | "all")): Array<any> {
+export function getDraftList(type: ("cardBook" | "dynamic" | "all"), userId: number): Array<any> {
     let list = uni.getStorageSync(DRAFT_STORAGE_KEY) || []
     if (!list || !list.length) return []
     if (type !== "all") {
         list = list.filter((item: any) => {
-            return item.type == type
+            return item.type == type && item.userId === userId
         })
     }
     return list.sort((x: any, y: any) => {
@@ -134,16 +134,16 @@ export function getDraftList(type: ("cardBook" | "dynamic" | "all")): Array<any>
     })
 }
 //获取草稿data
-export function getDraftDetail(draftId: string): any {
-    const list = getDraftList("all")
+export function getDraftDetail(draftId: string, userId: number): any {
+    const list = getDraftList("all", userId)
     const findItem = list.find((item: any) => {
         return item.draftId === draftId
     })
     return findItem ? findItem.data : {}
 }
 //删除草稿
-export function delDraftDetail(draftId: string) {
-    let list = getDraftList("all")
+export function delDraftDetail(draftId: string, userId: number) {
+    let list = getDraftList("all", userId)
     const findIndex = list.findIndex((item: any) => {
         return item.draftId === draftId
     })
@@ -152,8 +152,9 @@ export function delDraftDetail(draftId: string) {
 }
 //存储草稿箱
 export function storageDraft(data: any, type: ("cardBook" | "dynamic"), draftId?: string): Promise<Boolean> {
-    return new Promise((resovle, reject) => {
-        let beforeList = getDraftList(type)
+    return new Promise(async (resovle, reject) => {
+        const userinfo = await app.user.getUserInfo()
+        let beforeList = getDraftList(type, userinfo.userId)
         let saveData: any = {
             stamp: getStamp(),
             type,
@@ -161,6 +162,7 @@ export function storageDraft(data: any, type: ("cardBook" | "dynamic"), draftId?
         }
         if (!draftId) {
             saveData.draftId = uni.$u.guid(6)
+            saveData.userId = userinfo.userId
             beforeList.unshift(saveData)
             uni.setStorageSync(DRAFT_STORAGE_KEY, beforeList)
             resovle(true)

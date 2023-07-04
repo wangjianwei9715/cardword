@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-25 20:11:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 14:32:12
+ * @LastEditTime: 2023-07-04 14:41:22
  * @FilePath: \card-world\src\pages\cardForum\func\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -23,12 +23,12 @@ export function formatNumber(number, keepNum = 0, type = "cn") {//
 }
 const DRAFT_STORAGE_KEY = "cardForum_draft"
 //获取草稿箱
-export function getDraftList(type) {
+export function getDraftList(type, userId) {
     let list = uni.getStorageSync(DRAFT_STORAGE_KEY) || []
     if (!list || !list.length) return []
     if (type !== "all") {
         list = list.filter((item) => {
-            return item.type == type
+            return item.type == type && item.userId === userId
         })
     }
     return list.sort((x, y) => {
@@ -36,8 +36,8 @@ export function getDraftList(type) {
     })
 }
 //删除草稿
-export function delDraftDetail(draftId) {
-    let list = getDraftList("all")
+export function delDraftDetail(draftId, userId) {
+    let list = getDraftList("all", userId)
     const findIndex = list.findIndex((item) => {
         return item.draftId === draftId
     })
