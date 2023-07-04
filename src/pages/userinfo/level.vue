@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 14:05:33
+ * @LastEditTime: 2023-07-04 15:41:15
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -25,7 +25,21 @@
                         <view class="userName">爷就是拽</view>
                         <view class="userTitle">这就是我的称号</view>
                     </view>
+                    <view class="xzs">勋章数：0</view>
                 </view>
+            </view>
+            <view class="levelInfo">
+                <view class="level">LV.1</view>
+                <view class="tips">达到5/9/10级解锁特殊勋章</view>
+                <view class="flex1"></view>
+                <view class="gap">
+                    <text class="gap1">555</text>
+                    <text class="gap2">/888</text>
+                </view>
+                <view class="rightIcon"></view>
+            </view>
+            <view class="expWrap">
+                <view class="expWrap_show" :style="{width:'20%'}"></view>
             </view>
         </view>
         <view class="taskContainer">
@@ -56,6 +70,7 @@ export default class ClassName extends BaseNode {
     app = app
     navHeight = uni.upx2px(88)
     signInDay: number = 0
+    taskList: any = []
     onLoad(query: any) {
         this.reqTaskList()
     }
@@ -63,6 +78,11 @@ export default class ClassName extends BaseNode {
         app.http.Get(`dataApi/cardCircle/level/day/task/list`, {}, (res: any) => {
             console.log(res);
             this.signInDay = res.signInDay
+            this.taskList = (res.list || []).sort((x: any, y: any) => {
+                return x.id - y.id
+            })
+            console.log(this.taskList);
+
         })
     }
     reqNewData(cb?: any) {
@@ -180,6 +200,19 @@ page {
         width: 107rpx;
         height: 107rpx;
         border-radius: 50%;
+        margin-right: 25rpx;
+    }
+
+    .userNameWrap {
+        display: flex;
+        align-items: center;
+        height: 42rpx;
+    }
+
+    .userInfo {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .userName {
@@ -187,6 +220,97 @@ page {
         font-family: PingFang SC;
         font-weight: 500;
         color: #FFFFFF;
+    }
+
+    .userTitle {
+        // width: 108rpx;
+        padding: 0 26rpx;
+        line-height: 42rpx;
+        height: 42rpx;
+        background: #FFFFFF;
+        border-radius: 3rpx;
+        font-size: 31rpx;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #333333;
+        margin-left: 22rpx;
+    }
+
+    .xzs {
+        font-size: 21rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
+    }
+}
+
+.levelInfo {
+    display: flex;
+    align-items: center;
+    padding: 0 42rpx 0 36rpx;
+    margin-top: 37rpx;
+
+    .level {
+        font-size: 29rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FFFFFF;
+        margin-right: 22rpx;
+    }
+
+    .tips {
+        font-size: 19rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #959695;
+    }
+
+    .gap {
+        display: flex;
+        letter-spacing: 2rpx;
+    }
+
+    .gap1 {
+        font-size: 23rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
+    }
+
+    .gap2 {
+        font-size: 23rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #959695;
+    }
+
+    .rightIcon {
+        width: 10rpx;
+        height: 19rpx;
+        background-size: 100% 100%;
+        background-image: url("@/static/userinfo/v3/righrIcon.png");
+        margin-left: 12rpx;
+    }
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.expWrap {
+    width: 670rpx;
+    height: 10rpx;
+    background: #FFFFFF;
+    border-radius: 5rpx;
+    margin: 0 auto;
+    margin-top: 22rpx;
+    position: relative;
+    overflow: hidden;
+
+    .expWrap_show {
+        height: 10rpx;
+        background: linear-gradient(90deg, #FA1545 0%, #5211AB 98%);
+        border-radius: 5rpx;
     }
 }
 </style>
