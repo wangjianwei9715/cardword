@@ -228,7 +228,7 @@ export default class ClassName extends BaseNode {
         }
         if (this.selectTopics.length >= 15) {
             uni.showToast({
-                title: "最多关联15条话题"，
+                title: "最多关联15条话题",
                 icon: "none"
             })
             return
