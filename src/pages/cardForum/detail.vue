@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 16:04:42
+ * @LastEditTime: 2023-07-05 10:05:36
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -60,7 +60,8 @@
                 
             </u-read-more> -->
             <view class="topicsContainer" v-if="forumDetail.topic && forumDetail.topic.length">
-                <text v-for="item in forumDetail.topic" @click.stop="pageJump(`/pages/cardForum/topics/detail?id=${item.topicId}`)">{{ item.topicName }}</text>
+                <text v-for="item in forumDetail.topic"
+                    @click.stop="pageJump(`/pages/cardForum/topics/detail?id=${item.topicId}`)">{{ item.topicName }}</text>
             </view>
             <view class="haowuGoodsWrap" v-if="forumDetail.good && forumDetail.good.goodCode"
                 @click="app.navigateTo.goGoodsDetails(forumDetail.good.goodCode)">
@@ -672,6 +673,9 @@ export default class ClassName extends BaseNode {
                 //@ts-ignore
                 return this.$parsePic(decodeURIComponent(url))
             })
+            if (res.state == 2 && (res.data.bit & ForumBit.IS_PERSON) == ForumBit.IS_PERSON) {
+                this.private = true
+            }
         }).catch((err: any) => {
             uni.showModal({
                 title: "提示",
