@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-03 16:57:37
+ * @LastEditTime: 2023-07-05 10:45:53
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -436,6 +436,7 @@ export default {
         // #ifdef APP-NVUE
         this.safeBottomHeight = plus.navigator.getSafeAreaInsets().deviceBottom
         // #endif
+        uni.$on("")
     },
     methods: {
         onrefresh() {
@@ -478,7 +479,7 @@ export default {
                 return !alreadyList.includes(code)
             });
             if (!newArray || !newArray.length) return
-            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray }, () => {
+            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray,deviceId:app.platform.systemInfo.deviceId }, () => {
                 alreadyList.push(...newArray)
             })
         },
