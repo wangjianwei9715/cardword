@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-30 12:20:07
+ * @LastEditTime: 2023-07-05 13:57:56
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -50,6 +50,7 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import { parsePic } from '@/tools/util'
 	class ListParams {
 		noSize=10;
 		fetchFrom=1;
@@ -58,6 +59,7 @@
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
+		parsePic = parsePic;
 		titleStyle = {
 			color:'#333',
 			fontWeight:600,
@@ -104,7 +106,7 @@
 			})
 		}
 		onClickPreviewImage(pic:any[],index: number) {
-			const urls = pic.map((x)=> decodeURIComponent(x.pic));
+			const urls = pic.map((x)=> this.parsePic(x.pic));
 			uni.previewImage({
 				urls,
 				current: index,

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 11:42:18
+ * @LastEditTime: 2023-07-05 14:53:35
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -98,6 +98,8 @@
 		}
 		async onClickSplitNo(index:number,noIndex:number){
 			const list = this.selectSeries[index].noList;
+			list[noIndex].frontPic="";
+			list[noIndex].backPic="";
 			const { seq ,seqIndex, ...rest } = list[noIndex];
 			await this.maxNoTotal(seq);
 			this.selectSeries[index].noList.splice(noIndex,1);
@@ -110,6 +112,8 @@
 			list.some((x:any,index:number)=>{
 				if(x.code==noItem.code){
 					x.split = false;
+					x.frontPic = "";
+					x.backPic = "";
 					list.splice(index+1,x.seq-1)
 					return true;
 				}

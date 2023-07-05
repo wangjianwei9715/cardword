@@ -180,17 +180,15 @@
             })
         }
         onClickCard(item:any,index:number){
-            app.platform.hasLoginToken(()=>{
-                const { scrollId, st } = this.listOrther;
-                const cardList = this.cardSetList.map((x:any)=>x.code);
-                const httpParams = {
-                    url:`dataApi/cardIllustration/series/${this.seriesCode}/search/no`,
-                    scrollId,
-                    st,
-                }
-                uni.navigateTo({
-                    url:`/pages/illustration/cardSetUpload?noCode=${item.code}&nowIndex=${(index+1)}&indexAll=${this.total}&cardList=${encodeURIComponent(JSON.stringify(cardList))}&params=${encodeURIComponent(JSON.stringify(this.listParams))}&httpParams=${encodeURIComponent(JSON.stringify(httpParams))}`
-                })
+            const { scrollId, st } = this.listOrther;
+            const cardList = this.cardSetList.map((x:any)=>x.code);
+            const httpParams = {
+                url:`dataApi/cardIllustration/series/${this.seriesCode}/search/no`,
+                scrollId,
+                st,
+            }
+            uni.navigateTo({
+                url:`/pages/illustration/cardSetUpload?noCode=${item.code}&nowIndex=${(index+1)}&indexAll=${this.total}&cardList=${encodeURIComponent(JSON.stringify(cardList))}&params=${encodeURIComponent(JSON.stringify(this.listParams))}&httpParams=${encodeURIComponent(JSON.stringify(httpParams))}`
             })
         }
         againList(val=0){

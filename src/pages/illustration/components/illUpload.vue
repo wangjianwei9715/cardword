@@ -50,6 +50,7 @@
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
 	import Upload from "@/tools/upload"
+	import { app } from "@/app";
 	@Component({ components: { muqianLazyLoad },})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:{}})
@@ -90,9 +91,11 @@
 		}
 		async addImage(type:string) {
 			if(!this.uploadable) return;
-			const pic:any = await Upload.getInstance().uploadImgs(1, "illustration", ["album","camera"]);
-			type=="front" && (this.frontImg = pic[0]);
-			type=="back" && (this.backImg = pic[0]);
+			app.platform.hasLoginToken( async ()=>{
+				const pic:any = await Upload.getInstance().uploadImgs(1, "illustration", ["album","camera"]);
+				type=="front" && (this.frontImg = pic[0]);
+				type=="back" && (this.backImg = pic[0]);
+			})
 		}
 	}
 </script>

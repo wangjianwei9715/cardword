@@ -4,21 +4,21 @@
 			<statusbar/>
 			<view class="header">
 				<view class="icon-close" @click="onClickClose()"></view>
-				<navigator v-show="noData.illustration" :url="`/pages/illustration/report/error?code=${noCode}`" class="header-right" hover-class="none">
+				<view v-show="noData.illustration" @click="onClickReport" class="header-right">
 					<view class="icon-error"></view>
 					<view class="error-text">报错有奖</view>
-				</navigator>
+				</view>
 			</view>
 		</view>
 		<view class="center">
 			<statusbar/>
 			<view class="upload-box">	
 				<view class="upload-header">
-					<view class="icon-left" @click="onClickUp"></view>
+					<view class="icon-left" @click="$u.throttle(onClickUp,1000)"></view>
 					<view class="header-num">{{numData.now}}/{{numData.all}}</view>
-					<view class="icon-right" @click="onClickNext"></view>
+					<view class="icon-right" @click="$u.throttle(onClickNext,1000)"></view>
 				</view>
-				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic" :uploadable="noData.uploadable"/>
+				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic" :uploadable="hasUpload"/>
 				<view class="upload-card-info">
 					<view class="card-title">{{noData.text.player}}</view>
 					<view class="card-set u-line-2">{{noData.text.cardSet}}</view>
@@ -40,7 +40,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view v-show="!noData.illustration" class="up-btn" :class="{'up-ok':frontPic}" @click="onClickUpload">{{noData.uploadable?"补充图鉴":"请等待审核"}}</view>
+		<view v-show="!noData.illustration" class="up-btn" :class="{'up-ok':frontPic}" @click="onClickUpload">{{ hasUpload ?"补充图鉴":"请等待审核"}}</view>
 	</view>
 </template>
 
@@ -91,8 +91,18 @@
 		}
 		initEvent(){
 		}
+		hasUpload(){
+			return this.noData.uploadable || app.token.accessToken == ''
+		}
 		onClickClose(){
 			app.navigateTo.navigateBack()
+		}
+		onClickReport(){
+			app.platform.hasLoginToken(()=>{
+				uni.navigateTo({
+					url:`/pages/illustration/report/error?code=${this.noCode}`
+				})
+			})
 		}
 		getNoDetail(){
 			app.http.Get(`dataApi/cardIllustration/no/detail/rich/${this.noCode}`,{},(res:any)=>{
@@ -159,7 +169,7 @@
 			})
 		}
 		onClickUpload(){
-			if(!this.frontPic || !this.noData.uploadable) return;
+			if(!this.frontPic || !this.hasUpload) return;
 			uni.showModal({
                 content: '确认上传图鉴?',
                 success: (res: any) => {
