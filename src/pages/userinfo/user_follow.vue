@@ -88,7 +88,7 @@ const tabList = [
 	{ name: "用户", url: "cardCircle/me/follow/user" },
 	{ name: "商家", url: "me/follows/list" },
 	{ name: "话题", url: "cardCircle/me/follow/topic" },
-	{ name: "图鉴", url: "cardCircle/follow/tujian" }
+	{ name: "图鉴", url: "cardCircle/me/follow/tujian" }
 ]
 @Component({})
 export default class ClassName extends BaseNode {

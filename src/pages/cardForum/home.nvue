@@ -394,7 +394,7 @@ export default {
             this.tabs.index = event.index
         },
         onSelectAction(item) {
-            if (item.url) {
+            if (item.url) { 
                 uni.navigateTo({
                     url: item.url
                 })

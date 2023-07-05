@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 16:18:57
+ * @LastEditTime: 2023-07-05 17:00:00
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -34,8 +34,8 @@
                 {{ item.name }}
             </view>
         </view>
-        <textarea placeholderStyle="color: #959695;font-size:23rpx" v-model.trim="formData.content" :maxlength="3000"
-            height="326rpx" class="input_content" placeholder="分享一下您的球星卡收藏..（选填)"></textarea>
+        <textarea :adjust-position="false" placeholderStyle="color: #959695;font-size:23rpx" v-model.trim="formData.content"
+            :maxlength="3000" class="input_content" placeholder="分享一下您的球星卡收藏..（选填)"></textarea>
         <view class="associationWrap" @click="showTopics = true">
             <image class="ass_img" src="@/static/cardForum/release/topic.png" style="width: 30rpx;height:30rpx"></image>
             <view class="ass_title">关联话题</view>
@@ -329,7 +329,7 @@ export default class ClassName extends BaseNode {
                                 console.log("设备信息", app.platform.systemInfo);
                                 // const resolution = data.width > 500 ? (500 / data.width) : 1
                                 const bitrate = data.bitrate > 14000 ? 14000 : data.bitrate
-                                if (data.size >= 200 * 1024) {
+                                if (data.size >= 100 * 1024) {
                                     uni.showLoading({
                                         title: "视频处理中",
                                         mask: true
@@ -734,7 +734,7 @@ export default class ClassName extends BaseNode {
                         }
                     }
                 })
-                this.submitLock=false
+                this.submitLock = false
             }, (err: any) => {
                 //发布失败
                 // this.videoPath=
@@ -746,7 +746,7 @@ export default class ClassName extends BaseNode {
                 // }
                 //发布失败保存至草稿箱
                 uni.hideLoading()
-                this.submitLock=false
+                this.submitLock = false
                 this.formData.localVideo = false
                 this.isTempVideo = false
                 console.log("保存的草稿箱data", this.formData);
@@ -767,7 +767,7 @@ export default class ClassName extends BaseNode {
             })
         } catch (err) {
             console.log("错误错误错误", err);
-            this.submitLock=false
+            this.submitLock = false
             uni.hideLoading()
         }
         // this.formData.url=
@@ -863,11 +863,12 @@ page {
     font-size: 26rpx;
     font-family: PingFang SC;
     font-weight: 400;
-
+    height:326rpx;
     margin-top: 24rpx;
     height: 326rpx;
     border: none;
     color: #ffffff;
+    padding-bottom: 20rpx;
     border-bottom: 1rpx solid #3F3F3F;
 }
 
@@ -1039,7 +1040,7 @@ page {
 
     .glTopic {
         color: #ff003d;
-        font-size: 32rpx;
+        font-size: 28rpx;
         font-weight: bold;
         font-family: PingFang SC;
         margin-right: 8rpx;

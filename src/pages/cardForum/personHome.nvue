@@ -1,6 +1,6 @@
 <template>
-    <list  bounce="false" id="pageId" ref="pageList" @scroll="scroll" :show-scrollbar="false"
-        @touchstart="listTouch" @touchend="listTouch" @touchmove="listTouchMove">
+    <list bounce="false" id="pageId" ref="pageList" @scroll="scroll" :show-scrollbar="false" @touchstart="listTouch"
+        @touchend="listTouch" @touchmove="listTouchMove">
         <cell>
             <div id="topContainer">
                 <div class="userInfoWrap" id="userInfoWrap">
@@ -57,8 +57,8 @@
                 style="margin-top: 10rpx;">
                 <swiper-item style="width:750rpx" v-for="(tab, tabIndex) in tabs.list">
                     <waterfalls :viewUserId="userId" :showBottom="tab.name != '中卡'" :detailBack="true" :isMine="isMine"
-                        :showUser="false" :ref="`waterfalls${tabIndex}`" @scroll="waterScroll" :value="tab.list"
-                        :refresh="false" @loadmore="loadmore" :showEmpty="!isMine">
+                        :showUser="false" :ref="`waterfalls${tabIndex}`" @scroll="waterScroll($event, tabIndex)"
+                        :value="tab.list" :refresh="false" @loadmore="loadmore" :showEmpty="!isMine">
                         <template v-slot:cell v-if="tab.name == '动态' || tab.name == '卡册' && isMine">
                             <cell class="draftWrap" v-if="tab.name == '动态' && draftListByDynamic.length"
                                 @click="pageJump('/pages/cardForum/draftList')">
@@ -249,7 +249,8 @@ export default {
         showWater(tab) {
             return tab.list.length || (tab.name == "动态" && this.isMine && this.draftListByDynamic.length) || (tab.name == "卡册" && this.isMine && this.draftListByCardBook.length)
         },
-        waterScroll(event) {
+        waterScroll(event, index) {
+            if (this.tabs.index != index) return
             if (app.platform.systemInfo.platform == "android") {
                 // console.log("waterScroll", event.contentOffset);
                 waterY = event.contentOffset.y
@@ -271,7 +272,7 @@ export default {
                     if (gap > 1 && waterY >= -5 && this.stickyTabs) {
                         console.log("滚动", this.$refs.tabsWrap);
                         dom.scrollToElement(this.$refs.tabsWrap, {
-                            offset: 0,
+                            offset: uni.upx2px(60),
                             animated: false
                         })
                         waterY = 0

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 15:21:27
+ * @LastEditTime: 2023-07-05 16:24:21
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的投票组件
 -->
@@ -87,9 +87,12 @@ export default class ClassName extends BaseComponent {
     }
     setVote(data: any) {
         this.voteData.title = data.voteTitle || []
-        this.voteData.options = (data.voteOptions || []).map((item: any) => {
-            return { label: item }
-        })
+        if (data.voteOptions && data.voteOptions.length) {
+            this.voteData.options = (data.voteOptions || []).map((item: any) => {
+                return { label: item }
+            })
+        }
+
     }
     onClickFinishEdit() {
         console.log(this.voteData);
