@@ -2,14 +2,14 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 11:51:22
+ * @LastEditTime: 2023-07-05 14:04:29
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-    <view class="content">
+    <view class="content insetBottom">
         <cover-view style="width:750rpx;backgroundColor:#000000;position: fixed;
-        top: 0;" :style="{ height: navHeight + 'px' }">
+        top: 0;z-index:9" :style="{ height: navHeight + 'px' }">
             <!-- <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
             </navigationbar> -->
             <cover-view :style="{ height: app.statusBarHeight + 'px' }"></cover-view>
@@ -220,7 +220,10 @@ export default class ClassName extends BaseNode {
         uni.$on("editAlbum", (res: any) => this.albumList = res)
     }
     albumEditDetail(data: any) {
-        this.setSelectTopics(data.topic)
+        this.formData.title = data.title;
+        this.formData.content = data.description;
+        this.setSelectTopics(data.topic);
+        if(data.good) this.selectGoods = data.good;
     }
     onSelectTopic(item: CardForum.Topics) {
         const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
@@ -765,13 +768,14 @@ export default class ClassName extends BaseNode {
 page {
     background-color: #000;
 }
-
 .content {
     width: 750rpx;
     box-sizing: border-box;
     padding: 0 20rpx;
 }
-
+.insetBottom{
+    padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
+}
 .pushContainer {
     // padding: 0 24rpx;
     box-sizing: border-box;

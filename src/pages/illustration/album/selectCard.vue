@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-30 18:43:30
+ * @LastEditTime: 2023-07-05 11:42:18
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -46,13 +46,18 @@
 		components:{albumBottom}
 	})
 	export default class ClassName extends BaseNode {
-		selectSeries:any = []
+		selectSeries:any = [];
+		edit = false;
 		onLoad(query: any) {
 			if (query.draftList) {
 				this.selectSeries = JSON.parse(query.draftList)
 			}
 			if(query.seriesCode){
 				this.selectSeries = [{seriesCode:query.seriesCode,name:query.name,noList:[]}]
+			}
+			if(query.editCodeList){
+				this.edit = true;
+				this.selectSeries = JSON.parse(query.editCodeList)
 			}
 			this.onEventUI("albumSelect", (res) => {
 				const repeat = this.selectSeries.some((x:any)=>{
@@ -71,7 +76,7 @@
 					if(x.seriesCode === res.code){
 						res.list.forEach((item:any)=>{
 							if(!codeList.includes(item.code)){
-								x.noList.push(item)
+								x.noList.push({...item,frontPic:"",backPic:""})
 							}
 						})
 						return true;
@@ -121,9 +126,14 @@
 			})
 		}
 		onClickNext(){
-			uni.navigateTo({
-				url:`/pages/illustration/album/picUpload?selectSeries=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
-			})
+			if(this.edit){
+				uni.$emit("editNoSelect",this.selectSeries);
+				app.navigateTo.navigateBack()
+			}else{
+				uni.navigateTo({
+					url:`/pages/illustration/album/picUpload?selectSeries=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
+				})
+			}
 		}
 		maxNoTotal(num:number): Promise<any> {
 			return new Promise((resolve, reject) => {

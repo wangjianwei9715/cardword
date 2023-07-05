@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-04 17:12:11
+ * @LastEditTime: 2023-07-05 12:28:23
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -18,7 +18,7 @@
 				</view>
 				<muqian-lazyLoad v-for="(item,index) in hasPicList" :key="index" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
 			</scroll-view>
-			<view class="edit-box" @click="onClickGoPicUpload">编辑编号</view>
+			<view class="edit-box" @click="onClickGoPicUpload">修改图片</view>
 		</view>
 		<view class="percent">当前收集进度：{{percentMsg}}</view>
 		<view class="prove">
@@ -202,7 +202,7 @@
 			this.intervalQuery = setInterval(()=>{
 				uni.hideLoading();
 				this.publicQuery()
-			},1000)
+			},2000)
 		}
 		publicQuery(){
 			app.http.Post(`cardIllustration/album/${this.editUrl()}/query`,{identify:this.identify},(res:any)=>{
