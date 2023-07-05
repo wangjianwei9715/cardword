@@ -64,7 +64,7 @@
 		statusBarHeight = app.statusBarHeight;
 		tabsData = {
 			list:[{name:'图鉴'},{name:'玩家卡册'}],
-			current:0
+			current:0,
 		}
 		seriesCode = "";
 		seriesData:SeriesDetail = {
@@ -92,9 +92,10 @@
 		onLoad(query: any) {
 			if(query.seriesCode) this.seriesCode = query.seriesCode;
 			this.onEventUI("seriesSelect", (res) => {
+				this.onChangeTabs({index:0});
 				this.seriesCode = res.code;
 				this.postSearch = "";
-				this.initEvent()
+				this.initEvent();
 			});
 			this.initEvent();
 		}

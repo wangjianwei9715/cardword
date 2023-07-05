@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 16:16:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-04 13:44:40
+ * @LastEditTime: 2023-07-04 18:12:20
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -130,7 +130,10 @@
 	.percent{
 		width: 100%;
 		position: absolute;
-		bottom:0;
+		bottom:40rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 	.dotContainer {
 		// background-color: rgba(0, 0, 0, .3);

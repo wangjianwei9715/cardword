@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-04 17:00:45
+ * @LastEditTime: 2023-07-04 18:25:52
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -116,7 +116,11 @@
 		}
 		formatterCodeList(list:any[]){
 			const Series:any = {}
-			list.forEach((x:any)=>{
+			list.forEach((x:any,index:number)=>{
+				if(index+1<list.length && list[index+1].code == x.code){
+					x.split = true;
+					list[index+1].split = true;
+				}
 				if(Series.hasOwnProperty(x.series.code)){
 					Series[x.series.code].noList.push(x)
 				}else{
@@ -124,7 +128,7 @@
 				}
 			});
 			this.edit = true;
-			this.selectSeries = Array.from(Object.values(Series),x=>x)
+			this.selectSeries = Array.from(Object.values(Series),x=>x);
 		}
 		onClickSelectNo(item:any){
 			uni.navigateTo({
