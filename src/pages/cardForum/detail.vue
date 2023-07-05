@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 11:34:07
+ * @LastEditTime: 2023-07-05 14:12:31
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -178,9 +178,9 @@
             <view class="wrap">
                 <view class="fakerInput u-line-1" @click="onClickFakerInput">{{ fakerInputVal }}</view>
                 <view class="toolsWrap">
-                    <view class="toolsItem" @click="isPerson ? recGiftShow = true : rewardShow = true">
+                    <view class="toolsItem" @click="isPerson ? recGiftShow = true : rewardShow = true" style="position: relative;bottom: 4rpx;">
                         <image src="@/static/cardForum/gift.png" style="width:34rpx;height:37rpx" />
-                        <view class="num">打赏</view>
+                        <view class="num" style="position: relative;top: 5rpx;">打赏</view>
                     </view>
                     <view class="toolsItem" @click="$u.throttle(() => { onClickLike() }, 500)">
                         <image v-if="!isLike" src="@/static/cardForum/detail_dz.png" style="width:38rpx;height:32rpx" />

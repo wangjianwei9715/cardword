@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 15:20:36
+ * @LastEditTime: 2023-07-05 16:18:57
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -27,7 +27,7 @@
             <ppp v-if="showPPP" :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics"
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
         </view>
-        <input type="text" class="input_title" v-model.trim="formData.title" placeholder="添加一个有趣的标题吧~（选填）"
+        <input type="text" class="input_title" v-model.trim="formData.title" placeholder="添加一个有趣的标题吧~（必填）"
             placeholderStyle="color: #959695;font-size:29rpx" :maxlength="80">
         <view class="topicWrap" v-if="selectTopics.length">
             <view class="glTopic" v-for="(item, index) in selectTopics" :key="index" @click="delSelectTopic(item, index)">
@@ -90,7 +90,7 @@
         <votePop ref="vote" :show.sync="showVote" @finish="voteFinish" @clear="voteClear" />
         <topicsPop :show.sync="showTopics" @select="onSelectTopic" />
         <goods :show.sync="showGoods" @select="onSelectGoods" />
-        <view class="bottomSafeArea" style="height:180rpx"></view>
+        <view class="bottomSafeArea" style="height:180rpx;pointer-events: none;"></view>
     </view>
 </template>
 
@@ -184,6 +184,7 @@ export default class ClassName extends BaseNode {
     isTempVideo: boolean = false//是否是临时video路径(未将视频保存至本地)
     oldTopicIds: Array<number> = []
     userId: number = 0
+    submitLock: boolean = false
     onLoad(query: any) {
         // Upload.getInstance().uploadImgByNetWork("https://ka-world.oss-cn-shanghai.aliyuncs.com/video/app/cardForumVideo1687854408286baf13u4coq.mp4?x-oss-process=video/snapshot,t_1000,m_fast").then((path:any)=>{
         //     console.log(path);
@@ -326,19 +327,19 @@ export default class ClassName extends BaseNode {
                             success: (data: any) => {
                                 console.log("视频信息", data);
                                 console.log("设备信息", app.platform.systemInfo);
-                                const resolution = data.width > 700 ? (700 / data.width) : 1
+                                // const resolution = data.width > 500 ? (500 / data.width) : 1
                                 const bitrate = data.bitrate > 14000 ? 14000 : data.bitrate
-                                if (data.size >= 0 * 1024) {
+                                if (data.size >= 200 * 1024) {
                                     uni.showLoading({
                                         title: "视频处理中",
                                         mask: true
                                     })
                                     uni.compressVideo({
                                         src: res.files[0],
-                                        fps: data.fps > 24 ? 24 : data.fps,
-                                        resolution: resolution,
-                                        bitrate: bitrate,
-                                        // quality: "high",
+                                        // fps: data.fps > 30 ? 30 : data.fps,
+                                        // resolution: 1,
+                                        // bitrate: data.bitrate,
+                                        quality: "high",
                                         success: (qua: any) => {
                                             console.log("压缩后的", qua);
                                             this.tempVideoFile = { ...data, ...qua }
@@ -535,6 +536,14 @@ export default class ClassName extends BaseNode {
                     rj()
                     return
                 }
+                if (!this.formData.title) {
+                    uni.showToast({
+                        title: "输入标题",
+                        icon: "none"
+                    })
+                    rj()
+                    return
+                }
                 // if (this.formData.tp == Tp.Video && this.pics.length < 2) {
                 //     uni.showToast({
                 //         title: "请上传视频或视频封面",
@@ -662,7 +671,9 @@ export default class ClassName extends BaseNode {
         this.pics = []
     }
     async onClickSubmit() {
+        if (this.submitLock) return
         try {
+            this.submitLock = true
             // await this.assignFormData(true)
             uni.showLoading({
                 title: ""
@@ -723,6 +734,7 @@ export default class ClassName extends BaseNode {
                         }
                     }
                 })
+                this.submitLock=false
             }, (err: any) => {
                 //发布失败
                 // this.videoPath=
@@ -734,6 +746,7 @@ export default class ClassName extends BaseNode {
                 // }
                 //发布失败保存至草稿箱
                 uni.hideLoading()
+                this.submitLock=false
                 this.formData.localVideo = false
                 this.isTempVideo = false
                 console.log("保存的草稿箱data", this.formData);
@@ -754,7 +767,7 @@ export default class ClassName extends BaseNode {
             })
         } catch (err) {
             console.log("错误错误错误", err);
-
+            this.submitLock=false
             uni.hideLoading()
         }
         // this.formData.url=
