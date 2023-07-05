@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 13:42:42
+ * @LastEditTime: 2023-07-05 14:15:21
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -454,6 +454,7 @@ export default {
             this.refreshing = true
         },
         comAppear(event, item) {
+            if(!this.needExposure) return
             if (this.needExposure && item.uploadExposure) {
                 exposureList.push(item.code)
                 uni.$u.debounce(() => {

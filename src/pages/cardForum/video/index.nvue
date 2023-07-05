@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-28 10:12:28
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 13:52:35
+ * @LastEditTime: 2023-07-05 14:16:55
  * @FilePath: \card-world\src\pages\cardForum\video\index.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,11 +29,11 @@
                         <view v-if="Math.abs(k - i) <= 1">
                             <view class="root">
                                 <video :ref="'item' + i" :id="item.code" :loop="true" :src="getVideoPath(item.url)"
-                                    :poster="getVideoPath(item.url) + '?x-oss-process=video/snapshot,t_1000,m_fast'"
                                     :muted="item.isplay" @play="playIngs(i)" :enable-progress-gesture="false"
                                     :page-gesture="false" :controls="false" :http-cache="true" :show-loading="false"
                                     :show-fullscreen-btn="false" :show-center-play-btn="false" :style="boxStyle"
                                     :object-fit="'contain'" @timeupdate="timeupdate($event, i)" @waiting="waiting"></video>
+                                    <!-- :poster="getVideoPath(item.url) + '?x-oss-process=video/snapshot,t_1000,m_fast'" -->
                                 <!-- <image
 								v-if="!item.playIng"
 									:src="item.video_url+'?x-oss-process=video/snapshot,t_100,f_jpg'" 

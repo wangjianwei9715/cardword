@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 14:04:29
+ * @LastEditTime: 2023-07-05 15:20:36
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -87,7 +87,7 @@
             </view>
             <view class="bottomSafeArea"></view>
         </view>
-        <votePop :show.sync="showVote" @finish="voteFinish" @clear="voteClear" />
+        <votePop ref="vote" :show.sync="showVote" @finish="voteFinish" @clear="voteClear" />
         <topicsPop :show.sync="showTopics" @select="onSelectTopic" />
         <goods :show.sync="showGoods" @select="onSelectGoods" />
         <view class="bottomSafeArea" style="height:180rpx"></view>
@@ -223,7 +223,7 @@ export default class ClassName extends BaseNode {
         this.formData.title = data.title;
         this.formData.content = data.description;
         this.setSelectTopics(data.topic);
-        if(data.good) this.selectGoods = data.good;
+        if (data.good) this.selectGoods = data.good;
     }
     onSelectTopic(item: CardForum.Topics) {
         const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
@@ -287,7 +287,7 @@ export default class ClassName extends BaseNode {
             );
             // #endif
             // #ifndef APP-PLUS
-            this.choiceType(keyName, "video")
+            this.choiceType(keyName, "img")
             // #endif
         } else {
             if (this.addText === ADD_PIC) this.choiceType(keyName, "img")
@@ -325,14 +325,20 @@ export default class ClassName extends BaseNode {
                             src: res.files[0],
                             success: (data: any) => {
                                 console.log("视频信息", data);
-                                if (data.size >= 300 * 1024) {
+                                console.log("设备信息", app.platform.systemInfo);
+                                const resolution = data.width > 700 ? (700 / data.width) : 1
+                                const bitrate = data.bitrate > 14000 ? 14000 : data.bitrate
+                                if (data.size >= 0 * 1024) {
                                     uni.showLoading({
                                         title: "视频处理中",
                                         mask: true
                                     })
                                     uni.compressVideo({
                                         src: res.files[0],
-                                        quality: "high",
+                                        fps: data.fps > 24 ? 24 : data.fps,
+                                        resolution: resolution,
+                                        bitrate: bitrate,
+                                        // quality: "high",
                                         success: (qua: any) => {
                                             console.log("压缩后的", qua);
                                             this.tempVideoFile = { ...data, ...qua }
@@ -596,6 +602,8 @@ export default class ClassName extends BaseNode {
         console.log("草稿的内容", this.formData);
         // this.selectGoods = this.formData.selectGoods
         this.pics = [this.formData.cover, ...this.formData.url].filter(Boolean)
+        //@ts-ignore
+        this.$refs.vote.setVote(this.formData)
         if (this.formData.tp == Tp.Video && this.formData.localVideo) {
             const videoPath: string = getVideoPath(decodeURIComponent(this.pics.join(",")))
             if (videoPath) {
@@ -768,14 +776,17 @@ export default class ClassName extends BaseNode {
 page {
     background-color: #000;
 }
+
 .content {
     width: 750rpx;
     box-sizing: border-box;
     padding: 0 20rpx;
 }
-.insetBottom{
+
+.insetBottom {
     padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
 }
+
 .pushContainer {
     // padding: 0 24rpx;
     box-sizing: border-box;

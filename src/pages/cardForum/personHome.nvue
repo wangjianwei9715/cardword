@@ -205,7 +205,7 @@ export default {
     onShow() {
         if (this.isMine) {
             this.draftListByDynamic = getDraftList("dynamic", this.userId)
-            console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
+            // console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
             this.draftListByCardBook = getDraftList("cardBook", this.userId)
         }
         // this.listSetSpecialEffects(this.tabs.index)
@@ -244,14 +244,14 @@ export default {
                 })
             }
             this.reqData(false)
-            console.log(this.tabs);
+            // console.log(this.tabs);
         },
         showWater(tab) {
             return tab.list.length || (tab.name == "动态" && this.isMine && this.draftListByDynamic.length) || (tab.name == "卡册" && this.isMine && this.draftListByCardBook.length)
         },
         waterScroll(event) {
             if (app.platform.systemInfo.platform == "android") {
-                console.log("waterScroll", event.contentOffset);
+                // console.log("waterScroll", event.contentOffset);
                 waterY = event.contentOffset.y
             }
 
@@ -267,7 +267,7 @@ export default {
                 if (this.onTouch) {
 
                     const gap = event.changedTouches[0].screenY - agoListY
-                    console.log(gap, waterY, this.stickyTabs);
+                    // console.log(gap, waterY, this.stickyTabs);
                     if (gap > 1 && waterY >= -5 && this.stickyTabs) {
                         console.log("滚动", this.$refs.tabsWrap);
                         dom.scrollToElement(this.$refs.tabsWrap, {
@@ -295,10 +295,10 @@ export default {
         },
         listSetSpecialEffects(index) {
             this.$nextTick(() => {
-                console.log(this.navHeight);
-                console.log(this.topHeight);
-                console.log(this.tabsHeight);
-                console.log(this.userInfoWrapHeight);
+                // console.log(this.navHeight);
+                // console.log(this.topHeight);
+                // console.log(this.tabsHeight);
+                // console.log(this.userInfoWrapHeight);
                 this.$refs[`waterfalls${index}`] && this.$refs[`waterfalls${index}`][0].swiperChange("pageId", this.userInfoWrapHeight - this.navHeight)
             })
         },
@@ -409,7 +409,7 @@ export default {
                     }
                     return item
                 })
-                console.log(list);
+                // console.log(list);
                 this.current.firstReqEnd = true
                 this.current.isFetchEnd = res.isFetchEnd
                 if (res.scrollId) this.current.queryParams.scrollId = res.scrollId

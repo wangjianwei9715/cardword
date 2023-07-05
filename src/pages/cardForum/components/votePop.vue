@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-25 17:58:50
+ * @LastEditTime: 2023-07-05 15:21:27
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的投票组件
 -->
@@ -14,7 +14,8 @@
                     <view class="title">发起投票</view>
                     <view class="close" @click="showValue = false"></view>
                 </view>
-                <input class="input_title" v-model.trim="voteData.title" placeholder="添加投票标题吧~（最多30字）"></input>
+                <input class="input_title" :maxlength="30" v-model.trim="voteData.title"
+                    placeholder="添加投票标题吧~（最多30字）"></input>
                 <view class="optionsWrap" v-for="(item, index) in voteData.options">
                     <view class="name">选项{{ NumMap[index + 1] }}</view>
                     <view class="input_option">
@@ -83,6 +84,12 @@ export default class ClassName extends BaseComponent {
     onClickClear() {
         this.voteData = uni.$u.deepMerge({}, uni.$u.deepClone(voteData))
         this.$emit("clear")
+    }
+    setVote(data: any) {
+        this.voteData.title = data.voteTitle || []
+        this.voteData.options = (data.voteOptions || []).map((item: any) => {
+            return { label: item }
+        })
     }
     onClickFinishEdit() {
         console.log(this.voteData);
