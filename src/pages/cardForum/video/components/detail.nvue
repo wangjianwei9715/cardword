@@ -34,7 +34,7 @@
                                     item }}</text>
                         </view>
                         <view class="topicsContainer" v-if="forumDetail.topic && forumDetail.topic.length">
-                            <text class="topicsItem" v-for="item in forumDetail.topic">{{ item }}</text>
+                            <text @click="pageJump(`/pages/cardForum/topics/detail?id=${item.topicId}`)" class="topicsItem" v-for="item in forumDetail.topic">{{ item.topicName }}</text>
                         </view>
                         <view class="haowuGoodsWrap" v-if="forumDetail.good && forumDetail.good.goodCode"
                             @click="app.navigateTo.goGoodsDetails(forumDetail.good.goodCode)">
@@ -368,6 +368,11 @@ export default {
                 item.loading = false
             })
         },
+        pageJump(url){
+			uni.navigateTo({
+				url
+			})
+		},
         sendCom() {
             if (this.sayContent === "") {
                 uni.showToast({
