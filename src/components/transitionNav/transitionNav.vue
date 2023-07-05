@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 14:29:37
+ * @LastEditTime: 2023-07-05 17:55:39
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -19,7 +19,7 @@
                 <template v-if="needIconShadow">
                     <image class="back" src="/static/index/v3/icon_back.png" />
                 </template>
-                <template v-else>
+                <template v-if="!needIconShadow&&showBack">
                     <image class="back" :src="`/static/index/v3/${navBackGroundShow ? 'icon_back' : 'back'}.png`" />
                     <!-- #ifndef APP-NVUE -->
                     <!-- 非nvue下利用css滤镜改变方向键颜色 -->
@@ -159,6 +159,10 @@ export default {
         report:{
             type:Boolean,
             default:false
+        },
+        showBack:{
+            type:Boolean,
+            default:true
         }
 
     },

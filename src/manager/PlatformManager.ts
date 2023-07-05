@@ -195,6 +195,10 @@ export default class PlatformManager {
 
 	}
 	pageBack(params?:number | UniApp.NavigateBackOptions) {
+		// #ifdef APP-NVUE
+		uni.navigateBack({delta:1})
+		// #endif
+		// #ifndef APP-NVUE
 		let delta:any = 1
 		const IS_NUMBER = typeof params === 'number'
 		if (!IS_NUMBER && !params) delta = 1
@@ -209,7 +213,7 @@ export default class PlatformManager {
 		//@ts-ignore
 		const data:any = IS_NUMBER ? { delta } : { ...params }
 		uni.navigateBack(data)
-
+		// #endif
 	}
 	//ui触觉反馈(单次)
 	UIClickFeedBack (style?:number){

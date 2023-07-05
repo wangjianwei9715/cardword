@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <transitionNav @getNavHeight="getNavHeight" @navigateTo="navigateTo(`/pages/userinfo/setting`)"
+        <transitionNav @getNavHeight="getNavHeight" :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)"
             :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>

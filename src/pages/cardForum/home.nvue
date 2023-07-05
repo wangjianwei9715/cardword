@@ -109,7 +109,7 @@
                 <div class="nav">
                     <div class="navSearchWrap" :class="{ navSearchWrap_showka: isShowKa }"
                         @click="pageJump('/pages/cardForum/search')">
-                        <input class="navInput" type="text" placeholder="搜你想搜..." disabled />
+                        <input class="navInput" type="text" placeholder="搜你想搜..." disabled @click="pageJump('/pages/cardForum/search')"/>
                         <div class="nav_search flexCenter" :class="{ nav_search_showka: isShowKa }"
                             :style="{ backgroundColor: `rgba(250, 21, 69, ${isShowKa ? 0 : navOpacity})` }">
                             <text class="nav_search_text flexCenter">搜索</text>

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 17:00:00
+ * @LastEditTime: 2023-07-05 17:50:03
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -673,10 +673,13 @@ export default class ClassName extends BaseNode {
     async onClickSubmit() {
         if (this.submitLock) return
         try {
+            console.log("开始发布");
+
             this.submitLock = true
             // await this.assignFormData(true)
             uni.showLoading({
-                title: ""
+                title: "",
+                mask: true
             })
             await this.assignFormData(!this.albumRelease)
             if (this.albumRelease) {
@@ -746,7 +749,7 @@ export default class ClassName extends BaseNode {
                 // }
                 //发布失败保存至草稿箱
                 uni.hideLoading()
-                this.submitLock = false
+
                 this.formData.localVideo = false
                 this.isTempVideo = false
                 console.log("保存的草稿箱data", this.formData);
@@ -757,6 +760,7 @@ export default class ClassName extends BaseNode {
                         showCancel: false,
                         success: (res: any) => {
                             if (res.confirm) {
+                                this.submitLock = false
                                 app.platform.pageBack()
                             }
                         }
@@ -863,7 +867,7 @@ page {
     font-size: 26rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    height:326rpx;
+    height: 326rpx;
     margin-top: 24rpx;
     height: 326rpx;
     border: none;

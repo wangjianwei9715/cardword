@@ -36,6 +36,9 @@
 					</view>
 				</view>
 			</template>
+			<template v-if="tab.index == 2">
+				<topicList :value="currentList"></topicList>
+			</template>
 			<empty v-if="!currentList.length"></empty>
 		</view>
 		<!-- <u-sticky bgColor="#fff">
@@ -69,6 +72,7 @@ import {
 } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 import { followActionByUser } from "@/pages/cardForum/func"
+import topicList from "@/pages/cardForum/components/topicList.vue"
 interface Tab {
 	name: string;
 	url: string;
@@ -90,7 +94,11 @@ const tabList = [
 	{ name: "话题", url: "cardCircle/me/follow/topic" },
 	{ name: "图鉴", url: "cardCircle/me/follow/tujian" }
 ]
-@Component({})
+@Component({
+	components: {
+		topicList
+	}
+})
 export default class ClassName extends BaseNode {
 	followList: any = [];
 	totalPage = 0;
@@ -250,14 +258,15 @@ export default class ClassName extends BaseNode {
 .listContainer {
 	width: 750rpx;
 	box-sizing: border-box;
-	padding: 0 34rpx;
+	// padding: 0 34rpx;
 }
 
 .userItem {
 	display: flex;
 	align-items: center;
 	margin-top: 52rpx;
-
+	box-sizing: border-box;
+	padding: 0 34rpx;
 	.avatar {
 		width: 73rpx;
 		height: 73rpx;
