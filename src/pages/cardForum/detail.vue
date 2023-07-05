@@ -2,8 +2,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 14:12:31
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-05 16:34:43
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -35,7 +35,7 @@
         </view>
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
 
-        <albumSwiper v-if="isAlbum" :code="code" :swiperCurrent.sync="swiperCurrent" />
+        <albumSwiper v-if="isAlbum" :forumDetail="forumDetail" :code="code" :swiperCurrent.sync="swiperCurrent" />
         <view class="swiper" v-else>
             <!-- @click="onClickSwiper -->
             <u-swiper imgMode="aspectFit" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"

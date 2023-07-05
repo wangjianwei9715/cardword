@@ -3,12 +3,12 @@
  * @Author: wjw
  * @Date: 2023-07-03 16:16:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-04 18:12:20
+ * @LastEditTime: 2023-07-05 15:23:41
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
-	<view class="swiper-box">
+	<view class="swiper-box" @click="onClickGoCardList()">
 		<swiper v-if="onGrid" class="swiper" :current="current" @change="$event=>current=$event.detail.current">
 			<swiper-item v-for="(noItem,noIndex) in swiperLength" :key="noIndex">
 				<u-grid class="grid-box" :border="false">
@@ -28,7 +28,7 @@
 				<image class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)"/>
 			</swiper-item>
 		</swiper>
-		<view class="percent">卡册完整度：{{detail.percent}}%({{detail.uploadedNoNum}}/{{detail.noNum}})</view>
+		<view class="percent">卡册完整度：{{detail.percent}}%({{detail.uploadedNoNum}}/{{detail.noNum}})<view class="right"></view></view>
 		<view class="dotContainer" :style="{ width: dotContainerWidth + 'px' }" v-if="swiperLength > 1">
             <view class="indicatorScroll" :style="{ left: scrollLeft + 'px' }">
                 <view :id="`dot${index}`" class="dot" :class="{ dot_big: swiperLength > 5 && current === index }"
@@ -57,6 +57,8 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:""})
 		code!:string;
+		@Prop({default:{}})
+		forumDetail!:any;
 		@PropSync("swiperCurrent",{type:Number})
 		current!:number
 		
@@ -100,6 +102,11 @@
 				this.listParams.isFetchEnd = res.isFetchEnd;
 			})
 		}
+		onClickGoCardList(){
+			uni.navigateTo({
+				url:`/pages/cardForum/albumCodeList?code=${this.code}&forumDetail=${encodeURIComponent(JSON.stringify(this.forumDetail))}`
+			})
+		}
 	}
 </script>
 
@@ -129,11 +136,23 @@
 	}
 	.percent{
 		width: 100%;
+		height:43rpx;
+		background:rgba(0, 0, 0, 0.51);
 		position: absolute;
-		bottom:40rpx;
+		top:903rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #FFFEFE;
+		.right{
+			width: 12rpx;
+			height:21rpx;
+			background: url(@/static/illustration/icon_right.png) no-repeat center / 100% 100%;
+			margin-left: 22rpx;
+		}
 	}
 	.dotContainer {
 		// background-color: rgba(0, 0, 0, .3);

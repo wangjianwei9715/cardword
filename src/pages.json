@@ -1541,6 +1541,14 @@
 					}
 				},
 				{
+					"path": "albumCodeList",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "卡册编号",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "personHome",
 					"style": {
 						"navigationStyle": "custom",

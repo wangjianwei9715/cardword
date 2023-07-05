@@ -47,7 +47,7 @@
                     if (res.confirm){
 						await storageDraft({step:this.step,list:this.data},"cardBook");
 						uni.showToast({ title:"草稿保存成功",icon:"none" });
-						uni.switchTab({ url: '/pages/index/userinfo' });
+						uni.switchTab({ url: '/pages/index/userinfo_v3' });
 					}
                 }
             })

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 12:28:23
+ * @LastEditTime: 2023-07-05 15:05:00
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -200,24 +200,27 @@
 		setIntervalQuery(){
 			this.publicQuery();
 			this.intervalQuery = setInterval(()=>{
-				uni.hideLoading();
 				this.publicQuery()
-			},2000)
+			},5000)
 		}
 		publicQuery(){
 			app.http.Post(`cardIllustration/album/${this.editUrl()}/query`,{identify:this.identify},(res:any)=>{
 				if(res.state==0){
 					uni.showLoading({ title: `上传中：${res.percent}%` });
 				}else{
+					uni.hideLoading();
 					clearInterval(this.intervalQuery);
 					if(res.state==1){
 						uni.showToast({title:"上传成功",icon:"none"});
-						uni.switchTab({ url: '/pages/index/userinfo' });
+						uni.switchTab({ url: '/pages/index/userinfo_v3' });
 					}else{
 						uni.showToast({ title:res.failure,icon:"none" });
 						this.identify = uni.$u.guid(8);
 					}
 				}
+			},(error:any)=>{
+				uni.hideLoading();
+				clearInterval(this.intervalQuery);
 			})
 		}
 		revokePublish(){

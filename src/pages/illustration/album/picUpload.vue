@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 11:41:35
+ * @LastEditTime: 2023-07-05 14:50:08
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -67,7 +67,8 @@
 			show:false,
 			list:[
 				{ id:1, name:'选择卡种' },
-				{ id:2, name:'返回编辑' }
+				{ id:2, name:'返回编辑' },
+				{ id:3, name:'退出编辑' },
 			]
 		}
 		onLoad(query: any) {
@@ -143,6 +144,8 @@
 				})
 			}else if(id==2){
 				app.navigateTo.navigateBack()
+			}else if(id==3){
+				uni.navigateBack({delta:2})
 			}
 		}
 		onClickSelectNo(item:any){
