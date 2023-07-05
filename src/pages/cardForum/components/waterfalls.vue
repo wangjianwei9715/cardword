@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 10:47:39
+ * @LastEditTime: 2023-07-05 11:32:28
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -171,7 +171,7 @@
         </header>
         <slot name="cell"></slot>
         <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)"
-            @appear="comAppear($event, item.code)">
+            @appear="comAppear($event, item)">
             <div class="waterfall-item" v-if="item.mode">
                 <div class="waterfall-item__image">
                     <image v-if="item.mode == 'widthFix'" style="width: 360rpx;"
@@ -436,16 +436,26 @@ export default {
         // #ifdef APP-NVUE
         this.safeBottomHeight = plus.navigator.getSafeAreaInsets().deviceBottom
         // #endif
-        // uni.$on("")
+        uni.$on("delCardForum", this.onDelCardForum)
+        uni.$on("setCardForumPrivate", this.setCardForumPrivate)
+        uni.$on("cardForumLike", this.onCardForumLike)
+        uni.$on("editCardForum", this.onEditCardForum)
+
+    },
+    beforeDestroy() {
+        uni.$off("delCardForum", this.onDelCardForum)
+        uni.$off("setCardForumPrivate", this.setCardForumPrivate)
+        uni.$off("cardForumLike", this.onCardForumLike)
+        uni.$off("editCardForum", this.onEditCardForum)
     },
     methods: {
         onrefresh() {
             this.$emit("refresh")
             this.refreshing = true
         },
-        comAppear(event, code) {
-            if (this.needExposure) {
-                exposureList.push(code)
+        comAppear(event, item) {
+            if (this.needExposure && item.uploadExposure) {
+                exposureList.push(item.code)
                 uni.$u.debounce(() => {
                     this.exposureAction && this.exposureAction()
                 }, 5000)
@@ -479,7 +489,7 @@ export default {
                 return !alreadyList.includes(code)
             });
             if (!newArray || !newArray.length) return
-            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray,deviceId:app.platform.systemInfo.deviceId }, () => {
+            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray, deviceId: app.platform.systemInfo.deviceId }, () => {
                 alreadyList.push(...newArray)
             })
         },
@@ -673,6 +683,89 @@ export default {
             if (index != -1) this.$emit('update:modelValue', this.modelValue.splice(index, 1))
             // #endif
             this.$emit('remove', id);
+        },
+        findIndex(code) {
+            // #ifndef APP-NVUE
+            const findIndex1 = this.list1.findIndex((item) => {
+                return item.code == code
+            })
+            const findIndex2 = this.list2.findIndex((item) => {
+                return item.code == code
+            })
+            if (findIndex1 >= 0) {
+                return { index: findIndex1, list: "list1" }
+            }
+            if (findIndex2 >= 0) {
+                return { index: findIndex2, list: "list2" }
+            }
+            if (findIndex1 < 0 && findIndex2 < 0) {
+                return { index: -1, list: null }
+            }
+            // #endif
+            // #ifdef APP-NVUE
+            const index = this.tempList.findIndex((item) => {
+                return item.code == code
+            })
+            return { index: index, list: null }
+            // #endif
+        },
+        ////$on-------------------------
+        onDelCardForum(code) {
+            const { index, list } = this.findIndex(code)
+            // #ifndef APP-NVUE
+            if (index >= 0) {
+                this[list].splice(index, 1)
+            }
+            // #endif
+            // #ifdef APP-NVUE
+            if (index >= 0) {
+                this.tempList.splice(index, 1)
+            }
+            // #endif
+        },
+        onCardForumLike(res) {
+            const { index, list } = this.findIndex(res.code)
+            // #ifndef APP-NVUE
+            if (index >= 0) {
+                this[list][index].bit = res.bit
+                this[list][index].likeNum = res.likeNum
+            }
+            // #endif
+            // #ifdef APP-NVUE
+            if (index >= 0) {
+                this.tempList[index].bit = res.bit
+                this.tempList[index].likeNum = res.likeNum
+            }
+            // #endif
+        },
+        setCardForumPrivate(res) {
+            const { index, list } = this.findIndex(res.code)
+            // #ifndef APP-NVUE
+            if (index >= 0) {
+                this[list][index].status = res.private ? 2 : 1
+            }
+            // #endif
+            // #ifdef APP-NVUE
+            if (index >= 0) {
+                this.tempList[index].status = res.private ? 2 : 1
+            }
+            // #endif
+        },
+        onEditCardForum(res) {
+            console.log(res);
+            const { index, list } = this.findIndex(res.code)
+            // #ifndef APP-NVUE
+            if (index >= 0) {
+                this[list][index].title=res.formData.title
+                this[list][index].cover=res.formData.cover
+            }
+            // #endif
+            // #ifdef APP-NVUE
+            if (index >= 0) {
+                this.tempList[index].title=res.formData.title
+                this.tempList[index].cover=res.formData.cover
+            }
+            // #endif
         }
     }
 

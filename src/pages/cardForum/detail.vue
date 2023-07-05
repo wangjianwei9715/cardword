@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 10:45:08
+ * @LastEditTime: 2023-07-05 11:34:07
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -299,8 +299,12 @@ export default class ClassName extends BaseNode {
             this.code = query.code || "mockCode"
             this.reqNewData()
             this.getCommByWorks()
+            uni.$on("editCardForum", this.onEditCardForum)
             this.userInfo = await app.user.getUserInfo()
         })
+    }
+    beforeDestroy() {
+        uni.$off("editCardForum", this.onEditCardForum)
     }
     onReachBottom() {
         if (this.isFetchEnd) return
@@ -600,6 +604,7 @@ export default class ClassName extends BaseNode {
             if (this.isLike) this.forumDetail.likeNum -= 1
             if (!this.isLike) this.forumDetail.likeNum += 1
             this.forumDetail.bit ^= ForumBit.IS_LIKE;
+            uni.$emit("cardForumLike", { code: this.code, bit: this.forumDetail.bit, likeNum: this.forumDetail.likeNum })
         })
     }
     onClickCollect() {
@@ -665,6 +670,9 @@ export default class ClassName extends BaseNode {
             //     })
             // }
         })
+    }
+    onEditCardForum(res: any) {
+        if (res.code == this.code) this.reqNewData()
     }
     reqNewData(cb?: any) {
         getForumDetail(this.code).then((res: any) => {
