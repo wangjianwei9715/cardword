@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 12:06:29
+ * @LastEditTime: 2023-07-05 13:31:50
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -767,15 +767,14 @@ export default class ClassName extends BaseNode {
 page {
     background-color: #000;
 }
-.insetBottom{
-    padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
-}
 .content {
     width: 750rpx;
     box-sizing: border-box;
     padding: 0 20rpx;
 }
-
+.insetBottom{
+    padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
+}
 .pushContainer {
     // padding: 0 24rpx;
     box-sizing: border-box;

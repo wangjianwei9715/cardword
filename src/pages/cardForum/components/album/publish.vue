@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 09:59:11
+ * @LastEditTime: 2023-07-05 12:28:23
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -202,7 +202,7 @@
 			this.intervalQuery = setInterval(()=>{
 				uni.hideLoading();
 				this.publicQuery()
-			},1000)
+			},2000)
 		}
 		publicQuery(){
 			app.http.Post(`cardIllustration/album/${this.editUrl()}/query`,{identify:this.identify},(res:any)=>{
