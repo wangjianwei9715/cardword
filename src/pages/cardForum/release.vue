@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 11:28:16
+ * @LastEditTime: 2023-07-05 11:46:08
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -496,7 +496,8 @@ export default class ClassName extends BaseNode {
             await this.assignFormData(false)
             const Draft = {
                 ...this.formData,
-                list: this.albumList
+                list: this.albumList,
+                selectTopics: this.selectTopics
             }
             await storageDraft(Draft, this.albumRelease ? "cardBook" : "dynamic", this.draftId || "")
             uni.showModal({
@@ -584,9 +585,10 @@ export default class ClassName extends BaseNode {
 
     }
     processDrafts() {
-        const data = getDraftDetail(this.draftId, this.userId) as CardForumRelease
+        const data = getDraftDetail(this.draftId, this.userId) as any
         if (!Object.keys(data).length) return
         this.formData = data
+        this.selectTopics = data.selectTopics || []
         console.log("草稿的内容", this.formData);
         // this.selectGoods = this.formData.selectGoods
         this.pics = [this.formData.cover, ...this.formData.url].filter(Boolean)
