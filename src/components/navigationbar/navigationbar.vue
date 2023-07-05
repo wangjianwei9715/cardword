@@ -29,6 +29,8 @@ export default class navigationbar extends BaseComponent {
 	title!: string;
 	@Prop({ default: false })
 	custom?: Boolean;
+	@Prop({ default: false })
+	customBack?: Boolean;
 	@Prop({ default: '' })
 	shareData?: any;
 	@Prop({ default: '' })
@@ -50,6 +52,10 @@ export default class navigationbar extends BaseComponent {
 
 	}
 	onClickBack() {
+		if(this.customBack){
+			this.$emit("back")
+			return;
+		}
 		app.platform.pageBack()
 	}
 	// 分享

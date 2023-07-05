@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-29 16:29:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-05 10:42:23
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -16,7 +16,7 @@ import {
 	getUrlData
 } from "../tools/util";
 import { headersData, opSignData, opSignOtherData } from "@/net/DataHttp"
-const debounceData = ['dataApi/point/exchange/goodlist', 'dataApi/selectRank/award/list']
+const debounceData = ['dataApi/point/exchange/goodlist', 'dataApi/selectRank/award/list','dataApi/cardCircle/list']
 const reLoginAction = () => {
 	uni.showModal({
 		title: "信息无效",

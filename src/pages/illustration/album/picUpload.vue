@@ -3,13 +3,13 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-04 18:25:52
+ * @LastEditTime: 2023-07-05 11:41:35
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="album-card-content">
-		<navigationbar title="上传卡片" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true">
+		<navigationbar title="上传卡片" :customBack="edit" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true" @back="sheet.show=true">
 			<template slot="right">
 				<view class="segment" @click="segmentCheck=!segmentCheck">
 					<view class="check" :class="{'check_':segmentCheck}"></view>
@@ -45,6 +45,7 @@
 				</view>
 			</view>
 		</view>
+		<u-action-sheet :actions="sheet.list" :show="sheet.show" cancelText="取消" @select="onSheetSelect" @close="sheet.show=false"></u-action-sheet>
 		<albumBottom :canNext="uploadPercent>0" :data="selectSeries" :percent="uploadPercent" :step="2" @next="onClickNext()"/>
 	</view>
 </template>
@@ -62,19 +63,25 @@
 		selectSeries:any = [];
 		segmentCheck = false;
 		edit = false;
+		sheet = {
+			show:false,
+			list:[
+				{ id:1, name:'选择卡种' },
+				{ id:2, name:'返回编辑' }
+			]
+		}
 		onLoad(query: any) {
+			this.onEventUI("editNoSelect",(res:any)=>{
+				this.selectSeries = res;
+			})
 			if (query.draftList) {
 				this.selectSeries = JSON.parse(query.draftList)
 			}
 			if(query.selectSeries){
-				this.selectSeries = JSON.parse(query.selectSeries).map((x:any)=>{
-					x.noList= x.noList.map((element:any) => {
-						return {...element,frontPic:"",backPic:""}
-					});
-					return x
-				})
+				this.selectSeries = JSON.parse(query.selectSeries)
 			}
 			if(query.editCodeList){
+				this.edit = true;
 				this.formatterCodeList(JSON.parse(query.editCodeList))
 			}
 		}
@@ -127,8 +134,16 @@
 					Series[x.series.code] = {seriesCode:x.series.code,name:x.series.name,noList:[x]}
 				}
 			});
-			this.edit = true;
 			this.selectSeries = Array.from(Object.values(Series),x=>x);
+		}
+		onSheetSelect({id}:any){
+			if(id==1){
+				uni.navigateTo({
+					url:`/pages/illustration/album/selectCard?editCodeList=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
+				})
+			}else if(id==2){
+				app.navigateTo.navigateBack()
+			}
 		}
 		onClickSelectNo(item:any){
 			uni.navigateTo({
