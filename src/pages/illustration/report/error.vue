@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\illustration\report\error.vue
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 15:59:24
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-05 18:14:14
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -21,8 +21,10 @@
 					<image class="icon-add" src="@/static/illustration/icon_add.png"/>
 				</view>
 			</view>
-			<view class="title">添加描述（必填)</view>
-			<u--textarea v-model="desc" height="410rpx"  placeholder="请描述错误原因，审核通过后获得10卡币" count :maxlength="200" border="bottom" confirmType="done"></u--textarea>
+			<u-line color="#dadbde"></u-line>
+			<view class="title martop40">添加描述（必填)</view>
+			<u--textarea v-model="desc" height="410rpx"  placeholder="请描述错误原因，审核通过后获得10卡币" count :maxlength="200" border="none" confirmType="done"></u--textarea>
+			<u-line color="#dadbde"></u-line>
 			<view class="title martop40">请上传正确图片（选填)</view>
 			<view class="pic-box">
 				<view class="pic-index" v-if="frontPic">
@@ -43,7 +45,8 @@
 					<view class="upload-msg">上传反面</view>
 				</view>
 			</view>
-			<view class="tips">采纳后额外获得10卡币</view>
+			<u-line color="#dadbde"></u-line>
+			<view class="tips martop40">采纳后额外获得10卡币</view>
 			<view class="btn" @click="$u.throttle(onClickReport,1000)">提交</view>
 		</view>
 	</view>
@@ -145,8 +148,6 @@
 			width: 100%;
 			height:200rpx;
 			display: flex;
-			border-bottom:1px solid #E6E6E6;
-			margin-bottom: 44rpx;
 		}
 		.pic-index{
 			width: 162rpx;
