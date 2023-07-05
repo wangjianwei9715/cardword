@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-30 15:00:02
+ * @LastEditTime: 2023-07-04 18:25:52
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -61,16 +61,22 @@
 	export default class ClassName extends BaseNode {
 		selectSeries:any = [];
 		segmentCheck = false;
+		edit = false;
 		onLoad(query: any) {
 			if (query.draftList) {
 				this.selectSeries = JSON.parse(query.draftList)
 			}
-			this.selectSeries = JSON.parse(query.selectSeries).map((x:any)=>{
-				x.noList= x.noList.map((element:any) => {
-					return {...element,frontPic:"",backPic:""}
-				});
-				return x
-			})
+			if(query.selectSeries){
+				this.selectSeries = JSON.parse(query.selectSeries).map((x:any)=>{
+					x.noList= x.noList.map((element:any) => {
+						return {...element,frontPic:"",backPic:""}
+					});
+					return x
+				})
+			}
+			if(query.editCodeList){
+				this.formatterCodeList(JSON.parse(query.editCodeList))
+			}
 		}
 		public get uploadPercent() : string {
 			const total = this.selectSeries.reduce((total:number,x:any)=>{
@@ -82,11 +88,6 @@
 		public get listTotal() : number {
 			const total = this.selectSeries.reduce((total:number, x:any) => total + x.noList.length, 0);
 			return total
-		}
-		onClickSelectNo(item:any){
-			uni.navigateTo({
-				url:`/pages/illustration/album/selectNo?seriesCode=${item.seriesCode}`
-			})
 		}
 		async onClickAddImg(index:number,noIndex:number,type:string){
 			const list:any =  await this.addImg(1);
@@ -113,10 +114,36 @@
 				uni.showToast({ title:"上传失败请重试", icon: 'none' })
 			}
 		}
-		onClickNext(){
+		formatterCodeList(list:any[]){
+			const Series:any = {}
+			list.forEach((x:any,index:number)=>{
+				if(index+1<list.length && list[index+1].code == x.code){
+					x.split = true;
+					list[index+1].split = true;
+				}
+				if(Series.hasOwnProperty(x.series.code)){
+					Series[x.series.code].noList.push(x)
+				}else{
+					Series[x.series.code] = {seriesCode:x.series.code,name:x.series.name,noList:[x]}
+				}
+			});
+			this.edit = true;
+			this.selectSeries = Array.from(Object.values(Series),x=>x);
+		}
+		onClickSelectNo(item:any){
 			uni.navigateTo({
-				url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
+				url:`/pages/illustration/album/selectNo?seriesCode=${item.seriesCode}`
 			})
+		}
+		onClickNext(){
+			if(this.edit){
+				uni.$emit("editAlbum",this.selectSeries);
+				app.navigateTo.navigateBack()
+			}else{
+				uni.navigateTo({
+					url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
+				})
+			}
 		}
 	}
 </script>

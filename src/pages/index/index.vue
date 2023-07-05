@@ -25,7 +25,7 @@
 					<swiper-item class="tab-type">
 						<view class="tab-index" v-for="(items,indexs) in indexTabList.front" :key="indexs" @click="onClickJumpUrl(items)">
 							<view class="tab-img-content">
-								<image class="tabimg" :class="{'tabimg-all':items.name=='全部拼团'}" :src="decodeURIComponent(items.icon)" mode=""/>
+								<image class="tabimg" :src="items.icon" mode=""/>
 							</view>
 							<view class="tabtext u-line-1">{{items.name}}</view>
 						</view>
@@ -33,7 +33,7 @@
 					<swiper-item class="tab-type">
 						<view class="tab-index" v-for="(items,indexs) in indexTabList.back" :key="indexs" @click="onClickJumpUrl(items)">
 							<view class="tab-img-content">
-								<image class="tabimg" :class="{'tabimg-all':items.name=='全部拼团'}" :src="decodeURIComponent(items.icon)" mode=""/>
+								<image class="tabimg" :src="items.icon" mode=""/>
 							</view>
 							<view class="tabtext u-line-1">{{items.name}}</view>
 						</view>
@@ -372,14 +372,14 @@
 
 	.tab-type {
 		width: 100%;
-		height:140rpx;
+		height:150rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 	}
 	.tab-swiper{
 		width: 100%;
-		height:140rpx;
+		height:150rpx;
 		padding:0 30rpx 10rpx 30rpx;
 		box-sizing: border-box;
 	}
@@ -428,26 +428,15 @@
 	}
 	.tab-img-content {
 		display: flex;
-		width: 87rpx;
-		height: 87rpx;
+		width: 120rpx;
+		height: 120rpx;
 		align-items: center;
 		justify-content: center;
 		position: relative;
 	}
-	.tabimg-icon{
-		width: 50rpx;
-		height:39rpx;
-		position: absolute;
-		right:-11rpx;
-		top:0;
-	}
 	.tabimg {
-		width: 87rpx;
-		height: 85rpx;
-	}
-	.tabimg-all{
-		width: 73rpx;
-		height:38rpx
+		width: 120rpx;
+		height: 120rpx;
 	}
 	.tabtext {
 		width: 100%;
@@ -457,6 +446,9 @@
 		font-weight: 500;
 		color: #333333;
 		text-align: center;
+		margin-top: -16rpx;
+		position: relative;
+		z-index: 6;
 	}
 	.capsule-box {
 		width: 100%;

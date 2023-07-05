@@ -3,20 +3,23 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-04 13:56:33
+ * @LastEditTime: 2023-07-04 17:12:11
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="album-box">
 		<view class="tips">请完善卡册内容，评选为优质卡册将获得更多曝光</view>
-		<scroll-view class="scroll" :scroll-x="true">
-			<view class="cover-box" @click="changeCover()">
-				<view class="tip">封面</view>
-				<muqian-lazyLoad class="pic" mode="aspectFit" :src="decodeURIComponent(coverPic)" />
-			</view>
-			<muqian-lazyLoad v-for="(item,index) in hasPicList" :key="index" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
-		</scroll-view>
+		<view class="code-box">
+			<scroll-view class="scroll" :scroll-x="true">
+				<view class="cover-box" @click="changeCover()">
+					<view class="tip">封面</view>
+					<muqian-lazyLoad class="pic" mode="aspectFit" :src="decodeURIComponent(coverPic)" />
+				</view>
+				<muqian-lazyLoad v-for="(item,index) in hasPicList" :key="index" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
+			</scroll-view>
+			<view class="edit-box" @click="onClickGoPicUpload">编辑编号</view>
+		</view>
 		<view class="percent">当前收集进度：{{percentMsg}}</view>
 		<view class="prove">
 			<muqian-lazyLoad v-if="provePic" @click="changeProve()" class="pic" mode="aspectFit" :src="decodeURIComponent(provePic)" />
@@ -30,11 +33,17 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop,PropSync} from "vue-property-decorator";
+	import { Component, Watch,PropSync} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import Upload from "@/tools/upload";
 	import { app } from "@/app";
 	const MaxNos = 200;
+	class ListParams {
+		tp=0;
+		fetchFrom=1;
+		fetchSize=MaxNos;
+		isFetchEnd=false;
+	}
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@PropSync("albumList",{type:Array})
@@ -45,10 +54,17 @@
 		coverPic = "";
 		restParams:any = {};
 		list:any = [];
+		originalList:any = [];
 		intervalQuery:any = "";
 		code = "";
+		listParams = new ListParams();
+		revision = "";
+		@Watch("albumList")
+		onChangeAlbumList(){
+			this.formattingList();
+		}
 		mounted(){
-			this.list = this.codeList.flatMap(({ noList }) => noList);
+			this.formattingList()
 			this.identify=uni.$u.guid(8);
 			this.coverPic = this.hasPicList.length ? this.hasPicList[0].frontPic : "";
 		}
@@ -66,6 +82,9 @@
 			const have = this.hasPicList.length;
 			return `${((have/this.noNum)*100).toFixed(2)}%（${have}/${this.noNum})`
 		}
+		public get isEdit() : boolean {
+			return this.code!=""
+		}
 		async addImage() {
 			const picList:any = await Upload.getInstance().uploadImgs(1, "prove", ["album","camera"]);
 			return decodeURIComponent(picList[0])
@@ -76,14 +95,37 @@
 		async changeProve(){
 			this.provePic = await this.addImage()
 		}
+		formattingList(){
+			this.list = this.codeList.flatMap(({ noList }) => noList);
+		}
+		editUrl(revision=true):string{
+			return this.isEdit ? `edit/${this.code}${revision?'/'+this.revision:''}` : 'publish';
+		}
+		onClickGoPicUpload(){
+			uni.navigateTo({
+				url:`/pages/illustration/album/picUpload?editCodeList=${encodeURIComponent(JSON.stringify(this.list))}`
+			})
+		}
 		prepareEdit(code:string){
 			this.code = code;
-			this.getAlbumDetail()
+			this.getAlbumDetail();
+			this.getAlbumList()
 		}
 		getAlbumDetail(){
 			app.http.Get(`cardIllustration/album/edit/detail/${this.code}`,{},({data}:any)=>{
 				this.coverPic = data.cover;
 				this.provePic = data.provePic;
+				this.$emit("albumEditDetail",data)
+			})
+		}
+		getAlbumList(){
+			if(this.listParams.isFetchEnd) return;
+			app.http.Get(`cardIllustration/album/edit/detail/${this.code}/nolist`,this.listParams,(res:any)=>{
+				this.list = [...this.list,...res.list];
+				this.originalList = [...this.list];
+				this.listParams.fetchFrom += this.listParams.fetchSize;
+				this.listParams.isFetchEnd = res.isFetchEnd;
+				this.getAlbumList()
 			})
 		}
 		publish({content,cover,url,title,...rest}:any){
@@ -101,13 +143,19 @@
 				noNum:this.noNum,
 			}
 			this.restParams = rest;
-			app.http.Post('cardIllustration/album/publish/prepare',params,(res:any)=>{
+			app.http.Post(`cardIllustration/album/${this.editUrl(false)}/prepare`,params,(res:any)=>{
+				if(this.isEdit) this.revision = res.revision;
 				this.preparePublis(res.uploadToken)
 			},(err:any)=>{
 				this.revokePublish()
 			})
 		}
 		preparePublis(uploadToken:string){
+			if(this.isEdit && JSON.stringify(this.list)==JSON.stringify(this.originalList)){
+				// 如果编辑没有改变编号列表 直接complete
+				this.publicComplete(uploadToken);
+				return;
+			}
 			const PostLength = Math.ceil(this.noNum/MaxNos);
 			this.publishUpload(uploadToken,PostLength,0);
 		}
@@ -127,7 +175,7 @@
 					return {code:x.code,seqIndex:x.seqIndex,frontPic:x.frontPic,backPic:x.backPic};
 				})
 			}
-			app.http.Post('cardIllustration/album/publish/upload',params,(res:any)=>{
+			app.http.Post(`cardIllustration/album/${this.editUrl()}/upload`,params,(res:any)=>{
 				if(nowNum+1>=PostLength){
 					this.publicComplete(uploadToken)
 				}else{
@@ -143,7 +191,7 @@
 				identify:this.identify,
 				...this.restParams
 			}
-			app.http.Post('cardIllustration/album/publish/complete',params,(res:any)=>{
+			app.http.Post(`cardIllustration/album/${this.editUrl()}/complete`,params,(res:any)=>{
 				this.setIntervalQuery()
 			},(err:any)=>{
 				this.revokePublish()
@@ -157,7 +205,7 @@
 			},1000)
 		}
 		publicQuery(){
-			app.http.Post('cardIllustration/album/publish/query',{identify:this.identify},(res:any)=>{
+			app.http.Post(`cardIllustration/album/${this.editUrl()}/query`,{identify:this.identify},(res:any)=>{
 				if(res.state==0){
 					uni.showLoading({ title: `上传中：${res.percent}%` });
 				}else{
@@ -173,7 +221,8 @@
 			})
 		}
 		revokePublish(){
-			app.http.Post('cardIllustration/album/publish/revoke',{identify:this.identify},(res:any)=>{
+			const url = this.code ? `${this.code}/${this.revision}` : "publish"
+			app.http.Post(`cardIllustration/album/${url}/revoke`,{identify:this.identify},(res:any)=>{
 				this.identify = uni.$u.guid(8);
 				uni.showToast({ title:"发布失败，请重新发布",icon:"none" });
 			})
@@ -199,6 +248,11 @@
 		align-items: center;
 		box-sizing: border-box;
 		margin-bottom: 20rpx;
+	}
+	.code-box{
+		width: 100%;
+		height:162rpx;
+		position: relative;
 	}
 	.scroll{
 		width: 100%;
@@ -230,6 +284,25 @@
 		.pic{
 			margin-right: 0 !important;
 		}
+	}
+	.edit-box{
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 3rpx;
+		position: relative;
+		display: inline-flex;
+		position: absolute;
+		right:14rpx;
+		top:50%;
+		margin-top: -50rpx;
+		background:#000;
+		color:#fff;
+		font-size: 21rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		border: 2rpx dashed rgba(230, 230, 230, 0.6);
+		align-items: center;
+		justify-content: center;
 	}
 	.pic{
 		width: 162rpx;

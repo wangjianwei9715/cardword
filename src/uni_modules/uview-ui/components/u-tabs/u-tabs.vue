@@ -215,7 +215,8 @@ export default {
 				.reduce((total, curr) => total + curr.rect.width, 0);
 			// 获取下划线的数值px表示法
 			const lineWidth = uni.$u.getPx(this.lineWidth);
-			this.lineOffsetLeft = lineOffsetLeft + (tabItem.rect.width - lineWidth) / 2
+			const skew = tabItem.rect.width==0 ? 0 : ((tabItem.rect.width - lineWidth) / 2);
+			this.lineOffsetLeft = lineOffsetLeft + skew;
 			// #ifdef APP-NVUE
 			// 第一次移动滑块，无需过渡时间
 			this.animation(this.lineOffsetLeft, this.firstTime ? 0 : parseInt(this.duration))
