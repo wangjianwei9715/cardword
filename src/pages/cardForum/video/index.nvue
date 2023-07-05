@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-28 10:12:28
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-30 19:15:45
+ * @LastEditTime: 2023-07-05 13:52:35
  * @FilePath: \card-world\src\pages\cardForum\video\index.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -219,6 +219,7 @@ export default {
             upslideShow: false,
             parsePic: getApp().globalData.parsePic,
             userInfo: {},
+            fromMine: false
 
         }
     },
@@ -294,6 +295,7 @@ export default {
         this.code = query.code;
         this.vType = query.type;
         this.searchQ = query.q || '';
+        this.fromMine = query.fromMine == "1"
         this.platform = uni.getSystemInfoSync().platform
         var model = uni.getSystemInfoSync().model
         // if (this.platform == 'ios' && (model !== 'iPhone6' || model !== 'iPhone6s' || model !== 'iPhone7' || model !== 'iPhone8')) {
@@ -374,6 +376,7 @@ export default {
                                 title: "删除成功",
                                 icon: "none"
                             })
+                            uni.$emit("delCardForum", this.code)
                             app.platform.pageBack()
                         })
                     }
@@ -382,13 +385,15 @@ export default {
         },
         //设置为私密
         setPrivate() {
+            console.log(this.current);
             uni.showModal({
                 title: "提示",
-                content: `是否将作品设为${this.private ? "可见" : "私密"}`,
+                content: `是否将作品设为${this.current.private ? "可见" : "私密"}`,
                 success: (res) => {
                     if (res.confirm) {
-                        app.http.Post(`cardCircle/set/${this.private ? 'pub' : 'pri'}/${this.current.code}`, {}, () => {
-                            this.private = !this.private
+                        app.http.Post(`cardCircle/set/${this.current.private ? 'pub' : 'pri'}/${this.current.code}`, {}, () => {
+                            this.current.private = !this.current.private
+                            uni.$emit("setCardForumPrivate", { code: this.current.code, private: this.current.private })
                             uni.showToast({
                                 title: "操作成功",
                                 icon: "none"
@@ -553,14 +558,14 @@ export default {
         },
         get() {
             app.http.Get(`dataApi/cardCircle/detail/${this.code}`, {}, (res) => {
-                const data = [{ ...res.data, isShowProgressBarTime: false, state: 'play', isplay: false, hasDetail: true }]
+                const data = [{ ...res.data, isShowProgressBarTime: false, state: 'play', isplay: false, hasDetail: true, private: (res.state == 2 && ((res.data.bit & 1) === 1)) }]
                 this.dataList = [...data]
                 // console.log(this.dataList);
                 setTimeout(() => {
                     uni.createVideoContext(this.dataList[0].code, this).seek(0)
                     uni.createVideoContext(this.dataList[0].code, this).play()
                 }, 100)
-                this.getMore()
+                if (!this.fromMine) this.getMore()
             })
         },
         getMore() {

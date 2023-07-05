@@ -1,5 +1,5 @@
 <template>
-    <list fixFreezing="true" bounce="false" id="pageId" ref="pageList" @scroll="scroll" :show-scrollbar="false"
+    <list  bounce="false" id="pageId" ref="pageList" @scroll="scroll" :show-scrollbar="false"
         @touchstart="listTouch" @touchend="listTouch" @touchmove="listTouchMove">
         <cell>
             <div id="topContainer">
@@ -208,6 +208,8 @@ export default {
             console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
             this.draftListByCardBook = getDraftList("cardBook", this.userId)
         }
+        // this.listSetSpecialEffects(this.tabs.index)
+        // this.$refs.goTopRef()
     },
     onLoad(query) {
         if (query.tabIndex) this.tabs.index = +query.tabIndex
@@ -301,7 +303,7 @@ export default {
             })
         },
         goTopRef(index) {
-            // this.$refs[`waterfalls${index}`] && this.$refs[`waterfalls${index}`][0].goTop()
+            this.$refs[`waterfalls${index}`] && this.$refs[`waterfalls${index}`][0].goTop()
         },
         swiperChange(event) {
             this.tabs.index = event.detail.current

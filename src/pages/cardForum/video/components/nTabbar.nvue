@@ -148,6 +148,7 @@ export default {
 				if (this.Parent.isLike) this.data.likeNum -= 1
 				if (!this.Parent.isLike) this.data.likeNum += 1
 				this.data.bit ^= this.Parent.ForumBit.IS_LIKE;
+				uni.$emit("cardForumLike", { code: this.data.code, bit: this.data.bit, likeNum: this.data.likeNum })
 			})
 
 		},
