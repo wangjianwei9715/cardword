@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 15:05:00
+ * @LastEditTime: 2023-07-06 10:38:28
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -18,7 +18,7 @@
 				</view>
 				<muqian-lazyLoad v-for="(item,index) in hasPicList" :key="index" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
 			</scroll-view>
-			<view class="edit-box" @click="onClickGoPicUpload">修改图片</view>
+			<view class="edit-box" v-if="code" @click="onClickGoPicUpload">修改图片</view>
 		</view>
 		<view class="percent">当前收集进度：{{percentMsg}}</view>
 		<view class="prove">
@@ -47,24 +47,18 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@PropSync("albumList",{type:Array})
-		codeList!:any[]
+		list!:any[]
 
 		identify = "";
 		provePic = "";
 		coverPic = "";
 		restParams:any = {};
-		list:any = [];
 		originalList:any = [];
 		intervalQuery:any = "";
 		code = "";
 		listParams = new ListParams();
 		revision = "";
-		@Watch("albumList")
-		onChangeAlbumList(){
-			this.formattingList();
-		}
 		mounted(){
-			this.formattingList()
 			this.identify=uni.$u.guid(8);
 			this.coverPic = this.hasPicList.length ? this.hasPicList[0].frontPic : "";
 		}
@@ -95,9 +89,6 @@
 		async changeProve(){
 			this.provePic = await this.addImage()
 		}
-		formattingList(){
-			this.list = this.codeList.flatMap(({ noList }) => noList);
-		}
 		editUrl(revision=true):string{
 			return this.isEdit ? `edit/${this.code}${revision?'/'+this.revision:''}` : 'publish';
 		}
@@ -122,7 +113,7 @@
 			if(this.listParams.isFetchEnd) return;
 			app.http.Get(`cardIllustration/album/edit/detail/${this.code}/nolist`,this.listParams,(res:any)=>{
 				this.list = [...this.list,...res.list];
-				this.originalList = [...this.list];
+				this.originalList = [...this.originalList,...res.list];
 				this.listParams.fetchFrom += this.listParams.fetchSize;
 				this.listParams.isFetchEnd = res.isFetchEnd;
 				this.getAlbumList()
