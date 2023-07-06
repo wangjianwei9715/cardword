@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 10:38:28
+ * @LastEditTime: 2023-07-06 11:42:13
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -18,7 +18,7 @@
 				</view>
 				<muqian-lazyLoad v-for="(item,index) in hasPicList" :key="index" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
 			</scroll-view>
-			<view class="edit-box" v-if="code" @click="onClickGoPicUpload">修改图片</view>
+			<view class="edit-box" v-if="code||draftId" @click="onClickGoPicUpload">修改图片</view>
 		</view>
 		<view class="percent">当前收集进度：{{percentMsg}}</view>
 		<view class="prove">
@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Watch,PropSync} from "vue-property-decorator";
+	import { Component, Prop,Watch,PropSync} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import Upload from "@/tools/upload";
 	import { app } from "@/app";
@@ -48,10 +48,13 @@
 	export default class ClassName extends BaseComponent {
 		@PropSync("albumList",{type:Array})
 		list!:any[]
-
+		@PropSync("albumCover",{type:String})
+		coverPic?:string
+		@PropSync("albumProve",{type:String})
+		provePic?:string
+		@Prop({default:''})
+		draftId?:any
 		identify = "";
-		provePic = "";
-		coverPic = "";
 		restParams:any = {};
 		originalList:any = [];
 		intervalQuery:any = "";
@@ -60,7 +63,9 @@
 		revision = "";
 		mounted(){
 			this.identify=uni.$u.guid(8);
-			this.coverPic = this.hasPicList.length ? this.hasPicList[0].frontPic : "";
+			if(this.draftId=='' && this.code==''){
+				this.coverPic = this.hasPicList.length ? this.hasPicList[0].frontPic : "";
+			}
 		}
 		public get noNum() : number {
 			return this.list.length
@@ -84,7 +89,7 @@
 			return decodeURIComponent(picList[0])
 		}
 		async changeCover(){
-			this.coverPic = await this.addImage()
+			this.coverPic = await this.addImage();
 		}
 		async changeProve(){
 			this.provePic = await this.addImage()
@@ -106,7 +111,7 @@
 			app.http.Get(`cardIllustration/album/edit/detail/${this.code}`,{},({data}:any)=>{
 				this.coverPic = data.cover;
 				this.provePic = data.provePic;
-				this.$emit("albumEditDetail",data)
+				this.$emit("albumEditDetail",data);
 			})
 		}
 		getAlbumList(){
@@ -202,6 +207,7 @@
 					uni.hideLoading();
 					clearInterval(this.intervalQuery);
 					if(res.state==1){
+						if (this.draftId) this.$emit('delDraft')
 						uni.showToast({title:"上传成功",icon:"none"});
 						uni.switchTab({ url: '/pages/index/userinfo_v3' });
 					}else{

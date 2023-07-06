@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 14:53:35
+ * @LastEditTime: 2023-07-06 11:56:08
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -76,7 +76,7 @@
 					if(x.seriesCode === res.code){
 						res.list.forEach((item:any)=>{
 							if(!codeList.includes(item.code)){
-								x.noList.push({...item,frontPic:"",backPic:""})
+								x.noList.push({...item,frontPic:"",backPic:"",series:{code:x.seriesCode,name:x.name}})
 							}
 						})
 						return true;
