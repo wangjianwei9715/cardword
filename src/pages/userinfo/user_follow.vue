@@ -147,7 +147,7 @@ export default class ClassName extends BaseNode {
 	}
 	goPersonHome(item: any) {
 		uni.navigateTo({
-			url: "/pages/cardForum/personHome?userId=" + item.userId
+			url: "/pages/cardForum/personHomePage?userId=" + item.userId
 		})
 	}
 	onClickFollow(item: any, index: number, tabIndex: number) {
