@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 14:50:08
+ * @LastEditTime: 2023-07-06 10:31:24
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -154,12 +154,13 @@
 			})
 		}
 		onClickNext(){
+			const albumList = this.selectSeries.flatMap(({ noList }:any) => noList);
 			if(this.edit){
-				uni.$emit("editAlbum",this.selectSeries);
+				uni.$emit("editAlbum",albumList);
 				app.navigateTo.navigateBack()
 			}else{
 				uni.navigateTo({
-					url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
+					url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(albumList))}`
 				})
 			}
 		}
