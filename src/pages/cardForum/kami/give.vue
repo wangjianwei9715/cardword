@@ -91,20 +91,7 @@ export default class ClassName extends BaseNode {
         pageIndex: 1,
         pageSize: 20
     }
-    list: Array<Kami> = [{
-        name: "mock卡密名称卡密名称卡密名称卡密名称卡密名称卡密名称卡密名称卡密名称卡密名称卡密",
-        id: 1,
-        price: 1,
-        orderCode: "2",
-        // isSelect: false
-    },
-    {
-        name: "mock卡密名称卡密名称卡密名称卡密名称卡密名称卡密名称卡密名称卡密名称卡密名称卡密",
-        id: 2,
-        price: 2,
-        orderCode: "3",
-        // isSelect: false
-    }]
+    list: Array<Kami> = []
     selectIds: Array<number> = []
     totalPage: number = 0
     receiveInfo: ReceiveInfo | any = {}
