@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="content" v-show="noData.show">
 		<view class="header-box">
 			<statusbar/>
 			<view class="header">
@@ -10,7 +10,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="center">
+		<view class="center" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
 			<statusbar/>
 			<view class="upload-box">	
 				<view class="upload-header">
@@ -67,7 +67,8 @@
 				"number":0,//编号
 				"peer": [] //1编到seq 每个编号图鉴的上传情况  0 未上传 1 部分上传 2 全部上传
 			},
-			uploadable:true
+			uploadable:true,
+			show:false
 		};
 		numData = {
 			now:0,
@@ -78,6 +79,11 @@
 		cardList:any = [];
 		httpParams:any = {};
 		listParams:any = {};
+		touchData = {
+			startX:0,
+			moveX:0,
+			move:false
+		}
 		onLoad(query: any) {
 			this.noCode = query.noCode;
 			this.numData = {
@@ -109,7 +115,8 @@
 				this.noData = {
 					illustration:res.illustration,
 					text:res.text,
-					uploadable:res.uploadable
+					uploadable:res.uploadable,
+					show:true
 				}
 			})
 		}
@@ -121,13 +128,30 @@
 				this.noData = {
 					illustration:res.illustration,
 					text:res.text,
-					uploadable:res.uploadable
+					uploadable:res.uploadable,
+					show:true
 				}
 			})
 		}
 		clearPic(){
 			this.frontPic = "";
 			this.backPic = "";
+		}
+		handleTouchStart(event:any) {
+			this.touchData.startX = event.touches[0].clientX;
+		}
+		handleTouchMove(event:any) {
+			this.touchData.moveX = event.touches[0].clientX;
+			this.touchData.move = true;
+		}
+		handleTouchEnd() {
+			if(!this.touchData.move) return;
+			if (this.touchData.moveX - this.touchData.startX > 100) {
+				this.onClickUp()
+			} else if (this.touchData.moveX - this.touchData.startX < -100) {
+				this.onClickNext()
+			}
+			this.touchData.move = false;
 		}
 		onClickUp(){
 			if(this.numData.now<=1) return;

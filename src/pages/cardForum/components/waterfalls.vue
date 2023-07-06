@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 14:04:49
- * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-06 14:52:26
+ * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
 <template>
@@ -1023,5 +1023,17 @@ $uvui-nvue-style: true !default;
 .videoIcon {
     position: relative;
     left: 2rpx;
+}
+.cardBook-nullpic{
+    width:360rpx;
+    height:430rpx;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .wait-pic{
+        width: 91rpx;
+        height:78rpx;
+    }
 }
 </style>
