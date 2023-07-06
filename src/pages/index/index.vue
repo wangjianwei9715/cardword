@@ -25,7 +25,7 @@
 					<swiper-item class="tab-type">
 						<view class="tab-index" v-for="(items,indexs) in indexTabList.front" :key="indexs" @click="onClickJumpUrl(items)">
 							<view class="tab-img-content">
-								<image class="tabimg" :src="items.icon" mode=""/>
+								<image class="tabimg" :src="items.icon" mode="aspectFit"/>
 							</view>
 							<view class="tabtext u-line-1">{{items.name}}</view>
 						</view>
@@ -33,7 +33,7 @@
 					<swiper-item class="tab-type">
 						<view class="tab-index" v-for="(items,indexs) in indexTabList.back" :key="indexs" @click="onClickJumpUrl(items)">
 							<view class="tab-img-content">
-								<image class="tabimg" :src="items.icon" mode=""/>
+								<image class="tabimg" :src="items.icon" mode="aspectFit"/>
 							</view>
 							<view class="tabtext u-line-1">{{items.name}}</view>
 						</view>
@@ -446,7 +446,7 @@
 		font-weight: 500;
 		color: #333333;
 		text-align: center;
-		margin-top: -16rpx;
+		margin-top: -6rpx;
 		position: relative;
 		z-index: 6;
 	}

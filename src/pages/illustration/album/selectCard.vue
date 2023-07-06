@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 11:56:08
+ * @LastEditTime: 2023-07-06 16:37:57
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -19,7 +19,7 @@
 				<view class="card-team">
 					<view class="team">NO.{{noItem.number}} {{noItem.team}}</view>
 					<view v-show="!noItem.split" class="icon-clear" @click="item.noList.splice(noIndex,1)"></view>
-					<view v-show="!noItem.split&&noItem.seq>0" class="split" @click="onClickSplitNo(index,noIndex)">拆分限编</view>
+					<view v-show="!noItem.split&&noItem.seq>1" class="split" @click="onClickSplitNo(index,noIndex)">拆分限编</view>
 					<view v-show="noItem.split" class="split-c" @click="onClickSplitCancel(index,noItem)">取消拆分</view>
 				</view>
 				<view class="player">{{noItem.player}}</view>

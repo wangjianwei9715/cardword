@@ -2,8 +2,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 17:59:38
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-06 16:44:08
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -55,7 +55,7 @@
 
         <view class="contentContainer">
             <view class="title">{{ forumDetail.title }}</view>
-            <view class="desc" v-if="forumDetail.content">{{ forumDetail.content }}</view>
+            <view class="desc" v-if="forumDetail.content">{{ decodeURIComponent(forumDetail.content) }}</view>
             <!-- <u-read-more :showHeight="180" closeText="全部" color="#000">
                 
             </u-read-more> -->

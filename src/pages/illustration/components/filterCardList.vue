@@ -4,7 +4,7 @@
             <view class="operate-filter"> 
                 <view class="input-box">
                     <view class="search-icon"></view>
-                    <input class="input-operate" :adjust-position="false" v-model="listQ" placeholder="搜索球员/卡种/限编球队" @confirm="againList()"/>
+                    <input class="input-operate" :adjust-position="false" v-model="listQ" placeholder="搜索球员/卡种/限编球队" @confirm="onClickSearch()"/>
                 </view>
                 <view class="filter-box" @click="onClickGoFilter">
                     <image class="icon-filter" src="@/static/illustration/icon_filter.png"/>筛选
@@ -190,6 +190,24 @@
             uni.navigateTo({
                 url:`/pages/illustration/cardSetUpload?noCode=${item.code}&nowIndex=${(index+1)}&indexAll=${this.total}&cardList=${encodeURIComponent(JSON.stringify(cardList))}&params=${encodeURIComponent(JSON.stringify(this.listParams))}&httpParams=${encodeURIComponent(JSON.stringify(httpParams))}`
             })
+        }
+        onClickSearch(){
+            const text = this.listQ; 
+            const seriesCodeRegex = /[:][A-Za-z]{6}/; 
+            const noCodeRegex = /[:][A-Za-z0-9]{12}/;
+            if (text && (seriesCodeRegex.test(text) || noCodeRegex.test(text))) {
+                if (seriesCodeRegex.test(text)) { 
+                    uni.redirectTo({ 
+                        url: `/pages/illustration/seriesDetail?seriesCode=${text.slice(1, 7)}` 
+                    }); 
+                    return; 
+                }
+                if (noCodeRegex.test(text)) { 
+                    this.onClickCard({ code: text.slice(1, 13) }, 0); 
+                    return; 
+                } 
+            }
+            this.againList()
         }
         againList(val=0){
             if(val==0){
