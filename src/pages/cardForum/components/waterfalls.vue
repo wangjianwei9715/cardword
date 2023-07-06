@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 14:04:49
+ * @LastEditTime: 2023-07-06 16:02:48
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -17,15 +17,18 @@
                 <slot name="list1"></slot>
                 <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
+                        <!-- ?x-oss-process=image/resize,m_fixed,h_100,w_100 -->
                         <view class="waterfall-item__image">
-                            <view v-if="item.type=='cardBook' && item.cover==''" class="cardBook-nullpic">
-                                <image class="wait-pic" src="@/static/illustration/icon_wait.png"/>
+                            <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
+                                <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
                             </view>
-                            <image v-else-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
-                                :mode="item.mode" class="waterfall-item__image_img">
+                            <image v-else-if="item.mode" :style="{ height: item.height + 'px', width: item.width + 'px' }"
+                                :mode="item.mode"
+                                :src="parsePic(decodeURIComponent(item.cover)) + `?x-oss-process=image/resize,m_fixed,h_${parseInt(item.height * 2)},w_${parseInt(item.width * 2)}`"
+                                class="waterfall-item__image_img">
                             </image>
                             <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
-                                style="width:360rpx;height:430rpx;background-color: #fff;display: none;opacity: 0;">
+                                style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
                             </image>
                             <view class="videoIconWrap" v-if="item.video_at">
                                 <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
@@ -33,7 +36,7 @@
                         </view>
                         <view class="waterfall-item__ft">
                             <view class="waterfall-item__ft__title">
-                                <text class="waterfall-item__ft__title__value">{{ item.title||'发布一个新卡册' }}</text>
+                                <text class="waterfall-item__ft__title__value">{{ item.title || '发布一个新卡册' }}</text>
                             </view>
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
@@ -86,11 +89,13 @@
                 <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <view v-if="item.type=='cardBook' && item.cover==''" class="cardBook-nullpic">
-                                <image class="wait-pic" src="@/static/illustration/icon_wait.png"/>
+                            <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
+                                <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
                             </view>
-                            <image v-else-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
-                                :mode="item.mode" class="waterfall-item__image_img">
+                            <image v-else-if="item.mode" :style="{ height: item.height + 'px', width: item.width + 'px' }"
+                                :mode="item.mode"
+                                :src="parsePic(decodeURIComponent(item.cover)) + `?x-oss-process=image/resize,m_fixed,h_${parseInt(item.height * 2)},w_${parseInt(item.width * 2)}`"
+                                class="waterfall-item__image_img">
                             </image>
                             <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
                                 style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
@@ -101,7 +106,7 @@
                         </view>
                         <view class="waterfall-item__ft">
                             <view class="waterfall-item__ft__title">
-                                <text class="waterfall-item__ft__title__value">{{ item.title||'发布一个新卡册' }}</text>
+                                <text class="waterfall-item__ft__title__value">{{ item.title || '发布一个新卡册' }}</text>
                             </view>
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
@@ -240,8 +245,8 @@
 </template>
 <script>
 const CardBookJumpUrl = {
-    1:'/pages/illustration/album/selectCard',
-    2:'/pages/illustration/album/picUpload'
+    1: '/pages/illustration/album/selectCard',
+    2: '/pages/illustration/album/picUpload'
 }
 const MAX_HEIGHT = uni.upx2px(440)
 const WIDTH = uni.upx2px(360)
@@ -531,7 +536,7 @@ export default {
             event.stopPropagation();
             // #endif
             uni.navigateTo({
-                url: `/pages/cardForum/personHome?userId=${item.userId}&isMine=${item.isMe ? 1 : 0}`
+                url: `/pages/cardForum/personHomePage?userId=${item.userId}&isMine=${item.isMe ? 1 : 0}`
             })
         },
         goToDetail(item) {
@@ -539,11 +544,11 @@ export default {
             //     url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
             // })
             if (this.type == "draftList") {
-                if(item.type=="cardBook"){
+                if (item.type == "cardBook") {
                     const data = getDraftDetail(item.draftId, app.data.userId);
-                    if(data.step){
+                    if (data.step) {
                         uni.navigateTo({
-                            url:`${CardBookJumpUrl[data.step]}?draftList=${encodeURIComponent(JSON.stringify(data.list))}`
+                            url: `${CardBookJumpUrl[data.step]}?draftList=${encodeURIComponent(JSON.stringify(data.list))}`
                         })
                         return;
                     }
@@ -611,20 +616,32 @@ export default {
             }
         },
         h5ImageLoad(event, item) {
+
+            // event.detail.width = event.detail.width * 100
+            // event.detail.height = event.detail.height * 100
             // console.log(event);
+            if (event.detail.width < WIDTH) {
+                event.detail.height = (WIDTH / event.detail.width) * event.detail.height
+                event.detail.width = WIDTH
+            }
+            console.log(event);
             const widthFixHeight = (WIDTH / event.detail.width) * event.detail.height
             if (widthFixHeight > MAX_HEIGHT) {
                 item.mode = "aspectFit"
                 item.width = (event.detail.width / event.detail.height) * MAX_HEIGHT
+                item.height = MAX_HEIGHT
             } else {
                 item.mode = "widthFix"
+                item.height = widthFixHeight
             }
             bufferImgList.push({
                 code: item.code,
                 cover: item.cover,
                 mode: item.mode,
-                width: item.width
+                width: item.width,
+                height: item.height
             })
+            // console.log(item);
             this.pushTimer && clearTimeout(this.pushTimer)
             this.pushTimer = setTimeout(() => {
                 this.$forceUpdate()
@@ -919,7 +936,7 @@ $uvui-nvue-style: true !default;
     overflow: hidden;
     position: relative;
     // #ifndef APP-NVUE
-    min-height: 300rpx;
+    // min-height: 300rpx;
     // #endif
 }
 

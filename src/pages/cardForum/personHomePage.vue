@@ -53,7 +53,21 @@
         </div>
         <waterfalls style="width: 750rpx;" :viewUserId="userId" ref="waterfall" :showBottom="current.name != '中卡'"
             :detailBack="true" :isMine="isMine" :showUser="false" :value="tabs.list[tabs.index].list" :refresh="false"
-            :showEmpty="!isMine"></waterfalls>
+            :showEmpty="!isMine">
+            <template v-slot:list1>
+                <view class="draftWrap" v-if="current.name == '动态' && draftListByDynamic.length"
+                    @click="pageJump('/pages/cardForum/draftList')">
+                    <image class="draftWrapImage" v-if="draftListByDynamic[0].data.cover"
+                        :src="decodeURIComponent(draftListByDynamic[0].data.cover)" mode="aspectFill">
+                    </image>
+                    <view class="shadow">
+                        <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
+                        <text class="caogaoTitle">草稿箱</text>
+                        <text class="caogaoText">有{{ draftListByDynamic.length }}篇动态待发布</text>
+                    </view>
+                </view>
+            </template>
+        </waterfalls>
     </view>
 </template>
 
@@ -62,6 +76,7 @@ import { app } from "@/app";
 import { Component, Watch } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import waterfalls from "./components/waterfalls.vue"
+import { getDraftList, followActionByUser } from "./func"
 const navHeight = app.statusBarHeight + uni.upx2px(88)
 const mineTabs: any = [
     {
@@ -125,6 +140,8 @@ export default class ClassName extends BaseNode {
         index: 0,
         list: []
     }
+    draftListByDynamic: any = []
+    draftListByCardBook: any = []
     userId: number = 0
     onLoad(query: any) {
         if (query.tabIndex) this.tabs.index = +query.tabIndex
@@ -132,6 +149,19 @@ export default class ClassName extends BaseNode {
         this.isMine = query.isMine == "1" //后续解除注释
         this.getUserInfo()
         this.initTab()
+    }
+    onShow() {
+        if (this.isMine) {
+            this.draftListByDynamic = getDraftList("dynamic", this.userId)
+            console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
+            this.draftListByCardBook = getDraftList("cardBook", this.userId)
+        }
+        // this.listSetSpecialEffects(this.tabs.index)
+        // this.$refs.goTopRef()
+    }
+    onPageScroll(data: any) {
+        //@ts-ignore
+        this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
     }
     onReachBottom() {
         if (this.current.isFetchEnd) return
@@ -423,5 +453,58 @@ page {
     text-align: center;
     line-height: 62rpx;
     color: #FFFFFF;
+}
+
+.draftWrap {
+    width: 360rpx;
+    height: 287rpx;
+    position: relative;
+    border-radius: 3rpx;
+    margin-bottom: 10rpx;
+    display: flex;
+    
+}
+
+.draftWrapImage {
+    position: absolute;
+    width: 360rpx;
+    height: 277rpx;
+    left: 0;
+    top: 0;
+    border-radius: 3rpx;
+}
+
+.shadow {
+    position: absolute;
+    width: 360rpx;
+    height: 277rpx;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, .5);
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.caogaoIcon {
+    margin-top: 74rpx;
+    width: 61rpx;
+    height: 55rpx;
+}
+
+.caogaoTitle {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #ECEFF6;
+    margin-top: 17rpx;
+    margin-bottom: 10rpx;
+}
+
+.caogaoText {
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #ECEFF6;
 }
 </style>
