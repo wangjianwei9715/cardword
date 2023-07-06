@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 17:50:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-06 12:03:35
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,7 @@
             </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
-        <publish v-if="albumRelease" ref="albumRelease" :albumList.sync="albumList" @albumEditDetail="albumEditDetail" />
+        <publish v-if="albumRelease" ref="albumRelease" :albumList.sync="albumData.list" :albumCover.sync="albumData.cover" :albumProve.sync="albumData.prove" :draftId="draftId" @albumEditDetail="albumEditDetail" @delDraft="delDraftDetailAction"/>
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp v-if="showPPP" :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics"
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
@@ -178,7 +178,11 @@ export default class ClassName extends BaseNode {
     addText: string = ADD_PIC_VIDEO
     maxNum: number = 9
     draftId: string = ""
-    albumList: any[] = [];
+    albumData:any = {
+        list:[],
+        cover:'',
+        prove:''
+    }
     code: string = ""
     tempVideoFile: any = {}
     isTempVideo: boolean = false//是否是临时video路径(未将视频保存至本地)
@@ -207,7 +211,7 @@ export default class ClassName extends BaseNode {
 
                 }
                 if (query.albumList) {
-                    this.albumList = JSON.parse(query.albumList)
+                    this.albumData.list = JSON.parse(query.albumList)
                 }
                 uni.$on("cardForumDelVideo", this.cardForumDelVideo)
             })
@@ -215,10 +219,10 @@ export default class ClassName extends BaseNode {
 
     }
     public get albumRelease(): boolean {
-        return this.albumList.length > 0 || this.formData.tp == 3
+        return this.albumData.list.length > 0 || this.formData.tp == 3
     }
     eventAlbum() {
-        uni.$on("editAlbum", (res: any) => this.albumList = res)
+        uni.$on("editAlbum", (res: any) => this.albumData.list = res)
     }
     albumEditDetail(data: any) {
         this.formData.title = data.title;
@@ -507,7 +511,7 @@ export default class ClassName extends BaseNode {
             await this.assignFormData(false)
             const Draft = {
                 ...this.formData,
-                list: this.albumList,
+                ...this.albumData,
                 selectTopics: this.selectTopics
             }
             await storageDraft(Draft, this.albumRelease ? "cardBook" : "dynamic", this.draftId || "")
@@ -517,7 +521,7 @@ export default class ClassName extends BaseNode {
                 showCancel: false,
                 success: (res: any) => {
                     if (res.confirm) {
-                        app.platform.pageBack()
+                        uni.switchTab({ url: '/pages/index/userinfo_v3' });
                     }
                 }
             })
@@ -640,6 +644,13 @@ export default class ClassName extends BaseNode {
                         }
                     }
                 })
+            }
+        }
+        if(data.list){
+            this.albumData = {
+                list:data.list,
+                cover:data.cover,
+                prove:data.prove
             }
         }
     }

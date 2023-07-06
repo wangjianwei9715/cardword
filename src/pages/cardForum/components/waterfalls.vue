@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 11:40:58
- * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-06 12:02:17
+ * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
 <template>
@@ -17,7 +17,10 @@
                 <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
+                            <view v-if="item.type=='cardBook' && item.cover==''" class="cardBook-nullpic">
+                                <image class="wait-pic" src="@/static/illustration/icon_wait.png"/>
+                            </view>
+                            <image v-else-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
                                 :mode="item.mode" class="waterfall-item__image_img">
                             </image>
                             <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
@@ -29,7 +32,7 @@
                         </view>
                         <view class="waterfall-item__ft">
                             <view class="waterfall-item__ft__title">
-                                <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
+                                <text class="waterfall-item__ft__title__value">{{ item.title||'发布一个新卡册' }}</text>
                             </view>
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
@@ -82,7 +85,10 @@
                 <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
+                            <view v-if="item.type=='cardBook' && item.cover==''" class="cardBook-nullpic">
+                                <image class="wait-pic" src="@/static/illustration/icon_wait.png"/>
+                            </view>
+                            <image v-else-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
                                 :mode="item.mode" class="waterfall-item__image_img">
                             </image>
                             <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
@@ -94,7 +100,7 @@
                         </view>
                         <view class="waterfall-item__ft">
                             <view class="waterfall-item__ft__title">
-                                <text class="waterfall-item__ft__title__value">{{ item.title }}</text>
+                                <text class="waterfall-item__ft__title__value">{{ item.title||'发布一个新卡册' }}</text>
                             </view>
                         </view>
                         <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
@@ -230,6 +236,10 @@
     <!-- #endif -->
 </template>
 <script>
+const CardBookJumpUrl = {
+    1:'/pages/illustration/album/selectCard',
+    2:'/pages/illustration/album/picUpload'
+}
 const MAX_HEIGHT = uni.upx2px(440)
 const WIDTH = uni.upx2px(360)
 const MIN_HEIGHT = uni.upx2px(246)
@@ -242,6 +252,7 @@ const LIEK = 4
 import mixin from './function/mixin.js'
 import { delDraftDetail } from "../func/index.js"
 import empty from "@/components/empty/empty.vue"
+import { getDraftDetail } from "../func"
 // #ifdef APP-NVUE
 const dom = weex.requireModule('dom')
 // #endif
@@ -510,6 +521,15 @@ export default {
             //     url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
             // })
             if (this.type == "draftList") {
+                if(item.type=="cardBook"){
+                    const data = getDraftDetail(item.draftId, app.data.userId);
+                    if(data.step){
+                        uni.navigateTo({
+                            url:`${CardBookJumpUrl[data.step]}?draftList=${encodeURIComponent(JSON.stringify(data.list))}`
+                        })
+                        return;
+                    }
+                }
                 uni.navigateTo({
                     url: "/pages/cardForum/release?draftId=" + item.draftId
                 })

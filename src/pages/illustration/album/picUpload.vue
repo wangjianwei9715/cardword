@@ -3,13 +3,13 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 10:31:24
+ * @LastEditTime: 2023-07-06 11:24:17
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="album-card-content">
-		<navigationbar title="上传卡片" :customBack="edit" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true" @back="sheet.show=true">
+		<navigationbar title="上传卡片" :customBack="edit||draft" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true" @back="sheet.show=true">
 			<template slot="right">
 				<view class="segment" @click="segmentCheck=!segmentCheck">
 					<view class="check" :class="{'check_':segmentCheck}"></view>
@@ -63,6 +63,7 @@
 		selectSeries:any = [];
 		segmentCheck = false;
 		edit = false;
+		draft = false;
 		sheet = {
 			show:false,
 			list:[
@@ -76,6 +77,11 @@
 				this.selectSeries = res;
 			})
 			if (query.draftList) {
+				this.draft = true;
+				this.sheet.list = [
+					{ id:1, name:'选择卡种' },
+					{ id:3, name:'退出编辑' },
+				]
 				this.selectSeries = JSON.parse(query.draftList)
 			}
 			if(query.selectSeries){
