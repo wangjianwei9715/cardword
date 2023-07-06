@@ -82,6 +82,7 @@ interface KamiGiveData {
     ts: number
     /**签名 */
     sign: string
+    userId: number;
 }
 @Component({})
 export default class ClassName extends BaseNode {
@@ -110,12 +111,13 @@ export default class ClassName extends BaseNode {
     showGive: boolean = false
     code: string = ""
     onLoad(query: any) {
-        // this.reqNewData()
+        // 
         this.code = query.code
         //@ts-ignore
         const eventChannel = this.getOpenerEventChannel();
         eventChannel.on('receiveInfo', (data: ReceiveInfo) => {
             if (data) this.receiveInfo = data
+            this.reqNewData()
             console.log(this.receiveInfo);
         })
     }
@@ -165,28 +167,32 @@ export default class ClassName extends BaseNode {
     }
     give() {
         uni.showLoading({
-            title: ""
+            title: "",
+            mask:true
         })
         const ts: number = Math.round(+new Date() / 1000)
         const data: KamiGiveData = {
             goodCode: this.receiveInfo.goodCode,
             noId: this.selectIds,
             ts,
-            sign: Md5.hashStr(`applyTransfer_${ts}_${this.receiveInfo.goodCode}_${this.selectIds.join(",")}_${this.code}`)
+            userId: this.receiveInfo.userId,
+            sign: Md5.hashStr(`applyTransfer_${ts}_${this.receiveInfo.goodCode}_${this.selectIds.join(",")}_${this.receiveInfo.userId}`)
         }
-        app.http.Post(`cardCircle/send/cardNo/${this.code}`, data, (res: any) => {
+        app.http.Post(`cardCircle/userNo/transfer/applyBatch/${this.code}`, data, (res: any) => {
             uni.hideLoading()
             uni.showToast({
                 title: "赠送成功"
             })
             app.platform.UINotificationFeedBack("success")
             this.showGive = false
+            this.queryParams.pageIndex = 1
+            this.reqNewData()
         }, (err: any) => {
             uni.hideLoading()
         })
     }
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi`, this.queryParams, (res: any) => {
+        app.http.Get(`dataApi/function/userNo/transfer/good/${this.receiveInfo.goodCode}/list`, this.queryParams, (res: any) => {
             const list = res.list || []
             this.totalPage = res.totalPage
             this.queryParams.pageIndex == 1 ? this.list = list : this.list.push(...list)
