@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-27 18:18:15
+ * @LastEditTime: 2023-07-06 15:07:39
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -11,7 +11,7 @@
 	<view class="content">
 		<view class="record-index" v-for="(item,index) in recordList" :key="index" @click="onClickGoDetail(item)">
 			<view class="header">
-				<view class="time">{{$u.timeFormat(item.created_at,'yyyy-mm-dd hh:MM')}}</view>
+				<view class="time">{{$u.timeFormat(item.createdAt,'yyyy-mm-dd hh:MM')}}</view>
 				<view class="status">{{statusMsg(item)}}</view>
 			</view>
 			<view class="center">
