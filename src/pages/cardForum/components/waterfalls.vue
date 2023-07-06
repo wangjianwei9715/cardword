@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 16:36:06
+ * @LastEditTime: 2023-07-06 16:57:57
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -657,7 +657,7 @@ export default {
                 item.mode = "widthFix"
             }
             // #ifndef APP-NVUE
-            
+
             // #endif
             this.pushTimer && clearTimeout(this.pushTimer)
             this.pushTimer = setTimeout(() => {
@@ -1054,9 +1054,11 @@ $uvui-nvue-style: true !default;
     align-items: center;
     justify-content: center;
 
-    .wait-pic {
-        width: 91rpx;
-        height: 78rpx;
-    }
+
+}
+
+.wait-pic {
+    width: 91rpx;
+    height: 78rpx;
 }
 </style>
