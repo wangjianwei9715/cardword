@@ -78,7 +78,7 @@
                 <waterfalls column-count="2" v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')"
                     :ref="`waterfalls${tabIndex}`" left-gap="5" :height="scrollViewHeight + 'px'" :value="tab.list"
                     right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
-                    @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;">
+                    @refresh="onRefresh(tabIndex)" style="padding-top: 10rpx;">
                 </waterfalls>
                 <template v-if="tab.type == 'topics'">
                     <topicList :value="tab.list" style="margin-top: 10rpx;"></topicList>
@@ -306,6 +306,17 @@ export default {
             }
 
             //获取新数据
+        },
+        onRefresh(){
+            setTimeout(() => {
+                this.current.queryParams.fetchFrom = 1
+                this.refreshData(this.tabs.index)
+                // this.reqNewData(true, (() => {
+                //     setTimeout(() => {
+                //         this.$refs['waterfalls' + index][0].hideRefresh()
+                //     }, 200);
+                // }))
+            }, 300)
         },
         clearLog() {
             this.cardSearchLog = []

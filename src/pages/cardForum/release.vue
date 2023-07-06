@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 16:03:04
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-06 17:52:08
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -83,7 +83,7 @@
                     <image src="@/static/cardForum/release/caogao.png"></image>
                     <text>存草稿</text>
                 </view>
-                <view class="submit flexCenter" @click="onClickSubmit">{{ code ? "保存" : "发布" }}动态</view>
+                <view class="submit flexCenter" @click="$u.throttle(onClickSubmit, 1000)">{{ code ? "保存" : "发布" }}动态</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
