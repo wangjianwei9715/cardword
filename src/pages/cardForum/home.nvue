@@ -163,8 +163,7 @@ const actionsList = [
         url: "/pages/cardForum/release"
     }, {
         name: "卡册",
-        subname: "制作图片对应卡种的高质量卡册，适用于凑套等",
-        url:"/pages/illustration/album/selectCard"
+        subname: "制作图片对应卡种的高质量卡册，适用于凑套等"
     }
 ]
 const tabsList = [
@@ -287,9 +286,8 @@ export default {
             return this.tabs.index === 2
         },
         navOpacity() {
-            // if (this.oldIndex == 0) return 1
-            // console.log(this.dx);
             if (this.tabs.index == 1) {
+                if (this.dx == app.platform.systemInfo.screenWidth) return 1
                 return (app.platform.systemInfo.screenWidth - this.dx) / app.platform.systemInfo.screenWidth
             }
             if (this.isShowKa) {
@@ -298,6 +296,7 @@ export default {
                 return (Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
             }
             if (this.tabs.index === 3 && this.dx < 0) {
+                if (this.dx == -app.platform.systemInfo.screenWidth) return 1
                 return (app.platform.systemInfo.screenWidth - Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
             } else {
                 return 1
@@ -382,9 +381,9 @@ export default {
         swiperChange(event) {
             console.log("swiperChangeChange了了了");
             this.tabs.index = event.detail.current
-            setTimeout(() => {
-                this.dx = 0
-            }, 10)
+            // setTimeout(() => {
+            //     this.dx = 0
+            // }, 10)
         },
         transitionend(event) {
             console.log("66666666", event);
@@ -419,12 +418,11 @@ export default {
         refreshData(index) {
             setTimeout(() => {
                 this.current.queryParams.fetchFrom = 1
-                this.reqNewData(true, () => {
+                this.reqNewData(true, (() => {
                     setTimeout(() => {
                         this.$refs['waterfalls' + index][0].hideRefresh()
                     }, 200);
-                })
-
+                }))
             }, 300)
         },
         loadmoreData(index) {
@@ -465,17 +463,12 @@ export default {
 
                 query.flush = 1
             }
-            // query.deviceId = app.platform.systemInfo.deviceId
-            console.log(query);
             app.http.Get(`dataApi/${this.current.url || "cardCircle/list"}`, query, (res) => {
                 this.current.isFetchEnd = res.isFetchEnd
                 if (isRefresh) {
                     this.current.list = []
-                    // this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
                 }
-                // console.log(res.list);
                 this.current.list.push(...res.list || [])
-                // console.log(this.current.list);
                 this.current.firstReqEnd = true
                 cb && cb()
             }, (err) => {

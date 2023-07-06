@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 16:08:44
+ * @LastEditTime: 2023-07-06 16:36:06
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -23,9 +23,7 @@
                                 <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
                             </view>
                             <image v-else-if="item.mode" :style="{ height: item.height + 'px', width: item.width + 'px' }"
-                                :mode="item.mode"
-                                :src="parsePic(decodeURIComponent(item.cover)) + `?x-oss-process=image/resize,m_fixed,h_${parseInt(item.height * 2)},w_${parseInt(item.width * 2)}`"
-                                class="waterfall-item__image_img">
+                                :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
                             </image>
                             <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
                                 style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
@@ -93,9 +91,7 @@
                                 <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
                             </view>
                             <image v-else-if="item.mode" :style="{ height: item.height + 'px', width: item.width + 'px' }"
-                                :mode="item.mode"
-                                :src="parsePic(decodeURIComponent(item.cover)) + `?x-oss-process=image/resize,m_fixed,h_${parseInt(item.height * 2)},w_${parseInt(item.width * 2)}`"
-                                class="waterfall-item__image_img">
+                                :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
                             </image>
                             <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
                                 style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
@@ -236,7 +232,7 @@
                 </div>
             </div>
         </cell>
-        <header style="margin-top:50rpx" v-if="tempList.length">
+        <header style="margin-top:50rpx" v-if="copyValue.length">
             <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </header>
@@ -615,6 +611,7 @@ export default {
                 this.tempList.splice(index, 1)
             }
         },
+
         h5ImageLoad(event, item) {
 
             // event.detail.width = event.detail.width * 100
@@ -660,13 +657,14 @@ export default {
                 item.mode = "widthFix"
             }
             // #ifndef APP-NVUE
+            
+            // #endif
             this.pushTimer && clearTimeout(this.pushTimer)
             this.pushTimer = setTimeout(() => {
                 this.$forceUpdate()
-            }, 200)
-            // #endif
+            }, 100)
             // #ifdef APP-NVUE
-            this.tempList.push(item)
+            // this.tempList.push(item)
             bufferImgList.push({
                 code: item.code,
                 cover: item.cover,
@@ -674,6 +672,12 @@ export default {
                 width: item.width
             })
             // #endif
+        },
+        imageUrl(item) {
+            const deCover = this.parsePic(decodeURIComponent(item.cover))
+            const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
+            if (isVideoSnapshot) return deCover
+            return deCover + `?x-oss-process=image/resize,m_fixed,h_${parseInt(item.height * 2)},w_${parseInt(item.width * 2)}`
         },
         thumbnail(cover) {
             if (!cover) return cover
@@ -798,7 +802,7 @@ export default {
             }
             // #endif
             // #ifdef APP-NVUE
-            const index = this.tempList.findIndex((item) => {
+            const index = this.value.findIndex((item) => {
                 return item.code == code
             })
             return { index: index, list: null }
@@ -815,7 +819,7 @@ export default {
             // #endif
             // #ifdef APP-NVUE
             if (index >= 0) {
-                this.tempList.splice(index, 1)
+                this.value.splice(index, 1)
             }
             // #endif
         },
@@ -829,8 +833,8 @@ export default {
             // #endif
             // #ifdef APP-NVUE
             if (index >= 0) {
-                this.tempList[index].bit = res.bit
-                this.tempList[index].likeNum = res.likeNum
+                this.value[index].bit = res.bit
+                this.value[index].likeNum = res.likeNum
             }
             // #endif
         },
@@ -843,7 +847,7 @@ export default {
             // #endif
             // #ifdef APP-NVUE
             if (index >= 0) {
-                this.tempList[index].status = res.private ? 2 : 1
+                this.value[index].status = res.private ? 2 : 1
             }
             // #endif
         },
@@ -858,8 +862,8 @@ export default {
             // #endif
             // #ifdef APP-NVUE
             if (index >= 0) {
-                this.tempList[index].title = res.formData.title
-                this.tempList[index].cover = res.formData.cover
+                this.value[index].title = res.formData.title
+                this.value[index].cover = res.formData.cover
             }
             // #endif
         }
@@ -1041,16 +1045,18 @@ $uvui-nvue-style: true !default;
     position: relative;
     left: 2rpx;
 }
-.cardBook-nullpic{
-    width:360rpx;
-    height:430rpx;
+
+.cardBook-nullpic {
+    width: 360rpx;
+    height: 430rpx;
     background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    .wait-pic{
+
+    .wait-pic {
         width: 91rpx;
-        height:78rpx;
+        height: 78rpx;
     }
 }
 </style>
