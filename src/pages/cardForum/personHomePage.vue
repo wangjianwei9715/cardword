@@ -46,7 +46,8 @@
             </view>
         </view>
         <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
-            <u-tabs customType="cardForum" style="width:750rpx"
+            <u-tabs customType="cardForum"
+                :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx',padding:0 }"
                 :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
@@ -85,7 +86,7 @@ const mineTabs: any = [
     },
     {
         name: '卡册',
-        url: "cardCircle/list/me/kace"
+        url: "me/album/list"
     },
     {
         name: '收藏',
@@ -132,6 +133,7 @@ const defaultTagObj = {
     }
 })
 export default class ClassName extends BaseNode {
+    app = app
     isMine: boolean = false
     userInfo: any = {}
     navHeight = navHeight
@@ -149,6 +151,8 @@ export default class ClassName extends BaseNode {
         this.isMine = query.isMine == "1" //后续解除注释
         this.getUserInfo()
         this.initTab()
+    }
+    beforeDestroy() {
     }
     onShow() {
         if (this.isMine) {
@@ -240,6 +244,10 @@ export default class ClassName extends BaseNode {
         }, (err: any) => {
             this.current.firstReqEnd = true
         })
+    }
+    onDelCardForum() {
+        this.current.queryParams.fetchFrom = 1
+        this.reqData(true)
     }
     getUserInfo() {
         const url = this.isMine ? `cardCircle/me/home` : `cardCircle/user/home`
@@ -415,9 +423,9 @@ page {
 }
 
 .tabs {
-    width: 500rpx;
-    flex-direction: row;
-    justify-content: center;
+    // width: 500rpx;
+    // flex-direction: row;
+    // justify-content: center;
 }
 
 .flex1 {
@@ -462,7 +470,7 @@ page {
     border-radius: 3rpx;
     margin-bottom: 10rpx;
     display: flex;
-    
+
 }
 
 .draftWrapImage {
