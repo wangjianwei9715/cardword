@@ -2,10 +2,12 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 17:18:00
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 17:04:02
+ * @LastEditTime: 2023-07-06 11:14:49
  * @FilePath: \card-world\src\manager\userManager.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { Md5 } from "ts-md5"
+import { app } from "@/app"
 export interface UserStreamline {
     userName: string;
     avatar: string;
@@ -61,5 +63,20 @@ export default class userManager {
         console.log(Object.values(this._userInfo).filter(Boolean).length == 0);
         const nowTime: number = Math.round(+new Date() / 1000)
         return (this.needRefresh || (nowTime - this._agoTime >= this._saveTime) || (Object.values(this._userInfo).filter(Boolean).length == 0))
+    }
+    setViewerId() {
+        return new Promise((re, rj) => {
+            const ts: number = Math.round(+new Date() / 1000)
+            const deviceId: string = uni.getSystemInfoSync().deviceId
+            HttpRequest.getIns().Post("cardCircle/viewerId", { deviceId, ts, sn: Md5.hashStr(`viewerId_${ts}_${deviceId}`) }, (res: any) => {
+                console.log("resresresresresres", res);
+                app.viewerId = res.viewerId
+                uni.setStorageSync("viewerId", res.viewerId)
+                re(res.viewerId)
+                return
+            }, (err: any) => {
+                rj(err)
+            })
+        })
     }
 }

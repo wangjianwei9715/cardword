@@ -4,7 +4,7 @@
             :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
-            <view class="userInfo" @click="navigateTo(`/pages/cardForum/personHome?isMine=1&userId=${infoData.userId}`)">
+            <view class="userInfo" @click="navigateTo(`/pages/cardForum/personHomePage?isMine=1&userId=${infoData.userId}`)">
                 <image class="userInfo_avatar" mode="aspectFill"
                     :src="infoData.avatar ? $parsePic(decodeURIComponent(infoData.avatar)) : defaultAvatar">
                 </image>

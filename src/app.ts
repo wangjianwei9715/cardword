@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-19 17:19:05
+ * @LastEditTime: 2023-07-06 11:01:14
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -65,4 +65,5 @@ export module app{
     export let orderRich = true; //卡密特效默认开启
 	export let broadcastActor = false; 
 	export let picEncryptionKey='ksjreskey2022%^&'
+    export let viewerId=uni.getStorageSync("viewerId") || ""
 }

@@ -15,7 +15,7 @@
 					<view class="userInfo">
 						<view class="userName">{{ item.userName }}</view>
 						<view class="userData">
-							粉丝{{ item.fans }}丨动态1
+							粉丝{{ item.fans }} {{ item.dtNum ? ` | 动态${item.dtNum}` : "" }}
 						</view>
 					</view>
 					<view class="followButton flexCenter" @click.stop="onClickFollow(item, index, 0)">已关注</view>
@@ -267,6 +267,7 @@ export default class ClassName extends BaseNode {
 	margin-top: 52rpx;
 	box-sizing: border-box;
 	padding: 0 34rpx;
+
 	.avatar {
 		width: 73rpx;
 		height: 73rpx;

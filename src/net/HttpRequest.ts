@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 10:42:23
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-06 11:07:11
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -159,6 +159,9 @@ export default class HttpRequest {
 				if (!config.headers['token'] && app.token.accessToken !== '') { 
 					config.headers['token'] = app.token.accessToken; 
 				} 
+			}
+			if(app.viewerId){
+				config.headers['viewerId'] = app.viewerId; 
 			}
 			for (const data of this.headersData) { 
 				if (url.indexOf(data.url) !== -1) { 

@@ -109,7 +109,8 @@
                 <div class="nav">
                     <div class="navSearchWrap" :class="{ navSearchWrap_showka: isShowKa }"
                         @click="pageJump('/pages/cardForum/search')">
-                        <input class="navInput" type="text" placeholder="搜你想搜..." disabled @click="pageJump('/pages/cardForum/search')"/>
+                        <input class="navInput" type="text" placeholder="搜你想搜..." disabled
+                            @click="pageJump('/pages/cardForum/search')" />
                         <div class="nav_search flexCenter" :class="{ nav_search_showka: isShowKa }"
                             :style="{ backgroundColor: `rgba(250, 21, 69, ${isShowKa ? 0 : navOpacity})` }">
                             <text class="nav_search_text flexCenter">搜索</text>
@@ -246,9 +247,15 @@ export default {
         }
     },
     async onLoad() {
-        console.log(app.platform.systemInfo);
-        await this.initTab()
-        this.reqNewData(true)
+        try {
+            console.log(app.platform.systemInfo);
+            await app.user.setViewerId()
+            await this.initTab()
+            this.reqNewData(true)
+        } catch (err) {
+            await this.initTab()
+            this.reqNewData(true)
+        }
     },
     onShow() {
         this.$nextTick(() => {
@@ -394,7 +401,7 @@ export default {
             this.tabs.index = event.index
         },
         onSelectAction(item) {
-            if (item.url) { 
+            if (item.url) {
                 uni.navigateTo({
                     url: item.url
                 })
@@ -450,14 +457,16 @@ export default {
             if (isRefresh) {
                 query.flush = 1
             }
-            query.deviceId = app.platform.systemInfo.deviceId
+            // query.deviceId = app.platform.systemInfo.deviceId
             app.http.Get(`dataApi/${this.current.url || "cardCircle/list"}`, query, (res) => {
                 this.current.isFetchEnd = res.isFetchEnd
                 if (isRefresh) {
                     this.current.list = []
-                    this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
+                    // this.$refs['waterfalls' + this.tabs.index] && (this.$refs['waterfalls' + this.tabs.index][0].tempList = [])
                 }
+                // console.log(res.list);
                 this.current.list.push(...res.list || [])
+                // console.log(this.current.list);
                 this.current.firstReqEnd = true
                 cb && cb()
             }, (err) => {

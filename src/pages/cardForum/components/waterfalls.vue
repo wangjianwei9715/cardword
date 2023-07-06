@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 18:19:23
+ * @LastEditTime: 2023-07-06 11:40:58
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -17,13 +17,11 @@
                 <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="thumbnail(item.cover)" style="opacity:0;width:0px;height:0px;position:absolute"
-                                @load="imageLoad($event, item)">
-                            </image>
                             <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
                                 :mode="item.mode" class="waterfall-item__image_img">
                             </image>
-                            <image v-else class="defaultImg" style="width:360rpx;height:430rpx;background-color: #fff;">
+                            <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
+                                style="width:360rpx;height:430rpx;background-color: #fff;display: none;">
                             </image>
                             <view class="videoIconWrap" v-if="item.video_at">
                                 <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
@@ -84,13 +82,11 @@
                 <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
-                            <image :src="thumbnail(item.cover)" style="opacity:0;width:0px;height:0px;position:absolute"
-                                @load="imageLoad($event, item)">
-                            </image>
                             <image v-if="item.mode" style="width:360rpx" :src="parsePic(decodeURIComponent(item.cover))"
                                 :mode="item.mode" class="waterfall-item__image_img">
                             </image>
-                            <image v-else class="defaultImg" style="width:360rpx;height:430rpx;background-color: #fff;">
+                            <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
+                                style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
                             </image>
                             <view class="videoIconWrap" v-if="item.video_at">
                                 <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
@@ -170,10 +166,13 @@
             <empty v-if="!value.length && showEmpty"></empty>
         </header>
         <slot name="cell"></slot>
-        <cell v-for="(item, index) in tempList" class="waterfall-item-grayWrap" @click="goToDetail(item)"
+        <cell v-for="(item, index) in value" class="waterfall-item-grayWrap" @click="goToDetail(item)"
             @appear="comAppear($event, item)">
-            <div class="waterfall-item" v-if="item.mode">
+            <div class="waterfall-item">
                 <div class="waterfall-item__image">
+                    <!-- <image v-if="!item.mode" class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
+                        style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
+                    </image> -->
                     <image v-if="item.mode == 'widthFix'" style="width: 360rpx;"
                         :src="parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="widthFix">
                     </image>
@@ -238,6 +237,7 @@ const GAP = uni.upx2px(10)
 const app = getApp().globalData.app
 let exposureList = []
 let alreadyList = []
+let bufferImgList = []
 const LIEK = 4
 import mixin from './function/mixin.js'
 import { delDraftDetail } from "../func/index.js"
@@ -269,7 +269,7 @@ export default {
         // 如数据为：{id: 1, name: 'uv-ui'}，那么该值设置为id
         idKey: {
             type: String,
-            default: 'id'
+            default: 'code'
         },
         // 每次插入数据的事件间隔，间隔越长能保证两列高度相近，但是用户体验不好，单位ms
         addTime: {
@@ -418,6 +418,7 @@ export default {
     watch: {
         copyValue(nVal, oVal) {
             // #ifndef APP-NVUE
+            console.log("this.$refs.waterfall.clear();", nVal);
             if (nVal.length != 0) {
                 // 取出数组发生变化的部分
                 let startIndex = Array.isArray(oVal) && oVal.length > 0 ? oVal.length : 0
@@ -454,7 +455,7 @@ export default {
             this.refreshing = true
         },
         comAppear(event, item) {
-            if(!this.needExposure) return
+            if (!this.needExposure) return
             if (this.needExposure && item.uploadExposure) {
                 exposureList.push(item.code)
                 uni.$u.debounce(() => {
@@ -489,8 +490,9 @@ export default {
             const newArray = [...new Set(exposureList)].filter((code) => {
                 return !alreadyList.includes(code)
             });
+            // , deviceId: app.platform.systemInfo.deviceId 
             if (!newArray || !newArray.length) return
-            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray, deviceId: app.platform.systemInfo.deviceId }, () => {
+            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray}, () => {
                 alreadyList.push(...newArray)
             })
         },
@@ -515,7 +517,7 @@ export default {
             }
             if (item.video_at > 0) {
                 uni.navigateTo({
-                    url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}${this.isMine?"&fromMine=1":""}`
+                    url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}${this.isMine ? "&fromMine=1" : ""}`
                 })
                 return
             }
@@ -570,6 +572,26 @@ export default {
                 this.tempList.splice(index, 1)
             }
         },
+        h5ImageLoad(event, item) {
+            // console.log(event);
+            const widthFixHeight = (WIDTH / event.detail.width) * event.detail.height
+            if (widthFixHeight > MAX_HEIGHT) {
+                item.mode = "aspectFit"
+                item.width = (event.detail.width / event.detail.height) * MAX_HEIGHT
+            } else {
+                item.mode = "widthFix"
+            }
+            bufferImgList.push({
+                code: item.code,
+                cover: item.cover,
+                mode: item.mode,
+                width: item.width
+            })
+            this.pushTimer && clearTimeout(this.pushTimer)
+            this.pushTimer = setTimeout(() => {
+                this.$forceUpdate()
+            }, 200)
+        },
         imageLoad(event, item) {
             // #ifdef APP-NVUE
             if (item.mode || item.width) return
@@ -590,6 +612,12 @@ export default {
             // #endif
             // #ifdef APP-NVUE
             this.tempList.push(item)
+            bufferImgList.push({
+                code: item.code,
+                cover: item.cover,
+                mode: item.mode,
+                width: item.width
+            })
             // #endif
         },
         thumbnail(cover) {
@@ -626,6 +654,14 @@ export default {
             const minCol = this.getMin(rectArr);
             // 列宽可能使用的到
             item.width = minCol.width;
+            const findItem = bufferImgList.find((buffer) => {
+                buffer.cover == item.cover
+            })
+            if (findItem) {
+                item.mode = findItem.mode
+                item.width = findItem.width
+            }
+            // console.log(item);
             this[`list${minCol.name}`].push(item);
             emitList.name = `list${minCol.name}`;
             emitList.value = item;
@@ -639,7 +675,7 @@ export default {
                 // #ifdef MP-BAIDU
                 _timeout = _timeout < 200 ? 200 : _timeout;
                 // #endif
-                await this.$uv.sleep(_timeout);
+                await this.$uv.sleep(100);
                 this.splitData()
             } else {
                 this.$emit('finish')
@@ -654,6 +690,7 @@ export default {
         },
         // 清空数据列表
         async clear() {
+            console.log("清空数据咯");
             // #ifdef VUE2
             this.$emit('input', [])
             // #endif
@@ -661,6 +698,8 @@ export default {
             this.$emit('update:modelValue', [])
             // #endif
             this.tempList = []
+            this.list1 = []
+            this.list2 = []
             await this.$uv.sleep(300);
             this.$emit('clear');
         },
@@ -714,9 +753,10 @@ export default {
         onDelCardForum(code) {
             const { index, list } = this.findIndex(code)
             // #ifndef APP-NVUE
-            if (index >= 0) {
-                this[list].splice(index, 1)
-            }
+            // if (index >= 0) {
+            //     this[list].splice(index, 1)
+            // }
+            this.remove(code)
             // #endif
             // #ifdef APP-NVUE
             if (index >= 0) {
