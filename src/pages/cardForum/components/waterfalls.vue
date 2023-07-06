@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 11:40:58
+ * @LastEditTime: 2023-07-06 14:01:02
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -11,9 +11,10 @@
     <view class="uv-waterfall">
         <view class="uv-waterfall__gap_left" style="width:10rpx;opcity:0"></view>
         <view id="uv-waterfall-1" class="uv-waterfall__column">
-            <slot name="list1"></slot>
+
             <!-- slot示例 -->
             <view>
+                <slot name="list1"></slot>
                 <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item" @click="goToDetail(item)">
                         <view class="waterfall-item__image">
@@ -21,7 +22,7 @@
                                 :mode="item.mode" class="waterfall-item__image_img">
                             </image>
                             <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
-                                style="width:360rpx;height:430rpx;background-color: #fff;display: none;">
+                                style="width:360rpx;height:430rpx;background-color: #fff;display: none;opacity: 0;">
                             </image>
                             <view class="videoIconWrap" v-if="item.video_at">
                                 <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
@@ -156,23 +157,25 @@
             <div ref="goTop" style="width: 0;height: 0;"></div>
         </header>
         <header>
-            <image v-for="(item, index) in value" :src="thumbnail(item.cover)"
-                style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)"
-                @error="imageLoadError($event, item)">
-            </image>
+            <div v-for="(item, index) in copyValue" style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;">
+                <image :src="thumbnail(item.cover)" v-if="!item.mode"
+                    style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)"
+                    @error="imageLoadError($event, item)">
+                </image>
+            </div>
         </header>
         <slot name="header"></slot>
         <header>
-            <empty v-if="!value.length && showEmpty"></empty>
+            <empty v-if="!copyValue.length && showEmpty"></empty>
         </header>
         <slot name="cell"></slot>
-        <cell v-for="(item, index) in value" class="waterfall-item-grayWrap" @click="goToDetail(item)"
+        <cell v-for="(item, index) in copyValue" class="waterfall-item-grayWrap" @click="goToDetail(item)"
             @appear="comAppear($event, item)">
             <div class="waterfall-item">
                 <div class="waterfall-item__image">
-                    <!-- <image v-if="!item.mode" class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
+                    <div v-if="!item.mode" class="defaultImg"
                         style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
-                    </image> -->
+                    </div>
                     <image v-if="item.mode == 'widthFix'" style="width: 360rpx;"
                         :src="parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="widthFix">
                     </image>
@@ -381,7 +384,21 @@ export default {
         // 破坏value变量引用，否则数据会保持不变
         copyValue() {
             // #ifdef VUE2
-            return this.$uv.deepClone(this.value)
+            let newArr = this.$uv.deepClone(this.value)
+            // #ifdef APP-NVUE
+            newArr = newArr.map(item => {
+                const findItem = bufferImgList.find(buffer => {
+                    return buffer.cover === item.cover
+                })
+                // console.log("找到的item", findItem);
+                if (findItem) {
+                    item.mode = findItem.mode
+                    item.width = findItem.width
+                }
+                return item
+            })
+            // #endif
+            return newArr
             // #endif
             // #ifdef VUE3
             return this.$uv.deepClone(this.modelValue)
@@ -417,8 +434,8 @@ export default {
     },
     watch: {
         copyValue(nVal, oVal) {
-            // #ifndef APP-NVUE
             console.log("this.$refs.waterfall.clear();", nVal);
+            // #ifndef APP-NVUE
             if (nVal.length != 0) {
                 // 取出数组发生变化的部分
                 let startIndex = Array.isArray(oVal) && oVal.length > 0 ? oVal.length : 0
@@ -427,6 +444,7 @@ export default {
                 this.splitData()
             }
             // #endif
+
         }
     },
     mounted() {
@@ -492,7 +510,7 @@ export default {
             });
             // , deviceId: app.platform.systemInfo.deviceId 
             if (!newArray || !newArray.length) return
-            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray}, () => {
+            app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray }, () => {
                 alreadyList.push(...newArray)
             })
         },
@@ -880,6 +898,9 @@ $uvui-nvue-style: true !default;
     border-radius: 5rpx;
     overflow: hidden;
     position: relative;
+    // #ifndef APP-NVUE
+    min-height: 300rpx;
+    // #endif
 }
 
 .waterfall-item__image_img {

@@ -207,7 +207,7 @@ const app = getApp().globalData.app;
 const defaultTagObj = {
     queryParams: {
         fetchFrom: 1,
-        fetchSize: 15,
+        fetchSize: 10,
     },
     // totalPage: 10,
     isFetchEnd: false,
@@ -249,7 +249,7 @@ export default {
     async onLoad() {
         try {
             console.log(app.platform.systemInfo);
-            await app.user.setViewerId()
+            app.user.setViewerId()
             await this.initTab()
             this.reqNewData(true)
         } catch (err) {
@@ -287,13 +287,13 @@ export default {
         },
         navOpacity() {
             // if (this.oldIndex == 0) return 1
-            console.log(this.dx);
+            // console.log(this.dx);
             if (this.tabs.index == 1) {
                 return (app.platform.systemInfo.screenWidth - this.dx) / app.platform.systemInfo.screenWidth
             }
             if (this.isShowKa) {
                 if (this.dx <= app.platform.systemInfo.screenWidth && this.dx >= app.platform.systemInfo.screenWidth - 30) return 0
-                console.log((Math.abs(this.dx)) / app.platform.systemInfo.screenWidth);
+                // console.log((Math.abs(this.dx)) / app.platform.systemInfo.screenWidth);
                 return (Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
             }
             if (this.tabs.index === 3 && this.dx < 0) {
@@ -417,14 +417,20 @@ export default {
         },
         refreshData(index) {
             setTimeout(() => {
-                this.reqNewData(true)
-                setTimeout(() => {
-                    this.$refs['waterfalls' + index][0].hideRefresh()
-                }, 200);
+                this.current.queryParams.fetchFrom = 1
+                this.reqNewData(true, () => {
+                    setTimeout(() => {
+                        this.$refs['waterfalls' + index][0].hideRefresh()
+                    }, 200);
+                })
+
             }, 300)
         },
         loadmoreData(index) {
-            if (!this.current.isFetchEnd) this.reqNewData()
+            if (!this.current.isFetchEnd) {
+                this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
+                this.reqNewData()
+            }
         },
         onClickTopic(item) {
             releaseByTopic(item.id)
@@ -455,9 +461,11 @@ export default {
                 }
             }
             if (isRefresh) {
+
                 query.flush = 1
             }
             // query.deviceId = app.platform.systemInfo.deviceId
+            console.log(query);
             app.http.Get(`dataApi/${this.current.url || "cardCircle/list"}`, query, (res) => {
                 this.current.isFetchEnd = res.isFetchEnd
                 if (isRefresh) {
@@ -525,6 +533,7 @@ page {
     top: 0;
     background-color: #fff;
     padding-bottom: 8rpx;
+    z-index: 99;
 }
 
 .navBar {
