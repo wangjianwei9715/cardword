@@ -2,154 +2,169 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 16:57:57
+ * @LastEditTime: 2023-07-06 18:16:25
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
 <template>
     <!-- #ifndef APP-NVUE -->
-    <view class="uv-waterfall">
-        <view class="uv-waterfall__gap_left" style="width:10rpx;opcity:0"></view>
-        <view id="uv-waterfall-1" class="uv-waterfall__column">
+    <view>
+        <view class="uv-waterfall">
+            <view class="uv-waterfall__gap_left" style="width:10rpx;opcity:0"></view>
+            <view id="uv-waterfall-1" class="uv-waterfall__column">
 
-            <!-- slot示例 -->
-            <view>
-                <slot name="list1"></slot>
-                <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
-                    <view class="waterfall-item" @click="goToDetail(item)">
-                        <!-- ?x-oss-process=image/resize,m_fixed,h_100,w_100 -->
-                        <view class="waterfall-item__image">
-                            <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
-                                <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
-                            </view>
-                            <image v-else-if="item.mode" :style="{ height: item.height + 'px', width: item.width + 'px' }"
-                                :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
-                            </image>
-                            <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
-                                style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
-                            </image>
-                            <view class="videoIconWrap" v-if="item.video_at">
-                                <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
-                            </view>
-                        </view>
-                        <view class="waterfall-item__ft">
-                            <view class="waterfall-item__ft__title">
-                                <text class="waterfall-item__ft__title__value">{{ item.title || '发布一个新卡册' }}</text>
-                            </view>
-                        </view>
-                        <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
-                            <template v-if="showUser">
-                                <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                    :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
-                                <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
-                                <view class="likeWrap">
-                                    <image
-                                        :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
-                                        class="likeImg"></image>
-                                    <text class="likeNum">{{ item.likeNum }}</text>
+                <!-- slot示例 -->
+                <view>
+                    <slot name="list1"></slot>
+                    <view v-for="(item, index) in list1" :key="item.index" class="waterfall-item-grayWrap">
+                        <view class="waterfall-item" @click="goToDetail(item)">
+                            <!-- ?x-oss-process=image/resize,m_fixed,h_100,w_100 -->
+                            <view class="waterfall-item__image">
+                                <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
+                                    <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
                                 </view>
-                            </template>
-                            <template v-if="!showUser && type != 'draftList'">
-                                <view class="likeWrap" style="margin-right: 44rpx;">
-                                    <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
-                                        class="likeImg"></image>
-                                    <text class="likeNum">{{ item.clickNum }}</text>
+                                <image v-else-if="item.mode"
+                                    :style="{ height: item.height + 'px', width: item.width + 'px' }" :mode="item.mode"
+                                    :src="imageUrl(item)" class="waterfall-item__image_img">
+                                </image>
+                                <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
+                                    :src="thumbnail(item.cover)"
+                                    style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
+                                </image>
+                                <view class="videoIconWrap" v-if="item.video_at">
+                                    <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
                                 </view>
-                                <view class="likeWrap">
-                                    <image
-                                        :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
-                                        class="likeImg"></image>
-                                    <text class="likeNum">{{ item.likeNum }}</text>
+                            </view>
+                            <view class="waterfall-item__ft">
+                                <view class="waterfall-item__ft__title">
+                                    <text class="waterfall-item__ft__title__value">{{ item.title || '发布一个新卡册' }}</text>
                                 </view>
-                                <template v-if="isMine && item.status && item.status == 2">
-                                    <view style="flex:1"></view>
-                                    <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                            </view>
+                            <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
+                                v-if="showBottom">
+                                <template v-if="showUser">
+                                    <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                                        :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                                     </image>
+                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷'
+                                    }}</text>
+                                    <view class="likeWrap">
+                                        <image
+                                            :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                            class="likeImg"></image>
+                                        <text class="likeNum">{{ item.likeNum }}</text>
+                                    </view>
                                 </template>
-                            </template>
-                            <template v-if="type == 'draftList'">
-                                <view class="likeNum">{{ parseTime(item.create_at) }}</view>
-                                <view style="flex:1"></view>
-                                <view @click.stop="onClickDeleteDraft(item)">
-                                    <u-icon size="36rpx" name="trash"></u-icon>
-                                </view>
-                            </template>
+                                <template v-if="!showUser && type != 'draftList'">
+                                    <view class="likeWrap" style="margin-right: 44rpx;">
+                                        <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
+                                            class="likeImg"></image>
+                                        <text class="likeNum">{{ item.clickNum }}</text>
+                                    </view>
+                                    <view class="likeWrap">
+                                        <image
+                                            :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                            class="likeImg"></image>
+                                        <text class="likeNum">{{ item.likeNum }}</text>
+                                    </view>
+                                    <template v-if="isMine && item.status && item.status == 2">
+                                        <view style="flex:1"></view>
+                                        <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                                        </image>
+                                    </template>
+                                </template>
+                                <template v-if="type == 'draftList'">
+                                    <view class="likeNum">{{ parseTime(item.create_at) }}</view>
+                                    <view style="flex:1"></view>
+                                    <view @click.stop="onClickDeleteDraft(item)">
+                                        <u-icon size="36rpx" name="trash"></u-icon>
+                                    </view>
+                                </template>
+                            </view>
                         </view>
                     </view>
                 </view>
             </view>
-        </view>
-        <view class="uv-waterfall__gap_center" style="width:10rpx;opcity:0"></view>
-        <view id="uv-waterfall-2" class="uv-waterfall__column">
-            <slot name="list2"></slot>
-            <!-- slot示例 -->
-            <view>
-                <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
-                    <view class="waterfall-item" @click="goToDetail(item)">
-                        <view class="waterfall-item__image">
-                            <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
-                                <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
-                            </view>
-                            <image v-else-if="item.mode" :style="{ height: item.height + 'px', width: item.width + 'px' }"
-                                :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
-                            </image>
-                            <image v-else class="defaultImg" @load="h5ImageLoad($event, item)" :src="thumbnail(item.cover)"
-                                style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
-                            </image>
-                            <view class="videoIconWrap" v-if="item.video_at">
-                                <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
-                            </view>
-                        </view>
-                        <view class="waterfall-item__ft">
-                            <view class="waterfall-item__ft__title">
-                                <text class="waterfall-item__ft__title__value">{{ item.title || '发布一个新卡册' }}</text>
-                            </view>
-                        </view>
-                        <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
-                            <template v-if="showUser">
-                                <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                    :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"></image>
-                                <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
-                                <view class="likeWrap">
-                                    <image
-                                        :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
-                                        class="likeImg"></image>
-                                    <text class="likeNum">{{ item.likeNum }}</text>
+            <view class="uv-waterfall__gap_center" style="width:10rpx;opcity:0"></view>
+            <view id="uv-waterfall-2" class="uv-waterfall__column">
+                <slot name="list2"></slot>
+                <!-- slot示例 -->
+                <view>
+                    <view v-for="(item, index) in list2" :key="item.index" class="waterfall-item-grayWrap">
+                        <view class="waterfall-item" @click="goToDetail(item)">
+                            <view class="waterfall-item__image">
+                                <view v-if="item.type == 'cardBook' && item.cover == ''" class="cardBook-nullpic">
+                                    <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
                                 </view>
-                            </template>
-                            <template v-if="!showUser && type != 'draftList'">
-                                <view class="likeWrap" style="margin-right: 44rpx;">
-                                    <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
-                                        class="likeImg"></image>
-                                    <text class="likeNum">{{ item.clickNum }}</text>
+                                <image v-else-if="item.mode"
+                                    :style="{ height: item.height + 'px', width: item.width + 'px' }" :mode="item.mode"
+                                    :src="imageUrl(item)" class="waterfall-item__image_img">
+                                </image>
+                                <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
+                                    :src="thumbnail(item.cover)"
+                                    style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
+                                </image>
+                                <view class="videoIconWrap" v-if="item.video_at">
+                                    <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
                                 </view>
-                                <view class="likeWrap">
-                                    <image
-                                        :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
-                                        class="likeImg"></image>
-                                    <text class="likeNum">{{ item.likeNum }}</text>
+                            </view>
+                            <view class="waterfall-item__ft">
+                                <view class="waterfall-item__ft__title">
+                                    <text class="waterfall-item__ft__title__value">{{ item.title || '发布一个新卡册' }}</text>
                                 </view>
-                                <template v-if="isMine && item.status && item.status == 2">
-                                    <view style="flex:1"></view>
-                                    <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                            </view>
+                            <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
+                                v-if="showBottom">
+                                <template v-if="showUser">
+                                    <image class="waterfall-item__bottom__avatar" mode="aspectFill"
+                                        :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                                     </image>
+                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷'
+                                    }}</text>
+                                    <view class="likeWrap">
+                                        <image
+                                            :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                            class="likeImg"></image>
+                                        <text class="likeNum">{{ item.likeNum }}</text>
+                                    </view>
                                 </template>
-                            </template>
-                            <template v-if="type == 'draftList'">
-                                <view class="likeNum">{{ parseTime(item.create_at) }}</view>
-                                <view style="flex:1"></view>
-                                <view @click.stop="onClickDeleteDraft(item)">
-                                    <u-icon size="36rpx" name="trash"></u-icon>
-                                </view>
-                            </template>
+                                <template v-if="!showUser && type != 'draftList'">
+                                    <view class="likeWrap" style="margin-right: 44rpx;">
+                                        <image src="@/static/cardForum/eye.png" style="width:31rpx;height:23rpx"
+                                            class="likeImg"></image>
+                                        <text class="likeNum">{{ item.clickNum }}</text>
+                                    </view>
+                                    <view class="likeWrap">
+                                        <image
+                                            :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                            class="likeImg"></image>
+                                        <text class="likeNum">{{ item.likeNum }}</text>
+                                    </view>
+                                    <template v-if="isMine && item.status && item.status == 2">
+                                        <view style="flex:1"></view>
+                                        <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
+                                        </image>
+                                    </template>
+                                </template>
+                                <template v-if="type == 'draftList'">
+                                    <view class="likeNum">{{ parseTime(item.create_at) }}</view>
+                                    <view style="flex:1"></view>
+                                    <view @click.stop="onClickDeleteDraft(item)">
+                                        <u-icon size="36rpx" name="trash"></u-icon>
+                                    </view>
+                                </template>
+                            </view>
                         </view>
                     </view>
                 </view>
             </view>
+            <view class="uv-waterfall__gap_right" style="width:10rpx;opcity:0">
+            </view>
         </view>
-        <view class="uv-waterfall__gap_right" style="width:10rpx;opcity:0">
-        </view>
+        <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了" />
+        <div :style="{ height: safeBottomHeight + 'px' }"></div>
     </view>
+
     <!-- #endif -->
     <!-- #ifdef APP-NVUE -->
 

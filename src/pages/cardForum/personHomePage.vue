@@ -52,7 +52,7 @@
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
         </div>
-        <waterfalls style="width: 750rpx;" :viewUserId="userId" ref="waterfall" :showBottom="current.name != '中卡'"
+        <waterfalls style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall" :showBottom="current.name != '中卡'"
             :detailBack="true" :isMine="isMine" :showUser="false" :value="tabs.list[tabs.index].list" :refresh="false"
             :showEmpty="!isMine">
             <template v-slot:list1>
