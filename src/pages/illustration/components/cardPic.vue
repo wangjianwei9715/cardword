@@ -6,7 +6,7 @@
 				<view class="icon-close" @click="showBox=false"></view>
 			</view>
 		</view>
-		<view class="center">
+		<view class="center" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
 			<statusbar/>
 			<view class="upload-box">	
 				<view class="upload-header">
@@ -56,6 +56,11 @@
 
 		peTab = ['正面','反面'];
 		peCurrent = 0;
+		touchData = {
+			startX:0,
+			moveX:0,
+			move:false
+		}
 		mounted(){//挂载到实例上去之后调用
 			
 		}
@@ -72,6 +77,22 @@
 				return
 			}
 			this.peCurrent = index;
+		}
+		handleTouchStart(event:any) {
+			this.touchData.startX = event.touches[0].clientX;
+		}
+		handleTouchMove(event:any) {
+			this.touchData.moveX = event.touches[0].clientX;
+			this.touchData.move = true;
+		}
+		handleTouchEnd() {
+			if(!this.touchData.move) return;
+			if (this.touchData.moveX - this.touchData.startX > 100) {
+				this.onClickUp()
+			} else if (this.touchData.moveX - this.touchData.startX < -100) {
+				this.onClickNext()
+			}
+			this.touchData.move = false;
 		}
 		onClickUp(){
 			if(this.currentNum<=1) return;

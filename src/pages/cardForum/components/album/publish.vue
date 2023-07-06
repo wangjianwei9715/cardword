@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 11:42:13
+ * @LastEditTime: 2023-07-06 14:54:14
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -85,7 +85,7 @@
 			return this.code!=""
 		}
 		async addImage() {
-			const picList:any = await Upload.getInstance().uploadImgs(1, "prove", ["album","camera"]);
+			const picList:any = await Upload.getInstance().uploadImgs(1, "prove", ["album"]);
 			return decodeURIComponent(picList[0])
 		}
 		async changeCover(){

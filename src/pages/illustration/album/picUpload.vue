@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 11:24:17
+ * @LastEditTime: 2023-07-06 14:41:30
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -113,7 +113,7 @@
 			}
 		}
 		async addImg(length:number){
-			const picList:any = await Upload.getInstance().uploadImgs(length, "report", ["album","camera"]);
+			const picList:any = await Upload.getInstance().uploadImgs(length, "report", ["album"]);
 			return picList
 		}
 		async segment(pic:string){
