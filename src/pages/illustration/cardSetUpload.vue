@@ -21,7 +21,7 @@
 				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic" :uploadable="hasUpload"/>
 				<view class="upload-card-info">
 					<view class="card-title">{{noData.text.player}}</view>
-					<view class="card-set u-line-2">{{noData.text.cardSet}}</view>
+					<view class="card-set u-line-2">{{noData.text.seq==0?"无限":noData.text.seq}}编，{{noData.text.cardSet}}</view>
 					<view class="card-seq">
 						<view v-if="noData.text.seq<25&&noData.text.seq>0" class="card-seq-item" :class="`logo-seq-${noData.text.seq}`">{{noData.text.seq}}编</view>
 					</view>

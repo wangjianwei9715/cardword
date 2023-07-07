@@ -47,7 +47,7 @@
                 <view class="card-info">
                     <muqian-lazyLoad class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(item.teamLogo)" />
                     <view class="card-player">{{item.player}}</view>
-                    <view class="card-set u-line-2">{{item.cardSet}}</view>
+                    <view class="card-set u-line-2">{{item.seq==0?"无限":item.seq}}编，{{item.cardSet}}</view>
                     <view class="card-logo-box">
                         <view v-if="item.seq<25&&item.seq>0" class="logo-seq" :class="`logo-seq-${item.seq}`">{{item.seq}}编</view>
                         <image v-if="item.cardSetLogo" class="logo-pic" :src="decodeURIComponent(item.cardSetLogo)"/>
@@ -141,19 +141,15 @@
 		}
 		mounted(){//挂载到实例上去之后调用
             uni.$on("seriesFilter",(res:any)=>{
-                const list:any = [...res];
                 this.initEventSelect();
                 Object.keys(this.search).forEach((x:any)=>{
-                    this.search[x].forEach((y:any)=>{
-                        list.forEach((t:any,index:number)=>{
-                            if(y.nameId == t.nameId){
-                                this.$set(this.select, x, app.platform.removeDuplicate([...this.select[x],t],'nameId'));
-                                list.splice(index,1)
-                            }
-                        })
+                    res.forEach((item:any)=>{
+                        if(x== item.type+'s'){
+                            this.$set(this.select, x, app.platform.removeDuplicate([...this.select[x],item],'nameId'));
+                        }
                     })
                 })
-                this.filterList = list;
+                this.filterList = res.filter((x:any)=>!['cardSet','player','seq'].includes(x.type));
                 this.againList()
             })
 			this.getSeriesGroup()
