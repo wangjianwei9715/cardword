@@ -4,8 +4,6 @@
         <swiper :duration="300" :style="{ height: app.platform.systemInfo.screenHeight + 'px' }" v-if="initFinish"
             class="swiperContainer" :current="tabs.index" @change="swiperChange" @transition="swiperTransition"
             @animationfinish="swiperChangeAnimationfinish">
-            <!-- @animationfinish="swiperChangeAnimationfinish" -->
-            <!-- @touchstart="swipertouchmove" @touchend="swipertouchmove" -->
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack" v-if="tabIndex === 2"></image>
                 <div style="position:absolute;display:flex;flex-direction:column;align-items:center;"
@@ -287,7 +285,6 @@ export default {
             return this.tabs.index === 2
         },
         navOpacity() {
-            // return 1
             if (this.tabs.index == 1) {
                 // if (this.dx == app.platform.systemInfo.screenWidth) return 1
                 return (app.platform.systemInfo.screenWidth - this.dx) / app.platform.systemInfo.screenWidth
@@ -426,7 +423,7 @@ export default {
                         this.$refs['waterfalls' + index][0].hideRefresh()
                     }, 200);
                 }))
-            }, 300)
+            }, 500)
         },
         loadmoreData(index) {
             if (!this.current.isFetchEnd) {

@@ -15,11 +15,11 @@
                     <cell>
                         <!-- #endif -->
                         <view class="vd-user">
-                            <image class="vd-avatar" :src="parsePic(decodeURIComponent(forumDetail.avatar))"
+                            <image class="vd-avatar" :src="forumDetail.avatar?parsePic(decodeURIComponent(forumDetail.avatar)):defaultAvatar"
                                 mode="aspectFill">
                             </image>
                             <view>
-                                <text class="vd-name_zuozhe">{{ forumDetail.userName }}</text>
+                                <text class="vd-name">{{ forumDetail.userName }}</text>
                                 <text class="vd-time">发布于{{ timeFormat(forumDetail.created_at) }} IP属地:{{
                                     forumDetail.location
                                     ||
@@ -27,14 +27,16 @@
                                 }}</text>
                             </view>
                         </view>
-                        <view v-if="forumDetail.content">
+                        <text class="vd-title">{{ forumDetail.title }}</text>
+                        <view v-if="forumDetail.content" style="margin-bottom: 16rpx;">
                             <text class="vd-desc"
                                 v-for="(item, index) in replaceText(decodeURIComponent(forumDetail.content))"
                                 :key="index">{{
                                     item }}</text>
                         </view>
                         <view class="topicsContainer" v-if="forumDetail.topic && forumDetail.topic.length">
-                            <text @click="pageJump(`/pages/cardForum/topics/detail?id=${item.topicId}`)" class="topicsItem" v-for="item in forumDetail.topic">{{ item.topicName }}</text>
+                            <text @click="pageJump(`/pages/cardForum/topics/detail?id=${item.topicId}`)" class="topicsItem"
+                                v-for="item in forumDetail.topic">{{ item.topicName }}</text>
                         </view>
                         <view class="haowuGoodsWrap" v-if="forumDetail.good && forumDetail.good.goodCode"
                             @click="app.navigateTo.goGoodsDetails(forumDetail.good.goodCode)">
@@ -217,6 +219,7 @@ export default {
     data() {
         return {
             app,
+            defaultAvatar:app.defaultAvatar,
             sayContent: "",
             focus: false,
             queryParams,
@@ -368,11 +371,11 @@ export default {
                 item.loading = false
             })
         },
-        pageJump(url){
-			uni.navigateTo({
-				url
-			})
-		},
+        pageJump(url) {
+            uni.navigateTo({
+                url
+            })
+        },
         sendCom() {
             if (this.sayContent === "") {
                 uni.showToast({
@@ -486,24 +489,13 @@ export default {
     width: 750rpx;
 }
 
-.vd-title {
-    width: 670rpx;
-    font-size: 38rpx;
-    font-family: PingFang SC;
-    font-weight: bold;
-    color: #333333;
-    line-height: 48rpx;
-    margin-top: 20rpx;
-    /* margin-bottom: 20rpx; */
-}
-
 .vd-user {
     width: 750rpx;
     display: flex;
     align-items: center;
     flex-direction: row;
     height: 90rpx;
-    margin-bottom: 30rpx;
+    margin-bottom: 10rpx;
     // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
@@ -541,7 +533,7 @@ export default {
     // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
-    font-size: 28rpx;
+    font-size: 29rpx;
     font-family: Microsoft YaHei;
     font-weight: 400;
     color: #14151A;
@@ -565,6 +557,9 @@ export default {
     box-sizing: border-box;
     // #endif
     padding: 0 21rpx;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     // box-sizing: border-box;
 
     // // padding: 0 20rpx;
@@ -573,7 +568,7 @@ export default {
 
 .topicsItem {
     margin-right: 10rpx;
-    font-size: 33rpx;
+    font-size: 29rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #333333;
@@ -591,6 +586,16 @@ export default {
     // #endif
     padding: 0 21rpx;
 
+}
+
+.vd-title {
+    font-size: 33rpx;
+    width: 750rpx;
+    // #ifndef APP-NVUE
+    box-sizing: border-box;
+    // #endif
+    padding: 0 21rpx;
+    margin-bottom: 20rpx;
 }
 
 .goodsItem {

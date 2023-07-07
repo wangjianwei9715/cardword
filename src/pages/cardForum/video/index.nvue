@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-28 10:12:28
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 14:16:55
+ * @LastEditTime: 2023-07-07 16:23:32
  * @FilePath: \card-world\src\pages\cardForum\video\index.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,7 +32,7 @@
                                     :muted="item.isplay" @play="playIngs(i)" :enable-progress-gesture="false"
                                     :page-gesture="false" :controls="false" :http-cache="true" :show-loading="false"
                                     :show-fullscreen-btn="false" :show-center-play-btn="false" :style="boxStyle"
-                                    :object-fit="'contain'" @timeupdate="timeupdate($event, i)" @waiting="waiting"></video>
+                                    :object-fit="'contain'" @timeupdate="timeupdate($event, i)"></video>
                                     <!-- :poster="getVideoPath(item.url) + '?x-oss-process=video/snapshot,t_1000,m_fast'" -->
                                 <!-- <image
 								v-if="!item.playIng"
@@ -51,7 +51,7 @@
                                 @click="onDetail" :class="{ content_opa: isDragging }">
                                 <view class="descBox">
                                     <image style="width:50rpx;height:50rpx;border-radius:500px;overflow: hidden;"
-                                        :src="decodeURIComponent(item.avatar)" mode="aspectFill" />
+                                        :src="item.avatar?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFill" />
                                     <text class="descAuthor">{{ item.userName }}</text>
                                 </view>
                                 <text class="userName">{{ item.title }}</text><!-- i={{i}} -->
@@ -97,7 +97,7 @@
             </view>
         </view>
         <!-- 分享 -->
-        <nvueShare :visible.sync='shareShow' :shareData='shareData' :report="current.bit & 1 != 1" @report="goReport">
+        <nvueShare :visible.sync='shareShow' :shareData='shareData' :report="(current.bit & 1) != 1" @report="goReport">
         </nvueShare>
         <!-- 底部详情 -->
         <!-- <view class="popup" :style="{ height: showDetail ? wHeight : 0 + 'px' }">
@@ -219,7 +219,8 @@ export default {
             upslideShow: false,
             parsePic: getApp().globalData.parsePic,
             userInfo: {},
-            fromMine: false
+            fromMine: false,
+            defaultAvatar:app.defaultAvatar
 
         }
     },
@@ -232,6 +233,8 @@ export default {
     },
     watch: {
         async k(k, old_k) {//监听 k 值的变化，可以控制视频的播放与暂停
+            console.log("当前的K",k);
+            console.log("老的k",old_k);
             this.dataList[old_k].state = 'stop'
             this.dataList[old_k].isplay = true
             this.dataList[k].isplay = false
