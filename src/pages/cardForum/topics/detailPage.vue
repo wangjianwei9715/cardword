@@ -112,9 +112,9 @@ export default class ClassName extends BaseNode {
         this.initTab()
     }
     onReachBottom() {
-        if (this.isFetchEnd) return
-        this.queryParams.fetchFrom += this.queryParams.fetchSize
-        this.reqNewData()
+        if (this.current.isFetchEnd) return
+        this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
+        this.reqData(false)
     }
     onPullDownRefresh() {
         this.queryParams.fetchFrom = 1
