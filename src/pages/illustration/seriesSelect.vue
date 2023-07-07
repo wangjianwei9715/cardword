@@ -6,7 +6,7 @@
 			</view>
 			<view class="side-right">
 				<view class="right-box">
-					<scroll-view scroll-y="true" class="scroll-Y"  :scroll-with-animation="true" @scrolltoupper="scrolltoupper" @scrolltolower="scrolltolower">
+					<scroll-view :scroll-y="true" class="scroll-Y" :scroll-with-animation="true" >
 						<view class="scroll-view-item" v-for="(item,index) in seriesList" :key="index">
 							<view class="scroll-header">{{item.title}}</view>
 							<view class="series-list">
@@ -93,10 +93,6 @@
 				});
 			}
 		}
-        scrolltoupper(){
-        }
-        scrolltolower(){
-        }
 	}
 </script>
 

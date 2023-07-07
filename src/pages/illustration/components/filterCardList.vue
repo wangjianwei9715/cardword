@@ -50,7 +50,7 @@
                     <view class="card-set u-line-2">{{item.seq==0?"无限":item.seq}}编，{{item.cardSet}}</view>
                     <view class="card-logo-box">
                         <view v-if="item.seq<25&&item.seq>0" class="logo-seq" :class="`logo-seq-${item.seq}`">{{item.seq}}编</view>
-                        <image v-if="item.cardSetLogo" class="logo-pic" :src="decodeURIComponent(item.cardSetLogo)"/>
+                        <image v-if="item.cardSetLogo" class="logo-pic" :src="$parsePic(decodeURIComponent(item.cardSetLogo))"/>
                     </view>
                 </view>
             </view>
@@ -69,7 +69,7 @@
                 <view class="bottom">
                     <view class="player u-line-1">{{cardSetTitle(item)}}</view>
                     <view class="setcard u-line-2">
-                        <image v-if="item.cardSetLogo" class="logo" :src="decodeURIComponent(item.cardSetLogo)"/>
+                        <image v-if="item.cardSetLogo" class="logo" :src="$parsePic(decodeURIComponent(item.cardSetLogo))"/>
                         {{item.cardSet}}
                     </view>
                 </view>
@@ -520,6 +520,7 @@
         font-weight: 400;
         text-align: center;
         border-radius: 1rpx;
+        margin-right: 10rpx;
     }
     .logo-seq-1{
         background: #000000;
@@ -533,7 +534,6 @@
         width: 74rpx;
         height: 31rpx;
         border-radius: 1rpx;
-        margin-left: 20rpx;
     }
     .layou2-list{
         width: 100%;

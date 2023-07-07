@@ -23,7 +23,7 @@
 					<view class="card-title">{{noData.text.player}}</view>
 					<view class="card-set u-line-2">{{noData.text.seq==0?"无限":noData.text.seq}}编，{{noData.text.cardSet}}</view>
 					<view class="card-seq">
-						<view v-if="noData.text.seq<25&&noData.text.seq>0" class="card-seq-item" :class="`logo-seq-${noData.text.seq}`">{{noData.text.seq}}编</view>
+						<image v-if="noData.text.cardSetLogo" class="logo-pic" :src="$parsePic(decodeURIComponent(noData.text.cardSetLogo))"/>
 					</view>
 				</view>
 				<view v-if="noData.illustration && noData.illustration.author" class="upload-author">
@@ -351,6 +351,11 @@
 			font-weight: 400;
 			text-align: center;
 			line-height: 31rpx;
+		}
+		.logo-pic{
+			width: 74rpx;
+			height: 31rpx;
+			border-radius: 1rpx;
 		}
 		.logo-seq-1{
 			background: #000000;
