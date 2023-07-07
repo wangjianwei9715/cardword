@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <transitionNav title=" " ref="transitionNav"></transitionNav>
+        <transitionNav :title="data.name" ref="transitionNav"></transitionNav>
         <div id="topContainer" style="flex-direction: column;align-items: center;display: flex;">
             <div style="flex-direction: column;align-items: center;display: flex;background-color: #fff">
                 <div :style="{ height: navHeight + 'px' }"></div>
@@ -21,10 +21,17 @@
                     </view>
                 </view>
                 <view class="line"></view>
-                <div style="background-color: #fff;height:100rpx" id="tabs">
-                    <u-tabs customType="cardForum" @click="tabClick" :duration="300" :current="tabs.index"
-                        :list="tabs.list"></u-tabs>
-                </div>
+
+                <u-sticky :customNavHeight="navHeight">
+                    <div style="background-color: #fff;height:100rpx;width: 750rpx;display: flex;justify-content: center;"
+                        id="tabs">
+                        <u-tabs customType="cardForum" style="width: 500rpx;" @click="tabClick" :duration="300"
+                            :current="tabs.index" :list="tabs.list" :itemStyle="{
+                                width: '200rpx',
+                                height: '88rpx'
+                            }"></u-tabs>
+                    </div>
+                </u-sticky>
                 <div class="acWrap" id="acWrap" v-if="data.banner" @click="goToAct">
                     <image class="acImage" mode="aspectFill" :src="$parsePic(decodeURIComponent(data.banner))"></image>
                     <text class="iNeedPush" @click.stop="release">我要发布</text>
@@ -106,6 +113,10 @@ export default class ClassName extends BaseNode {
             })
         }
     }
+    onPageScroll(data: any) {
+        //@ts-ignore
+        this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
+    }
     onLoad(query: any) {
         this.id = +query.id
         this.reqNewData()
@@ -127,8 +138,7 @@ export default class ClassName extends BaseNode {
         mineTabsDeep.forEach((item: any, index: number) => {
             this.$set(this.tabs.list, index, { ...uni.$u.deepClone(defaultTagObj), ...item })
         })
-        console.log(this.tabs);
-        // this.reqData(true)
+        this.reqData(true)
     }
     goToAct() {
         uni.navigateTo({
@@ -158,6 +168,7 @@ export default class ClassName extends BaseNode {
     }
     reqData(isRefresh = false, cb?: any) {
         this.current.queryParams.od = this.current.od
+        this.current.queryParams.topicId = this.id
         app.http.Get(`dataApi/cardCircle/search/dt`, this.current.queryParams, (res: any) => {
             const list = res.list || []
             this.current.firstReqEnd = true
