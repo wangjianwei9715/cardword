@@ -215,6 +215,7 @@ export default {
     // transition: transform 0.2s;
     transition-property: transform;
     transition-duration: 0.2s;
+    transition-timing-function: linear;
     // #ifndef APP-NVUE
     pointer-events: none;
     // #endif

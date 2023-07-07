@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-28 10:12:28
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 16:23:32
+ * @LastEditTime: 2023-07-07 16:40:48
  * @FilePath: \card-world\src\pages\cardForum\video\index.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,8 +32,9 @@
                                     :muted="item.isplay" @play="playIngs(i)" :enable-progress-gesture="false"
                                     :page-gesture="false" :controls="false" :http-cache="true" :show-loading="false"
                                     :show-fullscreen-btn="false" :show-center-play-btn="false" :style="boxStyle"
-                                    :object-fit="'contain'" @timeupdate="timeupdate($event, i)"></video>
-                                    <!-- :poster="getVideoPath(item.url) + '?x-oss-process=video/snapshot,t_1000,m_fast'" -->
+                                    :object-fit="'contain'" @timeupdate="timeupdate($event, i)"
+                                    @pause="onVideoPause"></video>
+                                <!-- :poster="getVideoPath(item.url) + '?x-oss-process=video/snapshot,t_1000,m_fast'" -->
                                 <!-- <image
 								v-if="!item.playIng"
 									:src="item.video_url+'?x-oss-process=video/snapshot,t_100,f_jpg'" 
@@ -51,7 +52,8 @@
                                 @click="onDetail" :class="{ content_opa: isDragging }">
                                 <view class="descBox">
                                     <image style="width:50rpx;height:50rpx;border-radius:500px;overflow: hidden;"
-                                        :src="item.avatar?decodeURIComponent(item.avatar):defaultAvatar" mode="aspectFill" />
+                                        :src="item.avatar ? decodeURIComponent(item.avatar) : defaultAvatar"
+                                        mode="aspectFill" />
                                     <text class="descAuthor">{{ item.userName }}</text>
                                 </view>
                                 <text class="userName">{{ item.title }}</text><!-- i={{i}} -->
@@ -220,7 +222,7 @@ export default {
             parsePic: getApp().globalData.parsePic,
             userInfo: {},
             fromMine: false,
-            defaultAvatar:app.defaultAvatar
+            defaultAvatar: app.defaultAvatar
 
         }
     },
@@ -233,8 +235,8 @@ export default {
     },
     watch: {
         async k(k, old_k) {//监听 k 值的变化，可以控制视频的播放与暂停
-            console.log("当前的K",k);
-            console.log("老的k",old_k);
+            console.log("当前的K", k);
+            console.log("老的k", old_k);
             this.dataList[old_k].state = 'stop'
             this.dataList[old_k].isplay = true
             this.dataList[k].isplay = false
@@ -354,6 +356,9 @@ export default {
                 this[item.behavior] && this[item.behavior]()
                 return
             }
+        },
+        onVideoPause(event) {
+            console.log("视频暂停咯", event);
         },
         goReport() {
             uni.navigateTo({
@@ -567,7 +572,7 @@ export default {
                 setTimeout(() => {
                     uni.createVideoContext(this.dataList[0].code, this).seek(0)
                     uni.createVideoContext(this.dataList[0].code, this).play()
-                }, 100)
+                }, 200)
                 if (!this.fromMine) this.getMore()
             })
         },
@@ -629,60 +634,6 @@ export default {
             this.chatData = { ...chat }
             uni.hideKeyboard()
         },
-        // 提交评论或回复
-        // async onChatConfirm(content) {
-        //     if (!this.userInfo.userId) {
-        //         this.userInfo = await app.user.getUserInfo()
-        //     }
-        //     console.log('评论内容：', content);
-        //     if (!content || !content.replace(/\s/g, "")) {
-        //         uni.showToast({
-        //             title: "请输入评论内容",
-        //             icon: "none"
-        //         })
-        //         return
-        //     }
-        //     app.platform.hasLoginToken(() => {
-        //         console.log("this.chatDatathis.chatDatathis.chatDatathis.chatData", this.chatData);
-        //         const kData = this.dataList[this.k]
-        //         const url = !this.chatData.replyId ? `cardCircle/comment/issue/${kData.code}` : `cardCircle/comment/reply/${this.chatData.replyId}`;
-        //         app.http.Post(url, { content }, (res) => {
-
-        //             let data = {}
-        //             const same = {
-        //                 id: res.commentId,
-        //                 userName: this.userInfo.userName || "小卡迷",
-        //                 avatar: this.userInfo.avatar,
-        //                 isLiked: false,
-        //                 likeNum: 0,
-        //                 created_at: Math.round(+new Date() / 1000),
-        //                 content: res.content,
-        //                 host: true,
-        //                 location: res.location
-        //             }
-        //             if (!this.chatData.replyId) {
-        //                 data = {
-        //                     ...same,
-        //                     lower: [],
-        //                     loading: false,
-        //                     host: true,
-        //                     isFetchEnd: true,
-        //                 }
-        //             } else {
-        //                 data = {
-        //                     ...same,
-        //                     replyId: this.chatData.replyId,
-        //                     fatherId: this.chatData.fatherId
-        //                     // replyUserName: id == item.id ? "" : this.clickSon.userName,
-        //                 }
-        //             }
-        //             kData.comment++;
-        //             console.log("datatatatata", data);
-        //             uni.$emit('commentChange', { data })
-        //             uni.$emit('informationChange', kData)
-        //         })
-        //     })
-        // },
         onClosePopup() {
             if (this.chatData.focus) {
                 this.onBlur();

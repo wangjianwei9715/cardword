@@ -1,7 +1,7 @@
 <template>
   <popup :visible.sync='visible' background='#fff' :height='340'>
     <view class="operation-index">
-      <view class="operation-btn" @click="operationStart(item.scene)" v-for="item in operationData" :key="item.id">
+      <view class="operation-btn" @click="operationStart(item)" v-for="item in operationData" :key="item.id">
         <image class="operation-img" :src="item.img" mode=""></image>
         <text class="operation-text">{{ item.text }}</text>
       </view>
@@ -128,16 +128,16 @@ export default {
         }
       });
     },
-    operationStart(scene) {
+    operationStart(item) {
       if (item.emit) {
         this.$emit(item.emit)
         this.onClickOperaCancel()
         return
       }
-      if (scene == "") {
+      if (item.scene == "") {
         this.setClipboardData();
       } else {
-        this.weChatShare(scene);
+        this.weChatShare(item.scene);
       }
       this.onClickOperaCancel();
     },

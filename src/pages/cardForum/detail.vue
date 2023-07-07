@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 15:35:56
+ * @LastEditTime: 2023-07-07 17:03:45
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -231,6 +231,7 @@ import rewardPop from "./components/rewardPop.vue"
 import CardForum from "./interface/public";
 import { UserStreamline } from "@/manager/userManager"
 import { followActionByUser, getForumDetail } from "./func/index"
+import { comment_reason_tp } from "@/tools/DataExchange"
 import recGift from "./components/recGift.vue"
 import albumSwiper from "./components/album/albumSwiper.vue"
 interface Sheet {
@@ -263,6 +264,7 @@ const dotWidth = uni.upx2px(24)
     }
 })
 export default class ClassName extends BaseNode {
+    comment_reason_tp = comment_reason_tp
     app = app
     getDateDiff = getDateDiff
     keyBoardHeigh: number = -2
@@ -523,6 +525,34 @@ export default class ClassName extends BaseNode {
         //#endif
         //#ifdef H5
         if (item.host || this.isPerson) this.delCom(item, fatherItem, index, isSon)
+        //#endif
+    }
+    pickUpActionSheet(item: any) {
+        //#ifdef APP-PLUS
+        plus.nativeUI.actionSheet({
+            cancel: "取消",
+            buttons: this.comment_reason_tp.map((item: any) => {
+                return {
+                    title: item.label
+                }
+            })
+        }, (e: any) => {
+            if (e.index == 0) return
+            const value = this.comment_reason_tp[e.index - 1].value
+            if (!value || !item.id) {
+                uni.showToast({
+                    title: "举报失败",
+                    icon: "none"
+                })
+                return
+            }
+            app.http.Post("comment/report/" + item.id, { tp: 3, reason_tp: value }, (res: any) => {
+                uni.showToast({
+                    title: "举报成功",
+                    icon: "none"
+                })
+            })
+        })
         //#endif
     }
     delCom(item: CardForum.CommentFather, fatherItem: CardForum.CommentFather, index: number, isSon: boolean) {

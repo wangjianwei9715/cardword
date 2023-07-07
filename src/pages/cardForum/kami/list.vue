@@ -52,6 +52,7 @@ interface KamiGoods {
     price: number
     /**商品图片 */
     pic: string
+    leadGoodOrderCode:string
 }
 @Component({})
 export default class ClassName extends BaseNode {
@@ -87,7 +88,7 @@ export default class ClassName extends BaseNode {
     }
     onClickGive(item: KamiGoods) {
         uni.navigateTo({
-            url: `/pages/cardForum/kami/give?code=${this.code}`,
+            url: `/pages/cardForum/kami/give?code=${this.code}&leadGoodOrderCode=${item.leadGoodOrderCode}`,
             success: (res) => {
                 res.eventChannel.emit('receiveInfo', {
                     ...this.receiveUserInfo,

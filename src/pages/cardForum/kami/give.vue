@@ -1,22 +1,27 @@
 <template>
     <view class="content">
-        <view class="kamiWrap" v-for="(item, index) in list">
-            <view class="kamiPrice">
-                <view class="price">卡密单价:
-                    <text style="font-weight: bold;margin-left: 8rpx;">￥{{ item.price }}</text>
+        <template v-for="(item, index) in list">
+            <view class="kamiWrap" v-for="kami in item.noList">
+                <view class="kamiPrice">
+                    <view class="price">卡密单价:
+                        <text style="font-weight: bold;margin-left: 8rpx;">￥{{ item.unitPrice }}</text>
+                    </view>
+                    <view class="original" @click="onClickOrder(item)">订单 ></view>
                 </view>
-                <view class="original" @click="onClickOrder(item)">订单 ></view>
+                <view class="kamiNameWrap" @click="onClickSelect(kami)">
+                    <view class="name">{{ kami.name }}</view>
+                    <view class="select" :class="{ select_select: selectIds.includes(kami.id) }"></view>
+                </view>
             </view>
-            <view class="kamiNameWrap" @click="onClickSelect(item)">
-                <view class="name">{{ item.name }}</view>
-                <view class="select" :class="{ select_select: selectIds.includes(item.id) }"></view>
+            <view style="margin: 20rpx auto;font-size: 26rpx;" v-if="item.hasMore" @click="onClickGetMore(item)">点击加载更多
             </view>
-        </view>
+        </template>
         <view class="fixedWrap">
             <view class="contentWrap">
                 <view class="userInfoWrap">
                     <view class="To">To:</view>
-                    <image class="avatar" :src="receiveInfo.avatar || app.defaultAvatar"></image>
+                    <image class="avatar" :src="$parsePic(decodeURIComponent(receiveInfo.avatar || app.defaultAvatar))">
+                    </image>
                     <view class="userName">{{ receiveInfo.userName || "小卡迷" }}</view>
                     <view class="userId">({{ receiveInfo.userId || "未知用户id" }})</view>
                     <view class="flex1"></view>
@@ -31,13 +36,15 @@
             </view>
             <view class="bottomSafeArea"></view>
         </view>
+        <view class="bottomSafeArea" style="height:328rpx"></view>
         <u-overlay :show="showGive">
-            <view class="giveModal">
+            <view class="giveModal" :class="{ giveModal_show: showGive }">
                 <view class="title">提示</view>
                 <view class="tips">确认赠送{{ selectIds.length }}条卡密</view>
                 <view class="userWrap">
                     <view class="to">To:</view>
-                    <image class="avatar"></image>
+                    <image class="avatar" :src="$parsePic(decodeURIComponent(receiveInfo.avatar || app.defaultAvatar))">
+                    </image>
                     <view class="userName">{{ receiveInfo.userName || "小卡迷" }}</view>
                 </view>
                 <view class="bottomWrap">
@@ -89,22 +96,24 @@ export default class ClassName extends BaseNode {
     app = app
     queryParams: any = {
         pageIndex: 1,
-        pageSize: 20
+        pageSize: 20,
+        leadGoodOrderCode: ""
     }
-    list: Array<Kami> = []
+    list: Array<any> = []
     selectIds: Array<number> = []
     totalPage: number = 0
-    receiveInfo: ReceiveInfo | any = {}
+    receiveInfo: ReceiveInfo | any = { goodCode: "CL512822C" }
     showGive: boolean = false
     code: string = ""
     onLoad(query: any) {
-        // 
         this.code = query.code
+        this.queryParams.leadGoodOrderCode = query.leadGoodOrderCode
+        this.reqNewData()
         //@ts-ignore
         const eventChannel = this.getOpenerEventChannel();
         eventChannel.on('receiveInfo', (data: ReceiveInfo) => {
             if (data) this.receiveInfo = data
-            this.reqNewData()
+
             console.log(this.receiveInfo);
         })
     }
@@ -125,14 +134,14 @@ export default class ClassName extends BaseNode {
             url: "/pages/userinfo/order_details?code=" + item.orderCode
         })
     }
-    onClickSelect(item: Kami) {
+    onClickSelect(kami: any) {
         const index: number = this.selectIds.findIndex((id: number) => {
-            return id == item.id
+            return id == kami.id
         })
         if (index >= 0) {
             this.selectIds.splice(index, 1)
         } else {
-            this.selectIds.push(item.id)
+            this.selectIds.push(kami.id)
         }
     }
     onClickSubmit() {
@@ -152,10 +161,17 @@ export default class ClassName extends BaseNode {
         }
         this.showGive = true
     }
+    onClickGetMore(item: any) {
+        item.queryParams.pageIndex += 1
+        app.http.Get(`dataApi/function/userNo/transfer/order/${item.orderCode}/list`, item.queryParams, (res: any) => {
+            if (res.totalPage == item.queryParams.pageIndex) item.hasMore = false
+            item.noList.push(...(res.list || []))
+        })
+    }
     give() {
         uni.showLoading({
             title: "",
-            mask:true
+            mask: true
         })
         const ts: number = Math.round(+new Date() / 1000)
         const data: KamiGiveData = {
@@ -173,14 +189,27 @@ export default class ClassName extends BaseNode {
             app.platform.UINotificationFeedBack("success")
             this.showGive = false
             this.queryParams.pageIndex = 1
-            this.reqNewData()
+            this.selectIds = []
+            setTimeout(() => {
+                this.reqNewData()
+            }, 500)
         }, (err: any) => {
             uni.hideLoading()
         })
     }
     reqNewData(cb?: any) {
         app.http.Get(`dataApi/function/userNo/transfer/good/${this.receiveInfo.goodCode}/list`, this.queryParams, (res: any) => {
-            const list = res.list || []
+            const list = (res.list || []).map((item: any) => {
+                return {
+                    ...item,
+                    queryParams: {
+                        pageIndex: 1,
+                        pageSize: 10
+                    }
+                }
+            })
+            console.log(list);
+
             this.totalPage = res.totalPage
             this.queryParams.pageIndex == 1 ? this.list = list : this.list.push(...list)
             cb && cb()
@@ -282,6 +311,7 @@ page {
         color: #C0C0C0;
         margin-top: 22rpx;
         text-align: center;
+
     }
 }
 
@@ -354,7 +384,7 @@ page {
 
 .giveModal {
     width: 500rpx;
-    height: 400rpx;
+    // height: 400rpx;
     background-color: #fff;
     position: absolute;
     left: 0;
@@ -362,13 +392,14 @@ page {
     margin: auto;
     top: 350rpx;
     z-index: 10076;
-    box-sizing: border-box;
+    // box-sizing: border-box;
     transform: scale(0);
     transition: transform 0.2s;
     pointer-events: none;
     border-radius: 3rpx;
     box-sizing: border-box;
     padding-top: 30rpx;
+    padding-bottom: 40rpx;
 
     .title {
         color: #000;
@@ -378,6 +409,7 @@ page {
 
     .tips {
         text-align: center;
+        margin-top: 10rpx;
     }
 
     .userWrap {
@@ -404,7 +436,7 @@ page {
         padding: 0 30rpx;
         justify-content: space-between;
         align-items: center;
-        margin-top: 60rpx;
+        margin-top: 30rpx;
 
         .submit {
             width: 200rpx;
@@ -425,5 +457,4 @@ page {
 .giveModal_show {
     transform: scale(1);
     pointer-events: auto;
-}
-</style>
+}</style>
