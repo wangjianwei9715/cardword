@@ -10,7 +10,7 @@
         <view class="title" style="margin-top: 20rpx;">举报描述（选填）</view>
         <view class="txtArea">
             <u-textarea confirmType="done" placeholder="提供更多信息助于处理~" style="background-color: #F5F5F5;"
-                v-model="formData.reason" class="input" count :maxlength="200"></u-textarea>
+                v-model="formData.reason" class="input" height="332rpx" count :maxlength="200"></u-textarea>
         </view>
         <view class="title">举证图片（选填）</view>
         <view class="imageContainer">
