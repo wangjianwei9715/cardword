@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 14:20:54
+ * @LastEditTime: 2023-07-07 14:40:54
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -107,16 +107,16 @@
                         <view class="msgInfo" @click.stop="onClickCom(item, null)">
                             <view class="top">
                                 <view class="name u-line-1" style="flex:1">{{ item.userName }}</view>
-
+                            </view>
+                            <view class="contentMsg">{{ item.content }}</view>
+                            <view class="timeInfo">
+                                {{ getDateDiff(item.created_at * 1000) }} {{ item.location || "未知" }} <text
+                                    class="huifuText">回复</text>
                                 <view style="display: flex;align-items: center;"
                                     @click.stop="$u.throttle(() => { onClickCommLike(item) }, 500)">
                                     <view class="dz" :class="{ dzs: item.isLiked }"></view>
                                     <view class="num">{{ formatNumber(item.likeNum, 2, "en") }}</view>
                                 </view>
-                            </view>
-                            <view class="contentMsg">{{ item.content }}</view>
-                            <view class="timeInfo">
-                                {{ getDateDiff(item.created_at * 1000) }} {{ item.location || "未知" }}
                             </view>
                         </view>
                     </view>
@@ -136,21 +136,23 @@
                             <view class="top">
                                 <view class="name u-line-1" style="flex:1">{{ son.userName }}</view>
                                 <!-- <view class="time">{{ getDateDiff(son.created_at * 1000) }}</view> -->
+
+                            </view>
+                            <view class="contentMsg">
+                                <template v-if="son.replyUserName">
+                                    回复
+                                    <text class="replyName" style="color:#959695">{{ son.replyUserName }}</text>
+                                </template>
+                                {{ son.content }}
+                            </view>
+                            <view class="timeInfo">
+                                {{ getDateDiff(son.created_at * 1000) }} {{ item.location || "未知" }} <text
+                                    class="huifuText">回复</text>
                                 <view style="display: flex;align-items: center;"
                                     @click.stop="$u.throttle(() => { onClickCommLike(son) }, 500)">
                                     <view class="dz" :class="{ dzs: son.isLiked }"></view>
                                     <view class="num">{{ formatNumber(son.likeNum, 2, "en") }}</view>
                                 </view>
-                            </view>
-                            <view class="contentMsg">
-                                <template v-if="son.replyUserName">
-                                    回复
-                                    <text class="replyName">{{ son.replyUserName }}</text>
-                                </template>
-                                {{ son.content }}
-                            </view>
-                            <view class="timeInfo">
-                                {{ getDateDiff(son.created_at * 1000) }} {{ item.location || "未知" }}
                             </view>
                         </view>
                     </view>
@@ -786,7 +788,7 @@ export default class ClassName extends BaseNode {
     // padding: 0 20rpx;
     text {
         margin-right: 10rpx;
-        font-size: 33rpx;
+        font-size: 29rpx;
         font-family: PingFang SC;
         font-weight: bold;
         color: #333333;
@@ -905,18 +907,18 @@ export default class ClassName extends BaseNode {
     padding: 0rpx 21rpx;
 
     .title {
-        font-size: 27rpx;
+        font-size: 33rpx;
         font-family: PingFang SC;
         font-weight: bold;
         color: #333333;
         margin-bottom: 30rpx;
-        margin-top: 35rpx;
+        margin-top: 25rpx;
         letter-spacing: 2rpx;
     }
 
     .desc {
         width: 100%;
-        font-size: 25rpx;
+        font-size: 29rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
@@ -927,7 +929,7 @@ export default class ClassName extends BaseNode {
     }
 
     .time {
-        font-size: 21rpx;
+        font-size: 20rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #949494;
@@ -1144,24 +1146,7 @@ export default class ClassName extends BaseNode {
                         flex: 1;
                     }
 
-                    .num {
-                        font-size: 21rpx;
-                        font-family: PingFang SC;
-                        font-weight: 400;
-                        color: #AAAAAA;
-                        margin-left: 12rpx;
-                    }
 
-                    .dz {
-                        width: 23rpx;
-                        height: 23rpx;
-                        background-size: 100% 100%;
-                        background-image: url("@/static/act/portable/dz.png");
-                    }
-
-                    .dzs {
-                        background-image: url("@/static/act/portable/dzs.png");
-                    }
                 }
 
                 .contentMsg {
@@ -1344,6 +1329,37 @@ export default class ClassName extends BaseNode {
     font-weight: 400;
     color: #AAAAAA;
     margin-top: 20rpx;
+    display: flex;
+    align-content: center;
+
+    .num {
+        font-size: 21rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #AAAAAA;
+        margin-left: 12rpx;
+    }
+
+    .dz {
+        width: 23rpx;
+        height: 23rpx;
+        background-size: 100% 100%;
+        background-image: url("@/static/act/portable/dz.png");
+    }
+
+    .dzs {
+        background-image: url("@/static/act/portable/dzs.png");
+    }
+
     // margin-left: 22rpx;
+}
+
+.huifuText {
+    font-size: 23rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #707070;
+    margin-left: 28rpx;
+    flex: 1;
 }
 </style>
