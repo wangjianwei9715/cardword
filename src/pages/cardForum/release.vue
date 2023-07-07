@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 17:52:08
+ * @LastEditTime: 2023-07-07 10:44:08
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,9 @@
             </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
-        <publish v-if="albumRelease" ref="albumRelease" :albumList.sync="albumData.list" :albumCover.sync="albumData.albumCover" :albumProve.sync="albumData.albumProve" :draftId="draftId" @albumEditDetail="albumEditDetail" @delDraft="delDraftDetailAction"/>
+        <publish v-if="albumRelease" ref="albumRelease" :albumList.sync="albumData.list"
+            :albumCover.sync="albumData.albumCover" :albumProve.sync="albumData.albumProve" :draftId="draftId"
+            @albumEditDetail="albumEditDetail" @delDraft="delDraftDetailAction" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp v-if="showPPP" :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics"
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
@@ -178,10 +180,10 @@ export default class ClassName extends BaseNode {
     addText: string = ADD_PIC_VIDEO
     maxNum: number = 9
     draftId: string = ""
-    albumData:any = {
-        list:[],
-        albumCover:'',
-        albumProve:''
+    albumData: any = {
+        list: [],
+        albumCover: '',
+        albumProve: ''
     }
     code: string = ""
     tempVideoFile: any = {}
@@ -190,10 +192,6 @@ export default class ClassName extends BaseNode {
     userId: number = 0
     submitLock: boolean = false
     onLoad(query: any) {
-        // Upload.getInstance().uploadImgByNetWork("https://ka-world.oss-cn-shanghai.aliyuncs.com/video/app/cardForumVideo1687854408286baf13u4coq.mp4?x-oss-process=video/snapshot,t_1000,m_fast").then((path:any)=>{
-        //     console.log(path);
-
-        // })
         app.platform.hasLoginToken(() => {
             app.user.getUserInfo().then((userInfo: any) => {
                 this.eventAlbum();
@@ -646,11 +644,11 @@ export default class ClassName extends BaseNode {
                 })
             }
         }
-        if(data.list){
+        if (data.list) {
             this.albumData = {
-                list:data.list,
-                albumCover:data.albumCover,
-                albumProve:data.albumProve
+                list: data.list,
+                albumCover: data.albumCover,
+                albumProve: data.albumProve
             }
         }
     }
@@ -705,14 +703,9 @@ export default class ClassName extends BaseNode {
                     console.log("上传到阿里云的视频路径:", videoPath);
                     if (!this.formData.cover) {
                         //截帧
-                        // const cover: string = decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast"
-                        // console.log("截帧图片地址", cover);
-
+                        const cover: string = decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast"
                         // //截帧后的图片上传oss
-                        // const coverPath: any = await Upload.getInstance().uploadTempFile(cover, "cardForumVideoCover/", "images", `${Math.round(+new Date() / 1000)}cover.jpg`)
-                        // console.log("截帧图片oss地址", coverPath);
-
-                        this.formData.cover = encodeURIComponent(decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast")
+                        this.formData.cover = await this.getSnapshotPath(cover)
                     }
                     // #ifdef H5
                     if (this.formData.cover.indexOf("blob:http") >= 0) {
@@ -785,7 +778,21 @@ export default class ClassName extends BaseNode {
             this.submitLock = false
             uni.hideLoading()
         }
-        // this.formData.url=
+    }
+    getSnapshotPath(src: string):Promise<string> {
+        return new Promise((re, rj) => {
+            uni.getImageInfo({
+                src: src,
+                success(result: any) {
+                    Upload.getInstance().uploadTempFile(result.path, "forumCover/", "images", `${Math.round(+new Date() / 1000)}Cover.jpg`).then((res: any) => {
+                        re(res)
+                    })
+                },
+                fail: (err: any) => {
+
+                }
+            })
+        })
     }
     reqTopicDetail(id: number) {
         app.http.Get("dataApi/cardCircle/topic/detail/" + id, {}, (res: any) => {
