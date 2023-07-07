@@ -2,7 +2,7 @@
 	<view class="winning" v-show="show">
 		<view class="winning-showdow" ></view>
 		<view class="winning-popup">
-			<image class="winning-img" :class="{'img-show':showImg}" src="../../static/index/v2/drawCard.png" />
+			<image class="winning-img" :class="{'img-show':showImg}" src="@/static/index/v2/drawCard.png" />
 			<view v-show="showBtn" class="winning-btn" @click="onClickJumpWinning">点击查看</view>
 			<view v-show="showBtn" class="winning-close" @click="onClickCloseWinning"></view>
 		</view>
@@ -95,13 +95,13 @@
 				text-align: center;
 				line-height: 64rpx;
 				margin:0 auto;
-				background:url(../../static/index/v2/drawCard_btn.png) no-repeat center;
+				background:url(@/static/index/v2/drawCard_btn.png) no-repeat center;
 				background-size: 100% 100%;
 			}
 			.winning-close{
 				width: 29rpx;
 				height:32rpx;
-				background:url(../../static/goods/drawcard/close.png) no-repeat center;
+				background:url(@/static/goods/drawcard/close.png) no-repeat center;
 				background-size: 100% 100%;
 				margin:0 auto;
 				margin-top: 50rpx;
