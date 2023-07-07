@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 10:03:43
+ * @LastEditTime: 2023-07-07 18:09:09
  * @FilePath: \card-world\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -150,7 +150,7 @@ export function delDraftDetail(draftId: string, userId?: number) {
     uni.setStorageSync(DRAFT_STORAGE_KEY, list)
 }
 //存储草稿箱
-export function storageDraft(data: any, type: ("cardBook" | "dynamic"), draftId?: string): Promise<Boolean> {
+export function storageDraft(data: any, type: ("cardBook" | "dynamic"), draftId?: string): Promise<string> {
     return new Promise(async (resovle, reject) => {
         const userinfo = await app.user.getUserInfo()
         let beforeList = getDraftList("all")
@@ -164,7 +164,7 @@ export function storageDraft(data: any, type: ("cardBook" | "dynamic"), draftId?
             saveData.userId = userinfo.userId
             beforeList.unshift(saveData)
             uni.setStorageSync(DRAFT_STORAGE_KEY, beforeList)
-            resovle(true)
+            resovle(saveData.draftId)
         } else {
             const findIndex = beforeList.findIndex((item: any) => {
                 return item.draftId === draftId
@@ -179,7 +179,7 @@ export function storageDraft(data: any, type: ("cardBook" | "dynamic"), draftId?
                 return y.stamp - x.stamp
             })
             uni.setStorageSync(DRAFT_STORAGE_KEY, beforeList)
-            resovle(true)
+            resovle(saveData.draftId)
         }
     })
 }

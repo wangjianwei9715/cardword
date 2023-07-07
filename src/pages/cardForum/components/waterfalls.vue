@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 16:08:35
+ * @LastEditTime: 2023-07-07 18:15:37
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -37,7 +37,8 @@
                             </view>
                             <view class="waterfall-item__ft">
                                 <view class="waterfall-item__ft__title">
-                                    <text class="waterfall-item__ft__title__value">{{ item.title || '发布一个新卡册' }}</text>
+                                    <text class="waterfall-item__ft__title__value u-line-2">{{ item.title || '发布一个新卡册'
+                                    }}</text>
                                 </view>
                             </view>
                             <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
@@ -110,7 +111,8 @@
                             </view>
                             <view class="waterfall-item__ft">
                                 <view class="waterfall-item__ft__title">
-                                    <text class="waterfall-item__ft__title__value">{{ item.title || '发布一个新卡册' }}</text>
+                                    <text class="waterfall-item__ft__title__value u-line-2">{{ item.title || '发布一个新卡册'
+                                    }}</text>
                                 </view>
                             </view>
                             <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
@@ -163,7 +165,8 @@
         </view>
         <empty v-if="!list1.length && !list2.length && showEmpty"></empty>
         <template v-if="list1.length || list2.length">
-            <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了" fontSize="24rpx" />
+            <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了"
+                fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </template>
     </view>
@@ -251,7 +254,8 @@
             </div>
         </cell>
         <header style="margin-top:50rpx" v-if="copyValue.length">
-            <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了"  fontSize="24rpx" />
+            <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了"
+                fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </header>
     </waterfall>
@@ -994,7 +998,10 @@ $uvui-nvue-style: true !default;
     font-weight: bold;
     color: #333333;
     line-height: 33rpx;
-
+    // #ifdef APP-NVUE
+    lines: 2;
+    text-overflow: ellipsis;
+    // #endif
 }
 
 .waterfall-item__bottom {
@@ -1084,5 +1091,4 @@ $uvui-nvue-style: true !default;
 .wait-pic {
     width: 91rpx;
     height: 78rpx;
-}
-</style>
+}</style>
