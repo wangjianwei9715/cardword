@@ -174,6 +174,8 @@
 			this.getNewDetail()
 		}
 		getNewDetail(){
+			this.frontPic = "";
+			this.backPic = "";
 			this.noCode = this.cardList[this.numData.now-1];
 			this.getNoDetail()
 		}
