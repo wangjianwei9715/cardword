@@ -478,24 +478,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.popContainer {
-    position: fixed;
-    bottom: 0;
-    width: 750rpx;
-    background-color: rgba(0, 0, 0, .3);
-}
-
-.popWrap {
-    width: 750rpx;
-    background-color: #ffffff;
-    position: absolute;
-    bottom: 0;
-    /* bottom: -300px; */
-    transform: translateY(400px);
-    height: 600rpx;
-
-}
-
 .wrap {
     height: 1100rpx;
     display: flex;
@@ -797,24 +779,6 @@ export default {
     // flex: 1;
 }
 
-.num {
-    font-size: 21rpx;
-    font-family: PingFang SC;
-    font-weight: 400;
-    color: #AAAAAA;
-    margin-left: 12rpx;
-}
-
-.dz {
-    width: 23rpx;
-    height: 23rpx;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/portable/dz.png");
-}
-
-.dzs {
-    background-image: url("@/static/act/portable/dzs.png");
-}
 
 .contentMsg {
     font-size: 27rpx;
@@ -836,11 +800,6 @@ export default {
 .contentInfo {
     // padding-bottom: 30rpx;
     // background-color: red;
-}
-
-.replyName {
-    color: #636363;
-    margin: 0 8rpx;
 }
 
 .comBlock {

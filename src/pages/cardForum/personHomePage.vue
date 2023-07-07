@@ -48,7 +48,7 @@
         <u-sticky :customNavHeight="navHeight">
             <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
                 <u-tabs customType="cardForum"
-                    :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx', padding: 0 }"
+                    :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx', padding: 0,marginTop:'6rpx' }"
                     :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                     :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs"
                     :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>

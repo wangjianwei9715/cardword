@@ -677,7 +677,7 @@ page {
     flex-direction: row;
     // justify-content: space-between;
     align-items: center;
-    // #ifdef APP-NVUE
+    // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
     width: 740rpx;

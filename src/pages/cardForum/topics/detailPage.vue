@@ -28,8 +28,11 @@
                         <u-tabs customType="cardForum" style="width: 500rpx;" @click="tabClick" :duration="300"
                             :current="tabs.index" :list="tabs.list" :itemStyle="{
                                 width: '200rpx',
-                                height: '88rpx'
-                            }"></u-tabs>
+                                height: '88rpx',
+                                marginTop:'6rpx'
+                            }"
+                            :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
+                            :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }"></u-tabs>
                     </div>
                 </u-sticky>
                 <div class="acWrap" id="acWrap" v-if="data.banner" @click="goToAct">
