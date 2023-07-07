@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 17:52:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-07 10:44:13
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -213,7 +213,7 @@ export default class ClassName extends BaseNode {
                 if (query.albumList) {
                     this.albumData.list = JSON.parse(query.albumList)
                 }
-                uni.$on("cardForumDelVideo", this.cardForumDelVideo)
+                this.onEventUI("cardForumDelVideo", this.cardForumDelVideo)
             })
         })
 
@@ -222,7 +222,7 @@ export default class ClassName extends BaseNode {
         return this.albumData.list.length > 0 || this.formData.tp == 3
     }
     eventAlbum() {
-        uni.$on("editAlbum", (res: any) => this.albumData.list = res)
+        this.onEventUI("editAlbum", (res: any) => this.albumData.list = res)
     }
     albumEditDetail(data: any) {
         this.formData.title = data.title;
