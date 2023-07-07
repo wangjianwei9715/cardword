@@ -97,7 +97,7 @@
 		}
 		initEvent(){
 		}
-		hasUpload(){
+		public get hasUpload() : boolean {
 			return this.noData.uploadable || app.token.accessToken == ''
 		}
 		onClickClose(){
@@ -211,7 +211,9 @@
 										icon:'none'
 									});
 									this.clearPic();
-									this.getNoDetail();
+									setTimeout(() => {
+										this.getNoDetail();
+									}, 500);
 								})
 							}
 						})
