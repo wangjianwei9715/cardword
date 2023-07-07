@@ -25,7 +25,7 @@
             <view class="userDataWrap">
                 <view class="userData_data">
                     <view class="userData_item"
-                        @click="navigateTo(`/pages/cardForum/personHome?isMine=1&userId=${infoData.userId}`)">
+                        @click="navigateTo(`/pages/cardForum/personHomePage?isMine=1&userId=${infoData.userId}`)">
                         <text class="userData_num">{{ formatNumber(infoData.dtNum || 0, 1) }}</text>
                         <text class="userData_name">动态</text>
                     </view>
@@ -38,7 +38,7 @@
                         <text class="userData_name">关注</text>
                     </view>
                     <view class="userData_item"
-                        @click="navigateTo(`/pages/cardForum/personHome?isMine=1&userId=${infoData.userId}&tabIndex=${2}`)">
+                        @click="navigateTo(`/pages/cardForum/personHomePage?isMine=1&userId=${infoData.userId}&tabIndex=${2}`)">
                         <text class="userData_num">{{ formatNumber((infoData.like || 0) + (infoData.favorite || 0), 1)
                         }}</text>
                         <text class="userData_name">点赞/收藏</text>
