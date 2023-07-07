@@ -55,7 +55,7 @@
             </div>
         </u-sticky>
 
-        <waterfalls style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall"
+        <waterfalls v-if="current" style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall"
             :showBottom="current.name != '中卡'" :detailBack="true" :isMine="isMine" :showUser="false"
             :value="tabs.list[tabs.index].list" :refresh="false" :showEmpty="!isMine">
             <template v-slot:list1>
@@ -165,7 +165,7 @@ export default class ClassName extends BaseNode {
         this.userId = +query.userId
         this.isMine = query.isMine == "1" //后续解除注释
         this.getUserInfo()
-        
+
     }
     beforeDestroy() {
     }
@@ -197,6 +197,7 @@ export default class ClassName extends BaseNode {
             mineTabsDeep.forEach((item: any, index: number) => {
                 this.$set(this.tabs.list, index, { ...uni.$u.deepClone(defaultTagObj), ...item })
             })
+
         } else {
             let tabsDeep = uni.$u.deepClone(otherTabs);
             tabsDeep.forEach((item: any, index: number) => {
@@ -204,13 +205,13 @@ export default class ClassName extends BaseNode {
                     this.$set(this.tabs.list, index, { ...uni.$u.deepClone(defaultTagObj), ...item })
                 }
             })
+
         }
         this.reqData(false)
     }
     @Watch('tabs.index')
     onIndexChanged(val: number) {
         //@ts-ignore
-
         if (this.tabs.list[val]?.list && (this.tabs.list[val].list.length == 0)) {
             this.reqData(true)
         } else {
@@ -269,10 +270,7 @@ export default class ClassName extends BaseNode {
         app.http.Get(`dataApi/${url}`, { userId: this.userId }, (res: any) => {
             this.userInfo = res.data
             this.initTab()
-            // this.setDomHeight()
-
         }, () => {
-            // this.setDomHeight()
         })
     }
 
