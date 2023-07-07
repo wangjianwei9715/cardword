@@ -165,7 +165,7 @@ export default class ClassName extends BaseNode {
         this.userId = +query.userId
         this.isMine = query.isMine == "1" //后续解除注释
         this.getUserInfo()
-        this.initTab()
+        
     }
     beforeDestroy() {
     }
@@ -268,6 +268,7 @@ export default class ClassName extends BaseNode {
         const url = this.isMine ? `cardCircle/me/home` : `cardCircle/user/home`
         app.http.Get(`dataApi/${url}`, { userId: this.userId }, (res: any) => {
             this.userInfo = res.data
+            this.initTab()
             // this.setDomHeight()
 
         }, () => {

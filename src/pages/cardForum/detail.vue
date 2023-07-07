@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 14:40:54
+ * @LastEditTime: 2023-07-07 15:35:56
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -41,10 +41,9 @@
             <u-swiper imgMode="aspectFit" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"
                 :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
         </view>
-        <view class="dotContainer" :style="{ width: dotContainerWidth + 'px' }" v-if="pics.length > 1 && !isAlbum">
+        <view class="dotContainer" v-if="pics.length > 1 && !isAlbum" :style="{ width: dotContainerWidth + 'px' }">
             <view class="indicatorScroll" :style="{ left: scrollLeft + 'px' }">
-                <view :id="`dot${index}`" class="dot" :class="{ dot_big: pics.length > 5 && swiperCurrent === index }"
-                    v-for="(item, index) in pics.length" :key="index">
+                <view :id="`dot${index}`" class="dot" v-for="(item, index) in pics.length" :key="index">
                     <image v-if="index === swiperCurrent" style="width:16rpx;height:13rpx"
                         src="@/static/cardForum/dot_red.png">
                     </image>
@@ -55,13 +54,14 @@
 
         <view class="contentContainer">
             <view class="title">{{ forumDetail.title }}</view>
-            <view class="desc" v-if="forumDetail.content">{{ decodeURIComponent(forumDetail.content) }}</view>
+            <view class="desc" v-if="forumDetail.content" v-html="forumDetail.content"></view>
             <!-- <u-read-more :showHeight="180" closeText="全部" color="#000">
                 
             </u-read-more> -->
             <view class="topicsContainer" v-if="forumDetail.topic && forumDetail.topic.length">
                 <text v-for="item in forumDetail.topic"
-                    @click.stop="pageJump(`/pages/cardForum/topics/detail?id=${item.topicId}`)">{{ item.topicName }}</text>
+                    @click.stop="pageJump(`/pages/cardForum/topics/detailPage?id=${item.topicId}`)">{{ item.topicName
+                    }}</text>
             </view>
             <view class="haowuGoodsWrap" v-if="forumDetail.good && forumDetail.good.goodCode"
                 @click="app.navigateTo.goGoodsDetails(forumDetail.good.goodCode)">
@@ -254,6 +254,7 @@ const queryParams: CardForum.QueryByFetch = {
     fetchFrom: 1,
     fetchSize: 10
 }
+const dotWidth = uni.upx2px(24)
 @Component({
     components: {
         rewardPop,
@@ -289,8 +290,8 @@ export default class ClassName extends BaseNode {
     swiperCurrent: number = 0
     userInfo: UserStreamline = {} as UserStreamline
     PersonSheet = PersonSheet
-    dotWidth: any = uni.upx2px(24)
-    dotContainerWidth: any = uni.upx2px(24) * 5
+    dotWidth: any = dotWidth
+    dotContainerWidth: any = 0
     userBack: boolean = false
     private: boolean = false
     fromUserId: number = 0
@@ -494,10 +495,10 @@ export default class ClassName extends BaseNode {
     longtapCom(item: any, fatherItem: any, index: number, isSon: boolean) {
         console.log("longtapCom", item);
         this.touchId = item.id
-        let buttons = [
-            {
-                title: "举报"
-            }
+        let buttons: any = [
+            // {
+            //     title: "举报"
+            // }
         ]
         if (item.host || this.isPerson) buttons.push({ title: '删除' })
         //#ifdef APP-PLUS
@@ -698,6 +699,7 @@ export default class ClassName extends BaseNode {
             if (res.state == 2 && (res.data.bit & ForumBit.IS_PERSON) == ForumBit.IS_PERSON) {
                 this.private = true
             }
+            this.dotContainerWidth = this.dotWidth * (this.pics.length > 5 ? 5 : this.pics.length)
             this.getCommByWorks()
         }).catch((err: any) => {
             uni.showModal({
@@ -784,6 +786,7 @@ export default class ClassName extends BaseNode {
 .topicsContainer {
     width: 100%;
     box-sizing: border-box;
+    margin-top: 16rpx;
 
     // padding: 0 20rpx;
     text {

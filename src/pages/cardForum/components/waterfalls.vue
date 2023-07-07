@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 18:29:15
+ * @LastEditTime: 2023-07-07 15:31:43
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -464,7 +464,7 @@ export default {
     },
     watch: {
         copyValue(nVal, oVal) {
-            console.log("this.$refs.waterfall.clear();", nVal);
+            // console.log("this.$refs.waterfall.clear();", nVal);
             // #ifndef APP-NVUE
             if (nVal.length != 0) {
                 // 取出数组发生变化的部分
@@ -554,9 +554,15 @@ export default {
             })
         },
         goToDetail(item) {
-            // uni.navigateTo({
-            //     url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}`
-            // })
+            if (item.type == "中卡") {
+                uni.previewImage({
+                    current: 0,
+                    urls: item.pic.split(',').filter(Boolean).map(path => {
+                        return this.parsePic(decodeURIComponent(path))
+                    })
+                })
+                return
+            }
             if (this.type == "draftList") {
                 if (item.type == "cardBook") {
                     const data = getDraftDetail(item.draftId, app.data.userId);
@@ -639,7 +645,7 @@ export default {
                 event.detail.height = (WIDTH / event.detail.width) * event.detail.height
                 event.detail.width = WIDTH
             }
-            console.log(event);
+            // console.log(event);
             const widthFixHeight = (WIDTH / event.detail.width) * event.detail.height
             if (widthFixHeight > MAX_HEIGHT) {
                 item.mode = "aspectFit"
