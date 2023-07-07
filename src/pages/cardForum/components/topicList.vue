@@ -92,7 +92,7 @@ export default {
                 return
             }
             uni.navigateTo({
-                url: "/pages/cardForum/topics/detail?id=" + item.id
+                url: "/pages/cardForum/topics/detailPage?id=" + item.id
             })
         }
     }

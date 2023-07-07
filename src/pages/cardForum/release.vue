@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 10:44:08
+ * @LastEditTime: 2023-07-07 13:55:05
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -67,7 +67,8 @@
                 <view class="close" @click="selectGoods.goodCode = ''"></view>
             </view>
         </view>
-        <view class="associationWrap" @click="onClickVote" style="border-bottom: 1rpx solid #3F3F3F;padding-bottom: 30rpx;">
+        <view v-if="!code || (code && !hasVoteByCode)" class="associationWrap" @click="onClickVote"
+            style="border-bottom: 1rpx solid #3F3F3F;padding-bottom: 30rpx;">
             <image class="ass_img" src="@/static/cardForum/release/vote.png" style="width: 30rpx;height:30rpx"></image>
             <view class="ass_title">发起投票</view>
             <view class="flex1"></view>
@@ -191,6 +192,7 @@ export default class ClassName extends BaseNode {
     oldTopicIds: Array<number> = []
     userId: number = 0
     submitLock: boolean = false
+    hasVoteByCode: boolean = false
     onLoad(query: any) {
         app.platform.hasLoginToken(() => {
             app.user.getUserInfo().then((userInfo: any) => {
@@ -482,6 +484,7 @@ export default class ClassName extends BaseNode {
             })
             this.formData.state = res.data.state
             this.formData.voteTitle = res.data.vote.voteTitle || ""
+            if (this.formData.voteTitle) this.hasVoteByCode = true
             this.setSelectTopics(res.data.topic)
             // this.formData.vote=res.data.vote
         })
@@ -779,7 +782,7 @@ export default class ClassName extends BaseNode {
             uni.hideLoading()
         }
     }
-    getSnapshotPath(src: string):Promise<string> {
+    getSnapshotPath(src: string): Promise<string> {
         return new Promise((re, rj) => {
             uni.getImageInfo({
                 src: src,

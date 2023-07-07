@@ -56,7 +56,7 @@
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls :needExposure="true" :refreshColor="tabIndex==2 ? '#ffffff' : ''" column-count="2"
+                    <waterfalls :needExposure="true" column-count="2"
                         v-if="tab.firstReqEnd" :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'"
                         :value="tab.list" @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
                         style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
