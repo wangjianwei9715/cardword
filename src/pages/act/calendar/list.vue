@@ -19,7 +19,10 @@
 				
 			</view>
 			<view class="header-tab">
-				<tabNoline :tabc="orderTab" :tabsCheck="orderTabCheck" @tabsClick="onClickListTabs"></tabNoline>
+				<u-tabs class="goods-tabs" :list="orderTab" :current="orderTabCheck" lineHeight="0" @click="onClickListTabs" 
+					:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 6rpx'}"
+					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 6rpx'}"
+				></u-tabs>
 			</view>
 		</view>
 
@@ -68,7 +71,7 @@ import { Md5 } from "ts-md5";
 			{id:4,name:'橄榄球'},
 			{id:0,name:'其它'}
 		];
-		orderTabCheck = 100;
+		orderTabCheck = 0;
 		currentPage = 1;
 		pageSize = 20;
 		noMoreData = false;
@@ -124,32 +127,33 @@ import { Md5 } from "ts-md5";
 		}
 		reqNewData(cb?:Function) {
 		  // 获取更多商品
-		  if (this.noMoreData) {
-		    return;
-		  }
-		  let startDate = this.yearData[this.swiperIndex] + '-' +(this.monthIndex<10?'0'+this.monthIndex:this.monthIndex);
-		  let ts = Math.floor(new Date().getTime()/1000);
-		  let params:{[x:string]:any} = {
-			tp:this.orderTabCheck,
-			pageIndex: this.currentPage,
-			pageSize:this.pageSize,
-			date:startDate,
-			ts:ts,
-			s:Md5.hashStr('kww_calendar_'+this.orderTabCheck+'_'+startDate+'_'+this.currentPage+'_'+this.pageSize+'_'+ts+'_2022')
-		  }
-		  this.httpIng = true
-		  app.http.Get("dataApi/function/calendar/list", params, (data: any) => {
-			if(this.currentPage == 1) this.calendaList = []
-			if(data.list){
-				this.calendaList = this.calendaList.concat(data.list);
+			if (this.noMoreData) {
+				return;
 			}
-			if(!data.list || data.list.length<this.pageSize){
-				this.noMoreData = true;
+			const tp = this.orderTab[this.orderTabCheck].id
+			let startDate = this.yearData[this.swiperIndex] + '-' +(this.monthIndex<10?'0'+this.monthIndex:this.monthIndex);
+			let ts = Math.floor(new Date().getTime()/1000);
+			let params:{[x:string]:any} = {
+				tp,
+				pageIndex: this.currentPage,
+				pageSize:this.pageSize,
+				date:startDate,
+				ts:ts,
+				s:Md5.hashStr('kww_calendar_'+tp+'_'+startDate+'_'+this.currentPage+'_'+this.pageSize+'_'+ts+'_2022')
 			}
-		    this.currentPage++;
-			if(cb) cb()
-			this.httpIng = false;
-		  });
+			this.httpIng = true
+			app.http.Get("dataApi/function/calendar/list", params, (data: any) => {
+				if(this.currentPage == 1) this.calendaList = []
+				if(data.list){
+					this.calendaList = this.calendaList.concat(data.list);
+				}
+				if(!data.list || data.list.length<this.pageSize){
+					this.noMoreData = true;
+				}
+				this.currentPage++;
+				if(cb) cb()
+				this.httpIng = false;
+			});
 		}
 		againReqNewData(){
 			this.currentPage = 1;
@@ -208,11 +212,11 @@ import { Md5 } from "ts-md5";
 			this.monthIndex = index;
 			this.againReqNewData()
 		}
-		onClickListTabs(id:number){
-			if(id==this.orderTabCheck){
+		onClickListTabs(item:any){
+			if(item.index==this.orderTabCheck){
 				return;
 			}
-			this.orderTabCheck = id;
+			this.orderTabCheck = item.index;
 			this.againReqNewData()
 		}
 		onClickGoDetail(item:any,index:number){

@@ -67,7 +67,16 @@
 	import { indexSwiperFront,indexSwiperBack,goodsTabs } from "@/tools/DataExchange"
 	import { isDuringDate } from "@/tools/util"
 	import { Md5 } from "ts-md5";
-	@Component({components: {},})
+	import update from './component/index/update.vue'
+	import indexHot from './component/index/indexHot.vue'
+	import winningCardPopup from './component/index/winningCardPopup.vue'
+	import openscreenAd from './component/index/openscreenAd.vue'
+	@Component({components: {
+		update,
+		indexHot,
+		winningCardPopup,
+		openscreenAd
+	},})
 	export default class index extends BaseNode {
 		noticeList = [''];
 		isDuringDate = isDuringDate;

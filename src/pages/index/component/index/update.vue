@@ -146,7 +146,7 @@
 	.panel-title {
 		width: 500rpx;
 		height: 188rpx;
-		background: url(../../static/index/update_bg.png) no-repeat center;
+		background: url(@/static/index/update_bg.png) no-repeat center;
 		background-size: 100% 100%;
 		display: flex;
 		flex-wrap: wrap;

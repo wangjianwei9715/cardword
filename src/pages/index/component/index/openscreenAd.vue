@@ -142,14 +142,14 @@
 		.icon-pop{
 			width:40rpx;
 			height: 40rpx;
-			background: url(../../static/userinfo/weixuan@2x.png) no-repeat center;
+			background: url(@/static/userinfo/weixuan@2x.png) no-repeat center;
 			background-size: 100% 100%;
 			margin-right: 16rpx;
 		}
 		.icon-pop-choice{
 			width: 40rpx;
 			height: 40rpx;
-			background: url(../../static/userinfo/pay_gou.png) no-repeat center;
+			background: url(@/static/userinfo/pay_gou.png) no-repeat center;
 			background-size: 100% 100%;
 			margin-right: 16rpx;
 		}
