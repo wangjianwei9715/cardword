@@ -45,13 +45,16 @@
                 <text class="userData_edit" v-else @click="pageJump('/pages/userinfo/user_info_v3')">编辑资料</text>
             </view>
         </view>
-        <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
-            <u-tabs customType="cardForum"
-                :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx', padding: 0 }"
-                :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
-                :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs"
-                :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
-        </div>
+        <u-sticky :customNavHeight="navHeight">
+            <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
+                <u-tabs customType="cardForum"
+                    :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx', padding: 0 }"
+                    :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
+                    :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs"
+                    :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
+            </div>
+        </u-sticky>
+
         <waterfalls style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall"
             :showBottom="current.name != '中卡'" :detailBack="true" :isMine="isMine" :showUser="false"
             :value="tabs.list[tabs.index].list" :refresh="false" :showEmpty="!isMine">
