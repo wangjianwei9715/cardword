@@ -94,14 +94,18 @@
 			3:{params:this.seqParams,url:'seq'}
 		}
 		tp=0;
+		isAlbum = false;
 		onLoad(query: any) {
 			this.seriesCode = query.seriesCode;
 			this.selectList = JSON.parse(query.selectList);
-			if(query.tp&&query.tp!=0){
-				this.tp=query.tp;
-				this.sideTab.forEach((x:any)=>{
-					x.show = x.id==query.tp
-				})
+			if(query.tp){
+				this.isAlbum = true;
+				if(query.tp!=0){
+					this.tp=query.tp;
+					this.sideTab.forEach((x:any)=>{
+						x.show = x.id==query.tp
+					})
+				}
 			}
 			const rookieList:any = this.selectList.filter((x:any)=> x.rookie);
             const signList:any = this.selectList.filter((x:any)=> x.signature);
@@ -252,7 +256,7 @@
 			}
 		}
 		onClickConfirm(){
-			uni.$emit('seriesFilter',this.selectList);
+			uni.$emit(this.isAlbum?'albumFilter':'seriesFilter',this.selectList);
 			app.navigateTo.navigateBack()
 		}
 	}
