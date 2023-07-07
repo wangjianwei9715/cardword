@@ -56,7 +56,7 @@
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls :needExposure="true" :refreshColor="isShowKa ? '#ffffff' : ''" column-count="2"
+                    <waterfalls :needExposure="true" :refreshColor="tabIndex==2 ? '#ffffff' : ''" column-count="2"
                         v-if="tab.firstReqEnd" :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'"
                         :value="tab.list" @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
                         style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
@@ -83,7 +83,7 @@
                                         </view>
                                     </scroll-view>
                                 </div>
-                                <div class="adWrap" v-if="isShowKa && topicAcList && topicAcList.length">
+                                <div class="adWrap" v-if="tabIndex===2 && topicAcList && topicAcList.length">
                                     <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
                                     <swiper style="width: 730rpx;width: 730rpx;height:200rpx">
                                         <swiper-item v-for="(item, index) in topicAcList" :key="index"
@@ -287,6 +287,7 @@ export default {
             return this.tabs.index === 2
         },
         navOpacity() {
+            // return 1
             if (this.tabs.index == 1) {
                 // if (this.dx == app.platform.systemInfo.screenWidth) return 1
                 return (app.platform.systemInfo.screenWidth - this.dx) / app.platform.systemInfo.screenWidth
