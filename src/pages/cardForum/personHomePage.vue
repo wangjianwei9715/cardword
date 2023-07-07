@@ -47,14 +47,14 @@
         </view>
         <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
             <u-tabs customType="cardForum"
-                :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx',padding:0 }"
+                :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx', padding: 0 }"
                 :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
         </div>
-        <waterfalls style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall" :showBottom="current.name != '中卡'"
-            :detailBack="true" :isMine="isMine" :showUser="false" :value="tabs.list[tabs.index].list" :refresh="false"
-            :showEmpty="!isMine">
+        <waterfalls style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall"
+            :showBottom="current.name != '中卡'" :detailBack="true" :isMine="isMine" :showUser="false"
+            :value="tabs.list[tabs.index].list" :refresh="false" :showEmpty="!isMine">
             <template v-slot:list1>
                 <view class="draftWrap" v-if="current.name == '动态' && draftListByDynamic.length"
                     @click="pageJump('/pages/cardForum/draftList')">
@@ -66,6 +66,18 @@
                         <text class="caogaoTitle">草稿箱</text>
                         <text class="caogaoText">有{{ draftListByDynamic.length }}篇动态待发布</text>
                     </view>
+                </view>
+            </template>
+            <template v-if="current.name == '卡册' && draftListByCardBook.length">
+                <view class="draftWrap" @click="pageJump('/pages/cardForum/draftList')">
+                    <image class="draftWrapImage" v-if="draftListByCardBook[0].data.cover"
+                        :src="decodeURIComponent(draftListByCardBook[0].data.cover)" mode="aspectFill">
+                    </image>
+                    <div class="shadow">
+                        <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
+                        <text class="caogaoTitle">草稿箱</text>
+                        <text class="caogaoText">有{{ draftListByCardBook.length }}篇动态待发布</text>
+                    </div>
                 </view>
             </template>
         </waterfalls>
