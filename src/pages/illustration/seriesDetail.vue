@@ -172,7 +172,7 @@
 				let arr = data.list || [];
 				this.albumList = scrollId == "" ? arr : [...this.albumList, ...arr];
 				this.listParams.empty = data.total == 0;
-				this.listParams.noMoreData = data.isFetchEnd && data.total>0;
+				this.listParams.noMoreData = data.end && data.total>0;
 				this.listParams.scrollId = data.scrollId
 				if (cb) cb();
 			});
