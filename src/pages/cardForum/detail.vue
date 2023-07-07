@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 11:10:20
+ * @LastEditTime: 2023-07-07 14:20:54
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -299,7 +299,7 @@ export default class ClassName extends BaseNode {
         app.platform.hasLoginToken(async () => {
             this.code = query.code || "mockCode"
             this.reqNewData()
-            this.getCommByWorks()
+
             uni.$on("editCardForum", this.onEditCardForum)
             this.userInfo = await app.user.getUserInfo()
         })
@@ -677,6 +677,12 @@ export default class ClassName extends BaseNode {
     }
     reqNewData(cb?: any) {
         getForumDetail(this.code).then((res: any) => {
+            if (res.data.tp === 2) {
+                uni.redirectTo({
+                    url: `/pages/cardForum/video/index?code=${this.code}&fromMine=1`
+                })
+                return
+            }
             this.forumDetail = res.data as CardForum.ForumDetail || {}
             this.authorInfo = {
                 userId: this.forumDetail.userId,
@@ -690,6 +696,7 @@ export default class ClassName extends BaseNode {
             if (res.state == 2 && (res.data.bit & ForumBit.IS_PERSON) == ForumBit.IS_PERSON) {
                 this.private = true
             }
+            this.getCommByWorks()
         }).catch((err: any) => {
             uni.showModal({
                 title: "提示",
