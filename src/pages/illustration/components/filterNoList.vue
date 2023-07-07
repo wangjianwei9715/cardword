@@ -157,19 +157,15 @@
 		}
 		mounted(){//挂载到实例上去之后调用
             uni.$on("seriesFilter",(res:any)=>{
-                const list:any = [...res];
-                this.select = new Select();
+                this.initEventSelect();
                 Object.keys(this.search).forEach((x:any)=>{
-                    this.search[x].forEach((y:any)=>{
-                        list.forEach((t:any,index:number)=>{
-                            if(y.nameId == t.nameId){
-                                this.$set(this.select, x, app.platform.removeDuplicate([...this.select[x],t],'nameId'));
-                                list.splice(index,1)
-                            }
-                        })
+                    res.forEach((item:any)=>{
+                        if(x== item.type+'s'){
+                            this.$set(this.select, x, app.platform.removeDuplicate([...this.select[x],item],'nameId'));
+                        }
                     })
                 })
-                this.filterList = list;
+                this.filterList = res.filter((x:any)=>!['cardSet','player','seq'].includes(x.type));
                 this.againList()
             })
 			this.getSeriesGroup()
@@ -178,6 +174,10 @@
             return this.selectNo.map((x:any)=>{
                 return this.cardSetList[x]
             })
+        }
+        initEventSelect(){
+            this.select = new Select();
+            this.filterList=[];
         }
         onClickPopup(){
             if(this.selectNo.length == 0){
