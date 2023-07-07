@@ -211,7 +211,7 @@ export default class ClassName extends BaseNode {
                 if (query.albumList) {
                     this.albumData.list = JSON.parse(query.albumList)
                 }
-                uni.$on("cardForumDelVideo", this.cardForumDelVideo)
+                this.onEventUI("cardForumDelVideo", this.cardForumDelVideo)
             })
         })
 
@@ -220,7 +220,7 @@ export default class ClassName extends BaseNode {
         return this.albumData.list.length > 0 || this.formData.tp == 3
     }
     eventAlbum() {
-        uni.$on("editAlbum", (res: any) => this.albumData.list = res)
+        this.onEventUI("editAlbum", (res: any) => this.albumData.list = res)
     }
     albumEditDetail(data: any) {
         this.formData.title = data.title;
