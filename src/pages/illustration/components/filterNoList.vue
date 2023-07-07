@@ -156,7 +156,7 @@
 			
 		}
 		mounted(){//挂载到实例上去之后调用
-            this.onEventUI("seriesFilter",(res:any)=>{
+            this.onEventUI("albumFilter",(res:any)=>{
                 this.initEventSelect();
                 Object.keys(this.search).forEach((x:any)=>{
                     res.forEach((item:any)=>{
