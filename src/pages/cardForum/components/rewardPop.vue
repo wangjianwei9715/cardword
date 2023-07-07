@@ -150,6 +150,7 @@ export default {
                     })
                     uni.hideLoading()
                     this.showGive = false
+                    this.$emit("update:show",false)
                     app.platform.UINotificationFeedBack("success")
                 }, (err) => {
                     uni.hideLoading()
