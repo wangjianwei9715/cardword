@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 18:09:03
+ * @LastEditTime: 2023-07-07 11:10:20
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -178,7 +178,8 @@
             <view class="wrap">
                 <view class="fakerInput u-line-1" @click="onClickFakerInput">{{ fakerInputVal }}</view>
                 <view class="toolsWrap">
-                    <view class="toolsItem" @click="isPerson ? recGiftShow = true : rewardShow = true" style="position: relative;bottom: 4rpx;">
+                    <view class="toolsItem" @click="isPerson ? recGiftShow = true : rewardShow = true"
+                        style="position: relative;bottom: 4rpx;">
                         <image src="@/static/cardForum/gift.png" style="width:34rpx;height:37rpx" />
                         <view class="num" style="position: relative;top: 5rpx;">打赏</view>
                     </view>
@@ -449,7 +450,7 @@ export default class ClassName extends BaseNode {
             return
         }
         uni.navigateTo({
-            url: "/pages/cardForum/personHome?userId=" + this.forumDetail.userId
+            url: "/pages/cardForum/personHomePage?userId=" + this.forumDetail.userId
         })
     }
     onClickCom(item: CardForum.CommentFather, son: CardForum.Comment | null) {

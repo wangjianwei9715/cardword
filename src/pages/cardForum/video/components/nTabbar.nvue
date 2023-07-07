@@ -4,6 +4,12 @@
 			<view class="tabbar-chat" :class="{ 'chatDetail': detail }" @click="onClickChat"><text
 					class="chat-text">说点什么...</text></view>
 			<view class="tabbar-gn">
+				<view class="tabbar-item">
+					<view class="pic-box" @click="rewardPop = true">
+						<image class="pic-likes" src="@/static/cardForum/gift.png" />
+					</view>
+					<text class="num" :style="{color:detail?'#000':'#fff'}">打赏</text> 
+				</view>
 				<view class="tabbar-item" @click="onClickLike">
 					<view class="pic-box">
 						<image class="pic-likes" v-if="!Parent.isLike && !isSon" src="@/static/information/live_like.png" />
@@ -36,7 +42,8 @@
 				</view>
 			</view>
 		</view>
-
+		<rewardPop :code="data.code" :userInfo="{ userId: data.userId, userName: data.userName, avatar: data.avatar }"
+			:show.sync="rewardPop"></rewardPop>
 
 	</view>
 </template>
@@ -47,7 +54,11 @@ const app = getApp().globalData.app;
 // 	likes: { pic: '../../../static/information/live_like.png', piced: '../../../static/information/icon_t_liked.png', num: 0, boolean: false },
 // 	favorite: { pic: '../../../static/information/live_collect.png', piced: '../../../static/information/icon_t_collectd.png', num: 0, boolean: false }
 // }
+import rewardPop from "../../components/rewardPop.vue"
 export default {
+	components: {
+		rewardPop
+	},
 	props: {
 		commentNum: {
 			type: Number,
@@ -94,9 +105,9 @@ export default {
 	data() {
 		return {
 			// tabbarData: { ...tabbarData },
-
+			rewardPop: false,
 			tabHeight: 0,
-			Parent: {isLike:false}
+			Parent: { isLike: false }
 		};
 	},
 	computed: {
@@ -248,7 +259,7 @@ export default {
 }
 
 .tabbar-gn {
-	width: 250rpx;
+	width: 300rpx;
 	height: 80rpx;
 	display: flex;
 	align-items: center;

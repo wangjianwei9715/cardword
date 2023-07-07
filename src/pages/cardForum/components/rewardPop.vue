@@ -1,63 +1,45 @@
-<!--
- * @Author: lsj a1353474135@163.com
- * @Date: 2023-06-13 11:21:52
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 14:41:43
- * @FilePath: \card-world\src\pages\cardForum\components\rewardTool.vue
- * @Description: 卡圈的打赏组件
--->
 <template>
-    <view class="content">
-        <u-overlay :show="showValue">
-            <u-popup :show="showValue" :closeOnClickOverlay="true" @close="showValue = false">
+    <view>
+        <u-overlay :show="show">
+            <u-popup :show="show" :closeOnClickOverlay="true" @close="$emit('update:show', false), showGive = false">
                 <view class="rewardContainer">
                     <view class="reward_top flexCenter">
-                        <view class="title">赠送礼物</view>
-                        <view class="close" @click="showValue = false"></view>
+                        <text class="reward_top_title">赠送礼物</text>
+                        <image class="reward_top_close" src="@/static/cardForum/popClose.png"
+                            @click="$emit('update:show', false), showGive = false"></image>
                     </view>
                     <view class="rewardChoiceWrap">
                         <view class="rewardOption flexCenter" v-for="(item, index) in reawrdOptions"
                             @click="onClickOption(item)">
-                            <view class="reward_text">{{ item.type == 1 ? item.title : `赠送${item.num}卡币` }}</view>
+                            <text class="reward_text">{{ item.type == 1 ? item.title : `赠送${item.num}卡币` }}</text>
                             <image class="reward_img"></image>
                         </view>
                     </view>
-                    <view class="desc">表达赞赏/认同/鼓励，赠送后发放至作者账户且不可退回</view>
+                    <text class="desc">表达赞赏/认同/鼓励，赠送后发放至作者账户且不可退回</text>
                 </view>
             </u-popup>
-            <view class="giveModal" :class="{ giveModal_show: showGive }">
-                <view class="title">提示</view>
-                <view class="tips">确认赠送{{ nowSelectOption.num }}卡币</view>
-                <view class="userWrap">
-                    <view class="to">To:</view>
-                    <image class="avatar"
-                        :src="userInfo.avatar ? $parsePic(decodeURIComponent(userInfo.avatar)) : defaultAvatar"></image>
-                    <view class="userName">{{ userInfo.userName || "小卡迷" }}</view>
-                </view>
-                <view class="bottomWrap">
-                    <view class="submit submit_cancel flexCenter" @click.stop="showGive = false">先不了</view>
-                    <view class="submit flexCenter" @click.stop="$u.throttle(onClickGive, 1000)">确认赠送</view>
+            <view class="giveModal" v-if="show" :class="{ giveModal_show: showGive }">
+                <view style="width: 500rpx;background-color: #fff;height: 400rpx;display: flex;flex-direction: column;">
+                    <text class="title">提示</text>
+                    <text class="tips">确认赠送{{ nowSelectOption.num }}卡币</text>
+                    <view class="userWrap">
+                        <text class="to" style="font-size: 28rpx;">To:</text>
+                        <image class="avatar"
+                            :src="userInfo.avatar ? parsePic(decodeURIComponent(userInfo.avatar)) : defaultAvatar"></image>
+                        <text class="userName" style="font-size: 26rpx;">{{ userInfo.userName || "小卡迷" }}</text>
+                    </view>
+                    <view class="bottomWrap">
+                        <text class="submit submit_cancel flexCenter" @click.stop="showGive = false">先不了</text>
+                        <text class="submit flexCenter" @click.stop="onClickGive">确认赠送</text>
+                    </view>
                 </view>
             </view>
         </u-overlay>
+
     </view>
 </template>
-
-<script lang="ts">
-import { Component, PropSync, Prop, Watch } from "vue-property-decorator";
-import BaseComponent from '@/base/BaseComponent.vue';
-import CardForum from "../interface/public";
-import { app } from "@/app";
-interface Reward {
-    /** 标题 */
-    title: string;
-    /** 类型1:送卡密 2:送卡币 */
-    type: number;
-    /** type 2时,卡币赠送数量 */
-    num?: number;
-    tp?: number;
-}
-const reawrdOptions: Array<Reward> = [
+<script>
+const reawrdOptions = [
     {
         title: "赠送卡密",
         type: 1
@@ -93,57 +75,92 @@ const reawrdOptions: Array<Reward> = [
         num: 500
     }
 ]
-@Component({})
-export default class ClassName extends BaseComponent {
-    @PropSync("show", {
-        type: Boolean
-    }) showValue!: Boolean;
-    @Prop({ default: "" })
-    code?: string;
-    @Prop({
-        default: () => {
-            return {} as CardForum.RewardUserInfo
-        }
-    })
-    //@ts-ignore
-    userInfo: CardForum.RewardUserInfo;
-    reawrdOptions: Array<Reward> = reawrdOptions
-    defaultAvatar = app.defaultAvatar
-    nowSelectOption: Reward = {} as Reward
-    showGive: boolean = false
-    onClickOption(item: Reward) {
-        if (item.type == 1) {
-            //跳转赠送卡密
-            uni.navigateTo({
-                url: `/pages/cardForum/kami/list?code=${this.code}`,
-                success: (res) => {
-                    res.eventChannel.emit('receiveUserInfo', this.userInfo)
-                }
-            })
-            return
-        }
-        if (item.type == 2) {
-            //赠送卡币
-            this.nowSelectOption = item
-            this.showGive = true
-        }
-    }
-    onClickGive() {
-        if (!this.nowSelectOption.num) {
-            return
-        }
-        this.showGive = false
-        app.http.Post(`cardCircle/give/point/${this.code}`, { tp: this.nowSelectOption.tp }, (res: any) => {
-            uni.showToast({
-                title: "赠送成功"
-            })
-            app.platform.UINotificationFeedBack("success")
-        })
-    }
-}
-</script>
+const app = getApp().globalData.app
+export default {
+    name: '',
+    components: {
 
-<style lang="scss">
+    },
+    mixins: [],
+    props: {
+        show: {
+            type: Boolean,
+            default: false
+        },
+        code: {
+            type: String,
+            default: ""
+        },
+        userInfo: {
+            type: Object,
+            default: () => {
+                return {}
+            }
+        }
+    },
+    data() {
+        return {
+            reawrdOptions,
+            defaultAvatar: app.defaultAvatar,
+            nowSelectOption: {},
+            showGive: false
+        }
+    },
+    computed: {
+
+    },
+    watch: {
+
+    },
+    mounted() {
+
+    },
+    methods: {
+        onClickOption(item) {
+            if (item.type == 1) {
+                //跳转赠送卡密
+                uni.navigateTo({
+                    url: `/pages/cardForum/kami/list?code=${this.code}`,
+                    success: (res) => {
+                        res.eventChannel.emit('receiveUserInfo', this.userInfo)
+                    }
+                })
+                return
+            }
+            if (item.type == 2) {
+                //赠送卡币
+                this.nowSelectOption = item
+                this.showGive = true
+            }
+        },
+        parsePic(src) {
+            return getApp().globalData.parsePic(src)
+        },
+        onClickGive() {
+            if (!this.nowSelectOption.num) {
+                return
+            }
+            uni.$u.throttle(() => {
+                uni.showLoading({
+                    title: ""
+                })
+                app.http.Post(`cardCircle/give/point/${this.code}`, { tp: this.nowSelectOption.tp }, (res) => {
+                    uni.showToast({
+                        title: "赠送成功"
+                    })
+                    uni.hideLoading()
+                    this.showGive = false
+                    app.platform.UINotificationFeedBack("success")
+                }, (err) => {
+                    uni.hideLoading()
+                })
+            }, 1000)
+
+        }
+    }
+};
+</script>
+<style lang='scss' scoped>
 .rewardContainer {
     width: 750rpx;
     background-color: #fff;
@@ -158,160 +175,199 @@ export default class ClassName extends BaseComponent {
     margin-bottom: 56rpx;
     position: relative;
 
-    .title {
-        font-size: 33rpx;
-        font-family: PingFang SC;
-        font-weight: bold;
-        color: #333333;
-    }
 
-    .close {
-        width: 30rpx;
-        height: 30rpx;
-        background-size: 100% 100%;
-        background-image: url("@/static/cardForum/popClose.png");
-        position: absolute;
-        right: 17rpx;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-    }
 
 }
 
-.giveModal {
-    width: 500rpx;
-    height: 400rpx;
-    background-color: #fff;
+.reward_top_title {
+    font-size: 33rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    text-align: center;
+}
+
+.reward_top_close {
+    width: 30rpx;
+    height: 30rpx;
+    // background-size: 100% 100%;
+    // background-image: url("@/static/cardForum/popClose.png");
     position: absolute;
+    right: 17rpx;
+    top: 0;
+    bottom: 0;
+}
+
+.giveModal {
+    width: 750rpx;
+    height: 400rpx;
+    // background-color: #fff;
+    position: fixed;
     left: 0;
     right: 0;
-    margin: auto;
     top: 350rpx;
     z-index: 10076;
+    // #ifndef APP-NVUE
     box-sizing: border-box;
+    // #endif
     transform: scale(0);
-    transition: transform 0.2s;
+    // transition: transform 0.2s;
+    transition-property: transform;
+    transition-duration: 0.2s;
+    // #ifndef APP-NVUE
     pointer-events: none;
+    // #endif
     border-radius: 3rpx;
+    // #ifndef APP-NVUE
     box-sizing: border-box;
+    // #endif
     padding-top: 30rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    .title {
-        color: #000;
-        text-align: center;
-        font-weight: bold;
-    }
+}
 
-    .tips {
-        text-align: center;
-    }
+.title {
+    color: #000;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 30rpx;
+    font-size: 30rpx;
+}
 
-    .userWrap {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 30rpx;
+.tips {
+    text-align: center;
+    font-size: 26rpx;
+}
 
-        .avatar {
-            width: 50rpx;
-            height: 50rpx;
-            background-color: #000;
-            border-radius: 50%;
-            margin: 0 20rpx;
-        }
+.userWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30rpx;
 
-        .userName {
-            color: #000;
-        }
-    }
 
-    .bottomWrap {
-        display: flex;
-        padding: 0 30rpx;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 60rpx;
+}
 
-        .submit {
-            width: 200rpx;
-            height: 60rpx;
-            color: #fff;
-            background-color: #ff003d;
-            border: 1rpx solid #ff003d;
-        }
+.avatar {
+    width: 50rpx;
+    height: 50rpx;
+    background-color: #000;
+    border-radius: 50%;
+    margin: 0 20rpx;
+}
 
-        .submit_cancel {
-            background-color: #fff;
-            border: 1rpx solid #d7d7d7;
-            color: #000;
-        }
-    }
+.userName {
+    color: #000;
+}
+
+.bottomWrap {
+    display: flex;
+    padding: 0 30rpx;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 60rpx;
+
+
+}
+
+.submit {
+    width: 200rpx;
+    height: 60rpx;
+    color: #fff;
+    background-color: #ff003d;
+    border: 1rpx solid #ff003d;
+    text-align: center;
+    line-height: 60rpx;
+    font-size: 26rpx;
+}
+
+.submit_cancel {
+    background-color: #fff;
+    border: 1rpx solid #d7d7d7;
+    color: #000;
 }
 
 .giveModal_show {
     transform: scale(1);
+    // #ifndef APP-NVUE
     pointer-events: auto;
+    // #endif
 }
 
 .bottom_row {
     position: absolute;
     bottom: 0;
     width: 750rpx;
+    // #ifndef APP-NVUE
     box-sizing: border-box;
+    // #endif
     padding: 0 20rpx;
     justify-content: space-between;
     display: flex;
+    flex-direction: row;
 
-    .clearBtn {
-        width: 120rpx;
-        height: 80rpx;
-        color: #fff;
-        border: 1rpx solid #fff;
-    }
 
-    .finishBtn {
-        width: 540rpx;
-        height: 80rpx;
-        color: #fff;
-        background-color: #ff003d;
-    }
+}
+
+.clearBtn {
+    width: 120rpx;
+    height: 80rpx;
+    color: #fff;
+    border: 1rpx solid #fff;
+}
+
+.finishBtn {
+    width: 540rpx;
+    height: 80rpx;
+    color: #fff;
+    background-color: #ff003d;
 }
 
 .rewardChoiceWrap {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
+    // #ifndef APP-NVUE
     box-sizing: border-box;
+    // #endif
     width: 750rpx;
     // heigh;
     padding: 0 20rpx;
     justify-content: space-between;
 
-    .rewardOption {
-        width: 328rpx;
-        height: 89rpx;
-        border: 1rpx solid #C0C0C0;
-        border-radius: 3rpx;
-        margin-bottom: 20rpx;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 
-    .reward_text {
-        font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: bold;
-        color: #333333;
-        margin-right: 17rpx;
-    }
+}
 
-    .reward_img {
-        width: 36rpx;
-        height: 36rpx;
-        background: #333333;
-        border-radius: 50%;
-    }
+.rewardOption {
+    width: 328rpx;
+    height: 89rpx;
+    border: 1rpx solid #C0C0C0;
+    border-radius: 3rpx;
+    margin-bottom: 20rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.reward_text {
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #333333;
+    margin-right: 17rpx;
+}
+
+.reward_img {
+    width: 36rpx;
+    height: 36rpx;
+    background: #333333;
+    border-radius: 50%;
 }
 
 .desc {
