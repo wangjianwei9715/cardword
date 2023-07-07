@@ -79,7 +79,7 @@
                     <div class="shadow">
                         <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
                         <text class="caogaoTitle">草稿箱</text>
-                        <text class="caogaoText">有{{ draftListByCardBook.length }}篇动态待发布</text>
+                        <text class="caogaoText">有{{ draftListByCardBook.length }}篇卡册待发布</text>
                     </div>
                 </view>
             </template>
