@@ -16,9 +16,10 @@ export default class Upload {
             let arr: any = []
             for (let i = 0; i < fileList.length; i++) {
                 const fileName = type + "/app/" + fileDir + this.ossutils.getFileName(file.tempFiles[i]); // 自定义上传后的文件名称
-                uni.uploadFile({
+                const uploadTask = uni.uploadFile({
                     url: sign.host,
                     filePath: fileList[i],
+                    timeout: 5 * 60 * 60,
                     // fileType: 'image',
                     name: 'file',
                     formData: {
@@ -37,6 +38,8 @@ export default class Upload {
                             let imgSrc = sign.host + "/" + fileName;
                             arr.push(encodeURIComponent(imgSrc))
                             if (arr.length == fileList.length) resolve(arr);
+                        }else{
+                            reject("上传失败");
                         }
                     },
                     fail: (err) => {
@@ -48,6 +51,11 @@ export default class Upload {
                         reject(err);
                     }
                 });
+                if(type=="video"){
+                    uploadTask.onProgressUpdate((call: any) => {
+                        uni.$emit("videoProgress",call)
+                    })
+                }
             }
         })
     }
@@ -107,7 +115,6 @@ export default class Upload {
             })
             res = res.filter(Boolean)
             if (res[0].errMsg == "chooseVideo:fail cancel") throw new Error("取消")
-            if (res[0].duration < 5) throw new Error("不能上传时长小于5秒的视频")
             const sign = await this.ossutils.getSTS(); // 获取签名等信息
             uni.showLoading({
                 title: '上传中...'
@@ -126,8 +133,6 @@ export default class Upload {
                 tempFiles: [res[0].tempFile]
             }, sign, fileDir, "video")
             // #endif
-            console.log(res[0]);
-
             uni.hideLoading()
             return {
                 path: path[0],
@@ -151,10 +156,8 @@ export default class Upload {
             }, sign, fileDir, type)
             return res[0]
         } catch (err) {
-            console.log("错误", err);
-
             //@ts-ignore
-            throw new Error(err.message)
+            throw new Error(err.message || err)
         }
     }
     async uploadTemporaryFile(filePath: string) {

@@ -1,3 +1,11 @@
+<!--
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-06-30 15:46:32
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-10 15:44:08
+ * @FilePath: \card-world\src\pages\cardForum\videoPlay.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
     <view class="content">
 
@@ -10,12 +18,16 @@
             <cover-view :style="{ height: app.statusBarHeight + 'px' }"></cover-view>
             <cover-view class="tabHeader"
                 style="width:750rpx;height:88rpx;display: flex;align-items: center;justify-content: space-between;flex-direction: row;position: relative;">
-                <cover-view :style="{ color: '#fff' }" @click="app.platform.pageBack()">
-                    <cover-image style="width: 19rpx;height: 35rpx;margin-left: 30rpx;"
+                <cover-view :style="{ color: '#fff' }" style="height: 88rpx;width: 120rpx;"
+                    @click="app.platform.pageBack()">
+                    <cover-image
+                        style="width: 19rpx;height: 35rpx;left: 30rpx;position: absolute;top:0;bottom:0;margin: auto;"
                         src="@/static/index/v3/back.png"></cover-image>
                 </cover-view>
-                <cover-view style="position: absolute;right:30rpx;top:0;bottom:0;margin: auto;" @click="onClickDel">
-                    <cover-image style="width: 39rpx;height: 42rpx;margin-right: 30rpx;"
+                <cover-view style="position: absolute;right:30rpx;top:0;bottom:0;margin: auto; height: 88rpx;width: 120rpx;"
+                    @click="onClickDel">
+                    <cover-image
+                        style="width: 39rpx;height: 42rpx;right: 30rpx;position: absolute;top:0;bottom:0;margin: auto;"
                         src="@/static/cardForum/del.png"></cover-image>
                 </cover-view>
             </cover-view>

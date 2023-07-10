@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-10 11:29:02
+ * @LastEditTime: 2023-07-10 15:38:26
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -94,6 +94,7 @@
         <topicsPop :show.sync="showTopics" @select="onSelectTopic" />
         <goods :show.sync="showGoods" @select="onSelectGoods" />
         <view class="bottomSafeArea" style="height:180rpx;pointer-events: none;"></view>
+        <u-toast ref="uToast" v-if="submitLock"></u-toast>
     </view>
 </template>
 
@@ -194,6 +195,7 @@ export default class ClassName extends BaseNode {
     submitLock: boolean = false
     hasVoteByCode: boolean = false
     onLoad(query: any) {
+
         app.platform.hasLoginToken(() => {
             app.user.getUserInfo().then((userInfo: any) => {
                 this.eventAlbum();
@@ -333,7 +335,7 @@ export default class ClassName extends BaseNode {
                                 console.log("设备信息", app.platform.systemInfo);
                                 // const resolution = data.width > 500 ? (500 / data.width) : 1
                                 const bitrate = data.bitrate > 14000 ? 14000 : data.bitrate
-                                if (data.size >= 100 * 1024) {
+                                if (data.size >= 300 * 1024) {
                                     uni.showLoading({
                                         title: "视频处理中",
                                         mask: true
@@ -700,6 +702,8 @@ export default class ClassName extends BaseNode {
                 return;
             }
             if (this.formData.tp == Tp.Video && this.formData.localVideo) {
+                uni.hideLoading()
+                uni.$on("videoProgress", this.videoProgress)
                 if (this.isTempVideo) {
                     //临时的视频路径(上传至阿里云)
                     const videoPath: any = await Upload.getInstance().uploadTempFile(this.videoPath, "cardForumVideo/", "video", this.tempVideoFile.name || "video.mp4")
@@ -746,6 +750,7 @@ export default class ClassName extends BaseNode {
                     }
                 })
                 this.submitLock = false
+                uni.$off("videoProgress", this.videoProgress)
             }, (err: any) => {
                 //发布失败
                 // this.videoPath=
@@ -756,8 +761,8 @@ export default class ClassName extends BaseNode {
                 //     this.onClickSaveDraft()
                 // }
                 //发布失败保存至草稿箱
+                uni.$off("videoProgress", this.videoProgress)
                 uni.hideLoading()
-
                 this.formData.localVideo = false
                 this.isTempVideo = false
                 console.log("保存的草稿箱data", this.formData);
@@ -781,8 +786,26 @@ export default class ClassName extends BaseNode {
         } catch (err) {
             console.log("错误错误错误", err);
             this.submitLock = false
-            uni.hideLoading()
+            uni.$off("videoProgress", this.videoProgress)
+            // uni.hideLoading()
+            uni.showToast({
+                //@ts-ignore
+                title:err.message || err,
+                icon:'none'
+            })  
         }
+    }
+    videoProgress(res: any) {
+        // uni.showLoading({
+        //     title: `上传中:${res.progress}%`,
+        //     mask: true
+        // })
+        this.$refs.uToast.show({
+            type: "loading",
+            icon: 'https://cdn.uviewui.com/uview/demo/toast/loading.png',
+            message: `上传中:${res.progress}%`,
+            duration: 7000
+        })
     }
     getSnapshotPath(src: string): Promise<string> {
         return new Promise((re, rj) => {
