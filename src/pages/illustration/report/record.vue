@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 15:07:39
+ * @LastEditTime: 2023-07-10 15:47:39
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -14,6 +14,7 @@
 				<view class="time">{{$u.timeFormat(item.createdAt,'yyyy-mm-dd hh:MM')}}</view>
 				<view class="status">{{statusMsg(item)}}</view>
 			</view>
+			<u-line color="#dadbde"></u-line>
 			<view class="center">
 				<view class="desc">{{item.content}}</view>
 				<muqian-lazyLoad class="image" v-for="(item,index) in getImg(item.descPics)" :key="index" :src="decodeURIComponent(item)" borderRadius="3rpx"/>
@@ -107,7 +108,6 @@
 			width: 100%;
 			height:81rpx;
 			box-sizing: border-box;
-			border-bottom: 1px solid #E6E6E6;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
