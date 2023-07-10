@@ -471,6 +471,7 @@
         width: 100%;
         box-sizing: border-box;
         padding:20rpx;
+        padding-bottom:179rpx;
         padding-bottom:calc(179rpx + env(safe-area-inset-bottom));
     }
     .card-index{

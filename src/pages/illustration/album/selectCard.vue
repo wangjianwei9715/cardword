@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 16:37:57
+ * @LastEditTime: 2023-07-10 18:17:55
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -157,6 +157,7 @@
         background:#000000;
     }
 	.album-card-content{
+		padding-bottom:159rpx;
 		padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
 	}
 	.tips{

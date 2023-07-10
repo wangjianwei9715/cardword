@@ -178,6 +178,7 @@
         background:#000000;
     }
 	.album-card-content{
+		padding-bottom:159rpx;
 		padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
 		.segment{
 			display: flex;

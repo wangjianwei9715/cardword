@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-10 13:54:19
+ * @LastEditTime: 2023-07-10 18:16:41
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -139,8 +139,9 @@
 			})
 		}
 		publish({content,cover,url,title,...rest}:any){
-			if(this.provePic==""){
-				uni.showToast({title:'请上传证明图片',icon:'none'})
+			if(this.provePic=="" || !title){
+				uni.showToast({title:`${!title?"请输入标题":"请上传证明图片"}`,icon:'none'});
+				this.submitUnLock()
 				return;
 			}
 			const params = {
@@ -219,6 +220,7 @@
 						uni.switchTab({ url: '/pages/index/userinfo_v3' });
 					}else{
 						uni.showToast({ title:res.failure,icon:"none" });
+						this.submitUnLock()
 						this.identify = uni.$u.guid(8);
 					}
 				}
@@ -227,12 +229,15 @@
 				clearInterval(this.intervalQuery);
 			})
 		}
+		submitUnLock(){
+			this.$emit('unLock')
+		}
 		revokePublish(){
-			const url = this.code ? `${this.code}/${this.revision}` : "publish"
-			app.http.Post(`cardIllustration/album/${url}/revoke`,{identify:this.identify},(res:any)=>{
-				this.identify = uni.$u.guid(8);
-				uni.showToast({ title:"发布失败，请重新发布",icon:"none" });
-			})
+			const url = this.code ? `${this.code}/${this.revision}` : "publish";
+			this.identify = uni.$u.guid(8);
+			uni.showToast({ title:"发布失败，请重新发布",icon:"none" });
+			this.submitUnLock()
+			app.http.Post(`cardIllustration/album/${url}/revoke`,{identify:this.identify},(res:any)=>{})
 		}
 	}
 </script>
