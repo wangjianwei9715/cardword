@@ -1,9 +1,9 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 18:09:09
- * @FilePath: \card-world\src\pages\cardForum\func\index.ts
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-10 12:20:29
+ * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { app } from "@/app"
@@ -182,4 +182,15 @@ export function storageDraft(data: any, type: ("cardBook" | "dynamic"), draftId?
             resovle(saveData.draftId)
         }
     })
+}
+export function formatterNolist(list:any):any[] { 
+    return list.map(({seqIndex, ...rest}:any) => { 
+        const section = rest.section; 
+        const sectionSeqIndexFrom = section ? section.sectionSeqIndexFrom : undefined; 
+        const sectionSeqIndexEnd = section ? section.sectionSeqIndexEnd : undefined; 
+        const seqIndexes = section 
+        ? Array.from({length: sectionSeqIndexEnd - sectionSeqIndexFrom + 1}, (_, i) => sectionSeqIndexFrom + i) 
+        : [seqIndex]; 
+        return seqIndexes.map(seqIndex => ({...rest, seqIndex})); 
+    }).flat(); 
 }

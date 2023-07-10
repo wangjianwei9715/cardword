@@ -43,7 +43,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import cardPic from '@/pages/illustration/components/cardPic.vue'
-	import { followActionByUser } from "./func";
+	import { followActionByUser, formatterNolist } from "./func";
 	class ListParams {
 		tp=0;
 		fetchFrom=1;
@@ -81,7 +81,8 @@
 		public get isFollow(): boolean {
 			return (this.forumDetail.bit & 2) === 2
 		}
-		formatterCodeList(list:any[]){
+		formatterCodeList(addList:any[]){
+			const list = formatterNolist(addList);
 			list.forEach((x:any,index:number)=>{
 				if(index+1<list.length && list[index+1].code == x.code){
 					x.split = true;
