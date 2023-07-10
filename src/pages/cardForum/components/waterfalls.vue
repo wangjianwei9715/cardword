@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-10 10:55:41
- * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-10 11:37:23
+ * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
 <template>
@@ -587,6 +587,12 @@ export default {
                     url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}${this.isMine ? "&fromMine=1" : ""}`
                 })
                 return
+            }
+            if(item.typeName=='卡册' && item.status==0){
+                uni.navigateTo({
+                    url:`/pages/cardForum/release?code=${item.code}`
+                })
+                return;
             }
             uni.navigateTo({
                 url: `/pages/cardForum/detail?` +
