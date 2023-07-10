@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 18:14:14
+ * @LastEditTime: 2023-07-10 15:51:14
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -21,11 +21,11 @@
 					<image class="icon-add" src="@/static/illustration/icon_add.png"/>
 				</view>
 			</view>
-			<u-line color="#dadbde"></u-line>
-			<view class="title martop40">添加描述（必填)</view>
+			<u-line color="#dadbde" margin="0 0 40rpx 0"></u-line>
+			<view class="title">添加描述（必填)</view>
 			<u--textarea v-model="desc" height="410rpx"  placeholder="请描述错误原因，审核通过后获得10卡币" count :maxlength="200" border="none" confirmType="done"></u--textarea>
-			<u-line color="#dadbde"></u-line>
-			<view class="title martop40">请上传正确图片（选填)</view>
+			<u-line color="#dadbde" margin="0 0 40rpx 0"></u-line>
+			<view class="title">请上传正确图片（选填)</view>
 			<view class="pic-box">
 				<view class="pic-index" v-if="frontPic">
 					<image class="pic" :src="decodeURIComponent(frontPic)"/>
@@ -45,8 +45,8 @@
 					<view class="upload-msg">上传反面</view>
 				</view>
 			</view>
-			<u-line color="#dadbde"></u-line>
-			<view class="tips martop40">采纳后额外获得10卡币</view>
+			<u-line color="#dadbde" margin="0 0 40rpx 0"></u-line>
+			<view class="tips">采纳后额外获得10卡币</view>
 			<view class="btn" @click="$u.throttle(onClickReport,1000)">提交</view>
 		</view>
 	</view>
@@ -193,9 +193,6 @@
 		.icon-add{
 			width: 41rpx;
 			height:41rpx;
-		}
-		.martop40{
-			margin-top: 40rpx;
 		}
 		.tips{
 			font-size: 21rpx;

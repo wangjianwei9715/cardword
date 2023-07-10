@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-27 18:21:56
+ * @LastEditTime: 2023-07-10 15:49:34
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -17,16 +17,19 @@
 				</view>
 				<view class="msg" v-else>未上传</view>
 			</view>
+			<u-line color="#dadbde" margin="40rpx 0"></u-line>
 			<view class="title">描述</view>
 			<view class="line">
 				<view class="msg">{{detail.content}}</view>
 			</view>
+			<u-line color="#dadbde" margin="40rpx 0"></u-line>
 			<view class="title">正确图片</view>
 			<view class="line">
 				<image v-show="detail.frontPic" class="pic" :src="decodeURIComponent(detail.frontPic)" />
 				<image v-show="detail.backPic" class="pic" :src="decodeURIComponent(detail.backPic)" />
 				<view v-show="!detail.backPic && !detail.frontPic" class="msg">未上传</view>
 			</view>
+			<u-line color="#dadbde" margin="40rpx 0"></u-line>
 			<view class="title">处理结果</view>
 			<view class="line">
 				<view class="msg">{{result()}}</view>
@@ -92,9 +95,6 @@
 		.line{
 			width: 100%;
 			box-sizing: border-box;
-			padding-bottom: 40rpx;
-			border-bottom: 1px solid #dadbde;
-			margin-bottom: 40rpx;
 		}
 		.pic{
 			width: 162rpx;
