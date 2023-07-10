@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 17:03:45
+ * @LastEditTime: 2023-07-10 10:17:56
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,7 +12,9 @@
         <view class="navBar">
             <view :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
             <view class="nav">
-                <view class="back" @click="goBack"></view>
+                <view class="back" @click="goBack">
+                    <image src="@/static/act/portable/pageBack.png"></image>
+                </view>
                 <view @click="goPersonHome" style="display:flex">
                     <image :src="forumDetail.avatar ? $parsePic(decodeURIComponent(forumDetail.avatar)) : app.defaultAvatar"
                         class="topAvatar"></image>
@@ -309,6 +311,11 @@ export default class ClassName extends BaseNode {
             this.userInfo = await app.user.getUserInfo()
         })
     }
+    onPageScroll() {
+        if (this.focus) this.inputHide()
+        this.tapTimer && clearTimeout(this.tapTimer)
+        this.lontapTimer && clearTimeout(this.lontapTimer)
+    }
     beforeDestroy() {
         uni.$off("editCardForum", this.onEditCardForum)
     }
@@ -498,9 +505,9 @@ export default class ClassName extends BaseNode {
         console.log("longtapCom", item);
         this.touchId = item.id
         let buttons: any = [
-            // {
-            //     title: "举报"
-            // }
+            {
+                title: "举报"
+            }
         ]
         if (item.host || this.isPerson) buttons.push({ title: '删除' })
         //#ifdef APP-PLUS
@@ -516,7 +523,7 @@ export default class ClassName extends BaseNode {
                 if (e.index == 0) return
                 const title: string = buttons[e.index - 1].title
                 if (title == "举报") {
-                    // this.pickUpActionSheet(item)
+                    this.pickUpActionSheet(item)
                 } else if (title == "删除") {
                     this.delCom(item, fatherItem, index, isSon)
                 }
@@ -763,17 +770,24 @@ export default class ClassName extends BaseNode {
     }
 
     .back {
-        width: 19rpx;
-        height: 35rpx;
+        width: 64rpx;
+        height: 55rpx;
         background-size: 100% 100%;
-        background-image: url("@/static/act/portable/pageBack.png");
+        // background-color: red;
+        display: flex;
+        align-items: center;
+        image{
+            width: 19rpx;
+            height: 35rpx;
+        }
+        // background-image: url("@/static/act/portable/pageBack.png");
     }
 
     .topAvatar {
         width: 61rpx;
         height: 61rpx;
         border-radius: 50%;
-        margin-left: 50rpx;
+        // margin-left: 50rpx;
         margin-right: 20rpx;
     }
 
