@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-10 18:17:55
+ * @LastEditTime: 2023-07-10 18:26:46
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -94,7 +94,7 @@
 		getSeriesNoCode(seriesCode:string) {
 			return this.selectSeries.filter((x:any)=>{
 				return x.seriesCode == seriesCode;
-			}).map((x:any)=>x.code)
+			})[0].noList.map((x:any)=>x.code)
 		}
 		async onClickSplitNo(index:number,noIndex:number){
 			const list = this.selectSeries[index].noList;
