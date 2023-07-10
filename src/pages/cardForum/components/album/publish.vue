@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 14:54:14
+ * @LastEditTime: 2023-07-07 18:24:29
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -71,11 +71,11 @@
 			return this.list.length
 		}
 		public get picNum() : number {
-			const backPicLength = this.list.filter((x:any) => x.backPic).length;
+			const backPicLength = this.list.filter( x => x.backPic ).length;
 			return (backPicLength+this.hasPicList.length)
 		}
 		public get hasPicList() : any[] {
-			return this.list.filter((x:any) => x.frontPic);
+			return this.list.filter( x => x.frontPic );
 		}
 		public get percentMsg() : string {
 			const have = this.hasPicList.length;
@@ -96,6 +96,18 @@
 		}
 		editUrl(revision=true):string{
 			return this.isEdit ? `edit/${this.code}${revision?'/'+this.revision:''}` : 'publish';
+		}
+		formatterSplitedNumbers(list:any){
+			const Series:any = {}
+			list.forEach((x:any)=>{
+				if(!Series.hasOwnProperty(x.code)){
+					Series[x.code] = {code:x.code,list:[]}
+				}
+				if(x.frontPic){
+					Series[x.code].list.push({seqIndex:x.seqIndex,frontPic:x.frontPic,backPic:x.backPic})
+				}
+			});
+			return Array.from(Object.values(Series),x=>x);
 		}
 		onClickGoPicUpload(){
 			uni.navigateTo({
@@ -158,19 +170,12 @@
 		publishUpload(uploadToken:string,PostLength:number,nowNum:number){
 			const maxList = this.list.length;
 			const list = [...this.list].splice((nowNum*200),Math.min(200,maxList-(nowNum*200)));
-			const codes = list.filter((x:any)=>{
-				return !x.split && x.frontPic=="";
-			})
-			const nos = list.filter((x:any)=>{
-				return x.split || x.frontPic
-			})
-			const params = {
-				uploadToken,
-				codes:codes.map((x:any)=>x.code),
-				nos:nos.map((x:any)=>{
-					return {code:x.code,seqIndex:x.seqIndex,frontPic:x.frontPic,backPic:x.backPic};
-				})
-			}
+			const codes = list.filter( x => !x.split && x.frontPic=="" ).map( x => x.code);
+			const nos = list.filter( x => !x.split && x.frontPic ).map( 
+				x => ({code:x.code,seqIndex:x.seqIndex,frontPic:x.frontPic,backPic:x.backPic}) 
+			);
+			const splitedNumbers = this.formatterSplitedNumbers(list.filter( x => x.split));
+			const params = { uploadToken, codes, nos, splitedNumbers }
 			app.http.Post(`cardIllustration/album/${this.editUrl()}/upload`,params,(res:any)=>{
 				if(nowNum+1>=PostLength){
 					this.publicComplete(uploadToken)
