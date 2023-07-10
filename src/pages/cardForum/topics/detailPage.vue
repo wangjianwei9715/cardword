@@ -29,7 +29,7 @@
                             :current="tabs.index" :list="tabs.list" :itemStyle="{
                                 width: '200rpx',
                                 height: '88rpx',
-                                marginTop:'6rpx'
+                                marginTop: '6rpx'
                             }"
                             :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                             :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }"></u-tabs>
@@ -42,8 +42,8 @@
             </div>
 
         </div>
-        <waterfalls style="width: 750rpx;margin-top: 10rpx;" ref="waterfall" :showBottom="true" :detailBack="false"
-            :isMine="false" :showUser="false" :value="tabs.list[tabs.index].list" :refresh="false" :showEmpty="true">
+        <waterfalls v-if="current" style="width: 750rpx;margin-top: 10rpx;" ref="waterfall" :showBottom="true" :detailBack="false"
+            :isMine="false" :value="current.list" :refresh="false" :showEmpty="true">
         </waterfalls>
     </view>
 </template>
@@ -74,7 +74,7 @@ const defaultTagObj = {
         fetchFrom: 1,
         fetchSize: 15,
         topicId: 0,
-        scrollId: 0,
+        scrollId: "",
         st: 0,
         sn: ""
     },
@@ -105,7 +105,8 @@ export default class ClassName extends BaseNode {
     @Watch('tabs.index')
     onIndexChanged(val: number) {
         //@ts-ignore
-
+        this.$refs.waterfall.clear();
+        //@ts-ignore
         if (this.tabs.list[val]?.list && (this.tabs.list[val].list.length == 0)) {
             this.reqData(true)
         } else {
@@ -172,14 +173,15 @@ export default class ClassName extends BaseNode {
     reqData(isRefresh = false, cb?: any) {
         this.current.queryParams.od = this.current.od
         this.current.queryParams.topicId = this.id
+        this.current.queryParams.timeStamp = Math.round(+new Date() / 1000)
         app.http.Get(`dataApi/cardCircle/search/dt`, this.current.queryParams, (res: any) => {
             const list = res.list || []
             this.current.firstReqEnd = true
             this.current.isFetchEnd = res.isFetchEnd
             if (isRefresh) {
+                this.current.list = []
                 //@ts-ignore
                 this.$refs.waterfall.clear();
-                this.current.list = []
             }
             this.current.list.push(...list)
             this.current.firstReqEnd = true
@@ -193,6 +195,10 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
+page {
+    background-color: #f6f7fb;
+}
+
 .flex1 {
     flex: 1;
 }

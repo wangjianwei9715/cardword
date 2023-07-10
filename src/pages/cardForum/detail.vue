@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-10 10:17:56
+ * @LastEditTime: 2023-07-10 10:21:25
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -175,7 +175,7 @@
                     <u-loading-icon mode="circle" color="#ff013d" style="position: relative;right:60rpx"
                         v-if="item.loading"></u-loading-icon>
                 </view>
-                <view class="line" v-if="index + 1 < commList.length"></view>
+                <!-- <view class="line" v-if="index + 1 < commList.length"></view> -->
             </view>
         </view>
         <view class="fixInputContainer">
@@ -1377,7 +1377,7 @@ export default class ClassName extends BaseNode {
     color: #AAAAAA;
     margin-top: 20rpx;
     display: flex;
-    align-content: center;
+    align-items: center;
 
     .num {
         font-size: 21rpx;

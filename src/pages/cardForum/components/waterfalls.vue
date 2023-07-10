@@ -51,7 +51,7 @@
                                     }}</text>
                                     <view class="likeWrap">
                                         <image
-                                            :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                            :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
                                             class="likeImg"></image>
                                         <text class="likeNum">{{ item.likeNum }}</text>
                                     </view>
@@ -64,7 +64,7 @@
                                     </view>
                                     <view class="likeWrap">
                                         <image
-                                            :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                            :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
                                             class="likeImg"></image>
                                         <text class="likeNum">{{ item.likeNum }}</text>
                                     </view>
@@ -125,7 +125,7 @@
                                     }}</text>
                                     <view class="likeWrap">
                                         <image
-                                            :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                            :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
                                             class="likeImg"></image>
                                         <text class="likeNum">{{ item.likeNum }}</text>
                                     </view>
@@ -138,7 +138,7 @@
                                     </view>
                                     <view class="likeWrap">
                                         <image
-                                            :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                            :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
                                             class="likeImg"></image>
                                         <text class="likeNum">{{ item.likeNum }}</text>
                                     </view>
@@ -227,7 +227,7 @@
                         <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                         <div class="likeWrap">
                             <image
-                                :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                :src="isLike(item) ? '@/static/cardForum/like.png' : '@/static/cardForum/unLike.png'"
                                 class="likeImg"></image>
                             <text class="likeNum">{{ item.likeNum }}</text>
                         </div>
@@ -240,7 +240,7 @@
                         </view>
                         <view class="likeWrap">
                             <image
-                                :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
+                                :src="isLike(item) ? '@/static/cardForum/like.png' : '@/static/cardForum/unLike.png'"
                                 class="likeImg"></image>
                             <text class="likeNum">{{ item.likeNum }}</text>
                         </view>
