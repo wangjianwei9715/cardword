@@ -162,7 +162,8 @@ const actionsList = [
         url: "/pages/cardForum/release"
     }, {
         name: "卡册",
-        subname: "制作图片对应卡种的高质量卡册，适用于凑套等"
+        subname: "制作图片对应卡种的高质量卡册，适用于凑套等",
+        url: "/pages/illustration/album/selectCard"
     }
 ]
 const tabsList = [
