@@ -1,8 +1,8 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-10 12:20:29
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-10 18:13:41
  * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -10,10 +10,15 @@ import { app } from "@/app"
 import CardForum from "../interface/public"
 import { parsePic } from "@/tools/util"
 export enum CardForumReportSource {
+    /**卡册 */
+    BY_KACE = 1,
     /**动态 */
-    BY_DYNAMIC = 1,
+    BY_DT = 2,
+    /**评论 */
+    BY_COM = 3,
     /**用户 */
-    BY_USER = 2
+    BY_USER = 4
+
 }
 export interface Report {
     /**被举报的用户id */
@@ -28,6 +33,8 @@ export interface Report {
     tpBit: number;
     /**动态或卡册编号 */
     dtCode: string;
+    /**source=3 为评论id且必传 */
+    target?: number
 }
 //话题
 export function getTopics(params: Object): Promise<any> {
@@ -183,14 +190,14 @@ export function storageDraft(data: any, type: ("cardBook" | "dynamic"), draftId?
         }
     })
 }
-export function formatterNolist(list:any):any[] { 
-    return list.map(({seqIndex, ...rest}:any) => { 
-        const section = rest.section; 
-        const sectionSeqIndexFrom = section ? section.sectionSeqIndexFrom : undefined; 
-        const sectionSeqIndexEnd = section ? section.sectionSeqIndexEnd : undefined; 
-        const seqIndexes = section 
-        ? Array.from({length: sectionSeqIndexEnd - sectionSeqIndexFrom + 1}, (_, i) => sectionSeqIndexFrom + i) 
-        : [seqIndex]; 
-        return seqIndexes.map(seqIndex => ({...rest, seqIndex})); 
-    }).flat(); 
+export function formatterNolist(list: any): any[] {
+    return list.map(({ seqIndex, ...rest }: any) => {
+        const section = rest.section;
+        const sectionSeqIndexFrom = section ? section.sectionSeqIndexFrom : undefined;
+        const sectionSeqIndexEnd = section ? section.sectionSeqIndexEnd : undefined;
+        const seqIndexes = section
+            ? Array.from({ length: sectionSeqIndexEnd - sectionSeqIndexFrom + 1 }, (_, i) => sectionSeqIndexFrom + i)
+            : [seqIndex];
+        return seqIndexes.map(seqIndex => ({ ...rest, seqIndex }));
+    }).flat();
 }

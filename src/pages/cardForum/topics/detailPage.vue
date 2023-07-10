@@ -21,29 +21,26 @@
                     </view>
                 </view>
                 <view class="line"></view>
-
-                <u-sticky :customNavHeight="navHeight">
-                    <div style="background-color: #fff;height:100rpx;width: 750rpx;display: flex;justify-content: center;"
-                        id="tabs">
-                        <u-tabs customType="cardForum" style="width: 500rpx;" @click="tabClick" :duration="300"
-                            :current="tabs.index" :list="tabs.list" :itemStyle="{
-                                width: '200rpx',
-                                height: '88rpx',
-                                marginTop: '6rpx'
-                            }"
-                            :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
-                            :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }"></u-tabs>
-                    </div>
-                </u-sticky>
-                <div class="acWrap" id="acWrap" v-if="data.banner" @click="goToAct">
-                    <image class="acImage" mode="aspectFill" :src="$parsePic(decodeURIComponent(data.banner))"></image>
-                    <text class="iNeedPush" @click.stop="release">我要发布</text>
-                </div>
             </div>
-
         </div>
-        <waterfalls v-if="current" style="width: 750rpx;margin-top: 10rpx;" ref="waterfall" :showBottom="true" :detailBack="false"
-            :isMine="false" :value="current.list" :refresh="false" :showEmpty="true">
+        <u-sticky :customNavHeight="navHeight">
+            <view style="background-color: #fff;height:100rpx;width: 750rpx;display: flex;justify-content: center;">
+                <u-tabs customType="cardForum" style="width: 500rpx;" @click="tabClick" :duration="300"
+                    :current="tabs.index" :list="tabs.list" :itemStyle="{
+                        width: '200rpx',
+                        height: '88rpx',
+                        marginTop: '6rpx'
+                    }"
+                    :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
+                    :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }"></u-tabs>
+            </view>
+        </u-sticky>
+        <div class="acWrap" id="acWrap" v-if="data.banner" @click="goToAct">
+            <image class="acImage" mode="aspectFill" :src="$parsePic(decodeURIComponent(data.banner))"></image>
+            <text class="iNeedPush" @click.stop="release">我要发布</text>
+        </div>
+        <waterfalls v-if="current" style="width: 750rpx;margin-top: 10rpx;" ref="waterfall" :showBottom="true"
+            :detailBack="false" :isMine="false" :value="current.list" :refresh="false" :showEmpty="true">
         </waterfalls>
     </view>
 </template>

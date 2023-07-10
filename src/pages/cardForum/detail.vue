@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-10 10:54:00
+ * @LastEditTime: 2023-07-10 18:11:53
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -538,31 +538,34 @@ export default class ClassName extends BaseNode {
     }
     pickUpActionSheet(item: any) {
         //#ifdef APP-PLUS
-        plus.nativeUI.actionSheet({
-            cancel: "取消",
-            buttons: this.comment_reason_tp.map((item: any) => {
-                return {
-                    title: item.label
-                }
-            })
-        }, (e: any) => {
-            if (e.index == 0) return
-            const value = this.comment_reason_tp[e.index - 1].value
-            if (!value || !item.id) {
-                uni.showToast({
-                    title: "举报失败",
-                    icon: "none"
-                })
-                return
-            }
-            app.http.Post("comment/report/" + item.id, { tp: 3, reason_tp: value }, (res: any) => {
-                uni.showToast({
-                    title: "举报成功",
-                    icon: "none"
-                })
-            })
-        })
+        // plus.nativeUI.actionSheet({
+        //     cancel: "取消",
+        //     buttons: this.comment_reason_tp.map((item: any) => {
+        //         return {
+        //             title: item.label
+        //         }
+        //     })
+        // }, (e: any) => {
+        //     if (e.index == 0) return
+        //     const value = this.comment_reason_tp[e.index - 1].value
+        //     if (!value || !item.id) {
+        //         uni.showToast({
+        //             title: "举报失败",
+        //             icon: "none"
+        //         })
+        //         return
+        //     }
+        //     app.http.Post("comment/report/" + item.id, { tp: 3, reason_tp: value }, (res: any) => {
+        //         uni.showToast({
+        //             title: "举报成功",
+        //             icon: "none"
+        //         })
+        //     })
+        // })
         //#endif
+        uni.navigateTo({
+            url:`/pages/cardForum/report?source=${3}&dtCode=${this.code}&target=${item.id}`
+        })
     }
     delCom(item: CardForum.CommentFather, fatherItem: CardForum.CommentFather, index: number, isSon: boolean) {
         uni.showModal({

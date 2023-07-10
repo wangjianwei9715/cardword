@@ -8,10 +8,8 @@
             </view>
         </view>
         <view class="title" style="margin-top: 20rpx;">举报描述（选填）</view>
-        <view class="txtArea">
-            <u-textarea confirmType="done" placeholder="提供更多信息助于处理~" style="background-color: #F5F5F5;"
-                v-model="formData.reason" class="input" height="332rpx" count :maxlength="200"></u-textarea>
-        </view>
+        <u--textarea confirmType="done" placeholder="提供更多信息助于处理~" style="background-color: #F5F5F5;"
+            v-model="formData.reason" class="input" height="350rpx" count :maxlength="200"></u--textarea>
         <view class="title">举证图片（选填）</view>
         <view class="imageContainer">
             <image class="imageWrap flexCenter" v-for="(item) in formData.pic" :src="decodeURIComponent(item)"></image>
@@ -63,7 +61,8 @@ export default class ClassName extends BaseNode {
         reason: "",
         pic: [],
         tpBit: 0,
-        dtCode: ""
+        dtCode: "",
+        target: 0
     }
     onLoad(query: any) {
         if (query.code) {
@@ -72,6 +71,7 @@ export default class ClassName extends BaseNode {
         }
         query.source && (this.formData.source = +query.source)
         query.byInformer && (this.formData.byInformer = +query.byInformer)
+        query.target && (this.formData.target = +query.target)
     }
     onClickReason(bit: number): void {
         this.formData.tpBit ^= +bit
@@ -85,7 +85,7 @@ export default class ClassName extends BaseNode {
             uni.showModal({
                 title: "提示",
                 content: "感谢您的举报反馈",
-                showCancel:false,
+                showCancel: false,
                 success: (res: any) => {
                     if (res.confirm) {
                         app.platform.pageBack()
@@ -145,7 +145,7 @@ export default class ClassName extends BaseNode {
 .input {
     // background-color: #fcfcfc;
     // background-color: #F5F5F5;
-    height: 332rpx;
+    // height: 332rpx;
     width: 711rpx;
     // width: 690rpx;
     // margin-top: 20rpx;
