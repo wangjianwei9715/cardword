@@ -101,7 +101,7 @@ const mineTabs: any = [
     },
     {
         name: '卡册',
-        url: "me/album/list"
+        url: "cardCircle/list/me/album"
     },
     {
         name: '收藏',
@@ -244,7 +244,7 @@ export default class ClassName extends BaseNode {
                         pic: item.pic
                     }
                 }
-                return item
+                return {...item,typeName:this.current.name}
             })
             this.current.firstReqEnd = true
             this.current.isFetchEnd = res.isFetchEnd
