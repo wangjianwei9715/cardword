@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 18:15:37
+ * @LastEditTime: 2023-07-10 10:55:41
  * @FilePath: \card-world\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -227,7 +227,7 @@
                         <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                         <div class="likeWrap">
                             <image
-                                :src="isLike(item) ? '@/static/cardForum/like.png' : '@/static/cardForum/unLike.png'"
+                                :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
                                 class="likeImg"></image>
                             <text class="likeNum">{{ item.likeNum }}</text>
                         </div>
@@ -240,7 +240,7 @@
                         </view>
                         <view class="likeWrap">
                             <image
-                                :src="isLike(item) ? '@/static/cardForum/like.png' : '@/static/cardForum/unLike.png'"
+                                :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
                                 class="likeImg"></image>
                             <text class="likeNum">{{ item.likeNum }}</text>
                         </view>
