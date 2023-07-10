@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-10 11:37:23
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-10 17:22:21
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -174,16 +174,12 @@
     <!-- #endif -->
     <!-- #ifdef APP-NVUE -->
 
-    <waterfall @scroll="scroll" ref="water" bounce="true" :column-count="columnCount" :show-scrollbar="false"
+    <waterfall @scroll="scroll" fixFreezing="true" ref="water" bounce="true" :column-count="columnCount" :show-scrollbar="false"
         :column-width="WIDTH" :column-gap="GAP" :left-gap="GAP" :right-gap="GAP" @loadmore="scrolltolower"
         :always-scrollable-vertical="true" :height="height">
         <refresh v-if="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'" class="refresh">
-            <!-- <loading-indicator :style="[refreshColor ? {} : {}]"></loading-indicator> -->
             <u-loading-icon mode="semicircle"></u-loading-icon>
         </refresh>
-        <header>
-            <div ref="goTop" style="width: 0;height: 0;"></div>
-        </header>
         <header>
             <div v-for="(item, index) in copyValue" style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;">
                 <image :src="thumbnail(item.cover)" v-if="!item.mode"
@@ -512,7 +508,7 @@ export default {
                 exposureList.push(item.code)
                 uni.$u.debounce(() => {
                     this.exposureAction && this.exposureAction()
-                }, 5000)
+                }, 1000)
             }
         },
         isLike(item) {

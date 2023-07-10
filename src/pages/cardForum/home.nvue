@@ -54,10 +54,9 @@
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls :needExposure="true" column-count="2"
-                        v-if="tab.firstReqEnd" :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'"
-                        :value="tab.list" @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
-                        style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
+                    <waterfalls :needExposure="true" column-count="2" v-if="tab.firstReqEnd" :ref="`waterfalls${tabIndex}`"
+                        :height="scrollViewHeight + 'px'" :value="tab.list" @loadmore="loadmoreData(tabIndex)"
+                        @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
                         <template v-slot:header>
                             <header style="align-items: center;" v-if="tabIndex == 2 && tab.firstReqEnd">
                                 <div class="hotTopicWrap">
@@ -81,7 +80,7 @@
                                         </view>
                                     </scroll-view>
                                 </div>
-                                <div class="adWrap" v-if="tabIndex===2 && topicAcList && topicAcList.length">
+                                <div class="adWrap" v-if="tabIndex === 2 && topicAcList && topicAcList.length">
                                     <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
                                     <swiper style="width: 730rpx;width: 730rpx;height:200rpx">
                                         <swiper-item v-for="(item, index) in topicAcList" :key="index"
@@ -182,7 +181,7 @@ const tabsList = [
         tag: 'video'
     }, {
         name: '卡册',
-        tag: 'kace'
+        tag: 'album'
     }, {
         name: '交流',
         tag: 'swap'
@@ -244,6 +243,7 @@ export default {
             topicAcList: [
             ],
             oldIndex: 1,
+            loadmoreTimer: null
         }
     },
     async onLoad() {
@@ -418,19 +418,28 @@ export default {
         },
         refreshData(index) {
             setTimeout(() => {
-                this.current.queryParams.fetchFrom = 1
-                this.reqNewData(true, (() => {
+                if (this.current.isFetchEnd) {
                     setTimeout(() => {
                         this.$refs['waterfalls' + index][0].hideRefresh()
                     }, 200);
-                }))
-            }, 500)
+                } else {
+                    this.current.queryParams.fetchFrom = 1
+                    this.reqNewData(true, (() => {
+                        setTimeout(() => {
+                            this.$refs['waterfalls' + index][0].hideRefresh()
+                        }, 200);
+                    }))
+                }
+            }, 1000)
         },
         loadmoreData(index) {
-            if (!this.current.isFetchEnd) {
-                this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
-                this.reqNewData()
-            }
+            this.loadmoreTimer && clearTimeout(this.loadmoreTimer)
+            this.loadmoreTimer = setTimeout(() => {
+                if (!this.current.isFetchEnd) {
+                    this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
+                    this.reqNewData()
+                }
+            }, 1000)
         },
         onClickTopic(item) {
             releaseByTopic(item.id)
@@ -454,17 +463,23 @@ export default {
             let query = {
                 tag: this.current.tag
             }
-            if (this.current.name == '关注') {
-                query = {
-                    ...this.current.queryParams,
-                    ...query
+            const array = ["all", "album"]
+            if (!array.includes(this.current.tag)) {
+                if (this.current.name == '关注') {
+                    query = {
+                        ...this.current.queryParams,
+                        ...query
+                    }
+                }
+                if (isRefresh) {
+
+                    query.flush = 1
                 }
             }
-            if (isRefresh) {
-
-                query.flush = 1
-            }
-            app.http.Get(`dataApi/${this.current.url || "cardCircle/list"}`, query, (res) => {
+            const url = array.includes(this.current.tag) ? `dataApi/${this.current.url || "cardCircle/roll"}` : `dataApi/${this.current.url || "cardCircle/list"}`
+            console.log("请求的", url, query);
+            app.http.Get(url, query, (res) => {
+                console.log("响应的结果", res);
                 this.current.isFetchEnd = res.isFetchEnd
                 if (isRefresh) {
                     this.current.list = []
