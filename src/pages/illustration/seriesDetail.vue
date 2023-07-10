@@ -37,8 +37,6 @@
 				</view>
 			</view>
             <waterfalls v-if="tabsData.current==1" :value="albumList" :add-time="50"></waterfalls>
-			<empty v-show="listParams.empty"/>
-			<u-loadmore v-show="listParams.nomore" status="nomore" line/>
 			<view class="btn-publish" @click="onClickGoPublish"></view>
 		</view>
 	</view>

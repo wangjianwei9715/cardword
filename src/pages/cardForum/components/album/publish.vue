@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-10 12:06:20
+ * @LastEditTime: 2023-07-10 13:54:19
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -131,8 +131,6 @@
 			if(this.listParams.isFetchEnd) return;
 			app.http.Get(`cardIllustration/album/edit/detail/${this.code}/nolist`,this.listParams,(res:any)=>{
 				const addList = formatterNolist(res.list||[]);
-				console.log('addList=',addList);
-				
 				this.list = [...this.list,...addList];
 				this.originalList = [...this.originalList,...addList];
 				this.listParams.fetchFrom += this.listParams.fetchSize;
