@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-10 10:46:13
+ * @LastEditTime: 2023-07-10 10:54:00
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -178,6 +178,7 @@
                 <!-- <view class="line" v-if="index + 1 < commList.length"></view> -->
             </view>
         </view>
+        <u-loadmore style="margin-top: 20rpx;" fontSize="24rpx" v-if="commList&&commList.length" :status="isFetchEnd?'nomore':'loading'" line/>
         <view class="fixInputContainer">
             <view class="wrap">
                 <view class="fakerInput u-line-1" @click="onClickFakerInput">{{ fakerInputVal }}</view>
@@ -300,6 +301,7 @@ export default class ClassName extends BaseNode {
     private: boolean = false
     fromUserId: number = 0
     onLoad(query: any) {
+        this.queryParams.fetchFrom=1
         this.userBack = query.back == "true"
         this.private = query.private == "1"
         if (query.fromUserId) this.fromUserId = +query.fromUserId
