@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-11 15:57:12
+ * @LastEditTime: 2023-07-11 17:02:50
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -47,7 +47,7 @@
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
                                         :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                                     </image>
-                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷'
+                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || (item.author&&item.author.name) || '小卡迷'
                                     }}</text>
                                     <view class="likeWrap">
                                         <image
@@ -121,7 +121,7 @@
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
                                         :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                                     </image>
-                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷'
+                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || (item.author&&item.author.name) || '小卡迷'
                                     }}</text>
                                     <view class="likeWrap">
                                         <image

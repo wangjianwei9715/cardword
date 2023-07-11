@@ -60,6 +60,7 @@
 			text:{
 				"cardSet": "", 
 				"player": "", 
+				"point":0,
 				"team": "",
 				"cardSetLogo": "", //卡种标识图片
 				"seq": 0, //限编
@@ -106,7 +107,7 @@
 		onClickReport(){
 			app.platform.hasLoginToken(()=>{
 				uni.navigateTo({
-					url:`/pages/illustration/report/error?code=${this.noCode}`
+					url:`/pages/illustration/report/error?code=${this.noCode}&point=${this.noData.text.point}`
 				})
 			})
 		}

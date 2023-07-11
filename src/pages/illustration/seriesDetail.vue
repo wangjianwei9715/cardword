@@ -36,7 +36,7 @@
 					<input class="search-input" v-model="postSearch" :adjust-position="false" placeholder="搜索球员/卡种/限编球队" @confirm="againAlbum()"/>
 				</view>
 			</view>
-            <waterfalls v-if="tabsData.current==1" :value="albumList" :add-time="50"></waterfalls>
+            <waterfalls v-if="tabsData.current==1 && listParams.show" :value="albumList" :add-time="50"></waterfalls>
 			<view class="btn-publish" @click="onClickGoPublish"></view>
 		</view>
 	</view>
@@ -53,7 +53,8 @@
 		pageSize:number=10;
 		scrollId:string="";
 		noMoreData:boolean=false;
-		empty=false
+		empty=false;
+		show=false;
 	}
 	@Component({
 		components:{filterCardList,waterfalls}
@@ -169,6 +170,7 @@
 			app.http.Get(`cardIllustration/list/series/${this.seriesCode}/album`, params, (data: any) => {
 				let arr = data.list || [];
 				this.albumList = scrollId == "" ? arr : [...this.albumList, ...arr];
+				this.listParams.show = true;
 				this.listParams.empty = data.total == 0;
 				this.listParams.noMoreData = data.end && data.total>0;
 				this.listParams.scrollId = data.scrollId
