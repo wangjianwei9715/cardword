@@ -402,13 +402,15 @@ export default {
             this.tabs.index = event.index
         },
         onSelectAction(item) {
-            app.platform.hasLoginToken(()=>{
-                if (item.url) {
-                    uni.navigateTo({
-                        url: item.url
-                    })
-                }
-            })
+            if (app.token.accessToken == '') {
+                uni.navigateTo({url:'/pages/login/login'})
+                return;
+            }
+            if (item.url) {
+                uni.navigateTo({
+                    url: item.url
+                })
+            }
         },
         switchTo(url) {
             uni.switchTab({
