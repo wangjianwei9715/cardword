@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-10 18:11:53
+ * @LastEditTime: 2023-07-11 17:20:35
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -564,7 +564,7 @@ export default class ClassName extends BaseNode {
         // })
         //#endif
         uni.navigateTo({
-            url:`/pages/cardForum/report?source=${3}&dtCode=${this.code}&target=${item.id}`
+            url:`/pages/cardForum/report?source=${3}&dtCode=${this.code}&target=${item.id}&byInformer=${item.userId}`
         })
     }
     delCom(item: CardForum.CommentFather, fatherItem: CardForum.CommentFather, index: number, isSon: boolean) {
