@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-11 17:20:35
+ * @LastEditTime: 2023-07-11 17:57:54
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -40,7 +40,7 @@
         <albumSwiper v-if="isAlbum" :forumDetail="forumDetail" :code="code" :swiperCurrent.sync="swiperCurrent" />
         <view class="swiper" v-else>
             <!-- @click="onClickSwiper -->
-            <u-swiper imgMode="aspectFit" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"
+            <u-swiper imgMode="aspectFit" @click="onClickSwiper" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"
                 :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
         </view>
         <view class="dotContainer" v-if="pics.length > 1 && !isAlbum" :style="{ width: dotContainerWidth + 'px' }">
@@ -690,6 +690,12 @@ export default class ClassName extends BaseNode {
     }
     swiperChange(event: any) {
         this.swiperCurrent = event.current
+    }
+    onClickSwiper(index:number){
+        uni.previewImage({
+            urls:this.pics,
+            current:index
+        })
     }
     getCommByWorks() {
         app.http.Get(`dataApi/cardCircle/comment/list/` + this.code, this.queryParams, (res: any) => {
