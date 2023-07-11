@@ -48,7 +48,7 @@
                         </view>
 
                         <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
-                            :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40">
+                            :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40" :isFetchEnd="tab.isFetchEnd">
                         </waterfalls>
                         <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                     </scroll-view>

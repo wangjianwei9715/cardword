@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-11 17:02:50
+ * @LastEditTime: 2023-07-11 17:16:09
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -47,7 +47,8 @@
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
                                         :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                                     </image>
-                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || (item.author&&item.author.name) || '小卡迷'
+                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
+                                        (item.author && item.author.name) || '小卡迷'
                                     }}</text>
                                     <view class="likeWrap">
                                         <image
@@ -121,7 +122,8 @@
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
                                         :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                                     </image>
-                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || (item.author&&item.author.name) || '小卡迷'
+                                    <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
+                                        (item.author && item.author.name) || '小卡迷'
                                     }}</text>
                                     <view class="likeWrap">
                                         <image
@@ -165,8 +167,8 @@
         </view>
         <empty v-if="!list1.length && !list2.length && showEmpty"></empty>
         <template v-if="list1.length || list2.length">
-            <u-loadmore :line="true" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore"
-                nomore-text="没有更多了" fontSize="24rpx" />
+            <u-loadmore :line="true" lineLength="20rpx" loadingIcon="semicircle" :status="isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了"
+                fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </template>
     </view>
@@ -250,8 +252,8 @@
             </div>
         </cell>
         <header style="margin-top:50rpx" v-if="copyValue.length">
-            <u-loadmore :line="true" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore"
-                nomore-text="没有更多了" fontSize="24rpx" />
+            <u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了"
+                fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </header>
     </waterfall>
@@ -520,9 +522,9 @@ export default {
                 content: "是否删除此草稿?",
                 success: (res) => {
                     if (res.confirm) {
-                        if(item.code){
-                            app.http.Post(`cardCircle/delete/${item.code}`,{},()=>{
-                                uni.$emit("refreshDraft",item.code)
+                        if (item.code) {
+                            app.http.Post(`cardCircle/delete/${item.code}`, {}, () => {
+                                uni.$emit("refreshDraft", item.code)
                             })
                             return
                         }
