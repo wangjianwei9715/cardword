@@ -507,9 +507,10 @@ page {
     width: 360rpx;
     height: 287rpx;
     position: relative;
-    border-radius: 3rpx;
+    border-radius: 5rpx;
     margin-bottom: 10rpx;
     display: flex;
+    overflow: hidden;
 
 }
 
@@ -519,7 +520,7 @@ page {
     height: 277rpx;
     left: 0;
     top: 0;
-    border-radius: 3rpx;
+    border-radius: 5rpx;
 }
 
 .shadow {
@@ -531,6 +532,7 @@ page {
     background-color: rgba(0, 0, 0, .5);
     align-items: center;
     display: flex;
+    border-radius: 5rpx;
     flex-direction: column;
 }
 
