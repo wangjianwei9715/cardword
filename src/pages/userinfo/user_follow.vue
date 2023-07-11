@@ -39,6 +39,19 @@
 			<template v-if="tab.index == 2">
 				<topicList :value="currentList"></topicList>
 			</template>
+			<template v-if="tab.index == 3">
+				<view class="userItem" v-for="(item, index) in currentList" :key="index" @click="goTuj(item)">
+					<muqian-lazyLoad class="avatar" style="border-radius: 0rpx;"
+						:src="$parsePic(decodeURIComponent(item.logo))" borderRadius="3rpx"></muqian-lazyLoad>
+					<view class="userInfo">
+						<view class="userName">{{ item.name }}</view>
+						<view class="userData">
+							图鉴完成度 {{ item.uploadNum }}/{{ item.totalNum }}
+						</view>
+					</view>
+					<view class="followButton flexCenter" @click.stop="onClickFollow(item, index, 3)">已关注</view>
+				</view>
+			</template>
 			<empty v-if="!currentList.length"></empty>
 		</view>
 		<!-- <u-sticky bgColor="#fff">
@@ -171,6 +184,14 @@ export default class ClassName extends BaseNode {
 							this.tab.list[tabIndex] && this.tab.list[tabIndex].dataList.length && this.tab.list[tabIndex].dataList.splice(index, 1)
 						});
 					}
+					if (tabIndex == 3) {
+						// const type = this.seriesData.followed ? 'unfollow' : 'follow';
+						app.http.Post(`cardIllustration/series/${item.code}/unfollow`, {}, (res: any) => {
+							this.tab.list[tabIndex] && this.tab.list[tabIndex].dataList.length && this.tab.list[tabIndex].dataList.splice(index, 1)
+							// !this.seriesData.followed && uni.showToast({ title: '关注成功', icon: 'none' });
+							// this.seriesData.followed = !this.seriesData.followed;
+						})
+					}
 				}
 			}
 		})
@@ -199,6 +220,11 @@ export default class ClassName extends BaseNode {
 			const list = res.list || []
 			this.current.dataList = res.list
 			this.current.queryParams.fetchFrom == 1 ? this.current.dataList = list : this.current.dataList.push(...list)
+		})
+	}
+	goTuj(item:any){
+		uni.navigateTo({
+			url:`/pages/illustration/seriesDetail?seriesCode=${item.code}`
 		})
 	}
 	getFollowList() {
