@@ -81,8 +81,8 @@
 		public get isFollow(): boolean {
 			return (this.forumDetail.bit & 2) === 2
 		}
-		formatterCodeList(addList:any[]){
-			const list = formatterNolist(addList);
+		formatterCodeList(addList:any[],dic:object){
+			const list = formatterNolist(addList,dic);
 			list.forEach((x:any,index:number)=>{
 				if(index+1<list.length && list[index+1].code == x.code){
 					x.split = true;
@@ -116,7 +116,7 @@
 		getSeries(cb?:Function){
 			if(this.listParams.isFetchEnd) return;
 			app.http.Get(`dataApi/cardIllustration/album/detail/${this.code}/nolist`,this.listParams,(res:any)=>{
-				this.formatterCodeList(res.list)
+				this.formatterCodeList(res.list,res.dic)
 				this.listParams.fetchFrom += this.listParams.fetchSize;
 				this.listParams.isFetchEnd = res.isFetchEnd;
 				this.listParams.total = res.total

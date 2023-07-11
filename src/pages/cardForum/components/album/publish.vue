@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-10 18:16:41
+ * @LastEditTime: 2023-07-11 12:18:39
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -62,6 +62,7 @@
 		code = "";
 		listParams = new ListParams();
 		revision = "";
+		uploadData:any = {}
 		mounted(){
 			this.identify=uni.$u.guid(8);
 			if(this.draftId=='' && this.code==''){
@@ -110,6 +111,31 @@
 			});
 			return Array.from(Object.values(Series),x=>x);
 		}
+		uploadCodeList(uploadToken:string,nowNum: number): any {
+			return new Promise((resolve, reject) => {
+				try {
+					let uploadNum = Math.min(200,this.list.length-(nowNum*200));
+					const { uploadData } = this;
+					const codes = uploadData.codes.splice(0,uploadNum);
+					uploadNum -= codes.length;
+					const nos = uploadData.nos.splice(0,uploadNum);
+					uploadNum -= nos.length;
+					let splitedNumbers:any = []
+					uploadData.splitedNumbers.filter((x:any)=>{
+						if(uploadNum>0 && !x.upload){
+							const list = x.list.splice(0,uploadNum);
+							if(x.list.length==0) x.upload = true;
+							uploadNum -= list.length;
+							splitedNumbers.push({code:x.code,list})
+						}
+					})
+					resolve({ uploadToken, codes, nos, splitedNumbers })
+				} catch (error) {
+					this.revokePublish()
+					reject()
+				}
+			});
+		}
 		onClickGoPicUpload(){
 			uni.navigateTo({
 				url:`/pages/illustration/album/picUpload?editCodeList=${encodeURIComponent(JSON.stringify(this.list))}`
@@ -130,7 +156,7 @@
 		getAlbumList(){
 			if(this.listParams.isFetchEnd) return;
 			app.http.Get(`cardIllustration/album/edit/detail/${this.code}/nolist`,this.listParams,(res:any)=>{
-				const addList = formatterNolist(res.list||[]);
+				const addList = formatterNolist(res.list||[],res.dic);
 				this.list = [...this.list,...addList];
 				this.originalList = [...this.originalList,...addList];
 				this.listParams.fetchFrom += this.listParams.fetchSize;
@@ -154,6 +180,7 @@
 				noNum:this.noNum,
 			}
 			this.restParams = rest;
+			
 			app.http.Post(`cardIllustration/album/${this.editUrl(false)}/prepare`,params,(res:any)=>{
 				if(this.isEdit) this.revision = res.revision;
 				this.preparePublis(res.uploadToken)
@@ -167,18 +194,18 @@
 				this.publicComplete(uploadToken);
 				return;
 			}
+			const codes = this.list.filter( x => !x.split && x.frontPic=="" ).map( x => x.code);
+			const nos = this.list.filter( x => !x.split && x.frontPic ).map( 
+				x => ({code:x.code,seqIndex:x.seqIndex,frontPic:x.frontPic,backPic:x.backPic}) 
+			);
+			const splitedNumbers = this.formatterSplitedNumbers(this.list.filter( x => x.split));
+			this.uploadData = { codes,nos,splitedNumbers };
 			const PostLength = Math.ceil(this.noNum/MaxNos);
 			this.publishUpload(uploadToken,PostLength,0);
 		}
-		publishUpload(uploadToken:string,PostLength:number,nowNum:number){
-			const maxList = this.list.length;
-			const list = [...this.list].splice((nowNum*200),Math.min(200,maxList-(nowNum*200)));
-			const codes = list.filter( x => !x.split && x.frontPic=="" ).map( x => x.code);
-			const nos = list.filter( x => !x.split && x.frontPic ).map( 
-				x => ({code:x.code,seqIndex:x.seqIndex,frontPic:x.frontPic,backPic:x.backPic}) 
-			);
-			const splitedNumbers = this.formatterSplitedNumbers(list.filter( x => x.split));
-			const params = { uploadToken, codes, nos, splitedNumbers }
+		async publishUpload(uploadToken:string,PostLength:number,nowNum:number){
+			const params = await this.uploadCodeList(uploadToken,nowNum);
+
 			app.http.Post(`cardIllustration/album/${this.editUrl()}/upload`,params,(res:any)=>{
 				if(nowNum+1>=PostLength){
 					this.publicComplete(uploadToken)
@@ -233,11 +260,11 @@
 			this.$emit('unLock')
 		}
 		revokePublish(){
-			const url = this.code ? `${this.code}/${this.revision}` : "publish";
 			this.identify = uni.$u.guid(8);
 			uni.showToast({ title:"发布失败，请重新发布",icon:"none" });
 			this.submitUnLock()
-			app.http.Post(`cardIllustration/album/${url}/revoke`,{identify:this.identify},(res:any)=>{})
+			// const url = this.code ? `${this.code}/${this.revision}` : "publish";
+			// app.http.Post(`cardIllustration/album/${url}/revoke`,{identify:this.identify},(res:any)=>{})
 		}
 	}
 </script>
