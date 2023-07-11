@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 16:16:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 15:23:41
+ * @LastEditTime: 2023-07-11 14:48:43
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -85,9 +85,7 @@
 			if (this.current > 3 && this.swiperLength > 5) return -(this.dotWidth * (this.current - 3))
 		}
 		gridList(listIndex:number) : any[] {
-			return this.nolist.filter((x:any,index:number)=>{
-				return index>=(listIndex*9) && index<((listIndex+1)*9)
-			})
+			return Array.from({ length: 9 }, (_, i) => this.nolist[i+((listIndex)*9)] || '');
 		}
 		getDetail(){
 			app.http.Get(`dataApi/cardIllustration/album/detail/${this.code}`,{},(res:any)=>{
