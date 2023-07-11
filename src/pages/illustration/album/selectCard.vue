@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-10 18:26:46
+ * @LastEditTime: 2023-07-11 14:16:33
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -101,7 +101,7 @@
 			list[noIndex].frontPic="";
 			list[noIndex].backPic="";
 			const { seq ,seqIndex, ...rest } = list[noIndex];
-			await this.maxNoTotal(seq);
+			await this.maxNoTotal(seq-1);
 			this.selectSeries[index].noList.splice(noIndex,1);
 			for(let i=seq ; i>0 ; i--){
 				this.selectSeries[index].noList.splice(noIndex,0,{...rest,seqIndex:i,seq,split:true});
