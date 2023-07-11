@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-10 15:51:14
+ * @LastEditTime: 2023-07-11 15:19:33
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -23,7 +23,7 @@
 			</view>
 			<u-line color="#dadbde" margin="0 0 40rpx 0"></u-line>
 			<view class="title">添加描述（必填)</view>
-			<u--textarea v-model="desc" height="410rpx"  placeholder="请描述错误原因，审核通过后获得10卡币" count :maxlength="200" border="none" confirmType="done"></u--textarea>
+			<u--textarea v-model="desc" height="410rpx"  :placeholder="`请描述错误原因，审核通过后获得${point}卡币`" count :maxlength="200" border="none" confirmType="done"></u--textarea>
 			<u-line color="#dadbde" margin="0 0 40rpx 0"></u-line>
 			<view class="title">请上传正确图片（选填)</view>
 			<view class="pic-box">
@@ -46,7 +46,7 @@
 				</view>
 			</view>
 			<u-line color="#dadbde" margin="0 0 40rpx 0"></u-line>
-			<view class="tips">采纳后额外获得10卡币</view>
+			<view class="tips">采纳后额外获得{{point}}卡币</view>
 			<view class="btn" @click="$u.throttle(onClickReport,1000)">提交</view>
 		</view>
 	</view>
@@ -64,8 +64,10 @@
 		desc="";
 		frontPic="";
 		backPic="";
+		point = 0;
 		onLoad(query: any) {
 			this.code = query.code;
+			this.point = query.point
 		}
 		onClickRecord(){
 			uni.navigateTo({
