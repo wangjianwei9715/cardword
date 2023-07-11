@@ -4,7 +4,8 @@
             :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
-            <view class="userInfo" @click="navigateTo(`/pages/cardForum/personHomePage?isMine=1&userId=${infoData.userId}`)">
+            <view class="userInfo"
+                @click="navigateTo(`/pages/cardForum/personHomePage?isMine=1&userId=${infoData.userId}`)">
                 <image class="userInfo_avatar" mode="aspectFill"
                     :src="infoData.avatar ? $parsePic(decodeURIComponent(infoData.avatar)) : defaultAvatar">
                 </image>
@@ -70,10 +71,12 @@
             </view>
         </view>
         <view class="publicContainer moreToolsContainer">
-            <view class="wrapTitle flex1" style="margin-bottom: 32rpx;">更多功能</view>
+            <view class="wrapTitle flex1" style="margin-bottom: 36rpx;">更多功能</view>
             <view class="moreToolsWrap uni-flex fp">
                 <view class="toolsItem" v-for="(item, index) in toolsTab" @click="onClickMoreTools(item)">
-                    <image class="toolsItem_icon"></image>
+                    <view class="imageWrap">
+                        <image class="toolsItem_icon" :src="item.icon" :style="item.style"></image>
+                    </view>
                     <view class="toolsItem_label">{{ item.name }}</view>
                 </view>
             </view>
@@ -286,31 +289,45 @@ export default class ClassName extends BaseNode {
     toolsTab = [
         {
             name: '地址管理',
-            url: "/pages/userinfo/setting_addresses"
+            url: "/pages/userinfo/setting_addresses",
+            icon: "../../static/userinfo/v3/address.png",
+            style: { width: '47rpx', height: '46rpx' }
         },
         {
             name: '客服',
-
+            icon: "../../static/userinfo/v3/kefu.png",
+            style: { width: '48rpx', height: '49rpx' }
         },
         {
-            name: '卡册'
+            name: '卡册',
+            icon: "../../static/userinfo/v3/kace.png",
+            style: { width: '50rpx', height: '54rpx' }
         },
         {
             name: '查卡价',
-            url: "/pages/act/service/ref"
+            url: "/pages/act/service/ref",
+            icon: "../../static/userinfo/v3/price.png",
+            style: { width: '42rpx', height: '44rpx' }
         },
         {
             name: '发售日历',
-            url: "/pages/act/calendar/list"
+            url: "/pages/act/calendar/list",
+            icon: "../../static/userinfo/v3/rl.png",
+            style: { width: '43rpx', height: '47rpx' }
         },
         {
             name: '领券中心',
-            url: "/pages/userinfo/coupon/coupon_get"
-        },
-        {
-            name: '资讯公告',
-            url: "/pages/information/list"
+            url: "/pages/userinfo/coupon/coupon_get",
+            icon: "../../static/userinfo/v3/getCoupon.png",
+            style: { width: '47rpx', height: '40rpx' }
         }
+        // ,
+        // {
+        //     name: '资讯公告',
+        //     url: "/pages/information/list",
+        //     icon: "../../static/userinfo/v3/address.png",
+        //     style: { width: '47rpx', height: '46rpx' }
+        // }
     ]
     showPaySuccess = false;
     invoice = {
@@ -750,12 +767,19 @@ page {
             margin-right: 14rpx;
             margin-bottom: 70rpx;
 
+            .imageWrap {
+                width: 66rpx;
+                height: 56rpx;
+                display: flex;
+                justify-content: center;
+            }
+
             // margin-right: 20rpx;
             &_icon {
-                width: 66rpx;
-                height: 66rpx;
-                background: #FA1545;
-                border-radius: 50%;
+                // width: 66rpx;
+                // height: 66rpx;
+                // background: #FA1545;
+                // border-radius: 50%;
             }
 
             &_label {
