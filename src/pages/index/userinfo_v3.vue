@@ -410,6 +410,13 @@ export default class ClassName extends BaseNode {
             app.platform.heliService({ agentExten: '' })
             return
         }
+        if (item.name == "卡册") {
+            uni.setStorageSync('showKace', true);
+            uni.switchTab({
+                url: '/pages/cardForum/home'
+            });
+            return;
+        }
         if (item.url) {
             this.navigateTo(item.url)
             return

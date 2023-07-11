@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-11 09:59:39
+ * @LastEditTime: 2023-07-11 15:57:12
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -165,8 +165,8 @@
         </view>
         <empty v-if="!list1.length && !list2.length && showEmpty"></empty>
         <template v-if="list1.length || list2.length">
-            <u-loadmore :line="true" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了"
-                fontSize="24rpx" />
+            <u-loadmore :line="true" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore"
+                nomore-text="没有更多了" fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </template>
     </view>
@@ -174,9 +174,9 @@
     <!-- #endif -->
     <!-- #ifdef APP-NVUE -->
 
-    <waterfall @scroll="scroll" fixFreezing="true" ref="water" bounce="true" :column-count="columnCount" :show-scrollbar="false"
-        :column-width="WIDTH" :column-gap="GAP" :left-gap="GAP" :right-gap="GAP" @loadmore="scrolltolower"
-        :always-scrollable-vertical="true" :height="height">
+    <waterfall @scroll="scroll" fixFreezing="true" ref="water" bounce="true" :column-count="columnCount"
+        :show-scrollbar="false" :column-width="WIDTH" :column-gap="GAP" :left-gap="GAP" :right-gap="GAP"
+        @loadmore="scrolltolower" :always-scrollable-vertical="true" :height="height">
         <refresh v-if="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'" class="refresh">
             <u-loading-icon mode="semicircle"></u-loading-icon>
         </refresh>
@@ -250,8 +250,8 @@
             </div>
         </cell>
         <header style="margin-top:50rpx" v-if="copyValue.length">
-            <u-loadmore :line="true" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了"
-                fontSize="24rpx" />
+            <u-loadmore :line="true" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore"
+                nomore-text="没有更多了" fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </header>
     </waterfall>
@@ -520,6 +520,12 @@ export default {
                 content: "是否删除此草稿?",
                 success: (res) => {
                     if (res.confirm) {
+                        if(item.code){
+                            app.http.Post(`cardCircle/delete/${item.code}`,{},()=>{
+                                uni.$emit("refreshDraft",item.code)
+                            })
+                            return
+                        }
                         delDraftDetail(item.draftId)
                         // #ifdef APP-PLUS
                         if (item.video_at > 0 && item.url.length) {
@@ -529,7 +535,7 @@ export default {
                         }
                         // #endif
                         // this.delData(item.)
-                        this.$emit("refreshDraft")
+                        uni.$emit("refreshDraft")
                     }
                 }
             })
@@ -573,6 +579,12 @@ export default {
                         return;
                     }
                 }
+                if (item.code) {
+                    uni.navigateTo({
+                        url: "/pages/cardForum/release?code=" + item.code
+                    })
+                    return
+                }
                 uni.navigateTo({
                     url: "/pages/cardForum/release?draftId=" + item.draftId
                 })
@@ -584,9 +596,9 @@ export default {
                 })
                 return
             }
-            if(item.typeName=='卡册' && item.status==0){
+            if (item.typeName == '卡册' && item.status == 0) {
                 uni.navigateTo({
-                    url:`/pages/cardForum/release?code=${item.code}`
+                    url: `/pages/cardForum/release?code=${item.code}`
                 })
                 return;
             }
@@ -1093,4 +1105,5 @@ $uvui-nvue-style: true !default;
 .wait-pic {
     width: 91rpx;
     height: 78rpx;
-}</style>
+}
+</style>

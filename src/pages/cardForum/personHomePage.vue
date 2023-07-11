@@ -48,7 +48,7 @@
         <u-sticky :customNavHeight="navHeight">
             <div style="background-color: #fff;" id="tabs" class="tabsWrap" ref="tabsWrap">
                 <u-tabs customType="cardForum"
-                    :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx', padding: 0,marginTop:'6rpx' }"
+                    :itemStyle="{ width: (app.platform.systemInfo.screenWidth / tabs.list.length) + 'px', height: '84rpx', padding: 0, marginTop: '6rpx' }"
                     :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                     :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs"
                     :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
@@ -157,25 +157,25 @@ export default class ClassName extends BaseNode {
     }
     draftListByDynamic: any = []
     draftListByCardBook: any = []
+    cloudDraft: any = []
     userId: number = 0
     onLoad(query: any) {
         if (query.tabIndex) this.tabs.index = +query.tabIndex
         this.userId = +query.userId
         this.isMine = query.isMine == "1" //后续解除注释
-        this.getUserInfo()
-
-    }
-    beforeDestroy() {
-    }
-    onShow() {
         if (this.isMine) {
             this.draftListByDynamic = getDraftList("dynamic", this.userId)
-            console.log("this.draftListByDynamicthis.draftListByDynamicthis.draftListByDynamic", this.draftListByDynamic);
             this.draftListByCardBook = getDraftList("cardBook", this.userId)
+            uni.$on("refreshDraft", this.refreshDraft)
         }
-        // this.listSetSpecialEffects(this.tabs.index)
-        // this.$refs.goTopRef()
+        this.getUserInfo()
     }
+    beforeDestroy() {
+        if (this.isMine) uni.$off("refreshDraft", this.refreshDraft)
+    }
+    // onShow() {
+
+    // }
     onPageScroll(data: any) {
         //@ts-ignore
         this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
@@ -188,7 +188,11 @@ export default class ClassName extends BaseNode {
     public get current() {
         return this.tabs.list[this.tabs.index]
     }
-
+    refreshDraft() {
+        this.draftListByDynamic = getDraftList("dynamic", this.userId)
+        this.draftListByCardBook = getDraftList("cardBook", this.userId)
+        this.sortDraft(true)
+    }
     initTab() {
         if (this.isMine) {
             let mineTabsDeep = uni.$u.deepClone(mineTabs);
@@ -242,8 +246,19 @@ export default class ClassName extends BaseNode {
                         pic: item.pic
                     }
                 }
-                return {...item,typeName:this.current.name}
+                return { ...item, typeName: this.current.name }
             })
+            if (this.isMine && this.current.queryParams.fetchFrom == 1 && this.current.name == '动态') {
+                if (res.draftBrier) {
+                    this.draftListByDynamic = [...this.draftListByDynamic, {
+                        stamp: res.draftBrier.created_at, data: {
+                            cover: res.draftBrier.cover
+                        }
+                    }].sort((x: any, y: any) => {
+                        return y.stamp - x.stamp
+                    })
+                }
+            }
             this.current.firstReqEnd = true
             this.current.isFetchEnd = res.isFetchEnd
             if (res.scrollId) this.current.queryParams.scrollId = res.scrollId
@@ -257,6 +272,19 @@ export default class ClassName extends BaseNode {
             cb && cb()
         }, (err: any) => {
             this.current.firstReqEnd = true
+        })
+    }
+    sortDraft(get?: boolean) {
+        app.http.Get(`dataApi/cardCircle/list/me/dongtai`, {}, (res: any) => {
+            if (res.draftBrier) {
+                this.draftListByDynamic = [...this.draftListByDynamic, {
+                    stamp: res.draftBrier.created_at, data: {
+                        cover: res.draftBrier.cover
+                    }
+                }].sort((x: any, y: any) => {
+                    return y.stamp - x.stamp
+                })
+            }
         })
     }
     onDelCardForum() {

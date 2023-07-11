@@ -1,15 +1,15 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-30 14:05:10
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-11 09:49:16
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-11 15:57:47
  * @FilePath: \jichao_app_2\src\pages\cardForum\draftList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
         <view style="width:750rpx;margin-top: 10rpx;">
-            <waterfalls v-if="refresh" v-model="draftList" :showUser="false" @refreshDraft="refreshDraft" type="draftList">
+            <waterfalls v-if="refresh" v-model="list" :showUser="false" type="draftList">
             </waterfalls>
         </view>
     </view>
@@ -28,32 +28,71 @@ import waterfalls from "./components/waterfalls.vue"
 })
 export default class ClassName extends BaseNode {
     draftList: any = []
+    list: any = []
     refresh: boolean = true
     userId = 0;
-    draftType:"cardBook" | "dynamic" | "all" = "all";
+    draftType: "cardBook" | "dynamic" | "all" = "all";
+    isFetchEnd: boolean = false
+    queryParams: any = {
+        fetchFrom: 1,
+        fetchSize: 10
+    }
     onLoad(query: any) {
-        if(query.draftType) this.draftType=query.draftType;
+        if (query.draftType) this.draftType = query.draftType;
         app.user.getUserInfo().then((userInfo: any) => {
             this.userId = userInfo.userId
             this.reqNewData()
+            uni.$on("refreshDraft", this.refreshDraft)
         })
     }
-    refreshDraft() {
-        this.refresh = false
-        this.reqNewData()
+    beforeDestroy() {
+        uni.$off("refreshDraft", this.refreshDraft)
+    }
+    onReachBottom() {
+        if (this.isFetchEnd) return
+        this.queryParams.fetchFrom += this.queryParams.fetchSize
+        this.reqData()
+    }
+    refreshDraft(code?: string) {
         uni.showLoading({
-            title: ""
+            title: "",
+            mask: true
         })
+        this.refresh = false
+        this.queryParams.fetchFrom = 1
+        this.reqNewData()
         setTimeout(() => {
             this.refresh = true
             uni.hideLoading()
-        }, 500)
+        }, 300)
+    }
+    reqData() {
+        app.http.Get(`dataApi/cardCircle/list/me/draft`, this.queryParams, (res: any) => {
+            this.isFetchEnd = res.isFetchEnd
+            // console.log(res);
+            const list = (res.list || []).map((item: any) => {
+                return {
+                    cover: item.cover || "",
+                    url: item.url,
+                    title: item.title,
+                    create_at: item.created_at,
+                    code: item.code
+                }
+            })
+            if (this.queryParams.fetchFrom == 1) {
+                this.list = [...this.draftList, ...list].sort((x: any, y: any) => {
+                    return y.create_at - x.create_at
+                })
+            } else {
+                this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
+            }
+        })
     }
     reqNewData(cb?: any) {
         this.draftList = []
         this.draftList = getDraftList(this.draftType, this.userId).map((item: any) => {
             return {
-                cover: item.type=="cardBook" ? (item.data.albumCover || "") :(item.data.cover || ""),
+                cover: item.type == "cardBook" ? (item.data.albumCover || "") : (item.data.cover || ""),
                 url: item.data.url,
                 title: item.data.title,
                 create_at: item.stamp,
@@ -61,6 +100,7 @@ export default class ClassName extends BaseNode {
                 draftId: item.draftId
             }
         })
+        this.reqData()
     }
 
 }
