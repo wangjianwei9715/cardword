@@ -54,13 +54,12 @@
                     :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
             </div>
         </u-sticky>
-
         <waterfalls v-if="current" style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall"
             :showBottom="current.name != '中卡'" :detailBack="true" :isMine="isMine" :showUser="false"
             :value="tabs.list[tabs.index].list" :refresh="false" :showEmpty="!isMine">
             <template v-slot:list1>
-                <view class="draftWrap" v-if="current.name == '动态' && draftListByDynamic.length"
-                    @click="pageJump('/pages/cardForum/draftList')">
+                <view v-if="current.name == '动态' && draftListByDynamic.length" class="draftWrap"
+                    @click="pageJump('/pages/cardForum/draftList?draftType=dynamic')">
                     <image class="draftWrapImage" v-if="draftListByDynamic[0].data.cover"
                         :src="decodeURIComponent(draftListByDynamic[0].data.cover)" mode="aspectFill">
                     </image>
@@ -70,9 +69,8 @@
                         <text class="caogaoText">有{{ draftListByDynamic.length }}篇动态待发布</text>
                     </view>
                 </view>
-            </template>
-            <template v-if="current.name == '卡册' && draftListByCardBook.length">
-                <view class="draftWrap" @click="pageJump('/pages/cardForum/draftList')">
+                <view v-else-if="current.name == '卡册' && draftListByCardBook.length" class="draftWrap" 
+                    @click="pageJump('/pages/cardForum/draftList?draftType=cardBook')">
                     <image class="draftWrapImage" v-if="draftListByCardBook[0].data.cover"
                         :src="decodeURIComponent(draftListByCardBook[0].data.cover)" mode="aspectFill">
                     </image>

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-30 14:05:10
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 14:53:16
+ * @LastEditTime: 2023-07-11 09:49:16
  * @FilePath: \jichao_app_2\src\pages\cardForum\draftList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,8 +29,10 @@ import waterfalls from "./components/waterfalls.vue"
 export default class ClassName extends BaseNode {
     draftList: any = []
     refresh: boolean = true
-    userId = 0
+    userId = 0;
+    draftType:"cardBook" | "dynamic" | "all" = "all";
     onLoad(query: any) {
+        if(query.draftType) this.draftType=query.draftType;
         app.user.getUserInfo().then((userInfo: any) => {
             this.userId = userInfo.userId
             this.reqNewData()
@@ -49,7 +51,7 @@ export default class ClassName extends BaseNode {
     }
     reqNewData(cb?: any) {
         this.draftList = []
-        this.draftList = getDraftList("all", this.userId).map((item: any) => {
+        this.draftList = getDraftList(this.draftType, this.userId).map((item: any) => {
             return {
                 cover: item.type=="cardBook" ? (item.data.albumCover || "") :(item.data.cover || ""),
                 url: item.data.url,
