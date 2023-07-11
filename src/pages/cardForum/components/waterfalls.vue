@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-10 17:22:21
+ * @LastEditTime: 2023-07-11 09:59:39
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -165,7 +165,7 @@
         </view>
         <empty v-if="!list1.length && !list2.length && showEmpty"></empty>
         <template v-if="list1.length || list2.length">
-            <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了"
+            <u-loadmore :line="true" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了"
                 fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </template>
@@ -250,7 +250,7 @@
             </div>
         </cell>
         <header style="margin-top:50rpx" v-if="copyValue.length">
-            <u-loadmore :line="true" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了"
+            <u-loadmore :line="true" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" status="nomore" nomore-text="没有更多了"
                 fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </header>
