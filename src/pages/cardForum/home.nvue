@@ -402,11 +402,13 @@ export default {
             this.tabs.index = event.index
         },
         onSelectAction(item) {
-            if (item.url) {
-                uni.navigateTo({
-                    url: item.url
-                })
-            }
+            app.platform.hasLoginToken(()=>{
+                if (item.url) {
+                    uni.navigateTo({
+                        url: item.url
+                    })
+                }
+            })
         },
         switchTo(url) {
             uni.switchTab({
