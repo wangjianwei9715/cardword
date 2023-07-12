@@ -25,6 +25,7 @@
 					<view class="card-seq">
 						<image v-if="noData.text.cardSetLogo" class="logo-pic" :src="$parsePic(decodeURIComponent(noData.text.cardSetLogo))"/>
 					</view>
+					<muqian-lazyLoad v-if="noData.text.teamLogo" class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(noData.text.teamLogo)" />
 				</view>
 				<view v-if="noData.illustration && noData.illustration.author" class="upload-author">
 					由 <muqian-lazyLoad  class="upload-author-avatar" :src="decodeURIComponent(noData.illustration.author.avatar)" borderRadius="50%"/>
@@ -334,6 +335,8 @@
 		position: relative;
 		box-sizing: border-box;
 		padding:30rpx 40rpx 27rpx 40rpx;
+		position: relative;
+		overflow: hidden;
 		.card-title{
 			width: 100%;
 			font-size: 25rpx;
@@ -378,6 +381,14 @@
 		.logo-seq-10{
 			background: #BFBF3D;
 			color: #FFFF54;
+		}
+		.card-teamlogo{
+			width: 300rpx;
+			height:300rpx;
+			position: absolute;
+			bottom:-100rpx;
+			right:-100rpx;
+			opacity: 0.2;
 		}
 	}
 	.upload-author{
