@@ -32,10 +32,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="upload-right" v-if="noData.text && noData.text.peer">
+		<view class="upload-right" v-if="noData.text && noData.text.peer.length">
 			<statusbar/>
 			<scroll-view class="up-scroll-box" :scroll-y="true">
-				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':item>0}" v-for="(item,index) in noData.text.peer" :key='index' @click="onClickPeerTo(index)">
+				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':item>0}" v-for="(item,index) in binaryPeer" :key='index' @click="onClickPeerTo(index)">
 					{{index+1}}
 				</view>
 			</scroll-view>
@@ -100,6 +100,15 @@
 		}
 		public get hasUpload() : boolean {
 			return this.noData.uploadable || app.token.accessToken == ''
+		}
+		public get binaryPeer() : number[] {
+			const { peer, seq } = this.noData.text;
+			const list = peer.map((item:any,index:number)=>{
+				const length = Math.min(seq-(index*64),64);
+				const binary = item.toString(2);
+				return Array.from({length},(_,i)=>(Number(binary[binary.length-1-i])||0));
+			}).flat();
+			return list;
 		}
 		onClickClose(){
 			app.navigateTo.navigateBack()
