@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-12 09:56:04
+ * @LastEditTime: 2023-07-12 17:19:59
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -138,7 +138,7 @@
 		}
 		onClickGoPicUpload(){
 			uni.navigateTo({
-				url:`/pages/illustration/album/picUpload?editCodeList=${encodeURIComponent(JSON.stringify(this.list))}`
+				url:`/pages/illustration/album/picUpload?editCodeList=${encodeURIComponent(JSON.stringify(this.list))}&draftId=${this.draftId}`
 			})
 		}
 		prepareEdit(code:string){

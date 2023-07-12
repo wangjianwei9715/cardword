@@ -3,13 +3,13 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-06 14:41:30
+ * @LastEditTime: 2023-07-12 17:23:54
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="album-card-content">
-		<navigationbar title="上传卡片" :customBack="edit||draft" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true" @back="sheet.show=true">
+		<navigationbar title="上传卡片" :customBack="edit||draftId" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true" @back="sheet.show=true">
 			<template slot="right">
 				<view class="segment" @click="segmentCheck=!segmentCheck">
 					<view class="check" :class="{'check_':segmentCheck}"></view>
@@ -46,7 +46,7 @@
 			</view>
 		</view>
 		<u-action-sheet :actions="sheet.list" :show="sheet.show" cancelText="取消" @select="onSheetSelect" @close="sheet.show=false"></u-action-sheet>
-		<albumBottom :canNext="uploadPercent>0" :data="selectSeries" :percent="uploadPercent" :step="2" @next="onClickNext()"/>
+		<albumBottom :canNext="uploadPercent>0" :draftId="draftId" :data="selectSeries" :percent="uploadPercent" :step="2" @next="onClickNext()"/>
 	</view>
 </template>
 
@@ -63,7 +63,6 @@
 		selectSeries:any = [];
 		segmentCheck = false;
 		edit = false;
-		draft = false;
 		sheet = {
 			show:false,
 			list:[
@@ -72,12 +71,13 @@
 				{ id:3, name:'退出编辑' },
 			]
 		}
+		draftId = '';
 		onLoad(query: any) {
 			this.onEventUI("editNoSelect",(res:any)=>{
 				this.selectSeries = res;
 			})
 			if (query.draftList) {
-				this.draft = true;
+				this.draftId = query.draftId;
 				this.sheet.list = [
 					{ id:1, name:'选择卡种' },
 					{ id:3, name:'退出编辑' },
@@ -89,6 +89,7 @@
 			}
 			if(query.editCodeList){
 				this.edit = true;
+				this.draftId = query.draftId;
 				this.formatterCodeList(JSON.parse(query.editCodeList))
 			}
 		}
@@ -146,7 +147,7 @@
 		onSheetSelect({id}:any){
 			if(id==1){
 				uni.navigateTo({
-					url:`/pages/illustration/album/selectCard?editCodeList=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
+					url:`/pages/illustration/album/selectCard?editCodeList=${encodeURIComponent(JSON.stringify(this.selectSeries))}&draftId=${this.draftId}`
 				})
 			}else if(id==2){
 				app.navigateTo.navigateBack()
