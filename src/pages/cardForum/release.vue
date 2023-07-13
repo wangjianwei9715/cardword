@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 10:46:52
+ * @LastEditTime: 2023-07-13 17:19:34
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,13 +30,13 @@
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
         </view>
         <input type="text" class="input_title" v-model.trim="formData.title" placeholder="添加一个有趣的标题吧~（必填）"
-            placeholderStyle="color: #959695;font-size:29rpx" :maxlength="80">
+            placeholderStyle="color: #333333;font-size:33rpx" :maxlength="80">
         <view class="topicWrap" v-if="selectTopics.length">
             <view class="glTopic" v-for="(item, index) in selectTopics" :key="index" @click="delSelectTopic(item, index)">
                 {{ item.name }}
             </view>
         </view>
-        <textarea :adjust-position="false" placeholderStyle="color: #959695;font-size:23rpx" v-model.trim="formData.content"
+        <textarea :adjust-position="false" placeholderStyle="color: #333333;font-size:29rpx" v-model.trim="formData.content"
             :maxlength="3000" class="input_content" placeholder="分享一下您的球星卡收藏..（选填)"></textarea>
         <view class="associationWrap" @click="showTopics = true">
             <image class="ass_img" src="@/static/cardForum/release/topic.png" style="width: 30rpx;height:30rpx"></image>
@@ -870,7 +870,7 @@ page {
 
 .input_title {
     width: 100%;
-    font-size: 29rpx;
+    font-size: 33rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #ffffff;
@@ -921,7 +921,7 @@ page {
 .input_content {
     background-color: #000;
     width: 100%;
-    font-size: 26rpx;
+    font-size: 29rpx;
     font-family: PingFang SC;
     font-weight: 400;
     height: 326rpx;
@@ -944,15 +944,15 @@ page {
     }
 
     .ass_title {
-        font-size: 25rpx;
+        font-size: 29rpx;
         font-family: PingFang SC;
         font-weight: bold;
-        color: #C0C0C0;
+        color: #555555;
         margin-left: 11rpx;
     }
 
     .voteTitle {
-        font-size: 23rpx;
+        font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #959695;
@@ -984,10 +984,10 @@ page {
         // width: 241rpx;
         padding: 0 20rpx;
         height: 50rpx;
-        background: #3F3F3F;
+        background: #151515;
         border-radius: 3rpx;
         margin-right: 20rpx;
-        font-size: 23rpx;
+        font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: bold;
         color: #C0C0C0;
@@ -1007,7 +1007,7 @@ page {
     .goodsItem {
         width: 466rpx;
         height: 103rpx;
-        background: #3F3F3F;
+        background: #151515;
         border-radius: 3rpx;
         box-sizing: border-box;
         padding: 10rpx 22rpx 10rpx 11rpx;
@@ -1023,9 +1023,9 @@ page {
         }
 
         .goodsInfo {
-            font-size: 22rpx;
+            font-size: 23rpx;
             font-family: PingFang SC;
-            font-weight: 500;
+            font-weight: 400;
             color: #E6E6E6;
             line-height: 25rpx;
             flex: 1;

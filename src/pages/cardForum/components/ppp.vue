@@ -19,7 +19,7 @@
                             borderRadius: borderRadius + 'rpx',
                             transform: 'scale(' + item.scale + ')'
                         }">
-                            <image class="pre-image" :src="parsePic(decodeURIComponent(item.src))" mode="aspectFill">
+                            <image class="pre-image" mode="aspectFill" :src="parsePic(decodeURIComponent(item.src))">
                             </image>
 
                         </div>
@@ -42,8 +42,8 @@
                             transform: 'scale(' + item.scale + ')'
                         }">
                             <!--  -->
-                            <image v-if="!getVideoPath(item.src)" class="pre-image"
-                                :src="parsePic(decodeURIComponent(item.src))" mode="aspectFill">
+                            <image v-if="!getVideoPath(item.src)" mode="aspectFill" class="pre-image"
+                                :src="parsePic(decodeURIComponent(item.src))">
                             </image>
                             <view v-if="getVideoPath(item.src)" class="pre-image">
                                 <video @click="onClickVideo" ref="videoMine" id="videoMine" @play="videoPlay"
@@ -702,14 +702,14 @@ export default {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background-color: #3F3F3F;
+                background-color: #151515;
                 flex-direction: column;
 
                 text {
                     font-size: 21rpx;
                     font-family: PingFang SC;
                     font-weight: 400;
-                    color: #8D8D8D;
+                    color: #333333;
                     display: block;
                 }
             }

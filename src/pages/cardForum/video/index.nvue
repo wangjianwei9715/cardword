@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-28 10:12:28
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 16:40:48
+ * @LastEditTime: 2023-07-13 17:06:42
  * @FilePath: \card-world\src\pages\cardForum\video\index.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -28,12 +28,11 @@
                     <div :style="'width: ' + windowWidth + 'px; height: ' + boxStyle.height + 'px;'" @disappear="stop()">
                         <view v-if="Math.abs(k - i) <= 1">
                             <view class="root">
-                                <video :ref="'item' + i" :id="item.code" :loop="true" :src="getVideoPath(item.url)"
-                                    :muted="item.isplay" @play="playIngs(i)" :enable-progress-gesture="false"
-                                    :page-gesture="false" :controls="false" :http-cache="true" :show-loading="false"
-                                    :show-fullscreen-btn="false" :show-center-play-btn="false" :style="boxStyle"
-                                    :object-fit="'contain'" @timeupdate="timeupdate($event, i)"
-                                    @pause="onVideoPause"></video>
+                                <video :ref="'item' + i" :id="item.code" :loop="true" :src="item.url" :muted="item.isplay"
+                                    @play="playIngs(i)" :enable-progress-gesture="false" :page-gesture="false"
+                                    :controls="false" :http-cache="true" :show-loading="false" :show-fullscreen-btn="false"
+                                    :show-center-play-btn="false" :style="boxStyle" :object-fit="'contain'"
+                                    @timeupdate="timeupdate($event, i)" @pause="onVideoPause($event, item)"></video>
                                 <!-- :poster="getVideoPath(item.url) + '?x-oss-process=video/snapshot,t_1000,m_fast'" -->
                                 <!-- <image
 								v-if="!item.playIng"
@@ -234,7 +233,7 @@ export default {
         detailPop
     },
     watch: {
-        async k(k, old_k) {//监听 k 值的变化，可以控制视频的播放与暂停
+        k(k, old_k) {//监听 k 值的变化，可以控制视频的播放与暂停
             console.log("当前的K", k);
             console.log("老的k", old_k);
             this.dataList[old_k].state = 'stop'
@@ -243,21 +242,21 @@ export default {
             uni.createVideoContext(this.dataList[k].code, this).seek(0)
             uni.createVideoContext(this.dataList[k].code, this).play();
             uni.createVideoContext(this.dataList[old_k].code, this).pause()
-            console.log('已经暂停 --> 第' + (old_k + 1) + '个视频～')//提示
+            // console.log('已经暂停 --> 第' + (old_k + 1) + '个视频～')//提示
 
             //【2.0版本更新内容】- start
             var p = k + 1
-            await setTimeout(async () => {
+            this.$nextTick(() => {
                 uni.createVideoContext(this.dataList[p].code, this).play()
                 setTimeout(() => {
                     uni.createVideoContext(this.dataList[p].code, this).pause()
-                    console.log('预加载第' + (p + 1) + '个视频：' + this.dataList[p].code)
+                    console.log(`预加载第${p + 1}个视频,${this.dataList[p].code},${this.dataList[p].url}`);
                 }, 100)
-            }, 20)
+            })
             //【2.0版本更新内容】- end
             //【此处处理进度条卡住的问题】
             if (uni.getSystemInfoSync().platform !== 'ios') {
-                await setTimeout(() => {
+                setTimeout(() => {
                     uni.createVideoContext(this.dataList[k].code, this).pause()
                     uni.createVideoContext(this.dataList[k].code, this).play()
                 }, 100)
@@ -350,15 +349,15 @@ export default {
 
     methods: {
         onSelectActionSheet(item) {
-            console.log(item);
+            // console.log(item);
             if (item.behavior) {
                 //@ts-ignore
                 this[item.behavior] && this[item.behavior]()
                 return
             }
         },
-        onVideoPause(event) {
-            console.log("视频暂停咯", event);
+        onVideoPause(event, item) {
+            // console.log("视频暂停咯", item);
         },
         goReport() {
             uni.navigateTo({
@@ -548,7 +547,7 @@ export default {
                         if (this.k == this.dataList.length - 1) {
                             this.getMore()
                         }
-                        console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
+                        // console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
                     } else {
                         clearTimeout(this.timers);
                         this.timers = setTimeout(() => {
@@ -557,7 +556,7 @@ export default {
                             if (this.k == this.dataList.length - 1) {
                                 this.getMore()
                             }
-                            console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
+                            // console.log('正在播放 --> 第' + (this.k + 1) + '个视频～')
                         }, 80)
                     }
                 }
@@ -566,7 +565,9 @@ export default {
         },
         get() {
             app.http.Get(`dataApi/cardCircle/detail/${this.code}`, {}, (res) => {
+                res.data.url = this.getVideoPath(res.data.url)
                 const data = [{ ...res.data, isShowProgressBarTime: false, state: 'play', isplay: false, hasDetail: true, private: (res.state == 2 && ((res.data.bit & 1) === 1)) }]
+
                 this.dataList = [...data]
                 // console.log(this.dataList);
                 setTimeout(() => {
@@ -578,14 +579,14 @@ export default {
         },
         getMore() {
             if (this.isFetchEnd) return;
-            app.http.Get(`dataApi/cardCircle/commend/video/list/${this.dataList[this.k].code}`, { fetchSize: 10 }, async (res) => {
+            app.http.Get(`dataApi/cardCircle/commend/video/list/${this.dataList[this.k].code}`, { fetchSize: 10, viewCode: this.code }, async (res) => {
                 console.log("更多数据:", res);
                 this.isFetchEnd = res.isFetchEnd;
-                const list = await res.list.map((x) => {
-                    return { ...x, isShowProgressBarTime: false, state: 'stop', isplay: true, hasDetail: false }
+                const list = res.list.map((x) => {
+                    return { ...x, url: this.getVideoPath(x.url), isShowProgressBarTime: false, state: 'stop', isplay: true, hasDetail: false }
                 })
                 var p = this.dataList.length;
-                this.dataList = await [...this.dataList, ...list];
+                this.dataList.push(...list)
                 setTimeout(() => {
                     uni.createVideoContext(this.dataList[p].code, this).play()
                     setTimeout(() => {
