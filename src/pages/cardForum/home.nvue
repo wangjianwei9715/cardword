@@ -48,7 +48,8 @@
                         </view>
 
                         <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
-                            :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40" :isFetchEnd="tab.isFetchEnd">
+                            :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40"
+                            :isFetchEnd="tab.isFetchEnd">
                         </waterfalls>
                         <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                     </scroll-view>
@@ -250,9 +251,8 @@ export default {
     },
     async onLoad() {
         try {
-            console.log(app.platform.systemInfo);
-            app.user.setViewerId()
             await this.initTab()
+            await app.user.setViewerId()
             this.reqNewData(true)
         } catch (err) {
             await this.initTab()
@@ -405,7 +405,7 @@ export default {
         },
         onSelectAction(item) {
             if (app.token.accessToken == '') {
-                uni.navigateTo({url:'/pages/login/login'})
+                uni.navigateTo({ url: '/pages/login/login' })
                 return;
             }
             if (item.url) {
@@ -486,11 +486,15 @@ export default {
             console.log("请求的", url, query);
             app.http.Get(url, query, (res) => {
                 console.log("响应的结果", res);
+                const list = (res.list || []).map(item => {
+                    item.cover = this.parsePic(decodeURIComponent(item.cover))
+                    return item
+                })
                 this.current.isFetchEnd = res.isFetchEnd
                 if (isRefresh) {
                     this.current.list = []
                 }
-                this.current.list.push(...res.list || [])
+                this.current.list.push(...list)
                 this.current.firstReqEnd = true
                 cb && cb()
             }, (err) => {

@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-12 17:25:16
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-13 11:42:29
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -203,10 +203,10 @@
                         style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
                     </div>
                     <image v-if="item.mode == 'widthFix'" style="width: 360rpx;"
-                        :src="parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="widthFix">
+                        :src="item.cover" class="waterfall-item__image_img" mode="widthFix">
                     </image>
                     <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
-                        :src="parsePic(decodeURIComponent(item.cover))" class="waterfall-item__image_img" mode="aspectFit">
+                        :src="item.cover" class="waterfall-item__image_img" mode="aspectFit">
                     </image>
                     <view class="videoIconWrap" v-if="item.video_at">
                         <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
@@ -725,7 +725,7 @@ export default {
         },
         thumbnail(cover) {
             if (!cover) return cover
-            let deCover = this.parsePic(decodeURIComponent(cover))
+            let deCover = cover
             const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
             if (isVideoSnapshot) return deCover
             return deCover + "?x-oss-process=image/resize,p_1"
