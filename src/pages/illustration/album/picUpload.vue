@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-13 16:07:00
+ * @LastEditTime: 2023-07-13 16:30:03
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -106,7 +106,7 @@
 		}
 		async onClickAddImg(index:number,noIndex:number,type:string){
 			const list:any =  await this.addImg(1);
-			const path = await this.segment(list[0])
+			const path = await this.segment(list[0]);
 			if(type=='front'){
 				this.selectSeries[index].noList[noIndex].frontPic = path
 			}else{
@@ -128,9 +128,17 @@
 		}
 		uploadSegment(decodePic:string){
 			return new Promise((resolve, reject) => {
+				uni.showLoading({ title: '自动抠图中...' });
 				app.http.Post("cardIllustration/image/upload/segment",{pic:decodePic}, async (res:any)=>{
-					const picList:any = await Upload.getInstance().uploadTemporaryFile(res.pic,decodePic);
-					resolve(decodeURIComponent(picList[0]))
+					uni.downloadFile({
+						url: res.pic,
+						success: async (res) => {
+							if (res.statusCode === 200) {
+								const picList:any = await Upload.getInstance().uploadTemporaryFile(res.tempFilePath,decodePic);
+								resolve(decodeURIComponent(picList[0]))
+							}
+						}
+					});
 				},(error:any)=>{
 					reject(error)
 				})
