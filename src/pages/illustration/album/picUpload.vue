@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-13 14:26:25
+ * @LastEditTime: 2023-07-13 16:07:00
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -123,7 +123,7 @@
 				if(!this.segmentCheck) return decodePic;
 				return await this.uploadSegment(decodePic);
 			} catch (err) {
-				uni.showToast({ title:"上传失败请重试", icon: 'none' })
+				uni.showToast({ title:err as string||"上传失败请重试", icon: 'none' })
 			}
 		}
 		uploadSegment(decodePic:string){
@@ -132,7 +132,7 @@
 					const picList:any = await Upload.getInstance().uploadTemporaryFile(res.pic,decodePic);
 					resolve(decodeURIComponent(picList[0]))
 				},(error:any)=>{
-					reject()
+					reject(error)
 				})
 			});
 		}
