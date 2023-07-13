@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 10:34:38
+ * @LastEditTime: 2023-07-13 10:45:02
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -746,6 +746,7 @@ export default class ClassName extends BaseNode {
             app.http.Post(url, { ...this.formData, content }, () => {
                 uni.hideLoading()
                 if (this.code) uni.$emit("editCardForum", { code: this.code, formData: this.formData })
+                uni.$emit("refreshDraft")
                 uni.showModal({
                     title: "提示",
                     content: `${this.code ? '编辑' : '发布'}成功`,
@@ -775,6 +776,7 @@ export default class ClassName extends BaseNode {
                 this.isTempVideo = false
                 console.log("保存的草稿箱data", this.formData);
                 storageDraft(this.formData, "dynamic", this.draftId || "").then((draftId) => {
+                    uni.$emit("refreshDraft")
                     uni.showModal({
                         title: '提示',
                         content: `发布失败:${err},已保存至草稿箱`,
