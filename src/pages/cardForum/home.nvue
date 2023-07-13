@@ -182,10 +182,12 @@ const tabsList = [
     }, {
         name: '卡册',
         tag: 'album'
-    }, {
-        name: '交流',
-        tag: 'swap'
-    }, {
+    },
+    //  {
+    //     name: '交流',
+    //     tag: 'swap'
+    // }, 
+    {
         name: '篮球',
         tag: 'basket'
     },
