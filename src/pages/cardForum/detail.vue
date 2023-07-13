@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-11 17:57:54
+ * @LastEditTime: 2023-07-13 10:49:35
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -40,8 +40,8 @@
         <albumSwiper v-if="isAlbum" :forumDetail="forumDetail" :code="code" :swiperCurrent.sync="swiperCurrent" />
         <view class="swiper" v-else>
             <!-- @click="onClickSwiper -->
-            <u-swiper imgMode="aspectFit" @click="onClickSwiper" :current="swiperCurrent" :indicator="false" bgColor="#000" height="946rpx"
-                :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
+            <u-swiper imgMode="aspectFit" @click="onClickSwiper" :current="swiperCurrent" :indicator="false" bgColor="#000"
+                height="946rpx" :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
         </view>
         <view class="dotContainer" v-if="pics.length > 1 && !isAlbum" :style="{ width: dotContainerWidth + 'px' }">
             <view class="indicatorScroll" :style="{ left: scrollLeft + 'px' }">
@@ -178,7 +178,8 @@
                 <!-- <view class="line" v-if="index + 1 < commList.length"></view> -->
             </view>
         </view>
-        <u-loadmore style="margin-top: 20rpx;" fontSize="24rpx" v-if="commList&&commList.length" :status="isFetchEnd?'nomore':'loading'" line/>
+        <u-loadmore style="margin-top: 20rpx;" fontSize="24rpx" v-if="commList && commList.length"
+            :status="isFetchEnd ? 'nomore' : 'loading'" line />
         <view class="fixInputContainer">
             <view class="wrap">
                 <view class="fakerInput u-line-1" @click="onClickFakerInput">{{ fakerInputVal }}</view>
@@ -301,7 +302,7 @@ export default class ClassName extends BaseNode {
     private: boolean = false
     fromUserId: number = 0
     onLoad(query: any) {
-        this.queryParams.fetchFrom=1
+        this.queryParams.fetchFrom = 1
         this.userBack = query.back == "true"
         this.private = query.private == "1"
         if (query.fromUserId) this.fromUserId = +query.fromUserId
@@ -564,7 +565,7 @@ export default class ClassName extends BaseNode {
         // })
         //#endif
         uni.navigateTo({
-            url:`/pages/cardForum/report?source=${3}&dtCode=${this.code}&target=${item.id}&byInformer=${item.userId}`
+            url: `/pages/cardForum/report?source=${3}&dtCode=${this.code}&target=${item.id}&byInformer=${item.userId}`
         })
     }
     delCom(item: CardForum.CommentFather, fatherItem: CardForum.CommentFather, index: number, isSon: boolean) {
@@ -691,10 +692,10 @@ export default class ClassName extends BaseNode {
     swiperChange(event: any) {
         this.swiperCurrent = event.current
     }
-    onClickSwiper(index:number){
+    onClickSwiper(index: number) {
         uni.previewImage({
-            urls:this.pics,
-            current:index
+            urls: this.pics,
+            current: index
         })
     }
     getCommByWorks() {
@@ -724,7 +725,11 @@ export default class ClassName extends BaseNode {
         })
     }
     onEditCardForum(res: any) {
-        if (res.code == this.code) this.reqNewData()
+        if (res.code == this.code) {
+            setTimeout(() => {
+                this.reqNewData()
+            }, 500)
+        }
     }
     reqNewData(cb?: any) {
         getForumDetail(this.code).then((res: any) => {
@@ -787,10 +792,12 @@ export default class ClassName extends BaseNode {
         // background-color: red;
         display: flex;
         align-items: center;
-        image{
+
+        image {
             width: 19rpx;
             height: 35rpx;
         }
+
         // background-image: url("@/static/act/portable/pageBack.png");
     }
 
@@ -1419,5 +1426,4 @@ export default class ClassName extends BaseNode {
     color: #707070;
     margin-left: 28rpx;
     flex: 1;
-}
-</style>
+}</style>

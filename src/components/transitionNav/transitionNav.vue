@@ -19,7 +19,7 @@
                 <template v-if="needIconShadow">
                     <image class="back" src="/static/index/v3/icon_back.png" />
                 </template>
-                <template v-if="!needIconShadow&&showBack">
+                <template v-if="!needIconShadow && showBack">
                     <image class="back" :src="`/static/index/v3/${navBackGroundShow ? 'icon_back' : 'back'}.png`" />
                     <!-- #ifndef APP-NVUE -->
                     <!-- 非nvue下利用css滤镜改变方向键颜色 -->
@@ -156,13 +156,17 @@ export default {
                 return {}
             }
         },
-        report:{
-            type:Boolean,
-            default:false
+        report: {
+            type: Boolean,
+            default: false
         },
-        showBack:{
-            type:Boolean,
-            default:true
+        showBack: {
+            type: Boolean,
+            default: true
+        },
+        transition: {
+            type: Boolean,
+            default: true
         }
 
     },
@@ -177,9 +181,15 @@ export default {
     },
     computed: {
         scrollTopPercent() {
+            if (!this.transition) return 100
             return this.scrollTop / (this.MAX_HEIGHT.toFixed(2) * 1.4)
         },
         opacityStyle() {
+            if (!this.transition) {
+                return {
+                    opacity: 1
+                }
+            }
             return {
                 opacity: this.scrollTopPercent > 1 ? 1 : this.scrollTopPercent
             }
@@ -190,9 +200,11 @@ export default {
             }
         },
         navBackGroundShow() {
+            if (!this.transition) return true
             return (this.scrollTop / (this.MAX_HEIGHT * 1.4)) > 0.6
         },
         scrollTopOpacity() {
+            if (!this.transition) return true
             return 1 - (this.scrollTop / (this.MAX_HEIGHT * 1.4))
         },
         toolsList() {

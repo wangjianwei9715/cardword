@@ -39,9 +39,10 @@
                 </view>
                 <view class="flex1"></view>
                 <!-- @click="onClickFollow" -->
-                <text class="userData_follow" :class="{ userData_follow_dis: userInfo.isFollow }" v-if="!isMine">{{
-                    userInfo.isFollow ? '已关注' :
-                    '关注' }}</text>
+                <text class="userData_follow" @click="onClickUserFollow" :class="{ userData_follow_dis: userInfo.isFollow }"
+                    v-if="!isMine">{{
+                        userInfo.isFollow ? '已关注' :
+                        '关注' }}</text>
                 <text class="userData_edit" v-else @click="pageJump('/pages/userinfo/user_info_v3')">编辑资料</text>
             </view>
         </view>
@@ -66,7 +67,8 @@
                         <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
                         <text class="caogaoTitle">草稿箱</text>
                         <text class="caogaoText">有{{
-                            draftListByDynamic.length + (cloudDraftNumByDynamic > 0 ? cloudDraftNumByDynamic - 1 : 0) }}篇动态待发布</text>
+                            draftListByDynamic.length + (cloudDraftNumByDynamic > 0 ? cloudDraftNumByDynamic - 1 : 0)
+                        }}篇动态待发布</text>
                     </view>
                 </view>
             </template>
@@ -236,6 +238,12 @@ export default class ClassName extends BaseNode {
         //@ts-ignore
         this.$refs.waterfall.clear();
         this.tabs.index = event.index
+    }
+    onClickUserFollow() {
+        followActionByUser(this.userId, this.userInfo.isFollow).then(() => {
+            this.userInfo.isFollow = !this.userInfo.isFollow;
+            this.userInfo.fans += this.userInfo.isFollow ? 1 : -1;
+        })
     }
     reqData(isRefresh = false, cb?: any) {
         app.http.Get(`dataApi/${this.current.url}${this.isMine ? "" : this.userId}`, this.current.queryParams, (res: any) => {
