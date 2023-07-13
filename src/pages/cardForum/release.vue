@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-12 17:28:39
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-13 10:34:38
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -24,7 +24,7 @@
         <view :style="{ height: navHeight + 'px' }"></view>
         <publish v-if="albumRelease" ref="albumRelease" :albumList.sync="albumData.list"
             :albumCover.sync="albumData.albumCover" :albumProve.sync="albumData.albumProve" :draftId="draftId"
-            @albumEditDetail="albumEditDetail" @delDraft="delDraftDetailAction" @unLock="submitLock=false"/>
+            @albumEditDetail="albumEditDetail" @delDraft="delDraftDetailAction" @unLock="submitLock = false" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp v-if="showPPP" :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics"
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
@@ -516,6 +516,14 @@ export default class ClassName extends BaseNode {
                 ...this.albumData,
                 selectTopics: this.selectTopics
             }
+            if (this.code) {
+                Draft.code = this.code
+                const draftList = getDraftList("all")
+                const findItem = draftList.find((item: any) => {
+                    return item.data.code == this.code
+                })
+                if (findItem && findItem.draftId) this.draftId = findItem.draftId
+            }
             await storageDraft(Draft, this.albumRelease ? "cardBook" : "dynamic", this.draftId || "")
             uni.showModal({
                 title: "提示",
@@ -613,6 +621,7 @@ export default class ClassName extends BaseNode {
         const data = getDraftDetail(this.draftId, this.userId) as any
         if (!Object.keys(data).length) return
         this.formData = data
+        if (data.code) this.code = data.code
         this.selectTopics = data.selectTopics || []
         console.log("草稿的内容", this.formData);
         // this.selectGoods = this.formData.selectGoods
@@ -789,9 +798,9 @@ export default class ClassName extends BaseNode {
             // uni.hideLoading()
             uni.showToast({
                 //@ts-ignore
-                title:err.message || err,
-                icon:'none'
-            })  
+                title: err.message || err,
+                icon: 'none'
+            })
         }
     }
     videoProgress(res: any) {

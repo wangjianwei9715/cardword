@@ -65,7 +65,8 @@
                     <view class="shadow">
                         <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
                         <text class="caogaoTitle">草稿箱</text>
-                        <text class="caogaoText">有{{ draftListByDynamic.length }}篇动态待发布</text>
+                        <text class="caogaoText">有{{
+                            draftListByDynamic.length + (cloudDraftNumByDynamic > 0 ? cloudDraftNumByDynamic - 1 : 0) }}篇动态待发布</text>
                     </view>
                 </view>
             </template>
@@ -158,6 +159,7 @@ export default class ClassName extends BaseNode {
     draftListByDynamic: any = []
     draftListByCardBook: any = []
     cloudDraft: any = []
+    cloudDraftNumByDynamic: number = 0
     userId: number = 0
     onLoad(query: any) {
         if (query.tabIndex) this.tabs.index = +query.tabIndex
@@ -277,6 +279,7 @@ export default class ClassName extends BaseNode {
     sortDraft(get?: boolean) {
         app.http.Get(`dataApi/cardCircle/list/me/dongtai`, {}, (res: any) => {
             if (res.draftBrier) {
+                this.cloudDraftNumByDynamic = res.draftBrier.num
                 this.draftListByDynamic = [...this.draftListByDynamic, {
                     stamp: res.draftBrier.created_at, data: {
                         cover: res.draftBrier.cover

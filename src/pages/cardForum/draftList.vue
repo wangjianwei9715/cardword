@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-30 14:05:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-11 15:57:47
+ * @LastEditTime: 2023-07-13 10:38:25
  * @FilePath: \jichao_app_2\src\pages\cardForum\draftList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -76,7 +76,8 @@ export default class ClassName extends BaseNode {
                     url: item.url,
                     title: item.title,
                     create_at: item.created_at,
-                    code: item.code
+                    code: item.code,
+                    cloud: true,
                 }
             })
             if (this.queryParams.fetchFrom == 1) {
