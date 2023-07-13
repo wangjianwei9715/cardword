@@ -91,8 +91,8 @@
 							</view>
 						</template>
 						<template v-if="customType == 'showKa' || customType == 'cardForum'">
-							<image class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line"
-								src="@/static/cardForum/line.png" :style="[{
+							<image class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" style="border-radius: 0;background-color: #ff003d;"
+								 :style="[{
 									width: $u.addUnit(lineWidth),
 									height: $u.addUnit(lineHeight),
 								}]"></image>
@@ -110,13 +110,13 @@
 							}]">
 						</view>
 						<template v-if="customType == 'showKa' || customType == 'cardForum'">
-							<image class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line"
-								src="@/static/cardForum/line.png" :style="[{
+							<view class="u-tabs__wrapper__nav__line" style="border-radius: 0;background-color: #ff003d;" ref="u-tabs__wrapper__nav__line" 
+								 :style="[{
 									width: $u.addUnit(lineWidth),
 									transform: `translate(${lineOffsetLeft}px)`,
 									transitionDuration: `${firstTime ? 0 : duration}ms`,
 									height: $u.addUnit(lineHeight),
-								}]"></image>
+								}]"></view>
 						</template>
 						<!-- #endif -->
 
