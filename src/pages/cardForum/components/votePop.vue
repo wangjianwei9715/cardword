@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 16:24:21
+ * @LastEditTime: 2023-07-13 11:18:42
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的投票组件
 -->
@@ -23,7 +23,7 @@
                         <view class="del" v-if="index > 1" @click="deleteOptions(index)">删除</view>
                     </view>
                 </view>
-                <view class="addOptionWrap" @click="insertOptions" v-if="voteData.options.length <= MAX_OPTIONS_LENGTH">
+                <view class="addOptionWrap" @click="insertOptions" v-if="voteData.options.length < MAX_OPTIONS_LENGTH">
                     <view class="addImg"></view>
                     <view class="addText">添加选项</view>
                 </view>
