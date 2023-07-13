@@ -481,11 +481,9 @@ export default {
             }
             const array = ["all", "album"]
             if (!array.includes(this.current.tag)) {
-                if (this.current.name == '关注') {
-                    query = {
-                        ...this.current.queryParams,
-                        ...query
-                    }
+                query = {
+                    ...this.current.queryParams,
+                    ...query
                 }
                 if (isRefresh) {
 
