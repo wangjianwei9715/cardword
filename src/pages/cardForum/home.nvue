@@ -445,7 +445,7 @@ export default {
                     this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
                     this.reqNewData()
                 }
-            }, 1000)
+            }, 300)
         },
         onClickTopic(item) {
             releaseByTopic(item.id)
