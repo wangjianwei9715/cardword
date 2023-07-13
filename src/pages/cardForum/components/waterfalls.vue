@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 11:52:40
+ * @LastEditTime: 2023-07-13 12:01:23
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -28,7 +28,7 @@
                                     :src="imageUrl(item)" class="waterfall-item__image_img">
                                 </image>
                                 <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
-                                    :src="thumbnail(item.cover)"
+                                    :src="thumbnail(item.cover, true)"
                                     style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
                                 </image>
                                 <view class="videoIconWrap" v-if="item.video_at">
@@ -103,7 +103,7 @@
                                     :src="imageUrl(item)" class="waterfall-item__image_img">
                                 </image>
                                 <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
-                                    :src="thumbnail(item.cover)"
+                                    :src="thumbnail(item.cover, true)"
                                     style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
                                 </image>
                                 <view class="videoIconWrap" v-if="item.video_at">
@@ -167,8 +167,8 @@
         </view>
         <empty v-if="!list1.length && !list2.length && showEmpty"></empty>
         <template v-if="list1.length || list2.length">
-            <u-loadmore :line="true" lineLength="20rpx" loadingIcon="semicircle" :status="isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了"
-                fontSize="24rpx" />
+            <u-loadmore :line="true" lineLength="20rpx" loadingIcon="semicircle" :status="isFetchEnd ? 'nomore' : 'loading'"
+                nomore-text="没有更多了" fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </template>
     </view>
@@ -202,8 +202,8 @@
                     <div v-if="!item.mode" class="defaultImg"
                         style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
                     </div>
-                    <image v-if="item.mode == 'widthFix'" style="width: 360rpx;"
-                        :src="item.cover" class="waterfall-item__image_img" mode="widthFix">
+                    <image v-if="item.mode == 'widthFix'" style="width: 360rpx;" :src="item.cover"
+                        class="waterfall-item__image_img" mode="widthFix">
                     </image>
                     <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
                         :src="item.cover" class="waterfall-item__image_img" mode="aspectFit">
@@ -252,8 +252,8 @@
             </div>
         </cell>
         <header style="margin-top:50rpx" v-if="copyValue.length">
-            <u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了"
-                fontSize="24rpx" />
+            <u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'"
+                nomore-text="没有更多了" fontSize="24rpx" />
             <div :style="{ height: safeBottomHeight + 'px' }"></div>
         </header>
     </waterfall>
@@ -718,14 +718,14 @@ export default {
             // #endif
         },
         imageUrl(item) {
-            const deCover =item.cover
+            const deCover = this.parsePic(decodeURIComponent(item.cover))
             const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
             if (isVideoSnapshot) return deCover
             return deCover + `?x-oss-process=image/resize,m_fixed,h_${parseInt(item.height * 2)},w_${parseInt(item.width * 2)}`
         },
-        thumbnail(cover) {
+        thumbnail(cover, needParse) {
             if (!cover) return cover
-            let deCover = cover
+            let deCover = needParse ? this.parsePic(decodeURIComponent(cover)) : cover
             const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
             if (isVideoSnapshot) return deCover
             return deCover + "?x-oss-process=image/resize,p_1"
