@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 12:01:23
+ * @LastEditTime: 2023-07-13 16:12:07
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -24,8 +24,8 @@
                                     <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
                                 </view>
                                 <image v-else-if="item.mode"
-                                    :style="{ height: item.height + 'px', width: item.width + 'px' }" :mode="item.mode"
-                                    :src="imageUrl(item)" class="waterfall-item__image_img">
+                                    :style="{ height: item.height + 'px', width: item.width + 'px', borderRadius: item.mode == 'widthFix' ? `5rpx 5rpx 0rpx 0rpx` : `0rpx` }"
+                                    :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
                                 </image>
                                 <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
                                     :src="thumbnail(item.cover, true)"
@@ -50,7 +50,7 @@
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
                                     }}</text>
-                                    <view class="likeWrap">
+                                    <view class="likeWrap" @click.stop="onClickLike($event, item)">
                                         <image
                                             :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
                                             class="likeImg"></image>
@@ -63,7 +63,7 @@
                                             class="likeImg"></image>
                                         <text class="likeNum">{{ item.clickNum }}</text>
                                     </view>
-                                    <view class="likeWrap">
+                                    <view class="likeWrap" @click.stop="onClickLike($event, item)">
                                         <image
                                             :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
                                             class="likeImg"></image>
@@ -99,8 +99,8 @@
                                     <image class="wait-pic" src="@/static/illustration/icon_wait.png" />
                                 </view>
                                 <image v-else-if="item.mode"
-                                    :style="{ height: item.height + 'px', width: item.width + 'px' }" :mode="item.mode"
-                                    :src="imageUrl(item)" class="waterfall-item__image_img">
+                                    :style="{ height: item.height + 'px', width: item.width + 'px', borderRadius: item.mode == 'widthFix' ? `5rpx 5rpx 0rpx 0rpx` : `0rpx` }"
+                                    :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
                                 </image>
                                 <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
                                     :src="thumbnail(item.cover, true)"
@@ -125,7 +125,7 @@
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
                                     }}</text>
-                                    <view class="likeWrap">
+                                    <view class="likeWrap" @click.stop="onClickLike($event, item)">
                                         <image
                                             :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
                                             class="likeImg"></image>
@@ -138,7 +138,7 @@
                                             class="likeImg"></image>
                                         <text class="likeNum">{{ item.clickNum }}</text>
                                     </view>
-                                    <view class="likeWrap">
+                                    <view class="likeWrap" @click.stop="onClickLike($event, item)">
                                         <image
                                             :src="isLike(item) ? '/static/cardForum/like.png' : '/static/cardForum/unLike.png'"
                                             class="likeImg"></image>
@@ -202,7 +202,8 @@
                     <div v-if="!item.mode" class="defaultImg"
                         style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
                     </div>
-                    <image v-if="item.mode == 'widthFix'" style="width: 360rpx;" :src="item.cover"
+                    <image v-if="item.mode == 'widthFix'"
+                        style="width: 360rpx;border-top-left-radius:5rpx;border-top-right-radius:5rpx" :src="item.cover"
                         class="waterfall-item__image_img" mode="widthFix">
                     </image>
                     <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
@@ -223,7 +224,7 @@
                             :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                         </image>
                         <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
-                        <div class="likeWrap">
+                        <div class="likeWrap" @click="onClickLike($event, item)">
                             <image
                                 :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
                                 class="likeImg"></image>
@@ -236,7 +237,7 @@
                             </image>
                             <text class="likeNum">{{ item.clickNum }}</text>
                         </view>
-                        <view class="likeWrap">
+                        <view class="likeWrap" @click="onClickLike($event, item)">
                             <image
                                 :src="isLike(item) ? '../../static/cardForum/like.png' : '../../static/cardForum/unLike.png'"
                                 class="likeImg"></image>
@@ -550,6 +551,18 @@ export default {
             if (!newArray || !newArray.length) return
             app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray }, () => {
                 alreadyList.push(...newArray)
+            })
+        },
+        onClickLike(event, item) {
+            // #ifdef APP-NVUE
+            event.stopPropagation();
+            // #endif
+            const isLike = ((item.bit & 4) === 4)
+            app.http.Post(`cardCircle/${isLike ? 'un/' : ''}like/${item.code}`, {}, (res) => {
+                if (isLike) item.likeNum -= 1
+                if (!isLike) item.likeNum += 1
+                item.bit ^= 4;
+                uni.$emit("cardForumLike", { code: item.code, bit: item.bit, likeNum: item.likeNum })
             })
         },
         goToUserProfile(event, item) {
@@ -970,9 +983,7 @@ $uvui-nvue-style: true !default;
 .waterfall-item {
     width: 360rpx;
     background-color: #ffffff;
-    // margin-bottom: 10rpx;
     border-radius: 5rpx;
-    overflow: hidden;
 }
 
 .waterfall-item__image {
@@ -980,11 +991,16 @@ $uvui-nvue-style: true !default;
     background-color: #ffffff;
     display: flex;
     align-items: center;
-    border-radius: 5rpx;
-    overflow: hidden;
     position: relative;
     // #ifndef APP-NVUE
-    // min-height: 300rpx;
+    border-radius: 5rpx 5rpx 0 0;
+    overflow: hidden;
+    // #endif
+    // #ifdef APP-NVUE
+    border-top-left-radius: 5rpx;
+    border-top-right-radius: 5rpx;
+    border-bottom-left-radius: 0rpx;
+    border-bottom-right-radius: 0rpx;
     // #endif
 }
 
@@ -994,7 +1010,7 @@ $uvui-nvue-style: true !default;
     width: 100%;
     max-height: 439rpx;
     // #endif
-    border-radius: 5rpx;
+    // border-radius: 5rpx;
     background-color: #ffffff;
 }
 

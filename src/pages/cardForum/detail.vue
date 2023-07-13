@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 14:12:56
+ * @LastEditTime: 2023-07-13 15:18:30
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -220,7 +220,7 @@
         <recGift :code="code" :show.sync="recGiftShow"></recGift>
         <share
             @report="pageJump(`/pages/cardForum/report?code=${code}&byInformer=${forumDetail.userId}&source=${forumDetail.tp == 3 ? 1 : 2}`)"
-            :shareData="{}" :report="true" :operationShow.sync="operationShow"></share>
+            :shareData="shareData" :report="true" :operationShow.sync="operationShow"></share>
         <u-action-sheet :actions="PersonSheet" :show="actionSheetShow" cancelText="取消" :closeOnClickAction="true"
             @close="actionSheetShow = false" @select="onSelectActionSheet"></u-action-sheet>
     </view>
@@ -271,6 +271,7 @@ export default class ClassName extends BaseNode {
     comment_reason_tp = comment_reason_tp
     app = app
     getDateDiff = getDateDiff
+    shareData: any = {}
     keyBoardHeigh: number = -2
     code: string = ""
     sayContent: string = ""
@@ -753,6 +754,14 @@ export default class ClassName extends BaseNode {
                 this.private = true
             }
             this.dotContainerWidth = this.dotWidth * (this.pics.length > 5 ? 5 : this.pics.length)
+            let content=decodeURIComponent(res.data.content)
+            this.shareData = {
+                shareUrl: `share/${app.localTest ? 'testH5' : 'h5'}/#/pages/cardForum/detail?code=${this.code}`,
+                title: res.data.title,
+                summary: content?(content.length>20?content.substr(0,20)+'...':content):"我发现了一篇精彩动态",
+                //@ts-ignore
+                thumb: this.pics[0] + `?x-oss-process=image/resize,h_100,w_100`
+            }
             this.getCommByWorks()
         }).catch((err: any) => {
             uni.showModal({
@@ -1426,4 +1435,5 @@ export default class ClassName extends BaseNode {
     color: #707070;
     margin-left: 28rpx;
     flex: 1;
-}</style>
+}
+</style>
