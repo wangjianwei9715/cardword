@@ -31,7 +31,7 @@
 							<text class="price-text">{{ filterPrice(item.price).integer }}</text>
 							<text class="decimal"
 								v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
-							<text>{{goodsManaager.hasLowestPrice(item)?' 起':''}}</text>
+							<text>{{goodsManaager.hasLowestPrice(item)?'起':''}}</text>
 						</view>
 						<view v-if="item.state==0 || item.state == -1" class="goodslist-priceMsg-right">
 							{{dateFormatMSHMS(item.startAt)}}开售
