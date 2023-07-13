@@ -19,16 +19,17 @@
                     </div>
                     <div class="navSearchWrap">
                         <image class="searchFdj" src="@/static/cardForum/sousuo@2x.png"></image>
-                        <input class="navInput" ref="input" @focus="onSearch = true" type="text" v-model="searchText"
-                            placeholder="搜你想搜..." />
+                        <input class="navInput" ref="input" confirm-type="search" @confirm="onClickSearch"
+                            @focus="onSearch = true" type="text" v-model="searchText" placeholder="搜你想搜..." />
                         <image v-if="searchText" @click="searchText = '', onSearch = true" class="search-remove"
                             src="@/static/cardForum/searchClose.png" />
                     </div>
                     <text class="searchText" @click="onClickSearch">搜索</text>
                 </div>
             </div>
-            <u-tabs v-if="!onSearch" customType="cardForum" style="width:750rpx"
-                :itemStyle="{ width: `150rpx`, height: `90rpx` }"
+        </div>
+        <div v-if="!onSearch" style="height:100rpx">
+            <u-tabs customType="cardForum" style="width:750rpx" :itemStyle="{ width: `150rpx`, height: `90rpx` }"
                 :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
@@ -56,8 +57,6 @@
         <swiper class="swiperContainer" v-if="!onSearch" :style="{ height: scrollViewHeight + 'px' }" :current="tabs.index"
             @change="swiperChange" @animationfinish="swiperChangeAnimationfinish" @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
-                <!-- <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" /> -->
-
                 <!-- #ifndef APP-NVUE -->
                 <scroll-view :scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                     @scrolltolower="loadmoreData(tabIndex)">
@@ -279,7 +278,7 @@ export default {
         async setHeight() {
             this.fixedTopHeight = await this.getDomHeight("#fixedTop")
             // #ifdef APP-NVUE
-            this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight
+            this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - uni.upx2px(100)
             // - plus.navigator.getSafeAreaInsets().deviceBottom
             // #endif
             // #ifdef H5
