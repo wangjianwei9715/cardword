@@ -49,7 +49,7 @@
                 </view>
                 <view class="bottomWrap">
                     <view class="submit submit_cancel flexCenter" @click="showGive = false">先不了</view>
-                    <view class="submit flexCenter" @click="$u.throttle(give, 1000)">确认赠送</view>
+                    <view class="submit flexCenter" @click="give">确认赠送</view>
                 </view>
             </view>
         </u-overlay>
@@ -102,18 +102,20 @@ export default class ClassName extends BaseNode {
     list: Array<any> = []
     selectIds: Array<number> = []
     totalPage: number = 0
-    receiveInfo: ReceiveInfo | any = { goodCode: "CL512822C" }
+    receiveInfo: ReceiveInfo | any = {}
     showGive: boolean = false
     code: string = ""
     onLoad(query: any) {
         this.code = query.code
         this.queryParams.leadGoodOrderCode = query.leadGoodOrderCode
-        this.reqNewData()
+
         //@ts-ignore
         const eventChannel = this.getOpenerEventChannel();
         eventChannel.on('receiveInfo', (data: ReceiveInfo) => {
-            if (data) this.receiveInfo = data
-
+            if (data) {
+                this.receiveInfo = data
+                this.reqNewData()
+            }
             console.log(this.receiveInfo);
         })
     }
@@ -457,4 +459,5 @@ page {
 .giveModal_show {
     transform: scale(1);
     pointer-events: auto;
-}</style>
+}
+</style>
