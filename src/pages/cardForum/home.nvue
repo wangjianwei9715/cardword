@@ -628,7 +628,7 @@ page {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 73rpx;
+    height: 78rpx;
 }
 
 .camera_img {
@@ -643,7 +643,7 @@ page {
     font-weight: 500;
     color: #333333;
     position: relative;
-    top: 4rpx;
+    // top: 4rpx;
 }
 
 .navSearchWrap {
