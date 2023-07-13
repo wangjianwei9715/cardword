@@ -17,13 +17,21 @@
 					<view class="goodslist-pic">
 						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0"></muqian-lazyLoad>
 					</view>
+					<view class="goodslist-progress" :class="{'goodslist-progress-select':goodsManaager.ifSelectType(item)}">
+						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
+					</view>
 					<view class="goodslist-title u-line-2 goodslist-padding">
-						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-remainder">剩余随机</view>
+						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-cardicon goodslist-cardicon-purple">剩余随机</view>
+						<view v-else-if="[1,2,3,10,11].includes(item.pintuan_type)" class="goodslist-cardicon" :class="{'goodslist-cardicon-purple':[10,11].includes(item.pintuan_type)}">{{getGoodsPintuanDetail(item.pintuan_type)}}</view>
 						{{item.title}}
 					</view>
 					<view class="goodslist-priceMsg uni-flex goodslist-padding">
 						<view class="goodslist-priceMsg-left">
-							￥<text class="price-text">{{item.price}}</text><text>{{goodsManaager.hasLowestPrice(item)?' 起':''}}</text>
+							￥
+							<text class="price-text">{{ filterPrice(item.price).integer }}</text>
+							<text class="decimal"
+								v-if="filterPrice(item.price).decimal">{{ filterPrice(item.price).decimal }}</text>
+							<text>{{goodsManaager.hasLowestPrice(item)?'起':''}}</text>
 						</view>
 						<view v-if="item.state==0 || item.state == -1" class="goodslist-priceMsg-right">
 							{{dateFormatMSHMS(item.startAt)}}开售
@@ -32,19 +40,11 @@
 							{{goodsManaager.listPlan(item,'str')}}
 						</view>
 					</view>
-					<view class="goodslist-padding">
-						<view class="goodslist-progress" :class="{'goodslist-progress-select':goodsManaager.ifSelectType(item)}">
-							<view class="progressMask"
-								:style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
-						</view>
-					</view>
 				</view>
 				<view class="goodslist-bottom goodslist-padding" @click="onClickSellerShop(item)">
-					<view class="bottom-left" :class="{'bottom-left-shu':item.merchantName}">{{getGoodsPintuan(item.pintuan_type)}}</view>
 					<view class="bottom-right" v-show="item.merchantName">
-						<merchantAvatar :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
+						<merchantAvatar width="36rpx" height="36rpx" :level="item.merchantLevel" :src="decodeURIComponent(item.merchantLogo)"/>
 						<view class="bussName">{{item.merchantName}}</view>
-						<view class="cores"></view>
 					</view>
 				</view>
 			</view>
@@ -73,7 +73,8 @@
 		app
 	} from "@/app";
 	import {
-		getGoodsPintuan
+		getGoodsPintuan,
+		getGoodsPintuanDetail
 	} from '@/tools/switchUtil';
 	import {
 		Md5
@@ -81,6 +82,7 @@
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		getGoodsPintuan = getGoodsPintuan;
+		getGoodsPintuanDetail = getGoodsPintuanDetail;
 		goodsManaager = app.goods;
 		@Prop({ default: [] })
 		goodsList: any;
@@ -107,6 +109,22 @@
 			
 		}
 		mounted() { //挂载到实例上去之后调用
+		}
+		filterPrice(price: number) {
+			let data = {
+				integer: 0,
+				decimal: 0,
+			}
+			if (!price) return data
+			const priceArr: any = String(price).split('.')
+			if (priceArr.length == 1) {
+				data.integer = priceArr[0]
+				return data
+			}
+			return {
+				integer: priceArr[0],
+				decimal: '.' + priceArr[1]
+			}
 		}
 		onClickJumpUrl(id: any) {
 			this.$emit("send", id);
@@ -171,38 +189,39 @@
 			font-family: PingFangSC-Light;
 			font-weight: 400;
 			color: #333333;
-			margin-top: 10rpx;
+			margin-top: 15rpx;
 			display: -webkit-box;
 			line-height: 38rpx;
+			letter-spacing:1rpx;
 		}
-		&-remainder{
-			width: 87rpx;
-			text-align: center;
-			height: 27rpx;
-			background: #754DE2;
-			opacity: 0.88;
-			border-radius: 3rpx;
-			box-sizing: border-box;
-			display: inline-block;
+		&-cardicon{
+			width: 100rpx;
+			height:32rpx;
+			display: inline-flex;
+			line-height: 32rpx;
+			align-items: center;
+			justify-content: center;
 			font-size: 19rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
-			color: #FFFEFE;
-			line-height: 27rpx;
-			margin-right: 6rpx;
-			overflow: hidden;
-			margin-bottom: -2rpx;
+			color: #FFFFFF;
+			margin-right: 10rpx;
+			background: url(@/static/goods/icon_b2.png) no-repeat center / 100% 100%;
+		}
+		&-cardicon-purple{
+			background: url(@/static/goods/icon_b1.png) no-repeat center / 100% 100% !important;
 		}
 		&-progress {
-			background: linear-gradient(90deg, #FFB6C5 0%, #FA1545 100%);
+			background:#FA1545;
 			width: 100%;
-			height: 8rpx;
+			height: 6rpx;
 			position: relative;
 			display: flex;
 			justify-content: flex-end;
+			margin-top: 2rpx;
 			.progressMask {
 				height: inherit;
-				background-color: #F6F7FB;
+				background-color: #E6E6E6;
 				width: 30%;
 			}
 		}
@@ -220,33 +239,28 @@
 			align-items: flex-end;
 			position: relative;
 			margin-bottom: 11rpx;
-			margin-top: 16rpx;
+			margin-top: 20rpx;
 			align-items: flex-end;
 
 			.goodslist-priceMsg-left {
-				font-size: 21rpx;
+				font-size: 18rpx;
 				font-family: ArialBold !important;
 				font-weight: 600;
 				color: #333333;
 				height: 40rpx;
-				display: flex;
-				align-items: flex-end;
-
 				text.price-text {
-					font-size: 31rpx;
-					font-family: ArialBold !important;
-					font-weight: 400;
-					color: #333333;
+					font-size: 33rpx;
 					line-height: 38rpx;
-					margin-right: 10rpx;
-					letter-spacing:-2rpx;
 				}
-
-				text:last-child {
+				text.decimal{
 					font-size: 23rpx;
+				}
+				text:last-child {
+					font-size: 21rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 500;
-					color: #959695;
+					color: #C0C0C0;
+					margin-left: 6rpx;
 				}
 			}
 
@@ -254,10 +268,10 @@
 				height: 40rpx;
 				display: flex;
 				align-items: flex-end;
-				font-size: 23rpx;
+				font-size: 21rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
-				color: #959695;
+				color: #C0C0C0;
 			}
 		}
 
@@ -268,33 +282,12 @@
 			width: 100%;
 			padding-bottom: 8rpx;
 
-			.bottom-left {
-				width: 102rpx;
-				font-size: 23rpx;
-				font-family: PingFangSC-Regular;
-				font-weight: 400;
-				color: #959695;
-				position: relative;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
-			.bottom-left-shu::after{
-				content: '';
-				width: 1rpx;
-				height:20rpx;
-				position: absolute;
-				right:0;
-				top:50%;
-				margin-top: -10rpx;
-				background:#DADADA;
-			}
 			.bottom-right {
-				width: 200rpx;
+				width: 100%;
 				display: flex;
 				align-items: center;
 				.bussName {
-					width: 146rpx;
+					width: 246rpx;
 					position: relative;
 					font-size: 23rpx;
 					font-family: PingFangSC-Regular;

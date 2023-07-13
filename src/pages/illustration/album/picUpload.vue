@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-12 17:23:54
+ * @LastEditTime: 2023-07-13 16:07:00
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -114,20 +114,27 @@
 			}
 		}
 		async addImg(length:number){
-			const picList:any = await Upload.getInstance().uploadImgs(length, "report", ["album"]);
+			const picList:any = await Upload.getInstance().uploadImgs(length, "album/", ["album"]);
 			return picList
 		}
 		async segment(pic:string){
 			try {
-				if(!this.segmentCheck) return decodeURIComponent(pic)
-				
-				app.http.Post("cardIllustration/image/upload/segment",{pic:decodeURIComponent(pic)}, async (res:any)=>{
-					const picList:any = await Upload.getInstance().uploadTemporaryFile(res.pic);
-					return decodeURIComponent(picList[0])
-				})
+				const decodePic = decodeURIComponent(pic);
+				if(!this.segmentCheck) return decodePic;
+				return await this.uploadSegment(decodePic);
 			} catch (err) {
-				uni.showToast({ title:"上传失败请重试", icon: 'none' })
+				uni.showToast({ title:err as string||"上传失败请重试", icon: 'none' })
 			}
+		}
+		uploadSegment(decodePic:string){
+			return new Promise((resolve, reject) => {
+				app.http.Post("cardIllustration/image/upload/segment",{pic:decodePic}, async (res:any)=>{
+					const picList:any = await Upload.getInstance().uploadTemporaryFile(res.pic,decodePic);
+					resolve(decodeURIComponent(picList[0]))
+				},(error:any)=>{
+					reject(error)
+				})
+			});
 		}
 		formatterCodeList(list:any[]){
 			const Series:any = {}

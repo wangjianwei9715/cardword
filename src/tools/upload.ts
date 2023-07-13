@@ -160,16 +160,15 @@ export default class Upload {
             throw new Error(err.message || err)
         }
     }
-    async uploadTemporaryFile(filePath: string) {
+    async uploadTemporaryFile(filePath: string,oldFile:string) {
         try {
             const sign = await this.ossutils.getSTS(); // 获取签名等信息
-            uni.showLoading({
-                title: '上传图片中...'
-            });
-            const fileRes = [{
+            uni.showLoading({ title: '上传图片中...' });
+            const fileArr = oldFile.split('/');
+            const fileRes = {
                 tempFilePaths: [filePath],
-                tempFiles: [{ name: filePath }]
-            }]
+                tempFiles: [{ name: `temporary${fileArr[fileArr.length-1]}` }]
+            }
             const imgUrls = await this.uploadFile(fileRes, sign, 'TemporaryFile')
             return imgUrls
         } catch (err) {
