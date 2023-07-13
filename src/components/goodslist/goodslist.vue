@@ -248,9 +248,6 @@
 				font-weight: 600;
 				color: #333333;
 				height: 40rpx;
-				display: flex;
-				align-items: flex-end;
-
 				text.price-text {
 					font-size: 33rpx;
 					line-height: 38rpx;
