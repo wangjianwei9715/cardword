@@ -3,7 +3,9 @@
 		<view class="navBar">
             <view :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
             <view class="nav">
-                <view class="back" @click="goBack"></view>
+                <view class="back" @click="goBack">
+					<image src="@/static/drawCard/icon_step.png"></image>
+				</view>
                 <view @click="goPersonHome" style="display:flex">
                     <image :src="forumDetail.avatar ? $parsePic(decodeURIComponent(forumDetail.avatar)) : app.defaultAvatar"
                         class="topAvatar"></image>
@@ -172,18 +174,24 @@
 			}
 
 			.back {
-				width: 19rpx;
-				height: 35rpx;
+				width: 64rpx;
+				height: 55rpx;
 				background-size: 100% 100%;
-				background-image: url("@/static/drawCard/icon_step.png");
-				transform: rotate(180deg)
+				// background-color: red;
+				display: flex;
+				align-items: center;
+				image{
+					width: 19rpx;
+					height: 35rpx;
+					transform: rotate(180deg)
+				}
 			}
 
 			.topAvatar {
 				width: 61rpx;
 				height: 61rpx;
 				border-radius: 50%;
-				margin-left: 50rpx;
+				// margin-left: 50rpx;
 				margin-right: 20rpx;
 			}
 

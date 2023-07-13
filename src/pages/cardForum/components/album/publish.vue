@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-11 12:18:39
+ * @LastEditTime: 2023-07-12 17:19:59
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -138,7 +138,7 @@
 		}
 		onClickGoPicUpload(){
 			uni.navigateTo({
-				url:`/pages/illustration/album/picUpload?editCodeList=${encodeURIComponent(JSON.stringify(this.list))}`
+				url:`/pages/illustration/album/picUpload?editCodeList=${encodeURIComponent(JSON.stringify(this.list))}&draftId=${this.draftId}`
 			})
 		}
 		prepareEdit(code:string){
@@ -184,8 +184,8 @@
 			app.http.Post(`cardIllustration/album/${this.editUrl(false)}/prepare`,params,(res:any)=>{
 				if(this.isEdit) this.revision = res.revision;
 				this.preparePublis(res.uploadToken)
-			},(err:any)=>{
-				this.revokePublish()
+			},(error:any)=>{
+				this.revokePublish(error)
 			})
 		}
 		preparePublis(uploadToken:string){
@@ -212,8 +212,8 @@
 				}else{
 					this.publishUpload(uploadToken,PostLength,nowNum+1);
 				}
-			},(err:any)=>{
-				this.revokePublish()
+			},(error:any)=>{
+				this.revokePublish(error)
 			})
 		}
 		publicComplete(uploadToken:string){
@@ -224,8 +224,8 @@
 			}
 			app.http.Post(`cardIllustration/album/${this.editUrl()}/complete`,params,(res:any)=>{
 				this.setIntervalQuery()
-			},(err:any)=>{
-				this.revokePublish()
+			},(error:any)=>{
+				this.revokePublish(error)
 			})
 		}
 		setIntervalQuery(){
@@ -259,9 +259,9 @@
 		submitUnLock(){
 			this.$emit('unLock')
 		}
-		revokePublish(){
+		revokePublish(error=''){
 			this.identify = uni.$u.guid(8);
-			uni.showToast({ title:"发布失败，请重新发布",icon:"none" });
+			uni.showToast({ title:`${error||'发布失败，请重新发布'}`,icon:"none" });
 			this.submitUnLock()
 			// const url = this.code ? `${this.code}/${this.revision}` : "publish";
 			// app.http.Post(`cardIllustration/album/${url}/revoke`,{identify:this.identify},(res:any)=>{})

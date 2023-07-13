@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-11 14:16:33
+ * @LastEditTime: 2023-07-12 17:23:08
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -33,7 +33,7 @@
 				<view class="icon-add" @click="onClickSeriesSelect"></view>
 			</view>
 		</view>
-		<albumBottom :canNext="getSeriesNolistLength" :data="selectSeries" :step="1" @next="onClickNext()"/>
+		<albumBottom :canNext="getSeriesNolistLength" :draftId="draftId" :data="selectSeries" :step="1" @next="onClickNext()"/>
 	</view>
 </template>
 
@@ -48,8 +48,10 @@
 	export default class ClassName extends BaseNode {
 		selectSeries:any = [];
 		edit = false;
+		draftId = '';
 		onLoad(query: any) {
 			if (query.draftList) {
+				this.draftId = query.draftId;
 				this.selectSeries = JSON.parse(query.draftList)
 			}
 			if(query.seriesCode){
@@ -57,6 +59,7 @@
 			}
 			if(query.editCodeList){
 				this.edit = true;
+				this.draftId = query.draftId;
 				this.selectSeries = JSON.parse(query.editCodeList)
 			}
 			this.onEventUI("albumSelect", (res) => {

@@ -24,6 +24,8 @@
 		step!:number
 		@Prop({default:0})
 		percent!:number
+		@Prop({default:''})
+		draftId?:string
 		@Prop({default:[]})
 		data!:any
 		created(){//在实例创建完成后被立即调用
@@ -45,7 +47,7 @@
                 content: '确认保存至草稿箱吗?',
                 success: async (res: any) => {
                     if (res.confirm){
-						await storageDraft({step:this.step,list:this.data},"cardBook");
+						await storageDraft({step:this.step,list:this.data},"cardBook",this.draftId || "");
 						uni.showToast({ title:"草稿保存成功",icon:"none" });
 						uni.switchTab({ url: '/pages/index/userinfo_v3' });
 					}

@@ -45,7 +45,7 @@
                     </view>
                 </view>
                 <view class="card-info">
-                    <muqian-lazyLoad class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(item.teamLogo)" />
+                    <muqian-lazyLoad v-if="item.teamLogo" class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(item.teamLogo)" />
                     <view class="card-player">{{item.player}}</view>
                     <view class="card-set u-line-2">{{item.seq==0?"无限":item.seq}}编，{{item.cardSet}}</view>
                     <view class="card-logo-box">

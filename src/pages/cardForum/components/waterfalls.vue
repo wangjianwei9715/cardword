@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-11 17:38:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-12 17:25:16
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -576,7 +576,7 @@ export default {
                     const data = getDraftDetail(item.draftId, app.data.userId);
                     if (data.step) {
                         uni.navigateTo({
-                            url: `${CardBookJumpUrl[data.step]}?draftList=${encodeURIComponent(JSON.stringify(data.list))}`
+                            url: `${CardBookJumpUrl[data.step]}?draftList=${encodeURIComponent(JSON.stringify(data.list))}&draftId=${item.draftId}`
                         })
                         return;
                     }

@@ -25,6 +25,7 @@
 					<view class="card-seq">
 						<image v-if="noData.text.cardSetLogo" class="logo-pic" :src="$parsePic(decodeURIComponent(noData.text.cardSetLogo))"/>
 					</view>
+					<muqian-lazyLoad v-if="noData.text.teamLogo" class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(noData.text.teamLogo)" />
 				</view>
 				<view v-if="noData.illustration && noData.illustration.author" class="upload-author">
 					由 <muqian-lazyLoad  class="upload-author-avatar" :src="decodeURIComponent(noData.illustration.author.avatar)" borderRadius="50%"/>
@@ -32,10 +33,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="upload-right" v-if="noData.text && noData.text.peer">
+		<view class="upload-right" v-if="noData.text && noData.text.peer.length">
 			<statusbar/>
 			<scroll-view class="up-scroll-box" :scroll-y="true">
-				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':item>0}" v-for="(item,index) in noData.text.peer" :key='index' @click="onClickPeerTo(index)">
+				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':item>0}" v-for="(item,index) in binaryPeer" :key='index' @click="onClickPeerTo(index)">
 					{{index+1}}
 				</view>
 			</scroll-view>
@@ -100,6 +101,15 @@
 		}
 		public get hasUpload() : boolean {
 			return this.noData.uploadable || app.token.accessToken == ''
+		}
+		public get binaryPeer() : number[] {
+			const { peer, seq } = this.noData.text;
+			const list = peer.map((item:any,index:number)=>{
+				const length = Math.min(seq-(index*64),64);
+				const binary = item.toString(2);
+				return Array.from({length},(_,i)=>(Number(binary[binary.length-1-i])||0));
+			}).flat();
+			return list;
 		}
 		onClickClose(){
 			app.navigateTo.navigateBack()
@@ -325,6 +335,8 @@
 		position: relative;
 		box-sizing: border-box;
 		padding:30rpx 40rpx 27rpx 40rpx;
+		position: relative;
+		overflow: hidden;
 		.card-title{
 			width: 100%;
 			font-size: 25rpx;
@@ -369,6 +381,14 @@
 		.logo-seq-10{
 			background: #BFBF3D;
 			color: #FFFF54;
+		}
+		.card-teamlogo{
+			width: 300rpx;
+			height:300rpx;
+			position: absolute;
+			bottom:-100rpx;
+			right:-100rpx;
+			opacity: 0.2;
 		}
 	}
 	.upload-author{
