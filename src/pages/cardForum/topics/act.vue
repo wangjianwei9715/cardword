@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-15 17:02:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 14:21:39
+ * @LastEditTime: 2023-07-14 15:24:24
  * @FilePath: \card-world\src\pages\cardForum\topics\act.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -62,7 +62,7 @@
         </view>
         <view class="rule">
             1、本期活动时间：{{ $u.timeFormat(topData.start_at, "yyyy.mm.dd") }}-{{ $u.timeFormat(topData.end_at, "yyyy.mm.dd")
-            }}。活动期间，用户发布本话题动态即可参与，活动结束后点赞数最高的x位用户获得相应奖励。<br><br>
+            }}。活动期间，用户发布本话题动态即可参与，活动结束后点赞数最高的{{maxRank}}位用户获得相应奖励。<br><br>
             2、若发布多个本话题动态，则取点赞数最高的作品参与；若两名或多名用户点赞数相同，则按发布时间排名。<br><br>
             3、活动截至后，优惠券奖品自动发放，实物类奖品请联系客服发放<br><br>
         </view>
@@ -94,6 +94,7 @@ export default class ClassName extends BaseNode {
     topData: any = {}
     id: number = 0
     myLikeNum: number = 0
+    maxRank: number = 20
     onLoad(query: any) {
 
         this.id = +query.id
@@ -124,7 +125,7 @@ export default class ClassName extends BaseNode {
     reqNewData(cb?: any) {
         app.http.Get(`dataApi/cardCircle/topic/detail/` + this.id, {}, (res: any) => {
             this.topData = res.data
-
+            this.maxRank = res.data.maxRank || 20
         })
     }
 
