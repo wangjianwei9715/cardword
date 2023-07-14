@@ -191,17 +191,17 @@
             const text = this.listQ; 
             const seriesCodeRegex = /[:][A-Za-z]{6}/; 
             const noCodeRegex = /[:][A-Za-z0-9]{12}/;
-            if (text && (seriesCodeRegex.test(text) || noCodeRegex.test(text))) {
+            if (text && (noCodeRegex.test(text) || seriesCodeRegex.test(text))) {
+                if (noCodeRegex.test(text)) { 
+                    this.onClickCard({ code: text.slice(1, 13) }, 0); 
+                    return; 
+                } 
                 if (seriesCodeRegex.test(text)) { 
                     uni.redirectTo({ 
                         url: `/pages/illustration/seriesDetail?seriesCode=${text.slice(1, 7)}` 
                     }); 
                     return; 
                 }
-                if (noCodeRegex.test(text)) { 
-                    this.onClickCard({ code: text.slice(1, 13) }, 0); 
-                    return; 
-                } 
             }
             this.againList()
         }
