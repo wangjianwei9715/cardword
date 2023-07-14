@@ -2,14 +2,14 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-30 14:05:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 10:38:25
+ * @LastEditTime: 2023-07-14 10:54:44
  * @FilePath: \jichao_app_2\src\pages\cardForum\draftList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
         <view style="width:750rpx;margin-top: 10rpx;">
-            <waterfalls v-if="refresh" v-model="list" :showUser="false" type="draftList">
+            <waterfalls ref="waterfall" v-model="list" :showUser="false" type="draftList">
             </waterfalls>
         </view>
     </view>
@@ -32,7 +32,7 @@ export default class ClassName extends BaseNode {
     refresh: boolean = true
     userId = 0;
     draftType: "cardBook" | "dynamic" | "all" = "all";
-    isFetchEnd: boolean = false
+    isFetchEnd: boolean = true
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 10
@@ -58,36 +58,42 @@ export default class ClassName extends BaseNode {
             title: "",
             mask: true
         })
-        this.refresh = false
         this.queryParams.fetchFrom = 1
-        this.reqNewData()
+        this.$refs.waterfall.clear();
+        this.list = []
         setTimeout(() => {
-            this.refresh = true
+            this.reqNewData()
             uni.hideLoading()
         }, 300)
     }
     reqData() {
-        app.http.Get(`dataApi/cardCircle/list/me/draft`, this.queryParams, (res: any) => {
-            this.isFetchEnd = res.isFetchEnd
-            // console.log(res);
-            const list = (res.list || []).map((item: any) => {
-                return {
-                    cover: item.cover || "",
-                    url: item.url,
-                    title: item.title,
-                    create_at: item.created_at,
-                    code: item.code,
-                    cloud: true,
-                }
-            })
-            if (this.queryParams.fetchFrom == 1) {
-                this.list = [...this.draftList, ...list].sort((x: any, y: any) => {
-                    return y.create_at - x.create_at
+        if (this.draftList == "dynamic") {
+            app.http.Get(`dataApi/cardCircle/list/me/draft`, this.queryParams, (res: any) => {
+                this.isFetchEnd = res.isFetchEnd
+                // console.log(res);
+                const list = (res.list || []).map((item: any) => {
+                    return {
+                        cover: item.cover || "",
+                        url: item.url,
+                        title: item.title,
+                        create_at: item.created_at,
+                        code: item.code,
+                        cloud: true,
+                    }
                 })
-            } else {
-                this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
-            }
-        })
+                if (this.queryParams.fetchFrom == 1) {
+                    this.list = [...this.draftList, ...list].sort((x: any, y: any) => {
+                        return y.create_at - x.create_at
+                    })
+                } else {
+                    this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
+                }
+                console.log("this.list", this.list);
+            })
+        } else {
+            this.list = this.draftList
+        }
+
     }
     reqNewData(cb?: any) {
         this.draftList = []
@@ -101,6 +107,7 @@ export default class ClassName extends BaseNode {
                 draftId: item.draftId
             }
         })
+
         this.reqData()
     }
 
