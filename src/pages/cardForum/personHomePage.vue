@@ -1,7 +1,8 @@
 <template>
     <view class="content">
-        <transitionNav :needIconShadow="false" :needRightTools="['分享']" ref="transitionNav" :title="userInfo.userName"
-            :report="!isMine" @report="pageJump(`/pages/cardForum/report?byInformer=${userInfo.userId}&source=4`)">
+        <transitionNav :needIconShadow="false" :shareData="shareData" :needRightTools="['分享']" ref="transitionNav"
+            :title="userInfo.userName" :report="!isMine"
+            @report="pageJump(`/pages/cardForum/report?byInformer=${userInfo.userId}&source=4`)">
         </transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
@@ -158,6 +159,7 @@ export default class ClassName extends BaseNode {
         index: 0,
         list: []
     }
+    shareData: any = {}
     draftListByDynamic: any = []
     draftListByCardBook: any = []
     cloudDraft: any = []
@@ -318,6 +320,13 @@ export default class ClassName extends BaseNode {
         const url = this.isMine ? `cardCircle/me/home` : `cardCircle/user/home`
         app.http.Get(`dataApi/${url}`, { userId: this.userId }, (res: any) => {
             this.userInfo = res.data
+            this.shareData = {
+                shareUrl: `share/${app.localTest ? 'testH5' : 'h5'}/#/pages/cardForum/personHomePage?userId=${this.userId}`,
+                title: `${res.data.userName}在卡世界APP,快点开来看看吧！`,
+                summary: res.data.sign || "",
+                //@ts-ignore
+                thumb: this.$parsePic(decodeURIComponent(res.data.avatar)) + `?x-oss-process=image/resize,h_100,w_100`
+            }
             this.initTab()
         }, () => {
         })
@@ -382,12 +391,15 @@ page {
 .userInfo_msg {
     flex: 1;
     flex-direction: column;
+    display: flex;
+    justify-content: center
 }
 
 .userInfo_name {
     display: flex;
     align-items: center;
     flex-direction: row;
+    margin-bottom: 14rpx;
 }
 
 .userInfo_name_text {

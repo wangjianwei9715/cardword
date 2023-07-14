@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-28 10:12:28
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 17:06:42
+ * @LastEditTime: 2023-07-14 15:20:07
  * @FilePath: \card-world\src\pages\cardForum\video\index.nvue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -28,7 +28,7 @@
                     <div :style="'width: ' + windowWidth + 'px; height: ' + boxStyle.height + 'px;'" @disappear="stop()">
                         <view v-if="Math.abs(k - i) <= 1">
                             <view class="root">
-                                <video :ref="'item' + i" :id="item.code" :loop="true" :src="item.url" :muted="item.isplay"
+                                <video :ref="'item' + i" :id="item.code" :loop="true" :src="item.video" :muted="item.isplay"
                                     @play="playIngs(i)" :enable-progress-gesture="false" :page-gesture="false"
                                     :controls="false" :http-cache="true" :show-loading="false" :show-fullscreen-btn="false"
                                     :show-center-play-btn="false" :style="boxStyle" :object-fit="'contain'"
@@ -443,11 +443,22 @@ export default {
         },
         onClickShare() {
             uni.$u.throttle(() => {
+                const content = decodeURIComponent(this.current.content)
+                let cover = ""
+                const urlList = this.current.url.split(",")
+                for (let index = 0; index < urlList.length; index++) {
+                    const path = this.parsePic(decodeURIComponent(urlList[index]))
+                    if (!uni.$u.test.video(path)) {
+                        cover = path
+                        break;
+                    }
+                }
                 this.shareData = {
-                    shareUrl: "share/h5/index.html#/pages/information/index?code=" + this.code,
-                    title: this.dataList[this.k].title,
-                    summary: this.dataList[this.k].title,
-                    thumb: decodeURIComponent(this.dataList[this.k].cover)
+                    shareUrl: `share/${app.localTest ? 'testH5' : 'h5'}/#/pages/cardForum/detail?code=${this.current.code}`,
+                    title: this.current.title,
+                    summary: content ? (content.length > 20 ? content.substr(0, 20) + '...' : content) : "我发现了一篇精彩动态",
+                    //@ts-ignore
+                    thumb: cover
                 };
                 this.shareShow = true;
             }, 1000)
@@ -565,7 +576,7 @@ export default {
         },
         get() {
             app.http.Get(`dataApi/cardCircle/detail/${this.code}`, {}, (res) => {
-                res.data.url = this.getVideoPath(res.data.url)
+                res.data.video = this.getVideoPath(res.data.url)
                 const data = [{ ...res.data, isShowProgressBarTime: false, state: 'play', isplay: false, hasDetail: true, private: (res.state == 2 && ((res.data.bit & 1) === 1)) }]
 
                 this.dataList = [...data]
@@ -583,7 +594,7 @@ export default {
                 console.log("更多数据:", res);
                 this.isFetchEnd = res.isFetchEnd;
                 const list = res.list.map((x) => {
-                    return { ...x, url: this.getVideoPath(x.url), isShowProgressBarTime: false, state: 'stop', isplay: true, hasDetail: false }
+                    return { ...x, video: this.getVideoPath(x.url), isShowProgressBarTime: false, state: 'stop', isplay: true, hasDetail: false }
                 })
                 var p = this.dataList.length;
                 this.dataList.push(...list)
