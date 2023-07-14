@@ -50,8 +50,8 @@
 			</view>
 		</view>
 		<empty v-show="empty"/>
-		<view style="width:750rpx;margin-top:20rpx">
-			<u-loadmore v-show="nomore&&goodsList.length>0" :line="true" status="nomore" />
+		<view class="loadmore">
+			<u-loadmore v-show="nomore&&goodsList.length>0" :line="true" status="nomore" lineLength="20rpx"/>
 		</view>
 	</view>
 </template>
@@ -143,7 +143,7 @@
 	.goodsContent {
 		width: 100%;
 		box-sizing: border-box;
-		padding: 6rpx 20rpx;
+		padding: 6rpx 20rpx 56rpx 20rpx;
 		background: $content-bg;
 		display: flex;
 		flex-wrap: wrap;
@@ -449,5 +449,9 @@
 		height: 500rpx;
 		box-sizing: border-box;
 		border-radius: 5rpx;
+	}
+	.loadmore{
+		width:750rpx;
+		margin-top:20rpx;
 	}
 </style>
