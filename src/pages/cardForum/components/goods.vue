@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-27 18:53:50
+ * @LastEditTime: 2023-07-14 10:36:56
  * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
  * @Description: 卡圈的话题pop组件
 -->
@@ -184,7 +184,8 @@ export default class ClassName extends BaseComponent {
 .topicsScroll {
     // background-color: #333333;
     margin-top: 30rpx;
-    flex: 1;
+    height: 986rpx;
+    // flex: 1;
 }
 
 .topicsItem {
