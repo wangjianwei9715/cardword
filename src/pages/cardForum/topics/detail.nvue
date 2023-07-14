@@ -194,7 +194,7 @@ export default {
             releaseByTopic(this.id)
         },
         followTopicAction(event) {
-            followTopic(this.id).then(() => {
+            followTopic(this.id,this.data.isFollow).then(() => {
                 this.data.isFollow = !this.data.isFollow
             })
         },

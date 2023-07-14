@@ -43,9 +43,9 @@ export function delDraftDetail(draftId, userId) {
     uni.setStorageSync(DRAFT_STORAGE_KEY, list)
 }
 //关注话题
-export function followTopic(id) {
+export function followTopic(id,isFollow) {
     return new Promise((re, rj) => {
-        app.http.Post(`cardCircle/follow/topic/` + id, {}, () => {
+        app.http.Post(`cardCircle/${isFollow?'un/':''}follow/topic/` + id, {}, () => {
             re && re(true)
         }, (err) => {
             rj(err)

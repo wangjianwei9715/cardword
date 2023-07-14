@@ -158,7 +158,7 @@ export default class ClassName extends BaseNode {
         this.tabs.index = event.index
     }
     followTopicAction(event: any) {
-        followTopic(this.id).then(() => {
+        followTopic(this.id, this.data.isFollow).then(() => {
             this.data.isFollow = !this.data.isFollow
         })
     }

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-14 11:31:18
+ * @LastEditTime: 2023-07-14 16:21:52
  * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -53,9 +53,9 @@ export function releaseByTopic(id: number) {
     })
 }
 //关注话题
-export function followTopic(id: number): Promise<Boolean> {
+export function followTopic(id: number,isFollow:boolean): Promise<Boolean> {
     return new Promise((re, rj) => {
-        app.http.Post(`cardCircle/follow/topic/` + id, {}, () => {
+        app.http.Post(`cardCircle/${isFollow?'un/':''}follow/topic/` + id, {}, () => {
             re && re(true)
         }, (err: any) => {
             rj(err)
