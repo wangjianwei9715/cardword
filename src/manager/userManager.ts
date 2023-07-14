@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 17:18:00
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-07 15:53:13
+ * @LastEditTime: 2023-07-14 10:27:36
  * @FilePath: \card-world\src\manager\userManager.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -21,7 +21,6 @@ export default class userManager {
     private constructor() {
         uni.$on("loginSuccess", () => {
             this.needRefresh = true
-            this.setViewerId()
         })
     }
     needRefresh: boolean = true;

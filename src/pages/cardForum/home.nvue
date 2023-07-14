@@ -256,6 +256,7 @@ export default {
         }
     },
     async onLoad() {
+        uni.$on("loginSuccess", this.loginSuccess)
         try {
             await this.initTab()
             await app.user.setViewerId()
@@ -264,6 +265,9 @@ export default {
             await this.initTab()
             this.reqNewData(true)
         }
+    },
+    beforeDestroy() {
+        uni.$off("loginSuccess", this.loginSuccess)
     },
     onShow() {
         this.$nextTick(() => {
@@ -371,7 +375,16 @@ export default {
             this.initFinish = true
             return
         },
+        async loginSuccess() {
+            await app.user.setViewerId()
+            this.reqNewData(true)
+            this.getFollowDot()
+        },
         getFollowDot() {
+            if (!app.token.accessToken) {
+                this.tabs.list[0].badge.bgColor = `rgba(255, 0, 61,0)`
+                return
+            }
             app.http.Get(`dataApi/cardCircle/me/infor`, {}, (res) => {
                 if (this.tabs.index == 0) {
                     this.tabs.list[0].badge.bgColor = `rgba(255, 0, 61,0)`
