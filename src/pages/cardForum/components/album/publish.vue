@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-12 17:19:59
+ * @LastEditTime: 2023-07-14 14:49:43
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -165,6 +165,11 @@
 			})
 		}
 		publish({content,cover,url,title,...rest}:any){
+			if(this.coverPic==""){
+				uni.showToast({title:"请上传封面图片",icon:'none'});
+				this.submitUnLock()
+				return;
+			}
 			if(this.provePic=="" || !title){
 				uni.showToast({title:`${!title?"请输入标题":"请上传证明图片"}`,icon:'none'});
 				this.submitUnLock()

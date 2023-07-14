@@ -155,6 +155,7 @@
 				}
 				this.sideTab[index].status = res.isFetchEnd?"nomore":"loadmore";
 				params.fetchFrom += params.fetchSize;
+				params.fetchSize = 100;
 				setTimeout(()=>{
 					this.orientationInit()
 				},100)

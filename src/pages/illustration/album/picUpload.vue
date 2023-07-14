@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-13 16:30:03
+ * @LastEditTime: 2023-07-14 14:38:28
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -76,8 +76,10 @@
 			this.onEventUI("editNoSelect",(res:any)=>{
 				this.selectSeries = res;
 			})
-			if (query.draftList) {
+			if(query.draftId){
 				this.draftId = query.draftId;
+			}
+			if (query.draftList) {
 				this.sheet.list = [
 					{ id:1, name:'选择卡种' },
 					{ id:3, name:'退出编辑' },
@@ -89,7 +91,6 @@
 			}
 			if(query.editCodeList){
 				this.edit = true;
-				this.draftId = query.draftId;
 				this.formatterCodeList(JSON.parse(query.editCodeList))
 			}
 		}
@@ -182,7 +183,7 @@
 				app.navigateTo.navigateBack()
 			}else{
 				uni.navigateTo({
-					url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(albumList))}`
+					url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(albumList))}&draftId=${this.draftId}`
 				})
 			}
 		}

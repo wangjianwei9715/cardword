@@ -18,7 +18,7 @@
 		fetchSize=10;
 		noMoreData=false;
 		empty=false;
-		height=(app.platform.systemInfo.screenHeight-uni.upx2px(300));
+		height=app.platform.systemInfo.screenHeight;
 	}
 	@Component({})
 	export default class ClassName extends BaseComponent {
@@ -34,22 +34,20 @@
 		@Watch('current')
 		onCurrentChange(val:any,oldVal:any){
 			if(val!=oldVal){
-				if(val == 0 && app.token.accessToken == '') {
-					this.current = val;
-					setTimeout(()=>{
-						this.current = oldVal;
-					},500)
-					uni.navigateTo({
-						url:'/pages/login/login'
-					})
-					return;
+				if(val == 0) {
+					if(app.token.accessToken == ''){
+						this.current = val;
+						setTimeout(()=>{ this.current = oldVal; },500)
+						uni.navigateTo({ url:'/pages/login/login' })
+						return;
+					}
+					this.$set(this.goodsList, 0, { list:[], ...new ListParams()})
 				}
 				this.reqNewMainList()
 			}
 		}
 		created() {
-			this.goodsList = Array.from({length:this.tabs.length},()=> ({ list:[], ...new ListParams()}) );
-			this.reqNewMainList()
+			this.reload()
 		}
 		mounted() {
 		}
@@ -58,6 +56,10 @@
 		}
 		public get swiperHeight() : string {
 			return `${this.currentItem.height}px`
+		}
+		reload(){
+			this.goodsList = Array.from({length:this.tabs.length},()=> ({ list:[], ...new ListParams()}) );
+			this.reqNewMainList()
 		}
 		onClickJumpDetails(goodCode: any) {
 			app.navigateTo.goGoodsDetails(goodCode)

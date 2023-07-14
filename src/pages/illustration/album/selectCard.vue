@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-12 17:23:08
+ * @LastEditTime: 2023-07-14 14:37:41
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -50,8 +50,10 @@
 		edit = false;
 		draftId = '';
 		onLoad(query: any) {
-			if (query.draftList) {
+			if(query.draftId){
 				this.draftId = query.draftId;
+			}
+			if (query.draftList) {
 				this.selectSeries = JSON.parse(query.draftList)
 			}
 			if(query.seriesCode){
@@ -59,7 +61,6 @@
 			}
 			if(query.editCodeList){
 				this.edit = true;
-				this.draftId = query.draftId;
 				this.selectSeries = JSON.parse(query.editCodeList)
 			}
 			this.onEventUI("albumSelect", (res) => {
@@ -138,7 +139,7 @@
 				app.navigateTo.navigateBack()
 			}else{
 				uni.navigateTo({
-					url:`/pages/illustration/album/picUpload?selectSeries=${encodeURIComponent(JSON.stringify(this.selectSeries))}`
+					url:`/pages/illustration/album/picUpload?selectSeries=${encodeURIComponent(JSON.stringify(this.selectSeries))}&draftId=${this.draftId}`
 				})
 			}
 		}
