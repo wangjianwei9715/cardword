@@ -34,7 +34,7 @@
 							<text>{{goodsManaager.hasLowestPrice(item)?'起':''}}</text>
 						</view>
 						<view v-if="item.state==0 || item.state == -1" class="goodslist-priceMsg-right">
-							{{dateFormatMSHMS(item.startAt)}}开售
+							{{$u.timeFormat(item.startAt,"mm-dd hh:MM")}}开售
 						</view>
 						<view v-else :id="item.goodCode" class="goodslist-priceMsg-right goodslist-plan-desc">
 							{{goodsManaager.listPlan(item,'str')}}
@@ -57,28 +57,11 @@
 </template>
 
 <script lang="ts">
-	import {
-		Component,
-		Prop,
-		Vue
-	} from "vue-property-decorator";
+	import { Component, Prop, Vue } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import {
-		dateFormatMSHMS
-	} from "@/tools/util"
-	import {
-		getGoodsImg
-	} from "../../tools/util";
-	import {
-		app
-	} from "@/app";
-	import {
-		getGoodsPintuan,
-		getGoodsPintuanDetail
-	} from '@/tools/switchUtil';
-	import {
-		Md5
-	} from "ts-md5";
+	import { getGoodsImg } from "@/tools/util";
+	import { app } from "@/app";
+	import { getGoodsPintuan, getGoodsPintuanDetail } from '@/tools/switchUtil';
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		getGoodsPintuan = getGoodsPintuan;
@@ -100,7 +83,6 @@
 		empty?: any;
 		@Prop({ default: false })
 		nomore?: any;
-		dateFormatMSHMS = dateFormatMSHMS;
 		getGoodsImg = getGoodsImg;
 		screenHeight = uni.getSystemInfoSync().windowHeight
 		showPlan: any = []
