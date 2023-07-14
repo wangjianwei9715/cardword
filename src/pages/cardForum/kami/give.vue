@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <template v-for="(item, index) in list">
+        <view v-for="(item, index) in list">
             <view class="kamiWrap" v-for="kami in item.noList">
                 <view class="kamiPrice">
                     <view class="price">卡密单价:
@@ -15,7 +15,7 @@
             </view>
             <view style="margin: 20rpx auto;font-size: 26rpx;" v-if="item.hasMore" @click="onClickGetMore(item)">点击加载更多
             </view>
-        </template>
+        </view>
         <view class="fixedWrap">
             <view class="contentWrap">
                 <view class="userInfoWrap">
@@ -210,8 +210,6 @@ export default class ClassName extends BaseNode {
                     }
                 }
             })
-            console.log(list);
-
             this.totalPage = res.totalPage
             this.queryParams.pageIndex == 1 ? this.list = list : this.list.push(...list)
             cb && cb()
