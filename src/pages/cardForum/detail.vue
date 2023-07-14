@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-14 15:34:44
+ * @LastEditTime: 2023-07-14 18:11:46
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -205,7 +205,7 @@
                     </view>
                 </view>
             </view>
-
+            <view class="bottomSafeArea"></view>
         </view>
         <view class="safeBottom"></view>
         <u-overlay :zIndex="1000" :opacity="0.4" :show="focus && keyBoardHeigh > 0" @click="inputHide"></u-overlay>

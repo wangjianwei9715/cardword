@@ -150,7 +150,7 @@ export default {
                     })
                     uni.hideLoading()
                     this.showGive = false
-                    this.$emit("update:show",false)
+                    this.$emit("update:show", false)
                     app.platform.UINotificationFeedBack("success")
                 }, (err) => {
                     uni.hideLoading()
@@ -165,8 +165,11 @@ export default {
 .rewardContainer {
     width: 750rpx;
     background-color: #fff;
-    height: 584rpx;
+    height: 548rpx;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .reward_top {
@@ -208,6 +211,7 @@ export default {
     right: 0;
     top: 350rpx;
     z-index: 10076;
+    border-radius: 5rpx;
     // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
@@ -215,11 +219,11 @@ export default {
     // transition: transform 0.2s;
     transition-property: transform;
     transition-duration: 0.2s;
-    transition-timing-function: linear;
+    transition-timing-function: ease-in;
     // #ifndef APP-NVUE
     pointer-events: none;
     // #endif
-    border-radius: 3rpx;
+    border-radius: 5rpx;
     // #ifndef APP-NVUE
     box-sizing: border-box;
     // #endif
@@ -346,8 +350,8 @@ export default {
 }
 
 .rewardOption {
-    width: 328rpx;
-    height: 89rpx;
+    width: 345rpx;
+    height: 88rpx;
     border: 1rpx solid #C0C0C0;
     border-radius: 3rpx;
     margin-bottom: 20rpx;
@@ -358,7 +362,7 @@ export default {
 }
 
 .reward_text {
-    font-size: 25rpx;
+    font-size: 27rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #333333;
@@ -377,7 +381,6 @@ export default {
     font-family: PingFang SC;
     font-weight: 400;
     color: #C0C0C0;
-    text-align: center;
     margin-top: 10rpx;
 }
 </style>
