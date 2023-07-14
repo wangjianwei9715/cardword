@@ -19,7 +19,7 @@
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
 
 		<share @report="pageJump(`/pages/cardForum/report?code=${code}&byInformer=${forumDetail.userId}&source=${forumDetail.tp == 3 ? 1 : 2}`)"
-            :shareData="{}" :report="true" :operationShow.sync="operationShow"></share>
+            :shareData="shareData" :report="true" :operationShow.sync="operationShow"></share>
 
 		<view class="list" v-for="(item,index) in seriesList" :key="index">
 			<view class="tips">{{item.name}}</view>
@@ -70,7 +70,8 @@
 		}
 		onLoad(query: any) {
 			this.code = query.code;
-			this.forumDetail = JSON.parse(query.forumDetail)
+			this.forumDetail = JSON.parse(query.forumDetail);
+
 			this.getSeries()
 		}
 		//   加载更多数据
@@ -82,6 +83,16 @@
 		}
 		public get isFollow(): boolean {
 			return (this.forumDetail.bit & 2) === 2
+		}
+		public get shareData() : any {
+			const { title, content, url } = this.forumDetail;
+			return {
+                shareUrl: `share/${app.localTest ? 'testH5' : 'h5'}/#/pages/cardForum/detail?code=${this.code}`,
+                title,
+                summary: content ? (content.length > 20 ? content.substr(0, 20) + '...' : content) : "我发现了一篇精彩动态",
+                //@ts-ignore
+                thumb: this.$parsePic(decodeURIComponent(url)) + `?x-oss-process=image/resize,h_100,w_100`
+            }
 		}
 		formatterCodeList(addList:any[],dic:object){
 			const list = formatterNolist(addList,dic);
