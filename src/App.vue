@@ -13,7 +13,8 @@
 		liveCountDownV2,
 		getCountDownTime,
 		calculate,
-		formatNumber
+		formatNumber,
+		getUrlData
 	} from "./tools/util";
 	import { SocketServer } from "@/net/SocketServer";
 	import * as proto from "./net/proto";
@@ -229,12 +230,6 @@
 			setTimeout(() => {
 				let args = plus.runtime.arguments;
 				if(!args) return
-				if(app.platform.systemInfo.platform=='ios'){
-					args = decodeURIComponent(args.replace("ttauction://?",""))
-				}else{
-					args = decodeURIComponent(args.replace("ttauction://?",""))
-				}
-				if(!args) return
 				if (args.indexOf("goodsdetails") != -1) {
 					let index = args.indexOf("=") + 1;
 					let goodCode = args.substring(index);
@@ -242,24 +237,28 @@
 					app.navigateTo.goGoodsDetails(goodCode)
 					return
 				}
-				if(args.indexOf("=>")!=-1){
-					const pages = getCurrentPages();
-					let [jumpType,url]=args.split("=>")
-					if(!url) return
-					if(pages.length){
-						const currentRoute:any=pages[pages.length-1].route
-						if(url&&url.indexOf(currentRoute)!=-1) jumpType='redirectTo'
-					}
-					if(url.indexOf('/pages/live/zgPlayBack')!=-1){
-						app.platform.comeFromOpenPlayBack(url)
+				let params:any=getUrlData(args)
+				if (Object.keys(params).length){
+					//跳转
+					if(params.routerUrl){
+						let jumpType="navigateTo"
+						const pages = getCurrentPages();
+						params.routerUrl=decodeURIComponent(params.routerUrl)
+						if(params.routerUrl.indexOf('/pages/live/zgPlayBack')!=-1){
+							app.platform.comeFromOpenPlayBack(params.routerUrl)
+							return
+						}
+						if(pages.length){
+							const currentRoute:any=pages[pages.length-1].route
+							if(params.routerUrl&&params.routerUrl.indexOf(currentRoute)!=-1) jumpType='redirectTo'
+						}
+						//@ts-ignore
+						uni[jumpType]({
+							url:params.routerUrl
+						})
+						plus.runtime.arguments = "";
 						return
 					}
-					//@ts-ignore
-					uni[jumpType]({
-						url
-					})
-					plus.runtime.arguments = "";
-					return
 				}
 				plus.runtime.arguments = "";
 			}, 500);
