@@ -1,3 +1,12 @@
+<!--
+ * @FilePath: \jichao_app_2\src\pages\index\index.vue
+ * @Author: wjw
+ * @Date: 2023-07-03 11:32:48
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-14 11:07:30
+ * Copyright: 2023 .
+ * @Descripttion: 
+-->
 <template>
 	<view class="content">
 		<!-- 热更新 S -->
@@ -15,7 +24,8 @@
 			</view>
 		</view>
 		<view class="tab-center">
-			<statusbar />
+			<statusbar style="background:#fff" />
+			<view class="center-top"></view>
 			<view class="capsule-box" @click="onClickAddJump(item.target)" v-for="(item,index) in addList.top" :key="index">
 				<image class="capsule-pic1" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
 			</view>
@@ -45,13 +55,13 @@
 				<!-- 拼团进度 最新上架 新手体验 拆卡围观 -->
 				<indexHot :hot="hot" :broadCastList="broadCastList"/>
 			</view>
-			<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs" 
-				:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 6rpx'}"
-				:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 6rpx'}"
-			></u-tabs>
-			<goodslist :goodsList="goodsList" :indexAddList="goodsTabCurrent==1?addList.index:[]" :indexSwiper="indexSwiper"
-				@send="onClickJumpDetails" :presell="false" :empty="goodsListEmpty" :nomore="listParams.noMoreData" />
-				
+			<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
+				<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs" 
+					:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 6rpx'}"
+					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 6rpx'}"
+				></u-tabs>
+			</u-sticky>
+			<goodsListSwiper ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index"/>
 		</view>
 		
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
@@ -66,18 +76,20 @@
 	import BaseNode from '@/base/BaseNode.vue';
 	import { indexSwiperFront,indexSwiperBack,goodsTabs } from "@/tools/DataExchange"
 	import { isDuringDate } from "@/tools/util"
-	import { Md5 } from "ts-md5";
 	import update from './component/index/update.vue'
 	import indexHot from './component/index/indexHot.vue'
 	import winningCardPopup from './component/index/winningCardPopup.vue'
 	import openscreenAd from './component/index/openscreenAd.vue'
+	import goodsListSwiper from './component/index/goodsListSwiper.vue'
 	@Component({components: {
 		update,
 		indexHot,
 		winningCardPopup,
-		openscreenAd
+		openscreenAd,
+		goodsListSwiper
 	},})
 	export default class index extends BaseNode {
+		statusBarHeight = app.statusBarHeight;
 		noticeList = [''];
 		isDuringDate = isDuringDate;
 		goodsTabs = goodsTabs;
@@ -99,15 +111,6 @@
 		}
 		topAddList: any = [];
 		indexAddList: any = [];
-		indexSwiper = true;
-		goodsList: any = [];
-		goodsListEmpty = false;
-		// fetchFrom:第几个数据开始  fetchSize:取几个数据
-		listParams = {
-			fetchFrom:1,
-			fetchSize:10,
-			noMoreData:false
-		}
 		onNetWorkFunc: any;
 		showPaySuccess = false;
 		showWinningCrad = false;
@@ -138,12 +141,14 @@
 				})
 			}
 			app.platform.getNetworkType()
-			if (this.goodsList.length) {
-				this.getHome()
-			}
+			this.getHome()
 		}
 		onHide() {
 			uni.offNetworkStatusChange((res) => {})
+		}
+		//   加载更多数据
+		onReachBottom() {
+			this.$refs.listSwiper.reqNewMainList()
 		}
 		private onLoadIndex() {
 			if (app.dataApiDomain == '' && !app.localTest) {
@@ -155,13 +160,7 @@
 			this.initIndex()
 		}
 		private initIndex(cb ? : Function) {
-			this.reqGoodsList()
 			this.getHome(()=> cb && cb())
-		}
-		private reqGoodsList(){
-			this.listParams.fetchFrom = 1;
-			this.listParams.noMoreData = false;
-			this.reqNewMainList()
 		}
 		onClickAddJump(target:any){
 			app.navigateTo.addNavigate(target)
@@ -231,43 +230,7 @@
 		}
 		clickGoodsTabs({index}:any){
 			if(this.goodsTabCurrent == index) return;
-			if(index == 0 && app.token.accessToken == '') {
-				const old = this.goodsTabCurrent;
-				this.goodsTabCurrent = index;
-				setTimeout(()=>{
-					this.goodsTabCurrent = old;
-				},500)
-				uni.navigateTo({
-					url:'/pages/login/login'
-				})
-				return;
-			}
 			this.goodsTabCurrent = index;
-			this.reqGoodsList()
-		}
-		reqNewMainList(cb ? : Function) {
-			const { fetchFrom, fetchSize, noMoreData } = this.listParams
-			if (noMoreData) return;
-			const urlNamr = goodsTabs[this.goodsTabCurrent].url;
-			const ts = Math.floor(new Date().getTime() / 1000);
-			const params: { [x: string]: any } = {
-				fetchFrom,
-				fetchSize,
-				ts: ts,
-				s:Md5.hashStr(`kww_goodlist_sign_${urlNamr}_${fetchFrom}_${fetchSize}_${ts}_2022`)
-			}
-			app.http.Get(`dataApi/goodlist/forsale/${urlNamr}`, params, (data: any) => {
-				this.listParams.noMoreData = data.isFetchEnd;
-				if (fetchFrom == 1) this.goodsList = [];
-
-				if (data.goodList) {
-					const list = fetchFrom == 1 ? data.goodList : [...this.goodsList,...data.goodList];
-					this.goodsList = app.platform.removeDuplicate(list,'goodCode')
-				}
-				this.goodsListEmpty = this.goodsList.length==0;
-				this.listParams.fetchFrom += fetchSize;
-				cb && cb()
-			});
 		}
 		BackLogin(res: any) {
 			uni.$emit('BackLogin');
@@ -299,10 +262,6 @@
 				url: item.url
 			})
 		}
-		// 跳转商品详情
-		onClickJumpDetails(goodCode: any) {
-			app.navigateTo.goGoodsDetails(goodCode)
-		}
 	}
 </script>
 
@@ -326,8 +285,12 @@
 	.tab-center {
 		width: 100%;
 		box-sizing: border-box;
-		padding-top: 104rpx;
 		padding-bottom:20rpx;
+		.center-top{
+			width: 100%;
+			height:104rpx;
+			background:#fff;
+		}
 	}
 	.goods-list {
 		width: 100%;
