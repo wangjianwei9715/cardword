@@ -96,7 +96,7 @@ export default class ClassName extends BaseNode {
 		uni.showLoading({
 			title: ""
 		})
-		app.http.Post("message/read", { bucketName: "all" }, () => {
+		app.http.Post("message/read/all", { name: "all" }, () => {
 			setTimeout(() => {
 				this.getFunc()
 				uni.hideLoading()
