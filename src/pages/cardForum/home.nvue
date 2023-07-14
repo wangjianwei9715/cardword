@@ -289,6 +289,8 @@ export default {
         })
         if (this.tabs.index == 2) {
             uni.hideTabBar({ animation: false })
+        } else {
+            uni.showTabBar({ animation: false })
         }
     },
     computed: {
@@ -445,6 +447,9 @@ export default {
             this.tabs.index = event.index
         },
         onSelectAction(item) {
+            setTimeout(() => {
+                uni.showTabBar({ animation: false })
+            }, 300)
             if (app.token.accessToken == '') {
                 uni.navigateTo({ url: '/pages/login/login' })
                 return;
