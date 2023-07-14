@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-14 11:07:30
+ * @LastEditTime: 2023-07-14 14:28:24
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -151,6 +151,13 @@
 		onReachBottom() {
 			this.$refs.listSwiper.reqNewMainList()
 		}
+		//   下拉刷新
+		onPullDownRefresh() {
+			this.initIndex(() => {
+				this.$refs.listSwiper.reload()
+				uni.stopPullDownRefresh();
+			})
+		}
 		private onLoadIndex() {
 			if (app.dataApiDomain == '' && !app.localTest) {
 				setTimeout(() => {
@@ -194,14 +201,18 @@
 			app.http.Get('dataApi/advertising/iconSeries/brief',{},(res:any)=>{
 				this.hot = res.list
 			})
-			// 获取是否中卡信息
 			if(app.token.accessToken != ''){
+				// 获取是否中卡信息
 				app.http.Get('me/greet', {}, (res: any) => {
 					if (res.data.broadcastActor) app.broadcastActor = res.data.broadcastActor
 					if (res.data.newHitNum > 0) {
 						this.showWinningCrad = true;
 						uni.hideTabBar()
 					};
+				})
+				// 我的关注商家是否有新商品
+				app.http.Get('me/fresh/followed_merchant_goods/light',{},(res:any)=>{
+					this.goodsTabs[0].badge!.isDot = res.bright
 				})
 			}
 			// 开屏商品广告
@@ -214,6 +225,7 @@
 					uni.hideTabBar()
 				}
 			})
+			
 		}
 		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
@@ -232,6 +244,10 @@
 		clickGoodsTabs({index}:any){
 			if(this.goodsTabCurrent == index) return;
 			this.goodsTabCurrent = index;
+			if(index==0 && this.goodsTabs[0].badge!.isDot){
+				this.goodsTabs[0].badge!.isDot = false;
+				app.http.Post('me/fresh/followed_merchant_goods/light/turnoff',{})
+			}
 		}
 		BackLogin(res: any) {
 			uni.$emit('BackLogin');

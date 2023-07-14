@@ -13,7 +13,14 @@ export var indexSwiperBack = [
     {icon:'/static/index/tabs/8.png',needLogin:true,name:'发售日历',url:'/pages/act/calendar/list'},
 ]
 export const goodsTabs = [
-    {name:'关注',id:1,url:'from_followed_merchant'},
+    {
+        name:'关注',
+        id:1,
+        url:'from_followed_merchant',
+        badge: {
+            isDot: false
+        }
+    },
     {name:'热门',id:2,url:'main'},
     {name:'篮球',id:3,url:'basketball'},
     {name:'足球',id:4,url:'football'},
