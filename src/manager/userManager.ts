@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 17:18:00
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-14 10:27:36
+ * @LastEditTime: 2023-07-14 11:46:20
  * @FilePath: \card-world\src\manager\userManager.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -60,7 +60,6 @@ export default class userManager {
         this._agoTime = Math.round(+new Date() / 1000)
     }
     private checkNeedRefresh(): boolean {
-        console.log(Object.values(this._userInfo).filter(Boolean).length == 0);
         const nowTime: number = Math.round(+new Date() / 1000)
         return (this.needRefresh || (nowTime - this._agoTime >= this._saveTime) || (Object.values(this._userInfo).filter(Boolean).length == 0))
     }
@@ -69,7 +68,6 @@ export default class userManager {
             const ts: number = Math.round(+new Date() / 1000)
             const deviceId: string = uni.getSystemInfoSync().deviceId
             HttpRequest.getIns().Post("cardCircle/viewerId", { deviceId, ts, sn: Md5.hashStr(`viewerId_${ts}_${deviceId}`) }, (res: any) => {
-                console.log("resresresresresres", res);
                 app.viewerId = res.viewerId
                 uni.setStorageSync("viewerId", res.viewerId)
                 re(res.viewerId)

@@ -128,6 +128,7 @@
 			//#endif
 		}
 		onShow() {
+			uni.showTabBar({ animation: false })
 			// #ifdef APP-PLUS
 			this.networkStatusChange()
 			// #endif

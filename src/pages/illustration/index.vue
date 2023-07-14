@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\illustration\index.vue
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-05 13:57:56
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-14 12:00:40
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -72,6 +72,9 @@
 		seriesLst = [];
 		onLoad(query: any) {
 			this.initEvent()
+		}
+		onShow(){
+			uni.showTabBar({ animation: false })
 		}
 		//   加载更多数据
 		onReachBottom() {

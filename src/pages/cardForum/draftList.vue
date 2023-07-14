@@ -2,14 +2,14 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-30 14:05:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-14 10:54:44
+ * @LastEditTime: 2023-07-14 11:58:29
  * @FilePath: \jichao_app_2\src\pages\cardForum\draftList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
         <view style="width:750rpx;margin-top: 10rpx;">
-            <waterfalls ref="waterfall" v-model="list" :showUser="false" type="draftList">
+            <waterfalls ref="waterfall" :value="list" :showUser="false" type="draftList">
             </waterfalls>
         </view>
     </view>
@@ -54,43 +54,45 @@ export default class ClassName extends BaseNode {
         this.reqData()
     }
     refreshDraft(code?: string) {
-        uni.showLoading({
-            title: "",
-            mask: true
-        })
         this.queryParams.fetchFrom = 1
         this.$refs.waterfall.clear();
         this.list = []
         setTimeout(() => {
             this.reqNewData()
-            uni.hideLoading()
-        }, 300)
+        }, 500)
     }
     reqData() {
-        if (this.draftList == "dynamic") {
+        if (this.draftType == "dynamic") {
             app.http.Get(`dataApi/cardCircle/list/me/draft`, this.queryParams, (res: any) => {
                 this.isFetchEnd = res.isFetchEnd
-                // console.log(res);
-                const list = (res.list || []).map((item: any) => {
+                let list = res.list || []
+                let newList = list.filter((item: any) => {
+                    const findIndex: number = this.draftList.findIndex((local: any) => {
+                        return local.draftId === item.code
+                    })
+                    return findIndex < 0
+                })
+                newList = newList.map((item: any) => {
                     return {
                         cover: item.cover || "",
                         url: item.url,
                         title: item.title,
                         create_at: item.created_at,
-                        code: item.code,
-                        cloud: true,
+                        code: item.code
                     }
+
                 })
                 if (this.queryParams.fetchFrom == 1) {
-                    this.list = [...this.draftList, ...list].sort((x: any, y: any) => {
+                    this.list = [...this.draftList, ...newList].sort((x: any, y: any) => {
                         return y.create_at - x.create_at
                     })
+                    this.list = uni.$u.deepClone(this.list)
                 } else {
-                    this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
+                    this.list.push(...newList)
                 }
-                console.log("this.list", this.list);
             })
         } else {
+            //卡册
             this.list = this.draftList
         }
 
@@ -107,7 +109,6 @@ export default class ClassName extends BaseNode {
                 draftId: item.draftId
             }
         })
-
         this.reqData()
     }
 

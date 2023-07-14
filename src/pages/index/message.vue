@@ -79,6 +79,7 @@ export default class ClassName extends BaseNode {
 
 	}
 	onShow() {
+		uni.showTabBar({ animation: false })
 		this.getFunc()
 	}
 	getMessageList() {

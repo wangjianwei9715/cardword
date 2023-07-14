@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 17:19:34
+ * @LastEditTime: 2023-07-14 11:32:07
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -109,7 +109,7 @@ import ppp from "./components/ppp.vue"
 import Upload from "@/tools/upload"
 import goods from "./components/goods.vue"
 import publish from "./components/album/publish.vue"
-import { storageDraft, getDraftList, getDraftDetail, getVideoPath, delDraftDetail } from "./func"
+import { storageDraft, getDraftList, getDraftDetail, getVideoPath, delDraftDetail, testCode } from "./func"
 enum State {
     Public = 1,
     Private = 2
@@ -517,12 +517,13 @@ export default class ClassName extends BaseNode {
                 selectTopics: this.selectTopics
             }
             if (this.code) {
-                Draft.code = this.code
-                const draftList = getDraftList("all")
-                const findItem = draftList.find((item: any) => {
-                    return item.data.code == this.code
-                })
-                if (findItem && findItem.draftId) this.draftId = findItem.draftId
+                this.draftId = this.code
+                // Draft.code = this.code
+                // const draftList = getDraftList("all")
+                // const findItem = draftList.find((item: any) => {
+                //     return item.data.code == this.code
+                // })
+                // if (findItem && findItem.draftId) this.draftId = findItem.draftId
             }
             await storageDraft(Draft, this.albumRelease ? "cardBook" : "dynamic", this.draftId || "")
             uni.showModal({
@@ -621,7 +622,7 @@ export default class ClassName extends BaseNode {
         const data = getDraftDetail(this.draftId, this.userId) as any
         if (!Object.keys(data).length) return
         this.formData = data
-        if (data.code) this.code = data.code
+        if (testCode(this.draftId)) this.code = this.draftId //此时草稿id为作品编号
         this.selectTopics = data.selectTopics || []
         console.log("草稿的内容", this.formData);
         // this.selectGoods = this.formData.selectGoods

@@ -259,15 +259,16 @@ export default class ClassName extends BaseNode {
                 return { ...item, typeName: this.current.name }
             })
             if (this.isMine && this.current.queryParams.fetchFrom == 1 && this.current.name == '动态') {
-                if (res.draftBrier) {
-                    this.draftListByDynamic = [...this.draftListByDynamic, {
-                        stamp: res.draftBrier.created_at, data: {
-                            cover: res.draftBrier.cover
-                        }
-                    }].sort((x: any, y: any) => {
-                        return y.stamp - x.stamp
-                    })
-                }
+                this.sortDraftFunc(res)
+                // if (res.draftBrier) {
+                //     this.draftListByDynamic = [...this.draftListByDynamic, {
+                //         stamp: res.draftBrier.created_at, data: {
+                //             cover: res.draftBrier.cover
+                //         }
+                //     }].sort((x: any, y: any) => {
+                //         return y.stamp - x.stamp
+                //     })
+                // }
             }
             this.current.firstReqEnd = true
             this.current.isFetchEnd = res.isFetchEnd
@@ -286,7 +287,17 @@ export default class ClassName extends BaseNode {
     }
     sortDraft(get?: boolean) {
         app.http.Get(`dataApi/cardCircle/list/me/dongtai`, {}, (res: any) => {
-            if (res.draftBrier) {
+            this.sortDraftFunc(res)
+        })
+    }
+    sortDraftFunc(res: any) {
+        if (res.draftBrier) {
+            const findIndex = this.draftListByDynamic.findIndex((item: any) => {
+                return item.draftId == res.draftBrier.code
+            })
+            console.log(findIndex);
+
+            if (findIndex < 0) {
                 this.cloudDraftNumByDynamic = res.draftBrier.num
                 this.draftListByDynamic = [...this.draftListByDynamic, {
                     stamp: res.draftBrier.created_at, data: {
@@ -296,7 +307,8 @@ export default class ClassName extends BaseNode {
                     return y.stamp - x.stamp
                 })
             }
-        })
+
+        }
     }
     onDelCardForum() {
         this.current.queryParams.fetchFrom = 1

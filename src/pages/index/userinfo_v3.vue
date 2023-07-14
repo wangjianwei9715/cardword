@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <transitionNav @getNavHeight="getNavHeight" :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)"
+        <transitionNav  :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)"
             :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
@@ -334,7 +334,7 @@ export default class ClassName extends BaseNode {
         open: false,
         request: false
     }
-    navHeight: number = 0
+    navHeight: number = app.statusBarHeight+uni.upx2px(88)
     userInfo: any = {}
     onLoad(query: any) {
         this.onEventUI('updateToken', () => {
@@ -342,13 +342,14 @@ export default class ClassName extends BaseNode {
         })
     }
     onShow() {
+        uni.showTabBar({ animation: false })
         this.initPageData();
         this.broadcastActor = app.broadcastActor
     }
     onHide() {
     }
     getNavHeight(height: any) {
-        this.navHeight = height
+        // this.navHeight = height
         // setTimeout(() => {
         //     this.$nextTick(async () => {
         //         this.topHeight = await this.getDomHeight("#topContainer")
