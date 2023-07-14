@@ -171,7 +171,12 @@ const tabsList = [
     {
         name: '关注',
         tag: 'follow',
-        url: 'cardCircle/list/me/follow'
+        url: 'cardCircle/list/me/follow',
+        badge: {
+            show: true,
+            isDot: true,
+            bgColor: "rgba(255, 0, 61,1)"
+        }
     }, {
         name: '推荐',
         tag: 'all'
@@ -276,6 +281,7 @@ export default {
                 this.tabs.index = 4;
                 uni.removeStorageSync('showKace');
             }
+            this.getFollowDot()
         })
         if (this.tabs.index == 2) {
             uni.hideTabBar({ animation: false })
@@ -314,6 +320,9 @@ export default {
             handler(val) {
                 if (this.tabs.list[val]?.list && (this.tabs.list[val].list.length == 0)) {
                     this.reqNewData(true)
+                }
+                if (val == 0) {
+                    this.tabs.list[0].badge.bgColor = `rgba(255, 0, 61,0)`
                 }
                 if (val == 2) {
                     this.reqTopicAc()
@@ -361,6 +370,15 @@ export default {
             })
             this.initFinish = true
             return
+        },
+        getFollowDot() {
+            app.http.Get(`dataApi/cardCircle/me/infor`, {}, (res) => {
+                if (this.tabs.index == 0) {
+                    this.tabs.list[0].badge.bgColor = `rgba(255, 0, 61,0)`
+                    return
+                }
+                this.tabs.list[0] && (this.tabs.list[0].badge.bgColor = `rgba(255, 0, 61,${res.data.isFollow ? 1 : 0})`)
+            })
         },
         getTopicsList() {
             app.http.Get("dataApi/cardCircle/topic/list", { fetchFrom: 1, fetchSize: 15, od: "issue_72:asc" }, (res) => {
