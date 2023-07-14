@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 15:18:30
+ * @LastEditTime: 2023-07-14 15:34:44
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -307,6 +307,7 @@ export default class ClassName extends BaseNode {
         this.userBack = query.back == "true"
         this.private = query.private == "1"
         if (query.fromUserId) this.fromUserId = +query.fromUserId
+        if (query.noteCommentId) this.queryParams.noteCommentId = +query.noteCommentId
         app.platform.hasLoginToken(async () => {
             this.code = query.code || "mockCode"
             this.reqNewData()
@@ -718,12 +719,30 @@ export default class ClassName extends BaseNode {
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.commList = list : this.commList.push(...list)
             //跳转至评论
-            // if (this.queryParams.noteCommentId && !this.isScrollEnd) {
-            //     this.$nextTick(() => {
-            //         this.scrollToAnyBlock()
-            //     })
-            // }
+            if (this.queryParams.noteCommentId && !this.isScrollEnd) {
+                this.$nextTick(() => {
+                    this.scrollToAnyBlock()
+                })
+            }
         })
+    }
+    scrollToAnyBlock() {
+        uni
+            .createSelectorQuery()
+            .select("#commId_" + this.queryParams.noteCommentId)
+            .boundingClientRect((res) => {
+                if (res && res.top) {
+                    uni.pageScrollTo({
+                        duration: 150,
+                        scrollTop: res.top - app.statusBarHeight - 80,
+                        complete: () => {
+                            setTimeout(() => {
+                                this.isScrollEnd = true
+                            }, 200)
+                        }
+                    })
+                }
+            }).exec();
     }
     onEditCardForum(res: any) {
         if (res.code == this.code) {
@@ -754,11 +773,11 @@ export default class ClassName extends BaseNode {
                 this.private = true
             }
             this.dotContainerWidth = this.dotWidth * (this.pics.length > 5 ? 5 : this.pics.length)
-            let content=decodeURIComponent(res.data.content)
+            let content = decodeURIComponent(res.data.content)
             this.shareData = {
                 shareUrl: `share/${app.localTest ? 'testH5' : 'h5'}/#/pages/cardForum/detail?code=${this.code}`,
                 title: res.data.title,
-                summary: content?(content.length>20?content.substr(0,20)+'...':content):"我发现了一篇精彩动态",
+                summary: content ? (content.length > 20 ? content.substr(0, 20) + '...' : content) : "我发现了一篇精彩动态",
                 //@ts-ignore
                 thumb: this.pics[0] + `?x-oss-process=image/resize,h_100,w_100`
             }
