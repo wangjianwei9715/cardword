@@ -10,11 +10,12 @@
 				@click="onClickDynamic(item.bucketName)">
 				<view class="left">
 					<view class="icon">
-						<view :class="item.title == '交易动态' ? 'icon-zx' : 'icon-tz'"></view>
+						<!-- <view :class="item.title == '交易动态' ? 'icon-zx' : 'icon-tz'"></view> -->
+						<image :src="item.icon" style="width: 75rpx;height: 75rpx;"></image>
 					</view>
 					<view class="desc">
 						<view class="desc-title">{{ item.title }}</view>
-						<view class="desc-message">{{ item.content }}</view>
+						<view class="desc-message">{{ item.content || "暂无新消息" }}</view>
 					</view>
 				</view>
 				<view class="right">
@@ -22,9 +23,23 @@
 					<view class="new-message" v-if="item.new > 0">{{ item.new > 99 ? '99+' : item.new }}</view>
 				</view>
 			</view>
-
+			<view class="index border" @click="onClickHeli(chatData.agentExten)">
+				<view class="left">
+					<view class="icon">
+						<image src="/static/userinfo/v3/message/kefu.png" style="width: 75rpx;height: 75rpx;"></image>
+					</view>
+					<view class="desc">
+						<view class="desc-title">客服消息</view>
+						<view class="desc-message">{{ decodeURIComponent(chatData.content) }}</view>
+					</view>
+				</view>
+				<!-- <view class="right">
+					<view class="time">{{ item.lastTime > 0 ? getTime(item.lastTime) : '' }}</view>
+					<view class="new-message" v-if="item.new > 0">{{ item.new > 99 ? '99+' : item.new }}</view>
+				</view> -->
+			</view>
 		</view>
-		<view class="bottom">
+		<!-- <view class="bottom">
 			<view class="index" @click="onClickHeli(chatData.agentExten)">
 				<view class="left">
 					<view class="icon">
@@ -40,7 +55,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 
 	</view>
 </template>
@@ -64,6 +79,15 @@ let toolsMap = {
 
 	}
 }
+const iconMap: any = {
+	"互动消息": "/static/userinfo/v3/message/interaction.png",
+	"交易通知": "/static/userinfo/v3/message/transaction.png",
+	"订单通知": "/static/userinfo/v3/message/order.png",
+	"活动消息": "/static/userinfo/v3/message/act.png",
+	"系统消息": "/static/userinfo/v3/message/system.png",
+	"系统通知": "/static/userinfo/v3/message/system.png",
+	"客服消息": "/static/userinfo/v3/message/kefu.png"
+}
 @Component({})
 export default class ClassName extends BaseNode {
 	dynamicData: any = [];
@@ -84,7 +108,10 @@ export default class ClassName extends BaseNode {
 	}
 	getMessageList() {
 		app.http.Get('message/bucketlist', {}, (res: any) => {
-			this.dynamicData = res.list
+			this.dynamicData = (res.list || []).map((item: any) => {
+				item.icon = iconMap[item.title]
+				return item
+			})
 		})
 	}
 	getHeliChat() {
@@ -167,7 +194,7 @@ export default class ClassName extends BaseNode {
 
 .top {
 	width: 100%;
-	border-bottom: 20rpx solid $content-bg;
+	// border-bottom: 20rpx solid $content-bg;
 	box-sizing: border-box;
 	padding: 0 32rpx;
 }
