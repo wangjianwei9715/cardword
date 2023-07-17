@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-17 15:49:12
+ * @LastEditTime: 2023-07-17 17:45:37
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -195,7 +195,6 @@ export default class ClassName extends BaseNode {
     submitLock: boolean = false
     hasVoteByCode: boolean = false
     onLoad(query: any) {
-
         app.platform.hasLoginToken(() => {
             app.user.getUserInfo().then((userInfo: any) => {
                 this.eventAlbum();
@@ -715,18 +714,12 @@ export default class ClassName extends BaseNode {
                 if (this.isTempVideo) {
                     //临时的视频路径(上传至阿里云)
                     const videoPath: any = await Upload.getInstance().uploadTempFile(this.videoPath, "social/cardForumVideo/", "video", this.tempVideoFile.name || "video.mp4")
-                    console.log("上传到阿里云的视频路径:", videoPath);
-                    if (!this.formData.cover) {
-                        //截帧
-                        const cover: string = decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast"
+                    //截帧
+                    const cover: string = decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast"
+                    if (!this.formData.cover || this.formData.cover.indexOf("blob:http") >= 0) {
                         // //截帧后的图片上传oss
                         this.formData.cover = await this.getSnapshotPath(cover)
                     }
-                    // #ifdef H5
-                    if (this.formData.cover.indexOf("blob:http") >= 0) {
-                        this.formData.cover = encodeURIComponent(decodeURIComponent(videoPath) + "?x-oss-process=video/snapshot,t_1000,m_fast")
-                    }
-                    // #endif
                     this.formData.url = [videoPath]
                 }
             }

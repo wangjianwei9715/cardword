@@ -1,7 +1,7 @@
 import HttpRequest from "../net/HttpRequest";
 import * as Base64 from '../lib/base64';
 var Crypto = require("crypto-js");
-const uploadFileSize = 1024 * 1024 * 100; // 上传文件的大小限制100m
+const uploadFileSize = 1024 * 1024 * 300; // 上传文件的大小限制300m
 export default class ossUtils {
     osstoken:{[x: string]: any} = {};
     private static instance: ossUtils;

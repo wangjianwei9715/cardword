@@ -16,29 +16,33 @@ export default class Upload {
             let arr: any = []
             for (let i = 0; i < fileList.length; i++) {
                 const fileName = type + "/app/" + fileDir + this.ossutils.getFileName(file.tempFiles[i]); // 自定义上传后的文件名称
+                const formData:any={
+                    name: fileList[i],
+                    key: fileName,
+                    policy: sign.policy,
+                    OSSAccessKeyId: sign.accessId,
+                    success_action_status: '200',
+                    //让服务端返回200,不然，默认会返回204
+                    signature: sign.signature,
+                    "x-oss-security-token": sign.security_token
+                }
+                //设置一下最大字节数（video）
+                if(type=='video'){
+                    formData["content-length-range"]=`["content-length-range", 1, ${300*1024*1024}]`
+                }
                 const uploadTask = uni.uploadFile({
                     url: sign.host,
                     filePath: fileList[i],
-                    timeout: 5 * 60 * 60,
-                    // fileType: 'image',
+                    timeout: 5 * 60 * 60 * 1000,
                     name: 'file',
-                    formData: {
-                        name: fileList[i],
-                        key: fileName,
-                        policy: sign.policy,
-                        OSSAccessKeyId: sign.accessId,
-                        success_action_status: '200',
-                        //让服务端返回200,不然，默认会返回204
-                        signature: sign.signature,
-                        "x-oss-security-token": sign.security_token
-                    },
+                    formData,
                     success: (res) => {
                         uni.hideLoading();
                         if (res.statusCode == 200) {
                             let imgSrc = sign.host + "/" + fileName;
                             arr.push(encodeURIComponent(imgSrc))
                             if (arr.length == fileList.length) resolve(arr);
-                        }else{
+                        } else {
                             reject("上传失败");
                         }
                     },
@@ -51,9 +55,12 @@ export default class Upload {
                         reject(err);
                     }
                 });
-                if(type=="video"){
+                if (type == "video") {
                     uploadTask.onProgressUpdate((call: any) => {
-                        uni.$emit("videoProgress",call)
+                        uni.$u.throttle(() => {
+                            uni.$emit("videoProgress", call)
+                        }, 1000)
+
                     })
                 }
             }
@@ -87,7 +94,7 @@ export default class Upload {
         try {
             //@ts-ignore
             const fileRes: any = await this.getImages(...params); // 选择图片
-            const sign = await this.ossutils.getSTS(params[3]||''); // 获取签名等信息
+            const sign = await this.ossutils.getSTS(params[3] || ''); // 获取签名等信息
             uni.showLoading({
                 title: '上传图片中...'
             });
@@ -160,14 +167,14 @@ export default class Upload {
             throw new Error(err.message || err)
         }
     }
-    async uploadTemporaryFile(filePath: string,oldFile:string) {
+    async uploadTemporaryFile(filePath: string, oldFile: string) {
         try {
             const sign = await this.ossutils.getSTS('social'); // 获取签名等信息
             uni.showLoading({ title: '上传图片中...' });
             const fileArr = oldFile.split('/');
             const fileRes = {
                 tempFilePaths: [filePath],
-                tempFiles: [{ name: `temporary${fileArr[fileArr.length-1]}` }]
+                tempFiles: [{ name: `temporary${fileArr[fileArr.length - 1]}` }]
             }
             const imgUrls = await this.uploadFile(fileRes, sign, 'social/TemporaryFile')
             return imgUrls
@@ -188,7 +195,7 @@ export default class Upload {
         return result;
     }
     async uploadSocialImgs(count: number, fileDir: string, sourceType = ['album']) {
-        const result = await this.upLoadImagePath(count, 'social/'+fileDir, sourceType,'social');
+        const result = await this.upLoadImagePath(count, 'social/' + fileDir, sourceType, 'social');
         return result;
     }
     async uploadVideo(fileDir = "") {
