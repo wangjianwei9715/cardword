@@ -188,6 +188,7 @@
 <script lang="ts">
 import { app } from "@/app";
 import { getGoodsPintuan } from "@/tools/switchUtil";
+import { Md5 } from "ts-md5";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 import { getGoodsImg } from "../../tools/util";
@@ -502,14 +503,19 @@ export default class ClassName extends BaseNode {
     uni.showLoading({ title: '加载中' });
 
     const goodCode = this.goodsData.goodCode; 
+    const ts = Math.floor(new Date().getTime()/1000);
+    const userId = uni.getStorageSync('ksjUserId');
+    let snName = "ToPayForGood";
     let params: any = { 
       channelId: data.channelId ?? '', 
       channel: data.channel, 
       delivery: this.addressData.id, 
+      ts
     }; 
     let url = `good/topay/${goodCode}`;
     if(this.baoduiId != 0||this.cartData != ""||this.payRandomPrice>0){
       url = `good/topay/${goodCode}/select`;
+      snName = "ToPayForSelectGood"
     }
     switch (true) { 
       case this.baoduiId !== 0: 
@@ -525,6 +531,7 @@ export default class ClassName extends BaseNode {
         // 选队随机 
         params.list = this.payRandomTeamData.map((x:any) => { return { id: x.id, num: Number(x.num) }; });
         url = `good/topay/${goodCode}/optional`; 
+        snName = "ToPayForOptionGood";
         break; 
       default: 
         // 普通支付 
@@ -532,7 +539,7 @@ export default class ClassName extends BaseNode {
         params.num = Number(this.moneyNum); 
         break; 
     }
-
+    params.sn = Md5.hashStr(`${snName}_${ts}_${userId}_${goodCode}`)
     if (uni.getSystemInfoSync().platform === 'android') { 
       params.nativeSdk = 'qmf_android'; 
     }

@@ -486,12 +486,15 @@ import { Md5 } from "ts-md5";
 			uni.showLoading({
 				title: '加载中'
 			});
-
+			const ts = Math.floor(new Date().getTime()/1000);
+			const userId = uni.getStorageSync('ksjUserId');
 			let params:any = {
 				channelId:data.channelId??'',
 				channel: data.channel,
 				delivery:0,
-				num:Number(this.orderData.num)
+				num:Number(this.orderData.num),
+				ts,
+				sn:Md5.hashStr(`ToPayForGoodOrder_${ts}_${userId}_${this.orderData.code}`)
 			}
 			if(uni.getSystemInfoSync().platform === "android"){
 				params.nativeSdk = 'qmf_android'
