@@ -110,7 +110,7 @@ export default {
 		return {
 			// tabbarData: { ...tabbarData },
 			rewardPop: false,
-			recGiftShow:true,
+			recGiftShow:false,
 			tabHeight: 0,
 			Parent: { isLike: false }
 		};
