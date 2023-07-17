@@ -5,7 +5,8 @@
             <view class="giftContainer">
                 <view class="vote_top flexCenter">
                     <text class="title">收到打赏</text>
-                    <image class="close" src="@/static/cardForum/popClose.png" @click="$emit('update:show', false)"></image>
+                    <image class="close" style="width: 30rpx;height: 30rpx;" src="@/static/cardForum/popClose.png"
+                        @click="$emit('update:show', false)"></image>
                 </view>
                 <scroll-view class="giftScroll" :scroll-y="true" @scrolltolower="scrolltolower">
                     <view class="giftItem" v-for="(item, index) in list">
@@ -140,12 +141,14 @@ export default {
 
 .vote_top {
     // width: 750rpx;
-    width: 100%;
     // height: 100rpx;
     margin-top: 38rpx;
     margin-bottom: 56rpx;
     position: relative;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
 }
 
@@ -163,9 +166,10 @@ export default {
     // background-image: url("@/static/cardForum/popClose.png");
     position: absolute;
     right: 17rpx;
-    top: 0;
+    // top: 0;
+    
     bottom: 0;
-    margin: auto;
+    // margin: auto;
 }
 
 .giftItem {
@@ -187,8 +191,8 @@ export default {
 .giftPic {
     width: 91rpx;
     height: 91rpx;
-    display: block;
-    // background: #FA1545;
+    // display: block;
+    background: #FA1545;
 }
 
 .avatar {

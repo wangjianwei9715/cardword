@@ -19,7 +19,7 @@
                 </view>
             </u-popup>
             <view class="giveModal" v-if="show" :class="{ giveModal_show: showGive }">
-                <view style="width: 500rpx;background-color: #fff;height: 400rpx;display: flex;flex-direction: column;">
+                <view style="width: 550rpx;background-color: #fff;display: flex;flex-direction: column;">
                     <text class="title">提示</text>
                     <text class="tips">确认赠送{{ nowSelectOption.num }}卡币</text>
                     <view class="userWrap">
@@ -204,7 +204,7 @@ export default {
 
 .giveModal {
     width: 750rpx;
-    height: 400rpx;
+    // height: 400rpx;
     // background-color: #fff;
     position: fixed;
     left: 0;
@@ -277,12 +277,12 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-top: 60rpx;
-
+    padding-bottom: 40rpx;
 
 }
 
 .submit {
-    width: 200rpx;
+    width: 230rpx;
     height: 60rpx;
     color: #fff;
     background-color: #ff003d;

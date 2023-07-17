@@ -5,10 +5,10 @@
 					class="chat-text">说点什么...</text></view>
 			<view class="tabbar-gn">
 				<view class="tabbar-item">
-					<view class="pic-box" @click="rewardPop = true">
+					<view class="pic-box" @click="onClickGift">
 						<image class="pic-likes" src="@/static/cardForum/gift.png" />
 					</view>
-					<text class="num" :style="{color:detail?'#000':'#fff'}">打赏</text> 
+					<text class="num" :style="{ color: detail ? '#000' : '#fff' }">打赏</text>
 				</view>
 				<view class="tabbar-item" @click="onClickLike">
 					<view class="pic-box">
@@ -42,8 +42,10 @@
 				</view>
 			</view>
 		</view>
-		<rewardPop :eventPenetrationEnabled="rewardPop" :code="data.code" :userInfo="{ userId: data.userId, userName: data.userName, avatar: data.avatar }"
-			:show.sync="rewardPop"></rewardPop>
+		<rewardPop :eventPenetrationEnabled="rewardPop" :code="data.code"
+			:userInfo="{ userId: data.userId, userName: data.userName, avatar: data.avatar }" :show.sync="rewardPop">
+		</rewardPop>
+		<recGift :eventPenetrationEnabled="recGiftShow" :code="data.code" :show.sync="recGiftShow"></recGift>
 
 	</view>
 </template>
@@ -55,9 +57,11 @@ const app = getApp().globalData.app;
 // 	favorite: { pic: '../../../static/information/live_collect.png', piced: '../../../static/information/icon_t_collectd.png', num: 0, boolean: false }
 // }
 import rewardPop from "../../components/rewardPop.vue"
+import recGift from "../../components/recGift.vue";
 export default {
 	components: {
-		rewardPop
+		rewardPop,
+		recGift
 	},
 	props: {
 		commentNum: {
@@ -106,6 +110,7 @@ export default {
 		return {
 			// tabbarData: { ...tabbarData },
 			rewardPop: false,
+			recGiftShow:true,
 			tabHeight: 0,
 			Parent: { isLike: false }
 		};
@@ -124,6 +129,14 @@ export default {
 		},
 		onClickChat() {
 			this.$emit('comment')
+		},
+		onClickGift() {
+			console.log(this.Parent.isPerson);
+			if (this.Parent.isPerson) {
+				this.recGiftShow = true
+			} else {
+				this.rewardPop = true
+			}
 		},
 		// setTabbarNum(data) {
 		// 	let tab = {
