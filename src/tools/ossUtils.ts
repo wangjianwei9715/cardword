@@ -92,21 +92,22 @@ export default class ossUtils {
             })
         })
     }
-    getToken(){
+    getToken(type=''){
         if (!this.osstoken.expire_at || (new Date().getTime() / 1000) >= this.osstoken.expire_at) {
             return new Promise((resolve, reject) => {
-               HttpRequest.getIns().Get('dataApi/oss/token',{},async (res:any) =>{
+                const url = type=='social' ? 'social/' : '';
+                HttpRequest.getIns().Get(`dataApi/oss/${url}token`,{},async (res:any) =>{
                     this.osstoken = res.data;
                     resolve(res.data);
-               })
+                })
             })
         }else{
             return this.osstoken;
         }
     }
     // 获取STS签名
-    async getSTS() {
-        let token = await this.getToken();
+    async getSTS(type='') {
+        let token:any = await this.getToken(type);
         // 读取接口
         return new Promise((resolve, reject) => {
             let policy = this._getPolicy();

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-14 14:46:07
+ * @LastEditTime: 2023-07-17 11:06:48
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -310,7 +310,7 @@ export default class ClassName extends BaseNode {
             if (type == "img") {
                 //@ts-ignore
                 const COUNT: any = countMap[keyName] - this[keyName].length
-                const picArr: any = await Upload.getInstance().uploadImgs(COUNT, "cardForumPic/", ["album"])
+                const picArr: any = await Upload.getInstance().uploadSocialImgs(COUNT, "cardForumPic/", ["album"])
                 if (picArr) {
                     picArr.forEach((pic: any) => {
                         //@ts-ignore
@@ -413,7 +413,7 @@ export default class ClassName extends BaseNode {
                 this.pics = [this.formData.cover, this.formData.cover + `&isVideo=true`]
                 this.maxNum = 2
             } else if (type == "videoCover") {
-                const picArr: any = await Upload.getInstance().uploadImgs(1, "cardForumPic/", ["album"])
+                const picArr: any = await Upload.getInstance().uploadSocialImgs(1, "cardForumPic/", ["album"])
                 console.log(picArr);
 
                 this.pics.unshift(picArr[0])

@@ -93,7 +93,7 @@ export default class ClassName extends BaseNode {
         }
         //@ts-ignore
         const COUNT: any = countMap[keyName] - this[keyName].length
-        const picArr: any = await Upload.getInstance().uploadImgs(COUNT, "exhibition", ["album"])
+        const picArr: any = await Upload.getInstance().uploadSocialImgs(COUNT, "exhibition", ["album"])
         if (picArr){
             picArr.forEach((pic: any) => {
             //@ts-ignore

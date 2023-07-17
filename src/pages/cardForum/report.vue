@@ -77,7 +77,7 @@ export default class ClassName extends BaseNode {
         this.formData.tpBit ^= +bit
     }
     async addImage() {
-        const picArr: any = await Upload.getInstance().uploadImgs(3 - this.formData.pic.length, "cardForumReport/", ["album"])
+        const picArr: any = await Upload.getInstance().uploadSocialImgs(3 - this.formData.pic.length, "cardForumReport/", ["album"])
         this.formData.pic.push(...picArr)
     }
     submit() {
