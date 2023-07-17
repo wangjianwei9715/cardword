@@ -714,7 +714,7 @@ export default class ClassName extends BaseNode {
                 uni.$on("videoProgress", this.videoProgress)
                 if (this.isTempVideo) {
                     //临时的视频路径(上传至阿里云)
-                    const videoPath: any = await Upload.getInstance().uploadTempFile(this.videoPath, "cardForumVideo/", "video", this.tempVideoFile.name || "video.mp4")
+                    const videoPath: any = await Upload.getInstance().uploadTempFile(this.videoPath, "social/cardForumVideo/", "video", this.tempVideoFile.name || "video.mp4")
                     console.log("上传到阿里云的视频路径:", videoPath);
                     if (!this.formData.cover) {
                         //截帧
@@ -823,7 +823,7 @@ export default class ClassName extends BaseNode {
             uni.getImageInfo({
                 src: src,
                 success(result: any) {
-                    Upload.getInstance().uploadTempFile(result.path, "forumCover/", "images", `${Math.round(+new Date() / 1000)}Cover.jpg`).then((res: any) => {
+                    Upload.getInstance().uploadTempFile(result.path, "social/forumCover/", "images", `${Math.round(+new Date() / 1000)}Cover.jpg`).then((res: any) => {
                         re(res)
                     })
                 },
