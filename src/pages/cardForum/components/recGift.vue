@@ -168,7 +168,7 @@ export default {
     right: 17rpx;
     // top: 0;
     
-    bottom: 0;
+    // bottom: 0;
     // margin: auto;
 }
 

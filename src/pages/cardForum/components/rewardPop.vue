@@ -19,7 +19,7 @@
                 </view>
             </u-popup>
             <view class="giveModal" v-if="show" :class="{ giveModal_show: showGive }">
-                <view style="width: 550rpx;background-color: #fff;display: flex;flex-direction: column;">
+                <view style="width: 550rpx;background-color: #fff;display: flex;flex-direction: column;border-radius: 3rpx;">
                     <text class="title">提示</text>
                     <text class="tips">确认赠送{{ nowSelectOption.num }}卡币</text>
                     <view class="userWrap">
@@ -197,9 +197,9 @@ export default {
     // background-size: 100% 100%;
     // background-image: url("@/static/cardForum/popClose.png");
     position: absolute;
-    right: 17rpx;
-    top: 0;
-    bottom: 0;
+    right: 37rpx;
+    // top: 0;
+    // bottom: 0;
 }
 
 .giveModal {
