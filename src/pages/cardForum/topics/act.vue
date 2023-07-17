@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-15 17:02:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-14 15:24:24
+ * @LastEditTime: 2023-07-17 16:04:08
  * @FilePath: \card-world\src\pages\cardForum\topics\act.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -33,7 +33,6 @@
                 <view class="flex1"></view>
                 <view class="bottomInfo">
                     <text class="num">{{ topData.totalUseNum }}篇动态</text>
-                    <!-- <view class="flex1"></view> -->
                     <text class="push flexCenter" @click="onClickPush">发布</text>
                 </view>
             </view>
@@ -45,15 +44,14 @@
             <view class="gray">我的最高获赞{{ myLikeNum }}</view>
             <!-- <view class="smallTitle">（进行中 10.30~11.5）</view> -->
         </view>
-        <view class="rankWrap" v-for="(item, index) in list">
+        <view class="rankWrap" v-for="(item, index) in list" @click="onClickRank(item)">
             <view class="rankNum">{{ index + 1 }}</view>
             <muqian-lazyLoad :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : app.defaultAvatar"
                 borderRadius="50%" class="avatar"></muqian-lazyLoad>
             <view class="userInfo">
-                <view class="userName">{{ item.userName }}</view>
+                <view class="userName">{{ item.userName || "虚位以待" }}</view>
                 <view class="likeNum">{{ item.likeNum }}获赞 ＞</view>
             </view>
-            <view class="flex1"></view>
             <view class="award">{{ item.awardName }}</view>
         </view>
         <view class="titleWrap" style="margin-bottom: 18rpx;">
@@ -113,6 +111,12 @@ export default class ClassName extends BaseNode {
     }
     onClickPush() {
         releaseByTopic(this.id)
+    }
+    onClickRank(item:any){
+        if(!item.code) return
+        uni.navigateTo({
+            url:`/pages/cardForum/detail?code=${item.code}`
+        })
     }
     reqRankList() {
         app.http.Get(`dataApi/cardCircle/topic/award/list/${this.id}`, this.queryParams, (res: any) => {
