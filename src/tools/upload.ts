@@ -87,7 +87,7 @@ export default class Upload {
         try {
             //@ts-ignore
             const fileRes: any = await this.getImages(...params); // 选择图片
-            const sign = await this.ossutils.getSTS(); // 获取签名等信息
+            const sign = await this.ossutils.getSTS(params[3]||''); // 获取签名等信息
             uni.showLoading({
                 title: '上传图片中...'
             });
@@ -115,7 +115,7 @@ export default class Upload {
             })
             res = res.filter(Boolean)
             if (res[0].errMsg == "chooseVideo:fail cancel") throw new Error("取消")
-            const sign = await this.ossutils.getSTS(); // 获取签名等信息
+            const sign = await this.ossutils.getSTS('social'); // 获取签名等信息
             uni.showLoading({
                 title: '上传中...'
             });
@@ -149,7 +149,7 @@ export default class Upload {
         // fileName h5下使用
         try {
             console.log("需要上传的path", path);
-            const sign = await this.ossutils.getSTS(); // 获取签名等信息
+            const sign = await this.ossutils.getSTS('social'); // 获取签名等信息
             const res: any = await this.uploadFile({
                 tempFilePaths: [path],
                 tempFiles: [{ name: fileName }]
@@ -162,7 +162,7 @@ export default class Upload {
     }
     async uploadTemporaryFile(filePath: string,oldFile:string) {
         try {
-            const sign = await this.ossutils.getSTS(); // 获取签名等信息
+            const sign = await this.ossutils.getSTS('social'); // 获取签名等信息
             uni.showLoading({ title: '上传图片中...' });
             const fileArr = oldFile.split('/');
             const fileRes = {
@@ -185,6 +185,10 @@ export default class Upload {
     }
     async uploadImgs(count: number, fileDir: string, sourceType = ['album']) {
         const result = await this.upLoadImagePath(count, fileDir, sourceType);
+        return result;
+    }
+    async uploadSocialImgs(count: number, fileDir: string, sourceType = ['album']) {
+        const result = await this.upLoadImagePath(count, fileDir, sourceType,'social');
         return result;
     }
     async uploadVideo(fileDir = "") {

@@ -88,7 +88,7 @@
 			}
 		}
 		async addImg(length:number){
-			const picList:any = await Upload.getInstance().uploadImgs(length, "report", ["album"]);
+			const picList:any = await Upload.getInstance().uploadSocialImgs(length, "report", ["album"]);
 			return picList
 		}
 		onClickReport(){

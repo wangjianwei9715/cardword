@@ -115,7 +115,7 @@
 			}
 		}
 		async addImg(length:number){
-			const picList:any = await Upload.getInstance().uploadImgs(length, "album/", ["album"]);
+			const picList:any = await Upload.getInstance().uploadSocialImgs(length, "album/", ["album"]);
 			return picList
 		}
 		async segment(pic:string){
