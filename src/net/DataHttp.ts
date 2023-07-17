@@ -7,8 +7,8 @@ export var headersData = [
 // opSign
 export var opSignData = [
     {url:'search/ebay',sign:'searchSecret',needOpKey:false}, 
-    {url:'good/topay/',sign:'payGoodCode',needOpKey:true}, 
-    {url:'order/topay/',sign:'payGoodOrder',needOpKey:true},
+    // {url:'good/topay/',sign:'payGoodCode',needOpKey:true}, 
+    // {url:'order/topay/',sign:'payGoodOrder',needOpKey:true},
     {url:'activity/invite/requestKey',sign:'inviteKey',needOpKey:true},
     {url:'activity/invite/getKey',sign:'inviteGetKey',needOpKey:true},
     {url:'user/login/wechat/app',sign:'wechat',needOpKey:false},
