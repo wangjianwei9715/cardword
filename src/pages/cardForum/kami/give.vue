@@ -13,7 +13,7 @@
                     <view class="select" :class="{ select_select: selectIds.includes(kami.id) }"></view>
                 </view>
             </view>
-            <view style="margin: 20rpx auto;font-size: 26rpx;" v-if="item.hasMore" @click="onClickGetMore(item)">点击加载更多
+            <view style="margin: 20rpx auto;font-size: 26rpx;text-align: center;" v-if="item.hasMore" @click="onClickGetMore(item)">点击加载更多
             </view>
         </view>
         <view class="fixedWrap">
