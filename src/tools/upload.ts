@@ -169,7 +169,7 @@ export default class Upload {
                 tempFilePaths: [filePath],
                 tempFiles: [{ name: `temporary${fileArr[fileArr.length-1]}` }]
             }
-            const imgUrls = await this.uploadFile(fileRes, sign, 'TemporaryFile')
+            const imgUrls = await this.uploadFile(fileRes, sign, 'social/TemporaryFile')
             return imgUrls
         } catch (err) {
             //@ts-ignore
@@ -188,7 +188,7 @@ export default class Upload {
         return result;
     }
     async uploadSocialImgs(count: number, fileDir: string, sourceType = ['album']) {
-        const result = await this.upLoadImagePath(count, fileDir, sourceType,'social');
+        const result = await this.upLoadImagePath(count, 'social/'+fileDir, sourceType,'social');
         return result;
     }
     async uploadVideo(fileDir = "") {
