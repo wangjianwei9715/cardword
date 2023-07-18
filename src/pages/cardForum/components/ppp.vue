@@ -709,7 +709,7 @@ export default {
                     font-size: 21rpx;
                     font-family: PingFang SC;
                     font-weight: 400;
-                    color: #333333;
+                    color: #3E3E3E;
                     display: block;
                 }
             }

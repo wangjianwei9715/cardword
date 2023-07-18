@@ -2,13 +2,13 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-17 17:45:37
+ * @LastEditTime: 2023-07-18 13:37:33
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content insetBottom">
-        <cover-view style="width:750rpx;backgroundColor:#000000;position: fixed;
+        <cover-view style="width:750rpx;backgroundColor:#111111;position: fixed;
         top: 0;z-index:9" :style="{ height: navHeight + 'px' }">
             <!-- <navigationbar backgroundColor="#000000" borderBottom="none" backColor="#fff" style="z-index: 99999;">
             </navigationbar> -->
@@ -30,13 +30,13 @@
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
         </view>
         <input type="text" class="input_title" v-model.trim="formData.title" placeholder="添加一个有趣的标题吧~（必填）"
-            placeholderStyle="color: #333333;font-size:33rpx" :maxlength="80">
+            placeholderStyle="color: #3E3E3E;font-size:33rpx" :maxlength="80">
         <view class="topicWrap" v-if="selectTopics.length">
             <view class="glTopic" v-for="(item, index) in selectTopics" :key="index" @click="delSelectTopic(item, index)">
                 {{ item.name }}
             </view>
         </view>
-        <textarea :adjust-position="false" placeholderStyle="color: #333333;font-size:29rpx" v-model.trim="formData.content"
+        <textarea :adjust-position="false" placeholderStyle="color: #3E3E3E;font-size:29rpx" v-model.trim="formData.content"
             :maxlength="3000" class="input_content" placeholder="分享一下您的球星卡收藏..（选填)"></textarea>
         <view class="associationWrap" @click="showTopics = true">
             <image class="ass_img" src="@/static/cardForum/release/topic.png" style="width: 30rpx;height:30rpx"></image>
@@ -841,7 +841,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    background-color: #000;
+    background-color: #111111;
 }
 
 .content {
@@ -912,7 +912,7 @@ page {
 }
 
 .input_content {
-    background-color: #000;
+    background-color: #111111;
     width: 100%;
     font-size: 29rpx;
     font-family: PingFang SC;
@@ -940,7 +940,7 @@ page {
         font-size: 29rpx;
         font-family: PingFang SC;
         font-weight: bold;
-        color: #555555;
+        color: #888888;
         margin-left: 11rpx;
     }
 
@@ -977,7 +977,7 @@ page {
         // width: 241rpx;
         padding: 0 20rpx;
         height: 50rpx;
-        background: #151515;
+        background: #1E1E1E;
         border-radius: 3rpx;
         margin-right: 20rpx;
         font-size: 25rpx;
@@ -1039,7 +1039,7 @@ page {
     position: fixed;
     bottom: 0;
     width: inherit;
-    background-color: #000000;
+    background-color: #111111;;
 
     .buttonWrap {
         display: flex;
@@ -1048,7 +1048,7 @@ page {
         padding: 0 35rpx;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 44rpx;
+        margin-bottom: 24rpx;
 
         .draft {
             display: flex;
@@ -1150,7 +1150,7 @@ page {
     font-size: 46rpx;
     font-weight: normal;
     font-style: normal;
-    color: #000;
+    color: #111111;;
     display: flex;
     align-items: center;
     justify-content: center;
