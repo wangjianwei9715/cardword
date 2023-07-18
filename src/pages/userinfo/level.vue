@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-17 18:07:59
+ * @LastEditTime: 2023-07-18 17:23:06
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,27 +19,29 @@
         <view class="levelTopContainer">
             <view class="navW" :style="{ height: (app.statusBarHeight + navHeight) + 'px' }"></view>
             <view class="userInfoWrap">
-                <image :src="app.defaultAvatar" class="userAvatar" mode="aspectFill"></image>
+                <image :src="userInfo.avatar ? $parsePic(decodeURIComponent(userInfo.avatar)) : app.defaultAvatar"
+                    class="userAvatar" mode="aspectFill"></image>
                 <view class="userInfo">
                     <view class="userNameWrap">
-                        <view class="userName">爷就是拽</view>
-                        <view class="userTitle">大藏家</view>
+                        <view class="userName">{{ userInfo.userName }}</view>
+                        <image :style="levelInfo.level == 10 ? { height: `34rpx` } : {}" class="level"
+                            :src="`/static/userinfo/v3/level/${levelInfo.level || 1}.png`"></image>
                     </view>
                     <view class="xzs">勋章数：0</view>
                 </view>
             </view>
             <view class="levelInfo">
-                <view class="level">LV.1</view>
+                <view class="level">LV.{{ levelInfo.level || 1 }}</view>
                 <view class="tips">达到5/9/10级解锁特殊勋章</view>
                 <view class="flex1"></view>
                 <view class="gap">
-                    <text class="gap1">555</text>
-                    <text class="gap2">/888</text>
+                    <text class="gap1">{{ levelInfo.exp || 0 }}</text>
+                    <text class="gap2">/{{ expAll }}</text>
                 </view>
                 <view class="rightIcon"></view>
             </view>
             <view class="expWrap">
-                <view class="expWrap_show" :style="{ width: '20%' }"></view>
+                <view class="expWrap_show" :style="{ width: `${((levelInfo.exp || 0) * 100) / expAll}%` }"></view>
             </view>
         </view>
         <view class="taskContainer">
@@ -110,8 +112,18 @@ export default class ClassName extends BaseNode {
     navHeight = uni.upx2px(88)
     signInDay: number = 0
     taskList: any = []
+    levelInfo: any = {}
+    userInfo: any = {}
     onLoad(query: any) {
-        this.reqTaskList()
+        app.user.getUserInfo().then((userinfo: any) => {
+            this.userInfo = userinfo
+            this.reqNewData()
+            this.reqTaskList()
+        })
+
+    }
+    public get expAll() {
+        return (this.levelInfo.exp || 0) + (this.levelInfo.nextExp || 0)
     }
     onClickTask(item: any) {
         if (!item.isSuccess) {
@@ -127,6 +139,7 @@ export default class ClassName extends BaseNode {
                 icon: "none"
             })
             app.platform.UINotificationFeedBack("success")
+            this.reqNewData()
             this.reqTaskList()
         })
     }
@@ -151,8 +164,9 @@ export default class ClassName extends BaseNode {
         })
     }
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi`, {}, (res: any) => {
-
+        app.http.Get(`dataApi/cardCircle/level/data`, {}, (res: any) => {
+            console.log(res);
+            this.levelInfo = res.data
         })
     }
 
@@ -166,9 +180,10 @@ page {
 
 .levelTopContainer {
     width: 750rpx;
-    height: 450rpx;
+    // height: 450rpx;
     background-size: 100% 100%;
     background-image: url("@/static/userinfo/v3/levelBanner.png");
+    padding-bottom: 95rpx;
 }
 
 .taskContainer {
@@ -223,6 +238,12 @@ page {
     background-size: 100% 100%;
     background-image: url("@/static/userinfo/v3/titleWrap.png");
     margin-top: 22rpx;
+}
+
+.level {
+    width: 67.8rpx;
+    height: 25rpx;
+    margin-left: 12rpx;
 }
 
 .topTabContainer {
@@ -373,6 +394,7 @@ page {
     overflow: hidden;
 
     .expWrap_show {
+        width: 0%;
         height: 10rpx;
         background: linear-gradient(90deg, #FA1545 0%, #5211AB 98%);
         border-radius: 5rpx;

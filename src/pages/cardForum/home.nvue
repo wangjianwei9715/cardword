@@ -157,6 +157,7 @@ import waterfalls from "./components/waterfalls.vue"
 import cardSkeleton from "./components/cardSkeleton.vue"
 import { releaseByTopic, mockList } from "./func/index.js"
 import empty from "@/components/empty/empty.vue"
+import {Md5} from "js-md5"
 const actionsList = [
     {
         name: "动态",
@@ -262,8 +263,8 @@ export default {
             await app.user.setViewerId()
             this.reqNewData(true)
         } catch (err) {
-            await this.initTab()
-            this.reqNewData(true)
+            // await this.initTab()
+            // this.reqNewData(true)
         }
     },
     beforeDestroy() {
@@ -522,8 +523,13 @@ export default {
                     ...query
                 }
                 if (isRefresh) {
-
+                    delete query.scrollId
+                    delete query.st
+                    delete query.sn
                     query.flush = 1
+                }
+                if (query.scrollId && query.st){
+                     query.sn=Md5.hashStr(`${query.st}_${query.scrollId}_scrollSearchTujian`)
                 }
             }
             const url = array.includes(this.current.tag) ? `dataApi/${this.current.url || "cardCircle/roll"}` : `dataApi/${this.current.url || "cardCircle/list"}`
@@ -538,6 +544,8 @@ export default {
                 })
                 // #endif
                 this.current.isFetchEnd = res.isFetchEnd
+                if (res.scrollId) this.current.queryParams.scrollId = res.scrollId
+                if (res.st) this.current.queryParams.st = res.st
                 if (isRefresh) {
                     this.current.list = []
                 }

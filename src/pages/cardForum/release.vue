@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-18 14:29:38
+ * @LastEditTime: 2023-07-18 17:26:44
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -38,43 +38,45 @@
         </view>
         <textarea :adjust-position="false" placeholderStyle="color: #3E3E3E;font-size:29rpx" v-model.trim="formData.content"
             :maxlength="3000" class="input_content" placeholder="分享一下您的球星卡收藏..（选填)"></textarea>
-        <view class="associationWrap" @click="showTopics = true">
-            <image class="ass_img" src="@/static/cardForum/release/topic.png" style="width: 30rpx;height:30rpx"></image>
-            <view class="ass_title">关联话题</view>
-            <view class="flex1"></view>
-            <view class="ass_right"></view>
-        </view>
-        <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll"
-            v-if="relatedTopics && relatedTopics.length">
-            <view class="topicScrollWrap">
-                <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in relatedTopics"
-                    :key="index">
-                    <text>{{ item.name }}</text>
-                    <text class="act" v-if="item.activity">活动</text>
+        <template v-if="formData.tp != 4">
+            <view class="associationWrap" @click="showTopics = true">
+                <image class="ass_img" src="@/static/cardForum/release/topic.png" style="width: 30rpx;height:30rpx"></image>
+                <view class="ass_title">关联话题</view>
+                <view class="flex1"></view>
+                <view class="ass_right"></view>
+            </view>
+            <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll"
+                v-if="relatedTopics && relatedTopics.length">
+                <view class="topicScrollWrap">
+                    <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in relatedTopics"
+                        :key="index">
+                        <text>{{ item.name }}</text>
+                        <text class="act" v-if="item.activity">活动</text>
+                    </view>
+                </view>
+            </scroll-view>
+            <view class="associationWrap" @click="showGoods = true" style="margin-top: 60rpx;">
+                <image class="ass_img" src="@/static/cardForum/release/goods.png" style="width: 30rpx;height:30rpx"></image>
+                <view class="ass_title">关联好物</view>
+                <view class="flex1"></view>
+                <view class="ass_right"></view>
+            </view>
+            <view class="haowuGoodsWrap" v-if="selectGoods.goodCode">
+                <view class="goodsItem flexCenter">
+                    <image class="pic" :src="$parsePic(decodeURIComponent(selectGoods.cover))"></image>
+                    <view class="goodsInfo u-line-2">{{ selectGoods.title }}</view>
+                    <view class="close" @click="selectGoods.goodCode = ''"></view>
                 </view>
             </view>
-        </scroll-view>
-        <view class="associationWrap" @click="showGoods = true" style="margin-top: 60rpx;">
-            <image class="ass_img" src="@/static/cardForum/release/goods.png" style="width: 30rpx;height:30rpx"></image>
-            <view class="ass_title">关联好物</view>
-            <view class="flex1"></view>
-            <view class="ass_right"></view>
-        </view>
-        <view class="haowuGoodsWrap" v-if="selectGoods.goodCode">
-            <view class="goodsItem flexCenter">
-                <image class="pic" :src="$parsePic(decodeURIComponent(selectGoods.cover))"></image>
-                <view class="goodsInfo u-line-2">{{ selectGoods.title }}</view>
-                <view class="close" @click="selectGoods.goodCode = ''"></view>
+            <view v-if="!code || (code && !hasVoteByCode)" class="associationWrap" @click="onClickVote"
+                style="border-bottom: 1rpx solid #3F3F3F;padding-bottom: 30rpx;">
+                <image class="ass_img" src="@/static/cardForum/release/vote.png" style="width: 30rpx;height:30rpx"></image>
+                <view class="ass_title">发起投票</view>
+                <view class="flex1"></view>
+                <view class="voteTitle">{{ formData.voteTitle }}</view>
+                <view class="ass_right"></view>
             </view>
-        </view>
-        <view v-if="!code || (code && !hasVoteByCode)" class="associationWrap" @click="onClickVote"
-            style="border-bottom: 1rpx solid #3F3F3F;padding-bottom: 30rpx;">
-            <image class="ass_img" src="@/static/cardForum/release/vote.png" style="width: 30rpx;height:30rpx"></image>
-            <view class="ass_title">发起投票</view>
-            <view class="flex1"></view>
-            <view class="voteTitle">{{ formData.voteTitle }}</view>
-            <view class="ass_right"></view>
-        </view>
+        </template>
         <view class="privateContainer" @click="onClickState">
             <view class="radio" v-if="formData.state === 1"></view>
             <view class="radio_check" v-if="formData.state === 2"></view>
@@ -117,7 +119,8 @@ enum State {
 enum Tp {
     Pic = 1,
     Video = 2,
-    Album = 3
+    Album = 3,
+    Medium = 4
 }
 const ADD_PIC_VIDEO = "图片或视频"
 const ADD_PIC = "添加图片"
@@ -194,6 +197,7 @@ export default class ClassName extends BaseNode {
     userId: number = 0
     submitLock: boolean = false
     hasVoteByCode: boolean = false
+    isRepost: boolean = false
     onLoad(query: any) {
         app.platform.hasLoginToken(() => {
             app.user.getUserInfo().then((userInfo: any) => {
@@ -482,6 +486,7 @@ export default class ClassName extends BaseNode {
             this.pics = res.data.url.split(",").map((item: any) => {
                 return item
             })
+            // if (this.formData.tp === 4) this.formData.tp = 1
             this.formData.state = res.data.state
             if (res.data.vote.voteTitle) this.hasVoteByCode = true
             this.setSelectTopics(res.data.topic)
@@ -847,7 +852,7 @@ page {
 .content {
     width: 750rpx;
     box-sizing: border-box;
-    padding:0 29rpx;
+    padding: 0 29rpx;
 }
 
 .insetBottom {
@@ -917,9 +922,8 @@ page {
     font-size: 29rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    height: 326rpx;
     margin-top: 24rpx;
-    height: 326rpx;
+    height: 513rpx;
     border: none;
     color: #ffffff;
     padding-bottom: 20rpx;
@@ -975,7 +979,7 @@ page {
 
     .topicItem {
         // width: 241rpx;
-        padding:0 29rpx;
+        padding: 0 29rpx;
         height: 50rpx;
         background: #1E1E1E;
         border-radius: 3rpx;
@@ -1039,7 +1043,8 @@ page {
     position: fixed;
     bottom: 0;
     width: inherit;
-    background-color: #111111;;
+    background-color: #111111;
+    ;
 
     .buttonWrap {
         display: flex;
@@ -1090,7 +1095,7 @@ page {
     width: 750rpx;
     margin-top: 10rpx;
     box-sizing: border-box;
-    padding:0 29rpx;
+    padding: 0 29rpx;
 
     .glTopic {
         color: #ff003d;
@@ -1105,7 +1110,7 @@ page {
 .privateContainer {
     width: 750rpx;
     box-sizing: border-box;
-    padding:0 29rpx;
+    padding: 0 29rpx;
     justify-content: flex-end;
     align-items: center;
     flex-wrap: nowrap;
@@ -1150,7 +1155,8 @@ page {
     font-size: 46rpx;
     font-weight: normal;
     font-style: normal;
-    color: #111111;;
+    color: #111111;
+    ;
     display: flex;
     align-items: center;
     justify-content: center;

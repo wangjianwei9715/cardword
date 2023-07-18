@@ -3,7 +3,7 @@
 
         <template v-if="viewWidth">
             <movable-area class="area" :style="{ height: areaHeight }" @mouseenter="mouseenter" @mouseleave="mouseleave">
-                <template v-if="type == 1">
+                <template v-if="type == 1 ||4">
                     <movable-view v-for="(item, index) in imageList" :key="item.id" class="view" direction="all" :y="item.y"
                         :x="item.x" :damping="40" :disabled="item.disable" @change="onChange($event, item)"
                         @touchstart="touchstart(item, $event)" @mousedown="touchstart(item)"
