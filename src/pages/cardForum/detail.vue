@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-17 11:46:06
+ * @LastEditTime: 2023-07-18 17:32:44
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -140,7 +140,7 @@
                                 <!-- <view class="time">{{ getDateDiff(son.created_at * 1000) }}</view> -->
 
                             </view>
-                            <view class="contentMsg">
+                            <view class="contentMsg" style="font-size: 27rpx;">
                                 <template v-if="son.replyUserName">
                                     回复
                                     <text class="replyName" style="color:#959695">{{ son.replyUserName }}</text>
@@ -186,21 +186,21 @@
                 <view class="toolsWrap">
                     <view class="toolsItem" @click="isPerson ? recGiftShow = true : rewardShow = true"
                         style="position: relative;bottom: 4rpx;">
-                        <image src="@/static/cardForum/gift.png" style="width:34rpx;height:37rpx" />
+                        <image src="@/static/cardForum/gift.png" style="width:37rpx;height:40rpx" />
                         <view class="num" style="position: relative;top: 5rpx;">打赏</view>
                     </view>
                     <view class="toolsItem" @click="$u.throttle(() => { onClickLike() }, 500)">
-                        <image v-if="!isLike" src="@/static/cardForum/detail_dz.png" style="width:38rpx;height:32rpx" />
-                        <image v-else src="@/static/cardForum/detail_dz_s.png" style="width:38rpx;height:32rpx" />
+                        <image v-if="!isLike" src="@/static/cardForum/detail_dz.png" style="width:41rpx;height:34rpx" />
+                        <image v-else src="@/static/cardForum/detail_dz_s.png"style="width:41rpx;height:34rpx" />
                         <view class="num">{{ formatNumber(forumDetail.likeNum || 0, 2, "en") }}</view>
                     </view>
                     <view class="toolsItem" @click="onClickFakerInput">
-                        <image src="@/static/cardForum/comm.png" style="width:35rpx;height:33rpx" />
+                        <image src="@/static/cardForum/comm.png" style="width:37rpx;height:35rpx" />
                         <view class="num">{{ formatNumber(forumDetail.commentNum || 0, 2, "en") }}</view>
                     </view>
                     <view class="toolsItem" @click="$u.throttle(() => { onClickCollect() }, 500)">
-                        <image v-if="!isCollection" src="@/static/cardForum/sc.png" style="width:36rpx;height:34rpx" />
-                        <image v-else src="@/static/cardForum/sc_s.png" style="width:36rpx;height:34rpx" />
+                        <image v-if="!isCollection" src="@/static/cardForum/sc.png" style="width:39rpx;height:36rpx" />
+                        <image v-else src="@/static/cardForum/sc_s.png" style="width:39rpx;height:36rpx" />
                         <view class="num">{{ formatNumber(forumDetail.collectNum || 0, 2, "en") }}</view>
                     </view>
                 </view>
@@ -1001,7 +1001,7 @@ export default class ClassName extends BaseNode {
 .contentContainer {
     width: 750rpx;
     box-sizing: border-box;
-    padding: 0rpx 21rpx;
+    padding: 0rpx 30rpx;
 
     .title {
         font-size: 33rpx;
@@ -1064,7 +1064,7 @@ export default class ClassName extends BaseNode {
         .fakerInput {
             width: 313rpx;
             height: 63rpx;
-            background: #EFEFEF;
+            background: #F5F5F5;
             border-radius: 3rpx;
             box-sizing: border-box;
             padding: 0 30rpx;
@@ -1098,7 +1098,7 @@ export default class ClassName extends BaseNode {
                 position: absolute;
                 font-size: 23rpx;
                 font-family: PingFang SC;
-                font-weight: 400;
+                font-weight: bold;
                 color: #333333;
                 line-height: 30rpx;
                 bottom: 0;
@@ -1228,7 +1228,7 @@ export default class ClassName extends BaseNode {
                     align-items: center;
 
                     .name {
-                        font-size: 25rpx;
+                        font-size: 29rpx;
                         font-family: PingFang SC;
                         font-weight: 400;
                         color: #636363;
@@ -1236,7 +1236,7 @@ export default class ClassName extends BaseNode {
                     }
 
                     .time {
-                        font-size: 21rpx;
+                        font-size: 25rpx;
                         font-family: PingFang SC;
                         font-weight: 400;
                         color: #AAAAAA;
@@ -1248,7 +1248,7 @@ export default class ClassName extends BaseNode {
                 }
 
                 .contentMsg {
-                    font-size: 25rpx;
+                    font-size: 29rpx;
                     font-family: PingFang SC;
                     font-weight: 400;
                     color: #333333;
@@ -1422,7 +1422,7 @@ export default class ClassName extends BaseNode {
 }
 
 .timeInfo {
-    font-size: 21rpx;
+    font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: 400;
     color: #AAAAAA;
@@ -1431,7 +1431,7 @@ export default class ClassName extends BaseNode {
     align-items: center;
 
     .num {
-        font-size: 21rpx;
+        font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #AAAAAA;
@@ -1439,8 +1439,8 @@ export default class ClassName extends BaseNode {
     }
 
     .dz {
-        width: 23rpx;
-        height: 23rpx;
+        width: 30rpx;
+        height: 25rpx;
         background-size: 100% 100%;
         background-image: url("@/static/act/portable/dz.png");
     }
