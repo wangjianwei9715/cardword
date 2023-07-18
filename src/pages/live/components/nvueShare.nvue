@@ -52,7 +52,7 @@ export default {
   },
   mounted() {
     if (this.report) {
-      this.operationData.push({ img: '/static/share/lianjie@2x.png', text: '举报', scene: '', emit: 'report' })
+      this.operationData.push({ img: '/static/share/report.png', text: '举报', scene: '', emit: 'report' })
     }
     // if (this.extra && this.extra.length) {
     //   this.operationData.push(...this.extra)

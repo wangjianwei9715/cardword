@@ -5,7 +5,7 @@
 				<view v-if="bucketName == 'trade'" class="header-likes" @click="onClickReadAll">一键已读</view>
 			</template>
 		</navigationbar>
-		<view class="dynamic-content" v-if="bucketName != 'social'">
+		<view class="dynamic-content" v-if="!['social', 'order'].includes(bucketName)">
 			<view class="dynamic-item" @click="onClickDynamic(index, item.pagePath, item.msgId)"
 				v-for="(item, index) in dynamicData" :key="item.msgId">
 				<view class="left">
@@ -41,6 +41,45 @@
 						class="interaction_pic"></muqian-lazyLoad>
 				</view>
 			</view>
+		</template>
+		<template v-if="bucketName == 'order'">
+			<view class="orderItem" v-for="(item, index) in dynamicData" @click="onClickInteraction(item)">
+				<view class="merWrap">
+					<muqian-lazyLoad borderRadius="50%" class="avatar"
+						:src="$parsePic(decodeURIComponent(item.merchant.logo))"></muqian-lazyLoad>
+					<view class="name">{{ item.merchant.name }}</view>
+					<view class="dot" v-if="!item.read"></view>
+				</view>
+				<view class="line"></view>
+				<view class="tipsWrap">
+					<view class="title">{{ item.title }}</view>
+					<view class="time">{{ $u.timeFrom(item.sendTime, "yyyy-mm-dd") }}</view>
+				</view>
+				<view class="goodsWrap">
+					<view class="content">{{ item.content }}</view>
+					<muqian-lazyLoad class="pic" :src="$parsePic(decodeURIComponent(item.goodPic))"
+						borderRadius="3rpx"></muqian-lazyLoad>
+				</view>
+			</view>
+			<!-- <view class="interaction" v-for="(item, index) in dynamicData" @click="onClickInteraction(item)">
+				<muqian-lazyLoad class="avatar"
+					:src="$parsePic(decodeURIComponent(item.avatar)) || app.defaultAvatar"></muqian-lazyLoad>
+				<view class="info">
+					<view class="name">{{ item.userName }}</view>
+					<view class="source">
+						{{ item.title }}
+						<text class="source_time">{{ $u.timeFrom(item.sendTime, "yyyy-mm-dd") }}</text>
+					</view>
+					<view class="info_content">{{ item.content }}</view>
+				</view>
+				<view class="rightInfo">
+					<view class="followButton flexCenter" @click.stop="onClickFollow(item)"
+						:class="{ followButton_dis: (followMap[item.followState] && followMap[item.followState].isFollow) }"
+						v-if="item.tp === 1">{{ followMap[item.followState] && followMap[item.followState].text }}</view>
+					<muqian-lazyLoad v-else :src="$parsePic(decodeURIComponent(item.pic))"
+						class="interaction_pic"></muqian-lazyLoad>
+				</view>
+			</view> -->
 		</template>
 	</view>
 </template>
@@ -228,10 +267,13 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
+page{
+	background-color: #f6f7fb;
+}
 .dynamic-content {
 	width: 100%;
 	box-sizing: border-box;
-	padding: 10rpx 0 0 0;
+	padding: 0rpx 0 0 0;
 	position: relative;
 	z-index: 2;
 }
@@ -244,7 +286,8 @@ export default class ClassName extends BaseNode {
 	padding: 10rpx 30rpx;
 	box-sizing: border-box;
 	background: #fff;
-	margin-bottom: 20rpx;
+	padding-bottom: 30rpx;
+	// margin-bottom: 20rpx;
 }
 
 .dynamic-item .left {
@@ -335,14 +378,19 @@ export default class ClassName extends BaseNode {
 }
 
 .interaction {
-	width: 690rpx;
+	width: 750rpx;
 	box-sizing: border-box;
 	display: flex;
 	padding-bottom: 36rpx;
 	border-bottom: 1rpx solid #E6E6E6;
 	// margin-bottom: 36rpx;
-	margin-top: 36rpx;
-
+	// margin-top: 36rpx;
+	
+	box-sizing: border-box;
+	padding: 0 30rpx;
+	padding-top: 36rpx;
+	padding-bottom: 36rpx;
+	background-color: #ffffff;
 	.avatar {
 		width: 73rpx;
 		height: 73rpx;
@@ -370,6 +418,7 @@ export default class ClassName extends BaseNode {
 			font-weight: 400;
 			color: #333333;
 			margin-bottom: 20rpx;
+
 			.source_time {
 				font-size: 19rpx;
 				font-family: PingFang SC;
@@ -418,6 +467,89 @@ export default class ClassName extends BaseNode {
 			width: 91rpx;
 			height: 91rpx;
 			// background: #FA1545;
+		}
+	}
+}
+
+.orderItem {
+	width: 710rpx;
+	// height: 283px;
+	background: #FFFFFF;
+	border-radius: 3rpx;
+	box-sizing: border-box;
+	padding: 25rpx 35rpx 35rpx 34rpx;
+	margin-top: 20rpx;
+	.merWrap {
+		display: flex;
+		align-items: center;
+
+		.avatar {
+			width: 40rpx;
+			height: 40rpx;
+			border-radius: 50%;
+			margin-right: 10rpx;
+		}
+
+		.name {
+			font-size: 25rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #959695;
+			flex: 1;
+		}
+
+		.dot {
+			width: 13rpx;
+			height: 13rpx;
+			background: #FA1545;
+			border-radius: 50%;
+		}
+	}
+
+	.line {
+		height: 1rpx;
+		background-color: #E6E6E6;
+		margin-top: 16rpx;
+		margin-bottom: 23rpx;
+	}
+
+	.tipsWrap {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 14rpx;
+
+		.title {
+			font-size: 29rpx;
+			font-family: PingFang SC;
+			font-weight: bold;
+			color: #333333;
+		}
+
+		.time {
+			font-size: 21rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #C0C0C0;
+		}
+	}
+
+	.goodsWrap {
+		display: flex;
+
+		.content {
+			font-size: 25rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #333333;
+			flex:1;
+			margin-right: 10rpx;
+			// width: 500rpx;
+		}
+
+		.pic {
+			width: 117rpx;
+			height: 90rpx;
+			border-radius: 3rpx;
 		}
 	}
 }
