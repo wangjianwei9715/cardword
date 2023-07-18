@@ -46,7 +46,7 @@
 		}
 		mounted(){//挂载到实例上去之后调用
 			if(this.report){
-				this.operationData.push({ img: '/static/share/lianjie@2x.png', text: '举报', scene: '', emit: 'report' })
+				this.operationData.push({ img: '/static/share/report.png', text: '举报', scene: '', emit: 'report' })
 			}
 			if(this.extra&&this.extra.length){
 				this.operationData.push(...this.extra)
@@ -160,7 +160,7 @@
 		box-sizing: border-box;
 		border-top: 1px solid #F4F3F2;
 		transition: all 0.2s linear;
-		z-index:99;
+		z-index:802;
 		background:#fff
 	}
 	.operation-shadow{
@@ -169,7 +169,7 @@
 		position: fixed;
 		top:0;
 		left:0;
-		z-index: 88;
+		z-index: 801;
 		background: rgba(0, 0, 0, 0.5);
 	}
 	.operation-show{
