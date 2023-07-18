@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 16:30:57
+ * @LastEditTime: 2023-07-17 18:07:59
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,7 +12,7 @@
             <template v-slot:custom>
                 <view class="topTabContainer">
                     <view class="tab tab_select">卡圈等级</view>
-                    <view class="tab">勋章</view>
+                    <view class="tab" @click="onClickXz">勋章</view>
                 </view>
             </template>
         </transitionNav>
@@ -23,7 +23,7 @@
                 <view class="userInfo">
                     <view class="userNameWrap">
                         <view class="userName">爷就是拽</view>
-                        <view class="userTitle">这就是我的称号</view>
+                        <view class="userTitle">大藏家</view>
                     </view>
                     <view class="xzs">勋章数：0</view>
                 </view>
@@ -128,6 +128,12 @@ export default class ClassName extends BaseNode {
             })
             app.platform.UINotificationFeedBack("success")
             this.reqTaskList()
+        })
+    }
+    onClickXz() {
+        uni.showToast({
+            title: "敬请期待",
+            icon: "none"
         })
     }
     reqTaskList() {

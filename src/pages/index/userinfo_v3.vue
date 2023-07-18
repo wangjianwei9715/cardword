@@ -1,7 +1,7 @@
 <template>
     <view class="content">
-        <transitionNav  :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)"
-            :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
+        <transitionNav :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)" :needRightTools="['设置']"
+            :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
             <view class="userInfo"
@@ -13,7 +13,7 @@
                     <view class="userInfo_name">
                         <text class="userInfo_name_text">{{ infoData.name }}</text>
                         <view class="userInfo_name_title" @click.stop="navigateTo(`/pages/userinfo/level`)">{{
-                            infoData.title || "碉堡" }}</view>
+                            infoData.title || "大藏家" }}</view>
                     </view>
                     <view class="userInfo_ip">
                         <text class="userInfo_ip_text">IP属地：{{ infoData.location || '未知' }}</text>
@@ -51,7 +51,7 @@
         </view>
         <view class="publicContainer uni-flex jb fp">
             <view class="menuItem" v-for="(item, key) in walletTab" @click="onClickFourTool(item)">
-                <image class="icon"></image>
+                <image class="icon" :src="item.pic" :style="item.style"></image>
                 <view class="label">{{ item.name }}</view>
                 <view class="num" v-if="key != 'kami'">{{ item.num }}</view>
                 <view class="rightIcon"></view>
@@ -261,10 +261,10 @@ export default class ClassName extends BaseNode {
         // cabinetCard:{id:3,name:'寄存柜',num:0,url:'/pages/userinfo/locker/fancy'}
     };
     walletTab: { [x: string]: any } = {
-        point: { id: 1, name: '卡币', num: 0, pic: '../../static/userinfo/v2/icon_tab_gold.png', url: '/pages/mall/mallIndex' },
-        coupon: { id: 2, name: '优惠券', num: 0, pic: '../../static/userinfo/v2/icon_tab_card.png', url: '/pages/userinfo/coupon/coupon' },
-        hitNo: { id: 3, name: '我的中卡', num: 0, pic: '../../static/userinfo/v2/icon_tab_card.png', url: '/pages/userinfo/winningCard/index' },
-        kami: { id: 4, name: '收赠卡密', num: 0, pic: '../../static/userinfo/v2/icon_tab_card.png', url: '/pages/userinfo/giving/index' }
+        point: { id: 1, name: '卡币', num: 0, pic: '../../static/userinfo/v3/kb.png', url: '/pages/mall/mallIndex', style: { width: "32rpx", height: "32rpx" } },
+        coupon: { id: 2, name: '优惠券', num: 0, pic: '../../static/userinfo/v3/coupon.png', url: '/pages/userinfo/coupon/coupon', style: { width: "32rpx", height: "26rpx" } },
+        hitNo: { id: 3, name: '我的中卡', num: 0, pic: '../../static/userinfo/v3/hitNo.png', url: '/pages/userinfo/winningCard/index', style: { width: "28rpx", height: "30rpx" } },
+        kami: { id: 4, name: '收赠卡密', num: 0, pic: '../../static/userinfo/v3/give.png', url: '/pages/userinfo/giving/index', style: { width: "30rpx", height: "30rpx" } }
     }
     orderTab: { [x: string]: any } = {
         toPay: { id: 1, name: '待支付', num: 0, pic: "../../static/userinfo/v3/wait_pay.png" },
@@ -334,7 +334,7 @@ export default class ClassName extends BaseNode {
         open: false,
         request: false
     }
-    navHeight: number = app.statusBarHeight+uni.upx2px(88)
+    navHeight: number = app.statusBarHeight + uni.upx2px(88)
     userInfo: any = {}
     onLoad(query: any) {
         this.onEventUI('updateToken', () => {
@@ -656,11 +656,11 @@ page {
     padding: 0 26rpx;
 
     .icon {
-        width: 39rpx;
-        height: 39rpx;
-        background: #FA1545;
-        border-radius: 50%;
-        margin-right: 15rpx;
+        // width: 39rpx;
+        // height: 39rpx;
+        // background: #FA1545;
+        // border-radius: 50%;
+        margin-right: 18rpx;
     }
 
     .label {
