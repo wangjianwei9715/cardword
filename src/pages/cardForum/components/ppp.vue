@@ -154,7 +154,7 @@ export default {
         },
         addText: {
             type: String,
-            default: "添加图片或视频"
+            default: "图片或视频"
         }
     },
     data() {
@@ -627,9 +627,11 @@ export default {
 .con {
     // padding: 30rpx;
     position: absolute;
-    width: 750rpx;
+    width: 690rpx;
     pointer-events: none;
-
+    box-sizing: border-box;
+    left: 0;right:0;margin:auto;
+    // padding: 0 20rpx;
     .area {
         width: 100%;
 
@@ -702,7 +704,7 @@ export default {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background-color: #151515;
+                background-color: #1E1E1E;
                 flex-direction: column;
 
                 text {
@@ -724,6 +726,7 @@ export default {
         bottom: -240rpx;
         background-color: #fa1545;
         z-index: 999;
+        left: 0;
         transition: bottom 0.3s linear;
     }
 }

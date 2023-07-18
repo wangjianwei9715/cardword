@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-18 13:37:33
+ * @LastEditTime: 2023-07-18 14:29:38
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -54,7 +54,7 @@
                 </view>
             </view>
         </scroll-view>
-        <view class="associationWrap" @click="showGoods = true" style="margin-top: 40rpx;">
+        <view class="associationWrap" @click="showGoods = true" style="margin-top: 60rpx;">
             <image class="ass_img" src="@/static/cardForum/release/goods.png" style="width: 30rpx;height:30rpx"></image>
             <view class="ass_title">关联好物</view>
             <view class="flex1"></view>
@@ -119,7 +119,7 @@ enum Tp {
     Video = 2,
     Album = 3
 }
-const ADD_PIC_VIDEO = "添加图片或视频"
+const ADD_PIC_VIDEO = "图片或视频"
 const ADD_PIC = "添加图片"
 const ADD_COVER = "添加封面"
 const navHeight: any = app.statusBarHeight + uni.upx2px(88)
@@ -847,7 +847,7 @@ page {
 .content {
     width: 750rpx;
     box-sizing: border-box;
-    padding: 0 20rpx;
+    padding:0 29rpx;
 }
 
 .insetBottom {
@@ -930,7 +930,7 @@ page {
     display: flex;
     align-items: center;
     width: 100%;
-    margin-top: 28rpx;
+    margin-top: 61rpx;
 
     .ass_img {
         display: block;
@@ -975,7 +975,7 @@ page {
 
     .topicItem {
         // width: 241rpx;
-        padding: 0 20rpx;
+        padding:0 29rpx;
         height: 50rpx;
         background: #1E1E1E;
         border-radius: 3rpx;
@@ -1000,7 +1000,7 @@ page {
     .goodsItem {
         width: 466rpx;
         height: 103rpx;
-        background: #151515;
+        background: #1e1e1e;
         border-radius: 3rpx;
         box-sizing: border-box;
         padding: 10rpx 22rpx 10rpx 11rpx;
@@ -1090,7 +1090,7 @@ page {
     width: 750rpx;
     margin-top: 10rpx;
     box-sizing: border-box;
-    padding: 0 20rpx;
+    padding:0 29rpx;
 
     .glTopic {
         color: #ff003d;
@@ -1105,7 +1105,7 @@ page {
 .privateContainer {
     width: 750rpx;
     box-sizing: border-box;
-    padding: 0 20rpx;
+    padding:0 29rpx;
     justify-content: flex-end;
     align-items: center;
     flex-wrap: nowrap;
