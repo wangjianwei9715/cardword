@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-18 17:23:06
+ * @LastEditTime: 2023-07-18 18:10:39
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -335,8 +335,8 @@ page {
     align-items: center;
     padding: 0 42rpx 0 36rpx;
     margin-top: 37rpx;
-
     .level {
+        height: 34rpx;
         font-size: 29rpx;
         font-family: PingFang SC;
         font-weight: bold;
