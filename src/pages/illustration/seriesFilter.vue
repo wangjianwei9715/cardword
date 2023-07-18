@@ -44,7 +44,7 @@
 			</scroll-view>
 			<view class="bottom-btn-box">
 				<view class="btn-clear" @click="onClickClearAll()">清空</view>
-				<view class="btn-confirm" @click="onClickConfirm()">确定（共{{selectList.length}}条List）</view>
+				<view class="btn-confirm" @click="onClickConfirm()">确定（共{{selectList.length}}条）</view>
 			</view>
 		</view>
 	</view>

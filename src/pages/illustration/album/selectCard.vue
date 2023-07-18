@@ -3,13 +3,13 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-14 14:37:41
+ * @LastEditTime: 2023-07-18 15:41:53
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="album-card-content">
-		<view class="tips">请尽可能添加您想收集的整套卡组LIST，以便查看收集进度</view>
+		<view class="tips">请尽可能添加您想收集的整套卡组，以便查看收集进度</view>
 		<view class="series-box" v-for="(item,index) in selectSeries" :key="index">
 			<view class="header">
 				<view class="title">{{item.name}}</view>

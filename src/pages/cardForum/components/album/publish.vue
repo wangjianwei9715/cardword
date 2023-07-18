@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-17 11:06:39
+ * @LastEditTime: 2023-07-18 16:22:10
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -17,15 +17,19 @@
 					<muqian-lazyLoad class="pic" mode="aspectFit" :src="decodeURIComponent(coverPic)" />
 				</view>
 				<muqian-lazyLoad v-for="(item,index) in hasPicList" :key="index" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
+				<view class="upload" @click="onClickGoPicUpload" v-show="(code||draftId)&&hasPicList.length<=2">
+					<view class="icon-add"></view>
+					<view class="upload-content">添加图片</view>
+				</view>
 			</scroll-view>
-			<view class="edit-box" v-if="code||draftId" @click="onClickGoPicUpload">修改图片</view>
+			<view class="edit-box" v-show="(code||draftId)&&hasPicList.length>2" @click="onClickGoPicUpload">修改图片</view>
 		</view>
 		<view class="percent">当前收集进度：{{percentMsg}}</view>
 		<view class="prove">
 			<muqian-lazyLoad v-if="provePic" @click="changeProve()" class="pic" mode="aspectFit" :src="decodeURIComponent(provePic)" />
 			<view class="upload" v-else @click="changeProve()">
 				<view class="icon-add"></view>
-				<view class="content">上传证明</view>
+				<view class="upload-content">上传证明</view>
 			</view>
 			<view class="msg">*卡册为玩家玩家打造优质的个人收藏展示，请上传相关证明图片（如卡世界id与卡片共同拍摄、手持卡片等）</view>
 		</view>
@@ -300,7 +304,9 @@
 	}
 	.scroll{
 		width: 100%;
+		height: 162rpx;
 		white-space: nowrap;
+		
 	}
 	.cover-box{
 		width: 162rpx;
@@ -310,20 +316,20 @@
 		display: inline-flex;
 		margin-right: 14rpx;
 		.tip{
-			width: 51rpx;
-			height: 25rpx;
+			width: 60rpx;
+			height: 32rpx;
 			background: #FA1545;
 			border-radius: 3rpx;
 			position: absolute;
 			left:0;
 			top:0;
 			z-index: 2;
-			font-size: 17rpx;
+			font-size: 21rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
 			color: #FFFFFF;
 			text-align: center;
-			line-height: 25rpx;
+			line-height: 32rpx;
 		}
 		.pic{
 			margin-right: 0 !important;
@@ -352,7 +358,7 @@
 		width: 162rpx;
 		height: 162rpx;
 		border-radius: 3rpx;
-		margin-right: 14rpx;
+		margin-right: 9rpx;
 		display: inline-flex;
 	}
 	.percent{
@@ -378,30 +384,33 @@
 			color: #707070;
 			margin-top: 23rpx;
 		}
-		.upload{
-			width: 162rpx;
-			height: 162rpx;
-			background: #3F3F3F;
-			border-radius: 3rpx;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-wrap: wrap;
-			padding:40rpx 0;
-			box-sizing: border-box;
-			.icon-add{
-				width: 43rpx;
-				height:43rpx;
-				background: url(@/static/cardForum/addImage_gray.png) no-repeat center /100% 100%;
-			}
-			.content{
-				width: 100%;
-				text-align: center;
-				font-size: 21rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
-				color: #8D8D8D;
-			}
+	}
+	.upload{
+		width: 162rpx;
+		height: 162rpx;
+		background: #1E1E1E;
+		border-radius: 3rpx;
+		position: relative;
+		display: inline-block;
+		.icon-add{
+			width: 43rpx;
+			height:43rpx;
+			background: url(@/static/cardForum/addImage_gray.png) no-repeat center /100% 100%;
+			position: absolute;
+			left:50%;
+			margin-left:-21.5rpx;
+			top:44rpx;
+		}
+		.upload-content{
+			width: 100%;
+			text-align: center;
+			font-size: 21rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #3E3E3E;
+			position: absolute;
+			bottom: 43rpx;
+			left:0
 		}
 	}
 }
