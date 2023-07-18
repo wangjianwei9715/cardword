@@ -13,7 +13,7 @@
                 <view class="titleWrap">
                     <text class="title">{{ item.name }}</text>
                     <text class="act" v-if="item.activity && !old">活动</text>
-                    <text class="act" v-if="old && item.isMy">活动</text>
+                    <text class="act" v-if="old && item.isMy">我参与的</text>
                 </view>
                 <!-- #ifdef APP-NVUE -->
                 <text class="desc">{{ item.intro }}</text>
@@ -179,7 +179,7 @@ export default {
 }
 
 .act {
-    width: 71rpx;
+    // width: 71rpx;
     height: 32rpx;
     background: #FA1545;
     border-radius: 3rpx;
@@ -189,6 +189,7 @@ export default {
     font-weight: 400;
     color: #FFFFFF;
     line-height: 32rpx;
+    padding: 0 10rpx;
 }
 
 .bottomInfo {
