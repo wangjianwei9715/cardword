@@ -33,6 +33,8 @@
 			empty:false,
 			scrollId:''
 		}
+		minResultTime:number=0
+		newNum:number=0
 		onLoad(query:any) {
 			this.reqNewData();
 		}
@@ -55,6 +57,10 @@
 			if(params.scrollId!='')	pageParams.scrollId = params.scrollId
 			
 			app.http.Get('me/hitNo/list', pageParams, (data: any) => {
+				if(data.minResultTime){
+					this.minResultTime=data.minResultTime
+					this.newNum=data.newCount
+				}
 				params.total = data.total;
 				params.empty = data.total == 0;
 				params.noMoreData = data.end;

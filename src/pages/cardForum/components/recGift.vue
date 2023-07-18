@@ -136,7 +136,7 @@ export default {
 
 .giftScroll {
     margin-top: 30rpx;
-    flex: 1;
+    height: 620rpx;
 }
 
 .vote_top {
