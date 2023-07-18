@@ -2,13 +2,16 @@
  * @FilePath: \jichao_app_2\src\pages\illustration\index.vue
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-14 12:00:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-18 11:49:11
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="content">
+		<transitionNav :showBack="false" :needIconShadow="false" :transition="false" title="图鉴">
+		</transitionNav>
+		<view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
 		<view class="hot">
 			<u-cell url="seriesSelect" title="热门图鉴" :titleStyle="titleStyle" :border="false">
 				<view slot="value" class="cell-value">全部图鉴<image class="cell-right" src="@/static/goods/v2/icon_right_new.png"/></view>
@@ -31,7 +34,7 @@
 					<u-cell :title="`${item.year} ${item.serie}`" :titleStyle="titleStyle" :border="false">
 						<view slot="value" class="cell-value">详细图鉴<image class="cell-right" src="@/static/goods/v2/icon_right_new.png"/></view>
 					</u-cell>
-					<view class="series-card u-line-2">{{item.name}}</view>
+					<view class="series-card u-line-1">{{item.name}}</view>
 				</view>
 			</view>
 			<view class="series-nolist">
@@ -57,8 +60,11 @@
 		fetchSize=10;
 		isFetchEnd=false
 	}
+	const navHeight: number = app.statusBarHeight + uni.upx2px(88)
 	@Component({})
 	export default class ClassName extends BaseNode {
+		navHeight = navHeight;
+		
 		parsePic = parsePic;
 		titleStyle = {
 			color:'#333',
@@ -123,6 +129,10 @@
 	page{
         background:#F6F7F8;
     }
+	.fakeTop {
+		opacity: 0;
+		pointer-events: none;
+	}
 	.content{
 		width: 100%;
 		padding:20rpx;
