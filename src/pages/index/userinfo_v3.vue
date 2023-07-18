@@ -12,16 +12,17 @@
                 <view class="userInfo_msg">
                     <view class="userInfo_name">
                         <text class="userInfo_name_text">{{ infoData.name }}</text>
-                        <view class="userInfo_name_title" @click.stop="navigateTo(`/pages/userinfo/level`)">{{
-                            infoData.title || "大藏家" }}</view>
+                        <image :style="infoData.level==10?{height:`34rpx`}:{}" @click.stop="navigateTo(`/pages/userinfo/level`)" class="level" :src="`/static/userinfo/v3/level/${infoData.level || 1}.png`"></image>
+                        <!-- <view class="userInfo_name_title" @click.stop="navigateTo(`/pages/userinfo/level`)">{{
+                            infoData.title || "大藏家" }}</view> -->
                     </view>
                     <view class="userInfo_ip">
                         <text class="userInfo_ip_text">IP属地：{{ infoData.location || '未知' }}</text>
                     </view>
                 </view>
             </view>
-            <view class="descWrap" v-if="userInfo.sign">
-                <text class="desc_text">{{ userInfo.sign }}</text>
+            <view class="descWrap" v-if="infoData.sign">
+                <text class="desc_text">{{ infoData.sign }}</text>
             </view>
             <view class="userDataWrap">
                 <view class="userData_data">
@@ -471,8 +472,11 @@ page {
     flex-direction: column;
     align-items: center;
     display: flex;
-    background-color: #333333;
-    padding-bottom: 71rpx;
+    // height: 541rpx;
+    background-size: 100% 100%;
+    background-image: url("@/static/userinfo/v3/banner.png");
+    // background-color: #333333;
+    padding-bottom: 41rpx;
     margin-bottom: 20rpx;
 }
 
@@ -496,7 +500,7 @@ page {
     display: flex;
     flex-direction: row;
     margin-top: 24rpx;
-    flex: 1;
+    // flex: 1;
     // background-color: red;
 }
 
@@ -536,7 +540,11 @@ page {
     font-weight: 500;
     color: #FFFFFF;
 }
-
+.level{
+    width: 67.8rpx;
+    height: 25rpx;
+    margin-left: 12rpx;
+}
 .userInfo_name_title {
     // width: 114rpx;
     height: 33rpx;
