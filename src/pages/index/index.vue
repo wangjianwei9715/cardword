@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-14 14:28:24
+ * @LastEditTime: 2023-07-18 18:03:27
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -61,6 +61,7 @@
 					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 6rpx'}"
 				></u-tabs>
 			</u-sticky>
+			<view class="bg-gradient"></view>
 			<goodsListSwiper ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index"/>
 		</view>
 		
@@ -292,6 +293,11 @@
 
 	page {
 		background: $content-bg
+	}
+	.bg-gradient{
+		width: 100%;
+		height:20rpx;
+		background: linear-gradient(to bottom, #fff, $content-bg);
 	}
 	.content {
 		width: 100%;
@@ -573,6 +579,5 @@
 	.goods-tabs{
 		width: 100%;
 		background:#fff;
-		margin-bottom: 20rpx;
 	}
 </style>
