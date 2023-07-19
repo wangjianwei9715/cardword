@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-19 15:33:52
+ * @LastEditTime: 2023-07-19 15:36:50
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -43,7 +43,8 @@
                 <view class="rightIcon"></view>
             </view>
             <view class="expWrap">
-                <view class="expWrap_show" :style="{ width: `${((levelInfo.exp || 0) * 100) / levelInfo.nextExp}%` }"></view>
+                <view class="expWrap_show" :style="{ width: `${((levelInfo.exp || 0) * 100) / levelInfo.nextExp}%` }">
+                </view>
             </view>
         </view>
         <view class="taskContainer">
@@ -78,11 +79,15 @@
                 <view class="title">限定任务</view>
                 <view class="titleTip">限时开放</view>
             </view>
-            <view class="limitTitle" style="margin-bottom: 16rpx;">每篇动态/卡册被评论</view>
+            <view class="limitTitle" style="margin-bottom: 16rpx;">
+                <text>每篇动态/卡册被评论</text>
+            </view>
             <view class="someText" v-for="(item) in limitedOne">
                 {{ item }}
             </view>
-            <view class="limitTitle" style="margin-bottom: 16rpx;margin-top: 30rpx;">每篇动态/卡册被点赞</view>
+            <view class="limitTitle" style="margin-bottom: 16rpx;margin-top: 30rpx;">
+                <text>每篇动态/卡册被点赞</text>
+            </view>
             <view class="someText" v-for="(item) in limiteTwo">
                 {{ item }}
             </view>
@@ -91,6 +96,7 @@
             <text>查看详细规则</text>
             <image src="@/static/cardForum/level_icon.png"></image>
         </view>
+        <view class="bottomSafeArea"></view>
     </view>
 </template>
 
@@ -257,17 +263,22 @@ page {
 .limitTitle {
     width: 334rpx;
     height: 52rpx;
-    font-size: 25rpx;
-    font-family: PingFang SC;
-    font-weight: bold;
+
     box-sizing: border-box;
     padding-left: 35rpx;
     // padding-top: 5rpx;
     color: #FFFFFF;
     background-size: 100% 100%;
-    line-height: 33rpx;
+
     background-image: url("@/static/userinfo/v3/titleWrap.png");
     margin-top: 22rpx;
+    vertical-align: top;
+    text {
+        line-height: 33rpx;
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+    }
 }
 
 .level {
