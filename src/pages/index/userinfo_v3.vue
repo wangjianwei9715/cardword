@@ -57,6 +57,7 @@
                 <image class="icon" :src="item.pic" :style="item.style"></image>
                 <view class="label">{{ item.name }}</view>
                 <view class="num" v-if="key != 'kami'">{{ item.num }}</view>
+                <view class="num" v-else>前往</view>
                 <view class="rightIcon"></view>
             </view>
         </view>
