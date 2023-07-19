@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-19 11:55:46
+ * @LastEditTime: 2023-07-19 18:01:16
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,15 +21,16 @@
                     <view class="topName u-line-1">{{ forumDetail.userName || "获取中" }}</view>
                 </view>
                 <view class="flex1"></view>
-                <view class="follow flexCenter" v-if="!isPerson" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{
+                <view class="follow flexCenter"  v-if="!isPerson" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{
                     isFollow ? '已关注'
                     : '关注' }}</view>
                 <!-- v-if="!isPerson"
                 v-if="isPerson" -->
                 <view @click="actionSheetShow = true" v-if="isPerson" style="margin-right: 20rpx;">
-                    <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>
+                    <u-icon size="46rpx" color="#464646" name="more-dot-fill"></u-icon>
                 </view>
-                <u-icon name="share-square" color="#6c6969" size="28" @click="operationShow = true"></u-icon>
+                <image src="/static/goods/v2/icon_share.png" style="width:38rpx;height:38rpx"></image>
+                <!-- <u-icon name="share-square" color="#6c6969" size="28" @click="operationShow = true"></u-icon> -->
                 <!-- <view @click="actionSheetShow = true" v-if="isMy">
                     <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>
                 </view> -->
@@ -190,8 +191,8 @@
                 <view class="toolsWrap">
                     <view class="toolsItem" @click="isPerson ? recGiftShow = true : rewardShow = true"
                         style="position: relative;bottom: 4rpx;">
-                        <image src="@/static/cardForum/gift.png" style="width:37rpx;height:40rpx" />
-                        <view class="num" style="position: relative;top: 5rpx;">打赏</view>
+                        <image src="@/static/cardForum/gift.png" style="width:37rpx;height:40rpx;transform: scale(1.15);" />
+                        <view class="num" style="position: relative;top: 8rpx;font-size: 21rpx;">打赏</view>
                     </view>
                     <view class="toolsItem" @click="$u.throttle(() => { onClickLike() }, 500)">
                         <image v-if="!isLike" src="@/static/cardForum/detail_dz.png" style="width:41rpx;height:34rpx" />
@@ -869,13 +870,14 @@ export default class ClassName extends BaseNode {
 }
 
 .follow {
-    width: 128rpx;
-    height: 50rpx;
+    width: 120rpx;
+    height: 48rpx;
     background: #FA1545;
     border-radius: 3rpx;
-    font-size: 29rpx;
+    font-size: 28rpx;
     margin-right: 34rpx;
     font-family: PingFang SC;
+    border-radius: 5rpx;
     font-weight: bold;
     color: #FFFFFF;
 }
@@ -1009,10 +1011,10 @@ export default class ClassName extends BaseNode {
 .contentContainer {
     width: 750rpx;
     box-sizing: border-box;
-    padding: 0rpx 30rpx;
+    padding: 0rpx 32rpx;
 
     .title {
-        font-size: 33rpx;
+        font-size: 34rpx;
         font-family: PingFang SC;
         font-weight: bold;
         color: #333333;
@@ -1023,11 +1025,11 @@ export default class ClassName extends BaseNode {
 
     .desc {
         width: 100%;
-        font-size: 29rpx;
+        font-size: 31rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
-        line-height: 33rpx;
+        line-height: 50rpx;
         letter-spacing: 2rpx;
         text-align: left;
         white-space: pre-wrap;
@@ -1044,7 +1046,7 @@ export default class ClassName extends BaseNode {
     }
 
     .line {
-        width: 662rpx;
+        width: 686rpx;
         height: 1rpx;
         background: #E8E8E8;
     }
@@ -1070,18 +1072,19 @@ export default class ClassName extends BaseNode {
         align-items: center;
 
         .fakerInput {
-            width: 313rpx;
-            height: 63rpx;
+            width: 305rpx;
+            height: 67rpx;
             background: #F5F5F5;
             border-radius: 3rpx;
             box-sizing: border-box;
             padding: 0 30rpx;
-            line-height: 63rpx;
+            line-height: 67rpx;
+            border-radius: 5rpx;
             // display: flex;
             // align-items: center;
             font-size: 25rpx;
             font-family: PingFang SC;
-            margin-right: 30rpx;
+            margin-right: 50rpx;
             font-weight: 400;
             overflow: hidden;
             color: #88878C;
@@ -1109,7 +1112,7 @@ export default class ClassName extends BaseNode {
                 font-weight: bold;
                 color: #333333;
                 line-height: 30rpx;
-                bottom: 0;
+                bottom: -5rpx;
                 white-space: nowrap;
             }
         }
@@ -1188,7 +1191,7 @@ export default class ClassName extends BaseNode {
     margin-bottom: 30rpx;
     width: inherit;
     box-sizing: border-box;
-    padding: 0 21rpx;
+    padding: 0 32rpx;
 }
 
 .commentNum {
@@ -1236,7 +1239,7 @@ export default class ClassName extends BaseNode {
                     align-items: center;
 
                     .name {
-                        font-size: 29rpx;
+                        font-size: 27rpx;
                         font-family: PingFang SC;
                         font-weight: 400;
                         color: #636363;
@@ -1256,7 +1259,7 @@ export default class ClassName extends BaseNode {
                 }
 
                 .contentMsg {
-                    font-size: 29rpx;
+                    font-size: 27rpx;
                     font-family: PingFang SC;
                     font-weight: 400;
                     color: #333333;
@@ -1430,7 +1433,7 @@ export default class ClassName extends BaseNode {
 }
 
 .timeInfo {
-    font-size: 25rpx;
+    font-size: 24rpx;
     font-family: PingFang SC;
     font-weight: 400;
     color: #AAAAAA;
@@ -1439,7 +1442,7 @@ export default class ClassName extends BaseNode {
     align-items: center;
 
     .num {
-        font-size: 25rpx;
+        font-size: 24rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #AAAAAA;
@@ -1461,7 +1464,7 @@ export default class ClassName extends BaseNode {
 }
 
 .huifuText {
-    font-size: 23rpx;
+    font-size: 24rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #707070;

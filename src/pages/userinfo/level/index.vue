@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-19 15:48:23
+ * @LastEditTime: 2023-07-19 17:31:38
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -24,9 +24,9 @@
                 <view class="userInfo">
                     <view class="userNameWrap">
                         <view class="userName">{{ userInfo.userName }}</view>
-                        <image :style="levelInfo.level == 10 ? { height: `34rpx` } : {}" class="level"
+                        <image :style="levelInfo.level == 10 ? { height: `29rpx`,width:`58rpx` } : {}" class="level"
                             :src="`/static/userinfo/v3/level/${levelInfo.level || 1}.png`"></image>
-                        <!-- <image v-for="item in 10" :style="item == 10 ? { height: `34rpx` } : {}" class="level"
+                        <!-- <image v-for="item in 10" :style="item == 10 ? { height: `29rpx`,width:`58rpx` } : {}" class="level"
                             :src="`/static/userinfo/v3/level/${item || 1}.png`"></image> -->
                     </view>
                     <view class="xzs">勋章数：0</view>
@@ -335,6 +335,11 @@ page {
         display: flex;
         align-items: center;
         height: 42rpx;
+        flex-wrap: wrap;
+        .level{
+            width:56.37rpx;
+            height: 23rpx;
+        }
     }
 
     .userInfo {
