@@ -333,6 +333,8 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		width: 750rpx;
+		box-sizing: border-box;
 	}
 
 	[type="search"]::-webkit-search-decoration {

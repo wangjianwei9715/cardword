@@ -595,6 +595,7 @@ page {
     box-sizing: border-box;
     // #endif
     padding: 0 35rpx;
+    margin: 0 auto;
     margin-top: 60rpx;
     // justify-content: space-between;
 }
