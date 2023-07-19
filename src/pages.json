@@ -1,8 +1,8 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-18 11:48:55
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-19 10:15:46
  * @FilePath: \jichao_app_2\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,9 +18,9 @@
 				"app-plus": {
 					"bounce": "none", //关闭窗口回弹效果
 					"pullToRefresh": {
-                        "support": true,
-                        "style": "default"
-                    }
+						"support": true,
+						"style": "default"
+					}
 				}
 			}
 		},
@@ -214,7 +214,7 @@
 			"pullToRefresh": {
 				"style": "circle"
 			},
-			"scrollIndicator":"none"
+			"scrollIndicator": "none"
 		}
 	},
 	"tabBar": {
@@ -1364,9 +1364,31 @@
 					}
 				},
 				{
-					"path": "level",
+					"path": "level/index",
 					"style": {
 						"navigationStyle": "custom",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "level/rule",
+					"style": {
+						"navigationBarTitleText": "规则说明",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#F6F7FB", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
+						"backgroundColorBottom": "#F6F7FB" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+					}
+				},
+				{
+					"path": "level/details",
+					"style": {
+						"navigationBarTitleText": "阅卡值明细",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
@@ -1541,7 +1563,7 @@
 						"navigationBarTitleText": "卡册编号",
 						"enablePullDownRefresh": false,
 						"backgroundColorTop": "#000000", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
-						"backgroundColorBottom": "#000000"//底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
+						"backgroundColorBottom": "#000000" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
 					}
 				},
 				{

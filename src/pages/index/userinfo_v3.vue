@@ -12,7 +12,7 @@
                 <view class="userInfo_msg">
                     <view class="userInfo_name">
                         <text class="userInfo_name_text">{{ infoData.name }}</text>
-                        <image :style="infoData.level==10?{height:`34rpx`}:{}" @click.stop="navigateTo(`/pages/userinfo/level`)" class="level" :src="`/static/userinfo/v3/level/${infoData.level || 1}.png`"></image>
+                        <image :style="infoData.level==10?{height:`34rpx`}:{}" @click.stop="navigateTo(`/pages/userinfo/level/index`)" class="level" :src="`/static/userinfo/v3/level/${infoData.level || 1}.png`"></image>
                         <!-- <view class="userInfo_name_title" @click.stop="navigateTo(`/pages/userinfo/level`)">{{
                             infoData.title || "大藏家" }}</view> -->
                     </view>

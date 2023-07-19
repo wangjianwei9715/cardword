@@ -5,7 +5,7 @@
 				<view v-if="bucketName == 'trade'" class="header-likes" @click="onClickReadAll">一键已读</view>
 			</template>
 		</navigationbar>
-		<view class="dynamic-content" v-if="!['social', 'order'].includes(bucketName)">
+		<view class="dynamic-content" v-if="!['social', 'order','trade'].includes(bucketName)">
 			<view class="dynamic-item" @click="onClickDynamic(index, item.pagePath, item.msgId)"
 				v-for="(item, index) in dynamicData" :key="item.msgId">
 				<view class="left">
@@ -42,7 +42,7 @@
 				</view>
 			</view>
 		</template>
-		<template v-if="bucketName == 'order'">
+		<template v-if="bucketName == 'order' || bucketName=='trade'">
 			<view class="orderItem" v-for="(item, index) in dynamicData" @click="onClickInteraction(item)">
 				<view class="merWrap">
 					<muqian-lazyLoad borderRadius="50%" class="avatar"
