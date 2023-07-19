@@ -2,18 +2,21 @@
 import { Md5 } from 'ts-md5'
 import { app } from '@/app'
 // #endif
+const keywords = ['res_ksj', 'resources.ka-world.com','resources.social.ka-world.com'];
+const httpPattern = /http:\/\/(.*?)\//;
 /**
  * 图片特殊处理
  * @param src String 图片路径 
  * @returns String 图片路径
  */
 export function parsePic(src: string) {
-	if (!src) return ''
-	if (src.indexOf('res_ksj') == -1 && src.indexOf('resources.ka-world.com') == -1) return src
-	const httpUrl = src.indexOf('resources.ka-world.com') != -1 ? 'resources.ka-world.com' : 'res.ka-world.com'
+	if (!src) return '';
+	if(keywords.every((x:any)=> !src.includes(x))) return src;
+	const httpUrl = src.includes('res_ksj') ? 'res.ka-world.com': httpPattern.exec(src)?.[1]
 	const tsString = (Math.round(+new Date() / 1000)).toString(16).toUpperCase();
 	const noneOrigin = src.replace(/^http:\/\/[^/]+/, "");
-	const md5Key = Md5.hashStr(app.picEncryptionKey + noneOrigin + tsString)
+	const md5Key = Md5.hashStr(app.picEncryptionKey + noneOrigin + tsString);
+	
 	return `http://${httpUrl}/${md5Key}/${tsString}${noneOrigin}`
 }
 /**
