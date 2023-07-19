@@ -116,8 +116,10 @@
 		}
 		onClickReport(){
 			app.platform.hasLoginToken(()=>{
+				const { text } = this.noData;
+				const peer = text.peer.length>0? text.seqIndex : 0;
 				uni.navigateTo({
-					url:`/pages/illustration/report/error?code=${this.noCode}&point=${this.noData.text.point}`
+					url:`/pages/illustration/report/error?code=${this.noCode}&point=${text.point}&peer=${peer}`
 				})
 			})
 		}
@@ -211,14 +213,16 @@
                 content: '确认上传图鉴?',
                 success: (res: any) => {
 					if(res.confirm){
-						app.http.Post(`cardIllustration/pictorial/upload/${this.noCode}/authorize`,{},(res:any)=>{
+						const { seqIndex } = this.noData.text;
+						const peer = seqIndex>0 ? `/peer/to/${seqIndex}` : '';
+						app.http.Post(`cardIllustration/pictorial/upload/${this.noCode}${peer}/authorize`,{},(res:any)=>{
 							if(res.token){
 								const params = {
 									token:res.token,
 									frontPic:decodeURIComponent(this.frontPic),
 									backPic:decodeURIComponent(this.backPic)||""
 								}
-								app.http.Post(`cardIllustration/pictorial/upload/${this.noCode}`,params,(res:any)=>{
+								app.http.Post(`cardIllustration/pictorial/upload/${this.noCode}${peer}`,params,(res:any)=>{
 									uni.showToast({
 										title:'提交成功,请等待审核',
 										icon:'none'
