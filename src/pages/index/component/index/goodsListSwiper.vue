@@ -41,6 +41,7 @@
 						uni.navigateTo({ url:'/pages/login/login' })
 						return;
 					}
+					this.$emit('followed')
 					this.$set(this.goodsList, 0, { list:[], ...new ListParams()})
 				}
 				this.reqNewMainList()

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-18 18:03:27
+ * @LastEditTime: 2023-07-19 10:03:28
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -56,13 +56,13 @@
 				<indexHot :hot="hot" :broadCastList="broadCastList"/>
 			</view>
 			<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
-				<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs" 
+				<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
 					:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 6rpx'}"
 					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 6rpx'}"
 				></u-tabs>
 			</u-sticky>
 			<view class="bg-gradient"></view>
-			<goodsListSwiper ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index"/>
+			<goodsListSwiper ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index" @followed="checkFollowed"/>
 		</view>
 		
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
@@ -245,7 +245,9 @@
 		clickGoodsTabs({index}:any){
 			if(this.goodsTabCurrent == index) return;
 			this.goodsTabCurrent = index;
-			if(index==0 && this.goodsTabs[0].badge!.isDot){
+		}
+		checkFollowed(){
+			if(this.goodsTabs[0].badge!.isDot){
 				this.goodsTabs[0].badge!.isDot = false;
 				app.http.Post('me/fresh/followed_merchant_goods/light/turnoff',{})
 			}
