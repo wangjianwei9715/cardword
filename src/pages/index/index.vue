@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-19 16:22:46
+ * @LastEditTime: 2023-07-19 16:29:56
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -364,19 +364,19 @@
 		padding: 0;
 		background: #fff;
 		padding-top: 27rpx;
-		padding-bottom: 20rpx;
+		padding-bottom: 10rpx;
 	}
 
 	.tab-type {
 		width: 100%;
-		height:150rpx;
+		height:160rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 	}
 	.tab-swiper{
 		width: 100%;
-		height:150rpx;
+		height:160rpx;
 		padding:0 30rpx 10rpx 30rpx;
 		box-sizing: border-box;
 	}
@@ -412,7 +412,7 @@
 	}
 	.tab-index {
 		width: 130rpx;
-		height: 150rpx;
+		height: 160rpx;
 		display: flex;
 		align-items: flex-start;
 		position: relative;
@@ -425,15 +425,15 @@
 	}
 	.tab-img-content {
 		display: flex;
-		width: 120rpx;
-		height: 120rpx;
+		width: 130rpx;
+		height: 130rpx;
 		align-items: center;
 		justify-content: center;
 		position: relative;
 	}
 	.tabimg {
-		width: 120rpx;
-		height: 120rpx;
+		width: 130rpx;
+		height: 130rpx;
 	}
 	.tabtext {
 		width: 100%;
