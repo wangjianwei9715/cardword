@@ -20,12 +20,12 @@
 						</view>
 						<view class="right-list" v-if="item.id==1">
 							<view class="cardset-item u-line-2" :class="{'current-card':selectHasItem(card)}" v-for="(card,cindex) in item.list" :key="cindex" @click="onClickSelectItem(card,item)">{{card.name}}</view>
-							<u-loadmore :status="item.status" line @loadmore="loadmore(item)"/>
+							<u-loadmore :status="item.status" line @loadmore="loadmore(item)" loadmoreText="展开更多"/>
 						</view>
 
 						<view class="right-list" v-if="[2,3,4].includes(item.id)">
 							<view class="player-item u-line-1" :class="{'current-card':selectHasItem(card)}" v-for="(card,cindex) in item.list" :key="cindex" @click="onClickSelectItem(card,item)">{{card.name}}</view>
-							<u-loadmore :status="item.status" line @loadmore="loadmore(item)"/>
+							<u-loadmore :status="item.status" line @loadmore="loadmore(item)" loadmoreText="展开更多"/>
 						</view>
 
 						<view class="right-list" v-if="[5,6].includes(item.id)">

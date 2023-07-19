@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-19 10:03:28
+ * @LastEditTime: 2023-07-19 16:29:56
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -57,8 +57,8 @@
 			</view>
 			<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
 				<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
-					:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 6rpx'}"
-					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 6rpx'}"
+					:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 0'}"
+					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
 				></u-tabs>
 			</u-sticky>
 			<view class="bg-gradient"></view>
@@ -364,19 +364,19 @@
 		padding: 0;
 		background: #fff;
 		padding-top: 27rpx;
-		padding-bottom: 20rpx;
+		padding-bottom: 10rpx;
 	}
 
 	.tab-type {
 		width: 100%;
-		height:150rpx;
+		height:160rpx;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 	}
 	.tab-swiper{
 		width: 100%;
-		height:150rpx;
+		height:160rpx;
 		padding:0 30rpx 10rpx 30rpx;
 		box-sizing: border-box;
 	}
@@ -412,7 +412,7 @@
 	}
 	.tab-index {
 		width: 130rpx;
-		height: 150rpx;
+		height: 160rpx;
 		display: flex;
 		align-items: flex-start;
 		position: relative;
@@ -425,15 +425,15 @@
 	}
 	.tab-img-content {
 		display: flex;
-		width: 120rpx;
-		height: 120rpx;
+		width: 130rpx;
+		height: 130rpx;
 		align-items: center;
 		justify-content: center;
 		position: relative;
 	}
 	.tabimg {
-		width: 120rpx;
-		height: 120rpx;
+		width: 130rpx;
+		height: 130rpx;
 	}
 	.tabtext {
 		width: 100%;
@@ -480,7 +480,7 @@
 	.header-search {
 		width: 614rpx;
 		height: 71rpx;
-		border: 3rpx solid #333333;
+		border: 4rpx solid #333333;
 		border-radius: 5rpx;
 		display: flex;
 		align-items: center;
