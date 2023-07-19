@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-19 10:03:28
+ * @LastEditTime: 2023-07-19 16:22:46
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -57,8 +57,8 @@
 			</view>
 			<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
 				<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
-					:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 6rpx'}"
-					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 6rpx'}"
+					:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 0'}"
+					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
 				></u-tabs>
 			</u-sticky>
 			<view class="bg-gradient"></view>
@@ -480,7 +480,7 @@
 	.header-search {
 		width: 614rpx;
 		height: 71rpx;
-		border: 3rpx solid #333333;
+		border: 4rpx solid #333333;
 		border-radius: 5rpx;
 		display: flex;
 		align-items: center;

@@ -23,11 +23,11 @@
 				</view>
 			</view>
 			<view class="bottom">
-				<navigator url="/pages/goods/goods_assign_list?type=cheap" hover-class="none" class="bottom-box">
+				<navigator url="/pages/goods/goods_assign_list?type=cheap" hover-class="none" class="bottom-box1">
 					<image class="p1" src="@/static/index/hot/p_1.png"/>
 					<image class="title1" src="@/static/index/hot/title_x.png"/>
 				</navigator>
-				<navigator url="/pages/goods/goods_progressRank" hover-class="none"  class="bottom-box">
+				<navigator url="/pages/goods/goods_progressRank" hover-class="none"  class="bottom-box2">
 					<image class="p2" src="@/static/index/hot/p_2.png"/>
 					<image class="title2" src="@/static/index/hot/title_j.png"/>
 				</navigator>
@@ -268,7 +268,13 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			.bottom-box{
+			.bottom-box1{
+				width: 217rpx;
+				height:176rpx;
+				background: url(@/static/index/hot/bg_4.png) no-repeat center / 100% 100%;
+				position: relative;
+			}
+			.bottom-box2{
 				width: 217rpx;
 				height:176rpx;
 				background: url(@/static/index/hot/bg_3.png) no-repeat center / 100% 100%;
