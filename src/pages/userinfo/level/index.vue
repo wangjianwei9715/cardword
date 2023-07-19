@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-19 10:24:28
+ * @LastEditTime: 2023-07-19 15:33:52
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -38,12 +38,12 @@
                 <view class="flex1"></view>
                 <view class="gap">
                     <text class="gap1">{{ levelInfo.exp || 0 }}</text>
-                    <text class="gap2">/{{ expAll }}</text>
+                    <text class="gap2">/{{ levelInfo.nextExp }}</text>
                 </view>
                 <view class="rightIcon"></view>
             </view>
             <view class="expWrap">
-                <view class="expWrap_show" :style="{ width: `${((levelInfo.exp || 0) * 100) / expAll}%` }"></view>
+                <view class="expWrap_show" :style="{ width: `${((levelInfo.exp || 0) * 100) / levelInfo.nextExp}%` }"></view>
             </view>
         </view>
         <view class="taskContainer">
@@ -137,9 +137,9 @@ export default class ClassName extends BaseNode {
         })
 
     }
-    public get expAll() {
-        return (this.levelInfo.exp || 0) + (this.levelInfo.nextExp || 0)
-    }
+    // public get expAll() {
+    //     return (this.levelInfo.exp || 0) + (this.levelInfo.nextExp || 0)
+    // }
     onClickTask(item: any) {
         if (!item.isSuccess) {
             uni.switchTab({
@@ -262,9 +262,10 @@ page {
     font-weight: bold;
     box-sizing: border-box;
     padding-left: 35rpx;
-    padding-top: 5rpx;
+    // padding-top: 5rpx;
     color: #FFFFFF;
     background-size: 100% 100%;
+    line-height: 33rpx;
     background-image: url("@/static/userinfo/v3/titleWrap.png");
     margin-top: 22rpx;
 }
