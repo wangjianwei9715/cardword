@@ -1,18 +1,15 @@
 <template>
     <view style="padding-bottom: calc(20rpx + env(safe-area-inset-bottom))">
-        <!-- <view class="menu uni-flex">
-            <view class="menu-item" @click="menuChange(item, index)" :class="{ selectItem: index == tagMenu.index }"
-                v-for='(item, index) in tagMenu.list' :key='index'>{{ item.name }}</view>
-        </view> -->
-        <view class="point" v-for="(item, index) in pointList" :key="index">
+        <view class="point" v-for="(item, index) in list" :key="index">
             <view class="point-left">
-                <view class="name">{{ item.name }}</view>
+                <view class="name">{{ item.content }}</view>
                 <view class="time">{{ dateFormatMSHMS(item.created_at) }}</view>
             </view>
-            <view class="point-num" :style="{ color: item.point < 0 ? '#7AC04F' : '#EF3333' }">
-                {{ item.point > 0 ? `+${item.point}` : item.point }}</view>
+            <view class="point-num" :style="{ color: '#EF3333' }">
+                {{ item.exp }}
+            </view>
         </view>
-        <empty v-if='!pointList.length' />
+        <empty v-if='!list.length' />
     </view>
 </template>
 <script lang="ts">
@@ -23,56 +20,47 @@ import { dateFormatMSHMS } from "@/tools/util";
 @Component({})
 export default class ClassName extends BaseNode {
     dateFormatMSHMS: any = dateFormatMSHMS
-    tagMenu: any = {
-        index: 0,
-        list: [{
-            name: '全部',
-            value: 100
-        }, {
-            name: '收入',
-            value: 1
-        }, {
-            name: '支出',
-            value: 2
-        }]
-    };
+    // tagMenu: any = {
+    //     index: 0,
+    //     list: [{
+    //         name: '全部',
+    //         value: 100
+    //     }, {
+    //         name: '收入',
+    //         value: 1
+    //     }, {
+    //         name: '支出',
+    //         value: 2
+    //     }]
+    // };
     queryParams: any = {
-        pageIndex: 1,
-        pageSize: 20,
-        tp: 100//100 全部，1 收入，2 支出
+        fetchFrom: 1,
+        fetchSize: 15,
     };
+    isFetchEnd: boolean = true
     totalPage: number = 0;
+    list: any = []
     pointList: any = [];
     onLoad(query: any) {
         this.reqNewData()
     }
-    onPullDownRefresh() {
-        this.queryParams.pageIndex = 1
-        this.reqNewData(() => {
-            setTimeout(() => {
-                uni.stopPullDownRefresh()
-            }, 500)
-        })
-    }
     onReachBottom() {
-        if (this.queryParams.pageIndex < this.totalPage) {
-            this.queryParams.pageIndex += 1
-            this.reqNewData()
-        }
-    }
-    menuChange(item: any, index: number) {
-        if (this.tagMenu.index == index) return
-        this.tagMenu.index = index
-        this.queryParams.tp = this.tagMenu.list[index].value
-        this.queryParams.pageIndex = 1
+        if (this.isFetchEnd) return
+        this.queryParams.fetchFrom += this.queryParams.fetchSize
         this.reqNewData()
     }
-    reqNewData(cb?: Function) {
-        app.http.Get('dataApi/point/log', this.queryParams, (res: any) => {
-            // this.totalPage = res.totalPage
-            // const reqList = res.list || []
-            // this.queryParams.pageIndex == 1 ? this.pointList = reqList : this.pointList.push(...reqList)
-            // cb && cb()
+    onPullDownRefresh() {
+        this.queryParams.fetchFrom = 1
+        this.reqNewData(() => {
+            uni.stopPullDownRefresh()
+        })
+    }
+    reqNewData(cb?: any) {
+        app.http.Get(`dataApi/cardCircle/exp/record`, this.queryParams, (res: any) => {
+            const list = res.list || []
+            this.isFetchEnd = res.isFetchEnd
+            this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
+            cb && cb()
         })
     }
 
