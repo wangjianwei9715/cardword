@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-19 18:01:16
+ * @LastEditTime: 2023-07-19 18:16:49
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,7 +21,7 @@
                     <view class="topName u-line-1">{{ forumDetail.userName || "获取中" }}</view>
                 </view>
                 <view class="flex1"></view>
-                <view class="follow flexCenter"  v-if="!isPerson" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{
+                <view class="follow flexCenter" v-if="!isPerson" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{
                     isFollow ? '已关注'
                     : '关注' }}</view>
                 <!-- v-if="!isPerson"
@@ -308,6 +308,7 @@ export default class ClassName extends BaseNode {
     private: boolean = false
     fromUserId: number = 0
     onLoad(query: any) {
+        delete this.queryParams.noteCommentId
         this.queryParams.fetchFrom = 1
         this.userBack = query.back == "true"
         this.private = query.private == "1"
