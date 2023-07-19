@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-18 17:32:44
+ * @LastEditTime: 2023-07-19 11:11:16
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -60,9 +60,13 @@
             <!-- <u-read-more :showHeight="180" closeText="全部" color="#000">
                 
             </u-read-more> -->
-            <view class="topicsContainer" v-if="forumDetail.topic && forumDetail.topic.length">
+            <view class="topicsContainer"
+                v-if="(forumDetail.topic && forumDetail.topic.length) || (forumDetail.merAt && forumDetail.merAt.length)">
                 <text v-for="item in forumDetail.topic"
                     @click.stop="pageJump(`/pages/cardForum/topics/detailPage?id=${item.topicId}`)">{{ item.topicName
+                    }}</text>
+                <text v-for="item in (forumDetail.merAt || [])"
+                    @click.stop="pageJump(`/pages/merchant/core?alias=${item.alias}`)">@{{ item.merName
                     }}</text>
             </view>
             <view class="haowuGoodsWrap" v-if="forumDetail.good && forumDetail.good.goodCode"
@@ -191,7 +195,7 @@
                     </view>
                     <view class="toolsItem" @click="$u.throttle(() => { onClickLike() }, 500)">
                         <image v-if="!isLike" src="@/static/cardForum/detail_dz.png" style="width:41rpx;height:34rpx" />
-                        <image v-else src="@/static/cardForum/detail_dz_s.png"style="width:41rpx;height:34rpx" />
+                        <image v-else src="@/static/cardForum/detail_dz_s.png" style="width:41rpx;height:34rpx" />
                         <view class="num">{{ formatNumber(forumDetail.likeNum || 0, 2, "en") }}</view>
                     </view>
                     <view class="toolsItem" @click="onClickFakerInput">
@@ -798,10 +802,11 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
-.content{
+.content {
     width: 750rpx;
     overflow-x: hidden;
 }
+
 .navBar {
     width: 750rpx;
     position: fixed;

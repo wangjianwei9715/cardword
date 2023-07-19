@@ -3,7 +3,7 @@
 
         <template v-if="viewWidth">
             <movable-area class="area" :style="{ height: areaHeight }" @mouseenter="mouseenter" @mouseleave="mouseleave">
-                <template v-if="type == 1 ||4">
+                <template v-if="type == 1 || 4">
                     <movable-view v-for="(item, index) in imageList" :key="item.id" class="view" direction="all" :y="item.y"
                         :x="item.x" :damping="40" :disabled="item.disable" @change="onChange($event, item)"
                         @touchstart="touchstart(item, $event)" @mousedown="touchstart(item)"
@@ -405,8 +405,16 @@ export default {
             this.onMove = false
             // console.log(this.viewWidth);
             if (event.changedTouches[0].clientY > 700) {
-                console.log("删除");
-                this.delImages(item, index)
+                if (this.type == 4) {
+                    uni.showToast({
+                        title: "中卡分享暂不可删除",
+                        icon: "none"
+                    })
+                } else {
+                    console.log("删除");
+                    this.delImages(item, index)
+                }
+
             }
             console.log(event.changedTouches[0]);
             // console.log(event.changedTouches[0].clientY,item);
@@ -630,7 +638,10 @@ export default {
     width: 690rpx;
     pointer-events: none;
     box-sizing: border-box;
-    left: 0;right:0;margin:auto;
+    left: 0;
+    right: 0;
+    margin: auto;
+
     // padding: 0 20rpx;
     .area {
         width: 100%;

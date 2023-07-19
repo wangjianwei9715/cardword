@@ -15,7 +15,8 @@
                     <cell>
                         <!-- #endif -->
                         <view class="vd-user">
-                            <image class="vd-avatar" :src="forumDetail.avatar?parsePic(decodeURIComponent(forumDetail.avatar)):defaultAvatar"
+                            <image class="vd-avatar"
+                                :src="forumDetail.avatar ? parsePic(decodeURIComponent(forumDetail.avatar)) : defaultAvatar"
                                 mode="aspectFill">
                             </image>
                             <view>
@@ -34,9 +35,13 @@
                                 :key="index">{{
                                     item }}</text>
                         </view>
-                        <view class="topicsContainer" v-if="forumDetail.topic && forumDetail.topic.length">
+                        <view class="topicsContainer"
+                            v-if="(forumDetail.topic && forumDetail.topic.length) || (forumDetail.merAt && forumDetail.merAt.length)">
                             <text @click="pageJump(`/pages/cardForum/topics/detail?id=${item.topicId}`)" class="topicsItem"
                                 v-for="item in forumDetail.topic">{{ item.topicName }}</text>
+                            <text v-for="item in (forumDetail.merAt || [])"
+                                @click.stop="pageJump(`/pages/merchant/core?alias=${item.alias}`)">@{{ item.merName
+                                }}</text>
                         </view>
                         <view class="haowuGoodsWrap" v-if="forumDetail.good && forumDetail.good.goodCode"
                             @click="app.navigateTo.goGoodsDetails(forumDetail.good.goodCode)">
@@ -219,7 +224,7 @@ export default {
     data() {
         return {
             app,
-            defaultAvatar:app.defaultAvatar,
+            defaultAvatar: app.defaultAvatar,
             sayContent: "",
             focus: false,
             queryParams,
