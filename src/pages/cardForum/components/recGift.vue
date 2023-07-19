@@ -181,6 +181,7 @@ export default {
     display: flex;
     border-bottom: 1rpx solid #E6E6E6;
     padding-bottom: 47rpx;
+    margin-bottom: 40rpx;
 
 
 
