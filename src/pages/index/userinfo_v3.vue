@@ -12,7 +12,9 @@
                 <view class="userInfo_msg">
                     <view class="userInfo_name">
                         <text class="userInfo_name_text">{{ infoData.name }}</text>
-                        <image :style="infoData.level==10?{height:`34rpx`}:{}" @click.stop="navigateTo(`/pages/userinfo/level/index`)" class="level" :src="`/static/userinfo/v3/level/${infoData.level || 1}.png`"></image>
+                        <image :style="infoData.level == 10 ? { height: `34rpx` } : {}"
+                            @click.stop="navigateTo(`/pages/userinfo/level/index`)" class="level"
+                            :src="`/static/userinfo/v3/level/${infoData.level || 1}.png`"></image>
                         <!-- <view class="userInfo_name_title" @click.stop="navigateTo(`/pages/userinfo/level`)">{{
                             infoData.title || "大藏家" }}</view> -->
                     </view>
@@ -74,7 +76,15 @@
         <view class="publicContainer moreToolsContainer">
             <view class="wrapTitle flex1" style="margin-bottom: 36rpx;">更多功能</view>
             <view class="moreToolsWrap uni-flex fp">
-                <view class="toolsItem" v-for="(item, index) in toolsTab" @click="onClickMoreTools(item)">
+                <view class="toolsItem" v-for="(item, index) in toolsTab.slice(0, 5)" @click="onClickMoreTools(item)">
+                    <view class="imageWrap">
+                        <image class="toolsItem_icon" :src="item.icon" :style="item.style"></image>
+                    </view>
+                    <view class="toolsItem_label">{{ item.name }}</view>
+                </view>
+            </view>
+            <view class="moreToolsWrap uni-flex fp">
+                <view class="toolsItem" v-for="(item, index) in toolsTab.slice(5, 6)" @click="onClickMoreTools(item)">
                     <view class="imageWrap">
                         <image class="toolsItem_icon" :src="item.icon" :style="item.style"></image>
                     </view>
@@ -540,11 +550,13 @@ page {
     font-weight: 500;
     color: #FFFFFF;
 }
-.level{
-    width: 67.8rpx;
-    height: 25rpx;
+
+.level {
+    width: 56.37rpx;
+    height: 23rpx;
     margin-left: 12rpx;
 }
+
 .userInfo_name_title {
     // width: 114rpx;
     height: 33rpx;
@@ -681,7 +693,7 @@ page {
     }
 
     .num {
-        font-size: 21rpx;
+        font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
         color: #959695;
@@ -718,15 +730,15 @@ page {
         }
 
         .title_tip {
-            font-size: 21rpx;
+            font-size: 25rpx;
             font-family: PingFang SC;
             font-weight: 400;
-            color: #959695;
+            color: #E6E6E6;
         }
     }
 
     .order_menuWrap {
-        padding: 0 22rpx;
+        // padding: 0 22rpx;
         justify-content: space-between;
         margin-top: 37rpx;
 
@@ -741,7 +753,7 @@ page {
             }
 
             &_label {
-                font-size: 21rpx;
+                font-size: 23rpx;
                 font-family: PingFang SC;
                 font-weight: 400;
                 color: #333333;
@@ -764,7 +776,7 @@ page {
     background: #FFFFFF;
     border-radius: 3rpx;
     box-sizing: border-box;
-    padding: 0 36rpx;
+    padding: 0 29rpx;
     padding-top: 35rpx;
     padding-bottom: 44rpx;
     margin-top: 20rpx;
@@ -773,15 +785,12 @@ page {
     .moreToolsWrap {
         // padding: 0 18rpx;
         flex-wrap: wrap;
+        justify-content: space-between;
 
         .toolsItem {
             display: flex;
             flex-direction: column;
             align-items: center;
-            // margin-right: 66rpx;
-            // background-color: rgba(0,0,0,.3);
-            width: 114rpx;
-            margin-right: 14rpx;
             margin-bottom: 70rpx;
 
             .imageWrap {
@@ -800,7 +809,7 @@ page {
             }
 
             &_label {
-                font-size: 21rpx;
+                font-size: 23rpx;
                 font-family: PingFang SC;
                 font-weight: 400;
                 color: #333333;
