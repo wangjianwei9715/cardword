@@ -21,7 +21,7 @@
             </u-popup>
             <view class="giveModal" v-if="show" :class="{ giveModal_show: showGive }">
                 <view
-                    style="width: 550rpx;background-color: #fff;display: flex;flex-direction: column;border-radius: 3rpx;">
+                    style="width: 600rpx;background-color: #fff;display: flex;flex-direction: column;border-radius: 5rpx;">
                     <text class="title">提示</text>
                     <text class="tips">确认赠送{{ nowSelectOption.num }}卡币</text>
                     <view class="userWrap">
@@ -242,12 +242,13 @@ export default {
     text-align: center;
     font-weight: bold;
     margin-top: 30rpx;
-    font-size: 30rpx;
+    font-size: 36rpx;
 }
 
 .tips {
     text-align: center;
-    font-size: 26rpx;
+    font-size:30rpx;
+    margin-top: 20rpx;
 }
 
 .userWrap {
@@ -284,14 +285,16 @@ export default {
 }
 
 .submit {
-    width: 230rpx;
-    height: 60rpx;
+    width: 250rpx;
+    height: 80rpx;
     color: #fff;
     background-color: #ff003d;
     border: 1rpx solid #ff003d;
     text-align: center;
     line-height: 60rpx;
-    font-size: 26rpx;
+    font-size: 30rpx;
+    border-radius: 5rpx;
+    font-weight: bold;
 }
 
 .submit_cancel {
