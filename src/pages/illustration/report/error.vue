@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-11 15:19:33
+ * @LastEditTime: 2023-07-19 14:48:49
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -65,9 +65,11 @@
 		frontPic="";
 		backPic="";
 		point = 0;
+		peer = 0;
 		onLoad(query: any) {
 			this.code = query.code;
-			this.point = query.point
+			this.point = query.point;
+			this.peer = query.peer
 		}
 		onClickRecord(){
 			uni.navigateTo({
@@ -109,7 +111,8 @@
 							frontPic:this.frontPic,
 							backPic:this.backPic
 						}
-						app.http.Post(`cardIllustration/err/${this.code}`,params,(res:any)=>{
+						const peerTo = this.peer>0? `/peer/to/${this.peer}` :''
+						app.http.Post(`cardIllustration/err/${this.code}${peerTo}`,params,(res:any)=>{
 							uni.showToast({
 								title:'提交成功'
 							});

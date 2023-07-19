@@ -258,7 +258,9 @@
 	page {
 		background: $content-bg;
 	}
-
+	.content{
+		width: 100%;
+	}
 	.header-banner {
 		width: 100%;
 		background: #fff;
