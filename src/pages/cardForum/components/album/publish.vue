@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-18 16:22:10
+ * @LastEditTime: 2023-07-19 17:27:34
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -296,6 +296,7 @@
 		align-items: center;
 		box-sizing: border-box;
 		margin-bottom: 20rpx;
+		margin-left: -29rpx;
 	}
 	.code-box{
 		width: 100%;
