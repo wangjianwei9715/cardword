@@ -5,7 +5,7 @@
 				<view v-if="bucketName == 'trade'" class="header-likes" @click="onClickReadAll">一键已读</view>
 			</template>
 		</navigationbar>
-		<view class="dynamic-content" v-if="!['social', 'order','trade'].includes(bucketName)">
+		<view class="dynamic-content" v-if="!['social', 'order', 'trade'].includes(bucketName)">
 			<view class="dynamic-item" @click="onClickDynamic(index, item.pagePath, item.msgId)"
 				v-for="(item, index) in dynamicData" :key="item.msgId">
 				<view class="left">
@@ -23,26 +23,34 @@
 		</view>
 		<template v-if="bucketName == 'social'">
 			<view class="interaction" v-for="(item, index) in dynamicData" @click="onClickInteraction(item)">
-				<muqian-lazyLoad class="avatar"
-					:src="$parsePic(decodeURIComponent(item.avatar)) || app.defaultAvatar"></muqian-lazyLoad>
-				<view class="info">
-					<view class="name">{{ item.userName }}</view>
-					<view class="source">
-						{{ item.title }}
-						<text class="source_time">{{ $u.timeFrom(item.sendTime, "yyyy-mm-dd") }}</text>
+				<view style="display: flex;width: 100%;">
+					<muqian-lazyLoad class="avatar"
+						:src="$parsePic(decodeURIComponent(item.avatar)) || app.defaultAvatar"></muqian-lazyLoad>
+					<view class="info">
+						<view class="name">{{ item.userName }}</view>
+						<view class="source">
+							{{ item.title }}
+							<text class="source_time">{{ $u.timeFrom(item.sendTime, "yyyy-mm-dd") }}</text>
+						</view>
+						<view class="info_content" v-if="item.tp != 5">{{ item.content }}</view>
+						<view class="info_content info_content_back" v-if="item.tp == 5">
+							{{ item.content }}
+							<text>点击查看</text>
+						</view>
 					</view>
-					<view class="info_content">{{ item.content }}</view>
+					<view class="rightInfo">
+						<view class="followButton flexCenter" @click.stop="onClickFollow(item)"
+							:class="{ followButton_dis: (followMap[item.followState] && followMap[item.followState].isFollow) }"
+							v-if="item.tp === 1">{{ followMap[item.followState] && followMap[item.followState].text }}
+						</view>
+						<muqian-lazyLoad v-else :src="$parsePic(decodeURIComponent(item.pic))"
+							class="interaction_pic"></muqian-lazyLoad>
+					</view>
 				</view>
-				<view class="rightInfo">
-					<view class="followButton flexCenter" @click.stop="onClickFollow(item)"
-						:class="{ followButton_dis: (followMap[item.followState] && followMap[item.followState].isFollow) }"
-						v-if="item.tp === 1">{{ followMap[item.followState] && followMap[item.followState].text }}</view>
-					<muqian-lazyLoad v-else :src="$parsePic(decodeURIComponent(item.pic))"
-						class="interaction_pic"></muqian-lazyLoad>
-				</view>
+				<view class="line"></view>
 			</view>
 		</template>
-		<template v-if="bucketName == 'order' || bucketName=='trade'">
+		<template v-if="bucketName == 'order' || bucketName == 'trade'">
 			<view class="orderItem" v-for="(item, index) in dynamicData" @click="onClickInteraction(item)">
 				<view class="merWrap">
 					<muqian-lazyLoad borderRadius="50%" class="avatar"
@@ -267,9 +275,10 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
-page{
+page {
 	background-color: #f6f7fb;
 }
+
 .dynamic-content {
 	width: 100%;
 	box-sizing: border-box;
@@ -380,17 +389,23 @@ page{
 .interaction {
 	width: 750rpx;
 	box-sizing: border-box;
-	display: flex;
+	// display: flex;
 	padding-bottom: 36rpx;
-	border-bottom: 1rpx solid #E6E6E6;
+	// border-bottom: 1rpx solid #E6E6E6;
 	// margin-bottom: 36rpx;
 	// margin-top: 36rpx;
-	
+
 	box-sizing: border-box;
 	padding: 0 30rpx;
 	padding-top: 36rpx;
 	padding-bottom: 36rpx;
 	background-color: #ffffff;
+	.line{
+		height: 1rpx;
+		width: 100%;
+		background-color: #E6E6E6;
+		margin-top: 47rpx;
+	}
 	.avatar {
 		width: 73rpx;
 		height: 73rpx;
@@ -434,8 +449,27 @@ page{
 			font-weight: 400;
 			text-align: left;
 			color: #333333;
-			width: 90%;
+			max-width: 90%;
 			white-space: pre-wrap;
+		}
+
+		.info_content_back {
+			padding: 10rpx;
+			// width: auto;
+			display: inline-block;
+			background-color: #F5F5F5;
+			font-size: 21rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #707070;
+
+			text {
+				margin-left: 10rpx;
+				font-size: 21rpx;
+				font-family: PingFang SC;
+				font-weight: bold;
+				color: #707070;
+			}
 		}
 	}
 
@@ -479,6 +513,7 @@ page{
 	box-sizing: border-box;
 	padding: 25rpx 35rpx 35rpx 34rpx;
 	margin-top: 20rpx;
+
 	.merWrap {
 		display: flex;
 		align-items: center;
@@ -541,7 +576,7 @@ page{
 			font-family: PingFang SC;
 			font-weight: 400;
 			color: #333333;
-			flex:1;
+			flex: 1;
 			margin-right: 10rpx;
 			// width: 500rpx;
 		}
