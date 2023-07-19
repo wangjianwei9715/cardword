@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-19 15:36:50
+ * @LastEditTime: 2023-07-19 15:48:23
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -61,7 +61,7 @@
 
                 <view class="taskRight" v-if="item.id === 1"
                     style="flex-direction: column;align-items: flex-end;display: flex;">
-                    <view class="signButton flexCenter" @click="onClickSign">{{ item.isSuccess ? "已签到" : '签到' }}</view>
+                    <view class="signButton flexCenter" @click="onClickSign(item.isSuccess)">{{ item.isSuccess ? "已签到" : '签到' }}</view>
                     <view class="tips">连续签到5天后翻倍，当前{{ signInDay }}天</view>
                 </view>
                 <view class="taskRight" v-if="item.id != 1" @click="onClickTask(item)">
@@ -158,7 +158,8 @@ export default class ClassName extends BaseNode {
             url
         })
     }
-    onClickSign() {
+    onClickSign(isSuccess:boolean) {
+        if(isSuccess) return
         app.http.Post("cardCircle/level/signIn", {}, () => {
             uni.showToast({
                 title: "签到成功",
