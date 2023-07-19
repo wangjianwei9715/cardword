@@ -51,6 +51,12 @@ const reportReasonMap: ReportReasonMap = {
     8192: "政治相关",
     1: "其他"
 }
+const reportMap: any = {
+    1: "举报卡册",
+    2: "举报动态",
+    3: "举报评论",
+    4: "举报用户"
+}
 @Component({})
 export default class ClassName extends BaseNode {
     code: string = ""
@@ -72,6 +78,9 @@ export default class ClassName extends BaseNode {
         query.source && (this.formData.source = +query.source)
         query.byInformer && (this.formData.byInformer = +query.byInformer)
         query.target && (this.formData.target = +query.target)
+        uni.setNavigationBarTitle({
+            title: reportMap[this.formData.source] || "举报"
+        })
     }
     onClickReason(bit: number): void {
         this.formData.tpBit ^= +bit

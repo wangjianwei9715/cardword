@@ -26,6 +26,8 @@
                         <view class="userName">{{ userInfo.userName }}</view>
                         <image :style="levelInfo.level == 10 ? { height: `34rpx` } : {}" class="level"
                             :src="`/static/userinfo/v3/level/${levelInfo.level || 1}.png`"></image>
+                        <!-- <image v-for="item in 10" :style="item == 10 ? { height: `34rpx` } : {}" class="level"
+                            :src="`/static/userinfo/v3/level/${item || 1}.png`"></image> -->
                     </view>
                     <view class="xzs">勋章数：0</view>
                 </view>
@@ -145,7 +147,7 @@ export default class ClassName extends BaseNode {
             })
         }
     }
-    pageJump(url:string){
+    pageJump(url: string) {
         uni.navigateTo({
             url
         })
@@ -518,7 +520,8 @@ page {
     align-items: center;
     justify-content: center;
     margin: 30rpx 0;
-    image{
+
+    image {
         width: 10rpx;
         height: 20rpx;
         margin-left: 10rpx;

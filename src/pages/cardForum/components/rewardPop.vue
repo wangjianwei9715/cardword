@@ -12,14 +12,16 @@
                         <view class="rewardOption flexCenter" v-for="(item, index) in reawrdOptions"
                             @click="onClickOption(item)">
                             <text class="reward_text">{{ item.type == 1 ? item.title : `赠送${item.num}卡币` }}</text>
-                            <image class="reward_img"></image>
+                            <image class="reward_img"
+                                :src="item.type == 1 ? `/static/userinfo/v3/give.png` : `/static/userinfo/v3/kb.png`"></image>
                         </view>
                     </view>
                     <text class="desc">表达赞赏/认同/鼓励，赠送后发放至作者账户且不可退回</text>
                 </view>
             </u-popup>
             <view class="giveModal" v-if="show" :class="{ giveModal_show: showGive }">
-                <view style="width: 550rpx;background-color: #fff;display: flex;flex-direction: column;border-radius: 3rpx;">
+                <view
+                    style="width: 550rpx;background-color: #fff;display: flex;flex-direction: column;border-radius: 3rpx;">
                     <text class="title">提示</text>
                     <text class="tips">确认赠送{{ nowSelectOption.num }}卡币</text>
                     <view class="userWrap">
@@ -372,8 +374,8 @@ export default {
 .reward_img {
     width: 36rpx;
     height: 36rpx;
-    background: #333333;
-    border-radius: 50%;
+    // background: #333333;
+    // border-radius: 50%;
 }
 
 .desc {

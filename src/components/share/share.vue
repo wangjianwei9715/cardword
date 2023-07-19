@@ -103,6 +103,7 @@
 				imageUrl: this.shareData.thumb,
 				success: (res)=> {
 					console.log("success:" + JSON.stringify(res));
+					this.$emit("shareSuccess",true)
 				},
 				fail: function (err) {
 					console.log("fail:" + JSON.stringify(err));
