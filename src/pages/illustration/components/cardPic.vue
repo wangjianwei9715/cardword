@@ -54,7 +54,7 @@
 		@PropSync("current",{type:Number})
 		currentNum!:number;
 
-		peTab = ['正面','反面'];
+		peTab = ['正','反'];
 		peCurrent = 0;
 		touchData = {
 			startX:0,
@@ -352,23 +352,23 @@
 			}
 			.header-pe{
 				width: 154rpx;
-				height:36rpx;
+				height:42rpx;
 				display: flex;
 				align-items: center;
 			}
 			.pe-item{
 				width: 77rpx;
-				height: 36rpx;
+				height: 42rpx;
 				background: #707070;
-				font-size: 21rpx;
+				font-size: 23rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
 				color: #FFFFFF;
 				text-align: center;
-				line-height: 36rpx;
+				line-height: 42rpx;
 			}
 			.pe-current{
-				height: 36rpx;
+				height: 42rpx;
 				background: #FA1545;
 			}
 			.img-box{

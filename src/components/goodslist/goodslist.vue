@@ -126,7 +126,6 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding: 6rpx 20rpx 56rpx 20rpx;
-		background: $content-bg;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;

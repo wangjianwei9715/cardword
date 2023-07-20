@@ -27,7 +27,7 @@
 					</view>
 					<muqian-lazyLoad v-if="noData.text.teamLogo" class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(noData.text.teamLogo)" />
 				</view>
-				<view v-if="noData.illustration && noData.illustration.author" class="upload-author">
+				<view v-if="noData.illustration && noData.illustration.author && noData.illustration.author.name" class="upload-author">
 					由 <muqian-lazyLoad  class="upload-author-avatar" :src="decodeURIComponent(noData.illustration.author.avatar)" borderRadius="50%"/>
 					<text class="upload-author-name">{{noData.illustration.author.name}}</text>提供
 				</view>
@@ -333,7 +333,7 @@
 		width: 100%;
 		height: 221rpx;
 		background: rgba(39, 39, 39, 1);
-		border: 1px solid #C0C0C0;
+		border: 0.8px solid #C0C0C0;
 		border-radius: 3rpx;
 		margin-top: 31rpx;
 		position: relative;
