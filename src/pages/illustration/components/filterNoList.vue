@@ -30,10 +30,10 @@
             </view>
         </view>
         <view class="card-list">
-            <view class="card-index" v-show="tp==0" v-for="(item,index) in cardSetList" :key="index">
+            <view class="card-index" v-show="tp==0" v-for="(item,index) in cardSetList" :key="index" @click="onClickSelectNo(index)">
                 <view class="card-team">
                     <view class="team">NO.{{item.number}} {{item.team}}</view>
-                    <view class="check" :class="{'check_':selectNo.includes(index)}" @click="onClickSelectNo(index)"></view>
+                    <view class="check" :class="{'check_':selectNo.includes(index)}"></view>
                 </view>
                 <view class="player">{{item.player}}</view>
                 <view class="cardset">{{item.seq}}编，{{item.cardSet}}</view>
