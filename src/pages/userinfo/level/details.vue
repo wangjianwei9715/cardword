@@ -5,9 +5,7 @@
                 <view class="name">{{ item.content }}</view>
                 <view class="time">{{ dateFormatMSHMS(item.created_at) }}</view>
             </view>
-            <view class="point-num" :style="{ color: '#EF3333' }">
-                {{ item.exp }}
-            </view>
+            <view class="point-num" :style="{color:item.exp<0?'#7AC04F':'#EF3333'}">{{item.exp>0?`+${item.exp}`:item.exp}}</view>
         </view>
         <empty v-if='!list.length' />
     </view>
