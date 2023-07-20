@@ -23,8 +23,8 @@
                     </view>
                 </view>
             </view>
-            <view class="descWrap" v-if="infoData.sign">
-                <text class="desc_text u-line-2">{{ infoData.sign }}</text>
+            <view class="descWrap">
+                <text class="desc_text u-line-2">{{ infoData.sign || "暂无简介"}}</text>
             </view>
             <view class="userDataWrap">
                 <view class="userData_data">

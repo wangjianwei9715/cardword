@@ -24,8 +24,8 @@
                     </view>
                 </view>
             </view>
-            <view class="descWrap" v-if="userInfo.sign">
-                <text class="desc_text u-line-2">{{ userInfo.sign }}</text>
+            <view class="descWrap">
+                <text class="desc_text u-line-2">{{ userInfo.sign || "暂无简介" }}</text>
             </view>
             <view class="userDataWrap">
                 <view class="userData_data">
@@ -183,11 +183,15 @@ export default class ClassName extends BaseNode {
             this.draftListByDynamic = getDraftList("dynamic", this.userId)
             this.draftListByCardBook = getDraftList("cardBook", this.userId)
             uni.$on("refreshDraft", this.refreshDraft)
+            uni.$on("finishSign", this.finishSign)
         }
         this.getUserInfo()
     }
     beforeDestroy() {
-        if (this.isMine) uni.$off("refreshDraft", this.refreshDraft)
+        if (this.isMine) {
+            uni.$off("refreshDraft", this.refreshDraft)
+            uni.$off("finishSign", this.finishSign)
+        }
     }
     // onShow() {
 
@@ -208,6 +212,9 @@ export default class ClassName extends BaseNode {
         this.draftListByDynamic = getDraftList("dynamic", this.userId)
         this.draftListByCardBook = getDraftList("cardBook", this.userId)
         this.sortDraft(true)
+    }
+    finishSign(res: any) {
+        this.userInfo.sign = res.sign
     }
     initTab() {
         if (this.isMine) {
