@@ -2,7 +2,7 @@
 	<view class="side-content">
 		<view class="side-left">
 			<view class="side-tab" :class="{'current':current.id==item.id}" v-for="(item,index) in showTab" :key="index" @click="onClickTab(item.id)">
-				<u-badge :isDot="true" :show="showBadge(item)" class="icon-badge"/>{{item.name}}{{item.id<=4?`(${item.num})`:""}}
+				<u-badge :isDot="true" bgColor="#FA1545" :show="showBadge(item)" class="icon-badge"/>{{item.name}}{{item.id<=4?`(${item.num})`:""}}
 			</view>
 		</view>
 		<view class="side-right">
@@ -459,8 +459,8 @@
 			align-items: center;
 		}
 		.bottom-scroll-item{
-			height: 42rpx;
-			border: 1px solid #C0C0C0;
+			height: 43rpx;
+			border: 1rpx solid #C0C0C0;
 			border-radius: 1rpx;
 			box-sizing: border-box;
 			padding:  0 16rpx ;
@@ -489,7 +489,7 @@
 		.btn-clear{
 			width: 189rpx;
 			height: 92rpx;
-			border: 1px solid #C0C0C0;
+			border: 1rpx solid #C0C0C0;
 			border-radius: 5rpx;
 			box-sizing: border-box;
 			font-size: 33rpx;

@@ -23,7 +23,7 @@
 					<view class="goodslist-title u-line-2 goodslist-padding">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-cardicon goodslist-cardicon-purple">剩余随机</view>
 						<view v-else-if="[1,2,3,10,11].includes(item.pintuan_type)" class="goodslist-cardicon" :class="{'goodslist-cardicon-purple':[10,11].includes(item.pintuan_type)}">{{getGoodsPintuanDetail(item.pintuan_type)}}</view>
-						{{item.title}}
+						<text class="goodslist-title-text">{{item.title}}</text>
 					</view>
 					<view class="goodslist-priceMsg uni-flex goodslist-padding">
 						<view class="goodslist-priceMsg-left">
@@ -174,12 +174,17 @@
 			display: -webkit-box;
 			line-height: 38rpx;
 			letter-spacing:1rpx;
+			position: relative;
+			&-text{
+				padding-left: 100rpx;
+			}
 		}
+		
 		&-cardicon{
-			width: 100rpx;
-			height:32rpx;
+			width: 90rpx;
+			height:30rpx;
 			display: inline-flex;
-			line-height: 32rpx;
+			line-height: 31rpx;
 			align-items: center;
 			justify-content: center;
 			font-size: 19rpx;
@@ -188,6 +193,10 @@
 			color: #FFFFFF;
 			margin-right: 10rpx;
 			background: url(@/static/goods/icon_b2.png) no-repeat center / 100% 100%;
+			word-break: keep-all;
+			position: absolute;
+			left:16rpx;
+			top:4rpx;
 		}
 		&-cardicon-purple{
 			background: url(@/static/goods/icon_b1.png) no-repeat center / 100% 100% !important;
@@ -202,7 +211,7 @@
 			margin-top: 2rpx;
 			.progressMask {
 				height: inherit;
-				background-color: #E6E6E6;
+				background-color: #f3f2f2;
 				width: 30%;
 			}
 		}
@@ -229,8 +238,9 @@
 				font-weight: 600;
 				color: #333333;
 				height: 40rpx;
+				margin-bottom: -4rpx;
 				text.price-text {
-					font-size: 33rpx;
+					font-size: 31rpx;
 					line-height: 38rpx;
 				}
 				text.decimal{
@@ -249,7 +259,7 @@
 				height: 40rpx;
 				display: flex;
 				align-items: flex-end;
-				font-size: 21rpx;
+				font-size: 23rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: #C0C0C0;
@@ -273,7 +283,7 @@
 					font-size: 23rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
-					color: #333;
+					color: #707070;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;

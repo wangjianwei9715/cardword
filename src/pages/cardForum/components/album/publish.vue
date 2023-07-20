@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-19 17:27:34
+ * @LastEditTime: 2023-07-20 16:56:42
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -371,11 +371,11 @@
 		color: #959695;
 		display: flex;
 		align-items: center;
-		border-bottom: 1px solid #3F3F3F;
+		border-bottom: 0.5px solid #3F3F3F;
 	}
 	.prove{
 		width: 100%;
-		border-bottom: 1px solid #3F3F3F;
+		border-bottom: 0.5px solid #3F3F3F;
 		box-sizing: border-box;
 		padding: 30rpx 0;
 		.msg{

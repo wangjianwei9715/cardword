@@ -275,7 +275,7 @@ export default class ClassName extends BaseNode {
     walletTab: { [x: string]: any } = {
         point: { id: 1, name: '卡币', num: 0, pic: '../../static/userinfo/v3/kb.png', url: '/pages/mall/mallIndex', style: { width: "32rpx", height: "32rpx" } },
         coupon: { id: 2, name: '优惠券', num: 0, pic: '../../static/userinfo/v3/coupon.png', url: '/pages/userinfo/coupon/coupon', style: { width: "32rpx", height: "26rpx" } },
-        hitNo: { id: 3, name: '我的中卡', num: 0, pic: '../../static/userinfo/v3/hitNo.png', url: '/pages/userinfo/winningCard/index', style: { width: "28rpx", height: "30rpx" } },
+        hitNo: { id: 3, name: '我的卡片', num: 0, pic: '../../static/userinfo/v3/hitNo.png', url: '/pages/userinfo/winningCard/index', style: { width: "28rpx", height: "30rpx" } },
         kami: { id: 4, name: '收赠卡密', num: 0, pic: '../../static/userinfo/v3/give.png', url: '/pages/userinfo/giving/index', style: { width: "30rpx", height: "30rpx" } }
     }
     orderTab: { [x: string]: any } = {

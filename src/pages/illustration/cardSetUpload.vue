@@ -37,7 +37,7 @@
 			<statusbar/>
 			<scroll-view class="up-scroll-box" :scroll-y="true">
 				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':item>0}" v-for="(item,index) in binaryPeer" :key='index' @click="onClickPeerTo(index)">
-					{{index+1}}
+					{{index+1}}{{(index+1)==noData.text.seqIndex?`/${noData.text.seq}`:''}}
 				</view>
 			</scroll-view>
 		</view>
@@ -333,9 +333,9 @@
 		width: 100%;
 		height: 221rpx;
 		background: rgba(39, 39, 39, 1);
-		border: 0.8px solid #C0C0C0;
+		border: 0.8px solid #848484;
 		border-radius: 3rpx;
-		margin-top: 31rpx;
+		margin-top: 51rpx;
 		position: relative;
 		box-sizing: border-box;
 		padding:30rpx 40rpx 27rpx 40rpx;

@@ -91,7 +91,7 @@
 	$u-badge-info: $u-info !default;
 	$u-badge-warning: $u-warning !default;
 	$u-badge-dot-radius: 100px !default;
-	$u-badge-dot-size: 8px !default;
+	$u-badge-dot-size: 6px !default;
 	$u-badge-dot-right: 4px !default;
 	$u-badge-dot-top: 0 !default;
 	$u-badge-text-font-size: 11px !default;

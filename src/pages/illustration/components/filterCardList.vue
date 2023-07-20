@@ -264,6 +264,8 @@
 					uni.hideLoading();
 				}, 100);
                 this.listOrther.end = res.end || res.list.length<10;
+            },(error:any)=>{
+                this.againList()
             })
         }
 	}
@@ -519,7 +521,7 @@
         font-family: PingFang SC;
         font-weight: 400;
         text-align: center;
-        border-radius: 1rpx;
+        border-radius: 3rpx;
         margin-right: 10rpx;
     }
     .logo-seq-1{

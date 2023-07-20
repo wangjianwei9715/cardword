@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\index\index.vue
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-20 15:30:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-20 17:30:11
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -14,7 +14,7 @@
 		<!-- 热更新 E -->
 		<u-sticky offsetTop="0rpx" customNavHeight="0px">
 			<view class="header-banner">
-				<statusbar />
+				<statusbar/>
 				<view class="tab-header">
 					<view class="header-search">
 						<view class="sousuo-icon"></view>
@@ -61,11 +61,10 @@
 			<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
 				<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
 					:inactiveStyle="{fontSize:'27rpx',color:'#C0C0C0',padding:'0 0'}"
-					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
+					:activeStyle="{fontSize:'30rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
 				></u-tabs>
 			</u-sticky>
-			<view class="bg-gradient"></view>
-			<goodsListSwiper style="margin-top:-20rpx" ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index" @followed="checkFollowed"/>
+			<goodsListSwiper ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index" @followed="checkFollowed"/>
 		</view>
 		
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
@@ -300,11 +299,7 @@
 	page {
 		background: $content-bg
 	}
-	.bg-gradient{
-		width: 100%;
-		height:20rpx;
-		background: linear-gradient(to bottom, #fff, $content-bg);
-	}
+	
 	.content {
 		width: 100%;
 	}
@@ -315,7 +310,8 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding-bottom:20rpx;
-		margin-top: 10rpx;
+		padding-top: 10rpx;
+		background:#fff;
 		.center-top{
 			width: 100%;
 			height:104rpx;
@@ -359,7 +355,7 @@
 		box-sizing: border-box;
 		padding: 0;
 		background: #fff;
-		padding-top: 17rpx;
+		padding-top: 37rpx;
 		padding-bottom: 10rpx;
 	}
 
@@ -377,18 +373,16 @@
 		box-sizing: border-box;
 	}
 	.swiper_indicator_line{
-		width: 80rpx;
+		width: 70rpx;
 		height:8rpx;
-		border-radius: 3rpx;
 		background:#E6E6E6;
 		margin:0 auto;
 		margin-top: 10rpx;
 		margin-bottom: 30rpx;
 	}
 	.swiper_indicator_bar{
-		width: 40rpx;
+		width: 35rpx;
 		height:8rpx;
-		border-radius: 3rpx;
 		background:#FA1545;
 		transition: all 0.3s linear;
 		transform: translateX(0);
@@ -414,7 +408,7 @@
 		position: relative;
 		flex-wrap: wrap;
 		justify-content: center;
-		margin-right: 10rpx;
+		margin-right: 12rpx;
 	}
 	.tab-index:nth-child(5n){
 		margin-right: 0;
@@ -439,7 +433,7 @@
 		font-weight: 500;
 		color: #333333;
 		text-align: center;
-		margin-top: -6rpx;
+		margin-top: -16rpx;
 		position: relative;
 		z-index: 6;
 	}

@@ -45,7 +45,7 @@
 									<slot name="showKa"></slot>
 								</view>
 								<!-- :show="" -->
-								<u-badge style="position: absolute;right: 6rpx;" :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
+								<u-badge style="position: absolute;right: 8rpx;" :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
 									:isDot="true"
 									:value="item.badge && item.badge.value || propsBadge.value"
 									:max="item.badge && item.badge.max || propsBadge.max"
@@ -73,12 +73,12 @@
 									:max="item.badge && item.badge.max || propsBadge.max"
 									:type="item.badge && item.badge.type || propsBadge.type"
 									:showZero="item.badge && item.badge.showZero || propsBadge.showZero"
-									:bgColor="item.badge && item.badge.bgColor || propsBadge.bgColor"
+									bgColor="#FA1545"
 									:color="item.badge && item.badge.color || propsBadge.color"
 									:shape="item.badge && item.badge.shape || propsBadge.shape"
 									:numberType="item.badge && item.badge.numberType || propsBadge.numberType"
 									:inverted="item.badge && item.badge.inverted || propsBadge.inverted"
-									customStyle="position:absolute;right:5rpx;top:22rpx"></u-badge>
+									customStyle="position:absolute;right:8rpx;top:24rpx"></u-badge>
 							</view>
 						</template>
 						<!-- #ifdef APP-NVUE -->
