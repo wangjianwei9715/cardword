@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-20 16:26:28
+ * @LastEditTime: 2023-07-20 17:33:03
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -256,7 +256,7 @@ const PersonSheet: Array<Sheet> = [
     { name: "编辑内容", behavior: "goEdit" },
     { name: "删除此动态", behavior: "deleteForum", color: "#fb374e" }
 ]
-enum ForumBit {
+enum ForumBit { 
     IS_PERSON = 1,//本人
     IS_FOLLOW = 2,//关注
     IS_LIKE = 4,//点赞
@@ -1421,7 +1421,7 @@ export default class ClassName extends BaseNode {
     border-radius: 10rpx 10rpx 0 0;
 
     .input {
-        width: 500rpx;
+        width: 570rpx;
         // height: 63rpx;
         background: #EFEFEF;
         border-radius: 3rpx;
@@ -1436,12 +1436,12 @@ export default class ClassName extends BaseNode {
     }
 
     .send {
-        width: 140rpx;
+        width: 110rpx;
         height: 54rpx;
         color: #fff;
         font-size: 25rpx;
         font-family: PingFang SC;
-        font-weight: 400;
+        font-weight: bold;
         border-radius: 3rpx;
         background-color: #FA1545;
     }
