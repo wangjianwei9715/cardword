@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-20 15:12:51
+ * @LastEditTime: 2023-07-20 15:30:08
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -12,23 +12,26 @@
 		<!-- 热更新 S -->
 		<update/>
 		<!-- 热更新 E -->
-		<view class="header-banner">
-			<statusbar />
-			<view class="tab-header">
-				<view class="header-search">
-					<view class="sousuo-icon"></view>
-					<u-notice-bar style="padding-left:80rpx;" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
-					<view class="search-btn">搜索</view>
+		<u-sticky offsetTop="0rpx" customNavHeight="0px">
+			<view class="header-banner">
+				<statusbar />
+				<view class="tab-header">
+					<view class="header-search">
+						<view class="sousuo-icon"></view>
+						<u-notice-bar style="padding-left:80rpx;" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
+						<view class="search-btn">搜索</view>
+					</view>
+					<navigator url="/pages/live/list" hover-class="none" class="icon-live"></navigator>
 				</view>
-				<navigator url="/pages/live/list" hover-class="none" class="icon-live"></navigator>
 			</view>
-		</view>
+		</u-sticky>
 		<view class="tab-center">
-			<statusbar style="background:#fff" />
-			<view class="center-top"></view>
-			<view class="capsule-box" @click="onClickAddJump(item.target)" v-for="(item,index) in addList.top" :key="index">
-				<image class="capsule-pic1" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
-			</view>
+			<swiper class="capsule-box" :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
+				<swiper-item v-for="(item,index) in addList.top" :key="index">
+					<image class="capsule-pic1" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickAddJump(item.target)"/>
+				</swiper-item>
+			</swiper>
+			
 			
 			<view class="tab-good-content">
 				<swiper class="tab-swiper" :current="tabSwiperCurrent" @change="e=> tabSwiperCurrent=e.detail.current">
@@ -95,6 +98,7 @@
 		isDuringDate = isDuringDate;
 		goodsTabs = goodsTabs;
 		goodsTabCurrent = 1;
+		capsuleCurrent = 0;
 		indexTabList: { [x: string]: any } = {
 			front:indexSwiperFront,
 			back:indexSwiperBack
@@ -329,7 +333,7 @@
 	.header-banner {
 		width: 100%;
 		background: #fff;
-		position: fixed;
+		position: relative;
 		left: 0;
 		top: 0;
 		box-sizing: border-box;
