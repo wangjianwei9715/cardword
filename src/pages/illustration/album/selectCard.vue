@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-18 15:41:53
+ * @LastEditTime: 2023-07-20 16:55:30
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -254,7 +254,7 @@
 				}
 			}
 			.team{
-				font-size: 21rpx;
+				font-size: 23rpx;
 				font-family: PingFang SC;
 				font-weight: 600;
 				color: #FFFFFF;
@@ -265,14 +265,14 @@
 				background: url(@/static/illustration/album/icon_sub.png) no-repeat center/ 100% 100%;
 			}
 			.player{
-				font-size: 21rpx;
+				font-size: 23rpx;
 				font-family: PingFang SC;
 				font-weight: 600;
 				color: #FFFFFF;
 				margin-top: 12rpx;
 			}
 			.cardset{
-				font-size: 21rpx;
+				font-size: 23rpx;
 				font-family: PingFang SC;
 				font-weight: 600;
 				color: #C0C0C0;

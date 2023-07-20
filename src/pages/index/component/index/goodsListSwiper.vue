@@ -1,5 +1,6 @@
 <template>
 	<view class="kww-swiper">
+		<view class="bg-gradient"></view>
 		<swiper class="list-swiper" :style="{ height:swiperHeight }" :current="current" @change="e=> current=e.detail.current">
 			<swiper-item v-for="(item,index) in goodsList" :key="index" class="list-box">
                 <goodslist :class="`goodsList${index}`" :goodsList="item.list" :indexAddList="index==1?addList:[]" :indexSwiper="true" @send="onClickJumpDetails" :presell="false" :empty="item.empty" :nomore="item.noMoreData" />
@@ -110,6 +111,16 @@
 		width: 750rpx;
 		box-sizing: border-box;
 		overflow: hidden;
+		background:#F6F7FB;
+		position: relative;
+		.bg-gradient{
+			width: 100%;
+			height:100rpx;
+			background: linear-gradient(to bottom, #fff, $content-bg);
+			position: absolute;
+			top:0;
+			left:0
+		}
 		.list-swiper{
 			width: 100%;
 		}

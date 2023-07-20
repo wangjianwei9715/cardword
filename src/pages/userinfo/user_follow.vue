@@ -7,7 +7,7 @@
 			</view>
 		</view>
 		<view class="listContainer">
-			<template v-if="tab.index == 0">
+			<template v-if="tab.index == 1">
 				<view class="userItem" v-for="(item, index) in currentList" :key="index" @click="goPersonHome(item)">
 					<muqian-lazyLoad class="avatar"
 						:src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
@@ -21,7 +21,7 @@
 					<view class="followButton flexCenter" @click.stop="onClickFollow(item, index, 0)">已关注</view>
 				</view>
 			</template>
-			<template v-if="tab.index == 1">
+			<template v-if="tab.index == 0">
 				<view class="userItem" v-for="(item, index) in currentList" :key='index' @click='toDetail(item)'>
 					<muqian-lazyLoad :src='decodeURIComponent(item.logo)' class="avatar" mode="aspectFill" />
 					<view class="userInfo">
@@ -102,8 +102,8 @@ const queryParams = {
 	fetchSize: 15
 }
 const tabList = [
-	{ name: "用户", url: "cardCircle/me/follow/user" },
 	{ name: "商家", url: "me/follows/list" },
+	{ name: "用户", url: "cardCircle/me/follow/user" },
 	{ name: "话题", url: "cardCircle/me/follow/topic" },
 	{ name: "图鉴", url: "cardCircle/me/follow/tujian" }
 ]

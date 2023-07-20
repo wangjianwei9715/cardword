@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-18 11:49:11
+ * @LastEditTime: 2023-07-20 15:48:31
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -22,7 +22,7 @@
 						<muqian-lazyLoad class="pic" borderRadius="3rpx" :src="decodeURIComponent(item.logo)" />
 					</view>
 					<view class="hot-desc">{{item.year}}</view>
-					<view class="hot-desc">{{item.name}}</view>
+					<view class="hot-desc desc-name">{{item.name}}</view>
 					<view class="hot-percent">完整度{{item.percent}}%</view>
 				</view>
 			</view>
@@ -147,7 +147,7 @@
 		margin-bottom: 20rpx;
 	}
 	.cell-value{
-		font-size: 21rpx;
+		font-size: 23rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #C0C0C0;
@@ -190,7 +190,7 @@
 			width: 100%;
 			height:30rpx;
 			text-align: center;
-			font-size: 25rpx;
+			font-size: 23rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
 			color: #333333;
@@ -198,6 +198,11 @@
 			overflow: hidden;
 			text-overflow:ellipsis;
 			white-space: nowrap;
+		}
+		.desc-name{
+			font-size: 25rpx;
+			font-family: PingFang SC;
+			font-weight: 600;
 		}
 		.hot-percent{
 			width: 100%;
@@ -238,7 +243,7 @@
 			font-size: 25rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
-			color: #333333;
+			color: #767880;
 			margin-top: 10rpx;
 		}
 		.series-nolist{
@@ -256,7 +261,7 @@
 			display: inline-block;
 			width: 130rpx;
 			height:181rpx;
-			margin-right: 15rpx;
+			margin-right: 20rpx;
 		}
 		.series-pic{
 			width: 130rpx;

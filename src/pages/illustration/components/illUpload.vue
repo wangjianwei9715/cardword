@@ -112,18 +112,20 @@
 			margin-bottom: 22rpx;
 		}
 		.header-pe{
-			width: 154rpx;
+			width: 120rpx;
 			height:42rpx;
 			display: flex;
 			align-items: center;
+			border-radius: 3rpx;
+			overflow: hidden;
 		}
 		.pe-item{
-			width: 77rpx;
+			width: 60rpx;
 			height: 42rpx;
 			background: #707070;
 			font-size: 23rpx;
 			font-family: PingFang SC;
-			font-weight: 400;
+			font-weight: 600;
 			color: #FFFFFF;
 			text-align: center;
 			line-height: 42rpx;

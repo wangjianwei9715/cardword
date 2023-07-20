@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="top-header">
-			<muqian-lazyLoad class="series-bg" :src="decodeURIComponent(seriesData.main.backPic)" />
+			<muqian-lazyLoad class="series-bg" :src="decodeURIComponent(seriesData.main.backPic || defaultBg)" />
 			<transitionNav ref='transitionNav' @navBackGroundShowChange="navBackGroundShowChange" :needIconShadow="false" :title="`${seriesData.main.year} ${seriesData.main.name}`">
 				<template slot="slotRight">
 					<view :class="topHasBack?'icon-replace-back':'icon-replace'" @click="onClickSeriesSelect"></view>
@@ -60,6 +60,7 @@
 		components:{filterCardList,waterfalls}
 	})
 	export default class ClassName extends BaseNode {
+		defaultBg = "/static/illustration/default.jpg";
 		statusBarHeight = app.statusBarHeight;
 		tabsData = {
 			list:[{name:'图鉴'},{name:'玩家卡册'}],
@@ -226,7 +227,7 @@
 	.series-logo{
 		width: 104rpx;
 		height: 104rpx;
-		border-radius: 3rpx;
+		border-radius: 5rpx;
 		background:$pic-bg;
 		.logo{
 			width: 104rpx;
@@ -261,7 +262,7 @@
 		width: 122rpx;
 		height:51rpx;
 		background: #FA1545;
-		border-radius: 3rpx;
+		border-radius: 5rpx;
 		text-align: center;
 		line-height: 51rpx;
 		font-size: 25rpx;

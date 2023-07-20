@@ -160,7 +160,7 @@
 				font-size: 21rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
-				color: #959695;
+				color: #C0C0C0;
 			}
 		}
 		.right{
@@ -178,7 +178,7 @@
 				padding: 0 28rpx;
 			}
 			.live-title{
-				width: 160rpx;
+				width: 150rpx;
 				height:176rpx;
 				box-sizing: border-box;
 				padding-top: 58rpx;
@@ -191,11 +191,11 @@
 				font-size: 21rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
-				color: #959695;
+				color: #C0C0C0;
 				margin-top: 6rpx;
 			}
 			.live-index{
-				width: 230rpx;
+				width: 240rpx;
 				height:176rpx;
 				box-sizing: border-box;
 				padding-top: 38rpx;
@@ -208,11 +208,11 @@
 				position: relative;
 			}
 			.tab-hot-live-state{
-				width: 97rpx;
+				width: 104rpx;
 				height: 25rpx;
 				background: #FA1545;
 				border: 2rpx solid #FFFFFF;
-				border-radius: 3rpx;
+				border-radius: 5rpx;
 				font-size: 16rpx;
 				font-family: PingFang SC;
 				font-weight: 400;
@@ -221,8 +221,8 @@
 				align-items: center;
 				justify-content: center;
 				position: absolute;
-				left:0;
-				bottom:-9rpx;
+				left:-7rpx;
+				bottom:-12rpx;
 				z-index:3;
 			}
 			.live-border{
@@ -253,11 +253,11 @@
 					opacity: 1;  
 				}
 				50%{
-					transform: translate(-50%, -50%) scale(1.2);  
+					transform: translate(-50%, -50%) scale(1.1);  
 					opacity: 0.5;   /*圆形放大的同时，透明度逐渐减小为0*/
 				}
 				100%{
-					transform: translate(-50%, -50%) scale(1.4);  
+					transform: translate(-50%, -50%) scale(1.2);  
 					opacity: 0;   /*圆形放大的同时，透明度逐渐减小为0*/
 				}
 			}

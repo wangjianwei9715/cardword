@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-19 11:39:22
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-20 16:58:55
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -55,7 +55,7 @@
                     </view>
                 </view>
             </scroll-view>
-            <view class="associationWrap" @click="showGoods = true" style="margin-top: 60rpx;">
+            <view class="associationWrap" @click="showGoods = true">
                 <image class="ass_img" src="@/static/cardForum/release/goods.png" style="width: 30rpx;height:30rpx"></image>
                 <view class="ass_title">关联好物</view>
                 <view class="flex1"></view>
@@ -69,7 +69,7 @@
                 </view>
             </view>
             <view v-if="!code || (code && !hasVoteByCode)" class="associationWrap" @click="onClickVote"
-                style="border-bottom: 1rpx solid #3F3F3F;padding-bottom: 30rpx;">
+                style="border-bottom: 1rpx solid #3F3F3F;padding-bottom: 40rpx;">
                 <image class="ass_img" src="@/static/cardForum/release/vote.png" style="width: 30rpx;height:30rpx"></image>
                 <view class="ass_title">发起投票</view>
                 <view class="flex1"></view>
@@ -934,7 +934,7 @@ page {
     display: flex;
     align-items: center;
     width: 100%;
-    margin-top: 61rpx;
+    margin-top: 40rpx;
 
     .ass_img {
         display: block;

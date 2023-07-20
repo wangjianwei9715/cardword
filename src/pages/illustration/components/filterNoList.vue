@@ -507,7 +507,7 @@
         .player{
             font-size: 25rpx;
             font-family: PingFang SC;
-            font-weight: 400;
+            font-weight: 600;
             color: #333333;
             margin-top: 16rpx;
         }
