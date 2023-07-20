@@ -291,7 +291,7 @@ export default {
     background-color: #ff003d;
     border: 1rpx solid #ff003d;
     text-align: center;
-    line-height: 60rpx;
+    line-height: 80rpx;
     font-size: 30rpx;
     border-radius: 5rpx;
     font-weight: bold;
