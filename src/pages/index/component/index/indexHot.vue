@@ -253,11 +253,11 @@
 					opacity: 1;  
 				}
 				50%{
-					transform: translate(-50%, -50%) scale(1.15);  
+					transform: translate(-50%, -50%) scale(1.2);  
 					opacity: 0.5;   /*圆形放大的同时，透明度逐渐减小为0*/
 				}
 				100%{
-					transform: translate(-50%, -50%) scale(1.3);  
+					transform: translate(-50%, -50%) scale(1.4);  
 					opacity: 0;   /*圆形放大的同时，透明度逐渐减小为0*/
 				}
 			}
