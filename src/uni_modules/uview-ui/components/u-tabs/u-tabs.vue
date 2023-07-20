@@ -34,7 +34,7 @@
 						<template v-else-if="customType == 'showKa'">
 							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
-								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1,position:'relative' },{marginRight:index==0?`6rpx`:`0rpx`}]"
+								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1 },index==0?{width:`110rpx`}:{}]"
 								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
 								<text v-if="index != 2"
 									:class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
@@ -45,7 +45,7 @@
 									<slot name="showKa"></slot>
 								</view>
 								<!-- :show="" -->
-								<u-badge style="position: absolute;right:5rpx;top:22rpx" :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
+								<u-badge style="position: absolute;right: 6rpx;" :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
 									:isDot="true"
 									:value="item.badge && item.badge.value || propsBadge.value"
 									:max="item.badge && item.badge.max || propsBadge.max"
@@ -113,7 +113,7 @@
 						<template v-if="customType == 'showKa' || customType == 'cardForum'">
 							<view class="u-tabs__wrapper__nav__line" style="border-radius: 0;background-color: #ff003d;" ref="u-tabs__wrapper__nav__line" 
 								 :style="[{
-									width: $u.addUnit(lineWidth),
+									width: `50rpx`,
 									transform: `translate(${lineOffsetLeft}px)`,
 									transitionDuration: `${firstTime ? 0 : duration}ms`,
 									height: $u.addUnit(lineHeight),

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-20 13:52:36
+ * @LastEditTime: 2023-07-20 15:15:08
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -1025,7 +1025,7 @@ $uvui-nvue-style: true !default;
 }
 
 .waterfall-item__ft__title__value {
-    font-size: 27rpx;
+    font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #333333;

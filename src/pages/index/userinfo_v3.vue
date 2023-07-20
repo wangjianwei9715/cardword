@@ -621,7 +621,7 @@ page {
 }
 
 .userData_num {
-    font-size: 25rpx;
+    font-size: 27rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #FFFFFF;
@@ -632,7 +632,7 @@ page {
     font-size: 21rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #FFFFFF;
+    color: #C0C0C0;
     text-align: center;
 }
 

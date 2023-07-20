@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\pages\index\index.vue
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-20 11:33:39
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-20 15:12:51
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -311,6 +311,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding-bottom:20rpx;
+		margin-top: 10rpx;
 		.center-top{
 			width: 100%;
 			height:104rpx;
@@ -481,8 +482,8 @@
 	}
 	.header-search {
 		width: 614rpx;
-		height: 71rpx;
-		border: 2px solid #333333;
+		height: 73rpx;
+		border: 4rpx solid #333333;
 		border-radius: 5rpx;
 		display: flex;
 		align-items: center;
@@ -491,13 +492,13 @@
 		padding-right: 10rpx;
 	}
 	.search-btn{
-		width: 100rpx;
-		height: 52rpx;
+		width: 98rpx;
+		height: 49rpx;
 		background: #FA1545;
 		border-radius: 5rpx;
-		font-size: 29rpx;
+		font-size: 25rpx;
 		font-family: PingFang SC;
-		font-weight: 600;
+		font-weight: bold;
 		color: #FFFFFF;
 		text-align: center;
 		line-height: 54rpx;

@@ -124,7 +124,8 @@
                     </div>
                 </div>
             </div>
-            <u-tabs style="width: 750rpx;" customType="showKa" :duration="300" lineWidth="49rpx" lineHeight="6rpx"
+            <u-tabs style="width: 750rpx;height:" customType="showKa" :duration="300" lineWidth="49rpx" lineHeight="6rpx"
+            :itemStyle="{marginTop:'-10rpx',height:'74rpx'}"
                 :activeStyle="{ color: '#333333', fontSize: '27rpx', transform: 'scale(1.22)', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', transform: 'scale(1)', fontFamily: 'PingFang SC' }"
                 class="tabs" id="tabs" :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs">
@@ -628,7 +629,9 @@ page {
 .nav {
     // box-sizing: border-box;
     // padding: 20rpx 35rpx;
-    padding: 27rpx 25rpx 0 32rpx;
+    padding: 0rpx 33rpx 0 20rpx;
+    height: 104rpx;
+    // padding-top: 16rpx;
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -684,9 +687,10 @@ page {
 }
 
 .camera_img {
-    width: 56rpx;
-    height: 43rpx;
-
+    width: 53rpx;
+    height: 40rpx;
+    position: relative;
+    top: 7rpx;
 }
 
 .camera_txt {
@@ -699,7 +703,7 @@ page {
 }
 
 .navSearchWrap {
-    width: 588rpx;
+    width: 614rpx;
     height: 73rpx;
     border: 3rpx solid #333333;
     border-radius: 5rpx;
