@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-20 15:10:11
+ * @LastEditTime: 2023-07-20 15:11:46
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -12,7 +12,7 @@
 		<!-- 热更新 S -->
 		<update/>
 		<!-- 热更新 E -->
-		<u-sticky>
+		<u-sticky offsetTop="0rpx" customNavHeight="0px">
 			<view class="header-banner">
 				<statusbar />
 				<view class="tab-header">
