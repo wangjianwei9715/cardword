@@ -241,7 +241,7 @@ export default {
     color: #000;
     text-align: center;
     font-weight: bold;
-    margin-top: 30rpx;
+    margin-top: 36rpx;
     font-size: 36rpx;
 }
 
