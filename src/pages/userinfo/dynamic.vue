@@ -2,7 +2,7 @@
 	<view class="content">
 		<navigationbar title="消息" :custom="true">
 			<template slot="right">
-				<view v-if="bucketName == 'trade'" class="header-likes" @click="onClickReadAll">一键已读</view>
+				<image src="@/static/userinfo/v3/clear.png" style="width: 40rpx;height: 40rpx" @click="onClickReadAll"></image>
 			</template>
 		</navigationbar>
 		<view class="dynamic-content" v-if="!['social', 'order', 'trade'].includes(bucketName)">
@@ -400,12 +400,14 @@ page {
 	padding-top: 36rpx;
 	padding-bottom: 36rpx;
 	background-color: #ffffff;
-	.line{
+
+	.line {
 		height: 1rpx;
 		width: 100%;
 		background-color: #E6E6E6;
 		margin-top: 47rpx;
 	}
+
 	.avatar {
 		width: 73rpx;
 		height: 73rpx;
