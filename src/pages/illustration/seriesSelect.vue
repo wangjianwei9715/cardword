@@ -85,7 +85,7 @@
 		}
 		onClickSeries(item:any){
 			if(this.back){
-				uni.$emit(`${this.album?"albumSelect":"seriesSelect"}`,{code:item.code,name:item.name});
+				uni.$emit(`${this.album?"albumSelect":"seriesSelect"}`,{code:item.code,name:`${item.year} ${item.name}`});
 				app.navigateTo.navigateBack()
 			}else{
 				uni.redirectTo({

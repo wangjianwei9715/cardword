@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-20 16:56:42
+ * @LastEditTime: 2023-07-20 17:54:29
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -24,14 +24,19 @@
 			</scroll-view>
 			<view class="edit-box" v-show="(code||draftId)&&hasPicList.length>2" @click="onClickGoPicUpload">修改图片</view>
 		</view>
-		<view class="percent">当前收集进度：{{percentMsg}}</view>
+		<view class="percent">
+			<text>当前收集进度：{{percentMsg}}</text>
+			<view class="synchronization" @click="synchronizationCheck=!synchronizationCheck">
+				<view class="check" :class="{'check_':synchronizationCheck}"></view>同步至图鉴
+			</view>
+		</view>
 		<view class="prove">
 			<muqian-lazyLoad v-if="provePic" @click="changeProve()" class="pic" mode="aspectFit" :src="decodeURIComponent(provePic)" />
 			<view class="upload" v-else @click="changeProve()">
 				<view class="icon-add"></view>
 				<view class="upload-content">上传证明</view>
 			</view>
-			<view class="msg">*卡册为玩家玩家打造优质的个人收藏展示，请上传相关证明图片（如卡世界id与卡片共同拍摄、手持卡片等）</view>
+			<view class="msg">*卡册是制作的优质个人收藏相册，需上传相关证明图片（如卡世界id与卡片共同拍摄、手持卡片等）</view>
 		</view>
 	</view>
 </template>
@@ -66,7 +71,8 @@
 		code = "";
 		listParams = new ListParams();
 		revision = "";
-		uploadData:any = {}
+		uploadData:any = {};
+		synchronizationCheck=true
 		mounted(){
 			this.identify=uni.$u.guid(8);
 			if(this.draftId=='' && this.code==''){
@@ -365,25 +371,47 @@
 	.percent{
 		width: 100%;
 		height:86rpx;
-		font-size: 21rpx;
+		font-size: 23rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #959695;
 		display: flex;
 		align-items: center;
 		border-bottom: 0.5px solid #3F3F3F;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.synchronization{
+		display: flex;
+		align-items: center;
+		font-size: 23rpx;
+		color:#959695;
+		box-sizing: border-box;
+	}
+	.check{
+		width: 30rpx;
+		height:30rpx;
+		border: 1px solid #C0C0C0;
+		border-radius: 50%;
+		margin-right: 15rpx;
+		margin-top: 2rpx;
+		box-sizing: border-box;
+	}
+	.check_{
+		border: none;
+		background:url(@/static/illustration/album/icon_g.png) no-repeat center / 30rpx 30rpx;
 	}
 	.prove{
 		width: 100%;
-		border-bottom: 0.5px solid #3F3F3F;
 		box-sizing: border-box;
-		padding: 30rpx 0;
+		padding: 30rpx 0 20rpx 0;
 		.msg{
-			font-size: 19rpx;
+			font-size: 21rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
 			color: #707070;
-			margin-top: 23rpx;
+			margin-top: 18rpx;
 		}
 	}
 	.upload{

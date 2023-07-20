@@ -498,7 +498,7 @@
         font-size: 25rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #333333;
+        color: #767880;
         word-break: break-all;
     }
     .card-logo-box{
@@ -578,7 +578,7 @@
                     font-size: 25rpx;
                     font-family: PingFang SC;
                     font-weight: 400;
-                    color: #333333;
+                    color: #767880;
                     word-break: break-all;
                 }
                 .logo{

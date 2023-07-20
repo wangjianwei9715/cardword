@@ -148,7 +148,7 @@
 		onClickGoPublish(){
 			app.platform.hasLoginToken(()=>{
 				uni.navigateTo({
-					url:`/pages/illustration/album/selectCard?seriesCode=${this.seriesCode}&name=${this.seriesData.main.name}`
+					url:`/pages/illustration/album/selectCard?seriesCode=${this.seriesCode}&name=${this.seriesData.main.year+' '+this.seriesData.main.name}`
 				})
 			})
 		}
