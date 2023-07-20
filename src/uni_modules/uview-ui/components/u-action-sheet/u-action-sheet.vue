@@ -159,6 +159,7 @@
 					let style = {};
 					if (this.actions[index].color) style.color = this.actions[index].color
 					if (this.actions[index].fontSize) style.fontSize = uni.$u.addUnit(this.actions[index].fontSize)
+					if (this.actions[index].fontWeight) style.fontWeight = this.actions[index].fontWeight
 					// 选项被禁用的样式
 					if (this.actions[index].disabled) style.color = '#c0c4cc'
 					return style;
