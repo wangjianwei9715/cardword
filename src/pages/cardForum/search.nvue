@@ -54,6 +54,7 @@
             </view>
 
         </view>
+        <view class="whiteBlock" v-if="onSearch" style="background-color: #fff;height:600px"></view>
         <swiper class="swiperContainer" v-if="!onSearch" :style="{ height: scrollViewHeight + 'px' }" :current="tabs.index"
             @change="swiperChange" @animationfinish="swiperChangeAnimationfinish" @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
