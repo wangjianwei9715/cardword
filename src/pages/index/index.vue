@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-20 15:11:46
+ * @LastEditTime: 2023-07-20 15:21:22
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -26,9 +26,12 @@
 			</view>
 		</u-sticky>
 		<view class="tab-center">
-			<view class="capsule-box" @click="onClickAddJump(item.target)" v-for="(item,index) in addList.top" :key="index">
-				<image class="capsule-pic1" :src="decodeURIComponent(item.pic)" mode="aspectFill"/>
-			</view>
+			<swiper class="capsule-box" :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
+				<swiper-item v-for="(item,index) in addList.top" :key="index">
+					<image class="capsule-pic1" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickAddJump(item.target)"/>
+				</swiper-item>
+			</swiper>
+			
 			
 			<view class="tab-good-content">
 				<swiper class="tab-swiper" :current="tabSwiperCurrent" @change="e=> tabSwiperCurrent=e.detail.current">
@@ -95,6 +98,7 @@
 		isDuringDate = isDuringDate;
 		goodsTabs = goodsTabs;
 		goodsTabCurrent = 1;
+		capsuleCurrent = 0;
 		indexTabList: { [x: string]: any } = {
 			front:indexSwiperFront,
 			back:indexSwiperBack
