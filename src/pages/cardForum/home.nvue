@@ -628,8 +628,7 @@ page {
 .nav {
     // box-sizing: border-box;
     // padding: 20rpx 35rpx;
-    height: 104rpx;
-    padding: 0 34rpx 0 19rpx;
+    padding: 27rpx 25rpx 0 32rpx;
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -638,8 +637,8 @@ page {
 }
 
 .nav_search {
-    width: 100rpx;
-    height: 52rpx;
+    width: 98rpx;
+    height: 49rpx;
     background: #FA1545;
     border-radius: 5rpx;
 
@@ -652,10 +651,10 @@ page {
 }
 
 .nav_search_text {
-    font-size: 29rpx;
+    font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: bold;
-    line-height: 52rpx;
+    line-height: 49rpx;
     color: #FFFFFF;
 }
 
@@ -700,9 +699,9 @@ page {
 }
 
 .navSearchWrap {
-    width: 614rpx;
-    height: 69rpx;
-    border: 2px solid #333333;
+    width: 588rpx;
+    height: 73rpx;
+    border: 3rpx solid #333333;
     border-radius: 5rpx;
     // box-sizing: border-box;
     display: flex;
@@ -713,7 +712,7 @@ page {
 }
 
 .navSearchWrap_showka {
-    border: 2px solid #ffffff;
+    border: 3rpx solid #ffffff;
 }
 
 .navInput {
@@ -721,7 +720,7 @@ page {
     // width: 400rpx;
     flex: 1;
     // background-color: red;
-    font-size: 14px;
+    font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: 400;
     padding: 0 10rpx;
