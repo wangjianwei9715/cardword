@@ -139,7 +139,7 @@
             <div class="showKaTabBar">
                 <text class="tabbar_item" @click="switchTo('/pages/index/index')">首页</text>
                 <text class="tabbar_item" @click="switchTo('/pages/illustration/index')">图鉴</text>
-                <text class="tabbar_item">卡圈</text>
+                <text class="tabbar_item tabbar_item_select">卡圈</text>
                 <text class="tabbar_item" @click="switchTo('/pages/index/message')">消息</text>
                 <text class="tabbar_item" @click="switchTo('/pages/index/userinfo_v3')">我的</text>
             </div>
@@ -951,7 +951,10 @@ page {
     font-size: 31rpx;
     font-family: PingFang SC;
     font-weight: bold;
-    color: #FFFFFF;
+    color: #aaaaaa;
     text-align: center;
+}
+.tabbar_item_select{
+    color: #FFFFFF;
 }
 </style>

@@ -22,8 +22,9 @@
 					<view class="time">{{ item.lastTime > 0 ? getTime(item.lastTime) : '' }}</view>
 					<view class="new-message" v-if="item.new > 0">{{ item.new > 99 ? '99+' : item.new }}</view>
 				</view>
+				<view class="line"></view>
 			</view>
-			<view class="index border" @click="onClickHeli(chatData.agentExten)">
+			<view class="index" @click="onClickHeli(chatData.agentExten)">
 				<view class="left">
 					<view class="icon">
 						<image src="/static/userinfo/v3/message/kefu.png" style="width: 75rpx;height: 75rpx;"></image>
@@ -212,6 +213,15 @@ export default class ClassName extends BaseNode {
 	box-sizing: border-box;
 	align-items: center;
 	justify-content: space-between;
+	position: relative;
+
+	.line {
+		width: 587rpx;
+		height: 1rpx;
+		background: #E6E6E6;
+		position: absolute;right: 0;
+		bottom: 0;
+	}
 
 	.left {
 		width: 560rpx;
@@ -316,7 +326,7 @@ export default class ClassName extends BaseNode {
 }
 
 .border {
-	border-bottom: 1px solid #F1F1F4;
+	// border-bottom: 1px solid #F1F1F4;
 }
 
 .desc-message /deep/ p {
