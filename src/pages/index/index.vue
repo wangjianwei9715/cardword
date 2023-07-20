@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-20 09:47:32
+ * @LastEditTime: 2023-07-20 11:33:39
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -62,7 +62,7 @@
 				></u-tabs>
 			</u-sticky>
 			<view class="bg-gradient"></view>
-			<goodsListSwiper ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index" @followed="checkFollowed"/>
+			<goodsListSwiper style="margin-top:-20rpx" ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index" @followed="checkFollowed"/>
 		</view>
 		
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
@@ -334,16 +334,7 @@
 		box-sizing: border-box;
 		z-index: 9;
 	}
-	.tab-header {
-		width: 750rpx;
-		height: 104rpx;
-		display: flex;
-		box-sizing: border-box;
-		padding: 0 35rpx 0 20rpx;
-		z-index: 10;
-		align-items: center;
-		justify-content: space-between;
-	}
+	
 	.tab-box{
 		width: 290rpx;
 		height:100rpx
@@ -363,7 +354,7 @@
 		box-sizing: border-box;
 		padding: 0;
 		background: #fff;
-		padding-top: 27rpx;
+		padding-top: 17rpx;
 		padding-bottom: 10rpx;
 	}
 
@@ -449,7 +440,7 @@
 	}
 	.capsule-box {
 		width: 100%;
-		height: 220rpx;
+		height: 200rpx;
 		box-sizing: border-box;
 		display: flex;
 		position: relative;
@@ -478,17 +469,25 @@
 		box-sizing: border-box;
 		padding: 15rpx 18rpx 15rpx 19rpx
 	}
-
+	.tab-header {
+		width: 750rpx;
+		height: 104rpx;
+		display: flex;
+		box-sizing: border-box;
+		padding: 0 35rpx 0 20rpx;
+		z-index: 10;
+		align-items: center;
+		justify-content: space-between;
+	}
 	.header-search {
 		width: 614rpx;
 		height: 71rpx;
-		border: 4rpx solid #333333;
+		border: 2px solid #333333;
 		border-radius: 5rpx;
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
 		position: relative;
-		box-sizing: border-box;
 		padding-right: 10rpx;
 	}
 	.search-btn{
@@ -501,7 +500,8 @@
 		font-weight: 600;
 		color: #FFFFFF;
 		text-align: center;
-		line-height: 52rpx;
+		line-height: 54rpx;
+		margin-top: -1rpx;
 	}
 	.icon-live{
 		width: 51rpx;
