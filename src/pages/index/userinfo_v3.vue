@@ -64,7 +64,7 @@
         <view class="publicContainer orderContainer">
             <view class="order_topWrap alc" @click="onClickOrderList(0)">
                 <view class="wrapTitle flex1">我的订单</view>
-                <view class="title_tip">全部</view>
+                <view class="title_tip" style="color: #C0C0C0;">全部</view>
                 <view class="rightIcon"></view>
             </view>
             <view class="order_menuWrap uni-flex">
