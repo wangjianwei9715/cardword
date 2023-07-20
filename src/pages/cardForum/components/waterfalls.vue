@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 16:12:07
+ * @LastEditTime: 2023-07-20 13:52:36
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -265,7 +265,7 @@ const CardBookJumpUrl = {
     1: '/pages/illustration/album/selectCard',
     2: '/pages/illustration/album/picUpload'
 }
-const MAX_HEIGHT = uni.upx2px(440)
+const MAX_HEIGHT = uni.upx2px(478)
 const WIDTH = uni.upx2px(360)
 const MIN_HEIGHT = uni.upx2px(246)
 const GAP = uni.upx2px(10)
@@ -1025,7 +1025,7 @@ $uvui-nvue-style: true !default;
 }
 
 .waterfall-item__ft__title__value {
-    font-size: 25rpx;
+    font-size: 27rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #333333;
@@ -1045,7 +1045,7 @@ $uvui-nvue-style: true !default;
     // #endif
     width: 360rpx;
     padding: 0 12rpx 0 17rpx;
-    padding-bottom: 29rpx;
+    padding-bottom: 20rpx;
     align-items: center;
 }
 
