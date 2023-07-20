@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-20 16:15:08
+ * @LastEditTime: 2023-07-20 16:26:28
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -784,18 +784,15 @@ export default class ClassName extends BaseNode {
             })
             this.pics.forEach((pic: string, index) => {
                 uni.getImageInfo({
-                    src: pic,
+                    src: pic+"?x-oss-process=image/resize,p_1",
                     success: (res: any) => {
                         if (res.width < WIDTH) {
                             res.height = (WIDTH / res.width) * res.height
                             res.width = WIDTH
                         }
-                        // console.log(event);
                         let widthFixHeight = (WIDTH / res.width) * res.height
                         if (widthFixHeight > MaxHeight) widthFixHeight = MaxHeight
                         if (widthFixHeight > this.picHeight) this.picHeight = widthFixHeight
-                        console.log(this.picHeight,MaxHeight);
-                        
                     }
                 })
             })
