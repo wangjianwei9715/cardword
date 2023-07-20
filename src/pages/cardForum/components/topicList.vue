@@ -132,7 +132,7 @@ export default {
 .topiceImage {
     width: 161rpx;
     height: 161rpx;
-    border-radius: 3rpx;
+    border-radius: 5rpx;
     margin-right: 46rpx;
 }
 
@@ -144,7 +144,7 @@ export default {
 }
 
 .desc {
-    font-size: 21rpx;
+    font-size: 23rpx;
     font-family: PingFang SC;
     font-weight: 400;
     color: #959695;
@@ -171,7 +171,7 @@ export default {
 }
 
 .title {
-    font-size: 25rpx;
+    font-size: 27rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #333333;
@@ -190,6 +190,7 @@ export default {
     color: #FFFFFF;
     line-height: 32rpx;
     padding: 0 10rpx;
+    border-radius: 3rpx;font-weight: bold;
 }
 
 .bottomInfo {
@@ -204,7 +205,7 @@ export default {
 }
 
 .num {
-    font-size: 21rpx;
+    font-size: 23rpx;
     font-family: PingFang SC;
     font-weight: 400;
     color: #C0C0C0;
@@ -216,7 +217,7 @@ export default {
     width: 109rpx;
     height: 51rpx;
     background: #FA1545;
-    border-radius: 3rpx;
+    border-radius: 5rpx;
     font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: bold;

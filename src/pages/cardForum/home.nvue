@@ -774,7 +774,7 @@ page {
 }
 
 .hotTopicRow_title {
-    font-size: 25rpx;
+    font-size: 27rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #FFFFFF;
@@ -792,7 +792,7 @@ page {
     width: 710rpx;
     flex-direction: row;
     display: flex;
-    margin-top: 42rpx;
+    margin-top: 32rpx;
     // flex-wrap: nowrap;
 
 }
@@ -833,7 +833,7 @@ page {
     width: 101rpx;
     height: 200rpx;
     // background-color: #ffffff;
-    margin-right: 67rpx;
+    margin-right: 60rpx;
     // border-radius: 1rpx;
     position: relative;
 }
@@ -843,6 +843,7 @@ page {
     height: 101rpx;
     border-radius: 1rpx;
     background-color: #ffffff;
+    border-radius: 5rpx;
 }
 
 .topicItem_title_wrap {
@@ -885,13 +886,14 @@ page {
     justify-content: center;
     align-items: center;
     position: relative;
+    border-radius: 5rpx;
 }
 
 .topPushButton {
     width: 168rpx;
     height: 57rpx;
     background: #FA1545;
-    border-radius: 3rpx;
+    border-radius: 5rpx;
 
     right: 50rpx;
     top: 74rpx;
@@ -910,11 +912,13 @@ page {
     height: 208rpx;
     top: 0;
     left: 0;
+    border-radius: 5rpx;
 }
 
 .swiperPic {
     width: 730rpx;
     height: 200rpx;
+    border-radius: 5rpx;
     // position: absolute;
     // left: 0;
     // top:0;

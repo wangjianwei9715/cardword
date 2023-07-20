@@ -577,7 +577,7 @@ page {
 			font-size: 25rpx;
 			font-family: PingFang SC;
 			font-weight: 400;
-			color: #333333;
+			color: #767880;
 			flex: 1;
 			margin-right: 10rpx;
 			// width: 500rpx;

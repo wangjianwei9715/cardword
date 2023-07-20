@@ -270,7 +270,7 @@ page {
     width: 161rpx;
     height: 161rpx;
     // background-color: red;
-    border-radius: 3rpx;
+    border-radius: 5rpx;
     margin-right: 46rpx;
 }
 
@@ -296,7 +296,7 @@ page {
     width: 122rpx;
     height: 51rpx;
     background: #FA1545;
-    border-radius: 3rpx;
+    border-radius: 5rpx;
     font-size: 25rpx;
     font-family: PingFang SC;
     font-weight: bold;
@@ -316,7 +316,7 @@ page {
 }
 
 .desc {
-    font-size: 21rpx;
+    font-size: 23rpx;
     font-family: PingFang SC;
     font-weight: 400;
     color: #959695;
@@ -355,7 +355,7 @@ page {
 }
 
 .num {
-    font-size: 21rpx;
+    font-size: 23rpx;
     font-family: PingFang SC;
     font-weight: 400;
     color: #C0C0C0;
@@ -391,6 +391,7 @@ page {
     left: 0;
     top: 0;
     width: 730rpx;
+    border-radius: 5rpx;
     height: 200rpx;
 }
 
@@ -398,7 +399,7 @@ page {
     width: 168rpx;
     height: 57rpx;
     background: #FA1545;
-    border-radius: 3rpx;
+    border-radius: 5rpx;
     position: absolute;
     top: 75rpx;
     right: 48rpx;
