@@ -4,7 +4,10 @@
             :title="userInfo.userName" :report="!isMine"
             @report="pageJump(`/pages/cardForum/report?byInformer=${userInfo.userId}&source=4`)">
         </transitionNav>
-        <view class="userInfoWrap" id="userInfoWrap">
+        <view class="userInfoWrap" id="userInfoWrap" @click="menuShow = isMine">
+            <image :src="$parsePic(decodeURIComponent(userInfo.back_pic))" class="userBack" v-if="userInfo.back_pic"
+                mode="aspectFill"></image>
+            <image v-else src="@/static/userinfo/v3/banner.png" class="userBack" mode="aspectFill"></image>
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
             <view class="userInfo">
                 <image class="userInfo_avatar" mode="aspectFill"
@@ -17,11 +20,12 @@
                     </view>
                     <view class="userInfo_ip">
                         <text class="userInfo_ip_text">IP属地：{{ userInfo.location || '未知' }}</text>
+                        <text class="userInfo_ip_text" style="margin-left: 10rpx;">| 卡迷号：{{ userInfo.userId }}</text>
                     </view>
                 </view>
             </view>
             <view class="descWrap" v-if="userInfo.sign">
-                <text class="desc_text">{{ userInfo.sign }}</text>
+                <text class="desc_text u-line-2">{{ userInfo.sign }}</text>
             </view>
             <view class="userDataWrap">
                 <view class="userData_data">
@@ -40,11 +44,12 @@
                 </view>
                 <view class="flex1"></view>
                 <!-- @click="onClickFollow" -->
-                <text class="userData_follow" @click="onClickUserFollow" :class="{ userData_follow_dis: userInfo.isFollow }"
-                    v-if="!isMine">{{
+                <text class="userData_follow" @click.stop="onClickUserFollow"
+                    :class="{ userData_follow_dis: userInfo.isFollow }" v-if="!isMine">{{
                         userInfo.isFollow ? '已关注' :
                         '关注' }}</text>
-                <text class="userData_edit" v-else @click="pageJump('/pages/userinfo/user_info_v3')">编辑资料</text>
+                <text class="userData_edit flexCenter" v-else
+                    @click.stop="pageJump('/pages/userinfo/user_info_v3')">编辑资料</text>
             </view>
         </view>
         <u-sticky :customNavHeight="navHeight">
@@ -86,6 +91,8 @@
                 </view>
             </template>
         </waterfalls>
+        <u-action-sheet :safeAreaInsetBottom="true" @select="onSelect" cancelText="取消" @close="menuShow = false"
+            :actions="menuList" :show="menuShow"></u-action-sheet>
     </view>
 </template>
 
@@ -95,6 +102,7 @@ import { Component, Watch } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import waterfalls from "./components/waterfalls.vue"
 import { getDraftList, followActionByUser } from "./func"
+import Upload from "@/tools/upload"
 const navHeight = app.statusBarHeight + uni.upx2px(88)
 const mineTabs: any = [
     {
@@ -151,6 +159,8 @@ const defaultTagObj = {
 })
 export default class ClassName extends BaseNode {
     app = app
+    menuShow: boolean = false
+    menuList: any = [{ name: '从相册中选择', id: 1 }]
     isMine: boolean = false
     userInfo: any = {}
     navHeight = navHeight
@@ -287,6 +297,17 @@ export default class ClassName extends BaseNode {
             this.current.firstReqEnd = true
         })
     }
+    async onSelect(event: any) {
+        // console.log(event);
+        if (event.id == 1) {
+            const picArr: any = await Upload.getInstance().uploadSocialImgs(1, "userCover/", ["album"])
+            if (picArr.length) {
+                app.http.Post("cardCircle/edit/backPic", { back_pic: picArr[0] }, (res: any) => {
+                    this.userInfo.back_pic = picArr[0]
+                })
+            }
+        }
+    }
     sortDraft(get?: boolean) {
         app.http.Get(`dataApi/cardCircle/list/me/dongtai`, {}, (res: any) => {
             this.sortDraftFunc(res)
@@ -347,9 +368,24 @@ page {
     flex-direction: column;
     align-items: center;
     display: flex;
-    background-color: #333333;
+    // background-color: #333333;
     padding-bottom: 71rpx;
+    position: relative;
+    // background-size: 100% 100%;
 }
+
+.userBack {
+    width: 750rpx;
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+// .userInfoWrap_back {
+//     background-size: 100% 100%;
+//     background-image: url("@/static/userinfo/v3/banner.png");
+// }
 
 .fixImg {
     position: fixed;
@@ -372,6 +408,7 @@ page {
     flex-direction: row;
     margin-top: 24rpx;
     flex: 1;
+    position: relative;
     // background-color: red;
 }
 
@@ -427,7 +464,7 @@ page {
     font-size: 21rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #FFFFFF;
+    color: #C0C0C0;
 }
 
 .descWrap {
@@ -437,6 +474,7 @@ page {
     // #endif
     padding: 0 35rpx;
     margin-top: 38rpx;
+    position: relative;
     // height: 70rpx;
 }
 
@@ -458,6 +496,7 @@ page {
     // #endif
     padding: 0 35rpx;
     margin-top: 60rpx;
+    position: relative;
     // justify-content: space-between;
 }
 
@@ -525,16 +564,14 @@ page {
 }
 
 .userData_edit {
-    width: 176rpx;
-    height: 62rpx;
-    background-color: rgba(0, 0, 0, 0.38);
+    width: 159rpx;
+    height: 55rpx;
+    background: rgba(0, 0, 0, 0.38);
     border: 1rpx solid #E6E6E6;
     border-radius: 3rpx;
-    font-size: 29rpx;
+    font-size: 27rpx;
     font-family: PingFang SC;
     font-weight: bold;
-    text-align: center;
-    line-height: 62rpx;
     color: #FFFFFF;
 }
 

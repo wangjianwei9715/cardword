@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-19 17:31:38
+ * @LastEditTime: 2023-07-20 11:47:39
  * @FilePath: \card-world\src\pages\userinfo\level.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -24,7 +24,7 @@
                 <view class="userInfo">
                     <view class="userNameWrap">
                         <view class="userName">{{ userInfo.userName }}</view>
-                        <image :style="levelInfo.level == 10 ? { height: `29rpx`,width:`58rpx` } : {}" class="level"
+                        <image :style="levelInfo.level == 10 ? { height: `29rpx`, width: `58rpx` } : {}" class="level"
                             :src="`/static/userinfo/v3/level/${levelInfo.level || 1}.png`"></image>
                         <!-- <image v-for="item in 10" :style="item == 10 ? { height: `29rpx`,width:`58rpx` } : {}" class="level"
                             :src="`/static/userinfo/v3/level/${item || 1}.png`"></image> -->
@@ -33,7 +33,7 @@
                 </view>
             </view>
             <view class="levelInfo" @click="pageJump('/pages/userinfo/level/details')">
-                <view class="level">LV.{{ levelInfo.level || 1 }}</view>
+                <view class="level_num">LV.{{ levelInfo.level || 1 }}</view>
                 <view class="tips">达到5/9/10级解锁特殊勋章</view>
                 <view class="flex1"></view>
                 <view class="gap">
@@ -61,7 +61,8 @@
 
                 <view class="taskRight" v-if="item.id === 1"
                     style="flex-direction: column;align-items: flex-end;display: flex;">
-                    <view class="signButton flexCenter" @click="onClickSign(item.isSuccess)">{{ item.isSuccess ? "已签到" : '签到' }}</view>
+                    <view class="signButton flexCenter" @click="onClickSign(item.isSuccess)">{{ item.isSuccess ? "已签到" :
+                        '签到' }}</view>
                     <view class="tips">连续签到5天后翻倍，当前{{ signInDay }}天</view>
                 </view>
                 <view class="taskRight" v-if="item.id != 1" @click="onClickTask(item)">
@@ -158,8 +159,8 @@ export default class ClassName extends BaseNode {
             url
         })
     }
-    onClickSign(isSuccess:boolean) {
-        if(isSuccess) return
+    onClickSign(isSuccess: boolean) {
+        if (isSuccess) return
         app.http.Post("cardCircle/level/signIn", {}, () => {
             uni.showToast({
                 title: "签到成功",
@@ -274,6 +275,7 @@ page {
     background-image: url("@/static/userinfo/v3/titleWrap.png");
     margin-top: 22rpx;
     vertical-align: top;
+
     text {
         line-height: 33rpx;
         font-size: 25rpx;
@@ -336,8 +338,9 @@ page {
         align-items: center;
         height: 42rpx;
         flex-wrap: wrap;
-        .level{
-            width:56.37rpx;
+
+        .level {
+            width: 56.37rpx;
             height: 23rpx;
         }
     }
@@ -382,14 +385,16 @@ page {
     align-items: center;
     padding: 0 42rpx 0 36rpx;
     margin-top: 37rpx;
+    // height: 40rpx;
 
-    .level {
+    .level_num {
         height: 34rpx;
         font-size: 29rpx;
         font-family: PingFang SC;
         font-weight: bold;
         color: #FFFFFF;
         margin-right: 22rpx;
+        // line-height: 40rpx;
     }
 
     .tips {
@@ -397,6 +402,7 @@ page {
         font-family: PingFang SC;
         font-weight: 400;
         color: #959695;
+        // line-height: 40rpx;
     }
 
     .gap {
@@ -544,5 +550,4 @@ page {
         height: 20rpx;
         margin-left: 10rpx;
     }
-}
-</style>
+}</style>

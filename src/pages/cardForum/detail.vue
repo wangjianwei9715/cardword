@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-19 18:16:49
+ * @LastEditTime: 2023-07-20 10:35:17
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,7 +29,7 @@
                 <view @click="actionSheetShow = true" v-if="isPerson" style="margin-right: 20rpx;">
                     <u-icon size="46rpx" color="#464646" name="more-dot-fill"></u-icon>
                 </view>
-                <image src="/static/goods/v2/icon_share.png" style="width:38rpx;height:38rpx"></image>
+                <image src="/static/goods/v2/icon_share.png" style="width:38rpx;height:38rpx" @click="operationShow = true"></image>
                 <!-- <u-icon name="share-square" color="#6c6969" size="28" @click="operationShow = true"></u-icon> -->
                 <!-- <view @click="actionSheetShow = true" v-if="isMy">
                     <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>

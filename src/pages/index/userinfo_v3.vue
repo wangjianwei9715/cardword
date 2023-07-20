@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <transitionNav :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)" :needRightTools="['设置']"
+        <transitionNav :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)" title="" :needRightTools="['设置']"
             :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
@@ -24,7 +24,7 @@
                 </view>
             </view>
             <view class="descWrap" v-if="infoData.sign">
-                <text class="desc_text">{{ infoData.sign }}</text>
+                <text class="desc_text u-line-2">{{ infoData.sign }}</text>
             </view>
             <view class="userDataWrap">
                 <view class="userData_data">
@@ -577,7 +577,7 @@ page {
     font-size: 21rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #FFFFFF;
+    color: #C0C0C0;
 }
 
 .descWrap {
@@ -713,13 +713,13 @@ page {
 
 .orderContainer {
     height: 221rpx;
-    padding: 0 36rpx;
-    padding-top: 35rpx;
+    padding: 0 29rpx;
+    padding-top: 32rpx;
     background-color: #ffffff;
     border-radius: 3rpx;
     width: 710rpx;
     margin-top: 10rpx;
-
+    // padding-bottom: 48rpx;
     .order_topWrap {
         display: flex;
 
@@ -758,14 +758,14 @@ page {
                 font-family: PingFang SC;
                 font-weight: 400;
                 color: #333333;
-                margin-top: 18rpx;
+                margin-top: 14rpx;
             }
         }
     }
 }
 
 .wrapTitle {
-    font-size: 25rpx;
+    font-size: 29rpx;
     font-family: PingFang SC;
     font-weight: bold;
     color: #333333;
@@ -778,7 +778,7 @@ page {
     border-radius: 3rpx;
     box-sizing: border-box;
     padding: 0 29rpx;
-    padding-top: 35rpx;
+    padding-top: 32rpx;
     padding-bottom: 44rpx;
     margin-top: 20rpx;
     height: 437rpx;
