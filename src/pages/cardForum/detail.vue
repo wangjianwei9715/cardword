@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-20 10:35:17
+ * @LastEditTime: 2023-07-20 16:15:08
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,7 +29,8 @@
                 <view @click="actionSheetShow = true" v-if="isPerson" style="margin-right: 20rpx;">
                     <u-icon size="46rpx" color="#464646" name="more-dot-fill"></u-icon>
                 </view>
-                <image src="/static/goods/v2/icon_share.png" style="width:38rpx;height:38rpx" @click="operationShow = true"></image>
+                <image src="/static/goods/v2/icon_share.png" style="width:38rpx;height:38rpx" @click="operationShow = true">
+                </image>
                 <!-- <u-icon name="share-square" color="#6c6969" size="28" @click="operationShow = true"></u-icon> -->
                 <!-- <view @click="actionSheetShow = true" v-if="isMy">
                     <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>
@@ -42,7 +43,7 @@
         <view class="swiper" v-else>
             <!-- @click="onClickSwiper -->
             <u-swiper imgMode="aspectFit" @click="onClickSwiper" :current="swiperCurrent" :indicator="false" bgColor="#fff"
-                height="946rpx" :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
+                :height="picHeight || 400" :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
         </view>
         <view class="dotContainer" v-if="pics.length > 1 && !isAlbum" :style="{ width: dotContainerWidth + 'px' }">
             <view class="indicatorScroll" :style="{ left: scrollLeft + 'px' }">
@@ -243,6 +244,7 @@ import { followActionByUser, getForumDetail } from "./func/index"
 import { comment_reason_tp } from "@/tools/DataExchange"
 import recGift from "./components/recGift.vue"
 import albumSwiper from "./components/album/albumSwiper.vue"
+const WIDTH = app.platform.systemInfo.screenWidth
 interface Sheet {
     name: string;
     subname?: string;
@@ -265,6 +267,7 @@ const queryParams: CardForum.QueryByFetch = {
     fetchSize: 10
 }
 const dotWidth = uni.upx2px(24)
+const MaxHeight = uni.upx2px(1027)
 @Component({
     components: {
         rewardPop,
@@ -307,6 +310,7 @@ export default class ClassName extends BaseNode {
     userBack: boolean = false
     private: boolean = false
     fromUserId: number = 0
+    picHeight: number = 0
     onLoad(query: any) {
         delete this.queryParams.noteCommentId
         this.queryParams.fetchFrom = 1
@@ -778,6 +782,23 @@ export default class ClassName extends BaseNode {
                 //@ts-ignore
                 return this.$parsePic(decodeURIComponent(url))
             })
+            this.pics.forEach((pic: string, index) => {
+                uni.getImageInfo({
+                    src: pic,
+                    success: (res: any) => {
+                        if (res.width < WIDTH) {
+                            res.height = (WIDTH / res.width) * res.height
+                            res.width = WIDTH
+                        }
+                        // console.log(event);
+                        let widthFixHeight = (WIDTH / res.width) * res.height
+                        if (widthFixHeight > MaxHeight) widthFixHeight = MaxHeight
+                        if (widthFixHeight > this.picHeight) this.picHeight = widthFixHeight
+                        console.log(this.picHeight,MaxHeight);
+                        
+                    }
+                })
+            })
             if (res.state == 2 && (res.data.bit & ForumBit.IS_PERSON) == ForumBit.IS_PERSON) {
                 this.private = true
             }
@@ -863,7 +884,7 @@ export default class ClassName extends BaseNode {
 
 .swiper {
     width: 750rpx;
-    height: 946rpx;
+    // height: 946rpx;
 }
 
 .flex1 {
