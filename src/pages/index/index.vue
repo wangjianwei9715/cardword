@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-19 16:29:56
+ * @LastEditTime: 2023-07-20 09:47:32
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -57,7 +57,7 @@
 			</view>
 			<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
 				<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
-					:inactiveStyle="{fontSize:'27rpx',color:'#959695',padding:'0 0'}"
+					:inactiveStyle="{fontSize:'27rpx',color:'#C0C0C0',padding:'0 0'}"
 					:activeStyle="{fontSize:'33rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
 				></u-tabs>
 			</u-sticky>
@@ -213,7 +213,7 @@
 				})
 				// 我的关注商家是否有新商品
 				app.http.Get('me/fresh/followed_merchant_goods/light',{},(res:any)=>{
-					this.goodsTabs[0].badge!.isDot = res.bright
+					this.goodsTabs[0].badge!.isDot = true
 				})
 			}
 			// 开屏商品广告
@@ -454,12 +454,14 @@
 		display: flex;
 		position: relative;
 		background: #fff;
-		padding:20rpx 20rpx 0 20rpx;
+		padding:0rpx 20rpx 0rpx 20rpx;
+		border-radius: 5rpx;
 	}
 	.capsule-pic1{
 		width: 710rpx;
 		height:200rpx;
 		z-index: 5;
+		border-radius: 5rpx;
 	}
 	.tabc-content {
 		width: 100%;

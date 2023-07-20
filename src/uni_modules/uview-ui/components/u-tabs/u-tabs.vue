@@ -34,7 +34,7 @@
 						<template v-else-if="customType == 'showKa'">
 							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
-								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1 },{marginRight:index==0?`6rpx`:`0rpx`}]"
+								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1,position:'relative' },{marginRight:index==0?`6rpx`:`0rpx`}]"
 								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
 								<text v-if="index != 2"
 									:class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
@@ -45,7 +45,7 @@
 									<slot name="showKa"></slot>
 								</view>
 								<!-- :show="" -->
-								<u-badge style="position: absolute;right: 0rpx;" :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
+								<u-badge style="position: absolute;right:5rpx;top:22rpx" :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
 									:isDot="true"
 									:value="item.badge && item.badge.value || propsBadge.value"
 									:max="item.badge && item.badge.max || propsBadge.max"
@@ -62,7 +62,7 @@
 						<template v-else>
 							<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
 								@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
-								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1 }]"
+								:style="[$u.addStyle(itemStyle), { flex: scrollable ? '' : 1,position:'relative' }]"
 								:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
 								<text :class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
 									class="u-tabs__wrapper__nav__item__text" :style="[textStyle(index)]">{{ item[keyName]
@@ -78,7 +78,7 @@
 									:shape="item.badge && item.badge.shape || propsBadge.shape"
 									:numberType="item.badge && item.badge.numberType || propsBadge.numberType"
 									:inverted="item.badge && item.badge.inverted || propsBadge.inverted"
-									customStyle="margin-left: 4px;"></u-badge>
+									customStyle="position:absolute;right:5rpx;top:22rpx"></u-badge>
 							</view>
 						</template>
 						<!-- #ifdef APP-NVUE -->
