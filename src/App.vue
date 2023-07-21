@@ -73,6 +73,7 @@
 			// #endif
 			if (loginToken) {
 				app.token = JSON.parse(loginToken);
+				app.data.userId=uni.getStorageSync("ksjUserId") || 0
 			}
 			uni.$on("refreshToken", () => {
 				if (app.refreshIng) return;
