@@ -10,7 +10,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="center" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+		<view class="center">
 			<statusbar/>
 			<view class="upload-box">	
 				<view class="upload-header">
@@ -18,7 +18,7 @@
 					<view class="header-num">{{numData.now}}/{{numData.all}}</view>
 					<view class="icon-right" @click="$u.throttle(onClickNext,1000)"></view>
 				</view>
-				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic" :uploadable="hasUpload"/>
+				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic" :uploadable="hasUpload" @up="onClickUp" @next="onClickNext"/>
 				<view class="upload-card-info">
 					<view class="card-title">{{noData.text.player}}</view>
 					<view class="card-set u-line-2">{{noData.text.seq==0?"无限":noData.text.seq}}编，{{noData.text.cardSet}}</view>
@@ -81,11 +81,6 @@
 		cardList:any = [];
 		httpParams:any = {};
 		listParams:any = {};
-		touchData = {
-			startX:0,
-			moveX:0,
-			move:false
-		}
 		onLoad(query: any) {
 			this.noCode = query.noCode;
 			this.numData = {
@@ -149,22 +144,6 @@
 		clearPic(){
 			this.frontPic = "";
 			this.backPic = "";
-		}
-		handleTouchStart(event:any) {
-			this.touchData.startX = event.touches[0].clientX;
-		}
-		handleTouchMove(event:any) {
-			this.touchData.moveX = event.touches[0].clientX;
-			this.touchData.move = true;
-		}
-		handleTouchEnd() {
-			if(!this.touchData.move) return;
-			if (this.touchData.moveX - this.touchData.startX > 100) {
-				this.onClickUp()
-			} else if (this.touchData.moveX - this.touchData.startX < -100) {
-				this.onClickNext()
-			}
-			this.touchData.move = false;
 		}
 		onClickUp(){
 			if(this.numData.now<=1) return;
@@ -297,7 +276,7 @@
 		padding-top:100rpx;
 	}
 	.upload-box{
-		width: 538rpx;
+		width: 100%;
 		box-sizing: border-box;
 		margin:0 auto;
 		.upload-header{
@@ -330,11 +309,12 @@
 		}
 	}
 	.upload-card-info{
-		width: 100%;
+		width: 538rpx;
 		height: 221rpx;
 		background: rgba(39, 39, 39, 1);
 		border: 0.8px solid #848484;
 		border-radius: 3rpx;
+		margin:0 auto;
 		margin-top: 51rpx;
 		position: relative;
 		box-sizing: border-box;
@@ -396,7 +376,7 @@
 		}
 	}
 	.upload-author{
-		width: 100%;
+		width: 538rpx;
 		height:31rpx;
 		display: flex;
 		align-items: center;
@@ -405,6 +385,7 @@
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #FFFFFF;
+		margin:0 auto;
 		margin-top: 29rpx;
 		.upload-author-avatar{
 			width: 31rpx;
