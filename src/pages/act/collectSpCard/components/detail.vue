@@ -178,7 +178,7 @@
 		}
 		onClickGiveBtn(){
 			const { start } = this.giveData
-			if(start){
+			if(!start){
 				this.initGroupGiveNum()
 				this.giveData.total = 0;
 			}
