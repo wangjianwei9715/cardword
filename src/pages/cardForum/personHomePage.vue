@@ -387,6 +387,7 @@ page {
     height: 100%;
     left: 0;
     top: 0;
+    filter: brightness(0.61);
 }
 
 // .userInfoWrap_back {
@@ -471,7 +472,7 @@ page {
     font-size: 21rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #C0C0C0;
+    color: #e9e9e9;
 }
 
 .descWrap {

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-21 14:33:39
+ * @LastEditTime: 2023-07-21 16:44:33
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -309,7 +309,6 @@
 	.tab-center {
 		width: 100%;
 		box-sizing: border-box;
-		padding-bottom:20rpx;
 		padding-top: 10rpx;
 		background:#fff;
 		.center-top{
