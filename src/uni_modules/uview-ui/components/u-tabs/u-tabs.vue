@@ -114,7 +114,7 @@
 							<view class="u-tabs__wrapper__nav__line" style="border-radius: 0;background-color: #ff003d;" ref="u-tabs__wrapper__nav__line" 
 								 :style="[{
 									width: `50rpx`,
-									transform: `translate(${lineOffsetLeft}px)`,
+									transform: `translate(${lineOffsetLeft-(customType == 'showKa'?0:3)}px)`,
 									transitionDuration: `${firstTime ? 0 : duration}ms`,
 									height: $u.addUnit(lineHeight),
 								}]"></view>
