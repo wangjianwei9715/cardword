@@ -173,9 +173,9 @@
 		}
 		getDetail(cb?:Function){
 			const { scrollId, st } = this.httpParams;
-			const _url = `scrollId=${scrollId}&st=${st}&pageSize=10`;
-            const sn = Md5.hashStr(`${st}_${scrollId}_scrollSearchTujian`);
 			const ts = Math.floor(new Date().getTime()/1000);
+			const _url = scrollId ? `scrollId=${scrollId}&st=${st}&pageSize=10` :`ts=${ts}&noSplit=1`;
+            const sn = Md5.hashStr(`${scrollId?st:ts}_${scrollId?`${scrollId}_`:''}scrollSearchTujian`);
 			app.http.Post(`${this.httpParams.url}?${_url}&sn=${sn}`,this.listParams,(res:any)=>{
 				if(res.list){
 					this.cardList = [...this.cardList,...res.list.map((x:any)=>x.code)];
@@ -184,6 +184,11 @@
 				this.httpParams.st = ts;
 				uni.hideLoading();
 				cb?.()
+			},(error:any)=>{
+				this.httpParams.scrollId="";
+				this.httpParams.st=0;
+				this.cardList = []
+				this.getDetail()
 			})
 		}
 		onClickUpload(){
