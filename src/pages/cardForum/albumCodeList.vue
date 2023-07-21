@@ -45,7 +45,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import cardPic from '@/pages/illustration/components/cardPic.vue'
-	import { followActionByUser, formatterNolist } from "./func";
+	import { followActionByUser, formatterNolist,ossStitching } from "./func";
 	class ListParams {
 		tp=0;
 		fetchFrom=1;
@@ -91,7 +91,7 @@
                 title,
                 summary: content ? (content.length > 20 ? content.substr(0, 20) + '...' : content) : "我发现了一篇精彩动态",
                 //@ts-ignore
-                thumb: this.$parsePic(decodeURIComponent(url)) + `?x-oss-process=image/resize,h_100,w_100`
+                thumb: ossStitching(this.$parsePic(decodeURIComponent(url)),`x-oss-process=image/resize,h_100,w_100`)
             }
 		}
 		formatterCodeList(addList:any[],dic:object){

@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-20 17:33:03
+ * @LastEditTime: 2023-07-21 11:27:10
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -240,7 +240,7 @@ import { formatNumber, getDateDiff } from "@/tools/util"
 import rewardPop from "./components/rewardPop.vue"
 import CardForum from "./interface/public";
 import { UserStreamline } from "@/manager/userManager"
-import { followActionByUser, getForumDetail } from "./func/index"
+import { followActionByUser, getForumDetail, ossStitching } from "./func/index"
 import { comment_reason_tp } from "@/tools/DataExchange"
 import recGift from "./components/recGift.vue"
 import albumSwiper from "./components/album/albumSwiper.vue"
@@ -256,7 +256,7 @@ const PersonSheet: Array<Sheet> = [
     { name: "编辑内容", behavior: "goEdit" },
     { name: "删除此动态", behavior: "deleteForum", color: "#fb374e" }
 ]
-enum ForumBit { 
+enum ForumBit {
     IS_PERSON = 1,//本人
     IS_FOLLOW = 2,//关注
     IS_LIKE = 4,//点赞
@@ -784,7 +784,7 @@ export default class ClassName extends BaseNode {
             })
             this.pics.forEach((pic: string, index) => {
                 uni.getImageInfo({
-                    src: pic+"?x-oss-process=image/resize,p_1",
+                    src: ossStitching(pic,'x-oss-process=image/resize,p_1'),
                     success: (res: any) => {
                         if (res.width < WIDTH) {
                             res.height = (WIDTH / res.width) * res.height
@@ -806,7 +806,7 @@ export default class ClassName extends BaseNode {
                 title: res.data.title,
                 summary: content ? (content.length > 20 ? content.substr(0, 20) + '...' : content) : "我发现了一篇精彩动态",
                 //@ts-ignore
-                thumb: this.pics[0] + `?x-oss-process=image/resize,h_100,w_100`
+                thumb: ossStitching(this.pics[0], 'x-oss-process=image/resize,h_100,w_100')
             }
             this.getCommByWorks()
         }).catch((err: any) => {
