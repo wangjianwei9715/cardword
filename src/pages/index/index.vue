@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-20 17:30:11
+ * @LastEditTime: 2023-07-21 11:38:04
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -58,7 +58,7 @@
 				<!-- 拼团进度 最新上架 新手体验 拆卡围观 -->
 				<indexHot :hot="hot" :broadCastList="broadCastList"/>
 			</view>
-			<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="88rpx">
+			<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="90rpx">
 				<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
 					:inactiveStyle="{fontSize:'27rpx',color:'#C0C0C0',padding:'0 0'}"
 					:activeStyle="{fontSize:'30rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
