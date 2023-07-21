@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-20 15:15:08
+ * @LastEditTime: 2023-07-21 11:26:43
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -277,7 +277,7 @@ const LIEK = 4
 import mixin from './function/mixin.js'
 import { delDraftDetail } from "../func/index.js"
 import empty from "@/components/empty/empty.vue"
-import { getDraftDetail } from "../func"
+import { getDraftDetail,ossStitching } from "../func"
 // #ifdef APP-NVUE
 const dom = weex.requireModule('dom')
 // #endif
@@ -734,14 +734,14 @@ export default {
             const deCover = this.parsePic(decodeURIComponent(item.cover))
             const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
             if (isVideoSnapshot) return deCover
-            return deCover + `?x-oss-process=image/resize,m_fixed,h_${parseInt(item.height * 2)},w_${parseInt(item.width * 2)}`
+            return ossStitching(deCover,`x-oss-process=image/resize,m_fixed,h_${parseInt(item.height * 2)},w_${parseInt(item.width * 2)}`)
         },
         thumbnail(cover, needParse) {
             if (!cover) return cover
             let deCover = needParse ? this.parsePic(decodeURIComponent(cover)) : cover
             const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
             if (isVideoSnapshot) return deCover
-            return deCover + "?x-oss-process=image/resize,p_1"
+            return ossStitching(deCover,`x-oss-process=image/resize,p_1`)
         },
         imageLoadError(event, item) {
             // #ifndef APP-NVUE

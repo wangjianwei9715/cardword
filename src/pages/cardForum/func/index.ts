@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-14 16:21:52
+ * @LastEditTime: 2023-07-21 11:29:28
  * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -209,6 +209,10 @@ export function formatterNolist(list: any[], dic: any): any[] {
         }
         return seqIndexes.map(seqIndex => ({ ...params, seqIndex }));
     }).flat();
+}
+export function ossStitching(url:string,params:string){
+    const hasParams=decodeURIComponent(url).indexOf("?")>=0
+    return url+`${hasParams?'&':'?'}${params}`
 }
 export function testCode(code:string):Boolean{
     //先判断长度(后续优化)
