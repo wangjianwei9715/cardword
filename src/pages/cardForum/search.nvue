@@ -28,8 +28,8 @@
                 </div>
             </div>
         </div>
-        <div v-if="!onSearch" style="height:100rpx">
-            <u-tabs customType="cardForum" style="width:750rpx" :itemStyle="{ width: `150rpx`, height: `90rpx` }"
+        <div v-if="!onSearch" style="height:94rpx">
+            <u-tabs customType="cardForum" style="width:750rpx" :itemStyle="{ width: `150rpx`, height: `90rpx`,marginTop:`-10rpx` }"
                 :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
@@ -54,7 +54,7 @@
             </view>
 
         </view>
-        <view class="whiteBlock" v-if="onSearch" style="background-color: #fff;height:600px"></view>
+        <view class="whiteBlock" v-if="onSearch&&(os=='ios')" style="background-color: #fff;height:600px"></view>
         <swiper class="swiperContainer" v-if="!onSearch" :style="{ height: scrollViewHeight + 'px' }" :current="tabs.index"
             @change="swiperChange" @animationfinish="swiperChangeAnimationfinish" @transition="swiperTransition">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
@@ -169,7 +169,8 @@ export default {
             },
             hotList: [],
             hotSearchCopy: [],
-            trTimmer: null
+            trTimmer: null,
+            os:app.platform.systemInfo.platform
         }
     },
     async onLoad() {
@@ -279,7 +280,8 @@ export default {
         async setHeight() {
             this.fixedTopHeight = await this.getDomHeight("#fixedTop")
             // #ifdef APP-NVUE
-            this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - uni.upx2px(100)
+            this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - uni.upx2px(94)
+            console.log("this.scrollViewHeight",this.scrollViewHeight);
             // - plus.navigator.getSafeAreaInsets().deviceBottom
             // #endif
             // #ifdef H5

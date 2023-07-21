@@ -125,7 +125,7 @@
                 </div>
             </div>
             <u-tabs style="width: 750rpx;height:" customType="showKa" :duration="300" lineWidth="49rpx" lineHeight="6rpx"
-            :itemStyle="{marginTop:'-10rpx',height:'74rpx'}"
+                :itemStyle="{ marginTop: '-10rpx', height: '74rpx' }"
                 :activeStyle="{ color: '#333333', fontSize: '27rpx', transform: 'scale(1.22)', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', transform: 'scale(1)', fontFamily: 'PingFang SC' }"
                 class="tabs" id="tabs" :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs">
@@ -158,17 +158,17 @@ import waterfalls from "./components/waterfalls.vue"
 import cardSkeleton from "./components/cardSkeleton.vue"
 import { releaseByTopic, mockList } from "./func/index.js"
 import empty from "@/components/empty/empty.vue"
-import {Md5} from "js-md5"
+import { Md5 } from "js-md5"
 const actionsList = [
     {
         name: "动态",
         url: "/pages/cardForum/release",
-        fontWeight:600
+        fontWeight: 600
     }, {
         name: "卡册",
         subname: "适用于凑套，需图片与卡种对应上传。",
         url: "/pages/illustration/album/selectCard",
-        fontWeight:600
+        fontWeight: 600
     }
 ]
 const tabsList = [
@@ -473,19 +473,26 @@ export default {
             })
         },
         refreshData(index) {
+            console.log("刷新数据", this.current.isFetchEnd);
             setTimeout(() => {
-                if (this.current.isFetchEnd) {
+                // if (this.current.isFetchEnd) {
+                //     setTimeout(() => {
+                //         this.$refs['waterfalls' + index][0].hideRefresh()
+                //     }, 200);
+                // } else {
+                //     this.current.queryParams.fetchFrom = 1
+                //     this.reqNewData(true, (() => {
+                //         setTimeout(() => {
+                //             this.$refs['waterfalls' + index][0].hideRefresh()
+                //         }, 200);
+                //     }))
+                // }
+                this.current.queryParams.fetchFrom = 1
+                this.reqNewData(true, (() => {
                     setTimeout(() => {
                         this.$refs['waterfalls' + index][0].hideRefresh()
                     }, 200);
-                } else {
-                    this.current.queryParams.fetchFrom = 1
-                    this.reqNewData(true, (() => {
-                        setTimeout(() => {
-                            this.$refs['waterfalls' + index][0].hideRefresh()
-                        }, 200);
-                    }))
-                }
+                }))
             }, 1000)
         },
         loadmoreData(index) {
@@ -531,8 +538,8 @@ export default {
                     delete query.sn
                     query.flush = 1
                 }
-                if (query.scrollId && query.st){
-                     query.sn=Md5.hashStr(`${query.st}_${query.scrollId}_scrollSearchTujian`)
+                if (query.scrollId && query.st) {
+                    query.sn = Md5.hashStr(`${query.st}_${query.scrollId}_scrollSearchTujian`)
                 }
             }
             const url = array.includes(this.current.tag) ? `dataApi/${this.current.url || "cardCircle/roll"}` : `dataApi/${this.current.url || "cardCircle/list"}`
@@ -956,7 +963,8 @@ page {
     color: #aaaaaa;
     text-align: center;
 }
-.tabbar_item_select{
+
+.tabbar_item_select {
     color: #FFFFFF;
 }
 </style>
