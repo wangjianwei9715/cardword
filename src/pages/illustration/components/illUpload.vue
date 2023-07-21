@@ -6,42 +6,47 @@
 				<view class="pe-item" :class="{'pe-current':peCurrent==index}" v-for="(item,index) in peTab" :key="index" @click="onClickPeCurrent(index)">{{item}}</view>
 			</view>
 		</view>
-		<view v-show="peCurrent==0" class="img-box">
-			<muqian-lazyLoad v-if="illustration&&illustration.frontPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.frontPic)" borderRadius="3rpx" :preview="true"/>
-			<view v-else-if="!frontPic" class="up-box" @click="addImage('front')">
-				<view class="up-center">
-					<view class="icon-upload"></view>
-					<view class="up-c-wl">
-						<view class="icon-add"></view>我来补充
+		<swiper class="swiper-box">
+			<swiper-item @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+				<view v-show="peCurrent==0" class="img-box">
+					<muqian-lazyLoad v-if="illustration&&illustration.frontPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.frontPic)" borderRadius="3rpx" :preview="true"/>
+					<view v-else-if="!frontPic" class="up-box" @click="addImage('front')">
+						<view class="up-center">
+							<view class="icon-upload"></view>
+							<view class="up-c-wl">
+								<view class="icon-add"></view>我来补充
+							</view>
+							<view class="up-c-kb">
+								可获{{reward}}卡币
+							</view>
+						</view>
 					</view>
-					<view class="up-c-kb">
-						可获{{reward}}卡币
-					</view>
-				</view>
-			</view>
-			<view v-else class="up-wait-box">
-				<muqian-lazyLoad  class="ill-pic" mode="aspectFit" :src="decodeURIComponent(frontPic)" borderRadius="3rpx"/>
-				<view class="up-pic-del" @click="frontImg=''"></view>
-			</view>
-		</view>
-		<view v-show="peCurrent==1" class="img-box">
-			<muqian-lazyLoad v-if="illustration&&illustration.backPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.backPic)" borderRadius="3rpx" :preview="true"/>
-			<view v-else-if="!backPic" class="up-box" @click="addImage('back')">
-				<view class="up-center">
-					<view class="icon-upload"></view>
-					<view class="up-c-wl">
-						<view class="icon-add"></view>我来补充
-					</view>
-					<view class="up-c-kb">
-						可获{{reward}}卡币
+					<view v-else class="up-wait-box">
+						<muqian-lazyLoad  class="ill-pic" mode="aspectFit" :src="decodeURIComponent(frontPic)" borderRadius="3rpx"/>
+						<view class="up-pic-del" @click="frontImg=''"></view>
 					</view>
 				</view>
-			</view>
-			<view v-else class="up-wait-box">
-				<muqian-lazyLoad  class="ill-pic" mode="aspectFit" :src="decodeURIComponent(backPic)" borderRadius="3rpx"/>
-				<view class="up-pic-del" @click="backImg=''"></view>
-			</view>
-		</view>
+				<view v-show="peCurrent==1" class="img-box">
+					<muqian-lazyLoad v-if="illustration&&illustration.backPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.backPic)" borderRadius="3rpx" :preview="true"/>
+					<view v-else-if="!backPic" class="up-box" @click="addImage('back')">
+						<view class="up-center">
+							<view class="icon-upload"></view>
+							<view class="up-c-wl">
+								<view class="icon-add"></view>我来补充
+							</view>
+							<view class="up-c-kb">
+								可获{{reward}}卡币
+							</view>
+						</view>
+					</view>
+					<view v-else class="up-wait-box">
+						<muqian-lazyLoad  class="ill-pic" mode="aspectFit" :src="decodeURIComponent(backPic)" borderRadius="3rpx"/>
+						<view class="up-pic-del" @click="backImg=''"></view>
+					</view>
+				</view>
+			</swiper-item>
+		</swiper>
+		
 	</view>
 </template>
 
@@ -65,6 +70,11 @@
 		backImg?:string;
 		peTab = ['正','反'];
 		peCurrent = 0;
+		touchData = {
+			startX:0,
+			moveX:0,
+			move:false
+		}
 		@Watch("illustration")
 		onChangeIllustration(){
 			this.peCurrent = 0;
@@ -97,6 +107,23 @@
 				type=="back" && (this.backImg = pic[0]);
 			})
 		}
+		handleTouchStart(event:any) {
+			this.touchData.startX = event.touches[0].clientX;
+		}
+		handleTouchMove(event:any) {
+			this.touchData.moveX = event.touches[0].clientX;
+			this.touchData.move = true;
+		}
+		handleTouchEnd() {
+			if(!this.touchData.move) return;
+			if (this.touchData.moveX - this.touchData.startX > 100) {
+				this.$emit('up')
+			} else if (this.touchData.moveX - this.touchData.startX < -100) {
+				this.$emit('next')
+			}
+			
+			this.touchData.move = false;
+		}
 	}
 </script>
 
@@ -104,11 +131,12 @@
 	.upload-center{
 		width: 100%;
 		.center-header{
-			width: 100%;
+			width: 538rpx;
 			height:36rpx;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			margin:0 auto;
 			margin-bottom: 22rpx;
 		}
 		.header-pe{
@@ -134,9 +162,14 @@
 			height: 42rpx;
 			background: #FA1545;
 		}
-		.img-box{
+		.swiper-box{
 			width: 100%;
 			height:708rpx;
+		}
+		.img-box{
+			width: 538rpx;
+			height:708rpx;
+			margin:0 auto;
 			border-radius: 3rpx;
 		}
 		.ill-pic{
@@ -151,6 +184,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			box-sizing: border-box;
 		}
 		.up-wait-box{
 			width: 100%;

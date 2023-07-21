@@ -6,7 +6,7 @@
 				<view class="icon-close" @click="showBox=false"></view>
 			</view>
 		</view>
-		<view class="center" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+		<view class="center">
 			<statusbar/>
 			<view class="upload-box">	
 				<view class="upload-header">
@@ -21,14 +21,18 @@
 							<view class="pe-item" :class="{'pe-current':peCurrent==index}" v-for="(item,index) in peTab" :key="index" @click="onClickPeCurrent(index)">{{item}}</view>
 						</view>
 					</view>
-					<view v-show="peCurrent==0" class="img-box">
-						<muqian-lazyLoad v-if="currentItem.frontPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(currentItem.frontPic)" borderRadius="3rpx" :preview="true"/>
-						<view v-else class="no-pic">暂未收集</view>
-					</view>
-					<view v-show="peCurrent==1" class="img-box">
-						<muqian-lazyLoad v-if="currentItem.backPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(currentItem.backPic)" borderRadius="3rpx" :preview="true"/>
-						<view v-else class="no-pic">暂未收集</view>
-					</view>
+					<swiper class="swiper-box">
+						<swiper-item @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+							<view v-show="peCurrent==0" class="img-box">
+								<muqian-lazyLoad v-if="currentItem.frontPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(currentItem.frontPic)" borderRadius="3rpx" :preview="true"/>
+								<view v-else class="no-pic">暂未收集</view>
+							</view>
+							<view v-show="peCurrent==1" class="img-box">
+								<muqian-lazyLoad v-if="currentItem.backPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(currentItem.backPic)" borderRadius="3rpx" :preview="true"/>
+								<view v-else class="no-pic">暂未收集</view>
+							</view>
+						</swiper-item>
+					</swiper>
 				</view>
 				<view class="upload-card-info">
 					<view class="card-num">NO.{{currentItem.number}} {{currentItem.team}}</view>
@@ -175,7 +179,7 @@
 		padding-top:100rpx;
 	}
 	.upload-box{
-		width: 538rpx;
+		width: 100%;
 		box-sizing: border-box;
 		margin:0 auto;
 		.upload-header{
@@ -208,10 +212,11 @@
 		}
 	}
 	.upload-card-info{
-		width: 100%;
+		width: 538rpx;
 		background: rgba(39, 39, 39, 1);
 		border: 1px solid #C0C0C0;
 		border-radius: 3rpx;
+		margin:0 auto;
 		margin-top: 31rpx;
 		position: relative;
 		box-sizing: border-box;
@@ -343,11 +348,12 @@
 		.upload-center{
 			width: 100%;
 			.center-header{
-				width: 100%;
+				width: 538rpx;
 				height:36rpx;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
+				margin:0 auto;
 				margin-bottom: 22rpx;
 			}
 			.header-pe{
@@ -371,17 +377,22 @@
 				height: 42rpx;
 				background: #FA1545;
 			}
-			.img-box{
+			.swiper-box{
 				width: 100%;
 				height:708rpx;
+			}
+			.img-box{
+				width: 538rpx;
+				height:708rpx;
 				border-radius: 3rpx;
+				margin:0 auto;
 			}
 			.ill-pic{
-				width: 100%;
+				width: 538rpx;
 				height:708rpx;
 			}
 			.no-pic{
-				width: 100%;
+				width: 538rpx;
 				height:708rpx;
 				background: #333333;
 				border-radius: 3rpx 3rpx 0rpx 0rpx;
@@ -392,7 +403,7 @@
 				color: #707070;
 			}
 			.up-box{
-				width: 100%;
+				width: 538rpx;
 				height: 708rpx;
 				border: 1px dashed rgba(255, 255, 255, 0.6);
 				border-radius: 3rpx;
@@ -401,7 +412,7 @@
 				justify-content: center;
 			}
 			.up-wait-box{
-				width: 100%;
+				width: 538rpx;
 				height:708rpx;
 				position: relative;
 			}
