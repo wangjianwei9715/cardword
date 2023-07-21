@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-21 11:38:04
+ * @LastEditTime: 2023-07-21 14:33:39
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -216,7 +216,7 @@
 				})
 				// 我的关注商家是否有新商品
 				app.http.Get('me/fresh/followed_merchant_goods/light',{},(res:any)=>{
-					this.goodsTabs[0].badge!.isDot = true
+					this.goodsTabs[0].badge!.isDot = res.bright
 				})
 			}
 			// 开屏商品广告
