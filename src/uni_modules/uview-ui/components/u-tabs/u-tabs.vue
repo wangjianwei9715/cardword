@@ -114,7 +114,7 @@
 							<view class="u-tabs__wrapper__nav__line" style="border-radius: 0;background-color: #ff003d;" ref="u-tabs__wrapper__nav__line" 
 								 :style="[{
 									width: `50rpx`,
-									transform: `translate(${lineOffsetLeft-(customType == 'showKa'?0:3)}px)`,
+									transform: `translate(${lineOffsetLeft-(customType == 'showKa'?0:gap)}px)`,
 									transitionDuration: `${firstTime ? 0 : duration}ms`,
 									height: $u.addUnit(lineHeight),
 								}]"></view>
@@ -151,6 +151,7 @@ export default {
 	mixins: [uni.$u.mpMixin, uni.$u.mixin, props],
 	data() {
 		return {
+			gap:uni.upx2px(4),
 			firstTime: true,
 			scrollLeft: 0,
 			scrollViewWidth: 0,
