@@ -255,6 +255,9 @@
 					this.scrollIdSt = res.timeStamp;
 					this.isRequest = false;
 					if (cb) cb();
+				},
+				(error:any)=>{
+					this.reqSearchList()
 				}
 			);
 		}

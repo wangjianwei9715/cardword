@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-06 11:07:11
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-21 10:50:18
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -308,6 +308,8 @@ export default class HttpRequest {
 		this.axiosInstance.get(reqUrl + '?' + strParams).then((response) => {
 			if (response.data && response.data.code == 0) {
 				if (cb) cb(response.data);
+			} else if (response.data.code == 1000) {
+				if (errorCb) errorCb()
 			} else {
 				uni.showToast({
 					title: response.data.msg,
