@@ -1,7 +1,7 @@
 <template>
     <view class="content">
         <transitionNav :needIconShadow="false" :shareData="shareData" :needRightTools="['分享']" ref="transitionNav"
-            :title="userInfo.userName" :report="!isMine"
+            :title="userInfo.userName" :report="!isMine" style="z-index: 999;"
             @report="pageJump(`/pages/cardForum/report?byInformer=${userInfo.userId}&source=4`)">
         </transitionNav>
         <view class="userInfoWrap" id="userInfoWrap" @click="menuShow = isMine">
