@@ -1,7 +1,7 @@
 <template>
     <view class="content">
-        <transitionNav :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)" title="" :needRightTools="['设置']"
-            :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
+        <transitionNav :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)" title=""
+            :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
             <view class="userInfo"
@@ -24,7 +24,7 @@
                 </view>
             </view>
             <view class="descWrap">
-                <text class="desc_text u-line-2">{{ infoData.sign || "暂无简介"}}</text>
+                <text class="desc_text u-line-2">{{ infoData.sign || "暂无简介" }}</text>
             </view>
             <view class="userDataWrap">
                 <view class="userData_data">
@@ -102,7 +102,7 @@
                 </view>
 
             </view> -->
-            <view class="toolsItem"
+            <view class="toolsItem" v-if='infoData.merchantActor'
                 @click="onClickNavigateto({ url: `/pages/merchant/core?alias=${infoData.merchantActor}&isMerchant=1` })">
                 <view class="imgWrap">
                     <image src="../../static/userinfo/v2/liveCamera.png"></image>
@@ -117,7 +117,7 @@
                 <view class="toolsItem_label">{{ item.name }}</view>
                 <view class="rightIcon"></view>
             </view>
-            <view class="toolsItem" @click="onClickNavigateto({ url: `/pages/merchant/guide` })">
+            <view class="toolsItem"  v-if='infoData.merchantActor' @click="onClickNavigateto({ url: `/pages/merchant/guide` })">
                 <view class="imgWrap">
                     <image src="../../static/userinfo/v2/guide.png"></image>
                 </view>
@@ -719,6 +719,7 @@ page {
     border-radius: 3rpx;
     width: 710rpx;
     margin-top: 10rpx;
+
     // padding-bottom: 48rpx;
     .order_topWrap {
         display: flex;
