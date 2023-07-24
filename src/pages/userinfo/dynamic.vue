@@ -43,7 +43,7 @@
 							:class="{ followButton_dis: (followMap[item.followState] && followMap[item.followState].isFollow) }"
 							v-if="item.tp === 1">{{ followMap[item.followState] && followMap[item.followState].text }}
 						</view>
-						<muqian-lazyLoad v-else :src="$parsePic(decodeURIComponent(item.pic))"
+						<muqian-lazyLoad v-else :src="ossStitching($parsePic(decodeURIComponent(item.pic)),'x-oss-process=image/resize,h_100,w_100')"
 							class="interaction_pic"></muqian-lazyLoad>
 					</view>
 				</view>
@@ -104,7 +104,7 @@ import {
 	formatDateToMonth,
 	formatDateToYear
 } from "@/tools/util";
-import { followActionByUser } from "@/pages/cardForum/func"
+import { followActionByUser,ossStitching } from "@/pages/cardForum/func"
 import BaseNode from '../../base/BaseNode.vue';
 const followMap: any = {
 	0: {
@@ -140,6 +140,7 @@ export default class ClassName extends BaseNode {
 	readAll = false;
 	followMap = followMap
 	app = app
+	ossStitching=ossStitching
 	onLoad(query: any) {
 		if (query.type) {
 			this.bucketName = query.type
@@ -493,6 +494,7 @@ page {
 			width: 115rpx;
 			height: 47rpx;
 			border: 1rpx solid #C0C0C0;
+			background-color: #fff;
 			border-radius: 3rpx;
 			font-size: 25rpx;
 			font-family: PingFang SC;
