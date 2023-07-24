@@ -56,7 +56,7 @@
 					<muqian-lazyLoad borderRadius="50%" class="avatar"
 						:src="$parsePic(decodeURIComponent(item.merchant.logo))"></muqian-lazyLoad>
 					<view class="name">{{ item.merchant.name }}</view>
-					<view class="dot" v-if="!item.read"></view>
+					<view class="dot" v-if="!item.read&&!readAll"></view>
 				</view>
 				<view class="line"></view>
 				<view class="tipsWrap">
@@ -214,6 +214,7 @@ export default class ClassName extends BaseNode {
 			uni.navigateTo({
 				url: item.pagePath
 			})
+			item.read=true
 			return
 		}
 	}

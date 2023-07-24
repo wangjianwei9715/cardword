@@ -29,15 +29,15 @@
             </view>
             <view class="userDataWrap">
                 <view class="userData_data">
-                    <view class="userData_item">
+                    <view class="userData_item" @click.stop="">
                         <text class="userData_num">{{ userInfo.fans || 0 }}</text>
                         <text class="userData_name">粉丝</text>
                     </view>
-                    <view class="userData_item">
+                    <view class="userData_item" @click.stop="pageJump(`/pages/userinfo/user_follow`)">
                         <text class="userData_num">{{ userInfo.follow || 0 }}</text>
                         <text class="userData_name">关注</text>
                     </view>
-                    <view class="userData_item">
+                    <view class="userData_item" @click.stop="">
                         <text class="userData_num">{{ userInfo.like || 0 }}</text>
                         <text class="userData_name">点赞/收藏</text>
                     </view>
