@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-07 14:02:00
+ * @LastEditTime: 2023-07-24 17:30:07
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -97,17 +97,18 @@
 	}
 	.init-pic{
 		transform: scale(0.8);
+		filter: brightness(0.7);
 	}
-	.init-pic::before{
-		content:"";
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		left:0;
-		top:0;
-		right: 0;
-		background:rgba(0,0,0,0.6);
-	}
+	// .init-pic::before{
+	// 	content:"";
+	// 	width: 100%;
+	// 	height: 100%;
+	// 	position: absolute;
+	// 	left:0;
+	// 	top:0;
+	// 	right: 0;
+	// 	background:rgba(0,0,0,0.6);
+	// }
 	.swiper-desc{
 		margin-top: 10rpx;
 		text-align: center;
