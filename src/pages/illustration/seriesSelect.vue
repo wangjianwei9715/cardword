@@ -12,7 +12,7 @@
 							<view class="series-list">
 								<view class="series-index" v-for="(litem,lindex) in item.list" :key="lindex" @click="onClickSeries(litem)">
 									<view class="series-pic">
-										<muqian-lazyLoad class="pic" borderRadius="3rpx" :src="decodeURIComponent(litem.logo)" />
+										<muqian-lazyLoad class="pic" borderRadius="3rpx" :src="decodeURIComponent(litem.logo||defaultSeriesLogo)" />
 									</view>
 									<view class="series-name">{{litem.name}}</view>
 									<view class="series-percent">完整度{{litem.percent}}%</view>
@@ -33,8 +33,10 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	import { illustration } from './constants/constants'
 	@Component({})
 	export default class ClassName extends BaseNode {
+		defaultSeriesLogo = illustration.defaultSeriesLogo;
 		sideTab = [];
 		seriesList:any = [];
 		current = 0;

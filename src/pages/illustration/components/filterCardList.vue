@@ -265,7 +265,10 @@
 				}, 100);
                 this.listOrther.end = res.end || res.list.length<10;
             },(error:any)=>{
-                this.againList()
+                uni.showToast({title:"操作过期请重试",icon:'none'})
+                if(error.code==1000){
+                    this.againList()
+                }
             })
         }
 	}

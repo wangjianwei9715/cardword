@@ -201,5 +201,6 @@ ETag（实体标签）是在互联网浏览器与互联网服务器之间背后�
   padding: 0 20rpx;
   margin-top: 20rpx;
   font-size: 30rpx;
+  word-break: break-all
 }
 </style>

@@ -27,7 +27,7 @@
 			// {id:1,name:'给我们评分',url:''},
 			{id:2,name:'公司信息',url:'/pages/userinfo/corporate_info'},
 			{id:3,name:'隐私政策',url:'/pages/userinfo/user_privacy'},
-		
+			{id:4,name:'卡世界社区行为规范',url:'/pages/userinfo/user_codeConduct'},
 		]
 		version = ''
 		app = app;
