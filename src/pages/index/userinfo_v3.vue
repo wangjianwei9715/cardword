@@ -236,9 +236,9 @@
 			</view>
 
 		</view>
-		
+		 -->
 
-		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true"/> -->
+		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true"/>
     </view>
 </template>
 
