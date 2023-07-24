@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-21 16:44:33
+ * @LastEditTime: 2023-07-24 11:54:28
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -25,48 +25,47 @@
 				</view>
 			</view>
 		</u-sticky>
-		<view class="tab-center">
-			<swiper class="capsule-box" :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
-				<swiper-item v-for="(item,index) in addList.top" :key="index">
-					<image class="capsule-pic1" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickAddJump(item.target)"/>
-				</swiper-item>
-			</swiper>
-			
-			
-			<view class="tab-good-content">
-				<swiper class="tab-swiper" :current="tabSwiperCurrent" @change="e=> tabSwiperCurrent=e.detail.current">
-					<swiper-item class="tab-type">
-						<view class="tab-index" v-for="(items,indexs) in indexTabList.front" :key="indexs" @click="onClickJumpUrl(items)">
-							<view class="tab-img-content">
-								<image class="tabimg" :src="items.icon" mode="aspectFit"/>
-							</view>
-							<view class="tabtext u-line-1">{{items.name}}</view>
-						</view>
-					</swiper-item>
-					<swiper-item class="tab-type">
-						<view class="tab-index" v-for="(items,indexs) in indexTabList.back" :key="indexs" @click="onClickJumpUrl(items)">
-							<view class="tab-img-content">
-								<image class="tabimg" :src="items.icon" mode="aspectFit"/>
-							</view>
-							<view class="tabtext u-line-1">{{items.name}}</view>
-						</view>
+		<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: scrollHeight+'px' }" :refresher-threshold="45" :refresher-enabled="true" :scroll-y="true" :scroll-with-animation="true" :refresher-triggered="triggered" @scroll="onChangeScroll" @touchend="touchmoveScroll"  @scrolltolower="scrolltolower()" @refresherrefresh="refreshStart()">
+			<view class="tab-center">
+				<swiper v-show="addList.top.length" class="capsule-box" :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
+					<swiper-item v-for="(item,index) in addList.top" :key="index">
+						<image class="capsule-pic1" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickAddJump(item.target)"/>
 					</swiper-item>
 				</swiper>
-				<view class="swiper_indicator_line">
-					<view class="swiper_indicator_bar" :class="{'swiper_indicator_bar_right':tabSwiperCurrent==1}"></view>
+				<view class="tab-good-content">
+					<swiper class="tab-swiper" :current="tabSwiperCurrent" @change="e=> tabSwiperCurrent=e.detail.current">
+						<swiper-item class="tab-type">
+							<view class="tab-index" v-for="(items,indexs) in indexTabList.front" :key="indexs" @click="onClickJumpUrl(items)">
+								<view class="tab-img-content">
+									<image class="tabimg" :src="items.icon" mode="aspectFit"/>
+								</view>
+								<view class="tabtext u-line-1">{{items.name}}</view>
+							</view>
+						</swiper-item>
+						<swiper-item class="tab-type">
+							<view class="tab-index" v-for="(items,indexs) in indexTabList.back" :key="indexs" @click="onClickJumpUrl(items)">
+								<view class="tab-img-content">
+									<image class="tabimg" :src="items.icon" mode="aspectFit"/>
+								</view>
+								<view class="tabtext u-line-1">{{items.name}}</view>
+							</view>
+						</swiper-item>
+					</swiper>
+					<view class="swiper_indicator_line">
+						<view class="swiper_indicator_bar" :class="{'swiper_indicator_bar_right':tabSwiperCurrent==1}"></view>
+					</view>
+					<!-- 拼团进度 最新上架 新手体验 拆卡围观 -->
+					<indexHot :hot="hot" :broadCastList="broadCastList"/>
 				</view>
-				<!-- 拼团进度 最新上架 新手体验 拆卡围观 -->
-				<indexHot :hot="hot" :broadCastList="broadCastList"/>
+				<u-sticky customNavHeight="0" offsetTop="-20rpx">
+					<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
+						:inactiveStyle="{fontSize:'27rpx',color:'#C0C0C0',padding:'0 0'}"
+						:activeStyle="{fontSize:'30rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
+					></u-tabs>
+				</u-sticky>
+				<goodsListSwiper ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index" @followed="checkFollowed"/>
 			</view>
-			<u-sticky :customNavHeight="statusBarHeight + 'px'" offsetTop="90rpx">
-				<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
-					:inactiveStyle="{fontSize:'27rpx',color:'#C0C0C0',padding:'0 0'}"
-					:activeStyle="{fontSize:'30rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
-				></u-tabs>
-			</u-sticky>
-			<goodsListSwiper ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index" @followed="checkFollowed"/>
-		</view>
-		
+		</scroll-view>
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
 		<winningCardPopup :show.sync="showWinningCrad" />
 		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
@@ -123,6 +122,9 @@
 			show:false,
 			data:{}
 		};
+		triggered=false;
+		scrollHeight = 0;
+		scrollFresh = false;
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
@@ -133,6 +135,12 @@
 			//#ifdef APP-PLUS
 			// plus.webview.prefetchURL(app.liveWebView)//预载直播控件webview
 			//#endif
+			
+			let tabbarHeight = 0;
+			// #ifndef APP-PLUS
+			tabbarHeight = 52
+			// #endif
+			this.scrollHeight = app.platform.systemInfo.windowHeight - uni.upx2px(104) - this.statusBarHeight - tabbarHeight;
 		}
 		onShow() {
 			uni.showTabBar({ animation: false })
@@ -151,16 +159,34 @@
 		onHide() {
 			uni.offNetworkStatusChange((res) => {})
 		}
-		//   加载更多数据
-		onReachBottom() {
+		scrolltolower(){
 			this.$refs.listSwiper.reqNewMainList()
 		}
-		//   下拉刷新
-		onPullDownRefresh() {
-			this.initIndex(() => {
-				this.$refs.listSwiper.reload()
-				uni.stopPullDownRefresh();
-			})
+		onChangeScroll(event:any){
+			this.scrollFresh = false
+			if(!this.triggered){
+				if(event.detail.scrollTop<=-45){
+					this.scrollFresh = true;
+					return;
+				}
+			}
+		}
+		touchmoveScroll(){
+			if(this.scrollFresh){
+				this.refreshStart();
+			}
+		}
+		refreshStart(){
+			uni.$u.throttle(()=>{
+				this.triggered=true;
+				this.scrollFresh = false;
+				this.initIndex(() => {
+					this.$refs.listSwiper.reload()
+					setTimeout(() => {
+						this.triggered=false
+					}, 1000)
+				})
+			},1000)
 		}
 		private onLoadIndex() {
 			if (app.dataApiDomain == '' && !app.localTest) {
@@ -241,7 +267,9 @@
 					}
 				}
 				this.broadCastList = data.broadCast || [];
-				this.getIndexOrther()
+				setTimeout(() => {
+					this.getIndexOrther()
+				}, 300);
 				cb && cb()
 			})
 		}
@@ -302,6 +330,45 @@
 	
 	.content {
 		width: 100%;
+	}
+	.index-swiper-scroll{
+		// #ifdef APP-PLUS
+		box-sizing: border-box;
+		padding-bottom: calc(104rpx);
+		padding-bottom: calc(104rpx + constant(safe-area-inset-bottom));
+		padding-bottom: calc(104rpx + env(safe-area-inset-bottom));
+		// #endif
+	}
+	/deep/.uni-scroll-view-refresher{
+		background:$content-bg !important
+	}
+	/deep/.uni-scroll-view-refresh{
+		align-items: flex-end !important;
+	}
+	/deep/.uni-scroll-view-refresh__spinner{
+		width:50rpx !important;
+		height:50rpx !important;
+	}
+	/deep/.uni-scroll-view-refresh__icon{
+		display: none;
+	}
+	/deep/.uni-scroll-view-refresh-inner{
+		
+		background:rgba(0,0,0,0);
+		box-shadow:none
+	}
+	/deep/.uni-scroll-view-refresh__spinner>circle{
+		width: 50rpx !important;
+		height:50rpx !important;
+		stroke-width:6 !important;
+		color:#e2e2e2 !important;
+	}
+	.transRef /deep/.uni-scroll-view-refresher{
+		transition: height 0.2s ease-out;
+	}
+	/deep/.u-tabs__wrapper__nav__line{
+		border-radius: 0 !important;
+		bottom:18rpx !important
 	}
 	.absolute {
 		position: relative;

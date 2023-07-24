@@ -622,6 +622,7 @@
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: wrap;
+		padding-bottom:20rpx;
 		padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
 
 		.point-index {

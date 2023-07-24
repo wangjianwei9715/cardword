@@ -67,10 +67,8 @@
 			app.navigateTo.goGoodsDetails(goodCode)
 		}
 		getListHeight() {
-			if(uni.$u.os() === "android"){
-				const lenght = Math.ceil((this.currentItem.list.length + (this.current==1&&this.addList.length>0?1:0))/2);
-				this.currentItem.height = uni.upx2px((lenght * 514)+100);
-			}
+			const lenght = Math.ceil((this.currentItem.list.length + (this.current==1&&this.addList.length>0?1:0))/2);
+			this.currentItem.height = uni.upx2px((lenght * 514)+200);
 			uni.createSelectorQuery().select(`.goodsList${this.current}`).boundingClientRect((res) => {
 				this.currentItem.height = Math.max(res.height||0,this.currentItem.height);
 			}).exec()
