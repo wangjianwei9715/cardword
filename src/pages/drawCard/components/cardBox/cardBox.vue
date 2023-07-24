@@ -3,19 +3,23 @@
  * @Author: wjw
  * @Date: 2022-11-17 15:05:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-02 10:51:25
+ * @LastEditTime: 2023-07-24 16:19:33
  * Copyright: 2022 .
  * @Descripttion: 
 -->
 <template>
-	<view
-		class="movable-box"
-		:class="[animation?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
-	>
-		<view class="movable-pic-bg"></view>
-		<view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
-		<image class="movable-pic" :src="item.newPic||defultPic" @error="error"/>
-		<view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
+	<view class="card-content">
+		<view
+			v-show="item.picTp!=2"
+			class="movable-box"
+			:class="[animation?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
+		>
+			<view class="movable-pic-bg"></view>
+			<view v-if="item.rc" class="movable-rc" :class="`icon-rc-${item.color}`" />
+			<image class="movable-pic" :src="item.newPic||defultPic" @error="error"/>
+			<view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
+		</view>
+		<image v-show="item.picTp==2" :src="item.newPic||defultPic" @error="error" class="sp-card-image"></image>
 	</view>
 </template>
 
@@ -43,6 +47,11 @@
 </script>
 
 <style lang="scss" scoped>
+	.card-content{
+		width: 528rpx;
+		height: 795rpx;
+		position: relative;
+	}
 	.movable-box {
 		width: 528rpx;
 		height: 795rpx;
@@ -69,6 +78,14 @@
 		top:8rpx;
 		right:10rpx;
 		background: url(@/static/drawCard/pic_bg_silver.png) no-repeat center / 100% 100%;
+		z-index: 1;
+	}
+	.sp-card-image{
+		width:508rpx;
+		height: 722rpx;
+		position: absolute;
+		top:8rpx;
+		right:10rpx;
 		z-index: 1;
 	}
 	.movable-pic {

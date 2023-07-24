@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-02 11:04:26
+ * @LastEditTime: 2023-07-24 16:16:45
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -318,6 +318,7 @@
         this.moveData.x = iX;
         this.moveData.y = iY;
         this.cardMove = false;
+        this.getMore();
       }, 50);
     }
     // 解锁卡密排序切换
@@ -340,6 +341,12 @@
       }
       this.drawerData.code = data
     }
+    getMore(){
+      if(this.cardData.step>=this.codeList.length-6){
+        this.initData.pageIndex++;
+        this.reqNewData();
+      }
+    }
     reqNewData(){
       const { pageIndex, pageSize, noMoreData, goodOrder } = this.initData;
       // 获取更多商品
@@ -359,11 +366,6 @@
         }
         if(data.totalPage<=pageIndex){
           this.initData.noMoreData = true;
-        }else{
-          this.initData.pageIndex++;
-          setTimeout(()=>{
-            this.reqNewData();
-          },100)
         }
       });
     }

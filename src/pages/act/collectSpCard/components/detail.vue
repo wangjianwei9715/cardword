@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-24 13:47:12
+ * @LastEditTime: 2023-07-24 17:19:34
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -207,6 +207,8 @@
 				`activity/teka/give`,
 				{targetUserId:Number(targetUserId),list},
 				(res:any)=>{
+					this.giveClose();
+					uni.showToast({title:'赠送成功',icon:'none'});
 					this.$emit('giveSuccess')
 				}
 			)
