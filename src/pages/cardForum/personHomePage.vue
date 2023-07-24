@@ -235,7 +235,9 @@ export default class ClassName extends BaseNode {
             })
 
         }
-        this.reqData(false)
+        this.$nextTick(()=>{
+            this.reqData(false)
+        })
     }
     @Watch('tabs.index')
     onIndexChanged(val: number) {
