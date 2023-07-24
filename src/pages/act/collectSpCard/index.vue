@@ -116,6 +116,7 @@
 		width: 100%;
 		box-sizing:border-box;
         background:#000;
+		padding-bottom:100rpx;
 		padding-bottom: calc(100rpx + env(safe-area-inset-bottom));
 	}
 	.act-bg{

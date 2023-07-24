@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-20 17:50:03
+ * @LastEditTime: 2023-07-24 13:48:21
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -856,6 +856,7 @@ page {
 }
 
 .insetBottom {
+    padding-bottom:159rpx;
     padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
 }
 

@@ -100,6 +100,7 @@
 
 <style lang='scss'>
 	.liveContent {
+		padding-bottom:20rpx;
 		padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
 	}
 

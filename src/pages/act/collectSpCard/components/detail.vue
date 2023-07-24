@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-08 14:42:51
+ * @LastEditTime: 2023-07-24 13:47:12
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -478,6 +478,7 @@
 	}
 	.give-bottom{
 		position: fixed;
+		bottom:20rpx;
 		bottom:calc(20rpx + env(safe-area-inset-bottom));
 		left:50%;
 		margin-left: -325rpx;
