@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-30 14:05:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-24 11:59:43
+ * @LastEditTime: 2023-07-24 14:09:15
  * @FilePath: \jichao_app_2\src\pages\cardForum\draftList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -107,6 +107,53 @@ export default class ClassName extends BaseNode {
             //卡册
             this.list = this.draftList
         }
+        app.http.Get(`dataApi/cardCircle/list/me/draft`, this.queryParams, (res: any) => {
+            this.isFetchEnd = res.isFetchEnd
+            let list = (res.list || []).filter((item: any) => {
+                if (this.draftType == "dynamic") {
+                    return item.tp != 3
+                } else if (this.draftType == "cardBook") {
+                    return item.tp === 3
+                } else {
+                    return item.tp
+                }
+            })
+            let newList = list.filter((item: any) => {
+                const findIndex: number = this.draftList.findIndex((local: any) => {
+                    return local.draftId === item.code
+                })
+                return findIndex < 0
+            })
+            newList = newList.map((item: any) => {
+                if (this.draftType == "dynamic") {
+                    //卡圈
+                    return {
+                        cover: item.cover || "",
+                        url: item.url,
+                        title: item.title,
+                        create_at: item.created_at,
+                        code: item.code
+                    }
+                } else {
+                    //卡册
+                    return {
+                        cover: item.cover || "",
+                        url: item.url,
+                        title: item.title,
+                        create_at: item.created_at,
+                        code: item.code
+                    }
+                }
+            })
+            if (this.queryParams.fetchFrom == 1) {
+                this.list = [...this.draftList, ...newList].sort((x: any, y: any) => {
+                    return y.create_at - x.create_at
+                })
+            } else {
+                this.list.push(...newList)
+            }
+            this.$forceUpdate()
+        })
         uni.hideLoading()
     }
     reqNewData(cb?: any) {
