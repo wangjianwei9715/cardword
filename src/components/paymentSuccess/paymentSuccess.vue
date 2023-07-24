@@ -62,7 +62,6 @@
 			background:#fff;
 			border-radius: 40rpx;
 			z-index: 1000;
-			position: absolute;
 			left:50%;
 			top:50%;
 			margin-left: -303rpx;
