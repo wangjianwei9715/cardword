@@ -10,7 +10,7 @@
 			<view class="header-info">
 				<view class="header-info-l">
 					<view class="series-logo">
-						<muqian-lazyLoad class="logo" borderRadius="3rpx" :src="decodeURIComponent(seriesData.main.logo)" />
+						<muqian-lazyLoad class="logo" borderRadius="3rpx" :src="decodeURIComponent(seriesData.main.logo||defaultSeriesLogo)" />
 					</view>
 					<view class="series-info-box">
 						<view class="series-info-name u-line-2">{{seriesData.main.year}} {{seriesData.main.name}}</view>
@@ -49,6 +49,7 @@
 	import { SeriesDetail } from './constants/interface'
 	import filterCardList from './components/filterCardList.vue'
 	import waterfalls from "@/pages/cardForum/components/waterfalls.vue"
+	import { illustration } from './constants/constants'
 	class ListParams {
 		pageSize:number=10;
 		scrollId:string="";
@@ -60,7 +61,8 @@
 		components:{filterCardList,waterfalls}
 	})
 	export default class ClassName extends BaseNode {
-		defaultBg = "/static/illustration/default.jpg";
+		defaultSeriesLogo = illustration.defaultSeriesLogo;
+		defaultBg = illustration.defaultSeriesBg;
 		statusBarHeight = app.statusBarHeight;
 		tabsData = {
 			list:[{name:'图鉴'},{name:'玩家卡册'}],

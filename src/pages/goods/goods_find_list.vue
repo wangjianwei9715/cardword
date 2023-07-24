@@ -257,7 +257,9 @@
 					if (cb) cb();
 				},
 				(error:any)=>{
-					this.reqSearchList()
+					if(error.code==1000){
+						this.reqSearchList()
+					}
 				}
 			);
 		}

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-21 10:50:18
+ * @LastEditTime: 2023-07-24 14:13:48
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -256,7 +256,7 @@ export default class HttpRequest {
 				if (response.data.code == 0) {
 					if (cb) cb(response.data);
 				} else if (response.data.code == 1000) {
-					if (errorCb) errorCb()
+					if (errorCb) errorCb(response.data)
 				} else if (response.data.code == 16) {
 					uni.navigateTo({
 						url: '/pages/userinfo/setting_addresses'
@@ -309,7 +309,7 @@ export default class HttpRequest {
 			if (response.data && response.data.code == 0) {
 				if (cb) cb(response.data);
 			} else if (response.data.code == 1000) {
-				if (errorCb) errorCb()
+				if (errorCb) errorCb(response.data)
 			} else {
 				uni.showToast({
 					title: response.data.msg,

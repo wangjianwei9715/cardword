@@ -1090,6 +1090,15 @@
 					}
 				},
 				{
+					"path": "user_codeConduct",
+					"style": {
+						"navigationBarTitleText": "社区行为规范",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "user_agreement",
 					"style": {
 						"navigationBarTitleText": "用户协议",

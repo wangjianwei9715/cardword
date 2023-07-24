@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-20 15:48:31
+ * @LastEditTime: 2023-07-24 14:27:50
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -19,7 +19,7 @@
 			<view class="hot-box">
 				<view class="hot-index" v-for="(item,index) in hotSeriesList" :key="index" @click="onClickGoDetail(item.code)">
 					<view class="hot-pic">
-						<muqian-lazyLoad class="pic" borderRadius="3rpx" :src="decodeURIComponent(item.logo)" />
+						<muqian-lazyLoad class="pic" borderRadius="3rpx" :src="decodeURIComponent(item.logo||defaultSeriesLogo)" />
 					</view>
 					<view class="hot-desc">{{item.year}}</view>
 					<view class="hot-desc desc-name">{{item.name}}</view>
@@ -29,7 +29,7 @@
 		</view>
 		<view class="series" v-for="(item,index) in seriesLst" :key="index">
 			<view class="series-header" @click="onClickGoDetail(item.serieCode)">
-				<muqian-lazyLoad class="series-logo" borderRadius="3rpx" :src="decodeURIComponent(item.logo)" />
+				<muqian-lazyLoad class="series-logo" borderRadius="3rpx" :src="decodeURIComponent(item.logo||defaultSeriesLogo)" />
 				<view class="series-header-right">
 					<u-cell :title="`${item.year} ${item.serie}`" :titleStyle="titleStyle" :border="false">
 						<view slot="value" class="cell-value">详细图鉴<image class="cell-right" src="@/static/goods/v2/icon_right_new.png"/></view>
@@ -54,6 +54,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import { parsePic } from '@/tools/util'
+	import { illustration } from './constants/constants'
 	class ListParams {
 		noSize=10;
 		fetchFrom=1;
@@ -64,7 +65,7 @@
 	@Component({})
 	export default class ClassName extends BaseNode {
 		navHeight = navHeight;
-		
+		defaultSeriesLogo = illustration.defaultSeriesLogo;
 		parsePic = parsePic;
 		titleStyle = {
 			color:'#333',
