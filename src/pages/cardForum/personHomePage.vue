@@ -86,7 +86,9 @@
                     <div class="shadow">
                         <image class="caogaoIcon" src="@/static/cardForum/caogao_white.png"></image>
                         <text class="caogaoTitle">草稿箱</text>
-                        <text class="caogaoText">有{{ draftListByCardBook.length }}篇卡册待发布</text>
+                        <text class="caogaoText">有{{
+                            draftListByCardBook.length + (cloudDraftNumByCardBook > 0 ? cloudDraftNumByCardBook - 1 : 0)
+                        }}篇卡册待发布</text>
                     </div>
                 </view>
             </template>
@@ -174,6 +176,7 @@ export default class ClassName extends BaseNode {
     draftListByCardBook: any = []
     cloudDraft: any = []
     cloudDraftNumByDynamic: number = 0
+    cloudDraftNumByCardBook: number = 0
     userId: number = 0
     onLoad(query: any) {
         if (query.tabIndex) this.tabs.index = +query.tabIndex
@@ -278,16 +281,10 @@ export default class ClassName extends BaseNode {
                 return { ...item, typeName: this.current.name }
             })
             if (this.isMine && this.current.queryParams.fetchFrom == 1 && this.current.name == '动态') {
-                this.sortDraftFunc(res)
-                // if (res.draftBrier) {
-                //     this.draftListByDynamic = [...this.draftListByDynamic, {
-                //         stamp: res.draftBrier.created_at, data: {
-                //             cover: res.draftBrier.cover
-                //         }
-                //     }].sort((x: any, y: any) => {
-                //         return y.stamp - x.stamp
-                //     })
-                // }
+                this.sortDraftFunc(res, "draftListByDynamic")
+            }
+            if (this.isMine && this.current.queryParams.fetchFrom == 1 && this.current.name == '卡册') {
+                this.sortDraftFunc(res, "draftListByCardBook")
             }
             this.current.firstReqEnd = true
             this.current.isFetchEnd = res.isFetchEnd
@@ -317,19 +314,20 @@ export default class ClassName extends BaseNode {
     }
     sortDraft(get?: boolean) {
         app.http.Get(`dataApi/cardCircle/list/me/dongtai`, {}, (res: any) => {
-            this.sortDraftFunc(res)
+            this.sortDraftFunc(res, "draftListByDynamic")
         })
     }
-    sortDraftFunc(res: any) {
+    sortDraftFunc(res: any, key: string) {
         if (res.draftBrier) {
-            const findIndex = this.draftListByDynamic.findIndex((item: any) => {
+            //@ts-ignore
+            const findIndex = this[key].findIndex((item: any) => {
                 return item.draftId == res.draftBrier.code
             })
-            console.log(findIndex);
-
             if (findIndex < 0) {
-                this.cloudDraftNumByDynamic = res.draftBrier.num
-                this.draftListByDynamic = [...this.draftListByDynamic, {
+                if (key == 'draftListByDynamic') this.cloudDraftNumByDynamic = res.draftBrier.num
+                if (key == "draftListByCardBook") this.cloudDraftNumByCardBook = res.draftBrier.num
+                //@ts-ignore
+                this[key] = [...this[key], {
                     stamp: res.draftBrier.created_at, data: {
                         cover: res.draftBrier.cover
                     }
