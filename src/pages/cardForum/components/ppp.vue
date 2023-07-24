@@ -19,6 +19,7 @@
                             borderRadius: borderRadius + 'rpx',
                             transform: 'scale(' + item.scale + ')'
                         }">
+                            <view class="coverBlock" v-if="item.index==0&&!item.moveEnd">封面</view>
                             <image class="pre-image" mode="aspectFill" :src="parsePic(decodeURIComponent(item.src))">
                             </image>
 
@@ -42,6 +43,7 @@
                             transform: 'scale(' + item.scale + ')'
                         }">
                             <!--  -->
+                            <view class="coverBlock" v-if="!getVideoPath(item.src)">封面</view>
                             <image v-if="!getVideoPath(item.src)" mode="aspectFill" class="pre-image"
                                 :src="parsePic(decodeURIComponent(item.src))">
                             </image>
@@ -740,6 +742,23 @@ export default {
         left: 0;
         transition: bottom 0.3s linear;
     }
+}
+
+.coverBlock {
+    width: 60rpx;
+    height: 32rpx;
+    background: #FA1545;
+    border-radius: 3rpx;
+    font-size: 21rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 32rpx;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999999;
 }
 </style>
   
