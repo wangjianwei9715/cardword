@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-24 16:16:45
+ * @LastEditTime: 2023-07-25 10:12:30
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -342,7 +342,7 @@
       this.drawerData.code = data
     }
     getMore(){
-      if(this.cardData.step>=this.codeList.length-6){
+      if(this.cardData.step==this.codeList.length-6){
         this.initData.pageIndex++;
         this.reqNewData();
       }
@@ -351,7 +351,7 @@
       const { pageIndex, pageSize, noMoreData, goodOrder } = this.initData;
       // 获取更多商品
       if (noMoreData) return;
-
+      
       app.http.Get(`me/orderInfo/buyer/${goodOrder}/noShowList`, { pageIndex, pageSize }, (data: any) => {
         if (data.list) {
           const index = this.codeList.length;

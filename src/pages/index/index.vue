@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-24 11:54:28
+ * @LastEditTime: 2023-07-25 10:09:38
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -137,10 +137,14 @@
 			//#endif
 			
 			let tabbarHeight = 0;
-			// #ifndef APP-PLUS
+			// #ifdef H5
 			tabbarHeight = 52
 			// #endif
-			this.scrollHeight = app.platform.systemInfo.windowHeight - uni.upx2px(104) - this.statusBarHeight - tabbarHeight;
+			//#ifdef APP-PLUS
+			tabbarHeight = plus.navigator.getSafeAreaInsets().deviceBottom || 0;
+			//#endif
+			const { screenHeight, statusBarHeight } = app.platform.systemInfo;
+			this.scrollHeight = screenHeight - uni.upx2px(104) - (statusBarHeight||0) - tabbarHeight;
 		}
 		onShow() {
 			uni.showTabBar({ animation: false })
@@ -421,7 +425,6 @@
 		box-sizing: border-box;
 		padding: 0;
 		background: #fff;
-		padding-top: 37rpx;
 		padding-bottom: 10rpx;
 	}
 
@@ -512,6 +515,7 @@
 		background: #fff;
 		padding:0rpx 20rpx 0rpx 20rpx;
 		border-radius: 5rpx;
+		margin-bottom: 37rpx;
 	}
 	.capsule-pic1{
 		width: 710rpx;

@@ -328,6 +328,10 @@
 		font-family: "ArialBold";
 		src: url("~@/common/Tao/Futura.ttf");
 	}
+	@font-face {
+		font-family: "MINI";
+		src: url("~@/common/Tao/MINI.ttf");
+	}
 	// #endif
 	.content {
 		display: flex;

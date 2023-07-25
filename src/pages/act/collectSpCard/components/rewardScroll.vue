@@ -79,7 +79,7 @@
 			width: 46rpx;
 			height: 184rpx;
 			font-size: 42rpx;
-			font-family: Jcacuhei;
+			font-family: MINI;
 			font-weight: 400;
 			font-style: italic;
 			color: #9BF1FF;
