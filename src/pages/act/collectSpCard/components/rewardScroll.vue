@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-07 13:52:52
+ * @LastEditTime: 2023-07-25 13:57:41
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -111,7 +111,6 @@
 		.scroll-pic-box{
 			width: 103rpx;
 			height: 103rpx;
-			background: #fff;
 			border-radius: 3rpx;
 			display: flex;
 			justify-content: center;
