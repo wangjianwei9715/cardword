@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-24 17:04:23
+ * @LastEditTime: 2023-07-25 11:04:45
  * @FilePath: \jichao_app_2\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -744,6 +744,31 @@
 					"style": {
 						"navigationStyle": "custom",
 						"navigationBarTitleText": "卡圈抽奖",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "forumDraw/rule",
+					"style": {
+						"navigationBarTitleText": "规则说明",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "forumDraw/log",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "我的背包",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
