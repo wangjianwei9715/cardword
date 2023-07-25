@@ -340,7 +340,7 @@ page {
         flex-wrap: wrap;
 
         .level {
-            width: 56.37rpx;
+            width: 50.37rpx;
             height: 23rpx;
         }
     }

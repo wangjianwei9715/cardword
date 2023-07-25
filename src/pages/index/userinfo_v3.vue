@@ -12,7 +12,7 @@
                 <view class="userInfo_msg">
                     <view class="userInfo_name">
                         <text class="userInfo_name_text">{{ infoData.name }}</text>
-                        <image :style="infoData.level == 10 ? { height: `34rpx` } : {}"
+                        <image :style="infoData.level == 10 ? { height: `29rpx`, width: `58rpx` } : {}"
                             @click.stop="navigateTo(`/pages/userinfo/level/index`)" class="level"
                             :src="`/static/userinfo/v3/level/${infoData.level || 1}.png`"></image>
                         <!-- <view class="userInfo_name_title" @click.stop="navigateTo(`/pages/userinfo/level`)">{{
@@ -555,7 +555,7 @@ page {
 }
 
 .level {
-    width: 56.37rpx;
+    width: 50.37rpx;
     height: 23rpx;
     margin-left: 12rpx;
 }
