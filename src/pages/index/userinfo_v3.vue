@@ -71,6 +71,8 @@
                 <view class="order_item" v-for="(item, index) in orderTab" @click="onClickOrderList(item.id)">
                     <image class="order_item_img" :src="item.pic"></image>
                     <view class="order_item_label">{{ item.name }}</view>
+                    <!-- <u-badge :type="type" max="99" :value="value"></u-badge> -->
+                    <view v-if="item.num>0&&item.name!='已完成'" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num>99?'99+':item.num}}</view>
                 </view>
             </view>
         </view>
@@ -748,7 +750,7 @@ page {
             display: flex;
             align-items: center;
             flex-direction: column;
-
+            position: relative;
             &_img {
                 width: 43rpx;
                 height: 38rpx;
@@ -1209,7 +1211,7 @@ page {
     background: #FF504F;
     border-radius: 40rpx;
     position: absolute;
-    right: 0;
+    right: -14rpx;
     top: -10rpx;
     font-size: 20rpx;
     color: #fff;
