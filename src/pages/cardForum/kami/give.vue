@@ -13,7 +13,8 @@
                     <view class="select" :class="{ select_select: selectIds.includes(kami.id) }"></view>
                 </view>
             </view>
-            <view style="margin: 20rpx auto;font-size: 26rpx;text-align: center;" v-if="item.hasMore" @click="onClickGetMore(item)">点击加载更多
+            <view style="margin: 20rpx auto;font-size: 26rpx;text-align: center;" v-if="item.hasMore"
+                @click="onClickGetMore(item)">点击加载更多
             </view>
         </view>
         <view class="fixedWrap">
@@ -166,7 +167,7 @@ export default class ClassName extends BaseNode {
     onClickGetMore(item: any) {
         item.queryParams.pageIndex += 1
         app.http.Get(`dataApi/function/userNo/transfer/order/${item.orderCode}/list`, item.queryParams, (res: any) => {
-            if (res.totalPage == item.queryParams.pageIndex) item.hasMore = false
+            if (res.totalPage == item.queryParams.pageIndex || !res.list || !res.length) item.hasMore = false
             item.noList.push(...(res.list || []))
         })
     }
