@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-24 17:30:07
+ * @LastEditTime: 2023-07-25 10:23:43
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -24,7 +24,7 @@
 				<view class="swiper-box" @click="changeSwiperIndex({detail:{current:i}})">
 					<image class="swiper-pic" :class="{'init-pic':i!==current}" :src="item.pic" mode="aspectFill"/>
 					<view class="swiper-desc" v-if="item.start">
-						<text class="swiper-desc-text">{{item.collectedSetNum}}</text>/{{item.maxSetNum==0?'∞':item.maxSetNum}}
+						<text class="swiper-desc-text">{{item.getPlayerNum}}</text>/{{item.playerNum}}
 					</view>
 					<view class="swiper-desc" v-else>暂未开始</view>
 				</view>
@@ -51,8 +51,8 @@
 		}
 		destroyed(){
 		}
-		swiperDesc({start, collectedSetNum, maxSetNum}:any){
-			return start ? `${collectedSetNum}/${maxSetNum==0?'∞':maxSetNum}` : '暂未开始';
+		swiperDesc({start, getPlayerNum, playerNum}:any){
+			return start ? `${getPlayerNum}/${playerNum}` : '暂未开始';
 		}
 		changeSwiperIndex(e:any){
 			if(this.swiperCurrent===e.detail.current) return;

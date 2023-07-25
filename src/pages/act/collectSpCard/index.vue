@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-08 13:33:17
+ * @LastEditTime: 2023-07-25 10:26:22
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -21,7 +21,7 @@
 			<!-- 集齐奖励列表 -->
 			<rewardScroll :groupReward="groupReward" />
 			<!-- 卡组详情 -->
-			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail" @giveSuccess="getDetail()"/>
+			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail"/>
 		</view>
 	</view>
 </template>
@@ -37,8 +37,8 @@
 		id: number, //
 		name: string, //卡组名称
 		pic: string, //
-		maxSetNum: number, //允许最大可集齐数量,0代表无限
-		collectedSetNum: number, //已集齐数量
+		playerNum: number, //球员数量
+		getPlayerNum: number, //已拥有球员数量
 		startAt: number, //开始时间
 		[x:string]:any
 	}
@@ -53,7 +53,6 @@
 		groupReward:any[] = [];
 		groupDetail:any[] = [];
         onLoad(query:any) {
-			
 		}
 		onShow(){
 			app.platform.hasLoginToken(()=>{
@@ -69,7 +68,7 @@
 		}
 		public get getCurrentGroup() : groupItem {
 			return this.groupList.length ? this.groupList[this.groupCurrent]
-			: { id: 0, name: '', pic: '', maxSetNum: 0, collectedSetNum: 0, startAt: 0, };
+			: { id: 0, name: '', pic: '', playerNum: 0, getPlayerNum: 0, startAt: 0, };
 		}
 		getGroupList(cb?:Function){
 			app.http.Get('dataApi/activity/teka/home',{},({list}:any)=>{
@@ -80,13 +79,13 @@
 				cb?.()
 			})
 		}
-		getReward(change=false){
+		getReward(){
 			app.http.Get(
 				`dataApi/activity/teka/award/list/${this.getCurrentGroup.id}`,
 				{},
 				({list, collectedSetNum}:any)=>{
 					this.groupReward = list || [];
-					change && (this.getCurrentGroup.collectedSetNum = collectedSetNum);
+					this.getCurrentGroup.collectedSetNum = collectedSetNum;
 				}
 			)
 			this.getDetail()
@@ -102,7 +101,7 @@
 		}
 		onChangeGroup(){
 			const start = !this.getCurrentGroup.start && ( app.platform.currentTimestamp() >= this.getCurrentGroup.startAt);
-			start ? this.getGroupList() : this.getReward(true);
+			start ? this.getGroupList() : this.getReward();
 		}
 		
 	}
