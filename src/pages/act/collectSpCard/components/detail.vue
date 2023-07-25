@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 10:16:46
+ * @LastEditTime: 2023-07-25 10:39:47
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -14,7 +14,7 @@
 				<view class="detail-header-box">
 					<view class="detail-header-left">
 						<view class="detail-header-title u-line-1">{{getCurrentGroup.name}}</view>
-						<view class="detail-header-rank" @click="onClickUserRank">已有{{getCurrentGroup.collectedSetNum}}名用户集齐<view class="icon-right"></view></view>
+						<view class="detail-header-rank" @click="onClickUserRank">已有{{getCurrentGroup.collectedSetNum||0}}名用户集齐<view class="icon-right"></view></view>
 					</view>
 					<view class="detail-header-btn" @click="onClickGiveBtn">{{giveData.start?'取消':'送给好友'}}</view>
 				</view>
