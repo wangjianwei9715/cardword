@@ -24,11 +24,11 @@
 					<swiper class="swiper-box">
 						<swiper-item @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
 							<view v-show="peCurrent==0" class="img-box">
-								<muqian-lazyLoad v-if="currentItem.frontPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(currentItem.frontPic)" borderRadius="3rpx"/>
+								<muqian-lazyLoad v-if="currentItem.frontPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(currentItem.frontPic)" borderRadius="3rpx" :preview="true"/>
 								<view v-else class="no-pic">暂未收集</view>
 							</view>
 							<view v-show="peCurrent==1" class="img-box">
-								<muqian-lazyLoad v-if="currentItem.backPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(currentItem.backPic)" borderRadius="3rpx"/>
+								<muqian-lazyLoad v-if="currentItem.backPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(currentItem.backPic)" borderRadius="3rpx" :preview="true"/>
 								<view v-else class="no-pic">暂未收集</view>
 							</view>
 						</swiper-item>
