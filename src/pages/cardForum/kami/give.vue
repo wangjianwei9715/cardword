@@ -167,7 +167,7 @@ export default class ClassName extends BaseNode {
     onClickGetMore(item: any) {
         item.queryParams.pageIndex += 1
         app.http.Get(`dataApi/function/userNo/transfer/order/${item.orderCode}/list`, item.queryParams, (res: any) => {
-            if (res.totalPage == item.queryParams.pageIndex || !res.list || !res.length) item.hasMore = false
+            if (res.totalPage == item.queryParams.pageIndex || !res.list || !res.list.length) item.hasMore = false
             item.noList.push(...(res.list || []))
         })
     }
