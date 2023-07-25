@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 11:56:26
+ * @LastEditTime: 2023-07-25 17:27:35
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -88,18 +88,18 @@
 	import { Component, Prop,PropSync} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
-	class rankParams {
+	class RankParams {
 		fetchFrom:number = 1;
 		fetchSize:number = 10;
 		isFetchEnd:boolean = false;
 	}
-	class give {
+	class Give {
 		start:Boolean = false;
 		show:Boolean = false;
 		targetUserId:string|number = '';
 		total:number = 0;
 	}
-	class userRank {
+	class UserRank {
 		userName:string = "虚位以待";
 		avatar:string =  ""; 
 		rank:number = 0; 
@@ -116,10 +116,10 @@
 
 		isPullDown = app.platform.isPullDown;
 		defaultAvatar = app.defaultAvatar;
-		rankParams = new rankParams();
+		rankParams = new RankParams();
 		userRank:any[] = [];
 		rankPopupShow = false;
-		giveData = new give();
+		giveData = new Give();
 		mounted(){
 		}
 		destroyed(){
@@ -158,7 +158,7 @@
 			if(list.length < rankLength || (list.length===0 && rankEnd===0)){
 				const num = rankEnd===0 ? 1 : rankLength-list.length;
 				for(let i=0;i<num;i++){
-					list.push(new userRank())
+					list.push(new UserRank())
 				}
 			}
 			return list;
@@ -173,7 +173,7 @@
 		onPopupClose(){
 			this.isPullDown(true);
 			this.rankPopupShow = false;
-			this.rankParams = new rankParams();
+			this.rankParams = new RankParams();
 			this.userRank = [];
 		}
 		onClickGiveBtn(){
@@ -195,7 +195,7 @@
 			this.giveData.show = true;
 		}
 		giveClose(){
-			this.giveData = new give();
+			this.giveData = new Give();
 			this.initGroupGiveNum()
 		}
 		giveCard(){
@@ -210,7 +210,7 @@
 					uni.showToast({title:'赠送成功',icon:'none'});
 					this.groupDetail.forEach((element:any) => element.collectNum -= element.giveNum);
 					const length = this.groupDetail.filter((x:any)=>x.collectNum>0).length || 0;
-					this.giveData = new give();
+					this.giveData = new Give();
 					this.$emit('changeNum',length)
 				}
 			)

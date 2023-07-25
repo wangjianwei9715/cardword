@@ -82,7 +82,7 @@
 		1:'activity/teka/award/record',
 		2:'activity/teka/collect/record'
 	}
-	class listParams {
+	class ListParams {
 		fetchFrom:number=1;
 		fetchSize:number=10;
 		noMoreData:boolean=false
@@ -96,7 +96,7 @@
 			{id:1,name:'奖品明细'},
 			{id:2,name:'特卡明细'}
 		];
-		listParams = new listParams()
+		listParams = new ListParams()
 		list = [];
 		empty = false;
 		wuliu = {
@@ -143,7 +143,7 @@
 		refreshList(){
 			this.empty = false;
 			this.list = [];
-			this.listParams = new listParams()
+			this.listParams = new ListParams()
 			this.reqNewData()
 		}
 		reqNewData(cb?: Function) {
