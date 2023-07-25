@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 10:26:22
+ * @LastEditTime: 2023-07-25 11:58:35
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -21,7 +21,7 @@
 			<!-- 集齐奖励列表 -->
 			<rewardScroll :groupReward="groupReward" />
 			<!-- 卡组详情 -->
-			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail"/>
+			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail" @changeNum="changeCurrentGroupNum"/>
 		</view>
 	</view>
 </template>
@@ -102,6 +102,9 @@
 		onChangeGroup(){
 			const start = !this.getCurrentGroup.start && ( app.platform.currentTimestamp() >= this.getCurrentGroup.startAt);
 			start ? this.getGroupList() : this.getReward();
+		}
+		changeCurrentGroupNum(num:number){
+			this.getCurrentGroup.getPlayerNum = num
 		}
 		
 	}

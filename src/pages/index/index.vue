@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 10:09:38
+ * @LastEditTime: 2023-07-25 13:45:52
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -143,8 +143,9 @@
 			//#ifdef APP-PLUS
 			tabbarHeight = plus.navigator.getSafeAreaInsets().deviceBottom || 0;
 			//#endif
-			const { screenHeight, statusBarHeight } = app.platform.systemInfo;
-			this.scrollHeight = screenHeight - uni.upx2px(104) - (statusBarHeight||0) - tabbarHeight;
+			const { screenHeight, statusBarHeight, platform } = app.platform.systemInfo;
+			this.scrollHeight = screenHeight - uni.upx2px(104) - (statusBarHeight||0) - tabbarHeight -( platform== 'android'?52:0 );
+			
 		}
 		onShow() {
 			uni.showTabBar({ animation: false })
@@ -338,9 +339,6 @@
 	.index-swiper-scroll{
 		// #ifdef APP-PLUS
 		box-sizing: border-box;
-		padding-bottom: calc(104rpx);
-		padding-bottom: calc(104rpx + constant(safe-area-inset-bottom));
-		padding-bottom: calc(104rpx + env(safe-area-inset-bottom));
 		// #endif
 	}
 	/deep/.uni-scroll-view-refresher{

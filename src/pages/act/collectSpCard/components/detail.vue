@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 10:39:47
+ * @LastEditTime: 2023-07-25 11:56:26
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -209,7 +209,9 @@
 				(res:any)=>{
 					uni.showToast({title:'赠送成功',icon:'none'});
 					this.groupDetail.forEach((element:any) => element.collectNum -= element.giveNum);
+					const length = this.groupDetail.filter((x:any)=>x.collectNum>0).length || 0;
 					this.giveData = new give();
+					this.$emit('changeNum',length)
 				}
 			)
 		}
