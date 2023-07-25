@@ -154,9 +154,7 @@
 			app.http.Post(`function/userNo/transfer/${order?'goodOrder/':''}applyBatch`,params,(res:any)=>{
 				uni.hideLoading()
 				uni.showToast({ title:res.msg, icon:'none',duration:3000 })
-				uni.switchTab({
-					url: '/pages/index/userinfo'
-				});
+				app.navigateTo.switchTab(4)
 			})
 		}
 		inputConfirm(val:any){

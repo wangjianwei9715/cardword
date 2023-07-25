@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-21 10:29:53
+ * @LastEditTime: 2023-07-25 15:19:03
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -260,7 +260,7 @@
 					if(res.state==1){
 						if (this.draftId) this.$emit('delDraft')
 						uni.showToast({title:"上传成功",icon:"none"});
-						uni.switchTab({ url: '/pages/index/userinfo_v3' });
+						app.navigateTo.switchTab(4)
 					}else{
 						uni.showToast({ title:res.failure,icon:"none" });
 						this.submitUnLock()

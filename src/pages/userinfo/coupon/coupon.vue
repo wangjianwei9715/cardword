@@ -130,9 +130,7 @@
 			}else if(item.merchantAlias){
 				this.goMerchantPage(item.merchantAlias)
 			}else{
-				uni.switchTab({
-					url:'/pages/index/index'
-				})
+				app.navigateTo.switchTab(0)
 			}
 			
 		}

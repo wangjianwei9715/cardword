@@ -120,9 +120,7 @@ export default class ClassName extends BaseNode {
                 confirmText: "去卡圈",
                 success: (res: any) => {
                     if (res.confirm) {
-                        uni.switchTab({
-                            url: "/pages/cardForum/home"
-                        })
+                        app.navigateTo.switchTab(2)
                     }
                 }
             })

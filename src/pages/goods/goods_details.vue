@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-02 16:22:53
+ * @LastEditTime: 2023-07-25 15:19:19
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -357,7 +357,7 @@
 			app.http.Get(`dataApi/good/${goodCode}/detail`, params, (data: any) => {
 				if (!data.good) {
 					uni.showToast({ title: '无此商品', icon: 'none' })
-					uni.switchTab({ url: '/pages/index/index' })
+					app.navigateTo.switchTab(0)
 					return;
 				}
 				this.favorType = data.favorite>0;

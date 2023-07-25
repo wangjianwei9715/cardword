@@ -102,9 +102,7 @@
 					uni.setStorageSync("token", JSON.stringify(app.token));
 				}
 				uni.$emit('loginSuccess');
-				uni.switchTab({
-					url: '/pages/index/index'
-				});
+				app.navigateTo.switchTab(0)
 			})
 			
 		}

@@ -82,9 +82,7 @@
 		}
 		onBackPress(type:any){
 			if(this.return) return
-			uni.switchTab({
-				url:'/pages/index/index'
-			})
+			app.navigateTo.switchTab(0)
 			return true
 		}
 		onClickChangePassword(){
@@ -274,9 +272,7 @@
 			return
 		}
 		toIndex(){
-			uni.switchTab({
-				url: "/pages/index/index",
-			});
+			app.navigateTo.switchTab(0)
 		}
 	}
 </script>
