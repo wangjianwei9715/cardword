@@ -1,6 +1,21 @@
+/*
+ * @FilePath: \jichao_app_2\src\manager\navigateManager.ts
+ * @Author: wjw
+ * @Date: 2023-05-22 09:15:23
+ * @LastEditors: 
+ * @LastEditTime: 2023-07-25 15:16:03
+ * Copyright: 2023 .
+ * @Descripttion: 
+ */
 export default class navigateManager {
     private static instance: navigateManager;
-	
+	switchMap:{[x:number]:string} = {
+		0:"/pages/index/index",
+		1:"/pages/illustration/index",
+		2:"/pages/cardForum/home",
+		3:"/pages/index/message",
+		4:"/pages/index/userinfo_v3"
+	}
 	private constructor() {
 
 	}
@@ -68,6 +83,15 @@ export default class navigateManager {
 			})
 			return;
 		}
+	}
+	/**
+	 * 跳转tabbar
+	 * @param index  0:首页,1:图鉴,2:卡圈,3:消息,4:我的
+	 */
+	switchTab(index:number){
+		uni.switchTab({
+			url: this.switchMap[index]
+		})
 	}
 	navigateBack() {
 		uni.navigateBack({ delta: 1 });

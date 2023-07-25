@@ -535,7 +535,7 @@ export default class ClassName extends BaseNode {
                 showCancel: false,
                 success: (res: any) => {
                     if (res.confirm) {
-                        uni.switchTab({ url: '/pages/index/userinfo_v3' });
+                        app.navigateTo.switchTab(4)
                     }
                 }
             })

@@ -427,9 +427,7 @@ export default class ClassName extends BaseNode {
         }
         if (item.name == "卡册") {
             uni.setStorageSync('showKace', true);
-            uni.switchTab({
-                url: '/pages/cardForum/home'
-            });
+            app.navigateTo.switchTab(2)
             return;
         }
         if (item.url) {

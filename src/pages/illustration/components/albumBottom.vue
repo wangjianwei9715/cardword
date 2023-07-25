@@ -16,6 +16,7 @@
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
 	import { storageDraft } from '@/pages/cardForum/func/index'
+	import { app } from "@/app";
 	@Component({ components: { muqianLazyLoad },})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
@@ -49,7 +50,7 @@
                     if (res.confirm){
 						await storageDraft({step:this.step,list:this.data},"cardBook",this.draftId || "");
 						uni.showToast({ title:"草稿保存成功",icon:"none" });
-						uni.switchTab({ url: '/pages/index/userinfo_v3' });
+						app.navigateTo.switchTab(4)
 					}
                 }
             })

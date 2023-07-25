@@ -858,9 +858,7 @@ export default {
                 showCancel: false,
                 success: ({ confirm }) => {
                   if (confirm) {
-                    uni.switchTab({
-                      url: "/pages/index/index"
-                    });
+                    app.navigateTo.switchTab(0)
                   }
                 }
               })
@@ -1678,9 +1676,7 @@ export default {
             this.stopPublishingStream(false, true);
           if (res.confirm) {
             // this.leaveRoom()
-            uni.switchTab({
-              url: "/pages/index/index"
-            });
+            app.navigateTo.switchTab(0)
           }
         }
       });
@@ -1783,12 +1779,7 @@ export default {
           showCancel: false,
           success: res => {
             if (res.confirm) {
-              uni.switchTab({
-                url: "/pages/index/index",
-                fail: fail => {
-                  console.log("jumpFail", fail);
-                }
-              });
+              app.navigateTo.switchTab(0)
             }
           }
         });

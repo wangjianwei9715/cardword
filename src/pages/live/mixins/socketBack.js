@@ -94,9 +94,7 @@ export default {
                 //         url: "/pages/index/index"
                 //     });
                 // }
-                uni.switchTab({
-                    url: "/pages/index/index"
-                });
+                app.navigateTo.switchTab(0)
             })
         },
         BackSendMerchantCoupon(res) {

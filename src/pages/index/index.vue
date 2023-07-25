@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 13:45:52
+ * @LastEditTime: 2023-07-25 15:20:12
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -309,9 +309,7 @@
 			}
 			if(item.name=="玩家卡册"){
 				uni.setStorageSync('showKace', true);
-				uni.switchTab({
-					url: '/pages/cardForum/home'
-				});
+				app.navigateTo.switchTab(2)
 				return;
 			}
 			uni.navigateTo({
