@@ -258,7 +258,13 @@
 				return
 			}
 			if(this.redirect.indexOf("?")==-1) this.redirect+="?"
-			const switchTabList=['/pages/index/index','/pages/index/live','/pages/index/service','/pages/index/userinfo']
+			const switchTabList=[
+				'/pages/index/index',
+				'/pages/illustration/index',
+				'/pages/cardForum/home',
+				'/pages/index/message',
+				'/pages/index/userinfo_v3'
+			]
 			const noneParamsPage:string=this.redirect.split('?')[0]
 			if(!noneParamsPage){
 				this.toIndex()
