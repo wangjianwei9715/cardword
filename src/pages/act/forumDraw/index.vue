@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-26 14:32:11
+ * @LastEditTime: 2023-07-26 14:39:22
  * @FilePath: \card-world\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,6 @@
                 <view class="actBack flexCenter">
                     <image class="back" src="/static/index/v3/back.png" />
                 </view>
-                <!-- <view class="detailButton flexCenter" @click="pageJump('/pages/act/forumDraw/log')">抽奖记录</view> -->
             </template>
             <template v-slot:slotRight>
                 <view class="detailButton flexCenter" @click="pageJump('/pages/act/forumDraw/log')">抽奖记录</view>
@@ -56,13 +55,13 @@
             </view>
             <view class="taskWrap">
                 <view class="top">
-                    <view class="taskTitle">每篇动态累计获得x赞</view>
+                    <view class="taskTitle">卡圈动态累计获赞（单条）</view>
                     <view class="taskButton flexCenter" @click="pageJump('/pages/cardForum/personHomePage?isMine=1')">查看动态
                     </view>
                 </view>
                 <view class="info">
-                    <view class="left">已完成10次</view>
-                    <view class="right">距下次抽奖还需<text class="red">5</text>/10</view>
+                    <view class="left">已获10次</view>
+                    <view class="right">距离获得下一次抽奖最快还需<text class="red">5</text>/10</view>
                 </view>
                 <view class="bar">
                     <view class="bar_width"></view>
@@ -75,7 +74,7 @@
                     </view>
                 </view>
                 <view class="info">
-                    <view class="left">已完成10次</view>
+                    <view class="left">已获10次</view>
                     <view class="right">距下次抽奖还需<text class="red">5</text>/10</view>
                 </view>
                 <view class="bar">
