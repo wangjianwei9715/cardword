@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 17:11:09
+ * @LastEditTime: 2023-07-26 13:39:54
  * @FilePath: \jichao_app_2\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -47,15 +47,6 @@
 				"app-plus": {
 					"bounce": "none"
 				}
-			}
-		},
-		{
-			"path": "pages/index/service",
-			"style": {
-				"navigationBarTitleText": "功能",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black",
-				"enablePullDownRefresh": false
 			}
 		},
 		{
@@ -403,24 +394,6 @@
 						"navigationBarTitleText": "一元上组",
 						"navigationBarBackgroundColor": "#ffffff",
 						"navigationBarTextStyle": "black"
-					}
-				},
-				{
-					"path": "invite/invite",
-					"style": {
-						"navigationBarTitleText": "邀请好友",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true
-					}
-				},
-				{
-					"path": "invite/record",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false
 					}
 				},
 				{
