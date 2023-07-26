@@ -1,22 +1,19 @@
 <template>
     <view class="content">
-        <transitionNav ref='transitionNav' :needIconShadow="false" title="积分明细" />
+        <transitionNav ref='transitionNav' :needIconShadow="false" title="我的背包" />
         <!-- <view class="topBanner">
-            <view class="myRank">
-                <muqian-lazyLoad class="avatar" borderRadius="50%"
-                    :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
-                <view class="rankInfo">
-                    <view class="name">{{ myRank.userName }}</view>
-                    <view class="rank">当前排名:{{ myRank.rank }}</view>
-                </view>
-                <view class="rankPoint">
-                    <view style="margin-bottom: 18rpx;">已获取:{{ myRank.get_score }}</view>
-                    <view>冻结积分:{{ myRank.lock_score }}</view>
-                </view>
-            </view>
+            
         </view> -->
-        <!-- <view class="pointBlock flexCenter">积分明细</view> -->
         <view class="hide" :style="{ height: navHeight + 'px' }"></view>
+        <view class="topContainer">
+            <view class="selectContainer">
+                <view class="text">全部</view>
+                <u-icon class="icon" size="28rpx" color="#000" name="arrow-down"></u-icon>
+            </view>
+            <view class="num">
+                累计抽奖次数：99999
+            </view>
+        </view>
         <view class="pointCard" v-for="(item, index) in list" :key="index" @click="toGoods(item)">
             <view class="pointCard_top">
                 <view>{{ item.merchantName }}</view>
@@ -113,16 +110,17 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    background-color: #1a3439;
+    // background-color: #1a3439;
+    background: linear-gradient(0deg, #3e0b69 0%, rgba(62, 11, 105, .6) 56%, rgba(62, 11, 105, .9) 100%);
     font-family: PingFang SC;
 }
 
+
 .topBanner {
     width: 750rpx;
-    height: 450rpx;
-    position: relative;
+    height: 436rpx;
     background-size: 100% 100%;
-    background-image: url("@/static/act/portable/top.png");
+    background-image: url("@/static/act/forumDraw/topBanner.png");
 
     .myRank {
         width: 710rpx;
@@ -194,6 +192,39 @@ page {
     font-weight: 400;
     color: #FFFFFF;
     letter-spacing: 2rpx;
+}
+
+.topContainer {
+    width: 750rpx;
+    display: flex;
+    box-sizing: border-box;
+    padding: 0 20rpx;
+    margin-bottom: 30rpx;
+    margin-top: 20rpx;
+    justify-content: space-between;
+    align-items: center;
+    .selectContainer {
+        width: 140rpx;
+        height: 40rpx;
+        background-color: #fff;
+        border-radius: 3rpx;
+        box-sizing: border-box;
+        padding: 0 10rpx;
+        font-size: 24rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .text {
+            font-size: 24rpx;
+        }
+    }
+
+    .num {
+        color: #fff;
+        font-weight: bold;
+        font-size: 26rpx;
+    }
 }
 
 .noMore {

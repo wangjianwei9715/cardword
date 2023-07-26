@@ -2,33 +2,51 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-25 15:45:30
+ * @LastEditTime: 2023-07-26 14:23:08
  * @FilePath: \card-world\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <transitionNav title=" ">
+        <transitionNav title=" " :customBack="true">
+            <template v-slot:slotBack>
+                <view class="actBack flexCenter">
+                    <image class="back" src="/static/index/v3/back.png" />
+                </view>
+                <!-- <view class="detailButton flexCenter" @click="pageJump('/pages/act/forumDraw/log')">抽奖记录</view> -->
+            </template>
             <template v-slot:slotRight>
-                <view class="detailButton" @click="pageJump('/pages/act/forumDraw/log')">抽奖记录</view>
+                <view class="detailButton flexCenter" @click="pageJump('/pages/act/forumDraw/log')">抽奖记录</view>
             </template>
         </transitionNav>
         <view class="topBanner">
             <view class="hide" :style="{ height: navHeight + 'px' }"></view>
         </view>
         <view class="luckContainer">
-            <u-notice-bar :text="luckList" direction="row" :step="true"></u-notice-bar>
+            <view class="dot" style="margin-right: 14rpx;"></view>
+            <view class="dot dot_mask"></view>
+            <view class="title">幸运播报</view>
+            <view class="noticContainer">
+                <u-notice-bar icon="" fontSize="24rpx" bgColor="rgba(0,0,0,0)" color="#ffffff" :text="luckList"
+                    direction="column"></u-notice-bar>
+            </view>
+            <view class="dot dot_mask_left" style="margin-right: 14rpx;margin-left: 30rpx;"></view>
+            <view class="dot"></view>
         </view>
+        <view class="pageBackBg" :style="{ top: gapTop + 'px' }"></view>
         <view class="drawContainer">
             <view class="drawBlock" :class="[`drawBlock${index + 1}`, index == nowHeightLight ? `heightLight` : '']"
                 v-for="(item, index) in drawList">
                 <image :src="$parsePic(decodeURIComponent(item.pic))" style="width: 100%;height: 100%;" mode="aspectFill">
                 </image>
+                <view class="innerShaow" v-if="index === nowHeightLight"></view>
             </view>
-            <!-- @click="startDraw(Math.round(Math.random() * 7))" -->
             <view class="centerBlock">
                 <view class="drawButton" @click="onClickDraw(1)">抽奖一次</view>
-                <view class="drawButton" @click="onClickDraw(5)">抽奖五次</view>
+                <view class="num">
+                    可用次数：<text>{{ drawNum }}</text>
+                </view>
+                <view class="drawButton" style="position: relative;top: 10rpx;" @click="onClickDraw(5)">抽奖五次</view>
             </view>
         </view>
         <view class="taskContainer">
@@ -36,8 +54,35 @@
                 <view class="taskTitle">任务进度</view>
                 <view class="taskRule" @click="pageJump('/pages/act/forumDraw/rule')">规则说明</view>
             </view>
+            <view class="taskWrap">
+                <view class="top">
+                    <view class="taskTitle">每篇动态累计获得x赞</view>
+                    <view class="taskButton flexCenter" @click="pageJump('/pages/cardForum/personHomePage?isMine=1')">查看动态
+                    </view>
+                </view>
+                <view class="info">
+                    <view class="left">已完成10次</view>
+                    <view class="right">距下次抽奖还需<text class="red">5</text>/10</view>
+                </view>
+                <view class="bar">
+                    <view class="bar_width"></view>
+                </view>
+            </view>
+            <view class="taskWrap">
+                <view class="top">
+                    <view class="taskTitle">补充图鉴累计卡币（仅图鉴获取）</view>
+                    <view class="taskButton flexCenter" @click="goTuj">补充图鉴
+                    </view>
+                </view>
+                <view class="info">
+                    <view class="left">已完成10次</view>
+                    <view class="right">距下次抽奖还需<text class="red">5</text>/10</view>
+                </view>
+                <view class="bar">
+                    <view class="bar_width"></view>
+                </view>
+            </view>
         </view>
-        <!--  -->
         <u-overlay class="overlay" :duration="500" :opacity="0.8" :show="showSwiper" @click="showSwiper = false">
             <view class="preTitle">恭喜抽中以下奖品</view>
             <view class="preSwiper_container">
@@ -55,9 +100,9 @@
                     <view class="dot" :class="{ dot_current: index === current }" v-for="(item, index) in resRewardList">
                     </view>
                 </view>
-                <view class="goBag flexCenter" @click.stop="pageJump('/pages/act/forumDraw/log'),showSwiper=false">去背包查看</view>
+                <view class="goBag flexCenter" @click.stop="pageJump('/pages/act/forumDraw/log'), showSwiper = false">去背包查看
+                </view>
             </view>
-
         </u-overlay>
     </view>
 </template>
@@ -68,6 +113,7 @@ import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 const ROUND_NUM = 6
 const navHeight = app.statusBarHeight + uni.upx2px(88)
+const gapTop = uni.upx2px(436) + uni.upx2px(74)
 @Component({})
 export default class ClassName extends BaseNode {
     drawList: any = [
@@ -94,8 +140,16 @@ export default class ClassName extends BaseNode {
     onDraw: boolean = false
     showSwiper: boolean = false
     current: number = 0
+    gapTop = gapTop
+    defaultLoopTimer: any = null
+    loopTimer: any = null
     onLoad(query: any) {
         this.initConf()
+        this.defautLoop()
+    }
+    beforeDestroy() {
+        this.loopTimer && clearTimeout(this.loopTimer)
+        this.defaultLoopTimer && clearInterval(this.defaultLoopTimer)
     }
     initConf() {
         this.loopBol = true
@@ -106,6 +160,7 @@ export default class ClassName extends BaseNode {
     }
     onClickDraw(num: number) {
         if (this.onDraw) {
+            app.platform.UINotificationFeedBack("error")
             uni.showToast({
                 title: "请等待抽奖结束",
                 icon: "none"
@@ -113,6 +168,7 @@ export default class ClassName extends BaseNode {
             return
         }
         if (num > this.drawNum) {
+            app.platform.UINotificationFeedBack("error")
             uni.showModal({
                 title: "提示",
                 content: "次数不足，可补充图鉴或者发布动态收集点赞获得",
@@ -131,7 +187,10 @@ export default class ClassName extends BaseNode {
             content: `本次抽奖将消耗${num}次抽奖次数`,
             cancelText: "我再想想",
             success: (res: any) => {
-                if (res.confirm) this.postGetDrawResult(num)
+                if (res.confirm) {
+                    app.platform.UIClickFeedBack(0)
+                    this.postGetDrawResult(num)
+                }
             }
         })
     }
@@ -150,13 +209,16 @@ export default class ClassName extends BaseNode {
             await this.startDraw(this.resRewardIds[i], (i === this.resRewardIds.length - 1) ? 0 : 1500)
             if (i == this.resRewardIds.length - 1) {
                 this.onDraw = false
-                this.showDrawRes()
+                setTimeout(() => {
+                    this.showDrawRes()
+                }, 300)
             }
         }
 
     }
     startDraw(id: number, delay: number) {
         return new Promise((re: any, rj) => {
+            this.stopDefaultLoop()
             this.initConf()
             const index = this.drawList.findIndex((item: any) => {
                 return item.id === id
@@ -176,6 +238,7 @@ export default class ClassName extends BaseNode {
     }
     loop(endIndex: number, cb?: Function) {
         if (!this.nowHeightLight || this.nowHeightLight < 8) {
+            // app.platform.UIClickFeedBack()
             if (this.nowHeightLight == 7) {
                 this.nowHeightLight = 0
             } else {
@@ -200,12 +263,25 @@ export default class ClassName extends BaseNode {
                 }
             }
             if (this.loopBol) {
-                setTimeout(() => {
+                this.loopTimer = setTimeout(() => {
                     this.loop(endIndex, cb)
                 }, this.time);
             }
         }
 
+    }
+    defautLoop() {
+        this.defaultLoopTimer && clearInterval(this.defaultLoopTimer)
+        this.defaultLoopTimer = setInterval(() => {
+            if (this.nowHeightLight == 7) {
+                this.nowHeightLight = 0
+                return
+            }
+            this.nowHeightLight += 1
+        }, 1000)
+    }
+    stopDefaultLoop() {
+        this.defaultLoopTimer && clearInterval(this.defaultLoopTimer)
     }
     //展示抽奖的结果
     showDrawRes() {
@@ -218,6 +294,11 @@ export default class ClassName extends BaseNode {
         })
         console.log(this.resRewardList);
         this.showSwiper = true
+    }
+    goTuj(){
+        uni.switchTab({
+            url:"/pages/illustration/index"
+        })
     }
     pageJump(url: string) {
         uni.navigateTo({
@@ -239,29 +320,121 @@ export default class ClassName extends BaseNode {
 <style lang="scss">
 .luckContainer {
     width: 750rpx;
+    background-size: 100% 100%;
+    height: 120rpx;
+    background-image: url("@/static/act/forumDraw/titleWrap.png");
+    margin-top: -20rpx;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 26rpx;
+
+    .dot {
+        border-radius: 50%;
+        width: 22rpx;
+        height: 22rpx;
+        background-color: #ffdbff;
+
+    }
+
+    .dot_mask {
+        -webkit-mask-image: -webkit-linear-gradient(right,
+                rgba(0, 0, 0, 0) 2%,
+                rgba(0, 0, 0, 1) 90%);
+    }
+
+    .dot_mask_left {
+        -webkit-mask-image: -webkit-linear-gradient(left,
+                rgba(0, 0, 0, 0) 2%,
+                rgba(0, 0, 0, 1) 90%);
+    }
+
+    .title {
+        font-size: 45rpx;
+        font-family: YouSheBiaoTiHei;
+        font-weight: 400;
+        color: #FFFFFF;
+        margin-left: 23rpx;
+    }
+
+    .noticContainer {
+        width: 340rpx;
+        box-sizing: border-box;
+        height: 100rpx;
+        margin-left: 38rpx;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.topBanner {
+    width: 750rpx;
+    height: 436rpx;
+    background-size: 100% 100%;
+    background-image: url("@/static/act/forumDraw/topBanner.png");
+}
+
+.pageBackBg {
+    width: 750rpx;
+    // height: 100%;
+    // flex: 1;
+    height: 1485rpx;
+    background-size: 100% 100%;
+    position: absolute;
+    // top: 536rpx;
+    background-image: url("@/static/act/forumDraw/back.png");
+    z-index: 1;
 }
 
 .drawContainer {
     display: grid;
-    width: 750rpx;
+    width: 722rpx;
+    height: 723rpx;
+    background-size: 100% 100%;
+    background-image: url("@/static/act/forumDraw/drawContainer.png");
     flex-wrap: wrap;
-    grid-template-columns: repeat(3, 220rpx);
-    grid-template-rows: repeat(3, 220rpx);
-    grid-column-gap: 20rpx;
-    grid-row-gap: 20rpx;
+    grid-template-columns: repeat(3, 180rpx);
+    grid-template-rows: repeat(3, 180rpx);
+    grid-column-gap: 42rpx;
+    grid-row-gap: 42rpx;
     justify-content: center;
-    margin-top: 30rpx;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    margin-top: 0rpx;
+    z-index: 3;
+    box-sizing: border-box;
 }
 
 .drawBlock {
-    width: 220rpx;
-    height: 220rpx;
-    // background-color: red;
-    background-color: rgba(255, 0, 0, .4);
+    width: 180rpx;
+    height: 180rpx;
+    background-color: #e6e6e6;
+    // background-color: rgba(255, 0, 0, .4);
+    border-radius: 5rpx;
+
+    position: relative;
+    transition: transform 0.2s linear;
+    box-shadow: 0rpx 0rpx 21rpx 3rpx rgba(146, 146, 146, 0.73);
+
+    .innerShaow {
+        width: 180rpx;
+        height: 180rpx;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        box-shadow: inset 0px 0px 14rpx 6rpx rgba(153, 95, 253, .8);
+    }
 }
 
 .heightLight {
-    outline: 4rpx solid red;
+    transform: scale(1.1);
+    border: 2rpx solid #9862f5;
+    box-shadow: 0rpx 0rpx 21rpx 3rpx rgba(153, 95, 253, .9);
 }
 
 .drawBlock1 {
@@ -297,17 +470,181 @@ export default class ClassName extends BaseNode {
 }
 
 .centerBlock {
-    width: 220rpx;
-    height: 220rpx;
+    width: 180rx;
+    height: 180rx;
     color: #000;
     display: flex;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
+    justify-content: space-between;
     grid-area: 2 / 2 / 3 / 3;
+    flex-direction: column;
+
+    .drawButton {
+        font-size: 30rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #FFFFFF;
+        width: 186rpx;
+        height: 76rpx;
+        background-size: 100% 100%;
+        background-image: url("@/static/act/forumDraw/button.png");
+        text-align: center;
+        line-height: 60rpx;
+        letter-spacing: 2rpx;
+    }
+
+    .num {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #000000;
+        // margin-bottom: 8rpx;
+        margin-top: 4rpx;
+
+        text {
+            color: #FA1545;
+            margin-left: 3rpx;
+        }
+    }
 }
 
 .detailButton {
-    color: #000000;
+    font-size: 22rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    width: 110rpx;
+    height: 40rpx;
+    background: #8254CF;
+    border-radius: 5rpx;
+}
+
+.actBack {
+    width: 55rpx;
+    height: 55rpx;
+    background-color: rgba(174, 120, 255, .63);
+    border-radius: 50%;
+
+    .back {
+        width: 19rpx;
+        height: 35rpx;
+    }
+}
+
+.taskContainer {
+    width: 722rpx;
+    height: 635rpx;
+    background-size: 100% 100%;
+    background-image: url("@/static/act/forumDraw/taskContainer.png");
+    z-index: 3;
+    margin-top: 35rpx;
+    box-sizing: border-box;
+    padding: 0 25rpx;
+
+    .taskTop {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 47rpx;
+        margin-bottom: 20rpx;
+
+        .taskTitle {
+            font-size: 45rpx;
+            font-family: YouSheBiaoTiHei;
+            font-weight: 400;
+            color: #FFFFFF;
+        }
+
+        .taskRule {
+            font-size: 22rpx;
+            font-family: PingFang SC;
+            font-weight: 500;
+            color: #FFFFFF;
+        }
+    }
+
+    .taskWrap {
+        width: 673rpx;
+        height: 207rpx;
+        background: #C0C0C0;
+        box-shadow: 0rpx 0rpx 16rpx 0rpx rgba(77, 82, 123, 0.43);
+        background-color: #cacbe7;
+        border-radius: 5rpx;
+        margin-bottom: 31rpx;
+        box-sizing: border-box;
+        padding: 0 26rpx;
+        padding-top: 30rpx;
+
+        .top {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            // margin-top: 31rpx;
+            .taskTitle {
+                font-size: 27rpx;
+                font-family: PingFang SC;
+                font-weight: bold;
+                color: #626262;
+            }
+
+            .taskButton {
+                width: 137rpx;
+                height: 43rpx;
+                background: #FFC937;
+                border-radius: 5rpx;
+                font-size: 24rpx;
+                font-family: PingFang SC;
+                font-weight: bold;
+                color: #FFFFFF;
+            }
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 47rpx;
+            margin-bottom: 17rpx;
+
+            .left {
+                font-size: 22rpx;
+                font-family: PingFang SC;
+                font-weight: 500;
+                color: #626262;
+            }
+
+            .right {
+                font-size: 22rpx;
+                font-family: PingFang SC;
+                font-weight: bold;
+                color: #626262;
+
+                .red {
+                    color: #FA1545;
+                }
+            }
+        }
+
+        .bar {
+            width: 625rpx;
+            height: 14rpx;
+            background: #FFFFFF;
+            border-radius: 5rpx;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar_width {
+            width: 559rpx;
+            height: 14rpx;
+            background: linear-gradient(90deg, #B453FF 0%, #C57BFF 56%, #A230FA 100%);
+            border-radius: 5rpx;
+            transition: width 0.3s;
+        }
+    }
 }
 
 .overlay {

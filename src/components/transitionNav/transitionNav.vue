@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-05 17:55:39
+ * @LastEditTime: 2023-07-26 11:05:14
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -15,11 +15,11 @@
             <view class="pageTitle" :style="[opacityStyle]">
                 <text class="titleText">{{ title }}</text>
             </view>
-            <view class="leftBackContainer" :class="{ whiteBack: needIconShadow }" @click="app.platform.pageBack()">
-                <template v-if="needIconShadow">
+            <view class="leftBackContainer" :class="{ whiteBack: needIconShadow&&!customBack }" @click="app.platform.pageBack()">
+                <template v-if="needIconShadow&&!customBack">
                     <image class="back" src="/static/index/v3/icon_back.png" />
                 </template>
-                <template v-if="!needIconShadow && showBack">
+                <template v-if="!needIconShadow && showBack&&!customBack">
                     <image class="back" :src="`/static/index/v3/${navBackGroundShow ? 'icon_back' : 'back'}.png`" />
                     <!-- #ifndef APP-NVUE -->
                     <!-- 非nvue下利用css滤镜改变方向键颜色 -->
@@ -30,6 +30,9 @@
                     <!-- <image class="back" :src="`/static/index/v3/${navBackGroundShow ? 'icon_back' : 'back'}.png`"
                         @click="app.platform.pageBack()" /> -->
                     <!--  #endif -->
+                </template>
+                <template v-if="customBack">
+                    <slot name="slotBack"/>
                 </template>
             </view>
             <view class="slotContainer_left flex1" :style="[opacityStyleRevers]"
@@ -167,6 +170,10 @@ export default {
         transition: {
             type: Boolean,
             default: true
+        },
+        customBack:{
+            type:Boolean,
+            default:false
         }
 
     },
@@ -345,7 +352,7 @@ export default {
 }
 
 .leftBackContainer {
-    width: 19rpx;
+    /* width: 19rpx; */
     height: 55rpx;
     border-radius: 50%;
     margin-right: 14rpx;
