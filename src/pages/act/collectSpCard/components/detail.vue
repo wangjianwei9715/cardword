@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 17:27:35
+ * @LastEditTime: 2023-07-26 15:00:59
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -140,7 +140,7 @@
 				`dataApi/activity/teka/group/rank/list/${this.getCurrentGroup.id}`,
 				rankParams,
 				({list, isFetchEnd}:any)=>{
-					list && this.userRank.push(list);
+					list && (this.userRank = [...this.userRank,...list]);
 					this.rankParams.fetchFrom += rankParams.fetchSize;
 					this.rankParams.isFetchEnd = isFetchEnd;
 					cb?.()
