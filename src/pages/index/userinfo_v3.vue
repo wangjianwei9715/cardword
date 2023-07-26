@@ -136,110 +136,6 @@
                 </view>
             </navigator>
         </view>
-        <!-- <view class="user-header">
-			<view class="header-top">
-				<view class="header-top-left" @click="onClickUserInfo">
-					{{infoData.name}}
-					<view class="header-icon-right"></view>
-				</view>
-				<view class="header-top-right">
-					<view class="icon-setting" @click="navigateTo('/pages/userinfo/setting')"></view>
-					<view class="icon-xiaoxi" @click="navigateTo('/pages/userinfo/message')"><view class="xiaoxi-num" v-if="infoData.unReadMsg>0">{{infoData.unReadMsg>99?'99+':infoData.unReadMsg}}</view></view>
-				</view>
-			</view>
-			<view class="header-center">
-				<view class="avatar-border">
-					<muqian-lazyLoad @click="onClickUserInfo" class="user-avatar" :src="infoData.avatar?infoData.avatar:defaultAvatar" mode="aspectFit" :borderRadius="'50%'" />
-				</view>
-				<view class="header-tab-box">
-					<view class="header-tab-index" v-for="item in headerTab" :key="item.id" @click="onClickServiceTab(item)">
-						<view class="header-tab-index-num">{{item.num}}</view>
-						<view class="header-tab-index-name">{{item.name}}</view>
-					</view>
-				</view>
-			</view>
-		</view>
-
-		<view class="user-v2-box">
-			<view class="user-v2-langtab">
-				<view class="user-v2-langtab-index" @click="onClickServiceTab(item)" v-for="item in walletTab" :key="item.id">
-					<view class="langtab-left">
-						{{item.name}}
-					</view>
-					<view class="langtab-right">
-						{{item.num}}<view class="icon-right"></view>
-					</view>
-				</view>
-			</view>
-
-			<view class="user-order">
-				<view class="header">
-					<view class="title">我的订单</view>
-					<view class="right" @click="onClickOrderList(0)">查看全部<view class="icon-right"></view></view>
-				</view>
-				<view class="tab-content">
-					<view class="tab" v-for="(item,index) in orderTab" :key="item.id" @click="onClickOrderList(item.id)">
-						<view v-if="item.num>0&&item.name!='已完成'" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num>99?'99+':item.num}}</view>
-						<view class="icon-content">
-							<image class="tab-icon" :src="'../../static/userinfo/v2/icon_user_'+index+'.png'" />
-						</view>
-						<view class="name">{{item.name}}</view>
-					</view>
-				</view>
-				
-			</view>
-
-			<view class="user-order">
-				<view class="header">
-					<view class="title">更多功能</view>
-				</view>
-				<view class="tab-content">
-					<view class="tab" v-for="(item,index) in serviceTab" :key="item.id" @click="onClickServiceTab(item)">
-						<view v-if="item.num&&item.num>0" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num>99?'99+':item.num}}</view>
-						<view class="icon-content">
-							<image class="tab-icon" :src="'../../static/userinfo/v2/icon_user_'+index+'.png'" />
-						</view>
-						<view class="name">{{item.name}}</view>
-					</view>
-				</view>
-			</view>
-
-			<view class="orther-setting">
-				
-				<view class="setting" v-if='infoData.merchantActor' @click="onClickNavigateto({url:`/pages/merchant/core?alias=${infoData.merchantActor}&isMerchant=1`})">
-					<view class="name">
-						<image class="setting-icon" src="../../static/userinfo/v2/liveCamera.png" />
-						商家主页
-					</view>
-					<view class="icon-right"></view>
-				</view>
-				<view class="setting" v-for="item in settingTab" :key="item.id" @click="onClickNavigateto(item)">
-					<view class="name">
-						<image class="setting-icon" :src="item.pic" />
-						{{item.name}}
-					</view>
-					<view class="icon-right"></view>
-				</view>
-				<view class="setting" v-if='infoData.merchantActor'  @click="onClickNavigateto({url:`/pages/merchant/guide`})">
-					<view class="name">
-						<image class="setting-icon" src="../../static/userinfo/v2/guide.png" />
-						商家指南
-					</view>
-					<view class="icon-right"></view>
-				</view>
-				<navigator v-if="invoice.open" url="/pages/userinfo/invoice/index" hover-class="none">
-					<view class="setting">
-						<view class="name">
-							<image class="setting-icon" src="@/static/userinfo/v2/icon_b_invoice.png" />开票入口
-						</view>
-						<view class="icon-right"></view>
-					</view>
-				</navigator>
-			</view>
-
-		</view>
-		 -->
-
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true"/>
     </view>
 </template>
@@ -437,9 +333,6 @@ export default class ClassName extends BaseNode {
     }
     navigateTo(url: string) {
         uni.navigateTo({ url: url });
-    }
-    onClickUserInfo() {
-        this.navigateTo(`/pages/userinfo/user_info?data=${encodeURIComponent(JSON.stringify(this.infoData))}`)
     }
     onClickOrderList(id: number) {
         this.navigateTo(`/pages/userinfo/order_list?type=${id}`)
