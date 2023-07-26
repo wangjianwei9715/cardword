@@ -6,10 +6,12 @@
         </view> -->
         <view class="hide" :style="{ height: navHeight + 'px' }"></view>
         <view class="topContainer">
-            <view class="selectContainer">
-                <view class="text">全部</view>
-                <u-icon class="icon" size="28rpx" color="#000" name="arrow-down"></u-icon>
-            </view>
+            <picker :range="range" range-key="label" @change="pickerChange">
+                <view class="selectContainer">
+                    <view class="text">{{ nowSelectLabel }}</view>
+                    <u-icon class="icon" size="28rpx" color="#000" name="arrow-down"></u-icon>
+                </view>
+            </picker>
             <view class="num">
                 累计抽奖次数：99999
             </view>
@@ -47,12 +49,15 @@ import BaseNode from '@/base/BaseNode.vue';
 import { orderGoodsStateStr, getGoodsPintuan } from '@/tools/switchUtil'
 import { dateFormatMSHMS } from '@/tools/util'
 const navHeight = app.statusBarHeight + uni.upx2px(88)
+const range: any = [{ label: "全部", value: 100 }, { label: "虚拟物品", value: 1 }, { label: "实物奖品", value: 2 }]
 @Component({})
 export default class ClassName extends BaseNode {
+    range = range
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 20,
-        activityTp: 5
+        activityTp: 5,
+        tp: 100
     }
     navHeight = navHeight
     orderGoodsStateStr = orderGoodsStateStr
@@ -65,6 +70,12 @@ export default class ClassName extends BaseNode {
     onLoad(query: any) {
         this.reqNewData()
         this.reqMyRank()
+    }
+    public get nowSelectLabel() {
+        const findItem = this.range.find((item: any) => {
+            return this.queryParams.tp === item.value
+        })
+        return findItem ? findItem.label : "未知类型"
     }
     onPageScroll(data: any) {
         //@ts-ignore
@@ -95,6 +106,11 @@ export default class ClassName extends BaseNode {
         app.http.Get(`dataApi/selectRank/my/data`, { activityTp: 5 }, (res: any) => {
             this.myRank = res.data
         })
+    }
+    pickerChange(event: any) {
+        this.queryParams.pageIndex = 1
+        this.queryParams.tp = this.range[event.detail.value].value
+        this.reqNewData()
     }
     reqNewData(cb?: any) {
         app.http.Get(`dataApi/selectRank/score/record`, this.queryParams, (res: any) => {
@@ -203,6 +219,7 @@ page {
     margin-top: 20rpx;
     justify-content: space-between;
     align-items: center;
+
     .selectContainer {
         width: 140rpx;
         height: 40rpx;
