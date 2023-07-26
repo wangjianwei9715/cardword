@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 15:20:12
+ * @LastEditTime: 2023-07-26 11:15:08
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -29,7 +29,7 @@
 			<view class="tab-center">
 				<swiper v-show="addList.top.length" class="capsule-box" :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
 					<swiper-item v-for="(item,index) in addList.top" :key="index">
-						<image class="capsule-pic1" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickAddJump(item.target)"/>
+						<image class="capsule-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickToAD(item.target)"/>
 					</swiper-item>
 				</swiper>
 				<view class="tab-good-content">
@@ -91,7 +91,6 @@
 		goodsListSwiper
 	},})
 	export default class index extends BaseNode {
-		statusBarHeight = app.statusBarHeight;
 		noticeList = [''];
 		isDuringDate = isDuringDate;
 		goodsTabs = goodsTabs;
@@ -102,19 +101,12 @@
 			back:indexSwiperBack
 		};
 		tabSwiperCurrent=0;
-		capsule = {
-			pic:'../../static/index/v3/1.png',
-			url:'/pages/act/imm/index?seriesId=20&roomId='
-		}
 		hot = [];
 		broadCastList:any = [];
 		addList:any = {
 			top:[],
 			index:[]
 		}
-		topAddList: any = [];
-		indexAddList: any = [];
-		onNetWorkFunc: any;
 		showPaySuccess = false;
 		showWinningCrad = false;
 		greeted = false;
@@ -123,7 +115,6 @@
 			data:{}
 		};
 		triggered=false;
-		scrollHeight = 0;
 		scrollFresh = false;
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
@@ -131,21 +122,10 @@
 			this.onEventUI("showPaySuccess", (res) => {
 				this.showPaySuccess = true;
 			});
-			this.onLoadIndex()
+			this.onLoadIndex();
 			//#ifdef APP-PLUS
 			// plus.webview.prefetchURL(app.liveWebView)//预载直播控件webview
 			//#endif
-			
-			let tabbarHeight = 0;
-			// #ifdef H5
-			tabbarHeight = 52
-			// #endif
-			//#ifdef APP-PLUS
-			tabbarHeight = plus.navigator.getSafeAreaInsets().deviceBottom || 0;
-			//#endif
-			const { screenHeight, statusBarHeight, platform } = app.platform.systemInfo;
-			this.scrollHeight = screenHeight - uni.upx2px(104) - (statusBarHeight||0) - tabbarHeight -( platform== 'android'?52:0 );
-			
 		}
 		onShow() {
 			uni.showTabBar({ animation: false })
@@ -166,6 +146,29 @@
 		}
 		scrolltolower(){
 			this.$refs.listSwiper.reqNewMainList()
+		}
+		public get scrollHeight() : number {
+			let tabbarHeight = 0;
+			// #ifdef H5
+			tabbarHeight = 52
+			// #endif
+			//#ifdef APP-PLUS
+			tabbarHeight = plus.navigator.getSafeAreaInsets().deviceBottom || 0;
+			//#endif
+			const { screenHeight, statusBarHeight, platform } = app.platform.systemInfo;
+			return screenHeight - uni.upx2px(104) - (statusBarHeight||0) - tabbarHeight -( platform== 'android'?52:0 );
+		}
+		private onLoadIndex() {
+			if (app.dataApiDomain == '' && !app.localTest) {
+				setTimeout(() => {
+					this.onLoadIndex()
+				}, 100);
+				return;
+			}
+			this.initIndex()
+		}
+		private initIndex(cb ? : Function) {
+			this.getHome(()=> cb && cb())
 		}
 		onChangeScroll(event:any){
 			this.scrollFresh = false
@@ -193,25 +196,13 @@
 				})
 			},1000)
 		}
-		private onLoadIndex() {
-			if (app.dataApiDomain == '' && !app.localTest) {
-				setTimeout(() => {
-					this.onLoadIndex()
-				}, 100);
-				return;
-			}
-			this.initIndex()
-		}
-		private initIndex(cb ? : Function) {
-			this.getHome(()=> cb && cb())
-		}
-		onClickAddJump(target:any){
-			app.navigateTo.addNavigate(target)
+		onClickToAD(target:any){
+			app.navigateTo.navigateToAD(target)
 		}
 		// 监听网络
 		networkStatusChange() {
 			// #ifdef APP-PLUS
-			this.onNetWorkFunc = uni.onNetworkStatusChange((res) => {
+			uni.onNetworkStatusChange((res) => {
 				if (res.isConnected && app.service_url == '') {
 					uni.showLoading({
 						title: '加载中'
@@ -260,7 +251,6 @@
 					uni.hideTabBar()
 				}
 			})
-			
 		}
 		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
@@ -298,8 +288,8 @@
 				url: `/pages/goods/goods_find?placeholder=${placeholder}`
 			})
 		}
-		onClickJumpUrl(item: any) {
-			if (item.needLogin) {
+		onClickJumpUrl({ needLogin, name, url }: any) {
+			if (needLogin) {
 				if (app.token.accessToken == '') {
 					uni.navigateTo({
 						url: '/pages/login/login'
@@ -307,14 +297,12 @@
 					return;
 				}
 			}
-			if(item.name=="玩家卡册"){
+			if(name=="玩家卡册"){
 				uni.setStorageSync('showKace', true);
 				app.navigateTo.switchTab(2)
 				return;
 			}
-			uni.navigateTo({
-				url: item.url
-			})
+			uni.navigateTo({ url })
 		}
 	}
 </script>
@@ -513,7 +501,7 @@
 		border-radius: 5rpx;
 		margin-bottom: 37rpx;
 	}
-	.capsule-pic1{
+	.capsule-pic{
 		width: 710rpx;
 		height:200rpx;
 		z-index: 5;

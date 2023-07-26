@@ -64,7 +64,7 @@ export default class navigateManager {
 			url:`/pages/information/${url}code=${articleCode}&ad=${ad}${q&&q!=''?'&q='+q:''}`
 		})
 	}
-	addNavigate(target: any) {
+	navigateToAD(target: any) {
 		if (target.goodCode != '') {
 			this.goGoodsDetails(target.goodCode)
 			return;
