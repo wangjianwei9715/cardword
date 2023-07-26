@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-01-04 15:59:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 15:19:19
+ * @LastEditTime: 2023-07-26 13:36:27
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -87,10 +87,6 @@
 					</view>
 				</view>
 			</view>
-
-			<!-- 邀请新人步骤图 -->
-			<inviteStep v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" :goodsStep="true" />
-			<!-- 邀请新人步骤图 -->
 
 			<!-- 活动展示 -->
 			<goodAct :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData" />
@@ -198,9 +194,7 @@
 			<view class="btn-cardlist" @click="onClickAllCard">
 				<image class="cardlist-icon" src="@/static/goods/v2/icon_list_v3.png"></image>列表 
 			</view>
-			<view v-if="goodsData.specialType&&goodsData.specialType.indexOf('invite')!=-1" class="btn-confirm"
-				@click="onClickCopyInviteKey">复制口令给新人</view>
-			<view v-else class="btn-confirm" :style="{width:`${tipBtn.length==2?'310rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType}" @click="onClickBuy()">
+			<view class="btn-confirm" :style="{width:`${tipBtn.length==2?'310rpx':'395rpx'}`}" :class="{'random-confirm':getSelectType}" @click="onClickBuy()">
 				{{goodsData.isSelect?'选择编号':'立即购买'}}
 			</view>
 		</view>
@@ -230,10 +224,6 @@
 			:teamrandomGood="choiceTRData.rData" :teamrandomRemainder="choiceTRData.remainder" :type="goodsData.pintuan_type"
 			@teamRandomCancel="onClickteamRandomCancel" @cardCode="onClickAllCard" @buy="onClickTeamBuy"
 			@randomBuy="onClickTeamRandomBuy" @randomCountOver="getGoodSelectTeamRandom" />
-
-		<!-- 邀请新人活动弹窗 -->
-		<invitePopup :showInvitePopup="showInvitePopup" :inviteResult="668"
-			@cancelInvitePopup="showInvitePopup=false" @popupBtn="onClickInviteCopy" />
 
 		<!-- 底部弹窗 -->
 		<bottomDrawer :showDrawer.sync="showDrawer" :title="'拼团规则'">
@@ -296,7 +286,6 @@
 		choiceTRData = {...Manager.choiceTRData};
 		// 支付方式
 		payChannel: any = [];
-		showInvitePopup = false;
 		// 底部抽屉
 		showDrawer = false;
 		source="";
@@ -776,24 +765,6 @@
 		onClickteamRandomCancel() {
 			this.isPullDown(true)
 			this.choiceTRData.show = false;
-		}
-		// 复制邀请口令
-		onClickCopyInviteKey() {
-			app.http.Post('activity/invite/getKey', {
-				code: this.goodCode
-			}, (res: any) => {
-				uni.setClipboardData({
-					data: res.content,
-					showToast: false,
-					success: () => {
-						this.showInvitePopup = true;
-					}
-				});
-			})
-		}
-		onClickInviteCopy(type: any) {
-			plus.runtime.openURL("weixin://");
-			this.showInvitePopup = false;
 		}
 		onChangeSwiperCurrent(event: any) {
 			const { swiperData } = this

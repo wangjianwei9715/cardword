@@ -116,7 +116,7 @@
 			this.goMerchantPage(item.merchantAlias)
 		}
 		onClickTopJumpUrl(target: any) {
-			app.navigateTo.addNavigate(target)
+			app.navigateTo.navigateToAD(target)
 		}
 	}
 </script>

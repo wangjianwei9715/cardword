@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-28 17:34:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-26 17:57:52
+ * @LastEditTime: 2023-07-26 14:13:22
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -125,7 +125,7 @@
 	.cardBox-bg{
 		width: 513rpx;
 		height: 782rpx;
-		background: url("/static/goods/drawcard/dangban.png") no-repeat;
+		background: url("/static/drawCard/dangban.png") no-repeat;
 		background-size: 513rpx 722rpx;
 		position: absolute;
 		left:50%;
