@@ -175,6 +175,7 @@ export default class ClassName extends BaseNode {
             const list = res.list || []
             this.current.firstReqEnd = true
             this.current.isFetchEnd = res.isFetchEnd
+            this.current.queryParams.scrollId=res.scrollId
             if (isRefresh) {
                 this.current.list = []
                 //@ts-ignore
