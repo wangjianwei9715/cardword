@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-21 11:26:43
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-07-26 17:25:36
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -45,7 +45,7 @@
                                 v-if="showBottom">
                                 <template v-if="showUser">
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                        :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
+                                        :src="item.author ? item.author.avatar :(item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar)">
                                     </image>
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
@@ -120,7 +120,7 @@
                                 v-if="showBottom">
                                 <template v-if="showUser">
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                        :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
+                                        :src="item.author ? item.author.avatar :(item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar)">
                                     </image>
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
@@ -571,7 +571,7 @@ export default {
             event.stopPropagation();
             // #endif
             uni.navigateTo({
-                url: `/pages/cardForum/personHomePage?userId=${item.userId}&isMine=${item.isMe ? 1 : 0}`
+                url: `/pages/cardForum/personHomePage?userId=${item.author?item.author.userId:item.userId}&isMine=${item.isMe ? 1 : 0}`
             })
         },
         goToDetail(item) {
