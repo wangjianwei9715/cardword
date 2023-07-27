@@ -66,10 +66,6 @@
 				uni.removeStorageSync("token");
 				app.token = {accessToken:'',refreshToken:''};
 				uni.removeStorageSync('ksjUserId')
-				uni.showToast({
-					title:'beta模式'+(app.appBeta == 'on' ? '开启' : '关闭'),
-					icon:'none'
-				})
 				setTimeout(() => {
 					plus.runtime.restart();
 				}, 500)
