@@ -219,7 +219,7 @@ export default class ClassName extends BaseComponent {
     opacity: 1;
   }
   .classify-short {
-    height:170rpx;
+    height:90rpx;
     opacity: 1;
   }
   .classify-opt {

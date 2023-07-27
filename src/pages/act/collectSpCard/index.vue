@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 11:58:35
+ * @LastEditTime: 2023-07-27 16:22:30
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -21,7 +21,7 @@
 			<!-- 集齐奖励列表 -->
 			<rewardScroll :groupReward="groupReward" />
 			<!-- 卡组详情 -->
-			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail" @changeNum="changeCurrentGroupNum"/>
+			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail" @changeNum="changeCurrentGroupNum" @changeUser="changeCurrentCollectedSetNum"/>
 		</view>
 	</view>
 </template>
@@ -76,10 +76,15 @@
 					return {...x,start:app.platform.currentTimestamp()>=x.startAt}
 				})
 				this.getReward();
+				this.getDetail()
 				cb?.()
 			})
 		}
 		getReward(){
+			this.getUserList();
+			this.getDetail()
+		}
+		getUserList(){
 			app.http.Get(
 				`dataApi/activity/teka/award/list/${this.getCurrentGroup.id}`,
 				{},
@@ -88,7 +93,6 @@
 					this.getCurrentGroup.collectedSetNum = collectedSetNum;
 				}
 			)
-			this.getDetail()
 		}
 		getDetail(){
 			app.http.Get(
@@ -106,7 +110,9 @@
 		changeCurrentGroupNum(num:number){
 			this.getCurrentGroup.getPlayerNum = num
 		}
-		
+		changeCurrentCollectedSetNum(num:number){
+			this.getCurrentGroup.collectedSetNum = num;
+		}
 	}
 </script>
 
