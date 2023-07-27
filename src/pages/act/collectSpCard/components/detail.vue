@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-27 16:27:23
+ * @LastEditTime: 2023-07-27 16:39:43
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -124,6 +124,10 @@
 		}
 		destroyed(){
 		}
+		public get userMinLength() : Number {
+			const item = this.groupReward[this.groupReward.length-1];
+			return item.rankEnd ==0 ? item.rankStart : item.rankEnd
+		}
 		rewardRankText(item:any):string{
 			return `第${item.rankStart}${item.rankEnd==0?'+':(item.rankEnd==item.rankStart?'':`-${item.rankEnd}`)}名`
 		}
@@ -139,14 +143,14 @@
 			app.http.Get(
 				`dataApi/activity/teka/group/rank/list/${this.getCurrentGroup.id}`,
 				rankParams,
-				({list, isFetchEnd, total}:any)=>{
+				({list, isFetchEnd, collectedSetNum}:any)=>{
 					list && (this.userRank = [...this.userRank,...list]);
 					this.rankParams.fetchFrom += rankParams.fetchSize;
 					this.rankParams.isFetchEnd = isFetchEnd;
-					if(!isFetchEnd){
+					if(this.userRank.length<this.userMinLength){
 						this.getUserRank()
 					}
-					this.$emit('changeUser',total)
+					this.$emit('changeUser',collectedSetNum)
 					this.isPullDown(false);
 					this.rankPopupShow = true;
 				}
