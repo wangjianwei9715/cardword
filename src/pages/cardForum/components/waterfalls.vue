@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-26 17:25:36
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-07-27 11:47:25
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -69,7 +69,7 @@
                                             class="likeImg"></image>
                                         <text class="likeNum">{{ item.likeNum }}</text>
                                     </view>
-                                    <template v-if="isMine && item.status && item.status == 2">
+                                    <template v-if="isMine && item.private">
                                         <view style="flex:1"></view>
                                         <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
                                         </image>
@@ -144,7 +144,7 @@
                                             class="likeImg"></image>
                                         <text class="likeNum">{{ item.likeNum }}</text>
                                     </view>
-                                    <template v-if="isMine && item.status && item.status == 2">
+                                    <template v-if="isMine && item.private">
                                         <view style="flex:1"></view>
                                         <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
                                         </image>
@@ -243,7 +243,7 @@
                                 class="likeImg"></image>
                             <text class="likeNum">{{ item.likeNum }}</text>
                         </view>
-                        <template v-if="isMine && item.status && item.status == 2">
+                        <template v-if="isMine && item.private">
                             <view style="flex:1"></view>
                             <image src="@/static/cardForum/lock.png" style="width:23rpx;height:24rpx;">
                             </image>
@@ -607,7 +607,7 @@ export default {
             }
             if (item.video_at > 0) {
                 uni.navigateTo({
-                    url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.status && item.status == 2 ? 1 : 0}${this.isMine ? "&fromMine=1" : ""}`
+                    url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.private ? 1 : 0}${this.isMine ? "&fromMine=1" : ""}`
                 })
                 return
             }
@@ -621,7 +621,7 @@ export default {
                 url: `/pages/cardForum/detail?` +
                     `code=${item.code}` +
                     `&back=${this.detailBack}` +
-                    `&private=${item.status && item.status == 2 ? 1 : 0}` +
+                    `&private=${item.private ? 1 : 0}` +
                     `${this.viewUserId ? `&fromUserId=${this.viewUserId}` : ''}`
             })
         },
@@ -899,12 +899,12 @@ export default {
             const { index, list } = this.findIndex(res.code)
             // #ifndef APP-NVUE
             if (index >= 0) {
-                this[list][index].status = res.private ? 2 : 1
+                this[list][index].private = res.private
             }
             // #endif
             // #ifdef APP-NVUE
             if (index >= 0) {
-                this.value[index].status = res.private ? 2 : 1
+                this.value[index].private = res.private
             }
             // #endif
         },
