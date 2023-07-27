@@ -206,6 +206,7 @@
 		left:0;
 		top:0;
 		z-index: 3;
+		filter: brightness(0.61)
 	}
 	.header-info{
 		width: 100%;
