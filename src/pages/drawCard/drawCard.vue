@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 10:12:30
+ * @LastEditTime: 2023-07-26 18:02:59
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -343,8 +343,9 @@
     }
     getMore(){
       if(this.cardData.step==this.codeList.length-6){
-        this.initData.pageIndex++;
-        this.reqNewData();
+        uni.$u.throttle(()=>{
+          this.reqNewData();
+        },1000)
       }
     }
     reqNewData(){
@@ -367,6 +368,7 @@
         if(data.totalPage<=pageIndex){
           this.initData.noMoreData = true;
         }
+        this.initData.pageIndex++;
       });
     }
     

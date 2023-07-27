@@ -47,14 +47,21 @@
 			// plus.webview.prefetchURL(app.liveWebView); //预载直播控件webview
 			// plus.screen.lockOrientation('landscape-primary');
 			//#endif
+			app.appBeta = uni.getStorageSync('appBeta');
+			if(app.appBeta=='on') {
+				app.localTest=true;
+				app.bussinessApiDomain = app.appBetaDomain;
+				app.funcApiDomain = app.appBetaDomain;
+			};
+
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境"); 
 				// app.localTest = true;  
-				// app.bussinessApiDomain = `http://192.168.8.63:8701${app.requestVersion}`;
+				// app.bussinessApiDomain = `http://192.168.8.35:8701${app.requestVersion}`;
 				// app.bussinessApiDomain = `https://server.ssltest.ka-world.com${app.requestVersion}`; 
-				// app.funcApiDomain = "http://functest.ssl.ka-world.com/api/v2/";
+				// app.funcApiDomain = "http://functest.ssl.ka-world.com${app.requestVersion}";
 				// 正式服测试环境 
-				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com/api/v2/';
+				// app.bussinessApiDomain='http://server.beta_bigstone.ka-world.com${app.requestVersion}';
 			}
 			uni.setStorageSync("openAppTime", Math.round(+new Date() / 1000)); //存储打开app时间
 			if(!uni.getStorageSync("webViewVersion") || uni.getStorageSync("webViewVersion")!=app.webViewVersion){

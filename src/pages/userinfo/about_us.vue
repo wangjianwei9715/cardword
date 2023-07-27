@@ -10,7 +10,7 @@
 				<view class="icon-right"></view>
 			</view>
 		</view>
-		<view class="about-bottom">
+		<view class="about-bottom" @click="onClickBeta">
 			<view class="about-tip">Hangzhou card world Technology Co., Ltd</view>
 			<view class="about-tip">ka-world.com</view>
 		</view>
@@ -32,6 +32,7 @@
 		version = ''
 		app = app;
 		debugNum = 0;
+		betaNum = 0;
 		onLoad(query:any) {
 			this.version = app.version
 		}
@@ -53,6 +54,25 @@
 					title:'debug模式'+(app.updateDebug == 'on' ? '开启' : '关闭'),
 					icon:'none'
 				})
+			}
+		}
+		onClickBeta(){
+			if(this.betaNum<9){
+				this.betaNum++;
+			}else{
+				this.betaNum = 0;
+				app.appBeta = app.appBeta=='' ? 'on' : ''; 
+				uni.setStorageSync("appBeta", app.appBeta);
+				uni.removeStorageSync("token");
+				app.token = {accessToken:'',refreshToken:''};
+				uni.removeStorageSync('ksjUserId')
+				uni.showToast({
+					title:'beta模式'+(app.appBeta == 'on' ? '开启' : '关闭'),
+					icon:'none'
+				})
+				setTimeout(() => {
+					plus.runtime.restart();
+				}, 500)
 			}
 		}
 	}

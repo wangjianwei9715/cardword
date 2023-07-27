@@ -462,7 +462,7 @@ export default class PlatformManager {
 			// let activityShareOrigin = this.lastCharacter(res.shareDomain?res.shareDomain.activity:"")
 			app.bussinessApiDomain = `${bussinessApiDomain}${app.requestVersion}`;
 			app.dataApiDomain = `${App.dataApiDomain?dataApiDomain:bussinessApiDomain}${app.requestVersion}`;
-			app.funcApiDomain = `${App.funcApiDomain?funcApiDomain:bussinessApiDomain}/api/v2/`;
+			app.funcApiDomain = `${App.funcApiDomain?funcApiDomain:bussinessApiDomain}${app.requestVersion}`;
 			// app.goodShareOrigin = goodShareOrigin
 			// app.activityShareOrigin = activityShareOrigin
 			if (cb) cb()
