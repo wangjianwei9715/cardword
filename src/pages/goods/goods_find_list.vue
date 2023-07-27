@@ -91,25 +91,13 @@
 				odType: 0
 			}
 		];
-		classifyData = [{
-				id: 100,
-				name: "推荐"
-			},
-			{
-				id: 1,
-				name: "篮球"
-			},
-			{
-				id: 2,
-				name: "足球"
-			},
-			{
-				id: 0,
-				name: "其他"
-			}
+		classifyData = [
+			{ id: 100, name: "推荐" },
+			{ id: 1, name: "篮球" },
+			{ id: 2, name: "足球" },
+			{ id: 0, name: "其他" }
 		];
 		classifyOpt = 100;
-
 		playTypeCurrent = -1;
 		classifyShow = false;
 		classifyShowPlay = false;

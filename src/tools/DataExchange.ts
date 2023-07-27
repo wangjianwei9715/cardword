@@ -66,10 +66,10 @@ export var stateArray = [
     //     name: "即将发售",
     //     value: 0
     // },
-    {
-        name: "已拼成",
-        value: 2
-    }
+    // {
+    //     name: "已拼成",
+    //     value: 2
+    // }
 ]
 //玩法
 export var palyArray = [
