@@ -21,7 +21,7 @@
 			<!-- 集齐奖励列表 -->
 			<rewardScroll :groupReward="groupReward" />
 			<!-- 卡组详情 -->
-			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail" @changeNum="changeCurrentGroupNum" @changeUser="getReward"/>
+			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail" @changeNum="changeCurrentGroupNum" @changeUser="getUserList"/>
 		</view>
 	</view>
 </template>
@@ -76,10 +76,15 @@
 					return {...x,start:app.platform.currentTimestamp()>=x.startAt}
 				})
 				this.getReward();
+				this.getDetail()
 				cb?.()
 			})
 		}
 		getReward(){
+			this.getUserList();
+			this.getDetail()
+		}
+		getUserList(){
 			app.http.Get(
 				`dataApi/activity/teka/award/list/${this.getCurrentGroup.id}`,
 				{},
@@ -88,7 +93,6 @@
 					this.getCurrentGroup.collectedSetNum = collectedSetNum;
 				}
 			)
-			this.getDetail()
 		}
 		getDetail(){
 			app.http.Get(
