@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-27 16:00:33
+ * @LastEditTime: 2023-07-27 16:27:23
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -139,13 +139,14 @@
 			app.http.Get(
 				`dataApi/activity/teka/group/rank/list/${this.getCurrentGroup.id}`,
 				rankParams,
-				({list, isFetchEnd}:any)=>{
+				({list, isFetchEnd, total}:any)=>{
 					list && (this.userRank = [...this.userRank,...list]);
 					this.rankParams.fetchFrom += rankParams.fetchSize;
 					this.rankParams.isFetchEnd = isFetchEnd;
 					if(!isFetchEnd){
 						this.getUserRank()
 					}
+					this.$emit('changeUser',total)
 					this.isPullDown(false);
 					this.rankPopupShow = true;
 				}
@@ -169,7 +170,6 @@
 		}
 		onClickUserRank(){
 			app.platform.UIClickFeedBack()
-			this.$emit('changeUser')
 			this.getUserRank()
 		}
 		onPopupClose(){

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-27 16:01:10
+ * @LastEditTime: 2023-07-27 16:22:30
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -21,7 +21,7 @@
 			<!-- 集齐奖励列表 -->
 			<rewardScroll :groupReward="groupReward" />
 			<!-- 卡组详情 -->
-			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail" @changeNum="changeCurrentGroupNum" @changeUser="getUserList"/>
+			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail" @changeNum="changeCurrentGroupNum" @changeUser="changeCurrentCollectedSetNum"/>
 		</view>
 	</view>
 </template>
@@ -110,7 +110,9 @@
 		changeCurrentGroupNum(num:number){
 			this.getCurrentGroup.getPlayerNum = num
 		}
-		
+		changeCurrentCollectedSetNum(num:number){
+			this.getCurrentGroup.collectedSetNum = num;
+		}
 	}
 </script>
 
