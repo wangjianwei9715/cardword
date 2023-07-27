@@ -190,6 +190,8 @@ export default class ClassName extends BaseNode {
                 title: "赠送成功"
             })
             app.platform.UINotificationFeedBack("success")
+            app.platform.pageBack()
+            return
             this.showGive = false
             this.queryParams.pageIndex = 1
             this.selectIds = []
