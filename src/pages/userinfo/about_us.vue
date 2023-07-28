@@ -73,9 +73,7 @@
 				})
 				// #endif
 				// #ifdef APP-PLUS
-				setTimeout(() => {
-					plus.runtime.restart();
-				}, 500)
+				plus.runtime.restart();
 				// #endif
 			}
 		}
