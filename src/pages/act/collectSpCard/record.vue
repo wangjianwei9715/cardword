@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 14:33:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-08 13:31:51
+ * @LastEditTime: 2023-07-27 18:19:10
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -184,6 +184,7 @@
 					title:'申请成功',
 					icon:'none'
 				});
+				this.refreshList();
 				this.wuliu.show=false;
 			})
 		}

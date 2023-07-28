@@ -288,6 +288,7 @@
                     width: 67rpx;
                     height:28rpx;
                     margin-right: 6rpx;
+					margin-bottom: -4rpx;
                 }
 				.cardset{
 					width: 100%;

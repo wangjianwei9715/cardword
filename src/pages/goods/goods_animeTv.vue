@@ -151,8 +151,6 @@ export default class ClassName extends BaseNode {
             this.queryParams.st = item.id
             this.seriesType.index = item.index
         }
-        console.log(this.queryParams);
-        
         this.reqNewData()
     }
     onClickGoodsMenu(item: any, index: number) {
