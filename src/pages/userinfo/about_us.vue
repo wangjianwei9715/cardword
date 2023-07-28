@@ -65,10 +65,18 @@
 				uni.setStorageSync("appBeta", app.appBeta);
 				uni.removeStorageSync("token");
 				app.token = {accessToken:'',refreshToken:''};
-				uni.removeStorageSync('ksjUserId')
+				uni.removeStorageSync('ksjUserId');
+				// #ifdef H5
+				uni.showToast({
+					title:'beta模式'+(app.appBeta == 'on' ? '开启' : '关闭'),
+					icon:'none'
+				})
+				// #endif
+				// #ifdef APP-PLUS
 				setTimeout(() => {
 					plus.runtime.restart();
 				}, 500)
+				// #endif
 			}
 		}
 	}
