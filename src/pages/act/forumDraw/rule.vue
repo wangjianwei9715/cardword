@@ -67,8 +67,8 @@ export default class ClassName extends BaseNode {
         // {pic:'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.10.25/seller/info/1/1666686588175ypd48tdht.jpg',name:"抽取Select原盒一盒",rank:"第1-500名"}
     ]
     onLoad(query: any) {
-        this.reqRewardList()
-        this.reqRewardListTwo()
+        // this.reqRewardList()
+        // this.reqRewardListTwo()
     }
     onReachBottom() {
 

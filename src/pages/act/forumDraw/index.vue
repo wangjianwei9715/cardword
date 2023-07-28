@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-26 14:48:03
+ * @LastEditTime: 2023-07-28 17:37:13
  * @FilePath: \card-world\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,21 +22,23 @@
             <view class="hide" :style="{ height: navHeight + 'px' }"></view>
         </view>
         <view class="luckContainer">
-            <view class="dot" style="margin-right: 14rpx;"></view>
+            <view class="dot" style="margin-right: 14rpx"></view>
             <view class="dot dot_mask"></view>
             <view class="title">幸运播报</view>
             <view class="noticContainer">
                 <u-notice-bar icon="" fontSize="24rpx" bgColor="rgba(0,0,0,0)" color="#ffffff" :text="luckList"
                     direction="column"></u-notice-bar>
             </view>
-            <view class="dot dot_mask_left" style="margin-right: 14rpx;margin-left: 30rpx;"></view>
+            <view class="dot dot_mask_left" style="margin-right: 14rpx; margin-left: 30rpx"></view>
             <view class="dot"></view>
         </view>
         <view class="pageBackBg" :style="{ top: gapTop + 'px' }"></view>
         <view class="drawContainer">
-            <view class="drawBlock" :class="[`drawBlock${index + 1}`, index == nowHeightLight ? `heightLight` : '']"
-                v-for="(item, index) in drawList">
-                <image :src="$parsePic(decodeURIComponent(item.pic))" style="width: 100%;height: 100%;" mode="aspectFill">
+            <view class="drawBlock" :class="[
+                `drawBlock${index + 1}`,
+                index == nowHeightLight ? `heightLight` : '',
+            ]" v-for="(item, index) in drawList">
+                <image :src="$parsePic(decodeURIComponent(item.pic))" style="width: 100%; height: 100%" mode="aspectFill">
                 </image>
                 <view class="innerShaow" v-if="index === nowHeightLight"></view>
             </view>
@@ -45,7 +47,7 @@
                 <view class="num">
                     可用次数：<text>{{ drawNum }}</text>
                 </view>
-                <view class="drawButton" style="position: relative;top: 10rpx;" @click="onClickDraw(5)">抽奖五次</view>
+                <view class="drawButton" style="position: relative; top: 10rpx" @click="onClickDraw(5)">抽奖五次</view>
             </view>
         </view>
         <view class="taskContainer">
@@ -56,12 +58,15 @@
             <view class="taskWrap">
                 <view class="top">
                     <view class="taskTitle">卡圈动态累计获赞（单条）</view>
-                    <view class="taskButton flexCenter" @click="pageJump('/pages/cardForum/personHomePage?isMine=1')">查看动态
+                    <view class="taskButton flexCenter" @click="pageJump(dtLike.code?`/pages/cardForum/detail?code=${dtLike.code}`:`/pages/cardForum/personHomePage?isMine=1`)">
+                        查看动态
                     </view>
                 </view>
                 <view class="info">
-                    <view class="left">已获10次</view>
-                    <view class="right">距离获得下一次抽奖最快还需<text class="red">5</text>/10</view>
+                    <view class="left">已获{{ dtLike.getTotalNum || 0 }}次</view>
+                    <view class="right">距离获得下一次抽奖最快还需<text class="red">{{
+                        dtLike.nextNum || 0
+                    }}</text>/10</view>
                 </view>
                 <view class="bar">
                     <view class="bar_width"></view>
@@ -70,12 +75,11 @@
             <view class="taskWrap">
                 <view class="top">
                     <view class="taskTitle">补充图鉴累计卡币（仅图鉴获取）</view>
-                    <view class="taskButton flexCenter" @click="goTuj">补充图鉴
-                    </view>
+                    <view class="taskButton flexCenter" @click="goTuj">补充图鉴 </view>
                 </view>
                 <view class="info">
-                    <view class="left">已获10次</view>
-                    <view class="right">距下次抽奖还需<text class="red">5</text>/10</view>
+                    <view class="left">已获{{ cxPoint.getTotalNum || 0 }}次</view>
+                    <view class="right">距下次抽奖还需<text class="red">{{ cxPoint.nextNum || 0 }}</text>/10</view>
                 </view>
                 <view class="bar">
                     <view class="bar_width"></view>
@@ -89,17 +93,18 @@
                     @change="swiperChange">
                     <swiper-item class="preSwiper_item" v-for="(item, index) in resRewardList" :key="index">
                         <view class="img">
-                            <image mode="widthFix" :src="item.pic" />
-                            <view class="imageName">{{ item.label }}</view>
+                            <image mode="widthFix" :src="$parsePic(decodeURIComponent(item.pic))" />
+                            <view class="imageName">{{ item.name }}</view>
                         </view>
                     </swiper-item>
-
                 </swiper>
                 <view class="dotContainer">
                     <view class="dot" :class="{ dot_current: index === current }" v-for="(item, index) in resRewardList">
                     </view>
                 </view>
-                <view class="goBag flexCenter" @click.stop="pageJump('/pages/act/forumDraw/log'), showSwiper = false">去背包查看
+                <view class="goBag flexCenter" @click.stop="
+                    pageJump('/pages/act/forumDraw/log'), (showSwiper = false)
+                    ">去背包查看
                 </view>
             </view>
         </u-overlay>
@@ -109,65 +114,67 @@
 <script lang="ts">
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
-import BaseNode from '@/base/BaseNode.vue';
-const ROUND_NUM = 6
-const navHeight = app.statusBarHeight + uni.upx2px(88)
-const gapTop = uni.upx2px(436) + uni.upx2px(74)
+import BaseNode from "@/base/BaseNode.vue";
+const ROUND_NUM = 6;
+const navHeight = app.statusBarHeight + uni.upx2px(88);
+const gapTop = uni.upx2px(436) + uni.upx2px(74);
 @Component({})
 export default class ClassName extends BaseNode {
-    drawList: any = [
-        { label: "科比签字", id: 1, pic: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.06.09/check/card/0/1686298279488cl3wx7n3ac.png" },
-        { label: "库里小书", id: 2, pic: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.06.09/check/card/0/1686298291456eoiuvsmwb.png" },
-        { label: "麦迪", id: 3, pic: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.06.09/check/card/0/1686298308245ptjpli3nv9.png" },
-        { label: "起源盒子*1", id: 4, pic: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.06.09/check/card/0/1686298325664ntsr9mstaj.png" },
-        { label: "杜蕾斯OP*1盒", id: 5, pic: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.06.09/check/card/0/1686298372476z19tijyc22.png" },
-        { label: "瓦格纳", id: 6, pic: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.06.09/check/card/0/1686298411232qxq0w1d3l.png" },
-        { label: "拉文", id: 7, pic: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.06.09/check/card/0/16862984681521u352ix57.png" },
-        { label: "PZ单包", id: 8, pic: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.06.09/check/card/0/1686298482893fohr96k02.png" }
-    ]
-    navHeight = navHeight
-    luckList: Array<string> = ["恭喜短笛抽中改名卡", "恭喜短笛抽中无敌球衣", "恭喜ACE抽中空气", "恭喜肠炎宁抽中答辩", "恭喜我抽中500W", "恭喜XX抽中卡世界周末行"]
-    drawNum: number = 10
-    nowHeightLight: number = 0
-    loopBol: boolean = true
-    fastNum: number = 0
-    slowNum: number = 0
-    exSlowNum: number = 0
-    time: number = 50
-    resRewardIds: any = []
-    resRewardList: any = []
-    onDraw: boolean = false
-    showSwiper: boolean = false
-    current: number = 0
-    gapTop = gapTop
-    defaultLoopTimer: any = null
-    loopTimer: any = null
+    drawList: any = [];
+    navHeight = navHeight;
+    luckList: Array<string> = [];
+    drawNum: number = 0;
+    nowHeightLight: number = 0;
+    loopBol: boolean = true;
+    fastNum: number = 0;
+    slowNum: number = 0;
+    exSlowNum: number = 0;
+    time: number = 50;
+    resRewardIds: any = [];
+    resRewardList: any = [];
+    onDraw: boolean = false;
+    showSwiper: boolean = false;
+    current: number = 0;
+    gapTop = gapTop;
+    defaultLoopTimer: any = null;
+    loopTimer: any = null;
+    dtLike: any = {};
+    cxPoint: any = {};
     onLoad(query: any) {
-        this.initConf()
-        this.defautLoop()
+        app.platform.hasLoginToken(() => {
+            this.reqAward();
+            this.reqLucky();
+            this.initConf();
+            this.defautLoop();
+        });
+    }
+    onShow() {
+        app.platform.hasLoginToken(() => {
+            this.reqUserData();
+        });
     }
     beforeDestroy() {
-        this.loopTimer && clearTimeout(this.loopTimer)
-        this.defaultLoopTimer && clearInterval(this.defaultLoopTimer)
+        this.loopTimer && clearTimeout(this.loopTimer);
+        this.defaultLoopTimer && clearInterval(this.defaultLoopTimer);
     }
     initConf() {
-        this.loopBol = true
-        this.fastNum = 0
-        this.slowNum = 0
-        this.exSlowNum = 0
-        this.time = 50
+        this.loopBol = true;
+        this.fastNum = 0;
+        this.slowNum = 0;
+        this.exSlowNum = 0;
+        this.time = 50;
     }
     onClickDraw(num: number) {
         if (this.onDraw) {
-            app.platform.UINotificationFeedBack("error")
+            app.platform.UINotificationFeedBack("error");
             uni.showToast({
                 title: "请等待抽奖结束",
-                icon: "none"
-            })
-            return
+                icon: "none",
+            });
+            return;
         }
         if (num > this.drawNum) {
-            app.platform.UINotificationFeedBack("error")
+            app.platform.UINotificationFeedBack("error");
             uni.showModal({
                 title: "提示",
                 content: "次数不足，可补充图鉴或者发布动态收集点赞获得",
@@ -175,11 +182,11 @@ export default class ClassName extends BaseNode {
                 confirmText: "去卡圈",
                 success: (res: any) => {
                     if (res.confirm) {
-                        app.navigateTo.switchTab(2)
+                        app.navigateTo.switchTab(2);
                     }
-                }
-            })
-            return
+                },
+            });
+            return;
         }
         uni.showModal({
             title: "确认抽奖",
@@ -187,130 +194,163 @@ export default class ClassName extends BaseNode {
             cancelText: "我再想想",
             success: (res: any) => {
                 if (res.confirm) {
-                    app.platform.UIClickFeedBack(0)
-                    this.postGetDrawResult(num)
+                    app.platform.UIClickFeedBack(0);
+                    this.postGetDrawResult(num);
                 }
-            }
-        })
+            },
+        });
     }
     //获取抽奖结果
     async postGetDrawResult(num: number) {
-        this.resRewardIds = []
-        this.onDraw = true
-        // app.http.Post(``)
-        //=============mock================
-        for (let i = 0; i < num; i++) {
-            const randomId = Math.round(Math.random() * 8)
-            this.resRewardIds.push(randomId || 1)
-        }
-        //=============mock================
-        for (let i = 0; i < this.resRewardIds.length; i++) {
-            await this.startDraw(this.resRewardIds[i], (i === this.resRewardIds.length - 1) ? 0 : 1500)
-            if (i == this.resRewardIds.length - 1) {
-                this.onDraw = false
-                setTimeout(() => {
-                    this.showDrawRes()
-                }, 300)
+        this.resRewardIds = [];
+        this.onDraw = true;
+        app.http.Post(`activity/cardCircleDraw/proceed`, {
+            tp:num
+        }, async (res: any) => {
+            this.resRewardIds = res.award || [];
+            for (let i = 0; i < this.resRewardIds.length; i++) {
+                await this.startDraw(
+                    this.resRewardIds[i],
+                    i === this.resRewardIds.length - 1 ? 0 : 1500
+                );
+                if (i == this.resRewardIds.length - 1) {
+                    this.onDraw = false;
+                    setTimeout(() => {
+                        this.showDrawRes();
+                    }, 300);
+                }
             }
-        }
-
+        });
+        //=============mock================
+        // for (let i = 0; i < num; i++) {
+        //     const randomId = Math.round(Math.random() * 8)
+        //     this.resRewardIds.push(randomId || 1)
+        // }
+        // //=============mock================
+        // for (let i = 0; i < this.resRewardIds.length; i++) {
+        //     await this.startDraw(this.resRewardIds[i], (i === this.resRewardIds.length - 1) ? 0 : 1500)
+        //     if (i == this.resRewardIds.length - 1) {
+        //         this.onDraw = false
+        //         setTimeout(() => {
+        //             this.showDrawRes()
+        //         }, 300)
+        //     }
+        // }
     }
     startDraw(id: number, delay: number) {
         return new Promise((re: any, rj) => {
-            this.stopDefaultLoop()
-            this.initConf()
+            this.stopDefaultLoop();
+            this.initConf();
             const index = this.drawList.findIndex((item: any) => {
-                return item.id === id
-            })
+                return item.id === id;
+            });
             if (index < 0) {
                 uni.showToast({
                     title: `未知奖励:${id}`,
-                    icon: "none"
-                })
+                    icon: "none",
+                });
             }
             this.loop(index, () => {
                 setTimeout(() => {
-                    re()
-                }, delay)
-            })
-        })
+                    re();
+                }, delay);
+            });
+        });
     }
     loop(endIndex: number, cb?: Function) {
         if (!this.nowHeightLight || this.nowHeightLight < 8) {
             // app.platform.UIClickFeedBack()
             if (this.nowHeightLight == 7) {
-                this.nowHeightLight = 0
+                this.nowHeightLight = 0;
             } else {
-                this.nowHeightLight++
+                this.nowHeightLight++;
             }
-            this.fastNum++
+            this.fastNum++;
             if (this.fastNum == 4) {
-                this.fastNum = 0
-                this.time = 50
-                this.slowNum++
+                this.fastNum = 0;
+                this.time = 50;
+                this.slowNum++;
             }
             if (this.slowNum == 12) {
-                this.slowNum = 0
-                this.time = 200
-                this.fastNum = 5
+                this.slowNum = 0;
+                this.time = 200;
+                this.fastNum = 5;
             }
             if (this.fastNum > 5) {
                 if (this.nowHeightLight == endIndex) {
-                    this.initConf()
-                    this.loopBol = false
-                    cb && cb(endIndex)
+                    this.initConf();
+                    this.loopBol = false;
+                    cb && cb(endIndex);
                 }
             }
             if (this.loopBol) {
                 this.loopTimer = setTimeout(() => {
-                    this.loop(endIndex, cb)
+                    this.loop(endIndex, cb);
                 }, this.time);
             }
         }
-
     }
     defautLoop() {
-        this.defaultLoopTimer && clearInterval(this.defaultLoopTimer)
+        this.defaultLoopTimer && clearInterval(this.defaultLoopTimer);
         this.defaultLoopTimer = setInterval(() => {
             if (this.nowHeightLight == 7) {
-                this.nowHeightLight = 0
-                return
+                this.nowHeightLight = 0;
+                return;
             }
-            this.nowHeightLight += 1
-        }, 1000)
+            this.nowHeightLight += 1;
+        }, 1000);
     }
     stopDefaultLoop() {
-        this.defaultLoopTimer && clearInterval(this.defaultLoopTimer)
+        this.defaultLoopTimer && clearInterval(this.defaultLoopTimer);
     }
     //展示抽奖的结果
     showDrawRes() {
         console.log("展示抽奖的结果");
         this.resRewardList = this.resRewardIds.map((id: any) => {
             const findItem: any = this.drawList.find((draw: any) => {
-                return draw.id === id
-            })
-            return findItem
-        })
+                return draw.id === id;
+            });
+            return findItem;
+        });
         console.log(this.resRewardList);
-        this.showSwiper = true
+        this.showSwiper = true;
     }
-    goTuj(){
-        app.navigateTo.switchTab(1)
+    goTuj() {
+        app.navigateTo.switchTab(1);
     }
     pageJump(url: string) {
         uni.navigateTo({
-            url
-        })
+            url,
+        });
     }
     swiperChange(event: any) {
-        this.current = event.detail.current
+        this.current = event.detail.current;
     }
-    reqNewData(cb?: any) {
-        app.http.Get(`dataApi`, {}, (res: any) => {
-
-        })
+    reqUserData() {
+        app.http.Get(
+            `dataApi/activity/cardCircleDraw/user/data`,
+            {},
+            (res: any) => {
+                this.drawNum = res.data.drawNum;
+                this.dtLike = res.data.dtLike;
+                this.cxPoint = res.data.cxPoint;
+            }
+        );
     }
-
+    reqLucky() {
+        app.http.Get(
+            `dataApi/activity/cardCircleDraw/broadcast`,
+            {},
+            (res: any) => {
+                this.luckList = res.list || [];
+            }
+        );
+    }
+    reqAward(cb?: any) {
+        app.http.Get(`dataApi/activity/cardCircleDraw/award`, {}, (res: any) => {
+            this.drawList = res.list || [];
+        });
+    }
 }
 </script>
 
@@ -332,7 +372,6 @@ export default class ClassName extends BaseNode {
         width: 22rpx;
         height: 22rpx;
         background-color: #ffdbff;
-
     }
 
     .dot_mask {
@@ -351,7 +390,7 @@ export default class ClassName extends BaseNode {
         font-size: 45rpx;
         font-family: YouSheBiaoTiHei;
         font-weight: 400;
-        color: #FFFFFF;
+        color: #ffffff;
         margin-left: 23rpx;
     }
 
@@ -424,14 +463,14 @@ export default class ClassName extends BaseNode {
         top: 0;
         bottom: 0;
         margin: auto;
-        box-shadow: inset 0px 0px 14rpx 6rpx rgba(153, 95, 253, .8);
+        box-shadow: inset 0px 0px 14rpx 6rpx rgba(153, 95, 253, 0.8);
     }
 }
 
 .heightLight {
     transform: scale(1.1);
     border: 2rpx solid #9862f5;
-    box-shadow: 0rpx 0rpx 21rpx 3rpx rgba(153, 95, 253, .9);
+    box-shadow: 0rpx 0rpx 21rpx 3rpx rgba(153, 95, 253, 0.9);
 }
 
 .drawBlock1 {
@@ -481,7 +520,7 @@ export default class ClassName extends BaseNode {
         font-size: 30rpx;
         font-family: PingFang SC;
         font-weight: bold;
-        color: #FFFFFF;
+        color: #ffffff;
         width: 186rpx;
         height: 76rpx;
         background-size: 100% 100%;
@@ -500,7 +539,7 @@ export default class ClassName extends BaseNode {
         margin-top: 4rpx;
 
         text {
-            color: #FA1545;
+            color: #fa1545;
             margin-left: 3rpx;
         }
     }
@@ -510,17 +549,17 @@ export default class ClassName extends BaseNode {
     font-size: 22rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #FFFFFF;
+    color: #ffffff;
     width: 110rpx;
     height: 40rpx;
-    background: #8254CF;
+    background: #8254cf;
     border-radius: 5rpx;
 }
 
 .actBack {
     width: 55rpx;
     height: 55rpx;
-    background-color: rgba(174, 120, 255, .63);
+    background-color: rgba(174, 120, 255, 0.63);
     border-radius: 50%;
 
     .back {
@@ -550,21 +589,21 @@ export default class ClassName extends BaseNode {
             font-size: 45rpx;
             font-family: YouSheBiaoTiHei;
             font-weight: 400;
-            color: #FFFFFF;
+            color: #ffffff;
         }
 
         .taskRule {
             font-size: 22rpx;
             font-family: PingFang SC;
             font-weight: 500;
-            color: #FFFFFF;
+            color: #ffffff;
         }
     }
 
     .taskWrap {
         width: 673rpx;
         height: 207rpx;
-        background: #C0C0C0;
+        background: #c0c0c0;
         box-shadow: 0rpx 0rpx 16rpx 0rpx rgba(77, 82, 123, 0.43);
         background-color: #cacbe7;
         border-radius: 5rpx;
@@ -590,12 +629,12 @@ export default class ClassName extends BaseNode {
             .taskButton {
                 width: 137rpx;
                 height: 43rpx;
-                background: #FFC937;
+                background: #ffc937;
                 border-radius: 5rpx;
                 font-size: 24rpx;
                 font-family: PingFang SC;
                 font-weight: bold;
-                color: #FFFFFF;
+                color: #ffffff;
             }
         }
 
@@ -621,7 +660,7 @@ export default class ClassName extends BaseNode {
 
                 .red {
                     margin-left: 2rpx;
-                    color: #FA1545;
+                    color: #fa1545;
                 }
             }
         }
@@ -629,7 +668,7 @@ export default class ClassName extends BaseNode {
         .bar {
             width: 625rpx;
             height: 14rpx;
-            background: #FFFFFF;
+            background: #ffffff;
             border-radius: 5rpx;
             position: relative;
             overflow: hidden;
@@ -638,7 +677,7 @@ export default class ClassName extends BaseNode {
         .bar_width {
             width: 559rpx;
             height: 14rpx;
-            background: linear-gradient(90deg, #B453FF 0%, #C57BFF 56%, #A230FA 100%);
+            background: linear-gradient(90deg, #b453ff 0%, #c57bff 56%, #a230fa 100%);
             border-radius: 5rpx;
             transition: width 0.3s;
         }

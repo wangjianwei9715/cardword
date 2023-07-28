@@ -17,22 +17,22 @@
             </view>
         </view>
         <view class="pointCard" v-for="(item, index) in list" :key="index" @click="toGoods(item)">
-            <view class="pointCard_top">
+            <!-- <view class="pointCard_top">
                 <view>{{ item.merchantName }}</view>
                 <view>{{ orderGoodsStateStr({ good: item }) }}</view>
-            </view>
-            <view class="pointCard_line"></view>
+            </view> -->
+            <!-- <view class="pointCard_line"></view> -->
             <view class="pointCard_goods">
                 <muqian-lazyLoad class="goodsImage" :src="$parsePic(decodeURIComponent(item.pic))" borderRadius="3rpx" />
                 <view class="goodsInfo">
-                    <view class="goodsTitle">{{ item.goodTitle }}</view>
+                    <view class="goodsTitle">{{ item.name }}</view>
                     <view class="goodsBottom">
-                        <view class="goodsType">{{ getGoodsPintuan(item.pintuan_type) }}</view>
+                        <!-- <view class="goodsType">{{ getGoodsPintuan(item.pintuan_type) }}</view> -->
                         <view class="goodsTime">
                             <view class="time">{{ dateFormatMSHMS(item.created_at) }}</view>
-                            <view class="point"
+                            <!-- <view class="point"
                                 :class="{ get: item.scoreState == 1, freeze: item.scoreState == 0, deduction: item.scoreState == 2 }">
-                                {{ filterText(item) }}</view>
+                                {{ item.stateName }}</view> -->
                         </view>
                     </view>
                 </view>
@@ -56,7 +56,7 @@ export default class ClassName extends BaseNode {
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 20,
-        activityTp: 5,
+        // activityTp: 5,
         tp: 100
     }
     navHeight = navHeight
@@ -113,7 +113,7 @@ export default class ClassName extends BaseNode {
         this.reqNewData()
     }
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi/selectRank/score/record`, this.queryParams, (res: any) => {
+        app.http.Get(`dataApi/activity/cardCircleDraw/log`, this.queryParams, (res: any) => {
             const list = res.list || []
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
@@ -254,7 +254,7 @@ page {
 
 .pointCard {
     width: 710rpx;
-    height: 234rpx;
+    // height: 234rpx;
     background: #FFFFFF;
     border-radius: 3rpx;
     box-sizing: border-box;
