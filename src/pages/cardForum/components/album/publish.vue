@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 15:19:03
+ * @LastEditTime: 2023-07-28 12:41:42
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -95,6 +95,12 @@
 		}
 		public get isEdit() : boolean {
 			return this.code!=""
+		}
+		public get uploadOver() : boolean {
+			const { codes, nos, splitedNumbers } = this.uploadData;
+			const num = codes.length + nos.length + splitedNumbers.filter((x:any)=>!x.upload
+).length;
+			return num===0;
 		}
 		async addImage() {
 			const picList:any = await Upload.getInstance().uploadSocialImgs(1, "prove", ["album"]);
@@ -222,7 +228,7 @@
 			const params = await this.uploadCodeList(uploadToken,nowNum);
 
 			app.http.Post(`cardIllustration/album/${this.editUrl()}/upload`,params,(res:any)=>{
-				if(nowNum+1>=PostLength){
+				if(nowNum+1>=PostLength || this.uploadOver){
 					this.publicComplete(uploadToken)
 				}else{
 					this.publishUpload(uploadToken,PostLength,nowNum+1);
