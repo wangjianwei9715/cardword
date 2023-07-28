@@ -114,7 +114,7 @@ export default class ClassName extends BaseNode {
 
     }
     async onClickAddImg(src: any) {
-        let filePath = 'images/' + this.ossutils.getFileName(src); // 自定义上传后的文件名称
+        let filePath = 'images/' + this.ossutils.getFileName({name:src}); // 自定义上传后的文件名称
         let sign: any = await this.ossutils.getSTS(); // 获取签名等信息
         uni.showLoading({
             title: '上传图片中...'
