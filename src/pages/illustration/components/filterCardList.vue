@@ -224,8 +224,6 @@
             } else {
                 list.push({...item,type})
             }
-            console.log(repeatIndex);
-            
             app.platform.UIClickFeedBack(); 
             this.againList(); 
         }
