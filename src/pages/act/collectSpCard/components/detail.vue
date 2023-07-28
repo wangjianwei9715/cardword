@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-27 16:39:43
+ * @LastEditTime: 2023-07-28 11:31:49
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -58,7 +58,7 @@
 								<muqian-lazyLoad class="popup-item-avatar" :src="userItem.avatar?decodeURIComponent(userItem.avatar):defaultAvatar" mode="aspectFill" borderRadius="50%"></muqian-lazyLoad>
 								<view class="popup-item-info">
 									<view class="info-name">{{userItem.userName}}</view>
-									<view class="info-time">集齐时间:{{userItem.created_at===0?'-':$u.timeFormat(userItem.created_at,'yyyy-mm-dd hh:MM')}}</view>
+									<view class="info-time">集齐时间:{{userItem.created_at===0?'-':$u.timeFormat(userItem.created_at,'yyyy-mm-dd hh:MM:ss')}}</view>
 								</view>
 							</view>
 							<muqian-lazyLoad class="popup-item-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill" borderRadius="5rpx" @click="previewImage(item)"></muqian-lazyLoad>
