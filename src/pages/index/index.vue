@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-31 15:41:40
+ * @LastEditTime: 2023-07-31 15:53:00
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -77,7 +77,6 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
 	import { indexMenu,goodsTabs } from "@/tools/DataExchange"
-	import { isDuringDate } from "@/tools/util"
 	import update from './component/index/update.vue'
 	import indexHot from './component/index/indexHot.vue'
 	import winningCardPopup from './component/index/winningCardPopup.vue'
@@ -92,7 +91,6 @@
 	},})
 	export default class index extends BaseNode {
 		noticeList = [''];
-		isDuringDate = isDuringDate;
 		indexMenu = indexMenu;
 		goodsTabs = goodsTabs;
 		goodsTabCurrent = 1;

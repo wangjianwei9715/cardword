@@ -30,7 +30,7 @@ export function getGoodsPintuanDetail(state:number){
         case 11:
             return '选队随机'
         case 12:
-            return '自选卡种随机' 
+            return '自选卡种' 
     }
 }
 // 商品列表拼团形式
