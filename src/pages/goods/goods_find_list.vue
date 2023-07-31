@@ -50,10 +50,6 @@
 	} from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
 	import {
-		orderPlayDesc,
-		orderGoodsTypeDesc
-	} from "@/tools/switchUtil";
-	import {
 		stateArray,
 		palyArray
 	} from "@/tools/DataExchange";

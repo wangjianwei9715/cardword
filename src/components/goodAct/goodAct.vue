@@ -90,12 +90,9 @@
 	import { Component, Prop,Vue,Watch,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
-	import { chineseNumber } from "@/tools/DataExchange";
 	import { guessRules,cheduiHelp } from "@/tools/DataRules";
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		// 中文数字 规则
-		chineseNumber = chineseNumber;
 		guessRules:any = guessRules;
 		cheduiHelp = cheduiHelp;
 		@Prop({ default: [] })
