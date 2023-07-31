@@ -25,7 +25,10 @@
             <view class="pointCard_goods">
                 <muqian-lazyLoad class="goodsImage" :src="$parsePic(decodeURIComponent(item.pic))" borderRadius="3rpx" />
                 <view class="goodsInfo">
-                    <view class="goodsTitle">{{ item.name }}</view>
+                    <view class="goodsTitle uni-flex">
+                        <view class="title" style="flex:1">{{ item.name }}</view>
+                        <view class="title">{{ item.stateName }}</view>
+                    </view>
                     <view class="goodsBottom">
                         <!-- <view class="goodsType">{{ getGoodsPintuan(item.pintuan_type) }}</view> -->
                         <view class="goodsTime">
@@ -303,11 +306,14 @@ page {
             font-weight: 400;
             color: #333333;
             overflow: hidden;
-            text-overflow: ellipsis;
+            
+            .title{
+                text-overflow: ellipsis;
             word-break: break-all;
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 1;
+            }
         }
 
         .goodsType {
