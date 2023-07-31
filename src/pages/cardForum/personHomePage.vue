@@ -8,6 +8,7 @@
             <image :src="$parsePic(decodeURIComponent(userInfo.back_pic))" class="userBack" v-if="userInfo.back_pic"
                 mode="aspectFill"></image>
             <image v-else src="@/static/userinfo/v3/banner.png" class="userBack" mode="aspectFill"></image>
+            <view class="back_shadow"></view>
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
             <view class="userInfo">
                 <image class="userInfo_avatar" mode="aspectFill"
@@ -387,9 +388,15 @@ page {
     height: 100%;
     left: 0;
     top: 0;
-    filter: brightness(0.61);
 }
-
+.back_shadow{
+    width: 750rpx;
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background:rgba(0, 0, 0, 0.39)
+}
 // .userInfoWrap_back {
 //     background-size: 100% 100%;
 //     background-image: url("@/static/userinfo/v3/banner.png");
