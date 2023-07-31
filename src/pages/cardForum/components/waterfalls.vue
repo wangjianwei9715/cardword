@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-27 11:47:25
+ * @LastEditTime: 2023-07-31 14:15:45
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -571,7 +571,7 @@ export default {
             event.stopPropagation();
             // #endif
             uni.navigateTo({
-                url: `/pages/cardForum/personHomePage?userId=${item.author?item.author.userId:item.userId}&isMine=${item.isMe ? 1 : 0}`
+                url: `/pages/cardForum/personHomePage?userId=${item.author?item.author.userId:item.userId}&isMine=${(item.bit & 1)==1?1:0 }`
             })
         },
         goToDetail(item) {
