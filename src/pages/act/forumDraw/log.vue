@@ -13,7 +13,7 @@
                 </view>
             </picker>
             <view class="num">
-                累计抽奖次数：99999
+                累计抽奖次数：{{total}}
             </view>
         </view>
         <view class="pointCard" v-for="(item, index) in list" :key="index" @click="toGoods(item)">
@@ -52,7 +52,7 @@ import BaseNode from '@/base/BaseNode.vue';
 import { orderGoodsStateStr, getGoodsPintuan } from '@/tools/switchUtil'
 import { dateFormatMSHMS } from '@/tools/util'
 const navHeight = app.statusBarHeight + uni.upx2px(88)
-const range: any = [{ label: "全部", value: 100 }, { label: "虚拟物品", value: 1 }, { label: "实物奖品", value: 2 }]
+const range: any = [{ label: "全部", value: 100 }, { label: "实物奖品", value: 1 }, { label: "优惠券", value: 2 },{ label: "卡币奖品", value: 3 },{ label: "改名卡", value: 4 }]
 @Component({})
 export default class ClassName extends BaseNode {
     range = range
@@ -70,9 +70,10 @@ export default class ClassName extends BaseNode {
     defaultAvatar: any = app.defaultAvatar
     isFetchEnd: boolean = true
     myRank: any = {}
+    total:number=0
     onLoad(query: any) {
         this.reqNewData()
-        this.reqMyRank()
+        // this.reqMyRank()
     }
     public get nowSelectLabel() {
         const findItem = this.range.find((item: any) => {
@@ -120,6 +121,9 @@ export default class ClassName extends BaseNode {
             const list = res.list || []
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
+            if(this.queryParams.fetchFrom==1&&this.queryParams.tp==100){
+                this.total=res.total || 0
+            }
             cb && cb()
         })
     }
