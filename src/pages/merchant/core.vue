@@ -80,7 +80,7 @@
     <view class="niceTimeContainer" v-if='niceTimeFinish'>
       <swiper indicator-dots autoplay circular :interval="5*1000" indicator-active-color="#333333" indicator-color="#CAC6C6" style="width:100%;height:100%" v-if="niceTimeList&&niceTimeList.length">
         <swiper-item class="niceTimeItem" v-for="(item,index) in niceTimeList" :key="index" style="display: flex;flex-wrap: nowrap;">
-          <image v-for="(sItem,sNndex) in item" class="niceTimeImage" :style="{marginRight:sNndex==2?0:'24rpx'}" :key="'sImg'+sNndex" :src="filterImage(decodeURIComponent(sItem),false)" @click="previewImage(filterImage(decodeURIComponent(sItem),true),0,'')" mode="aspectFill" />
+          <image v-for="(sItem,sNndex) in item" class="niceTimeImage" :style="{marginRight:sNndex==2?0:'24rpx'}" :key="'sImg'+sNndex" :src="filterImage(decodeURIComponent(sItem.pic),false)" @click="previewImage(filterImage(decodeURIComponent(sItem.pic),true),0,'')" mode="aspectFill" />
         </swiper-item>
       </swiper>
       <empty v-if="niceTimeList&&!niceTimeList.length" style="position: relative;bottom:240rpx" />
