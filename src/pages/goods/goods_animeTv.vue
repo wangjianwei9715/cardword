@@ -8,7 +8,7 @@
             </view>
         </view>
         <view class="goodsMenu">
-            <view class="menu" v-for="(item, index) in     goodsMenu.list"
+            <view class="menu" v-for="(item, index) in goodsMenu.list" :key="index"
                 :class="{ menu_select: goodsMenu.index == index }" @click="onClickGoodsMenu(item, index)">{{
                     item.label }}</view>
         </view>
