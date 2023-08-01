@@ -128,6 +128,7 @@
 			});
 		}
 		onInput(event:any){
+			if(this.searchTetxt=="") return;
 			const ts = Math.floor(new Date().getTime()/1000);
 			const params = {
 				realm:"good",
@@ -138,7 +139,6 @@
 			}
 			app.http.Get("search/lenovo",params,(res:any)=>{
 				this.lenovoList = res.list || [];
-				console.log('lenovo=',res);
 			})
 		}
 		onClickSearch(search:string){
