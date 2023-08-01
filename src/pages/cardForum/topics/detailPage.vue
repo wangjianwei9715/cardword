@@ -9,7 +9,7 @@
                     </image>
                     <view class="rightInfo">
                         <view style="display: flex;flex-direction: row;">
-                            <text class="topicsItem_title u-line-1" style="flex: 1;">#{{ data.name || "获取中" }}</text>
+                            <text class="topicsItem_title u-line-1" style="flex: 1;">{{ data.name || "获取中" }}</text>
                             <text class="followButton" :class="{ followButton_dis: data.isFollow }"
                                 @click="followTopicAction">{{ data.isFollow ? '已关注' : '关注' }}</text>
                         </view>
