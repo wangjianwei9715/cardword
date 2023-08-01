@@ -5,14 +5,21 @@
 			<view class="tab-header">
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" focus v-model="searchTetxt" :placeholder="placeholder" confirm-type="search" @confirm="onClickSearch(searchTetxt)" />
+					<input class="search-input" type="text" focus v-model="searchTetxt" :placeholder="placeholder" confirm-type="search" @input="onInput" @confirm="onClickSearch(searchTetxt)" />
 				</view>
 				<view v-if="searchTetxt==''" class="header-right" @click="onClickBack">取消</view>
 				<view v-else class="header-right" @click="onClickSearch(searchTetxt)">搜索</view>
 			</view>
 		</view>
-		
-		<view class="top-center">
+		<view class="lenovo-list" v-show="lenovoShow">
+			<statusbar/>
+			<u-list :height="listHeight+'px'">
+				<u-list-item v-for="(item, index) in lenovoList" :key="index" >
+					<u-cell :title="item" @click="onClickSearch(item)"></u-cell>
+				</u-list-item>
+			</u-list>
+		</view>
+		<view class="top-center" v-show="!lenovoShow">
 			<statusbar/>
 			<view class="search-title" v-show="historyList!=''">历史记录<view class="icon-delete" @click="onClickDelete"></view></view>
 			<view class="search-list" v-show="historyList!=''">
@@ -63,6 +70,7 @@
 
 <script lang="ts">
 	import { app } from "@/app";
+	import { Md5 } from "ts-md5";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	@Component({})
@@ -77,6 +85,8 @@
 			merchantList:[]
 		}
 		placeholder = '';
+		lenovoList = [];
+		listHeight = 0;
 		onLoad(query:any) {
 			let searchData = uni.getStorageSync("searchData");
 			if(searchData) this.historyList = searchData
@@ -89,9 +99,21 @@
 			app.http.Get('dataApi/search/series/list',{},(res:any)=>{
 				this.hotSearchList = res.list ? res.list : [];
 			})
+
+			// #ifdef H5
+			this.listHeight = 777;
+			// #endif
+			//#ifdef APP-PLUS
+			const tabbarHeight = plus.navigator.getSafeAreaInsets().deviceBottom || 0;
+			const { screenHeight, statusBarHeight } = app.platform.systemInfo;
+			this.listHeight = screenHeight - uni.upx2px(104) - (statusBarHeight||0) - tabbarHeight
+			//#endif
 		}
 		onClickBack(){
 			uni.navigateBack({ delta: 1 });
+		}
+		public get lenovoShow() : boolean {
+			return this.lenovoList.length>0
 		}
 		onClickDelete(){
 			uni.showModal({
@@ -104,7 +126,20 @@
 					}
 				}
 			});
-
+		}
+		onInput(event:any){
+			const ts = Math.floor(new Date().getTime()/1000);
+			const params = {
+				realm:"good",
+				q:encodeURIComponent(this.searchTetxt),
+				sourceId:"pm.index",
+				ts,
+				sn:Md5.hashStr(`slenovo_${ts}_good_${this.searchTetxt}`)
+			}
+			app.http.Get("search/lenovo",params,(res:any)=>{
+				this.lenovoList = res.list || [];
+				console.log('lenovo=',res);
+			})
 		}
 		onClickSearch(search:string){
 			const text = search=='' ? this.placeholder : search;
@@ -227,6 +262,11 @@
 		color: #14151A;
 	}
 	.top-center{
+		width: 100%;
+		box-sizing: border-box;
+		padding-top: 124rpx;
+	}
+	.lenovo-list{
 		width: 100%;
 		box-sizing: border-box;
 		padding-top: 124rpx;
