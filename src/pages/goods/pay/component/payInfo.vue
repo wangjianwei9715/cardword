@@ -7,7 +7,7 @@
 				<view class="pay-box" v-if="normalRandomGoods">
 					<view class="pay-goods">¥<text>{{ goodsData.price }}</text></view>
 					<view class="pay-goods-right" v-if="baoduiId == 0">
-						<view class="pay-goods-right-header"> {{  goodsData.buyLimit && goodsData.buyLimit.maxNumPerOrder > 0 ? "限购" + goodsData.buyLimit.maxNumPerOrder + "份" : "" }} </view>
+						<view class="pay-goods-right-header">{{ buyLimitMsg }}</view>
 						<view class="pay-goods-add">
 							<view class="num-box" @click="onClickCutDown()">  <view class="img-jian" ></view> </view>
 							<input class="money-add" @input="onInputMoney" v-model.number="payGoodsNum" type="number" />
@@ -16,10 +16,10 @@
 					</view>
 				</view>
 				<view class="pay-box" v-else>
-					<view class="pay-goods" v-if="payRandomTeamData==''">¥<text>{{ cartData.amount }}</text></view>
+					<view class="pay-goods" v-if="!isRandomTeam">¥<text>{{ cartData.amount }}</text></view>
 					<view class="pay-goods select-team-title" v-else>{{getGoodsPintuan(goodsData.pintuan_type)}}</view>
-					<view class="pay-goods-right" v-if="payRandomTeamData == ''">
-						<view class="pay-goods-right-header"> </view>
+					<view class="pay-goods-right" v-if="!isRandomTeam">
+						<view class="pay-goods-right-header"></view>
 						<view class="pay-goods-add">
 							<view class="pay-goods-availa" >共{{ cartData.available }}件</view >
 						</view>
@@ -39,7 +39,7 @@
 		</scroll-view>
 
 		<!-- 选队随机 自选卡种 -->
-		<view class="randomh-box" v-show="payRandomTeamData!=''" >
+		<view class="randomh-box" v-show="isRandomTeam" >
 			<view class="randomh-index" v-for="(item,index) in payRandomTeamData" :key="index">
 			<view class="randomh-index-left">
 				<view class="randomh-name">{{item.name}}</view>
@@ -91,7 +91,7 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:{}})
 		goodsData!:any
-		@PropSync('randomTeam',{type:[Object,String]})
+		@PropSync('randomTeam',{type:[Array,String]})
 		payRandomTeamData!:any;
 		@Prop({default:{}})
 		cartData!:any;
@@ -109,6 +109,14 @@
 		maxNum!:number
 		getGoodsImg = getGoodsImg;
 		getGoodsPintuan = getGoodsPintuan;
+
+		public get buyLimitMsg() : string {
+			const { maxNumPerOrder } = this.goodsData?.buyLimit;
+			return maxNumPerOrder > 0 ? `限购${maxNumPerOrder}份` : ""
+		}
+		public get isRandomTeam() : boolean {
+			return this.payRandomTeamData!='';
+		}
 		getOnePrice(){
 			this.$emit('getOnePrice')
 		}

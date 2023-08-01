@@ -7,6 +7,7 @@
       <payInfo :goodsData="goodsData" :normalRandomGoods="normalRandomGoods" :baoduiId="baoduiId" :payNum.sync="payNum" :maxNum="maxNum" :randomTeam.sync="payRandomTeamData" :cartData="cartData" :baoduiName="baoduiName" :onePrice="keepTwoDecimal(onePrice)" @getOnePrice="getOnePrice"/>
       
       <confirmorderGuess v-if="getBitDisableGuess"  :freeNum="freeNum>=payNum?(freeNum-payNum):0" :checkTeam.sync="guessCheckTeam" :teamList="guessList" :lastGuess="lastGuess" @onScrolltolower="onScrolltolower" />
+
       <view class="yunfei-info top-order" >
         <view class="yunfei-item">
           <text class="item-name">商品金额</text>
@@ -60,16 +61,16 @@
     <payment
       :showPayMent="showPayMent"
       :payChannel="payChannel"
-      @cancelPay="onClickCancelPay"
       :payPrice="getTotalPrice"
       :countTime="countTime"
       @pay="onClickPayGoods"
+      @cancelPay="onClickCancelPay"
     />
     <paymentCoupon
       :showPayMentCoupon="showPayMentCoupon"
       :couponList="couponList"
-      @cancelCoupon="showPayMentCoupon=false"
       @couponConfirm="onClickCouponConfirm"
+      @cancelCoupon="showPayMentCoupon=false"
     />
   </view>
 </template>
@@ -90,7 +91,6 @@ import payNeedKnow from "./component/payNeedKnow.vue";
   }
 })
 export default class ClassName extends BaseNode {
-  
   addressData: any = [];
   payNum = 1;
   goodsData: { [x: string]: any } = [];
@@ -129,45 +129,34 @@ export default class ClassName extends BaseNode {
   cuokaOpne = false;
   AD_id=null
   onLoad(query: any) {
-    const { data, AD_id, payChannel, payRandomPrice, baodui, price, baoduiName, cart, payRandomTeam, selectRanId, randomPrice } = query;
-    if (!data) return;
-    this.AD_id = AD_id ?? null; 
-    this.goodsData = JSON.parse(data); 
-    this.payChannel = JSON.parse(payChannel);
+    if (!query.data) return;
+    this.AD_id = query.AD_id ?? null; 
+    this.goodsData = JSON.parse(query.data); 
+    this.payChannel = JSON.parse(query.payChannel);
     // 剩余随机
-    if (payRandomPrice) {
-      this.payRandomPrice = payRandomPrice;
-      this.goodsData.price = payRandomPrice;
+    if (query.payRandomPrice) {
+      this.payRandomPrice = query.payRandomPrice;
+      this.goodsData.price = query.payRandomPrice;
     }
     // 包队
-    if (baodui) {
-      this.baoduiId = Number(baodui);
-      this.goodsData.price = price;
-      this.baoduiName = baoduiName;
+    if (query.baodui) {
+      this.baoduiId = Number(query.baodui);
+      this.goodsData.price = query.price;
+      this.baoduiName = query.baoduiName;
     }
     // 购物车
-    if (cart) {
-      this.cartData = JSON.parse(cart);
+    if (query.cart) {
+      this.cartData = JSON.parse(query.cart);
     }
     // 选队随机
-    if(payRandomTeam){
-      this.payRandomTeamData = JSON.parse(payRandomTeam)
+    if(query.payRandomTeam){
+      this.payRandomTeamData = JSON.parse(query.payRandomTeam)
     }
-    if(selectRanId){
-      this.selectRanId = Number(selectRanId);
-      this.goodsData.price = Number(randomPrice);
+    if(query.selectRanId){
+      this.selectRanId = Number(query.selectRanId);
+      this.goodsData.price = Number(query.randomPrice);
     }
-    this.maxNum =  this.goodsData.totalNum -(this.goodsData.currentNum + this.goodsData.lockNum);
-    this.getOnePrice();
-    this.getNoRichShow();
-    app.http.Get("me/delivery", {}, (res: any) => {
-      if (res.list) {
-        this.addressData = res.list.find((x:any)=>x.default) || res.list[0];
-      }
-    });
-    this.onEventUI("addressSelect", (data) => {
-      this.addressData = data.data;
-    });
+    this.initEvent();
   }
   // 普通随机商品 非自选及选队随机
   public get normalRandomGoods() : boolean {
@@ -179,7 +168,7 @@ export default class ClassName extends BaseNode {
     if (this.cartData !== '') { 
       totalPrice = this.cartData.amount; 
     } else if (this.payRandomTeamData !== '') { 
-      totalPrice = this.getRandomTotalPrice(); 
+      totalPrice = this.getRandomTotalPrice; 
     } else { 
       totalPrice = this.goodsData.price * this.payNum; 
     } 
@@ -206,10 +195,19 @@ export default class ClassName extends BaseNode {
     }
   }
   // 优惠金额
-  public get freeDiscount() {
-    const freePrice = this.freeNum >= this.payNum ? this.payNum * this.goodsData.price : this.freeNum * this.onePrice;
-    const subPrice = (this.payNum - this.freeNum) * (this.goodsData.price - this.onePrice);
-    return this.keepTwoDecimal(this.freeNum > 0 ? (freePrice+subPrice) : subPrice);
+  public get freeDiscount() { 
+    // 计算折扣价格 
+    const {freeNum, payNum, goodsData, onePrice} = this; 
+    const discountedPrice = freeNum >= payNum ? payNum * goodsData.price : freeNum * onePrice;
+    // 计算剩余商品价格折扣金额 
+    const remainingDiscount = (payNum - freeNum) * (goodsData.price - onePrice);
+    // 返回保留两位小数的最终折扣金额 
+    return this.keepTwoDecimal(freeNum > 0 ? (discountedPrice + remainingDiscount) : remainingDiscount); 
+  }
+  public get getRandomTotalPrice() : number {
+    const priceData = this.payRandomTeamData.map((x:any) => x.price * x.num);
+    const price = priceData.reduce((total:number, curr:number) => total + curr, 0);
+    return price;
   }
   // 预测免单
   public get getBitDisableGuess() : boolean {
@@ -219,17 +217,37 @@ export default class ClassName extends BaseNode {
   public get getBitDisableCoupon() : boolean {
     return (this.goodsData.bit & 1) == 1
   }
+  keepTwoDecimal(num: any) {
+    var result = parseFloat(num);
+    if (isNaN(result)) {
+      return 0;
+    }
+    result = Math.round(num * 100) / 100;
+    return result > 0 ? result : 0;
+  }
+  initEvent(){
+    const { totalNum, currentNum, lockNum } = this.goodsData
+    this.maxNum =  totalNum -(currentNum+lockNum);
+    this.getOnePrice();
+    this.getNoRichShow();
+    app.http.Get("me/delivery", {}, (res: any) => {
+      if (res.list) {
+        this.addressData = res.list.find((x:any)=>x.default) || res.list[0];
+      }
+    });
+    this.onEventUI("addressSelect", (data) => {
+      this.addressData = data.data;
+    });
+  }
   // 预测球队列表分页
   onScrolltolower(){
-    if(this.guessNoMoreData){
-      return
-    }
+    if(this.guessNoMoreData) return;
+
     let params:{[x:string]:any} = {
       pageIndex: this.guessCurrentPage,
       pageSize:this.guessPageSize,
     }
-    
-    app.http.Get("me/order/guess/option/"+this.goodsData.goodCode, params, (data: any) => {
+    app.http.Get(`me/order/guess/option/${this.goodsData.goodCode}`, params, (data: any) => {
       if(data.totalPage<=this.guessCurrentPage){
         this.guessNoMoreData = true;
       }
@@ -242,19 +260,20 @@ export default class ClassName extends BaseNode {
   // 获取卡密效果开关
   getNoRichShow() {
     app.http.Get(
-      "me/order/confirm/" + this.goodsData.goodCode,
+      `me/order/confirm/${this.goodsData.goodCode}`,
       {},
-      (res: any) => {
-        if(res.data.guess){
-          this.freeNum = res.data.guess.freeNoNum;
-          this.guessList = res.data.guess.option.list;
-          this.lastGuess = res.data.guess.lastGuess;
-          this.guessNoMoreData = res.data.guess.option.totalPage>=2?false:true;
+      ({data}: any) => {
+        if(data.guess){
+          const { freeNoNum, option, lastGuess } = data.guess;
+          this.freeNum = freeNoNum;
+          this.guessList = option.list;
+          this.lastGuess = lastGuess;
+          this.guessNoMoreData = option.totalPage>=2?false:true;
         }
-        if(res.data.cuokaState){
-          this.cuokaOpne = res.data.cuokaState == 1 ? true : false
+        if(data.cuokaState){
+          this.cuokaOpne = data.cuokaState == 1 ? true : false
         }
-        if(res.data.cuokaWindow){
+        if(data.cuokaWindow){
           uni.showModal({
             title: '提示',
             content: '是否由商家代搓卡密？(商家搓完后显示卡密)',
@@ -291,7 +310,7 @@ export default class ClassName extends BaseNode {
       params.price = this.goodsData.price;
     } else if (this.payRandomTeamData != '') {
       params.num = 1;
-      params.price = this.keepTwoDecimal(this.getRandomTotalPrice())
+      params.price = this.keepTwoDecimal(this.getRandomTotalPrice)
     } else if (this.cartData != "") {
       params.price = this.cartData.amount;
     } else if(this.selectRanId!=0){
@@ -318,13 +337,6 @@ export default class ClassName extends BaseNode {
       this.getConditionPrice();
     });
   }
-  getRandomTotalPrice(){
-    let priceData = this.payRandomTeamData.map((x:any)=>{
-      return x.price * x.num;
-    })
-    let price = eval(priceData.join("+"));
-    return price
-  }
   onClickToPay() {
     if (this.addressData == "") {
       uni.showToast({ title: "请先选择地址", icon: "none"});
@@ -336,14 +348,6 @@ export default class ClassName extends BaseNode {
     }
     this.showPayMent = true;
   }
-  keepTwoDecimal(num: any) {
-    var result = parseFloat(num);
-    if (isNaN(result)) {
-      return 0;
-    }
-    result = Math.round(num * 100) / 100;
-    return result > 0 ? result : 0;
-  }
   // 取消支付
   onClickCancelPay() {
     this.showPayMent = false;
@@ -353,7 +357,7 @@ export default class ClassName extends BaseNode {
     if (data == '') return; 
     uni.showLoading({ title: '加载中' });
 
-    const goodCode = this.goodsData.goodCode; 
+    const { goodCode } = this.goodsData; 
     const ts = Math.floor(new Date().getTime()/1000);
     const userId = uni.getStorageSync('ksjUserId');
     let snName = "ToPayForGood";
