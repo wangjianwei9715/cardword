@@ -30,7 +30,7 @@ export function getGoodsPintuanDetail(state:number){
         case 11:
             return '选队随机'
         case 12:
-            return '自选卡种随机' 
+            return '自选卡种' 
     }
 }
 // 商品列表拼团形式
@@ -165,41 +165,6 @@ export function myCardGoodsType(state:any){
             return [];
     }
 }
-
-//玩法switch
-export function orderPlayDesc(state:any){
-	switch (state) {
-		case 0:
-			return '随机卡种';
-		case 1:
-			return '自选球队';
-		case 2:
-			return '随机球员';
-		case 3:
-			return '随机球队';
-		case 4:
-			return '随机卡包';
-		default:
-			return '拼团方式'
-	}
-}
-export function orderGoodsTypeDesc(state:any){
-	switch (state) {
-		case 0:
-			return '即将发售';
-		case 1:
-			return '在售';
-		case 2:
-			return '已拼成';
-		case 3:
-			return '待拆卡';
-		case 4:
-			return '拆卡中';
-		default:
-			return '分类'
-	}
-}
-
 // 自选随机说明
 export function getCardRandomtips(state:number){
     // 随机方式 11 选队随机 12 选卡种随机 

@@ -1,17 +1,18 @@
 // 首页tab列表
-export var indexSwiperFront = [
-    {icon:'/static/index/tabs/1.png',needLogin:false,name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
-    {icon:'/static/index/tabs/2.png',needLogin:false,name:'动漫专区',url:"/pages/goods/goods_animeTv",},
-    {icon:'/static/index/tabs/3.png',needLogin:false,name:'玩家卡册',url:'/pages/information/list'},
-    {icon:'/static/index/tabs/4.png',needLogin:false,name:'查卡价',url:'/pages/act/service/ref'},
-    {icon:'/static/index/tabs/5.png',needLogin:true,name:'卡币商城',url:'/pages/mall/mallIndex'},
-]
-// 首页tab列表
-export var indexSwiperBack = [
-    {icon:'/static/index/tabs/6.png',needLogin:true,name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
-    {icon:'/static/index/tabs/7.png',needLogin:true,name:'领券中心',url:"/pages/userinfo/coupon/coupon_get",},
-    {icon:'/static/index/tabs/8.png',needLogin:true,name:'发售日历',url:'/pages/act/calendar/list'},
-]
+export const indexMenu = {
+    front:[
+        {icon:'/static/index/tabs/1.png',needLogin:false,name:'全部拼团',url:'/pages/goods/goods_find_list?classType=100'},
+        {icon:'/static/index/tabs/2.png',needLogin:false,name:'动漫专区',url:"/pages/goods/goods_animeTv",},
+        {icon:'/static/index/tabs/3.png',needLogin:false,name:'玩家卡册',url:'/pages/information/list'},
+        {icon:'/static/index/tabs/4.png',needLogin:false,name:'查卡价',url:'/pages/act/service/ref'},
+        {icon:'/static/index/tabs/5.png',needLogin:true,name:'卡币商城',url:'/pages/mall/mallIndex'},
+    ],
+    back:[
+        {icon:'/static/index/tabs/6.png',needLogin:true,name:'商家列表',url:'/pages/userinfo/merchant_listV2'},
+        {icon:'/static/index/tabs/7.png',needLogin:true,name:'领券中心',url:"/pages/userinfo/coupon/coupon_get",},
+        {icon:'/static/index/tabs/8.png',needLogin:true,name:'发售日历',url:'/pages/act/calendar/list'},
+    ]
+};
 export const goodsTabs = [
     {
         name:'关注',
@@ -29,7 +30,7 @@ export const goodsTabs = [
     {name:'其他',id:7,url:'other'},
 ]
 // 商品列表类型
-export var goodsListType: { [x: string]: any } = {
+export const goodsTypeTitle: { [x: string]: any } = {
     'activity': '活动专区',
     'cheap': '新手专区',
     'select': '自选玩法',
@@ -99,7 +100,7 @@ export var palyArray = [
     }
 ]
 // 中文数字
-export var chineseNumber = {
+export const chineseNumber = {
     1: '一',
     2: '二',
     3: '三',
@@ -111,7 +112,6 @@ export var chineseNumber = {
     9: '九',
     10: '十'
 }
-
 // 订单状态 //1 等待支付 2 进行中 3 等待发货 4 等待收货 5 收货成功  10 未中卡
 export var orderState = {
     '1': '等待支付',

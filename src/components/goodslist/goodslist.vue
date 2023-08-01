@@ -22,7 +22,7 @@
 					</view>
 					<view class="goodslist-title u-line-2 goodslist-padding">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-cardicon goodslist-cardicon-purple">剩余随机</view>
-						<view v-else-if="[1,2,3,10,11].includes(item.pintuan_type)" class="goodslist-cardicon" :class="{'goodslist-cardicon-purple':[10,11].includes(item.pintuan_type)}">{{getGoodsPintuanDetail(item.pintuan_type)}}</view>
+						<view v-else class="goodslist-cardicon" :class="{'goodslist-cardicon-purple':[10,11].includes(item.pintuan_type)}">{{getGoodsPintuanDetail(item.pintuan_type)}}</view>
 						<text class="goodslist-title-text">{{item.title}}</text>
 					</view>
 					<view class="goodslist-priceMsg uni-flex goodslist-padding">

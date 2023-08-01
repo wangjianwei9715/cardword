@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-26 11:15:08
+ * @LastEditTime: 2023-07-31 15:53:00
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -35,7 +35,7 @@
 				<view class="tab-good-content">
 					<swiper class="tab-swiper" :current="tabSwiperCurrent" @change="e=> tabSwiperCurrent=e.detail.current">
 						<swiper-item class="tab-type">
-							<view class="tab-index" v-for="(items,indexs) in indexTabList.front" :key="indexs" @click="onClickJumpUrl(items)">
+							<view class="tab-index" v-for="(items,indexs) in indexMenu.front" :key="indexs" @click="onClickJumpUrl(items)">
 								<view class="tab-img-content">
 									<image class="tabimg" :src="items.icon" mode="aspectFit"/>
 								</view>
@@ -43,7 +43,7 @@
 							</view>
 						</swiper-item>
 						<swiper-item class="tab-type">
-							<view class="tab-index" v-for="(items,indexs) in indexTabList.back" :key="indexs" @click="onClickJumpUrl(items)">
+							<view class="tab-index" v-for="(items,indexs) in indexMenu.back" :key="indexs" @click="onClickJumpUrl(items)">
 								<view class="tab-img-content">
 									<image class="tabimg" :src="items.icon" mode="aspectFit"/>
 								</view>
@@ -76,8 +76,7 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
-	import { indexSwiperFront,indexSwiperBack,goodsTabs } from "@/tools/DataExchange"
-	import { isDuringDate } from "@/tools/util"
+	import { indexMenu,goodsTabs } from "@/tools/DataExchange"
 	import update from './component/index/update.vue'
 	import indexHot from './component/index/indexHot.vue'
 	import winningCardPopup from './component/index/winningCardPopup.vue'
@@ -92,14 +91,10 @@
 	},})
 	export default class index extends BaseNode {
 		noticeList = [''];
-		isDuringDate = isDuringDate;
+		indexMenu = indexMenu;
 		goodsTabs = goodsTabs;
 		goodsTabCurrent = 1;
 		capsuleCurrent = 0;
-		indexTabList: { [x: string]: any } = {
-			front:indexSwiperFront,
-			back:indexSwiperBack
-		};
 		tabSwiperCurrent=0;
 		hot = [];
 		broadCastList:any = [];

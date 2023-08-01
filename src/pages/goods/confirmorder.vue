@@ -27,7 +27,7 @@
               <view class="goods-money-add">
                 <view class="goods-money-max" v-if="payRandomTeamData != ''" @click="moneyNum = maxNum">MAX</view>
                 <view class="num-box" @click="onClickCutDown()">  <view class="img-jian" ></view> </view>
-                <input class="money-add" @input="onInputMoney" v-model="moneyNum" type="number" />
+                <input class="money-add" @input="onInputMoney" v-model.number="moneyNum" type="number" />
                 <view class="num-box" @click="onClickAdd()"> <view class="img-add" ></view> </view>
               </view>
             </view>
@@ -69,7 +69,7 @@
               <view class="randomh-num-btn" @click="onClickRandomNum(item,'reduce')">
                 <image class="icon-randomReduce" src="../../static/pay/v2/icon_reduce_.png" />
               </view>
-              <input class="randomh-num" v-model="item.num" @input="onInputMoneyRandom($event,item)" />
+              <input type="number" class="randomh-num" v-model.number="item.num" @input="onInputMoneyRandom($event,item)" />
               <view class="randomh-num-btn" @click="onClickRandomNum(item,'add')">
                 <image class="icon-randomAdd" src="../../static/pay/v2/icon_add_.png" />
               </view>
@@ -323,9 +323,9 @@ export default class ClassName extends BaseNode {
     return (this.goodsData.bit & 1) == 1
   }
   onInputMoney(event: any) {
-    if (Number(event.detail.value) > this.maxNum) {
+    if (event.detail.value <=0 || Number(event.detail.value) > this.maxNum) {
       setTimeout(() => {
-        this.moneyNum = this.maxNum;
+        this.moneyNum = event.detail.value <=0 ? 1 :this.maxNum;
         this.getOnePrice();
       }, 100);
     }else{
@@ -338,16 +338,16 @@ export default class ClassName extends BaseNode {
   }
   onClickRandomNum(item:any,type:string){
     if( type == 'add' ){
-      item.num = item.num >= item.maxNum ? item.maxNum : item.num+1
+      item.num = item.num >= item.maxNum ? item.maxNum : +item.num+1
     }else{
       item.num = item.num > 1 ? item.num-1 : 1
     }
     this.getOnePrice();
   }
   onInputMoneyRandom(event:any,item:any){
-    if (Number(event.detail.value) > item.maxNum) {
+    if (event.detail.value <=0 || Number(event.detail.value) > item.maxNum) {
       setTimeout(() => {
-        item.num = item.maxNum;
+        item.num = event.detail.value <=0 ? 1 :item.maxNum;
         this.getOnePrice();
       }, 100);
     }else{

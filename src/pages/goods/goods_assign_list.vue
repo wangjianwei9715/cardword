@@ -17,14 +17,12 @@
 
 <script lang="ts">
 import { app } from "@/app";
-import { Md5 } from "ts-md5";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
-import { goodsListType } from "@/tools/DataExchange";
-import { parsePic } from "@/tools/util";
+import { goodsTypeTitle } from "@/tools/DataExchange";
 @Component({})
 export default class ClassName extends BaseNode {
-  goodsListType = goodsListType;
+  goodsTypeTitle = goodsTypeTitle;
   urlType = "";
   //   odType 0:默认 1:升序 2:降序
   sortData = {
@@ -42,7 +40,7 @@ export default class ClassName extends BaseNode {
   onLoad(query: any) {
     this.urlType = query.type;
     uni.setNavigationBarTitle({
-      title: this.goodsListType[this.urlType]
+      title: this.goodsTypeTitle[this.urlType]
     });
     this.reqNewData();
   }
