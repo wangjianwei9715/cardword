@@ -13,7 +13,7 @@
                 </view>
             </picker>
             <view class="num">
-                累计抽奖次数：{{total}}
+                累计抽奖次数：{{ total }}
             </view>
         </view>
         <view class="pointCard" v-for="(item, index) in list" :key="index" @click="toGoods(item)">
@@ -27,7 +27,7 @@
                 <view class="goodsInfo">
                     <view class="goodsTitle uni-flex">
                         <view class="title" style="flex:1">{{ item.name }}</view>
-                        <view class="title">{{ item.stateName }}</view>
+                        <view class="title">{{ item.stateName }}{{ item.stateName == '已发货' ? '(点击查看物流)' : '' }}</view>
                     </view>
                     <view class="goodsBottom">
                         <!-- <view class="goodsType">{{ getGoodsPintuan(item.pintuan_type) }}</view> -->
@@ -53,7 +53,7 @@ import { orderGoodsStateStr, getGoodsPintuan } from '@/tools/switchUtil'
 import { dateFormatMSHMS } from '@/tools/util'
 const navHeight = app.statusBarHeight + uni.upx2px(88)
 // { label: "改名卡", value: 4 }
-const range: any = [{ label: "全部", value: 100 }, { label: "实物奖品", value: 1 }, { label: "优惠券", value: 2 },{ label: "卡币奖品", value: 3 }]
+const range: any = [{ label: "全部", value: 100 }, { label: "实物奖品", value: 1 }, { label: "优惠券", value: 2 }, { label: "卡币奖品", value: 3 }]
 @Component({})
 export default class ClassName extends BaseNode {
     range = range
@@ -71,7 +71,7 @@ export default class ClassName extends BaseNode {
     defaultAvatar: any = app.defaultAvatar
     isFetchEnd: boolean = true
     myRank: any = {}
-    total:number=0
+    total: number = 0
     onLoad(query: any) {
         this.reqNewData()
         // this.reqMyRank()
@@ -105,7 +105,12 @@ export default class ClassName extends BaseNode {
         if (scoreState == 2) return `扣除冻结${score}`
     }
     toGoods(item: any) {
-        app.navigateTo.goGoodsDetails(item.goodCode)
+        if (item.wlCode) {
+            uni.navigateTo({
+                url: `/pages/userinfo/order_logistics?code=${item.wlCode}`,
+            });
+        }
+        // app.navigateTo.goGoodsDetails(item.goodCode)
     }
     reqMyRank() {
         app.http.Get(`dataApi/selectRank/my/data`, { activityTp: 5 }, (res: any) => {
@@ -122,8 +127,8 @@ export default class ClassName extends BaseNode {
             const list = res.list || []
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
-            if(this.queryParams.fetchFrom==1&&this.queryParams.tp==100){
-                this.total=res.total || 0
+            if (this.queryParams.fetchFrom == 1 && this.queryParams.tp == 100) {
+                this.total = res.total || 0
             }
             cb && cb()
         })
@@ -311,13 +316,13 @@ page {
             font-weight: 400;
             color: #333333;
             overflow: hidden;
-            
-            .title{
+
+            .title {
                 text-overflow: ellipsis;
-            word-break: break-all;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
+                word-break: break-all;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
             }
         }
 
