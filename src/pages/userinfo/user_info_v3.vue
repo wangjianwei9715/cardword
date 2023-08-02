@@ -66,7 +66,7 @@ export default class ClassName extends BaseNode {
             this.settingTab = { ...this.settingTab, cancellation: { id: 7, name: "注销账号", desc: '' } }
         }
         this.onEventUI('finishName', (res: any) => {
-            this.settingTab.name.desc = res.name
+            this.settingTab.userName.desc = res.name
         });
         this.onEventUI('finishSign', (res: any) => {
             this.settingTab.sign.desc = res.sign
@@ -90,7 +90,7 @@ export default class ClassName extends BaseNode {
             this.onClickChangeAvatar()
         }
         if (id == 2) {
-            uni.navigateTo({ url: '/pages/userinfo/setting_name?name=' + this.settingTab.name.desc });
+            uni.navigateTo({ url: '/pages/userinfo/setting_name?name=' + this.settingTab.userName.desc });
         }
         if (id == 3) {
             uni.navigateTo({ url: '/pages/userinfo/setting_sign?sign=' + this.settingTab.sign.desc });
