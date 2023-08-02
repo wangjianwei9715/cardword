@@ -1,21 +1,3 @@
-<!--
- * @FilePath: \jichao_app_2\src\pages\goods\goods_details.vue
- * @Author: wjw
- * @Date: 2023-01-04 15:59:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-26 13:36:27
- * Copyright: 2023 .
- * @Descripttion: 
--->
-<!--
- * @FilePath: \jichao_app_2\src\pages\goods\goods_details.vue
- * @Author: wjw
- * @Date: 2023-01-04 15:59:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-03-13 17:40:06
- * Copyright: 2023 .
- * @Descripttion: 
--->
 <template>
 	<view class="content" v-show="goodsData!=''" :class="{'body-hidden':choiceTeamData.teamCheckShow||choiceTRData.show}">
 		<navigationbar title="商品详情" :custom="true">
@@ -258,7 +240,7 @@
 	import { parsePic,secondsFormat } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
 	const Manager =  detailsManager.getIns();
-	class shareData { shareUrl:string =''; title:string =''; summary:string =''; thumb:string ='' }
+	class ShareData { shareUrl:string =''; title:string =''; summary:string =''; thumb:string ='' }
 	@Component({})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
@@ -270,7 +252,7 @@
 		goodsSpe = goodDetailSpe;
 		shareObj = {
 			shareShow:false,
-			shareData:new shareData()
+			shareData:new ShareData()
 		};
 		buyRecordList:any = [];
 		goodsDesc:any = [];

@@ -89,7 +89,7 @@
 		openscreenAd,
 		goodsListSwiper
 	},})
-	export default class index extends BaseNode {
+	export default class Index extends BaseNode {
 		noticeList = [''];
 		indexMenu = indexMenu;
 		goodsTabs = goodsTabs;
