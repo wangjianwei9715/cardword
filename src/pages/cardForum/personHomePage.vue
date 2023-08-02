@@ -184,8 +184,8 @@ export default class ClassName extends BaseNode {
         this.userId = +query.userId
         this.isMine = query.isMine == "1" //后续解除注释
         if (this.isMine) {
-            this.draftListByDynamic = getDraftList("dynamic", this.userId)
-            this.draftListByCardBook = getDraftList("cardBook", this.userId)
+            this.draftListByDynamic = getDraftList("dynamic", this.isMine ? app.data.userId : this.userId)
+            this.draftListByCardBook = getDraftList("cardBook", this.isMine ? app.data.userId:this.userId)
             uni.$on("refreshDraft", this.refreshDraft)
             uni.$on("finishSign", this.finishSign)
         }
@@ -236,7 +236,7 @@ export default class ClassName extends BaseNode {
             })
 
         }
-        this.$nextTick(()=>{
+        this.$nextTick(() => {
             this.reqData(false)
         })
     }
@@ -347,7 +347,7 @@ export default class ClassName extends BaseNode {
     }
     getUserInfo() {
         const url = this.isMine ? `cardCircle/me/home` : `cardCircle/user/home`
-        app.http.Get(`dataApi/${url}`, { userId: this.userId }, (res: any) => {
+        app.http.Get(`dataApi/${url}`, this.isMine ? {} : { userId: this.userId }, (res: any) => {
             this.userInfo = res.data
             this.shareData = {
                 shareUrl: `share/${app.localTest ? 'testH5' : 'h5'}/#/pages/cardForum/personHomePage?userId=${this.userId}`,
@@ -389,14 +389,16 @@ page {
     left: 0;
     top: 0;
 }
-.back_shadow{
+
+.back_shadow {
     width: 750rpx;
     position: absolute;
     height: 100%;
     left: 0;
     top: 0;
-    background:rgba(0, 0, 0, 0.39)
+    background: rgba(0, 0, 0, 0.39)
 }
+
 // .userInfoWrap_back {
 //     background-size: 100% 100%;
 //     background-image: url("@/static/userinfo/v3/banner.png");
