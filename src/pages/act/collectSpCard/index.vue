@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-27 16:22:30
+ * @LastEditTime: 2023-08-02 10:56:06
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -100,6 +100,7 @@
 				{},
 				({list}:any)=>{
 					this.groupDetail = list || [];
+					this.getCurrentGroup.getPlayerNum = this.groupDetail.filter((x:any)=>x.collectNum>0).length || 0;
 				}
 			)
 		}
