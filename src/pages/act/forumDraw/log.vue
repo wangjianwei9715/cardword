@@ -52,7 +52,8 @@ import BaseNode from '@/base/BaseNode.vue';
 import { orderGoodsStateStr, getGoodsPintuan } from '@/tools/switchUtil'
 import { dateFormatMSHMS } from '@/tools/util'
 const navHeight = app.statusBarHeight + uni.upx2px(88)
-const range: any = [{ label: "全部", value: 100 }, { label: "实物奖品", value: 1 }, { label: "优惠券", value: 2 },{ label: "卡币奖品", value: 3 },{ label: "改名卡", value: 4 }]
+// { label: "改名卡", value: 4 }
+const range: any = [{ label: "全部", value: 100 }, { label: "实物奖品", value: 1 }, { label: "优惠券", value: 2 },{ label: "卡币奖品", value: 3 }]
 @Component({})
 export default class ClassName extends BaseNode {
     range = range
