@@ -282,6 +282,7 @@ export default class ClassName extends BaseNode {
         }
         app.http.Get('me/home', {}, (res: any) => {
             const data = res.data;
+            if(this.infoData.avatar!=data.avatar || this.infoData.name!=data.name) app.user.needRefresh=true
             this.infoData = data;
             app.familial = data.familial;
             this.$set(this.infoData, 'avatar', decodeURIComponent(res.data.avatar));
