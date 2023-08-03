@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-31 14:15:45
+ * @LastEditTime: 2023-08-03 09:54:11
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -612,6 +612,12 @@ export default {
                 return
             }
             if (item.typeName == '卡册' && item.status == 0) {
+                uni.navigateTo({
+                    url: `/pages/cardForum/release?code=${item.code}`
+                })
+                return;
+            }
+            if(this.isMine&&item.status==0){
                 uni.navigateTo({
                     url: `/pages/cardForum/release?code=${item.code}`
                 })
