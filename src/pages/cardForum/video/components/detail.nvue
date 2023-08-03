@@ -15,7 +15,7 @@
                     <cell>
                         <!-- #endif -->
                         <view class="vd-user">
-                            <image class="vd-avatar"
+                            <image class="vd-avatar" @click="onClickUserAvatar"
                                 :src="forumDetail.avatar ? parsePic(decodeURIComponent(forumDetail.avatar)) : defaultAvatar"
                                 mode="aspectFill">
                             </image>
@@ -282,6 +282,14 @@ export default {
         // }, 1000)
     },
     methods: {
+        onClickUserAvatar(event) {
+            // #ifdef APP-NVUE
+            event.stopPropagation();
+            // #endif
+            uni.navigateTo({
+                url: `/pages/cardForum/personHomePage?userId=${this.forumDetail.userId}&isMine=${(this.forumDetail.bit & 1) == 1 ? 1 : 0}`
+            })
+        },
         replaceText(text) {
             const msg = text.replace(/\<p\>/g, '').split('</p>');
             console.log(msg);
