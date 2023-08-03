@@ -30,7 +30,7 @@
         </view>
         <view class="yunfei-item" v-show="cartData == ''&&(goodsData.price - onePrice > 0)">
           <text class="item-name">优惠</text>
-          <text class="item-name">- ¥{{freeDiscount}}</text>
+          <text class="item-name">- ¥{{allDiscount}}</text>
         </view>
         <view class="yunfei-item">
           <text class="item-name">运费</text>
@@ -195,14 +195,17 @@ export default class ClassName extends BaseNode {
     }
   }
   // 优惠金额
-  public get freeDiscount() { 
+  public get freeDiscount() {
     // 计算折扣价格 
-    const {freeNum, payNum, goodsData, onePrice} = this; 
-    const discountedPrice = freeNum >= payNum ? payNum * goodsData.price : freeNum * onePrice;
-    // 计算剩余商品价格折扣金额 
-    const remainingDiscount = (payNum - freeNum) * (goodsData.price - onePrice);
-    // 返回保留两位小数的最终折扣金额 
-    return this.keepTwoDecimal(freeNum > 0 ? (discountedPrice + remainingDiscount) : remainingDiscount); 
+    const {freeNum, payNum, onePrice} = this; 
+    const discountedPrice = Math.min(freeNum,payNum) * onePrice;
+    return this.keepTwoDecimal(discountedPrice); 
+  }
+  public get allDiscount() : number {
+    // 计算折扣价格 
+    const {payNum, goodsData, onePrice} = this; 
+    const remainingDiscount = payNum * (goodsData.price - onePrice);
+    return this.keepTwoDecimal(remainingDiscount);
   }
   public get getRandomTotalPrice() : number {
     const priceData = this.payRandomTeamData.map((x:any) => x.price * x.num);
