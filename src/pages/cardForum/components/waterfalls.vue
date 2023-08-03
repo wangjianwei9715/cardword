@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-03 09:54:11
+ * @LastEditTime: 2023-08-03 16:57:31
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -605,17 +605,17 @@ export default {
                 })
                 return
             }
-            if (item.video_at > 0) {
-                uni.navigateTo({
-                    url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.private ? 1 : 0}${this.isMine ? "&fromMine=1" : ""}`
-                })
-                return
-            }
             if(this.isMine&&item.status==0){
                 uni.navigateTo({
                     url: `/pages/cardForum/release?code=${item.code}`
                 })
                 return;
+            }
+            if (item.video_at > 0) {
+                uni.navigateTo({
+                    url: `/pages/cardForum/video/index?code=${item.code}&back=${this.detailBack}&private=${item.private ? 1 : 0}${this.isMine ? "&fromMine=1" : ""}`
+                })
+                return
             }
             uni.navigateTo({
                 url: `/pages/cardForum/detail?` +

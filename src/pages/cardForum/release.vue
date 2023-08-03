@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-03 16:04:10
+ * @LastEditTime: 2023-08-03 16:56:49
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -544,10 +544,15 @@ export default class ClassName extends BaseNode {
     setSelectTopics(topic: any) {
         this.selectTopics = (topic || []).map((item: any) => {
             this.oldTopicIds.push(item.topicId)
+            const findIndex:number=this.relatedTopics.findIndex((topic:CardForum.Topics)=>{
+                return topic.id==item.topicId
+            })
+            if (findIndex>=0) this.relatedTopics.splice(findIndex,1)
             return {
                 id: item.topicId,
                 name: item.topicName,
-                isActivity: item.activity
+                isActivity: item.activity,
+                formList:true
             }
         })
     }
@@ -677,7 +682,8 @@ export default class ClassName extends BaseNode {
         if (!Object.keys(data).length) return
         this.formData = data
         if (testCode(this.draftId)) this.code = this.draftId //此时草稿id为作品编号
-        this.selectTopics = data.selectTopics || []
+        // this.selectTopics = data.selectTopics || []
+        this.setSelectTopics(data.selectTopics)
         console.log("草稿的内容", this.formData);
         // this.selectGoods = this.formData.selectGoods
         this.pics = [this.formData.cover, ...this.formData.url].filter(Boolean)
