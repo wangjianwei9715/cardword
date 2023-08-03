@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-03 17:17:36
+ * @LastEditTime: 2023-08-03 17:47:37
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -102,6 +102,13 @@
 			if(query.formData){
 				this.formData = JSON.parse(query.formData)
 			}
+		}
+		onBackPress(event:any){
+			if(event.from=='backbutton'){
+				this.sheetShow=true;
+				return true
+			}
+			return
 		}
 		public get uploadPercent() : string {
 			const total = this.selectSeries.reduce((total:number,x:any)=>{

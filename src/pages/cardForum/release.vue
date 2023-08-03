@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-03 17:26:23
+ * @LastEditTime: 2023-08-03 17:48:15
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -233,7 +233,13 @@ export default class ClassName extends BaseNode {
                 this.onEventUI("cardForumDelVideo", this.cardForumDelVideo)
             })
         })
-
+    }
+    onBackPress(event:any){
+        if(event.from=='backbutton'){
+            this.sheetShow=true;
+            return true
+        }
+        return
     }
     public get albumRelease(): boolean {
         return this.albumData.list.length > 0 || this.formData.tp == 3
