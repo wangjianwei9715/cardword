@@ -611,12 +611,6 @@ export default {
                 })
                 return
             }
-            if (item.typeName == '卡册' && item.status == 0) {
-                uni.navigateTo({
-                    url: `/pages/cardForum/release?code=${item.code}`
-                })
-                return;
-            }
             if(this.isMine&&item.status==0){
                 uni.navigateTo({
                     url: `/pages/cardForum/release?code=${item.code}`

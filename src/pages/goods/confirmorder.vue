@@ -125,7 +125,7 @@
         </view>
         <view class="yunfei-item" v-show="cartData == ''&&(goodsData.price - onePrice > 0)">
           <text class="item-name">优惠</text>
-          <text class="item-name">- ¥{{freeDiscount}}</text>
+          <text class="item-name">- ¥{{allDiscount}}</text>
         </view>
         <view class="yunfei-item">
           <text class="item-name">运费</text>
@@ -310,9 +310,16 @@ export default class ClassName extends BaseNode {
   }
   // 优惠金额
   public get freeDiscount() {
-    const freePrice = this.freeNum >= this.moneyNum ? this.moneyNum * this.goodsData.price : this.freeNum * this.onePrice;
-    const subPrice = (this.moneyNum - this.freeNum) * (this.goodsData.price - this.onePrice);
-    return this.keepTwoDecimal(this.freeNum > 0 ? (freePrice+subPrice) : subPrice);
+    // 计算折扣价格 
+    const {freeNum, moneyNum, onePrice} = this; 
+    const discountedPrice = Math.min(freeNum,moneyNum) * onePrice;
+    return this.keepTwoDecimal(discountedPrice); 
+  }
+  public get allDiscount() : number {
+    // 计算折扣价格 
+    const {moneyNum, goodsData, onePrice} = this; 
+    const remainingDiscount = moneyNum * (goodsData.price - onePrice);
+    return this.keepTwoDecimal(remainingDiscount);
   }
   // 预测免单
   public get getBitDisableGuess() : boolean {
