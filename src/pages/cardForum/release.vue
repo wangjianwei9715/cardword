@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-03 16:56:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-03 17:26:23
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,15 +15,14 @@
             <cover-view :style="{ height: app.statusBarHeight + 'px' }"></cover-view>
             <cover-view class="tabHeader"
                 style="width:750rpx;height:88rpx;display: flex;align-items: center;flex-direction: row;">
-                <cover-view :style="{ color: '#fff', width: '100rpx', height: '88rpx' }"
-                    style="display: flex;align-items: center;" @click="app.platform.pageBack()">
+                <cover-view :style="{ color: '#fff' }" @click="sheetShow=true">
                     <cover-image style="width: 19rpx;height: 35rpx;margin-left: 30rpx;"
                         src="@/static/index/v3/back.png"></cover-image>
                 </cover-view>
             </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
-        <publish v-if="albumRelease" ref="albumRelease" :albumList.sync="albumData.list"
+        <publish v-if="albumRelease" ref="albumRelease" :formData="formData" :albumList.sync="albumData.list"
             :albumCover.sync="albumData.albumCover" :albumProve.sync="albumData.albumProve" :draftId="draftId"
             @albumEditDetail="albumEditDetail" @delDraft="delDraftDetailAction" @unLock="submitLock = false" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
@@ -85,12 +84,11 @@
         </view>
         <view class="bottomWrap">
             <view class="buttonWrap">
-                <view class="draft" @click="onClickSaveDraft(false)">
+                <view class="draft" @click="onClickSaveDraft">
                     <image src="@/static/cardForum/release/caogao.png"></image>
                     <text>存草稿</text>
                 </view>
-                <view class="submit flexCenter" @click="$u.throttle(onClickSubmit, 1000)">{{ code ? "保存" : "发布"
-                }}{{ albumRelease ? '卡册' : '动态' }}</view>
+                <view class="submit flexCenter" @click="$u.throttle(onClickSubmit, 1000)">{{ code ? "保存" : "发布" }}{{albumRelease?'卡册':'动态'}}</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
@@ -99,6 +97,8 @@
         <goods :show.sync="showGoods" @select="onSelectGoods" />
         <view class="bottomSafeArea" style="height:180rpx;pointer-events: none;"></view>
         <u-toast ref="uToast" v-if="submitLock"></u-toast>
+
+        <albumActionSheet :show.sync="sheetShow" :listId="[1,3]" @save="onClickSaveDraft"/>
     </view>
 </template>
 
@@ -113,6 +113,7 @@ import ppp from "./components/ppp.vue"
 import Upload from "@/tools/upload"
 import goods from "./components/goods.vue"
 import publish from "./components/album/publish.vue"
+import albumActionSheet from '../illustration/components/albumActionSheet.vue'
 import { storageDraft, getDraftList, getDraftDetail, getVideoPath, delDraftDetail, testCode } from "./func"
 enum State {
     Public = 1,
@@ -163,7 +164,8 @@ const formData: CardForumRelease = {
         topicsPop,
         ppp,
         goods,
-        publish
+        publish,
+        albumActionSheet
     }
 })
 export default class ClassName extends BaseNode {
@@ -199,15 +201,9 @@ export default class ClassName extends BaseNode {
     userId: number = 0
     submitLock: boolean = false
     hasVoteByCode: boolean = false
-    isRepost: boolean = false
-    originalStr: string = JSON.stringify(formData)
-    isClickBack: boolean = false
+    isRepost: boolean = false;
+    sheetShow=false;
     onLoad(query: any) {
-        // #ifdef APP-PLUS
-        //@ts-ignore
-        let currentWebview = this.$mp.page.$getAppWebview() //获取当前页面的webview对象
-        currentWebview.setStyle({ popGesture: 'none' })
-        // #endif
         app.platform.hasLoginToken(() => {
             app.user.getUserInfo().then((userInfo: any) => {
                 this.eventAlbum();
@@ -226,51 +222,21 @@ export default class ClassName extends BaseNode {
                 if (query.albumList) {
                     this.albumData.list = JSON.parse(query.albumList)
                 }
+                if (query.draftData){
+                    const data = JSON.parse(query.draftData)
+                    this.albumData.albumCover = data.albumCover;
+                    this.albumData.albumProve = data.albumProve;
+                    this.formData = JSON.parse(query.draftData);
+                    this.setSelectTopics(data.selectTopics)
+                    this.$refs.vote.setVote(this.formData)
+                }
                 this.onEventUI("cardForumDelVideo", this.cardForumDelVideo)
             })
         })
 
     }
-    onBackPress(event: any) {
-        console.log(event);
-        // backbutton
-        if ((event.from === 'navigateBack'||event.from === 'backbutton') && !this.isClickBack) {
-            const hasChange: boolean = this.originalStr !== this.stitchingStr()
-            console.log(this.originalStr);
-            console.log(this.stitchingStr());
-            console.log("是否有修改", hasChange);
-            if (hasChange) {
-                uni.showModal({
-                    title: "提示",
-                    content: "是否保存至草稿箱?",
-                    success: (res: any) => {
-                        this.isClickBack = true
-                        if (res.confirm) {
-                            this.onClickSaveDraft(true)
-                            app.navigateTo.switchTab(4)
-                            return
-                        }
-                        app.platform.pageBack()
-                    }
-                })
-            } else {
-                this.isClickBack = true
-                app.platform.pageBack()
-            }
-            return true;
-        }
-        return false
-    }
     public get albumRelease(): boolean {
         return this.albumData.list.length > 0 || this.formData.tp == 3
-    }
-    stitchingStr(original?: boolean) {
-        this.assignFormData(false)
-        if (original) {
-            this.originalStr = JSON.stringify(this.formData)
-            return
-        }
-        return JSON.stringify(this.formData)
     }
     eventAlbum() {
         this.onEventUI("editAlbum", (res: any) => this.albumData.list = res)
@@ -537,7 +503,6 @@ export default class ClassName extends BaseNode {
             this.formData.state = res.data.state
             if (res.data.vote.voteTitle) this.hasVoteByCode = true
             this.setSelectTopics(res.data.topic)
-            this.stitchingStr(true)
             // this.formData.vote=res.data.vote
         })
     }
@@ -556,7 +521,7 @@ export default class ClassName extends BaseNode {
             }
         })
     }
-    async onClickSaveDraft(hideModal: boolean) {
+    async onClickSaveDraft() {
         try {
             if (this.formData.localVideo && this.formData.tp == Tp.Video) {
                 if (this.isTempVideo) {
@@ -582,19 +547,16 @@ export default class ClassName extends BaseNode {
                 // if (findItem && findItem.draftId) this.draftId = findItem.draftId
             }
             await storageDraft(Draft, this.albumRelease ? "cardBook" : "dynamic", this.draftId || "")
-            if (!hideModal) {
-                uni.showModal({
-                    title: "提示",
-                    content: "已保存至草稿箱",
-                    showCancel: false,
-                    success: (res: any) => {
-                        if (res.confirm) {
-                            app.navigateTo.switchTab(4)
-                        }
+            uni.showModal({
+                title: "提示",
+                content: "已保存至草稿箱",
+                showCancel: false,
+                success: (res: any) => {
+                    if (res.confirm) {
+                        app.navigateTo.switchTab(4)
                     }
-                })
-            }
-
+                }
+            })
         } catch (err) {
 
         }
@@ -630,7 +592,7 @@ export default class ClassName extends BaseNode {
             if (this.pics.length && !getVideoPath(this.pics[0])) this.formData.cover = this.pics[0]
             if (this.pics.length == 1 && getVideoPath(this.pics[0])) this.formData.url = [encodeURIComponent(this.videoPath)]
             if (this.pics.length > 1) {
-                if (this.formData.tp === Tp.Pic || this.formData.tp === Tp.Medium) this.formData.url = this.pics.slice(1, this.pics.length)
+                if (this.formData.tp === Tp.Pic || this.formData.tp===Tp.Medium) this.formData.url = this.pics.slice(1, this.pics.length)
                 if (this.formData.tp === Tp.Video) this.formData.url = [encodeURIComponent(this.videoPath)]
             }
             this.formData.topicId = this.selectTopics.map((item: any) => {
@@ -725,7 +687,6 @@ export default class ClassName extends BaseNode {
                 albumProve: data.albumProve
             }
         }
-        this.stitchingStr(true)
     }
     delDraftDetailAction() {
         //删除草稿
@@ -811,7 +772,6 @@ export default class ClassName extends BaseNode {
                     success: (res: any) => {
 
                         if (res.confirm) {
-                            this.isClickBack = true
                             app.platform.pageBack()
                         }
                     }
@@ -915,7 +875,7 @@ page {
 }
 
 .insetBottom {
-    padding-bottom: 159rpx;
+    padding-bottom:159rpx;
     padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
 }
 

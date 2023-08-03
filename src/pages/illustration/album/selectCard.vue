@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-20 16:55:30
+ * @LastEditTime: 2023-08-03 17:14:24
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -33,7 +33,8 @@
 				<view class="icon-add" @click="onClickSeriesSelect"></view>
 			</view>
 		</view>
-		<albumBottom :canNext="getSeriesNolistLength" :draftId="draftId" :data="selectSeries" :step="1" @next="onClickNext()"/>
+		<albumBottom :showSave="false" :canNext="getSeriesNolistLength" :draftId="draftId" :selectSeries.sync="selectSeries" :step="1" @next="onClickNext()"/>
+		<albumActionSheet :show.sync="sheetShow" :listId="[1]"/>
 	</view>
 </template>
 
@@ -42,13 +43,15 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	import albumBottom from '../components/albumBottom.vue'
+	import albumActionSheet from '../components/albumActionSheet.vue'
 	@Component({
-		components:{albumBottom}
+		components:{albumBottom,albumActionSheet}
 	})
 	export default class ClassName extends BaseNode {
 		selectSeries:any = [];
 		edit = false;
 		draftId = '';
+		sheetShow = false;
 		onLoad(query: any) {
 			if(query.draftId){
 				this.draftId = query.draftId;
@@ -87,6 +90,13 @@
 					}
 				})
 			})
+		}
+		onBackPress(event:any){
+			if(event.from=='backbutton'){
+				this.sheetShow=true;
+				return true
+			}
+			return
 		}
 		public get listTotal() : number {
 			const total = this.selectSeries.reduce((total:number, x:any) => total + x.noList.length, 0);

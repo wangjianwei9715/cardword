@@ -3,13 +3,13 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-14 14:38:28
+ * @LastEditTime: 2023-08-03 17:17:36
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="album-card-content">
-		<navigationbar title="上传卡片" :customBack="edit||draftId" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true" @back="sheet.show=true">
+		<navigationbar title="上传卡片" :customBack="true" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true" @back="sheetShow=true">
 			<template slot="right">
 				<view class="segment" @click="segmentCheck=!segmentCheck">
 					<view class="check" :class="{'check_':segmentCheck}"></view>
@@ -45,8 +45,8 @@
 				</view>
 			</view>
 		</view>
-		<u-action-sheet :actions="sheet.list" :show="sheet.show" cancelText="取消" @select="onSheetSelect" @close="sheet.show=false"></u-action-sheet>
-		<albumBottom :canNext="uploadPercent>0" :draftId="draftId" :data="selectSeries" :percent="uploadPercent" :step="2" @next="onClickNext()"/>
+		<albumBottom ref="albumBtn" :canNext="uploadPercent>0" :saveData="formData" :draftId="draftId" :selectSeries.sync="selectSeries" :percent="uploadPercent" :step="2" @next="onClickNext()"/>
+		<albumActionSheet :show.sync="sheetShow" :listId="[1,2,3]" @select="onSheetSelect(2)" @save="onSheetSelect(3)"/>
 	</view>
 </template>
 
@@ -56,22 +56,31 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	import albumBottom from '../components/albumBottom.vue'
-	@Component({
-		components:{albumBottom}
-	})
+	import albumActionSheet from '../components/albumActionSheet.vue'
+	class FormData {
+		title = "";
+		content= "";
+		cover= "";
+		url= [];
+		topicId= [];
+		goodCode= "";
+		voteTitle= "";
+		voteOptions= [];
+		topicArr= [];
+		state= 1;
+		tp= 1;
+		localVideo= true;
+		albumCover = "";
+		albumProve = "";
+	}
+	@Component({ components:{albumBottom,albumActionSheet} })
 	export default class ClassName extends BaseNode {
 		selectSeries:any = [];
 		segmentCheck = false;
 		edit = false;
-		sheet = {
-			show:false,
-			list:[
-				{ id:1, name:'选择卡种' },
-				{ id:2, name:'返回编辑' },
-				{ id:3, name:'退出编辑' },
-			]
-		}
+		sheetShow = false;
 		draftId = '';
+		formData = new FormData();
 		onLoad(query: any) {
 			this.onEventUI("editNoSelect",(res:any)=>{
 				this.selectSeries = res;
@@ -80,11 +89,8 @@
 				this.draftId = query.draftId;
 			}
 			if (query.draftList) {
-				this.sheet.list = [
-					{ id:1, name:'选择卡种' },
-					{ id:3, name:'退出编辑' },
-				]
-				this.selectSeries = JSON.parse(query.draftList)
+				this.selectSeries = JSON.parse(query.draftList);
+				this.formData = JSON.parse(query.formData);
 			}
 			if(query.selectSeries){
 				this.selectSeries = JSON.parse(query.selectSeries)
@@ -92,6 +98,9 @@
 			if(query.editCodeList){
 				this.edit = true;
 				this.formatterCodeList(JSON.parse(query.editCodeList))
+			}
+			if(query.formData){
+				this.formData = JSON.parse(query.formData)
 			}
 		}
 		public get uploadPercent() : string {
@@ -108,6 +117,9 @@
 		async onClickAddImg(index:number,noIndex:number,type:string){
 			const list:any =  await this.addImg(1);
 			const path = await this.segment(list[0]);
+			this.selectSeries[index].noList.forEach((x:any)=>{
+				x.frontPic = path
+			})
 			if(type=='front'){
 				this.selectSeries[index].noList[noIndex].frontPic = path
 			}else{
@@ -160,15 +172,13 @@
 			});
 			this.selectSeries = Array.from(Object.values(Series),x=>x);
 		}
-		onSheetSelect({id}:any){
-			if(id==1){
+		onSheetSelect(id:number){
+			if(id==2){
 				uni.navigateTo({
 					url:`/pages/illustration/album/selectCard?editCodeList=${encodeURIComponent(JSON.stringify(this.selectSeries))}&draftId=${this.draftId}`
 				})
-			}else if(id==2){
-				app.navigateTo.navigateBack()
-			}else if(id==3){
-				uni.navigateBack({delta:2})
+			}if(id==3){
+				this.$refs.albumBtn.onClickSave()
 			}
 		}
 		onClickSelectNo(item:any){
@@ -183,7 +193,7 @@
 				app.navigateTo.navigateBack()
 			}else{
 				uni.navigateTo({
-					url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(albumList))}&draftId=${this.draftId}`
+					url:`/pages/cardForum/release?albumList=${encodeURIComponent(JSON.stringify(albumList))}&draftId=${this.draftId}&draftData=${encodeURIComponent(JSON.stringify(this.formData))}`
 				})
 			}
 		}

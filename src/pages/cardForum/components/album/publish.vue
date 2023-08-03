@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-28 12:41:42
+ * @LastEditTime: 2023-08-03 16:45:07
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -17,12 +17,12 @@
 					<muqian-lazyLoad class="pic" mode="aspectFit" :src="decodeURIComponent(coverPic)" />
 				</view>
 				<muqian-lazyLoad v-for="(item,index) in hasPicList" :key="index" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
-				<view class="upload" @click="onClickGoPicUpload" v-show="(code||draftId)&&hasPicList.length<=2">
+				<view class="upload" @click="onClickGoPicUpload" v-show="hasPicList.length<=2">
 					<view class="icon-add"></view>
 					<view class="upload-content">添加图片</view>
 				</view>
 			</scroll-view>
-			<view class="edit-box" v-show="(code||draftId)&&hasPicList.length>2" @click="onClickGoPicUpload">修改图片</view>
+			<view class="edit-box" v-show="hasPicList.length>2" @click="onClickGoPicUpload">修改图片</view>
 		</view>
 		<view class="percent">
 			<text>当前收集进度：{{percentMsg}}</text>
@@ -64,6 +64,8 @@
 		provePic?:string
 		@Prop({default:''})
 		draftId?:any
+		@Prop({default:{}})
+		formData!:any
 		identify = "";
 		restParams:any = {};
 		originalList:any = [];
@@ -153,8 +155,13 @@
 			});
 		}
 		onClickGoPicUpload(){
+			const formData= {
+				...this.formData,
+				albumCover:this.coverPic,
+				albumProve:this.provePic
+			}
 			uni.navigateTo({
-				url:`/pages/illustration/album/picUpload?editCodeList=${encodeURIComponent(JSON.stringify(this.list))}&draftId=${this.draftId}`
+				url:`/pages/illustration/album/picUpload?editCodeList=${encodeURIComponent(JSON.stringify(this.list))}&draftId=${this.draftId}&formData=${encodeURIComponent(JSON.stringify(formData))}`
 			})
 		}
 		prepareEdit(code:string){
