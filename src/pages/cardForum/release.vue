@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-03 17:48:15
+ * @LastEditTime: 2023-08-04 10:05:46
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -48,10 +48,10 @@
             <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll"
                 v-if="relatedTopics && relatedTopics.length">
                 <view class="topicScrollWrap">
-                    <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in relatedTopics"
+                    <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in unSelectedTopics"
                         :key="index">
                         <text>{{ item.name }}</text>
-                        <text class="act" v-if="item.activity">活动</text>
+                        <text class="act" v-if="item.activity||item.isActivity">活动</text>
                     </view>
                 </view>
             </scroll-view>
@@ -241,6 +241,14 @@ export default class ClassName extends BaseNode {
         }
         return
     }
+    public get selectTopicsIds() : number[] {
+        return this.selectTopics.map((item:any)=> item.topicId || item.id)
+    }
+    public get unSelectedTopics() : any[] {
+        return this.relatedTopics.filter((x:any)=>{
+            return !this.selectTopicsIds.includes(x.id)
+        })
+    }
     public get albumRelease(): boolean {
         return this.albumData.list.length > 0 || this.formData.tp == 3
     }
@@ -254,17 +262,6 @@ export default class ClassName extends BaseNode {
         if (data.good) this.selectGoods = data.good;
     }
     onSelectTopic(item: CardForum.Topics) {
-        const findIndex: number = this.selectTopics.findIndex((orgItem: any) => {
-            return orgItem.id == item.id
-        })
-        if (findIndex >= 0) return
-        const orgIndex: number = this.relatedTopics.findIndex((orgItem: any) => {
-            return orgItem.id == item.id
-        })
-        if (orgIndex >= 0) {
-            this.relatedTopics.splice(orgIndex, 1)
-            item.formList = true
-        }
         if (this.selectTopics.length >= 15) {
             uni.showToast({
                 title: "最多关联15条话题",
@@ -275,9 +272,6 @@ export default class ClassName extends BaseNode {
         this.selectTopics.push(item)
     }
     delSelectTopic(item: any, index: number) {
-        if (item.formList) {
-            this.relatedTopics.unshift(item)
-        }
         this.selectTopics.splice(index, 1)
     }
     onSelectGoods(item: any) {
@@ -515,13 +509,10 @@ export default class ClassName extends BaseNode {
     setSelectTopics(topic: any) {
         this.selectTopics = (topic || []).map((item: any) => {
             this.oldTopicIds.push(item.topicId)
-            const findIndex:number=this.relatedTopics.findIndex((topic:CardForum.Topics)=>{
-                return topic.id==item.topicId
-            })
-            if (findIndex>=0) this.relatedTopics.splice(findIndex,1)
+            
             return {
-                id: item.topicId,
-                name: item.topicName,
+                id: item.topicId || item.id,
+                name: item.topicName || item.name,
                 isActivity: item.activity,
                 formList:true
             }

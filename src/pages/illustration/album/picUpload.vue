@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-03 17:47:37
+ * @LastEditTime: 2023-08-03 18:16:23
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -124,9 +124,6 @@
 		async onClickAddImg(index:number,noIndex:number,type:string){
 			const list:any =  await this.addImg(1);
 			const path = await this.segment(list[0]);
-			this.selectSeries[index].noList.forEach((x:any)=>{
-				x.frontPic = path
-			})
 			if(type=='front'){
 				this.selectSeries[index].noList[noIndex].frontPic = path
 			}else{
