@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-03 13:50:02
+ * @LastEditTime: 2023-08-04 14:34:08
  * @FilePath: \card-world\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -219,21 +219,23 @@ export default class ClassName extends BaseNode {
   //获取抽奖结果
   async postGetDrawResult(num: number) {
     this.resRewardIds = [];
+    this.current = 0
     this.onDraw = true;
     uni.showLoading({
-      title:""
+      title: ""
     })
     app.http.Post(`activity/cardCircleDraw/proceed`, {
-      tp: num==5?2:1
+      tp: num == 5 ? 2 : 1
     }, async (res: any) => {
       uni.hideLoading()
       this.resRewardIds = res.award || [];
-      
-      this.drawNum-=num
+
+      this.drawNum -= num
       for (let i = 0; i < this.resRewardIds.length; i++) {
         await this.startDraw(
           this.resRewardIds[i],
-          i === this.resRewardIds.length - 1 ? 0 : 1500
+          i === this.resRewardIds.length - 1 ? 0 : 1500,
+          num == 5 ? 4 : 12
         );
         if (i == this.resRewardIds.length - 1) {
           this.onDraw = false;
@@ -242,9 +244,9 @@ export default class ClassName extends BaseNode {
           }, 300);
         }
       }
-    },()=>{
+    }, () => {
       uni.hideLoading()
-      this.onDraw=false
+      this.onDraw = false
     });
     //=============mock================
     // for (let i = 0; i < num; i++) {
@@ -262,7 +264,7 @@ export default class ClassName extends BaseNode {
     //     }
     // }
   }
-  startDraw(id: number, delay: number) {
+  startDraw(id: number, delay: number, slowNum: number) {
     return new Promise((re: any, rj) => {
       this.stopDefaultLoop();
       this.initConf();
@@ -275,14 +277,14 @@ export default class ClassName extends BaseNode {
           icon: "none",
         });
       }
-      this.loop(index, () => {
+      this.loop(index, slowNum, () => {
         setTimeout(() => {
           re();
-        }, delay);
+        }, delay,);
       });
     });
   }
-  loop(endIndex: number, cb?: Function) {
+  loop(endIndex: number, slowNum: number ,cb?: Function) {
     if (!this.nowHeightLight || this.nowHeightLight < 8) {
       // app.platform.UIClickFeedBack()
       if (this.nowHeightLight == 7) {
@@ -296,7 +298,7 @@ export default class ClassName extends BaseNode {
         this.time = 50;
         this.slowNum++;
       }
-      if (this.slowNum == 12) {
+      if (this.slowNum == slowNum) {
         this.slowNum = 0;
         this.time = 200;
         this.fastNum = 5;
@@ -310,7 +312,7 @@ export default class ClassName extends BaseNode {
       }
       if (this.loopBol) {
         this.loopTimer = setTimeout(() => {
-          this.loop(endIndex, cb);
+          this.loop(endIndex,slowNum, cb);
         }, this.time);
       }
     }
@@ -339,7 +341,7 @@ export default class ClassName extends BaseNode {
     });
     console.log(this.resRewardList);
     this.showSwiper = true;
-    this.reqUserData() 
+    this.reqUserData()
   }
   goTuj() {
     app.navigateTo.switchTab(1);
