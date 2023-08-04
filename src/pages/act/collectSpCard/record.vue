@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 14:33:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-27 18:19:10
+ * @LastEditTime: 2023-08-04 10:07:12
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -99,7 +99,7 @@
 		listParams = new ListParams()
 		list = [];
 		empty = false;
-		wuliu = {
+		wuliu:any = {
 			show:false,
 			id:0,
 			data:{}
@@ -179,7 +179,7 @@
 			});
 		}
 		onClickDeliver(){
-			app.http.Post(`activity/teka/award/apply/deliver/${this.wuliu.id}`,{},(res:any)=>{
+			app.http.Post(`activity/teka/award/apply/deliver/${this.wuliu.id}`,{deliverId:this.wuliu.data.id},(res:any)=>{
 				uni.showToast({
 					title:'申请成功',
 					icon:'none'

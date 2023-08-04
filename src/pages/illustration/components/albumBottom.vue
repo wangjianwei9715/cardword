@@ -1,10 +1,10 @@
 <template>
 	<view class="album-bottom">
-		<view class="left" @click="onClickSave">
+		<view v-if="showSave" class="left" @click="onClickSave">
 			<view class="icon-save"></view>
 			<view class="msg">存草稿</view>
 		</view>
-		<view class="btn" :class="{'btn-red':canNext}" @click="onClickNext">
+		<view class="btn" :class="{'btn-red':canNext,'no-save':!showSave}" @click="onClickNext">
 			下一步
 			<view class="percent" v-show="step==2">当前收集进度{{percent}}%</view>
 		</view>
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-	import { Component, Prop} from "vue-property-decorator";
+	import { Component, Prop, PropSync} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import muqianLazyLoad from "@/components/muqian-lazyLoad/muqian-lazyLoad.vue";
 	import { storageDraft } from '@/pages/cardForum/func/index'
@@ -21,14 +21,18 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:false})
 		canNext!:boolean
+		@Prop({default:true})
+		showSave!:boolean
 		@Prop({default:1})
 		step!:number
 		@Prop({default:0})
 		percent!:number
 		@Prop({default:''})
 		draftId?:string
-		@Prop({default:[]})
+		@PropSync('selectSeries',{type:Array})
 		data!:any
+		@Prop({default:()=>{}})
+		saveData?:any
 		created(){//在实例创建完成后被立即调用
 			
 		}
@@ -42,18 +46,12 @@
 			if(!this.canNext) return;
 			this.$emit('next');
 		}
-		onClickSave(){
+		async onClickSave(){
 			if(!this.canNext) return;
-			uni.showModal({
-                content: '确认保存至草稿箱吗?',
-                success: async (res: any) => {
-                    if (res.confirm){
-						await storageDraft({step:this.step,list:this.data},"cardBook",this.draftId || "");
-						uni.showToast({ title:"草稿保存成功",icon:"none" });
-						app.navigateTo.switchTab(4)
-					}
-                }
-            })
+			const { list, ...rest } = this.saveData;
+			await storageDraft({step:this.step,list:this.data,...rest},"cardBook",this.draftId || "");
+			uni.showToast({ title:"草稿保存成功",icon:"none" });
+			app.navigateTo.switchTab(4)
 		}
 	}
 </script>
@@ -119,6 +117,9 @@
 			font-weight: 400;
 			color: #FFFFFF;
 		}
+	}
+	.no-save{
+		width: 100% !important;
 	}
 	.btn-red{
 		background: #FA1545 !important;

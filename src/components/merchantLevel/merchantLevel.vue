@@ -15,6 +15,7 @@
 		4:{level:'V4',name:'荣耀商家',icon:'v2'},
 		5:{level:'V5',name:'荣耀商家',icon:'v2'},
 		6:{level:'V6',name:'荣耀商家',icon:'v2'},
+		7:{level:'V7',name:'荣耀商家',icon:'v2'},
 	}
 	@Component({})
 	export default class ClassName extends BaseComponent {

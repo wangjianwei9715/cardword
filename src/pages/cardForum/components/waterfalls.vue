@@ -586,10 +586,10 @@ export default {
             }
             if (this.type == "draftList") {
                 if (item.type == "cardBook") {
-                    const data = getDraftDetail(item.draftId, app.data.userId);
-                    if (data.step) {
+                    const { step, list, ...rest} = getDraftDetail(item.draftId, app.data.userId);
+                    if (step) {
                         uni.navigateTo({
-                            url: `${CardBookJumpUrl[data.step]}?draftList=${encodeURIComponent(JSON.stringify(data.list))}&draftId=${item.draftId}`
+                            url: `${CardBookJumpUrl[step]}?draftList=${encodeURIComponent(JSON.stringify(list))}&draftId=${item.draftId}&formData=${encodeURIComponent(JSON.stringify(rest))}`
                         })
                         return;
                     }
