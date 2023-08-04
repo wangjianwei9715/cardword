@@ -25,7 +25,7 @@
                 <!-- <view class="flex1"></view> -->
 
             </view>
-            <text class="follow" :class="{ follow_dis: item.isFollow }" @click.stop="onClickFollow($event, item)">{{
+            <text class="follow" v-if="!item.isMe" :class="{ follow_dis: item.isFollow }" @click.stop="onClickFollow($event, item)">{{
                 item.isFollow ?
                 '已关注' : '关注' }}</text>
         </view>
