@@ -66,6 +66,8 @@
 		draftId?:any
 		@Prop({default:{}})
 		formData!:any
+		@Prop({default:[]})
+		selectTopics!:any
 		identify = "";
 		restParams:any = {};
 		originalList:any = [];
@@ -158,7 +160,8 @@
 			const formData= {
 				...this.formData,
 				albumCover:this.coverPic,
-				albumProve:this.provePic
+				albumProve:this.provePic,
+				selectTopics:this.selectTopics
 			}
 			uni.navigateTo({
 				url:`/pages/illustration/album/picUpload?editCodeList=${encodeURIComponent(JSON.stringify(this.list))}&draftId=${this.draftId}&formData=${encodeURIComponent(JSON.stringify(formData))}`

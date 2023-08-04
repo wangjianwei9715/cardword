@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-04 10:05:46
+ * @LastEditTime: 2023-08-04 10:20:50
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,7 @@
             </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
-        <publish v-if="albumRelease" ref="albumRelease" :formData="formData" :albumList.sync="albumData.list"
+        <publish v-if="albumRelease" ref="albumRelease" :selectTopics="selectTopics" :formData="formData" :albumList.sync="albumData.list"
             :albumCover.sync="albumData.albumCover" :albumProve.sync="albumData.albumProve" :draftId="draftId"
             @albumEditDetail="albumEditDetail" @delDraft="delDraftDetailAction" @unLock="submitLock = false" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
