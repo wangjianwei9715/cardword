@@ -196,4 +196,13 @@ export const comment_reason_tp:any=[
         value:100
     }
 ]
-
+export const MerchantLevel:{[x:number]:any} = {
+    0:{level:'L1',name:'',icon:''},
+    1:{level:'V1',name:'星耀商家',icon:'v1'},
+    2:{level:'V2',name:'星耀商家',icon:'v1'},
+    3:{level:'V3',name:'星耀商家',icon:'v1'},
+    4:{level:'V4',name:'荣耀商家',icon:'v2'},
+    5:{level:'V5',name:'荣耀商家',icon:'v2'},
+    6:{level:'V6',name:'荣耀商家',icon:'v2'},
+    7:{level:'V7',name:'荣耀商家',icon:'v2'},
+}

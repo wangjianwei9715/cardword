@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-31 15:53:00
+ * @LastEditTime: 2023-08-04 14:41:48
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -25,7 +25,7 @@
 				</view>
 			</view>
 		</u-sticky>
-		<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: scrollHeight+'px' }" :refresher-threshold="45" :refresher-enabled="true" :scroll-y="true" :scroll-with-animation="true" :refresher-triggered="triggered" @scroll="onChangeScroll" @touchend="touchmoveScroll"  @scrolltolower="scrolltolower()" @refresherrefresh="refreshStart()">
+		<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: scrollHeight+'px' }" :refresher-threshold="45" :refresher-enabled="true" :scroll-y="true" :scroll-with-animation="true" :scroll-top="scrollTop" :refresher-triggered="triggered" @scroll="onChangeScroll" @touchend="touchmoveScroll"  @scrolltolower="scrolltolower()" @refresherrefresh="refreshStart()">
 			<view class="tab-center">
 				<swiper v-show="addList.top.length" class="capsule-box" :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
 					<swiper-item v-for="(item,index) in addList.top" :key="index">
@@ -111,6 +111,9 @@
 		};
 		triggered=false;
 		scrollFresh = false;
+		scrollTop = 0;
+		scrollTopNum = 0;
+		showIndex = false;
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
@@ -123,6 +126,9 @@
 			//#endif
 		}
 		onShow() {
+			setTimeout(()=>{
+				this.showIndex = true;
+			},500)
 			uni.showTabBar({ animation: false })
 			// #ifdef APP-PLUS
 			this.networkStatusChange()
@@ -137,7 +143,18 @@
 			this.getHome()
 		}
 		onHide() {
+			this.showIndex = false;
 			uni.offNetworkStatusChange((res) => {})
+		}
+		onTabItemTap(item:any){
+			if(item.index!=0 || !this.showIndex) return;
+			if (this.scrollTopNum>0) { 
+				this.scrollTop=0;
+				this.refreshStart(()=>{
+					this.scrollTop=1;
+					this.scrollTopNum = 0;
+				})
+            }
 		}
 		scrolltolower(){
 			this.$refs.listSwiper.reqNewMainList()
@@ -172,6 +189,9 @@
 					this.scrollFresh = true;
 					return;
 				}
+				if(event.detail.scrollTop>=0){
+					this.scrollTopNum = event.detail.scrollTop;
+				}
 			}
 		}
 		touchmoveScroll(){
@@ -179,12 +199,13 @@
 				this.refreshStart();
 			}
 		}
-		refreshStart(){
+		refreshStart(cb?:Function){
 			uni.$u.throttle(()=>{
 				this.triggered=true;
 				this.scrollFresh = false;
 				this.initIndex(() => {
-					this.$refs.listSwiper.reload()
+					this.$refs.listSwiper.reload();
+					cb?.();
 					setTimeout(() => {
 						this.triggered=false
 					}, 1000)

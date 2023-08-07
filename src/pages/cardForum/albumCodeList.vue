@@ -178,7 +178,7 @@
 
 			.nav {
 				box-sizing: border-box;
-				padding: 0 35rpx;
+				padding:  0 26rpx 0 35rpx;
 				display: flex;
 				align-items: center;
 				height: 88rpx;
@@ -219,13 +219,14 @@
 			flex: 1;
 		}
 		.follow {
-			width: 128rpx;
-			height: 50rpx;
+			width: 120rpx;
+			height: 48rpx;
 			background: #FA1545;
 			border-radius: 3rpx;
-			font-size: 29rpx;
-			margin-right: 34rpx;
+			font-size: 28rpx;
+			margin-right: 30rpx;
 			font-family: PingFang SC;
+			border-radius: 5rpx;
 			font-weight: bold;
 			color: #FFFFFF;
 		}

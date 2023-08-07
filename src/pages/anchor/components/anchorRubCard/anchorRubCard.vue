@@ -211,12 +211,20 @@
 					this.stepIndex++;
 					let color = this.picData[this.stepIndex+1].color;
 					if(( color == 'gold' || color == 'SP')) uni.vibrateLong({});
+					this.getMore()
 				}else{
 					app.http.Post(`my/cuoka/release/${this.cardNoParams.orderCode}`,{})
 				}
 			}
 			this.moveData.x = this.moveData.x_init;
 			this.moveData.y = this.moveData.y_init
+		}
+		getMore(){
+			if(this.stepIndex==this.picData.length-6){
+				uni.$u.throttle(()=>{
+					this.reqNewData();
+				},1000)
+			}
 		}
 		getUserlist(cb?:Function){
 			const params = this.userParams;
@@ -237,10 +245,6 @@
 		}
 		reqNewData(cb?:Function) {
 			// 获取更多搓卡
-			uni.showLoading({
-				title: '卡密加载中',
-				mask:true
-			});
 			const params = this.cardNoParams
 			if (params.noMoreData) return;
 			app.http.Get(`my/cuoka/user/cardNo/${params.orderCode}`, params, (data: any) => {
@@ -252,14 +256,11 @@
 					this.picData = this.picData.concat(listData);
 				}
 				if(data.totalPage<=params.pageIndex){
-					this.totalNum = data.total;
 					params.noMoreData = true;
-					uni.hideLoading();
-					if(cb) cb()
-				}else{
-					params.pageIndex++;
-					setTimeout(()=>{ this.reqNewData(cb) },10)
 				}
+				params.pageIndex++;
+				this.totalNum = data.total;
+				if(cb) cb()
 			});
 		}
 		onClickBack(){
