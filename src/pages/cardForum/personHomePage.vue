@@ -34,7 +34,7 @@
                         <text class="userData_num">{{ userInfo.fans || 0 }}</text>
                         <text class="userData_name">粉丝</text>
                     </view>
-                    <view class="userData_item" @click.stop="pageJump(`/pages/userinfo/user_follow`)">
+                    <view class="userData_item" @click.stop="onClickFollow">
                         <text class="userData_num">{{ userInfo.follow || 0 }}</text>
                         <text class="userData_name">关注</text>
                     </view>
@@ -257,6 +257,10 @@ export default class ClassName extends BaseNode {
         uni.navigateTo({
             url: url
         })
+    }
+    onClickFollow(){
+        if(!this.isMine) return
+        this.pageJump(`/pages/userinfo/user_follow`)
     }
     tabClick(event: any) {
         if (event.index == this.tabs.index) return
