@@ -52,6 +52,7 @@
 
 <script lang="ts">
 	import { app } from "@/app";
+	import { Md5 } from "ts-md5";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import { getGoodsImg, parsePic } from "../../tools/util";
@@ -63,6 +64,12 @@
 		pageIndex:1,
 		pageSize:10,
 	}
+	class CardParams {
+		fromId = 0;
+		fetchSize = 10;
+		ts = 0;
+		sn = ""
+	}
 	@Component({})
 	export default class ClassName extends BaseNode {
 		navigateBack = app.navigateTo.navigateBack;
@@ -72,13 +79,14 @@
 		tabList = Tab;
 		chooseId = 0;
 		goodCode = '';
-		teamDataList = [];
+		teamDataList:any = [];
 		listParams = {...ListParams};
 		searchQ = '';
 		noMore = false;
 		hasRandom = false;
 		showRulePopup = false;
 		randomList:any = [];
+		cardNoParams = new CardParams();
 		onLoad(query: any) {
 			if (query.chooseIds) {
 				this.chooseId = query.chooseIds;
@@ -97,9 +105,27 @@
 		}
 		getList(){
 			if(this.noMore) return;
+			if(this.chooseId!=0){
+				this.getResult()
+			}else{
+				this.getCardNo()
+			}
+		}
+		getCardNo(){
+			const { cardNoParams } = this;
+			cardNoParams.ts = Math.floor(new Date().getTime()/1000);
+			cardNoParams.sn = Md5.hashStr(`cardNo_${this.goodCode}_${cardNoParams.fromId}_${cardNoParams.ts}`);
+			app.http.Get(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchQ},(res:any)=>{
+				if(res.list){
+					this.teamDataList = this.teamDataList.concat(res.list)
+				}
+				this.noMore = res.isFetchEnd;
+				cardNoParams.fromId = this.teamDataList[this.teamDataList.length-1].id;
+			})
+		}
+		getResult(){
 			const { listParams } = this;
-			const httpUrl = this.chooseId==0 ? 'cardNo' : 'cardNoResult';
-			app.http.Get(`dataApi/good/${this.goodCode}/${httpUrl}`,{...listParams,q:this.searchQ},(res:any)=>{
+			app.http.Get(`dataApi/good/${this.goodCode}/cardNoResult`,{...listParams,q:this.searchQ},(res:any)=>{
 				if(res.list){
 					this.teamDataList = this.teamDataList.concat(res.list)
 				}
@@ -110,7 +136,8 @@
 			})
 		}
 		resetList(){
-			this.listParams = {...ListParams}
+			this.listParams = {...ListParams};
+			this.cardNoParams = new CardParams();
 			this.noMore = false;
 			this.teamDataList = [];
 		}
