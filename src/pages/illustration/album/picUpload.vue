@@ -3,13 +3,13 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-03 18:16:23
+ * @LastEditTime: 2023-08-09 17:11:28
  * Copyright: 2023 .
  * @Descripttion: 
 -->
 <template>
 	<view class="album-card-content">
-		<navigationbar title="上传卡片" :customBack="true" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true" @back="sheetShow=true">
+		<navigationbar title="上传图片" :customBack="true" backgroundColor="#000" backColor="#fff" borderBottom="none" :custom="true" @back="sheetShow=true">
 			<template slot="right">
 				<view class="segment" @click="segmentCheck=!segmentCheck">
 					<view class="check" :class="{'check_':segmentCheck}"></view>
@@ -46,7 +46,7 @@
 			</view>
 		</view>
 		<albumBottom ref="albumBtn" :canNext="uploadPercent>0" :saveData="formData" :draftId="draftId" :selectSeries.sync="selectSeries" :percent="uploadPercent" :step="2" @next="onClickNext()"/>
-		<albumActionSheet :show.sync="sheetShow" :listId="[1,2,3]" @select="onSheetSelect(2)" @save="onSheetSelect(3)"/>
+		<albumActionSheet :show.sync="sheetShow" :listId="[2,3]" @select="onSheetSelect(2)" @save="onSheetSelect(3)"/>
 	</view>
 </template>
 

@@ -2,7 +2,7 @@
 	<view class="upload-center">
 		<view class="center-header">
 			<view class="header-segment"></view>
-			<view class="header-pe">
+			<view class="header-pe" v-show="showPe">
 				<view class="pe-item" :class="{'pe-current':peCurrent==index}" v-for="(item,index) in peTab" :key="index" @click="onClickPeCurrent(index)">{{item}}</view>
 			</view>
 		</view>
@@ -87,6 +87,9 @@
 		}
 		destroyed(){
 			
+		}
+		public get showPe() : boolean {
+			return  !this.illustration  ||  (!this.illustration.frontPic || this.illustration.backPic)
 		}
 		onClickPeCurrent(index:number){
 			if(this.peCurrent==index) return;
