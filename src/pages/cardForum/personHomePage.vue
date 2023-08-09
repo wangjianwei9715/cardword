@@ -94,8 +94,8 @@
                 </view>
             </template>
         </waterfalls>
-        <forumEmpty style="margin-top: 20rpx;" type="forum" v-if="showEmpty" @onClickButton="app.navigateTo.switchTab(2)" :showButton="isMine"
-            :tips="isMine ? '您还没有创建动态/卡册哦～' : 'ta还没有创建动态/卡册哦～'">
+        <forumEmpty style="margin-top: 20rpx;" type="forum" v-if="showEmpty" @onClickButton="app.navigateTo.switchTab(2)"
+            :showButton="isMine" :tips="isMine ? '您还没有创建动态/卡册哦～' : 'ta还没有创建动态/卡册哦～'">
         </forumEmpty>
         <u-action-sheet :safeAreaInsetBottom="true" @select="onSelect" cancelText="取消" @close="menuShow = false"
             :actions="menuList" :show="menuShow"></u-action-sheet>
@@ -219,6 +219,7 @@ export default class ClassName extends BaseNode {
     }
     public get showEmpty() {
         if (!this.isMine) return false
+        if (!this.current) return false
         if (this.current.name == "动态" || this.current.name == "卡册") {
             if (this.current.name == "动态") {
                 return !this.current.list.length && !this.draftListByDynamic.length
