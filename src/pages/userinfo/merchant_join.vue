@@ -332,7 +332,7 @@ export default class ClassName extends BaseNode {
     const isArr: boolean = typeof src != 'string';
     const filePaths = (isArr ? src : [src]).map((item: any) => {
       return {
-        fileName: `merchantJoin${type}/${this.ossutils.getFileName(item)}`,
+        fileName: `merchantJoin${type=="Video"?"Video":"Image"}/${this.ossutils.getFileName(item)}`,
         url: item
       }
     })
