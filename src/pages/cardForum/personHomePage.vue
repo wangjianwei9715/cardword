@@ -94,6 +94,9 @@
                 </view>
             </template>
         </waterfalls>
+        <forumEmpty style="margin-top: 20rpx;" type="forum" v-if="showEmpty" @onClickButton="app.navigateTo.switchTab(2)" :showButton="isMine"
+            :tips="isMine ? '您还没有创建动态/卡册哦～' : 'ta还没有创建动态/卡册哦～'">
+        </forumEmpty>
         <u-action-sheet :safeAreaInsetBottom="true" @select="onSelect" cancelText="取消" @close="menuShow = false"
             :actions="menuList" :show="menuShow"></u-action-sheet>
     </view>
@@ -106,6 +109,7 @@ import BaseNode from '@/base/BaseNode.vue';
 import waterfalls from "./components/waterfalls.vue"
 import { getDraftList, followActionByUser } from "./func"
 import Upload from "@/tools/upload"
+import forumEmpty from "./components/empty.vue"
 const navHeight = app.statusBarHeight + uni.upx2px(88)
 const mineTabs: any = [
     {
@@ -157,7 +161,8 @@ const defaultTagObj = {
 }
 @Component({
     components: {
-        waterfalls
+        waterfalls,
+        forumEmpty
     }
 })
 export default class ClassName extends BaseNode {
@@ -185,7 +190,7 @@ export default class ClassName extends BaseNode {
         this.isMine = query.isMine == "1" //后续解除注释
         if (this.isMine) {
             this.draftListByDynamic = getDraftList("dynamic", this.isMine ? app.data.userId : this.userId)
-            this.draftListByCardBook = getDraftList("cardBook", this.isMine ? app.data.userId:this.userId)
+            this.draftListByCardBook = getDraftList("cardBook", this.isMine ? app.data.userId : this.userId)
             uni.$on("refreshDraft", this.refreshDraft)
             uni.$on("finishSign", this.finishSign)
         }
@@ -211,6 +216,18 @@ export default class ClassName extends BaseNode {
     }
     public get current() {
         return this.tabs.list[this.tabs.index]
+    }
+    public get showEmpty() {
+        if (!this.isMine) return false
+        if (this.current.name == "动态" || this.current.name == "卡册") {
+            if (this.current.name == "动态") {
+                return !this.current.list.length && !this.draftListByDynamic.length
+            }
+            if (this.current.name == "卡册") {
+                return !this.current.list.length && !this.draftListByCardBook.length
+            }
+        }
+        return false
     }
     refreshDraft() {
         this.draftListByDynamic = getDraftList("dynamic", this.userId)
@@ -258,8 +275,8 @@ export default class ClassName extends BaseNode {
             url: url
         })
     }
-    onClickFollow(){
-        if(!this.isMine) return
+    onClickFollow() {
+        if (!this.isMine) return
         this.pageJump(`/pages/userinfo/user_follow`)
     }
     tabClick(event: any) {
