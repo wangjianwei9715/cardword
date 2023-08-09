@@ -64,6 +64,7 @@
 
 <script lang="ts">
 	import { app } from "@/app";
+import { Md5 } from "ts-md5";
 	import {
 		Component
 	} from "vue-property-decorator";
@@ -71,13 +72,19 @@
 	import {
 		dateFormat,getGoodsImg, parsePic
 	} from "../../tools/util";
+	class CardParams {
+		fromId = 0;
+		fetchSize = 10;
+		ts = 0;
+		sn = ""
+	}
 	@Component({})
 	export default class ClassName extends BaseNode {
 		defaultAvatar = app.defaultAvatar;
 		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
 		goodCode = '';
 		orderCode = '';
-		teamDataList = [];
+		teamDataList:any = [];
 		teamDataList2 = [];
 		getGoodsImg = getGoodsImg;
 		dateFormat = dateFormat;
@@ -85,6 +92,7 @@
 		currentPage = 1;
 		noMore = false;
 		searchTetxt = "";
+		cardNoParams = new CardParams();
 		onLoad(query: any) {
 			if (query.chooseIds) {
 				this.chooseId = query.chooseIds;
@@ -110,21 +118,15 @@
 			if(this.noMore){
 				return;
 			}
-			let params = {
-				q:this.searchTetxt,
-				pageIndex:this.currentPage,
-				pageSize:15
-			}
-			app.http.Get('good/'+this.goodCode+'/cardNo',params,(res:any)=>{
+			const { cardNoParams } = this;
+			cardNoParams.ts = Math.floor(new Date().getTime()/1000);
+			cardNoParams.sn = Md5.hashStr(`cardNo_${this.goodCode}_${cardNoParams.fromId}_${cardNoParams.ts}`);
+			app.http.Get(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchTetxt},(res:any)=>{
 				if(res.list){
 					this.teamDataList = this.teamDataList.concat(res.list)
-				}else{
-					this.noMore = true
 				}
-				if(res.list.length<15){
-					this.noMore = true
-				}
-				this.currentPage++;
+				this.noMore = res.isFetchEnd;
+				cardNoParams.fromId = this.teamDataList[this.teamDataList.length-1].id;
 			})
 		}
 		getTpCardNoResult(){
@@ -169,7 +171,8 @@
 			this.currentPage = 1;
 			this.noMore = false;
 			this.teamDataList = [];
-			this.teamDataList2 = []
+			this.teamDataList2 = [];
+			this.cardNoParams = new CardParams();
 		}
 		onClickSearch(text:string){
 			if(this.chooseId==0){
