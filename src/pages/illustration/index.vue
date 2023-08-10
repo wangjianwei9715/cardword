@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-10 11:24:50
+ * @LastEditTime: 2023-08-10 15:10:23
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -23,7 +23,7 @@
 					</view>
 					<view class="hot-desc">{{item.year}}</view>
 					<view class="hot-desc desc-name">{{item.name}}</view>
-					<view class="hot-percent">完整度{{item.percent}}%</view>
+					<view class="hot-percent">{{item.uploadNum>0?item.uploadNum+"张":"待补充"}}</view>
 				</view>
 			</view>
 		</view>
