@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-09 10:49:12
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-09 16:27:15
+ * @LastEditTime: 2023-08-10 14:09:12
  * @FilePath: \card-world\src\pages\cardForum\components\empty.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -96,9 +96,9 @@ export default {
 }
 
 .button {
-    width: 164rpx;
+    width: 163rpx;
     height: 61rpx;
-    border: 2rpx solid #C0C0C0;
+    border: 1rpx solid #C0C0C0;
     border-radius: 3rpx;
     text-align: center;
     line-height: 61rpx;
@@ -106,6 +106,6 @@ export default {
     font-family: PingFang SC;
     font-weight: 400;
     color: #FA1545;
-    margin-top: 24rpx;
+    margin-top: 25rpx;
 }
 </style>

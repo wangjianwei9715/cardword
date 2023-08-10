@@ -187,10 +187,12 @@ const tabsList = [
     }, {
         name: 'SHOW卡',
         tag: 'show'
-    }, {
-        name: '视频',
-        tag: 'video'
-    }, {
+    },
+    //  {
+    //     name: '视频',
+    //     tag: 'video'
+    // }, 
+    {
         name: '卡册',
         tag: 'album'
     },
@@ -207,7 +209,7 @@ const tabsList = [
         tag: 'foot'
     },
     {
-        name: '影视',
+        name: '动漫影视',
         tag: 'animeTv'
     },
     {
