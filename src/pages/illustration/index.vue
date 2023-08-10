@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-16 17:01:28
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-24 14:27:50
+ * @LastEditTime: 2023-08-10 11:24:50
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -40,7 +40,7 @@
 			<view class="series-nolist">
 				<scroll-view class="scroll-box" scroll-x="true">
 					<view class="scroll-index" v-for="(pitem,pindex) in item.noList" :key='pindex'>
-						<muqian-lazyLoad @click="onClickPreviewImage(item.noList,pindex)" class="series-pic" borderRadius="3rpx" :src="decodeURIComponent(pitem.pic)" />
+						<muqian-lazyLoad @click="onClickPreviewImage(item.noList,pindex)" class="series-pic" borderRadius="3rpx" :src="decodeURIComponent(pitem.pic)" mode="aspectFit"/>
 					</view>
 				</scroll-view>
 			</view>

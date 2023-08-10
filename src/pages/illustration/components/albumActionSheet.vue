@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-08-03 17:02:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-09 17:11:05
+ * @LastEditTime: 2023-08-10 10:06:54
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -19,9 +19,9 @@
 	import { app } from "@/app";
 	const listOption = [
 		{ id:1, name:'返回' ,subname:"返回后编辑内容将不会保留"},
-		{ id:2, name:'返回添加卡种' },
-		{ id:4, name:'返回上传图片',},
-		{ id:3, name:'保存并退出' },
+		{ id:2, name:'返回添加卡种',emit:"select" },
+		{ id:4, name:'返回上传图片',emit:"edit"},
+		{ id:3, name:'保存并退出',emit:"save" },
 	]
 	@Component({})
 	export default class ClassName extends BaseComponent {
@@ -33,15 +33,11 @@
 			const filteredData = listOption.filter(option => this.listId.includes(option.id));
 			return filteredData
 		}
-		onSheetSelect({id}:any){
+		onSheetSelect({id,emit}:any){
 			if(id==1){
 				app.navigateTo.navigateBack()
-			}else if(id==2){
-				this.$emit('select')
-			}if(id==3){
-				this.$emit('save')
-			}else if (id==4){
-				this.$emit('edit')
+			}else {
+				this.$emit(emit)
 			}
 		}
 	}
