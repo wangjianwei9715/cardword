@@ -1,12 +1,3 @@
-<!--
- * @FilePath: \jichao_app_2\src\pages\illustration\components\albumActionSheet.vue
- * @Author: wjw
- * @Date: 2023-08-03 17:02:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-11 14:27:55
- * Copyright: 2023 .
- * @Descripttion: 
--->
 <template>
 	<view>
 		<u-action-sheet :actions="actionsList" :show="showAction" cancelText="取消" @select="onSheetSelect" @close="showAction=false"></u-action-sheet>
@@ -49,11 +40,9 @@
 					success: (res)=>{
 						if (res.confirm) {
 							const curPage: any = getCurrentPages();
-							console.log(curPage)
 							const backLength = curPage.filter((item:any)=>{
 								return releaseRoute.includes(item.route)
 							}).length;
-							console.log(backLength)
 							app.navigateTo.navigateBack(backLength)
 						}
 					}
