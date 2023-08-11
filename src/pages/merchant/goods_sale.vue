@@ -2,13 +2,13 @@
  * @FilePath: \jichao_app_2\src\pages\merchant\goods_sale.vue
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-06 10:49:44
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-11 13:56:36
  * Copyright: 2022 .
  * @Descripttion: 
 -->
 <template>
-    <view class="content">
+    <view class="content" style="width: 100%;">
         <view class="goods-item" v-for="(item,index) in listData" :key="index">
             <view class="item-header">
                 <view class="item-time">上架时间 {{$u.timeFormat(item.active_at,'yyyy-mm-dd hh:MM')}}</view>

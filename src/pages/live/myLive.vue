@@ -89,7 +89,7 @@
 		}
 		getList(cb ? : Function) {
 			app.http.Get('funcApi/brodcast/third/1001/achor/roomlist', this.queryParams, (res: any) => {
-				this.isFetchEnd = res.isFetchEnd || true
+				this.isFetchEnd = res.isFetchEnd
 				const dataList = res.list || []
 				this.dataList = this.queryParams.fetchFrom == 1 ? dataList : [...this.dataList, ...dataList]
 				cb && cb()
