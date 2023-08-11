@@ -792,7 +792,7 @@ export default {
         shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/live/liveShare?roomID=${this.roomID
           }&funcApi=${encodeURIComponent(app.funcApiDomain)}`,
         summary: `${data.title}的直播间`,
-        thumb: this.parsePic(decodeURIComponent(data.cover))
+        thumb: this.parsePic(decodeURIComponent(data.cover))+"?x-oss-process=image/resize,h_100,w_100"
       };
     },
     leaveRoom() {
