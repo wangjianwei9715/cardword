@@ -15,7 +15,7 @@
 										<muqian-lazyLoad class="pic" borderRadius="3rpx" :src="decodeURIComponent(litem.logo||defaultSeriesLogo)" />
 									</view>
 									<view class="series-name">{{litem.name}}</view>
-									<view class="series-percent">完整度{{litem.percent}}%</view>
+									<view class="series-percent">{{litem.uploadNum>0?litem.uploadNum+"张":"待补充"}}</view>
 								</view>
 							</view>
 							<view v-if="!item.isFetchEnd" class="scroll-more" @click="getSeriesMore(index)">
