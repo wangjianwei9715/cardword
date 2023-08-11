@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-03 17:14:24
+ * @LastEditTime: 2023-08-11 14:11:38
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -34,7 +34,7 @@
 			</view>
 		</view>
 		<albumBottom :showSave="false" :canNext="getSeriesNolistLength" :draftId="draftId" :selectSeries.sync="selectSeries" :step="1" @next="onClickNext()"/>
-		<albumActionSheet :show.sync="sheetShow" :listId="[1]"/>
+		<albumActionSheet :show.sync="sheetShow" :listId="[edit?1:0,5]"/>
 	</view>
 </template>
 
@@ -148,7 +148,7 @@
 				uni.$emit("editNoSelect",this.selectSeries);
 				app.navigateTo.navigateBack()
 			}else{
-				uni.navigateTo({
+				uni.redirectTo({
 					url:`/pages/illustration/album/picUpload?selectSeries=${encodeURIComponent(JSON.stringify(this.selectSeries))}&draftId=${this.draftId}`
 				})
 			}

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-09 17:08:30
+ * @LastEditTime: 2023-08-11 14:13:28
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -98,7 +98,7 @@
         <view class="bottomSafeArea" style="height:180rpx;pointer-events: none;"></view>
         <u-toast ref="uToast" v-if="submitLock"></u-toast>
 
-        <albumActionSheet :show.sync="sheetShow" :listId="[albumRelease?4:0,3]" @save="onClickSaveDraft" @edit="onClickBackEdit"/>
+        <albumActionSheet :show.sync="sheetShow" :listId="[albumRelease?4:1,3]" @save="onClickSaveDraft" @edit="onClickBackEdit"/>
     </view>
 </template>
 
