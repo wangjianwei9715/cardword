@@ -487,7 +487,7 @@
 						shareUrl: `share/h5/#/pages/goods/goods_details?id=${goodCode}`,
 						title,
 						summary: title,
-						thumb: pic.thumb||this.picData.carousel[0]
+						thumb: pic.thumb||this.picData.carousel[0]+`?x-oss-process=image/resize,h_100,w_100`
 					}
 				}
 				shareObj.shareShow = true
