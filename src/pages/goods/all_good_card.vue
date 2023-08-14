@@ -83,7 +83,7 @@
 			}
 			if(this.teamId>0) params.teamId = this.teamId;
 			
-			app.http.Get("dataApi/good/"+this.goodCode+'/noList', params, (data: any) => {
+			app.http.GetWithCrypto("dataApi/good/"+this.goodCode+'/noList', params, (data: any) => {
 				this.goodTitle = data.goodTitle;
 				if(data.totalPage<=this.currentPage){
 					this.noMoreData = true;
