@@ -1,4 +1,5 @@
-import {Md5} from "ts-md5"
+import { Md5 } from "ts-md5"
+import {app} from "@/app"
 const EncodeMap = [0xC2, 0x73, 0x2E, 0xAC, 0xC3, 0x39, 0x2D, 0x0C, 0x4E, 0xB5, 0xF6, 0xA8, 0x10, 0xDA, 0x44, 0xF8,
     0xF2, 0xB8, 0x07, 0xBE, 0xD8, 0x3B, 0xA0, 0xBD, 0x0E, 0x75, 0x71, 0x48, 0xD2, 0x00, 0x78, 0x45,
     0x0F, 0x30, 0x8D, 0x80, 0x22, 0x9B, 0x13, 0x26, 0x6E, 0x3F, 0x4C, 0xF0, 0x23, 0x31, 0x38, 0x2F,
@@ -15,42 +16,52 @@ const EncodeMap = [0xC2, 0x73, 0x2E, 0xAC, 0xC3, 0x39, 0x2D, 0x0C, 0x4E, 0xB5, 0
     0x3C, 0x81, 0x65, 0xE4, 0xAA, 0x56, 0xF9, 0x37, 0x08, 0x61, 0xB0, 0x49, 0xFB, 0xD5, 0x1A, 0x88,
     0xFE, 0xA9, 0x91, 0xE1, 0xBA, 0x20, 0xD4, 0xC5, 0xA3, 0xF1, 0x54, 0x43, 0x5B, 0xFD, 0x33, 0xE0,
     0x28, 0xBF, 0xE7, 0x35, 0xB7, 0x3A, 0xDC, 0x74, 0xCE, 0xE8, 0x12, 0x47, 0xAB, 0x17, 0x79, 0x89]
-interface Crypto{
-    noce:number
-    ts:number
-    swap:string
-    path:string
+interface Crypto {
+    noce: number
+    ts: number
+    swap: string
+    path: string
 }
-export  function GetCrypto(path:string):string {
-    let Crypto:Crypto={} as Crypto
+export function GetCrypto(path: string): string {
+    let Crypto: Crypto = {} as Crypto
     const nowTimeStamp = Math.round(+new Date() / 1000)
     Crypto.noce = getRandomInt(1, 500)
-    Crypto.path = path
-    let EncodeMapIndexArray = [1, 244, 8, 19, 7, 11, 3, 156]
+    Crypto.path = parsePath(path)
+    let EncodeMapIndexArray: Array<number> = []
     while (EncodeMapIndexArray.length < 8) {
         const index = getRandomInt(0, EncodeMap.length - 1)
         if (!EncodeMapIndexArray.includes(index)) {
             EncodeMapIndexArray.push(index)
         }
     }
-    Crypto.swap=hexEncodeToString(new Uint8Array(EncodeMapIndexArray))
-    Crypto.ts=nowTimeStamp
-    const Str=`${Crypto.swap}_${nowTimeStamp}_${Crypto.noce}_${Crypto.path}`
-    const md5Str=Md5.hashStr(Str)
-    return `Swap="${Crypto.swap}",Timestamp=${Crypto.ts},Nonce=${Crypto.noce},Signature="${enc1(md5Str)}"`
+    Crypto.swap = hexEncodeToString(new Uint8Array(EncodeMapIndexArray))
+    Crypto.ts = nowTimeStamp
+    const Str = `${Crypto.swap}_${nowTimeStamp}_${Crypto.noce}_${Crypto.path}`
+    const md5Str = Md5.hashStr(Str)
+    return `Swap="${Crypto.swap}",Timestamp=${Crypto.ts},Nonce=${Crypto.noce},Signature="${enc1(md5Str, EncodeMapIndexArray)}"`
 }
-function getRandomInt(min:number, max:number) {
+function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-function enc1(raw:any) {
+function parsePath(path:string):string{
+    let newPath=(app.requestVersion+path).replace("/dataApi","").split("?")[0]
+    return newPath || ""
+}
+function enc1(raw: any, EncodeMapIndexArray: Array<number>) {
     //@ts-ignore
     const hexStr = Buffer.from(raw).toString('hex');
     const encodedHexStr = [];
+    let swappedArray = [...EncodeMap]
+    for (let i = 0; i < EncodeMapIndexArray.length; i += 2) {
+        const index1 = EncodeMapIndexArray[i] - 1;
+        const index2 = EncodeMapIndexArray[i + 1] - 1;
+        [swappedArray[index1], swappedArray[index2]] = [swappedArray[index2], swappedArray[index1]];
+    }
     for (let i = 0; i < hexStr.length; i++) {
         const c = hexStr[i];
         const charCode = c.charCodeAt(0);
         //@ts-ignore
-        const h = (charCode in EncodeMap) ? EncodeMap[charCode].toString(16).toUpperCase() : '';
+        const h = (charCode in swappedArray) ? swappedArray[charCode].toString(16).toUpperCase() : '';
         if (h.length === 1) {
             encodedHexStr.push('0' + h);
         } else {
@@ -60,7 +71,7 @@ function enc1(raw:any) {
 
     return encodedHexStr.join('');
 }
-function hexEncodeToString(bytes:any) {
+function hexEncodeToString(bytes: any) {
     let hexString = '';
     for (let i = 0; i < bytes.length; i++) {
         const byte = bytes[i];

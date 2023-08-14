@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-24 14:13:48
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-14 14:10:28
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -11,6 +11,7 @@ import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
 import { data } from 'browserslist';
 import { Md5 } from 'ts-md5';
+import {GetCrypto} from "@/tools/Crypto"
 import {
 	objKeySort,
 	getUrlData
@@ -249,9 +250,17 @@ export default class HttpRequest {
 	Login() {
 
 	}
-	Post(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function) {
+	PostWithCrypto(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function){
+		const SIG=GetCrypto(reqUrl)
+		this.Post(reqUrl,params,cb,errorCb,{"OPEN-AUTH-SIG":SIG})
+	}
+	GetWithCrypto(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function){
+		const SIG=GetCrypto(reqUrl)
+		this.Get(reqUrl,params,cb,errorCb,{"OPEN-AUTH-SIG":SIG})
+	}
+	Post(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function,headers?:{[x: string]: any}) {
 		let newParams = objKeySort(params)
-		this.axiosInstance.post(reqUrl, newParams).then((response: any) => {
+		this.axiosInstance.post(reqUrl, newParams,{headers:headers||{}}).then((response: any) => {
 			if (response.data) {
 				if (response.data.code == 0) {
 					if (cb) cb(response.data);
@@ -295,7 +304,7 @@ export default class HttpRequest {
 
 		});
 	}
-	Get(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function) {
+	Get(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function,headers?:{[x: string]: any}) {
 		// 防止列表请求还未响应时重复请求 响应拦截器内删除
 		if (this.debounceUrl == reqUrl && debounceData.indexOf(reqUrl) == -1) return;
 		this.debounceUrl = reqUrl;
@@ -305,7 +314,7 @@ export default class HttpRequest {
 			p.push(`${key}=${newParams[key]}`);
 		}
 		var strParams = p.join('&');
-		this.axiosInstance.get(reqUrl + '?' + strParams).then((response) => {
+		this.axiosInstance.get(reqUrl + '?' + strParams,{headers:headers||{}}).then((response) => {
 			if (response.data && response.data.code == 0) {
 				if (cb) cb(response.data);
 			} else if (response.data.code == 1000) {
