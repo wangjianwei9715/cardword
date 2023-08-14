@@ -53,8 +53,8 @@ function enc1(raw: any, EncodeMapIndexArray: Array<number>) {
     const encodedHexStr = [];
     let swappedArray = [...EncodeMap]
     for (let i = 0; i < EncodeMapIndexArray.length; i += 2) {
-        const index1 = EncodeMapIndexArray[i] - 1;
-        const index2 = EncodeMapIndexArray[i + 1] - 1;
+        const index1 = EncodeMapIndexArray[i];
+        const index2 = EncodeMapIndexArray[i + 1];
         [swappedArray[index1], swappedArray[index2]] = [swappedArray[index2], swappedArray[index1]];
     }
     for (let i = 0; i < hexStr.length; i++) {
