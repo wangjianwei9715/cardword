@@ -17,7 +17,7 @@
 				<view class="upload-center">
 					<view class="center-header">
 						<view class="header-segment"></view>
-						<view class="header-pe">
+						<view class="header-pe" v-show="showPe">
 							<view class="pe-item" :class="{'pe-current':peCurrent==index}" v-for="(item,index) in peTab" :key="index" @click="onClickPeCurrent(index)">{{item}}</view>
 						</view>
 					</view>
@@ -68,6 +68,9 @@
 		mounted(){//挂载到实例上去之后调用
 			
 		}
+		public get showPe() : boolean {
+			return  this.currentItem.backPic
+		}
 		public get currentItem() : any {
 			return this.list[this.currentNum-1]
 		}
@@ -100,6 +103,7 @@
 		}
 		onClickUp(){
 			if(this.currentNum<=1) return;
+			this.peCurrent=0;
 			this.currentNum--;
 		}
 		onClickNext(){
@@ -111,6 +115,7 @@
 				this.$emit('loadmore')
 				return;
 			}
+			this.peCurrent=0;
 			this.currentNum ++;
 		}
 	}

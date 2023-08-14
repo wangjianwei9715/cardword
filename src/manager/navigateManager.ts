@@ -93,7 +93,7 @@ export default class navigateManager {
 			url: this.switchMap[index]
 		})
 	}
-	navigateBack() {
-		uni.navigateBack({ delta: 1 });
+	navigateBack(delta=1) {
+		uni.navigateBack({ delta });
 	}
 }
