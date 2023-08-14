@@ -63,7 +63,7 @@
             </div>
         </u-sticky>
         <waterfalls v-if="current" style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall"
-            :showBottom="current.name != '中卡'" :detailBack="true" :isMine="isMine" :showUser="false"
+            :showBottom="current.name != '中卡'" :detailBack="true" :isMine="isMine" :showUser="showUser"
             :value="tabs.list[tabs.index].list" :refresh="false" :showEmpty="!isMine">
             <template slot="list1" v-if="current.name == '动态' && draftListByDynamic.length">
                 <view class="draftWrap" @click="pageJump('/pages/cardForum/draftList?draftType=dynamic')">
@@ -229,6 +229,11 @@ export default class ClassName extends BaseNode {
             }
         }
         return false
+    }
+    public get showUser(){
+        if (!this.current) return false
+        if (this.current.name=="动态" || this.current.name=="卡册") return false
+        return true
     }
     refreshDraft() {
         this.draftListByDynamic = getDraftList("dynamic", this.userId)
