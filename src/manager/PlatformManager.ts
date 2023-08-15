@@ -192,7 +192,25 @@ export default class PlatformManager {
 		// 	url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + id
 		// })
 		// #endif
-
+	}
+	getGuideData(){
+		if(!app.guide.request){
+			app.http.Get("social/guide/isNeed",{uuid:app.platform.deviceID},(res:any)=>{
+				app.guide = {
+					request:true,
+					illustration:res.data.illustration,
+					cardCircle:res.data.cardCircle
+				},
+				this.setGuideData()
+			})
+		}
+	}
+	finishGuideData(tp:number){ //tp 1 图鉴，2 卡圈
+		this.setGuideData()
+		app.http.Post("social/guide/finish",{uuid:app.platform.deviceID,tp})
+	}
+	setGuideData(){
+		uni.setStorageSync("GUIDE_DATA",app.guide);
 	}
 	pageBack(params?:number | UniApp.NavigateBackOptions) {
 		// #ifdef APP-NVUE

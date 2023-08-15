@@ -4,10 +4,10 @@
 		</transitionNav>
 		<view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
 		<view class="hot" :class="{'guide-show':guideShowStep(1)}">
-			<u-cell :disabled="illustrationGuide" url="seriesSelect" title="热门图鉴" :titleStyle="titleStyle" :border="false">
+			<u-cell :disabled="illustrationGuide||disabledCell" url="seriesSelect" title="热门图鉴" :titleStyle="titleStyle" :border="false">
 				<view slot="value" class="cell-value" :class="{'guide-show':guideShowStep(3)}">
 					全部图鉴<image class="cell-right" src="@/static/goods/v2/icon_right_new.png"/>
-					<guideStep :step="3" :show="guideShowStep(3)" @next="illustrationGuide=false"/>
+					<guideStep :step="3" :show="guideShowStep(3)" @next="guideEnd"/>
 				</view>
 			</u-cell>
 			<view class="hot-box">
@@ -78,15 +78,19 @@
 		listParams = new ListParams()
 		hotSeriesList = [];
 		seriesLst = [];
-		illustrationGuide = false;
+		illustrationGuide = app.guide.illustration;
+		disabledCell = app.guide.illustration;
 		guideStep = 1;
-		onLoad(query: any) {
-			this.illustrationGuide = !Boolean(uni.getStorageSync('illustrationGuide'));
-			uni.setStorageSync('illustrationGuide',true)
-			this.initEvent()
-		}
 		onShow(){
 			uni.showTabBar({ animation: false })
+		}
+		onLoad(query: any) {
+			this.initEvent()
+			if(app.guide.illustration){
+				uni.hideTabBar()
+				app.guide.illustration = false;
+				app.platform.finishGuideData(1);
+			}
 		}
 		//   加载更多数据
 		onReachBottom() {
@@ -97,6 +101,13 @@
 		}
 		guideShowStep(step:number){
 			return this.illustrationGuide&&step===this.guideStep;
+		}
+		guideEnd(){
+			this.illustrationGuide=false;
+			uni.showTabBar({ animation: false })
+			setTimeout(()=>{
+				this.disabledCell = false;
+			},200)
 		}
 		initEvent(){
 			this.getHotSeries();
