@@ -288,7 +288,7 @@ export default {
                 // #endif
             }, 100)
             if (uni.getStorageSync('showKace')) {
-                this.tabs.index = 4;
+                this.tabs.index = 3;
                 uni.removeStorageSync('showKace');
             }
             this.getFollowDot()
