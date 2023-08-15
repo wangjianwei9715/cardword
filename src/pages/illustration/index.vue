@@ -1,23 +1,17 @@
-<!--
- * @FilePath: \jichao_app_2\src\pages\illustration\index.vue
- * @Author: wjw
- * @Date: 2023-06-16 17:01:28
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-10 15:10:23
- * Copyright: 2023 .
- * @Descripttion: 
--->
 <template>
-	<view class="content">
+	<view class="view-content" :class="{'body-hidden':illustrationGuide}">
 		<transitionNav :showBack="false" :needIconShadow="false" :transition="false" title="图鉴">
 		</transitionNav>
 		<view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
-		<view class="hot">
-			<u-cell url="seriesSelect" title="热门图鉴" :titleStyle="titleStyle" :border="false">
-				<view slot="value" class="cell-value">全部图鉴<image class="cell-right" src="@/static/goods/v2/icon_right_new.png"/></view>
+		<view class="hot" :class="{'guide-show':guideShowStep(1)}">
+			<u-cell :disabled="illustrationGuide" url="seriesSelect" title="热门图鉴" :titleStyle="titleStyle" :border="false">
+				<view slot="value" class="cell-value" :class="{'guide-show':guideShowStep(3)}">
+					全部图鉴<image class="cell-right" src="@/static/goods/v2/icon_right_new.png"/>
+					<guideStep :step="3" :show="guideShowStep(3)" @next="illustrationGuide=false"/>
+				</view>
 			</u-cell>
 			<view class="hot-box">
-				<view class="hot-index" v-for="(item,index) in hotSeriesList" :key="index" @click="onClickGoDetail(item.code)">
+				<view class="hot-index" v-for="(item,index) in showHotSeriesList" :key="index" @click="onClickGoDetail(item.code)">
 					<view class="hot-pic">
 						<muqian-lazyLoad class="pic" borderRadius="3rpx" :src="decodeURIComponent(item.logo||defaultSeriesLogo)" />
 					</view>
@@ -26,8 +20,9 @@
 					<view class="hot-percent">{{item.uploadNum>0?item.uploadNum+"张":"待补充"}}</view>
 				</view>
 			</view>
+			<guideStep :step="1" :show="guideShowStep(1)" @next="guideStep=2"/>
 		</view>
-		<view class="series" v-for="(item,index) in seriesLst" :key="index">
+		<view class="series" :class="{'guide-show':guideShowStep(2)&&index==0}" v-for="(item,index) in seriesLst" :key="index">
 			<view class="series-header" @click="onClickGoDetail(item.serieCode)">
 				<muqian-lazyLoad class="series-logo" borderRadius="3rpx" :src="decodeURIComponent(item.logo||defaultSeriesLogo)" />
 				<view class="series-header-right">
@@ -44,8 +39,11 @@
 					</view>
 				</scroll-view>
 			</view>
+			<guideStep :step="2" :show="guideShowStep(2)&&index==0" @next="guideStep=3"/>
 		</view>
 		<u-loadmore v-show="listParams.isFetchEnd" status="nomore" line/>
+
+		<view v-show="illustrationGuide" class="guide-shadow"></view>
 	</view>
 </template>
 
@@ -55,6 +53,7 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	import { parsePic } from '@/tools/util'
 	import { illustration } from './constants/constants'
+	import guideStep from "./components/guideStep.vue";
 	class ListParams {
 		noSize=10;
 		fetchFrom=1;
@@ -62,7 +61,9 @@
 		isFetchEnd=false
 	}
 	const navHeight: number = app.statusBarHeight + uni.upx2px(88)
-	@Component({})
+	@Component({
+		components:{guideStep}
+	})
 	export default class ClassName extends BaseNode {
 		navHeight = navHeight;
 		defaultSeriesLogo = illustration.defaultSeriesLogo;
@@ -77,7 +78,11 @@
 		listParams = new ListParams()
 		hotSeriesList = [];
 		seriesLst = [];
+		illustrationGuide = false;
+		guideStep = 1;
 		onLoad(query: any) {
+			this.illustrationGuide = !Boolean(uni.getStorageSync('illustrationGuide'));
+			uni.setStorageSync('illustrationGuide',true)
 			this.initEvent()
 		}
 		onShow(){
@@ -87,11 +92,18 @@
 		onReachBottom() {
 			this.getSeries() 
 		}
+		public get showHotSeriesList() : any[] {
+			return this.illustrationGuide&&this.guideStep==1 ? this.hotSeriesList.slice(0,4) : this.hotSeriesList;
+		}
+		guideShowStep(step:number){
+			return this.illustrationGuide&&step===this.guideStep;
+		}
 		initEvent(){
 			this.getHotSeries();
 			this.getSeries();
 		}
 		onClickGoDetail(code:string){
+			if(this.illustrationGuide) return;
 			uni.navigateTo({
 				url:`seriesDetail?seriesCode=${code}`
 			})
@@ -116,6 +128,7 @@
 			})
 		}
 		onClickPreviewImage(pic:any[],index: number) {
+			if(this.illustrationGuide) return;
 			const urls = pic.map((x)=> this.parsePic(x.pic));
 			uni.previewImage({
 				urls,
@@ -130,35 +143,41 @@
 	page{
         background:#F6F7F8;
     }
+	.body-hidden {
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		position: fixed;
+	}
 	.fakeTop {
 		opacity: 0;
 		pointer-events: none;
 	}
-	.content{
+	.view-content{
 		width: 100%;
-		padding:20rpx;
 		box-sizing: border-box;
 	}
 	.hot{
-		width: 100%;
+		width: 710rpx;
 		box-sizing: border-box;
 		padding:20rpx 20rpx 0 20rpx;
 		background:#fff;
 		border-radius: 3rpx;
-		margin-bottom: 20rpx;
+		margin: 20rpx auto;
 	}
 	.cell-value{
 		font-size: 23rpx;
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #C0C0C0;
+		background: #fff;
 	}
 	.cell-right{
 		width: 11rpx;
 		height:17rpx;
 		margin-left: 6rpx;
 	}
-	.content /deep/ .u-cell__body{
+	.view-content /deep/ .u-cell__body{
 		padding: 0 !important;
 	}
 	.hot-box{
@@ -170,7 +189,7 @@
 		.hot-index{
 			width: 126rpx;
 			height:230rpx;
-			margin-right: 47rpx;
+			margin-right: 55rpx;
 			margin-bottom: 40rpx;
 		}
 		.hot-index:nth-child(4n){
@@ -216,9 +235,10 @@
 		}
 	}
 	.series{
-		width: 100%;
+		width: 710rpx;
 		box-sizing: border-box;
 		padding:26rpx 0 44rpx 20rpx;
+		margin:0 auto;
 		margin-bottom: 20rpx;
 		background: #FFFFFF;
 		border-radius: 3rpx;
@@ -269,4 +289,22 @@
 			height:181rpx;
 		}
 	}
+	.view-content{
+		.guide-shadow{
+			width: 100%;
+			height:100%;
+			position: fixed;
+			top:0;
+			left:0;
+			bottom: 0;
+			right:0;
+			z-index: 998;
+			background:rgba(0,0,0,0.5)
+		}
+		.guide-show{
+			position: relative;
+			z-index: 999;
+		}
+	}
+	
 </style>

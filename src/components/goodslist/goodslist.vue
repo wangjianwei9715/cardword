@@ -17,9 +17,7 @@
 					<view class="goodslist-pic">
 						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0"></muqian-lazyLoad>
 					</view>
-					<view class="goodslist-progress" :class="{'goodslist-progress-select':goodsManaager.ifSelectType(item)}">
-						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
-					</view>
+					
 					<view class="goodslist-title u-line-2 goodslist-padding">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-cardicon goodslist-cardicon-purple">剩余随机</view>
 						<view v-else class="goodslist-cardicon" :class="{'goodslist-cardicon-purple':[10,11].includes(item.pintuan_type)}">{{getGoodsPintuanDetail(item.pintuan_type)}}</view>
@@ -39,6 +37,9 @@
 						<view v-else :id="item.goodCode" class="goodslist-priceMsg-right goodslist-plan-desc">
 							{{goodsManaager.listPlan(item,'str')}}
 						</view>
+					</view>
+					<view class="goodslist-progress" :class="{'goodslist-progress-select':goodsManaager.ifSelectType(item)}">
+						<view class="progressMask" :style="{width:(100-goodsManaager.listPlan(item,'num'))+'%'}"></view>
 					</view>
 				</view>
 				<view class="goodslist-bottom goodslist-padding" @click="onClickSellerShop(item)">
@@ -203,11 +204,12 @@
 		}
 		&-progress {
 			background:#FA1545;
-			width: 100%;
+			width: 317rpx;
 			height: 6rpx;
 			position: relative;
 			display: flex;
 			justify-content: flex-end;
+			margin:0 auto;
 			margin-top: 2rpx;
 			.progressMask {
 				height: inherit;
