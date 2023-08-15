@@ -148,7 +148,7 @@
         <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
             @close="actionSheet = false"></u-action-sheet>
 
-        <guide v-if="forumGuide" :tabs="tabs" :firstData="firstData" @over="onClickGuideOver"/>
+        <guide v-if="forumGuide" :tabs="tabs" :firstData="firstData" @over="forumGuide=false"/>
     </div>
 </template>
 <script>
@@ -304,6 +304,11 @@ export default {
         } else {
             uni.showTabBar({ animation: false })
         }
+
+        if(app.guide.cardCircle){
+            app.guide.cardCircle = false;
+            app.platform.finishGuideData(2)
+        }
     },
     computed: {
         current() {
@@ -393,11 +398,6 @@ export default {
             await app.user.setViewerId()
             this.reqNewData(true)
             this.getFollowDot()
-        },
-        onClickGuideOver(){
-            this.forumGuide = false;
-            app.guide.cardCircle = false;
-            app.platform.finishGuideData(2)
         },
         getFollowDot() {
             if (!app.token.accessToken) {
