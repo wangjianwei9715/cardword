@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-14 14:10:28
+ * @LastEditTime: 2023-08-15 10:16:51
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -252,11 +252,11 @@ export default class HttpRequest {
 	}
 	PostWithCrypto(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function){
 		const SIG=GetCrypto(reqUrl)
-		this.Post(reqUrl,params,cb,errorCb,{"OPEN-AUTH-SIG":SIG})
+		this.Post(reqUrl,params,cb,errorCb,{"Authorization":SIG})
 	}
 	GetWithCrypto(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function){
 		const SIG=GetCrypto(reqUrl)
-		this.Get(reqUrl,params,cb,errorCb,{"OPEN-AUTH-SIG":SIG})
+		this.Get(reqUrl,params,cb,errorCb,{"Authorization":SIG})
 	}
 	Post(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function,headers?:{[x: string]: any}) {
 		let newParams = objKeySort(params)

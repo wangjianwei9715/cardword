@@ -38,7 +38,7 @@ export function GetCrypto(path: string): string {
     Crypto.ts = nowTimeStamp
     const Str = `${Crypto.swap}_${nowTimeStamp}_${Crypto.noce}_${Crypto.path}`
     const md5Str = Md5.hashStr(Str)
-    return `Swap="${Crypto.swap}",Timestamp=${Crypto.ts},Nonce=${Crypto.noce},Signature="${enc1(md5Str, EncodeMapIndexArray)}"`
+    return `Open-Auth-Sig Swap="${Crypto.swap}",Timestamp=${Crypto.ts},Nonce=${Crypto.noce},Signature="${enc1(md5Str, EncodeMapIndexArray)}"`
 }
 function getRandomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;

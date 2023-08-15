@@ -78,6 +78,28 @@ export default class ClassName extends BaseNode {
             <br />
             <view class="des_content">
                 发货说明：实物奖品商家将在活动结束后1-7天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系商家安排发货
+            </view>`,
+            9:`<view class="des_title">
+                积分榜单：
+            </view>
+            <br/>
+            <view class="des_content">
+                活动期间，参与【赛博球星卡社】拼团的用户，将根据拼团的单价获得相应的积分奖励【拼团期间活动积分为冻结状态，拼团完成后则转化会用户获得的活动积分,拼团失败则从冻结积分中扣除】
+                <br />
+                <br />
+                活动截至入<text style="color:red">榜前10</text>的用户将获得对应的名次奖励
+                <br />
+                <br />
+                <text style="color:red">*</text>进入积分解冻环节后，拼团将不再获得积分，冻结的积分会根据之前的拼团是否成功录入或从冻结状态中扣除<br>
+                <br />
+                <text style="color:red">*</text>榜单每30分钟更新一次<br>
+                <br />
+                <text style="color:red">*</text>积分倍数：积分单价比为1:1
+                <br />
+            </view>
+            <br />
+            <view class="des_content">
+                发货说明：实物奖品商家将在活动结束后1-7天内发货，收货地址为用户的默认收货地址，未填写地址的用户在中奖后联系商家安排发货
             </view>`
     }
     onLoad(query: any) {
