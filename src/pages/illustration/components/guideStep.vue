@@ -5,13 +5,13 @@
 			<view class="content">
 				<image class="icon" src="@/static/guide/icon.png"/>
 				<view class="title" v-if="step==1">
-					当前<text>热门</text>的系列，<text>点击系列</text>查看详细图鉴
+					当前热门的系列，点击系列查看详细图鉴
 				</view>
 				<view class="title" v-else-if="step==2">
-					此处浏览<text>当前热门</text>的卡种及相应图片，点击右上角按钮可查看<text>详细图鉴</text>
+					此处浏览当前热门的卡种及相应图片，点击右上角按钮可查看详细图鉴
 				</view>
 				<view class="title" v-else-if="step==3">
-					点击此处可筛选,<text>全部系列</text>
+					点击此处可筛选,全部系列
 				</view>
 				<view class="msg" v-if="step==1">详细图鉴中可对未补充的图鉴进行填补，审核通过后可得卡币奖励！</view>
 			</view>
@@ -79,7 +79,7 @@
 	.content{
 		width: 595rpx;
 		box-sizing: border-box;
-		padding:45rpx 11rpx 0 11rpx;
+		padding:45rpx 15rpx 0 15rpx;
 		border-radius: 3rpx;
 		background:#fff;
 		position: absolute;
@@ -132,7 +132,8 @@
 		background: url(@/static/guide/btn.png) no-repeat center / 100% 100%;
 		position: absolute;
 		top:542rpx;
-		right:0rpx;
+		right:8rpx;
+		transform: scale(1.1);
 	}
 	.step2 .btn{
 		top:-185rpx;

@@ -53,7 +53,8 @@
 				app.bussinessApiDomain = app.appBetaDomain;
 				app.funcApiDomain = app.appBetaDomain;
 			};
-
+			uni.getStorageSync("GUIDE_DATA") && (app.guide = uni.getStorageSync("GUIDE_DATA"));
+			
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境"); 
 				// app.localTest = true;  

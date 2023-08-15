@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 11:32:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-04 14:41:48
+ * @LastEditTime: 2023-08-15 11:52:05
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -267,6 +267,9 @@
 					uni.hideTabBar()
 				}
 			})
+			setTimeout(()=>{
+				app.platform.getGuideData()
+			},200)
 		}
 		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {

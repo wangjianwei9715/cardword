@@ -50,15 +50,15 @@
 
                         <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
                             :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40"
-                            :isFetchEnd="tab.isFetchEnd">
+                            :isFetchEnd="tab.isFetchEnd" :forumGuide="forumGuide" @firstData="$event=>firstData=$event">
                         </waterfalls>
                         <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls :needExposure="true" column-count="2" v-if="tab.firstReqEnd" :ref="`waterfalls${tabIndex}`"
+                    <waterfalls :needExposure="true" column-count="2" :forumGuide="forumGuide" v-if="tab.firstReqEnd" :ref="`waterfalls${tabIndex}`"
                         :height="scrollViewHeight + 'px'" :value="tab.list" @loadmore="loadmoreData(tabIndex)"
-                        @refresh="refreshData(tabIndex)" style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
+                        @refresh="refreshData(tabIndex)"  @firstData="$event=>firstData=$event" style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
                         <template v-slot:header>
                             <header style="align-items: center;" v-if="tabIndex == 2 && tab.firstReqEnd">
                                 <div class="hotTopicWrap">
@@ -147,6 +147,8 @@
         </div>
         <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
             @close="actionSheet = false"></u-action-sheet>
+
+        <guide v-if="forumGuide" :tabs="tabs" :firstData="firstData" @over="onClickGuideOver"/>
     </div>
 </template>
 <script>
@@ -158,6 +160,7 @@ import waterfalls from "./components/waterfalls.vue"
 import cardSkeleton from "./components/cardSkeleton.vue"
 import { releaseByTopic, mockList } from "./func/index.js"
 import empty from "@/components/empty/empty.vue"
+import guide from "./components/guide.vue"
 import { Md5 } from "js-md5"
 const actionsList = [
     {
@@ -232,7 +235,8 @@ export default {
     components: {
         waterfalls,
         cardSkeleton,
-        empty
+        empty,
+        guide
     },
     data() {
         return {
@@ -258,7 +262,9 @@ export default {
             topicAcList: [
             ],
             oldIndex: 1,
-            loadmoreTimer: null
+            loadmoreTimer: null,
+            forumGuide : app.guide.cardCircle,
+            firstData : {},
         }
     },
     async onLoad() {
@@ -387,6 +393,11 @@ export default {
             await app.user.setViewerId()
             this.reqNewData(true)
             this.getFollowDot()
+        },
+        onClickGuideOver(){
+            this.forumGuide = false;
+            app.guide.cardCircle = false;
+            app.platform.finishGuideData(2)
         },
         getFollowDot() {
             if (!app.token.accessToken) {
