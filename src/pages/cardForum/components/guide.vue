@@ -1,33 +1,33 @@
 <template>
-    <view class="guide-box">
+    <view class="guide-box" @click.stop="stop">
         <view class="guide-top">
-            <view class="navBar">
+            <view class="navBar" :class="{'maxSize':guideShowStep(1)}">
+                <view class="box step1" v-if="guideShowStep(1)">
+                    <image class="line step1-line" src="@/static/guide/line.png"/>
+                    <view class="content step1-content">
+                        <text class="title">
+                            点击此按钮发布动态或卡册，与卡迷们分享收藏~
+                        </text>
+                        <text class="msg">动态：分享您的卡片与收藏</text>
+                        <text class="msg margin20">卡册：适用与凑套，需图片与卡种对应上传</text>
+                    </view>
+                    <image class="icon" src="@/static/guide/icon.png"/>
+                    <view class="btn" @click="guideStep=2">
+                        <image class="btn-img" src="@/static/guide/btn.png"></image>
+                        <text class="next">下一步</text>
+                        <text class="num">（1/3）</text>
+                    </view>
+                </view>
                 <view :style="{ height: app.statusBarHeight + 'px' }"></view>
                 <view class="nav">
                     <view class="navSearchWrap"></view>
                     <view v-if="guideShowStep(1)" class="camera guide-show">
                         <image src="@/static/cardForum/camera.png" class="camera_img"></image>
                         <text class="camera_txt">发布</text>
-                        <view class="box step1">
-                            <image class="line step1-line" src="@/static/guide/line.png"/>
-                            <view class="content step1-content">
-                                <image class="icon" src="@/static/guide/icon.png"/>
-                                <text class="title">
-                                    点击此按钮发布动态或卡册，与卡迷们分享收藏~
-                                </text>
-                                <text class="msg">动态：分享您的卡片与收藏</text>
-                                <text class="msg margin20">卡册：适用与凑套，需图片与卡种对应上传</text>
-                            </view>
-                            <view class="btn" @click="guideStep=2">
-                                <image class="btn-img" src="@/static/guide/btn.png"></image>
-                                <text class="next">下一步</text>
-                                <text class="num">（1/3）</text>
-                            </view>
-                        </view>
                     </view>
                 </view>
             </view>
-            <view v-if="guideShowStep(2)" style="width: 750rpx;" class="tabs guide-show">
+            <view v-if="guideShowStep(2)" style="width: 750rpx;" class="tabs" :class="{'maxSize':guideShowStep(2)}">
                 <u-tabs style="width: 750rpx;" customType="showKa" :duration="300" lineWidth="49rpx" lineHeight="6rpx"
                     :itemStyle="{ marginTop: '-10rpx', height: '74rpx' }"
                     :activeStyle="{ color: '#333333', fontSize: '27rpx', transform: 'scale(1.22)', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
@@ -40,9 +40,9 @@
                 <view class="box step2">
                     <image class="line step2-line" src="@/static/guide/line.png"/>
                     <view class="content step2-content">
-                        <image class="icon" src="@/static/guide/icon.png"/>
                         <text class="title title-center">选择您感兴趣的类型浏览</text>
                     </view>
+                    <image class="icon step2-icon" src="@/static/guide/icon.png"/>
                     <view class="btn step2-btn" @click="guideStep=3">
                         <image class="btn-img" src="@/static/guide/btn.png"></image>
                         <text class="next">下一步</text>
@@ -50,7 +50,19 @@
                     </view>
                 </view>
             </view>
-            <view v-if="guideStep==3" class="list-box">
+            <view v-if="guideStep==3" class="list-box" :class="{'maxSize':guideShowStep(3)}">
+                <view class="box step3">
+                    <image class="line step3-line" src="@/static/guide/line.png"/>
+                    <view class="content step3-content">
+                        <text class="title">点击查看其他用户的动态详情，觉得不错就点个赞吧~</text>
+                    </view>
+                    <image class="icon_r" src="@/static/guide/icon_r.png"/>
+                    <view class="btn step3-btn" @click="onClickOver">
+                        <image class="btn-img" src="@/static/guide/btn.png"></image>
+                        <text class="next">知道了</text>
+                        <text class="num">（3/3）</text>
+                    </view>
+                </view>
                 <view v-for="(item,index) in [firstData]" :key="index" class="waterfall-item-grayWrap">
                     <view class="waterfall-item">
                         <view class="waterfall-item__image">
@@ -97,18 +109,7 @@
                         </view>
                     </view>
                 </view>
-                <view class="box step2">
-                    <image class="line step3-line" src="@/static/guide/line.png"/>
-                    <view class="content step3-content">
-                        <image class="icon_r" src="@/static/guide/icon_r.png"/>
-                        <text class="title">点击查看其他用户的动态详情，觉得不错就点个赞吧~</text>
-                    </view>
-                    <view class="btn step3-btn" @click="onClickOver">
-                        <image class="btn-img" src="@/static/guide/btn.png"></image>
-                        <text class="next">知道了</text>
-                        <text class="num">（3/3）</text>
-                    </view>
-                </view>
+                
             </view>
         </view>
     </view>
@@ -137,7 +138,7 @@ export default {
             app,
             guideStep:1,
             parsePic: getApp().globalData.parsePic,
-            defaultAvatar: getApp().globalData.app.defaultAvatar,
+            defaultAvatar: getApp().globalData.app.defaultAvatar
         }
     },
     computed: {
@@ -146,10 +147,8 @@ export default {
         }
     },
     watch: {
-
     },
     mounted() {
-
     },
     methods: {
         guideShowStep(step){
@@ -166,7 +165,8 @@ export default {
         },
         onClickOver(){
             this.$emit('over')
-        }
+        },
+        stop(){}
     }
 };
 </script>
@@ -237,17 +237,19 @@ export default {
     width: 710rpx;
     height:700rpx;
     position: absolute;
-    z-index: 999;
 }
 .step1{
-    bottom:-700rpx;
-    right:0rpx;
+    top:104rpx;
+    right:35rpx;
 }
 .step2{
-    bottom:-700rpx;
+    top:64rpx;
+    left:0rpx;
+}   
+.step3{
+    top:500rpx;
     left:0rpx;
 }
-
 .line{
     width: 40rpx;
     height:269rpx;
@@ -288,15 +290,18 @@ export default {
     width: 255rpx;
     height:212rpx;
     position: absolute;
-    left:0;
-    top:-80rpx;
+    right:340rpx;
+    top:196rpx;
+}
+.step2-icon{
+    top:204rpx;
 }
 .icon_r{
     width: 255rpx;
     height:212rpx;
     position: absolute;
-    right:0;
-    top:-80rpx;
+    left:450rpx;
+    top:144rpx;
 }
 .title{
     width: 565rpx;
@@ -519,12 +524,6 @@ $uvui-nvue-style: true !default;
     margin-left: 8rpx;
 }
 
-//兼容nvue下cell上下间距无法调整
-.waterfall-item-grayWrap {
-    padding-bottom: 10rpx;
-    // background-color: #f6f7fb;
-}
-
 .videoIconWrap {
     position: absolute;
     right: 20rpx;
@@ -550,10 +549,7 @@ $uvui-nvue-style: true !default;
     display: flex;
     align-items: center;
     justify-content: center;
-
-
 }
-
 .wait-pic {
     width: 91rpx;
     height: 78rpx;
@@ -562,6 +558,11 @@ $uvui-nvue-style: true !default;
     width: 730rpx;
     margin-left:10rpx;
     margin-top: 82rpx;
+    position: relative;
+}
+.maxSize{
+    width: 750rpx;
+    height:1200rpx;
     position: relative;
 }
 </style>
