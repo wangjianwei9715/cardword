@@ -8,6 +8,7 @@
                     <image class="close" style="width: 30rpx;height: 30rpx;" src="@/static/cardForum/popClose.png"
                         @click="$emit('update:show', false)"></image>
                 </view>
+                <image src="@/static/cardForum/forumEmpty.png" mode="widthFix" class="empty" v-if="!list.length"></image>
                 <scroll-view class="giftScroll" :scroll-y="true" @scrolltolower="scrolltolower">
                     <view class="giftItem" v-for="(item, index) in list">
                         <image class="avatar"
@@ -28,6 +29,7 @@
                         <image class="giftPic" mode="aspectFill"></image>
                     </view>
                 </scroll-view>
+                
                 <view class="bottomSafeArea"></view>
             </view>
         </u-popup>
@@ -119,6 +121,13 @@ export default {
 };
 </script>
 <style lang="scss">
+.empty{
+    width: 300rpx;
+    position: absolute;
+    left: 0;right: 0;margin: auto;
+    top: 200rpx;
+    left: 60rpx;
+}
 .giftContainer {
     width: 750rpx;
     background-color: #ffffff;
