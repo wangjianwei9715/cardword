@@ -71,17 +71,12 @@
 	import {
 		dateFormat,getGoodsImg, parsePic
 	} from "../../tools/util";
-	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
 	class CardParams {
 		fromId = 0;
 		fetchSize = 10;
-		ts = 0;
-		sn = ""
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion()
 		defaultAvatar = app.defaultAvatar;
 		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
 		goodCode = '';
@@ -121,8 +116,7 @@
 				return;
 			}
 			const { cardNoParams } = this;
-			const hash = this.kwwConfusion.goodsResultList(this.goodCode,cardNoParams.fromId)
-			app.http.Get(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchTetxt,...hash},(res:any)=>{
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchTetxt},(res:any)=>{
 				if(res.list){
 					this.teamDataList = this.teamDataList.concat(res.list)
 				}

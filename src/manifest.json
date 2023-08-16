@@ -22,7 +22,8 @@
             "description" : "原生混淆",
             "resources" : {
                 "net/httpOpsign.js" : {},
-                "net/kwwConfusion.js" : {}
+                "net/kwwConfusion.js" : {},
+                "net/Crypto.js" : {}
             }
         },
         "compatible" : {

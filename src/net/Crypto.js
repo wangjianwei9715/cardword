@@ -16,18 +16,12 @@ const EncodeMap = [0xC2, 0x73, 0x2E, 0xAC, 0xC3, 0x39, 0x2D, 0x0C, 0x4E, 0xB5, 0
     0x3C, 0x81, 0x65, 0xE4, 0xAA, 0x56, 0xF9, 0x37, 0x08, 0x61, 0xB0, 0x49, 0xFB, 0xD5, 0x1A, 0x88,
     0xFE, 0xA9, 0x91, 0xE1, 0xBA, 0x20, 0xD4, 0xC5, 0xA3, 0xF1, 0x54, 0x43, 0x5B, 0xFD, 0x33, 0xE0,
     0x28, 0xBF, 0xE7, 0x35, 0xB7, 0x3A, 0xDC, 0x74, 0xCE, 0xE8, 0x12, 0x47, 0xAB, 0x17, 0x79, 0x89]
-interface Crypto {
-    noce: number
-    ts: number
-    swap: string
-    path: string
-}
-export function GetCrypto(path: string): string {
-    let Crypto: Crypto = {} as Crypto
+export function GetCrypto(path) {
+    let Crypto = {}
     const nowTimeStamp = Math.round(+new Date() / 1000)
     Crypto.noce = getRandomInt(1, 500)
     Crypto.path = parsePath(path)
-    let EncodeMapIndexArray: Array<number> = []
+    let EncodeMapIndexArray = []
     while (EncodeMapIndexArray.length < 8) {
         const index = getRandomInt(0, EncodeMap.length - 1)
         if (!EncodeMapIndexArray.includes(index)) {
@@ -40,14 +34,14 @@ export function GetCrypto(path: string): string {
     const md5Str = Md5.hashStr(Str)
     return `Open-Auth-Sig Swap="${Crypto.swap}",Timestamp=${Crypto.ts},Nonce=${Crypto.noce},Signature="${enc1(md5Str, EncodeMapIndexArray)}"`
 }
-function getRandomInt(min: number, max: number) {
+function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-function parsePath(path:string):string{
+function parsePath(path){
     let newPath=(app.requestVersion+path).replace("/dataApi","").split("?")[0]
     return newPath || ""
 }
-function enc1(raw: any, EncodeMapIndexArray: Array<number>) {
+function enc1(raw, EncodeMapIndexArray) {
     //@ts-ignore
     const hexStr = Buffer.from(raw).toString('hex');
     const encodedHexStr = [];
@@ -71,7 +65,7 @@ function enc1(raw: any, EncodeMapIndexArray: Array<number>) {
 
     return encodedHexStr.join('');
 }
-function hexEncodeToString(bytes: any) {
+function hexEncodeToString(bytes) {
     let hexString = '';
     for (let i = 0; i < bytes.length; i++) {
         const byte = bytes[i];

@@ -3,19 +3,20 @@
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-16 09:54:35
+ * @LastEditTime: 2023-08-16 12:01:41
  * Copyright: 2023 .
  * @Descripttion: 
  */
 import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
-import {GetCrypto} from "@/tools/Crypto"
 import {
 	objKeySort,
 	getUrlData
 } from "../tools/util";
 //@ts-ignore
 import httpOpsign from "@/net/httpOpsign.js"
+//@ts-ignore
+import {GetCrypto} from "@/net/Crypto.js"
 const reLoginAction = () => {
 	uni.showModal({
 		title: "信息无效",

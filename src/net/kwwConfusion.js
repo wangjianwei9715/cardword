@@ -21,21 +21,6 @@ export default class KwwConfusion{
             s:Md5.hashStr(`${kName}_calendar_${tp}_${startDate}_${currentPage}_${pageSize}_${ts}_${kYear}`)
         }
     }
-    goodsResultList(goodCode,fromId){
-        const ts = this.getTime()
-        return {
-            ts,
-            sn:Md5.hashStr(`cardNo_${goodCode}_${fromId}_${ts}`)
-        }
-    }
-    goodsDetail(goodCode){
-        const ts = this.getTime();
-        console.log(`${kName}_good_${goodCode}_${ts}_2023`)
-        return {
-            ts,
-            s:Md5.hashStr(`${kName}_good_${goodCode}_${ts}_2023`)
-        }
-    }
     lenovo(searchTetxt){
         const ts = this.getTime()
         return {

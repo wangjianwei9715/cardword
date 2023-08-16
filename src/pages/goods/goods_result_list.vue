@@ -55,8 +55,6 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import { getGoodsImg, parsePic } from "../../tools/util";
-	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
 	const Tab = {
 		0:'拼团结果',
 		1:'拆卡报告'
@@ -68,12 +66,9 @@
 	class CardParams {
 		fromId = 0;
 		fetchSize = 10;
-		ts = 0;
-		sn = ""
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion();
 		navigateBack = app.navigateTo.navigateBack;
 		parsePic = parsePic;
 		getGoodsImg = getGoodsImg;
@@ -115,8 +110,7 @@
 		}
 		getCardNo(){
 			const { cardNoParams } = this;
-			const hash = this.kwwConfusion.goodsResultList(this.goodCode,cardNoParams.fromId)
-			app.http.Get(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchQ,...hash},(res:any)=>{
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchQ},(res:any)=>{
 				if(res.list){
 					this.teamDataList = this.teamDataList.concat(res.list)
 				}

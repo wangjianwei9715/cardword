@@ -238,13 +238,10 @@
 	import { goodDetailSpe } from "@/tools/DataExchange"
 	import { parsePic,secondsFormat } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
-	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
 	const Manager =  detailsManager.getIns();
 	class ShareData { shareUrl:string =''; title:string =''; summary:string =''; thumb:string ='' }
 	@Component({})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion()
 		parsePic = parsePic;
 		navigateBack = app.navigateTo.navigateBack;
 		isPullDown = app.platform.isPullDown;
@@ -322,8 +319,7 @@
 		getGoodData(cb?:Function) {
 			const goodCode = this.goodCode;
 			clearInterval(this.countData.countInterval);
-			const params = this.kwwConfusion.goodsDetail(goodCode)
-			app.http.Get(`dataApi/good/${goodCode}/detail`, params, (data: any) => {
+			app.http.GetWithCrypto(`dataApi/good/${goodCode}/detail`, {}, (data: any) => {
 				if (!data.good) {
 					uni.showToast({ title: '无此商品', icon: 'none' })
 					app.navigateTo.switchTab(0)

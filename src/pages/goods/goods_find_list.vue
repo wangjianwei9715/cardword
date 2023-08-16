@@ -50,11 +50,8 @@
 		stateArray,
 		palyArray
 	} from "@/tools/DataExchange";
-	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion();
 		searchText = "";
 		isRequest: boolean = true;
 		goodTabCheck = 1;
@@ -102,7 +99,6 @@
 		scrollId = "";
 		noMoreData = false;
 		hasQueryData:boolean=false;
-		scrollIdSt: any = 0;
 		seriesList: any = [];
 		clickSerieItem: any = {};
 		tagParams: any = {};
@@ -134,7 +130,7 @@
 					this.goodsData = JSON.parse(query.data);
 					this.goodsList = this.goodsData.goodList ? this.goodsData.goodList : [];
 					this.scrollId = this.goodsData.scrollId;
-					if (query.data.end) {
+					if (this.goodsData.end) {
 						this.noMoreData = true;
 					}
 					this.hasQueryData=true
@@ -215,12 +211,10 @@
 			}
 			if (type == "reach") {
 				params.scrollId = this.scrollId;
-				params.st = this.scrollIdSt;
-				params.sn = this.kwwConfusion.findList(this.scrollIdSt,this.scrollId)
 			}
 			const date: any = new Date();
 			params.timeStamp = Date.parse(date) / 1000;
-			app.http.Get(
+			app.http.GetWithCrypto(
 				"dataApi/search/good", {
 					...params,
 					...tagParams
@@ -234,7 +228,6 @@
 						this.goodsList = app.platform.removeDuplicate(list,'goodCode')
 					}
 					this.scrollId = res.scrollId;
-					this.scrollIdSt = res.timeStamp;
 					this.isRequest = false;
 					if (cb) cb();
 				},
