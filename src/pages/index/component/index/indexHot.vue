@@ -125,7 +125,7 @@
 		.hot-box{
 			width: 260rpx;
 			height:360rpx;
-			background: url(@/static/index/hot/bg_1.png) no-repeat center / 100% 100%;
+			background: #F8F8FA;
 			position:relative;
 			box-sizing: border-box;
 			padding-top: 272rpx;
@@ -169,7 +169,7 @@
 			.live-box{
 				width: 442rpx;
 				height:176rpx;
-				background: url(@/static/index/hot/bg_2.png) no-repeat center / 100% 100%;
+				background: #F8F8FA;
 				margin-bottom: 8rpx;
 				display: flex;
 				align-items: center;
@@ -271,13 +271,13 @@
 			.bottom-box1{
 				width: 217rpx;
 				height:176rpx;
-				background: url(@/static/index/hot/bg_4.png) no-repeat center / 100% 100%;
+				background: #F8F8FA;
 				position: relative;
 			}
 			.bottom-box2{
 				width: 217rpx;
 				height:176rpx;
-				background: url(@/static/index/hot/bg_3.png) no-repeat center / 100% 100%;
+				background: #F8F8FA;
 				position: relative;
 			}
 			.p1{

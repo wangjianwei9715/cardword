@@ -51,7 +51,7 @@
 				<u-sticky customNavHeight="0" offsetTop="-20rpx">
 					<u-tabs class="goods-tabs" :list="goodsTabs" :current="goodsTabCurrent" lineHeight="0" @click="clickGoodsTabs"
 						:inactiveStyle="{fontSize:'27rpx',color:'#C0C0C0',padding:'0 0'}"
-						:activeStyle="{fontSize:'30rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
+						:activeStyle="{fontSize:'32rpx',color:'#333333',fontWeight:600,padding:'0 0'}"
 					></u-tabs>
 				</u-sticky>
 				<goodsListSwiper ref="listSwiper" :tabs="goodsTabs" :tabCurrent.sync="goodsTabCurrent" :addList="addList.index" @followed="checkFollowed"/>
@@ -432,7 +432,7 @@
 	.tab-swiper{
 		width: 100%;
 		height:160rpx;
-		padding:0 30rpx 10rpx 30rpx;
+		padding:5rpx 30rpx 10rpx 30rpx;
 		box-sizing: border-box;
 	}
 	.swiper_indicator_line{
@@ -457,7 +457,6 @@
 		justify-content: flex-start;
 		.tab-index{
 			margin-right:10rpx;
-			
 		}
 		.tab-index:last-child{
 			margin-right: 0;
@@ -478,15 +477,15 @@
 	}
 	.tab-img-content {
 		display: flex;
-		width: 130rpx;
-		height: 130rpx;
+		width: 122rpx;
+		height: 122rpx;
 		align-items: center;
 		justify-content: center;
 		position: relative;
 	}
 	.tabimg {
-		width: 130rpx;
-		height: 130rpx;
+		width: 122rpx;
+		height: 122rpx;
 	}
 	.tabtext {
 		width: 100%;
@@ -496,7 +495,7 @@
 		font-weight: 500;
 		color: #333333;
 		text-align: center;
-		margin-top: -16rpx;
+		margin-top: -21rpx;
 		position: relative;
 		z-index: 6;
 	}
@@ -509,7 +508,7 @@
 		background: #fff;
 		padding:0rpx 20rpx 0rpx 20rpx;
 		border-radius: 5rpx;
-		margin-bottom: 37rpx;
+		margin-bottom: 32rpx;
 	}
 	.capsule-pic{
 		width: 710rpx;
@@ -545,7 +544,6 @@
 	.header-search {
 		width: 614rpx;
 		height: 71rpx;
-		border-radius: 5rpx;
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;

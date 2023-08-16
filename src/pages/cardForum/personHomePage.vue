@@ -17,7 +17,9 @@
                 <view class="userInfo_msg">
                     <view class="userInfo_name">
                         <text class="userInfo_name_text">{{ userInfo.userName }}</text>
-                        <text class="userInfo_name_title" v-if="userInfo.title">{{ userInfo.title }}</text>
+                        <image :style="userInfo.level == 10 ? { height: `29rpx`, width: `58rpx` } : {}"
+                            @click.stop="isMine?pageJump(`/pages/userinfo/level/index`):()=>{}" class="level"
+                            :src="`/static/userinfo/v3/level/${userInfo.level || 1}.png`"></image>
                     </view>
                     <view class="userInfo_ip">
                         <text class="userInfo_ip_text">IP属地：{{ userInfo.location || '未知' }}</text>
@@ -480,7 +482,9 @@ page {
     display: flex;
     align-items: center;
     flex-direction: row;
-    margin-bottom: 14rpx;
+    margin-bottom: 6rpx;
+    // margin-top: 16rpx;
+    // margin-bottom: 4rpx;
 }
 
 .userInfo_name_text {
@@ -488,6 +492,12 @@ page {
     font-family: PingFang SC;
     font-weight: 500;
     color: #FFFFFF;
+}
+
+.level {
+    width: 50.37rpx;
+    height: 23rpx;
+    margin-left: 12rpx;
 }
 
 .userInfo_name_title {
@@ -508,7 +518,7 @@ page {
     font-size: 21rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #e9e9e9;
+    color: #ffffff;
 }
 
 .descWrap {

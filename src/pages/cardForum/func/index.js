@@ -1,9 +1,9 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-25 20:11:24
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-21 11:25:04
- * @FilePath: \card-world\src\pages\cardForum\func\index.js
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-16 14:39:59
+ * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 const app = getApp().globalData.app
@@ -82,7 +82,7 @@ const Detail_State_Map = {
 }
 export function getForumDetail(code) {
     return new Promise((resolve, reject) => {
-        app.http.Get(`dataApi/cardCircle/detail/${code}`, {}, (res) => {
+        app.http.GetWithCrypto(`dataApi/cardCircle/detail/${code}`, {}, (res) => {
             const isMine = (res.data.bit & 1) === 1
             if (res.state != 1 && !isMine) {
                 uni.$emit("forumDetailError", res.state)

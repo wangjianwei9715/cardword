@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-21 11:20:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-06-29 17:09:04
+ * @LastEditTime: 2023-08-16 14:44:02
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -68,7 +68,7 @@
 			this.tabsData.current = event.index
 		}
 		getSeriesDetail(){
-			app.http.Get(`dataApi/cardIllustration/series/detail/${this.seriesCode}`,{},(res:any)=>{
+			app.http.GetWithCrypto(`dataApi/cardIllustration/series/detail/${this.seriesCode}`,{},(res:any)=>{
 				this.seriesData = res;
 				uni.setNavigationBarTitle({
 					title: `${res.main.year} ${ res.main.name}`

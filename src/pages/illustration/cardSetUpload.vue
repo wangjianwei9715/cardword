@@ -50,13 +50,10 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import illUpload from './components/illUpload.vue';
-	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
 	@Component({
 		components:{illUpload}
 	})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion();
 		noCode="";
 		noData={
 			illustration:null,
@@ -121,7 +118,7 @@
 			})
 		}
 		getNoDetail(){
-			app.http.Get(`dataApi/cardIllustration/no/detail/rich/${this.noCode}`,{},(res:any)=>{
+			app.http.GetWithCrypto(`dataApi/cardIllustration/no/detail/rich/${this.noCode}`,{},(res:any)=>{
 				this.noData = {
 					illustration:res.illustration,
 					text:res.text,
@@ -133,7 +130,7 @@
 		onClickPeerTo(index:number){
 			if(index===this.noData.text.seqIndex-1) return;
 			this.clearPic()
-			app.http.Get(`dataApi/cardIllustration/no/detail/rich/${this.noCode}/peer/to/${index+1}`,{},(res:any)=>{
+			app.http.GetWithCrypto(`dataApi/cardIllustration/no/detail/rich/${this.noCode}/peer/to/${index+1}`,{},(res:any)=>{
 				this.noCode = res.text.code;
 				this.noData = {
 					illustration:res.illustration,
@@ -174,16 +171,13 @@
 			this.getNoDetail()
 		}
 		getDetail(cb?:Function){
-			const { scrollId, st } = this.httpParams;
-			const ts = Math.floor(new Date().getTime()/1000);
-			const _url = scrollId ? `scrollId=${scrollId}&st=${st}&pageSize=10` :`ts=${ts}&noSplit=1`;
-			const sn = this.kwwConfusion.illList(scrollId,st,ts);
-			app.http.Post(`${this.httpParams.url}?${_url}&sn=${sn}`,this.listParams,(res:any)=>{
+			const { scrollId } = this.httpParams;
+			const _url = scrollId ? `scrollId=${scrollId}&pageSize=10` :`noSplit=1`;
+			app.http.PostWithCrypto(`${this.httpParams.url}?${_url}`,this.listParams,(res:any)=>{
 				if(res.list){
 					this.cardList = [...this.cardList,...res.list.map((x:any)=>x.code)];
 				}
 				this.httpParams.scrollId = res.scrollId;
-				this.httpParams.st = ts;
 				uni.hideLoading();
 				cb?.()
 			},(error:any)=>{

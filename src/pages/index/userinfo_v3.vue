@@ -20,6 +20,7 @@
                     </view>
                     <view class="userInfo_ip">
                         <text class="userInfo_ip_text">IP属地：{{ infoData.location || '未知' }}</text>
+                        <text class="userInfo_ip_text" style="margin-left: 10rpx;">| 卡迷号：{{ infoData.userId }}</text>
                     </view>
                 </view>
             </view>
@@ -471,7 +472,7 @@ page {
     font-size: 21rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #C0C0C0;
+    color: #a5a5a5;
 }
 
 .descWrap {
@@ -526,7 +527,7 @@ page {
     font-size: 21rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #C0C0C0;
+    color: #a5a5a5;
     text-align: center;
 }
 
