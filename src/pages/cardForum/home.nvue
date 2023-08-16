@@ -578,7 +578,7 @@ export default {
             }
             const url = array.includes(this.current.tag) ? `dataApi/${this.current.url || "cardCircle/roll"}` : `dataApi/${this.current.url || "cardCircle/list"}`
             console.log("请求的", url, query);
-            app.http.Get(url, query, (res) => {
+            app.http.GetWithCrypto(url, query, (res) => {
                 console.log("响应的结果", res);
                 let list = res.list || []
                 // #ifdef APP-NVUE

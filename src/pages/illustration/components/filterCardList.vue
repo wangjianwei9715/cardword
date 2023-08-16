@@ -86,8 +86,6 @@
 	import { Component, Prop,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
     import { app } from "@/app";
-    //@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
     class ListOrther {
         st = 0;
         scrollId = "";
@@ -105,7 +103,6 @@
         @Prop({default:{}})
 		search!:any;
 
-        kwwConfusion = new KwwConfusion();
         pageScrollTop = app.platform.pageScrollTop;
         listQ="";
         list = [
@@ -232,10 +229,8 @@
         getSeriesGroup(){
             if(this.listOrther.end) return;
             uni.showLoading({ title: '加载中' });
-            const { scrollId, st } = this.listOrther;
-            const ts = Math.floor(new Date().getTime()/1000);
-            const _url = scrollId ? `scrollId=${scrollId}&st=${st}&pageSize=10` : `ts=${ts}&noSplit=1`
-            const sn = this.kwwConfusion.illList(scrollId,st,ts)
+            const { scrollId } = this.listOrther;
+            const _url = scrollId ? `scrollId=${scrollId}&pageSize=10` : `noSplit=1`
             const rookieList:any = this.filterList.filter((x:any)=> x.rookie);
             const signList:any = this.filterList.filter((x:any)=> x.signature);
             const params = {
@@ -250,11 +245,10 @@
                 seqs:this.select.seqs.map((x:any)=> x.nameId) || null
             }
             this.listParams = params;
-            app.http.Post(`dataApi/cardIllustration/series/${this.seriesCode}/search/no?${_url}&sn=${sn}`,params,(res:any)=>{
+            app.http.PostWithCrypto(`dataApi/cardIllustration/series/${this.seriesCode}/search/no?${_url}`,params,(res:any)=>{
                 if(res.list){
                     this.cardSetList = scrollId ? [...this.cardSetList,...res.list] : res.list;
                     this.listOrther.scrollId = res.scrollId;
-                    this.listOrther.st = ts;
                 }else if(res.total==0){
                     this.cardSetList = [];
                 }

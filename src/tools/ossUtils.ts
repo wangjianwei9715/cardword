@@ -96,7 +96,7 @@ export default class ossUtils {
         if (!this.osstoken.expire_at || (new Date().getTime() / 1000) >= this.osstoken.expire_at) {
             return new Promise((resolve, reject) => {
                 const ossUrlPath = type=='social' ? '/social' : '';
-                HttpRequest.getIns().Get(`dataApi/oss${ossUrlPath}/token`,{},async (res:any) =>{
+                HttpRequest.getIns().GetWithCrypto(`dataApi/oss${ossUrlPath}/token`,{},async (res:any) =>{
                     this.osstoken = res.data;
                     resolve(res.data);
                 })

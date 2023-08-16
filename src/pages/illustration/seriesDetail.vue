@@ -120,7 +120,7 @@
 			this.getSeriesDetail();
 		}
 		getSeriesDetail(){
-			app.http.Get(`dataApi/cardIllustration/series/detail/${this.seriesCode}`,{},(res:any)=>{
+			app.http.GetWithCrypto(`dataApi/cardIllustration/series/detail/${this.seriesCode}`,{},(res:any)=>{
 				this.seriesData = res;
 			})
 		}

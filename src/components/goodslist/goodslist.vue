@@ -210,7 +210,6 @@
 			display: flex;
 			justify-content: flex-end;
 			margin:0 auto;
-			margin-top: 2rpx;
 			.progressMask {
 				height: inherit;
 				background-color: #f3f2f2;
