@@ -5,7 +5,7 @@
 				<u-badge :isDot="true" bgColor="#FA1545" :show="showBadge(item)" class="icon-badge"/>{{item.name}}{{item.id<=4?`(${item.num})`:""}}
 			</view>
 		</view>
-		<view class="side-right">
+		<view class="side-right" :class="{'side-lang':!checkTag}">
 			<view class="right-box">
 				<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y"  :scroll-with-animation="true" @scroll="onScroll">
 					<view v-for="(item,index) in showTab" :key="index" :id="item.id" class="scroll-view-item">
@@ -36,8 +36,8 @@
 				</scroll-view>
 			</view>
 		</view>
-		<view class="side-bottom">
-			<scroll-view class="bottom-scroll" :scroll-x="true">
+		<view class="side-bottom" :class="{'mini-bottom':!checkTag}">
+			<scroll-view v-show="checkTag" class="bottom-scroll" :scroll-x="true">
 				<view class="bottom-scroll-box"  v-for="(item,index) in selectList" :key="index" @click="onClickClearSelect(item,index)">
 					<view class="bottom-scroll-item">{{item.name}}<view class="icon-close"></view></view>
 				</view>
@@ -115,6 +115,9 @@
 				this.orientationInit();
 				this.initEvent()
 			})
+		}
+		public get checkTag() : boolean {
+			return this.selectList.length>0
 		}
 		public get showTab() : object {
 			return this.sideTab.filter((x:any)=>x.show)
@@ -292,6 +295,9 @@
 		box-sizing: border-box;
 		padding:20rpx 0 280rpx 0;
 	}
+	.side-lang{
+		padding-bottom: 202rpx;
+	}
 	.side-tab{
 		width: 100%;
 		height:150rpx;
@@ -444,6 +450,7 @@
 		height:260rpx;
 		background:#fff;
 		position: fixed;
+		box-sizing: border-box;
 		bottom:0;
 		left:0;
 		.bottom-scroll{
@@ -513,6 +520,10 @@
 			align-items: center;
 			justify-content: center;
 		}
+	}
+	.mini-bottom{
+		height:182rpx;
+		padding-top: 30rpx;
 	}
 	.current-card{
 		background: #FFE8E8 !important;
