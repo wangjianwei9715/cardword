@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-07 16:32:24
+ * @LastEditTime: 2023-08-16 18:05:57
  * @FilePath: \card-world\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -52,7 +52,7 @@
     </view>
     <view class="taskContainer">
       <view class="taskTop">
-        <view class="taskTitle">任务进度</view>
+        <view class="taskTitle" style="display: flex;align-items: center;">任务进度<text style="font-size: 24rpx;color:#fff;margin-left: 10rpx;font-family: PingFang SC;">(活动截止至9/16 0:00)</text></view>
         <view class="taskRule" @click="pageJump('/pages/act/forumDraw/rule')">规则说明</view>
       </view>
       <view class="taskWrap">
