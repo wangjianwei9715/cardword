@@ -380,7 +380,7 @@ export default class ClassName extends BaseNode {
             this.userInfo = res.data
             this.shareData = {
                 shareUrl: `share/${app.localTest ? 'testH5' : 'h5'}/#/pages/cardForum/personHomePage?userId=${this.userId}`,
-                title: `${res.data.userName}在卡世界APP,快点开来看看吧！`,
+                title: `${res.data.userName} 在卡世界APP,快点开来看看吧！`,
                 summary: res.data.sign || "",
                 //@ts-ignore
                 thumb: this.$parsePic(decodeURIComponent(res.data.avatar)) + `?x-oss-process=image/resize,h_100,w_100`
