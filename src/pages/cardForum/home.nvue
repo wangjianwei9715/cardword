@@ -303,7 +303,7 @@ export default {
                 this.fixedTopHeight = await this.getDomHeight("#fixedTop")
                 // #ifdef APP-NVUE
                 this.bottomSafeArea = plus.navigator.getSafeAreaInsets().deviceBottom
-                this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - plus.navigator.getSafeAreaInsets().deviceBottom - 56
+                this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - plus.navigator.getSafeAreaInsets().deviceBottom - 52
                 // #endif
                 // #ifdef H5
                 this.scrollViewHeight = 666
