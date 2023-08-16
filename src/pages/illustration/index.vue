@@ -81,8 +81,9 @@
 		illustrationGuide = app.guide.illustration;
 		disabledCell = app.guide.illustration;
 		guideStep = 1;
+		showTabbar = true;
 		onShow(){
-			if(!app.guide.illustration){
+			if(!app.guide.illustration && this.showTabbar){
 				uni.showTabBar({ animation: false })
 			}
 		}
@@ -90,6 +91,7 @@
 			this.initEvent()
 			if(app.guide.illustration){
 				uni.hideTabBar()
+				this.showTabbar = false;
 				app.guide.illustration = false;
 				app.platform.finishGuideData(1);
 			}
@@ -105,10 +107,11 @@
 			return this.illustrationGuide&&step===this.guideStep;
 		}
 		guideEnd(){
+			uni.showTabBar({ animation: false })
 			this.illustrationGuide=false;
+			this.showTabbar = true;
 			setTimeout(()=>{
 				this.disabledCell = false;
-				uni.showTabBar({ animation: false })
 			},200)
 		}
 		initEvent(){
