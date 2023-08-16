@@ -238,6 +238,8 @@
 	import { goodDetailSpe } from "@/tools/DataExchange"
 	import { parsePic,secondsFormat } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
+	//@ts-ignore
+	import {decHex} from "@/net/Crypto.js"
 	const Manager =  detailsManager.getIns();
 	class ShareData { shareUrl:string =''; title:string =''; summary:string =''; thumb:string ='' }
 	@Component({})
@@ -386,9 +388,8 @@
 			swiperData.carouselLength = carousel.length;
 			picData.detailImg = [...picFormat(goodsPic.yuanfeng)];
 			picData.carousel = [...carousel,...picData.detailImg];
-
-			function picFormat(pic:string){
-				return pic ? decodeURIComponent(pic).split(',').map(x => parsePic(x)) : [];
+			function picFormat(pic:any[]){
+				return pic ? pic.map(x => parsePic(decHex(x))) : [];
 			}
 		}
 		/**
@@ -481,7 +482,7 @@
 						shareUrl: `share/h5/#/pages/goods/goods_details?id=${goodCode}`,
 						title,
 						summary: title,
-						thumb: pic.thumb||this.picData.carousel[0]+`?x-oss-process=image/resize,h_100,w_100`
+						thumb: (pic.thumb&&pic.thumb[0])||this.picData.carousel[0]+`?x-oss-process=image/resize,h_100,w_100`
 					}
 				}
 				shareObj.shareShow = true
