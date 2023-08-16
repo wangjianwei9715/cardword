@@ -1,5 +1,7 @@
 import HttpRequest from "../net/HttpRequest";
 import * as Base64 from '../lib/base64';
+//@ts-ignore
+import {decHex} from "@/net/Crypto.js"
 var Crypto = require("crypto-js");
 const uploadFileSize = 1024 * 1024 * 300; // 上传文件的大小限制300m
 export default class ossUtils {
@@ -96,7 +98,8 @@ export default class ossUtils {
         if (!this.osstoken.expire_at || (new Date().getTime() / 1000) >= this.osstoken.expire_at) {
             return new Promise((resolve, reject) => {
                 const ossUrlPath = type=='social' ? '/social' : '';
-                HttpRequest.getIns().Get(`dataApi/oss${ossUrlPath}/token`,{},async (res:any) =>{
+                HttpRequest.getIns().GetWithCrypto(`dataApi/oss${ossUrlPath}/token`,{},async (res:any) =>{
+                    res.data.access_key_secret=decHex(res.data.access_key_secret)
                     this.osstoken = res.data;
                     resolve(res.data);
                 })
