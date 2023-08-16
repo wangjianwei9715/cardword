@@ -192,8 +192,11 @@ import { Md5 } from "ts-md5";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 import { getGoodsImg } from "../../tools/util";
+//@ts-ignore
+import KwwConfusion from "@/net/kwwConfusion.js"
 @Component({})
 export default class ClassName extends BaseNode {
+  kwwConfusion = new KwwConfusion()
   getGoodsPintuan = getGoodsPintuan;
   addressData: any = [];
   getGoodsImg = getGoodsImg;
@@ -546,7 +549,7 @@ export default class ClassName extends BaseNode {
         params.num = Number(this.moneyNum); 
         break; 
     }
-    params.sn = Md5.hashStr(`${snName}_${ts}_${userId}_${goodCode}`)
+    params.sn = this.kwwConfusion.confirmOrder(ts,snName,userId,goodCode);
     if (uni.getSystemInfoSync().platform === 'android') { 
       params.nativeSdk = 'qmf_android'; 
     }

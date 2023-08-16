@@ -50,11 +50,13 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import illUpload from './components/illUpload.vue';
-	import { Md5 } from "ts-md5";
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	@Component({
 		components:{illUpload}
 	})
 	export default class ClassName extends BaseNode {
+		kwwConfusion = new KwwConfusion();
 		noCode="";
 		noData={
 			illustration:null,
@@ -175,7 +177,7 @@
 			const { scrollId, st } = this.httpParams;
 			const ts = Math.floor(new Date().getTime()/1000);
 			const _url = scrollId ? `scrollId=${scrollId}&st=${st}&pageSize=10` :`ts=${ts}&noSplit=1`;
-            const sn = Md5.hashStr(`${scrollId?st:ts}_${scrollId?`${scrollId}_`:''}scrollSearchTujian`);
+			const sn = this.kwwConfusion.illList(scrollId,st,ts);
 			app.http.Post(`${this.httpParams.url}?${_url}&sn=${sn}`,this.listParams,(res:any)=>{
 				if(res.list){
 					this.cardList = [...this.cardList,...res.list.map((x:any)=>x.code)];

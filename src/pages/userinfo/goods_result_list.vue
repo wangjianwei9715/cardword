@@ -64,7 +64,6 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-import { Md5 } from "ts-md5";
 	import {
 		Component
 	} from "vue-property-decorator";
@@ -72,6 +71,8 @@ import { Md5 } from "ts-md5";
 	import {
 		dateFormat,getGoodsImg, parsePic
 	} from "../../tools/util";
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	class CardParams {
 		fromId = 0;
 		fetchSize = 10;
@@ -80,6 +81,7 @@ import { Md5 } from "ts-md5";
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
+		kwwConfusion = new KwwConfusion()
 		defaultAvatar = app.defaultAvatar;
 		chooseId = 0; //0代表选中拼团结果，展示下划线； 1代表选中拆卡报告，展示下划线 ；
 		goodCode = '';
@@ -119,9 +121,8 @@ import { Md5 } from "ts-md5";
 				return;
 			}
 			const { cardNoParams } = this;
-			cardNoParams.ts = Math.floor(new Date().getTime()/1000);
-			cardNoParams.sn = Md5.hashStr(`cardNo_${this.goodCode}_${cardNoParams.fromId}_${cardNoParams.ts}`);
-			app.http.Get(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchTetxt},(res:any)=>{
+			const hash = this.kwwConfusion.goodsResultList(this.goodCode,cardNoParams.fromId)
+			app.http.Get(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchTetxt,...hash},(res:any)=>{
 				if(res.list){
 					this.teamDataList = this.teamDataList.concat(res.list)
 				}

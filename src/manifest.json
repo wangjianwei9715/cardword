@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.4.47",
+    "versionName" : "3.4.49",
     "versionCode" : 203,
     "transformPx" : false,
     "networkTimeout" : {
@@ -18,6 +18,13 @@
         }
     ],
     "app-plus" : {
+        "confusion" : {
+            "description" : "原生混淆",
+            "resources" : {
+                "net/httpOpsign.js" : {},
+                "net/kwwConfusion.js" : {}
+            }
+        },
         "compatible" : {
             "ignoreVersion" : true
         },

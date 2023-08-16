@@ -230,8 +230,8 @@
 			display: flex;
 			align-items: flex-end;
 			position: relative;
-			margin-bottom: 11rpx;
-			margin-top: 20rpx;
+			margin-bottom: 15rpx;
+			margin-top: 16rpx;
 			align-items: flex-end;
 
 			.goodslist-priceMsg-left {

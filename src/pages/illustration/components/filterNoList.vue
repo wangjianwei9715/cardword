@@ -100,7 +100,8 @@
 	import { Component, Prop,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
     import { app } from "@/app";
-    import { Md5 } from "ts-md5";
+    //@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
     class ListOrther {
         st = 0;
         scrollId = "";
@@ -127,6 +128,7 @@
         @Prop({default:0})
         tp!:number
 
+        kwwConfusion = new KwwConfusion();
         isPullDown = app.platform.isPullDown;
         listQ="";
         select:{[x:string]:any} = new Select()
@@ -277,8 +279,7 @@
             const { scrollId, st } = this.listOrther;
             const ts = Math.floor(new Date().getTime()/1000);
             const _url = scrollId ? `scrollId=${scrollId}&st=${st}&pageSize=10` : `ts=${ts}&noSplit=1`
-            const sn = Md5.hashStr(`${scrollId?st:ts}_${scrollId?`${scrollId}_`:''}scrollSearchTujian`);
-            
+            const sn = this.kwwConfusion.illList(scrollId,st,ts)
             const rookieList:any = this.filterList.filter((x:any)=> x.rookie);
             const signList:any = this.filterList.filter((x:any)=> x.signature);
 

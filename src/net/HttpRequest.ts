@@ -2,22 +2,20 @@
  * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-15 10:16:51
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-16 09:54:35
  * Copyright: 2023 .
  * @Descripttion: 
  */
 import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
-import { data } from 'browserslist';
-import { Md5 } from 'ts-md5';
 import {GetCrypto} from "@/tools/Crypto"
 import {
 	objKeySort,
 	getUrlData
 } from "../tools/util";
-import { headersData, opSignData, opSignOtherData } from "@/net/DataHttp"
-const debounceData = ['dataApi/point/exchange/goodlist', 'dataApi/selectRank/award/list','dataApi/cardCircle/list']
+//@ts-ignore
+import httpOpsign from "@/net/httpOpsign.js"
 const reLoginAction = () => {
 	uni.showModal({
 		title: "信息无效",
@@ -76,27 +74,18 @@ const errorCodeMap: any = {
 
 }
 const excludeUrls = ["user/login/phone", "user/code", "user/forget"];
-const opSignMap:any = { 
-	'短信验证码': (config:any) => `opk_smscode_${config.data.phone}_${config.data.type}`,
-	'确认收货': (config:any) => `opk_${app.opKey}_receive_good_${config.data.code}`, 
-	'绑定Push': (config:any) => `opk_${app.opKey}_${plus.push.getClientInfo().clientid}`, 
-	'客服发送消息': (config:any) => `opk_${app.opKey}_${config.data.bucketId}_${config.data.picUrl || ''}_${config.data.content || ''} `
-};
+
 export default class HttpRequest {
 	private static instance: HttpRequest;
 	private axiosInstance: AxiosInstance;
 	debounceUrl = '';
-	headersData = headersData;
-	opSignData = opSignData;
-	opSignOtherData = opSignOtherData
+	httpOpsign = new httpOpsign();
 	static getIns(): HttpRequest {
 		if (!HttpRequest.instance) {
 			HttpRequest.instance = new HttpRequest();
 		}
 		return HttpRequest.instance;
 	}
-
-
 	private constructor() {
 		var domain = ''
 		domain = app.bussinessApiDomain
@@ -142,7 +131,6 @@ export default class HttpRequest {
 		});
 		// 添加请求拦截器
 		this.axiosInstance.interceptors.request.use((config) => {
-			
 			// 在发送请求之前做些什么
 			const { opKey, bussinessApiDomain, dataApiDomain, funcApiDomain, version, update_url, localTest } = app; 
 			const ksjUserId = uni.getStorageSync('ksjUserId');
@@ -164,24 +152,24 @@ export default class HttpRequest {
 			if(app.viewerId){
 				config.headers['viewerId'] = app.viewerId; 
 			}
-			for (const data of this.headersData) { 
+			for (const data of this.httpOpsign.headersData) { 
 				if (url.indexOf(data.url) !== -1) { 
 					config.headers[data.name] = data.msg; 
 				} 
 			}
 			// config.data数据+sign统一处理opSign
-			for (const data of this.opSignData) { 
+			for (const data of this.httpOpsign.opSignData) { 
 				if (url.indexOf(data.url) !== -1) { 
-					this.setOpSign(config, data.sign, data.needOpKey); 
+					const op = this.httpOpsign.getOpSign(config, data.sign, data.needOpKey);
+					op.rawStr && (config.data.rawStr = op.rawStr); 
+					config.headers['opSign'] = op.opSign;
 				} 
 			}
 			// 需要单独处理额外数据的opSign
-			for (const data of this.opSignOtherData) { 
+			for (const data of this.httpOpsign.opSignOtherData) { 
 				if (url.indexOf(data.url) !== -1) { 
-					const opSignFn = opSignMap[data.name]; 
-					if (opSignFn) { 
-						config.headers['opSign'] = Md5.hashStr(opSignFn(config)); 
-					} 
+					const opSignFn = this.httpOpsign.opSignMap[data.name]; 
+					opSignFn && (config.headers['opSign'] = opSignFn(config));
 				} 
 			}
 			switch (true) { 
@@ -306,7 +294,7 @@ export default class HttpRequest {
 	}
 	Get(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function,headers?:{[x: string]: any}) {
 		// 防止列表请求还未响应时重复请求 响应拦截器内删除
-		if (this.debounceUrl == reqUrl && debounceData.indexOf(reqUrl) == -1) return;
+		if (this.debounceUrl == reqUrl && this.httpOpsign.debounceData.indexOf(reqUrl) == -1) return;
 		this.debounceUrl = reqUrl;
 		let newParams = objKeySort(params)
 		var p = [];
@@ -353,23 +341,4 @@ export default class HttpRequest {
 			}
 		});
 	}
-	setOpSign(config: any, sign: string, needOpKey:boolean) { 
-		let str = ''; 
-		if (config.data) {
-			for (let i in config.data) {
-				if (config.data[i] !== undefined && typeof(config.data[i]) !== 'object') { 
-					str += `${i}=${config.data[i]}&`; 
-				} 
-			} 
-			str = str.slice(0, -1); 
-			config.data.rawStr = `${app.opKey}_${str}_${sign}`; 
-		} else {
-			str = config.url.split('?')[1]; 
-			// config.url += `&rawStr=${str}_${sign}`; 
-		} 
-		const opSign = needOpKey ? `${app.opKey}_${str}_${sign}` : `${decodeURIComponent(str)}_${sign}`; 
-		config.headers['opSign'] = Md5.hashStr(opSign); 
-		return; 
-	}
-	
 }

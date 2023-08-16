@@ -82,7 +82,9 @@
 		disabledCell = app.guide.illustration;
 		guideStep = 1;
 		onShow(){
-			uni.showTabBar({ animation: false })
+			if(!app.guide.illustration){
+				uni.showTabBar({ animation: false })
+			}
 		}
 		onLoad(query: any) {
 			this.initEvent()

@@ -25,22 +25,20 @@
 	import {
 		getGoodsImg
 	} from "../../tools/util";
-	import { Md5 } from "ts-md5";
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:''})
 		goodCode:any;
 
 		getGoodsImg = getGoodsImg;
+		kwwConfusion = new KwwConfusion();
 		relativeOnce = false;
 		goodsList = [];
 		created(){//在实例创建完成后被立即调用
 			setTimeout(()=>{
-				const ts = Math.floor(new Date().getTime()/1000);
-				const relativeParams = {
-					ts,
-					s:Md5.hashStr(`kww_goodrelative_sign_${this.goodCode}_${ts}_2022`)
-				}
+				const relativeParams = this.kwwConfusion.guessYouLike(this.goodCode);
 				this.getRelative(relativeParams)
 			},500)
 		}

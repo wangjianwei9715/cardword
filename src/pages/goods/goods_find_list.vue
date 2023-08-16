@@ -43,9 +43,6 @@
 		app
 	} from "@/app";
 	import {
-		Md5
-	} from "ts-md5";
-	import {
 		Component
 	} from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
@@ -53,8 +50,11 @@
 		stateArray,
 		palyArray
 	} from "@/tools/DataExchange";
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
+		kwwConfusion = new KwwConfusion();
 		searchText = "";
 		isRequest: boolean = true;
 		goodTabCheck = 1;
@@ -216,9 +216,7 @@
 			if (type == "reach") {
 				params.scrollId = this.scrollId;
 				params.st = this.scrollIdSt;
-				params.sn = Md5.hashStr(
-					this.scrollIdSt + this.scrollId + "scrollSearchGood"
-				);
+				params.sn = this.kwwConfusion.findList(this.scrollIdSt,this.scrollId)
 			}
 			const date: any = new Date();
 			params.timeStamp = Date.parse(date) / 1000;

@@ -70,11 +70,13 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-	import { Md5 } from "ts-md5";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
+		kwwConfusion = new KwwConfusion();
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
@@ -129,15 +131,13 @@
 		}
 		onInput(event:any){
 			if(this.searchTetxt=="") return;
-			const ts = Math.floor(new Date().getTime()/1000);
 			const params = {
 				realm:"good",
 				q:encodeURIComponent(this.searchTetxt),
 				sourceId:"pm.index",
-				ts,
-				sn:Md5.hashStr(`slenovo_${ts}_good_${this.searchTetxt}`)
 			}
-			app.http.Get("search/lenovo",params,(res:any)=>{
+			const hash = this.kwwConfusion.lenovo(this.searchTetxt)
+			app.http.Get("search/lenovo",{...params,...hash},(res:any)=>{
 				this.lenovoList = res.list || [];
 			})
 		}

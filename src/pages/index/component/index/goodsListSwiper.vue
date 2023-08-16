@@ -13,7 +13,8 @@
 	import { Component, Prop, Vue,PropSync ,Watch} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
-	import { Md5 } from "ts-md5";
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	class ListParams {
 		fetchFrom=1;
 		fetchSize=10;
@@ -30,6 +31,7 @@
 		@PropSync('tabCurrent',{type:Number})
 		current!:number
 
+		kwwConfusion = new KwwConfusion();
 		app=app;
 		goodsList:any = [];
 		@Watch('current')
@@ -77,14 +79,12 @@
 			const { fetchFrom, fetchSize, noMoreData } = this.currentItem;
 			if (noMoreData) return;
 			const urlNamr = this.tabs[this.current].url;
-			const ts = Math.floor(new Date().getTime() / 1000);
 			const params: { [x: string]: any } = {
 				fetchFrom,
 				fetchSize,
-				ts: ts,
-				s:Md5.hashStr(`kww_goodlist_sign_${urlNamr}_${fetchFrom}_${fetchSize}_${ts}_2022`)
 			}
-			app.http.Get(`dataApi/goodlist/forsale/${urlNamr}`, params, (data: any) => {
+			const hash = this.kwwConfusion.goodsSwiper(urlNamr,fetchFrom,fetchSize)
+			app.http.Get(`dataApi/goodlist/forsale/${urlNamr}`, {...params,...hash}, (data: any) => {
 				this.currentItem.noMoreData = data.isFetchEnd;
 				if (fetchFrom == 1) this.currentItem.list = [];
 

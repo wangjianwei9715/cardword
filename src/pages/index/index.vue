@@ -1,12 +1,3 @@
-<!--
- * @FilePath: \jichao_app_2\src\pages\index\index.vue
- * @Author: wjw
- * @Date: 2023-07-03 11:32:48
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-15 11:52:05
- * Copyright: 2023 .
- * @Descripttion: 
--->
 <template>
 	<view class="content">
 		<!-- 热更新 S -->
@@ -27,7 +18,7 @@
 		</u-sticky>
 		<scroll-view class="index-swiper-scroll transRef" :style="{ width: '100%', height: scrollHeight+'px' }" :refresher-threshold="45" :refresher-enabled="true" :scroll-y="true" :scroll-with-animation="true" :scroll-top="scrollTop" :refresher-triggered="triggered" @scroll="onChangeScroll" @touchend="touchmoveScroll"  @scrolltolower="scrolltolower()" @refresherrefresh="refreshStart()">
 			<view class="tab-center">
-				<swiper v-show="addList.top.length" class="capsule-box" :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
+				<swiper v-show="addList.top.length" :indicator-dots="true" :indicator-active-color="'#fff'" :indicator-color="'rgba(170, 170, 170, .75)'" class="capsule-box"  :current="capsuleCurrent" autoplay circular @change="e=> capsuleCurrent=e.detail.current">
 					<swiper-item v-for="(item,index) in addList.top" :key="index">
 						<image class="capsule-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill" @click="onClickToAD(item.target)"/>
 					</swiper-item>
@@ -553,14 +544,14 @@
 	}
 	.header-search {
 		width: 614rpx;
-		height: 73rpx;
-		border: 4rpx solid #333333;
+		height: 71rpx;
 		border-radius: 5rpx;
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
 		position: relative;
 		padding-right: 10rpx;
+		background: url(@/static/index/search.png) no-repeat center / 100% 100%;
 	}
 	.search-btn{
 		width: 98rpx;

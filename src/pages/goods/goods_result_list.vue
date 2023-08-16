@@ -52,10 +52,11 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-	import { Md5 } from "ts-md5";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import { getGoodsImg, parsePic } from "../../tools/util";
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	const Tab = {
 		0:'拼团结果',
 		1:'拆卡报告'
@@ -72,6 +73,7 @@
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
+		kwwConfusion = new KwwConfusion();
 		navigateBack = app.navigateTo.navigateBack;
 		parsePic = parsePic;
 		getGoodsImg = getGoodsImg;
@@ -113,9 +115,8 @@
 		}
 		getCardNo(){
 			const { cardNoParams } = this;
-			cardNoParams.ts = Math.floor(new Date().getTime()/1000);
-			cardNoParams.sn = Md5.hashStr(`cardNo_${this.goodCode}_${cardNoParams.fromId}_${cardNoParams.ts}`);
-			app.http.Get(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchQ},(res:any)=>{
+			const hash = this.kwwConfusion.goodsResultList(this.goodCode,cardNoParams.fromId)
+			app.http.Get(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchQ,...hash},(res:any)=>{
 				if(res.list){
 					this.teamDataList = this.teamDataList.concat(res.list)
 				}

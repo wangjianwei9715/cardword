@@ -55,11 +55,13 @@
 
 <script lang="ts">
 	import { app } from "@/app";
-import { Md5 } from "ts-md5";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
+		kwwConfusion = new KwwConfusion()
 		windowWidth = 0;
 		monthScrollLeft = 0;
 		scrollLeftPx = 0;
@@ -132,17 +134,15 @@ import { Md5 } from "ts-md5";
 			}
 			const tp = this.orderTab[this.orderTabCheck].id
 			let startDate = this.yearData[this.swiperIndex] + '-' +(this.monthIndex<10?'0'+this.monthIndex:this.monthIndex);
-			let ts = Math.floor(new Date().getTime()/1000);
 			let params:{[x:string]:any} = {
 				tp,
 				pageIndex: this.currentPage,
 				pageSize:this.pageSize,
 				date:startDate,
-				ts:ts,
-				s:Md5.hashStr('kww_calendar_'+tp+'_'+startDate+'_'+this.currentPage+'_'+this.pageSize+'_'+ts+'_2022')
 			}
+			const hash = this.kwwConfusion.calendar({tp,startDate,currentPage:this.currentPage,pageSize:this.pageSize})
 			this.httpIng = true
-			app.http.Get("dataApi/function/calendar/list", params, (data: any) => {
+			app.http.Get("dataApi/function/calendar/list", {...params,...hash}, (data: any) => {
 				if(this.currentPage == 1) this.calendaList = []
 				if(data.list){
 					this.calendaList = this.calendaList.concat(data.list);
