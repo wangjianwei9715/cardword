@@ -1475,11 +1475,11 @@ export default class ClassName extends BaseNode {
         width: 30rpx;
         height: 25rpx;
         background-size: 100% 100%;
-        background-image: url("@/static/act/portable/dz.png");
+        background-image: url("@/static/cardForum/unLike.png");
     }
 
     .dzs {
-        background-image: url("@/static/act/portable/dzs.png");
+        background-image: url("@/static/cardForum/like.png");
     }
 
     // margin-left: 22rpx;
