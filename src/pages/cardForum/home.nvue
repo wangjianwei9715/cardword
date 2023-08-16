@@ -50,15 +50,16 @@
 
                         <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
                             :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40"
-                            :isFetchEnd="tab.isFetchEnd" :forumGuide="forumGuide" @firstData="$event=>firstData=$event">
+                            :isFetchEnd="tab.isFetchEnd" :forumGuide="forumGuide" @firstData="$event => firstData = $event">
                         </waterfalls>
                         <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls :needExposure="true" column-count="2" :forumGuide="forumGuide" v-if="tab.firstReqEnd" :ref="`waterfalls${tabIndex}`"
-                        :height="scrollViewHeight + 'px'" :value="tab.list" @loadmore="loadmoreData(tabIndex)"
-                        @refresh="refreshData(tabIndex)"  @firstData="$event=>firstData=$event" style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
+                    <waterfalls :needExposure="true" column-count="2" :forumGuide="forumGuide" v-if="tab.firstReqEnd"
+                        :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'" :value="tab.list"
+                        @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
+                        @firstData="$event => firstData = $event" style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
                         <template v-slot:header>
                             <header style="align-items: center;" v-if="tabIndex == 2 && tab.firstReqEnd">
                                 <div class="hotTopicWrap">
@@ -137,18 +138,33 @@
         </div>
         <div class="showKaBottom" ref="showKaBottom" v-if="tabs.index == 2">
             <div class="showKaTabBar">
-                <text class="tabbar_item" @click="switchTo('/pages/index/index')">首页</text>
-                <text class="tabbar_item" @click="switchTo('/pages/illustration/index')">图鉴</text>
-                <text class="tabbar_item tabbar_item_select">卡圈</text>
-                <text class="tabbar_item" @click="switchTo('/pages/index/message')">消息</text>
-                <text class="tabbar_item" @click="switchTo('/pages/index/userinfo_v3')">我的</text>
+                <div class="tabBarItem" @click="switchTo('/pages/index/index')">
+                    <image class="showKaTabBar_image" src="@/static/index/tabbar/1_.png"></image>
+                    <text class="tabBarText">首页</text>
+                </div>
+                <div class="tabBarItem" @click="switchTo('/pages/illustration/index')">
+                    <image class="showKaTabBar_image" src="@/static/index/tabbar/2_.png"></image>
+                    <text class="tabBarText">图鉴</text>
+                </div>
+                <div class="tabBarItem">
+                    <image class="showKaTabBar_image" src="@/static/index/tabbar/3.png"></image>
+                    <text class="tabBarText">卡圈</text>
+                </div>
+                <div class="tabBarItem" @click="switchTo('/pages/index/message')">
+                    <image class="showKaTabBar_image" src="@/static/index/tabbar/4_.png"></image>
+                    <text class="tabBarText">消息</text>
+                </div>
+                <div class="tabBarItem" @click="switchTo('/pages/index/userinfo_v3')">
+                    <image class="showKaTabBar_image" src="@/static/index/tabbar/5_.png"></image>
+                    <text class="tabBarText">我的</text>
+                </div>
             </div>
             <div :style="{ height: bottomSafeArea + 'px' }"></div>
         </div>
         <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
             @close="actionSheet = false"></u-action-sheet>
 
-        <guide v-if="forumGuide" :tabs="tabs" :firstData="firstData" @over="guideOver"/>
+        <guide v-if="forumGuide" :tabs="tabs" :firstData="firstData" @over="guideOver" />
     </div>
 </template>
 <script>
@@ -263,8 +279,8 @@ export default {
             ],
             oldIndex: 1,
             loadmoreTimer: null,
-            forumGuide : app.guide.cardCircle,
-            firstData : {},
+            forumGuide: app.guide.cardCircle,
+            firstData: {},
         }
     },
     async onLoad() {
@@ -305,7 +321,7 @@ export default {
             uni.showTabBar({ animation: false })
         }
 
-        if(app.guide.cardCircle){
+        if (app.guide.cardCircle) {
             uni.hideTabBar()
             app.guide.cardCircle = false;
             app.platform.finishGuideData(2)
@@ -400,8 +416,8 @@ export default {
             this.reqNewData(true)
             this.getFollowDot()
         },
-        guideOver(){
-            this.forumGuide=false;
+        guideOver() {
+            this.forumGuide = false;
             uni.showTabBar({ animation: false })
         },
         getFollowDot() {
@@ -965,14 +981,28 @@ page {
 
 .showKaTabBar {
     width: 750rpx;
-    height: 56px;
+    height: 52px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     // justify-content: space-evenly;
     align-items: center;
 }
-
+.tabBarItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: text-top;
+}
+.showKaTabBar_image {
+    width: 28px;
+    height: 28px;
+    // margin-top: 5px;
+}
+.tabBarText{
+    color: #ffffff;
+    font-size: 10px;
+}
 .tabbar_item {
     // width: 25%;
     font-size: 31rpx;
@@ -984,5 +1014,4 @@ page {
 
 .tabbar_item_select {
     color: #FFFFFF;
-}
-</style>
+}</style>
