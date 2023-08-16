@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-26 18:02:59
+ * @LastEditTime: 2023-08-16 17:20:25
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -32,6 +32,9 @@
             <view class="draw-navigation-msg u-line-1">{{item.type=='music'?musicData.name:item.name}}</view>
           </view>
         </view>
+        <navigator v-if="isDuringDate('2023-08-16','2023-09-01')" class="sp-navigator" url="/pages/act/collectSpCard/index" hover-class="none">
+          <image class="sp-icon" :class="{'wobble-hor-bottom':spAnimation}" src="@/static/act/collectSpCard/icon.png"></image>
+        </navigator>
       </view>
       <!-- 场景选择 -->
       <scene :popupShow.sync="sceneData.show" :picType="sceneData.picType" @sceneChange="sceneData.bg=$event"/>
@@ -102,7 +105,7 @@
   import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
   import { DarwCard } from './utils/interface'
-  import { parsePic } from "@/tools/util";
+  import { parsePic ,isDuringDate } from "@/tools/util";
 	import BaseNode from '../../base/BaseNode.vue';
   import music from './components/music/music.vue'
   import scene from './components/scene/scene.vue'
@@ -113,6 +116,7 @@
   })
 	export default class ClassName extends BaseNode {
     parsePic = parsePic;
+    isDuringDate = isDuringDate;
     navigationTab:Array<{
         type:string;
         name:string;
@@ -155,6 +159,7 @@
       height:880,
       boxTop:1170
     }
+    spAnimation=false;
     /**是否最后一张卡片 */
     public get DrawCardOver():boolean {
       return this.cardData.step  >= this.cardData.total;
@@ -304,11 +309,15 @@
         const move_x = Math.abs(mX - iX);
         const move_Y = Math.abs(mY - iY);
         if(move_x>uni.upx2px(220) || move_Y>uni.upx2px(300)){
+          this.spAnimation = false;
           this.cardData.step++;
           const step = this.cardData.step;
           const item:DarwCard.Code = this.codeList[step];
           if(!this.DrawCardOver && ['gold','SP'].includes(this.codeList[step+1].color)){
             uni.vibrateLong({})
+          }
+          if(item.picTp==2){
+            this.spAnimation = true;
           }
           // 特效卡并且动画开启
           if(item.color=='gold'&&this.animationSwitch){
@@ -436,6 +445,16 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding:0 35rpx;
+    position: relative;
+    .sp-navigator{
+      position: absolute;
+      right:23rpx;
+      bottom:-110rpx;
+    }
+    .sp-icon{
+      width: 94rpx;
+      height:93rpx;
+    }
     .draw-back{
       width: 49rpx;
       height: 49rpx;
@@ -664,4 +683,38 @@
     top: -9999;
     display: none;
   }
+  .wobble-hor-bottom {
+    animation: wobble-hor-bottom 1s both;
+    animation-iteration-count: 1;
+  }
+  @keyframes wobble-hor-bottom {
+    0%,
+    100% {
+      -webkit-transform: translateX(0%);
+              transform: translateX(0%);
+      -webkit-transform-origin: 50% 50%;
+              transform-origin: 50% 50%;
+    }
+    15% {
+      -webkit-transform: translateX(-20px) rotate(-6deg);
+              transform: translateX(-20px) rotate(-6deg);
+    }
+    30% {
+      -webkit-transform: translateX(10px) rotate(6deg);
+              transform: translateX(10px) rotate(6deg);
+    }
+    45% {
+      -webkit-transform: translateX(-10px) rotate(-3.6deg);
+              transform: translateX(-10px) rotate(-3.6deg);
+    }
+    60% {
+      -webkit-transform: translateX(7px) rotate(2.4deg);
+              transform: translateX(7px) rotate(2.4deg);
+    }
+    75% {
+      -webkit-transform: translateX(-3px) rotate(-1.2deg);
+              transform: translateX(-3px) rotate(-1.2deg);
+    }
+  }
+
 </style>

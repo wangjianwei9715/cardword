@@ -106,9 +106,9 @@
 		}
 		guideEnd(){
 			this.illustrationGuide=false;
-			uni.showTabBar({ animation: false })
 			setTimeout(()=>{
 				this.disabledCell = false;
+				uni.showTabBar({ animation: false })
 			},200)
 		}
 		initEvent(){
