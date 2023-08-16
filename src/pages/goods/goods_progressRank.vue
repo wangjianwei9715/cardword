@@ -68,7 +68,7 @@ export default class ClassName extends BaseNode {
             params.od = this.listSort;
         }
 
-        app.http.Get(
+        app.http.GetWithCrypto(
             "dataApi/goodlist/forsale/progress",
             params,
             (res: any) => {

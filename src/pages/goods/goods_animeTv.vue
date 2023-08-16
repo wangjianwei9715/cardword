@@ -185,7 +185,7 @@ export default class ClassName extends BaseNode {
     }
     reqNewData(cb?: any) {
         this.queryParams.timeStamp = Math.round(+new Date() / 1000)
-        app.http.Get(`dataApi/goodlist/forsale/animeTv`, this.queryParams, (res: any) => {
+        app.http.GetWithCrypto(`dataApi/goodlist/forsale/animeTv`, this.queryParams, (res: any) => {
             const list = res.goodList || []
             this.isEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.goodsList = list : this.goodsList.push(...list)

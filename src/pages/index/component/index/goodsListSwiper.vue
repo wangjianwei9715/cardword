@@ -13,8 +13,6 @@
 	import { Component, Prop, Vue,PropSync ,Watch} from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
-	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
 	class ListParams {
 		fetchFrom=1;
 		fetchSize=10;
@@ -31,7 +29,6 @@
 		@PropSync('tabCurrent',{type:Number})
 		current!:number
 
-		kwwConfusion = new KwwConfusion();
 		app=app;
 		goodsList:any = [];
 		@Watch('current')
@@ -83,8 +80,7 @@
 				fetchFrom,
 				fetchSize,
 			}
-			const hash = this.kwwConfusion.goodsSwiper(urlNamr,fetchFrom,fetchSize)
-			app.http.Get(`dataApi/goodlist/forsale/${urlNamr}`, {...params,...hash}, (data: any) => {
+			app.http.GetWithCrypto(`dataApi/goodlist/forsale/${urlNamr}`, params, (data: any) => {
 				this.currentItem.noMoreData = data.isFetchEnd;
 				if (fetchFrom == 1) this.currentItem.list = [];
 
