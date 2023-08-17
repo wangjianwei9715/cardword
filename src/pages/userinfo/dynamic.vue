@@ -2,7 +2,8 @@
 	<view class="content">
 		<navigationbar title="消息" :custom="true">
 			<template slot="right">
-				<image src="@/static/userinfo/v3/clear.png" style="width: 40rpx;height: 40rpx" @click="onClickReadAll"></image>
+				<image src="@/static/userinfo/v3/clear.png" style="width: 40rpx;height: 40rpx" @click="onClickReadAll">
+				</image>
 			</template>
 		</navigationbar>
 		<view class="dynamic-content" v-if="!['social', 'order', 'trade'].includes(bucketName)">
@@ -43,7 +44,8 @@
 							:class="{ followButton_dis: (followMap[item.followState] && followMap[item.followState].isFollow) }"
 							v-if="item.tp === 1">{{ followMap[item.followState] && followMap[item.followState].text }}
 						</view>
-						<muqian-lazyLoad v-else :src="ossStitching($parsePic(decodeURIComponent(item.pic)),'x-oss-process=image/resize,h_100,w_100')"
+						<muqian-lazyLoad v-else
+							:src="ossStitching($parsePic(decodeURIComponent(item.pic)), 'x-oss-process=image/resize,h_100,w_100')"
 							class="interaction_pic"></muqian-lazyLoad>
 					</view>
 				</view>
@@ -56,7 +58,7 @@
 					<muqian-lazyLoad borderRadius="50%" class="avatar"
 						:src="$parsePic(decodeURIComponent(item.merchant.logo))"></muqian-lazyLoad>
 					<view class="name">{{ item.merchant.name }}</view>
-					<view class="dot" v-if="!item.read&&!readAll"></view>
+					<view class="dot" v-if="!item.read && !readAll"></view>
 				</view>
 				<view class="line"></view>
 				<view class="tipsWrap">
@@ -104,7 +106,7 @@ import {
 	formatDateToMonth,
 	formatDateToYear
 } from "@/tools/util";
-import { followActionByUser,ossStitching } from "@/pages/cardForum/func"
+import { followActionByUser, ossStitching } from "@/pages/cardForum/func"
 import BaseNode from '../../base/BaseNode.vue';
 const followMap: any = {
 	0: {
@@ -140,7 +142,7 @@ export default class ClassName extends BaseNode {
 	readAll = false;
 	followMap = followMap
 	app = app
-	ossStitching=ossStitching
+	ossStitching = ossStitching
 	onLoad(query: any) {
 		if (query.type) {
 			this.bucketName = query.type
@@ -211,13 +213,19 @@ export default class ClassName extends BaseNode {
 
 	}
 	onClickInteraction(item: any) {
-		if (item.pagePath) {
-			uni.navigateTo({
-				url: item.pagePath
-			})
-			item.read=true
-			return
-		}
+		app.http.Post('message/read', {
+			msgIds: String(item.msgId)
+		}, (res: any) => {
+			if (item.pagePath) {
+				uni.navigateTo({
+					url: item.pagePath
+				})
+				item.read = true
+				uni.$emit('dynamic')
+				return
+			}
+		})
+
 	}
 	onClickFollow(item: any) {
 		if (!item.userId) {

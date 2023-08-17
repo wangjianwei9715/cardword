@@ -518,7 +518,7 @@ page {
     font-size: 21rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #ffffff;
+    color: #a5a5a5;
 }
 
 .descWrap {
@@ -572,7 +572,7 @@ page {
     font-size: 21rpx;
     font-family: PingFang SC;
     font-weight: 400;
-    color: #FFFFFF;
+    color: #a5a5a5;
     text-align: center;
 }
 
