@@ -80,7 +80,7 @@ export default {
         goToDetail(item) {
 
             uni.navigateTo({
-                url: "/pages/cardForum/personHomePage?userId=" + item.userId
+                url: `/pages/cardForum/personHomePage?userId=${item.userId}&isMine=${item.isMe?1:0}` 
             })
         }
     }
