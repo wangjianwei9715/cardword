@@ -19,7 +19,7 @@
 			<!-- 卡组列表 -->
 			<spSwiper :current.sync="groupCurrent" :list="groupList" @change="onChangeGroup"/>
 			<!-- 集齐奖励列表 -->
-			<rewardScroll :groupReward="groupReward" />
+			<rewardScroll :groupReward="groupReward" :getCurrentGroup="getCurrentGroup"/>
 			<!-- 卡组详情 -->
 			<detail :getCurrentGroup="getCurrentGroup" :groupReward="groupReward" :detail.sync="groupDetail" @changeNum="changeCurrentGroupNum" @changeUser="changeCurrentCollectedSetNum"/>
 		</view>

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 13:57:41
+ * @LastEditTime: 2023-08-17 14:36:54
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -14,7 +14,7 @@
 			<view class="reward-title">集齐奖励</view>
 			<view class="reward-scroll">
 				<scroll-view class="scroll-box" scroll-x="true">
-					<view class="scroll-index" v-for="(item,index) in groupReward" :key='index'>
+					<view class="scroll-index" :class="{'brightness':rewardFinish(item.rankEnd)}" v-for="(item,index) in groupReward" :key='index'>
 						<view class="scroll-pic-box" @click="previewImage(item)">
 							<muqian-lazyLoad class="reward-pic" :src="decodeURIComponent(item.pic)" mode="aspectFill"></muqian-lazyLoad>
 						</view>
@@ -35,11 +35,17 @@
 	export default class ClassName extends BaseComponent {
 		@Prop({default:[]})
 		groupReward!:any[]
+		@Prop({default:{}})
+		getCurrentGroup!:any;
 		created(){
 		}
 		mounted(){
 		}
 		destroyed(){
+		}
+		rewardFinish(rankEnd:number){
+			const num = this.getCurrentGroup.collectedSetNum;
+			return rankEnd>0 && rankEnd<=num
 		}
 		rewardRankText(item:any):string{
 			return `第${item.rankStart}${item.rankEnd==0?'+':(item.rankEnd==item.rankStart?'':`-${item.rankEnd}`)}名`
@@ -58,7 +64,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		position: relative;
-		margin-top: 82rpx;
+		margin-top: 52rpx;
 		padding-left: 49rpx;
 		.reward-icon-s{
 			width: 88rpx;
@@ -140,5 +146,8 @@
 			color: #FFFFFF;
 			text-align: center;
 		}
+	}
+	.brightness{
+		filter: brightness(0.7);
 	}
 </style>
