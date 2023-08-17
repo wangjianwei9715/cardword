@@ -8,6 +8,7 @@
 				<statusbar/>
 				<view class="tab-header">
 					<view class="header-search">
+						<image class="searchbox-icon" src="@/static/index/search.png"/>
 						<view class="sousuo-icon"></view>
 						<u-notice-bar style="padding-left:80rpx;" @click="onClickSearch" :text="noticeList" direction="column" icon="" color="#A3A3A3" bgColor="rgba(0,0,0,0)" :duration="5000"></u-notice-bar>
 						<view class="search-btn">搜索</view>
@@ -542,14 +543,21 @@
 		justify-content: space-between;
 	}
 	.header-search {
-		width: 614rpx;
+		width: 613rpx;
 		height: 71rpx;
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
 		position: relative;
 		padding-right: 10rpx;
-		background: url(@/static/index/search.png) no-repeat center / 100% 100%;
+	}
+	
+	.searchbox-icon{
+		width: 613rpx;
+		height: 71rpx;
+		position: absolute;
+		left:0;
+		top:0;
 	}
 	.search-btn{
 		width: 98rpx;

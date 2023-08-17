@@ -4,7 +4,6 @@
 			<u-transition class="hot-p-b" v-for="(item,index) in freshPic" :key="index" :show="item.show" :duration="500" mode="fade-zoom">
 				<image class="hot-pic" :src="decodeURIComponent(item.icon)" mode="aspectFill"></image>
 			</u-transition>
-			<view class="hot-b"></view>
 			<image class="hot-name" src="@/static/index/hot/title_h.png"/>
 			<view class="hot-desc">大家都在玩～</view>
 		</view>
@@ -113,7 +112,6 @@
 		}
 	}
 </script>
-
 <style lang="scss">
 	.index-hot{
 		width: 100%;
@@ -125,7 +123,7 @@
 		.hot-box{
 			width: 260rpx;
 			height:360rpx;
-			background: #F8F8FA;
+			background: url(@/static/index/hot/bg_1.png) no-repeat center / 100% 100%;
 			position:relative;
 			box-sizing: border-box;
 			padding-top: 272rpx;
@@ -141,15 +139,6 @@
 			.hot-pic{
 				width: 167rpx;
 				height:167rpx;
-			}
-			.hot-b{
-				width: 209rpx;
-				height:51rpx;
-				background: url(@/static/index/hot/hot_b.png) no-repeat center / 100% 100%;
-				position: absolute;
-				top:204rpx;
-				left:26rpx;
-				z-index: 1;
 			}
 			.hot-name{
 				width: 108rpx;
@@ -169,7 +158,7 @@
 			.live-box{
 				width: 442rpx;
 				height:176rpx;
-				background: #F8F8FA;
+				background: url(@/static/index/hot/bg_2.png) no-repeat center / 100% 100%;
 				margin-bottom: 8rpx;
 				display: flex;
 				align-items: center;
@@ -271,13 +260,13 @@
 			.bottom-box1{
 				width: 217rpx;
 				height:176rpx;
-				background: #F8F8FA;
+				background: url(@/static/index/hot/bg_3.png) no-repeat center / 100% 100%;
 				position: relative;
 			}
 			.bottom-box2{
 				width: 217rpx;
 				height:176rpx;
-				background: #F8F8FA;
+				background: url(@/static/index/hot/bg_4.png) no-repeat center / 100% 100%;
 				position: relative;
 			}
 			.p1{

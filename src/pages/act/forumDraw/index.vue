@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-16 18:05:57
- * @FilePath: \card-world\src\pages\act\forumDraw\index.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-17 13:24:32
+ * @FilePath: \jichao_app_2\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -57,7 +57,7 @@
       </view>
       <view class="taskWrap">
         <view class="top">
-          <view class="taskTitle">卡圈动态累计获赞（单条）</view>
+          <view class="taskTitle">每篇卡圈动态累计获得20赞（循环）</view>
           <view class="taskButton flexCenter" @click="
             pageJump(
               dtLike.code
@@ -69,8 +69,8 @@
           </view>
         </view>
         <view class="info">
-          <view class="left">已获{{ dtLike.getTotalNum || 0 }}次</view>
-          <view class="right">距离获得下一次抽奖最快还需<text class="red">{{
+          <view class="left">已完成{{ dtLike.getTotalNum || 0 }}次</view>
+          <view class="right">距下次抽奖还需<text class="red">{{
             dtLike.nextNum || 0
           }}</text>/15</view>
         </view>
@@ -80,11 +80,11 @@
       </view>
       <view class="taskWrap">
         <view class="top">
-          <view class="taskTitle">补充图鉴累计卡币（仅图鉴获取）</view>
+          <view class="taskTitle">补充图鉴每获得50卡币（循环）</view>
           <view class="taskButton flexCenter" @click="goTuj">补充图鉴 </view>
         </view>
         <view class="info">
-          <view class="left">已获{{ cxPoint.getTotalNum || 0 }}次</view>
+          <view class="left">已完成{{ cxPoint.getTotalNum || 0 }}次</view>
           <view class="right">距下次抽奖还需<text class="red">{{ cxPoint.nextNum || 0 }}</text>/15</view>
         </view>
         <view class="bar">
