@@ -120,7 +120,7 @@
 		}
 		getResult(){
 			const { listParams } = this;
-			app.http.Get(`dataApi/good/${this.goodCode}/cardNoResult`,{...listParams,q:this.searchQ},(res:any)=>{
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNoResult`,{...listParams,q:this.searchQ},(res:any)=>{
 				if(res.list){
 					this.teamDataList = this.teamDataList.concat(res.list)
 				}
