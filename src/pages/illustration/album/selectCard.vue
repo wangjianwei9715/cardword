@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-11 14:11:38
+ * @LastEditTime: 2023-08-17 17:51:16
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -103,7 +103,8 @@
 			return total
 		}
 		public get getSeriesNolistLength() : boolean {
-			return this.selectSeries.some((x:any)=> x.noList.length>0)
+			const num = this.selectSeries.reduce((total:number,item:any)=> total+item.noList.length,0);
+			return num>=2
 		}
 		getSeriesNoCode(seriesCode:string) {
 			return this.selectSeries.filter((x:any)=>{
