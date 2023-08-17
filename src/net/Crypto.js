@@ -99,8 +99,7 @@ export function decHex(str) {
         bs.push(decoder[parseInt(h, 16)])
     }
     bs = new Uint8Array(bs)
-    const d = new TextDecoder('utf-8');
-    const s = d.decode(bs.buffer)
+    const s = decodeByteArrayToString(bs)
     return decodeHexString(s)
 }
 function decodeHexString(hexString) {
@@ -108,8 +107,7 @@ function decodeHexString(hexString) {
     for (let i = 0; i < hexString.length; i += 2) {
         bytes[i / 2] = parseInt(hexString.substr(i, 2), 16);
     }
-    const decoder = new TextDecoder();
-    return decoder.decode(bytes);
+    return decodeByteArrayToString(bytes);
 }
 function hexEncodeToString(bytes) {
     let hexString = '';
@@ -119,3 +117,10 @@ function hexEncodeToString(bytes) {
     }
     return hexString;
 }
+function decodeByteArrayToString(byteArray) {
+    var result = "";
+    for (var i = 0; i < byteArray.length; i++) {
+      result += String.fromCharCode(byteArray[i]);
+    }
+    return result;
+  }

@@ -1,8 +1,8 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 18:05:04
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-16 14:40:05
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-17 09:45:30
  * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -214,7 +214,7 @@ export function ossStitching(url:string,params:string){
     const hasParams=decodeURIComponent(url).indexOf("?")>=0
     return url+`${hasParams?'&':'?'}${params}`
 }
+const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{12}$/;
 export function testCode(code:string):Boolean{
-    //先判断长度(后续优化)
-    return code.length==12
+    return pattern.test(code);
 }

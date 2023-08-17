@@ -106,6 +106,10 @@ export function ossStitching(url,params){
     const hasParams=decodeURIComponent(url).indexOf("?")>=0
     return url+`${hasParams?'&':'?'}${params}`
 }
+const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{12}$/;
+export function testCode(code){
+    return pattern.test(code);
+}
 export const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.26/goods/pintuan0/16877444345160g177cxxvv.jpeg' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.26/goods/CL5842680/0/1687741972912rcg5fj6jr.jpg' },

@@ -103,7 +103,7 @@ import cardSkeleton from "./components/cardSkeleton.vue"
 import topicList from "./components/topicList.vue"
 import userList from "./components/userList.vue"
 import { Md5 } from "ts-md5";
-import { mockList } from "./func/index.js"
+import { mockList,testCode } from "./func/index.js"
 import empty from "@/components/empty/empty.vue"
 const tabsList = [
     {
@@ -292,6 +292,12 @@ export default {
         },
         async onClickSearch() {
             if (this.searchText) {
+                if (testCode(this.searchText)){
+                    uni.navigateTo({
+                        url:`/pages/cardForum/detail?code=${this.searchText}`
+                    })
+                    return
+                }
                 const stamp = Math.round(+new Date() / 1000)
                 const item = this.cardSearchLog.find((item) => {
                     return item.s == this.searchText
