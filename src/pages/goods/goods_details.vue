@@ -350,10 +350,13 @@
 		getBuyRecord(){
 			// 购买记录
 			if (this.goodsData.state == 1) {
-				app.http.Get(`dataApi/good/${this.goodCode}/buyRecord`, {}, (res: any) => {
-					if (res.list) this.buyRecordList = res.list.filter((x:any,index:number)=>{
-						return index<5
-					})
+				app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/latest_sales`,{},({list,dic}:any)=>{
+					if(list){
+						this.buyRecordList = list.map(({dicKey,time,num}:any)=>{
+							const {userName,avatar} = dic[dicKey];
+							return {time,num,userName,avatar}
+						}).filter((x:any,index:number)=>index<5);
+					}
 				})
 			}
 		}
