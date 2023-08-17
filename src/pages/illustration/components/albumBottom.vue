@@ -6,6 +6,7 @@
 		</view>
 		<view class="btn" :class="{'btn-red':canNext,'no-save':!showSave}" @click="onClickNext">
 			下一步
+			<view class="percent" v-show="step==1">至少选择2条卡密</view>
 			<view class="percent" v-show="step==2">当前收集进度{{percent}}%</view>
 		</view>
 	</view>

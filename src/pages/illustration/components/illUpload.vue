@@ -109,7 +109,7 @@
 		async addImage(type:string) {
 			if(!this.uploadable) return;
 			app.platform.hasLoginToken( async ()=>{
-				const pic:any = await Upload.getInstance().uploadSocialImgs(1, "illustration", ["album","camera"]);
+				const pic:any = await Upload.getInstance().uploadSocialImgs(1, "illustration", ["album"]);
 				type=="front" && (this.frontImg = pic[0]);
 				type=="back" && (this.backImg = pic[0]);
 			})
