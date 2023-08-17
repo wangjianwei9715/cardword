@@ -33,11 +33,15 @@
 				</view>
 			</view>
 			<view class="series-nolist">
-				<scroll-view class="scroll-box" scroll-x="true">
+				<scroll-view class="scroll-box" scroll-x="true" v-if="item.noList&&item.noList.length">
 					<view class="scroll-index" v-for="(pitem,pindex) in item.noList" :key='pindex'>
 						<muqian-lazyLoad @click="onClickPreviewImage(item.noList,pindex)" class="series-pic" borderRadius="3rpx" :src="decodeURIComponent(pitem.pic)" mode="aspectFit"/>
 					</view>
 				</scroll-view>
+				<view v-else class="empty-box">
+					<image class="icon-empty" src="@/static/cardForum/forumEmpty.png"/>
+					<view class="empty-text">暂无相关内容</view>
+				</view>
 			</view>
 			<guideStep :step="2" :show="guideShowStep(2)&&index==0" @next="guideStep=3"/>
 		</view>
@@ -322,5 +326,24 @@
 			z-index: 999;
 		}
 	}
-	
+	.empty-box{
+		width: 100%;
+		height:181rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: wrap;
+		.icon-empty{
+			width: 180rpx;
+			height:170rpx;
+			margin-top: -30rpx;
+			margin-right: -40rpx;
+		}
+		.empty-text{
+			width: 100%;
+			text-align: center;
+			font-size:24rpx;
+			color:#C0C0C0
+		}
+	}
 </style>

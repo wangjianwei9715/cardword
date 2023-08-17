@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-16 17:20:25
+ * @LastEditTime: 2023-08-17 14:22:26
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -259,6 +259,7 @@
       }, 10); 
     }
     onClickNavigation(item:{ type:string; name:string; }){
+      if(this.animationStart) return;
       if(item.type=='scene') this.sceneData.show=true ;
       if(item.type=='music') this.musicData.show=true ;
       if(item.type=='ani'){

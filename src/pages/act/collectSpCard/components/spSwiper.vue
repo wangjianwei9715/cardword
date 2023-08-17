@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-26 16:52:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-25 10:23:43
+ * @LastEditTime: 2023-08-17 14:39:18
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -13,7 +13,7 @@
 			<image class="icon-choois" src="@/static/act/collectSpCard/icon_choois.png"/>
 		</view>
 		<swiper
-			:style="{ width: '100vw', height: '180rpx' }"
+			:style="{ width: '100vw', height: '210rpx' }"
 			:current="swiperCurrent"
 			:circular="true"
 			previous-margin="308rpx"
@@ -23,6 +23,7 @@
 			<swiper-item v-for="(item, i) in list" :key="i">
 				<view class="swiper-box" @click="changeSwiperIndex({detail:{current:i}})">
 					<image class="swiper-pic" :class="{'init-pic':i!==current}" :src="item.pic" mode="aspectFill"/>
+					<view class="swiper-name">{{item.name}}</view>
 					<view class="swiper-desc" v-if="item.start">
 						<text class="swiper-desc-text">{{item.getPlayerNum}}</text>/{{item.playerNum}}
 					</view>
@@ -111,6 +112,14 @@
 	// }
 	.swiper-desc{
 		margin-top: 10rpx;
+		text-align: center;
+		font-size: 23rpx;
+		font-family: PingFang SC;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+	.swiper-name{
+		width: 100%;
 		text-align: center;
 		font-size: 23rpx;
 		font-family: PingFang SC;
