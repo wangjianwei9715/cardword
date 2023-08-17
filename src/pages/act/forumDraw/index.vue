@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-17 13:24:32
+ * @LastEditTime: 2023-08-17 13:30:04
  * @FilePath: \jichao_app_2\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -72,7 +72,7 @@
           <view class="left">已完成{{ dtLike.getTotalNum || 0 }}次</view>
           <view class="right">距下次抽奖还需<text class="red">{{
             dtLike.nextNum || 0
-          }}</text>/15</view>
+          }}</text>/20</view>
         </view>
         <view class="bar">
           <view class="bar_width" :style="{ width: dtPercent() + '%' }"></view>
@@ -84,8 +84,8 @@
           <view class="taskButton flexCenter" @click="goTuj">补充图鉴 </view>
         </view>
         <view class="info">
-          <view class="left">已完成{{ cxPoint.getTotalNum || 0 }}次</view>
-          <view class="right">距下次抽奖还需<text class="red">{{ cxPoint.nextNum || 0 }}</text>/15</view>
+          <view class="left">已获{{ cxPoint.getTotalNum || 0 }}次</view>
+          <view class="right">距下次抽奖还需<text class="red">{{ cxPoint.nextNum || 0 }}</text>/50</view>
         </view>
         <view class="bar">
           <view class="bar_width" :style="{ width: tjPercent() + '%' }"></view>
@@ -149,12 +149,12 @@ export default class ClassName extends BaseNode {
   public dtPercent() {
     if (this.dtLike.nextNum == undefined) return 0
     const num = this.dtLike.nextNum || 0
-    return (15 - num) * 100 / 15
+    return (20 - num) * 100 / 20
   }
   public tjPercent() {
     if (this.cxPoint.nextNum == undefined) return 0
     const num = this.cxPoint.nextNum || 0
-    return (15 - num) * 100 / 15
+    return (50 - num) * 100 / 50
   }
   onLoad(query: any) {
     app.platform.hasLoginToken(() => {
