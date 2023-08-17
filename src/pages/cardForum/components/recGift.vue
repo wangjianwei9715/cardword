@@ -17,7 +17,7 @@
                         <view class="centerInfo">
                             <text class="userName">{{ item.userName }}</text>
                             <view class="giftName">
-                                <text class="name">赠送了你一份礼物</text>
+                                <text class="name">赠送了你{{ item.tp==1?"一份礼物":`${item.content}` }}</text>
                                 <text class="time">{{ timeDiff(item.created_at) }}</text>
                                 <!-- defaultAvatar -->
                             </view>
@@ -26,7 +26,8 @@
                             </view>
                         </view>
                         <!-- <view class="flex1"></view> -->
-                        <image class="giftPic" mode="aspectFill"></image>
+                        <!-- <image class="giftPic" mode="aspectFill" v-if="item.tp==1" src="/static/userinfo/v3/give.png"></image>
+                        <image class="giftPic" mode="aspectFill" v-if="item.tp==2" src="/static/userinfo/v3/kb.png"></image> -->
                     </view>
                 </scroll-view>
                 
@@ -199,10 +200,10 @@ export default {
 }
 
 .giftPic {
-    width: 91rpx;
-    height: 91rpx;
+    width: 60rpx;
+    height: 60rpx;
     // display: block;
-    background: #FA1545;
+    // background: #FA1545;
 }
 
 .avatar {
