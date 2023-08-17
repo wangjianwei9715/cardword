@@ -388,6 +388,9 @@
 			swiperData.carouselLength = carousel.length;
 			picData.detailImg = [...picFormat(goodsPic.yuanfeng)];
 			picData.carousel = [...carousel,...picData.detailImg];
+			if(goodsPic.thumb){
+				goodsPic.thumb = picFormat(goodsPic.thumb);
+			}
 			function picFormat(pic:any[]){
 				return pic ? pic.map(x => parsePic(decHex(x))) : [];
 			}
