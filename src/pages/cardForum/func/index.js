@@ -1,12 +1,16 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-25 20:11:24
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-16 14:39:59
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-18 17:40:08
  * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+const MAX_HEIGHT = uni.upx2px(478)
+const WIDTH = uni.upx2px(360)
+const MIN_HEIGHT = uni.upx2px(246)
 const app = getApp().globalData.app
+let bufferImageList = []
 export function releaseByTopic(id) {
     uni.navigateTo({
         url: `/pages/cardForum/release?topicId=${id}`
@@ -43,9 +47,9 @@ export function delDraftDetail(draftId, userId) {
     uni.setStorageSync(DRAFT_STORAGE_KEY, list)
 }
 //关注话题
-export function followTopic(id,isFollow) {
+export function followTopic(id, isFollow) {
     return new Promise((re, rj) => {
-        app.http.Post(`cardCircle/${isFollow?'un/':''}follow/topic/` + id, {}, () => {
+        app.http.Post(`cardCircle/${isFollow ? 'un/' : ''}follow/topic/` + id, {}, () => {
             re && re(true)
         }, (err) => {
             rj(err)
@@ -102,13 +106,71 @@ export function getForumDetail(code) {
         })
     })
 }
-export function ossStitching(url,params){
-    const hasParams=decodeURIComponent(url).indexOf("?")>=0
-    return url+`${hasParams?'&':'?'}${params}`
+export function ossStitching(url, params) {
+    const hasParams = decodeURIComponent(url).indexOf("?") >= 0
+    return url + `${hasParams ? '&' : '?'}${params}`
 }
 const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{12}$/;
-export function testCode(code){
+export function testCode(code) {
     return pattern.test(code);
+}
+export function getImageInfo(item) {
+    return new Promise((re, rj) => {
+        const findItem = bufferImageList.find((buffer) => {
+            return (item.code == buffer.code && item.cover == buffer.cover)
+        })
+        if (findItem) {
+            item.mode = findItem.mode
+            item.width = findItem.width
+            item.height = findItem.height
+            re(item)
+        } else {
+            re(item)
+            // uni.getImageInfo({
+            //     src: thumbnail(item.cover, needParse),
+            //     success: (res) => {
+            //         if (res.width < WIDTH) {
+            //             res.height = (WIDTH / res.width) * res.height
+            //             res.width = WIDTH
+            //         }
+            //         const widthFixHeight = (WIDTH / res.width) * res.height
+            //         if (widthFixHeight > MAX_HEIGHT) {
+            //             item.mode = "aspectFit"
+            //             item.width = (res.width / res.height) * MAX_HEIGHT
+            //             item.height = MAX_HEIGHT
+            //         } else {
+            //             item.mode = "widthFix"
+            //             item.height = widthFixHeight
+            //         }
+            //         re(item)
+            //         bufferImageList.push({
+            //             code: item.code,
+            //             cover: item.cover,
+            //             mode: item.mode,
+            //             width: item.width,
+            //             height: item.height
+            //         })
+            //     },
+            //     fail: (err) => {
+            //         re(item)
+            //     }
+            // })
+        }
+    })
+}
+export function getImageByLocal(item) {
+    const findItem = app.cardForumImgLocal[item.code]
+    return findItem
+}
+export function pushImage(item) {
+    app.cardForumImgLocal[item.code] = { width: item.width, height: item.height, mode: item.mode }
+}
+function thumbnail(cover, needParse) {
+    if (!cover) return cover
+    let deCover = needParse ? getApp().globalData.parsePic(decodeURIComponent(cover)) : cover
+    const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
+    if (isVideoSnapshot) return deCover
+    return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,w_1`)
 }
 export const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.26/goods/pintuan0/16877444345160g177cxxvv.jpeg' },

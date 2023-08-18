@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\app.ts
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-15 11:30:48
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-18 17:41:24
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -73,4 +73,5 @@ export module app{
         illustration:true,
         cardCircle:true
     }
+    export let cardForumImgLocal={}
 }
