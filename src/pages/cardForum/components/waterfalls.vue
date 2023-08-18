@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 15:57:03
+ * @LastEditTime: 2023-08-18 16:00:24
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -777,7 +777,7 @@ export default {
             let deCover = needParse ? this.parsePic(decodeURIComponent(cover)) : cover
             const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
             if (isVideoSnapshot) return deCover
-            return ossStitching(deCover, `x-oss-process=image/resize,p_1`)
+            return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,w_1`)
         },
         imageLoadError(event, item) {
             // #ifndef APP-NVUE
