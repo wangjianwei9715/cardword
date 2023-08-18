@@ -74,7 +74,9 @@
 		peCurrent = 0;
 		touchData = {
 			startX:0,
+			startY:0,
 			moveX:0,
+			moveY:0,
 			move:false
 		}
 		showSwiper = true;
@@ -116,9 +118,11 @@
 		}
 		handleTouchStart(event:any) {
 			this.touchData.startX = event.touches[0].clientX;
+			this.touchData.startY = event.touches[0].clientY;
 		}
 		handleTouchMove(event:any) {
 			this.touchData.moveX = event.touches[0].clientX;
+			this.touchData.moveY = event.touches[0].clientY;
 			this.touchData.move = true;
 		}
 		handleTouchEnd() {
@@ -129,6 +133,10 @@
 			} else if (this.touchData.moveX - this.touchData.startX < -100) {
 				this.showSwiper = false;
 				this.$emit('next')
+			}else if(this.touchData.moveY - this.touchData.startY > 100){
+				this.$emit("peerTo","up")
+			}else if(this.touchData.moveY - this.touchData.startY < -100){
+				this.$emit("peerTo","next")
 			}
 			this.touchData.move = false;
 			setTimeout(() => {
