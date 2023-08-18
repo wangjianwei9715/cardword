@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 12:05:40
+ * @LastEditTime: 2023-08-18 12:08:32
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -204,11 +204,11 @@
                     </div>
                     <image v-if="item.mode == 'widthFix'"
                         style="width: 360rpx;border-top-left-radius:5rpx;border-top-right-radius:5rpx"
-                        :src="ossStitching(item.cover, 'x-oss-process=image/resize,m_lfit,w_540')"
+                        :src="ossStitching(item.cover, 'x-oss-process=image/resize,m_lfit,w_432')"
                         class="waterfall-item__image_img" mode="widthFix">
                     </image>
                     <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
-                        :src="ossStitching(item.cover, 'x-oss-process=image/resize,m_lfit,h_660')"
+                        :src="ossStitching(item.cover, 'x-oss-process=image/resize,m_lfit,h_572')"
                         class="waterfall-item__image_img" mode="aspectFit">
                     </image>
                     <view class="videoIconWrap" v-if="item.video_at">
