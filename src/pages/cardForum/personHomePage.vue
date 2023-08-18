@@ -66,7 +66,7 @@
         </u-sticky>
         <waterfalls v-if="current" style="width: 750rpx;margin-top: 10rpx;" :viewUserId="userId" ref="waterfall"
             :showBottom="current.name != '中卡'" :detailBack="true" :isMine="isMine" :showUser="showUser"
-            :value="tabs.list[tabs.index].list" :refresh="false" :showEmpty="!isMine">
+            :value="tabs.list[tabs.index].list" :refresh="false" :showEmpty="!isMine" :isFetchEnd="current.isFetchEnd">
             <template slot="list1" v-if="current.name == '动态' && draftListByDynamic.length">
                 <view class="draftWrap" @click="pageJump('/pages/cardForum/draftList?draftType=dynamic')">
                     <image class="draftWrapImage" v-if="draftListByDynamic[0].data.cover"
