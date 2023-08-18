@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 13:34:09
+ * @LastEditTime: 2023-08-18 14:43:37
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -177,8 +177,7 @@
     <!-- #ifdef APP-NVUE -->
 
     <waterfall @scroll="scroll" fixFreezing="true" ref="water" bounce="true" :column-count="columnCount"
-        :show-scrollbar="false" :column-width="WIDTH" :column-gap="GAP" :left-gap="GAP" :right-gap="GAP"
-        @loadmore="scrolltolower" :always-scrollable-vertical="true" :height="height">
+        :show-scrollbar="false" :column-width="WIDTH" :column-gap="GAP" :left-gap="GAP" :right-gap="GAP" :always-scrollable-vertical="true" :height="height">
         <refresh v-if="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'" class="refresh">
             <u-loading-icon mode="semicircle"></u-loading-icon>
         </refresh>
@@ -254,9 +253,11 @@
                 </div>
             </div>
         </cell>
+
         <header style="margin-top:50rpx" v-if="copyValue.length">
-            <u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'"
-                nomore-text="没有更多了" fontSize="24rpx" />
+            <div @appear="appearLoadMore" @disappear="disappearLoadMore"><u-loadmore :line="true" loadingIcon="semicircle"
+                    lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
+            </div>
             <div :style="{ height: safeBottomHeight + 'px' }" v-if="bottomSafe"></div>
         </header>
     </waterfall>
@@ -420,7 +421,8 @@ export default {
             pushTimer: 0,
             safeBottomHeight: 0,
             firstEmit: false,
-            ossStitching
+            ossStitching,
+            loadMoreTimer:null,
         }
     },
 
@@ -666,9 +668,16 @@ export default {
         scroll(event) {
             this.$emit("scroll", event)
         },
-        scrolltolower() {
-            console.log("scrolltolower=>this.$emit('loadmore')");
-            this.$emit("loadmore")
+        appearLoadMore(event) {
+            if (this.copyValue.length&&!this.isFetchEnd) {
+                this.disappearLoadMore()
+                this.loadMoreTimer = setTimeout(() => {
+                    this.$emit("loadmore")
+                }, 200)
+            }
+        },
+        disappearLoadMore() {
+            this.loadMoreTimer && clearTimeout(this.loadMoreTimer)
         },
         delData(code) {
             const index = this.tempList.findIndex(item => {
@@ -681,9 +690,6 @@ export default {
 
         h5ImageLoad(event, item) {
 
-            // event.detail.width = event.detail.width * 100
-            // event.detail.height = event.detail.height * 100
-            // console.log(event);
             if (event.detail.width < WIDTH) {
                 event.detail.height = (WIDTH / event.detail.width) * event.detail.height
                 event.detail.width = WIDTH
