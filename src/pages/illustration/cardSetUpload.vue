@@ -18,10 +18,10 @@
 					<view class="header-num">{{numData.now}}/{{numData.all}}</view>
 					<view class="icon-right" @click="$u.throttle(onClickNext,1000)"></view>
 				</view>
-				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic" :uploadable="hasUpload" @up="onClickUp" @next="onClickNext"/>
+				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic" :uploadable="hasUpload" @up="onClickUp" @next="onClickNext" @peerTo="onClickMovePeerTo"/>
 				<view class="upload-card-info">
 					<view class="card-title">{{noData.text.player}}</view>
-					<view class="card-set u-line-2">{{noData.text.seq==0?"无限":noData.text.seq}}编，{{noData.text.cardSet}}</view>
+					<view class="card-set u-line-2">{{binaryPeer.length?`${noData.text.seqIndex}/`:''}}{{noData.text.seq==0?"无限":noData.text.seq}}编，{{noData.text.cardSet}}</view>
 					<view class="card-seq">
 						<image v-if="noData.text.cardSetLogo" class="logo-pic" :src="$parsePic(decodeURIComponent(noData.text.cardSetLogo))"/>
 					</view>
@@ -36,7 +36,7 @@
 		<view class="upload-right" v-if="noData.text && noData.text.peer.length">
 			<statusbar/>
 			<scroll-view class="up-scroll-box" :scroll-y="true">
-				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':item>0}" v-for="(item,index) in binaryPeer" :key='index' @click="onClickPeerTo(index)">
+				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':item>0}" v-for="(item,index) in binaryPeer" :key='index' @click="onClickPeerTo(index+1)">
 					{{index+1}}{{(index+1)==noData.text.seqIndex?`/${noData.text.seq}`:''}}
 				</view>
 			</scroll-view>
@@ -127,10 +127,17 @@
 				}
 			})
 		}
+		onClickMovePeerTo(type:string){
+			const { seqIndex } = this.noData.text;
+			const index = type=='up' ? seqIndex-1 : seqIndex+1;
+			if(index>0 && index<= this.binaryPeer.length){
+				this.onClickPeerTo(index);
+			}
+		}
 		onClickPeerTo(index:number){
-			if(index===this.noData.text.seqIndex-1) return;
+			if(index===this.noData.text.seqIndex) return;
 			this.clearPic()
-			app.http.GetWithCrypto(`dataApi/cardIllustration/no/detail/rich/${this.noCode}/peer/to/${index+1}`,{},(res:any)=>{
+			app.http.GetWithCrypto(`dataApi/cardIllustration/no/detail/rich/${this.noCode}/peer/to/${index}`,{},(res:any)=>{
 				this.noCode = res.text.code;
 				this.noData = {
 					illustration:res.illustration,

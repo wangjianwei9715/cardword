@@ -154,7 +154,14 @@
 			onClickLazyImage(pic) {
 				if(this.preview){
 					uni.previewImage({
-						urls: [pic]
+						urls: [pic],
+						longPressActions:{
+							itemList:[],
+							success: (data)=> {
+							},
+							fail: (err)=> {
+							}
+						}
 					});
 				}else{
 					this.$emit('click')
