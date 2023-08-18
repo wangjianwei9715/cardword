@@ -241,6 +241,7 @@ const defaultTagObj = {
     queryParams: {
         fetchFrom: 1,
         fetchSize: 10,
+        sequence:0,
     },
     // totalPage: 10,
     isFetchEnd: false,
@@ -480,8 +481,12 @@ export default {
             this.dx = event.detail.dx
         },
         tabClick(event) {
-            // console.log(event);
-            if (event.index == this.tabs.index) return
+            if (event.index == this.tabs.index){
+                //#ifdef APP-NVUE
+                this.$refs[`waterfalls${this.tabs.index}`][0].goTop()
+                //#endif
+                return
+            }
             this.tabs.index = event.index
         },
         onSelectAction(item) {
@@ -522,6 +527,7 @@ export default {
                 //     }))
                 // }
                 this.current.queryParams.fetchFrom = 1
+                this.current.queryParams.sequence=0
                 this.reqNewData(true, (() => {
                     setTimeout(() => {
                         this.$refs['waterfalls' + index][0].hideRefresh()
@@ -530,10 +536,13 @@ export default {
             }, 1000)
         },
         loadmoreData(index) {
+            console.log("loadmoreData=>loadmoreData");
             this.loadmoreTimer && clearTimeout(this.loadmoreTimer)
             this.loadmoreTimer = setTimeout(() => {
+                console.log("this.current.isFetchEnd=>",this.current.isFetchEnd);
                 if (!this.current.isFetchEnd) {
                     this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
+                    this.current.queryParams.sequence+=1
                     this.reqNewData()
                 }
             }, 300)
@@ -558,7 +567,8 @@ export default {
         },
         reqNewData(isRefresh = false, cb) {
             let query = {
-                tag: this.current.tag
+                tag: this.current.tag,
+                sequence:this.current.queryParams.sequence
             }
             const array = ["all", "album"]
             if (!array.includes(this.current.tag)) {
@@ -598,6 +608,11 @@ export default {
                 cb && cb()
             }, (err) => {
                 this.current.firstReqEnd = true
+                uni.showToast({
+                    title:err,
+                    icon:'none'
+                })
+                this.refreshData(this.tabs.index)
             })
         }
     }

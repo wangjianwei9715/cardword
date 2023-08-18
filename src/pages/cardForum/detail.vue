@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-17 17:07:13
+ * @LastEditTime: 2023-08-17 21:03:48
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -480,7 +480,7 @@ export default class ClassName extends BaseNode {
             return
         }
         uni.navigateTo({
-            url: `/pages/cardForum/personHomePage?userId=${this.forumDetail.userId}&isMine=${this.isPerson?1:0}` 
+            url: `/pages/cardForum/personHomePage?userId=${this.forumDetail.userId}&isMine=${this.isPerson ? 1 : 0}`
         })
     }
     onClickCom(item: CardForum.CommentFather, son: CardForum.Comment | null) {
@@ -767,6 +767,9 @@ export default class ClassName extends BaseNode {
     shareSuccess() {
         app.http.Post(`cardCircle/share/${this.code}`, {}, () => { })
     }
+    replacePic(str: string) {
+        return str.indexOf('#thumb') == -1 ? str : str.replace('#thumb', '.thumb')
+    }
     reqNewData(cb?: any) {
         getForumDetail(this.code).then((res: any) => {
             if (res.data.tp === 2) {
@@ -783,11 +786,11 @@ export default class ClassName extends BaseNode {
             }
             this.pics = res.data.url.split(",").filter(Boolean).map((url: string) => {
                 //@ts-ignore
-                return this.$parsePic(decodeURIComponent(url))
+                return this.replacePic(this.$parsePic(decodeURIComponent(url)))
             })
             this.pics.forEach((pic: string, index) => {
                 uni.getImageInfo({
-                    src: ossStitching(pic,'x-oss-process=image/resize,p_1'),
+                    src: ossStitching(pic, 'x-oss-process=image/resize,p_1'),
                     success: (res: any) => {
                         if (res.width < WIDTH) {
                             res.height = (WIDTH / res.width) * res.height

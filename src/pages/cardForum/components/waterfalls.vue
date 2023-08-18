@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-15 11:11:45
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-18 11:35:54
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -45,7 +45,7 @@
                                 v-if="showBottom">
                                 <template v-if="showUser">
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                        :src="item.author ? item.author.avatar :(item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar)">
+                                        :src="item.author ? item.author.avatar :(item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)),'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar)">
                                     </image>
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
@@ -120,7 +120,7 @@
                                 v-if="showBottom">
                                 <template v-if="showUser">
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                        :src="item.author ? item.author.avatar :(item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar)">
+                                        :src="item.author ? item.author.avatar :(item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)),'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar)">
                                     </image>
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
@@ -182,7 +182,7 @@
         <refresh v-if="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'" class="refresh">
             <u-loading-icon mode="semicircle"></u-loading-icon>
         </refresh>
-        <header>
+        <header ref="goTop">
             <div v-for="(item, index) in copyValue" style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;">
                 <image :src="thumbnail(item.cover)" v-if="!item.mode"
                     style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)"
@@ -221,7 +221,7 @@
                 <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
                     <template v-if="showUser">
                         <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                            :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
+                            :src="item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)),'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar">
                         </image>
                         <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                         <div class="likeWrap" @click="onClickLike($event, item)">
@@ -413,7 +413,8 @@ export default {
             defaultAvatar: getApp().globalData.app.defaultAvatar,
             pushTimer: 0,
             safeBottomHeight: 0,
-            firstEmit:false
+            firstEmit:false,
+            ossStitching
         }
     },
 
@@ -651,12 +652,10 @@ export default {
         },
         goTop() {
             // #ifdef APP-NVUE
-            // console.log(this.$refs.goTop);
             dom.scrollToElement(this.$refs.goTop, {
-                animated: false//无动画
+                animated: true
             })
             // #endif
-            // console.log("goTopgoTop");
         },
         scroll(event) {
             this.$emit("scroll", event)
@@ -699,11 +698,10 @@ export default {
                 width: item.width,
                 height: item.height
             })
-            // console.log(item);
             this.pushTimer && clearTimeout(this.pushTimer)
             this.pushTimer = setTimeout(() => {
                 this.$forceUpdate()
-            }, 200)
+            }, 100)
         },
         imageLoad(event, item) {
             // #ifdef APP-NVUE
@@ -714,8 +712,11 @@ export default {
             if (widthFixHeight > MAX_HEIGHT) {
                 item.mode = "aspectFit"
                 item.width = (event.detail.width / event.detail.height) * MAX_HEIGHT
+                item.height = MAX_HEIGHT
             } else {
                 item.mode = "widthFix"
+                item.height = widthFixHeight
+                item.width=WIDTH
             }
             // #ifndef APP-NVUE
 
@@ -730,7 +731,8 @@ export default {
                 code: item.code,
                 cover: item.cover,
                 mode: item.mode,
-                width: item.width
+                width: item.width,
+                height: item.height
             })
             // #endif
             if(!this.firstEmit && this.forumGuide){
