@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 16:00:24
+ * @LastEditTime: 2023-08-18 17:24:19
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -278,7 +278,7 @@ let alreadyList = []
 let bufferImgList = []
 const LIEK = 4
 import mixin from './function/mixin.js'
-import { delDraftDetail } from "../func/index.js"
+import { delDraftDetail, pushImage, getImageByLocal } from "../func/index.js"
 import empty from "@/components/empty/empty.vue"
 import { getDraftDetail, ossStitching } from "../func"
 // #ifdef APP-NVUE
@@ -433,9 +433,7 @@ export default {
             let newArr = this.$uv.deepClone(this.value)
             // #ifdef APP-NVUE
             newArr = newArr.map(item => {
-                const findItem = bufferImgList.find(buffer => {
-                    return buffer.cover === item.cover
-                })
+                const findItem = getImageByLocal(item)
                 if (findItem) {
                     item.mode = findItem.mode
                     item.width = findItem.width
@@ -713,13 +711,22 @@ export default {
                 item.mode = "widthFix"
                 item.height = widthFixHeight
             }
-            bufferImgList.push({
-                code: item.code,
-                cover: item.cover,
-                mode: item.mode,
-                width: item.width,
-                height: item.height
-            })
+            pushImage(
+                {
+                    code: item.code,
+                    // cover: item.cover,
+                    mode: item.mode,
+                    width: item.width,
+                    height: item.height
+                }
+            )
+            // bufferImgList.push({
+            //     code: item.code,
+            //     cover: item.cover,
+            //     mode: item.mode,
+            //     width: item.width,
+            //     height: item.height
+            // })
             this.pushTimer && clearTimeout(this.pushTimer)
             this.pushTimer = setTimeout(() => {
                 this.$forceUpdate()
@@ -749,13 +756,22 @@ export default {
             }, 100)
             // #ifdef APP-NVUE
             // this.tempList.push(item)
-            bufferImgList.push({
-                code: item.code,
-                cover: item.cover,
-                mode: item.mode,
-                width: item.width,
-                height: item.height
-            })
+            // bufferImgList.push({
+            //     code: item.code,
+            //     cover: item.cover,
+            //     mode: item.mode,
+            //     width: item.width,
+            //     height: item.height
+            // })
+            pushImage(
+                {
+                    code: item.code,
+                    // cover: item.cover,
+                    mode: item.mode,
+                    width: item.width,
+                    height: item.height
+                }
+            )
             // #endif
             if (!this.firstEmit && this.forumGuide) {
                 this.$emit('firstData', this.copyValue[0]);
@@ -806,12 +822,11 @@ export default {
             const minCol = this.getMin(rectArr);
             // 列宽可能使用的到
             item.width = minCol.width;
-            const findItem = bufferImgList.find((buffer) => {
-                return buffer.cover == item.cover
-            })
+            const findItem = getImageByLocal(item)
             if (findItem) {
                 item.mode = findItem.mode
                 item.width = findItem.width
+                if (item.height) item.height = findItem.height
             } else {
                 uni.getImageInfo({
                     src: this.thumbnail(item.cover, true),
