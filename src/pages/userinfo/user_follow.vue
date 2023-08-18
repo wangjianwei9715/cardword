@@ -218,7 +218,7 @@ export default class ClassName extends BaseNode {
 		app.http.Get(this.current.url, this.current.queryParams, (res: any) => {
 			this.current.isFetchEnd = res.isFetchEnd ?? true
 			const list = res.list || []
-			this.current.dataList = res.list
+			// this.current.dataList = res.list
 			this.current.queryParams.fetchFrom == 1 ? this.current.dataList = list : this.current.dataList.push(...list)
 		})
 	}
