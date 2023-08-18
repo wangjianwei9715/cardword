@@ -246,6 +246,7 @@ const defaultTagObj = {
     // totalPage: 10,
     isFetchEnd: false,
     firstReqEnd: false,
+    retry: 0,
     list: []
 }
 export default {
@@ -612,6 +613,7 @@ export default {
                 }
                 this.current.list.push(...list)
                 this.current.firstReqEnd = true
+                this.current.retry=0
                 cb && cb()
             }, (err) => {
                 this.current.firstReqEnd = true
@@ -619,7 +621,10 @@ export default {
                     title: err,
                     icon: 'none'
                 })
-                this.refreshData(this.tabs.index)
+                if (this.current.retry < 1) {
+                    this.refreshData(this.tabs.index)
+                    this.current.retry += 1
+                }
             })
         }
     }
