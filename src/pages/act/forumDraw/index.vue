@@ -57,7 +57,7 @@
       </view>
       <view class="taskWrap">
         <view class="top">
-          <view class="taskTitle">每篇卡圈动态累计获得20赞（循环）</view>
+          <view class="taskTitle">每篇卡圈动态累计获得15赞（循环）</view>
           <view class="taskButton flexCenter" @click="
             pageJump(
               dtLike.code
@@ -72,7 +72,7 @@
           <view class="left">已完成{{ dtLike.getTotalNum || 0 }}次</view>
           <view class="right">距下次抽奖还需<text class="red">{{
             dtLike.nextNum || 0
-          }}</text>/20</view>
+          }}</text>/15</view>
         </view>
         <view class="bar">
           <view class="bar_width" :style="{ width: dtPercent() + '%' }"></view>
@@ -149,7 +149,7 @@ export default class ClassName extends BaseNode {
   public dtPercent() {
     if (this.dtLike.nextNum == undefined) return 0
     const num = this.dtLike.nextNum || 0
-    return (20 - num) * 100 / 20
+    return (15 - num) * 100 / 15
   }
   public tjPercent() {
     if (this.cxPoint.nextNum == undefined) return 0
