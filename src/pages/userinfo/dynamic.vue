@@ -224,6 +224,11 @@ export default class ClassName extends BaseNode {
 				uni.$emit('dynamic')
 				return
 			}
+			if(item.tp===1){
+				uni.navigateTo({
+					url: `/pages/cardForum/personHomePage?userId=${item.userId}`
+				})
+			}
 		})
 
 	}
