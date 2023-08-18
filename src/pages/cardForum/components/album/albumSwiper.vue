@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 16:16:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-11 14:48:43
+ * @LastEditTime: 2023-08-18 11:41:27
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -25,7 +25,7 @@
 		</swiper>
 		<swiper v-else class="swiper" :current="current" @change="$event=>current=$event.detail.current">
 			<swiper-item v-for="(item,index) in nolist" :key="index">
-				<image class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)"/>
+				<muqian-lazyLoad class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)"/>
 			</swiper-item>
 		</swiper>
 		<view class="percent">卡册完整度：{{detail.percent}}%({{detail.uploadedNoNum}}/{{detail.noNum}})<view class="right"></view></view>
