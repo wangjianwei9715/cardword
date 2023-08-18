@@ -241,7 +241,7 @@ const defaultTagObj = {
     queryParams: {
         fetchFrom: 1,
         fetchSize: 10,
-        sequence:0,
+        sequence: 0,
     },
     // totalPage: 10,
     isFetchEnd: false,
@@ -299,6 +299,7 @@ export default {
         uni.$off("loginSuccess", this.loginSuccess)
     },
     onShow() {
+        console.log("我出现了bo");
         this.$nextTick(() => {
             setTimeout(async () => {
                 this.fixedTopHeight = await this.getDomHeight("#fixedTop")
@@ -327,6 +328,12 @@ export default {
             app.guide.cardCircle = false;
             app.platform.finishGuideData(2)
         }
+    },
+    onHide(e) {
+        console.log("我隐藏了bo");
+    },
+    onTabItemTap(e) {
+        console.log("菜单切换", e)
     },
     computed: {
         current() {
@@ -481,7 +488,7 @@ export default {
             this.dx = event.detail.dx
         },
         tabClick(event) {
-            if (event.index == this.tabs.index){
+            if (event.index == this.tabs.index) {
                 //#ifdef APP-NVUE
                 this.$refs[`waterfalls${this.tabs.index}`][0].goTop()
                 //#endif
@@ -527,7 +534,7 @@ export default {
                 //     }))
                 // }
                 this.current.queryParams.fetchFrom = 1
-                this.current.queryParams.sequence=0
+                this.current.queryParams.sequence = 0
                 this.reqNewData(true, (() => {
                     setTimeout(() => {
                         this.$refs['waterfalls' + index][0].hideRefresh()
@@ -536,13 +543,13 @@ export default {
             }, 1000)
         },
         loadmoreData(index) {
-            console.log("loadmoreData=>loadmoreData");
+            // console.log("loadmoreData=>loadmoreData");
             this.loadmoreTimer && clearTimeout(this.loadmoreTimer)
             this.loadmoreTimer = setTimeout(() => {
-                console.log("this.current.isFetchEnd=>",this.current.isFetchEnd);
+                // console.log("this.current.isFetchEnd=>", this.current.isFetchEnd);
                 if (!this.current.isFetchEnd) {
                     this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
-                    this.current.queryParams.sequence+=1
+                    this.current.queryParams.sequence += 1
                     this.reqNewData()
                 }
             }, 300)
@@ -568,7 +575,7 @@ export default {
         reqNewData(isRefresh = false, cb) {
             let query = {
                 tag: this.current.tag,
-                sequence:this.current.queryParams.sequence
+                sequence: this.current.queryParams.sequence
             }
             const array = ["all", "album"]
             if (!array.includes(this.current.tag)) {
@@ -589,7 +596,7 @@ export default {
             const url = array.includes(this.current.tag) ? `dataApi/${this.current.url || "cardCircle/roll"}` : `dataApi/${this.current.url || "cardCircle/list"}`
             console.log("请求的", url, query);
             app.http.GetWithCrypto(url, query, (res) => {
-                console.log("响应的结果", res);
+                // console.log("响应的结果", res);
                 let list = res.list || []
                 // #ifdef APP-NVUE
                 list = (res.list || []).map(item => {
@@ -609,8 +616,8 @@ export default {
             }, (err) => {
                 this.current.firstReqEnd = true
                 uni.showToast({
-                    title:err,
-                    icon:'none'
+                    title: err,
+                    icon: 'none'
                 })
                 this.refreshData(this.tabs.index)
             })
@@ -1003,21 +1010,25 @@ page {
     // justify-content: space-evenly;
     align-items: center;
 }
-.tabBarItem{
+
+.tabBarItem {
     display: flex;
     flex-direction: column;
     align-items: center;
     vertical-align: text-top;
 }
+
 .showKaTabBar_image {
     width: 28px;
     height: 28px;
     // margin-top: 5px;
 }
-.tabBarText{
+
+.tabBarText {
     color: #ffffff;
     font-size: 10px;
 }
+
 .tabbar_item {
     // width: 25%;
     font-size: 31rpx;
@@ -1029,4 +1040,5 @@ page {
 
 .tabbar_item_select {
     color: #FFFFFF;
-}</style>
+}
+</style>

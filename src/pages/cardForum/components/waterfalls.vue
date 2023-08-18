@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 14:43:37
+ * @LastEditTime: 2023-08-18 15:39:41
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -27,9 +27,8 @@
                                     :style="{ height: item.height + 'px', width: item.width + 'px', borderRadius: item.mode == 'widthFix' ? `5rpx 5rpx 0rpx 0rpx` : `0rpx` }"
                                     :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
                                 </image>
-                                <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
-                                    :src="thumbnail(item.cover, true)"
-                                    style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
+                                <image v-else class="defaultImg" style="background-color: #fff;opacity: 0;"
+                                    :style="{ width: item.width ? `${item.width}px` : `360rpx`, height: item.height ? `${item.height}px` : `430rpx` }">
                                 </image>
                                 <view class="videoIconWrap" v-if="item.video_at">
                                     <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
@@ -102,10 +101,10 @@
                                     :style="{ height: item.height + 'px', width: item.width + 'px', borderRadius: item.mode == 'widthFix' ? `5rpx 5rpx 0rpx 0rpx` : `0rpx` }"
                                     :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
                                 </image>
-                                <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
+                                <!-- <image v-else class="defaultImg" @load="h5ImageLoad($event, item)"
                                     :src="thumbnail(item.cover, true)"
                                     style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
-                                </image>
+                                </image> -->
                                 <view class="videoIconWrap" v-if="item.video_at">
                                     <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
                                 </view>
@@ -177,17 +176,18 @@
     <!-- #ifdef APP-NVUE -->
 
     <waterfall @scroll="scroll" fixFreezing="true" ref="water" bounce="true" :column-count="columnCount"
-        :show-scrollbar="false" :column-width="WIDTH" :column-gap="GAP" :left-gap="GAP" :right-gap="GAP" :always-scrollable-vertical="true" :height="height">
+        :show-scrollbar="false" :column-width="WIDTH" :column-gap="GAP" :left-gap="GAP" :right-gap="GAP"
+        :always-scrollable-vertical="true" :height="height">
         <refresh v-if="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'" class="refresh">
             <u-loading-icon mode="semicircle"></u-loading-icon>
         </refresh>
         <header ref="goTop">
-            <div v-for="(item, index) in copyValue" style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;">
+            <!-- <div v-for="(item, index) in copyValue" style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;">
                 <image :src="thumbnail(item.cover)" v-if="!item.mode"
                     style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)"
                     @error="imageLoadError($event, item)">
                 </image>
-            </div>
+            </div> -->
         </header>
         <slot name="header"></slot>
         <header>
@@ -198,8 +198,8 @@
             @click="goToDetail(item)" @appear="comAppear($event, item)">
             <div class="waterfall-item">
                 <div class="waterfall-item__image">
-                    <div v-if="!item.mode" class="defaultImg"
-                        style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
+                    <div v-if="!item.mode" class="defaultImg" style="background-color: #fff;opacity: 0;"
+                        :style="{ width: item.width ? `${item.width}px` : `360rpx`, height: item.height ? `${item.height}px` : `430rpx` }">
                     </div>
                     <image v-if="item.mode == 'widthFix'"
                         style="width: 360rpx;border-top-left-radius:5rpx;border-top-right-radius:5rpx"
@@ -422,7 +422,7 @@ export default {
             safeBottomHeight: 0,
             firstEmit: false,
             ossStitching,
-            loadMoreTimer:null,
+            loadMoreTimer: null,
         }
     },
 
@@ -440,6 +440,15 @@ export default {
                     item.mode = findItem.mode
                     item.width = findItem.width
                     if (findItem.height) item.height = findItem.height
+                } else {
+                    uni.getImageInfo({
+                        src: this.thumbnail(item.cover),
+                        success: (res) => {
+                            this.imageLoad({ detail: res }, item)
+                        },
+                        fail: (err) => {
+                        }
+                    })
                 }
                 return item
             })
@@ -669,7 +678,7 @@ export default {
             this.$emit("scroll", event)
         },
         appearLoadMore(event) {
-            if (this.copyValue.length&&!this.isFetchEnd) {
+            if (this.copyValue.length && !this.isFetchEnd) {
                 this.disappearLoadMore()
                 this.loadMoreTimer = setTimeout(() => {
                     this.$emit("loadmore")
@@ -761,7 +770,7 @@ export default {
             const deCover = this.parsePic(decodeURIComponent(item.cover))
             const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
             if (isVideoSnapshot) return deCover
-            return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,h_${parseInt(item.height * 2)}`)
+            return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,${item.mode == 'widthFix' ? 'w_432' : 'h_572'}`)
         },
         thumbnail(cover, needParse) {
             if (!cover) return cover
@@ -798,11 +807,20 @@ export default {
             // 列宽可能使用的到
             item.width = minCol.width;
             const findItem = bufferImgList.find((buffer) => {
-                buffer.cover == item.cover
+                return buffer.cover == item.cover
             })
             if (findItem) {
                 item.mode = findItem.mode
                 item.width = findItem.width
+            } else {
+                uni.getImageInfo({
+                    src: this.thumbnail(item.cover, true),
+                    success: (res) => {
+                        this.h5ImageLoad({ detail: res }, item)
+                    },
+                    fail: (err) => {
+                    }
+                })
             }
             // console.log(item);
             this[`list${minCol.name}`].push(item);
