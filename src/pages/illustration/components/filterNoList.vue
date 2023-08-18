@@ -279,7 +279,7 @@
             const signList:any = this.filterList.filter((x:any)=> x.signature);
 
             const params = {
-                pageSize:10,
+                pageSize:30,
                 q:this.listQ,
                 rookie:rookieList.length?(rookieList[0].name=="新秀"?1:2):0,
                 signature:signList.length?(signList[0].name=="签字"?1:2):0,

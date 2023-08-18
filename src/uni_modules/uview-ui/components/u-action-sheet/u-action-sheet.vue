@@ -205,7 +205,7 @@
 	$u-action-sheet-item-wrap-name-font-size:16px !default;
 	$u-action-sheet-item-wrap-subname-font-size:13px !default;
 	$u-action-sheet-item-wrap-subname-color: #c0c4cc !default;
-	$u-action-sheet-item-wrap-subname-margin-top:10px !default;
+	$u-action-sheet-item-wrap-subname-margin-top:4px !default;
 	$u-action-sheet-cancel-text-font-size:16px !default;
 	$u-action-sheet-cancel-text-color:$u-content-color !default;
 	$u-action-sheet-cancel-text-font-size:15px !default;
@@ -244,12 +244,11 @@
 		&__item-wrap {
 
 			&__item {
-				padding: $u-action-sheet-item-wrap-item-padding;
 				@include flex;
 				align-items: center;
 				justify-content: center;
 				flex-direction: column;
-
+				height:60px;
 				&__name {
 					font-size: $u-action-sheet-item-wrap-name-font-size;
 					color: $u-main-color;
