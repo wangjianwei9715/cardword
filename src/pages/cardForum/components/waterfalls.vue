@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 15:39:41
+ * @LastEditTime: 2023-08-18 15:57:03
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -27,9 +27,9 @@
                                     :style="{ height: item.height + 'px', width: item.width + 'px', borderRadius: item.mode == 'widthFix' ? `5rpx 5rpx 0rpx 0rpx` : `0rpx` }"
                                     :mode="item.mode" :src="imageUrl(item)" class="waterfall-item__image_img">
                                 </image>
-                                <image v-else class="defaultImg" style="background-color: #fff;opacity: 0;"
+                                <view v-else class="defaultImg" style="background-color: #fff;opacity: 0;"
                                     :style="{ width: item.width ? `${item.width}px` : `360rpx`, height: item.height ? `${item.height}px` : `430rpx` }">
-                                </image>
+                                </view>
                                 <view class="videoIconWrap" v-if="item.video_at">
                                     <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
                                 </view>
