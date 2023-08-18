@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 11:35:54
+ * @LastEditTime: 2023-08-18 12:05:40
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -45,7 +45,7 @@
                                 v-if="showBottom">
                                 <template v-if="showUser">
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                        :src="item.author ? item.author.avatar :(item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)),'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar)">
+                                        :src="item.author ? item.author.avatar : (item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)), 'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar)">
                                     </image>
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
@@ -120,7 +120,7 @@
                                 v-if="showBottom">
                                 <template v-if="showUser">
                                     <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                        :src="item.author ? item.author.avatar :(item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)),'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar)">
+                                        :src="item.author ? item.author.avatar : (item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)), 'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar)">
                                     </image>
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
@@ -203,11 +203,13 @@
                         style="width:360rpx;height:430rpx;background-color: #fff;opacity: 0;">
                     </div>
                     <image v-if="item.mode == 'widthFix'"
-                        style="width: 360rpx;border-top-left-radius:5rpx;border-top-right-radius:5rpx" :src="item.cover"
+                        style="width: 360rpx;border-top-left-radius:5rpx;border-top-right-radius:5rpx"
+                        :src="ossStitching(item.cover, 'x-oss-process=image/resize,m_lfit,w_540')"
                         class="waterfall-item__image_img" mode="widthFix">
                     </image>
                     <image v-if="item.mode == 'aspectFit'" :style="{ height: `440rpx`, width: item.width + 'px' }"
-                        :src="item.cover" class="waterfall-item__image_img" mode="aspectFit">
+                        :src="ossStitching(item.cover, 'x-oss-process=image/resize,m_lfit,h_660')"
+                        class="waterfall-item__image_img" mode="aspectFit">
                     </image>
                     <view class="videoIconWrap" v-if="item.video_at">
                         <u-icon class="videoIcon" color="#ffffff" size="26rpx" name="play-right-fill"></u-icon>
@@ -221,7 +223,7 @@
                 <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
                     <template v-if="showUser">
                         <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                            :src="item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)),'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar">
+                            :src="item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)), 'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar">
                         </image>
                         <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                         <div class="likeWrap" @click="onClickLike($event, item)">
@@ -277,7 +279,7 @@ const LIEK = 4
 import mixin from './function/mixin.js'
 import { delDraftDetail } from "../func/index.js"
 import empty from "@/components/empty/empty.vue"
-import { getDraftDetail,ossStitching } from "../func"
+import { getDraftDetail, ossStitching } from "../func"
 // #ifdef APP-NVUE
 const dom = weex.requireModule('dom')
 // #endif
@@ -395,7 +397,7 @@ export default {
             type: Boolean,
             default: true
         },
-        forumGuide:{
+        forumGuide: {
             type: Boolean,
             default: false
         }
@@ -413,7 +415,7 @@ export default {
             defaultAvatar: getApp().globalData.app.defaultAvatar,
             pushTimer: 0,
             safeBottomHeight: 0,
-            firstEmit:false,
+            firstEmit: false,
             ossStitching
         }
     },
@@ -576,7 +578,7 @@ export default {
             event.stopPropagation();
             // #endif
             uni.navigateTo({
-                url: `/pages/cardForum/personHomePage?userId=${item.author?item.author.userId:item.userId}&isMine=${(item.bit & 1)==1?1:0 }`
+                url: `/pages/cardForum/personHomePage?userId=${item.author ? item.author.userId : item.userId}&isMine=${(item.bit & 1) == 1 ? 1 : 0}`
             })
         },
         goToDetail(item) {
@@ -591,7 +593,7 @@ export default {
             }
             if (this.type == "draftList") {
                 if (item.type == "cardBook") {
-                    const { step, list, ...rest} = getDraftDetail(item.draftId, app.data.userId);
+                    const { step, list, ...rest } = getDraftDetail(item.draftId, app.data.userId);
                     if (step) {
                         uni.navigateTo({
                             url: `${CardBookJumpUrl[step]}?draftList=${encodeURIComponent(JSON.stringify(list))}&draftId=${item.draftId}&formData=${encodeURIComponent(JSON.stringify(rest))}`
@@ -610,7 +612,7 @@ export default {
                 })
                 return
             }
-            if(this.isMine&&item.status==0){
+            if (this.isMine && item.status == 0) {
                 uni.navigateTo({
                     url: `/pages/cardForum/release?code=${item.code}`
                 })
@@ -716,7 +718,7 @@ export default {
             } else {
                 item.mode = "widthFix"
                 item.height = widthFixHeight
-                item.width=WIDTH
+                item.width = WIDTH
             }
             // #ifndef APP-NVUE
 
@@ -735,27 +737,27 @@ export default {
                 height: item.height
             })
             // #endif
-            if(!this.firstEmit && this.forumGuide){
-                this.$emit('firstData',this.copyValue[0]);
+            if (!this.firstEmit && this.forumGuide) {
+                this.$emit('firstData', this.copyValue[0]);
                 this.firstEmit = true;
             }
         },
         imageUrl(item) {
-            if(this.list1.length && !this.firstEmit && this.forumGuide){
-                this.$emit('firstData',this.list1[0]);
+            if (this.list1.length && !this.firstEmit && this.forumGuide) {
+                this.$emit('firstData', this.list1[0]);
                 this.firstEmit = true;
             }
             const deCover = this.parsePic(decodeURIComponent(item.cover))
             const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
             if (isVideoSnapshot) return deCover
-            return ossStitching(deCover,`x-oss-process=image/resize,m_fixed,h_${parseInt(item.height * 2)},w_${parseInt(item.width * 2)}`)
+            return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,h_${parseInt(item.height * 2)}`)
         },
         thumbnail(cover, needParse) {
             if (!cover) return cover
             let deCover = needParse ? this.parsePic(decodeURIComponent(cover)) : cover
             const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
             if (isVideoSnapshot) return deCover
-            return ossStitching(deCover,`x-oss-process=image/resize,p_1`)
+            return ossStitching(deCover, `x-oss-process=image/resize,p_1`)
         },
         imageLoadError(event, item) {
             // #ifndef APP-NVUE
