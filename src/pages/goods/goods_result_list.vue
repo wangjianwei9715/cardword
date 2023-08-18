@@ -110,9 +110,13 @@
 		}
 		getCardNo(){
 			const { cardNoParams } = this;
-			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/cardNo`,{...cardNoParams,q:this.searchQ},(res:any)=>{
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/result`,{...cardNoParams,q:this.searchQ},(res:any)=>{
 				if(res.list){
-					this.teamDataList = this.teamDataList.concat(res.list)
+					const list = res.list.map(({dicKey,...rest}:any)=>{
+						const {userName,avatar} = res.dic[dicKey];
+						return {...rest,userName,avatar}
+					})
+					this.teamDataList = this.teamDataList.concat(list)
 				}
 				this.noMore = res.isFetchEnd;
 				cardNoParams.fromId = this.teamDataList[this.teamDataList.length-1].id;
