@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 16:16:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-18 11:41:27
+ * @LastEditTime: 2023-08-18 14:12:19
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -18,7 +18,7 @@
 						:key="index"
 						class="grid-item"
                     >
-						<image class="grid-pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)"/>
+						<muqian-lazyLoad class="grid-pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)"/>
                     </u-grid-item>
                 </u-grid>
 			</swiper-item>
