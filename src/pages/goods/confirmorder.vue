@@ -27,7 +27,7 @@
               <view class="goods-money-add">
                 <view class="goods-money-max" v-if="payRandomTeamData != ''" @click="moneyNum = maxNum">MAX</view>
                 <view class="num-box" @click="onClickCutDown()">  <view class="img-jian" ></view> </view>
-                <input class="money-add" @input="onInputMoney" v-model.number="moneyNum" type="number" />
+                <input class="money-add" @input="onInputMoney" @blur="onBlurMoneyNum" v-model.number="moneyNum" type="number" />
                 <view class="num-box" @click="onClickAdd()"> <view class="img-add" ></view> </view>
               </view>
             </view>
@@ -69,7 +69,7 @@
               <view class="randomh-num-btn" @click="onClickRandomNum(item,'reduce')">
                 <image class="icon-randomReduce" src="../../static/pay/v2/icon_reduce_.png" />
               </view>
-              <input type="number" class="randomh-num" v-model.number="item.num" @input="onInputMoneyRandom($event,item)" />
+              <input type="number" class="randomh-num" v-model.number="item.num" @input="onInputMoneyRandom($event,item)" @blur="onBlurMoneyRandom($event,item)" />
               <view class="randomh-num-btn" @click="onClickRandomNum(item,'add')">
                 <image class="icon-randomAdd" src="../../static/pay/v2/icon_add_.png" />
               </view>
@@ -333,12 +333,18 @@ export default class ClassName extends BaseNode {
     return (this.goodsData.bit & 1) == 1
   }
   onInputMoney(event: any) {
-    if (event.detail.value <=0 || Number(event.detail.value) > this.maxNum) {
+    if (Number(event.detail.value) > this.maxNum) {
       setTimeout(() => {
-        this.moneyNum = event.detail.value <=0 ? 1 :this.maxNum;
+        this.moneyNum = this.maxNum;
         this.getOnePrice();
       }, 100);
     }else{
+      this.getOnePrice();
+    }
+  }
+  onBlurMoneyNum(event: any){
+    if(Number(event.detail.value)<=0){
+      this.moneyNum = 1;
       this.getOnePrice();
     }
   }
@@ -355,12 +361,18 @@ export default class ClassName extends BaseNode {
     this.getOnePrice();
   }
   onInputMoneyRandom(event:any,item:any){
-    if (event.detail.value <=0 || Number(event.detail.value) > item.maxNum) {
+    if ( Number(event.detail.value) > item.maxNum) {
       setTimeout(() => {
-        item.num = event.detail.value <=0 ? 1 :item.maxNum;
+        item.num = item.maxNum;
         this.getOnePrice();
       }, 100);
     }else{
+      this.getOnePrice();
+    }
+  }
+  onBlurMoneyRandom(event:any,item:any){
+    if ( Number(event.detail.value) <=0) {
+      item.num = 1;
       this.getOnePrice();
     }
   }
