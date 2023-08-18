@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 12:08:32
+ * @LastEditTime: 2023-08-18 13:34:09
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -195,8 +195,8 @@
             <empty v-if="!copyValue.length && showEmpty"></empty>
         </header>
         <slot name="cell"></slot>
-        <cell v-for="(item, index) in copyValue" class="waterfall-item-grayWrap" @click="goToDetail(item)"
-            @appear="comAppear($event, item)">
+        <cell insert-animation="default" v-for="(item, index) in copyValue" class="waterfall-item-grayWrap"
+            @click="goToDetail(item)" @appear="comAppear($event, item)">
             <div class="waterfall-item">
                 <div class="waterfall-item__image">
                     <div v-if="!item.mode" class="defaultImg"
@@ -257,7 +257,7 @@
         <header style="margin-top:50rpx" v-if="copyValue.length">
             <u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx" :status="isFetchEnd ? 'nomore' : 'loading'"
                 nomore-text="没有更多了" fontSize="24rpx" />
-            <div :style="{ height: safeBottomHeight + 'px' }"></div>
+            <div :style="{ height: safeBottomHeight + 'px' }" v-if="bottomSafe"></div>
         </header>
     </waterfall>
     <!-- #endif -->
@@ -400,6 +400,10 @@ export default {
         forumGuide: {
             type: Boolean,
             default: false
+        },
+        bottomSafe: {
+            type: Boolean,
+            default: false
         }
 
     },
@@ -430,10 +434,10 @@ export default {
                 const findItem = bufferImgList.find(buffer => {
                     return buffer.cover === item.cover
                 })
-                // console.log("找到的item", findItem);
                 if (findItem) {
                     item.mode = findItem.mode
                     item.width = findItem.width
+                    if (findItem.height) item.height = findItem.height
                 }
                 return item
             })
@@ -663,6 +667,7 @@ export default {
             this.$emit("scroll", event)
         },
         scrolltolower() {
+            console.log("scrolltolower=>this.$emit('loadmore')");
             this.$emit("loadmore")
         },
         delData(code) {

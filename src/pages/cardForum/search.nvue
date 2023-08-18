@@ -76,7 +76,7 @@
                 <!-- #endif -->
                 <!-- #ifdef APP-NVUE -->
                 <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
-                <waterfalls column-count="2" v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')"
+                <waterfalls :bottomSafe="true" column-count="2" v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')"
                     :ref="`waterfalls${tabIndex}`" left-gap="5" :height="scrollViewHeight + 'px'" :value="tab.list"
                     right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
                     @refresh="onRefresh(tabIndex)" style="padding-top: 10rpx;">
