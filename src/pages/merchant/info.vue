@@ -90,7 +90,7 @@ export default class ClassName extends BaseNode {
         // let imageSrc = await this.ossutils.getImage();
         // console.log(imageSrc);
         // await this.onClickAddImg(imageSrc)'
-        const picArr: any = await Upload.getInstance().uploadSocialImgs(1, "images/", ["album"])
+        const picArr: any = await Upload.getInstance().uploadImgs(1, "images/", ["album"])
         this.saveBack = picArr[0]
         this.saveFunction(true)
 
