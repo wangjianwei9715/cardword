@@ -208,10 +208,17 @@ export default class ClassName extends BaseNode {
             icon: "../../static/userinfo/v3/address.png",
             style: { width: '47rpx', height: '46rpx' }
         },
+
         {
             name: '客服',
             icon: "../../static/userinfo/v3/kefu.png",
             style: { width: '48rpx', height: '49rpx' }
+        },
+        {
+            name: '收藏商品',
+            url: "/pages/userinfo/user_collect",
+            icon: "../../static/goods/v2/icon_collect.png",
+            style: { width: '43rpx', height: '44rpx' }
         },
         {
             name: '卡册',
@@ -235,12 +242,6 @@ export default class ClassName extends BaseNode {
             url: "/pages/userinfo/coupon/coupon_get",
             icon: "../../static/userinfo/v3/getCoupon.png",
             style: { width: '47rpx', height: '40rpx' }
-        },
-        {
-            name: '收藏商品',
-            url: "/pages/userinfo/user_collect",
-            icon: "../../static/goods/v2/icon_collect.png",
-            style: { width: '43rpx', height: '44rpx', opacity: 1 }
         },
         {
             name: '占位占位',
