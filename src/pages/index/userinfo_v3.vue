@@ -73,7 +73,9 @@
                     <image class="order_item_img" :src="item.pic"></image>
                     <view class="order_item_label">{{ item.name }}</view>
                     <!-- <u-badge :type="type" max="99" :value="value"></u-badge> -->
-                    <view v-if="item.num>0&&item.name!='已完成'" class="icon-yuan" :class="item.num>=10?'icon-yuans':''">{{item.num>99?'99+':item.num}}</view>
+                    <view v-if="item.num > 0 && item.name != '已完成'" class="icon-yuan"
+                        :class="item.num >= 10 ? 'icon-yuans' : ''">
+                        {{ item.num > 99 ? '99+' : item.num }}</view>
                 </view>
             </view>
         </view>
@@ -84,15 +86,16 @@
                     <view class="imageWrap">
                         <image class="toolsItem_icon" :src="item.icon" :style="item.style"></image>
                     </view>
-                    <view class="toolsItem_label">{{ item.name }}</view>
+                    <view class="toolsItem_label" :class="{ cLabel: index != 0 && index != 4 }">{{ item.name }}</view>
                 </view>
             </view>
             <view class="moreToolsWrap uni-flex fp">
-                <view class="toolsItem" v-for="(item, index) in toolsTab.slice(5, 6)" @click="onClickMoreTools(item)">
+                <view class="toolsItem" v-for="(item, index) in toolsTab.slice(5, 10)" @click="onClickMoreTools(item)">
                     <view class="imageWrap">
                         <image class="toolsItem_icon" :src="item.icon" :style="item.style"></image>
                     </view>
-                    <view class="toolsItem_label">{{ item.name }}</view>
+                    <view class="toolsItem_label" :style="{ opacity: item.style.opacity }"
+                        :class="{ cLabel: index != 0 && index != 4 }">{{ item.name }}</view>
                 </view>
             </view>
         </view>
@@ -120,7 +123,8 @@
                 <view class="toolsItem_label">{{ item.name }}</view>
                 <view class="rightIcon"></view>
             </view>
-            <view class="toolsItem"  v-if='infoData.merchantActor' @click="onClickNavigateto({ url: `/pages/merchant/guide` })">
+            <view class="toolsItem" v-if='infoData.merchantActor'
+                @click="onClickNavigateto({ url: `/pages/merchant/guide` })">
                 <view class="imgWrap">
                     <image src="../../static/userinfo/v2/guide.png"></image>
                 </view>
@@ -137,7 +141,7 @@
                 </view>
             </navigator>
         </view>
-		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true"/>
+        <paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
     </view>
 </template>
 
@@ -231,6 +235,30 @@ export default class ClassName extends BaseNode {
             url: "/pages/userinfo/coupon/coupon_get",
             icon: "../../static/userinfo/v3/getCoupon.png",
             style: { width: '47rpx', height: '40rpx' }
+        },
+        {
+            name: '收藏商品',
+            url: "/pages/userinfo/user_collect",
+            icon: "../../static/goods/v2/icon_collect.png",
+            style: { width: '43rpx', height: '44rpx', opacity: 1 }
+        },
+        {
+            name: '占位占位',
+            url: "",
+            icon: "../../static/goods/v2/icon_collect.png",
+            style: { width: '43rpx', height: '44rpx', opacity: 0 }
+        },
+        {
+            name: '占位占位',
+            url: "",
+            icon: "../../static/goods/v2/icon_collect.png",
+            style: { width: '43rpx', height: '44rpx', opacity: 0 }
+        },
+        {
+            name: '占位占位',
+            url: "",
+            icon: "../../static/goods/v2/icon_collect.png",
+            style: { width: '43rpx', height: '44rpx', opacity: 0 }
         }
         // ,
         // {
@@ -283,7 +311,7 @@ export default class ClassName extends BaseNode {
         }
         app.http.Get('me/home', {}, (res: any) => {
             const data = res.data;
-            if(this.infoData.avatar!=data.avatar || this.infoData.name!=data.name) app.user.needRefresh=true
+            if (this.infoData.avatar != data.avatar || this.infoData.name != data.name) app.user.needRefresh = true
             this.infoData = data;
             app.familial = data.familial;
             this.$set(this.infoData, 'avatar', decodeURIComponent(res.data.avatar));
@@ -369,6 +397,11 @@ export default class ClassName extends BaseNode {
 <style lang="scss">
 page {
     background: $content-bg
+}
+
+.cLabel {
+    width: 110rpx;
+    text-align: center;
 }
 
 .userInfoWrap {
@@ -644,6 +677,7 @@ page {
             align-items: center;
             flex-direction: column;
             position: relative;
+
             &_img {
                 width: 43rpx;
                 height: 38rpx;
@@ -683,6 +717,7 @@ page {
         // padding: 0 18rpx;
         flex-wrap: wrap;
         justify-content: space-between;
+        width: 100%;
 
         .toolsItem {
             display: flex;
