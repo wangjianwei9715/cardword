@@ -578,7 +578,7 @@ export default {
                 tag: this.current.tag,
                 sequence: this.current.queryParams.sequence
             }
-            const array = ["all", "album"]
+            const array = ["all", "album","basket"]
             if (!array.includes(this.current.tag)) {
                 query = {
                     ...this.current.queryParams,
