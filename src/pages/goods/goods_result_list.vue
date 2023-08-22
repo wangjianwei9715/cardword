@@ -3,7 +3,7 @@
 		<view class="header-banner">
 			<statusbar />
 			<view class="tab-header">
-				<view class="icon-back" @click="navigateBack">
+				<view class="icon-back" @click="navigateBack()">
 					<image style="width:19rpx;height:35rpx" src="@/static/index/v3/icon_back.png"/>
 				</view>
 				<view v-for="(item,index) in tabList" :key="index" :class="chooseId==index?'header-title':'header-title2'" @click="onClickTab(index)" :style="{marginLeft:index==1?'112rpx':''}">{{item}}
