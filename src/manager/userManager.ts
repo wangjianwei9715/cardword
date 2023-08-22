@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 17:18:00
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-21 15:06:58
+ * @LastEditTime: 2023-08-22 11:39:30
  * @FilePath: \jichao_app_2\src\manager\userManager.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -85,7 +85,7 @@ export default class userManager {
     }
     async getAppDataUserId(){
         let ksjUserId = uni.getStorageSync('ksjUserId');
-        if (uni.$u.test.isEmpty(uni.getStorageSync('ksjUserId'))) {
+        if (uni.$u.test.isEmpty(ksjUserId)) {
             const { userId } = await this.getUserInfo();
             ksjUserId = userId;
             uni.setStorageSync("ksjUserId", ksjUserId);

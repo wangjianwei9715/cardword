@@ -1,5 +1,10 @@
 <template>
     <view class="content">
+        <transitionNav ref='transitionNav' @navBackGroundShowChange="navBackGroundShowChange" :needIconShadow="false" :title="seriesDetail.name">
+            <template slot="slotRight">
+                <view class="series-icon" :class="topHasBack?'series-icon1':'series-icon2'" @click="seriesShow=!seriesShow"></view>
+            </template>
+        </transitionNav>
         <view class="detailCard" :style="{height:(380+(36*2))+'rpx'}">
             <image class="backImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(seriesDetail.back_img))" />
             <view class="merchantMask"></view>
@@ -26,6 +31,8 @@
         <goodslist :class="{noOther:!cardList.length&&!cardList.length,hasOther:cardList.length || choices.length>2}"
             :goodsList="goodsList" @send="onClickJumpDetails" />
         <empty v-if="goodsList && !goodsList.length"></empty>
+
+        <seriesPopup :popupShow.sync="seriesShow" @seriesChange="initEvent"/>
     </view>
 </template>
 
@@ -33,7 +40,12 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '../../base/BaseNode.vue';
-@Component({})
+import seriesPopup from './component/seriesPopup.vue'
+@Component({
+    components:{
+        seriesPopup
+    }
+})
 export default class ClassName extends BaseNode {
     seriesId: any = ''
     statusBarHeight=app.statusBarHeight;
@@ -47,12 +59,15 @@ export default class ClassName extends BaseNode {
     isFetchEnd: boolean = true
     seriesCardEnd: boolean = true
     cardList: any = []
-    goodsList: any = []
+    goodsList: any = [];
+    topHasBack = false;
+    seriesShow = false;
     onLoad(query: any) {
-        this.seriesId = query.seriesId
-        this.reqSeriesCards()
-        this.reqSeriesDetail()
-        this.reqSeriesGoods()
+        this.initEvent(query.seriesId)
+    }
+    onPageScroll(data: any) {
+        //@ts-ignore
+        this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
     }
     onPullDownRefresh() {
         this.queryParams.fetchFrom = 1
@@ -65,11 +80,21 @@ export default class ClassName extends BaseNode {
         this.queryParams.fetchFrom += this.queryParams.fetchSize
         this.reqSeriesGoods()
     }
+    navBackGroundShowChange(event: any) {
+        this.topHasBack = event
+    }
+    initEvent(seriesId:number){
+        if(this.seriesId == seriesId) return;
+
+        this.seriesId = seriesId
+        this.reqSeriesCards()
+        this.reqSeriesDetail()
+        this.reqSeriesGoods()
+    }
     refresh() {
         this.queryParams.fetchFrom = 1
         this.queryParams.fetchSize = 20
         this.reqSeriesGoods()
-
     }
     goMore() {
         uni.navigateTo({
@@ -102,6 +127,11 @@ export default class ClassName extends BaseNode {
         app.http.Get('dataApi/advertising/iconSeries/detail/' + this.seriesId, {}, (res: any) => {
             this.seriesDetail = res.data
             this.choices = ['全部', ...res.data.choices]
+        })
+    }
+    onClickSeriesSelect(){
+        uni.navigateTo({
+            url:'seriesSelect?back=true'
         })
     }
 
@@ -226,5 +256,16 @@ page {
         color: #E6E6E6;
         position: relative;bottom: 2rpx;
     }
+}
+.series-icon{
+    width: 198rpx;
+    height:48rpx;
+    margin-right: -10rpx;
+}
+.series-icon1{
+    background:url(@/static/goods/series_icon.png) no-repeat center / 100% 100%;
+}
+.series-icon2{
+    background:url(@/static/goods/series_icon2.png) no-repeat center / 100% 100%;
 }
 </style>
