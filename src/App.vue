@@ -58,7 +58,7 @@
 			if (process.env.NODE_ENV === "development") {
 				//   console.log("开发环境"); 
 				// app.localTest = true;  
-				// app.bussinessApiDomain = `http://192.168.8.35:8701${app.requestVersion}`;
+				// app.bussinessApiDomain = `http://192.168.8.63:8701${app.requestVersion}`;
 				// app.bussinessApiDomain = `https://server.ssltest.ka-world.com${app.requestVersion}`; 
 				// app.funcApiDomain = "http://functest.ssl.ka-world.com${app.requestVersion}";
 				// 正式服测试环境 
@@ -81,7 +81,9 @@
 			// #endif
 			if (loginToken) {
 				app.token = JSON.parse(loginToken);
-				app.data.userId=uni.getStorageSync("ksjUserId") || 0
+				app.user.getAppDataUserId().then((res:any)=>{
+					app.data.userId = res;
+				});
 			}
 			uni.$on("refreshToken", () => {
 				if (app.refreshIng) return;

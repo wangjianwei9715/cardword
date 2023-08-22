@@ -214,13 +214,12 @@
 			this.showPayMent = false;
 			this.againReqNewData();
 		}
-		onClickPayGoods({channelId="",channel}: any) {
+		async onClickPayGoods({channelId="",channel}: any) {
 			// 1：支付宝 2：微信
 			if (channel == "")  return;
-
+			const userId = await app.user.getAppDataUserId();
 			uni.showLoading({ title: "加载中" });
 			const ts = Math.floor(new Date().getTime()/1000);
-			const userId = uni.getStorageSync('ksjUserId');
 			let params: any = {
 				channelId,
 				channel,
@@ -229,8 +228,6 @@
 				ts,
 				sn:Md5.hashStr(`ToPayForGoodOrder_${ts}_${userId}_${this.payItem.code}`)
 			};
-			console.log();
-			
 			if (uni.getSystemInfoSync().platform === "android") {
 				params.nativeSdk = "qmf_android";
 			}

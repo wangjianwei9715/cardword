@@ -520,13 +520,13 @@ export default class ClassName extends BaseNode {
     this.showPayMent = false;
     this.countTime = 0;
   }
-  onClickPayGoods(data: any) { 
+  async onClickPayGoods(data: any) { 
     if (data == '') return; 
     uni.showLoading({ title: '加载中' });
 
     const goodCode = this.goodsData.goodCode; 
     const ts = Math.floor(new Date().getTime()/1000);
-    const userId = uni.getStorageSync('ksjUserId');
+    const userId = await app.user.getAppDataUserId();
     let snName = "ToPayForGood";
     let params: any = { 
       channelId: data.channelId ?? '', 

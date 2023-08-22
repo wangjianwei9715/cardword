@@ -478,7 +478,7 @@ import { Md5 } from "ts-md5";
 		onClickCancelPay(){
 			this.showPayMent = false;
 		}
-		onClickPayGoods(data:any){
+		async onClickPayGoods(data:any){
 			// 1：支付宝 2：微信
 			if (data == '') {
 				return;
@@ -487,7 +487,7 @@ import { Md5 } from "ts-md5";
 				title: '加载中'
 			});
 			const ts = Math.floor(new Date().getTime()/1000);
-			const userId = uni.getStorageSync('ksjUserId');
+			const userId = await app.user.getAppDataUserId();
 			let params:any = {
 				channelId:data.channelId??'',
 				channel: data.channel,
