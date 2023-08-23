@@ -26,11 +26,14 @@
                                 <view class="scrollTopicWarp">
                                     <view class="faker_topicItem"></view>
                                     <view class="topicItem" v-for="item in hotTopics" @click="onClickTopic(item)">
-                                        <image mode="aspectFill" class="topicItem_img"
-                                            :src="parsePic(decodeURIComponent(item.pic))"></image>
+                                        <view class="topicItem_imageWap">
+                                            <image mode="aspectFill" class="topicItem_img"
+                                                :src="parsePic(decodeURIComponent(item.pic))"></image>
+                                            <text class="topiceActCorner" v-if="item.activity">活动</text>
+                                        </view>
                                         <text class="topicItem_title">{{ item.name }}</text>
                                         <text class="topicItem_dt">{{ item.totalUseNum }}篇动态</text>
-                                        <text class="topiceActCorner" v-if="item.activity">活动</text>
+
                                     </view>
                                 </view>
                             </scroll-view>
@@ -43,7 +46,7 @@
                                     @click="onClickTopicAct($event, item)">
                                     <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
                                         mode="aspectFill"></image>
-                                    <text class="topPushButton" @click="onClickPushTopic($event, item)">我要发布</text>
+                                    <!-- <text class="topPushButton" @click="onClickPushTopic($event, item)">我要发布</text> -->
                                 </swiper-item>
                             </swiper>
                         </view>
@@ -75,11 +78,14 @@
                                     <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
                                         <view class="faker_topicItem"></view>
                                         <view class="topicItem" v-for="item in hotTopics" @click="onClickTopic(item)">
-                                            <image mode="aspectFill" class="topicItem_img"
-                                                :src="parsePic(decodeURIComponent(item.pic))"></image>
+                                            <view class="topicItem_imageWap">
+                                                <image mode="aspectFill" class="topicItem_img"
+                                                    :src="parsePic(decodeURIComponent(item.pic))"></image>
+                                                <text class="topiceActCorner" v-if="item.activity">活动</text>
+                                            </view>
                                             <text class="topicItem_title">{{ item.name }}</text>
                                             <text class="topicItem_dt">{{ item.totalUseNum }}篇动态</text>
-                                            <text class="topiceActCorner" v-if="item.activity">活动</text>
+                                            <!-- <text class="topiceActCorner" v-if="item.activity">活动</text> -->
                                         </view>
                                     </scroll-view>
                                 </div>
@@ -90,7 +96,7 @@
                                             style="position: relative;" @click="onClickTopicAct($event, item)">
                                             <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
                                                 mode="aspectFill"></image>
-                                            <text class="topPushButton" @click="onClickPushTopic($event, item)">我要发布</text>
+                                            <!-- <text class="topPushButton" @click="onClickPushTopic($event, item)">我要发布</text> -->
                                         </swiper-item>
                                     </swiper>
                                 </div>
@@ -443,7 +449,7 @@ export default {
             })
         },
         getTopicsList() {
-            app.http.Get("dataApi/cardCircle/topic/list", { fetchFrom: 1, fetchSize: 15, od: "issue_72:asc" }, (res) => {
+            app.http.Get("dataApi/cardCircle/topic/list", { fetchFrom: 1, fetchSize: 15, od: "issue_72:asc", hidePre: 1 }, (res) => {
                 this.hotTopics = res.list || []
             })
         },
@@ -556,7 +562,9 @@ export default {
             }, 300)
         },
         onClickTopic(item) {
-            releaseByTopic(item.id)
+            uni.navigateTo({
+                url: `/pages/cardForum/topics/detailPage?id=${item.id}`
+            })
         },
         onClickTopicAct(event, item) {
             this.pageJump(`/pages/cardForum/topics/act?id=${item.id}`)
@@ -578,7 +586,7 @@ export default {
                 tag: this.current.tag,
                 sequence: this.current.queryParams.sequence
             }
-            const array = ["all", "album","basket"]
+            const array = ["all", "album", "basket"]
             if (!array.includes(this.current.tag)) {
                 query = {
                     ...this.current.queryParams,
@@ -613,7 +621,7 @@ export default {
                 }
                 this.current.list.push(...list)
                 this.current.firstReqEnd = true
-                this.current.retry=0
+                this.current.retry = 0
                 cb && cb()
             }, (err) => {
                 this.current.firstReqEnd = true
@@ -878,7 +886,7 @@ page {
 }
 
 .faker_topicItem {
-    width: 40rpx;
+    width: 10rpx;
     opacity: 0;
 }
 
@@ -900,19 +908,28 @@ page {
 }
 
 .topicItem {
-    width: 101rpx;
+    width: 130rpx;
     height: 200rpx;
     // background-color: #ffffff;
-    margin-right: 60rpx;
+    margin-right: 30rpx;
     // border-radius: 1rpx;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.topicItem_imageWap {
+    position: relative;
+    width: 101rpx;
+    height: 101rpx;
+    border-radius: 5rpx;
 }
 
 .topicItem_img {
     width: 101rpx;
     height: 101rpx;
     border-radius: 1rpx;
-    background-color: #ffffff;
     border-radius: 5rpx;
 }
 
@@ -929,7 +946,7 @@ page {
     font-weight: bold;
     color: #FFFFFF;
     text-align: center;
-    width: 101rpx;
+    width: 130rpx;
     margin-top: 10rpx;
     // #ifdef APP-NVUE
     lines: 1;
