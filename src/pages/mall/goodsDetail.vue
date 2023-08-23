@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:08:27
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-05 15:40:48
- * @FilePath: \card-world\src\pages\mall\detail.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-23 15:35:57
+ * @FilePath: \jichao_app_2\src\pages\mall\goodsDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -29,15 +29,15 @@
                         <view class="tips">距离开始</view>
                         <view class="timeBlockContainer">
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).hours">{{ time }}
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).hours" :key="`hours${tIndex}`">{{ time }}
                             </view>
                             <view class="colon">:</view>
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).minutes">{{ time }}
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).minutes" :key="`minutes${tIndex}`">{{ time }}
                             </view>
                             <view class="colon">:</view>
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).seconds">{{ time }}
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, goodsDetail.start_at).seconds" :key="`seconds${tIndex}`">{{ time }}
                             </view>
                         </view>
                     </template>

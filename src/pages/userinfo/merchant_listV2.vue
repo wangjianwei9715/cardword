@@ -63,7 +63,7 @@
                 </view>
                 <view class="merchantCard_bottom">
                     <view class="uni-flex reativeBlock" v-if="item.goodData&&item.goodData.length">
-                        <view class="goodsItem" v-for="(goodsItem,goodsIndex) in item.goodData"
+                        <view class="goodsItem" v-for="(goodsItem,goodsIndex) in item.goodData" :key="goodsIndex"
                             @click.stop="onClickJumpDetails(goodsItem.goodCode)">
                             <view class="goodsImgContainer flexCenter">
                                 <muqian-lazyLoad class="goodsImg" borderRadius="3rpx"

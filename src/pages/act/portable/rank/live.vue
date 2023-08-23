@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-03-28 11:08:21
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-05-20 18:09:36
- * @FilePath: \card-world\src\pages\act\portable\rank\live.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-23 15:37:10
+ * @FilePath: \jichao_app_2\src\pages\act\portable\rank\live.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -33,7 +33,7 @@
             <view class="draw_onPrize">
                 <view class="prize_item gray">中奖用户 :</view>
                 <template v-if="item.luckyUsers && item.luckyUsers.length">
-                    <view class="prize_item" v-for="(prizeItem, prizeIndex) in item.luckyUsers">
+                    <view class="prize_item" v-for="(prizeItem, prizeIndex) in item.luckyUsers" :key="prizeIndex">
                         <muqian-lazyLoad borderRadius="50%" class="avatar"
                             :src="prizeItem.avatar ? $parsePic(decodeURIComponent(prizeItem.avatar)) : defaultAvatar" />
                         <view class="name">{{ prizeItem.userName }}</view>

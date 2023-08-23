@@ -77,7 +77,7 @@ export default {
         //   "pageJump",
         //   "/pages/goods/goods_details?id=" + item.goodCode
         // );
-        app.navigateTo.goGoodsDetails(item.goodCode,'&source=livePage')
+        app.navigateTo.goGoodsDetails(item.goodCode,'&source=livePage&referer=Live')
         return;
       }
       console.log("跳转商家页");

@@ -62,7 +62,7 @@
 			}
 			this.openscreenReport(true,false)
 			this.close()
-			this.goGoodsDetails(this.goodData.good_code,`&AD_id=${this.goodData.ad_id}`)
+			this.goGoodsDetails(this.goodData.good_code,`&AD_id=${this.goodData.ad_id}&referer=AD`)
 		}
 		onClickClose(){
 			this.close()

@@ -1,7 +1,7 @@
 <template>
     <view class="content">
-        <view v-for="(item, index) in list">
-            <view class="kamiWrap" v-for="kami in item.noList">
+        <view v-for="(item, index) in list" :key="index">
+            <view class="kamiWrap" v-for="(kami,kIndex) in item.noList" :key="`kami${kIndex}`">
                 <view class="kamiPrice">
                     <view class="price">卡密单价:
                         <text style="font-weight: bold;margin-left: 8rpx;">￥{{ item.unitPrice }}</text>

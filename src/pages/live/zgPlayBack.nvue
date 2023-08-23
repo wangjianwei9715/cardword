@@ -265,7 +265,7 @@ export default {
     },
     pageJump(url, type = "navigateTo") {
       if (url.indexOf('/pages/goods/goods_details') != -1) {
-        app.navigateTo.goGoodsDetails(this.goodCode, '&source=livePage')
+        app.navigateTo.goGoodsDetails(this.goodCode, '&source=livePage&referer=Live')
         return
       }
       uni[type]({

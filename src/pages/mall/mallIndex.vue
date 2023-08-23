@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 17:50:05
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-06 16:43:41
- * @FilePath: \card-world\src\pages\mall\mallIndex.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-23 15:34:34
+ * @FilePath: \jichao_app_2\src\pages\mall\mallIndex.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -35,7 +35,7 @@
             indicator indicatorMode="line" circular></u-swiper>
         <view class="uTabs">
             <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)"
-                v-for="(item, index) in tab.list">{{ item.name }}</view>
+                v-for="(item, index) in tab.list" :key="index">{{ item.name }}</view>
         </view>
         <!-- <u-sticky v-if="navHeight" :customNavHeight="navHeight">
             
@@ -54,13 +54,13 @@
                         <view class="startTimeBlock_rightCountDown"
                             v-if="item.start_at && item.start_at > 0 && nowTimeStamp < item.start_at">
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, item.start_at).hours">{{ time }}</view>
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, item.start_at).hours" :key="`hours${tIndex}`">{{ time }}</view>
                             <view class="colon">:</view>
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, item.start_at).minutes">{{ time }}</view>
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, item.start_at).minutes" :key="`minutes${tIndex}`">{{ time }}</view>
                             <view class="colon">:</view>
                             <view class="timeBlock flexCenter"
-                                v-for="time in getCountDownInfo(nowTimeStamp, item.start_at).seconds">{{ time }}</view>
+                                v-for="(time,tIndex) in getCountDownInfo(nowTimeStamp, item.start_at).seconds" :key="`seconds${tIndex}`">{{ time }}</view>
                         </view>
                     </view>
                 </view>

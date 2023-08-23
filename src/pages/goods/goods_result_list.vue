@@ -66,6 +66,7 @@
 	class CardParams {
 		fromId = 0;
 		fetchSize = 10;
+		remainNum = -1;
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
@@ -120,6 +121,7 @@
 				}
 				this.noMore = res.isFetchEnd;
 				cardNoParams.fromId = this.teamDataList[this.teamDataList.length-1].id;
+				cardNoParams.remainNum = res.remainNum || -1
 			})
 		}
 		getResult(){
