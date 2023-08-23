@@ -26,7 +26,7 @@ export default class navigateManager {
 		if(!goodCode) return
 		const pages = getCurrentPages();
 		const route = pages[pages.length - 1].route;
-		const referer = route.indexOf("act")!=-1 ? "Act" : _Maps._UrlMaps[route];
+		const referer = route.indexOf("act")!=-1 ? "Act" : _Maps._RefererMaps[route];
 		uni.navigateTo({
 			url:`/pages/goods/goods_details?goodCode=${goodCode}${orther||"&referer="+referer}`
 		})

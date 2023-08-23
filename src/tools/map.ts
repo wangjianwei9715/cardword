@@ -7,7 +7,7 @@
  * Copyright: 2023 .
  * @Descripttion: 
  */
-const _UrlMaps:{[x:string]:string} = {
+const _RefererMaps:{[x:string]:string} = {
     "pages/index/index":"Home",
     "pages/merchant/goods_sale":"Merchant",
     "pages/merchant/core":"MerchantList",
@@ -27,5 +27,5 @@ const _UrlMaps:{[x:string]:string} = {
     "pages/userinfo/coupon/coupon_get":"Coupon"
 }
 export const _Maps:any = {
-    _UrlMaps
+    _RefererMaps
 }
