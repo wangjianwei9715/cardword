@@ -3,7 +3,7 @@
         <view class="title">请选择举报类型</view>
         <view class="reportReasonWrap">
             <view class="reportReason flexCenter" :class="{ reportReason_select: (formData.tpBit & +bit) === +bit }"
-                v-for="(v, bit) in reportReasonMap" @click="onClickReason(bit)">
+                v-for="(v, bit) in reportReasonMap" :key="v" @click="onClickReason(bit)">
                 {{ v }}
             </view>
         </view>
@@ -12,7 +12,7 @@
             v-model="formData.reason" class="input" height="350rpx" count :maxlength="200"></u--textarea>
         <view class="title">举证图片（选填）</view>
         <view class="imageContainer">
-            <image class="imageWrap flexCenter" v-for="(item) in formData.pic" :src="decodeURIComponent(item)"></image>
+            <image class="imageWrap flexCenter" v-for="(item,index) in formData.pic" :key="index" :src="decodeURIComponent(item)"></image>
             <view class="imageWrap imageWrap_add flexCenter" @click="addImage" v-if="formData.pic.length <= 2"></view>
         </view>
         <view class="fixedWrap">

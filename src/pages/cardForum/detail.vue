@@ -2,8 +2,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-17 21:03:48
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-23 15:23:24
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -64,10 +64,10 @@
             </u-read-more> -->
             <view class="topicsContainer"
                 v-if="(forumDetail.topic && forumDetail.topic.length) || (forumDetail.merAt && forumDetail.merAt.length)">
-                <text v-for="item in forumDetail.topic"
+                <text v-for="(item,index) in forumDetail.topic" :key="index"
                     @click.stop="pageJump(`/pages/cardForum/topics/detailPage?id=${item.topicId}`)">{{ item.topicName
                     }}</text>
-                <text v-for="item in (forumDetail.merAt || [])"
+                <text v-for="(item,index) in (forumDetail.merAt || [])" :key="index"
                     @click.stop="pageJump(`/pages/merchant/core?alias=${item.alias}`)">@{{ item.merName
                     }}</text>
             </view>
@@ -84,7 +84,7 @@
             <view class="line"></view>
             <view class="voteContainer" v-if="forumDetail.vote && forumDetail.vote.voteTitle">
                 <view class="voteTitle">投票：{{ forumDetail.vote.voteTitle }}</view>
-                <view class="voteOption" v-for="(item, index) in forumDetail.vote.options" @click="onClickVote(item)">
+                <view class="voteOption" v-for="(item, index) in forumDetail.vote.options" :key="index" @click="onClickVote(item)">
                     <view class="voteGray" :style="{ width: (item.poll / voteTotal) * 100 + '%' }"
                         :class="{ voteGray_select: forumDetail.vote.myOption === item.optionId }"></view>
                     <view class="voteFont" :class="{ voteFont_select: forumDetail.vote.myOption === item.optionId }">{{
@@ -101,7 +101,7 @@
                 <view class="commentNum">{{ forumDetail.commentNum || 0 }}条评论</view>
                 <!-- <view class="tips">*请勿在评论区泄露您的个人信息以及交易信息</view> -->
             </view>
-            <view class="comWrap" v-for="(item, index) in commList"
+            <view class="comWrap" v-for="(item, index) in commList" :key="item"
                 @touchstart="touchAction($event, item, {}, index, false)"
                 @touchend="touchAction($event, item, {}, index, false)">
                 <view class=" comBlock" :id="`commId_${item.id}`" :class="{
@@ -129,7 +129,7 @@
                         </view>
                     </view>
                 </view>
-                <view :id="`commId_${son.id}`" class="comBlock comBlock_son" v-for="(son, sonIndex) in item.lower"
+                <view :id="`commId_${son.id}`" class="comBlock comBlock_son" v-for="(son, sonIndex) in item.lower" :key="sonIndex"
                     @touchstart.stop="touchAction($event, son, item, sonIndex, true)"
                     @touchend.stop="touchAction($event, son, item, sonIndex, true)" @click.stop="onClickCom(item, son)"
                     :class="{
