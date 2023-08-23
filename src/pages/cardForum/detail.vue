@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-23 15:23:24
+ * @LastEditTime: 2023-08-23 17:19:47
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -101,7 +101,7 @@
                 <view class="commentNum">{{ forumDetail.commentNum || 0 }}条评论</view>
                 <!-- <view class="tips">*请勿在评论区泄露您的个人信息以及交易信息</view> -->
             </view>
-            <view class="comWrap" v-for="(item, index) in commList" :key="item"
+            <view class="comWrap" v-for="(item, index) in commList" :key="index"
                 @touchstart="touchAction($event, item, {}, index, false)"
                 @touchend="touchAction($event, item, {}, index, false)">
                 <view class=" comBlock" :id="`commId_${item.id}`" :class="{
