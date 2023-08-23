@@ -1,12 +1,4 @@
-/*
- * @FilePath: \jichao_app_2\src\manager\navigateManager.ts
- * @Author: wjw
- * @Date: 2023-05-22 09:15:23
- * @LastEditors: 
- * @LastEditTime: 2023-07-25 15:16:03
- * Copyright: 2023 .
- * @Descripttion: 
- */
+import { _Maps } from "@/tools/map"
 export default class navigateManager {
     private static instance: navigateManager;
 	switchMap:{[x:number]:string} = {
@@ -32,8 +24,11 @@ export default class navigateManager {
 	 */
 	goGoodsDetails(goodCode:string,orther=''){
 		if(!goodCode) return
+		const pages = getCurrentPages();
+		const route = pages[pages.length - 1].route;
+		const referer = route.indexOf("act")!=-1 ? "Act" : _Maps._UrlMaps[route];
 		uni.navigateTo({
-			url:`/pages/goods/goods_details?goodCode=${goodCode}${orther}`
+			url:`/pages/goods/goods_details?goodCode=${goodCode}${orther||"&referer="+referer}`
 		})
 	}
 	/**
@@ -66,7 +61,7 @@ export default class navigateManager {
 	}
 	navigateToAD(target: any) {
 		if (target.goodCode != '') {
-			this.goGoodsDetails(target.goodCode)
+			this.goGoodsDetails(target.goodCode,"&referer=AD")
 			return;
 		} else if (target.url != '') {
 			uni.navigateTo({

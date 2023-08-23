@@ -267,29 +267,26 @@
 		goodsData: any = [];
 		choiceTeamData = {...Manager.choiceTeamData};
 		choiceTRData = {...Manager.choiceTRData};
-		// 支付方式
-		payChannel: any = [];
-		// 底部抽屉
-		showDrawer = false;
+		payChannel: any = [];// 支付方式
+		showDrawer = false;// 底部抽屉
 		source="";
-		// 猜你喜欢
 		planData = {...Manager.planData}
-		// 可领取优惠券列表
-		getCouponList:any = [];
+		getCouponList:any = [];// 可领取优惠券列表
 		userData = app.data;
 		cheduiData = {};
 		showCheduiDraw = false;
 		cheduiDataAva:any = '';
-		// 商家好卡
-		cardList = [];
+		cardList = [];// 商家好卡
 		seriesCardEnd = true;
 		AD_id=null;
+		referer="";//来源
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
 			this.goodCode = goodCode;
 			this.source=query.source
 			this.AD_id = query.AD_id || null;
+			this.referer = query.referer;
 			this.getGoodData(()=>{
 				// 购买记录
 				this.getBuyRecord()
@@ -321,7 +318,7 @@
 		getGoodData(cb?:Function) {
 			const goodCode = this.goodCode;
 			clearInterval(this.countData.countInterval);
-			app.http.GetWithCrypto(`dataApi/good/${goodCode}/detail`, {}, (data: any) => {
+			app.http.GetWithCrypto(`dataApi/good/${goodCode}/detail`, {referer:this.referer}, (data: any) => {
 				if (!data.good) {
 					uni.showToast({ title: '无此商品', icon: 'none' })
 					app.navigateTo.switchTab(0)

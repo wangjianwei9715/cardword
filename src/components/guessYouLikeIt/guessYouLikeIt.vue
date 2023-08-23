@@ -61,7 +61,7 @@
 			return Math.floor((Number(item.lockNum)+Number(item.currentNum))/Number(item.totalNum)*100)+'%'
 		}
 		goGoodsDetails(goodCode:string){
-			app.navigateTo.goGoodsDetails(goodCode)
+			app.navigateTo.goGoodsDetails(goodCode,"&referer=GuessYouLike")
 		}
 	}
 </script>

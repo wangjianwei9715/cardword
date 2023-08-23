@@ -245,7 +245,7 @@
 					let index = args.indexOf("=") + 1;
 					let goodCode = args.substring(index);
 					plus.runtime.arguments = "";
-					app.navigateTo.goGoodsDetails(goodCode)
+					app.navigateTo.goGoodsDetails(goodCode,"&referer=ThirdParties")
 					return
 				}
 				let params:any=getUrlData(args)
