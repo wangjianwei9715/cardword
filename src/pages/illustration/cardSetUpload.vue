@@ -23,7 +23,7 @@
 					<view class="card-title">{{noData.text.player}}</view>
 					<view class="card-set u-line-2">{{binaryPeer.length?`${noData.text.seqIndex}/`:''}}{{noData.text.seq==0?"无限":noData.text.seq}}编，{{noData.text.cardSet}}</view>
 					<view class="card-seq">
-						<image v-if="noData.text.cardSetLogo" class="logo-pic" :src="$parsePic(decodeURIComponent(noData.text.cardSetLogo))"/>
+						<image v-if="noData.text.cardSetLogo" class="logo-pic" :src="$parsePic(noData.text.cardSetLogo)"/>
 					</view>
 					<muqian-lazyLoad v-if="noData.text.teamLogo" class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(noData.text.teamLogo)" />
 				</view>

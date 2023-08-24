@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-24 17:01:39
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-17 13:30:04
+ * @LastEditTime: 2023-08-24 14:44:21
  * @FilePath: \jichao_app_2\src\pages\act\forumDraw\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -38,7 +38,7 @@
         `drawBlock${index + 1}`,
         index == nowHeightLight ? `heightLight` : '',
       ]" v-for="(item, index) in drawList">
-        <image :src="$parsePic(decodeURIComponent(item.pic))" style="width: 100%; height: 100%" mode="aspectFill">
+        <image :src="$parsePic(item.pic)" style="width: 100%; height: 100%" mode="aspectFill">
         </image>
         <view class="innerShaow" v-if="index === nowHeightLight"></view>
       </view>
@@ -99,7 +99,7 @@
           @change="swiperChange">
           <swiper-item class="preSwiper_item" v-for="(item, index) in resRewardList" :key="index">
             <view class="img">
-              <image mode="widthFix" :src="$parsePic(decodeURIComponent(item.pic))" />
+              <image mode="widthFix" :src="$parsePic(item.pic)" />
               <view class="imageName">{{ item.name }}</view>
             </view>
           </swiper-item>

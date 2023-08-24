@@ -14,7 +14,7 @@
       <view class="smallTips" v-if="introduction">{{ introduction }}</view>
     </view>
     <view class="publickBlock goodsContainer">
-      <image class="goodsImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(orderDetail.logo))"></image>
+      <image class="goodsImg" mode="aspectFill" :src="$parsePic(orderDetail.logo)"></image>
       <view class="goodsRightInfo">
         <view class="goodsName">
           <view class="name u-line-2">{{ orderDetail.name }}</view>

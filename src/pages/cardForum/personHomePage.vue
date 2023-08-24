@@ -5,14 +5,14 @@
             @report="pageJump(`/pages/cardForum/report?byInformer=${userInfo.userId}&source=4`)">
         </transitionNav>
         <view class="userInfoWrap" id="userInfoWrap" @click="menuShow = isMine">
-            <image :src="$parsePic(decodeURIComponent(userInfo.back_pic))" class="userBack" v-if="userInfo.back_pic"
+            <image :src="$parsePic(userInfo.back_pic)" class="userBack" v-if="userInfo.back_pic"
                 mode="aspectFill"></image>
             <image v-else src="@/static/userinfo/v3/banner.png" class="userBack" mode="aspectFill"></image>
             <view class="back_shadow"></view>
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
             <view class="userInfo">
                 <image class="userInfo_avatar" mode="aspectFill"
-                    :src="userInfo.avatar ? $parsePic(decodeURIComponent(userInfo.avatar)) : defaultAvatar">
+                    :src="userInfo.avatar ? $parsePic(userInfo.avatar) : defaultAvatar">
                 </image>
                 <view class="userInfo_msg">
                     <view class="userInfo_name">
@@ -383,7 +383,7 @@ export default class ClassName extends BaseNode {
                 title: `${res.data.userName} 在卡世界APP,快点开来看看吧！`,
                 summary: res.data.sign || "",
                 //@ts-ignore
-                thumb: this.$parsePic(decodeURIComponent(res.data.avatar)) + `?x-oss-process=image/resize,h_100,w_100`
+                thumb: this.$parsePic(res.data.avatar) + `?x-oss-process=image/resize,h_100,w_100`
             }
             this.initTab()
         }, () => {

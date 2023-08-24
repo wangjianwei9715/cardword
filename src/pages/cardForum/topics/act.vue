@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-15 17:02:36
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-17 16:04:08
- * @FilePath: \card-world\src\pages\cardForum\topics\act.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-24 14:42:09
+ * @FilePath: \jichao_app_2\src\pages\cardForum\topics\act.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -17,7 +17,7 @@
                 {{ $u.timeFormat(topData.end_at, "mm-dd") }}）</view>
         </view>
         <view class="topicsItem">
-            <image class="topicsItem_img" :src="$parsePic(decodeURIComponent(topData.pic))">
+            <image class="topicsItem_img" :src="$parsePic(topData.pic)">
             </image>
             <view class="rightInfo">
                 <view class="topicsItem_title">
@@ -44,9 +44,9 @@
             <view class="gray">我的最高获赞{{ myLikeNum }}</view>
             <!-- <view class="smallTitle">（进行中 10.30~11.5）</view> -->
         </view>
-        <view class="rankWrap" v-for="(item, index) in list" @click="onClickRank(item)">
+        <view class="rankWrap" v-for="(item, index) in list" :key="index" @click="onClickRank(item)">
             <view class="rankNum">{{ index + 1 }}</view>
-            <muqian-lazyLoad :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : app.defaultAvatar"
+            <muqian-lazyLoad :src="item.avatar ? $parsePic(item.avatar) : app.defaultAvatar"
                 borderRadius="50%" class="avatar"></muqian-lazyLoad>
             <view class="userInfo">
                 <view class="userName">{{ item.userName || "虚位以待" }}</view>

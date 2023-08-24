@@ -15,7 +15,7 @@
         <view class="goodsList">
             <view class="anGoods" v-for="(item, index) in goodsList" :key="index" @click="onClickGoods(item)">
                 <muqian-lazyLoad class="pic" borderRadius="3rpx"
-                    :src="$parsePic(decodeURIComponent(item.pic))"></muqian-lazyLoad>
+                    :src="$parsePic(item.pic)"></muqian-lazyLoad>
                 <view class="goodsInfo">
                     <view class="name u-line-1">{{ item.title }}</view>
                     <view class="typePro">
@@ -172,7 +172,7 @@ export default class ClassName extends BaseNode {
                     id: item.id,
                     name: item.title,
                     //@ts-ignore
-                    pic_url: this.$parsePic(decodeURIComponent(item.pic_url)),
+                    pic_url: this.$parsePic(item.pic_url),
                 }
             })
             if (this.seriesId) {

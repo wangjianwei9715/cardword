@@ -50,7 +50,7 @@
                     <view class="card-set u-line-2">{{item.seq==0?"无限":item.seq}}编，{{item.cardSet}}</view>
                     <view class="card-logo-box">
                         <view v-if="item.seq<25&&item.seq>0" class="logo-seq" :class="`logo-seq-${item.seq}`">{{item.seq}}编</view>
-                        <image v-if="item.cardSetLogo" class="logo-pic" :src="$parsePic(decodeURIComponent(item.cardSetLogo))"/>
+                        <image v-if="item.cardSetLogo" class="logo-pic" :src="$parsePic(item.cardSetLogo)"/>
                     </view>
                 </view>
             </view>
@@ -69,7 +69,7 @@
                 <view class="bottom">
                     <view class="player u-line-1">{{cardSetTitle(item)}}</view>
                     <view class="setcard u-line-2">
-                        <image v-if="item.cardSetLogo" class="logo" :src="$parsePic(decodeURIComponent(item.cardSetLogo))"/>
+                        <image v-if="item.cardSetLogo" class="logo" :src="$parsePic(item.cardSetLogo)"/>
                         {{item.cardSet}}
                     </view>
                 </view>

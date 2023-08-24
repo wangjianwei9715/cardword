@@ -10,7 +10,7 @@
 			<template v-if="tab.index == 1">
 				<view class="userItem" v-for="(item, index) in currentList" :key="index" @click="goPersonHome(item)">
 					<muqian-lazyLoad class="avatar"
-						:src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
+						:src="item.avatar ? $parsePic(item.avatar) : defaultAvatar"
 						borderRadius="50%"></muqian-lazyLoad>
 					<view class="userInfo">
 						<view class="userName">{{ item.userName }}</view>
@@ -42,7 +42,7 @@
 			<template v-if="tab.index == 3">
 				<view class="userItem" v-for="(item, index) in currentList" :key="index" @click="goTuj(item)">
 					<muqian-lazyLoad class="avatar" style="border-radius: 0rpx;"
-						:src="$parsePic(decodeURIComponent(item.logo))" borderRadius="3rpx"></muqian-lazyLoad>
+						:src="$parsePic(item.logo)" borderRadius="3rpx"></muqian-lazyLoad>
 					<view class="userInfo">
 						<view class="userName">{{ item.name }}</view>
 						<view class="userData">

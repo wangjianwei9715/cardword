@@ -22,7 +22,7 @@
             <view class="dotRight"></view>
         </view>
         <view class="publickBlock goodsContainer">
-            <image class="goodsImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(goodsDetail.logo))"></image>
+            <image class="goodsImg" mode="aspectFill" :src="$parsePic(goodsDetail.logo)"></image>
             <view class="goodsRightInfo">
                 <view class="goodsName">{{ goodsDetail.name }}</view>
                 <view class="goodsPrice">

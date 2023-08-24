@@ -15,7 +15,7 @@
                             @click="onClickJumpUrl(item)">
                             <view class="merchantAvatar_block flexCenter">
                                 <muqian-lazyLoad class="avatar" borderRadius="50%"
-                                    :src="$parsePic(decodeURIComponent(item.logo))">
+                                    :src="$parsePic(item.logo)">
                                 </muqian-lazyLoad>
                                 <view class="liveEffects"></view>
                             </view>
@@ -34,7 +34,7 @@
                     v-for="(item,index) in hotRank" :key="index" @click="goMerchantPage(item.alias)">
                     <view class="hot_picBlock">
                         <muqian-lazyLoad class="hot_pic" borderRadius="3rpx"
-                            :src="$parsePic(decodeURIComponent(item.logo))" />
+                            :src="$parsePic(item.logo)" />
                         <view class="rankItem flexCenter" v-if="index<=2" :class="[`rank${index+1}`]">
                             <!-- <view class="top">TOP</view> -->
                             <view class="rank">{{index+1}}</view>
@@ -49,10 +49,10 @@
                 @click="goMerchantPage(item.alias)">
                 <view class="merchantCard_top">
                     <muqian-lazyLoad class="merchantBack" borderRadius="3rpx"
-                        :src="$parsePic(decodeURIComponent(item.back_img || item.logo))" />
+                        :src="$parsePic(item.back_img || item.logo)" />
                     <view class="merchantMask"></view>
                     <muqian-lazyLoad class="merchantAvatr" borderRadius="3rpx"
-                        :src="$parsePic(decodeURIComponent(item.logo))" />
+                        :src="$parsePic(item.logo)" />
                     <view class="merchantMsg">
                         <view class="name">{{item.name}}</view>
                         <view class="msg">{{item.groupGoodNum}}拼成 · {{item.fans}}粉丝</view>
@@ -67,7 +67,7 @@
                             @click.stop="onClickJumpDetails(goodsItem.goodCode)">
                             <view class="goodsImgContainer flexCenter">
                                 <muqian-lazyLoad class="goodsImg" borderRadius="3rpx"
-                                    :src="$parsePic(decodeURIComponent(goodsItem.pic))" />
+                                    :src="$parsePic(goodsItem.pic)" />
                             </view>
                             <view class="goodsName">{{goodsItem.goodName}}</view>
                             <view class="goodsPrice" v-if="goodsItem.status==1">

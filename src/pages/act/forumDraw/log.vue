@@ -23,7 +23,7 @@
             </view> -->
             <!-- <view class="pointCard_line"></view> -->
             <view class="pointCard_goods">
-                <muqian-lazyLoad class="goodsImage" :src="$parsePic(decodeURIComponent(item.pic))" borderRadius="3rpx" />
+                <muqian-lazyLoad class="goodsImage" :src="$parsePic(item.pic)" borderRadius="3rpx" />
                 <view class="goodsInfo">
                     <view class="goodsTitle uni-flex">
                         <view class="title" style="flex:1">{{ item.name }}</view>
