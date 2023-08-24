@@ -103,7 +103,7 @@ import cardSkeleton from "./components/cardSkeleton.vue"
 import topicList from "./components/topicList.vue"
 import userList from "./components/userList.vue"
 import { Md5 } from "ts-md5";
-import { mockList,testCode } from "./func/index.js"
+import { testCode } from "./func/index.js"
 import empty from "@/components/empty/empty.vue"
 const tabsList = [
     {
@@ -453,7 +453,9 @@ export default {
                 this.current.scrollId = res.scrollId || ""
                 this.current.timeStamp = res.timeStamp || 0
                 const list = (res.list || []).map(item => {
+                    //#ifdef APP-NVUE
                     if (item.cover) item.cover = this.parsePic(decodeURIComponent(item.cover))
+                    //#endif
                     return item
                 })
                 if (isRefresh) {
