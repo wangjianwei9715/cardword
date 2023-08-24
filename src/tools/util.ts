@@ -1,6 +1,7 @@
 // #ifndef APP-NVUE
 import { Md5 } from 'ts-md5'
 import { app } from '@/app'
+import { ossStitching } from "@/pages/cardForum/func/index"
 // #endif
 const keywords = ['res_ksj', 'resources.ka-world.com','resources.social.ka-world.com'];
 const httpPattern = /http:\/\/(.*?)\//;
@@ -18,6 +19,13 @@ export function parsePic(src: string) {
 	const md5Key = Md5.hashStr(app.picEncryptionKey + noneOrigin + tsString);
 	
 	return `http://${httpUrl}/${md5Key}/${tsString}${noneOrigin}`
+}
+export function thumbnail(cover:string, width=100, needParse=true) {
+    if (!cover) return cover
+    let deCover = needParse ? parsePic(decodeURIComponent(cover)) : cover
+    const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
+    if (isVideoSnapshot) return deCover
+    return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,w_${width}`)
 }
 /**
  * 数字处理 大于万/亿 调整为字符串

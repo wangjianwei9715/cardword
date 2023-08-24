@@ -35,7 +35,7 @@
 			<view class="series-nolist">
 				<scroll-view class="scroll-box" scroll-x="true" v-if="item.noList&&item.noList.length">
 					<view class="scroll-index" v-for="(pitem,pindex) in item.noList" :key='pindex'>
-						<muqian-lazyLoad @click="onClickPreviewImage(item.noList,pindex)" class="series-pic" borderRadius="3rpx" :src="decodeURIComponent(pitem.pic)" mode="aspectFit"/>
+						<image @click="onClickPreviewImage(item.noList,pindex)" class="series-pic"  :src="$thumbnail(pitem.pic,200)" mode="aspectFit"/>
 					</view>
 				</scroll-view>
 				<view v-else class="empty-box">
@@ -149,11 +149,19 @@
 		}
 		onClickPreviewImage(pic:any[],index: number) {
 			if(this.illustrationGuide) return;
-			const urls = pic.map((x)=> this.parsePic(x.pic));
+			//@ts-ignore
+			const urls = pic.map((x)=> this.$thumbnail(x.pic,750));
 			uni.previewImage({
 				urls,
 				current: index,
-				indicator: "number"
+				indicator: "number",
+				longPressActions:{
+					itemList:[],
+					success: (data)=> {
+					},
+					fail: (err)=> {
+					}
+				}
 			});
 		}
 	}

@@ -25,7 +25,7 @@
 			<view class="tips">{{item.name}}</view>
 			<view class="card-box">
 				<view class="card" v-for="(noItem,noIndex) in item.noList" :key="noIndex">
-					<muqian-lazyLoad v-if="noItem.frontPic" class="pic" mode="aspectFit" :src="decodeURIComponent(noItem.frontPic)" borderRadius="3rpx" @click="onClickCardPic(index,noIndex)"/>
+					<image v-if="noItem.frontPic" class="pic" mode="aspectFit" :src="$thumbnail(noItem.frontPic,400)" @click="onClickCardPic(index,noIndex)"/>
 					<view v-else class="no-pic">暂未收集</view>
 					<view class="player u-line-1">{{noItem.split?noItem.seqIndex+"/":""}}{{noItem.seq}}编 {{noItem.player}}</view>
 					<view class="cardset u-line-2">
@@ -45,7 +45,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import cardPic from '@/pages/illustration/components/cardPic.vue'
-	import { followActionByUser, formatterNolist,ossStitching } from "./func";
+	import { followActionByUser, formatterNolist, ossStitching } from "./func";
 	class ListParams {
 		tp=0;
 		fetchFrom=1;

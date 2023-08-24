@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-07-03 16:16:26
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-18 14:58:49
+ * @LastEditTime: 2023-08-24 09:34:30
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -18,14 +18,14 @@
 						:key="index"
 						class="grid-item"
                     >
-						<muqian-lazyLoad v-if="item.frontPic" class="grid-pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)"/>
+						<image v-if="item.frontPic" class="grid-pic" mode="aspectFit" :src="$thumbnail(item.frontPic,300)"/>
                     </u-grid-item>
                 </u-grid>
 			</swiper-item>
 		</swiper>
 		<swiper v-else class="swiper" :current="current" @change="$event=>current=$event.detail.current">
 			<swiper-item v-for="(item,index) in nolist" :key="index">
-				<muqian-lazyLoad class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)"/>
+				<image class="pic" mode="aspectFit" :src="$thumbnail(item.frontPic,400)"/>
 			</swiper-item>
 		</swiper>
 		<view class="percent">卡册完整度：{{detail.percent}}%({{detail.uploadedNoNum}}/{{detail.noNum}})<view class="right"></view></view>

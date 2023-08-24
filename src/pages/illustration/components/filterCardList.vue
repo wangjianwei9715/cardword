@@ -36,7 +36,7 @@
         <view v-show="layoutLine==1" class="card-list">
             <view class="card-index" v-for="(item,index) in cardSetList" :key="index" @click="onClickCard(item,index)">
                 <view v-if="item.frontPic" class="card-pic">
-                    <muqian-lazyLoad v-if="item.frontPic" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
+                    <image v-if="item.frontPic" class="pic" mode="aspectFit" :src="$thumbnail(item.frontPic,200)" />
                 </view>
                 <view v-else class="card-wait-up">
                     <view>
@@ -45,7 +45,7 @@
                     </view>
                 </view>
                 <view class="card-info">
-                    <muqian-lazyLoad v-if="item.teamLogo" class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(item.teamLogo)" />
+                    <image v-if="item.teamLogo" class="card-teamlogo" mode="aspectFit" :src="$thumbnail(item.teamLogo,300)" />
                     <view class="card-player">{{item.player}}</view>
                     <view class="card-set u-line-2">{{item.seq==0?"无限":item.seq}}编，{{item.cardSet}}</view>
                     <view class="card-logo-box">

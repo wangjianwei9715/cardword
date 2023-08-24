@@ -10,7 +10,7 @@
 			<swiper class="swiper-box" v-if="showSwiper">
 				<swiper-item  @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
 					<view v-show="peCurrent==0" class="img-box">
-						<muqian-lazyLoad v-if="illustration&&illustration.frontPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.frontPic)" borderRadius="3rpx" :preview="true"/>
+						<image v-if="illustration&&illustration.frontPic" class="ill-pic" mode="aspectFit" :src="$thumbnail(illustration.frontPic,600)" @click="onClickLazyImage(illustration.frontPic)"/>
 						<view v-else-if="!frontPic" class="up-box" @click="addImage('front')">
 							<view class="up-center">
 								<view class="icon-upload"></view>
@@ -28,7 +28,7 @@
 						</view>
 					</view>
 					<view v-show="peCurrent==1" class="img-box">
-						<muqian-lazyLoad v-if="illustration&&illustration.backPic" class="ill-pic" mode="aspectFit" :src="decodeURIComponent(illustration.backPic)" borderRadius="3rpx" :preview="true"/>
+						<image v-if="illustration&&illustration.backPic" class="ill-pic" mode="aspectFit" :src="$thumbnail(illustration.backPic,600)" @click="onClickLazyImage(illustration.backPic)"/>
 						<view v-else-if="!backPic" class="up-box" @click="addImage('back')">
 							<view class="up-center">
 								<view class="icon-upload"></view>
@@ -142,6 +142,19 @@
 			setTimeout(() => {
 				this.showSwiper = true;
 			}, 100);
+		}
+		onClickLazyImage(pic:string) {
+			uni.previewImage({
+				//@ts-ignore
+				urls: [this.$thumbnail(pic,750)],
+				longPressActions:{
+					itemList:[],
+					success: (data)=> {
+					},
+					fail: (err)=> {
+					}
+				}
+			});
 		}
 	}
 </script>
