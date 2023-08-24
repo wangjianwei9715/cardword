@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-11 14:13:28
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-24 14:11:55
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,16 +15,17 @@
             <cover-view :style="{ height: app.statusBarHeight + 'px' }"></cover-view>
             <cover-view class="tabHeader"
                 style="width:750rpx;height:88rpx;display: flex;align-items: center;flex-direction: row;">
-                <cover-view :style="{ color: '#fff' }" @click="sheetShow=true">
+                <cover-view :style="{ color: '#fff' }" @click="sheetShow = true">
                     <cover-image style="width: 19rpx;height: 35rpx;margin-left: 30rpx;"
                         src="@/static/index/v3/back.png"></cover-image>
                 </cover-view>
             </cover-view>
         </cover-view>
         <view :style="{ height: navHeight + 'px' }"></view>
-        <publish v-if="albumRelease" ref="albumRelease" :selectTopics="selectTopics" :formData="formData" :albumList.sync="albumData.list"
-            :albumCover.sync="albumData.albumCover" :albumProve.sync="albumData.albumProve" :draftId="draftId"
-            @albumEditDetail="albumEditDetail" @delDraft="delDraftDetailAction" @unLock="submitLock = false" />
+        <publish v-if="albumRelease" ref="albumRelease" :selectTopics="selectTopics" :formData="formData"
+            :albumList.sync="albumData.list" :albumCover.sync="albumData.albumCover" :albumProve.sync="albumData.albumProve"
+            :draftId="draftId" @albumEditDetail="albumEditDetail" @delDraft="delDraftDetailAction"
+            @unLock="submitLock = false" />
         <view v-else class="pushContainer" :style="{ height: imgUploadHeight + 'px' }">
             <ppp v-if="showPPP" :type="formData.tp" :number="maxNum" :addText="addText" v-model="pics"
                 @heightChange="heightChange" @addImage="addImage('pics')" @delVideo="delVideo" />
@@ -48,10 +49,10 @@
             <scroll-view scroll-x="true" :show-scrollbar="false" class="topicScroll"
                 v-if="relatedTopics && relatedTopics.length">
                 <view class="topicScrollWrap">
-                    <view class="topicItem flexCenter" @click="onSelectTopic(item)" v-for="(item, index) in unSelectedTopics"
-                        :key="index">
+                    <view class="topicItem flexCenter" @click="onSelectTopic(item)"
+                        v-for="(item, index) in unSelectedTopics" :key="index">
                         <text>{{ item.name }}</text>
-                        <text class="act" v-if="item.activity||item.isActivity">活动</text>
+                        <text class="act" v-if="item.activity || item.isActivity">活动</text>
                     </view>
                 </view>
             </scroll-view>
@@ -88,7 +89,8 @@
                     <image src="@/static/cardForum/release/caogao.png"></image>
                     <text>存草稿</text>
                 </view>
-                <view class="submit flexCenter" @click="$u.throttle(onClickSubmit, 1000)">{{ code ? "提交" : "发布" }}{{albumRelease?'卡册':'动态'}}</view>
+                <view class="submit flexCenter" @click="$u.throttle(onClickSubmit, 1000)">{{ code ? "提交" : "发布"
+                }}{{ albumRelease ? '卡册' : '动态' }}</view>
             </view>
             <view class="bottomSafeArea"></view>
         </view>
@@ -98,7 +100,8 @@
         <view class="bottomSafeArea" style="height:180rpx;pointer-events: none;"></view>
         <u-toast ref="uToast" v-if="submitLock"></u-toast>
 
-        <albumActionSheet :show.sync="sheetShow" :listId="[albumRelease?4:1,3]" @save="onClickSaveDraft" @edit="onClickBackEdit"/>
+        <albumActionSheet :show.sync="sheetShow" :listId="[albumRelease ? 4 : 1, 3]" @save="onClickSaveDraft"
+            @edit="onClickBackEdit" />
     </view>
 </template>
 
@@ -143,6 +146,8 @@ interface CardForumRelease {
     video_at?: number;
     localVideo?: boolean
     topicArr?: any
+    width?: number
+    height?: number
 }
 const formData: CardForumRelease = {
     title: "",
@@ -202,7 +207,7 @@ export default class ClassName extends BaseNode {
     submitLock: boolean = false
     hasVoteByCode: boolean = false
     isRepost: boolean = false;
-    sheetShow=false;
+    sheetShow = false;
     onLoad(query: any) {
         app.platform.hasLoginToken(() => {
             app.user.getUserInfo().then((userInfo: any) => {
@@ -222,7 +227,7 @@ export default class ClassName extends BaseNode {
                 if (query.albumList) {
                     this.albumData.list = JSON.parse(query.albumList)
                 }
-                if (query.draftData){
+                if (query.draftData) {
                     const data = JSON.parse(query.draftData)
                     this.albumData.albumCover = data.albumCover;
                     this.albumData.albumProve = data.albumProve;
@@ -234,18 +239,18 @@ export default class ClassName extends BaseNode {
             })
         })
     }
-    onBackPress(event:any){
-        if(event.from=='backbutton'){
-            this.sheetShow=true;
+    onBackPress(event: any) {
+        if (event.from == 'backbutton') {
+            this.sheetShow = true;
             return true
         }
         return
     }
-    public get selectTopicsIds() : number[] {
-        return this.selectTopics.map((item:any)=> item.topicId || item.id)
+    public get selectTopicsIds(): number[] {
+        return this.selectTopics.map((item: any) => item.topicId || item.id)
     }
-    public get unSelectedTopics() : any[] {
-        return this.relatedTopics.filter((x:any)=>{
+    public get unSelectedTopics(): any[] {
+        return this.relatedTopics.filter((x: any) => {
             return !this.selectTopicsIds.includes(x.id)
         })
     }
@@ -255,7 +260,7 @@ export default class ClassName extends BaseNode {
     eventAlbum() {
         this.onEventUI("editAlbum", (res: any) => this.albumData.list = res)
     }
-    onClickBackEdit(){
+    onClickBackEdit() {
         //@ts-ignore
         this.$refs.albumRelease.onClickGoPicUpload()
     }
@@ -273,7 +278,9 @@ export default class ClassName extends BaseNode {
             })
             return
         }
-        this.selectTopics.push(item)
+        if (!this.selectTopicsIds.includes(item.id)){
+            this.selectTopics.push(item)
+        }
     }
     delSelectTopic(item: any, index: number) {
         this.selectTopics.splice(index, 1)
@@ -513,12 +520,12 @@ export default class ClassName extends BaseNode {
     setSelectTopics(topic: any) {
         this.selectTopics = (topic || []).map((item: any) => {
             this.oldTopicIds.push(item.topicId)
-            
+
             return {
                 id: item.topicId || item.id,
                 name: item.topicName || item.name,
                 isActivity: item.activity,
-                formList:true
+                formList: true
             }
         })
     }
@@ -546,6 +553,13 @@ export default class ClassName extends BaseNode {
                 //     return item.data.code == this.code
                 // })
                 // if (findItem && findItem.draftId) this.draftId = findItem.draftId
+            }
+            if (Draft.cover) {
+                const coverInfo = await this.getImageInfo(decodeURIComponent(Draft.cover))
+                if (coverInfo.width && coverInfo.height) {
+                    Draft.width = coverInfo.width
+                    Draft.height = coverInfo.height
+                }
             }
             await storageDraft(Draft, this.albumRelease ? "cardBook" : "dynamic", this.draftId || "")
             uni.showModal({
@@ -593,7 +607,7 @@ export default class ClassName extends BaseNode {
             if (this.pics.length && !getVideoPath(this.pics[0])) this.formData.cover = this.pics[0]
             if (this.pics.length == 1 && getVideoPath(this.pics[0])) this.formData.url = [encodeURIComponent(this.videoPath)]
             if (this.pics.length > 1) {
-                if (this.formData.tp === Tp.Pic || this.formData.tp===Tp.Medium) this.formData.url = this.pics.slice(1, this.pics.length)
+                if (this.formData.tp === Tp.Pic || this.formData.tp === Tp.Medium) this.formData.url = this.pics.slice(1, this.pics.length)
                 if (this.formData.tp === Tp.Video) this.formData.url = [encodeURIComponent(this.videoPath)]
             }
             this.formData.topicId = this.selectTopics.map((item: any) => {
@@ -758,7 +772,11 @@ export default class ClassName extends BaseNode {
                 })
                 this.formData.topicArr = topicArr
             }
-            console.log("最终的表单", this.formData);
+            const coverInfo = await this.getImageInfo(decodeURIComponent(this.formData.cover))
+            if (coverInfo.width && coverInfo.height) {
+                this.formData.width = coverInfo.width
+                this.formData.height = coverInfo.height
+            }
             const url = this.code ? `cardCircle/edit/${this.code}` : `cardCircle/issue`
             const content = encodeURIComponent(this.formData.content || "")
             app.http.Post(url, { ...this.formData, content }, () => {
@@ -851,6 +869,19 @@ export default class ClassName extends BaseNode {
             })
         })
     }
+    getImageInfo(src: string): Promise<any> {
+        return new Promise((re, rj) => {
+            uni.getImageInfo({
+                src: src,
+                success: (result: any) => {
+                    re(result)
+                },
+                fail: (err: any) => {
+                    re({})
+                }
+            })
+        })
+    }
     reqTopicDetail(id: number) {
         app.http.Get("dataApi/cardCircle/topic/detail/" + id, {}, (res: any) => {
             this.onSelectTopic({ ...res.data, id })
@@ -876,7 +907,7 @@ page {
 }
 
 .insetBottom {
-    padding-bottom:159rpx;
+    padding-bottom: 159rpx;
     padding-bottom: calc(159rpx + env(safe-area-inset-bottom));
 }
 
