@@ -409,7 +409,7 @@
         }
         //获取商家店铺可领取的优惠券
         reqMerchantCoupon(cb?: any) {
-            app.http.Get(`merchant/online/coupon/` + this.alias, this.couponQuery, (res: any) => {
+            app.http.Get(`dataApi/merchant/online/coupon/` + this.alias, this.couponQuery, (res: any) => {
                 this.couponIsFetchEnd = res.isFetchEnd
                 const list = res.list || []
                 this.couponQuery.fetchFrom == 1 ? this.couponList = list : this.couponList.push(...list)
@@ -418,7 +418,7 @@
             })
         }
         reqCouponBrief(){
-            app.http.Get(`merchant/coupon/brief/${this.alias}`,{},(res:any)=>{
+            app.http.Get(`dataApi/merchant/coupon/brief/${this.alias}`,{},(res:any)=>{
                 this.couponBrief=res.couponBrief || []
             })
         }
