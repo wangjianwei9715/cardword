@@ -21,7 +21,7 @@
             <view class="contentWrap">
                 <view class="userInfoWrap">
                     <view class="To">To:</view>
-                    <image class="avatar" :src="$parsePic(decodeURIComponent(receiveInfo.avatar || app.defaultAvatar))">
+                    <image class="avatar" :src="$parsePic(receiveInfo.avatar || app.defaultAvatar)">
                     </image>
                     <view class="userName">{{ receiveInfo.userName || "小卡迷" }}</view>
                     <view class="userId">({{ receiveInfo.userId || "未知用户id" }})</view>
@@ -44,7 +44,7 @@
                 <view class="tips">确认赠送{{ selectIds.length }}条卡密</view>
                 <view class="userWrap">
                     <view class="to">To:</view>
-                    <image class="avatar" :src="$parsePic(decodeURIComponent(receiveInfo.avatar || app.defaultAvatar))">
+                    <image class="avatar" :src="$parsePic(receiveInfo.avatar || app.defaultAvatar)">
                     </image>
                     <view class="userName">{{ receiveInfo.userName || "小卡迷" }}</view>
                 </view>

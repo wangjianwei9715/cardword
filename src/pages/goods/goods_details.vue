@@ -238,8 +238,6 @@
 	import { goodDetailSpe } from "@/tools/DataExchange"
 	import { parsePic,secondsFormat } from "@/tools/util";
 	import detailsManager from "./manager/detailsManager"
-	//@ts-ignore
-	import {decHex} from "@/net/Crypto.js"
 	const Manager =  detailsManager.getIns();
 	class ShareData { shareUrl:string =''; title:string =''; summary:string =''; thumb:string ='' }
 	@Component({})
@@ -392,7 +390,7 @@
 				goodsPic.thumb = picFormat(goodsPic.thumb);
 			}
 			function picFormat(pic:any[]){
-				return pic ? pic.map(x => parsePic(decHex(x))) : [];
+				return pic ? pic.map(x => parsePic(x)) : [];
 			}
 		}
 		/**

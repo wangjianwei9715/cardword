@@ -7,7 +7,7 @@
 					<image src="@/static/drawCard/icon_step.png"></image>
 				</view>
                 <view @click="goPersonHome" style="display:flex">
-                    <image :src="forumDetail.avatar ? $parsePic(decodeURIComponent(forumDetail.avatar)) : app.defaultAvatar"
+                    <image :src="forumDetail.avatar ? $parsePic(forumDetail.avatar) : app.defaultAvatar"
                         class="topAvatar"></image>
                     <view class="topName u-line-1">{{ forumDetail.userName || "获取中" }}</view>
                 </view>
@@ -91,7 +91,7 @@
                 title,
                 summary: content ? (content.length > 20 ? content.substr(0, 20) + '...' : content) : "我发现了一篇精彩动态",
                 //@ts-ignore
-                thumb: ossStitching(this.$parsePic(decodeURIComponent(url)),`x-oss-process=image/resize,h_100,w_100`)
+                thumb: ossStitching(this.$parsePic(url),`x-oss-process=image/resize,h_100,w_100`)
             }
 		}
 		formatterCodeList(addList:any[],dic:object){

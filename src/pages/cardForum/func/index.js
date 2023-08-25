@@ -1,8 +1,8 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-25 20:11:24
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 17:40:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-24 14:26:45
  * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -164,13 +164,6 @@ export function getImageByLocal(item) {
 }
 export function pushImage(item) {
     app.cardForumImgLocal[item.code] = { width: item.width, height: item.height, mode: item.mode }
-}
-function thumbnail(cover, needParse) {
-    if (!cover) return cover
-    let deCover = needParse ? getApp().globalData.parsePic(decodeURIComponent(cover)) : cover
-    const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
-    if (isVideoSnapshot) return deCover
-    return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,w_1`)
 }
 export const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg' },
 { title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.26/goods/pintuan0/16877444345160g177cxxvv.jpeg' },

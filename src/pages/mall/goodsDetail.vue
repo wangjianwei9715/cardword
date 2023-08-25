@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:08:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-23 15:35:57
+ * @LastEditTime: 2023-08-24 14:41:32
  * @FilePath: \jichao_app_2\src\pages\mall\goodsDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,7 +12,7 @@
             :rowsHeight="[`280rpx`, `40rpx`, `200rpx`, `600rpx`]" :title="false"
             :loading="!goodsDetail.id"></u-skeleton>
         <view class="topImage">
-            <image mode="aspectFill" :src="$parsePic(decodeURIComponent(goodsDetail.logo))"></image>
+            <image mode="aspectFill" :src="$parsePic(goodsDetail.logo)"></image>
         </view>
         <view class="goodsInfoContainer">
             <view class="goodsName">{{ goodsDetail.name }}</view>
@@ -61,7 +61,7 @@
             <view class="title">商品详情</view>
             <muqian-lazyLoad class="img" borderRadius="3rpx" @click="onClickPreviewImage(index)"
                 v-for="(item, index) in goodsDetail.pic" :key="index"
-                :src="$parsePic(decodeURIComponent(item))"></muqian-lazyLoad>
+                :src="$parsePic(item)"></muqian-lazyLoad>
         </view>
         <view class="bottomSafeArea" style="height: 150rpx"></view>
         <view class="bottomFixedPay">
@@ -78,7 +78,7 @@
         <u-popup mode="center" closeable round="3rpx" :show="exchangeModal" @close="exchangeModal = false"
             :safeAreaInsetBottom="false">
             <view class="coninExchange">
-                <image class="exchangeImg" :src="$parsePic(decodeURIComponent(goodsDetail.logo))" mode="aspectFill" />
+                <image class="exchangeImg" :src="$parsePic(goodsDetail.logo)" mode="aspectFill" />
                 <view class="exchangeGoodsPrice">
                     <view class="exchangeText">兑换所需：<text style="color: #e53b4b">{{ goodsDetail.price }}卡币</text></view>
                     <view class="exchangeText">当前卡币：<text>{{ meBeanPoint }}</text></view>

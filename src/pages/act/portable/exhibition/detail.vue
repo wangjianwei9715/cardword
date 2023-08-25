@@ -12,7 +12,7 @@
             <view :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
             <view class="nav">
                 <view class="back" @click="goBack"></view>
-                <image :src="formData.avatar ? $parsePic(decodeURIComponent(formData.avatar)) : defaultAvatar"
+                <image :src="formData.avatar ? $parsePic(formData.avatar) : defaultAvatar"
                     class="topAvatar"></image>
                 <view class="topName u-line-1">{{ formData.userName || "获取中" }}</view>
                 <view @click="actionSheetShow = true" v-if="isMy">
@@ -45,7 +45,7 @@
                         hold: onClickTap && touchId == item.id
                     }">
                     <muqian-lazyLoad class="avatar"
-                        :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar"
+                        :src="item.avatar ? $parsePic(item.avatar) : defaultAvatar"
                         borderRadius="50%" />
                     <view class="rightWrap">
                         <view class="msgInfo" @click.stop="onClickCom(item, {})">
@@ -70,7 +70,7 @@
                             hold: onClickTap && touchId == son.id
                         }">
                     <muqian-lazyLoad class="avatar"
-                        :src="son.avatar ? $parsePic(decodeURIComponent(son.avatar)) : defaultAvatar" borderRadius="50%" />
+                        :src="son.avatar ? $parsePic(son.avatar) : defaultAvatar" borderRadius="50%" />
                     <view class="rightWrap">
                         <view class="msgInfo">
                             <view class="top">
@@ -613,7 +613,7 @@ export default class ClassName extends BaseNode {
             this.formData = res.data
             this.pics = res.data.url.split(",").filter(Boolean).map((url: string) => {
                 //@ts-ignore
-                return this.$parsePic(decodeURIComponent(url))
+                return this.$parsePic(url)
             })
             if (res.data.status && res.data.status === 1) this.getCommByWorks()
         })

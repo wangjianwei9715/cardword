@@ -48,7 +48,7 @@
                 v-for="(item, index) in goodsList" :key="index">
                 <view class="goodsItem_top">
                     <muqian-lazyLoad class="logo" borderRadius="3rpx"
-                        :src="$parsePic(decodeURIComponent(item.logo))"></muqian-lazyLoad>
+                        :src="$parsePic(item.logo)"></muqian-lazyLoad>
                     <view class="startTimeBlock" v-if="item.start_at > 0">
                         <view class="startTimeBlock_leftFont">{{ item.start_at > nowTimeStamp ? '距离开始' : '开抢中' }}</view>
                         <view class="startTimeBlock_rightCountDown"

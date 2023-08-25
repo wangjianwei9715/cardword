@@ -26,14 +26,14 @@
             <template v-if="tag.index == 0">
                 <view class="workWrap" v-for="(item, index) in nowList" @click="goToDetail(item.id, true)">
                     <view class="imgWrap flexCenter">
-                        <muqian-lazyLoad class="img" borderRadius="3rpx" :src="$parsePic(decodeURIComponent(item.url))" />
+                        <muqian-lazyLoad class="img" borderRadius="3rpx" :src="$parsePic(item.url)" />
                     </view>
                     <view class="userWrap">
                         <view class="title u-line-2">{{ item.title || "标题获取中" }}
                         </view>
                         <view class="userInfo uni-flex">
                             <muqian-lazyLoad borderRadius="50%" class="avatar"
-                                :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar" />
+                                :src="item.avatar ? $parsePic(item.avatar) : defaultAvatar" />
                             <view class="name">{{ item.userName || "小卡迷" }}</view>
                             <view class="loading" v-if="item.status == 0">审核中</view>
                             <view class="rightMsg" v-if="item.status == 1">
@@ -62,19 +62,19 @@
                 </view>
                 <view class="messageWrap" v-for="(item, index) in nowList">
                     <muqian-lazyLoad class="avatar" borderRadius="50%"
-                        :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar" />
+                        :src="item.avatar ? $parsePic(item.avatar) : defaultAvatar" />
                     <view class="infoWrap">
                         <view class="name u-line-1">{{ item.userName || "小卡迷" }}</view>
                         <view class="action">{{ showWhat(item).tips }} {{ getDateDiff(item.created_at * 1000) }}</view>
                         <view class="content u-line-1">{{ showWhat(item).content }}</view>
                         <view class="look" @click="onClickLook(item)">点击查看</view>
                     </view>
-                    <muqian-lazyLoad class="pic" borderRadius="3rpx" :src="$parsePic(decodeURIComponent(item.url))" />
+                    <muqian-lazyLoad class="pic" borderRadius="3rpx" :src="$parsePic(item.url)" />
                 </view>
             </template>
             <template v-if="tag.index == 2">
                 <view class="detailWrap" v-for="(item, index) in nowList">
-                    <muqian-lazyLoad borderRadius="3rpx" class="pic" :src="$parsePic(decodeURIComponent(item.url))" />
+                    <muqian-lazyLoad borderRadius="3rpx" class="pic" :src="$parsePic(item.url)" />
                     <view class="titleInfo">
                         <view class="title u-line-1">{{ item.title || "标题获取中..." }}</view>
                         <view class="time">{{ $u.timeFormat(item.created_at, 'mm-dd hh:MM') }}</view>

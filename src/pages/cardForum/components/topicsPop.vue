@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:21:52
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-04 16:35:55
- * @FilePath: \card-world\src\pages\cardForum\components\vote.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-24 14:43:26
+ * @FilePath: \jichao_app_2\src\pages\cardForum\components\topicsPop.vue
  * @Description: 卡圈的话题pop组件
 -->
 <template>
@@ -21,7 +21,7 @@
                 <scroll-view class="topicsScroll" :scroll-y="true" @scrolltolower="scrolltolower">
                     <view class="topicsItem" v-for="(item, index) in list"
                         @click="$emit('select', item), showValue = false">
-                        <muqian-lazyLoad class="image" :src="$parsePic(decodeURIComponent(item.pic))"
+                        <muqian-lazyLoad class="image" :src="$parsePic(item.pic)"
                             borderRadius="50%"></muqian-lazyLoad>
                         <view class="rightInfo">
                             <view class="title">{{ item.name }}</view>

@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-07-04 11:46:40
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-20 11:47:39
- * @FilePath: \card-world\src\pages\userinfo\level.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-24 14:31:53
+ * @FilePath: \jichao_app_2\src\pages\userinfo\level\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -19,7 +19,7 @@
         <view class="levelTopContainer">
             <view class="navW" :style="{ height: (app.statusBarHeight + navHeight) + 'px' }"></view>
             <view class="userInfoWrap">
-                <image :src="userInfo.avatar ? $parsePic(decodeURIComponent(userInfo.avatar)) : app.defaultAvatar"
+                <image :src="userInfo.avatar ? $parsePic(userInfo.avatar) : app.defaultAvatar"
                     class="userAvatar" mode="aspectFill"></image>
                 <view class="userInfo">
                     <view class="userNameWrap">

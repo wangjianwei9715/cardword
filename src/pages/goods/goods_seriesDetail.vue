@@ -6,11 +6,11 @@
             </template>
         </transitionNav>
         <view class="detailCard" :style="{height:(380+(36*2))+'rpx'}">
-            <image class="backImg" mode="aspectFill" :src="$parsePic(decodeURIComponent(seriesDetail.back_img))" />
+            <image class="backImg" mode="aspectFill" :src="$parsePic(seriesDetail.back_img)" />
             <view class="merchantMask"></view>
             <view class="seriesInfo uni-flex" :style="{marginTop:(130+(36*2))+'rpx'}">
                 <image class="seriesInfo-avatar" mode="aspectFill"
-                    :src="$parsePic(decodeURIComponent(seriesDetail.icon))" />
+                    :src="$parsePic(seriesDetail.icon)" />
                 <view class="seriesInfo-name">{{seriesDetail.name || "获取中"}}</view>
             </view>
             <view class="seriesInfo-introduction">

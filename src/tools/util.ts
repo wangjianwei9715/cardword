@@ -2,6 +2,8 @@
 import { Md5 } from 'ts-md5'
 import { app } from '@/app'
 import { ossStitching } from "@/pages/cardForum/func/index"
+//@ts-ignore
+import {decHex} from "@/net/Crypto.js"
 // #endif
 const keywords = ['res_ksj', 'resources.ka-world.com','resources.social.ka-world.com'];
 const httpPattern = /http:\/\/(.*?)\//;
@@ -10,8 +12,9 @@ const httpPattern = /http:\/\/(.*?)\//;
  * @param src String 图片路径 
  * @returns String 图片路径
  */
-export function parsePic(src: string) {
-	if (!src) return '';
+export function parsePic(picUrl: string) {
+	if (!picUrl) return '';
+	const src = decHex(decodeURIComponent(picUrl));
 	if(keywords.every((x:any)=> !src.includes(x))) return src;
 	const httpUrl = src.includes('res_ksj') ? 'res.ka-world.com': httpPattern.exec(src)?.[1]
 	const tsString = (Math.round(+new Date() / 1000)).toString(16).toUpperCase();
@@ -20,9 +23,9 @@ export function parsePic(src: string) {
 	
 	return `http://${httpUrl}/${md5Key}/${tsString}${noneOrigin}`
 }
-export function thumbnail(cover:string, width=100, needParse=true) {
+export function thumbnail(cover:string, width=100) {
     if (!cover) return cover
-    let deCover = needParse ? parsePic(decodeURIComponent(cover)) : cover
+    let deCover = parsePic(cover)
     const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
     if (isVideoSnapshot) return deCover
     return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,w_${width}`)

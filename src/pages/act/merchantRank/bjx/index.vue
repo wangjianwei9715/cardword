@@ -38,13 +38,13 @@
                         <view class="leftCorner flexCenter">我的成绩</view>
                         <view class="rankNum">{{ myRank.rank }}</view>
                         <muqian-lazyLoad class="rank_avatar" borderRadius="50%"
-                            :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
+                            :src="myRank.avatar ? $parsePic(myRank.avatar) : defaultAvatar" />
                         <view class="rankPoint">
                             <view class="get">已获取：{{ myRank.get_score }}</view>
                             <view class="freeze">冻结中：{{ myRank.lock_score }}</view>
                         </view>
                         <muqian-lazyLoad v-if="myRank.isPass" class="rankReward" borderRadius="3rpx"
-                            :src="$parsePic(decodeURIComponent(myRank.awardPic))" />
+                            :src="$parsePic(myRank.awardPic)" />
                         <view class="rank_right" v-else>
                             <view style="margin-bottom: 10rpx;">距离入榜还需</view>
                             <view>{{ myRank.passScore }}</view>
@@ -56,7 +56,7 @@
                         }}
                         </view>
                         <muqian-lazyLoad class="rank_avatar" borderRadius="50%"
-                            :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
+                            :src="item.avatar ? $parsePic(item.avatar) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
                         <view class="rank_userName">{{ item.userName }}</view>
                         <view class="rankPoint" v-if="item.get_score || item.lock_score">
                             <view class="get">已获取：{{ item.get_score }}</view>
@@ -64,7 +64,7 @@
                         </view>
                         <view v-else style="flex:1"></view>
                         <muqian-lazyLoad class="rank_reward" v-if="item.awardPic_url" borderRadius="3rpx"
-                            @click="previewImage(item)" :src="$parsePic(decodeURIComponent(item.awardPic_url))" />
+                            @click="previewImage(item)" :src="$parsePic(item.awardPic_url)" />
                     </view>
                     <view class="bottomSafeArea"></view>
                 </view>

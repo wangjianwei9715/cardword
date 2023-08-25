@@ -5,7 +5,7 @@
             <view class="rewardsContainer">
                 <view class="rewardItem" v-for="(item, index) in awardList"
                     :style="{ marginRight: ((index + 1) % 3 == 0) ? `0rpx` : `14rpx` }">
-                    <muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.pic_url))" class="rewardImage"
+                    <muqian-lazyLoad :src="$parsePic(item.pic_url)" class="rewardImage"
                         @click="prviewImages(item.pic_url)" borderRadius="3rpx">
                     </muqian-lazyLoad>
                     <view class="rewardRank">

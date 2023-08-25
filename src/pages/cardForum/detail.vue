@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-23 17:19:47
+ * @LastEditTime: 2023-08-24 14:49:24
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -16,7 +16,7 @@
                     <image src="@/static/act/portable/pageBack.png"></image>
                 </view>
                 <view @click="goPersonHome" style="display:flex">
-                    <image :src="forumDetail.avatar ? $parsePic(decodeURIComponent(forumDetail.avatar)) : app.defaultAvatar"
+                    <image :src="forumDetail.avatar ? $parsePic(forumDetail.avatar) : app.defaultAvatar"
                         class="topAvatar"></image>
                     <view class="topName u-line-1">{{ forumDetail.userName || "获取中" }}</view>
                 </view>
@@ -74,7 +74,7 @@
             <view class="haowuGoodsWrap" v-if="forumDetail.good && forumDetail.good.goodCode"
                 @click="app.navigateTo.goGoodsDetails(forumDetail.good.goodCode)">
                 <view class="goodsItem flexCenter">
-                    <image class="pic" mode="aspectFill" :src="$parsePic(decodeURIComponent(forumDetail.good.cover))">
+                    <image class="pic" mode="aspectFill" :src="$parsePic(forumDetail.good.cover)">
                     </image>
                     <view class="goodsInfo u-line-2">{{ forumDetail.good.title }}</view>
                 </view>
@@ -109,7 +109,7 @@
                     hold: onClickTap && touchId == item.id
                 }">
                     <muqian-lazyLoad class="avatar"
-                        :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : app.defaultAvatar"
+                        :src="item.avatar ? $parsePic(item.avatar) : app.defaultAvatar"
                         borderRadius="50%" />
                     <view class="rightWrap">
                         <view class="msgInfo" @click.stop="onClickCom(item, null)">
@@ -137,7 +137,7 @@
                         hold: onClickTap && touchId == son.id
                     }">
                     <muqian-lazyLoad class="avatar"
-                        :src="son.avatar ? $parsePic(decodeURIComponent(son.avatar)) : app.defaultAvatar"
+                        :src="son.avatar ? $parsePic(son.avatar) : app.defaultAvatar"
                         borderRadius="50%" />
                     <view class="rightWrap">
                         <view class="msgInfo">
@@ -786,7 +786,7 @@ export default class ClassName extends BaseNode {
             }
             this.pics = res.data.url.split(",").filter(Boolean).map((url: string) => {
                 //@ts-ignore
-                return this.replacePic(this.$parsePic(decodeURIComponent(url)))
+                return this.replacePic(this.$parsePic(url))
             })
             this.pics.forEach((pic: string, index) => {
                 uni.getImageInfo({

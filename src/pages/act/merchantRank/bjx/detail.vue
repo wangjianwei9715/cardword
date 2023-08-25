@@ -10,7 +10,7 @@
         <view class="pointContainer">
             <view class="myRank">
                 <muqian-lazyLoad class="avatar" borderRadius="50%"
-                    :src="myRank.avatar ? $parsePic(decodeURIComponent(myRank.avatar)) : defaultAvatar" />
+                    :src="myRank.avatar ? $parsePic(myRank.avatar) : defaultAvatar" />
                 <view class="rankInfo">
                     <view class="name">{{ myRank.userName }}</view>
                     <view class="rank">当前排名:{{ myRank.rank }}</view>
@@ -28,7 +28,7 @@
                     </view>
                     <view class="pointCard_line"></view>
                     <view class="pointCard_goods">
-                        <muqian-lazyLoad class="goodsImage" :src="$parsePic(decodeURIComponent(item.pic))"
+                        <muqian-lazyLoad class="goodsImage" :src="$parsePic(item.pic)"
                             borderRadius="3rpx" />
                         <view class="goodsInfo">
                             <view class="goodsTitle">{{ item.goodTitle }}</view>

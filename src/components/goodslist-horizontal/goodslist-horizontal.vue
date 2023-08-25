@@ -1,7 +1,7 @@
 <template>
     <view class="goodslistHorizontal">
         <view class="goodsCard" v-for="(item, index) in goodsList" :key="index" @click="onClickJumpUrl(item.goodCode)">
-            <muqian-lazyLoad class="goodsImg" borderRadius="3rpx" :src="$parsePic(decodeURIComponent(item.pic))" />
+            <muqian-lazyLoad class="goodsImg" borderRadius="3rpx" :src="$parsePic(item.pic)" />
             <view class="goodsRight">
                 <view class="goodsRight-top">
                     <view class="goodsName" :class="{ onLineOver: isOneLine }">{{ item.title }}</view>

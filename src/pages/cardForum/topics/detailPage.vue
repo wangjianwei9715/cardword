@@ -36,7 +36,7 @@
             </view>
         </u-sticky>
         <div class="acWrap" id="acWrap" v-if="data.banner" @click="goToAct">
-            <image class="acImage" mode="aspectFill" :src="$parsePic(decodeURIComponent(data.banner))"></image>
+            <image class="acImage" mode="aspectFill" :src="$parsePic(data.banner)"></image>
             <text class="iNeedPush" @click.stop="release">我要发布</text>
         </div>
         <waterfalls v-if="current" style="width: 750rpx;margin-top: 10rpx;" ref="waterfall" :showBottom="true"

@@ -43,14 +43,14 @@
             <template v-if="tag.index == 0">
                 <view class="messageWrap" v-for="(item, index) in list" @click="goToDetail(item.id)">
                     <view class="imgWrap flexCenter">
-                        <muqian-lazyLoad class="img" :src="$parsePic(decodeURIComponent(item.url))" />
+                        <muqian-lazyLoad class="img" :src="$parsePic(item.url)" />
                     </view>
                     <view class="userWrap">
                         <view class="title u-line-2">{{ item.title || "此处为标题内容很长很长很长很长很长很长很长此处为标题内容很长很长很长很长很长很长很长." }}
                         </view>
                         <view class="userInfo uni-flex">
                             <muqian-lazyLoad borderRadius="50%" class="avatar"
-                                :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar" />
+                                :src="item.avatar ? $parsePic(item.avatar) : defaultAvatar" />
                             <view class="name">{{ item.userName || "小卡迷" }}</view>
                             <view class="rightMsg">
                                 <view class="rightMsg_1">
@@ -71,7 +71,7 @@
                 <view class="draw_tr" v-for="(item, index) in bestList" :key="index">
                     <view class="draw_infoContainer border">
                         <muqian-lazyLoad class="draw_img" borderRadius="3rpx" @click="previewImage(item)"
-                            :src="$parsePic(decodeURIComponent(item.awardPic))" />
+                            :src="$parsePic(item.awardPic)" />
                         <view class="draw_infoRight">
                             <view class="draw_name">{{ item.awardName || "获取中" }}</view>
                             <view class="draw_condition">
@@ -84,7 +84,7 @@
                         <template v-if="item.userName">
                             <view class="prize_item" style="flex:1">
                                 <muqian-lazyLoad borderRadius="50%" class="avatar"
-                                    :src="item.avatar ? $parsePic(decodeURIComponent(item.avatar)) : defaultAvatar" />
+                                    :src="item.avatar ? $parsePic(item.avatar) : defaultAvatar" />
                                 <view class="name">{{ item.userName }}</view>
                             </view>
                             <view class="prize_item gray" style="text-decoration: underline;"

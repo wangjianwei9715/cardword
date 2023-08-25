@@ -1,22 +1,22 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 10:37:43
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-13 16:34:16
- * @FilePath: \card-world\src\pages\cardForum\kami\list.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-08-24 14:42:32
+ * @FilePath: \jichao_app_2\src\pages\cardForum\kami\list.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
-        <view class="goodsCard" v-for="(item, index) in list">
+        <view class="goodsCard" v-for="(item, index) in list" :key="index">
             <view class="merchantWrap">
-                <muqian-lazyLoad :src="$parsePic(decodeURIComponent(item.merchantLogo))" class="merchantAvatar"
+                <muqian-lazyLoad :src="$parsePic(item.merchantLogo)" class="merchantAvatar"
                     borderRadius="50%"></muqian-lazyLoad>
                 <view class="merchantName">{{ item.merchantName }}</view>
             </view>
             <view class="goodsWrap uni-flex">
                 <muqian-lazyLoad class="goodsPic" borderRadius="3rpx"
-                    :src="$parsePic(decodeURIComponent(item.cover))"></muqian-lazyLoad>
+                    :src="$parsePic(item.cover)"></muqian-lazyLoad>
                 <view class="goodsInfo">
                     <view class="goodsName u-line-2">{{ item.title }}</view>
                     <view class="price">￥{{ item.price }}</view>

@@ -22,7 +22,7 @@
                     <view class="topicsItem" v-for="(item, index) in list"
                         @click="$emit('select', item), showValue = false">
                         <muqian-lazyLoad class="image"
-                            :src="$parsePic(decodeURIComponent(item.cover))"
+                            :src="$parsePic(item.cover)"
                             borderRadius="3rpx"></muqian-lazyLoad>
                         <view class="rightInfo">
                             <view class="title u-line-1">{{ item.title }}</view>

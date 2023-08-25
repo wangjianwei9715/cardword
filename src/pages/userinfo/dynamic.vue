@@ -26,7 +26,7 @@
 			<view class="interaction" v-for="(item, index) in dynamicData" @click="onClickInteraction(item)">
 				<view style="display: flex;width: 100%;">
 					<muqian-lazyLoad class="avatar"
-						:src="$parsePic(decodeURIComponent(item.avatar)) || app.defaultAvatar"></muqian-lazyLoad>
+						:src="$parsePic(item.avatar) || app.defaultAvatar"></muqian-lazyLoad>
 					<view class="info">
 						<view class="name">{{ item.userName }}</view>
 						<view class="source">
@@ -45,7 +45,7 @@
 							v-if="item.tp === 1">{{ followMap[item.followState] && followMap[item.followState].text }}
 						</view>
 						<muqian-lazyLoad v-else
-							:src="ossStitching($parsePic(decodeURIComponent(item.pic)), 'x-oss-process=image/resize,h_100,w_100')"
+							:src="ossStitching($parsePic(item.pic), 'x-oss-process=image/resize,h_100,w_100')"
 							class="interaction_pic"></muqian-lazyLoad>
 					</view>
 				</view>
@@ -56,7 +56,7 @@
 			<view class="orderItem" v-for="(item, index) in dynamicData" @click="onClickInteraction(item)">
 				<view class="merWrap">
 					<muqian-lazyLoad borderRadius="50%" class="avatar"
-						:src="$parsePic(decodeURIComponent(item.merchant.logo))"></muqian-lazyLoad>
+						:src="$parsePic(item.merchant.logo)"></muqian-lazyLoad>
 					<view class="name">{{ item.merchant.name }}</view>
 					<view class="dot" v-if="!item.read && !readAll"></view>
 				</view>
@@ -67,13 +67,13 @@
 				</view>
 				<view class="goodsWrap">
 					<view class="content">{{ item.content }}</view>
-					<muqian-lazyLoad class="pic" :src="$parsePic(decodeURIComponent(item.goodPic))"
+					<muqian-lazyLoad class="pic" :src="$parsePic(item.goodPic)"
 						borderRadius="3rpx"></muqian-lazyLoad>
 				</view>
 			</view>
 			<!-- <view class="interaction" v-for="(item, index) in dynamicData" @click="onClickInteraction(item)">
 				<muqian-lazyLoad class="avatar"
-					:src="$parsePic(decodeURIComponent(item.avatar)) || app.defaultAvatar"></muqian-lazyLoad>
+					:src="$parsePic(item.avatar) || app.defaultAvatar"></muqian-lazyLoad>
 				<view class="info">
 					<view class="name">{{ item.userName }}</view>
 					<view class="source">
@@ -86,7 +86,7 @@
 					<view class="followButton flexCenter" @click.stop="onClickFollow(item)"
 						:class="{ followButton_dis: (followMap[item.followState] && followMap[item.followState].isFollow) }"
 						v-if="item.tp === 1">{{ followMap[item.followState] && followMap[item.followState].text }}</view>
-					<muqian-lazyLoad v-else :src="$parsePic(decodeURIComponent(item.pic))"
+					<muqian-lazyLoad v-else :src="$parsePic(item.pic)"
 						class="interaction_pic"></muqian-lazyLoad>
 				</view>
 			</view> -->
