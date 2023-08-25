@@ -26,10 +26,16 @@ export default class navigateManager {
 		if(!goodCode) return
 		const pages = getCurrentPages();
 		const route = pages[pages.length - 1].route;
-		const referer = route.indexOf("act")!=-1 ? "Act" : _Maps._RefererMaps[route];
+		const referer = route.indexOf("act")!=-1 ? "Act" : this.getRefererName(route);
 		uni.navigateTo({
 			url:`/pages/goods/goods_details?goodCode=${goodCode}${orther||"&referer="+referer}`
 		})
+	}
+	getRefererName(route:string){
+		const key = Object.keys(_Maps._RefererMaps).find(key => {
+			return route.indexOf(key) != -1;
+		});
+		return (key && _Maps._RefererMaps[key]) || route
 	}
 	/**
 	 * 跳转订单详情
