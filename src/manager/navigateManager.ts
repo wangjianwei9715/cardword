@@ -35,7 +35,7 @@ export default class navigateManager {
 		const key = Object.keys(_Maps._RefererMaps).find(key => {
 			return route.indexOf(key) != -1;
 		});
-		return (key && _Maps._RefererMaps[key]) || route
+		return (key && _Maps._RefererMaps[key]) || `pages_${route}`
 	}
 	/**
 	 * 跳转订单详情

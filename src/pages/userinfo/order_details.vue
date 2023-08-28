@@ -215,6 +215,9 @@ import { Md5 } from "ts-md5";
 		onHide(){
 			clearInterval(this.countDownInter);
 		}
+		public get orderGoodCode() : string {
+			return this.orderData.good.goodCode;
+		}
 		public get orderRefund() : boolean {
 			return this.orderData.refund
 		}
@@ -359,16 +362,16 @@ import { Md5 } from "ts-md5";
 		}
 		onClickAllCard(){
 			uni.navigateTo({
-				url:'/pages/userinfo/order_myCard?code='+this.orderCode+'&goodCode='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType
+				url:'/pages/userinfo/order_myCard?code='+this.orderCode+'&goodCode='+this.orderGoodCode+'&pintuanType='+this.orderData.good.pintuanType
 			})
 		}
 		onClickGoodDetail(){
-			app.navigateTo.goGoodsDetails(this.orderData.good.goodCode)
+			app.navigateTo.goGoodsDetails(this.orderGoodCode)
 		}
 		onClickKefu(){
 			let params = {
 				agentExten:this.orderData.kefu||'',
-				businessParam:'goodCode:'+this.orderData.good.goodCode
+				businessParam:'goodCode:'+this.orderGoodCode
 			}
 			app.platform.heliService(params)
 		}
@@ -376,7 +379,7 @@ import { Md5 } from "ts-md5";
 			let params:{[x:string]:any}
 			if(cmd=='viewGood'){
 				uni.redirectTo({
-					url: '/pages/goods/goods_details?id='+this.orderData.good.goodCode
+					url: `/pages/goods/goods_details?id=${this.orderGoodCode}&referer=Order`
 				})
 			}
 			if(cmd=='resultCard'){
@@ -392,7 +395,7 @@ import { Md5 } from "ts-md5";
 				};
 				
 				uni.navigateTo({
-					url:'/pages/userinfo/giving/giving_list?code='+this.orderData.good.goodCode+'&pintuanType='+this.orderData.good.pintuanType+'&orderCode='+this.orderData.code
+					url:'/pages/userinfo/giving/giving_list?code='+this.orderGoodCode+'&pintuanType='+this.orderData.good.pintuanType+'&orderCode='+this.orderData.code
 				})
 			}
 			if(cmd == 'wuliu'){
@@ -471,7 +474,7 @@ import { Md5 } from "ts-md5";
 		onClcikResult(chooseID:any){
 			const random = this.orderData.good.state>0?true:false
 			uni.navigateTo({
-				url: '/pages/userinfo/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderData.good.goodCode+'&order='+this.orderData.code+'&random='+random
+				url: '/pages/userinfo/goods_result_list?chooseIds=' + chooseID+'&code='+this.orderGoodCode+'&order='+this.orderData.code+'&random='+random
 			})
 		}
 		// 取消支付
