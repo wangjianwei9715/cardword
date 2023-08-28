@@ -87,7 +87,7 @@
 				<view class="index" v-for="item in orderInfo" :key="item.id" v-show="item.desc!=0">
 					<view class="index-left">{{item.title}}</view>
 					<view class="index-right">
-						{{item.title=='订单编号'||item.title=='支付方式'?item.desc:(item.desc>0?dateFormat(item.desc):'')}}
+						{{item.title=='订单编号'||item.title=='支付方式'?item.desc:(item.desc>0?$u.timeFormat(item.desc,"yyyy-mm-dd hh:MM:ss"):'')}}
 						<view v-if="item.title=='订单编号'" class="copy" @click="onClickCopyInfo(item.desc)"></view>
 					</view>
 				</view>
@@ -120,17 +120,16 @@
 	import BaseNode from '../../base/BaseNode.vue';
 	import {getCountDownTime, parsePic} from '@/tools/util';
 	import { app } from "@/app";
-	import {
-		getGoodsImg,dateFormat
-	} from "../../tools/util";
+	import { getGoodsImg } from "../../tools/util";
 	import {orderState} from "@/tools/DataExchange"
 	import { orderStateDesc,orderGoodsStateStr,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
-import { Md5 } from "ts-md5";
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
+		kwwConfusion = new KwwConfusion();
 		parsePic = parsePic;
 		getGoodsImg = getGoodsImg;
-		dateFormat = dateFormat;
 		orderState = orderState;
 		orderStateDesc = orderStateDesc;
 		orderGoodsStateStr = orderGoodsStateStr;
@@ -486,23 +485,19 @@ import { Md5 } from "ts-md5";
 			if (data == '') {
 				return;
 			}
-			uni.showLoading({
-				title: '加载中'
-			});
-			const ts = Math.floor(new Date().getTime()/1000);
+			uni.showLoading({ title: '加载中' });
 			const userId = await app.user.getAppDataUserId();
 			let params:any = {
 				channelId:data.channelId??'',
 				channel: data.channel,
 				delivery:0,
 				num:Number(this.orderData.num),
-				ts,
-				sn:Md5.hashStr(`ToPayForGoodOrder_${ts}_${userId}_${this.orderData.code}`)
 			}
+			const hash = this.kwwConfusion.toPayForGoodOrder(userId,this.orderData.code)
 			if(uni.getSystemInfoSync().platform === "android"){
 				params.nativeSdk = 'qmf_android'
 			}
-			app.http.Post('order/topay/'+this.orderData.code,params,(res:any)=>{
+			app.http.Post('order/topay/'+this.orderData.code,{...params,...hash},(res:any)=>{
 				if(['alipay','alipay_h5'].includes(data.channel)){
 					this.clickToPay = true;
 					uni.hideLoading()
