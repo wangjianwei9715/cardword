@@ -1,8 +1,8 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-22 14:01:28
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-30 11:37:31
  * @FilePath: \jichao_app_2\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -564,36 +564,6 @@
 					}
 				},
 				{
-					"path": "merchantRank/shuke/index",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "榜单",
-						"navigationBarBackgroundColor": "#fff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#e4a1cd",
-						"backgroundColorBottom": "#e4a1cd",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "merchantRank/shuke/detail",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "明细",
-						"navigationBarBackgroundColor": "#fff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#e4a1cd",
-						"backgroundColorBottom": "#e4a1cd",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
 					"path": "merchantRank/sib/index",
 					"style": {
 						"navigationStyle": "custom",
@@ -610,6 +580,36 @@
 				},
 				{
 					"path": "merchantRank/sib/detail",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "明细",
+						"navigationBarBackgroundColor": "#fff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#950101",
+						"backgroundColorBottom": "#950101",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "merchantRank/hammer/index",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "榜单",
+						"navigationBarBackgroundColor": "#fff",
+						"navigationBarTextStyle": "black",
+						"enablePullDownRefresh": false,
+						"backgroundColorTop": "#950101",
+						"backgroundColorBottom": "#950101",
+						"app-plus": {
+							"bounce": "none"
+						}
+					}
+				},
+				{
+					"path": "merchantRank/hammer/detail",
 					"style": {
 						"navigationStyle": "custom",
 						"navigationBarTitleText": "明细",
@@ -643,36 +643,6 @@
 						"navigationBarBackgroundColor": "#fff",
 						"navigationBarTextStyle": "black",
 						"enablePullDownRefresh": false,
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "merchantRank/bjx/index",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "榜单",
-						"navigationBarBackgroundColor": "#fff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#00000",
-						"backgroundColorBottom": "#000000",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "merchantRank/bjx/detail",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "明细",
-						"navigationBarBackgroundColor": "#fff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#000000",
-						"backgroundColorBottom": "#000000",
 						"app-plus": {
 							"bounce": "none"
 						}

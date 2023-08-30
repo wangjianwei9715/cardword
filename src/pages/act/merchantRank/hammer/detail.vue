@@ -6,22 +6,31 @@
             
         </view> -->
         <view class="pageBg">
-            <image src="@/static/act/merchantRank/shuke/bg.png" />
-            <!-- <image style="transform: rotateX(180deg);" src="@/static/act/merchantRank/shuke/bg.png" /> -->
+            <image src="/static/act/merchantRank/hammer/back.png"></image>
         </view>
         <view class="nav">
             <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px' }"></view>
-            <view class="pageBack" @click="app.platform.pageBack()"></view>
+            <view class="a uni-flex" style="justify-content: space-between;align-items:center;">
+                <view class="pageBack" @click="app.platform.pageBack()"></view>
+                <!-- <view class="ruleText flexCenter" @click="onClickRule">规则说明</view> -->
+            </view>
         </view>
         <view class="topBanner">
             <view class="rule" @click="onClickRule">
-                <view class="ruleBlock flexCenter">
-                    <view class="txt">规则</view>
-                    <view class="txt">说明</view>
+                <view class="ruleBlock">
+                    <view class="txt" style="line-height: 28rpx;">规则</view>
+                    <view class="txt" style="line-height: 28rpx;">说明</view>
                 </view>
             </view>
         </view>
         <view class="pointContainer">
+            <view
+                style="position: absolute;left: 0;right: 0;margin: auto;width: 720rpx;display: flex;flex-direction: column;">
+
+                <image src="/static/act/merchantRank/hammer/back_1.png" style="width: 720rpx;height: 1000rpx;"></image>
+                <image src="/static/act/merchantRank/hammer/back_2.png" style="width: 720rpx;height: 910rpx;"></image>
+            </view>
+            <view class="rankTitle"></view>
             <view class="myRank">
                 <muqian-lazyLoad class="avatar" borderRadius="50%"
                     :src="myRank.avatar ? $parsePic(myRank.avatar) : defaultAvatar" />
@@ -30,11 +39,11 @@
                     <view class="rank">当前排名:{{ myRank.rank }}</view>
                 </view>
                 <view class="rankPoint">
-                    <view style="margin-bottom: 18rpx;color: #E74B82;">已获取:{{ myRank.get_score }}</view>
+                    <view style="margin-bottom: 18rpx;color: #950101;">已获取:{{ myRank.get_score }}</view>
                     <view style="color: #A0BED8;">冻结积分:{{ myRank.lock_score }}</view>
                 </view>
             </view>
-            <scroll-view class="scv"  :scroll-y="true" @scrolltolower="reachBottom">
+            <scroll-view class="scv" :scroll-y="true" @scrolltolower="reachBottom">
                 <view class="pointCard" v-for="(item, index) in list" :key="index" @click="toGoods(item)">
                     <view class="pointCard_top">
                         <view>{{ item.merchantName }}</view>
@@ -42,8 +51,7 @@
                     </view>
                     <view class="pointCard_line"></view>
                     <view class="pointCard_goods">
-                        <muqian-lazyLoad class="goodsImage" :src="$parsePic(item.pic)"
-                            borderRadius="3rpx" />
+                        <muqian-lazyLoad class="goodsImage" :src="$parsePic(item.pic)" borderRadius="3rpx" />
                         <view class="goodsInfo">
                             <view class="goodsTitle">{{ item.goodTitle }}</view>
                             <view class="goodsBottom">
@@ -71,12 +79,13 @@ import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import { orderGoodsStateStr, getGoodsPintuan } from '@/tools/switchUtil'
 import { dateFormatMSHMS } from '@/tools/util'
+const activityTp = 10
 @Component({})
 export default class ClassName extends BaseNode {
     queryParams: any = {
         fetchFrom: 1,
         fetchSize: 20,
-        activityTp: 7
+        activityTp: activityTp
     }
     app: any = app
     orderGoodsStateStr = orderGoodsStateStr
@@ -106,7 +115,7 @@ export default class ClassName extends BaseNode {
             uni.stopPullDownRefresh()
         })
     }
-    reachBottom(){
+    reachBottom() {
         console.log(6666);
         if (this.isFetchEnd) return
         this.queryParams.fetchFrom += this.queryParams.fetchSize
@@ -121,7 +130,7 @@ export default class ClassName extends BaseNode {
     }
     onClickRule() {
         uni.navigateTo({
-            url: "/pages/act/merchantRank/shuke/rule",
+            url: `/pages/act/merchantRank/publicRule?activityTp=${activityTp}`,
             // animationType:"slide-in-bottom"
         })
     }
@@ -129,7 +138,7 @@ export default class ClassName extends BaseNode {
         app.navigateTo.goGoodsDetails(item.goodCode)
     }
     reqMyRank() {
-        app.http.Get(`dataApi/selectRank/my/data`, { activityTp: 7 }, (res: any) => {
+        app.http.Get(`dataApi/selectRank/my/data`, { activityTp: activityTp }, (res: any) => {
             this.myRank = res.data
         })
     }
@@ -147,7 +156,7 @@ export default class ClassName extends BaseNode {
 
 <style lang="scss">
 page {
-    background-color: #e4a1cd;
+    background-color: #000000;
     font-family: PingFang SC;
     width: 750rpx;
     overflow-x: hidden;
@@ -163,55 +172,79 @@ page {
         width: 55rpx;
         height: 55rpx;
         background-size: 100% 100%;
-        background-image: url("@/static/act/merchantRank/shuke/back.png");
+        background-image: url("@/static/act/merchantRank/back.png");
         // background-color: #fff;
         margin-top: 10rpx;
         margin-left: 20rpx;
+    }
+
+    .ruleText {
+        color: #fff;
+        width: 160rpx;
+        // height: 60rpx;
+        margin-right: 16rpx;
+        font-size: 26rpx;
+        background-color: rgba(0, 0, 0, .4);
+        border-radius: 30rpx;
+        font-weight: bold;
+        padding: 10rpx 0;
     }
 }
 
 
 .pointContainer {
-    margin-top: 30rpx;
+    margin-top: 0rpx;
     position: relative;
-    width: 710rpx;
-    height: 1616rpx;
+    width: 750rpx;
+    height: 2000rpx;
     background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/shuke/detailBack.png");
+    // background-image: url("@/static/act/merchantRank/sib/detail.jpg");
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10rpx;
+}
+
+.rankTitle {
+    width: 344rpx;
+    height: 70rpx;
+    background-size: 100% 100%;
+    background-image: url("@/static/act/merchantRank/hammer/point_title.png");
+    margin-top: 35rpx;
+    position: relative;
 }
 
 .topBanner {
     width: 750rpx;
-    height: 541rpx;
+    height: 542rpx;
     background-size: 100% 100%;
     position: relative;
-    background-image: url("@/static/act/merchantRank/shuke/topBanner.png");
+    background-image: url("@/static/act/merchantRank/hammer/topBanner.png");
 
     .rule {
-        width: 122rpx;
-        height: 279rpx;
+        right: 14rpx;
+        width: 117rpx;
+        height: 119rpx;
+        // background: #930400;
+        // border-radius: 5rpx;
+        font-size: 30rpx;
+        top: 68rpx;
         background-size: 100% 100%;
-        background-image: url("@/static/act/merchantRank/shuke/rule.png");
+        position: relative;
+        background-image: url("@/static/act/merchantRank/hammer/rule.png");
         position: absolute;
-        top: 59rpx;
-        right: 0;
 
         .ruleBlock {
-            width: 100rpx;
-            height: 90rpx;
-            margin-top: 18rpx;
-            margin-left: 2rpx;
-            // background-color: rgba(0, 0, 0, .3);
-            flex-direction: column;
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #060807;
+            text-align: center;
+            position: absolute;
+            left: 24rpx;
+            top: 32rpx;
 
-            .txt {
-                font-size: 21rpx;
-                font-family: PingFang SC;
-                font-weight: bold;
-                color: #FFFFFF;
-                line-height: 24rpx;
-                text-shadow: 0rpx 0rpx 8rpx #E92677;
-            }
         }
     }
 
@@ -234,8 +267,12 @@ page {
     left: 0;
     width: 750rpx;
 
+    // z-index: 2;
+    // height: 1850rpx;
+    // background-size: 100% 100%;
+    // background-image: url("@/static/act/merchantRank/shuke/bg.png");
     image {
-        height: 1850rpx;
+        height: 1943rpx;
         width: inherit;
         display: block;
     }
@@ -244,19 +281,19 @@ page {
 .myRank {
     width: 650rpx;
     height: 160rpx;
-
     background: rgba(255, 255, 255, 0.66);
     border-radius: 3rpx;
-    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(231, 75, 130, .66);
-    margin: auto;
-    bottom: 70rpx;
+    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(188, 33, 41, .66);
+    // margin: auto;
+    // bottom: 70rpx;
     display: flex;
     box-sizing: border-box;
     padding: 0rpx 30rpx;
     display: flex;
     align-items: center;
     // margin-bottom: 50rpx;
-    margin-top: 123rpx;
+    margin-top: 43rpx;
+    position: relative;
 
     .avatar {
         width: 94rpx;
@@ -303,10 +340,12 @@ page {
 
 .scv {
     width: 650rpx;
-    max-height: 1240rpx;
+    max-height: 1520rpx;
+    // height: 1540rpx;
     margin: 0 auto;
     margin-top: 51rpx;
     // background-color: red;
+    position: relative;
 }
 
 .bg {
@@ -406,7 +445,7 @@ page {
             }
 
             .get {
-                color: #FA1545;
+                color: #C4232B;
             }
 
             .freeze {

@@ -2,77 +2,95 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-06-08 15:36:53
- * @FilePath: \jichao_app_2\src\pages\act\worldCup\rank.vue
+ * @LastEditTime: 2023-08-30 11:27:47
+ * @FilePath: \jichao_app_2\src\pages\act\merchantRank\sib\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <view class="content">
+        <view class="pageBg">
+            <image src="/static/act/merchantRank/hammer/back.png"></image>
+        </view>
         <view class="nav">
             <view class="status" :style="{ paddingTop: app.statusBarHeight + 'px' }"></view>
-            <view class="pageBack" @click="app.platform.pageBack()"></view>
+            <view class="a uni-flex" style="justify-content: space-between;align-items:center;">
+                <view class="pageBack" @click="app.platform.pageBack()"></view>
+            </view>
         </view>
-        <view class="faker" :style="{ height: app.statusBarHeight / 2.4 + 'px' }"></view>
         <view class="topBanner">
-            <view class="rule flexCenter" @click="onClickRule">规则说明</view>
-            <!-- <view class="rule" @click="onClickRule">
-                <view class="ruleBlock flexCenter">
-                    <view class="txt">规则</view>
-                    <view class="txt">说明</view>
+            <view class="rule" @click="onClickRule">
+                <view class="ruleBlock">
+                    <view class="txt" style="line-height: 28rpx;">规则</view>
+                    <view class="txt" style="line-height: 28rpx;">说明</view>
                 </view>
-            </view> -->
+            </view>
         </view>
         <view class="t1">
         </view>
+        <view class="awardContainer">
+            <view class="salesWrap">
+                <view class="saleNum">100.99w</view>
+                <view class="saleText">当前销量</view>
+            </view>
+            <view class="awardWrap" v-for="(item, index) in 4" :style="{ marginRight: index == 3 ? 0 : `18rpx` }">
+                <view class="award">
+                    <image src="/static/act/merchantRank/hammer/topBanner.png" mode="aspectFill"></image>
+                    <view class="mask flexCenter">待解锁</view>
+                </view>
+                <view class="target">100w</view>
+            </view>
+        </view>
         <view class="rankContainer">
+            <view
+                style="position: absolute;left: 0;right: 0;margin: auto;width: 720rpx;display: flex;flex-direction: column;">
+                <image src="/static/act/merchantRank/hammer/back_1.png" style="width: 720rpx;height: 1000rpx;"></image>
+                <image src="/static/act/merchantRank/hammer/back_2.png" style="width: 720rpx;height: 910rpx;"></image>
+            </view>
             <view class="rankP">
+                <view class="rankTitle"></view>
                 <view class="rankTopTitle">
                     <view class="tips">{{ parseTips().tips || "" }} {{ parseTips().time || "" }}</view>
-                    <navigator url="/pages/act/merchantRank/bjx/detail" hover-class="none"
+                    <navigator url="/pages/act/merchantRank/hammer/detail" hover-class="none"
                         class="sp-tips-index sp-tips-index2">
                         <view class="lookDetail">查看积分明细</view>
                     </navigator>
                 </view>
-                <view>
-                    <view class="rank_tr_my">
-                        <view class="leftCorner flexCenter">我的成绩</view>
-                        <view class="rankNum">{{ myRank.rank }}</view>
-                        <muqian-lazyLoad class="rank_avatar" borderRadius="50%"
-                            :src="myRank.avatar ? $parsePic(myRank.avatar) : defaultAvatar" />
-                        <view class="rankPoint">
-                            <view class="get">已获取：{{ myRank.get_score }}</view>
-                            <view class="freeze">冻结中：{{ myRank.lock_score }}</view>
-                        </view>
-                        <muqian-lazyLoad v-if="myRank.isPass" class="rankReward" borderRadius="3rpx"
-                            :src="$parsePic(myRank.awardPic)" />
-                        <view class="rank_right" v-else>
-                            <view style="margin-bottom: 10rpx;">距离入榜还需</view>
-                            <view>{{ myRank.passScore }}</view>
-                        </view>
+                <view class="rank_tr_my">
+                    <view class="leftCorner flexCenter">我的成绩</view>
+                    <view class="rankNum">{{ myRank.rank }}</view>
+                    <muqian-lazyLoad class="rank_avatar" borderRadius="50%"
+                        :src="myRank.avatar ? $parsePic(myRank.avatar) : defaultAvatar" />
+                    <view class="rankPoint">
+                        <view class="get">已获取：{{ myRank.get_score }}</view>
+                        <view class="freeze">冻结中：{{ myRank.lock_score }}</view>
                     </view>
-                    <view class="rank_tr" v-for="(item, index) in rankList.slice(0,10)">
-                        <view class="rank_num" :class="[index <= 2 ? `rank${index + 1}` : '']">{{ index > 2 ? (index + 1) :
-                            ""
-                        }}
-                        </view>
-                        <muqian-lazyLoad class="rank_avatar" borderRadius="50%"
-                            :src="item.avatar ? $parsePic(item.avatar) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
-                        <view class="rank_userName">{{ item.userName }}</view>
-                        <view class="rankPoint" v-if="item.get_score || item.lock_score">
-                            <view class="get">已获取：{{ item.get_score }}</view>
-                            <view class="freeze">冻结中：{{ item.lock_score }}</view>
-                        </view>
-                        <view v-else style="flex:1"></view>
-                        <muqian-lazyLoad class="rank_reward" v-if="item.awardPic_url" borderRadius="3rpx"
-                            @click="previewImage(item)" :src="$parsePic(item.awardPic_url)" />
+                    <muqian-lazyLoad v-if="myRank.isPass" class="rankReward" borderRadius="3rpx"
+                        :src="$parsePic(myRank.awardPic)" />
+                    <view class="rank_right" v-else>
+                        <view style="margin-bottom: 10rpx;">距离入榜还需</view>
+                        <view>{{ myRank.passScore }}</view>
                     </view>
-                    <view class="bottomSafeArea"></view>
+                </view>
+                <view class="rank_tr" v-for="(item, index) in rankList">
+                    <view class="rank_num" :class="[index <= 2 ? `rank${index + 1}` : '']">{{ index > 2 ? (index + 1) : ""
+                    }}
+                    </view>
+                    <muqian-lazyLoad class="rank_avatar" borderRadius="50%"
+                        :src="item.avatar ? $parsePic(item.avatar) : (item.userName == '虚位以待' ? '/static/goods/v2/waitAvatar.png' : defaultAvatar)" />
+                    <view class="rank_userName">{{ item.userName }}</view>
+                    <view class="rankPoint" v-if="item.get_score || item.lock_score">
+                        <view class="get">已获取：{{ item.get_score }}</view>
+                        <view class="freeze">冻结中：{{ item.lock_score }}</view>
+                    </view>
+                    <view v-else style="flex:1"></view>
+                    <muqian-lazyLoad class="rank_reward" v-if="item.awardPic_url" borderRadius="3rpx"
+                        @click="previewImage(item)" :src="$parsePic(item.awardPic_url)" />
                 </view>
             </view>
         </view>
-        <view class="bottomSafeArea"></view>
+        <view class="a" style="height: 120rpx;"></view>
         <view class="letsgo flexCenter" @click="goBuy">
-            <image src="@/static/act/portable/add.png"></image>
+            <image src="@/static/act/merchantRank/hammer/add.png"></image>
             <view>立即上车</view>
         </view>
         <previewImage ref="previewImage" />
@@ -84,6 +102,7 @@ import { app } from "@/app";
 import { Component, Watch, Prop } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import { parsePic, dateFormatMSHMS, dateFormatMS } from '@/tools/util'
+const activityTp = 10
 @Component({})
 export default class ClassName extends BaseNode {
     @Prop({ default: 0 })
@@ -92,7 +111,6 @@ export default class ClassName extends BaseNode {
     roomId?: number;
 
     rankList: any = []
-    activityTp: number = 8
     alias: string = ""
     parsePic = parsePic
     defaultAvatar: any = app.defaultAvatar
@@ -107,19 +125,15 @@ export default class ClassName extends BaseNode {
             this.reqMyRank()
             this.reqAllRank()
         })
-
     }
     onShow() {
-        // #ifdef APP-PLUS
-        plus.navigator.setStatusBarStyle("light");
-        // #endif
     }
     onPageScroll(data: any) {
         //@ts-ignore
         // this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
     }
     goBuy() {
-        if (!this.alias) this.alias = "MCT7526055"
+        if (!this.alias) this.alias = "MCT8940626"
         uni.navigateTo({
             url: `/pages/merchant/core?alias=${this.alias}&tp=1`
         })
@@ -128,32 +142,33 @@ export default class ClassName extends BaseNode {
         // })
     }
     parseTips() {
-        const ActivityPeriod: any = [1686240000, 1686931199]//积分获取
-        const ThawPeriod: any = [1686931200, 1688227199]//积分解冻
-        const DrawPeriod: number = 1688227200//榜单结算
+        const ActivityPeriod: any = [1691942400, 1694620799]//积分获取
+        const ThawPeriod: any = [1694620800, 1695916799]//积分解冻
+        const DrawPeriod: number = 1695916800//榜单结算
         // const LivePeriod: number = 1686294000//直播
         const nowTimeStamp = Math.round(+new Date() / 1000)
         if (nowTimeStamp < ActivityPeriod[0]) {
-            return { tips: "暂未开始", time: "06.09-06.16" }
+            return { tips: "暂未开始", time: "08.14-09.13" }
         };
         if (nowTimeStamp >= ActivityPeriod[0] && nowTimeStamp <= ActivityPeriod[1]) {
-            return { tips: "积分获取", time: "06.09-06.16" }
+            return { tips: "积分获取", time: "08.14-09.13" }
         }
         if (nowTimeStamp >= ThawPeriod[0] && nowTimeStamp <= ThawPeriod[1]) {
             return {
-                tips: "积分解冻", time: "06.17-07.01"
+                tips: "积分解冻", time: "09.14-09.28"
             }
         };
         if (nowTimeStamp > ThawPeriod[1]) {
             return {
                 tips: "榜单结算",
-                time: "07.02"
+                time: "09.29"
             }
         };
     }
     onClickRule() {
         uni.navigateTo({
-            url: "/pages/act/merchantRank/publicRule?activityTp=" + this.activityTp,
+            url: `/pages/act/merchantRank/publicRule?activityTp=${activityTp}`,
+            // animationType:"slide-in-bottom"
         })
     }
     navBackGroundShowChange(event: any) {
@@ -166,12 +181,12 @@ export default class ClassName extends BaseNode {
         })
     }
     reqMyRank() {
-        app.http.Get("dataApi/selectRank/my/data", { activityTp: this.activityTp }, (res: any) => {
+        app.http.Get("dataApi/selectRank/my/data", { activityTp: activityTp }, (res: any) => {
             this.myRank = res.data
         })
     }
     reqAllRank(cb?: any) {
-        app.http.Get('dataApi/selectRank/list', { activityTp: this.activityTp }, (res: any) => {
+        app.http.Get('dataApi/selectRank/list', { activityTp: activityTp }, (res: any) => {
             this.rankList = res.list || []
             cb && cb()
         })
@@ -185,6 +200,7 @@ page {
     background-color: #000000;
     width: 750rpx;
     overflow-x: hidden;
+    // background-image: url("@/static/act/merchantRank/hammer/back.png");
 }
 
 .nav {
@@ -192,20 +208,28 @@ page {
     position: fixed;
     top: 0;
     z-index: 9;
-    pointer-events: none;
 
     .pageBack {
         width: 55rpx;
         height: 55rpx;
         background-size: 100% 100%;
-        background-image: url("@/static/act/merchantRank/shuke/back.png");
-        // background-color: #fff;
+        background-image: url("@/static/act/merchantRank/back.png");
+
         margin-top: 10rpx;
-        margin-left: 40rpx;
-        pointer-events: auto;
+        margin-left: 20rpx;
     }
 
-
+    .ruleText {
+        color: #fff;
+        width: 160rpx;
+        // height: 60rpx;
+        margin-right: 16rpx;
+        font-size: 26rpx;
+        background-color: rgba(0, 0, 0, .4);
+        border-radius: 30rpx;
+        font-weight: bold;
+        padding: 10rpx 0;
+    }
 }
 
 .pageBg {
@@ -213,40 +237,44 @@ page {
     top: 0;
     left: 0;
     width: 750rpx;
-
-    // z-index: 2;
-    // height: 1850rpx;
-    // background-size: 100% 100%;
-    // background-image: url("@/static/act/merchantRank/shuke/bg.png");
     image {
-        height: 1850rpx;
+        height: 1943rpx;
         width: inherit;
         display: block;
     }
 }
 
-.faker {
-    background-color: #000;
-}
-
 .topBanner {
     width: 750rpx;
-    height: 541rpx;
+    height: 542rpx;
     background-size: 100% 100%;
     position: relative;
-    background-image: url("@/static/act/merchantRank/bjx/topBanner.png");
+    background-image: url("@/static/act/merchantRank/hammer/topBanner.png");
 
     .rule {
-        right: 51rpx;
-        width: 105rpx;
-        height: 26rpx;
-        background: #000000;
-        border-radius: 5rpx;
-        font-size: 21rpx;
-        top: 66rpx;
-        font-weight: normal;
-        color: #FFFFFF;
+        right: 14rpx;
+        width: 117rpx;
+        height: 119rpx;
+        // background: #930400;
+        // border-radius: 5rpx;
+        font-size: 30rpx;
+        top: 68rpx;
+        background-size: 100% 100%;
+        position: relative;
+        background-image: url("@/static/act/merchantRank/hammer/rule.png");
         position: absolute;
+
+        .ruleBlock {
+            font-size: 21rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #060807;
+            text-align: center;
+            position: absolute;
+            left: 24rpx;
+            top: 32rpx;
+
+        }
     }
 
     // .rule {
@@ -258,6 +286,7 @@ page {
     //     top: 59rpx;
     //     right: 0;
     //     z-index: 99;
+
     //     .ruleBlock {
     //         width: 100rpx;
     //         height: 90rpx;
@@ -265,6 +294,7 @@ page {
     //         margin-left: 2rpx;
     //         // background-color: rgba(0, 0, 0, .3);
     //         flex-direction: column;
+
     //         .txt {
     //             font-size: 21rpx;
     //             font-family: PingFang SC;
@@ -281,10 +311,11 @@ page {
 
 .t1 {
     width: 750rpx;
-    height: 102rpx;
+    height: 82rpx;
     background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/bjx/t1.png");
+    background-image: url("@/static/act/merchantRank/hammer/s_banner.png");
     position: relative;
+    // margin-bottom: 20rpx;
 
     .t1Text {
         width: 750rpx;
@@ -296,21 +327,6 @@ page {
     }
 }
 
-.t2 {
-    width: 750rpx;
-    height: 855rpx;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/shuke/t2.png");
-    position: relative;
-}
-
-.t2Down {
-    width: 750rpx;
-    height: 773rpx;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/shuke/t2Down.png");
-    position: relative;
-}
 
 .t3 {
     width: 750rpx;
@@ -359,7 +375,7 @@ page {
     width: 650rpx;
     height: 135rpx;
     background: #FFFFFF;
-    box-shadow: 0px 4rpx 13rpx 0rpx rgba(98, 209, 247, .9);
+    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(149, 1, 1, .66);
     border-radius: 3rpx;
     position: relative;
     box-sizing: border-box;
@@ -382,15 +398,15 @@ page {
 }
 
 .rank1 {
-    background-image: url("@/static/act/merchantRank/shuke/rank1.png");
+    background-image: url("@/static/act/merchantRank/rank1.png");
 }
 
 .rank2 {
-    background-image: url("@/static/act/merchantRank/shuke/rank2.png");
+    background-image: url("@/static/act/merchantRank/rank2.png");
 }
 
 .rank3 {
-    background-image: url("@/static/act/merchantRank/shuke/rank3.png");
+    background-image: url("@/static/act/merchantRank/rank3.png");
 }
 
 .rank_avatar {
@@ -410,7 +426,7 @@ page {
         font-size: 23rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #E74B82;
+        color: #C4232B;
         margin-bottom: 10rpx;
     }
 
@@ -446,33 +462,150 @@ page {
 }
 
 .rankContainer {
-    width: 735rpx;
-    height: 1911rpx;
-    margin-top: 23rpx;
+    width: 750rpx;
+    // background: #4A5B5D;
+    // border-radius: 18rpx 18rpx 3rpx 3rpx;
     display: flex;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/bjx/back.png");
     flex-direction: column;
     align-items: center;
     position: relative;
+    // padding-bottom: 10rpx;
+    // margin-top: 34rpx;
+    height: 2000rpx;
+    margin-top: 14rpx;
+    // margin-top: -20rpx;
+    // background-image: url("@/static/act/merchantRank/sib/rankBack.jpg");
+    background-size: 100% 100%;
+    // .fakerTtitle{
+    //     width: 750rpx;
+    //     background-size: 100% 100%;
+    //     background-image: url("@/static/act/merchantRank/sib/rankTitle.jpg");
+    //     height: 146rpx;
+
+    // }
+}
+
+.awardContainer {
+    width: 720rpx;
+    height: 210rpx;
+    background-size: 100% 100%;
+    background-image: url("@/static/act/merchantRank/hammer/award_back.png");
+    box-sizing: border-box;
+    padding: 0 36rpx;
+    display: flex;
+    position: relative;
+    align-items: center;
+    margin-top: 12rpx;
+
+    .salesWrap {
+        display: flex;
+        flex-direction: column;
+        // align-items: center;
+        justify-content: center;
+        margin-right: 22rpx;
+        // background-color: red;
+        // width: 130rpx;
+        min-width: 130rpx;
+
+        .saleNum {
+            font-size: 33rpx;
+            font-family: Impact;
+            font-weight: 400;
+            color: #FFE400;
+            // line-height: 32rpx;
+            -webkit-text-stroke: 2rpx #000000;
+            text-stroke: 2rpx #000000;
+            text-align: center;
+        }
+    }
+
+    .saleText {
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: bold;
+        color: #333333;
+        text-align: center;
+    }
+
+    .awardWrap {
+        width: 110rpx;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+
+        .award {
+            position: relative;
+            width: inherit;
+            height: 110rpx;
+            border-radius: 3rpx;
+            overflow: hidden;
+
+            image {
+                width: inherit;
+                height: inherit;
+            }
+
+            .mask {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                background-color: rgba(0, 0, 0, .61);
+                font-size: 25rpx;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: #FFE400;
+            }
+        }
+
+        .target {
+            font-size: 25rpx;
+            font-family: Impact;
+            font-weight: 400;
+            color: #FFE400;
+            line-height: 32rpx;
+            -webkit-text-stroke: 2rpx #000000;
+            text-stroke: 2rpx #000000;
+            position: relative;
+            top: 6rpx;
+        }
+
+        // height: 110px;
+    }
 }
 
 .rankP {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 735rpx;
+    // position: absolute;
+    width: 750rpx;
     display: flex;
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+    // background-color: #fbabae;
+    // box-shadow: inset 0px 0px 14rpx 14rpx rgba(157, 0, 0, 0.3);
+    position: relative;
+    // padding-top: 120rpx;
+
+    // bottom: 30rpx;
+    // z-index: 1;
+    .rankTitle {
+        width: 346rpx;
+        height: 63rpx;
+        background-size: 100% 100%;
+        background-image: url("@/static/act/merchantRank/hammer/rank_title.png");
+        margin-top: 28rpx;
+    }
 
     .rankTopTitle {
         display: flex;
         width: 650rpx;
+        // justify-content: space-between;
         justify-content: space-between;
+        // align-items: center;
         position: relative;
-        margin-top: 94rpx;
+        margin-top: 8rpx;
 
         // padding: 0 50rpx;
         .tips {
@@ -480,7 +613,7 @@ page {
             font-family: PingFang SC;
             font-weight: 400;
             text-decoration: underline;
-            color: #fff;
+            color: #ffffff;
         }
 
         .lookDetail {
@@ -488,7 +621,7 @@ page {
             font-family: PingFang SC;
             font-weight: 400;
             text-decoration: underline;
-            color: #fff;
+            color: #ffffff;
         }
     }
 }
@@ -563,9 +696,9 @@ page {
     // border: 4rpx solid #FA1545;
     border-radius: 3rpx;
     box-sizing: border-box;
-    margin-bottom: 36rpx;
+    margin-bottom: 53rpx;
     background: #FFFFFF;
-    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(98, 209, 247, .9);
+    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(188, 33, 41, .66);
     border-radius: 3rpx;
     position: relative;
     margin-top: 32rpx;
@@ -617,12 +750,13 @@ page {
         position: absolute;
         left: 0;
         top: 0;
-        background-size: 100% 100%;
-        background-image: url("@/static/act/merchantRank/shuke/leftA.png");
+        // background-size: 100% 100%;
+        // background-color: #950101;
+        background-image: url("@/static/act/merchantRank/hammer/tag.png");
         font-size: 21rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #FFFFFF
+        color: #F3BD79;
     }
 
 }
@@ -630,9 +764,10 @@ page {
 .letsgo {
     width: 750rpx;
     height: 120rpx;
-    background: #FA1545;
+    // background: #FA1545;
     background-size: 100% 100%;
-    // background-image: url("@/static/act/merchantRank/shuke/gobuy.png");
+    // background-color: #950101;
+    background-image: url("@/static/act/merchantRank/hammer/goBuy.png");
     position: fixed;
     bottom: 0;
 
@@ -647,7 +782,8 @@ page {
         font-size: 33rpx;
         font-family: PingFang SC;
         font-weight: bold;
-        color: #FFFFFF;
+        color: #D21F25;
         letter-spacing: 2rpx;
     }
-}</style>
+}
+</style>

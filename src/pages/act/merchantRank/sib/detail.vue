@@ -166,7 +166,7 @@ page {
         width: 55rpx;
         height: 55rpx;
         background-size: 100% 100%;
-        background-image: url("@/static/act/merchantRank/shuke/back.png");
+        background-image: url("@/static/act/merchantRank/back.png");
         // background-color: #fff;
         margin-top: 10rpx;
         margin-left: 20rpx;
@@ -203,33 +203,6 @@ page {
     position: relative;
     background-image: url("@/static/act/merchantRank/sib/topBanner.jpg");
 
-    .rule {
-        width: 122rpx;
-        height: 279rpx;
-        background-size: 100% 100%;
-        background-image: url("@/static/act/merchantRank/shuke/rule.png");
-        position: absolute;
-        top: 59rpx;
-        right: 0;
-
-        .ruleBlock {
-            width: 100rpx;
-            height: 90rpx;
-            margin-top: 18rpx;
-            margin-left: 2rpx;
-            // background-color: rgba(0, 0, 0, .3);
-            flex-direction: column;
-
-            .txt {
-                font-size: 21rpx;
-                font-family: PingFang SC;
-                font-weight: bold;
-                color: #FFFFFF;
-                line-height: 24rpx;
-                text-shadow: 0rpx 0rpx 8rpx #E92677;
-            }
-        }
-    }
 
     // z-index: 3;
 }

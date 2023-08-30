@@ -172,7 +172,7 @@ export default {
 .close {
     width: 30rpx;
     height: 30rpx;
-    background-size: 100% 100%;
+    // background-size: 100% 100%;
     // background-image: url("@/static/cardForum/popClose.png");
     position: absolute;
     right: 17rpx;
@@ -246,7 +246,9 @@ export default {
 }
 
 .giftWrap {
+    //#ifndef APP-NVUE
     max-width: 396rpx;
+    //#endif
     // height: 64rpx;
     background: #F5F5F5;
     // #ifndef APP-NVUE

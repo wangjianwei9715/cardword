@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-24 14:46:29
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-30 11:31:44
  * @FilePath: \jichao_app_2\src\pages\act\merchantRank\sib\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -226,7 +226,7 @@ page {
         width: 55rpx;
         height: 55rpx;
         background-size: 100% 100%;
-        background-image: url("@/static/act/merchantRank/shuke/back.png");
+        background-image: url("@/static/act/merchantRank/back.png");
         
         margin-top: 10rpx;
         margin-left: 20rpx;
@@ -331,22 +331,6 @@ page {
     }
 }
 
-.t2 {
-    width: 750rpx;
-    height: 855rpx;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/shuke/t2.png");
-    position: relative;
-}
-
-.t2Down {
-    width: 750rpx;
-    height: 773rpx;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/merchantRank/shuke/t2Down.png");
-    position: relative;
-}
-
 .t3 {
     width: 750rpx;
     height: 94rpx;
@@ -417,15 +401,15 @@ page {
 }
 
 .rank1 {
-    background-image: url("@/static/act/merchantRank/shuke/rank1.png");
+    background-image: url("@/static/act/merchantRank/rank1.png");
 }
 
 .rank2 {
-    background-image: url("@/static/act/merchantRank/shuke/rank2.png");
+    background-image: url("@/static/act/merchantRank/rank2.png");
 }
 
 .rank3 {
-    background-image: url("@/static/act/merchantRank/shuke/rank3.png");
+    background-image: url("@/static/act/merchantRank/rank3.png");
 }
 
 .rank_avatar {
