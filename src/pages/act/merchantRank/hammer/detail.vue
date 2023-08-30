@@ -287,7 +287,7 @@ page {
     height: 160rpx;
     background: rgba(255, 255, 255, 0.66);
     border-radius: 3rpx;
-    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(188, 33, 41, .66);
+    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(190, 144, 29, .66);
     // margin: auto;
     // bottom: 70rpx;
     display: flex;

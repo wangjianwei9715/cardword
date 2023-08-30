@@ -397,7 +397,7 @@ page {
     width: 650rpx;
     height: 135rpx;
     background: #FFFFFF;
-    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(149, 1, 1, .66);
+    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(190, 144, 29, .66);
     border-radius: 3rpx;
     position: relative;
     box-sizing: border-box;
@@ -720,7 +720,7 @@ page {
     box-sizing: border-box;
     margin-bottom: 53rpx;
     background: #FFFFFF;
-    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(188, 33, 41, .66);
+    box-shadow: 0rpx 4rpx 13rpx 0rpx rgba(190, 144, 29, .66);
     border-radius: 3rpx;
     position: relative;
     margin-top: 32rpx;
