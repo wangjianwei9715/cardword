@@ -84,7 +84,7 @@ const activityTp = 10
 export default class ClassName extends BaseNode {
     queryParams: any = {
         fetchFrom: 1,
-        fetchSize: 20,
+        fetchSize: 15,
         activityTp: activityTp
     }
     app: any = app
@@ -167,15 +167,16 @@ page {
     position: fixed;
     top: 0;
     z-index: 9;
-
+    pointer-events: none;
     .pageBack {
         width: 55rpx;
         height: 55rpx;
         background-size: 100% 100%;
         background-image: url("@/static/act/merchantRank/back.png");
-        // background-color: #fff;
+
         margin-top: 10rpx;
         margin-left: 20rpx;
+        pointer-events: auto;
     }
 
     .ruleText {
@@ -223,7 +224,7 @@ page {
     background-image: url("@/static/act/merchantRank/hammer/topBanner.png");
 
     .rule {
-        right: 14rpx;
+        right: 0rpx;
         width: 117rpx;
         height: 119rpx;
         // background: #930400;
@@ -236,15 +237,18 @@ page {
         position: absolute;
 
         .ruleBlock {
-            font-size: 21rpx;
-            font-family: PingFang SC;
-            font-weight: bold;
-            color: #060807;
+
             text-align: center;
             position: absolute;
             left: 24rpx;
             top: 32rpx;
 
+            .txt {
+                font-size: 21rpx;
+                font-family: PingFang SC;
+                font-weight: bold;
+                color: #060807;
+            }
         }
     }
 

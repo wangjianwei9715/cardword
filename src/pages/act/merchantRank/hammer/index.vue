@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-30 11:27:47
+ * @LastEditTime: 2023-08-30 13:54:55
  * @FilePath: \jichao_app_2\src\pages\act\merchantRank\sib\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,15 +29,17 @@
         </view>
         <view class="awardContainer">
             <view class="salesWrap">
-                <view class="saleNum">100.99w</view>
+                <view class="saleNum">{{ formatNumber(nowAmount, 2) }}</view>
                 <view class="saleText">当前销量</view>
             </view>
-            <view class="awardWrap" v-for="(item, index) in 4" :style="{ marginRight: index == 3 ? 0 : `18rpx` }">
+            <view class="awardWrap" v-for="(item, index) in awardList" :key="index"
+                :style="{ marginRight: index == awardList.length - 1 ? 0 : `18rpx` }"
+                @click="previewImage({ pic: item.pic_url, name: item.name })">
                 <view class="award">
-                    <image src="/static/act/merchantRank/hammer/topBanner.png" mode="aspectFill"></image>
-                    <view class="mask flexCenter">待解锁</view>
+                    <image :src="$parsePic(item.pic_url)" mode="aspectFill"></image>
+                    <view class="mask flexCenter" v-if="nowAmount && nowAmount < item.amount">待解锁</view>
                 </view>
-                <view class="target">100w</view>
+                <view class="target">{{ formatNumber(item.amount || 0, 2) }}</view>
             </view>
         </view>
         <view class="rankContainer">
@@ -115,6 +117,8 @@ export default class ClassName extends BaseNode {
     parsePic = parsePic
     defaultAvatar: any = app.defaultAvatar
     app: any = app
+    nowAmount: number = 0
+    awardList: any = []
     myRank: any = {
 
     }
@@ -123,10 +127,11 @@ export default class ClassName extends BaseNode {
         app.platform.hasLoginToken(() => {
             if (query.alias) this.alias = query.alias
             this.reqMyRank()
-            this.reqAllRank()
+            this.reqAward()
         })
     }
     onShow() {
+        this.reqAllRank()
     }
     onPageScroll(data: any) {
         //@ts-ignore
@@ -137,31 +142,37 @@ export default class ClassName extends BaseNode {
         uni.navigateTo({
             url: `/pages/merchant/core?alias=${this.alias}&tp=1`
         })
-        // uni.navigateTo({
-        //     url: `/pages/goods/goods_seriesDetail?seriesId=${this.seriesId}`
-        // })
+    }
+    formatNumber(number: number, keepNum = 0, type = "cn") {//
+        let result = '' + number;
+        if (number >= 100000000) {
+            result = (number / 100000000).toFixed(keepNum) + '亿'
+        } else if (number >= 10000) {
+            result = (number / 10000).toFixed(keepNum) + "W"
+        }
+        return result;
     }
     parseTips() {
-        const ActivityPeriod: any = [1691942400, 1694620799]//积分获取
-        const ThawPeriod: any = [1694620800, 1695916799]//积分解冻
-        const DrawPeriod: number = 1695916800//榜单结算
+        const ActivityPeriod: any = [1693497600, 1696089599]//积分获取
+        const ThawPeriod: any = [1696089600, 1697385599]//积分解冻
+        const DrawPeriod: number = 1697385600//榜单结算
         // const LivePeriod: number = 1686294000//直播
         const nowTimeStamp = Math.round(+new Date() / 1000)
         if (nowTimeStamp < ActivityPeriod[0]) {
-            return { tips: "暂未开始", time: "08.14-09.13" }
+            return { tips: "暂未开始", time: `${uni.$u.date(ActivityPeriod[0], 'mm-dd')}-${uni.$u.date(ActivityPeriod[1], 'mm-dd')}` }
         };
         if (nowTimeStamp >= ActivityPeriod[0] && nowTimeStamp <= ActivityPeriod[1]) {
-            return { tips: "积分获取", time: "08.14-09.13" }
+            return { tips: "积分获取", time: `${uni.$u.date(ActivityPeriod[0], 'mm-dd')}-${uni.$u.date(ActivityPeriod[1], 'mm-dd')}` }
         }
         if (nowTimeStamp >= ThawPeriod[0] && nowTimeStamp <= ThawPeriod[1]) {
             return {
-                tips: "积分解冻", time: "09.14-09.28"
+                tips: "积分解冻", time: `${uni.$u.date(ThawPeriod[0], 'mm-dd')}-${uni.$u.date(ThawPeriod[1], 'mm-dd')}`
             }
         };
         if (nowTimeStamp > ThawPeriod[1]) {
             return {
                 tips: "榜单结算",
-                time: "09.29"
+                time: `${uni.$u.date(DrawPeriod, 'mm-dd')}`
             }
         };
     }
@@ -180,6 +191,11 @@ export default class ClassName extends BaseNode {
             urls: [{ src: this.parsePic(decodeURIComponent(item.awardPic_url || item.pic)), title: item.awardName || item.name }]
         })
     }
+    reqAward() {
+        app.http.Get("dataApi/selectRank/award/list", { activityTp: activityTp, way: 3 }, (res: any) => {
+            this.awardList = res.list || []
+        })
+    }
     reqMyRank() {
         app.http.Get("dataApi/selectRank/my/data", { activityTp: activityTp }, (res: any) => {
             this.myRank = res.data
@@ -187,6 +203,7 @@ export default class ClassName extends BaseNode {
     }
     reqAllRank(cb?: any) {
         app.http.Get('dataApi/selectRank/list', { activityTp: activityTp }, (res: any) => {
+            this.nowAmount = res.nowAmount || 0
             this.rankList = res.list || []
             cb && cb()
         })
@@ -208,7 +225,7 @@ page {
     position: fixed;
     top: 0;
     z-index: 9;
-
+    pointer-events: none;
     .pageBack {
         width: 55rpx;
         height: 55rpx;
@@ -217,6 +234,7 @@ page {
 
         margin-top: 10rpx;
         margin-left: 20rpx;
+        pointer-events: auto;
     }
 
     .ruleText {
@@ -237,6 +255,7 @@ page {
     top: 0;
     left: 0;
     width: 750rpx;
+
     image {
         height: 1943rpx;
         width: inherit;
@@ -252,7 +271,7 @@ page {
     background-image: url("@/static/act/merchantRank/hammer/topBanner.png");
 
     .rule {
-        right: 14rpx;
+        right: 0rpx;
         width: 117rpx;
         height: 119rpx;
         // background: #930400;
@@ -265,15 +284,18 @@ page {
         position: absolute;
 
         .ruleBlock {
-            font-size: 21rpx;
-            font-family: PingFang SC;
-            font-weight: bold;
-            color: #060807;
+
             text-align: center;
             position: absolute;
             left: 24rpx;
             top: 32rpx;
 
+            .txt {
+                font-size: 21rpx;
+                font-family: PingFang SC;
+                font-weight: bold;
+                color: #060807;
+            }
         }
     }
 
