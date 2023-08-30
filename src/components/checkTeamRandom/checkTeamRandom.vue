@@ -125,7 +125,7 @@
 <script lang="ts">
 	import { Component, Prop,Vue,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
-	import {getCardRandomtips,getCardRandomHelp,getCardRandomTitle} from "@/tools/switchUtil"
+	import {getCardRandomtips,getCardRandomHelp} from "@/tools/switchUtil"
 	import { getCountDownTime } from "@/tools/util";
 	@Component({})
 	export default class ClassName extends BaseComponent {
@@ -147,7 +147,6 @@
 		type:boolean|undefined;
 		
 		getCardRandomtips = getCardRandomtips;
-		getCardRandomTitle = getCardRandomTitle;
 		getCardRandomHelp = getCardRandomHelp;
 		currentIndex = 0;
 		showDrawer = false;
@@ -180,6 +179,9 @@
 		}
 		destroyed(){
 			clearInterval(this.randomCountInterval);
+		}
+		getCardRandomTitle(state:number){
+			return state==11?"选择球队":(state==12?"选择卡种":"-");
 		}
 		onClickMultiple(){
 			this.multiple = !this.multiple;

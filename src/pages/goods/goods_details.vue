@@ -230,10 +230,6 @@
 	import { app } from "@/app";
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
-	import {
-		getGoodsPintuanDetail,
-		getGoodsRandom,
-	} from '@/tools/switchUtil';
 	import { goodsDetailRules, goodsDetailHelp } from "@/tools/DataRules";
 	import { goodDetailSpe } from "@/tools/DataExchange"
 	import { parsePic,secondsFormat } from "@/tools/util";
@@ -246,6 +242,7 @@
 		navigateBack = app.navigateTo.navigateBack;
 		isPullDown = app.platform.isPullDown;
 		defaultAvatar = app.defaultAvatar;
+		goodsManaager:any = app.goods;
 		goodsDetailRules = goodsDetailRules
 		goodsDetailHelp = goodsDetailHelp;
 		goodsSpe = goodDetailSpe;
@@ -439,8 +436,8 @@
 			} else {
 				spec.name = specName;
 				num.name = numValue;
-				pintuan_type.name = getGoodsPintuanDetail(goodsData.pintuan_type);
-				random_type.name = getGoodsRandom(goodsData.random_type);
+				pintuan_type.name = this.goodsManaager.gameplayType[goodsData.pintuan_type]
+				random_type.name = goodsData.random_type==1?"即买即随":(goodsData.random_type==2?"拼满随机":"-");
 			}
 		}
 		onClickTipBtn(item: any) {

@@ -1,6 +1,16 @@
+
 export default class goodsManager {
     private static instance: goodsManager;
-	
+	gameplayType = {
+		1:"随机卡种",
+		2:"随机球队",
+		3:"随机球员",
+		4:"随机卡盒",
+		5:"随机卡包",
+		10:"自选球队",
+		11:"选队随机",
+		12:"自选卡种"
+	}
 	private constructor() {
 
 	}
@@ -27,7 +37,8 @@ export default class goodsManager {
 	}
 	// 自选类型
 	ifSelectType(item: any) {
-		return item.pintuan_type == 10 || item.pintuan_type == 11 || item.pintuan_type == 12
+		const allowedTypes = [10, 11, 12];
+		return allowedTypes.includes(item.pintuan_type);
 	}
 	
 }
