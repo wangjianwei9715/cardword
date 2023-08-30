@@ -36,7 +36,7 @@
 		<view class="upload-right" v-if="noData.text && noData.text.peer.length">
 			<statusbar/>
 			<scroll-view class="up-scroll-box" :scroll-y="true">
-				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':item>0}" v-for="(item,index) in binaryPeer" :key='index' @click="onClickPeerTo(index+1)">
+				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':binaryPeer[index]>0}" v-for="(item,index) in noData.text.seq" :key='index' @click="onClickPeerTo(index+1)">
 					{{index+1}}{{(index+1)==noData.text.seqIndex?`/${noData.text.seq}`:''}}
 				</view>
 			</scroll-view>
@@ -99,7 +99,7 @@
 		public get binaryPeer() : number[] {
 			const { peer, seq } = this.noData.text;
 			const list = peer.map((item:any,index:number)=>{
-				const length = Math.min(seq-(index*64),64);
+				const length = Math.min(seq-(index*60),60);
 				const binary = item.toString(2);
 				return Array.from({length},(_,i)=>(Number(binary[binary.length-1-i])||0));
 			}).flat();

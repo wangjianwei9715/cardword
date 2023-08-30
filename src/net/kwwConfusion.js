@@ -35,6 +35,13 @@ export default class KwwConfusion{
             s:Md5.hashStr(`${kName}_goodlist_sign_${urlNamr}_${fetchFrom}_${fetchSize}_${ts}_${kYear}`)
         }
     }
+    toPayForGoodOrder(userId,orderCode){
+        const ts = this.getTime()
+        return {
+            ts,
+            sn:Md5.hashStr(`ToPayForGoodOrder_${ts}_${userId}_${orderCode}`)
+        }
+    }
     findList(scrollIdSt,scrollId){
         return Md5.hashStr(`${scrollIdSt}${scrollId}scrollSearchGood`)
     }

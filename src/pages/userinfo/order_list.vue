@@ -28,14 +28,11 @@
 </template>
 
 <script lang="ts">
-	import {
-		app
-	} from "@/app";
-	import { Md5 } from "ts-md5";
-	import {
-		Component
-	} from "vue-property-decorator";
+	import { app } from "@/app";
+	import { Component } from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
+	//@ts-ignore
+	import KwwConfusion from "@/net/kwwConfusion.js"
 	const OperateMap:{[x:string]:any} = {
 		"receive_good":{
 			content:'是否确认已经收货？',
@@ -55,6 +52,7 @@
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
+		kwwConfusion = new KwwConfusion();
 		orderTab = [
 			{ id: 0, name: "全部" },
 			{ id: 1, name: "待支付" },
@@ -219,19 +217,17 @@
 			if (channel == "")  return;
 			const userId = await app.user.getAppDataUserId();
 			uni.showLoading({ title: "加载中" });
-			const ts = Math.floor(new Date().getTime()/1000);
 			let params: any = {
 				channelId,
 				channel,
 				delivery: 0,
 				num: this.payItem.num,
-				ts,
-				sn:Md5.hashStr(`ToPayForGoodOrder_${ts}_${userId}_${this.payItem.code}`)
 			};
+			const hash = this.kwwConfusion.toPayForGoodOrder(userId,this.payItem.code)
 			if (uni.getSystemInfoSync().platform === "android") {
 				params.nativeSdk = "qmf_android";
 			}
-			app.http.Post("order/topay/" + this.payItem.code, params, (res: any) => {
+			app.http.Post("order/topay/" + this.payItem.code, {...params,...hash}, (res: any) => {
 				//data.channel=='alipay' (before)
 				if (['alipay','alipay_h5'].includes(channel)) {
 					this.clickToPay = true;
