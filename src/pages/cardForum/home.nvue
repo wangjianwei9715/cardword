@@ -498,6 +498,9 @@ export default {
         swiperChange(event) {
             console.log("swiperChangeChange了了了");
             this.tabs.index = event.detail.current
+            if(this.tabs.index==1){
+                this.reqAddList()
+            }
             // setTimeout(() => {
             //     this.dx = 0
             // }, 10)
