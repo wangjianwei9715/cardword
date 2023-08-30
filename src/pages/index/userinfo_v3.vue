@@ -54,7 +54,7 @@
             </view>
         </view>
         <view class="publicContainer uni-flex jb fp">
-            <view class="menuItem" v-for="(item, key) in walletTab" @click="onClickFourTool(item)">
+            <view class="menuItem" v-for="(item, key) in walletTab" :key="`wallet_${key}`" @click="onClickFourTool(item)">
                 <image class="icon" :src="item.pic" :style="item.style"></image>
                 <view class="label">{{ item.name }}</view>
                 <view class="num" v-if="key != 'kami'">{{ item.num }}</view>
@@ -69,7 +69,7 @@
                 <view class="rightIcon"></view>
             </view>
             <view class="order_menuWrap uni-flex">
-                <view class="order_item" v-for="(item, index) in orderTab" @click="onClickOrderList(item.id)">
+                <view class="order_item" v-for="(item, index) in orderTab" :key="`order_${index}`" @click="onClickOrderList(item.id)">
                     <image class="order_item_img" :src="item.pic"></image>
                     <view class="order_item_label">{{ item.name }}</view>
                     <!-- <u-badge :type="type" max="99" :value="value"></u-badge> -->
@@ -82,7 +82,7 @@
         <view class="publicContainer moreToolsContainer">
             <view class="wrapTitle flex1" style="margin-bottom: 36rpx;">更多功能</view>
             <view class="moreToolsWrap uni-flex fp">
-                <view class="toolsItem" v-for="(item, index) in toolsTab.slice(0, 5)" @click="onClickMoreTools(item)">
+                <view class="toolsItem" v-for="(item, index) in toolsTab.slice(0, 5)" :key="`tools1_${index}`" @click="onClickMoreTools(item)">
                     <view class="imageWrap">
                         <image class="toolsItem_icon" :src="item.icon" :style="item.style"></image>
                     </view>
@@ -90,7 +90,7 @@
                 </view>
             </view>
             <view class="moreToolsWrap uni-flex fp">
-                <view class="toolsItem" v-for="(item, index) in toolsTab.slice(5, 10)" @click="onClickMoreTools(item)">
+                <view class="toolsItem" v-for="(item, index) in toolsTab.slice(5, 10)" :key="`tools2_${index}`" @click="onClickMoreTools(item)">
                     <view class="imageWrap">
                         <image class="toolsItem_icon" :src="item.icon" :style="item.style"></image>
                     </view>
@@ -116,7 +116,7 @@
                 <view class="toolsItem_label">商家主页</view>
                 <view class="rightIcon"></view>
             </view>
-            <view class="toolsItem" v-for="(item, index) in settingTab" @click="onClickNavigateto(item)">
+            <view class="toolsItem" v-for="(item, index) in settingTab" :key="`setting_${index}`" @click="onClickNavigateto(item)">
                 <view class="imgWrap">
                     <image :src="item.pic" :style="{ width: `${item.width}rpx`, height: `${item.height}rpx` }"></image>
                 </view>
