@@ -20,7 +20,7 @@
 					
 					<view class="goodslist-title u-line-2 goodslist-padding">
 						<view v-if="item.saleMode==1&&item.state==1" class="goodslist-cardicon goodslist-cardicon-purple">剩余随机</view>
-						<view v-else class="goodslist-cardicon" :class="{'goodslist-cardicon-purple':[10,11].includes(item.pintuan_type)}">{{getGoodsPintuanDetail(item.pintuan_type)}}</view>
+						<view v-else class="goodslist-cardicon" :class="{'goodslist-cardicon-purple':[10,11].includes(item.pintuan_type)}">{{goodsManaager.gameplayType[item.pintuan_type]}}</view>
 						<text class="goodslist-title-text">{{item.title}}</text>
 					</view>
 					<view class="goodslist-priceMsg uni-flex goodslist-padding">
@@ -62,11 +62,8 @@
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { getGoodsImg } from "@/tools/util";
 	import { app } from "@/app";
-	import { getGoodsPintuan, getGoodsPintuanDetail } from '@/tools/switchUtil';
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		getGoodsPintuan = getGoodsPintuan;
-		getGoodsPintuanDetail = getGoodsPintuanDetail;
 		goodsManaager = app.goods;
 		@Prop({ default: [] })
 		goodsList: any;

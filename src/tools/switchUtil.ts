@@ -1,38 +1,3 @@
-// 首页直播状态
-export function getBroadCastStr(state:number){
-     //1 即将拆卡 2 正在拆卡 3 拆卡回放 0 等待拆卡
-    switch(state){
-        case 2:
-            return '正在拆卡';
-        case 3:
-            return '拆卡回放';
-        default:
-            return '即将拆卡'; 
-    }
-}
-
-// 商品详情拼团形式
-export function getGoodsPintuanDetail(state:number){
-    // 拼团形式 1 随机卡种 2 随机球队 3 随机球员 4 随机卡包 5 随机卡盒    
-    switch(state){
-        case 1:
-            return '随机卡种';
-        case 2:
-            return '随机球队';
-        case 3:
-            return '随机球员';
-        case 4:
-            return '随机卡盒'
-        case 5:
-            return '随机卡包'
-        case 10:
-            return '自选球队'   
-        case 11:
-            return '选队随机'
-        case 12:
-            return '自选卡种' 
-    }
-}
 // 商品列表拼团形式
 export function getGoodsPintuan(state:number,english=false){
     // 拼团形式 1 随机卡种 2 随机球队 3 随机球员 4 随机卡盒 5 随机卡包  10 自选买队 11 选队随机  
@@ -58,16 +23,6 @@ export function getGoodsPintuan(state:number,english=false){
     }
 }
 
-// 商品详情随机形式
-export function getGoodsRandom(state:number){
-    // 随机方式 1 即买即随 2 拼满随机 
-    switch(state){
-        case 1:
-            return '即买即随';
-        case 2:
-            return '拼满随机';
-    }
-}
 // 订单状态说明 //1 等待支付 2 进行中 3 等待发货 4 等待收货 5 收货成功  10 未中卡
 export function orderStateDesc(data:any) {
     switch(data.state){
@@ -173,14 +128,6 @@ export function getCardRandomtips(state:number){
             return '选队随机：购买后将在所选球队的卡种中随机卡密';
         case 12:
             return '选卡种随机：购买后将在所选卡种中随机卡密';
-    }
-}
-export function getCardRandomTitle(state:number){
-    switch(state){
-        case 11:
-            return '选择球队';
-        case 12:
-            return '选择卡种';
     }
 }
 export function getCardRandomHelp(state:number){
