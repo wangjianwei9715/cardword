@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-07-26 11:05:14
+ * @LastEditTime: 2023-08-31 16:50:14
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -214,8 +214,11 @@ export default {
             if (!this.transition) return true
             return 1 - (this.scrollTop / (this.MAX_HEIGHT * 1.4))
         },
+        toolsMapCom(){
+            return Object.assign(toolsMap, this.toolsMapCustomNew)
+        },
         toolsList() {
-            const list = this.needRightTools.map(key => toolsMap[key])
+            const list = this.needRightTools.map(key => this.toolsMapCom[key])
             return list.filter(item => Boolean(item))
         }
     },
@@ -231,9 +234,6 @@ export default {
     },
     mounted() {
         this.init()
-        if (Object.keys(this.toolsMapCustomNew).length) {
-            toolsMap = Object.assign(toolsMap, this.toolsMapCustomNew)
-        }
     },
     methods: {
         init() {
