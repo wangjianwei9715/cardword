@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-30 11:31:44
+ * @LastEditTime: 2023-08-31 17:00:46
  * @FilePath: \jichao_app_2\src\pages\act\merchantRank\sib\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -104,7 +104,7 @@
         </view> -->
         <view class="a" style="height: 120rpx;"></view>
         <view class="letsgo flexCenter" @click="goBuy">
-            <image src="@/static/act/portable/add.png"></image>
+            <image src="@/static/act/merchantRank/add.png"></image>
             <view>立即上车</view>
         </view>
         <previewImage ref="previewImage" />
@@ -334,42 +334,6 @@ page {
 .t3 {
     width: 750rpx;
     height: 94rpx;
-}
-
-.liveContainer {
-    width: 750rpx;
-    height: 75rpx;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/portable/liveBack.png");
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 0 50rpx;
-    justify-content: space-between;
-
-    .title {
-        font-size: 33rpx;
-        font-family: YouSheBiaoTiHei;
-        font-weight: 400;
-        color: #FFFFFF;
-        letter-spacing: 2rpx;
-    }
-
-    .entrance {
-        width: 168rpx;
-        height: 43rpx;
-        border: 2rpx solid #FFFFFF;
-        border-radius: 21rpx;
-        font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: 500;
-        color: #FFFFFF;
-
-        text {
-            font-size: 22rpx;
-            margin-left: 4rpx;
-        }
-    }
 }
 
 .rank_tr {

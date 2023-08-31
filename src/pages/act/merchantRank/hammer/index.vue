@@ -355,41 +355,6 @@ page {
     height: 94rpx;
 }
 
-.liveContainer {
-    width: 750rpx;
-    height: 75rpx;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/portable/liveBack.png");
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 0 50rpx;
-    justify-content: space-between;
-
-    .title {
-        font-size: 33rpx;
-        font-family: YouSheBiaoTiHei;
-        font-weight: 400;
-        color: #FFFFFF;
-        letter-spacing: 2rpx;
-    }
-
-    .entrance {
-        width: 168rpx;
-        height: 43rpx;
-        border: 2rpx solid #FFFFFF;
-        border-radius: 21rpx;
-        font-size: 25rpx;
-        font-family: PingFang SC;
-        font-weight: 500;
-        color: #FFFFFF;
-
-        text {
-            font-size: 22rpx;
-            margin-left: 4rpx;
-        }
-    }
-}
 
 .rank_tr {
     display: flex;

@@ -211,17 +211,6 @@ page {
     }
 }
 
-.pointBlock {
-    width: 750rpx;
-    height: 75rpx;
-    background-size: 100% 100%;
-    background-image: url("@/static/act/portable/liveBack.png");
-    font-size: 38rpx;
-    font-family: YouSheBiaoTiHei;
-    font-weight: 400;
-    color: #FFFFFF;
-    letter-spacing: 2rpx;
-}
 
 .topContainer {
     width: 750rpx;

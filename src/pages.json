@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 10:58:55
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-30 13:56:09
+ * @LastEditTime: 2023-08-31 17:06:44
  * @FilePath: \jichao_app_2\src\pages.json
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -447,120 +447,6 @@
 						"navigationStyle": "custom",
 						"backgroundColorTop": "#F4F5F9", //顶部窗口的背景色（bounce回弹区域）仅 iOS 平台  
 						"backgroundColorBottom": "#F4F5F9" //底部窗口的背景色（bounce回弹区域）仅 iOS 平台 
-					}
-				},
-				{
-					"path": "portable/container",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "3倍积分 入榜夺礼",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#1a3439",
-						"backgroundColorBottom": "#1a3439",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "portable/rule",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "3倍积分 入榜夺礼",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "portable/award",
-					"style": {
-						"navigationBarTitleText": "奖励预览",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "portable/rank/detail",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "积分明细",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#1a3439",
-						"backgroundColorBottom": "#1a3439",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "portable/rank/live",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "直播入口",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#1a3439",
-						"backgroundColorBottom": "#1a3439",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "portable/exhibition/release",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "发布",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"backgroundColorTop": "#1a3439",
-						"backgroundColorBottom": "#1a3439",
-						"app-plus": {
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "portable/exhibition/detail",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "详情",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": false,
-						"app-plus": {
-							"softinputNavBar": "none",
-							"bounce": "none"
-						}
-					}
-				},
-				{
-					"path": "portable/exhibition/my",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "我的",
-						"navigationBarBackgroundColor": "#ffffff",
-						"navigationBarTextStyle": "black",
-						"enablePullDownRefresh": true,
-						"backgroundColorTop": "#1a3439",
-						"backgroundColorBottom": "#1a3439",
-						"app-plus": {
-							"bounce": "none"
-						}
 					}
 				},
 				{
