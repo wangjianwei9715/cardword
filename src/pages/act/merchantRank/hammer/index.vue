@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-07 17:20:31
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-30 13:54:55
+ * @LastEditTime: 2023-09-01 13:48:51
  * @FilePath: \jichao_app_2\src\pages\act\merchantRank\sib\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -37,7 +37,7 @@
                 @click="previewImage({ pic: item.pic_url, name: item.name })">
                 <view class="award">
                     <image :src="$parsePic(item.pic_url)" mode="aspectFill"></image>
-                    <view class="mask flexCenter" v-if="nowAmount && nowAmount < item.amount">待解锁</view>
+                    <view class="mask flexCenter" v-if="nowAmount < item.amount">待解锁</view>
                 </view>
                 <view class="target">{{ formatNumber(item.amount || 0, 2) }}</view>
             </view>
