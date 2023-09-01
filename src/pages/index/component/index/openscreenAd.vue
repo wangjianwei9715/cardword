@@ -28,7 +28,6 @@
 		}) showSync!: Boolean;
 		@Prop({default:''})
 		goodData!:any;
-		goGoodsDetails = app.navigateTo.goGoodsDetails;
 		showImg = false;
 		no_pop = false;
 		@Watch('show')
@@ -62,7 +61,7 @@
 			}
 			this.openscreenReport(true,false)
 			this.close()
-			this.goGoodsDetails(this.goodData.good_code,`&AD_id=${this.goodData.ad_id}&referer=AD`)
+			app.navigateTo.goGoodsDetails(this.goodData.good_code,`&AD_id=${this.goodData.ad_id}&referer=AD`)
 		}
 		onClickClose(){
 			this.close()
