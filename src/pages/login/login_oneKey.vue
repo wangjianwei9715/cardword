@@ -43,7 +43,10 @@
             <view class="line"></view>
         </view>
         <view class="otherLoginContainer uni-flex ac">
+            <image src="/static/login/apple.png" v-if="iosLogin" style="width: 100rpx;height: 100rpx;margin-right:20rpx;"
+                @click="onClickAppleLogin"></image>
             <image src="/static/login/weixin@2x.png" style="width: 100rpx;height: 100rpx;" @click="wxLogin"></image>
+
         </view>
     </view>
 </template>
@@ -73,6 +76,7 @@ export default class ClassName extends BaseNode {
     actionMap: any = {}
     redirect: string = ""
     return: boolean = false
+    iosLogin = app.iosPlatform;
     onLoad(query: any) {
         //#ifdef APP-PLUS
         // this.initYdLogin()
@@ -82,7 +86,7 @@ export default class ClassName extends BaseNode {
         // uni.$on("ydLoginAction", this.ydLoginAction)
         // this.initFn()
         console.log(Md5.hashStr("1230" + '_pmpm'));
-        
+
     }
     onBackPress(type: any) {
         if (this.return) return
@@ -118,6 +122,26 @@ export default class ClassName extends BaseNode {
         uni.navigateTo({
             url: '/pages/userinfo/user_privacy'
         })
+    }
+    // 苹果登录
+    onClickAppleLogin() {
+        uni.showLoading({ title: '加载中' });
+        uni.login({
+            provider: 'apple',
+            success: (loginRes: any) => {
+                let params = {
+                    openid: loginRes.authResult.openid,
+                    uuid: app.platform.deviceID,
+                    os: app.platform.systemInfo.platform,
+                    device: app.platform.systemInfo.brand + app.platform.systemInfo.model
+                }
+                this.postLogin('user/login/apple', params)
+            },
+            fail: (err) => {
+                uni.hideLoading()
+                // 登录失败  
+            }
+        });
     }
     wxLogin(data?: any) {
         // console.log("wxLogin", data);
@@ -195,7 +219,7 @@ export default class ClassName extends BaseNode {
         this.phoneTypeIndex = val.detail.value;
     }
     onClickSubmit() {
-        if(!this.canSubmit) return
+        if (!this.canSubmit) return
         if (!this.read) {
             uni.showToast({ title: '请先阅读并同意协议！', icon: 'none', duration: 2000 });
             return;
@@ -251,8 +275,8 @@ export default class ClassName extends BaseNode {
             uni.setStorageSync("token", JSON.stringify(app.token));
             uni.setStorageSync("ksjUserId", data.data.userId);
             uni.$emit('loginSuccess');
-            console.log("data=>data",data);
-            
+            console.log("data=>data", data);
+
             if (url == "user/login/wechat/app" && data.data.showBindPhone) {
                 uni.redirectTo({
                     url: `/pages/login/checkPhone?type=${PhoneCodeType.BIND_PHONE}&toIndex=1`
