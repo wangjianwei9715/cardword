@@ -78,15 +78,8 @@ export default class ClassName extends BaseNode {
     return: boolean = false
     iosLogin = app.iosPlatform;
     onLoad(query: any) {
-        //#ifdef APP-PLUS
-        // this.initYdLogin()
-        //#endif
         if (query.redirect) this.redirect = decodeURIComponent(query.redirect)
         if (query.return) this.return = true
-        // uni.$on("ydLoginAction", this.ydLoginAction)
-        // this.initFn()
-        console.log(Md5.hashStr("1230" + '_pmpm'));
-
     }
     onBackPress(type: any) {
         if (this.return) return
@@ -94,7 +87,6 @@ export default class ClassName extends BaseNode {
         return true
     }
     beforeDestroy() {
-        // uni.$off("ydLoginAction", this.ydLoginAction)
     }
     public get pageInfo() {
         if (this.nowType == CODE_TYPE) {
