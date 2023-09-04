@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <transitionNav :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)" title=""
+        <transitionNav   :showBack="false" @navigateTo="navigateTo(`/pages/userinfo/setting`)" title=""
             :needRightTools="['设置']" :needIconShadow="false" :toolsMapCustomNew="toolsMapCustomNew"></transitionNav>
         <view class="userInfoWrap" id="userInfoWrap">
             <view class="fakeTop" :style="{ height: navHeight + 'px' }"></view>
@@ -307,7 +307,7 @@ export default class ClassName extends BaseNode {
     }
     initPageData(cb?: Function) {
         if (app.token.accessToken == '') {
-            this.navigateTo('/pages/login/login')
+            app.login.arouseLogin("/pages/index/userinfo_v3")
             return;
         }
         app.http.Get('me/home', {}, (res: any) => {

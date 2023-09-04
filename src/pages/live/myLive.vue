@@ -55,9 +55,7 @@
 		}
 		onLoad() {
 			if (app.token.accessToken == "") {
-				uni.navigateTo({
-					url: "/pages/login/login"
-				});
+				app.login.arouseLogin()
 				return;
 			}
 			this.getList()

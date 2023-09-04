@@ -302,9 +302,7 @@
 		onClickJumpUrl({ needLogin, name, url }: any) {
 			if (needLogin) {
 				if (app.token.accessToken == '') {
-					uni.navigateTo({
-						url: '/pages/login/login'
-					})
+					app.login.arouseLogin()
 					return;
 				}
 			}

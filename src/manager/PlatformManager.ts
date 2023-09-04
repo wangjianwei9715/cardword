@@ -556,10 +556,8 @@ export default class PlatformManager {
 	}
 	async hasLoginToken(cb?:Function){
 		if(app.token.accessToken == ''){
-			const redirect = await this.currentPage();
-			uni.redirectTo({
-				url:`/pages/login/login?redirect=/${redirect}`
-			})
+			const redirect:any = await this.currentPage();
+			app.login.arouseLogin(`/${redirect}`)
 			return;
 		}
 		cb && cb()
@@ -613,9 +611,7 @@ export default class PlatformManager {
 			key = code.match(inviteCode);
 			app.requestKey = key[0];
 			if(app.token.accessToken == ''){
-				uni.navigateTo({
-					url:'/pages/login/login'
-				})
+				app.login.arouseLogin()
 				return;
 			}
 			this.checkShareNo(app.requestKey)

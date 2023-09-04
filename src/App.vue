@@ -127,9 +127,8 @@
 					console.log(e);
 				}
 				app.data = {};
-				uni.navigateTo({
-					url: `/pages/login/login?${query || ""}`,
-				});
+				const params =getUrlData(query[0]=="?"?query:"?"+query)
+				app.login.arouseLogin(params.redirect || "", Boolean(params.return || false))
 			});
 			// #ifdef APP-PLUS
 			// #endif

@@ -140,9 +140,7 @@ export default class ClassName extends BaseNode {
 	getFunc() {
 		// #ifndef MP-WEIXIN
 		if (app.token.accessToken == '') {
-			uni.navigateTo({
-				url: '/pages/login/login'
-			})
+			app.login.arouseLogin()
 			return;
 		}
 		this.pageIndex = 1;

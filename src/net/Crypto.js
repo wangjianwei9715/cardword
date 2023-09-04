@@ -1,3 +1,11 @@
+/*
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-08-17 10:14:04
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-08-29 15:10:35
+ * @FilePath: \jichao_app_2\src\net\Crypto.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { Md5 } from "ts-md5"
 import { app } from "@/app"
 
@@ -120,7 +128,7 @@ function hexEncodeToString(bytes) {
 function decodeByteArrayToString(byteArray) {
     var result = "";
     for (var i = 0; i < byteArray.length; i++) {
-      result += String.fromCharCode(byteArray[i]);
+        result += String.fromCharCode(byteArray[i]);
     }
     return result;
-  }
+}

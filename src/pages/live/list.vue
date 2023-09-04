@@ -82,7 +82,7 @@
 				return;
 			}
 			if (id == 3 && app.token.accessToken == ''){
-				uni.navigateTo({ url:'/pages/login/login' })
+				app.login.arouseLogin()
 				return;
 			}
 			this.liveData = {

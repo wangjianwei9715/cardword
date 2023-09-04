@@ -88,9 +88,7 @@
 		}
 		onClickLive(item:any){
 			if(app.token.accessToken == ''){
-				uni.navigateTo({
-					url:'/pages/login/login'
-				})
+				app.login.arouseLogin()
 				return;
 			}
 			if (item.third && item.third === 1001) {

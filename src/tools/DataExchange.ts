@@ -206,3 +206,16 @@ export const MerchantLevel:{[x:number]:any} = {
     6:{level:'V6',name:'荣耀商家',icon:'v2'},
     7:{level:'V7',name:'荣耀商家',icon:'v2'},
 }
+export const phoneTypeArray = [
+    '+86',
+    '+852',
+    '+853',
+    '+886'
+]
+export const PhoneCodeType={
+    LOGIN:'login',
+    FORGET:"forget",
+    SET_PWD:"setPwd",
+    BIND_PHONE:"bind",
+    CHANGE_BIND_PHONE:"changeBindPhone"
+}

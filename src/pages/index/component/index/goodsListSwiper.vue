@@ -38,7 +38,7 @@
 					if(app.token.accessToken == ''){
 						this.current = val;
 						setTimeout(()=>{ this.current = oldVal; },500)
-						uni.navigateTo({ url:'/pages/login/login' })
+						app.login.arouseLogin()
 						return;
 					}
 					this.$emit('followed')

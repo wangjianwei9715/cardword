@@ -44,7 +44,8 @@ import permision from "@/js_sdk/wa-permission/permission"
 export default class ClassName extends BaseNode {
   settingTab = [
     // { id: 1, name: "修改密码/设置登录密码", url: "/pages/login/change_password" },
-    { id: 1, name: "账号与安全", url: "/pages/userinfo/security/route" },
+    // { id: 1, name: "账号与安全", url: "/pages/userinfo/security/route" },
+    { id: 1, name: "账号与安全", url: "/pages/userinfo/security/route_v3" },
     { id: 2, name: "地址管理", url: "/pages/userinfo/setting_addresses" },
     { id: 3, name: "消息通知", url: "" },
     { id: 7, name: "卡密特效", url: "" },

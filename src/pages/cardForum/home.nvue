@@ -530,7 +530,7 @@ export default {
                 uni.showTabBar({ animation: false })
             }, 300)
             if (app.token.accessToken == '') {
-                uni.navigateTo({ url: '/pages/login/login' })
+                app.login.arouseLogin()
                 return;
             }
             if (item.url) {
@@ -613,6 +613,11 @@ export default {
             })
         },
         reqNewData(isRefresh = false, cb) {
+            if(this.tabs.index==0&&!app.token.accessToken){
+                console.log("return了");
+                app.login.arouseLogin()
+                return
+            }
             let query = {
                 tag: this.current.tag,
                 sequence: this.current.queryParams.sequence

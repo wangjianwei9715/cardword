@@ -187,7 +187,7 @@
 		onClickShops(alias: any) {
 			// #ifndef MP
 			if (app.token.accessToken == "") {
-				uni.navigateTo({ url: "/pages/login/login" });
+				app.login.arouseLogin()
 				return;
 			}
 			// #endif
