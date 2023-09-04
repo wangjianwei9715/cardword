@@ -37,9 +37,9 @@
 		},
 		onLaunch() {
 			// #ifdef APP-PLUS
-			// setTimeout(() => {
-			// 	plus.navigator.closeSplashscreen();
-			// }, 2400);
+			setTimeout(() => {
+				plus.navigator.closeSplashscreen();
+			}, 2400);
 			// #endif
 			console.log("App Launch");
 			//#ifdef APP-PLUS

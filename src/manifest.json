@@ -2,7 +2,7 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.4.53",
+    "versionName" : "3.5.1",
     "versionCode" : 203,
     "transformPx" : false,
     "networkTimeout" : {
@@ -196,8 +196,8 @@
             },
             "splashscreen" : {
                 "useOriginalMsgbox" : true,
-                "iosStyle" : "common",
-                "androidStyle" : "common",
+                "iosStyle" : "storyboard",
+                "androidStyle" : "default",
                 "ios" : {
                     "storyboard" : "unpackage/res/CustomStoryboard.zip"
                 },
@@ -253,6 +253,20 @@
                     "isCloud" : true,
                     "bought" : 1,
                     "pid" : "3617",
+                    "parameters" : {}
+                }
+            },
+            "YD-Login" : {
+                "__plugin_info__" : {
+                    "name" : "易盾号码认证",
+                    "description" : "直连三大运营商，一步校验手机号与当前SIM卡号一致性。优化注册/登录/支付等场景验证流程",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=2274",
+                    "android_package_name" : "com.kawowang.card",
+                    "ios_bundle_id" : "com.kawowang.card",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "2274",
                     "parameters" : {}
                 }
             }
