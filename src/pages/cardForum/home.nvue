@@ -2,9 +2,9 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-06 16:42:45
+ * @LastEditTime: 2023-09-06 16:48:39
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 不使用index抽象索引
 -->
 <template>
     <div class="content cardForumContainer">
@@ -325,11 +325,11 @@ export default {
                     this.reqNewData(true)
                 }
                 //推荐
-                if (this.current.tag === CFTT.ALL.tag) {
+                if (tag === CFTT.ALL.tag) {
                     this.reqAddList()
                 }
                 //栏目
-                if (this.current.tag === CFTT.COLUMN.tag) {
+                if (tag === CFTT.COLUMN.tag) {
                     this.reqsSecialColumnList()
                 }
                 //关注
@@ -506,7 +506,7 @@ export default {
             })
         },
         reqNewData(isRefresh = false, cb) {
-            if (this.tabs.index == CFTT.FOLLOW && !app.token.accessToken) {
+            if (this.current.tag == CFTT.FOLLOW.tag && !app.token.accessToken) {
                 app.login.arouseLogin()
                 return
             }
