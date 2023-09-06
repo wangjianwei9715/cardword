@@ -1,15 +1,21 @@
+<!--
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-08-25 14:42:10
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-09-06 16:39:18
+ * @FilePath: \card-world\src\pages\cardForum\home.nvue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
-    <div class="content" style="display: flex;width: 750rpx;flex-direction: column;align-items: center;">
-        <!--  -->
+    <div class="content cardForumContainer">
         <swiper :duration="300" :style="{ height: app.platform.systemInfo.screenHeight + 'px' }" v-if="initFinish"
             class="swiperContainer" :current="tabs.index" @change="swiperChange" @transition="swiperTransition"
             @animationfinish="swiperChangeAnimationfinish">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
-                <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack" v-if="tabIndex === 2"></image>
-                <div style="position:absolute;display:flex;flex-direction:column;align-items:center;"
-                    :style="{ height: scrollViewHeight + 'px', top: fixedTopHeight + 'px' }">
+                <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack" v-if="tabIndex === CFTT.SHOW.index">
+                </image>
+                <div class="waterContainer" :style="{ height: scrollViewHeight + 'px', top: fixedTopHeight + 'px' }">
                     <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
-
                     <!-- #ifndef APP-NVUE -->
                     <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                         @scrolltolower="loadmoreData(tabIndex)">
@@ -25,7 +31,8 @@
                             <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
                                 <view class="scrollTopicWarp">
                                     <view class="faker_topicItem"></view>
-                                    <view class="topicItem" v-for="item in hotTopics" @click="onClickTopic(item)">
+                                    <view class="topicItem" v-for="item in hotTopics"
+                                        @click="pageJump(`/pages/cardForum/topics/detailPage?id=${item.id}`)">
                                         <view class="topicItem_imageWap">
                                             <image mode="aspectFill" class="topicItem_img"
                                                 :src="parsePic(decodeURIComponent(item.pic))"></image>
@@ -40,26 +47,24 @@
                         </view>
                         <view class="adWrap" v-if="isShowKa && topicAcList && topicAcList.length">
                             <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
-                            <swiper style="width: 730rpx;" :autoplay="true" :circular="true">
+                            <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
                                 <swiper-item v-for="(item, index) in topicAcList" :key="index"
                                     style="position: relative;width: 730rpx;height:160rpx"
-                                    @click="onClickTopicAct($event, item)">
+                                    @click="pageJump(`/pages/cardForum/topics/act?id=${item.id}`)">
                                     <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
                                         mode="aspectFill"></image>
-                                    <!-- <text class="topPushButton" @click="onClickPushTopic($event, item)">我要发布</text> -->
                                 </swiper-item>
                             </swiper>
                         </view>
-                        <div class="adWrap" v-if="tabIndex === 1 && addList && addList.length">
-                            <!-- <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image> -->
-                            <swiper style="width: 730rpx;width: 730rpx;height:160rpx" :autoplay="true" :circular="true">
-                                <swiper-item v-for="(item, index) in addList" :key="index" @click="onClickAdd($event,item)" style="position: relative;">
+                        <div class="adWrap" v-if="tab.tag === CFTT.ALL.tag && addList && addList.length">
+                            <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
+                                <swiper-item v-for="(item, index) in addList" :key="index" @click="onClickAdd($event, item)"
+                                    style="position: relative;">
                                     <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
                                         mode="aspectFill"></image>
                                 </swiper-item>
                             </swiper>
                         </div>
-
                         <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
                             :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40"
                             :isFetchEnd="tab.isFetchEnd" :forumGuide="forumGuide" @firstData="$event => firstData = $event">
@@ -73,7 +78,7 @@
                         @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
                         @firstData="$event => firstData = $event" style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
                         <template v-slot:header>
-                            <header style="align-items: center;" v-if="tabIndex == 2 && tab.firstReqEnd">
+                            <header style="align-items: center;" v-if="tab.tag == CFTT.SHOW.tag && tab.firstReqEnd">
                                 <div class="hotTopicWrap">
                                     <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
                                     <div class="hotTopicRow">
@@ -86,7 +91,8 @@
                                     </div>
                                     <scroll-view scroll-x="true" :show-scrollbar="false" class="hotTopicScroll">
                                         <view class="faker_topicItem"></view>
-                                        <view class="topicItem" v-for="item in hotTopics" @click="onClickTopic(item)">
+                                        <view class="topicItem" v-for="item in hotTopics"
+                                            @click="pageJump(`/pages/cardForum/topics/detailPage?id=${item.id}`)">
                                             <view class="topicItem_imageWap">
                                                 <image mode="aspectFill" class="topicItem_img"
                                                     :src="parsePic(decodeURIComponent(item.pic))"></image>
@@ -94,27 +100,26 @@
                                             </view>
                                             <text class="topicItem_title">{{ item.name }}</text>
                                             <text class="topicItem_dt">{{ item.totalUseNum }}篇动态</text>
-                                            <!-- <text class="topiceActCorner" v-if="item.activity">活动</text> -->
                                         </view>
                                     </scroll-view>
                                 </div>
-                                <div class="adWrap" v-if="tabIndex === 2 && topicAcList && topicAcList.length">
+                                <div class="adWrap" v-if="tab.tag === CFTT.SHOW.tag && topicAcList && topicAcList.length">
                                     <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
-                                    <swiper style="width: 730rpx;width: 730rpx;height:160rpx" :autoplay="true" :circular="true">
+                                    <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
                                         <swiper-item v-for="(item, index) in topicAcList" :key="index"
-                                            style="position: relative;" @click="onClickTopicAct($event, item)">
+                                            style="position: relative;"
+                                            @click="pageJump(`/pages/cardForum/topics/act?id=${item.id}`)">
                                             <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
                                                 mode="aspectFill"></image>
-                                            <!-- <text class="topPushButton" @click="onClickPushTopic($event, item)">我要发布</text> -->
                                         </swiper-item>
                                     </swiper>
                                 </div>
                             </header>
-                            <header style="align-items: center;" v-if="tabIndex == 1 && tab.firstReqEnd">
-                                <div class="adWrap" v-if="tabIndex === 1 && addList && addList.length">
-                                    <swiper style="width: 730rpx;height:160rpx" :autoplay="true" :circular="true">
+                            <header class="ac" v-if="tab.tag === CFTT.ALL.tag && tab.firstReqEnd && addList.length">
+                                <div class="adWrap">
+                                    <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
                                         <swiper-item v-for="(item, index) in addList" :key="index"
-                                            style="position: relative;" @click="onClickAdd($event,item)">
+                                            style="position: relative;" @click="onClickAdd($event, item)">
                                             <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
                                                 mode="aspectFill"></image>
                                         </swiper-item>
@@ -123,7 +128,6 @@
                             </header>
                         </template>
                     </waterfalls>
-
                     <!-- #endif -->
 
                 </div>
@@ -157,119 +161,49 @@
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', transform: 'scale(1)', fontFamily: 'PingFang SC' }"
                 class="tabs" id="tabs" :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs">
                 <template v-slot:showKa>
-                    <image class="showKaImage" v-if="!isShowKa" src="@/static/cardForum/showKa.png"></image>
-                    <image class="showKaImage" v-else src="@/static/cardForum/showKa_select.png"></image>
+                    <image class="showKaImage" v-if="!isShowKa" src="/static/cardForum/showKa.png"></image>
+                    <image class="showKaImage" v-else src="/static/cardForum/showKa_select.png"></image>
                 </template>
             </u-tabs>
         </div>
-        <div class="showKaBottom" ref="showKaBottom" v-if="tabs.index == 2">
+        <div class="showKaBottom" ref="showKaBottom" v-if="isShowKa">
             <div class="showKaTabBar">
-                <div class="tabBarItem" @click="switchTo('/pages/index/index')">
-                    <image class="showKaTabBar_image" src="@/static/index/tabbar/1_.png"></image>
-                    <text class="tabBarText">首页</text>
-                </div>
-                <div class="tabBarItem" @click="switchTo('/pages/illustration/index')">
-                    <image class="showKaTabBar_image" src="@/static/index/tabbar/2_.png"></image>
-                    <text class="tabBarText">图鉴</text>
-                </div>
-                <div class="tabBarItem">
-                    <image class="showKaTabBar_image" src="@/static/index/tabbar/3.png"></image>
-                    <text class="tabBarText">卡圈</text>
-                </div>
-                <div class="tabBarItem" @click="switchTo('/pages/index/message')">
-                    <image class="showKaTabBar_image" src="@/static/index/tabbar/4_.png"></image>
-                    <text class="tabBarText">消息</text>
-                </div>
-                <div class="tabBarItem" @click="switchTo('/pages/index/userinfo_v3')">
-                    <image class="showKaTabBar_image" src="@/static/index/tabbar/5_.png"></image>
-                    <text class="tabBarText">我的</text>
+                <div class="tabBarItem" v-for="(tab, tabIndex) in CardForumTabbar" :key="tabIndex"
+                    @click="app.navigateTo.switchTab(tabIndex)">
+                    <image class="showKaTabBar_image" :src="tab.iconPath"></image>
+                    <text class="tabBarText">{{ tab.text }}</text>
                 </div>
             </div>
             <div :style="{ height: bottomSafeArea + 'px' }"></div>
         </div>
-        <u-action-sheet :actions="actionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
+        <u-action-sheet :actions="ActionsList" cancelText="取消" :show="actionSheet" @select="onSelectAction"
             @close="actionSheet = false"></u-action-sheet>
-
         <guide v-if="forumGuide" :tabs="tabs" :firstData="firstData" @over="guideOver" />
     </div>
 </template>
 <script>
 // #ifdef APP-NVUE
 const animation = uni.requireNativePlugin('animation')
-const dom = uni.requireNativePlugin('dom')
 // #endif
 import waterfalls from "./components/waterfalls.vue"
 import cardSkeleton from "./components/cardSkeleton.vue"
-import { releaseByTopic, mockList } from "./func/index.js"
+import { CardForumTagMap, CardForumTabbar, ActionsList } from "./func/data.js"
 import empty from "@/components/empty/empty.vue"
 import guide from "./components/guide.vue"
 import { Md5 } from "js-md5"
-const actionsList = [
-    {
-        name: "动态",
-        url: "/pages/cardForum/release",
-        fontWeight: 600
-    }, {
-        name: "卡册",
-        subname: "适用于凑套，需图片与卡种对应上传。",
-        url: "/pages/illustration/album/selectCard",
-        fontWeight: 600
-    }
-]
-const tabsList = [
-    {
-        name: '关注',
-        tag: 'follow',
-        url: 'cardCircle/list/me/follow',
-        badge: {
-            show: true,
-            isDot: true,
-            bgColor: "rgba(255, 0, 61,0)"
-        }
-    }, {
-        name: '推荐',
-        tag: 'all'
-    }, {
-        name: 'SHOW卡',
-        tag: 'show'
-    },
-    //  {
-    //     name: '视频',
-    //     tag: 'video'
-    // }, 
-    {
-        name: '卡册',
-        tag: 'album'
-    },
-    //  {
-    //     name: '交流',
-    //     tag: 'swap'
-    // }, 
-    {
-        name: '篮球',
-        tag: 'basket'
-    },
-    {
-        name: '足球',
-        tag: 'foot'
-    },
-    {
-        name: '动漫影视',
-        tag: 'animeTv'
-    },
-    {
-        name: '其他',
-        tag: 'rest'
-    }
-]
 const app = getApp().globalData.app;
+const parsePic = getApp().globalData.parsePic;
+const CFTT = {}
+const tabsList = Object.keys(CardForumTagMap).map((key, index) => {
+    CFTT[key] = { ...CardForumTagMap[key], index }
+    return CardForumTagMap[key]
+})
 const defaultTagObj = {
     queryParams: {
         fetchFrom: 1,
         fetchSize: 10,
         sequence: 0,
     },
-    // totalPage: 10,
     isFetchEnd: false,
     firstReqEnd: false,
     retry: 0,
@@ -284,9 +218,11 @@ export default {
     },
     data() {
         return {
-            parsePic: getApp().globalData.parsePic,
             app,
-            actionsList,
+            parsePic,
+            CFTT,
+            CardForumTabbar,
+            ActionsList,
             actionSheet: false,
             firstReqEnd: false,
             initFinish: false,
@@ -301,11 +237,14 @@ export default {
                 index: 1,
                 list: []
             },
+            column: {
+                select: "",
+                list: []
+            },
             trTimmer: null,
             bottomSafeArea: 0,
             topicAcList: [
             ],
-            oldIndex: 1,
             loadmoreTimer: null,
             forumGuide: app.guide.cardCircle,
             firstData: {},
@@ -319,8 +258,6 @@ export default {
             await app.user.setViewerId()
             this.reqNewData(true)
         } catch (err) {
-            // await this.initTab()
-            // this.reqNewData(true)
         }
     },
     beforeDestroy() {
@@ -339,12 +276,12 @@ export default {
                 // #endif
             }, 100)
             if (uni.getStorageSync('showKace')) {
-                this.tabs.index = 3;
+                this.switchTag(CFTT.ALBUM.index)
                 uni.removeStorageSync('showKace');
             }
             this.getFollowDot()
         })
-        if (this.tabs.index == 2) {
+        if (this.isShowKa) {
             uni.hideTabBar({ animation: false })
         } else {
             uni.showTabBar({ animation: false })
@@ -355,50 +292,52 @@ export default {
             app.guide.cardCircle = false;
             app.platform.finishGuideData(2)
         }
-        this.reqAddList()
-    },
-    onHide(e) {
-    },
-    onTabItemTap(e) {
     },
     computed: {
         current() {
             return this.tabs.list[this.tabs.index]
         },
         isShowKa() {
-            return this.tabs.index === 2
+            return this.current.tag === CFTT.SHOW.tag
         },
         navOpacity() {
-            if (this.tabs.index == 1) {
-                // if (this.dx == app.platform.systemInfo.screenWidth) return 1
+            if (this.tabs.index === (CFTT.SHOW.index - 1)) {
                 return (app.platform.systemInfo.screenWidth - this.dx) / app.platform.systemInfo.screenWidth
             }
             if (this.isShowKa) {
                 if (this.dx <= app.platform.systemInfo.screenWidth && this.dx >= app.platform.systemInfo.screenWidth - 30) return 0
-                // console.log((Math.abs(this.dx)) / app.platform.systemInfo.screenWidth);
                 return (Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
             }
-            if (this.tabs.index === 3 && this.dx < 0) {
+            if (this.tabs.index === (CFTT.SHOW.index + 1) && this.dx < 0) {
                 if (this.dx == -app.platform.systemInfo.screenWidth) return 1
                 return (app.platform.systemInfo.screenWidth - Math.abs(this.dx)) / app.platform.systemInfo.screenWidth
             } else {
                 return 1
             }
-
         }
-
     },
     watch: {
-        'tabs.index': {
+        "current.tag": {
             immediate: true,
-            handler(val) {
-                if (this.tabs.list[val]?.list && (this.tabs.list[val].list.length == 0)) {
+            handler(tag) {
+                if (!tag || !this.current) return
+                if (this.current?.list && this.current.list.length === 0) {
                     this.reqNewData(true)
                 }
-                if (val == 0) {
-                    this.tabs.list[0].badge.bgColor = `rgba(255, 0, 61,0)`
+                //推荐
+                if (this.current.tag === CFTT.ALL.tag) {
+                    this.reqAddList()
                 }
-                if (val == 2) {
+                //栏目
+                if (this.current.tag === CFTT.COLUMN.tag) {
+                    this.reqsSecialColumnList()
+                }
+                //关注
+                if (tag === CFTT.FOLLOW.tag) {
+                    this.setFollowBadge(0)
+                }
+                //Show卡
+                if (tag === CFTT.SHOW.tag) {
                     this.reqTopicAc()
                     uni.hideTabBar({
                         animation: false,
@@ -406,7 +345,6 @@ export default {
                             plus.navigator.setStatusBarStyle("light");
                         }
                     })
-
                     if (!this.hotTopics.length) this.getTopicsList()
                 } else {
                     // #ifdef APP-NVUE
@@ -427,13 +365,9 @@ export default {
             }
         },
         actionSheet: function (val) {
-            if (val) {
-                uni.hideTabBar({ animation: false })
-            } else {
-                setTimeout(() => {
-                    uni.showTabBar({ animation: false })
-                }, 300)
-            }
+            setTimeout(() => {
+                uni.showTabBar({ animation: false })
+            }, val ? 0 : 300)
         }
     },
     methods: {
@@ -454,24 +388,7 @@ export default {
             this.forumGuide = false;
             uni.showTabBar({ animation: false })
         },
-        getFollowDot() {
-            if (!app.token.accessToken) {
-                this.tabs.list[0].badge.bgColor = `rgba(255, 0, 61,0)`
-                return
-            }
-            app.http.Get(`dataApi/cardCircle/me/infor`, {}, (res) => {
-                if (this.tabs.index == 0) {
-                    this.tabs.list[0].badge.bgColor = `rgba(255, 0, 61,0)`
-                    return
-                }
-                this.tabs.list[0] && (this.tabs.list[0].badge.bgColor = `rgba(255, 0, 61,${res.data.isFollow ? 1 : 0})`)
-            })
-        },
-        getTopicsList() {
-            app.http.Get("dataApi/cardCircle/topic/list", { fetchFrom: 1, fetchSize: 15, od: "issue_72:asc", hidePre: 1 }, (res) => {
-                this.hotTopics = res.list || []
-            })
-        },
+
         pageJump(url) {
             uni.navigateTo({
                 url
@@ -489,29 +406,17 @@ export default {
                     .exec();
             })
         },
-        goToDetail(item) {
-            this.pageJump("/pages/cardForum/detail?code=" + item.code)
+        setFollowBadge(opacity) {
+            if (this.tabs[CFTT.FOLLOW.index]) this.tabs[CFTT.FOLLOW.index].badge.bgColor = `rgba(255, 0, 61,${opacity})`
         },
-        clearSeach() {
-            this.current.queryParams.q = ""
+        switchTag(index) {
+            if (this.tabs.index != index) this.tabs.index = index;
         },
         swiperChange(event) {
-            console.log("swiperChangeChange了了了");
             this.tabs.index = event.detail.current
-            if(this.tabs.index==1){
-                this.reqAddList()
-            }
-            // setTimeout(() => {
-            //     this.dx = 0
-            // }, 10)
-        },
-        transitionend(event) {
-            console.log("66666666", event);
         },
         swiperChangeAnimationfinish(event) {
             this.dx = 0
-        },
-        swipertouchmove(event) {
         },
         swiperTransition(event) {
             this.dx = event.detail.dx
@@ -533,35 +438,10 @@ export default {
                 app.login.arouseLogin()
                 return;
             }
-            if (item.url) {
-                uni.navigateTo({
-                    url: item.url
-                })
-            }
-        },
-        switchTo(url) {
-            uni.switchTab({
-                url,
-                success: (res) => {
-                    uni.showTabBar({ animation: false })
-                }
-            })
+            this.pageJump(item.url)
         },
         refreshData(index) {
-            console.log("刷新数据", this.current.isFetchEnd);
             setTimeout(() => {
-                // if (this.current.isFetchEnd) {
-                //     setTimeout(() => {
-                //         this.$refs['waterfalls' + index][0].hideRefresh()
-                //     }, 200);
-                // } else {
-                //     this.current.queryParams.fetchFrom = 1
-                //     this.reqNewData(true, (() => {
-                //         setTimeout(() => {
-                //             this.$refs['waterfalls' + index][0].hideRefresh()
-                //         }, 200);
-                //     }))
-                // }
                 this.current.queryParams.fetchFrom = 1
                 this.current.queryParams.sequence = 0
                 this.reqNewData(true, (() => {
@@ -572,10 +452,8 @@ export default {
             }, 1000)
         },
         loadmoreData(index) {
-            // console.log("loadmoreData=>loadmoreData");
             this.loadmoreTimer && clearTimeout(this.loadmoreTimer)
             this.loadmoreTimer = setTimeout(() => {
-                // console.log("this.current.isFetchEnd=>", this.current.isFetchEnd);
                 if (!this.current.isFetchEnd) {
                     this.current.queryParams.fetchFrom += this.current.queryParams.fetchSize
                     this.current.queryParams.sequence += 1
@@ -583,23 +461,32 @@ export default {
                 }
             }, 300)
         },
-        onClickTopic(item) {
-            uni.navigateTo({
-                url: `/pages/cardForum/topics/detailPage?id=${item.id}`
-            })
-        },
-        onClickTopicAct(event, item) {
-            this.pageJump(`/pages/cardForum/topics/act?id=${item.id}`)
-        },
-        onClickAdd(event,item){
+        onClickAdd(event, item) {
             app.navigateTo.navigateToAD(item.target)
         },
         onClickPushTopic(event, item) {
             // #ifdef APP-NVUE
             event.stopPropagation();
             // #endif
-            this.onClickTopic(item)
-            // this.pageJump(`/pages/cardForum/topics/act?id=${item.id}`)
+            this.pageJump(`/pages/cardForum/topics/detailPage?id=${item.id}`)
+        },
+        getFollowDot() {
+            if (!app.token.accessToken) {
+                this.setFollowBadge(0)
+                return
+            }
+            app.http.Get(`dataApi/cardCircle/me/infor`, {}, (res) => {
+                if (this.current.tag == CFTT.FOLLOW.tag) {
+                    this.setFollowBadge(0)
+                    return
+                }
+                this.setFollowBadge(res.data.isFollow ? 1 : 0)
+            })
+        },
+        getTopicsList() {
+            app.http.Get("dataApi/cardCircle/topic/list", { fetchFrom: 1, fetchSize: 15, od: "issue_72:asc", hidePre: 1 }, (res) => {
+                this.hotTopics = res.list || []
+            })
         },
         reqTopicAc() {
             app.http.Get(`dataApi/cardCircle/topic/banner/list`, {}, (res) => {
@@ -608,22 +495,25 @@ export default {
         },
         reqAddList() {
             app.http.Get("dataApi/cardCircle/addList", {}, (res) => {
-                // console.log(res);
                 this.addList = res.list || []
             })
         },
+        reqsSecialColumnList() {
+            app.http.Get(`dataApi/cardCircle/specialColumn`, {}, (res) => {
+                this.column.list = res.list || []
+            })
+        },
         reqNewData(isRefresh = false, cb) {
-            if(this.tabs.index==0&&!app.token.accessToken){
-                console.log("return了");
+            if (this.tabs.index == CFTT.FOLLOW && !app.token.accessToken) {
                 app.login.arouseLogin()
                 return
             }
             let query = {
                 tag: this.current.tag,
-                sequence: this.current.queryParams.sequence
+                sequence: this.current.queryParams.sequence //滚动序列 从0开始
             }
-            const array = ["all", "album", "basket"]
-            if (!array.includes(this.current.tag)) {
+            //去请求非roll接口的类型
+            if (!this.current.roll) {
                 query = {
                     ...this.current.queryParams,
                     ...query
@@ -638,13 +528,13 @@ export default {
                     query.sn = Md5.hashStr(`${query.st}_${query.scrollId}_scrollSearchTujian`)
                 }
             }
-            const url = array.includes(this.current.tag) ? `dataApi/${this.current.url || "cardCircle/roll"}` : `dataApi/${this.current.url || "cardCircle/list"}`
-            console.log("请求的", url, query);
+            //存在自定义url优先使用
+            const url = `dataApi/${this.current.url ?? (this.current.roll ? "cardCircle/roll" : "cardCircle/list")}`
             app.http.GetWithCrypto(url, query, (res) => {
-                // console.log("响应的结果", res);
                 let list = res.list || []
                 // #ifdef APP-NVUE
                 list = (res.list || []).map(item => {
+                    //nvue瀑布流下parsePic，有时需要手动更新视图才会显示图片,直接对原数据parsePic
                     item.cover = this.parsePic(decodeURIComponent(item.cover))
                     return item
                 })
@@ -677,7 +567,6 @@ export default {
 <style scoped lang="scss">
 $show-lines: 1;
 
-// @import '@/uni_modules/uv-ui-tools/libs/css/variable.scss';
 // #ifndef APP-NVUE 
 page {
     background-color: #f2f2f2;
@@ -692,11 +581,23 @@ page {
     flex-direction: column;
 }
 
-.fakerView {
-    // background-color: red;
-    width: 750rpx;
+.ac {
+    align-items: center;
 }
 
+.cardForumContainer {
+    display: flex;
+    width: 750rpx;
+    flex-direction: column;
+    align-items: center;
+}
+
+.waterContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .swiperContainer {
     width: 750rpx;
@@ -709,8 +610,6 @@ page {
     height: 1980rpx;
     position: absolute;
     top: 0;
-    // transition-property: opacity;
-    // transition-duration: 0.2s;
 }
 
 .swiperItem {
@@ -733,11 +632,6 @@ page {
     // z-index: 999;
     // background-color: #fff;
 
-}
-
-.scroller {
-    width: 750rpx;
-    background-color: red;
 }
 
 .nav {
@@ -773,23 +667,6 @@ page {
     font-weight: bold;
     line-height: 49rpx;
     color: #FFFFFF;
-}
-
-.search-icon {
-    width: 31rpx;
-    height: 31rpx;
-    margin: 0 10rpx;
-    margin-right: 16rpx;
-    // position: relative;
-    background-color: #dbdbdb;
-    // right: 20rpx;
-    border-radius: 50%;
-}
-
-.search-remove {
-    width: 15rpx;
-    height: 14rpx;
-
 }
 
 .camera {
@@ -969,13 +846,6 @@ page {
     border-radius: 5rpx;
 }
 
-.topicItem_title_wrap {
-    width: 101rpx;
-    // height: 30rpx;
-
-    background-color: red;
-}
-
 .topicItem_title {
     font-size: 21rpx;
     font-family: PingFang SC;
@@ -1012,21 +882,9 @@ page {
     border-radius: 5rpx;
 }
 
-.topPushButton {
-    width: 168rpx;
-    height: 57rpx;
-    background: #FA1545;
-    border-radius: 5rpx;
-
-    right: 50rpx;
-    top: 74rpx;
-    font-size: 25rpx;
-    font-family: PingFang SC;
-    font-weight: bold;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 57rpx;
-    position: absolute;
+.adWrap_swiper {
+    width: 730rpx;
+    height: 160rpx;
 }
 
 .adWrap_img {
@@ -1087,18 +945,5 @@ page {
 .tabBarText {
     color: #ffffff;
     font-size: 10px;
-}
-
-.tabbar_item {
-    // width: 25%;
-    font-size: 31rpx;
-    font-family: PingFang SC;
-    font-weight: bold;
-    color: #aaaaaa;
-    text-align: center;
-}
-
-.tabbar_item_select {
-    color: #FFFFFF;
 }
 </style>

@@ -1,8 +1,8 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-25 20:11:24
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-24 14:26:45
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-09-05 16:38:09
  * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -165,13 +165,49 @@ export function getImageByLocal(item) {
 export function pushImage(item) {
     app.cardForumImgLocal[item.code] = { width: item.width, height: item.height, mode: item.mode }
 }
-export const mockList = [{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.25/template/0/1687677627931owaw5lh2t8.jpg' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.26/goods/pintuan0/16877444345160g177cxxvv.jpeg' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'http://cdn.ka-world.com/admin/2023.06.26/goods/CL5842680/0/1687741972912rcg5fj6jr.jpg' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.06.02/narticle/0/1685695514132vkqnegiq08.png' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/0/1677040405260bb682jm0np.jpg' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2022.10.26/narticle/0/1666765013856gr7mut3izc.jpg' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1641519378736jhpa2j19gh.png' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/16415196284582jjy5sfnnk.png' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/images/seller/pintuan/1640856712466ieazib579.jpg' },
-{ title: "这是表踢踢踢踢踢", desc: "描述描述还是输", cover: 'https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/2023.02.22/narticle/16770400681038j7gxlupox.jpg' },]
+export const CardForumTagMap = {
+    FOLLOW: {
+        name: "关注",
+        tag: "follow"
+    },
+    ALL: {
+        name: "推荐",
+        tag: "all"
+    },
+    SHOW: {
+        name: "SHOW卡",
+        tag: "show"
+    },
+    //  VIDEO:{
+    //     name: '视频',
+    //     tag: 'video'
+    // }, 
+    COLUMN: {
+        name: "专栏",
+        tag: "column"
+    },
+    // SWAP:{
+    //     name: '交流',
+    //     tag: 'swap'
+    // }, 
+    ALBUM: {
+        name: "卡册",
+        tag: "album"
+    },
+    BASKET: {
+        name: "篮球",
+        tag: "basket"
+    },
+    FOOT: {
+        name: "足球",
+        tag: "foot"
+    },
+    ANIME_TV: {
+        name: "动漫影视",
+        tag: "animeTv"
+    },
+    REST: {
+        name: "其他",
+        tag: "rest"
+    }
+}
