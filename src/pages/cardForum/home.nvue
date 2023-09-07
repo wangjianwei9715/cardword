@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-07 17:12:13
+ * @LastEditTime: 2023-09-07 17:25:30
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -170,14 +170,19 @@
                                 </view>
                             </scroll-view>
                         </cell>
-                        <cell style="margin-top: 20rpx;">
+                        <cell v-if="!tab.list.length&&firstReqEnd">
+                            <empty></empty>
+                        </cell>
+                        <cell style="margin-top: 20rpx;" v-if="tab.firstReqEnd">
                             <columnList v-model="tab.list"></columnList>
                         </cell>
                         <cell>
-                            <div><u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx"
+                            <div>
+                                <u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx"
                                     :status="tab.isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
                             </div>
                         </cell>
+
                     </list>
                     <!-- #endif -->
 
@@ -885,6 +890,11 @@ page {
     border-radius: 3rpx;
     //#ifndef APP-NVUE
     transition: background-color 0.2s;
+    //#endif
+    //#ifdef APP-NVUE
+    transition-property: background-color;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
     //#endif
 }
 
