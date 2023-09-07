@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-31 17:02:50
+ * @LastEditTime: 2023-09-07 16:59:09
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -16,14 +16,18 @@
                     <image src="@/static/index/v3/icon_back.png"></image>
                 </view>
                 <view @click="goPersonHome" style="display:flex">
-                    <image :src="forumDetail.avatar ? $parsePic(forumDetail.avatar) : app.defaultAvatar"
-                        class="topAvatar"></image>
+                    <image
+                        :src="forumDetail.avatar ? $parsePic(forumDetail.avatar) : (isColumn ? '/static/userinfo/logo.png' : app.defaultAvatar)"
+                        class="topAvatar">
+                    </image>
+                    </image>
                     <view class="topName u-line-1">{{ forumDetail.userName || "获取中" }}</view>
                 </view>
                 <view class="flex1"></view>
-                <view class="follow flexCenter" v-if="!isPerson" :class="{ follow_dis: isFollow }" @click="onClickFollow">{{
-                    isFollow ? '已关注'
-                    : '关注' }}</view>
+                <view class="follow flexCenter" v-if="!isPerson && !isColumn" :class="{ follow_dis: isFollow }"
+                    @click="onClickFollow">{{
+                        isFollow ? '已关注'
+                        : '关注' }}</view>
                 <!-- v-if="!isPerson"
                 v-if="isPerson" -->
                 <view @click="actionSheetShow = true" v-if="isPerson" style="margin-right: 20rpx;">
@@ -40,7 +44,7 @@
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
 
         <albumSwiper v-if="isAlbum" :forumDetail="forumDetail" :code="code" :swiperCurrent.sync="swiperCurrent" />
-        <view class="swiper" v-else>
+        <view class="swiper" v-if="!isColumn && !isAlbum">
             <!-- @click="onClickSwiper -->
             <u-swiper imgMode="aspectFit" @click="onClickSwiper" :current="swiperCurrent" :indicator="false" bgColor="#fff"
                 :height="picHeight || 400" :interval="3000" radius="1rpx" :list="pics" @change="swiperChange"></u-swiper>
@@ -58,16 +62,25 @@
 
         <view class="contentContainer">
             <view class="title">{{ forumDetail.title }}</view>
-            <view class="desc" v-if="forumDetail.content" v-html="decodeURIComponent(forumDetail.content)"></view>
-            <!-- <u-read-more :showHeight="180" closeText="全部" color="#000">
-                
-            </u-read-more> -->
+            <view class="desc" v-if="forumDetail.content && !isColumn" v-html="decodeURIComponent(forumDetail.content)">
+            </view>
+            <template v-if="isColumn">
+                <view v-for="(content, index) in contentArr" :key="index">
+                    <rich-text class="desc ql-editor ql-container" style="width: 100%;min-height: 0;" :nodes="content"
+                        @itemclick="articlePreviewImage" />
+                    <view class="videoContainer" @click="onClickVideoPlay(videoArr[index])" v-if="videoArr[index] !== null">
+                        <image class="desc-video" mode="aspectFill"
+                            :src="`${videoArr[index]}?x-oss-process=video/snapshot,t_0,f_jpg`"></image>
+                        <image src="/static/live/play.png" class="playIcon" mode="widthFix"></image>
+                    </view>
+                </view>
+            </template>
             <view class="topicsContainer"
                 v-if="(forumDetail.topic && forumDetail.topic.length) || (forumDetail.merAt && forumDetail.merAt.length)">
-                <text v-for="(item,index) in forumDetail.topic" :key="index"
+                <text v-for="(item, index) in forumDetail.topic" :key="index"
                     @click.stop="pageJump(`/pages/cardForum/topics/detailPage?id=${item.topicId}`)">{{ item.topicName
                     }}</text>
-                <text v-for="(item,index) in (forumDetail.merAt || [])" :key="index"
+                <text v-for="(item, index) in (forumDetail.merAt || [])" :key="index"
                     @click.stop="pageJump(`/pages/merchant/core?alias=${item.alias}`)">@{{ item.merName
                     }}</text>
             </view>
@@ -84,7 +97,8 @@
             <view class="line"></view>
             <view class="voteContainer" v-if="forumDetail.vote && forumDetail.vote.voteTitle">
                 <view class="voteTitle">投票：{{ forumDetail.vote.voteTitle }}</view>
-                <view class="voteOption" v-for="(item, index) in forumDetail.vote.options" :key="index" @click="onClickVote(item)">
+                <view class="voteOption" v-for="(item, index) in forumDetail.vote.options" :key="index"
+                    @click="onClickVote(item)">
                     <view class="voteGray" :style="{ width: (item.poll / voteTotal) * 100 + '%' }"
                         :class="{ voteGray_select: forumDetail.vote.myOption === item.optionId }"></view>
                     <view class="voteFont" :class="{ voteFont_select: forumDetail.vote.myOption === item.optionId }">{{
@@ -108,8 +122,7 @@
                     heightLight_an: queryParams.noteCommentId && item.id == queryParams.noteCommentId && isScrollEnd,
                     hold: onClickTap && touchId == item.id
                 }">
-                    <muqian-lazyLoad class="avatar"
-                        :src="item.avatar ? $parsePic(item.avatar) : app.defaultAvatar"
+                    <muqian-lazyLoad class="avatar" :src="item.avatar ? $parsePic(item.avatar) : app.defaultAvatar"
                         borderRadius="50%" />
                     <view class="rightWrap">
                         <view class="msgInfo" @click.stop="onClickCom(item, null)">
@@ -129,15 +142,14 @@
                         </view>
                     </view>
                 </view>
-                <view :id="`commId_${son.id}`" class="comBlock comBlock_son" v-for="(son, sonIndex) in item.lower" :key="sonIndex"
-                    @touchstart.stop="touchAction($event, son, item, sonIndex, true)"
+                <view :id="`commId_${son.id}`" class="comBlock comBlock_son" v-for="(son, sonIndex) in item.lower"
+                    :key="sonIndex" @touchstart.stop="touchAction($event, son, item, sonIndex, true)"
                     @touchend.stop="touchAction($event, son, item, sonIndex, true)" @click.stop="onClickCom(item, son)"
                     :class="{
                         heightLight_an: queryParams.noteCommentId && son.id == queryParams.noteCommentId && isScrollEnd,
                         hold: onClickTap && touchId == son.id
                     }">
-                    <muqian-lazyLoad class="avatar"
-                        :src="son.avatar ? $parsePic(son.avatar) : app.defaultAvatar"
+                    <muqian-lazyLoad class="avatar" :src="son.avatar ? $parsePic(son.avatar) : app.defaultAvatar"
                         borderRadius="50%" />
                     <view class="rightWrap">
                         <view class="msgInfo">
@@ -191,8 +203,8 @@
             <view class="wrap">
                 <view class="fakerInput u-line-1" @click="onClickFakerInput">{{ fakerInputVal }}</view>
                 <view class="toolsWrap">
-                    <view class="toolsItem" @click="isPerson ? recGiftShow = true : rewardShow = true"
-                        style="position: relative;bottom: 4rpx;">
+                    <view class="toolsItem" @click="onClickGift" style="position: relative;bottom: 4rpx;"
+                        :style="{ opacity: isColumn ? 0 : 1 }">
                         <image src="@/static/cardForum/gift.png" style="width:37rpx;height:40rpx;transform: scale(1.15);" />
                         <view class="num" style="position: relative;top: 8rpx;font-size: 21rpx;">打赏</view>
                     </view>
@@ -242,6 +254,8 @@ import rewardPop from "./components/rewardPop.vue"
 import CardForum from "./interface/public";
 import { UserStreamline } from "@/manager/userManager"
 import { followActionByUser, getForumDetail, ossStitching } from "./func/index"
+//@ts-ignore
+import { ArticleTpMap, BitMap } from "./func/data.js"
 import { comment_reason_tp } from "@/tools/DataExchange"
 import recGift from "./components/recGift.vue"
 import albumSwiper from "./components/album/albumSwiper.vue"
@@ -258,12 +272,6 @@ const PersonSheet: Array<Sheet> = [
     { name: "编辑内容", behavior: "goEdit" },
     { name: "删除此动态", behavior: "deleteForum", color: "#fb374e" }
 ]
-enum ForumBit {
-    IS_PERSON = 1,//本人
-    IS_FOLLOW = 2,//关注
-    IS_LIKE = 4,//点赞
-    IS_COLLECTION = 8//收藏
-}
 const queryParams: CardForum.QueryByFetch = {
     fetchFrom: 1,
     fetchSize: 10
@@ -314,6 +322,8 @@ export default class ClassName extends BaseNode {
     private: boolean = false
     fromUserId: number = 0
     picHeight: number = 0
+    videoArr: any = []
+    contentArr: Array<string> = []
     onLoad(query: any) {
         delete this.queryParams.noteCommentId
         this.queryParams.fetchFrom = 1
@@ -343,19 +353,22 @@ export default class ClassName extends BaseNode {
         this.getCommByWorks()
     }
     public get isAlbum(): boolean {
-        return this.forumDetail.tp == 3
+        return this.forumDetail.tp == ArticleTpMap.Album
+    }
+    public get isColumn(): boolean {
+        return this.forumDetail.tp == ArticleTpMap.Column
     }
     public get isPerson(): boolean {
-        return (this.forumDetail.bit & ForumBit.IS_PERSON) === ForumBit.IS_PERSON
+        return (this.forumDetail.bit & BitMap.IS_PERSON) === BitMap.IS_PERSON
     }
     public get isFollow(): boolean {
-        return (this.forumDetail.bit & ForumBit.IS_FOLLOW) === ForumBit.IS_FOLLOW
+        return (this.forumDetail.bit & BitMap.IS_FOLLOW) === BitMap.IS_FOLLOW
     }
     public get isLike(): boolean {
-        return (this.forumDetail.bit & ForumBit.IS_LIKE) === ForumBit.IS_LIKE
+        return (this.forumDetail.bit & BitMap.IS_LIKE) === BitMap.IS_LIKE
     }
     public get isCollection(): boolean {
-        return (this.forumDetail.bit & ForumBit.IS_COLLECTION) === ForumBit.IS_COLLECTION
+        return (this.forumDetail.bit & BitMap.IS_COLLECT) === BitMap.IS_COLLECT
     }
     public get inputPlaceholder() {
         if (this.clickCom.id) {
@@ -475,6 +488,7 @@ export default class ClassName extends BaseNode {
         })
     }
     goPersonHome() {
+        if (this.isColumn) return
         if (this.userBack && this.fromUserId == this.authorInfo.userId) {
             app.platform.pageBack()
             return
@@ -553,32 +567,6 @@ export default class ClassName extends BaseNode {
         //#endif
     }
     pickUpActionSheet(item: any) {
-        //#ifdef APP-PLUS
-        // plus.nativeUI.actionSheet({
-        //     cancel: "取消",
-        //     buttons: this.comment_reason_tp.map((item: any) => {
-        //         return {
-        //             title: item.label
-        //         }
-        //     })
-        // }, (e: any) => {
-        //     if (e.index == 0) return
-        //     const value = this.comment_reason_tp[e.index - 1].value
-        //     if (!value || !item.id) {
-        //         uni.showToast({
-        //             title: "举报失败",
-        //             icon: "none"
-        //         })
-        //         return
-        //     }
-        //     app.http.Post("comment/report/" + item.id, { tp: 3, reason_tp: value }, (res: any) => {
-        //         uni.showToast({
-        //             title: "举报成功",
-        //             icon: "none"
-        //         })
-        //     })
-        // })
-        //#endif
         uni.navigateTo({
             url: `/pages/cardForum/report?source=${3}&dtCode=${this.code}&target=${item.id}&byInformer=${item.userId}`
         })
@@ -589,8 +577,6 @@ export default class ClassName extends BaseNode {
             content: `是否删除"${item.content.length <= 15 ? item.content : item.content.slice(0, 15) + "..."}"评论?`,
             success: (res: any) => {
                 if (res.confirm) {
-                    // cardCircle/comment/delete/
-                    // portableCard/works/comment/delete/
                     app.http.Post("cardCircle/comment/delete/" + item.id, {}, () => {
                         if (isSon) {
                             fatherItem.lower.splice(index, 1)
@@ -606,12 +592,15 @@ export default class ClassName extends BaseNode {
         })
     }
     onSelectActionSheet(item: Sheet) {
-        console.log(item);
         if (item.behavior) {
             //@ts-ignore
             this[item.behavior] && this[item.behavior]()
             return
         }
+    }
+    onClickGift() {
+        if (this.isColumn) return
+        this.isPerson ? this.recGiftShow = true : this.rewardShow = true
     }
     goEdit() {
         this.pageJump("/pages/cardForum/release?code=" + this.code)
@@ -665,7 +654,7 @@ export default class ClassName extends BaseNode {
         app.http.Post(`cardCircle/${this.isLike ? 'un/' : ''}like/${this.code}`, {}, (res: any) => {
             if (this.isLike) this.forumDetail.likeNum -= 1
             if (!this.isLike) this.forumDetail.likeNum += 1
-            this.forumDetail.bit ^= ForumBit.IS_LIKE;
+            this.forumDetail.bit ^= BitMap.IS_LIKE;
             uni.$emit("cardForumLike", { code: this.code, bit: this.forumDetail.bit, likeNum: this.forumDetail.likeNum })
         })
     }
@@ -673,12 +662,12 @@ export default class ClassName extends BaseNode {
         app.http.Post(`cardCircle/${this.isCollection ? 'un/' : ''}collect/${this.code}`, {}, (res: any) => {
             if (this.isCollection) this.forumDetail.collectNum -= 1
             if (!this.isCollection) this.forumDetail.collectNum += 1
-            this.forumDetail.bit ^= ForumBit.IS_COLLECTION;
+            this.forumDetail.bit ^= BitMap.IS_COLLECT;
         })
     }
     onClickFollow() {
         followActionByUser(this.forumDetail.userId, this.isFollow).then(() => {
-            this.forumDetail.bit ^= ForumBit.IS_FOLLOW;
+            this.forumDetail.bit ^= BitMap.IS_FOLLOW;
         })
     }
     onClickLoadMore(item: CardForum.CommentFather) {
@@ -757,6 +746,19 @@ export default class ClassName extends BaseNode {
                 }
             }).exec();
     }
+    articlePreviewImage(e: any) {
+        const item = e.detail.node;
+        if (item.name == 'img') {
+            uni.previewImage({
+                urls: [item.attrs.src]
+            });
+        }
+    }
+    onClickVideoPlay(path: string) {
+        uni.navigateTo({
+            url: `/pages/cardForum/videoPlay?path=${encodeURIComponent(path)}&showDel=false`
+        })
+    }
     onEditCardForum(res: any) {
         if (res.code == this.code) {
             setTimeout(() => {
@@ -772,41 +774,60 @@ export default class ClassName extends BaseNode {
     }
     reqNewData(cb?: any) {
         getForumDetail(this.code).then((res: any) => {
-            if (res.data.tp === 2) {
-                uni.redirectTo({
-                    url: `/pages/cardForum/video/index?code=${this.code}&fromMine=1`
-                })
-                return
-            }
+            if (res.data.content) res.data.content = decodeURIComponent(res.data.content)
             this.forumDetail = res.data as CardForum.ForumDetail || {}
             this.authorInfo = {
                 userId: this.forumDetail.userId,
                 userName: this.forumDetail.userName,
                 avatar: this.forumDetail.avatar
             }
-            this.pics = res.data.url.split(",").filter(Boolean).map((url: string) => {
-                //@ts-ignore
-                return this.replacePic(this.$parsePic(url))
-            })
-            this.pics.forEach((pic: string, index) => {
-                uni.getImageInfo({
-                    src: ossStitching(pic, 'x-oss-process=image/resize,p_1'),
-                    success: (res: any) => {
-                        if (res.width < WIDTH) {
-                            res.height = (WIDTH / res.width) * res.height
-                            res.width = WIDTH
-                        }
-                        let widthFixHeight = (WIDTH / res.width) * res.height
-                        if (widthFixHeight > MaxHeight) widthFixHeight = MaxHeight
-                        if (widthFixHeight > this.picHeight) this.picHeight = widthFixHeight
-                    }
+            if (res.data.tp === ArticleTpMap.Video) {
+                uni.redirectTo({
+                    url: `/pages/cardForum/video/index?code=${this.code}&fromMine=1`
                 })
-            })
-            if (res.state == 2 && (res.data.bit & ForumBit.IS_PERSON) == ForumBit.IS_PERSON) {
+                return
+            }
+
+            let content = res.data.content
+            if (res.data.tp !== ArticleTpMap.Column) {
+                this.pics = res.data.url.split(",").filter(Boolean).map((url: string) => {
+                    //@ts-ignore
+                    return this.replacePic(this.$parsePic(url))
+                })
+                this.pics.forEach((pic: string, index) => {
+                    uni.getImageInfo({
+                        src: ossStitching(pic, 'x-oss-process=image/resize,p_1'),
+                        success: (res: any) => {
+                            if (res.width < WIDTH) {
+                                res.height = (WIDTH / res.width) * res.height
+                                res.width = WIDTH
+                            }
+                            let widthFixHeight = (WIDTH / res.width) * res.height
+                            if (widthFixHeight > MaxHeight) widthFixHeight = MaxHeight
+                            if (widthFixHeight > this.picHeight) this.picHeight = widthFixHeight
+                        }
+                    })
+                })
+                this.dotContainerWidth = this.dotWidth * (this.pics.length > 5 ? 5 : this.pics.length)
+            } else {
+                console.log(this.forumDetail.content);
+                const arr = decodeURIComponent(content).split('</iframe>');
+                const reg = /<iframe([\s\S]*)/g;
+                for (let i in arr) {
+                    const item = arr[i];
+                    const urlMatch = item.match(/<iframe[\s\S]*src=\"(.*?)\"/);
+                    if (urlMatch && urlMatch.length > 1) {
+                        this.videoArr[i] = urlMatch[1];
+                    } else {
+                        this.videoArr[i] = null;
+                    }
+                    this.contentArr[i] = item.replace(reg, '');
+                }
+            }
+            if (res.state == 2 && (res.data.bit & BitMap.IS_PERSON) == BitMap.IS_PERSON) {
                 this.private = true
             }
-            this.dotContainerWidth = this.dotWidth * (this.pics.length > 5 ? 5 : this.pics.length)
-            let content = decodeURIComponent(res.data.content)
+
             this.shareData = {
                 shareUrl: `share/${app.localTest ? 'testH5' : 'h5'}/#/pages/cardForum/detail?code=${this.code}`,
                 title: res.data.title,
@@ -816,9 +837,11 @@ export default class ClassName extends BaseNode {
             }
             this.getCommByWorks()
         }).catch((err: any) => {
+            console.log(err);
+
             uni.showModal({
                 title: "提示",
-                content: err.msg,
+                content: err.msg || err,
                 showCancel: false,
                 success: (res: any) => {
                     if (res.confirm) app.platform.pageBack()
@@ -910,6 +933,23 @@ export default class ClassName extends BaseNode {
 .follow_dis {
     color: #fff;
     background-color: #c9d0d7;
+}
+
+.videoContainer {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+
+    .playIcon {
+        width: 70rpx;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+    }
 }
 
 .topicsContainer {
@@ -1059,6 +1099,10 @@ export default class ClassName extends BaseNode {
         text-align: left;
         white-space: pre-wrap;
         word-wrap: break-word;
+    }
+
+    .desc-video {
+        width: 100%;
     }
 
     .time {

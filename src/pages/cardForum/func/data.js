@@ -24,8 +24,7 @@ export const CardForumTagMap = {
     // }, 
     COLUMN: {
         name: "专栏",
-        tag: "column",
-        url: "cardCircle/specialColumn/list"
+        tag: "sc",
     },
     // SWAP:{
     //     name: '交流',
@@ -93,3 +92,18 @@ export const ActionsList = [
         fontWeight: 600
     }
 ]
+//文章类型
+export const ArticleTpMap = {
+    CardForum: 1,
+    Video: 2,
+    Album: 3,
+    HitCard: 4,
+    Column: 5
+}
+//bit类型
+export const BitMap = {
+    IS_PERSON: 1,
+    IS_FOLLOW: 2,
+    IS_LIKE: 4,
+    IS_COLLECT: 8
+}
