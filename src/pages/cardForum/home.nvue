@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-07 17:25:30
+ * @LastEditTime: 2023-09-07 18:05:59
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -10,7 +10,7 @@
     <div class="content cardForumContainer">
         <swiper :duration="300" :style="{ height: app.platform.systemInfo.screenHeight + 'px' }" v-if="initFinish"
             class="swiperContainer" :current="tabs.index" @change="swiperChange" @transition="swiperTransition"
-            @animationfinish="swiperChangeAnimationfinish">
+            @animationfinish="dx = 0">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack" v-if="tabIndex === CFTT.SHOW.index">
                 </image>
@@ -23,7 +23,7 @@
                     <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                         @scrolltolower="loadmoreData(tabIndex)">
                         <!-- show卡板块热门话题 -->
-                        <view class="hotTopicWrap" v-if="isShowKa && tab.firstReqEnd">
+                        <view class="hotTopicWrap" v-if="tab.tag === CFTT.SHOW.tag && tab.firstReqEnd">
                             <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
                             <view class="hotTopicRow">
                                 <image src="@/static/cardForum/star.png" class="star"></image>
@@ -50,7 +50,7 @@
                             </scroll-view>
                         </view>
                         <!-- show卡板块广告 -->
-                        <view class="adWrap" v-if="isShowKa && topicAcList && topicAcList.length">
+                        <view class="adWrap" v-if="tab.tag === CFTT.SHOW.tag && topicAcList && topicAcList.length">
                             <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
                             <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
                                 <swiper-item v-for="(item, index) in topicAcList" :key="index"
@@ -152,11 +152,14 @@
                             </header>
                         </template>
                     </waterfalls>
+                    <!-- 专栏 -->
                     <list v-if="tab.tag === CFTT.COLUMN.tag" :show-scrollbar="false" @loadmore="loadmoreData(tabIndex)">
                         <refresh display="show" @refresh="refreshData(tabIndex)"
                             :display="columnRefreshing ? 'show' : 'hide'" class="refresh">
                             <u-loading-icon mode="semicircle"></u-loading-icon>
                         </refresh>
+                        <cell ref="goTop">
+                        </cell>
                         <cell>
                             <scroll-view scroll-x="true" :show-scrollbar="false" class="columnScroll">
                                 <view class="columnScrollWrap">
@@ -170,7 +173,7 @@
                                 </view>
                             </scroll-view>
                         </cell>
-                        <cell v-if="!tab.list.length&&firstReqEnd">
+                        <cell v-if="!tab.list.length && firstReqEnd">
                             <empty></empty>
                         </cell>
                         <cell style="margin-top: 20rpx;" v-if="tab.firstReqEnd">
@@ -317,6 +320,7 @@ export default {
             await app.user.setViewerId()
             this.reqNewData(true)
         } catch (err) {
+
         }
     },
     beforeDestroy() {
@@ -411,12 +415,7 @@ export default {
                     // #ifdef APP-NVUE
                     const ref = this.$refs['showKaBottom']
                     const duration = 0
-                    animation.transition(ref, {
-                        styles: {
-                            opacity: `0`
-                        },
-                        duration
-                    })
+                    animation.transition(ref, { styles: { opacity: `0` }, duration })
                     // #endif
                     uni.showTabBar({ animation: false })
                     // #ifdef APP-NVUE
@@ -480,16 +479,19 @@ export default {
         swiperChange(event) {
             this.tabs.index = event.detail.current
         },
-        swiperChangeAnimationfinish(event) {
-            this.dx = 0
-        },
         swiperTransition(event) {
             this.dx = event.detail.dx
         },
         tabClick(event) {
             if (event.index == this.tabs.index) {
                 //#ifdef APP-NVUE
-                this.$refs[`waterfalls${this.tabs.index}`][0].goTop()
+                if (this.current.tag !== CFTT.COLUMN.tag) this.$refs[`waterfalls${this.tabs.index}`][0].goTop()
+                if (this.current.tag === CFTT.COLUMN.tag) {
+                    const dom = weex.requireModule('dom')
+                    dom.scrollToElement(this.$refs.goTop[0], {
+                        animated: true
+                    })
+                }
                 //#endif
                 return
             }
@@ -515,7 +517,10 @@ export default {
                 this.reqNewData(true, (() => {
                     if (onPull) {
                         setTimeout(() => {
-                            if (this.current.tag === CFTT.COLUMN.tag) this.columnRefreshing = false
+                            if (this.current.tag === CFTT.COLUMN.tag) {
+                                this.columnRefreshing = false
+                                return
+                            }
                             this.$refs['waterfalls' + index][0] && this.$refs['waterfalls' + index][0].hideRefresh()
                         }, 200);
                     }
@@ -574,7 +579,6 @@ export default {
         },
         reqsSecialColumnList() {
             app.http.Get(`dataApi/cardCircle/specialColumn`, {}, (res) => {
-                // console.log(res.list);
                 this.column.list = res.list || []
             })
         },
@@ -620,9 +624,7 @@ export default {
                 this.current.isFetchEnd = res.isFetchEnd
                 if (res.scrollId) this.current.queryParams.scrollId = res.scrollId
                 if (res.st) this.current.queryParams.st = res.st
-                if (isRefresh) {
-                    this.current.list = []
-                }
+                if (isRefresh) this.current.list = []
                 this.current.list.push(...list)
                 this.current.firstReqEnd = true
                 this.current.retry = 0

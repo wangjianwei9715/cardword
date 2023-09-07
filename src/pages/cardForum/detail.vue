@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-07 17:15:41
+ * @LastEditTime: 2023-09-07 17:43:12
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -28,17 +28,11 @@
                     @click="onClickFollow">{{
                         isFollow ? '已关注'
                         : '关注' }}</view>
-                <!-- v-if="!isPerson"
-                v-if="isPerson" -->
                 <view @click="actionSheetShow = true" v-if="isPerson" style="margin-right: 20rpx;">
                     <u-icon size="46rpx" color="#464646" name="more-dot-fill"></u-icon>
                 </view>
                 <image src="/static/goods/v2/icon_share.png" style="width:38rpx;height:38rpx" @click="operationShow = true">
                 </image>
-                <!-- <u-icon name="share-square" color="#6c6969" size="28" @click="operationShow = true"></u-icon> -->
-                <!-- <view @click="actionSheetShow = true" v-if="isMy">
-                    <u-icon size="46rpx" color="#737070" name="more-dot-fill"></u-icon>
-                </view> -->
             </view>
         </view>
         <view style="height:88rpx" :style="{ paddingTop: app.statusBarHeight + 'px', }"></view>
@@ -193,7 +187,6 @@
                     <u-loading-icon mode="circle" color="#ff013d" style="position: relative;right:60rpx"
                         v-if="item.loading"></u-loading-icon>
                 </view>
-                <!-- <view class="line" v-if="index + 1 < commList.length"></view> -->
             </view>
         </view>
         <forumEmpty @onClickButton="onClickFakerInput" v-if="!commList.length"></forumEmpty>
@@ -448,7 +441,6 @@ export default class ClassName extends BaseNode {
     }
     //发布评论或回复
     pushOrReply(id: number, item: CardForum.CommentFather) {
-        // cardCircle/comment
         const requestUrl = `cardCircle/comment/${id == 0 ? "issue" : "reply"}/${id || this.code}`
         app.http.Post(requestUrl, { content: this.sayContent }, (res: any) => {
             const same = {
@@ -498,7 +490,6 @@ export default class ClassName extends BaseNode {
         })
     }
     onClickCom(item: CardForum.CommentFather, son: CardForum.Comment | null) {
-        console.log(item, son);
         if (this.onClickTap || this.touchId) return
         this.focus = true
         if (!item.id) return
@@ -521,8 +512,6 @@ export default class ClassName extends BaseNode {
         if (event.type == "touchstart") {
             this.lontapTimer && clearTimeout(this.lontapTimer)
             this.lontapTimer = setTimeout(() => {
-                console.log("按住了0.7s");
-                // if (item.host || this.isMy) this.longtapCom(item, fatherItem, index, isSon) 
                 this.longtapCom(item, fatherItem, index, isSon)
             }, 700)
             this.tapTimer = setTimeout(() => {
@@ -534,7 +523,6 @@ export default class ClassName extends BaseNode {
 
     }
     longtapCom(item: any, fatherItem: any, index: number, isSon: boolean) {
-        console.log("longtapCom", item);
         this.touchId = item.id
         let buttons: any = [
             {
