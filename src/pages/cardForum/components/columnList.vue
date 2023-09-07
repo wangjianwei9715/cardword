@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-07 09:51:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-07 15:56:30
+ * @LastEditTime: 2023-09-07 17:17:27
  * @FilePath: \card-world\src\pages\cardForum\components\columnList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,11 +32,11 @@
                 </div>
                 <div class="columnWrap_bottom uni-flex ac fdr">
                     <div class="columnWrap_bottom_left uni-flex ac flex1 fdr">
-                        <div class="bottomItem" style="margin-right: 30rpx;">
+                        <div class="bottomItem uni-flex fdr ac" style="margin-right: 30rpx;">
                             <image class="infoImg" mode="widthFix" src="/static/cardForum/comm.png"></image>
                             <text class="infoNum">{{ item.commentNum }}</text>
                         </div>
-                        <div class="bottomItem" @click.stop="onClickLike($event, item)">
+                        <div class="bottomItem uni-flex fdr ac" @click.stop="onClickLike($event, item)">
                             <image class="infoImg" mode="widthFix" src="/static/cardForum/comm_dz.png" v-if="!isLike(item)">
                             </image>
                             <image class="infoImg" mode="widthFix" src="/static/cardForum/comm_dz_s.png" v-else></image>

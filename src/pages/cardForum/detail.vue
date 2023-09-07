@@ -3,7 +3,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-07 16:59:09
+ * @LastEditTime: 2023-09-07 17:15:41
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -789,11 +789,11 @@ export default class ClassName extends BaseNode {
             }
 
             let content = res.data.content
+            this.pics = res.data.url.split(",").filter(Boolean).map((url: string) => {
+                //@ts-ignore
+                return this.replacePic(this.$parsePic(url))
+            })
             if (res.data.tp !== ArticleTpMap.Column) {
-                this.pics = res.data.url.split(",").filter(Boolean).map((url: string) => {
-                    //@ts-ignore
-                    return this.replacePic(this.$parsePic(url))
-                })
                 this.pics.forEach((pic: string, index) => {
                     uni.getImageInfo({
                         src: ossStitching(pic, 'x-oss-process=image/resize,p_1'),
@@ -810,7 +810,6 @@ export default class ClassName extends BaseNode {
                 })
                 this.dotContainerWidth = this.dotWidth * (this.pics.length > 5 ? 5 : this.pics.length)
             } else {
-                console.log(this.forumDetail.content);
                 const arr = decodeURIComponent(content).split('</iframe>');
                 const reg = /<iframe([\s\S]*)/g;
                 for (let i in arr) {
@@ -831,14 +830,12 @@ export default class ClassName extends BaseNode {
             this.shareData = {
                 shareUrl: `share/${app.localTest ? 'testH5' : 'h5'}/#/pages/cardForum/detail?code=${this.code}`,
                 title: res.data.title,
-                summary: content ? (content.length > 20 ? content.substr(0, 20) + '...' : content) : "我发现了一篇精彩动态",
+                summary: res.data.tp == ArticleTpMap.Column ? "" : content ? (content.length > 20 ? content.substr(0, 20) + '...' : content) : "我发现了一篇精彩动态",
                 //@ts-ignore
                 thumb: ossStitching(this.pics[0], 'x-oss-process=image/resize,h_100,w_100')
             }
             this.getCommByWorks()
         }).catch((err: any) => {
-            console.log(err);
-
             uni.showModal({
                 title: "提示",
                 content: err.msg || err,

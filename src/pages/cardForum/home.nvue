@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-06 16:48:39
+ * @LastEditTime: 2023-09-07 17:12:13
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -14,11 +14,15 @@
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack" v-if="tabIndex === CFTT.SHOW.index">
                 </image>
+                <div style="background-color: #ffffff;" class="showKaBack" v-if="tabIndex === CFTT.COLUMN.index">
+                </div>
                 <div class="waterContainer" :style="{ height: scrollViewHeight + 'px', top: fixedTopHeight + 'px' }">
+                    <!-- 骨架 -->
                     <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
                     <!-- #ifndef APP-NVUE -->
                     <scroll-view scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
                         @scrolltolower="loadmoreData(tabIndex)">
+                        <!-- show卡板块热门话题 -->
                         <view class="hotTopicWrap" v-if="isShowKa && tab.firstReqEnd">
                             <image src="@/static/cardForum/hotCard.png" class="hotTopicWrap_img"></image>
                             <view class="hotTopicRow">
@@ -45,6 +49,7 @@
                                 </view>
                             </scroll-view>
                         </view>
+                        <!-- show卡板块广告 -->
                         <view class="adWrap" v-if="isShowKa && topicAcList && topicAcList.length">
                             <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
                             <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
@@ -56,6 +61,7 @@
                                 </swiper-item>
                             </swiper>
                         </view>
+                        <!-- 推荐板块广告 -->
                         <div class="adWrap" v-if="tab.tag === CFTT.ALL.tag && addList && addList.length">
                             <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
                                 <swiper-item v-for="(item, index) in addList" :key="index" @click="onClickAdd($event, item)"
@@ -65,18 +71,36 @@
                                 </swiper-item>
                             </swiper>
                         </div>
-                        <waterfalls style="width:750rpx;padding-top: 10rpx;" v-if="tab.list.length" v-model="tab.list"
-                            :add-time="50" column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40"
+                        <!-- 类目专栏 -->
+                        <template v-if="tab.tag === CFTT.COLUMN.tag">
+                            <scroll-view scroll-x="true" :show-scrollbar="false" class="columnScroll">
+                                <view class="columnScrollWrap">
+                                    <view class="columnItem" @click="onClickColumn($event, columnItem)"
+                                        :class="{ columnItem_select: columnItem.name === column.select }"
+                                        v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
+                                        <text class="columnItem_text"
+                                            :class="{ columnItem_text_select: columnItem.name === column.select }">{{
+                                                columnItem.name }}</text>
+                                    </view>
+                                </view>
+                            </scroll-view>
+                            <columnList v-model="tab.list" style="margin-top: 20rpx;width: 730rpx;"></columnList>
+                        </template>
+                        <!-- 瀑布流组件 -->
+                        <waterfalls style="width:750rpx;padding-top: 10rpx;"
+                            v-if="tab.list.length && tab.tag !== CFTT.COLUMN.tag" v-model="tab.list" :add-time="50"
+                            column-count="2" left-gap="10" right-gap="10" column-gap="8" column-width="40"
                             :isFetchEnd="tab.isFetchEnd" :forumGuide="forumGuide" @firstData="$event => firstData = $event">
                         </waterfalls>
                         <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
                     </scroll-view>
                     <!-- #endif -->
                     <!-- #ifdef APP-NVUE -->
-                    <waterfalls :needExposure="true" column-count="2" :forumGuide="forumGuide" v-if="tab.firstReqEnd"
-                        :ref="`waterfalls${tabIndex}`" :height="scrollViewHeight + 'px'" :value="tab.list"
-                        @loadmore="loadmoreData(tabIndex)" @refresh="refreshData(tabIndex)"
-                        @firstData="$event => firstData = $event" style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
+                    <waterfalls :needExposure="true" column-count="2" :forumGuide="forumGuide"
+                        v-if="tab.firstReqEnd && tab.tag !== CFTT.COLUMN.tag" :ref="`waterfalls${tabIndex}`"
+                        :height="scrollViewHeight + 'px'" :value="tab.list" @loadmore="loadmoreData(tabIndex)"
+                        @refresh="refreshData(tabIndex)" @firstData="$event => firstData = $event"
+                        style="padding-top: 10rpx;" :isFetchEnd="tab.isFetchEnd">
                         <template v-slot:header>
                             <header style="align-items: center;" v-if="tab.tag == CFTT.SHOW.tag && tab.firstReqEnd">
                                 <div class="hotTopicWrap">
@@ -128,6 +152,33 @@
                             </header>
                         </template>
                     </waterfalls>
+                    <list v-if="tab.tag === CFTT.COLUMN.tag" :show-scrollbar="false" @loadmore="loadmoreData(tabIndex)">
+                        <refresh display="show" @refresh="refreshData(tabIndex)"
+                            :display="columnRefreshing ? 'show' : 'hide'" class="refresh">
+                            <u-loading-icon mode="semicircle"></u-loading-icon>
+                        </refresh>
+                        <cell>
+                            <scroll-view scroll-x="true" :show-scrollbar="false" class="columnScroll">
+                                <view class="columnScrollWrap">
+                                    <view class="columnItem" @click="onClickColumn($event, columnItem)"
+                                        :class="{ columnItem_select: columnItem.name === column.select }"
+                                        v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
+                                        <text class="columnItem_text"
+                                            :class="{ columnItem_text_select: columnItem.name === column.select }">{{
+                                                columnItem.name }}</text>
+                                    </view>
+                                </view>
+                            </scroll-view>
+                        </cell>
+                        <cell style="margin-top: 20rpx;">
+                            <columnList v-model="tab.list"></columnList>
+                        </cell>
+                        <cell>
+                            <div><u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx"
+                                    :status="tab.isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
+                            </div>
+                        </cell>
+                    </list>
                     <!-- #endif -->
 
                 </div>
@@ -187,9 +238,10 @@ const animation = uni.requireNativePlugin('animation')
 // #endif
 import waterfalls from "./components/waterfalls.vue"
 import cardSkeleton from "./components/cardSkeleton.vue"
-import { CardForumTagMap, CardForumTabbar, ActionsList } from "./func/data.js"
 import empty from "@/components/empty/empty.vue"
 import guide from "./components/guide.vue"
+import columnList from "./components/columnList.vue"
+import { CardForumTagMap, CardForumTabbar, ActionsList } from "./func/data.js"
 import { Md5 } from "js-md5"
 const app = getApp().globalData.app;
 const parsePic = getApp().globalData.parsePic;
@@ -214,7 +266,8 @@ export default {
         waterfalls,
         cardSkeleton,
         empty,
-        guide
+        guide,
+        columnList
     },
     data() {
         return {
@@ -234,7 +287,7 @@ export default {
             hotTopics: [],
             dx: 0,
             tabs: {
-                index: 1,
+                index: CFTT.ALL.index,
                 list: []
             },
             column: {
@@ -248,7 +301,8 @@ export default {
             loadmoreTimer: null,
             forumGuide: app.guide.cardCircle,
             firstData: {},
-            addList: []
+            addList: [],
+            columnRefreshing: false
         }
     },
     async onLoad() {
@@ -366,6 +420,10 @@ export default {
                 }
             }
         },
+        "column.select": function (val) {
+            console.log(val);
+            this.refreshData(CFTT.COLUMN.index, false)
+        },
         actionSheet: function (val) {
             setTimeout(() => {
                 uni.showTabBar({ animation: false })
@@ -442,16 +500,22 @@ export default {
             }
             this.pageJump(item.url)
         },
-        refreshData(index) {
+        refreshData(index, onPull = true) {
+            if (onPull && this.current.tag == CFTT.COLUMN.tag) {
+                this.columnRefreshing = true
+            }
             setTimeout(() => {
                 this.current.queryParams.fetchFrom = 1
                 this.current.queryParams.sequence = 0
                 this.reqNewData(true, (() => {
-                    setTimeout(() => {
-                        this.$refs['waterfalls' + index][0].hideRefresh()
-                    }, 200);
+                    if (onPull) {
+                        setTimeout(() => {
+                            if (this.current.tag === CFTT.COLUMN.tag) this.columnRefreshing = false
+                            this.$refs['waterfalls' + index][0] && this.$refs['waterfalls' + index][0].hideRefresh()
+                        }, 200);
+                    }
                 }))
-            }, 1000)
+            }, onPull ? 1000 : 0)
         },
         loadmoreData(index) {
             this.loadmoreTimer && clearTimeout(this.loadmoreTimer)
@@ -471,6 +535,9 @@ export default {
             event.stopPropagation();
             // #endif
             this.pageJump(`/pages/cardForum/topics/detailPage?id=${item.id}`)
+        },
+        onClickColumn(event, item) {
+            this.column.select = item.name === this.column.select ? "" : item.name
         },
         getFollowDot() {
             if (!app.token.accessToken) {
@@ -502,6 +569,7 @@ export default {
         },
         reqsSecialColumnList() {
             app.http.Get(`dataApi/cardCircle/specialColumn`, {}, (res) => {
+                // console.log(res.list);
                 this.column.list = res.list || []
             })
         },
@@ -529,6 +597,9 @@ export default {
                 if (query.scrollId && query.st) {
                     query.sn = Md5.hashStr(`${query.st}_${query.scrollId}_scrollSearchTujian`)
                 }
+            }
+            if (this.current.tag === CFTT.COLUMN.tag) {
+                query.scName = this.column.select
             }
             //存在自定义url优先使用
             const url = `dataApi/${this.current.url ?? (this.current.roll ? "cardCircle/roll" : "cardCircle/list")}`
@@ -558,7 +629,7 @@ export default {
                     icon: 'none'
                 })
                 if (this.current.retry < 1) {
-                    this.refreshData(this.tabs.index)
+                    this.refreshData(this.tabs.index, false)
                     this.current.retry += 1
                 }
             })
@@ -790,6 +861,47 @@ page {
 
 }
 
+.columnScroll {
+    width: 710rpx;
+    flex-direction: row;
+    display: flex;
+    margin-top: 12rpx;
+}
+
+.columnScrollWrap {
+    flex-direction: row;
+    display: flex;
+    width: 710rpx;
+    flex-wrap: nowrap;
+    // #ifndef APP-NVUE
+    white-space: nowrap;
+    // #endif
+}
+
+.columnItem {
+    padding: 10rpx;
+    background-color: #f2f2f2;
+    margin-right: 30rpx;
+    border-radius: 3rpx;
+    //#ifndef APP-NVUE
+    transition: background-color 0.2s;
+    //#endif
+}
+
+.columnItem_select {
+    background-color: #fb374e;
+}
+
+.columnItem_text {
+    color: #aaaaaa;
+    font-weight: bold;
+    font-size: 26rpx;
+}
+
+.columnItem_text_select {
+    color: #ffffff;
+}
+
 .scrollTopicWarp {
     flex-direction: row;
     display: flex;
@@ -947,5 +1059,15 @@ page {
 .tabBarText {
     color: #ffffff;
     font-size: 10px;
+}
+
+.refresh {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 750rpx;
+    height: 80rpx;
+    background-color: rgba(0, 0, 0, 0)
 }
 </style>
