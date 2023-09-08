@@ -1,8 +1,8 @@
 /*
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-19 17:18:00
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-04 10:46:30
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-09-08 11:14:06
  * @FilePath: \jichao_app_2\src\manager\loginManager.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -293,18 +293,19 @@ export default class loginManager {
         app.http.Post('user/domain', { content: encodeURIComponent(domian) })
     }
     loginSuccessJump() {
+        let redirect = decodeURIComponent(this.redirect);
         if (this.Return) {
             app.platform.pageBack(1)
             this.closeydLogin(false, true)
             return
         }
-        if (!this.redirect) {
+        if (!redirect) {
             this.toIndex()
             this.closeydLogin(false, true)
             return
         }
-        if (this.redirect.indexOf("?") == -1) this.redirect += "?"
-        const noneParamsPage: string = this.redirect.split('?')[0]
+        if (redirect.indexOf("?") == -1) redirect += "?"
+        const noneParamsPage: string = redirect.split('?')[0]
         if (!noneParamsPage) {
             this.toIndex()
             this.closeydLogin(false, true)
@@ -313,7 +314,7 @@ export default class loginManager {
         const jumpType: string = this.isTab(noneParamsPage) ? "switchTab" : "redirectTo"
         //@ts-ignore
         uni[jumpType]({
-            url: decodeURIComponent(this.redirect)
+            url: redirect
         });
         this.closeydLogin(true, true)
         return

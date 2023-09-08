@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-24 14:43:38
+ * @LastEditTime: 2023-09-07 09:47:47
  * @FilePath: \jichao_app_2\src\pages\cardForum\release.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,7 +15,7 @@
             <cover-view :style="{ height: app.statusBarHeight + 'px' }"></cover-view>
             <cover-view class="tabHeader"
                 style="width:750rpx;height:88rpx;display: flex;align-items: center;flex-direction: row;">
-                <cover-view :style="{ color: '#fff' }" @click="sheetShow = true">
+                <cover-view class="icon-back" @click="sheetShow = true">
                     <cover-image style="width: 19rpx;height: 35rpx;margin-left: 30rpx;"
                         src="@/static/index/v3/back.png"></cover-image>
                 </cover-view>
@@ -1196,22 +1196,8 @@ page {
 }
 
 .icon-back {
-    position: absolute;
-    left: 18rpx;
-    top: 50%;
-    margin-top: -25rpx;
-    width: 50rpx;
-    height: 50rpx;
-    // background-color: rgba(255, 255, 255, 0);
-    font-family: uniicons;
-    font-size: 46rpx;
-    font-weight: normal;
-    font-style: normal;
-    color: #111111;
-    ;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: red;
+    width: 100rpx;
+    box-sizing: border-box;
+    color:#fff
 }
 </style>

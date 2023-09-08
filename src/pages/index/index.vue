@@ -169,6 +169,10 @@
 				}, 100);
 				return;
 			}
+			// 获取系列icon
+			app.http.Get('dataApi/advertising/iconSeries/brief',{},(res:any)=>{
+				this.hot = res.list
+			})
 			this.initIndex()
 		}
 		private initIndex(cb ? : Function) {
@@ -231,10 +235,7 @@
 			app.http.Get('dataApi/advertising/seekRotate/list',{},(res:any)=>{
 				this.noticeList = res.list
 			})
-			// 获取系列icon
-			app.http.Get('dataApi/advertising/iconSeries/brief',{},(res:any)=>{
-				this.hot = res.list
-			})
+			
 			if(app.token.accessToken != ''){
 				// 获取是否中卡信息
 				app.http.Get('me/greet', {}, (res: any) => {

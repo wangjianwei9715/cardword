@@ -10,7 +10,7 @@
                 </view>
                 <image src="@/static/cardForum/forumEmpty.png" mode="widthFix" class="empty" v-if="!list.length"></image>
                 <scroll-view class="giftScroll" :scroll-y="true" @scrolltolower="scrolltolower">
-                    <view class="giftItem" v-for="(item, index) in list">
+                    <view class="giftItem" v-for="(item, index) in list" :key="`gift_${index}`">
                         <image class="avatar"
                             :src="item.avatar ? parsePic(decodeURIComponent(item.avatar)) : defaultAvatar">
                         </image>
@@ -123,7 +123,7 @@ export default {
 .empty{
     width: 300rpx;
     position: absolute;
-    left: 0;right: 0;margin: auto;
+    left: 0;right: 0;
     top: 200rpx;
     left: 60rpx;
 }
