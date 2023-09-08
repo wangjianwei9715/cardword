@@ -21,13 +21,11 @@
                                 <text class="time">{{ timeDiff(item.created_at) }}</text>
                                 <!-- defaultAvatar -->
                             </view>
-                            <view class="giftWrap" @click="onClickItem(item)">{{ item.content }}
+                            <view class="giftWrap" @click="onClickItem(item)">
+                                <text>{{ item.content }}</text>
                                 <text class="look">点击查看</text>
                             </view>
                         </view>
-                        <!-- <view class="flex1"></view> -->
-                        <!-- <image class="giftPic" mode="aspectFill" v-if="item.tp==1" src="/static/userinfo/v3/give.png"></image>
-                        <image class="giftPic" mode="aspectFill" v-if="item.tp==2" src="/static/userinfo/v3/kb.png"></image> -->
                     </view>
                 </scroll-view>
                 
@@ -217,8 +215,6 @@ export default {
 .centerInfo {
     // flex: 1;
     width: 440rpx;
-
-
 }
 
 .userName {
@@ -246,14 +242,7 @@ export default {
 }
 
 .giftWrap {
-    //#ifndef APP-NVUE
-    max-width: 396rpx;
-    //#endif
-    // height: 64rpx;
     background: #F5F5F5;
-    // #ifndef APP-NVUE
-    box-sizing: border-box;
-    // #endif
     padding: 10rpx 12rpx;
     font-size: 21rpx;
     font-family: PingFang SC;
@@ -261,6 +250,8 @@ export default {
     color: #707070;
     line-height: 25rpx;
     margin-top: 28rpx;
+    // width: auto;
+    display: inline-block;
 }
 
 .look {

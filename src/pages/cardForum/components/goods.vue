@@ -74,7 +74,6 @@ export default class ClassName extends BaseComponent {
     timer: number = 0
     isFetchEnd: boolean = true
     mounted(): void {
-        // this.reqList()
     }
     scrolltolower() {
         if (!this.isFetchEnd) {
@@ -95,33 +94,6 @@ export default class ClassName extends BaseComponent {
             this.isFetchEnd = res.isFetchEnd
             this.queryParams.fetchFrom == 1 ? this.list = list : this.list.push(...list)
         })
-        // this.list = [
-        //     {
-        //         name: "秀卡-詹姆斯",
-        //         id: 1,
-        //         isActivity: true
-        //     },
-        //     {
-        //         name: "问价",
-        //         id: 2,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的第一张卡",
-        //         id: 3,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的卡在哪里",
-        //         id: 5,
-        //         isActivity: false
-        //     },
-        //     {
-        //         name: "我的卡屌不屌",
-        //         id: 6,
-        //         isActivity: false
-        //     }
-        // ]
     }
 }
 </script>
