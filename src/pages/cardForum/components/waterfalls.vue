@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-18 17:24:19
+ * @LastEditTime: 2023-09-08 11:08:23
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -43,8 +43,7 @@
                             <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
                                 v-if="showBottom">
                                 <template v-if="showUser">
-                                    <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                        :src="item.author ? item.author.avatar : (item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)), 'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar)">
+                                    <image class="waterfall-item__bottom__avatar" mode="aspectFill" :src="userAvatar(item)">
                                     </image>
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
@@ -118,8 +117,7 @@
                             <view class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)"
                                 v-if="showBottom">
                                 <template v-if="showUser">
-                                    <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                                        :src="item.author ? item.author.avatar : (item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)), 'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar)">
+                                    <image class="waterfall-item__bottom__avatar" mode="aspectFill" :src="userAvatar(item)">
                                     </image>
                                     <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName ||
                                         (item.author && item.author.name) || '小卡迷'
@@ -182,12 +180,6 @@
             <u-loading-icon mode="semicircle"></u-loading-icon>
         </refresh>
         <header ref="goTop">
-            <!-- <div v-for="(item, index) in copyValue" style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;">
-                <image :src="thumbnail(item.cover)" v-if="!item.mode"
-                    style="opacity:0;width:1px;height:1px;position:fixed;bottom:0;" @load="imageLoad($event, item)"
-                    @error="imageLoadError($event, item)">
-                </image>
-            </div> -->
         </header>
         <slot name="header"></slot>
         <header>
@@ -221,8 +213,7 @@
                 </div>
                 <div class="waterfall-item__bottom" @click.stop="goToUserProfile($event, item)" v-if="showBottom">
                     <template v-if="showUser">
-                        <image class="waterfall-item__bottom__avatar" mode="aspectFill"
-                            :src="item.avatar ? ossStitching(parsePic(decodeURIComponent(item.avatar)), 'x-oss-process=image/resize,m_fixed,h_50,w_50') : defaultAvatar">
+                        <image class="waterfall-item__bottom__avatar" mode="aspectFill" :src="userAvatar(item)">
                         </image>
                         <text class="waterfall-item__bottom__userName u-line-1">{{ item.userName || '小卡迷' }}</text>
                         <div class="likeWrap" @click="onClickLike($event, item)">
@@ -279,6 +270,7 @@ let bufferImgList = []
 const LIEK = 4
 import mixin from './function/mixin.js'
 import { delDraftDetail, pushImage, getImageByLocal } from "../func/index.js"
+import { ArticleTpMap, BitMap } from "../func/data.js"
 import empty from "@/components/empty/empty.vue"
 import { getDraftDetail, ossStitching } from "../func"
 // #ifdef APP-NVUE
@@ -557,7 +549,6 @@ export default {
                             })
                         }
                         // #endif
-                        // this.delData(item.)
                         uni.$emit("refreshDraft")
                     }
                 }
@@ -567,7 +558,6 @@ export default {
             const newArray = [...new Set(exposureList)].filter((code) => {
                 return !alreadyList.includes(code)
             });
-            // , deviceId: app.platform.systemInfo.deviceId 
             if (!newArray || !newArray.length) return
             app.http.Post(`cardCircle/upload/show/dt`, { codes: newArray }, () => {
                 alreadyList.push(...newArray)
@@ -577,21 +567,22 @@ export default {
             // #ifdef APP-NVUE
             event.stopPropagation();
             // #endif
-            const isLike = ((item.bit & 4) === 4)
+            const isLike = ((item.bit & BitMap.IS_LIKE) === BitMap.IS_LIKE)
             app.http.Post(`cardCircle/${isLike ? 'un/' : ''}like/${item.code}`, {}, (res) => {
                 if (isLike) item.likeNum -= 1
                 if (!isLike) item.likeNum += 1
-                item.bit ^= 4;
+                item.bit ^= BitMap.IS_LIKE;
                 uni.$emit("cardForumLike", { code: item.code, bit: item.bit, likeNum: item.likeNum })
             })
         },
         goToUserProfile(event, item) {
-            if (this.type == "draftList" || !this.showUser) return
             // #ifdef APP-NVUE
             event.stopPropagation();
             // #endif
+            if (item.tp === ArticleTpMap.Column) return
+            if (this.type == "draftList" || !this.showUser) return
             uni.navigateTo({
-                url: `/pages/cardForum/personHomePage?userId=${item.author ? item.author.userId : item.userId}&isMine=${(item.bit & 1) == 1 ? 1 : 0}`
+                url: `/pages/cardForum/personHomePage?userId=${item.author ? item.author.userId : item.userId}&isMine=${(item.bit & BitMap.IS_PERSON) == BitMap.IS_PERSON ? 1 : 0}`
             })
         },
         goToDetail(item) {
@@ -650,10 +641,6 @@ export default {
         },
         hideRefresh() {
             this.refreshing = false
-            // console.log("停止下啦啦啦啦");
-        },
-        onpullingdown() {
-            console.log("onpullingdown");
         },
         swiperChange(listId, height) {
             // #ifdef APP-NVUE
@@ -661,9 +648,7 @@ export default {
                 id: listId,
                 headerHeight: height.toFixed(2)
             });
-            // console.log(this.$refs.water.setSpecialEffects);
             // #endif
-            console.log("设置swiperChange", listId, height);
         },
         goTop() {
             // #ifdef APP-NVUE
@@ -683,6 +668,12 @@ export default {
                 }, 200)
             }
         },
+        userAvatar(item) {
+            if (item.author) return item.author.avatar
+            if (item.avatar) return this.ossStitching(this.parsePic(decodeURIComponent(item.avatar)), 'x-oss-process=image/resize,m_fixed,h_50,w_50')
+            if (item.tp === ArticleTpMap.Column && !item.avatar) return '/static/userinfo/logo.png'
+            return this.defaultAvatar
+        },
         disappearLoadMore() {
             this.loadMoreTimer && clearTimeout(this.loadMoreTimer)
         },
@@ -701,7 +692,6 @@ export default {
                 event.detail.height = (WIDTH / event.detail.width) * event.detail.height
                 event.detail.width = WIDTH
             }
-            // console.log(event);
             const widthFixHeight = (WIDTH / event.detail.width) * event.detail.height
             if (widthFixHeight > MAX_HEIGHT) {
                 item.mode = "aspectFit"
@@ -714,19 +704,11 @@ export default {
             pushImage(
                 {
                     code: item.code,
-                    // cover: item.cover,
                     mode: item.mode,
                     width: item.width,
                     height: item.height
                 }
             )
-            // bufferImgList.push({
-            //     code: item.code,
-            //     cover: item.cover,
-            //     mode: item.mode,
-            //     width: item.width,
-            //     height: item.height
-            // })
             this.pushTimer && clearTimeout(this.pushTimer)
             this.pushTimer = setTimeout(() => {
                 this.$forceUpdate()
@@ -737,7 +719,6 @@ export default {
             if (item.mode || item.width) return
             // #endif
             const widthFixHeight = (WIDTH / event.detail.width) * event.detail.height
-            // console.log(widthFixHeight,MAX_HEIGHT);
             if (widthFixHeight > MAX_HEIGHT) {
                 item.mode = "aspectFit"
                 item.width = (event.detail.width / event.detail.height) * MAX_HEIGHT
@@ -748,25 +729,15 @@ export default {
                 item.width = WIDTH
             }
             // #ifndef APP-NVUE
-
             // #endif
             this.pushTimer && clearTimeout(this.pushTimer)
             this.pushTimer = setTimeout(() => {
                 this.$forceUpdate()
             }, 100)
             // #ifdef APP-NVUE
-            // this.tempList.push(item)
-            // bufferImgList.push({
-            //     code: item.code,
-            //     cover: item.cover,
-            //     mode: item.mode,
-            //     width: item.width,
-            //     height: item.height
-            // })
             pushImage(
                 {
                     code: item.code,
-                    // cover: item.cover,
                     mode: item.mode,
                     width: item.width,
                     height: item.height
@@ -837,7 +808,6 @@ export default {
                     }
                 })
             }
-            // console.log(item);
             this[`list${minCol.name}`].push(item);
             emitList.name = `list${minCol.name}`;
             emitList.value = item;
@@ -929,9 +899,6 @@ export default {
         onDelCardForum(code) {
             const { index, list } = this.findIndex(code)
             // #ifndef APP-NVUE
-            // if (index >= 0) {
-            //     this[list].splice(index, 1)
-            // }
             this.remove(code)
             // #endif
             // #ifdef APP-NVUE
@@ -942,47 +909,33 @@ export default {
         },
         onCardForumLike(res) {
             const { index, list } = this.findIndex(res.code)
+            let key = "value"
             // #ifndef APP-NVUE
-            if (index >= 0) {
-                this[list][index].bit = res.bit
-                this[list][index].likeNum = res.likeNum
-            }
+            key = list
             // #endif
-            // #ifdef APP-NVUE
-            if (index >= 0) {
-                this.value[index].bit = res.bit
-                this.value[index].likeNum = res.likeNum
+            if (index > 0) {
+                this[key][index].bit = res.bit
+                this[key][index].likeNum = res.likeNum
             }
-            // #endif
         },
         setCardForumPrivate(res) {
             const { index, list } = this.findIndex(res.code)
+            let key = "value"
             // #ifndef APP-NVUE
-            if (index >= 0) {
-                this[list][index].private = res.private
-            }
+            key = list
             // #endif
-            // #ifdef APP-NVUE
-            if (index >= 0) {
-                this.value[index].private = res.private
-            }
-            // #endif
+            if (index >= 0) this[key][index].private = res.private
         },
         onEditCardForum(res) {
-            console.log(res);
             const { index, list } = this.findIndex(res.code)
+            let key = "value"
             // #ifndef APP-NVUE
-            if (index >= 0) {
-                this[list][index].title = res.formData.title
-                this[list][index].cover = res.formData.cover
-            }
+            key = list
             // #endif
-            // #ifdef APP-NVUE
             if (index >= 0) {
-                this.value[index].title = res.formData.title
-                this.value[index].cover = res.formData.cover
+                this[key][index].title = res.formData.title
+                this[key][index].cover = res.formData.cover
             }
-            // #endif
         }
     }
 

@@ -36,7 +36,7 @@
 					<input class="search-input" v-model="postSearch" :adjust-position="false" placeholder="搜索球员/卡种/限编球队" @confirm="againAlbum()"/>
 				</view>
 			</view>
-            <waterfalls v-if="tabsData.current==1 && listParams.show" :value="albumList" :add-time="50"></waterfalls>
+            <waterfalls v-if="tabsData.current==1 && listParams.show" v-model="albumList" :add-time="50"></waterfalls>
 			<view class="btn-publish" @click="onClickGoPublish"></view>
 		</view>
 	</view>
