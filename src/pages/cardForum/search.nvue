@@ -1,13 +1,5 @@
 <template>
-    <div class="content"
-        style="display: flex;width: 750rpx;flex-direction: column;align-items: center;background-color: #ffffff;">
-        <!-- <view class="fakerView" :style="{ height: navHeight + tabsHeight + 'px' }"></view> -->
-        <div class="hideGetReactWrap">
-            <text class="hideText" :id="`searchLog${index}`" v-for="(item, index) in cardSearchLog">{{ item.s }}</text>
-        </div>
-        <div class="hideGetReactWrap">
-            <text class="hideText" :id="`hotSearchLog${index}`" v-for="(item, index) in hotList">{{ item.s }}</text>
-        </div>
+    <div class="content searchContainer">
         <div class="fakerView" :style="{ height: fixedTopHeight + 'px' }"></div>
 
         <div class="fixedTop" id="fixedTop">
@@ -29,7 +21,8 @@
             </div>
         </div>
         <div v-if="!onSearch" style="height:94rpx">
-            <u-tabs customType="cardForum" style="width:750rpx" :itemStyle="{ width: `150rpx`, height: `90rpx`,marginTop:`-10rpx` }"
+            <u-tabs customType="cardForum" style="width:750rpx"
+                :itemStyle="{ width: `150rpx`, height: `90rpx`, marginTop: `-10rpx` }"
                 :activeStyle="{ color: '#333333', fontSize: '33rpx', fontWeight: 'bold', fontFamily: 'PingFang SC' }"
                 :inactiveStyle="{ color: '#959695', fontSize: '27rpx', fontFamily: 'PingFang SC' }" class="tabs" id="tabs"
                 :current="tabs.index" @click="tabClick" :list="tabs.list" ref="tabs"></u-tabs>
@@ -40,23 +33,23 @@
                 <image src="@/static/cardForum/del.png" class="bigText_img" @click="clearLog"></image>
             </view>
             <view class="keywordsWrap">
-                <view class="keywords flexCenter" v-for="(item) in cardSearchLogCopy" @click="onClickKey(item)">
-                    <text class="keywords_text" :style="{ width: item.width + 'px' }">{{ item.s }}</text>
+                <view class="keywords" v-for="(item) in cardSearchLog" @click="onClickKey(item)">
+                    <text class="keywords_text">{{ item.s }}</text>
                 </view>
             </view>
             <view class="bigText" style="margin-top: 40rpx;">
                 <text class="bigText_text">热门搜索</text>
             </view>
             <view class="keywordsWrap">
-                <view class="keywords flexCenter" v-for="(item) in hotSearchCopy" @click="onClickKey(item)">
-                    <text class="keywords_text" :style="{ width: item.width + 'px' }">{{ item.s }}</text>
+                <view class="keywords" v-for="(item) in hotList" @click="onClickKey(item)">
+                    <text class="keywords_text">{{ item.s }}</text>
                 </view>
             </view>
 
         </view>
-        <view class="whiteBlock" v-if="onSearch&&(os=='ios')" style="background-color: #fff;height:600px"></view>
+        <view class="whiteBlock" v-if="onSearch && (os == 'ios')" style="background-color: #fff;height:600px"></view>
         <swiper class="swiperContainer" v-if="!onSearch" :style="{ height: scrollViewHeight + 'px' }" :current="tabs.index"
-            @change="swiperChange" @animationfinish="swiperChangeAnimationfinish" @transition="swiperTransition">
+            @change="swiperChange">
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <!-- #ifndef APP-NVUE -->
                 <scroll-view :scroll-y="true" :style="{ height: scrollViewHeight + 'px' }"
@@ -76,10 +69,11 @@
                 <!-- #endif -->
                 <!-- #ifdef APP-NVUE -->
                 <empty v-if="tab.firstReqEnd && !tab.list.length"></empty>
-                <waterfalls :bottomSafe="true" column-count="2" v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')"
-                    :ref="`waterfalls${tabIndex}`" left-gap="5" :height="scrollViewHeight + 'px'" :value="tab.list"
-                    right-gap="5" column-gap="5" :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)"
-                    @refresh="onRefresh(tabIndex)" style="padding-top: 10rpx;">
+                <waterfalls :bottomSafe="true" column-count="2"
+                    v-if="tab.list.length && (tab.type != 'user' && tab.type != 'topics')" :ref="`waterfalls${tabIndex}`"
+                    left-gap="5" :height="scrollViewHeight + 'px'" :value="tab.list" right-gap="5" column-gap="5"
+                    :always-scrollable-vertical="true" @loadmore="loadmoreData(tabIndex)" @refresh="onRefresh(tabIndex)"
+                    style="padding-top: 10rpx;">
                 </waterfalls>
                 <template v-if="tab.type == 'topics'">
                     <topicList :value="tab.list" style="margin-top: 10rpx;"></topicList>
@@ -170,7 +164,7 @@ export default {
             hotList: [],
             hotSearchCopy: [],
             trTimmer: null,
-            os:app.platform.systemInfo.platform
+            os: app.platform.systemInfo.platform
         }
     },
     async onLoad() {
@@ -180,7 +174,6 @@ export default {
         await this.initTab()
         this.getLog()
         this.getHot()
-        // this.reqNewData()
     },
     computed: {
         nowTabText() {
@@ -207,42 +200,6 @@ export default {
                     backgroundColor: "#ffffff"
                 })
             }
-        },
-        cardSearchLog: function (val) {
-            this.$nextTick(() => {
-                this.cardSearchLogCopy = []
-                setTimeout(() => {
-                    val.forEach(async (item, index) => {
-                        const res = await this.getDom('#searchLog' + index)
-                        if (res.width > 150) {
-                            item.width = 150
-                        }
-                        else {
-                            item.width = res.width + 8
-                        }
-                        this.cardSearchLogCopy.push(item)
-                    })
-                }, 100)
-
-            })
-        },
-        hotList: function (val) {
-            this.$nextTick(() => {
-                this.hotSearchCopy = []
-                // console.log("valvalvalvalvalval", val);
-                setTimeout(() => {
-                    val.forEach(async (item, index) => {
-                        const res = await this.getDom(`#hotSearchLog${index}`)
-                        if (res.width > 150) {
-                            item.width = 150
-                        } else {
-                            item.width = res.width + 8
-                        }
-                        this.hotSearchCopy.push(item)
-                    })
-                }, 100)
-
-            })
         },
         "onSearch": {
             handler(newVal, oldName) {
@@ -281,8 +238,6 @@ export default {
             this.fixedTopHeight = await this.getDomHeight("#fixedTop")
             // #ifdef APP-NVUE
             this.scrollViewHeight = app.platform.systemInfo.screenHeight - this.fixedTopHeight - uni.upx2px(94)
-            console.log("this.scrollViewHeight",this.scrollViewHeight);
-            // - plus.navigator.getSafeAreaInsets().deviceBottom
             // #endif
             // #ifdef H5
             this.scrollViewHeight = 666
@@ -292,9 +247,9 @@ export default {
         },
         async onClickSearch() {
             if (this.searchText) {
-                if (testCode(this.searchText)){
+                if (testCode(this.searchText)) {
                     uni.navigateTo({
-                        url:`/pages/cardForum/detail?code=${this.searchText}`
+                        url: `/pages/cardForum/detail?code=${this.searchText}`
                     })
                     return
                 }
@@ -334,7 +289,6 @@ export default {
                     return y.stamp - x.stamp
                 })
             }
-            // console.log(this.cardSearchLog);
         },
         getHot() {
             app.http.Get("dataApi/cardCircle/hot/search/list", {}, (res) => {
@@ -383,25 +337,13 @@ export default {
             this.current.queryParams.q = ""
         },
         onClickKey(item) {
-            console.log(item)
             this.searchText = item.s
             this.onClickSearch()
         },
         swiperChange(event) {
-            // console.log("swiperChange", event);
             this.tabs.index = event.detail.current
         },
-        swiperChangeAnimationfinish(event) {
-            // console.log("动画结束", event);
-        },
-        swiperTransition(event) {
-            // this.trTimmer && clearTimeout(this.trTimmer)
-            // this.trTimmer = setTimeout(() => {
-            //     console.log("swiperTransition", event);
-            // }, 10)
-        },
         tabClick(event) {
-            // console.log(event);
             if (event.index == this.tabs.index) return
             this.tabs.index = event.index
         },
@@ -413,8 +355,6 @@ export default {
             }
         },
         refreshData(index) {
-            // const nowTab = this.tabs.list[index]
-            // nowTab.pageIndex = 1
             this.current.queryParams.fetchFrom = 1
             this.reqNewData(true, () => {
                 const key = "waterfalls" + index
@@ -473,21 +413,12 @@ export default {
 <style scoped lang="scss">
 $show-lines: 1;
 
-// @import '@/uni_modules/uv-ui-tools/libs/css/variable.scss';
-// #ifndef APP-NVUE 
-// page {
-//     background-color: #f5f7fb;
-// }
-
-// #endif 
 .hideGetReactWrap {
     position: fixed;
     top: 0;
     opacity: 0;
     flex-direction: row;
     flex-wrap: nowrap;
-    // transform: scale(0);
-
 }
 
 .hideText {
@@ -499,6 +430,14 @@ $show-lines: 1;
 
 .content {
     flex-direction: column;
+}
+
+.searchContainer {
+    display: flex;
+    width: 750rpx;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
 }
 
 .fakerView {
@@ -739,18 +678,11 @@ $show-lines: 1;
 }
 
 .keywords {
-    height: 48rpx;
-    padding: 0 16rpx;
+    padding: 4rpx 16rpx;
     background-color: #F5F5F5;
     border-radius: 3rpx 0rpx 0rpx 0rpx;
     margin-right: 16rpx;
     margin-bottom: 16rpx;
-
-    // width: 300rpx;
-    flex-flow: row wrap;
-    // #ifndef APP-NVUE
-    max-width: 250rpx;
-    // #endif
 }
 
 .keywords_text {
