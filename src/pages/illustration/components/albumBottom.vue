@@ -1,13 +1,23 @@
 <template>
-	<view class="album-bottom">
-		<view v-if="showSave" class="left" @click="onClickSave">
-			<view class="icon-save"></view>
-			<view class="msg">存草稿</view>
+	<view>
+		<view class="album-bottom" v-show="!showDel">
+			<view class="album-left">
+				<view v-if="showSave" class="left" @click="onClickSave">
+					<view class="icon-save"></view>
+					<view class="msg">存草稿</view>
+				</view>
+				<view class="left" @click="showDel=true">
+					<view class="icon-save"></view>
+					<view class="msg">删除</view>
+				</view>
+			</view>
+			<view class="btn" :class="{'btn-red':canNext,'no-save':!showSave}" @click="onClickNext">
+				下一步
+				<view class="percent">当前收集进度{{percent}}</view>
+			</view>
 		</view>
-		<view class="btn" :class="{'btn-red':canNext,'no-save':!showSave}" @click="onClickNext">
-			下一步
-			<view class="percent" v-show="step==1">至少选择2条卡密</view>
-			<view class="percent" v-show="step==2">当前收集进度{{percent}}%</view>
+		<view class="album-bottom" v-show="showDel">
+			<view class="btn del-btn" :class="{'btn-red':delList.length}" @click="onClickDelSave">保存</view>
 		</view>
 	</view>
 </template>
@@ -34,18 +44,13 @@
 		data!:any
 		@Prop({default:()=>{}})
 		saveData?:any
-		created(){//在实例创建完成后被立即调用
-			
-		}
-		mounted(){//挂载到实例上去之后调用
-			
-		}
-		destroyed(){
-			
-		}
+		@Prop({default:()=>[]})
+		delList?:any
+		@PropSync("showDelete",{type:Boolean})
+		showDel?:boolean
 		onClickNext(){
 			if(!this.canNext) return;
-			this.$emit('next');
+			this.$emit('next'); 
 		}
 		async onClickSave(){
 			if(!this.canNext) return;
@@ -53,6 +58,10 @@
 			await storageDraft({step:this.step,list:this.data,...rest},"cardBook",this.draftId || "");
 			uni.showToast({ title:"草稿保存成功",icon:"none" });
 			app.navigateTo.switchTab(4)
+		}
+		onClickDelSave(){
+			if(this.delList.length<=0) return;
+			this.$emit('delSave')
 		}
 	}
 </script>
@@ -74,8 +83,12 @@
 	justify-content: space-between;
 	padding-bottom: constant(safe-area-inset-bottom);
 	padding-bottom: env(safe-area-inset-bottom);
+	.album-left{
+		height:92rpx;
+		display: flex;
+	}
 	.left{
-		width: 100rpx;
+		width: 90rpx;
 		height:92rpx;
 		box-sizing: border-box;
 		padding-top: 8rpx;
@@ -86,6 +99,19 @@
 			margin:0 auto;
 			margin-bottom: 4rpx;
 		}
+		.check{
+            width: 40rpx;
+            height:40rpx;
+            border: 1px solid #C0C0C0;
+            border-radius: 50%;
+            box-sizing: border-box;
+			margin:4rpx auto;
+			margin-bottom: 8rpx;
+        }
+        .check_{
+            border: none;
+            background:url(@/static/illustration/album/icon_g.png) no-repeat center / 100% 100%;
+        }
 		.msg{
 			width: 100%;
 			text-align: center;
@@ -96,7 +122,7 @@
 		}
 	}
 	.btn{
-		width: 575rpx;
+		width: 520rpx;
 		height: 92rpx;
 		background: #C0C0C0;
 		border-radius: 5rpx;
@@ -118,6 +144,9 @@
 			font-weight: 400;
 			color: #FFFFFF;
 		}
+	}
+	.del-btn{
+		width: 710rpx !important;
 	}
 	.no-save{
 		width: 100% !important;

@@ -1,103 +1,88 @@
 <template>
 	<view class="scroll-view">
-        <view class="scroll-operate">
+        <u-sticky>
+			<u-tabs 
+				:list="tabsData.list" :current="tabsData.current" @change="onChangeTabs" lineWidth="375rpx" lineHeight="6rpx" lineColor="#FA1545"
+				:itemStyle="{width:'375rpx',height:'78rpx',lineHeight:'72rpx',padding:0,background:'#fff'}"
+				:activeStyle="{color: '#333333',fontSize: '33rpx',fontWeight:'600'}" 
+				:inactiveStyle="{color: '#959695',fontSize: '27rpx'}" 
+			/>
+		</u-sticky>
+        <view class="scroll-operate" v-show="!byPlyaer">
             <view class="operate-filter"> 
                 <view class="input-box">
                     <view class="search-icon"></view>
-                    <input class="input-operate" :adjust-position="false" v-model="listQ" placeholder='填加"空格"可输入多个关键词搜索' @confirm="againList()"/>
-                </view>
-                <view class="filter-box" @click="onClickGoFilter">
-                    <image class="icon-filter" src="@/static/illustration/icon_filter.png"/>筛选
+                    <input class="input-operate" :adjust-position="false" v-model="cardSetQ" placeholder='搜索卡种' @confirm="againList()"/>
                 </view>
             </view>
-            <view class="operate-line flex-line" v-show="tp!=2">
-                <view class="line-title">卡种</view>
+            <view class="operate-line flex-line">
+                <view class="line-title">热门</view>
                 <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.cardSets)}" v-for="(item,index) in search.cardSets" :key="index" @click="onClickSelectTab(item,select.cardSets,'cardSet')">{{item.name}}</view>
-                </scroll-view>
-            </view>
-            <view class="operate-line flex-line" v-show="tp!=1">
-                <view class="line-title">球员</view>
-                <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.players)}" v-for="(item,index) in search.players" :key="index" @click="onClickSelectTab(item,select.players,'player')">{{item.name}}</view>
-                </scroll-view>
-            </view>
-            <view class="operate-line flex-line" v-show="tp==0">
-                <view class="line-title">限编</view>
-                <scroll-view class="line-scroll" :scroll-x="true">
-                    <view class="line-scroll-box" :class="{'current':selectTab(item,select.seqs)}" v-for="(item,index) in search.seqs" :key="index" @click="onClickSelectTab(item,select.seqs,'seq')">{{item.name}}</view>
+                    <view class="line-scroll-box" :class="{'current':item.nameId===select.cardSets}" v-for="(item,index) in search.cardSets" :key="`cardSet_${index}`" @click="onClickSelectTab(item,'cardSets')">{{item.name}}</view>
                 </scroll-view>
             </view>
         </view>
-        <view class="card-list">
-            <view class="card-index" v-show="tp==0" v-for="(item,index) in cardSetList" :key="index" @click="onClickSelectNo(index)">
-                <view class="card-team">
-                    <view class="team">NO.{{item.number}} {{item.team}}</view>
-                    <view class="check" :class="{'check_':selectNo.includes(index)}"></view>
+
+        <view class="scroll-operate" v-show="byPlyaer">
+            <view class="player-header"> 
+                <view class="player-title">已选球员</view>
+                <view class="player-select">
+                    <view class="player-q">{{playerQ||"请选择球员"}}<u-icon name="close-circle-fill" v-show="playerQ" class="player-close" @click="onClickClosePlayer"></u-icon></view>
+                    <view class="player-search" @click="onClickGoSearch">
+                        <view class="icon"></view> 搜索球员
+                    </view>
                 </view>
-                <view class="player">{{item.player}}</view>
-                <view class="cardset">{{item.seq}}编，{{item.cardSet}}</view>
             </view>
-<!-- 
-            <view class="no-index" v-show="tp!=0" v-for="(item,index) in noList" :key="index">
+            <view class="operate-line flex-line">
+                <scroll-view class="line-scroll" style="width:716rpx" :scroll-x="true">
+                    <view class="line-scroll-box" :class="{'current':item.nameId===select.players}" v-for="(item,index) in search.players" :key="`playes_${index}`" @click="onClickSelectTab(item,'players')">{{item.name}}</view>
+                </scroll-view>
+            </view>
+        </view>
+
+        <view class="card-list">
+            <view class="no-index" v-show="!byPlyaer" v-for="(item,index) in noList" :key="`noList_${index}`" @click="onClickCardSetNo(item)">
                 <view class="no-header">
                     <view class="left">
-                        <view class="name">{{ tp==1 ? item.cardSet : item.player}}</view>
+                        <view class="name">{{ item.cardSet}}</view>
                         <view class="num">
                             <text class="num-text">{{item.total}}</text>条卡种
-                            <text v-show="tp==1" class="num-text">，{{item.playerNum}}</text>{{tp==1?"名球员":""}}  
+                            <text class="num-text">，{{item.playerNum}}</text>名球员  
                         </view>
                     </view>
-                    <u-icon :name="item.unfold?'arrow-up':'arrow-down'" @click="item.unfold=!item.unfold"></u-icon>
-                </view>
-                <view class="no-center" v-show="item.unfold">
-                    <view class="card-index" v-for="(sample,sampleIndex) in item.sample" :key="sampleIndex">
-                        <u-line color="#b4b3b1"></u-line>
-                        <view class="card-team">
-                            <view class="team">NO.{{sample.number}} {{sample.team}}</view>
-                            <view class="check" :class="{'check_':sampleIsSelect(index,sampleIndex)}" @click="onClickSelectSample(index,sampleIndex)"></view>
-                        </view>
-                        <view class="player">{{sample.player}}</view>
-                        <view class="cardset">{{sample.seq}}编，{{tp==1?item.cardSet:sample.cardSet}}</view>
-                    </view>
-                    <u-loadmore class="margin20" line :status="item.loading?'loading':(item.sample.length<item.total?'loadmore':'nomore')" @loadmore="sampleMore(item)"/>
-                </view>
-            </view> -->
-            <u-loadmore v-show="(tp==0&&listOrther.end) || (tp!=0&&noParams.end)" status="nomore" line/>
-        </view>
-
-        <view class="bottom-box">
-            <view class="btn-look" @click="onClickPopup">查看已选({{selectNo.length}})</view>
-            <view class="btn-confirm" @click="onClickConfirm()">确定</view>
-        </view>
-
-        <u-popup :show="showPopup" closeable @close="closePopup">
-            <view class="popup-box">
-                <view class="header">已选LIST</view>
-                <view class="center">
-                    <view class="card-index" v-for="(item,index) in getSelectList" :key="index">
-                        <view class="card-team">
-                            <view class="team">NO.{{item.number}} {{item.team}}</view>
-                            <view class="icon-clear" @click="selectNo.splice(index,1)"></view>
-                        </view>
-                        <view class="player">{{item.player}}</view>
-                        <view class="cardset">{{item.seq}}编，{{item.cardSet}}</view>
-                    </view>
-                </view>
-                <view class="bottom">
-                    <view class="clear" @click="selectNo=[]">
-                        <view class="icon-clear"></view>
-                        <view class="msg">清空</view>
-                    </view>
-                    <view class="confirm" @click="onClickConfirm()">确定选择</view>
+                    <u-icon name="arrow-right"></u-icon>
                 </view>
             </view>
-		</u-popup>
+
+            <view class="card-index" v-show="byPlyaer" v-for="(item,index) in playerList" :key="`cardSetList_${index}`" @click="onClickSelectNo(item)">
+                <view class="card-team">
+                    <view class="team">NO.{{item.number}} {{item.team}}</view>
+                    <view class="team-right">
+                        <view v-show="!item.split&&item.seq>1" class="split" @click.stop="onClickSplitNo(index)">拆分限编</view>
+                        <view v-show="item.split" class="split-c" @click.stop="onClickSplitCancel(item)">取消拆分</view>
+                        <view class="check" :class="{'check_':selectNo.includes(item.code)}"></view>
+                    </view>
+                </view>
+                <view class="player">{{item.player}}</view>
+                <view class="cardset"><text v-show="item.split" class="split-text">拆分限编 x/{{item.seq}}编</text>{{item.split?"":item.seq+"编"}}，{{item.cardSet}}</view>
+                
+            </view>
+            <u-loadmore v-show="(byPlyaer&&listOrther.end) || (!byPlyaer&&noParams.end)" status="nomore" line/>
+        </view>
+
+        <view class="bottom-box" v-show="byPlyaer">
+            <view class="all-select" @click="onClickAllSelect">
+                <view class="check" :class="{'check_':allPlayerSelect}"></view>
+                <view>全选</view>
+            </view>
+            <view class="clear" @click="selectNo=[]">清空</view>
+            <view class="btn-confirm" :class="{'red-btn':canNext}" @click="onClickConfirm()">下一步</view>
+        </view>
     </view>
 </template>
 
 <script lang="ts">
-	import { Component, Prop,Watch } from "vue-property-decorator";
+	import { Component, Prop,Watch,PropSync } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
     import { app } from "@/app";
     class ListOrther {
@@ -111,247 +96,299 @@
         end = false;
     }
     class Select {
-        cardSets = [];
-        players = [];
-        seqs = [];
+        cardSets = 0;
+        players = 0;
     }
 	@Component({})
 	export default class ClassName extends BaseComponent {
-		@Prop({default:""})
-		seriesCode!:string;
         @Prop({default:{}})
 		search!:any;
         @Prop({default:0})
         numAll!:number
-        @Prop({default:0})
-        tp!:number
+        @PropSync('selectSeries',{type:Object})
+        seriesData!:any
 
         isPullDown = app.platform.isPullDown;
-        listQ="";
+        tabsData = {
+			list:[{name:'按卡种收集'},{name:'按球员收集'}],
+			current:0
+		}
+        cardSetQ="";
+        playerQ="";
         select:{[x:string]:any} = new Select()
-        cardSetList = [];
+        playerList:any = [];
         listOrther = new ListOrther();
         filterList = [];
-        // noParams = new NoParams();
-        // noList = [];
+        noParams = new NoParams();
+        noList = [];
         selectNo:any = [];
-        // selectSample:any = {};
-        showPopup = false;
-        @Watch('seriesCode')
-		onSeriesCodeChanged(val: any, oldVal: any){
-            if(oldVal&&val!=oldVal){
-                this.againList()
-            }
-		}
-        @Watch('tp')
-		onTpChanged(val: any, oldVal: any){
-            if(val!=oldVal){
-                this.select = new Select();
-                this.filterList = [];
-                this.againList()
-            }
-		}
-		created(){//在实例创建完成后被立即调用
-			
-		}
+        loading = false;
+        removeDuplicate=[];
 		mounted(){//挂载到实例上去之后调用
-            this.onEventUI("albumFilter",(res:any)=>{
-                this.initEventSelect();
-                Object.keys(this.search).forEach((x:any)=>{
-                    res.forEach((item:any)=>{
-                        if(x== item.type+'s'){
-                            this.$set(this.select, x, app.platform.removeDuplicate([...this.select[x],item],'nameId'));
-                        }
-                    })
-                })
-                this.filterList = res.filter((x:any)=>!['cardSet','player','seq'].includes(x.type));
-                this.againList()
-            })
-			this.getSeriesGroup()
+            this.checkNoType(()=>{
+                this.getNoGroup();
+            });
 		}
         public get getSelectList() : any {
-            return this.selectNo.map((x:any)=>{
-                return this.cardSetList[x]
+            const list:any[] = [];
+            this.selectNo.forEach((code:any)=>{
+                const item = this.playerList.find((item:any)=>item.code == code);
+                if(item.split){
+                    for(let i=1 ; i<=item.seq ; i++){
+                        list.push({...item,seqIndex:i,seq:item.seq,split:true});
+                    }
+                }else{
+                    list.push(item)
+                }
+            })
+            return list;
+        }
+        public get byPlyaer() : boolean {
+            return this.tabsData.current == 1;
+        }
+        public get canNext() : boolean {
+            return this.getSelectNoTotal>=2;
+        }
+        public get allPlayerSelect() : boolean {
+            const selectLength = this.selectNo.length;
+            return selectLength>0 && (this.playerList.length === selectLength)
+        }
+        public get playerListTotalNo() : boolean {
+            const total = this.playerList.reduce((total:number,item:any)=>{
+                return total + (item&&item.split ? item.seq : 1);
+            },0);
+            return total>500;
+        }
+        public get seriesDataNolist() : any[] {
+            return this.seriesData.noList
+        }
+        public get getSelectNoTotal() : number {
+            const total = this.selectNo.reduce((total:number,code:any)=>{
+                const item = this.playerList.find((item:any)=>item.code == code);
+                return total + (item&&item.split ? item.seq : 1);
+            },0);
+            return total;
+        }
+        onClickGoSearch(){
+            uni.navigateTo({
+                url:`/pages/illustration/album/searchPlayer?code=${this.seriesData.seriesCode}`
             })
         }
+        checkNoType( cb?:Function){
+            if(this.seriesDataNolist.length>0){
+                const playerName= this.seriesDataNolist[0].player;
+                const isPlayer = this.seriesDataNolist.every((item:any) => item.player == playerName );
+                this.tabsData.current = isPlayer ? 1 : 0 ;
+                if(isPlayer){
+                    this.playerQ = playerName;
+                    this.removeDuplicate = app.platform.removeDuplicate(this.seriesDataNolist,'code');
+                    this.getSeriesPlayer();
+                    this.selectNo = this.removeDuplicate.map((item:any)=>item.code)
+                }
+            }
+            cb?.();
+		}
+        onChangeTabs(event:any){
+			this.tabsData.current = event.index;
+		}
         initEventSelect(){
             this.select = new Select();
             this.filterList=[];
         }
-        onClickPopup(){
-            if(this.selectNo.length == 0){
-                uni.showToast({ title:'未选择卡种', icon:'none' })
-                return;
-            }
-            this.isPullDown(false);
-            this.showPopup=true
-        }
-        closePopup(){
-            this.isPullDown(true);
-            this.showPopup = false;
-        }
         onClickConfirm(){
-            if(this.selectNo.length==0){
-                uni.showToast({ title:'未选择卡种', icon:'none' })
-                return;
-            }
-            this.closePopup();
-            uni.$emit('albumNoList',{list:this.getSelectList,code:this.seriesCode});
-			app.navigateTo.navigateBack()
+            if(!this.canNext) return;
+
+            const { seriesCode:code, name } = this.seriesData;
+            this.seriesData.noList = this.getSelectList.map((x:any)=>{
+                const editItem = this.seriesDataNolist.find((item:any)=>{
+                    return item.code==x.code && (item.split?item.seqIndex==x.seqIndex:true)
+                });
+                return editItem ?? {...x,frontPic:"",backPic:"",series:{code,name}}
+            });
+            this.$emit('next')
         }
-        selectTab(item:any,list:string[]){
-			return list.some((x:any)=>{
-                return x.nameId == item.nameId
-			})
-        }
-        onClickSelectNo(index:number){
-            if(this.selectNo.includes(index)){
-                const indexOf = this.selectNo.indexOf(index);
+        async onClickSelectNo(item:any){
+            if(this.selectNo.includes(item.code)){
+                const indexOf = this.selectNo.indexOf(item.code);
                 this.selectNo.splice(indexOf,1)
             }else{
-                this.selectNo.push(index);
+                await this.maxNoTotal(item.split?item.seq:1);
+                this.selectNo.push(item.code);
                 app.platform.UIClickFeedBack(); 
             }
         }
-        // sampleIsSelect(index:number,sampleIndex:number){
-        //     if(index in this.selectSample){
-        //         return this.selectSample[index].includes(sampleIndex);
-        //     }else{
-        //         return false
-        //     }
-        // }
-        // onClickSelectSample(index:number,sampleIndex:number){
-        //     let list = [sampleIndex]
-        //     if(index in this.selectSample){
-        //         if(this.selectSample[index].includes(sampleIndex)){
-        //             const indexOf = this.selectSample[index].indexOf(sampleIndex);
-        //             this.selectSample[index].splice(indexOf,1);
-        //             list = this.selectSample[index];
-        //         }else{
-        //             list = [...this.selectSample[index],sampleIndex];
-        //         }
-        //     }
-        //     this.$set(this.selectSample, index, list)
-        // }
-        onClickGoFilter(){
-            const { cardSets, players, seqs } = this.select;
-            const removeDuplicate= app.platform.removeDuplicate([...cardSets,...players,...seqs,...this.filterList],'nameId')
-            const list = encodeURIComponent(JSON.stringify(removeDuplicate))
-
-            uni.navigateTo({
-                url:`/pages/illustration/seriesFilter?seriesCode=${this.seriesCode}&selectList=${list}&tp=${this.tp}`
-            })
+        onClickAllSelect(){
+            if(this.allPlayerSelect) return;
+            if(this.playerListTotalNo){
+                uni.showToast({title:"超出500张无法全选",icon:"none"});
+                return;
+            }
+            this.selectNo = this.playerList.map(({code}:any)=> code);
         }
-        againList(val=0){
-            if(val==0){
-                this.cardSetList = [];
+        reachBottom(){
+            if(this.byPlyaer){
+                this.getSeriesPlayer()
+            }else{
+                this.getNoGroup()
+            }
+        }
+        againList(){
+            if(this.byPlyaer){
+                this.playerList = [];
                 this.selectNo = [];
                 this.listOrther = new ListOrther();
-                // this.noList=[];
-                // this.selectSample = {};
-                // this.noParams = new NoParams();
-            }
-            
-            if(this.tp==0){
-                this.getSeriesGroup()
             }else{
-                // this.getNoGroup()
+                this.noList = [];
+                this.noParams = new NoParams();
             }
+            this.reachBottom();
         }
-        onClickSelectTab(item:any,list:string[],type:string){
-            const repeatIndex = list.findIndex((x: any) => x.nameId === item.nameId);
-            if (repeatIndex !== -1) { 
-                list.splice(repeatIndex, 1); 
-            } else {
-                list.push({...item,type})
+        onClickSelectTab({name,nameId}:any,type:string){
+            if(type==="players"){
+                if(this.playerQ===name) return;
+                this.playerQ = name;
+                this.select[type] = nameId;
+            }else{
+                this.select[type] = this.select[type]===nameId ? 0 : nameId;
             }
             app.platform.UIClickFeedBack(); 
             this.againList(); 
         }
-        getSeriesGroup(){
-            if(this.listOrther.end) return;
-            uni.showLoading({
-				title: '加载中'
-			});
+        setPlayer(item:any){
+            this.playerQ = item.player;
+            this.select.players=item.playerNameId;
+            this.againList();
+        }
+        onClickClosePlayer(){
+            this.playerQ = "";
+            this.select.players=0;
+            this.againList(); 
+        }
+        getNoGroup(){
+            if(this.noParams.end)  return;
+            uni.showLoading({ title: '加载中',mask:true });
+            const get = `group=cardset`;
+            const { fetchFrom, fetchSize } = this.noParams;
+            const params = {
+                fetchFrom,
+                fetchSize,
+                q:this.cardSetQ,
+                cardSets:this.select.cardSets==0?null:[this.select.cardSets],
+            }
+            app.http.PostWithCrypto(`dataApi/cardIllustration/series/${this.seriesData.seriesCode}/search/no/group?${get}`,params,(res:any)=>{
+                if(res.groups){
+                    const list = res.groups||[];
+                    this.noList = fetchFrom==1 ? list : [...this.noList,...list];
+                }
+                uni.hideLoading();
+                this.noParams.fetchFrom += fetchSize;
+                this.noParams.end = res.end || res.groups.length<10;
+            })
+        }
+        getSeriesPlayer(){
+            if(this.listOrther.end || (this.select.players==0&&this.playerQ=="")) return;
+
+            !this.loading && uni.showLoading({ title: '加载中',mask:true });
+            this.loading = true;
             const { scrollId } = this.listOrther;
             const _url = scrollId ? `scrollId=${scrollId}&pageSize=10` : `noSplit=1`
-            const rookieList:any = this.filterList.filter((x:any)=> x.rookie);
-            const signList:any = this.filterList.filter((x:any)=> x.signature);
 
             const params = {
                 pageSize:30,
-                q:this.listQ,
-                rookie:rookieList.length?(rookieList[0].name=="新秀"?1:2):0,
-                signature:signList.length?(signList[0].name=="签字"?1:2):0,
-                players:this.select.players.map((x:any)=> x.nameId) || null,
-                teams:this.filterList.filter((x:any)=>x.team).map((x:any)=>x.nameId) || null,
-                cardSets:this.select.cardSets.map((x:any)=> x.nameId) || null,
-                seqs:this.select.seqs.map((x:any)=> x.nameId) || null
+                q:this.playerQ,
+                players:this.select.players==0?null:[this.select.players],
             }
-            app.http.PostWithCrypto(`dataApi/cardIllustration/series/${this.seriesCode}/search/no/plain?${_url}`,params,(res:any)=>{
+            app.http.PostWithCrypto(`dataApi/cardIllustration/series/${this.seriesData.seriesCode}/search/no/plain?${_url}`,params,(res:any)=>{
                 if(res.list){
-                    this.cardSetList = scrollId ? [...this.cardSetList,...res.list] : res.list;
+                    const list = res.list;
+                    this.removeDuplicate.forEach((item:any)=>{
+                        if(item.split){
+                            list.forEach((x:any)=>{
+                                (x.code===item.code) && (x.split = true);
+                            })
+                        }
+                    })
+                    this.playerList = scrollId ? [...this.playerList,...list] : list;
                     this.listOrther.scrollId = res.scrollId;
                 }else if(res.total==0){
-                    this.cardSetList = [];
+                    this.playerList = [];
                 }
-                setTimeout(() => {
-					uni.hideLoading();
-				}, 100);
                 this.listOrther.end = res.end || res.list.length<10;
+                setTimeout(() => {
+                    if(!this.listOrther.end){
+                        this.getSeriesPlayer()
+                    }else{
+                        uni.hideLoading();
+                        this.loading=false;
+                    }
+                }, 100);
             })
         }
-        // getNoGroup(){
-        //     if(this.noParams.end)  return;
-        //     uni.showLoading({
-		// 		title: '加载中'
-		// 	});
-        //     const ts = Math.floor(new Date().getTime()/1000);
-        //     const sn = Md5.hashStr(`${ts}_scrollSearchTujian`);
-        //     const group = this.tp==1?"cardset":"player";
-        //     const get = `noSplit=1&ts=${ts}&sn=${sn}&group=${group}`;
-        //     const { fetchFrom, fetchSize } = this.noParams;
-
-        //     const params = {
-        //         fetchFrom,
-        //         fetchSize,
-        //         q:this.listQ,
-        //         players:this.tp==2?(this.select.players.map((x:any)=> x.nameId) || null):null,
-        //         cardSets:this.tp==1?(this.select.cardSets.map((x:any)=> x.nameId) || null):null,
-        //     }
-        //     app.http.Post(`dataApi/cardIllustration/series/${this.seriesCode}/search/no/group?${get}`,params,(res:any)=>{
-        //         if(res.groups){
-        //             const list = res.groups.map((x:any)=>{
-        //                 return {...x,unfold:false,loading:false}
-        //             })
-        //             this.noList = fetchFrom==1 ? list : [...this.noList,...list];
-        //         }else if(res.total==0){
-        //             this.cardSetList = [];
-        //         }
-        //         uni.hideLoading();
-        //         this.noParams.fetchFrom += fetchSize;
-        //         this.noParams.end = res.end || res.groups.length<10;
-        //     })
-        // }
-        // sampleMore(item:any){
-        //     item.loading = true;
-        //     const params = {
-        //         fetchFrom:item.sample.length+1,
-        //         fetchSize:10,
-        //         groupId:item.groupId
-        //     }
-        //     app.http.Get(`dataApi/cardIllustration/series/${this.seriesCode}/search/no/group/more`,params,(res:any)=>{
-        //         if(res.list){
-        //             item.sample = [...item.sample,...res.list];
-        //         }
-        //         item.loading = false;
-        //     })
-        // }
-        
+        async onClickSplitNo(noIndex:number){
+			const list = this.playerList;
+			const { seq ,...rest } = list[noIndex];
+			await this.maxNoTotal(seq-1);
+			this.playerList.splice(noIndex,1,{...rest,seq,split:true});
+            this.setSeriesNolistSplit(list[noIndex].code,true)
+		}
+        onClickSplitCancel(noItem:any){
+            noItem.split = false;
+            this.setSeriesNolistSplit(noItem.code,false)
+		}
+        setSeriesNolistSplit(code:string,bool:boolean){
+            this.seriesData.noList.forEach((item:any)=>{
+                (item.code===code) && (item.split=bool)
+            })
+        }
+        maxNoTotal(num:number): Promise<any> {
+			return new Promise((resolve, reject) => {
+				if(num + this.getSelectNoTotal > 500){
+					uni.showToast({title:"最多支持500张，请重新选择",icon:"none"});
+					reject();
+					return;
+				}
+				resolve && resolve(true)
+			})
+		}
+        // 计算卡种分类卡密
+        onClickCardSetNo({ cardSet, groupId } :any){
+            uni.showLoading({ title: '加载中',mask:true })
+            this.sampleMore([],cardSet,groupId,(list:any)=>{
+                uni.hideLoading();
+                const { seriesCode:code, name } = this.seriesData;
+                this.seriesData.noList = list.map((x:any)=>{
+                    return {...x,frontPic:"",backPic:"",series:{code,name}}
+                });
+                this.$emit('next')
+            });
+        }
+        sampleMore(list:any[],cardSet:string,groupId:string,cb?:Function){
+            const params = {
+                fetchFrom:list.length+1,
+                fetchSize:30,
+                groupId
+            }
+            app.http.Get(`dataApi/cardIllustration/series/${this.seriesData.seriesCode}/search/no/group/more`,params,(res:any)=>{
+                const List = res.list.map((x:any)=>({...x,cardSet}))
+                list = [...list,...List]
+                if(!res.end){
+                    setTimeout(()=>{
+                        this.sampleMore(list,cardSet,groupId,cb)
+                    },100)
+                }else{
+                    cb?.(list);
+                }
+            })
+        }
 	}
 </script>
 
 <style lang="scss">
+    @mixin flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 	.scroll-box{
 		// #ifdef APP-PLUS
 		box-sizing: border-box;
@@ -370,19 +407,60 @@
         width: 100%;
         background:#fff;
         box-sizing: border-box;
-        padding:14rpx 0 37rpx 34rpx;
+        padding:14rpx 0 24rpx 34rpx;
     }
     .operate-filter{
         width: 100%;
         height:69rpx;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        @include flex;
         box-sizing: border-box;
         padding-right: 34rpx;
     }
+    .player-header{
+        width: 100%;
+    }
+    .player-title{
+        width: 100%;
+        font-size: 27rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #707070;
+    }
+    .player-select{
+        width: 100%;
+        height:60rpx;
+        box-sizing: border-box;
+        padding-right: 24rpx;
+        @include flex;
+        .player-q{
+            @include flex;
+            font-size: 34rpx;
+            font-weight:600;
+            color: #333;
+            .player-close{
+                margin-left: 6rpx;
+            }
+        }
+        .player-search{
+            height:46rpx;
+            border-radius: 30rpx;
+            font-size: 20rpx;
+            color:#707070;
+            background:#F5F5F5;
+            box-sizing: border-box;
+            padding:0 20rpx;
+            display: flex;
+            align-items: center;
+            .icon{
+                width: 20rpx;
+                height:20rpx;
+                background:url(@/static/index/sousuo@2x.png) no-repeat center / 100% 100%;
+                margin-right: 6rpx;
+            }
+        }
+    }
     .input-box{
-        width: 566rpx;
+        width: 682rpx;
         height: 69rpx;
         background:#F5F5F5;
         border-radius:3rpx;
@@ -489,11 +567,15 @@
             font-weight: 400;
             color: #333333;
         }
+        .team-right{
+            @include flex
+        }
         .check{
             width: 36rpx;
             height:36rpx;
             border: 1px solid #C0C0C0;
             border-radius: 50%;
+            box-sizing: border-box;
         }
         .check_{
             border: none;
@@ -586,8 +668,28 @@
 		justify-content: space-between;
 		padding-bottom: constant(safe-area-inset-bottom);
 		padding-bottom: env(safe-area-inset-bottom);
-        .btn-look{
-            width: 345rpx;
+        .all-select{
+            width: 80rpx;
+            height:93rpx;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+            padding-top: 10rpx;
+        }
+        .check{
+            width: 46rpx;
+            height:46rpx;
+            border: 1px solid #C0C0C0;
+            border-radius: 50%;
+            box-sizing: border-box;
+        }
+        .check_{
+            border: none;
+            background:url(@/static/illustration/album/icon_g.png) no-repeat center / 100% 100%;
+        }
+        .clear{
+            width: 200rpx;
             height: 93rpx;
             border: 1px solid #C0C0C0;
             border-radius: 5rpx;
@@ -601,10 +703,9 @@
             color: #333333;
         }
         .btn-confirm{
-            width: 345rpx;
+            width: 390rpx;
             height: 93rpx;
-            background: #FA1545;
-            border: 1px solid #FA1545;
+            background: #C0C0C0;
             border-radius: 5rpx;
             display: flex;
             box-sizing: border-box;
@@ -614,6 +715,9 @@
             font-family: PingFang SC;
             font-weight: 400;
             color: #FFFFFF;
+        }
+        .red-btn{
+            background: #FA1545;
         }
     }
     .popup-box{
@@ -689,5 +793,38 @@
                 color: #FFFFFF;
             }
         }
+    }
+    .split{
+        height: 34rpx;
+        background: #707070;
+        border: 1px solid #D8D8D8;
+        font-size: 17rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #FFFFFF;
+        box-sizing: border-box;
+        padding:0 10rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20rpx;
+    }
+    .split-c{
+        height: 34rpx;
+        background: #FFE8E8;
+        border: 1px solid #FFE8E8;
+        font-size: 17rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #FA1545;
+        box-sizing: border-box;
+        padding:0 10rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right:20rpx;
+    }
+    .split-text{
+        color: #FA1545;
     }
 </style>

@@ -88,7 +88,7 @@ export const ActionsList = [
     }, {
         name: "卡册",
         subname: "适用于凑套，需图片与卡种对应上传。",
-        url: "/pages/illustration/album/selectCard",
+        url: "/pages/illustration/seriesSelect?&album=true",
         fontWeight: 600
     }
 ]

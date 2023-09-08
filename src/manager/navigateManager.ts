@@ -87,6 +87,16 @@ export default class navigateManager {
 			return;
 		}
 	}
+	goAlbumCreate(code:string,name:string){
+		uni.navigateTo({
+			url:`/pages/illustration/album/selectCard?seriesCode=${code}&name=${name}`
+		})
+	}
+	goAlbumEdit(selectSeries:string,draftId:string){
+		uni.navigateTo({
+			url:`/pages/illustration/album/selectCard?editCodeList=${selectSeries}&draftId=${draftId}`
+		})
+	}
 	/**
 	 * 跳转tabbar
 	 * @param index  0:首页,1:图鉴,2:卡圈,3:消息,4:我的

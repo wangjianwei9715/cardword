@@ -22,7 +22,7 @@
             :shareData="shareData" :report="true" :operationShow.sync="operationShow"></share>
 
 		<view class="list" v-for="(item,index) in seriesList" :key="index">
-			<view class="tips">{{item.name}}</view>
+			<view class="tips">{{item.name}} {{getAlbumType}}</view>
 			<view class="card-box">
 				<view class="card" v-for="(noItem,noIndex) in item.noList" :key="noIndex">
 					<image v-if="noItem.frontPic" class="pic" mode="aspectFit" :src="$thumbnail(noItem.frontPic,400)" @click="onClickCardPic(index,noIndex)"/>
@@ -68,6 +68,7 @@
 			show:false,
 			current:1
 		}
+		dicList:any=[];
 		onLoad(query: any) {
 			this.code = query.code;
 			this.forumDetail = JSON.parse(query.forumDetail);
@@ -94,7 +95,18 @@
                 thumb: ossStitching(this.$parsePic(url),`x-oss-process=image/resize,h_100,w_100`)
             }
 		}
-		formatterCodeList(addList:any[],dic:object){
+		public get getAlbumType() : string {
+			let type = ""
+			if(this.dicList.length>=1){
+				const { cardSet, player } = this.dicList[0]
+				const alike_CardSet = this.dicList.every((item:any)=>item.cardSet===cardSet);
+				const alike_Player = this.dicList.every((item:any)=>item.player===player);
+				alike_CardSet && (type=cardSet);
+				alike_Player && (type=player);
+			}
+			return type
+		}
+		formatterCodeList(addList:any[],dic:any){
 			const list = formatterNolist(addList,dic);
 			list.forEach((x:any,index:number)=>{
 				if(index+1<list.length && list[index+1].code == x.code){
@@ -112,6 +124,10 @@
 					this.seriesList.push({seriesCode:x.series.code,name:x.series.name,noList:[x]})
 				}
 			});
+			const DicList = Object.keys(dic).map((x:any)=>{
+				return dic[x]
+			})
+			this.dicList = [...DicList,...this.dicList]
 		}
 		goPersonHome() {
 			uni.navigateTo({

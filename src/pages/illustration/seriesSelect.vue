@@ -86,8 +86,11 @@
 			this.getYearSportsSeries()
 		}
 		onClickSeries(item:any){
+			if(this.album){
+				app.navigateTo.goAlbumCreate(item.code,`${item.year} ${item.name}`)
+			}
 			if(this.back){
-				uni.$emit(`${this.album?"albumSelect":"seriesSelect"}`,{code:item.code,name:`${item.year} ${item.name}`});
+				uni.$emit("seriesSelect",{code:item.code,name:`${item.year} ${item.name}`});
 				app.navigateTo.navigateBack()
 			}else{
 				uni.redirectTo({
