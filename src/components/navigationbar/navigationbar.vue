@@ -3,7 +3,7 @@
 		<view class="header-banner" :style="{ backgroundColor: backgroundColor,borderBottom:borderBottom }">
 			<view class="content" :style="'height:' + statusBarHeight + 'px'"></view>
 			<view class="tab-header">
-				<view class="icon-back" :style="{color:backColor}" @click="onClickBack">&#xe582;</view>
+				<view class="icon-back" v-show="showBack" :style="{color:backColor}" @click="onClickBack">&#xe582;</view>
 				<view class="header-title" :style="{color:backColor}">{{ title }}</view>
 				<view class="header-icon" v-if="custom">
 					<slot name="right"></slot>
@@ -29,6 +29,8 @@ export default class navigationbar extends BaseComponent {
 	title!: string;
 	@Prop({ default: false })
 	custom?: Boolean;
+	@Prop({ default: true })
+	showBack?: Boolean;
 	@Prop({ default: false })
 	customBack?: Boolean;
 	@Prop({ default: '' })

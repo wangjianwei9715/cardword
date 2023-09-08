@@ -53,10 +53,7 @@
 		onDataChanged(val: any, oldVal: any) {
 			if(val){
 				this.freshPic = val.map((x:any,index:number)=>{
-					if(index==this.transIndex){
-						setTimeout(()=>{this.freshPic[index].show=true},400)
-					}
-					return {show:false,icon:x.icon,id:x.id}
+					return {show:index==0,icon:x.icon,id:x.id}
 				})
 				this.freshInterFnc()
 			}
