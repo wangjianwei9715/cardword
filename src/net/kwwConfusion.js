@@ -3,6 +3,8 @@ import { app } from '@/app';
 import { Md5 } from 'ts-md5';
 const kName = "kww";
 const kYear = "2022"
+const keywords = ['res_ksj', 'resources.ka-world.com','resources.social.ka-world.com'];
+const httpPattern = /http:\/\/(.*?)\//;
 export default class KwwConfusion{
     getTime(){
         return Math.floor(new Date().getTime()/1000);
@@ -53,5 +55,14 @@ export default class KwwConfusion{
     }
     illList(scrollId,st,ts){
         return Md5.hashStr(`${scrollId?st:ts}_${scrollId?`${scrollId}_`:''}scrollSearchTujian`)
+    }
+    kwwParsePic(src){
+        if(keywords.every(x=> !src.includes(x))) return src;
+        const httpUrl = src.includes('res_ksj') ? 'res.ka-world.com': httpPattern.exec(src)?.[1]
+        const tsString = (Math.round(+new Date() / 1000)).toString(16).toUpperCase();
+        const noneOrigin = src.replace(/^http:\/\/[^/]+/, "");
+        const md5Key = Md5.hashStr(app.picEncryptionKey + noneOrigin + tsString);
+        
+        return `http://${httpUrl}/${md5Key}/${tsString}${noneOrigin}`
     }
 }
