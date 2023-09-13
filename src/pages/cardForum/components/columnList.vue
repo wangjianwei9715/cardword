@@ -2,61 +2,51 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-07 09:51:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-13 14:14:57
+ * @LastEditTime: 2023-09-13 15:05:40
  * @FilePath: \card-world\src\pages\cardForum\components\columnList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-    <!-- #ifndef APP-NVUE -->
-    <div class="columnContainer">
-        <!-- #endif -->
-        <!-- #ifdef APP-NVUE -->
-        <cell>
-            <!-- #endif -->
-            <div class="columnWrap" v-for="(item, index) in value" :key="index" @click="onClickData(item)">
-                <div class="columnWrap_message uni-flex fdr">
-                    <div class="columnWrap_message_left uni-flex flex1">
-                        <div>
-                            <text class="columnWrap_message_left_title u-line-2">{{ item.title }}</text>
-                        </div>
-                        <div>
-                            <text class="columnWrap_message_left_type">{{ item.scName }}</text>
-                        </div>
+    <view class="columnContainer">
+        <div class="columnWrap" v-for="(item, index) in value" :key="index" @click="onClickData(item)">
+            <div class="columnWrap_message uni-flex fdr">
+                <div class="columnWrap_message_left uni-flex flex1">
+                    <div>
+                        <text class="columnWrap_message_left_title u-line-2">{{ item.title }}</text>
                     </div>
-                    <!-- #ifndef APP-NVUE -->
-                    <image class="columnWrap_message_cover" mode="aspectFill"
-                        :src="ossStitching(parsePic(decodeURIComponent(item.cover)), `x-oss-process=image/resize,m_lfit,w_200`)">
-                    </image>
-                    <!-- #endif -->
-                    <!-- #ifdef APP-NVUE -->
-                    <image class="columnWrap_message_cover" mode="aspectFill"
-                        :src="ossStitching(item.cover, `x-oss-process=image/resize,m_lfit,w_200`)">
-                    </image>
-                    <!-- #endif -->
-                </div>
-                <div class="columnWrap_bottom uni-flex ac fdr">
-                    <div class="columnWrap_bottom_left uni-flex ac flex1 fdr">
-                        <div class="bottomItem uni-flex fdr ac" style="margin-right: 37rpx;">
-                            <image class="infoImg" mode="widthFix" src="/static/cardForum/comm_gray.png"></image>
-                            <text class="infoNum">{{ item.commentNum }}</text>
-                        </div>
-                        <div class="bottomItem uni-flex fdr ac" @click.stop="onClickLike($event, item)">
-                            <image class="infoImg" mode="widthFix" src="/static/cardForum/dz_gray.png" v-if="!isLike(item)">
-                            </image>
-                            <image class="infoImg" mode="widthFix" src="/static/cardForum/comm_dz_s.png" v-else></image>
-                            <text class="infoNum">{{ item.likeNum }}</text>
-                        </div>
+                    <div>
+                        <text class="columnWrap_message_left_type">{{ item.scName }}</text>
                     </div>
-                    <text class="columnWrap_bottom_time">{{ timeFrom(item.pub_at) }}</text>
                 </div>
-                <div class="line" v-if="index != value.length - 1"></div>
+                <!-- #ifndef APP-NVUE -->
+                <image class="columnWrap_message_cover" mode="aspectFill"
+                    :src="ossStitching(parsePic(decodeURIComponent(item.cover)), `x-oss-process=image/resize,m_lfit,w_200`)">
+                </image>
+                <!-- #endif -->
+                <!-- #ifdef APP-NVUE -->
+                <image class="columnWrap_message_cover" mode="aspectFill"
+                    :src="ossStitching(item.cover, `x-oss-process=image/resize,m_lfit,w_200`)">
+                </image>
+                <!-- #endif -->
             </div>
-            <!-- #ifdef APP-NVUE -->
-        </cell>
-        <!-- #endif -->
-        <!-- #ifndef APP-NVUE -->
-    </div>
-    <!-- #endif -->
+            <div class="columnWrap_bottom uni-flex ac fdr">
+                <div class="columnWrap_bottom_left uni-flex ac flex1 fdr">
+                    <div class="bottomItem uni-flex fdr ac" style="margin-right: 37rpx;">
+                        <image class="infoImg" mode="widthFix" src="/static/cardForum/comm_gray.png"></image>
+                        <text class="infoNum">{{ item.commentNum }}</text>
+                    </div>
+                    <div class="bottomItem uni-flex fdr ac" @click.stop="onClickLike($event, item)">
+                        <image class="infoImg" mode="widthFix" src="/static/cardForum/dz_gray.png" v-if="!isLike(item)">
+                        </image>
+                        <image class="infoImg" mode="widthFix" src="/static/cardForum/comm_dz_s.png" v-else></image>
+                        <text class="infoNum">{{ item.likeNum }}</text>
+                    </div>
+                </div>
+                <text class="columnWrap_bottom_time">{{ timeFrom(item.pub_at) }}</text>
+            </div>
+            <div class="line" v-if="index != value.length - 1"></div>
+        </div>
+    </view>
 </template> 
 <script>
 import { ossStitching } from "../func/index.js"
@@ -155,10 +145,11 @@ export default {
 .columnContainer {
     //#ifndef APP-NVUE
     width: 100%;
+    box-sizing: border-box;
     //#endif
     //#ifdef APP-NVUE
     width: 750rpx;
-    padding: 0 34rpx;
+    // padding: 0 34rpx;
     //#endif
 }
 
@@ -252,7 +243,7 @@ export default {
 
 .line {
     height: 1rpx;
-    background: #E6E6E6;
+    background: rgba(230, 230, 230, .6);
     margin-top: 47rpx;
 }
 </style>

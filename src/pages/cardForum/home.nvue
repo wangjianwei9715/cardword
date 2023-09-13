@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-13 14:09:46
+ * @LastEditTime: 2023-09-13 15:12:48
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -73,10 +73,12 @@
                         </div>
                         <!-- 类目专栏 -->
                         <template v-if="tab.tag === CFTT.COLUMN.tag">
+                            <view class="columnScrollLine"></view>
                             <scroll-view scroll-x="true" :show-scrollbar="false" class="columnScroll">
-                                <view class="columnScrollWrap">
+                                <view class="uni-flex" style="flex-direction: row;">
                                     <view class="columnItem flexCenter" @click="onClickColumn($event, columnItem)"
                                         :class="{ columnItem_select: columnItem.name === column.select }"
+                                        :style="{ marginLeft: columnIndex == 0 ? '33rpx' : '0rpx' }"
                                         v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
                                         <text class="columnItem_text"
                                             :class="{ columnItem_text_select: columnItem.name === column.select }">{{
@@ -153,7 +155,8 @@
                         </template>
                     </waterfalls>
                     <!-- 专栏 -->
-                    <list v-if="tab.tag === CFTT.COLUMN.tag" :show-scrollbar="false" @loadmore="loadmoreData(tabIndex)">
+                    <list v-if="tab.tag === CFTT.COLUMN.tag" :height="scrollViewHeight + 'px'" :show-scrollbar="false"
+                        @loadmore="loadmoreData(tabIndex)">
                         <refresh display="show" @refresh="refreshData(tabIndex)"
                             :display="columnRefreshing ? 'show' : 'hide'" class="refresh">
                             <u-loading-icon mode="semicircle"></u-loading-icon>
@@ -161,21 +164,25 @@
                         <cell ref="goTop">
                         </cell>
                         <cell>
+                            <view class="columnScrollLine"></view>
                             <scroll-view scroll-x="true" :show-scrollbar="false" class="columnScroll">
-                                <view class="columnScrollWrap">
-                                    <view class="columnItem flexCenter" @click="onClickColumn($event, columnItem)"
-                                        :class="{ columnItem_select: columnItem.name === column.select }"
-                                        v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
-                                        <text class="columnItem_text"
-                                            :class="{ columnItem_text_select: columnItem.name === column.select }">{{
-                                                columnItem.name }}</text>
-                                    </view>
+                                <view class="columnItem flexCenter" @click="onClickColumn($event, columnItem)"
+                                    :class="{ columnItem_select: columnItem.name === column.select }"
+                                    :style="{ marginLeft: columnIndex == 0 ? '33rpx' : '0rpx' }"
+                                    v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
+                                    <text class="columnItem_text"
+                                        :class="{ columnItem_text_select: columnItem.name === column.select }">{{
+                                            columnItem.name }}</text>
                                 </view>
                             </scroll-view>
                         </cell>
-                        <cell v-if="tab.firstReqEnd">
-                            <columnList v-model="tab.list"></columnList>
-                            <empty v-if="!tab.list.length"></empty>
+                        <cell v-if="tab.list.length && tab.firstReqEnd">
+                            <div>
+                                <columnList v-model="tab.list"></columnList>
+                            </div>
+                        </cell>
+                        <cell v-if="!tab.list.length && tab.firstReqEnd">
+                            <empty></empty>
                         </cell>
                         <cell v-if="tab.list.length">
                             <div>
@@ -865,30 +872,53 @@ page {
     // flex-wrap: nowrap;
 
 }
-
+.columnScrollLine{
+    width: 750rpx;
+    height: 1rpx;
+    background-color: #f7f8fc;
+}
 .columnScroll {
     width: 750rpx;
     flex-direction: row;
     display: flex;
-    // margin-top: 12rpx;
-}
-
-.columnScrollWrap {
-    flex-direction: row;
-    display: flex;
-    width: 750rpx;
     flex-wrap: nowrap;
+    background-color: #ffffff;
+
     // #ifndef APP-NVUE
+    // border-top: 1rpx solid #f7f8fc;
     white-space: nowrap;
     box-sizing: border-box;
+
     // #endif
-    // padding: 0;
-    padding-left: 33rpx;
+    //#ifdef APP-NVUE
+    // border-width: 1rpx;
+    // border-top-style: solid;
+    // border-top-width: 1rpx;
+    // border-top-color: #f7f8fc;
+    // border-bottom-color: rgba(247, 248, 252, .0);
+    // border-bottom-width: 0;
+    //#endif
     padding-top: 16rpx;
     padding-bottom: 28rpx;
-    border-top: 1rpx solid #f7f8fc;
-    background-color: #fff;
+
 }
+
+// .columnScrollWrap {
+//     flex-direction: row;
+//     display: flex;
+//     // width: 750rpx;
+//     flex-wrap: nowrap;
+//     // #ifndef APP-NVUE
+//     white-space: nowrap;
+//     box-sizing: border-box;
+//     // #endif
+//     // padding: 0;
+//     // padding-left: 33rpx;
+//     // padding-top: 16rpx;
+//     padding-bottom: 28rpx;
+//     border-top: 1rpx solid #f7f8fc;
+//     background-color: #fff;
+// }
 
 .columnItem {
     // padding: 10rpx;
