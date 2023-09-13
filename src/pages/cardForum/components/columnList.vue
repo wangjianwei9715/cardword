@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-07 09:51:48
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-13 13:49:49
+ * @LastEditTime: 2023-09-13 14:14:57
  * @FilePath: \card-world\src\pages\cardForum\components\columnList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -88,9 +88,11 @@ export default {
     },
     mounted() {
         uni.$on("cardForumLike", this.onCardForumLike)
+        uni.$on("cardForumCommChange", this.onCardForumCommChange)
     },
     beforeDestroy() {
         uni.$off("cardForumLike", this.onCardForumLike)
+        uni.$off("cardForumCommChange", this.onCardForumCommChange)
     },
     methods: {
         timeFrom(time) {
@@ -103,6 +105,14 @@ export default {
             if (findIndex >= 0) {
                 this.value[findIndex].bit = res.bit
                 this.value[findIndex].likeNum = res.likeNum
+            }
+        },
+        onCardForumCommChange(res) {
+            const findIndex = this.value.findIndex((item) => {
+                return item.code === res.code
+            })
+            if (findIndex >= 0) {
+                this.value[findIndex].commentNum = res.num
             }
         },
         isLike(item) {

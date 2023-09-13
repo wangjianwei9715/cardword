@@ -3,7 +3,6 @@ import { ossStitching } from "@/pages/cardForum/func/index"
 import {decHex} from "@/net/Crypto.js"
 //@ts-ignore
 import KwwConfusion from "@/net/kwwConfusion.js"
-// #endif
 const kwwConfusion = new KwwConfusion();
 /**
  * 图片特殊处理
