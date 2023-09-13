@@ -1,6 +1,6 @@
 <template>
     <view class='content'>
-        <navigationbar :showBack="true" title="店铺精彩时刻" :rightText="onEdit ? '取消' : '管理'"
+        <navigationbar :showBack="true" title="店铺精彩时刻" :rightText="isMerchant ? (onEdit ? '取消' : '管理') : ''"
             @onClickRightText="onClickRightText"></navigationbar>
         <view class="niceTime">
             <view class="niceTimeItem" v-for="(item, index) in niceTimeList" :key="index">
@@ -13,7 +13,7 @@
                     </view>
                     <template v-if="!onEdit && item.isTop">
                         <view class="isTop flexCenter" v-if="!onEdit && item.isTop">置顶</view>
-                        <view class="cancleTop flexCenter" v-if="!onEdit && item.isTop" @click.stop="onClickSetTop(item)">
+                        <view class="cancleTop flexCenter" v-if="!onEdit && item.isTop&&isMerchant" @click.stop="onClickSetTop(item)">
                             取消置顶</view>
                     </template>
                     <view class="selectContainer" v-if="onEdit" @click="onClickSelect(item.id)"
@@ -42,10 +42,13 @@
                     </image>
                 </swiper-item>
             </swiper>
-            <view class="setTopButton flexCenter" @click.stop="onClickSetTop(undefined)">{{ selectItem.isTop ? '取消' : ''
-            }}置顶</view>
-            <view class="swiperIsTop flexCenter" v-if="selectItem.isTop" :style="{ top: (statusBarHeight + top) + 'px' }">置顶
-            </view>
+            <template>
+                <view class="setTopButton flexCenter"v-if="isMerchant" @click.stop="onClickSetTop(undefined)">{{ selectItem.isTop ? '取消' : ''
+                }}置顶</view>
+                <view class="swiperIsTop flexCenter" v-if="selectItem.isTop"
+                    :style="{ top: (statusBarHeight + top) + 'px' }">置顶
+                </view>
+            </template>
         </view>
     </view>
 </template>
@@ -73,9 +76,11 @@ export default class ClassName extends BaseNode {
     showSwiper: boolean = false
     statusBarHeight: number = app.statusBarHeight;
     top: number = uni.upx2px(88)
+    isMerchant: boolean = false
     selectItem: any = {}
     onLoad(query: any) {
         if (query.alias) this.alias = query.alias
+        if (query.isMerchant) this.isMerchant = true
         this.reqNewData()
     }
     onReachBottom() {
@@ -98,6 +103,7 @@ export default class ClassName extends BaseNode {
         })
     }
     onClickRightText() {
+        if (!this.isMerchant) return
         this.onEdit = !this.onEdit
         this.selectIds = []
     }

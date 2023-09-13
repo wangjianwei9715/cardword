@@ -76,7 +76,7 @@
       </view>
     </view>
     <view class="moreContainer" :style="{ marginTop: (isMerchant ? 27 : 68) + 'rpx' }"
-      @click="pageJump('/pages/merchant/niceTime?alias=' + alias)">
+      @click="pageJump(`/pages/merchant/niceTime?alias=${alias}${isMerchant?'&isMerchant=1':''}`)">
       <view class="more-left">店铺精彩时刻</view>
       <view class="more-right">更多</view>
     </view>
