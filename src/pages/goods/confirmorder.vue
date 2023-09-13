@@ -188,7 +188,6 @@
 <script lang="ts">
 import { app } from "@/app";
 import { getGoodsPintuan } from "@/tools/switchUtil";
-import { Md5 } from "ts-md5";
 import { Component } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";
 import { getGoodsImg } from "../../tools/util";

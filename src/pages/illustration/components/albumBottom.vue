@@ -3,11 +3,11 @@
 		<view class="album-bottom" v-show="!showDel">
 			<view class="album-left">
 				<view v-if="showSave" class="left" @click="onClickSave">
-					<view class="icon-save"></view>
+					<view class="icon icon-save"></view>
 					<view class="msg">存草稿</view>
 				</view>
 				<view class="left" @click="showDel=true">
-					<view class="icon-save"></view>
+					<view class="icon icon-del"></view>
 					<view class="msg">删除</view>
 				</view>
 			</view>
@@ -92,12 +92,17 @@
 		height:92rpx;
 		box-sizing: border-box;
 		padding-top: 8rpx;
-		.icon-save{
+		.icon{
 			width: 48rpx;
 			height:48rpx;
-			background: url(@/static/illustration/album/icon_save.png) no-repeat center/ 100% 100%;
 			margin:0 auto;
 			margin-bottom: 4rpx;
+		}
+		.icon-save{
+			background: url(@/static/illustration/album/icon_save.png) no-repeat center/ 100% 100%;
+		}
+		.icon-del{
+			background: url(@/static/illustration/album/icon_del.png) no-repeat center/ 100% 100%;
 		}
 		.check{
             width: 40rpx;

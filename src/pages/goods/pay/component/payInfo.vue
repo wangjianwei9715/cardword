@@ -10,7 +10,7 @@
 						<view class="pay-goods-right-header">{{ buyLimitMsg }}</view>
 						<view class="pay-goods-add">
 							<view class="num-box" @click="onClickCutDown()">  <view class="img-jian" ></view> </view>
-							<input class="money-add" @input="onInputMoney" v-model.number="payGoodsNum" type="number" />
+							<input class="money-add" @input="onInputMoney" @blur="onBlurMoneyNum" v-model.number="payGoodsNum" type="number" />
 							<view class="num-box" @click="onClickAdd()"> <view class="img-add" ></view> </view>
 						</view>
 					</view>
@@ -51,7 +51,7 @@
 				<view class="randomh-num-btn" @click="onClickRandomNum(item,'reduce')">
 					<image class="icon-randomReduce" src="@/static/pay/v2/icon_reduce_.png" />
 				</view>
-				<input type="number" class="randomh-num" v-model.number="item.num" @input="onInputMoneyRandom($event,item)" />
+				<input type="number" class="randomh-num" v-model.number="item.num" @blur="onBlurMoneyRandom($event,item)" @input="onInputMoneyRandom($event,item)" />
 				<view class="randomh-num-btn" @click="onClickRandomNum(item,'add')">
 					<image class="icon-randomAdd" src="@/static/pay/v2/icon_add_.png" />
 				</view>
@@ -129,12 +129,18 @@
 			this.getOnePrice();
 		}
 		onInputMoney(event: any) {
-			if (event.detail.value <=0 || Number(event.detail.value) > this.maxNum) {
+			if (Number(event.detail.value) > this.maxNum) {
 				setTimeout(() => {
-					this.payGoodsNum = event.detail.value <=0 ? 1 :this.maxNum;
+					this.payGoodsNum = this.maxNum;
 					this.getOnePrice();
 				}, 100);
 			}else{
+				this.getOnePrice();
+			}
+		}
+		onBlurMoneyNum(event: any){
+			if(Number(event.detail.value)<=0){
+				this.payGoodsNum = 1;
 				this.getOnePrice();
 			}
 		}
@@ -151,12 +157,18 @@
 			this.getOnePrice();
 		}
 		onInputMoneyRandom(event:any,item:any){
-			if (event.detail.value <=0 || Number(event.detail.value) > item.maxNum) {
+			if (Number(event.detail.value) > item.maxNum) {
 				setTimeout(() => {
-					item.num = event.detail.value <=0 ? 1 :item.maxNum;
+					item.num = item.maxNum;
 					this.getOnePrice();
 				}, 100);
 			}else{
+				this.getOnePrice();
+			}
+		}
+		onBlurMoneyRandom(event:any,item:any){
+			if ( Number(event.detail.value) <=0) {
+				item.num = 1;
 				this.getOnePrice();
 			}
 		}

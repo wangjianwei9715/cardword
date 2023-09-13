@@ -77,12 +77,13 @@
 
 <script lang="ts">
 import { app } from "@/app";
-import { Md5 } from "ts-md5";
 import { Component } from "vue-property-decorator";
 import BaseNode from "@/base/BaseNode.vue";
 import payAddress from "./component/payAddress.vue";
 import payInfo from "./component/payInfo.vue";
 import payNeedKnow from "./component/payNeedKnow.vue";
+//@ts-ignore
+import KwwConfusion from "@/net/kwwConfusion.js"
 @Component({
   components:{
     payAddress,
@@ -91,6 +92,7 @@ import payNeedKnow from "./component/payNeedKnow.vue";
   }
 })
 export default class ClassName extends BaseNode {
+  kwwConfusion = new KwwConfusion()
   addressData: any = [];
   payNum = 1;
   goodsData: { [x: string]: any } = [];
@@ -397,7 +399,7 @@ export default class ClassName extends BaseNode {
         params.num = Number(this.payNum); 
         break; 
     }
-    params.sn = Md5.hashStr(`${snName}_${ts}_${userId}_${goodCode}`)
+    params.sn = this.kwwConfusion.confirmOrder(ts,snName,userId,goodCode);
     if (uni.getSystemInfoSync().platform === 'android') { 
       params.nativeSdk = 'qmf_android'; 
     }
