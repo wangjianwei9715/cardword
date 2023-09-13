@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-08 11:21:33
+ * @LastEditTime: 2023-09-13 14:09:46
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -14,8 +14,8 @@
             <swiper-item class="swiperItem" v-for="(tab, tabIndex) in tabs.list">
                 <image src="@/static/cardForum/showKaBack.jpg" class="showKaBack" v-if="tabIndex === CFTT.SHOW.index">
                 </image>
-                <div style="background-color: #ffffff;" class="showKaBack" v-if="tabIndex === CFTT.COLUMN.index">
-                </div>
+                <!-- <div style="background-color: #ffffff;" class="showKaBack" v-if="tabIndex === CFTT.COLUMN.index">
+                </div> -->
                 <div class="waterContainer" :style="{ height: scrollViewHeight + 'px', top: fixedTopHeight + 'px' }">
                     <!-- 骨架 -->
                     <cardSkeleton :loading="!tab.firstReqEnd" v-if="!tab.firstReqEnd" />
@@ -75,7 +75,7 @@
                         <template v-if="tab.tag === CFTT.COLUMN.tag">
                             <scroll-view scroll-x="true" :show-scrollbar="false" class="columnScroll">
                                 <view class="columnScrollWrap">
-                                    <view class="columnItem" @click="onClickColumn($event, columnItem)"
+                                    <view class="columnItem flexCenter" @click="onClickColumn($event, columnItem)"
                                         :class="{ columnItem_select: columnItem.name === column.select }"
                                         v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
                                         <text class="columnItem_text"
@@ -84,7 +84,7 @@
                                     </view>
                                 </view>
                             </scroll-view>
-                            <columnList v-model="tab.list" style="margin-top: 20rpx;width: 730rpx;"></columnList>
+                            <columnList v-model="tab.list" style="width: 750rpx;"></columnList>
                         </template>
                         <!-- 瀑布流组件 -->
                         <waterfalls style="width:750rpx;padding-top: 10rpx;"
@@ -163,7 +163,7 @@
                         <cell>
                             <scroll-view scroll-x="true" :show-scrollbar="false" class="columnScroll">
                                 <view class="columnScrollWrap">
-                                    <view class="columnItem" @click="onClickColumn($event, columnItem)"
+                                    <view class="columnItem flexCenter" @click="onClickColumn($event, columnItem)"
                                         :class="{ columnItem_select: columnItem.name === column.select }"
                                         v-for="(columnItem, columnIndex) in column.list" :key="columnIndex">
                                         <text class="columnItem_text"
@@ -173,13 +173,11 @@
                                 </view>
                             </scroll-view>
                         </cell>
-                        <cell v-if="!tab.list.length && firstReqEnd">
-                            <empty></empty>
-                        </cell>
-                        <cell style="margin-top: 20rpx;" v-if="tab.firstReqEnd">
+                        <cell v-if="tab.firstReqEnd">
                             <columnList v-model="tab.list"></columnList>
+                            <empty v-if="!tab.list.length"></empty>
                         </cell>
-                        <cell>
+                        <cell v-if="tab.list.length">
                             <div>
                                 <u-loadmore :line="true" loadingIcon="semicircle" lineLength="20rpx"
                                     :status="tab.isFetchEnd ? 'nomore' : 'loading'" nomore-text="没有更多了" fontSize="24rpx" />
@@ -634,7 +632,7 @@ export default {
                     title: err,
                     icon: 'none'
                 })
-                this.columnRefreshing=false
+                this.columnRefreshing = false
                 if (this.current.retry < 1) {
                     this.refreshData(this.tabs.index, false)
                     this.current.retry += 1
@@ -869,27 +867,38 @@ page {
 }
 
 .columnScroll {
-    width: 710rpx;
+    width: 750rpx;
     flex-direction: row;
     display: flex;
-    margin-top: 12rpx;
+    // margin-top: 12rpx;
 }
 
 .columnScrollWrap {
     flex-direction: row;
     display: flex;
-    width: 710rpx;
+    width: 750rpx;
     flex-wrap: nowrap;
     // #ifndef APP-NVUE
     white-space: nowrap;
+    box-sizing: border-box;
     // #endif
+    // padding: 0;
+    padding-left: 33rpx;
+    padding-top: 16rpx;
+    padding-bottom: 28rpx;
+    border-top: 1rpx solid #f7f8fc;
+    background-color: #fff;
 }
 
 .columnItem {
-    padding: 10rpx;
+    // padding: 10rpx;
+    padding-left: 18rpx;
+    padding-right: 18rpx;
+    height: 52rpx;
     background-color: #f2f2f2;
     margin-right: 30rpx;
     border-radius: 3rpx;
+
     //#ifndef APP-NVUE
     transition: background-color 0.2s;
     //#endif
@@ -902,16 +911,21 @@ page {
 
 .columnItem_select {
     background-color: #fb374e;
+
 }
 
 .columnItem_text {
-    color: #aaaaaa;
-    font-weight: bold;
-    font-size: 26rpx;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #959695;
 }
 
 .columnItem_text_select {
-    color: #ffffff;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: bold;
+    color: #FFFFFF;
 }
 
 .scrollTopicWarp {

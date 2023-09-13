@@ -11,14 +11,16 @@
                     <view class="niceTimeItem-dot flexCenter">{{ imageNums(item.pic) }}</view>
                     <view class="scoreContainer uni-flex">
                     </view>
-                    <view class="selectContainer" @click="onClickSelect(item.id)"
-                        :class="{ selectContainer_select: hasSelect(item.id) }" v-if="onEdit">
+                    <template v-if="!onEdit && item.isTop">
+                        <view class="isTop flexCenter" v-if="!onEdit && item.isTop">置顶</view>
+                        <view class="cancleTop flexCenter" v-if="!onEdit && item.isTop" @click.stop="onClickSetTop(item)">
+                            取消置顶</view>
+                    </template>
+                    <view class="selectContainer" v-if="onEdit" @click="onClickSelect(item.id)"
+                        :class="{ selectContainer_select: hasSelect(item.id) }">
                         <view class="circle"></view>
                     </view>
-                    <template v-if="!onEdit && item.isTop">
-                        <view class="isTop flexCenter">置顶</view>
-                        <view class="cancleTop flexCenter" @click.stop="onClickSetTop(item)">取消置顶</view>
-                    </template>
+
                 </view>
                 <view class="niceTime-name">
                     {{ item.name }}
@@ -123,9 +125,11 @@ export default class ClassName extends BaseNode {
                         uni.showToast({
                             title: '删除成功'
                         })
+                        this.onEdit = false
                         setTimeout(() => {
                             this.queryParams.pageIndex = 1
                             this.reqNewData()
+                            uni.$emit("niceTimeChange")
                         }, 200)
                     })
                 }
@@ -150,6 +154,7 @@ export default class ClassName extends BaseNode {
             setTimeout(() => {
                 this.queryParams.pageIndex = 1
                 this.reqNewData()
+                uni.$emit("niceTimeChange")
             }, 200)
         })
     }
@@ -282,7 +287,7 @@ page {
     left: 0;
     border-radius: 5rpx;
     display: block;
-
+    // z-index: 7;
 }
 
 .niceTimeItem-dot {
@@ -319,11 +324,14 @@ page {
 }
 
 .selectContainer {
-    width: inherit;
-    height: inherit;
+    width: 355rpx;
+    height: 426rpx;
     position: absolute;
     background-color: rgba(0, 0, 0, .2);
     transition: background-color 0.2s;
+    // z-index: 9;
+    left: 0;
+    top: 0;
 
     // background-color: red;
     .circle {
@@ -361,7 +369,7 @@ page {
     position: absolute;
     left: 25rpx;
     top: 22rpx;
-    background-color: #ff003d;
+    background: #ff003d;
     border-radius: 7rpx;
 }
 
@@ -373,7 +381,7 @@ page {
     font-weight: 400;
     color: #FFFFFF;
     position: absolute;
-    background-color: rgba(0, 0, 0, .4);
+    background: rgba(0, 0, 0, .4);
     right: 25rpx;
     top: 22rpx;
     border-radius: 7rpx;
@@ -440,5 +448,6 @@ page {
     font-weight: bold;
     color: #FFFFFF;
     background-color: #ff003d;
+    z-index: 30;
 }
 </style>

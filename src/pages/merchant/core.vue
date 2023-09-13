@@ -89,7 +89,7 @@
             :key="'sImg' + sNndex">
             <image class="niceTimeImage" :src="filterImage(decodeURIComponent(sItem.pic), false)"
               @click="previewImage(filterImage(decodeURIComponent(sItem.pic), true), 0, '')" mode="aspectFill" />
-            <view class="isTop flexCenter" v-if="sItem.isTop">置顶</view>
+            <view class="isTop flexCenter" v-show="sItem.isTop">置顶</view>
           </view>
         </swiper-item>
       </swiper>
@@ -239,10 +239,10 @@ export default class ClassName extends BaseNode {
   scrollTop: number = 0
   MAX_HEIGHT: number = 0;
   niceTimeFinish: boolean = false
-  private get scrollTopPercent() {
+  public get scrollTopPercent() {
     return this.scrollTop / (this.MAX_HEIGHT * 2)
   }
-  private get merchantRule() {
+  public get merchantRule() {
     if (!this.merchantInfo.bit) return []
     return this.ruleList.filter((item: any) => {
       const bitNum = this.merchantInfo.bit & item.bit
@@ -268,7 +268,7 @@ export default class ClassName extends BaseNode {
       this.reqCouponBrief()
       this.reqMerchantData()
     }
-
+    this.reqNiceTime()
     if (query.tp && +query.tp > 0) {
       const index = this.tag.list.findIndex((item: any) => {
         return item.value == +query.tp
@@ -281,11 +281,11 @@ export default class ClassName extends BaseNode {
       // console.log("refreshMerchantInfo", res);
       this.merchantInfo = res
     });
+    this.onEventUI("niceTimeChange", () => {
+      this.niceTimeFinish = false
+      this.reqNiceTime()
+    })
 
-  }
-
-  onShow() {
-    this.reqNiceTime()
   }
   onReachBottom() {
     if (this.goodsQuery.pageIndex < this.goodsTotalPage) {

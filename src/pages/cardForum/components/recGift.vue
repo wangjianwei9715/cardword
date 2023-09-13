@@ -251,7 +251,9 @@ export default {
     line-height: 25rpx;
     margin-top: 28rpx;
     // width: auto;
+    //#ifndef APP-NVUE
     display: inline-block;
+    //#endif
 }
 
 .look {
