@@ -25,7 +25,7 @@
 			<view class="tips">{{item.name}} {{getAlbumType}}</view>
 			<view class="card-box">
 				<view class="card" v-for="(noItem,noIndex) in item.noList" :key="noIndex">
-					<image v-if="noItem.frontPic" class="pic" mode="aspectFit" :src="$thumbnail(noItem.frontPic,400)" @click="onClickCardPic(index,noIndex)"/>
+					<muqian-lazyLoad v-if="noItem.frontPic" class="pic" mode="aspectFit" :thumbnailWidth="400" :src="noItem.frontPic" @click="onClickCardPic(index,noIndex)"/>
 					<view v-else class="no-pic">暂未收集</view>
 					<view class="player u-line-1">{{noItem.split?noItem.seqIndex+"/":""}}{{noItem.seq}}编 {{noItem.player}}</view>
 					<view class="cardset u-line-2">

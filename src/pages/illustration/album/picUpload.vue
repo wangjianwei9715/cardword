@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-26 19:47:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-09-07 11:12:21
+ * @LastEditTime: 2023-09-14 10:21:27
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -28,7 +28,7 @@
 						<!-- && (noItem.split?noItem.seqIndex==1:true) -->
 						<view v-show="startDelete" class="icon-check" :class="{'icon-check_':delSelectNo(noItem.code)}" @click="onClickDelSelect(noItem)"></view>
 						<view class="pic-index" v-if="noItem.frontPic">
-							<muqian-lazyLoad class="pic" :src="decodeURIComponent(noItem.frontPic)" mode="aspectFit" :preview="!startDelete"/>
+							<muqian-lazyLoad class="pic" :thumbnailWidth="400" :src="noItem.frontPic" mode="aspectFit" :preview="!startDelete"/>
 							<view v-show="!startDelete" class="pic-close" @click="noItem.frontPic=''"></view>
 						</view>
 						<view class="upload-box" v-else @click="onClickAddImg(index,noIndex,'front')">
@@ -37,7 +37,7 @@
 						</view>
 
 						<view class="pic-index back-pic-box" v-if="noItem.backPic">
-							<muqian-lazyLoad class="pic back-pic" :src="decodeURIComponent(noItem.backPic)" mode="aspectFit" :preview="!startDelete"/>
+							<muqian-lazyLoad class="pic back-pic" :thumbnailWidth="400" :src="noItem.backPic" mode="aspectFit" :preview="!startDelete"/>
 							<view v-show="!startDelete" class="pic-close" @click="noItem.backPic=''"></view>
 						</view>
 						<view class="upload-box back-pic-box back-box" v-else @click="onClickAddImg(index,noIndex,'back')">
