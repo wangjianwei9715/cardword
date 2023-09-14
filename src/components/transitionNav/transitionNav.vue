@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-31 16:50:14
+ * @LastEditTime: 2023-09-14 17:28:51
  * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
@@ -95,6 +95,16 @@ let toolsMap = {
             height: "34rpx",
         }
 
+    },
+    "规则":{
+        emitAction:"onClickRule",
+        icon: "/static/index/v3/rule.png",
+        icon_black:"/static/index/v3/rule_black.png",
+        style: {
+            width: "36rpx",
+            height: "36rpx",
+            // marginRight: "20rpx"
+        }
     }
 }
 export default {

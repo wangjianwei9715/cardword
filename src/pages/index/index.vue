@@ -250,19 +250,43 @@
 					this.goodsTabs[0].badge!.isDot = res.bright
 				})
 			}
-			// 开屏商品广告
-			const openScreenCode = uni.getStorageSync('openScreenCode') || [];
-			app.http.Post('openscreen/ad/get',{already_good_codes:openScreenCode},(res:any)=>{
-				if(res.data){
-					const storageCode = app.platform.removeArrRepeat(openScreenCode,res.not_sale_good_codes??[])
-					uni.setStorageSync('openScreenCode',[...storageCode,res.data.good_code]);
-					this.openScreenData = { show:true, data:res.data };
-					uni.hideTabBar()
-				}
-			})
 			setTimeout(()=>{
 				app.platform.getGuideData()
 			},200)
+			// 开屏商品广告
+			//得物活动弹窗(===========)
+			// const [start,end]=[1694707200,1694966399]//正式
+			const [start,end]=[1694620799,1694966399]//测试
+			const dewuAdLastOpen=uni.getStorageSync("dewuAdLastOpen")||0
+			const openTime=Math.round(+new Date()/1000)
+			// && new Date(dewuAdLastOpen).toDateString() !== new Date().toDateString()
+			if (start<=openTime&&openTime<=end&&!dewuAdLastOpen){
+				uni.setStorageSync("dewuAdLastOpen",+new Date())
+				this.openScreenData = { show:true,
+					 data:{
+						pic_url:"/static/act/dewu/ad.png",
+						style:{
+							width:"596rpx",
+							height:"593rpx",
+							marginTop:"80rpx"
+						},
+						url:"/pages/act/dewu/index",
+						hideThreeDay:true,
+						isAct:true,
+						act:"dewu" 
+					} 		
+				}
+				return
+			}
+			const openScreenCode = uni.getStorageSync('openScreenCode') || [];
+				app.http.Post('openscreen/ad/get',{already_good_codes:openScreenCode},(res:any)=>{
+					if(res.data){
+						const storageCode = app.platform.removeArrRepeat(openScreenCode,res.not_sale_good_codes??[])
+						uni.setStorageSync('openScreenCode',[...storageCode,res.data.good_code]);
+						this.openScreenData = { show:true, data:res.data };
+						uni.hideTabBar()
+					}
+				})
 		}
 		getHome(cb?:Function){
 			app.http.Get("dataApi/home", {}, (data: any) => {
