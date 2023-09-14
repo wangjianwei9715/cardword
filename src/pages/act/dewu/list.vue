@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-14 16:12:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 00:37:00
+ * @LastEditTime: 2023-09-15 00:39:19
  * @FilePath: \card-world\src\pages\act\dewu\list.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,7 +17,7 @@
         </view>
         <view class="contentContainer">
             <view class="topRed" style="height: 84rpx;"></view>
-            <view class="bigTitle center" style="margin-top: 76rpx;">01.话题点赞榜</view>
+            <view class="bigTitle center" style="margin-top: 76rpx;background-color: #000000;width: 750rpx;">01.话题点赞榜</view>
             <view class="tips center"><text class="blue">发布球星卡内容</text>并关联本话题即可参与</view>
             <view class="rankContainer">
                 <view class="myRank uni-flex jb ac">
@@ -232,7 +232,9 @@ page {
     font-weight: bold;
     color: #ffffff;
     letter-spacing: 2rpx;
-    margin-top: 18rpx;
+    padding-top: 18rpx;
+    width: 750rpx;
+    background-color: #000000;
 }
 
 .rankContainer {
@@ -433,7 +435,7 @@ page {
     align-items: center;
     position: relative;
     bottom: 150rpx;
-    background-color: #000;
+    // background-color: #000;
 
     .topRed {
         width: 750rpx;
