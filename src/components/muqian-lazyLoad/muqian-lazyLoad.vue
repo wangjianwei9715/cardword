@@ -7,17 +7,17 @@
 				}"></image>
 
 		<!-- 加载成功 -->
-		<image class="muqian-image" @click="onClickLazyImage($parsePic(src))" @load="load" @error="error" v-if="status==1&&!viewBg"
-			:src="$parsePic(src)" :mode="mode" :style="{
+		<image class="muqian-image" @click="onClickLazyImage()" @load="load" @error="error" v-if="status==1&&!viewBg"
+			:src="imageSrc" :mode="mode" :style="{
 				opacity:isShow?'1':'0',
 				borderRadius,
 				transition: `opacity ${duration/1000}s ${effect}`
 				}">
 		</image>
-		<view v-else-if="status==1&&viewBg" @click="onClickLazyImage($parsePic(src))" :style="{
+		<view v-else-if="status==1&&viewBg" @click="onClickLazyImage()" :style="{
 				borderRadius,
 				transition: `opacity ${duration/1000}s ${effect}`,
-				background:`url(${$parsePic(src)}) no-repeat center/100% 100%`,
+				background:`url(${imageSrc}) no-repeat center/100% 100%`,
 				width:`${width}`,
 				height:`${height}`,
 				}"></view>
@@ -126,6 +126,11 @@
 			preview:{
 				type:Boolean,
 				default: false
+			},
+			// 缩略图宽度 0显示正常图片
+			thumbnailWidth:{
+				type:Number,
+				default: 0
 			}
 
 		},
@@ -133,6 +138,7 @@
 			return {
 				status: 0, //0加载中 1加载成功 2加载失败
 				isShow: false,
+				lazyImage:[]
 			}
 		},
 		watch: {
@@ -144,17 +150,26 @@
 				this.$nextTick(() => {
 					this.status = 1
 				})
+				this.lazyImage = [this.$parsePic(this.src)]
 			}
 		},
 		destroyed() {
 			//页面销毁取消监听
 			this.$emit('destroyed')
 		},
+		computed:{
+			imageSrc(){
+				return this.thumbnailWidth ? this.$thumbnail(this.src,this.thumbnailWidth) : this.$parsePic(this.src)
+			}
+		},
 		methods: {
-			onClickLazyImage(pic) {
+			onClickLazyImage() {
 				if(this.preview){
+					if(this.lazyImage.length==0){
+						this.lazyImage = [this.$parsePic(this.src)]
+					}
 					uni.previewImage({
-						urls: [pic],
+						urls: this.lazyImage,
 						longPressActions:{
 							itemList:[],
 							success: (data)=> {

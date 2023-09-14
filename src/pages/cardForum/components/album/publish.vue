@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-06-29 18:47:57
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-03 16:45:07
+ * @LastEditTime: 2023-09-14 10:23:30
  * Copyright: 2023 .
  * @Descripttion: 
 -->
@@ -14,9 +14,9 @@
 			<scroll-view class="scroll" :scroll-x="true">
 				<view class="cover-box" @click="changeCover()">
 					<view class="tip">封面</view>
-					<muqian-lazyLoad class="pic" mode="aspectFit" :src="decodeURIComponent(coverPic)" />
+					<muqian-lazyLoad class="pic" mode="aspectFit" :thumbnailWidth="300" :src="coverPic" />
 				</view>
-				<muqian-lazyLoad v-for="(item,index) in hasPicList" :key="index" class="pic" mode="aspectFit" :src="decodeURIComponent(item.frontPic)" />
+				<muqian-lazyLoad v-for="(item,index) in hasPicList" :key="index" :thumbnailWidth="300" class="pic" mode="aspectFit" :src="item.frontPic" />
 				<view class="upload" @click="onClickGoPicUpload" v-show="hasPicList.length<=2">
 					<view class="icon-add"></view>
 					<view class="upload-content">添加图片</view>
@@ -31,7 +31,7 @@
 			</view>
 		</view>
 		<view class="prove">
-			<muqian-lazyLoad v-if="provePic" @click="changeProve()" class="pic" mode="aspectFit" :src="decodeURIComponent(provePic)" />
+			<muqian-lazyLoad v-if="provePic" @click="changeProve()" class="pic" mode="aspectFit" :thumbnailWidth="300" :src="provePic" />
 			<view class="upload" v-else @click="changeProve()">
 				<view class="icon-add"></view>
 				<view class="upload-content">上传证明</view>

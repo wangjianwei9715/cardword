@@ -24,11 +24,11 @@
 					<swiper class="swiper-box">
 						<swiper-item @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
 							<view v-show="peCurrent==0" class="img-box">
-								<image v-if="currentItem.frontPic" class="ill-pic" mode="aspectFit" :src="$thumbnail(currentItem.frontPic,600)" @click="onClickLazyImage(currentItem.frontPic)"/>
+								<muqian-lazyLoad v-if="currentItem.frontPic" class="ill-pic" mode="aspectFit" :thumbnailWidth="600" :src="currentItem.frontPic" preview/>
 								<view v-else class="no-pic">暂未收集</view>
 							</view>
 							<view v-show="peCurrent==1" class="img-box">
-								<image v-if="currentItem.backPic" class="ill-pic" mode="aspectFit" :src="$thumbnail(currentItem.backPic,600)" @click="onClickLazyImage(currentItem.backPic)"/>
+								<muqian-lazyLoad v-if="currentItem.backPic" class="ill-pic" mode="aspectFit" :thumbnailWidth="600" :src="currentItem.backPic" preview/>
 								<view v-else class="no-pic">暂未收集</view>
 							</view>
 						</swiper-item>
@@ -117,19 +117,6 @@
 			}
 			this.peCurrent=0;
 			this.currentNum ++;
-		}
-		onClickLazyImage(pic:string) {
-			uni.previewImage({
-				//@ts-ignore
-				urls: [this.$thumbnail(pic,750)],
-				longPressActions:{
-					itemList:[],
-					success: (data)=> {
-					},
-					fail: (err)=> {
-					}
-				}
-			});
 		}
 	}
 </script>
