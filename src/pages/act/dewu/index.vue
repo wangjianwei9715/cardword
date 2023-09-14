@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-14 18:10:17
+ * @LastEditTime: 2023-09-14 19:51:40
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -150,7 +150,8 @@
         <u-overlay :zIndex="888" :show="exchangeBoxShow || successBoxShow"></u-overlay>
         <view class="modal exchangeModal" :class="{ modal_show: exchangeBoxShow }"
             :style="{ top: statusBarHeight + 380 + 'rpx' }">
-            <view class="coupon" :class="{ coupon3: selectItem.nameTwo }"></view>
+            <!-- :class="{ coupon3: selectItem.nameTwo }" -->
+            <view class="coupon" ></view>
             <!-- <view class="title">确认兑换</view> -->
             <view class="text">是否消耗{{ selectItem.price }}卡币兑换</view>
             <view class="text">{{ "得物" + selectItem.name || "" }}</view>
@@ -161,7 +162,8 @@
         </view>
         <view class="modal successModal" :class="{ modal_show: successBoxShow }"
             :style="{ top: statusBarHeight + 340 + 'rpx' }">
-            <view class="coupon" :class="{ coupon3: selectItem.nameTwo }"></view>
+            <!-- :class="{ coupon3: selectItem.nameTwo }" -->
+            <view class="coupon" ></view>
             <view class="title">恭喜您，兑换成功</view>
             <view class="text">（同时在得物app下单5张卡牌评级，额外附赠1张评级包邮券！）</view>
             <!-- <view style="flex:1"></view> -->
