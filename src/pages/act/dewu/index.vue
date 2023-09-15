@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 10:09:57
+ * @LastEditTime: 2023-09-15 11:18:41
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -16,13 +16,12 @@
 -->
 <template>
     <view class="content">
-        <transitionNav ref='transitionNav' @onClickRule="onClickRule" :shareData="shareData""
-                            :needIconShadow="false" :needRightTools="['规则', '分享']" title="得物卡牌评级 限量兑换">
+        <transitionNav ref='transitionNav' @onClickRule="onClickRule" :shareData="shareData" :needIconShadow="false" :needRightTools="['规则', '分享']" title="得物卡牌评级 限量兑换">
         </transitionNav>
         <view class="topBanner">
             <view class="tipOne">
-                <view>得物卡牌评级</view>
-                <view>限量兑换</view>
+                <!-- <view>卡牌评级/保护通用券</view>
+                <view>限量兑换</view> -->
             </view>
             <view class="tipTwo">
                 <view>原价：33元/张</view>
@@ -46,8 +45,8 @@
                         </view>
                         <view class="right" style="position: relative;bottom: 2rpx;">
                             <view class="free">免费</view>
-                            <view class="wmk">≤135pt</view>
-                            <view class="wmk">及以下可用</view>
+                            <view class="wmk">135pt及</view>
+                            <view class="wmk">以下可用</view>
                             <!-- <view class="wmk">及以下可用</view> -->
 
                         </view>
@@ -120,7 +119,7 @@
             <view class="tipBlock flexCenter">若同时下单5张卡牌评级，额外附赠1张得物免费卡牌评级券！</view>
             <view class="tips">（下单后，7个工作日内发放至用户得物账号）</view>
         </view> -->
-        <view class="newKa"></view>
+        <view class="newKa" @click="goList"></view>
         <view class="blockTitle blockTitle1"></view>
         <view class="desc">得物评级的过程是将卡牌进行边（边长），角（四角），面（表面），形（居中度），体（体积）、颜（颜色）作为评分依据，多个方面进行检查，然后根据卡牌的整体状况，给予一个评级等级。</view>
         <view class="pj">
@@ -187,10 +186,10 @@ if (plus.os.name == "iOS") {
 //#endif
 const Over_time = 1696694399
 const shareData = {
-    shareUrl: `share/${app.bussinessApiDomain == "https://server.ssltest.ka-world.com/api/v2.1/" ? "testH5" : "h5"}/#/pages/act/dewu`,
-    title: "得物卡牌评级 限量兑换",
+    shareUrl: `share/${app.localTest ? "testH5" : "h5"}/#/pages/act/dewu`,
+    title: "卡牌评级/保护通用券 限量兑换",
     summary: "仅需18卡币，开启评级新体验",
-    thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.04.28/luckdraw/0/1682648659261en8jkrxelu.jpg"
+    thumb: "https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2023.09.15/template/0/1694747570620c3bgi5nvcf.png"
 }
 const navRule = {
     "规则": {
@@ -246,6 +245,7 @@ export default class ClassName extends BaseNode {
     shareData = shareData
     timer: any = null
     Over_time = Over_time
+    topicsId:number=51
     exchangeLock: boolean = false
     onLoad(query: any) {
         // app.platform.hasLoginToken(() => {
@@ -254,6 +254,7 @@ export default class ClassName extends BaseNode {
         this.timer = setInterval(() => {
             this.getNewTime();
         }, 1000);
+        if (query.topicsId) this.topicsId=query.topicsId
         this.reqNewData()
     }
     onShow() {
@@ -382,6 +383,11 @@ export default class ClassName extends BaseNode {
         this.selectItem = item
         this.goDewuApp()
     }
+    goList(){
+        uni.navigateTo({
+            url:"/pages/act/dewu/list?topicsId="+this.topicsId
+        })
+    }
     onClickRule() {
         uni.navigateTo({
             url: "/pages/act/dewu/rule"
@@ -467,7 +473,7 @@ page {
         width: 600rpx;
         height: 92rpx;
         background-size: 100% 100%;
-        background-image: url("@/static/act/dewu/tipOne.png");
+        background-image: url("@/static/act/dewu/bigTitle.png");
 
         display: flex;
         justify-content: space-between;
@@ -475,16 +481,19 @@ page {
         padding: 0 32rpx 0 25rpx;
         align-items: center;
         margin-bottom: 7rpx;
-
-        view {
-            position: relative;
-            top: 4rpx;
-            font-size: 49rpx;
-            font-family: FZLanTingHeiS-H-GB;
-            font-weight: 400;
-            color: #333333;
-            font-style: italic;
-        }
+        position: relative;
+        right: 2rpx;
+        top: 2rpx;
+        // view {
+        //     position: relative;
+        //     top: 4rpx;
+        //     font-size: 38rpx;
+        //     font-family: FZLanTingHeiS-H-GB;
+        //     font-weight: 400;
+        //     letter-spacing: 2rpx;
+        //     color: #333333;
+        //     font-style: italic;
+        // }
     }
 
     .tipTwo {
@@ -579,7 +588,7 @@ page {
             }
 
             .name {
-                font-size: 21rpx;
+                font-size: 20rpx;
                 font-family: FZLanTingHeiS-H-GB;
                 font-weight: 400;
                 color: #2C2C2C;
