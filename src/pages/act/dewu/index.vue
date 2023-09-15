@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 15:39:22
+ * @LastEditTime: 2023-09-15 15:49:35
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -123,7 +123,8 @@
         </view> -->
         <view class="newKa" @click="goList"></view>
         <view class="blockTitle blockTitle1"></view>
-        <view class="desc">得物评级的过程是将卡牌进行边（边长），角（四角），面（表面），形（居中度），体（体积）、颜（颜色）作为评分依据，多个方面进行检查，然后根据卡牌的整体状况，给予一个评级等级。</view>
+        <view class="desc">卡牌评级服务是一种对卡牌进行鉴别、评估、评级的专业服务，旨在保障卡牌交易的安全性。通过卡牌评级服务，卡牌收藏爱好者可以了解到自己收藏的卡牌的品相，也能够更好地保护自己的卡牌收藏品，避免因为购买到假冒伪劣的卡牌而遭受损失。同时，对于卡牌交易市场来说，卡牌评级服务也能提高市场的透明度和交易的可靠性，促进市场的稳健发展。
+得物评级的过程是将卡牌进行边（边长），角（四角），面（表面），形（居中度），体（体积）、颜（颜色）作为评分依据，多个方面进行检查，然后根据卡牌的整体状况，给予一个评级等级。</view>
         <view class="pj">
             <view class="jumpButton" @click="goToDewuPj"></view>
         </view>
