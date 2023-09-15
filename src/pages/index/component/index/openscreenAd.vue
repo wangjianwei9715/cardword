@@ -6,7 +6,7 @@
 				<muqian-lazyLoad @click="onClickGoGoods" class="img" :style="goodData.style || ''" :src="decodeURIComponent(goodData.pic_url)" />
 				<!-- 得物活动特殊处理 -->
 				<view class="dewuButton" v-if="goodData.act&&goodData.act==='dewu'" @click="onClickGoGoods">
-					13卡币立即兑换
+					18卡币立即兑换
 				</view>
 			</view>
 			<view class="close-box">
