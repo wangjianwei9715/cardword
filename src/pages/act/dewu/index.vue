@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-14 19:51:40
+ * @LastEditTime: 2023-09-15 10:09:57
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -205,14 +205,14 @@ const navRule = {
 }
 const one = {
     name: "卡牌评级/保护通用券x1",
-    iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Ffast.dewu.com%252Fnezha-plus%252Fdetail%252F63355374167c22c6ca0bb439%253FisAllowVideoAutoPlay%253D1%2526eTId%253D1682318723413-a766b70e-f788-83ee-4850-abbdd0dc4556%2526dFId%253D660e656b907b1b20306fd25c44db9ab0%2526browser_name%253Dsafari%2526m_brand%253Diphone%2526os_version%253D${os_version}%2526phone_os%253DiPhone%2526eFrom%253Dhttps%25253A%25252F%25252Fcdn-fast.dewu.com%25252Fnezha-plus%25252Fdetail%25252F63355374167c22c6ca0bb439`,
-    androidLink: "dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F63355374167c22c6ca0bb439%253FisAllowVideoAutoPlay%253D1",
+    iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%3A%2F%2Fcdn-fast.dewu.com%2Fnezha-plus%2Fdetail%2F64ed854911e6a3e236008adb%3FisAllowVideoAutoPlay%3D1%26navControl%3D1%26toolbarControl%3D1`,
+    androidLink: "dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F64ed854911e6a3e236008adb%253FisAllowVideoAutoPlay%253D1%2526navControl%253D1%2526toolbarControl%253D1",
 }
 const two = {
     name: "卡牌评级/保护通用券x1",
     // nameTwo: "卡牌评级回寄包邮券x1",
-    iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F61df95ff55692a2045b4a616%253FisAllowVideoAutoPlay%253D1`,
-    androidLink: "dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F61df95ff55692a2045b4a616%253FisAllowVideoAutoPlay%253D1",
+    iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F64b6768a3abb6903d8c5e106%253FisAllowVideoAutoPlay%253D1%2526navControl%253D1%2526toolbarControl%253D1`,
+    androidLink: "dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F64b6768a3abb6903d8c5e106%253FisAllowVideoAutoPlay%253D1%2526navControl%253D1%2526toolbarControl%253D1",
 
 }
 const pics = [

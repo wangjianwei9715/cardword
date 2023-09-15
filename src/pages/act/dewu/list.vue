@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-14 16:12:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 09:52:23
+ * @LastEditTime: 2023-09-15 10:15:46
  * @FilePath: \card-world\src\pages\act\dewu\list.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,12 +29,16 @@
                     <view class="name" style="width: 33%;">排名</view>
                     <view class="name" style="width: 30%;">点赞数</view>
                     <view class="name" style="width: 30%;">奖励</view>
+                    <view class="gz" style="left: 20rpx;"></view>
+                    <view class="gz" style="left: 233rpx;"></view> 
+                    <view class="gz" style="left: 450rpx;"></view> 
+                    <view class="gz" style="right: 20rpx;"></view> 
                 </view>
                 <scroll-view scroll-y="true" class="scrollContainer" @scrolltolower="scrolltolower">
                     <view class="scrollItem uni-flex" v-for="(item, index) in  rankList" :key="index"
                         :style="{ marginTop: index == 0 ? `25rpx` : '0' }">
                         <view class="rankNum">{{ index + 1 }}</view>
-                        <muqian-lazyLoad :src="avatar(item)" class="avatar"></muqian-lazyLoad>
+                        <muqian-lazyLoad  borderRadius="50%" :src="avatar(item)" class="avatar"></muqian-lazyLoad>
                         <view class="userName u-line-1">{{ item.code ? item.userName : '虚位以待' }}</view>
                         <view class="likeContainer uni-flex alc">
                             <view class="likeNum">{{ item.likeNum }}</view>
@@ -283,13 +287,21 @@ page {
         background-size: 100% 100%;
         background-image: url("@/static/act/dewu/tabletitle.png");
         margin-top: 30rpx;
-
+        position: relative;
         .name {
             font-size: 29rpx;
             font-family: PingFang SC;
             font-weight: bold;
             color: #FA1545;
             text-align: center;
+        }
+        .gz{
+            position: absolute;
+            width: 25rpx;
+            height: 40rpx;
+            background-size: 100% 100%;
+            background-image: url("@/static/act/dewu/kz.png");
+            bottom: -20rpx;
         }
     }
 
@@ -300,7 +312,7 @@ page {
         background-image: url("@/static/act/dewu/scrollContainer.png");
         box-sizing: border-box;
         padding: 10rpx 36rpx 10rpx 20rpx;
-
+        margin-top: -4rpx;
         .scrollItem {
             margin-bottom: 35rpx;
             height: 47rpx;
