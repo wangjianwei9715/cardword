@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-14 16:12:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 10:15:46
+ * @LastEditTime: 2023-09-15 10:39:27
  * @FilePath: \card-world\src\pages\act\dewu\list.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -35,7 +35,7 @@
                     <view class="gz" style="right: 20rpx;"></view> 
                 </view>
                 <scroll-view scroll-y="true" class="scrollContainer" @scrolltolower="scrolltolower">
-                    <view class="scrollItem uni-flex" v-for="(item, index) in  rankList" :key="index"
+                    <view class="scrollItem uni-flex" v-for="(item, index) in  rankList" :key="index" @click="onClickRank(item)"
                         :style="{ marginTop: index == 0 ? `25rpx` : '0' }">
                         <view class="rankNum">{{ index + 1 }}</view>
                         <muqian-lazyLoad  borderRadius="50%" :src="avatar(item)" class="avatar"></muqian-lazyLoad>
@@ -139,6 +139,12 @@ export default class ClassName extends BaseNode {
     lxkf() {
         let params = { agentExten: '' }
         app.platform.heliService(params)
+    }
+    onClickRank(item:any){
+        if(!item.code) return
+        uni.navigateTo({
+            url:`/pages/cardForum/detail?code=${item.code}`
+        })
     }
     onClickPush() {
         app.platform.hasLoginToken(() => {
