@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 17:52:26
+ * @LastEditTime: 2023-09-15 18:24:48
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -433,13 +433,15 @@ export default {
             this.refreshData(CFTT.COLUMN.index, false)
         },
         actionSheet: function (val) {
-            if (val){
-                uni.hideTabBar({ animation: false })
-                return
+            if (this.current.tag != CardForumTagMap.SHOW.tag) {
+                if (val) {
+                    uni.hideTabBar({ animation: false })
+                    return
+                }
+                setTimeout(() => {
+                    uni.showTabBar({ animation: false })
+                }, val ? 0 : 300)
             }
-            setTimeout(() => {
-                uni.showTabBar({ animation: false })
-            }, val ? 0 : 300)
         }
     },
     methods: {
