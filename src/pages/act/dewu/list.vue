@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-14 16:12:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 15:51:26
+ * @LastEditTime: 2023-09-15 16:06:35
  * @FilePath: \card-world\src\pages\act\dewu\list.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -50,9 +50,9 @@
                 <view class="rankTips">*温馨提示：优惠券于活动结束后自动发放，得物评级&保护券请<text class="blue">联系客服</text>领取</view>
             </view>
             <view class="bigTitle center" style="margin-top: 40rpx;">02.晒评级 送礼品</view>
-            <view class="tips center"><text class="blue">发布得物评级相关内容</text>并关联本话题即可领奖</view>
+            <view class="tips center"><text class="blue">发布球星卡内容</text>并关联本话题即可参与</view>
             <view class="uni-flex"
-                style="box-sizing: border-box;width: 750rpx;padding: 0 80rpx;justify-content: space-between;align-items: center;margin-top: 42rpx;">
+                style="box-sizing: border-box;width: 750rpx;padding: 0 90rpx 0 70rpx;justify-content: space-between;align-items: center;margin-top: 42rpx;">
                 <image src="/static/act/dewu/pt1.png" style="width: 286rpx;height: 117rpx;"></image>
                 <image src="/static/act/dewu/add.png" style="width: 52rpx;height: 52rpx;"></image>
                 <image src="/static/act/dewu/cp5.png" style="width: 117rpx;height: 144rpx;"></image>
