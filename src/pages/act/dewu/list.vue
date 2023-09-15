@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-14 16:12:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 00:39:19
+ * @LastEditTime: 2023-09-15 09:52:23
  * @FilePath: \card-world\src\pages\act\dewu\list.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -45,10 +45,10 @@
                 </scroll-view>
                 <view class="rankTips">*温馨提示：优惠券于活动结束后自动发放，得物评级&保护券请<text class="blue">联系客服</text>领取</view>
             </view>
-            <view class="bigTitle center" style="margin-top: 60rpx;">02.晒评级 送礼品</view>
+            <view class="bigTitle center" style="margin-top: 40rpx;">02.晒评级 送礼品</view>
             <view class="tips center"><text class="blue">发布得物评级相关内容</text>并关联本话题即可领奖</view>
             <view class="uni-flex"
-                style="box-sizing: border-box;width: 750rpx;padding: 0 25rpx;justify-content: space-between;align-items: center;margin-top: 62rpx;">
+                style="box-sizing: border-box;width: 750rpx;padding: 0 25rpx;justify-content: space-between;align-items: center;margin-top: 42rpx;">
                 <image src="/static/act/dewu/pt1.png" style="width: 286rpx;height: 117rpx;"></image>
                 <image src="/static/act/dewu/add.png" style="width: 52rpx;height: 52rpx;"></image>
                 <image src="/static/act/dewu/pt2.png" style="width: 286rpx;height: 117rpx;"></image>
@@ -68,7 +68,7 @@
                 <view class="button flexCenter" style="background-image: url('/static/act/dewu/goPush.png');color: #ffffff;"
                     @click="onClickPush">去发布</view>
             </view>
-            <view class="bigTitle center" style="margin-top: 56rpx;margin-bottom: 40rpx;">03.精选内容</view>
+            <view class="bigTitle center" style="margin-top: 56rpx;margin-bottom: 25rpx;">03.精选内容</view>
             <waterfalls style="width: 750rpx;margin-top: 10rpx;" ref="waterfall" :showBottom="true" :detailBack="false"
                 :isMine="false" :value="list" :refresh="false" :showEmpty="false">
             </waterfalls>
@@ -232,7 +232,7 @@ page {
     font-weight: bold;
     color: #ffffff;
     letter-spacing: 2rpx;
-    padding-top: 18rpx;
+    padding-top: 6rpx;
     width: 750rpx;
     background-color: #000000;
 }
@@ -248,8 +248,8 @@ page {
         font-family: PingFang SC;
         font-weight: 400;
         color: #FFFFFF;
-        margin-top: 27rpx;
-        line-height: 34rpx;
+        margin-top: 17rpx;
+        line-height: 40rpx;
 
     }
 
@@ -400,8 +400,11 @@ page {
     font-weight: 400;
     // color: #FA1545;
     color: #ffffff;
-    margin-top: 44rpx;
-    line-height: 39rpx;
+    margin-top: 24rpx;
+    // line-height: 44rpx;
+    .req{
+        line-height: 44rpx;
+    }
 
 
 }

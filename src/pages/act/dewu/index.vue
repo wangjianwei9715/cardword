@@ -120,6 +120,7 @@
             <view class="tipBlock flexCenter">若同时下单5张卡牌评级，额外附赠1张得物免费卡牌评级券！</view>
             <view class="tips">（下单后，7个工作日内发放至用户得物账号）</view>
         </view> -->
+        <view class="newKa"></view>
         <view class="blockTitle blockTitle1"></view>
         <view class="desc">得物评级的过程是将卡牌进行边（边长），角（四角），面（表面），形（居中度），体（体积）、颜（颜色）作为评分依据，多个方面进行检查，然后根据卡牌的整体状况，给予一个评级等级。</view>
         <view class="pj">
@@ -657,7 +658,12 @@ page {
         // background-color: #ff404d;
     }
 }
-
+.newKa{
+    background-size: 100% 100%;
+    background-image: url("@/static/act/dewu/k.png");
+    width: 650rpx;
+    height: 330rpx;
+}
 .blockTitle {
     background-size: 100% 100%;
 }
