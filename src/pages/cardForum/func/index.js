@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-25 20:11:24
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-05 16:38:09
+ * @LastEditTime: 2023-09-15 17:45:36
  * @FilePath: \jichao_app_2\src\pages\cardForum\func\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -10,11 +10,23 @@ const MAX_HEIGHT = uni.upx2px(478)
 const WIDTH = uni.upx2px(360)
 const MIN_HEIGHT = uni.upx2px(246)
 const app = getApp().globalData.app
+const custom_act_ids = [5]
 let bufferImageList = []
 export function releaseByTopic(id) {
     uni.navigateTo({
         url: `/pages/cardForum/release?topicId=${id}`
     })
+}
+export function goTopicsAct(id) {
+    if (custom_act_ids.includes(id)) {
+        uni.navigateTo({
+            url: "/pages/act/dewu/list?topicsId=" + id
+        })
+    } else {
+        uni.navigateTo({
+            url: "/pages/cardForum/topics/act?id=" + id
+        })
+    }
 }
 export function formatNumber(number, keepNum = 0, type = "cn") {//
     let result = '' + number;

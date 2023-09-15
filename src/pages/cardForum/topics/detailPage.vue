@@ -50,6 +50,8 @@ import { app } from "@/app";
 import { Component, Watch } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import { followTopic, releaseByTopic } from "../func"
+//@ts-ignore
+import {goTopicsAct} from "../func/index.js"
 import waterfalls from "../components/waterfalls.vue"
 const navHeight = app.statusBarHeight + uni.upx2px(88)
 const mineTabs = [
@@ -142,9 +144,10 @@ export default class ClassName extends BaseNode {
         this.reqData(true)
     }
     goToAct() {
-        uni.navigateTo({
-            url: "/pages/cardForum/topics/act?id=" + this.id
-        })
+        goTopicsAct(this.id)
+        // uni.navigateTo({
+        //     url: "/pages/cardForum/topics/act?id=" + this.id
+        // })
     }
     release(event: any) {
         // #ifdef APP-NVUE

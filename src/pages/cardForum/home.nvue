@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-13 15:12:48
+ * @LastEditTime: 2023-09-15 17:52:26
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -55,7 +55,7 @@
                             <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
                                 <swiper-item v-for="(item, index) in topicAcList" :key="index"
                                     style="position: relative;width: 730rpx;height:160rpx"
-                                    @click="pageJump(`/pages/cardForum/topics/act?id=${item.id}`)">
+                                    @click="onClickShowKaSwiper(item)">
                                     <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
                                         mode="aspectFill"></image>
                                 </swiper-item>
@@ -133,8 +133,7 @@
                                     <image src="@/static/cardForum/acCard.png" class="adWrap_img"></image>
                                     <swiper class="adWrap_swiper" :autoplay="true" :circular="true">
                                         <swiper-item v-for="(item, index) in topicAcList" :key="index"
-                                            style="position: relative;"
-                                            @click="pageJump(`/pages/cardForum/topics/act?id=${item.id}`)">
+                                            style="position: relative;" @click="onClickShowKaSwiper(item)">
                                             <image :src="parsePic(decodeURIComponent(item.pic))" class="swiperPic"
                                                 mode="aspectFill"></image>
                                         </swiper-item>
@@ -255,6 +254,7 @@ import empty from "@/components/empty/empty.vue"
 import guide from "./components/guide.vue"
 import columnList from "./components/columnList.vue"
 import { CardForumTagMap, CardForumTabbar, ActionsList } from "./func/data.js"
+import { goTopicsAct } from "./func/index.js"
 import { Md5 } from "js-md5"
 const app = getApp().globalData.app;
 const parsePic = getApp().globalData.parsePic;
@@ -433,6 +433,10 @@ export default {
             this.refreshData(CFTT.COLUMN.index, false)
         },
         actionSheet: function (val) {
+            if (val){
+                uni.hideTabBar({ animation: false })
+                return
+            }
             setTimeout(() => {
                 uni.showTabBar({ animation: false })
             }, val ? 0 : 300)
@@ -540,6 +544,9 @@ export default {
                     this.reqNewData()
                 }
             }, 300)
+        },
+        onClickShowKaSwiper(item) {
+            goTopicsAct(item.id)
         },
         onClickAdd(event, item) {
             app.navigateTo.navigateToAD(item.target)
@@ -872,11 +879,13 @@ page {
     // flex-wrap: nowrap;
 
 }
-.columnScrollLine{
+
+.columnScrollLine {
     width: 750rpx;
     height: 1rpx;
     background-color: #f7f8fc;
 }
+
 .columnScroll {
     width: 750rpx;
     flex-direction: row;

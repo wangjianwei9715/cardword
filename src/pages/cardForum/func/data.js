@@ -23,7 +23,7 @@ export const CardForumTagMap = {
     //     tag: 'video'
     // }, 
     COLUMN: {
-        name: "专栏",
+        name: "专题",
         tag: "sc",
     },
     // SWAP:{
