@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-14 16:12:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 10:39:27
+ * @LastEditTime: 2023-09-15 12:00:46
  * @FilePath: \card-world\src\pages\act\dewu\list.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,15 +30,15 @@
                     <view class="name" style="width: 30%;">点赞数</view>
                     <view class="name" style="width: 30%;">奖励</view>
                     <view class="gz" style="left: 20rpx;"></view>
-                    <view class="gz" style="left: 233rpx;"></view> 
-                    <view class="gz" style="left: 450rpx;"></view> 
-                    <view class="gz" style="right: 20rpx;"></view> 
+                    <view class="gz" style="left: 233rpx;"></view>
+                    <view class="gz" style="left: 450rpx;"></view>
+                    <view class="gz" style="right: 20rpx;"></view>
                 </view>
                 <scroll-view scroll-y="true" class="scrollContainer" @scrolltolower="scrolltolower">
-                    <view class="scrollItem uni-flex" v-for="(item, index) in  rankList" :key="index" @click="onClickRank(item)"
-                        :style="{ marginTop: index == 0 ? `25rpx` : '0' }">
+                    <view class="scrollItem uni-flex" v-for="(item, index) in  rankList" :key="index"
+                        @click="onClickRank(item)" :style="{ marginTop: index == 0 ? `25rpx` : '0' }">
                         <view class="rankNum">{{ index + 1 }}</view>
-                        <muqian-lazyLoad  borderRadius="50%" :src="avatar(item)" class="avatar"></muqian-lazyLoad>
+                        <muqian-lazyLoad borderRadius="50%" :src="avatar(item)" class="avatar"></muqian-lazyLoad>
                         <view class="userName u-line-1">{{ item.code ? item.userName : '虚位以待' }}</view>
                         <view class="likeContainer uni-flex alc">
                             <view class="likeNum">{{ item.likeNum }}</view>
@@ -140,10 +140,10 @@ export default class ClassName extends BaseNode {
         let params = { agentExten: '' }
         app.platform.heliService(params)
     }
-    onClickRank(item:any){
-        if(!item.code) return
+    onClickRank(item: any) {
+        if (!item.code) return
         uni.navigateTo({
-            url:`/pages/cardForum/detail?code=${item.code}`
+            url: `/pages/cardForum/detail?code=${item.code}`
         })
     }
     onClickPush() {
@@ -175,7 +175,7 @@ export default class ClassName extends BaseNode {
             this.rankIsFetchEnd = res.isFetchEnd
             this.rankQueryParams.fetchFrom == 1 ? this.rankList = list : this.rankList.push(...list)
             this.myLikeNum = res.myLikeNum
-            this.myRank = res.myRank || 0
+            if (this.rankQueryParams.fetchFrom == 1) this.myRank = res.myRank || 0
         })
     }
     reqNewData(cb?: any) {
@@ -294,6 +294,7 @@ page {
         background-image: url("@/static/act/dewu/tabletitle.png");
         margin-top: 30rpx;
         position: relative;
+
         .name {
             font-size: 29rpx;
             font-family: PingFang SC;
@@ -301,7 +302,8 @@ page {
             color: #FA1545;
             text-align: center;
         }
-        .gz{
+
+        .gz {
             position: absolute;
             width: 25rpx;
             height: 40rpx;
@@ -319,6 +321,7 @@ page {
         box-sizing: border-box;
         padding: 10rpx 36rpx 10rpx 20rpx;
         margin-top: -4rpx;
+
         .scrollItem {
             margin-bottom: 35rpx;
             height: 47rpx;
@@ -419,8 +422,9 @@ page {
     // color: #FA1545;
     color: #ffffff;
     margin-top: 24rpx;
+
     // line-height: 44rpx;
-    .req{
+    .req {
         line-height: 44rpx;
     }
 
