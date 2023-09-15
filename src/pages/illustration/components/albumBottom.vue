@@ -53,7 +53,6 @@
 			this.$emit('next'); 
 		}
 		async onClickSave(){
-			if(!this.canNext) return;
 			const { list, ...rest } = this.saveData;
 			await storageDraft({step:this.step,list:this.data,...rest},"cardBook",this.draftId || "");
 			uni.showToast({ title:"草稿保存成功",icon:"none" });
