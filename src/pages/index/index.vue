@@ -255,11 +255,12 @@
 			},200)
 			// 开屏商品广告
 			//得物活动弹窗(===========)
-			// const [start,end]=[1694707200,1694966399]//正式
-			const [start,end]=[1694620799,1694966399]//测试
+			// const [start,end]=[1694707200,1695571199]//正式
+			const [start,end]=[1694707200,1695571199]//测试
 			const dewuAdLastOpen=uni.getStorageSync("dewuAdLastOpen")||0
 			const openTime=Math.round(+new Date()/1000)
 			// && new Date(dewuAdLastOpen).toDateString() !== new Date().toDateString()
+			
 			if (start<=openTime&&openTime<=end&&!dewuAdLastOpen){
 				uni.setStorageSync("dewuAdLastOpen",+new Date())
 				this.openScreenData = { show:true,

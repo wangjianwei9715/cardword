@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-04-25 10:07:50
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 11:18:41
+ * @LastEditTime: 2023-09-15 15:39:22
  * @FilePath: \card-world\src\pages\act\dewu\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -16,7 +16,8 @@
 -->
 <template>
     <view class="content">
-        <transitionNav ref='transitionNav' @onClickRule="onClickRule" :shareData="shareData" :needIconShadow="false" :needRightTools="['规则', '分享']" title="得物卡牌评级 限量兑换">
+        <transitionNav ref='transitionNav' @onClickRule="onClickRule" :shareData="shareData" :needIconShadow="false"
+            :needRightTools="['规则', '分享']" title="得物卡牌评级 限量兑换">
         </transitionNav>
         <view class="topBanner">
             <view class="tipOne">
@@ -53,14 +54,15 @@
                     </view>
                 </view>
                 <view class="rightInfo" v-if="index == 0">
-                    <view class="font" style="margin-top: 23rpx;margin-bottom: 25rpx;">{{ item.name }}</view>
+                    <view class="font" style="margin-top: 6rpx;margin-bottom: 12rpx;">{{ item.name }}</view>
+                    <view class="font" style="font-size: 21rpx;margin-bottom: 16rpx;">每日限兑一张</view>
                     <view class="font">
                         剩余：<text class="big">{{ item.leftNum }}份</text>
                     </view>
                 </view>
                 <view v-else class="rightInfo">
-                    <view class="font" style="margin-top:23rpx;margin-bottom: 25rpx;">{{ item.name }}</view>
-                    <!-- <view class="font">{{ item.nameTwo }}</view> -->
+                    <view class="font" style="margin-top:6rpx;margin-bottom: 12rpx;">{{ item.name }}</view>
+                    <view class="font" style="font-size: 21rpx;margin-bottom: 16rpx;">每日限兑一张</view>
                     <view class="font">
                         剩余：<text class="big">{{ item.leftNum }}份</text>
                     </view>
@@ -70,7 +72,7 @@
             <template v-if="isOnTime(item)">
                 <!-- 可兑换 -->
                 <view class="couponButton flexCenter" v-if="item.leftNum > 0 && item.todayCanBuy"
-                    @click="onClickExchange(item)">{{ item.price }}卡币立即兑换</view>
+                    @click="onClickExchange(item, index)">{{ item.price }}卡币立即兑换</view>
                 <!-- 已兑换 -->
                 <view class="couponButton red flexCenter" @click="onClickGoApp(item)" v-else-if="item.canExchange">
                     去得物APP领取并使用
@@ -151,7 +153,7 @@
         <view class="modal exchangeModal" :class="{ modal_show: exchangeBoxShow }"
             :style="{ top: statusBarHeight + 380 + 'rpx' }">
             <!-- :class="{ coupon3: selectItem.nameTwo }" -->
-            <view class="coupon" ></view>
+            <view class="coupon"></view>
             <!-- <view class="title">确认兑换</view> -->
             <view class="text">是否消耗{{ selectItem.price }}卡币兑换</view>
             <view class="text">{{ "得物" + selectItem.name || "" }}</view>
@@ -163,9 +165,9 @@
         <view class="modal successModal" :class="{ modal_show: successBoxShow }"
             :style="{ top: statusBarHeight + 340 + 'rpx' }">
             <!-- :class="{ coupon3: selectItem.nameTwo }" -->
-            <view class="coupon" ></view>
+            <view class="coupon"></view>
             <view class="title">恭喜您，兑换成功</view>
-            <view class="text">（同时在得物app下单5张卡牌评级，额外附赠1张评级包邮券！）</view>
+            <!-- <view class="text">（同时在得物app下单5张卡牌评级，额外附赠1张评级包邮券！）</view> -->
             <!-- <view style="flex:1"></view> -->
             <view class="exchangeModalButtonRed" @click="onClickGoApp(selectItem)">去得物APP领取并使用</view>
             <view class="wait" @click="successBoxShow = false">等等再说</view>
@@ -204,7 +206,7 @@ const navRule = {
 }
 const one = {
     name: "卡牌评级/保护通用券x1",
-    iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%3A%2F%2Fcdn-fast.dewu.com%2Fnezha-plus%2Fdetail%2F64ed854911e6a3e236008adb%3FisAllowVideoAutoPlay%3D1%26navControl%3D1%26toolbarControl%3D1`,
+    iosLink: `dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F64ed854911e6a3e236008adb%253FisAllowVideoAutoPlay%253D1%2526navControl%253D1%2526toolbarControl%253D1`,
     androidLink: "dewulink://m.dewu.com/note?routerUrl=https%3A%2F%2Fm.poizon.com%2Frouter%2Fweb%2FBrowserPage%3FloadUrl%3Dhttps%253A%252F%252Fcdn-fast.dewu.com%252Fnezha-plus%252Fdetail%252F64ed854911e6a3e236008adb%253FisAllowVideoAutoPlay%253D1%2526navControl%253D1%2526toolbarControl%253D1",
 }
 const two = {
@@ -245,8 +247,9 @@ export default class ClassName extends BaseNode {
     shareData = shareData
     timer: any = null
     Over_time = Over_time
-    topicsId:number=51
+    topicsId: number = 51
     exchangeLock: boolean = false
+    onClickIndex: number = 0
     onLoad(query: any) {
         // app.platform.hasLoginToken(() => {
 
@@ -254,13 +257,14 @@ export default class ClassName extends BaseNode {
         this.timer = setInterval(() => {
             this.getNewTime();
         }, 1000);
-        if (query.topicsId) this.topicsId=query.topicsId
+        if (query.topicsId) this.topicsId = query.topicsId
         this.reqNewData()
     }
     onShow() {
         //#ifdef APP-PLUS
         plus.navigator.setStatusBarStyle("light")
         //#endif
+        
     }
     beforeDestroy() {
         this.timer && clearInterval(this.timer)
@@ -311,7 +315,7 @@ export default class ClassName extends BaseNode {
             current: index
         })
     }
-    onClickExchange(item: any) {
+    onClickExchange(item: any, index: number) {
         if (this.exchangeLock) return
         app.platform.hasLoginToken(() => {
             const checkMap: any = {
@@ -343,6 +347,7 @@ export default class ClassName extends BaseNode {
                 return
             }
             this.selectItem = item
+            this.onClickIndex = index
             this.exchangeBoxShow = true
         })
 
@@ -363,29 +368,32 @@ export default class ClassName extends BaseNode {
             title: "",
             mask: true
         })
-        app.http.Post(`point/exchange/exchange/${this.selectItem.id}`, {}, (res: any) => {
+        app.http.Post(`point/exchange/exchange/${this.selectItem.id}`, {exchangeIndex:this.onClickIndex}, (res: any) => {
             this.exchangeBoxShow = false;
             this.successBoxShow = true
             uni.hideLoading()
             app.platform.UINotificationFeedBack("success");
             this.exchangeLock = false
-            setTimeout(() => {
-                this.reqNewData();
-            }, 300)
+            this.selectItem.todayCanBuy=false
+            this.selectItem.canExchange=true
+            this.selectItem.leftNum-=1
+            // setTimeout(() => {
+            //     this.reqNewData();
+            // }, 600)
         }, (err: any) => {
             this.exchangeLock = false
-            setTimeout(() => {
-                this.reqNewData();
-            }, 300)
+            // setTimeout(() => {
+            //     this.reqNewData();
+            // }, 600)
         });
     }
     onClickGoApp(item: any) {
         this.selectItem = item
         this.goDewuApp()
     }
-    goList(){
+    goList() {
         uni.navigateTo({
-            url:"/pages/act/dewu/list?topicsId="+this.topicsId
+            url: "/pages/act/dewu/list?topicsId=" + this.topicsId
         })
     }
     onClickRule() {
@@ -667,12 +675,14 @@ page {
         // background-color: #ff404d;
     }
 }
-.newKa{
+
+.newKa {
     background-size: 100% 100%;
     background-image: url("@/static/act/dewu/k.png");
     width: 650rpx;
     height: 330rpx;
 }
+
 .blockTitle {
     background-size: 100% 100%;
 }

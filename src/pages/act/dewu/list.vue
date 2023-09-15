@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-09-14 16:12:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 12:00:46
+ * @LastEditTime: 2023-09-15 14:08:15
  * @FilePath: \card-world\src\pages\act\dewu\list.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -62,7 +62,7 @@
                         style="font-weight: bold;">参与要求：</text>发布的内容需本人原创并关联“#得物评级”话题。内容需与得物评级相关，如：发布评级后寄回的卡片照；分享评级的过程等等。
                 </view>
                 <view class="req" style="margin-top: 30rpx;"><text class="blue"
-                        style="font-weight: bold;">领奖说明：</text>发布后请联系卡世界客服并附上原创相关证明，核实后将为您发放奖励。5元无门槛券立即发放，得物免费评级券请向卡世界客服提供得物注册ID与手机号并于5个工作日内发放至您的得物账号
+                        style="font-weight: bold;">领奖说明：</text>发布后请联系卡世界客服并附上原创相关证明，客服核实，并收集您的得物注册手机号后，将于5个工作日内，发放得物免费评级券至您的得物账户中。卡世界5元无门槛券将在核实信息后立即发放。
                 </view>
 
             </view>
@@ -136,10 +136,16 @@ export default class ClassName extends BaseNode {
         this.reqRankList()
         this.reqNewData()
     }
+    onReachBottom() {
+        if (this.isFetchEnd) return
+        this.queryParams.fetchFrom += this.queryParams.fetchSize
+        this.reqList()
+    }
     lxkf() {
         let params = { agentExten: '' }
         app.platform.heliService(params)
     }
+    
     onClickRank(item: any) {
         if (!item.code) return
         uni.navigateTo({
@@ -347,7 +353,7 @@ page {
         }
 
         .userName {
-            font-size: 25rpx;
+            font-size: 23rpx;
             font-family: PingFang SC;
             font-weight: 400;
             color: #FFFFFF;
@@ -363,7 +369,7 @@ page {
             justify-content: center;
 
             .likeNum {
-                font-size: 25rpx;
+                font-size: 23rpx;
                 font-family: PingFang SC;
                 font-weight: 400;
                 color: #FFFFFF;
@@ -379,7 +385,7 @@ page {
         }
 
         .awardName {
-            font-size: 25rpx;
+            font-size: 23rpx;
             font-family: PingFang SC;
             font-weight: 400;
             color: #FFFFFF;
