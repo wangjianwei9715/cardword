@@ -41,6 +41,7 @@
 		onLoad(query: any) {
 			if(query.code){
 				this.seriesCode = query.code;
+                this.onClickConfirm();
 			}
 		}
 		onReachBottom() {

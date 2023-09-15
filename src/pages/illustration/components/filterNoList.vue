@@ -65,7 +65,10 @@
                 </view>
                 <view class="player">{{item.player}}</view>
                 <view class="cardset"><text v-show="item.split" class="split-text">拆分限编 x/{{item.seq}}编</text>{{item.split?"":item.seq+"编"}}，{{item.cardSet}}</view>
-                
+            </view>
+            <view class="player-empty" v-show="byPlyaer&&playerList.length===0">
+                <view class="icon-empty"></view>
+                <view class="empty-text">请先选择球员</view>
             </view>
             <u-loadmore v-show="(byPlyaer&&listOrther.end) || (!byPlyaer&&noParams.end)" status="nomore" line/>
         </view>
@@ -796,35 +799,43 @@
     }
     .split{
         height: 34rpx;
-        background: #707070;
         border: 1px solid #D8D8D8;
         font-size: 17rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #FFFFFF;
+        color: #aaaaaa;
         box-sizing: border-box;
         padding:0 10rpx;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 20rpx;
+        margin-right: 30rpx;
     }
     .split-c{
-        height: 34rpx;
+        @extend .split;
         background: #FFE8E8;
         border: 1px solid #FFE8E8;
-        font-size: 17rpx;
-        font-family: PingFang SC;
-        font-weight: 400;
         color: #FA1545;
-        box-sizing: border-box;
-        padding:0 10rpx;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right:20rpx;
     }
     .split-text{
         color: #FA1545;
+    }
+    .player-empty{
+        width: 100%;
+        height:800rpx;
+        box-sizing: border-box;
+        padding-top: 260rpx;
+        .icon-empty{
+            width: 333rpx;
+            height:312rpx;
+            background:url(@/static/cardForum/forumEmpty.png) no-repeat center / 100% 100%;
+            margin:0 auto;
+            margin-left: 246rpx;
+        }
+        .empty-text{
+            width: 100%;
+            text-align: center;
+            color:rgb(192, 192, 192);
+        }
     }
 </style>
