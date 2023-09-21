@@ -1,8 +1,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-13 11:25:59
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-08 11:08:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-09-21 13:33:17
  * @FilePath: \jichao_app_2\src\pages\cardForum\components\waterfalls.vue
  * @Description: 瀑布流
 -->
@@ -754,10 +754,12 @@ export default {
                 this.$emit('firstData', this.list1[0]);
                 this.firstEmit = true;
             }
-            const deCover = this.parsePic(decodeURIComponent(item.cover))
-            const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
-            if (isVideoSnapshot) return deCover
-            return ossStitching(deCover, `x-oss-process=image/resize,m_lfit,${item.mode == 'widthFix' ? 'w_432' : 'h_572'}`)
+            if(!item.ossImg){
+                const deCover = this.parsePic(decodeURIComponent(item.cover))
+                const isVideoSnapshot = deCover.indexOf("x-oss-process=video/snapshot") >= 0
+                item.ossImg = isVideoSnapshot ? deCover : ossStitching(deCover, `x-oss-process=image/resize,m_lfit,${item.mode == 'widthFix' ? 'w_432' : 'h_572'}`);
+            }
+            return item.ossImg
         },
         thumbnail(cover, needParse) {
             if (!cover) return cover
