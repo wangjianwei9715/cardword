@@ -2,8 +2,8 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-06-12 16:06:41
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-13 14:16:04
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-09-22 12:07:48
  * @FilePath: \jichao_app_2\src\pages\cardForum\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -56,7 +56,7 @@
 
         <view class="contentContainer">
             <view class="title">{{ forumDetail.title }}</view>
-            <view class="desc" v-if="forumDetail.content && !isColumn" v-html="decodeURIComponent(forumDetail.content)">
+            <view class="desc" v-if="forumDetail.content && !isColumn" v-html="forumDetail.content">
             </view>
             <template v-if="isColumn">
                 <view v-for="(content, index) in contentArr" :key="index">
@@ -778,7 +778,7 @@ export default class ClassName extends BaseNode {
                 return
             }
 
-            let content = res.data.content
+            let content = res.data.content;
             this.pics = res.data.url.split(",").filter(Boolean).map((url: string) => {
                 //@ts-ignore
                 return this.replacePic(this.$parsePic(url))
@@ -800,7 +800,7 @@ export default class ClassName extends BaseNode {
                 })
                 this.dotContainerWidth = this.dotWidth * (this.pics.length > 5 ? 5 : this.pics.length)
             } else {
-                const arr = decodeURIComponent(content).split('</iframe>');
+                const arr:any[] = content.split('</iframe>');
                 const reg = /<iframe([\s\S]*)/g;
                 for (let i in arr) {
                     const item = arr[i];
