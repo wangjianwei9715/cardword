@@ -104,8 +104,8 @@
 				margin-right: 0;
 			}
 			.seriesImg{
-				width: 150rpx;
-				height:150rpx;
+				width: 130rpx;
+				height:130rpx;
 			}
 			.desc{
 				width: 100%;

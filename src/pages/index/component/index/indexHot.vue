@@ -1,9 +1,11 @@
 <template>
 	<view class="index-hot">
 		<view class="hot-box" @click="onClickHot()">
-			<u-transition class="hot-p-b" v-for="(item,index) in freshPic" :key="index" :show="item.show" :duration="500" mode="fade-zoom">
-				<image class="hot-pic" :src="decodeURIComponent(item.icon)" mode="aspectFill"></image>
-			</u-transition>
+			<swiper class="hot-p-b" :current="transIndex" @change="$event=>transIndex=$event.detail.current" :autoplay="true" :interval="5000" :duration="500" :circular="true">
+				<swiper-item v-for="(item,index) in hot" :key="index">
+					<image class="hot-pic" :src="decodeURIComponent(item.icon)" mode="aspectFill"></image>
+				</swiper-item>
+			</swiper>
 			<image class="hot-name" src="@/static/index/hot/title_h.png"/>
 			<view class="hot-desc">大家都在玩～</view>
 		</view>
@@ -46,43 +48,7 @@
 		@Prop({default:[]})
 		broadCastList:any;
 
-		freshPic:any = [];
-		freshInterval:any;
 		transIndex = 0;
-		@Watch('hot')
-		onDataChanged(val: any, oldVal: any) {
-			if(val){
-				this.freshPic = val.map((x:any,index:number)=>{
-					return {show:index==0,icon:x.icon,id:x.id}
-				})
-				this.freshInterFnc()
-			}
-		}
-		created(){//在实例创建完成后被立即调用
-			
-		}
-		mounted(){//挂载到实例上去之后调用
-			console.log(this.broadCastList);
-			
-		}
-		freshInterFnc(){
-			this.transIndex = 0;
-			clearInterval(this.freshInterval)
-			this.freshInterval = setInterval(()=>{
-				if(this.transIndex<this.freshPic.length-1){
-					this.transIndex ++ ;
-				}else{
-					this.transIndex = 0;
-				}
-				this.freshPic.forEach((x:any,index:number)=>{
-					if(index==this.transIndex){
-						setTimeout(()=>{this.freshPic[index].show=true},400)
-					}else{
-						x.show = false;
-					}
-				})
-			},4500)
-		}
 		onClickLive(item:any){
 			if(app.token.accessToken == ''){
 				app.login.arouseLogin()
@@ -102,196 +68,198 @@
 		}
 		onClickHot(){
 			uni.navigateTo({
-				url:`/pages/goods/goods_seriesDetail?seriesId=${this.freshPic[this.transIndex].id}`
+				url:`/pages/goods/goods_seriesDetail?seriesId=${this.hot[this.transIndex].id}`
 			})
 		}
 	}
 </script>
 <style lang="scss">
-	.index-hot{
-		width: 100%;
+$swiperWidth:180rpx;
+$swiperHeight:180rpx;
+.index-hot{
+	width: 100%;
+	height:360rpx;
+	box-sizing: border-box;
+	padding:0 20rpx;
+	display: flex;
+	justify-content: space-between;
+	.hot-box{
+		width: 260rpx;
 		height:360rpx;
+		background: url(@/static/index/hot/bg_1.png) no-repeat center / 100% 100%;
+		position:relative;
 		box-sizing: border-box;
-		padding:0 20rpx;
-		display: flex;
-		justify-content: space-between;
-		.hot-box{
-			width: 260rpx;
-			height:360rpx;
-			background: url(@/static/index/hot/bg_1.png) no-repeat center / 100% 100%;
-			position:relative;
-			box-sizing: border-box;
-			padding-top: 272rpx;
-			padding-left: 25rpx;
-			.hot-p-b{
-				width: 167rpx;
-				height:167rpx;
-				position: absolute;
-				top:34rpx;
-				left:47rpx;
-				z-index: 2;
-			}
-			.hot-pic{
-				width: 167rpx;
-				height:167rpx;
-			}
-			.hot-name{
-				width: 108rpx;
-				height:26rpx;
-			}
-			.hot-desc{
-				margin-top: 5rpx;
-				font-size: 21rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
-				color: #C0C0C0;
-			}
+		padding-top: 272rpx;
+		padding-left: 25rpx;
+		.hot-p-b{
+			width: $swiperWidth;
+			height:$swiperHeight;
+			position: absolute;
+			top:34rpx;
+			left:40rpx;
+			z-index: 2;
 		}
-		.right{
-			width: 442rpx;
-			height:360rpx;
-			.live-box{
-				width: 442rpx;
-				height:176rpx;
-				background: url(@/static/index/hot/bg_2.png) no-repeat center / 100% 100%;
-				margin-bottom: 8rpx;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				box-sizing: border-box;
-				padding: 0 28rpx;
-			}
-			.live-title{
-				width: 150rpx;
-				height:176rpx;
-				box-sizing: border-box;
-				padding-top: 58rpx;
-			}
-			.live-name{
-				width: 109rpx;
-				height:26rpx;
-			}
-			.live-desc{
-				font-size: 21rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
-				color: #C0C0C0;
-				margin-top: 6rpx;
-			}
-			.live-index{
-				width: 240rpx;
-				height:176rpx;
-				box-sizing: border-box;
-				padding-top: 38rpx;
-				display: flex;
-				justify-content: space-between;
-			}
-			.tab-hot-boxpic-box{
-				width: 97rpx;
-				height:97rpx;
-				position: relative;
-			}
-			.tab-hot-live-state{
-				width: 104rpx;
-				height: 25rpx;
-				background: #FA1545;
-				border: 2rpx solid #FFFFFF;
-				border-radius: 5rpx;
-				font-size: 16rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
-				color: #FFFFFF;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				position: absolute;
-				left:-7rpx;
-				bottom:-12rpx;
-				z-index:3;
-			}
-			.live-border{
-				border:4rpx solid #FA1545;
-				border-radius: 50%;
-			}
-			.broadcast-box{
-				width: 97rpx;
-				height:97rpx;
-				border-radius: 50%;
-				overflow: hidden;
-			}
-			.live-ing{
-				width: 97rpx;
-				height:97rpx;
-				position: absolute;
-				left:50%;
-				top:50%;
-				z-index: 2;
-				border:2rpx solid #FA1545;
-				border-radius: 50%;
-				-webkit-animation: animate 1s linear infinite;
-			}
-
-			@keyframes animate {
-				0%{
-					transform: translate(-50%, -50%) scale(1);
-					opacity: 1;  
-				}
-				50%{
-					transform: translate(-50%, -50%) scale(1.1);  
-					opacity: 0.5;   /*圆形放大的同时，透明度逐渐减小为0*/
-				}
-				100%{
-					transform: translate(-50%, -50%) scale(1.2);  
-					opacity: 0;   /*圆形放大的同时，透明度逐渐减小为0*/
-				}
-			}
+		.hot-pic{
+			width: $swiperWidth;
+			height:$swiperHeight;
 		}
-		.bottom{
+		.hot-name{
+			width: 108rpx;
+			height:26rpx;
+		}
+		.hot-desc{
+			margin-top: 5rpx;
+			font-size: 21rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #C0C0C0;
+		}
+	}
+	.right{
+		width: 442rpx;
+		height:360rpx;
+		.live-box{
 			width: 442rpx;
 			height:176rpx;
+			background: url(@/static/index/hot/bg_2.png) no-repeat center / 100% 100%;
+			margin-bottom: 8rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			.bottom-box1{
-				width: 217rpx;
-				height:176rpx;
-				background: url(@/static/index/hot/bg_3.png) no-repeat center / 100% 100%;
-				position: relative;
+			box-sizing: border-box;
+			padding: 0 28rpx;
+		}
+		.live-title{
+			width: 150rpx;
+			height:176rpx;
+			box-sizing: border-box;
+			padding-top: 58rpx;
+		}
+		.live-name{
+			width: 109rpx;
+			height:26rpx;
+		}
+		.live-desc{
+			font-size: 21rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #C0C0C0;
+			margin-top: 6rpx;
+		}
+		.live-index{
+			width: 240rpx;
+			height:176rpx;
+			box-sizing: border-box;
+			padding-top: 38rpx;
+			display: flex;
+			justify-content: space-between;
+		}
+		.tab-hot-boxpic-box{
+			width: 97rpx;
+			height:97rpx;
+			position: relative;
+		}
+		.tab-hot-live-state{
+			width: 104rpx;
+			height: 25rpx;
+			background: #FA1545;
+			border: 2rpx solid #FFFFFF;
+			border-radius: 5rpx;
+			font-size: 16rpx;
+			font-family: PingFang SC;
+			font-weight: 400;
+			color: #FFFFFF;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			left:-7rpx;
+			bottom:-12rpx;
+			z-index:3;
+		}
+		.live-border{
+			border:4rpx solid #FA1545;
+			border-radius: 50%;
+		}
+		.broadcast-box{
+			width: 97rpx;
+			height:97rpx;
+			border-radius: 50%;
+			overflow: hidden;
+		}
+		.live-ing{
+			width: 97rpx;
+			height:97rpx;
+			position: absolute;
+			left:50%;
+			top:50%;
+			z-index: 2;
+			border:2rpx solid #FA1545;
+			border-radius: 50%;
+			-webkit-animation: animate 1s linear infinite;
+		}
+
+		@keyframes animate {
+			0%{
+				transform: translate(-50%, -50%) scale(1);
+				opacity: 1;  
 			}
-			.bottom-box2{
-				width: 217rpx;
-				height:176rpx;
-				background: url(@/static/index/hot/bg_4.png) no-repeat center / 100% 100%;
-				position: relative;
+			50%{
+				transform: translate(-50%, -50%) scale(1.1);  
+				opacity: 0.5;   /*圆形放大的同时，透明度逐渐减小为0*/
 			}
-			.p1{
-				width: 132rpx;
-				height:95rpx;
-				position: absolute;
-				top:23rpx;
-				left:44rpx
-			}
-			.p2{
-				width: 157rpx;
-				height:80rpx;
-				position: absolute;
-				top:28rpx;
-				left:37rpx;
-			}
-			.title1{
-				width: 109rpx;
-				height:26rpx;
-				position: absolute;
-				left:54rpx;
-				bottom:24rpx
-			}
-			.title2{
-				width: 108rpx;
-				height:26rpx;
-				position: absolute;
-				left:55rpx;
-				bottom:24rpx
+			100%{
+				transform: translate(-50%, -50%) scale(1.2);  
+				opacity: 0;   /*圆形放大的同时，透明度逐渐减小为0*/
 			}
 		}
 	}
+	.bottom{
+		width: 442rpx;
+		height:176rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.bottom-box1{
+			width: 217rpx;
+			height:176rpx;
+			background: url(@/static/index/hot/bg_3.png) no-repeat center / 100% 100%;
+			position: relative;
+		}
+		.bottom-box2{
+			width: 217rpx;
+			height:176rpx;
+			background: url(@/static/index/hot/bg_4.png) no-repeat center / 100% 100%;
+			position: relative;
+		}
+		.p1{
+			width: 132rpx;
+			height:95rpx;
+			position: absolute;
+			top:23rpx;
+			left:44rpx
+		}
+		.p2{
+			width: 157rpx;
+			height:80rpx;
+			position: absolute;
+			top:28rpx;
+			left:37rpx;
+		}
+		.title1{
+			width: 109rpx;
+			height:26rpx;
+			position: absolute;
+			left:54rpx;
+			bottom:24rpx
+		}
+		.title2{
+			width: 108rpx;
+			height:26rpx;
+			position: absolute;
+			left:55rpx;
+			bottom:24rpx
+		}
+	}
+}
 </style>
