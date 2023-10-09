@@ -2,13 +2,18 @@
  * @FilePath: \jichao_app_2\src\pages\merchant\goods_sale.vue
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-08-11 13:56:36
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-10-09 14:53:37
  * Copyright: 2022 .
  * @Descripttion: 
 -->
 <template>
     <view class="content" style="width: 100%;">
+        <navigationbar title="在售管理" :custom="true">
+			<template slot="right">
+				<view class="extract-btn" @click="onClickShowAd()">主页推广</view>
+			</template>
+		</navigationbar>
         <view class="goods-item" v-for="(item,index) in listData" :key="index">
             <view class="item-header">
                 <view class="item-time">上架时间 {{$u.timeFormat(item.active_at,'yyyy-mm-dd hh:MM')}}</view>
@@ -31,12 +36,14 @@
                 <view class="item-rank">权重：{{item.rank}}位</view>
                 <view class="item-btn-box">
                     <view class="item-btn btn-details" @click="goGoodsDetails(item.goodCode)">详情</view>
+                    <view class="item-btn btn-extract" @click="onClickShowAd(item.goodCode)">广告推广</view>
                     <view class="item-btn btn-extract" @click="onClickShowUpWeight(item.goodCode)">提权</view>
                 </view>
             </view>
         </view>
 
         <upWeight :show.sync="showUpWeight" :equitycard="equitycard" :short_description="short_description" :monthly_cards="monthly_cards" :goodCode="goodCode" @equitycardUse="refresh"/>
+        <advertising :show.sync="adPopup.show"/>
     </view>
 </template>
 
@@ -45,6 +52,7 @@
     import { Component } from "vue-property-decorator";
     import BaseNode from "../../base/BaseNode.vue";
     import upWeight from "./components/upWeight.vue"
+    import advertising from "./components/advertising.vue"
     const ListInitParams = {
         pageIndex: 1,
         pageSize: 10,
@@ -53,7 +61,8 @@
     }
     @Component({
         components:{
-            upWeight
+            upWeight,
+            advertising
         }
     })
     export default class ClassName extends BaseNode {
@@ -66,6 +75,9 @@
         short_description = '';
         goodCode = '';
         showUpWeight = false;
+        adPopup = {
+            show:false
+        }
         onLoad(query: any) {
             this.reqNewData()
         }
@@ -100,6 +112,9 @@
                 })
                 this.showUpWeight = true
             })
+        }
+        onClickShowAd(){
+            this.adPopup.show=true;
         }
     }
 </script>
@@ -244,5 +259,20 @@
             margin-left: 28rpx;
             color:#FFFFFF
         }
+    }
+    .extract-btn{
+        width: 138rpx;
+        height: 52rpx;
+        border-radius: 3rpx;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25rpx;
+        font-family: PingFang SC;
+        font-weight: 500;
+        line-height: 52rpx;
+        background: #E6374C;
+        color:#FFFFFF
     }
 </style>

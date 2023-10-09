@@ -5,7 +5,7 @@
 			<view class="tab-header">
 				<view class="header-search">
 					<view class="search-icon"></view>
-					<input class="search-input" type="text" focus v-model="searchTetxt" :placeholder="placeholder" confirm-type="search" @input="onInput" @confirm="onClickSearch(searchTetxt)" />
+					<input class="search-input" type="text" focus v-model="searchTetxt" :placeholder="placeholder" confirm-type="search" @input="$u.debounce(onInput, 200)" @confirm="onClickSearch(searchTetxt)" />
 				</view>
 				<view v-if="searchTetxt==''" class="header-right" @click="onClickBack">取消</view>
 				<view v-else class="header-right" @click="onClickSearch(searchTetxt)">搜索</view>
@@ -88,6 +88,7 @@
 		}
 		placeholder = '';
 		lenovoList = [];
+		lastLenovo = "";
 		listHeight = 0;
 		onLoad(query:any) {
 			let searchData = uni.getStorageSync("searchData");
@@ -115,7 +116,7 @@
 			uni.navigateBack({ delta: 1 });
 		}
 		public get lenovoShow() : boolean {
-			return this.lenovoList.length>0
+			return this.lenovoList.length>0 && this.searchTetxt!="";
 		}
 		onClickDelete(){
 			uni.showModal({
@@ -130,13 +131,19 @@
 			});
 		}
 		onInput(event:any){
-			if(this.searchTetxt=="") return;
+			if(this.searchTetxt==""){
+				this.lenovoList = [];
+				this.lastLenovo = "";
+				return;
+			};
+			if(this.lastLenovo==this.searchTetxt) return;
 			const params = {
 				realm:"good",
 				q:encodeURIComponent(this.searchTetxt),
 				sourceId:"pm.index",
 			}
-			const hash = this.kwwConfusion.lenovo(this.searchTetxt)
+			const hash = this.kwwConfusion.lenovo(this.searchTetxt);
+			this.lastLenovo = this.searchTetxt;
 			app.http.Get("search/lenovo",{...params,...hash},(res:any)=>{
 				this.lenovoList = res.list || [];
 			})

@@ -84,6 +84,9 @@ import payInfo from "./component/payInfo.vue";
 import payNeedKnow from "./component/payNeedKnow.vue";
 //@ts-ignore
 import KwwConfusion from "@/net/kwwConfusion.js"
+const parseJSONIfPresent = (value:any) => {
+  return value ? JSON.parse(value) : null;
+}
 @Component({
   components:{
     payAddress,
@@ -132,9 +135,10 @@ export default class ClassName extends BaseNode {
   AD_id=null
   onLoad(query: any) {
     if (!query.data) return;
+
     this.AD_id = query.AD_id ?? null; 
-    this.goodsData = JSON.parse(query.data); 
-    this.payChannel = JSON.parse(query.payChannel);
+    this.goodsData = parseJSONIfPresent(query.data); 
+    this.payChannel = parseJSONIfPresent(query.payChannel);
     // 剩余随机
     if (query.payRandomPrice) {
       this.payRandomPrice = query.payRandomPrice;
@@ -148,11 +152,11 @@ export default class ClassName extends BaseNode {
     }
     // 购物车
     if (query.cart) {
-      this.cartData = JSON.parse(query.cart);
+      this.cartData = parseJSONIfPresent(query.cart);
     }
     // 选队随机
     if(query.payRandomTeam){
-      this.payRandomTeamData = JSON.parse(query.payRandomTeam)
+      this.payRandomTeamData = parseJSONIfPresent(query.payRandomTeam)
     }
     if(query.selectRanId){
       this.selectRanId = Number(query.selectRanId);

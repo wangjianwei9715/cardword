@@ -2,8 +2,8 @@
     "name" : "卡世界",
     "appid" : "__UNI__017A011",
     "description" : "",
-    "versionName" : "3.5.1",
-    "versionCode" : 203,
+    "versionName" : "3.5.5",
+    "versionCode" : 3550,
     "transformPx" : false,
     "networkTimeout" : {
         "request" : 5000,
@@ -209,7 +209,7 @@
             }
         },
         /* SDK配置 */
-        "usingComponents" : true,
+        "usingComponents" : false,
         "uniStatistics" : {
             "enable" : true
         },
