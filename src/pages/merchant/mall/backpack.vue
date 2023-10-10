@@ -390,9 +390,9 @@ page {
     }
 }
 .buyBtn{
-    width: 300rpx;
+    width: 327rpx;
     height: 52rpx;
-    border-radius: 30rpx;
+    border-radius: 3rpx;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -401,7 +401,7 @@ page {
     font-family: PingFang SC;
     font-weight: 500;
     line-height: 52rpx;
-    background: #E6374C;
+    background: #FA1545;
     color:#FFFFFF;
     margin:0 auto;
 }

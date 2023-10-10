@@ -43,6 +43,12 @@
       </view>
       <view class="merchant-introduction">店铺简介：{{ merchantInfo.brief_intr ? merchantInfo.brief_intr : '欢迎来到我的店铺!' }}
       </view>
+      <navigator url="mall/index">
+        <view class="merchant-points">
+          <view class="points-text">商家积分</view>
+          <view class="points-text">000<view class="points-right"></view></view>
+        </view>
+      </navigator>
     </view>
     <view class="couponContainer uni-flex" v-if="!isMerchant && couponBrief && couponBrief.length">
       <view class="leftCoupon uni-flex">
@@ -64,6 +70,8 @@
       </view>
       <!-- <view class="coupon-receive" @click="pageJump('/pages/merchant/couponManage')">领取更多</view> -->
     </view>
+    
+    
     <view class="ruleContainer" v-if="isMerchant">
       <view class="ruleItem" v-for="(item, index) in merchantRule" :key="index" @click="onClickRule(item)">
         <view class="rule-left flexCenter">
@@ -97,7 +105,7 @@
     </view>
     <view class="tagsContainer" id="tagsContainer">
       <view class="tag" :class="{ selectTag: index == tag.index }" v-for="(item, index) in tag.list"
-        @click="onTagClick(item, index)">
+        @click="onTagClick(item, index)" :key="index">
         {{ item.label }}
         <text>{{ goodsMsg[item.valueKey] }}</text>
       </view>
@@ -460,10 +468,14 @@ export default class ClassName extends BaseNode {
 </script>
 
 <style lang="scss">
+@mixin padingLR30{
+  box-sizing: border-box;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+}
 page {
   font-family: PingFang SC;
 }
-
 @font-face {
   font-family: BDZongYi-A001;
   src: url("https://ka-world.oss-cn-shanghai.aliyuncs.com/admin/debug/2022.08.26/seller/info/1661506714192c1fus35zzh.ttf");
@@ -542,7 +554,7 @@ page {
   border-radius: 5rpx;
   background-color: #fff;
   box-sizing: border-box;
-  padding: 28rpx 30rpx 30rpx 30rpx;
+  padding-top: 28rpx;
   margin-top: -58rpx;
   z-index: 2;
 }
@@ -623,6 +635,7 @@ page {
 }
 
 .infoTop {
+  @include padingLR30;
   .info-avatar {
     width: 111rpx;
     height: 111rpx;
@@ -679,6 +692,7 @@ page {
 }
 
 .merchant-introduction {
+  @include padingLR30;
   font-size: 25rpx;
   font-weight: 400;
   color: #7c7c7c;
@@ -686,7 +700,30 @@ page {
   letter-spacing: 0rpx;
   /* line-height: 24rpx; */
 }
-
+.merchant-points{
+  width: 100%;
+  height:40rpx;
+  background: #FA1545;
+  margin-top: 16rpx;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:0 10rpx 0 30rpx;
+}
+.points-text{
+  font-size: 33rpx;
+  font-family: YouSheBiaoTiHei;
+  color:#fff;
+  display: flex;
+  align-items: center;
+}
+.points-right{
+  width: 15rpx;
+  height:24rpx;
+  margin-left: 20rpx;
+  background: url(@/static/illustration/icon_right.png) no-repeat center / 100% 100%;
+}
 .ruleContainer {
   width: 750rpx;
   box-sizing: border-box;

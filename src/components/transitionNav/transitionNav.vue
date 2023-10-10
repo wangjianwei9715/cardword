@@ -48,7 +48,8 @@
                         <image :style="[item.style]" class="centerImg" :src="item.icon_black" />
                     </template>
                     <template v-else>
-                        <image :style="[item.style]" class="centerImg"
+                        <text v-if="item.text" class="toolsText">{{item.text}}</text>
+                        <image v-else :style="[item.style]" class="centerImg"
                             :src="navBackGroundShow ? item.icon_black : item.icon" />
                     </template>
                 </view>
@@ -401,6 +402,10 @@ export default {
     height: 35rpx;
 }
 
+.toolsText{
+    font-size: 28rpx;
+    color:#fff
+}
 /* #ifndef APP-NVUE */
 .filterBlack {
     -webkit-filter: invert(1) hue-rotate(270deg);

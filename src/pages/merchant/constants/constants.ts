@@ -4,6 +4,7 @@ const custonRightIcon = {
         emitAction: "onClickBackPack",
         icon: "/static/mall/order.png",
         icon_black: "/static/mall/order_black.png",
+        text:"背包",
         style: {
             width: "29rpx",
             height: "34rpx",
@@ -13,6 +14,7 @@ const custonRightIcon = {
         emitAction: "onClickRule",
         icon: "/static/mall/order.png",
         icon_black: "/static/mall/order_black.png",
+        text:"规则",
         style: {
             width: "29rpx",
             height: "34rpx",

@@ -2,9 +2,9 @@
     <view class="content">
         <transitionNav @onClickRule="pageJump(`${mallRouter}/rule`)" @onClickBackPack="pageJump(`${mallRouter}/backpack`)"
             :toolsMapCustomNew="custonRightIcon" ref='transitionNav' :needRightTools="['背包','积分规则']"
-            :needIconShadow="false" title="权益中心">
+            :needIconShadow="false" title="积分中心">
             <template slot="slotLeft">
-                <view class="leftTitle">权益中心</view>
+                <view class="leftTitle">积分中心</view>
             </template>
         </transitionNav>
         <view class="topBanner"></view>
@@ -23,6 +23,7 @@
                 </view>
             </view>
         </view>
+        <view class="limit-line">本月剩余可兑权重分：9999999/999999999</view>
         <view class="uTabs">
             <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)"
                 v-for="(item, index) in tab.list" :key="index">{{ item.name }}</view>
@@ -38,9 +39,8 @@
                 <view class="goodsItem_bottom">
                     <view class="goodsName">{{ item.name }}</view>
                     <view class="goodsPriceBlock">
-                        <view class="rmbMoney money" v-if="item.pay_tp == 2">{{ item.price }}卡币</view>
                         <view class="goodsPriceBlock_bottom">
-                            <view class="money">{{ item.pay_tp == 2 ? `+${item.money}元` : `${item.price}卡币` }}</view>
+                            <view class="money">{{ item.pay_tp == 2 ? `${item.money}元` : `${item.price}卡币` }}</view>
                             <view class="leftNum" v-if='item.limit_num != 0 || item.leftNum != -1'>剩余{{ item.leftNum }}
                             </view>
                         </view>
@@ -180,9 +180,9 @@ page {
         align-items: center;
 
         &_gift {
-            width: 46rpx;
+            width: 42rpx;
             height: 46rpx;
-            background-image: url("@/static/mall/gift.png");
+            background-image: url("@/static/mall/order_.png");
             background-size: 100% 100%;
         }
 
@@ -406,9 +406,9 @@ page {
     }
 }
 .buyBtn{
-    width: 300rpx;
+    width: 327rpx;
     height: 52rpx;
-    border-radius: 30rpx;
+    border-radius: 3rpx;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -417,8 +417,18 @@ page {
     font-family: PingFang SC;
     font-weight: 500;
     line-height: 52rpx;
-    background: #E6374C;
+    background: #FA1545;
     color:#FFFFFF;
     margin:0 auto;
+}
+.limit-line{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-left: 19rpx;
+    font-size: 23rpx;
+    color: #999999;
+    margin-top: 16rpx;
 }
 </style>
