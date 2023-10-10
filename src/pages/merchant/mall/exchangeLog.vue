@@ -20,11 +20,13 @@
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
             <view class="name u-line-1">{{ item.name }}</view>
-            <view class="state">{{
-    item.status == 2
-      ? mallStateMap[String(item.state)].tip
-      : mallStatusMap[String(item.status)]
-}}</view>
+            <view class="state">
+              {{
+                item.status == 2
+                  ? mallStateMap[String(item.state)].tip
+                  : mallStatusMap[String(item.status)]
+              }}
+            </view>
           </view>
           <view class="goodsInfoWrap_right_exchangeTime">{{
     dateFormatMSHMS(item.exchangeAt)
@@ -260,11 +262,11 @@ page {
   box-sizing: border-box;
   padding: 25rpx 30rpx 34rpx 30rpx;
   margin-bottom: 14rpx;
+  position: relative;
 
   .goodsInfoWrap {
     height: 133rpx;
     display: flex;
-
     .img {
       width: 173rpx;
       height: 133rpx;
@@ -299,10 +301,19 @@ page {
       }
 
       .state {
-        font-size: 25rpx;
+        height:30rpx;
+        background:#fa1545;
+        position: absolute;
+        right:0;
+        top:0;
+        font-size: 21rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #fa1545;
+        color:#fff ;
+        box-sizing: border-box;
+        line-height: 30rpx;
+        padding:0 15rpx;
+        border-bottom-left-radius: 3rpx;
       }
     }
 

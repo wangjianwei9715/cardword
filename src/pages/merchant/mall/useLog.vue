@@ -260,7 +260,7 @@ page {
   box-sizing: border-box;
   padding: 25rpx 30rpx 34rpx 30rpx;
   margin-bottom: 14rpx;
-
+  position: relative;
   .goodsInfoWrap {
     height: 133rpx;
     display: flex;
@@ -299,10 +299,19 @@ page {
       }
 
       .state {
-        font-size: 25rpx;
+        height:30rpx;
+        background:#fa1545;
+        position: absolute;
+        right:0;
+        top:0;
+        font-size: 21rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #fa1545;
+        color:#fff ;
+        box-sizing: border-box;
+        line-height: 30rpx;
+        padding:0 15rpx;
+        border-bottom-left-radius: 3rpx;
       }
     }
 
