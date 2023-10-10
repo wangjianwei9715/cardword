@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-11-24 11:05:35
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-14 17:28:51
- * @FilePath: \card-world\src\components\transitionNav\transitionNav.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-10-10 16:41:15
+ * @FilePath: \jichao_app_2\src\components\transitionNav\transitionNav.vue
  * @Description: 渐变导航栏（兼容nvue, nvue中把组件放到结构最下面:越后层级越高）
 -->
 <template>
@@ -48,7 +48,7 @@
                         <image :style="[item.style]" class="centerImg" :src="item.icon_black" />
                     </template>
                     <template v-else>
-                        <text v-if="item.text" class="toolsText">{{item.text}}</text>
+                        <text v-if="item.text" class="toolsText" :class="navBackGroundShow?'colorBlack':'colorWhite'">{{item.text}}</text>
                         <image v-else :style="[item.style]" class="centerImg"
                             :src="navBackGroundShow ? item.icon_black : item.icon" />
                     </template>
@@ -404,7 +404,12 @@ export default {
 
 .toolsText{
     font-size: 28rpx;
-    color:#fff
+}
+.colorWhite{
+    color:#fff;
+}
+.colorBlack{
+    color:#000
 }
 /* #ifndef APP-NVUE */
 .filterBlack {
