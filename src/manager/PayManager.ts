@@ -2,8 +2,8 @@
  * @FilePath: \jichao_app_2\src\manager\PayManager.ts
  * @Author: wjw
  * @Date: 2023-05-23 15:29:20
- * @LastEditors: 
- * @LastEditTime: 2023-05-24 10:42:19
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-10-12 15:42:07
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -13,13 +13,41 @@ import { CBC } from "crypto-ts/src/mode/CBC";
 export default class PayManager {
     private static instance: PayManager;
 	payQmfAndroid:any;
+	riskContorl={};
     private constructor() {
 		
 		// #ifdef APP-PLUS
 
 		// #endif
     }
-
+	alipayRiskContorl(cb:Function){
+		if(uni.$u.test.isEmpty(this.riskContorl)){
+			const { systemInfo, deviceID } = app.platform;
+			this.riskContorl={
+				sysVersion:systemInfo.osVersion,
+				platformType:systemInfo.model,
+				mcCreatelmei:deviceID,
+				mobileOperatingPlatform:systemInfo.platform,
+				mcCreateTradePackage:systemInfo.appName
+			}
+		}
+		uni.getNetworkType({
+			success: (res) => {
+				app.http.Post(
+					"upload/alipay/riskContorl/data",
+					{...this.riskContorl,netWork:res.networkType},
+					// success
+					()=>{
+						cb()
+					},
+					// error
+					()=>{
+						uni.showToast({ title:"发生错误，请重试", icon:"none", duration: 2000 })
+					}
+				)
+			}
+		})
+	}
 	paymentAlipayQmfSdk(payRequest:string,cb?:Function){
 		this.payQmfAndroid = uni.requireNativePlugin("payQmfAndroid");
 		this.payQmfAndroid.payAliPayMiniPro(payRequest,(res:any)=>{});

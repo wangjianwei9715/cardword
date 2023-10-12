@@ -227,7 +227,7 @@
 			if (uni.getSystemInfoSync().platform === "android") {
 				params.nativeSdk = "qmf_android";
 			}
-			app.http.Post("order/topay/" + this.payItem.code, {...params,...hash}, (res: any) => {
+			app.http.Pay("order/topay/" + this.payItem.code, {...params,...hash}, (res: any) => {
 				//data.channel=='alipay' (before)
 				if (['alipay','alipay_h5'].includes(channel)) {
 					this.clickToPay = true;

@@ -414,7 +414,7 @@ export default class ClassName extends BaseNode {
     this.postPay(url, params, data); 
   }
   postPay(url:string,params:any,data:any){
-    app.http.Post(url, params, async (res: any) => {
+    app.http.Pay(url, params, async (res: any) => {
       const goodOrderCode = res.goodOrderCode
       uni.hideLoading();
       // 订单额外数据

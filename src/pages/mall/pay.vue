@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:19:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-05-23 12:19:19
+ * @LastEditTime: 2023-10-12 15:03:32
  * @FilePath: \jichao_app_2\src\pages\mall\pay.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -164,7 +164,7 @@ export default class ClassName extends BaseNode {
             title: ""
         })
         this.showPayMent = false
-        app.http.Post(`point/good/toBuy/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
+        app.http.Pay(`point/good/toBuy/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
             this.orderCode = res.orderCode
             uni.hideLoading()
 

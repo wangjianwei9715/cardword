@@ -136,7 +136,7 @@ export default class ClassName extends BaseNode {
             title: ""
         })
         this.showPayMent = false
-        app.http.Post(`merchant/exchange/cash/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
+        app.http.Pay(`merchant/exchange/cash/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
             this.orderCode = res.orderCode
             uni.hideLoading()
             //订单创建成功跳转支付宝支付

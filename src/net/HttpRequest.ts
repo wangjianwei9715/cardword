@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-09 11:24:22
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-16 12:01:41
+ * @LastEditTime: 2023-10-12 15:02:07
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -246,6 +246,11 @@ export default class HttpRequest {
 	GetWithCrypto(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function){
 		const SIG=GetCrypto(reqUrl)
 		this.Get(reqUrl,params,cb,errorCb,{"Authorization":SIG})
+	}
+	Pay(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function){
+		app.payment.alipayRiskContorl(()=>{
+			this.Post(reqUrl,params,cb,errorCb)
+		})
 	}
 	Post(reqUrl: string, params: { [x: string]: any }, cb?: Function, errorCb?: Function,headers?:{[x: string]: any}) {
 		let newParams = objKeySort(params)

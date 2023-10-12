@@ -212,7 +212,7 @@ export default class ClassName extends BaseNode {
     uni.showLoading({
       title: "",
     });
-    app.http.Post(
+    app.http.Pay(
       `point/order/toBuy/${this.orderCode}`,
       {
         channel,

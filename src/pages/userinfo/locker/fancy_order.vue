@@ -192,7 +192,7 @@
 			const params = {
 				channel:channelData.channel,
 			}
-			app.http.Post(`me/cabinet/card/topay/order/${this.orderCode}`,params,(res:any)=>{
+			app.http.Pay(`me/cabinet/card/topay/order/${this.orderCode}`,params,(res:any)=>{
 				if (res.alipay.orderInfo != "") {
 					app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo);
 					this.showPayMent = false;

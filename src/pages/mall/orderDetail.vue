@@ -1,9 +1,9 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-01-05 15:39:17
- * @FilePath: \card-world\src\pages\mall\orderDetail.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-10-12 15:10:09
+ * @FilePath: \jichao_app_2\src\pages\mall\orderDetail.vue
  * @Description: 订单详情
 -->
 <template>
@@ -227,7 +227,7 @@ export default class ClassName extends BaseNode {
     uni.showLoading({
       title: "",
     });
-    app.http.Post(
+    app.http.Pay(
       `point/order/toBuy/${this.orderCode}`,
       {
         channel,

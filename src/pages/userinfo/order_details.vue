@@ -497,7 +497,7 @@
 			if(uni.getSystemInfoSync().platform === "android"){
 				params.nativeSdk = 'qmf_android'
 			}
-			app.http.Post('order/topay/'+this.orderData.code,{...params,...hash},(res:any)=>{
+			app.http.Pay('order/topay/'+this.orderData.code,{...params,...hash},(res:any)=>{
 				if(['alipay','alipay_h5'].includes(data.channel)){
 					this.clickToPay = true;
 					uni.hideLoading()
