@@ -68,6 +68,7 @@ import { getMerchantIntegral } from '../utils/util';
     }
 })
 export default class ClassName extends BaseNode {
+    pageJump = app.navigateTo.pageJump;
     custonRightIcon: any = mall.custonRightIcon;
     mallRouter = mall.mallRouter;
     goodsList: any = []
@@ -128,9 +129,6 @@ export default class ClassName extends BaseNode {
         this.queryParams.pageIndex = 1
         this.reqNewData(() => {
         }, false)
-    }
-    pageJump(url: string) {
-        uni.navigateTo({ url })
     }
     reqNewData(cb?: any, isRefresh?: boolean) {
         if (isRefresh) this.successRequest = false;

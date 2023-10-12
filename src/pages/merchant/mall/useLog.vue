@@ -50,6 +50,7 @@ const goodTpOption = mall.exchange.goodTpOption;
 const stateOption = mall.exchange.stateOption;
 @Component({})
 export default class ClassName extends BaseNode {
+  pageJump = app.navigateTo.pageJump;
   dateFormatMSHMS: any = dateFormatMSHMS;
   mallStateMap: any = mallStateMap;
   mallStatusMap: any = mallStatusMap;
@@ -125,11 +126,6 @@ export default class ClassName extends BaseNode {
     });
     this.queryParams.pageIndex = 1;
     this.reqNewData();
-  }
-  pageJump(url: string) {
-    uni.navigateTo({
-      url,
-    });
   }
   toOrderDetail(item: any) {
     if (!item.code) return;

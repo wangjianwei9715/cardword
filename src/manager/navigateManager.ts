@@ -109,4 +109,7 @@ export default class navigateManager {
 	navigateBack(delta=1) {
 		uni.navigateBack({ delta });
 	}
+	pageJump(url: string) {
+		uni.navigateTo({ url })
+	}
 }
