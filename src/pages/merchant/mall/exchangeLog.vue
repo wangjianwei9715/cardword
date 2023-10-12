@@ -15,8 +15,7 @@
   pageJump(`/pages/mall/orderDetail?orderCode=${item.code}&pay_tp=${item.pay_tp}`)
 ">
       <view class="goodsInfoWrap">
-        <muqian-lazyLoad borderRadius="3rpx" @click.stop="onClickPreviewImage($parsePic(item.logo))"
-          class="img" :src="$parsePic(item.logo)" />
+        <muqian-lazyLoad borderRadius="3rpx" class="img" :src="item.cover" preview/>
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
             <view class="name u-line-1">{{ item.name }}</view>
@@ -28,14 +27,12 @@
               }}
             </view>
           </view>
-          <view class="goodsInfoWrap_right_exchangeTime">{{
-    dateFormatMSHMS(item.exchangeAt)
-}}</view>
+          <view class="goodsInfoWrap_right_exchangeTime">{{ dateFormatMSHMS(item.create_at) }}</view>
           <view class="goodsInfoWrap_right_price">{{ goodsPrice(item) }}</view>
         </view>
       </view>
       <view class="buttonWrap">
-        <template v-if="item.status == 2 && item.goodTp == 2">
+        <template v-if="item.status == 2 && item.tp == 2">
           <view class="normalButton flexCenter" @click.stop="onClickWuliu(item)">查看物流</view>
           <view class="normalButton redButton flexCenter" @click.stop="onClickConfirmReceipt(item)"
             v-if="item.state == 2">确认收货</view>
@@ -43,7 +40,7 @@
       </view>
     </view>
     <empty v-if="!awardList.length" />
-    <u-picker ref="goodTpShowPicker" keyName="label" @confirm="confirmSelect($event, 'goodTp')" :show="goodTpShow"
+    <u-picker ref="goodTpShowPicker" keyName="label" @confirm="confirmSelect($event, 'tp')" :show="goodTpShow"
       :columns="goodTpOption" @close="goodTpShow = false" @cancel="goodTpShow = false"></u-picker>
     <u-picker ref="stateShowPicker" keyName="label" @confirm="confirmSelect($event, 'state')" :show="stateShow"
       :columns="stateOption" @close="stateShow = false" @cancel="stateShow = false"></u-picker>
@@ -68,7 +65,7 @@ export default class ClassName extends BaseNode {
   queryParams: any = {
     pageIndex: 1,
     pageSize: 20,
-    goodTp: 100,
+    tp: 100,
     state: 100,
   };
   totalPage: number = 0;
@@ -102,7 +99,7 @@ export default class ClassName extends BaseNode {
   onShow() { }
   private get leftText() {
     const findItem: any = goodTpOption.find(
-      (item: any) => item.value == this.queryParams.goodTp
+      (item: any) => item.value == this.queryParams.tp
     );
     return findItem.label;
   }
@@ -121,7 +118,7 @@ export default class ClassName extends BaseNode {
     this.awardList[index].status = orderDetail.status
   }
   goodsPrice(item: any) {
-    return `${item.pay_tp == 2 ? `￥${item.money}+` : ""}${item.price}卡币`;
+    return `${item.pay_type == 2 ? `￥${item.price}+` : `${item.price}积分`}`;
   }
   onClickShowPicker(key: string) {
     //@ts-ignore
@@ -140,14 +137,6 @@ export default class ClassName extends BaseNode {
     this.queryParams.pageIndex = 1;
     this.reqNewData();
   }
-  // 观看大图
-  onClickPreviewImage(img: string) {
-    uni.previewImage({
-      urls: [img],
-      current: 0,
-      indicator: "number",
-    });
-  }
   pageJump(url: string) {
     uni.navigateTo({
       url,
@@ -160,7 +149,7 @@ export default class ClassName extends BaseNode {
     });
   }
   setCopy(item: any) {
-    if (item.goodTp !== 1) return;
+    if (item.tp !== 1) return;
     uni.setClipboardData({
       data: item.couponCode,
       success: (res: any) => {
@@ -177,7 +166,7 @@ export default class ClassName extends BaseNode {
       content: "确认收到货了吗?",
       success: (res: any) => {
         if (res.confirm) {
-          app.http.Post(`point/exchange/order/receive/${item.code}`, {}, (res: any) => {
+          app.http.Post(`merchant/mall/goodsOrder/receipt/${item.code}`, {}, (res: any) => {
             item.state = 3;
           });
         }
@@ -196,7 +185,7 @@ export default class ClassName extends BaseNode {
     this.visible = true
   }
   reqNewData(cb?: Function) {
-    app.http.Get("dataApi/point/exchange/myRecordlist", this.queryParams, (res: any) => {
+    app.http.Get("dataApi/merchant/mall/goodsOrder/list", this.queryParams, (res: any) => {
       this.totalPage = res.totalPage;
       const reqList = res.list || [];
       this.queryParams.pageIndex == 1

@@ -33,11 +33,11 @@
         <view class="goodsContainer">
             <view class="goodsItem" v-for="(item, index) in goodsList" :key="index">
                 <view class="goodsItem_top">
-                    <muqian-lazyLoad class="logo" borderRadius="3rpx" :src="$parsePic(item.logo)"></muqian-lazyLoad>
+                    <muqian-lazyLoad class="logo" borderRadius="3rpx" :src="item.cover"></muqian-lazyLoad>
                 </view>
                 <view class="goodsItem_bottom">
                     <view class="goodsName">{{ item.name }}</view>
-                    <view class="buyBtn" @click="onClickUse(item)">去使用</view>
+                    <view class="buyBtn" @click="onClickUse()">去使用</view>
                 </view>
             </view>
         </view>
@@ -52,6 +52,7 @@ import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import { mall } from '../constants/constants'
+import { getMerchantIntegral } from '../utils/util';
 @Component({
     components:{
     }
@@ -82,7 +83,13 @@ export default class ClassName extends BaseNode {
         show:false,
         data:{}
     }
+    merchantInfo:any={}
     onLoad(query: any) {
+        if(query.integral){
+            this.merchantInfo.integral = query.integral;
+        }else{
+            this.getMerchantInfo();
+        }
         app.platform.hasLoginToken(() => {
             this.reqNewData()
         })
@@ -92,7 +99,8 @@ export default class ClassName extends BaseNode {
         this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
     }
     onPullDownRefresh() {
-        this.queryParams.pageIndex = 1
+        this.queryParams.pageIndex = 1;
+        this.getMerchantInfo();
         this.reqNewData(() => {
             setTimeout(() => {
                 uni.stopPullDownRefresh()
@@ -113,12 +121,15 @@ export default class ClassName extends BaseNode {
         this.reqNewData(() => {
         }, false)
     }
+    async getMerchantInfo(){
+        this.merchantInfo = await getMerchantIntegral()
+    }
     pageJump(url: string) {
         uni.navigateTo({ url })
     }
     reqNewData(cb?: any, isRefresh?: boolean) {
         if (isRefresh) this.successRequest = false
-        app.http.Get(`dataApi/point/exchange/goodlist`, this.queryParams, (res: any) => {
+        app.http.Get(`dataApi/merchant/backpack/list`, this.queryParams, (res: any) => {
             const list = res.list || []
             this.totalPage = res.totalPage
             this.queryParams.pageIndex == 1 ? this.goodsList = list : this.goodsList.push(...list)
@@ -129,7 +140,7 @@ export default class ClassName extends BaseNode {
         })
     }
     onClickUse(){
-        
+        uni.navigateTo({ url:"/pages/merchant/goods_sale" })
     }
 }
 </script>

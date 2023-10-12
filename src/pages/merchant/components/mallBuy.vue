@@ -4,16 +4,17 @@
 			<view class="popup-content">
 				<view class="header">
 					<view class="title">商品信息</view>
-					<view class="special">限购:1（30天）</view>
+					<view class="special" v-if="detail.limit_num>0">限购:{{detail.limit_num}}</view>
 				</view>
 				<view class="goods">
-					<view class="desc">1000权重1小时*1</view>
-					<view class="desc">1000权重1小时*1</view>
+					<view class="desc" v-for="(item,index) in detail.sonGoodsList" :key="index">
+						{{item.weight}}{{item.name}}{{item.hour}}小时*{{item.num}}
+					</view>
 				</view>
 				<u-divider class="widthMax"></u-divider>
-				<view class="tips">所需积分：<text>18888888888</text></view>
-				<view class="tips">门槛：上月销量未超999999999</view>
-				<view class="btn" @click="onClickConfirm">确认兑换</view>
+				<view class="tips">{{needPayMoney?"￥":"所需积分"}}：<text>{{detail.price}}</text></view>
+				<view class="tips" v-if="detail.buy_require>0">门槛：上月销量未超{{detail.buy_require}}</view>
+				<view class="btn" @click="onClickConfirm">{{needPayMoney?'购买':'确认兑换'}}</view>
 			</view>
 		</u-popup>
 
@@ -27,29 +28,40 @@
 </template>
 
 <script lang="ts">
-	import { Component,Prop,PropSync } from "vue-property-decorator";
+	import { Component,Prop,PropSync,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@PropSync("popupShow",{type:Boolean})
 		show!:Boolean
-		@Prop({default:()=>{}})
-		data!:any
+		@Prop({default:0})
+		id!:any
 		exchangeShow = false;
+		detail:any = {};
+		@Watch('show')
+		onChangeShow(val:boolean){
+			if(val){
+				app.http.Get(`dataApi/merchant/mall/goodsDetail/${this.id}`, {}, (res: any) => {
+					this.detail = res.data || {}
+				})
+			}
+		}
 		public get needPayMoney() : boolean {
-			return true;
+			return this.detail.pay_type==2;
 		}
 		onClickConfirm(){
 			app.platform.UIClickFeedBack(); 
 			if(this.needPayMoney){
 				this.exchangeClose();
 				uni.navigateTo({
-					url: `/pages/merchant/mall/pay?id=${this.data.id}`,
+					url: `/pages/merchant/mall/pay?id=${this.id}`,
 				});
 				return;
 			}
-			this.exchangeShow=true;
+			app.http.Post(`merchant/exchange/${this.id}`,{},(res:any)=>{
+				this.exchangeShow=true;
+			})
 		}
 		exchangeClose(){
 			this.exchangeShow=false;

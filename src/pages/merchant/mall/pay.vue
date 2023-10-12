@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-16 16:19:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-09 16:38:56
+ * @LastEditTime: 2023-10-11 17:09:40
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\pay.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,21 +22,18 @@
             <view class="dotRight"></view>
         </view>
         <view class="publickBlock goodsContainer">
-            <image class="goodsImg" mode="aspectFill" :src="$parsePic(goodsDetail.logo)"></image>
+            <image class="goodsImg" mode="aspectFill" :src="$parsePic(goodsDetail.cover)"></image>
             <view class="goodsRightInfo">
-                <view class="goodsName">{{ goodsDetail.name }}</view>
+                <view class="goodsName">{{ goodsDetail.title }}</view>
                 <view class="goodsPrice">
-                    <text class="symbol" v-if="goodsDetail.pay_tp == 2">￥</text>
-                    <!-- 5555+99999999卡币 -->
-                    {{ goodsDetail.pay_tp == 2 ? `${goodsDetail.money}+${goodsDetail.price}卡币` :
-        `${goodsDetail.price}卡币`
-}}
+                    <text class="symbol">￥</text>
+                    {{ goodsDetail.price }}
                 </view>
             </view>
         </view>
         <view class="publickBlock priceContainer">
             <view class="price_left">商品金额</view>
-            <view class="price_right">￥{{ goodsDetail.pay_tp == 2 ? goodsDetail.money : 0 }}</view>
+            <view class="price_right">￥{{goodsDetail.price}}</view>
         </view>
         <view class="publickBlock buyReadContainer">
             <view class="buyReadTop" @click="isReadAgreement = !isReadAgreement">
@@ -49,14 +46,13 @@
             </view>
         </view>
         <payment :showPayMent="showPayMent" :payChannel="mallPayChannel" @cancelPay="showPayMent = false"
-            :payPrice="goodsDetail.money" :countTime="0" @pay="onClickPayGoods" />
+            :payPrice="goodsDetail.price" :countTime="0" @pay="onClickPayGoods" />
         <view class="bottomFixedPay">
             <view class="payContainer">
                 <view class="payInfo">
                     <view class="all">合计</view>
                     <view class="price">
-                        <text class="moneySymbol">￥</text>
-                        {{ goodsDetail.pay_tp == 2 ? goodsDetail.money : 0 }}
+                        <text class="moneySymbol">￥</text> {{ goodsDetail.price }}
                     </view>
                 </view>
                 <view class="exchangeButton flexCenter" @click="onClickPay">立即支付</view>
@@ -140,27 +136,13 @@ export default class ClassName extends BaseNode {
             title: ""
         })
         this.showPayMent = false
-        app.http.Post(`point/good/toBuy/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
+        app.http.Post(`merchant/exchange/cash/${this.ID}`, { deliveryId: this.addressData.id, channel }, (res: any) => {
             this.orderCode = res.orderCode
             uni.hideLoading()
-
-            if (isTrueGoods) {
-                //实物
-                app.platform.UINotificationFeedBack('success')
-                uni.showModal({
-                    title: '卡币商城提示',
-                    content: "兑换成功！",
-                    showCancel: false,
-                    success: (res: any) => {
-                        if (res.confirm) this.toOrderDetail()
-                    }
-                })
-            } else {
-                //订单创建成功跳转支付宝支付
-                app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo,() => {
-                    this.toOrderDetail()
-                });
-            }
+            //订单创建成功跳转支付宝支付
+            app.payment.paymentAlipay(res.h5CashierAddress, res.alipay.orderInfo,() => {
+                this.toOrderDetail()
+            });
         })
     }
     toOrderDetail() {
@@ -186,7 +168,7 @@ export default class ClassName extends BaseNode {
     }
     //获取商品详情
     reqNewData(cb?: any) {
-        app.http.Get(`dataApi/point/exchange/good/detail/${this.ID}`, {}, (res: any) => {
+        app.http.Get(`merchant/mall/goodsDetail/${this.ID}`, {}, (res: any) => {
             this.goodsDetail = res.data
         })
     }

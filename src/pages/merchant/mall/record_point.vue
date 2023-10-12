@@ -6,10 +6,13 @@
 		</view>
 		<view class="point" v-for="(item,index) in pointList" :key="index">
 			<view class="point-left">
-				<view class="name">{{item.name}}</view>
-				<view class="time">{{dateFormatMSHMS(item.created_at)}}</view>
+				<view class="name">{{item.source}}</view>
+				<view class="time">
+					{{dateFormatMSHMS(item.create_at)}}
+					<view class="good-info"><text @click="item.showSale=!item.showSale">{{item.showSale?'隐藏':'查看'}}</text>【{{item.goodsCode}}】{{item.showSale?`销售额:${item.saleMoney}`:''}}</view>
+				</view>
 			</view>
-			<view class="point-num" :style="{color:item.point<0?'#7AC04F':'#EF3333'}">{{item.point>0?`+${item.point}`:item.point}}</view>
+			<view class="point-num" :style="{color:item.tp==1?'#EF3333':'#7AC04F'}">{{item.tp==1?'+':'-'}}{{item.integral}}</view>
 		</view>
 		<empty v-if='!pointList.length'/>
 	</view>
@@ -67,9 +70,11 @@
 			this.reqNewData()
 		}
 		reqNewData(cb?: Function) {
-			app.http.Get('dataApi/point/log', this.queryParams, (res: any) => {
+			app.http.Get('dataApi/merchant/integral/record/list', this.queryParams, (res: any) => {
 				this.totalPage = res.totalPage
-				const reqList = res.list || []
+				const reqList = res.list.map((item:any)=>{
+					return {...item,showSale:false}
+				})
 				this.queryParams.pageIndex == 1 ? this.pointList = reqList : this.pointList.push(...reqList)
 				cb && cb()
 			})
@@ -107,12 +112,12 @@
 	}
 
 	.point {
-		width:617rpx;
+		width:722rpx;
 		height: 140rpx;
-		
+		box-sizing: border-box;
 		margin: 14rpx auto;
 		border-radius: 5rpx;
-		padding: 0 56rpx 0 49rpx;
+		padding: 0 26rpx 0 29rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -127,14 +132,25 @@
 
 			.time {
 				margin-top: 8rpx;
-				font-size: 25rpx;
+				font-size: 20rpx;
 				font-weight: 400;
 				color: #88878C;
+				display: flex;
+				align-items: center
+			}
+			.good-info{
+				font-size: 20rpx;
+				font-weight: 400;
+				color: #88878C;
+				margin-left: 20rpx;
+				text{
+					color:#E6374C
+				}
 			}
 		}
 
 		&-num {
-			font-size: 42rpx;
+			font-size: 25rpx;
 			font-weight: 600;
 			color: #7AC04F;
 		}

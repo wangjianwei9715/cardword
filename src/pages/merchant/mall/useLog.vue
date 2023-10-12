@@ -15,29 +15,19 @@
   pageJump(`/pages/mall/orderDetail?orderCode=${item.code}&pay_tp=${item.pay_tp}`)
 ">
       <view class="goodsInfoWrap">
-        <muqian-lazyLoad borderRadius="3rpx" @click.stop="onClickPreviewImage($parsePic(item.logo))"
-          class="img" :src="$parsePic(item.logo)" />
+        <muqian-lazyLoad borderRadius="3rpx" class="img" :src="item.cover" preview/>
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
             <view class="name u-line-1">{{ item.name }}</view>
             <view class="state">{{
-    item.status == 2
-      ? mallStateMap[String(item.state)].tip
-      : mallStatusMap[String(item.status)]
-}}</view>
+                item.status == 2
+                  ? mallStateMap[String(item.state)].tip
+                  : mallStatusMap[String(item.status)]
+            }}</view>
           </view>
-          <view class="goodsInfoWrap_right_exchangeTime">{{
-    dateFormatMSHMS(item.exchangeAt)
-}}</view>
-          <view class="goodsInfoWrap_right_price">{{ goodsPrice(item) }}</view>
+          <view class="goodsInfoWrap_right_exchangeTime">商品ID{{ item.goodCode }}</view>
+          <view class="goodsInfoWrap_right_price">开始结束时间{{ $u.timeFormat(item.startAt,"mm-dd hh:MM") }}</view>
         </view>
-      </view>
-      <view class="buttonWrap">
-        <template v-if="item.status == 2 && item.goodTp == 2">
-          <view class="normalButton flexCenter" @click.stop="onClickWuliu(item)">查看物流</view>
-          <view class="normalButton redButton flexCenter" @click.stop="onClickConfirmReceipt(item)"
-            v-if="item.state == 2">确认收货</view>
-        </template>
       </view>
     </view>
     <empty v-if="!awardList.length" />
@@ -118,9 +108,7 @@ export default class ClassName extends BaseNode {
     this.awardList[index].state = orderDetail.state
     this.awardList[index].status = orderDetail.status
   }
-  goodsPrice(item: any) {
-    return `${item.pay_tp == 2 ? `￥${item.money}+` : ""}${item.price}卡币`;
-  }
+
   onClickShowPicker(key: string) {
     //@ts-ignore
     this[key] = true;
@@ -138,14 +126,6 @@ export default class ClassName extends BaseNode {
     this.queryParams.pageIndex = 1;
     this.reqNewData();
   }
-  // 观看大图
-  onClickPreviewImage(img: string) {
-    uni.previewImage({
-      urls: [img],
-      current: 0,
-      indicator: "number",
-    });
-  }
   pageJump(url: string) {
     uni.navigateTo({
       url,
@@ -156,42 +136,6 @@ export default class ClassName extends BaseNode {
     uni.navigateTo({
       url: `/pages/mall/orderDetail?orderCode=${item.code}`,
     });
-  }
-  setCopy(item: any) {
-    if (item.goodTp !== 1) return;
-    uni.setClipboardData({
-      data: item.couponCode,
-      success: (res: any) => {
-        uni.showToast({
-          title: "卷编号复制成功",
-          duration: 2000,
-        });
-      },
-    });
-  }
-  onClickConfirmReceipt(item: any) {
-    uni.showModal({
-      title: "提示",
-      content: "确认收到货了吗?",
-      success: (res: any) => {
-        if (res.confirm) {
-          app.http.Post(`point/exchange/order/receive/${item.code}`, {}, (res: any) => {
-            item.state = 3;
-          });
-        }
-      },
-    });
-  }
-  onClickWuliu(item: any) {
-    if (!item.wuliuCode) {
-      uni.showToast({
-        title: "暂未发货,请联系客服发货",
-        icon: "none",
-      });
-      return;
-    }
-    this.wuliuCode = item.wuliuCode
-    this.visible = true
   }
   reqNewData(cb?: Function) {
     app.http.Get("dataApi/point/exchange/myRecordlist", this.queryParams, (res: any) => {

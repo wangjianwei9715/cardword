@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-09 16:37:14
+ * @LastEditTime: 2023-10-11 17:25:31
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\orderDetail.vue
  * @Description: 订单详情
 -->
@@ -239,7 +239,7 @@ export default class ClassName extends BaseNode {
   }
   cancelOrder() {
     app.http.Post(
-      `point/exchange/order/cancel/${this.orderCode}`,
+      `merchant/mall/goodsOrder/cancel/${this.orderCode}`,
       {},
       (res: any) => {
         this.orderDetail.status = -2;

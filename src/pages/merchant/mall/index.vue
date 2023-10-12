@@ -1,6 +1,6 @@
 <template>
     <view class="content">
-        <transitionNav @onClickRule="pageJump(`${mallRouter}/rule`)" @onClickBackPack="pageJump(`${mallRouter}/backpack`)"
+        <transitionNav @onClickRule="pageJump(`${mallRouter}/rule`)" @onClickBackPack="pageJump(`${mallRouter}/backpack?integral=${merchantInfo.integral}`)"
             :toolsMapCustomNew="custonRightIcon" ref='transitionNav' :needRightTools="['背包','积分规则']"
             :needIconShadow="false" title="积分中心">
             <template slot="slotLeft">
@@ -12,7 +12,7 @@
             <view class="myInfo_left">
                 <view class="myInfo_left_redFont">商家积分</view>
                 <view class="myInfo_left_point" @click="pageJump(`${mallRouter}/record_point`)">
-                    <text>000</text>
+                    <text>{{merchantInfo.integral}}</text>
                     <image src="@/static/mall/dotRight.png"></image>
                 </view>
             </view>
@@ -23,7 +23,7 @@
                 </view>
             </view>
         </view>
-        <view class="limit-line">本月剩余可兑权重分：9999999/999999999</view>
+        <view class="limit-line">本月剩余可兑权重分：{{merchantInfo.nowMonthWeight}}/999999999</view>
         <view class="uTabs">
             <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)"
                 v-for="(item, index) in tab.list" :key="index">{{ item.name }}</view>
@@ -34,15 +34,14 @@
         <view class="goodsContainer">
             <view class="goodsItem" v-for="(item, index) in goodsList" :key="index">
                 <view class="goodsItem_top">
-                    <muqian-lazyLoad class="logo" borderRadius="3rpx" :src="$parsePic(item.logo)"></muqian-lazyLoad>
+                    <muqian-lazyLoad class="logo" borderRadius="3rpx" :src="item.cover"></muqian-lazyLoad>
                 </view>
                 <view class="goodsItem_bottom">
-                    <view class="goodsName">{{ item.name }}</view>
+                    <view class="goodsName">{{ item.title }}</view>
                     <view class="goodsPriceBlock">
                         <view class="goodsPriceBlock_bottom">
-                            <view class="money">{{ item.pay_tp == 2 ? `${item.money}元` : `${item.price}卡币` }}</view>
-                            <view class="leftNum" v-if='item.limit_num != 0 || item.leftNum != -1'>剩余{{ item.leftNum }}
-                            </view>
+                            <view class="money">{{item.price}}{{ item.pay_type==2 ? '元' : '积分' }}</view>
+                            <view class="leftNum" v-if='item.limit_num>0'>限购:{{ item.limit_num }}</view>
                         </view>
                     </view>
                     <view class="buyBtn" @click="onClickBuy(item)">兑换</view>
@@ -52,7 +51,7 @@
         <empty v-if="goodsList && !goodsList.length && successRequest" />
         <view class="bottomSafeArea"></view>
 
-        <mallBuy :popupShow.sync="buyPopup.show" :data="buyPopup.data"/>
+        <mallBuy :popupShow.sync="buyPopup.show" :id="buyPopup.id"/>
     </view>
 </template>
 
@@ -62,6 +61,7 @@ import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
 import { mall } from '../constants/constants'
 import mallBuy from '../components/mallBuy.vue';
+import { getMerchantIntegral } from '../utils/util';
 @Component({
     components:{
         mallBuy
@@ -75,26 +75,27 @@ export default class ClassName extends BaseNode {
     queryParams: any = {
         pageIndex: 1,
         pageSize: 15,
-        tp: 100,
-        state: 1
+        tp: 0,
     }
     successRequest: boolean = false
     tab: any = {
         index: 0,
         list: [
-            { name: '全部', value: 100 },
-            { name: '权重', value: 11 }, 
-            { name: '广告位', value: 2 },
-            { name: '物料', value: 3 },
-            { name: '其他', value: 4 }
+            { name: '全部', value: 0 },
+            { name: '权重', value: 2 }, 
+            { name: '广告位', value: 3 },
+            { name: '实物', value: 1 },
+            { name: '其他', value: 100 }
         ]
     };
     buyPopup = {
         show:false,
-        data:{}
+        id:0
     }
+    merchantInfo:any = {};
     onLoad(query: any) {
         app.platform.hasLoginToken(() => {
+            this.getMerchantInfo();
             this.reqNewData()
         })
     }
@@ -103,7 +104,8 @@ export default class ClassName extends BaseNode {
         this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
     }
     onPullDownRefresh() {
-        this.queryParams.pageIndex = 1
+        this.queryParams.pageIndex = 1;
+        this.getMerchantInfo();
         this.reqNewData(() => {
             setTimeout(() => {
                 uni.stopPullDownRefresh()
@@ -115,6 +117,9 @@ export default class ClassName extends BaseNode {
             this.queryParams.pageIndex += 1
             this.reqNewData(() => { }, false)
         }
+    }
+    async getMerchantInfo(){
+        this.merchantInfo = await getMerchantIntegral()
     }
     tabChange(item: any, index: any) {
         if (this.tab.index == index) return
@@ -128,8 +133,10 @@ export default class ClassName extends BaseNode {
         uni.navigateTo({ url })
     }
     reqNewData(cb?: any, isRefresh?: boolean) {
-        if (isRefresh) this.successRequest = false
-        app.http.Get(`dataApi/point/exchange/goodlist`, this.queryParams, (res: any) => {
+        if (isRefresh) this.successRequest = false;
+        const { tp, ...rest } = this.queryParams;
+        
+        app.http.Get(`dataApi/merchant/mall/list`, {...rest,tp:tp>0?tp:null}, (res: any) => {
             const list = res.list || []
             this.totalPage = res.totalPage
             this.queryParams.pageIndex == 1 ? this.goodsList = list : this.goodsList.push(...list)
@@ -143,7 +150,7 @@ export default class ClassName extends BaseNode {
         app.platform.UIClickFeedBack(); 
         this.buyPopup = {
             show:true,
-            data:item
+            id:item.id
         }
     }
 
