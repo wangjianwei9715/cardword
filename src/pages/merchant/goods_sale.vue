@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-12-16 16:23:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-09 14:53:37
+ * @LastEditTime: 2023-10-12 16:33:36
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -43,7 +43,7 @@
         </view>
 
         <upWeight :show.sync="showUpWeight" :equitycard="equitycard" :short_description="short_description" :monthly_cards="monthly_cards" :goodCode="goodCode" @equitycardUse="refresh"/>
-        <advertising :show.sync="adPopup.show"/>
+        <advertising :show.sync="adPopup.show" :goodCode="adPopup.goodCode" />
     </view>
 </template>
 
@@ -76,7 +76,8 @@
         goodCode = '';
         showUpWeight = false;
         adPopup = {
-            show:false
+            show:false,
+            goodCode:""
         }
         onLoad(query: any) {
             this.reqNewData()
@@ -113,8 +114,11 @@
                 this.showUpWeight = true
             })
         }
-        onClickShowAd(){
-            this.adPopup.show=true;
+        onClickShowAd(goodCode=""){
+            this.adPopup = {
+                show:true,
+                goodCode
+            }
         }
     }
 </script>
@@ -255,7 +259,7 @@
             color:#333333
         }
         .btn-extract{
-            background: #E6374C;
+            background: #FA1545;
             margin-left: 28rpx;
             color:#FFFFFF
         }
@@ -272,7 +276,7 @@
         font-family: PingFang SC;
         font-weight: 500;
         line-height: 52rpx;
-        background: #E6374C;
+        background: #FA1545;
         color:#FFFFFF
     }
 </style>

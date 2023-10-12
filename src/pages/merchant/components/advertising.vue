@@ -4,15 +4,18 @@
 			<view class="drawer-header">
 				<view class="drawer-header-name">使用后在售期间可投放广告页至首页（单商品最高累计可投放72小时）</view>
 			</view>
-			<view class="drawer-center-list">
-				<view class="drawer-center-item" v-for="(item,index) in equitycard" :key="index">
+			<view class="drawer-center-list" v-show="adData.state!=1 && adData.state!=2">
+				<view class="drawer-center-item" v-for="(item,index) in adCard" :key="index">
 					<view class="drawer-item-box">
 						<view class="drawer-item-surplus">剩{{item.remaining_quantity}}次</view>
 						<view>
 							<view class="drawer-item-num">广告位</view>
-							<view class="drawer-item-time">{{item.hour_str}}</view>
+							<view class="drawer-item-time">{{item.hour}}小时</view>
 						</view>
-						<view class="drawer-item-inuse" v-if="item.using_count>0">({{item.using_count}})生效中  {{(item.distance_end_time-countDown)}}</view>
+						<view class="drawer-item-inuse" v-if="item.state==2">
+							生效中
+							<u-count-down :time="countDown(item.end_time)" format="HH:mm:ss" @finish="onFinish"></u-count-down>
+						</view>
 					</view>
 					<view class="drawer-item-operate">
 						<view class="operate-btn" @click="onClickReduceNum(item)"><image class="icon-reduce" src="@/static/merchant/icon_reduce.png" /></view>
@@ -21,9 +24,31 @@
 					</view>
 				</view>
 			</view>
-			<view class="drawer-bottom" >
-				<view class="drawer-bottom-rank">已选<text class="choice-num">{{totalNum}}</text>张广告图审核通过后开始计时，在售期间/倒计时结束前有效</view>
-				<view class="drawer-bottom-btn" @click="onClickConfirmUse">确认使用</view>
+			<view class="drawer-center-list" v-show="[1,2].includes(adData.state)">
+				<view v-if="!uploadImg" class="up-box" @click="addImage()">
+					<view class="up-center">
+						<view class="icon-upload"></view>
+					</view>
+				</view>
+				<view v-else class="ad-image-box">
+					<muqian-lazyLoad  class="ad-image-box" mode="aspectFit" :src="decodeURIComponent(uploadImg)" borderRadius="3rpx" preview/>
+					<view v-show="adData.state==1" class="up-pic-del" @click="uploadImg=''"></view>
+				</view>
+			</view>
+			<view class="drawer-bottom" v-if="hasCard">
+				<view class="drawer-bottom-rank">
+					已选{{selectedNum}}张,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
+				</view>
+				<view v-if="adData.state==0" class="drawer-bottom-btn" :class="{'btn-disabled':adFull}" @click="onClickConfirmUse">{{adFull?'广告位已满':`确认使用（可申请广告位${1}/${3}）`}}</view>
+				<view v-else-if="adData.state==1" class="drawer-bottom-btn upload-btn" @click="onClickUploadPic">
+					上传图片审核 <u-count-down :time="60*1000" format="mm:ss" @finish="onFinish"></u-count-down>
+				</view>
+				<view v-else-if="adData.state==2" class="drawer-bottom-btn btn-disabled">广告内容审核中</view>
+				<view v-else-if="adData.state==3" class="drawer-bottom-btn btn-disabled">续费时长（{{adData.totalHour}}/72h)</view>
+			</view>
+			<view class="drawer-bottom" v-else>
+				<view class="drawer-bottom-rank">暂无广告卡可用</view>
+				<view class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
 			</view>
 		</bottomDrawer>
 	</view>
@@ -32,57 +57,94 @@
 <script lang="ts">
 	import { Component, Prop,PropSync,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
+	import Upload from "@/tools/upload"
 	import { app } from "@/app";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@PropSync("show",{
 			type:Boolean
 		}) showSync!: Boolean;
-		@Prop({default:[]})
-		equitycard!:[]
 		@Prop({default:''})
-		goodCode!:[]
+		goodCode?:string
 
 		isPullDown = app.platform.isPullDown;
-		cDInterval: any;
-		countDown:number = 0;
-		totalNum = 0;
-
+		adCard:any=[];
+		adData:any={};
+		uploadImg="";
+		
 		@Watch('show')
 		onChangeShow(val:boolean){
 			if(val){
-				
-			}else{
-				clearInterval(this.cDInterval)
+				this.getList()
 			}
 		}
-		created() {
+		public get adFull() : boolean {
+			return false
 		}
-		destroyed(){
-			clearInterval(this.cDInterval)
+		public get hasCard() : boolean {
+			return this.adCard.length>0
+		}
+		public get selectedNum() : number {
+			return this.adCard.reduce((total:number,item:any) => total+item.num , 0)
+		}
+		async addImage() {
+			app.platform.hasLoginToken( async ()=>{
+				const pic:any = await Upload.getInstance().uploadSocialImgs(1, "illustration", ["album"]);
+				this.uploadImg = pic[0];
+			})
+		}
+		countDown(endTime:number){
+			return (endTime-Math.round(+new Date().getTime() / 1000))*1000
+		}
+		redirectToMall(){
+			uni.redirectTo({url:"/pages/merchant/mall/index"});
 		}
 		onClickReduceNum(item:any){
 			if(item.num<=0) return;
 			item.num--;
-			this.onChangeNumber()
 		}
 		onClickAddNum(item:any){
 			if(item.num>=item.remaining_quantity) return;
 			item.num++;
-			this.onChangeNumber()
-		}
-		onChangeNumber(){
 		}
 		onClickConfirmUse(){
+			if(this.selectedNum==0 || this.adFull) return;
+			app.platform.UIClickFeedBack(); 
 			uni.showModal({
 				title: '提示',
-				content: '是否确认使用权重卡',
+				content: '是否确认申请广告位',
 				success:  (res)=> {
 					if (res.confirm) {
-						
+						const params = {
+							goodCode:this.goodCode??null,
+							list:this.adCard.map((x:any)=>{
+								return {count:Number(x.num),hour:x.hour}
+							})
+						}
+						app.http.Post("merchant/me/adCard/use",params,(res:any)=>{
+							this.adData.state=1
+						})
 					}
 				}
 			});
+		}
+		onClickUploadPic(){
+			if(!this.uploadImg) return;
+			app.platform.UIClickFeedBack();
+			app.http.Post(`merchant/me/adCard/upload/cover/${this.adData.adLogId}`,{cover:this.uploadImg},(res:any)=>{
+				uni.showToast({title:"提交成功，请等待审核",icon:"none"})
+				this.adData.state=2
+			})
+		}
+		onFinish(){
+			this.adData.state=0
+			this.uploadImg="";
+		}
+		getList(){
+			app.http.Get('merchant/me/adCard/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
+				this.adData = rest;
+				this.adCard = list.map( (x:any) => ({...x,num:0}) )
+			})
 		}
 	}
 </script>
@@ -92,137 +154,6 @@
 		width: 710rpx;
 		border-radius: 3rpx;
 		background:#fff;
-	}
-	.detail-act-box{
-		width: 100%;
-		box-sizing: border-box;
-		padding:10rpx 30rpx 0 30rpx;
-		.act-box{
-			width: 100%;
-			min-height:76rpx;
-			display: flex;
-			.act-box-name{
-				height:76rpx;
-				width:82rpx;
-				font-size: 25rpx;
-				font-family: PingFang SC;
-				font-weight: 600;
-				color: #333333;
-				display: flex;
-				align-items: center;
-			}
-			.chedui-name{
-				color:#FA1545
-			}
-			.act-box-desc{
-				width: 550rpx;
-				min-height:76rpx;
-			}
-			.flex-between{
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-			}
-			.act-box-desc-item{
-				font-size: 25rpx;
-				font-family: PingFang SC;
-				font-weight: 400;
-				color: #333333;
-				margin:22rpx 0;
-			}
-		}
-		.detail-act-index{
-			width: 100%;
-			height:40rpx;
-			margin-bottom: 20rpx;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			
-		}
-	}
-	.detail-act-left{
-		width: 600rpx;
-		height:40rpx;
-		display: flex;
-		align-items: center;
-	}
-	.detail-act-name{
-		width: 110rpx;
-		height:40rpx;
-		line-height: 40rpx;
-		font-size: 27rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #C0C0C0;
-	}
-	.detail-act-desc{
-		width: 550rpx;
-		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #333333;
-		overflow: hidden;
-		text-overflow:ellipsis;
-		white-space: nowrap;
-	}
-	.discount-box{
-		display: flex;
-		align-items: center;
-	}
-	.detail-discount{
-		height:40rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-sizing: border-box;
-		padding:0 13rpx;
-		border:1px solid #F4919F;
-		margin-right: 24rpx;
-		font-size: 24rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #EA4055;
-	}
-	.drawer-helpmsg{
-		width: 100%;
-		box-sizing: border-box;
-		line-height: 40rpx;
-	}
-	.drawer-help-title{
-		font-size: 27rpx;
-		font-family: PingFangSC-Medium;
-		font-weight: bold;
-		color:#333333;
-		margin:15rpx 0rpx;
-	}
-	.drawer-help-content{
-		width: 100%;
-		font-size: 25rpx;
-		font-family: PingFangSC-Regular;
-		font-weight: 400;
-		color: #7D8288;
-		white-space: pre-wrap;
-		line-height: 35rpx;
-		margin-bottom: 50rpx;
-	}
-	.drawer-help-cd{
-		width: 100%;
-		font-size: 25rpx;
-		font-family: PingFang SC;
-		font-weight: 400;
-		color: #333333;
-		line-height: 46rpx;
-		white-space: pre-wrap;
-		margin-bottom: 15rpx;
-	}
-	.detail-act-right{
-		width: 13rpx;
-		height:21rpx;
-		background:url(@/static/index/v2/icon_right.png) no-repeat center;
-		background-size: 100% 100%;
-		margin-left: 10rpx;
-		margin-top: 27.5rpx;
 	}
 	.drawer-header{
 		width: 100%;
@@ -239,9 +170,6 @@
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #959695;
-	}
-	.drawer-chedui{
-		margin-bottom: 40rpx;
 	}
 	.drawer-bottom{
 		width: 100%;
@@ -260,6 +188,10 @@
 			align-items: center;
 			justify-content: center;
 			color:#959695;
+			font-size: 23rpx;
+			text{
+				color:#FA1545
+			}
 		}
 		.drawer-bottom-btn{
 			width: 702rpx;
@@ -274,17 +206,18 @@
 			line-height: 92rpx;
 			margin:0 auto;
 		}
+		.upload-btn{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 	}
-	.font-bold{
-		font-weight: bold;
-	}
-	.choice-num{
-		color:#333333;
-		font-weight: 600;
-	}
-	.rnak-red{
-		color:#FA1545;
-		font-weight: 600;
+	.good-act-content .upload-btn /deep/ .u-count-down__text{
+		font-size: 33rpx !important;
+		font-family: PingFang SC;
+		font-weight: 600 !important;
+		color: #FFFFFF !important;
+		margin-left: 10rpx;
 	}
 	.drawer-center-list{
 		width: 100%;
@@ -361,6 +294,13 @@
 			justify-content: center;
 		}
 	}
+	.good-act-content .drawer-item-inuse /deep/ .u-count-down__text{
+		font-size: 20rpx !important;
+		font-family: PingFang SC;
+		font-weight: 400 !important;
+		color: #FA1545 !important;
+		margin-left: 10rpx;
+	}
 	.drawer-center-item:nth-child(3n){
 		margin-right: 0rpx;
 	}
@@ -395,5 +335,37 @@
 	.icon-add{
 		width: 21rpx;
 		height:21rpx;
+	}
+	.btn-disabled{
+		background:#c4c6c9 !important
+	}
+	.up-box{
+		width: 181rpx;
+		height:260rpx;
+		border: 0.8px dashed #c4c6c9;
+		border-radius: 3rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-sizing: border-box;
+	}
+	.ad-image-box{
+		width: 181rpx;
+		height:260rpx;
+		position: relative;
+	}
+	.up-pic-del{
+		width: 50rpx;
+		height:50rpx;
+		position: absolute;
+		right:-10rpx;
+		top:-10rpx;
+		background: url(@/static/illustration/icon_close.png) no-repeat center / 100% 100%;
+	}
+	.icon-upload{
+		width: 100rpx;
+		height:100rpx;
+		background: url(@/static/illustration/icon_upload.png) no-repeat center / 100% 100%;
+		margin:0 auto;
 	}
 </style>

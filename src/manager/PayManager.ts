@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-23 15:29:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-12 15:42:07
+ * @LastEditTime: 2023-10-12 16:28:28
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -34,7 +34,7 @@ export default class PayManager {
 		uni.getNetworkType({
 			success: (res) => {
 				app.http.Post(
-					"upload/alipay/riskContorl/data",
+					"upload/alipay/trade/risk/info",
 					{...this.riskContorl,netWork:res.networkType},
 					// success
 					()=>{
