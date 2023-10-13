@@ -44,7 +44,7 @@
 					上传图片审核 <u-count-down :time="60*1000" format="mm:ss" @finish="onFinish"></u-count-down>
 				</view>
 				<view v-else-if="adData.state==2" class="drawer-bottom-btn btn-disabled">广告内容审核中</view>
-				<view v-else-if="adData.state==3" class="drawer-bottom-btn btn-disabled">续费时长（{{adData.totalHour}}/72h)</view>
+				<view v-else-if="adData.state==3" class="drawer-bottom-btn btn-disabled" @click="onClickConfirmUse(true)">续费时长（{{useHour}}/72h)</view>
 			</view>
 			<view class="drawer-bottom" v-else>
 				<view class="drawer-bottom-rank">暂无广告卡可用</view>
@@ -87,6 +87,11 @@
 		public get selectedNum() : number {
 			return this.adCard.reduce((total:number,item:any) => total+item.num , 0)
 		}
+		public get useHour() : number {
+			const selectHour = this.adCard.reduce((total:number,item:any) => total+item.hour , 0);
+			const hour = this.adData.totalHour + selectHour;
+			return hour
+		}
 		async addImage() {
 			app.platform.hasLoginToken( async ()=>{
 				const pic:any = await Upload.getInstance().uploadSocialImgs(1, "illustration", ["album"]);
@@ -107,12 +112,16 @@
 			if(item.num>=item.remaining_quantity) return;
 			item.num++;
 		}
-		onClickConfirmUse(){
+		onClickConfirmUse(renew=false){
 			if(this.selectedNum==0 || this.adFull) return;
+			if(renew && this.useHour > 72){
+				uni.showToast({title:"超出可续费时间,请重新确认",icon:"none"})
+				return;
+			}
 			app.platform.UIClickFeedBack(); 
 			uni.showModal({
 				title: '提示',
-				content: '是否确认申请广告位',
+				content: `是否确认${renew?"续费":"申请"}广告位`,
 				success:  (res)=> {
 					if (res.confirm) {
 						const params = {
@@ -122,7 +131,7 @@
 							})
 						}
 						app.http.Post("merchant/me/adCard/use",params,(res:any)=>{
-							this.adData.state=1
+							this.getList()
 						})
 					}
 				}
