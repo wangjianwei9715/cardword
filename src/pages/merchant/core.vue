@@ -127,9 +127,6 @@
 </template>
 
 <script lang="ts">
-interface MerchantInfo {
-  name: string;
-}
 import { app } from "@/app";
 import { Component, Watch } from "vue-property-decorator";
 import BaseNode from "../../base/BaseNode.vue";

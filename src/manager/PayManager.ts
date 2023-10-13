@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2023-05-23 15:29:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-12 16:28:28
+ * @LastEditTime: 2023-10-13 15:20:36
  * Copyright: 2023 .
  * @Descripttion: 
  */
@@ -33,18 +33,10 @@ export default class PayManager {
 		}
 		uni.getNetworkType({
 			success: (res) => {
-				app.http.Post(
-					"upload/alipay/trade/risk/info",
-					{...this.riskContorl,netWork:res.networkType},
-					// success
-					()=>{
-						cb()
-					},
-					// error
-					()=>{
-						uni.showToast({ title:"发生错误，请重试", icon:"none", duration: 2000 })
-					}
-				)
+				cb({...this.riskContorl,netWork:res.networkType})
+			},
+			fail:()=>{
+				uni.showToast({ title:"发生错误，请重试", icon:"none", duration: 2000 })
 			}
 		})
 	}
