@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-10-10 11:00:00
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-04 10:48:16
+ * @LastEditTime: 2023-10-13 16:45:50
  * Copyright: 2022 .
  * @Descripttion: 
  */
@@ -35,7 +35,7 @@ export module app{
     // export let activityShareOrigin=""
     export let liveWebView='http://www.ka-world.com/live/#/pages/liveStreaming/tools'
     export let playBackWebView='http://www.ka-world.com/live/#/pages/liveStreaming/chart'
-    export let webViewVersion="1.7"
+    export let webViewVersion="1.8"
     export let statusBarHeight:any = 0;
     export let platform = PlatformManager.getIns();
 	export let payment = PayManager.getIns();
