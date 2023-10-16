@@ -12,7 +12,7 @@
             <view class="myInfo_left">
                 <view class="myInfo_left_redFont">可用积分</view>
                 <view class="myInfo_left_point" @click="pageJump(`${mallRouter}/record_point`)">
-                    <text>000</text>
+                    <text>{{merchantInfo.integral}}</text>
                     <image src="@/static/mall/dotRight.png"></image>
                 </view>
             </view>

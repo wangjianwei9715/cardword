@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-11 17:25:31
+ * @LastEditTime: 2023-10-16 14:11:19
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\orderDetail.vue
  * @Description: 订单详情
 -->
@@ -10,28 +10,22 @@
   <view class="content" v-if="orderDetail.code">
     <view class="pageTop">
       <view class="bigState">{{ topTip }}</view>
-      <view class="smallTips" v-if="orderDetail.status == 1">订单将于{{ closeCountDown }}秒后关闭</view>
-      <view class="smallTips" v-if="introduction">{{ introduction }}</view>
+      <view class="smallTips" v-if="orderDetail.pay_status == -1">订单将于{{ closeCountDown }}秒后关闭</view>
     </view>
     <view class="publickBlock goodsContainer">
-      <image class="goodsImg" mode="aspectFill" :src="$parsePic(orderDetail.logo)"></image>
+      <image class="goodsImg" mode="aspectFill" :src="$parsePic(orderDetail.cover)"></image>
       <view class="goodsRightInfo">
         <view class="goodsName">
-          <view class="name u-line-2">{{ orderDetail.name }}</view>
+          <view class="name u-line-2">{{ orderDetail.title }}</view>
           <view class="state">{{ userTip }}</view>
         </view>
         <view class="goodsPrice">
-          <text class="symbol" v-if="pay_tp == 2">￥</text>
-          <!-- 5555+99999999卡币 -->
-          {{
-    pay_tp == 2
-      ? `${orderDetail.payMoney}+${orderDetail.point}卡币`
-      : `${orderDetail.point}卡币`
-}}
+          <text class="symbol">￥</text>
+          {{ orderDetail.payMoney }}
         </view>
       </view>
     </view>
-    <view class="publickBlock priceContainer" v-if="pay_tp == 2">
+    <view class="publickBlock priceContainer">
       <view class="priceItem">
         <view>商品金额</view>
         <view>￥{{ orderDetail.payMoney }}</view>
@@ -42,11 +36,11 @@
       </view>
       <view class="priceItem">
         <view>合计</view>
-        <view>{{ `￥${orderDetail.payMoney}+${orderDetail.point}卡币` }}</view>
+        <view>￥{{ orderDetail.payMoney }}</view>
       </view>
     </view>
     <!-- @click="onClickChangeAddress" -->
-    <view class="publickBlock addressContainer" v-if="orderDetail.goodTp == 2">
+    <view class="publickBlock addressContainer">
       <view class="addressIcon"></view>
       <view class="addressInfo">
         <template>
@@ -64,30 +58,30 @@
       </view>
       <view class="priceItem">
         <view>支付方式</view>
-        <view>{{ pay_tp == 1 ? "卡币支付" : "支付宝" }}</view>
+        <view>支付宝</view>
       </view>
       <view class="priceItem">
         <view>创建时间</view>
         <view style="color: #949494">{{
-    $u.timeFormat(orderDetail.created_at, "yyyy-mm-dd hh:MM:ss")
-}}</view>
+            $u.timeFormat(orderDetail.created_at, "yyyy-mm-dd hh:MM:ss")
+        }}</view>
       </view>
       <view class="priceItem" v-if="orderDetail.goodTp == 2">
         <view>发货时间</view>
         <view style="color: #949494">{{
-    orderDetail.deliver_at > 0
-      ? $u.timeFormat(orderDetail.deliver_at, "yyyy-mm-dd hh:MM:ss")
-      : "-"
-}}</view>
+            orderDetail.deliver_at > 0
+              ? $u.timeFormat(orderDetail.deliver_at, "yyyy-mm-dd hh:MM:ss")
+              : "-"
+        }}</view>
       </view>
     </view>
     <view class="bottomFixedPay">
-      <view class="payContainer jb" :class="{ center: orderDetail.status == 2 && orderDetail.state != 2 }">
-        <template v-if="orderDetail.status == 1 && pay_tp == 2">
+      <view class="payContainer jb">
+        <template v-if="orderDetail.pay_status == -1">
           <view class="exchangeButton flexCenter" @click="cancelOrderHandle">取消订单</view>
           <view class="exchangeButton exchangeButton_red flexCenter" @click="showPayMent = true">立即支付</view>
         </template>
-        <template v-if="orderDetail.status == 2 && orderDetail.goodTp == 2">
+        <template v-if="orderDetail.pay_status == 1">
           <view class="exchangeButton flexCenter" @click="onClickWuliu">查看物流</view>
           <view v-if="orderDetail.state == 2" class="exchangeButton exchangeButton_red flexCenter"
             @click="confirmReceipt">确认收货</view>
@@ -106,23 +100,21 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from "@/base/BaseNode.vue";
-import { mallStatusMap, mallStateMap } from "@/tools/DataExchange";
 import { mallPayChannel } from "../constants/constants";
+import { mall } from "../constants/constants";
 @Component({})
 export default class ClassName extends BaseNode {
   orderCode: string = "";
   orderDetail: any = {};
-  pay_tp: number = 1;
-  mallStatusMap: any = mallStatusMap;
-  mallStateMap: any = mallStateMap;
   nowTimeStamp: any = Math.round(+new Date() / 1000);
   stampTimer: any = null;
   showPayMent: boolean = false;
   mallPayChannel: any = mallPayChannel;
-  visible: boolean = false
+  visible: boolean = false;
+  orderStateMap:any = mall.orderStateMap;
+  payStatusMap:any = mall.payStatusMap
   onLoad(query: any) {
     this.orderCode = query.orderCode;
-    this.pay_tp = +query.pay_tp;
   }
   onShow() {
     this.reqNewData();
@@ -133,23 +125,18 @@ export default class ClassName extends BaseNode {
   }
   private get closeCountDown() {
     const num: number = this.orderDetail.payExpire_at - this.nowTimeStamp;
-    if (num <= 0 && this.orderDetail.status == 1) this.orderDetail.status = -1;
+    if (num <= 0 && this.orderDetail.pay_status == -1) this.orderDetail.pay_status = -2;
     return num;
   }
   private get topTip() {
-    return this.orderDetail.status == 2
-      ? mallStateMap[String(this.orderDetail.state)].tip
-      : mallStatusMap[String(this.orderDetail.status)];
+    return this.orderDetail.pay_status == 1
+      ? this.orderStateMap[Number(this.orderDetail.state)]
+      : this.payStatusMap[String(this.orderDetail.pay_status)];
   }
   private get userTip() {
-    if (this.orderDetail.goodTp != 2 && this.pay_tp == 1) return "已完成";
-    return this.orderDetail.status == 2
-      ? mallStateMap[String(this.orderDetail.state)].userTip
-      : mallStatusMap[String(this.orderDetail.status)];
-  }
-  private get introduction() {
-    if (this.orderDetail.status != 2) return "";
-    return this.mallStateMap[String(this.orderDetail.state)].introduction;
+    return this.orderDetail.pay_status == 1
+      ? this.orderStateMap[String(this.orderDetail.state)].userTip
+      : this.payStatusMap[String(this.orderDetail.pay_status)];
   }
   onUnload() {
     this.stampTimer && clearInterval(this.stampTimer);
@@ -197,7 +184,7 @@ export default class ClassName extends BaseNode {
     });
   }
   onClickPayGoods(event: any) {
-    if (this.orderDetail.status == -1) {
+    if (this.orderDetail.pay_status == -2) {
       uni.showToast({
         title: "订单已超时",
         icon: "none",
@@ -213,10 +200,11 @@ export default class ClassName extends BaseNode {
       title: "",
     });
     app.http.Pay(
-      `point/order/toBuy/${this.orderCode}`,
+      `merchant/exchange/cash/${this.orderCode}`,
       {
         channel,
         deliveryId: this.orderDetail.deliveryId,
+        orderCode:this.orderCode
       },
       (res: any) => {
         uni.hideLoading();
@@ -242,14 +230,14 @@ export default class ClassName extends BaseNode {
       `merchant/mall/goodsOrder/cancel/${this.orderCode}`,
       {},
       (res: any) => {
-        this.orderDetail.status = -2;
+        this.orderDetail.pay_status = -3;
         this.reqNewData();
       }
     );
   }
   reqNewData(cb?: any) {
     app.http.Get(
-      `dataApi/point/order/detail/${this.orderCode}`,
+      `dataApi/merchant/mall/goodsOrder/detail/${this.orderCode}`,
       {},
       (res: any) => {
         this.orderDetail = res.data;

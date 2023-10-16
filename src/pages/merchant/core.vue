@@ -46,7 +46,7 @@
       <navigator url="mall/index">
         <view class="merchant-points">
           <view class="points-text">商家积分</view>
-          <view class="points-text">000<view class="points-right"></view></view>
+          <view class="points-text">{{merchantInfo.integral}}<view class="points-right"></view></view>
         </view>
       </navigator>
     </view>

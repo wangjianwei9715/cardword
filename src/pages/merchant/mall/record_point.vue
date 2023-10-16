@@ -6,10 +6,10 @@
 		</view>
 		<view class="point" v-for="(item,index) in pointList" :key="index">
 			<view class="point-left">
-				<view class="name">{{item.source}}</view>
+				<view class="name">{{integralSourceMap[item.source]}}</view>
 				<view class="time">
 					{{dateFormatMSHMS(item.create_at)}}
-					<view class="good-info"><text @click="item.showSale=!item.showSale">{{item.showSale?'隐藏':'查看'}}</text>【{{item.goodsCode}}】{{item.showSale?`销售额:${item.saleMoney}`:''}}</view>
+					<view class="good-info" v-if="item.source==3"><text @click="item.showSale=!item.showSale">{{item.showSale?'隐藏':'查看'}}</text>【{{item.goodsCode}}】{{item.showSale?`销售额:${item.saleMoney}`:''}}</view>
 				</view>
 			</view>
 			<view class="point-num" :style="{color:item.tp==1?'#EF3333':'#7AC04F'}">{{item.tp==1?'+':'-'}}{{item.integral}}</view>
@@ -22,8 +22,10 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '@/base/BaseNode.vue';
 	import { dateFormatMSHMS } from "@/tools/util";
+	import { mall } from "../constants/constants"
 	@Component({})
 	export default class ClassName extends BaseNode {
+		integralSourceMap = mall.integralSourceMap;
 		dateFormatMSHMS:any=dateFormatMSHMS
 		tagMenu: any = {
 			index: 0,

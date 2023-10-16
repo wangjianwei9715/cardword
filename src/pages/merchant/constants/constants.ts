@@ -36,6 +36,24 @@ const exchange = {
         { label: "待支付", value: -1 },
     ]
 }
+const integralSourceMap = {
+    1:"商品兑换消耗",
+    2:"管理员操作",
+    3:"拼团完成"
+}
+const orderStateMap = {
+    1:"待发货",
+    2:"已发货",
+    3:"已收货",
+    4:"已发放"
+}
+const payStatusMap = {
+    "1":"已支付",
+    "-1":"等待支付",
+    "-2":"超时",
+    "-3":"取消支付",
+    "-4":"支付失败"
+}
 export const mallPayChannel: any = [
     {
         android: true,
@@ -65,5 +83,8 @@ export const payExplain = [
 export const mall = {
     mallRouter,
     custonRightIcon,
-    exchange
+    exchange,
+    orderStateMap,
+    payStatusMap,
+    integralSourceMap
 }

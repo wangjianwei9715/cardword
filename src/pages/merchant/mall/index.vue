@@ -23,7 +23,7 @@
                 </view>
             </view>
         </view>
-        <view class="limit-line">本月剩余可兑权重分：{{merchantInfo.nowMonthWeight}}/999999999</view>
+        <view class="limit-line">本月剩余可兑权重分：{{ availableMonthWeight }}/999999999</view>
         <view class="uTabs">
             <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)"
                 v-for="(item, index) in tab.list" :key="index">{{ item.name }}</view>
@@ -51,7 +51,7 @@
         <empty v-if="goodsList && !goodsList.length && successRequest" />
         <view class="bottomSafeArea"></view>
 
-        <mallBuy :popupShow.sync="buyPopup.show" :id="buyPopup.id"/>
+        <mallBuy :popupShow.sync="buyPopup.show" :id="buyPopup.id" @exchangeSuccess="refreshPages()"/>
     </view>
 </template>
 
@@ -105,13 +105,7 @@ export default class ClassName extends BaseNode {
         this.$refs.transitionNav && this.$refs.transitionNav.setPageScroll(data)
     }
     onPullDownRefresh() {
-        this.queryParams.pageIndex = 1;
-        this.getMerchantInfo();
-        this.reqNewData(() => {
-            setTimeout(() => {
-                uni.stopPullDownRefresh()
-            }, 500)
-        })
+        this.refreshPages()
     }
     onReachBottom() {
         if (this.queryParams.pageIndex < this.totalPage) {
@@ -119,8 +113,20 @@ export default class ClassName extends BaseNode {
             this.reqNewData(() => { }, false)
         }
     }
+    public get availableMonthWeight() : number {
+        return Math.round(999999999-(this.merchantInfo.nowMonthWeight))
+    }
     async getMerchantInfo(){
         this.merchantInfo = await getMerchantIntegral()
+    }
+    refreshPages(){
+        this.queryParams.pageIndex = 1;
+        this.getMerchantInfo();
+        this.reqNewData(() => {
+            setTimeout(() => {
+                uni.stopPullDownRefresh()
+            }, 500)
+        })
     }
     tabChange(item: any, index: any) {
         if (this.tab.index == index) return

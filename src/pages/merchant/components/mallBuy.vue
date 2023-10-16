@@ -13,7 +13,7 @@
 				</view>
 				<u-divider class="widthMax"></u-divider>
 				<view class="tips">{{needPayMoney?"￥":"所需积分"}}：<text>{{detail.price}}</text></view>
-				<view class="tips" v-if="detail.buy_require>0">门槛：上月销量未超{{detail.buy_require}}</view>
+				<view class="tips" v-if="detail.buy_require>0">门槛：{{requireStr}}</view>
 				<view class="btn" @click="onClickConfirm">{{needPayMoney?'购买':'确认兑换'}}</view>
 			</view>
 		</u-popup>
@@ -50,6 +50,10 @@
 		public get needPayMoney() : boolean {
 			return this.detail.pay_type==2;
 		}
+		public get requireStr() : string {
+			const { buy_require, require_num } = this.detail
+			return buy_require==1?`入驻时间不超过${require_num}天`:`上月销售额不超过${require_num}元`
+		}
 		onClickConfirm(){
 			app.platform.UIClickFeedBack(); 
 			if(this.needPayMoney){
@@ -60,6 +64,7 @@
 				return;
 			}
 			app.http.Post(`merchant/exchange/${this.id}`,{},(res:any)=>{
+				this.$emit("exchangeSuccess")
 				this.exchangeShow=true;
 			})
 		}
