@@ -1,3 +1,5 @@
+export const maxAdHour = 72; //最大广告有效时长
+export const maxMonthWeight = 9999999; //最大月可兑积分
 const mallRouter = "/pages/merchant/mall";
 const custonRightIcon = {
     "背包": {

@@ -23,7 +23,7 @@
                 </view>
             </view>
         </view>
-        <view class="limit-line">本月剩余可兑权重分：{{ availableMonthWeight }}/999999999</view>
+        <view class="limit-line">本月剩余可兑权重分：{{ availableMonthWeight }}/{{ maxMonthWeight }}</view>
         <view class="uTabs">
             <view class="tabsItem" :class="{ tabsItem_select: index == tab.index }" @click="tabChange(item, index)"
                 v-for="(item, index) in tab.list" :key="index">{{ item.name }}</view>
@@ -59,7 +59,7 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
-import { mall } from '../constants/constants'
+import { mall, maxMonthWeight } from '../constants/constants'
 import mallBuy from '../components/mallBuy.vue';
 import { getMerchantIntegral } from '../utils/util';
 @Component({
@@ -68,6 +68,7 @@ import { getMerchantIntegral } from '../utils/util';
     }
 })
 export default class ClassName extends BaseNode {
+    maxMonthWeight = maxMonthWeight;
     pageJump = app.navigateTo.pageJump;
     custonRightIcon: any = mall.custonRightIcon;
     mallRouter = mall.mallRouter;
@@ -114,7 +115,7 @@ export default class ClassName extends BaseNode {
         }
     }
     public get availableMonthWeight() : number {
-        return Math.round(999999999-(this.merchantInfo.nowMonthWeight))
+        return Math.round( maxMonthWeight-(this.merchantInfo.nowMonthWeight) )
     }
     async getMerchantInfo(){
         this.merchantInfo = await getMerchantIntegral()

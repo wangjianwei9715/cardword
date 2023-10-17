@@ -2,10 +2,10 @@
 	<view class="good-act-content" >
 		<bottomDrawer :showDrawer="show" title="广告推广" @closeDrawer="showSync=false;isPullDown(true)" :needSafeArea="true" padding="0rpx 0rpx">
 			<view class="drawer-header">
-				<view class="drawer-header-name">使用后在售期间可投放广告页至首页（单商品最高累计可投放72小时）</view>
+				<view class="drawer-header-name">使用后在售期间可投放广告页至首页（单商品最高累计可投放{{maxAdHour}}小时）</view>
 			</view>
 			<view class="drawer-center-list" v-show="adData.state!=1 && adData.state!=2">
-				<view class="drawer-center-item" v-for="(item,index) in adCard" :key="index">
+				<view class="drawer-center-item" v-for="(item,index) in adCardList" :key="index">
 					<view class="drawer-item-box">
 						<view class="drawer-item-surplus">剩{{item.remaining_quantity}}次</view>
 						<view>
@@ -39,12 +39,12 @@
 				<view class="drawer-bottom-rank">
 					已选{{selectedNum}}张,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
 				</view>
-				<view v-if="adData.state==0" class="drawer-bottom-btn" :class="{'btn-disabled':adFull}" @click="onClickConfirmUse">{{adFull?'广告位已满':`确认使用（可申请广告位${1}/${3}）`}}</view>
+				<view v-if="adData.state==0" class="drawer-bottom-btn" :class="{'btn-disabled':adFull}" @click="onClickConfirmUse">{{adFull?'广告位已满':`确认使用（可申请广告位${adData.now_num}/${adData.limit_num}）`}}</view>
 				<view v-else-if="adData.state==1" class="drawer-bottom-btn upload-btn" @click="onClickUploadPic">
 					上传图片审核 <u-count-down :time="60*1000" format="mm:ss" @finish="onFinish"></u-count-down>
 				</view>
 				<view v-else-if="adData.state==2" class="drawer-bottom-btn btn-disabled">广告内容审核中</view>
-				<view v-else-if="adData.state==3" class="drawer-bottom-btn btn-disabled" @click="onClickConfirmUse(true)">续费时长（{{useHour}}/72h)</view>
+				<view v-else-if="adData.state==3" class="drawer-bottom-btn btn-disabled" @click="onClickConfirmUse(true)">续费时长（{{useHour}}/{{maxAdHour}}h)</view>
 			</view>
 			<view class="drawer-bottom" v-else>
 				<view class="drawer-bottom-rank">暂无广告卡可用</view>
@@ -59,6 +59,7 @@
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import Upload from "@/tools/upload"
 	import { app } from "@/app";
+	import { maxAdHour } from "../constants/constants"
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@PropSync("show",{
@@ -67,8 +68,9 @@
 		@Prop({default:''})
 		goodCode?:string
 
+		maxAdHour = maxAdHour;
 		isPullDown = app.platform.isPullDown;
-		adCard:any=[];
+		adCardList:any=[];
 		adData:any={};
 		uploadImg="";
 		
@@ -82,13 +84,13 @@
 			return false
 		}
 		public get hasCard() : boolean {
-			return this.adCard.length>0
+			return this.adCardList.length>0
 		}
 		public get selectedNum() : number {
-			return this.adCard.reduce((total:number,item:any) => total+item.num , 0)
+			return this.adCardList.reduce((total:number,item:any) => total+item.num , 0)
 		}
 		public get useHour() : number {
-			const selectHour = this.adCard.reduce((total:number,item:any) => total+item.hour , 0);
+			const selectHour = this.adCardList.reduce((total:number,item:any) => total+item.hour , 0);
 			const hour = this.adData.totalHour + selectHour;
 			return hour
 		}
@@ -114,7 +116,7 @@
 		}
 		onClickConfirmUse(renew=false){
 			if(this.selectedNum==0 || this.adFull) return;
-			if(renew && this.useHour > 72){
+			if(renew && this.useHour > maxAdHour){
 				uni.showToast({title:"超出可续费时间,请重新确认",icon:"none"})
 				return;
 			}
@@ -126,11 +128,11 @@
 					if (res.confirm) {
 						const params = {
 							goodCode:this.goodCode??null,
-							list:this.adCard.map((x:any)=>{
+							list:this.adCardList.map((x:any)=>{
 								return {count:Number(x.num),hour:x.hour}
 							})
 						}
-						app.http.Post("merchant/me/adCard/use",params,(res:any)=>{
+						app.http.Post("merchant/me/adCardList/use",params,(res:any)=>{
 							this.getList()
 						})
 					}
@@ -140,7 +142,7 @@
 		onClickUploadPic(){
 			if(!this.uploadImg) return;
 			app.platform.UIClickFeedBack();
-			app.http.Post(`merchant/me/adCard/upload/cover/${this.adData.adLogId}`,{cover:this.uploadImg},(res:any)=>{
+			app.http.Post(`merchant/me/adCardList/upload/cover/${this.adData.adLogId}`,{cover:this.uploadImg},(res:any)=>{
 				uni.showToast({title:"提交成功，请等待审核",icon:"none"})
 				this.adData.state=2
 			})
@@ -150,9 +152,9 @@
 			this.uploadImg="";
 		}
 		getList(){
-			app.http.Get('merchant/me/adCard/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
+			app.http.Get('merchant/me/adCardList/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
 				this.adData = rest;
-				this.adCard = list.map( (x:any) => ({...x,num:0}) )
+				this.adCardList = list.map( (x:any) => ({...x,num:0}) )
 			})
 		}
 	}
