@@ -185,10 +185,10 @@
 			this.uploadImg="";
 		}
 		getList(){
-			// app.http.Get('merchant/me/adCard/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
-			// 	this.adData = rest;
-			// 	this.adCardList = list.map( (x:any) => ({...x,num:0}) )
-			// })
+			app.http.Get('merchant/me/adCard/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
+				this.adData = rest;
+				this.adCardList = list.map( (x:any) => ({...x,num:0}) )
+			})
 		}
 	}
 </script>
