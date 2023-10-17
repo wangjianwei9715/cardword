@@ -4,7 +4,7 @@
 			<view class="drawer-header">
 				<view class="drawer-header-name">使用后在售期间可投放广告页至首页（单商品最高累计可投放{{maxAdHour}}小时）</view>
 			</view>
-			<view class="drawer-center-list" v-show="adData.state!=1 && adData.state!=2">
+			<view class="drawer-center-list" v-show="!waitUploadOrReview">
 				<view class="drawer-center-item" v-for="(item,index) in adCardList" :key="index">
 					<view class="drawer-item-box">
 						<view class="drawer-item-surplus">剩{{item.remaining_quantity}}次</view>
@@ -24,7 +24,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="drawer-center-list" v-show="[1,2].includes(adData.state)">
+			<view class="drawer-center-list" v-show="waitUploadOrReview">
 				<view v-if="!uploadImg" class="up-box" @click="addImage()">
 					<view class="up-center">
 						<view class="icon-upload"></view>
@@ -32,19 +32,16 @@
 				</view>
 				<view v-else class="ad-image-box">
 					<muqian-lazyLoad  class="ad-image-box" mode="aspectFit" :src="decodeURIComponent(uploadImg)" borderRadius="3rpx" preview/>
-					<view v-show="adData.state==1" class="up-pic-del" @click="uploadImg=''"></view>
+					<view v-show="adData.state==stateMap.waitUpload" class="up-pic-del" @click="uploadImg=''"></view>
 				</view>
 			</view>
 			<view class="drawer-bottom" v-if="hasCard">
 				<view class="drawer-bottom-rank">
 					已选{{selectedNum}}张,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
 				</view>
-				<view v-if="adData.state==0" class="drawer-bottom-btn" :class="{'btn-disabled':adFull}" @click="onClickConfirmUse">{{adFull?'广告位已满':`确认使用（可申请广告位${adData.now_num}/${adData.limit_num}）`}}</view>
-				<view v-else-if="adData.state==1" class="drawer-bottom-btn upload-btn" @click="onClickUploadPic">
-					上传图片审核 <u-count-down :time="60*1000" format="mm:ss" @finish="onFinish"></u-count-down>
+				<view :class="buttonData.class" @click="buttonData.clickHandler">
+					{{ buttonData.text }} <u-count-down v-if="adData.state==stateMap.waitUpload" :time="60*1000" format="mm:ss" @finish="onFinish"></u-count-down>
 				</view>
-				<view v-else-if="adData.state==2" class="drawer-bottom-btn btn-disabled">广告内容审核中</view>
-				<view v-else-if="adData.state==3" class="drawer-bottom-btn btn-disabled" @click="onClickConfirmUse(true)">续费时长（{{useHour}}/{{maxAdHour}}h)</view>
 			</view>
 			<view class="drawer-bottom" v-else>
 				<view class="drawer-bottom-rank">暂无广告卡可用</view>
@@ -59,7 +56,7 @@
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import Upload from "@/tools/upload"
 	import { app } from "@/app";
-	import { maxAdHour } from "../constants/constants"
+	import { maxAdHour, stateMap } from "../constants/constants";
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@PropSync("show",{
@@ -69,11 +66,29 @@
 		goodCode?:string
 
 		maxAdHour = maxAdHour;
+		stateMap = stateMap;
 		isPullDown = app.platform.isPullDown;
 		adCardList:any=[];
-		adData:any={};
+		adData:{[x:string]:any}={};
 		uploadImg="";
-		
+		buttonConfig:{[x:number]:{[x:string]:any}} = {
+			[stateMap.notStart]:{
+				text : this.adFull ? "广告位已满" : `确认使用（可申请广告位${this.adData.now_num}/${this.adData.limit_num}）`,
+				clickHandler : this.onClickConfirmUse
+			},
+			[stateMap.waitUpload]:{
+				text : "上传图片审核",
+				clickHandler : this.onClickUploadPic
+			},
+			[stateMap.waitReview]:{
+				text : "广告内容审核中",
+				clickHandler : ()=>{}
+			},
+			[stateMap.inEffect]:{
+				text : `续费时长（${this.useHour}/${this.maxAdHour}h)`,
+				clickHandler : this.onClickConfirmRenew
+			}
+		}
 		@Watch('show')
 		onChangeShow(val:boolean){
 			if(val){
@@ -82,6 +97,9 @@
 		}
 		public get adFull() : boolean {
 			return false
+		}
+		public get waitUploadOrReview() : boolean {
+			return [stateMap.waitUpload,stateMap.waitReview].includes(this.adData.state)
 		}
 		public get hasCard() : boolean {
 			return this.adCardList.length>0
@@ -93,6 +111,18 @@
 			const selectHour = this.adCardList.reduce((total:number,item:any) => total+item.hour , 0);
 			const hour = this.adData.totalHour + selectHour;
 			return hour
+		}
+		public get buttonData():{[x:string]:any} {
+			const { state } = this.adData;
+			const { notStart, waitUpload, waitReview } = stateMap;
+			return {
+				class: {
+					'drawer-bottom-btn': true,
+					'btn-disabled': state===waitReview || (state===notStart&&this.adFull),
+					'upload-btn': state===waitUpload
+				},
+				...this.buttonConfig[state]
+			};
 		}
 		async addImage() {
 			app.platform.hasLoginToken( async ()=>{
@@ -113,6 +143,9 @@
 		onClickAddNum(item:any){
 			if(item.num>=item.remaining_quantity) return;
 			item.num++;
+		}
+		onClickConfirmRenew(){
+			this.onClickConfirmUse(true)
 		}
 		onClickConfirmUse(renew=false){
 			if(this.selectedNum==0 || this.adFull) return;
@@ -144,18 +177,18 @@
 			app.platform.UIClickFeedBack();
 			app.http.Post(`merchant/me/adCardList/upload/cover/${this.adData.adLogId}`,{cover:this.uploadImg},(res:any)=>{
 				uni.showToast({title:"提交成功，请等待审核",icon:"none"})
-				this.adData.state=2
+				this.adData.state=stateMap.waitReview
 			})
 		}
 		onFinish(){
-			this.adData.state=0
+			this.getList()
 			this.uploadImg="";
 		}
 		getList(){
-			app.http.Get('merchant/me/adCardList/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
-				this.adData = rest;
-				this.adCardList = list.map( (x:any) => ({...x,num:0}) )
-			})
+			// app.http.Get('merchant/me/adCard/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
+			// 	this.adData = rest;
+			// 	this.adCardList = list.map( (x:any) => ({...x,num:0}) )
+			// })
 		}
 	}
 </script>
