@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <view class="searchContainer topWhich">
-      <view class="searchItem flexCenter" @click="onClickShowPicker('goodTpShow')">
+      <view class="searchItem flexCenter" @click="onClickShowPicker('tpShow')">
         {{ leftText }}
         <u-icon name="arrow-down" style="margin-left: 6rpx" color="#000" size="24rpx"></u-icon>
       </view>
@@ -11,28 +11,30 @@
       </view>
     </view>
     <view class="fakerZw"></view>
-    <view class="logWrap" v-for="(item, index) in awardList" :key="index" @click="
-  pageJump(`/pages/mall/orderDetail?orderCode=${item.code}&pay_tp=${item.pay_tp}`)
-">
+    <view class="logWrap" v-for="(item, index) in awardList" :key="index">
       <view class="goodsInfoWrap">
-        <muqian-lazyLoad borderRadius="3rpx" class="img" :src="item.cover" preview/>
+        <view class="img">{{item.tp==2?"权重卡":(item.adTp==1?"主页推广":"商品推广")}}</view>
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
-            <view class="name u-line-1">{{ item.name }}</view>
+            <view class="name u-line-1">
+              {{ item.tp==1 ? `广告卡` : `${item.weight}权重卡`}}{{item.hour+'小时 * '+item.num}}
+            </view>
             <view class="state">{{
-                item.status == 2
-                  ? mallStateMap[String(item.state)].tip
-                  : mallStatusMap[String(item.status)]
+                logStateMap[String(item.logState)]
             }}</view>
           </view>
-          <view class="goodsInfoWrap_right_exchangeTime">商品ID{{ item.goodCode }}</view>
-          <view class="goodsInfoWrap_right_price">开始结束时间{{ $u.timeFormat(item.startAt,"mm-dd hh:MM") }}</view>
+          <view class="goodsInfoWrap_right_exchangeTime">
+            {{item.goodsCode!=""?`商品ID：${item.goodsCode}`:"用于商家主页"}}
+          </view>
+          <view class="goodsInfoWrap_right_price">
+            开始结束时间{{ $u.timeFormat(item.failure_at,"mm-dd hh:MM") }}-{{ $u.timeFormat(item.effective_at,"mm-dd hh:MM") }}
+          </view>
         </view>
       </view>
     </view>
     <empty v-if="!awardList.length" />
-    <u-picker ref="goodTpShowPicker" keyName="label" @confirm="confirmSelect($event, 'goodTp')" :show="goodTpShow"
-      :columns="goodTpOption" @close="goodTpShow = false" @cancel="goodTpShow = false"></u-picker>
+    <u-picker ref="goodTpShowPicker" keyName="label" @confirm="confirmSelect($event, 'tp')" :show="tpShow"
+      :columns="goodTpOption" @close="tpShow = false" @cancel="tpShow = false"></u-picker>
     <u-picker ref="stateShowPicker" keyName="label" @confirm="confirmSelect($event, 'state')" :show="stateShow"
       :columns="stateOption" @close="stateShow = false" @cancel="stateShow = false"></u-picker>
     <logisticsPop :visible.sync="visible" :code="wuliuCode" />
@@ -44,26 +46,81 @@ import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from "@/base/BaseNode.vue";
 import { dateFormatMSHMS } from "@/tools/util";
-import { mallStateMap, mallStatusMap } from "@/tools/DataExchange";
 import { mall } from '../constants/constants'
-const goodTpOption = mall.exchange.goodTpOption;
-const stateOption = mall.exchange.stateOption;
+const goodTpOption = mall.useLog.tpOption;
+const stateOption = mall.useLog.stateOption;
 @Component({})
 export default class ClassName extends BaseNode {
   pageJump = app.navigateTo.pageJump;
   dateFormatMSHMS: any = dateFormatMSHMS;
-  mallStateMap: any = mallStateMap;
-  mallStatusMap: any = mallStatusMap;
+  logStateMap: any = mall.logStateMap;
   queryParams: any = {
     pageIndex: 1,
     pageSize: 20,
-    goodTp: 100,
+    tp: 100,
     state: 100,
   };
   totalPage: number = 0;
-  awardList: any = [];
+  awardList: any = [
+    {
+            "hour": 1,//小时
+            "weight": 0,//权重
+            "logState": -1,//1:待上传封面图;2:待审核;3:生效中:4:已完成;-1:封面图上传超时;-2:驳回
+            "effective_at": -62135596800,//生效时间
+            "failure_at": -62135596800,//开始时间
+            "adTp": 2,//当tp==1时；adTp==1：商家主页推广;adTp==2:商家商品推广
+            "goodsCode": "CL976485C",
+            "title": "22-23 足球 topps Inception UEFA Club Competitions 盗梦空间  原盒",//商品推广才有标题
+            "num": 1,//数量
+            "tp": 1//1:广告;2:权重
+        },
+        {
+            "hour": 1,
+            "weight": 0,
+            "logState": 4,
+            "effective_at": 1697094738,
+            "failure_at": 1697098338,
+            "adTp": 2,
+            "goodsCode": "CL976485C",
+            "num": 1,
+            "tp": 1
+        },
+        {
+            "hour": 2,
+            "weight": 100,
+            "logState": 4,
+            "effective_at": 1697093721,
+            "failure_at": 1697108121,
+            "adTp": 0,
+            "goodsCode": "CL976485C",
+            "num": 2,
+            "tp": 2
+        },
+        {
+            "hour": 1,
+            "weight": 1,
+            "logState": 4,
+            "effective_at": 1697016589,
+            "failure_at": 1697020189,
+            "adTp": 0,
+            "goodsCode": "GT029287C",
+            "num": 1,
+            "tp": 2
+        },
+        {
+            "hour": 1,
+            "weight": 100,
+            "logState": 4,
+            "effective_at": 1697010648,
+            "failure_at": 1697035848,
+            "adTp": 0,
+            "goodsCode": "GT029287C",
+            "num": 7,
+            "tp": 2
+        }
+  ];
   goodTpOption: any = [[], goodTpOption, []];
-  goodTpShow: boolean = false;
+  tpShow: boolean = false;
   stateOption: any = [[], stateOption, []];
   stateShow: boolean = false;
   visible: boolean = false
@@ -91,7 +148,7 @@ export default class ClassName extends BaseNode {
   onShow() { }
   private get leftText() {
     const findItem: any = goodTpOption.find(
-      (item: any) => item.value == this.queryParams.goodTp
+      (item: any) => item.value == this.queryParams.tp
     );
     return findItem.label;
   }
@@ -134,7 +191,8 @@ export default class ClassName extends BaseNode {
     });
   }
   reqNewData(cb?: Function) {
-    app.http.Get("dataApi/point/exchange/myRecordlist", this.queryParams, (res: any) => {
+    return;
+    app.http.Get("dataApi/merchant/me/cards/useLog", this.queryParams, (res: any) => {
       this.totalPage = res.totalPage;
       const reqList = res.list || [];
       this.queryParams.pageIndex == 1
@@ -206,10 +264,15 @@ page {
     display: flex;
 
     .img {
-      width: 173rpx;
+      width: 133rpx;
       height: 133rpx;
       border-radius: 3rpx;
       margin-right: 27rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color:#333333;
+      font-size: 28rpx;
     }
   }
 
@@ -256,9 +319,9 @@ page {
     }
 
     &_price {
-      font-size: 25rpx;
+      font-size: 20rpx;
       font-family: PingFang SC;
-      font-weight: 600;
+      font-weight: 400;
       color: #fa1545;
     }
   }

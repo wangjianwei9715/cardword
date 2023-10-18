@@ -8,7 +8,7 @@
 				</view>
 				<view class="goods">
 					<view class="desc" v-for="(item,index) in detail.sonGoodsList" :key="index">
-						{{item.weight}}{{item.name}}{{item.hour}}小时*{{item.num}}
+						{{item.tp==2?item.weight:""}}{{item.name}}{{item.tp!=1?`${item.hour}小时`:""}}*{{item.num}}
 					</view>
 				</view>
 				<u-divider class="widthMax"></u-divider>
@@ -31,6 +31,7 @@
 	import { Component,Prop,PropSync,Watch } from "vue-property-decorator";
 	import BaseComponent from "@/base/BaseComponent.vue";
 	import { app } from "@/app";
+	import { payTypeMap } from '../constants/constants'
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@PropSync("popupShow",{type:Boolean})
@@ -42,13 +43,14 @@
 		@Watch('show')
 		onChangeShow(val:boolean){
 			if(val){
+				this.detail = {};
 				app.http.Get(`dataApi/merchant/mall/goodsDetail/${this.id}`, {}, (res: any) => {
 					this.detail = res.data || {}
 				})
 			}
 		}
 		public get needPayMoney() : boolean {
-			return this.detail.pay_type==2;
+			return this.detail.pay_type==payTypeMap.money;
 		}
 		public get requireStr() : string {
 			const { buy_require, require_num } = this.detail

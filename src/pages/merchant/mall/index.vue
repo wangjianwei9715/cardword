@@ -40,7 +40,7 @@
                     <view class="goodsName">{{ item.title }}</view>
                     <view class="goodsPriceBlock">
                         <view class="goodsPriceBlock_bottom">
-                            <view class="money">{{item.price}}{{ item.pay_type==2 ? '元' : '积分' }}</view>
+                            <view class="money">{{item.price}}{{ item.pay_type==payTypeMap.money ? '元' : '积分' }}</view>
                             <view class="leftNum" v-if='item.limit_num>0'>限购:{{ item.limit_num }}</view>
                         </view>
                     </view>
@@ -59,7 +59,7 @@
 import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from '@/base/BaseNode.vue';
-import { mall, maxMonthWeight } from '../constants/constants'
+import { mall, maxMonthWeight, payTypeMap } from '../constants/constants'
 import mallBuy from '../components/mallBuy.vue';
 import { getMerchantIntegral } from '../utils/util';
 @Component({
@@ -68,6 +68,7 @@ import { getMerchantIntegral } from '../utils/util';
     }
 })
 export default class ClassName extends BaseNode {
+    payTypeMap = payTypeMap
     maxMonthWeight = maxMonthWeight;
     pageJump = app.navigateTo.pageJump;
     custonRightIcon: any = mall.custonRightIcon;
@@ -95,11 +96,8 @@ export default class ClassName extends BaseNode {
         id:0
     }
     merchantInfo:any = {};
-    onLoad(query: any) {
-        app.platform.hasLoginToken(() => {
-            this.getMerchantInfo();
-            this.reqNewData()
-        })
+    onShow(){
+        this.refreshPages()
     }
     onPageScroll(data: any) {
         //@ts-ignore

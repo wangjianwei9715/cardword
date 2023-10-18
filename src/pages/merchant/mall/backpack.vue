@@ -74,10 +74,8 @@ export default class ClassName extends BaseNode {
         index: 0,
         list: [
             { name: '全部', value: 100 },
-            { name: '权重', value: 11 }, 
-            { name: '广告位', value: 2 },
-            { name: '物料', value: 3 },
-            { name: '其他', value: 4 }
+            { name: '权重', value: 2 }, 
+            { name: '广告位', value: 3 },
         ]
     };
     buyPopup = {

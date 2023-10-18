@@ -11,20 +11,14 @@
       </view>
     </view>
     <view class="fakerZw"></view>
-    <view class="logWrap" v-for="(item, index) in awardList" :key="index" @click="
-  pageJump(`/pages/mall/orderDetail?orderCode=${item.code}&pay_tp=${item.pay_tp}`)
-">
+    <view class="logWrap" v-for="(item, index) in awardList" :key="index" @click="onClickGoOrder(item)">
       <view class="goodsInfoWrap">
         <muqian-lazyLoad borderRadius="3rpx" class="img" :src="item.cover" preview/>
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
             <view class="name u-line-1">{{ item.name }}</view>
             <view class="state">
-              {{
-                item.status == 2
-                  ? mallStateMap[String(item.state)].tip
-                  : mallStatusMap[String(item.status)]
-              }}
+              {{ orderStateMap[String(item.state)] }}
             </view>
           </view>
           <view class="goodsInfoWrap_right_exchangeTime">{{ dateFormatMSHMS(item.create_at) }}</view>
@@ -32,7 +26,7 @@
         </view>
       </view>
       <view class="buttonWrap">
-        <template v-if="item.status == 2 && item.tp == 2">
+        <template v-if="item.pay_status == 2 && item.tp == mallTp.reality">
           <view class="normalButton flexCenter" @click.stop="onClickWuliu(item)">查看物流</view>
           <view class="normalButton redButton flexCenter" @click.stop="onClickConfirmReceipt(item)"
             v-if="item.state == 2">确认收货</view>
@@ -53,16 +47,16 @@ import { app } from "@/app";
 import { Component } from "vue-property-decorator";
 import BaseNode from "@/base/BaseNode.vue";
 import { dateFormatMSHMS } from "@/tools/util";
-import { mallStateMap, mallStatusMap } from "@/tools/DataExchange";
-import { mall } from '../constants/constants'
+import { mall, payTypeMap, mallTp } from '../constants/constants'
 const goodTpOption = mall.exchange.goodTpOption;
 const stateOption = mall.exchange.stateOption;
 @Component({})
 export default class ClassName extends BaseNode {
   pageJump = app.navigateTo.pageJump;
+  mallRouter = mall.mallRouter;
   dateFormatMSHMS: any = dateFormatMSHMS;
-  mallStateMap: any = mallStateMap;
-  mallStatusMap: any = mallStatusMap;
+  orderStateMap:any = mall.exchange.stateMap;
+  mallTp = mallTp;
   queryParams: any = {
     pageIndex: 1,
     pageSize: 20,
@@ -110,6 +104,10 @@ export default class ClassName extends BaseNode {
     );
     return findItem.label;
   }
+  onClickGoOrder(item:any){
+    if(item.pay_type == payTypeMap.points) return;
+    this.pageJump(`${this.mallRouter}/orderDetail?orderCode=${item.code}&pay_tp=${item.pay_tp}`)
+  }
   changeOrderDetail(code: string, orderDetail: any) {
     const index: number = this.awardList.findIndex((item: any) => {
       return item.code == code
@@ -119,7 +117,7 @@ export default class ClassName extends BaseNode {
     this.awardList[index].status = orderDetail.status
   }
   goodsPrice(item: any) {
-    return `${item.pay_type == 2 ? `￥${item.price}+` : `${item.price}积分`}`;
+    return `${item.pay_type == payTypeMap.points ? `${item.price}积分` : `￥${item.price}`}`;
   }
   onClickShowPicker(key: string) {
     //@ts-ignore
@@ -137,24 +135,6 @@ export default class ClassName extends BaseNode {
     });
     this.queryParams.pageIndex = 1;
     this.reqNewData();
-  }
-  toOrderDetail(item: any) {
-    if (!item.code) return;
-    uni.navigateTo({
-      url: `/pages/mall/orderDetail?orderCode=${item.code}`,
-    });
-  }
-  setCopy(item: any) {
-    if (item.tp !== 1) return;
-    uni.setClipboardData({
-      data: item.couponCode,
-      success: (res: any) => {
-        uni.showToast({
-          title: "卷编号复制成功",
-          duration: 2000,
-        });
-      },
-    });
   }
   onClickConfirmReceipt(item: any) {
     uni.showModal({
