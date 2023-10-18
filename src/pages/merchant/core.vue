@@ -21,7 +21,7 @@
     <image :src='parsePic(decodeURIComponent(merchantInfo.back_img))'
       @click="previewImage([decodeURIComponent(merchantInfo.back_img)], 0, '')" mode='aspectFill'
       class="merchantBanner" />
-    <view class="merchantInfoContainer">
+    <view class="merchantInfoContainer" :class="{'paddingB':!isMerchant}">
       <view class="infoTop uni-flex">
         <image :src="parsePic(decodeURIComponent(merchantInfo.logo))" mode="aspectFill" class="info-avatar" />
         <view class="info-message">
@@ -43,7 +43,7 @@
       </view>
       <view class="merchant-introduction">店铺简介：{{ merchantInfo.brief_intr ? merchantInfo.brief_intr : '欢迎来到我的店铺!' }}
       </view>
-      <navigator url="mall/index">
+      <navigator url="mall/index" v-if="isMerchant">
         <view class="merchant-points">
           <view class="points-text">商家积分</view>
           <view class="points-text">{{merchantInfo.integral}}<view class="points-right"></view></view>
@@ -555,7 +555,9 @@ page {
   margin-top: -58rpx;
   z-index: 2;
 }
-
+.paddingB{
+  padding-bottom: 28rpx;
+}
 .couponContainer {
   width: 706rpx;
   height: 148rpx;
