@@ -25,25 +25,24 @@
 				</view>
 			</view>
 			<view class="drawer-center-list" v-show="waitUploadOrReview">
-				<view v-if="!uploadImg&&adData.state==stateMap.waitUpload" class="up-box" @click="addImage()">
+				<view v-if="!uploadImg&&waitUpload" class="up-box" @click="addImage()">
 					<view class="up-center">
 						<view class="icon-upload"></view>
 					</view>
 				</view>
 				<view v-else class="ad-image-box">
-					<muqian-lazyLoad  class="ad-image-box" mode="aspectFit" :src="decodeURIComponent(uploadImg)" borderRadius="3rpx" preview/>
-					<view v-show="adData.state==stateMap.waitUpload" class="up-pic-del" @click="uploadImg=''"></view>
+					<muqian-lazyLoad  class="ad-image-box" mode="aspectFit" :src="decodeURIComponent(waitUpload?uploadImg:adData.cover)" borderRadius="3rpx" preview/>
+					<view v-show="waitUpload" class="up-pic-del" @click="uploadImg=''"></view>
 				</view>
 			</view>
 			<view class="drawer-bottom" v-if="hasCard">
 				<view class="drawer-bottom-rank">
-					已选{{selectedNum}}张,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
+					共{{notStart ?selectedHour:adData.totalHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
 				</view>
 				<view :class="buttonData.class" @click="buttonData.clickHandler">
-					{{ adData.state==stateMap.notStart ?
-					`${ adFull? "广告位已满" : `确认使用（可申请广告位${adData.now_num}/${adData.limit_num}）`}` 
+					{{ notStart ? `${ adFull? "广告位已满" : `确认使用（可申请广告位${adData.now_num}/${adData.limit_num}）`}` 
 					:buttonData.text }} 
-					<u-count-down v-if="adData.state==stateMap.waitUpload" :time="60*1000" format="mm:ss" @finish="onFinish"></u-count-down>
+					<u-count-down v-if="waitUpload" :time="countDown(adData.coverUpOverTime)" format="mm:ss" @finish="onFinish"></u-count-down>
 				</view>
 			</view>
 			<view class="drawer-bottom" v-else>
@@ -95,8 +94,15 @@
 		@Watch('show')
 		onChangeShow(val:boolean){
 			if(val){
+				this.uploadImg="";
 				this.getList()
 			}
+		}
+		public get notStart() : boolean {
+			return this.adData.state==stateMap.notStart
+		}
+		public get waitUpload() : boolean {
+			return this.adData.state==stateMap.waitUpload
 		}
 		public get adFull() : boolean {
 			return this.adData.now_num>=this.adData.limit_num;
@@ -107,8 +113,8 @@
 		public get hasCard() : boolean {
 			return this.adCardList.length>0
 		}
-		public get selectedNum() : number {
-			return this.adCardList.reduce((total:number,item:any) => total+item.num , 0)
+		public get selectedHour() : number {
+			return this.adCardList.reduce((total:number,item:any) => total+(item.num*item.hour) , 0)
 		}
 		public get useHour() : number {
 			const selectHour = this.adCardList.reduce((total:number,item:any) => total+item.hour , 0);
@@ -151,7 +157,7 @@
 			this.onClickConfirmUse(true)
 		}
 		onClickConfirmUse(renew=false){
-			if(this.selectedNum==0 || this.adFull) return;
+			if(this.selectedHour==0 || this.adFull) return;
 			if(renew && this.useHour > maxAdHour){
 				uni.showToast({title:"超出可续费时间,请重新确认",icon:"none"})
 				return;

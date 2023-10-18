@@ -104,9 +104,9 @@ const logStateMap = {
     "-2":'驳回'
 }
 const cardImg = {
-    1:"/static/mall/card_ad.png",
-    2:"/static/mall/card_w.png",
-    3:"/static/mall/card_ad.png"
+    1:"/static/mall/card_ad.jpg",
+    2:"/static/mall/card_w.jpg",
+    3:"/static/mall/card_ad.jpg"
 }
 export const mall = {
     mallRouter,

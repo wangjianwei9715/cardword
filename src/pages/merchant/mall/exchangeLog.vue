@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <view class="searchContainer topWhich">
-      <view class="searchItem flexCenter" @click="onClickShowPicker('goodTpShow')">
+      <view class="searchItem flexCenter" @click="onClickShowPicker('tpShow')">
         {{ leftText }}
         <u-icon name="arrow-down" style="margin-left: 6rpx" color="#000" size="24rpx"></u-icon>
       </view>
@@ -34,8 +34,8 @@
       </view>
     </view>
     <empty v-if="!awardList.length" />
-    <u-picker ref="goodTpShowPicker" keyName="label" @confirm="confirmSelect($event, 'tp')" :show="goodTpShow"
-      :columns="goodTpOption" @close="goodTpShow = false" @cancel="goodTpShow = false"></u-picker>
+    <u-picker ref="goodTpShowPicker" keyName="label" @confirm="confirmSelect($event, 'tp')" :show="tpShow"
+      :columns="goodTpOption" @close="tpShow = false" @cancel="tpShow = false"></u-picker>
     <u-picker ref="stateShowPicker" keyName="label" @confirm="confirmSelect($event, 'state')" :show="stateShow"
       :columns="stateOption" @close="stateShow = false" @cancel="stateShow = false"></u-picker>
     <logisticsPop :visible.sync="visible" :code="wuliuCode" />
@@ -66,7 +66,7 @@ export default class ClassName extends BaseNode {
   totalPage: number = 0;
   awardList: any = [];
   goodTpOption: any = [[], goodTpOption, []];
-  goodTpShow: boolean = false;
+  tpShow: boolean = false;
   stateOption: any = [[], stateOption, []];
   stateShow: boolean = false;
   visible: boolean = false

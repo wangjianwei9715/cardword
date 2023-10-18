@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-18 15:36:06
+ * @LastEditTime: 2023-10-18 16:26:09
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\orderDetail.vue
  * @Description: 订单详情
 -->
@@ -202,7 +202,7 @@ export default class ClassName extends BaseNode {
       title: "",
     });
     app.http.Pay(
-      `merchant/exchange/cash/${this.orderCode}`,
+      `merchant/exchange/cash/${this.orderDetail.goodsId}`,
       {
         channel,
         deliveryId: this.orderDetail.deliveryId,

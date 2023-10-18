@@ -15,6 +15,7 @@
 				<view class="tips">{{needPayMoney?"￥":"所需积分"}}：<text>{{detail.price}}</text></view>
 				<view class="tips" v-if="detail.buy_require>0">门槛：{{requireStr}}</view>
 				<view class="btn" @click="onClickConfirm">{{needPayMoney?'购买':'确认兑换'}}</view>
+				<view class="ex">确认兑换后积分将不予退回</view>
 			</view>
 		</u-popup>
 
@@ -85,17 +86,18 @@
 @mixin lineBox{
 	width: 100%;
 	box-sizing: border-box;
-	padding: 0 20rpx;
+	padding: 0 33rpx;
 	display: flex;
 }
 .widthMax{
 	width: 100%;
+	margin-top: 40rpx
 }
 .popup-content{
 	@include lineBox;
-	width: 525rpx;
-	border-radius: 3rpx;
-	padding: 20rpx 0 ;
+	width: 482rpx;
+	border-radius: 15rpx;
+	padding: 26rpx 0 ;
 	flex-direction: column;
 	align-items: center;
 }
@@ -103,11 +105,13 @@
 	@include lineBox;
 	justify-content: space-between;
 	.title{
-		font-size: 30rpx;
-		font-weight: bold
+		font-size: 28rpx;
+		font-weight: bold;
+		color:#333
 	}
 	.special{
-		font-size: 26rpx;
+		font-size: 21rpx;
+		color:#999999
 	}
 }
 .goods{
@@ -115,30 +119,36 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	margin-top: 50rpx;
+	min-height: 150rpx;
+	align-items: center;
 	.desc{
 		width: 100%;
-		text-align: center
+		text-align: center;
+		font-size: 28rpx;
+		color:#333;
+		margin-bottom: 6rpx;
 	}
 }
 .tips{
 	@include lineBox;
 	justify-content: flex-start;
-	padding:0 40rpx;
-	font-size: 22rpx;
-	color:#666;
+	padding:0 33rpx;
+	font-size: 21rpx;
+	margin-bottom: 18rpx;
+	color:#333;
 	text{
 		color:#E6374C
 	}
 }
 .btn{
-	width: 450rpx;
+	width: 416rpx;
 	height:60rpx;
-	background:#E6374C;
-	border-radius: 10rpx;
+	background:#FA1545;
+	border-radius: 5rpx;
 	color:#fff;
-	font-size: 36rpx;
-	font-weight: bold;
-	margin:20rpx auto;
+	font-size: 25rpx;
+	font-weight: 500;
+	margin:14rpx auto;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -150,5 +160,10 @@
 	font-size: 26rpx;
 	color:#333;
 }
-
+.ex{
+	font-size: 21rpx;
+	color:#AAAAAA;
+	width: 100%;
+	text-align: center;
+}
 </style>
