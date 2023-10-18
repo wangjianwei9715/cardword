@@ -33,7 +33,7 @@
         <view class="goodsContainer">
             <view class="goodsItem" v-for="(item, index) in goodsList" :key="index">
                 <view class="goodsItem_top">
-                    <muqian-lazyLoad class="logo" borderRadius="3rpx" :src="item.cover"></muqian-lazyLoad>
+                    <muqian-lazyLoad class="logo" borderRadius="3rpx" :src="cardImg[item.tp]"></muqian-lazyLoad>
                 </view>
                 <view class="goodsItem_bottom">
                     <view class="goodsName">{{ item.name }}</view>
@@ -61,6 +61,7 @@ export default class ClassName extends BaseNode {
     pageJump = app.navigateTo.pageJump;
     custonRightIcon: any = mall.custonRightIcon;
     mallRouter = mall.mallRouter;
+    cardImg = mall.cardImg;
     goodsList: any = []
     totalPage: number = 0;
     queryParams: any = {

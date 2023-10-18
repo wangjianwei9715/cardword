@@ -13,7 +13,7 @@
     <view class="fakerZw"></view>
     <view class="logWrap" v-for="(item, index) in awardList" :key="index">
       <view class="goodsInfoWrap">
-        <view class="img">{{item.tp==2?"权重卡":(item.adTp==1?"主页推广":"商品推广")}}</view>
+        <muqian-lazyLoad class="img" borderRadius="3rpx" :src="cardImg[item.tp]"></muqian-lazyLoad>
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
             <view class="name u-line-1">
@@ -54,6 +54,7 @@ export default class ClassName extends BaseNode {
   pageJump = app.navigateTo.pageJump;
   dateFormatMSHMS: any = dateFormatMSHMS;
   logStateMap: any = mall.logStateMap;
+  cardImg = mall.cardImg;
   queryParams: any = {
     pageIndex: 1,
     pageSize: 20,
@@ -61,64 +62,7 @@ export default class ClassName extends BaseNode {
     state: 100,
   };
   totalPage: number = 0;
-  awardList: any = [
-    {
-            "hour": 1,//小时
-            "weight": 0,//权重
-            "logState": -1,//1:待上传封面图;2:待审核;3:生效中:4:已完成;-1:封面图上传超时;-2:驳回
-            "effective_at": -62135596800,//生效时间
-            "failure_at": -62135596800,//开始时间
-            "adTp": 2,//当tp==1时；adTp==1：商家主页推广;adTp==2:商家商品推广
-            "goodsCode": "CL976485C",
-            "title": "22-23 足球 topps Inception UEFA Club Competitions 盗梦空间  原盒",//商品推广才有标题
-            "num": 1,//数量
-            "tp": 1//1:广告;2:权重
-        },
-        {
-            "hour": 1,
-            "weight": 0,
-            "logState": 4,
-            "effective_at": 1697094738,
-            "failure_at": 1697098338,
-            "adTp": 2,
-            "goodsCode": "CL976485C",
-            "num": 1,
-            "tp": 1
-        },
-        {
-            "hour": 2,
-            "weight": 100,
-            "logState": 4,
-            "effective_at": 1697093721,
-            "failure_at": 1697108121,
-            "adTp": 0,
-            "goodsCode": "CL976485C",
-            "num": 2,
-            "tp": 2
-        },
-        {
-            "hour": 1,
-            "weight": 1,
-            "logState": 4,
-            "effective_at": 1697016589,
-            "failure_at": 1697020189,
-            "adTp": 0,
-            "goodsCode": "GT029287C",
-            "num": 1,
-            "tp": 2
-        },
-        {
-            "hour": 1,
-            "weight": 100,
-            "logState": 4,
-            "effective_at": 1697010648,
-            "failure_at": 1697035848,
-            "adTp": 0,
-            "goodsCode": "GT029287C",
-            "num": 7,
-            "tp": 2
-        }
-  ];
+  awardList: any = [];
   goodTpOption: any = [[], goodTpOption, []];
   tpShow: boolean = false;
   stateOption: any = [[], stateOption, []];
@@ -191,7 +135,6 @@ export default class ClassName extends BaseNode {
     });
   }
   reqNewData(cb?: Function) {
-    return;
     app.http.Get("dataApi/merchant/me/cards/useLog", this.queryParams, (res: any) => {
       this.totalPage = res.totalPage;
       const reqList = res.list || [];
@@ -264,7 +207,7 @@ page {
     display: flex;
 
     .img {
-      width: 133rpx;
+      width: 173rpx;
       height: 133rpx;
       border-radius: 3rpx;
       margin-right: 27rpx;

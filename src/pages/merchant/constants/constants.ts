@@ -103,6 +103,11 @@ const logStateMap = {
     "-1":"封面图上传超时",
     "-2":'驳回'
 }
+const cardImg = {
+    1:"/static/mall/card_ad.png",
+    2:"/static/mall/card_w.png",
+    3:"/static/mall/card_ad.png"
+}
 export const mall = {
     mallRouter,
     custonRightIcon,
@@ -111,7 +116,8 @@ export const mall = {
     payStatusMap,
     integralSourceMap,
     useLog,
-    logStateMap
+    logStateMap,
+    cardImg
 }
 export const mallPayChannel: any = [
     {
