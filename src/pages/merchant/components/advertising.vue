@@ -25,7 +25,7 @@
 				</view>
 			</view>
 			<view class="drawer-center-list" v-show="waitUploadOrReview">
-				<view v-if="!uploadImg" class="up-box" @click="addImage()">
+				<view v-if="!uploadImg&&adData.state==stateMap.waitUpload" class="up-box" @click="addImage()">
 					<view class="up-center">
 						<view class="icon-upload"></view>
 					</view>
@@ -40,7 +40,10 @@
 					已选{{selectedNum}}张,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
 				</view>
 				<view :class="buttonData.class" @click="buttonData.clickHandler">
-					{{ buttonData.text }} <u-count-down v-if="adData.state==stateMap.waitUpload" :time="60*1000" format="mm:ss" @finish="onFinish"></u-count-down>
+					{{ adData.state==stateMap.notStart ?
+					`${ adFull? "广告位已满" : `确认使用（可申请广告位${adData.now_num}/${adData.limit_num}）`}` 
+					:buttonData.text }} 
+					<u-count-down v-if="adData.state==stateMap.waitUpload" :time="60*1000" format="mm:ss" @finish="onFinish"></u-count-down>
 				</view>
 			</view>
 			<view class="drawer-bottom" v-else>
@@ -69,11 +72,11 @@
 		stateMap = stateMap;
 		isPullDown = app.platform.isPullDown;
 		adCardList:any=[];
-		adData:{[x:string]:any}={};
+		adData:any={};
 		uploadImg="";
-		buttonConfig:{[x:number]:{[x:string]:any}} = {
+		buttonConfig:any = {
 			[stateMap.notStart]:{
-				text : this.adFull ? "广告位已满" : `确认使用（可申请广告位${this.adData.now_num}/${this.adData.limit_num}）`,
+				text : "",
 				clickHandler : this.onClickConfirmUse
 			},
 			[stateMap.waitUpload]:{
@@ -96,7 +99,7 @@
 			}
 		}
 		public get adFull() : boolean {
-			return false
+			return this.adData.now_num>=this.adData.limit_num;
 		}
 		public get waitUploadOrReview() : boolean {
 			return [stateMap.waitUpload,stateMap.waitReview].includes(this.adData.state)
@@ -165,7 +168,7 @@
 								return {count:Number(x.num),hour:x.hour}
 							})
 						}
-						app.http.Post("merchant/me/adCardList/use",params,(res:any)=>{
+						app.http.Post("merchant/me/adCard/use",params,(res:any)=>{
 							this.getList()
 						})
 					}
@@ -175,7 +178,7 @@
 		onClickUploadPic(){
 			if(!this.uploadImg) return;
 			app.platform.UIClickFeedBack();
-			app.http.Post(`merchant/me/adCardList/upload/cover/${this.adData.adLogId}`,{cover:this.uploadImg},(res:any)=>{
+			app.http.Post(`merchant/me/adCard/upload/cover/${this.adData.adLogId}`,{cover:this.uploadImg},(res:any)=>{
 				uni.showToast({title:"提交成功，请等待审核",icon:"none"})
 				this.adData.state=stateMap.waitReview
 			})

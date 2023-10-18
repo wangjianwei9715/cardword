@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-16 14:11:19
+ * @LastEditTime: 2023-10-18 15:36:06
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\orderDetail.vue
  * @Description: 订单详情
 -->
@@ -63,14 +63,14 @@
       <view class="priceItem">
         <view>创建时间</view>
         <view style="color: #949494">{{
-            $u.timeFormat(orderDetail.created_at, "yyyy-mm-dd hh:MM:ss")
+            dateFormat(orderDetail.create_at)
         }}</view>
       </view>
       <view class="priceItem" v-if="orderDetail.goodTp == 2">
         <view>发货时间</view>
         <view style="color: #949494">{{
             orderDetail.deliver_at > 0
-              ? $u.timeFormat(orderDetail.deliver_at, "yyyy-mm-dd hh:MM:ss")
+              ? dateFormat(orderDetail.deliver_at)
               : "-"
         }}</view>
       </view>
@@ -102,8 +102,10 @@ import { Component } from "vue-property-decorator";
 import BaseNode from "@/base/BaseNode.vue";
 import { mallPayChannel } from "../constants/constants";
 import { mall } from "../constants/constants";
+import { dateFormat } from "@/tools/util"
 @Component({})
 export default class ClassName extends BaseNode {
+  dateFormat = dateFormat;
   orderCode: string = "";
   orderDetail: any = {};
   nowTimeStamp: any = Math.round(+new Date() / 1000);

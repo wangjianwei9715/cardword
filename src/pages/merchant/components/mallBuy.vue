@@ -7,8 +7,8 @@
 					<view class="special" v-if="detail.limit_num>0">限购:{{detail.limit_num}}</view>
 				</view>
 				<view class="goods">
-					<view class="desc" v-for="(item,index) in detail.sonGoodsList" :key="index">
-						{{item.tp==2?item.weight:""}}{{item.name}}{{item.tp!=1?`${item.hour}小时`:""}}*{{item.num}}
+					<view class="desc" v-for="(item,index) in detail.sonNameList" :key="index">
+						{{item}}
 					</view>
 				</view>
 				<u-divider class="widthMax"></u-divider>
