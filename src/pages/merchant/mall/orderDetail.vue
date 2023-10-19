@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-19 10:42:52
+ * @LastEditTime: 2023-10-19 17:05:27
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\orderDetail.vue
  * @Description: 订单详情
 -->
@@ -222,7 +222,7 @@ export default class ClassName extends BaseNode {
   }
   receiptAction() {
     app.http.Post(
-      `point/exchange/order/receive/${this.orderCode}`,
+      `merchant/mall/goodsOrder/receipt/${this.orderCode}`,
       {},
       (res: any) => {
         this.orderDetail.state = 3;
