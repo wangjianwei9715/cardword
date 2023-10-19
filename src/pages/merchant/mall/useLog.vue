@@ -27,7 +27,7 @@
             {{item.goodsCode!=""?`商品ID：${item.goodsCode}`:"用于商家主页"}}
           </view>
           <view class="goodsInfoWrap_right_price">
-            开始结束时间{{ $u.timeFormat(item.failure_at,"mm-dd hh:MM") }}-{{ $u.timeFormat(item.effective_at,"mm-dd hh:MM") }}
+            开始结束时间{{ $u.timeFormat(item.effective_at,"mm.dd hh:MM") }} - {{ $u.timeFormat(item.failure_at,"mm.dd hh:MM") }}
           </view>
         </view>
       </view>
