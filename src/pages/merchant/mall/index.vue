@@ -44,7 +44,7 @@
                             <view class="leftNum" v-if='item.limit_num>0'>限购:{{ item.limit_num }}</view>
                         </view>
                     </view>
-                    <view class="buyBtn" @click="onClickBuy(item)">兑换</view>
+                    <view class="buyBtn" @click="onClickBuy(item)">{{item.pay_type==payTypeMap.money?"购买":"兑换"}}</view>
                 </view>
             </view>
         </view>

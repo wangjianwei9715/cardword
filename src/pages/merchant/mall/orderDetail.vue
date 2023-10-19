@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2022-12-19 14:15:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-18 16:26:09
+ * @LastEditTime: 2023-10-19 10:42:52
  * @FilePath: \jichao_app_2\src\pages\merchant\mall\orderDetail.vue
  * @Description: 订单详情
 -->
@@ -40,7 +40,7 @@
       </view>
     </view>
     <!-- @click="onClickChangeAddress" -->
-    <view class="publickBlock addressContainer">
+    <view class="publickBlock addressContainer" v-if="hasAddress">
       <view class="addressIcon"></view>
       <view class="addressInfo">
         <template>
@@ -81,7 +81,7 @@
           <view class="exchangeButton flexCenter" @click="cancelOrderHandle">取消订单</view>
           <view class="exchangeButton exchangeButton_red flexCenter" @click="showPayMent = true">立即支付</view>
         </template>
-        <template v-if="orderDetail.pay_status == 1">
+        <template v-if="orderDetail.pay_status == 1 && hasAddress">
           <view class="exchangeButton flexCenter" @click="onClickWuliu">查看物流</view>
           <view v-if="orderDetail.state == 2" class="exchangeButton exchangeButton_red flexCenter"
             @click="confirmReceipt">确认收货</view>
@@ -124,6 +124,9 @@ export default class ClassName extends BaseNode {
   }
   onHide() {
     this.stampTimer && clearInterval(this.stampTimer);
+  }
+  public get hasAddress() : boolean {
+    return this.orderDetail.receiver.name!=""
   }
   private get closeCountDown() {
     const num: number = this.orderDetail.payExpire_at - this.nowTimeStamp;
