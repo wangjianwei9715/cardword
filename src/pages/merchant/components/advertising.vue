@@ -87,7 +87,7 @@
 			},
 			[stateMap.inEffect]:{
 				text : "",
-				clickHandler : this.onClickConfirmRenew
+				clickHandler : this.onClickConfirmUse
 			}
 		}
 		@Watch('show')
@@ -160,19 +160,16 @@
 			if(item.num>=item.remaining_quantity) return;
 			item.num++;
 		}
-		onClickConfirmRenew(){
-			this.onClickConfirmUse(true)
-		}
-		onClickConfirmUse(renew=false){
+		onClickConfirmUse(){
 			if(this.selectedHour==0 || (this.adFull&&!this.inEffect)) return;
-			if(renew && this.useHour > maxAdHour){
+			if(this.inEffect && this.useHour > maxAdHour){
 				uni.showToast({title:"超出可续费时间,请重新确认",icon:"none"})
 				return;
 			}
 			app.platform.UIClickFeedBack(); 
 			uni.showModal({
 				title: '提示',
-				content: `是否确认${renew?"续费":"申请"}广告位`,
+				content: `是否确认${this.inEffect?"续费":"申请"}广告位`,
 				success:  (res)=> {
 					if (res.confirm) {
 						const params = {
