@@ -22,13 +22,13 @@
 					</view>
 				</view>
 			</view>
-			<view class="drawer-bottom" v-if="equitycard.length>0">
+			<view class="drawer-bottom" v-if="hasUsableCard">
 				<view class="drawer-bottom-rank">已选<text class="choice-num">{{totalNum}}</text>张 预计排名提升<text class="rnak-red">{{rankUp.old_rank}}名→{{rankUp.new_rank}}名</text></view>
 				<view class="drawer-bottom-btn" @click="onClickConfirmUse">确认使用</view>
 			</view>
 			<view class="drawer-bottom" v-else>
 				<view class="drawer-bottom-rank">暂无权重卡可用</view>
-				<view class="drawer-bottom-btn" @click="redirectToMall">确认使用</view>
+				<view class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
 			</view>
 		</bottomDrawer>
 
@@ -93,6 +93,9 @@
 		}
 		destroyed(){
 			clearInterval(this.cDInterval)
+		}
+		public get hasUsableCard() : boolean {
+			return this.equitycard.length>0&&this.equitycard.some((item:any)=>item.remaining_quantity>0)
 		}
 		redirectToMall(){
 			uni.redirectTo({url:"/pages/merchant/mall/index"});

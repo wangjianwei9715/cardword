@@ -35,7 +35,7 @@
 					<view v-show="waitUpload" class="up-pic-del" @click="uploadImg=''"></view>
 				</view>
 			</view>
-			<view class="drawer-bottom" v-if="hasCard">
+			<view class="drawer-bottom" v-if="hasUsableCard">
 				<view class="drawer-bottom-rank">
 					共{{notStart ?selectedHour:adData.totalHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
 				</view>
@@ -110,8 +110,8 @@
 		public get waitUploadOrReview() : boolean {
 			return [stateMap.waitUpload,stateMap.waitReview].includes(this.adData.state)
 		}
-		public get hasCard() : boolean {
-			return this.adCardList.length>0
+		public get hasUsableCard() : boolean {
+			return this.adCardList.length>0&&this.adCardList.some((item:any)=>item.remaining_quantity>0)
 		}
 		public get selectedHour() : number {
 			return this.adCardList.reduce((total:number,item:any) => total+(item.num*item.hour) , 0)
