@@ -40,8 +40,7 @@
 					共{{notStart ?selectedHour:adData.totalHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
 				</view>
 				<view :class="buttonData.class" @click="buttonData.clickHandler">
-					{{ notStart ? `${ adFull? "广告位已满" : `确认使用（可申请广告位${adData.now_num}/${adData.limit_num}）`}` 
-					:buttonData.text }} 
+					{{ buttonData.text }} 
 					<u-count-down v-if="waitUpload" :time="countDown(adData.coverUpOverTime)" format="mm:ss" @finish="onFinish"></u-count-down>
 				</view>
 			</view>
@@ -87,7 +86,7 @@
 				clickHandler : ()=>{}
 			},
 			[stateMap.inEffect]:{
-				text : `续费时长（${this.useHour}/${this.maxAdHour}h)`,
+				text : "",
 				clickHandler : this.onClickConfirmRenew
 			}
 		}
@@ -104,6 +103,9 @@
 		public get waitUpload() : boolean {
 			return this.adData.state==stateMap.waitUpload
 		}
+		public get inEffect() : boolean {
+			return this.adData.state==stateMap.inEffect
+		}
 		public get adFull() : boolean {
 			return this.adData.now_num>=this.adData.limit_num;
 		}
@@ -117,13 +119,18 @@
 			return this.adCardList.reduce((total:number,item:any) => total+(item.num*item.hour) , 0)
 		}
 		public get useHour() : number {
-			const selectHour = this.adCardList.reduce((total:number,item:any) => total+item.hour , 0);
-			const hour = this.adData.totalHour + selectHour;
+			const hour = this.adData.totalHour + this.selectedHour;
 			return hour
 		}
 		public get buttonData():{[x:string]:any} {
 			const { state } = this.adData;
-			const { notStart, waitUpload, waitReview } = stateMap;
+			const { notStart, waitUpload, waitReview, inEffect } = stateMap;
+			if(this.notStart){
+				this.buttonConfig[notStart].text = this.adFull? "广告位已满" : `确认使用（可申请广告位${this.adData.now_num}/${this.adData.limit_num}）`
+			}
+			if(this.inEffect){
+				this.buttonConfig[inEffect].text = `续费时长（${this.useHour}/${this.maxAdHour}h)`
+			}
 			return {
 				class: {
 					'drawer-bottom-btn': true,
@@ -157,7 +164,7 @@
 			this.onClickConfirmUse(true)
 		}
 		onClickConfirmUse(renew=false){
-			if(this.selectedHour==0 || this.adFull) return;
+			if(this.selectedHour==0 || (this.adFull&&!this.inEffect)) return;
 			if(renew && this.useHour > maxAdHour){
 				uni.showToast({title:"超出可续费时间,请重新确认",icon:"none"})
 				return;
@@ -186,7 +193,7 @@
 			app.platform.UIClickFeedBack();
 			app.http.Post(`merchant/me/adCard/upload/cover/${this.adData.adLogId}`,{cover:this.uploadImg},(res:any)=>{
 				uni.showToast({title:"提交成功，请等待审核",icon:"none"})
-				this.adData.state=stateMap.waitReview
+				this.getList()
 			})
 		}
 		onFinish(){
