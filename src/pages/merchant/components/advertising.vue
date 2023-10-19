@@ -5,16 +5,12 @@
 				<view class="drawer-header-name">使用后在售期间可投放广告页至首页（单商品最高累计可投放{{maxAdHour}}小时）</view>
 			</view>
 			<view class="drawer-center-list" v-show="!waitUploadOrReview">
-				<view class="drawer-center-item" v-for="(item,index) in adCardList" :key="index">
+				<view class="drawer-center-item" v-for="(item,index) in usableAdCardList" :key="index">
 					<view class="drawer-item-box">
 						<view class="drawer-item-surplus">剩{{item.remaining_quantity}}次</view>
 						<view>
 							<view class="drawer-item-num">广告位</view>
 							<view class="drawer-item-time">{{item.hour}}小时</view>
-						</view>
-						<view class="drawer-item-inuse" v-if="item.state==2">
-							生效中
-							<u-count-down :time="countDown(item.end_time)" format="HH:mm:ss" @finish="onFinish"></u-count-down>
 						</view>
 					</view>
 					<view class="drawer-item-operate">
@@ -35,18 +31,21 @@
 					<view v-show="waitUpload" class="up-pic-del" @click="uploadImg=''"></view>
 				</view>
 			</view>
-			<view class="drawer-bottom" v-if="hasUsableCard">
-				<view class="drawer-bottom-rank">
-					共{{notStart ?selectedHour:adData.totalHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
+			
+			<view class="drawer-bottom" >
+				<view v-if="inEffect" class="drawer-bottom-rank">
+					<text>生效中：</text><u-count-down :time="countDown(adData.failure_at)" format="HH:mm:ss" @finish="onFinish"></u-count-down>，<text>在售期间/倒计时结束前</text>有效
 				</view>
-				<view :class="buttonData.class" @click="buttonData.clickHandler">
+				<view v-else-if="hasUsableCard" class="drawer-bottom-rank" >
+					共{{notStart ? selectedHour:adData.totalHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
+				</view>
+				<view v-else class="drawer-bottom-rank">暂无广告卡可用</view>
+
+				<view v-if="hasUsableCard" :class="buttonData.class" @click="buttonData.clickHandler">
 					{{ buttonData.text }} 
 					<u-count-down v-if="waitUpload" :time="countDown(adData.coverUpOverTime)" format="mm:ss" @finish="onFinish"></u-count-down>
 				</view>
-			</view>
-			<view class="drawer-bottom" v-else>
-				<view class="drawer-bottom-rank">暂无广告卡可用</view>
-				<view class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
+				<view v-else class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
 			</view>
 		</bottomDrawer>
 	</view>
@@ -109,11 +108,16 @@
 		public get adFull() : boolean {
 			return this.adData.now_num>=this.adData.limit_num;
 		}
+		
+		public get usableAdCardList() : string {
+			return this.adCardList.filter((item:any)=>item.remaining_quantity>0)
+		}
+		
 		public get waitUploadOrReview() : boolean {
 			return [stateMap.waitUpload,stateMap.waitReview].includes(this.adData.state)
 		}
 		public get hasUsableCard() : boolean {
-			return this.adCardList.length>0&&this.adCardList.some((item:any)=>item.remaining_quantity>0)
+			return this.adCardList.length>0 && this.adCardList.some((item:any)=>item.remaining_quantity>0)
 		}
 		public get selectedHour() : number {
 			return this.adCardList.reduce((total:number,item:any) => total+(item.num*item.hour) , 0)
@@ -275,6 +279,10 @@
 		font-weight: 600 !important;
 		color: #FFFFFF !important;
 		margin-left: 10rpx;
+	}
+	.good-act-content .drawer-bottom-rank /deep/ .u-count-down__text{
+		font-size: 23rpx !important;
+		color:#FA1545 !important
 	}
 	.drawer-center-list{
 		width: 100%;
