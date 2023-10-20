@@ -16,19 +16,29 @@
         <muqian-lazyLoad class="img" borderRadius="3rpx" :src="cardImg[item.tp]"></muqian-lazyLoad>
         <view class="goodsInfoWrap_right">
           <view class="goodsInfoWrap_right_goodsName">
-            <view class="name u-line-1">
-              {{ item.tp==1 ? `广告卡` : `${item.weight}权重卡`}}{{item.hour+'小时 * '+item.num}}
+            <!-- 广告卡 -->
+            <view v-if="isAdCard(item.tp)" class="name u-line-1" >
+              累计使用{{item.num}}张 <text @click="onClickShowModal(item)">详情</text>
             </view>
-            <view class="state">{{
-                logStateMap[String(item.logState)]
-            }}</view>
+            <view v-else class="name u-line-1" >
+              {{ item.weight+"权重卡"+item.hour+"小时 * "+item.num }}
+            </view>
+
+            <view class="state">{{ logStateMap[String(item.logState)] }}</view>
           </view>
+
           <view class="goodsInfoWrap_right_exchangeTime">
             {{item.goodsCode!=""?`商品ID：${item.goodsCode}`:"用于商家主页"}}
           </view>
-          <view class="goodsInfoWrap_right_price">
+          <!-- 广告卡 -->
+          <view v-if="isAdCard(item.tp)" class="goodsInfoWrap_right_ad" >
+            <view class="inline color-red">发起时间 {{ $u.timeFormat(item.effective_at,"mm.dd hh:MM") }}</view>
+            <view class="inline">使用后累计 <text class="color-red">{{item.afterHour}}小时</text></view>
+          </view>
+          <view v-else class="goodsInfoWrap_right_price" >
             开始结束时间{{ $u.timeFormat(item.effective_at,"mm.dd hh:MM") }} - {{ $u.timeFormat(item.failure_at,"mm.dd hh:MM") }}
           </view>
+
         </view>
       </view>
     </view>
@@ -38,6 +48,12 @@
     <u-picker ref="stateShowPicker" keyName="label" @confirm="confirmSelect($event, 'state')" :show="stateShow"
       :columns="stateOption" @close="stateShow = false" @cancel="stateShow = false"></u-picker>
     <logisticsPop :visible.sync="visible" :code="wuliuCode" />
+
+    <u-modal :show="modalData.show" title="详情" confirmText="我知道了" :closeOnClickOverlay="true" @close="modalData.show=false" @confirm="modalData.show=false">
+			<view class="slot-content">
+				<rich-text :nodes="modalData.content"></rich-text>
+			</view>
+		</u-modal>
   </view>
 </template>
 
@@ -69,6 +85,10 @@ export default class ClassName extends BaseNode {
   stateShow: boolean = false;
   visible: boolean = false
   wuliuCode: string = ""
+  modalData = {
+    show:false,
+    content:""
+  }
   onLoad(query: any) {
     this.reqNewData();
     this.onEventUI("mallOrderChange", (res: any) => {
@@ -89,7 +109,6 @@ export default class ClassName extends BaseNode {
       this.reqNewData();
     }
   }
-  onShow() { }
   private get leftText() {
     const findItem: any = goodTpOption.find(
       (item: any) => item.value == this.queryParams.tp
@@ -101,6 +120,9 @@ export default class ClassName extends BaseNode {
       (item: any) => item.value == this.queryParams.state
     );
     return findItem.label;
+  }
+  isAdCard(tp:number){
+    return tp==1
   }
   changeOrderDetail(code: string, orderDetail: any) {
     const index: number = this.awardList.findIndex((item: any) => {
@@ -143,6 +165,13 @@ export default class ClassName extends BaseNode {
         : this.awardList.push(...reqList);
       cb && cb();
     });
+  }
+  onClickShowModal(item:any){
+    const content = item.adCardList.join("<br>")
+    this.modalData = {
+      show:true,
+      content
+    }
   }
 }
 </script>
@@ -242,6 +271,11 @@ page {
         font-family: PingFang SC;
         font-weight: 400;
         color: #333333;
+        text{
+          text-decoration:underline;
+          color:#409EFF;
+          margin-left: 20rpx;
+        }
       }
 
       .state {
@@ -266,6 +300,20 @@ page {
       font-family: PingFang SC;
       font-weight: 400;
       color: #fa1545;
+    }
+    &_ad {
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      .inline,text{
+        font-size: 20rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+      }
+      .color-red{
+        color: #fa1545;
+      }
     }
   }
 
