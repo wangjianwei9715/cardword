@@ -19,6 +19,7 @@
 						<view class="operate-btn" @click="onClickAddNum(item)"><image  class="icon-add" src="@/static/merchant/icon_add.png" /></view>
 					</view>
 				</view>
+				<view v-if="!hasUsableCard&&inEffect" class="nouse-card">暂无可用的广告卡</view>
 			</view>
 			<view class="drawer-center-list" v-show="waitUploadOrReview">
 				<view v-if="!uploadImg&&waitUpload" class="up-box" @click="addImage()">
@@ -27,7 +28,7 @@
 					</view>
 				</view>
 				<view v-else class="ad-image-box">
-					<muqian-lazyLoad  class="ad-image-box" mode="aspectFit" :src="decodeURIComponent(waitUpload?uploadImg:adData.cover)" borderRadius="3rpx" preview/>
+					<muqian-lazyLoad  class="ad-image-box" mode="aspectFit" :src="waitUpload?uploadImg:adData.cover" borderRadius="3rpx" preview/>
 					<view v-show="waitUpload" class="up-pic-del" @click="uploadImg=''"></view>
 				</view>
 			</view>
@@ -102,6 +103,9 @@
 		public get waitUpload() : boolean {
 			return this.adData.state==stateMap.waitUpload
 		}
+		public get waitReview() : boolean {
+			return this.adData.state==stateMap.waitReview
+		}
 		public get inEffect() : boolean {
 			return this.adData.state==stateMap.inEffect
 		}
@@ -117,7 +121,8 @@
 			return [stateMap.waitUpload,stateMap.waitReview].includes(this.adData.state)
 		}
 		public get hasUsableCard() : boolean {
-			return this.adCardList.length>0 && this.adCardList.some((item:any)=>item.remaining_quantity>0)
+			const hasCard = this.adCardList.length>0 && this.adCardList.some((item:any)=>item.remaining_quantity>0)
+			return (hasCard || this.waitUpload || this.waitReview)
 		}
 		public get selectedHour() : number {
 			return this.adCardList.reduce((total:number,item:any) => total+(item.num*item.hour) , 0)
@@ -245,6 +250,7 @@
 		.drawer-bottom-rank{
 			width: 100%;
 			height:80rpx;
+			line-height: 80rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -281,6 +287,8 @@
 		margin-left: 10rpx;
 	}
 	.good-act-content .drawer-bottom-rank /deep/ .u-count-down__text{
+		height:80rpx;
+		line-height: 80rpx;
 		font-size: 23rpx !important;
 		color:#FA1545 !important
 	}
@@ -432,5 +440,13 @@
 		height:100rpx;
 		background: url(@/static/illustration/icon_upload.png) no-repeat center / 100% 100%;
 		margin:0 auto;
+	}
+	.nouse-card{
+		width: 100%;
+		text-align: center;
+		height: 500rpx;
+		line-height: 500rpx;
+		color:#959695;
+		font-size: 30rpx;
 	}
 </style>
