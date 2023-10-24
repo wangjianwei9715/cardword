@@ -19,32 +19,32 @@
 						<view class="operate-btn" @click="onClickAddNum(item)"><image  class="icon-add" src="@/static/merchant/icon_add.png" /></view>
 					</view>
 				</view>
-				<view v-if="!hasUsableCard&&inEffect" class="nouse-card">暂无可用的广告卡</view>
+				<view v-if="!hasUsableCard&&currentState.inEffect" class="nouse-card">暂无可用的广告卡</view>
 			</view>
 			<view class="drawer-center-list" v-show="waitUploadOrReview">
-				<view v-if="!uploadImg&&waitUpload" class="up-box" @click="addImage()">
+				<view v-if="!uploadImg&&currentState.waitUpload" class="up-box" @click="addImage()">
 					<view class="up-center">
 						<view class="icon-upload"></view>
 					</view>
 				</view>
 				<view v-else class="ad-image-box">
-					<muqian-lazyLoad  class="ad-image-box" mode="aspectFit" :src="waitUpload?uploadImg:adData.cover" borderRadius="3rpx" preview/>
-					<view v-show="waitUpload" class="up-pic-del" @click="uploadImg=''"></view>
+					<muqian-lazyLoad  class="ad-image-box" mode="aspectFit" :src="currentState.waitUpload?uploadImg:adData.cover" borderRadius="3rpx" preview/>
+					<view v-show="currentState.waitUpload" class="up-pic-del" @click="uploadImg=''"></view>
 				</view>
 			</view>
 			
 			<view class="drawer-bottom" >
-				<view v-if="inEffect" class="drawer-bottom-rank">
+				<view v-if="currentState.inEffect" class="drawer-bottom-rank">
 					<text>生效中：</text><u-count-down :time="countDown(adData.failure_at)" format="HH:mm:ss" @finish="onFinish"></u-count-down>，<text>在售期间/倒计时结束前</text>有效
 				</view>
 				<view v-else-if="hasUsableCard" class="drawer-bottom-rank" >
-					共{{notStart ? selectedHour:adData.totalHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
+					共{{currentState.notStart ? selectedHour:adData.totalHour}}小时,广告图审核通过后开始计时，<text>在售期间/倒计时结束前</text>有效
 				</view>
 				<view v-else class="drawer-bottom-rank">暂无广告卡可用</view>
 
 				<view v-if="hasUsableCard" :class="buttonData.class" @click="buttonData.clickHandler">
 					{{ buttonData.text }} 
-					<u-count-down v-if="waitUpload" :time="countDown(adData.coverUpOverTime)" format="mm:ss" @finish="onFinish"></u-count-down>
+					<u-count-down v-if="currentState.waitUpload" :time="countDown(adData.coverUpOverTime)" format="mm:ss" @finish="onFinish"></u-count-down>
 				</view>
 				<view v-else class="drawer-bottom-btn" @click="redirectToMall">去积分中心兑换</view>
 			</view>
@@ -97,32 +97,26 @@
 				this.getList()
 			}
 		}
-		public get notStart() : boolean {
-			return this.adData.state==stateMap.notStart
-		}
-		public get waitUpload() : boolean {
-			return this.adData.state==stateMap.waitUpload
-		}
-		public get waitReview() : boolean {
-			return this.adData.state==stateMap.waitReview
-		}
-		public get inEffect() : boolean {
-			return this.adData.state==stateMap.inEffect
+		public get currentState(): { [key: string]: boolean } {
+			return {
+				notStart: this.adData.state === stateMap.notStart,
+				waitUpload: this.adData.state === stateMap.waitUpload,
+				waitReview: this.adData.state === stateMap.waitReview,
+				inEffect: this.adData.state === stateMap.inEffect
+			};
 		}
 		public get adFull() : boolean {
 			return this.adData.now_num>=this.adData.limit_num;
 		}
-		
 		public get usableAdCardList() : string {
 			return this.adCardList.filter((item:any)=>item.remaining_quantity>0)
 		}
-		
 		public get waitUploadOrReview() : boolean {
 			return [stateMap.waitUpload,stateMap.waitReview].includes(this.adData.state)
 		}
 		public get hasUsableCard() : boolean {
 			const hasCard = this.adCardList.length>0 && this.adCardList.some((item:any)=>item.remaining_quantity>0)
-			return (hasCard || this.waitUpload || this.waitReview)
+			return (hasCard || this.currentState.waitUpload || this.currentState.waitReview)
 		}
 		public get selectedHour() : number {
 			return this.adCardList.reduce((total:number,item:any) => total+(item.num*item.hour) , 0)
@@ -134,10 +128,10 @@
 		public get buttonData():{[x:string]:any} {
 			const { state } = this.adData;
 			const { notStart, waitUpload, waitReview, inEffect } = stateMap;
-			if(this.notStart){
+			if(this.currentState.notStart){
 				this.buttonConfig[notStart].text = this.adFull? "广告位已满" : `确认使用（可申请广告位${this.adData.now_num}/${this.adData.limit_num}）`
 			}
-			if(this.inEffect){
+			if(this.currentState.inEffect){
 				this.buttonConfig[inEffect].text = `续费时长（${this.useHour}/${this.maxAdHour}h)`
 			}
 			return {
@@ -170,15 +164,16 @@
 			item.num++;
 		}
 		onClickConfirmUse(){
-			if(this.selectedHour==0 || (this.adFull&&!this.inEffect)) return;
-			if(this.inEffect && this.useHour > maxAdHour){
+			const { inEffect } = this.currentState
+			if(this.selectedHour==0 || (this.adFull&&!inEffect)) return;
+			if(inEffect && this.useHour > maxAdHour){
 				uni.showToast({title:"超出可续费时间,请重新确认",icon:"none"})
 				return;
 			}
 			app.platform.UIClickFeedBack(); 
 			uni.showModal({
 				title: '提示',
-				content: `是否确认${this.inEffect?"续费":"申请"}广告位`,
+				content: `是否确认${inEffect?"续费":"申请"}广告位`,
 				success:  (res)=> {
 					if (res.confirm) {
 						const params = {
@@ -209,7 +204,7 @@
 		getList(){
 			app.http.Get('merchant/me/adCard/list',{goodCode:this.goodCode},({list,...rest}:any)=>{
 				this.adData = rest;
-				this.adCardList = list.map( (x:any) => ({...x,num:0}) )
+				this.adCardList = list ? list.map( (x:any) => ({...x,num:0}) ) : [];
 			})
 		}
 	}
