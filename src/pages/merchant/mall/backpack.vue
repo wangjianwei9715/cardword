@@ -66,7 +66,7 @@ export default class ClassName extends BaseNode {
     totalPage: number = 0;
     queryParams: any = {
         pageIndex: 1,
-        pageSize: 15,
+        pageSize: 20,
         tp: 100,
         state: 1
     }
