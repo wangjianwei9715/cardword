@@ -61,14 +61,11 @@
 			this.current = val.text.seqIndex-1
 		}
 		created(){
-		}
-		mounted(){
-		}
-		destroyed(){
+			this.current = this.noData.text.seqIndex-1
 		}
 		public get sizeData() : {[x:string]:any} {
 			const num = this.binaryPeer.length;
-			const size = num>10?"base":(num<=5?"mini":"small");
+			const size = num>10?"base":(num<9?"mini":"small");
 			return SizeMap[size];
 		}
 		public get boxStyle() : {[x:string]:any} {

@@ -305,6 +305,8 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding-top:100rpx;
+		position: relative;
+		z-index: 3;
 	}
 	.upload-box{
 		width: 662rpx;
@@ -323,6 +325,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+
 		}
 		.icon-left{
 			width: 25rpx;
