@@ -19,29 +19,27 @@
 					<view class="icon-right" @click="$u.throttle(onClickNext,1000)"></view>
 				</view>
 				<illUpload :reward="noData.text.point" :illustration="noData.illustration" :frontPic.sync="frontPic" :backPic.sync="backPic" :uploadable="hasUpload" @up="onClickUp" @next="onClickNext" @peerTo="onClickMovePeerTo"/>
-				<view class="upload-card-info">
-					<view class="card-title">{{noData.text.player}}</view>
-					<view class="card-set u-line-2">{{noData.text.split?`${noData.text.seqIndex}/`:''}}{{noData.text.seq==0?"无限":noData.text.seq}}编，{{noData.text.cardSet}}</view>
-					<view class="card-seq">
-						<image v-if="noData.text.cardSetLogo" class="logo-pic" :src="$parsePic(noData.text.cardSetLogo)"/>
+				<seqSwiper v-if="noData.text.split" :noData="noData" :binaryPeer="binaryPeer" @change="onClickPeerTo"/>
+				<view class="card-info-box">
+					<view class="upload-card-info">
+						<view class="card-title">{{noData.text.player}}</view>
+						<view class="card-set u-line-2">{{noData.text.split?`${noData.text.seqIndex}/`:''}}{{noData.text.seq==0?"无限":noData.text.seq}}编，{{noData.text.cardSet}}</view>
+						<view class="card-seq">
+							<image v-if="noData.text.cardSetLogo" class="logo-pic" :src="$parsePic(noData.text.cardSetLogo)"/>
+						</view>
+						<muqian-lazyLoad v-if="noData.text.teamLogo" class="card-teamlogo" mode="aspectFit" :src="noData.text.teamLogo" />
 					</view>
-					<muqian-lazyLoad v-if="noData.text.teamLogo" class="card-teamlogo" mode="aspectFit" :src="decodeURIComponent(noData.text.teamLogo)" />
 				</view>
 				<view v-if="noData.illustration && noData.illustration.author && noData.illustration.author.name" class="upload-author">
 					由 <muqian-lazyLoad  class="upload-author-avatar" :src="decodeURIComponent(noData.illustration.author.avatar)" borderRadius="50%"/>
 					<text class="upload-author-name">{{noData.illustration.author.name}}</text>提供
 				</view>
+				<view v-show="!noData.illustration" class="up-btn" :class="{'up-ok':frontPic}" @click="onClickUpload">{{ hasUpload ?"补充图鉴":"请等待审核"}}</view>
 			</view>
 		</view>
-		<view class="upload-right" v-if="noData.text.split">
-			<statusbar/>
-			<scroll-view class="up-scroll-box" :scroll-y="true">
-				<view class="up-scroll-index" :class="{'current-scroll':(index+1)==noData.text.seqIndex,'haspic':binaryPeer[index]>0}" v-for="(item,index) in noData.text.seq" :key='index' @click="onClickPeerTo(index+1)">
-					{{index+1}}{{(index+1)==noData.text.seqIndex?`/${noData.text.seq}`:''}}
-				</view>
-			</scroll-view>
-		</view>
-		<view v-show="!noData.illustration" class="up-btn" :class="{'up-ok':frontPic}" @click="onClickUpload">{{ hasUpload ?"补充图鉴":"请等待审核"}}</view>
+
+		
+		
 	</view>
 </template>
 
@@ -50,8 +48,9 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	import illUpload from './components/illUpload.vue';
+	import seqSwiper from './components/seqSwiper.vue'
 	@Component({
-		components:{illUpload}
+		components:{illUpload,seqSwiper}
 	})
 	export default class ClassName extends BaseNode {
 		noCode="";
@@ -233,8 +232,16 @@
 </script>
 
 <style lang="scss">
+	@mixin line{
+		content: "";
+		width: 538rpx;
+		height:5rpx;
+		background:url(@/static/illustration/line.png) no-repeat center/ 100% 100%;
+		position: absolute;
+		left:0;
+	}
 	page{
-        background:#000000;
+        background:#0E0E0E;
     }
 	.content{
 		width: 100%;
@@ -244,7 +251,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding:0 34rpx;
-		background:#000000;
+		background:#0E0E0E;
 		position: fixed;
 		left:0;
 		top:0;
@@ -256,6 +263,8 @@
 			justify-content: space-between;
 			box-sizing: border-box;
 			padding-top: 26rpx;
+			position: relative;
+			z-index: 1;;
 		}
 		.icon-close{
 			width: 35rpx;
@@ -282,20 +291,35 @@
 			margin-top: 8rpx;
 		}
 	}
+	.header-box::after{
+		content:"";
+		width: 750rpx;
+		height:174rpx;
+		position: absolute;
+		left:0;
+		top:0;
+		z-index: 0;
+		background: url(@/static/illustration/header_bg.png) no-repeat center / 100% 100%;
+	}
 	.center{
 		width: 100%;
 		box-sizing: border-box;
 		padding-top:100rpx;
 	}
 	.upload-box{
-		width: 100%;
+		width: 662rpx;
 		box-sizing: border-box;
 		margin:0 auto;
+		padding-bottom: 40rpx;
+		background: #111111;
+		box-shadow: 0rpx 0rpx 39rpx 2rpx #000000;
+		border-radius: 8rpx;
+		position: relative;
 		.upload-header{
 			width: 100%;
 			height:130rpx;
 			box-sizing: border-box;
-			padding:0 86rpx;
+			padding:0 180rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -320,18 +344,29 @@
 			color: #FFFFFF;
 		}
 	}
-	.upload-card-info{
+	.card-info-box{
 		width: 538rpx;
-		height: 221rpx;
-		background: rgba(39, 39, 39, 1);
-		border: 0.8px solid #848484;
-		border-radius: 3rpx;
 		margin:0 auto;
-		margin-top: 51rpx;
+		margin-top: 44rpx;
+		box-sizing: border-box;
+		position: relative;
+	}
+	.card-info-box::before{
+		@include line;
+		top:-21rpx;
+	}
+	.card-info-box::after{
+		@include line;
+		bottom:-21rpx;
+	}
+	.upload-card-info{
+		width: 100%;
+		height: 221rpx;
+		background: #151515;
+		border-radius: 3rpx;
 		position: relative;
 		box-sizing: border-box;
 		padding:30rpx 40rpx 27rpx 40rpx;
-		position: relative;
 		overflow: hidden;
 		.card-title{
 			width: 100%;
@@ -385,6 +420,7 @@
 			bottom:-100rpx;
 			right:-100rpx;
 			opacity: 0.2;
+			z-index: 2;
 		}
 	}
 	.upload-author{
@@ -398,7 +434,7 @@
 		font-weight: 400;
 		color: #FFFFFF;
 		margin:0 auto;
-		margin-top: 29rpx;
+		margin-top: 30rpx;
 		.upload-author-avatar{
 			width: 31rpx;
 			height:31rpx;
@@ -409,60 +445,20 @@
 		}
 	}
 	.up-btn{
-		width: 681rpx;
-		height: 92rpx;
-		background: #C0C0C0;
-		border-radius: 5rpx;
-		font-size: 33rpx;
+		width: 578rpx;
+		height: 146rpx;
+		box-sizing: border-box;
+		background: url(@/static/illustration/btn_gray.png) no-repeat center / 100% 100%;
+		font-size: 34rpx;
 		font-family: PingFang SC;
 		font-weight: 600;
 		color: #FFFFFF;
-		line-height: 92rpx;
+		line-height: 130rpx;
 		text-align: center;
 		margin:0 auto;
-		margin-top: 92rpx;
+		margin-top: 30rpx;
 	}
 	.up-ok{
-		background:#FA1545;
-	}
-	.upload-right{
-		width: 62rpx;
-		height:708rpx;
-		position: fixed;
-		right:0;
-		top:294rpx;
-		.up-scroll-box{
-			width: 62rpx;
-			height:708rpx;
-		}
-		.up-scroll-index{
-			width: 47rpx;
-			height: 29rpx;
-			border: 1px dashed #FFFFFF;
-			border-radius: 1rpx;
-			box-sizing: border-box;
-			font-size: 21rpx;
-			font-family: PingFang SC;
-			font-weight: 400;
-			color: #F5F5F5;
-			margin-bottom: 46rpx;
-			float: right;
-			box-sizing: border-box;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-		}
-		.haspic{
-			background: #707070;
-			border: 1px solid #707070;
-		}
-		.current-scroll{
-			width: 62rpx;
-			height: 32rpx;
-			background: #FA1545 !important;
-			border-radius: 1rpx;
-			border: 1px solid #FA1545 !important;
-			font-weight: 600;
-		}
+		background: url(@/static/illustration/btn.png) no-repeat center / 100% 100%;
 	}
 </style>
