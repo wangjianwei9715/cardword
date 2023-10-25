@@ -1,12 +1,3 @@
-/*
- * @FilePath: \jichao_app_2\src\net\HttpRequest.ts
- * @Author: wjw
- * @Date: 2022-12-09 11:24:22
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-10-13 14:59:44
- * Copyright: 2023 .
- * @Descripttion: 
- */
 import { app } from '@/app';
 import axios, { AxiosInstance } from 'axios';
 import {
@@ -90,20 +81,11 @@ export default class HttpRequest {
 	private constructor() {
 		var domain = ''
 		domain = app.bussinessApiDomain
-		let systemInfo = app.platform.getAppInfo();
-
+		const { headers } = this.httpOpsign;
 		this.axiosInstance = axios.create({
 			baseURL: domain,
 			timeout: 6000,
-			headers: {
-				appdevice: 'android',
-				appversion: '20210406',
-				versionname: systemInfo.versionname || '1.0.0',
-				'device-density': systemInfo['device-density'] || '1.5',
-				model: systemInfo.model || 'windows',
-				'os-version': systemInfo.os_version || '10',
-				plat: systemInfo.plat || 'official'
-			},
+			headers,
 			adapter: (config: any) => {
 				return new Promise((resolve, reject) => {
 					let settle = require('axios/lib/core/settle');
@@ -133,13 +115,10 @@ export default class HttpRequest {
 		// 添加请求拦截器
 		this.axiosInstance.interceptors.request.use((config) => {
 			// 在发送请求之前做些什么
-			const { opKey, bussinessApiDomain, dataApiDomain, funcApiDomain, version, update_url, localTest } = app; 
+			const { opKey, bussinessApiDomain, dataApiDomain, funcApiDomain, update_url, localTest } = app; 
 			const ksjUserId = uni.getStorageSync('ksjUserId');
 			if (!uni.$u.test.isEmpty(ksjUserId)) {
 				config.headers['ksjUserId'] = ksjUserId;
-			}
-			if (version != '' && version != '1.0.0') {
-				config.headers['version'] = version;
 			}
 			app.opKey = opKey || uni.getStorageSync('app_opk'); 
 			let url = config.url + '';

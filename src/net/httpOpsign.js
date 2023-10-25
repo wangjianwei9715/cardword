@@ -1,6 +1,7 @@
 import { app } from '@/app';
 import { Md5 } from 'ts-md5';
 export default class HttpOpsign{
+    headers = {}
     debounceData = ['dataApi/point/exchange/goodlist', 'dataApi/selectRank/award/list','dataApi/cardCircle/list']
     headersData = [
         {url:'me/certify"',name:'Content-Type',msg:'application/x-www-form-urlencoded'}, 
@@ -30,6 +31,23 @@ export default class HttpOpsign{
         '绑定Push': (config) => Md5.hashStr(`opk_${app.opKey}_${plus.push.getClientInfo().clientid}`), 
         '客服发送消息': (config) => Md5.hashStr(`opk_${app.opKey}_${config.data.bucketId}_${config.data.picUrl || ''}_${config.data.content || ''} `)
     };
+    constructor() {
+        const systemInfo = uni.getSystemInfoSync();
+        const deviceInfo = uni.getDeviceInfo();
+        const launchOptions = uni.getLaunchOptionsSync();
+        this.headers = {
+            'device-density':'1.5',
+            version: systemInfo.appVersion || app.version,
+            appVersionCode: systemInfo.appVersionCode || 'unknown',
+            deviceType: systemInfo.deviceType || 'unknown',
+            model: systemInfo.model || 'windows',
+            osVersion: systemInfo.osVersion || 'unknown',
+            plat: deviceInfo.platform || 'unknown',
+            issimulator:deviceInfo.issimulator || false,
+            system:deviceInfo.system || 'unknown', 
+            channel:launchOptions.channel || "official"
+        }
+    }
     getOpSign(config, sign, needOpKey) { 
         let params = {
             opSign:"",
