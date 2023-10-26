@@ -43,8 +43,6 @@ export default class HttpOpsign{
             model: systemInfo.model || 'windows',
             osVersion: systemInfo.osVersion || 'unknown',
             plat: deviceInfo.platform || 'unknown',
-            issimulator:deviceInfo.issimulator || false,
-            system:deviceInfo.system || 'unknown', 
             channel:launchOptions.channel || "official"
         }
     }
