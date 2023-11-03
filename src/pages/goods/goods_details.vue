@@ -35,8 +35,8 @@
 					<view class="header-right">
 						<view class="icon-end">{{goodsData.state==0?'距开售':'距结束'}}</view>
 						<view class="countdown-content">
-							<view v-if="countData.countDay>0" class="countdown-index countdown-day">{{countData.countDay}}<text>天</text></view>
-							<view class="countdown-index">{{`${countData.countHour} : ${countData.countMinute} : ${countData.countSecond}`}}</view>
+							<view v-if="countDownData.countDay>0" class="countdown-index countdown-day">{{countDownData.countDay}}<text>天</text></view>
+							<view class="countdown-index">{{`${countDownData.countHour} : ${countDownData.countMinute} : ${countDownData.countSecond}`}}</view>
 						</view>
 					</view>
 				</view>
@@ -191,7 +191,7 @@
 			<view class="btn-ck" @click="onClickResult(1)">拆卡报告</view>
 		</view>
 
-		<cardplay :operationShow="operaData.operaShow" :operaType="operaData.operaType" @operacancel="operaData.operaShow=false" />
+		<cardplay :operationShow="gamePlayData.operaShow" :operaType="gamePlayData.operaType" @operacancel="gamePlayData.operaShow=false" />
 
 		<share :operationShow="shareObj.shareShow" :shareData="shareObj.shareData" @operacancel="shareObj.shareShow=false" />
 
@@ -233,6 +233,7 @@
 	import { goodsDetailRules, goodsDetailHelp } from "@/tools/DataRules";
 	import { goodDetailSpe } from "@/tools/DataExchange"
 	import { parsePic,secondsFormat } from "@/tools/util";
+	import { GoodsClass } from "./utils/class";
 	import detailsManager from "./manager/detailsManager"
 	const Manager =  detailsManager.getIns();
 	class ShareData { shareUrl:string =''; title:string =''; summary:string =''; thumb:string ='' }
@@ -252,20 +253,20 @@
 		};
 		buyRecordList:any = [];
 		goodsDesc:any = [];
-		favorType = Manager.favorType;
-		operaData = {...Manager.operaData};
-		countData = {...Manager.countData};
-		swiperData = {...Manager.swiperData};
-		picData = {...Manager.picData}
+		favorType = false;
+		gamePlayData:any = new GoodsClass.GamePlay();
+		countDownData:any = new GoodsClass.CountDown();
+		swiperData:any = new GoodsClass.Swiper();
+		picData:any = new GoodsClass.Pic();
 		tipBtn = [Manager.tipBtn[0]];
 		goodCode = '';
 		goodsData: any = [];
-		choiceTeamData = {...Manager.choiceTeamData};
-		choiceTRData = {...Manager.choiceTRData};
+		choiceTeamData:any = new GoodsClass.ChoiceTeam();
+		choiceTRData:any = new GoodsClass.ChoiceTR();
 		payChannel: any = [];// 支付方式
 		showDrawer = false;// 底部抽屉
 		source="";
-		planData = {...Manager.planData}
+		planData = new GoodsClass.Plan()
 		getCouponList:any = [];// 可领取优惠券列表
 		userData = app.data;
 		cheduiData = {};
@@ -312,7 +313,7 @@
 		// 数据详情赋值
 		getGoodData(cb?:Function) {
 			const goodCode = this.goodCode;
-			clearInterval(this.countData.countInterval);
+			clearInterval(this.countDownData.countInterval);
 			app.http.GetWithCrypto(`dataApi/good/${goodCode}/detail`, {referer:this.goodsData!=""?"PageRefresh":this.referer}, (data: any) => {
 				if (!data.good) {
 					uni.showToast({ title: '无此商品', icon: 'none' })
@@ -332,7 +333,7 @@
 					})
 				}
 				// 倒计时
-				this.countData.countDown = state == 0 ? (leftsec-(overAt-startAt)) : leftsec;
+				this.countDownData.countDown = state == 0 ? (leftsec-(overAt-startAt)) : leftsec;
 				this.getGoodsImage();
 				this.getCountDown();
 				this.getGoodsSpe();
@@ -394,11 +395,11 @@
 		 * 倒计时定时器
 		 */
 		getCountDown() {
-			const { countData,goodsData } = this;
+			const { countDownData,goodsData } = this;
 			setCountDownStr()
-			countData.countInterval = this.scheduler(() => {
-				if (countData.countDown > 0) {
-					countData.countDown--;
+			countDownData.countInterval = this.scheduler(() => {
+				if (countDownData.countDown > 0) {
+					countDownData.countDown--;
 					setCountDownStr()
 				} else {
 					if(goodsData.state == 0){
@@ -406,16 +407,16 @@
 					} else if (goodsData.state == 1) {
 						goodsData.state = -99
 					}
-					clearInterval(countData.countInterval)
+					clearInterval(countDownData.countInterval)
 				}
 			}, 1);
 
 			function setCountDownStr() {
-				const { day, hour, minute, second } = secondsFormat(countData.countDown);
-				countData.countDay = day;
-				countData.countHour = hour;
-				countData.countMinute = minute;
-				countData.countSecond = second
+				const { day, hour, minute, second } = secondsFormat(countDownData.countDown);
+				countDownData.countDay = day;
+				countDownData.countHour = hour;
+				countDownData.countMinute = minute;
+				countDownData.countSecond = second
 			}
 		}
 		/**
@@ -569,10 +570,11 @@
 			} 
 		}
 		onClickCardPlay(item: any) {
-			const { operaData } = this;
 			if (item.id <= 2) {
-				operaData.operaShow = true;
-				operaData.operaType = item.id
+				this.gamePlayData = {
+					operaShow:true,
+					operaType:item.id
+				}
 			}
 		}
 		// 自选球队 我要选队
