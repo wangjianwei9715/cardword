@@ -313,7 +313,7 @@
 		getGoodData(cb?:Function) {
 			const goodCode = this.goodCode;
 			clearInterval(this.countData.countInterval);
-			app.http.GetWithCrypto(`dataApi/good/${goodCode}/detail`, {referer:this.referer}, (data: any) => {
+			app.http.GetWithCrypto(`dataApi/good/${goodCode}/detail`, {referer:this.goodsData!=""?"PageRefresh":this.referer}, (data: any) => {
 				if (!data.good) {
 					uni.showToast({ title: '无此商品', icon: 'none' })
 					app.navigateTo.switchTab(0)
