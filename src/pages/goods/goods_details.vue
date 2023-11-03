@@ -233,10 +233,9 @@
 	import { goodsDetailRules, goodsDetailHelp } from "@/tools/DataRules";
 	import { goodDetailSpe } from "@/tools/DataExchange"
 	import { parsePic,secondsFormat } from "@/tools/util";
-	import { GoodsClass } from "./utils/class";
+	import { Goods, Share } from "./utils/class";
 	import detailsManager from "./manager/detailsManager"
 	const Manager =  detailsManager.getIns();
-	class ShareData { shareUrl:string =''; title:string =''; summary:string =''; thumb:string ='' }
 	@Component({})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
@@ -249,24 +248,24 @@
 		goodsSpe = goodDetailSpe;
 		shareObj = {
 			shareShow:false,
-			shareData:new ShareData()
+			shareData:new Share()
 		};
 		buyRecordList:any = [];
 		goodsDesc:any = [];
 		favorType = false;
-		gamePlayData:any = new GoodsClass.GamePlay();
-		countDownData:any = new GoodsClass.CountDown();
-		swiperData:any = new GoodsClass.Swiper();
-		picData:any = new GoodsClass.Pic();
+		gamePlayData:any = Goods.GamePlay();
+		countDownData:any = Goods.CountDown();
+		swiperData:any = Goods.Swiper();
+		picData:any = Goods.Pic();
 		tipBtn = [Manager.tipBtn[0]];
 		goodCode = '';
 		goodsData: any = [];
-		choiceTeamData:any = new GoodsClass.ChoiceTeam();
-		choiceTRData:any = new GoodsClass.ChoiceTR();
+		choiceTeamData:any = Goods.ChoiceTeam();
+		choiceTRData:any = Goods.ChoiceTR();
 		payChannel: any = [];// 支付方式
 		showDrawer = false;// 底部抽屉
 		source="";
-		planData = new GoodsClass.Plan()
+		planData = Goods.Plan()
 		getCouponList:any = [];// 可领取优惠券列表
 		userData = app.data;
 		cheduiData = {};

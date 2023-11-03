@@ -1,4 +1,17 @@
 /**
+ * 分享数据
+ * @shareUrl 	分享地址
+ * @title 	    分享标题
+ * @summary 	分享内容
+ * @thumb 	    分享缩略图
+ */
+export class Share { 
+    shareUrl:string =''; 
+    title:string =''; 
+    summary:string =''; 
+    thumb:string ='' 
+}
+/**
  * 拼团玩法
  * @operaType 	玩法类型 1 = 拼团形式 2 = 随机方式
  * @operaShow 	玩法弹窗显示
@@ -129,12 +142,12 @@ class ChoiceTR {
     rData = [];
     remainder =[ ]
 };
-export const GoodsClass = {
-    GamePlay,
-    CountDown,
-    Swiper,
-    Pic,
-    Plan,
-    ChoiceTeam,
-    ChoiceTR
+export const Goods = {
+    GamePlay : ():GamePlay => new GamePlay(),
+    CountDown : ():CountDown => new CountDown(),
+    Swiper : ():Swiper => new Swiper(),
+    Pic : ():Pic => new Pic(),
+    Plan : ():Plan => new Plan(),
+    ChoiceTeam : ():ChoiceTeam => new ChoiceTeam(),
+    ChoiceTR : ():ChoiceTR => new ChoiceTR(),
 }

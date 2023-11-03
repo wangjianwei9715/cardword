@@ -16,18 +16,6 @@ export default class detailsManager {
 		},
 		{ id: 2, name: '我的卡密', url: '../../static/goods/v2/icon_order.png', class: 'order' }
 	]
-	/**
-	 * @planData            商品进度数据
-	 * @width       		{Number}     进度条宽度
-	 * @str					{String}     进度说明				
-	 */
-	planData:any = {
-		width:0,
-		str:'',
-		showMsg:true
-	}
-	private constructor() {
-    }
 	static getIns(): detailsManager {
 		if (!detailsManager.instance) {
 			detailsManager.instance = new detailsManager();
