@@ -73,10 +73,9 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion();
 		statusBarHeight = app.statusBarHeight;
 		searchTetxt = ''
 		historyList:{[x:string]:any} = [];
@@ -142,7 +141,7 @@
 				q:encodeURIComponent(this.searchTetxt),
 				sourceId:"pm.index",
 			}
-			const hash = this.kwwConfusion.lenovo(this.searchTetxt);
+			const hash = KwwConfusion.lenovo(this.searchTetxt);
 			this.lastLenovo = this.searchTetxt;
 			app.http.Get("search/lenovo",{...params,...hash},(res:any)=>{
 				this.lenovoList = res.list || [];

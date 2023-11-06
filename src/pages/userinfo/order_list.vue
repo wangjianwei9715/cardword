@@ -32,7 +32,7 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from "../../base/BaseNode.vue";
 	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
 	const OperateMap:{[x:string]:any} = {
 		"receive_good":{
 			content:'是否确认已经收货？',
@@ -52,7 +52,6 @@
 	}
 	@Component({})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion();
 		orderTab = [
 			{ id: 0, name: "全部" },
 			{ id: 1, name: "待支付" },
@@ -223,7 +222,7 @@
 				delivery: 0,
 				num: this.payItem.num,
 			};
-			const hash = this.kwwConfusion.toPayForGoodOrder(userId,this.payItem.code)
+			const hash = KwwConfusion.toPayForGoodOrder(userId,this.payItem.code)
 			if (uni.getSystemInfoSync().platform === "android") {
 				params.nativeSdk = "qmf_android";
 			}

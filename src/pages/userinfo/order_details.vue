@@ -124,10 +124,9 @@
 	import {orderState} from "@/tools/DataExchange"
 	import { orderStateDesc,orderGoodsStateStr,orderSetOperate, getGoodsPintuan } from "@/tools/switchUtil"
 	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion();
 		parsePic = parsePic;
 		getGoodsImg = getGoodsImg;
 		orderState = orderState;
@@ -493,7 +492,7 @@
 				delivery:0,
 				num:Number(this.orderData.num),
 			}
-			const hash = this.kwwConfusion.toPayForGoodOrder(userId,this.orderData.code)
+			const hash = KwwConfusion.toPayForGoodOrder(userId,this.orderData.code)
 			if(uni.getSystemInfoSync().platform === "android"){
 				params.nativeSdk = 'qmf_android'
 			}

@@ -26,19 +26,19 @@
 		getGoodsImg
 	} from "../../tools/util";
 	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
+
 	@Component({})
 	export default class ClassName extends BaseComponent {
 		@Prop({default:''})
 		goodCode:any;
 
 		getGoodsImg = getGoodsImg;
-		kwwConfusion = new KwwConfusion();
 		relativeOnce = false;
 		goodsList = [];
 		created(){//在实例创建完成后被立即调用
 			setTimeout(()=>{
-				const relativeParams = this.kwwConfusion.guessYouLike(this.goodCode);
+				const relativeParams = KwwConfusion.guessYouLike(this.goodCode);
 				this.getRelative(relativeParams)
 			},500)
 		}

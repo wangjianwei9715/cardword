@@ -35,10 +35,9 @@
 	} from "vue-property-decorator";
 	import BaseNode from '../../base/BaseNode.vue';
 	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion()
 		goodCode = '';
 		goodType = 0;
 		searchText = '';
@@ -116,7 +115,7 @@
 			if(this.scrollId!=''){
 				params.scrollId = this.scrollId;
 				params.st = this.scrollIdSt;
-				params.sn = this.kwwConfusion.goodCard(this.scrollIdSt,this.scrollId);
+				params.sn = KwwConfusion.goodCard(this.scrollIdSt,this.scrollId);
 			}
 			
 			app.http.Get("dataApi/good/"+this.goodCode+'/cards/search', params, (data: any) => {

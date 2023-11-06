@@ -2,8 +2,7 @@ import { ossStitching } from "@/pages/cardForum/func/index"
 //@ts-ignore
 import {decHex} from "@/net/Crypto.js"
 //@ts-ignore
-import KwwConfusion from "@/net/kwwConfusion.js"
-const kwwConfusion = new KwwConfusion();
+import { KwwConfusion } from "@/net/kwwConfusion.js"
 /**
  * 图片特殊处理
  * @param src String 图片路径 
@@ -12,7 +11,7 @@ const kwwConfusion = new KwwConfusion();
 export function parsePic(picUrl: string) {
 	if (!picUrl) return '';
 	const decHexSrc = decHex(decodeURIComponent(picUrl));
-	return kwwConfusion.kwwParsePic(decHexSrc);
+	return KwwConfusion.kwwParsePic(decHexSrc);
 }
 export function thumbnail(cover:string, width=100) {
     if (!cover) return cover

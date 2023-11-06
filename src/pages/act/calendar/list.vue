@@ -58,10 +58,9 @@
 	import { Component } from "vue-property-decorator";
 	import BaseNode from '../../../base/BaseNode.vue';
 	//@ts-ignore
-	import KwwConfusion from "@/net/kwwConfusion.js"
+	import { KwwConfusion } from "@/net/kwwConfusion.js"
 	@Component({})
 	export default class ClassName extends BaseNode {
-		kwwConfusion = new KwwConfusion()
 		windowWidth = 0;
 		monthScrollLeft = 0;
 		scrollLeftPx = 0;
@@ -140,7 +139,7 @@
 				pageSize:this.pageSize,
 				date:startDate,
 			}
-			const hash = this.kwwConfusion.calendar({tp,startDate,currentPage:this.currentPage,pageSize:this.pageSize})
+			const hash = KwwConfusion.calendar({tp,startDate,currentPage:this.currentPage,pageSize:this.pageSize})
 			this.httpIng = true
 			app.http.Get("dataApi/function/calendar/list", {...params,...hash}, (data: any) => {
 				if(this.currentPage == 1) this.calendaList = []

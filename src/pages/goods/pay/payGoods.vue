@@ -83,7 +83,7 @@ import payAddress from "./component/payAddress.vue";
 import payInfo from "./component/payInfo.vue";
 import payNeedKnow from "./component/payNeedKnow.vue";
 //@ts-ignore
-import KwwConfusion from "@/net/kwwConfusion.js"
+import { KwwConfusion } from "@/net/kwwConfusion.js"
 const parseJSONIfPresent = (value:any) => {
   return value ? JSON.parse(value) : null;
 }
@@ -95,7 +95,6 @@ const parseJSONIfPresent = (value:any) => {
   }
 })
 export default class ClassName extends BaseNode {
-  kwwConfusion = new KwwConfusion()
   addressData: any = [];
   payNum = 1;
   goodsData: { [x: string]: any } = [];
@@ -403,7 +402,7 @@ export default class ClassName extends BaseNode {
         params.num = Number(this.payNum); 
         break; 
     }
-    params.sn = this.kwwConfusion.confirmOrder(ts,snName,userId,goodCode);
+    params.sn = KwwConfusion.confirmOrder(ts,snName,userId,goodCode);
     if (uni.getSystemInfoSync().platform === 'android') { 
       params.nativeSdk = 'qmf_android'; 
     }
