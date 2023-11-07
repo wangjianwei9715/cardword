@@ -297,7 +297,7 @@
 			// #endif
 		}
 		onShow() {
-			if (this.goodsData != '') {
+			if (!this.firstShow) {
 				this.getGoodData();
 				this.onClickteamRandomCancel()
 			}
@@ -309,11 +309,26 @@
 				uni.stopPullDownRefresh();
 			})
 		}
+		public get firstShow () : boolean {
+			return uni.$u.test.isEmpty(this.goodsData)
+		}
+		public get getSelectType() : boolean{
+			return [10,11,12].includes(this.goodsData.pintuan_type)
+		}
+		public get getPriceStart() : boolean {
+			const { goodsData } = this
+			return goodsData.isSelect || goodsData.pintuan_type == 11 || goodsData.pintuan_type == 12
+		}
+		// 商品剩余数量
+		public get goodSurplusNum() : number {
+			const { goodsData } = this;
+			return goodsData.totalNum - (goodsData.currentNum + goodsData.lockNum)
+		}
 		// 数据详情赋值
 		getGoodData(cb?:Function) {
 			const goodCode = this.goodCode;
 			clearInterval(this.countDownData.countInterval);
-			app.http.GetWithCrypto(`dataApi/good/${goodCode}/detail`, {referer:this.goodsData!=""?"PageRefresh":this.referer}, (data: any) => {
+			app.http.GetWithCrypto(`dataApi/good/${goodCode}/detail`, {referer:this.firstShow?this.referer:"PageRefresh"}, (data: any) => {
 				if (!data.good) {
 					uni.showToast({ title: '无此商品', icon: 'none' })
 					app.navigateTo.switchTab(0)
@@ -341,16 +356,16 @@
 		}
 		getBuyRecord(){
 			// 购买记录
-			if (this.goodsData.state == 1) {
-				app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/latest_sales`,{},({list,dic}:any)=>{
-					if(list){
-						this.buyRecordList = list.map(({dicKey,time,num}:any)=>{
-							const {userName,avatar} = dic[dicKey];
-							return {time,num,userName,avatar}
-						}).filter((x:any,index:number)=>index<5);
-					}
-				})
-			}
+			if (this.goodsData.state != 1) return;
+
+			app.http.GetWithCrypto(`dataApi/good/${this.goodCode}/latest_sales`,{},({list,dic}:any)=>{
+				if(list){
+					this.buyRecordList = list.map(({dicKey,time,num}:any)=>{
+						const {userName,avatar} = dic[dicKey];
+						return {time,num,userName,avatar}
+					}).filter((x:any,index:number)=>index<5);
+				}
+			})
 		}
 		queryCoupon(){
 			const data = this.goodsData;
@@ -754,18 +769,7 @@
 				swiperData.swiperCurrent = index == 0 ? 0 : swiperData.carouselLength;
 			}
 		}
-		public get getSelectType() : boolean{
-			return [10,11,12].includes(this.goodsData.pintuan_type)
-		}
-		public get getPriceStart() : boolean {
-			const { goodsData } = this
-			return goodsData.isSelect || goodsData.pintuan_type == 11 || goodsData.pintuan_type == 12
-		}
-		// 商品剩余数量
-		public get goodSurplusNum() : number {
-			const { goodsData } = this;
-			return goodsData.totalNum - (goodsData.currentNum + goodsData.lockNum)
-		}
+		
 	}
 </script>
 
