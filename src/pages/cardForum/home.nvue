@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-08-25 14:42:10
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-09-15 18:24:48
+ * @LastEditTime: 2023-11-10 13:35:50
  * @FilePath: \card-world\src\pages\cardForum\home.nvue
  * @Description: 不使用index抽象索引
 -->
@@ -322,8 +322,11 @@ export default {
         uni.$on("loginSuccess", this.loginSuccess)
         try {
             await this.initTab()
-            await app.user.setViewerId()
-            this.reqNewData(true)
+            if (!app.viewerId) {
+                await app.user.setViewerId()
+                this.reqNewData(true)
+                return
+            }
         } catch (err) {
 
         }
@@ -390,6 +393,7 @@ export default {
             handler(tag) {
                 if (!tag || !this.current) return
                 if (this.current?.list && this.current.list.length === 0) {
+                    if (!app.viewerId) return
                     this.reqNewData(true)
                 }
                 //推荐
