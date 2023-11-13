@@ -61,6 +61,7 @@
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
 		<winningCardPopup :show.sync="showWinningCrad" />
 		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
+		<luckyBagOpenPop :popupShow.sync="luckyBagShow" :type="1" :num="ntLuckyBag"/>
 	</view>
 </template>
 
@@ -74,12 +75,14 @@
 	import winningCardPopup from './component/index/winningCardPopup.vue'
 	import openscreenAd from './component/index/openscreenAd.vue'
 	import goodsListSwiper from './component/index/goodsListSwiper.vue'
+	import luckyBagOpenPop from "../drawCard/components/popup/popup.vue"
 	@Component({components: {
 		update,
 		indexHot,
 		winningCardPopup,
 		openscreenAd,
-		goodsListSwiper
+		goodsListSwiper,
+		luckyBagOpenPop
 	},})
 	export default class Index extends BaseNode {
 		noticeList = [''];
@@ -106,6 +109,8 @@
 		scrollTop = 0;
 		scrollTopNum = 0;
 		showIndex = false;
+		luckyBagShow=false
+		ntLuckyBag=0
 		onLoad(query: any) {
 			let listeners = ['BackLogin']
 			this.register(listeners);
@@ -244,6 +249,15 @@
 						this.showWinningCrad = true;
 						uni.hideTabBar()
 					};
+					if(res.data.ntLuckyBag&&res.data.ntLuckyBag>0){
+						const date=(new Date().getMonth()+1)+"-"+new Date().getDate()
+						if (uni.getStorageSync("luckyBagTipsDay")!=date){
+							uni.setStorageSync("luckyBagTipsDay",date)
+							this.luckyBagShow=true
+							this.ntLuckyBag=res.data.ntLuckyBag
+						}
+						
+					}
 				})
 				// 我的关注商家是否有新商品
 				app.http.Get('me/fresh/followed_merchant_goods/light',{},(res:any)=>{

@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-10 11:07:44
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-13 15:44:38
+ * @LastEditTime: 2023-11-13 17:37:06
  * @FilePath: \card-world\src\pages\act\luckyBag\log.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,7 +21,7 @@
                         <view class="name">{{ item.name }}</view>
                         <view class="num">x{{ item.num }}</view>
                     </view>
-                    <view class="timeWrap">
+                    <view class="timeWrap" @click="toOrder(item)">
                         <view class="time">{{ $u.timeFormat(item.created_at, 'mm.dd hh:MM') }}</view>
                         <template v-if="tag.currentIndex == 0">
                             <view class="order">订单：{{ item.orderCode }}</view>
@@ -130,6 +130,9 @@ export default class ClassName extends BaseNode {
             app.platform.heliService({ agentExten: '' })
             return
         }
+    }
+    toOrder(item:any){
+        app.navigateTo.goOrderDetails(item.orderCode)
     }
     reqNewData(cb?: any) {
         app.http.Get(`dataApi/${this.current.url}`, this.current.queryParams, (res: any) => {

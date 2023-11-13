@@ -72,6 +72,7 @@
 			<view class="luckyBar" @click="onClickLuckyBag" v-if="goodsData.bit&&(goodsData.bit&256)==256">
 				<view class="text">有{{goodsData.luckyWeight}}概率掉落福袋</view>
 				<view class="flex1"></view>
+				<image :src="parsePic(item.pic)" class="pic" v-for="(item) in goodsData.luckyList"></image>
 				<view class="luckyBar-right"></view>
 			</view>
 			<!-- <view class="a">55555</view> -->
@@ -359,6 +360,7 @@
 				if((bit&256)==256){
 					app.http.Get(`dataApi/activity/nt/luckyBag/preview/${goodCode}`,{},(res:any)=>{
 						this.goodsData.luckyWeight = res.data.weight
+						this.goodsData.luckyList=(res.data.list || []).slice(0,2)
 					})
 				}
 				// 倒计时
@@ -1893,12 +1895,20 @@
 		.flex1{
 			flex: 1;
 		}
+		.pic{
+			width: 64rpx;
+			height: 64rpx;
+			background: #333333;
+			border-radius: 2rpx;
+			margin-left: 15rpx;
+		}
 		&-right {
 			width: 11rpx;
 			height:17rpx;
 			background:url(@/static/goods/v2/icon_right_new.png) no-repeat center;
 			background-size: 100% 100%;
 			margin-right: 31rpx;
+			margin-left: 30rpx;
 		}
 	}
 </style>

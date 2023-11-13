@@ -55,16 +55,6 @@ import BaseComponent from "@/base/BaseComponent.vue";
 import { app } from "@/app"
 @Component({})
 export default class ClassName extends BaseComponent {
-    // @Prop({ default: "" })
-    // goodCode: string;
-    // @Prop({ default: "" })
-    // merName!: string;
-    // @Prop({ default: "" })
-    // merLogo!: string;
-    // @PropSync("show", {
-    //     type: Boolean
-    // }) showVal!: Boolean;
-
     goodsDetail: any = {}
     show: boolean = false
     created() {

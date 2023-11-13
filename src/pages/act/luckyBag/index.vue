@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-13 14:54:58
+ * @LastEditTime: 2023-11-13 17:42:33
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,9 +13,7 @@
         </transitionNav>
         <view class="bgBack"></view>
         <view class="topContainer">
-            <navigator :url="`/pages/illustration/seriesDetail?seriesCode=${seriesCode}`" hover-class="none">
-                <view class="lookTuj"></view>
-            </navigator>
+            <view class="lookTuj" @click="goTuj"></view>
         </view>
         <view class="luckyBagContainer">
             <view class="topLucky uni-flex">
@@ -39,33 +37,28 @@
             </view>
             <swiper class="luckyBagHBox" previous-margin="160rpx" next-margin="180rpx" @change="swiperChange"
                 @animationfinish="animationfinish">
-                <temaplte v-if="list && list.length">
-                    <swiper-item v-for="(item, index) in list" @click.stop="onClickLuckyBag(item, index)"
-                        :key="'luckyBag' + index">
-                        <view class="luckyItem">
-                            <view class="bag normal"
-                                :class="{ big: index === current, bag_open: item.num && item.state == 2 }">
-                            </view>
-                            <view class="bagInfo" :class="{ bagInfo_big: index === current }">
-                                <image class="merLogo" :src="$parsePic(item.merchantLogo)">
-                                </image>
-                                <view class="merName">{{ item.sponsor == 1 ? "卡世界福袋" : item.merchantName }}</view>
-                                <view class="subTitle">{{ item.state == 1 ? "待计入" : "可开启" }}{{ item.num }}个</view>
-                            </view>
+                <swiper-item v-for="(item, index) in list" @click.stop="onClickLuckyBag(item, index)"
+                    :key="'luckyBag' + index">
+                    <view class="luckyItem">
+                        <view class="bag normal" :class="{ big: index === current, bag_open: item.num && item.state == 2 }">
                         </view>
-                    </swiper-item>
-                </temaplte>
-                <template v-else>
-                    <swiper-item>
-                        <view class="luckyItem">
-                            <view class="bag normal bag_none big">
-                            </view>
-                            <view class="bagInfo bagInfo_big">
-                                <view class="merName">暂未获得福袋</view>
-                            </view>
+                        <view class="bagInfo" :class="{ bagInfo_big: index === current }">
+                            <image class="merLogo" :src="$parsePic(item.merchantLogo)">
+                            </image>
+                            <view class="merName u-line-1">{{ item.sponsor == 1 ? "卡世界福袋" : item.name }}</view>
+                            <view class="subTitle">{{ item.state == 1 ? "待计入" : "可开启" }}{{ item.num }}个</view>
                         </view>
-                    </swiper-item>
-                </template>
+                    </view>
+                </swiper-item>
+                <swiper-item v-if="list&&!list.length">
+                    <view class="luckyItem">
+                        <view class="bag normal bag_none big">
+                        </view>
+                        <view class="bagInfo bagInfo_big">
+                            <view class="merName">暂未获得福袋</view>
+                        </view>
+                    </view>
+                </swiper-item>
             </swiper>
             <view class="openButton openOne" @click="$u.throttle(() => { openBag(1) }, 500)"></view>
             <view class="openButton openAll" @click="$u.throttle(() => { openBag(-1) }, 500)"></view>
@@ -241,7 +234,7 @@ export default class ClassName extends BaseNode {
     defaultAddress: any = {}
     rewardList: any = []
     openBagShow: boolean = false
-    seriesCode: string = "ZBCKGe"
+    seriesCode: string = ""
     onLoad(query: any) {
         if (query.seriesCode) this.seriesCode = query.seriesCode
         this.hasChoiceAddress = Boolean(uni.getStorageSync("luckyBagAddress"))
@@ -288,6 +281,7 @@ export default class ClassName extends BaseNode {
     onClickAddressConfirm() {
         uni.setStorageSync("luckyBagAddress", this.defaultAddress.id)
         this.hasChoiceAddress = true
+        this.addressShow=false
     }
     openBag(num: number) {
         if (!this.list.length) {
@@ -327,6 +321,7 @@ export default class ClassName extends BaseNode {
                     })
                     return
                 }
+                this.addressShow=true
             })
             return
         }
@@ -342,9 +337,11 @@ export default class ClassName extends BaseNode {
             this.rewardList = res.list || []
             this.openBagShow = true
             uni.hideLoading()
-            setTimeout(() => {
-                this.reqNewData()
-            }, 1000)
+            if (num==1){
+                nowItem.num-=1
+            }else{
+                nowItem.num=0
+            }
         }, (err: any) => {
             uni.hideLoading()
         })
@@ -356,6 +353,15 @@ export default class ClassName extends BaseNode {
         return
         if ((this.current) >= this.list.length - 2) {
             this.reqNewData()
+        }
+    }
+    goTuj(){
+        if(this.seriesCode){
+            uni.navigateTo({
+                url:`/pages/illustration/seriesDetail?seriesCode=${this.seriesCode}`
+            })
+        }else{
+            app.navigateTo.switchTab(1)
         }
     }
     filterPrice(price: number) {
@@ -378,6 +384,8 @@ export default class ClassName extends BaseNode {
     reqNewData(cb?: any) {
         app.http.Get(`dataApi/activity/nt/luckyBag/my`, {}, (res: any) => {
             this.list = res.list || []
+            console.log(this.list);
+
         })
     }
     reqBroadcast() {

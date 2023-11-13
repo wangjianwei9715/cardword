@@ -1,62 +1,100 @@
+<!--
+ * @Author: lsj a1353474135@163.com
+ * @Date: 2023-11-13 16:59:19
+ * @LastEditors: lsj a1353474135@163.com
+ * @LastEditTime: 2023-11-13 17:28:48
+ * @FilePath: \card-world\src\pages\drawCard\components\popup\popup.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
-	<u-popup mode="center" bgColor="transparent" :show="show" @close="show=false">
+	<u-popup mode="center" :closeOnClickOverlay="false" bgColor="transparent" :show="show" @close="show = false">
 		<view class="popup-content">
-			<view class="title">恭喜，您得到了一个福袋！</view>
+			<view class="tipsTitle" v-if="type == 1">温馨提示</view>
+			<view class="title" v-if="type == 1">您有{{ num }}个福袋待开启</view>
+			<view class="title" v-if="type == 0">恭喜，您得到了一个福袋！</view>
 			<image class="image" src="/static/act/luckyBag/bag_open.png"></image>
-			<view class="btn" @click="show=false">我知道了</view>
-			<view class="tips">
-				<image class="icon" src="/static/act/luckyBag/i.png"/>
+			<view class="btn" @click="onClickBtn">{{type==1?"去开启":"我知道了"}}</view>
+			<view class="tips" v-if="type==0">
+				<image class="icon" src="/static/act/luckyBag/i.png" />
 				请在拼团完成后前往活动页面开启奖励
+			</view>
+			<view class="tips" v-if="type==1" style="position:relative;bottom:40rpx;" @click.stop="show=false">
+				晚点再说
 			</view>
 		</view>
 	</u-popup>
 </template>
 
 <script lang="ts">
-	import { Component,PropSync } from "vue-property-decorator";
-	import BaseComponent from "@/base/BaseComponent.vue";
-	@Component({})
-	export default class ClassName extends BaseComponent {
-		@PropSync("popupShow",{type:Boolean})
-		show!:Boolean
+import { Component, PropSync, Prop } from "vue-property-decorator";
+import BaseComponent from "@/base/BaseComponent.vue";
+@Component({})
+export default class ClassName extends BaseComponent {
+	@PropSync("popupShow", { type: Boolean })
+	show!: Boolean;
+	@Prop({ default: 0 })
+	type!: number;
+	@Prop({ default: 0 })
+	num!: number;
+
+	onClickBtn(){
+		if(this.type==1){
+			uni.navigateTo({
+				url: `/pages/act/luckyBag/index`
+			})
+		}
+		this.show = false
 	}
+}
 </script>
 
 <style lang="scss" scoped>
-@mixin lineBox{
+@mixin lineBox {
 	width: 100%;
 	box-sizing: border-box;
 	display: flex;
 }
-@mixin font($size){
+
+@mixin font($size) {
 	font-size: $size;
 	font-family: PingFang SC;
 	font-weight: 600;
 	color: #FFFFFF;
 }
-.popup-content{
+
+.popup-content {
 	@include lineBox;
 	width: 588rpx;
 	flex-direction: column;
 	align-items: center;
-	.title{
+
+	.title {
 		@include font(36rpx)
 	}
-	.image{
-		width: 292rpx;
-		height:235rpx;
-		margin:56rpx 0 60rpx 0
+	.tipsTitle{
+		color:#fff;
+		font-weight:bold;
+		@include font(30rpx)
+		position:relative;
+		bottom:12rpx;
 	}
-	.btn{
-		@include font(40rpx);
+	.image {
+		width: 292rpx;
+		height: 235rpx;
+		margin: 56rpx 0 60rpx 0
+	}
+
+	.btn {
+		@include font(36rpx);
 		width: 480rpx;
-		height: 110rpx;
+		height: 80rpx;
 		background: #FA1545;
 		border-radius: 3rpx;
 		text-align: center;
-		line-height: 110rpx;
+		line-height: 80rpx;
 	}
-	.tips{
+
+	.tips {
 		@include lineBox;
 		font-size: 24rpx;
 		font-family: PingFang SC;
@@ -65,9 +103,10 @@
 		margin-top: 70rpx;
 		justify-content: center;
 		align-items: center;
-		.icon{
+
+		.icon {
 			width: 24rpx;
-			height:24rpx;
+			height: 24rpx;
 			margin-right: 10rpx;
 		}
 	}
