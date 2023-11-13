@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-08-17 14:22:26
+ * @LastEditTime: 2023-11-13 14:42:49
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -32,9 +32,6 @@
             <view class="draw-navigation-msg u-line-1">{{item.type=='music'?musicData.name:item.name}}</view>
           </view>
         </view>
-        <navigator v-if="isDuringDate('2023-08-16','2023-09-01')" class="sp-navigator" url="/pages/act/collectSpCard/index" hover-class="none">
-          <image class="sp-icon" :class="{'wobble-hor-bottom':spAnimation}" src="@/static/act/collectSpCard/icon.png"></image>
-        </navigator>
       </view>
       <!-- 场景选择 -->
       <scene :popupShow.sync="sceneData.show" :picType="sceneData.picType" @sceneChange="sceneData.bg=$event"/>
@@ -58,13 +55,16 @@
 				>
           <view v-if="item.index == 0" class="movable-box dangban" ></view>
           <view v-else-if="item.index==nextStep(1)&&animationStart"></view>
-          <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==nextStep(1)&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="animationStart=false">
+          <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==nextStep(1)&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="onAnimationOver">
             <cardBox :item="item" :defultPic="defultPic" @errorPic="parseImage()"/>
           </animationCard>
           <cardBox v-else :item="item" :defultPic="defultPic" :animation="(item.index==nextStep(1))&&item.color=='gold'" @errorPic="parseImage()"/>
 				</movable-view>
 			</movable-area>
       
+      <!-- 国宝福袋 -->
+      <popup :popupShow.sync="showLuckyBox"/>
+
       <view class="bottom-box" :style="{'top':`${fitPosition.boxTop}rpx`}">
         <view class="cardname"><text class="cardname-clamp">{{this.cardname}}</text></view>
         <view class="cardstep">
@@ -111,8 +111,9 @@
   import scene from './components/scene/scene.vue'
   import animationCard from './components/animationCard/animationCard.vue'
   import cardBox from './components/cardBox/cardBox.vue'
+  import popup from './components/popup/popup.vue'
   @Component({
-    components:{music,scene,animationCard,cardBox}
+    components:{music,scene,animationCard,cardBox,popup}
   })
 	export default class ClassName extends BaseNode {
     parsePic = parsePic;
@@ -159,7 +160,7 @@
       height:880,
       boxTop:1170
     }
-    spAnimation=false;
+    showLuckyBox=false
     /**是否最后一张卡片 */
     public get DrawCardOver():boolean {
       return this.cardData.step  >= this.cardData.total;
@@ -310,19 +311,17 @@
         const move_x = Math.abs(mX - iX);
         const move_Y = Math.abs(mY - iY);
         if(move_x>uni.upx2px(220) || move_Y>uni.upx2px(300)){
-          this.spAnimation = false;
           this.cardData.step++;
           const step = this.cardData.step;
           const item:DarwCard.Code = this.codeList[step];
           if(!this.DrawCardOver && ['gold','SP'].includes(this.codeList[step+1].color)){
             uni.vibrateLong({})
           }
-          if(item.picTp==2){
-            this.spAnimation = true;
-          }
           // 特效卡并且动画开启
           if(item.color=='gold'&&this.animationSwitch){
             this.animationStart = true;
+          }else{
+            this.setShowLuckyBox()
           }
         }
         this.moveData.x = iX;
@@ -330,6 +329,14 @@
         this.cardMove = false;
         this.getMore();
       }, 50);
+    }
+    onAnimationOver(){
+      this.animationStart=false;
+      this.setShowLuckyBox()
+    }
+    setShowLuckyBox() {
+      const currentItem = this.codeList[this.cardData.step];
+      this.showLuckyBox = currentItem.index==this.nextStep(0)&&!this.animationStart&&currentItem.luckyBagTp>0
     }
     // 解锁卡密排序切换
     onClickDrawerType(index: number){
@@ -717,5 +724,4 @@
               transform: translateX(-3px) rotate(-1.2deg);
     }
   }
-
 </style>
