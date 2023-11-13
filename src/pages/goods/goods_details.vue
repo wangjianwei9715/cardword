@@ -70,7 +70,7 @@
 				</view>
 			</view>
 			<view class="luckyBar" @click="onClickLuckyBag" v-if="goodsData.bit&&(goodsData.bit&256)==256">
-				<view class="text">有10.8%概率掉落福袋</view>
+				<view class="text">有{{goodsData.luckyWeight}}概率掉落福袋</view>
 				<view class="flex1"></view>
 				<view class="luckyBar-right"></view>
 			</view>
@@ -354,6 +354,11 @@
 				if((bit & 128) == 128){
 					app.http.Get(`dataApi/good/${goodCode}/chedui`,{},(res:any)=>{
 						this.cheduiData = res
+					})
+				}
+				if((bit&256)==256){
+					app.http.Get(`dataApi/activity/nt/luckyBag/preview/${goodCode}`,{},(res:any)=>{
+						this.goodsData.luckyWeight = res.data.weight
 					})
 				}
 				// 倒计时
