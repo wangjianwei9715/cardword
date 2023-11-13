@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-10 10:41:36
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-10 11:03:14
+ * @LastEditTime: 2023-11-13 14:43:43
  * @FilePath: \card-world\src\pages\act\luckyBag\components\bagPop.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,13 +17,13 @@
                 <view class="goods">
                     <view class="goods_mer">
                         <image :src="$parsePic(goodsDetail.merchantLogo)" class="merPic"></image>
-                        <view class="merName">{{ goodsDetail.merchantName }}</view>
+                        <view class="merName u-line-1">{{ goodsDetail.merchantName }}</view>
                     </view>
                     <view class="goodsCode">商品编号:{{ goodsDetail.goodCode }}</view>
                 </view>
                 <view class="flex1"></view>
                 <view class="bagNum">
-                    <view class="num">{{ goodsDetail.totalNum }}</view>
+                    <view class="num">{{ goodsDetail.luckyBagNum }}</view>
                     <view class="subText">福袋数量</view>
                 </view>
                 <view class="bagNum" style="margin-left: 70rpx;">
@@ -36,7 +36,7 @@
                 本商品福袋包含以下奖励</view>
             <scroll-view class="rewardScroll" :scroll-y="true">
                 <view class="rewardContainer">
-                    <view class="rewardItem" v-for="(item, index) in goodsDetail.rewardList" :key="index">
+                    <view class="rewardItem" v-for="(item, index) in (goodsDetail.list || [])" :key="index">
                         <muqian-lazyLoad :src="$parsePic(item.pic)" borderRadius="3rpx" class="pic"></muqian-lazyLoad>
                         <view class="name u-line-1">{{ item.name }}</view>
                         <view class="num">共{{ item.num }}份</view>
@@ -74,20 +74,9 @@ export default class ClassName extends BaseComponent {
     }
     destroyed() {
     }
-    showPop(data: any) {
-        this.show = true
-        return
-        app.http.Get(`dataApi/activity/nt/luckyBag/preview/${data.goodCode}`, {}, (res: any) => {
-            this.goodsDetail.goodCode = data.goodCdoe
-            this.goodsDetail.merchantLogo = data.logo
-            this.goodsDetail.merchantName = data.name
-            this.goodsDetail.weight = res.data.weight
-            this.goodsDetail.rewardList = res.data.list || []
-            this.goodsDetail.totalNum = this.goodsDetail.rewardList.map((reward: any) => {
-                return reward.num
-            }).reduce((pre: number, cur: number) => {
-                return pre + cur
-            })
+    showPop(goodCode: string) {
+        app.http.Get(`dataApi/activity/nt/luckyBag/preview/${goodCode}`, {}, (res: any) => {
+            this.goodsDetail=res.data
             this.show = true
         })
     }
@@ -98,9 +87,10 @@ export default class ClassName extends BaseComponent {
 </script>
 
 <style lang="scss" scoped>
-.flex1{
+.flex1 {
     flex: 1;
 }
+
 .goodsBagContainer {
     width: 750rpx;
     // height: 1004rpx;
@@ -110,6 +100,7 @@ export default class ClassName extends BaseComponent {
     flex-direction: column;
     align-items: center;
     font-family: PingFang SC;
+
     .title {
         font-size: 36rpx;
 
@@ -188,7 +179,7 @@ export default class ClassName extends BaseComponent {
 
             .subText {
                 font-size: 22rpx;
-
+                white-space: nowrap;
                 font-weight: 400;
                 color: #959695;
             }

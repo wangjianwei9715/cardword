@@ -69,7 +69,12 @@
 					</view>
 				</view>
 			</view>
-
+			<view class="luckyBar" @click="onClickLuckyBag" v-if="goodsData.bit&&(goodsData.bit&256)==256">
+				<view class="text">有10.8%概率掉落福袋</view>
+				<view class="flex1"></view>
+				<view class="luckyBar-right"></view>
+			</view>
+			<!-- <view class="a">55555</view> -->
 			<!-- 活动展示 -->
 			<goodAct :goodsData="goodsData" :showChedui.sync="showCheduiDraw" :cheduiData="cheduiData" :userData="userData" />
 			
@@ -221,7 +226,7 @@
 				可免单{{goodsData.freeNoNum}}组
 			</view>
 		</view>
-
+		<bagPop ref="bagPop"></bagPop>
 		
 	</view>
 </template>
@@ -235,8 +240,13 @@
 	import { parsePic,secondsFormat } from "@/tools/util";
 	import { Goods, Share } from "./utils/class";
 	import detailsManager from "./manager/detailsManager"
+	import bagPop from "../act/luckyBag/components/bagPop.vue"
 	const Manager =  detailsManager.getIns();
-	@Component({})
+	@Component({
+		components:{
+			bagPop
+		}
+	})
 	export default class ClassName extends BaseNode {
 		parsePic = parsePic;
 		navigateBack = app.navigateTo.navigateBack;
@@ -768,6 +778,9 @@
 				swiperData.swiperTabCurrent = index;
 				swiperData.swiperCurrent = index == 0 ? 0 : swiperData.carouselLength;
 			}
+		}
+		onClickLuckyBag(){
+			this.$refs.bagPop.showPop(this.goodCode)
 		}
 		
 	}
@@ -1854,6 +1867,33 @@
 			font-weight: 600;
 			color: #FFFFFF;
 			margin-right: 10rpx;
+		}
+	}
+	.luckyBar{
+		width: 713rpx;
+		height:100rpx;
+		background-size: 100% 100%;
+		background-image: url("/static/act/luckyBag/goodsLucky.png");
+		margin-bottom: 6rpx;
+		display: flex;
+		align-items: center;
+		position: relative;
+		.text{
+			font-size: 24rpx;
+			font-family: PingFang SC;
+			font-weight: bold;
+			color: #333333;
+			margin-left: 144rpx;
+		}
+		.flex1{
+			flex: 1;
+		}
+		&-right {
+			width: 11rpx;
+			height:17rpx;
+			background:url(@/static/goods/v2/icon_right_new.png) no-repeat center;
+			background-size: 100% 100%;
+			margin-right: 31rpx;
 		}
 	}
 </style>

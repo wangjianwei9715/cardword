@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-10 11:07:44
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-10 11:46:47
+ * @LastEditTime: 2023-11-13 14:44:09
  * @FilePath: \card-world\src\pages\act\luckyBag\log.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -60,7 +60,7 @@ export default class ClassName extends BaseNode {
         5: "已发放"
     }
     tag: any = {
-        currentIndex: 2,
+        currentIndex: 0,
         list: [
             {
                 label: "获取记录",

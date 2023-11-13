@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-10 11:58:07
+ * @LastEditTime: 2023-11-13 14:54:58
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -144,13 +144,13 @@
                     :src="$parsePic(decodeURIComponent(item.merchantLogo))" borderRadius="50%"></muqian-lazyLoad>
                 <view class="merName" @click.stop="goMerchantPage(item.merchantAlias)">{{ item.merchantName }}</view>
                 <view class="flex1"></view>
-                <tempplate v-if="item.luckyBagNum && item.luckyBagNum > 0">
+                <template v-if="item.luckyBagNum && item.luckyBagNum > 0">
                     <view class="smallBag"></view>
                     <view class="bagNum" @click.stop="getGoodsDetail(item)">
                         <text class="x">x</text>
                         {{ item.luckyBagNum }}
                     </view>
-                </tempplate>
+                </template>
                 <view class="goBuy" v-if="!item.luckyBagNum">去购买</view>
                 <view class="rightDot"></view>
             </view>
@@ -273,18 +273,10 @@ export default class ClassName extends BaseNode {
     }
     onClickLuckyBag(item: any, index: number) {
         this.current = index
-        this.$refs.bagPop.showPop({
-            goodCode: item.goodCode,
-            logo: item.merchantLogo,
-            name: item.name
-        })
+        this.$refs.bagPop.showPop(item.goodCode)
     }
     getGoodsDetail(item: any) {
-        this.$refs.bagPop.showPop({
-            goodCode: item.goodCode,
-            logo: item.merchantLogo,
-            name: item.merchantName
-        })
+        this.$refs.bagPop.showPop(item.goodCode)
     }
     onClickAddressEdit() {
         uni.navigateTo({
@@ -788,6 +780,8 @@ page {
             height: 55rpx;
             background-size: 100% 100%;
             background-image: url("/static/act/luckyBag/smallBag.png");
+            position: relative;
+            bottom: 4rpx;
         }
 
         .rightDot {
