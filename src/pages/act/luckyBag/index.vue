@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-14 17:55:44
+ * @LastEditTime: 2023-11-14 18:08:22
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -172,14 +172,14 @@
                     <image :src="$parsePic(rewardList[0].pic)" mode="heightFix" class="pic"></image>
                     <view class="name">{{ rewardList[0].name }}</view>
                 </view>
-                <view class="rewardWrap_more" :scroll-y="true" v-else>
+                <scroll-view class="rewardWrap_more" :scroll-y="true" v-else>
                     <view class="rewardGrid">
                         <view class="rewardMore_item" v-for="(item, index) in rewardList" :key="'rewardMore_item' + index">
                             <muqian-lazyLoad :src="$parsePic(item.pic)" mode="heightFix" borderRadius="3rpx" class="pic"></muqian-lazyLoad>
                             <view class="name u-line-1">{{ item.name }}</view>
                         </view>
                     </view>
-                </view>
+                </scroll-view>
                 <view class="receiveButton flexCenter" @click="openBagShow = false">开心收下</view>
                 <view class="tips">
                     <image src="/static/act/luckyBag/i.png" style="width: 24rpx;height: 24rpx;"></image>
