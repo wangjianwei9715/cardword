@@ -72,7 +72,7 @@
 			<view class="luckyBar" @click="onClickLuckyBag" v-if="goodsData.bit&&(goodsData.bit&256)==256">
 				<view class="text">有{{goodsData.luckyWeight}}概率掉落福袋</view>
 				<view class="flex1"></view>
-				<image mode="aspectFill" :src="parsePic(item.pic)" class="pic" v-for="(item) in goodsData.luckyList"></image>
+				<image mode="heightFix" :src="parsePic(item.pic)" class="pic" v-for="(item) in goodsData.luckyList"></image>
 				<view class="luckyBar-right"></view>
 			</view>
 			<!-- <view class="a">55555</view> -->
@@ -1898,7 +1898,7 @@
 		.pic{
 			width: 64rpx;
 			height: 64rpx;
-			background: #333333;
+			// background: #333333;
 			border-radius: 2rpx;
 			margin-left: 15rpx;
 		}
