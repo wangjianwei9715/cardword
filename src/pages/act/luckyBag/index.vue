@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-14 15:15:51
+ * @LastEditTime: 2023-11-14 16:48:09
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -172,7 +172,7 @@
                     <image :src="$parsePic(rewardList[0].pic)" mode="heightFix" class="pic"></image>
                     <view class="name">{{ rewardList[0].name }}</view>
                 </view>
-                <view class="rewardWrap_more" :scroll-y="true">
+                <view class="rewardWrap_more" :scroll-y="true" v-else>
                     <view class="rewardGrid">
                         <view class="rewardMore_item" v-for="(item, index) in rewardList" :key="'rewardMore_item' + index">
                             <image :src="$parsePic(item.pic)" mode="heightFix" class="pic"></image>
@@ -1021,6 +1021,9 @@ page {
 
     .rewardWrap {
         animation: show 0.3s;
+        .pic{
+            background-color: rgba(0,0,0,0);
+        }
     }
 
     .rewardWrap_more {
@@ -1048,6 +1051,7 @@ page {
                     height: 200rpx;
                     border-radius: 3rpx;
                     margin-bottom: 19rpx;
+                    background-color: rgba(0,0,0,0);
                 }
 
                 .name {
