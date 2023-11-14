@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-14 16:48:09
+ * @LastEditTime: 2023-11-14 17:48:48
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -243,6 +243,12 @@ export default class ClassName extends BaseNode {
     }
     onShow(){
         this.reqNewData()
+    }
+    onPullDownRefresh(){
+        this.reqNewData()
+        setTimeout(()=>{
+            uni.stopPullDownRefresh()
+        },300)
     }
     onReachBottom() {
         if (this.goodsIsFetchEnd) return
