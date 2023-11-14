@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-13 17:42:33
+ * @LastEditTime: 2023-11-14 15:02:37
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -169,7 +169,7 @@
             <view class="rewardPop">
                 <view class="title" :class="{ title_more: rewardList.length > 1 }">恭喜您获得以下奖品</view>
                 <view class="rewardWrap" v-if="rewardList.length == 1">
-                    <image :src="$parsePic(rewardList[0].pic)" class="pic"></image>
+                    <image :src="$parsePic(rewardList[0].pic)" mode="heightFix" class="pic"></image>
                     <view class="name">{{ rewardList[0].name }}</view>
                 </view>
                 <view class="rewardWrap_more" :scroll-y="true">
@@ -238,9 +238,11 @@ export default class ClassName extends BaseNode {
     onLoad(query: any) {
         if (query.seriesCode) this.seriesCode = query.seriesCode
         this.hasChoiceAddress = Boolean(uni.getStorageSync("luckyBagAddress"))
-        this.reqNewData()
         this.reqBroadcast()
         this.reqGoods()
+    }
+    onShow(){
+        this.reqNewData()
     }
     onReachBottom() {
         if (this.goodsIsFetchEnd) return
@@ -1044,7 +1046,6 @@ page {
                 .pic {
                     width: 200rpx;
                     height: 200rpx;
-                    background: #FFFFFF;
                     border-radius: 3rpx;
                     margin-bottom: 19rpx;
                 }
