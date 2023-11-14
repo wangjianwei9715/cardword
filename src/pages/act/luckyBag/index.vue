@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-14 15:02:37
+ * @LastEditTime: 2023-11-14 15:15:51
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -45,7 +45,7 @@
                         <view class="bagInfo" :class="{ bagInfo_big: index === current }">
                             <image class="merLogo" :src="$parsePic(item.merchantLogo)">
                             </image>
-                            <view class="merName u-line-1">{{ item.sponsor == 1 ? "卡世界福袋" : item.name }}</view>
+                            <view class="merName u-line-1">{{item.name }}</view>
                             <view class="subTitle">{{ item.state == 1 ? "待计入" : "可开启" }}{{ item.num }}个</view>
                         </view>
                     </view>
@@ -175,7 +175,7 @@
                 <view class="rewardWrap_more" :scroll-y="true">
                     <view class="rewardGrid">
                         <view class="rewardMore_item" v-for="(item, index) in rewardList" :key="'rewardMore_item' + index">
-                            <image :src="$parsePic(item.pic)" class="pic"></image>
+                            <image :src="$parsePic(item.pic)" mode="heightFix" class="pic"></image>
                             <view class="name u-line-1">{{ item.name }}</view>
                         </view>
                     </view>
@@ -332,7 +332,7 @@ export default class ClassName extends BaseNode {
         })
         app.platform.UIClickFeedBack()
         app.http.Post("activity/nt/luckyBag/open", {
-            sponsor: nowItem.sponsor,
+            // sponsor: nowItem.sponsor,
             goodCode: nowItem.goodCode,
             tp: num == -1 ? 2 : 1
         }, (res: any) => {
