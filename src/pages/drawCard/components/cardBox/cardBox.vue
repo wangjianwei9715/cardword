@@ -3,14 +3,14 @@
  * @Author: wjw
  * @Date: 2022-11-17 15:05:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-07-24 16:19:33
+ * @LastEditTime: 2023-11-14 16:32:56
  * Copyright: 2022 .
  * @Descripttion: 
 -->
 <template>
 	<view class="card-content">
 		<view
-			v-show="item.picTp!=2"
+			v-show="item.picTp!=2&&(bit&1)!=1"
 			class="movable-box"
 			:class="[animation?'container':'',item.color==''?'movable-box-silver':'movable-box-' + item.color]"
 		>
@@ -19,7 +19,7 @@
 			<image class="movable-pic" :src="item.newPic||defultPic" @error="error"/>
 			<view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
 		</view>
-		<image v-show="item.picTp==2" :src="item.newPic||defultPic" @error="error" class="sp-card-image"></image>
+		<image v-show="item.picTp==2||(bit&1)==1" :src="item.newPic||defultPic" @error="error" class="sp-card-image"></image>
 	</view>
 </template>
 
@@ -34,6 +34,8 @@
 		defultPic!:string
 		@Prop({default:false})
 		animation?:boolean
+		@Prop({default:0})
+		bit!:number
 		mounted(){
 			
 		}

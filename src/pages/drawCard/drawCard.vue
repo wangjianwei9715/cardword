@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-11-13 14:42:49
+ * @LastEditTime: 2023-11-14 17:03:35
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -24,12 +24,12 @@
     <view class="draw-box"> 
       <!-- 顶部导航 -->
       <view class="draw-navigation">
-        <view class="draw-back" @click="onClickBack()"><view class="icon-back"></view></view>
+        <view class="draw-back" @click="onClickBack()"></view>
         <view class="draw-navigation-right">
           <view class="draw-navigation-tab" v-for="item in navigationTab" :key="item.type" @click="onClickNavigation(item)">
             <view v-if="item.type=='ani'&&!animationSwitch" class="icon-anin"></view>
             <view v-else :class="`icon-${item.type}`" ></view>
-            <view class="draw-navigation-msg u-line-1">{{item.type=='music'?musicData.name:item.name}}</view>
+            <view class="draw-navigation-msg">{{item.type=='music'?musicData.name:item.name}}</view>
           </view>
         </view>
       </view>
@@ -56,14 +56,14 @@
           <view v-if="item.index == 0" class="movable-box dangban" ></view>
           <view v-else-if="item.index==nextStep(1)&&animationStart"></view>
           <animationCard v-else-if="item.color=='gold'&&animationSwitch" :start="item.index==cardData.step&&animationStart" :cardMove="item.index==nextStep(1)&&cardMove" :data="{team:(item.extra&&item.extra.team)?item.extra.team:'',position:(item.extra&&item.extra.position)?item.extra.position:'',rc:item.rc}" @over="onAnimationOver">
-            <cardBox :item="item" :defultPic="defultPic" @errorPic="parseImage()"/>
+            <cardBox :item="item" :bit="cardBit" :defultPic="defultPic" @errorPic="parseImage()"/>
           </animationCard>
-          <cardBox v-else :item="item" :defultPic="defultPic" :animation="(item.index==nextStep(1))&&item.color=='gold'" @errorPic="parseImage()"/>
+          <cardBox v-else :item="item" :bit="cardBit" :defultPic="defultPic" :animation="(item.index==nextStep(1))&&item.color=='gold'" @errorPic="parseImage()"/>
 				</movable-view>
 			</movable-area>
       
       <!-- 国宝福袋 -->
-      <popup :popupShow.sync="showLuckyBox"/>
+      <popup :popupShow.sync="showLuckyBox" @noShow="once=0"/>
 
       <view class="bottom-box" :style="{'top':`${fitPosition.boxTop}rpx`}">
         <view class="cardname"><text class="cardname-clamp">{{this.cardname}}</text></view>
@@ -160,7 +160,9 @@
       height:880,
       boxTop:1170
     }
-    showLuckyBox=false
+    showLuckyBox=false;
+    once=0;
+    cardBit=0;
     /**是否最后一张卡片 */
     public get DrawCardOver():boolean {
       return this.cardData.step  >= this.cardData.total;
@@ -215,7 +217,14 @@
       });
     }
     initEvent(query: any): void { 
-      this.sceneData.picType = query.picType || 0;
+      this.cardBit = query.bit || 0;
+      if((this.cardBit&1)==1){
+        this.sceneData.picType = 3; //宝可梦
+      }else{
+        this.sceneData.picType = Number(query.picType) || 0;
+      }
+      this.once = query.once;
+      
       if(query.picType == 1){
         this.defultPic = '../../static/goods/drawcard/default_.png';
       } 
@@ -335,6 +344,7 @@
       this.setShowLuckyBox()
     }
     setShowLuckyBox() {
+      if(this.once==0) return;
       const currentItem = this.codeList[this.cardData.step];
       this.showLuckyBox = currentItem.index==this.nextStep(0)&&!this.animationStart&&currentItem.luckyBagTp>0
     }
@@ -464,9 +474,9 @@
       height:93rpx;
     }
     .draw-back{
-      width: 49rpx;
-      height: 49rpx;
-      background: linear-gradient(0deg, #FFFFFF, rgba(255,255,255,0.01), #FFFFFF);
+      width: 50rpx;
+      height: 50rpx;
+      background: url(@/static/drawCard/icon_back2.png) no-repeat center / 100% 100%;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -485,19 +495,19 @@
       align-items: center;
     }
     .draw-navigation-tab{
+      width: 120rpx;
+      height:48rpx;
       display: flex;
       align-items: center;
-      padding:0 18rpx 0 16rpx;
-      height:49rpx;
-      line-height: 49rpx;
+      padding:0 0 0 16rpx;
+      line-height: 48rpx;
       box-sizing: border-box;
-      background: linear-gradient(0deg, #FFFFFF, rgba(255,255,255,0.01), #FFFFFF);
-      border-radius: 24rpx;
+      background: url(@/static/drawCard/icon_bgy.png) no-repeat center / 100% 100%;
       font-size: 25rpx;
       font-family: PingFang SC;
       font-weight: 500;
-      color: #FFFFFF;
-      margin-left: 29rpx;
+      color: #ACACAC;
+      margin-left:30rpx;
     }
     .draw-navigation-msg{
       max-width: 160rpx;
@@ -506,17 +516,17 @@
       margin-left: 8rpx;
     }
     .icon-scene{
-      width: 28rpx;
+      width: 26rpx;
       height:26rpx;
       background: url(@/static/drawCard/icon_scene.png) no-repeat center / 100% 100%;
     }
     .icon-ani{
-      width: 31rpx;
+      width: 29rpx;
       height:30rpx;
       background: url(@/static/drawCard/icon_ani.png) no-repeat center / 100% 100%;
     }
     .icon-anin{
-      width: 31rpx;
+      width: 29rpx;
       height:30rpx;
       background: url(@/static/drawCard/icon_ani_.png) no-repeat center / 100% 100%;
     }

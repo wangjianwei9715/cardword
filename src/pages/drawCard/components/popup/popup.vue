@@ -1,25 +1,28 @@
 <!--
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-13 16:59:19
- * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-13 17:28:48
- * @FilePath: \card-world\src\pages\drawCard\components\popup\popup.vue
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-11-14 15:42:05
+ * @FilePath: \jichao_app_2\src\pages\drawCard\components\popup\popup.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-	<u-popup mode="center" :closeOnClickOverlay="false" bgColor="transparent" :show="show" @close="show = false">
+	<u-popup mode="center" :closeOnClickOverlay="false" :overlayOpacity="0.7" bgColor="transparent" :show="show" @close="show = false">
 		<view class="popup-content">
 			<view class="tipsTitle" v-if="type == 1">温馨提示</view>
 			<view class="title" v-if="type == 1">您有{{ num }}个福袋待开启</view>
 			<view class="title" v-if="type == 0">恭喜，您得到了一个福袋！</view>
 			<image class="image" src="/static/act/luckyBag/bag_open.png"></image>
-			<view class="btn" @click="onClickBtn">{{type==1?"去开启":"我知道了"}}</view>
 			<view class="tips" v-if="type==0">
 				<image class="icon" src="/static/act/luckyBag/i.png" />
 				请在拼团完成后前往活动页面开启奖励
 			</view>
 			<view class="tips" v-if="type==1" style="position:relative;bottom:40rpx;" @click.stop="show=false">
 				晚点再说
+			</view>
+			<view class="btn" @click="onClickBtn">{{type==1?"去开启":"我知道了"}}</view>
+			<view class="tips tips-btn" v-if="type==0" @click="onClickNoShow">
+				本商品不再提醒
 			</view>
 		</view>
 	</u-popup>
@@ -43,6 +46,10 @@ export default class ClassName extends BaseComponent {
 				url: `/pages/act/luckyBag/index`
 			})
 		}
+		this.show = false
+	}
+	onClickNoShow(){
+		this.$emit("noShow");
 		this.show = false
 	}
 }
@@ -69,19 +76,20 @@ export default class ClassName extends BaseComponent {
 	align-items: center;
 
 	.title {
-		@include font(36rpx)
+		@include font(42rpx)
 	}
 	.tipsTitle{
 		color:#fff;
 		font-weight:bold;
-		@include font(30rpx)
+		@include font(30rpx);
 		position:relative;
 		bottom:12rpx;
 	}
 	.image {
 		width: 292rpx;
 		height: 235rpx;
-		margin: 56rpx 0 60rpx 0
+		transform: scale(1.2);
+		margin: 76rpx 0 100rpx 0
 	}
 
 	.btn {
@@ -92,6 +100,7 @@ export default class ClassName extends BaseComponent {
 		border-radius: 3rpx;
 		text-align: center;
 		line-height: 80rpx;
+		margin-top:30rpx;
 	}
 
 	.tips {
@@ -100,15 +109,17 @@ export default class ClassName extends BaseComponent {
 		font-family: PingFang SC;
 		font-weight: 400;
 		color: #E6E6E6;
-		margin-top: 70rpx;
 		justify-content: center;
 		align-items: center;
-
 		.icon {
 			width: 24rpx;
 			height: 24rpx;
 			margin-right: 10rpx;
 		}
+	}
+	.tips-btn{
+		font-size: 28rpx;
+		margin-top: 20rpx;
 	}
 }
 </style>

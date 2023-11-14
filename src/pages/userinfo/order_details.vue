@@ -182,7 +182,7 @@
 			setTimeout(()=>{
 				this.initEvent(()=>{
 					if(this.clickToPay){
-						this.getNoShowList();
+						this.getNoShowList(true);
 						if(this.guessNum>0){
 							this.guessSuccess = true
 						}
@@ -202,7 +202,7 @@
 			if(this.clickToPay && !this.onceLoad){
 				clearInterval(this.countDownInter);
 				this.clickPayShowLoading(()=>{
-					this.getNoShowList();
+					this.getNoShowList(true);
 					if(this.guessNum>0){
 						this.guessSuccess = true
 					}
@@ -298,7 +298,7 @@
 			
 		}
 		// 获取解锁卡密效果
-		getNoShowList(){
+		getNoShowList(once=false){
 			if(!app.orderRich) {
 				uni.showToast({
 					title:'卡密特效未开启',
@@ -316,7 +316,7 @@
 				if(res.total>0){
 					const type = this.orderData.good.title.indexOf('足球')!=-1?1:0
 					uni.navigateTo({
-						url:`/pages/drawCard/drawCard?code=${this.orderCode}&data=${encodeURIComponent(JSON.stringify(res.list))}&num=${res.total}&hasNumber=${res.hasNumber}&picType=${type}&sp=${res.sp}`
+						url:`/pages/drawCard/drawCard?code=${this.orderCode}&data=${encodeURIComponent(JSON.stringify(res.list))}&num=${res.total}&hasNumber=${res.hasNumber}&picType=${type}&sp=${res.sp}&once=${once?1:0}&bit=${res.bit||0}`
 					})
 				}else{
 					if( res.retry && this.retryNum==0 ){

@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-17 15:05:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-04-25 14:47:00
+ * @LastEditTime: 2023-11-14 17:02:30
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -49,6 +49,7 @@
 			{id:1,name:'篮球场',choice:false,enable:true,pic:'/static/drawCard/scene_bg1.jpg',sceneBg:'bj_001'},
 			{id:2,name:'足球场',choice:false,enable:true,pic:'/static/drawCard/scene_bg2.jpg',sceneBg:'bj_002'},
 			{id:3,name:'赛博朋克',choice:false,enable:true,pic:'/static/drawCard/scene_bg3.jpg',sceneBg:'bj_003'},
+			{id:6,name:'裂空座',choice:false,enable:true,pic:'/static/drawCard/scene_bg4.jpg',sceneBg:'bj_004'},
 			{id:4,name:'标准',choice:false,enable:true,pic:'/static/goods/drawcard/black_bg.jpg',sceneBg:''},
 			{id:5,name:'敬请期待',choice:false,enable:false,pic:'/static/drawCard/scene_bg0.jpg',sceneBg:''},
 		]
@@ -72,7 +73,7 @@
 			const item = this.sceneList.find((x:Scene)=>{
 				return x.id == uni.getStorageSync('sceneChoice').id
 			})
-			return item ?? this.sceneList[this.picType==1?1:0] 
+			return this.picType==3? this.sceneList[3] : (item ?? this.sceneList[this.picType==1?1:0] )
 		}
 		
 	}
