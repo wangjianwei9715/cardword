@@ -3,7 +3,7 @@
  * @Author: wjw
  * @Date: 2022-11-16 11:38:59
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-11-14 17:03:35
+ * @LastEditTime: 2023-11-15 14:21:03
  * Copyright: 2022 .
  * @Descripttion: 
 -->
@@ -23,8 +23,8 @@
     
     <view class="draw-box"> 
       <!-- 顶部导航 -->
-      <view class="draw-navigation">
-        <view class="draw-back" @click="onClickBack()"></view>
+      <view class="draw-navigation" :class="isPokemom?'pokemom':'normal'">
+        <view class="draw-back" @click="onClickBack()"><view class="icon-back"></view></view>
         <view class="draw-navigation-right">
           <view class="draw-navigation-tab" v-for="item in navigationTab" :key="item.type" @click="onClickNavigation(item)">
             <view v-if="item.type=='ani'&&!animationSwitch" class="icon-anin"></view>
@@ -183,6 +183,9 @@
         return `/static/drawCard/${this.sceneData.bg}.${this.animationSwitch?'gif':'jpg'}`
       }
       return _default
+    }
+    public get isPokemom() : boolean {
+      return this.sceneData.bg=="bj_004"
     }
     onLoad(query:any){
       this.fitCardPosition();
@@ -473,68 +476,14 @@
       width: 94rpx;
       height:93rpx;
     }
-    .draw-back{
-      width: 50rpx;
-      height: 50rpx;
-      background: url(@/static/drawCard/icon_back2.png) no-repeat center / 100% 100%;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .icon-back{
-      width: 17rpx;
-      height:30rpx;
-      background: url(@/static/drawCard/icon_back.png) no-repeat center / 100% 100%;
-      margin-left: -2rpx;
-    }
+    
     .draw-navigation-right{
       height:100rpx;
       display: flex;
       justify-content: flex-end;
       align-items: center;
     }
-    .draw-navigation-tab{
-      width: 120rpx;
-      height:48rpx;
-      display: flex;
-      align-items: center;
-      padding:0 0 0 16rpx;
-      line-height: 48rpx;
-      box-sizing: border-box;
-      background: url(@/static/drawCard/icon_bgy.png) no-repeat center / 100% 100%;
-      font-size: 25rpx;
-      font-family: PingFang SC;
-      font-weight: 500;
-      color: #ACACAC;
-      margin-left:30rpx;
-    }
-    .draw-navigation-msg{
-      max-width: 160rpx;
-      height:49rpx;
-      line-height: 49rpx;
-      margin-left: 8rpx;
-    }
-    .icon-scene{
-      width: 26rpx;
-      height:26rpx;
-      background: url(@/static/drawCard/icon_scene.png) no-repeat center / 100% 100%;
-    }
-    .icon-ani{
-      width: 29rpx;
-      height:30rpx;
-      background: url(@/static/drawCard/icon_ani.png) no-repeat center / 100% 100%;
-    }
-    .icon-anin{
-      width: 29rpx;
-      height:30rpx;
-      background: url(@/static/drawCard/icon_ani_.png) no-repeat center / 100% 100%;
-    }
-    .icon-music{
-      width: 26rpx;
-      height:25rpx;
-      background: url(@/static/drawCard/icon_music.png) no-repeat center / 100% 100%;
-    }
+    
   }
   .movable-area {
     position: fixed;
@@ -544,6 +493,92 @@
     height: calc(100% + 1000rpx);
     pointer-events: none;
     z-index:3;
+  }
+  @mixin drawBack($size) {
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .normal .draw-back{
+    @include drawBack(49rpx);
+    background: linear-gradient(0deg, #FFFFFF, rgba(255,255,255,0.01), #FFFFFF);
+  }
+  .pokemom .draw-back{
+    @include drawBack(50rpx);
+    background: url(@/static/drawCard/icon_back2.png) no-repeat center / 100% 100%;
+  }
+  .normal .icon-back{
+    width: 17rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/icon_back.png) no-repeat center / 100% 100%;
+    margin-left: -2rpx;
+  }
+  @mixin drawNaviTab($pLeft,$height,$color) {
+    display: flex;
+    height:$height;
+    line-height: $height;
+    align-items: center;
+    font-size: 25rpx;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: $color;
+    margin-left: 29rpx;
+    box-sizing: border-box;
+    padding:0 $pLeft 0 16rpx;
+  }
+  .normal .draw-navigation-tab{
+    @include drawNaviTab(18rpx,49rpx,#ffffff);
+    background: linear-gradient(0deg, #FFFFFF, rgba(255,255,255,0.01), #FFFFFF);
+    border-radius: 24rpx;
+  }
+  .pokemom .draw-navigation-tab{
+    @include drawNaviTab(0,48rpx,#333333);
+    width: 120rpx;
+    background: url(@/static/drawCard/icon_bgy.png) no-repeat center / 100% 100%;
+  }
+  .draw-navigation-msg{
+    max-width: 160rpx;
+    height:49rpx;
+    line-height: 49rpx;
+    margin-left: 8rpx;
+  }
+  .normal .icon-scene{
+    width: 26rpx;
+    height:26rpx;
+    background: url(@/static/drawCard/icon_scene.png) no-repeat center / 100% 100%;
+  }
+  .normal .icon-ani{
+    width: 29rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/icon_ani.png) no-repeat center / 100% 100%;
+  }
+  .normal .icon-anin{
+    width: 29rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/icon_ani_.png) no-repeat center / 100% 100%;
+  }
+  .pokemom .icon-scene{
+    width: 26rpx;
+    height:26rpx;
+    background: url(@/static/drawCard/bkm_scene.png) no-repeat center / 100% 100%;
+  }
+  .pokemom .icon-ani{
+    width: 29rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/bkm_ani.png) no-repeat center / 100% 100%;
+  }
+  .pokemom .icon-anin{
+    width: 29rpx;
+    height:30rpx;
+    background: url(@/static/drawCard/bkm_ani_.png) no-repeat center / 100% 100%;
+  }
+  .icon-music{
+    width: 26rpx;
+    height:25rpx;
+    background: url(@/static/drawCard/icon_music.png) no-repeat center / 100% 100%;
   }
   .movable-content {
     pointer-events: auto;
