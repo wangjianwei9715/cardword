@@ -61,7 +61,7 @@
 		<paymentSuccess :showPaySuccess.sync="showPaySuccess" :showJoin="true" />
 		<winningCardPopup :show.sync="showWinningCrad" />
 		<openscreenAd :show.sync="openScreenData.show" :goodData="openScreenData.data"/>
-		<luckyBagOpenPop :popupShow.sync="luckyBagShow" :type="1" :num="ntLuckyBag"/>
+		<luckyBagOpenPop :popupShow.sync="luckyBagShow" :type="1" :num="ntLuckyBag" @close="showTabBar"/>
 	</view>
 </template>
 
@@ -183,6 +183,9 @@
 		private initIndex(cb ? : Function) {
 			this.getHome(()=> cb && cb())
 		}
+		showTabBar(){
+			uni.showTabBar({ animation: false })
+		}
 		onChangeScroll(event:any){
 			this.scrollFresh = false
 			if(!this.triggered){
@@ -253,7 +256,8 @@
 						const date=(new Date().getMonth()+1)+"-"+new Date().getDate()
 						if (uni.getStorageSync("luckyBagTipsDay")!=date){
 							uni.setStorageSync("luckyBagTipsDay",date)
-							this.luckyBagShow=true
+							this.luckyBagShow=true;
+							uni.hideTabBar()
 							this.ntLuckyBag=res.data.ntLuckyBag
 						}
 						
