@@ -12,6 +12,7 @@
 		</view>
 		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
 			<view class="goodslist-index">
+				<image v-if="item.bit&&(item.bit&256)==256" class="lucky-mark" src="@/static/act/luckyBag/mark.png"/>
 				<muqian-lazyLoad v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
 				<view class="goodslist-index-box" @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic">
@@ -142,7 +143,7 @@
 			position: relative;
 			padding:0;
 			margin-bottom: 14rpx;
-			overflow: hidden;
+			// overflow: hidden;
 		}
 		&-index-box{
 			height:430rpx;
@@ -408,7 +409,14 @@
 		z-index: 1;
 		box-sizing: border-box;
 	}
-
+	.lucky-mark{
+		width: 87rpx;
+		height:87rpx;
+		position: absolute;
+		right: -4rpx;
+		top: -4rpx;
+		z-index: 1;
+	}
 	.price-qi {
 		font-size: 20rpx !important;
 		color: #ACAEB7 !important;
