@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-15 15:19:11
+ * @LastEditTime: 2023-11-15 16:05:33
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -56,6 +56,7 @@
                         </view>
                         <view class="bagInfo bagInfo_big">
                             <view class="merName">暂未获得福袋</view>
+                            <view class="noneBagTips">参与部分22~23国宝有机会获得</view>
                         </view>
                     </view>
                 </swiper-item>
@@ -63,7 +64,7 @@
             <view class="openButton openOne" @click="$u.throttle(() => { openBag(1) }, 500)"></view>
             <view class="openButton openAll" @click="$u.throttle(() => { openBag(-1) }, 500)"></view>
             <view class="noticeContainer">
-                <swiper class="noticeContainer_swiper" :vertical="true" :autoplay="true" :interval="3000" :circular="true">
+                <swiper class="noticeContainer_swiper" :disable-touch="true" :vertical="true" :autoplay="true" :interval="3000" :circular="true">
                     <swiper-item class="noticeItem uni-flex" v-for="(item, index) in broadcastList"
                         :key="'noticeItem' + index">
                         <image class="avatar" :src="$parsePic(item.avatar)">
@@ -478,7 +479,7 @@ page {
 
         .left {
             .myLucky {
-                width: 180rpx;
+                width: 268rpx;
                 height: 58rpx;
                 background-size: 100% 100%;
                 background-image: url("/static/act/luckyBag/myLucky.png");
@@ -620,7 +621,12 @@ page {
                     margin-top: 13rpx;
                     text-align: center;
                 }
-
+                .noneBagTips{
+                    font-size: 20rpx;
+                    color: #2A2626;
+                    font-weight: normal;
+                    margin-top: 4rpx;
+                }
                 .subTitle {
                     margin-top: 13rpx;
                     text-align: center;
@@ -658,13 +664,15 @@ page {
     height: 190rpx;
     box-sizing: border-box;
     padding-top: 70rpx;
-    padding-left: 50rpx;
+    padding-left: 41rpx;
 
     .title {
-        width: 521rpx;
-        height: 58rpx;
+        width: 457rpx;
+        height: 126rpx;
         background-size: 100% 100%;
-        background-image: url("/static/act/luckyBag/goodsTitle.png");
+        background-image: url("/static/act/luckyBag/logoMan.png");
+        position: relative;
+        bottom: 26rpx;
     }
 
     .subTitle {

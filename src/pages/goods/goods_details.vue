@@ -70,7 +70,7 @@
 				</view>
 			</view>
 			<view class="luckyBar" @click="onClickLuckyBag" v-if="goodsData.bit&&(goodsData.bit&256)==256">
-				<view class="text">有<text>{{luckyData.luckyWeight}}</text>概率掉落福袋</view>
+				<view class="text"><text>{{luckyData.luckyWeight}}</text>概率掉落福袋</view>
 				<!-- <view class="flex1"></view> -->
 				<view class="flex1" v-if="luckyData.luckyList" style="position: relative;height: 64rpx;justify-content: flex-end;display: flex;">
 					<view v-for="(item,index) in luckyData.luckyList" style="position: absolute;height: 64rpx;justify-content: flex-end;flex-wrap: nowrap;">
@@ -1913,11 +1913,14 @@
 		.text{
 			font-size: 26rpx;
 			font-family: PingFang SC;
-			font-weight: bold;
+			// font-weight: bold;
 			color: #333333;
 			margin-left: 144rpx;
+			
 			text{
-				font-size: 30rpx;
+				font-size: 32rpx;
+				// color: #fdb927;
+				font-weight: bold;
 			}
 		}
 		.flex1{
