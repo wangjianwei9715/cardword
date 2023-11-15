@@ -12,7 +12,9 @@
 		</view>
 		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
 			<view class="goodslist-index">
-				<muqian-lazyLoad v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
+				<!-- 国宝福袋角标暂时写死 -->
+				<image v-if="item.mark&&item.mark!='' || item.cornerMark&&item.cornerMark!=''" class="lucky-mark" src="@/static/act/luckyBag/mark.png"/>
+				<!-- <muqian-lazyLoad v-else-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/> -->
 				<view class="goodslist-index-box" @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic">
 						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0"></muqian-lazyLoad>
@@ -142,7 +144,7 @@
 			position: relative;
 			padding:0;
 			margin-bottom: 14rpx;
-			overflow: hidden;
+			// overflow: hidden;
 		}
 		&-index-box{
 			height:430rpx;
@@ -408,7 +410,14 @@
 		z-index: 1;
 		box-sizing: border-box;
 	}
-
+	.lucky-mark{
+		width: 87rpx;
+		height:87rpx;
+		position: absolute;
+		right: -4rpx;
+		top: -4rpx;
+		z-index: 1;
+	}
 	.price-qi {
 		font-size: 20rpx !important;
 		color: #ACAEB7 !important;

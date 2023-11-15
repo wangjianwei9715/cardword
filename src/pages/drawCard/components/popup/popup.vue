@@ -2,12 +2,12 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-13 16:59:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-11-14 15:42:05
+ * @LastEditTime: 2023-11-15 11:18:55
  * @FilePath: \jichao_app_2\src\pages\drawCard\components\popup\popup.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-	<u-popup mode="center" :closeOnClickOverlay="false" :overlayOpacity="0.7" bgColor="transparent" :show="show" @close="show = false">
+	<u-popup mode="center" :closeOnClickOverlay="false" :overlayOpacity="0.7" bgColor="transparent" :show="show" @close="onClose">
 		<view class="popup-content">
 			<view class="tipsTitle" v-if="type == 1">温馨提示</view>
 			<view class="title" v-if="type == 1">您有{{ num }}个福袋待开启</view>
@@ -17,7 +17,7 @@
 				<image class="icon" src="/static/act/luckyBag/i.png" />
 				请在拼团完成后前往活动页面开启奖励
 			</view>
-			<view class="tips" v-if="type==1" style="position:relative;bottom:40rpx;" @click.stop="show=false">
+			<view class="tips" v-if="type==1" style="position:relative;bottom:40rpx;" @click.stop="onClose">
 				晚点再说
 			</view>
 			<view class="btn" @click="onClickBtn">{{type==1?"去开启":"我知道了"}}</view>
@@ -46,11 +46,15 @@ export default class ClassName extends BaseComponent {
 				url: `/pages/act/luckyBag/index`
 			})
 		}
-		this.show = false
+		this.onClose()
 	}
 	onClickNoShow(){
 		this.$emit("noShow");
 		this.show = false
+	}
+	onClose(){
+		this.show = false
+		this.$emit("close");
 	}
 }
 </script>

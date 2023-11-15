@@ -19,7 +19,7 @@
 			<image class="movable-pic" :src="item.newPic||defultPic" @error="error"/>
 			<view class="movable-name" :class="{'long-name':ifNameTooLong(item.player)}">{{item.player}}</view>
 		</view>
-		<image v-show="item.picTp==2||(bit&1)==1" :src="item.newPic||defultPic" @error="error" class="sp-card-image"></image>
+		<image v-show="item.picTp==2||(bit&1)==1" mode="aspectFit" :src="item.newPic||defultPic" @error="error" class="sp-card-image"></image>
 	</view>
 </template>
 
