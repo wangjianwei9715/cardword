@@ -70,9 +70,14 @@
 				</view>
 			</view>
 			<view class="luckyBar" @click="onClickLuckyBag" v-if="goodsData.bit&&(goodsData.bit&256)==256">
-				<view class="text">有{{goodsData.luckyWeight}}概率掉落福袋</view>
-				<view class="flex1"></view>
-				<image mode="heightFix" :src="parsePic(item.pic)" class="pic" v-for="(item) in goodsData.luckyList"></image>
+				<view class="text">有<text>{{luckyData.luckyWeight}}</text>概率掉落福袋</view>
+				<!-- <view class="flex1"></view> -->
+				<view class="flex1" v-if="luckyData.luckyList" style="position: relative;height: 64rpx;justify-content: flex-end;display: flex;">
+					<view v-for="(item,index) in luckyData.luckyList" style="position: absolute;height: 64rpx;justify-content: flex-end;flex-wrap: nowrap;">
+						<image mode="heightFix" :class="{hide:index!=nowShowLuckyIndex,show:index===nowShowLuckyIndex}" :src="parsePic(pic.pic)" class="pic" v-for="(pic) in item"></image>
+					</view>
+					
+				</view>
 				<view class="luckyBar-right"></view>
 			</view>
 			<!-- <view class="a">55555</view> -->
@@ -286,6 +291,8 @@
 		seriesCardEnd = true;
 		AD_id=null;
 		referer="";//来源
+		nowShowLuckyIndex:number=0
+		luckyData:any={}
 		onLoad(query: any) {
 			// #ifndef MP
 			const goodCode = query.goodCode ||query.id
@@ -357,10 +364,18 @@
 						this.cheduiData = res
 					})
 				}
-				if((bit&256)==256){
+				if((bit&256)==256&&!this.luckyData.goodCode){
 					app.http.Get(`dataApi/activity/nt/luckyBag/preview/${goodCode}`,{},(res:any)=>{
-						this.goodsData.luckyWeight = res.data.weight
-						this.goodsData.luckyList=(res.data.list || []).slice(0,2)
+						this.luckyData.goodCode=goodCode
+						this.luckyData.luckyWeight = res.data.weight
+						res.list=res.data.list || []
+						let list=[]
+						for (var i = 0; i < res.list.length; i += 2) {
+						    list.push(res.list.slice(i, i + 2));
+						}
+						this.luckyData.luckyList=list
+						if(list.length) this.nowShowLuckyIndex=0
+						if(list.length>1) this.startLuckyTransition()
 					})
 				}
 				// 倒计时
@@ -788,6 +803,15 @@
 		}
 		onClickLuckyBag(){
 			this.$refs.bagPop.showPop(this.goodCode)
+		}
+		startLuckyTransition(){
+			setInterval(()=>{
+				if (this.nowShowLuckyIndex==this.luckyData.luckyList.length-1){
+					this.nowShowLuckyIndex=0
+					return
+				}
+				this.nowShowLuckyIndex++
+			},4000)
 		}
 		
 	}
@@ -1885,12 +1909,16 @@
 		display: flex;
 		align-items: center;
 		position: relative;
+		
 		.text{
-			font-size: 24rpx;
+			font-size: 26rpx;
 			font-family: PingFang SC;
 			font-weight: bold;
 			color: #333333;
 			margin-left: 144rpx;
+			text{
+				font-size: 30rpx;
+			}
 		}
 		.flex1{
 			flex: 1;
@@ -1900,7 +1928,10 @@
 			height: 64rpx;
 			// background: #333333;
 			border-radius: 2rpx;
-			margin-left: 15rpx;
+			margin-left: 16rpx;
+			// transition: all 0.3s;
+			transition: opacity 1s;
+			opacity:0;
 		}
 		&-right {
 			width: 11rpx;
@@ -1909,6 +1940,14 @@
 			background-size: 100% 100%;
 			margin-right: 31rpx;
 			margin-left: 30rpx;
+		}
+		.hide{
+			opacity: 0;
+			// transform: scale(0);
+		}
+		.show{
+			opacity: 1;
+			// transform: scale(1);
 		}
 	}
 </style>

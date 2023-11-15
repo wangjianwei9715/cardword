@@ -2,7 +2,7 @@
  * @Author: lsj a1353474135@163.com
  * @Date: 2023-11-08 15:32:21
  * @LastEditors: lsj a1353474135@163.com
- * @LastEditTime: 2023-11-14 18:08:22
+ * @LastEditTime: 2023-11-15 14:49:06
  * @FilePath: \card-world\src\pages\act\luckyBag\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -35,8 +35,8 @@
                 </navigator>
 
             </view>
-            <swiper class="luckyBagHBox" previous-margin="160rpx" next-margin="180rpx" @change="swiperChange"
-                @animationfinish="animationfinish">
+            <swiper class="luckyBagHBox" previous-margin="160rpx" :current="current" next-margin="180rpx"
+                @change="swiperChange" @animationfinish="animationfinish">
                 <swiper-item v-for="(item, index) in list" @click.stop="onClickLuckyBag(item, index)"
                     :key="'luckyBag' + index">
                     <view class="luckyItem">
@@ -45,12 +45,12 @@
                         <view class="bagInfo" :class="{ bagInfo_big: index === current }">
                             <image class="merLogo" :src="$parsePic(item.merchantLogo)">
                             </image>
-                            <view class="merName u-line-1">{{item.name }}</view>
+                            <view class="merName u-line-1">{{ item.name }}</view>
                             <view class="subTitle">{{ item.state == 1 ? "待计入" : "可开启" }}{{ item.num }}个</view>
                         </view>
                     </view>
                 </swiper-item>
-                <swiper-item v-if="list&&!list.length">
+                <swiper-item v-if="list && !list.length">
                     <view class="luckyItem">
                         <view class="bag normal bag_none big">
                         </view>
@@ -62,13 +62,17 @@
             </swiper>
             <view class="openButton openOne" @click="$u.throttle(() => { openBag(1) }, 500)"></view>
             <view class="openButton openAll" @click="$u.throttle(() => { openBag(-1) }, 500)"></view>
-            <swiper class="noticeContainer" :vertical="true" :autoplay="true" :interval="3000" :circular="true">
-                <swiper-item class="noticeItem uni-flex" v-for="(item, index) in broadcastList" :key="'noticeItem' + index">
-                    <image class="avatar" :src="$parsePic(item.avatar)">
-                    </image>
-                    <view class="text u-line-1">{{ item.content }}</view>
-                </swiper-item>
-            </swiper>
+            <view class="noticeContainer">
+                <swiper class="noticeContainer_swiper" :vertical="true" :autoplay="true" :interval="3000" :circular="true">
+                    <swiper-item class="noticeItem uni-flex" v-for="(item, index) in broadcastList"
+                        :key="'noticeItem' + index">
+                        <image class="avatar" :src="$parsePic(item.avatar)">
+                        </image>
+                        <view class="text u-line-1">{{ item.content }}</view>
+                    </swiper-item>
+                </swiper>
+            </view>
+
         </view>
         <view class="subContainer">
             <view class="title"></view>
@@ -148,8 +152,7 @@
                 <view class="rightDot"></view>
             </view>
         </view>
-        <bagPop ref="bagPop" />
-        <u-popup :show="addressShow" @close="addressShow = false" mode="center">
+        <u-popup :show="addressShow" @close="addressShow = false" :safeAreaInsetBottom="false" mode="center" round="3rpx">
             <view class="addressContainer">
                 <view class="title">
                     确认物流信息
@@ -165,6 +168,8 @@
                 </view>
             </view>
         </u-popup>
+        <bagPop ref="bagPop" />
+
         <u-overlay :show="openBagShow" @close="openBagShow = false" :opacity="0.71">
             <view class="rewardPop">
                 <view class="title" :class="{ title_more: rewardList.length > 1 }">恭喜您获得以下奖品</view>
@@ -175,7 +180,8 @@
                 <scroll-view class="rewardWrap_more" :scroll-y="true" v-else>
                     <view class="rewardGrid">
                         <view class="rewardMore_item" v-for="(item, index) in rewardList" :key="'rewardMore_item' + index">
-                            <muqian-lazyLoad :src="$parsePic(item.pic)" mode="heightFix" borderRadius="3rpx" class="pic"></muqian-lazyLoad>
+                            <muqian-lazyLoad :src="$parsePic(item.pic)" mode="heightFix" borderRadius="3rpx"
+                                class="pic"></muqian-lazyLoad>
                             <view class="name u-line-1">{{ item.name }}</view>
                         </view>
                     </view>
@@ -241,14 +247,14 @@ export default class ClassName extends BaseNode {
         this.reqBroadcast()
         this.reqGoods()
     }
-    onShow(){
+    onShow() {
         this.reqNewData()
     }
-    onPullDownRefresh(){
+    onPullDownRefresh() {
         this.reqNewData()
-        setTimeout(()=>{
+        setTimeout(() => {
             uni.stopPullDownRefresh()
-        },300)
+        }, 300)
     }
     onReachBottom() {
         if (this.goodsIsFetchEnd) return
@@ -289,7 +295,7 @@ export default class ClassName extends BaseNode {
     onClickAddressConfirm() {
         uni.setStorageSync("luckyBagAddress", this.defaultAddress.id)
         this.hasChoiceAddress = true
-        this.addressShow=false
+        this.addressShow = false
     }
     openBag(num: number) {
         if (!this.list.length) {
@@ -329,7 +335,7 @@ export default class ClassName extends BaseNode {
                     })
                     return
                 }
-                this.addressShow=true
+                this.addressShow = true
             })
             return
         }
@@ -345,11 +351,15 @@ export default class ClassName extends BaseNode {
             this.rewardList = res.list || []
             this.openBagShow = true
             uni.hideLoading()
-            if (num==1){
-                nowItem.num-=1
-            }else{
-                nowItem.num=0
+            if (num == 1) {
+                nowItem.num -= 1
+            } else {
+                nowItem.num = 0
             }
+            setTimeout(() => {
+                this.current = 0
+                this.reqNewData()
+            }, 1000)
         }, (err: any) => {
             uni.hideLoading()
         })
@@ -363,12 +373,12 @@ export default class ClassName extends BaseNode {
             this.reqNewData()
         }
     }
-    goTuj(){
-        if(this.seriesCode){
+    goTuj() {
+        if (this.seriesCode) {
             uni.navigateTo({
-                url:`/pages/illustration/seriesDetail?seriesCode=${this.seriesCode}`
+                url: `/pages/illustration/seriesDetail?seriesCode=${this.seriesCode}`
             })
-        }else{
+        } else {
             app.navigateTo.switchTab(1)
         }
     }
@@ -523,7 +533,13 @@ page {
         margin: auto;
         background-size: 100% 100%;
         background-image: url("/static/act/luckyBag/noticeContainer.png");
-
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .noticeContainer_swiper{
+            width: 632rpx;
+            height: 48rpx;
+        }
         .noticeItem {
             width: 632rpx;
             box-sizing: border-box;
@@ -916,10 +932,12 @@ page {
 
 .addressContainer {
     width: 550rpx;
-    // min-height: 460rpx;
+    // min-height: 260rpx;
     background: #FFFFFF;
     border-radius: 3rpx;
-    padding-bottom: 50rpx;
+    padding-bottom: 40rpx;
+    display: flex;
+    flex-direction: column;
 
     .title {
         font-size: 36rpx;
@@ -946,7 +964,7 @@ page {
     .address {
         .default {
             color: #ffffff;
-            background-color: #ff3164;
+            background-color: #fdb927;
             // text-align: center;
             padding: 0rpx 14rpx;
             border-radius: 3rpx;
@@ -990,9 +1008,9 @@ page {
         }
 
         .confirm {
-            border: 1rpx solid #fa1545;
+            border: 1rpx solid #fdb927;
             color: #ffffff;
-            background-color: #fa1545;
+            background-color: #fdb927;
         }
     }
 }
@@ -1008,11 +1026,11 @@ page {
         font-weight: bold;
         color: #FFFFFF;
         margin-bottom: 56rpx;
-        margin-top: 246rpx;
+        margin-top: 300rpx;
     }
 
     .title_more {
-        margin-top: 189rpx;
+        margin-top: 209rpx;
     }
 
     @keyframes show {
@@ -1027,8 +1045,9 @@ page {
 
     .rewardWrap {
         animation: show 0.3s;
-        .pic{
-            background-color: rgba(0,0,0,0);
+
+        .pic {
+            background-color: rgba(0, 0, 0, 0);
         }
     }
 
@@ -1057,7 +1076,7 @@ page {
                     height: 200rpx;
                     border-radius: 3rpx;
                     margin-bottom: 19rpx;
-                    background-color: rgba(0,0,0,0);
+                    background-color: rgba(0, 0, 0, 0);
                 }
 
                 .name {
@@ -1086,8 +1105,8 @@ page {
 
     .receiveButton {
         width: 480rpx;
-        height: 110rpx;
-        background: #FA1545;
+        height: 90rpx;
+        background: #fdb927;
         border-radius: 3rpx;
         font-size: 40rpx;
         font-weight: bold;
@@ -1115,5 +1134,4 @@ page {
     }
 
 
-}
-</style>
+}</style>
