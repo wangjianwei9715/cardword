@@ -12,8 +12,9 @@
 		</view>
 		<view class="goodslist-index-show" v-for="(item,index) in goodsList" :key="index">
 			<view class="goodslist-index">
-				<image v-if="item.bit&&(item.bit&256)==256" class="lucky-mark" src="@/static/act/luckyBag/mark.png"/>
-				<muqian-lazyLoad v-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/>
+				<!-- 国宝福袋角标暂时写死 -->
+				<image v-if="item.mark&&item.mark!='' || item.cornerMark&&item.cornerMark!=''" class="lucky-mark" src="@/static/act/luckyBag/mark.png"/>
+				<!-- <muqian-lazyLoad v-else-if="item.mark&&item.mark!=''" class="select-team" :src="decodeURIComponent(item.mark)"/> -->
 				<view class="goodslist-index-box" @click="onClickJumpUrl(item.goodCode)">
 					<view class="goodslist-pic">
 						<muqian-lazyLoad v-if="item.pic!=''" class="goodslist-pic-image" :src="getGoodsImg(decodeURIComponent(item.pic))" borderRadius="5rpx 5rpx 0 0"></muqian-lazyLoad>
